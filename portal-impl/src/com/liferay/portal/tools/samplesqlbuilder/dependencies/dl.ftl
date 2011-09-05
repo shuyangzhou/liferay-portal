@@ -1,5 +1,7 @@
 <#setting number_format = "0">
 
+${writerDocumentLibraryCSV.write("###" + companyId + "\n")}
+
 <#if (maxDLFolderCount > 0)>
 	<#assign ddmStructure = dataFactory.addDDMStructure(groupId, companyId, firstUserId, dataFactory.DLFileEntryClassName.classNameId)>
 
