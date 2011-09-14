@@ -11,9 +11,11 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
+
 package com.liferay.portal.kernel.scheduler;
 
 import com.liferay.portal.kernel.util.ObjectValuePair;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,41 +24,61 @@ import java.util.Set;
 /**
  * @author Tina Tian
  */
-
 public class JobStateSerializeUtil {
 
-	public static JobState deSerialize(Map<String, Object> jobStateMap) {
+	public static JobState deserialize(Map<String, Object> jobStateMap) {
 		Object object = jobStateMap.get(_VERSION_FIELD);
 
-		if (object == null) {
-			return null;
+		if (!(object instanceof Integer)) {
+			throw new IllegalStateException(
+				"Unable to find JobState version number");
 		}
 
 		int version = (Integer)object;
 
-		if (version == 1) {
-			return _doDeSerialize1(jobStateMap);
+		switch (version) {
+			case 1:
+				return _doDeserialize1(jobStateMap);
+			default:
+				throw new IllegalStateException(
+					"Unable to find deserialize method for JobState with " +
+						"version " + version);
 		}
-
-		return null;
 	}
 
 	public static Map<String, Object> serialize(JobState jobState) {
-		return _doSerialize1(jobState);
+		switch (JobState.VERSION) {
+			case 1:
+				return _doSerialize1(jobState);
+			default:
+				throw new IllegalStateException(
+					"Unable to find serialize method for JobState with " +
+						"current version " + JobState.VERSION);
+		}
 	}
 
-	private static JobState _doDeSerialize1(Map<String, Object> jobStateMap) {
+	private static JobState _doDeserialize1(Map<String, Object> jobStateMap) {
 		Map<Exception, Date> exceptionsMap =
-			(Map<Exception, Date>)jobStateMap.get(
-				_EXCEPTIONS_FIELD);
+			(Map<Exception, Date>)jobStateMap.get(_EXCEPTIONS_FIELD);
 		int exceptionsMaxSize = (Integer)jobStateMap.get(
 			_EXCEPTIONS_MAX_SIZE_FIELD);
-		int triggerStateIndex = (Integer)jobStateMap.get(_TRIGGER_STATE_FIELD);
+		String triggerStateString =
+			(String)jobStateMap.get(_TRIGGER_STATE_FIELD);
 		Map<String, Date> triggerTimeInfomation =
 			(Map<String, Date>)jobStateMap.get(_TRIGGER_TIME_INFOMATION_FIELD);
 
-		JobState jobState = new JobState(
-			TriggerState.values()[triggerStateIndex], exceptionsMaxSize);
+		TriggerState triggerState = null;
+
+		try {
+			triggerState = TriggerState.valueOf(triggerStateString);
+		}
+		catch (Exception ex) {
+			throw new IllegalStateException(
+				"Unable to cast string " + triggerStateString +
+					" to TriggerState enum type", ex);
+		}
+
+		JobState jobState = new JobState(triggerState, exceptionsMaxSize);
 
 		if (exceptionsMap != null) {
 			Set<Map.Entry<Exception, Date>> entries = exceptionsMap.entrySet();
@@ -81,12 +103,12 @@ public class JobStateSerializeUtil {
 
 	private static Map<String, Object> _doSerialize1(JobState jobState) {
 		Map<String, Object> jobStateMap = new HashMap<String, Object>();
-		
+
 		Map<Exception, Date> exceptionsMap = new HashMap<Exception, Date>();
-		
-		ObjectValuePair<Exception, Date>[] exceptions = 
+
+		ObjectValuePair<Exception, Date>[] exceptions =
 			(ObjectValuePair<Exception, Date>[])jobState.getExceptions();
-		
+
 		for (ObjectValuePair<Exception, Date> exception : exceptions) {
 			exceptionsMap.put(exception.getKey(), exception.getValue());
 		}
@@ -95,7 +117,7 @@ public class JobStateSerializeUtil {
 		jobStateMap.put(
 			_EXCEPTIONS_MAX_SIZE_FIELD, jobState.getExceptionsMaxSize());
 		jobStateMap.put(
-			_TRIGGER_STATE_FIELD, jobState.getTriggerState().ordinal());
+			_TRIGGER_STATE_FIELD, jobState.getTriggerState().toString());
 		jobStateMap.put(
 			_TRIGGER_TIME_INFOMATION_FIELD,
 			jobState.getTriggerTimeInfomations());

@@ -143,7 +143,7 @@ public class UpgradeScheduler extends UpgradeProcess {
 					continue;
 				}
 
-				Map<String, Object> jobStateMap = 
+				Map<String, Object> jobStateMap =
 					(Map<String, Object>)jobDataMap.get(
 						SchedulerEngine.JOB_STATE);
 

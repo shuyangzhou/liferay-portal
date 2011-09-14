@@ -17,8 +17,8 @@ package com.liferay.portal.kernel.scheduler;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 
 import java.io.Serializable;
-import java.util.Collections;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -113,7 +113,7 @@ public class JobState implements Cloneable, Serializable {
 
 	public Map<String, Date> getTriggerTimeInfomations() {
 		if (_triggerTimeInfomation == null) {
-			return Collections.EMPTY_MAP; 
+			return Collections.EMPTY_MAP;
 		}
 
 		return _triggerTimeInfomation;

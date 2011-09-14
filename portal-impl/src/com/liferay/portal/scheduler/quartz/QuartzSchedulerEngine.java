@@ -745,7 +745,7 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 				JobState jobState = getJobState(jobDataMap);
 
 				jobState.setTriggerState(TriggerState.COMPLETE);
-				
+
 				jobDataMap.put(
 					JOB_STATE, JobStateSerializeUtil.serialize(jobState));
 
@@ -987,7 +987,7 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		Map<String, Object> jobStateMap = (Map<String, Object>)jobDataMap.get(
 			JOB_STATE);
 
-		return JobStateSerializeUtil.deSerialize(jobStateMap);
+		return JobStateSerializeUtil.deserialize(jobStateMap);
 	}
 
 	@BeanReference(name = "com.liferay.portal.service.QuartzLocalService")

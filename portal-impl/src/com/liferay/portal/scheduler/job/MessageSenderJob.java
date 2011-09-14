@@ -32,8 +32,8 @@ import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.spring.context.PortletContextLoaderListener;
 import com.liferay.portal.util.PropsValues;
-import java.util.Map;
 
+import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.quartz.Job;
@@ -106,7 +106,7 @@ public class MessageSenderJob implements Job {
 			Map<String, Object> jobStateMap =
 				(Map<String, Object>)jobDataMap.get(SchedulerEngine.JOB_STATE);
 
-			JobState jobState = JobStateSerializeUtil.deSerialize(jobStateMap);
+			JobState jobState = JobStateSerializeUtil.deserialize(jobStateMap);
 
 			if (jobExecutionContext.getNextFireTime() == null) {
 				Trigger trigger = jobExecutionContext.getTrigger();
