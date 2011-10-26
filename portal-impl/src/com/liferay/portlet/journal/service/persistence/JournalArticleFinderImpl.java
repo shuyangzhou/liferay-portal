@@ -546,8 +546,8 @@ public class JournalArticleFinderImpl
 
 		articleIds = CustomSQLUtil.keywords(articleIds, false);
 		titles = CustomSQLUtil.keywords(titles);
-		descriptions = CustomSQLUtil.keywords(descriptions, false);
-		contents = CustomSQLUtil.keywords(contents, false);
+		descriptions = CustomSQLUtil.keywords(descriptions);
+		contents = CustomSQLUtil.keywords(contents);
 		structureIds = CustomSQLUtil.keywords(structureIds, false);
 		templateIds = CustomSQLUtil.keywords(templateIds, false);
 		Timestamp displayDateGT_TS = CalendarUtil.getTimestamp(displayDateGT);
@@ -685,8 +685,8 @@ public class JournalArticleFinderImpl
 
 		articleIds = CustomSQLUtil.keywords(articleIds, false);
 		titles = CustomSQLUtil.keywords(titles);
-		descriptions = CustomSQLUtil.keywords(descriptions, false);
-		contents = CustomSQLUtil.keywords(contents, false);
+		descriptions = CustomSQLUtil.keywords(descriptions);
+		contents = CustomSQLUtil.keywords(contents);
 		structureIds = CustomSQLUtil.keywords(structureIds, false);
 		templateIds = CustomSQLUtil.keywords(templateIds, false);
 		Timestamp displayDateGT_TS = CalendarUtil.getTimestamp(displayDateGT);
