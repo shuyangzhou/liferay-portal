@@ -14,6 +14,8 @@
 
 package com.liferay.portal.cluster;
 
+import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
+import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.cluster.Address;
 import com.liferay.portal.kernel.cluster.ClusterEvent;
 import com.liferay.portal.kernel.cluster.ClusterEventListener;
@@ -33,6 +35,7 @@ import com.liferay.portal.kernel.util.NamedThreadFactory;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WeakValueConcurrentHashMap;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.util.PortalPortEventListener;
@@ -120,7 +123,7 @@ public class ClusterExecutorImpl
 			addresses.remove(getLocalClusterNodeAddress())) {
 
 			ClusterNodeResponse clusterNodeResponse = runLocalMethod(
-				clusterRequest.getMethodHandler());
+				clusterRequest);
 
 			clusterNodeResponse.setMulticast(clusterRequest.isMulticast());
 			clusterNodeResponse.setUuid(clusterRequest.getUuid());
@@ -365,6 +368,51 @@ public class ClusterExecutorImpl
 		return _shortcutLocalMethod;
 	}
 
+	protected Object invoke(
+			String servletContextName, String beanIdentifier,
+			MethodHandler methodHandler)
+		throws Exception {
+
+		if (servletContextName == null) {
+			if (Validator.isNull(beanIdentifier)) {
+				return methodHandler.invoke(true);
+			}
+			else {
+				Object bean = PortalBeanLocatorUtil.locate(beanIdentifier);
+
+				return methodHandler.invoke(bean);
+			}
+		}
+
+		Thread currentThread = Thread.currentThread();
+
+		ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+		try {
+			ClassLoader classLoader =
+				(ClassLoader)PortletBeanLocatorUtil.locate(
+					servletContextName, "portletClassLoader");
+
+			currentThread.setContextClassLoader(classLoader);
+
+			if (Validator.isNull(beanIdentifier)) {
+				return methodHandler.invoke(true);
+			}
+			else {
+				Object bean = PortletBeanLocatorUtil.locate(
+					servletContextName, beanIdentifier);
+
+				return methodHandler.invoke(bean);
+			}
+		}
+		catch (Exception e) {
+			throw e;
+		}
+		finally {
+			currentThread.setContextClassLoader(contextClassLoader);
+		}
+	}
+
 	protected void notify(
 		Address address, ClusterNode clusterNode, long expirationTime) {
 
@@ -467,7 +515,9 @@ public class ClusterExecutorImpl
 		}
 	}
 
-	protected ClusterNodeResponse runLocalMethod(MethodHandler methodHandler) {
+	protected ClusterNodeResponse runLocalMethod(
+		ClusterRequest clusterRequest) {
+
 		ClusterNodeResponse clusterNodeResponse = new ClusterNodeResponse();
 
 		ClusterNode localClusterNode = getLocalClusterNode();
@@ -475,6 +525,8 @@ public class ClusterExecutorImpl
 		clusterNodeResponse.setAddress(getLocalClusterNodeAddress());
 		clusterNodeResponse.setClusterNode(localClusterNode);
 		clusterNodeResponse.setClusterMessageType(ClusterMessageType.EXECUTE);
+
+		MethodHandler methodHandler = clusterRequest.getMethodHandler();
 
 		if (methodHandler == null) {
 			clusterNodeResponse.setException(
@@ -485,7 +537,9 @@ public class ClusterExecutorImpl
 		}
 
 		try {
-			Object returnValue = methodHandler.invoke(true);
+			Object returnValue = invoke(
+				clusterRequest.getServletContextName(),
+				clusterRequest.getBeanIdentifier(), methodHandler);
 
 			if (returnValue instanceof Serializable) {
 				clusterNodeResponse.setResult(returnValue);
@@ -497,6 +551,8 @@ public class ClusterExecutorImpl
 		}
 		catch (Exception e) {
 			clusterNodeResponse.setException(e);
+
+			_log.error("Failed to invoke method " + methodHandler, e);
 		}
 
 		return clusterNodeResponse;
