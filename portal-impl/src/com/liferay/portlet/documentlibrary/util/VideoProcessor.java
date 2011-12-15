@@ -232,7 +232,7 @@ public class VideoProcessor extends DefaultPreviewableProcessor {
 							DL_FILE_ENTRY_THUMBNAIL_VIDEO_FRAME_PERCENTAGE);
 
 				ProcessExecutor.execute(
-					processCallable, ClassPathUtil.getPortalClassPath());
+					processCallable, ClassPathUtil.getPortalClassPath(), true);
 			}
 			catch (Exception e) {
 				_log.error(e, e);
@@ -369,7 +369,7 @@ public class VideoProcessor extends DefaultPreviewableProcessor {
 				PropsUtil.getProperties(PropsKeys.XUGGLER_FFPRESET, true));
 
 		ProcessExecutor.execute(
-			processCallable, ClassPathUtil.getPortalClassPath());
+			processCallable, ClassPathUtil.getPortalClassPath(), true);
 
 		addFileToStore(
 			fileVersion.getCompanyId(), PREVIEW_PATH,

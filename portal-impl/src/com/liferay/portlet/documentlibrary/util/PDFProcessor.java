@@ -424,7 +424,7 @@ public class PDFProcessor extends DefaultPreviewableProcessor {
 				_globalSearchPath, imOperation.getCmdArgs());
 
 		ProcessExecutor.execute(
-			processCallable, ClassPathUtil.getPortalClassPath());
+			processCallable, ClassPathUtil.getPortalClassPath(), true);
 
 		// Store images
 

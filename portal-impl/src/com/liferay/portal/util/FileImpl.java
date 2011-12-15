@@ -283,7 +283,7 @@ public class FileImpl implements com.liferay.portal.kernel.util.File {
 			if (forkProcess) {
 				text = ProcessExecutor.execute(
 					new ExtractTextProcessCallable(getBytes(is)),
-					ClassPathUtil.getPortalClassPath());
+					ClassPathUtil.getPortalClassPath(), false);
 			}
 			else {
 				text = tika.parseToString(is);

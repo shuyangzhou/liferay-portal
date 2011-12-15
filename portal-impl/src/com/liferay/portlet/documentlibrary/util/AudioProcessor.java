@@ -213,7 +213,7 @@ public class AudioProcessor extends DefaultPreviewableProcessor {
 					srcFile.getCanonicalPath(), destFile.getCanonicalPath());
 
 			ProcessExecutor.execute(
-				processCallable, ClassPathUtil.getPortalClassPath());
+				processCallable, ClassPathUtil.getPortalClassPath(), true);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
