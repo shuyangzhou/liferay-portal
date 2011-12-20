@@ -15,7 +15,9 @@
 package com.liferay.portal.kernel.process;
 
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedInputStream;
+import com.liferay.portal.kernel.util.GetterUtil;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -30,16 +32,43 @@ import java.io.Serializable;
 public class ProcessExecutor {
 
 	public static <T extends Serializable> T execute(
-			ProcessCallable<T> processCallable, String classPath)
+			ProcessCallable<T> processCallable, String classPath,
+			boolean loggable)
+		throws ProcessException {
+
+		return execute(
+			processCallable, classPath, System.out, System.err, loggable);
+	}
+
+	public static <T extends Serializable> T execute(
+			ProcessCallable<T> processCallable, String classPath,
+			OutputStream outputStream, OutputStream errorStream,
+			boolean loggable)
 		throws ProcessException {
 
 		try {
 			ProcessBuilder processBuilder = new ProcessBuilder(
-				"java", "-cp", classPath, ProcessExecutor.class.getName());
+				"java", "-cp", classPath, ProcessExecutor.class.getName(),
+				Boolean.toString(loggable));
 
 			Process process = processBuilder.start();
 
 			_writeObject(process.getOutputStream(), processCallable, true);
+
+			if (loggable) {
+				try {
+					int b = -1;
+
+					while ((b = process.getInputStream().read()) != -1) {
+						outputStream.write(b);
+					}
+				}
+				catch (EOFException eofe) {
+				}
+				finally {
+					outputStream.flush();
+				}
+			}
 
 			int exitCode = process.waitFor();
 
@@ -53,14 +82,20 @@ public class ProcessExecutor {
 			if (errorInputStream.available() > 0) {
 				ProcessException processException =
 					(ProcessException)_readObject(
-						errorInputStream, System.err, true);
+						errorInputStream, errorStream, true);
 
 				if (processException != null) {
 					throw processException;
 				}
 			}
 
-			return (T)_readObject(process.getInputStream(), System.out, true);
+			if (loggable) {
+				return null;
+			}
+			else {
+				return (T)_readObject(
+					process.getInputStream(), outputStream, true);
+			}
 		}
 		catch (Exception e) {
 			throw new ProcessException(e);
@@ -76,7 +111,9 @@ public class ProcessExecutor {
 
 			Object result = processCallable.call();
 
-			_writeObject(System.out, result, false);
+			if (!GetterUtil.getBoolean(arguments[0])) {
+				_writeObject(System.out, result, false);
+			}
 		}
 		catch (ProcessException pe) {
 			_writeObject(System.err, pe, false);
