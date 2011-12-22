@@ -112,6 +112,7 @@ import com.liferay.portal.security.pwd.PwdToolkitUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.base.PrincipalBean;
 import com.liferay.portal.service.base.UserLocalServiceBaseImpl;
+import com.liferay.portal.spring.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PrefsPropsUtil;
 import com.liferay.portal.util.PropsValues;
@@ -137,6 +138,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -788,9 +790,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		// Indexer
 
 		if (serviceContext.isIndexingEnabled()) {
-			Indexer indexer = IndexerRegistryUtil.getIndexer(User.class);
-
-			indexer.reindex(user);
+			reindex(user);
 		}
 
 		// Workflow
@@ -1773,6 +1773,18 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	}
 
 	/**
+	 * Returns the user with the primary key.
+	 *
+	 * @param  userId the primary key of the user
+	 * @return the user with the primary key, or <code>null</code> if a user
+	 *         with the primary key could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public User fetchUserById(long userId) throws SystemException {
+		return userPersistence.fetchByPrimaryKey(userId);
+	}
+
+	/**
 	 * Returns the user with the screen name.
 	 *
 	 * @param  companyId the primary key of the user's company
@@ -1787,18 +1799,6 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		screenName = getScreenName(screenName);
 
 		return userPersistence.fetchByC_SN(companyId, screenName);
-	}
-
-	/**
-	 * Returns the user with the primary key.
-	 *
-	 * @param  userId the primary key of the user
-	 * @return the user with the primary key, or <code>null</code> if a user
-	 *         with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public User fetchUserById(long userId) throws SystemException {
-		return userPersistence.fetchByPrimaryKey(userId);
 	}
 
 	/**
@@ -2822,188 +2822,6 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	}
 
 	/**
-	 * Updates a user account that was automatically created when a guest user
-	 * participated in an action (e.g. posting a comment) and only provided his
-	 * name and email address.
-	 *
-	 * @param  creatorUserId the primary key of the creator
-	 * @param  companyId the primary key of the user's company
-	 * @param  autoPassword whether a password should be automatically generated
-	 *         for the user
-	 * @param  password1 the user's password
-	 * @param  password2 the user's password confirmation
-	 * @param  autoScreenName whether a screen name should be automatically
-	 *         generated for the user
-	 * @param  screenName the user's screen name
-	 * @param  emailAddress the user's email address
-	 * @param  facebookId the user's facebook ID
-	 * @param  openId the user's OpenID
-	 * @param  locale the user's locale
-	 * @param  firstName the user's first name
-	 * @param  middleName the user's middle name
-	 * @param  lastName the user's last name
-	 * @param  prefixId the user's name prefix ID
-	 * @param  suffixId the user's name suffix ID
-	 * @param  male whether the user is male
-	 * @param  birthdayMonth the user's birthday month (0-based, meaning 0 for
-	 *         January)
-	 * @param  birthdayDay the user's birthday day
-	 * @param  birthdayYear the user's birthday year
-	 * @param  jobTitle the user's job title
-	 * @param  updateUserInformation whether to update the user's information
-	 * @param  sendEmail whether to send the user an email notification about
-	 *         their new account
-	 * @param  serviceContext the user's service context (optionally
-	 *         <code>null</code>). Can set expando bridge attributes for the
-	 *         user.
-	 * @return the user
-	 * @throws PortalException if the user's information was invalid
-	 * @throws SystemException if a system exception occurred
-	 */
-	public User updateIncompleteUser(
-			long creatorUserId, long companyId, boolean autoPassword,
-			String password1, String password2, boolean autoScreenName,
-			String screenName, String emailAddress, long facebookId,
-			String openId, Locale locale, String firstName, String middleName,
-			String lastName, int prefixId, int suffixId, boolean male,
-			int birthdayMonth, int birthdayDay, int birthdayYear,
-			String jobTitle, boolean updateUserInformation, boolean sendEmail,
-			ServiceContext serviceContext)
-		throws PortalException, SystemException {
-
-		User user = getUserByEmailAddress(companyId, emailAddress);
-
-		if (user.getStatus() != WorkflowConstants.STATUS_INCOMPLETE) {
-			throw new PortalException("Invalid user status");
-		}
-
-		User defaultUser = getDefaultUser(companyId);
-
-		if (updateUserInformation) {
-			autoScreenName = false;
-
-			if (PrefsPropsUtil.getBoolean(
-					companyId,
-					PropsKeys.USERS_SCREEN_NAME_ALWAYS_AUTOGENERATE)) {
-
-				autoScreenName = true;
-			}
-
-			validate(
-				companyId, user.getUserId(), autoPassword, password1, password2,
-				autoScreenName, screenName, emailAddress, firstName, middleName,
-				lastName, null);
-
-			if (!autoPassword) {
-				if (Validator.isNull(password1) ||
-					Validator.isNull(password2)) {
-						throw new UserPasswordException(
-							UserPasswordException.PASSWORD_INVALID);
-				}
-			}
-
-			if (autoScreenName) {
-				ScreenNameGenerator screenNameGenerator =
-					ScreenNameGeneratorFactory.getInstance();
-
-				try {
-					screenName = screenNameGenerator.generate(
-						companyId, user.getUserId(), emailAddress);
-				}
-				catch (Exception e) {
-					throw new SystemException(e);
-				}
-			}
-
-			FullNameGenerator fullNameGenerator =
-				FullNameGeneratorFactory.getInstance();
-
-			String fullName = fullNameGenerator.getFullName(
-				firstName, middleName, lastName);
-
-			String greeting = LanguageUtil.format(
-				locale, "welcome-x", " " + fullName, false);
-
-			if (Validator.isNotNull(password1)) {
-				user.setPassword(PwdEncryptor.encrypt(password1));
-				user.setPasswordUnencrypted(password1);
-			}
-
-			user.setPasswordEncrypted(true);
-
-			PasswordPolicy passwordPolicy = defaultUser.getPasswordPolicy();
-
-			if (passwordPolicy.isChangeable() &&
-				passwordPolicy.isChangeRequired()) {
-
-				user.setPasswordReset(true);
-			}
-			else {
-				user.setPasswordReset(false);
-			}
-
-			user.setScreenName(screenName);
-			user.setFacebookId(facebookId);
-			user.setOpenId(openId);
-			user.setLanguageId(locale.toString());
-			user.setTimeZoneId(defaultUser.getTimeZoneId());
-			user.setGreeting(greeting);
-			user.setFirstName(firstName);
-			user.setMiddleName(middleName);
-			user.setLastName(lastName);
-			user.setJobTitle(jobTitle);
-
-			Date birthday = PortalUtil.getDate(
-				birthdayMonth, birthdayDay, birthdayYear,
-				new ContactBirthdayException());
-
-			Contact contact = user.getContact();
-
-			contact.setFirstName(firstName);
-			contact.setMiddleName(middleName);
-			contact.setLastName(lastName);
-			contact.setPrefixId(prefixId);
-			contact.setSuffixId(suffixId);
-			contact.setMale(male);
-			contact.setBirthday(birthday);
-			contact.setJobTitle(jobTitle);
-
-			contactPersistence.update(contact, false, serviceContext);
-
-			// Expando
-
-			user.setExpandoBridgeAttributes(serviceContext);
-
-			// Indexer
-
-			Indexer indexer = IndexerRegistryUtil.getIndexer(User.class);
-
-			indexer.reindex(user);
-		}
-
-		user.setStatus(WorkflowConstants.STATUS_DRAFT);
-
-		userPersistence.update(user, false, serviceContext);
-
-		// Workflow
-
-		long workflowUserId = creatorUserId;
-
-		if (workflowUserId == user.getUserId()) {
-			workflowUserId = defaultUser.getUserId();
-		}
-
-		serviceContext.setAttribute("autoPassword", autoPassword);
-		serviceContext.setAttribute("sendEmail", sendEmail);
-
-		WorkflowHandlerRegistryUtil.startWorkflowInstance(
-			companyId, workflowUserId, User.class.getName(), user.getUserId(),
-			user, serviceContext);
-
-		return getUserByEmailAddress(companyId, emailAddress);
-	}
-
-	/**
 	 * Returns an ordered range of all the users who match the keywords and
 	 * status, without using the indexer. It is preferable to use the indexed
 	 * version {@link #search(long, String, int, LinkedHashMap, int, int, Sort)}
@@ -3943,6 +3761,188 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	}
 
 	/**
+	 * Updates a user account that was automatically created when a guest user
+	 * participated in an action (e.g. posting a comment) and only provided his
+	 * name and email address.
+	 *
+	 * @param  creatorUserId the primary key of the creator
+	 * @param  companyId the primary key of the user's company
+	 * @param  autoPassword whether a password should be automatically generated
+	 *         for the user
+	 * @param  password1 the user's password
+	 * @param  password2 the user's password confirmation
+	 * @param  autoScreenName whether a screen name should be automatically
+	 *         generated for the user
+	 * @param  screenName the user's screen name
+	 * @param  emailAddress the user's email address
+	 * @param  facebookId the user's facebook ID
+	 * @param  openId the user's OpenID
+	 * @param  locale the user's locale
+	 * @param  firstName the user's first name
+	 * @param  middleName the user's middle name
+	 * @param  lastName the user's last name
+	 * @param  prefixId the user's name prefix ID
+	 * @param  suffixId the user's name suffix ID
+	 * @param  male whether the user is male
+	 * @param  birthdayMonth the user's birthday month (0-based, meaning 0 for
+	 *         January)
+	 * @param  birthdayDay the user's birthday day
+	 * @param  birthdayYear the user's birthday year
+	 * @param  jobTitle the user's job title
+	 * @param  updateUserInformation whether to update the user's information
+	 * @param  sendEmail whether to send the user an email notification about
+	 *         their new account
+	 * @param  serviceContext the user's service context (optionally
+	 *         <code>null</code>). Can set expando bridge attributes for the
+	 *         user.
+	 * @return the user
+	 * @throws PortalException if the user's information was invalid
+	 * @throws SystemException if a system exception occurred
+	 */
+	public User updateIncompleteUser(
+			long creatorUserId, long companyId, boolean autoPassword,
+			String password1, String password2, boolean autoScreenName,
+			String screenName, String emailAddress, long facebookId,
+			String openId, Locale locale, String firstName, String middleName,
+			String lastName, int prefixId, int suffixId, boolean male,
+			int birthdayMonth, int birthdayDay, int birthdayYear,
+			String jobTitle, boolean updateUserInformation, boolean sendEmail,
+			ServiceContext serviceContext)
+		throws PortalException, SystemException {
+
+		User user = getUserByEmailAddress(companyId, emailAddress);
+
+		if (user.getStatus() != WorkflowConstants.STATUS_INCOMPLETE) {
+			throw new PortalException("Invalid user status");
+		}
+
+		User defaultUser = getDefaultUser(companyId);
+
+		if (updateUserInformation) {
+			autoScreenName = false;
+
+			if (PrefsPropsUtil.getBoolean(
+					companyId,
+					PropsKeys.USERS_SCREEN_NAME_ALWAYS_AUTOGENERATE)) {
+
+				autoScreenName = true;
+			}
+
+			validate(
+				companyId, user.getUserId(), autoPassword, password1, password2,
+				autoScreenName, screenName, emailAddress, firstName, middleName,
+				lastName, null);
+
+			if (!autoPassword) {
+				if (Validator.isNull(password1) ||
+					Validator.isNull(password2)) {
+						throw new UserPasswordException(
+							UserPasswordException.PASSWORD_INVALID);
+				}
+			}
+
+			if (autoScreenName) {
+				ScreenNameGenerator screenNameGenerator =
+					ScreenNameGeneratorFactory.getInstance();
+
+				try {
+					screenName = screenNameGenerator.generate(
+						companyId, user.getUserId(), emailAddress);
+				}
+				catch (Exception e) {
+					throw new SystemException(e);
+				}
+			}
+
+			FullNameGenerator fullNameGenerator =
+				FullNameGeneratorFactory.getInstance();
+
+			String fullName = fullNameGenerator.getFullName(
+				firstName, middleName, lastName);
+
+			String greeting = LanguageUtil.format(
+				locale, "welcome-x", " " + fullName, false);
+
+			if (Validator.isNotNull(password1)) {
+				user.setPassword(PwdEncryptor.encrypt(password1));
+				user.setPasswordUnencrypted(password1);
+			}
+
+			user.setPasswordEncrypted(true);
+
+			PasswordPolicy passwordPolicy = defaultUser.getPasswordPolicy();
+
+			if (passwordPolicy.isChangeable() &&
+				passwordPolicy.isChangeRequired()) {
+
+				user.setPasswordReset(true);
+			}
+			else {
+				user.setPasswordReset(false);
+			}
+
+			user.setScreenName(screenName);
+			user.setFacebookId(facebookId);
+			user.setOpenId(openId);
+			user.setLanguageId(locale.toString());
+			user.setTimeZoneId(defaultUser.getTimeZoneId());
+			user.setGreeting(greeting);
+			user.setFirstName(firstName);
+			user.setMiddleName(middleName);
+			user.setLastName(lastName);
+			user.setJobTitle(jobTitle);
+
+			Date birthday = PortalUtil.getDate(
+				birthdayMonth, birthdayDay, birthdayYear,
+				new ContactBirthdayException());
+
+			Contact contact = user.getContact();
+
+			contact.setFirstName(firstName);
+			contact.setMiddleName(middleName);
+			contact.setLastName(lastName);
+			contact.setPrefixId(prefixId);
+			contact.setSuffixId(suffixId);
+			contact.setMale(male);
+			contact.setBirthday(birthday);
+			contact.setJobTitle(jobTitle);
+
+			contactPersistence.update(contact, false, serviceContext);
+
+			// Expando
+
+			user.setExpandoBridgeAttributes(serviceContext);
+
+			// Indexer
+
+			Indexer indexer = IndexerRegistryUtil.getIndexer(User.class);
+
+			indexer.reindex(user);
+		}
+
+		user.setStatus(WorkflowConstants.STATUS_DRAFT);
+
+		userPersistence.update(user, false, serviceContext);
+
+		// Workflow
+
+		long workflowUserId = creatorUserId;
+
+		if (workflowUserId == user.getUserId()) {
+			workflowUserId = defaultUser.getUserId();
+		}
+
+		serviceContext.setAttribute("autoPassword", autoPassword);
+		serviceContext.setAttribute("sendEmail", sendEmail);
+
+		WorkflowHandlerRegistryUtil.startWorkflowInstance(
+			companyId, workflowUserId, User.class.getName(), user.getUserId(),
+			user, serviceContext);
+
+		return getUserByEmailAddress(companyId, emailAddress);
+	}
+
+	/**
 	 * Updates the user's job title.
 	 *
 	 * @param  userId the primary key of the user
@@ -4491,9 +4491,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 		userPersistence.update(user, false);
 
-		Indexer indexer = IndexerRegistryUtil.getIndexer(User.class);
-
-		indexer.reindex(user);
+		reindex(user);
 
 		return user;
 	}
@@ -5147,57 +5145,20 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		return userIds;
 	}
 
-	protected void sendEmail(
-			User user, String password, ServiceContext serviceContext)
-		throws SystemException {
+	protected void reindex(final User user) {
+		final Indexer indexer = IndexerRegistryUtil.getIndexer(User.class);
 
-		if (!PrefsPropsUtil.getBoolean(
-				user.getCompanyId(),
-				PropsKeys.ADMIN_EMAIL_USER_ADDED_ENABLED)) {
+		Callable<Void> callable = new Callable<Void>() {
 
-			return;
-		}
+			public Void call() throws Exception {
+				indexer.reindex(user);
 
-		String fromName = PrefsPropsUtil.getString(
-			user.getCompanyId(), PropsKeys.ADMIN_EMAIL_FROM_NAME);
-		String fromAddress = PrefsPropsUtil.getString(
-			user.getCompanyId(), PropsKeys.ADMIN_EMAIL_FROM_ADDRESS);
+				return null;
+			}
 
-		String toName = user.getFullName();
-		String toAddress = user.getEmailAddress();
+		};
 
-		String subject = PrefsPropsUtil.getContent(
-			user.getCompanyId(), PropsKeys.ADMIN_EMAIL_USER_ADDED_SUBJECT);
-
-		String body = null;
-
-		if (Validator.isNotNull(password)) {
-			body = PrefsPropsUtil.getContent(
-				user.getCompanyId(), PropsKeys.ADMIN_EMAIL_USER_ADDED_BODY);
-		}
-		else {
-			body = PrefsPropsUtil.getContent(
-				user.getCompanyId(),
-				PropsKeys.ADMIN_EMAIL_USER_ADDED_NO_PASSWORD_BODY);
-		}
-
-		SubscriptionSender subscriptionSender = new SubscriptionSender();
-
-		subscriptionSender.setBody(body);
-		subscriptionSender.setCompanyId(user.getCompanyId());
-		subscriptionSender.setContextAttributes(
-			"[$USER_ID$]", user.getUserId(), "[$USER_PASSWORD$]", password,
-			"[$USER_SCREENNAME$]", user.getScreenName());
-		subscriptionSender.setFrom(fromAddress, fromName);
-		subscriptionSender.setHtmlFormat(true);
-		subscriptionSender.setMailId("user", user.getUserId());
-		subscriptionSender.setServiceContext(serviceContext);
-		subscriptionSender.setSubject(subject);
-		subscriptionSender.setUserId(user.getUserId());
-
-		subscriptionSender.addRuntimeSubscribers(toAddress, toName);
-
-		subscriptionSender.flushNotificationsAsync();
+		TransactionCommitCallbackUtil.registerCallback(callable);
 	}
 
 	protected Hits search(
@@ -5258,6 +5219,59 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		catch (Exception e) {
 			throw new SystemException(e);
 		}
+	}
+
+	protected void sendEmail(
+			User user, String password, ServiceContext serviceContext)
+		throws SystemException {
+
+		if (!PrefsPropsUtil.getBoolean(
+				user.getCompanyId(),
+				PropsKeys.ADMIN_EMAIL_USER_ADDED_ENABLED)) {
+
+			return;
+		}
+
+		String fromName = PrefsPropsUtil.getString(
+			user.getCompanyId(), PropsKeys.ADMIN_EMAIL_FROM_NAME);
+		String fromAddress = PrefsPropsUtil.getString(
+			user.getCompanyId(), PropsKeys.ADMIN_EMAIL_FROM_ADDRESS);
+
+		String toName = user.getFullName();
+		String toAddress = user.getEmailAddress();
+
+		String subject = PrefsPropsUtil.getContent(
+			user.getCompanyId(), PropsKeys.ADMIN_EMAIL_USER_ADDED_SUBJECT);
+
+		String body = null;
+
+		if (Validator.isNotNull(password)) {
+			body = PrefsPropsUtil.getContent(
+				user.getCompanyId(), PropsKeys.ADMIN_EMAIL_USER_ADDED_BODY);
+		}
+		else {
+			body = PrefsPropsUtil.getContent(
+				user.getCompanyId(),
+				PropsKeys.ADMIN_EMAIL_USER_ADDED_NO_PASSWORD_BODY);
+		}
+
+		SubscriptionSender subscriptionSender = new SubscriptionSender();
+
+		subscriptionSender.setBody(body);
+		subscriptionSender.setCompanyId(user.getCompanyId());
+		subscriptionSender.setContextAttributes(
+			"[$USER_ID$]", user.getUserId(), "[$USER_PASSWORD$]", password,
+			"[$USER_SCREENNAME$]", user.getScreenName());
+		subscriptionSender.setFrom(fromAddress, fromName);
+		subscriptionSender.setHtmlFormat(true);
+		subscriptionSender.setMailId("user", user.getUserId());
+		subscriptionSender.setServiceContext(serviceContext);
+		subscriptionSender.setSubject(subject);
+		subscriptionSender.setUserId(user.getUserId());
+
+		subscriptionSender.addRuntimeSubscribers(toAddress, toName);
+
+		subscriptionSender.flushNotificationsAsync();
 	}
 
 	protected void setEmailAddress(

@@ -471,11 +471,19 @@ public class ModifiableEhcacheWrapper implements Ehcache {
 	}
 
 	public void removeAll() throws CacheException, IllegalStateException {
+		if (!isStatusAlive()) {
+			return;
+		}
+
 		_ehcache.removeAll();
 	}
 
 	public void removeAll(boolean doNotNotifyCacheReplicators)
 		throws CacheException, IllegalStateException {
+
+		if (!isStatusAlive()) {
+			return;
+		}
 
 		_ehcache.removeAll(doNotNotifyCacheReplicators);
 	}
@@ -487,6 +495,10 @@ public class ModifiableEhcacheWrapper implements Ehcache {
 	}
 
 	public boolean removeElement(Element element) throws NullPointerException {
+		if (!isStatusAlive()) {
+			return true;
+		}
+
 		return _ehcache.removeElement(element);
 	}
 
@@ -497,10 +509,18 @@ public class ModifiableEhcacheWrapper implements Ehcache {
 	}
 
 	public boolean removeQuiet(Object key) throws IllegalStateException {
+		if (!isStatusAlive()) {
+			return true;
+		}
+
 		return _ehcache.removeQuiet(key);
 	}
 
 	public boolean removeQuiet(Serializable key) throws IllegalStateException {
+		if (!isStatusAlive()) {
+			return true;
+		}
+
 		return _ehcache.removeQuiet(key);
 	}
 
@@ -511,18 +531,22 @@ public class ModifiableEhcacheWrapper implements Ehcache {
 	public boolean removeWithWriter(Object key)
 		throws CacheException, IllegalStateException {
 
+		if (!isStatusAlive()) {
+			return true;
+		}
+
 		return _ehcache.removeWithWriter(key);
 	}
 
 	public Element replace(Element element) throws NullPointerException {
 		return _ehcache.replace(element);
 	}
-
 	public boolean replace(Element oldElement, Element newElement)
 		throws IllegalArgumentException, NullPointerException {
 
 		return _ehcache.replace(oldElement, newElement);
 	}
+
 	public void setBootstrapCacheLoader(
 			BootstrapCacheLoader bootstrapCacheLoader)
 		throws CacheException {
@@ -626,6 +650,17 @@ public class ModifiableEhcacheWrapper implements Ehcache {
 		throws UnsupportedOperationException {
 
 		_ehcache.waitUntilClusterCoherent();
+	}
+
+	protected boolean isStatusAlive() {
+		Status status = _ehcache.getStatus(); 
+
+		if (status.equals(Status.STATUS_ALIVE)) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 	private Ehcache _ehcache;
