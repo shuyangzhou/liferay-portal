@@ -561,6 +561,21 @@ public class DLUtil {
 		return sb.toString();
 	}
 
+	public static String getTitleWithExtension(FileEntry fileEntry) {
+		String title = fileEntry.getTitle();
+		String extension = fileEntry.getExtension();
+
+		if (Validator.isNotNull(extension)) {
+			String periodAndExtension = StringPool.PERIOD + extension;
+
+			if (!title.endsWith(periodAndExtension)) {
+				title += periodAndExtension;
+			}
+		}
+
+		return title;
+	}
+
 	public static String getWebDavURL(
 			ThemeDisplay themeDisplay, Folder folder, FileEntry fileEntry)
 		throws PortalException, SystemException {

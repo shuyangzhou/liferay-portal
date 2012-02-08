@@ -43,6 +43,8 @@ public class InetAddressUtil {
 				if (!inetAddress.isLoopbackAddress() &&
 					(inetAddress instanceof Inet4Address)) {
 
+					_localInetAddressHostName = inetAddress.getHostName();
+
 					return inetAddress;
 				}
 			}
@@ -50,5 +52,15 @@ public class InetAddressUtil {
 
 		throw new SystemException("No local internet address");
 	}
+
+	public static String getLocalInetAddressHostName() throws Exception {
+		if (_localInetAddressHostName != null) {
+			return _localInetAddressHostName;
+		}
+
+		return getLocalInetAddress().getHostName();
+	}
+
+	private static String _localInetAddressHostName;
 
 }

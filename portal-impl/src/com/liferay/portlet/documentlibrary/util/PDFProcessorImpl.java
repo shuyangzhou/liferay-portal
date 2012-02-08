@@ -325,6 +325,7 @@ public class PDFProcessorImpl
 		return THUMBNAIL_TYPE;
 	}
 
+	@Override
 	protected void importPreviewFromLAR(
 			PortletDataContext portletDataContext, FileEntry fileEntry,
 			Element fileEntryElement, String binPathName, int fileIndex)
