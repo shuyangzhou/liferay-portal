@@ -2299,7 +2299,7 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 		try {
 			Layout layout = layoutPersistence.findByG_P_P_Last(
 				groupId, privateLayout, parentLayoutId, null);
-			
+
 			return layout.getPriority() + 1;
 		}
 		catch (NoSuchLayoutException e) {
