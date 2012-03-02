@@ -51,6 +51,10 @@ public class ClusterRequestReceiver extends BaseReceiver {
 
 	@Override
 	public void receive(Message message) {
+		if (!_clusterExecutorImpl.isInitialized()) {
+			return;
+		}
+
 		org.jgroups.Address sourceAddress = message.getSrc();
 
 		Channel controlChannel = _clusterExecutorImpl.getControlChannel();
@@ -95,7 +99,7 @@ public class ClusterRequestReceiver extends BaseReceiver {
 	public void viewAccepted(View view) {
 		super.viewAccepted(view);
 
-		if (_lastView == null) {
+		if (_lastView == null || !_clusterExecutorImpl.isInitialized()) {
 			_lastView = view;
 
 			return;

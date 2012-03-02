@@ -49,6 +49,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CountDownLatch;
 
 import org.jgroups.ChannelException;
 import org.jgroups.JChannel;
@@ -191,6 +192,8 @@ public class ClusterExecutorImpl
 		memberJoined(_localAddress, _localClusterNode);
 
 		sendNotifyRequest();
+
+		_countDownLatch.countDown();
 	}
 
 	public boolean isClusterNodeAlive(Address address) {
@@ -329,6 +332,10 @@ public class ClusterExecutorImpl
 			throw new SystemException(
 				"Unable to determine local network address", e);
 		}
+	}
+
+	protected boolean isInitialized() {
+		return _countDownLatch.getCount() == 0;
 	}
 
 	protected boolean isShortcutLocalMethod() {
@@ -495,13 +502,14 @@ public class ClusterExecutorImpl
 		new CopyOnWriteArrayList<ClusterEventListener>();
 	private Map<String, Address> _clusterNodeAddresses =
 		new ConcurrentHashMap<String, Address>();
-	private JChannel _controlChannel;
+	private volatile JChannel _controlChannel;
+	private CountDownLatch _countDownLatch = new CountDownLatch(1);
 	private Map<String, FutureClusterResponses> _futureClusterResponses =
 		new WeakValueConcurrentHashMap<String, FutureClusterResponses>();
 	private Map<Address, ClusterNode> _liveInstances =
 		new ConcurrentHashMap<Address, ClusterNode>();
-	private Address _localAddress;
-	private ClusterNode _localClusterNode;
-	private boolean _shortcutLocalMethod;
+	private volatile Address _localAddress;
+	private volatile ClusterNode _localClusterNode;
+	private volatile boolean _shortcutLocalMethod;
 
 }
