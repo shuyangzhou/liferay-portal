@@ -181,13 +181,11 @@ public class ListUtil {
 	}
 
 	public static <E> boolean remove(List<E> list, E element) {
-		Iterator<E> itr = list.iterator();
-
-		while (itr.hasNext()) {
-			E curElement = itr.next();
+		for (int i = 0; i < list.size(); i++) {
+			E curElement = list.get(i);
 
 			if ((curElement == element) || curElement.equals(element)) {
-				itr.remove();
+				list.remove(i);
 
 				return true;
 			}
