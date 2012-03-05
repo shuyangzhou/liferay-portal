@@ -18,9 +18,6 @@ import com.liferay.portal.kernel.cluster.Address;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.search.lucene.LuceneHelperUtil;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 /**
  * @author Shuyang Zhou
  * @author Tina Tian
@@ -30,45 +27,19 @@ public class LuceneClusterUtil {
 	public static void loadIndexesFromCluster(long companyId)
 		throws SystemException {
 
-		Address bootupAddress = LuceneHelperUtil.selectBootupClusterAddress(
-			companyId, LuceneHelperUtil.getLastGeneration(companyId));
-
-		loadIndexesFromCluster(new long[] {companyId}, bootupAddress);
+		loadIndexesFromCluster(new long[] {companyId}, null);
 	}
 
 	public static void loadIndexesFromCluster(
 			long[] companyIds, Address bootupAddress)
 		throws SystemException {
 
-		if (bootupAddress == null) {
-			return;
-		}
-
-		InputStream inputStream = null;
-
 		for (long companyId : companyIds) {
 			try {
-				inputStream =
-					LuceneHelperUtil.getLoadIndexesInputStreamFromCluster(
-						companyId, bootupAddress);
-
-				LuceneHelperUtil.loadIndex(companyId, inputStream);
+				LuceneHelperUtil.loadIndex(companyId, bootupAddress);
 			}
 			catch (SystemException se) {
 				throw se;
-			}
-			catch (IOException ioe) {
-				throw new SystemException(ioe);
-			}
-			finally {
-				if (inputStream != null) {
-					try {
-						inputStream.close();
-					}
-					catch (IOException ioe) {
-						throw new SystemException(ioe);
-					}
-				}
 			}
 		}
 	}
