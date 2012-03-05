@@ -20,7 +20,6 @@ import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 
 import java.util.Date;
@@ -311,14 +310,6 @@ public class LuceneHelperUtil {
 		return getLuceneHelper().getLastGeneration(companyId);
 	}
 
-	public static InputStream getLoadIndexesInputStreamFromCluster(
-			long companyId, Address bootupAddress)
-		throws SystemException {
-
-		return getLuceneHelper().getLoadIndexesInputStreamFromCluster(
-			companyId, bootupAddress);
-	}
-
 	public static LuceneHelper getLuceneHelper() {
 		return _luceneHelper;
 	}
@@ -359,18 +350,10 @@ public class LuceneHelperUtil {
 		return getLuceneHelper().isLoadIndexFromClusterEnabled();
 	}
 
-	public static void loadIndex(long companyId, InputStream inputStream)
-		throws IOException {
-
-		getLuceneHelper().loadIndex(companyId, inputStream);
-	}
-
-	public static Address selectBootupClusterAddress(
-			long companyId, long localLastGeneration)
+	public static void loadIndex(long companyId, Address bootupAddress)
 		throws SystemException {
 
-		return getLuceneHelper().selectBootupClusterAddress(
-			companyId, localLastGeneration);
+		getLuceneHelper().loadIndex(companyId, bootupAddress);
 	}
 
 	public static void shutdown() {

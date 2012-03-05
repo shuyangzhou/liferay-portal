@@ -17,6 +17,7 @@ package com.liferay.portal.scheduler;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.bean.IdentifiableBean;
 import com.liferay.portal.kernel.cluster.Address;
+import com.liferay.portal.kernel.cluster.BaseClusterResponseCallback;
 import com.liferay.portal.kernel.cluster.ClusterEvent;
 import com.liferay.portal.kernel.cluster.ClusterEventListener;
 import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
@@ -59,6 +60,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -162,7 +164,7 @@ public class ClusterSchedulerEngine
 		try {
 			if (isMemorySchedulerSlave(groupName)) {
 				return (SchedulerResponse)callMaster(
-					_getScheduledJobMethodKey, jobName, groupName);
+					_getScheduledJobMethodKey, false, jobName, groupName);
 			}
 		}
 		catch (Exception e) {
@@ -192,7 +194,7 @@ public class ClusterSchedulerEngine
 		try {
 			if (isMemorySchedulerSlave()) {
 				return (List<SchedulerResponse>)callMaster(
-					_getScheduledJobsMethodKey1);
+					_getScheduledJobsMethodKey1, false);
 			}
 		}
 		catch (Exception e) {
@@ -219,7 +221,7 @@ public class ClusterSchedulerEngine
 		try {
 			if (isMemorySchedulerSlave(groupName)) {
 				return (List<SchedulerResponse>)callMaster(
-					_getScheduledJobsMethodKey2, groupName);
+					_getScheduledJobsMethodKey2, false, groupName);
 			}
 		}
 		catch (Exception e) {
@@ -258,7 +260,9 @@ public class ClusterSchedulerEngine
 			if (!isMemorySchedulerClusterLockOwner(
 					lockMemorySchedulerCluster(null))) {
 
-				initMemoryClusteredJobs();
+				callMaster(
+					_getScheduledJobsMethodKey3, true, 
+					StorageType.MEMORY_CLUSTERED);
 			}
 		}
 		catch (Exception e) {
@@ -643,7 +647,8 @@ public class ClusterSchedulerEngine
 		}
 	}
 
-	protected Object callMaster(MethodKey methodKey, Object... arguments)
+	protected Object callMaster(
+			MethodKey methodKey, boolean useCallback, Object... arguments)
 		throws Exception {
 
 		MethodHandler methodHandler = new MethodHandler(methodKey, arguments);
@@ -665,6 +670,14 @@ public class ClusterSchedulerEngine
 			methodHandler, address);
 
 		clusterRequest.setBeanIdentifier(_beanIdentifier);
+
+		if (useCallback) {
+			ClusterExecutorUtil.execute(
+				clusterRequest, new SchedulerClusterResponseCallback(address), 
+				20, TimeUnit.SECONDS);
+
+			return null;
+		}
 
 		FutureClusterResponses futureClusterResponses =
 			ClusterExecutorUtil.execute(clusterRequest);
@@ -729,39 +742,6 @@ public class ClusterSchedulerEngine
 		return StorageType.valueOf(storageTypeString);
 	}
 
-	protected void initMemoryClusteredJobs() throws Exception {
-		List<SchedulerResponse> schedulerResponses =
-			(List<SchedulerResponse>)callMaster(
-				_getScheduledJobsMethodKey3, StorageType.MEMORY_CLUSTERED);
-
-		for (SchedulerResponse schedulerResponse : schedulerResponses) {
-			Trigger oldTrigger = schedulerResponse.getTrigger();
-
-			String jobName = schedulerResponse.getJobName();
-			String groupName = SchedulerEngineUtil.namespaceGroupName(
-				schedulerResponse.getGroupName(), StorageType.MEMORY_CLUSTERED);
-
-			Trigger newTrigger = TriggerFactoryUtil.buildTrigger(
-				oldTrigger.getTriggerType(), jobName, groupName,
-				oldTrigger.getStartDate(), oldTrigger.getEndDate(),
-				oldTrigger.getTriggerContent());
-
-			schedulerResponse.setTrigger(newTrigger);
-
-			TriggerState triggerState = SchedulerEngineUtil.getJobState(
-				schedulerResponse);
-
-			Message message = schedulerResponse.getMessage();
-
-			message.remove(JOB_STATE);
-
-			_memoryClusteredJobs.put(
-				getFullName(jobName, groupName),
-				new ObjectValuePair<SchedulerResponse, TriggerState>(
-					schedulerResponse, triggerState));
-		}
-	}
-
 	protected boolean isMemorySchedulerClusterLockOwner(Lock lock)
 		throws Exception {
 
@@ -790,7 +770,8 @@ public class ClusterSchedulerEngine
 				schedulerResponse.getGroupName());
 		}
 
-		initMemoryClusteredJobs();
+		callMaster(
+			_getScheduledJobsMethodKey3, true, StorageType.MEMORY_CLUSTERED);
 
 		if (_log.isInfoEnabled()) {
 			_log.info("Another node is now the memory scheduler master");
@@ -1007,6 +988,71 @@ public class ClusterSchedulerEngine
 			}
 		}
 
+	}
+
+	private class SchedulerClusterResponseCallback
+		extends BaseClusterResponseCallback {
+
+		SchedulerClusterResponseCallback(Address address) {
+			_address = address;
+		}
+
+		public void callback(ClusterNodeResponses clusterNodeResponses) {
+			try {
+				ClusterNodeResponse clusterNodeResponse = 
+					clusterNodeResponses.getClusterResponse(_address);
+
+				List<SchedulerResponse>  schedulerResponses = 
+					(List<SchedulerResponse>)clusterNodeResponse.getResult();
+
+				for (SchedulerResponse schedulerResponse : schedulerResponses) {
+					Trigger oldTrigger = schedulerResponse.getTrigger();
+
+					String jobName = schedulerResponse.getJobName();
+					String groupName = SchedulerEngineUtil.namespaceGroupName(
+						schedulerResponse.getGroupName(), 
+						StorageType.MEMORY_CLUSTERED);
+
+					Trigger newTrigger = TriggerFactoryUtil.buildTrigger(
+						oldTrigger.getTriggerType(), jobName, groupName,
+						oldTrigger.getStartDate(), oldTrigger.getEndDate(),
+						oldTrigger.getTriggerContent());
+
+					schedulerResponse.setTrigger(newTrigger);
+
+					TriggerState triggerState = SchedulerEngineUtil.getJobState(
+						schedulerResponse);
+
+					Message message = schedulerResponse.getMessage();
+
+					message.remove(JOB_STATE);
+
+					_memoryClusteredJobs.put(
+						getFullName(jobName, groupName),
+						new ObjectValuePair<SchedulerResponse, TriggerState>(
+							schedulerResponse, triggerState));
+				}
+			}
+			catch (Exception ex) {
+				_log.error(
+					"Unable to initial local memeory cluster jobs", ex);
+			}
+		}
+		
+		public void processInterruptedException(
+			InterruptedException exception) {
+
+			Thread.currentThread().interrupt();
+		}
+
+		public void processTimeoutException(TimeoutException timeoutException) {
+			_log.error(
+				"Unable to load scheduled jobs from cluster node " +
+					_address.getDescription(),
+				timeoutException);
+		}
+
+		private Address _address;
 	}
 
 }
