@@ -15,7 +15,6 @@
 package com.liferay.portal.kernel.util;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -94,14 +93,13 @@ public class DiffResult {
 		sb.append(_lineNumber);
 		sb.append("\n");
 
-		Iterator<String> itr = _changedLines.iterator();
+		for(String changedLine : _changedLines) {
+			sb.append(changedLine);
+			sb.append("\n");
+		}
 
-		while (itr.hasNext()) {
-			sb.append(itr.next());
-
-			if (itr.hasNext()) {
-				sb.append("\n");
-			}
+		if (!_changedLines.isEmpty()) {
+			sb.setIndex(sb.index() - 1);
 		}
 
 		return sb.toString();

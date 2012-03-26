@@ -120,12 +120,7 @@ public class PortletCategory implements Serializable {
 	}
 
 	public void separate(Set<String> portletIds) {
-		Iterator<PortletCategory> categoriesItr =
-			_categories.values().iterator();
-
-		while (categoriesItr.hasNext()) {
-			PortletCategory category = categoriesItr.next();
-
+		for(PortletCategory category : _categories.values()) {
 			category.separate(portletIds);
 		}
 
@@ -163,12 +158,7 @@ public class PortletCategory implements Serializable {
 	private void _merge(
 		PortletCategory portletCategory1, PortletCategory portletCategory2) {
 
-		Iterator<PortletCategory> itr =
-			portletCategory2.getCategories().iterator();
-
-		while (itr.hasNext()) {
-			PortletCategory curCategory2 = itr.next();
-
+		for (PortletCategory curCategory2 : portletCategory2.getCategories()) {
 			PortletCategory curCategory1 = portletCategory1.getCategory(
 				curCategory2.getName());
 
