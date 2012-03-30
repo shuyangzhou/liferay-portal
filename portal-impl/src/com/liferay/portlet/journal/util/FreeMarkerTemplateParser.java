@@ -18,6 +18,7 @@ import com.liferay.portal.freemarker.JournalTemplateLoader;
 import com.liferay.portal.kernel.freemarker.FreeMarkerContext;
 import com.liferay.portal.kernel.freemarker.FreeMarkerEngineUtil;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
+import com.liferay.portal.kernel.template.engine.TemplateEngineException;
 import com.liferay.portal.kernel.templateparser.TemplateContext;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -25,8 +26,6 @@ import com.liferay.portal.util.PropsValues;
 import com.liferay.util.ContentUtil;
 
 import freemarker.core.ParseException;
-
-import freemarker.template.TemplateException;
 
 /**
  * @author Mika Koivisto
@@ -76,15 +75,17 @@ public class FreeMarkerTemplateParser extends VelocityTemplateParser {
 				unsyncStringWriter);
 		}
 		catch (Exception e) {
-			if (e instanceof ParseException || e instanceof TemplateException) {
+			if (e instanceof TemplateEngineException) {
 				String errorTemplateId = getErrorTemplateId();
 				String errorTemplateContent = getErrorTemplateContent();
 
-				freeMarkerContext.put("exception", e.getMessage());
+				Throwable throwable = e.getCause();
+
+				freeMarkerContext.put("exception", throwable.getMessage());
 				freeMarkerContext.put("script", getScript());
 
-				if (e instanceof ParseException) {
-					ParseException pe = (ParseException)e;
+				if (throwable instanceof ParseException) {
+					ParseException pe = (ParseException)throwable;
 
 					freeMarkerContext.put("column", pe.getColumnNumber());
 					freeMarkerContext.put("line", pe.getLineNumber());
