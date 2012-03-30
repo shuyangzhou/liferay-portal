@@ -15,10 +15,11 @@
 package com.liferay.portlet.journal.util;
 
 import com.liferay.portal.freemarker.JournalTemplateLoader;
-import com.liferay.portal.kernel.freemarker.FreeMarkerContext;
-import com.liferay.portal.kernel.freemarker.FreeMarkerEngineUtil;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
+import com.liferay.portal.kernel.template.engine.TemplateEngine;
+import com.liferay.portal.kernel.template.engine.TemplateEngineContext;
 import com.liferay.portal.kernel.template.engine.TemplateEngineException;
+import com.liferay.portal.kernel.template.engine.TemplateEngineUtil;
 import com.liferay.portal.kernel.templateparser.TemplateContext;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -56,8 +57,9 @@ public class FreeMarkerTemplateParser extends VelocityTemplateParser {
 	}
 
 	@Override
-	protected TemplateContext getTemplateContext() {
-		return FreeMarkerEngineUtil.getWrappedRestrictedToolsContext();
+	protected TemplateContext getTemplateContext() throws Exception {
+		return TemplateEngineUtil.getWrappedRestrictedToolsContext(
+			TemplateEngine.FREE_MARKER);
 	}
 
 	@Override
@@ -66,13 +68,13 @@ public class FreeMarkerTemplateParser extends VelocityTemplateParser {
 			UnsyncStringWriter unsyncStringWriter)
 		throws Exception {
 
-		FreeMarkerContext freeMarkerContext =
-			(FreeMarkerContext)templateContext;
+		TemplateEngineContext freeMarkerContext =
+			(TemplateEngineContext)templateContext;
 
 		try {
-			return FreeMarkerEngineUtil.mergeTemplate(
-				getTemplateId(), getScript(), freeMarkerContext,
-				unsyncStringWriter);
+			return TemplateEngineUtil.mergeTemplate(
+				TemplateEngine.FREE_MARKER, getTemplateId(), getScript(),
+				freeMarkerContext, unsyncStringWriter);
 		}
 		catch (Exception e) {
 			if (e instanceof TemplateEngineException) {
@@ -93,8 +95,9 @@ public class FreeMarkerTemplateParser extends VelocityTemplateParser {
 
 				unsyncStringWriter.reset();
 
-				return FreeMarkerEngineUtil.mergeTemplate(
-					errorTemplateId, errorTemplateContent, freeMarkerContext,
+				return TemplateEngineUtil.mergeTemplate(
+					TemplateEngine.FREE_MARKER, errorTemplateId,
+					errorTemplateContent, freeMarkerContext,
 					unsyncStringWriter);
 			}
 			else {

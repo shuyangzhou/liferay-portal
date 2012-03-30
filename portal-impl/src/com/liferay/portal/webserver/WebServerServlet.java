@@ -18,8 +18,6 @@ import com.liferay.portal.NoSuchGroupException;
 import com.liferay.portal.freemarker.FreeMarkerUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.freemarker.FreeMarkerContext;
-import com.liferay.portal.kernel.freemarker.FreeMarkerEngineUtil;
 import com.liferay.portal.kernel.image.ImageBag;
 import com.liferay.portal.kernel.image.ImageToolUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -32,6 +30,9 @@ import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.servlet.PortalSessionThreadLocal;
 import com.liferay.portal.kernel.servlet.Range;
 import com.liferay.portal.kernel.servlet.ServletResponseUtil;
+import com.liferay.portal.kernel.template.engine.TemplateEngine;
+import com.liferay.portal.kernel.template.engine.TemplateEngineContext;
+import com.liferay.portal.kernel.template.engine.TemplateEngineUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
@@ -1044,8 +1045,9 @@ public class WebServerServlet extends HttpServlet {
 			List<WebServerEntry> webServerEntries)
 		throws Exception {
 
-		FreeMarkerContext freeMarkerContext =
-			FreeMarkerEngineUtil.getWrappedRestrictedToolsContext();
+		TemplateEngineContext freeMarkerContext =
+			TemplateEngineUtil.getWrappedRestrictedToolsContext(
+				TemplateEngine.FREE_MARKER);
 
 		freeMarkerContext.put("dateFormat", _dateFormat);
 		freeMarkerContext.put("entries", webServerEntries);

@@ -14,14 +14,14 @@
 
 package com.liferay.portlet.dynamicdatamapping.util;
 
-import com.liferay.portal.kernel.freemarker.FreeMarkerContext;
-import com.liferay.portal.kernel.freemarker.FreeMarkerEngineUtil;
-import com.liferay.portal.kernel.freemarker.FreeMarkerVariablesUtil;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.template.engine.TemplateEngine;
+import com.liferay.portal.kernel.template.engine.TemplateEngineContext;
+import com.liferay.portal.kernel.template.engine.TemplateEngineUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -121,7 +121,7 @@ public class DDMXSDImpl implements DDMXSD {
 			"dynamic-element");
 
 		for (Element dynamicElementElement : dynamicElementElements) {
-			FreeMarkerContext freeMarkerContext = getFreeMarkerContext(
+			TemplateEngineContext freeMarkerContext = getFreeMarkerContext(
 				dynamicElementElement, locale);
 
 			freeMarkerContext.put("portletNamespace", portletNamespace);
@@ -364,11 +364,13 @@ public class DDMXSDImpl implements DDMXSD {
 		return field;
 	}
 
-	protected FreeMarkerContext getFreeMarkerContext(
-		Element dynamicElementElement, Locale locale) {
+	protected TemplateEngineContext getFreeMarkerContext(
+			Element dynamicElementElement, Locale locale)
+		throws Exception {
 
-		FreeMarkerContext freeMarkerContext =
-			FreeMarkerEngineUtil.getWrappedStandardToolsContext();
+		TemplateEngineContext freeMarkerContext =
+			TemplateEngineUtil.getWrappedStandardToolsContext(
+				TemplateEngine.FREE_MARKER);
 
 		Map<String, Object> fieldContext = getFieldContext(
 			dynamicElementElement, locale);
@@ -391,11 +393,13 @@ public class DDMXSDImpl implements DDMXSD {
 	 * @see com.liferay.taglib.util.ThemeUtil#includeFTL
 	 */
 	protected String processFTL(
-			PageContext pageContext, FreeMarkerContext freeMarkerContext,
+			PageContext pageContext, TemplateEngineContext freeMarkerContext,
 			String resourcePath, String defaultResourcePath)
 		throws Exception {
 
-		if (!FreeMarkerEngineUtil.resourceExists(resourcePath)) {
+		if (!TemplateEngineUtil.templateExists(
+			TemplateEngine.FREE_MARKER, resourcePath)) {
+
 			resourcePath = defaultResourcePath;
 		}
 
@@ -404,7 +408,8 @@ public class DDMXSDImpl implements DDMXSD {
 
 		// FreeMarker variables
 
-		FreeMarkerVariablesUtil.insertVariables(freeMarkerContext, request);
+		TemplateEngineUtil.insertRequestVariables(
+			TemplateEngine.FREE_MARKER, freeMarkerContext, request);
 
 		// Tag libraries
 
@@ -460,8 +465,9 @@ public class DDMXSDImpl implements DDMXSD {
 
 		// Merge templates
 
-		FreeMarkerEngineUtil.mergeTemplate(
-			resourcePath, freeMarkerContext, writer);
+		TemplateEngineUtil.mergeTemplate(
+			TemplateEngine.FREE_MARKER, resourcePath, freeMarkerContext,
+			writer);
 
 		return writer.toString();
 	}

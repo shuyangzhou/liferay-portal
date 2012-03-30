@@ -14,7 +14,7 @@
 
 package com.liferay.portal.freemarker;
 
-import com.liferay.portal.kernel.freemarker.FreeMarkerContext;
+import com.liferay.portal.kernel.template.engine.TemplateEngineContext;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -22,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @author Mika Koivisto
  */
-public class FreeMarkerContextImpl implements FreeMarkerContext {
+public class FreeMarkerContextImpl implements TemplateEngineContext {
 
 	public FreeMarkerContextImpl() {
 		_context = new ConcurrentHashMap<String, Object>();
@@ -38,7 +38,7 @@ public class FreeMarkerContextImpl implements FreeMarkerContext {
 		return _context.get(key);
 	}
 
-	public Map<String, Object> getWrappedContext() {
+	public Object getWrappedTemplateContext() {
 		return _context;
 	}
 

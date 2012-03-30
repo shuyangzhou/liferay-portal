@@ -14,14 +14,14 @@
 
 package com.liferay.taglib.util;
 
-import com.liferay.portal.kernel.freemarker.FreeMarkerContext;
-import com.liferay.portal.kernel.freemarker.FreeMarkerEngineUtil;
-import com.liferay.portal.kernel.freemarker.FreeMarkerVariablesUtil;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.PipingServletResponse;
 import com.liferay.portal.kernel.servlet.ServletContextPool;
+import com.liferay.portal.kernel.template.engine.TemplateEngine;
+import com.liferay.portal.kernel.template.engine.TemplateEngineContext;
+import com.liferay.portal.kernel.template.engine.TemplateEngineUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.ThemeHelper;
@@ -133,7 +133,8 @@ public class ThemeUtil {
 			servletContext, portletId, path);
 
 		if (Validator.isNotNull(portletId) &&
-			!FreeMarkerEngineUtil.resourceExists(resourcePath) &&
+			!TemplateEngineUtil.templateExists(
+				TemplateEngine.FREE_MARKER, resourcePath) &&
 			portletId.contains(PortletConstants.INSTANCE_SEPARATOR)) {
 
 			String rootPortletId = PortletConstants.getRootPortletId(portletId);
@@ -143,23 +144,28 @@ public class ThemeUtil {
 		}
 
 		if (Validator.isNotNull(portletId) &&
-			!FreeMarkerEngineUtil.resourceExists(resourcePath)) {
+			!TemplateEngineUtil.templateExists(
+				TemplateEngine.FREE_MARKER, resourcePath)) {
 
 			resourcePath = theme.getResourcePath(servletContext, null, path);
 		}
 
-		if (!FreeMarkerEngineUtil.resourceExists(resourcePath)) {
+		if (!TemplateEngineUtil.templateExists(
+				TemplateEngine.FREE_MARKER, resourcePath)) {
+
 			_log.error(resourcePath + " does not exist");
 
 			return null;
 		}
 
-		FreeMarkerContext freeMarkerContext =
-			FreeMarkerEngineUtil.getWrappedStandardToolsContext();
+		TemplateEngineContext freeMarkerContext =
+			TemplateEngineUtil.getWrappedStandardToolsContext(
+				TemplateEngine.FREE_MARKER);
 
 		// FreeMarker variables
 
-		FreeMarkerVariablesUtil.insertVariables(freeMarkerContext, request);
+		TemplateEngineUtil.insertRequestVariables(
+			TemplateEngine.FREE_MARKER, freeMarkerContext, request);
 
 		// Theme servlet context
 
@@ -249,8 +255,9 @@ public class ThemeUtil {
 
 		// Merge templates
 
-		FreeMarkerEngineUtil.mergeTemplate(
-			resourcePath, freeMarkerContext, writer);
+		TemplateEngineUtil.mergeTemplate(
+			TemplateEngine.FREE_MARKER, resourcePath, freeMarkerContext,
+			writer);
 
 		if (write) {
 			return null;

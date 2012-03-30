@@ -146,14 +146,6 @@
 			<bean class="com.liferay.portal.format.PhoneNumberFormatImpl" />
 		</property>
 	</bean>
-	<bean id="com.liferay.portal.kernel.freemarker.FreeMarkerEngine" class="com.liferay.portal.freemarker.FreeMarkerEngineImpl" />
-	<bean id="com.liferay.portal.kernel.freemarker.FreeMarkerEngineUtil" class="com.liferay.portal.kernel.freemarker.FreeMarkerEngineUtil">
-		<property name="freeMarkerEngine" ref="com.liferay.portal.kernel.freemarker.FreeMarkerEngine" />
-	</bean>
-	<bean id="com.liferay.portal.kernel.freemarker.FreeMarkerVariables" class="com.liferay.portal.freemarker.FreeMarkerVariablesImpl" />
-	<bean id="com.liferay.portal.kernel.freemarker.FreeMarkerVariablesUtil" class="com.liferay.portal.kernel.freemarker.FreeMarkerVariablesUtil">
-		<property name="freeMarkerVariables" ref="com.liferay.portal.kernel.freemarker.FreeMarkerVariables" />
-	</bean>
 	<bean id="com.liferay.portal.kernel.googleapps.GoogleAppsFactoryUtil" class="com.liferay.portal.kernel.googleapps.GoogleAppsFactoryUtil">
 		<property name="googleAppsFactory">
 			<bean class="com.liferay.portal.googleapps.GoogleAppsFactoryImpl" />
@@ -258,6 +250,17 @@
 	<bean id="com.liferay.portal.kernel.staging.permission.StagingPermissionUtil" class="com.liferay.portal.kernel.staging.permission.StagingPermissionUtil">
 		<property name="stagingPermission">
 			<bean class="com.liferay.portal.staging.permission.StagingPermissionImpl" />
+		</property>
+	</bean>
+	<bean id="com.liferay.portal.kernel.template.engine.TemplateEngineUtil" class="com.liferay.portal.kernel.template.engine.TemplateEngineUtil">
+		<property name="templateEngines">
+			<list>
+				<bean class="com.liferay.portal.freemarker.FreeMarkerEngineImpl" >
+					<property name="templateEngineVariables">
+						<bean class="com.liferay.portal.freemarker.FreeMarkerVariablesImpl" />
+					</property>
+				</bean>
+			</list>
 		</property>
 	</bean>
 	<bean id="com.liferay.portal.kernel.upgrade.util.UpgradeTableFactoryUtil" class="com.liferay.portal.kernel.upgrade.util.UpgradeTableFactoryUtil">
