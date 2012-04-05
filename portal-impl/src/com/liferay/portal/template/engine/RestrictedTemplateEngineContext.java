@@ -12,40 +12,44 @@
  * details.
  */
 
-package com.liferay.portal.freemarker;
+package com.liferay.portal.template.engine;
 
 import com.liferay.portal.kernel.template.engine.TemplateEngineContext;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import edu.emory.mathcs.backport.java.util.Arrays;
+
+import java.util.List;
 
 /**
- * @author Mika Koivisto
+ * @author Tina Tian
  */
-public class FreeMarkerContextImpl implements TemplateEngineContext {
+public class RestrictedTemplateEngineContext implements TemplateEngineContext {
 
-	public FreeMarkerContextImpl() {
-		_context = new ConcurrentHashMap<String, Object>();
-	}
+	public RestrictedTemplateEngineContext(
+		TemplateEngineContext templateEngineContext,
+		String[] restrictedVariables) {
 
-	public FreeMarkerContextImpl(Map<String, Object> context) {
-		_context = new ConcurrentHashMap<String, Object>();
-
-		_context.putAll(context);
+		_templateEngineContext = templateEngineContext;
+		_restrictedVariables = Arrays.asList(restrictedVariables);
 	}
 
 	public Object get(String key) {
-		return _context.get(key);
+		return _templateEngineContext.get(key);
 	}
 
 	public Object getWrappedTemplateContext() {
-		return _context;
+		return _templateEngineContext.getWrappedTemplateContext();
 	}
 
 	public void put(String key, Object value) {
-		_context.put(key, value);
+		if (_restrictedVariables.contains(key)) {
+			return;
+		}
+
+		_templateEngineContext.put(key, value);
 	}
 
-	private Map<String, Object> _context;
+	private List<String> _restrictedVariables;
+	private TemplateEngineContext _templateEngineContext;
 
 }

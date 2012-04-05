@@ -12,12 +12,29 @@
  * details.
  */
 
-package com.liferay.portal.kernel.freemarker;
+package com.liferay.portal.kernel.template.engine;
 
-import com.liferay.portal.kernel.templateparser.TemplateContext;
+import com.liferay.portal.kernel.exception.PortalException;
 
 /**
- * @author Mika Koivisto
+ * @author Tina Tian
  */
-public interface FreeMarkerContext extends TemplateContext {
+public class TemplateEngineException extends PortalException {
+
+	public TemplateEngineException() {
+		super();
+	}
+
+	public TemplateEngineException(String msg) {
+		super(msg);
+	}
+
+	public TemplateEngineException(String msg, Throwable cause) {
+		super(msg, cause);
+	}
+
+	public TemplateEngineException(Throwable cause) {
+		super(cause);
+	}
+
 }

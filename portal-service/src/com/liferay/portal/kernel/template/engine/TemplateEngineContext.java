@@ -12,20 +12,15 @@
  * details.
  */
 
-package com.liferay.portal.kernel.freemarker;
+package com.liferay.portal.kernel.template.engine;
 
-import javax.servlet.http.HttpServletRequest;
+import com.liferay.portal.kernel.templateparser.TemplateContext;
 
 /**
- * @author Raymond Augé
+ * @author Tina Tian
  */
-public interface FreeMarkerVariables {
+public interface TemplateEngineContext extends TemplateContext {
 
-	public void insertHelperUtilities(
-		FreeMarkerContext freeMarkerContext, String[] restrictedVariables);
-
-	public void insertVariables(
-			FreeMarkerContext freeMarkerContext, HttpServletRequest request)
-		throws Exception;
+	public Object getWrappedTemplateContext();
 
 }

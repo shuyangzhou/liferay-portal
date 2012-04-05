@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.velocity;
+package com.liferay.portal.template.engine;
 
 import com.liferay.portal.kernel.audit.AuditMessageFactoryUtil;
 import com.liferay.portal.kernel.audit.AuditRouterUtil;
@@ -20,7 +20,9 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.language.UnicodeLanguageUtil;
 import com.liferay.portal.kernel.servlet.BrowserSnifferUtil;
-import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.template.engine.TemplateEngineContext;
+import com.liferay.portal.kernel.template.engine.TemplateEngineException;
+import com.liferay.portal.kernel.template.engine.TemplateEngineVariables;
 import com.liferay.portal.kernel.util.ArrayUtil_IW;
 import com.liferay.portal.kernel.util.DateUtil_IW;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
@@ -36,10 +38,7 @@ import com.liferay.portal.kernel.util.StaticFieldGetter;
 import com.liferay.portal.kernel.util.StringUtil_IW;
 import com.liferay.portal.kernel.util.TimeZoneUtil_IW;
 import com.liferay.portal.kernel.util.UnicodeFormatter_IW;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.Validator_IW;
-import com.liferay.portal.kernel.velocity.VelocityContext;
-import com.liferay.portal.kernel.velocity.VelocityVariables;
 import com.liferay.portal.kernel.xml.SAXReader;
 import com.liferay.portal.model.Layout;
 import com.liferay.portal.model.Theme;
@@ -54,8 +53,6 @@ import com.liferay.portal.service.permission.PortletPermissionUtil;
 import com.liferay.portal.service.permission.RolePermissionUtil;
 import com.liferay.portal.service.permission.UserGroupPermissionUtil;
 import com.liferay.portal.service.permission.UserPermissionUtil;
-import com.liferay.portal.template.engine.ServiceLocator;
-import com.liferay.portal.template.engine.UtilLocator;
 import com.liferay.portal.theme.NavItem;
 import com.liferay.portal.theme.RequestVars;
 import com.liferay.portal.theme.ThemeDisplay;
@@ -75,7 +72,6 @@ import com.liferay.portlet.journalcontent.util.JournalContentUtil;
 import com.liferay.util.portlet.PortletRequestUtil;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
@@ -86,282 +82,249 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts.taglib.tiles.ComponentConstants;
 import org.apache.struts.tiles.ComponentContext;
-import org.apache.velocity.tools.generic.DateTool;
-import org.apache.velocity.tools.generic.EscapeTool;
-import org.apache.velocity.tools.generic.IteratorTool;
-import org.apache.velocity.tools.generic.ListTool;
-import org.apache.velocity.tools.generic.MathTool;
-import org.apache.velocity.tools.generic.NumberTool;
-import org.apache.velocity.tools.generic.SortTool;
 
 /**
- * @author Brian Wing Shun Chan
- * @author Raymond Augé
+ * @author Tina Tian
  */
-public class VelocityVariablesImpl implements VelocityVariables {
+public class DefaultTemplateEngineVariablesImpl
+	implements TemplateEngineVariables {
 
 	public void insertHelperUtilities(
-		VelocityContext velocityContext, String[] restrictedVariables) {
+		TemplateEngineContext templateEngineContext) {
+
+		doInsertHelperUtilities(templateEngineContext);
+	}
+
+	public void insertRequestVariables(
+			TemplateEngineContext templateEngineContext,
+			HttpServletRequest request)
+		throws TemplateEngineException {
+
+		doInsertRequestVariables(templateEngineContext, request);
+	}
+
+	protected void doInsertHelperUtilities(
+		TemplateEngineContext templateEngineContext) {
 
 		// Array util
 
-		velocityContext.put("arrayUtil", ArrayUtil_IW.getInstance());
+		templateEngineContext.put("arrayUtil", ArrayUtil_IW.getInstance());
 
 		// Audit message factory
 
-		velocityContext.put(
+		templateEngineContext.put(
 			"auditMessageFactoryUtil",
 			AuditMessageFactoryUtil.getAuditMessageFactory());
 
 		// Audit router util
 
-		velocityContext.put(
+		templateEngineContext.put(
 			"auditRouterUtil", AuditRouterUtil.getAuditRouter());
 
 		// Browser sniffer
 
-		velocityContext.put(
+		templateEngineContext.put(
 			"browserSniffer", BrowserSnifferUtil.getBrowserSniffer());
 
 		// Date format
 
-		velocityContext.put(
+		templateEngineContext.put(
 			"dateFormatFactory",
 			FastDateFormatFactoryUtil.getFastDateFormatFactory());
 
-		// Date tool
-
-		velocityContext.put("dateTool", new DateTool());
-
 		// Date util
 
-		velocityContext.put("dateUtil", DateUtil_IW.getInstance());
-
-		// Escape tool
-
-		velocityContext.put("escapeTool", new EscapeTool());
+		templateEngineContext.put("dateUtil", DateUtil_IW.getInstance());
 
 		// Expando column service
 
 		ServiceLocator serviceLocator = ServiceLocator.getInstance();
 
-		velocityContext.put(
+		templateEngineContext.put(
 			"expandoColumnLocalService",
 			serviceLocator.findService(
 				ExpandoColumnLocalService.class.getName()));
 
 		// Expando row service
 
-		velocityContext.put(
+		templateEngineContext.put(
 			"expandoRowLocalService",
 			serviceLocator.findService(ExpandoRowLocalService.class.getName()));
 
 		// Expando table service
 
-		velocityContext.put(
+		templateEngineContext.put(
 			"expandoTableLocalService",
 			serviceLocator.findService(
 				ExpandoTableLocalService.class.getName()));
 
 		// Expando value service
 
-		velocityContext.put(
+		templateEngineContext.put(
 			"expandoValueLocalService",
 			serviceLocator.findService(
 				ExpandoValueLocalService.class.getName()));
 
 		// Getter util
 
-		velocityContext.put("getterUtil", GetterUtil_IW.getInstance());
+		templateEngineContext.put("getterUtil", GetterUtil_IW.getInstance());
 
 		// Html util
 
-		velocityContext.put("htmlUtil", HtmlUtil.getHtml());
+		templateEngineContext.put("htmlUtil", HtmlUtil.getHtml());
 
 		// Http util
 
-		velocityContext.put("httpUtil", HttpUtil.getHttp());
-
-		// Iterator tool
-
-		velocityContext.put("iteratorTool", new IteratorTool());
+		templateEngineContext.put("httpUtil", HttpUtil.getHttp());
 
 		// Journal content util
 
-		velocityContext.put(
+		templateEngineContext.put(
 			"journalContentUtil", JournalContentUtil.getJournalContent());
 
 		// JSON factory util
 
-		velocityContext.put(
+		templateEngineContext.put(
 			"jsonFactoryUtil", JSONFactoryUtil.getJSONFactory());
 
 		// Language util
 
-		velocityContext.put("languageUtil", LanguageUtil.getLanguage());
-		velocityContext.put(
+		templateEngineContext.put("languageUtil", LanguageUtil.getLanguage());
+
+		templateEngineContext.put(
 			"unicodeLanguageUtil", UnicodeLanguageUtil.getUnicodeLanguage());
-
-		// List tool
-
-		velocityContext.put("listTool", new ListTool());
 
 		// Locale util
 
-		velocityContext.put("localeUtil", LocaleUtil.getInstance());
-
-		// Math tool
-
-		velocityContext.put("mathTool", new MathTool());
-
-		// Number tool
-
-		velocityContext.put("numberTool", new NumberTool());
+		templateEngineContext.put("localeUtil", LocaleUtil.getInstance());
 
 		// Param util
 
-		velocityContext.put("paramUtil", ParamUtil_IW.getInstance());
+		templateEngineContext.put("paramUtil", ParamUtil_IW.getInstance());
 
 		// Portal util
 
-		insertHelperUtility(
-			velocityContext, restrictedVariables, "portalUtil",
-			PortalUtil.getPortal());
-		insertHelperUtility(
-			velocityContext, restrictedVariables, "portal",
-			PortalUtil.getPortal());
+		templateEngineContext.put("portalUtil", PortalUtil.getPortal());
+
+		templateEngineContext.put("portal", PortalUtil.getPortal());
 
 		// Prefs props util
 
-		insertHelperUtility(
-			velocityContext, restrictedVariables, "prefsPropsUtil",
-			PrefsPropsUtil_IW.getInstance());
+		templateEngineContext.put(
+			"prefsPropsUtil", PrefsPropsUtil_IW.getInstance());
 
 		// Props util
 
-		insertHelperUtility(
-			velocityContext, restrictedVariables, "propsUtil",
-			PropsUtil_IW.getInstance());
+		templateEngineContext.put("propsUtil", PropsUtil_IW.getInstance());
 
 		// Portlet URL factory
 
-		velocityContext.put(
+		templateEngineContext.put(
 			"portletURLFactory", PortletURLFactoryUtil.getPortletURLFactory());
-
-		// Portlet preferences
-
-		insertHelperUtility(
-			velocityContext, restrictedVariables, "velocityPortletPreferences",
-			new VelocityPortletPreferences());
 
 		// Randomizer
 
-		velocityContext.put(
+		templateEngineContext.put(
 			"randomizer", Randomizer_IW.getInstance().getWrappedInstance());
 
 		// SAX reader util
 
 		UtilLocator utilLocator = UtilLocator.getInstance();
 
-		velocityContext.put(
+		templateEngineContext.put(
 			"saxReaderUtil", utilLocator.findUtil(SAXReader.class.getName()));
 
 		// Service locator
 
-		insertHelperUtility(
-			velocityContext, restrictedVariables, "serviceLocator",
-			serviceLocator);
+		templateEngineContext.put("serviceLocator", serviceLocator);
 
 		// Session clicks
 
-		insertHelperUtility(
-			velocityContext, restrictedVariables, "sessionClicks",
-			SessionClicks_IW.getInstance());
-
-		// Sort tool
-
-		velocityContext.put("sortTool", new SortTool());
+		templateEngineContext.put(
+			"sessionClicks", SessionClicks_IW.getInstance());
 
 		// Static field getter
 
-		velocityContext.put(
+		templateEngineContext.put(
 			"staticFieldGetter", StaticFieldGetter.getInstance());
 
 		// String util
 
-		velocityContext.put("stringUtil", StringUtil_IW.getInstance());
+		templateEngineContext.put("stringUtil", StringUtil_IW.getInstance());
 
 		// Time zone util
 
-		velocityContext.put("timeZoneUtil", TimeZoneUtil_IW.getInstance());
+		templateEngineContext.put(
+			"timeZoneUtil", TimeZoneUtil_IW.getInstance());
 
 		// Util locator
 
-		insertHelperUtility(
-			velocityContext, restrictedVariables, "utilLocator", utilLocator);
+		templateEngineContext.put("utilLocator", utilLocator);
 
 		// Unicode formatter
 
-		velocityContext.put(
+		templateEngineContext.put(
 			"unicodeFormatter", UnicodeFormatter_IW.getInstance());
 
 		// Validator
 
-		velocityContext.put("validator", Validator_IW.getInstance());
+		templateEngineContext.put("validator", Validator_IW.getInstance());
 
 		// Web server servlet token
 
-		velocityContext.put(
+		templateEngineContext.put(
 			"webServerToken",
 			WebServerServletTokenUtil.getWebServerServletToken());
 
 		// Permissions
 
-		velocityContext.put(
+		templateEngineContext.put(
 			"accountPermission", AccountPermissionUtil.getAccountPermission());
-		velocityContext.put(
+		templateEngineContext.put(
 			"commonPermission", CommonPermissionUtil.getCommonPermission());
-		velocityContext.put(
+		templateEngineContext.put(
 			"groupPermission", GroupPermissionUtil.getGroupPermission());
-		velocityContext.put(
+		templateEngineContext.put(
 			"layoutPermission", LayoutPermissionUtil.getLayoutPermission());
-		velocityContext.put(
+		templateEngineContext.put(
 			"organizationPermission",
 			OrganizationPermissionUtil.getOrganizationPermission());
-		velocityContext.put(
+		templateEngineContext.put(
 			"passwordPolicyPermission",
 			PasswordPolicyPermissionUtil.getPasswordPolicyPermission());
-		velocityContext.put(
+		templateEngineContext.put(
 			"portalPermission", PortalPermissionUtil.getPortalPermission());
-		velocityContext.put(
+		templateEngineContext.put(
 			"portletPermission", PortletPermissionUtil.getPortletPermission());
-		velocityContext.put(
+		templateEngineContext.put(
 			"rolePermission", RolePermissionUtil.getRolePermission());
-		velocityContext.put(
+		templateEngineContext.put(
 			"userGroupPermission",
 			UserGroupPermissionUtil.getUserGroupPermission());
-		velocityContext.put(
+		templateEngineContext.put(
 			"userPermission", UserPermissionUtil.getUserPermission());
 
 		// Deprecated
 
-		velocityContext.put(
+		templateEngineContext.put(
 			"dateFormats",
 			FastDateFormatFactoryUtil.getFastDateFormatFactory());
-		velocityContext.put(
+		templateEngineContext.put(
 			"imageToken", WebServerServletTokenUtil.getWebServerServletToken());
-		velocityContext.put(
+		templateEngineContext.put(
 			"locationPermission",
 			OrganizationPermissionUtil.getOrganizationPermission());
+
 	}
 
-	public void insertVariables(
-			VelocityContext velocityContext, HttpServletRequest request)
-		throws Exception {
+	protected void doInsertRequestVariables(
+			TemplateEngineContext templateEngineContext,
+			HttpServletRequest request)
+		throws TemplateEngineException {
 
 		// Request
 
-		velocityContext.put("request", request);
+		templateEngineContext.put("request", request);
 
 		// Portlet config
 
@@ -370,7 +333,7 @@ public class VelocityVariablesImpl implements VelocityVariables {
 				JavaConstants.JAVAX_PORTLET_CONFIG);
 
 		if (portletConfigImpl != null) {
-			velocityContext.put("portletConfig", portletConfigImpl);
+			templateEngineContext.put("portletConfig", portletConfigImpl);
 		}
 
 		// Render request
@@ -381,7 +344,7 @@ public class VelocityVariablesImpl implements VelocityVariables {
 
 		if (portletRequest != null) {
 			if (portletRequest instanceof RenderRequest) {
-				velocityContext.put("renderRequest", portletRequest);
+				templateEngineContext.put("renderRequest", portletRequest);
 			}
 		}
 
@@ -393,14 +356,14 @@ public class VelocityVariablesImpl implements VelocityVariables {
 
 		if (portletResponse != null) {
 			if (portletResponse instanceof RenderResponse) {
-				velocityContext.put("renderResponse", portletResponse);
+				templateEngineContext.put("renderResponse", portletResponse);
 			}
 		}
 
 		// XML request
 
 		if ((portletRequest != null) && (portletResponse != null)) {
-			velocityContext.put(
+			templateEngineContext.put(
 				"xmlRequest",
 				new Object() {
 
@@ -423,49 +386,50 @@ public class VelocityVariablesImpl implements VelocityVariables {
 			Layout layout = themeDisplay.getLayout();
 			List<Layout> layouts = themeDisplay.getLayouts();
 
-			velocityContext.put("themeDisplay", themeDisplay);
-			velocityContext.put("company", themeDisplay.getCompany());
-			velocityContext.put("user", themeDisplay.getUser());
-			velocityContext.put("realUser", themeDisplay.getRealUser());
-			velocityContext.put("layout", layout);
-			velocityContext.put("layouts", layouts);
-			velocityContext.put("plid", String.valueOf(themeDisplay.getPlid()));
-			velocityContext.put(
+			templateEngineContext.put("themeDisplay", themeDisplay);
+			templateEngineContext.put("company", themeDisplay.getCompany());
+			templateEngineContext.put("user", themeDisplay.getUser());
+			templateEngineContext.put("realUser", themeDisplay.getRealUser());
+			templateEngineContext.put("layout", layout);
+			templateEngineContext.put("layouts", layouts);
+			templateEngineContext.put(
+				"plid", String.valueOf(themeDisplay.getPlid()));
+			templateEngineContext.put(
 				"layoutTypePortlet", themeDisplay.getLayoutTypePortlet());
-			velocityContext.put(
+			templateEngineContext.put(
 				"scopeGroupId", new Long(themeDisplay.getScopeGroupId()));
-			velocityContext.put(
+			templateEngineContext.put(
 				"permissionChecker", themeDisplay.getPermissionChecker());
-			velocityContext.put("locale", themeDisplay.getLocale());
-			velocityContext.put("timeZone", themeDisplay.getTimeZone());
-			velocityContext.put("colorScheme", themeDisplay.getColorScheme());
-			velocityContext.put(
+			templateEngineContext.put("locale", themeDisplay.getLocale());
+			templateEngineContext.put("timeZone", themeDisplay.getTimeZone());
+			templateEngineContext.put(
+				"colorScheme", themeDisplay.getColorScheme());
+			templateEngineContext.put(
 				"portletDisplay", themeDisplay.getPortletDisplay());
 
 			// Navigation items
 
 			if (layout != null) {
-				RequestVars requestVars = new RequestVars(
-					request, themeDisplay, layout.getAncestorPlid(),
-					layout.getAncestorLayoutId());
+				RequestVars requestVars = null;
+
+				try {
+					requestVars = new RequestVars(
+						request, themeDisplay, layout.getAncestorPlid(),
+						layout.getAncestorLayoutId());
+				}
+				catch(Exception e) {
+					throw new TemplateEngineException(e);
+				}
 
 				List<NavItem> navItems = NavItem.fromLayouts(
 					requestVars, layouts);
 
-				velocityContext.put("navItems", navItems);
+				templateEngineContext.put("navItems", navItems);
 			}
-
-			// Init
-
-			velocityContext.put(
-				"init",
-				themeDisplay.getPathContext() +
-					VelocityResourceListener.SERVLET_SEPARATOR +
-						"/html/themes/_unstyled/templates/init.vm");
 
 			// Deprecated
 
-			velocityContext.put(
+			templateEngineContext.put(
 				"portletGroupId", new Long(themeDisplay.getScopeGroupId()));
 		}
 
@@ -478,64 +442,24 @@ public class VelocityVariablesImpl implements VelocityVariables {
 		}
 
 		if (theme != null) {
-
-			// Full css and templates path
-
-			velocityContext.put("theme", theme);
-
-			String servletContextName = GetterUtil.getString(
-				theme.getServletContextName());
-
-			velocityContext.put(
-				"fullCssPath",
-				servletContextName + theme.getVelocityResourceListener() +
-					theme.getCssPath());
-
-			velocityContext.put(
-				"fullTemplatesPath",
-				servletContextName + theme.getVelocityResourceListener() +
-					theme.getTemplatesPath());
+			templateEngineContext.put("theme", theme);
 		}
 
 		// Tiles attributes
 
-		insertTilesVariables(velocityContext, request);
+		insertTilesVariables(templateEngineContext, request);
 
 		// Page title and subtitle
 
-		velocityContext.put(
+		templateEngineContext.put(
 			"pageTitle", request.getAttribute(WebKeys.PAGE_TITLE));
-		velocityContext.put(
+		templateEngineContext.put(
 			"pageSubtitle", request.getAttribute(WebKeys.PAGE_SUBTITLE));
-
-		// Insert custom vm variables
-
-		Map<String, Object> vmVariables =
-			(Map<String, Object>)request.getAttribute(WebKeys.VM_VARIABLES);
-
-		if (vmVariables != null) {
-			for (Map.Entry<String, Object> entry : vmVariables.entrySet()) {
-				String key = entry.getKey();
-				Object value = entry.getValue();
-
-				if (Validator.isNotNull(key)) {
-					velocityContext.put(key, value);
-				}
-			}
-		}
-	}
-
-	protected void insertHelperUtility(
-		VelocityContext velocityContext, String[] restrictedVariables,
-		String key, Object value) {
-
-		if (!ArrayUtil.contains(restrictedVariables, key)) {
-			velocityContext.put(key, value);
-		}
 	}
 
 	protected void insertTilesVariables(
-		VelocityContext velocityContext, HttpServletRequest request) {
+		TemplateEngineContext templateEngineContext,
+		HttpServletRequest request) {
 
 		ComponentContext componentContext =
 			(ComponentContext)request.getAttribute(
@@ -552,20 +476,20 @@ public class VelocityVariablesImpl implements VelocityVariables {
 
 		themeDisplay.setTilesTitle(tilesTitle);
 
-		velocityContext.put("tilesTitle", tilesTitle);
+		templateEngineContext.put("tilesTitle", tilesTitle);
 
 		String tilesContent = (String)componentContext.getAttribute("content");
 
 		themeDisplay.setTilesContent(tilesContent);
 
-		velocityContext.put("tilesContent", tilesContent);
+		templateEngineContext.put("tilesContent", tilesContent);
 
 		boolean tilesSelectable = GetterUtil.getBoolean(
 			(String)componentContext.getAttribute("selectable"));
 
 		themeDisplay.setTilesSelectable(tilesSelectable);
 
-		velocityContext.put("tilesSelectable", tilesSelectable);
+		templateEngineContext.put("tilesSelectable", tilesSelectable);
 	}
 
 }

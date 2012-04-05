@@ -15,13 +15,15 @@
 package com.liferay.portal.freemarker;
 
 import com.liferay.portal.kernel.cache.PortalCache;
-import com.liferay.portal.kernel.freemarker.FreeMarkerContext;
-import com.liferay.portal.kernel.freemarker.FreeMarkerEngine;
-import com.liferay.portal.kernel.freemarker.FreeMarkerVariablesUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.template.engine.TemplateEngine;
+import com.liferay.portal.kernel.template.engine.TemplateEngineContext;
+import com.liferay.portal.kernel.template.engine.TemplateEngineException;
+import com.liferay.portal.kernel.template.engine.TemplateEngineVariables;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.template.engine.RestrictedTemplateEngineContext;
 import com.liferay.portal.util.PropsValues;
 
 import freemarker.cache.ClassTemplateLoader;
@@ -34,32 +36,54 @@ import freemarker.template.Template;
 import java.io.IOException;
 import java.io.Writer;
 
+import java.util.Map;
+
 /**
  * @author Mika Koivisto
  */
-public class FreeMarkerEngineImpl implements FreeMarkerEngine {
+public class FreeMarkerEngineImpl implements TemplateEngine {
 
-	public void flushTemplate(String freeMarkerTemplateId) {
+	public void flushTemplate(String templateId) {
 		if (_stringTemplateLoader != null) {
-			_stringTemplateLoader.removeTemplate(freeMarkerTemplateId);
+			_stringTemplateLoader.removeTemplate(templateId);
 		}
 
 		PortalCache portalCache = LiferayCacheStorage.getPortalCache();
 
-		portalCache.remove(freeMarkerTemplateId);
+		portalCache.remove(templateId);
 	}
 
-	public FreeMarkerContext getWrappedRestrictedToolsContext() {
+	public void flushTemplates() {
+		PortalCache portalCache = LiferayCacheStorage.getPortalCache();
+
+		portalCache.removeAll();
+	}
+
+	public TemplateEngineContext getEmptyContext() {
+		return new FreeMarkerContextImpl();
+	}
+
+	public String getEngineName() {
+		return TemplateEngine.FREE_MARKER;
+	}
+
+	public TemplateEngineVariables getTemplateEngineVariables() {
+		return _templateEngineVariables;
+	}
+
+	public TemplateEngineContext getWrappedRestrictedToolsContext() {
 		return new FreeMarkerContextImpl(
-			_restrictedToolsContext.getWrappedContext());
+			(Map<String, Object>)
+				_restrictedToolsContext.getWrappedTemplateContext());
 	}
 
-	public FreeMarkerContext getWrappedStandardToolsContext() {
+	public TemplateEngineContext getWrappedStandardToolsContext() {
 		return new FreeMarkerContextImpl(
-			_standardToolsContext.getWrappedContext());
+			(Map<String, Object>)
+				_standardToolsContext.getWrappedTemplateContext());
 	}
 
-	public void init() throws Exception {
+	public void init() throws TemplateEngineException {
 		if (_configuration != null) {
 			return;
 		}
@@ -85,71 +109,87 @@ public class FreeMarkerEngineImpl implements FreeMarkerEngine {
 		_configuration.setLocalizedLookup(
 			PropsValues.FREEMARKER_ENGINE_LOCALIZED_LOOKUP);
 		_configuration.setObjectWrapper(new LiferayObjectWrapper());
-		_configuration.setSetting(
-			"auto_import", PropsValues.FREEMARKER_ENGINE_MACRO_LIBRARY);
-		_configuration.setSetting(
-			"cache_storage", PropsValues.FREEMARKER_ENGINE_CACHE_STORAGE);
-		_configuration.setSetting(
-			"template_exception_handler",
-			PropsValues.FREEMARKER_ENGINE_TEMPLATE_EXCEPTION_HANDLER);
 		_configuration.setTemplateLoader(multiTemplateLoader);
 		_configuration.setTemplateUpdateDelay(
 			PropsValues.FREEMARKER_ENGINE_MODIFICATION_CHECK_INTERVAL);
 
-		_restrictedToolsContext = new FreeMarkerContextImpl();
+		try {
+			_configuration.setSetting(
+				"auto_import", PropsValues.FREEMARKER_ENGINE_MACRO_LIBRARY);
+			_configuration.setSetting(
+				"cache_storage", PropsValues.FREEMARKER_ENGINE_CACHE_STORAGE);
+			_configuration.setSetting(
+				"template_exception_handler",
+				PropsValues.FREEMARKER_ENGINE_TEMPLATE_EXCEPTION_HANDLER);
+		}
+		catch (Exception e) {
+			throw new TemplateEngineException(
+				"Unable to config freemarker engine", e);
+		}
 
-		FreeMarkerVariablesUtil.insertHelperUtilities(
-			_restrictedToolsContext,
+		_restrictedToolsContext = new RestrictedTemplateEngineContext(
+			new FreeMarkerContextImpl(),
 			PropsValues.JOURNAL_TEMPLATE_FREEMARKER_RESTRICTED_VARIABLES);
+
+		_templateEngineVariables.insertHelperUtilities(_restrictedToolsContext);
 
 		_standardToolsContext = new FreeMarkerContextImpl();
 
-		FreeMarkerVariablesUtil.insertHelperUtilities(
-			_standardToolsContext, null);
+		_templateEngineVariables.insertHelperUtilities(_standardToolsContext);
 	}
 
 	public boolean mergeTemplate(
-			String freeMarkerTemplateId, FreeMarkerContext freeMarkerContext,
-			Writer writer)
-		throws Exception {
+			String templateId, String templateContent,
+			TemplateEngineContext templateEngineContext, Writer writer)
+		throws TemplateEngineException {
 
-		return mergeTemplate(
-			freeMarkerTemplateId, null, freeMarkerContext, writer);
-	}
-
-	public boolean mergeTemplate(
-			String freeMarkerTemplateId, String freemarkerTemplateContent,
-			FreeMarkerContext freeMarkerContext, Writer writer)
-		throws Exception {
-
-		if (Validator.isNotNull(freemarkerTemplateContent) &&
+		if (Validator.isNotNull(templateContent) &&
 			(!PropsValues.LAYOUT_TEMPLATE_CACHE_ENABLED ||
-			 !stringTemplateExists(freeMarkerTemplateId))) {
+			 !stringTemplateExists(templateId))) {
 
-			_stringTemplateLoader.putTemplate(
-				freeMarkerTemplateId, freemarkerTemplateContent);
+			_stringTemplateLoader.putTemplate(templateId, templateContent);
 
 			if (_log.isDebugEnabled()) {
 				_log.debug(
-					"Added " + freeMarkerTemplateId +
-						" to the string based FreeMarker template repository");
+					"Added " + templateId + " to the string based FreeMarker " +
+						"template repository");
 			}
 		}
 
-		FreeMarkerContextImpl freeMarkerContextImpl =
-			(FreeMarkerContextImpl)freeMarkerContext;
+		try {
+			Template template = _configuration.getTemplate(
+				templateId, StringPool.UTF8);
 
-		Template template = _configuration.getTemplate(
-			freeMarkerTemplateId, StringPool.UTF8);
-
-		template.process(freeMarkerContextImpl.getWrappedContext(), writer);
+			template.process(
+				templateEngineContext.getWrappedTemplateContext(), writer);
+		}
+		catch (Exception e) {
+			throw new TemplateEngineException(
+				"Unable to process template " + templateId + " with content " +
+					templateContent,
+				e);
+		}
 
 		return true;
 	}
 
-	public boolean resourceExists(String resource) {
+	public boolean mergeTemplate(
+			String templateId, TemplateEngineContext templateEngineContext,
+			Writer writer)
+		throws TemplateEngineException {
+
+		return mergeTemplate(templateId, null, templateEngineContext, writer);
+	}
+
+	public void setTemplateEngineVariables(
+		TemplateEngineVariables templateEngineVariables) {
+
+		_templateEngineVariables = templateEngineVariables;
+	}
+
+	public boolean templateExists(String templateId) {
 		try {
-			Template template = _configuration.getTemplate(resource);
+			Template template = _configuration.getTemplate(templateId);
 
 			if (template != null) {
 				return true;
@@ -167,9 +207,9 @@ public class FreeMarkerEngineImpl implements FreeMarkerEngine {
 		}
 	}
 
-	protected boolean stringTemplateExists(String freeMarkerTemplateId) {
+	protected boolean stringTemplateExists(String templateId) {
 		Object templateSource = _stringTemplateLoader.findTemplateSource(
-			freeMarkerTemplateId);
+			templateId);
 
 		if (templateSource == null) {
 			return false;
@@ -181,8 +221,9 @@ public class FreeMarkerEngineImpl implements FreeMarkerEngine {
 	private static Log _log = LogFactoryUtil.getLog(FreeMarkerEngineImpl.class);
 
 	private Configuration _configuration;
-	private FreeMarkerContextImpl _restrictedToolsContext;
-	private FreeMarkerContextImpl _standardToolsContext;
+	private TemplateEngineContext _restrictedToolsContext;
+	private TemplateEngineContext _standardToolsContext;
 	private StringTemplateLoader _stringTemplateLoader;
+	private TemplateEngineVariables _templateEngineVariables;
 
 }
