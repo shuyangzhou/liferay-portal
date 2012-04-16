@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
 import com.liferay.portal.kernel.events.ActionException;
 import com.liferay.portal.kernel.events.SimpleAction;
-import com.liferay.portal.kernel.freemarker.FreeMarkerEngineUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.MessageBus;
@@ -29,6 +28,7 @@ import com.liferay.portal.kernel.messaging.sender.SynchronousMessageSender;
 import com.liferay.portal.kernel.scheduler.SchedulerEngineUtil;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.servlet.JspFactorySwapper;
+import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.ServerDetector;
 import com.liferay.portal.kernel.velocity.VelocityEngineUtil;
@@ -114,13 +114,13 @@ public class StartupAction extends SimpleAction {
 			System.setSecurityManager(null);
 		}
 
-		// FreeMarker
+		// TemplateManager
 
 		if (_log.isDebugEnabled()) {
-			_log.debug("Initialize FreeMarker engine");
+			_log.debug("Initialize template manager");
 		}
 
-		FreeMarkerEngineUtil.init();
+		TemplateManagerUtil.init();
 
 		// Velocity
 
