@@ -20,15 +20,16 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletContainerUtil;
 import com.liferay.portal.kernel.servlet.PipingPageContext;
 import com.liferay.portal.kernel.servlet.PipingServletResponse;
+import com.liferay.portal.kernel.template.Template;
+import com.liferay.portal.kernel.template.TemplateContextType;
+import com.liferay.portal.kernel.template.TemplateManager;
+import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.velocity.VelocityContext;
-import com.liferay.portal.kernel.velocity.VelocityEngineUtil;
-import com.liferay.portal.kernel.velocity.VelocityVariablesUtil;
 import com.liferay.portal.model.Portlet;
 import com.liferay.portal.util.WebKeys;
 import com.liferay.portlet.layoutconfiguration.util.velocity.CustomizationSettingsProcessor;
@@ -71,14 +72,15 @@ public class RuntimePageImpl implements RuntimePage {
 				request, new PipingPageContext(pageContext, unsyncStringWriter),
 				unsyncStringWriter);
 
-		VelocityContext velocityContext =
-			VelocityEngineUtil.getWrappedStandardToolsContext();
+		Template velocityTemplate = TemplateManagerUtil.getTemplate(
+			TemplateManager.VELOCITY, velocityTemplateId,
+			velocityTemplateContent, TemplateContextType.STANDARD);
 
-		velocityContext.put("processor", processor);
+		velocityTemplate.put("processor", processor);
 
 		// Velocity variables
 
-		VelocityVariablesUtil.insertVariables(velocityContext, request);
+		velocityTemplate.prepare(request);
 
 		// liferay:include tag library
 
@@ -89,13 +91,11 @@ public class RuntimePageImpl implements RuntimePage {
 
 		Object velocityTaglib = methodHandler.invoke(true);
 
-		velocityContext.put("taglibLiferay", velocityTaglib);
-		velocityContext.put("theme", velocityTaglib);
+		velocityTemplate.put("taglibLiferay", velocityTaglib);
+		velocityTemplate.put("theme", velocityTaglib);
 
 		try {
-			VelocityEngineUtil.mergeTemplate(
-				velocityTemplateId, velocityTemplateContent, velocityContext,
-				unsyncStringWriter);
+			velocityTemplate.processTemplate(unsyncStringWriter);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -134,14 +134,15 @@ public class RuntimePageImpl implements RuntimePage {
 		TemplateProcessor processor = new TemplateProcessor(
 			request, response, portletId);
 
-		VelocityContext velocityContext =
-			VelocityEngineUtil.getWrappedStandardToolsContext();
+		Template velocityTemplate = TemplateManagerUtil.getTemplate(
+			TemplateManager.VELOCITY, velocityTemplateId,
+			velocityTemplateContent, TemplateContextType.STANDARD);
 
-		velocityContext.put("processor", processor);
+		velocityTemplate.put("processor", processor);
 
 		// Velocity variables
 
-		VelocityVariablesUtil.insertVariables(velocityContext, request);
+		velocityTemplate.prepare(request);
 
 		// liferay:include tag library
 
@@ -154,13 +155,11 @@ public class RuntimePageImpl implements RuntimePage {
 
 		Object velocityTaglib = methodHandler.invoke(true);
 
-		velocityContext.put("taglibLiferay", velocityTaglib);
-		velocityContext.put("theme", velocityTaglib);
+		velocityTemplate.put("taglibLiferay", velocityTaglib);
+		velocityTemplate.put("theme", velocityTaglib);
 
 		try {
-			VelocityEngineUtil.mergeTemplate(
-				velocityTemplateId, velocityTemplateContent, velocityContext,
-				unsyncStringWriter);
+			velocityTemplate.processTemplate(unsyncStringWriter);
 		}
 		catch (Exception e) {
 			_log.error(e, e);

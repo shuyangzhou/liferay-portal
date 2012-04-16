@@ -26,9 +26,6 @@ import com.liferay.portal.kernel.util.ThemeHelper;
 import com.liferay.portal.kernel.util.UnsyncPrintWriterPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.kernel.velocity.VelocityContext;
-import com.liferay.portal.kernel.velocity.VelocityEngineUtil;
-import com.liferay.portal.kernel.velocity.VelocityVariablesUtil;
 import com.liferay.portal.model.PortletConstants;
 import com.liferay.portal.model.Theme;
 import com.liferay.portal.theme.PortletDisplay;
@@ -337,8 +334,8 @@ public class ThemeUtil {
 
 		if (Validator.isNotNull(portletId)) {
 			if (portletId.contains(PortletConstants.INSTANCE_SEPARATOR) &&
-				(checkResourceExists = !VelocityEngineUtil.resourceExists(
-					resourcePath))) {
+				(checkResourceExists = !TemplateManagerUtil.hasTemplate(
+					TemplateManager.VELOCITY, resourcePath))) {
 
 				String rootPortletId = PortletConstants.getRootPortletId(
 					portletId);
@@ -348,8 +345,8 @@ public class ThemeUtil {
 			}
 
 			if (checkResourceExists &&
-				(checkResourceExists = !VelocityEngineUtil.resourceExists(
-					resourcePath))) {
+				(checkResourceExists = !TemplateManagerUtil.hasTemplate(
+					TemplateManager.VELOCITY, resourcePath))) {
 
 				resourcePath = theme.getResourcePath(
 					servletContext, null, page);
@@ -357,30 +354,32 @@ public class ThemeUtil {
 		}
 
 		if (checkResourceExists &&
-			!VelocityEngineUtil.resourceExists(resourcePath)) {
+			!TemplateManagerUtil.hasTemplate(
+				TemplateManager.VELOCITY, resourcePath)) {
 
 			_log.error(resourcePath + " does not exist");
 
 			return null;
 		}
 
-		VelocityContext velocityContext =
-			VelocityEngineUtil.getWrappedStandardToolsContext();
+		Template velocityTemplate = TemplateManagerUtil.getTemplate(
+			TemplateManager.VELOCITY, resourcePath,
+			TemplateContextType.STANDARD);
 
 		// Velocity variables
 
-		VelocityVariablesUtil.insertVariables(velocityContext, request);
+		velocityTemplate.prepare(request);
 
 		// Page context
 
-		velocityContext.put("pageContext", pageContext);
+		velocityTemplate.put("pageContext", pageContext);
 
 		// Theme servlet context
 
 		ServletContext themeServletContext = ServletContextPool.get(
 			servletContextName);
 
-		velocityContext.put("themeServletContext", themeServletContext);
+		velocityTemplate.put("themeServletContext", themeServletContext);
 
 		// Tag libraries
 
@@ -402,13 +401,13 @@ public class ThemeUtil {
 
 		request.setAttribute(WebKeys.VELOCITY_TAGLIB, velocityTaglib);
 
-		velocityContext.put("taglibLiferay", velocityTaglib);
-		velocityContext.put("theme", velocityTaglib);
-		velocityContext.put("writer", writer);
+		velocityTemplate.put("taglibLiferay", velocityTaglib);
+		velocityTemplate.put("theme", velocityTaglib);
+		velocityTemplate.put("writer", writer);
 
 		// Merge templates
 
-		VelocityEngineUtil.mergeTemplate(resourcePath, velocityContext, writer);
+		velocityTemplate.processTemplate(writer);
 
 		if (write) {
 			return null;

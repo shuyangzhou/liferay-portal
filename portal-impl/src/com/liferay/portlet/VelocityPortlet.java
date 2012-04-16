@@ -14,16 +14,21 @@
 
 package com.liferay.portlet;
 
+import com.liferay.portal.kernel.template.Template;
+import com.liferay.portal.kernel.template.TemplateContextType;
+import com.liferay.portal.kernel.template.TemplateManager;
+import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.UnsyncPrintWriterPool;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.velocity.VelocityContext;
-import com.liferay.portal.kernel.velocity.VelocityEngineUtil;
 import com.liferay.portal.struts.StrutsUtil;
 import com.liferay.portal.velocity.VelocityResourceListener;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -151,11 +156,10 @@ public class VelocityPortlet extends GenericPortlet {
 		}
 	}
 
-	protected VelocityContext getVelocityContext(
+	protected Map<String, Object> getVelocityContext(
 		PortletRequest portletRequest, PortletResponse portletResponse) {
 
-		VelocityContext velocityContext =
-			VelocityEngineUtil.getWrappedStandardToolsContext();
+		Map<String, Object> velocityContext = new HashMap<String, Object>();
 
 		velocityContext.put("portletConfig", getPortletConfig());
 		velocityContext.put("portletContext", getPortletContext());
@@ -210,14 +214,24 @@ public class VelocityPortlet extends GenericPortlet {
 			PortletResponse portletResponse)
 		throws Exception {
 
+		Template velocityTemplate = TemplateManagerUtil.getTemplate(
+			TemplateManager.VELOCITY, velocityTemplateId,
+			TemplateContextType.STANDARD);
+
+		Map<String, Object> velocityContext = getVelocityContext(
+			portletRequest, portletResponse);
+
+		for (Map.Entry<String, Object> entry : velocityContext.entrySet()) {
+			velocityTemplate.put(entry.getKey(), entry.getValue());
+		}
+
 		mergeTemplate(
-			velocityTemplateId,
-			getVelocityContext(portletRequest, portletResponse), portletRequest,
+			velocityTemplateId, velocityTemplate, portletRequest,
 			portletResponse);
 	}
 
 	protected void mergeTemplate(
-			String velocityTemplateId, VelocityContext velocityContext,
+			String velocityTemplateId, Template velocityTemplate,
 			PortletRequest portletRequest, PortletResponse portletResponse)
 		throws Exception {
 
@@ -251,8 +265,7 @@ public class VelocityPortlet extends GenericPortlet {
 				velocityWriter.recycle(output);
 			}
 
-			VelocityEngineUtil.mergeTemplate(
-				velocityTemplateId, null, velocityContext, velocityWriter);
+			velocityTemplate.processTemplate(velocityWriter);
 		}
 		finally {
 			try {
