@@ -12,12 +12,28 @@
  * details.
  */
 
-package com.liferay.portal.kernel.freemarker;
+package com.liferay.portal.kernel.template;
 
 import com.liferay.portal.kernel.templateparser.TemplateContext;
 
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 /**
- * @author Mika Koivisto
+ * @author Tina Tian
  */
-public interface FreeMarkerContext extends TemplateContext {
+public interface TemplateContextHelper {
+
+	public Map<String, Object> getHelperUtilities();
+
+	public Map<String, Object> getRestrictedHelperUtilities();
+
+	public List<String> getRestrictedVariables();
+
+	public void prepare(
+			TemplateContext templateContext, HttpServletRequest request)
+		throws TemplateException;
+
 }

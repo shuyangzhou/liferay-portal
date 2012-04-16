@@ -12,20 +12,21 @@
  * details.
  */
 
-package com.liferay.portal.kernel.velocity;
+package com.liferay.portal.kernel.template;
+
+import com.liferay.portal.kernel.templateparser.TemplateContext;
+
+import java.io.Writer;
 
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * @author Raymond Augé
+ * @author Tina Tian
  */
-public interface VelocityVariables {
+public interface Template extends TemplateContext {
 
-	public void insertHelperUtilities(
-		VelocityContext velocityContext, String[] restrictedVariables);
+	public void prepare(HttpServletRequest request) throws TemplateException;
 
-	public void insertVariables(
-			VelocityContext velocityContext, HttpServletRequest request)
-		throws Exception;
+	public boolean processTemplate(Writer writer) throws TemplateException;
 
 }
