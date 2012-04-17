@@ -14,7 +14,9 @@
 
 package com.liferay.portlet.journal.model;
 
-import com.liferay.portal.kernel.freemarker.FreeMarkerEngineUtil;
+import com.liferay.portal.ModelListenerException;
+import com.liferay.portal.kernel.template.TemplateManager;
+import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.kernel.velocity.VelocityEngineUtil;
 import com.liferay.portal.model.BaseModelListener;
 import com.liferay.portal.servlet.filters.cache.CacheUtil;
@@ -33,16 +35,30 @@ public class JournalTemplateListener
 	extends BaseModelListener<JournalTemplate> {
 
 	@Override
-	public void onAfterRemove(JournalTemplate template) {
-		clearCache(template);
+	public void onAfterRemove(JournalTemplate template)
+		throws ModelListenerException {
+
+		try {
+			clearCache(template);
+		}
+		catch (Exception e) {
+			throw new ModelListenerException(e);
+		}
 	}
 
 	@Override
-	public void onAfterUpdate(JournalTemplate template) {
-		clearCache(template);
+	public void onAfterUpdate(JournalTemplate template)
+		throws ModelListenerException {
+
+		try {
+			clearCache(template);
+		}
+		catch (Exception e) {
+			throw new ModelListenerException(e);
+		}
 	}
 
-	protected void clearCache(JournalTemplate template) {
+	protected void clearCache(JournalTemplate template) throws Exception {
 
 		// Freemarker cache
 
@@ -50,7 +66,8 @@ public class JournalTemplateListener
 			template.getCompanyId() + template.getGroupId() +
 				template.getTemplateId();
 
-		FreeMarkerEngineUtil.flushTemplate(freeMarkerTemplateId);
+		TemplateManagerUtil.clearCache(
+			TemplateManager.FREE_MARKER, freeMarkerTemplateId);
 
 		// Journal content
 
