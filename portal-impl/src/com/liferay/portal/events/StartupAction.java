@@ -31,7 +31,6 @@ import com.liferay.portal.kernel.servlet.JspFactorySwapper;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.ServerDetector;
-import com.liferay.portal.kernel.velocity.VelocityEngineUtil;
 import com.liferay.portal.plugin.PluginPackageIndexer;
 import com.liferay.portal.security.lang.PortalSecurityManager;
 import com.liferay.portal.service.LockLocalServiceUtil;
@@ -121,14 +120,6 @@ public class StartupAction extends SimpleAction {
 		}
 
 		TemplateManagerUtil.init();
-
-		// Velocity
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Initialize Velocity engine");
-		}
-
-		VelocityEngineUtil.init();
 
 		// Indexers
 
