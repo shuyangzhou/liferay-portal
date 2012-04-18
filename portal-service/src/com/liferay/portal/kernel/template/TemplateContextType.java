@@ -12,12 +12,13 @@
  * details.
  */
 
-package com.liferay.portal.kernel.velocity;
-
-import com.liferay.portal.kernel.templateparser.TemplateContext;
+package com.liferay.portal.kernel.template;
 
 /**
- * @author Raymond Augé
+ * @author Tina Tian
  */
-public interface VelocityContext extends TemplateContext {
+public enum TemplateContextType {
+
+	EMPTY, RESTRICTED, STANDARD,
+
 }
