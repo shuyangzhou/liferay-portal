@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.freemarker;
+package com.liferay.portal.template;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -33,78 +33,70 @@ import java.io.Reader;
 
 /**
  * @author Mika Koivisto
+ * @author Tina Tian
  */
-public class JournalTemplateLoader extends FreeMarkerTemplateLoader {
+public class JournalTemplateResourceLoader extends TemplateResourceLoader {
 
 	@Override
-	public Object findTemplateSource(String name) throws IOException {
+	public TemplateResource findTemplateReource(String templateId)
+		throws IOException {
+
+		int pos = templateId.indexOf(JOURNAL_SEPARATOR + StringPool.SLASH);
+
+		if (pos == -1) {
+			return null;
+		}
+
 		try {
-			int pos = name.indexOf(JOURNAL_SEPARATOR + StringPool.SLASH);
+			int x = templateId.indexOf(CharPool.SLASH, pos);
+			int y = templateId.indexOf(CharPool.SLASH, x + 1);
+			int z = templateId.indexOf(CharPool.SLASH, y + 1);
 
-			if (pos != -1) {
-				int x = name.indexOf(CharPool.SLASH, pos);
-				int y = name.indexOf(CharPool.SLASH, x + 1);
-				int z = name.indexOf(CharPool.SLASH, y + 1);
+			long companyId = GetterUtil.getLong(templateId.substring(x + 1, y));
+			long groupId = GetterUtil.getLong(templateId.substring(y + 1, z));
+			String journalTemplateId = templateId.substring(z + 1);
 
-				long companyId = GetterUtil.getLong(name.substring(x + 1, y));
-				long groupId = GetterUtil.getLong(name.substring(y + 1, z));
-				String templateId = name.substring(z + 1);
-
-				if (_log.isDebugEnabled()) {
-					_log.debug(
-						"Loading {companyId=" + companyId + ", groupId=" +
-							groupId + ", templateId=" + templateId + "}");
-				}
-
-				JournalTemplate template =
-					JournalTemplateLocalServiceUtil.getTemplate(
-						groupId, templateId);
-
-				return template;
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Loading {companyId=" + companyId + ", groupId=" +
+						groupId + ", templateId=" + journalTemplateId + "}");
 			}
+
+			JournalTemplate journalTemplate =
+				JournalTemplateLocalServiceUtil.getTemplate(
+					groupId, journalTemplateId);
+
+			return new TemplateResource(
+				journalTemplateId, journalTemplate, this);
+
 		}
 		catch (NoSuchTemplateException nste) {
 			return null;
 		}
 		catch (PortalException pe) {
-			throw new IOException("Template {" + name + "} not found");
+			throw new IOException("Template {" + templateId + "} not found");
 		}
 		catch (SystemException se) {
-			throw new IOException("Template {" + name + "} not found");
+			throw new IOException("Template {" + templateId + "} not found");
 		}
-
-		return null;
 	}
 
 	@Override
-	public long getLastModified(Object templateSource) {
-		if (templateSource instanceof JournalTemplate) {
-			JournalTemplate template = (JournalTemplate)templateSource;
+	public Reader getReader(Object resource) throws IOException {
+		if (resource instanceof JournalTemplate) {
+			JournalTemplate journalTemplate = (JournalTemplate)resource;
 
-			return template.getModifiedDate().getTime();
-		}
-
-		return -1;
-	}
-
-	@Override
-	public Reader getReader(Object templateSource, String encoding)
-		throws IOException {
-
-		if (templateSource instanceof JournalTemplate) {
-			JournalTemplate template = (JournalTemplate)templateSource;
-
-			String xsl = template.getXsl();
+			String xsl = journalTemplate.getXsl();
 
 			return new UnsyncBufferedReader(
 				new InputStreamReader(
-					new UnsyncByteArrayInputStream(xsl.getBytes()), encoding));
+					new UnsyncByteArrayInputStream(xsl.getBytes()), ENCODING));
 		}
 
 		return null;
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(
-		JournalTemplateLoader.class);
+		JournalTemplateResourceLoader.class);
 
 }
