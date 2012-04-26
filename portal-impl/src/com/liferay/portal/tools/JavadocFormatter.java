@@ -40,8 +40,6 @@ import com.thoughtworks.qdox.model.JavaPackage;
 import com.thoughtworks.qdox.model.JavaParameter;
 import com.thoughtworks.qdox.model.Type;
 
-import jargs.gnu.CmdLineParser;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -77,33 +75,34 @@ public class JavadocFormatter {
 	}
 
 	public JavadocFormatter(String[] args) throws Exception {
-		CmdLineParser cmdLineParser = new CmdLineParser();
+		Map<String, String> arguments = ArgumentsUtil.parseArguments(args);
 
-		CmdLineParser.Option limitOption = cmdLineParser.addStringOption(
-			"limit");
-		CmdLineParser.Option initOption = cmdLineParser.addStringOption(
-			"init");
-		CmdLineParser.Option updateOption = cmdLineParser.addStringOption(
-			"update");
+		_basedir = arguments.get("javadoc.base.dir");
 
-		cmdLineParser.parse(args);
+		if (!_basedir.endsWith("/")) {
+			_basedir += "/";
+		}
 
-		String limit = (String)cmdLineParser.getOptionValue(limitOption);
-		String init = (String)cmdLineParser.getOptionValue(initOption);
-		String update = (String)cmdLineParser.getOptionValue(updateOption);
+		String init = arguments.get("javadoc.init");
 
 		if (Validator.isNotNull(init) && !init.startsWith("$")) {
 			_initializeMissingJavadocs = GetterUtil.getBoolean(init);
 		}
 
+		String limit = arguments.get("javadoc.limit");
+
+		_outputFileName = arguments.get("javadoc.output.file");
+
+		String update = arguments.get("javadoc.update");
+
 		if (Validator.isNotNull(update) && !update.startsWith("$")) {
 			_updateJavadocs = GetterUtil.getBoolean(update);
 		}
 
-		DirectoryScanner ds = new DirectoryScanner();
+		DirectoryScanner directoryScanner = new DirectoryScanner();
 
-		ds.setBasedir(_basedir);
-		ds.setExcludes(
+		directoryScanner.setBasedir(_basedir);
+		directoryScanner.setExcludes(
 			new String[] {"**\\classes\\**", "**\\portal-client\\**"});
 
 		List<String> includes = new ArrayList<String>();
@@ -124,11 +123,12 @@ public class JavadocFormatter {
 			includes.add("**\\*.java");
 		}
 
-		ds.setIncludes(includes.toArray(new String[includes.size()]));
+		directoryScanner.setIncludes(
+			includes.toArray(new String[includes.size()]));
 
-		ds.scan();
+		directoryScanner.scan();
 
-		String[] fileNames = ds.getIncludedFiles();
+		String[] fileNames = directoryScanner.getIncludedFiles();
 
 		if ((fileNames.length == 0) && Validator.isNotNull(limit) &&
 			!limit.startsWith("$")) {
@@ -178,9 +178,13 @@ public class JavadocFormatter {
 	private void _addClassCommentElement(
 		Element rootElement, JavaClass javaClass) {
 
-		Element commentElement = rootElement.addElement("comment");
-
 		String comment = _getCDATA(javaClass);
+
+		if (Validator.isNull(comment)) {
+			return;
+		}
+
+		Element commentElement = rootElement.addElement("comment");
 
 		if (comment.startsWith("Copyright (c) 2000-2010 Liferay, Inc.")) {
 			comment = StringPool.BLANK;
@@ -390,9 +394,13 @@ public class JavadocFormatter {
 
 		DocUtil.add(fieldElement, "name", javaField.getName());
 
-		Element commentElement = fieldElement.addElement("comment");
+		String comment = _getCDATA(javaField);
 
-		commentElement.addCDATA(_getCDATA(javaField));
+		if (Validator.isNotNull(comment)) {
+			Element commentElement = fieldElement.addElement("comment");
+
+			commentElement.addCDATA(comment);
+		}
 
 		_addDocletElements(fieldElement, javaField, "version");
 		_addDocletElements(fieldElement, javaField, "see");
@@ -407,9 +415,13 @@ public class JavadocFormatter {
 
 		DocUtil.add(methodElement, "name", javaMethod.getName());
 
-		Element commentElement = methodElement.addElement("comment");
+		String comment = _getCDATA(javaMethod);
 
-		commentElement.addCDATA(_getCDATA(javaMethod));
+		if (Validator.isNotNull(comment)) {
+			Element commentElement = methodElement.addElement("comment");
+
+			commentElement.addCDATA(comment);
+		}
 
 		_addDocletElements(methodElement, javaMethod, "version");
 		_addParamElements(methodElement, javaMethod);
@@ -452,9 +464,11 @@ public class JavadocFormatter {
 
 		value = _trimMultilineText(value);
 
-		Element commentElement = paramElement.addElement("comment");
+		if (Validator.isNotNull(value)) {
+			Element commentElement = paramElement.addElement("comment");
 
-		commentElement.addCDATA(value);
+			commentElement.addCDATA(value);
+		}
 	}
 
 	private void _addParamElements(
@@ -485,10 +499,6 @@ public class JavadocFormatter {
 			return;
 		}
 
-		Element returnElement = methodElement.addElement("return");
-
-		Element commentElement = returnElement.addElement("comment");
-
 		DocletTag[] returnDocletTags = javaMethod.getTagsByName("return");
 
 		String comment = StringPool.BLANK;
@@ -501,7 +511,13 @@ public class JavadocFormatter {
 
 		comment = _trimMultilineText(comment);
 
-		commentElement.addCDATA(comment);
+		if (Validator.isNotNull(comment)) {
+			Element returnElement = methodElement.addElement("return");
+
+			Element commentElement = returnElement.addElement("comment");
+
+			commentElement.addCDATA(comment);
+		}
 	}
 
 	private void _addThrowsElement(
@@ -538,10 +554,11 @@ public class JavadocFormatter {
 
 		value = _trimMultilineText(value);
 
-		Element commentElement = throwsElement.addElement("comment");
+		if (Validator.isNotNull(value)) {
+			Element commentElement = throwsElement.addElement("comment");
 
-		commentElement.addCDATA(_getCDATA(value));
-
+			commentElement.addCDATA(_getCDATA(value));
+		}
 	}
 
 	private void _addThrowsElements(
@@ -897,7 +914,33 @@ public class JavadocFormatter {
 		if (pos != -1) {
 			srcDirName = absolutePath.substring(0, pos + 17);
 		}
-		else {
+
+		if (srcDirName == null) {
+			pos = absolutePath.indexOf("/portal-kernel/src/");
+
+			if (pos == -1) {
+				pos = absolutePath.indexOf("/portal-service/src/");
+			}
+
+			if (pos == -1) {
+				pos = absolutePath.indexOf("/util-bridges/src/");
+			}
+
+			if (pos == -1) {
+				pos = absolutePath.indexOf("/util-java/src/");
+			}
+
+			if (pos == -1) {
+				pos = absolutePath.indexOf("/util-taglib/src/");
+			}
+
+			if (pos != -1) {
+				srcDirName =
+					absolutePath.substring(0, pos) + "/portal-impl/src/";
+			}
+		}
+
+		if (srcDirName == null) {
 			pos = absolutePath.indexOf("/WEB-INF/src/");
 
 			if (pos != -1) {
@@ -915,7 +958,8 @@ public class JavadocFormatter {
 			return tuple;
 		}
 
-		File javadocsXmlFile = new File(srcDirName, "META-INF/javadocs.xml");
+		File javadocsXmlFile = new File(
+			srcDirName, "META-INF/" + _outputFileName);
 
 		if (!javadocsXmlFile.exists()) {
 			_fileUtil.write(
@@ -1298,11 +1342,11 @@ public class JavadocFormatter {
 
 		String javaClassFullyQualifiedName = javaClass.getFullyQualifiedName();
 
-		if (!javaClassFullyQualifiedName.contains(".service.") ||
+		/*if (!javaClassFullyQualifiedName.contains(".service.") ||
 			!javaClassFullyQualifiedName.endsWith("ServiceImpl")) {
 
 			return;
-		}
+		}*/
 
 		Tuple javadocsXmlTuple = _getJavadocsXmlTuple(fileName);
 
@@ -1498,6 +1542,7 @@ public class JavadocFormatter {
 	private boolean _initializeMissingJavadocs;
 	private Map<String, Tuple> _javadocxXmlTuples =
 		new HashMap<String, Tuple>();
+	private String _outputFileName;
 	private boolean _updateJavadocs;
 
 }
