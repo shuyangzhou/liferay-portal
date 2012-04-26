@@ -14,7 +14,6 @@
 
 package com.liferay.portal.freemarker;
 
-import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.template.Template;
@@ -24,16 +23,14 @@ import com.liferay.portal.kernel.template.TemplateManager;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.template.RestrictedTemplate;
 import com.liferay.portal.template.TemplateContextHelper;
+import com.liferay.portal.template.TemplateResourceManager;
 import com.liferay.portal.util.PropsValues;
-
-import freemarker.cache.ClassTemplateLoader;
-import freemarker.cache.MultiTemplateLoader;
-import freemarker.cache.TemplateLoader;
 
 import freemarker.template.Configuration;
 
 import java.io.IOException;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -43,19 +40,11 @@ import java.util.Map;
 public class FreeMarkerManager implements TemplateManager {
 
 	public void clearCache() {
-		_stringTemplateLoader.removeTemplates();
-
-		PortalCache portalCache = LiferayCacheStorage.getPortalCache();
-
-		portalCache.removeAll();
+		_templateResourceManager.clearCache();
 	}
 
 	public void clearCache(String templateId) {
-		_stringTemplateLoader.removeTemplate(templateId);
-
-		PortalCache portalCache = LiferayCacheStorage.getPortalCache();
-
-		portalCache.remove(templateId);
+		_templateResourceManager.clearCache(templateId);
 	}
 
 	public void destroy() {
@@ -77,11 +66,11 @@ public class FreeMarkerManager implements TemplateManager {
 
 		_standardHelperUtilities = null;
 
-		_stringTemplateLoader.removeTemplates();
-
-		_stringTemplateLoader = null;
-
 		_templateContextHelper = null;
+
+		_templateResourceManager.destroy();
+
+		_templateResourceManager = null;
 	}
 
 	public Template getTemplate(
@@ -92,7 +81,8 @@ public class FreeMarkerManager implements TemplateManager {
 			return new FreeMarkerTemplate(
 					templateId, templateContent, errorTemplateId,
 					errorTemplateContent, null, _configuration,
-					_templateContextHelper, _stringTemplateLoader);
+					_templateContextHelper, _templateResourceManager,
+					_autoImportLibraries);
 		}
 		else if (templateContextType.equals(TemplateContextType.RESTRICTED)) {
 			return new RestrictedTemplate(
@@ -100,14 +90,15 @@ public class FreeMarkerManager implements TemplateManager {
 					templateId, templateContent, errorTemplateId,
 					errorTemplateContent, _restrictedHelperUtilities,
 					_configuration, _templateContextHelper,
-					_stringTemplateLoader),
+					_templateResourceManager, _autoImportLibraries),
 				_templateContextHelper.getRestrictedVariables());
 		}
 		else if (templateContextType.equals(TemplateContextType.STANDARD)) {
 			return new FreeMarkerTemplate(
 				templateId, templateContent, errorTemplateId,
 				errorTemplateContent, _standardHelperUtilities, _configuration,
-				_templateContextHelper, _stringTemplateLoader);
+				_templateContextHelper, _templateResourceManager,
+				_autoImportLibraries);
 		}
 
 		return null;
@@ -166,20 +157,12 @@ public class FreeMarkerManager implements TemplateManager {
 			return;
 		}
 
-		LiferayTemplateLoader liferayTemplateLoader =
-			new LiferayTemplateLoader();
+		_templateResourceManager = new TemplateResourceManager();
 
-		liferayTemplateLoader.setTemplateLoaders(
+		_templateResourceManager.setResourceLoaders(
 			PropsValues.FREEMARKER_ENGINE_TEMPLATE_LOADERS);
-
-		_stringTemplateLoader = new StringTemplateLoader();
-
-		MultiTemplateLoader multiTemplateLoader =
-			new MultiTemplateLoader(
-				new TemplateLoader[] {
-					new ClassTemplateLoader(getClass(), StringPool.SLASH),
-					_stringTemplateLoader, liferayTemplateLoader
-				});
+		_templateResourceManager.setInterval(
+			PropsValues.FREEMARKER_ENGINE_MODIFICATION_CHECK_INTERVAL);
 
 		_configuration = new Configuration();
 
@@ -187,21 +170,25 @@ public class FreeMarkerManager implements TemplateManager {
 		_configuration.setLocalizedLookup(
 			PropsValues.FREEMARKER_ENGINE_LOCALIZED_LOOKUP);
 		_configuration.setObjectWrapper(new LiferayObjectWrapper());
-		_configuration.setTemplateLoader(multiTemplateLoader);
-		_configuration.setTemplateUpdateDelay(
-			PropsValues.FREEMARKER_ENGINE_MODIFICATION_CHECK_INTERVAL);
 
 		try {
-			_configuration.setSetting(
-				"auto_import", PropsValues.FREEMARKER_ENGINE_MACRO_LIBRARY);
-			_configuration.setSetting(
-				"cache_storage", PropsValues.FREEMARKER_ENGINE_CACHE_STORAGE);
 			_configuration.setSetting(
 				"template_exception_handler",
 				PropsValues.FREEMARKER_ENGINE_TEMPLATE_EXCEPTION_HANDLER);
 		}
 		catch (Exception e) {
 			throw new TemplateException("Unable to init freemarker manager", e);
+		}
+
+		for (String macroLibrary :
+			PropsValues.FREEMARKER_ENGINE_MACRO_LIBRARY) {
+
+			int index = macroLibrary.indexOf(StringPool.COLON);
+
+			String libraryFile = macroLibrary.substring(0, index).trim();
+			String libraryName = macroLibrary.substring(index + 1).trim();
+
+			_autoImportLibraries.put(libraryName, libraryFile);
 		}
 
 		_standardHelperUtilities = _templateContextHelper.getHelperUtilities();
@@ -217,10 +204,12 @@ public class FreeMarkerManager implements TemplateManager {
 
 	private static Log _log = LogFactoryUtil.getLog(FreeMarkerManager.class);
 
+	private Map<String, String> _autoImportLibraries =
+		new HashMap<String, String>();
 	private Configuration _configuration;
 	private Map<String, Object> _restrictedHelperUtilities;
 	private Map<String, Object> _standardHelperUtilities;
-	private StringTemplateLoader _stringTemplateLoader;
 	private TemplateContextHelper _templateContextHelper;
+	private TemplateResourceManager _templateResourceManager;
 
 }
