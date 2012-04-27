@@ -114,6 +114,7 @@ public class TemplateResourceManager {
 			}
 		}
 		catch (Exception ex) {
+			_log.warn(ex, ex);
 		}
 
 		return false;
