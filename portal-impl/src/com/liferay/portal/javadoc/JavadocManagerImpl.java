@@ -131,7 +131,7 @@ public class JavadocManagerImpl implements JavadocManager {
 		InputStream inputStream = null;
 
 		try {
-			URL url = classLoader.getResource("META-INF/javadocs.xml");
+			URL url = classLoader.getResource("META-INF/javadocs-rt.xml");
 
 			if (url == null) {
 				return null;

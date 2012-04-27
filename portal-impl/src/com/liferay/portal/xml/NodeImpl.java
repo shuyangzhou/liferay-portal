@@ -14,6 +14,8 @@
 
 package com.liferay.portal.xml;
 
+import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.Node;
@@ -24,6 +26,9 @@ import java.io.IOException;
 import java.io.Writer;
 
 import java.util.List;
+
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.XMLWriter;
 
 /**
  * @author Brian Wing Shun Chan
@@ -59,6 +64,20 @@ public class NodeImpl implements Node {
 		}
 	}
 
+	public String compactString() throws IOException {
+		UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
+			new UnsyncByteArrayOutputStream();
+
+		OutputFormat outputFormat = OutputFormat.createCompactFormat();
+
+		XMLWriter xmlWriter = new XMLWriter(
+			unsyncByteArrayOutputStream, outputFormat);
+
+		xmlWriter.write(_node);
+
+		return unsyncByteArrayOutputStream.toString(StringPool.UTF8);
+	}
+
 	public Node detach() {
 		org.dom4j.Node node = _node.detach();
 
@@ -92,6 +111,14 @@ public class NodeImpl implements Node {
 		throws IOException {
 
 		return XMLFormatter.toString(_node, indent, expandEmptyElements);
+	}
+
+	public String formattedString(
+			String indent, boolean expandEmptyElements, boolean trimText)
+		throws IOException {
+
+		return XMLFormatter.toString(
+			_node, indent, expandEmptyElements, trimText);
 	}
 
 	public Document getDocument() {

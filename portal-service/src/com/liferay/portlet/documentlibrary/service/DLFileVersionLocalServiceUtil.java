@@ -306,6 +306,11 @@ public class DLFileVersionLocalServiceUtil {
 		return getService().getFileVersions(fileEntryId, status);
 	}
 
+	public static int getFileVersionsCount(long fileEntryId, int status)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getFileVersionsCount(fileEntryId, status);
+	}
+
 	public static com.liferay.portlet.documentlibrary.model.DLFileVersion getLatestFileVersion(
 		long fileEntryId, boolean excludeWorkingCopy)
 		throws com.liferay.portal.kernel.exception.PortalException,

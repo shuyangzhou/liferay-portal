@@ -684,6 +684,11 @@ public class DLFileEntryWrapper implements DLFileEntry,
 		return _dlFileEntry.getFileVersions(status);
 	}
 
+	public int getFileVersionsCount(int status)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _dlFileEntry.getFileVersionsCount(status);
+	}
+
 	public com.liferay.portlet.documentlibrary.model.DLFolder getFolder() {
 		return _dlFileEntry.getFolder();
 	}

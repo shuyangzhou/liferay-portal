@@ -451,7 +451,7 @@ request.setAttribute("view_file_entry.jsp-fileEntry", fileEntry);
 							<liferay-ui:icon
 								image="download"
 								label="<%= true %>"
-								message='<%= LanguageUtil.get(pageContext, "download") + " (" + TextFormatter.formatKB(fileVersion.getSize(), locale) + "k)" %>'
+								message='<%= LanguageUtil.get(pageContext, "download") + " (" + TextFormatter.formatStorageSize(fileVersion.getSize(), locale) + ")" %>'
 								url="<%= DLUtil.getPreviewURL(fileEntry, fileVersion, themeDisplay, StringPool.BLANK) %>"
 							/>
 						</c:if>
@@ -460,8 +460,8 @@ request.setAttribute("view_file_entry.jsp-fileEntry", fileEntry);
 					<span class="conversions">
 
 						<%
-						for (int i = 0; i < conversions.length; i++) {
-							String conversion = conversions[i];
+							for (int i = 0; i < conversions.length; i++) {
+											String conversion = conversions[i];
 						%>
 
 							<liferay-ui:icon
@@ -472,7 +472,7 @@ request.setAttribute("view_file_entry.jsp-fileEntry", fileEntry);
 							/>
 
 						<%
-						}
+							}
 						%>
 
 					</span>
@@ -501,14 +501,14 @@ request.setAttribute("view_file_entry.jsp-fileEntry", fileEntry);
 						<div class="lfr-asset-field webdav-url-file-container aui-helper-hidden">
 
 							<%
-							String webDavHelpMessage = null;
+								String webDavHelpMessage = null;
 
-							if (BrowserSnifferUtil.isWindows(request)) {
-								webDavHelpMessage = LanguageUtil.format(pageContext, "webdav-windows-help", new Object[] {"http://www.microsoft.com/downloads/details.aspx?FamilyId=17C36612-632E-4C04-9382-987622ED1D64", "http://www.liferay.com/web/guest/community/wiki/-/wiki/Main/WebDAV"});
-							}
-							else {
-								webDavHelpMessage = LanguageUtil.format(pageContext, "webdav-help", "http://www.liferay.com/web/guest/community/wiki/-/wiki/Main/WebDAV");
-							}
+												if (BrowserSnifferUtil.isWindows(request)) {
+													webDavHelpMessage = LanguageUtil.format(pageContext, "webdav-windows-help", new Object[] {"http://www.microsoft.com/downloads/details.aspx?FamilyId=17C36612-632E-4C04-9382-987622ED1D64", "http://www.liferay.com/web/guest/community/wiki/-/wiki/Main/WebDAV"});
+												}
+												else {
+													webDavHelpMessage = LanguageUtil.format(pageContext, "webdav-help", "http://www.liferay.com/web/guest/community/wiki/-/wiki/Main/WebDAV");
+												}
 							%>
 
 							<aui:field-wrapper helpMessage="<%= webDavHelpMessage %>" label="webdav-url">
@@ -519,43 +519,43 @@ request.setAttribute("view_file_entry.jsp-fileEntry", fileEntry);
 				</div>
 
 				<%
-				request.removeAttribute(WebKeys.SEARCH_CONTAINER_RESULT_ROW);
+					request.removeAttribute(WebKeys.SEARCH_CONTAINER_RESULT_ROW);
 				%>
 
 				<div class="lfr-asset-panels">
 					<liferay-ui:panel-container extended="<%= false %>" id="documentLibraryAssetPanelContainer" persistState="<%= true %>">
 
 						<%
-						if (fileEntryTypeId > 0) {
-							try {
-								DLFileEntryType fileEntryType = DLFileEntryTypeServiceUtil.getFileEntryType(fileEntryTypeId);
+							if (fileEntryTypeId > 0) {
+											try {
+												DLFileEntryType fileEntryType = DLFileEntryTypeServiceUtil.getFileEntryType(fileEntryTypeId);
 
-								List<DDMStructure> ddmStructures = fileEntryType.getDDMStructures();
+												List<DDMStructure> ddmStructures = fileEntryType.getDDMStructures();
 
-								for (DDMStructure ddmStructure : ddmStructures) {
-									Fields fields = null;
+												for (DDMStructure ddmStructure : ddmStructures) {
+													Fields fields = null;
 
-									try {
-										DLFileEntryMetadata fileEntryMetadata = DLFileEntryMetadataLocalServiceUtil.getFileEntryMetadata(ddmStructure.getStructureId(), fileVersionId);
+													try {
+														DLFileEntryMetadata fileEntryMetadata = DLFileEntryMetadataLocalServiceUtil.getFileEntryMetadata(ddmStructure.getStructureId(), fileVersionId);
 
-										fields = StorageEngineUtil.getFields(fileEntryMetadata.getDDMStorageId());
-									}
-									catch (Exception e) {
-									}
+														fields = StorageEngineUtil.getFields(fileEntryMetadata.getDDMStorageId());
+													}
+													catch (Exception e) {
+													}
 						%>
 
 									<liferay-ui:panel collapsible="<%= true %>" cssClass="metadata" extended="<%= true %>" id="documentLibraryMetadataPanel" persistState="<%= true %>" title="<%= ddmStructure.getName(LocaleUtil.getDefault()) %>">
 
-										<%= DDMXSDUtil.getHTML(pageContext, ddmStructure.getXsd(), fields, String.valueOf(ddmStructure.getPrimaryKey()), true, locale) %>
+										<%=DDMXSDUtil.getHTML(pageContext, ddmStructure.getXsd(), fields, String.valueOf(ddmStructure.getPrimaryKey()), true, locale) %>
 
 									</liferay-ui:panel>
 
 						<%
-								}
 							}
-							catch (Exception e) {
-							}
-						}
+											}
+											catch (Exception e) {
+											}
+										}
 						%>
 
 						<liferay-ui:custom-attributes-available className="<%= DLFileEntryConstants.getClassName() %>" classPK="<%= fileVersionId %>" editable="<%= false %>">
@@ -570,117 +570,117 @@ request.setAttribute("view_file_entry.jsp-fileEntry", fileEntry);
 						</liferay-ui:custom-attributes-available>
 
 						<%
-						try {
-							List<DDMStructure> ddmStructures = DDMStructureLocalServiceUtil.getClassStructures(PortalUtil.getClassNameId(DLFileEntry.class), new StructureStructureKeyComparator(true));
+							try {
+											List<DDMStructure> ddmStructures = DDMStructureLocalServiceUtil.getClassStructures(PortalUtil.getClassNameId(DLFileEntry.class), new StructureStructureKeyComparator(true));
 
-							for (DDMStructure ddmStructure : ddmStructures) {
-								Fields fields = null;
+											for (DDMStructure ddmStructure : ddmStructures) {
+												Fields fields = null;
 
-								try {
-									DLFileEntryMetadata fileEntryMetadata = DLFileEntryMetadataLocalServiceUtil.getFileEntryMetadata(ddmStructure.getStructureId(), fileVersionId);
+												try {
+													DLFileEntryMetadata fileEntryMetadata = DLFileEntryMetadataLocalServiceUtil.getFileEntryMetadata(ddmStructure.getStructureId(), fileVersionId);
 
-									fields = StorageEngineUtil.getFields(fileEntryMetadata.getDDMStorageId());
-								}
-								catch (Exception e) {
-								}
+													fields = StorageEngineUtil.getFields(fileEntryMetadata.getDDMStorageId());
+												}
+												catch (Exception e) {
+												}
 
-								if (fields != null) {
-									String name = "metadata." + ddmStructure.getName(LocaleUtil.getDefault(), true);
+												if (fields != null) {
+													String name = "metadata." + ddmStructure.getName(LocaleUtil.getDefault(), true);
 						%>
 
 									<liferay-ui:panel collapsible="<%= true %>" cssClass="lfr-asset-metadata" id="documentLibraryAssetMetadataPanel" persistState="<%= true %>" title="<%= name %>">
 
-										<%= DDMXSDUtil.getHTML(pageContext, ddmStructure.getXsd(), fields, String.valueOf(ddmStructure.getPrimaryKey()), true, locale) %>
+										<%=DDMXSDUtil.getHTML(pageContext, ddmStructure.getXsd(), fields, String.valueOf(ddmStructure.getPrimaryKey()), true, locale) %>
 
 									</liferay-ui:panel>
 
 						<%
-								}
 							}
-						}
-						catch (Exception e) {
-						}
+											}
+										}
+										catch (Exception e) {
+										}
 						%>
 
 						<liferay-ui:panel collapsible="<%= true %>" cssClass="version-history" id="documentLibraryVersionHistoryPanel" persistState="<%= true %>" title="version-history">
 
 							<%
-							boolean comparableFileEntry = DocumentConversionUtil.isComparableVersion(extension);
-							boolean showNonApprovedDocuments = false;
+								boolean comparableFileEntry = DocumentConversionUtil.isComparableVersion(extension);
+																	boolean showNonApprovedDocuments = false;
 
-							if ((user.getUserId() == fileEntry.getUserId()) || permissionChecker.isCompanyAdmin() || permissionChecker.isGroupAdmin(scopeGroupId)) {
-								showNonApprovedDocuments = true;
-							}
+																	if ((user.getUserId() == fileEntry.getUserId()) || permissionChecker.isCompanyAdmin() || permissionChecker.isGroupAdmin(scopeGroupId)) {
+																		showNonApprovedDocuments = true;
+																	}
 
-							SearchContainer searchContainer = new SearchContainer();
+																	SearchContainer searchContainer = new SearchContainer();
 
-							List<String> headerNames = new ArrayList<String>();
+																	List<String> headerNames = new ArrayList<String>();
 
-							headerNames.add("version");
-							headerNames.add("date");
-							headerNames.add("size");
+																	headerNames.add("version");
+																	headerNames.add("date");
+																	headerNames.add("size");
 
-							if (showNonApprovedDocuments) {
-								headerNames.add("status");
-							}
+																	if (showNonApprovedDocuments) {
+																		headerNames.add("status");
+																	}
 
-							headerNames.add(StringPool.BLANK);
+																	headerNames.add(StringPool.BLANK);
 
-							searchContainer.setHeaderNames(headerNames);
+																	searchContainer.setHeaderNames(headerNames);
 
-							PortletURL viewFileEntryURL = renderResponse.createRenderURL();
+																	PortletURL viewFileEntryURL = renderResponse.createRenderURL();
 
-							viewFileEntryURL.setParameter("struts_action", "/document_library/view_file_entry");
-							viewFileEntryURL.setParameter("redirect", currentURL);
-							viewFileEntryURL.setParameter("fileEntryId", String.valueOf(fileEntry.getFileEntryId()));
+																	viewFileEntryURL.setParameter("struts_action", "/document_library/view_file_entry");
+																	viewFileEntryURL.setParameter("redirect", currentURL);
+																	viewFileEntryURL.setParameter("fileEntryId", String.valueOf(fileEntry.getFileEntryId()));
 
-							searchContainer.setIteratorURL(viewFileEntryURL);
+																	searchContainer.setIteratorURL(viewFileEntryURL);
 
-							if (comparableFileEntry) {
-								RowChecker rowChecker = new RowChecker(renderResponse);
+																	if (comparableFileEntry) {
+																		RowChecker rowChecker = new RowChecker(renderResponse);
 
-								rowChecker.setAllRowIds(null);
+																		rowChecker.setAllRowIds(null);
 
-								searchContainer.setRowChecker(rowChecker);
-							}
+																		searchContainer.setRowChecker(rowChecker);
+																	}
 
-							int status = WorkflowConstants.STATUS_APPROVED;
+																	int status = WorkflowConstants.STATUS_APPROVED;
 
-							if (showNonApprovedDocuments) {
-								status = WorkflowConstants.STATUS_ANY;
-							}
+																	if (showNonApprovedDocuments) {
+																		status = WorkflowConstants.STATUS_ANY;
+																	}
 
-							List results = fileEntry.getFileVersions(status);
-							List resultRows = searchContainer.getResultRows();
+																	List results = fileEntry.getFileVersions(status);
+																	List resultRows = searchContainer.getResultRows();
 
-							for (int i = 0; i < results.size(); i++) {
-								FileVersion curFileVersion = (FileVersion)results.get(i);
+																	for (int i = 0; i < results.size(); i++) {
+																		FileVersion curFileVersion = (FileVersion)results.get(i);
 
-								ResultRow row = new ResultRow(new Object[] {fileEntry, curFileVersion, results.size(), conversions, fileEntry.isCheckedOut(), fileEntry.hasLock()}, String.valueOf(curFileVersion.getVersion()), i);
+																		ResultRow row = new ResultRow(new Object[] {fileEntry, curFileVersion, results.size(), conversions, fileEntry.isCheckedOut(), fileEntry.hasLock()}, String.valueOf(curFileVersion.getVersion()), i);
 
-								// Statistics
+																		// Statistics
 
-								row.addText(String.valueOf(curFileVersion.getVersion()));
-								row.addText(dateFormatDateTime.format(curFileVersion.getCreateDate()));
-								row.addText(TextFormatter.formatKB(curFileVersion.getSize(), locale) + "k");
+																		row.addText(String.valueOf(curFileVersion.getVersion()));
+																		row.addText(dateFormatDateTime.format(curFileVersion.getCreateDate()));
+																		row.addText(TextFormatter.formatStorageSize(curFileVersion.getSize(), locale));
 
-								// Status
+																		// Status
 
-								if (showNonApprovedDocuments) {
-									row.addText(LanguageUtil.get(pageContext, WorkflowConstants.toLabel(curFileVersion.getStatus())));
-								}
+																		if (showNonApprovedDocuments) {
+																			row.addText(LanguageUtil.get(pageContext, WorkflowConstants.toLabel(curFileVersion.getStatus())));
+																		}
 
-								// Action
+																		// Action
 
-								row.addJSP("right", SearchEntry.DEFAULT_VALIGN, "/html/portlet/document_library/file_entry_history_action.jsp");
+																		row.addJSP("right", SearchEntry.DEFAULT_VALIGN, "/html/portlet/document_library/file_entry_history_action.jsp");
 
-								// Add result row
+																		// Add result row
 
-								resultRows.add(row);
-							}
+																		resultRows.add(row);
+																	}
 
-							if (comparableFileEntry && !results.isEmpty()) {
-								FileVersion curFileVersion = (FileVersion)results.get(0);
+																	if (comparableFileEntry && !results.isEmpty()) {
+																		FileVersion curFileVersion = (FileVersion)results.get(0);
 							%>
 
 								<portlet:actionURL var="compareVersionsURL">
