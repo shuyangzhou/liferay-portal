@@ -14,7 +14,6 @@
 
 package com.liferay.portal.model.impl;
 
-import com.liferay.portal.freemarker.FreeMarkerTemplateLoader;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -31,6 +30,7 @@ import com.liferay.portal.model.Plugin;
 import com.liferay.portal.model.SpriteImage;
 import com.liferay.portal.model.Theme;
 import com.liferay.portal.model.ThemeSetting;
+import com.liferay.portal.template.TemplateResourceLoader;
 import com.liferay.portal.theme.ThemeCompanyId;
 import com.liferay.portal.theme.ThemeCompanyLimit;
 import com.liferay.portal.theme.ThemeGroupLimit;
@@ -199,10 +199,10 @@ public class ThemeImpl extends PluginBaseImpl implements Theme {
 
 	public String getFreeMarkerTemplateLoader() {
 		if (_loadFromServletContext) {
-			return FreeMarkerTemplateLoader.SERVLET_SEPARATOR;
+			return TemplateResourceLoader.SERVLET_SEPARATOR;
 		}
 		else {
-			return FreeMarkerTemplateLoader.THEME_LOADER_SEPARATOR;
+			return TemplateResourceLoader.THEME_LOADER_SEPARATOR;
 		}
 	}
 
