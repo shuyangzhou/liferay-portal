@@ -12,33 +12,38 @@
  * details.
  */
 
-package com.liferay.portal.freemarker;
+package com.liferay.portal.template;
 
 import java.io.IOException;
 import java.io.Reader;
 
 /**
- * @author Mika Koivisto
+ * @author Tina Tian
  */
-public abstract class FreeMarkerTemplateLoader {
+public class TemplateResource<T> {
 
-	public static final String JOURNAL_SEPARATOR = "_JOURNAL_CONTEXT_";
+	public TemplateResource(
+		String name, T data, TemplateResourceLoader<T> templateResourceLoader) {
 
-	public static final String SERVLET_SEPARATOR = "_SERVLET_CONTEXT_";
-
-	public static final String THEME_LOADER_SEPARATOR =
-		"_THEME_LOADER_CONTEXT_";
-
-	public void closeTemplateSource(Object templateSource) {
+		_data = data;
+		_name = name;
+		_templateResourceLoader = templateResourceLoader;
 	}
 
-	public abstract Object findTemplateSource(String name) throws IOException;
-
-	public long getLastModified(Object templateSource) {
-		return 0;
+	public T getData() {
+		return _data;
 	}
 
-	public abstract Reader getReader(Object templateSource, String encoding)
-		throws IOException;
+	public String getName() {
+		return _name;
+	}
+
+	public Reader getReader() throws IOException {
+		return _templateResourceLoader.getReader(_data);
+	}
+
+	private T _data;
+	private String _name;
+	private TemplateResourceLoader<T> _templateResourceLoader;
 
 }
