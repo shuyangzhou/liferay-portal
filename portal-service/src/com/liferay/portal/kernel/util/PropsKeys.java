@@ -735,8 +735,6 @@ public interface PropsKeys {
 
 	public static final String FREEMARKER_ENGINE_CACHE_ENABLED = "freemarker.engine.cache.enabled";
 
-	public static final String FREEMARKER_ENGINE_CACHE_STORAGE = "freemarker.engine.cache.storage";
-
 	public static final String FREEMARKER_ENGINE_LOCALIZED_LOOKUP = "freemarker.engine.localized.lookup";
 
 	public static final String FREEMARKER_ENGINE_MACRO_LIBRARY = "freemarker.engine.macro.library";

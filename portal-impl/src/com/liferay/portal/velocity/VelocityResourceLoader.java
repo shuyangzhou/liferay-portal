@@ -16,6 +16,8 @@ package com.liferay.portal.velocity;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.template.TemplateResource;
+import com.liferay.portal.template.TemplateResourceManager;
 import com.liferay.portal.util.PropsValues;
 
 import java.io.IOException;
@@ -30,27 +32,12 @@ import org.apache.velocity.runtime.resource.loader.ResourceLoader;
  * @author Brian Wing Shun Chan
  * @author Shuyang Zhou
  */
-public class LiferayResourceLoader extends ResourceLoader {
+public class VelocityResourceLoader extends ResourceLoader {
 
-	public static void setVelocityResourceListeners(
-		String[] velocityResourceListeners) {
+	public static void setTemplateResourceManager(
+		TemplateResourceManager templateResourceManager ) {
 
-		_velocityResourceListeners = new VelocityResourceListener[
-			velocityResourceListeners.length];
-
-		for (int i = 0; i < velocityResourceListeners.length; i++) {
-			try {
-				Class<?> clazz = Class.forName(velocityResourceListeners[i]);
-
-				_velocityResourceListeners[i] = (VelocityResourceListener)
-					clazz.newInstance();
-			}
-			catch (Exception e) {
-				_log.error(e);
-
-				_velocityResourceListeners[i] = null;
-			}
-		}
+		_templateResourceManager = templateResourceManager;
 	}
 
 	@Override
@@ -126,26 +113,24 @@ public class LiferayResourceLoader extends ResourceLoader {
 			_log.debug("Get resource for " + source);
 		}
 
-		InputStream is = null;
+		try {
+			TemplateResource<?> templateResource =
+				_templateResourceManager.findTemplateResource(source);
 
-		for (int i = 0; (is == null) && (i < _velocityResourceListeners.length);
-				i++) {
-
-			VelocityResourceListener velocityResourceListener =
-				_velocityResourceListeners[i];
-
-			if (velocityResourceListener != null) {
-				is = velocityResourceListener.getResourceStream(source);
+			if (templateResource == null) {
+				return null;
 			}
-		}
 
-		return is;
+			return templateResource.getInputStream();
+		}
+		catch (IOException ex) {
+			throw new ResourceNotFoundException(ex);
+		}
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(
-			LiferayResourceLoader.class);
+			VelocityResourceLoader.class);
 
-	private static VelocityResourceListener[] _velocityResourceListeners =
-		new VelocityResourceListener[0];
+	private static TemplateResourceManager _templateResourceManager;
 
 }

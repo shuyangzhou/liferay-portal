@@ -12,35 +12,34 @@
  * details.
  */
 
-package com.liferay.portal.velocity;
+package com.liferay.portal.template;
 
-import java.io.Serializable;
-
-import org.apache.velocity.runtime.resource.util.StringResource;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
- * @author Michael C. Han
+ * @author Tina Tian
  */
-public class SerializableStringResource implements Serializable {
+public class TemplateResource<T> {
 
-	public SerializableStringResource(String body, String encoding) {
-		_body = body;
-		_encoding = encoding;
+	public TemplateResource(
+		String name, T data, TemplateResourceLoader<T> templateResourceLoader) {
+
+		_data = data;
+		_name = name;
+		_templateResourceLoader = templateResourceLoader;
 	}
 
-	public String getBody() {
-		return _body;
+	public InputStream getInputStream() throws IOException {
+		return _templateResourceLoader.getInputStream(_data);
 	}
 
-	public String getEncoding() {
-		return _encoding;
+	public String getName() {
+		return _name;
 	}
 
-	public StringResource toStringResource() {
-		return new StringResource(_body, _encoding);
-	}
-
-	private String _body;
-	private String _encoding;
+	private T _data;
+	private String _name;
+	private TemplateResourceLoader<T> _templateResourceLoader;
 
 }

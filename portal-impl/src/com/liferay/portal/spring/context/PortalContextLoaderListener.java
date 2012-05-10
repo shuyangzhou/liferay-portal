@@ -46,7 +46,6 @@ import com.liferay.portal.servlet.filters.cache.CacheUtil;
 import com.liferay.portal.util.InitUtil;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portal.util.WebAppPool;
-import com.liferay.portal.velocity.LiferayResourceCacheUtil;
 import com.liferay.portlet.PortletContextBagPool;
 import com.liferay.portlet.wiki.util.WikiCacheUtil;
 
@@ -177,7 +176,6 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 		FinderCacheUtil.clearLocalCache();
 		EntityCacheUtil.clearCache();
 		EntityCacheUtil.clearLocalCache();
-		LiferayResourceCacheUtil.clear();
 		PermissionCacheUtil.clearCache();
 		PermissionCacheUtil.clearLocalCache();
 		WikiCacheUtil.clearCache(0);
