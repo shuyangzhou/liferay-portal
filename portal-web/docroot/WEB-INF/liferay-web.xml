@@ -338,7 +338,7 @@
 		</init-param>
 		<init-param>
 			<param-name>url-regex-pattern</param-name>
-			<param-value>.+/(activities|asset_publisher/\p{Alnum}{4}|blogs|journal|message_boards|wiki)/rss.*</param-value>
+			<param-value>.+/(activities|asset_publisher/\p{Alnum}{4,12}|blogs|journal|message_boards|wiki)/rss.*</param-value>
 		</init-param>
 	</filter>
 	<filter>

@@ -28,7 +28,7 @@
 					<aui:button type="submit" value="<%= buttonLabel %>" />
 				</span>
 
-				<div class="toggle-link">
+				<div class="<%= id %>toggle-link">
 					<aui:a href="javascript:;" tabindex="-1"><liferay-ui:message key="advanced" /> &raquo;</aui:a>
 				</div>
 			</c:when>

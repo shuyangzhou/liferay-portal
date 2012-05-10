@@ -89,13 +89,15 @@ public class AddDefaultDDMTemplatesAction extends SimpleAction {
 
 		addDDMTemplate(
 			userId, groupId, DDMTemplateConstants.TEMPLATE_KEY_CUSTOM_ABSTRACTS,
-			"custom-abstracts", "custom-abstracts-description",
+			"asset-publisher-custom-abstracts",
+			"asset-publisher-custom-abstracts-description",
 			"asset-publisher-custom-abstracts.vm", serviceContext);
 
 		addDDMTemplate(
 			userId, groupId,
 			DDMTemplateConstants.TEMPLATE_KEY_CUSTOM_TITLE_LIST,
-			"custom-title-list", "custom-title-list-description",
+			"asset-publisher-custom-title-list",
+			"asset-publisher-custom-title-list-description",
 			"asset-publisher-custom-title-list.vm", serviceContext);
 	}
 

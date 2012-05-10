@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.io.unsync.UnsyncPrintWriter;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SystemProperties;
@@ -31,6 +32,7 @@ import com.liferay.portal.util.FastDateFormatFactoryImpl;
 import com.liferay.portal.util.FileImpl;
 import com.liferay.portal.util.PortalImpl;
 import com.liferay.portal.util.PortalUtil;
+import com.liferay.portal.util.PropsImpl;
 
 import java.io.File;
 
@@ -161,6 +163,10 @@ public class SassToCssBuilder {
 		PortalUtil portalUtil = new PortalUtil();
 
 		portalUtil.setPortal(new PortalImpl());
+
+		PropsUtil propsUtil = new PropsUtil();
+
+		propsUtil.setProps(new PropsImpl());
 	}
 
 	private void _parseSassDirectory(String dirName) throws Exception {

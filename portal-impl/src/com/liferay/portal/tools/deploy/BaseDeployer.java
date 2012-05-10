@@ -960,7 +960,8 @@ public class BaseDeployer implements Deployer {
 		return displayName;
 	}
 
-	public String getExtraContent(File srcFile, String displayName)
+	public String getExtraContent(
+			double webXmlVersion, File srcFile, String displayName)
 		throws Exception {
 
 		StringBundler sb = new StringBundler();
@@ -968,6 +969,13 @@ public class BaseDeployer implements Deployer {
 		sb.append("<display-name>");
 		sb.append(displayName);
 		sb.append("</display-name>");
+
+		if (webXmlVersion < 2.4) {
+			sb.append("<context-param>");
+			sb.append("<param-name>liferay-invoker-enabled</param-name>");
+			sb.append("<param-value>false</param-value>");
+			sb.append("</context-param>");
+		}
 
 		sb.append("<listener>");
 		sb.append("<listener-class>");
@@ -1005,7 +1013,7 @@ public class BaseDeployer implements Deployer {
 			hasTaglib = true;
 		}
 
-		if (hasTaglib) {
+		if (hasTaglib && (webXmlVersion > 2.3)) {
 			sb.append("<jsp-config>");
 		}
 
@@ -1077,7 +1085,7 @@ public class BaseDeployer implements Deployer {
 			sb.append("</taglib>");
 		}
 
-		if (hasTaglib) {
+		if (hasTaglib && (webXmlVersion > 2.3)) {
 			sb.append("</jsp-config>");
 		}
 
@@ -1298,25 +1306,26 @@ public class BaseDeployer implements Deployer {
 			double webXmlVersion, File srcFile)
 		throws Exception {
 
-		boolean servletContextIncludeFiltersEnabled = true;
+		if (webXmlVersion < 2.4) {
+			return StringPool.BLANK;
+		}
 
 		Properties properties = getPluginPackageProperties(srcFile);
 
-		if (properties != null) {
-			servletContextIncludeFiltersEnabled = GetterUtil.getBoolean(
+		if (properties == null) {
+			return StringPool.BLANK;
+		}
+
+		if (!GetterUtil.getBoolean(
 				properties.getProperty(
-					"servlet-context-include-filters-enabled"), true);
+					"servlet-context-include-filters-enabled"), true)) {
+
+			return StringPool.BLANK;
 		}
 
-		if (servletContextIncludeFiltersEnabled) {
-			String servletContextIncludeFiltersContent = FileUtil.read(
-				DeployUtil.getResourcePath(
-					"servlet-context-include-filters-web.xml"));
-
-			return servletContextIncludeFiltersContent;
-		}
-
-		return StringPool.BLANK;
+		return FileUtil.read(
+			DeployUtil.getResourcePath(
+				"servlet-context-include-filters-web.xml"));
 	}
 
 	public String getSessionFiltersContent() throws Exception {
@@ -1754,7 +1763,7 @@ public class BaseDeployer implements Deployer {
 			y = x;
 		}
 		else {
-			if (liferayWebXmlEnabled) {
+			if (liferayWebXmlEnabled && (webXmlVersion > 2.3)) {
 				webXmlFiltersContent = webXmlContent.substring(x, y + 17);
 
 				y = y + 17;
@@ -1763,6 +1772,15 @@ public class BaseDeployer implements Deployer {
 				x = y + 17;
 				y = y + 17;
 			}
+		}
+
+		if (webXmlVersion < 2.4) {
+			webXmlContent =
+				webXmlContent.substring(0, x) +
+					getExtraFiltersContent(webXmlVersion, srcFile) +
+						webXmlContent.substring(y);
+
+			return webXmlContent;
 		}
 
 		String filtersContent =
@@ -1817,7 +1835,7 @@ public class BaseDeployer implements Deployer {
 		double webXmlVersion = GetterUtil.getDouble(
 			rootElement.attributeValue("version"), 2.3);
 
-		if (webXmlVersion <= 2.3) {
+		if (!PropsValues.TCK_URL && (webXmlVersion <= 2.3)) {
 			throw new AutoDeployException(
 				webXml.getName() +
 					" must be updated to the Servlet 2.4 specification");
@@ -1853,7 +1871,8 @@ public class BaseDeployer implements Deployer {
 
 		// Merge content
 
-		String extraContent = getExtraContent(srcFile, displayName);
+		String extraContent = getExtraContent(
+			webXmlVersion, srcFile, displayName);
 
 		int pos = content.indexOf("<listener>");
 
