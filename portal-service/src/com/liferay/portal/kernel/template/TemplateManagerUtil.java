@@ -25,6 +25,12 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class TemplateManagerUtil {
 
+	public static void clearCache() {
+		for (TemplateManager templateManager : _templateManagers.values()) {
+			templateManager.clearCache();
+		}
+	}
+
 	public static void clearCache(String templateManagerName)
 		throws TemplateException {
 
