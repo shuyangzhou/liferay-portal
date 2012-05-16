@@ -19,10 +19,7 @@ import com.liferay.portal.kernel.template.TemplateManager;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.model.BaseModelListener;
 import com.liferay.portal.servlet.filters.cache.CacheUtil;
-import com.liferay.portal.velocity.LiferayResourceCacheUtil;
 import com.liferay.portlet.journalcontent.util.JournalContentUtil;
-
-import org.apache.velocity.runtime.resource.ResourceManager;
 
 /**
  * @author Brian Wing Shun Chan
@@ -76,18 +73,10 @@ public class JournalTemplateListener
 
 		CacheUtil.clearCache(template.getCompanyId());
 
-		// Liferay resource cache
-
-		LiferayResourceCacheUtil.remove(
-			_RESOURCE_TEMPLATE_NAME_SPACE.concat(freeMarkerTemplateId));
-
 		// Velocity cache
 
 		TemplateManagerUtil.clearCache(
 			TemplateManager.VELOCITY, freeMarkerTemplateId);
 	}
-
-	private static final String _RESOURCE_TEMPLATE_NAME_SPACE = String.valueOf(
-		ResourceManager.RESOURCE_TEMPLATE);
 
 }
