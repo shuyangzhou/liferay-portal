@@ -37,7 +37,6 @@ import com.liferay.portal.theme.ThemeGroupLimit;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PrefsPropsUtil;
 import com.liferay.portal.util.PropsValues;
-import com.liferay.portal.velocity.VelocityResourceListener;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -356,10 +355,10 @@ public class ThemeImpl extends PluginBaseImpl implements Theme {
 
 	public String getVelocityResourceListener() {
 		if (_loadFromServletContext) {
-			return VelocityResourceListener.SERVLET_SEPARATOR;
+			return TemplateResourceLoader.SERVLET_SEPARATOR;
 		}
 		else {
-			return VelocityResourceListener.THEME_LOADER_SEPARATOR;
+			return TemplateResourceLoader.THEME_LOADER_SEPARATOR;
 		}
 	}
 
