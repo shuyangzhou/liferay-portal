@@ -52794,7 +52794,9 @@ For a usage example see {@link com.liferay.portlet.shopping.util.ShoppingUtil#ge
 	<javadoc>
 		<name>AbortPolicy</name>
 		<type>com.liferay.portal.kernel.concurrent.AbortPolicy</type>
+		<comment><![CDATA[Implements the same behavior as {@link java.util.concurrent.ThreadPoolExecutor.AbortPolicy}.]]></comment>
 		<author><![CDATA[Shuyang Zhou]]></author>
+		<see><![CDATA[{@link java.util.concurrent.ThreadPoolExecutor.AbortPolicy}]]></see>
 		<method>
 			<name>rejectedExecution</name>
 			<param>
@@ -52805,6 +52807,7 @@ For a usage example see {@link com.liferay.portlet.shopping.util.ShoppingUtil#ge
 				<name>threadPoolExecutor</name>
 				<type>com.liferay.portal.kernel.concurrent.ThreadPoolExecutor</type>
 			</param>
+			<see><![CDATA[{@link java.util.concurrent.ThreadPoolExecutor.AbortPolicy#rejectedExecution(Runnable, java.util.concurrent.ThreadPoolExecutor)}]]></see>
 		</method>
 	</javadoc>
 	<javadoc>
@@ -52841,7 +52844,9 @@ For a usage example see {@link com.liferay.portlet.shopping.util.ShoppingUtil#ge
 	<javadoc>
 		<name>CallerRunsPolicy</name>
 		<type>com.liferay.portal.kernel.concurrent.CallerRunsPolicy</type>
+		<comment><![CDATA[Implements the same behavior as {@link java.util.concurrent.ThreadPoolExecutor.CallerRunsPolicy}.]]></comment>
 		<author><![CDATA[Shuyang Zhou]]></author>
+		<see><![CDATA[{@link java.util.concurrent.ThreadPoolExecutor.CallerRunsPolicy}]]></see>
 		<method>
 			<name>rejectedExecution</name>
 			<param>
@@ -52852,6 +52857,7 @@ For a usage example see {@link com.liferay.portlet.shopping.util.ShoppingUtil#ge
 				<name>threadPoolExecutor</name>
 				<type>com.liferay.portal.kernel.concurrent.ThreadPoolExecutor</type>
 			</param>
+			<see><![CDATA[{@link java.util.concurrent.ThreadPoolExecutor.CallerRunsPolicy#rejectedExecution(Runnable, java.util.concurrent.ThreadPoolExecutor)}]]></see>
 		</method>
 	</javadoc>
 	<javadoc>
@@ -53137,7 +53143,9 @@ See LPS-3744 for a sample use case.
 	<javadoc>
 		<name>DiscardOldestPolicy</name>
 		<type>com.liferay.portal.kernel.concurrent.DiscardOldestPolicy</type>
+		<comment><![CDATA[Implements the same behavior as {@link java.util.concurrent.ThreadPoolExecutor.DiscardOldestPolicy}.]]></comment>
 		<author><![CDATA[Shuyang Zhou]]></author>
+		<see><![CDATA[{@link java.util.concurrent.ThreadPoolExecutor.DiscardOldestPolicy}]]></see>
 		<method>
 			<name>rejectedExecution</name>
 			<param>
@@ -53148,12 +53156,15 @@ See LPS-3744 for a sample use case.
 				<name>threadPoolExecutor</name>
 				<type>com.liferay.portal.kernel.concurrent.ThreadPoolExecutor</type>
 			</param>
+			<see><![CDATA[{@link java.util.concurrent.ThreadPoolExecutor.DiscardOldestPolicy#rejectedExecution( Runnable, java.util.concurrent.ThreadPoolExecutor)}]]></see>
 		</method>
 	</javadoc>
 	<javadoc>
 		<name>DiscardPolicy</name>
 		<type>com.liferay.portal.kernel.concurrent.DiscardPolicy</type>
+		<comment><![CDATA[Implements the same behavior as {@link java.util.concurrent.ThreadPoolExecutor.DiscardPolicy}.]]></comment>
 		<author><![CDATA[Shuyang Zhou]]></author>
+		<see><![CDATA[{@link java.util.concurrent.ThreadPoolExecutor.DiscardPolicy}]]></see>
 		<method>
 			<name>rejectedExecution</name>
 			<param>
@@ -53163,6 +53174,31 @@ See LPS-3744 for a sample use case.
 			<param>
 				<name>threadPoolExecutor</name>
 				<type>com.liferay.portal.kernel.concurrent.ThreadPoolExecutor</type>
+			</param>
+			<see><![CDATA[{@link java.util.concurrent.ThreadPoolExecutor.DiscardPolicy#rejectedExecution( Runnable, java.util.concurrent.ThreadPoolExecutor)}]]></see>
+		</method>
+	</javadoc>
+	<javadoc>
+		<name>DiscardWithCancelPolicy</name>
+		<type>com.liferay.portal.kernel.concurrent.DiscardWithCancelPolicy</type>
+		<comment><![CDATA[Handles rejected tasks by canceling them immediately.
+
+<p>
+Use this policy for efficiently discarding rejected tasks. Unlike {@link DiscardWithCancelPolicy}, this policy maintains the order of tasks in the task queue and the application server's rendering of portlets is not disrupted. Unlike {@link DiscardOldestPolicy} and {@link DiscardPolicy}, the meaningless blocking wait until timeout is bypassed, since {@link Future#get()} is not called for the rejected task.
+</p>]]></comment>
+		<author><![CDATA[Shuyang Zhou]]></author>
+		<method>
+			<name>rejectedExecution</name>
+			<comment><![CDATA[Rejects execution of the {@link Runnable} task by canceling it immediately.]]></comment>
+			<param>
+				<name>runnable</name>
+				<type>java.lang.Runnable</type>
+				<comment><![CDATA[the task]]></comment>
+			</param>
+			<param>
+				<name>threadPoolExecutor</name>
+				<type>com.liferay.portal.kernel.concurrent.ThreadPoolExecutor</type>
+				<comment><![CDATA[the executor]]></comment>
 			</param>
 		</method>
 	</javadoc>
@@ -53402,7 +53438,9 @@ Registry for {@link ReadWriteLock} objects with {@link ReadWriteLockKey} as keys
 	<javadoc>
 		<name>RejectedExecutionHandler</name>
 		<type>com.liferay.portal.kernel.concurrent.RejectedExecutionHandler</type>
+		<comment><![CDATA[Provides the same interface as {@link java.util.concurrent.ThreadPoolExecutor.RejectedExecutionHandler}.]]></comment>
 		<author><![CDATA[Shuyang Zhou]]></author>
+		<see><![CDATA[{@link java.util.concurrent.ThreadPoolExecutor.RejectedExecutionHandler}]]></see>
 		<method>
 			<name>rejectedExecution</name>
 			<param>
@@ -53413,6 +53451,7 @@ Registry for {@link ReadWriteLock} objects with {@link ReadWriteLockKey} as keys
 				<name>threadPoolExecutor</name>
 				<type>com.liferay.portal.kernel.concurrent.ThreadPoolExecutor</type>
 			</param>
+			<see><![CDATA[{@link java.util.concurrent.ThreadPoolExecutor.RejectedExecutionHandler#rejectedExecution( Runnable, java.util.concurrent.ThreadPoolExecutor)}]]></see>
 		</method>
 	</javadoc>
 	<javadoc>

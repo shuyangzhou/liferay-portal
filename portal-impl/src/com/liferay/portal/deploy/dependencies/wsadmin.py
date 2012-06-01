@@ -1,27 +1,24 @@
-def uninstallApp(appName):
-	app = ''
-	appList = AdminApp.list()
+def isAppInstalled(appName):
+	appNames = AdminApp.list()
 
-	if len(appList) > 0:
-		for item in appList.split('\n'):
-			item = item.rstrip()
+	if len(appNames) > 0:
+		for curAppName in appNames.split('\n'):
+			curAppName = curAppName.rstrip()
 
-			if item.find(appName) >= 0:
-				app = item
+			if curAppName.find(appName) >= 0:
+				return 1
 
-				break
-
-	if app != '':
-		print AdminApp.uninstall(appName)
-
-		print AdminConfig.save()
-
-uninstallApp('${plugin.servlet.context.name}')
-
-print AdminApp.install('${auto.deploy.dest.dir}/${plugin.servlet.context.name}.war', '[-appname ${plugin.servlet.context.name} -contextroot /${plugin.servlet.context.name} -usedefaultbindings]')
-
-print AdminConfig.save()
+	return 0
 
 appManager = AdminControl.queryNames('${auto.deploy.websphere.wsadmin.app.manager.query}')
+
+if isAppInstalled('${plugin.servlet.context.name}'):
+	print AdminControl.invoke(appManager, 'stopApplication', '${plugin.servlet.context.name}')
+
+	print AdminApp.update('${plugin.servlet.context.name}', 'app', '[-contents ${auto.deploy.dest.dir}/${plugin.servlet.context.name}.war -contextroot /${plugin.servlet.context.name} -operation update -usedefaultbindings]')
+else:
+	print AdminApp.install('${auto.deploy.dest.dir}/${plugin.servlet.context.name}.war', '[-appname ${plugin.servlet.context.name} -contextroot /${plugin.servlet.context.name} -usedefaultbindings]')
+
+print AdminConfig.save()
 
 print AdminControl.invoke(appManager, 'startApplication', '${plugin.servlet.context.name}')

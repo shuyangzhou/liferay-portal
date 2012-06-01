@@ -1355,6 +1355,11 @@ them in ${app.server.parent.dir}. Then rerun this task.
 			<arg line="/c install.exe -options liferay-responsefile.txt -silent" />
 		</exec>
 
+		<replace file="${app.server.websphere.instance.dir}/config/cells/liferay-cell/nodes/liferay-node/servers/server1/server.xml">
+			<replacetoken><![CDATA[disableJIT="false">]]></replacetoken>
+			<replacevalue><![CDATA[disableJIT="false" maximumHeapSize="1024">]]></replacevalue>
+		</replace>
+
 		<unzip
 			dest="${tstamp.value}/updi"
 			src="${app.server.parent.dir}/${app.server.websphere.update.installer.zip.name}"
@@ -1380,8 +1385,18 @@ them in ${app.server.parent.dir}. Then rerun this task.
 
 		<echo>Installing fix pack.</echo>
 
+		<if>
+			<available file="${app.server.websphere.dir}/UpdateInstaller/update.exe" />
+			<then>
+				<property name="update.executable" value="update.exe" />
+			</then>
+			<else>
+				<property name="update.executable" value="update.bat" />
+			</else>
+		</if>
+
 		<exec dir="${app.server.websphere.dir}/UpdateInstaller" executable="cmd.exe">
-			<arg line="/c update.bat -options liferay-responsefile.txt -silent" />
+			<arg line="/c ${update.executable} -options liferay-responsefile.txt -silent" />
 		</exec>
 
 		<delete dir="${tstamp.value}" />

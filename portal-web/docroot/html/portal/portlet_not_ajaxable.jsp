@@ -1,3 +1,4 @@
+<%--
 /**
  * Copyright (c) 2000-2012 Liferay, Inc. All rights reserved.
  *
@@ -11,25 +12,20 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
+--%>
 
-package com.liferay.portal.kernel.concurrent;
+<%@ include file="/html/portal/init.jsp" %>
 
-/**
- * Implements the same behavior as {@link
- * java.util.concurrent.ThreadPoolExecutor.DiscardPolicy}.
- *
- * @author Shuyang Zhou
- * @see    {@link java.util.concurrent.ThreadPoolExecutor.DiscardPolicy}
- */
-public class DiscardPolicy implements RejectedExecutionHandler {
+<portlet:defineObjects />
 
-	/**
-	 * @see {@link
-	 *      java.util.concurrent.ThreadPoolExecutor.DiscardPolicy#rejectedExecution(
-	 *      Runnable, java.util.concurrent.ThreadPoolExecutor)}
-	 */
-	public void rejectedExecution(
-		Runnable runnable, ThreadPoolExecutor threadPoolExecutor) {
-	}
+<%
+String portletTitle = HtmlUtil.escape(PortalUtil.getPortletTitle(renderResponse));
 
+if (portletTitle == null) {
+	portletTitle = LanguageUtil.get(pageContext, "portlet");
 }
+%>
+
+<div class="portlet-msg-info">
+	<%= LanguageUtil.format(pageContext, "x-will-only-be-shown-after-you-refresh-the-page", portletTitle, false) %>
+</div>

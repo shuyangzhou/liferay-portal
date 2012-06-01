@@ -57,6 +57,8 @@ public class LayoutTemplateAutoDeployer
 
 			List<String> jars = new ArrayList<String>();
 
+			addRequiredJar(jars, "util-java.jar");
+
 			this.jars = jars;
 
 			checkArguments();

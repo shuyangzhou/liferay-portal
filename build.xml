@@ -800,33 +800,36 @@ set JAVA_OPTS=-Dfile.encoding=UTF8 -Djava.net.preferIPv4Stack=true -Djonas.felix
 				<echo>Installing liferay-portal.war.</echo>
 
 				<echo file="wsadmin.py">
-def uninstallApp(appName):
-	app = ''
-	appList = AdminApp.list()
+def isAppInstalled(appName):
+	appNames = AdminApp.list()
 
-	if len(appList) > 0:
-		for item in appList.split('\n'):
-			item = item.rstrip()
+	if len(appNames) > 0:
+		for curAppName in appNames.split('\n'):
+			curAppName = curAppName.rstrip()
 
-			if item.find(appName) >= 0:
-				app = item
+			if curAppName.find(appName) >= 0:
+				return 1
 
-				break
+	return 0
 
-	if app != '':
-		print AdminApp.uninstall(appName)
+if isAppInstalled('DefaultApplication'):
+	print AdminApp.uninstall('DefaultApplication')
 
-		print AdminConfig.save()
-
-uninstallApp('DefaultApplication')
-
-print AdminApp.install('${app.server.websphere.instance.dir.unix}/wsadmin-deploy/liferay-portal.war', '[-appname liferay-portal -contextroot /]')
-
-print AdminConfig.save()
+	print AdminConfig.save()
 
 appManager = AdminControl.queryNames('type=ApplicationManager,process=server1,*')
 
-print AdminControl.invoke(appManager, 'startApplication', 'liferay-portal')</echo>
+if isAppInstalled('liferay-portal'):
+	print AdminControl.invoke(appManager, 'stopApplication', 'liferay-portal')
+
+	print AdminApp.update('liferay-portal', 'app', '[-contents ${app.server.websphere.instance.dir.unix}/wsadmin-deploy/liferay-portal.war -contextroot / -operation update]')
+else:
+	print AdminApp.install('${app.server.websphere.instance.dir.unix}/wsadmin-deploy/liferay-portal.war', '[-appname liferay-portal -contextroot /]')
+
+print AdminConfig.save()
+
+print AdminControl.invoke(appManager, 'startApplication', 'liferay-portal')
+				</echo>
 
 				<exec dir="${app.server.websphere.bin.dir}" executable="cmd.exe">
 					<arg line="/c wsadmin.bat -f ${basedir}\wsadmin.py" />
