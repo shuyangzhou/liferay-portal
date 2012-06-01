@@ -15,10 +15,19 @@
 package com.liferay.portal.kernel.concurrent;
 
 /**
+ * Implements the same behavior as {@link
+ * java.util.concurrent.ThreadPoolExecutor.DiscardPolicy}.
+ *
  * @author Shuyang Zhou
+ * @see    {@link java.util.concurrent.ThreadPoolExecutor.DiscardPolicy}
  */
 public class DiscardPolicy implements RejectedExecutionHandler {
 
+	/**
+	 * @see {@link
+	 *      java.util.concurrent.ThreadPoolExecutor.DiscardPolicy#rejectedExecution(
+	 *      Runnable, java.util.concurrent.ThreadPoolExecutor)}
+	 */
 	public void rejectedExecution(
 		Runnable runnable, ThreadPoolExecutor threadPoolExecutor) {
 	}

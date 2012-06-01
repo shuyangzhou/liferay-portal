@@ -17,10 +17,28 @@ package com.liferay.portal.kernel.concurrent;
 import java.util.concurrent.Future;
 
 /**
+ * Handles rejected tasks by canceling them immediately.
+ *
+ * <p>
+ * Use this policy for efficiently discarding rejected tasks. Unlike {@link
+ * DiscardWithCancelPolicy}, this policy maintains the order of tasks in the
+ * task queue and the application server's rendering of portlets is not
+ * disrupted. Unlike {@link DiscardOldestPolicy} and {@link DiscardPolicy}, the
+ * meaningless blocking wait until timeout is bypassed, since {@link
+ * Future#get()} is not called for the rejected task.
+ * </p>
+ *
  * @author Shuyang Zhou
  */
 public class DiscardWithCancelPolicy implements RejectedExecutionHandler {
 
+	/**
+	 * Rejects execution of the {@link Runnable} task by canceling it
+	 * immediately.
+	 *
+	 * @param runnable the task
+	 * @param threadPoolExecutor the executor
+	 */
 	public void rejectedExecution(
 		Runnable runnable, ThreadPoolExecutor threadPoolExecutor) {
 
