@@ -23,6 +23,8 @@ import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateContextType;
 import com.liferay.portal.kernel.template.TemplateManager;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
+import com.liferay.portal.kernel.template.TemplateResource;
+import com.liferay.portal.kernel.template.TemplateResourceLoaderUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.ThemeHelper;
@@ -131,7 +133,7 @@ public class ThemeUtil {
 			servletContext, portletId, path);
 
 		if (Validator.isNotNull(portletId) &&
-			!TemplateManagerUtil.hasTemplate(
+			!TemplateResourceLoaderUtil.hasTemplateResource(
 				TemplateManager.FREEMARKER, resourcePath) &&
 			portletId.contains(PortletConstants.INSTANCE_SEPARATOR)) {
 
@@ -142,13 +144,13 @@ public class ThemeUtil {
 		}
 
 		if (Validator.isNotNull(portletId) &&
-			!TemplateManagerUtil.hasTemplate(
+			!TemplateResourceLoaderUtil.hasTemplateResource(
 				TemplateManager.FREEMARKER, resourcePath)) {
 
 			resourcePath = theme.getResourcePath(servletContext, null, path);
 		}
 
-		if (!TemplateManagerUtil.hasTemplate(
+		if (!TemplateResourceLoaderUtil.hasTemplateResource(
 				TemplateManager.FREEMARKER, resourcePath)) {
 
 			_log.error(resourcePath + " does not exist");
@@ -156,8 +158,12 @@ public class ThemeUtil {
 			return null;
 		}
 
+		TemplateResource templateResource =
+			TemplateResourceLoaderUtil.getTemplateResource(
+				TemplateManager.FREEMARKER, resourcePath);
+
 		Template template = TemplateManagerUtil.getTemplate(
-			TemplateManager.FREEMARKER, resourcePath,
+			TemplateManager.FREEMARKER, templateResource,
 			TemplateContextType.STANDARD);
 
 		// FreeMarker variables
@@ -342,7 +348,8 @@ public class ThemeUtil {
 
 		if (Validator.isNotNull(portletId)) {
 			if (portletId.contains(PortletConstants.INSTANCE_SEPARATOR) &&
-				(checkResourceExists = !TemplateManagerUtil.hasTemplate(
+				(checkResourceExists =
+				!TemplateResourceLoaderUtil.hasTemplateResource(
 					TemplateManager.VELOCITY, resourcePath))) {
 
 				String rootPortletId = PortletConstants.getRootPortletId(
@@ -353,7 +360,8 @@ public class ThemeUtil {
 			}
 
 			if (checkResourceExists &&
-				(checkResourceExists = !TemplateManagerUtil.hasTemplate(
+				(checkResourceExists =
+				!TemplateResourceLoaderUtil.hasTemplateResource(
 					TemplateManager.VELOCITY, resourcePath))) {
 
 				resourcePath = theme.getResourcePath(
@@ -362,7 +370,7 @@ public class ThemeUtil {
 		}
 
 		if (checkResourceExists &&
-			!TemplateManagerUtil.hasTemplate(
+			!TemplateResourceLoaderUtil.hasTemplateResource(
 				TemplateManager.VELOCITY, resourcePath)) {
 
 			_log.error(resourcePath + " does not exist");
@@ -370,8 +378,12 @@ public class ThemeUtil {
 			return null;
 		}
 
+		TemplateResource templateResource =
+			TemplateResourceLoaderUtil.getTemplateResource(
+				TemplateManager.VELOCITY, resourcePath);
+
 		Template template = TemplateManagerUtil.getTemplate(
-			TemplateManager.VELOCITY, resourcePath,
+			TemplateManager.VELOCITY, templateResource,
 			TemplateContextType.STANDARD);
 
 		// Velocity variables

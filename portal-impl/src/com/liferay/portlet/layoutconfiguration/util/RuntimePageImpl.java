@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.Portlet;
 import com.liferay.portal.servlet.ThreadLocalFacadeServletRequestWrapperUtil;
+import com.liferay.portal.template.StringTemplateResource;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portal.util.WebKeys;
 import com.liferay.portlet.layoutconfiguration.util.velocity.CustomizationSettingsProcessor;
@@ -88,8 +89,10 @@ public class RuntimePageImpl implements RuntimePage {
 			new CustomizationSettingsProcessor(pageContext);
 
 		Template template = TemplateManagerUtil.getTemplate(
-			TemplateManager.VELOCITY, velocityTemplateId,
-			velocityTemplateContent, TemplateContextType.STANDARD);
+			TemplateManager.VELOCITY,
+			new StringTemplateResource(
+				velocityTemplateId, velocityTemplateContent),
+			TemplateContextType.STANDARD);
 
 		template.put("processor", processor);
 
@@ -145,8 +148,10 @@ public class RuntimePageImpl implements RuntimePage {
 			request, response, portletId);
 
 		Template template = TemplateManagerUtil.getTemplate(
-			TemplateManager.VELOCITY, velocityTemplateId,
-			velocityTemplateContent, TemplateContextType.STANDARD);
+			TemplateManager.VELOCITY,
+			new StringTemplateResource(
+				velocityTemplateId, velocityTemplateContent),
+			TemplateContextType.STANDARD);
 
 		template.put("processor", processor);
 
