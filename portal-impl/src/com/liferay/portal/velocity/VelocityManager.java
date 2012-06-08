@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateContextType;
 import com.liferay.portal.kernel.template.TemplateException;
 import com.liferay.portal.kernel.template.TemplateManager;
+import com.liferay.portal.kernel.template.TemplateResource;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.template.RestrictedTemplate;
 import com.liferay.portal.template.TemplateContextHelper;
@@ -29,42 +30,13 @@ import java.util.Map;
 import org.apache.commons.collections.ExtendedProperties;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
-import org.apache.velocity.runtime.resource.loader.StringResourceLoader;
-import org.apache.velocity.runtime.resource.util.StringResourceRepository;
 
 /**
  * @author Raymond Augé
  */
 public class VelocityManager implements TemplateManager {
 
-	public void clearCache() {
-		StringResourceRepository stringResourceRepository =
-			StringResourceLoader.getRepository();
-
-		if (stringResourceRepository != null) {
-			StringResourceRepositoryImpl stringResourceRepositoryImpl =
-				(StringResourceRepositoryImpl)stringResourceRepository;
-
-			stringResourceRepositoryImpl.removeAll();
-		}
-
-		LiferayResourceCacheUtil.removeAll();
-	}
-
-	public void clearCache(String templateId) {
-		StringResourceRepository stringResourceRepository =
-			StringResourceLoader.getRepository();
-
-		if (stringResourceRepository != null) {
-			stringResourceRepository.removeStringResource(templateId);
-		}
-
-		LiferayResourceCacheUtil.remove(templateId);
-	}
-
 	public void destroy() {
-		StringResourceLoader.clearRepositories();
-
 		_restrictedVelocityContext = null;
 		_standardVelocityContext = null;
 		_velocityEngine = null;
@@ -72,27 +44,27 @@ public class VelocityManager implements TemplateManager {
 	}
 
 	public Template getTemplate(
-		String templateId, String templateContent, String errorTemplateId,
-		String errorTemplateContent, TemplateContextType templateContextType) {
+		TemplateResource templateResource,
+		TemplateResource errorTemplateResource,
+		TemplateContextType templateContextType) {
 
 		if (templateContextType.equals(TemplateContextType.EMPTY)) {
 			return new VelocityTemplate(
-				templateId, templateContent, errorTemplateId,
-				errorTemplateContent, null, _velocityEngine,
+				templateResource, errorTemplateResource, null, _velocityEngine,
 				_templateContextHelper);
 		}
 		else if (templateContextType.equals(TemplateContextType.RESTRICTED)) {
 			return new RestrictedTemplate(
 				new VelocityTemplate(
-					templateId, templateContent, errorTemplateId,
-					errorTemplateContent, _restrictedVelocityContext,
-					_velocityEngine, _templateContextHelper),
+					templateResource, errorTemplateResource,
+					_restrictedVelocityContext, _velocityEngine,
+					_templateContextHelper),
 				_templateContextHelper.getRestrictedVariables());
 		}
 		else if (templateContextType.equals(TemplateContextType.STANDARD)) {
 			return new VelocityTemplate(
-				templateId, templateContent, errorTemplateId,
-				errorTemplateContent, _standardVelocityContext, _velocityEngine,
+				templateResource, errorTemplateResource,
+				_standardVelocityContext, _velocityEngine,
 				_templateContextHelper);
 		}
 
@@ -100,34 +72,14 @@ public class VelocityManager implements TemplateManager {
 	}
 
 	public Template getTemplate(
-		String templateId, String templateContent, String errorTemplateId,
+		TemplateResource templateResource,
 		TemplateContextType templateContextType) {
 
-		return getTemplate(
-			templateId, templateContent, errorTemplateId, null,
-			templateContextType);
-	}
-
-	public Template getTemplate(
-		String templateId, String templateContent,
-		TemplateContextType templateContextType) {
-
-		return getTemplate(
-			templateId, templateContent, null, null, templateContextType);
-	}
-
-	public Template getTemplate(
-		String templateId, TemplateContextType templateContextType) {
-
-		return getTemplate(templateId, null, null, null, templateContextType);
+		return getTemplate(templateResource, null, templateContextType);
 	}
 
 	public String getTemplateManagerName() {
 		return VELOCITY;
-	}
-
-	public boolean hasTemplate(String templateId) {
-		return _velocityEngine.resourceExists(templateId);
 	}
 
 	public void init() throws TemplateException {
@@ -137,42 +89,24 @@ public class VelocityManager implements TemplateManager {
 
 		_velocityEngine = new VelocityEngine();
 
-		LiferayResourceLoader.setVelocityResourceListeners(
-			PropsValues.VELOCITY_ENGINE_RESOURCE_LISTENERS);
+		_velocityEngine = new VelocityEngine();
 
 		ExtendedProperties extendedProperties = new FastExtendedProperties();
 
-		extendedProperties.setProperty(_RESOURCE_LOADER, "string,servlet");
+		extendedProperties.setProperty(_RESOURCE_LOADER, "liferay");
 
 		extendedProperties.setProperty(
-			"string." + _RESOURCE_LOADER + ".cache",
+			"liferay." + _RESOURCE_LOADER + ".cache",
 			String.valueOf(
 				PropsValues.VELOCITY_ENGINE_RESOURCE_MANAGER_CACHE_ENABLED));
 
 		extendedProperties.setProperty(
-			"string." + _RESOURCE_LOADER + ".class",
-			StringResourceLoader.class.getName());
-
-		extendedProperties.setProperty(
-			"string." + _RESOURCE_LOADER + ".repository.class",
-			StringResourceRepositoryImpl.class.getName());
-
-		extendedProperties.setProperty(
-			"servlet." + _RESOURCE_LOADER + ".cache",
-			String.valueOf(
-				PropsValues.VELOCITY_ENGINE_RESOURCE_MANAGER_CACHE_ENABLED));
-
-		extendedProperties.setProperty(
-			"servlet." + _RESOURCE_LOADER + ".class",
+			"liferay." + _RESOURCE_LOADER + ".class",
 			LiferayResourceLoader.class.getName());
 
 		extendedProperties.setProperty(
 			VelocityEngine.RESOURCE_MANAGER_CLASS,
 			PropsUtil.get(PropsKeys.VELOCITY_ENGINE_RESOURCE_MANAGER));
-
-		extendedProperties.setProperty(
-			VelocityEngine.RESOURCE_MANAGER_CACHE_CLASS,
-			PropsUtil.get(PropsKeys.VELOCITY_ENGINE_RESOURCE_MANAGER_CACHE));
 
 		extendedProperties.setProperty(
 			VelocityEngine.VM_LIBRARY,

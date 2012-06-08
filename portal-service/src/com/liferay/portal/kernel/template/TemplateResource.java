@@ -12,35 +12,24 @@
  * details.
  */
 
-package com.liferay.portal.velocity;
+package com.liferay.portal.kernel.template;
 
+import com.liferay.portal.kernel.util.StringPool;
+
+import java.io.InputStream;
 import java.io.Serializable;
 
-import org.apache.velocity.runtime.resource.util.StringResource;
-
 /**
- * @author Michael C. Han
+ * @author Tina Tian
  */
-public class SerializableStringResource implements Serializable {
+public interface TemplateResource extends Serializable {
 
-	public SerializableStringResource(String body, String encoding) {
-		_body = body;
-		_encoding = encoding;
-	}
+	public static final String DEFAUT_ENCODING = StringPool.UTF8;
 
-	public String getBody() {
-		return _body;
-	}
+	public InputStream getInputStream() throws Exception;
 
-	public String getEncoding() {
-		return _encoding;
-	}
+	public long getLastModified();
 
-	public StringResource toStringResource() {
-		return new StringResource(_body, _encoding);
-	}
-
-	private String _body;
-	private String _encoding;
+	public String getName();
 
 }

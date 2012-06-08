@@ -12,15 +12,15 @@
  * details.
  */
 
-package com.liferay.portal.freemarker;
+package com.liferay.portal.template;
 
-import java.io.IOException;
-import java.io.Reader;
+import com.liferay.portal.kernel.template.TemplateException;
+import com.liferay.portal.kernel.template.TemplateResource;
 
 /**
- * @author Mika Koivisto
+ * @author Tina Tian
  */
-public abstract class FreeMarkerTemplateLoader {
+public interface TemplateResourceParser {
 
 	public static final String JOURNAL_SEPARATOR = "_JOURNAL_CONTEXT_";
 
@@ -29,16 +29,7 @@ public abstract class FreeMarkerTemplateLoader {
 	public static final String THEME_LOADER_SEPARATOR =
 		"_THEME_LOADER_CONTEXT_";
 
-	public void closeTemplateSource(Object templateSource) {
-	}
-
-	public abstract Object findTemplateSource(String name) throws IOException;
-
-	public long getLastModified(Object templateSource) {
-		return 0;
-	}
-
-	public abstract Reader getReader(Object templateSource, String encoding)
-		throws IOException;
+	public TemplateResource getTemplateResource(String templateId)
+		throws TemplateException;
 
 }
