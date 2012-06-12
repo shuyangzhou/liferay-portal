@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateContextType;
 import com.liferay.portal.kernel.template.TemplateManager;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
+import com.liferay.portal.kernel.template.TemplateResource;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
@@ -71,13 +72,8 @@ import org.apache.commons.lang.time.StopWatch;
 public class RuntimePageImpl implements RuntimePage {
 
 	public void processCustomizationSettings(
-			PageContext pageContext, String velocityTemplateId,
-			String velocityTemplateContent)
+			PageContext pageContext, TemplateResource templateResource)
 		throws Exception {
-
-		if (Validator.isNull(velocityTemplateContent)) {
-			return;
-		}
 
 		HttpServletRequest request =
 			(HttpServletRequest)pageContext.getRequest();
@@ -88,8 +84,8 @@ public class RuntimePageImpl implements RuntimePage {
 			new CustomizationSettingsProcessor(pageContext);
 
 		Template template = TemplateManagerUtil.getTemplate(
-			TemplateManager.VELOCITY, velocityTemplateId,
-			velocityTemplateContent, TemplateContextType.STANDARD);
+			TemplateManager.VELOCITY, templateResource,
+			TemplateContextType.STANDARD);
 
 		template.put("processor", processor);
 
@@ -119,22 +115,9 @@ public class RuntimePageImpl implements RuntimePage {
 	}
 
 	public void processTemplate(
-			PageContext pageContext, String velocityTemplateId,
-			String velocityTemplateContent)
-		throws Exception {
-
-		processTemplate(
-			pageContext, null, velocityTemplateId, velocityTemplateContent);
-	}
-
-	public void processTemplate(
 			PageContext pageContext, String portletId,
-			String velocityTemplateId, String velocityTemplateContent)
+			TemplateResource templateResource)
 		throws Exception {
-
-		if (Validator.isNull(velocityTemplateContent)) {
-			return;
-		}
 
 		HttpServletRequest request =
 			(HttpServletRequest)pageContext.getRequest();
@@ -145,8 +128,8 @@ public class RuntimePageImpl implements RuntimePage {
 			request, response, portletId);
 
 		Template template = TemplateManagerUtil.getTemplate(
-			TemplateManager.VELOCITY, velocityTemplateId,
-			velocityTemplateContent, TemplateContextType.STANDARD);
+			TemplateManager.VELOCITY, templateResource,
+			TemplateContextType.STANDARD);
 
 		template.put("processor", processor);
 
@@ -281,6 +264,13 @@ public class RuntimePageImpl implements RuntimePage {
 			contentsMap);
 
 		sb.writeTo(pageContext.getOut());
+	}
+
+	public void processTemplate(
+			PageContext pageContext, TemplateResource templateResource)
+		throws Exception {
+
+		processTemplate(pageContext, null, templateResource);
 	}
 
 	public String processXML(

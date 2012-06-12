@@ -143,6 +143,8 @@ public class ServiceBuilder {
 		String propsUtil = arguments.get("service.props.util");
 		String pluginName = arguments.get("service.plugin.name");
 		String testDir = arguments.get("service.test.dir");
+		long buildNumber = GetterUtil.getLong(arguments.get("service.build.number"), 1);
+		boolean buildNumberIncrement = GetterUtil.getBoolean(arguments.get("service.build.number.increment"), true);
 
 		try {
 			new ServiceBuilder(
@@ -153,7 +155,8 @@ public class ServiceBuilder {
 				apiDir, implDir, jsonFileName, remotingFileName, sqlDir,
 				sqlFileName, sqlIndexesFileName, sqlIndexesPropertiesFileName,
 				sqlSequencesFileName, autoNamespaceTables, beanLocatorUtil,
-				propsUtil, pluginName, testDir);
+				propsUtil, pluginName, testDir, true, buildNumber,
+				buildNumberIncrement);
 		}
 		catch (RuntimeException re) {
 			System.out.println(
@@ -176,6 +179,8 @@ public class ServiceBuilder {
 				"\tservice.bean.locator.util=com.liferay.portal.kernel.bean.PortalBeanLocatorUtil\n" +
 				"\tservice.props.util=com.liferay.portal.util.PropsUtil\n" +
 				"\tservice.test.dir=${basedir}/test/integration\n" +
+				"\tservice.build.number=1\n" +
+				"\tservice.build.number.increment=true\n" +
 				"\n" +
 				"You can also customize the generated code by overriding the default templates with these optional system properties:\n" +
 				"\n" +
@@ -431,7 +436,7 @@ public class ServiceBuilder {
 			implDir, jsonFileName, remotingFileName, sqlDir, sqlFileName,
 			sqlIndexesFileName, sqlIndexesPropertiesFileName,
 			sqlSequencesFileName, autoNamespaceTables, beanLocatorUtil,
-			propsUtil, pluginName, testDir, true);
+			propsUtil, pluginName, testDir, true, 1, true);
 	}
 
 	public ServiceBuilder(
@@ -445,7 +450,8 @@ public class ServiceBuilder {
 		String sqlFileName, String sqlIndexesFileName,
 		String sqlIndexesPropertiesFileName, String sqlSequencesFileName,
 		boolean autoNamespaceTables, String beanLocatorUtil, String propsUtil,
-		String pluginName, String testDir, boolean build) {
+		String pluginName, String testDir, boolean build, long buildNumber,
+		boolean buildNumberIncrement) {
 
 		_tplBadAliasNames = _getTplProperty(
 			"bad_alias_names", _tplBadAliasNames);
@@ -546,6 +552,8 @@ public class ServiceBuilder {
 			_pluginName = GetterUtil.getString(pluginName);
 			_testDir = testDir;
 			_build = build;
+			_buildNumber = buildNumber;
+			_buildNumberIncrement = buildNumberIncrement;
 
 			String content = _getContent(fileName);
 
@@ -928,7 +936,7 @@ public class ServiceBuilder {
 				_sqlFileName, _sqlIndexesFileName,
 				_sqlIndexesPropertiesFileName, _sqlSequencesFileName,
 				_autoNamespaceTables, _beanLocatorUtil, _propsUtil, _pluginName,
-				_testDir, false);
+				_testDir, false, _buildNumber, _buildNumberIncrement);
 
 			entity = serviceBuilder.getEntity(refEntity);
 
@@ -2589,19 +2597,33 @@ public class ServiceBuilder {
 		File propsFile = new File(_implDir + "/service.properties");
 
 		long buildNumber = 1;
+		long buildDate = System.currentTimeMillis();
 
 		if (propsFile.exists()) {
 			Properties properties = PropertiesUtil.load(
 				FileUtil.read(propsFile));
 
-			buildNumber = GetterUtil.getLong(
-				properties.getProperty("build.number")) + 1;
+			if (!_buildNumberIncrement) {
+				buildDate = GetterUtil.getLong(
+					properties.getProperty("build.date"));
+				buildNumber = GetterUtil.getLong(
+					properties.getProperty("build.number"));
+			}
+			else {
+				buildNumber = GetterUtil.getLong(
+					properties.getProperty("build.number")) + 1;
+			}
+		}
+
+		if (!_buildNumberIncrement && (buildNumber < _buildNumber)) {
+			buildNumber = _buildNumber;
+			buildDate = System.currentTimeMillis();
 		}
 
 		Map<String, Object> context = _getContext();
 
-		context.put("buildNumber", new Long(buildNumber));
-		context.put("currentTimeMillis", new Long(System.currentTimeMillis()));
+		context.put("buildNumber", buildNumber);
+		context.put("currentTimeMillis", buildDate);
 
 		String content = _processTemplate(_tplProps, context);
 
@@ -4988,6 +5010,8 @@ public class ServiceBuilder {
 	private String _beanLocatorUtil;
 	private String _beanLocatorUtilShortName;
 	private boolean _build;
+	private long _buildNumber;
+	private boolean _buildNumberIncrement;
 	private List<Entity> _ejbList;
 	private Map<String, EntityMapping> _entityMappings;
 	private Map<String, Entity> _entityPool = new HashMap<String, Entity>();

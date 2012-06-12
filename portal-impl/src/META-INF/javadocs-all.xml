@@ -183856,6 +183856,139 @@ Holds context information that is used during exporting and importing portlet da
 		</field>
 	</javadoc>
 	<javadoc>
+		<name>MicrosoftTranslator</name>
+		<type>com.liferay.portal.microsofttranslator.MicrosoftTranslator</type>
+		<author><![CDATA[Hugo Huijser]]></author>
+		<method>
+			<name>MicrosoftTranslator</name>
+		</method>
+		<method>
+			<name>MicrosoftTranslator</name>
+			<param>
+				<name>clientId</name>
+				<type>java.lang.String</type>
+			</param>
+			<param>
+				<name>clientSecret</name>
+				<type>java.lang.String</type>
+			</param>
+		</method>
+		<method>
+			<name>getMicrosoftTranslatorAuthenticator</name>
+		</method>
+		<method>
+			<name>translate</name>
+			<param>
+				<name>fromLanguage</name>
+				<type>java.lang.String</type>
+			</param>
+			<param>
+				<name>toLanguage</name>
+				<type>java.lang.String</type>
+			</param>
+			<param>
+				<name>fromText</name>
+				<type>java.lang.String</type>
+			</param>
+			<throws>
+				<name>Exception</name>
+				<type>java.lang.Exception</type>
+			</throws>
+		</method>
+		<field>
+			<name>_microsoftTranslatorAuthenticator</name>
+		</field>
+	</javadoc>
+	<javadoc>
+		<name>MicrosoftTranslatorAuthenticator</name>
+		<type>com.liferay.portal.microsofttranslator.MicrosoftTranslatorAuthenticator</type>
+		<author><![CDATA[Hugo Huijser]]></author>
+		<method>
+			<name>MicrosoftTranslatorAuthenticator</name>
+		</method>
+		<method>
+			<name>MicrosoftTranslatorAuthenticator</name>
+			<param>
+				<name>clientId</name>
+				<type>java.lang.String</type>
+			</param>
+			<param>
+				<name>clientSecret</name>
+				<type>java.lang.String</type>
+			</param>
+		</method>
+		<method>
+			<name>getAccessToken</name>
+		</method>
+		<method>
+			<name>getError</name>
+		</method>
+		<method>
+			<name>init</name>
+			<param>
+				<name>manual</name>
+				<type>boolean</type>
+			</param>
+		</method>
+		<method>
+			<name>doInit</name>
+		</method>
+		<method>
+			<name>isStale</name>
+		</method>
+		<field>
+			<name>_DATA_MARK_ACCESS_URI</name>
+		</field>
+		<field>
+			<name>_log</name>
+		</field>
+		<field>
+			<name>_accessToken</name>
+		</field>
+		<field>
+			<name>_clientId</name>
+		</field>
+		<field>
+			<name>_clientSecret</name>
+		</field>
+		<field>
+			<name>_error</name>
+		</field>
+		<field>
+			<name>_initTime</name>
+		</field>
+	</javadoc>
+	<javadoc>
+		<name>MicrosoftTranslatorFactoryImpl</name>
+		<type>com.liferay.portal.microsofttranslator.MicrosoftTranslatorFactoryImpl</type>
+		<author><![CDATA[Hugo Huijser]]></author>
+		<method>
+			<name>translate</name>
+			<param>
+				<name>fromLanguage</name>
+				<type>java.lang.String</type>
+			</param>
+			<param>
+				<name>toLanguage</name>
+				<type>java.lang.String</type>
+			</param>
+			<param>
+				<name>fromText</name>
+				<type>java.lang.String</type>
+			</param>
+			<throws>
+				<name>Exception</name>
+				<type>java.lang.Exception</type>
+			</throws>
+		</method>
+		<method>
+			<name>getMicrosoftTranslator</name>
+		</method>
+		<field>
+			<name>_microsoftTranslator</name>
+		</field>
+	</javadoc>
+	<javadoc>
 		<name>DefaultDeviceRecognitionProvider</name>
 		<type>com.liferay.portal.mobile.device.DefaultDeviceRecognitionProvider</type>
 		<author><![CDATA[Milen Dyankov]]></author>
@@ -349856,6 +349989,12 @@ Preserved parameters are parameters that should be sent with every request as th
 		</field>
 		<field>
 			<name>MESSAGE_BOARDS_THREAD_VIEWS_DEFAULT</name>
+		</field>
+		<field>
+			<name>MICROSOFT_TRANSLATOR_CLIENT_ID</name>
+		</field>
+		<field>
+			<name>MICROSOFT_TRANSLATOR_CLIENT_SECRET</name>
 		</field>
 		<field>
 			<name>MIME_TYPES_CONTENT_DISPOSITION_INLINE</name>
@@ -549676,6 +549815,7 @@ If the status is updated to {@link com.liferay.portlet.social.model.SocialReques
 		<name>TranslationWebCacheItem</name>
 		<type>com.liferay.portlet.translator.util.TranslationWebCacheItem</type>
 		<author><![CDATA[Brian Wing Shun Chan]]></author>
+		<author><![CDATA[Hugo Huijser]]></author>
 		<method>
 			<name>TranslationWebCacheItem</name>
 			<param>
