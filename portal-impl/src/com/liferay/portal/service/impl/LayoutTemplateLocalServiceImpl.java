@@ -23,6 +23,8 @@ import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateContextType;
 import com.liferay.portal.kernel.template.TemplateManager;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
+import com.liferay.portal.kernel.template.TemplateResource;
+import com.liferay.portal.kernel.template.TemplateResourceLoaderUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -38,6 +40,7 @@ import com.liferay.portal.model.LayoutTemplateConstants;
 import com.liferay.portal.model.PluginSetting;
 import com.liferay.portal.model.impl.LayoutTemplateImpl;
 import com.liferay.portal.service.base.LayoutTemplateLocalServiceBaseImpl;
+import com.liferay.portal.template.StringTemplateResource;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.layoutconfiguration.util.velocity.InitColumnProcessor;
 
@@ -407,7 +410,9 @@ public class LayoutTemplateLocalServiceImpl
 
 				layoutTemplateModel.setContent(content);
 				layoutTemplateModel.setColumns(
-					_getColumns(velocityTemplateId, content));
+					_getColumns(
+						new StringTemplateResource(
+							velocityTemplateId, content)));
 			}
 
 			if (Validator.isNull(layoutTemplateModel.getWapTemplatePath())) {
@@ -466,7 +471,7 @@ public class LayoutTemplateLocalServiceImpl
 					"null" + LayoutTemplateConstants.STANDARD_SEPARATOR +
 						layoutTemplateId;
 
-				TemplateManagerUtil.clearCache(
+				TemplateResourceLoaderUtil.clearCache(
 					TemplateManager.VELOCITY, templateId);
 
 				_warStandard.remove(layoutTemplateId);
@@ -476,7 +481,7 @@ public class LayoutTemplateLocalServiceImpl
 					"null" + LayoutTemplateConstants.CUSTOM_SEPARATOR +
 						layoutTemplateId;
 
-				TemplateManagerUtil.clearCache(
+				TemplateResourceLoaderUtil.clearCache(
 					TemplateManager.VELOCITY, templateId);
 
 				_warCustom.remove(layoutTemplateId);
@@ -502,7 +507,7 @@ public class LayoutTemplateLocalServiceImpl
 					layoutTemplate.getLayoutTemplateId();
 
 			try {
-				TemplateManagerUtil.clearCache(
+				TemplateResourceLoaderUtil.clearCache(
 					TemplateManager.VELOCITY, templateId);
 			}
 			catch (Exception e) {
@@ -527,7 +532,7 @@ public class LayoutTemplateLocalServiceImpl
 					layoutTemplate.getLayoutTemplateId();
 
 			try {
-				TemplateManagerUtil.clearCache(
+				TemplateResourceLoaderUtil.clearCache(
 					TemplateManager.VELOCITY, templateId);
 			}
 			catch (Exception e) {
@@ -541,15 +546,13 @@ public class LayoutTemplateLocalServiceImpl
 		_themesCustom.clear();
 	}
 
-	private List<String> _getColumns(
-		String velocityTemplateId, String velocityTemplateContent) {
-
+	private List<String> _getColumns(TemplateResource templateResource) {
 		try {
 			InitColumnProcessor processor = new InitColumnProcessor();
 
 			Template template = TemplateManagerUtil.getTemplate(
-				TemplateManager.VELOCITY, velocityTemplateId,
-				velocityTemplateContent, TemplateContextType.STANDARD);
+				TemplateManager.VELOCITY, templateResource,
+				TemplateContextType.STANDARD);
 
 			template.put("processor", processor);
 

@@ -15,8 +15,10 @@
 package com.liferay.portal.tools.deploy;
 
 import com.liferay.portal.deploy.DeployUtil;
+import com.liferay.portal.deploy.auto.AutoDeployer;
 import com.liferay.portal.kernel.deploy.Deployer;
 import com.liferay.portal.kernel.deploy.auto.AutoDeployException;
+import com.liferay.portal.kernel.deploy.auto.context.AutoDeploymentContext;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.plugin.License;
@@ -79,7 +81,7 @@ import org.apache.oro.io.GlobFilenameFilter;
  * @author Brian Wing Shun Chan
  * @author Sandeep Soni
  */
-public class BaseDeployer implements Deployer {
+public class BaseDeployer implements AutoDeployer, Deployer {
 
 	public static final String DEPLOY_TO_PREFIX = "DEPLOY_TO__";
 
@@ -179,6 +181,25 @@ public class BaseDeployer implements Deployer {
 		}
 
 		jars.add(path);
+	}
+
+	public void autoDeploy(AutoDeploymentContext autoDeploymentContext)
+		throws AutoDeployException {
+
+		List<String> wars = new ArrayList<String>();
+
+		File file = autoDeploymentContext.getFileToDeploy();
+
+		wars.add(file.getName());
+
+		this.wars = wars;
+
+		try {
+			deployFile(autoDeploymentContext);
+		}
+		catch (Exception e) {
+			throw new AutoDeployException(e);
+		}
 	}
 
 	public void checkArguments() {
@@ -499,7 +520,13 @@ public class BaseDeployer implements Deployer {
 				}
 
 				if (deploy) {
-					deployFile(srcFile, context);
+					AutoDeploymentContext autoDeploymentContext =
+						new AutoDeploymentContext();
+
+					autoDeploymentContext.setContext(context);
+					autoDeploymentContext.setFileToDeploy(srcFile);
+
+					deployFile(autoDeploymentContext);
 				}
 			}
 		}
@@ -708,55 +735,10 @@ public class BaseDeployer implements Deployer {
 			srcFile, null, null, displayName, override, pluginPackage);
 	}
 
-	public boolean deployFile(
-			File srcFile, File mergeDir, File deployDir, String displayName,
-			boolean overwrite, PluginPackage pluginPackage)
+	public void deployFile(AutoDeploymentContext autoDeploymentContext)
 		throws Exception {
 
-		boolean undeployOnRedeploy = false;
-
-		try {
-			undeployOnRedeploy = PrefsPropsUtil.getBoolean(
-				PropsKeys.HOT_UNDEPLOY_ON_REDEPLOY,
-				PropsValues.HOT_UNDEPLOY_ON_REDEPLOY);
-		}
-		catch (Exception e) {
-
-			// This will only happen when running the deploy tool in Ant in the
-			// classical way where the WAR file is actually massaged and
-			// packaged.
-
-		}
-
-		if (undeployOnRedeploy) {
-			DeployUtil.undeploy(appServerType, deployDir);
-		}
-
-		if (!overwrite && UpToDateTask.isUpToDate(srcFile, deployDir)) {
-			if (_log.isInfoEnabled()) {
-				_log.info(deployDir + " is already up to date");
-			}
-
-			return false;
-		}
-
-		File tempDir = new File(
-			SystemProperties.get(SystemProperties.TMP_DIR) + File.separator +
-				Time.getTimestamp());
-
-		ExpandTask.expand(srcFile, tempDir);
-
-		deployDirectory(
-			tempDir, mergeDir, deployDir, displayName, overwrite,
-			pluginPackage);
-
-		DeleteTask.deleteDirectory(tempDir);
-
-		return true;
-	}
-
-	public void deployFile(File srcFile, String specifiedContext)
-		throws Exception {
+		File srcFile = autoDeploymentContext.getFileToDeploy();
 
 		PluginPackage pluginPackage = readPluginPackage(srcFile);
 
@@ -764,7 +746,8 @@ public class BaseDeployer implements Deployer {
 			_log.info("Deploying " + srcFile.getName());
 		}
 
-		String deployDir = null;
+		String specifiedContext = autoDeploymentContext.getContext();
+
 		String displayName = specifiedContext;
 		boolean overwrite = false;
 		String preliminaryContext = specifiedContext;
@@ -811,6 +794,8 @@ public class BaseDeployer implements Deployer {
 				preliminaryContext, pluginPackage);
 		}
 
+		String deployDir = null;
+
 		if (Validator.isNotNull(displayName)) {
 			deployDir = displayName + ".war";
 		}
@@ -834,6 +819,12 @@ public class BaseDeployer implements Deployer {
 			if (unpackWar) {
 				deployDir = deployDir.substring(0, deployDir.length() - 4);
 			}
+		}
+
+		String destDir = this.destDir;
+
+		if (autoDeploymentContext.getDestDir() != null) {
+			destDir = autoDeploymentContext.getDestDir();
 		}
 
 		File deployDirFile = new File(destDir + "/" + deployDir);
@@ -893,6 +884,53 @@ public class BaseDeployer implements Deployer {
 
 			throw e;
 		}
+	}
+
+	public boolean deployFile(
+			File srcFile, File mergeDir, File deployDir, String displayName,
+			boolean overwrite, PluginPackage pluginPackage)
+		throws Exception {
+
+		boolean undeployOnRedeploy = false;
+
+		try {
+			undeployOnRedeploy = PrefsPropsUtil.getBoolean(
+				PropsKeys.HOT_UNDEPLOY_ON_REDEPLOY,
+				PropsValues.HOT_UNDEPLOY_ON_REDEPLOY);
+		}
+		catch (Exception e) {
+
+			// This will only happen when running the deploy tool in Ant in the
+			// classical way where the WAR file is actually massaged and
+			// packaged.
+
+		}
+
+		if (undeployOnRedeploy) {
+			DeployUtil.undeploy(appServerType, deployDir);
+		}
+
+		if (!overwrite && UpToDateTask.isUpToDate(srcFile, deployDir)) {
+			if (_log.isInfoEnabled()) {
+				_log.info(deployDir + " is already up to date");
+			}
+
+			return false;
+		}
+
+		File tempDir = new File(
+			SystemProperties.get(SystemProperties.TMP_DIR) + File.separator +
+				Time.getTimestamp());
+
+		ExpandTask.expand(srcFile, tempDir);
+
+		deployDirectory(
+			tempDir, mergeDir, deployDir, displayName, overwrite,
+			pluginPackage);
+
+		DeleteTask.deleteDirectory(tempDir);
+
+		return true;
 	}
 
 	public String downloadJar(String jar) throws Exception {

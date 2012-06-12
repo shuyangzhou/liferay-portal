@@ -17,17 +17,33 @@ package com.liferay.portlet.journalcontent.action;
 import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Layout;
+import com.liferay.portal.model.LayoutTypePortlet;
+import com.liferay.portal.model.LayoutTypePortletConstants;
+import com.liferay.portal.service.GroupLocalServiceUtil;
+import com.liferay.portal.service.LayoutLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.WebKeys;
+import com.liferay.portlet.journal.NoSuchArticleException;
+import com.liferay.portlet.journal.NoSuchTemplateException;
+import com.liferay.portlet.journal.model.JournalArticle;
+import com.liferay.portlet.journal.model.JournalTemplate;
+import com.liferay.portlet.journal.service.JournalArticleLocalServiceUtil;
 import com.liferay.portlet.journal.service.JournalContentSearchLocalServiceUtil;
+import com.liferay.portlet.journal.service.JournalTemplateLocalServiceUtil;
+import com.liferay.portlet.layoutconfiguration.util.xml.PortletLogic;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletConfig;
+import javax.portlet.PortletRequest;
 
 /**
  * @author Brian Wing Shun Chan
+ * @author Douglas Wong
  */
 public class ConfigurationActionImpl extends DefaultConfigurationAction {
 
@@ -45,26 +61,107 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 
 		if (SessionErrors.isEmpty(actionRequest)) {
 			updateContentSearch(actionRequest);
+
+			updateLayout(actionRequest);
 		}
 	}
 
-	protected void updateContentSearch(ActionRequest actionRequest)
+	protected String getArticleId(PortletRequest portletRequest) {
+		String articleId = getParameter(portletRequest, "articleId");
+
+		return articleId.toUpperCase();
+	}
+
+	protected String getRuntimePortletIds(
+			ThemeDisplay themeDisplay, String articleId)
 		throws Exception {
 
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
+		JournalArticle journalArticle = null;
+
+		Group companyGroup = GroupLocalServiceUtil.getCompanyGroup(
+			themeDisplay.getCompanyId());
+
+		try {
+			journalArticle =
+				JournalArticleLocalServiceUtil.getDisplayArticle(
+					themeDisplay.getScopeGroupId(), articleId);
+		}
+		catch (NoSuchArticleException nsae) {
+			journalArticle =
+				JournalArticleLocalServiceUtil.getDisplayArticle(
+					companyGroup.getGroupId(), articleId);
+		}
+
+		String portletIds = PortletLogic.getRuntimePortletIds(
+			journalArticle.getContent());
+
+		if (Validator.isNotNull(journalArticle.getTemplateId())) {
+			JournalTemplate journalTemplate = null;
+
+			try {
+				journalTemplate = JournalTemplateLocalServiceUtil.getTemplate(
+					themeDisplay.getScopeGroupId(),
+					journalArticle.getTemplateId());
+			}
+			catch (NoSuchTemplateException nste) {
+				journalTemplate = JournalTemplateLocalServiceUtil.getTemplate(
+					companyGroup.getGroupId(), journalArticle.getTemplateId());
+			}
+
+			portletIds = StringUtil.add(
+				portletIds,
+				PortletLogic.getRuntimePortletIds(journalTemplate.getXsl()));
+		}
+
+		return portletIds;
+	}
+
+	protected void updateContentSearch(PortletRequest portletRequest)
+		throws Exception {
+
+		String articleId = getArticleId(portletRequest);
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		String articleId = getParameter(
-			actionRequest, "articleId").toUpperCase();
+		Layout layout = themeDisplay.getLayout();
 
 		String portletResource = ParamUtil.getString(
-			actionRequest, "portletResource");
-
-		Layout layout = themeDisplay.getLayout();
+			portletRequest, "portletResource");
 
 		JournalContentSearchLocalServiceUtil.updateContentSearch(
 			layout.getGroupId(), layout.isPrivateLayout(), layout.getLayoutId(),
 			portletResource, articleId, true);
+	}
+
+	protected void updateLayout(PortletRequest portletRequest)
+		throws Exception {
+
+		String articleId = getArticleId(portletRequest);
+
+		if (Validator.isNull(articleId)) {
+			return;
+		}
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		Layout layout = themeDisplay.getLayout();
+
+		LayoutTypePortlet layoutTypePortlet =
+			(LayoutTypePortlet)layout.getLayoutType();
+
+		String portletResource = ParamUtil.getString(
+			portletRequest, "portletResource");
+
+		layoutTypePortlet.setPortletIds(
+			LayoutTypePortletConstants.RUNTIME_COLUMN_PREFIX +
+				portletResource,
+			getRuntimePortletIds(themeDisplay, articleId));
+
+		LayoutLocalServiceUtil.updateLayout(
+			layout.getGroupId(), layout.isPrivateLayout(), layout.getLayoutId(),
+			layout.getTypeSettings());
 	}
 
 }
