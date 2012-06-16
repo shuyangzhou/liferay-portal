@@ -12,32 +12,24 @@
  * details.
  */
 
-package com.liferay.portal.kernel.template;
+package com.liferay.portal.template;
+
+import com.liferay.portal.kernel.template.TemplateException;
+import com.liferay.portal.kernel.template.TemplateResource;
 
 /**
  * @author Tina Tian
  */
-public interface TemplateManager {
+public interface TemplateResourceParser {
 
-	public static final String FREEMARKER = "FREEMARKER";
+	public static final String JOURNAL_SEPARATOR = "_JOURNAL_CONTEXT_";
 
-	public static final String VELOCITY = "VELOCITY";
+	public static final String SERVLET_SEPARATOR = "_SERVLET_CONTEXT_";
 
-	public void destroy();
+	public static final String THEME_LOADER_SEPARATOR =
+		"_THEME_LOADER_CONTEXT_";
 
-	public void destroy(ClassLoader classLoader);
-
-	public Template getTemplate(
-		TemplateResource templateResource,
-		TemplateResource errorTemplateResource,
-		TemplateContextType templateContextType);
-
-	public Template getTemplate(
-		TemplateResource templateResource,
-		TemplateContextType templateContextType);
-
-	public String getTemplateManagerName();
-
-	public void init() throws TemplateException;
+	public TemplateResource getTemplateResource(String templateId)
+		throws TemplateException;
 
 }

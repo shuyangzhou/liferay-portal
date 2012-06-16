@@ -14,30 +14,23 @@
 
 package com.liferay.portal.kernel.template;
 
+import com.liferay.portal.kernel.util.StringPool;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Serializable;
+
 /**
  * @author Tina Tian
  */
-public interface TemplateManager {
+public interface TemplateResource extends Serializable {
 
-	public static final String FREEMARKER = "FREEMARKER";
+	public static final String DEFAUT_ENCODING = StringPool.UTF8;
 
-	public static final String VELOCITY = "VELOCITY";
+	public long getLastModified();
 
-	public void destroy();
+	public Reader getReader() throws IOException;
 
-	public void destroy(ClassLoader classLoader);
-
-	public Template getTemplate(
-		TemplateResource templateResource,
-		TemplateResource errorTemplateResource,
-		TemplateContextType templateContextType);
-
-	public Template getTemplate(
-		TemplateResource templateResource,
-		TemplateContextType templateContextType);
-
-	public String getTemplateManagerName();
-
-	public void init() throws TemplateException;
+	public String getTemplateId();
 
 }
