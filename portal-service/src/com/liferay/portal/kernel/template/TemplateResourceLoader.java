@@ -17,26 +17,20 @@ package com.liferay.portal.kernel.template;
 /**
  * @author Tina Tian
  */
-public interface TemplateManager {
+public interface TemplateResourceLoader {
 
-	public static final String FREEMARKER = "FREEMARKER";
+	public void clearCache();
 
-	public static final String VELOCITY = "VELOCITY";
+	public void clearCache(String templateId);
 
 	public void destroy();
 
-	public void destroy(ClassLoader classLoader);
+	public TemplateResource getTemplateResource(String templateId)
+		throws TemplateException;
 
-	public Template getTemplate(
-		TemplateResource templateResource,
-		TemplateContextType templateContextType);
+	public String getTemplateResourceLoaderName();
 
-	public Template getTemplate(
-		TemplateResource templateResource,
-		TemplateResource errorTemplateResource,
-		TemplateContextType templateContextType);
-
-	public String getTemplateManagerName();
+	public boolean hasTemplateResource(String templateId);
 
 	public void init() throws TemplateException;
 
