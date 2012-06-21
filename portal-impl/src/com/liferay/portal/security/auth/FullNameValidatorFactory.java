@@ -16,6 +16,7 @@ package com.liferay.portal.security.auth;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.security.pacl.PACLClassLoaderUtil;
 import com.liferay.portal.util.PropsValues;
 
@@ -35,8 +36,9 @@ public class FullNameValidatorFactory {
 				PACLClassLoaderUtil.getPortalClassLoader();
 
 			try {
-				_fullNameValidator = (FullNameValidator)classLoader.loadClass(
-					PropsValues.USERS_FULL_NAME_VALIDATOR).newInstance();
+				_fullNameValidator =
+					(FullNameValidator)InstanceFactory.newInstance(
+						classLoader, PropsValues.USERS_FULL_NAME_VALIDATOR);
 			}
 			catch (Exception e) {
 				_log.error(e, e);

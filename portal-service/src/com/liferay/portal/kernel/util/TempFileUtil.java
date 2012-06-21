@@ -116,21 +116,25 @@ public class TempFileUtil {
 	}
 
 	public static void deleteTempFile(
-		long userId, String fileName, String tempPathName) {
+			long userId, String fileName, String tempPathName)
+		throws PortalException {
 
 		File file = getTempFile(userId, fileName, tempPathName);
 
 		FileUtil.delete(file);
 	}
 
-	public static void deleteTempFile(String fileName, String tempPathName) {
+	public static void deleteTempFile(String fileName, String tempPathName)
+		throws PortalException {
+
 		File file = getTempFile(fileName, tempPathName);
 
 		FileUtil.delete(file);
 	}
 
 	public static File getTempFile(
-		long userId, String fileName, String tempPathName) {
+			long userId, String fileName, String tempPathName)
+		throws PortalException {
 
 		String absoluteFilePath = _getTempAbsolutePath(
 			userId, fileName, tempPathName);
@@ -138,7 +142,9 @@ public class TempFileUtil {
 		return new File(absoluteFilePath);
 	}
 
-	public static File getTempFile(String fileName, String tempPathName) {
+	public static File getTempFile(String fileName, String tempPathName)
+		throws PortalException {
+
 		String absoluteFilePath = _getTempAbsolutePath(fileName, tempPathName);
 
 		return new File(absoluteFilePath);
@@ -203,8 +209,20 @@ public class TempFileUtil {
 		return fileNames;
 	}
 
+	protected static boolean isValidFileName(String name) {
+		if ((name == null) ||
+			name.contains(StringPool.SLASH) ||
+			name.contains(StringPool.BACK_SLASH)) {
+
+			return false;
+		}
+
+		return true;
+	}
+
 	private static String _getTempAbsolutePath(
-		long userId, String fileName, String tempPathName) {
+			long userId, String fileName, String tempPathName)
+		throws PortalException {
 
 		StringBundler sb = new StringBundler(5);
 
@@ -229,7 +247,8 @@ public class TempFileUtil {
 	}
 
 	private static String _getTempAbsolutePath(
-		String fileName, String tempPathName) {
+			String fileName, String tempPathName)
+		throws PortalException {
 
 		StringBundler sb = new StringBundler(5);
 
@@ -242,7 +261,13 @@ public class TempFileUtil {
 		return sb.toString();
 	}
 
-	private static String _getTempFileName(long userId, String fileName) {
+	private static String _getTempFileName(long userId, String fileName)
+		throws PortalException {
+
+		if (!isValidFileName(fileName)) {
+			throw new TempFileNameException();
+		}
+
 		StringBundler sb = new StringBundler(4);
 
 		sb.append(fileName);
@@ -253,7 +278,13 @@ public class TempFileUtil {
 		return sb.toString();
 	}
 
-	private static String _getTempFileName(String fileName) {
+	private static String _getTempFileName(String fileName)
+		throws PortalException {
+
+		if (!isValidFileName(fileName)) {
+			throw new TempFileNameException();
+		}
+
 		return fileName + _SUFFIX_TEMP_FILENAME;
 	}
 

@@ -1871,6 +1871,10 @@ public interface PropsKeys {
 
 	public static final String SERVLET_SESSION_DESTROY_EVENTS = "servlet.session.destroy.events";
 
+	public static final String SESSION_CLICKS_MAX_ALLOWED_VALUES = "session.clicks.max.allowed.values";
+
+	public static final String SESSION_CLICKS_MAX_SIZE_TERMS = "session.clicks.max.size.terms";
+
 	public static final String SESSION_COOKIE_DOMAIN = "session.cookie.domain";
 
 	public static final String SESSION_DISABLED = "session.disabled";
@@ -2146,6 +2150,8 @@ public interface PropsKeys {
 	public static final String USERS_EMAIL_ADDRESS_GENERATOR = "users.email.address.generator";
 
 	public static final String USERS_EMAIL_ADDRESS_REQUIRED = "users.email.address.required";
+
+	public static final String USERS_EMAIL_ADDRESS_VALIDATOR = "users.email.address.validator";
 
 	public static final String USERS_EXPORT_CSV_FIELDS = "users.export.csv.fields";
 

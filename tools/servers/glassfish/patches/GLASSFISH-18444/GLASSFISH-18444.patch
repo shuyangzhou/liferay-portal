@@ -1,0 +1,127 @@
+Index: web/web-core/src/main/java/org/apache/catalina/core/StandardWrapper.java
+===================================================================
+--- web/web-core/src/main/java/org/apache/catalina/core/StandardWrapper.java	(revision 54151)
++++ web/web-core/src/main/java/org/apache/catalina/core/StandardWrapper.java	(working copy)
+@@ -314,6 +314,7 @@
+     /**
+      * File upload (multipart) support 
+      */
++	private boolean multipartConfigured = false;
+     private String multipartLocation = null;
+     private long multipartMaxFileSize = -1L;
+     private long multipartMaxRequestSize = -1L;
+@@ -768,11 +769,15 @@
+         return allow.toArray(methodNames);
+     }
+ 
++	public boolean isMultipartConfigured() {
++		return multipartConfigured;
++	}
+ 
+     /**
+      * Sets the multipart location
+      */
+     public void setMultipartLocation(String location) {
++		multipartConfigured = true;
+         multipartLocation = location;
+     }
+ 
+@@ -789,6 +794,7 @@
+      * Sets the multipart max-file-size
+      */
+     public void setMultipartMaxFileSize(long maxFileSize) {
++		multipartConfigured = true;
+         multipartMaxFileSize = maxFileSize;
+     }
+ 
+@@ -805,6 +811,7 @@
+      * Sets the multipart max-request-size
+      */
+     public void setMultipartMaxRequestSize(long maxRequestSize) {
++		multipartConfigured = true;
+         multipartMaxRequestSize = maxRequestSize;
+     }
+ 
+@@ -821,6 +828,7 @@
+      * Sets the multipart file-size-threshold
+      */
+     public void setMultipartFileSizeThreshold(int fileSizeThreshold) {
++		multipartConfigured = true;
+         multipartFileSizeThreshold = fileSizeThreshold;
+     }
+ 
+Index: web/web-core/src/main/java/org/apache/catalina/connector/Request.java
+===================================================================
+--- web/web-core/src/main/java/org/apache/catalina/connector/Request.java	(revision 54151)
++++ web/web-core/src/main/java/org/apache/catalina/connector/Request.java	(working copy)
+@@ -78,6 +78,7 @@
+ import org.apache.catalina.core.ApplicationHttpResponse;
+ import org.apache.catalina.core.StandardContext;
+ import org.apache.catalina.core.StandardHost;
++import org.apache.catalina.core.StandardWrapper;
+ import org.apache.catalina.deploy.LoginConfig;
+ import org.apache.catalina.fileupload.Multipart;
+ import org.apache.catalina.security.SecurityUtil;
+@@ -3147,7 +3148,7 @@
+         } else {
+             contentType = contentType.trim();
+         }
+-        if ("multipart/form-data".equals(contentType)) {
++        if (isMultipartConfigured() && "multipart/form-data".equals(contentType)) {
+             getMultipart().init();
+         }
+         if (!("application/x-www-form-urlencoded".equals(contentType))) {
+@@ -4052,6 +4053,12 @@
+         }
+     }
+ 
++	private void checkMultipartConfiguration(String name) {
++		if (!isMultipartConfigured()) {
++			throw new IllegalStateException(sm.getString("coyoteRequest.multipart.not.configured", name));
++		}
++	}
++
+     private Multipart getMultipart() {
+         if (multipart == null) {
+             multipart = new Multipart(this, coyoteRequest.getParameters(),
+@@ -4065,14 +4072,26 @@
+ 
+     @Override
+     public Collection<Part> getParts() throws IOException, ServletException {
+-        return getMultipart().getParts();
++		checkMultipartConfiguration("getParts");
++
++		return getMultipart().getParts();
+     }
+ 
+     @Override
+     public Part getPart(String name) throws IOException, ServletException {
+-        return getMultipart().getPart(name);
++		checkMultipartConfiguration("getPart");
++
++		return getMultipart().getPart(name);
+     }
+ 
++	private boolean isMultipartConfigured() {
++		if (wrapper instanceof StandardWrapper) {
++			return ((StandardWrapper)wrapper).isMultipartConfigured();
++		}
++
++		return false;
++	}
++
+     /**
+      * Log a message on the Logger associated with our Container (if any).
+      *
+Index: web/web-core/src/main/resources/org/apache/catalina/connector/LocalStrings.properties
+===================================================================
+--- web/web-core/src/main/resources/org/apache/catalina/connector/LocalStrings.properties	(revision 54151)
++++ web/web-core/src/main/resources/org/apache/catalina/connector/LocalStrings.properties	(working copy)
+@@ -103,6 +103,7 @@
+ coyoteRequest.nullRemoteAddressFromProxy=PWC4013: Unable to determine client remote address from proxy (returns null)
+ object.invalidScope=PWC4014: Cannot use this object outside a servlet's service method or outside a filter's doFilter method
+ inputBuffer.streamClosed=PWC4015: Stream closed
++coyoteRequest.multipart.not.configured=PWC4016: Request.{0} is called without multipart configuration. Either add a @MultipartConfig to the servlet, or a multipart-config element to web.xml
+ 
+ #
+ # Messages related to async processing mode

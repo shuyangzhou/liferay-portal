@@ -26,6 +26,10 @@ public class TimeZoneUtil_IW {
 		return TimeZoneUtil.getDefault();
 	}
 
+	public com.liferay.portal.kernel.util.TimeZoneUtil getWrappedInstance() {
+		return TimeZoneUtil.getInstance();
+	}
+
 	public java.util.TimeZone getTimeZone(java.lang.String timeZoneId) {
 		return TimeZoneUtil.getTimeZone(timeZoneId);
 	}

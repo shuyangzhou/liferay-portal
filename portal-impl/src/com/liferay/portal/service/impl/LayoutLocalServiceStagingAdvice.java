@@ -224,6 +224,12 @@ public class LayoutLocalServiceStagingAdvice
 			}
 		}
 
+		boolean layoutPrototypeLinkEnabled = ParamUtil.getBoolean(
+			serviceContext, "layoutPrototypeLinkEnabled", true);
+
+		originalLayout.setLayoutPrototypeLinkEnabled(
+			layoutPrototypeLinkEnabled);
+
 		layoutPersistence.update(originalLayout, false);
 
 		boolean hasWorkflowTask = StagingUtil.hasWorkflowTask(

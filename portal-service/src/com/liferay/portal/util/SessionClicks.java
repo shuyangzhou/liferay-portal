@@ -16,6 +16,9 @@ package com.liferay.portal.util;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portlet.PortalPreferences;
 import com.liferay.portlet.PortletPreferencesFactoryUtil;
 
@@ -61,10 +64,35 @@ public class SessionClicks {
 		String value) {
 
 		try {
+			if ((key.length() > _SESSION_CLICKS_MAX_SIZE_TERMS) ||
+				(value.length() > _SESSION_CLICKS_MAX_SIZE_TERMS)) {
+
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						"Session clicks has attempted to exceed the maximum " +
+							"size allowed for keys or values with {key=" + key +
+								", value=" + value + "}");
+				}
+
+				return;
+			}
+
 			PortalPreferences preferences =
 				PortletPreferencesFactoryUtil.getPortalPreferences(request);
 
-			preferences.setValue(namespace, key, value);
+			int size = preferences.size();
+
+			if (size <= _SESSION_CLICKS_MAX_ALLOWED_VALUES) {
+				preferences.setValue(namespace, key, value);
+			}
+			else {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						"Session clicks has attempted to exceed the maximum " +
+							"number of allowed values with {key=" + key +
+								", value=" + value + "}");
+				}
+			}
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -73,6 +101,14 @@ public class SessionClicks {
 
 	private static final String _DEFAULT_NAMESPACE =
 		SessionClicks.class.getName();
+
+	private static final int _SESSION_CLICKS_MAX_ALLOWED_VALUES =
+		GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.SESSION_CLICKS_MAX_ALLOWED_VALUES));
+
+	private static final int _SESSION_CLICKS_MAX_SIZE_TERMS =
+		GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.SESSION_CLICKS_MAX_SIZE_TERMS));
 
 	private static Log _log = LogFactoryUtil.getLog(SessionClicks.class);
 
