@@ -5654,8 +5654,7 @@ public class PortalImpl implements Portal {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
 					"Unable to impersonate " + doAsUserIdString +
-						" because the string cannot be decrypted",
-					e);
+						" because the string cannot be decrypted");
 			}
 
 			return 0;

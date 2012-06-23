@@ -107,6 +107,13 @@ public class RoleFinderUtil {
 		return getFinder().findByU_G(userId, groupIds);
 	}
 
+	public static java.util.List<com.liferay.portal.model.Role> findByR_N_A(
+		long resourceBlockId, java.lang.String className,
+		java.lang.String actionId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getFinder().findByR_N_A(resourceBlockId, className, actionId);
+	}
+
 	public static java.util.List<com.liferay.portal.model.Role> findByC_N_D_T(
 		long companyId, java.lang.String name, java.lang.String description,
 		java.lang.Integer[] types,

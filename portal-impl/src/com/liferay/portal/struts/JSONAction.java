@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.security.auth.AuthSettingsUtil;
 import com.liferay.portal.security.auth.AuthTokenUtil;
 import com.liferay.portal.security.auth.PrincipalException;
+import com.liferay.portal.servlet.SharedSessionServletRequest;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portal.util.WebKeys;
@@ -197,7 +198,8 @@ public abstract class JSONAction extends Action {
 			return false;
 		}
 
-		requestDispatcher.forward(request, response);
+		requestDispatcher.forward(
+			new SharedSessionServletRequest(request, true), response);
 
 		return true;
 	}

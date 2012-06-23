@@ -388,6 +388,12 @@ public interface RoleLocalService extends BaseLocalService,
 		long groupId)
 		throws com.liferay.portal.kernel.exception.SystemException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public java.util.List<com.liferay.portal.model.Role> getResourceBlockRoles(
+		long resourceBlockId, java.lang.String className,
+		java.lang.String actionId)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
 	/**
 	* Returns a map of role names to associated action IDs for the named
 	* resource in the company within the permission scope.

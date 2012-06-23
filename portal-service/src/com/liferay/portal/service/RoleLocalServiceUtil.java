@@ -433,6 +433,14 @@ public class RoleLocalServiceUtil {
 		return getService().getGroupRoles(groupId);
 	}
 
+	public static java.util.List<com.liferay.portal.model.Role> getResourceBlockRoles(
+		long resourceBlockId, java.lang.String className,
+		java.lang.String actionId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .getResourceBlockRoles(resourceBlockId, className, actionId);
+	}
+
 	/**
 	* Returns a map of role names to associated action IDs for the named
 	* resource in the company within the permission scope.

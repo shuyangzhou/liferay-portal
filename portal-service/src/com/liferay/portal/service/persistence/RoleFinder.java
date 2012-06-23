@@ -74,6 +74,11 @@ public interface RoleFinder {
 		long userId, long[] groupIds)
 		throws com.liferay.portal.kernel.exception.SystemException;
 
+	public java.util.List<com.liferay.portal.model.Role> findByR_N_A(
+		long resourceBlockId, java.lang.String className,
+		java.lang.String actionId)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
 	public java.util.List<com.liferay.portal.model.Role> findByC_N_D_T(
 		long companyId, java.lang.String name, java.lang.String description,
 		java.lang.Integer[] types,

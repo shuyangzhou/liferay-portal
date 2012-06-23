@@ -460,6 +460,13 @@ public class RoleLocalServiceImpl extends RoleLocalServiceBaseImpl {
 		return groupPersistence.getRoles(groupId);
 	}
 
+	public List<Role> getResourceBlockRoles(
+			long resourceBlockId, String className, String actionId)
+		throws SystemException {
+
+		return roleFinder.findByR_N_A(resourceBlockId, className, actionId);
+	}
+
 	/**
 	 * Returns a map of role names to associated action IDs for the named
 	 * resource in the company within the permission scope.
