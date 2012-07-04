@@ -136,14 +136,12 @@ public class VelocityTemplate implements Template {
 			TemplateResource templateResource, Writer writer)
 		throws Exception {
 
-		Reader reader = null;
+		if (templateResource == null) {
+			throw new Exception("Unable to find template resource");
+		}
 
-		try {
-			if (templateResource == null) {
-				throw new Exception("Unable to find template resource");
-			}
-
-			reader = templateResource.getReader();
+		if (templateResource instanceof StringTemplateResource) {
+			Reader reader = templateResource.getReader();
 
 			if (reader == null) {
 				throw new Exception(
@@ -154,11 +152,10 @@ public class VelocityTemplate implements Template {
 				_velocityContext, writer, templateResource.getTemplateId(),
 				reader);
 		}
-		finally {
-			if (reader != null) {
-				reader.close();
-			}
-		}
+
+		return _velocityEngine.mergeTemplate(
+			templateResource.getTemplateId(), TemplateResource.DEFAUT_ENCODING,
+			_velocityContext, writer);
 	}
 
 	private TemplateResource _errorTemplateResource;

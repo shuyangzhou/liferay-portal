@@ -156,17 +156,25 @@ public class FreeMarkerTemplate implements Template {
 			throw new Exception("Unable to find template resource");
 		}
 
-		Reader reader = templateResource.getReader();
+		freemarker.template.Template template = null;
 
-		if (reader == null) {
-			throw new Exception(
-				"Unable to find template resource " + templateResource);
-		}
+		if (templateResource instanceof StringTemplateResource) {
+			Reader reader = templateResource.getReader();
 
-		freemarker.template.Template template =
-			new freemarker.template.Template(
+			if (reader == null) {
+				throw new Exception(
+					"Unable to find template resource " + templateResource);
+			}
+
+			template = new freemarker.template.Template(
 				templateResource.getTemplateId(), reader, _configuration,
 				TemplateResource.DEFAUT_ENCODING);
+		}
+		else {
+			template = _configuration.getTemplate(
+				templateResource.getTemplateId(),
+				TemplateResource.DEFAUT_ENCODING);
+		}
 
 		template.process(_context, writer);
 	}

@@ -84,7 +84,7 @@ public class DefaultTemplateResourceLoader implements TemplateResourceLoader {
 			if (object instanceof TemplateResource) {
 				templateResource = (TemplateResource)object;
 
-				if (_modificationCheckInterval <= 0) {
+				if (_modificationCheckInterval < 0) {
 					return templateResource;
 				}
 
@@ -122,12 +122,16 @@ public class DefaultTemplateResourceLoader implements TemplateResourceLoader {
 					templateId);
 
 				if (templateResource != null) {
-					String name = getName();
+					if ((_modificationCheckInterval != 0) &&
+						(!_name.equals(TemplateManager.VELOCITY) ||
+							!templateId.contains(
+								SandboxHandler.SANDBOX_MARKER))) {
 
-					if (!name.equals(TemplateManager.VELOCITY) ||
-						!templateId.contains(SandboxHandler.SANDBOX_MARKER)) {
+						_portalCache.put(
+							templateId,
+							new TemplateResourceCacheWrapper(
+								templateResource, System.currentTimeMillis()));
 
-						_portalCache.put(templateId, templateResource);
 					}
 
 					break;
