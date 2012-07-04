@@ -14,13 +14,25 @@
 
 package com.liferay.portal.velocity;
 
+import com.liferay.portal.kernel.cache.PortalCache;
+import com.liferay.portal.kernel.cache.SingleVMPoolUtil;
+import com.liferay.portal.kernel.template.TemplateManager;
+import com.liferay.portal.kernel.template.TemplateResource;
+import com.liferay.portal.kernel.template.TemplateResourceLoaderUtil;
 import com.liferay.portal.kernel.util.ReflectionUtil;
+
+import java.io.IOException;
+import java.io.Reader;
 
 import java.lang.reflect.Field;
 
 import org.apache.commons.collections.ExtendedProperties;
+import org.apache.velocity.Template;
+import org.apache.velocity.exception.ParseErrorException;
+import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.RuntimeInstance;
 import org.apache.velocity.runtime.RuntimeServices;
+import org.apache.velocity.runtime.resource.Resource;
 import org.apache.velocity.runtime.resource.ResourceManager;
 import org.apache.velocity.runtime.resource.ResourceManagerImpl;
 
@@ -48,6 +60,46 @@ public class LiferayResourceManager extends ResourceManagerImpl {
 		}
 	}
 
+	public Resource getResource(
+			final String resourceName, final int resourceType,
+			final String encoding)
+		throws ResourceNotFoundException, ParseErrorException, Exception {
+
+		if (resourceType != ResourceManager.RESOURCE_TEMPLATE) {
+			return super.getResource(resourceName, resourceType, encoding);
+		}
+
+		Object object = _portalCache.get(resourceName);
+
+		Resource resource = null;
+
+		if (object == null) {
+			try {
+				TemplateResource templateResource =
+					TemplateResourceLoaderUtil.getTemplateResource(
+						TemplateManager.VELOCITY, resourceName);
+
+				resource = new LiferayTemplate(templateResource.getReader());
+
+				resource.setEncoding(encoding);
+				resource.setName(resourceName);
+				resource.setResourceLoader(new LiferayResourceLoader());
+				resource.setRuntimeServices(rsvc);
+
+				resource.process();
+
+				_portalCache.put(resourceName, resource);
+			}
+			catch (Exception te) {
+			}
+		}
+		else if (object instanceof Resource) {
+			resource = (Resource)object;
+		}
+
+		return resource;
+	}
+
 	@Override
 	public synchronized void initialize(RuntimeServices runtimeServices)
 		throws Exception {
@@ -62,6 +114,40 @@ public class LiferayResourceManager extends ResourceManagerImpl {
 			runtimeServices, new FastExtendedProperties(extendedProperties));
 
 		super.initialize(runtimeServices);
+	}
+
+	private PortalCache _portalCache = SingleVMPoolUtil.getCache(
+		LiferayResourceManager.class.getName());
+
+	private class LiferayTemplate extends Template {
+
+		public LiferayTemplate(Reader reader) {
+			_reader = reader;
+		}
+
+		@Override
+		public boolean process() throws ParseErrorException, IOException {
+			data = null;
+
+			try {
+				data = rsvc.parse(_reader, name);
+
+				initDocument();
+
+				return true;
+			}
+			catch (Exception e) {
+				throw new ParseErrorException("Unable to parse tempalte");
+			}
+			finally {
+				if (_reader != null) {
+					_reader.close();
+				}
+			}
+		}
+
+		private Reader _reader;
+
 	}
 
 }

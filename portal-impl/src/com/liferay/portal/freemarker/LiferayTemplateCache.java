@@ -14,6 +14,8 @@
 
 package com.liferay.portal.freemarker;
 
+import com.liferay.portal.kernel.cache.PortalCache;
+import com.liferay.portal.kernel.cache.SingleVMPoolUtil;
 import com.liferay.portal.kernel.template.TemplateException;
 import com.liferay.portal.kernel.template.TemplateManager;
 import com.liferay.portal.kernel.template.TemplateResource;
@@ -81,25 +83,36 @@ public class LiferayTemplateCache extends TemplateCache {
 			return null;
 		}
 
-		try {
-			TemplateResource templateResource =
-				TemplateResourceLoaderUtil.getTemplateResource(
-					TemplateManager.FREEMARKER, templateId);
+		Object object = _portalCache.get(templateId);
 
-			freemarker.template.Template template =
-				new freemarker.template.Template(
+		Template template = null;
+
+		if (object == null) {
+			try {
+				TemplateResource templateResource =
+					TemplateResourceLoaderUtil.getTemplateResource(
+						TemplateManager.FREEMARKER, templateId);
+
+				template = new Template(
 					templateResource.getTemplateId(),
 					templateResource.getReader(), _configuration,
 					TemplateResource.DEFAUT_ENCODING);
 
-			return template;
+				_portalCache.put(templateId, template);
+			}
+			catch (Exception te) {
+			}
 		}
-		catch (TemplateException te) {
-			return null;
+		else if (object instanceof Template) {
+			template = (Template)object;
 		}
+
+		return template;
 	}
 
 	private Configuration _configuration;
 	private Method _normalizeNameMethod;
+	private PortalCache _portalCache = SingleVMPoolUtil.getCache(
+		LiferayTemplateCache.class.getName());
 
 }
