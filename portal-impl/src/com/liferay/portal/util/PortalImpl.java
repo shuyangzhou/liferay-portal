@@ -44,6 +44,7 @@ import com.liferay.portal.kernel.servlet.HttpMethods;
 import com.liferay.portal.kernel.servlet.PersistentHttpServletRequestWrapper;
 import com.liferay.portal.kernel.servlet.ServletContextUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.servlet.taglib.portletext.UniqueElementIDs;
 import com.liferay.portal.kernel.servlet.taglib.ui.BreadcrumbEntry;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.upload.UploadServletRequest;
@@ -3888,18 +3889,21 @@ public class PortalImpl implements Portal {
 
 		String uniqueElementId = elementId;
 
-		Set<String> uniqueElementIds = (Set<String>)request.getAttribute(
-			WebKeys.UNIQUE_ELEMENT_IDS);
+		UniqueElementIDs uniqueElementIDs =
+			(UniqueElementIDs)request.getAttribute(WebKeys.UNIQUE_ELEMENT_IDS);
 
-		if (uniqueElementIds == null) {
-			uniqueElementIds = new HashSet<String>();
+		if (uniqueElementIDs == null) {
+			uniqueElementIDs = new UniqueElementIDs();
 
-			request.setAttribute(WebKeys.UNIQUE_ELEMENT_IDS, uniqueElementIds);
+			request.setAttribute(WebKeys.UNIQUE_ELEMENT_IDS, uniqueElementIDs);
 		}
 		else {
+			Set<String> uniqueElementIDsSet =
+				uniqueElementIDs.getUniqueElementIDs();
+
 			int i = 1;
 
-			while (uniqueElementIds.contains(uniqueElementId)) {
+			while (uniqueElementIDsSet.contains(uniqueElementId)) {
 				uniqueElementId = elementId.concat(StringPool.UNDERLINE).concat(
 					String.valueOf(i));
 
@@ -3907,7 +3911,7 @@ public class PortalImpl implements Portal {
 			}
 		}
 
-		uniqueElementIds.add(uniqueElementId);
+		uniqueElementIDs.addUniqueElemntID(uniqueElementId);
 
 		return uniqueElementId;
 	}
