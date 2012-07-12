@@ -16,7 +16,9 @@
 
 <%@ include file="/html/portlet/init.jsp" %>
 
-<%@ page import="com.liferay.portal.plugin.PluginUtil" %><%@
+<%@ page import="com.liferay.portal.kernel.template.TemplateManager" %><%@
+page import="com.liferay.portal.kernel.template.TemplateResourceLoaderUtil" %><%@
+page import="com.liferay.portal.plugin.PluginUtil" %><%@
 page import="com.liferay.portlet.layoutconfiguration.util.RuntimePageUtil" %>
 
 <%

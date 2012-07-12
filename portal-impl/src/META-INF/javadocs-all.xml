@@ -416529,6 +416529,42 @@ Useful when paginating results. Returns a maximum of <code>end - start</code> in
 			</throws>
 		</method>
 		<method>
+			<name>moveFileShortcutFromTrash</name>
+			<comment><![CDATA[Moves the file shortcut from a trashed folder to the new folder.]]></comment>
+			<param>
+				<name>fileShortcutId</name>
+				<type>long</type>
+				<comment><![CDATA[the primary key of the file shortcut]]></comment>
+			</param>
+			<param>
+				<name>newFolderId</name>
+				<type>long</type>
+				<comment><![CDATA[the primary key of the new folder]]></comment>
+			</param>
+			<param>
+				<name>toFileEntryId</name>
+				<type>long</type>
+			</param>
+			<param>
+				<name>serviceContext</name>
+				<type>com.liferay.portal.service.ServiceContext</type>
+				<comment><![CDATA[the service context to be applied]]></comment>
+			</param>
+			<return>
+				<comment><![CDATA[the file shortcut]]></comment>
+			</return>
+			<throws>
+				<name>PortalException</name>
+				<type>com.liferay.portal.kernel.exception.PortalException</type>
+				<comment><![CDATA[if the file entry or the new folder could not be found]]></comment>
+			</throws>
+			<throws>
+				<name>SystemException</name>
+				<type>com.liferay.portal.kernel.exception.SystemException</type>
+				<comment><![CDATA[if a system exception occurred]]></comment>
+			</throws>
+		</method>
+		<method>
 			<name>moveFileShortcutToTrash</name>
 			<comment><![CDATA[Moves the file shortcut with the primary key to the trash portlet.]]></comment>
 			<param>
@@ -416536,6 +416572,9 @@ Useful when paginating results. Returns a maximum of <code>end - start</code> in
 				<type>long</type>
 				<comment><![CDATA[the primary key of the file shortcut]]></comment>
 			</param>
+			<return>
+				<comment><![CDATA[the file shortcut]]></comment>
+			</return>
 			<throws>
 				<name>PortalException</name>
 				<type>com.liferay.portal.kernel.exception.PortalException</type>

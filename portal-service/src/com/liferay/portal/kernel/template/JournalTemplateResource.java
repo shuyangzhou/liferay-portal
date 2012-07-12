@@ -41,6 +41,31 @@ public class JournalTemplateResource implements TemplateResource {
 		_journalTemplate = journalTemplate;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+
+		JournalTemplateResource journalTemplateResource = null;
+
+		try {
+			journalTemplateResource = (JournalTemplateResource)obj;
+		}
+		catch (ClassCastException cce) {
+			return false;
+		}
+
+		if (_templateId.equals(journalTemplateResource._templateId) &&
+			_journalTemplate.equals(journalTemplateResource._journalTemplate)) {
+
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
 	public long getLastModified() {
 		Date modifiedDate = _journalTemplate.getModifiedDate();
 
@@ -59,6 +84,11 @@ public class JournalTemplateResource implements TemplateResource {
 
 	public String getTemplateId() {
 		return _templateId;
+	}
+
+	@Override
+	public int hashCode() {
+		return _journalTemplate.hashCode() + _templateId.hashCode();
 	}
 
 	private JournalTemplate _journalTemplate;

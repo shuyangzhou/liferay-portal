@@ -3,11 +3,12 @@
 <jboss-deployment-structure xmlns="urn:jboss:deployment-structure:1.0">
 	<deployment>
 		<exclusions>
+			<module name="javaee.api" />
 			<module name="org.apache.log4j" />
 		</exclusions>
 		<dependencies>
-			<module name="com.liferay.portal"></module>
-			<module name="org.jboss.modules"></module>
+			<module name="com.liferay.portal" />
+			<module name="org.jboss.modules" />
 		</dependencies>
 	</deployment>
 </jboss-deployment-structure>

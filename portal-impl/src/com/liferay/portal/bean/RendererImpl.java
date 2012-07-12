@@ -25,11 +25,11 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.template.StringTemplateResource;
 import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateContextType;
 import com.liferay.portal.kernel.template.TemplateManager;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
+import com.liferay.portal.kernel.template.TemplateResourceLoaderUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringPool;
@@ -141,7 +141,9 @@ public class RendererImpl implements Renderer {
 		try {
 			Template template = TemplateManagerUtil.getTemplate(
 				TemplateManager.VELOCITY,
-				new StringTemplateResource(className, velocityTemplateContent),
+				TemplateResourceLoaderUtil.getTemplateResource(
+					TemplateManager.VELOCITY, className,
+					velocityTemplateContent),
 				TemplateContextType.STANDARD);
 
 			template.prepare(request);
