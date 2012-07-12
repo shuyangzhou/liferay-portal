@@ -14,11 +14,15 @@
 
 package com.liferay.portal.freemarker;
 
+import com.liferay.portal.kernel.cache.PortalCache;
+import com.liferay.portal.kernel.cache.SingleVMPoolUtil;
 import com.liferay.portal.kernel.template.TemplateException;
 import com.liferay.portal.kernel.template.TemplateManager;
 import com.liferay.portal.kernel.template.TemplateResource;
 import com.liferay.portal.kernel.template.TemplateResourceLoaderUtil;
 import com.liferay.portal.kernel.util.ReflectionUtil;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.template.TemplateResourceThreadLocal;
 
 import freemarker.cache.TemplateCache;
 
@@ -70,36 +74,68 @@ public class LiferayTemplateCache extends TemplateCache {
 				"Argument \"encoding\" cannot be null");
 		}
 
-		try {
-			templateId = (String)_normalizeNameMethod.invoke(this, templateId);
+		TemplateResource templateResource = null;
+
+		if (templateId.startsWith(
+			TemplateResource.TEMPLATE_RESOURCE_UUID_PREFIX)) {
+
+			templateResource = TemplateResourceThreadLocal.getTemplateResource(
+				TemplateManager.FREEMARKER);
 		}
-		catch (Exception e) {
+		else {
+			try {
+				templateId = (String)_normalizeNameMethod.invoke(
+					this, templateId);
+			}
+			catch (Exception e) {
+				return null;
+			}
+
+			if (templateId == null) {
+				return null;
+			}
+
+			try {
+				templateResource =
+					TemplateResourceLoaderUtil.getTemplateResource(
+						TemplateManager.FREEMARKER, templateId);
+			}
+			catch (TemplateException te) {
+				return null;
+			}
+		}
+
+		if (templateResource == null) {
 			return null;
 		}
 
-		if (templateId == null) {
-			return null;
+		Object object = _portalCache.get(templateResource);
+
+		if ((object != null) && (object instanceof Template)) {
+			return (Template)object;
 		}
 
-		try {
-			TemplateResource templateResource =
-				TemplateResourceLoaderUtil.getTemplateResource(
-					TemplateManager.FREEMARKER, templateId);
+		Template template = new Template(
+			templateResource.getTemplateId(), templateResource.getReader(),
+			_configuration, TemplateResource.DEFAUT_ENCODING);
 
-			freemarker.template.Template template =
-				new freemarker.template.Template(
-					templateResource.getTemplateId(),
-					templateResource.getReader(), _configuration,
-					TemplateResource.DEFAUT_ENCODING);
+		_portalCache.put(templateResource, template);
 
-			return template;
-		}
-		catch (TemplateException te) {
-			return null;
-		}
+		return template;
 	}
+
+	private static PortalCache _portalCache;
 
 	private Configuration _configuration;
 	private Method _normalizeNameMethod;
+
+	static {
+		String loaderName =
+			TemplateResourceLoaderUtil.getTemplateResourceLoader(
+				TemplateManager.FREEMARKER).getName();
+
+		_portalCache = SingleVMPoolUtil.getCache(
+			loaderName + StringPool.COLON + TemplateResource.class.getName());
+	}
 
 }

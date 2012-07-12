@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.template.TemplateResourceLoaderUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.template.AbstractTemplate;
 import com.liferay.portal.template.TemplateContextHelper;
+import com.liferay.portal.template.TemplateResourceThreadLocal;
 import com.liferay.portal.util.PropsValues;
 
 import freemarker.core.ParseException;
@@ -32,7 +33,6 @@ import freemarker.core.ParseException;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 
-import java.io.Reader;
 import java.io.Writer;
 
 import java.util.Map;
@@ -129,18 +129,24 @@ public class FreeMarkerTemplate extends AbstractTemplate {
 			throw new Exception("Unable to find template resource");
 		}
 
-		Reader reader = templateResource.getReader();
+		TemplateResourceThreadLocal.setTemplateResource(
+			TemplateManager.FREEMARKER, templateResource);
 
-		if (reader == null) {
-			throw new Exception(
-				"Unable to find template resource " + templateResource);
+		try {
+			Template template = _configuration.getTemplate(
+				getTemplateResourceUUID(templateResource),
+				TemplateResource.DEFAUT_ENCODING);
+
+			if (template == null) {
+				throw new Exception("Unable to parse template resource");
+			}
+
+			template.process(_context, writer);
 		}
-
-		Template template = new Template(
-			templateResource.getTemplateId(), reader, _configuration,
-			TemplateResource.DEFAUT_ENCODING);
-
-		template.process(_context, writer);
+		finally {
+			TemplateResourceThreadLocal.setTemplateResource(
+				TemplateManager.FREEMARKER, null);
+		}
 	}
 
 	private static PortalCache _portalCache;

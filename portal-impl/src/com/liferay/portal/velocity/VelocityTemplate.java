@@ -25,11 +25,12 @@ import com.liferay.portal.kernel.template.TemplateResourceLoaderUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.template.AbstractTemplate;
 import com.liferay.portal.template.TemplateContextHelper;
+import com.liferay.portal.template.TemplateResourceThreadLocal;
 import com.liferay.portal.util.PropsValues;
 
-import java.io.Reader;
 import java.io.Writer;
 
+import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.ParseErrorException;
@@ -109,28 +110,27 @@ public class VelocityTemplate extends AbstractTemplate {
 			TemplateResource templateResource, Writer writer)
 		throws Exception {
 
-		Reader reader = null;
+		if (templateResource == null) {
+			throw new Exception("Unable to find template resource");
+		}
+
+		TemplateResourceThreadLocal.setTemplateResource(
+			TemplateManager.VELOCITY, templateResource);
 
 		try {
-			if (templateResource == null) {
-				throw new Exception("Unable to find template resource");
+			Template template = _velocityEngine.getTemplate(
+				getTemplateResourceUUID(templateResource),
+				TemplateResource.DEFAUT_ENCODING);
+
+			if (template == null) {
+				throw new Exception("Unable to parse template resource");
 			}
 
-			reader = templateResource.getReader();
-
-			if (reader == null) {
-				throw new Exception(
-					"Unable to find template resource " + templateResource);
-			}
-
-			_velocityEngine.evaluate(
-				_velocityContext, writer, templateResource.getTemplateId(),
-				reader);
+			template.merge(_velocityContext, writer);
 		}
 		finally {
-			if (reader != null) {
-				reader.close();
-			}
+			TemplateResourceThreadLocal.setTemplateResource(
+				TemplateManager.VELOCITY, null);
 		}
 	}
 
