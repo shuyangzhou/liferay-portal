@@ -14,11 +14,18 @@
 
 package com.liferay.portal.velocity;
 
+import com.liferay.portal.kernel.cache.MultiVMPoolUtil;
+import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.template.StringTemplateResource;
 import com.liferay.portal.kernel.template.TemplateException;
+import com.liferay.portal.kernel.template.TemplateManager;
 import com.liferay.portal.kernel.template.TemplateResource;
+import com.liferay.portal.kernel.template.TemplateResourceLoader;
+import com.liferay.portal.kernel.template.TemplateResourceLoaderUtil;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.template.AbstractTemplate;
 import com.liferay.portal.template.TemplateContextHelper;
+import com.liferay.portal.util.PropsValues;
 
 import java.io.Reader;
 import java.io.Writer;
@@ -38,7 +45,10 @@ public class VelocityTemplate extends AbstractTemplate {
 		VelocityEngine velocityEngine,
 		TemplateContextHelper templateContextHelper) {
 
-		super(templateResource, errorTemplateResource, templateContextHelper);
+		super(
+			templateResource, errorTemplateResource, templateContextHelper,
+			PropsValues.VELOCITY_ENGINE_RESOURCE_MODIFICATION_CHECK_INTERVAL,
+			_portalCache);
 
 		if (velocityContext == null) {
 			_velocityContext = new VelocityContext();
@@ -124,7 +134,19 @@ public class VelocityTemplate extends AbstractTemplate {
 		}
 	}
 
+	private static PortalCache _portalCache;
+
 	private VelocityContext _velocityContext;
 	private VelocityEngine _velocityEngine;
+
+	static {
+		String loaderName =
+			TemplateResourceLoaderUtil.getTemplateResourceLoader(
+				TemplateManager.VELOCITY).getName();
+
+		_portalCache = MultiVMPoolUtil.getCache(
+			loaderName + StringPool.COLON +
+				TemplateResourceLoader.class.getName());
+	}
 
 }
