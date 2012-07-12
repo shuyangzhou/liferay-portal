@@ -24,6 +24,10 @@ import com.liferay.portal.kernel.template.TemplateManager;
 import com.liferay.portal.kernel.template.TemplateResource;
 import com.liferay.portal.kernel.template.TemplateResourceLoader;
 import com.liferay.portal.kernel.util.InstanceFactory;
+import com.liferay.portal.kernel.util.StringPool;
+
+import java.io.IOException;
+import java.io.Reader;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -55,6 +59,10 @@ public class DefaultTemplateResourceLoader implements TemplateResourceLoader {
 		}
 
 		_modificationCheckInterval = modificationCheckInterval;
+
+		//Different tempalte engine should use different portal cache.
+		_portalCache = MultiVMPoolUtil.getCache(
+			name + StringPool.COLON + TemplateResourceLoader.class.getName());
 	}
 
 	public void clearCache() {
@@ -76,53 +84,80 @@ public class DefaultTemplateResourceLoader implements TemplateResourceLoader {
 	}
 
 	public TemplateResource getTemplateResource(String templateId) {
-		TemplateResource templateResource = null;
+		TemplateResource templateResource = _loadFromCache(templateId);
 
-		Object object = _portalCache.get(templateId);
-
-		if (object != null) {
-			if (object instanceof TemplateResource) {
-				templateResource = (TemplateResource)object;
-
-				if (_modificationCheckInterval < 0) {
-					return templateResource;
-				}
-
-				long expireTime =
-					templateResource.getLastModified() +
-						_modificationCheckInterval;
-
-				if (expireTime > System.currentTimeMillis()) {
-					return templateResource;
-				}
-				else {
-					_portalCache.remove(templateId);
-
-					if (_log.isDebugEnabled()) {
-						_log.debug("Reload stale template " + templateId);
-					}
-				}
-			}
-			else if (object == _nullHolder) {
+		if (templateResource != null) {
+			if (templateResource instanceof NullHolderTemplateResource) {
 				return null;
 			}
-			else {
-				_portalCache.remove(templateId);
 
-				if (_log.isWarnEnabled()) {
-					_log.warn(
-						"Remove template " + templateId +
-							" because it is not a template resource");
-				}
+			return templateResource;
+		}
+
+		templateResource = _loadFromParser(templateId);
+
+		if (_modificationCheckInterval != 0) {
+			if (templateResource == null) {
+				_portalCache.put(templateId, new NullHolderTemplateResource());
+			}
+			else {
+				_portalCache.put(templateId, templateResource);
 			}
 		}
 
+		return templateResource;
+	}
+
+	public boolean hasTemplateResource(String templateId) {
+		TemplateResource templateResource = getTemplateResource(templateId);
+
+		if (templateResource != null) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private TemplateResource _loadFromCache(String templateId) {
+		if (_modificationCheckInterval == 0) {
+			return null;
+		}
+
+		Object object = _portalCache.get(templateId);
+
+		if ((object == null) || !(object instanceof TemplateResource)) {
+			return null;
+		}
+
+		TemplateResource templateResource = (TemplateResource)object;
+
+		if (_modificationCheckInterval < 0) {
+			return templateResource;
+		}
+
+		long expireTime =
+			templateResource.getLastModified() + _modificationCheckInterval;
+
+		if (expireTime > System.currentTimeMillis()) {
+			return templateResource;
+		}
+
+		_portalCache.remove(templateId);
+
+		if (_log.isDebugEnabled()) {
+			_log.debug("Reload stale template " + templateId);
+		}
+
+		return null;
+	}
+
+	private TemplateResource _loadFromParser(String templateId) {
 		for (TemplateResourceParser templateResourceParser :
 				_templateResourceParsers) {
 
 			try {
-				templateResource = templateResourceParser.getTemplateResource(
-					templateId);
+				TemplateResource templateResource =
+					templateResourceParser.getTemplateResource(templateId);
 
 				if (templateResource != null) {
 					if ((_modificationCheckInterval != 0) &&
@@ -132,8 +167,6 @@ public class DefaultTemplateResourceLoader implements TemplateResourceLoader {
 
 						templateResource = new CacheTemplateResource(
 							templateResource);
-
-						_portalCache.put(templateId, templateResource);
 					}
 
 					return templateResource;
@@ -147,31 +180,37 @@ public class DefaultTemplateResourceLoader implements TemplateResourceLoader {
 			}
 		}
 
-		_portalCache.put(templateId, _nullHolder);
-
 		return null;
-	}
-
-	public boolean hasTemplateResource(String templateId) {
-		TemplateResource templateResource = getTemplateResource(templateId);
-
-		if (templateResource != null) {
-			return true;
-		}
-
-		return false;
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(
 		DefaultTemplateResourceLoader.class);
 
-	private static Object _nullHolder = new Object();
-
 	private long _modificationCheckInterval;
 	private String _name;
-	private PortalCache _portalCache = MultiVMPoolUtil.getCache(
-		TemplateResourceLoader.class.getName());
+	private PortalCache _portalCache;
 	private Set<TemplateResourceParser> _templateResourceParsers =
 		new HashSet<TemplateResourceParser>();
+
+	private class NullHolderTemplateResource implements TemplateResource {
+
+		public NullHolderTemplateResource() {
+		}
+
+		public long getLastModified() {
+			return _lastModified;
+		}
+
+		public Reader getReader() throws IOException {
+			return null;
+		}
+
+		public String getTemplateId() {
+			return null;
+		}
+
+		private long _lastModified = System.currentTimeMillis();
+
+	}
 
 }
