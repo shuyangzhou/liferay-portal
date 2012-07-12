@@ -32,6 +32,29 @@ public class CacheTemplateResource implements TemplateResource {
 		_templateResource = templateResource;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+
+		CacheTemplateResource cacheTemplateResource = null;
+
+		try {
+			cacheTemplateResource = (CacheTemplateResource)obj;
+		}
+		catch (ClassCastException cce) {
+			return false;
+		}
+
+		if (_templateResource.equals(cacheTemplateResource._templateResource)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
 	public long getLastModified() {
 		return _lastModified;
 	}
@@ -78,6 +101,11 @@ public class CacheTemplateResource implements TemplateResource {
 
 	public String getTemplateId() {
 		return _templateResource.getTemplateId();
+	}
+
+	@Override
+	public int hashCode() {
+		return _templateResource.hashCode();
 	}
 
 	private long _lastModified = System.currentTimeMillis();

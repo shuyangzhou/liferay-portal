@@ -36,6 +36,31 @@ public class StringTemplateResource implements TemplateResource {
 		_templateContent = templateContent;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+
+		StringTemplateResource stringTemplateResource = null;
+
+		try {
+			stringTemplateResource = (StringTemplateResource)obj;
+		}
+		catch (ClassCastException cce) {
+			return false;
+		}
+
+		if (_templateId.equals(stringTemplateResource._templateId) &&
+			_templateContent.equals(stringTemplateResource._templateContent)) {
+
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
 	public String getContent() {
 		return _templateContent;
 	}
@@ -54,6 +79,11 @@ public class StringTemplateResource implements TemplateResource {
 
 	public String getTemplateId() {
 		return _templateId;
+	}
+
+	@Override
+	public int hashCode() {
+		return _templateContent.hashCode() + _templateId.hashCode();
 	}
 
 	private long _lastModified = System.currentTimeMillis();
