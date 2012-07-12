@@ -100,9 +100,10 @@ public class DefaultTemplateResourceLoader implements TemplateResourceLoader {
 			if (templateResource == null) {
 				_portalCache.put(templateId, new NullHolderTemplateResource());
 			}
-			else {
-				_portalCache.put(templateId, templateResource);
-			}
+			//Delay put until Template is processed.
+//			else {
+//				_portalCache.put(templateId, templateResource);
+//			}
 		}
 
 		return templateResource;

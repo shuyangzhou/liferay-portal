@@ -14,6 +14,7 @@
 
 package com.liferay.portal.template;
 
+import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
 import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateException;
@@ -32,11 +33,21 @@ public abstract class AbstractTemplate implements Template {
 	public AbstractTemplate(
 		TemplateResource templateResource,
 		TemplateResource errorTemplateResource,
-		TemplateContextHelper templateContextHelper) {
+		TemplateContextHelper templateContextHelper, long checkInterval,
+		PortalCache portalCache) {
 
 		_templateResource = templateResource;
+		_portalCache = portalCache;
+
+		if (checkInterval != 0) {
+			_cacheTemplateResource(templateResource);
+		}
 
 		if (errorTemplateResource != null) {
+			if (checkInterval != 0) {
+				_cacheTemplateResource(templateResource);
+			}
+
 			_errorTemplateResource = errorTemplateResource;
 			_hasErrorTemplate = true;
 		}
@@ -92,8 +103,18 @@ public abstract class AbstractTemplate implements Template {
 			TemplateResource templateResource, Writer writer)
 		throws Exception;
 
+	private void _cacheTemplateResource(TemplateResource templateResource) {
+		Object object = _portalCache.get(templateResource.getTemplateId());
+
+		if ((object == null) || !templateResource.equals(object)) {
+			_portalCache.put(
+				templateResource.getTemplateId(), templateResource);
+		}
+	}
+
 	private TemplateResource _errorTemplateResource;
 	private boolean _hasErrorTemplate;
+	private PortalCache _portalCache;
 	private TemplateContextHelper _templateContextHelper;
 	private TemplateResource _templateResource;
 

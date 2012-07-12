@@ -14,11 +14,18 @@
 
 package com.liferay.portal.freemarker;
 
+import com.liferay.portal.kernel.cache.MultiVMPoolUtil;
+import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.template.StringTemplateResource;
 import com.liferay.portal.kernel.template.TemplateException;
+import com.liferay.portal.kernel.template.TemplateManager;
 import com.liferay.portal.kernel.template.TemplateResource;
+import com.liferay.portal.kernel.template.TemplateResourceLoader;
+import com.liferay.portal.kernel.template.TemplateResourceLoaderUtil;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.template.AbstractTemplate;
 import com.liferay.portal.template.TemplateContextHelper;
+import com.liferay.portal.util.PropsValues;
 
 import freemarker.core.ParseException;
 
@@ -43,7 +50,10 @@ public class FreeMarkerTemplate extends AbstractTemplate {
 		Configuration configuration,
 		TemplateContextHelper templateContextHelper) {
 
-		super(templateResource, errorTemplateResource, templateContextHelper);
+		super(
+			templateResource, errorTemplateResource, templateContextHelper,
+			PropsValues.FREEMARKER_ENGINE_RESOURCE_MODIFICATION_CHECK_INTERVAL,
+			_portalCache);
 
 		_context = new ConcurrentHashMap<String, Object>();
 
@@ -133,7 +143,19 @@ public class FreeMarkerTemplate extends AbstractTemplate {
 		template.process(_context, writer);
 	}
 
+	private static PortalCache _portalCache;
+
 	private Configuration _configuration;
 	private Map<String, Object> _context;
+
+	static {
+		String loaderName =
+			TemplateResourceLoaderUtil.getTemplateResourceLoader(
+				TemplateManager.FREEMARKER).getName();
+
+		_portalCache = MultiVMPoolUtil.getCache(
+			loaderName + StringPool.COLON +
+				TemplateResourceLoader.class.getName());
+	}
 
 }
