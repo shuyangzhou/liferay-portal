@@ -88,7 +88,7 @@ if (selLayout != null) {
 
 	<%
 	if (Validator.isNotNull(velocityTemplateId) && Validator.isNotNull(velocityTemplateContent)) {
-		RuntimePageUtil.processCustomizationSettings(pageContext, new StringTemplateResource(velocityTemplateId, velocityTemplateContent));
+		RuntimePageUtil.processCustomizationSettings(pageContext, TemplateResourceLoaderUtil.getTemplateResource(TemplateManager.VELOCITY, velocityTemplateId, velocityTemplateContent));
 	}
 	%>
 

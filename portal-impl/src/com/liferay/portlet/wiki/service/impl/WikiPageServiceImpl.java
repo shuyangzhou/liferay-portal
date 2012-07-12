@@ -19,11 +19,11 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
 import com.liferay.portal.kernel.language.LanguageUtil;
-import com.liferay.portal.kernel.template.StringTemplateResource;
 import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateContextType;
 import com.liferay.portal.kernel.template.TemplateManager;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
+import com.liferay.portal.kernel.template.TemplateResourceLoaderUtil;
 import com.liferay.portal.kernel.util.Diff;
 import com.liferay.portal.kernel.util.DiffResult;
 import com.liferay.portal.kernel.util.DiffUtil;
@@ -484,7 +484,8 @@ public class WikiPageServiceImpl extends WikiPageServiceBaseImpl {
 
 			Template template = TemplateManagerUtil.getTemplate(
 				TemplateManager.VELOCITY,
-				new StringTemplateResource(templateId, templateContent),
+				TemplateResourceLoaderUtil.getTemplateResource(
+					TemplateManager.VELOCITY, templateId, templateContent),
 				TemplateContextType.STANDARD);
 
 			template.put("companyId", companyId);
