@@ -14,11 +14,15 @@
 
 package com.liferay.portal.template;
 
+import com.liferay.portal.kernel.cache.MultiVMPoolUtil;
+import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
 import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateException;
 import com.liferay.portal.kernel.template.TemplateResource;
+import com.liferay.portal.kernel.template.TemplateResourceLoader;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Writer;
 
@@ -32,7 +36,8 @@ public abstract class AbstractTemplate implements Template {
 	public AbstractTemplate(
 		TemplateResource templateResource,
 		TemplateResource errorTemplateResource,
-		TemplateContextHelper templateContextHelper) {
+		TemplateContextHelper templateContextHelper,
+		String templateResourceLoaderName, long interval) {
 
 		if (templateResource == null) {
 			throw new IllegalArgumentException("TemplateResource is null");
@@ -42,9 +47,16 @@ public abstract class AbstractTemplate implements Template {
 			throw new IllegalArgumentException("TemplateContextHelper is null");
 		}
 
+		if (templateResourceLoaderName == null) {
+			throw new IllegalArgumentException(
+				"Name of TemplateResourceLoader is null");
+		}
+
 		_templateResource = templateResource;
 		_errorTemplateResource = errorTemplateResource;
 		_templateContextHelper = templateContextHelper;
+
+		_cacheTemplateResource(templateResourceLoaderName, interval);
 	}
 
 	public void prepare(HttpServletRequest request) {
@@ -94,6 +106,37 @@ public abstract class AbstractTemplate implements Template {
 	protected abstract void processTemplate(
 			TemplateResource templateResource, Writer writer)
 		throws Exception;
+
+	private void _cacheTemplateResource(
+		String templateResourceLoaderName, long interval) {
+
+		if (interval == 0) {
+			return;
+		}
+
+		String cacheName = TemplateResourceLoader.class.getName().concat(
+			StringPool.POUND).concat(templateResourceLoaderName);
+
+		PortalCache portalCache = MultiVMPoolUtil.getCache(cacheName);
+
+		Object object = portalCache.get(_templateResource.getTemplateId());
+
+		if ((object == null) || !_templateResource.equals(object)) {
+			portalCache.put(
+				_templateResource.getTemplateId(), _templateResource);
+		}
+
+		if (_errorTemplateResource == null) {
+			return;
+		}
+
+		object = portalCache.get(_errorTemplateResource.getTemplateId());
+
+		if ((object == null) || !_errorTemplateResource.equals(object)) {
+			portalCache.put(
+				_errorTemplateResource.getTemplateId(), _errorTemplateResource);
+		}
+	}
 
 	private TemplateResource _errorTemplateResource;
 	private TemplateContextHelper _templateContextHelper;
