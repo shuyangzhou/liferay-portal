@@ -14,11 +14,18 @@
 
 package com.liferay.portal.freemarker;
 
+import com.liferay.portal.kernel.cache.MultiVMPoolUtil;
+import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.template.StringTemplateResource;
 import com.liferay.portal.kernel.template.TemplateException;
+import com.liferay.portal.kernel.template.TemplateManager;
 import com.liferay.portal.kernel.template.TemplateResource;
+import com.liferay.portal.kernel.template.TemplateResourceLoader;
+import com.liferay.portal.kernel.template.TemplateResourceLoaderUtil;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.template.AbstractTemplate;
 import com.liferay.portal.template.TemplateContextHelper;
+import com.liferay.portal.util.PropsValues;
 
 import freemarker.core.ParseException;
 
@@ -44,6 +51,13 @@ public class FreeMarkerTemplate extends AbstractTemplate {
 		TemplateContextHelper templateContextHelper) {
 
 		super(templateResource, errorTemplateResource, templateContextHelper);
+
+		if (PropsValues.FREEMARKER_ENGINE_RESOURCE_MODIFICATION_CHECK_INTERVAL
+			!= 0) {
+
+			cacheTemplateResource(_portalCache, templateResource);
+			cacheTemplateResource(_portalCache, errorTemplateResource);
+		}
 
 		// Template is always being used as stack local, no way it could be
 		// shared across threads, so the threadsafty protection is not needed.
@@ -135,7 +149,20 @@ public class FreeMarkerTemplate extends AbstractTemplate {
 		}
 	}
 
+	private static PortalCache _portalCache;
+
 	private Configuration _configuration;
 	private Map<String, Object> _context;
+
+	static {
+		String loaderName =
+			TemplateResourceLoaderUtil.getTemplateResourceLoader(
+				TemplateManager.FREEMARKER).getName();
+
+		String cacheName = TemplateResourceLoader.class.getName().concat(
+			StringPool.POUND).concat(loaderName);
+
+		_portalCache = MultiVMPoolUtil.getCache(cacheName);
+	}
 
 }
