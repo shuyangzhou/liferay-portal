@@ -19,12 +19,14 @@ import com.liferay.portal.kernel.cache.MultiVMPoolUtil;
 import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.template.StringTemplateResource;
 import com.liferay.portal.kernel.template.TemplateException;
 import com.liferay.portal.kernel.template.TemplateManager;
 import com.liferay.portal.kernel.template.TemplateResource;
 import com.liferay.portal.kernel.template.TemplateResourceLoader;
 import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -63,18 +65,24 @@ public class DefaultTemplateResourceLoader implements TemplateResourceLoader {
 		//Different tempalte engine should use different portal cache.
 		_portalCache = MultiVMPoolUtil.getCache(
 			name + StringPool.COLON + TemplateResourceLoader.class.getName());
+
+		_stringTemplateResourceCache = MultiVMPoolUtil.getCache(
+			name + StringPool.COLON + StringTemplateResource.class.getName());
 	}
 
 	public void clearCache() {
 		_portalCache.removeAll();
+		_stringTemplateResourceCache.removeAll();
 	}
 
 	public void clearCache(String templateId) {
 		_portalCache.remove(templateId);
+		_stringTemplateResourceCache.remove(templateId);
 	}
 
 	public void destroy() {
 		_portalCache.destroy();
+		_stringTemplateResourceCache.destroy();
 
 		_templateResourceParsers.clear();
 	}
@@ -96,6 +104,10 @@ public class DefaultTemplateResourceLoader implements TemplateResourceLoader {
 
 		templateResource = _loadFromParser(templateId);
 
+		if (templateResource == null) {
+			templateResource = _loadStringTemplateResource(templateId);
+		}
+
 		if (_modificationCheckInterval != 0) {
 			if (templateResource == null) {
 				_portalCache.put(templateId, new NullHolderTemplateResource());
@@ -107,6 +119,37 @@ public class DefaultTemplateResourceLoader implements TemplateResourceLoader {
 		}
 
 		return templateResource;
+	}
+
+	public TemplateResource getTemplateResource(
+		String templateId, String templateContent) {
+
+		if (Validator.isNull(templateId)) {
+			throw new IllegalArgumentException("Template ID is null");
+		}
+
+		if (Validator.isNull(templateContent)) {
+			return getTemplateResource(templateId);
+		}
+
+		TemplateResource templateResource = _loadFromCache(templateId);
+
+		if ((templateResource != null) &&
+			(templateResource instanceof StringTemplateResource)) {
+
+			StringTemplateResource stringTemplateResource =
+				(StringTemplateResource)templateResource;
+
+			if (stringTemplateResource.getContent().equals(templateContent)) {
+				return templateResource;
+			}
+
+			_portalCache.remove(templateId);
+		}
+
+		_stringTemplateResourceCache.put(templateId, templateContent);
+
+		return new StringTemplateResource(templateId, templateContent);
 	}
 
 	public boolean hasTemplateResource(String templateId) {
@@ -184,12 +227,27 @@ public class DefaultTemplateResourceLoader implements TemplateResourceLoader {
 		return null;
 	}
 
+	private TemplateResource _loadStringTemplateResource(String templateId) {
+		Object templateContent = _stringTemplateResourceCache.get(templateId);
+
+		if (templateContent instanceof String) {
+			String content = (String)templateContent;
+
+			if (Validator.isNotNull(content)) {
+				return new StringTemplateResource(templateId, content);
+			}
+		}
+
+		return null;
+	}
+
 	private static Log _log = LogFactoryUtil.getLog(
 		DefaultTemplateResourceLoader.class);
 
 	private long _modificationCheckInterval;
 	private String _name;
 	private PortalCache _portalCache;
+	private PortalCache _stringTemplateResourceCache;
 	private Set<TemplateResourceParser> _templateResourceParsers =
 		new HashSet<TemplateResourceParser>();
 
