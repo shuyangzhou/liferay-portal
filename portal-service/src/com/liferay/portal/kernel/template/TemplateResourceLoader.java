@@ -29,6 +29,9 @@ public interface TemplateResourceLoader {
 
 	public TemplateResource getTemplateResource(String templateId);
 
+	public TemplateResource getTemplateResource(
+		String templateId, String templateContent);
+
 	public boolean hasTemplateResource(String templateId);
 
 }

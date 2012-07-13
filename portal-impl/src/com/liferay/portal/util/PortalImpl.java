@@ -4550,7 +4550,14 @@ public class PortalImpl implements Portal {
 			return true;
 		}
 
-		String strutsAction = ParamUtil.getString(request, "struts_action");
+		String namespace = getPortletNamespace(portletId);
+
+		String strutsAction = ParamUtil.getString(
+			request, namespace + "struts_action");
+
+		if (Validator.isNull(strutsAction)) {
+			strutsAction = ParamUtil.getString(request, "struts_action");
+		}
 
 		if (_portletAddDefaultResourceCheckWhitelistActions.contains(
 				strutsAction)) {

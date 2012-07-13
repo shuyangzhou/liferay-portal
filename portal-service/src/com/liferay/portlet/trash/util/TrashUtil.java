@@ -16,6 +16,11 @@ package com.liferay.portlet.trash.util;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.search.Document;
+import com.liferay.portal.kernel.search.Field;
+import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
@@ -23,12 +28,18 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.service.GroupLocalServiceUtil;
+import com.liferay.portlet.trash.model.TrashEntry;
+import com.liferay.portlet.trash.service.TrashEntryLocalServiceUtil;
 import com.liferay.portlet.trash.util.comparator.EntryCreateDateComparator;
 import com.liferay.portlet.trash.util.comparator.EntryTypeComparator;
 import com.liferay.portlet.trash.util.comparator.EntryUserNameComparator;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Sergio González
+ * @author Julio Camarero
  */
 public class TrashUtil {
 
@@ -37,6 +48,33 @@ public class TrashUtil {
 	public static final int TRASH_DISABLED_BY_DEFAULT = 1;
 
 	public static final int TRASH_ENABLED_BY_DEFAULT = 2;
+
+	public static List<TrashEntry> getEntries(Hits hits) {
+		List<TrashEntry> entries = new ArrayList<TrashEntry>();
+
+		for (Document document : hits.getDocs()) {
+			String entryClassName = GetterUtil.getString(
+				document.get(Field.ENTRY_CLASS_NAME));
+			long classPK = GetterUtil.getLong(
+				document.get(Field.ENTRY_CLASS_PK));
+
+			try {
+				TrashEntry entry = TrashEntryLocalServiceUtil.getEntry(
+					entryClassName, classPK);
+
+				entries.add(entry);
+			}
+			catch (Exception e) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						"Unable to find trash entry for " + entryClassName +
+							" with primary key " + classPK);
+				}
+			}
+		}
+
+		return entries;
+	}
 
 	public static OrderByComparator getEntryOrderByComparator(
 		String orderByCol, String orderByType) {
@@ -81,5 +119,7 @@ public class TrashUtil {
 			typeSettingsProperties.getProperty("trashEnabled"),
 			(trashEnabled == TRASH_ENABLED_BY_DEFAULT));
 	}
+
+	private static Log _log = LogFactoryUtil.getLog(TrashUtil.class);
 
 }

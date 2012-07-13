@@ -16,7 +16,10 @@
 
 <%@ include file="/html/portlet/init.jsp" %>
 
-<%@ page import="com.liferay.portal.kernel.trash.TrashHandler" %><%@
+<%@ page import="com.liferay.portal.kernel.search.Hits" %><%@
+page import="com.liferay.portal.kernel.search.Sort" %><%@
+page import="com.liferay.portal.kernel.search.SortFactoryUtil" %><%@
+page import="com.liferay.portal.kernel.trash.TrashHandler" %><%@
 page import="com.liferay.portal.kernel.trash.TrashHandlerRegistryUtil" %><%@
 page import="com.liferay.portal.kernel.trash.TrashRenderer" %><%@
 page import="com.liferay.portlet.asset.model.AssetEntry" %><%@
@@ -28,8 +31,10 @@ page import="com.liferay.portlet.trash.model.TrashEntry" %><%@
 page import="com.liferay.portlet.trash.model.TrashEntryList" %><%@
 page import="com.liferay.portlet.trash.model.impl.TrashEntryImpl" %><%@
 page import="com.liferay.portlet.trash.search.EntrySearch" %><%@
+page import="com.liferay.portlet.trash.search.EntrySearchTerms" %><%@
 page import="com.liferay.portlet.trash.service.TrashEntryLocalServiceUtil" %><%@
-page import="com.liferay.portlet.trash.service.TrashEntryServiceUtil" %>
+page import="com.liferay.portlet.trash.service.TrashEntryServiceUtil" %><%@
+page import="com.liferay.portlet.trash.util.TrashUtil" %>
 
 <%@ include file="/html/portlet/trash/init-ext.jsp" %>
 

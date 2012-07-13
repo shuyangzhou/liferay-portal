@@ -87,6 +87,10 @@ public class Field implements Serializable {
 
 	public static final String PROPERTIES = "properties";
 
+	public static final String REMOVED_BY_USER_NAME = "removedByUserName";
+
+	public static final String REMOVED_DATE = "removedDate";
+
 	public static final String ROLE_ID = "roleId";
 
 	public static final String ROOT_ENTRY_CLASS_PK = "rootEntryClassPK";
