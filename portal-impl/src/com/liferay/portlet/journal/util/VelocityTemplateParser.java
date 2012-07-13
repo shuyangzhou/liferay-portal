@@ -15,12 +15,12 @@
 package com.liferay.portlet.journal.util;
 
 import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
-import com.liferay.portal.kernel.template.StringTemplateResource;
 import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateContextType;
 import com.liferay.portal.kernel.template.TemplateManager;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.kernel.template.TemplateResource;
+import com.liferay.portal.kernel.template.TemplateResourceLoaderUtil;
 import com.liferay.portal.kernel.templateparser.BaseTemplateParser;
 import com.liferay.portal.kernel.templateparser.TemplateContext;
 import com.liferay.portal.kernel.templateparser.TemplateNode;
@@ -67,10 +67,13 @@ public class VelocityTemplateParser extends BaseTemplateParser {
 
 	@Override
 	protected TemplateContext getTemplateContext() throws Exception {
-		TemplateResource templateResource = new StringTemplateResource(
-			getTemplateId(), getScript());
-		TemplateResource errorTemplateResource = new StringTemplateResource(
-			getErrorTemplateId(), getErrorTemplateContent());
+		TemplateResource templateResource =
+			TemplateResourceLoaderUtil.getTemplateResource(
+				TemplateManager.VELOCITY, getTemplateId(), getScript());
+		TemplateResource errorTemplateResource =
+			TemplateResourceLoaderUtil.getTemplateResource(
+				TemplateManager.VELOCITY, getErrorTemplateId(),
+				getErrorTemplateContent());
 
 		return TemplateManagerUtil.getTemplate(
 			TemplateManager.VELOCITY, templateResource, errorTemplateResource,
