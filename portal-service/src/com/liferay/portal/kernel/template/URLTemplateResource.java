@@ -44,6 +44,28 @@ public class URLTemplateResource implements TemplateResource {
 		_templateURL = templateURL;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof URLTemplateResource)) {
+			return false;
+		}
+
+		URLTemplateResource urlTemplateResource = (URLTemplateResource)obj;
+
+		// No need to use Validator, as constructor ensures they are not null
+		if (_templateId.equals(urlTemplateResource._templateId) &&
+			_templateURL.equals(urlTemplateResource._templateURL)) {
+
+			return true;
+		}
+
+		return false;
+	}
+
 	public long getLastModified() {
 		URLConnection urlConnection = null;
 
@@ -99,6 +121,11 @@ public class URLTemplateResource implements TemplateResource {
 
 	public String getTemplateId() {
 		return _templateId;
+	}
+
+	@Override
+	public int hashCode() {
+		return _templateId.hashCode() * 11 + _templateURL.hashCode();
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(URLTemplateResource.class);
