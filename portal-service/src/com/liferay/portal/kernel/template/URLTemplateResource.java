@@ -16,6 +16,7 @@ package com.liferay.portal.kernel.template;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,7 +33,7 @@ import java.net.URLConnection;
 public class URLTemplateResource implements TemplateResource {
 
 	public URLTemplateResource(String templateId, URL templateURL) {
-		if (templateId == null) {
+		if (Validator.isNull(templateId)) {
 			throw new IllegalArgumentException("Template ID is null");
 		}
 
@@ -109,10 +110,6 @@ public class URLTemplateResource implements TemplateResource {
 	}
 
 	public Reader getReader() throws IOException {
-		if (_templateURL == null) {
-			return null;
-		}
-
 		URLConnection urlConnection = _templateURL.openConnection();
 
 		return new InputStreamReader(

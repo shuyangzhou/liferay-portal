@@ -15,6 +15,7 @@
 package com.liferay.portal.kernel.template;
 
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portlet.journal.model.JournalTemplate;
 
 import java.io.Reader;
@@ -29,7 +30,7 @@ public class JournalTemplateResource implements TemplateResource {
 	public JournalTemplateResource(
 		String templateId, JournalTemplate journalTemplate) {
 
-		if (templateId == null) {
+		if (Validator.isNull(templateId)) {
 			throw new IllegalArgumentException("Template ID is null");
 		}
 
@@ -71,10 +72,6 @@ public class JournalTemplateResource implements TemplateResource {
 	}
 
 	public Reader getReader() {
-		if (_journalTemplate == null) {
-			return null;
-		}
-
 		String xsl = _journalTemplate.getXsl();
 
 		return new UnsyncStringReader(xsl);

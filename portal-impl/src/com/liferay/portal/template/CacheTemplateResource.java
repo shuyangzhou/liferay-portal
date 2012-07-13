@@ -74,10 +74,6 @@ public class CacheTemplateResource implements TemplateResource {
 		try {
 			reader = _templateResource.getReader();
 
-			if (reader == null) {
-				return null;
-			}
-
 			char[] buffer = new char[1024];
 
 			int result = -1;
