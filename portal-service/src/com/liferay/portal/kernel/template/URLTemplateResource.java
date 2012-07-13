@@ -109,10 +109,6 @@ public class URLTemplateResource implements TemplateResource {
 	}
 
 	public Reader getReader() throws IOException {
-		if (_templateURL == null) {
-			return null;
-		}
-
 		URLConnection urlConnection = _templateURL.openConnection();
 
 		return new InputStreamReader(

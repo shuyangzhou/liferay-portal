@@ -28,8 +28,8 @@ import freemarker.template.Template;
 import java.io.Reader;
 import java.io.Writer;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Mika Koivisto
@@ -45,7 +45,9 @@ public class FreeMarkerTemplate extends AbstractTemplate {
 
 		super(templateResource, errorTemplateResource, templateContextHelper);
 
-		_context = new ConcurrentHashMap<String, Object>();
+		// Template is always being used as stack local, no way it could be
+		// shared across threads, so the threadsafty protection is not needed.
+		_context = new HashMap<String, Object>();
 
 		if (context != null) {
 			for (Map.Entry<String, Object> entry : context.entrySet()) {
@@ -115,22 +117,22 @@ public class FreeMarkerTemplate extends AbstractTemplate {
 			TemplateResource templateResource, Writer writer)
 		throws Exception {
 
-		if (templateResource == null) {
-			throw new Exception("Unable to find template resource");
+		Reader reader = null;
+
+		try {
+			reader = templateResource.getReader();
+
+			Template template = new Template(
+				templateResource.getTemplateId(), reader, _configuration,
+				TemplateResource.DEFAUT_ENCODING);
+
+			template.process(_context, writer);
 		}
-
-		Reader reader = templateResource.getReader();
-
-		if (reader == null) {
-			throw new Exception(
-				"Unable to find template resource " + templateResource);
+		finally {
+			if (reader != null) {
+				reader.close();
+			}
 		}
-
-		Template template = new Template(
-			templateResource.getTemplateId(), reader, _configuration,
-			TemplateResource.DEFAUT_ENCODING);
-
-		template.process(_context, writer);
 	}
 
 	private Configuration _configuration;

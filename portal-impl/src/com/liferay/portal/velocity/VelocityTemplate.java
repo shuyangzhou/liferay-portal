@@ -102,16 +102,7 @@ public class VelocityTemplate extends AbstractTemplate {
 		Reader reader = null;
 
 		try {
-			if (templateResource == null) {
-				throw new Exception("Unable to find template resource");
-			}
-
 			reader = templateResource.getReader();
-
-			if (reader == null) {
-				throw new Exception(
-					"Unable to find template resource " + templateResource);
-			}
 
 			_velocityEngine.evaluate(
 				_velocityContext, writer, templateResource.getTemplateId(),

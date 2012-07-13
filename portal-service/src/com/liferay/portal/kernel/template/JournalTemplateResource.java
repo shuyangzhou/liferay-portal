@@ -71,10 +71,6 @@ public class JournalTemplateResource implements TemplateResource {
 	}
 
 	public Reader getReader() {
-		if (_journalTemplate == null) {
-			return null;
-		}
-
 		String xsl = _journalTemplate.getXsl();
 
 		return new UnsyncStringReader(xsl);

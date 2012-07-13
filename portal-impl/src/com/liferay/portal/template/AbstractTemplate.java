@@ -34,13 +34,16 @@ public abstract class AbstractTemplate implements Template {
 		TemplateResource errorTemplateResource,
 		TemplateContextHelper templateContextHelper) {
 
-		_templateResource = templateResource;
-
-		if (errorTemplateResource != null) {
-			_errorTemplateResource = errorTemplateResource;
-			_hasErrorTemplate = true;
+		if (templateResource == null) {
+			throw new IllegalArgumentException("TemplateResource is null");
 		}
 
+		if (templateContextHelper == null) {
+			throw new IllegalArgumentException("TemplateContextHelper is null");
+		}
+
+		_templateResource = templateResource;
+		_errorTemplateResource = errorTemplateResource;
 		_templateContextHelper = templateContextHelper;
 	}
 
@@ -49,7 +52,7 @@ public abstract class AbstractTemplate implements Template {
 	}
 
 	public boolean processTemplate(Writer writer) throws TemplateException {
-		if (!_hasErrorTemplate) {
+		if (_errorTemplateResource == null) {
 			try {
 				processTemplate(_templateResource, writer);
 
@@ -93,7 +96,6 @@ public abstract class AbstractTemplate implements Template {
 		throws Exception;
 
 	private TemplateResource _errorTemplateResource;
-	private boolean _hasErrorTemplate;
 	private TemplateContextHelper _templateContextHelper;
 	private TemplateResource _templateResource;
 

@@ -68,10 +68,6 @@ public class StringTemplateResource implements TemplateResource {
 	}
 
 	public Reader getReader() {
-		if (_templateContent == null) {
-			return null;
-		}
-
 		return new UnsyncStringReader(_templateContent);
 	}
 
