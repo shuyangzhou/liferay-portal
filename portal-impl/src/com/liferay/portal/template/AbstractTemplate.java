@@ -16,10 +16,12 @@ package com.liferay.portal.template;
 
 import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
+import com.liferay.portal.kernel.template.StringTemplateResource;
 import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateException;
 import com.liferay.portal.kernel.template.TemplateResource;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Writer;
 
@@ -91,6 +93,28 @@ public abstract class AbstractTemplate implements Template {
 
 			return false;
 		}
+	}
+
+	protected String getTemplateResourceUUID(
+		TemplateResource templateResource) {
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(TemplateResource.TEMPLATE_RESOURCE_UUID_PREFIX);
+		sb.append(templateResource.getTemplateId());
+		sb.append(StringPool.POUND);
+
+		if (templateResource instanceof StringTemplateResource) {
+			StringTemplateResource stringTemplateResource =
+				(StringTemplateResource)templateResource;
+
+			sb.append(stringTemplateResource.getContent());
+		}
+		else {
+			sb.append(templateResource.getLastModified());
+		}
+
+		return sb.toString();
 	}
 
 	protected abstract void handleException(
