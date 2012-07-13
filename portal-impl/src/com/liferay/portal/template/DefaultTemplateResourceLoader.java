@@ -72,8 +72,10 @@ public class DefaultTemplateResourceLoader implements TemplateResourceLoader {
 		_modificationCheckInterval = modificationCheckInterval;
 
 		//Different tempalte engine should use different portal cache.
-		_portalCache = MultiVMPoolUtil.getCache(
-			name + StringPool.COLON + TemplateResourceLoader.class.getName());
+		String cacheName = TemplateResourceLoader.class.getName().concat(
+			StringPool.POUND).concat(name);
+
+		_portalCache = MultiVMPoolUtil.getCache(cacheName);
 	}
 
 	public void clearCache() {
@@ -109,11 +111,10 @@ public class DefaultTemplateResourceLoader implements TemplateResourceLoader {
 
 		if (_modificationCheckInterval != 0) {
 			if (templateResource == null) {
-				_portalCache.put(templateId, new NullHolderTemplateResource());
+				templateResource = new NullHolderTemplateResource();
 			}
-			else {
-				_portalCache.put(templateId, templateResource);
-			}
+
+			_portalCache.put(templateId, templateResource);
 		}
 
 		return templateResource;
@@ -136,30 +137,41 @@ public class DefaultTemplateResourceLoader implements TemplateResourceLoader {
 
 		Object object = _portalCache.get(templateId);
 
-		if ((object == null) || !(object instanceof TemplateResource)) {
+		if (object == null) {
+			return null;
+		}
+
+		if (!(object instanceof TemplateResource)) {
+			_portalCache.remove(templateId);
+
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					"Remove template " + templateId +
+						" because it is not a template resource");
+			}
+
 			return null;
 		}
 
 		TemplateResource templateResource = (TemplateResource)object;
 
-		if (_modificationCheckInterval < 0) {
-			return templateResource;
+		if (_modificationCheckInterval > 0) {
+			long expireTime =
+				templateResource.getLastModified() + _modificationCheckInterval;
+
+			if (System.currentTimeMillis() > expireTime) {
+				_portalCache.remove(templateId);
+
+				templateResource = null;
+
+				if (_log.isDebugEnabled()) {
+					_log.debug(
+						"Remove expired template resource " + templateId);
+				}
+			}
 		}
 
-		long expireTime =
-			templateResource.getLastModified() + _modificationCheckInterval;
-
-		if (expireTime > System.currentTimeMillis()) {
-			return templateResource;
-		}
-
-		_portalCache.remove(templateId);
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Reload stale template " + templateId);
-		}
-
-		return null;
+		return templateResource;
 	}
 
 	private TemplateResource _loadFromParser(String templateId) {
@@ -204,9 +216,6 @@ public class DefaultTemplateResourceLoader implements TemplateResourceLoader {
 		new HashSet<TemplateResourceParser>();
 
 	private class NullHolderTemplateResource implements TemplateResource {
-
-		public NullHolderTemplateResource() {
-		}
 
 		public long getLastModified() {
 			return _lastModified;
