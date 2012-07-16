@@ -72,6 +72,18 @@ public class TemplateResourceLoaderUtil {
 		return templateResourceLoader.getTemplateResource(templateId);
 	}
 
+	public static TemplateResource getTemplateResource(
+			String templateResourceLoaderName, String templateId,
+			String templateContent)
+		throws TemplateException {
+
+		TemplateResourceLoader templateResourceLoader =
+			_getTemplateResourceLoader(templateResourceLoaderName);
+
+		return templateResourceLoader.getTemplateResource(
+			templateId, templateContent);
+	}
+
 	public static TemplateResourceLoader getTemplateResourceLoader(
 		String templateResourceLoaderName) {
 
