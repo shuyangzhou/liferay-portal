@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.template.TemplateContextType;
 import com.liferay.portal.kernel.template.TemplateManager;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.kernel.template.TemplateResource;
+import com.liferay.portal.kernel.template.TemplateResourceLoaderUtil;
 import com.liferay.portal.kernel.templateparser.BaseTemplateParser;
 import com.liferay.portal.kernel.templateparser.TemplateContext;
 import com.liferay.portal.kernel.templateparser.TemplateNode;
@@ -30,7 +31,6 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.template.TemplateResourceParser;
 import com.liferay.portal.util.PropsValues;
-import com.liferay.util.ContentUtil;
 import com.liferay.util.PwdGenerator;
 
 import java.util.ArrayList;
@@ -44,10 +44,6 @@ import java.util.Map;
  * @author Raymond Augé
  */
 public class VelocityTemplateParser extends BaseTemplateParser {
-
-	protected String getErrorTemplateContent() {
-		return ContentUtil.get(PropsValues.JOURNAL_ERROR_TEMPLATE_VELOCITY);
-	}
 
 	protected String getErrorTemplateId() {
 		return PropsValues.JOURNAL_ERROR_TEMPLATE_VELOCITY;
@@ -69,8 +65,9 @@ public class VelocityTemplateParser extends BaseTemplateParser {
 	protected TemplateContext getTemplateContext() throws Exception {
 		TemplateResource templateResource = new StringTemplateResource(
 			getTemplateId(), getScript());
-		TemplateResource errorTemplateResource = new StringTemplateResource(
-			getErrorTemplateId(), getErrorTemplateContent());
+		TemplateResource errorTemplateResource =
+			TemplateResourceLoaderUtil.getTemplateResource(
+				TemplateManager.VELOCITY, getErrorTemplateId());
 
 		return TemplateManagerUtil.getTemplate(
 			TemplateManager.VELOCITY, templateResource, errorTemplateResource,
