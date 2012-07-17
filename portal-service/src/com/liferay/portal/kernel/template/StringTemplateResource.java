@@ -36,6 +36,29 @@ public class StringTemplateResource implements TemplateResource {
 		_templateContent = templateContent;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof StringTemplateResource)) {
+			return false;
+		}
+
+		StringTemplateResource stringTemplateResource =
+			(StringTemplateResource)obj;
+
+		// No need to use Validator, as constructor ensures they are not null
+		if (_templateId.equals(stringTemplateResource._templateId) &&
+			_templateContent.equals(stringTemplateResource._templateContent)) {
+
+			return true;
+		}
+
+		return false;
+	}
+
 	public String getContent() {
 		return _templateContent;
 	}
@@ -45,15 +68,16 @@ public class StringTemplateResource implements TemplateResource {
 	}
 
 	public Reader getReader() {
-		if (_templateContent == null) {
-			return null;
-		}
-
 		return new UnsyncStringReader(_templateContent);
 	}
 
 	public String getTemplateId() {
 		return _templateId;
+	}
+
+	@Override
+	public int hashCode() {
+		return _templateId.hashCode() * 11 + _templateContent.hashCode();
 	}
 
 	private long _lastModified = System.currentTimeMillis();
