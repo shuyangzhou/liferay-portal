@@ -38,7 +38,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PrefsPropsUtil;
 import com.liferay.portlet.PortletPreferencesFactoryUtil;
-import com.liferay.util.ContentUtil;
 
 import java.lang.reflect.Method;
 
@@ -115,9 +114,9 @@ public class RendererImpl implements Renderer {
 				BeanLocator beanLocator = PortletBeanLocatorUtil.getBeanLocator(
 					servletContextName);
 
-				velocityTemplateContent = ContentUtil.get(
+				velocityTemplateContent = StringUtil.read(
 					beanLocator.getClassLoader(),
-					PropsUtil.get(RENDERER_TEMPLATE_PREFIX + className));
+					PropsUtil.get(RENDERER_TEMPLATE_PREFIX + className), false);
 			}
 			catch (Exception e) {
 			}

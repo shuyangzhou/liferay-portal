@@ -19,21 +19,15 @@ import com.liferay.portal.kernel.template.TemplateContextType;
 import com.liferay.portal.kernel.template.TemplateManager;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.kernel.template.TemplateResource;
+import com.liferay.portal.kernel.template.TemplateResourceLoaderUtil;
 import com.liferay.portal.kernel.templateparser.TemplateContext;
 import com.liferay.portal.util.PropsValues;
-import com.liferay.util.ContentUtil;
 
 /**
  * @author Marcellus Tavares
  */
 public class FreeMarkerTemplateParser extends
 	com.liferay.portlet.journal.util.FreeMarkerTemplateParser {
-
-	@Override
-	protected String getErrorTemplateContent() {
-		return ContentUtil.get(
-			PropsValues.DYNAMIC_DATA_LISTS_ERROR_TEMPLATE_FREEMARKER);
-	}
 
 	@Override
 	protected String getErrorTemplateId() {
@@ -44,8 +38,9 @@ public class FreeMarkerTemplateParser extends
 	protected TemplateContext getTemplateContext() throws Exception {
 		TemplateResource templateResource = new StringTemplateResource(
 			getTemplateId(), getScript());
-		TemplateResource errorTemplateResource = new StringTemplateResource(
-			getErrorTemplateId(), getErrorTemplateContent());
+		TemplateResource errorTemplateResource =
+			TemplateResourceLoaderUtil.getTemplateResource(
+				TemplateManager.FREEMARKER, getErrorTemplateId());
 
 		return TemplateManagerUtil.getTemplate(
 			TemplateManager.FREEMARKER, templateResource, errorTemplateResource,
