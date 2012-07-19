@@ -4507,6 +4507,16 @@ public class PortalImpl implements Portal {
 			if (layoutTypePortlet.hasPortletId(checkPortletId)) {
 				return true;
 			}
+
+			String resourcePrimKey = PortletPermissionUtil.getPrimaryKey(
+				themeDisplay.getPlid(), portletId);
+
+			if (ResourcePermissionLocalServiceUtil.getResourcePermissionsCount(
+					themeDisplay.getCompanyId(), portlet.getPortletName(),
+					ResourceConstants.SCOPE_INDIVIDUAL, resourcePrimKey) > 0) {
+
+				return true;
+			}
 		}
 
 		if (themeDisplay.isSignedIn() &&

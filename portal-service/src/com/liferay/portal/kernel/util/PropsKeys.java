@@ -2379,4 +2379,16 @@ public interface PropsKeys {
 
 	public static final String YM_PASSWORD = "ym.password";
 
+	public static final String YUI_COMPRESSOR_CSS_LINE_BREAK = "yui.compressor.css.line.break";
+
+	public static final String YUI_COMPRESSOR_JS_DISABLE_OPTIMIZATIONS = "yui.compressor.js.disable.optimizations";
+
+	public static final String YUI_COMPRESSOR_JS_LINE_BREAK = "yui.compressor.js.line.break";
+
+	public static final String YUI_COMPRESSOR_JS_MUNGE = "yui.compressor.js.munge";
+
+	public static final String YUI_COMPRESSOR_JS_PRESERVE_ALL_SEMICOLONS = "yui.compressor.js.preserve.all.semicolons";
+
+	public static final String YUI_COMPRESSOR_JS_VERBOSE = "yui.compressor.js.verbose";
+
 }

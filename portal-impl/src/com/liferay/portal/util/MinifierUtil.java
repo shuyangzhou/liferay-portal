@@ -56,7 +56,8 @@ public class MinifierUtil {
 			CssCompressor cssCompressor = new CssCompressor(
 				new UnsyncStringReader(content));
 
-			cssCompressor.compress(unsyncStringWriter, _CSS_LINE_BREAK);
+			cssCompressor.compress(
+				unsyncStringWriter, PropsValues.YUI_COMPRESSOR_CSS_LINE_BREAK);
 		}
 		catch (Exception e) {
 			_log.error("CSS Minifier failed for\n" + content);
@@ -77,8 +78,11 @@ public class MinifierUtil {
 					new JavaScriptErrorReporter());
 
 			javaScriptCompressor.compress(
-					unsyncStringWriter, _JS_LINE_BREAK, _JS_MUNGE, _JS_VERBOSE,
-					_JS_PRESERVE_ALL_SEMICOLONS, _JS_DISABLE_OPTIMIZATIONS);
+				unsyncStringWriter, PropsValues.YUI_COMPRESSOR_JS_LINE_BREAK,
+				PropsValues.YUI_COMPRESSOR_JS_MUNGE,
+				PropsValues.YUI_COMPRESSOR_JS_VERBOSE,
+				PropsValues.YUI_COMPRESSOR_JS_PRESERVE_ALL_SEMICOLONS,
+				PropsValues.YUI_COMPRESSOR_JS_DISABLE_OPTIMIZATIONS);
 		}
 		catch (Exception e) {
 			_log.error("JavaScript Minifier failed for\n" + content);
@@ -88,18 +92,6 @@ public class MinifierUtil {
 
 		return unsyncStringWriter.toString();
 	}
-
-	private static final int _CSS_LINE_BREAK = -1;
-
-	private static final boolean _JS_DISABLE_OPTIMIZATIONS = false;
-
-	private static final int _JS_LINE_BREAK = -1;
-
-	private static final boolean _JS_MUNGE = true;
-
-	private static final boolean _JS_PRESERVE_ALL_SEMICOLONS = false;
-
-	private static final boolean _JS_VERBOSE = false;
 
 	private static Log _log = LogFactoryUtil.getLog(MinifierUtil.class);
 

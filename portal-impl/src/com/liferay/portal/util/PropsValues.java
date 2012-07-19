@@ -1730,6 +1730,18 @@ public class PropsValues {
 
 	public static final String XUGGLER_JAR_URL = PropsUtil.get(PropsKeys.XUGGLER_JAR_URL);
 
+	public static final int YUI_COMPRESSOR_CSS_LINE_BREAK = GetterUtil.getInteger(PropsUtil.get(PropsKeys.YUI_COMPRESSOR_CSS_LINE_BREAK));
+
+	public static final boolean YUI_COMPRESSOR_JS_DISABLE_OPTIMIZATIONS = GetterUtil.getBoolean(PropsUtil.get(PropsKeys.YUI_COMPRESSOR_JS_DISABLE_OPTIMIZATIONS));
+
+	public static final int YUI_COMPRESSOR_JS_LINE_BREAK = GetterUtil.getInteger(PropsUtil.get(PropsKeys.YUI_COMPRESSOR_JS_LINE_BREAK));
+
+	public static final boolean YUI_COMPRESSOR_JS_MUNGE = GetterUtil.getBoolean(PropsUtil.get(PropsKeys.YUI_COMPRESSOR_JS_MUNGE));
+
+	public static final boolean YUI_COMPRESSOR_JS_PRESERVE_ALL_SEMICOLONS = GetterUtil.getBoolean(PropsUtil.get(PropsKeys.YUI_COMPRESSOR_JS_PRESERVE_ALL_SEMICOLONS));
+
+	public static final boolean YUI_COMPRESSOR_JS_VERBOSE = GetterUtil.getBoolean(PropsUtil.get(PropsKeys.YUI_COMPRESSOR_JS_VERBOSE));
+
 	static {
 		if (!LAYOUT_USER_PRIVATE_LAYOUTS_ENABLED) {
 			LAYOUT_USER_PRIVATE_LAYOUTS_AUTO_CREATE = false;

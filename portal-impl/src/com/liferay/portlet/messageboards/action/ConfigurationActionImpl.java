@@ -108,8 +108,8 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 
 		Locale[] locales = LanguageUtil.getAvailableLocales();
 
-		for (int i = 0; i < locales.length; i++) {
-			String languageId = LocaleUtil.toLanguageId(locales[i]);
+		for (Locale locale : locales) {
+			String languageId = LocaleUtil.toLanguageId(locale);
 
 			String[] ranks = StringUtil.splitLines(
 				ParamUtil.getString(actionRequest, "ranks_" + languageId));

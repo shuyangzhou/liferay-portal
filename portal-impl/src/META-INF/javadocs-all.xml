@@ -76662,6 +76662,13 @@ Holds context information that is used during exporting and importing portlet da
 			</throws>
 		</method>
 		<method>
+			<name>getDataPortletPreferences</name>
+			<comment><![CDATA[Returns an array of the portlet preferences that reference data. These preferences should only be updated if the referenced data is imported.]]></comment>
+			<return>
+				<comment><![CDATA[A String array]]></comment>
+			</return>
+		</method>
+		<method>
 			<name>getExportControls</name>
 			<comment><![CDATA[Returns an array of the controls defined for this data handler. These controls enable the developer to create fine grained controls over export behavior. The controls are rendered in the export UI.]]></comment>
 			<return>
@@ -76750,6 +76757,9 @@ Holds context information that is used during exporting and importing portlet da
 		</method>
 		<method>
 			<name>isAlwaysStaged</name>
+		</method>
+		<method>
+			<name>isDataLocalized</name>
 		</method>
 		<method>
 			<name>isPublishToLiveByDefault</name>

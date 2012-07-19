@@ -102,6 +102,10 @@ public class Validator_IW {
 		return Validator.isEmailAddressSpecialChar(c);
 	}
 
+	public boolean isFileExtension(java.lang.String fileExtension) {
+		return Validator.isFileExtension(fileExtension);
+	}
+
 	public boolean isGregorianDate(int month, int day, int year) {
 		return Validator.isGregorianDate(month, day, year);
 	}
