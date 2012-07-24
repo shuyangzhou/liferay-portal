@@ -26,7 +26,6 @@ import com.liferay.portal.kernel.deploy.hot.HotDeployException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.plugin.PluginPackage;
-import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
 import com.liferay.portal.kernel.servlet.ServletContextPool;
 import com.liferay.portal.kernel.util.AggregateClassLoader;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -54,20 +53,11 @@ public class PluginPackageHotDeployListener extends BaseHotDeployListener {
 		throws HotDeployException {
 
 		try {
-			PortletClassLoaderUtil.setClassLoader(
-				hotDeployEvent.getContextClassLoader());
-			PortletClassLoaderUtil.setServletContextName(
-				hotDeployEvent.getServletContextName());
-
 			doInvokeDeploy(hotDeployEvent);
 		}
 		catch (Throwable t) {
 			throwHotDeployException(
 				hotDeployEvent, "Error registering plugins for ", t);
-		}
-		finally {
-			PortletClassLoaderUtil.setClassLoader(null);
-			PortletClassLoaderUtil.setServletContextName(null);
 		}
 	}
 
@@ -75,20 +65,11 @@ public class PluginPackageHotDeployListener extends BaseHotDeployListener {
 		throws HotDeployException {
 
 		try {
-			PortletClassLoaderUtil.setClassLoader(
-				hotDeployEvent.getContextClassLoader());
-			PortletClassLoaderUtil.setServletContextName(
-				hotDeployEvent.getServletContextName());
-
 			doInvokeUndeploy(hotDeployEvent);
 		}
 		catch (Throwable t) {
 			throwHotDeployException(
 				hotDeployEvent, "Error unregistering plugins for ", t);
-		}
-		finally {
-			PortletClassLoaderUtil.setClassLoader(null);
-			PortletClassLoaderUtil.setServletContextName(null);
 		}
 	}
 

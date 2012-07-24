@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.template.TemplateContextType;
 import com.liferay.portal.kernel.template.TemplateManager;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.kernel.template.TemplateResource;
+import com.liferay.portal.kernel.template.URLTemplateResource;
 import com.liferay.portal.kernel.templateparser.BaseTemplateParser;
 import com.liferay.portal.kernel.templateparser.TemplateContext;
 import com.liferay.portal.kernel.templateparser.TemplateNode;
@@ -29,8 +30,9 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.util.PropsValues;
-import com.liferay.util.ContentUtil;
 import com.liferay.util.PwdGenerator;
+
+import java.net.URL;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,12 +46,24 @@ import java.util.Map;
  */
 public class VelocityTemplateParser extends BaseTemplateParser {
 
-	protected String getErrorTemplateContent() {
-		return ContentUtil.get(PropsValues.JOURNAL_ERROR_TEMPLATE_VELOCITY);
-	}
-
 	protected String getErrorTemplateId() {
 		return PropsValues.JOURNAL_ERROR_TEMPLATE_VELOCITY;
+	}
+
+	protected TemplateResource getErrorTemplateResource() {
+		try {
+			Class<?> clazz = getClass();
+
+			ClassLoader classLoader = clazz.getClassLoader();
+
+			URL url = classLoader.getResource(getErrorTemplateId());
+
+			return new URLTemplateResource(getErrorTemplateId(), url);
+		}
+		catch (Exception e) {
+		}
+
+		return null;
 	}
 
 	protected String getJournalTemplatesPath() {
@@ -68,12 +82,10 @@ public class VelocityTemplateParser extends BaseTemplateParser {
 	protected TemplateContext getTemplateContext() throws Exception {
 		TemplateResource templateResource = new StringTemplateResource(
 			getTemplateId(), getScript());
-		TemplateResource errorTemplateResource = new StringTemplateResource(
-			getErrorTemplateId(), getErrorTemplateContent());
 
 		return TemplateManagerUtil.getTemplate(
-			TemplateManager.VELOCITY, templateResource, errorTemplateResource,
-			TemplateContextType.RESTRICTED);
+			TemplateManager.VELOCITY, templateResource,
+			getErrorTemplateResource(), TemplateContextType.RESTRICTED);
 	}
 
 	@Override
@@ -98,14 +110,16 @@ public class VelocityTemplateParser extends BaseTemplateParser {
 				data = dynamicContentElement.getText();
 			}
 
-			String name = dynamicElementElement.attributeValue("name", "");
+			String name = dynamicElementElement.attributeValue(
+				"name", StringPool.BLANK);
 
 			if (name.length() == 0) {
 				throw new TransformException(
 					"Element missing \"name\" attribute");
 			}
 
-			String type = dynamicElementElement.attributeValue("type", "");
+			String type = dynamicElementElement.attributeValue(
+				"type", StringPool.BLANK);
 
 			TemplateNode templateNode = new TemplateNode(
 				getThemeDisplay(), name, stripCDATA(data), type);

@@ -17,7 +17,6 @@ package com.liferay.portal.deploy.hot;
 import com.liferay.portal.kernel.deploy.hot.BaseHotDeployListener;
 import com.liferay.portal.kernel.deploy.hot.HotDeployEvent;
 import com.liferay.portal.kernel.deploy.hot.HotDeployException;
-import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
 import com.liferay.portal.security.pacl.PACLClassLoaderUtil;
 import com.liferay.portal.spring.context.PortletContextLoaderListener;
 
@@ -38,20 +37,11 @@ public class SpringHotDeployListener extends BaseHotDeployListener {
 		throws HotDeployException {
 
 		try {
-			PortletClassLoaderUtil.setClassLoader(
-				hotDeployEvent.getContextClassLoader());
-			PortletClassLoaderUtil.setServletContextName(
-				hotDeployEvent.getServletContextName());
-
 			doInvokeDeploy(hotDeployEvent);
 		}
 		catch (Throwable t) {
 			throwHotDeployException(
 				hotDeployEvent, "Error initializing Spring for ", t);
-		}
-		finally {
-			PortletClassLoaderUtil.setClassLoader(null);
-			PortletClassLoaderUtil.setServletContextName(null);
 		}
 	}
 
@@ -59,20 +49,11 @@ public class SpringHotDeployListener extends BaseHotDeployListener {
 		throws HotDeployException {
 
 		try {
-			PortletClassLoaderUtil.setClassLoader(
-				hotDeployEvent.getContextClassLoader());
-			PortletClassLoaderUtil.setServletContextName(
-				hotDeployEvent.getServletContextName());
-
 			doInvokeUndeploy(hotDeployEvent);
 		}
 		catch (Throwable t) {
 			throwHotDeployException(
 				hotDeployEvent, "Error uninitializing Spring for ", t);
-		}
-		finally {
-			PortletClassLoaderUtil.setClassLoader(null);
-			PortletClassLoaderUtil.setServletContextName(null);
 		}
 	}
 

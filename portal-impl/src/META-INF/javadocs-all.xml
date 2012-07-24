@@ -31873,10 +31873,6 @@ See http://issues.liferay.com/browse/LPS-11061.
 		<method>
 			<name>initPortletApp</name>
 			<param>
-				<name>portlet</name>
-				<type>com.liferay.portal.model.Portlet</type>
-			</param>
-			<param>
 				<name>servletContextName</name>
 				<type>java.lang.String</type>
 			</param>
@@ -31887,6 +31883,10 @@ See http://issues.liferay.com/browse/LPS-11061.
 			<param>
 				<name>classLoader</name>
 				<type>java.lang.ClassLoader</type>
+			</param>
+			<param>
+				<name>portlet</name>
+				<type>com.liferay.portal.model.Portlet</type>
 			</param>
 			<throws>
 				<name>Exception</name>
@@ -36306,24 +36306,6 @@ This action ensures that all requests are secure. Extend this and override the <
 			</param>
 		</method>
 		<method>
-			<name>prepare</name>
-			<param>
-				<name>request</name>
-				<type>javax.servlet.http.HttpServletRequest</type>
-			</param>
-		</method>
-		<method>
-			<name>processTemplate</name>
-			<param>
-				<name>writer</name>
-				<type>java.io.Writer</type>
-			</param>
-			<throws>
-				<name>TemplateException</name>
-				<type>com.liferay.portal.kernel.template.TemplateException</type>
-			</throws>
-		</method>
-		<method>
 			<name>put</name>
 			<param>
 				<name>key</name>
@@ -36335,7 +36317,22 @@ This action ensures that all requests are secure. Extend this and override the <
 			</param>
 		</method>
 		<method>
-			<name>_processTemplate</name>
+			<name>handleException</name>
+			<param>
+				<name>exception</name>
+				<type>java.lang.Exception</type>
+			</param>
+			<param>
+				<name>writer</name>
+				<type>java.io.Writer</type>
+			</param>
+			<throws>
+				<name>TemplateException</name>
+				<type>com.liferay.portal.kernel.template.TemplateException</type>
+			</throws>
+		</method>
+		<method>
+			<name>processTemplate</name>
 			<param>
 				<name>templateResource</name>
 				<type>com.liferay.portal.kernel.template.TemplateResource</type>
@@ -36354,18 +36351,6 @@ This action ensures that all requests are secure. Extend this and override the <
 		</field>
 		<field>
 			<name>_context</name>
-		</field>
-		<field>
-			<name>_errorTemplateResource</name>
-		</field>
-		<field>
-			<name>_hasErrorTemplate</name>
-		</field>
-		<field>
-			<name>_templateContextHelper</name>
-		</field>
-		<field>
-			<name>_templateResource</name>
 		</field>
 	</javadoc>
 	<javadoc>
@@ -36512,6 +36497,9 @@ This action ensures that all requests are secure. Extend this and override the <
 		</field>
 		<field>
 			<name>_normalizeNameMethod</name>
+		</field>
+		<field>
+			<name>_portalCache</name>
 		</field>
 	</javadoc>
 	<javadoc>
@@ -124303,6 +124291,13 @@ See http://issues.liferay.com/browse/LPS-13878.
 			</param>
 		</method>
 		<method>
+			<name>equals</name>
+			<param>
+				<name>obj</name>
+				<type>java.lang.Object</type>
+			</param>
+		</method>
+		<method>
 			<name>getLastModified</name>
 		</method>
 		<method>
@@ -124310,6 +124305,9 @@ See http://issues.liferay.com/browse/LPS-13878.
 		</method>
 		<method>
 			<name>getTemplateId</name>
+		</method>
+		<method>
+			<name>hashCode</name>
 		</method>
 		<field>
 			<name>_journalTemplate</name>
@@ -124523,6 +124521,13 @@ See http://issues.liferay.com/browse/LPS-13878.
 			</param>
 		</method>
 		<method>
+			<name>equals</name>
+			<param>
+				<name>obj</name>
+				<type>java.lang.Object</type>
+			</param>
+		</method>
+		<method>
 			<name>getContent</name>
 		</method>
 		<method>
@@ -124533,6 +124538,9 @@ See http://issues.liferay.com/browse/LPS-13878.
 		</method>
 		<method>
 			<name>getTemplateId</name>
+		</method>
+		<method>
+			<name>hashCode</name>
 		</method>
 		<field>
 			<name>_lastModified</name>
@@ -124832,6 +124840,9 @@ See http://issues.liferay.com/browse/LPS-13878.
 			<name>SERVLET_SEPARATOR</name>
 		</field>
 		<field>
+			<name>TEMPLATE_RESOURCE_UUID_PREFIX</name>
+		</field>
+		<field>
 			<name>THEME_LOADER_SEPARATOR</name>
 		</field>
 	</javadoc>
@@ -125008,6 +125019,13 @@ See http://issues.liferay.com/browse/LPS-13878.
 			</param>
 		</method>
 		<method>
+			<name>equals</name>
+			<param>
+				<name>obj</name>
+				<type>java.lang.Object</type>
+			</param>
+		</method>
+		<method>
 			<name>getLastModified</name>
 		</method>
 		<method>
@@ -125019,6 +125037,9 @@ See http://issues.liferay.com/browse/LPS-13878.
 		</method>
 		<method>
 			<name>getTemplateId</name>
+		</method>
+		<method>
+			<name>hashCode</name>
 		</method>
 		<field>
 			<name>_log</name>
@@ -207081,6 +207102,13 @@ The <code>actionIds</code> attribute stores the bitwise IDs of all the actions a
 			</param>
 		</method>
 		<method>
+			<name>escapeQuote</name>
+			<param>
+				<name>quote</name>
+				<type>java.lang.String</type>
+			</param>
+		</method>
+		<method>
 			<name>extractData</name>
 			<param>
 				<name>bbCodeItems</name>
@@ -207481,7 +207509,13 @@ The <code>actionIds</code> attribute stores the bitwise IDs of all the actions a
 			<name>_log</name>
 		</field>
 		<field>
+			<name>_bbCodeCharacters</name>
+		</field>
+		<field>
 			<name>_bbCodeParser</name>
+		</field>
+		<field>
+			<name>_bbCodePattern</name>
 		</field>
 		<field>
 			<name>_colorPattern</name>
@@ -313182,6 +313216,105 @@ In most cases, SpringUtil.setContext() would have been called by com.liferay.por
 		</field>
 	</javadoc>
 	<javadoc>
+		<name>AbstractTemplate</name>
+		<type>com.liferay.portal.template.AbstractTemplate</type>
+		<author><![CDATA[Tina Tian]]></author>
+		<method>
+			<name>AbstractTemplate</name>
+			<param>
+				<name>templateResource</name>
+				<type>com.liferay.portal.kernel.template.TemplateResource</type>
+			</param>
+			<param>
+				<name>errorTemplateResource</name>
+				<type>com.liferay.portal.kernel.template.TemplateResource</type>
+			</param>
+			<param>
+				<name>templateContextHelper</name>
+				<type>com.liferay.portal.template.TemplateContextHelper</type>
+			</param>
+			<param>
+				<name>templateManagerName</name>
+				<type>java.lang.String</type>
+			</param>
+			<param>
+				<name>interval</name>
+				<type>long</type>
+			</param>
+		</method>
+		<method>
+			<name>prepare</name>
+			<param>
+				<name>request</name>
+				<type>javax.servlet.http.HttpServletRequest</type>
+			</param>
+		</method>
+		<method>
+			<name>processTemplate</name>
+			<param>
+				<name>writer</name>
+				<type>java.io.Writer</type>
+			</param>
+			<throws>
+				<name>TemplateException</name>
+				<type>com.liferay.portal.kernel.template.TemplateException</type>
+			</throws>
+		</method>
+		<method>
+			<name>getTemplateResourceUUID</name>
+			<param>
+				<name>templateResource</name>
+				<type>com.liferay.portal.kernel.template.TemplateResource</type>
+			</param>
+		</method>
+		<method>
+			<name>handleException</name>
+			<param>
+				<name>exception</name>
+				<type>java.lang.Exception</type>
+			</param>
+			<param>
+				<name>writer</name>
+				<type>java.io.Writer</type>
+			</param>
+			<throws>
+				<name>TemplateException</name>
+				<type>com.liferay.portal.kernel.template.TemplateException</type>
+			</throws>
+		</method>
+		<method>
+			<name>processTemplate</name>
+			<param>
+				<name>templateResource</name>
+				<type>com.liferay.portal.kernel.template.TemplateResource</type>
+			</param>
+			<param>
+				<name>writer</name>
+				<type>java.io.Writer</type>
+			</param>
+			<throws>
+				<name>Exception</name>
+				<type>java.lang.Exception</type>
+			</throws>
+		</method>
+		<method>
+			<name>_cacheTemplateResource</name>
+			<param>
+				<name>templateManagerName</name>
+				<type>java.lang.String</type>
+			</param>
+		</method>
+		<field>
+			<name>errorTemplateResource</name>
+		</field>
+		<field>
+			<name>templateResource</name>
+		</field>
+		<field>
+			<name>_templateContextHelper</name>
+		</field>
+	</javadoc>
+	<javadoc>
 		<name>CacheTemplateResource</name>
 		<type>com.liferay.portal.template.CacheTemplateResource</type>
 		<author><![CDATA[Tina Tian]]></author>
@@ -313190,6 +313323,13 @@ In most cases, SpringUtil.setContext() would have been called by com.liferay.por
 			<param>
 				<name>templateResource</name>
 				<type>com.liferay.portal.kernel.template.TemplateResource</type>
+			</param>
+		</method>
+		<method>
+			<name>equals</name>
+			<param>
+				<name>obj</name>
+				<type>java.lang.Object</type>
 			</param>
 		</method>
 		<method>
@@ -313204,6 +313344,9 @@ In most cases, SpringUtil.setContext() would have been called by com.liferay.por
 		</method>
 		<method>
 			<name>getTemplateId</name>
+		</method>
+		<method>
+			<name>hashCode</name>
 		</method>
 		<field>
 			<name>_lastModified</name>
@@ -313279,11 +313422,22 @@ In most cases, SpringUtil.setContext() would have been called by com.liferay.por
 				<type>java.lang.String</type>
 			</param>
 		</method>
+		<method>
+			<name>_loadFromCache</name>
+			<param>
+				<name>templateId</name>
+				<type>java.lang.String</type>
+			</param>
+		</method>
+		<method>
+			<name>_loadFromParser</name>
+			<param>
+				<name>templateId</name>
+				<type>java.lang.String</type>
+			</param>
+		</method>
 		<field>
 			<name>_log</name>
-		</field>
-		<field>
-			<name>_nullHolder</name>
 		</field>
 		<field>
 			<name>_modificationCheckInterval</name>
@@ -313507,6 +313661,127 @@ In most cases, SpringUtil.setContext() would have been called by com.liferay.por
 		</field>
 	</javadoc>
 	<javadoc>
+		<name>TemplateResourceCacheListener</name>
+		<type>com.liferay.portal.template.TemplateResourceCacheListener</type>
+		<author><![CDATA[Tina Tian]]></author>
+		<method>
+			<name>TemplateResourceCacheListener</name>
+			<param>
+				<name>templateResourceLoaderName</name>
+				<type>java.lang.String</type>
+			</param>
+		</method>
+		<method>
+			<name>notifyEntryEvicted</name>
+			<param>
+				<name>portalCache</name>
+				<type>com.liferay.portal.kernel.cache.PortalCache</type>
+			</param>
+			<param>
+				<name>key</name>
+				<type>java.io.Serializable</type>
+			</param>
+			<param>
+				<name>value</name>
+				<type>java.lang.Object</type>
+			</param>
+			<throws>
+				<name>PortalCacheException</name>
+				<type>com.liferay.portal.kernel.cache.PortalCacheException</type>
+			</throws>
+		</method>
+		<method>
+			<name>notifyEntryExpired</name>
+			<param>
+				<name>portalCache</name>
+				<type>com.liferay.portal.kernel.cache.PortalCache</type>
+			</param>
+			<param>
+				<name>key</name>
+				<type>java.io.Serializable</type>
+			</param>
+			<param>
+				<name>value</name>
+				<type>java.lang.Object</type>
+			</param>
+			<throws>
+				<name>PortalCacheException</name>
+				<type>com.liferay.portal.kernel.cache.PortalCacheException</type>
+			</throws>
+		</method>
+		<method>
+			<name>notifyEntryPut</name>
+			<param>
+				<name>portalCache</name>
+				<type>com.liferay.portal.kernel.cache.PortalCache</type>
+			</param>
+			<param>
+				<name>key</name>
+				<type>java.io.Serializable</type>
+			</param>
+			<param>
+				<name>value</name>
+				<type>java.lang.Object</type>
+			</param>
+			<throws>
+				<name>PortalCacheException</name>
+				<type>com.liferay.portal.kernel.cache.PortalCacheException</type>
+			</throws>
+		</method>
+		<method>
+			<name>notifyEntryRemoved</name>
+			<param>
+				<name>portalCache</name>
+				<type>com.liferay.portal.kernel.cache.PortalCache</type>
+			</param>
+			<param>
+				<name>key</name>
+				<type>java.io.Serializable</type>
+			</param>
+			<param>
+				<name>value</name>
+				<type>java.lang.Object</type>
+			</param>
+			<throws>
+				<name>PortalCacheException</name>
+				<type>com.liferay.portal.kernel.cache.PortalCacheException</type>
+			</throws>
+		</method>
+		<method>
+			<name>notifyEntryUpdated</name>
+			<param>
+				<name>portalCache</name>
+				<type>com.liferay.portal.kernel.cache.PortalCache</type>
+			</param>
+			<param>
+				<name>key</name>
+				<type>java.io.Serializable</type>
+			</param>
+			<param>
+				<name>value</name>
+				<type>java.lang.Object</type>
+			</param>
+			<throws>
+				<name>PortalCacheException</name>
+				<type>com.liferay.portal.kernel.cache.PortalCacheException</type>
+			</throws>
+		</method>
+		<method>
+			<name>notifyRemoveAll</name>
+			<param>
+				<name>portalCache</name>
+				<type>com.liferay.portal.kernel.cache.PortalCache</type>
+			</param>
+			<throws>
+				<name>PortalCacheException</name>
+				<type>com.liferay.portal.kernel.cache.PortalCacheException</type>
+			</throws>
+		</method>
+		<field>
+			<name>_portalCache</name>
+		</field>
+	</javadoc>
+	<javadoc>
 		<name>TemplateResourceParser</name>
 		<type>com.liferay.portal.template.TemplateResourceParser</type>
 		<author><![CDATA[Tina Tian]]></author>
@@ -313521,6 +313796,32 @@ In most cases, SpringUtil.setContext() would have been called by com.liferay.por
 				<type>com.liferay.portal.kernel.template.TemplateException</type>
 			</throws>
 		</method>
+	</javadoc>
+	<javadoc>
+		<name>TemplateResourceThreadLocal</name>
+		<type>com.liferay.portal.template.TemplateResourceThreadLocal</type>
+		<author><![CDATA[Tina Tian]]></author>
+		<method>
+			<name>getTemplateResource</name>
+			<param>
+				<name>templateType</name>
+				<type>java.lang.String</type>
+			</param>
+		</method>
+		<method>
+			<name>setTemplateResource</name>
+			<param>
+				<name>templateType</name>
+				<type>java.lang.String</type>
+			</param>
+			<param>
+				<name>templateResource</name>
+				<type>com.liferay.portal.kernel.template.TemplateResource</type>
+			</param>
+		</method>
+		<field>
+			<name>_templateResources</name>
+		</field>
 	</javadoc>
 	<javadoc>
 		<name>ThemeResourceParser</name>
@@ -356179,11 +356480,41 @@ Preserved parameters are parameters that should be sent with every request as th
 		<author><![CDATA[Brian Wing Shun Chan]]></author>
 		<author><![CDATA[Shuyang Zhou]]></author>
 		<method>
+			<name>LiferayResourceManager</name>
+		</method>
+		<method>
 			<name>getLoaderNameForResource</name>
 			<param>
 				<name>source</name>
 				<type>java.lang.String</type>
 			</param>
+		</method>
+		<method>
+			<name>getResource</name>
+			<param>
+				<name>resourceName</name>
+				<type>java.lang.String</type>
+			</param>
+			<param>
+				<name>resourceType</name>
+				<type>int</type>
+			</param>
+			<param>
+				<name>encoding</name>
+				<type>java.lang.String</type>
+			</param>
+			<throws>
+				<name>Exception</name>
+				<type>java.lang.Exception</type>
+			</throws>
+			<throws>
+				<name>ParseErrorException</name>
+				<type>org.apache.velocity.exception.ParseErrorException</type>
+			</throws>
+			<throws>
+				<name>ResourceNotFoundException</name>
+				<type>org.apache.velocity.exception.ResourceNotFoundException</type>
+			</throws>
 		</method>
 		<method>
 			<name>initialize</name>
@@ -356196,6 +356527,20 @@ Preserved parameters are parameters that should be sent with every request as th
 				<type>java.lang.Exception</type>
 			</throws>
 		</method>
+		<method>
+			<name>_createTemplate</name>
+			<param>
+				<name>templateResource</name>
+				<type>com.liferay.portal.kernel.template.TemplateResource</type>
+			</param>
+			<throws>
+				<name>IOException</name>
+				<type>java.io.IOException</type>
+			</throws>
+		</method>
+		<field>
+			<name>_portalCache</name>
+		</field>
 	</javadoc>
 	<javadoc>
 		<name>PACLVelocityTemplate</name>
@@ -356409,24 +356754,6 @@ Preserved parameters are parameters that should be sent with every request as th
 			</param>
 		</method>
 		<method>
-			<name>prepare</name>
-			<param>
-				<name>request</name>
-				<type>javax.servlet.http.HttpServletRequest</type>
-			</param>
-		</method>
-		<method>
-			<name>processTemplate</name>
-			<param>
-				<name>writer</name>
-				<type>java.io.Writer</type>
-			</param>
-			<throws>
-				<name>TemplateException</name>
-				<type>com.liferay.portal.kernel.template.TemplateException</type>
-			</throws>
-		</method>
-		<method>
 			<name>put</name>
 			<param>
 				<name>key</name>
@@ -356438,7 +356765,22 @@ Preserved parameters are parameters that should be sent with every request as th
 			</param>
 		</method>
 		<method>
-			<name>_processTemplate</name>
+			<name>handleException</name>
+			<param>
+				<name>exception</name>
+				<type>java.lang.Exception</type>
+			</param>
+			<param>
+				<name>writer</name>
+				<type>java.io.Writer</type>
+			</param>
+			<throws>
+				<name>TemplateException</name>
+				<type>com.liferay.portal.kernel.template.TemplateException</type>
+			</throws>
+		</method>
+		<method>
+			<name>processTemplate</name>
 			<param>
 				<name>templateResource</name>
 				<type>com.liferay.portal.kernel.template.TemplateResource</type>
@@ -356452,18 +356794,6 @@ Preserved parameters are parameters that should be sent with every request as th
 				<type>java.lang.Exception</type>
 			</throws>
 		</method>
-		<field>
-			<name>_errorTemplateResource</name>
-		</field>
-		<field>
-			<name>_hasErrorTemplate</name>
-		</field>
-		<field>
-			<name>_templateContextHelper</name>
-		</field>
-		<field>
-			<name>_templateResource</name>
-		</field>
 		<field>
 			<name>_velocityContext</name>
 		</field>
@@ -359145,9 +359475,6 @@ This class looks at every blog comment to see if it is a trackback and verifies 
 			<name>_PATH_DDM</name>
 		</field>
 		<field>
-			<name>_TEMPLATE_FTL</name>
-		</field>
-		<field>
 			<name>_WEB_SERVER_SERVLET_VERSION_VERBOSITY_DEFAULT</name>
 		</field>
 		<field>
@@ -359164,6 +359491,9 @@ This class looks at every blog comment to see if it is a trackback and verifies 
 		</field>
 		<field>
 			<name>_lastModified</name>
+		</field>
+		<field>
+			<name>_templateResource</name>
 		</field>
 	</javadoc>
 	<javadoc>
@@ -450314,9 +450644,6 @@ The raw metadata extraction is done asynchronously.
 		<type>com.liferay.portlet.dynamicdatalists.util.FreeMarkerTemplateParser</type>
 		<author><![CDATA[Marcellus Tavares]]></author>
 		<method>
-			<name>getErrorTemplateContent</name>
-		</method>
-		<method>
 			<name>getErrorTemplateId</name>
 		</method>
 		<method>
@@ -450331,9 +450658,6 @@ The raw metadata extraction is done asynchronously.
 		<name>VelocityTemplateParser</name>
 		<type>com.liferay.portlet.dynamicdatalists.util.VelocityTemplateParser</type>
 		<author><![CDATA[Marcellus Tavares]]></author>
-		<method>
-			<name>getErrorTemplateContent</name>
-		</method>
 		<method>
 			<name>getErrorTemplateId</name>
 		</method>
@@ -464952,6 +465276,9 @@ The raw metadata extraction is done asynchronously.
 		<author><![CDATA[Eduardo Lundgren]]></author>
 		<author><![CDATA[Brian Wing Shun Chan]]></author>
 		<method>
+			<name>DDMXSDImpl</name>
+		</method>
+		<method>
 			<name>getHTML</name>
 			<param>
 				<name>pageContext</name>
@@ -465285,6 +465612,13 @@ The raw metadata extraction is done asynchronously.
 			</param>
 		</method>
 		<method>
+			<name>getResource</name>
+			<param>
+				<name>name</name>
+				<type>java.lang.String</type>
+			</param>
+		</method>
+		<method>
 			<name>processFTL</name>
 			<param>
 				<name>pageContext</name>
@@ -465326,16 +465660,16 @@ The raw metadata extraction is done asynchronously.
 			<name>_DEFAULT_READ_ONLY_NAMESPACE</name>
 		</field>
 		<field>
-			<name>_TPL_DEFAULT_PATH</name>
-		</field>
-		<field>
-			<name>_TPL_DEFAULT_READ_ONLY_PATH</name>
-		</field>
-		<field>
 			<name>_TPL_EXT</name>
 		</field>
 		<field>
 			<name>_TPL_PATH</name>
+		</field>
+		<field>
+			<name>_defaultReadOnlyTemplateResource</name>
+		</field>
+		<field>
+			<name>_defaultTemplateResource</name>
 		</field>
 	</javadoc>
 	<javadoc>
@@ -499537,31 +499871,10 @@ This <code>PortletDataHandler</code> differs from <code>JournalContentPortletDat
 		<type>com.liferay.portlet.journal.util.FreeMarkerTemplateParser</type>
 		<author><![CDATA[Mika Koivisto]]></author>
 		<method>
-			<name>getErrorTemplateContent</name>
-		</method>
-		<method>
 			<name>getErrorTemplateId</name>
 		</method>
 		<method>
-			<name>getJournalTemplatesPath</name>
-		</method>
-		<method>
 			<name>getTemplateContext</name>
-			<throws>
-				<name>Exception</name>
-				<type>java.lang.Exception</type>
-			</throws>
-		</method>
-		<method>
-			<name>mergeTemplate</name>
-			<param>
-				<name>templateContext</name>
-				<type>com.liferay.portal.kernel.templateparser.TemplateContext</type>
-			</param>
-			<param>
-				<name>unsyncStringWriter</name>
-				<type>com.liferay.portal.kernel.io.unsync.UnsyncStringWriter</type>
-			</param>
 			<throws>
 				<name>Exception</name>
 				<type>java.lang.Exception</type>
@@ -501243,10 +501556,10 @@ This <code>PortletDataHandler</code> differs from <code>JournalContentPortletDat
 		<author><![CDATA[Brian Wing Shun Chan]]></author>
 		<author><![CDATA[Raymond Augé]]></author>
 		<method>
-			<name>getErrorTemplateContent</name>
+			<name>getErrorTemplateId</name>
 		</method>
 		<method>
-			<name>getErrorTemplateId</name>
+			<name>getErrorTemplateResource</name>
 		</method>
 		<method>
 			<name>getJournalTemplatesPath</name>
@@ -569013,6 +569326,9 @@ This is a modification of JSPWiki's core TableOfContents plugin for use within L
 		<author><![CDATA[Jorge Ferrer]]></author>
 		<author><![CDATA[Raymond Augé]]></author>
 		<method>
+			<name>WikiPageServiceImpl</name>
+		</method>
+		<method>
 			<name>addPage</name>
 			<param>
 				<name>nodeId</name>
@@ -569807,6 +570123,9 @@ This is a modification of JSPWiki's core TableOfContents plugin for use within L
 				<type>com.liferay.portal.kernel.exception.SystemException</type>
 			</throws>
 		</method>
+		<field>
+			<name>_templateResource</name>
+		</field>
 	</javadoc>
 	<javadoc>
 		<name>WikiNodePermission</name>

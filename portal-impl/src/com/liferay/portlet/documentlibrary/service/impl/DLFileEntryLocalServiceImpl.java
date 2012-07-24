@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
@@ -48,6 +49,7 @@ import com.liferay.portal.model.ResourceConstants;
 import com.liferay.portal.model.User;
 import com.liferay.portal.repository.liferayrepository.model.LiferayFileEntry;
 import com.liferay.portal.repository.liferayrepository.model.LiferayFileVersion;
+import com.liferay.portal.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PrefsPropsUtil;
@@ -58,6 +60,7 @@ import com.liferay.portlet.documentlibrary.FileNameException;
 import com.liferay.portlet.documentlibrary.ImageSizeException;
 import com.liferay.portlet.documentlibrary.InvalidFileEntryTypeException;
 import com.liferay.portlet.documentlibrary.InvalidFileVersionException;
+import com.liferay.portlet.documentlibrary.NoSuchFileEntryException;
 import com.liferay.portlet.documentlibrary.NoSuchFileEntryMetadataException;
 import com.liferay.portlet.documentlibrary.NoSuchFileVersionException;
 import com.liferay.portlet.documentlibrary.model.DLFileEntry;
@@ -880,12 +883,44 @@ public class DLFileEntryLocalServiceImpl
 	public DLFileEntry getFileEntry(long groupId, long folderId, String title)
 		throws PortalException, SystemException {
 
-		DLFileEntry dlFileEntry = dlFileEntryPersistence.findByG_F_T(
+		DLFileEntry dlFileEntry = dlFileEntryPersistence.fetchByG_F_T(
 			groupId, folderId, title);
 
-		setFileVersion(dlFileEntry);
+		if (dlFileEntry != null) {
+			setFileVersion(dlFileEntry);
 
-		return dlFileEntry;
+			return dlFileEntry;
+		}
+
+		List<DLFileVersion> dlFileVersions =
+			dlFileVersionPersistence.findByG_F_T_V(
+				groupId, folderId, title,
+				DLFileEntryConstants.PRIVATE_WORKING_COPY_VERSION);
+
+		long userId = PrincipalThreadLocal.getUserId();
+
+		for (DLFileVersion dlFileVersion : dlFileVersions) {
+			if (hasFileEntryLock(userId, dlFileVersion.getFileEntryId())) {
+				return dlFileVersion.getFileEntry();
+			}
+		}
+
+		StringBundler sb = new StringBundler(8);
+
+		sb.append("No DLFileEntry exists with the key {");
+		sb.append("groupId=");
+		sb.append(groupId);
+		sb.append(", folderId=");
+		sb.append(folderId);
+		sb.append(", title=");
+		sb.append(title);
+		sb.append(StringPool.CLOSE_CURLY_BRACE);
+
+		if (_log.isWarnEnabled()) {
+			_log.warn(sb.toString());
+		}
+
+		throw new NoSuchFileEntryException(sb.toString());
 	}
 
 	public DLFileEntry getFileEntryByName(

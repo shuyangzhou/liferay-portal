@@ -27,7 +27,6 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletBag;
-import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
 import com.liferay.portal.kernel.scheduler.SchedulerEngineUtil;
 import com.liferay.portal.kernel.scheduler.SchedulerEntry;
 import com.liferay.portal.kernel.scheduler.StorageType;
@@ -118,20 +117,11 @@ public class PortletHotDeployListener extends BaseHotDeployListener {
 		throws HotDeployException {
 
 		try {
-			PortletClassLoaderUtil.setClassLoader(
-				hotDeployEvent.getContextClassLoader());
-			PortletClassLoaderUtil.setServletContextName(
-				hotDeployEvent.getServletContextName());
-
 			doInvokeDeploy(hotDeployEvent);
 		}
 		catch (Throwable t) {
 			throwHotDeployException(
 				hotDeployEvent, "Error registering portlets for ", t);
-		}
-		finally {
-			PortletClassLoaderUtil.setClassLoader(null);
-			PortletClassLoaderUtil.setServletContextName(null);
 		}
 	}
 
@@ -139,20 +129,11 @@ public class PortletHotDeployListener extends BaseHotDeployListener {
 		throws HotDeployException {
 
 		try {
-			PortletClassLoaderUtil.setClassLoader(
-				hotDeployEvent.getContextClassLoader());
-			PortletClassLoaderUtil.setServletContextName(
-				hotDeployEvent.getServletContextName());
-
 			doInvokeUndeploy(hotDeployEvent);
 		}
 		catch (Throwable t) {
 			throwHotDeployException(
 				hotDeployEvent, "Error unregistering portlets for ", t);
-		}
-		finally {
-			PortletClassLoaderUtil.setClassLoader(null);
-			PortletClassLoaderUtil.setServletContextName(null);
 		}
 	}
 

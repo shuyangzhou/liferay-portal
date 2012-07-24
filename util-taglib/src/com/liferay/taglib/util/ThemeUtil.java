@@ -468,6 +468,11 @@ public class ThemeUtil {
 			TemplateResourceLoaderUtil.getTemplateResource(
 				TemplateManager.VELOCITY, resourcePath);
 
+		if (templateResource == null) {
+			throw new Exception(
+				"Unable to load template resource " + resourcePath);
+		}
+
 		Template template = TemplateManagerUtil.getTemplate(
 			TemplateManager.VELOCITY, templateResource,
 			TemplateContextType.STANDARD);
