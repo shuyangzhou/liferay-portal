@@ -21,8 +21,9 @@ configParams.put("emoticonsPath", themeDisplay.getPathThemeImages() + "/emoticon
 
 if (quote && Validator.isNull(body) && (curParentMessage != null)) {
 	StringBundler sb = new StringBundler(5);
+
 	sb.append("[quote=");
-	sb.append(parentAuthor);
+	sb.append(StringUtil.replace(parentAuthor, new String[] {"[", "]", "(", ")"}, new String[] {"&#91;", "&#93;", "&#40;", "&#41;"}));
 	sb.append("]");
 	sb.append(curParentMessage.getBody(false));
 	sb.append("[/quote]\n\n\n");

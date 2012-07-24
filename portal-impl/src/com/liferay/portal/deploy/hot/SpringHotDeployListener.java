@@ -38,11 +38,20 @@ public class SpringHotDeployListener extends BaseHotDeployListener {
 		throws HotDeployException {
 
 		try {
+			PortletClassLoaderUtil.setClassLoader(
+				hotDeployEvent.getContextClassLoader());
+			PortletClassLoaderUtil.setServletContextName(
+				hotDeployEvent.getServletContextName());
+
 			doInvokeDeploy(hotDeployEvent);
 		}
 		catch (Throwable t) {
 			throwHotDeployException(
 				hotDeployEvent, "Error initializing Spring for ", t);
+		}
+		finally {
+			PortletClassLoaderUtil.setClassLoader(null);
+			PortletClassLoaderUtil.setServletContextName(null);
 		}
 	}
 
@@ -50,11 +59,20 @@ public class SpringHotDeployListener extends BaseHotDeployListener {
 		throws HotDeployException {
 
 		try {
+			PortletClassLoaderUtil.setClassLoader(
+				hotDeployEvent.getContextClassLoader());
+			PortletClassLoaderUtil.setServletContextName(
+				hotDeployEvent.getServletContextName());
+
 			doInvokeUndeploy(hotDeployEvent);
 		}
 		catch (Throwable t) {
 			throwHotDeployException(
 				hotDeployEvent, "Error uninitializing Spring for ", t);
+		}
+		finally {
+			PortletClassLoaderUtil.setClassLoader(null);
+			PortletClassLoaderUtil.setServletContextName(null);
 		}
 	}
 
@@ -68,10 +86,6 @@ public class SpringHotDeployListener extends BaseHotDeployListener {
 		ContextLoaderListener contextLoaderListener =
 			new PortletContextLoaderListener();
 
-		PortletClassLoaderUtil.setClassLoader(
-			hotDeployEvent.getContextClassLoader());
-		PortletClassLoaderUtil.setServletContextName(servletContextName);
-
 		ClassLoader contextClassLoader =
 			PACLClassLoaderUtil.getContextClassLoader();
 
@@ -83,9 +97,6 @@ public class SpringHotDeployListener extends BaseHotDeployListener {
 				new ServletContextEvent(servletContext));
 		}
 		finally {
-			PortletClassLoaderUtil.setClassLoader(null);
-			PortletClassLoaderUtil.setServletContextName(null);
-
 			PACLClassLoaderUtil.setContextClassLoader(contextClassLoader);
 		}
 
@@ -106,10 +117,6 @@ public class SpringHotDeployListener extends BaseHotDeployListener {
 			return;
 		}
 
-		PortletClassLoaderUtil.setClassLoader(
-			hotDeployEvent.getContextClassLoader());
-		PortletClassLoaderUtil.setServletContextName(servletContextName);
-
 		ClassLoader contextClassLoader =
 			PACLClassLoaderUtil.getContextClassLoader();
 
@@ -121,9 +128,6 @@ public class SpringHotDeployListener extends BaseHotDeployListener {
 				new ServletContextEvent(servletContext));
 		}
 		finally {
-			PortletClassLoaderUtil.setClassLoader(null);
-			PortletClassLoaderUtil.setServletContextName(null);
-
 			PACLClassLoaderUtil.setContextClassLoader(contextClassLoader);
 		}
 	}

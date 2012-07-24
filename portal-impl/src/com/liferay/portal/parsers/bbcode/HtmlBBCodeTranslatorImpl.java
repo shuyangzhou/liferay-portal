@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +54,20 @@ public class HtmlBBCodeTranslatorImpl implements BBCodeTranslator {
 		_excludeNewLineTypes.put("td", BBCodeParser.TYPE_TAG_START_END);
 		_excludeNewLineTypes.put("th", BBCodeParser.TYPE_TAG_START_END);
 		_excludeNewLineTypes.put("tr", BBCodeParser.TYPE_TAG_START_END);
+
+		_bbCodeCharacters = new HashMap<String, String>();
+
+		_bbCodeCharacters.put("&", "&amp;");
+		_bbCodeCharacters.put("<", "&lt;");
+		_bbCodeCharacters.put(">", "&gt;");
+		_bbCodeCharacters.put("\"", "&#034;");
+		_bbCodeCharacters.put("'", "&#039;");
+		_bbCodeCharacters.put("/", "&#047;");
+		_bbCodeCharacters.put("`", "&#096;");
+		_bbCodeCharacters.put("[", "&#91;");
+		_bbCodeCharacters.put("]", "&#93;");
+		_bbCodeCharacters.put("(", "&#40;");
+		_bbCodeCharacters.put(")", "&#41;");
 
 		for (int i = 0; i < _EMOTICONS.length; i++) {
 			String[] emoticon = _EMOTICONS[i];
@@ -119,6 +134,56 @@ public class HtmlBBCodeTranslatorImpl implements BBCodeTranslator {
 			else if (type == BBCodeParser.TYPE_TAG_START) {
 				handleTagStart(sb, bbCodeItems, tags, marker, bbCodeItem);
 			}
+		}
+
+		return sb.toString();
+	}
+
+	protected String escapeQuote(String quote) {
+		StringBuilder sb = new StringBuilder();
+
+		int index = 0;
+
+		Matcher matcher = _bbCodePattern.matcher(quote);
+
+		Collection<String> values = _bbCodeCharacters.values();
+
+		while (matcher.find()) {
+			String match = matcher.group();
+
+			int matchStartIndex = matcher.start();
+
+			int nextSemicolonIndex = quote.indexOf(
+				StringPool.SEMICOLON, matchStartIndex);
+
+			sb.append(quote.substring(index, matchStartIndex));
+
+			boolean entityFound = false;
+
+			if (nextSemicolonIndex >= 0) {
+				String value = quote.substring(
+					matchStartIndex, nextSemicolonIndex + 1);
+
+				if (values.contains(value)) {
+					sb.append(value);
+
+					index = matchStartIndex + value.length();
+
+					entityFound = true;
+				}
+			}
+
+			if (!entityFound) {
+				String escapedValue = _bbCodeCharacters.get(match);
+
+				sb.append(escapedValue);
+
+				index = matchStartIndex + match.length();
+			}
+		}
+
+		if (index < quote.length()) {
+			sb.append(quote.substring(index, quote.length()));
 		}
 
 		return sb.toString();
@@ -402,7 +467,7 @@ public class HtmlBBCodeTranslatorImpl implements BBCodeTranslator {
 
 		if ((quote != null) && (quote.length() > 0)) {
 			sb.append("<div class=\"quote-title\">");
-			sb.append(HtmlUtil.escape(quote));
+			sb.append(escapeQuote(quote));
 			sb.append(":</div>");
 		}
 
@@ -614,7 +679,9 @@ public class HtmlBBCodeTranslatorImpl implements BBCodeTranslator {
 	private static Log _log = LogFactoryUtil.getLog(
 		HtmlBBCodeTranslatorImpl.class);
 
+	private Map<String, String> _bbCodeCharacters;
 	private BBCodeParser _bbCodeParser = new BBCodeParser();
+	private Pattern _bbCodePattern = Pattern.compile("[]&<>'\"`\\[()]");
 	private Pattern _colorPattern = Pattern.compile(
 		"^(:?aqua|black|blue|fuchsia|gray|green|lime|maroon|navy|olive|purple" +
 			"|red|silver|teal|white|yellow|#(?:[0-9a-f]{3})?[0-9a-f]{3})$",

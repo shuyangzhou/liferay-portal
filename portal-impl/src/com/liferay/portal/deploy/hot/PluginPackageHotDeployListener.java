@@ -54,11 +54,20 @@ public class PluginPackageHotDeployListener extends BaseHotDeployListener {
 		throws HotDeployException {
 
 		try {
+			PortletClassLoaderUtil.setClassLoader(
+				hotDeployEvent.getContextClassLoader());
+			PortletClassLoaderUtil.setServletContextName(
+				hotDeployEvent.getServletContextName());
+
 			doInvokeDeploy(hotDeployEvent);
 		}
 		catch (Throwable t) {
 			throwHotDeployException(
 				hotDeployEvent, "Error registering plugins for ", t);
+		}
+		finally {
+			PortletClassLoaderUtil.setClassLoader(null);
+			PortletClassLoaderUtil.setServletContextName(null);
 		}
 	}
 
@@ -66,11 +75,20 @@ public class PluginPackageHotDeployListener extends BaseHotDeployListener {
 		throws HotDeployException {
 
 		try {
+			PortletClassLoaderUtil.setClassLoader(
+				hotDeployEvent.getContextClassLoader());
+			PortletClassLoaderUtil.setServletContextName(
+				hotDeployEvent.getServletContextName());
+
 			doInvokeUndeploy(hotDeployEvent);
 		}
 		catch (Throwable t) {
 			throwHotDeployException(
 				hotDeployEvent, "Error unregistering plugins for ", t);
+		}
+		finally {
+			PortletClassLoaderUtil.setClassLoader(null);
+			PortletClassLoaderUtil.setServletContextName(null);
 		}
 	}
 
@@ -116,14 +134,7 @@ public class PluginPackageHotDeployListener extends BaseHotDeployListener {
 
 		ClassLoader classLoader = hotDeployEvent.getContextClassLoader();
 
-		PortletClassLoaderUtil.setClassLoader(classLoader);
-
-		try {
-			initServiceComponent(servletContext, classLoader);
-		}
-		finally {
-			PortletClassLoaderUtil.setClassLoader(null);
-		}
+		initServiceComponent(servletContext, classLoader);
 
 		registerClpMessageListeners(servletContext, classLoader);
 
