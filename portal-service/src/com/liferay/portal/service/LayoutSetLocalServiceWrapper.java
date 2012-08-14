@@ -413,6 +413,14 @@ public class LayoutSetLocalServiceWrapper implements LayoutSetLocalService,
 			settings);
 	}
 
+	public void updateSettingsDelayed(long groupId, boolean privateLayout,
+		java.lang.String settings)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_layoutSetLocalService.updateSettingsDelayed(groupId, privateLayout,
+			settings);
+	}
+
 	public com.liferay.portal.model.LayoutSet updateVirtualHost(long groupId,
 		boolean privateLayout, java.lang.String virtualHostname)
 		throws com.liferay.portal.kernel.exception.PortalException,
