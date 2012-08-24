@@ -40,6 +40,7 @@ import javax.servlet.http.HttpServletResponseWrapper;
  * @author Jayson Falkner
  * @author Brian Wing Shun Chan
  * @author Shuyang Zhou
+ * @author Raymond Augé
  */
 public class GZipResponse extends HttpServletResponseWrapper {
 
@@ -56,7 +57,7 @@ public class GZipResponse extends HttpServletResponseWrapper {
 
 		_response.setContentLength(-1);
 
-		_response.addHeader(HttpHeaders.CONTENT_ENCODING, _GZIP);
+		_status = 0;
 
 		_firefox = BrowserSnifferUtil.isFirefox(request);
 	}
@@ -73,10 +74,16 @@ public class GZipResponse extends HttpServletResponseWrapper {
 		catch (IOException ioe) {
 		}
 
-		if (_unsyncByteArrayOutputStream != null) {
-			_response.setContentLength(_unsyncByteArrayOutputStream.size());
+		if (_status < 300) {
+			_response.addHeader(HttpHeaders.CONTENT_ENCODING, _GZIP);
 
-			_unsyncByteArrayOutputStream.writeTo(_response.getOutputStream());
+			if (_unsyncByteArrayOutputStream != null) {
+				_response.setContentLength(
+					_unsyncByteArrayOutputStream.size());
+
+				_unsyncByteArrayOutputStream.writeTo(
+					_response.getOutputStream());
+			}
 		}
 	}
 
@@ -94,7 +101,7 @@ public class GZipResponse extends HttpServletResponseWrapper {
 		}
 
 		if (_servletOutputStream == null) {
-			if (_gZipContentType) {
+			if (_gZipContentType || (_status > 299)) {
 				_servletOutputStream = _response.getOutputStream();
 			}
 			else {
@@ -154,6 +161,22 @@ public class GZipResponse extends HttpServletResponseWrapper {
 		}
 	}
 
+	@Override
+	public void setStatus(int status) {
+		setStatus(status, null);
+	}
+
+	@Override
+	public void setStatus(int status, String message) {
+		if (isCommitted()) {
+			return;
+		}
+
+		super.setStatus(status, message);
+
+		_status = status;
+	}
+
 	private ServletOutputStream _createGZipServletOutputStream(
 			OutputStream outputStream)
 		throws IOException {
@@ -178,6 +201,7 @@ public class GZipResponse extends HttpServletResponseWrapper {
 	private PrintWriter _printWriter;
 	private HttpServletResponse _response;
 	private ServletOutputStream _servletOutputStream;
+	private int _status;
 	private UnsyncByteArrayOutputStream _unsyncByteArrayOutputStream;
 
 }
