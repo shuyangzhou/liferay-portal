@@ -87,7 +87,11 @@ public abstract class AbstractTemplate implements Template {
 		try {
 			UnsyncStringWriter unsyncStringWriter = new UnsyncStringWriter();
 
+			Writer oldWriter = _updateWriter(unsyncStringWriter);
+
 			processTemplate(templateResource, unsyncStringWriter);
+
+			_updateWriter(oldWriter);
 
 			StringBundler sb = unsyncStringWriter.getStringBundler();
 
@@ -188,6 +192,14 @@ public abstract class AbstractTemplate implements Template {
 			portalCache.put(
 				errorTemplateResource.getTemplateId(), errorTemplateResource);
 		}
+	}
+
+	private Writer _updateWriter(Writer newWriter) {
+		Writer oldWriter = (Writer)get(WRITER);
+
+		put(WRITER, newWriter);
+
+		return oldWriter;
 	}
 
 	private TemplateContextHelper _templateContextHelper;

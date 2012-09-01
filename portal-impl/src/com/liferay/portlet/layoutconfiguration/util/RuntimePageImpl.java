@@ -212,7 +212,7 @@ public class RuntimePageImpl implements RuntimePage {
 		}
 	}
 
-	protected Object buildVelocityTaglib(
+	protected VelocityTaglib buildVelocityTaglib(
 			HttpServletRequest request, HttpServletResponse response,
 			PageContext pageContext)
 		throws Exception {
@@ -226,9 +226,10 @@ public class RuntimePageImpl implements RuntimePage {
 			ServletContext.class, HttpServletRequest.class,
 			HttpServletResponse.class, PageContext.class);
 
-		return constructor.newInstance(
+		Object velociytTaglib = constructor.newInstance(
 			pageContext.getServletContext(), request, response, pageContext);
 
+		return (VelocityTaglib)velociytTaglib;
 	}
 
 	protected void doDispatch(
@@ -312,8 +313,10 @@ public class RuntimePageImpl implements RuntimePage {
 
 		// liferay:include tag library
 
-		Object velocityTaglib = buildVelocityTaglib(
+		VelocityTaglib velocityTaglib = buildVelocityTaglib(
 			request, response, pageContext);
+
+		velocityTaglib.setTemplateContext(template);
 
 		template.put("taglibLiferay", velocityTaglib);
 		template.put("theme", velocityTaglib);
@@ -355,9 +358,11 @@ public class RuntimePageImpl implements RuntimePage {
 
 		UnsyncStringWriter unsyncStringWriter = new UnsyncStringWriter();
 
-		Object velocityTaglib = buildVelocityTaglib(
+		VelocityTaglib velocityTaglib = buildVelocityTaglib(
 			request, new PipingServletResponse(response, unsyncStringWriter),
 			pageContext);
+
+		velocityTaglib.setTemplateContext(template);
 
 		template.put("taglibLiferay", velocityTaglib);
 		template.put("theme", velocityTaglib);

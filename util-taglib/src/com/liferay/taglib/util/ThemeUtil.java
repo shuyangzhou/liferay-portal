@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.template.TemplateManager;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.kernel.template.TemplateResource;
 import com.liferay.portal.kernel.template.TemplateResourceLoaderUtil;
+import com.liferay.portal.kernel.templateparser.TemplateContext;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.ThemeHelper;
@@ -290,9 +291,11 @@ public class ThemeUtil {
 			servletContext, request,
 			new PipingServletResponse(response, writer), pageContext);
 
+		velocityTaglib.setTemplateContext(template);
+
 		template.put("taglibLiferay", velocityTaglib);
 		template.put("theme", velocityTaglib);
-		template.put("writer", writer);
+		template.put(TemplateContext.WRITER, writer);
 
 		// Portal JSP tag library factory
 
@@ -510,9 +513,11 @@ public class ThemeUtil {
 			servletContext, request,
 			new PipingServletResponse(response, writer), pageContext);
 
+		velocityTaglib.setTemplateContext(template);
+
 		template.put("taglibLiferay", velocityTaglib);
 		template.put("theme", velocityTaglib);
-		template.put("writer", writer);
+		template.put(TemplateContext.WRITER, writer);
 
 		// Merge templates
 

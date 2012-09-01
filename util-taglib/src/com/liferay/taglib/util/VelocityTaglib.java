@@ -17,6 +17,7 @@ package com.liferay.taglib.util;
 import com.liferay.portal.kernel.servlet.DirectRequestDispatcherFactoryUtil;
 import com.liferay.portal.kernel.servlet.PipingPageContext;
 import com.liferay.portal.kernel.servlet.taglib.TagSupport;
+import com.liferay.portal.kernel.templateparser.TemplateContext;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.Layout;
@@ -52,6 +53,8 @@ import com.liferay.taglib.ui.PngImageTag;
 import com.liferay.taglib.ui.SearchTag;
 import com.liferay.taglib.ui.StagingTag;
 import com.liferay.taglib.ui.ToggleTag;
+
+import java.io.Writer;
 
 import java.util.Map;
 import java.util.Set;
@@ -631,6 +634,10 @@ public class VelocityTaglib {
 		searchTag.runTag();
 	}
 
+	public void setTemplateContext(TemplateContext templateContext) {
+		_templateContext = templateContext;
+	}
+
 	public void staging() throws Exception {
 		StagingTag stagingTag = new StagingTag();
 
@@ -658,13 +665,23 @@ public class VelocityTaglib {
 	}
 
 	protected void setUp(TagSupport tagSupport) throws Exception {
-		tagSupport.setPageContext(
-			new PipingPageContext(_pageContext, _response.getWriter()));
+		Writer writer = null;
+
+		if (_templateContext != null) {
+			writer = (Writer)_templateContext.get(TemplateContext.WRITER);
+		}
+
+		if (writer == null) {
+			writer = _response.getWriter();
+		}
+
+		tagSupport.setPageContext(new PipingPageContext(_pageContext, writer));
 	}
 
 	private PageContext _pageContext;
 	private HttpServletRequest _request;
 	private HttpServletResponse _response;
 	private ServletContext _servletContext;
+	private TemplateContext _templateContext;
 
 }
