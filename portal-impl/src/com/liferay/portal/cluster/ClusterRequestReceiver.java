@@ -271,6 +271,10 @@ public class ClusterRequestReceiver extends BaseReceiver {
 
 				return;
 			}
+
+			if (clusterMessageType.equals(ClusterMessageType.UPDATE)) {
+				return;
+			}
 		}
 		else {
 			clusterNodeResponse.setClusterMessageType(
@@ -314,6 +318,10 @@ public class ClusterRequestReceiver extends BaseReceiver {
 			}
 		}
 
+		if (clusterRequest.isFireAndForget()) {
+			return;
+		}
+
 		Channel controlChannel = _clusterExecutorImpl.getControlChannel();
 
 		try {
@@ -335,9 +343,7 @@ public class ClusterRequestReceiver extends BaseReceiver {
 		ClusterMessageType clusterMessageType =
 			clusterNodeResponse.getClusterMessageType();
 
-		if (clusterMessageType.equals(ClusterMessageType.NOTIFY) ||
-			clusterMessageType.equals(ClusterMessageType.UPDATE)) {
-
+		if (clusterMessageType.equals(ClusterMessageType.NOTIFY)) {
 			ClusterNode clusterNode = clusterNodeResponse.getClusterNode();
 
 			if (clusterNode != null) {

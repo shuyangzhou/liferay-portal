@@ -15,6 +15,9 @@
 package com.liferay.portal.kernel.cluster;
 
 import com.liferay.portal.kernel.test.TestCase;
+import com.liferay.portal.kernel.util.InetAddressUtil;
+
+import java.net.InetAddress;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,13 +41,13 @@ public class FutureClusterResponsesTest extends TestCase {
 
 		ClusterNodeResponse clusterNodeResponse1 = new ClusterNodeResponse();
 
-		clusterNodeResponse1.setClusterNode(new ClusterNode("1.2.3.4"));
+		clusterNodeResponse1.setClusterNode(_getClusterNode("1.2.3.4"));
 
 		clusterNodeResponses.addClusterNodeResponse(clusterNodeResponse1);
 
 		ClusterNodeResponse clusterNodeResponse2 = new ClusterNodeResponse();
 
-		clusterNodeResponse2.setClusterNode(new ClusterNode("1.2.3.5"));
+		clusterNodeResponse2.setClusterNode(_getClusterNode("1.2.3.5"));
 
 		clusterNodeResponses.addClusterNodeResponse(clusterNodeResponse2);
 
@@ -72,19 +75,19 @@ public class FutureClusterResponsesTest extends TestCase {
 
 		ClusterNodeResponse clusterNodeResponse1 = new ClusterNodeResponse();
 
-		clusterNodeResponse1.setClusterNode(new ClusterNode("1.2.3.4"));
+		clusterNodeResponse1.setClusterNode(_getClusterNode("1.2.3.4"));
 
 		clusterNodeResponses.addClusterNodeResponse(clusterNodeResponse1);
 
 		ClusterNodeResponse clusterNodeResponse2 = new ClusterNodeResponse();
 
-		clusterNodeResponse2.setClusterNode(new ClusterNode("1.2.3.5"));
+		clusterNodeResponse2.setClusterNode(_getClusterNode("1.2.3.5"));
 
 		clusterNodeResponses.addClusterNodeResponse(clusterNodeResponse2);
 
 		ClusterNodeResponse clusterNodeResponse3 = new ClusterNodeResponse();
 
-		clusterNodeResponse3.setClusterNode(new ClusterNode("1.2.3.6"));
+		clusterNodeResponse3.setClusterNode(_getClusterNode("1.2.3.6"));
 
 		clusterNodeResponses.addClusterNodeResponse(clusterNodeResponse3);
 
@@ -129,7 +132,7 @@ public class FutureClusterResponsesTest extends TestCase {
 
 		ClusterNodeResponse clusterNodeResponse = new ClusterNodeResponse();
 
-		clusterNodeResponse.setClusterNode(new ClusterNode("test"));
+		clusterNodeResponse.setClusterNode(_getClusterNode("test"));
 
 		futureClusterResponses.addClusterNodeResponse(clusterNodeResponse);
 
@@ -142,6 +145,18 @@ public class FutureClusterResponsesTest extends TestCase {
 		catch (TimeoutException te) {
 			fail("Timed out");
 		}
+	}
+
+	private ClusterNode _getClusterNode(String clusterNodeId) {
+		try {
+			InetAddress inetAddress = InetAddressUtil.getLocalInetAddress();
+
+			return new ClusterNode(clusterNodeId, inetAddress, clusterNodeId);
+		}
+		catch (Exception e) {
+		}
+
+		return null;
 	}
 
 	private class MockAddress implements Address {
