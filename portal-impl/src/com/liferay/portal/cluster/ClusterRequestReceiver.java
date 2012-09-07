@@ -271,6 +271,10 @@ public class ClusterRequestReceiver extends BaseReceiver {
 
 				return;
 			}
+
+			if (clusterMessageType.equals(ClusterMessageType.UPDATE)) {
+				return;
+			}
 		}
 		else {
 			clusterNodeResponse.setClusterMessageType(
@@ -312,6 +316,10 @@ public class ClusterRequestReceiver extends BaseReceiver {
 						"Payload is not of type " +
 							MethodHandler.class.getName()));
 			}
+		}
+
+		if (clusterRequest.isFireAndForget()) {
+			return;
 		}
 
 		Channel controlChannel = _clusterExecutorImpl.getControlChannel();

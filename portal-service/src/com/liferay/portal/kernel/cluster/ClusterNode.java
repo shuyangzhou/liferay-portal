@@ -26,8 +26,24 @@ import java.net.InetAddress;
  */
 public class ClusterNode implements Comparable<ClusterNode>, Serializable {
 
-	public ClusterNode(String clusterNodeId) {
+	public ClusterNode(
+		String clusterNodeId, InetAddress inetAddress, String hostName) {
+
+		if (clusterNodeId == null) {
+			throw new IllegalArgumentException("ClusterNode ID is null");
+		}
+
+		if (inetAddress == null) {
+			throw new IllegalArgumentException("InetAddress is null");
+		}
+
+		if (hostName == null) {
+			throw new IllegalArgumentException("Host name is null");
+		}
+
 		_clusterNodeId = clusterNodeId;
+		_hostName = hostName;
+		_inetAddress = inetAddress;
 	}
 
 	public int compareTo(ClusterNode clusterNode) {
@@ -89,14 +105,6 @@ public class ClusterNode implements Comparable<ClusterNode>, Serializable {
 	@Override
 	public int hashCode() {
 		return _clusterNodeId.hashCode();
-	}
-
-	public void setHostName(String hostName) {
-		_hostName = hostName;
-	}
-
-	public void setInetAddress(InetAddress inetAddress) {
-		_inetAddress = inetAddress;
 	}
 
 	public void setPort(int port) {
