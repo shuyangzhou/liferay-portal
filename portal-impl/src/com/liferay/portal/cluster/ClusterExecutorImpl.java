@@ -33,11 +33,11 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.InetAddressUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.WeakValueConcurrentHashMap;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.util.PortalPortEventListener;
 import com.liferay.portal.util.PortalUtil;
+import com.liferay.portal.util.PropsUtil;
 import com.liferay.portal.util.PropsValues;
 
 import java.io.Serializable;
@@ -101,6 +101,7 @@ public class ClusterExecutorImpl
 		PortalExecutorManagerUtil.shutdown(
 			CLUSTER_EXECUTOR_CALLBACK_THREAD_POOL, true);
 
+		_controlJChannel.setReceiver(null);
 		_controlJChannel.close();
 	}
 
@@ -122,23 +123,49 @@ public class ClusterExecutorImpl
 			_futureClusterResponses.put(uuid, futureClusterResponses);
 		}
 
-		if (!clusterRequest.isSkipLocal() && _shortcutLocalMethod &&
+		if (_shortcutLocalMethod &&
 			addresses.remove(getLocalClusterNodeAddress())) {
 
 			ClusterNodeResponse clusterNodeResponse = runLocalMethod(
 				clusterRequest.getMethodHandler());
 
-			clusterNodeResponse.setMulticast(clusterRequest.isMulticast());
-			clusterNodeResponse.setUuid(clusterRequest.getUuid());
+			if (!clusterRequest.isFireAndForget()) {
+				clusterNodeResponse.setMulticast(clusterRequest.isMulticast());
+				clusterNodeResponse.setUuid(clusterRequest.getUuid());
 
-			futureClusterResponses.addClusterNodeResponse(clusterNodeResponse);
+				futureClusterResponses.addClusterNodeResponse(
+					clusterNodeResponse);
+			}
 		}
 
 		if (clusterRequest.isMulticast()) {
-			sendMulticastRequest(clusterRequest);
+			try {
+				_controlJChannel.send(null, clusterRequest);
+			}
+			catch (Exception e) {
+				_log.error(
+					"Unable to send multicast message " + clusterRequest, e);
+
+				throw new SystemException(
+					"Unable to send multicast request", e);
+			}
 		}
 		else {
-			sendUnicastRequest(clusterRequest, addresses);
+			for (Address address : addresses) {
+				org.jgroups.Address jGroupsAddress =
+					(org.jgroups.Address)address.getRealAddress();
+
+				try {
+					_controlJChannel.send(jGroupsAddress, clusterRequest);
+				}
+				catch (Exception e) {
+					_log.error(
+						"Unable to send unicast message " + clusterRequest, e);
+
+					throw new SystemException(
+						"Unable to send unicast request", e);
+				}
+			}
 		}
 
 		return futureClusterResponses;
@@ -228,14 +255,14 @@ public class ClusterExecutorImpl
 
 		try {
 			initLocalClusterNode();
-		}
-		catch (SystemException se) {
-			_log.error("Unable to determine local network address", se);
-		}
 
-		memberJoined(_localAddress, _localClusterNode);
+			memberJoined(_localAddress, _localClusterNode);
 
-		sendNotifyRequest();
+			sendNotifyRequest();
+		}
+		catch (Exception e) {
+			_log.error("Unable to determine local network address", e);
+		}
 
 		ClusterRequestReceiver clusterRequestReceiver =
 			(ClusterRequestReceiver)_controlJChannel.getReceiver();
@@ -259,11 +286,6 @@ public class ClusterExecutorImpl
 		}
 
 		return _clusterNodeAddresses.containsKey(clusterNodeId);
-	}
-
-	@Override
-	public boolean isEnabled() {
-		return PropsValues.CLUSTER_LINK_ENABLED;
 	}
 
 	public void portalPortConfigured(int port) {
@@ -332,7 +354,7 @@ public class ClusterExecutorImpl
 	}
 
 	@Override
-	protected void initChannels() {
+	protected void initChannels() throws Exception {
 		Properties controlProperties = PropsUtil.getProperties(
 			PropsKeys.CLUSTER_LINK_CHANNEL_PROPERTIES_CONTROL, false);
 
@@ -342,40 +364,28 @@ public class ClusterExecutorImpl
 		ClusterRequestReceiver clusterRequestReceiver =
 			new ClusterRequestReceiver(this);
 
-		try {
-			_controlJChannel = createJChannel(
-				controlProperty, clusterRequestReceiver, _DEFAULT_CLUSTER_NAME);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-		}
+		_controlJChannel = createJChannel(
+			controlProperty, clusterRequestReceiver, _DEFAULT_CLUSTER_NAME);
 	}
 
-	protected void initLocalClusterNode() throws SystemException {
-		_localClusterNode = new ClusterNode(PortalUUIDUtil.generate());
+	protected void initLocalClusterNode() throws Exception {
+		InetAddress inetAddress = bindInetAddress;
+
+		if (inetAddress == null) {
+			inetAddress = InetAddressUtil.getLocalInetAddress();
+		}
+
+		ClusterNode localClusterNode = new ClusterNode(
+			PortalUUIDUtil.generate(), inetAddress, inetAddress.getHostName());
 
 		if (PropsValues.PORTAL_INSTANCE_HTTP_PORT > 0) {
-			_localClusterNode.setPort(PropsValues.PORTAL_INSTANCE_HTTP_PORT);
+			localClusterNode.setPort(PropsValues.PORTAL_INSTANCE_HTTP_PORT);
 		}
 		else {
-			_localClusterNode.setPort(PortalUtil.getPortalPort(false));
+			localClusterNode.setPort(PortalUtil.getPortalPort(false));
 		}
 
-		try {
-			InetAddress inetAddress = bindInetAddress;
-
-			if (inetAddress == null) {
-				inetAddress = InetAddressUtil.getLocalInetAddress();
-			}
-
-			_localClusterNode.setInetAddress(inetAddress);
-
-			_localClusterNode.setHostName(inetAddress.getHostName());
-		}
-		catch (Exception e) {
-			throw new SystemException(
-				"Unable to determine local network address", e);
-		}
+		_localClusterNode = localClusterNode;
 	}
 
 	protected boolean isShortcutLocalMethod() {
@@ -450,6 +460,10 @@ public class ClusterExecutorImpl
 			}
 		}
 
+		if (clusterRequest.isSkipLocal()) {
+			addresses.remove(getLocalClusterNodeAddress());
+		}
+
 		return addresses;
 	}
 
@@ -488,19 +502,6 @@ public class ClusterExecutorImpl
 		return clusterNodeResponse;
 	}
 
-	protected void sendMulticastRequest(ClusterRequest clusterRequest)
-		throws SystemException {
-
-		try {
-			_controlJChannel.send(null, clusterRequest);
-		}
-		catch (Exception e) {
-			_log.error("Unable to send multicast message " + clusterRequest, e);
-
-			throw new SystemException("Unable to send multicast request", e);
-		}
-	}
-
 	protected void sendNotifyRequest() {
 		ClusterRequest clusterRequest = ClusterRequest.createClusterRequest(
 			ClusterMessageType.NOTIFY, _localClusterNode);
@@ -509,27 +510,7 @@ public class ClusterExecutorImpl
 			_controlJChannel.send(null, clusterRequest);
 		}
 		catch (Exception e) {
-			_log.error("Unable to send multicast message", e);
-		}
-	}
-
-	protected void sendUnicastRequest(
-			ClusterRequest clusterRequest, List<Address> addresses)
-		throws SystemException {
-
-		for (Address address : addresses) {
-			org.jgroups.Address jGroupsAddress =
-				(org.jgroups.Address)address.getRealAddress();
-
-			try {
-				_controlJChannel.send(jGroupsAddress, clusterRequest);
-			}
-			catch (Exception e) {
-				_log.error(
-					"Unable to send unicast message " + clusterRequest, e);
-
-				throw new SystemException("Unable to send unicast request", e);
-			}
+			_log.error("Unable to send notify message", e);
 		}
 	}
 
