@@ -14,17 +14,24 @@
 
 package com.liferay.portal.kernel.scheduler.config;
 
+import com.liferay.portal.kernel.scheduler.SchedulerEngineHelperUtil;
+
 /**
  * @author Shuyang Zhou
+ * @author Tina Tian
  */
 public class DefaultSchedulingConfigurator
 	extends AbstractSchedulingConfigurator {
 
-	@Override
-	protected ClassLoader getOperatingClassloader() {
-		Thread currentThread = Thread.currentThread();
+	public void afterPropertiesSet() {
+		if (_schedulerEntries.isEmpty()) {
+			return;
+		}
 
-		return currentThread.getContextClassLoader();
+		SchedulerEngineHelperUtil.registerSchedulingConfigurator(this);
+	}
+
+	public void destroy() {
 	}
 
 }

@@ -15,6 +15,7 @@
 package com.liferay.portal.kernel.scheduler;
 
 import com.liferay.portal.kernel.messaging.Message;
+import com.liferay.portal.kernel.scheduler.config.SchedulingConfigurator;
 import com.liferay.portal.kernel.scheduler.messaging.SchedulerResponse;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 
@@ -133,6 +134,9 @@ public interface SchedulerEngineHelper {
 
 	public void pause(String jobName, String groupName, StorageType storageType)
 		throws SchedulerException;
+
+	public void registerSchedulingConfigurator(
+		SchedulingConfigurator schedulingConfigurator);
 
 	public void resume(String groupName, StorageType storageType)
 		throws SchedulerException;

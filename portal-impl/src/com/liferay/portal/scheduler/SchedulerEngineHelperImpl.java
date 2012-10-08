@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.scheduler.StorageType;
 import com.liferay.portal.kernel.scheduler.Trigger;
 import com.liferay.portal.kernel.scheduler.TriggerFactoryUtil;
 import com.liferay.portal.kernel.scheduler.TriggerState;
+import com.liferay.portal.kernel.scheduler.config.SchedulingConfigurator;
 import com.liferay.portal.kernel.scheduler.messaging.SchedulerResponse;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.InetAddressUtil;
@@ -51,6 +52,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.portlet.PortletRequest;
 
@@ -547,6 +549,28 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 		SchedulerLifecycle schedulerLifecycle = new SchedulerLifecycle();
 
 		schedulerLifecycle.registerPortalLifecycle(PortalLifecycle.METHOD_INIT);
+
+		if (_schedulingConfigurators.isEmpty()) {
+			return;
+		}
+
+		for (SchedulingConfigurator schedulingConfigurator :
+			_schedulingConfigurators) {
+
+			List<SchedulerEntry> schedulerEntrys =
+				schedulingConfigurator.getSchedulerEntries();
+			int exceptionsMaxSize =
+				schedulingConfigurator.getExceptionsMaxSize();
+			StorageType storageType = schedulingConfigurator.getStorageType();
+
+			for (SchedulerEntry schedulerEntry : schedulerEntrys) {
+				schedule(schedulerEntry, storageType, null, exceptionsMaxSize);
+			}
+		}
+
+		_schedulingConfigurators.clear();
+
+		_initilized = true;
 	}
 
 	public String namespaceGroupName(
@@ -567,6 +591,16 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 
 		_schedulerEngine.pause(
 			jobName, namespaceGroupName(groupName, storageType));
+	}
+
+	public void registerSchedulingConfigurator(
+		SchedulingConfigurator schedulingConfigurator) {
+
+		if (_initilized) {
+			return;
+		}
+
+		_schedulingConfigurators.add(schedulingConfigurator);
 	}
 
 	public void resume(String groupName, StorageType storageType)
@@ -749,7 +783,10 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 	private static Log _log = LogFactoryUtil.getLog(
 		SchedulerEngineHelperImpl.class);
 
+	private volatile boolean _initilized = false;
 	private SchedulerEngine _schedulerEngine;
 	private SchedulerEngineClusterManager _schedulerEngineClusterManager;
+	private List<SchedulingConfigurator> _schedulingConfigurators =
+		new CopyOnWriteArrayList<SchedulingConfigurator>();
 
 }

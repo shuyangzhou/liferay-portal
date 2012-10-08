@@ -14,27 +14,30 @@
 
 package com.liferay.portal.kernel.scheduler.config;
 
-import com.liferay.portal.kernel.messaging.MessageBus;
-import com.liferay.portal.kernel.scheduler.SchedulerEngine;
 import com.liferay.portal.kernel.scheduler.SchedulerEntry;
+import com.liferay.portal.kernel.scheduler.StorageType;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Shuyang Zhou
  */
 public interface SchedulingConfigurator {
 
+	public void afterPropertiesSet();
+
 	public void destroy();
 
-	public void init();
+	public int getExceptionsMaxSize();
 
-	public void setMessageBus(MessageBus messageBus);
+	public List<SchedulerEntry> getSchedulerEntries();
 
-	public void setSchedulerEngine(SchedulerEngine schedulerEngine);
+	public StorageType getStorageType();
 
-	public void setSchedulerEntries(
-		Map<String, List<SchedulerEntry>> schedulerEntries);
+	public void setExceptionsMaxSize(int exceptionsMaxSize);
+
+	public void setSchedulerEntries(List<SchedulerEntry> schedulerEntries);
+
+	public void setStorageType(StorageType storageType);
 
 }
