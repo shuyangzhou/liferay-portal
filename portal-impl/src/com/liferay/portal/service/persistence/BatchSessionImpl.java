@@ -16,7 +16,12 @@ package com.liferay.portal.service.persistence;
 
 import com.liferay.portal.kernel.dao.orm.ORMException;
 import com.liferay.portal.kernel.dao.orm.Session;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.InitialThreadLocal;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.util.PropsValues;
 
@@ -56,6 +61,21 @@ public class BatchSessionImpl implements BatchSession {
 	}
 
 	public boolean isEnabled() {
+		if (!PropsValues.SPRING_HIBERNATE_SESSION_DELEGATED) {
+			StringBundler sb = new StringBundler(6);
+
+			sb.append("Batch processing must not be enabled when ");
+			sb.append(StringPool.OPEN_CURLY_BRACE);
+			sb.append(PropsKeys.SPRING_HIBERNATE_SESSION_DELEGATED);
+			sb.append(StringPool.EQUAL);
+			sb.append(Boolean.FALSE.toString());
+			sb.append(StringPool.CLOSE_CURLY_BRACE);
+
+			_log.warn(sb.toString());
+
+			return false;
+		}
+
 		return _enabled.get();
 	}
 
@@ -105,6 +125,8 @@ public class BatchSessionImpl implements BatchSession {
 
 		_counter.set(_counter.get() + 1);
 	}
+
+	private static Log _log = LogFactoryUtil.getLog(BatchSessionImpl.class);
 
 	private static final long _INITIAL_COUNTER = 1;
 

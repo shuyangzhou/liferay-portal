@@ -638,6 +638,10 @@
 		<priority value="ERROR" />
 	</category>
 
+	<category name="com.liferay.portal.service.persistence.BatchSessionImpl">
+		<priority value="WARN" />
+	</category>
+
 	<category name="com.liferay.portal.service.persistence.PermissionPool">
 		<priority value="ERROR" />
 	</category>
