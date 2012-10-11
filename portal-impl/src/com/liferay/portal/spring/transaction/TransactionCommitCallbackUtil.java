@@ -30,6 +30,10 @@ class TransactionCommitCallbackUtil {
 		List<List<Callable<?>>> callbackListList =
 			_callbackListListThreadLocal.get();
 
+		if (callbackListList.isEmpty()) {
+			callbackListList.add(new ArrayList<Callable<?>>());
+		}
+
 		int index = callbackListList.size() - 1;
 
 		List<Callable<?>> callableList = callbackListList.get(index);
