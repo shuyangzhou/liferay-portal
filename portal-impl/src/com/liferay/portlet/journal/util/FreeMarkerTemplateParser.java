@@ -19,13 +19,14 @@ import com.liferay.portal.kernel.template.TemplateContextType;
 import com.liferay.portal.kernel.template.TemplateManager;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.kernel.template.TemplateResource;
+import com.liferay.portal.template.BaseTemplateParser;
 import com.liferay.portal.kernel.templateparser.TemplateContext;
 import com.liferay.portal.util.PropsValues;
 
 /**
  * @author Mika Koivisto
  */
-public class FreeMarkerTemplateParser extends VelocityTemplateParser {
+public class FreeMarkerTemplateParser extends BaseTemplateParser {
 
 	@Override
 	protected String getErrorTemplateId() {

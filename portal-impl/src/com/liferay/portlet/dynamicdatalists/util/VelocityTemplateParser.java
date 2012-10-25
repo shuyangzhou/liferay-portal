@@ -19,14 +19,14 @@ import com.liferay.portal.kernel.template.TemplateContextType;
 import com.liferay.portal.kernel.template.TemplateManager;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.kernel.template.TemplateResource;
+import com.liferay.portal.template.BaseTemplateParser;
 import com.liferay.portal.kernel.templateparser.TemplateContext;
 import com.liferay.portal.util.PropsValues;
 
 /**
  * @author Marcellus Tavares
  */
-public class VelocityTemplateParser extends
-	com.liferay.portlet.journal.util.VelocityTemplateParser {
+public class VelocityTemplateParser extends BaseTemplateParser {
 
 	@Override
 	protected String getErrorTemplateId() {
