@@ -2169,6 +2169,8 @@ public interface PropsKeys {
 
 	public static final String TCK_URL = "tck.url";
 
+	public static final String TEMPLATE_LANGUAGE_TYPES = "template.language.types";
+
 	public static final String TERMS_OF_USE_JOURNAL_ARTICLE_GROUP_ID = "terms.of.use.journal.article.group.id";
 
 	public static final String TERMS_OF_USE_JOURNAL_ARTICLE_ID = "terms.of.use.journal.article.id";
