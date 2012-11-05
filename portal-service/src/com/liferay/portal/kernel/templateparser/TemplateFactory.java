@@ -14,16 +14,15 @@
 
 package com.liferay.portal.kernel.templateparser;
 
+import com.liferay.portal.kernel.template.Template;
+
 /**
- * @author Marcellus Tavares
  * @author Brian Wing Shun Chan
+ * @author Tina Tian
  */
-public interface TemplateContext {
+public interface TemplateFactory {
 
-	public static final String WRITER = "writer";
-
-	public Object get(String key);
-
-	public void put(String key, Object value);
+	public Template getTemplate(TemplateFactoryContext templateFactoryContext)
+		throws TransformException;
 
 }
