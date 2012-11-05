@@ -12,34 +12,32 @@
  * details.
  */
 
-package com.liferay.portlet.journal.util;
+package com.liferay.portal.template.factory;
 
 import com.liferay.portal.kernel.template.StringTemplateResource;
-import com.liferay.portal.kernel.template.Template;
-import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateContextType;
-import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.kernel.template.TemplateResource;
-import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.kernel.templateparser.TemplateFactoryContext;
 
 /**
- * @author Mika Koivisto
+ * @author Tina Tian
  */
-public class FreeMarkerTemplateParser extends VelocityTemplateParser {
+public class DefaultTemplateFactory extends BaseTemplateFactory {
 
-	@Override
-	protected String getErrorTemplateId() {
-		return PropsValues.JOURNAL_ERROR_TEMPLATE_FREEMARKER;
+	public DefaultTemplateFactory(
+		String errorTemplateId, TemplateContextType templateContextType) {
+
+		super(errorTemplateId, templateContextType);
 	}
 
 	@Override
-	protected Template getTemplate() throws Exception {
-		TemplateResource templateResource = new StringTemplateResource(
-			getTemplateId(), getScript());
+	protected TemplateResource getTemplateResource(
+			TemplateFactoryContext templateFactoryContext)
+		throws Exception {
 
-		return TemplateManagerUtil.getTemplate(
-			TemplateConstants.LANG_TYPE_FTL, templateResource,
-			getErrorTemplateResource(), TemplateContextType.RESTRICTED);
+		return new StringTemplateResource(
+			getTemplateId(templateFactoryContext),
+			templateFactoryContext.getScript());
 	}
 
 }

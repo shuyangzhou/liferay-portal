@@ -14,17 +14,16 @@
 
 package com.liferay.portal.kernel.templateparser;
 
+import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.LocalizationUtil;
-import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.theme.ThemeDisplay;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +35,7 @@ import java.util.Map;
  * @author Hugo Huijser
  * @author Marcellus Tavares
  * @author Juan Fernández
+ * @author Tina Tian
  */
 public abstract class BaseTransformer implements Transformer {
 
@@ -48,32 +48,22 @@ public abstract class BaseTransformer implements Transformer {
 			return null;
 		}
 
-		String templateParserClassName = getTemplateParserClassName(langType);
+		TemplateFactoryContext templateFactoryContext =
+			new TemplateFactoryContext(
+				themeDisplay, contextObjects, script, langType);
 
-		if (Validator.isNull(templateParserClassName)) {
-			return null;
+		Template template = getTemplate(templateFactoryContext);
+
+		UnsyncStringWriter unsyncStringWriter = new UnsyncStringWriter();
+
+		boolean result = template.processTemplate(unsyncStringWriter);
+
+		if (!result) {
+			throw new TransformException(
+				"Unable to dynamically load transform script");
 		}
 
-		if (_log.isDebugEnabled()) {
-			_log.debug("Template parser class name " + templateParserClassName);
-		}
-
-		TemplateParser templateParser = null;
-
-		try {
-			templateParser = (TemplateParser)InstanceFactory.newInstance(
-				PortalClassLoaderUtil.getClassLoader(),
-				templateParserClassName);
-		}
-		catch (Exception e) {
-			throw new TransformException(e);
-		}
-
-		templateParser.setContextObjects(contextObjects);
-		templateParser.setScript(script);
-		templateParser.setThemeDisplay(themeDisplay);
-
-		return templateParser.transform();
+		return unsyncStringWriter.toString();
 	}
 
 	public String transform(
@@ -102,32 +92,10 @@ public abstract class BaseTransformer implements Transformer {
 			_logTransformBefore.debug(xml);
 		}
 
-		List<TransformerListener> listenersList =
-			new ArrayList<TransformerListener>();
+		List<TransformerListener> transformerListeners =
+			getTransformerListeners();
 
-		String[] listeners = getTransformerListenersClassNames();
-
-		for (int i = 0; i < listeners.length; i++) {
-			TransformerListener listener = null;
-
-			try {
-				if (_log.isDebugEnabled()) {
-					_log.debug("Instantiate listener " + listeners[i]);
-				}
-
-				boolean templateDriven = Validator.isNotNull(langType);
-
-				ClassLoader classLoader =
-					PortalClassLoaderUtil.getClassLoader();
-
-				listener = (TransformerListener)InstanceFactory.newInstance(
-					classLoader, listeners[i]);
-
-				listenersList.add(listener);
-			}
-			catch (Exception e) {
-				_log.error(e, e);
-			}
+		for (TransformerListener transformerListener : transformerListeners) {
 
 			// Modify XML
 
@@ -135,12 +103,10 @@ public abstract class BaseTransformer implements Transformer {
 				_logXmlBeforeListener.debug(xml);
 			}
 
-			if (listener != null) {
-				xml = listener.onXml(xml, languageId, tokens);
+			xml = transformerListener.onXml(xml, languageId, tokens);
 
-				if (_logXmlAfterListener.isDebugEnabled()) {
-					_logXmlAfterListener.debug(xml);
-				}
+			if (_logXmlAfterListener.isDebugEnabled()) {
+				_logXmlAfterListener.debug(xml);
 			}
 
 			// Modify script
@@ -149,12 +115,11 @@ public abstract class BaseTransformer implements Transformer {
 				_logScriptBeforeListener.debug(script);
 			}
 
-			if (listener != null) {
-				script = listener.onScript(script, xml, languageId, tokens);
+			script = transformerListener.onScript(
+				script, xml, languageId, tokens);
 
-				if (_logScriptAfterListener.isDebugEnabled()) {
-					_logScriptAfterListener.debug(script);
-				}
+			if (_logScriptAfterListener.isDebugEnabled()) {
+				_logScriptAfterListener.debug(script);
 			}
 		}
 
@@ -166,42 +131,28 @@ public abstract class BaseTransformer implements Transformer {
 			output = LocalizationUtil.getLocalization(xml, languageId);
 		}
 		else {
-			String templateParserClassName = getTemplateParserClassName(
-				langType);
+			TemplateFactoryContext templateFactoryContext =
+				new TemplateFactoryContext(
+					themeDisplay, tokens, viewMode, languageId, xml, script,
+					langType);
 
-			if (_log.isDebugEnabled()) {
-				_log.debug(
-					"Template parser class name " + templateParserClassName);
+			Template template = getTemplate(templateFactoryContext);
+
+			UnsyncStringWriter unsyncStringWriter = new UnsyncStringWriter();
+
+			boolean result = template.processTemplate(unsyncStringWriter);
+
+			if (!result) {
+				throw new TransformException(
+					"Unable to dynamically load transform script");
 			}
 
-			if (Validator.isNotNull(templateParserClassName)) {
-				TemplateParser templateParser = null;
-
-				try {
-					templateParser =
-						(TemplateParser)InstanceFactory.newInstance(
-							PortalClassLoaderUtil.getClassLoader(),
-							templateParserClassName);
-				}
-				catch (Exception e) {
-					throw new TransformException(e);
-				}
-
-				templateParser.setLanguageId(languageId);
-				templateParser.setScript(script);
-				templateParser.setThemeDisplay(themeDisplay);
-				templateParser.setTokens(tokens);
-				templateParser.setViewMode(viewMode);
-				templateParser.setXML(xml);
-
-				output = templateParser.transform();
-			}
+			output = unsyncStringWriter.toString();
 		}
 
 		// Postprocess output
 
-		for (int i = 0; i < listenersList.size(); i++) {
-			TransformerListener listener = listenersList.get(i);
+		for (TransformerListener transformerListener : transformerListeners) {
 
 			// Modify output
 
@@ -209,7 +160,7 @@ public abstract class BaseTransformer implements Transformer {
 				_logOutputBeforeListener.debug(output);
 			}
 
-			output = listener.onOutput(output, languageId, tokens);
+			output = transformerListener.onOutput(output, languageId, tokens);
 
 			if (_logOutputAfterListener.isDebugEnabled()) {
 				_logOutputAfterListener.debug(output);
@@ -223,9 +174,11 @@ public abstract class BaseTransformer implements Transformer {
 		return output;
 	}
 
-	protected abstract String getTemplateParserClassName(String langType);
+	protected abstract Template getTemplate(
+			TemplateFactoryContext templateFactoryContext)
+		throws TransformException;
 
-	protected abstract String[] getTransformerListenersClassNames();
+	protected abstract List<TransformerListener> getTransformerListeners();
 
 	private static Log _log = LogFactoryUtil.getLog(BaseTransformer.class);
 

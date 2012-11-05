@@ -12,20 +12,17 @@
  * details.
  */
 
-package com.liferay.portlet.dynamicdatalists.util;
+package com.liferay.portal.kernel.templateparser;
 
-import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.kernel.template.Template;
 
 /**
- * @author Marcellus Tavares
+ * @author Brian Wing Shun Chan
  * @author Tina Tian
  */
-public class XSLTemplateParser extends
-	com.liferay.portlet.journal.util.XSLTemplateParser {
+public interface TemplateFactory {
 
-	@Override
-	protected String getErrorTemplateId() {
-		return PropsValues.DYNAMIC_DATA_LISTS_ERROR_TEMPLATE_XSL;
-	}
+	public Template getTemplate(TemplateFactoryContext templateFactoryContext)
+		throws TransformException;
 
 }
