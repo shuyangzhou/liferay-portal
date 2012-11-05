@@ -17,6 +17,7 @@ package com.liferay.portal.xsl;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
 import com.liferay.portal.kernel.template.StringTemplateResource;
 import com.liferay.portal.kernel.template.Template;
+import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateException;
 import com.liferay.portal.kernel.template.TemplateResource;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -126,12 +127,12 @@ public class XSLTemplate implements Template {
 			}
 		}
 
-		Writer oldWriter = (Writer)get(WRITER);
+		Writer oldWriter = (Writer)get(TemplateConstants.WRITER);
 
 		try {
 			UnsyncStringWriter unsyncStringWriter = new UnsyncStringWriter();
 
-			put(WRITER, unsyncStringWriter);
+			put(TemplateConstants.WRITER, unsyncStringWriter);
 
 			_transformer.transform(
 				_xmlSource, new StreamResult(unsyncStringWriter));
@@ -143,7 +144,7 @@ public class XSLTemplate implements Template {
 			return true;
 		}
 		catch (Exception e) {
-			put(WRITER, writer);
+			put(TemplateConstants.WRITER, writer);
 
 			try {
 				_errorTransformer.setParameter(
@@ -178,7 +179,7 @@ public class XSLTemplate implements Template {
 			return false;
 		}
 		finally {
-			put(WRITER, oldWriter);
+			put(TemplateConstants.WRITER, oldWriter);
 		}
 	}
 
