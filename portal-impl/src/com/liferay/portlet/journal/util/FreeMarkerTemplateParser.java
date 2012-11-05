@@ -15,11 +15,11 @@
 package com.liferay.portlet.journal.util;
 
 import com.liferay.portal.kernel.template.StringTemplateResource;
+import com.liferay.portal.kernel.template.Template;
+import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateContextType;
-import com.liferay.portal.kernel.template.TemplateManager;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.kernel.template.TemplateResource;
-import com.liferay.portal.kernel.templateparser.TemplateContext;
 import com.liferay.portal.util.PropsValues;
 
 /**
@@ -33,12 +33,12 @@ public class FreeMarkerTemplateParser extends VelocityTemplateParser {
 	}
 
 	@Override
-	protected TemplateContext getTemplateContext() throws Exception {
+	protected Template getTemplate() throws Exception {
 		TemplateResource templateResource = new StringTemplateResource(
 			getTemplateId(), getScript());
 
 		return TemplateManagerUtil.getTemplate(
-			TemplateManager.FREEMARKER, templateResource,
+			TemplateConstants.LANG_TYPE_FTL, templateResource,
 			getErrorTemplateResource(), TemplateContextType.RESTRICTED);
 	}
 

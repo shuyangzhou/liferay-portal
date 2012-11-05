@@ -21,12 +21,11 @@ import com.liferay.portal.kernel.servlet.PipingServletResponse;
 import com.liferay.portal.kernel.servlet.PluginContextListener;
 import com.liferay.portal.kernel.servlet.ServletContextPool;
 import com.liferay.portal.kernel.template.Template;
+import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateContextType;
-import com.liferay.portal.kernel.template.TemplateManager;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.kernel.template.TemplateResource;
 import com.liferay.portal.kernel.template.TemplateResourceLoaderUtil;
-import com.liferay.portal.kernel.templateparser.TemplateContext;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.ThemeHelper;
@@ -228,7 +227,7 @@ public class ThemeUtil {
 		if (Validator.isNotNull(portletId) &&
 			PortletConstants.hasInstanceId(portletId) &&
 			!TemplateResourceLoaderUtil.hasTemplateResource(
-				TemplateManager.FREEMARKER, resourcePath)) {
+				TemplateConstants.LANG_TYPE_FTL, resourcePath)) {
 
 			String rootPortletId = PortletConstants.getRootPortletId(portletId);
 
@@ -238,13 +237,13 @@ public class ThemeUtil {
 
 		if (Validator.isNotNull(portletId) &&
 			!TemplateResourceLoaderUtil.hasTemplateResource(
-				TemplateManager.FREEMARKER, resourcePath)) {
+				TemplateConstants.LANG_TYPE_FTL, resourcePath)) {
 
 			resourcePath = theme.getResourcePath(servletContext, null, path);
 		}
 
 		if (!TemplateResourceLoaderUtil.hasTemplateResource(
-				TemplateManager.FREEMARKER, resourcePath)) {
+				TemplateConstants.LANG_TYPE_FTL, resourcePath)) {
 
 			_log.error(resourcePath + " does not exist");
 
@@ -253,10 +252,10 @@ public class ThemeUtil {
 
 		TemplateResource templateResource =
 			TemplateResourceLoaderUtil.getTemplateResource(
-				TemplateManager.FREEMARKER, resourcePath);
+				TemplateConstants.LANG_TYPE_FTL, resourcePath);
 
 		Template template = TemplateManagerUtil.getTemplate(
-			TemplateManager.FREEMARKER, templateResource,
+			TemplateConstants.LANG_TYPE_FTL, templateResource,
 			TemplateContextType.STANDARD);
 
 		// FreeMarker variables
@@ -291,7 +290,7 @@ public class ThemeUtil {
 			servletContext, request,
 			new PipingServletResponse(response, writer), pageContext, template);
 
-		template.put(TemplateContext.WRITER, writer);
+		template.put(TemplateConstants.WRITER, writer);
 		template.put("taglibLiferay", velocityTaglib);
 		template.put("theme", velocityTaglib);
 
@@ -437,7 +436,7 @@ public class ThemeUtil {
 			if (PortletConstants.hasInstanceId(portletId) &&
 				(checkResourceExists = !
 				TemplateResourceLoaderUtil.hasTemplateResource(
-					TemplateManager.VELOCITY, resourcePath))) {
+					TemplateConstants.LANG_TYPE_VM, resourcePath))) {
 
 				String rootPortletId = PortletConstants.getRootPortletId(
 					portletId);
@@ -449,7 +448,7 @@ public class ThemeUtil {
 			if (checkResourceExists &&
 				(checkResourceExists = !
 				TemplateResourceLoaderUtil.hasTemplateResource(
-					TemplateManager.VELOCITY, resourcePath))) {
+					TemplateConstants.LANG_TYPE_VM, resourcePath))) {
 
 				resourcePath = theme.getResourcePath(
 					servletContext, null, page);
@@ -458,7 +457,7 @@ public class ThemeUtil {
 
 		if (checkResourceExists &&
 			!TemplateResourceLoaderUtil.hasTemplateResource(
-				TemplateManager.VELOCITY, resourcePath)) {
+				TemplateConstants.LANG_TYPE_VM, resourcePath)) {
 
 			_log.error(resourcePath + " does not exist");
 
@@ -467,7 +466,7 @@ public class ThemeUtil {
 
 		TemplateResource templateResource =
 			TemplateResourceLoaderUtil.getTemplateResource(
-				TemplateManager.VELOCITY, resourcePath);
+				TemplateConstants.LANG_TYPE_VM, resourcePath);
 
 		if (templateResource == null) {
 			throw new Exception(
@@ -475,7 +474,7 @@ public class ThemeUtil {
 		}
 
 		Template template = TemplateManagerUtil.getTemplate(
-			TemplateManager.VELOCITY, templateResource,
+			TemplateConstants.LANG_TYPE_VM, templateResource,
 			TemplateContextType.STANDARD);
 
 		// Velocity variables
@@ -511,7 +510,7 @@ public class ThemeUtil {
 			servletContext, request,
 			new PipingServletResponse(response, writer), pageContext, template);
 
-		template.put(TemplateContext.WRITER, writer);
+		template.put(TemplateConstants.WRITER, writer);
 		template.put("taglibLiferay", velocityTaglib);
 		template.put("theme", velocityTaglib);
 

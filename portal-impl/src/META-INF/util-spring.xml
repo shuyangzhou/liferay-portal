@@ -336,6 +336,11 @@
 						<bean class="com.liferay.portal.velocity.VelocityTemplateContextHelper" />
 					</property>
 				</bean>
+				<bean class="com.liferay.portal.xsl.XSLManager">
+					<property name="templateContextHelper">
+						<bean class="com.liferay.portal.template.TemplateContextHelper" />
+					</property>
+				</bean>
 			</list>
 		</property>
 	</bean>
@@ -344,7 +349,7 @@
 			<list>
 				<bean class="com.liferay.portal.template.DefaultTemplateResourceLoader">
 					<constructor-arg>
-						<util:constant static-field="com.liferay.portal.kernel.template.TemplateManager.FREEMARKER" />
+						<util:constant static-field="com.liferay.portal.kernel.template.TemplateConstants.LANG_TYPE_FTL" />
 					</constructor-arg>
 					<constructor-arg>
 						<util:constant static-field="com.liferay.portal.util.PropsValues.FREEMARKER_ENGINE_TEMPLATE_PARSERS" />
@@ -355,7 +360,7 @@
 				</bean>
 				<bean class="com.liferay.portal.template.DefaultTemplateResourceLoader">
 					<constructor-arg>
-						<util:constant static-field="com.liferay.portal.kernel.template.TemplateManager.VELOCITY" />
+						<util:constant static-field="com.liferay.portal.kernel.template.TemplateConstants.LANG_TYPE_VM" />
 					</constructor-arg>
 					<constructor-arg>
 						<util:constant static-field="com.liferay.portal.util.PropsValues.VELOCITY_ENGINE_RESOURCE_PARSERS" />
