@@ -241,11 +241,10 @@ public class ClusterSchedulerEngine
 		try {
 			if (memoryClusteredSlaveJob) {
 				updateMemoryClusteredJobs(groupName, TriggerState.PAUSED);
-
-				return;
 			}
-
-			_schedulerEngine.pause(groupName);
+			else {
+				_schedulerEngine.pause(groupName);
+			}
 		}
 		finally {
 			_readLock.unlock();
@@ -266,11 +265,10 @@ public class ClusterSchedulerEngine
 			if (memoryClusteredSlaveJob) {
 				updateMemoryClusteredJob(
 					jobName, groupName, TriggerState.PAUSED);
-
-				return;
 			}
-
-			_schedulerEngine.pause(jobName, groupName);
+			else {
+				_schedulerEngine.pause(jobName, groupName);
+			}
 		}
 		finally {
 			_readLock.unlock();
@@ -288,11 +286,10 @@ public class ClusterSchedulerEngine
 		try {
 			if (memoryClusteredSlaveJob) {
 				updateMemoryClusteredJobs(groupName, TriggerState.NORMAL);
-
-				return;
 			}
-
-			_schedulerEngine.resume(groupName);
+			else {
+				_schedulerEngine.resume(groupName);
+			}
 		}
 		finally {
 			_readLock.unlock();
@@ -313,11 +310,10 @@ public class ClusterSchedulerEngine
 			if (memoryClusteredSlaveJob) {
 				updateMemoryClusteredJob(
 					jobName, groupName, TriggerState.NORMAL);
-
-				return;
 			}
-
-			_schedulerEngine.resume(jobName, groupName);
+			else {
+				_schedulerEngine.resume(jobName, groupName);
+			}
 		}
 		finally {
 			_readLock.unlock();
@@ -354,12 +350,11 @@ public class ClusterSchedulerEngine
 					getFullName(jobName, groupName),
 					new ObjectValuePair<SchedulerResponse, TriggerState>(
 						schedulerResponse, TriggerState.NORMAL));
-
-				return;
 			}
-
-			_schedulerEngine.schedule(
-				trigger, description, destinationName, message);
+			else {
+				_schedulerEngine.schedule(
+					trigger, description, destinationName, message);
+			}
 		}
 		finally {
 			_readLock.unlock();
@@ -384,12 +379,17 @@ public class ClusterSchedulerEngine
 		catch (Exception e) {
 			throw new SchedulerException("Unable to shutdown scheduler", e);
 		}
+		finally {
+			_schedulerEngine.shutdown();
 
-		_schedulerEngine.shutdown();
+			_isClosed = true;
+		}
 	}
 
 	public void start() throws SchedulerException {
 		_schedulerEngine.start();
+
+		_isStarted = true;
 	}
 
 	@Clusterable
@@ -398,17 +398,15 @@ public class ClusterSchedulerEngine
 
 		boolean memoryClusteredSlaveJob = isMemoryClusteredSlaveJob(groupName);
 
-		if (memoryClusteredSlaveJob) {
-			return;
-		}
+		if (!memoryClusteredSlaveJob) {
+			_readLock.lock();
 
-		_readLock.lock();
-
-		try {
-			_schedulerEngine.suppressError(jobName, groupName);
-		}
-		finally {
-			_readLock.unlock();
+			try {
+				_schedulerEngine.suppressError(jobName, groupName);
+			}
+			finally {
+				_readLock.unlock();
+			}
 		}
 
 		skipClusterInvoking(groupName);
@@ -469,6 +467,8 @@ public class ClusterSchedulerEngine
 
 		try {
 			if (memoryClusteredSlaveJob) {
+				boolean triggerUpdated = false;
+
 				for (ObjectValuePair<SchedulerResponse, TriggerState>
 						memoryClusteredJob : _memoryClusteredJobs.values()) {
 
@@ -480,15 +480,18 @@ public class ClusterSchedulerEngine
 
 						schedulerResponse.setTrigger(trigger);
 
-						return;
+						triggerUpdated = true;
 					}
 				}
 
-				throw new SchedulerException(
-					"Unable to update trigger for memory clustered job");
+				if (!triggerUpdated) {
+					throw new SchedulerException(
+						"Unable to update trigger for memory clustered job");
+				}
 			}
-
-			_schedulerEngine.update(trigger);
+			else {
+				_schedulerEngine.update(trigger);
+			}
 		}
 		finally {
 			_readLock.unlock();
@@ -771,7 +774,8 @@ public class ClusterSchedulerEngine
 
 		StorageType storageType = getStorageType(groupName);
 
-		if (storageType.equals(StorageType.PERSISTED) ||
+		if (storageType.equals(StorageType.PERSISTED) || !_isStarted ||
+			_isClosed || PluginContextLifecycleThreadLocal.isInitializing() ||
 			PluginContextLifecycleThreadLocal.isDestroying()) {
 
 			SchedulerException schedulerException = new SchedulerException();
@@ -907,6 +911,8 @@ public class ClusterSchedulerEngine
 
 	private String _beanIdentifier;
 	private ClusterEventListener _clusterEventListener;
+	private boolean _isClosed;
+	private boolean _isStarted;
 	private volatile String _localClusterNodeAddress;
 	private volatile boolean _master;
 	private Map<String, ObjectValuePair<SchedulerResponse, TriggerState>>
