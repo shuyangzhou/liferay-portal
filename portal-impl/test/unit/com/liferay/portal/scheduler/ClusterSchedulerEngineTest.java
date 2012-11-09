@@ -15,6 +15,8 @@
 package com.liferay.portal.scheduler;
 
 import com.liferay.portal.cluster.AddressImpl;
+import com.liferay.portal.cluster.ClusterInvokeThreadLocal;
+import com.liferay.portal.cluster.ClusterableAdviceContextHelper;
 import com.liferay.portal.kernel.cluster.Address;
 import com.liferay.portal.kernel.cluster.ClusterEventListener;
 import com.liferay.portal.kernel.cluster.ClusterExecutor;
@@ -37,6 +39,7 @@ import com.liferay.portal.kernel.scheduler.TriggerFactoryUtil;
 import com.liferay.portal.kernel.scheduler.TriggerState;
 import com.liferay.portal.kernel.scheduler.TriggerType;
 import com.liferay.portal.kernel.scheduler.messaging.SchedulerResponse;
+import com.liferay.portal.kernel.servlet.PluginContextLifecycleThreadLocal;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
@@ -58,6 +61,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.io.Serializable;
 
 import java.lang.reflect.Field;
 
@@ -212,14 +216,7 @@ public class ClusterSchedulerEngineTest {
 		}
 
 		_clusterSchedulerEngine.delete(_MEMORY_CLUSTER_TEST_GROUP_NAME);
-
-		try {
-			_clusterSchedulerEngine.delete(_PERSISTENT_TEST_GROUP_NAME);
-
-			Assert.fail();
-		}
-		catch (Exception e) {
-		}
+		_clusterSchedulerEngine.delete(_PERSISTENT_TEST_GROUP_NAME);
 
 		try {
 			_clusterSchedulerEngine.getScheduledJobs();
@@ -496,6 +493,111 @@ public class ClusterSchedulerEngineTest {
 		schedulerResponses = _getMemoryClusteredJobs(_clusterSchedulerEngine);
 
 		Assert.assertEquals(2, schedulerResponses.size());
+	}
+
+	@Test
+	public void testSetClusterableAdviceContext1() throws Exception {
+		_clusterSchedulerEngine = _getClusterSchedulerEngine(false, 2, 0);
+
+		_clusterSchedulerEngine.shutdown();
+
+		_clusterSchedulerEngine.delete(_MEMORY_CLUSTER_TEST_GROUP_NAME);
+
+		Map<String, Serializable> context =
+			ClusterableAdviceContextHelper.getThreadLocalContext();
+
+		Assert.assertTrue((Boolean)context.get("skip"));
+	}
+
+	@Test
+	public void testSetClusterableAdviceContext2() throws Exception {
+		_clusterSchedulerEngine = _getClusterSchedulerEngine(false, 2, 0);
+
+		PluginContextLifecycleThreadLocal.setDestroying(true);
+
+		_clusterSchedulerEngine.delete(_MEMORY_CLUSTER_TEST_GROUP_NAME);
+
+		PluginContextLifecycleThreadLocal.setDestroying(false);
+
+		Map<String, Serializable> context =
+			ClusterableAdviceContextHelper.getThreadLocalContext();
+
+		Assert.assertTrue((Boolean)context.get("skip"));
+	}
+
+	@Test
+	public void testSetClusterableAdviceContext3() throws Exception {
+		_clusterSchedulerEngine = _getClusterSchedulerEngine(false, 2, 0);
+
+		PluginContextLifecycleThreadLocal.setInitializing(true);
+
+		_clusterSchedulerEngine.delete(_MEMORY_CLUSTER_TEST_GROUP_NAME);
+
+		PluginContextLifecycleThreadLocal.setInitializing(false);
+
+		Map<String, Serializable> context =
+			ClusterableAdviceContextHelper.getThreadLocalContext();
+
+		Assert.assertTrue((Boolean)context.get("skip"));
+	}
+
+	@Test
+	public void testSkipClusterInvoking1() throws Exception {
+		_clusterSchedulerEngine = _getClusterSchedulerEngine(false, 2, 0);
+
+		ClusterInvokeThreadLocal.setEnabled(false);
+
+		Map<String, Serializable> context = new HashMap<String, Serializable>();
+
+		context.put("skip", Boolean.TRUE);
+
+		ClusterableAdviceContextHelper.setClusterableAdviceContext(context);
+
+		try {
+			_clusterSchedulerEngine.delete(_MEMORY_CLUSTER_TEST_GROUP_NAME);
+
+			Assert.fail();
+		}
+		catch (SchedulerException se) {
+		}
+		finally {
+			ClusterInvokeThreadLocal.setEnabled(true);
+			ClusterableAdviceContextHelper.setClusterableAdviceContext(null);
+		}
+	}
+
+	@Test
+	public void testSkipClusterInvoking2() throws Exception {
+		_clusterSchedulerEngine = _getClusterSchedulerEngine(false, 2, 0);
+
+		ClusterInvokeThreadLocal.setEnabled(false);
+
+		_clusterSchedulerEngine.delete(_MEMORY_CLUSTER_TEST_GROUP_NAME);
+
+		Map<String, SchedulerResponse> schedulerResponses =
+			_getMemoryClusteredJobs(_clusterSchedulerEngine);
+
+		Assert.assertTrue(schedulerResponses.isEmpty());
+
+		ClusterInvokeThreadLocal.setEnabled(true);
+	}
+
+	@Test
+	public void testSkipClusterInvoking3() throws Exception {
+		_clusterSchedulerEngine = _getClusterSchedulerEngine(false, 2, 0);
+
+		ClusterInvokeThreadLocal.setEnabled(false);
+
+		try {
+			_clusterSchedulerEngine.delete(_PERSISTENT_TEST_GROUP_NAME);
+
+			Assert.fail();
+		}
+		catch (SchedulerException se) {
+		}
+		finally {
+			ClusterInvokeThreadLocal.setEnabled(true);
+		}
 	}
 
 	@Test

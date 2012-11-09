@@ -48,7 +48,7 @@
 			<trigger>
 				<simple>
 					<property-key>calendar.event.check.interval</property-key>
-					<time-unit>minute</time-unit>
+					<time-unit>second</time-unit>
 				</simple>
 			</trigger>
 		</scheduler-entry>
