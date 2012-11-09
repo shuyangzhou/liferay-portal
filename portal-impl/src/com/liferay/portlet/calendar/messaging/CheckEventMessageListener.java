@@ -18,6 +18,8 @@ import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portlet.calendar.service.CalEventLocalServiceUtil;
 
+import java.util.Date;
+
 /**
  * @author Brian Wing Shun Chan
  * @author Tina Tian
@@ -26,6 +28,7 @@ public class CheckEventMessageListener extends BaseMessageListener {
 
 	@Override
 	protected void doReceive(Message message) throws Exception {
+		System.out.println("#############CheckEventMessageListener is triggered at " + new Date(System.currentTimeMillis()));
 		CalEventLocalServiceUtil.checkEvents();
 	}
 

@@ -65,6 +65,13 @@ public class ClusterableAdvice
 		MethodHandler methodHandler = new MethodHandler(
 			method, methodInvocation.getArguments());
 
+		methodHandler =
+			ClusterableAdviceContextHelper.wrapMethodhandlerWithContext(
+				methodHandler,
+				ClusterableAdviceContextHelper.getThreadLocalContext());
+
+		ClusterableAdviceContextHelper.removeThreadLocalContext();
+
 		ClusterRequest clusterRequest = ClusterRequest.createMulticastRequest(
 			methodHandler, true);
 

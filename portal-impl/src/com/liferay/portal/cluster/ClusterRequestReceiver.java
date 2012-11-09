@@ -25,12 +25,16 @@ import com.liferay.portal.kernel.cluster.FutureClusterResponses;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
+import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.security.pacl.PACLClassLoaderUtil;
+
+import java.io.Serializable;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 
 import org.jgroups.Channel;
@@ -272,12 +276,22 @@ public class ClusterRequestReceiver extends BaseReceiver {
 
 		MethodHandler methodHandler = clusterRequest.getMethodHandler();
 
+		ObjectValuePair<MethodHandler, Map<String, Serializable>>
+			objectValuePair =
+				ClusterableAdviceContextHelper.unwrapMethodhandlerWithContext(
+					methodHandler);
+
+		methodHandler = objectValuePair.getKey();
+
 		Object returnValue = null;
 		Exception exception = null;
 
 		if (methodHandler != null) {
 			try {
 				ClusterInvokeThreadLocal.setEnabled(false);
+
+				ClusterableAdviceContextHelper.putAllThreadLocalContext(
+					objectValuePair.getValue());
 
 				returnValue = invoke(
 					clusterRequest.getServletContextName(),
@@ -290,6 +304,8 @@ public class ClusterRequestReceiver extends BaseReceiver {
 			}
 			finally {
 				ClusterInvokeThreadLocal.setEnabled(true);
+
+				ClusterableAdviceContextHelper.removeThreadLocalContext();
 			}
 		}
 		else {
