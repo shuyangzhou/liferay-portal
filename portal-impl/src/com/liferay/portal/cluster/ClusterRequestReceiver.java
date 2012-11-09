@@ -279,6 +279,9 @@ public class ClusterRequestReceiver extends BaseReceiver {
 			try {
 				ClusterInvokeThreadLocal.setEnabled(false);
 
+				ClusterableAdviceContextThreadLocal.setClusterableAdviceContext(
+					clusterRequest.getContext());
+
 				returnValue = invoke(
 					clusterRequest.getServletContextName(),
 					clusterRequest.getBeanIdentifier(), methodHandler);
@@ -290,6 +293,9 @@ public class ClusterRequestReceiver extends BaseReceiver {
 			}
 			finally {
 				ClusterInvokeThreadLocal.setEnabled(true);
+
+				ClusterableAdviceContextThreadLocal.setClusterableAdviceContext(
+					null);
 			}
 		}
 		else {

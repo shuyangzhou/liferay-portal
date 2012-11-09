@@ -68,6 +68,11 @@ public class ClusterableAdvice
 		ClusterRequest clusterRequest = ClusterRequest.createMulticastRequest(
 			methodHandler, true);
 
+		clusterRequest.setContext(
+			ClusterableAdviceContextThreadLocal.getClusterableAdviceContext());
+
+		ClusterableAdviceContextThreadLocal.setClusterableAdviceContext(null);
+
 		IdentifiableBean identifiableBean = (IdentifiableBean)thisObject;
 
 		clusterRequest.setBeanIdentifier(identifiableBean.getBeanIdentifier());

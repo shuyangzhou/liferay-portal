@@ -21,7 +21,10 @@ import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import java.io.Serializable;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -127,6 +130,14 @@ public class ClusterRequest implements Serializable {
 		return _clusterMessageType;
 	}
 
+	public Map<String, Serializable> getContext() {
+		if (_context == null) {
+			return null;
+		}
+
+		return Collections.unmodifiableMap(_context);
+	}
+
 	public MethodHandler getMethodHandler() {
 		return _methodHandler;
 	}
@@ -169,6 +180,12 @@ public class ClusterRequest implements Serializable {
 
 	public void setClusterMessageType(ClusterMessageType clusterMessageType) {
 		_clusterMessageType = clusterMessageType;
+	}
+
+	public void setContext(Map<String, Serializable> context) {
+		if (context != null) {
+			_context = new HashMap<String, Serializable>(context);
+		}
 	}
 
 	public void setFireAndForget(boolean fireAndForget) {
@@ -243,6 +260,7 @@ public class ClusterRequest implements Serializable {
 
 	private String _beanIdentifier;
 	private ClusterMessageType _clusterMessageType;
+	private Map<String, Serializable> _context;
 	private boolean _fireAndForget;
 	private MethodHandler _methodHandler;
 	private boolean _multicast;
