@@ -14,22 +14,15 @@
 
 package com.liferay.portal.kernel.cluster;
 
-import com.liferay.portal.kernel.util.StringPool;
+import java.io.Serializable;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.util.Map;
 
 /**
- * @author Shuyang Zhou
+ * @author Tina Tian
  */
-@Documented
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface Clusterable {
+public interface ClusterableListener {
 
-	String invokeClassName() default StringPool.BLANK;
+	public boolean skipClusteringInvoke(Map<String, Serializable> context);
 
 }

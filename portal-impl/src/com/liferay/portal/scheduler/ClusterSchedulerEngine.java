@@ -14,6 +14,9 @@
 
 package com.liferay.portal.scheduler;
 
+import com.liferay.portal.cluster.ClusterInvokeThreadLocal;
+import com.liferay.portal.cluster.ClusterableAdvice;
+import com.liferay.portal.cluster.ClusterableContextThreadLocal;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.bean.IdentifiableBean;
 import com.liferay.portal.kernel.cluster.Address;
@@ -25,6 +28,7 @@ import com.liferay.portal.kernel.cluster.ClusterNodeResponse;
 import com.liferay.portal.kernel.cluster.ClusterNodeResponses;
 import com.liferay.portal.kernel.cluster.ClusterRequest;
 import com.liferay.portal.kernel.cluster.Clusterable;
+import com.liferay.portal.kernel.cluster.ClusterableListener;
 import com.liferay.portal.kernel.cluster.FutureClusterResponses;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
@@ -54,6 +58,7 @@ import com.liferay.portal.util.PropsValues;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 import java.util.Iterator;
 import java.util.List;
@@ -84,9 +89,15 @@ public class ClusterSchedulerEngine
 
 	public ClusterSchedulerEngine(SchedulerEngine schedulerEngine) {
 		_schedulerEngine = schedulerEngine;
+
+		ClusterableAdvice.registerClusterableListener(
+			ClusterSchedulerEngine.class.getName(),
+			new SchedulerClusterableListener());
 	}
 
-	@Clusterable
+	@Clusterable(
+		invokeClassName =
+			"com.liferay.portal.scheduler.ClusterSchedulerEngine")
 	public void delete(String groupName) throws SchedulerException {
 		boolean memoryClusteredSlaveJob = isMemoryClusteredSlaveJob(groupName);
 
@@ -104,10 +115,12 @@ public class ClusterSchedulerEngine
 			_readLock.unlock();
 		}
 
-		skipClusterInvoking(groupName);
+		setClusterableThreadLocal(groupName);
 	}
 
-	@Clusterable
+	@Clusterable(
+		invokeClassName =
+			"com.liferay.portal.scheduler.ClusterSchedulerEngine")
 	public void delete(String jobName, String groupName)
 		throws SchedulerException {
 
@@ -127,7 +140,7 @@ public class ClusterSchedulerEngine
 			_readLock.unlock();
 		}
 
-		skipClusterInvoking(groupName);
+		setClusterableThreadLocal(groupName);
 	}
 
 	public String getBeanIdentifier() {
@@ -238,7 +251,9 @@ public class ClusterSchedulerEngine
 		}
 	}
 
-	@Clusterable
+	@Clusterable(
+		invokeClassName =
+			"com.liferay.portal.scheduler.ClusterSchedulerEngine")
 	public void pause(String groupName) throws SchedulerException {
 		boolean memoryClusteredSlaveJob = isMemoryClusteredSlaveJob(groupName);
 
@@ -247,20 +262,21 @@ public class ClusterSchedulerEngine
 		try {
 			if (memoryClusteredSlaveJob) {
 				updateMemoryClusteredJobs(groupName, TriggerState.PAUSED);
-
-				return;
 			}
-
-			_schedulerEngine.pause(groupName);
+			else {
+				_schedulerEngine.pause(groupName);
+			}
 		}
 		finally {
 			_readLock.unlock();
 		}
 
-		skipClusterInvoking(groupName);
+		setClusterableThreadLocal(groupName);
 	}
 
-	@Clusterable
+	@Clusterable(
+		invokeClassName =
+			"com.liferay.portal.scheduler.ClusterSchedulerEngine")
 	public void pause(String jobName, String groupName)
 		throws SchedulerException {
 
@@ -272,20 +288,21 @@ public class ClusterSchedulerEngine
 			if (memoryClusteredSlaveJob) {
 				updateMemoryClusteredJob(
 					jobName, groupName, TriggerState.PAUSED);
-
-				return;
 			}
-
-			_schedulerEngine.pause(jobName, groupName);
+			else {
+				_schedulerEngine.pause(jobName, groupName);
+			}
 		}
 		finally {
 			_readLock.unlock();
 		}
 
-		skipClusterInvoking(groupName);
+		setClusterableThreadLocal(groupName);
 	}
 
-	@Clusterable
+	@Clusterable(
+		invokeClassName =
+			"com.liferay.portal.scheduler.ClusterSchedulerEngine")
 	public void resume(String groupName) throws SchedulerException {
 		boolean memoryClusteredSlaveJob = isMemoryClusteredSlaveJob(groupName);
 
@@ -294,20 +311,21 @@ public class ClusterSchedulerEngine
 		try {
 			if (memoryClusteredSlaveJob) {
 				updateMemoryClusteredJobs(groupName, TriggerState.NORMAL);
-
-				return;
 			}
-
-			_schedulerEngine.resume(groupName);
+			else {
+				_schedulerEngine.resume(groupName);
+			}
 		}
 		finally {
 			_readLock.unlock();
 		}
 
-		skipClusterInvoking(groupName);
+		setClusterableThreadLocal(groupName);
 	}
 
-	@Clusterable
+	@Clusterable(
+		invokeClassName =
+			"com.liferay.portal.scheduler.ClusterSchedulerEngine")
 	public void resume(String jobName, String groupName)
 		throws SchedulerException {
 
@@ -319,20 +337,21 @@ public class ClusterSchedulerEngine
 			if (memoryClusteredSlaveJob) {
 				updateMemoryClusteredJob(
 					jobName, groupName, TriggerState.NORMAL);
-
-				return;
 			}
-
-			_schedulerEngine.resume(jobName, groupName);
+			else {
+				_schedulerEngine.resume(jobName, groupName);
+			}
 		}
 		finally {
 			_readLock.unlock();
 		}
 
-		skipClusterInvoking(groupName);
+		setClusterableThreadLocal(groupName);
 	}
 
-	@Clusterable
+	@Clusterable(
+		invokeClassName =
+			"com.liferay.portal.scheduler.ClusterSchedulerEngine")
 	public void schedule(
 			Trigger trigger, String description, String destinationName,
 			Message message)
@@ -360,18 +379,17 @@ public class ClusterSchedulerEngine
 					getFullName(jobName, groupName),
 					new ObjectValuePair<SchedulerResponse, TriggerState>(
 						schedulerResponse, TriggerState.NORMAL));
-
-				return;
 			}
-
-			_schedulerEngine.schedule(
-				trigger, description, destinationName, message);
+			else {
+				_schedulerEngine.schedule(
+					trigger, description, destinationName, message);
+			}
 		}
 		finally {
 			_readLock.unlock();
 		}
 
-		skipClusterInvoking(groupName);
+		setClusterableThreadLocal(groupName);
 	}
 
 	public void setBeanIdentifier(String beanIdentifier) {
@@ -379,6 +397,11 @@ public class ClusterSchedulerEngine
 	}
 
 	public void shutdown() throws SchedulerException {
+		_portalReady = false;
+
+		ClusterableAdvice.unregisterClusterableListener(
+			ClusterSchedulerEngine.class.getName());
+
 		try {
 			ClusterExecutorUtil.removeClusterEventListener(
 				_clusterEventListener);
@@ -396,31 +419,35 @@ public class ClusterSchedulerEngine
 
 	public void start() throws SchedulerException {
 		_schedulerEngine.start();
+
+		_portalReady = true;
 	}
 
-	@Clusterable
+	@Clusterable(
+		invokeClassName =
+			"com.liferay.portal.scheduler.ClusterSchedulerEngine")
 	public void suppressError(String jobName, String groupName)
 		throws SchedulerException {
 
 		boolean memoryClusteredSlaveJob = isMemoryClusteredSlaveJob(groupName);
 
-		if (memoryClusteredSlaveJob) {
-			return;
+		if (!memoryClusteredSlaveJob) {
+			_readLock.lock();
+
+			try {
+				_schedulerEngine.suppressError(jobName, groupName);
+			}
+			finally {
+				_readLock.unlock();
+			}
 		}
 
-		_readLock.lock();
-
-		try {
-			_schedulerEngine.suppressError(jobName, groupName);
-		}
-		finally {
-			_readLock.unlock();
-		}
-
-		skipClusterInvoking(groupName);
+		setClusterableThreadLocal(groupName);
 	}
 
-	@Clusterable
+	@Clusterable(
+		invokeClassName =
+			"com.liferay.portal.scheduler.ClusterSchedulerEngine")
 	public void unschedule(String groupName) throws SchedulerException {
 		boolean memoryClusteredSlaveJob = isMemoryClusteredSlaveJob(groupName);
 
@@ -438,10 +465,12 @@ public class ClusterSchedulerEngine
 			_readLock.unlock();
 		}
 
-		skipClusterInvoking(groupName);
+		setClusterableThreadLocal(groupName);
 	}
 
-	@Clusterable
+	@Clusterable(
+		invokeClassName =
+			"com.liferay.portal.scheduler.ClusterSchedulerEngine")
 	public void unschedule(String jobName, String groupName)
 		throws SchedulerException {
 
@@ -461,10 +490,12 @@ public class ClusterSchedulerEngine
 			_readLock.unlock();
 		}
 
-		skipClusterInvoking(groupName);
+		setClusterableThreadLocal(groupName);
 	}
 
-	@Clusterable
+	@Clusterable(
+		invokeClassName =
+			"com.liferay.portal.scheduler.ClusterSchedulerEngine")
 	public void update(Trigger trigger) throws SchedulerException {
 		String jobName = trigger.getJobName();
 		String groupName = trigger.getGroupName();
@@ -475,6 +506,8 @@ public class ClusterSchedulerEngine
 
 		try {
 			if (memoryClusteredSlaveJob) {
+				boolean updated = false;
+
 				for (ObjectValuePair<SchedulerResponse, TriggerState>
 						memoryClusteredJob : _memoryClusteredJobs.values()) {
 
@@ -486,21 +519,26 @@ public class ClusterSchedulerEngine
 
 						schedulerResponse.setTrigger(trigger);
 
-						return;
+						updated = true;
+
+						break;
 					}
 				}
 
-				throw new SchedulerException(
-					"Unable to update trigger for memory clustered job");
+				if (!updated) {
+					throw new SchedulerException(
+						"Unable to update trigger for memory clustered job");
+				}
 			}
-
-			_schedulerEngine.update(trigger);
+			else {
+				_schedulerEngine.update(trigger);
+			}
 		}
 		finally {
 			_readLock.unlock();
 		}
 
-		skipClusterInvoking(groupName);
+		setClusterableThreadLocal(groupName);
 	}
 
 	public Lock updateMemorySchedulerClusterMaster() throws SchedulerException {
@@ -778,23 +816,25 @@ public class ClusterSchedulerEngine
 			orginalGroupName, storageType);
 	}
 
-	protected void skipClusterInvoking(String groupName)
-		throws SchedulerException {
-
+	protected void setClusterableThreadLocal(String groupName) {
 		ObjectValuePair<String, StorageType> objectValuePair = resolveGroupName(
 			groupName);
 
-		StorageType storageType = objectValuePair.getValue();
+		ClusterableContextThreadLocal.putThreadLocalContext(
+			STORAGE_TYPE, objectValuePair.getValue());
+		ClusterableContextThreadLocal.putThreadLocalContext(
+			_PORTAL_READY, _portalReady);
 
-		if (storageType.equals(StorageType.PERSISTED) ||
+		boolean pluginReady = true;
+
+		if (PluginContextLifecycleThreadLocal.isInitializing() ||
 			PluginContextLifecycleThreadLocal.isDestroying()) {
 
-			SchedulerException schedulerException = new SchedulerException();
-
-			schedulerException.setSwallowable(true);
-
-			throw schedulerException;
+			pluginReady = false;
 		}
+
+		ClusterableContextThreadLocal.putThreadLocalContext(
+			_PLUGIN_READY, pluginReady);
 	}
 
 	protected void slaveToMaster() throws SchedulerException {
@@ -907,6 +947,8 @@ public class ClusterSchedulerEngine
 
 	private static final String _LOCK_CLASS_NAME =
 		SchedulerEngine.class.getName();
+	private static final String _PLUGIN_READY = "plugin.ready";
+	private static final String _PORTAL_READY = "portal.ready";
 
 	private static Log _log = LogFactoryUtil.getLog(
 		ClusterSchedulerEngine.class);
@@ -929,6 +971,7 @@ public class ClusterSchedulerEngine
 	private Map<String, ObjectValuePair<SchedulerResponse, TriggerState>>
 		_memoryClusteredJobs = new ConcurrentHashMap
 			<String, ObjectValuePair<SchedulerResponse, TriggerState>>();
+	private boolean _portalReady;
 	private java.util.concurrent.locks.Lock _readLock;
 	private SchedulerEngine _schedulerEngine;
 	private java.util.concurrent.locks.Lock _writeLock;
@@ -982,6 +1025,28 @@ public class ClusterSchedulerEngine
 		}
 
 		private Address _address;
+
+	}
+
+	private class SchedulerClusterableListener implements ClusterableListener {
+
+		public boolean skipClusteringInvoke(Map<String, Serializable> context) {
+			if (ClusterInvokeThreadLocal.isEnabled()) {
+				return false;
+			}
+
+			StorageType storageType = (StorageType)context.get(STORAGE_TYPE);
+			boolean portalReady = (Boolean)context.get(_PORTAL_READY);
+			boolean pluginReady = (Boolean)context.get(_PLUGIN_READY);
+
+			if (storageType.equals(StorageType.PERSISTED) || !portalReady ||
+				!pluginReady) {
+
+				return true;
+			}
+
+			return false;
+		}
 
 	}
 
