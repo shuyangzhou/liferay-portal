@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.template.TemplateResource;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.template.TemplateContextHelper;
+import com.liferay.portal.theme.ThemeDisplay;
 
 import java.io.Writer;
 
@@ -110,6 +111,10 @@ public class XSLTemplate implements Template {
 
 	public void prepare(HttpServletRequest request) {
 		_templateContextHelper.prepare(this, request);
+	}
+
+	public void prepare(ThemeDisplay themeDisplay, String xml) {
+		_templateContextHelper.prepare(this, themeDisplay, xml);
 	}
 
 	public boolean processTemplate(Writer writer) throws TemplateException {
