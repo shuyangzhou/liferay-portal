@@ -32,6 +32,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.HashMap;
@@ -255,13 +257,28 @@ public class DDMStructureLinkModelImpl extends BaseModelImpl<DDMStructureLink>
 
 	@Override
 	public DDMStructureLink toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (DDMStructureLink)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (DDMStructureLink)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public DDMStructureLink toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (DDMStructureLink)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (DDMStructureLink)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -404,7 +421,7 @@ public class DDMStructureLinkModelImpl extends BaseModelImpl<DDMStructureLink>
 	}
 
 	private static ClassLoader _classLoader = DDMStructureLink.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			DDMStructureLink.class
 		};
 	private long _structureLinkId;
@@ -418,5 +435,6 @@ public class DDMStructureLinkModelImpl extends BaseModelImpl<DDMStructureLink>
 	private long _originalStructureId;
 	private boolean _setOriginalStructureId;
 	private long _columnBitmask;
-	private DDMStructureLink _escapedModelProxy;
+	private DDMStructureLink _escapedModel;
+	private DDMStructureLink _unescapedModel;
 }

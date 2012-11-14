@@ -17,6 +17,7 @@ import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
@@ -27,6 +28,7 @@ import com.liferay.portal.util.PortalUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 
 import java.sql.Blob;
@@ -506,7 +508,21 @@ public class ${entity.name}Clp extends BaseModelImpl<${entity.name}> implements 
 
 	@Override
 	public ${entity.name} toEscapedModel() {
-		return (${entity.name})Proxy.newProxyInstance(${entity.name}.class.getClassLoader(), new Class[] {${entity.name}.class}, new AutoEscapeBeanHandler(this));
+		return (${entity.name})ProxyUtil.newProxyInstance(${entity.name}.class.getClassLoader(), new Class[] {${entity.name}.class}, new AutoEscapeBeanHandler(this));
+	}
+
+	@Override
+	public ${entity.name} toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			return (${entity.name})autoEscapeBeanHandler.getBean();
+		}
+		else {
+			return (${entity.name})this;
+		}
 	}
 
 	@Override

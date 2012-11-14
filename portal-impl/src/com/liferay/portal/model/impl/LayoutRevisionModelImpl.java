@@ -39,6 +39,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -1387,13 +1389,28 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 
 	@Override
 	public LayoutRevision toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (LayoutRevision)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (LayoutRevision)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public LayoutRevision toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (LayoutRevision)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (LayoutRevision)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -1890,7 +1907,7 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 	}
 
 	private static ClassLoader _classLoader = LayoutRevision.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			LayoutRevision.class
 		};
 	private long _layoutRevisionId;
@@ -1944,5 +1961,6 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 	private String _statusByUserName;
 	private Date _statusDate;
 	private long _columnBitmask;
-	private LayoutRevision _escapedModelProxy;
+	private LayoutRevision _escapedModel;
+	private LayoutRevision _unescapedModel;
 }

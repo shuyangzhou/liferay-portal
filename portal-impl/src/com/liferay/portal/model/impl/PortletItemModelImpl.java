@@ -32,6 +32,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.Date;
@@ -384,13 +386,28 @@ public class PortletItemModelImpl extends BaseModelImpl<PortletItem>
 
 	@Override
 	public PortletItem toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (PortletItem)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (PortletItem)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public PortletItem toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (PortletItem)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (PortletItem)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -618,7 +635,7 @@ public class PortletItemModelImpl extends BaseModelImpl<PortletItem>
 	}
 
 	private static ClassLoader _classLoader = PortletItem.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			PortletItem.class
 		};
 	private long _portletItemId;
@@ -639,5 +656,6 @@ public class PortletItemModelImpl extends BaseModelImpl<PortletItem>
 	private long _originalClassNameId;
 	private boolean _setOriginalClassNameId;
 	private long _columnBitmask;
-	private PortletItem _escapedModelProxy;
+	private PortletItem _escapedModel;
+	private PortletItem _unescapedModel;
 }

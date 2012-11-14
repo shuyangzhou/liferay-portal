@@ -29,6 +29,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.HashMap;
@@ -247,13 +249,28 @@ public class ServiceComponentModelImpl extends BaseModelImpl<ServiceComponent>
 
 	@Override
 	public ServiceComponent toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (ServiceComponent)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (ServiceComponent)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public ServiceComponent toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (ServiceComponent)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (ServiceComponent)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -427,7 +444,7 @@ public class ServiceComponentModelImpl extends BaseModelImpl<ServiceComponent>
 	}
 
 	private static ClassLoader _classLoader = ServiceComponent.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			ServiceComponent.class
 		};
 	private long _serviceComponentId;
@@ -439,5 +456,6 @@ public class ServiceComponentModelImpl extends BaseModelImpl<ServiceComponent>
 	private long _buildDate;
 	private String _data;
 	private long _columnBitmask;
-	private ServiceComponent _escapedModelProxy;
+	private ServiceComponent _escapedModel;
+	private ServiceComponent _unescapedModel;
 }

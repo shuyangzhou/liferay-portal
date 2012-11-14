@@ -49,6 +49,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Blob;
 import java.sql.Types;
 
@@ -803,11 +805,27 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 
 	@Override
 	public ${entity.name} toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (${entity.name})ProxyUtil.newProxyInstance(_classLoader, _escapedModelProxyInterfaces, new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (${entity.name})ProxyUtil.newProxyInstance(_classLoader, _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public ${entity.name} toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (${entity.name})autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (${entity.name})this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -1050,7 +1068,7 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 
 	private static ClassLoader _classLoader = ${entity.name}.class.getClassLoader();
 
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {${entity.name}.class};
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {${entity.name}.class};
 
 	<#list entity.regularColList as column>
 		<#if (column.type == "Blob") && column.lazy>
@@ -1080,6 +1098,7 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 		private long _columnBitmask;
 	</#if>
 
-	private ${entity.name} _escapedModelProxy;
+	private ${entity.name} _escapedModel;
+	private ${entity.name} _unescapedModel;
 
 }

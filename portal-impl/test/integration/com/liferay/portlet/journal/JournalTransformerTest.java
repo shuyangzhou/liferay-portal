@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.journal;
 
+import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.test.ExecutionTestListeners;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.Constants;
@@ -28,7 +29,6 @@ import com.liferay.portal.util.TestPropsValues;
 import com.liferay.portlet.journal.model.JournalArticle;
 import com.liferay.portlet.journal.model.JournalStructure;
 import com.liferay.portlet.journal.model.JournalTemplate;
-import com.liferay.portlet.journal.model.JournalTemplateConstants;
 import com.liferay.portlet.journal.service.BaseJournalServiceTestCase;
 import com.liferay.portlet.journal.util.JournalUtil;
 
@@ -66,8 +66,7 @@ public class JournalTransformerTest extends BaseJournalServiceTestCase {
 		String xsl = "$name.getData()";
 
 		JournalTemplate template = addTemplate(
-			struture.getStructureId(), xsl,
-			JournalTemplateConstants.LANG_TYPE_VM);
+			struture.getStructureId(), xsl, TemplateConstants.LANG_TYPE_VM);
 
 		document = createDocument("en_US", "en_US");
 
@@ -85,7 +84,7 @@ public class JournalTransformerTest extends BaseJournalServiceTestCase {
 
 		String content = JournalUtil.transform(
 			null, tokens, Constants.VIEW, "en_US", xml, xsl,
-			JournalTemplateConstants.LANG_TYPE_VM);
+			TemplateConstants.LANG_TYPE_VM);
 
 		Assert.assertEquals("Joe Bloggs", content);
 
@@ -96,7 +95,7 @@ public class JournalTransformerTest extends BaseJournalServiceTestCase {
 
 		content = JournalUtil.transform(
 			null, tokens, Constants.VIEW, "en_US", document.asXML(), xsl,
-			JournalTemplateConstants.LANG_TYPE_VM);
+			TemplateConstants.LANG_TYPE_VM);
 
 		Assert.assertEquals("Joe Bloggs", content);
 	}
@@ -111,7 +110,7 @@ public class JournalTransformerTest extends BaseJournalServiceTestCase {
 
 		String content = JournalUtil.transform(
 			null, tokens, Constants.PRINT, "en_US", xml, script,
-			JournalTemplateConstants.LANG_TYPE_FTL);
+			TemplateConstants.LANG_TYPE_FTL);
 
 		Assert.assertEquals("Joe Bloggs - print", content);
 	}
@@ -134,19 +133,19 @@ public class JournalTransformerTest extends BaseJournalServiceTestCase {
 
 		String content = JournalUtil.transform(
 			null, tokens, Constants.VIEW, "en_US", xml, script,
-			JournalTemplateConstants.LANG_TYPE_VM);
+			TemplateConstants.LANG_TYPE_VM);
 
 		Assert.assertEquals("Joe Bloggs", content);
 
 		content = JournalUtil.transform(
 			null, tokens, Constants.VIEW, "pt_BR", xml, script,
-			JournalTemplateConstants.LANG_TYPE_VM);
+			TemplateConstants.LANG_TYPE_VM);
 
 		Assert.assertEquals("Joao da Silva", content);
 
 		content = JournalUtil.transform(
 			null, tokens, Constants.VIEW, "fr_CA", xml, script,
-			JournalTemplateConstants.LANG_TYPE_VM);
+			TemplateConstants.LANG_TYPE_VM);
 
 		Assert.assertEquals("Joe Bloggs", content);
 	}
@@ -161,7 +160,7 @@ public class JournalTransformerTest extends BaseJournalServiceTestCase {
 
 		String content = JournalUtil.transform(
 			null, tokens, Constants.VIEW, "en_US", xml, script,
-			JournalTemplateConstants.LANG_TYPE_VM);
+			TemplateConstants.LANG_TYPE_VM);
 
 		Assert.assertEquals(
 			"Hello Joe Bloggs, Welcome to production.sample.com.", content);
@@ -177,7 +176,7 @@ public class JournalTransformerTest extends BaseJournalServiceTestCase {
 
 		String content = JournalUtil.transform(
 			null, tokens, Constants.VIEW, "en_US", xml, script,
-			JournalTemplateConstants.LANG_TYPE_VM);
+			TemplateConstants.LANG_TYPE_VM);
 
 		Assert.assertEquals(
 			String.valueOf(TestPropsValues.getCompanyId()), content);
@@ -186,7 +185,7 @@ public class JournalTransformerTest extends BaseJournalServiceTestCase {
 
 		content = JournalUtil.transform(
 			null, tokens, Constants.VIEW, "en_US", xml, script,
-			JournalTemplateConstants.LANG_TYPE_VM);
+			TemplateConstants.LANG_TYPE_VM);
 
 		Assert.assertEquals(
 			String.valueOf(TestPropsValues.getCompanyId()), content);
@@ -204,7 +203,7 @@ public class JournalTransformerTest extends BaseJournalServiceTestCase {
 
 		String content = JournalUtil.transform(
 			null, tokens, Constants.VIEW, "en_US", xml, script,
-			JournalTemplateConstants.LANG_TYPE_VM);
+			TemplateConstants.LANG_TYPE_VM);
 
 		StringBundler sb = new StringBundler(6);
 
@@ -228,7 +227,7 @@ public class JournalTransformerTest extends BaseJournalServiceTestCase {
 
 		String content = JournalUtil.transform(
 			null, tokens, Constants.VIEW, "en_US", xml, script,
-			JournalTemplateConstants.LANG_TYPE_VM);
+			TemplateConstants.LANG_TYPE_VM);
 
 		Assert.assertEquals("Joe Bloggs", content);
 	}

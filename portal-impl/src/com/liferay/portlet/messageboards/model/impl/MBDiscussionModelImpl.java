@@ -32,6 +32,8 @@ import com.liferay.portlet.messageboards.model.MBDiscussionModel;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.HashMap;
@@ -255,13 +257,28 @@ public class MBDiscussionModelImpl extends BaseModelImpl<MBDiscussion>
 
 	@Override
 	public MBDiscussion toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (MBDiscussion)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (MBDiscussion)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public MBDiscussion toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (MBDiscussion)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (MBDiscussion)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -403,7 +420,7 @@ public class MBDiscussionModelImpl extends BaseModelImpl<MBDiscussion>
 	}
 
 	private static ClassLoader _classLoader = MBDiscussion.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			MBDiscussion.class
 		};
 	private long _discussionId;
@@ -417,5 +434,6 @@ public class MBDiscussionModelImpl extends BaseModelImpl<MBDiscussion>
 	private long _originalThreadId;
 	private boolean _setOriginalThreadId;
 	private long _columnBitmask;
-	private MBDiscussion _escapedModelProxy;
+	private MBDiscussion _escapedModel;
+	private MBDiscussion _unescapedModel;
 }

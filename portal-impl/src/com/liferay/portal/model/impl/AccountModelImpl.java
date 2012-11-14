@@ -33,6 +33,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -517,13 +519,28 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 
 	@Override
 	public Account toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (Account)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (Account)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public Account toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (Account)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (Account)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -832,7 +849,7 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 	}
 
 	private static ClassLoader _classLoader = Account.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			Account.class
 		};
 	private long _accountId;
@@ -852,5 +869,6 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 	private String _industry;
 	private String _type;
 	private String _size;
-	private Account _escapedModelProxy;
+	private Account _escapedModel;
+	private Account _unescapedModel;
 }

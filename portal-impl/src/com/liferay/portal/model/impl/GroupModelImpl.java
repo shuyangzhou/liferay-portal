@@ -34,6 +34,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -643,13 +645,28 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public Group toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (Group)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (Group)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public Group toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (Group)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (Group)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -927,9 +944,7 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 	}
 
 	private static ClassLoader _classLoader = Group.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
-			Group.class
-		};
+	private static Class<?>[] _escapedModelInterfaces = new Class[] { Group.class };
 	private long _groupId;
 	private long _companyId;
 	private long _originalCompanyId;
@@ -964,5 +979,6 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 	private boolean _originalActive;
 	private boolean _setOriginalActive;
 	private long _columnBitmask;
-	private Group _escapedModelProxy;
+	private Group _escapedModel;
+	private Group _unescapedModel;
 }

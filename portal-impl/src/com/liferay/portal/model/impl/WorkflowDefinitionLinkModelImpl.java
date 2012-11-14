@@ -32,6 +32,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.Date;
@@ -458,13 +460,28 @@ public class WorkflowDefinitionLinkModelImpl extends BaseModelImpl<WorkflowDefin
 
 	@Override
 	public WorkflowDefinitionLink toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (WorkflowDefinitionLink)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (WorkflowDefinitionLink)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public WorkflowDefinitionLink toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (WorkflowDefinitionLink)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (WorkflowDefinitionLink)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -718,7 +735,7 @@ public class WorkflowDefinitionLinkModelImpl extends BaseModelImpl<WorkflowDefin
 	}
 
 	private static ClassLoader _classLoader = WorkflowDefinitionLink.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			WorkflowDefinitionLink.class
 		};
 	private long _workflowDefinitionLinkId;
@@ -748,5 +765,6 @@ public class WorkflowDefinitionLinkModelImpl extends BaseModelImpl<WorkflowDefin
 	private int _originalWorkflowDefinitionVersion;
 	private boolean _setOriginalWorkflowDefinitionVersion;
 	private long _columnBitmask;
-	private WorkflowDefinitionLink _escapedModelProxy;
+	private WorkflowDefinitionLink _escapedModel;
+	private WorkflowDefinitionLink _unescapedModel;
 }

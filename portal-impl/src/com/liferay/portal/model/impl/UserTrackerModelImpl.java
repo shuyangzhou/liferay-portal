@@ -31,6 +31,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.Date;
@@ -327,13 +329,28 @@ public class UserTrackerModelImpl extends BaseModelImpl<UserTracker>
 
 	@Override
 	public UserTracker toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (UserTracker)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (UserTracker)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public UserTracker toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (UserTracker)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (UserTracker)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -540,7 +557,7 @@ public class UserTrackerModelImpl extends BaseModelImpl<UserTracker>
 	}
 
 	private static ClassLoader _classLoader = UserTracker.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			UserTracker.class
 		};
 	private long _userTrackerId;
@@ -558,5 +575,6 @@ public class UserTrackerModelImpl extends BaseModelImpl<UserTracker>
 	private String _remoteHost;
 	private String _userAgent;
 	private long _columnBitmask;
-	private UserTracker _escapedModelProxy;
+	private UserTracker _escapedModel;
+	private UserTracker _unescapedModel;
 }

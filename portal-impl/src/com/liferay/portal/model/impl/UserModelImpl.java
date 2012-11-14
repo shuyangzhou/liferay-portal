@@ -33,6 +33,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -1218,13 +1220,28 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public User toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (User)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (User)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public User toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (User)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (User)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -1877,9 +1894,7 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 	}
 
 	private static ClassLoader _classLoader = User.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
-			User.class
-		};
+	private static Class<?>[] _escapedModelInterfaces = new Class[] { User.class };
 	private String _uuid;
 	private String _originalUuid;
 	private long _userId;
@@ -1942,5 +1957,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 	private int _originalStatus;
 	private boolean _setOriginalStatus;
 	private long _columnBitmask;
-	private User _escapedModelProxy;
+	private User _escapedModel;
+	private User _unescapedModel;
 }

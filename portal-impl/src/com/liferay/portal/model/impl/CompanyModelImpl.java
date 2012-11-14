@@ -31,6 +31,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -437,13 +439,28 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 
 	@Override
 	public Company toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (Company)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (Company)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public Company toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (Company)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (Company)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -665,7 +682,7 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 	}
 
 	private static ClassLoader _classLoader = Company.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			Company.class
 		};
 	private long _companyId;
@@ -685,5 +702,6 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 	private int _maxUsers;
 	private boolean _active;
 	private long _columnBitmask;
-	private Company _escapedModelProxy;
+	private Company _escapedModel;
+	private Company _unescapedModel;
 }

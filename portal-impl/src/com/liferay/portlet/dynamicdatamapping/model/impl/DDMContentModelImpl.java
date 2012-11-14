@@ -37,6 +37,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.Date;
@@ -463,13 +465,28 @@ public class DDMContentModelImpl extends BaseModelImpl<DDMContent>
 
 	@Override
 	public DDMContent toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (DDMContent)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (DDMContent)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public DDMContent toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (DDMContent)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (DDMContent)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -716,7 +733,7 @@ public class DDMContentModelImpl extends BaseModelImpl<DDMContent>
 	}
 
 	private static ClassLoader _classLoader = DDMContent.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			DDMContent.class
 		};
 	private String _uuid;
@@ -738,5 +755,6 @@ public class DDMContentModelImpl extends BaseModelImpl<DDMContent>
 	private String _description;
 	private String _xml;
 	private long _columnBitmask;
-	private DDMContent _escapedModelProxy;
+	private DDMContent _escapedModel;
+	private DDMContent _unescapedModel;
 }

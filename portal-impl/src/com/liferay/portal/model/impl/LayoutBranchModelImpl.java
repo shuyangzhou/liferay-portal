@@ -33,6 +33,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -433,13 +435,28 @@ public class LayoutBranchModelImpl extends BaseModelImpl<LayoutBranch>
 
 	@Override
 	public LayoutBranch toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (LayoutBranch)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (LayoutBranch)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public LayoutBranch toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (LayoutBranch)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (LayoutBranch)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -655,7 +672,7 @@ public class LayoutBranchModelImpl extends BaseModelImpl<LayoutBranch>
 	}
 
 	private static ClassLoader _classLoader = LayoutBranch.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			LayoutBranch.class
 		};
 	private long _LayoutBranchId;
@@ -677,5 +694,6 @@ public class LayoutBranchModelImpl extends BaseModelImpl<LayoutBranch>
 	private boolean _originalMaster;
 	private boolean _setOriginalMaster;
 	private long _columnBitmask;
-	private LayoutBranch _escapedModelProxy;
+	private LayoutBranch _escapedModel;
+	private LayoutBranch _unescapedModel;
 }

@@ -34,6 +34,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -404,13 +406,28 @@ public class AssetCategoryPropertyModelImpl extends BaseModelImpl<AssetCategoryP
 
 	@Override
 	public AssetCategoryProperty toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (AssetCategoryProperty)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (AssetCategoryProperty)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public AssetCategoryProperty toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (AssetCategoryProperty)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (AssetCategoryProperty)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -625,7 +642,7 @@ public class AssetCategoryPropertyModelImpl extends BaseModelImpl<AssetCategoryP
 	}
 
 	private static ClassLoader _classLoader = AssetCategoryProperty.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			AssetCategoryProperty.class
 		};
 	private long _categoryPropertyId;
@@ -644,5 +661,6 @@ public class AssetCategoryPropertyModelImpl extends BaseModelImpl<AssetCategoryP
 	private String _originalKey;
 	private String _value;
 	private long _columnBitmask;
-	private AssetCategoryProperty _escapedModelProxy;
+	private AssetCategoryProperty _escapedModel;
+	private AssetCategoryProperty _unescapedModel;
 }

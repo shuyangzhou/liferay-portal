@@ -31,6 +31,8 @@ import com.liferay.portlet.expando.model.ExpandoValueSoap;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -406,13 +408,28 @@ public class ExpandoValueModelImpl extends BaseModelImpl<ExpandoValue>
 
 	@Override
 	public ExpandoValue toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (ExpandoValue)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (ExpandoValue)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public ExpandoValue toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (ExpandoValue)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (ExpandoValue)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -640,7 +657,7 @@ public class ExpandoValueModelImpl extends BaseModelImpl<ExpandoValue>
 	}
 
 	private static ClassLoader _classLoader = ExpandoValue.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			ExpandoValue.class
 		};
 	private long _valueId;
@@ -663,5 +680,6 @@ public class ExpandoValueModelImpl extends BaseModelImpl<ExpandoValue>
 	private String _data;
 	private String _originalData;
 	private long _columnBitmask;
-	private ExpandoValue _escapedModelProxy;
+	private ExpandoValue _escapedModel;
+	private ExpandoValue _unescapedModel;
 }

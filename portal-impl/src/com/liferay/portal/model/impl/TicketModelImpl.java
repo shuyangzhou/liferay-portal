@@ -31,6 +31,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.Date;
@@ -321,13 +323,28 @@ public class TicketModelImpl extends BaseModelImpl<Ticket>
 
 	@Override
 	public Ticket toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (Ticket)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (Ticket)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public Ticket toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (Ticket)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (Ticket)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -536,9 +553,7 @@ public class TicketModelImpl extends BaseModelImpl<Ticket>
 	}
 
 	private static ClassLoader _classLoader = Ticket.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
-			Ticket.class
-		};
+	private static Class<?>[] _escapedModelInterfaces = new Class[] { Ticket.class };
 	private long _ticketId;
 	private long _companyId;
 	private Date _createDate;
@@ -550,5 +565,6 @@ public class TicketModelImpl extends BaseModelImpl<Ticket>
 	private String _extraInfo;
 	private Date _expirationDate;
 	private long _columnBitmask;
-	private Ticket _escapedModelProxy;
+	private Ticket _escapedModel;
+	private Ticket _unescapedModel;
 }

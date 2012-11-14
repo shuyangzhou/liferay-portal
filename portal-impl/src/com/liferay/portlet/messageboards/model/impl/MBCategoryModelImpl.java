@@ -34,6 +34,8 @@ import com.liferay.portlet.messageboards.model.MBCategorySoap;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -533,13 +535,28 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 
 	@Override
 	public MBCategory toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (MBCategory)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (MBCategory)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public MBCategory toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (MBCategory)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (MBCategory)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -846,7 +863,7 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 	}
 
 	private static ClassLoader _classLoader = MBCategory.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			MBCategory.class
 		};
 	private String _uuid;
@@ -873,5 +890,6 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 	private int _messageCount;
 	private Date _lastPostDate;
 	private long _columnBitmask;
-	private MBCategory _escapedModelProxy;
+	private MBCategory _escapedModel;
+	private MBCategory _unescapedModel;
 }

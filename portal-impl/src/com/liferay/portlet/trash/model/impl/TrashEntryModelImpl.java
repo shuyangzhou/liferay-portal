@@ -36,6 +36,8 @@ import com.liferay.portlet.trash.model.TrashEntrySoap;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -461,13 +463,28 @@ public class TrashEntryModelImpl extends BaseModelImpl<TrashEntry>
 
 	@Override
 	public TrashEntry toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (TrashEntry)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (TrashEntry)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public TrashEntry toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (TrashEntry)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (TrashEntry)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -688,7 +705,7 @@ public class TrashEntryModelImpl extends BaseModelImpl<TrashEntry>
 	}
 
 	private static ClassLoader _classLoader = TrashEntry.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			TrashEntry.class
 		};
 	private long _entryId;
@@ -712,5 +729,6 @@ public class TrashEntryModelImpl extends BaseModelImpl<TrashEntry>
 	private String _typeSettings;
 	private int _status;
 	private long _columnBitmask;
-	private TrashEntry _escapedModelProxy;
+	private TrashEntry _escapedModel;
+	private TrashEntry _unescapedModel;
 }

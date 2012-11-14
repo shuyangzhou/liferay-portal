@@ -29,6 +29,8 @@ import com.liferay.portlet.shopping.model.ShoppingItemPriceModel;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.HashMap;
@@ -317,13 +319,28 @@ public class ShoppingItemPriceModelImpl extends BaseModelImpl<ShoppingItemPrice>
 
 	@Override
 	public ShoppingItemPrice toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (ShoppingItemPrice)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (ShoppingItemPrice)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public ShoppingItemPrice toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (ShoppingItemPrice)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (ShoppingItemPrice)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -531,7 +548,7 @@ public class ShoppingItemPriceModelImpl extends BaseModelImpl<ShoppingItemPrice>
 	}
 
 	private static ClassLoader _classLoader = ShoppingItemPrice.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			ShoppingItemPrice.class
 		};
 	private long _itemPriceId;
@@ -547,5 +564,6 @@ public class ShoppingItemPriceModelImpl extends BaseModelImpl<ShoppingItemPrice>
 	private boolean _useShippingFormula;
 	private int _status;
 	private long _columnBitmask;
-	private ShoppingItemPrice _escapedModelProxy;
+	private ShoppingItemPrice _escapedModel;
+	private ShoppingItemPrice _unescapedModel;
 }

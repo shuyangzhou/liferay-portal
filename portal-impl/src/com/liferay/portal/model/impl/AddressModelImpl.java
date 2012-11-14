@@ -35,6 +35,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -649,13 +651,28 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 
 	@Override
 	public Address toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (Address)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (Address)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public Address toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (Address)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (Address)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -983,7 +1000,7 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 	}
 
 	private static ClassLoader _classLoader = Address.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			Address.class
 		};
 	private long _addressId;
@@ -1018,5 +1035,6 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 	private boolean _originalPrimary;
 	private boolean _setOriginalPrimary;
 	private long _columnBitmask;
-	private Address _escapedModelProxy;
+	private Address _escapedModel;
+	private Address _unescapedModel;
 }

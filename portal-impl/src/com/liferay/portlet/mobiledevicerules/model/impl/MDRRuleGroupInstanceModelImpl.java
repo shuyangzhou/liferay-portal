@@ -35,6 +35,8 @@ import com.liferay.portlet.mobiledevicerules.model.MDRRuleGroupInstanceSoap;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -507,13 +509,28 @@ public class MDRRuleGroupInstanceModelImpl extends BaseModelImpl<MDRRuleGroupIns
 
 	@Override
 	public MDRRuleGroupInstance toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (MDRRuleGroupInstance)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (MDRRuleGroupInstance)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public MDRRuleGroupInstance toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (MDRRuleGroupInstance)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (MDRRuleGroupInstance)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -764,7 +781,7 @@ public class MDRRuleGroupInstanceModelImpl extends BaseModelImpl<MDRRuleGroupIns
 	}
 
 	private static ClassLoader _classLoader = MDRRuleGroupInstance.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			MDRRuleGroupInstance.class
 		};
 	private String _uuid;
@@ -792,5 +809,6 @@ public class MDRRuleGroupInstanceModelImpl extends BaseModelImpl<MDRRuleGroupIns
 	private boolean _setOriginalRuleGroupId;
 	private int _priority;
 	private long _columnBitmask;
-	private MDRRuleGroupInstance _escapedModelProxy;
+	private MDRRuleGroupInstance _escapedModel;
+	private MDRRuleGroupInstance _unescapedModel;
 }

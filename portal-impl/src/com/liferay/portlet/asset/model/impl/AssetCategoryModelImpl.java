@@ -38,6 +38,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -727,13 +729,28 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 
 	@Override
 	public AssetCategory toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (AssetCategory)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (AssetCategory)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public AssetCategory toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (AssetCategory)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (AssetCategory)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -1024,7 +1041,7 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 	}
 
 	private static ClassLoader _classLoader = AssetCategory.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			AssetCategory.class
 		};
 	private String _uuid;
@@ -1056,5 +1073,6 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 	private long _originalVocabularyId;
 	private boolean _setOriginalVocabularyId;
 	private long _columnBitmask;
-	private AssetCategory _escapedModelProxy;
+	private AssetCategory _escapedModel;
+	private AssetCategory _unescapedModel;
 }

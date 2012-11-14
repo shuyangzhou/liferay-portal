@@ -31,6 +31,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -340,13 +342,28 @@ public class ResourceBlockModelImpl extends BaseModelImpl<ResourceBlock>
 
 	@Override
 	public ResourceBlock toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (ResourceBlock)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (ResourceBlock)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public ResourceBlock toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (ResourceBlock)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (ResourceBlock)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -518,7 +535,7 @@ public class ResourceBlockModelImpl extends BaseModelImpl<ResourceBlock>
 	}
 
 	private static ClassLoader _classLoader = ResourceBlock.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			ResourceBlock.class
 		};
 	private long _resourceBlockId;
@@ -534,5 +551,6 @@ public class ResourceBlockModelImpl extends BaseModelImpl<ResourceBlock>
 	private String _originalPermissionsHash;
 	private long _referenceCount;
 	private long _columnBitmask;
-	private ResourceBlock _escapedModelProxy;
+	private ResourceBlock _escapedModel;
+	private ResourceBlock _unescapedModel;
 }

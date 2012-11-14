@@ -33,6 +33,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -850,13 +852,28 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 
 	@Override
 	public PasswordPolicy toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (PasswordPolicy)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (PasswordPolicy)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public PasswordPolicy toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (PasswordPolicy)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (PasswordPolicy)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -1280,7 +1297,7 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 	}
 
 	private static ClassLoader _classLoader = PasswordPolicy.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			PasswordPolicy.class
 		};
 	private long _passwordPolicyId;
@@ -1322,5 +1339,6 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 	private long _resetFailureCount;
 	private long _resetTicketMaxAge;
 	private long _columnBitmask;
-	private PasswordPolicy _escapedModelProxy;
+	private PasswordPolicy _escapedModel;
+	private PasswordPolicy _unescapedModel;
 }

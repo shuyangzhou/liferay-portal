@@ -34,6 +34,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -354,13 +356,28 @@ public class AnnouncementsDeliveryModelImpl extends BaseModelImpl<AnnouncementsD
 
 	@Override
 	public AnnouncementsDelivery toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (AnnouncementsDelivery)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (AnnouncementsDelivery)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public AnnouncementsDelivery toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (AnnouncementsDelivery)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (AnnouncementsDelivery)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -530,7 +547,7 @@ public class AnnouncementsDeliveryModelImpl extends BaseModelImpl<AnnouncementsD
 	}
 
 	private static ClassLoader _classLoader = AnnouncementsDelivery.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			AnnouncementsDelivery.class
 		};
 	private long _deliveryId;
@@ -545,5 +562,6 @@ public class AnnouncementsDeliveryModelImpl extends BaseModelImpl<AnnouncementsD
 	private boolean _sms;
 	private boolean _website;
 	private long _columnBitmask;
-	private AnnouncementsDelivery _escapedModelProxy;
+	private AnnouncementsDelivery _escapedModel;
+	private AnnouncementsDelivery _unescapedModel;
 }

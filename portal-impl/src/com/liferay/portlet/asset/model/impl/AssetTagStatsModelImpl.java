@@ -32,6 +32,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.HashMap;
@@ -246,13 +248,28 @@ public class AssetTagStatsModelImpl extends BaseModelImpl<AssetTagStats>
 
 	@Override
 	public AssetTagStats toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (AssetTagStats)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (AssetTagStats)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public AssetTagStats toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (AssetTagStats)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (AssetTagStats)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -398,7 +415,7 @@ public class AssetTagStatsModelImpl extends BaseModelImpl<AssetTagStats>
 	}
 
 	private static ClassLoader _classLoader = AssetTagStats.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			AssetTagStats.class
 		};
 	private long _tagStatsId;
@@ -410,5 +427,6 @@ public class AssetTagStatsModelImpl extends BaseModelImpl<AssetTagStats>
 	private boolean _setOriginalClassNameId;
 	private int _assetCount;
 	private long _columnBitmask;
-	private AssetTagStats _escapedModelProxy;
+	private AssetTagStats _escapedModel;
+	private AssetTagStats _unescapedModel;
 }

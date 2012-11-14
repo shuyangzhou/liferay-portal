@@ -31,6 +31,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -336,13 +338,28 @@ public class PluginSettingModelImpl extends BaseModelImpl<PluginSetting>
 
 	@Override
 	public PluginSetting toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (PluginSetting)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (PluginSetting)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public PluginSetting toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (PluginSetting)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (PluginSetting)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -516,7 +533,7 @@ public class PluginSettingModelImpl extends BaseModelImpl<PluginSetting>
 	}
 
 	private static ClassLoader _classLoader = PluginSetting.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			PluginSetting.class
 		};
 	private long _pluginSettingId;
@@ -530,5 +547,6 @@ public class PluginSettingModelImpl extends BaseModelImpl<PluginSetting>
 	private String _roles;
 	private boolean _active;
 	private long _columnBitmask;
-	private PluginSetting _escapedModelProxy;
+	private PluginSetting _escapedModel;
+	private PluginSetting _unescapedModel;
 }

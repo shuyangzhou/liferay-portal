@@ -29,6 +29,8 @@ import com.liferay.portlet.expando.model.ExpandoColumnSoap;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -326,13 +328,28 @@ public class ExpandoColumnModelImpl extends BaseModelImpl<ExpandoColumn>
 
 	@Override
 	public ExpandoColumn toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (ExpandoColumn)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (ExpandoColumn)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public ExpandoColumn toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (ExpandoColumn)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (ExpandoColumn)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -511,7 +528,7 @@ public class ExpandoColumnModelImpl extends BaseModelImpl<ExpandoColumn>
 	}
 
 	private static ClassLoader _classLoader = ExpandoColumn.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			ExpandoColumn.class
 		};
 	private long _columnId;
@@ -525,5 +542,6 @@ public class ExpandoColumnModelImpl extends BaseModelImpl<ExpandoColumn>
 	private String _defaultData;
 	private String _typeSettings;
 	private long _columnBitmask;
-	private ExpandoColumn _escapedModelProxy;
+	private ExpandoColumn _escapedModel;
+	private ExpandoColumn _unescapedModel;
 }

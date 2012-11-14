@@ -29,6 +29,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.HashMap;
@@ -231,13 +233,28 @@ public class ResourceActionModelImpl extends BaseModelImpl<ResourceAction>
 
 	@Override
 	public ResourceAction toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (ResourceAction)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (ResourceAction)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public ResourceAction toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (ResourceAction)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (ResourceAction)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -395,7 +412,7 @@ public class ResourceActionModelImpl extends BaseModelImpl<ResourceAction>
 	}
 
 	private static ClassLoader _classLoader = ResourceAction.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			ResourceAction.class
 		};
 	private long _resourceActionId;
@@ -405,5 +422,6 @@ public class ResourceActionModelImpl extends BaseModelImpl<ResourceAction>
 	private String _originalActionId;
 	private long _bitwiseValue;
 	private long _columnBitmask;
-	private ResourceAction _escapedModelProxy;
+	private ResourceAction _escapedModel;
+	private ResourceAction _unescapedModel;
 }

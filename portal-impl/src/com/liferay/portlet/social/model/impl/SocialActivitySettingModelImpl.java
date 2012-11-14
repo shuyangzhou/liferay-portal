@@ -34,6 +34,8 @@ import com.liferay.portlet.social.model.SocialActivitySettingSoap;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -383,13 +385,28 @@ public class SocialActivitySettingModelImpl extends BaseModelImpl<SocialActivity
 
 	@Override
 	public SocialActivitySetting toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (SocialActivitySetting)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (SocialActivitySetting)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public SocialActivitySetting toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (SocialActivitySetting)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (SocialActivitySetting)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -572,7 +589,7 @@ public class SocialActivitySettingModelImpl extends BaseModelImpl<SocialActivity
 	}
 
 	private static ClassLoader _classLoader = SocialActivitySetting.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			SocialActivitySetting.class
 		};
 	private long _activitySettingId;
@@ -590,5 +607,6 @@ public class SocialActivitySettingModelImpl extends BaseModelImpl<SocialActivity
 	private String _originalName;
 	private String _value;
 	private long _columnBitmask;
-	private SocialActivitySetting _escapedModelProxy;
+	private SocialActivitySetting _escapedModel;
+	private SocialActivitySetting _unescapedModel;
 }

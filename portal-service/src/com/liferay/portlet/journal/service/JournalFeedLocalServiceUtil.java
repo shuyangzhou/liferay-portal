@@ -275,7 +275,7 @@ public class JournalFeedLocalServiceUtil {
 		int delta, java.lang.String orderByCol, java.lang.String orderByType,
 		java.lang.String targetLayoutFriendlyUrl,
 		java.lang.String targetPortletId, java.lang.String contentField,
-		java.lang.String feedType, double feedVersion,
+		java.lang.String feedFormat, double feedVersion,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
@@ -283,7 +283,8 @@ public class JournalFeedLocalServiceUtil {
 				   .addFeed(userId, groupId, feedId, autoFeedId, name,
 			description, type, structureId, templateId, rendererTemplateId,
 			delta, orderByCol, orderByType, targetLayoutFriendlyUrl,
-			targetPortletId, contentField, feedType, feedVersion, serviceContext);
+			targetPortletId, contentField, feedFormat, feedVersion,
+			serviceContext);
 	}
 
 	public static void addFeedResources(
@@ -414,7 +415,7 @@ public class JournalFeedLocalServiceUtil {
 		java.lang.String orderByCol, java.lang.String orderByType,
 		java.lang.String targetLayoutFriendlyUrl,
 		java.lang.String targetPortletId, java.lang.String contentField,
-		java.lang.String feedType, double feedVersion,
+		java.lang.String feedFormat, double feedVersion,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
@@ -422,7 +423,7 @@ public class JournalFeedLocalServiceUtil {
 				   .updateFeed(groupId, feedId, name, description, type,
 			structureId, templateId, rendererTemplateId, delta, orderByCol,
 			orderByType, targetLayoutFriendlyUrl, targetPortletId,
-			contentField, feedType, feedVersion, serviceContext);
+			contentField, feedFormat, feedVersion, serviceContext);
 	}
 
 	public static JournalFeedLocalService getService() {

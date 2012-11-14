@@ -38,6 +38,8 @@ import com.liferay.portlet.mobiledevicerules.model.MDRRuleGroupSoap;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -581,13 +583,28 @@ public class MDRRuleGroupModelImpl extends BaseModelImpl<MDRRuleGroup>
 
 	@Override
 	public MDRRuleGroup toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (MDRRuleGroup)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (MDRRuleGroup)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public MDRRuleGroup toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (MDRRuleGroup)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (MDRRuleGroup)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -819,7 +836,7 @@ public class MDRRuleGroupModelImpl extends BaseModelImpl<MDRRuleGroup>
 	}
 
 	private static ClassLoader _classLoader = MDRRuleGroup.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			MDRRuleGroup.class
 		};
 	private String _uuid;
@@ -841,5 +858,6 @@ public class MDRRuleGroupModelImpl extends BaseModelImpl<MDRRuleGroup>
 	private String _description;
 	private String _descriptionCurrentLanguageId;
 	private long _columnBitmask;
-	private MDRRuleGroup _escapedModelProxy;
+	private MDRRuleGroup _escapedModel;
+	private MDRRuleGroup _unescapedModel;
 }

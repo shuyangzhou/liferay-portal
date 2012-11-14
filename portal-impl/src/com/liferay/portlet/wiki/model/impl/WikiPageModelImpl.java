@@ -35,6 +35,8 @@ import com.liferay.portlet.wiki.model.WikiPageSoap;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -914,13 +916,28 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 
 	@Override
 	public WikiPage toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (WikiPage)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (WikiPage)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public WikiPage toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (WikiPage)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (WikiPage)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -1367,7 +1384,7 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 	}
 
 	private static ClassLoader _classLoader = WikiPage.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			WikiPage.class
 		};
 	private String _uuid;
@@ -1417,5 +1434,6 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 	private String _statusByUserName;
 	private Date _statusDate;
 	private long _columnBitmask;
-	private WikiPage _escapedModelProxy;
+	private WikiPage _escapedModel;
+	private WikiPage _unescapedModel;
 }

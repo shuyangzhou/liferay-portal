@@ -29,6 +29,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.HashMap;
@@ -283,13 +285,28 @@ public class ResourceTypePermissionModelImpl extends BaseModelImpl<ResourceTypeP
 
 	@Override
 	public ResourceTypePermission toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (ResourceTypePermission)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (ResourceTypePermission)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public ResourceTypePermission toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (ResourceTypePermission)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (ResourceTypePermission)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -457,7 +474,7 @@ public class ResourceTypePermissionModelImpl extends BaseModelImpl<ResourceTypeP
 	}
 
 	private static ClassLoader _classLoader = ResourceTypePermission.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			ResourceTypePermission.class
 		};
 	private long _resourceTypePermissionId;
@@ -474,5 +491,6 @@ public class ResourceTypePermissionModelImpl extends BaseModelImpl<ResourceTypeP
 	private boolean _setOriginalRoleId;
 	private long _actionIds;
 	private long _columnBitmask;
-	private ResourceTypePermission _escapedModelProxy;
+	private ResourceTypePermission _escapedModel;
+	private ResourceTypePermission _unescapedModel;
 }

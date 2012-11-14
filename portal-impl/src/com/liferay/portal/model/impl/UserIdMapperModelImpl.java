@@ -31,6 +31,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.HashMap;
@@ -271,13 +273,28 @@ public class UserIdMapperModelImpl extends BaseModelImpl<UserIdMapper>
 
 	@Override
 	public UserIdMapper toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (UserIdMapper)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (UserIdMapper)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public UserIdMapper toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (UserIdMapper)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (UserIdMapper)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -442,7 +459,7 @@ public class UserIdMapperModelImpl extends BaseModelImpl<UserIdMapper>
 	}
 
 	private static ClassLoader _classLoader = UserIdMapper.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			UserIdMapper.class
 		};
 	private long _userIdMapperId;
@@ -456,5 +473,6 @@ public class UserIdMapperModelImpl extends BaseModelImpl<UserIdMapper>
 	private String _externalUserId;
 	private String _originalExternalUserId;
 	private long _columnBitmask;
-	private UserIdMapper _escapedModelProxy;
+	private UserIdMapper _escapedModel;
+	private UserIdMapper _unescapedModel;
 }

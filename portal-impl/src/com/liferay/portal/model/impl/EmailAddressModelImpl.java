@@ -35,6 +35,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -486,13 +488,28 @@ public class EmailAddressModelImpl extends BaseModelImpl<EmailAddress>
 
 	@Override
 	public EmailAddress toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (EmailAddress)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (EmailAddress)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public EmailAddress toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (EmailAddress)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (EmailAddress)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -729,7 +746,7 @@ public class EmailAddressModelImpl extends BaseModelImpl<EmailAddress>
 	}
 
 	private static ClassLoader _classLoader = EmailAddress.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			EmailAddress.class
 		};
 	private long _emailAddressId;
@@ -755,5 +772,6 @@ public class EmailAddressModelImpl extends BaseModelImpl<EmailAddress>
 	private boolean _originalPrimary;
 	private boolean _setOriginalPrimary;
 	private long _columnBitmask;
-	private EmailAddress _escapedModelProxy;
+	private EmailAddress _escapedModel;
+	private EmailAddress _unescapedModel;
 }

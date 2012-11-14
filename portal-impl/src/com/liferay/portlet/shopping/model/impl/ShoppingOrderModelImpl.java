@@ -35,6 +35,8 @@ import com.liferay.portlet.shopping.model.ShoppingOrderSoap;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -1355,13 +1357,28 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public ShoppingOrder toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (ShoppingOrder)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (ShoppingOrder)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public ShoppingOrder toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (ShoppingOrder)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (ShoppingOrder)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -2143,7 +2160,7 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 	}
 
 	private static ClassLoader _classLoader = ShoppingOrder.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			ShoppingOrder.class
 		};
 	private long _orderId;
@@ -2206,5 +2223,6 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 	private boolean _sendOrderEmail;
 	private boolean _sendShippingEmail;
 	private long _columnBitmask;
-	private ShoppingOrder _escapedModelProxy;
+	private ShoppingOrder _escapedModel;
+	private ShoppingOrder _unescapedModel;
 }

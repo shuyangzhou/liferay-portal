@@ -31,6 +31,8 @@ import com.liferay.portlet.messageboards.model.MBStatsUserModel;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.Date;
@@ -271,13 +273,28 @@ public class MBStatsUserModelImpl extends BaseModelImpl<MBStatsUser>
 
 	@Override
 	public MBStatsUser toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (MBStatsUser)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (MBStatsUser)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public MBStatsUser toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (MBStatsUser)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (MBStatsUser)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -443,7 +460,7 @@ public class MBStatsUserModelImpl extends BaseModelImpl<MBStatsUser>
 	}
 
 	private static ClassLoader _classLoader = MBStatsUser.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			MBStatsUser.class
 		};
 	private long _statsUserId;
@@ -460,5 +477,6 @@ public class MBStatsUserModelImpl extends BaseModelImpl<MBStatsUser>
 	private boolean _setOriginalMessageCount;
 	private Date _lastPostDate;
 	private long _columnBitmask;
-	private MBStatsUser _escapedModelProxy;
+	private MBStatsUser _escapedModel;
+	private MBStatsUser _unescapedModel;
 }

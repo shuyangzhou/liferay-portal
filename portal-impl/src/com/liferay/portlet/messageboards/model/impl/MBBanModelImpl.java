@@ -34,6 +34,8 @@ import com.liferay.portlet.messageboards.model.MBBanSoap;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -381,13 +383,28 @@ public class MBBanModelImpl extends BaseModelImpl<MBBan> implements MBBanModel {
 
 	@Override
 	public MBBan toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (MBBan)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (MBBan)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public MBBan toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (MBBan)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (MBBan)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -585,9 +602,7 @@ public class MBBanModelImpl extends BaseModelImpl<MBBan> implements MBBanModel {
 	}
 
 	private static ClassLoader _classLoader = MBBan.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
-			MBBan.class
-		};
+	private static Class<?>[] _escapedModelInterfaces = new Class[] { MBBan.class };
 	private long _banId;
 	private long _groupId;
 	private long _originalGroupId;
@@ -605,5 +620,6 @@ public class MBBanModelImpl extends BaseModelImpl<MBBan> implements MBBanModel {
 	private long _originalBanUserId;
 	private boolean _setOriginalBanUserId;
 	private long _columnBitmask;
-	private MBBan _escapedModelProxy;
+	private MBBan _escapedModel;
+	private MBBan _unescapedModel;
 }

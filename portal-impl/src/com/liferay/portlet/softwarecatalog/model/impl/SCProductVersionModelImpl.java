@@ -35,6 +35,8 @@ import com.liferay.portlet.softwarecatalog.model.SCProductVersionSoap;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -474,13 +476,28 @@ public class SCProductVersionModelImpl extends BaseModelImpl<SCProductVersion>
 
 	@Override
 	public SCProductVersion toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (SCProductVersion)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (SCProductVersion)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public SCProductVersion toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (SCProductVersion)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (SCProductVersion)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -733,7 +750,7 @@ public class SCProductVersionModelImpl extends BaseModelImpl<SCProductVersion>
 	}
 
 	private static ClassLoader _classLoader = SCProductVersion.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			SCProductVersion.class
 		};
 	private long _productVersionId;
@@ -753,5 +770,6 @@ public class SCProductVersionModelImpl extends BaseModelImpl<SCProductVersion>
 	private String _originalDirectDownloadURL;
 	private boolean _repoStoreArtifact;
 	private long _columnBitmask;
-	private SCProductVersion _escapedModelProxy;
+	private SCProductVersion _escapedModel;
+	private SCProductVersion _unescapedModel;
 }

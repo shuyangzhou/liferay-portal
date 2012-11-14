@@ -32,6 +32,8 @@ import com.liferay.portlet.social.model.SocialActivityCounterModel;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.HashMap;
@@ -458,13 +460,28 @@ public class SocialActivityCounterModelImpl extends BaseModelImpl<SocialActivity
 
 	@Override
 	public SocialActivityCounter toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (SocialActivityCounter)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (SocialActivityCounter)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public SocialActivityCounter toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (SocialActivityCounter)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (SocialActivityCounter)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -707,7 +724,7 @@ public class SocialActivityCounterModelImpl extends BaseModelImpl<SocialActivity
 	}
 
 	private static ClassLoader _classLoader = SocialActivityCounter.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			SocialActivityCounter.class
 		};
 	private long _activityCounterId;
@@ -737,5 +754,6 @@ public class SocialActivityCounterModelImpl extends BaseModelImpl<SocialActivity
 	private boolean _setOriginalEndPeriod;
 	private boolean _active;
 	private long _columnBitmask;
-	private SocialActivityCounter _escapedModelProxy;
+	private SocialActivityCounter _escapedModel;
+	private SocialActivityCounter _unescapedModel;
 }

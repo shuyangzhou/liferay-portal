@@ -32,6 +32,8 @@ import com.liferay.portlet.ratings.model.RatingsStatsModel;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.HashMap;
@@ -274,13 +276,28 @@ public class RatingsStatsModelImpl extends BaseModelImpl<RatingsStats>
 
 	@Override
 	public RatingsStats toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (RatingsStats)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (RatingsStats)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public RatingsStats toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (RatingsStats)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (RatingsStats)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -436,7 +453,7 @@ public class RatingsStatsModelImpl extends BaseModelImpl<RatingsStats>
 	}
 
 	private static ClassLoader _classLoader = RatingsStats.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			RatingsStats.class
 		};
 	private long _statsId;
@@ -450,5 +467,6 @@ public class RatingsStatsModelImpl extends BaseModelImpl<RatingsStats>
 	private double _totalScore;
 	private double _averageScore;
 	private long _columnBitmask;
-	private RatingsStats _escapedModelProxy;
+	private RatingsStats _escapedModel;
+	private RatingsStats _unescapedModel;
 }

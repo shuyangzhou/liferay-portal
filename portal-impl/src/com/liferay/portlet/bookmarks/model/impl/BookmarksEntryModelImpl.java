@@ -34,6 +34,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -559,13 +561,28 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 
 	@Override
 	public BookmarksEntry toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (BookmarksEntry)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (BookmarksEntry)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public BookmarksEntry toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (BookmarksEntry)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (BookmarksEntry)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -873,7 +890,7 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 	}
 
 	private static ClassLoader _classLoader = BookmarksEntry.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			BookmarksEntry.class
 		};
 	private String _uuid;
@@ -904,5 +921,6 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 	private int _visits;
 	private int _priority;
 	private long _columnBitmask;
-	private BookmarksEntry _escapedModelProxy;
+	private BookmarksEntry _escapedModel;
+	private BookmarksEntry _unescapedModel;
 }

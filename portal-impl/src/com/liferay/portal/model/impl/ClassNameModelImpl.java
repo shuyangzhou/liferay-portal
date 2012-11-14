@@ -33,6 +33,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -246,13 +248,28 @@ public class ClassNameModelImpl extends BaseModelImpl<ClassName>
 
 	@Override
 	public ClassName toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (ClassName)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (ClassName)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public ClassName toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (ClassName)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (ClassName)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -372,12 +389,13 @@ public class ClassNameModelImpl extends BaseModelImpl<ClassName>
 	}
 
 	private static ClassLoader _classLoader = ClassName.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			ClassName.class
 		};
 	private long _classNameId;
 	private String _value;
 	private String _originalValue;
 	private long _columnBitmask;
-	private ClassName _escapedModelProxy;
+	private ClassName _escapedModel;
+	private ClassName _unescapedModel;
 }

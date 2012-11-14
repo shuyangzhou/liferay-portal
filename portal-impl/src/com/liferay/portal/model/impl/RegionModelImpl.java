@@ -31,6 +31,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -319,13 +321,28 @@ public class RegionModelImpl extends BaseModelImpl<Region>
 
 	@Override
 	public Region toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (Region)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (Region)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public Region toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (Region)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (Region)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -484,9 +501,7 @@ public class RegionModelImpl extends BaseModelImpl<Region>
 	}
 
 	private static ClassLoader _classLoader = Region.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
-			Region.class
-		};
+	private static Class<?>[] _escapedModelInterfaces = new Class[] { Region.class };
 	private long _regionId;
 	private long _countryId;
 	private long _originalCountryId;
@@ -498,5 +513,6 @@ public class RegionModelImpl extends BaseModelImpl<Region>
 	private boolean _originalActive;
 	private boolean _setOriginalActive;
 	private long _columnBitmask;
-	private Region _escapedModelProxy;
+	private Region _escapedModel;
+	private Region _unescapedModel;
 }

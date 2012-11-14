@@ -31,6 +31,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -399,13 +401,28 @@ public class CountryModelImpl extends BaseModelImpl<Country>
 
 	@Override
 	public Country toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (Country)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (Country)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public Country toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (Country)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (Country)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -609,7 +626,7 @@ public class CountryModelImpl extends BaseModelImpl<Country>
 	}
 
 	private static ClassLoader _classLoader = Country.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			Country.class
 		};
 	private long _countryId;
@@ -626,5 +643,6 @@ public class CountryModelImpl extends BaseModelImpl<Country>
 	private boolean _originalActive;
 	private boolean _setOriginalActive;
 	private long _columnBitmask;
-	private Country _escapedModelProxy;
+	private Country _escapedModel;
+	private Country _unescapedModel;
 }

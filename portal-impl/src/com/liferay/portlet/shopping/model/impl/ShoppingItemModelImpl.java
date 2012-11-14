@@ -34,6 +34,8 @@ import com.liferay.portlet.shopping.model.ShoppingItemSoap;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -973,13 +975,28 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 
 	@Override
 	public ShoppingItem toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (ShoppingItem)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (ShoppingItem)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public ShoppingItem toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (ShoppingItem)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (ShoppingItem)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -1479,7 +1496,7 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 	}
 
 	private static ClassLoader _classLoader = ShoppingItem.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			ShoppingItem.class
 		};
 	private long _itemId;
@@ -1531,5 +1548,6 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 	private boolean _setOriginalLargeImageId;
 	private String _largeImageURL;
 	private long _columnBitmask;
-	private ShoppingItem _escapedModelProxy;
+	private ShoppingItem _escapedModel;
+	private ShoppingItem _unescapedModel;
 }

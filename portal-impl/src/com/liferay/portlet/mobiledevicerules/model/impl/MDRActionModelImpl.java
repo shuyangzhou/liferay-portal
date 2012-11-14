@@ -38,6 +38,8 @@ import com.liferay.portlet.mobiledevicerules.model.MDRActionSoap;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -712,13 +714,28 @@ public class MDRActionModelImpl extends BaseModelImpl<MDRAction>
 
 	@Override
 	public MDRAction toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (MDRAction)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (MDRAction)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public MDRAction toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (MDRAction)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (MDRAction)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -1011,7 +1028,7 @@ public class MDRActionModelImpl extends BaseModelImpl<MDRAction>
 	}
 
 	private static ClassLoader _classLoader = MDRAction.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			MDRAction.class
 		};
 	private String _uuid;
@@ -1040,5 +1057,6 @@ public class MDRActionModelImpl extends BaseModelImpl<MDRAction>
 	private String _type;
 	private String _typeSettings;
 	private long _columnBitmask;
-	private MDRAction _escapedModelProxy;
+	private MDRAction _escapedModel;
+	private MDRAction _unescapedModel;
 }

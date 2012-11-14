@@ -34,6 +34,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -543,13 +545,28 @@ public class RepositoryModelImpl extends BaseModelImpl<Repository>
 
 	@Override
 	public Repository toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (Repository)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (Repository)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public Repository toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (Repository)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (Repository)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -833,7 +850,7 @@ public class RepositoryModelImpl extends BaseModelImpl<Repository>
 	}
 
 	private static ClassLoader _classLoader = Repository.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			Repository.class
 		};
 	private String _uuid;
@@ -859,5 +876,6 @@ public class RepositoryModelImpl extends BaseModelImpl<Repository>
 	private String _typeSettings;
 	private long _dlFolderId;
 	private long _columnBitmask;
-	private Repository _escapedModelProxy;
+	private Repository _escapedModel;
+	private Repository _unescapedModel;
 }

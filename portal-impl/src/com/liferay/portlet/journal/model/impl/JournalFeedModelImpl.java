@@ -34,6 +34,8 @@ import com.liferay.portlet.journal.model.JournalFeedSoap;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -724,13 +726,28 @@ public class JournalFeedModelImpl extends BaseModelImpl<JournalFeed>
 
 	@Override
 	public JournalFeed toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (JournalFeed)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (JournalFeed)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public JournalFeed toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (JournalFeed)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (JournalFeed)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -1146,7 +1163,7 @@ public class JournalFeedModelImpl extends BaseModelImpl<JournalFeed>
 	}
 
 	private static ClassLoader _classLoader = JournalFeed.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			JournalFeed.class
 		};
 	private String _uuid;
@@ -1180,5 +1197,6 @@ public class JournalFeedModelImpl extends BaseModelImpl<JournalFeed>
 	private String _feedFormat;
 	private double _feedVersion;
 	private long _columnBitmask;
-	private JournalFeed _escapedModelProxy;
+	private JournalFeed _escapedModel;
+	private JournalFeed _unescapedModel;
 }

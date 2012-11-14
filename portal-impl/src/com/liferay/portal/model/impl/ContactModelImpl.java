@@ -34,6 +34,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -954,13 +956,28 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 
 	@Override
 	public Contact toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (Contact)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (Contact)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public Contact toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (Contact)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (Contact)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -1508,7 +1525,7 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 	}
 
 	private static ClassLoader _classLoader = Contact.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			Contact.class
 		};
 	private long _contactId;
@@ -1554,5 +1571,6 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 	private String _jobClass;
 	private String _hoursOfOperation;
 	private long _columnBitmask;
-	private Contact _escapedModelProxy;
+	private Contact _escapedModel;
+	private Contact _unescapedModel;
 }

@@ -30,6 +30,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -496,13 +498,28 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 
 	@Override
 	public OrgLabor toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (OrgLabor)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (OrgLabor)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public OrgLabor toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (OrgLabor)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (OrgLabor)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -773,7 +790,7 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 	}
 
 	private static ClassLoader _classLoader = OrgLabor.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			OrgLabor.class
 		};
 	private long _orgLaborId;
@@ -796,5 +813,6 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 	private int _satOpen;
 	private int _satClose;
 	private long _columnBitmask;
-	private OrgLabor _escapedModelProxy;
+	private OrgLabor _escapedModel;
+	private OrgLabor _unescapedModel;
 }

@@ -32,6 +32,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.HashMap;
@@ -272,13 +274,28 @@ public class DDMStorageLinkModelImpl extends BaseModelImpl<DDMStorageLink>
 
 	@Override
 	public DDMStorageLink toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (DDMStorageLink)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (DDMStorageLink)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public DDMStorageLink toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (DDMStorageLink)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (DDMStorageLink)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -433,7 +450,7 @@ public class DDMStorageLinkModelImpl extends BaseModelImpl<DDMStorageLink>
 	}
 
 	private static ClassLoader _classLoader = DDMStorageLink.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			DDMStorageLink.class
 		};
 	private String _uuid;
@@ -447,5 +464,6 @@ public class DDMStorageLinkModelImpl extends BaseModelImpl<DDMStorageLink>
 	private long _originalStructureId;
 	private boolean _setOriginalStructureId;
 	private long _columnBitmask;
-	private DDMStorageLink _escapedModelProxy;
+	private DDMStorageLink _escapedModel;
+	private DDMStorageLink _unescapedModel;
 }

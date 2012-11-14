@@ -26,6 +26,8 @@ import com.liferay.portlet.expando.model.ExpandoRowModel;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.Date;
@@ -222,13 +224,28 @@ public class ExpandoRowModelImpl extends BaseModelImpl<ExpandoRow>
 
 	@Override
 	public ExpandoRow toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (ExpandoRow)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (ExpandoRow)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public ExpandoRow toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (ExpandoRow)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (ExpandoRow)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -382,7 +399,7 @@ public class ExpandoRowModelImpl extends BaseModelImpl<ExpandoRow>
 	}
 
 	private static ClassLoader _classLoader = ExpandoRow.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			ExpandoRow.class
 		};
 	private long _rowId;
@@ -395,5 +412,6 @@ public class ExpandoRowModelImpl extends BaseModelImpl<ExpandoRow>
 	private long _originalClassPK;
 	private boolean _setOriginalClassPK;
 	private long _columnBitmask;
-	private ExpandoRow _escapedModelProxy;
+	private ExpandoRow _escapedModel;
+	private ExpandoRow _unescapedModel;
 }

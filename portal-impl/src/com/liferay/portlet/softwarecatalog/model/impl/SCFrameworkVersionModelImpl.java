@@ -34,6 +34,8 @@ import com.liferay.portlet.softwarecatalog.model.SCFrameworkVersionSoap;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -460,13 +462,28 @@ public class SCFrameworkVersionModelImpl extends BaseModelImpl<SCFrameworkVersio
 
 	@Override
 	public SCFrameworkVersion toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (SCFrameworkVersion)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (SCFrameworkVersion)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public SCFrameworkVersion toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (SCFrameworkVersion)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (SCFrameworkVersion)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -704,7 +721,7 @@ public class SCFrameworkVersionModelImpl extends BaseModelImpl<SCFrameworkVersio
 	}
 
 	private static ClassLoader _classLoader = SCFrameworkVersion.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			SCFrameworkVersion.class
 		};
 	private long _frameworkVersionId;
@@ -726,5 +743,6 @@ public class SCFrameworkVersionModelImpl extends BaseModelImpl<SCFrameworkVersio
 	private boolean _setOriginalActive;
 	private int _priority;
 	private long _columnBitmask;
-	private SCFrameworkVersion _escapedModelProxy;
+	private SCFrameworkVersion _escapedModel;
+	private SCFrameworkVersion _unescapedModel;
 }

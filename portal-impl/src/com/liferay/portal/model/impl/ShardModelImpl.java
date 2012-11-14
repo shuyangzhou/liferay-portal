@@ -31,6 +31,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.HashMap;
@@ -256,13 +258,28 @@ public class ShardModelImpl extends BaseModelImpl<Shard> implements ShardModel {
 
 	@Override
 	public Shard toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (Shard)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (Shard)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public Shard toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (Shard)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (Shard)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -408,9 +425,7 @@ public class ShardModelImpl extends BaseModelImpl<Shard> implements ShardModel {
 	}
 
 	private static ClassLoader _classLoader = Shard.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
-			Shard.class
-		};
+	private static Class<?>[] _escapedModelInterfaces = new Class[] { Shard.class };
 	private long _shardId;
 	private long _classNameId;
 	private long _originalClassNameId;
@@ -421,5 +436,6 @@ public class ShardModelImpl extends BaseModelImpl<Shard> implements ShardModel {
 	private String _name;
 	private String _originalName;
 	private long _columnBitmask;
-	private Shard _escapedModelProxy;
+	private Shard _escapedModel;
+	private Shard _unescapedModel;
 }

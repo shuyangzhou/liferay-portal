@@ -33,6 +33,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.Date;
@@ -533,13 +535,28 @@ public class DDLRecordVersionModelImpl extends BaseModelImpl<DDLRecordVersion>
 
 	@Override
 	public DDLRecordVersion toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (DDLRecordVersion)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (DDLRecordVersion)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public DDLRecordVersion toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (DDLRecordVersion)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (DDLRecordVersion)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -810,7 +827,7 @@ public class DDLRecordVersionModelImpl extends BaseModelImpl<DDLRecordVersion>
 	}
 
 	private static ClassLoader _classLoader = DDLRecordVersion.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			DDLRecordVersion.class
 		};
 	private long _recordVersionId;
@@ -836,5 +853,6 @@ public class DDLRecordVersionModelImpl extends BaseModelImpl<DDLRecordVersion>
 	private String _statusByUserName;
 	private Date _statusDate;
 	private long _columnBitmask;
-	private DDLRecordVersion _escapedModelProxy;
+	private DDLRecordVersion _escapedModel;
+	private DDLRecordVersion _unescapedModel;
 }

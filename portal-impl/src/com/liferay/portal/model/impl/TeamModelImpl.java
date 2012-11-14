@@ -33,6 +33,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -403,13 +405,28 @@ public class TeamModelImpl extends BaseModelImpl<Team> implements TeamModel {
 
 	@Override
 	public Team toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (Team)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (Team)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public Team toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (Team)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (Team)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -620,9 +637,7 @@ public class TeamModelImpl extends BaseModelImpl<Team> implements TeamModel {
 	}
 
 	private static ClassLoader _classLoader = Team.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
-			Team.class
-		};
+	private static Class<?>[] _escapedModelInterfaces = new Class[] { Team.class };
 	private long _teamId;
 	private long _companyId;
 	private long _userId;
@@ -637,5 +652,6 @@ public class TeamModelImpl extends BaseModelImpl<Team> implements TeamModel {
 	private String _originalName;
 	private String _description;
 	private long _columnBitmask;
-	private Team _escapedModelProxy;
+	private Team _escapedModel;
+	private Team _unescapedModel;
 }

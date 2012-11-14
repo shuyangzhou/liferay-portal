@@ -35,6 +35,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -726,13 +728,28 @@ public class CalEventModelImpl extends BaseModelImpl<CalEvent>
 
 	@Override
 	public CalEvent toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (CalEvent)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (CalEvent)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public CalEvent toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (CalEvent)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (CalEvent)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -1128,7 +1145,7 @@ public class CalEventModelImpl extends BaseModelImpl<CalEvent>
 	}
 
 	private static ClassLoader _classLoader = CalEvent.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			CalEvent.class
 		};
 	private String _uuid;
@@ -1166,5 +1183,6 @@ public class CalEventModelImpl extends BaseModelImpl<CalEvent>
 	private int _firstReminder;
 	private int _secondReminder;
 	private long _columnBitmask;
-	private CalEvent _escapedModelProxy;
+	private CalEvent _escapedModel;
+	private CalEvent _unescapedModel;
 }

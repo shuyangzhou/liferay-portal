@@ -43,4 +43,14 @@ public interface PortletDisplayTemplate {
 			Map<String, Object> contextObjects)
 		throws Exception;
 
+	public String renderDDMTemplate(
+		ThemeDisplay themeDisplay, Map<String, String> tokens, String viewMode,
+		String languageId, String xml, String script, String langType)
+	throws Exception;
+
+	public String renderJournalTemplate(
+		ThemeDisplay themeDisplay, Map<String, String> tokens, String viewMode,
+		String languageId, String xml, String script, String langType)
+	throws Exception;
+
 }

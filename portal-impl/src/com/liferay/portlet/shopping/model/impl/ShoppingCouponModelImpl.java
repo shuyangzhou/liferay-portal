@@ -35,6 +35,8 @@ import com.liferay.portlet.shopping.model.ShoppingCouponSoap;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -578,13 +580,28 @@ public class ShoppingCouponModelImpl extends BaseModelImpl<ShoppingCoupon>
 
 	@Override
 	public ShoppingCoupon toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (ShoppingCoupon)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (ShoppingCoupon)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public ShoppingCoupon toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (ShoppingCoupon)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (ShoppingCoupon)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -915,7 +932,7 @@ public class ShoppingCouponModelImpl extends BaseModelImpl<ShoppingCoupon>
 	}
 
 	private static ClassLoader _classLoader = ShoppingCoupon.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			ShoppingCoupon.class
 		};
 	private long _couponId;
@@ -941,5 +958,6 @@ public class ShoppingCouponModelImpl extends BaseModelImpl<ShoppingCoupon>
 	private double _discount;
 	private String _discountType;
 	private long _columnBitmask;
-	private ShoppingCoupon _escapedModelProxy;
+	private ShoppingCoupon _escapedModel;
+	private ShoppingCoupon _unescapedModel;
 }

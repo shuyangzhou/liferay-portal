@@ -34,6 +34,8 @@ import com.liferay.portlet.polls.model.PollsVoteSoap;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -392,13 +394,28 @@ public class PollsVoteModelImpl extends BaseModelImpl<PollsVote>
 
 	@Override
 	public PollsVote toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (PollsVote)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (PollsVote)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public PollsVote toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (PollsVote)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (PollsVote)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -612,7 +629,7 @@ public class PollsVoteModelImpl extends BaseModelImpl<PollsVote>
 	}
 
 	private static ClassLoader _classLoader = PollsVote.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			PollsVote.class
 		};
 	private long _voteId;
@@ -632,5 +649,6 @@ public class PollsVoteModelImpl extends BaseModelImpl<PollsVote>
 	private boolean _setOriginalChoiceId;
 	private Date _voteDate;
 	private long _columnBitmask;
-	private PollsVote _escapedModelProxy;
+	private PollsVote _escapedModel;
+	private PollsVote _unescapedModel;
 }

@@ -36,6 +36,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -843,13 +845,28 @@ public class BlogsEntryModelImpl extends BaseModelImpl<BlogsEntry>
 
 	@Override
 	public BlogsEntry toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (BlogsEntry)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (BlogsEntry)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public BlogsEntry toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (BlogsEntry)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (BlogsEntry)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -1262,7 +1279,7 @@ public class BlogsEntryModelImpl extends BaseModelImpl<BlogsEntry>
 	}
 
 	private static ClassLoader _classLoader = BlogsEntry.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			BlogsEntry.class
 		};
 	private String _uuid;
@@ -1302,5 +1319,6 @@ public class BlogsEntryModelImpl extends BaseModelImpl<BlogsEntry>
 	private String _statusByUserName;
 	private Date _statusDate;
 	private long _columnBitmask;
-	private BlogsEntry _escapedModelProxy;
+	private BlogsEntry _escapedModel;
+	private BlogsEntry _unescapedModel;
 }

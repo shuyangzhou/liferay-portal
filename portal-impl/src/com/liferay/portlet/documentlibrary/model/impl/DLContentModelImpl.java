@@ -32,6 +32,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Blob;
 import java.sql.Types;
 
@@ -342,13 +344,28 @@ public class DLContentModelImpl extends BaseModelImpl<DLContent>
 
 	@Override
 	public DLContent toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (DLContent)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (DLContent)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public DLContent toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (DLContent)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (DLContent)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -531,7 +548,7 @@ public class DLContentModelImpl extends BaseModelImpl<DLContent>
 	}
 
 	private static ClassLoader _classLoader = DLContent.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			DLContent.class
 		};
 	private long _contentId;
@@ -549,5 +566,6 @@ public class DLContentModelImpl extends BaseModelImpl<DLContent>
 	private DLContentDataBlobModel _dataBlobModel;
 	private long _size;
 	private long _columnBitmask;
-	private DLContent _escapedModelProxy;
+	private DLContent _escapedModel;
+	private DLContent _unescapedModel;
 }

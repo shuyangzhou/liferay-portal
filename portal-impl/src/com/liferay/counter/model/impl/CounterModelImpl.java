@@ -27,6 +27,8 @@ import com.liferay.portal.model.impl.BaseModelImpl;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.HashMap;
@@ -147,13 +149,28 @@ public class CounterModelImpl extends BaseModelImpl<Counter>
 
 	@Override
 	public Counter toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (Counter)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (Counter)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public Counter toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (Counter)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (Counter)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -260,10 +277,11 @@ public class CounterModelImpl extends BaseModelImpl<Counter>
 	}
 
 	private static ClassLoader _classLoader = Counter.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			Counter.class
 		};
 	private String _name;
 	private long _currentId;
-	private Counter _escapedModelProxy;
+	private Counter _escapedModel;
+	private Counter _unescapedModel;
 }

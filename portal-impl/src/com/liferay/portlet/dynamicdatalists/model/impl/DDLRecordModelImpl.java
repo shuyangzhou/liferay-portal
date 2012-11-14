@@ -34,6 +34,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -528,13 +530,28 @@ public class DDLRecordModelImpl extends BaseModelImpl<DDLRecord>
 
 	@Override
 	public DDLRecord toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (DDLRecord)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (DDLRecord)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public DDLRecord toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (DDLRecord)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (DDLRecord)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -810,7 +827,7 @@ public class DDLRecordModelImpl extends BaseModelImpl<DDLRecord>
 	}
 
 	private static ClassLoader _classLoader = DDLRecord.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			DDLRecord.class
 		};
 	private String _uuid;
@@ -839,5 +856,6 @@ public class DDLRecordModelImpl extends BaseModelImpl<DDLRecord>
 	private String _version;
 	private int _displayIndex;
 	private long _columnBitmask;
-	private DDLRecord _escapedModelProxy;
+	private DDLRecord _escapedModel;
+	private DDLRecord _unescapedModel;
 }

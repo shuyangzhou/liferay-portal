@@ -31,6 +31,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.Date;
@@ -412,13 +414,28 @@ public class LockModelImpl extends BaseModelImpl<Lock> implements LockModel {
 
 	@Override
 	public Lock toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (Lock)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (Lock)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public Lock toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (Lock)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (Lock)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -669,9 +686,7 @@ public class LockModelImpl extends BaseModelImpl<Lock> implements LockModel {
 	}
 
 	private static ClassLoader _classLoader = Lock.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
-			Lock.class
-		};
+	private static Class<?>[] _escapedModelInterfaces = new Class[] { Lock.class };
 	private String _uuid;
 	private String _originalUuid;
 	private long _lockId;
@@ -692,5 +707,6 @@ public class LockModelImpl extends BaseModelImpl<Lock> implements LockModel {
 	private Date _expirationDate;
 	private Date _originalExpirationDate;
 	private long _columnBitmask;
-	private Lock _escapedModelProxy;
+	private Lock _escapedModel;
+	private Lock _unescapedModel;
 }

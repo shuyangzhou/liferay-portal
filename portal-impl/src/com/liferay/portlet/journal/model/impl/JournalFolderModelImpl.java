@@ -34,6 +34,8 @@ import com.liferay.portlet.journal.model.JournalFolderSoap;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -465,13 +467,28 @@ public class JournalFolderModelImpl extends BaseModelImpl<JournalFolder>
 
 	@Override
 	public JournalFolder toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (JournalFolder)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (JournalFolder)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public JournalFolder toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (JournalFolder)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (JournalFolder)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -731,7 +748,7 @@ public class JournalFolderModelImpl extends BaseModelImpl<JournalFolder>
 	}
 
 	private static ClassLoader _classLoader = JournalFolder.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			JournalFolder.class
 		};
 	private String _uuid;
@@ -755,5 +772,6 @@ public class JournalFolderModelImpl extends BaseModelImpl<JournalFolder>
 	private String _originalName;
 	private String _description;
 	private long _columnBitmask;
-	private JournalFolder _escapedModelProxy;
+	private JournalFolder _escapedModel;
+	private JournalFolder _unescapedModel;
 }

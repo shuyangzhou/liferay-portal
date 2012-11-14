@@ -31,6 +31,8 @@ import com.liferay.portlet.messageboards.model.MBThreadFlagModel;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.Date;
@@ -232,13 +234,28 @@ public class MBThreadFlagModelImpl extends BaseModelImpl<MBThreadFlag>
 
 	@Override
 	public MBThreadFlag toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (MBThreadFlag)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (MBThreadFlag)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public MBThreadFlag toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (MBThreadFlag)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (MBThreadFlag)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -383,7 +400,7 @@ public class MBThreadFlagModelImpl extends BaseModelImpl<MBThreadFlag>
 	}
 
 	private static ClassLoader _classLoader = MBThreadFlag.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			MBThreadFlag.class
 		};
 	private long _threadFlagId;
@@ -396,5 +413,6 @@ public class MBThreadFlagModelImpl extends BaseModelImpl<MBThreadFlag>
 	private long _originalThreadId;
 	private boolean _setOriginalThreadId;
 	private long _columnBitmask;
-	private MBThreadFlag _escapedModelProxy;
+	private MBThreadFlag _escapedModel;
+	private MBThreadFlag _unescapedModel;
 }

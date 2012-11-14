@@ -38,6 +38,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -1080,13 +1082,28 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 
 	@Override
 	public AssetEntry toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (AssetEntry)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (AssetEntry)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public AssetEntry toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (AssetEntry)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (AssetEntry)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -1532,7 +1549,7 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 	}
 
 	private static ClassLoader _classLoader = AssetEntry.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			AssetEntry.class
 		};
 	private long _entryId;
@@ -1580,5 +1597,6 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 	private double _priority;
 	private int _viewCount;
 	private long _columnBitmask;
-	private AssetEntry _escapedModelProxy;
+	private AssetEntry _escapedModel;
+	private AssetEntry _unescapedModel;
 }

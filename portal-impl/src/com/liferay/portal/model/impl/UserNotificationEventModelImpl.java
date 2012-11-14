@@ -31,6 +31,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.HashMap;
@@ -357,13 +359,28 @@ public class UserNotificationEventModelImpl extends BaseModelImpl<UserNotificati
 
 	@Override
 	public UserNotificationEvent toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (UserNotificationEvent)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (UserNotificationEvent)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public UserNotificationEvent toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (UserNotificationEvent)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (UserNotificationEvent)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -578,7 +595,7 @@ public class UserNotificationEventModelImpl extends BaseModelImpl<UserNotificati
 	}
 
 	private static ClassLoader _classLoader = UserNotificationEvent.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			UserNotificationEvent.class
 		};
 	private String _uuid;
@@ -599,5 +616,6 @@ public class UserNotificationEventModelImpl extends BaseModelImpl<UserNotificati
 	private boolean _originalArchived;
 	private boolean _setOriginalArchived;
 	private long _columnBitmask;
-	private UserNotificationEvent _escapedModelProxy;
+	private UserNotificationEvent _escapedModel;
+	private UserNotificationEvent _unescapedModel;
 }

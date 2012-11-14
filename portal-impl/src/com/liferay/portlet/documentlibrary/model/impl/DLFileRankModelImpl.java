@@ -32,6 +32,8 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.Date;
@@ -328,13 +330,28 @@ public class DLFileRankModelImpl extends BaseModelImpl<DLFileRank>
 
 	@Override
 	public DLFileRank toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (DLFileRank)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (DLFileRank)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public DLFileRank toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (DLFileRank)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (DLFileRank)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -518,7 +535,7 @@ public class DLFileRankModelImpl extends BaseModelImpl<DLFileRank>
 	}
 
 	private static ClassLoader _classLoader = DLFileRank.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			DLFileRank.class
 		};
 	private long _fileRankId;
@@ -540,5 +557,6 @@ public class DLFileRankModelImpl extends BaseModelImpl<DLFileRank>
 	private boolean _originalActive;
 	private boolean _setOriginalActive;
 	private long _columnBitmask;
-	private DLFileRank _escapedModelProxy;
+	private DLFileRank _escapedModel;
+	private DLFileRank _unescapedModel;
 }

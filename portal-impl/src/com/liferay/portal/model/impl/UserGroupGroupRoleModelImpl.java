@@ -27,6 +27,8 @@ import com.liferay.portal.service.persistence.UserGroupGroupRolePK;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -253,13 +255,28 @@ public class UserGroupGroupRoleModelImpl extends BaseModelImpl<UserGroupGroupRol
 
 	@Override
 	public UserGroupGroupRole toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (UserGroupGroupRole)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (UserGroupGroupRole)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public UserGroupGroupRole toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (UserGroupGroupRole)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (UserGroupGroupRole)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -384,7 +401,7 @@ public class UserGroupGroupRoleModelImpl extends BaseModelImpl<UserGroupGroupRol
 	}
 
 	private static ClassLoader _classLoader = UserGroupGroupRole.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			UserGroupGroupRole.class
 		};
 	private long _userGroupId;
@@ -397,5 +414,6 @@ public class UserGroupGroupRoleModelImpl extends BaseModelImpl<UserGroupGroupRol
 	private long _originalRoleId;
 	private boolean _setOriginalRoleId;
 	private long _columnBitmask;
-	private UserGroupGroupRole _escapedModelProxy;
+	private UserGroupGroupRole _escapedModel;
+	private UserGroupGroupRole _unescapedModel;
 }

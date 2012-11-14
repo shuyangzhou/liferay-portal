@@ -270,14 +270,14 @@ public class JournalFeedLocalServiceWrapper implements JournalFeedLocalService,
 		int delta, java.lang.String orderByCol, java.lang.String orderByType,
 		java.lang.String targetLayoutFriendlyUrl,
 		java.lang.String targetPortletId, java.lang.String contentField,
-		java.lang.String feedType, double feedVersion,
+		java.lang.String feedFormat, double feedVersion,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
 		return _journalFeedLocalService.addFeed(userId, groupId, feedId,
 			autoFeedId, name, description, type, structureId, templateId,
 			rendererTemplateId, delta, orderByCol, orderByType,
-			targetLayoutFriendlyUrl, targetPortletId, contentField, feedType,
+			targetLayoutFriendlyUrl, targetPortletId, contentField, feedFormat,
 			feedVersion, serviceContext);
 	}
 
@@ -408,14 +408,15 @@ public class JournalFeedLocalServiceWrapper implements JournalFeedLocalService,
 		java.lang.String orderByCol, java.lang.String orderByType,
 		java.lang.String targetLayoutFriendlyUrl,
 		java.lang.String targetPortletId, java.lang.String contentField,
-		java.lang.String feedType, double feedVersion,
+		java.lang.String feedFormat, double feedVersion,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
 		return _journalFeedLocalService.updateFeed(groupId, feedId, name,
 			description, type, structureId, templateId, rendererTemplateId,
 			delta, orderByCol, orderByType, targetLayoutFriendlyUrl,
-			targetPortletId, contentField, feedType, feedVersion, serviceContext);
+			targetPortletId, contentField, feedFormat, feedVersion,
+			serviceContext);
 	}
 
 	/**

@@ -32,6 +32,8 @@ import com.liferay.portlet.softwarecatalog.model.SCLicenseSoap;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -347,13 +349,28 @@ public class SCLicenseModelImpl extends BaseModelImpl<SCLicense>
 
 	@Override
 	public SCLicense toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (SCLicense)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (SCLicense)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	@Override
+	public SCLicense toUnescapedModel() {
+		if (ProxyUtil.isProxyClass(getClass())) {
+			InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(this);
+
+			AutoEscapeBeanHandler autoEscapeBeanHandler = (AutoEscapeBeanHandler)invocationHandler;
+
+			_unescapedModel = (SCLicense)autoEscapeBeanHandler.getBean();
+		}
+		else {
+			_unescapedModel = (SCLicense)this;
+		}
+
+		return _unescapedModel;
 	}
 
 	@Override
@@ -519,7 +536,7 @@ public class SCLicenseModelImpl extends BaseModelImpl<SCLicense>
 	}
 
 	private static ClassLoader _classLoader = SCLicense.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			SCLicense.class
 		};
 	private long _licenseId;
@@ -533,5 +550,6 @@ public class SCLicenseModelImpl extends BaseModelImpl<SCLicense>
 	private boolean _originalRecommended;
 	private boolean _setOriginalRecommended;
 	private long _columnBitmask;
-	private SCLicense _escapedModelProxy;
+	private SCLicense _escapedModel;
+	private SCLicense _unescapedModel;
 }
