@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
-import com.liferay.portal.kernel.templateparser.Transformer;
 import com.liferay.portal.kernel.templateparser.TransformerListener;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
@@ -80,6 +79,7 @@ import com.liferay.portlet.journal.util.comparator.ArticleModifiedDateComparator
 import com.liferay.portlet.journal.util.comparator.ArticleReviewDateComparator;
 import com.liferay.portlet.journal.util.comparator.ArticleTitleComparator;
 import com.liferay.portlet.journal.util.comparator.ArticleVersionComparator;
+import com.liferay.portlet.portletdisplaytemplate.util.PortletDisplayTemplateUtil;
 import com.liferay.util.ContentUtil;
 import com.liferay.util.FiniteUniqueStack;
 
@@ -1151,7 +1151,7 @@ public class JournalUtil {
 			String langType)
 		throws Exception {
 
-		return _transformer.transform(
+		return PortletDisplayTemplateUtil.renderJournalTemplate(
 			themeDisplay, tokens, viewMode, languageId, xml, script, langType);
 	}
 
@@ -1624,6 +1624,5 @@ public class JournalUtil {
 	private static Log _log = LogFactoryUtil.getLog(JournalUtil.class);
 
 	private static Map<String, String> _customTokens;
-	private static Transformer _transformer = new JournalTransformer();
 
 }
