@@ -71,6 +71,24 @@ public class PortletDisplayTemplateUtil {
 			pageContext, ddmTemplateId, entries, contextObjects);
 	}
 
+	public static String renderDDMTemplate(
+		ThemeDisplay themeDisplay, Map<String, String> tokens, String viewMode,
+		String languageId, String xml, String script, String langType)
+	throws Exception {
+
+		return getPortletDisplayTemplate().renderDDMTemplate(
+			themeDisplay, tokens, viewMode, languageId, xml, script, langType);
+	}
+
+	public static String renderJournalTemplate(
+		ThemeDisplay themeDisplay, Map<String, String> tokens, String viewMode,
+		String languageId, String xml, String script, String langType)
+	throws Exception {
+
+		return getPortletDisplayTemplate().renderJournalTemplate(
+			themeDisplay, tokens, viewMode, languageId, xml, script, langType);
+	}
+
 	public void setPortletDisplayTemplate(
 		PortletDisplayTemplate portletDisplayTemplate) {
 

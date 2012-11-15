@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
-import com.liferay.portal.kernel.templateparser.Transformer;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -61,6 +60,7 @@ import com.liferay.portlet.dynamicdatamapping.util.DDMImpl;
 import com.liferay.portlet.dynamicdatamapping.util.DDMUtil;
 import com.liferay.portlet.dynamicdatamapping.util.DDMXMLUtil;
 import com.liferay.portlet.journal.util.JournalUtil;
+import com.liferay.portlet.portletdisplaytemplate.util.PortletDisplayTemplateUtil;
 import com.liferay.util.portlet.PortletRequestUtil;
 
 import java.util.ArrayList;
@@ -340,7 +340,7 @@ public class DDLImpl implements DDL {
 		DDMTemplate template = DDMTemplateLocalServiceUtil.getTemplate(
 			ddmTemplateId);
 
-		return _transformer.transform(
+		return PortletDisplayTemplateUtil.renderDDMTemplate(
 			themeDisplay, tokens, viewMode, languageId, xml,
 			template.getScript(), template.getLanguage());
 	}
@@ -525,7 +525,5 @@ public class DDLImpl implements DDL {
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(DDLImpl.class);
-
-	private Transformer _transformer = new DDLTransformer();
 
 }

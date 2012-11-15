@@ -14,7 +14,7 @@
 
 package com.liferay.portal.kernel.template;
 
-import com.liferay.portal.kernel.templateparser.TemplateContext;
+import com.liferay.portal.theme.ThemeDisplay;
 
 import java.io.Writer;
 
@@ -23,10 +23,16 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author Tina Tian
  */
-public interface Template extends TemplateContext {
+public interface Template {
+
+	public Object get(String key);
 
 	public void prepare(HttpServletRequest request);
 
+	public void prepare(ThemeDisplay themeDisplay, String xml);
+
 	public boolean processTemplate(Writer writer) throws TemplateException;
+
+	public void put(String key, Object value);
 
 }
