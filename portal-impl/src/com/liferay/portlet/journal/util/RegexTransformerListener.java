@@ -16,7 +16,7 @@ package com.liferay.portlet.journal.util;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.templateparser.TransformerListener;
+import com.liferay.portal.kernel.template.TransformerListener;
 
 import java.util.List;
 import java.util.Map;

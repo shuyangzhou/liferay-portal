@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.kernel.templateparser;
+package com.liferay.portal.kernel.template;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
