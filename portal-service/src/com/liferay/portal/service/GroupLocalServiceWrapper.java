@@ -536,6 +536,20 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	}
 
 	/**
+	* Returns the guest group to the corresponding company.
+	*
+	* @param companyId the primary key of the company
+	* @return The guest group to the corresponding company
+	* @throws PortalException if a matching group could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public com.liferay.portal.model.Group getGuestGroup(long companyId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _groupLocalService.getGuestGroup(companyId);
+	}
+
+	/**
 	* Returns the group associated with the layout.
 	*
 	* @param companyId the primary key of the company
