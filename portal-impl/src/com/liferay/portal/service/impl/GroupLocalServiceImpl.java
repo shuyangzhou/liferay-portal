@@ -1053,6 +1053,14 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 		return groups;
 	}
 
+	/**
+	 * Returns the guest group to the corresponding company.
+	 *
+	 * @param  companyId the primary key of the company
+	 * @return The guest group to the corresponding company
+	 * @throws PortalException if a matching group could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
 	public Group getGuestGroup(long companyId)
 		throws PortalException, SystemException {
 
