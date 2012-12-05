@@ -515,9 +515,9 @@ Please set the environment variable ANT_OPTS to the recommended value of
 			<then>
 				<cobertura-instrument datafile="test-coverage/cobertura.ser" maxmemory="512m" todir="test-coverage">
 					<fileset dir="${project.dir}/portal-impl/classes">
-						<include name="**/*.class" />
+						<include name="com/liferay/portal/search/lucene/*.class" />
 					</fileset>
-					<fileset dir="${project.dir}/portal-service/classes">
+<!--					<fileset dir="${project.dir}/portal-service/classes">
 						<include name="**/*.class" />
 					</fileset>
 					<fileset dir="${project.dir}/util-java/classes">
@@ -525,7 +525,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 					</fileset>
 					<fileset dir="${project.dir}/util-taglib/classes">
 						<include name="**/*.class" />
-					</fileset>
+					</fileset>-->
 				</cobertura-instrument>
 			</then>
 		</if>
@@ -549,9 +549,9 @@ Please set the environment variable ANT_OPTS to the recommended value of
 					format="${junit.cobertura.report.format}"
 				>
 					<fileset dir="${project.dir}/portal-impl/src">
-						<include name="**/*.java" />
+						<include name="com/liferay/portal/search/lucene/*.java" />
 					</fileset>
-					<fileset dir="${project.dir}/portal-service/src">
+<!--					<fileset dir="${project.dir}/portal-service/src">
 						<include name="**/*.java" />
 					</fileset>
 					<fileset dir="${project.dir}/util-java/src">
@@ -559,7 +559,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 					</fileset>
 					<fileset dir="${project.dir}/util-taglib/src">
 						<include name="**/*.java" />
-					</fileset>
+					</fileset>-->
 				</cobertura-report>
 			</then>
 		</if>
