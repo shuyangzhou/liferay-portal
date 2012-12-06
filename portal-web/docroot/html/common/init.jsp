@@ -143,6 +143,7 @@ page import="com.liferay.portal.model.*" %><%@
 page import="com.liferay.portal.model.impl.*" %><%@
 page import="com.liferay.portal.security.auth.AuthTokenUtil" %><%@
 page import="com.liferay.portal.security.auth.PrincipalException" %><%@
+page import="com.liferay.portal.security.pacl.PACLClassLoaderUtil" %><%@
 page import="com.liferay.portal.security.permission.ActionKeys" %><%@
 page import="com.liferay.portal.security.permission.PermissionChecker" %><%@
 page import="com.liferay.portal.security.permission.ResourceActionsUtil" %><%@

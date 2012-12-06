@@ -23,6 +23,8 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.security.pacl.PACLClassLoaderUtil;
 import com.liferay.portal.security.pacl.PACLClassUtil;
 import com.liferay.portal.security.pacl.PACLPolicy;
+import com.liferay.portal.util.PortalImpl;
+import com.liferay.portal.util.PortalUtil;
 
 import java.util.Properties;
 import java.util.Set;
@@ -251,6 +253,22 @@ public abstract class BaseChecker implements Checker, PACLConstants {
 		}
 	}
 
+	protected boolean isTrustedCallerClass(Class<?> callerClass) {
+		String callerClassLocation = PACLClassUtil.getClassLocation(
+			callerClass);
+
+		if (callerClassLocation.startsWith(portalImplJarLocation) ||
+			callerClassLocation.startsWith(portalServiceJarLocation) ||
+			callerClassLocation.contains("/util-bridges.jar!/") ||
+			callerClassLocation.contains("/util-java.jar!/") ||
+			callerClassLocation.contains("/util-taglib.jar!/")) {
+
+			return true;
+		}
+
+		return false;
+	}
+
 	protected void throwSecurityException(Log log, String message) {
 		if (log.isWarnEnabled()) {
 			log.warn(message);
@@ -258,6 +276,11 @@ public abstract class BaseChecker implements Checker, PACLConstants {
 
 		throw new SecurityException(message);
 	}
+
+	protected String portalImplJarLocation = PACLClassUtil.getJarLocation(
+		PortalImpl.class);
+	protected String portalServiceJarLocation = PACLClassUtil.getJarLocation(
+		PortalUtil.class);
 
 	private static final String _ClASS_NAME_COMPILER =
 		"org.apache.jasper.compiler.Compiler";

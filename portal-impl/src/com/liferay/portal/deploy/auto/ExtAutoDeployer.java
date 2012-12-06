@@ -52,7 +52,9 @@ public class ExtAutoDeployer extends ExtDeployer implements AutoDeployer {
 
 			List<String> jars = new ArrayList<String>();
 
+			addRequiredJar(jars, "util-bridges.jar");
 			addRequiredJar(jars, "util-java.jar");
+			addRequiredJar(jars, "util-taglib.jar");
 
 			this.jars = jars;
 

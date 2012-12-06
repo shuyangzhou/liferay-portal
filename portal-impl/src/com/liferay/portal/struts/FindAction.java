@@ -169,12 +169,16 @@ public abstract class FindAction extends Action {
 					(LayoutTypePortlet)layout.getLayoutType();
 
 				for (String portletId : _portletIds) {
-					if (layoutTypePortlet.hasPortletId(portletId) &&
-						LayoutPermissionUtil.contains(
+					if (!layoutTypePortlet.hasPortletId(portletId) ||
+						!LayoutPermissionUtil.contains(
 							permissionChecker, layout, ActionKeys.VIEW)) {
 
-						return new Object[] {plid, portletId};
+						continue;
 					}
+
+					portletId = getPortletId(layoutTypePortlet, portletId);
+
+					return new Object[] {plid, portletId};
 				}
 			}
 			catch (NoSuchLayoutException nsle) {
@@ -190,28 +194,36 @@ public abstract class FindAction extends Action {
 
 			Layout layout = LayoutLocalServiceUtil.getLayout(plid);
 
-			if (LayoutPermissionUtil.contains(
+			if (!LayoutPermissionUtil.contains(
 					permissionChecker, layout, ActionKeys.VIEW)) {
 
-				LayoutTypePortlet layoutTypePortlet =
-					(LayoutTypePortlet)layout.getLayoutType();
-
-				for (String curPortletId : layoutTypePortlet.getPortletIds()) {
-					String curRootPortletId = PortletConstants.getRootPortletId(
-						curPortletId);
-
-					if (portletId.equals(curRootPortletId)) {
-						portletId = curPortletId;
-
-						break;
-					}
-				}
-
-				return new Object[] {plid, portletId};
+				continue;
 			}
+
+			LayoutTypePortlet layoutTypePortlet =
+				(LayoutTypePortlet)layout.getLayoutType();
+
+			portletId = getPortletId(layoutTypePortlet, portletId);
+
+			return new Object[] {plid, portletId};
 		}
 
 		throw new NoSuchLayoutException();
+	}
+
+	protected String getPortletId(
+		LayoutTypePortlet layoutTypePortlet, String portletId) {
+
+		for (String curPortletId : layoutTypePortlet.getPortletIds()) {
+			String curRootPortletId = PortletConstants.getRootPortletId(
+				curPortletId);
+
+			if (portletId.equals(curRootPortletId)) {
+				return curPortletId;
+			}
+		}
+
+		return portletId;
 	}
 
 	protected abstract String getPrimaryKeyParameterName();

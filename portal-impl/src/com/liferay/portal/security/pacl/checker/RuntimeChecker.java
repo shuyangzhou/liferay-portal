@@ -16,9 +16,6 @@ package com.liferay.portal.security.pacl.checker;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.messaging.BaseAsyncDestination;
-import com.liferay.portal.kernel.servlet.PortalClassLoaderFilter;
-import com.liferay.portal.kernel.servlet.PortalClassLoaderServlet;
 import com.liferay.portal.kernel.util.JavaDetector;
 import com.liferay.portal.kernel.util.PathUtil;
 import com.liferay.portal.kernel.util.ServerDetector;
@@ -218,10 +215,7 @@ public class RuntimeChecker extends BaseReflectChecker {
 			if (referenceId.equals("portal")) {
 				Class<?> callerClass7 = Reflection.getCallerClass(7);
 
-				if ((callerClass7 == BaseAsyncDestination.class) ||
-					(callerClass7 == PortalClassLoaderFilter.class) ||
-					(callerClass7 == PortalClassLoaderServlet.class)) {
-
+				if (isTrustedCallerClass(callerClass7)) {
 					return true;
 				}
 			}

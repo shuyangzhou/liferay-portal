@@ -74,6 +74,18 @@ public class PACLClassUtil {
 		}
 	}
 
+	public static String getJarLocation(Class<?> clazz) {
+		String classLocation = getClassLocation(clazz);
+
+		if (classLocation == null) {
+			return null;
+		}
+
+		int index = classLocation.indexOf(".jar!");
+
+		return classLocation.substring(0, index + 4);
+	}
+
 	public static PACLPolicy getPACLPolicy(boolean deep, boolean debug) {
 		PACLPolicy paclPolicy =
 			PortalSecurityManagerThreadLocal.getPACLPolicy();

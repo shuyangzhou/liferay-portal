@@ -14,10 +14,8 @@
 
 package com.liferay.portal.security.pacl.checker;
 
-import com.liferay.portal.kernel.executor.PortalExecutorManagerUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.messaging.BaseAsyncDestination;
 import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringPool;
@@ -127,15 +125,9 @@ public class PortalRuntimeChecker extends BaseChecker {
 			}
 		}
 
-		if (clazz == PortalExecutorManagerUtil.class) {
-			Class<?> callerClass10 = Reflection.getCallerClass(10);
+		Class<?> callerClass10 = Reflection.getCallerClass(10);
 
-			if (callerClass10 == BaseAsyncDestination.class) {
-				return true;
-			}
-		}
-
-		return false;
+		return isTrustedCallerClass(callerClass10);
 	}
 
 	protected boolean hasSetBeanProperty(Class<?> clazz, String property) {

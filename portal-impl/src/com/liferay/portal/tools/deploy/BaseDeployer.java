@@ -141,7 +141,7 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 			deploy(context);
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			_log.error(e, e);
 		}
 	}
 
@@ -340,13 +340,8 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 			String jarName = jarFullName.substring(
 				jarFullName.lastIndexOf("/") + 1);
 
-			if (!appServerType.equals(ServerDetector.TOMCAT_ID) ||
-				(appServerType.equals(ServerDetector.TOMCAT_ID) &&
-				 !jarFullName.equals("util-java.jar"))) {
-
-				FileUtil.copyFile(
-					jarFullName, srcFile + "/WEB-INF/lib/" + jarName, true);
-			}
+			FileUtil.copyFile(
+				jarFullName, srcFile + "/WEB-INF/lib/" + jarName, false);
 		}
 
 		FileUtil.delete(srcFile + "/WEB-INF/lib/util-jsf.jar");
@@ -622,7 +617,7 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 			}
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			_log.error(e, e);
 		}
 	}
 
