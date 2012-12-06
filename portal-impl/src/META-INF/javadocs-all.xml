@@ -261638,6 +261638,45 @@ Useful when paginating results. Returns a maximum of <code>end - start</code> in
 		</method>
 		<method>
 			<name>getUserPlaces</name>
+			<param>
+				<name>userId</name>
+				<type>long</type>
+			</param>
+			<param>
+				<name>classNames</name>
+				<type>java.lang.String[]</type>
+			</param>
+			<param>
+				<name>name</name>
+				<type>java.lang.String</type>
+			</param>
+			<param>
+				<name>active</name>
+				<type>boolean</type>
+			</param>
+			<param>
+				<name>includeControlPanel</name>
+				<type>boolean</type>
+			</param>
+			<param>
+				<name>start</name>
+				<type>int</type>
+			</param>
+			<param>
+				<name>end</name>
+				<type>int</type>
+			</param>
+			<throws>
+				<name>PortalException</name>
+				<type>com.liferay.portal.kernel.exception.PortalException</type>
+			</throws>
+			<throws>
+				<name>SystemException</name>
+				<type>com.liferay.portal.kernel.exception.SystemException</type>
+			</throws>
+		</method>
+		<method>
+			<name>getUserPlaces</name>
 			<comment><![CDATA[Returns the guest or current user's group &quot;places&quot; associated with the group entity class names, including the control panel group if the user is permitted to view the control panel.
 
 <p>
@@ -261655,6 +261694,23 @@ Useful when paginating results. Returns a maximum of <code>end - start</code> in
 			</param>
 			<return>
 				<comment><![CDATA[the user's group &quot;places&quot;]]></comment>
+			</return>
+			<throws>
+				<name>PortalException</name>
+				<type>com.liferay.portal.kernel.exception.PortalException</type>
+				<comment><![CDATA[if a portal exception occurred]]></comment>
+			</throws>
+			<throws>
+				<name>SystemException</name>
+				<type>com.liferay.portal.kernel.exception.SystemException</type>
+				<comment><![CDATA[if a system exception occurred]]></comment>
+			</throws>
+		</method>
+		<method>
+			<name>getUserPlacesCount</name>
+			<comment><![CDATA[Returns the number of the guest or current user's group &quot;places&quot; associated with the group entity class names, including the control panel group if the user is permitted to view the control panel.]]></comment>
+			<return>
+				<comment><![CDATA[the number of user's group &quot;places&quot;]]></comment>
 			</return>
 			<throws>
 				<name>PortalException</name>

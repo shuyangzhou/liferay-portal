@@ -20,10 +20,13 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.io.Serializable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -32,20 +35,38 @@ import java.util.Locale;
 public class FileUploadFieldRenderer extends BaseFieldRenderer {
 
 	@Override
-	protected String doRender(Field field, Locale locale) {
-		Serializable fieldValue = field.getValue();
+	protected String doRender(Field field, Locale locale) throws Exception {
+		List<String> values = new ArrayList<String>();
 
-		if (Validator.isNull(fieldValue) ||
-			fieldValue.equals(JSONFactoryUtil.getNullJSON())) {
+		for (Serializable value : field.getValues()) {
+			String valueString = String.valueOf(value);
 
+			if (Validator.isNull(valueString)) {
+				continue;
+			}
+
+			values.add(handleJSON(valueString));
+		}
+
+		return StringUtil.merge(values, StringPool.COMMA_AND_SPACE);
+	}
+
+	@Override
+	protected String doRender(Field field, Locale locale, int valueIndex) {
+		String value = String.valueOf(field.getValue(valueIndex));
+
+		if (Validator.isNull(value)) {
 			return StringPool.BLANK;
 		}
 
-		JSONObject fieldValueJSONObject = null;
+		return handleJSON(value);
+	}
+
+	protected String handleJSON(String json) {
+		JSONObject jsonObject = null;
 
 		try {
-			fieldValueJSONObject = JSONFactoryUtil.createJSONObject(
-				String.valueOf(fieldValue));
+			jsonObject = JSONFactoryUtil.createJSONObject(json);
 		}
 		catch (JSONException jsone) {
 			if (_log.isDebugEnabled()) {
@@ -55,7 +76,7 @@ public class FileUploadFieldRenderer extends BaseFieldRenderer {
 			return StringPool.BLANK;
 		}
 
-		return fieldValueJSONObject.getString("name");
+		return jsonObject.getString("name");
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(

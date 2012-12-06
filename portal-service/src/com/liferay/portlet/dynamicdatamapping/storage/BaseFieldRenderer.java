@@ -30,15 +30,28 @@ public abstract class BaseFieldRenderer implements FieldRenderer {
 			return doRender(field, locale);
 		}
 		catch (Exception e) {
-			if (_log.isErrorEnabled()) {
-				_log.error("Unable to render field", e);
-			}
+			_log.error("Unable to render field", e);
+		}
+
+		return null;
+	}
+
+	public String render(Field field, Locale locale, int valueIndex) {
+		try {
+			return doRender(field, locale, valueIndex);
+		}
+		catch (Exception e) {
+			_log.error("Unable to render field", e);
 		}
 
 		return null;
 	}
 
 	protected abstract String doRender(Field field, Locale locale)
+		throws Exception;
+
+	protected abstract String doRender(
+			Field field, Locale locale, int valueIndex)
 		throws Exception;
 
 	private static Log _log = LogFactoryUtil.getLog(BaseFieldRenderer.class);

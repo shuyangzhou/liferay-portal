@@ -31,6 +31,7 @@ import com.liferay.portlet.trash.TrashEntryConstants;
 import com.liferay.portlet.trash.model.TrashEntry;
 import com.liferay.portlet.trash.util.TrashUtil;
 import com.liferay.portlet.wiki.asset.WikiPageAssetRenderer;
+import com.liferay.portlet.wiki.model.WikiNode;
 import com.liferay.portlet.wiki.model.WikiPage;
 import com.liferay.portlet.wiki.model.WikiPageResource;
 import com.liferay.portlet.wiki.service.WikiPageLocalServiceUtil;
@@ -122,6 +123,8 @@ public class WikiPageTrashHandler extends BaseTrashHandler {
 	public String getRestoreLink(PortletRequest portletRequest, long classPK)
 		throws PortalException, SystemException {
 
+		String portletId = PortletKeys.WIKI;
+
 		WikiPage page = WikiPageLocalServiceUtil.getPage(classPK);
 
 		long plid = PortalUtil.getPlidFromPortletId(
@@ -129,14 +132,17 @@ public class WikiPageTrashHandler extends BaseTrashHandler {
 
 		if (plid == LayoutConstants.DEFAULT_PLID) {
 			plid = PortalUtil.getControlPanelPlid(portletRequest);
+
+			portletId = PortletKeys.WIKI_ADMIN;
 		}
 
 		PortletURL portletURL = PortletURLFactoryUtil.create(
-			portletRequest, PortletKeys.WIKI, plid,
-			PortletRequest.RENDER_PHASE);
+			portletRequest, portletId, plid, PortletRequest.RENDER_PHASE);
+
+		WikiNode node = page.getNode();
 
 		portletURL.setParameter("struts_action", "/wiki/view");
-		portletURL.setParameter("nodeName", page.getNode().getName());
+		portletURL.setParameter("nodeName", node.getName());
 		portletURL.setParameter("title", HtmlUtil.unescape(page.getTitle()));
 
 		return portletURL.toString();

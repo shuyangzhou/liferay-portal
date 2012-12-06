@@ -120,7 +120,9 @@ public class GoogleHook implements Hook {
 			GNicknameManager gNicknameManager =
 				GoogleAppsFactoryUtil.getGNicknameManager(companyId);
 
-			gNicknameManager.addGNickname(userId, emailAddress);
+			String nickname = _getNickname(emailAddress);
+
+			gNicknameManager.addGNickname(userId, nickname);
 
 			GEmailSettingsManager gEmailSettingsManager =
 				GoogleAppsFactoryUtil.getGEmailSettingsManager(companyId);

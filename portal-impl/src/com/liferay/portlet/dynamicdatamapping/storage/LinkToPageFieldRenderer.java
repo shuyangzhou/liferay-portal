@@ -22,12 +22,15 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.security.auth.PrincipalException;
 import com.liferay.portal.service.LayoutServiceUtil;
 
 import java.io.Serializable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -36,20 +39,38 @@ import java.util.Locale;
 public class LinkToPageFieldRenderer extends BaseFieldRenderer {
 
 	@Override
-	protected String doRender(Field field, Locale locale) {
-		Serializable fieldValue = field.getValue();
+	protected String doRender(Field field, Locale locale) throws Exception {
+		List<String> values = new ArrayList<String>();
 
-		if (Validator.isNull(fieldValue) ||
-			fieldValue.equals(JSONFactoryUtil.getNullJSON())) {
+		for (Serializable value : field.getValues()) {
+			String valueString = String.valueOf(value);
 
+			if (Validator.isNull(valueString)) {
+				continue;
+			}
+
+			values.add(handleJSON(valueString, locale));
+		}
+
+		return StringUtil.merge(values, StringPool.COMMA_AND_SPACE);
+	}
+
+	@Override
+	protected String doRender(Field field, Locale locale, int valueIndex) {
+		String value = String.valueOf(field.getValue(valueIndex));
+
+		if (Validator.isNull(value)) {
 			return StringPool.BLANK;
 		}
 
-		JSONObject fieldValueJSONObject = null;
+		return handleJSON(value, locale);
+	}
+
+	protected String handleJSON(String value, Locale locale) {
+		JSONObject jsonObject = null;
 
 		try {
-			fieldValueJSONObject = JSONFactoryUtil.createJSONObject(
-				String.valueOf(fieldValue));
+			jsonObject = JSONFactoryUtil.createJSONObject(value);
 		}
 		catch (JSONException jsone) {
 			if (_log.isDebugEnabled()) {
@@ -59,10 +80,9 @@ public class LinkToPageFieldRenderer extends BaseFieldRenderer {
 			return StringPool.BLANK;
 		}
 
-		long groupId = fieldValueJSONObject.getLong("groupId");
-		boolean privateLayout = fieldValueJSONObject.getBoolean(
-			"privateLayout");
-		long layoutId = fieldValueJSONObject.getLong("layoutId");
+		long groupId = jsonObject.getLong("groupId");
+		boolean privateLayout = jsonObject.getBoolean("privateLayout");
+		long layoutId = jsonObject.getLong("layoutId");
 
 		try {
 			return LayoutServiceUtil.getLayoutName(
