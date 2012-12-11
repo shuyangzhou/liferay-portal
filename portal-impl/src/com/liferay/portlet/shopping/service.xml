@@ -189,13 +189,13 @@
 
 		<!-- Finder methods -->
 
-		<finder name="SmallImageId" return-type="ShoppingItem">
+		<finder name="SmallImageId" return-type="ShoppingItem" unique="true">
 			<finder-column name="smallImageId" />
 		</finder>
-		<finder name="MediumImageId" return-type="ShoppingItem">
+		<finder name="MediumImageId" return-type="ShoppingItem" unique="true">
 			<finder-column name="mediumImageId" />
 		</finder>
-		<finder name="LargeImageId" return-type="ShoppingItem">
+		<finder name="LargeImageId" return-type="ShoppingItem" unique="true">
 			<finder-column name="largeImageId" />
 		</finder>
 		<finder name="G_C" return-type="Collection">
