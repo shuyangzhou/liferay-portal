@@ -236,8 +236,7 @@ public interface JournalContentSearchLocalService extends BaseLocalService,
 
 	public void deleteArticleContentSearch(long groupId, boolean privateLayout,
 		long layoutId, java.lang.String portletId, java.lang.String articleId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.SystemException;
 
 	public void deleteArticleContentSearches(long groupId,
 		java.lang.String articleId)

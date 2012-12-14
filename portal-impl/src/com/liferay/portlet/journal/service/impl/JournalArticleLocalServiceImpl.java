@@ -2066,10 +2066,14 @@ public class JournalArticleLocalServiceImpl
 
 		if (imported) {
 			if (latestVersion > version) {
-				article = journalArticlePersistence.fetchByG_A_V(
-					groupId, articleId, version);
+				JournalArticle existingArticle =
+					journalArticlePersistence.fetchByG_A_V(
+						groupId, articleId, version);
 
-				if (article == null) {
+				if (existingArticle != null) {
+					article = existingArticle;
+				}
+				else {
 					addNewVersion = true;
 				}
 			}
@@ -2188,8 +2192,13 @@ public class JournalArticleLocalServiceImpl
 		article.setIndexable(indexable);
 		article.setSmallImage(smallImage);
 
-		if (article.getSmallImageId() == 0) {
-			article.setSmallImageId(counterLocalService.increment());
+		if (smallImage) {
+			if ((smallImageFile != null) && (smallImageBytes != null)) {
+				article.setSmallImageId(counterLocalService.increment());
+			}
+		}
+		else {
+			article.setSmallImageId(0);
 		}
 
 		article.setSmallImageURL(smallImageURL);

@@ -261,8 +261,7 @@ public class JournalContentSearchLocalServiceUtil {
 	public static void deleteArticleContentSearch(long groupId,
 		boolean privateLayout, long layoutId, java.lang.String portletId,
 		java.lang.String articleId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.SystemException {
 		getService()
 			.deleteArticleContentSearch(groupId, privateLayout, layoutId,
 			portletId, articleId);

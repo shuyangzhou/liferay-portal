@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.service.LayoutLocalServiceUtil;
-import com.liferay.portlet.journal.NoSuchContentSearchException;
 import com.liferay.portlet.journal.service.JournalContentSearchLocalServiceUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -54,13 +53,9 @@ public class LayoutTypeArticleConfigurationDeleteAction extends Action {
 				return;
 			}
 
-			try {
-				JournalContentSearchLocalServiceUtil.deleteArticleContentSearch(
-					layout.getGroupId(), layout.isPrivateLayout(),
-					layout.getLayoutId(), StringPool.BLANK, articleId);
-			}
-			catch (NoSuchContentSearchException nscse) {
-			}
+			JournalContentSearchLocalServiceUtil.deleteArticleContentSearch(
+				layout.getGroupId(), layout.isPrivateLayout(),
+				layout.getLayoutId(), StringPool.BLANK, articleId);
 		}
 		catch (Exception e) {
 			throw new ActionException(e);
