@@ -493,6 +493,19 @@ public interface GroupLocalService extends BaseLocalService,
 			com.liferay.portal.kernel.exception.SystemException;
 
 	/**
+	* Returns the guest group to the corresponding company.
+	*
+	* @param companyId the primary key of the company
+	* @return The guest group to the corresponding company
+	* @throws PortalException if a matching group could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public com.liferay.portal.model.Group getGuestGroup(long companyId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
+
+	/**
 	* Returns the group associated with the layout.
 	*
 	* @param companyId the primary key of the company
