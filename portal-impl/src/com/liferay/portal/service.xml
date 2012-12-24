@@ -615,7 +615,7 @@
 			<finder-column name="plid" />
 			<finder-column name="name" />
 		</finder>
-		<finder name="L_P_M" return-type="LayoutBranch">
+		<finder name="L_P_M" return-type="LayoutBranch" unique="true">
 			<finder-column name="layoutSetBranchId" />
 			<finder-column name="plid" />
 			<finder-column name="master" />
@@ -737,7 +737,7 @@
 			<finder-column name="parentLayoutRevisionId" />
 			<finder-column name="plid" />
 		</finder>
-		<finder name="L_H_P" return-type="LayoutRevision">
+		<finder name="L_H_P" return-type="LayoutRevision" unique="true">
 			<finder-column name="layoutSetBranchId" />
 			<finder-column name="head" />
 			<finder-column name="plid" />
@@ -927,7 +927,7 @@
 		<finder name="LtExpirationDate" return-type="Collection">
 			<finder-column name="expirationDate" comparator="&lt;" />
 		</finder>
-		<finder name="C_K" return-type="Lock">
+		<finder name="C_K" return-type="Lock" unique="true">
 			<finder-column name="className" />
 			<finder-column name="key" />
 		</finder>
@@ -1170,11 +1170,11 @@
 		<finder name="PasswordPolicyId" return-type="Collection">
 			<finder-column name="passwordPolicyId" />
 		</finder>
-		<finder name="C_C" return-type="PasswordPolicyRel">
+		<finder name="C_C" return-type="PasswordPolicyRel" unique="true">
 			<finder-column name="classNameId" />
 			<finder-column name="classPK" />
 		</finder>
-		<finder name="P_C_C" return-type="PasswordPolicyRel">
+		<finder name="P_C_C" return-type="PasswordPolicyRel" unique="true">
 			<finder-column name="passwordPolicyId" />
 			<finder-column name="classNameId" />
 			<finder-column name="classPK" />
@@ -1305,7 +1305,7 @@
 
 		<!-- Finder methods -->
 
-		<finder name="O_O" return-type="PortalPreferences">
+		<finder name="O_O" return-type="PortalPreferences" unique="true">
 			<finder-column name="ownerId" />
 			<finder-column name="ownerType" />
 		</finder>
@@ -1371,7 +1371,7 @@
 			<finder-column name="portletId" />
 			<finder-column name="classNameId" />
 		</finder>
-		<finder name="G_N_P_C" return-type="PortletItem">
+		<finder name="G_N_P_C" return-type="PortletItem" unique="true">
 			<finder-column name="groupId" />
 			<finder-column name="name" case-sensitive="false" />
 			<finder-column name="portletId" />
@@ -1716,7 +1716,7 @@
 			<finder-column name="roleId" arrayable-operator="OR" />
 			<finder-column name="actionIds" />
 		</finder>
-		<finder name="C_N_S_P_R_O_A" return-type="ResourcePermission">
+		<finder name="C_N_S_P_R_O_A" return-type="ResourcePermission" unique="true">
 			<finder-column name="companyId" />
 			<finder-column name="name" />
 			<finder-column name="scope" />
@@ -1863,7 +1863,7 @@
 		<finder name="Name" return-type="Shard">
 			<finder-column name="name" />
 		</finder>
-		<finder name="C_C" return-type="Shard">
+		<finder name="C_C" return-type="Shard" unique="true">
 			<finder-column name="classNameId" />
 			<finder-column name="classPK" />
 		</finder>
@@ -1985,7 +1985,7 @@
 
 		<!-- Finder methods -->
 
-		<finder name="Key" return-type="Ticket">
+		<finder name="Key" return-type="Ticket" unique="true">
 			<finder-column name="key" />
 		</finder>
 	</entity>
@@ -2480,7 +2480,7 @@
 			<finder-column name="workflowDefinitionName" />
 			<finder-column name="workflowDefinitionVersion" />
 		</finder>
-		<finder name="G_C_C_C_T" return-type="WorkflowDefinitionLink">
+		<finder name="G_C_C_C_T" return-type="WorkflowDefinitionLink" unique="true">
 			<finder-column name="groupId" />
 			<finder-column name="companyId" />
 			<finder-column name="classNameId" />

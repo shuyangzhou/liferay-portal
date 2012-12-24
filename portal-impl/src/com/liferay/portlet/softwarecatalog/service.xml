@@ -184,13 +184,13 @@
 		<finder name="ProductEntryId" return-type="Collection">
 			<finder-column name="productEntryId" />
 		</finder>
-		<finder name="ThumbnailId" return-type="SCProductScreenshot">
+		<finder name="ThumbnailId" return-type="SCProductScreenshot" unique="true">
 			<finder-column name="thumbnailId" />
 		</finder>
-		<finder name="FullImageId" return-type="SCProductScreenshot">
+		<finder name="FullImageId" return-type="SCProductScreenshot" unique="true">
 			<finder-column name="fullImageId" />
 		</finder>
-		<finder name="P_P" return-type="SCProductScreenshot">
+		<finder name="P_P" return-type="SCProductScreenshot" unique="true">
 			<finder-column name="productEntryId" />
 			<finder-column name="priority" />
 		</finder>

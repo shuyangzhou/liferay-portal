@@ -428,7 +428,7 @@
 			<finder-column name="groupId" />
 			<finder-column name="parentFolderId" />
 		</finder>
-		<finder name="G_N" return-type="JournalFolder">
+		<finder name="G_N" return-type="JournalFolder" unique="true">
 			<finder-column name="groupId" />
 			<finder-column name="name" />
 		</finder>
@@ -549,7 +549,7 @@
 		<finder name="StructureId" return-type="Collection">
 			<finder-column name="structureId" />
 		</finder>
-		<finder name="SmallImageId" return-type="JournalTemplate">
+		<finder name="SmallImageId" return-type="JournalTemplate" unique="true">
 			<finder-column name="smallImageId" />
 		</finder>
 		<finder name="G_T" return-type="JournalTemplate" unique="true">
