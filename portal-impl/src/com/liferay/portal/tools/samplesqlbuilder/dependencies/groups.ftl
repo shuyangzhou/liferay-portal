@@ -26,15 +26,24 @@
 		dataFactory.addLayout(5, "Wiki", "/wiki", "", "36,")
 	]>
 
+	<#assign dynamicDataListDisplayLayouts = []>
+
+	<#assign dynamicDataListDisplayURLPrefix = "dynamic_data_list_display_">
+	<#assign dynamicDataListDisplayNamePrefix = "169_INSTANCE_TEST" >
+
+	<#list 1..maxDDLRecordSetCount as ddlRecordSetCount>
+		<#assign dynamicDataListDisplayLayouts = dynamicDataListDisplayLayouts + [dataFactory.addLayout(5 + ddlRecordSetCount, "Dynamic Data List Display " + ddlRecordSetCount, "/" + dynamicDataListDisplayURLPrefix + ddlRecordSetCount, "", dynamicDataListDisplayNamePrefix + ddlRecordSetCount)]>
+	</#list>
+
 	<#assign journalArticleLayouts = []>
 
 	<#list 1..maxJournalArticleCount as journalArticleCount>
-		<#assign journalArticleLayouts = journalArticleLayouts + [dataFactory.addLayout(5 + journalArticleCount, "Web Content " + journalArticleCount, "/journal_article_" + journalArticleCount, "", "56,")]>
+		<#assign journalArticleLayouts = journalArticleLayouts + [dataFactory.addLayout(5 + maxDDLRecordSetCount + journalArticleCount, "Web Content " + journalArticleCount, "/journal_article_" + journalArticleCount, "", "56,")]>
 
 		${writerLayoutCSV.write("journal_article_" + journalArticleCount + "\n")}
 	</#list>
 
-	<#assign publicLayouts = publicLayouts + journalArticleLayouts>
+	<#assign publicLayouts = publicLayouts + journalArticleLayouts + dynamicDataListDisplayLayouts>
 
 	${sampleSQLBuilder.insertGroup(group, privateLayouts, publicLayouts)}
 
@@ -42,9 +51,9 @@
 
 	<#include "users.ftl">
 
-	<#include "blogs.ftl">
+	${sampleSQLBuilder.insertDDLRecordSet(groupId, firstUserId, dynamicDataListDisplayURLPrefix, dynamicDataListDisplayNamePrefix, dynamicDataListDisplayLayouts)}
 
-	<#include "ddl.ftl">
+	<#include "blogs.ftl">
 
 	<#include "dl.ftl">
 

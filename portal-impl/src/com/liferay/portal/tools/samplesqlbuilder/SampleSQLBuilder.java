@@ -268,23 +268,47 @@ public class SampleSQLBuilder {
 		processTemplate(_tplBlogsEntry, context);
 	}
 
-	public void insertDDLRecord(DDLRecord ddlRecord, DDLRecordSet ddlRecordSet)
+	public void insertDDLRecord(
+			DDLRecord ddlRecord, DDLRecordSet ddlRecordSet, int ddlRecordCount)
 		throws Exception {
 
 		Map<String, Object> context = getContext();
 
 		put(context, "ddlRecord", ddlRecord);
 		put(context, "ddlRecordSet", ddlRecordSet);
+		put(context, "ddlRecordCount", ddlRecordCount);
 
 		processTemplate(_tplDDLRecord, context);
 	}
 
-	public void insertDDLRecordSet(DDMStructure ddmStructure) throws Exception {
+	public void insertDDLRecordSet(
+			long groupId, long firstUserId,
+			String dynamicDataListDisplayURLPrefix,
+			String dynamicDataListDisplayNamePrefix,
+			List<Layout> dynamicDataListDisplayLayouts)
+		throws Exception {
+
+		if ((dynamicDataListDisplayLayouts == null) ||
+			dynamicDataListDisplayLayouts.isEmpty()) {
+
+			return;
+		}
+
 		Map<String, Object> context = getContext();
 
-		put(context, "ddmStructure", ddmStructure);
+		put(context, "groupId", groupId);
+		put(context, "firstUserId", firstUserId);
+		put(
+			context, "dynamicDataListDisplayURLPrefix",
+			dynamicDataListDisplayURLPrefix);
+		put(
+			context, "dynamicDataListDisplayNamePrefix",
+			dynamicDataListDisplayNamePrefix);
+		put(
+			context, "dynamicDataListDisplayLayouts",
+			dynamicDataListDisplayLayouts);
 
-		processTemplate(_tplDLFolders, context);
+		processTemplate(_tplDDL, context);
 	}
 
 	public void insertDLFileEntry(
@@ -749,6 +773,7 @@ public class SampleSQLBuilder {
 	private SimpleCounter _socialActivityCounter;
 	private File _tempDir;
 	private String _tplBlogsEntry = _TPL_ROOT + "blogs_entry.ftl";
+	private String _tplDDL = _TPL_ROOT + "ddl.ftl";
 	private String _tplDDLRecord = _TPL_ROOT + "ddl_record.ftl";
 	private String _tplDLFileEntry = _TPL_ROOT + "dl_file_entry.ftl";
 	private String _tplDLFolder = _TPL_ROOT + "dl_folder.ftl";
