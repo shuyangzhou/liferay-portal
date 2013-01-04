@@ -23,13 +23,13 @@ ${sampleSQLBuilder.insertGroup(dataFactory.guestGroup, privateLayouts, publicLay
 
 	<#include "journal_article.ftl">
 
+	<#include "ddl.ftl">
+
 	${sampleSQLBuilder.insertGroup(group, privateLayouts, publicLayouts)}
 
 	<#include "users.ftl">
 
 	<#include "blogs.ftl">
-
-	<#include "ddl.ftl">
 
 	<#include "dl.ftl">
 
