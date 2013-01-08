@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.portlet.PortletModeFactory_IW;
 import com.liferay.portal.kernel.portlet.WindowStateFactory_IW;
 import com.liferay.portal.kernel.servlet.BrowserSnifferUtil;
 import com.liferay.portal.kernel.template.Template;
+import com.liferay.portal.kernel.templateparser.TemplateNode;
 import com.liferay.portal.kernel.util.ArrayUtil_IW;
 import com.liferay.portal.kernel.util.DateUtil_IW;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
@@ -45,9 +46,14 @@ import com.liferay.portal.kernel.util.StringUtil_IW;
 import com.liferay.portal.kernel.util.TimeZoneUtil_IW;
 import com.liferay.portal.kernel.util.UnicodeFormatter_IW;
 import com.liferay.portal.kernel.util.Validator_IW;
+import com.liferay.portal.kernel.xml.Document;
+import com.liferay.portal.kernel.xml.DocumentException;
+import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReader;
+import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.model.Layout;
 import com.liferay.portal.model.Theme;
+import com.liferay.portal.security.permission.PermissionThreadLocal;
 import com.liferay.portal.service.permission.AccountPermissionUtil;
 import com.liferay.portal.service.permission.CommonPermissionUtil;
 import com.liferay.portal.service.permission.GroupPermissionUtil;
@@ -67,6 +73,7 @@ import com.liferay.portal.util.WebKeys;
 import com.liferay.portal.webserver.WebServerServletTokenUtil;
 import com.liferay.portlet.PortletConfigImpl;
 import com.liferay.portlet.PortletURLFactoryUtil;
+import com.liferay.portlet.PortletURLUtil;
 import com.liferay.portlet.documentlibrary.util.DLUtil;
 import com.liferay.portlet.expando.service.ExpandoColumnLocalService;
 import com.liferay.portlet.expando.service.ExpandoRowLocalService;
@@ -78,14 +85,17 @@ import com.liferay.util.portlet.PortletRequestUtil;
 
 import java.lang.reflect.Method;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
+import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
@@ -571,6 +581,13 @@ public class TemplateContextHelper {
 
 		template.put("request", request);
 
+		template.put("locale", request.getLocale());
+
+		// PermissionChecker
+
+		template.put(
+			"permissionChecker", PermissionThreadLocal.getPermissionChecker());
+
 		// Portlet config
 
 		PortletConfigImpl portletConfigImpl =
@@ -591,6 +608,29 @@ public class TemplateContextHelper {
 			if (portletRequest instanceof RenderRequest) {
 				template.put("renderRequest", portletRequest);
 			}
+
+			// Portlet preference
+
+			final PortletPreferences portletPreferences =
+				portletRequest.getPreferences();
+
+			Map<String, String[]> map = portletPreferences.getMap();
+
+			for (Map.Entry<String, String[]> entry : map.entrySet()) {
+				String[] values = entry.getValue();
+
+				if ((values == null) || (values.length == 0)) {
+					continue;
+				}
+
+				String value = values[0];
+
+				if (value == null) {
+					continue;
+				}
+
+				template.put(entry.getKey(), value);
+			}
 		}
 
 		// Render response
@@ -599,10 +639,21 @@ public class TemplateContextHelper {
 			(PortletResponse)request.getAttribute(
 				JavaConstants.JAVAX_PORTLET_RESPONSE);
 
+		RenderResponse renderResponse = null;
+
 		if (portletResponse != null) {
 			if (portletResponse instanceof RenderResponse) {
-				template.put("renderResponse", portletResponse);
+				renderResponse = (RenderResponse)portletResponse;
+
+				template.put("renderResponse", renderResponse);
 			}
+		}
+
+		if ((portletRequest != null) && (renderResponse != null)) {
+			PortletURL currentURL = PortletURLUtil.getCurrent(
+				portletRequest, renderResponse);
+
+			template.put("currentURL", currentURL.toString());
 		}
 
 		// XML request
@@ -633,6 +684,8 @@ public class TemplateContextHelper {
 
 			template.put("themeDisplay", themeDisplay);
 			template.put("company", themeDisplay.getCompany());
+			template.put("companyId", themeDisplay.getCompanyId());
+			template.put("device", themeDisplay.getDevice());
 			template.put("user", themeDisplay.getUser());
 			template.put("realUser", themeDisplay.getRealUser());
 			template.put("layout", layout);
@@ -642,9 +695,6 @@ public class TemplateContextHelper {
 				"layoutTypePortlet", themeDisplay.getLayoutTypePortlet());
 			template.put(
 				"scopeGroupId", new Long(themeDisplay.getScopeGroupId()));
-			template.put(
-				"permissionChecker", themeDisplay.getPermissionChecker());
-			template.put("locale", themeDisplay.getLocale());
 			template.put("timeZone", themeDisplay.getTimeZone());
 			template.put("colorScheme", themeDisplay.getColorScheme());
 			template.put("portletDisplay", themeDisplay.getPortletDisplay());
@@ -703,6 +753,149 @@ public class TemplateContextHelper {
 		}
 	}
 
+	public void prepare(
+		Template template, ThemeDisplay themeDisplay, String xml) {
+
+		Document document = null;
+
+		try {
+			document = SAXReaderUtil.read(xml);
+		}
+		catch (DocumentException ex) {
+			_log.error("Unable to parse xml " + xml, ex);
+
+			return;
+		}
+
+		Element rootElement = document.getRootElement();
+
+		List<TemplateNode> templateNodes = getTemplateNodes(
+			themeDisplay, rootElement);
+
+		for (TemplateNode templateNode : templateNodes) {
+			template.put(templateNode.getName(), templateNode);
+		}
+
+		Element requestElement = rootElement.element("request");
+
+		template.put("request", insertRequestVariables(requestElement));
+		template.put("xmlRequest", requestElement.asXML());
+	}
+
+	protected List<TemplateNode> getTemplateNodes(
+		ThemeDisplay themeDisplay, Element element) {
+
+		List<TemplateNode> templateNodes = new ArrayList<TemplateNode>();
+
+		Map<String, TemplateNode> prototypeTemplateNodes =
+			new HashMap<String, TemplateNode>();
+
+		List<Element> dynamicElementElements = element.elements(
+			"dynamic-element");
+
+		for (Element dynamicElementElement : dynamicElementElements) {
+			Element dynamicContentElement = dynamicElementElement.element(
+				"dynamic-content");
+
+			String data = StringPool.BLANK;
+
+			if (dynamicContentElement != null) {
+				data = dynamicContentElement.getText();
+			}
+
+			String name = dynamicElementElement.attributeValue(
+				"name", StringPool.BLANK);
+
+			if (name.length() == 0) {
+				_log.error("Element missing \"name\" attribute");
+			}
+
+			String type = dynamicElementElement.attributeValue(
+				"type", StringPool.BLANK);
+
+			TemplateNode templateNode = new TemplateNode(
+				themeDisplay, name, stripCDATA(data), type);
+
+			if (dynamicElementElement.element("dynamic-element") != null) {
+				templateNode.appendChildren(
+					getTemplateNodes(themeDisplay, dynamicElementElement));
+			}
+			else if ((dynamicContentElement != null) &&
+					 (dynamicContentElement.element("option") != null)) {
+
+				List<Element> optionElements = dynamicContentElement.elements(
+					"option");
+
+				for (Element optionElement : optionElements) {
+					templateNode.appendOption(
+						stripCDATA(optionElement.getText()));
+				}
+			}
+
+			TemplateNode prototypeTemplateNode = prototypeTemplateNodes.get(
+				name);
+
+			if (prototypeTemplateNode == null) {
+				prototypeTemplateNode = templateNode;
+
+				prototypeTemplateNodes.put(name, prototypeTemplateNode);
+
+				templateNodes.add(templateNode);
+			}
+
+			prototypeTemplateNode.appendSibling(templateNode);
+		}
+
+		return templateNodes;
+	}
+
+	protected Map<String, Object> insertRequestVariables(Element element) {
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		if (element == null) {
+			return map;
+		}
+
+		for (Element childElement : element.elements()) {
+			String name = childElement.getName();
+
+			if (name.equals("attribute")) {
+				Element nameElement = childElement.element("name");
+				Element valueElement = childElement.element("value");
+
+				map.put(nameElement.getText(), valueElement.getText());
+			}
+			else if (name.equals("parameter")) {
+				Element nameElement = childElement.element("name");
+
+				List<Element> valueElements = childElement.elements("value");
+
+				if (valueElements.size() == 1) {
+					Element valueElement = valueElements.get(0);
+
+					map.put(nameElement.getText(), valueElement.getText());
+				}
+				else {
+					List<String> values = new ArrayList<String>();
+
+					for (Element valueElement : valueElements) {
+						values.add(valueElement.getText());
+					}
+
+					map.put(nameElement.getText(), values);
+				}
+			}
+			else if (childElement.elements().size() > 0) {
+				map.put(name, insertRequestVariables(childElement));
+			}
+			else {
+				map.put(name, childElement.getText());
+			}
+		}
+
+		return map;
+	}
+
 	protected void prepareTiles(Template template, HttpServletRequest request) {
 		ComponentContext componentContext =
 			(ComponentContext)request.getAttribute(
@@ -733,6 +926,18 @@ public class TemplateContextHelper {
 		themeDisplay.setTilesSelectable(tilesSelectable);
 
 		template.put("tilesSelectable", tilesSelectable);
+	}
+
+	protected String stripCDATA(String s) {
+		if (s.startsWith(StringPool.CDATA_OPEN) &&
+			s.endsWith(StringPool.CDATA_CLOSE)) {
+
+			s = s.substring(
+				StringPool.CDATA_OPEN.length(),
+				s.length() - StringPool.CDATA_CLOSE.length());
+		}
+
+		return s;
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(

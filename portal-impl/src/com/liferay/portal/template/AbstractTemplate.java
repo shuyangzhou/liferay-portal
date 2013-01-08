@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.template.TemplateResource;
 import com.liferay.portal.kernel.template.TemplateResourceLoader;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.theme.ThemeDisplay;
 
 import java.io.Serializable;
 import java.io.Writer;
@@ -68,6 +69,10 @@ public abstract class AbstractTemplate implements Template {
 
 	public void prepare(HttpServletRequest request) {
 		_templateContextHelper.prepare(this, request);
+	}
+
+	public void prepare(ThemeDisplay themeDisplay, String xml) {
+		_templateContextHelper.prepare(this, themeDisplay, xml);
 	}
 
 	public boolean processTemplate(Writer writer) throws TemplateException {
