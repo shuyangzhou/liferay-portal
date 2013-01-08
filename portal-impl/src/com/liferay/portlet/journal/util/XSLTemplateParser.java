@@ -14,11 +14,11 @@
 
 package com.liferay.portlet.journal.util;
 
+import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateContextType;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.kernel.template.TemplateResource;
-import com.liferay.portal.kernel.templateparser.TemplateContext;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portal.xsl.XSLTemplateResource;
 
@@ -35,7 +35,7 @@ public class XSLTemplateParser extends VelocityTemplateParser {
 	}
 
 	@Override
-	protected TemplateContext getTemplateContext() throws Exception {
+	protected Template getTemplate() throws Exception {
 		TemplateResource templateResource = new XSLTemplateResource(
 			getTemplateId(), getScript(), getTokens(), getLanguageId(),
 			getXML());
