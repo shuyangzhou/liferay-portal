@@ -238,7 +238,15 @@ public class VerifyProperties extends VerifyProcess {
 	private static final String[] _OBSOLETE_PORTAL_KEYS = new String[] {
 		"auth.max.failures.limit", "cas.validate.url",
 		"cluster.executor.heartbeat.interval", "commons.pool.enabled",
-		"jbi.workflow.url", "lucene.analyzer",
+		"dynamic.data.lists.template.language.parser[ftl]",
+		"dynamic.data.lists.template.language.parser[vm]",
+		"dynamic.data.lists.template.language.parser[xsl]",
+		"dynamic.data.mapping.template.language.types", "jbi.workflow.url",
+		"journal.template.language.types",
+		"journal.template.language.parser[css]",
+		"journal.template.language.parser[ftl]",
+		"journal.template.language.parser[vm]",
+		"journal.template.language.parser[xsl]", "lucene.analyzer",
 		"lucene.store.jdbc.auto.clean.up",
 		"lucene.store.jdbc.auto.clean.up.enabled",
 		"lucene.store.jdbc.auto.clean.up.interval",
@@ -351,6 +359,18 @@ public class VerifyProperties extends VerifyProcess {
 			"dl.hook.s3.secret.key", "dl.store.s3.secret.key"
 		},
 		new String[] {
+			"dynamic.data.lists.error.template.freemarker",
+			"dynamic.data.lists.error.template[ftl]"
+		},
+		new String[] {
+			"dynamic.data.lists.error.template.velocity",
+			"dynamic.data.lists.error.template[vm]"
+		},
+		new String[] {
+			"dynamic.data.lists.error.template.xsl",
+			"dynamic.data.lists.error.template[xsl]"
+		},
+		new String[] {
 			"editor.wysiwyg.portal-web.docroot.html.portlet.calendar." +
 				"edit_configuration.jsp",
 			"editor.wysiwyg.portal-web.docroot.html.portlet.calendar." +
@@ -379,6 +399,15 @@ public class VerifyProperties extends VerifyProcess {
 				"edit_configuration.jsp",
 			"editor.wysiwyg.portal-web.docroot.html.portlet.shopping." +
 				"configuration.jsp"
+		},
+		new String[] {
+			"journal.error.template.freemarker", "journal.error.template[ftl]"
+		},
+		new String[] {
+			"journal.error.template.velocity", "journal.error.template[vm]"
+		},
+		new String[] {
+			"journal.error.template.xsl", "journal.error.template[xsl]"
 		},
 		new String[] {
 			"referer.url.domains.allowed", "redirect.url.domains.allowed"

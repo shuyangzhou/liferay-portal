@@ -12,18 +12,24 @@
  * details.
  */
 
-package com.liferay.portal.kernel.templateparser;
+package com.liferay.portal.kernel.template;
+
+import java.util.Map;
 
 /**
- * @author Marcellus Tavares
  * @author Brian Wing Shun Chan
+ * @author Tina Tina
  */
-public interface TemplateContext {
+public interface TransformerListener {
 
-	public static final String WRITER = "writer";
+	public String onOutput(
+		String output, String languageId, Map<String, String> tokens);
 
-	public Object get(String key);
+	public String onScript(
+		String script, String xml, String languageId,
+		Map<String, String> tokens);
 
-	public void put(String key, Object value);
+	public String onXml(
+		String xml, String languageId, Map<String, String> tokens);
 
 }

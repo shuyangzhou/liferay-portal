@@ -75,7 +75,7 @@ if (Validator.isNotNull(exception)) {
 
 		<code><%= HtmlUtil.escape(url) %></code>
 	</c:when>
-	<c:when test="<%= SessionErrors.contains(request, TransformException.class.getName()) %>">
+	<c:when test="<%= SessionErrors.contains(request, TemplateException.class.getName()) %>">
 		<h3 class="portlet-msg-error">
 			<liferay-ui:message key="internal-server-error" />
 		</h3>
@@ -89,7 +89,7 @@ if (Validator.isNotNull(exception)) {
 		<br /><br />
 
 		<%
-		TransformException te = (TransformException)SessionErrors.get(request, TransformException.class.getName());
+		TemplateException te = (TemplateException)SessionErrors.get(request, TemplateException.class.getName());
 		%>
 
 		<div>
