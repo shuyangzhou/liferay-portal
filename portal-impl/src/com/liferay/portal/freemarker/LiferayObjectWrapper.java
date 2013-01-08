@@ -14,7 +14,7 @@
 
 package com.liferay.portal.freemarker;
 
-import com.liferay.portal.kernel.templateparser.TemplateNode;
+import com.liferay.portal.kernel.template.TemplateNode;
 
 import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.TemplateModel;

@@ -12,20 +12,24 @@
  * details.
  */
 
-package com.liferay.portlet.dynamicdatalists.util;
+package com.liferay.portal.kernel.template;
 
-import com.liferay.portal.util.PropsValues;
+import java.util.Map;
 
 /**
- * @author Marcellus Tavares
- * @author Tina Tian
+ * @author Brian Wing Shun Chan
+ * @author Tina Tina
  */
-public class XSLTemplateParser extends
-	com.liferay.portlet.journal.util.XSLTemplateParser {
+public interface TransformerListener {
 
-	@Override
-	protected String getErrorTemplateId() {
-		return PropsValues.DYNAMIC_DATA_LISTS_ERROR_TEMPLATE_XSL;
-	}
+	public String onOutput(
+		String output, String languageId, Map<String, String> tokens);
+
+	public String onScript(
+		String script, String xml, String languageId,
+		Map<String, String> tokens);
+
+	public String onXml(
+		String xml, String languageId, Map<String, String> tokens);
 
 }

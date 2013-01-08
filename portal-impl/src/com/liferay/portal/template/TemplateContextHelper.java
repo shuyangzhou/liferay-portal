@@ -25,7 +25,7 @@ import com.liferay.portal.kernel.portlet.PortletModeFactory_IW;
 import com.liferay.portal.kernel.portlet.WindowStateFactory_IW;
 import com.liferay.portal.kernel.servlet.BrowserSnifferUtil;
 import com.liferay.portal.kernel.template.Template;
-import com.liferay.portal.kernel.templateparser.TemplateNode;
+import com.liferay.portal.kernel.template.TemplateNode;
 import com.liferay.portal.kernel.util.ArrayUtil_IW;
 import com.liferay.portal.kernel.util.DateUtil_IW;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
