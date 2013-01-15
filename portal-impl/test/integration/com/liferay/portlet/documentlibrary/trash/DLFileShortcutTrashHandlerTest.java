@@ -115,7 +115,7 @@ public class DLFileShortcutTrashHandlerTest extends BaseTrashHandlerTestCase {
 	}
 
 	@Override
-	protected int getBaseModelsNotInTrashCount(BaseModel<?> parentBaseModel)
+	protected int getNotInTrashBaseModelsCount(BaseModel<?> parentBaseModel)
 		throws Exception {
 
 		DLFolder dlFolder = (DLFolder)parentBaseModel;
@@ -209,7 +209,7 @@ public class DLFileShortcutTrashHandlerTest extends BaseTrashHandlerTestCase {
 		BaseModel<?> parentBaseModel = getParentBaseModel(
 			group, serviceContext);
 
-		int initialBaseModelsCount = getBaseModelsNotInTrashCount(
+		int initialBaseModelsCount = getNotInTrashBaseModelsCount(
 			parentBaseModel);
 		int initialTrashEntriesCount = getTrashEntriesCount(group.getGroupId());
 
@@ -223,7 +223,7 @@ public class DLFileShortcutTrashHandlerTest extends BaseTrashHandlerTestCase {
 
 		Assert.assertEquals(
 			initialBaseModelsCount + 1,
-			getBaseModelsNotInTrashCount(parentBaseModel));
+			getNotInTrashBaseModelsCount(parentBaseModel));
 		Assert.assertEquals(
 			initialTrashEntriesCount, getTrashEntriesCount(group.getGroupId()));
 
@@ -231,7 +231,7 @@ public class DLFileShortcutTrashHandlerTest extends BaseTrashHandlerTestCase {
 
 		Assert.assertEquals(
 			initialBaseModelsCount,
-			getBaseModelsNotInTrashCount(parentBaseModel));
+			getNotInTrashBaseModelsCount(parentBaseModel));
 		Assert.assertEquals(
 			initialTrashEntriesCount + 1,
 			getTrashEntriesCount(group.getGroupId()));
@@ -240,7 +240,7 @@ public class DLFileShortcutTrashHandlerTest extends BaseTrashHandlerTestCase {
 
 		Assert.assertEquals(
 			initialBaseModelsCount + 1,
-			getBaseModelsNotInTrashCount(parentBaseModel));
+			getNotInTrashBaseModelsCount(parentBaseModel));
 	}
 
 }

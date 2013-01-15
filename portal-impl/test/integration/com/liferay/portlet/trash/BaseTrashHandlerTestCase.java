@@ -176,7 +176,7 @@ public abstract class BaseTrashHandlerTestCase {
 		return StringPool.BLANK;
 	}
 
-	protected abstract int getBaseModelsNotInTrashCount(
+	protected abstract int getNotInTrashBaseModelsCount(
 			BaseModel<?> parentBaseModel)
 		throws Exception;
 
@@ -307,7 +307,7 @@ public abstract class BaseTrashHandlerTestCase {
 		BaseModel<?> parentBaseModel = getParentBaseModel(
 			group, serviceContext);
 
-		int initialBaseModelsCount = getBaseModelsNotInTrashCount(
+		int initialBaseModelsCount = getNotInTrashBaseModelsCount(
 			parentBaseModel);
 		int initialBaseModelsSearchCount = 0;
 		int initialTrashEntriesCount = getTrashEntriesCount(group.getGroupId());
@@ -326,7 +326,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		Assert.assertEquals(
 			initialBaseModelsCount + 1,
-			getBaseModelsNotInTrashCount(parentBaseModel));
+			getNotInTrashBaseModelsCount(parentBaseModel));
 
 		if (isIndexableBaseModel()) {
 			if (approved) {
@@ -364,7 +364,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		Assert.assertEquals(
 			initialBaseModelsCount,
-			getBaseModelsNotInTrashCount(parentBaseModel));
+			getNotInTrashBaseModelsCount(parentBaseModel));
 		Assert.assertEquals(
 			initialTrashEntriesCount + 1,
 			getTrashEntriesCount(group.getGroupId()));
@@ -407,7 +407,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 			Assert.assertEquals(
 				initialBaseModelsCount,
-				getBaseModelsNotInTrashCount(parentBaseModel));
+				getNotInTrashBaseModelsCount(parentBaseModel));
 
 			if (isIndexableBaseModel()) {
 				Assert.assertEquals(
@@ -427,7 +427,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 			Assert.assertEquals(
 				initialBaseModelsCount + 1,
-				getBaseModelsNotInTrashCount(parentBaseModel));
+				getNotInTrashBaseModelsCount(parentBaseModel));
 
 			if (isIndexableBaseModel()) {
 				if (approved) {
@@ -473,7 +473,7 @@ public abstract class BaseTrashHandlerTestCase {
 		BaseModel<?> parentBaseModel = getParentBaseModel(
 			group, serviceContext);
 
-		int initialBaseModelsCount = getBaseModelsNotInTrashCount(
+		int initialBaseModelsCount = getNotInTrashBaseModelsCount(
 			parentBaseModel);
 		int initialTrashEntriesCount = getTrashEntriesCount(group.getGroupId());
 
@@ -485,7 +485,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		Assert.assertEquals(
 			initialBaseModelsCount,
-			getBaseModelsNotInTrashCount(parentBaseModel));
+			getNotInTrashBaseModelsCount(parentBaseModel));
 		Assert.assertEquals(
 			initialTrashEntriesCount + 1,
 			getTrashEntriesCount(group.getGroupId()));
@@ -502,7 +502,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		Assert.assertEquals(
 			initialBaseModelsCount,
-			getBaseModelsNotInTrashCount(parentBaseModel));
+			getNotInTrashBaseModelsCount(parentBaseModel));
 		Assert.assertEquals(
 			initialTrashEntriesCount + 2,
 			getTrashEntriesCount(group.getGroupId()));
@@ -518,7 +518,7 @@ public abstract class BaseTrashHandlerTestCase {
 		BaseModel<?> parentBaseModel = getParentBaseModel(
 			group, serviceContext);
 
-		int initialBaseModelsCount = getBaseModelsNotInTrashCount(
+		int initialBaseModelsCount = getNotInTrashBaseModelsCount(
 			parentBaseModel);
 		int initialTrashEntriesCount = getTrashEntriesCount(group.getGroupId());
 
@@ -526,7 +526,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		Assert.assertEquals(
 			initialBaseModelsCount + 1,
-			getBaseModelsNotInTrashCount(parentBaseModel));
+			getNotInTrashBaseModelsCount(parentBaseModel));
 		Assert.assertEquals(
 			initialTrashEntriesCount, getTrashEntriesCount(group.getGroupId()));
 
@@ -534,7 +534,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		Assert.assertEquals(
 			initialBaseModelsCount,
-			getBaseModelsNotInTrashCount(parentBaseModel));
+			getNotInTrashBaseModelsCount(parentBaseModel));
 		Assert.assertEquals(
 			initialTrashEntriesCount + 1,
 			getTrashEntriesCount(group.getGroupId()));
@@ -560,7 +560,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 				Assert.assertEquals(
 					initialBaseModelsCount,
-					getBaseModelsNotInTrashCount(parentBaseModel));
+					getNotInTrashBaseModelsCount(parentBaseModel));
 				Assert.assertEquals(
 					initialTrashEntriesCount + 1,
 					getTrashEntriesCount(group.getGroupId()));
@@ -571,7 +571,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 				Assert.assertEquals(
 					initialBaseModelsCount + 1,
-					getBaseModelsNotInTrashCount(newParentBaseModel));
+					getNotInTrashBaseModelsCount(newParentBaseModel));
 				Assert.assertEquals(
 					initialTrashEntriesCount + 1,
 					getTrashEntriesCount(group.getGroupId()));
@@ -587,7 +587,7 @@ public abstract class BaseTrashHandlerTestCase {
 		BaseModel<?> parentBaseModel = getParentBaseModel(
 			group, serviceContext);
 
-		int initialBaseModelsCount = getBaseModelsNotInTrashCount(
+		int initialBaseModelsCount = getNotInTrashBaseModelsCount(
 			parentBaseModel);
 		int initialBaseModelsSearchCount = 0;
 		int initialTrashEntriesCount = getTrashEntriesCount(group.getGroupId());
@@ -607,7 +607,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		Assert.assertEquals(
 			initialBaseModelsCount + 1,
-			getBaseModelsNotInTrashCount(parentBaseModel));
+			getNotInTrashBaseModelsCount(parentBaseModel));
 		Assert.assertEquals(
 			initialTrashEntriesCount, getTrashEntriesCount(group.getGroupId()));
 
@@ -628,7 +628,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		Assert.assertEquals(
 			initialBaseModelsCount,
-			getBaseModelsNotInTrashCount(parentBaseModel));
+			getNotInTrashBaseModelsCount(parentBaseModel));
 		Assert.assertEquals(
 			initialTrashEntriesCount + 1,
 			getTrashEntriesCount(group.getGroupId()));
@@ -654,7 +654,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 			Assert.assertEquals(
 				initialBaseModelsCount,
-				getBaseModelsNotInTrashCount(parentBaseModel));
+				getNotInTrashBaseModelsCount(parentBaseModel));
 			Assert.assertEquals(
 				initialTrashEntriesCount,
 				getTrashEntriesCount(group.getGroupId()));
@@ -677,7 +677,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 			Assert.assertEquals(
 				initialBaseModelsCount + 1,
-				getBaseModelsNotInTrashCount(parentBaseModel));
+				getNotInTrashBaseModelsCount(parentBaseModel));
 			Assert.assertEquals(
 				initialTrashEntriesCount,
 				getTrashEntriesCount(group.getGroupId()));

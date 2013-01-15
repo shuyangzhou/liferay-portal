@@ -99,7 +99,7 @@ public class BookmarksFolderTrashHandlerTest extends BaseTrashHandlerTestCase {
 	}
 
 	@Override
-	protected int getBaseModelsNotInTrashCount(BaseModel<?> parentBaseModel)
+	protected int getNotInTrashBaseModelsCount(BaseModel<?> parentBaseModel)
 		throws Exception {
 
 		BookmarksFolder parentDLFolder = (BookmarksFolder)parentBaseModel;

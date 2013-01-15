@@ -1,3 +1,18 @@
+drop index IX_852EA801 on AssetCategory;
+drop index IX_D61ABE08 on AssetCategory;
+drop index IX_9DDD15EA on AssetCategory;
+
+drop index IX_52340033 on AssetCategoryProperty;
+drop index IX_8654719F on AssetCategoryProperty;
+
+drop index IX_75D42FF9 on AssetEntry;
+drop index IX_FEC4A201 on AssetEntry;
+drop index IX_2E4E3885 on AssetEntry;
+drop index IX_9029E15A on AssetEntry;
+
+drop index IX_13805BF7 on AssetTagProperty;
+drop index IX_DFF1F063 on AssetTagProperty;
+
 update BlogsEntry set status = 2 where status = 9;
 
 alter table BookmarksEntry add status INTEGER;
@@ -23,6 +38,14 @@ update BookmarksFolder set status = 0;
 update BookmarksFolder set statusByUserId = userId;
 update BookmarksFolder set statusByUserName = userName;
 update BookmarksFolder set statusDate = modifiedDate;
+
+drop index IX_430D791F on BlogsEntry;
+drop index IX_EB2DCE27 on BlogsEntry;
+drop index IX_8CACE77B on BlogsEntry;
+drop index IX_72EF6041 on BlogsEntry;
+drop index IX_A5F57B61 on BlogsEntry;
+drop index IX_621E19D on BlogsEntry;
+drop index IX_FBDE0AA3 on BlogsEntry;
 
 alter table Contact_ add classNameId LONG;
 alter table Contact_ add classPK LONG;

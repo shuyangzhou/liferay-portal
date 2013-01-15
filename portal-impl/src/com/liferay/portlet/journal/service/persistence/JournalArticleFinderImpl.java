@@ -56,9 +56,6 @@ public class JournalArticleFinderImpl
 	public static final String COUNT_BY_G_U_C =
 		JournalArticleFinder.class.getName() + ".countByG_U_C";
 
-	public static final String COUNT_BY_G_C_S =
-		JournalArticleFinder.class.getName() + ".countByG_C_S";
-
 	public static final String COUNT_BY_G_F_S =
 		JournalArticleFinder.class.getName() + ".countByG_F_S";
 
@@ -83,9 +80,6 @@ public class JournalArticleFinderImpl
 
 	public static final String FIND_BY_G_U_C =
 		JournalArticleFinder.class.getName() + ".findByG_U_C";
-
-	public static final String FIND_BY_G_C_S =
-		JournalArticleFinder.class.getName() + ".findByG_C_S";
 
 	public static final String FIND_BY_G_U_C_S =
 		JournalArticleFinder.class.getName() + ".findByG_U_C_S";
@@ -795,13 +789,10 @@ public class JournalArticleFinderImpl
 		try {
 			session = openSession();
 
-			String sql = null;
+			String sql = CustomSQLUtil.get(COUNT_BY_G_C_S_S);
 
 			if (status == WorkflowConstants.STATUS_ANY) {
-				sql = CustomSQLUtil.get(COUNT_BY_G_C_S);
-			}
-			else {
-				sql = CustomSQLUtil.get(COUNT_BY_G_C_S_S);
+				sql = StringUtil.replace(sql, "(status = ?)", "(status != ?)");
 			}
 
 			if (structureId.equals(
@@ -832,6 +823,9 @@ public class JournalArticleFinderImpl
 
 			if (status != WorkflowConstants.STATUS_ANY) {
 				qPos.add(status);
+			}
+			else {
+				qPos.add(WorkflowConstants.STATUS_IN_TRASH);
 			}
 
 			Iterator<Long> itr = q.iterate();
@@ -894,6 +888,11 @@ public class JournalArticleFinderImpl
 				sql = StringUtil.replace(
 					sql, "[$FOLDER_ID$]",
 					getFolderIds(folderIds, "JournalArticle"));
+			}
+
+			if (status != WorkflowConstants.STATUS_ANY) {
+				sql = StringUtil.replace(
+					sql, "(status != ?) AND", StringPool.BLANK);
 			}
 
 			sql = CustomSQLUtil.replaceKeywords(
@@ -967,6 +966,11 @@ public class JournalArticleFinderImpl
 			}
 
 			qPos.add(classNameId);
+
+			if (status == WorkflowConstants.STATUS_ANY) {
+				qPos.add(WorkflowConstants.STATUS_IN_TRASH);
+			}
+
 			qPos.add(articleIds, 2);
 
 			if ((version != null) && (version > 0)) {
@@ -1087,13 +1091,10 @@ public class JournalArticleFinderImpl
 		try {
 			session = openSession();
 
-			String sql = null;
+			String sql = CustomSQLUtil.get(FIND_BY_G_C_S_S);
 
 			if (status == WorkflowConstants.STATUS_ANY) {
-				sql = CustomSQLUtil.get(FIND_BY_G_C_S);
-			}
-			else {
-				sql = CustomSQLUtil.get(FIND_BY_G_C_S_S);
+				sql = StringUtil.replace(sql, "(status = ?)", "(status != ?)");
 			}
 
 			sql = CustomSQLUtil.replaceOrderBy(sql, orderByComparator);
@@ -1126,6 +1127,9 @@ public class JournalArticleFinderImpl
 
 			if (status != WorkflowConstants.STATUS_ANY) {
 				qPos.add(status);
+			}
+			else {
+				qPos.add(WorkflowConstants.STATUS_IN_TRASH);
 			}
 
 			return (List<JournalArticle>)QueryUtil.list(
@@ -1180,6 +1184,11 @@ public class JournalArticleFinderImpl
 				sql = StringUtil.replace(
 					sql, "[$FOLDER_ID$]",
 					getFolderIds(folderIds, "JournalArticle"));
+			}
+
+			if (status != WorkflowConstants.STATUS_ANY) {
+				sql = StringUtil.replace(
+					sql, "(status != ?) AND", StringPool.BLANK);
 			}
 
 			sql = CustomSQLUtil.replaceKeywords(
@@ -1254,6 +1263,11 @@ public class JournalArticleFinderImpl
 			}
 
 			qPos.add(classNameId);
+
+			if (status == WorkflowConstants.STATUS_ANY) {
+				qPos.add(WorkflowConstants.STATUS_IN_TRASH);
+			}
+
 			qPos.add(articleIds, 2);
 
 			if ((version != null) && (version > 0)) {
