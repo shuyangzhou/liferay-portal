@@ -23,8 +23,7 @@ import java.lang.reflect.Constructor;
  */
 public class IncrementFactory {
 
-	@SuppressWarnings("rawtypes")
-	public static Increment createIncrement(
+	public static Increment<?> createIncrement(
 			Class<? extends Increment<?>> counterClass, Object value)
 		throws SystemException {
 
@@ -39,6 +38,22 @@ public class IncrementFactory {
 				counterClass.getConstructor(value.getClass());
 
 			return constructor.newInstance(value);
+		}
+		catch (Exception e) {
+			throw new SystemException(e);
+		}
+	}
+
+	public static Increment<?> parseIncrement(
+			Class<? extends Increment<?>> counterClass, String value)
+		throws SystemException {
+
+		try {
+			Increment<?> increment = counterClass.newInstance();
+
+			increment.parseValue(value);
+
+			return increment;
 		}
 		catch (Exception e) {
 			throw new SystemException(e);

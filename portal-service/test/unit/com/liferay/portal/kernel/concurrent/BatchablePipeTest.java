@@ -211,6 +211,59 @@ public class BatchablePipeTest extends TestCase {
 		assertNull(batchablePipe.take());
 	}
 
+	public void testDelayedEntries() {
+		BatchablePipe<String, Integer> batchablePipe =
+			new BatchablePipe<String, Integer>();
+
+		// Insert delayed entries, still under threshold
+
+		for (int i = 0; i < 100; i++) {
+			batchablePipe.put(
+				new IntegerIncreasableEntry(
+					"V" + String.valueOf(i % 10), 1, 12, -1));
+		}
+
+		assertNull(batchablePipe.take());
+
+		// Insert delayed entries with timeout
+
+		for (int i = 0; i < 100; i++) {
+			batchablePipe.put(
+				new IntegerIncreasableEntry(
+					"T" + String.valueOf(i % 10), 1, null, 1000));
+		}
+
+		assertNull(batchablePipe.take());
+
+		// Insert delayed entries reaching threshold
+
+		for (int i = 0; i < 30; i++) {
+			batchablePipe.put(
+				new IntegerIncreasableEntry(
+					"V" + String.valueOf(i % 10), 1, 12, -1));
+		}
+
+		checkPipeContents(batchablePipe, 10, 13, 45);
+
+		assertNull(batchablePipe.take());
+
+		// Wait for timeout
+
+		try {
+			Thread.sleep(1000);
+		}
+		catch (InterruptedException ie) {
+		}
+
+		batchablePipe.checkDelayedEntries();
+
+		checkPipeContents(batchablePipe, 10, 10, 45);
+
+		assertNull(batchablePipe.take());
+
+		assertFalse(batchablePipe.flushDelayedEntries());
+	}
+
 	public void testSimplePutAndTake() {
 		BatchablePipe<String, Integer> batchablePipe =
 			new BatchablePipe<String, Integer>();
@@ -230,7 +283,7 @@ public class BatchablePipeTest extends TestCase {
 
 		assertTrue(increasableEntry1.increase(1));
 
-		// Assure get the correct increaed value
+		// Assure get the correct increased value
 
 		assertEquals(2, (int)increasableEntry1.getValue());
 
@@ -276,6 +329,28 @@ public class BatchablePipeTest extends TestCase {
 		assertNull(batchablePipe.take());
 	}
 
+	protected void checkPipeContents(
+		BatchablePipe<String, Integer> batchablePipe, int expectedCount,
+		int expectedValue, int expectedCheckSum) {
+
+		int checkSum = 0;
+
+		for (int i = 0; i < expectedCount; i++) {
+			IntegerIncreasableEntry entry =
+				(IntegerIncreasableEntry)batchablePipe.take();
+
+			assertNotNull(entry);
+
+			String key = entry.getKey();
+
+			checkSum = checkSum + Integer.valueOf(key.substring(1));
+
+			assertEquals(expectedValue, (int)entry.getValue());
+		}
+
+		assertEquals(expectedCheckSum, checkSum);
+	}
+
 	private class IntegerIncreasableEntry
 		extends IncreasableEntry<String, Integer> {
 
@@ -283,9 +358,25 @@ public class BatchablePipeTest extends TestCase {
 			super(key, value);
 		}
 
+		public IntegerIncreasableEntry(
+			String key, Integer value, Integer valueThreshold,
+			long timeOutInMillis) {
+
+			super(key, value, valueThreshold, timeOutInMillis);
+		}
+
 		@Override
 		public Integer doIncrease(Integer originalValue, Integer deltaValue) {
 			return originalValue + deltaValue;
+		}
+
+		@Override
+		public boolean isValueAboveThreshold() {
+			if (getValueThreshold() == null) {
+				return true;
+			}
+
+			return (peekValue() > getValueThreshold());
 		}
 
 	}

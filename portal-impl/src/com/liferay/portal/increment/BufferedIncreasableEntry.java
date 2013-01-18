@@ -33,11 +33,32 @@ public class BufferedIncreasableEntry<K, T>
 		_methodInvocation = methodInvocation;
 	}
 
+	public BufferedIncreasableEntry(
+		MethodInvocation methodInvocation, K key, Increment<T> value,
+		Increment<T> valueThreshold, long timeOutInMillis) {
+
+		super(key, value, valueThreshold, timeOutInMillis);
+
+		_methodInvocation = methodInvocation;
+	}
+
 	@Override
 	public Increment<T> doIncrease(
 		Increment<T> originalValue, Increment<T> deltaValue) {
 
 		return originalValue.increaseForNew(deltaValue.getValue());
+	}
+
+	@Override
+	public boolean isValueAboveThreshold() {
+		if (getValueThreshold() == null) {
+			return true;
+		}
+
+		Increment<T> value = peekValue();
+		Increment<T> valueThreshold = getValueThreshold();
+
+		return (value.compareTo(valueThreshold.getValue()) > 0);
 	}
 
 	public void proceed() throws Throwable {

@@ -23,6 +23,20 @@ public class NumberIncrement implements Increment<Number> {
 		_value = value;
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public int compareTo(Number o) {
+		if (_value instanceof Comparable<?>) {
+			return ((Comparable)_value).compareTo(o);
+		}
+
+		String numberClass = _value.getClass().getName();
+
+		throw new UnsupportedOperationException(
+			"The number type " + numberClass +
+			" does not support the Comparable interface.");
+	}
+
 	public void decrease(Number delta) {
 		_value = subtract(delta);
 	}
@@ -41,6 +55,23 @@ public class NumberIncrement implements Increment<Number> {
 
 	public Increment<Number> increaseForNew(Number delta) {
 		return new NumberIncrement(add(delta));
+	}
+
+	@Override
+	public void parseValue(String value) {
+		if (_value instanceof Double) {
+			_value = Double.parseDouble(value);
+		}
+		else if (_value instanceof Integer) {
+			_value = Integer.parseInt(value);
+		}
+		else if (_value instanceof Long) {
+			_value = Long.parseLong(value);
+		}
+
+		throw new UnsupportedOperationException(
+			"Paring from string is only supported for the following Number " +
+			"types: Double, Integer, Long");
 	}
 
 	public void setValue(Number value) {

@@ -83,6 +83,15 @@ public class IncreasableEntryTest extends TestCase {
 			return originalValue + deltaValue;
 		}
 
+		@Override
+		public boolean isValueAboveThreshold() {
+			if (getValueThreshold() == null) {
+				return true;
+			}
+
+			return (peekValue() > getValueThreshold());
+		}
+
 	}
 
 }

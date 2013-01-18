@@ -17,17 +17,25 @@ package com.liferay.portal.increment;
 import com.liferay.portal.kernel.cache.key.CacheKeyGenerator;
 import com.liferay.portal.kernel.cache.key.CacheKeyGeneratorUtil;
 import com.liferay.portal.kernel.concurrent.BatchablePipe;
+import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.increment.BufferedIncrement;
 import com.liferay.portal.kernel.increment.Increment;
 import com.liferay.portal.kernel.increment.IncrementFactory;
 import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.spring.aop.AnnotationChainableMethodAdvice;
 
 import java.io.Serializable;
 
 import java.lang.annotation.Annotation;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.aopalliance.intercept.MethodInvocation;
 
@@ -37,6 +45,21 @@ import org.aopalliance.intercept.MethodInvocation;
  */
 public class BufferedIncrementAdvice
 	extends AnnotationChainableMethodAdvice<BufferedIncrement> {
+
+	public BufferedIncrementAdvice() {
+		_timer.schedule(new TimerTask() {
+
+			@Override
+			public void run() {
+				if (_batchablePipe.checkDelayedEntries()) {
+					MessageBusUtil.sendMessage(
+						DestinationNames.BUFFERED_INCREMENT_PARALLEL,
+						_batchablePipe);
+				}
+			}
+
+		}, 1000L, 1000L);
+	}
 
 	@Override
 	@SuppressWarnings("rawtypes")
@@ -66,19 +89,38 @@ public class BufferedIncrementAdvice
 		Increment<?> increment = IncrementFactory.createIncrement(
 			bufferedIncrement.incrementClass(), value);
 
-		BufferedIncreasableEntry bufferedIncreasableEntry =
-			new BufferedIncreasableEntry(methodInvocation, batchKey, increment);
+		BufferedIncreasableEntry bufferedIncreasableEntry;
+
+		if (!Validator.isBlank(bufferedIncrement.propertyKey())) {
+			String propertyKey = bufferedIncrement.propertyKey();
+
+			long timeOutInMillis = GetterUtil.getLong(
+				PropsUtil.get(propertyKey, new Filter("timeout")), -1);
+
+			String threshold = PropsUtil.get(
+				propertyKey, new Filter("threshold"));
+
+			Increment<?> valueTreshold = null;
+
+			if (Validator.isNotNull(threshold)) {
+				valueTreshold = IncrementFactory.parseIncrement(
+					bufferedIncrement.incrementClass(), threshold);
+			}
+
+			bufferedIncreasableEntry =
+				new BufferedIncreasableEntry(
+					methodInvocation, batchKey, increment, valueTreshold,
+					timeOutInMillis);
+		}
+		else {
+			bufferedIncreasableEntry =
+				new BufferedIncreasableEntry(
+					methodInvocation, batchKey, increment);
+		}
 
 		if (_batchablePipe.put(bufferedIncreasableEntry)) {
-			if (bufferedIncrement.parallel()) {
-				MessageBusUtil.sendMessage(
-					DestinationNames.BUFFERED_INCREMENT_PARALLEL,
-					_batchablePipe);
-			}
-			else {
-				MessageBusUtil.sendMessage(
-					DestinationNames.BUFFERED_INCREMENT_SERIAL, _batchablePipe);
-			}
+			MessageBusUtil.sendMessage(
+				DestinationNames.BUFFERED_INCREMENT_PARALLEL, _batchablePipe);
 		}
 
 		return nullResult;
@@ -108,6 +150,12 @@ public class BufferedIncrementAdvice
 				return true;
 			}
 
+			public String propertyKey() {
+				return StringPool.BLANK;
+			}
+
 		};
+
+	private static Timer _timer = new Timer();
 
 }

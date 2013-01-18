@@ -25,8 +25,24 @@ import java.util.concurrent.atomic.AtomicMarkableReference;
 public abstract class IncreasableEntry<K, V> {
 
 	public IncreasableEntry(K key, V value) {
+		this(key, value, null, -1);
+	}
+
+	public IncreasableEntry(K key, V value, long timeOutInMillis) {
+		this(key, value, null, timeOutInMillis);
+	}
+
+	public IncreasableEntry(K key, V value, V valueThreshold) {
+		this(key, value, valueThreshold, -1);
+	}
+
+	public IncreasableEntry(
+		K key, V value, V valueThreshold, long timeOutInMillis) {
+
 		_key = key;
 		_markedValue = new AtomicMarkableReference<V>(value, false);
+		_timeOutInMillis = timeOutInMillis;
+		_valueThreshold = valueThreshold;
 	}
 
 	public abstract V doIncrease(V originalValue, V deltaValue);
@@ -43,10 +59,14 @@ public abstract class IncreasableEntry<K, V> {
 
 		IncreasableEntry<K, V> increasableEntry = (IncreasableEntry<K, V>)obj;
 
-		if (Validator.equals(_key, increasableEntry._key) &&
+		if (Validator.equals(
+				_timeOutInMillis, increasableEntry._timeOutInMillis) &&
+			Validator.equals(_key, increasableEntry._key) &&
 			Validator.equals(
 				_markedValue.getReference(),
-				increasableEntry._markedValue.getReference())) {
+				increasableEntry._markedValue.getReference()) &&
+			Validator.equals(
+				_valueThreshold, increasableEntry._valueThreshold)) {
 
 			return true;
 		}
@@ -56,6 +76,10 @@ public abstract class IncreasableEntry<K, V> {
 
 	public final K getKey() {
 		return _key;
+	}
+
+	public final long getTimeOutInMillis() {
+		return _timeOutInMillis;
 	}
 
 	public final V getValue() {
@@ -68,6 +92,10 @@ public abstract class IncreasableEntry<K, V> {
 		}
 	}
 
+	public final V getValueThreshold() {
+		return _valueThreshold;
+	}
+
 	@Override
 	public int hashCode() {
 		int hash = 77;
@@ -76,12 +104,20 @@ public abstract class IncreasableEntry<K, V> {
 			hash += _key.hashCode();
 		}
 
-		hash = 11 * hash;
-
 		V value = _markedValue.getReference();
 
 		if (value != null) {
-			hash += value.hashCode();
+			hash = hash * 11 + value.hashCode();
+		}
+
+		if (_valueThreshold != null) {
+			hash = hash * 11 + _valueThreshold.hashCode();
+		}
+
+		if (_timeOutInMillis != -1) {
+			hash =
+				hash * 11 +
+				(int)(_timeOutInMillis ^ (_timeOutInMillis >>> 32));
 		}
 
 		return hash;
@@ -108,6 +144,36 @@ public abstract class IncreasableEntry<K, V> {
 		}
 	}
 
+	public boolean isDelayable() {
+		if ((_valueThreshold == null) && (_timeOutInMillis == -1)) {
+			return false;
+		}
+
+		if ((_valueThreshold != null) && isValueAboveThreshold()) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public boolean isDelayable(long startTime) {
+		if (!isDelayable()) {
+			return false;
+		}
+
+		long currentTimeInMillis = System.currentTimeMillis();
+
+		if ((_timeOutInMillis > -1) &&
+			(currentTimeInMillis > (startTime + _timeOutInMillis))) {
+
+			return false;
+		}
+
+		return true;
+	}
+
+	public abstract boolean isValueAboveThreshold();
+
 	@Override
 	public String toString() {
 		StringBundler sb = new StringBundler(5);
@@ -116,12 +182,22 @@ public abstract class IncreasableEntry<K, V> {
 		sb.append(String.valueOf(_key.toString()));
 		sb.append(", value=");
 		sb.append(String.valueOf(_markedValue.getReference()));
+		sb.append(", threshold=");
+		sb.append(String.valueOf(_valueThreshold));
+		sb.append(", timeout=");
+		sb.append(String.valueOf(_timeOutInMillis));
 		sb.append("}");
 
 		return sb.toString();
 	}
 
+	protected V peekValue() {
+		return _markedValue.getReference();
+	}
+
 	private final K _key;
 	private final AtomicMarkableReference<V> _markedValue;
+	private final long _timeOutInMillis;
+	private final V _valueThreshold;
 
 }

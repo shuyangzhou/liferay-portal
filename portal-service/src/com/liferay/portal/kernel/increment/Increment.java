@@ -17,7 +17,9 @@ package com.liferay.portal.kernel.increment;
 /**
  * @author Zsolt Berentey
  */
-public interface Increment<T> {
+public interface Increment<T> extends Comparable<T> {
+
+	//public int compareTo(T value);
 
 	public void decrease(T delta);
 
@@ -28,6 +30,8 @@ public interface Increment<T> {
 	public void increase(T delta);
 
 	public Increment<T> increaseForNew(T delta);
+
+	public void parseValue(String value);
 
 	public void setValue(T value);
 
