@@ -177,8 +177,6 @@ if (inlineEdit && (inlineEditSaveURL != null)) {
 }
 %>
 
-</c:if>
-
 <div class="<%= cssClass %>">
 	<textarea id="<%= textareaName %>" name="<%= textareaName %>" style="display: none;"></textarea>
 </div>
