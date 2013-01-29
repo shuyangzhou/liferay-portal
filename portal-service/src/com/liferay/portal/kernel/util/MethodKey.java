@@ -29,6 +29,14 @@ import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 /**
+ * Loosely represents a serializable {@link Method}, considering its declaring
+ * class, name, and parameter types, while ignoring its return type and
+ * exceptions. This means the compiler generated bridging method is considered
+ * logically the same as it source counterpart. On deserialization of a generic
+ * {@link Method}, resolving to a bridge method or source method depends on the
+ * runtime environment. Since a force cast is performed on the method's return
+ * value anyway, there is generally no problem resolving the method.
+ *
  * @author Brian Wing Shun Chan
  * @author Shuyang Zhou
  */
