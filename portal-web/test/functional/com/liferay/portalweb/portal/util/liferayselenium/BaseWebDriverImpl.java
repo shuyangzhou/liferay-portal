@@ -302,6 +302,10 @@ public abstract class BaseWebDriverImpl
 	public void setDefaultTimeout() {
 	}
 
+	public void typeFrame(String locator, String value) {
+		LiferaySeleniumHelper.typeFrame(this, locator, value);
+	}
+
 	public void uploadCommonFile(String location, String value) {
 		uploadFile(
 			location,

@@ -99,6 +99,12 @@ public class PortletFileRepositoryUtil {
 			groupId, folderId, fileName);
 	}
 
+	public static void deletePortletRepository(long groupId, String portletId)
+		throws PortalException, SystemException {
+
+		getPortletFileRepository().deletePortletRepository(groupId, portletId);
+	}
+
 	public static List<FileEntry> getPortletFileEntries(
 			long groupId, long folderId)
 		throws SystemException {
@@ -175,11 +181,11 @@ public class PortletFileRepositoryUtil {
 			userId, repositoryId, parentFolderId, folderName, serviceContext);
 	}
 
-	public static long getPortletRepository(
+	public static long getPortletRepositoryId(
 			long groupId, String portletId, ServiceContext serviceContext)
 		throws PortalException, SystemException {
 
-		return getPortletFileRepository().getPortletRepository(
+		return getPortletFileRepository().getPortletRepositoryId(
 			groupId, portletId, serviceContext);
 	}
 

@@ -44,6 +44,7 @@
 		<fileset dir="${project.dir}/lib/global" includes="*.jar" />
 		<fileset dir="${project.dir}/lib/portal" includes="*.jar" />
 		<fileset dir="${project.dir}/osgi/lib/common/core" includes="*.jar" />
+		<fileset dir="${project.dir}/osgi/lib/common/portal" includes="org.phidias.compile.jar" />
 	</path>
 
 	<path id="project.classpath">

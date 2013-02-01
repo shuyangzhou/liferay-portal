@@ -16,7 +16,7 @@ package com.liferay.portalweb.portlet.webcontentlist;
 
 import com.liferay.portalweb.portal.BaseTestSuite;
 import com.liferay.portalweb.portlet.webcontentlist.portlet.PortletTestPlan;
-import com.liferay.portalweb.portlet.webcontentlist.webcontent.WebContentTestPlan;
+import com.liferay.portalweb.portlet.webcontentlist.wcwebcontent.WCWebContentTestPlan;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -30,7 +30,7 @@ public class WebContentListTestPlan extends BaseTestSuite {
 		TestSuite testSuite = new TestSuite();
 
 		testSuite.addTest(PortletTestPlan.suite());
-		testSuite.addTest(WebContentTestPlan.suite());
+		testSuite.addTest(WCWebContentTestPlan.suite());
 
 		return testSuite;
 	}

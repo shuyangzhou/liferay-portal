@@ -566,6 +566,7 @@
 			<bean class="com.liferay.portal.security.auth.AuthTokenImpl" />
 		</property>
 	</bean>
+	<bean id="com.liferay.portal.security.auth.MembershipPolicyFactory" class="com.liferay.portal.security.auth.MembershipPolicyFactory" />
 	<bean id="com.liferay.portal.security.permission.InlineSQLHelperUtil" class="com.liferay.portal.security.permission.InlineSQLHelperUtil">
 		<property name="inlineSQLHelper">
 			<bean class="com.liferay.portal.security.permission.InlineSQLHelperImpl" />
@@ -772,11 +773,6 @@
 					<bean class="com.liferay.portlet.dynamicdatalists.util.DDLXMLExporter" />
 				</entry>
 			</map>
-		</property>
-	</bean>
-	<bean id="com.liferay.portlet.dynamicdatalists.lar.DDLPortletDataHandlerUtil" class="com.liferay.portlet.dynamicdatalists.lar.DDLPortletDataHandlerUtil">
-		<property name="DDLPortletDataHandler">
-			<bean class="com.liferay.portlet.dynamicdatalists.lar.DDLPortletDataHandlerImpl" />
 		</property>
 	</bean>
 	<bean id="com.liferay.portlet.dynamicdatalists.util.DDLUtil" class="com.liferay.portlet.dynamicdatalists.util.DDLUtil">

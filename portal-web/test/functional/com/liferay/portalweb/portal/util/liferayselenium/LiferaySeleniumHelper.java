@@ -313,6 +313,16 @@ public class LiferaySeleniumHelper {
 		}
 	}
 
+	public static void typeFrame(
+		LiferaySelenium liferaySelenium, String locator, String value) {
+
+		liferaySelenium.selectFrame(locator);
+
+		liferaySelenium.runScript("document.body.innerHTML = '" + value + "'");
+
+		liferaySelenium.selectFrame("relative=top");
+	}
+
 	public static void waitForElementNotPresent(
 			LiferaySelenium liferaySelenium, String locator)
 		throws Exception {

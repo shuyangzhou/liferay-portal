@@ -17,6 +17,7 @@ package com.liferay.portalweb.portlet.categoriesnavigation.portlet;
 import com.liferay.portalweb.portal.BaseTestSuite;
 import com.liferay.portalweb.portlet.categoriesnavigation.portlet.addportletcn.AddPortletCNTests;
 import com.liferay.portalweb.portlet.categoriesnavigation.portlet.addportletscn.AddPortletsCNTests;
+import com.liferay.portalweb.portlet.categoriesnavigation.portlet.configureportletcndisplaytemplatemulticolumn.ConfigurePortletCNDisplayTemplateMultiColumnTests;
 import com.liferay.portalweb.portlet.categoriesnavigation.portlet.removeportletcn.RemovePortletCNTests;
 
 import junit.framework.Test;
@@ -32,6 +33,8 @@ public class PortletTestPlan extends BaseTestSuite {
 
 		testSuite.addTest(AddPortletCNTests.suite());
 		testSuite.addTest(AddPortletsCNTests.suite());
+		testSuite.addTest(
+			ConfigurePortletCNDisplayTemplateMultiColumnTests.suite());
 		testSuite.addTest(RemovePortletCNTests.suite());
 
 		return testSuite;
