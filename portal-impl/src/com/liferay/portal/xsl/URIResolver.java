@@ -12,13 +12,14 @@
  * details.
  */
 
-package com.liferay.portlet.journal.util;
+package com.liferay.portal.xsl;
 
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portlet.journal.util.JournalUtil;
 
 import java.util.Map;
 
