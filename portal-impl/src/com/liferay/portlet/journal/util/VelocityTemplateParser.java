@@ -14,12 +14,8 @@
 
 package com.liferay.portlet.journal.util;
 
-import com.liferay.portal.kernel.template.StringTemplateResource;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateContextType;
-import com.liferay.portal.kernel.template.TemplateManagerUtil;
-import com.liferay.portal.kernel.template.TemplateResource;
-import com.liferay.portal.kernel.templateparser.TemplateContext;
 import com.liferay.portal.templateparser.BaseTemplateParser;
 import com.liferay.portal.util.PropsValues;
 
@@ -30,18 +26,10 @@ import com.liferay.portal.util.PropsValues;
  */
 public class VelocityTemplateParser extends BaseTemplateParser {
 
-	protected String getErrorTemplateId() {
-		return PropsValues.JOURNAL_ERROR_TEMPLATE_VELOCITY;
-	}
-
-	@Override
-	protected TemplateContext getTemplateContext() throws Exception {
-		TemplateResource templateResource = new StringTemplateResource(
-			getTemplateId(), getScript());
-
-		return TemplateManagerUtil.getTemplate(
-			TemplateConstants.LANG_TYPE_VM, templateResource,
-			getErrorTemplateResource(), TemplateContextType.RESTRICTED);
+	public VelocityTemplateParser() {
+		super(
+			PropsValues.JOURNAL_ERROR_TEMPLATE_VELOCITY,
+			TemplateConstants.LANG_TYPE_VM, TemplateContextType.RESTRICTED);
 	}
 
 }

@@ -14,33 +14,20 @@
 
 package com.liferay.portlet.dynamicdatalists.util;
 
-import com.liferay.portal.kernel.template.StringTemplateResource;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateContextType;
-import com.liferay.portal.kernel.template.TemplateManagerUtil;
-import com.liferay.portal.kernel.template.TemplateResource;
-import com.liferay.portal.kernel.templateparser.TemplateContext;
+import com.liferay.portal.templateparser.BaseTemplateParser;
 import com.liferay.portal.util.PropsValues;
 
 /**
  * @author Marcellus Tavares
  */
-public class VelocityTemplateParser extends
-	com.liferay.portlet.journal.util.VelocityTemplateParser {
+public class VelocityTemplateParser extends BaseTemplateParser {
 
-	@Override
-	protected String getErrorTemplateId() {
-		return PropsValues.DYNAMIC_DATA_LISTS_ERROR_TEMPLATE_VELOCITY;
-	}
-
-	@Override
-	protected TemplateContext getTemplateContext() throws Exception {
-		TemplateResource templateResource = new StringTemplateResource(
-			getTemplateId(), getScript());
-
-		return TemplateManagerUtil.getTemplate(
-			TemplateConstants.LANG_TYPE_VM, templateResource,
-			getErrorTemplateResource(), TemplateContextType.STANDARD);
+	public VelocityTemplateParser() {
+		super(
+			PropsValues.DYNAMIC_DATA_LISTS_ERROR_TEMPLATE_VELOCITY,
+			TemplateConstants.LANG_TYPE_VM, TemplateContextType.STANDARD);
 	}
 
 }

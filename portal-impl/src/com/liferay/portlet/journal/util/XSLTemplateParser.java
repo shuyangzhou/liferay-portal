@@ -16,36 +16,20 @@ package com.liferay.portlet.journal.util;
 
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateContextType;
-import com.liferay.portal.kernel.template.TemplateManagerUtil;
-import com.liferay.portal.kernel.template.TemplateResource;
-import com.liferay.portal.kernel.templateparser.TemplateContext;
+import com.liferay.portal.templateparser.BaseTemplateParser;
 import com.liferay.portal.util.PropsValues;
-import com.liferay.portal.xsl.XSLTemplateResource;
-import com.liferay.portal.xsl.XSLURIResolver;
 
 /**
  * @author Alexander Chow
  * @author Raymond Augé
  * @author Tina Tian
  */
-public class XSLTemplateParser extends VelocityTemplateParser {
+public class XSLTemplateParser extends BaseTemplateParser {
 
-	@Override
-	protected String getErrorTemplateId() {
-		return PropsValues.JOURNAL_ERROR_TEMPLATE_XSL;
-	}
-
-	@Override
-	protected TemplateContext getTemplateContext() throws Exception {
-		XSLURIResolver xslURIResolver = new JournalXSLURIResolver(
-			getTokens(), getLanguageId());
-
-		TemplateResource templateResource = new XSLTemplateResource(
-			getTemplateId(), getScript(), xslURIResolver, getXML());
-
-		return TemplateManagerUtil.getTemplate(
-			TemplateConstants.LANG_TYPE_XSL, templateResource,
-			getErrorTemplateResource(), TemplateContextType.EMPTY);
+	public XSLTemplateParser() {
+		super(
+			PropsValues.JOURNAL_ERROR_TEMPLATE_XSL,
+			TemplateConstants.LANG_TYPE_XSL, TemplateContextType.EMPTY);
 	}
 
 }

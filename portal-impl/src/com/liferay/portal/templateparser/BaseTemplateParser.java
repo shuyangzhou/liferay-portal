@@ -17,8 +17,11 @@ package com.liferay.portal.templateparser;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
 import com.liferay.portal.kernel.mobile.device.Device;
 import com.liferay.portal.kernel.mobile.device.UnknownDevice;
+import com.liferay.portal.kernel.template.StringTemplateResource;
 import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateConstants;
+import com.liferay.portal.kernel.template.TemplateContextType;
+import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.kernel.template.TemplateResource;
 import com.liferay.portal.kernel.template.URLTemplateResource;
 import com.liferay.portal.kernel.templateparser.TemplateContext;
@@ -38,6 +41,9 @@ import com.liferay.portal.model.Company;
 import com.liferay.portal.security.permission.PermissionThreadLocal;
 import com.liferay.portal.service.CompanyLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portal.xsl.XSLTemplateResource;
+import com.liferay.portal.xsl.XSLURIResolver;
+import com.liferay.portlet.journal.util.JournalXSLURIResolver;
 import com.liferay.portlet.portletdisplaytemplate.util.PortletDisplayTemplateConstants;
 import com.liferay.taglib.util.VelocityTaglib;
 import com.liferay.util.PwdGenerator;
@@ -57,6 +63,15 @@ import java.util.Map;
  * @author Marcellus Tavares
  */
 public abstract class BaseTemplateParser implements TemplateParser {
+
+	public BaseTemplateParser(
+		String errorTemplateId, String langType,
+		TemplateContextType templateContextType) {
+
+		_errorTemplateId = errorTemplateId;
+		_langType = langType;
+		_templateContextType = templateContextType;
+	}
 
 	public String getLanguageId() {
 		return _languageId;
@@ -206,17 +221,15 @@ public abstract class BaseTemplateParser implements TemplateParser {
 		return UnknownDevice.getInstance();
 	}
 
-	protected abstract String getErrorTemplateId();
-
 	protected TemplateResource getErrorTemplateResource() {
 		try {
 			Class<?> clazz = getClass();
 
 			ClassLoader classLoader = clazz.getClassLoader();
 
-			URL url = classLoader.getResource(getErrorTemplateId());
+			URL url = classLoader.getResource(_errorTemplateId);
 
-			return new URLTemplateResource(getErrorTemplateId(), url);
+			return new URLTemplateResource(_errorTemplateId, url);
 		}
 		catch (Exception e) {
 		}
@@ -244,7 +257,26 @@ public abstract class BaseTemplateParser implements TemplateParser {
 		return sb.toString();
 	}
 
-	protected abstract TemplateContext getTemplateContext() throws Exception;
+	protected TemplateContext getTemplateContext() throws Exception {
+		String templateId = getTemplateId();
+
+		TemplateResource templateResource = null;
+
+		if (_langType.equals(TemplateConstants.LANG_TYPE_XSL)) {
+			XSLURIResolver xslURIResolver = new JournalXSLURIResolver(
+				_tokens, _languageId);
+
+			templateResource = new XSLTemplateResource(
+				templateId, _script, xslURIResolver, _xml);
+		}
+		else {
+			templateResource = new StringTemplateResource(templateId, _script);
+		}
+
+		return TemplateManagerUtil.getTemplate(
+			_langType, templateResource, getErrorTemplateResource(),
+			_templateContextType);
+	}
 
 	protected String getTemplateId() {
 		long companyGroupId = getCompanyGroupId();
@@ -447,8 +479,16 @@ public abstract class BaseTemplateParser implements TemplateParser {
 	}
 
 	private Map<String, Object> _contextObjects = new HashMap<String, Object>();
+
+	private String _errorTemplateId;
+
+	private String _langType;
+
 	private String _languageId;
 	private String _script;
+
+	private TemplateContextType _templateContextType;
+
 	private ThemeDisplay _themeDisplay;
 	private Map<String, String> _tokens;
 	private String _viewMode;

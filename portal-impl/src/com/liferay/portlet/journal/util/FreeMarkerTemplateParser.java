@@ -14,32 +14,20 @@
 
 package com.liferay.portlet.journal.util;
 
-import com.liferay.portal.kernel.template.StringTemplateResource;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateContextType;
-import com.liferay.portal.kernel.template.TemplateManagerUtil;
-import com.liferay.portal.kernel.template.TemplateResource;
-import com.liferay.portal.kernel.templateparser.TemplateContext;
+import com.liferay.portal.templateparser.BaseTemplateParser;
 import com.liferay.portal.util.PropsValues;
 
 /**
  * @author Mika Koivisto
  */
-public class FreeMarkerTemplateParser extends VelocityTemplateParser {
+public class FreeMarkerTemplateParser extends BaseTemplateParser {
 
-	@Override
-	protected String getErrorTemplateId() {
-		return PropsValues.JOURNAL_ERROR_TEMPLATE_FREEMARKER;
-	}
-
-	@Override
-	protected TemplateContext getTemplateContext() throws Exception {
-		TemplateResource templateResource = new StringTemplateResource(
-			getTemplateId(), getScript());
-
-		return TemplateManagerUtil.getTemplate(
-			TemplateConstants.LANG_TYPE_FTL, templateResource,
-			getErrorTemplateResource(), TemplateContextType.RESTRICTED);
+	public FreeMarkerTemplateParser() {
+		super(
+			PropsValues.JOURNAL_ERROR_TEMPLATE_FREEMARKER,
+			TemplateConstants.LANG_TYPE_FTL, TemplateContextType.RESTRICTED);
 	}
 
 }
