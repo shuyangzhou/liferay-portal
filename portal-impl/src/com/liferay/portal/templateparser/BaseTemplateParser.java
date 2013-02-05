@@ -93,30 +93,6 @@ public abstract class BaseTemplateParser implements TemplateParser {
 		_xml = xml;
 	}
 
-	public String getLanguageId() {
-		return _languageId;
-	}
-
-	public String getScript() {
-		return _script;
-	}
-
-	public ThemeDisplay getThemeDisplay() {
-		return _themeDisplay;
-	}
-
-	public Map<String, String> getTokens() {
-		return _tokens;
-	}
-
-	public String getViewMode() {
-		return _viewMode;
-	}
-
-	public String getXML() {
-		return _xml;
-	}
-
 	public String transform() throws TransformException {
 		UnsyncStringWriter unsyncStringWriter = new UnsyncStringWriter();
 
@@ -334,7 +310,7 @@ public abstract class BaseTemplateParser implements TemplateParser {
 				"type", StringPool.BLANK);
 
 			TemplateNode templateNode = new TemplateNode(
-				getThemeDisplay(), name, stripCDATA(data), type);
+				_themeDisplay, name, stripCDATA(data), type);
 
 			if (dynamicElementElement.element("dynamic-element") != null) {
 				templateNode.appendChildren(
