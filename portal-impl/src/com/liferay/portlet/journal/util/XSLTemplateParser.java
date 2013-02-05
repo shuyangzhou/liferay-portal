@@ -20,9 +20,12 @@ import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.kernel.template.TemplateResource;
 import com.liferay.portal.kernel.templateparser.TemplateContext;
 import com.liferay.portal.templateparser.BaseTemplateParser;
+import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portal.xsl.XSLTemplateResource;
 import com.liferay.portal.xsl.XSLURIResolver;
+
+import java.util.Map;
 
 /**
  * @author Alexander Chow
@@ -30,6 +33,20 @@ import com.liferay.portal.xsl.XSLURIResolver;
  * @author Tina Tian
  */
 public class XSLTemplateParser extends BaseTemplateParser {
+
+	public XSLTemplateParser(
+		ThemeDisplay themeDisplay, Map<String, Object> contextObjects,
+		String script) {
+
+		super(themeDisplay, contextObjects, script);
+	}
+
+	public XSLTemplateParser(
+		ThemeDisplay themeDisplay, Map<String, String> tokens, String viewMode,
+		String languageId, String xml, String script) {
+
+		super(themeDisplay, tokens, viewMode, languageId, xml, script);
+	}
 
 	@Override
 	protected String getErrorTemplateId() {

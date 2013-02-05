@@ -35,20 +35,6 @@ public interface TemplateParser {
 
 	public String getXML();
 
-	public void setContextObjects(Map<String, Object> contextObjects);
-
-	public void setLanguageId(String languageId);
-
-	public void setScript(String script);
-
-	public void setThemeDisplay(ThemeDisplay themeDisplay);
-
-	public void setTokens(Map<String, String> tokens);
-
-	public void setViewMode(String viewMode);
-
-	public void setXML(String xml);
-
 	public String transform() throws TransformException;
 
 }

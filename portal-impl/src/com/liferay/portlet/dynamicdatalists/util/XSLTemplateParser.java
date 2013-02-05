@@ -14,7 +14,10 @@
 
 package com.liferay.portlet.dynamicdatalists.util;
 
+import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PropsValues;
+
+import java.util.Map;
 
 /**
  * @author Marcellus Tavares
@@ -22,6 +25,20 @@ import com.liferay.portal.util.PropsValues;
  */
 public class XSLTemplateParser extends
 	com.liferay.portlet.journal.util.XSLTemplateParser {
+
+	public XSLTemplateParser(
+		ThemeDisplay themeDisplay, Map<String, Object> contextObjects,
+		String script) {
+
+		super(themeDisplay, contextObjects, script);
+	}
+
+	public XSLTemplateParser(
+		ThemeDisplay themeDisplay, Map<String, String> tokens, String viewMode,
+		String languageId, String xml, String script) {
+
+		super(themeDisplay, tokens, viewMode, languageId, xml, script);
+	}
 
 	@Override
 	protected String getErrorTemplateId() {
