@@ -355,6 +355,18 @@ public class VerifyProperties extends VerifyProcess {
 			"dl.hook.s3.secret.key", "dl.store.s3.secret.key"
 		},
 		new String[] {
+			"dynamic.data.lists.error.template.freemarker",
+			"dynamic.data.lists.error.template[ftl]"
+		},
+		new String[] {
+			"dynamic.data.lists.error.template.velocity",
+			"dynamic.data.lists.error.template[vm]"
+		},
+		new String[] {
+			"dynamic.data.lists.error.template.xsl",
+			"dynamic.data.lists.error.template[xsl]"
+		},
+		new String[] {
 			"editor.wysiwyg.portal-web.docroot.html.portlet.calendar." +
 				"edit_configuration.jsp",
 			"editor.wysiwyg.portal-web.docroot.html.portlet.calendar." +
@@ -383,6 +395,15 @@ public class VerifyProperties extends VerifyProcess {
 				"edit_configuration.jsp",
 			"editor.wysiwyg.portal-web.docroot.html.portlet.shopping." +
 				"configuration.jsp"
+		},
+		new String[] {
+			"journal.error.template.freemarker", "journal.error.template[ftl]"
+		},
+		new String[] {
+			"journal.error.template.velocity", "journal.error.template[vm]"
+		},
+		new String[] {
+			"journal.error.template.xsl", "journal.error.template[xsl]"
 		},
 		new String[] {
 			"referer.url.domains.allowed", "redirect.url.domains.allowed"

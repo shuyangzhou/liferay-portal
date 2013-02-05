@@ -17,6 +17,7 @@ package com.liferay.portal.kernel.templateparser;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
 import com.liferay.portal.kernel.mobile.device.Device;
 import com.liferay.portal.kernel.mobile.device.UnknownDevice;
+import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -103,7 +104,7 @@ public abstract class BaseTemplateParser implements TemplateParser {
 		boolean load = false;
 
 		try {
-			TemplateContext templateContext = getTemplateContext();
+			Template template = getTemplate();
 
 			if (Validator.isNotNull(_xml)) {
 				Document document = SAXReaderUtil.read(_xml);
@@ -115,28 +116,26 @@ public abstract class BaseTemplateParser implements TemplateParser {
 
 				if (templateNodes != null) {
 					for (TemplateNode templateNode : templateNodes) {
-						templateContext.put(
-							templateNode.getName(), templateNode);
+						template.put(templateNode.getName(), templateNode);
 					}
 				}
 
 				Element requestElement = rootElement.element("request");
 
-				templateContext.put(
-					"request", insertRequestVariables(requestElement));
+				template.put("request", insertRequestVariables(requestElement));
 
-				templateContext.put("xmlRequest", requestElement.asXML());
+				template.put("xmlRequest", requestElement.asXML());
 			}
 
 			if (_contextObjects != null) {
 				for (String key : _contextObjects.keySet()) {
-					templateContext.put(key, _contextObjects.get(key));
+					template.put(key, _contextObjects.get(key));
 				}
 			}
 
-			populateTemplateContext(templateContext);
+			populateTemplateContext(template);
 
-			load = mergeTemplate(templateContext, unsyncStringWriter);
+			load = mergeTemplate(template, unsyncStringWriter);
 		}
 		catch (Exception e) {
 			if (e instanceof DocumentException) {
@@ -201,7 +200,7 @@ public abstract class BaseTemplateParser implements TemplateParser {
 		return GetterUtil.getLong(_tokens.get("group_id"));
 	}
 
-	protected abstract TemplateContext getTemplateContext() throws Exception;
+	protected abstract Template getTemplate() throws Exception;
 
 	protected String getTemplateId() {
 		long companyGroupId = getCompanyGroupId();
@@ -285,25 +284,22 @@ public abstract class BaseTemplateParser implements TemplateParser {
 	}
 
 	protected abstract boolean mergeTemplate(
-			TemplateContext templateContext,
-			UnsyncStringWriter unsyncStringWriter)
+			Template template, UnsyncStringWriter unsyncStringWriter)
 		throws Exception;
 
-	protected void populateTemplateContext(TemplateContext templateContext)
-		throws Exception {
-
-		templateContext.put("company", getCompany());
-		templateContext.put("companyId", getCompanyId());
-		templateContext.put("device", getDevice());
-		templateContext.put("groupId", getGroupId());
+	protected void populateTemplateContext(Template template) throws Exception {
+		template.put("company", getCompany());
+		template.put("companyId", getCompanyId());
+		template.put("device", getDevice());
+		template.put("groupId", getGroupId());
 
 		Locale locale = LocaleUtil.fromLanguageId(_languageId);
 
-		templateContext.put("locale", locale);
+		template.put("locale", locale);
 
-		templateContext.put(
+		template.put(
 			"permissionChecker", PermissionThreadLocal.getPermissionChecker());
-		templateContext.put("viewMode", _viewMode);
+		template.put("viewMode", _viewMode);
 	}
 
 	private Map<String, Object> _contextObjects = new HashMap<String, Object>();

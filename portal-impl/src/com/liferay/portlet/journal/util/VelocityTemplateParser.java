@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.journal.util;
 
+import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
 import com.liferay.portal.kernel.template.StringTemplateResource;
 import com.liferay.portal.kernel.template.Template;
@@ -23,13 +24,13 @@ import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.kernel.template.TemplateResource;
 import com.liferay.portal.kernel.template.URLTemplateResource;
 import com.liferay.portal.kernel.templateparser.BaseTemplateParser;
-import com.liferay.portal.kernel.templateparser.TemplateContext;
 import com.liferay.portal.kernel.templateparser.TemplateNode;
 import com.liferay.portal.kernel.templateparser.TransformException;
+import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.xml.Element;
-import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.util.PropsUtil;
 import com.liferay.portlet.portletdisplaytemplate.util.PortletDisplayTemplateConstants;
 import com.liferay.taglib.util.VelocityTaglib;
 import com.liferay.util.PwdGenerator;
@@ -49,7 +50,9 @@ import java.util.Map;
 public class VelocityTemplateParser extends BaseTemplateParser {
 
 	protected String getErrorTemplateId() {
-		return PropsValues.JOURNAL_ERROR_TEMPLATE_VELOCITY;
+		return PropsUtil.get(
+			PropsKeys.JOURNAL_ERROR_TEMPLATE,
+			new Filter(TemplateConstants.LANG_TYPE_VM));
 	}
 
 	protected TemplateResource getErrorTemplateResource() {
@@ -81,7 +84,7 @@ public class VelocityTemplateParser extends BaseTemplateParser {
 	}
 
 	@Override
-	protected TemplateContext getTemplateContext() throws Exception {
+	protected Template getTemplate() throws Exception {
 		TemplateResource templateResource = new StringTemplateResource(
 			getTemplateId(), getScript());
 
@@ -161,35 +164,30 @@ public class VelocityTemplateParser extends BaseTemplateParser {
 
 	@Override
 	protected boolean mergeTemplate(
-			TemplateContext templateContext,
-			UnsyncStringWriter unsyncStringWriter)
+			Template template, UnsyncStringWriter unsyncStringWriter)
 		throws Exception {
-
-		Template template = (Template)templateContext;
 
 		VelocityTaglib velocityTaglib = (VelocityTaglib)template.get(
 			PortletDisplayTemplateConstants.TAGLIB_LIFERAY);
 
 		if (velocityTaglib != null) {
-			velocityTaglib.setTemplateContext(templateContext);
+			velocityTaglib.setTemplate(template);
 		}
 
 		return template.processTemplate(unsyncStringWriter);
 	}
 
 	@Override
-	protected void populateTemplateContext(TemplateContext templateContext)
-		throws Exception {
+	protected void populateTemplateContext(Template template) throws Exception {
+		super.populateTemplateContext(template);
 
-		super.populateTemplateContext(templateContext);
-
-		templateContext.put("journalTemplatesPath", getJournalTemplatesPath());
+		template.put("journalTemplatesPath", getJournalTemplatesPath());
 
 		String randomNamespace =
 			PwdGenerator.getPassword(PwdGenerator.KEY3, 4) +
 				StringPool.UNDERLINE;
 
-		templateContext.put("randomNamespace", randomNamespace);
+		template.put("randomNamespace", randomNamespace);
 	}
 
 	protected String stripCDATA(String s) {
