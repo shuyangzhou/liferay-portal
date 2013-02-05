@@ -19,16 +19,34 @@ import com.liferay.portal.kernel.template.TemplateContextType;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.kernel.template.TemplateResource;
 import com.liferay.portal.kernel.templateparser.TemplateContext;
+import com.liferay.portal.templateparser.BaseTemplateParser;
+import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portal.xsl.XSLTemplateResource;
 import com.liferay.portal.xsl.XSLURIResolver;
+
+import java.util.Map;
 
 /**
  * @author Alexander Chow
  * @author Raymond Augé
  * @author Tina Tian
  */
-public class XSLTemplateParser extends VelocityTemplateParser {
+public class XSLTemplateParser extends BaseTemplateParser {
+
+	public XSLTemplateParser(
+		ThemeDisplay themeDisplay, Map<String, Object> contextObjects,
+		String script) {
+
+		super(themeDisplay, contextObjects, script);
+	}
+
+	public XSLTemplateParser(
+		ThemeDisplay themeDisplay, Map<String, String> tokens, String viewMode,
+		String languageId, String xml, String script) {
+
+		super(themeDisplay, tokens, viewMode, languageId, xml, script);
+	}
 
 	@Override
 	protected String getErrorTemplateId() {
@@ -38,10 +56,10 @@ public class XSLTemplateParser extends VelocityTemplateParser {
 	@Override
 	protected TemplateContext getTemplateContext() throws Exception {
 		XSLURIResolver xslURIResolver = new JournalXSLURIResolver(
-			getTokens(), getLanguageId());
+			tokens, languageId);
 
 		TemplateResource templateResource = new XSLTemplateResource(
-			getTemplateId(), getScript(), xslURIResolver, getXML());
+			getTemplateId(), script, xslURIResolver, xml);
 
 		return TemplateManagerUtil.getTemplate(
 			TemplateConstants.LANG_TYPE_XSL, templateResource,

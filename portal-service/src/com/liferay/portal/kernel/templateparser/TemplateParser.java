@@ -14,40 +14,10 @@
 
 package com.liferay.portal.kernel.templateparser;
 
-import com.liferay.portal.theme.ThemeDisplay;
-
-import java.util.Map;
-
 /**
  * @author Brian Wing Shun Chan
  */
 public interface TemplateParser {
-
-	public String getLanguageId();
-
-	public String getScript();
-
-	public ThemeDisplay getThemeDisplay();
-
-	public Map<String, String> getTokens();
-
-	public String getViewMode();
-
-	public String getXML();
-
-	public void setContextObjects(Map<String, Object> contextObjects);
-
-	public void setLanguageId(String languageId);
-
-	public void setScript(String script);
-
-	public void setThemeDisplay(ThemeDisplay themeDisplay);
-
-	public void setTokens(Map<String, String> tokens);
-
-	public void setViewMode(String viewMode);
-
-	public void setXML(String xml);
 
 	public String transform() throws TransformException;
 
