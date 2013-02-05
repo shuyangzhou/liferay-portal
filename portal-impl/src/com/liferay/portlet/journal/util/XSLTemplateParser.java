@@ -56,10 +56,10 @@ public class XSLTemplateParser extends BaseTemplateParser {
 	@Override
 	protected TemplateContext getTemplateContext() throws Exception {
 		XSLURIResolver xslURIResolver = new JournalXSLURIResolver(
-			getTokens(), getLanguageId());
+			tokens, languageId);
 
 		TemplateResource templateResource = new XSLTemplateResource(
-			getTemplateId(), getScript(), xslURIResolver, getXML());
+			getTemplateId(), script, xslURIResolver, xml);
 
 		return TemplateManagerUtil.getTemplate(
 			TemplateConstants.LANG_TYPE_XSL, templateResource,

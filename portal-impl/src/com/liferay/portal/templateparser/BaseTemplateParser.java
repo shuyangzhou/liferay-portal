@@ -64,7 +64,7 @@ public abstract class BaseTemplateParser implements TemplateParser {
 
 		_themeDisplay = themeDisplay;
 		_contextObjects = contextObjects;
-		_script = script;
+		this.script = script;
 	}
 
 	public BaseTemplateParser(
@@ -72,35 +72,11 @@ public abstract class BaseTemplateParser implements TemplateParser {
 		String languageId, String xml, String script) {
 
 		_themeDisplay = themeDisplay;
-		_tokens = tokens;
+		this.tokens = tokens;
 		_viewMode = viewMode;
-		_languageId = languageId;
-		_xml = xml;
-		_script = script;
-	}
-
-	public String getLanguageId() {
-		return _languageId;
-	}
-
-	public String getScript() {
-		return _script;
-	}
-
-	public ThemeDisplay getThemeDisplay() {
-		return _themeDisplay;
-	}
-
-	public Map<String, String> getTokens() {
-		return _tokens;
-	}
-
-	public String getViewMode() {
-		return _viewMode;
-	}
-
-	public String getXML() {
-		return _xml;
+		this.languageId = languageId;
+		this.xml = xml;
+		this.script = script;
 	}
 
 	public String transform() throws TransformException {
@@ -111,8 +87,8 @@ public abstract class BaseTemplateParser implements TemplateParser {
 		try {
 			TemplateContext templateContext = getTemplateContext();
 
-			if (Validator.isNotNull(_xml)) {
-				Document document = SAXReaderUtil.read(_xml);
+			if (Validator.isNotNull(xml)) {
+				Document document = SAXReaderUtil.read(xml);
 
 				Element rootElement = document.getRootElement();
 
@@ -180,7 +156,7 @@ public abstract class BaseTemplateParser implements TemplateParser {
 			return _themeDisplay.getCompanyGroupId();
 		}
 
-		return GetterUtil.getLong(_tokens.get("company_group_id"));
+		return GetterUtil.getLong(tokens.get("company_group_id"));
 	}
 
 	protected long getCompanyId() {
@@ -188,7 +164,7 @@ public abstract class BaseTemplateParser implements TemplateParser {
 			return _themeDisplay.getCompanyId();
 		}
 
-		return GetterUtil.getLong(_tokens.get("company_id"));
+		return GetterUtil.getLong(tokens.get("company_id"));
 	}
 
 	protected Device getDevice() {
@@ -222,7 +198,7 @@ public abstract class BaseTemplateParser implements TemplateParser {
 			return _themeDisplay.getScopeGroupId();
 		}
 
-		return GetterUtil.getLong(_tokens.get("group_id"));
+		return GetterUtil.getLong(tokens.get("group_id"));
 	}
 
 	protected String getJournalTemplatesPath() {
@@ -244,8 +220,8 @@ public abstract class BaseTemplateParser implements TemplateParser {
 
 		String templateId = null;
 
-		if (_tokens != null) {
-			templateId = _tokens.get("template_id");
+		if (tokens != null) {
+			templateId = tokens.get("template_id");
 		}
 
 		if (Validator.isNull(templateId)) {
@@ -303,7 +279,7 @@ public abstract class BaseTemplateParser implements TemplateParser {
 				"type", StringPool.BLANK);
 
 			TemplateNode templateNode = new TemplateNode(
-				getThemeDisplay(), name, stripCDATA(data), type);
+				_themeDisplay, name, stripCDATA(data), type);
 
 			if (dynamicElementElement.element("dynamic-element") != null) {
 				templateNode.appendChildren(
@@ -410,7 +386,7 @@ public abstract class BaseTemplateParser implements TemplateParser {
 		templateContext.put("device", getDevice());
 		templateContext.put("groupId", getGroupId());
 
-		Locale locale = LocaleUtil.fromLanguageId(_languageId);
+		Locale locale = LocaleUtil.fromLanguageId(languageId);
 
 		templateContext.put("locale", locale);
 
@@ -439,12 +415,13 @@ public abstract class BaseTemplateParser implements TemplateParser {
 		return s;
 	}
 
+	protected String languageId;
+	protected String script;
+	protected Map<String, String> tokens;
+	protected String xml;
+
 	private Map<String, Object> _contextObjects = new HashMap<String, Object>();
-	private String _languageId;
-	private String _script;
 	private ThemeDisplay _themeDisplay;
-	private Map<String, String> _tokens;
 	private String _viewMode;
-	private String _xml;
 
 }

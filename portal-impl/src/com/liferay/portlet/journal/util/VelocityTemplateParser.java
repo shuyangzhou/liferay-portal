@@ -54,7 +54,7 @@ public class VelocityTemplateParser extends BaseTemplateParser {
 	@Override
 	protected TemplateContext getTemplateContext() throws Exception {
 		TemplateResource templateResource = new StringTemplateResource(
-			getTemplateId(), getScript());
+			getTemplateId(), script);
 
 		return TemplateManagerUtil.getTemplate(
 			TemplateConstants.LANG_TYPE_VM, templateResource,
