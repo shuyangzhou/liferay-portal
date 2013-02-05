@@ -65,12 +65,32 @@ import java.util.Map;
 public abstract class BaseTemplateParser implements TemplateParser {
 
 	public BaseTemplateParser(
-		String errorTemplateId, String langType,
+		ThemeDisplay themeDisplay, Map<String, Object> contextObjects,
+		String script, String errorTemplateId, String langType,
 		TemplateContextType templateContextType) {
+
+		_contextObjects = contextObjects;
+		_errorTemplateId = errorTemplateId;
+		_langType = langType;
+		_script = script;
+		_templateContextType = templateContextType;
+		_themeDisplay = themeDisplay;
+	}
+
+	public BaseTemplateParser(
+		ThemeDisplay themeDisplay, Map<String, String> tokens, String viewMode,
+		String languageId, String xml, String script, String errorTemplateId,
+		String langType, TemplateContextType templateContextType) {
 
 		_errorTemplateId = errorTemplateId;
 		_langType = langType;
+		_languageId = languageId;
+		_script = script;
 		_templateContextType = templateContextType;
+		_themeDisplay = themeDisplay;
+		_tokens = tokens;
+		_viewMode = viewMode;
+		_xml = xml;
 	}
 
 	public String getLanguageId() {
@@ -95,34 +115,6 @@ public abstract class BaseTemplateParser implements TemplateParser {
 
 	public String getXML() {
 		return _xml;
-	}
-
-	public void setContextObjects(Map<String, Object> contextObjects) {
-		_contextObjects = contextObjects;
-	}
-
-	public void setLanguageId(String languageId) {
-		_languageId = languageId;
-	}
-
-	public void setScript(String script) {
-		_script = script;
-	}
-
-	public void setThemeDisplay(ThemeDisplay themeDisplay) {
-		_themeDisplay = themeDisplay;
-	}
-
-	public void setTokens(Map<String, String> tokens) {
-		_tokens = tokens;
-	}
-
-	public void setViewMode(String viewMode) {
-		_viewMode = viewMode;
-	}
-
-	public void setXML(String xml) {
-		_xml = xml;
 	}
 
 	public String transform() throws TransformException {

@@ -17,15 +17,32 @@ package com.liferay.portlet.journal.util;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateContextType;
 import com.liferay.portal.templateparser.BaseTemplateParser;
+import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PropsValues;
+
+import java.util.Map;
 
 /**
  * @author Mika Koivisto
  */
 public class FreeMarkerTemplateParser extends BaseTemplateParser {
 
-	public FreeMarkerTemplateParser() {
+	public FreeMarkerTemplateParser(
+		ThemeDisplay themeDisplay, Map<String, Object> contextObjects,
+		String script) {
+
 		super(
+			themeDisplay, contextObjects, script,
+			PropsValues.JOURNAL_ERROR_TEMPLATE_FREEMARKER,
+			TemplateConstants.LANG_TYPE_FTL, TemplateContextType.RESTRICTED);
+	}
+
+	public FreeMarkerTemplateParser(
+		ThemeDisplay themeDisplay, Map<String, String> tokens, String viewMode,
+		String languageId, String xml, String script) {
+
+		super(
+			themeDisplay, tokens, viewMode, languageId, xml, script,
 			PropsValues.JOURNAL_ERROR_TEMPLATE_FREEMARKER,
 			TemplateConstants.LANG_TYPE_FTL, TemplateContextType.RESTRICTED);
 	}

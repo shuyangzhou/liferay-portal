@@ -17,15 +17,32 @@ package com.liferay.portlet.dynamicdatalists.util;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateContextType;
 import com.liferay.portal.templateparser.BaseTemplateParser;
+import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PropsValues;
+
+import java.util.Map;
 
 /**
  * @author Marcellus Tavares
  */
 public class VelocityTemplateParser extends BaseTemplateParser {
 
-	public VelocityTemplateParser() {
+	public VelocityTemplateParser(
+		ThemeDisplay themeDisplay, Map<String, Object> contextObjects,
+		String script) {
+
 		super(
+			themeDisplay, contextObjects, script,
+			PropsValues.DYNAMIC_DATA_LISTS_ERROR_TEMPLATE_VELOCITY,
+			TemplateConstants.LANG_TYPE_VM, TemplateContextType.STANDARD);
+	}
+
+	public VelocityTemplateParser(
+		ThemeDisplay themeDisplay, Map<String, String> tokens, String viewMode,
+		String languageId, String xml, String script) {
+
+		super(
+			themeDisplay, tokens, viewMode, languageId, xml, script,
 			PropsValues.DYNAMIC_DATA_LISTS_ERROR_TEMPLATE_VELOCITY,
 			TemplateConstants.LANG_TYPE_VM, TemplateContextType.STANDARD);
 	}

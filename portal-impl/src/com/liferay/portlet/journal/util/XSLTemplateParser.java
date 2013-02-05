@@ -17,7 +17,10 @@ package com.liferay.portlet.journal.util;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateContextType;
 import com.liferay.portal.templateparser.BaseTemplateParser;
+import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PropsValues;
+
+import java.util.Map;
 
 /**
  * @author Alexander Chow
@@ -26,8 +29,22 @@ import com.liferay.portal.util.PropsValues;
  */
 public class XSLTemplateParser extends BaseTemplateParser {
 
-	public XSLTemplateParser() {
+	public XSLTemplateParser(
+		ThemeDisplay themeDisplay, Map<String, Object> contextObjects,
+		String script) {
+
 		super(
+			themeDisplay, contextObjects, script,
+			PropsValues.JOURNAL_ERROR_TEMPLATE_XSL,
+			TemplateConstants.LANG_TYPE_XSL, TemplateContextType.EMPTY);
+	}
+
+	public XSLTemplateParser(
+		ThemeDisplay themeDisplay, Map<String, String> tokens, String viewMode,
+		String languageId, String xml, String script) {
+
+		super(
+			themeDisplay, tokens, viewMode, languageId, xml, script,
 			PropsValues.JOURNAL_ERROR_TEMPLATE_XSL,
 			TemplateConstants.LANG_TYPE_XSL, TemplateContextType.EMPTY);
 	}
