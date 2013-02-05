@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.kernel.template.TemplateResource;
 import com.liferay.portal.kernel.template.URLTemplateResource;
 import com.liferay.portal.kernel.templateparser.BaseTemplateParser;
-import com.liferay.portal.kernel.templateparser.TemplateContext;
 import com.liferay.portal.kernel.templateparser.TemplateNode;
 import com.liferay.portal.kernel.templateparser.TransformException;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -85,7 +84,7 @@ public class VelocityTemplateParser extends BaseTemplateParser {
 	}
 
 	@Override
-	protected TemplateContext getTemplateContext() throws Exception {
+	protected Template getTemplate() throws Exception {
 		TemplateResource templateResource = new StringTemplateResource(
 			getTemplateId(), getScript());
 
@@ -165,35 +164,30 @@ public class VelocityTemplateParser extends BaseTemplateParser {
 
 	@Override
 	protected boolean mergeTemplate(
-			TemplateContext templateContext,
-			UnsyncStringWriter unsyncStringWriter)
+			Template template, UnsyncStringWriter unsyncStringWriter)
 		throws Exception {
-
-		Template template = (Template)templateContext;
 
 		VelocityTaglib velocityTaglib = (VelocityTaglib)template.get(
 			PortletDisplayTemplateConstants.TAGLIB_LIFERAY);
 
 		if (velocityTaglib != null) {
-			velocityTaglib.setTemplateContext(templateContext);
+			velocityTaglib.setTemplate(template);
 		}
 
 		return template.processTemplate(unsyncStringWriter);
 	}
 
 	@Override
-	protected void populateTemplateContext(TemplateContext templateContext)
-		throws Exception {
+	protected void populateTemplateContext(Template template) throws Exception {
+		super.populateTemplateContext(template);
 
-		super.populateTemplateContext(templateContext);
-
-		templateContext.put("journalTemplatesPath", getJournalTemplatesPath());
+		template.put("journalTemplatesPath", getJournalTemplatesPath());
 
 		String randomNamespace =
 			PwdGenerator.getPassword(PwdGenerator.KEY3, 4) +
 				StringPool.UNDERLINE;
 
-		templateContext.put("randomNamespace", randomNamespace);
+		template.put("randomNamespace", randomNamespace);
 	}
 
 	protected String stripCDATA(String s) {
