@@ -14,7 +14,10 @@
 
 package com.liferay.portlet.dynamicdatalists.util;
 
-import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.kernel.configuration.Filter;
+import com.liferay.portal.kernel.template.TemplateConstants;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.util.PropsUtil;
 
 /**
  * @author Marcellus Tavares
@@ -25,7 +28,9 @@ public class XSLTemplateParser extends
 
 	@Override
 	protected String getErrorTemplateId() {
-		return PropsValues.DYNAMIC_DATA_LISTS_ERROR_TEMPLATE_XSL;
+		return PropsUtil.get(
+			PropsKeys.DYNAMIC_DATA_LISTS_ERROR_TEMPLATE,
+			new Filter(TemplateConstants.LANG_TYPE_XSL));
 	}
 
 }

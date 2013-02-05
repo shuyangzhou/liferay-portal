@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.journal.util;
 
+import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
 import com.liferay.portal.kernel.template.StringTemplateResource;
 import com.liferay.portal.kernel.template.Template;
@@ -26,10 +27,11 @@ import com.liferay.portal.kernel.templateparser.BaseTemplateParser;
 import com.liferay.portal.kernel.templateparser.TemplateContext;
 import com.liferay.portal.kernel.templateparser.TemplateNode;
 import com.liferay.portal.kernel.templateparser.TransformException;
+import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.xml.Element;
-import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.util.PropsUtil;
 import com.liferay.portlet.portletdisplaytemplate.util.PortletDisplayTemplateConstants;
 import com.liferay.taglib.util.VelocityTaglib;
 import com.liferay.util.PwdGenerator;
@@ -49,7 +51,9 @@ import java.util.Map;
 public class VelocityTemplateParser extends BaseTemplateParser {
 
 	protected String getErrorTemplateId() {
-		return PropsValues.JOURNAL_ERROR_TEMPLATE_VELOCITY;
+		return PropsUtil.get(
+			PropsKeys.JOURNAL_ERROR_TEMPLATE,
+			new Filter(TemplateConstants.LANG_TYPE_VM));
 	}
 
 	protected TemplateResource getErrorTemplateResource() {
