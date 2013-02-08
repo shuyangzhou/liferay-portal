@@ -326,7 +326,7 @@
 	</target>
 
 	<target name="build-test-ant-scripts">
-		<property name="build-test-ant-scripts.version" value="5" />
+		<property name="build-test-ant-scripts.version" value="6" />
 
 		<if>
 			<available file="portal-web/test-ant-scripts/version" />
@@ -3115,8 +3115,8 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 
 		<replace
 			file="portal-web/test/test-portal-web.properties"
-			token="#selenium.browser.commands.dir="
-			value="selenium.browser.commands.dir=${basedir.unix}/tools/selenium/browser-commands/${test.selenium.implementation}/${os.type}/${browser.type}/${browser.version}/"
+			token="#browser.commands.dir="
+			value="browser.commands.dir=${basedir.unix}/tools/selenium/browser-commands/${test.selenium.implementation}/${os.type}/${browser.type}/${browser.version}/"
 		/>
 
 		<replace

@@ -114,7 +114,8 @@ import com.liferay.portal.security.auth.FullNameGeneratorFactory;
 import com.liferay.portal.security.auth.FullNameValidator;
 import com.liferay.portal.security.auth.FullNameValidatorFactory;
 import com.liferay.portal.security.auth.MembershipPolicy;
-import com.liferay.portal.security.auth.MembershipPolicyFactory;
+import com.liferay.portal.security.auth.MembershipPolicyFactoryImpl;
+import com.liferay.portal.security.auth.MembershipPolicyFactoryUtil;
 import com.liferay.portal.security.auth.ScreenNameGenerator;
 import com.liferay.portal.security.auth.ScreenNameGeneratorFactory;
 import com.liferay.portal.security.auth.ScreenNameValidator;
@@ -479,7 +480,11 @@ public class HookHotDeployListener
 		}
 
 		if (portalProperties.containsKey(PropsKeys.USERS_MEMBERSHIP_POLICY)) {
-			MembershipPolicyFactory.setInstance(null);
+			MembershipPolicyFactoryImpl membershipPolicyFactoryImpl =
+				(MembershipPolicyFactoryImpl)
+					MembershipPolicyFactoryUtil.getMembershipPolicyFactory();
+
+			membershipPolicyFactoryImpl.setMembershipPolicy(null);
 		}
 
 		if (portalProperties.containsKey(
@@ -1937,11 +1942,15 @@ public class HookHotDeployListener
 			String membershipPolicyClassName = portalProperties.getProperty(
 				PropsKeys.USERS_MEMBERSHIP_POLICY);
 
+			MembershipPolicyFactoryImpl membershipPolicyFactoryImpl =
+				(MembershipPolicyFactoryImpl)
+					MembershipPolicyFactoryUtil.getMembershipPolicyFactory();
+
 			MembershipPolicy membershipPolicy = (MembershipPolicy)newInstance(
 				portletClassLoader, MembershipPolicy.class,
 				membershipPolicyClassName);
 
-			MembershipPolicyFactory.setInstance(membershipPolicy);
+			membershipPolicyFactoryImpl.setMembershipPolicy(membershipPolicy);
 		}
 
 		if (portalProperties.containsKey(

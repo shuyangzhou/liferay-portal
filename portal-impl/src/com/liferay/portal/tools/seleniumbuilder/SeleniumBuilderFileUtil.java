@@ -38,6 +38,29 @@ public class SeleniumBuilderFileUtil {
 		return _baseDir;
 	}
 
+	public String getClassName(String fileName) {
+		int x = fileName.indexOf(CharPool.PERIOD);
+
+		String fileSuffix = fileName.substring(x + 1);
+
+		String classSuffix = StringUtil.upperCaseFirstLetter(fileSuffix);
+
+		return getClassName(fileName, classSuffix);
+	}
+
+	public String getClassName(String fileName, String classSuffix) {
+		int x = fileName.lastIndexOf(StringPool.SLASH);
+
+		String packagePath = StringUtil.replace(
+			fileName.substring(0, x + 1), StringPool.SLASH, StringPool.PERIOD);
+
+		int y = fileName.indexOf(CharPool.PERIOD);
+
+		String simpleClassName = fileName.substring(x + 1, y) + classSuffix;
+
+		return packagePath + simpleClassName;
+	}
+
 	public String getNormalizedContent(String fileName) throws Exception {
 		String content = readFile(fileName);
 

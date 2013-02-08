@@ -151,6 +151,7 @@
 		<control-panel-entry-category>content</control-panel-entry-category>
 		<control-panel-entry-weight>11.0</control-panel-entry-weight>
 		<asset-renderer-factory>com.liferay.portlet.journal.asset.JournalArticleAssetRendererFactory</asset-renderer-factory>
+		<asset-renderer-factory>com.liferay.portlet.journal.asset.JournalFolderAssetRendererFactory</asset-renderer-factory>
 		<atom-collection-adapter>com.liferay.portlet.journal.atom.JournalArticleAtomCollectionProvider</atom-collection-adapter>
 		<trash-handler>com.liferay.portlet.journal.trash.JournalArticleTrashHandler</trash-handler>
 		<workflow-handler>com.liferay.portlet.journal.workflow.JournalArticleWorkflowHandler</workflow-handler>
@@ -262,6 +263,7 @@
 		<footer-portlet-javascript>/html/portlet/dynamic_data_lists/js/main.js</footer-portlet-javascript>
 		<footer-portlet-javascript>/html/portlet/dynamic_data_mapping/js/main.js</footer-portlet-javascript>
 		<footer-portlet-javascript>/html/portlet/document_library/js/main.js</footer-portlet-javascript>
+		<footer-portlet-javascript>/html/portlet/document_library/js/upload.js</footer-portlet-javascript>
 		<css-class-wrapper>portlet-document-library</css-class-wrapper>
 		<add-default-resource>true</add-default-resource>
 	</portlet>
@@ -329,6 +331,7 @@
 		<control-panel-entry-category>content</control-panel-entry-category>
 		<control-panel-entry-weight>13.0</control-panel-entry-weight>
 		<asset-renderer-factory>com.liferay.portlet.bookmarks.asset.BookmarksEntryAssetRendererFactory</asset-renderer-factory>
+		<asset-renderer-factory>com.liferay.portlet.bookmarks.asset.BookmarksFolderAssetRendererFactory</asset-renderer-factory>
 		<custom-attributes-display>com.liferay.portlet.bookmarks.BookmarksEntryCustomAttributesDisplay</custom-attributes-display>
 		<custom-attributes-display>com.liferay.portlet.bookmarks.BookmarksFolderCustomAttributesDisplay</custom-attributes-display>
 		<trash-handler>com.liferay.portlet.bookmarks.trash.BookmarksEntryTrashHandler</trash-handler>
@@ -925,6 +928,15 @@
 		<struts-path>asset_publisher</struts-path>
 		<configuration-action-class>com.liferay.portlet.assetpublisher.action.ConfigurationActionImpl</configuration-action-class>
 		<indexer-class>com.liferay.portlet.assetpublisher.util.AssetIndexer</indexer-class>
+		<scheduler-entry>
+			<scheduler-event-listener-class>com.liferay.portlet.assetpublisher.messaging.CheckAssetEntryMessageListener</scheduler-event-listener-class>
+			<trigger>
+				<simple>
+					<property-key>asset.publisher.check.interval</property-key>
+					<time-unit>hour</time-unit>
+				</simple>
+			</trigger>
+		</scheduler-entry>
 		<friendly-url-mapper-class>com.liferay.portal.kernel.portlet.DefaultFriendlyURLMapper</friendly-url-mapper-class>
 		<friendly-url-mapping>asset_publisher</friendly-url-mapping>
 		<friendly-url-routes>com/liferay/portlet/assetpublisher/asset-publisher-friendly-url-routes.xml</friendly-url-routes>
@@ -1764,6 +1776,7 @@
 		<indexer-class>com.liferay.portlet.dynamicdatalists.util.DDLIndexer</indexer-class>
 		<portlet-url-class>com.liferay.portal.struts.StrutsActionPortletURL</portlet-url-class>
 		<portlet-data-handler-class>com.liferay.portlet.dynamicdatalists.lar.DDLPortletDataHandler</portlet-data-handler-class>
+		<staged-model-data-handler-class>com.liferay.portlet.dynamicdatalists.lar.DDLRecordSetStagedModelDataHandler</staged-model-data-handler-class>
 		<control-panel-entry-category>content</control-panel-entry-category>
 		<control-panel-entry-weight>24.0</control-panel-entry-weight>
 		<asset-renderer-factory>com.liferay.portlet.dynamicdatalists.asset.DDLRecordAssetRendererFactory</asset-renderer-factory>
@@ -2024,6 +2037,32 @@
 		<css-class-wrapper>portlet-site-browser</css-class-wrapper>
 		<add-default-resource>true</add-default-resource>
 		<system>true</system>
+	</portlet>
+	<portlet>
+		<portlet-name>186</portlet-name>
+		<icon>/html/icons/directory.png</icon>
+		<parent-struts-path>directory</parent-struts-path>
+		<portlet-url-class>com.liferay.portal.struts.StrutsActionPortletURL</portlet-url-class>
+		<preferences-owned-by-group>true</preferences-owned-by-group>
+		<use-default-template>false</use-default-template>
+		<private-request-attributes>false</private-request-attributes>
+		<private-session-attributes>false</private-session-attributes>
+		<render-weight>50</render-weight>
+		<header-portlet-css>/html/portlet/directory/css/main.css</header-portlet-css>
+		<css-class-wrapper>portlet-directory</css-class-wrapper>
+	</portlet>
+	<portlet>
+		<portlet-name>187</portlet-name>
+		<icon>/html/icons/directory.png</icon>
+		<parent-struts-path>directory</parent-struts-path>
+		<portlet-url-class>com.liferay.portal.struts.StrutsActionPortletURL</portlet-url-class>
+		<preferences-owned-by-group>true</preferences-owned-by-group>
+		<use-default-template>false</use-default-template>
+		<private-request-attributes>false</private-request-attributes>
+		<private-session-attributes>false</private-session-attributes>
+		<render-weight>50</render-weight>
+		<header-portlet-css>/html/portlet/directory/css/main.css</header-portlet-css>
+		<css-class-wrapper>portlet-directory</css-class-wrapper>
 	</portlet>
 	<role-mapper>
 		<role-name>administrator</role-name>

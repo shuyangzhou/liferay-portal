@@ -119,20 +119,18 @@ public class DataFactory {
 
 	public DataFactory(
 		String baseDir, int maxGroupsCount, int maxJournalArticleSize,
-		int maxUserToGroupCount, SimpleCounter counter,
-		SimpleCounter dlDateCounter, SimpleCounter permissionCounter,
-		SimpleCounter resourceCounter, SimpleCounter resourcePermissionCounter,
-		SimpleCounter socialActivityCounter) {
+		int maxMBCategoryCount, int maxMBThreadCount, int maxMBMessageCount,
+		int maxUserToGroupCount) {
 
 		try {
 			_baseDir = baseDir;
 			_maxGroupsCount = maxGroupsCount;
 			_maxUserToGroupCount = maxUserToGroupCount;
+			_maxMBCategoryCount = maxMBCategoryCount;
+			_maxMBThreadCount = maxMBThreadCount;
+			_maxMBMessageCount = maxMBMessageCount;
 
-			_counter = counter;
-			_dlDateCounter = dlDateCounter;
-			_resourcePermissionCounter = resourcePermissionCounter;
-			_socialActivityCounter = socialActivityCounter;
+			initSimpleCounters();
 
 			initClassNames();
 			initCompany();
@@ -710,6 +708,14 @@ public class DataFactory {
 		return _company;
 	}
 
+	public long getCompanyId() {
+		return _company.getCompanyId();
+	}
+
+	public SimpleCounter getCounter() {
+		return _counter;
+	}
+
 	public List<CounterModelImpl> getCounters() {
 		return _counters;
 	}
@@ -732,6 +738,10 @@ public class DataFactory {
 
 	public User getDefaultUser() {
 		return _defaultUser;
+	}
+
+	public long getDefaultUserId() {
+		return _defaultUser.getUserId();
 	}
 
 	public long getDLFileEntryClassNameId() {
@@ -804,6 +814,10 @@ public class DataFactory {
 
 	public Role getUserRole() {
 		return _userRole;
+	}
+
+	public SimpleCounter getUserScreenNameCounter() {
+		return _userScreenNameCounter;
 	}
 
 	public long getWikiPageClassNameId() {
@@ -1061,6 +1075,23 @@ public class DataFactory {
 		_userRole = role;
 	}
 
+	public void initSimpleCounters() {
+		int totalMThreadCount = _maxMBCategoryCount * _maxMBThreadCount;
+		int totalMBMessageCount = totalMThreadCount * _maxMBMessageCount;
+
+		int counterOffset =
+			_maxMBCategoryCount + totalMThreadCount + totalMBMessageCount;
+
+		counterOffset = _maxGroupsCount * counterOffset;
+		counterOffset = _maxGroupsCount + counterOffset + 1;
+
+		_counter = new SimpleCounter(counterOffset);
+		_dlDateCounter = new SimpleCounter();
+		_resourcePermissionCounter = new SimpleCounter();
+		_socialActivityCounter = new SimpleCounter();
+		_userScreenNameCounter = new SimpleCounter();
+	}
+
 	public void initUserNames() throws Exception {
 		if (_userNames != null) {
 			return;
@@ -1118,6 +1149,9 @@ public class DataFactory {
 	private long _journalArticleClassNameId;
 	private String _journalArticleContent;
 	private int _maxGroupsCount;
+	private int _maxMBCategoryCount;
+	private int _maxMBMessageCount;
+	private int _maxMBThreadCount;
 	private int _maxUserToGroupCount;
 	private long _mbMessageClassNameId;
 	private Role _organizationAdministratorRole;
@@ -1137,6 +1171,7 @@ public class DataFactory {
 	private long _userClassNameId;
 	private Object[] _userNames;
 	private Role _userRole;
+	private SimpleCounter _userScreenNameCounter;
 	private long _wikiPageClassNameId;
 
 }

@@ -60,19 +60,19 @@ iteratorURL.setParameter("nodeId", String.valueOf(node.getNodeId()));
 			className="com.liferay.portlet.social.model.SocialActivity"
 			escapedModel="<%= true %>"
 			keyProperty="activityId"
-			modelVar="activity"
+			modelVar="socialActivity"
 		>
 
 			<%
-			User activityUser = UserLocalServiceUtil.getUserById(activity.getUserId());
-			JSONObject extraDataJSONObject = JSONFactoryUtil.createJSONObject(activity.getExtraData());
+			User socialActivityUser = UserLocalServiceUtil.getUserById(socialActivity.getUserId());
+			JSONObject extraDataJSONObject = JSONFactoryUtil.createJSONObject(socialActivity.getExtraData());
 			%>
 
 			<liferay-ui:search-container-column-text
 				name="activity"
 			>
 				<c:choose>
-					<c:when test="<%= activity.getType() == SocialActivityConstants.TYPE_ADD_ATTACHMENT || activity.getType() == SocialActivityConstants.TYPE_MOVE_ATTACHMENT_TO_TRASH || activity.getType() == SocialActivityConstants.TYPE_RESTORE_ATTACHMENT_FROM_TRASH %>">
+					<c:when test="<%= socialActivity.getType() == SocialActivityConstants.TYPE_ADD_ATTACHMENT || socialActivity.getType() == SocialActivityConstants.TYPE_MOVE_ATTACHMENT_TO_TRASH || socialActivity.getType() == SocialActivityConstants.TYPE_RESTORE_ATTACHMENT_FROM_TRASH %>">
 
 						<%
 						FileEntry fileEntry = PortletFileRepositoryUtil.getPortletFileEntry(extraDataJSONObject.getLong("fileEntryId"));
@@ -99,31 +99,31 @@ iteratorURL.setParameter("nodeId", String.valueOf(node.getNodeId()));
 						</liferay-util:buffer>
 
 						<c:choose>
-							<c:when test="<%= activity.getType() == SocialActivityConstants.TYPE_ADD_ATTACHMENT %>">
+							<c:when test="<%= socialActivity.getType() == SocialActivityConstants.TYPE_ADD_ATTACHMENT %>">
 								<liferay-ui:icon
 									image="clip"
 									label="<%= true %>"
-									message='<%= LanguageUtil.format(pageContext, "activity-wiki-add-attachment", new Object[] {activityUser.getFullName(), attachmentTitleLink}) %>'
+									message='<%= LanguageUtil.format(pageContext, "activity-wiki-add-attachment", new Object[] {socialActivityUser.getFullName(), attachmentTitleLink}) %>'
 								/>
 							</c:when>
-							<c:when test="<%= activity.getType() == SocialActivityConstants.TYPE_MOVE_ATTACHMENT_TO_TRASH %>">
+							<c:when test="<%= socialActivity.getType() == SocialActivityConstants.TYPE_MOVE_ATTACHMENT_TO_TRASH %>">
 								<liferay-ui:icon
 									image="delete_attachment"
 									label="<%= true %>"
-									message='<%= LanguageUtil.format(pageContext, "activity-wiki-delete-attachment", new Object[] {activityUser.getFullName(), attachmentTitleLink}) %>'
+									message='<%= LanguageUtil.format(pageContext, "activity-wiki-delete-attachment", new Object[] {socialActivityUser.getFullName(), attachmentTitleLink}) %>'
 								/>
 							</c:when>
-							<c:when test="<%= activity.getType() == SocialActivityConstants.TYPE_RESTORE_ATTACHMENT_FROM_TRASH %>">
+							<c:when test="<%= socialActivity.getType() == SocialActivityConstants.TYPE_RESTORE_ATTACHMENT_FROM_TRASH %>">
 								<liferay-ui:icon
 									image="undo"
 									label="<%= true %>"
-									message='<%= LanguageUtil.format(pageContext, "activity-wiki-restore-attachment", new Object[] {activityUser.getFullName(), attachmentTitleLink}) %>'
+									message='<%= LanguageUtil.format(pageContext, "activity-wiki-restore-attachment", new Object[] {socialActivityUser.getFullName(), attachmentTitleLink}) %>'
 								/>
 							</c:when>
 						</c:choose>
 					</c:when>
 
-					<c:when test="<%= (activity.getType() == WikiActivityKeys.ADD_PAGE) || (activity.getType() == WikiActivityKeys.UPDATE_PAGE) %>">
+					<c:when test="<%= (socialActivity.getType() == WikiActivityKeys.ADD_PAGE) || (socialActivity.getType() == WikiActivityKeys.UPDATE_PAGE) %>">
 
 						<%
 						double version = extraDataJSONObject.getDouble("version");
@@ -139,7 +139,7 @@ iteratorURL.setParameter("nodeId", String.valueOf(node.getNodeId()));
 						</portlet:renderURL>
 
 						<c:choose>
-							<c:when test="<%= activity.getType() == WikiActivityKeys.ADD_PAGE %>">
+							<c:when test="<%= socialActivity.getType() == WikiActivityKeys.ADD_PAGE %>">
 								<liferay-util:buffer var="pageTitleLink">
 									<aui:a href="<%= viewPageURL.toString() %>"><%= activityWikiPage.getTitle() %></aui:a>
 								</liferay-util:buffer>
@@ -147,10 +147,10 @@ iteratorURL.setParameter("nodeId", String.valueOf(node.getNodeId()));
 								<liferay-ui:icon
 									image="add_article"
 									label="<%= true %>"
-									message='<%= LanguageUtil.format(pageContext, "activity-wiki-add-page", new Object[] {activityUser.getFullName(), pageTitleLink}) %>'
+									message='<%= LanguageUtil.format(pageContext, "activity-wiki-add-page", new Object[] {socialActivityUser.getFullName(), pageTitleLink}) %>'
 								/>
 							</c:when >
-							<c:when test="<%= activity.getType() == WikiActivityKeys.UPDATE_PAGE %>">
+							<c:when test="<%= socialActivity.getType() == WikiActivityKeys.UPDATE_PAGE %>">
 								<liferay-util:buffer var="pageTitleLink">
 									<aui:a href="<%= viewPageURL.toString() %>"><%= version %></aui:a>
 								</liferay-util:buffer>
@@ -158,7 +158,7 @@ iteratorURL.setParameter("nodeId", String.valueOf(node.getNodeId()));
 								<liferay-ui:icon
 									image="edit"
 									label="<%= true %>"
-									message='<%= LanguageUtil.format(pageContext, "activity-wiki-update-page", new Object[] {activityUser.getFullName(), pageTitleLink}) %>'
+									message='<%= LanguageUtil.format(pageContext, "activity-wiki-update-page", new Object[] {socialActivityUser.getFullName(), pageTitleLink}) %>'
 								/>
 
 								<c:if test="<%= Validator.isNotNull(activityWikiPage.getSummary()) %>">
@@ -173,7 +173,7 @@ iteratorURL.setParameter("nodeId", String.valueOf(node.getNodeId()));
 			<liferay-ui:search-container-column-text
 				name="date"
 			>
-				<liferay-ui:message arguments="<%= LanguageUtil.getTimeDescription(pageContext, System.currentTimeMillis() - activity.getCreateDate(), true) %>" key="x-ago" />
+				<liferay-ui:message arguments="<%= LanguageUtil.getTimeDescription(pageContext, System.currentTimeMillis() - socialActivity.getCreateDate(), true) %>" key="x-ago" />
 			</liferay-ui:search-container-column-text>
 		</liferay-ui:search-container-row>
 

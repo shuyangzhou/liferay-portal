@@ -101,13 +101,14 @@
 			<finder-column name="groupId" />
 			<finder-column name="classNameId" />
 		</finder>
-		<finder name="G_S" return-type="DDMStructure" unique="true">
-			<finder-column name="groupId" />
-			<finder-column name="structureKey" />
-		</finder>
 		<finder name="C_C" return-type="Collection">
 			<finder-column name="companyId" />
 			<finder-column name="classNameId" />
+		</finder>
+		<finder name="G_C_S" return-type="DDMStructure" unique="true">
+			<finder-column name="groupId" />
+			<finder-column name="classNameId" />
+			<finder-column name="structureKey" />
 		</finder>
 		<finder name="G_N_D" return-type="Collection" db-index="false">
 			<finder-column name="groupId" />
@@ -199,14 +200,15 @@
 			<finder-column name="groupId" />
 			<finder-column name="classNameId" />
 		</finder>
-		<finder name="G_T" return-type="DDMStructure" unique="true">
-			<finder-column name="groupId" />
-			<finder-column name="templateKey" />
-		</finder>
 		<finder name="G_C_C" return-type="Collection">
 			<finder-column name="groupId" />
 			<finder-column name="classNameId" />
 			<finder-column name="classPK" />
+		</finder>
+		<finder name="G_C_T" return-type="DDMTemplate" unique="true">
+			<finder-column name="groupId" />
+			<finder-column name="classNameId" />
+			<finder-column name="templateKey" />
 		</finder>
 		<finder name="C_C_T" return-type="Collection">
 			<finder-column name="classNameId" />

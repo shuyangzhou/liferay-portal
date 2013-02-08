@@ -52,7 +52,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_team_assignments.
 
 	LinkedHashMap<String, Object> userParams = new LinkedHashMap<String, Object>();
 
-	userParams.put("inherit", true);
+	userParams.put("inherit", Boolean.TRUE);
 	userParams.put("usersGroups", team.getGroupId());
 
 	if (tabs2.equals("current")) {

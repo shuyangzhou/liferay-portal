@@ -329,6 +329,16 @@ public interface GroupLocalService extends BaseLocalService,
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException;
 
+	/**
+	* Removes the user from any forbidden groups and adds the user to all
+	* mandatory groups, if the user does not belong to them.
+	*
+	* @param user the user
+	* @throws PortalException if the user cannot be added or removed from any
+	groups.
+	* @throws SystemException if a system exception occurred
+	* @see com.liferay.portal.events.MembershipPolicyAction
+	*/
 	public void checkMembershipPolicy(com.liferay.portal.model.User user)
 		throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -494,6 +504,10 @@ public interface GroupLocalService extends BaseLocalService,
 		long[] groupIds)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getGroupsCount(long companyId, long parentGroupId, boolean site)
+		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**
 	* Returns the group associated with the layout.

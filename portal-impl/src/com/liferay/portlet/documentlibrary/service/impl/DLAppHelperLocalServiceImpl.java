@@ -324,6 +324,11 @@ public class DLAppHelperLocalServiceImpl
 				DLSyncConstants.EVENT_DELETE, "-1");
 		}
 
+		// Asset
+
+		assetEntryLocalService.deleteEntry(
+			DLFolderConstants.getClassName(), folder.getFolderId());
+
 		// Trash
 
 		if (folder.getModel() instanceof DLFolder) {
@@ -334,7 +339,7 @@ public class DLAppHelperLocalServiceImpl
 
 	public void getFileAsStream(
 			long userId, FileEntry fileEntry, boolean incrementCounter)
-		throws SystemException {
+		throws PortalException, SystemException {
 
 		if (!incrementCounter) {
 			return;

@@ -608,7 +608,8 @@ public class EditArticleAction extends PortletAction {
 		if (Validator.isNotNull(structureId)) {
 			DDMStructure ddmStructure =
 				DDMStructureLocalServiceUtil.fetchStructure(
-					groupId, structureId);
+					groupId, PortalUtil.getClassNameId(JournalArticle.class),
+					structureId);
 
 			Fields fields = DDMUtil.getFields(
 				ddmStructure.getStructureId(), serviceContext);
@@ -778,6 +779,27 @@ public class EditArticleAction extends PortletAction {
 							defaultLanguageId, defaultLanguageId, true,
 							localized);
 					}
+				}
+			}
+			else {
+				if (curArticle.isTemplateDriven()) {
+					DDMStructure ddmStructure =
+						DDMStructureLocalServiceUtil.getStructure(
+							groupId,
+							PortalUtil.getClassNameId(JournalArticle.class),
+							structureId);
+
+					Fields newFields = DDMUtil.getFields(
+						ddmStructure.getStructureId(), serviceContext);
+
+					Fields existingFields = JournalConverterUtil.getDDMFields(
+						ddmStructure, curArticle.getContent());
+
+					Fields mergedFields = DDMUtil.mergeFields(
+						newFields, existingFields);
+
+					content = JournalConverterUtil.getXML(
+						ddmStructure, mergedFields);
 				}
 			}
 

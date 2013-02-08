@@ -30,14 +30,9 @@ for (int i = 0; i < results.size(); i++) {
 
 	DLFileShortcut fileShortcut = null;
 
-	String thumbnailSrc = DLUtil.getThumbnailSrc(fileEntry, fileShortcut, themeDisplay);
-
-	sb.append(thumbnailSrc);
+	sb.append(DLUtil.getThumbnailSrc(fileEntry, fileShortcut, themeDisplay));
 	sb.append("\" style=\"");
-
-	String thumbnailStyle = DLUtil.getThumbnailStyle();
-
-	sb.append(thumbnailStyle);
+	sb.append(DLUtil.getThumbnailStyle());
 	sb.append("\">");
 	sb.append(fileEntry.getTitle());
 

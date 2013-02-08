@@ -741,6 +741,17 @@ public class DLFolderLocalServiceImpl extends DLFolderLocalServiceBaseImpl {
 		dlAppHelperLocalService.updateDependentStatus(
 			user, foldersAndFileEntriesAndFileShortcuts, status);
 
+		// Asset
+
+		if (status == WorkflowConstants.STATUS_APPROVED) {
+			assetEntryLocalService.updateVisible(
+				DLFolder.class.getName(), dlFolder.getFolderId(), true);
+		}
+		else if (status == WorkflowConstants.STATUS_IN_TRASH) {
+			assetEntryLocalService.updateVisible(
+				DLFolder.class.getName(), dlFolder.getFolderId(), false);
+		}
+
 		// Trash
 
 		if (status == WorkflowConstants.STATUS_IN_TRASH) {

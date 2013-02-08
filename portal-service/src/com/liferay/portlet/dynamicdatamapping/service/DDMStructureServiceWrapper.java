@@ -235,10 +235,11 @@ public class DDMStructureServiceWrapper implements DDMStructureService,
 	* @throws SystemException if a system exception occurred
 	*/
 	public com.liferay.portlet.dynamicdatamapping.model.DDMStructure fetchStructure(
-		long groupId, java.lang.String structureKey)
+		long groupId, long classNameId, java.lang.String structureKey)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
-		return _ddmStructureService.fetchStructure(groupId, structureKey);
+		return _ddmStructureService.fetchStructure(groupId, classNameId,
+			structureKey);
 	}
 
 	/**
@@ -268,10 +269,11 @@ public class DDMStructureServiceWrapper implements DDMStructureService,
 	* @throws SystemException if a system exception occurred
 	*/
 	public com.liferay.portlet.dynamicdatamapping.model.DDMStructure getStructure(
-		long groupId, java.lang.String structureKey)
+		long groupId, long classNameId, java.lang.String structureKey)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
-		return _ddmStructureService.getStructure(groupId, structureKey);
+		return _ddmStructureService.getStructure(groupId, classNameId,
+			structureKey);
 	}
 
 	/**
@@ -294,12 +296,12 @@ public class DDMStructureServiceWrapper implements DDMStructureService,
 	* @throws SystemException if a system exception occurred
 	*/
 	public com.liferay.portlet.dynamicdatamapping.model.DDMStructure getStructure(
-		long groupId, java.lang.String structureKey,
+		long groupId, long classNameId, java.lang.String structureKey,
 		boolean includeGlobalStructures)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
-		return _ddmStructureService.getStructure(groupId, structureKey,
-			includeGlobalStructures);
+		return _ddmStructureService.getStructure(groupId, classNameId,
+			structureKey, includeGlobalStructures);
 	}
 
 	/**
@@ -482,15 +484,17 @@ public class DDMStructureServiceWrapper implements DDMStructureService,
 	* @throws SystemException if a system exception occurred
 	*/
 	public com.liferay.portlet.dynamicdatamapping.model.DDMStructure updateStructure(
-		long structureId, long parentStructureId,
+		long groupId, long parentStructureId, long classNameId,
+		java.lang.String structureKey,
 		java.util.Map<java.util.Locale, java.lang.String> nameMap,
 		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
 		java.lang.String xsd,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
-		return _ddmStructureService.updateStructure(structureId,
-			parentStructureId, nameMap, descriptionMap, xsd, serviceContext);
+		return _ddmStructureService.updateStructure(groupId, parentStructureId,
+			classNameId, structureKey, nameMap, descriptionMap, xsd,
+			serviceContext);
 	}
 
 	/**
@@ -513,15 +517,15 @@ public class DDMStructureServiceWrapper implements DDMStructureService,
 	* @throws SystemException if a system exception occurred
 	*/
 	public com.liferay.portlet.dynamicdatamapping.model.DDMStructure updateStructure(
-		long groupId, long parentStructureId, java.lang.String structureKey,
+		long structureId, long parentStructureId,
 		java.util.Map<java.util.Locale, java.lang.String> nameMap,
 		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
 		java.lang.String xsd,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
-		return _ddmStructureService.updateStructure(groupId, parentStructureId,
-			structureKey, nameMap, descriptionMap, xsd, serviceContext);
+		return _ddmStructureService.updateStructure(structureId,
+			parentStructureId, nameMap, descriptionMap, xsd, serviceContext);
 	}
 
 	/**

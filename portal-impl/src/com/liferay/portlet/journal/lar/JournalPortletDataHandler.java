@@ -179,7 +179,9 @@ public class JournalPortletDataHandler extends BasePortletDataHandler {
 		if (Validator.isNotNull(article.getStructureId())) {
 			DDMStructure ddmStructure =
 				DDMStructureLocalServiceUtil.getStructure(
-					article.getGroupId(), article.getStructureId(), true);
+					article.getGroupId(),
+					PortalUtil.getClassNameId(JournalArticle.class),
+					article.getStructureId(), true);
 
 			articleElement.addAttribute(
 				"ddm-structure-uuid", ddmStructure.getUuid());
@@ -194,7 +196,9 @@ public class JournalPortletDataHandler extends BasePortletDataHandler {
 
 		if (Validator.isNotNull(article.getTemplateId())) {
 			DDMTemplate ddmTemplate = DDMTemplateLocalServiceUtil.getTemplate(
-				article.getGroupId(), article.getTemplateId(), true);
+				article.getGroupId(),
+				PortalUtil.getClassNameId(DDMStructure.class),
+				article.getTemplateId(), true);
 
 			articleElement.addAttribute(
 				"ddm-template-uuid", ddmTemplate.getUuid());
@@ -520,8 +524,9 @@ public class JournalPortletDataHandler extends BasePortletDataHandler {
 					article.getStructureId());
 
 				if (Validator.isNotNull(newStructureId)) {
-					existingDDMStructure = DDMStructureUtil.fetchByG_S(
+					existingDDMStructure = DDMStructureUtil.fetchByG_C_S(
 						portletDataContext.getScopeGroupId(),
+						PortalUtil.getClassNameId(JournalArticle.class),
 						String.valueOf(newStructureId));
 				}
 
@@ -569,8 +574,10 @@ public class JournalPortletDataHandler extends BasePortletDataHandler {
 					article.getTemplateId());
 
 				if (Validator.isNotNull(newTemplateId)) {
-					existingDDMTemplate = DDMTemplateUtil.fetchByG_T(
-						portletDataContext.getScopeGroupId(), newTemplateId);
+					existingDDMTemplate = DDMTemplateUtil.fetchByG_C_T(
+						portletDataContext.getScopeGroupId(),
+						PortalUtil.getClassNameId(DDMStructure.class),
+						newTemplateId);
 				}
 
 				if (existingDDMTemplate == null) {
@@ -1429,7 +1436,7 @@ public class JournalPortletDataHandler extends BasePortletDataHandler {
 			}
 			else {
 				importedFolder = JournalFolderLocalServiceUtil.updateFolder(
-					existingFolder.getFolderId(), parentFolderId,
+					userId, existingFolder.getFolderId(), parentFolderId,
 					folder.getName(), folder.getDescription(), false,
 					serviceContext);
 			}
@@ -1601,18 +1608,20 @@ public class JournalPortletDataHandler extends BasePortletDataHandler {
 			PortletPreferences portletPreferences)
 		throws Exception {
 
-		if (!portletDataContext.addPrimaryKey(
+		if (portletDataContext.addPrimaryKey(
 				JournalPortletDataHandler.class, "deleteData")) {
 
-			JournalArticleLocalServiceUtil.deleteArticles(
-				portletDataContext.getScopeGroupId());
-
-			DDMTemplateLocalServiceUtil.deleteTemplates(
-				portletDataContext.getScopeGroupId());
-
-			DDMStructureLocalServiceUtil.deleteStructures(
-				portletDataContext.getScopeGroupId());
+			return portletPreferences;
 		}
+
+		JournalArticleLocalServiceUtil.deleteArticles(
+			portletDataContext.getScopeGroupId());
+
+		DDMTemplateLocalServiceUtil.deleteTemplates(
+			portletDataContext.getScopeGroupId());
+
+		DDMStructureLocalServiceUtil.deleteStructures(
+			portletDataContext.getScopeGroupId());
 
 		return portletPreferences;
 	}
@@ -1627,9 +1636,7 @@ public class JournalPortletDataHandler extends BasePortletDataHandler {
 			"com.liferay.portlet.journal",
 			portletDataContext.getScopeGroupId());
 
-		Document document = SAXReaderUtil.createDocument();
-
-		Element rootElement = document.addElement("journal-data");
+		Element rootElement = addExportRootElement();
 
 		rootElement.addAttribute(
 			"group-id", String.valueOf(portletDataContext.getScopeGroupId()));
@@ -1734,7 +1741,7 @@ public class JournalPortletDataHandler extends BasePortletDataHandler {
 			}
 		}
 
-		return document.formattedString();
+		return rootElement.formattedString();
 	}
 
 	@Override

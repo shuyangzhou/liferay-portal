@@ -473,6 +473,7 @@ public class SourceFormatter {
 					languageKey.endsWith(StringPool.UNDERLINE) ||
 					languageKey.startsWith(StringPool.DASH) ||
 					languageKey.startsWith(StringPool.OPEN_BRACKET) ||
+					languageKey.startsWith(StringPool.OPEN_CURLY_BRACE) ||
 					languageKey.startsWith(StringPool.PERIOD) ||
 					languageKey.startsWith(StringPool.UNDERLINE)) {
 
@@ -1793,6 +1794,22 @@ public class SourceFormatter {
 
 				_sourceFormatterHelper.printError(
 					fileName, "line break: " + fileName + " " + lineCount);
+			}
+
+			if (trimmedLine.endsWith(StringPool.PLUS) &&
+				!trimmedLine.startsWith(StringPool.OPEN_PARENTHESIS)) {
+
+				String strippedQuotesLine = _stripQuotes(trimmedLine);
+
+				int closeParenthesisCount = StringUtil.count(
+					strippedQuotesLine, StringPool.CLOSE_PARENTHESIS);
+				int openParenthesisCount = StringUtil.count(
+					strippedQuotesLine, StringPool.OPEN_PARENTHESIS);
+
+				if (openParenthesisCount > closeParenthesisCount) {
+					_sourceFormatterHelper.printError(
+						fileName, "line break: " + fileName + " " + lineCount);
+				}
 			}
 
 			if (line.contains(StringPool.COMMA) &&

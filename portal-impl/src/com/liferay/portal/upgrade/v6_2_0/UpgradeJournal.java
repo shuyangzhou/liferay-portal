@@ -28,6 +28,7 @@ import com.liferay.portlet.dynamicdatamapping.model.DDMTemplateConstants;
 import com.liferay.portlet.journal.model.JournalArticle;
 import com.liferay.portlet.journal.model.JournalStructure;
 import com.liferay.portlet.journal.model.JournalTemplate;
+import com.liferay.portlet.journal.util.JournalConverterUtil;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -90,7 +91,7 @@ public class UpgradeJournal extends RenameUpgradePortletPreferences {
 			ps.setString(11, ddmStructureKey);
 			ps.setString(12, name);
 			ps.setString(13, description);
-			ps.setString(14, xsd);
+			ps.setString(14, JournalConverterUtil.getDDMXSD(xsd));
 			ps.setString(15, storageType);
 			ps.setInt(16, type);
 
@@ -123,7 +124,7 @@ public class UpgradeJournal extends RenameUpgradePortletPreferences {
 			DDMStructureConstants.TYPE_DEFAULT);
 	}
 
-	protected long addDDMTemplate(
+	protected void addDDMTemplate(
 			String uuid_, long ddmTemplateId, long groupId, long companyId,
 			long userId, String userName, Date createDate, Date modifiedDate,
 			long classNameId, long classPK, String templateKey, String name,
@@ -178,8 +179,6 @@ public class UpgradeJournal extends RenameUpgradePortletPreferences {
 		finally {
 			DataAccess.cleanUp(con, ps);
 		}
-
-		return ddmTemplateId;
 	}
 
 	@Override
@@ -371,17 +370,19 @@ public class UpgradeJournal extends RenameUpgradePortletPreferences {
 				long smallImageId = rs.getLong("smallImageId");
 				String smallImageURL = rs.getString("smallImageURL");
 
+				long ddmTemplateId = increment();
+
 				long classNameId = PortalUtil.getClassNameId(
 					DDMStructure.class.getName());
 
 				long classPK = 0;
 
 				if (Validator.isNotNull(structureId)) {
-					classPK = _ddmStructureIds.get(structureId);
+					classPK = _ddmStructureIds.get(groupId + "#" + structureId);
 				}
 
-				long ddmTemplateId = addDDMTemplate(
-					uuid_, increment(), groupId, companyId, userId, userName,
+				addDDMTemplate(
+					uuid_, ddmTemplateId, groupId, companyId, userId, userName,
 					createDate, modifiedDate, classNameId, classPK, templateId,
 					name, description,
 					DDMTemplateConstants.TEMPLATE_TYPE_DISPLAY,

@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.lar.PortletDataHandlerBoolean;
 import com.liferay.portal.kernel.lar.PortletDataHandlerControl;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -239,6 +240,17 @@ public class WikiPortletDataHandler extends BasePortletDataHandler {
 				String binPath = attachmentElement.attributeValue("bin-path");
 
 				InputStream inputStream = null;
+				String mimeType = null;
+
+				try {
+					inputStream = portletDataContext.getZipEntryAsInputStream(
+						binPath);
+
+					mimeType = MimeTypesUtil.getContentType(inputStream, name);
+				}
+				finally {
+					StreamUtil.cleanUp(inputStream);
+				}
 
 				try {
 					inputStream = portletDataContext.getZipEntryAsInputStream(
@@ -246,7 +258,7 @@ public class WikiPortletDataHandler extends BasePortletDataHandler {
 
 					WikiPageLocalServiceUtil.addPageAttachment(
 						userId, importedPage.getNodeId(),
-						importedPage.getTitle(), name, inputStream);
+						importedPage.getTitle(), name, inputStream, mimeType);
 				}
 				finally {
 					StreamUtil.cleanUp(inputStream);
@@ -466,14 +478,16 @@ public class WikiPortletDataHandler extends BasePortletDataHandler {
 			PortletPreferences portletPreferences)
 		throws Exception {
 
-		if (!portletDataContext.addPrimaryKey(
+		if (portletDataContext.addPrimaryKey(
 				WikiPortletDataHandler.class, "deleteData")) {
 
-			WikiNodeLocalServiceUtil.deleteNodes(
-				portletDataContext.getScopeGroupId());
+			return portletPreferences;
 		}
 
-		return null;
+		WikiNodeLocalServiceUtil.deleteNodes(
+			portletDataContext.getScopeGroupId());
+
+		return portletPreferences;
 	}
 
 	@Override
@@ -485,9 +499,7 @@ public class WikiPortletDataHandler extends BasePortletDataHandler {
 		portletDataContext.addPermissions(
 			"com.liferay.portlet.wiki", portletDataContext.getScopeGroupId());
 
-		Document document = SAXReaderUtil.createDocument();
-
-		Element rootElement = document.addElement("wiki-data");
+		Element rootElement = addExportRootElement();
 
 		rootElement.addAttribute(
 			"group-id", String.valueOf(portletDataContext.getScopeGroupId()));
@@ -502,7 +514,7 @@ public class WikiPortletDataHandler extends BasePortletDataHandler {
 			exportNode(portletDataContext, nodesElement, pagesElement, node);
 		}
 
-		return document.formattedString();
+		return rootElement.formattedString();
 	}
 
 	@Override

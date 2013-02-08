@@ -15,6 +15,7 @@
 package com.liferay.portalweb.portal.controlpanel.webcontent;
 
 import com.liferay.portalweb.portal.BaseTestSuite;
+import com.liferay.portalweb.portal.controlpanel.webcontent.wcfolder.WCFolderTestPlan;
 import com.liferay.portalweb.portal.controlpanel.webcontent.wcstructure.WCStructureTestPlan;
 import com.liferay.portalweb.portal.controlpanel.webcontent.wctemplate.WCTemplateTestPlan;
 import com.liferay.portalweb.portal.controlpanel.webcontent.wcwebcontent.WCWebContentTestPlan;
@@ -30,6 +31,7 @@ public class WebContentTestPlan extends BaseTestSuite {
 	public static Test suite() {
 		TestSuite testSuite = new TestSuite();
 
+		testSuite.addTest(WCFolderTestPlan.suite());
 		testSuite.addTest(WCStructureTestPlan.suite());
 		testSuite.addTest(WCTemplateTestPlan.suite());
 		testSuite.addTest(WCWebContentTestPlan.suite());

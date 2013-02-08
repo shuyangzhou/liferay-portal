@@ -1138,16 +1138,20 @@ public class JournalArticleLocalServiceImpl
 				DDMTemplate ddmTemplate = null;
 
 				try {
-					ddmTemplate = ddmTemplatePersistence.findByG_T(
-						article.getGroupId(), templateId);
+					ddmTemplate = ddmTemplatePersistence.findByG_C_T(
+						article.getGroupId(),
+						PortalUtil.getClassNameId(DDMStructure.class),
+						templateId);
 				}
 				catch (NoSuchTemplateException nste1) {
 					try {
 						Group companyGroup = groupLocalService.getCompanyGroup(
 							article.getCompanyId());
 
-						ddmTemplate = ddmTemplatePersistence.findByG_T(
-							companyGroup.getGroupId(), templateId);
+						ddmTemplate = ddmTemplatePersistence.findByG_C_T(
+							companyGroup.getGroupId(),
+							PortalUtil.getClassNameId(DDMStructure.class),
+							templateId);
 
 						tokens.put(
 							"company_group_id",
@@ -1155,8 +1159,10 @@ public class JournalArticleLocalServiceImpl
 					}
 					catch (NoSuchTemplateException nste2) {
 						if (!defaultTemplateId.equals(templateId)) {
-							ddmTemplate = ddmTemplatePersistence.findByG_T(
-								article.getGroupId(), defaultTemplateId);
+							ddmTemplate = ddmTemplatePersistence.findByG_C_T(
+								article.getGroupId(),
+								PortalUtil.getClassNameId(DDMStructure.class),
+								defaultTemplateId);
 						}
 						else {
 							throw nste1;
@@ -2991,12 +2997,16 @@ public class JournalArticleLocalServiceImpl
 		DDMStructure structure = null;
 
 		try {
-			structure = ddmStructurePersistence.findByG_S(
-				article.getGroupId(), article.getStructureId());
+			structure = ddmStructurePersistence.findByG_C_S(
+				article.getGroupId(),
+				PortalUtil.getClassNameId(JournalArticle.class),
+				article.getStructureId());
 		}
 		catch (NoSuchStructureException nsse) {
-			structure = ddmStructurePersistence.findByG_S(
-				companyGroup.getGroupId(), article.getStructureId());
+			structure = ddmStructurePersistence.findByG_C_S(
+				companyGroup.getGroupId(),
+				PortalUtil.getClassNameId(JournalArticle.class),
+				article.getStructureId());
 		}
 
 		String content = GetterUtil.getString(article.getContent());
@@ -3394,15 +3404,18 @@ public class JournalArticleLocalServiceImpl
 		long classTypeId = 0;
 
 		try {
-			DDMStructure ddmStructure = ddmStructurePersistence.fetchByG_S(
-				article.getGroupId(), article.getStructureId());
+			long classNameId = PortalUtil.getClassNameId(JournalArticle.class);
+
+			DDMStructure ddmStructure = ddmStructurePersistence.fetchByG_C_S(
+				article.getGroupId(), classNameId, article.getStructureId());
 
 			if (ddmStructure == null) {
 				Group companyGroup = groupLocalService.getCompanyGroup(
 					article.getCompanyId());
 
-				ddmStructure = ddmStructurePersistence.fetchByG_S(
-					companyGroup.getGroupId(), article.getStructureId());
+				ddmStructure = ddmStructurePersistence.fetchByG_C_S(
+					companyGroup.getGroupId(), classNameId,
+					article.getStructureId());
 			}
 
 			if (ddmStructure != null) {
@@ -3891,19 +3904,23 @@ public class JournalArticleLocalServiceImpl
 			DDMStructure ddmStructure = null;
 
 			try {
-				ddmStructure = ddmStructurePersistence.findByG_S(
-					groupId, structureId);
+				ddmStructure = ddmStructurePersistence.findByG_C_S(
+					groupId, PortalUtil.getClassNameId(JournalArticle.class),
+					structureId);
 			}
 			catch (NoSuchStructureException nsse) {
-				ddmStructure = ddmStructurePersistence.findByG_S(
-					companyGroup.getGroupId(), structureId);
+				ddmStructure = ddmStructurePersistence.findByG_C_S(
+					companyGroup.getGroupId(),
+					PortalUtil.getClassNameId(JournalArticle.class),
+					structureId);
 			}
 
 			DDMTemplate ddmTemplate = null;
 
 			if (Validator.isNotNull(templateId)) {
 				ddmTemplate = ddmTemplateService.getTemplate(
-					groupId, templateId);
+					groupId, PortalUtil.getClassNameId(DDMStructure.class),
+					templateId);
 
 				if (ddmTemplate.getClassPK() != ddmStructure.getStructureId()) {
 					throw new NoSuchTemplateException();

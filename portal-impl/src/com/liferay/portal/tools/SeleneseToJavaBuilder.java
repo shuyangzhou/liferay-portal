@@ -167,7 +167,7 @@ public class SeleneseToJavaBuilder {
 			}
 		}
 
-		if (_reportDuplicates && (sb.length() > 0)) {
+		if (_reportDuplicates && (sb.index() > 0)) {
 			System.out.println(
 				"There are " + duplicateTestHtmlCount +
 					" duplicate tests out of " + testHtmlCount +
@@ -229,13 +229,20 @@ public class SeleneseToJavaBuilder {
 				continue;
 			}
 
-			if (testCaseName.contains("../portalweb/")) {
-				continue;
-			}
-
 			int z = fileName.lastIndexOf(StringPool.SLASH);
 
 			String importClassName = fileName.substring(0, z);
+
+			if (!FileUtil.exists(
+					_basedir + "/" + importClassName + "/" + testCaseName)) {
+
+				throw new IllegalArgumentException(
+					fileName + " has improper relative path");
+			}
+
+			if (testCaseName.contains("../portalweb/")) {
+				continue;
+			}
 
 			int count = StringUtil.count(testCaseName, "..");
 
@@ -463,6 +470,8 @@ public class SeleneseToJavaBuilder {
 		sb.append("import com.liferay.portal.kernel.util.FileUtil;\n");
 		sb.append("import com.liferay.portal.kernel.util.StringPool;\n");
 		sb.append("import com.liferay.portalweb.portal.BaseTestCase;\n");
+		sb.append(
+			"import com.liferay.portalweb.portal.util.BrowserCommands;\n");
 		sb.append(
 			"import com.liferay.portalweb.portal.util.RuntimeVariables;\n");
 
@@ -894,7 +903,13 @@ public class SeleneseToJavaBuilder {
 					 param1.equals("waitForTextPresent") ||
 					 param1.equals("waitForVisible")) {
 
-				sb.append("selenium.");
+				if (param1.equals("downloadTempFile")) {
+					sb.append("BrowserCommands.");
+				}
+				else {
+					sb.append("selenium.");
+				}
+
 				sb.append(param1);
 				sb.append("(");
 
@@ -946,7 +961,13 @@ public class SeleneseToJavaBuilder {
 					 param1.equals("windowFocus") ||
 					 param1.equals("windowMaximize")) {
 
-				sb.append("selenium.");
+				if (param1.equals("setBrowserOption")) {
+					sb.append("BrowserCommands.");
+				}
+				else {
+					sb.append("selenium.");
+				}
+
 				sb.append(param1);
 				sb.append("();");
 			}

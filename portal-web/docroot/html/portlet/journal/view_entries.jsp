@@ -90,7 +90,7 @@ boolean showAddArticleButton = JournalPermission.contains(permissionChecker, sco
 			if (!displayTerms.getStructureId().equals("0")) {
 				structureId = displayTerms.getStructureId();
 
-				DDMStructure ddmStructure = DDMStructureLocalServiceUtil.getStructure(scopeGroupId, displayTerms.getStructureId());
+				DDMStructure ddmStructure = DDMStructureLocalServiceUtil.getStructure(scopeGroupId, PortalUtil.getClassNameId(JournalArticle.class), displayTerms.getStructureId());
 
 				ddmStructureName = ddmStructure.getName(locale);
 			}
@@ -117,7 +117,7 @@ boolean showAddArticleButton = JournalPermission.contains(permissionChecker, sco
 		<div class="portlet-msg-info">
 
 			<%
-			DDMTemplate ddmTemplate = DDMTemplateLocalServiceUtil.getTemplate(scopeGroupId, displayTerms.getTemplateId());
+			DDMTemplate ddmTemplate = DDMTemplateLocalServiceUtil.getTemplate(scopeGroupId, PortalUtil.getClassNameId(DDMStructure.class), displayTerms.getTemplateId());
 
 			DDMStructure ddmStructure = DDMStructureLocalServiceUtil.getStructure(ddmTemplate.getClassPK());
 			%>

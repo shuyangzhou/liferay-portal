@@ -64,6 +64,10 @@ public class MimeTypesUtil {
 		return getMimeTypes().getContentType(fileName);
 	}
 
+	public static String getExtensionContentType(String extension) {
+		return getMimeTypes().getExtensionContentType(extension);
+	}
+
 	/**
 	 * Returns the possible file extensions for a given content type.
 	 *

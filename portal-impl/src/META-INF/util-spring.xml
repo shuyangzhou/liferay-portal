@@ -571,7 +571,11 @@
 	<bean id="com.liferay.portal.security.auth.EmailAddressValidatorFactory" class="com.liferay.portal.security.auth.EmailAddressValidatorFactory" />
 	<bean id="com.liferay.portal.security.auth.FullNameGeneratorFactory" class="com.liferay.portal.security.auth.FullNameGeneratorFactory" />
 	<bean id="com.liferay.portal.security.auth.FullNameValidatorFactory" class="com.liferay.portal.security.auth.FullNameValidatorFactory" />
-	<bean id="com.liferay.portal.security.auth.MembershipPolicyFactory" class="com.liferay.portal.security.auth.MembershipPolicyFactory" />
+	<bean id="com.liferay.portal.security.auth.MembershipPolicyFactoryUtil" class="com.liferay.portal.security.auth.MembershipPolicyFactoryUtil">
+		<property name="membershipPolicyFactory">
+			<bean class="com.liferay.portal.security.auth.MembershipPolicyFactoryImpl" />
+		</property>
+	</bean>
 	<bean id="com.liferay.portal.security.auth.ScreenNameGeneratorFactory" class="com.liferay.portal.security.auth.ScreenNameGeneratorFactory" />
 	<bean id="com.liferay.portal.security.auth.ScreenNameValidatorFactory" class="com.liferay.portal.security.auth.ScreenNameValidatorFactory" />
 	<bean id="com.liferay.portal.security.ldap.AttributesTransformerFactory" class="com.liferay.portal.security.ldap.AttributesTransformerFactory" />

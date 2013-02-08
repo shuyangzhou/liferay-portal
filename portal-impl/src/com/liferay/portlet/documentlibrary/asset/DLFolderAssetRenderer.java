@@ -23,10 +23,8 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortletKeys;
 import com.liferay.portal.util.WebKeys;
-import com.liferay.portlet.asset.AssetRendererFactoryRegistryUtil;
 import com.liferay.portlet.asset.model.AssetRendererFactory;
 import com.liferay.portlet.asset.model.BaseAssetRenderer;
-import com.liferay.portlet.documentlibrary.model.DLFileEntry;
 import com.liferay.portlet.documentlibrary.model.DLFolder;
 import com.liferay.portlet.documentlibrary.service.DLAppServiceUtil;
 import com.liferay.portlet.trash.util.TrashUtil;
@@ -69,32 +67,23 @@ public class DLFolderAssetRenderer
 
 	@Override
 	public String getIconPath(ThemeDisplay themeDisplay) {
-		int foldersCount = 0;
-		int fileEntriesAndFileShortcutsCount = 0;
-
 		try {
-			foldersCount = DLAppServiceUtil.getFoldersCount(
-				_folder.getRepositoryId(), _folder.getFolderId());
-			fileEntriesAndFileShortcutsCount =
-				DLAppServiceUtil.getFileEntriesAndFileShortcutsCount(
+			if (DLAppServiceUtil.getFoldersAndFileEntriesAndFileShortcutsCount(
 					_folder.getRepositoryId(), _folder.getFolderId(),
-					WorkflowConstants.STATUS_APPROVED);
+					WorkflowConstants.STATUS_APPROVED, true) > 0) {
+
+				return themeDisplay.getPathThemeImages() +
+					"/common/folder_full_document.png";
+			}
 		}
 		catch (Exception e) {
-		}
-
-		if ((foldersCount + fileEntriesAndFileShortcutsCount) > 0) {
-			return themeDisplay.getPathThemeImages() +
-				"/common/folder_full_document.png";
 		}
 
 		return themeDisplay.getPathThemeImages() + "/common/folder_empty.png";
 	}
 
 	public String getPortletId() {
-		AssetRendererFactory assetRendererFactory =
-			AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByClassName(
-				DLFileEntry.class.getName());
+		AssetRendererFactory assetRendererFactory = getAssetRendererFactory();
 
 		return assetRendererFactory.getPortletId();
 	}

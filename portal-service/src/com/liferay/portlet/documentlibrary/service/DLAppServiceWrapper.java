@@ -258,23 +258,24 @@ public class DLAppServiceWrapper implements DLAppService,
 	* @throws SystemException if a system exception occurred
 	* @see com.liferay.portal.kernel.util.TempFileUtil
 	*/
-	public java.lang.String addTempFileEntry(long groupId, long folderId,
-		java.lang.String fileName, java.lang.String tempFolderName,
-		java.io.File file)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException,
-			java.io.IOException {
-		return _dlAppService.addTempFileEntry(groupId, folderId, fileName,
-			tempFolderName, file);
-	}
-
-	public java.lang.String addTempFileEntry(long groupId, long folderId,
-		java.lang.String fileName, java.lang.String tempFolderName,
-		java.io.InputStream inputStream)
+	public com.liferay.portal.kernel.repository.model.FileEntry addTempFileEntry(
+		long groupId, long folderId, java.lang.String fileName,
+		java.lang.String tempFolderName, java.io.File file,
+		java.lang.String mimeType)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
 		return _dlAppService.addTempFileEntry(groupId, folderId, fileName,
-			tempFolderName, inputStream);
+			tempFolderName, file, mimeType);
+	}
+
+	public com.liferay.portal.kernel.repository.model.FileEntry addTempFileEntry(
+		long groupId, long folderId, java.lang.String fileName,
+		java.lang.String tempFolderName, java.io.InputStream inputStream,
+		java.lang.String mimeType)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _dlAppService.addTempFileEntry(groupId, folderId, fileName,
+			tempFolderName, inputStream, mimeType);
 	}
 
 	/**

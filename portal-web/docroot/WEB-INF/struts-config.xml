@@ -383,6 +383,8 @@
 
 		<action path="/bookmarks/find_entry" type="com.liferay.portlet.bookmarks.action.FindEntryAction" />
 
+		<action path="/bookmarks/find_folder" type="com.liferay.portlet.bookmarks.action.FindFolderAction" />
+
 		<action path="/bookmarks/open_entry" type="com.liferay.portlet.bookmarks.action.OpenEntryAction" />
 
 		<action path="/bookmarks/search" forward="portlet.bookmarks.search" />
@@ -844,6 +846,8 @@
 			<forward name="portlet.journal.edit_folder" path="portlet.journal.edit_folder" />
 			<forward name="portlet.journal.error" path="portlet.journal.error" />
 		</action>
+
+		<action path="/journal/find_folder" type="com.liferay.portlet.journal.action.FindFolderAction" />
 
 		<action path="/journal/get_article" type="com.liferay.portlet.journal.action.GetArticleAction" />
 

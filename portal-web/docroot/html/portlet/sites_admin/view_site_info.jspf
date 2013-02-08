@@ -21,7 +21,7 @@
 <%
 LinkedHashMap<String, Object> userParams = new LinkedHashMap<String, Object>();
 
-userParams.put("inherit", true);
+userParams.put("inherit", Boolean.TRUE);
 userParams.put("usersGroups", new Long(groupId));
 
 int usersCount = UserLocalServiceUtil.searchCount(company.getCompanyId(), null, WorkflowConstants.STATUS_APPROVED, userParams);

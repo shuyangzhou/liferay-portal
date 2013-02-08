@@ -15,6 +15,7 @@
 package com.liferay.portlet.dynamicdatalists.lar;
 
 import com.liferay.portal.kernel.lar.PortletDataContext;
+import com.liferay.portal.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -82,17 +83,15 @@ public class DDLDisplayPortletDataHandler extends DDLPortletDataHandler {
 			return StringPool.BLANK;
 		}
 
-		Document document = SAXReaderUtil.createDocument();
-
-		Element rootElement = document.addElement("record-set-data");
+		Element rootElement = addExportRootElement();
 
 		DDLRecordSet recordSet = DDLRecordSetLocalServiceUtil.getRecordSet(
 			recordSetId);
 
-		_ddlPortletDataHandler.exportRecordSet(
+		StagedModelDataHandlerUtil.exportStagedModel(
 			portletDataContext, rootElement, recordSet);
 
-		return document.formattedString();
+		return rootElement.formattedString();
 	}
 
 	@Override
@@ -117,7 +116,7 @@ public class DDLDisplayPortletDataHandler extends DDLPortletDataHandler {
 		Element recordSetElement = rootElement.element("record-set");
 
 		if (recordSetElement != null) {
-			_ddlPortletDataHandler.importRecordSet(
+			StagedModelDataHandlerUtil.importStagedModel(
 				portletDataContext, recordSetElement);
 		}
 
@@ -157,8 +156,5 @@ public class DDLDisplayPortletDataHandler extends DDLPortletDataHandler {
 
 	private static Log _log = LogFactoryUtil.getLog(
 		DDLDisplayPortletDataHandler.class);
-
-	private DDLPortletDataHandler _ddlPortletDataHandler =
-		new DDLPortletDataHandler();
 
 }
