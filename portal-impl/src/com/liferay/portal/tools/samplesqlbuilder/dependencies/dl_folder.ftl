@@ -6,7 +6,7 @@ insert into DLFolder values ('${portalUUIDUtil.generate()}', ${dlFolder.folderId
 
 <#assign dlSync = dataFactory.addDLSync(dlFolder.companyId, dlFolder.folderId, dlFolder.repositoryId, dlFolder.parentFolderId, true)>
 
-insert into DLSync values (${dlSync.syncId}, ${dlSync.companyId}, '${dlFolderCreateDate}', '${dlFolderCreateDate}', ${dlSync.fileId}, '${dlSync.fileUuid}', ${dlSync.repositoryId}, ${dlSync.parentFolderId}, '${dlSync.name}', '${dlSync.description}', '${dlSync.event}', '${dlSync.type}', '${dlSync.version}');
+insert into DLSync values (${dlSync.syncId}, ${dlSync.companyId}, ${dataFactory.getDateLong(dlFolder.createDate)}, ${dataFactory.getDateLong(dlFolder.createDate)}, ${dlSync.fileId}, '${dlSync.fileUuid}', ${dlSync.repositoryId}, ${dlSync.parentFolderId}, '${dlSync.name}', '${dlSync.description}', '${dlSync.event}', '${dlSync.type}', '${dlSync.version}');
 
 <#if (maxDLFileEntryCount > 0)>
 	<#list 1..maxDLFileEntryCount as dlFileEntryCount>
