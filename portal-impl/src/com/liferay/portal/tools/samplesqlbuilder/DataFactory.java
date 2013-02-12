@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.model.ClassName;
 import com.liferay.portal.model.Company;
 import com.liferay.portal.model.Contact;
@@ -56,14 +57,15 @@ import com.liferay.portlet.blogs.model.impl.BlogsEntryImpl;
 import com.liferay.portlet.blogs.model.impl.BlogsStatsUserImpl;
 import com.liferay.portlet.documentlibrary.model.DLFileEntry;
 import com.liferay.portlet.documentlibrary.model.DLFileEntryMetadata;
-import com.liferay.portlet.documentlibrary.model.DLFileRank;
+import com.liferay.portlet.documentlibrary.model.DLFileEntryType;
+import com.liferay.portlet.documentlibrary.model.DLFileEntryTypeConstants;
 import com.liferay.portlet.documentlibrary.model.DLFileVersion;
 import com.liferay.portlet.documentlibrary.model.DLFolder;
 import com.liferay.portlet.documentlibrary.model.DLSync;
 import com.liferay.portlet.documentlibrary.model.DLSyncConstants;
 import com.liferay.portlet.documentlibrary.model.impl.DLFileEntryImpl;
 import com.liferay.portlet.documentlibrary.model.impl.DLFileEntryMetadataImpl;
-import com.liferay.portlet.documentlibrary.model.impl.DLFileRankImpl;
+import com.liferay.portlet.documentlibrary.model.impl.DLFileEntryTypeImpl;
 import com.liferay.portlet.documentlibrary.model.impl.DLFileVersionImpl;
 import com.liferay.portlet.documentlibrary.model.impl.DLFolderImpl;
 import com.liferay.portlet.documentlibrary.model.impl.DLSyncImpl;
@@ -135,6 +137,7 @@ public class DataFactory {
 			initClassNames();
 			initCompany();
 			initDefaultUser();
+			initDLFileEntryType();
 			initGuestGroup();
 			initJournalArticle(maxJournalArticleSize);
 			initRoles();
@@ -330,20 +333,6 @@ public class DataFactory {
 		dlFileEntryMetadata.setFileVersionId(fileVersionId);
 
 		return dlFileEntryMetadata;
-	}
-
-	public DLFileRank addDLFileRank(
-		long groupId, long companyId, long userId, long fileEntryId) {
-
-		DLFileRank dlFileRank = new DLFileRankImpl();
-
-		dlFileRank.setFileRankId(_counter.get());
-		dlFileRank.setGroupId(groupId);
-		dlFileRank.setCompanyId(companyId);
-		dlFileRank.setUserId(userId);
-		dlFileRank.setFileEntryId(fileEntryId);
-
-		return dlFileRank;
 	}
 
 	public DLFileVersion addDLFileVersion(DLFileEntry dlFileEntry) {
@@ -736,6 +725,10 @@ public class DataFactory {
 		return _ddmContentClassNameId;
 	}
 
+	public DLFileEntryType getDefaultDLFileEntryType() {
+		return _defaultDLFileEntryType;
+	}
+
 	public User getDefaultUser() {
 		return _defaultUser;
 	}
@@ -806,10 +799,6 @@ public class DataFactory {
 
 	public long getUserClassNameId() {
 		return _userClassNameId;
-	}
-
-	public Object[] getUserNames() {
-		return _userNames;
 	}
 
 	public Role getUserRole() {
@@ -919,6 +908,20 @@ public class DataFactory {
 		_defaultUser = new UserImpl();
 
 		_defaultUser.setUserId(_counter.get());
+	}
+
+	public void initDLFileEntryType() {
+		_defaultDLFileEntryType = new DLFileEntryTypeImpl();
+
+		Date date = new Date();
+
+		_defaultDLFileEntryType.setUuid(PortalUUIDUtil.generate());
+		_defaultDLFileEntryType.setFileEntryTypeId(
+			DLFileEntryTypeConstants.FILE_ENTRY_TYPE_ID_BASIC_DOCUMENT);
+		_defaultDLFileEntryType.setCreateDate(date);
+		_defaultDLFileEntryType.setModifiedDate(date);
+		_defaultDLFileEntryType.setName(
+			DLFileEntryTypeConstants.NAME_BASIC_DOCUMENT);
 	}
 
 	public void initGuestGroup() {
@@ -1093,27 +1096,34 @@ public class DataFactory {
 	}
 
 	public void initUserNames() throws Exception {
-		if (_userNames != null) {
-			return;
-		}
-
-		_userNames = new Object[2];
-
 		String dependenciesDir =
 			"../portal-impl/src/com/liferay/portal/tools/samplesqlbuilder/" +
 				"dependencies/";
 
-		List<String> firstNames = ListUtil.fromFile(
+		_firstNames = ListUtil.fromFile(
 			new File(_baseDir, dependenciesDir + "first_names.txt"));
-		List<String> lastNames = ListUtil.fromFile(
+		_lastNames = ListUtil.fromFile(
 			new File(_baseDir, dependenciesDir + "last_names.txt"));
-
-		_userNames[0] = firstNames;
-		_userNames[1] = lastNames;
 	}
 
 	public IntegerWrapper newInteger() {
 		return new IntegerWrapper();
+	}
+
+	public String[] nextName(long currentIndex) {
+		int firstNamesSize = _firstNames.size();
+		int lastNamesSize = _lastNames.size();
+
+		int firstNameIndex =
+			(int)(currentIndex / lastNamesSize) % firstNamesSize;
+		int lastNameIndex = (int)(currentIndex % lastNamesSize);
+
+		String[] names = new String[2];
+
+		names[0] = _firstNames.get(firstNameIndex);
+		names[1] = _lastNames.get(lastNameIndex);
+
+		return names;
 	}
 
 	protected Date newCreateDate() {
@@ -1140,14 +1150,27 @@ public class DataFactory {
 	private List<CounterModelImpl> _counters;
 	private long _ddlRecordSetClassNameId;
 	private long _ddmContentClassNameId;
+
+	private DLFileEntryType _defaultDLFileEntryType;
+
 	private User _defaultUser;
+
 	private SimpleCounter _dlDateCounter;
+
 	private long _dlFileEntryClassNameId;
+
+	private List<String> _firstNames;
+
 	private long _groupClassNameId;
+
 	private Group _guestGroup;
+
 	private Role _guestRole;
+
 	private long _journalArticleClassNameId;
+
 	private String _journalArticleContent;
+	private List<String> _lastNames;
 	private int _maxGroupsCount;
 	private int _maxMBCategoryCount;
 	private int _maxMBMessageCount;
