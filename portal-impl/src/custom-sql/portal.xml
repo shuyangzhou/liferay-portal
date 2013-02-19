@@ -1405,15 +1405,19 @@
 				(Contact_.twitterSn != '')
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.service.persistence.UserFinder.joinByNoOrganizations">
+    <sql id="com.liferay.portal.service.persistence.UserFinder.joinByNoOrganizations">
 		<![CDATA[
 			WHERE
-				(User_.userId NOT IN (
-					SELECT
-						userId
-					FROM
-						Users_Orgs
-				))
+                (NOT EXISTS
+                    (
+                        SELECT
+                            userId
+                        FROM
+                            Users_Orgs
+                        WHERE
+                            User_.userId=Users_orgs.userId
+                    )
+                )
 		]]>
 	</sql>
 	<sql id="com.liferay.portal.service.persistence.UserFinder.joinByUserGroupRole">
