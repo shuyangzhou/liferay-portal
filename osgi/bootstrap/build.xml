@@ -5,6 +5,6 @@
 
 	<import file="../../build-common-java.xml" />
 
-	<property name="deploy.dir" value="${liferay.home}/data/osgi/core" />
+	<property name="deploy.dir" value="${portal-impl.classes.dir}/com/liferay/portal/deploy/dependencies/osgi/core" />
 	<property name="jar.file" value="${ant.project.name}" />
 </project>

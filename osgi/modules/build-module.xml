@@ -5,7 +5,7 @@
 
 	<import file="../../build-common-java.xml" />
 
-	<property name="deploy.dir" value="${liferay.home}/data/osgi/portal" />
+	<property name="deploy.dir" value="${portal-impl.classes.dir}/com/liferay/portal/deploy/dependencies/osgi/portal" />
 
 	<target name="compile">
 		<if>

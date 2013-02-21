@@ -16,9 +16,11 @@ package com.liferay.portal.module.framework;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.kernel.util.ReflectionUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.util.ClassLoaderUtil;
 import com.liferay.portal.util.PropsValues;
 
@@ -43,6 +45,13 @@ public class ModuleFrameworkAdapterHelper {
 		}
 
 		try {
+			_initDir(
+				"com/liferay/portal/deploy/dependencies/osgi/core",
+				PropsValues.MODULE_FRAMEWORK_CORE_DIR);
+			_initDir(
+				"com/liferay/portal/deploy/dependencies/osgi/portal",
+				PropsValues.MODULE_FRAMEWORK_PORTAL_DIR);
+
 			File coreDir = new File(PropsValues.MODULE_FRAMEWORK_CORE_DIR);
 
 			File[] files = coreDir.listFiles();
@@ -101,7 +110,7 @@ public class ModuleFrameworkAdapterHelper {
 		return exec(methodName, parameterTypes, parameters);
 	}
 
-	private Method searchMethod(String methodName, Class<?>[] parameterTypes)
+	protected Method searchMethod(String methodName, Class<?>[] parameterTypes)
 		throws Exception {
 
 		MethodKey methodKey = new MethodKey(
@@ -117,6 +126,29 @@ public class ModuleFrameworkAdapterHelper {
 		_methods.put(methodKey, method);
 
 		return method;
+	}
+
+	private static void _initDir(String sourcePath, String destinationPath)
+		throws Exception {
+
+		if (FileUtil.exists(destinationPath)) {
+			return;
+		}
+
+		FileUtil.mkdirs(destinationPath);
+
+		ClassLoader classLoader = ClassLoaderUtil.getPortalClassLoader();
+
+		String[] jarFileNames = StringUtil.split(
+			StringUtil.read(classLoader, sourcePath + "/jars.txt"));
+
+		for (String jarFileName : jarFileNames) {
+			byte[] bytes = FileUtil.getBytes(
+				classLoader.getResourceAsStream(
+					sourcePath + "/" + jarFileName));
+
+			FileUtil.write(new File(destinationPath, jarFileName), bytes);
+		}
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(

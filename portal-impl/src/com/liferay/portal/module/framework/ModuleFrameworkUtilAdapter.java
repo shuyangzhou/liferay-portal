@@ -65,7 +65,7 @@ public class ModuleFrameworkUtilAdapter {
 	}
 
 	public static void startFramework() throws Exception {
-		ClassLoader current = ClassLoaderUtil.getContextClassLoader();
+		ClassLoader classLoader = ClassLoaderUtil.getContextClassLoader();
 
 		ClassLoaderUtil.setContextClassLoader(
 			ModuleFrameworkAdapterHelper.getClassLoader());
@@ -74,7 +74,7 @@ public class ModuleFrameworkUtilAdapter {
 			_moduleFrameworkAdapterHelper.execute("startFramework");
 		}
 		finally {
-			ClassLoaderUtil.setContextClassLoader(current);
+			ClassLoaderUtil.setContextClassLoader(classLoader);
 		}
 	}
 

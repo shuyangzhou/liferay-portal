@@ -608,7 +608,7 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 	}
 
 	private String _getFelixFileInstallDir() {
-		return PropsValues.MODULE_FRAMEWORK_LIB_DIR + StringPool.COMMA +
+		return PropsValues.MODULE_FRAMEWORK_PORTAL_DIR + StringPool.COMMA +
 			StringUtil.merge(PropsValues.MODULE_FRAMEWORK_AUTO_DEPLOY_DIRS);
 	}
 

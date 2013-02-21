@@ -187,7 +187,7 @@ public abstract class BaseSandboxHandler implements SandboxHandler {
 			return null;
 		}
 
-		String dirName = System.getenv("CATALINA_BASE") + "/conf";
+		String dirName = System.getProperty("catalina.base") + "/conf";
 
 		String[] fileNames = FileUtil.find(dirName, "**/ROOT.xml", null);
 

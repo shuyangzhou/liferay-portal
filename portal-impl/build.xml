@@ -1306,6 +1306,35 @@ public class Creole10Parser]]></replacevalue>
 		<ant dir="../util-java" target="jar" inheritAll="false" />
 		<ant dir="../util-taglib" target="jar" inheritAll="false" />
 
+		<copy todir="${portal-impl.classes.dir}/com/liferay/portal/deploy/dependencies/osgi/core">
+			<fileset dir="${project.dir}/osgi/lib/${module.framework.implementation}/core" includes="*.jar" />
+		</copy>
+
+		<fileset dir="${portal-impl.classes.dir}/com/liferay/portal/deploy/dependencies/osgi/core" id="osgi.core.jars">
+			<include name="*.jar" />
+		</fileset>
+
+		<pathconvert property="osgi.core.jars.list" pathsep="," refid="osgi.core.jars">
+			<flattenmapper />
+		</pathconvert>
+
+		<echo file="${portal-impl.classes.dir}/com/liferay/portal/deploy/dependencies/osgi/core/jars.txt">${osgi.core.jars.list}</echo>
+
+		<copy todir="${portal-impl.classes.dir}/com/liferay/portal/deploy/dependencies/osgi/portal">
+			<fileset dir="${project.dir}/osgi/lib/common/portal" includes="*.jar" />
+			<fileset dir="${project.dir}/osgi/lib/${module.framework.implementation}/portal" includes="*.jar" />
+		</copy>
+
+		<fileset dir="${portal-impl.classes.dir}/com/liferay/portal/deploy/dependencies/osgi/portal" id="osgi.portal.jars">
+			<include name="*.jar" />
+		</fileset>
+
+		<pathconvert property="osgi.portal.jars.list" pathsep="," refid="osgi.portal.jars">
+			<flattenmapper />
+		</pathconvert>
+
+		<echo file="${portal-impl.classes.dir}/com/liferay/portal/deploy/dependencies/osgi/portal/jars.txt">${osgi.portal.jars.list}</echo>
+
 		<if>
 			<not>
 				<and>
