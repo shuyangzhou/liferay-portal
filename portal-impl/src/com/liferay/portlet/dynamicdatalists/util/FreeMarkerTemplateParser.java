@@ -14,33 +14,37 @@
 
 package com.liferay.portlet.dynamicdatalists.util;
 
-import com.liferay.portal.kernel.template.StringTemplateResource;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateContextType;
-import com.liferay.portal.kernel.template.TemplateManagerUtil;
-import com.liferay.portal.kernel.template.TemplateResource;
-import com.liferay.portal.kernel.templateparser.TemplateContext;
+import com.liferay.portal.templateparser.BaseTemplateParser;
+import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PropsValues;
+
+import java.util.Map;
 
 /**
  * @author Marcellus Tavares
  */
-public class FreeMarkerTemplateParser extends
-	com.liferay.portlet.journal.util.FreeMarkerTemplateParser {
+public class FreeMarkerTemplateParser extends BaseTemplateParser {
 
-	@Override
-	protected String getErrorTemplateId() {
-		return PropsValues.DYNAMIC_DATA_LISTS_ERROR_TEMPLATE_FREEMARKER;
+	public FreeMarkerTemplateParser(
+		ThemeDisplay themeDisplay, Map<String, Object> contextObjects,
+		String script) {
+
+		super(
+			themeDisplay, contextObjects, script,
+			PropsValues.DYNAMIC_DATA_LISTS_ERROR_TEMPLATE_FREEMARKER,
+			TemplateConstants.LANG_TYPE_FTL, TemplateContextType.STANDARD);
 	}
 
-	@Override
-	protected TemplateContext getTemplateContext() throws Exception {
-		TemplateResource templateResource = new StringTemplateResource(
-			getTemplateId(), getScript());
+	public FreeMarkerTemplateParser(
+		ThemeDisplay themeDisplay, Map<String, String> tokens, String viewMode,
+		String languageId, String xml, String script) {
 
-		return TemplateManagerUtil.getTemplate(
-			TemplateConstants.LANG_TYPE_FTL, templateResource,
-			getErrorTemplateResource(), TemplateContextType.STANDARD);
+		super(
+			themeDisplay, tokens, viewMode, languageId, xml, script,
+			PropsValues.DYNAMIC_DATA_LISTS_ERROR_TEMPLATE_FREEMARKER,
+			TemplateConstants.LANG_TYPE_FTL, TemplateContextType.STANDARD);
 	}
 
 }

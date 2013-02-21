@@ -24,6 +24,8 @@ import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.theme.ThemeDisplay;
 
+import java.lang.reflect.Constructor;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -61,17 +63,19 @@ public abstract class BaseTransformer implements Transformer {
 		TemplateParser templateParser = null;
 
 		try {
-			templateParser = (TemplateParser)InstanceFactory.newInstance(
-				PortalClassLoaderUtil.getClassLoader(),
-				templateParserClassName);
+			ClassLoader classLoader = PortalClassLoaderUtil.getClassLoader();
+
+			Class<?> clazz = classLoader.loadClass(templateParserClassName);
+
+			Constructor<?> constructor = clazz.getConstructor(
+				ThemeDisplay.class, Map.class, String.class);
+
+			templateParser = (TemplateParser)constructor.newInstance(
+				themeDisplay, contextObjects, script);
 		}
 		catch (Exception e) {
 			throw new TransformException(e);
 		}
-
-		templateParser.setContextObjects(contextObjects);
-		templateParser.setScript(script);
-		templateParser.setThemeDisplay(themeDisplay);
 
 		return templateParser.transform();
 	}
@@ -183,21 +187,23 @@ public abstract class BaseTransformer implements Transformer {
 				TemplateParser templateParser = null;
 
 				try {
-					templateParser =
-						(TemplateParser)InstanceFactory.newInstance(
-							PortalClassLoaderUtil.getClassLoader(),
-							templateParserClassName);
+					ClassLoader classLoader =
+						PortalClassLoaderUtil.getClassLoader();
+
+					Class<?> clazz = classLoader.loadClass(
+						templateParserClassName);
+
+					Constructor<?> constructor = clazz.getConstructor(
+						ThemeDisplay.class, Map.class, String.class,
+						String.class, String.class, String.class);
+
+					templateParser = (TemplateParser)constructor.newInstance(
+						themeDisplay, tokens, viewMode, languageId, xml,
+						script);
 				}
 				catch (Exception e) {
 					throw new TransformException(e);
 				}
-
-				templateParser.setLanguageId(languageId);
-				templateParser.setScript(script);
-				templateParser.setThemeDisplay(themeDisplay);
-				templateParser.setTokens(tokens);
-				templateParser.setViewMode(viewMode);
-				templateParser.setXML(xml);
 
 				output = templateParser.transform();
 			}

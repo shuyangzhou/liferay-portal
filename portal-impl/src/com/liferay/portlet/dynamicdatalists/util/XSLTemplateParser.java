@@ -14,18 +14,38 @@
 
 package com.liferay.portlet.dynamicdatalists.util;
 
+import com.liferay.portal.kernel.template.TemplateConstants;
+import com.liferay.portal.kernel.template.TemplateContextType;
+import com.liferay.portal.templateparser.BaseTemplateParser;
+import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PropsValues;
+
+import java.util.Map;
 
 /**
  * @author Marcellus Tavares
  * @author Tina Tian
  */
-public class XSLTemplateParser extends
-	com.liferay.portlet.journal.util.XSLTemplateParser {
+public class XSLTemplateParser extends BaseTemplateParser {
 
-	@Override
-	protected String getErrorTemplateId() {
-		return PropsValues.DYNAMIC_DATA_LISTS_ERROR_TEMPLATE_XSL;
+	public XSLTemplateParser(
+		ThemeDisplay themeDisplay, Map<String, Object> contextObjects,
+		String script) {
+
+		super(
+			themeDisplay, contextObjects, script,
+			PropsValues.DYNAMIC_DATA_LISTS_ERROR_TEMPLATE_XSL,
+			TemplateConstants.LANG_TYPE_XSL, TemplateContextType.EMPTY);
+	}
+
+	public XSLTemplateParser(
+		ThemeDisplay themeDisplay, Map<String, String> tokens, String viewMode,
+		String languageId, String xml, String script) {
+
+		super(
+			themeDisplay, tokens, viewMode, languageId, xml, script,
+			PropsValues.DYNAMIC_DATA_LISTS_ERROR_TEMPLATE_XSL,
+			TemplateConstants.LANG_TYPE_XSL, TemplateContextType.EMPTY);
 	}
 
 }
