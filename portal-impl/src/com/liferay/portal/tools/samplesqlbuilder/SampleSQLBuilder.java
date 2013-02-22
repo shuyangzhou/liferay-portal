@@ -262,15 +262,12 @@ public class SampleSQLBuilder {
 		processTemplate(_tplDLFolders, context);
 	}
 
-	public void insertGroup(
-			Group group, List<Layout> privateLayouts,
-			List<Layout> publicLayouts)
+	public void insertGroup(Group group, List<Layout> publicLayouts)
 		throws Exception {
 
 		Map<String, Object> context = getContext();
 
 		put(context, "group", group);
-		put(context, "privateLayouts", privateLayouts);
 		put(context, "publicLayouts", publicLayouts);
 
 		processTemplate(_tplGroup, context);
@@ -282,6 +279,24 @@ public class SampleSQLBuilder {
 		put(context, "mbCategory", mbCategory);
 
 		processTemplate(_tplMBCategory, context);
+	}
+
+	public void insertMBDiscussion(
+			long groupId, long userId, long classNameId, long classPK,
+			long mbThreadId, long mbRootMessageId, int maxCommentCount)
+		throws Exception {
+
+		Map<String, Object> context = getContext();
+
+		put(context, "groupId", groupId);
+		put(context, "userId", userId);
+		put(context, "classNameId", classNameId);
+		put(context, "classPK", classPK);
+		put(context, "mbThreadId", mbThreadId);
+		put(context, "mbRootMessageId", mbRootMessageId);
+		put(context, "maxCommentCount", maxCommentCount);
+
+		processTemplate(_tplMBDiscussion, context);
 	}
 
 	public void insertMBMessage(MBMessage mbMessage) throws Exception {
@@ -304,15 +319,13 @@ public class SampleSQLBuilder {
 	}
 
 	public void insertUser(
-			Contact contact, List<Long> groupIds, List<Long> organizationIds,
-			List<Role> roleIds, User user)
+			Contact contact, List<Long> groupIds, List<Role> roleIds, User user)
 		throws Exception {
 
 		Map<String, Object> context = getContext();
 
 		put(context, "contact", contact);
 		put(context, "groupIds", groupIds);
-		put(context, "organizationIds", organizationIds);
 		put(context, "roleIds", roleIds);
 		put(context, "user", user);
 
@@ -663,6 +676,7 @@ public class SampleSQLBuilder {
 	private String _tplDLFolders = _TPL_ROOT + "dl_folders.ftl";
 	private String _tplGroup = _TPL_ROOT + "group.ftl";
 	private String _tplMBCategory = _TPL_ROOT + "mb_category.ftl";
+	private String _tplMBDiscussion = _TPL_ROOT + "mb_discussion.ftl";
 	private String _tplMBMessage = _TPL_ROOT + "mb_message.ftl";;
 	private String _tplResourcePermission =
 		_TPL_ROOT + "resource_permission.ftl";
