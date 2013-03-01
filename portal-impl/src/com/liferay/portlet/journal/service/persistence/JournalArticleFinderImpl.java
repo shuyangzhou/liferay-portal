@@ -796,7 +796,7 @@ public class JournalArticleFinderImpl
 				sql = StringUtil.replace(
 					sql, "(structureId = ?)",
 					"((structureId = ?) OR (structureId = '') OR " +
-						"(structureId = null))");
+						"(structureId is null))");
 			}
 
 			if (inlineSQLHelper) {
@@ -1018,7 +1018,7 @@ public class JournalArticleFinderImpl
 				sql = StringUtil.replace(
 					sql, "(structureId = ?)",
 					"((structureId = ?) OR (structureId = '') OR" +
-						"(structureId = null))");
+						"(structureId is null))");
 			}
 
 			if (inlineSQLHelper) {
