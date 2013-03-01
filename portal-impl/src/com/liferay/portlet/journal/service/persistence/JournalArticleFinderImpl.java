@@ -796,7 +796,7 @@ public class JournalArticleFinderImpl
 				sql = StringUtil.replace(
 					sql, "(structureId = ?)",
 					"((structureId = ?) OR (structureId = '') OR " +
-						"(structureId = null))");
+						"(structureId is null))");
 			}
 
 			if (inlineSQLHelper) {
@@ -935,8 +935,6 @@ public class JournalArticleFinderImpl
 
 			QueryPos qPos = QueryPos.getInstance(q);
 
-			qPos.add(companyId);
-
 			if (groupId > 0) {
 				qPos.add(groupId);
 			}
@@ -1020,7 +1018,7 @@ public class JournalArticleFinderImpl
 				sql = StringUtil.replace(
 					sql, "(structureId = ?)",
 					"((structureId = ?) OR (structureId = '') OR" +
-						"(structureId = null))");
+						"(structureId is null))");
 			}
 
 			if (inlineSQLHelper) {
