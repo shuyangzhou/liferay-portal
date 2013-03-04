@@ -357,7 +357,7 @@ public class DataFactory {
 		_groups = new ArrayList<Group>(_maxGroupsCount);
 
 		for (int i = 1; i <= _maxGroupsCount; i++) {
-			String name = "Site " + i;
+			String name = "community" + i;
 
 			Group group = newGroup(i, groupClassNameId, i, name, name, true);
 
@@ -792,7 +792,8 @@ public class DataFactory {
 	}
 
 	public JournalArticle newJournalArticle(
-		long resourcePrimKey, long groupId, long companyId, String articleId) {
+		long resourcePrimKey, long groupId, long companyId, String articleId,
+		int versionCount) {
 
 		JournalArticle journalArticle = new JournalArticleImpl();
 
@@ -801,6 +802,7 @@ public class DataFactory {
 		journalArticle.setGroupId(groupId);
 		journalArticle.setCompanyId(companyId);
 		journalArticle.setArticleId(articleId);
+		journalArticle.setVersion(versionCount);
 		journalArticle.setContent(_journalArticleContent);
 
 		return journalArticle;
