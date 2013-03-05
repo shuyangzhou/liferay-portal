@@ -32,7 +32,6 @@ import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.test.JDKLoggerTestUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
-import com.liferay.portal.kernel.util.SocketUtil;
 import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
@@ -60,8 +59,6 @@ import java.lang.reflect.Field;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-
-import java.nio.channels.ServerSocketChannel;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -832,11 +829,19 @@ public class LuceneHelperImplTest {
 	private class MockServer extends Thread {
 
 		public MockServer() throws IOException {
-			ServerSocketChannel serverSocketChannel =
-				SocketUtil.createServerSocketChannel(
-					_localhostInetAddress, 1024, null);
+			int port = 1024;
 
-			_serverSocket = serverSocketChannel.socket();
+			while (true) {
+				try {
+					_serverSocket = new ServerSocket(
+						port, 1, _localhostInetAddress);
+
+					break;
+				}
+				catch (IOException ioe) {
+					port++;
+				}
+			}
 		}
 
 		public int getPort() {
