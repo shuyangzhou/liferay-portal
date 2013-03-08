@@ -24,11 +24,12 @@ User selUser = PortalUtil.getSelectedUser(request);
 PortletURL portletURL = renderResponse.createRenderURL();
 
 portletURL.setParameter("struts_action", "/roles_admin/select_regular_role");
-portletURL.setParameter("callback", callback);
 
 if (selUser != null) {
 	portletURL.setParameter("p_u_i_d", String.valueOf(selUser.getUserId()));
 }
+
+portletURL.setParameter("callback", callback);
 %>
 
 <aui:form action="<%= portletURL.toString() %>" method="post" name="fm">
@@ -81,7 +82,7 @@ if (selUser != null) {
 			<%
 			String rowHREF = null;
 
-			if (RoleMembershipPolicyUtil.isRoleAllowed(selUser.getUserId(), role.getRoleId())) {
+			if (RoleMembershipPolicyUtil.isRoleAllowed(selUser != null ? selUser.getUserId() : 0, role.getRoleId())) {
 				StringBundler sb = new StringBundler(8);
 
 				sb.append("javascript:opener.");

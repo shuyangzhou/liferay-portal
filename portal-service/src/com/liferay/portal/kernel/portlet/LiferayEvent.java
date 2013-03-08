@@ -12,28 +12,16 @@
  * details.
  */
 
-package com.liferay.portal.security.pacl.checker;
+package com.liferay.portal.kernel.portlet;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-
-import java.security.Permission;
+import javax.portlet.Event;
+import javax.xml.namespace.QName;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author Michael Young
  */
-public class ReflectChecker extends BaseChecker {
+public interface LiferayEvent extends Event {
 
-	public void afterPropertiesSet() {
-	}
-
-	public boolean implies(Permission permission) {
-
-		// Temporarily return true
-
-		return true;
-	}
-
-	private static Log _log = LogFactoryUtil.getLog(ReflectChecker.class);
+	public LiferayEvent clone(QName qName);
 
 }

@@ -23,7 +23,11 @@ import java.io.Serializable;
  */
 public interface EventDefinition extends Serializable {
 
+	public void addAliasQName(QName aliasQName);
+
 	public PortletApp getPortletApp();
+
+	public QName getAliasQName(String uri, String localPart);
 
 	public QName getQName();
 
