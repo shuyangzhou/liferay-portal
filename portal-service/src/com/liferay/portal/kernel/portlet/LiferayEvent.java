@@ -12,31 +12,17 @@
  * details.
  */
 
-package com.liferay.portal.model;
+package com.liferay.portal.kernel.portlet;
 
-import com.liferay.portal.kernel.xml.QName;
+import javax.portlet.Event;
 
-import java.io.Serializable;
+import javax.xml.namespace.QName;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author Michael Young
  */
-public interface EventDefinition extends Serializable {
+public interface LiferayEvent extends Event {
 
-	public void addAliasQName(QName aliasQName);
-
-	public QName getAliasQName(String uri, String localPart);
-
-	public PortletApp getPortletApp();
-
-	public QName getQName();
-
-	public String getValueType();
-
-	public void setPortletApp(PortletApp portletApp);
-
-	public void setQName(QName qName);
-
-	public void setValueType(String valueType);
+	public LiferayEvent clone(QName qName);
 
 }
