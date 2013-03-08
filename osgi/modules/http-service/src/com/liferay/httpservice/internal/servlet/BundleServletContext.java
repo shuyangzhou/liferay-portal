@@ -18,6 +18,7 @@ import com.liferay.httpservice.servlet.BundleServletConfig;
 import com.liferay.portal.apache.bridges.struts.LiferayServletContext;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.servlet.PluginContextListener;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.PropertiesUtil;
@@ -29,6 +30,7 @@ import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.util.PortalUtil;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Dictionary;
 import java.util.Iterator;
 import java.util.List;
@@ -36,6 +38,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterConfig;
@@ -47,6 +50,7 @@ import javax.servlet.ServletRequestAttributeListener;
 import javax.servlet.ServletRequestListener;
 
 import org.osgi.framework.Bundle;
+import org.osgi.framework.wiring.BundleWiring;
 import org.osgi.service.http.HttpContext;
 import org.osgi.service.http.NamespaceException;
 
@@ -145,7 +149,19 @@ public class BundleServletContext extends LiferayServletContext {
 	}
 
 	public ClassLoader getClassLoader() {
-		return null;
+		ClassLoader classLoader = (ClassLoader)_contextAttributes.get(
+			PluginContextListener.PLUGIN_CLASS_LOADER);
+
+		if (classLoader == null) {
+			BundleWiring bundleWiring = _bundle.adapt(BundleWiring.class);
+
+			classLoader = bundleWiring.getClassLoader();
+
+			_contextAttributes.put(
+				PluginContextListener.PLUGIN_CLASS_LOADER, classLoader);
+		}
+
+		return classLoader;
 	}
 
 	public HttpContext getHttpContext() {
@@ -204,6 +220,30 @@ public class BundleServletContext extends LiferayServletContext {
 							getContextPath() + urlPattern);
 				}
 			}
+
+			FilterServiceRanking filterServiceRanking =
+				new FilterServiceRanking();
+
+			filterServiceRanking.setFilterName(filterName);
+
+			int serviceRanking = GetterUtil.getInteger(
+				initParameters.remove("service.ranking"),
+				_FILTER_SERVICE_RANKING_DEFAULT);
+
+			filterServiceRanking.setServiceRanking(serviceRanking);
+
+			_filterServiceRankings.add(filterServiceRanking);
+
+			// Filters are sorted based on their service ranking value where
+			// the default service ranking is 10 for those filters that do not
+			// specify a specific service ranking.
+
+			// Filters are first sorted based on the service ranking where
+			// filters with a smaller service ranking appear earlier in the
+			// list, and then based on when the filter was registered where
+			// those that are registered earlier appear earlier in the list.
+
+			Collections.sort(_filterServiceRankings);
 		}
 		finally {
 			currentThread.setContextClassLoader(contextClassLoader);
@@ -285,32 +325,8 @@ public class BundleServletContext extends LiferayServletContext {
 
 		filter.destroy();
 
-		Set<Map.Entry<String, Filter>> set = _filtersByURLPatterns.entrySet();
-
-		Iterator<Map.Entry<String, Filter>> iterator = set.iterator();
-
-		while (iterator.hasNext()) {
-			Map.Entry<String, Filter> entry = iterator.next();
-
-			Filter curFilter = entry.getValue();
-
-			if (curFilter != filter) {
-				continue;
-			}
-
-			iterator.remove();
-
-			if (_log.isInfoEnabled()) {
-				String urlPattern = entry.getKey();
-
-				_log.info(
-					"Unmapped filter " + filterName + " from " + urlPattern);
-			}
-		}
-
-		if (_log.isInfoEnabled()) {
-			_log.info("Unregistered filter " + filterName);
-		}
+		unregisterFilterByServiceRanking(filterName);
+		unregisterFilterByURLMapping(filterName, filter);
 	}
 
 	public void unregisterServlet(String servletName) {
@@ -350,10 +366,60 @@ public class BundleServletContext extends LiferayServletContext {
 		}
 	}
 
+	protected void unregisterFilterByServiceRanking(String filterName) {
+		Iterator<FilterServiceRanking> iterator =
+			_filterServiceRankings.iterator();
+
+		while (iterator.hasNext()) {
+			FilterServiceRanking filterServiceRanking = iterator.next();
+
+			if (!filterName.equals(filterServiceRanking.getFilterName())) {
+				continue;
+			}
+
+			iterator.remove();
+		}
+	}
+
+	protected void unregisterFilterByURLMapping(
+		String filterName, Filter filter) {
+
+		Set<Map.Entry<String, Filter>> set = _filtersByURLPatterns.entrySet();
+
+		Iterator<Map.Entry<String, Filter>> iterator = set.iterator();
+
+		while (iterator.hasNext()) {
+			Map.Entry<String, Filter> entry = iterator.next();
+
+			Filter curFilter = entry.getValue();
+
+			if (curFilter != filter) {
+				continue;
+			}
+
+			iterator.remove();
+
+			if (_log.isInfoEnabled()) {
+				String urlPattern = entry.getKey();
+
+				_log.info(
+					"Unmapped filter " + filterName + " from " + urlPattern);
+			}
+		}
+
+		if (_log.isInfoEnabled()) {
+			_log.info("Unregistered filter " + filterName);
+		}
+	}
+
 	protected void validateFilter(
 			String filterName, Filter filter, List<String> urlPatterns,
 			HttpContext httpContext)
 		throws NamespaceException {
+
+		if (filter == null) {
+			throw new IllegalArgumentException("Filter must not be null");
+		}
 
 		Filter registeredFilter = _filtersByFilterNames.get(filterName);
 
@@ -371,6 +437,10 @@ public class BundleServletContext extends LiferayServletContext {
 			String servletName, Servlet servlet, List<String> urlPatterns,
 			HttpContext httpContext)
 		throws NamespaceException {
+
+		if (servlet == null) {
+			throw new IllegalArgumentException("Servlet must not be null");
+		}
 
 		Servlet registeredServlet = _servletsByServletNames.get(servletName);
 
@@ -405,17 +475,98 @@ public class BundleServletContext extends LiferayServletContext {
 		}
 	}
 
+	private static final int _FILTER_SERVICE_RANKING_DEFAULT = 10;
+
 	private static Log _log = LogFactoryUtil.getLog(BundleServletContext.class);
 
 	private Bundle _bundle;
+	private Map<String, Object> _contextAttributes =
+		new ConcurrentHashMap<String, Object>();
 	private Map<String, Filter> _filtersByFilterNames =
 		new ConcurrentHashMap<String, Filter>();
 	private Map<String, Filter> _filtersByURLPatterns =
 		new ConcurrentHashMap<String, Filter>();
+	private List<FilterServiceRanking> _filterServiceRankings =
+		new CopyOnWriteArrayList<FilterServiceRanking>();
 	private String _servletContextName;
 	private Map<String, Servlet> _servletsByServletNames =
 		new ConcurrentHashMap<String, Servlet>();
 	private Map<String, Servlet> _servletsByURLPatterns =
 		new ConcurrentHashMap<String, Servlet>();
+
+	private class FilterServiceRanking
+		implements Comparable<FilterServiceRanking> {
+
+		public String getFilterName() {
+			return _filterName;
+		}
+
+		public int getServiceRanking() {
+			return _serviceRanking;
+		}
+
+		public long getTimestamp() {
+			return _timestamp;
+		}
+
+		public int compareTo(FilterServiceRanking filterServiceRanking) {
+			if (_serviceRanking <
+					filterServiceRanking.getServiceRanking()) {
+
+				return -1;
+			}
+			else if (_serviceRanking >
+						filterServiceRanking.getServiceRanking()) {
+
+				return 1;
+			}
+
+			if (_timestamp < filterServiceRanking.getTimestamp()) {
+				return -1;
+			}
+			else if (_timestamp > filterServiceRanking.getTimestamp()) {
+				return 1;
+			}
+
+			return 0;
+		}
+
+		@Override
+		public boolean equals(Object object) {
+			if (this == object) {
+				return true;
+			}
+
+			if (!(object instanceof FilterServiceRanking)) {
+				return false;
+			}
+
+			FilterServiceRanking filterServiceRanking =
+				(FilterServiceRanking)object;
+
+			if (Validator.equals(
+					_filterName, filterServiceRanking._filterName) &&
+				Validator.equals(
+					_serviceRanking, filterServiceRanking._serviceRanking)) {
+
+				return true;
+			}
+
+			return false;
+		}
+
+		public void setFilterName(String filterName) {
+			_filterName = filterName;
+		}
+
+		public void setServiceRanking(int serviceRanking) {
+			_serviceRanking = serviceRanking;
+		}
+
+		private String _filterName;
+		private int _serviceRanking;
+		private long _timestamp = System.currentTimeMillis();
+
+	}
 
 }
