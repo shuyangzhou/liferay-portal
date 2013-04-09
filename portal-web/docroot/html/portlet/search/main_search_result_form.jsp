@@ -51,7 +51,7 @@ if (assetRendererFactory != null) {
 
 	downloadURL = assetRenderer.getURLDownload(themeDisplay);
 
-	viewFullContentURL = _getViewFullContentURL(request, themeDisplay, PortletKeys.ASSET_PUBLISHER, document);
+	viewFullContentURL = SearchFormUtil.getViewFullContentURL(request, themeDisplay, PortletKeys.ASSET_PUBLISHER, document);
 
 	viewFullContentURL.setParameter("struts_action", "/asset_publisher/view_content");
 
@@ -86,7 +86,7 @@ if (assetRendererFactory != null) {
 else {
 	String portletId = document.get(Field.PORTLET_ID);
 
-	viewFullContentURL = _getViewFullContentURL(request, themeDisplay, portletId, document);
+	viewFullContentURL = SearchFormUtil.getViewFullContentURL(request, themeDisplay, portletId, document);
 
 	if (Validator.isNotNull(returnToFullPageURL)) {
 		viewFullContentURL.setParameter("returnToFullPageURL", returnToFullPageURL);
@@ -114,7 +114,7 @@ if ((assetRendererFactory == null) && viewInContext) {
 	viewURL = viewFullContentURL.toString();
 }
 
-viewURL = _checkViewURL(themeDisplay, viewURL, currentURL, inheritRedirect);
+viewURL = SearchFormUtil.checkViewURL(themeDisplay, viewURL, currentURL, inheritRedirect);
 
 String[] queryTerms = (String[])request.getAttribute("search.jsp-queryTerms");
 
@@ -216,7 +216,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("search.jsp-portletURL"
 						</c:if>
 
 						<a class="asset-category" href="<%= categoryURL.toString() %>">
-							<%= _buildAssetCategoryPath(assetCategory, locale) %>
+							<%= SearchFormUtil.buildAssetCategoryPath(assetCategory, locale) %>
 						</a>
 
 						<c:if test="<%= (i + 1) == assetCategoryIds.length %>">

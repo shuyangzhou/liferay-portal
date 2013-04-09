@@ -286,6 +286,15 @@ public class PortletPreferencesLocalServiceUtil {
 		return getService().getDefaultPreferences(companyId, portletId);
 	}
 
+	public static java.util.List<java.lang.Long> getPlids(long companyId,
+		long groupId, long ownerId, int ownerType, java.lang.String portletId,
+		boolean privateLayout)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .getPlids(companyId, groupId, ownerId, ownerType, portletId,
+			privateLayout);
+	}
+
 	public static java.util.List<com.liferay.portal.model.PortletPreferences> getPortletPreferences()
 		throws com.liferay.portal.kernel.exception.SystemException {
 		return getService().getPortletPreferences();

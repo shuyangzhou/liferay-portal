@@ -126,6 +126,15 @@ public class PortletPreferencesLocalServiceImpl
 			portlet.getDefaultPreferences());
 	}
 
+	public List<Long> getPlids(
+			long companyId, long groupId, long ownerId, int ownerType,
+			String portletId, boolean privateLayout)
+		throws SystemException {
+
+		return portletPreferencesFinder.findPlidsByC_G_O_O_P_P(
+			companyId, groupId, ownerId, ownerType, portletId, privateLayout);
+	}
+
 	public List<PortletPreferences> getPortletPreferences()
 		throws SystemException {
 
@@ -162,7 +171,7 @@ public class PortletPreferencesLocalServiceImpl
 			String portletId, boolean privateLayout)
 		throws SystemException {
 
-		return portletPreferencesFinder.findByC_G_O_O_P_P(
+		return portletPreferencesFinder.findPortletPreferencesByC_G_O_O_P_P(
 			companyId, groupId, ownerId, ownerType, portletId, privateLayout);
 	}
 

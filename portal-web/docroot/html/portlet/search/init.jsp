@@ -58,6 +58,7 @@ page import="com.liferay.portlet.asset.service.AssetVocabularyLocalServiceUtil" 
 page import="com.liferay.portlet.asset.service.AssetVocabularyServiceUtil" %><%@
 page import="com.liferay.portlet.documentlibrary.model.DLFileEntryConstants" %><%@
 page import="com.liferay.portlet.documentlibrary.service.DLAppLocalServiceUtil" %><%@
+page import="com.liferay.portlet.search.util.SearchFormUtil" %><%@
 page import="com.liferay.taglib.aui.ScriptTag" %><%@
 page import="com.liferay.util.PropertyComparator" %>
 
@@ -103,75 +104,3 @@ boolean includeSystemPortlets = false;
 %>
 
 <%@ include file="/html/portlet/search/init-ext.jsp" %>
-
-<%!
-private String _buildAssetCategoryPath(AssetCategory assetCategory, Locale locale) throws Exception {
-	List<AssetCategory> assetCategories = assetCategory.getAncestors();
-
-	if (assetCategories.isEmpty()) {
-		return HtmlUtil.escape(assetCategory.getName());
-	}
-
-	Collections.reverse(assetCategories);
-
-	StringBundler sb = new StringBundler(assetCategories.size() * 2 + 1);
-
-	for (AssetCategory curAssetCategory : assetCategories) {
-		sb.append(HtmlUtil.escape(curAssetCategory.getTitle(locale)));
-		sb.append(" &raquo; ");
-	}
-
-	sb.append(HtmlUtil.escape(assetCategory.getName()));
-
-	return sb.toString();
-}
-
-private String _checkViewURL(ThemeDisplay themeDisplay, String viewURL, String currentURL, boolean inheritRedirect) {
-	if (Validator.isNotNull(viewURL) && viewURL.startsWith(themeDisplay.getURLPortal())) {
-		viewURL = HttpUtil.setParameter(viewURL, "inheritRedirect", inheritRedirect);
-
-		if (!inheritRedirect) {
-			viewURL = HttpUtil.setParameter(viewURL, "redirect", currentURL);
-		}
-	}
-
-	return viewURL;
-}
-
-private PortletURL _getViewFullContentURL(HttpServletRequest request, ThemeDisplay themeDisplay, String portletId, Document document) throws Exception {
-	long groupId = GetterUtil.getLong(document.get(Field.GROUP_ID));
-
-	if (groupId == 0) {
-		Layout layout = themeDisplay.getLayout();
-
-		groupId = layout.getGroupId();
-	}
-
-	long scopeGroupId = GetterUtil.getLong(document.get(Field.SCOPE_GROUP_ID));
-
-	if (scopeGroupId == 0) {
-		scopeGroupId = themeDisplay.getScopeGroupId();
-	}
-
-	long plid = LayoutServiceUtil.getDefaultPlid(groupId, scopeGroupId, false, portletId);
-
-	if (plid == 0) {
-		plid = LayoutServiceUtil.getDefaultPlid(groupId, scopeGroupId, true, portletId);
-	}
-
-	if (plid == 0) {
-		Layout layout = (Layout)request.getAttribute(WebKeys.LAYOUT);
-
-		if (layout != null) {
-			plid = layout.getPlid();
-		}
-	}
-
-	PortletURL portletURL = PortletURLFactoryUtil.create(request, portletId, plid, PortletRequest.RENDER_PHASE);
-
-	portletURL.setWindowState(WindowState.MAXIMIZED);
-	portletURL.setPortletMode(PortletMode.VIEW);
-
-	return portletURL;
-}
-%>

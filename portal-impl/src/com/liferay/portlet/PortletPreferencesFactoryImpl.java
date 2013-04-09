@@ -422,21 +422,15 @@ public class PortletPreferencesFactoryImpl
 		Map<Long, PortletPreferences> portletSetupMap =
 			new HashMap<Long, PortletPreferences>();
 
-		List<com.liferay.portal.model.PortletPreferences>
-			portletPreferencesList =
-				PortletPreferencesLocalServiceUtil.getPortletPreferences(
-					companyId, groupId, ownerId, ownerType, portletId,
-					privateLayout);
+		List<Long> plids = PortletPreferencesLocalServiceUtil.getPlids(
+			companyId, groupId, ownerId, ownerType, portletId, privateLayout);
 
-		for (com.liferay.portal.model.PortletPreferences portletPreferences :
-				portletPreferencesList) {
-
+		for (Long plid : plids) {
 			PortletPreferences portletSetup =
 				PortletPreferencesLocalServiceUtil.getPreferences(
-					companyId, ownerId, ownerType, portletPreferences.getPlid(),
-					portletId);
+					companyId, ownerId, ownerType, plid, portletId);
 
-			portletSetupMap.put(portletPreferences.getPlid(), portletSetup);
+			portletSetupMap.put(plid, portletSetup);
 		}
 
 		return portletSetupMap;

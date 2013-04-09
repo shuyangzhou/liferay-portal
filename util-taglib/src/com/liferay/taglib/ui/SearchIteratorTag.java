@@ -14,7 +14,12 @@
 
 package com.liferay.taglib.ui;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Brian Wing Shun Chan
@@ -38,6 +43,27 @@ public class SearchIteratorTag<R> extends SearchPaginatorTag<R> {
 	}
 
 	@Override
+	protected void include(String page) throws Exception {
+		StopWatch stopWatch = null;
+
+		if (_log.isDebugEnabled()) {
+			stopWatch = new StopWatch();
+			stopWatch.start();
+		}
+
+		try {
+			super.include(page);
+		}
+		finally {
+			if (stopWatch != null) {
+				stopWatch.stop();
+
+				_log.debug("Elapsed time: " + stopWatch.getTime());
+			}
+		}
+	}
+
+	@Override
 	protected void setAttributes(HttpServletRequest request) {
 		super.setAttributes(request);
 
@@ -47,6 +73,8 @@ public class SearchIteratorTag<R> extends SearchPaginatorTag<R> {
 
 	private static final String _PAGE =
 		"/html/taglib/ui/search_iterator/page.jsp";
+
+	private static Log _log = LogFactoryUtil.getLog(SearchIteratorTag.class);
 
 	private boolean _paginate = true;
 

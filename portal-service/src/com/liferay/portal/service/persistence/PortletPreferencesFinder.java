@@ -26,4 +26,14 @@ public interface PortletPreferencesFinder {
 		long companyId, long groupId, long ownerId, int ownerType,
 		java.lang.String portletId, boolean privateLayout)
 		throws com.liferay.portal.kernel.exception.SystemException;
+
+	public java.util.List<java.lang.Long> findPlidsByC_G_O_O_P_P(
+		long companyId, long groupId, long ownerId, int ownerType,
+		java.lang.String portletId, boolean privateLayout)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	public java.util.List<com.liferay.portal.model.PortletPreferences> findPortletPreferencesByC_G_O_O_P_P(
+		long companyId, long groupId, long ownerId, int ownerType,
+		java.lang.String portletId, boolean privateLayout)
+		throws com.liferay.portal.kernel.exception.SystemException;
 }
