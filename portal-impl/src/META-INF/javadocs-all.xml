@@ -287560,7 +287560,46 @@ This method handles the creation of the layout including its resources, metadata
 			</throws>
 		</method>
 		<method>
+			<name>getDefaultPlid</name>
+			<comment><![CDATA[Returns the primary key of the default layout for the group. First it tries to search for a public layout, if there isn't any it falls back and searches among private layouts.]]></comment>
+			<param>
+				<name>groupId</name>
+				<type>long</type>
+				<required>true</required>
+				<comment><![CDATA[the primary key of the group]]></comment>
+			</param>
+			<param>
+				<name>scopeGroupId</name>
+				<type>long</type>
+				<required>true</required>
+				<comment><![CDATA[the primary key of the scope group. See {@link com.liferay.portal.service.ServiceContext#getScopeGroupId()}.]]></comment>
+			</param>
+			<param>
+				<name>portletId</name>
+				<type>java.lang.String</type>
+				<required>true</required>
+				<comment><![CDATA[the primary key of the portlet]]></comment>
+			</param>
+			<return>
+				<required>true</required>
+				<comment><![CDATA[Returns the primary key of the default layout group; {@link com.liferay.portal.model.LayoutConstants#DEFAULT_PLID} otherwise]]></comment>
+			</return>
+			<throws>
+				<name>PortalException</name>
+				<type>com.liferay.portal.kernel.exception.PortalException</type>
+				<required>true</required>
+				<comment><![CDATA[if a group, layout, or portlet with the primary key could not be found]]></comment>
+			</throws>
+			<throws>
+				<name>SystemException</name>
+				<type>com.liferay.portal.kernel.exception.SystemException</type>
+				<required>true</required>
+				<comment><![CDATA[if a system exception occurred]]></comment>
+			</throws>
+		</method>
+		<method>
 			<name>getLayoutByUuidAndGroupId</name>
+			<comment><![CDATA[Returns the layout matching the UUID, group, and privacy.]]></comment>
 			<param>
 				<name>uuid</name>
 				<type>java.lang.String</type>
@@ -287683,15 +287722,20 @@ This method handles the creation of the layout including its resources, metadata
 			<param>
 				<name>groupId</name>
 				<type>long</type>
+				<comment><![CDATA[]]></comment>
 			</param>
 			<param>
 				<name>privateLayout</name>
 				<type>boolean</type>
+				<comment><![CDATA[]]></comment>
 			</param>
-			<return/>
+			<return>
+				<comment><![CDATA[]]></comment>
+			</return>
 			<throws>
 				<name>SystemException</name>
 				<type>com.liferay.portal.kernel.exception.SystemException</type>
+				<comment><![CDATA[]]></comment>
 			</throws>
 		</method>
 		<method>
@@ -287699,19 +287743,25 @@ This method handles the creation of the layout including its resources, metadata
 			<param>
 				<name>groupId</name>
 				<type>long</type>
+				<comment><![CDATA[]]></comment>
 			</param>
 			<param>
 				<name>privateLayout</name>
 				<type>boolean</type>
+				<comment><![CDATA[]]></comment>
 			</param>
 			<param>
 				<name>parentLayoutId</name>
 				<type>long</type>
+				<comment><![CDATA[]]></comment>
 			</param>
-			<return/>
+			<return>
+				<comment><![CDATA[]]></comment>
+			</return>
 			<throws>
 				<name>SystemException</name>
 				<type>com.liferay.portal.kernel.exception.SystemException</type>
+				<comment><![CDATA[]]></comment>
 			</throws>
 		</method>
 		<method>
@@ -287719,35 +287769,45 @@ This method handles the creation of the layout including its resources, metadata
 			<param>
 				<name>groupId</name>
 				<type>long</type>
+				<comment><![CDATA[]]></comment>
 			</param>
 			<param>
 				<name>privateLayout</name>
 				<type>boolean</type>
+				<comment><![CDATA[]]></comment>
 			</param>
 			<param>
 				<name>parentLayoutId</name>
 				<type>long</type>
+				<comment><![CDATA[]]></comment>
 			</param>
 			<param>
 				<name>incomplete</name>
 				<type>boolean</type>
+				<comment><![CDATA[]]></comment>
 			</param>
 			<param>
 				<name>start</name>
 				<type>int</type>
+				<comment><![CDATA[]]></comment>
 			</param>
 			<param>
 				<name>end</name>
 				<type>int</type>
+				<comment><![CDATA[]]></comment>
 			</param>
-			<return/>
+			<return>
+				<comment><![CDATA[]]></comment>
+			</return>
 			<throws>
 				<name>PortalException</name>
 				<type>com.liferay.portal.kernel.exception.PortalException</type>
+				<comment><![CDATA[]]></comment>
 			</throws>
 			<throws>
 				<name>SystemException</name>
 				<type>com.liferay.portal.kernel.exception.SystemException</type>
+				<comment><![CDATA[]]></comment>
 			</throws>
 		</method>
 		<method>
@@ -288752,15 +288812,20 @@ This method handles the creation of the layout including its resources, metadata
 			<param>
 				<name>layouts</name>
 				<type>java.util.List</type>
+				<comment><![CDATA[]]></comment>
 			</param>
-			<return/>
+			<return>
+				<comment><![CDATA[]]></comment>
+			</return>
 			<throws>
 				<name>PortalException</name>
 				<type>com.liferay.portal.kernel.exception.PortalException</type>
+				<comment><![CDATA[]]></comment>
 			</throws>
 			<throws>
 				<name>SystemException</name>
 				<type>com.liferay.portal.kernel.exception.SystemException</type>
+				<comment><![CDATA[]]></comment>
 			</throws>
 		</method>
 	</javadoc>
