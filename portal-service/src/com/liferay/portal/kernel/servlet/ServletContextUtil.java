@@ -29,6 +29,8 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
@@ -82,42 +84,24 @@ public class ServletContextUtil {
 
 		long lastModified = 0;
 
-		Set<String> paths = null;
+		Queue<String> queue = new LinkedList<String>();
 
-		if (path.endsWith(StringPool.SLASH)) {
-			paths = servletContext.getResourcePaths(path);
-		}
-		else {
-			paths = new HashSet<String>();
+		queue.offer(path);
 
-			paths.add(path);
-		}
+		while ((path = queue.poll()) != null) {
+			if (path.endsWith(StringPool.SLASH)) {
+				Set<String> paths = servletContext.getResourcePaths(path);
 
-		if ((paths == null) || paths.isEmpty()) {
-			if (cache) {
-				servletContext.setAttribute(
-					ServletContextUtil.class.getName() + StringPool.PERIOD +
-						path,
-					new Long(lastModified));
-			}
-
-			return lastModified;
-		}
-
-		for (String curPath : paths) {
-			if (curPath.endsWith(StringPool.SLASH)) {
-				long curLastModified = getLastModified(servletContext, curPath);
-
-				if (curLastModified > lastModified) {
-					lastModified = curLastModified;
+				for (String curPath : paths) {
+					queue.offer(curPath);
 				}
 			}
 			else {
 				try {
-					URL url = servletContext.getResource(curPath);
+					URL url = servletContext.getResource(path);
 
 					if (url == null) {
-						_log.error("Resource URL for " + curPath + " is null");
+						_log.error("Resource URL for " + path + " is null");
 
 						continue;
 					}
