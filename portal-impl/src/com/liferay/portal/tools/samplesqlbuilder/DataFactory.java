@@ -1474,6 +1474,14 @@ public class DataFactory {
 			StringUtil.valueOf(blogsEntry.getEntryId()), _sampleUserId);
 	}
 
+	public List<ResourcePermission> newResourcePermissions(
+		DLFileEntry dlFileEntry) {
+
+		return newResourcePermissions(
+			DLFileEntry.class.getName(),
+			StringUtil.valueOf(dlFileEntry.getFileEntryId()), _sampleUserId);
+	}
+
 	public List<ResourcePermission> newResourcePermissions(DLFolder dlFolder) {
 		return newResourcePermissions(
 			DLFolder.class.getName(),
@@ -1554,7 +1562,7 @@ public class DataFactory {
 		return newSocialActivity(
 			dlFileEntry.getGroupId(), getDLFileEntryClassNameId(),
 			dlFileEntry.getFileEntryId(), DLActivityKeys.ADD_FILE_ENTRY,
-			"{\"title\":\""+ dlFileEntry.getTitle() +"\"}");
+			StringPool.BLANK);
 	}
 
 	public SocialActivity newSocialActivity(JournalArticle journalArticle) {
