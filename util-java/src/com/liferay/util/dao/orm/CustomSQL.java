@@ -693,6 +693,12 @@ public class CustomSQL {
 	}
 
 	public String replaceOrderBy(String sql, OrderByComparator obc) {
+		return replaceOrderBy(sql, obc, null);
+	}
+
+	public String replaceOrderBy(
+			String sql, OrderByComparator obc, String tableName) {
+
 		if (obc == null) {
 			return sql;
 		}
