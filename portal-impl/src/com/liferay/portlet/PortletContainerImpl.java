@@ -705,6 +705,12 @@ public class PortletContainerImpl implements PortletContainer {
 			return;
 		}
 
+		// LPS-31508
+
+		if (request.getAttribute("rootRequest") == null) {
+			request.setAttribute("rootRequest", request);
+		}
+
 		// Capture the current portlet's settings to reset them once the child
 		// portlet is rendered
 

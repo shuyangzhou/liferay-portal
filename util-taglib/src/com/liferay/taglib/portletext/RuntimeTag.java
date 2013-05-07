@@ -69,6 +69,15 @@ public class RuntimeTag extends TagSupport {
 				response, pageContext.getOut());
 		}
 
+		// LPS-31508
+
+		HttpServletRequest rootRequest =
+			(HttpServletRequest) request.getAttribute("rootRequest");
+
+		if (rootRequest != null) {
+			request = rootRequest;
+		}
+
 		String portletId = portletName;
 
 		RestrictPortletServletRequest restrictPortletServletRequest =
