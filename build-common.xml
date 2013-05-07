@@ -762,6 +762,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 					</not>
 				</and>
 				<then>
+					<var name="junit.forkmode" value="once" />
 					<var name="test.dir" value="functional-generated" />
 					<var name="test.type" value="functional" />
 				</then>
@@ -774,6 +775,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 					</not>
 				</and>
 				<then>
+					<var name="junit.forkmode" value="once" />
 					<var name="test.type" value="integration" />
 				</then>
 			</elseif>
@@ -785,6 +787,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 					</not>
 				</and>
 				<then>
+					<var name="junit.forkmode" value="perTest" />
 					<var name="test.type" value="unit" />
 				</then>
 			</elseif>
@@ -794,7 +797,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 		</if>
 
 		<ant target="test-cmd">
-			<property name="junit.forkmode" value="once" />
+			<property name="junit.forkmode" value="${junit.forkmode}" />
 			<property name="test.type" value="${test.type}" />
 		</ant>
 
