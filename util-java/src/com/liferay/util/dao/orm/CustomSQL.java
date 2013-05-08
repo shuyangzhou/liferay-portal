@@ -46,6 +46,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Brian Wing Shun Chan
@@ -123,11 +125,7 @@ public class CustomSQL {
 
 		String sql = get(id);
 
-		if (!Validator.isBlank(tableName) &&
-			!tableName.endsWith(StringPool.PERIOD)) {
-
-			tableName = tableName.concat(StringPool.PERIOD);
-		}
+		tableName = prepareTableName(tableName);
 
 		if (queryDefinition.getStatus() == WorkflowConstants.STATUS_ANY) {
 			sql = sql.replace(_STATUS_KEYWORD, _STATUS_CONDITION_EMPTY);
@@ -705,6 +703,14 @@ public class CustomSQL {
 
 		String orderBy = obc.getOrderBy();
 
+		if (Validator.isNotNull(tableName)) {
+			Matcher matcher = _ORDER_BY_PATTERN.matcher(orderBy);
+
+			tableName = prepareTableName(tableName);
+
+			orderBy = matcher.replaceAll(tableName.concat("$1"));
+		}
+
 		int pos = sql.indexOf(_ORDER_BY_CLAUSE);
 
 		if ((pos != -1) && (pos < sql.length())) {
@@ -730,6 +736,16 @@ public class CustomSQL {
 		else {
 			return new String[] {"custom-sql/default.xml"};
 		}
+	}
+
+	protected String prepareTableName(String tableName) {
+		if (!Validator.isBlank(tableName) &&
+			!tableName.endsWith(StringPool.PERIOD)) {
+
+			tableName = tableName.concat(StringPool.PERIOD);
+		}
+
+		return tableName;
 	}
 
 	protected void read(ClassLoader classLoader, String source)
@@ -794,6 +810,11 @@ public class CustomSQL {
 	private static final String _GROUP_BY_CLAUSE = " GROUP BY ";
 
 	private static final String _ORDER_BY_CLAUSE = " ORDER BY ";
+
+	private static final Pattern _ORDER_BY_PATTERN = Pattern.compile(
+		"((?<!\\.)\\b\\w+\\s+(?:ASC|DESC)|" +
+			"(?<!\\.)\\b(?!ASC|DESC)\\w+\\b(?!\\.))",
+		Pattern.CASE_INSENSITIVE);
 
 	private static final String _STATUS_CONDITION_DEFAULT = "status = ?";
 

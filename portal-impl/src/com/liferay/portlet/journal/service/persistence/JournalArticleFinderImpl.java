@@ -1294,7 +1294,7 @@ public class JournalArticleFinderImpl
 
 			sql = CustomSQLUtil.replaceAndOperator(sql, andOperator);
 			sql = CustomSQLUtil.replaceOrderBy(
-				sql, queryDefinition.getOrderByComparator());
+				sql, queryDefinition.getOrderByComparator(), "JournalArticle");
 
 			if (inlineSQLHelper) {
 				sql = InlineSQLHelperUtil.replacePermissionCheck(
