@@ -762,6 +762,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 					</not>
 				</and>
 				<then>
+					<var name="junit.forkmode" value="once" />
 					<var name="test.dir" value="functional-generated" />
 					<var name="test.type" value="functional" />
 				</then>
@@ -774,6 +775,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 					</not>
 				</and>
 				<then>
+					<var name="junit.forkmode" value="once" />
 					<var name="test.type" value="integration" />
 				</then>
 			</elseif>
@@ -785,6 +787,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 					</not>
 				</and>
 				<then>
+					<var name="junit.forkmode" value="perTest" />
 					<var name="test.type" value="unit" />
 				</then>
 			</elseif>
@@ -794,7 +797,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 		</if>
 
 		<ant target="test-cmd">
-			<property name="junit.forkmode" value="once" />
+			<property name="junit.forkmode" value="${junit.forkmode}" />
 			<property name="test.type" value="${test.type}" />
 		</ant>
 
@@ -872,7 +875,16 @@ Please set the environment variable ANT_OPTS to the recommended value of
 	</target>
 
 	<target name="test-method" depends="compile,compile-test">
-		<junit dir="${project.dir}" fork="on" forkmode="once" haltonfailure="${junit.halt.on.failure}" outputtoformatters="false" printsummary="on" showoutput="true">
+		<if>
+			<not>
+				<isset property="junit.forkmode" />
+			</not>
+			<then>
+				<var name="junit.forkmode" value="perTest" />
+			</then>
+		</if>
+
+		<junit dir="${project.dir}" fork="on" forkmode="${junit.forkmode}" haltonfailure="${junit.halt.on.failure}" outputtoformatters="false" printsummary="on" showoutput="true">
 			<sysproperty key="junit.aspectj.dump" file="woven-classes" />
 			<sysproperty key="junit.cobertura.agent" value="${junit.cobertura.agent}" />
 			<sysproperty key="junit.code.coverage" value="${junit.code.coverage}" />
