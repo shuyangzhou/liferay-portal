@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.security.pacl.DoPrivileged;
 import com.liferay.portal.kernel.servlet.BufferCacheServletResponse;
 import com.liferay.portal.kernel.servlet.DirectRequestDispatcherFactoryUtil;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
+import com.liferay.portal.kernel.servlet.ServletContextPool;
 import com.liferay.portal.kernel.servlet.TempAttributesServletRequest;
 import com.liferay.portal.kernel.struts.LastPath;
 import com.liferay.portal.kernel.upload.UploadServletRequest;
@@ -89,6 +90,7 @@ import javax.portlet.WindowState;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -705,6 +707,8 @@ public class PortletContainerImpl implements PortletContainer {
 			return;
 		}
 
+		request = getPortalRequestDispatcherRequest(request);
+
 		// Capture the current portlet's settings to reset them once the child
 		// portlet is rendered
 
@@ -869,6 +873,8 @@ public class PortletContainerImpl implements PortletContainer {
 			return;
 		}
 
+		request = getPortalRequestDispatcherRequest(request);
+
 		WindowState windowState = (WindowState)request.getAttribute(
 			WebKeys.WINDOW_STATE);
 
@@ -958,6 +964,35 @@ public class PortletContainerImpl implements PortletContainer {
 		finally {
 			ServiceContextThreadLocal.popServiceContext();
 		}
+	}
+
+	private HttpServletRequest getPortalRequestDispatcherRequest(
+		HttpServletRequest request) {
+
+		// see LPS-31508
+
+		String actualServletContextName =
+			request.getSession().getServletContext().getServletContextName();
+
+		if (Validator.isNull(actualServletContextName)) {
+			return request;
+		}
+
+		final ServletContext portalServletContext = ServletContextPool.get(
+			PortalUtil.getPathContext());
+
+		if (actualServletContextName.equals(
+				portalServletContext.getServletContextName())) {
+
+			return request;
+		}
+
+		return new HttpServletRequestWrapper(request) {
+			@Override
+			public RequestDispatcher getRequestDispatcher(String path) {
+				return portalServletContext.getRequestDispatcher(path);
+			}
+		};
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(PortletContainerImpl.class);
