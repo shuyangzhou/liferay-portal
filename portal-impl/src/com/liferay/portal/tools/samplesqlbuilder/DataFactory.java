@@ -47,6 +47,8 @@ import com.liferay.portal.model.ResourceConstants;
 import com.liferay.portal.model.ResourcePermission;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.model.RoleConstants;
+import com.liferay.portal.model.Subscription;
+import com.liferay.portal.model.SubscriptionConstants;
 import com.liferay.portal.model.User;
 import com.liferay.portal.model.VirtualHost;
 import com.liferay.portal.model.impl.AccountImpl;
@@ -59,6 +61,7 @@ import com.liferay.portal.model.impl.LayoutSetImpl;
 import com.liferay.portal.model.impl.PortletPreferencesImpl;
 import com.liferay.portal.model.impl.ResourcePermissionImpl;
 import com.liferay.portal.model.impl.RoleImpl;
+import com.liferay.portal.model.impl.SubscriptionImpl;
 import com.liferay.portal.model.impl.UserImpl;
 import com.liferay.portal.model.impl.VirtualHostImpl;
 import com.liferay.portal.service.permission.PortletPermissionUtil;
@@ -76,6 +79,7 @@ import com.liferay.portlet.blogs.model.BlogsEntry;
 import com.liferay.portlet.blogs.model.BlogsStatsUser;
 import com.liferay.portlet.blogs.model.impl.BlogsEntryImpl;
 import com.liferay.portlet.blogs.model.impl.BlogsStatsUserImpl;
+import com.liferay.portlet.blogs.social.BlogsActivityKeys;
 import com.liferay.portlet.documentlibrary.model.DLFileEntry;
 import com.liferay.portlet.documentlibrary.model.DLFileEntryConstants;
 import com.liferay.portlet.documentlibrary.model.DLFileEntryMetadata;
@@ -121,13 +125,17 @@ import com.liferay.portlet.messageboards.model.MBMessage;
 import com.liferay.portlet.messageboards.model.MBMessageConstants;
 import com.liferay.portlet.messageboards.model.MBStatsUser;
 import com.liferay.portlet.messageboards.model.MBThread;
+import com.liferay.portlet.messageboards.model.MBThreadFlag;
 import com.liferay.portlet.messageboards.model.impl.MBCategoryImpl;
 import com.liferay.portlet.messageboards.model.impl.MBDiscussionImpl;
 import com.liferay.portlet.messageboards.model.impl.MBMailingListImpl;
 import com.liferay.portlet.messageboards.model.impl.MBMessageImpl;
 import com.liferay.portlet.messageboards.model.impl.MBStatsUserImpl;
+import com.liferay.portlet.messageboards.model.impl.MBThreadFlagImpl;
 import com.liferay.portlet.messageboards.model.impl.MBThreadImpl;
+import com.liferay.portlet.messageboards.social.MBActivityKeys;
 import com.liferay.portlet.social.model.SocialActivity;
+import com.liferay.portlet.social.model.SocialActivityConstants;
 import com.liferay.portlet.social.model.impl.SocialActivityImpl;
 import com.liferay.portlet.wiki.model.WikiNode;
 import com.liferay.portlet.wiki.model.WikiPage;
@@ -136,6 +144,7 @@ import com.liferay.portlet.wiki.model.WikiPageResource;
 import com.liferay.portlet.wiki.model.impl.WikiNodeImpl;
 import com.liferay.portlet.wiki.model.impl.WikiPageImpl;
 import com.liferay.portlet.wiki.model.impl.WikiPageResourceImpl;
+import com.liferay.portlet.wiki.social.WikiActivityKeys;
 import com.liferay.util.SimpleCounter;
 
 import java.io.File;
@@ -175,6 +184,7 @@ public class DataFactory {
 		_maxUserToGroupCount = maxUserToGroupCount;
 
 		_counter = new SimpleCounter(_maxGroupsCount + 1);
+		_dateCounter = new SimpleCounter();
 		_futureDateCounter = new SimpleCounter();
 		_resourcePermissionCounter = new SimpleCounter();
 		_socialActivityCounter = new SimpleCounter();
@@ -652,6 +662,15 @@ public class DataFactory {
 			dlFileEntry.getTitle());
 	}
 
+	public AssetEntry newAssetEntry(DLFolder dlFolder) {
+		return newAssetEntry(
+			dlFolder.getGroupId(), dlFolder.getCreateDate(),
+			dlFolder.getModifiedDate(),
+			_classNamesMap.get(DLFolder.class.getName()),
+			dlFolder.getFolderId(), dlFolder.getUuid(), 0, true, null,
+			dlFolder.getName());
+	}
+
 	public AssetEntry newAssetEntry(JournalArticle journalArticle) {
 		return newAssetEntry(
 			journalArticle.getGroupId(), journalArticle.getCreateDate(),
@@ -677,6 +696,15 @@ public class DataFactory {
 			mbMessage.getModifiedDate(), classNameId, mbMessage.getMessageId(),
 			mbMessage.getUuid(), 0, visible, ContentTypes.TEXT_HTML,
 			mbMessage.getSubject());
+	}
+
+	public AssetEntry newAssetEntry(MBThread mbThread) {
+		return newAssetEntry(
+			mbThread.getGroupId(), mbThread.getCreateDate(),
+			mbThread.getModifiedDate(),
+			_classNamesMap.get(MBThread.class.getName()),
+			mbThread.getThreadId(), mbThread.getUuid(), 0, false,
+			StringPool.BLANK, String.valueOf(mbThread.getRootMessageId()));
 	}
 
 	public AssetEntry newAssetEntry(WikiPage wikiPage) {
@@ -1323,6 +1351,22 @@ public class DataFactory {
 			_counter.get(), _maxMBMessageCount);
 	}
 
+	public MBThreadFlag newMBThreadFlag(MBThread mbThread) {
+		MBThreadFlag mbThreadFlag = new MBThreadFlagImpl();
+
+		mbThreadFlag.setUuid(SequentialUUID.generate());
+		mbThreadFlag.setThreadFlagId(_counter.get());
+		mbThreadFlag.setGroupId(mbThread.getGroupId());
+		mbThreadFlag.setCompanyId(_companyId);
+		mbThreadFlag.setUserId(_sampleUserId);
+		mbThreadFlag.setUserName(_SAMPLE_USER_NAME);
+		mbThreadFlag.setCreateDate(new Date());
+		mbThreadFlag.setModifiedDate(new Date());
+		mbThreadFlag.setThreadId(mbThread.getThreadId());
+
+		return mbThreadFlag;
+	}
+
 	public List<PortletPreferences> newPortletPreferences(long plid) {
 		List<PortletPreferences> portletPreferencesList =
 			new ArrayList<PortletPreferences>(2);
@@ -1425,6 +1469,58 @@ public class DataFactory {
 	}
 
 	public List<ResourcePermission> newResourcePermissions(
+		BlogsEntry blogsEntry) {
+
+		return newResourcePermissions(
+			BlogsEntry.class.getName(),
+			StringUtil.valueOf(blogsEntry.getEntryId()), _sampleUserId);
+	}
+
+	public List<ResourcePermission> newResourcePermissions(
+		DDLRecordSet ddlRecordSet) {
+
+		List<ResourcePermission> resourcePermissions =
+			new ArrayList<ResourcePermission>(1);
+
+		resourcePermissions.add(
+			newResourcePermission(
+				DDLRecordSet.class.getName(),
+				StringUtil.valueOf(ddlRecordSet.getRecordSetId()),
+				_ownerRole.getRoleId(), _defaultUserId));
+
+		return resourcePermissions;
+	}
+
+	public List<ResourcePermission> newResourcePermissions(
+		DDMStructure ddmStructure) {
+
+		List<ResourcePermission> resourcePermissions =
+			new ArrayList<ResourcePermission>(1);
+
+		resourcePermissions.add(
+			newResourcePermission(
+				DDMStructure.class.getName(),
+				StringUtil.valueOf(ddmStructure.getStructureId()),
+				_ownerRole.getRoleId(), _defaultUserId));
+
+		return resourcePermissions;
+	}
+
+	public List<ResourcePermission> newResourcePermissions(
+		DLFileEntry dlFileEntry) {
+
+		return newResourcePermissions(
+			DLFileEntry.class.getName(),
+			StringUtil.valueOf(dlFileEntry.getFileEntryId()), _sampleUserId);
+	}
+
+	public List<ResourcePermission> newResourcePermissions(DLFolder dlFolder) {
+		return newResourcePermissions(
+			DLFolder.class.getName(),
+			StringUtil.valueOf(dlFolder.getFolderId()), _sampleUserId);
+	}
+
+	public List<ResourcePermission> newResourcePermissions(
 		JournalArticleResource journalArticleResource) {
 
 		return newResourcePermissions(
@@ -1437,6 +1533,22 @@ public class DataFactory {
 		return newResourcePermissions(
 			Layout.class.getName(), StringUtil.valueOf(layout.getPlid()),
 			_sampleUserId);
+	}
+
+	public List<ResourcePermission> newResourcePermissions(
+		MBCategory mbCategory) {
+
+		return newResourcePermissions(
+			MBCategory.class.getName(),
+			StringUtil.valueOf(mbCategory.getCategoryId()), _sampleUserId);
+	}
+
+	public List<ResourcePermission> newResourcePermissions(
+		MBMessage mbMessage) {
+
+		return newResourcePermissions(
+			MBMessage.class.getName(),
+			StringUtil.valueOf(mbMessage.getMessageId()), _sampleUserId);
 	}
 
 	public List<ResourcePermission> newResourcePermissions(
@@ -1458,11 +1570,31 @@ public class DataFactory {
 		return newResourcePermissions(name, primKey, 0);
 	}
 
+	public List<ResourcePermission> newResourcePermissions(WikiNode wikiNode) {
+		return newResourcePermissions(
+			WikiNode.class.getName(), StringUtil.valueOf(wikiNode.getNodeId()),
+			_sampleUserId);
+	}
+
+	public List<ResourcePermission> newResourcePermissions(WikiPage wikiPage) {
+		return newResourcePermissions(
+			WikiPage.class.getName(),
+			StringUtil.valueOf(wikiPage.getResourcePrimKey()), _sampleUserId);
+	}
+
+	public SocialActivity newSocialActivity(BlogsEntry blogsEntry) {
+		return newSocialActivity(
+			blogsEntry.getGroupId(),
+			_classNamesMap.get(BlogsEntry.class.getName()),
+			blogsEntry.getEntryId(), BlogsActivityKeys.ADD_ENTRY,
+			"{\"title\":\""+ blogsEntry.getTitle() +"\"}");
+	}
+
 	public SocialActivity newSocialActivity(DLFileEntry dlFileEntry) {
 		return newSocialActivity(
 			dlFileEntry.getGroupId(), getDLFileEntryClassNameId(),
 			dlFileEntry.getFileEntryId(), DLActivityKeys.ADD_FILE_ENTRY,
-			dlFileEntry.getTitle());
+			StringPool.BLANK);
 	}
 
 	public SocialActivity newSocialActivity(JournalArticle journalArticle) {
@@ -1477,7 +1609,63 @@ public class DataFactory {
 		return newSocialActivity(
 			journalArticle.getGroupId(), getJournalArticleClassNameId(),
 			journalArticle.getResourcePrimKey(), type,
-			journalArticle.getUrlTitle());
+			"{\"title\":\""+ journalArticle.getUrlTitle() +"\"}");
+	}
+
+	public SocialActivity newSocialActivity(MBMessage mbMessage) {
+		long classNameId = mbMessage.getClassNameId();
+		long classPk = mbMessage.getClassPK();
+
+		int type = 0;
+		String extraData = null;
+
+		if (classNameId == _classNamesMap.get(WikiPage.class.getName())) {
+			extraData = "{\"version\":1}";
+
+			type = WikiActivityKeys.ADD_PAGE;
+		}
+		else if (classNameId == 0) {
+			extraData = "{\"title\":\"" + mbMessage.getSubject() + "\"}";
+
+			type = MBActivityKeys.ADD_MESSAGE;
+
+			classNameId = _classNamesMap.get(MBMessage.class.getName());
+			classPk = mbMessage.getMessageId();
+		}
+		else {
+			StringBundler sb = new StringBundler(5);
+
+			sb.append("{\"title\":\"");
+			sb.append(mbMessage.getSubject());
+			sb.append("\", \"messageId\":");
+			sb.append(mbMessage.getMessageId());
+			sb.append("}");
+
+			extraData = sb.toString();
+
+			type = SocialActivityConstants.TYPE_ADD_COMMENT;
+		}
+
+		return newSocialActivity(
+			mbMessage.getGroupId(), classNameId, classPk, type, extraData);
+	}
+
+	public Subscription newSubscription(BlogsEntry blogsEntry) {
+		return newSubscription(
+			_classNamesMap.get(BlogsEntry.class.getName()),
+			blogsEntry.getEntryId());
+	}
+
+	public Subscription newSubscription(MBThread mbThread) {
+		return newSubscription(
+			_classNamesMap.get(MBThread.class.getName()),
+			mbThread.getThreadId());
+	}
+
+	public Subscription newSubscription(WikiPage wikiPage) {
+		return newSubscription(
+			_classNamesMap.get(WikiPage.class.getName()),
+			wikiPage.getResourcePrimKey());
 	}
 
 	public User newUser(int index) {
@@ -1831,7 +2019,8 @@ public class DataFactory {
 	}
 
 	protected SocialActivity newSocialActivity(
-		long groupId, long classNameId, long classPK, int type, String title) {
+		long groupId, long classNameId, long classPK, int type,
+		String extraData) {
 
 		SocialActivity socialActivity = new SocialActivityImpl();
 
@@ -1839,13 +2028,29 @@ public class DataFactory {
 		socialActivity.setGroupId(groupId);
 		socialActivity.setCompanyId(_companyId);
 		socialActivity.setUserId(_sampleUserId);
-		socialActivity.setCreateDate(System.currentTimeMillis());
+		socialActivity.setCreateDate(_CURRENT_TIME + _dateCounter.get());
 		socialActivity.setClassNameId(classNameId);
 		socialActivity.setClassPK(classPK);
 		socialActivity.setType(type);
-		socialActivity.setExtraData("{\"title\":\""+ title +"\"}");
+		socialActivity.setExtraData(extraData);
 
 		return socialActivity;
+	}
+
+	protected Subscription newSubscription(long classNameId, long classPK) {
+		Subscription subscription = new SubscriptionImpl();
+
+		subscription.setSubscriptionId(_counter.get());
+		subscription.setCompanyId(_companyId);
+		subscription.setUserId(_sampleUserId);
+		subscription.setUserName(_SAMPLE_USER_NAME);
+		subscription.setCreateDate(new Date());
+		subscription.setModifiedDate(new Date());
+		subscription.setClassNameId(classNameId);
+		subscription.setClassPK(classPK);
+		subscription.setFrequency(SubscriptionConstants.FREQUENCY_INSTANT);
+
+		return subscription;
 	}
 
 	protected User newUser(
@@ -1903,6 +2108,8 @@ public class DataFactory {
 			_FUTURE_TIME + (_futureDateCounter.get() * Time.SECOND));
 	}
 
+	private static final long _CURRENT_TIME = System.currentTimeMillis();
+
 	private static final String _DEPENDENCIES_DIR=
 		"../portal-impl/src/com/liferay/portal/tools/samplesqlbuilder/" +
 			"dependencies/";
@@ -1923,6 +2130,7 @@ public class DataFactory {
 	private Company _company;
 	private long _companyId;
 	private SimpleCounter _counter;
+	private SimpleCounter _dateCounter;
 	private DDMStructure _defaultDLDDMStructure;
 	private DLFileEntryType _defaultDLFileEntryType;
 	private User _defaultUser;
