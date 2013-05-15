@@ -695,7 +695,7 @@ public class CustomSQL {
 	}
 
 	public String replaceOrderBy(
-			String sql, OrderByComparator obc, String tableName) {
+		String sql, OrderByComparator obc, String tableName) {
 
 		if (obc == null) {
 			return sql;

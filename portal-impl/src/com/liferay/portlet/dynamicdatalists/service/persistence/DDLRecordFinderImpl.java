@@ -162,7 +162,7 @@ public class DDLRecordFinderImpl extends BasePersistenceImpl<DDLRecord>
 			}
 
 			sql = CustomSQLUtil.replaceOrderBy(
-				sql, orderByComparator, "DDLRecord");
+				sql, orderByComparator, DDLRecordImpl.TABLE_NAME);
 
 			SQLQuery q = session.createSQLQuery(sql);
 
@@ -204,7 +204,7 @@ public class DDLRecordFinderImpl extends BasePersistenceImpl<DDLRecord>
 			}
 
 			sql = CustomSQLUtil.replaceOrderBy(
-				sql, orderByComparator, "DDLRecord");
+				sql, orderByComparator, DDLRecordImpl.TABLE_NAME);
 
 			SQLQuery q = session.createSQLQuery(sql);
 

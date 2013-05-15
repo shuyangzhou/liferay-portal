@@ -229,7 +229,8 @@ public class BlogsEntryFinderImpl
 				sql, "[$ORGANIZATION_ID$]",
 				getOrganizationIds(organizationIds));
 			sql = CustomSQLUtil.replaceOrderBy(
-				sql, queryDefinition.getOrderByComparator(), "BlogsEntry");
+				sql, queryDefinition.getOrderByComparator(),
+				BlogsEntryImpl.TABLE_NAME);
 
 			SQLQuery q = session.createSQLQuery(sql);
 
