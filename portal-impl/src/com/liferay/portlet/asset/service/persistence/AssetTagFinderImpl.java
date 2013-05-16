@@ -399,7 +399,8 @@ public class AssetTagFinderImpl
 
 			String sql = CustomSQLUtil.get(FIND_BY_G_C_N);
 
-			sql = CustomSQLUtil.replaceOrderBy(sql, obc);
+			sql = CustomSQLUtil.replaceOrderBy(sql, obc,
+				AssetTagImpl.TABLE_NAME);
 
 			if (inlineSQLHelper) {
 				sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -442,7 +443,8 @@ public class AssetTagFinderImpl
 			sql = StringUtil.replace(sql, "[$JOIN$]", getJoin(tagProperties));
 			sql = StringUtil.replace(
 				sql, "[$GROUP_ID$]", getGroupIds(groupIds));
-			sql = CustomSQLUtil.replaceOrderBy(sql, obc);
+			sql = CustomSQLUtil.replaceOrderBy(sql, obc,
+				AssetTagImpl.TABLE_NAME);
 
 			if (inlineSQLHelper) {
 				sql = InlineSQLHelperUtil.replacePermissionCheck(
