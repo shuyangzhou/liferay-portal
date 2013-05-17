@@ -378,6 +378,19 @@ public class JournalTemplateLocalServiceImpl
 	}
 
 	public List<JournalTemplate> getStructureTemplates(
+			long groupId, String structureId, boolean includeGlobalTemplates)
+		throws PortalException, SystemException {
+
+		if (!includeGlobalTemplates) {
+			return journalTemplatePersistence.findByG_S(groupId, structureId);
+		}
+
+		long[] groupIds = PortalUtil.getSiteAndCompanyGroupIds(groupId);
+
+		return journalTemplatePersistence.findByG_S(groupIds, structureId);
+	}
+
+	public List<JournalTemplate> getStructureTemplates(
 			long groupId, String structureId, int start, int end)
 		throws SystemException {
 

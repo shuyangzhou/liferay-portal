@@ -17,6 +17,8 @@ package com.liferay.portal.verify;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.Layout;
+import com.liferay.portal.model.LayoutFriendlyURL;
+import com.liferay.portal.service.LayoutFriendlyURLLocalServiceUtil;
 import com.liferay.portal.service.LayoutLocalServiceUtil;
 
 import java.util.List;
@@ -38,10 +40,17 @@ public class VerifyLayout extends VerifyProcess {
 			LayoutLocalServiceUtil.getNullFriendlyURLLayouts();
 
 		for (Layout layout : layouts) {
-			String friendlyURL = StringPool.SLASH + layout.getLayoutId();
+			List<LayoutFriendlyURL> layoutFriendlyURLs =
+				LayoutFriendlyURLLocalServiceUtil.getLayoutFriendlyURLs(
+					layout.getPlid());
 
-			LayoutLocalServiceUtil.updateFriendlyURL(
-				layout.getPlid(), friendlyURL);
+			for (LayoutFriendlyURL layoutFriendlyURL : layoutFriendlyURLs) {
+				String friendlyURL = StringPool.SLASH + layout.getLayoutId();
+
+				LayoutLocalServiceUtil.updateFriendlyURL(
+					layout.getPlid(), friendlyURL,
+					layoutFriendlyURL.getLanguageId());
+			}
 		}
 	}
 

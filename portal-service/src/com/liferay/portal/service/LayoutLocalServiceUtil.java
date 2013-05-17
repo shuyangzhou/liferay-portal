@@ -1224,10 +1224,10 @@ public class LayoutLocalServiceUtil {
 	* @throws SystemException if a system exception occurred
 	*/
 	public static com.liferay.portal.model.Layout updateFriendlyURL(long plid,
-		java.lang.String friendlyURL)
+		java.lang.String friendlyURL, java.lang.String languageId)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
-		return getService().updateFriendlyURL(plid, friendlyURL);
+		return getService().updateFriendlyURL(plid, friendlyURL, languageId);
 	}
 
 	public static com.liferay.portal.model.Layout updateLayout(long groupId,

@@ -903,13 +903,15 @@ public class PortletContainerImpl implements PortletContainer {
 		String portletPrimaryKey = PortletPermissionUtil.getPrimaryKey(
 			layout.getPlid(), portlet.getPortletId());
 
+		portletDisplay.setControlPanelCategory(
+			portlet.getControlPanelEntryCategory());
 		portletDisplay.setId(portlet.getPortletId());
-		portletDisplay.setRootPortletId(portlet.getRootPortletId());
 		portletDisplay.setInstanceId(portlet.getInstanceId());
-		portletDisplay.setResourcePK(portletPrimaryKey);
-		portletDisplay.setPortletName(portletConfig.getPortletName());
 		portletDisplay.setNamespace(
 			PortalUtil.getPortletNamespace(portlet.getPortletId()));
+		portletDisplay.setPortletName(portletConfig.getPortletName());
+		portletDisplay.setResourcePK(portletPrimaryKey);
+		portletDisplay.setRootPortletId(portlet.getRootPortletId());
 
 		WebDAVStorage webDAVStorage = portlet.getWebDAVStorageInstance();
 

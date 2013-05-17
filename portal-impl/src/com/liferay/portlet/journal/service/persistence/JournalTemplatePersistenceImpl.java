@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -3814,6 +3815,10 @@ public class JournalTemplatePersistenceImpl extends BasePersistenceImpl<JournalT
 			JournalTemplateModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_S",
 			new String[] { Long.class.getName(), String.class.getName() });
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_COUNT_BY_G_S = new FinderPath(JournalTemplateModelImpl.ENTITY_CACHE_ENABLED,
+			JournalTemplateModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByG_S",
+			new String[] { Long.class.getName(), String.class.getName() });
 
 	/**
 	 * Returns all the journal templates where groupId = &#63; and structureId = &#63;.
@@ -4616,6 +4621,365 @@ public class JournalTemplatePersistenceImpl extends BasePersistenceImpl<JournalT
 	}
 
 	/**
+	 * Returns all the journal templates that the user has permission to view where groupId = any &#63; and structureId = &#63;.
+	 *
+	 * @param groupIds the group IDs
+	 * @param structureId the structure ID
+	 * @return the matching journal templates that the user has permission to view
+	 * @throws SystemException if a system exception occurred
+	 */
+	public List<JournalTemplate> filterFindByG_S(long[] groupIds,
+		String structureId) throws SystemException {
+		return filterFindByG_S(groupIds, structureId, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the journal templates that the user has permission to view where groupId = any &#63; and structureId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.journal.model.impl.JournalTemplateModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param groupIds the group IDs
+	 * @param structureId the structure ID
+	 * @param start the lower bound of the range of journal templates
+	 * @param end the upper bound of the range of journal templates (not inclusive)
+	 * @return the range of matching journal templates that the user has permission to view
+	 * @throws SystemException if a system exception occurred
+	 */
+	public List<JournalTemplate> filterFindByG_S(long[] groupIds,
+		String structureId, int start, int end) throws SystemException {
+		return filterFindByG_S(groupIds, structureId, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the journal templates that the user has permission to view where groupId = any &#63; and structureId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.journal.model.impl.JournalTemplateModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param groupIds the group IDs
+	 * @param structureId the structure ID
+	 * @param start the lower bound of the range of journal templates
+	 * @param end the upper bound of the range of journal templates (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching journal templates that the user has permission to view
+	 * @throws SystemException if a system exception occurred
+	 */
+	public List<JournalTemplate> filterFindByG_S(long[] groupIds,
+		String structureId, int start, int end,
+		OrderByComparator orderByComparator) throws SystemException {
+		if (!InlineSQLHelperUtil.isEnabled(groupIds)) {
+			return findByG_S(groupIds, structureId, start, end,
+				orderByComparator);
+		}
+
+		StringBundler query = new StringBundler();
+
+		if (getDB().isSupportsInlineDistinct()) {
+			query.append(_FILTER_SQL_SELECT_JOURNALTEMPLATE_WHERE);
+		}
+		else {
+			query.append(_FILTER_SQL_SELECT_JOURNALTEMPLATE_NO_INLINE_DISTINCT_WHERE_1);
+		}
+
+		boolean conjunctionable = false;
+
+		if ((groupIds == null) || (groupIds.length > 0)) {
+			if (conjunctionable) {
+				query.append(WHERE_AND);
+			}
+
+			query.append(StringPool.OPEN_PARENTHESIS);
+
+			for (int i = 0; i < groupIds.length; i++) {
+				query.append(_FINDER_COLUMN_G_S_GROUPID_5);
+
+				if ((i + 1) < groupIds.length) {
+					query.append(WHERE_OR);
+				}
+			}
+
+			query.append(StringPool.CLOSE_PARENTHESIS);
+
+			conjunctionable = true;
+		}
+
+		if (conjunctionable) {
+			query.append(WHERE_AND);
+		}
+
+		if (structureId == null) {
+			query.append(_FINDER_COLUMN_G_S_STRUCTUREID_4);
+		}
+		else if (structureId.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_G_S_STRUCTUREID_6);
+		}
+		else {
+			query.append(_FINDER_COLUMN_G_S_STRUCTUREID_5);
+		}
+
+		conjunctionable = true;
+
+		if (!getDB().isSupportsInlineDistinct()) {
+			query.append(_FILTER_SQL_SELECT_JOURNALTEMPLATE_NO_INLINE_DISTINCT_WHERE_2);
+		}
+
+		if (orderByComparator != null) {
+			if (getDB().isSupportsInlineDistinct()) {
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator, true);
+			}
+			else {
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_TABLE,
+					orderByComparator, true);
+			}
+		}
+		else {
+			if (getDB().isSupportsInlineDistinct()) {
+				query.append(JournalTemplateModelImpl.ORDER_BY_JPQL);
+			}
+			else {
+				query.append(JournalTemplateModelImpl.ORDER_BY_SQL);
+			}
+		}
+
+		String sql = InlineSQLHelperUtil.replacePermissionCheck(query.toString(),
+				JournalTemplate.class.getName(),
+				_FILTER_ENTITY_TABLE_FILTER_PK_COLUMN, groupIds);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			SQLQuery q = session.createSQLQuery(sql);
+
+			if (getDB().isSupportsInlineDistinct()) {
+				q.addEntity(_FILTER_ENTITY_ALIAS, JournalTemplateImpl.class);
+			}
+			else {
+				q.addEntity(_FILTER_ENTITY_TABLE, JournalTemplateImpl.class);
+			}
+
+			QueryPos qPos = QueryPos.getInstance(q);
+
+			if (groupIds != null) {
+				qPos.add(groupIds);
+			}
+
+			if (structureId != null) {
+				qPos.add(structureId);
+			}
+
+			return (List<JournalTemplate>)QueryUtil.list(q, getDialect(),
+				start, end);
+		}
+		catch (Exception e) {
+			throw processException(e);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	/**
+	 * Returns all the journal templates where groupId = any &#63; and structureId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.journal.model.impl.JournalTemplateModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param groupIds the group IDs
+	 * @param structureId the structure ID
+	 * @return the matching journal templates
+	 * @throws SystemException if a system exception occurred
+	 */
+	public List<JournalTemplate> findByG_S(long[] groupIds, String structureId)
+		throws SystemException {
+		return findByG_S(groupIds, structureId, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the journal templates where groupId = any &#63; and structureId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.journal.model.impl.JournalTemplateModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param groupIds the group IDs
+	 * @param structureId the structure ID
+	 * @param start the lower bound of the range of journal templates
+	 * @param end the upper bound of the range of journal templates (not inclusive)
+	 * @return the range of matching journal templates
+	 * @throws SystemException if a system exception occurred
+	 */
+	public List<JournalTemplate> findByG_S(long[] groupIds, String structureId,
+		int start, int end) throws SystemException {
+		return findByG_S(groupIds, structureId, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the journal templates where groupId = any &#63; and structureId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.journal.model.impl.JournalTemplateModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param groupIds the group IDs
+	 * @param structureId the structure ID
+	 * @param start the lower bound of the range of journal templates
+	 * @param end the upper bound of the range of journal templates (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching journal templates
+	 * @throws SystemException if a system exception occurred
+	 */
+	public List<JournalTemplate> findByG_S(long[] groupIds, String structureId,
+		int start, int end, OrderByComparator orderByComparator)
+		throws SystemException {
+		if ((groupIds != null) && (groupIds.length == 1)) {
+			return findByG_S(groupIds[0], structureId, start, end,
+				orderByComparator);
+		}
+
+		boolean pagination = true;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+				(orderByComparator == null)) {
+			pagination = false;
+			finderArgs = new Object[] { StringUtil.merge(groupIds), structureId };
+		}
+		else {
+			finderArgs = new Object[] {
+					StringUtil.merge(groupIds), structureId,
+					
+					start, end, orderByComparator
+				};
+		}
+
+		List<JournalTemplate> list = (List<JournalTemplate>)FinderCacheUtil.getResult(FINDER_PATH_WITH_PAGINATION_FIND_BY_G_S,
+				finderArgs, this);
+
+		if ((list != null) && !list.isEmpty()) {
+			for (JournalTemplate journalTemplate : list) {
+				if (!ArrayUtil.contains(groupIds, journalTemplate.getGroupId()) ||
+						!Validator.equals(structureId,
+							journalTemplate.getStructureId())) {
+					list = null;
+
+					break;
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler query = new StringBundler();
+
+			query.append(_SQL_SELECT_JOURNALTEMPLATE_WHERE);
+
+			boolean conjunctionable = false;
+
+			if ((groupIds == null) || (groupIds.length > 0)) {
+				if (conjunctionable) {
+					query.append(WHERE_AND);
+				}
+
+				query.append(StringPool.OPEN_PARENTHESIS);
+
+				for (int i = 0; i < groupIds.length; i++) {
+					query.append(_FINDER_COLUMN_G_S_GROUPID_5);
+
+					if ((i + 1) < groupIds.length) {
+						query.append(WHERE_OR);
+					}
+				}
+
+				query.append(StringPool.CLOSE_PARENTHESIS);
+
+				conjunctionable = true;
+			}
+
+			if (conjunctionable) {
+				query.append(WHERE_AND);
+			}
+
+			if (structureId == null) {
+				query.append(_FINDER_COLUMN_G_S_STRUCTUREID_4);
+			}
+			else if (structureId.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_G_S_STRUCTUREID_6);
+			}
+			else {
+				query.append(_FINDER_COLUMN_G_S_STRUCTUREID_5);
+			}
+
+			conjunctionable = true;
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
+			}
+			else
+			 if (pagination) {
+				query.append(JournalTemplateModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				if (groupIds != null) {
+					qPos.add(groupIds);
+				}
+
+				if (structureId != null) {
+					qPos.add(structureId);
+				}
+
+				if (!pagination) {
+					list = (List<JournalTemplate>)QueryUtil.list(q,
+							getDialect(), start, end, false);
+
+					Collections.sort(list);
+
+					list = new UnmodifiableList<JournalTemplate>(list);
+				}
+				else {
+					list = (List<JournalTemplate>)QueryUtil.list(q,
+							getDialect(), start, end);
+				}
+
+				cacheResult(list);
+
+				FinderCacheUtil.putResult(FINDER_PATH_WITH_PAGINATION_FIND_BY_G_S,
+					finderArgs, list);
+			}
+			catch (Exception e) {
+				FinderCacheUtil.removeResult(FINDER_PATH_WITH_PAGINATION_FIND_BY_G_S,
+					finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
 	 * Removes all the journal templates where groupId = &#63; and structureId = &#63; from the database.
 	 *
 	 * @param groupId the group ID
@@ -4703,6 +5067,104 @@ public class JournalTemplatePersistenceImpl extends BasePersistenceImpl<JournalT
 	}
 
 	/**
+	 * Returns the number of journal templates where groupId = any &#63; and structureId = &#63;.
+	 *
+	 * @param groupIds the group IDs
+	 * @param structureId the structure ID
+	 * @return the number of matching journal templates
+	 * @throws SystemException if a system exception occurred
+	 */
+	public int countByG_S(long[] groupIds, String structureId)
+		throws SystemException {
+		Object[] finderArgs = new Object[] {
+				StringUtil.merge(groupIds), structureId
+			};
+
+		Long count = (Long)FinderCacheUtil.getResult(FINDER_PATH_WITH_PAGINATION_COUNT_BY_G_S,
+				finderArgs, this);
+
+		if (count == null) {
+			StringBundler query = new StringBundler();
+
+			query.append(_SQL_COUNT_JOURNALTEMPLATE_WHERE);
+
+			boolean conjunctionable = false;
+
+			if ((groupIds == null) || (groupIds.length > 0)) {
+				if (conjunctionable) {
+					query.append(WHERE_AND);
+				}
+
+				query.append(StringPool.OPEN_PARENTHESIS);
+
+				for (int i = 0; i < groupIds.length; i++) {
+					query.append(_FINDER_COLUMN_G_S_GROUPID_5);
+
+					if ((i + 1) < groupIds.length) {
+						query.append(WHERE_OR);
+					}
+				}
+
+				query.append(StringPool.CLOSE_PARENTHESIS);
+
+				conjunctionable = true;
+			}
+
+			if (conjunctionable) {
+				query.append(WHERE_AND);
+			}
+
+			if (structureId == null) {
+				query.append(_FINDER_COLUMN_G_S_STRUCTUREID_4);
+			}
+			else if (structureId.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_G_S_STRUCTUREID_6);
+			}
+			else {
+				query.append(_FINDER_COLUMN_G_S_STRUCTUREID_5);
+			}
+
+			conjunctionable = true;
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				if (groupIds != null) {
+					qPos.add(groupIds);
+				}
+
+				if (structureId != null) {
+					qPos.add(structureId);
+				}
+
+				count = (Long)q.uniqueResult();
+
+				FinderCacheUtil.putResult(FINDER_PATH_WITH_PAGINATION_COUNT_BY_G_S,
+					finderArgs, count);
+			}
+			catch (Exception e) {
+				FinderCacheUtil.removeResult(FINDER_PATH_WITH_PAGINATION_COUNT_BY_G_S,
+					finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	/**
 	 * Returns the number of journal templates that the user has permission to view where groupId = &#63; and structureId = &#63;.
 	 *
 	 * @param groupId the group ID
@@ -4770,10 +5232,110 @@ public class JournalTemplatePersistenceImpl extends BasePersistenceImpl<JournalT
 		}
 	}
 
+	/**
+	 * Returns the number of journal templates that the user has permission to view where groupId = any &#63; and structureId = &#63;.
+	 *
+	 * @param groupIds the group IDs
+	 * @param structureId the structure ID
+	 * @return the number of matching journal templates that the user has permission to view
+	 * @throws SystemException if a system exception occurred
+	 */
+	public int filterCountByG_S(long[] groupIds, String structureId)
+		throws SystemException {
+		if (!InlineSQLHelperUtil.isEnabled(groupIds)) {
+			return countByG_S(groupIds, structureId);
+		}
+
+		StringBundler query = new StringBundler();
+
+		query.append(_FILTER_SQL_COUNT_JOURNALTEMPLATE_WHERE);
+
+		boolean conjunctionable = false;
+
+		if ((groupIds == null) || (groupIds.length > 0)) {
+			if (conjunctionable) {
+				query.append(WHERE_AND);
+			}
+
+			query.append(StringPool.OPEN_PARENTHESIS);
+
+			for (int i = 0; i < groupIds.length; i++) {
+				query.append(_FINDER_COLUMN_G_S_GROUPID_5);
+
+				if ((i + 1) < groupIds.length) {
+					query.append(WHERE_OR);
+				}
+			}
+
+			query.append(StringPool.CLOSE_PARENTHESIS);
+
+			conjunctionable = true;
+		}
+
+		if (conjunctionable) {
+			query.append(WHERE_AND);
+		}
+
+		if (structureId == null) {
+			query.append(_FINDER_COLUMN_G_S_STRUCTUREID_4);
+		}
+		else if (structureId.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_G_S_STRUCTUREID_6);
+		}
+		else {
+			query.append(_FINDER_COLUMN_G_S_STRUCTUREID_5);
+		}
+
+		conjunctionable = true;
+
+		String sql = InlineSQLHelperUtil.replacePermissionCheck(query.toString(),
+				JournalTemplate.class.getName(),
+				_FILTER_ENTITY_TABLE_FILTER_PK_COLUMN, groupIds);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			SQLQuery q = session.createSQLQuery(sql);
+
+			q.addScalar(COUNT_COLUMN_NAME,
+				com.liferay.portal.kernel.dao.orm.Type.LONG);
+
+			QueryPos qPos = QueryPos.getInstance(q);
+
+			if (groupIds != null) {
+				qPos.add(groupIds);
+			}
+
+			if (structureId != null) {
+				qPos.add(structureId);
+			}
+
+			Long count = (Long)q.uniqueResult();
+
+			return count.intValue();
+		}
+		catch (Exception e) {
+			throw processException(e);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
 	private static final String _FINDER_COLUMN_G_S_GROUPID_2 = "journalTemplate.groupId = ? AND ";
+	private static final String _FINDER_COLUMN_G_S_GROUPID_5 = "(" +
+		removeConjunction(_FINDER_COLUMN_G_S_GROUPID_2) + ")";
 	private static final String _FINDER_COLUMN_G_S_STRUCTUREID_1 = "journalTemplate.structureId IS NULL";
 	private static final String _FINDER_COLUMN_G_S_STRUCTUREID_2 = "journalTemplate.structureId = ?";
 	private static final String _FINDER_COLUMN_G_S_STRUCTUREID_3 = "(journalTemplate.structureId IS NULL OR journalTemplate.structureId = '')";
+	private static final String _FINDER_COLUMN_G_S_STRUCTUREID_4 = "(" +
+		removeConjunction(_FINDER_COLUMN_G_S_STRUCTUREID_1) + ")";
+	private static final String _FINDER_COLUMN_G_S_STRUCTUREID_5 = "(" +
+		removeConjunction(_FINDER_COLUMN_G_S_STRUCTUREID_2) + ")";
+	private static final String _FINDER_COLUMN_G_S_STRUCTUREID_6 = "(" +
+		removeConjunction(_FINDER_COLUMN_G_S_STRUCTUREID_3) + ")";
 
 	/**
 	 * Caches the journal template in the entity cache if it is enabled.

@@ -38,12 +38,12 @@ public class GhostscriptImpl implements Ghostscript {
 
 	public Future<?> execute(List<String> commandArguments) throws Exception {
 		if (!isEnabled()) {
-			StringBundler sb = new StringBundler(5);
+			StringBundler sb = new StringBundler(6);
 
-			sb.append("Cannot execute the Ghostscript command. Please install");
-			sb.append("ImageMagick and Ghostscript and enable ImageMagick in ");
-			sb.append("portal-ext.properties or in the Server Administration ");
-			sb.append("section of the Control Panel at: ");
+			sb.append("Cannot execute the Ghostscript command. Please ");
+			sb.append("install ImageMagick and Ghostscript and enable ");
+			sb.append("ImageMagick in portal-ext.properties or in the Server ");
+			sb.append("Administration section of the Control Panel at: ");
 			sb.append("http://<server>/group/control_panel/manage/-/server/");
 			sb.append("external-services");
 

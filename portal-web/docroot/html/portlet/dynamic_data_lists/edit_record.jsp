@@ -122,12 +122,10 @@ if (translating) {
 
 			<liferay-portlet:renderURL copyCurrentRenderParameters="<%= true %>" var="updateDefaultLanguageURL">
 				<portlet:param name="struts_action" value="/dynamic_data_lists/edit_record" />
-				<portlet:param name="defaultLanguageId" value="{defaultLanguageId}" />
 			</liferay-portlet:renderURL>
 
 			<liferay-portlet:renderURL copyCurrentRenderParameters="<%= true %>" var="translateRecordURL" windowState="pop_up">
 				<portlet:param name="struts_action" value="/dynamic_data_lists/edit_record" />
-				<portlet:param name="languageId" value="{languageId}" />
 			</liferay-portlet:renderURL>
 
 			<aui:script use="liferay-translation-manager">
@@ -145,14 +143,9 @@ if (translating) {
 				translationManager.after(
 					{
 						defaultLocaleChange: function(event) {
-							var url = A.Lang.sub(
-								decodeURIComponent('<%= updateDefaultLanguageURL %>'),
-								{
-									defaultLanguageId: event.newVal
-								}
-							);
+							var url = '<%= updateDefaultLanguageURL %>' + '&<portlet:namespace />defaultLanguageId=' + event.newVal;
 
-							location.href = url;
+							window.location.href = url;
 						},
 						deleteAvailableLocale: function(event) {
 							var locale = event.locale;
@@ -177,19 +170,12 @@ if (translating) {
 							var defaultLocale = translationManager.get('defaultLocale');
 
 							if (editingLocale !== defaultLocale) {
-								var uri = A.Lang.sub(
-									decodeURIComponent('<%= translateRecordURL %>'),
-									{
-										languageId: editingLocale
-									}
-								);
-
 								Liferay.Util.openWindow(
 									{
 										cache: false,
 										id: event.newVal,
 										title: '<%= UnicodeLanguageUtil.get(pageContext, "web-content-translation") %>',
-										uri: uri
+										uri: '<%= translateRecordURL %>' + '&<portlet:namespace />languageId=' + editingLocale
 									},
 									function(translationWindow) {
 										translationWindow.once(

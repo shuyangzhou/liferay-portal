@@ -1200,10 +1200,11 @@ public class LayoutLocalServiceWrapper implements LayoutLocalService,
 	* @throws SystemException if a system exception occurred
 	*/
 	public com.liferay.portal.model.Layout updateFriendlyURL(long plid,
-		java.lang.String friendlyURL)
+		java.lang.String friendlyURL, java.lang.String languageId)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
-		return _layoutLocalService.updateFriendlyURL(plid, friendlyURL);
+		return _layoutLocalService.updateFriendlyURL(plid, friendlyURL,
+			languageId);
 	}
 
 	public com.liferay.portal.model.Layout updateLayout(long groupId,

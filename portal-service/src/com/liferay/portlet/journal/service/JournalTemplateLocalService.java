@@ -307,6 +307,13 @@ public interface JournalTemplateLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public java.util.List<com.liferay.portlet.journal.model.JournalTemplate> getStructureTemplates(
+		long groupId, java.lang.String structureId,
+		boolean includeGlobalTemplates)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public java.util.List<com.liferay.portlet.journal.model.JournalTemplate> getStructureTemplates(
 		long groupId, java.lang.String structureId, int start, int end)
 		throws com.liferay.portal.kernel.exception.SystemException;
 

@@ -369,26 +369,14 @@ if (siteGroup.isStaged() && !siteGroup.isStagedRemotely() && !siteGroup.isStaged
 
 portletDisplay.recycle();
 
-portletDisplay.setId(portletId);
-portletDisplay.setRootPortletId(rootPortletId);
-portletDisplay.setInstanceId(instanceId);
-portletDisplay.setResourcePK(portletPrimaryKey);
-portletDisplay.setPortletName(portletConfig.getPortletName());
-portletDisplay.setNamespace(PortalUtil.getPortletNamespace(portletId));
-
 portletDisplay.setAccess(access);
 portletDisplay.setActive(portlet.isActive());
-
+portletDisplay.setColumnCount(columnCount);
 portletDisplay.setColumnId(columnId);
 portletDisplay.setColumnPos(columnPos);
-portletDisplay.setColumnCount(columnCount);
-
-portletDisplay.setStateExclusive(themeDisplay.isStateExclusive());
-portletDisplay.setStateMax(stateMax);
-portletDisplay.setStateMin(stateMin);
-portletDisplay.setStateNormal(windowState.equals(WindowState.NORMAL));
-portletDisplay.setStatePopUp(themeDisplay.isStatePopUp());
-
+portletDisplay.setControlPanelCategory(portlet.getControlPanelEntryCategory());
+portletDisplay.setId(portletId);
+portletDisplay.setInstanceId(instanceId);
 portletDisplay.setModeAbout(modeAbout);
 portletDisplay.setModeConfig(modeConfig);
 portletDisplay.setModeEdit(modeEdit);
@@ -398,7 +386,11 @@ portletDisplay.setModeHelp(modeHelp);
 portletDisplay.setModePreview(modePreview);
 portletDisplay.setModePrint(modePrint);
 portletDisplay.setModeView(portletMode.equals(PortletMode.VIEW));
-
+portletDisplay.setNamespace(PortalUtil.getPortletNamespace(portletId));
+portletDisplay.setPortletName(portletConfig.getPortletName());
+portletDisplay.setResourcePK(portletPrimaryKey);
+portletDisplay.setRestoreCurrentView(portlet.isRestoreCurrentView());
+portletDisplay.setRootPortletId(rootPortletId);
 portletDisplay.setShowCloseIcon(showCloseIcon);
 portletDisplay.setShowConfigurationIcon(showConfigurationIcon);
 portletDisplay.setShowEditIcon(showEditIcon);
@@ -413,11 +405,13 @@ portletDisplay.setShowPortletCssIcon(showPortletCssIcon);
 portletDisplay.setShowPortletIcon(showPortletIcon);
 portletDisplay.setShowPrintIcon(showPrintIcon);
 portletDisplay.setShowRefreshIcon(showRefreshIcon);
-
-portletDisplay.setWebDAVEnabled(portlet.getWebDAVStorageInstance() != null);
-portletDisplay.setRestoreCurrentView(portlet.isRestoreCurrentView());
-
+portletDisplay.setStateExclusive(themeDisplay.isStateExclusive());
+portletDisplay.setStateMax(stateMax);
+portletDisplay.setStateMin(stateMin);
+portletDisplay.setStateNormal(windowState.equals(WindowState.NORMAL));
+portletDisplay.setStatePopUp(themeDisplay.isStatePopUp());
 portletDisplay.setPortletSetup(portletSetup);
+portletDisplay.setWebDAVEnabled(portlet.getWebDAVStorageInstance() != null);
 
 // Portlet custom CSS class name
 

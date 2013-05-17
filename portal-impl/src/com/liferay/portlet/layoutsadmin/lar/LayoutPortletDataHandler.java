@@ -12,13 +12,15 @@
  * details.
  */
 
-package com.liferay.portal.kernel.template;
+package com.liferay.portlet.layoutsadmin.lar;
+
+import com.liferay.portal.kernel.lar.BasePortletDataHandler;
 
 /**
- * @author Tina Tian
+ * @author Mate Thurzo
  */
-public enum TemplateContextType {
+public class LayoutPortletDataHandler extends BasePortletDataHandler {
 
-	EMPTY, RESTRICTED, STANDARD,
+	public static final String NAMESPACE = "layouts_admin";
 
 }

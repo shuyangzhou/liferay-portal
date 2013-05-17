@@ -226,8 +226,10 @@ public class JournalArticleImpl extends JournalArticleBaseImpl {
 		}
 	}
 
+	/**
+	 * @throws LocaleException
+	 */
 	@Override
-	@SuppressWarnings("unused")
 	public void prepareLocalizedFieldsForImport(Locale defaultImportLocale)
 		throws LocaleException {
 	}

@@ -1082,7 +1082,7 @@ public interface LayoutLocalService extends BaseLocalService,
 	* @throws SystemException if a system exception occurred
 	*/
 	public com.liferay.portal.model.Layout updateFriendlyURL(long plid,
-		java.lang.String friendlyURL)
+		java.lang.String friendlyURL, java.lang.String languageId)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException;
 

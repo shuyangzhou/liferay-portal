@@ -67,6 +67,10 @@ public class Fields implements Serializable {
 		Set<Locale> availableLocales = new HashSet<Locale>();
 
 		for (Field field : _fieldsMap.values()) {
+			if (field.isPrivate()) {
+				continue;
+			}
+
 			for (Locale availableLocale : field.getAvailableLocales()) {
 				availableLocales.add(availableLocale);
 			}

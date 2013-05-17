@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.service.ResourceLocalServiceUtil;
@@ -347,10 +348,14 @@ public class VerifyJournal extends VerifyProcess {
 		try {
 			con = DataAccess.getUpgradeOptimizedConnection();
 
-			ps = con.prepareStatement(
-				"select distinct urlTitle from JournalArticle where urlTitle " +
-					"like '%\u2018%' or urlTitle like '%\u2019%' or urlTitle " +
-						"like '%\u201c%' or urlTitle like '%\u201d%'");
+			StringBundler sb = new StringBundler();
+
+			sb.append("select distinct urlTitle from JournalArticle where ");
+			sb.append("urlTitle like '%\u00a3%' or urlTitle like '%\u2018%' ");
+			sb.append("or urlTitle like '%\u2019%' or urlTitle like ");
+			sb.append("'%\u201c%' or urlTitle like '%\u201d%'");
+
+			ps = con.prepareStatement(sb.toString());
 
 			rs = ps.executeQuery();
 

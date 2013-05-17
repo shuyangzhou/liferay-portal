@@ -356,6 +356,15 @@ public class JournalTemplateLocalServiceWrapper
 	}
 
 	public java.util.List<com.liferay.portlet.journal.model.JournalTemplate> getStructureTemplates(
+		long groupId, java.lang.String structureId,
+		boolean includeGlobalTemplates)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _journalTemplateLocalService.getStructureTemplates(groupId,
+			structureId, includeGlobalTemplates);
+	}
+
+	public java.util.List<com.liferay.portlet.journal.model.JournalTemplate> getStructureTemplates(
 		long groupId, java.lang.String structureId, int start, int end)
 		throws com.liferay.portal.kernel.exception.SystemException {
 		return _journalTemplateLocalService.getStructureTemplates(groupId,

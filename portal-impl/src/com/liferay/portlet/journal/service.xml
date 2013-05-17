@@ -577,7 +577,7 @@
 			<finder-column name="templateId" />
 		</finder>
 		<finder name="G_S" return-type="Collection">
-			<finder-column name="groupId" />
+			<finder-column name="groupId" arrayable-operator="OR" />
 			<finder-column name="structureId" />
 		</finder>
 
