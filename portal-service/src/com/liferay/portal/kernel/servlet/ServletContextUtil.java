@@ -28,6 +28,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.jar.JarEntry;
@@ -38,6 +39,7 @@ import javax.servlet.ServletContext;
 /**
  * @author Brian Wing Shun Chan
  * @author Raymond Augé
+ * @author James Lefeu
  */
 public class ServletContextUtil {
 
@@ -70,66 +72,80 @@ public class ServletContextUtil {
 	public static long getLastModified(
 		ServletContext servletContext, String path, boolean cache) {
 
+		boolean quickExit = false;
+		long lastModified = 0;
+
 		if (cache) {
-			Long lastModified = (Long)servletContext.getAttribute(
+			Long llm = (Long)servletContext.getAttribute(
 				ServletContextUtil.class.getName() + StringPool.PERIOD +
 					path);
 
-			if (lastModified != null) {
-				return lastModified.longValue();
+			if (llm != null) {
+				quickExit = true;
+				lastModified = llm.longValue();
 			}
 		}
-
-		long lastModified = 0;
 
 		Set<String> paths = null;
 
-		if (path.endsWith(StringPool.SLASH)) {
-			paths = servletContext.getResourcePaths(path);
-		}
-		else {
-			paths = new HashSet<String>();
+		if (false == quickExit) {
 
-			paths.add(path);
-		}
-
-		if ((paths == null) || paths.isEmpty()) {
-			if (cache) {
-				servletContext.setAttribute(
-					ServletContextUtil.class.getName() + StringPool.PERIOD +
-						path,
-					new Long(lastModified));
-			}
-
-			return lastModified;
-		}
-
-		for (String curPath : paths) {
-			if (curPath.endsWith(StringPool.SLASH)) {
-				long curLastModified = getLastModified(servletContext, curPath);
-
-				if (curLastModified > lastModified) {
-					lastModified = curLastModified;
-				}
+			if (path.endsWith(StringPool.SLASH)) {
+				paths = servletContext.getResourcePaths(path);
 			}
 			else {
-				try {
-					URL url = servletContext.getResource(curPath);
+				paths = new HashSet<String>();
 
-					if (url == null) {
-						_log.error("Resource URL for " + curPath + " is null");
+				paths.add(path);
+			}
 
-						continue;
+			if ((paths == null) || paths.isEmpty()) {
+				quickExit = true;
+			}
+		}
+
+		if (false == quickExit) {
+
+			for (String curPath : paths) {
+				ArrayList<String> tempPaths = new ArrayList<String>();
+				String tempPath = curPath;
+
+				while (tempPath.endsWith(StringPool.SLASH) || 
+						!tempPaths.isEmpty()) {
+
+					if (tempPath.endsWith(StringPool.SLASH)) {
+						Set<String> s = servletContext.getResourcePaths(
+								tempPath);
+						tempPaths.addAll(s);
 					}
 
-					URLConnection urlConnection = url.openConnection();
+					try {
+						URL url = servletContext.getResource(tempPath);
 
-					if (urlConnection.getLastModified() > lastModified) {
-						lastModified = urlConnection.getLastModified();
+						if (url == null) {
+							_log.error(
+								"Resource URL for " + tempPath + " is null");
+						} else {
+
+							URLConnection urlConnection = url.openConnection();
+							long urlModified = urlConnection.getLastModified();
+
+							if (urlModified > lastModified) {
+								lastModified = urlModified;
+							}
+						}
 					}
-				}
-				catch (IOException ioe) {
-					_log.error(ioe, ioe);
+					catch (IOException ioe) {
+						_log.error(ioe, ioe);
+					}
+
+					tempPaths.remove(tempPath);
+
+					if (tempPaths.isEmpty()) {
+						break;
+					} else {
+						tempPath = tempPaths.get(0);
+					}
 				}
 			}
 		}
