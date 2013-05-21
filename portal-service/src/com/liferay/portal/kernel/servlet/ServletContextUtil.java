@@ -28,6 +28,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.jar.JarEntry;
@@ -38,6 +39,7 @@ import javax.servlet.ServletContext;
 /**
  * @author Brian Wing Shun Chan
  * @author Raymond Augé
+ * @author James Lefeu
  */
 public class ServletContextUtil {
 
@@ -105,31 +107,44 @@ public class ServletContextUtil {
 		}
 
 		for (String curPath : paths) {
-			if (curPath.endsWith(StringPool.SLASH)) {
-				long curLastModified = getLastModified(servletContext, curPath);
+			ArrayList<String> tempPaths = new ArrayList<String>();
+			String tempPath = curPath;
 
-				if (curLastModified > lastModified) {
-					lastModified = curLastModified;
+			while (tempPath.endsWith(StringPool.SLASH) || 
+					!tempPaths.isEmpty()) {
+
+				if (tempPath.endsWith(StringPool.SLASH)) {
+					Set<String> s = servletContext.getResourcePaths(
+							tempPath);
+					tempPaths.addAll(s);
 				}
-			}
-			else {
+
 				try {
-					URL url = servletContext.getResource(curPath);
+					URL url = servletContext.getResource(tempPath);
 
 					if (url == null) {
-						_log.error("Resource URL for " + curPath + " is null");
+						_log.error(
+							"Resource URL for " + tempPath + " is null");
+					} else {
 
-						continue;
-					}
+						URLConnection urlConnection = url.openConnection();
+						long urlModified = urlConnection.getLastModified();
 
-					URLConnection urlConnection = url.openConnection();
-
-					if (urlConnection.getLastModified() > lastModified) {
-						lastModified = urlConnection.getLastModified();
+						if (urlModified > lastModified) {
+							lastModified = urlModified;
+						}
 					}
 				}
 				catch (IOException ioe) {
 					_log.error(ioe, ioe);
+				}
+
+				tempPaths.remove(tempPath);
+
+				if (tempPaths.isEmpty()) {
+					break;
+				} else {
+					tempPath = tempPaths.get(0);
 				}
 			}
 		}
