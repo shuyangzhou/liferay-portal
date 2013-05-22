@@ -427,7 +427,8 @@ public class DLFileEntryFinderImpl
 				inlineSQLHelper);
 
 			sql = CustomSQLUtil.replaceOrderBy(
-				sql, queryDefinition.getOrderByComparator());
+				sql, queryDefinition.getOrderByComparator(),
+				DLFileEntryImpl.TABLE_NAME);
 
 			SQLQuery q = session.createSQLQuery(sql);
 

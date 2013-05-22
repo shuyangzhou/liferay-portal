@@ -449,7 +449,7 @@ public class DLFolderFinderImpl
 
 			sql = updateSQL(sql, folderId, includeMountFolders);
 			sql = CustomSQLUtil.replaceOrderBy(
-				sql, queryDefinition.getOrderByComparator());
+				sql, queryDefinition.getOrderByComparator(), "TEMP_TABLE");
 
 			SQLQuery q = session.createSQLQuery(sql);
 
