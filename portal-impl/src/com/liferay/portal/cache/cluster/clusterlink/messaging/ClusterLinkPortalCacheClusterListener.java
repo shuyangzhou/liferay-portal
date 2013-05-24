@@ -70,6 +70,11 @@ public class ClusterLinkPortalCacheClusterListener extends BaseMessageListener {
 			ehcache = _hibernateCacheManager.getEhcache(cacheName);
 		}
 
+		if(ehcache == null) {
+			_portalCacheManager.addCache(cacheName);
+			ehcache = _portalCacheManager.getCache(cacheName);
+		}
+
 		if (ehcache != null) {
 			PortalCacheClusterEventType portalCacheClusterEventType =
 				portalCacheClusterEvent.getEventType();
