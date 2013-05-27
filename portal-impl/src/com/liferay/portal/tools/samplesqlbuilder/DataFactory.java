@@ -167,15 +167,22 @@ import java.util.Map;
 public class DataFactory {
 
 	public DataFactory(
-			String baseDir, int maxAssetCategoryCount, int maxBlogsEntryCount,
-			int maxDDLCustomFieldCount, int maxGroupsCount,
-			int maxJournalArticleCount, int maxJournalArticleSize,
-			int maxMBCategoryCount, int maxMBThreadCount, int maxMBMessageCount,
+			String baseDir, int maxAssetCategoryCount,
+			int maxAssetCategoryPerEntryCount, int maxAssetTagCount,
+			int maxAssetTagPerEntryCount, int maxAssetVocabularyCount,
+			int maxBlogsEntryCount, int maxDDLCustomFieldCount,
+			int maxGroupsCount, int maxJournalArticleCount,
+			int maxJournalArticleSize, int maxMBCategoryCount,
+			int maxMBThreadCount, int maxMBMessageCount,
 			int maxUserToGroupCount)
 		throws Exception {
 
 		_baseDir = baseDir;
 		_maxAssetCategoryCount = maxAssetCategoryCount;
+		_maxAssetCategoryPerEntryCount = maxAssetCategoryPerEntryCount;
+		_maxAssetTagCount = maxAssetTagCount;
+		_maxAssetTagPerEntryCount = maxAssetTagPerEntryCount;
+		_maxAssetVocabularyCount = maxAssetVocabularyCount;
 		_maxBlogsEntryCount = maxBlogsEntryCount;
 		_maxDDLCustomFieldCount = maxDDLCustomFieldCount;
 		_maxGroupsCount = maxGroupsCount;
@@ -2162,6 +2169,10 @@ public class DataFactory {
 	private Map<Long, SimpleCounter> _layoutCounters =
 		new HashMap<Long, SimpleCounter>();
 	private int _maxAssetCategoryCount;
+	private int _maxAssetCategoryPerEntryCount;
+	private int _maxAssetTagCount;
+	private int _maxAssetTagPerEntryCount;
+	private int _maxAssetVocabularyCount;
 	private int _maxBlogsEntryCount;
 	private int _maxDDLCustomFieldCount;
 	private int _maxDLFileEntrySize;
