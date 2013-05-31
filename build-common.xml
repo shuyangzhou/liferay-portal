@@ -418,6 +418,16 @@ Please set the environment variable ANT_OPTS to the recommended value of
 		</then>
 	</if>
 
+	<if>
+		<not>
+			<isset property="antStart.alreadyCompiled"/>
+		</not>
+		<then>
+			<var name="antStart.alreadyCompiled" value="false" />
+			<echo>antStart.alreadyCompiled: ${antStart.alreadyCompiled}</echo>
+		</then>
+	</if>
+
 	<macrodef name="manifest-helper">
 		<attribute name="analyze" default="false" />
 

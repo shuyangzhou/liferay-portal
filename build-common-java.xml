@@ -57,6 +57,9 @@
 					<param name="javac.srcdir" value="src" />
 				</antcall>
 			</then>
+			<else>
+				<echo>We are trying to compile a file that is already compiled.</echo>
+			</else>
 		</if>
 	</target>
 
@@ -93,7 +96,15 @@
 		</if>
 	</target>
 
-	<target name="jar" depends="compile">
+	<target name="jar">
+
+		<if>
+			<equals arg1="${antStart.alreadyCompiled}" arg2="false" />
+			<then>
+				<antcall target="compile" />
+			</then>
+		</if>
+
 		<if>
 			<not>
 				<uptodate targetfile="${jar.file}.jar">

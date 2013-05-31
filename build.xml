@@ -4,12 +4,17 @@
 	<import file="build-common.xml" />
 
 	<target name="all">
-		<antcall target="clean" />
-		<antcall target="start" />
-		<antcall target="deploy" />
+		<antcall>
+			<target name="clean" />
+			<target name="start" />
+			<target name="deploy" />
+		</antcall>
 	</target>
 
 	<target name="clean">
+		<var name="antStart.alreadyCompiled" value="false" />
+		<echo>antStart.alreadyCompiled: ${antStart.alreadyCompiled}</echo>
+
 		<ant dir="classes" target="clean" inheritAll="false" />
 
 		<ant dir="portal-service" target="clean" inheritAll="false" />
@@ -150,6 +155,8 @@
 		<ant dir="portal-pacl" target="compile" inheritAll="false" />
 
 		<ant dir="osgi/bootstrap" target="deploy" inheritAll="false" />
+		
+		<ant dir="support-tomcat" target="compile" inheritAll="false" />
 	</target>
 
 	<target name="deploy">
@@ -719,6 +726,8 @@ Plugins: ${lp.plugins.dir}</echo>
 
 	<target name="start">
 		<antcall target="compile" />
+		<var name="antStart.alreadyCompiled" value="true" />
+		<echo>antStart.alreadyCompiled: ${antStart.alreadyCompiled}</echo>
 
 		<ant dir="util-taglib" target="jar" inheritAll="false" />
 

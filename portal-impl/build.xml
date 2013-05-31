@@ -1312,7 +1312,15 @@ public class Creole10Parser]]></replacevalue>
 		<delete file="ServiceBuilder.temp" />
 	</target>
 
-	<target name="jar" depends="compile">
+	<target name="jar">
+
+		<if>
+			<equals arg1="${antStart.alreadyCompiled}" arg2="false" />
+			<then>
+				<antcall target="compile" />
+			</then>
+		</if>
+
 		<ant dir="../util-bridges" target="jar" inheritAll="false" />
 		<ant dir="../util-java" target="jar" inheritAll="false" />
 		<ant dir="../util-taglib" target="jar" inheritAll="false" />
