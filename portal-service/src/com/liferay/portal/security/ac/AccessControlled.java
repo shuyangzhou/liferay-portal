@@ -34,6 +34,8 @@ public @interface AccessControlled {
 
 	public boolean hostAllowedValidationEnabled() default true;
 
+	// Fail javac: http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6857918
+
 	public AccessControlled NULL_ACCESS_CONTROLLED = new AccessControlled() {
 
 		@Override
