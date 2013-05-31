@@ -6,7 +6,9 @@
 	<target name="all">
 		<antcall target="clean" />
 		<antcall target="start" />
-		<antcall target="deploy" />
+		<antcall target="deploy" >
+			<param name="antStart.alreadyCompiled" value="true" />
+		</antcall>
 	</target>
 
 	<target name="clean">
@@ -150,6 +152,8 @@
 		<ant dir="portal-pacl" target="compile" inheritAll="false" />
 
 		<ant dir="osgi/bootstrap" target="deploy" inheritAll="false" />
+
+		<ant dir="support-tomcat" target="compile" inheritAll="false" />
 	</target>
 
 	<target name="deploy">
@@ -727,7 +731,9 @@ Plugins: ${lp.plugins.dir}</echo>
 
 		<ant dir="portal-impl" target="build-themes" inheritAll="false" />
 
-		<antcall target="jar" />
+		<antcall target="jar" >
+			<param name="antStart.alreadyCompiled" value="true" />
+		</antcall>
 
 		<antcall target="print-current-time" />
 	</target>
