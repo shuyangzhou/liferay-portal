@@ -17,7 +17,6 @@ package com.liferay.portal.kernel.util;
 import com.liferay.portal.util.PropsImpl;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -56,7 +55,8 @@ public class CookieKeysTest {
 
 		mockHttpServletRequest.setServerName("www.liferay.com");
 
-		Field field = getField("_SESSION_COOKIE_DOMAIN");
+		Field field = ReflectionUtil.getDeclaredField(
+			CookieKeys.class, "_SESSION_COOKIE_DOMAIN");
 
 		Object value = field.get(null);
 
@@ -79,7 +79,8 @@ public class CookieKeysTest {
 
 		mockHttpServletRequest.setServerName("www.liferay.com");
 
-		Field field = getField("_SESSION_COOKIE_USE_FULL_HOSTNAME");
+		Field field = ReflectionUtil.getDeclaredField(
+			CookieKeys.class, "_SESSION_COOKIE_USE_FULL_HOSTNAME");
 
 		Object value = field.get(null);
 
@@ -102,7 +103,8 @@ public class CookieKeysTest {
 
 		mockHttpServletRequest.setServerName("www.liferay.com");
 
-		Field field = getField("_SESSION_COOKIE_USE_FULL_HOSTNAME");
+		Field field = ReflectionUtil.getDeclaredField(
+			CookieKeys.class, "_SESSION_COOKIE_USE_FULL_HOSTNAME");
 
 		Object value = field.get(null);
 
@@ -121,22 +123,6 @@ public class CookieKeysTest {
 	@Before
 	public void setup() {
 		PropsUtil.setProps(new PropsImpl());
-	}
-
-	protected Field getField(String fieldName) throws Exception {
-		Field field = ReflectionUtil.getDeclaredField(
-			CookieKeys.class, fieldName);
-
-		int modifiers = field.getModifiers();
-
-		if ((modifiers & Modifier.FINAL) == Modifier.FINAL) {
-			Field modifiersField = ReflectionUtil.getDeclaredField(
-				Field.class, "modifiers");
-
-			modifiersField.setInt(field, modifiers & ~Modifier.FINAL);
-		}
-
-		return field;
 	}
 
 }

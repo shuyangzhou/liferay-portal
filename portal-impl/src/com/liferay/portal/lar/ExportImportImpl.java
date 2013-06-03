@@ -34,7 +34,9 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.CharPool;
+import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.DateRange;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -50,6 +52,7 @@ import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.ElementHandler;
 import com.liferay.portal.kernel.xml.ElementProcessor;
+import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.kernel.zip.ZipReader;
 import com.liferay.portal.kernel.zip.ZipReaderFactoryUtil;
 import com.liferay.portal.model.Group;
@@ -75,6 +78,7 @@ import com.liferay.portlet.journal.model.JournalArticle;
 
 import java.io.File;
 import java.io.InputStream;
+import java.io.StringReader;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -249,10 +253,69 @@ public class ExportImportImpl implements ExportImport {
 			"/manifest.xml");
 
 		if (is == null) {
-			throw new LARFileException("manifest.xml not found in the LAR");
+			throw new LARFileException("manifest.xml is not in the LAR");
 		}
 
-		saxParser.parse(new InputSource(is));
+		String manifestXMLContent = StringUtil.read(is);
+
+		saxParser.parse(new InputSource(new StringReader(manifestXMLContent)));
+
+		Document document = SAXReaderUtil.read(manifestXMLContent);
+
+		Element rootElement = document.getRootElement();
+
+		Element headerElement = rootElement.element("header");
+
+		String exportDateString = headerElement.attributeValue("export-date");
+
+		Date exportDate = GetterUtil.getDate(
+			exportDateString,
+			DateFormatFactoryUtil.getSimpleDateFormat(Time.RFC822_FORMAT));
+
+		manifestSummary.setExportDate(exportDate);
+
+		return manifestSummary;
+	}
+
+	@Override
+	public ManifestSummary getManifestSummary(
+			long userId, long groupId, Map<String, String[]> parameterMap,
+			FileEntry fileEntry)
+		throws Exception {
+
+		File file = DLFileEntryLocalServiceUtil.getFile(
+			userId, fileEntry.getFileEntryId(), fileEntry.getVersion(), false);
+		File newFile = null;
+		boolean rename = false;
+
+		ManifestSummary manifestSummary = null;
+
+		try {
+			String newFileName = StringUtil.replace(
+				file.getPath(), file.getName(), fileEntry.getTitle());
+
+			newFile = new File(newFileName);
+
+			rename = file.renameTo(newFile);
+
+			if (!rename) {
+				newFile = FileUtil.createTempFile(fileEntry.getExtension());
+
+				FileUtil.copyFile(file, newFile);
+			}
+
+			manifestSummary = getManifestSummary(
+				userId, groupId, parameterMap, newFile);
+
+		}
+		finally {
+			if (rename) {
+				newFile.renameTo(file);
+			}
+			else {
+				FileUtil.delete(newFile);
+			}
+		}
 
 		return manifestSummary;
 	}

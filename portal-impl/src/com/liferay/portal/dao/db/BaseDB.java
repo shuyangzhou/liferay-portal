@@ -49,7 +49,9 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -63,6 +65,7 @@ import javax.naming.NamingException;
  * @author Ganesh Ram
  * @author Brian Wing Shun Chan
  * @author Daniel Kocsis
+ * @author James Lefeu
  */
 public abstract class BaseDB implements DB {
 
@@ -999,41 +1002,21 @@ public abstract class BaseDB implements DB {
 			return null;
 		}
 
-		if (TEMPLATE.length != actual.length) {
-			return template;
-		}
+		if (TEMPLATE.length == actual.length) {
+			Set<Entry<String, String>> replacements = _templateMap.entrySet();
+			Iterator<Entry<String, String>> it = replacements.iterator();
+			while (it.hasNext()) {
+				Entry<String, String> entry = (Entry<String, String>)it.next();
 
-		StringBundler sb = null;
-
-		int endIndex = 0;
-
-		Matcher matcher = _templatePattern.matcher(template);
-
-		while (matcher.find()) {
-			int startIndex = matcher.start();
-
-			if (sb == null) {
-				sb = new StringBundler();
+				if (entry != null) {
+					template = StringUtil.replace(
+							template, (String)entry.getKey(),
+							(String)entry.getValue());
+				}
 			}
-
-			sb.append(template.substring(endIndex, startIndex));
-
-			endIndex = matcher.end();
-
-			String matched = template.substring(startIndex, endIndex);
-
-			sb.append(_templateMap.get(matched));
 		}
 
-		if (sb == null) {
-			return template;
-		}
-
-		if (template.length() > endIndex) {
-			sb.append(template.substring(endIndex));
-		}
-
-		return sb.toString();
+		return template;
 	}
 
 	protected abstract String reword(String data) throws IOException;

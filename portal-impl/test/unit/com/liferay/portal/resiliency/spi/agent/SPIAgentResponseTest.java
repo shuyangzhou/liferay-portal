@@ -292,7 +292,7 @@ public class SPIAgentResponseTest {
 		Assert.assertNotNull(spiAgentResponse.metaData);
 		Assert.assertNull(spiAgentResponse.byteData);
 		Assert.assertEquals(
-			"<body>content<div class=\"portlet-msg-info\"><strong>This " +
+			"<body>content<div class=\"alert alert-info\"><strong>This " +
 				"portlet is from SPI 1234</strong></div></body>",
 			spiAgentResponse.stringData);
 	}

@@ -43,10 +43,10 @@ public class MainServletExecutionTestListener
 		MockServletConfig mockServletConfig = new MockServletConfig(
 			mockServletContext);
 
-		_mainServlet = new MainServlet();
+		mainServlet = new MainServlet();
 
 		try {
-			_mainServlet.init(mockServletConfig);
+			mainServlet.init(mockServletConfig);
 		}
 		catch (ServletException se) {
 			throw new RuntimeException(
@@ -60,9 +60,9 @@ public class MainServletExecutionTestListener
 		return "file:" + file.getAbsolutePath();
 	}
 
-	private MainServlet _mainServlet;
+	protected MainServlet mainServlet;
 
-	private class AutoDeployMockServletContext extends MockServletContext {
+	protected class AutoDeployMockServletContext extends MockServletContext {
 
 		public AutoDeployMockServletContext(
 			String resourceBasePath, ResourceLoader resourceLoader) {
@@ -73,7 +73,6 @@ public class MainServletExecutionTestListener
 		/**
 		 * @see com.liferay.portal.server.capabilities.TomcatServerCapabilities
 		 */
-		@SuppressWarnings("unused")
 		protected Boolean autoDeploy = Boolean.TRUE;
 
 	}

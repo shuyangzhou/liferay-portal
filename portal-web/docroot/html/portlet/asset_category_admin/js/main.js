@@ -1472,11 +1472,12 @@ AUI.add(
 						Liferay.Service(
 							{
 								'$display = /assetvocabulary/get-group-vocabularies-display': {
+									addDefaultVocabulary: true,
+									end: end,
 									groupId: parentGroupId,
 									name: query,
-									start: start,
-									end: end,
 									obc: null,
+									start: start,
 									'vocabularies.$categoriesCount = /assetcategory/get-vocabulary-root-categories-count': {
 										groupId: parentGroupId,
 										'@vocabularyId': '$display.vocabularies.vocabularyId'

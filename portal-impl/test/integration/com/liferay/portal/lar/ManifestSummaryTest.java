@@ -17,7 +17,9 @@ package com.liferay.portal.lar;
 import com.liferay.portal.kernel.lar.ExportImportUtil;
 import com.liferay.portal.kernel.lar.ManifestSummary;
 import com.liferay.portal.kernel.lar.PortletDataContext;
+import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.xml.Document;
+import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.StagedModel;
@@ -52,9 +54,13 @@ public class ManifestSummaryTest
 
 		Assert.assertEquals(4, modelCountMap.size());
 		Assert.assertEquals(
-			1, manifestSummary.getModelCount(DDMStructure.class));
+			1,
+			manifestSummary.getModelCount(
+				DDMStructure.class, JournalArticle.class));
 		Assert.assertEquals(
-			1, manifestSummary.getModelCount(DDMTemplate.class));
+			1,
+			manifestSummary.getModelCount(
+				DDMTemplate.class, DDMStructure.class));
 		Assert.assertEquals(
 			1, manifestSummary.getModelCount(JournalArticle.class));
 		Assert.assertEquals(
@@ -62,7 +68,13 @@ public class ManifestSummaryTest
 
 		Document document = SAXReaderUtil.createDocument();
 
-		document.addElement("root");
+		Element rootElement = document.addElement("root");
+
+		Element headerElement = rootElement.addElement("header");
+
+		_exportDateString = Time.getRFC822();
+
+		headerElement.addAttribute("export-date", _exportDateString);
 
 		ExportImportUtil.writeManifestSummary(document, manifestSummary);
 
@@ -84,13 +96,24 @@ public class ManifestSummaryTest
 
 		Assert.assertEquals(4, modelCountMap.size());
 		Assert.assertEquals(
-			1, manifestSummary.getModelCount(DDMStructure.class));
+			1,
+			manifestSummary.getModelCount(
+				DDMStructure.class, JournalArticle.class));
 		Assert.assertEquals(
-			1, manifestSummary.getModelCount(DDMTemplate.class));
+			1,
+			manifestSummary.getModelCount(
+				DDMTemplate.class, DDMStructure.class));
 		Assert.assertEquals(
 			1, manifestSummary.getModelCount(JournalArticle.class));
 		Assert.assertEquals(
 			1, manifestSummary.getModelCount(JournalFolder.class));
+
+		String exportedDateString = Time.getRFC822(
+			manifestSummary.getExportDate());
+
+		Assert.assertEquals(_exportDateString, exportedDateString);
 	}
+
+	private String _exportDateString;
 
 }

@@ -51,7 +51,8 @@ import java.util.Map;
 public class AssetVocabularyServiceImpl extends AssetVocabularyServiceBaseImpl {
 
 	/**
-	 * @deprecated As of 6.1.0
+	 * @deprecated As of 6.1.0 {@link #addVocabulary(String, Map, Map, String,
+	 *             ServiceContext)}
 	 */
 	@Override
 	public AssetVocabulary addVocabulary(
@@ -215,7 +216,7 @@ public class AssetVocabularyServiceImpl extends AssetVocabularyServiceBaseImpl {
 	@Override
 	public AssetVocabularyDisplay getGroupVocabulariesDisplay(
 			long groupId, String name, int start, int end,
-			OrderByComparator obc)
+			boolean addDefaultVocabulary, OrderByComparator obc)
 		throws PortalException, SystemException {
 
 		List<AssetVocabulary> vocabularies;
@@ -232,7 +233,7 @@ public class AssetVocabularyServiceImpl extends AssetVocabularyServiceBaseImpl {
 			total = getGroupVocabulariesCount(groupId);
 		}
 
-		if (total == 0) {
+		if (addDefaultVocabulary && (total == 0)) {
 			vocabularies = new ArrayList<AssetVocabulary>();
 
 			vocabularies.add(
@@ -244,7 +245,19 @@ public class AssetVocabularyServiceImpl extends AssetVocabularyServiceBaseImpl {
 		return new AssetVocabularyDisplay(vocabularies, total, start, end);
 	}
 
-	@Deprecated
+	@Override
+	public AssetVocabularyDisplay getGroupVocabulariesDisplay(
+			long groupId, String name, int start, int end,
+			OrderByComparator obc)
+		throws PortalException, SystemException {
+
+		return getGroupVocabulariesDisplay(
+			groupId, name, start, end, false, obc);
+	}
+
+	/**
+	 * @deprecated As of 6.2.0, with no direct replacement
+	 */
 	@Override
 	public JSONObject getJSONGroupVocabularies(
 			long groupId, String name, int start, int end,
@@ -302,7 +315,8 @@ public class AssetVocabularyServiceImpl extends AssetVocabularyServiceBaseImpl {
 	}
 
 	/**
-	 * @deprecated As of 6.1.0
+	 * @deprecated As of 6.1.0, {@link #updateVocabulary(long, String, Map, Map,
+	 *             String, ServiceContext)}
 	 */
 	@Override
 	public AssetVocabulary updateVocabulary(
