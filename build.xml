@@ -6,7 +6,9 @@
 	<target name="all">
 		<antcall target="clean" />
 		<antcall target="start" />
-		<antcall target="deploy" />
+		<antcall target="deploy" >
+			<param name="antStart.alreadyJarred" value="true" />
+		</antcall>
 	</target>
 
 	<target name="clean">
@@ -149,7 +151,9 @@
 		<ant dir="portal-impl" target="compile" inheritAll="false" />
 		<ant dir="portal-pacl" target="compile" inheritAll="false" />
 
-		<ant dir="osgi/bootstrap" target="deploy" inheritAll="false" />
+		<ant dir="osgi/bootstrap" target="compile" inheritAll="false" />
+
+		<ant dir="support-tomcat" target="compile" inheritAll="false" />
 	</target>
 
 	<target name="deploy">
@@ -183,6 +187,8 @@ ${app.server.tomcat.dir}, then run "ant -buildfile build-dist.xml unzip-tomcat".
 			</then>
 		</if>
 
+		<ant dir="osgi/bootstrap" target="deploy" inheritAll="false" />
+
 		<ant dir="portal-service" target="deploy" inheritAll="false" />
 
 		<ant dir="util-bridges" target="deploy" inheritAll="false" />
@@ -190,7 +196,9 @@ ${app.server.tomcat.dir}, then run "ant -buildfile build-dist.xml unzip-tomcat".
 		<ant dir="util-slf4j" target="deploy" inheritAll="false" />
 		<ant dir="util-taglib" target="deploy" inheritAll="false" />
 
-		<ant dir="portal-impl" target="deploy" inheritAll="false" />
+		<ant dir="portal-impl" target="deploy" inheritAll="false" >
+			<property name="portal-service.alreadyDeployed" value="true" />
+		</ant>
 		<ant dir="portal-pacl" target="deploy" inheritAll="false" />
 
 		<ant dir="portal-web" target="deploy" inheritAll="false" />
@@ -594,10 +602,7 @@ print AdminControl.invoke(appManager, 'startApplication', 'liferay-portal')
 	<target name="jar">
 		<ant dir="portal-service" target="jar" inheritAll="false" />
 
-		<ant dir="util-bridges" target="jar" inheritAll="false" />
-		<ant dir="util-java" target="jar" inheritAll="false" />
 		<ant dir="util-slf4j" target="jar" inheritAll="false" />
-		<ant dir="util-taglib" target="jar" inheritAll="false" />
 
 		<ant dir="portal-impl" target="jar" inheritAll="false" />
 		<ant dir="portal-pacl" target="jar" inheritAll="false" />
@@ -605,6 +610,8 @@ print AdminControl.invoke(appManager, 'startApplication', 'liferay-portal')
 		<ant dir="portal-web" target="war" inheritAll="false" />
 
 		<ant dir="support-tomcat" target="jar" inheritAll="false" />
+
+		<ant dir="osgi/bootstrap" target="jar" inheritAll="false" />
 	</target>
 
 	<target name="javadoc">
@@ -780,14 +787,14 @@ Plugins: ${lp.plugins.dir}</echo>
 	<target name="start">
 		<antcall target="compile" />
 
-		<ant dir="util-taglib" target="jar" inheritAll="false" />
-
 		<ant dir="sql" target="build-db" inheritAll="false" />
 		<ant dir="sql" target="rebuild-hypersonic" inheritAll="false" />
 
-		<ant dir="portal-impl" target="build-themes" inheritAll="false" />
+		<ant dir="portal-web" target="build-themes" inheritAll="false" />
 
-		<antcall target="jar" />
+		<antcall target="jar" >
+			<param name="antStart.alreadyCompiled" value="true" />
+		</antcall>
 
 		<antcall target="print-current-time" />
 	</target>

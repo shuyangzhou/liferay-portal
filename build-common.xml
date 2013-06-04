@@ -418,6 +418,21 @@ Please set the environment variable ANT_OPTS to the recommended value of
 		</then>
 	</if>
 
+	<macrodef name="dependency">
+		<attribute name="alreadyDone" default="false" />
+		<attribute name="dir" default="${basedir}" />
+		<attribute name="inheritAll" default="true" />
+		<attribute name="action" />
+		<sequential>
+			<if>
+				<equals arg1="@{alreadyDone}" arg2="false" />
+				<then>
+					<ant dir="@{dir}" target="@{action}" inheritAll="@{inheritAll}"/>
+				</then>
+			</if>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="manifest-helper">
 		<attribute name="analyze" default="false" />
 

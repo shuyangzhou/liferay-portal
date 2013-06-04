@@ -1216,6 +1216,9 @@ public class Creole10Parser]]></replacevalue>
 					srcdir="src"
 				/>
 			</then>
+			<else>
+				<echo>Compile-fast was called but did nothing.</echo>
+			</else>
 		</if>
 	</target>
 
@@ -1242,7 +1245,7 @@ public class Creole10Parser]]></replacevalue>
 	</target>
 
 	<target name="deploy">
-		<ant dir="../portal-service" target="deploy" inheritAll="false" />
+		<dependency alreadyDone="${portal-service.alreadyDeployed}" dir="../portal-service" action="deploy" inheritAll="false" />
 
 		<antcall target="deploy-properties" />
 
@@ -1311,10 +1314,11 @@ public class Creole10Parser]]></replacevalue>
 		<delete file="ServiceBuilder.temp" />
 	</target>
 
-	<target name="jar" depends="compile">
-		<ant dir="../util-bridges" target="jar" inheritAll="false" />
-		<ant dir="../util-java" target="jar" inheritAll="false" />
-		<ant dir="../util-taglib" target="jar" inheritAll="false" />
+	<target name="jar">
+		<dependency alreadyDone="${antStart.alreadyCompiled}" action="compile" />
+		<dependency dir="../util-bridges" action="jar" inheritAll="false" />
+		<dependency dir="../util-java" action="jar" inheritAll="false" />
+		<dependency dir="../util-taglib" action="jar" inheritAll="false" />
 
 		<copy todir="${portal-impl.classes.dir}/com/liferay/portal/deploy/dependencies/osgi/core">
 			<fileset dir="${project.dir}/osgi/lib/${module.framework.implementation}/core" includes="*.jar" />
