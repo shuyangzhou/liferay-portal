@@ -374,7 +374,9 @@ public class ServiceBuilder {
 
 		String className = file.getName();
 
-		className = className.substring(0, className.length() - 5);
+		final int _JAVA_EXT_SIZE = 5;
+		className = className.substring(0, 
+				className.length() - _JAVA_EXT_SIZE);
 
 		content = SourceFormatter.stripJavaImports(
 			content, packagePath, className);
@@ -385,7 +387,7 @@ public class ServiceBuilder {
 
 		// Beautify
 
-		StringBuffer sb = new StringBuffer();
+		StringBuffer sb = new StringBuffer(content.length() * 2);
 
 		Jalopy jalopy = new Jalopy();
 
@@ -393,22 +395,16 @@ public class ServiceBuilder {
 		jalopy.setInput(tempFile);
 		jalopy.setOutput(sb);
 
-		File jalopyXmlFile = new File("tools/jalopy.xml");
+		File jalopyXmlFile = new File(
+				_JALOPY_CONFIG_DIRS[0] + _JALOPY_CONFIG_FILE);
 
-		if (!jalopyXmlFile.exists()) {
-			jalopyXmlFile = new File("../tools/jalopy.xml");
-		}
+		int index = 1;
+		while (!jalopyXmlFile.exists() && 
+				(index < _JALOPY_CONFIG_DIRS.length)) {
 
-		if (!jalopyXmlFile.exists()) {
-			jalopyXmlFile = new File("misc/jalopy.xml");
-		}
-
-		if (!jalopyXmlFile.exists()) {
-			jalopyXmlFile = new File("../misc/jalopy.xml");
-		}
-
-		if (!jalopyXmlFile.exists()) {
-			jalopyXmlFile = new File("../../misc/jalopy.xml");
+			jalopyXmlFile = new File(
+					_JALOPY_CONFIG_DIRS[index] + _JALOPY_CONFIG_FILE);
+			index++;
 		}
 
 		try {
@@ -448,6 +444,13 @@ public class ServiceBuilder {
 
 		jalopy.format();
 
+		if (jalopy.getState() == Jalopy.State.ERROR) {
+			System.out.println(file.getName() + " could not be formatted");
+		}
+		else if (jalopy.getState() == Jalopy.State.WARN) {
+			System.out.println(file.getName() + " formatted with warnings");
+		}
+
 		String newContent = sb.toString();
 
 		// Remove double blank lines after the package or last import
@@ -455,24 +458,6 @@ public class ServiceBuilder {
 		newContent = newContent.replaceFirst(
 			"(?m)^[ \t]*((?:package|import) .*;)\\s*^[ \t]*/\\*\\*",
 			"$1\n\n/**");
-
-		/*
-		// Remove blank lines after try {
-
-		newContent = StringUtil.replace(newContent, "try {\n\n", "try {\n");
-
-		// Remove blank lines after ) {
-
-		newContent = StringUtil.replace(newContent, ") {\n\n", ") {\n");
-
-		// Remove blank lines empty braces { }
-
-		newContent = StringUtil.replace(newContent, "\n\n\t}", "\n\t}");
-
-		// Add space to last }
-
-		newContent = newContent.substring(0, newContent.length() - 2) + "\n\n}";
-		*/
 
 		writeFileRaw(file, newContent);
 
@@ -4949,6 +4934,11 @@ public class ServiceBuilder {
 			_createSQLTables(updateSQLFile, createTableSQL, entity, false);
 		}
 	}
+	
+	private static final String[] _JALOPY_CONFIG_DIRS = {
+		"tools/", "../tools/", "misc/", "../misc/", "../../misc/"
+	};
+	private static final String _JALOPY_CONFIG_FILE = "jalopy.xml";
 
 	private static final int _SESSION_TYPE_LOCAL = 1;
 
