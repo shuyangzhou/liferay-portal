@@ -173,9 +173,10 @@ import java.util.Map;
 public class DataFactory {
 
 	public DataFactory(
-			String baseDir, int maxAssetCategoryCount,
-			int maxAssetEntryToAssetCategoryCount,
-			int maxAssetEntryToAssetTagCount, int maxAssetTagCount,
+			String baseDir, boolean assetPublisherFilter,
+			int maxAssetCategoryCount, int maxAssetEntryToAssetCategoryCount,
+			int maxAssetEntryToAssetTagCount,
+			int maxAssetPublisherToFilterRuleCount, int maxAssetTagCount,
 			int maxAssetVocabularyCount, int maxBlogsEntryCount,
 			int maxDDLCustomFieldCount, int maxGroupsCount,
 			int maxJournalArticleCount, int maxJournalArticleSize,
@@ -184,9 +185,12 @@ public class DataFactory {
 		throws Exception {
 
 		_baseDir = baseDir;
+		_assetPublisherFilter = assetPublisherFilter;
 		_maxAssetCategoryCount = maxAssetCategoryCount;
 		_maxAssetEntryToAssetCategoryCount = maxAssetEntryToAssetCategoryCount;
 		_maxAssetEntryToAssetTagCount = maxAssetEntryToAssetTagCount;
+		_maxAssetPublisherToFilterRuleCount =
+			maxAssetPublisherToFilterRuleCount;
 		_maxAssetTagCount = maxAssetTagCount;
 		_maxAssetVocabularyCount = maxAssetVocabularyCount;
 		_maxBlogsEntryCount = maxBlogsEntryCount;
@@ -1508,6 +1512,49 @@ public class DataFactory {
 	}
 
 	public PortletPreferences newPortletPreferences(
+			long plid, long groupId, String portletId, int currentIndex)
+		throws Exception {
+
+		if (!_assetPublisherFilter || (currentIndex == 1)) {
+			return newPortletPreferences(
+				plid, portletId, PortletConstants.DEFAULT_PREFERENCES);
+		}
+
+		javax.portlet.PortletPreferences jxPreferences =
+			new com.liferay.portlet.PortletPreferencesImpl();
+
+		int assetCategoryCountPerGroup =
+			_maxAssetCategoryCount * _maxAssetVocabularyCount;
+
+		int startIndex = assetCategoryCountPerGroup * ((int)groupId - 1);
+
+		for (int i = 0; i < _maxAssetPublisherToFilterRuleCount; i++) {
+			SimpleCounter counter = _assetPublisherRuleCounter.get(groupId);
+
+			if (counter == null) {
+				counter = new SimpleCounter(0);
+
+				_assetPublisherRuleCounter.put(groupId, counter);
+			}
+
+			int index =
+				startIndex + (int)counter.get() % assetCategoryCountPerGroup;
+
+			long categoryId = _assetCategories.get(index).getCategoryId();
+
+			jxPreferences.setValue("queryName" + i, "assetCategories");
+			jxPreferences.setValue(
+				"queryValues" + i, String.valueOf(categoryId));
+			jxPreferences.setValue("queryAndOperator" + i, "false");
+			jxPreferences.setValue("queryContains" + i, "false");
+		}
+
+		return newPortletPreferences(
+			plid, portletId,
+			PortletPreferencesFactoryUtil.toXML(jxPreferences));
+	}
+
+	public PortletPreferences newPortletPreferences(
 			long plid, String portletId, DDLRecordSet ddlRecordSet)
 		throws Exception {
 
@@ -1547,6 +1594,33 @@ public class DataFactory {
 		return newPortletPreferences(
 			plid, portletId,
 			PortletPreferencesFactoryUtil.toXML(jxPreferences));
+	}
+
+	public List<PortletPreferences> newPortletPreferencesForAssetPublisher(
+		long plid) {
+
+		List<PortletPreferences> portletPreferencesList =
+			new ArrayList<PortletPreferences>(4);
+
+		portletPreferencesList.add(
+			newPortletPreferences(
+				plid, PortletKeys.DOCKBAR,
+				PortletConstants.DEFAULT_PREFERENCES));
+
+		portletPreferencesList.add(
+			newPortletPreferences(
+				plid, PortletKeys.BLOGS, PortletConstants.DEFAULT_PREFERENCES));
+
+		portletPreferencesList.add(
+			newPortletPreferences(
+				plid, PortletKeys.JOURNAL,
+				PortletConstants.DEFAULT_PREFERENCES));
+
+		portletPreferencesList.add(
+			newPortletPreferences(
+				plid, PortletKeys.WIKI, PortletConstants.DEFAULT_PREFERENCES));
+
+		return portletPreferencesList;
 	}
 
 	public List<Layout> newPublicLayouts(long groupId) {
@@ -2308,6 +2382,9 @@ public class DataFactory {
 	private List<AssetCategory> _assetCategories;
 	private Map<Long, SimpleCounter> _assetCategoryCounters =
 		new HashMap<Long, SimpleCounter>();
+	private boolean _assetPublisherFilter;
+	private Map<Long, SimpleCounter> _assetPublisherRuleCounter =
+		new HashMap<Long, SimpleCounter>();
 	private Map<Long, SimpleCounter> _assetTagCounters =
 		new HashMap<Long, SimpleCounter>();
 	private List<AssetTag> _assetTags;
@@ -2340,6 +2417,7 @@ public class DataFactory {
 	private int _maxAssetCategoryCount;
 	private int _maxAssetEntryToAssetCategoryCount;
 	private int _maxAssetEntryToAssetTagCount;
+	private int _maxAssetPublisherToFilterRuleCount;
 	private int _maxAssetTagCount;
 	private int _maxAssetVocabularyCount;
 	private int _maxBlogsEntryCount;
