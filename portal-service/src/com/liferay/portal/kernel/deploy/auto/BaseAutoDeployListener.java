@@ -44,7 +44,8 @@ public abstract class BaseAutoDeployListener implements AutoDeployListener {
 
 		if (isMatchingFile(file, "WEB-INF/liferay-hook.xml") &&
 			!isMatchingFile(file, "WEB-INF/liferay-portlet.xml") &&
-			!fileName.contains("-theme") && !isJarFile(file)) {
+			!fileName.contains("-theme") && !fileName.contains("-web") &&
+			!isJarFile(file)) {
 
 			return true;
 		}
