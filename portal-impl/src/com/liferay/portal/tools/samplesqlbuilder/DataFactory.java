@@ -1559,6 +1559,48 @@ public class DataFactory {
 	}
 
 	public PortletPreferences newPortletPreferences(
+			long plid, long groupId, String portletId, int currentIndex)
+		throws Exception {
+
+		List<AssetCategory> assetCategories = _assetCategoriesMap.get(groupId);
+
+		if (!_assetPublisherFilter || (currentIndex == 1) ||
+			(assetCategories == null) || assetCategories.isEmpty()) {
+
+			return newPortletPreferences(
+				plid, portletId, PortletConstants.DEFAULT_PREFERENCES);
+		}
+
+		SimpleCounter counter = _assetPublisherRuleCounter.get(groupId);
+
+		if (counter == null) {
+			counter = new SimpleCounter(0);
+
+			_assetPublisherRuleCounter.put(groupId, counter);
+		}
+
+		javax.portlet.PortletPreferences jxPreferences =
+			new com.liferay.portlet.PortletPreferencesImpl();
+
+		for (int i = 0; i < _maxAssetPublisherFilterRuleCount; i++) {
+			int index = (int)counter.get() % assetCategories.size();
+
+			AssetCategory assetCategory = assetCategories.get(index);
+
+			jxPreferences.setValue("queryName" + i, "assetCategories");
+			jxPreferences.setValue(
+				"queryValues" + i,
+				String.valueOf(assetCategory.getCategoryId()));
+			jxPreferences.setValue("queryAndOperator" + i, "false");
+			jxPreferences.setValue("queryContains" + i, "false");
+		}
+
+		return newPortletPreferences(
+			plid, portletId,
+			PortletPreferencesFactoryUtil.toXML(jxPreferences));
+	}
+
+	public PortletPreferences newPortletPreferences(
 			long plid, String portletId, DDLRecordSet ddlRecordSet)
 		throws Exception {
 
@@ -1598,6 +1640,33 @@ public class DataFactory {
 		return newPortletPreferences(
 			plid, portletId,
 			PortletPreferencesFactoryUtil.toXML(jxPreferences));
+	}
+
+	public List<PortletPreferences> newPortletPreferencesForAssetPublisher(
+		long plid) {
+
+		List<PortletPreferences> portletPreferencesList =
+			new ArrayList<PortletPreferences>(4);
+
+		portletPreferencesList.add(
+			newPortletPreferences(
+				plid, PortletKeys.DOCKBAR,
+				PortletConstants.DEFAULT_PREFERENCES));
+
+		portletPreferencesList.add(
+			newPortletPreferences(
+				plid, PortletKeys.BLOGS, PortletConstants.DEFAULT_PREFERENCES));
+
+		portletPreferencesList.add(
+			newPortletPreferences(
+				plid, PortletKeys.JOURNAL,
+				PortletConstants.DEFAULT_PREFERENCES));
+
+		portletPreferencesList.add(
+			newPortletPreferences(
+				plid, PortletKeys.WIKI, PortletConstants.DEFAULT_PREFERENCES));
+
+		return portletPreferencesList;
 	}
 
 	public List<Layout> newPublicLayouts(long groupId) {
@@ -2361,6 +2430,8 @@ public class DataFactory {
 	private Map<Long, SimpleCounter> _assetCategoryCounters =
 		new HashMap<Long, SimpleCounter>();
 	private boolean _assetPublisherFilter;
+	private Map<Long, SimpleCounter> _assetPublisherRuleCounter =
+		new HashMap<Long, SimpleCounter>();
 	private Map<Long, SimpleCounter> _assetTagCounters =
 		new HashMap<Long, SimpleCounter>();
 	private Map<Long, List<AssetTag>> _assetTagsMap =
