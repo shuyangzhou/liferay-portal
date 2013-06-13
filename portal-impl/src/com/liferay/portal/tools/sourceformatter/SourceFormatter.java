@@ -441,6 +441,34 @@ public class SourceFormatter {
 		}
 	}
 
+	private static void _checkAnnotationAndMethodName(
+		String fileName, String methodContent, String methodName,
+		String annotation, String requiredRegex) {
+
+		Pattern pattern = Pattern.compile(requiredRegex);
+
+		Matcher matcher = pattern.matcher(methodName);
+
+		if (methodContent.contains(
+				StringPool.TAB + StringPool.AT + annotation + "\n") ||
+			methodContent.contains(
+				StringPool.TAB + StringPool.AT + annotation +
+					StringPool.OPEN_PARENTHESIS)) {
+
+			if (!matcher.find()) {
+				_processErrorMessage(
+					fileName,
+					"Incorrect method name: " + fileName + " " + methodName);
+			}
+		}
+		else if (matcher.find()) {
+			_processErrorMessage(
+				fileName,
+				"Annotation @" + annotation + " required: " + fileName + " - " +
+					methodName);
+		}
+	}
+
 	private static String _checkIfClause(
 			String ifClause, String fileName, int lineCount)
 		throws IOException {
@@ -730,6 +758,37 @@ public class SourceFormatter {
 		while (pos1 != -1);
 
 		return false;
+	}
+
+	private static void _checkTestAnnotations(
+		String fileName, JavaTerm javaTerm) {
+
+		if ((javaTerm.getType() != _TYPE_METHOD_PUBLIC) &&
+			(javaTerm.getType() != _TYPE_METHOD_PUBLIC_STATIC)) {
+
+			return;
+		}
+
+		String methodContent = javaTerm.getContent();
+
+		if (methodContent.contains(StringPool.TAB + "@Override")) {
+			return;
+		}
+
+		String methodName = javaTerm.getName();
+
+		_checkAnnotationAndMethodName(
+			fileName, methodContent, methodName, "After", "^.*tearDown\\z");
+		_checkAnnotationAndMethodName(
+			fileName, methodContent, methodName, "AfterClass",
+			"^.*tearDownClass\\z");
+		_checkAnnotationAndMethodName(
+			fileName, methodContent, methodName, "Before", "^.*setUp\\z");
+		_checkAnnotationAndMethodName(
+			fileName, methodContent, methodName, "BeforeClass",
+			"^.*setUpClass\\z");
+		_checkAnnotationAndMethodName(
+			fileName, methodContent, methodName, "Test", "^.*test");
 	}
 
 	private static void _checkUnprocessedExceptions(
@@ -2602,7 +2661,7 @@ public class SourceFormatter {
 
 			newContent = _sortJavaTerms(fileName, content, javaTerms);
 
-			newContent = _sortAnnotations(newContent, javaTerms);
+			newContent = _formatAnnotations(fileName, newContent, javaTerms);
 		}
 
 		return newContent;
@@ -5009,13 +5068,18 @@ public class SourceFormatter {
 		return newLine;
 	}
 
-	private static String _sortAnnotations(
-		String content, Set<JavaTerm> javaTerms) throws IOException {
+	private static String _formatAnnotations(
+			String fileName, String content, Set<JavaTerm> javaTerms)
+		throws IOException {
 
 		Iterator<JavaTerm> itr = javaTerms.iterator();
 
 		while (itr.hasNext()) {
 			JavaTerm javaTerm = itr.next();
+
+			if (fileName.contains("/test/")) {
+				_checkTestAnnotations(fileName, javaTerm);
+			}
 
 			for (;;) {
 				String javaTermContent = javaTerm.getContent();
