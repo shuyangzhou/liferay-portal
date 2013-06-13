@@ -1325,6 +1325,37 @@ public class SourceFormatter {
 		return newContent;
 	}
 
+	private static String _formatAnnotations(
+			String fileName, String content, Set<JavaTerm> javaTerms)
+		throws IOException {
+
+		Iterator<JavaTerm> itr = javaTerms.iterator();
+
+		while (itr.hasNext()) {
+			JavaTerm javaTerm = itr.next();
+
+			if (fileName.contains("/test/")) {
+				_checkTestAnnotations(fileName, javaTerm);
+			}
+
+			for (;;) {
+				String javaTermContent = javaTerm.getContent();
+
+				javaTerm.sortAnnotations();
+
+				String newJavaTermContent = javaTerm.getContent();
+
+				if (javaTermContent.equals(newJavaTermContent)) {
+					break;
+				}
+
+				content = content.replace(javaTermContent, newJavaTermContent);
+			}
+		}
+
+		return content;
+	}
+
 	private static void _formatAntXML() throws DocumentException, IOException {
 		String basedir = "./";
 
@@ -5066,37 +5097,6 @@ public class SourceFormatter {
 		}
 
 		return newLine;
-	}
-
-	private static String _formatAnnotations(
-			String fileName, String content, Set<JavaTerm> javaTerms)
-		throws IOException {
-
-		Iterator<JavaTerm> itr = javaTerms.iterator();
-
-		while (itr.hasNext()) {
-			JavaTerm javaTerm = itr.next();
-
-			if (fileName.contains("/test/")) {
-				_checkTestAnnotations(fileName, javaTerm);
-			}
-
-			for (;;) {
-				String javaTermContent = javaTerm.getContent();
-
-				javaTerm.sortAnnotations();
-
-				String newJavaTermContent = javaTerm.getContent();
-
-				if (javaTermContent.equals(newJavaTermContent)) {
-					break;
-				}
-
-				content = content.replace(javaTermContent, newJavaTermContent);
-			}
-		}
-
-		return content;
 	}
 
 	private static String _sortExceptions(String line) {
