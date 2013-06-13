@@ -14,6 +14,8 @@
 
 package com.liferay.portal.cluster;
 
+import org.junit.Test;
+
 /**
  * @author Tina Tian
  */
@@ -21,6 +23,7 @@ public class TestBean {
 
 	public static String TIMESTAMP;
 
+	@Test
 	public static String testMethod1(String timeStamp) {
 		if (timeStamp.length() == 0) {
 			return null;
@@ -31,10 +34,12 @@ public class TestBean {
 		return timeStamp;
 	}
 
+	@Test
 	public static Object testMethod2() {
 		return new Object();
 	}
 
+	@Test
 	public static Object testMethod3(String timeStamp) throws Exception {
 		throw new Exception(timeStamp);
 	}
@@ -43,6 +48,7 @@ public class TestBean {
 		_key = key;
 	}
 
+	@Test
 	public String testMethod4() {
 		return _key;
 	}
