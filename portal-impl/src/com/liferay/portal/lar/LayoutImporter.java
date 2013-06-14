@@ -540,8 +540,6 @@ public class LayoutImporter {
 					getLayoutSetPrototypeByUuidAndCompanyId(
 						layoutSetPrototypeUuid, companyId);
 
-			Group layoutSetPrototypeGroup = layoutSetPrototype.getGroup();
-
 			for (Layout layout : previousLayouts) {
 				String sourcePrototypeLayoutUuid =
 					layout.getSourcePrototypeLayoutUuid();
@@ -551,8 +549,8 @@ public class LayoutImporter {
 				}
 
 				Layout sourcePrototypeLayout = LayoutUtil.fetchByUUID_G_P(
-					sourcePrototypeLayoutUuid,
-					layoutSetPrototypeGroup.getGroupId(), true);
+					sourcePrototypeLayoutUuid, layoutSetPrototype.getGroupId(),
+					true);
 
 				if (sourcePrototypeLayout == null) {
 					LayoutLocalServiceUtil.deleteLayout(

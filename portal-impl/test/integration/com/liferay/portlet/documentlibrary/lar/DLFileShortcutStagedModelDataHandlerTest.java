@@ -81,15 +81,15 @@ public class DLFileShortcutStagedModelDataHandlerTest
 			Map<String, List<StagedModel>> dependentStagedModelsMap)
 		throws Exception {
 
-		List<StagedModel> dependentStagedModels = dependentStagedModelsMap.get(
-			Folder.class.getSimpleName());
+		List<StagedModel> folderDependentStagedModels =
+			dependentStagedModelsMap.get(Folder.class.getSimpleName());
 
-		Folder folder = (Folder)dependentStagedModels.get(0);
+		Folder folder = (Folder)folderDependentStagedModels.get(0);
 
-		dependentStagedModels = dependentStagedModelsMap.get(
-			FileEntry.class.getSimpleName());
+		List<StagedModel> fileEntryDependentStagedModels =
+			dependentStagedModelsMap.get(FileEntry.class.getSimpleName());
 
-		FileEntry fileEntry = (FileEntry)dependentStagedModels.get(0);
+		FileEntry fileEntry = (FileEntry)fileEntryDependentStagedModels.get(0);
 
 		return DLAppTestUtil.addDLFileShortcut(
 			fileEntry, group.getGroupId(), folder.getFolderId());
@@ -135,22 +135,22 @@ public class DLFileShortcutStagedModelDataHandlerTest
 			Group group)
 		throws Exception {
 
-		List<StagedModel> dependentStagedModels = dependentStagedModelsMap.get(
-			FileEntry.class.getSimpleName());
+		List<StagedModel> fileEntryDependentStagedModels =
+			dependentStagedModelsMap.get(FileEntry.class.getSimpleName());
 
-		Assert.assertEquals(1, dependentStagedModels.size());
+		Assert.assertEquals(1, fileEntryDependentStagedModels.size());
 
-		FileEntry fileEntry = (FileEntry)dependentStagedModels.get(0);
+		FileEntry fileEntry = (FileEntry)fileEntryDependentStagedModels.get(0);
 
 		DLAppLocalServiceUtil.getFileEntryByUuidAndGroupId(
 			fileEntry.getUuid(), group.getGroupId());
 
-		dependentStagedModels = dependentStagedModelsMap.get(
-			Folder.class.getSimpleName());
+		List<StagedModel> folderDependentStagedModels =
+			dependentStagedModelsMap.get(Folder.class.getSimpleName());
 
-		Assert.assertEquals(1, dependentStagedModels.size());
+		Assert.assertEquals(1, folderDependentStagedModels.size());
 
-		Folder folder = (Folder)dependentStagedModels.get(0);
+		Folder folder = (Folder)folderDependentStagedModels.get(0);
 
 		DLFolderLocalServiceUtil.getDLFolderByUuidAndGroupId(
 			folder.getUuid(), group.getGroupId());

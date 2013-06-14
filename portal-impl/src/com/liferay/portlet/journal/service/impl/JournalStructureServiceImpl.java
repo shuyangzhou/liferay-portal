@@ -34,8 +34,10 @@ import java.util.Locale;
 import java.util.Map;
 
 /**
- * @author Brian Wing Shun Chan
- * @author Raymond Augé
+ * @author     Brian Wing Shun Chan
+ * @author     Raymond Augé
+ * @deprecated As of 6.2.0, since Web Content Administration now uses the
+ *             Dynamic Data Mapping framework to handle templates
  */
 public class JournalStructureServiceImpl
 	extends JournalStructureServiceBaseImpl {

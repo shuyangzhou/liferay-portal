@@ -32,6 +32,8 @@ import com.liferay.portal.service.BaseService;
  * @see JournalStructureServiceUtil
  * @see com.liferay.portlet.journal.service.base.JournalStructureServiceBaseImpl
  * @see com.liferay.portlet.journal.service.impl.JournalStructureServiceImpl
+ * @deprecated As of 6.2.0, since Web Content Administration now uses the
+            Dynamic Data Mapping framework to handle templates
  * @generated
  */
 @AccessControlled

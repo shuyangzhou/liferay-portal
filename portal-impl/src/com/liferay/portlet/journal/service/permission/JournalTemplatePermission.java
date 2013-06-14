@@ -21,7 +21,6 @@ import com.liferay.portal.security.auth.PrincipalException;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.util.PortletKeys;
 import com.liferay.portlet.journal.model.JournalTemplate;
-import com.liferay.portlet.journal.service.JournalTemplateLocalServiceUtil;
 
 /**
  * @author Brian Wing Shun Chan
@@ -79,8 +78,11 @@ public class JournalTemplatePermission {
 			String templateId, String actionId)
 		throws PortalException, SystemException {
 
-		JournalTemplate template = JournalTemplateLocalServiceUtil.getTemplate(
-			groupId, templateId, true);
+		@SuppressWarnings("deprecation")
+		JournalTemplate template =
+			com.liferay.portlet.journal.service.
+				JournalTemplateLocalServiceUtil.getTemplate(
+					groupId, templateId, true);
 
 		return contains(permissionChecker, template, actionId);
 	}

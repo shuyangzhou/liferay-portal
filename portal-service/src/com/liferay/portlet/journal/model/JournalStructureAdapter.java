@@ -28,7 +28,6 @@ import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.dynamicdatamapping.model.DDMStructure;
 import com.liferay.portlet.dynamicdatamapping.service.DDMStructureLocalServiceUtil;
 import com.liferay.portlet.expando.model.ExpandoBridge;
-import com.liferay.portlet.journal.service.JournalStructureLocalServiceUtil;
 import com.liferay.portlet.journal.util.JournalConverterUtil;
 
 import java.io.Serializable;
@@ -172,9 +171,11 @@ public class JournalStructureAdapter implements JournalStructure {
 		}
 
 		try {
+			@SuppressWarnings("deprecation")
 			JournalStructure parentStructure =
-				JournalStructureLocalServiceUtil.getStructure(
-					getGroupId(), parentStructureId, true);
+				com.liferay.portlet.journal.service.
+					JournalStructureLocalServiceUtil.getStructure(
+						getGroupId(), parentStructureId, true);
 
 			Document document = SAXReaderUtil.read(getXsd());
 

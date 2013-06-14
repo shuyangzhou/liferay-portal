@@ -2011,6 +2011,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 *         with the Facebook ID could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
+	@Override
 	public User fetchUserByFacebookId(long companyId, long facebookId)
 		throws SystemException {
 
@@ -2039,6 +2040,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 *         with the OpenID could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
+	@Override
 	public User fetchUserByOpenId(long companyId, String openId)
 		throws SystemException {
 

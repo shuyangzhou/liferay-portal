@@ -88,8 +88,8 @@ public class Entity {
 	public Entity(String name) {
 		this(
 			null, null, null, name, null, null, null, false, false, false, true,
-			null, null, null, null, null, true, false, null, null, null, null,
-			null, null, null, null, null);
+			null, null, null, null, null, true, false, false, null, null, null,
+			null, null, null, null, null, null);
 	}
 
 	public Entity(
@@ -98,7 +98,7 @@ public class Entity {
 		boolean uuidAccessor, boolean localService, boolean remoteService,
 		String persistenceClass, String finderClass, String dataSource,
 		String sessionFactory, String txManager, boolean cacheEnabled,
-		boolean jsonEnabled, List<EntityColumn> pkList,
+		boolean jsonEnabled, boolean deprecated, List<EntityColumn> pkList,
 		List<EntityColumn> regularColList, List<EntityColumn> blobList,
 		List<EntityColumn> collectionList, List<EntityColumn> columnList,
 		EntityOrder order, List<EntityFinder> finderList,
@@ -124,6 +124,7 @@ public class Entity {
 		_txManager = GetterUtil.getString(txManager, DEFAULT_TX_MANAGER);
 		_cacheEnabled = cacheEnabled;
 		_jsonEnabled = jsonEnabled;
+		_deprecated = deprecated;
 		_pkList = pkList;
 		_regularColList = regularColList;
 		_blobList = blobList;
@@ -642,6 +643,10 @@ public class Entity {
 		}
 	}
 
+	public boolean isDeprecated() {
+		return _deprecated;
+	}
+
 	public boolean isGroupedModel() {
 		String pkVarName = getPKVarName();
 
@@ -808,6 +813,7 @@ public class Entity {
 	private List<EntityColumn> _columnList;
 	private boolean _containerModel;
 	private String _dataSource;
+	private boolean _deprecated;
 	private String _finderClass;
 	private List<EntityColumn> _finderColumnsList;
 	private List<EntityFinder> _finderList;

@@ -80,15 +80,16 @@ public class PollsVoteStagedModelDataHandlerTest
 			Map<String, List<StagedModel>> dependentStagedModelsMap)
 		throws Exception {
 
-		List<StagedModel> dependentStagedModels = dependentStagedModelsMap.get(
-			PollsQuestion.class.getSimpleName());
+		List<StagedModel> questionDependentStagedModels =
+			dependentStagedModelsMap.get(PollsQuestion.class.getSimpleName());
 
-		PollsQuestion question = (PollsQuestion)dependentStagedModels.get(0);
+		PollsQuestion question =
+			(PollsQuestion)questionDependentStagedModels.get(0);
 
-		dependentStagedModels = dependentStagedModelsMap.get(
-			PollsChoice.class.getSimpleName());
+		List<StagedModel>  choiceDependentStagedModels =
+			dependentStagedModelsMap.get(PollsChoice.class.getSimpleName());
 
-		PollsChoice choice = (PollsChoice)dependentStagedModels.get(0);
+		PollsChoice choice = (PollsChoice)choiceDependentStagedModels.get(0);
 
 		return PollsTestUtil.addVote(
 			group.getGroupId(), question.getQuestionId(), choice.getChoiceId());
@@ -116,22 +117,23 @@ public class PollsVoteStagedModelDataHandlerTest
 			Group group)
 		throws Exception {
 
-		List<StagedModel> dependentStagedModels = dependentStagedModelsMap.get(
-			PollsChoice.class.getSimpleName());
+		List<StagedModel> choiceDependentStagedModels =
+			dependentStagedModelsMap.get(PollsChoice.class.getSimpleName());
 
-		Assert.assertEquals(1, dependentStagedModels.size());
+		Assert.assertEquals(1, choiceDependentStagedModels.size());
 
-		PollsChoice choice = (PollsChoice)dependentStagedModels.get(0);
+		PollsChoice choice = (PollsChoice)choiceDependentStagedModels.get(0);
 
 		PollsChoiceLocalServiceUtil.getPollsChoiceByUuidAndGroupId(
 			choice.getUuid(), group.getGroupId());
 
-		dependentStagedModels = dependentStagedModelsMap.get(
-			PollsQuestion.class.getSimpleName());
+		List<StagedModel> questionDependentStagedModels =
+			dependentStagedModelsMap.get(PollsQuestion.class.getSimpleName());
 
-		Assert.assertEquals(1, dependentStagedModels.size());
+		Assert.assertEquals(1, questionDependentStagedModels.size());
 
-		PollsQuestion question = (PollsQuestion)dependentStagedModels.get(0);
+		PollsQuestion question =
+			(PollsQuestion)questionDependentStagedModels.get(0);
 
 		PollsQuestionLocalServiceUtil.getPollsQuestionByUuidAndGroupId(
 			question.getUuid(), group.getGroupId());

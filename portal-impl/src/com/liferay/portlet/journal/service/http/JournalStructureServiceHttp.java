@@ -49,6 +49,8 @@ import com.liferay.portlet.journal.service.JournalStructureServiceUtil;
  * @see JournalStructureServiceSoap
  * @see com.liferay.portal.security.auth.HttpPrincipal
  * @see com.liferay.portlet.journal.service.JournalStructureServiceUtil
+ * @deprecated As of 6.2.0, since Web Content Administration now uses the
+            Dynamic Data Mapping framework to handle templates
  * @generated
  */
 public class JournalStructureServiceHttp {

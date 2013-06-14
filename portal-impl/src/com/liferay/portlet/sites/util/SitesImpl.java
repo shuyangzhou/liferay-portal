@@ -599,11 +599,9 @@ public class SitesImpl implements Sites {
 						layoutSet.getLayoutSetPrototypeUuid(),
 						layout.getCompanyId());
 
-			Group group = layoutSetPrototype.getGroup();
-
 			return LayoutLocalServiceUtil.fetchLayoutByUuidAndGroupId(
-				layout.getSourcePrototypeLayoutUuid(), group.getGroupId(),
-				true);
+				layout.getSourcePrototypeLayoutUuid(),
+				layoutSetPrototype.getGroupId(), true);
 		}
 		catch (Exception e) {
 			_log.error(
@@ -1788,11 +1786,9 @@ public class SitesImpl implements Sites {
 		boolean newFile = false;
 
 		if (file == null) {
-			Group layoutSetPrototypeGroup = layoutSetPrototype.getGroup();
-
 			file = LayoutLocalServiceUtil.exportLayoutsAsFile(
-				layoutSetPrototypeGroup.getGroupId(), true, null, parameterMap,
-				null, null);
+				layoutSetPrototype.getGroupId(), true, null, parameterMap, null,
+				null);
 
 			newFile = true;
 		}

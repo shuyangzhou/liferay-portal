@@ -14,8 +14,6 @@
 
 package com.liferay.portlet.asset.service.base;
 
-import com.liferay.counter.service.CounterLocalService;
-
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.bean.IdentifiableBean;
 import com.liferay.portal.kernel.dao.jdbc.SqlUpdate;
@@ -29,15 +27,7 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.model.PersistedModel;
 import com.liferay.portal.service.BaseLocalServiceImpl;
-import com.liferay.portal.service.CompanyLocalService;
-import com.liferay.portal.service.CompanyService;
-import com.liferay.portal.service.GroupLocalService;
-import com.liferay.portal.service.GroupService;
 import com.liferay.portal.service.PersistedModelLocalServiceRegistry;
-import com.liferay.portal.service.ResourceLocalService;
-import com.liferay.portal.service.SystemEventLocalService;
-import com.liferay.portal.service.UserLocalService;
-import com.liferay.portal.service.UserService;
 import com.liferay.portal.service.persistence.CompanyPersistence;
 import com.liferay.portal.service.persistence.GroupFinder;
 import com.liferay.portal.service.persistence.GroupPersistence;
@@ -46,20 +36,7 @@ import com.liferay.portal.service.persistence.UserFinder;
 import com.liferay.portal.service.persistence.UserPersistence;
 
 import com.liferay.portlet.asset.model.AssetEntry;
-import com.liferay.portlet.asset.service.AssetCategoryLocalService;
-import com.liferay.portlet.asset.service.AssetCategoryPropertyLocalService;
-import com.liferay.portlet.asset.service.AssetCategoryPropertyService;
-import com.liferay.portlet.asset.service.AssetCategoryService;
 import com.liferay.portlet.asset.service.AssetEntryLocalService;
-import com.liferay.portlet.asset.service.AssetEntryService;
-import com.liferay.portlet.asset.service.AssetLinkLocalService;
-import com.liferay.portlet.asset.service.AssetTagLocalService;
-import com.liferay.portlet.asset.service.AssetTagPropertyLocalService;
-import com.liferay.portlet.asset.service.AssetTagPropertyService;
-import com.liferay.portlet.asset.service.AssetTagService;
-import com.liferay.portlet.asset.service.AssetTagStatsLocalService;
-import com.liferay.portlet.asset.service.AssetVocabularyLocalService;
-import com.liferay.portlet.asset.service.AssetVocabularyService;
 import com.liferay.portlet.asset.service.persistence.AssetCategoryFinder;
 import com.liferay.portlet.asset.service.persistence.AssetCategoryPersistence;
 import com.liferay.portlet.asset.service.persistence.AssetCategoryPropertyFinder;
@@ -76,43 +53,23 @@ import com.liferay.portlet.asset.service.persistence.AssetTagPropertyPersistence
 import com.liferay.portlet.asset.service.persistence.AssetTagStatsPersistence;
 import com.liferay.portlet.asset.service.persistence.AssetVocabularyFinder;
 import com.liferay.portlet.asset.service.persistence.AssetVocabularyPersistence;
-import com.liferay.portlet.blogs.service.BlogsEntryLocalService;
-import com.liferay.portlet.blogs.service.BlogsEntryService;
 import com.liferay.portlet.blogs.service.persistence.BlogsEntryFinder;
 import com.liferay.portlet.blogs.service.persistence.BlogsEntryPersistence;
-import com.liferay.portlet.bookmarks.service.BookmarksEntryLocalService;
-import com.liferay.portlet.bookmarks.service.BookmarksEntryService;
 import com.liferay.portlet.bookmarks.service.persistence.BookmarksEntryFinder;
 import com.liferay.portlet.bookmarks.service.persistence.BookmarksEntryPersistence;
-import com.liferay.portlet.documentlibrary.service.DLAppLocalService;
-import com.liferay.portlet.documentlibrary.service.DLAppService;
-import com.liferay.portlet.documentlibrary.service.DLFileEntryLocalService;
-import com.liferay.portlet.documentlibrary.service.DLFileEntryService;
-import com.liferay.portlet.documentlibrary.service.DLFolderLocalService;
-import com.liferay.portlet.documentlibrary.service.DLFolderService;
 import com.liferay.portlet.documentlibrary.service.persistence.DLFileEntryFinder;
 import com.liferay.portlet.documentlibrary.service.persistence.DLFileEntryPersistence;
 import com.liferay.portlet.documentlibrary.service.persistence.DLFolderFinder;
 import com.liferay.portlet.documentlibrary.service.persistence.DLFolderPersistence;
-import com.liferay.portlet.journal.service.JournalArticleLocalService;
-import com.liferay.portlet.journal.service.JournalArticleResourceLocalService;
-import com.liferay.portlet.journal.service.JournalArticleService;
 import com.liferay.portlet.journal.service.persistence.JournalArticleFinder;
 import com.liferay.portlet.journal.service.persistence.JournalArticlePersistence;
 import com.liferay.portlet.journal.service.persistence.JournalArticleResourcePersistence;
-import com.liferay.portlet.messageboards.service.MBMessageLocalService;
-import com.liferay.portlet.messageboards.service.MBMessageService;
 import com.liferay.portlet.messageboards.service.persistence.MBMessageFinder;
 import com.liferay.portlet.messageboards.service.persistence.MBMessagePersistence;
-import com.liferay.portlet.social.service.SocialActivityCounterLocalService;
-import com.liferay.portlet.social.service.SocialActivityLocalService;
 import com.liferay.portlet.social.service.persistence.SocialActivityCounterFinder;
 import com.liferay.portlet.social.service.persistence.SocialActivityCounterPersistence;
 import com.liferay.portlet.social.service.persistence.SocialActivityFinder;
 import com.liferay.portlet.social.service.persistence.SocialActivityPersistence;
-import com.liferay.portlet.wiki.service.WikiPageLocalService;
-import com.liferay.portlet.wiki.service.WikiPageResourceLocalService;
-import com.liferay.portlet.wiki.service.WikiPageService;
 import com.liferay.portlet.wiki.service.persistence.WikiPageFinder;
 import com.liferay.portlet.wiki.service.persistence.WikiPagePersistence;
 import com.liferay.portlet.wiki.service.persistence.WikiPageResourcePersistence;
@@ -641,7 +598,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the asset category local service
 	 */
-	public AssetCategoryLocalService getAssetCategoryLocalService() {
+	public com.liferay.portlet.asset.service.AssetCategoryLocalService getAssetCategoryLocalService() {
 		return assetCategoryLocalService;
 	}
 
@@ -651,7 +608,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 * @param assetCategoryLocalService the asset category local service
 	 */
 	public void setAssetCategoryLocalService(
-		AssetCategoryLocalService assetCategoryLocalService) {
+		com.liferay.portlet.asset.service.AssetCategoryLocalService assetCategoryLocalService) {
 		this.assetCategoryLocalService = assetCategoryLocalService;
 	}
 
@@ -660,7 +617,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the asset category remote service
 	 */
-	public AssetCategoryService getAssetCategoryService() {
+	public com.liferay.portlet.asset.service.AssetCategoryService getAssetCategoryService() {
 		return assetCategoryService;
 	}
 
@@ -670,7 +627,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 * @param assetCategoryService the asset category remote service
 	 */
 	public void setAssetCategoryService(
-		AssetCategoryService assetCategoryService) {
+		com.liferay.portlet.asset.service.AssetCategoryService assetCategoryService) {
 		this.assetCategoryService = assetCategoryService;
 	}
 
@@ -716,7 +673,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the asset category property local service
 	 */
-	public AssetCategoryPropertyLocalService getAssetCategoryPropertyLocalService() {
+	public com.liferay.portlet.asset.service.AssetCategoryPropertyLocalService getAssetCategoryPropertyLocalService() {
 		return assetCategoryPropertyLocalService;
 	}
 
@@ -726,7 +683,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 * @param assetCategoryPropertyLocalService the asset category property local service
 	 */
 	public void setAssetCategoryPropertyLocalService(
-		AssetCategoryPropertyLocalService assetCategoryPropertyLocalService) {
+		com.liferay.portlet.asset.service.AssetCategoryPropertyLocalService assetCategoryPropertyLocalService) {
 		this.assetCategoryPropertyLocalService = assetCategoryPropertyLocalService;
 	}
 
@@ -735,7 +692,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the asset category property remote service
 	 */
-	public AssetCategoryPropertyService getAssetCategoryPropertyService() {
+	public com.liferay.portlet.asset.service.AssetCategoryPropertyService getAssetCategoryPropertyService() {
 		return assetCategoryPropertyService;
 	}
 
@@ -745,7 +702,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 * @param assetCategoryPropertyService the asset category property remote service
 	 */
 	public void setAssetCategoryPropertyService(
-		AssetCategoryPropertyService assetCategoryPropertyService) {
+		com.liferay.portlet.asset.service.AssetCategoryPropertyService assetCategoryPropertyService) {
 		this.assetCategoryPropertyService = assetCategoryPropertyService;
 	}
 
@@ -792,7 +749,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the asset entry local service
 	 */
-	public AssetEntryLocalService getAssetEntryLocalService() {
+	public com.liferay.portlet.asset.service.AssetEntryLocalService getAssetEntryLocalService() {
 		return assetEntryLocalService;
 	}
 
@@ -802,7 +759,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 * @param assetEntryLocalService the asset entry local service
 	 */
 	public void setAssetEntryLocalService(
-		AssetEntryLocalService assetEntryLocalService) {
+		com.liferay.portlet.asset.service.AssetEntryLocalService assetEntryLocalService) {
 		this.assetEntryLocalService = assetEntryLocalService;
 	}
 
@@ -811,7 +768,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the asset entry remote service
 	 */
-	public AssetEntryService getAssetEntryService() {
+	public com.liferay.portlet.asset.service.AssetEntryService getAssetEntryService() {
 		return assetEntryService;
 	}
 
@@ -820,7 +777,8 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @param assetEntryService the asset entry remote service
 	 */
-	public void setAssetEntryService(AssetEntryService assetEntryService) {
+	public void setAssetEntryService(
+		com.liferay.portlet.asset.service.AssetEntryService assetEntryService) {
 		this.assetEntryService = assetEntryService;
 	}
 
@@ -866,7 +824,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the asset link local service
 	 */
-	public AssetLinkLocalService getAssetLinkLocalService() {
+	public com.liferay.portlet.asset.service.AssetLinkLocalService getAssetLinkLocalService() {
 		return assetLinkLocalService;
 	}
 
@@ -876,7 +834,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 * @param assetLinkLocalService the asset link local service
 	 */
 	public void setAssetLinkLocalService(
-		AssetLinkLocalService assetLinkLocalService) {
+		com.liferay.portlet.asset.service.AssetLinkLocalService assetLinkLocalService) {
 		this.assetLinkLocalService = assetLinkLocalService;
 	}
 
@@ -922,7 +880,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the asset tag local service
 	 */
-	public AssetTagLocalService getAssetTagLocalService() {
+	public com.liferay.portlet.asset.service.AssetTagLocalService getAssetTagLocalService() {
 		return assetTagLocalService;
 	}
 
@@ -932,7 +890,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 * @param assetTagLocalService the asset tag local service
 	 */
 	public void setAssetTagLocalService(
-		AssetTagLocalService assetTagLocalService) {
+		com.liferay.portlet.asset.service.AssetTagLocalService assetTagLocalService) {
 		this.assetTagLocalService = assetTagLocalService;
 	}
 
@@ -941,7 +899,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the asset tag remote service
 	 */
-	public AssetTagService getAssetTagService() {
+	public com.liferay.portlet.asset.service.AssetTagService getAssetTagService() {
 		return assetTagService;
 	}
 
@@ -950,7 +908,8 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @param assetTagService the asset tag remote service
 	 */
-	public void setAssetTagService(AssetTagService assetTagService) {
+	public void setAssetTagService(
+		com.liferay.portlet.asset.service.AssetTagService assetTagService) {
 		this.assetTagService = assetTagService;
 	}
 
@@ -995,7 +954,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the asset tag property local service
 	 */
-	public AssetTagPropertyLocalService getAssetTagPropertyLocalService() {
+	public com.liferay.portlet.asset.service.AssetTagPropertyLocalService getAssetTagPropertyLocalService() {
 		return assetTagPropertyLocalService;
 	}
 
@@ -1005,7 +964,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 * @param assetTagPropertyLocalService the asset tag property local service
 	 */
 	public void setAssetTagPropertyLocalService(
-		AssetTagPropertyLocalService assetTagPropertyLocalService) {
+		com.liferay.portlet.asset.service.AssetTagPropertyLocalService assetTagPropertyLocalService) {
 		this.assetTagPropertyLocalService = assetTagPropertyLocalService;
 	}
 
@@ -1014,7 +973,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the asset tag property remote service
 	 */
-	public AssetTagPropertyService getAssetTagPropertyService() {
+	public com.liferay.portlet.asset.service.AssetTagPropertyService getAssetTagPropertyService() {
 		return assetTagPropertyService;
 	}
 
@@ -1024,7 +983,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 * @param assetTagPropertyService the asset tag property remote service
 	 */
 	public void setAssetTagPropertyService(
-		AssetTagPropertyService assetTagPropertyService) {
+		com.liferay.portlet.asset.service.AssetTagPropertyService assetTagPropertyService) {
 		this.assetTagPropertyService = assetTagPropertyService;
 	}
 
@@ -1090,7 +1049,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the asset tag stats local service
 	 */
-	public AssetTagStatsLocalService getAssetTagStatsLocalService() {
+	public com.liferay.portlet.asset.service.AssetTagStatsLocalService getAssetTagStatsLocalService() {
 		return assetTagStatsLocalService;
 	}
 
@@ -1100,7 +1059,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 * @param assetTagStatsLocalService the asset tag stats local service
 	 */
 	public void setAssetTagStatsLocalService(
-		AssetTagStatsLocalService assetTagStatsLocalService) {
+		com.liferay.portlet.asset.service.AssetTagStatsLocalService assetTagStatsLocalService) {
 		this.assetTagStatsLocalService = assetTagStatsLocalService;
 	}
 
@@ -1128,7 +1087,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the asset vocabulary local service
 	 */
-	public AssetVocabularyLocalService getAssetVocabularyLocalService() {
+	public com.liferay.portlet.asset.service.AssetVocabularyLocalService getAssetVocabularyLocalService() {
 		return assetVocabularyLocalService;
 	}
 
@@ -1138,7 +1097,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 * @param assetVocabularyLocalService the asset vocabulary local service
 	 */
 	public void setAssetVocabularyLocalService(
-		AssetVocabularyLocalService assetVocabularyLocalService) {
+		com.liferay.portlet.asset.service.AssetVocabularyLocalService assetVocabularyLocalService) {
 		this.assetVocabularyLocalService = assetVocabularyLocalService;
 	}
 
@@ -1147,7 +1106,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the asset vocabulary remote service
 	 */
-	public AssetVocabularyService getAssetVocabularyService() {
+	public com.liferay.portlet.asset.service.AssetVocabularyService getAssetVocabularyService() {
 		return assetVocabularyService;
 	}
 
@@ -1157,7 +1116,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 * @param assetVocabularyService the asset vocabulary remote service
 	 */
 	public void setAssetVocabularyService(
-		AssetVocabularyService assetVocabularyService) {
+		com.liferay.portlet.asset.service.AssetVocabularyService assetVocabularyService) {
 		this.assetVocabularyService = assetVocabularyService;
 	}
 
@@ -1204,7 +1163,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public CounterLocalService getCounterLocalService() {
+	public com.liferay.counter.service.CounterLocalService getCounterLocalService() {
 		return counterLocalService;
 	}
 
@@ -1213,7 +1172,8 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @param counterLocalService the counter local service
 	 */
-	public void setCounterLocalService(CounterLocalService counterLocalService) {
+	public void setCounterLocalService(
+		com.liferay.counter.service.CounterLocalService counterLocalService) {
 		this.counterLocalService = counterLocalService;
 	}
 
@@ -1222,7 +1182,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the company local service
 	 */
-	public CompanyLocalService getCompanyLocalService() {
+	public com.liferay.portal.service.CompanyLocalService getCompanyLocalService() {
 		return companyLocalService;
 	}
 
@@ -1231,7 +1191,8 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @param companyLocalService the company local service
 	 */
-	public void setCompanyLocalService(CompanyLocalService companyLocalService) {
+	public void setCompanyLocalService(
+		com.liferay.portal.service.CompanyLocalService companyLocalService) {
 		this.companyLocalService = companyLocalService;
 	}
 
@@ -1240,7 +1201,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the company remote service
 	 */
-	public CompanyService getCompanyService() {
+	public com.liferay.portal.service.CompanyService getCompanyService() {
 		return companyService;
 	}
 
@@ -1249,7 +1210,8 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @param companyService the company remote service
 	 */
-	public void setCompanyService(CompanyService companyService) {
+	public void setCompanyService(
+		com.liferay.portal.service.CompanyService companyService) {
 		this.companyService = companyService;
 	}
 
@@ -1276,7 +1238,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the group local service
 	 */
-	public GroupLocalService getGroupLocalService() {
+	public com.liferay.portal.service.GroupLocalService getGroupLocalService() {
 		return groupLocalService;
 	}
 
@@ -1285,7 +1247,8 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @param groupLocalService the group local service
 	 */
-	public void setGroupLocalService(GroupLocalService groupLocalService) {
+	public void setGroupLocalService(
+		com.liferay.portal.service.GroupLocalService groupLocalService) {
 		this.groupLocalService = groupLocalService;
 	}
 
@@ -1294,7 +1257,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the group remote service
 	 */
-	public GroupService getGroupService() {
+	public com.liferay.portal.service.GroupService getGroupService() {
 		return groupService;
 	}
 
@@ -1303,7 +1266,8 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @param groupService the group remote service
 	 */
-	public void setGroupService(GroupService groupService) {
+	public void setGroupService(
+		com.liferay.portal.service.GroupService groupService) {
 		this.groupService = groupService;
 	}
 
@@ -1348,7 +1312,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the resource local service
 	 */
-	public ResourceLocalService getResourceLocalService() {
+	public com.liferay.portal.service.ResourceLocalService getResourceLocalService() {
 		return resourceLocalService;
 	}
 
@@ -1358,7 +1322,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 * @param resourceLocalService the resource local service
 	 */
 	public void setResourceLocalService(
-		ResourceLocalService resourceLocalService) {
+		com.liferay.portal.service.ResourceLocalService resourceLocalService) {
 		this.resourceLocalService = resourceLocalService;
 	}
 
@@ -1367,7 +1331,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the system event local service
 	 */
-	public SystemEventLocalService getSystemEventLocalService() {
+	public com.liferay.portal.service.SystemEventLocalService getSystemEventLocalService() {
 		return systemEventLocalService;
 	}
 
@@ -1377,7 +1341,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 * @param systemEventLocalService the system event local service
 	 */
 	public void setSystemEventLocalService(
-		SystemEventLocalService systemEventLocalService) {
+		com.liferay.portal.service.SystemEventLocalService systemEventLocalService) {
 		this.systemEventLocalService = systemEventLocalService;
 	}
 
@@ -1405,7 +1369,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the user local service
 	 */
-	public UserLocalService getUserLocalService() {
+	public com.liferay.portal.service.UserLocalService getUserLocalService() {
 		return userLocalService;
 	}
 
@@ -1414,7 +1378,8 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @param userLocalService the user local service
 	 */
-	public void setUserLocalService(UserLocalService userLocalService) {
+	public void setUserLocalService(
+		com.liferay.portal.service.UserLocalService userLocalService) {
 		this.userLocalService = userLocalService;
 	}
 
@@ -1423,7 +1388,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the user remote service
 	 */
-	public UserService getUserService() {
+	public com.liferay.portal.service.UserService getUserService() {
 		return userService;
 	}
 
@@ -1432,7 +1397,8 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @param userService the user remote service
 	 */
-	public void setUserService(UserService userService) {
+	public void setUserService(
+		com.liferay.portal.service.UserService userService) {
 		this.userService = userService;
 	}
 
@@ -1477,7 +1443,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the blogs entry local service
 	 */
-	public BlogsEntryLocalService getBlogsEntryLocalService() {
+	public com.liferay.portlet.blogs.service.BlogsEntryLocalService getBlogsEntryLocalService() {
 		return blogsEntryLocalService;
 	}
 
@@ -1487,7 +1453,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 * @param blogsEntryLocalService the blogs entry local service
 	 */
 	public void setBlogsEntryLocalService(
-		BlogsEntryLocalService blogsEntryLocalService) {
+		com.liferay.portlet.blogs.service.BlogsEntryLocalService blogsEntryLocalService) {
 		this.blogsEntryLocalService = blogsEntryLocalService;
 	}
 
@@ -1496,7 +1462,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the blogs entry remote service
 	 */
-	public BlogsEntryService getBlogsEntryService() {
+	public com.liferay.portlet.blogs.service.BlogsEntryService getBlogsEntryService() {
 		return blogsEntryService;
 	}
 
@@ -1505,7 +1471,8 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @param blogsEntryService the blogs entry remote service
 	 */
-	public void setBlogsEntryService(BlogsEntryService blogsEntryService) {
+	public void setBlogsEntryService(
+		com.liferay.portlet.blogs.service.BlogsEntryService blogsEntryService) {
 		this.blogsEntryService = blogsEntryService;
 	}
 
@@ -1551,7 +1518,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the bookmarks entry local service
 	 */
-	public BookmarksEntryLocalService getBookmarksEntryLocalService() {
+	public com.liferay.portlet.bookmarks.service.BookmarksEntryLocalService getBookmarksEntryLocalService() {
 		return bookmarksEntryLocalService;
 	}
 
@@ -1561,7 +1528,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 * @param bookmarksEntryLocalService the bookmarks entry local service
 	 */
 	public void setBookmarksEntryLocalService(
-		BookmarksEntryLocalService bookmarksEntryLocalService) {
+		com.liferay.portlet.bookmarks.service.BookmarksEntryLocalService bookmarksEntryLocalService) {
 		this.bookmarksEntryLocalService = bookmarksEntryLocalService;
 	}
 
@@ -1570,7 +1537,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the bookmarks entry remote service
 	 */
-	public BookmarksEntryService getBookmarksEntryService() {
+	public com.liferay.portlet.bookmarks.service.BookmarksEntryService getBookmarksEntryService() {
 		return bookmarksEntryService;
 	}
 
@@ -1580,7 +1547,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 * @param bookmarksEntryService the bookmarks entry remote service
 	 */
 	public void setBookmarksEntryService(
-		BookmarksEntryService bookmarksEntryService) {
+		com.liferay.portlet.bookmarks.service.BookmarksEntryService bookmarksEntryService) {
 		this.bookmarksEntryService = bookmarksEntryService;
 	}
 
@@ -1627,7 +1594,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the d l app local service
 	 */
-	public DLAppLocalService getDLAppLocalService() {
+	public com.liferay.portlet.documentlibrary.service.DLAppLocalService getDLAppLocalService() {
 		return dlAppLocalService;
 	}
 
@@ -1636,7 +1603,8 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @param dlAppLocalService the d l app local service
 	 */
-	public void setDLAppLocalService(DLAppLocalService dlAppLocalService) {
+	public void setDLAppLocalService(
+		com.liferay.portlet.documentlibrary.service.DLAppLocalService dlAppLocalService) {
 		this.dlAppLocalService = dlAppLocalService;
 	}
 
@@ -1645,7 +1613,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the d l app remote service
 	 */
-	public DLAppService getDLAppService() {
+	public com.liferay.portlet.documentlibrary.service.DLAppService getDLAppService() {
 		return dlAppService;
 	}
 
@@ -1654,7 +1622,8 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @param dlAppService the d l app remote service
 	 */
-	public void setDLAppService(DLAppService dlAppService) {
+	public void setDLAppService(
+		com.liferay.portlet.documentlibrary.service.DLAppService dlAppService) {
 		this.dlAppService = dlAppService;
 	}
 
@@ -1663,7 +1632,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the document library file entry local service
 	 */
-	public DLFileEntryLocalService getDLFileEntryLocalService() {
+	public com.liferay.portlet.documentlibrary.service.DLFileEntryLocalService getDLFileEntryLocalService() {
 		return dlFileEntryLocalService;
 	}
 
@@ -1673,7 +1642,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 * @param dlFileEntryLocalService the document library file entry local service
 	 */
 	public void setDLFileEntryLocalService(
-		DLFileEntryLocalService dlFileEntryLocalService) {
+		com.liferay.portlet.documentlibrary.service.DLFileEntryLocalService dlFileEntryLocalService) {
 		this.dlFileEntryLocalService = dlFileEntryLocalService;
 	}
 
@@ -1682,7 +1651,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the document library file entry remote service
 	 */
-	public DLFileEntryService getDLFileEntryService() {
+	public com.liferay.portlet.documentlibrary.service.DLFileEntryService getDLFileEntryService() {
 		return dlFileEntryService;
 	}
 
@@ -1691,7 +1660,8 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @param dlFileEntryService the document library file entry remote service
 	 */
-	public void setDLFileEntryService(DLFileEntryService dlFileEntryService) {
+	public void setDLFileEntryService(
+		com.liferay.portlet.documentlibrary.service.DLFileEntryService dlFileEntryService) {
 		this.dlFileEntryService = dlFileEntryService;
 	}
 
@@ -1737,7 +1707,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the document library folder local service
 	 */
-	public DLFolderLocalService getDLFolderLocalService() {
+	public com.liferay.portlet.documentlibrary.service.DLFolderLocalService getDLFolderLocalService() {
 		return dlFolderLocalService;
 	}
 
@@ -1747,7 +1717,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 * @param dlFolderLocalService the document library folder local service
 	 */
 	public void setDLFolderLocalService(
-		DLFolderLocalService dlFolderLocalService) {
+		com.liferay.portlet.documentlibrary.service.DLFolderLocalService dlFolderLocalService) {
 		this.dlFolderLocalService = dlFolderLocalService;
 	}
 
@@ -1756,7 +1726,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the document library folder remote service
 	 */
-	public DLFolderService getDLFolderService() {
+	public com.liferay.portlet.documentlibrary.service.DLFolderService getDLFolderService() {
 		return dlFolderService;
 	}
 
@@ -1765,7 +1735,8 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @param dlFolderService the document library folder remote service
 	 */
-	public void setDLFolderService(DLFolderService dlFolderService) {
+	public void setDLFolderService(
+		com.liferay.portlet.documentlibrary.service.DLFolderService dlFolderService) {
 		this.dlFolderService = dlFolderService;
 	}
 
@@ -1810,7 +1781,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the journal article local service
 	 */
-	public JournalArticleLocalService getJournalArticleLocalService() {
+	public com.liferay.portlet.journal.service.JournalArticleLocalService getJournalArticleLocalService() {
 		return journalArticleLocalService;
 	}
 
@@ -1820,7 +1791,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 * @param journalArticleLocalService the journal article local service
 	 */
 	public void setJournalArticleLocalService(
-		JournalArticleLocalService journalArticleLocalService) {
+		com.liferay.portlet.journal.service.JournalArticleLocalService journalArticleLocalService) {
 		this.journalArticleLocalService = journalArticleLocalService;
 	}
 
@@ -1829,7 +1800,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the journal article remote service
 	 */
-	public JournalArticleService getJournalArticleService() {
+	public com.liferay.portlet.journal.service.JournalArticleService getJournalArticleService() {
 		return journalArticleService;
 	}
 
@@ -1839,7 +1810,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 * @param journalArticleService the journal article remote service
 	 */
 	public void setJournalArticleService(
-		JournalArticleService journalArticleService) {
+		com.liferay.portlet.journal.service.JournalArticleService journalArticleService) {
 		this.journalArticleService = journalArticleService;
 	}
 
@@ -1886,7 +1857,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the journal article resource local service
 	 */
-	public JournalArticleResourceLocalService getJournalArticleResourceLocalService() {
+	public com.liferay.portlet.journal.service.JournalArticleResourceLocalService getJournalArticleResourceLocalService() {
 		return journalArticleResourceLocalService;
 	}
 
@@ -1896,7 +1867,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 * @param journalArticleResourceLocalService the journal article resource local service
 	 */
 	public void setJournalArticleResourceLocalService(
-		JournalArticleResourceLocalService journalArticleResourceLocalService) {
+		com.liferay.portlet.journal.service.JournalArticleResourceLocalService journalArticleResourceLocalService) {
 		this.journalArticleResourceLocalService = journalArticleResourceLocalService;
 	}
 
@@ -1924,7 +1895,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the message-boards message local service
 	 */
-	public MBMessageLocalService getMBMessageLocalService() {
+	public com.liferay.portlet.messageboards.service.MBMessageLocalService getMBMessageLocalService() {
 		return mbMessageLocalService;
 	}
 
@@ -1934,7 +1905,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 * @param mbMessageLocalService the message-boards message local service
 	 */
 	public void setMBMessageLocalService(
-		MBMessageLocalService mbMessageLocalService) {
+		com.liferay.portlet.messageboards.service.MBMessageLocalService mbMessageLocalService) {
 		this.mbMessageLocalService = mbMessageLocalService;
 	}
 
@@ -1943,7 +1914,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the message-boards message remote service
 	 */
-	public MBMessageService getMBMessageService() {
+	public com.liferay.portlet.messageboards.service.MBMessageService getMBMessageService() {
 		return mbMessageService;
 	}
 
@@ -1952,7 +1923,8 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @param mbMessageService the message-boards message remote service
 	 */
-	public void setMBMessageService(MBMessageService mbMessageService) {
+	public void setMBMessageService(
+		com.liferay.portlet.messageboards.service.MBMessageService mbMessageService) {
 		this.mbMessageService = mbMessageService;
 	}
 
@@ -1998,7 +1970,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the social activity local service
 	 */
-	public SocialActivityLocalService getSocialActivityLocalService() {
+	public com.liferay.portlet.social.service.SocialActivityLocalService getSocialActivityLocalService() {
 		return socialActivityLocalService;
 	}
 
@@ -2008,7 +1980,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 * @param socialActivityLocalService the social activity local service
 	 */
 	public void setSocialActivityLocalService(
-		SocialActivityLocalService socialActivityLocalService) {
+		com.liferay.portlet.social.service.SocialActivityLocalService socialActivityLocalService) {
 		this.socialActivityLocalService = socialActivityLocalService;
 	}
 
@@ -2055,7 +2027,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the social activity counter local service
 	 */
-	public SocialActivityCounterLocalService getSocialActivityCounterLocalService() {
+	public com.liferay.portlet.social.service.SocialActivityCounterLocalService getSocialActivityCounterLocalService() {
 		return socialActivityCounterLocalService;
 	}
 
@@ -2065,7 +2037,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 * @param socialActivityCounterLocalService the social activity counter local service
 	 */
 	public void setSocialActivityCounterLocalService(
-		SocialActivityCounterLocalService socialActivityCounterLocalService) {
+		com.liferay.portlet.social.service.SocialActivityCounterLocalService socialActivityCounterLocalService) {
 		this.socialActivityCounterLocalService = socialActivityCounterLocalService;
 	}
 
@@ -2112,7 +2084,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the wiki page local service
 	 */
-	public WikiPageLocalService getWikiPageLocalService() {
+	public com.liferay.portlet.wiki.service.WikiPageLocalService getWikiPageLocalService() {
 		return wikiPageLocalService;
 	}
 
@@ -2122,7 +2094,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 * @param wikiPageLocalService the wiki page local service
 	 */
 	public void setWikiPageLocalService(
-		WikiPageLocalService wikiPageLocalService) {
+		com.liferay.portlet.wiki.service.WikiPageLocalService wikiPageLocalService) {
 		this.wikiPageLocalService = wikiPageLocalService;
 	}
 
@@ -2131,7 +2103,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the wiki page remote service
 	 */
-	public WikiPageService getWikiPageService() {
+	public com.liferay.portlet.wiki.service.WikiPageService getWikiPageService() {
 		return wikiPageService;
 	}
 
@@ -2140,7 +2112,8 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @param wikiPageService the wiki page remote service
 	 */
-	public void setWikiPageService(WikiPageService wikiPageService) {
+	public void setWikiPageService(
+		com.liferay.portlet.wiki.service.WikiPageService wikiPageService) {
 		this.wikiPageService = wikiPageService;
 	}
 
@@ -2185,7 +2158,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 *
 	 * @return the wiki page resource local service
 	 */
-	public WikiPageResourceLocalService getWikiPageResourceLocalService() {
+	public com.liferay.portlet.wiki.service.WikiPageResourceLocalService getWikiPageResourceLocalService() {
 		return wikiPageResourceLocalService;
 	}
 
@@ -2195,7 +2168,7 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	 * @param wikiPageResourceLocalService the wiki page resource local service
 	 */
 	public void setWikiPageResourceLocalService(
-		WikiPageResourceLocalService wikiPageResourceLocalService) {
+		com.liferay.portlet.wiki.service.WikiPageResourceLocalService wikiPageResourceLocalService) {
 		this.wikiPageResourceLocalService = wikiPageResourceLocalService;
 	}
 
@@ -2275,174 +2248,174 @@ public abstract class AssetEntryLocalServiceBaseImpl
 		}
 	}
 
-	@BeanReference(type = AssetCategoryLocalService.class)
-	protected AssetCategoryLocalService assetCategoryLocalService;
-	@BeanReference(type = AssetCategoryService.class)
-	protected AssetCategoryService assetCategoryService;
+	@BeanReference(type = com.liferay.portlet.asset.service.AssetCategoryLocalService.class)
+	protected com.liferay.portlet.asset.service.AssetCategoryLocalService assetCategoryLocalService;
+	@BeanReference(type = com.liferay.portlet.asset.service.AssetCategoryService.class)
+	protected com.liferay.portlet.asset.service.AssetCategoryService assetCategoryService;
 	@BeanReference(type = AssetCategoryPersistence.class)
 	protected AssetCategoryPersistence assetCategoryPersistence;
 	@BeanReference(type = AssetCategoryFinder.class)
 	protected AssetCategoryFinder assetCategoryFinder;
-	@BeanReference(type = AssetCategoryPropertyLocalService.class)
-	protected AssetCategoryPropertyLocalService assetCategoryPropertyLocalService;
-	@BeanReference(type = AssetCategoryPropertyService.class)
-	protected AssetCategoryPropertyService assetCategoryPropertyService;
+	@BeanReference(type = com.liferay.portlet.asset.service.AssetCategoryPropertyLocalService.class)
+	protected com.liferay.portlet.asset.service.AssetCategoryPropertyLocalService assetCategoryPropertyLocalService;
+	@BeanReference(type = com.liferay.portlet.asset.service.AssetCategoryPropertyService.class)
+	protected com.liferay.portlet.asset.service.AssetCategoryPropertyService assetCategoryPropertyService;
 	@BeanReference(type = AssetCategoryPropertyPersistence.class)
 	protected AssetCategoryPropertyPersistence assetCategoryPropertyPersistence;
 	@BeanReference(type = AssetCategoryPropertyFinder.class)
 	protected AssetCategoryPropertyFinder assetCategoryPropertyFinder;
-	@BeanReference(type = AssetEntryLocalService.class)
-	protected AssetEntryLocalService assetEntryLocalService;
-	@BeanReference(type = AssetEntryService.class)
-	protected AssetEntryService assetEntryService;
+	@BeanReference(type = com.liferay.portlet.asset.service.AssetEntryLocalService.class)
+	protected com.liferay.portlet.asset.service.AssetEntryLocalService assetEntryLocalService;
+	@BeanReference(type = com.liferay.portlet.asset.service.AssetEntryService.class)
+	protected com.liferay.portlet.asset.service.AssetEntryService assetEntryService;
 	@BeanReference(type = AssetEntryPersistence.class)
 	protected AssetEntryPersistence assetEntryPersistence;
 	@BeanReference(type = AssetEntryFinder.class)
 	protected AssetEntryFinder assetEntryFinder;
-	@BeanReference(type = AssetLinkLocalService.class)
-	protected AssetLinkLocalService assetLinkLocalService;
+	@BeanReference(type = com.liferay.portlet.asset.service.AssetLinkLocalService.class)
+	protected com.liferay.portlet.asset.service.AssetLinkLocalService assetLinkLocalService;
 	@BeanReference(type = AssetLinkPersistence.class)
 	protected AssetLinkPersistence assetLinkPersistence;
 	@BeanReference(type = AssetLinkFinder.class)
 	protected AssetLinkFinder assetLinkFinder;
-	@BeanReference(type = AssetTagLocalService.class)
-	protected AssetTagLocalService assetTagLocalService;
-	@BeanReference(type = AssetTagService.class)
-	protected AssetTagService assetTagService;
+	@BeanReference(type = com.liferay.portlet.asset.service.AssetTagLocalService.class)
+	protected com.liferay.portlet.asset.service.AssetTagLocalService assetTagLocalService;
+	@BeanReference(type = com.liferay.portlet.asset.service.AssetTagService.class)
+	protected com.liferay.portlet.asset.service.AssetTagService assetTagService;
 	@BeanReference(type = AssetTagPersistence.class)
 	protected AssetTagPersistence assetTagPersistence;
 	@BeanReference(type = AssetTagFinder.class)
 	protected AssetTagFinder assetTagFinder;
-	@BeanReference(type = AssetTagPropertyLocalService.class)
-	protected AssetTagPropertyLocalService assetTagPropertyLocalService;
-	@BeanReference(type = AssetTagPropertyService.class)
-	protected AssetTagPropertyService assetTagPropertyService;
+	@BeanReference(type = com.liferay.portlet.asset.service.AssetTagPropertyLocalService.class)
+	protected com.liferay.portlet.asset.service.AssetTagPropertyLocalService assetTagPropertyLocalService;
+	@BeanReference(type = com.liferay.portlet.asset.service.AssetTagPropertyService.class)
+	protected com.liferay.portlet.asset.service.AssetTagPropertyService assetTagPropertyService;
 	@BeanReference(type = AssetTagPropertyPersistence.class)
 	protected AssetTagPropertyPersistence assetTagPropertyPersistence;
 	@BeanReference(type = AssetTagPropertyFinder.class)
 	protected AssetTagPropertyFinder assetTagPropertyFinder;
 	@BeanReference(type = AssetTagPropertyKeyFinder.class)
 	protected AssetTagPropertyKeyFinder assetTagPropertyKeyFinder;
-	@BeanReference(type = AssetTagStatsLocalService.class)
-	protected AssetTagStatsLocalService assetTagStatsLocalService;
+	@BeanReference(type = com.liferay.portlet.asset.service.AssetTagStatsLocalService.class)
+	protected com.liferay.portlet.asset.service.AssetTagStatsLocalService assetTagStatsLocalService;
 	@BeanReference(type = AssetTagStatsPersistence.class)
 	protected AssetTagStatsPersistence assetTagStatsPersistence;
-	@BeanReference(type = AssetVocabularyLocalService.class)
-	protected AssetVocabularyLocalService assetVocabularyLocalService;
-	@BeanReference(type = AssetVocabularyService.class)
-	protected AssetVocabularyService assetVocabularyService;
+	@BeanReference(type = com.liferay.portlet.asset.service.AssetVocabularyLocalService.class)
+	protected com.liferay.portlet.asset.service.AssetVocabularyLocalService assetVocabularyLocalService;
+	@BeanReference(type = com.liferay.portlet.asset.service.AssetVocabularyService.class)
+	protected com.liferay.portlet.asset.service.AssetVocabularyService assetVocabularyService;
 	@BeanReference(type = AssetVocabularyPersistence.class)
 	protected AssetVocabularyPersistence assetVocabularyPersistence;
 	@BeanReference(type = AssetVocabularyFinder.class)
 	protected AssetVocabularyFinder assetVocabularyFinder;
-	@BeanReference(type = CounterLocalService.class)
-	protected CounterLocalService counterLocalService;
-	@BeanReference(type = CompanyLocalService.class)
-	protected CompanyLocalService companyLocalService;
-	@BeanReference(type = CompanyService.class)
-	protected CompanyService companyService;
+	@BeanReference(type = com.liferay.counter.service.CounterLocalService.class)
+	protected com.liferay.counter.service.CounterLocalService counterLocalService;
+	@BeanReference(type = com.liferay.portal.service.CompanyLocalService.class)
+	protected com.liferay.portal.service.CompanyLocalService companyLocalService;
+	@BeanReference(type = com.liferay.portal.service.CompanyService.class)
+	protected com.liferay.portal.service.CompanyService companyService;
 	@BeanReference(type = CompanyPersistence.class)
 	protected CompanyPersistence companyPersistence;
-	@BeanReference(type = GroupLocalService.class)
-	protected GroupLocalService groupLocalService;
-	@BeanReference(type = GroupService.class)
-	protected GroupService groupService;
+	@BeanReference(type = com.liferay.portal.service.GroupLocalService.class)
+	protected com.liferay.portal.service.GroupLocalService groupLocalService;
+	@BeanReference(type = com.liferay.portal.service.GroupService.class)
+	protected com.liferay.portal.service.GroupService groupService;
 	@BeanReference(type = GroupPersistence.class)
 	protected GroupPersistence groupPersistence;
 	@BeanReference(type = GroupFinder.class)
 	protected GroupFinder groupFinder;
-	@BeanReference(type = ResourceLocalService.class)
-	protected ResourceLocalService resourceLocalService;
-	@BeanReference(type = SystemEventLocalService.class)
-	protected SystemEventLocalService systemEventLocalService;
+	@BeanReference(type = com.liferay.portal.service.ResourceLocalService.class)
+	protected com.liferay.portal.service.ResourceLocalService resourceLocalService;
+	@BeanReference(type = com.liferay.portal.service.SystemEventLocalService.class)
+	protected com.liferay.portal.service.SystemEventLocalService systemEventLocalService;
 	@BeanReference(type = SystemEventPersistence.class)
 	protected SystemEventPersistence systemEventPersistence;
-	@BeanReference(type = UserLocalService.class)
-	protected UserLocalService userLocalService;
-	@BeanReference(type = UserService.class)
-	protected UserService userService;
+	@BeanReference(type = com.liferay.portal.service.UserLocalService.class)
+	protected com.liferay.portal.service.UserLocalService userLocalService;
+	@BeanReference(type = com.liferay.portal.service.UserService.class)
+	protected com.liferay.portal.service.UserService userService;
 	@BeanReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
 	@BeanReference(type = UserFinder.class)
 	protected UserFinder userFinder;
-	@BeanReference(type = BlogsEntryLocalService.class)
-	protected BlogsEntryLocalService blogsEntryLocalService;
-	@BeanReference(type = BlogsEntryService.class)
-	protected BlogsEntryService blogsEntryService;
+	@BeanReference(type = com.liferay.portlet.blogs.service.BlogsEntryLocalService.class)
+	protected com.liferay.portlet.blogs.service.BlogsEntryLocalService blogsEntryLocalService;
+	@BeanReference(type = com.liferay.portlet.blogs.service.BlogsEntryService.class)
+	protected com.liferay.portlet.blogs.service.BlogsEntryService blogsEntryService;
 	@BeanReference(type = BlogsEntryPersistence.class)
 	protected BlogsEntryPersistence blogsEntryPersistence;
 	@BeanReference(type = BlogsEntryFinder.class)
 	protected BlogsEntryFinder blogsEntryFinder;
-	@BeanReference(type = BookmarksEntryLocalService.class)
-	protected BookmarksEntryLocalService bookmarksEntryLocalService;
-	@BeanReference(type = BookmarksEntryService.class)
-	protected BookmarksEntryService bookmarksEntryService;
+	@BeanReference(type = com.liferay.portlet.bookmarks.service.BookmarksEntryLocalService.class)
+	protected com.liferay.portlet.bookmarks.service.BookmarksEntryLocalService bookmarksEntryLocalService;
+	@BeanReference(type = com.liferay.portlet.bookmarks.service.BookmarksEntryService.class)
+	protected com.liferay.portlet.bookmarks.service.BookmarksEntryService bookmarksEntryService;
 	@BeanReference(type = BookmarksEntryPersistence.class)
 	protected BookmarksEntryPersistence bookmarksEntryPersistence;
 	@BeanReference(type = BookmarksEntryFinder.class)
 	protected BookmarksEntryFinder bookmarksEntryFinder;
-	@BeanReference(type = DLAppLocalService.class)
-	protected DLAppLocalService dlAppLocalService;
-	@BeanReference(type = DLAppService.class)
-	protected DLAppService dlAppService;
-	@BeanReference(type = DLFileEntryLocalService.class)
-	protected DLFileEntryLocalService dlFileEntryLocalService;
-	@BeanReference(type = DLFileEntryService.class)
-	protected DLFileEntryService dlFileEntryService;
+	@BeanReference(type = com.liferay.portlet.documentlibrary.service.DLAppLocalService.class)
+	protected com.liferay.portlet.documentlibrary.service.DLAppLocalService dlAppLocalService;
+	@BeanReference(type = com.liferay.portlet.documentlibrary.service.DLAppService.class)
+	protected com.liferay.portlet.documentlibrary.service.DLAppService dlAppService;
+	@BeanReference(type = com.liferay.portlet.documentlibrary.service.DLFileEntryLocalService.class)
+	protected com.liferay.portlet.documentlibrary.service.DLFileEntryLocalService dlFileEntryLocalService;
+	@BeanReference(type = com.liferay.portlet.documentlibrary.service.DLFileEntryService.class)
+	protected com.liferay.portlet.documentlibrary.service.DLFileEntryService dlFileEntryService;
 	@BeanReference(type = DLFileEntryPersistence.class)
 	protected DLFileEntryPersistence dlFileEntryPersistence;
 	@BeanReference(type = DLFileEntryFinder.class)
 	protected DLFileEntryFinder dlFileEntryFinder;
-	@BeanReference(type = DLFolderLocalService.class)
-	protected DLFolderLocalService dlFolderLocalService;
-	@BeanReference(type = DLFolderService.class)
-	protected DLFolderService dlFolderService;
+	@BeanReference(type = com.liferay.portlet.documentlibrary.service.DLFolderLocalService.class)
+	protected com.liferay.portlet.documentlibrary.service.DLFolderLocalService dlFolderLocalService;
+	@BeanReference(type = com.liferay.portlet.documentlibrary.service.DLFolderService.class)
+	protected com.liferay.portlet.documentlibrary.service.DLFolderService dlFolderService;
 	@BeanReference(type = DLFolderPersistence.class)
 	protected DLFolderPersistence dlFolderPersistence;
 	@BeanReference(type = DLFolderFinder.class)
 	protected DLFolderFinder dlFolderFinder;
-	@BeanReference(type = JournalArticleLocalService.class)
-	protected JournalArticleLocalService journalArticleLocalService;
-	@BeanReference(type = JournalArticleService.class)
-	protected JournalArticleService journalArticleService;
+	@BeanReference(type = com.liferay.portlet.journal.service.JournalArticleLocalService.class)
+	protected com.liferay.portlet.journal.service.JournalArticleLocalService journalArticleLocalService;
+	@BeanReference(type = com.liferay.portlet.journal.service.JournalArticleService.class)
+	protected com.liferay.portlet.journal.service.JournalArticleService journalArticleService;
 	@BeanReference(type = JournalArticlePersistence.class)
 	protected JournalArticlePersistence journalArticlePersistence;
 	@BeanReference(type = JournalArticleFinder.class)
 	protected JournalArticleFinder journalArticleFinder;
-	@BeanReference(type = JournalArticleResourceLocalService.class)
-	protected JournalArticleResourceLocalService journalArticleResourceLocalService;
+	@BeanReference(type = com.liferay.portlet.journal.service.JournalArticleResourceLocalService.class)
+	protected com.liferay.portlet.journal.service.JournalArticleResourceLocalService journalArticleResourceLocalService;
 	@BeanReference(type = JournalArticleResourcePersistence.class)
 	protected JournalArticleResourcePersistence journalArticleResourcePersistence;
-	@BeanReference(type = MBMessageLocalService.class)
-	protected MBMessageLocalService mbMessageLocalService;
-	@BeanReference(type = MBMessageService.class)
-	protected MBMessageService mbMessageService;
+	@BeanReference(type = com.liferay.portlet.messageboards.service.MBMessageLocalService.class)
+	protected com.liferay.portlet.messageboards.service.MBMessageLocalService mbMessageLocalService;
+	@BeanReference(type = com.liferay.portlet.messageboards.service.MBMessageService.class)
+	protected com.liferay.portlet.messageboards.service.MBMessageService mbMessageService;
 	@BeanReference(type = MBMessagePersistence.class)
 	protected MBMessagePersistence mbMessagePersistence;
 	@BeanReference(type = MBMessageFinder.class)
 	protected MBMessageFinder mbMessageFinder;
-	@BeanReference(type = SocialActivityLocalService.class)
-	protected SocialActivityLocalService socialActivityLocalService;
+	@BeanReference(type = com.liferay.portlet.social.service.SocialActivityLocalService.class)
+	protected com.liferay.portlet.social.service.SocialActivityLocalService socialActivityLocalService;
 	@BeanReference(type = SocialActivityPersistence.class)
 	protected SocialActivityPersistence socialActivityPersistence;
 	@BeanReference(type = SocialActivityFinder.class)
 	protected SocialActivityFinder socialActivityFinder;
-	@BeanReference(type = SocialActivityCounterLocalService.class)
-	protected SocialActivityCounterLocalService socialActivityCounterLocalService;
+	@BeanReference(type = com.liferay.portlet.social.service.SocialActivityCounterLocalService.class)
+	protected com.liferay.portlet.social.service.SocialActivityCounterLocalService socialActivityCounterLocalService;
 	@BeanReference(type = SocialActivityCounterPersistence.class)
 	protected SocialActivityCounterPersistence socialActivityCounterPersistence;
 	@BeanReference(type = SocialActivityCounterFinder.class)
 	protected SocialActivityCounterFinder socialActivityCounterFinder;
-	@BeanReference(type = WikiPageLocalService.class)
-	protected WikiPageLocalService wikiPageLocalService;
-	@BeanReference(type = WikiPageService.class)
-	protected WikiPageService wikiPageService;
+	@BeanReference(type = com.liferay.portlet.wiki.service.WikiPageLocalService.class)
+	protected com.liferay.portlet.wiki.service.WikiPageLocalService wikiPageLocalService;
+	@BeanReference(type = com.liferay.portlet.wiki.service.WikiPageService.class)
+	protected com.liferay.portlet.wiki.service.WikiPageService wikiPageService;
 	@BeanReference(type = WikiPagePersistence.class)
 	protected WikiPagePersistence wikiPagePersistence;
 	@BeanReference(type = WikiPageFinder.class)
 	protected WikiPageFinder wikiPageFinder;
-	@BeanReference(type = WikiPageResourceLocalService.class)
-	protected WikiPageResourceLocalService wikiPageResourceLocalService;
+	@BeanReference(type = com.liferay.portlet.wiki.service.WikiPageResourceLocalService.class)
+	protected com.liferay.portlet.wiki.service.WikiPageResourceLocalService wikiPageResourceLocalService;
 	@BeanReference(type = WikiPageResourcePersistence.class)
 	protected WikiPageResourcePersistence wikiPageResourcePersistence;
 	@BeanReference(type = PersistedModelLocalServiceRegistry.class)

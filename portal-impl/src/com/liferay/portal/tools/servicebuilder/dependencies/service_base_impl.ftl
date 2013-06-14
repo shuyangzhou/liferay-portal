@@ -29,6 +29,8 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import ${packagePath}.service.${entity.name}${sessionTypeName}Service;
+
 <#if entity.hasColumns()>
 	<#if entity.hasCompoundPK()>
 		import ${packagePath}.service.persistence.${entity.name}PK;
@@ -46,14 +48,6 @@ import javax.sql.DataSource;
 </#if>
 
 <#list referenceList as tempEntity>
-	<#if tempEntity.hasLocalService()>
-		import ${tempEntity.packagePath}.service.${tempEntity.name}LocalService;
-	</#if>
-
-	<#if tempEntity.hasRemoteService()>
-		import ${tempEntity.packagePath}.service.${tempEntity.name}Service;
-	</#if>
-
 	<#if tempEntity.hasColumns() && (entity.name == "Counter" || tempEntity.name != "Counter")>
 		import ${tempEntity.packagePath}.service.persistence.${tempEntity.name}Persistence;
 		import ${tempEntity.packagePath}.service.persistence.${tempEntity.name}Util;
@@ -684,7 +678,12 @@ import javax.sql.DataSource;
 			 *
 			 * @return the ${tempEntity.humanName} local service
 			 */
-			public ${tempEntity.name}LocalService get${tempEntity.name}LocalService() {
+
+			<#if !classDeprecated && tempEntity.isDeprecated()>
+				@SuppressWarnings("deprecation")
+			</#if>
+
+			public ${tempEntity.packagePath}.service.${tempEntity.name}LocalService get${tempEntity.name}LocalService() {
 				return ${tempEntity.varName}LocalService;
 			}
 
@@ -693,7 +692,12 @@ import javax.sql.DataSource;
 			 *
 			 * @param ${tempEntity.varName}LocalService the ${tempEntity.humanName} local service
 			 */
-			public void set${tempEntity.name}LocalService(${tempEntity.name}LocalService ${tempEntity.varName}LocalService) {
+
+			<#if !classDeprecated && tempEntity.isDeprecated()>
+				@SuppressWarnings("deprecation")
+			</#if>
+
+			public void set${tempEntity.name}LocalService(${tempEntity.packagePath}.service.${tempEntity.name}LocalService ${tempEntity.varName}LocalService) {
 				this.${tempEntity.varName}LocalService = ${tempEntity.varName}LocalService;
 			}
 		</#if>
@@ -704,7 +708,12 @@ import javax.sql.DataSource;
 			 *
 			 * @return the ${tempEntity.humanName} remote service
 			 */
-			public ${tempEntity.name}Service get${tempEntity.name}Service() {
+
+			<#if !classDeprecated && tempEntity.isDeprecated()>
+				@SuppressWarnings("deprecation")
+			</#if>
+
+			public ${tempEntity.packagePath}.service.${tempEntity.name}Service get${tempEntity.name}Service() {
 				return ${tempEntity.varName}Service;
 			}
 
@@ -713,7 +722,12 @@ import javax.sql.DataSource;
 			 *
 			 * @param ${tempEntity.varName}Service the ${tempEntity.humanName} remote service
 			 */
-			public void set${tempEntity.name}Service(${tempEntity.name}Service ${tempEntity.varName}Service) {
+
+			<#if !classDeprecated && tempEntity.isDeprecated()>
+				@SuppressWarnings("deprecation")
+			</#if>
+
+			public void set${tempEntity.name}Service(${tempEntity.packagePath}.service.${tempEntity.name}Service ${tempEntity.varName}Service) {
 				this.${tempEntity.varName}Service = ${tempEntity.varName}Service;
 			}
 		</#if>
@@ -864,13 +878,23 @@ import javax.sql.DataSource;
 
 	<#list referenceList as tempEntity>
 		<#if tempEntity.hasLocalService()>
-			@BeanReference(type = ${tempEntity.name}LocalService.class)
-			protected ${tempEntity.name}LocalService ${tempEntity.varName}LocalService;
+			@BeanReference(type = ${tempEntity.packagePath}.service.${tempEntity.name}LocalService.class)
+
+			<#if !classDeprecated && tempEntity.isDeprecated()>
+				@SuppressWarnings("deprecation")
+			</#if>
+
+			protected ${tempEntity.packagePath}.service.${tempEntity.name}LocalService ${tempEntity.varName}LocalService;
 		</#if>
 
 		<#if tempEntity.hasRemoteService()>
-			@BeanReference(type = ${tempEntity.name}Service.class)
-			protected ${tempEntity.name}Service ${tempEntity.varName}Service;
+			@BeanReference(type = ${tempEntity.packagePath}.service.${tempEntity.name}Service.class)
+
+			<#if !classDeprecated && tempEntity.isDeprecated()>
+				@SuppressWarnings("deprecation")
+			</#if>
+
+			protected ${tempEntity.packagePath}.service.${tempEntity.name}Service ${tempEntity.varName}Service;
 		</#if>
 
 		<#if tempEntity.hasColumns() && (entity.name == "Counter" || tempEntity.name != "Counter")>

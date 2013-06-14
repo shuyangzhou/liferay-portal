@@ -14,8 +14,6 @@
 
 package com.liferay.portlet.journal.service.base;
 
-import com.liferay.counter.service.CounterLocalService;
-
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.bean.IdentifiableBean;
 import com.liferay.portal.kernel.dao.jdbc.SqlUpdate;
@@ -23,36 +21,15 @@ import com.liferay.portal.kernel.dao.jdbc.SqlUpdateFactoryUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.service.BaseLocalServiceImpl;
-import com.liferay.portal.service.GroupLocalService;
-import com.liferay.portal.service.GroupService;
-import com.liferay.portal.service.ImageLocalService;
-import com.liferay.portal.service.ImageService;
-import com.liferay.portal.service.ResourceLocalService;
-import com.liferay.portal.service.UserLocalService;
-import com.liferay.portal.service.UserService;
 import com.liferay.portal.service.persistence.GroupFinder;
 import com.liferay.portal.service.persistence.GroupPersistence;
 import com.liferay.portal.service.persistence.ImagePersistence;
 import com.liferay.portal.service.persistence.UserFinder;
 import com.liferay.portal.service.persistence.UserPersistence;
 
-import com.liferay.portlet.dynamicdatamapping.service.DDMTemplateLocalService;
-import com.liferay.portlet.dynamicdatamapping.service.DDMTemplateService;
 import com.liferay.portlet.dynamicdatamapping.service.persistence.DDMTemplateFinder;
 import com.liferay.portlet.dynamicdatamapping.service.persistence.DDMTemplatePersistence;
-import com.liferay.portlet.journal.service.JournalArticleImageLocalService;
-import com.liferay.portlet.journal.service.JournalArticleLocalService;
-import com.liferay.portlet.journal.service.JournalArticleResourceLocalService;
-import com.liferay.portlet.journal.service.JournalArticleService;
-import com.liferay.portlet.journal.service.JournalContentSearchLocalService;
-import com.liferay.portlet.journal.service.JournalFeedLocalService;
-import com.liferay.portlet.journal.service.JournalFeedService;
-import com.liferay.portlet.journal.service.JournalFolderLocalService;
-import com.liferay.portlet.journal.service.JournalFolderService;
-import com.liferay.portlet.journal.service.JournalStructureLocalService;
-import com.liferay.portlet.journal.service.JournalStructureService;
 import com.liferay.portlet.journal.service.JournalTemplateLocalService;
-import com.liferay.portlet.journal.service.JournalTemplateService;
 import com.liferay.portlet.journal.service.persistence.JournalArticleFinder;
 import com.liferay.portlet.journal.service.persistence.JournalArticleImagePersistence;
 import com.liferay.portlet.journal.service.persistence.JournalArticlePersistence;
@@ -93,7 +70,7 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 *
 	 * @return the journal article local service
 	 */
-	public JournalArticleLocalService getJournalArticleLocalService() {
+	public com.liferay.portlet.journal.service.JournalArticleLocalService getJournalArticleLocalService() {
 		return journalArticleLocalService;
 	}
 
@@ -103,7 +80,7 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 * @param journalArticleLocalService the journal article local service
 	 */
 	public void setJournalArticleLocalService(
-		JournalArticleLocalService journalArticleLocalService) {
+		com.liferay.portlet.journal.service.JournalArticleLocalService journalArticleLocalService) {
 		this.journalArticleLocalService = journalArticleLocalService;
 	}
 
@@ -112,7 +89,7 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 *
 	 * @return the journal article remote service
 	 */
-	public JournalArticleService getJournalArticleService() {
+	public com.liferay.portlet.journal.service.JournalArticleService getJournalArticleService() {
 		return journalArticleService;
 	}
 
@@ -122,7 +99,7 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 * @param journalArticleService the journal article remote service
 	 */
 	public void setJournalArticleService(
-		JournalArticleService journalArticleService) {
+		com.liferay.portlet.journal.service.JournalArticleService journalArticleService) {
 		this.journalArticleService = journalArticleService;
 	}
 
@@ -169,7 +146,7 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 *
 	 * @return the journal article image local service
 	 */
-	public JournalArticleImageLocalService getJournalArticleImageLocalService() {
+	public com.liferay.portlet.journal.service.JournalArticleImageLocalService getJournalArticleImageLocalService() {
 		return journalArticleImageLocalService;
 	}
 
@@ -179,7 +156,7 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 * @param journalArticleImageLocalService the journal article image local service
 	 */
 	public void setJournalArticleImageLocalService(
-		JournalArticleImageLocalService journalArticleImageLocalService) {
+		com.liferay.portlet.journal.service.JournalArticleImageLocalService journalArticleImageLocalService) {
 		this.journalArticleImageLocalService = journalArticleImageLocalService;
 	}
 
@@ -207,7 +184,7 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 *
 	 * @return the journal article resource local service
 	 */
-	public JournalArticleResourceLocalService getJournalArticleResourceLocalService() {
+	public com.liferay.portlet.journal.service.JournalArticleResourceLocalService getJournalArticleResourceLocalService() {
 		return journalArticleResourceLocalService;
 	}
 
@@ -217,7 +194,7 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 * @param journalArticleResourceLocalService the journal article resource local service
 	 */
 	public void setJournalArticleResourceLocalService(
-		JournalArticleResourceLocalService journalArticleResourceLocalService) {
+		com.liferay.portlet.journal.service.JournalArticleResourceLocalService journalArticleResourceLocalService) {
 		this.journalArticleResourceLocalService = journalArticleResourceLocalService;
 	}
 
@@ -245,7 +222,7 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 *
 	 * @return the journal content search local service
 	 */
-	public JournalContentSearchLocalService getJournalContentSearchLocalService() {
+	public com.liferay.portlet.journal.service.JournalContentSearchLocalService getJournalContentSearchLocalService() {
 		return journalContentSearchLocalService;
 	}
 
@@ -255,7 +232,7 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 * @param journalContentSearchLocalService the journal content search local service
 	 */
 	public void setJournalContentSearchLocalService(
-		JournalContentSearchLocalService journalContentSearchLocalService) {
+		com.liferay.portlet.journal.service.JournalContentSearchLocalService journalContentSearchLocalService) {
 		this.journalContentSearchLocalService = journalContentSearchLocalService;
 	}
 
@@ -283,7 +260,7 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 *
 	 * @return the journal feed local service
 	 */
-	public JournalFeedLocalService getJournalFeedLocalService() {
+	public com.liferay.portlet.journal.service.JournalFeedLocalService getJournalFeedLocalService() {
 		return journalFeedLocalService;
 	}
 
@@ -293,7 +270,7 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 * @param journalFeedLocalService the journal feed local service
 	 */
 	public void setJournalFeedLocalService(
-		JournalFeedLocalService journalFeedLocalService) {
+		com.liferay.portlet.journal.service.JournalFeedLocalService journalFeedLocalService) {
 		this.journalFeedLocalService = journalFeedLocalService;
 	}
 
@@ -302,7 +279,7 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 *
 	 * @return the journal feed remote service
 	 */
-	public JournalFeedService getJournalFeedService() {
+	public com.liferay.portlet.journal.service.JournalFeedService getJournalFeedService() {
 		return journalFeedService;
 	}
 
@@ -311,7 +288,8 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 *
 	 * @param journalFeedService the journal feed remote service
 	 */
-	public void setJournalFeedService(JournalFeedService journalFeedService) {
+	public void setJournalFeedService(
+		com.liferay.portlet.journal.service.JournalFeedService journalFeedService) {
 		this.journalFeedService = journalFeedService;
 	}
 
@@ -357,7 +335,7 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 *
 	 * @return the journal folder local service
 	 */
-	public JournalFolderLocalService getJournalFolderLocalService() {
+	public com.liferay.portlet.journal.service.JournalFolderLocalService getJournalFolderLocalService() {
 		return journalFolderLocalService;
 	}
 
@@ -367,7 +345,7 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 * @param journalFolderLocalService the journal folder local service
 	 */
 	public void setJournalFolderLocalService(
-		JournalFolderLocalService journalFolderLocalService) {
+		com.liferay.portlet.journal.service.JournalFolderLocalService journalFolderLocalService) {
 		this.journalFolderLocalService = journalFolderLocalService;
 	}
 
@@ -376,7 +354,7 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 *
 	 * @return the journal folder remote service
 	 */
-	public JournalFolderService getJournalFolderService() {
+	public com.liferay.portlet.journal.service.JournalFolderService getJournalFolderService() {
 		return journalFolderService;
 	}
 
@@ -386,7 +364,7 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 * @param journalFolderService the journal folder remote service
 	 */
 	public void setJournalFolderService(
-		JournalFolderService journalFolderService) {
+		com.liferay.portlet.journal.service.JournalFolderService journalFolderService) {
 		this.journalFolderService = journalFolderService;
 	}
 
@@ -432,7 +410,7 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 *
 	 * @return the journal structure local service
 	 */
-	public JournalStructureLocalService getJournalStructureLocalService() {
+	public com.liferay.portlet.journal.service.JournalStructureLocalService getJournalStructureLocalService() {
 		return journalStructureLocalService;
 	}
 
@@ -442,7 +420,7 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 * @param journalStructureLocalService the journal structure local service
 	 */
 	public void setJournalStructureLocalService(
-		JournalStructureLocalService journalStructureLocalService) {
+		com.liferay.portlet.journal.service.JournalStructureLocalService journalStructureLocalService) {
 		this.journalStructureLocalService = journalStructureLocalService;
 	}
 
@@ -451,7 +429,7 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 *
 	 * @return the journal structure remote service
 	 */
-	public JournalStructureService getJournalStructureService() {
+	public com.liferay.portlet.journal.service.JournalStructureService getJournalStructureService() {
 		return journalStructureService;
 	}
 
@@ -461,7 +439,7 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 * @param journalStructureService the journal structure remote service
 	 */
 	public void setJournalStructureService(
-		JournalStructureService journalStructureService) {
+		com.liferay.portlet.journal.service.JournalStructureService journalStructureService) {
 		this.journalStructureService = journalStructureService;
 	}
 
@@ -470,7 +448,7 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 *
 	 * @return the journal template local service
 	 */
-	public JournalTemplateLocalService getJournalTemplateLocalService() {
+	public com.liferay.portlet.journal.service.JournalTemplateLocalService getJournalTemplateLocalService() {
 		return journalTemplateLocalService;
 	}
 
@@ -480,7 +458,7 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 * @param journalTemplateLocalService the journal template local service
 	 */
 	public void setJournalTemplateLocalService(
-		JournalTemplateLocalService journalTemplateLocalService) {
+		com.liferay.portlet.journal.service.JournalTemplateLocalService journalTemplateLocalService) {
 		this.journalTemplateLocalService = journalTemplateLocalService;
 	}
 
@@ -489,7 +467,7 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 *
 	 * @return the journal template remote service
 	 */
-	public JournalTemplateService getJournalTemplateService() {
+	public com.liferay.portlet.journal.service.JournalTemplateService getJournalTemplateService() {
 		return journalTemplateService;
 	}
 
@@ -499,7 +477,7 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 * @param journalTemplateService the journal template remote service
 	 */
 	public void setJournalTemplateService(
-		JournalTemplateService journalTemplateService) {
+		com.liferay.portlet.journal.service.JournalTemplateService journalTemplateService) {
 		this.journalTemplateService = journalTemplateService;
 	}
 
@@ -508,7 +486,7 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public CounterLocalService getCounterLocalService() {
+	public com.liferay.counter.service.CounterLocalService getCounterLocalService() {
 		return counterLocalService;
 	}
 
@@ -517,7 +495,8 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 *
 	 * @param counterLocalService the counter local service
 	 */
-	public void setCounterLocalService(CounterLocalService counterLocalService) {
+	public void setCounterLocalService(
+		com.liferay.counter.service.CounterLocalService counterLocalService) {
 		this.counterLocalService = counterLocalService;
 	}
 
@@ -526,7 +505,7 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 *
 	 * @return the group local service
 	 */
-	public GroupLocalService getGroupLocalService() {
+	public com.liferay.portal.service.GroupLocalService getGroupLocalService() {
 		return groupLocalService;
 	}
 
@@ -535,7 +514,8 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 *
 	 * @param groupLocalService the group local service
 	 */
-	public void setGroupLocalService(GroupLocalService groupLocalService) {
+	public void setGroupLocalService(
+		com.liferay.portal.service.GroupLocalService groupLocalService) {
 		this.groupLocalService = groupLocalService;
 	}
 
@@ -544,7 +524,7 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 *
 	 * @return the group remote service
 	 */
-	public GroupService getGroupService() {
+	public com.liferay.portal.service.GroupService getGroupService() {
 		return groupService;
 	}
 
@@ -553,7 +533,8 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 *
 	 * @param groupService the group remote service
 	 */
-	public void setGroupService(GroupService groupService) {
+	public void setGroupService(
+		com.liferay.portal.service.GroupService groupService) {
 		this.groupService = groupService;
 	}
 
@@ -598,7 +579,7 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 *
 	 * @return the image local service
 	 */
-	public ImageLocalService getImageLocalService() {
+	public com.liferay.portal.service.ImageLocalService getImageLocalService() {
 		return imageLocalService;
 	}
 
@@ -607,7 +588,8 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 *
 	 * @param imageLocalService the image local service
 	 */
-	public void setImageLocalService(ImageLocalService imageLocalService) {
+	public void setImageLocalService(
+		com.liferay.portal.service.ImageLocalService imageLocalService) {
 		this.imageLocalService = imageLocalService;
 	}
 
@@ -616,7 +598,7 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 *
 	 * @return the image remote service
 	 */
-	public ImageService getImageService() {
+	public com.liferay.portal.service.ImageService getImageService() {
 		return imageService;
 	}
 
@@ -625,7 +607,8 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 *
 	 * @param imageService the image remote service
 	 */
-	public void setImageService(ImageService imageService) {
+	public void setImageService(
+		com.liferay.portal.service.ImageService imageService) {
 		this.imageService = imageService;
 	}
 
@@ -652,7 +635,7 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 *
 	 * @return the resource local service
 	 */
-	public ResourceLocalService getResourceLocalService() {
+	public com.liferay.portal.service.ResourceLocalService getResourceLocalService() {
 		return resourceLocalService;
 	}
 
@@ -662,7 +645,7 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 * @param resourceLocalService the resource local service
 	 */
 	public void setResourceLocalService(
-		ResourceLocalService resourceLocalService) {
+		com.liferay.portal.service.ResourceLocalService resourceLocalService) {
 		this.resourceLocalService = resourceLocalService;
 	}
 
@@ -671,7 +654,7 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 *
 	 * @return the user local service
 	 */
-	public UserLocalService getUserLocalService() {
+	public com.liferay.portal.service.UserLocalService getUserLocalService() {
 		return userLocalService;
 	}
 
@@ -680,7 +663,8 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 *
 	 * @param userLocalService the user local service
 	 */
-	public void setUserLocalService(UserLocalService userLocalService) {
+	public void setUserLocalService(
+		com.liferay.portal.service.UserLocalService userLocalService) {
 		this.userLocalService = userLocalService;
 	}
 
@@ -689,7 +673,7 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 *
 	 * @return the user remote service
 	 */
-	public UserService getUserService() {
+	public com.liferay.portal.service.UserService getUserService() {
 		return userService;
 	}
 
@@ -698,7 +682,8 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 *
 	 * @param userService the user remote service
 	 */
-	public void setUserService(UserService userService) {
+	public void setUserService(
+		com.liferay.portal.service.UserService userService) {
 		this.userService = userService;
 	}
 
@@ -743,7 +728,7 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 *
 	 * @return the d d m template local service
 	 */
-	public DDMTemplateLocalService getDDMTemplateLocalService() {
+	public com.liferay.portlet.dynamicdatamapping.service.DDMTemplateLocalService getDDMTemplateLocalService() {
 		return ddmTemplateLocalService;
 	}
 
@@ -753,7 +738,7 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 * @param ddmTemplateLocalService the d d m template local service
 	 */
 	public void setDDMTemplateLocalService(
-		DDMTemplateLocalService ddmTemplateLocalService) {
+		com.liferay.portlet.dynamicdatamapping.service.DDMTemplateLocalService ddmTemplateLocalService) {
 		this.ddmTemplateLocalService = ddmTemplateLocalService;
 	}
 
@@ -762,7 +747,7 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 *
 	 * @return the d d m template remote service
 	 */
-	public DDMTemplateService getDDMTemplateService() {
+	public com.liferay.portlet.dynamicdatamapping.service.DDMTemplateService getDDMTemplateService() {
 		return ddmTemplateService;
 	}
 
@@ -771,7 +756,8 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 	 *
 	 * @param ddmTemplateService the d d m template remote service
 	 */
-	public void setDDMTemplateService(DDMTemplateService ddmTemplateService) {
+	public void setDDMTemplateService(
+		com.liferay.portlet.dynamicdatamapping.service.DDMTemplateService ddmTemplateService) {
 		this.ddmTemplateService = ddmTemplateService;
 	}
 
@@ -857,80 +843,80 @@ public abstract class JournalTemplateLocalServiceBaseImpl
 		}
 	}
 
-	@BeanReference(type = JournalArticleLocalService.class)
-	protected JournalArticleLocalService journalArticleLocalService;
-	@BeanReference(type = JournalArticleService.class)
-	protected JournalArticleService journalArticleService;
+	@BeanReference(type = com.liferay.portlet.journal.service.JournalArticleLocalService.class)
+	protected com.liferay.portlet.journal.service.JournalArticleLocalService journalArticleLocalService;
+	@BeanReference(type = com.liferay.portlet.journal.service.JournalArticleService.class)
+	protected com.liferay.portlet.journal.service.JournalArticleService journalArticleService;
 	@BeanReference(type = JournalArticlePersistence.class)
 	protected JournalArticlePersistence journalArticlePersistence;
 	@BeanReference(type = JournalArticleFinder.class)
 	protected JournalArticleFinder journalArticleFinder;
-	@BeanReference(type = JournalArticleImageLocalService.class)
-	protected JournalArticleImageLocalService journalArticleImageLocalService;
+	@BeanReference(type = com.liferay.portlet.journal.service.JournalArticleImageLocalService.class)
+	protected com.liferay.portlet.journal.service.JournalArticleImageLocalService journalArticleImageLocalService;
 	@BeanReference(type = JournalArticleImagePersistence.class)
 	protected JournalArticleImagePersistence journalArticleImagePersistence;
-	@BeanReference(type = JournalArticleResourceLocalService.class)
-	protected JournalArticleResourceLocalService journalArticleResourceLocalService;
+	@BeanReference(type = com.liferay.portlet.journal.service.JournalArticleResourceLocalService.class)
+	protected com.liferay.portlet.journal.service.JournalArticleResourceLocalService journalArticleResourceLocalService;
 	@BeanReference(type = JournalArticleResourcePersistence.class)
 	protected JournalArticleResourcePersistence journalArticleResourcePersistence;
-	@BeanReference(type = JournalContentSearchLocalService.class)
-	protected JournalContentSearchLocalService journalContentSearchLocalService;
+	@BeanReference(type = com.liferay.portlet.journal.service.JournalContentSearchLocalService.class)
+	protected com.liferay.portlet.journal.service.JournalContentSearchLocalService journalContentSearchLocalService;
 	@BeanReference(type = JournalContentSearchPersistence.class)
 	protected JournalContentSearchPersistence journalContentSearchPersistence;
-	@BeanReference(type = JournalFeedLocalService.class)
-	protected JournalFeedLocalService journalFeedLocalService;
-	@BeanReference(type = JournalFeedService.class)
-	protected JournalFeedService journalFeedService;
+	@BeanReference(type = com.liferay.portlet.journal.service.JournalFeedLocalService.class)
+	protected com.liferay.portlet.journal.service.JournalFeedLocalService journalFeedLocalService;
+	@BeanReference(type = com.liferay.portlet.journal.service.JournalFeedService.class)
+	protected com.liferay.portlet.journal.service.JournalFeedService journalFeedService;
 	@BeanReference(type = JournalFeedPersistence.class)
 	protected JournalFeedPersistence journalFeedPersistence;
 	@BeanReference(type = JournalFeedFinder.class)
 	protected JournalFeedFinder journalFeedFinder;
-	@BeanReference(type = JournalFolderLocalService.class)
-	protected JournalFolderLocalService journalFolderLocalService;
-	@BeanReference(type = JournalFolderService.class)
-	protected JournalFolderService journalFolderService;
+	@BeanReference(type = com.liferay.portlet.journal.service.JournalFolderLocalService.class)
+	protected com.liferay.portlet.journal.service.JournalFolderLocalService journalFolderLocalService;
+	@BeanReference(type = com.liferay.portlet.journal.service.JournalFolderService.class)
+	protected com.liferay.portlet.journal.service.JournalFolderService journalFolderService;
 	@BeanReference(type = JournalFolderPersistence.class)
 	protected JournalFolderPersistence journalFolderPersistence;
 	@BeanReference(type = JournalFolderFinder.class)
 	protected JournalFolderFinder journalFolderFinder;
-	@BeanReference(type = JournalStructureLocalService.class)
-	protected JournalStructureLocalService journalStructureLocalService;
-	@BeanReference(type = JournalStructureService.class)
-	protected JournalStructureService journalStructureService;
-	@BeanReference(type = JournalTemplateLocalService.class)
-	protected JournalTemplateLocalService journalTemplateLocalService;
-	@BeanReference(type = JournalTemplateService.class)
-	protected JournalTemplateService journalTemplateService;
-	@BeanReference(type = CounterLocalService.class)
-	protected CounterLocalService counterLocalService;
-	@BeanReference(type = GroupLocalService.class)
-	protected GroupLocalService groupLocalService;
-	@BeanReference(type = GroupService.class)
-	protected GroupService groupService;
+	@BeanReference(type = com.liferay.portlet.journal.service.JournalStructureLocalService.class)
+	protected com.liferay.portlet.journal.service.JournalStructureLocalService journalStructureLocalService;
+	@BeanReference(type = com.liferay.portlet.journal.service.JournalStructureService.class)
+	protected com.liferay.portlet.journal.service.JournalStructureService journalStructureService;
+	@BeanReference(type = com.liferay.portlet.journal.service.JournalTemplateLocalService.class)
+	protected com.liferay.portlet.journal.service.JournalTemplateLocalService journalTemplateLocalService;
+	@BeanReference(type = com.liferay.portlet.journal.service.JournalTemplateService.class)
+	protected com.liferay.portlet.journal.service.JournalTemplateService journalTemplateService;
+	@BeanReference(type = com.liferay.counter.service.CounterLocalService.class)
+	protected com.liferay.counter.service.CounterLocalService counterLocalService;
+	@BeanReference(type = com.liferay.portal.service.GroupLocalService.class)
+	protected com.liferay.portal.service.GroupLocalService groupLocalService;
+	@BeanReference(type = com.liferay.portal.service.GroupService.class)
+	protected com.liferay.portal.service.GroupService groupService;
 	@BeanReference(type = GroupPersistence.class)
 	protected GroupPersistence groupPersistence;
 	@BeanReference(type = GroupFinder.class)
 	protected GroupFinder groupFinder;
-	@BeanReference(type = ImageLocalService.class)
-	protected ImageLocalService imageLocalService;
-	@BeanReference(type = ImageService.class)
-	protected ImageService imageService;
+	@BeanReference(type = com.liferay.portal.service.ImageLocalService.class)
+	protected com.liferay.portal.service.ImageLocalService imageLocalService;
+	@BeanReference(type = com.liferay.portal.service.ImageService.class)
+	protected com.liferay.portal.service.ImageService imageService;
 	@BeanReference(type = ImagePersistence.class)
 	protected ImagePersistence imagePersistence;
-	@BeanReference(type = ResourceLocalService.class)
-	protected ResourceLocalService resourceLocalService;
-	@BeanReference(type = UserLocalService.class)
-	protected UserLocalService userLocalService;
-	@BeanReference(type = UserService.class)
-	protected UserService userService;
+	@BeanReference(type = com.liferay.portal.service.ResourceLocalService.class)
+	protected com.liferay.portal.service.ResourceLocalService resourceLocalService;
+	@BeanReference(type = com.liferay.portal.service.UserLocalService.class)
+	protected com.liferay.portal.service.UserLocalService userLocalService;
+	@BeanReference(type = com.liferay.portal.service.UserService.class)
+	protected com.liferay.portal.service.UserService userService;
 	@BeanReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
 	@BeanReference(type = UserFinder.class)
 	protected UserFinder userFinder;
-	@BeanReference(type = DDMTemplateLocalService.class)
-	protected DDMTemplateLocalService ddmTemplateLocalService;
-	@BeanReference(type = DDMTemplateService.class)
-	protected DDMTemplateService ddmTemplateService;
+	@BeanReference(type = com.liferay.portlet.dynamicdatamapping.service.DDMTemplateLocalService.class)
+	protected com.liferay.portlet.dynamicdatamapping.service.DDMTemplateLocalService ddmTemplateLocalService;
+	@BeanReference(type = com.liferay.portlet.dynamicdatamapping.service.DDMTemplateService.class)
+	protected com.liferay.portlet.dynamicdatamapping.service.DDMTemplateService ddmTemplateService;
 	@BeanReference(type = DDMTemplatePersistence.class)
 	protected DDMTemplatePersistence ddmTemplatePersistence;
 	@BeanReference(type = DDMTemplateFinder.class)

@@ -83,7 +83,6 @@ import com.liferay.portlet.journal.model.JournalTemplate;
 import com.liferay.portlet.journal.model.JournalTemplateAdapter;
 import com.liferay.portlet.journal.service.JournalArticleLocalServiceUtil;
 import com.liferay.portlet.journal.service.JournalFolderLocalServiceUtil;
-import com.liferay.portlet.journal.service.JournalStructureLocalServiceUtil;
 import com.liferay.portlet.journal.util.comparator.ArticleCreateDateComparator;
 import com.liferay.portlet.journal.util.comparator.ArticleDisplayDateComparator;
 import com.liferay.portlet.journal.util.comparator.ArticleIDComparator;
@@ -956,9 +955,11 @@ public class JournalUtil {
 		List<Long> classPKs = new ArrayList<Long>();
 
 		for (long groupId : groupIds) {
+			@SuppressWarnings("deprecation")
 			JournalStructure structure =
-				JournalStructureLocalServiceUtil.fetchStructure(
-					groupId, structureId);
+				com.liferay.portlet.journal.service.
+					JournalStructureLocalServiceUtil.fetchStructure(
+						groupId, structureId);
 
 			if (structure != null) {
 				classPKs.add(structure.getId());

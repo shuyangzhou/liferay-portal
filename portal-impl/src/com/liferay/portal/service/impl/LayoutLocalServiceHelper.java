@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Layout;
 import com.liferay.portal.model.LayoutConstants;
 import com.liferay.portal.model.LayoutFriendlyURL;
@@ -189,10 +188,8 @@ public class LayoutLocalServiceHelper implements IdentifiableBean {
 			LayoutSetPrototype layoutSetPrototype, String layoutUuid)
 		throws PortalException, SystemException {
 
-		Group group = layoutSetPrototype.getGroup();
-
 		Layout layout = layoutPersistence.fetchByUUID_G_P(
-			layoutUuid, group.getGroupId(), true);
+			layoutUuid, layoutSetPrototype.getGroupId(), true);
 
 		if (layout != null) {
 			return true;

@@ -107,18 +107,20 @@ public class JournalFeedStagedModelDataHandlerTest
 			Map<String, List<StagedModel>> dependentStagedModelsMap)
 		throws Exception {
 
-		List<StagedModel> dependentStagedModels = dependentStagedModelsMap.get(
-			DDMStructure.class.getSimpleName());
+		List<StagedModel> ddmStructureDependentStagedModels =
+			dependentStagedModelsMap.get(DDMStructure.class.getSimpleName());
 
-		DDMStructure ddmStructure = (DDMStructure)dependentStagedModels.get(0);
+		DDMStructure ddmStructure =
+			(DDMStructure)ddmStructureDependentStagedModels.get(0);
 
-		dependentStagedModels = dependentStagedModelsMap.get(
-			DDMTemplate.class.getSimpleName());
+		List<StagedModel> ddmTemplateDependentStagedModels =
+			dependentStagedModelsMap.get(DDMTemplate.class.getSimpleName());
 
-		DDMTemplate ddmTemplate = (DDMTemplate)dependentStagedModels.get(0);
+		DDMTemplate ddmTemplate =
+			(DDMTemplate)ddmTemplateDependentStagedModels.get(0);
 
 		DDMTemplate rendererDDMTemplate =
-			(DDMTemplate)dependentStagedModels.get(1);
+			(DDMTemplate)ddmTemplateDependentStagedModels.get(1);
 
 		return JournalTestUtil.addFeed(
 			group.getGroupId(), _layout.getPlid(),
@@ -148,23 +150,27 @@ public class JournalFeedStagedModelDataHandlerTest
 			Group group)
 		throws Exception {
 
-		List<StagedModel> dependentStagedModels = dependentStagedModelsMap.get(
-			DDMStructure.class.getSimpleName());
+		List<StagedModel> ddmStructureDependentStagedModels =
+			dependentStagedModelsMap.get(DDMStructure.class.getSimpleName());
 
-		Assert.assertEquals(1, dependentStagedModels.size());
+		Assert.assertEquals(1, ddmStructureDependentStagedModels.size());
 
-		DDMStructure ddmStructure = (DDMStructure)dependentStagedModels.get(0);
+		DDMStructure ddmStructure =
+			(DDMStructure)ddmStructureDependentStagedModels.get(0);
 
 		DDMStructureLocalServiceUtil.getDDMStructureByUuidAndGroupId(
 			ddmStructure.getUuid(), group.getGroupId());
 
-		dependentStagedModels = dependentStagedModelsMap.get(
-			DDMTemplate.class.getSimpleName());
+		List<StagedModel> ddmTemplateDependentStagedModels =
+			dependentStagedModelsMap.get(DDMTemplate.class.getSimpleName());
 
-		Assert.assertEquals(2, dependentStagedModels.size());
+		Assert.assertEquals(2, ddmTemplateDependentStagedModels.size());
 
-		for (StagedModel dependentStagedModel : dependentStagedModels) {
-			DDMTemplate ddmTemplate = (DDMTemplate)dependentStagedModel;
+		for (StagedModel ddmTemplateDependentStagedModel :
+				ddmTemplateDependentStagedModels) {
+
+			DDMTemplate ddmTemplate =
+				(DDMTemplate)ddmTemplateDependentStagedModel;
 
 			DDMTemplateLocalServiceUtil.getDDMTemplateByUuidAndGroupId(
 				ddmTemplate.getUuid(), group.getGroupId());

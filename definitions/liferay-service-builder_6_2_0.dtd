@@ -109,6 +109,8 @@ programs. The default value is true.
 The json-enabled value specifies whether or not the entity should be annotated
 for JSON serialization. By default, if the remote-service value is true, then
 the json-enabled value is true.
+
+The deprecated value specifies whether the entity's services are deprecated.
 -->
 <!ATTLIST entity
 	name CDATA #REQUIRED
@@ -124,6 +126,7 @@ the json-enabled value is true.
 	tx-manager CDATA #IMPLIED
 	cache-enabled CDATA #IMPLIED
 	json-enabled CDATA #IMPLIED
+	deprecated CDATA #IMPLIED
 >
 
 <!--

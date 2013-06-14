@@ -116,24 +116,27 @@ public class DDLRecordSetStagedModelDataHandlerTest
 			Group group)
 		throws Exception {
 
-		List<StagedModel> dependentStagedModels = dependentStagedModelsMap.get(
-			DDMStructure.class.getSimpleName());
+		List<StagedModel> ddmStructureDependentStagedModels =
+			dependentStagedModelsMap.get(DDMStructure.class.getSimpleName());
 
-		Assert.assertEquals(1, dependentStagedModels.size());
+		Assert.assertEquals(1, ddmStructureDependentStagedModels.size());
 
-		DDMStructure ddmStructure = (DDMStructure)dependentStagedModels.get(0);
+		DDMStructure ddmStructure =
+			(DDMStructure)ddmStructureDependentStagedModels.get(0);
 
 		DDMStructureLocalServiceUtil.getDDMStructureByUuidAndGroupId(
 			ddmStructure.getUuid(), group.getGroupId());
 
-		dependentStagedModels = dependentStagedModelsMap.get(
-			DDMTemplate.class.getSimpleName());
+		List<StagedModel> ddmTemplateDependentStagedModels =
+			dependentStagedModelsMap.get(DDMTemplate.class.getSimpleName());
 
-		Assert.assertEquals(2, dependentStagedModels.size());
+		Assert.assertEquals(2, ddmTemplateDependentStagedModels.size());
 
-		for (StagedModel dependentStagedModel : dependentStagedModels) {
+		for (StagedModel ddmTemplateDependentStagedModel :
+				ddmTemplateDependentStagedModels) {
+
 			DDMTemplateLocalServiceUtil.getDDMTemplateByUuidAndGroupId(
-				dependentStagedModel.getUuid(), group.getGroupId());
+				ddmTemplateDependentStagedModel.getUuid(), group.getGroupId());
 		}
 	}
 

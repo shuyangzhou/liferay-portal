@@ -14,43 +14,20 @@
 
 package com.liferay.portlet.shopping.service.base;
 
-import com.liferay.counter.service.CounterLocalService;
-
-import com.liferay.mail.service.MailService;
-
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.bean.IdentifiableBean;
 import com.liferay.portal.kernel.dao.jdbc.SqlUpdate;
 import com.liferay.portal.kernel.dao.jdbc.SqlUpdateFactoryUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.service.BaseServiceImpl;
-import com.liferay.portal.service.CompanyLocalService;
-import com.liferay.portal.service.CompanyService;
-import com.liferay.portal.service.ResourceLocalService;
-import com.liferay.portal.service.SubscriptionLocalService;
-import com.liferay.portal.service.UserLocalService;
-import com.liferay.portal.service.UserService;
 import com.liferay.portal.service.persistence.CompanyPersistence;
 import com.liferay.portal.service.persistence.SubscriptionPersistence;
 import com.liferay.portal.service.persistence.UserFinder;
 import com.liferay.portal.service.persistence.UserPersistence;
 
-import com.liferay.portlet.messageboards.service.MBMessageLocalService;
-import com.liferay.portlet.messageboards.service.MBMessageService;
 import com.liferay.portlet.messageboards.service.persistence.MBMessageFinder;
 import com.liferay.portlet.messageboards.service.persistence.MBMessagePersistence;
 import com.liferay.portlet.shopping.model.ShoppingOrder;
-import com.liferay.portlet.shopping.service.ShoppingCartLocalService;
-import com.liferay.portlet.shopping.service.ShoppingCategoryLocalService;
-import com.liferay.portlet.shopping.service.ShoppingCategoryService;
-import com.liferay.portlet.shopping.service.ShoppingCouponLocalService;
-import com.liferay.portlet.shopping.service.ShoppingCouponService;
-import com.liferay.portlet.shopping.service.ShoppingItemFieldLocalService;
-import com.liferay.portlet.shopping.service.ShoppingItemLocalService;
-import com.liferay.portlet.shopping.service.ShoppingItemPriceLocalService;
-import com.liferay.portlet.shopping.service.ShoppingItemService;
-import com.liferay.portlet.shopping.service.ShoppingOrderItemLocalService;
-import com.liferay.portlet.shopping.service.ShoppingOrderLocalService;
 import com.liferay.portlet.shopping.service.ShoppingOrderService;
 import com.liferay.portlet.shopping.service.persistence.ShoppingCartPersistence;
 import com.liferay.portlet.shopping.service.persistence.ShoppingCategoryPersistence;
@@ -91,7 +68,7 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the shopping cart local service
 	 */
-	public ShoppingCartLocalService getShoppingCartLocalService() {
+	public com.liferay.portlet.shopping.service.ShoppingCartLocalService getShoppingCartLocalService() {
 		return shoppingCartLocalService;
 	}
 
@@ -101,7 +78,7 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 * @param shoppingCartLocalService the shopping cart local service
 	 */
 	public void setShoppingCartLocalService(
-		ShoppingCartLocalService shoppingCartLocalService) {
+		com.liferay.portlet.shopping.service.ShoppingCartLocalService shoppingCartLocalService) {
 		this.shoppingCartLocalService = shoppingCartLocalService;
 	}
 
@@ -129,7 +106,7 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the shopping category local service
 	 */
-	public ShoppingCategoryLocalService getShoppingCategoryLocalService() {
+	public com.liferay.portlet.shopping.service.ShoppingCategoryLocalService getShoppingCategoryLocalService() {
 		return shoppingCategoryLocalService;
 	}
 
@@ -139,7 +116,7 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 * @param shoppingCategoryLocalService the shopping category local service
 	 */
 	public void setShoppingCategoryLocalService(
-		ShoppingCategoryLocalService shoppingCategoryLocalService) {
+		com.liferay.portlet.shopping.service.ShoppingCategoryLocalService shoppingCategoryLocalService) {
 		this.shoppingCategoryLocalService = shoppingCategoryLocalService;
 	}
 
@@ -148,7 +125,7 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the shopping category remote service
 	 */
-	public ShoppingCategoryService getShoppingCategoryService() {
+	public com.liferay.portlet.shopping.service.ShoppingCategoryService getShoppingCategoryService() {
 		return shoppingCategoryService;
 	}
 
@@ -158,7 +135,7 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 * @param shoppingCategoryService the shopping category remote service
 	 */
 	public void setShoppingCategoryService(
-		ShoppingCategoryService shoppingCategoryService) {
+		com.liferay.portlet.shopping.service.ShoppingCategoryService shoppingCategoryService) {
 		this.shoppingCategoryService = shoppingCategoryService;
 	}
 
@@ -186,7 +163,7 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the shopping coupon local service
 	 */
-	public ShoppingCouponLocalService getShoppingCouponLocalService() {
+	public com.liferay.portlet.shopping.service.ShoppingCouponLocalService getShoppingCouponLocalService() {
 		return shoppingCouponLocalService;
 	}
 
@@ -196,7 +173,7 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 * @param shoppingCouponLocalService the shopping coupon local service
 	 */
 	public void setShoppingCouponLocalService(
-		ShoppingCouponLocalService shoppingCouponLocalService) {
+		com.liferay.portlet.shopping.service.ShoppingCouponLocalService shoppingCouponLocalService) {
 		this.shoppingCouponLocalService = shoppingCouponLocalService;
 	}
 
@@ -205,7 +182,7 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the shopping coupon remote service
 	 */
-	public ShoppingCouponService getShoppingCouponService() {
+	public com.liferay.portlet.shopping.service.ShoppingCouponService getShoppingCouponService() {
 		return shoppingCouponService;
 	}
 
@@ -215,7 +192,7 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 * @param shoppingCouponService the shopping coupon remote service
 	 */
 	public void setShoppingCouponService(
-		ShoppingCouponService shoppingCouponService) {
+		com.liferay.portlet.shopping.service.ShoppingCouponService shoppingCouponService) {
 		this.shoppingCouponService = shoppingCouponService;
 	}
 
@@ -262,7 +239,7 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the shopping item local service
 	 */
-	public ShoppingItemLocalService getShoppingItemLocalService() {
+	public com.liferay.portlet.shopping.service.ShoppingItemLocalService getShoppingItemLocalService() {
 		return shoppingItemLocalService;
 	}
 
@@ -272,7 +249,7 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 * @param shoppingItemLocalService the shopping item local service
 	 */
 	public void setShoppingItemLocalService(
-		ShoppingItemLocalService shoppingItemLocalService) {
+		com.liferay.portlet.shopping.service.ShoppingItemLocalService shoppingItemLocalService) {
 		this.shoppingItemLocalService = shoppingItemLocalService;
 	}
 
@@ -281,7 +258,7 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the shopping item remote service
 	 */
-	public ShoppingItemService getShoppingItemService() {
+	public com.liferay.portlet.shopping.service.ShoppingItemService getShoppingItemService() {
 		return shoppingItemService;
 	}
 
@@ -290,7 +267,8 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @param shoppingItemService the shopping item remote service
 	 */
-	public void setShoppingItemService(ShoppingItemService shoppingItemService) {
+	public void setShoppingItemService(
+		com.liferay.portlet.shopping.service.ShoppingItemService shoppingItemService) {
 		this.shoppingItemService = shoppingItemService;
 	}
 
@@ -336,7 +314,7 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the shopping item field local service
 	 */
-	public ShoppingItemFieldLocalService getShoppingItemFieldLocalService() {
+	public com.liferay.portlet.shopping.service.ShoppingItemFieldLocalService getShoppingItemFieldLocalService() {
 		return shoppingItemFieldLocalService;
 	}
 
@@ -346,7 +324,7 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 * @param shoppingItemFieldLocalService the shopping item field local service
 	 */
 	public void setShoppingItemFieldLocalService(
-		ShoppingItemFieldLocalService shoppingItemFieldLocalService) {
+		com.liferay.portlet.shopping.service.ShoppingItemFieldLocalService shoppingItemFieldLocalService) {
 		this.shoppingItemFieldLocalService = shoppingItemFieldLocalService;
 	}
 
@@ -374,7 +352,7 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the shopping item price local service
 	 */
-	public ShoppingItemPriceLocalService getShoppingItemPriceLocalService() {
+	public com.liferay.portlet.shopping.service.ShoppingItemPriceLocalService getShoppingItemPriceLocalService() {
 		return shoppingItemPriceLocalService;
 	}
 
@@ -384,7 +362,7 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 * @param shoppingItemPriceLocalService the shopping item price local service
 	 */
 	public void setShoppingItemPriceLocalService(
-		ShoppingItemPriceLocalService shoppingItemPriceLocalService) {
+		com.liferay.portlet.shopping.service.ShoppingItemPriceLocalService shoppingItemPriceLocalService) {
 		this.shoppingItemPriceLocalService = shoppingItemPriceLocalService;
 	}
 
@@ -412,7 +390,7 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the shopping order local service
 	 */
-	public ShoppingOrderLocalService getShoppingOrderLocalService() {
+	public com.liferay.portlet.shopping.service.ShoppingOrderLocalService getShoppingOrderLocalService() {
 		return shoppingOrderLocalService;
 	}
 
@@ -422,7 +400,7 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 * @param shoppingOrderLocalService the shopping order local service
 	 */
 	public void setShoppingOrderLocalService(
-		ShoppingOrderLocalService shoppingOrderLocalService) {
+		com.liferay.portlet.shopping.service.ShoppingOrderLocalService shoppingOrderLocalService) {
 		this.shoppingOrderLocalService = shoppingOrderLocalService;
 	}
 
@@ -431,7 +409,7 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the shopping order remote service
 	 */
-	public ShoppingOrderService getShoppingOrderService() {
+	public com.liferay.portlet.shopping.service.ShoppingOrderService getShoppingOrderService() {
 		return shoppingOrderService;
 	}
 
@@ -441,7 +419,7 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 * @param shoppingOrderService the shopping order remote service
 	 */
 	public void setShoppingOrderService(
-		ShoppingOrderService shoppingOrderService) {
+		com.liferay.portlet.shopping.service.ShoppingOrderService shoppingOrderService) {
 		this.shoppingOrderService = shoppingOrderService;
 	}
 
@@ -487,7 +465,7 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the shopping order item local service
 	 */
-	public ShoppingOrderItemLocalService getShoppingOrderItemLocalService() {
+	public com.liferay.portlet.shopping.service.ShoppingOrderItemLocalService getShoppingOrderItemLocalService() {
 		return shoppingOrderItemLocalService;
 	}
 
@@ -497,7 +475,7 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 * @param shoppingOrderItemLocalService the shopping order item local service
 	 */
 	public void setShoppingOrderItemLocalService(
-		ShoppingOrderItemLocalService shoppingOrderItemLocalService) {
+		com.liferay.portlet.shopping.service.ShoppingOrderItemLocalService shoppingOrderItemLocalService) {
 		this.shoppingOrderItemLocalService = shoppingOrderItemLocalService;
 	}
 
@@ -525,7 +503,7 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the counter local service
 	 */
-	public CounterLocalService getCounterLocalService() {
+	public com.liferay.counter.service.CounterLocalService getCounterLocalService() {
 		return counterLocalService;
 	}
 
@@ -534,7 +512,8 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @param counterLocalService the counter local service
 	 */
-	public void setCounterLocalService(CounterLocalService counterLocalService) {
+	public void setCounterLocalService(
+		com.liferay.counter.service.CounterLocalService counterLocalService) {
 		this.counterLocalService = counterLocalService;
 	}
 
@@ -543,7 +522,7 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the mail remote service
 	 */
-	public MailService getMailService() {
+	public com.liferay.mail.service.MailService getMailService() {
 		return mailService;
 	}
 
@@ -552,7 +531,7 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @param mailService the mail remote service
 	 */
-	public void setMailService(MailService mailService) {
+	public void setMailService(com.liferay.mail.service.MailService mailService) {
 		this.mailService = mailService;
 	}
 
@@ -561,7 +540,7 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the company local service
 	 */
-	public CompanyLocalService getCompanyLocalService() {
+	public com.liferay.portal.service.CompanyLocalService getCompanyLocalService() {
 		return companyLocalService;
 	}
 
@@ -570,7 +549,8 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @param companyLocalService the company local service
 	 */
-	public void setCompanyLocalService(CompanyLocalService companyLocalService) {
+	public void setCompanyLocalService(
+		com.liferay.portal.service.CompanyLocalService companyLocalService) {
 		this.companyLocalService = companyLocalService;
 	}
 
@@ -579,7 +559,7 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the company remote service
 	 */
-	public CompanyService getCompanyService() {
+	public com.liferay.portal.service.CompanyService getCompanyService() {
 		return companyService;
 	}
 
@@ -588,7 +568,8 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @param companyService the company remote service
 	 */
-	public void setCompanyService(CompanyService companyService) {
+	public void setCompanyService(
+		com.liferay.portal.service.CompanyService companyService) {
 		this.companyService = companyService;
 	}
 
@@ -615,7 +596,7 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the resource local service
 	 */
-	public ResourceLocalService getResourceLocalService() {
+	public com.liferay.portal.service.ResourceLocalService getResourceLocalService() {
 		return resourceLocalService;
 	}
 
@@ -625,7 +606,7 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 * @param resourceLocalService the resource local service
 	 */
 	public void setResourceLocalService(
-		ResourceLocalService resourceLocalService) {
+		com.liferay.portal.service.ResourceLocalService resourceLocalService) {
 		this.resourceLocalService = resourceLocalService;
 	}
 
@@ -634,7 +615,7 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the subscription local service
 	 */
-	public SubscriptionLocalService getSubscriptionLocalService() {
+	public com.liferay.portal.service.SubscriptionLocalService getSubscriptionLocalService() {
 		return subscriptionLocalService;
 	}
 
@@ -644,7 +625,7 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 * @param subscriptionLocalService the subscription local service
 	 */
 	public void setSubscriptionLocalService(
-		SubscriptionLocalService subscriptionLocalService) {
+		com.liferay.portal.service.SubscriptionLocalService subscriptionLocalService) {
 		this.subscriptionLocalService = subscriptionLocalService;
 	}
 
@@ -672,7 +653,7 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the user local service
 	 */
-	public UserLocalService getUserLocalService() {
+	public com.liferay.portal.service.UserLocalService getUserLocalService() {
 		return userLocalService;
 	}
 
@@ -681,7 +662,8 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @param userLocalService the user local service
 	 */
-	public void setUserLocalService(UserLocalService userLocalService) {
+	public void setUserLocalService(
+		com.liferay.portal.service.UserLocalService userLocalService) {
 		this.userLocalService = userLocalService;
 	}
 
@@ -690,7 +672,7 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the user remote service
 	 */
-	public UserService getUserService() {
+	public com.liferay.portal.service.UserService getUserService() {
 		return userService;
 	}
 
@@ -699,7 +681,8 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @param userService the user remote service
 	 */
-	public void setUserService(UserService userService) {
+	public void setUserService(
+		com.liferay.portal.service.UserService userService) {
 		this.userService = userService;
 	}
 
@@ -744,7 +727,7 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the message-boards message local service
 	 */
-	public MBMessageLocalService getMBMessageLocalService() {
+	public com.liferay.portlet.messageboards.service.MBMessageLocalService getMBMessageLocalService() {
 		return mbMessageLocalService;
 	}
 
@@ -754,7 +737,7 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 * @param mbMessageLocalService the message-boards message local service
 	 */
 	public void setMBMessageLocalService(
-		MBMessageLocalService mbMessageLocalService) {
+		com.liferay.portlet.messageboards.service.MBMessageLocalService mbMessageLocalService) {
 		this.mbMessageLocalService = mbMessageLocalService;
 	}
 
@@ -763,7 +746,7 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the message-boards message remote service
 	 */
-	public MBMessageService getMBMessageService() {
+	public com.liferay.portlet.messageboards.service.MBMessageService getMBMessageService() {
 		return mbMessageService;
 	}
 
@@ -772,7 +755,8 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @param mbMessageService the message-boards message remote service
 	 */
-	public void setMBMessageService(MBMessageService mbMessageService) {
+	public void setMBMessageService(
+		com.liferay.portlet.messageboards.service.MBMessageService mbMessageService) {
 		this.mbMessageService = mbMessageService;
 	}
 
@@ -866,80 +850,80 @@ public abstract class ShoppingOrderServiceBaseImpl extends BaseServiceImpl
 		}
 	}
 
-	@BeanReference(type = ShoppingCartLocalService.class)
-	protected ShoppingCartLocalService shoppingCartLocalService;
+	@BeanReference(type = com.liferay.portlet.shopping.service.ShoppingCartLocalService.class)
+	protected com.liferay.portlet.shopping.service.ShoppingCartLocalService shoppingCartLocalService;
 	@BeanReference(type = ShoppingCartPersistence.class)
 	protected ShoppingCartPersistence shoppingCartPersistence;
-	@BeanReference(type = ShoppingCategoryLocalService.class)
-	protected ShoppingCategoryLocalService shoppingCategoryLocalService;
-	@BeanReference(type = ShoppingCategoryService.class)
-	protected ShoppingCategoryService shoppingCategoryService;
+	@BeanReference(type = com.liferay.portlet.shopping.service.ShoppingCategoryLocalService.class)
+	protected com.liferay.portlet.shopping.service.ShoppingCategoryLocalService shoppingCategoryLocalService;
+	@BeanReference(type = com.liferay.portlet.shopping.service.ShoppingCategoryService.class)
+	protected com.liferay.portlet.shopping.service.ShoppingCategoryService shoppingCategoryService;
 	@BeanReference(type = ShoppingCategoryPersistence.class)
 	protected ShoppingCategoryPersistence shoppingCategoryPersistence;
-	@BeanReference(type = ShoppingCouponLocalService.class)
-	protected ShoppingCouponLocalService shoppingCouponLocalService;
-	@BeanReference(type = ShoppingCouponService.class)
-	protected ShoppingCouponService shoppingCouponService;
+	@BeanReference(type = com.liferay.portlet.shopping.service.ShoppingCouponLocalService.class)
+	protected com.liferay.portlet.shopping.service.ShoppingCouponLocalService shoppingCouponLocalService;
+	@BeanReference(type = com.liferay.portlet.shopping.service.ShoppingCouponService.class)
+	protected com.liferay.portlet.shopping.service.ShoppingCouponService shoppingCouponService;
 	@BeanReference(type = ShoppingCouponPersistence.class)
 	protected ShoppingCouponPersistence shoppingCouponPersistence;
 	@BeanReference(type = ShoppingCouponFinder.class)
 	protected ShoppingCouponFinder shoppingCouponFinder;
-	@BeanReference(type = ShoppingItemLocalService.class)
-	protected ShoppingItemLocalService shoppingItemLocalService;
-	@BeanReference(type = ShoppingItemService.class)
-	protected ShoppingItemService shoppingItemService;
+	@BeanReference(type = com.liferay.portlet.shopping.service.ShoppingItemLocalService.class)
+	protected com.liferay.portlet.shopping.service.ShoppingItemLocalService shoppingItemLocalService;
+	@BeanReference(type = com.liferay.portlet.shopping.service.ShoppingItemService.class)
+	protected com.liferay.portlet.shopping.service.ShoppingItemService shoppingItemService;
 	@BeanReference(type = ShoppingItemPersistence.class)
 	protected ShoppingItemPersistence shoppingItemPersistence;
 	@BeanReference(type = ShoppingItemFinder.class)
 	protected ShoppingItemFinder shoppingItemFinder;
-	@BeanReference(type = ShoppingItemFieldLocalService.class)
-	protected ShoppingItemFieldLocalService shoppingItemFieldLocalService;
+	@BeanReference(type = com.liferay.portlet.shopping.service.ShoppingItemFieldLocalService.class)
+	protected com.liferay.portlet.shopping.service.ShoppingItemFieldLocalService shoppingItemFieldLocalService;
 	@BeanReference(type = ShoppingItemFieldPersistence.class)
 	protected ShoppingItemFieldPersistence shoppingItemFieldPersistence;
-	@BeanReference(type = ShoppingItemPriceLocalService.class)
-	protected ShoppingItemPriceLocalService shoppingItemPriceLocalService;
+	@BeanReference(type = com.liferay.portlet.shopping.service.ShoppingItemPriceLocalService.class)
+	protected com.liferay.portlet.shopping.service.ShoppingItemPriceLocalService shoppingItemPriceLocalService;
 	@BeanReference(type = ShoppingItemPricePersistence.class)
 	protected ShoppingItemPricePersistence shoppingItemPricePersistence;
-	@BeanReference(type = ShoppingOrderLocalService.class)
-	protected ShoppingOrderLocalService shoppingOrderLocalService;
-	@BeanReference(type = ShoppingOrderService.class)
-	protected ShoppingOrderService shoppingOrderService;
+	@BeanReference(type = com.liferay.portlet.shopping.service.ShoppingOrderLocalService.class)
+	protected com.liferay.portlet.shopping.service.ShoppingOrderLocalService shoppingOrderLocalService;
+	@BeanReference(type = com.liferay.portlet.shopping.service.ShoppingOrderService.class)
+	protected com.liferay.portlet.shopping.service.ShoppingOrderService shoppingOrderService;
 	@BeanReference(type = ShoppingOrderPersistence.class)
 	protected ShoppingOrderPersistence shoppingOrderPersistence;
 	@BeanReference(type = ShoppingOrderFinder.class)
 	protected ShoppingOrderFinder shoppingOrderFinder;
-	@BeanReference(type = ShoppingOrderItemLocalService.class)
-	protected ShoppingOrderItemLocalService shoppingOrderItemLocalService;
+	@BeanReference(type = com.liferay.portlet.shopping.service.ShoppingOrderItemLocalService.class)
+	protected com.liferay.portlet.shopping.service.ShoppingOrderItemLocalService shoppingOrderItemLocalService;
 	@BeanReference(type = ShoppingOrderItemPersistence.class)
 	protected ShoppingOrderItemPersistence shoppingOrderItemPersistence;
-	@BeanReference(type = CounterLocalService.class)
-	protected CounterLocalService counterLocalService;
-	@BeanReference(type = MailService.class)
-	protected MailService mailService;
-	@BeanReference(type = CompanyLocalService.class)
-	protected CompanyLocalService companyLocalService;
-	@BeanReference(type = CompanyService.class)
-	protected CompanyService companyService;
+	@BeanReference(type = com.liferay.counter.service.CounterLocalService.class)
+	protected com.liferay.counter.service.CounterLocalService counterLocalService;
+	@BeanReference(type = com.liferay.mail.service.MailService.class)
+	protected com.liferay.mail.service.MailService mailService;
+	@BeanReference(type = com.liferay.portal.service.CompanyLocalService.class)
+	protected com.liferay.portal.service.CompanyLocalService companyLocalService;
+	@BeanReference(type = com.liferay.portal.service.CompanyService.class)
+	protected com.liferay.portal.service.CompanyService companyService;
 	@BeanReference(type = CompanyPersistence.class)
 	protected CompanyPersistence companyPersistence;
-	@BeanReference(type = ResourceLocalService.class)
-	protected ResourceLocalService resourceLocalService;
-	@BeanReference(type = SubscriptionLocalService.class)
-	protected SubscriptionLocalService subscriptionLocalService;
+	@BeanReference(type = com.liferay.portal.service.ResourceLocalService.class)
+	protected com.liferay.portal.service.ResourceLocalService resourceLocalService;
+	@BeanReference(type = com.liferay.portal.service.SubscriptionLocalService.class)
+	protected com.liferay.portal.service.SubscriptionLocalService subscriptionLocalService;
 	@BeanReference(type = SubscriptionPersistence.class)
 	protected SubscriptionPersistence subscriptionPersistence;
-	@BeanReference(type = UserLocalService.class)
-	protected UserLocalService userLocalService;
-	@BeanReference(type = UserService.class)
-	protected UserService userService;
+	@BeanReference(type = com.liferay.portal.service.UserLocalService.class)
+	protected com.liferay.portal.service.UserLocalService userLocalService;
+	@BeanReference(type = com.liferay.portal.service.UserService.class)
+	protected com.liferay.portal.service.UserService userService;
 	@BeanReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
 	@BeanReference(type = UserFinder.class)
 	protected UserFinder userFinder;
-	@BeanReference(type = MBMessageLocalService.class)
-	protected MBMessageLocalService mbMessageLocalService;
-	@BeanReference(type = MBMessageService.class)
-	protected MBMessageService mbMessageService;
+	@BeanReference(type = com.liferay.portlet.messageboards.service.MBMessageLocalService.class)
+	protected com.liferay.portlet.messageboards.service.MBMessageLocalService mbMessageLocalService;
+	@BeanReference(type = com.liferay.portlet.messageboards.service.MBMessageService.class)
+	protected com.liferay.portlet.messageboards.service.MBMessageService mbMessageService;
 	@BeanReference(type = MBMessagePersistence.class)
 	protected MBMessagePersistence mbMessagePersistence;
 	@BeanReference(type = MBMessageFinder.class)

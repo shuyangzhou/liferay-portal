@@ -4554,6 +4554,8 @@ public class ServiceBuilder {
 			entityElement.attributeValue("cache-enabled"), true);
 		boolean jsonEnabled = GetterUtil.getBoolean(
 			entityElement.attributeValue("json-enabled"), remoteService);
+		boolean deprecated = GetterUtil.getBoolean(
+			entityElement.attributeValue("deprecated"));
 
 		List<EntityColumn> pkList = new ArrayList<EntityColumn>();
 		List<EntityColumn> regularColList = new ArrayList<EntityColumn>();
@@ -4930,9 +4932,9 @@ public class ServiceBuilder {
 				_packagePath, _portletName, _portletShortName, ejbName,
 				humanName, table, alias, uuid, uuidAccessor, localService,
 				remoteService, persistenceClass, finderClass, dataSource,
-				sessionFactory, txManager, cacheEnabled, jsonEnabled, pkList,
-				regularColList, blobList, collectionList, columnList, order,
-				finderList, referenceList, txRequiredList));
+				sessionFactory, txManager, cacheEnabled, jsonEnabled,
+				deprecated, pkList, regularColList, blobList, collectionList,
+				columnList, order, finderList, referenceList, txRequiredList));
 	}
 
 	private String _processTemplate(String name) throws Exception {

@@ -14,27 +14,17 @@
 
 package com.liferay.portlet.announcements.service.base;
 
-import com.liferay.counter.service.CounterLocalService;
-
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.bean.IdentifiableBean;
 import com.liferay.portal.kernel.dao.jdbc.SqlUpdate;
 import com.liferay.portal.kernel.dao.jdbc.SqlUpdateFactoryUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.service.BaseServiceImpl;
-import com.liferay.portal.service.ResourceLocalService;
-import com.liferay.portal.service.UserLocalService;
-import com.liferay.portal.service.UserService;
 import com.liferay.portal.service.persistence.UserFinder;
 import com.liferay.portal.service.persistence.UserPersistence;
 
 import com.liferay.portlet.announcements.model.AnnouncementsDelivery;
-import com.liferay.portlet.announcements.service.AnnouncementsDeliveryLocalService;
 import com.liferay.portlet.announcements.service.AnnouncementsDeliveryService;
-import com.liferay.portlet.announcements.service.AnnouncementsEntryLocalService;
-import com.liferay.portlet.announcements.service.AnnouncementsEntryService;
-import com.liferay.portlet.announcements.service.AnnouncementsFlagLocalService;
-import com.liferay.portlet.announcements.service.AnnouncementsFlagService;
 import com.liferay.portlet.announcements.service.persistence.AnnouncementsDeliveryPersistence;
 import com.liferay.portlet.announcements.service.persistence.AnnouncementsEntryFinder;
 import com.liferay.portlet.announcements.service.persistence.AnnouncementsEntryPersistence;
@@ -68,7 +58,7 @@ public abstract class AnnouncementsDeliveryServiceBaseImpl
 	 *
 	 * @return the announcements delivery local service
 	 */
-	public AnnouncementsDeliveryLocalService getAnnouncementsDeliveryLocalService() {
+	public com.liferay.portlet.announcements.service.AnnouncementsDeliveryLocalService getAnnouncementsDeliveryLocalService() {
 		return announcementsDeliveryLocalService;
 	}
 
@@ -78,7 +68,7 @@ public abstract class AnnouncementsDeliveryServiceBaseImpl
 	 * @param announcementsDeliveryLocalService the announcements delivery local service
 	 */
 	public void setAnnouncementsDeliveryLocalService(
-		AnnouncementsDeliveryLocalService announcementsDeliveryLocalService) {
+		com.liferay.portlet.announcements.service.AnnouncementsDeliveryLocalService announcementsDeliveryLocalService) {
 		this.announcementsDeliveryLocalService = announcementsDeliveryLocalService;
 	}
 
@@ -87,7 +77,7 @@ public abstract class AnnouncementsDeliveryServiceBaseImpl
 	 *
 	 * @return the announcements delivery remote service
 	 */
-	public AnnouncementsDeliveryService getAnnouncementsDeliveryService() {
+	public com.liferay.portlet.announcements.service.AnnouncementsDeliveryService getAnnouncementsDeliveryService() {
 		return announcementsDeliveryService;
 	}
 
@@ -97,7 +87,7 @@ public abstract class AnnouncementsDeliveryServiceBaseImpl
 	 * @param announcementsDeliveryService the announcements delivery remote service
 	 */
 	public void setAnnouncementsDeliveryService(
-		AnnouncementsDeliveryService announcementsDeliveryService) {
+		com.liferay.portlet.announcements.service.AnnouncementsDeliveryService announcementsDeliveryService) {
 		this.announcementsDeliveryService = announcementsDeliveryService;
 	}
 
@@ -125,7 +115,7 @@ public abstract class AnnouncementsDeliveryServiceBaseImpl
 	 *
 	 * @return the announcements entry local service
 	 */
-	public AnnouncementsEntryLocalService getAnnouncementsEntryLocalService() {
+	public com.liferay.portlet.announcements.service.AnnouncementsEntryLocalService getAnnouncementsEntryLocalService() {
 		return announcementsEntryLocalService;
 	}
 
@@ -135,7 +125,7 @@ public abstract class AnnouncementsDeliveryServiceBaseImpl
 	 * @param announcementsEntryLocalService the announcements entry local service
 	 */
 	public void setAnnouncementsEntryLocalService(
-		AnnouncementsEntryLocalService announcementsEntryLocalService) {
+		com.liferay.portlet.announcements.service.AnnouncementsEntryLocalService announcementsEntryLocalService) {
 		this.announcementsEntryLocalService = announcementsEntryLocalService;
 	}
 
@@ -144,7 +134,7 @@ public abstract class AnnouncementsDeliveryServiceBaseImpl
 	 *
 	 * @return the announcements entry remote service
 	 */
-	public AnnouncementsEntryService getAnnouncementsEntryService() {
+	public com.liferay.portlet.announcements.service.AnnouncementsEntryService getAnnouncementsEntryService() {
 		return announcementsEntryService;
 	}
 
@@ -154,7 +144,7 @@ public abstract class AnnouncementsDeliveryServiceBaseImpl
 	 * @param announcementsEntryService the announcements entry remote service
 	 */
 	public void setAnnouncementsEntryService(
-		AnnouncementsEntryService announcementsEntryService) {
+		com.liferay.portlet.announcements.service.AnnouncementsEntryService announcementsEntryService) {
 		this.announcementsEntryService = announcementsEntryService;
 	}
 
@@ -201,7 +191,7 @@ public abstract class AnnouncementsDeliveryServiceBaseImpl
 	 *
 	 * @return the announcements flag local service
 	 */
-	public AnnouncementsFlagLocalService getAnnouncementsFlagLocalService() {
+	public com.liferay.portlet.announcements.service.AnnouncementsFlagLocalService getAnnouncementsFlagLocalService() {
 		return announcementsFlagLocalService;
 	}
 
@@ -211,7 +201,7 @@ public abstract class AnnouncementsDeliveryServiceBaseImpl
 	 * @param announcementsFlagLocalService the announcements flag local service
 	 */
 	public void setAnnouncementsFlagLocalService(
-		AnnouncementsFlagLocalService announcementsFlagLocalService) {
+		com.liferay.portlet.announcements.service.AnnouncementsFlagLocalService announcementsFlagLocalService) {
 		this.announcementsFlagLocalService = announcementsFlagLocalService;
 	}
 
@@ -220,7 +210,7 @@ public abstract class AnnouncementsDeliveryServiceBaseImpl
 	 *
 	 * @return the announcements flag remote service
 	 */
-	public AnnouncementsFlagService getAnnouncementsFlagService() {
+	public com.liferay.portlet.announcements.service.AnnouncementsFlagService getAnnouncementsFlagService() {
 		return announcementsFlagService;
 	}
 
@@ -230,7 +220,7 @@ public abstract class AnnouncementsDeliveryServiceBaseImpl
 	 * @param announcementsFlagService the announcements flag remote service
 	 */
 	public void setAnnouncementsFlagService(
-		AnnouncementsFlagService announcementsFlagService) {
+		com.liferay.portlet.announcements.service.AnnouncementsFlagService announcementsFlagService) {
 		this.announcementsFlagService = announcementsFlagService;
 	}
 
@@ -258,7 +248,7 @@ public abstract class AnnouncementsDeliveryServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public CounterLocalService getCounterLocalService() {
+	public com.liferay.counter.service.CounterLocalService getCounterLocalService() {
 		return counterLocalService;
 	}
 
@@ -267,7 +257,8 @@ public abstract class AnnouncementsDeliveryServiceBaseImpl
 	 *
 	 * @param counterLocalService the counter local service
 	 */
-	public void setCounterLocalService(CounterLocalService counterLocalService) {
+	public void setCounterLocalService(
+		com.liferay.counter.service.CounterLocalService counterLocalService) {
 		this.counterLocalService = counterLocalService;
 	}
 
@@ -276,7 +267,7 @@ public abstract class AnnouncementsDeliveryServiceBaseImpl
 	 *
 	 * @return the resource local service
 	 */
-	public ResourceLocalService getResourceLocalService() {
+	public com.liferay.portal.service.ResourceLocalService getResourceLocalService() {
 		return resourceLocalService;
 	}
 
@@ -286,7 +277,7 @@ public abstract class AnnouncementsDeliveryServiceBaseImpl
 	 * @param resourceLocalService the resource local service
 	 */
 	public void setResourceLocalService(
-		ResourceLocalService resourceLocalService) {
+		com.liferay.portal.service.ResourceLocalService resourceLocalService) {
 		this.resourceLocalService = resourceLocalService;
 	}
 
@@ -295,7 +286,7 @@ public abstract class AnnouncementsDeliveryServiceBaseImpl
 	 *
 	 * @return the user local service
 	 */
-	public UserLocalService getUserLocalService() {
+	public com.liferay.portal.service.UserLocalService getUserLocalService() {
 		return userLocalService;
 	}
 
@@ -304,7 +295,8 @@ public abstract class AnnouncementsDeliveryServiceBaseImpl
 	 *
 	 * @param userLocalService the user local service
 	 */
-	public void setUserLocalService(UserLocalService userLocalService) {
+	public void setUserLocalService(
+		com.liferay.portal.service.UserLocalService userLocalService) {
 		this.userLocalService = userLocalService;
 	}
 
@@ -313,7 +305,7 @@ public abstract class AnnouncementsDeliveryServiceBaseImpl
 	 *
 	 * @return the user remote service
 	 */
-	public UserService getUserService() {
+	public com.liferay.portal.service.UserService getUserService() {
 		return userService;
 	}
 
@@ -322,7 +314,8 @@ public abstract class AnnouncementsDeliveryServiceBaseImpl
 	 *
 	 * @param userService the user remote service
 	 */
-	public void setUserService(UserService userService) {
+	public void setUserService(
+		com.liferay.portal.service.UserService userService) {
 		this.userService = userService;
 	}
 
@@ -415,34 +408,34 @@ public abstract class AnnouncementsDeliveryServiceBaseImpl
 		}
 	}
 
-	@BeanReference(type = AnnouncementsDeliveryLocalService.class)
-	protected AnnouncementsDeliveryLocalService announcementsDeliveryLocalService;
-	@BeanReference(type = AnnouncementsDeliveryService.class)
-	protected AnnouncementsDeliveryService announcementsDeliveryService;
+	@BeanReference(type = com.liferay.portlet.announcements.service.AnnouncementsDeliveryLocalService.class)
+	protected com.liferay.portlet.announcements.service.AnnouncementsDeliveryLocalService announcementsDeliveryLocalService;
+	@BeanReference(type = com.liferay.portlet.announcements.service.AnnouncementsDeliveryService.class)
+	protected com.liferay.portlet.announcements.service.AnnouncementsDeliveryService announcementsDeliveryService;
 	@BeanReference(type = AnnouncementsDeliveryPersistence.class)
 	protected AnnouncementsDeliveryPersistence announcementsDeliveryPersistence;
-	@BeanReference(type = AnnouncementsEntryLocalService.class)
-	protected AnnouncementsEntryLocalService announcementsEntryLocalService;
-	@BeanReference(type = AnnouncementsEntryService.class)
-	protected AnnouncementsEntryService announcementsEntryService;
+	@BeanReference(type = com.liferay.portlet.announcements.service.AnnouncementsEntryLocalService.class)
+	protected com.liferay.portlet.announcements.service.AnnouncementsEntryLocalService announcementsEntryLocalService;
+	@BeanReference(type = com.liferay.portlet.announcements.service.AnnouncementsEntryService.class)
+	protected com.liferay.portlet.announcements.service.AnnouncementsEntryService announcementsEntryService;
 	@BeanReference(type = AnnouncementsEntryPersistence.class)
 	protected AnnouncementsEntryPersistence announcementsEntryPersistence;
 	@BeanReference(type = AnnouncementsEntryFinder.class)
 	protected AnnouncementsEntryFinder announcementsEntryFinder;
-	@BeanReference(type = AnnouncementsFlagLocalService.class)
-	protected AnnouncementsFlagLocalService announcementsFlagLocalService;
-	@BeanReference(type = AnnouncementsFlagService.class)
-	protected AnnouncementsFlagService announcementsFlagService;
+	@BeanReference(type = com.liferay.portlet.announcements.service.AnnouncementsFlagLocalService.class)
+	protected com.liferay.portlet.announcements.service.AnnouncementsFlagLocalService announcementsFlagLocalService;
+	@BeanReference(type = com.liferay.portlet.announcements.service.AnnouncementsFlagService.class)
+	protected com.liferay.portlet.announcements.service.AnnouncementsFlagService announcementsFlagService;
 	@BeanReference(type = AnnouncementsFlagPersistence.class)
 	protected AnnouncementsFlagPersistence announcementsFlagPersistence;
-	@BeanReference(type = CounterLocalService.class)
-	protected CounterLocalService counterLocalService;
-	@BeanReference(type = ResourceLocalService.class)
-	protected ResourceLocalService resourceLocalService;
-	@BeanReference(type = UserLocalService.class)
-	protected UserLocalService userLocalService;
-	@BeanReference(type = UserService.class)
-	protected UserService userService;
+	@BeanReference(type = com.liferay.counter.service.CounterLocalService.class)
+	protected com.liferay.counter.service.CounterLocalService counterLocalService;
+	@BeanReference(type = com.liferay.portal.service.ResourceLocalService.class)
+	protected com.liferay.portal.service.ResourceLocalService resourceLocalService;
+	@BeanReference(type = com.liferay.portal.service.UserLocalService.class)
+	protected com.liferay.portal.service.UserLocalService userLocalService;
+	@BeanReference(type = com.liferay.portal.service.UserService.class)
+	protected com.liferay.portal.service.UserService userService;
 	@BeanReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
 	@BeanReference(type = UserFinder.class)

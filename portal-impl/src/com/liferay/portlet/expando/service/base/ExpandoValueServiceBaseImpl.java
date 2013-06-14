@@ -14,26 +14,16 @@
 
 package com.liferay.portlet.expando.service.base;
 
-import com.liferay.counter.service.CounterLocalService;
-
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.bean.IdentifiableBean;
 import com.liferay.portal.kernel.dao.jdbc.SqlUpdate;
 import com.liferay.portal.kernel.dao.jdbc.SqlUpdateFactoryUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.service.BaseServiceImpl;
-import com.liferay.portal.service.ResourceLocalService;
-import com.liferay.portal.service.UserLocalService;
-import com.liferay.portal.service.UserService;
 import com.liferay.portal.service.persistence.UserFinder;
 import com.liferay.portal.service.persistence.UserPersistence;
 
 import com.liferay.portlet.expando.model.ExpandoValue;
-import com.liferay.portlet.expando.service.ExpandoColumnLocalService;
-import com.liferay.portlet.expando.service.ExpandoColumnService;
-import com.liferay.portlet.expando.service.ExpandoRowLocalService;
-import com.liferay.portlet.expando.service.ExpandoTableLocalService;
-import com.liferay.portlet.expando.service.ExpandoValueLocalService;
 import com.liferay.portlet.expando.service.ExpandoValueService;
 import com.liferay.portlet.expando.service.persistence.ExpandoColumnPersistence;
 import com.liferay.portlet.expando.service.persistence.ExpandoRowPersistence;
@@ -67,7 +57,7 @@ public abstract class ExpandoValueServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the expando column local service
 	 */
-	public ExpandoColumnLocalService getExpandoColumnLocalService() {
+	public com.liferay.portlet.expando.service.ExpandoColumnLocalService getExpandoColumnLocalService() {
 		return expandoColumnLocalService;
 	}
 
@@ -77,7 +67,7 @@ public abstract class ExpandoValueServiceBaseImpl extends BaseServiceImpl
 	 * @param expandoColumnLocalService the expando column local service
 	 */
 	public void setExpandoColumnLocalService(
-		ExpandoColumnLocalService expandoColumnLocalService) {
+		com.liferay.portlet.expando.service.ExpandoColumnLocalService expandoColumnLocalService) {
 		this.expandoColumnLocalService = expandoColumnLocalService;
 	}
 
@@ -86,7 +76,7 @@ public abstract class ExpandoValueServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the expando column remote service
 	 */
-	public ExpandoColumnService getExpandoColumnService() {
+	public com.liferay.portlet.expando.service.ExpandoColumnService getExpandoColumnService() {
 		return expandoColumnService;
 	}
 
@@ -96,7 +86,7 @@ public abstract class ExpandoValueServiceBaseImpl extends BaseServiceImpl
 	 * @param expandoColumnService the expando column remote service
 	 */
 	public void setExpandoColumnService(
-		ExpandoColumnService expandoColumnService) {
+		com.liferay.portlet.expando.service.ExpandoColumnService expandoColumnService) {
 		this.expandoColumnService = expandoColumnService;
 	}
 
@@ -124,7 +114,7 @@ public abstract class ExpandoValueServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the expando row local service
 	 */
-	public ExpandoRowLocalService getExpandoRowLocalService() {
+	public com.liferay.portlet.expando.service.ExpandoRowLocalService getExpandoRowLocalService() {
 		return expandoRowLocalService;
 	}
 
@@ -134,7 +124,7 @@ public abstract class ExpandoValueServiceBaseImpl extends BaseServiceImpl
 	 * @param expandoRowLocalService the expando row local service
 	 */
 	public void setExpandoRowLocalService(
-		ExpandoRowLocalService expandoRowLocalService) {
+		com.liferay.portlet.expando.service.ExpandoRowLocalService expandoRowLocalService) {
 		this.expandoRowLocalService = expandoRowLocalService;
 	}
 
@@ -162,7 +152,7 @@ public abstract class ExpandoValueServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the expando table local service
 	 */
-	public ExpandoTableLocalService getExpandoTableLocalService() {
+	public com.liferay.portlet.expando.service.ExpandoTableLocalService getExpandoTableLocalService() {
 		return expandoTableLocalService;
 	}
 
@@ -172,7 +162,7 @@ public abstract class ExpandoValueServiceBaseImpl extends BaseServiceImpl
 	 * @param expandoTableLocalService the expando table local service
 	 */
 	public void setExpandoTableLocalService(
-		ExpandoTableLocalService expandoTableLocalService) {
+		com.liferay.portlet.expando.service.ExpandoTableLocalService expandoTableLocalService) {
 		this.expandoTableLocalService = expandoTableLocalService;
 	}
 
@@ -200,7 +190,7 @@ public abstract class ExpandoValueServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the expando value local service
 	 */
-	public ExpandoValueLocalService getExpandoValueLocalService() {
+	public com.liferay.portlet.expando.service.ExpandoValueLocalService getExpandoValueLocalService() {
 		return expandoValueLocalService;
 	}
 
@@ -210,7 +200,7 @@ public abstract class ExpandoValueServiceBaseImpl extends BaseServiceImpl
 	 * @param expandoValueLocalService the expando value local service
 	 */
 	public void setExpandoValueLocalService(
-		ExpandoValueLocalService expandoValueLocalService) {
+		com.liferay.portlet.expando.service.ExpandoValueLocalService expandoValueLocalService) {
 		this.expandoValueLocalService = expandoValueLocalService;
 	}
 
@@ -219,7 +209,7 @@ public abstract class ExpandoValueServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the expando value remote service
 	 */
-	public ExpandoValueService getExpandoValueService() {
+	public com.liferay.portlet.expando.service.ExpandoValueService getExpandoValueService() {
 		return expandoValueService;
 	}
 
@@ -228,7 +218,8 @@ public abstract class ExpandoValueServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @param expandoValueService the expando value remote service
 	 */
-	public void setExpandoValueService(ExpandoValueService expandoValueService) {
+	public void setExpandoValueService(
+		com.liferay.portlet.expando.service.ExpandoValueService expandoValueService) {
 		this.expandoValueService = expandoValueService;
 	}
 
@@ -256,7 +247,7 @@ public abstract class ExpandoValueServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the counter local service
 	 */
-	public CounterLocalService getCounterLocalService() {
+	public com.liferay.counter.service.CounterLocalService getCounterLocalService() {
 		return counterLocalService;
 	}
 
@@ -265,7 +256,8 @@ public abstract class ExpandoValueServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @param counterLocalService the counter local service
 	 */
-	public void setCounterLocalService(CounterLocalService counterLocalService) {
+	public void setCounterLocalService(
+		com.liferay.counter.service.CounterLocalService counterLocalService) {
 		this.counterLocalService = counterLocalService;
 	}
 
@@ -274,7 +266,7 @@ public abstract class ExpandoValueServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the resource local service
 	 */
-	public ResourceLocalService getResourceLocalService() {
+	public com.liferay.portal.service.ResourceLocalService getResourceLocalService() {
 		return resourceLocalService;
 	}
 
@@ -284,7 +276,7 @@ public abstract class ExpandoValueServiceBaseImpl extends BaseServiceImpl
 	 * @param resourceLocalService the resource local service
 	 */
 	public void setResourceLocalService(
-		ResourceLocalService resourceLocalService) {
+		com.liferay.portal.service.ResourceLocalService resourceLocalService) {
 		this.resourceLocalService = resourceLocalService;
 	}
 
@@ -293,7 +285,7 @@ public abstract class ExpandoValueServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the user local service
 	 */
-	public UserLocalService getUserLocalService() {
+	public com.liferay.portal.service.UserLocalService getUserLocalService() {
 		return userLocalService;
 	}
 
@@ -302,7 +294,8 @@ public abstract class ExpandoValueServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @param userLocalService the user local service
 	 */
-	public void setUserLocalService(UserLocalService userLocalService) {
+	public void setUserLocalService(
+		com.liferay.portal.service.UserLocalService userLocalService) {
 		this.userLocalService = userLocalService;
 	}
 
@@ -311,7 +304,7 @@ public abstract class ExpandoValueServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the user remote service
 	 */
-	public UserService getUserService() {
+	public com.liferay.portal.service.UserService getUserService() {
 		return userService;
 	}
 
@@ -320,7 +313,8 @@ public abstract class ExpandoValueServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @param userService the user remote service
 	 */
-	public void setUserService(UserService userService) {
+	public void setUserService(
+		com.liferay.portal.service.UserService userService) {
 		this.userService = userService;
 	}
 
@@ -413,34 +407,34 @@ public abstract class ExpandoValueServiceBaseImpl extends BaseServiceImpl
 		}
 	}
 
-	@BeanReference(type = ExpandoColumnLocalService.class)
-	protected ExpandoColumnLocalService expandoColumnLocalService;
-	@BeanReference(type = ExpandoColumnService.class)
-	protected ExpandoColumnService expandoColumnService;
+	@BeanReference(type = com.liferay.portlet.expando.service.ExpandoColumnLocalService.class)
+	protected com.liferay.portlet.expando.service.ExpandoColumnLocalService expandoColumnLocalService;
+	@BeanReference(type = com.liferay.portlet.expando.service.ExpandoColumnService.class)
+	protected com.liferay.portlet.expando.service.ExpandoColumnService expandoColumnService;
 	@BeanReference(type = ExpandoColumnPersistence.class)
 	protected ExpandoColumnPersistence expandoColumnPersistence;
-	@BeanReference(type = ExpandoRowLocalService.class)
-	protected ExpandoRowLocalService expandoRowLocalService;
+	@BeanReference(type = com.liferay.portlet.expando.service.ExpandoRowLocalService.class)
+	protected com.liferay.portlet.expando.service.ExpandoRowLocalService expandoRowLocalService;
 	@BeanReference(type = ExpandoRowPersistence.class)
 	protected ExpandoRowPersistence expandoRowPersistence;
-	@BeanReference(type = ExpandoTableLocalService.class)
-	protected ExpandoTableLocalService expandoTableLocalService;
+	@BeanReference(type = com.liferay.portlet.expando.service.ExpandoTableLocalService.class)
+	protected com.liferay.portlet.expando.service.ExpandoTableLocalService expandoTableLocalService;
 	@BeanReference(type = ExpandoTablePersistence.class)
 	protected ExpandoTablePersistence expandoTablePersistence;
-	@BeanReference(type = ExpandoValueLocalService.class)
-	protected ExpandoValueLocalService expandoValueLocalService;
-	@BeanReference(type = ExpandoValueService.class)
-	protected ExpandoValueService expandoValueService;
+	@BeanReference(type = com.liferay.portlet.expando.service.ExpandoValueLocalService.class)
+	protected com.liferay.portlet.expando.service.ExpandoValueLocalService expandoValueLocalService;
+	@BeanReference(type = com.liferay.portlet.expando.service.ExpandoValueService.class)
+	protected com.liferay.portlet.expando.service.ExpandoValueService expandoValueService;
 	@BeanReference(type = ExpandoValuePersistence.class)
 	protected ExpandoValuePersistence expandoValuePersistence;
-	@BeanReference(type = CounterLocalService.class)
-	protected CounterLocalService counterLocalService;
-	@BeanReference(type = ResourceLocalService.class)
-	protected ResourceLocalService resourceLocalService;
-	@BeanReference(type = UserLocalService.class)
-	protected UserLocalService userLocalService;
-	@BeanReference(type = UserService.class)
-	protected UserService userService;
+	@BeanReference(type = com.liferay.counter.service.CounterLocalService.class)
+	protected com.liferay.counter.service.CounterLocalService counterLocalService;
+	@BeanReference(type = com.liferay.portal.service.ResourceLocalService.class)
+	protected com.liferay.portal.service.ResourceLocalService resourceLocalService;
+	@BeanReference(type = com.liferay.portal.service.UserLocalService.class)
+	protected com.liferay.portal.service.UserLocalService userLocalService;
+	@BeanReference(type = com.liferay.portal.service.UserService.class)
+	protected com.liferay.portal.service.UserService userService;
 	@BeanReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
 	@BeanReference(type = UserFinder.class)

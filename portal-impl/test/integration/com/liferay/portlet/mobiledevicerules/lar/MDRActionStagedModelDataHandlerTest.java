@@ -136,23 +136,25 @@ public class MDRActionStagedModelDataHandlerTest
 			Group group)
 		throws Exception {
 
-		List<StagedModel> dependentStagedModels = dependentStagedModelsMap.get(
-			MDRRuleGroup.class.getSimpleName());
+		List<StagedModel> ruleGroupDependentStagedModels =
+			dependentStagedModelsMap.get(MDRRuleGroup.class.getSimpleName());
 
-		Assert.assertEquals(1, dependentStagedModels.size());
+		Assert.assertEquals(1, ruleGroupDependentStagedModels.size());
 
-		MDRRuleGroup ruleGroup = (MDRRuleGroup)dependentStagedModels.get(0);
+		MDRRuleGroup ruleGroup =
+			(MDRRuleGroup)ruleGroupDependentStagedModels.get(0);
 
 		MDRRuleGroupLocalServiceUtil.getMDRRuleGroupByUuidAndGroupId(
 			ruleGroup.getUuid(), group.getGroupId());
 
-		dependentStagedModels = dependentStagedModelsMap.get(
-			MDRRuleGroupInstance.class.getSimpleName());
+		List<StagedModel> ruleGroupInstanceDependentStagedModels =
+			dependentStagedModelsMap.get(
+				MDRRuleGroupInstance.class.getSimpleName());
 
-		Assert.assertEquals(1, dependentStagedModels.size());
+		Assert.assertEquals(1, ruleGroupInstanceDependentStagedModels.size());
 
 		MDRRuleGroupInstance ruleGroupInstance =
-			(MDRRuleGroupInstance)dependentStagedModels.get(0);
+			(MDRRuleGroupInstance)ruleGroupInstanceDependentStagedModels.get(0);
 
 		MDRRuleGroupInstanceLocalServiceUtil.
 			getMDRRuleGroupInstanceByUuidAndGroupId(

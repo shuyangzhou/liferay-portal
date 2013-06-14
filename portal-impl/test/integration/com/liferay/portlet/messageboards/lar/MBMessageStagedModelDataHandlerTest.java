@@ -128,10 +128,11 @@ public class MBMessageStagedModelDataHandlerTest
 
 		super.validateImport(stagedModel, dependentStagedModelsMap, group);
 
-		MBMessage message = (MBMessage)getStagedModel(
+		MBMessage importedMessage = (MBMessage)getStagedModel(
 			stagedModel.getUuid(), group);
 
-		Assert.assertEquals(1, message.getAttachmentsFileEntriesCount());
+		Assert.assertEquals(
+			1, importedMessage.getAttachmentsFileEntriesCount());
 	}
 
 }

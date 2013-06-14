@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.security.auth.PrincipalException;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portlet.journal.model.JournalStructure;
-import com.liferay.portlet.journal.service.JournalStructureLocalServiceUtil;
 
 /**
  * @author Brian Wing Shun Chan
@@ -68,9 +67,11 @@ public class JournalStructurePermission {
 			String structureId, String actionId)
 		throws PortalException, SystemException {
 
+		@SuppressWarnings("deprecation")
 		JournalStructure structure =
-			JournalStructureLocalServiceUtil.getStructure(
-				groupId, structureId, true);
+			com.liferay.portlet.journal.service.
+				JournalStructureLocalServiceUtil.getStructure(
+					groupId, structureId, true);
 
 		return contains(permissionChecker, structure, actionId);
 	}

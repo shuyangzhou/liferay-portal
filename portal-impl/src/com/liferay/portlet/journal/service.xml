@@ -464,14 +464,14 @@
 		<reference package-path="com.liferay.portlet.social" entity="SocialActivityCounter" />
 		<reference package-path="com.liferay.portlet.trash" entity="TrashEntry" />
 	</entity>
-	<entity name="JournalStructure" local-service="true" remote-service="true">
+	<entity name="JournalStructure" local-service="true" remote-service="true" deprecated="true">
 
 		<!-- References -->
 
 		<reference package-path="com.liferay.portal" entity="Group" />
 		<reference package-path="com.liferay.portlet.dynamicdatamapping" entity="DDMStructure" />
 	</entity>
-	<entity name="JournalTemplate" local-service="true" remote-service="true">
+	<entity name="JournalTemplate" local-service="true" remote-service="true" deprecated="true">
 
 		<!-- References -->
 
