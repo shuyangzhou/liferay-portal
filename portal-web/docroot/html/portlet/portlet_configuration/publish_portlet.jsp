@@ -123,7 +123,7 @@ else if (stagingGroup.isLayout()) {
 										<div class="selected-labels" id="<portlet:namespace />selectedConfiguration_<%= selPortlet.getRootPortletId() %>"></div>
 
 										<%
-										Map<String,Object> data = new HashMap<String,Object>();
+										Map<String,Object> data = new TreeMap<String,Object>();
 
 										data.put("portletid", selPortlet.getRootPortletId());
 										%>
@@ -341,7 +341,7 @@ else if (stagingGroup.isLayout()) {
 													<div class="selected-labels" id="<portlet:namespace />selectedContent_<%= selPortlet.getRootPortletId() %>"></div>
 
 													<%
-													Map<String,Object> data = new HashMap<String,Object>();
+													Map<String,Object> data = new TreeMap<String,Object>();
 
 													data.put("portletid", selPortlet.getRootPortletId());
 													%>

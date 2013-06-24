@@ -90,7 +90,7 @@ portletURL.setParameter("eventName", eventName);
 				<c:if test="<%= (UserGroupMembershipPolicyUtil.isMembershipAllowed((selUser != null) ? selUser.getUserId() : 0, userGroup.getUserGroupId())) %>">
 
 					<%
-					Map<String, Object> data = new HashMap<String, Object>();
+					Map<String, Object> data = new TreeMap<String, Object>();
 
 					data.put("usergroupid", userGroup.getUserGroupId());
 					data.put("usergroupname", HtmlUtil.escape(userGroup.getName()));

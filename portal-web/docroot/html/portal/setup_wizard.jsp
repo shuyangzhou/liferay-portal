@@ -179,7 +179,7 @@
 										for (int i = 0; i < PropsValues.SETUP_DATABASE_TYPES.length; i++) {
 											String databaseType = PropsValues.SETUP_DATABASE_TYPES[i];
 
-											Map<String, Object> data = new HashMap<String, Object>();
+											Map<String, Object> data = new TreeMap<String, Object>();
 
 											String driverClassName = PropsUtil.get(PropsKeys.SETUP_DATABASE_DRIVER_CLASS_NAME, new Filter(databaseType));
 

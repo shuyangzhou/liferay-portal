@@ -173,7 +173,7 @@ if (endDateTime > 0) {
 														<div class="selected-labels" id="<portlet:namespace />selectedConfiguration_<%= portlet.getRootPortletId() %>"></div>
 
 														<%
-														Map<String,Object> data = new HashMap<String,Object>();
+														Map<String,Object> data = new TreeMap<String,Object>();
 
 														data.put("portletid", portlet.getRootPortletId());
 														data.put("portlettitle", portletTitle);
@@ -431,7 +431,7 @@ if (endDateTime > 0) {
 														<div class="selected-labels" id="<portlet:namespace />selectedContent_<%= portlet.getRootPortletId() %>"></div>
 
 														<%
-														Map<String,Object> data = new HashMap<String,Object>();
+														Map<String,Object> data = new TreeMap<String,Object>();
 
 														data.put("portletid", portlet.getRootPortletId());
 														data.put("portlettitle", portletTitle);

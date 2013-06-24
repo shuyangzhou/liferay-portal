@@ -51,7 +51,7 @@ TrashHandler trashHandler = TrashHandlerRegistryUtil.getTrashHandler(trashRender
 		</portlet:renderURL>
 
 		<%
-		Map<String, Object> data = new HashMap<String, Object>();
+		Map<String, Object> data = new TreeMap<String, Object>();
 
 		data.put("uri", moveURL);
 		%>

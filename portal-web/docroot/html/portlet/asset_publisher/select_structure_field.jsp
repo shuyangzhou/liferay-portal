@@ -101,7 +101,7 @@ portletURL.setParameter("classTypeId", String.valueOf(classTypeId));
 			<liferay-ui:search-container-column-text>
 
 				<%
-				Map<String, Object> data = new HashMap<String, Object>();
+				Map<String, Object> data = new TreeMap<String, Object>();
 
 				data.put("form", renderResponse.getNamespace() + name + "fieldForm");
 				data.put("label", label);

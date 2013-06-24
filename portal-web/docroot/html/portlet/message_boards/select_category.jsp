@@ -110,7 +110,7 @@ else {
 			<liferay-ui:search-container-column-text>
 
 				<%
-				Map<String, Object> data = new HashMap<String, Object>();
+				Map<String, Object> data = new TreeMap<String, Object>();
 
 				data.put("categoryId", curCategory.getCategoryId());
 				data.put("name", HtmlUtil.escapeAttribute(curCategory.getName()));
@@ -123,7 +123,7 @@ else {
 		<aui:button-row>
 
 			<%
-			Map<String, Object> data = new HashMap<String, Object>();
+			Map<String, Object> data = new TreeMap<String, Object>();
 
 			data.put("categoryId", categoryId);
 			data.put("name", HtmlUtil.escapeAttribute(categoryName));

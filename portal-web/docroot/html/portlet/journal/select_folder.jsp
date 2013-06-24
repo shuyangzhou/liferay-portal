@@ -61,7 +61,7 @@ if (folder != null) {
 		</c:if>
 
 		<%
-		Map<String, Object> data = new HashMap<String, Object>();
+		Map<String, Object> data = new TreeMap<String, Object>();
 
 		data.put("folderid", String.valueOf(folderId));
 		data.put("foldername", HtmlUtil.escape(folderName));
@@ -139,7 +139,7 @@ if (folder != null) {
 				<liferay-ui:search-container-column-text>
 
 					<%
-					Map<String, Object> data = new HashMap<String, Object>();
+					Map<String, Object> data = new TreeMap<String, Object>();
 
 					data.put("folderid", curFolder.getFolderId());
 					data.put("foldername", HtmlUtil.escape(curFolder.getName()));

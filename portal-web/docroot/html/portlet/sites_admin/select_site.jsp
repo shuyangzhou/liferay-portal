@@ -161,7 +161,7 @@ portletURL.setParameter("target", target);
 				<c:if test="<%= (Validator.isNull(p_u_i_d) || SiteMembershipPolicyUtil.isMembershipAllowed((selUser != null) ? selUser.getUserId() : 0, group.getGroupId())) %>">
 
 					<%
-					Map<String, Object> data = new HashMap<String, Object>();
+					Map<String, Object> data = new TreeMap<String, Object>();
 
 					data.put("groupid", group.getGroupId());
 					data.put("groupname", HtmlUtil.escape(group.getDescriptiveName(locale)));

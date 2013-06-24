@@ -98,7 +98,7 @@ String title = ddmDisplay.getViewTemplatesTitle(structure, locale);
 				<c:if test="<%= template.getTemplateId() != classPK %>">
 
 					<%
-					Map<String, Object> data = new HashMap<String, Object>();
+					Map<String, Object> data = new TreeMap<String, Object>();
 
 					data.put("ddmtemplateid", template.getTemplateId());
 					data.put("ddmtemplatekey", template.getTemplateKey());

@@ -174,7 +174,7 @@ if (folder != null) {
 			<liferay-ui:search-container-column-text>
 
 				<%
-				Map<String, Object> data = new HashMap<String, Object>();
+				Map<String, Object> data = new TreeMap<String, Object>();
 
 				data.put("entryid", curFile.getFileEntryId());
 				data.put("entryname", curFile.getTitle());

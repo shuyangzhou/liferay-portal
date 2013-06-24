@@ -75,7 +75,7 @@ refererURL.setParameter("updateLayout", "true");
 
 								boolean portletLocked = (!portletInstanceable && portletUsed);
 
-								Map<String, Object> data = new HashMap<String, Object>();
+								Map<String, Object> data = new TreeMap<String, Object>();
 
 								data.put("draggable", "true");
 								data.put("id", renderResponse.getNamespace() + "portletItem" + portlet.getPortletId());
