@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -580,7 +579,8 @@ public abstract class BaseIndexer implements Indexer {
 
 		document.addNumber(Field.VIEW_COUNT, assetEntry.getViewCount());
 
-		document.addLocalizedKeyword("localized_title", assetEntry.getTitleMap(), true);
+		document.addLocalizedKeyword(
+			"localized_title", assetEntry.getTitleMap(), true);
 	}
 
 	/**
