@@ -127,7 +127,7 @@ if (!categories.isEmpty() || !portlets.isEmpty()) {
 						<c:when test="<%= layout.isTypePortlet() %>">
 
 							<%
-							Map<String, Object> data = new HashMap<String, Object>();
+							Map<String, Object> data = new TreeMap<String, Object>();
 
 							data.put("draggable", true);
 							data.put("id", renderResponse.getNamespace() + "portletItem" + portlet.getPortletId());

@@ -29,7 +29,7 @@ boolean selected = GetterUtil.getBoolean(request.getAttribute("liferay-ui:app-vi
 boolean showExpand = GetterUtil.getBoolean(request.getAttribute("liferay-ui:app-view-navigation-entry:showExpand"));
 String viewURL = (String)request.getAttribute("liferay-ui:app-view-navigation-entry:viewURL");
 
-Map<String, Object> data = new HashMap<String, Object>();
+Map<String, Object> data = new TreeMap<String, Object>();
 
 data.putAll(dataView);
 

@@ -83,7 +83,7 @@ String eventName = ParamUtil.getString(request, "eventName", liferayPortletRespo
 			<liferay-ui:search-container-column-text>
 
 				<%
-				Map<String, Object> data = new HashMap<String, Object>();
+				Map<String, Object> data = new TreeMap<String, Object>();
 
 				data.put("groupid", group.getGroupId());
 				data.put("groupname", HtmlUtil.escape(groupName));

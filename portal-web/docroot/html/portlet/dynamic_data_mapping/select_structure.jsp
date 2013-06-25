@@ -81,7 +81,7 @@ String eventName = ParamUtil.getString(request, "eventName", "selectStructure");
 				<c:if test="<%= (structure.getStructureId() != classPK) && ((classPK == 0) || (structure.getParentStructureId() == 0) || (structure.getParentStructureId() != classPK)) %>">
 
 					<%
-					Map<String, Object> data = new HashMap<String, Object>();
+					Map<String, Object> data = new TreeMap<String, Object>();
 
 					data.put("ddmstructureid", structure.getStructureId());
 					data.put("ddmstructurekey", structure.getStructureKey());

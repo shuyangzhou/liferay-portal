@@ -113,7 +113,7 @@ boolean viewPreview = ParamUtil.getBoolean(request, "viewPreview");
 
 						String title = HtmlUtil.escape(StringUtil.shorten(assetRenderer.getTitle(themeDisplay.getLocale()), 60));
 
-						Map<String, Object> data = new HashMap<String, Object>();
+						Map<String, Object> data = new TreeMap<String, Object>();
 
 						data.put("class-name", assetEntry.getClassName());
 						data.put("class-pk", assetEntry.getClassPK());

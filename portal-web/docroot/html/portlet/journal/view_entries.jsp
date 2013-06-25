@@ -338,7 +338,7 @@ for (int i = 0; i < results.size(); i++) {
 
 					row.setClassName("entry-display-style");
 
-					Map<String, Object> data = new HashMap<String, Object>();
+					Map<String, Object> data = new TreeMap<String, Object>();
 
 					data.put("draggable", JournalArticlePermission.contains(permissionChecker, curArticle, ActionKeys.DELETE) || JournalArticlePermission.contains(permissionChecker, curArticle, ActionKeys.UPDATE));
 					data.put("title", curArticle.getTitle(locale));
@@ -402,7 +402,7 @@ for (int i = 0; i < results.size(); i++) {
 							folderImage = "folder_full_document";
 						}
 
-						Map<String, Object> data = new HashMap<String, Object>();
+						Map<String, Object> data = new TreeMap<String, Object>();
 
 						data.put("folder", true);
 						data.put("folder-id", curFolder.getFolderId());
@@ -432,7 +432,7 @@ for (int i = 0; i < results.size(); i++) {
 
 					row.setClassName("entry-display-style");
 
-					Map<String, Object> data = new HashMap<String, Object>();
+					Map<String, Object> data = new TreeMap<String, Object>();
 
 					data.put("draggable", JournalFolderPermission.contains(permissionChecker, curFolder, ActionKeys.DELETE) || JournalFolderPermission.contains(permissionChecker, curFolder, ActionKeys.UPDATE));
 					data.put("folder", true);

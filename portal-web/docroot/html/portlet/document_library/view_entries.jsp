@@ -425,7 +425,7 @@ for (int i = 0; i < results.size(); i++) {
 
 					row.setClassName("app-view-entry-taglib entry-display-style selectable");
 
-					Map<String, Object> data = new HashMap<String, Object>();
+					Map<String, Object> data = new TreeMap<String, Object>();
 
 					data.put("draggable", DLFileEntryPermission.contains(permissionChecker, fileEntry, ActionKeys.DELETE) || DLFileEntryPermission.contains(permissionChecker, fileEntry, ActionKeys.UPDATE));
 					data.put("title", fileEntry.getTitle());
@@ -515,7 +515,7 @@ for (int i = 0; i < results.size(); i++) {
 							folderImage = "folder_full_document";
 						}
 
-						Map<String, Object> data = new HashMap<String, Object>();
+						Map<String, Object> data = new TreeMap<String, Object>();
 
 						data.put("folder", true);
 						data.put("folder-id", curFolder.getFolderId());
@@ -545,7 +545,7 @@ for (int i = 0; i < results.size(); i++) {
 
 					row.setClassName("app-view-entry-taglib entry-display-style selectable");
 
-					Map<String, Object> data = new HashMap<String, Object>();
+					Map<String, Object> data = new TreeMap<String, Object>();
 
 					data.put("draggable", DLFolderPermission.contains(permissionChecker, curFolder, ActionKeys.DELETE) || DLFolderPermission.contains(permissionChecker, curFolder, ActionKeys.UPDATE));
 					data.put("folder", true);

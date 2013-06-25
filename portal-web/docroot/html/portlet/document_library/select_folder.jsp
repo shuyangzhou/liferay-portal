@@ -53,7 +53,7 @@ if (folder != null) {
 		</c:if>
 
 		<%
-		Map<String, Object> data = new HashMap<String, Object>();
+		Map<String, Object> data = new TreeMap<String, Object>();
 
 		data.put("folderid", folderId);
 		data.put("folderissupportsmetadata", ((folder != null) ? folder.isSupportsMetadata() : Boolean.TRUE.toString()));
@@ -154,7 +154,7 @@ if (folder != null) {
 				<c:if test="<%= rowURL != null %>">
 
 					<%
-					Map<String, Object> data = new HashMap<String, Object>();
+					Map<String, Object> data = new TreeMap<String, Object>();
 
 					data.put("folderid", curFolder.getFolderId());
 					data.put("folderissupportsmetadata", curFolder.isSupportsMetadata());

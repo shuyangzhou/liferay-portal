@@ -89,7 +89,7 @@ portletURL.setParameter("eventName", eventName);
 				<c:if test="<%= Validator.isNull(p_u_i_d)|| RoleMembershipPolicyUtil.isRoleAllowed((selUser != null) ? selUser.getUserId() : 0, role.getRoleId()) %>">
 
 					<%
-					Map<String, Object> data = new HashMap<String, Object>();
+					Map<String, Object> data = new TreeMap<String, Object>();
 
 					data.put("roleid", role.getRoleId());
 					data.put("roletitle", HtmlUtil.escapeAttribute(role.getTitle(locale)));

@@ -72,7 +72,7 @@ AssetRenderer assetRenderer = (AssetRenderer)request.getAttribute("add_panel.jsp
 	</div>
 
 	<%
-	Map<String, Object> data = new HashMap<String, Object>();
+	Map<String, Object> data = new TreeMap<String, Object>();
 
 	data.put("class-name", assetEntry.getClassName());
 	data.put("class-pk", assetEntry.getClassPK());

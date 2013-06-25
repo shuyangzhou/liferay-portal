@@ -105,7 +105,7 @@ if (step == 1) {
 					<liferay-ui:search-container-column-text>
 
 						<%
-						Map<String, Object> data = new HashMap<String, Object>();
+						Map<String, Object> data = new TreeMap<String, Object>();
 
 						data.put("groupid", group.getGroupId());
 						%>
@@ -220,7 +220,7 @@ if (step == 1) {
 						<c:if test="<%= Validator.isNull(p_u_i_d) || SiteMembershipPolicyUtil.isRoleAllowed((selUser != null) ? selUser.getUserId() : 0, group.getGroupId(), role.getRoleId()) %>">
 
 							<%
-							Map<String, Object> data = new HashMap<String, Object>();
+							Map<String, Object> data = new TreeMap<String, Object>();
 
 							data.put("groupid", group.getGroupId());
 							data.put("groupname", HtmlUtil.escapeAttribute(group.getDescriptiveName(locale)));

@@ -30,7 +30,7 @@ for (int i = 0; i < controls.length; i++) {
 			<c:when test="<%= controls[i] instanceof PortletDataHandlerBoolean %>">
 
 				<%
-				Map<String, Object> data = new HashMap<String, Object>();
+				Map<String, Object> data = new TreeMap<String, Object>();
 
 				PortletDataHandlerBoolean control = (PortletDataHandlerBoolean)controls[i];
 
@@ -82,7 +82,7 @@ for (int i = 0; i < controls.length; i++) {
 					for (int j = 0; j < choices.length; j++) {
 						String choice = choices[j];
 
-						Map<String, Object> data = new HashMap<String, Object>();
+						Map<String, Object> data = new TreeMap<String, Object>();
 
 						String controlName = LanguageUtil.get(pageContext, choice);
 
