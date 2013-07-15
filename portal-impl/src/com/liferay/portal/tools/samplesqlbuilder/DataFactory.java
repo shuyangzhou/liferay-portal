@@ -21,8 +21,10 @@ import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
+import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -45,6 +47,7 @@ import com.liferay.portal.model.LayoutFriendlyURLModel;
 import com.liferay.portal.model.LayoutModel;
 import com.liferay.portal.model.LayoutSetModel;
 import com.liferay.portal.model.LayoutTypePortletConstants;
+import com.liferay.portal.model.ModelHintsImpl;
 import com.liferay.portal.model.ModelHintsUtil;
 import com.liferay.portal.model.PortletConstants;
 import com.liferay.portal.model.PortletPreferencesModel;
@@ -73,11 +76,18 @@ import com.liferay.portal.model.impl.RoleModelImpl;
 import com.liferay.portal.model.impl.SubscriptionModelImpl;
 import com.liferay.portal.model.impl.UserModelImpl;
 import com.liferay.portal.model.impl.VirtualHostModelImpl;
+import com.liferay.portal.security.auth.DefaultFullNameGenerator;
 import com.liferay.portal.security.auth.FullNameGenerator;
-import com.liferay.portal.security.auth.FullNameGeneratorFactory;
+import com.liferay.portal.service.permission.PortletPermissionImpl;
 import com.liferay.portal.service.permission.PortletPermissionUtil;
+import com.liferay.portal.util.FastDateFormatFactoryImpl;
+import com.liferay.portal.util.FriendlyURLNormalizerImpl;
+import com.liferay.portal.util.HtmlImpl;
 import com.liferay.portal.util.PortletKeys;
+import com.liferay.portal.util.PropsImpl;
 import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.xml.SAXReaderImpl;
+import com.liferay.portlet.PortletPreferencesFactoryImpl;
 import com.liferay.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portlet.asset.model.AssetCategory;
 import com.liferay.portlet.asset.model.AssetCategoryConstants;
@@ -231,6 +241,8 @@ public class DataFactory {
 		_maxMBMessageCount = maxMBMessageCount;
 		_maxUserToGroupCount = maxUserToGroupCount;
 
+		PropsUtil.setProps(new PropsImpl());
+
 		_counter = new SimpleCounter(_maxGroupsCount + 1);
 		_timeCounter = new SimpleCounter();
 		_futureDateCounter = new SimpleCounter();
@@ -239,6 +251,16 @@ public class DataFactory {
 		_userScreenNameCounter = new SimpleCounter();
 
 		_classNameModels = new ArrayList<ClassNameModel>();
+
+		ModelHintsUtil modelHintsUtil = new ModelHintsUtil();
+
+		ModelHintsImpl modelHintsImpl = new ModelHintsImpl();
+
+		modelHintsImpl.setSAXReader(new SAXReaderImpl());
+
+		modelHintsImpl.afterPropertiesSet();
+
+		modelHintsUtil.setModelHints(modelHintsImpl);
 
 		List<String> models = ModelHintsUtil.getModels();
 
@@ -424,6 +446,17 @@ public class DataFactory {
 	public String getDateString(Date date) {
 		if (date == null) {
 			return null;
+		}
+
+		if (_simpleDateFormat == null) {
+			FastDateFormatFactoryUtil fastDateFormatFactoryUtil =
+				new FastDateFormatFactoryUtil();
+
+			fastDateFormatFactoryUtil.setFastDateFormatFactory(
+				new FastDateFormatFactoryImpl());
+
+			_simpleDateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
+				"yyyy-MM-dd HH:mm:ss");
 		}
 
 		return _simpleDateFormat.format(date);
@@ -982,8 +1015,7 @@ public class DataFactory {
 		contactModel.setCompanyId(userModel.getCompanyId());
 		contactModel.setUserId(userModel.getUserId());
 
-		FullNameGenerator fullNameGenerator =
-			FullNameGeneratorFactory.getInstance();
+		FullNameGenerator fullNameGenerator = new DefaultFullNameGenerator();
 
 		String fullName = fullNameGenerator.getFullName(
 			userModel.getFirstName(), userModel.getMiddleName(),
@@ -1725,8 +1757,7 @@ public class DataFactory {
 		}
 
 		return newPortletPreferencesModel(
-			plid, portletId,
-			PortletPreferencesFactoryUtil.toXML(jxPortletPreferences));
+			plid, portletId, jxPortletPreferences);
 	}
 
 	public PortletPreferencesModel newPortletPreferencesModel(
@@ -1742,8 +1773,7 @@ public class DataFactory {
 		jxPortletPreferences.setValue("spreadsheet", "false");
 
 		return newPortletPreferencesModel(
-			plid, portletId,
-			PortletPreferencesFactoryUtil.toXML(jxPortletPreferences));
+			plid, portletId, jxPortletPreferences);
 	}
 
 	public PortletPreferencesModel newPortletPreferencesModel(
@@ -1768,8 +1798,7 @@ public class DataFactory {
 		jxPortletPreferences.setValue("showAvailableLocales", "false");
 
 		return newPortletPreferencesModel(
-			plid, portletId,
-			PortletPreferencesFactoryUtil.toXML(jxPortletPreferences));
+			plid, portletId, jxPortletPreferences);
 	}
 
 	public List<PortletPreferencesModel> newPortletPreferencesModels(
@@ -1939,6 +1968,14 @@ public class DataFactory {
 
 		if (index > 0) {
 			name = portletId.substring(0, index);
+		}
+
+		if (PortletPermissionUtil.getPortletPermission() == null) {
+			PortletPermissionUtil portletPermissionUtil =
+				new PortletPermissionUtil();
+
+			portletPermissionUtil.setPortletPermission(
+				new PortletPermissionImpl());
 		}
 
 		String primKey = PortletPermissionUtil.getPrimaryKey(
@@ -2326,6 +2363,15 @@ public class DataFactory {
 		groupModel.setManualMembership(true);
 		groupModel.setMembershipRestriction(
 			GroupConstants.DEFAULT_MEMBERSHIP_RESTRICTION);
+
+		if (FriendlyURLNormalizerUtil.getFriendlyURLNormalizer() == null) {
+			FriendlyURLNormalizerUtil friendlyURLNormalizerUtil =
+				new FriendlyURLNormalizerUtil();
+
+			friendlyURLNormalizerUtil.setFriendlyURLNormalizer(
+				new FriendlyURLNormalizerImpl());
+		}
+
 		groupModel.setFriendlyURL(
 			StringPool.FORWARD_SLASH +
 				FriendlyURLNormalizerUtil.normalize(name));
@@ -2407,6 +2453,30 @@ public class DataFactory {
 		mbThreadModel.setStatusDate(new Date());
 
 		return mbThreadModel;
+	}
+
+	protected PortletPreferencesModel newPortletPreferencesModel(
+		long plid, String portletId,
+		javax.portlet.PortletPreferences jxPortletPreferences) {
+
+		if (PortletPreferencesFactoryUtil.getPortletPreferencesFactory() ==
+				null) {
+
+			PortletPreferencesFactoryUtil portletPreferencesFactoryUtil =
+				new PortletPreferencesFactoryUtil();
+
+			portletPreferencesFactoryUtil.setPortletPreferencesFactory(
+				new PortletPreferencesFactoryImpl());
+
+			HtmlUtil htmlUtil = new HtmlUtil();
+
+			htmlUtil.setHtml(new HtmlImpl());
+		}
+
+		String preferences = PortletPreferencesFactoryUtil.toXML(
+			jxPortletPreferences);
+
+		return newPortletPreferencesModel(plid, portletId, preferences);
 	}
 
 	protected PortletPreferencesModel newPortletPreferencesModel(
@@ -2645,8 +2715,7 @@ public class DataFactory {
 	private List<RoleModel> _roleModels;
 	private long _sampleUserId;
 	private UserModel _sampleUserModel;
-	private Format _simpleDateFormat =
-		FastDateFormatFactoryUtil.getSimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	private Format _simpleDateFormat;
 	private RoleModel _siteMemberRoleModel;
 	private SimpleCounter _socialActivityCounter;
 	private SimpleCounter _timeCounter;

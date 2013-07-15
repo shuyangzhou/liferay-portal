@@ -14,6 +14,7 @@
 
 package com.liferay.portal.tools.samplesqlbuilder;
 
+import com.liferay.portal.dao.db.DBFactoryImpl;
 import com.liferay.portal.dao.db.MySQLDB;
 import com.liferay.portal.freemarker.FreeMarkerUtil;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -29,7 +30,7 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.tools.ArgumentsUtil;
-import com.liferay.portal.util.InitUtil;
+import com.liferay.portal.util.FileImpl;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -57,12 +58,6 @@ public class SampleSQLBuilder {
 
 	public static void main(String[] args) {
 		Map<String, String> arguments = ArgumentsUtil.parseArguments(args);
-
-		List<String> extraConfigLocations = new ArrayList<String>();
-
-		extraConfigLocations.add("META-INF/portlet-container-spring.xml");
-
-		InitUtil.initWithSpring(false, extraConfigLocations);
 
 		try {
 			new SampleSQLBuilder(arguments);
@@ -150,11 +145,17 @@ public class SampleSQLBuilder {
 			_maxJournalArticleSize, _maxMBCategoryCount, _maxMBThreadCount,
 			_maxMBMessageCount, _maxUserToGroupCount);
 
+		DBFactoryUtil.setDBFactory(new DBFactoryImpl());
+
 		_db = DBFactoryUtil.getDB(_dbType);
 
 		if (_db instanceof MySQLDB) {
 			_db = new SampleMySQLDB();
 		}
+
+		FileUtil fileUtil = new FileUtil();
+
+		fileUtil.setFile(new FileImpl());
 
 		// Clean up previous output
 
