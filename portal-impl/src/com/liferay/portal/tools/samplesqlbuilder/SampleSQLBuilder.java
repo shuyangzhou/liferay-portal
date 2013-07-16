@@ -296,12 +296,6 @@ public class SampleSQLBuilder {
 		return createUnsyncBufferedWriter(writer);
 	}
 
-	protected Writer createFileWriter(String fileName) throws IOException {
-		File file = new File(fileName);
-
-		return createFileWriter(file);
-	}
-
 	protected Writer createUnsyncBufferedWriter(Writer writer) {
 		return new UnsyncBufferedWriter(writer, _WRITER_BUFFER_SIZE) {
 
@@ -316,56 +310,41 @@ public class SampleSQLBuilder {
 	}
 
 	protected void generateSQL(final CharPipe charPipe) {
-		final Writer writer = createUnsyncBufferedWriter(charPipe.getWriter());
+		final Writer charPipeWriter = createUnsyncBufferedWriter(
+			charPipe.getWriter());
 
 		Thread thread = new Thread() {
 
 			@Override
 			public void run() {
 				try {
-					_writerSampleSQL = new UnsyncTeeWriter(
-						writer, createFileWriter(_outputDir + "/sample.sql"));
+					Map<String, Object> context = getContext();
 
-					createSample();
+					List<Writer> csvWriters = initCSVWriters(
+						context,
+						new String[] {
+							"assetPublisher", "blog", "company",
+							"documentLibrary", "dynamicDataList", "layout",
+							"messageBoard", "repository", "wiki"});
 
-					_writerSampleSQL.close();
+					Writer writerSampleSQL = new UnsyncTeeWriter(
+						charPipeWriter,
+						createFileWriter(new File(_outputDir, "sample.sql")));
+
+					FreeMarkerUtil.process(
+						_tplSample, context, writerSampleSQL);
+
+					for (Writer csvWriter : csvWriters) {
+						csvWriter.close();
+					}
+
+					writerSampleSQL.close();
 
 					charPipe.close();
 				}
 				catch (Exception e) {
 					e.printStackTrace();
 				}
-			}
-
-			protected void createSample() throws Exception {
-				_writerAssetPublisherCSV = getWriter("asset_publisher.csv");
-				_writerBlogsCSV = getWriter("blogs.csv");
-				_writerCompanyCSV = getWriter("company.csv");
-				_writerDocumentLibraryCSV = getWriter("document_library.csv");
-				_writerDynamicDataListsCSV = getWriter(
-					"dynamic_data_lists.csv");
-				_writerLayoutCSV = getWriter("layout.csv");
-				_writerMessageBoardsCSV = getWriter("message_boards.csv");
-				_writerRepositoryCSV = getWriter("repository.csv");
-				_writerWikiCSV = getWriter("wiki.csv");
-
-				Map<String, Object> context = getContext();
-
-				processTemplate(_tplSample, context);
-
-				_writerAssetPublisherCSV.close();
-				_writerBlogsCSV.close();
-				_writerCompanyCSV.close();
-				_writerDocumentLibraryCSV.close();
-				_writerDynamicDataListsCSV.close();
-				_writerLayoutCSV.close();
-				_writerMessageBoardsCSV.close();
-				_writerRepositoryCSV.close();
-				_writerWikiCSV.close();
-			}
-
-			protected Writer getWriter(String fileName) throws Exception {
-				return createFileWriter(new File(_outputDir + "/" + fileName));
 			}
 
 		};
@@ -376,46 +355,54 @@ public class SampleSQLBuilder {
 	protected Map<String, Object> getContext() {
 		Map<String, Object> context = new HashMap<String, Object>();
 
-		put(context, "counter", _dataFactory.getCounter());
-		put(context, "dataFactory", _dataFactory);
-		put(context, "maxAssetPublisherPageCount", _maxAssetPublisherPageCount);
-		put(context, "maxDLFileEntrySize", _maxDLFileEntrySize);
-		put(context, "maxBlogsEntryCommentCount", _maxBlogsEntryCommentCount);
-		put(context, "maxBlogsEntryCount", _maxBlogsEntryCount);
-		put(context, "maxDDLRecordCount", _maxDDLRecordCount);
-		put(context, "maxDDLRecordSetCount", _maxDDLRecordSetCount);
-		put(context, "maxDLFileEntryCount", _maxDLFileEntryCount);
-		put(context, "maxDLFolderCount", _maxDLFolderCount);
-		put(context, "maxDLFolderDepth", _maxDLFolderDepth);
-		put(context, "maxGroupCount", _maxGroupCount);
-		put(context, "maxJournalArticleCount", _maxJournalArticleCount);
-		put(context, "maxJournalArticlePageCount", _maxJournalArticlePageCount);
-		put(
-			context, "maxJournalArticleVersionCount",
-			_maxJournalArticleVersionCount);
-		put(context, "maxMBCategoryCount", _maxMBCategoryCount);
-		put(context, "maxMBMessageCount", _maxMBMessageCount);
-		put(context, "maxMBThreadCount", _maxMBThreadCount);
-		put(context, "maxUserCount", _maxUserCount);
-		put(context, "maxUserToGroupCount", _maxUserToGroupCount);
-		put(context, "maxWikiNodeCount", _maxWikiNodeCount);
-		put(context, "maxWikiPageCommentCount", _maxWikiPageCommentCount);
-		put(context, "maxWikiPageCount", _maxWikiPageCount);
-		put(context, "writerAssetPublisherCSV", _writerAssetPublisherCSV);
-		put(context, "writerBlogsCSV", _writerBlogsCSV);
-		put(context, "writerCompanyCSV", _writerCompanyCSV);
-		put(context, "writerDocumentLibraryCSV", _writerDocumentLibraryCSV);
-		put(context, "writerDynamicDataListsCSV", _writerDynamicDataListsCSV);
-		put(context, "writerLayoutCSV", _writerLayoutCSV);
-		put(context, "writerMessageBoardsCSV", _writerMessageBoardsCSV);
-		put(context, "writerRepositoryCSV", _writerRepositoryCSV);
-		put(context, "writerWikiCSV", _writerWikiCSV);
+		context.put("counter", _dataFactory.getCounter());
+		context.put("dataFactory", _dataFactory);
+		context.put("maxAssetPublisherPageCount", _maxAssetPublisherPageCount);
+		context.put("maxDLFileEntrySize", _maxDLFileEntrySize);
+		context.put("maxBlogsEntryCommentCount", _maxBlogsEntryCommentCount);
+		context.put("maxBlogsEntryCount", _maxBlogsEntryCount);
+		context.put("maxDDLRecordCount", _maxDDLRecordCount);
+		context.put("maxDDLRecordSetCount", _maxDDLRecordSetCount);
+		context.put("maxDLFileEntryCount", _maxDLFileEntryCount);
+		context.put("maxDLFolderCount", _maxDLFolderCount);
+		context.put("maxDLFolderDepth", _maxDLFolderDepth);
+		context.put("maxGroupCount", _maxGroupCount);
+		context.put("maxJournalArticleCount", _maxJournalArticleCount);
+		context.put("maxJournalArticlePageCount", _maxJournalArticlePageCount);
+		context.put(
+			"maxJournalArticleVersionCount", _maxJournalArticleVersionCount);
+		context.put("maxMBCategoryCount", _maxMBCategoryCount);
+		context.put("maxMBMessageCount", _maxMBMessageCount);
+		context.put("maxMBThreadCount", _maxMBThreadCount);
+		context.put("maxUserCount", _maxUserCount);
+		context.put("maxUserToGroupCount", _maxUserToGroupCount);
+		context.put("maxWikiNodeCount", _maxWikiNodeCount);
+		context.put("maxWikiPageCommentCount", _maxWikiPageCommentCount);
+		context.put("maxWikiPageCount", _maxWikiPageCount);
 
 		return context;
 	}
 
 	protected File getInsertSQLFile(String tableName) {
 		return new File(_tempDir, tableName + ".sql");
+	}
+
+	protected List<Writer> initCSVWriters(
+			Map<String, Object> context, String[] fileNames)
+		throws Exception {
+
+		List<Writer> writers = new ArrayList<Writer>();
+
+		for (String fileName : fileNames) {
+			Writer writer = createFileWriter(
+				new File(_outputDir, fileName + ".csv"));
+
+			context.put(fileName + "CSVWriter", writer);
+
+			writers.add(writer);
+		}
+
+		return writers;
 	}
 
 	protected void mergeSQL() throws IOException {
@@ -492,16 +479,6 @@ public class SampleSQLBuilder {
 		}
 	}
 
-	protected void processTemplate(String name, Map<String, Object> context)
-		throws Exception {
-
-		FreeMarkerUtil.process(name, context, _writerSampleSQL);
-	}
-
-	protected void put(Map<String, Object> context, String key, Object value) {
-		context.put(key, value);
-	}
-
 	protected void writeToInsertSQLFile(String tableName, String sql)
 		throws IOException {
 
@@ -567,15 +544,5 @@ public class SampleSQLBuilder {
 	private boolean _outputMerge;
 	private File _tempDir;
 	private String _tplSample = _TPL_ROOT + "sample.ftl";
-	private Writer _writerAssetPublisherCSV;
-	private Writer _writerBlogsCSV;
-	private Writer _writerCompanyCSV;
-	private Writer _writerDocumentLibraryCSV;
-	private Writer _writerDynamicDataListsCSV;
-	private Writer _writerLayoutCSV;
-	private Writer _writerMessageBoardsCSV;
-	private Writer _writerRepositoryCSV;
-	private Writer _writerSampleSQL;
-	private Writer _writerWikiCSV;
 
 }
