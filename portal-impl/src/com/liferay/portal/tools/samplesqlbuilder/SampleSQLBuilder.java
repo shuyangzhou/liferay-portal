@@ -88,87 +88,12 @@ public class SampleSQLBuilder {
 
 		InitUtil.initWithSpring(false, extraConfigLocations);
 
-		String baseDir = System.getProperty("sample.sql.base.dir");
-
 		_dbType = properties.getProperty("sample.sql.db.type");
-		_maxAssetCategoryCount = GetterUtil.getInteger(
-			properties.getProperty("sample.sql.max.asset.category.count"));
-		_maxAssetEntryToAssetCategoryCount = GetterUtil.getInteger(
-			properties.getProperty(
-				"sample.sql.max.asset.entry.to.asset.category.count"));
-		_maxAssetEntryToAssetTagCount = GetterUtil.getInteger(
-			properties.getProperty(
-				"sample.sql.max.asset.entry.to.asset.tag.count"));
-		_maxAssetPublisherFilterRuleCount = GetterUtil.getInteger(
-			properties.getProperty(
-				"sample.sql.max.asset.publisher.filter.rule.count"));
-		_maxAssetPublisherPageCount = GetterUtil.getInteger(
-			properties.getProperty(
-				"sample.sql.max.asset.publisher.page.count"));
-		_maxAssetTagCount = GetterUtil.getInteger(
-			properties.getProperty("sample.sql.max.asset.tag.count"));
-		_maxAssetVocabularyCount = GetterUtil.getInteger(
-			properties.getProperty("sample.sql.max.asset.vocabulary.count"));
-		_maxBlogsEntryCommentCount = GetterUtil.getInteger(
-			properties.getProperty("sample.sql.max.blogs.entry.comment.count"));
-		_maxBlogsEntryCount = GetterUtil.getInteger(
-			properties.getProperty("sample.sql.max.blogs.entry.count"));
-		_maxDDLCustomFieldCount = GetterUtil.getInteger(
-			properties.getProperty("sample.sql.max.ddl.custom.field.count"));
-		_maxDDLRecordCount = GetterUtil.getInteger(
-			properties.getProperty("sample.sql.max.ddl.record.count"));
-		_maxDDLRecordSetCount = GetterUtil.getInteger(
-			properties.getProperty("sample.sql.max.ddl.record.set.count"));
-		_maxDLFileEntryCount = GetterUtil.getInteger(
-			properties.getProperty("sample.sql.max.dl.file.entry.count"));
-		_maxDLFileEntrySize = GetterUtil.getInteger(
-			properties.getProperty("sample.sql.max.dl.file.entry.size"));
-		_maxDLFolderCount = GetterUtil.getInteger(
-			properties.getProperty("sample.sql.max.dl.folder.count"));
-		_maxDLFolderDepth = GetterUtil.getInteger(
-			properties.getProperty("sample.sql.max.dl.folder.depth"));
-		_maxGroupCount = GetterUtil.getInteger(
-			properties.getProperty("sample.sql.max.group.count"));
-		_maxJournalArticleCount = GetterUtil.getInteger(
-			properties.getProperty("sample.sql.max.journal.article.count"));
-		_maxJournalArticlePageCount = GetterUtil.getInteger(
-			properties.getProperty(
-				"sample.sql.max.journal.article.page.count"));
-		_maxJournalArticleSize = GetterUtil.getInteger(
-			properties.getProperty("sample.sql.max.journal.article.size"));
-		_maxJournalArticleVersionCount = GetterUtil.getInteger(
-			properties.getProperty(
-				"sample.sql.max.journal.article.version.count"));
-		_maxMBCategoryCount = GetterUtil.getInteger(
-			properties.getProperty("sample.sql.max.mb.category.count"));
-		_maxMBMessageCount = GetterUtil.getInteger(
-			properties.getProperty("sample.sql.max.mb.message.count"));
-		_maxMBThreadCount = GetterUtil.getInteger(
-			properties.getProperty("sample.sql.max.mb.thread.count"));
-		_maxUserCount = GetterUtil.getInteger(
-			properties.getProperty("sample.sql.max.user.count"));
-		_maxUserToGroupCount = GetterUtil.getInteger(
-			properties.getProperty("sample.sql.max.user.to.group.count"));
-		_maxWikiNodeCount = GetterUtil.getInteger(
-			properties.getProperty("sample.sql.max.wiki.node.count"));
-		_maxWikiPageCommentCount = GetterUtil.getInteger(
-			properties.getProperty("sample.sql.max.wiki.page.comment.count"));
-		_maxWikiPageCount = GetterUtil.getInteger(
-			properties.getProperty("sample.sql.max.wiki.page.count"));
 		_optimizeBufferSize = GetterUtil.getInteger(
 			properties.getProperty("sample.sql.optimize.buffer.size"));
 		_outputDir = properties.getProperty("sample.sql.output.dir");
 		_outputMerge = GetterUtil.getBoolean(
 			properties.getProperty("sample.sql.output.merge"));
-
-		_dataFactory = new DataFactory(
-			baseDir, _maxAssetCategoryCount, _maxAssetEntryToAssetCategoryCount,
-			_maxAssetEntryToAssetTagCount, _maxAssetPublisherFilterRuleCount,
-			_maxAssetPublisherPageCount, _maxAssetTagCount,
-			_maxAssetVocabularyCount, _maxBlogsEntryCount,
-			_maxDDLCustomFieldCount, _maxGroupCount, _maxJournalArticleCount,
-			_maxJournalArticleSize, _maxMBCategoryCount, _maxMBThreadCount,
-			_maxMBMessageCount, _maxUserToGroupCount);
 
 		_db = DBFactoryUtil.getDB(_dbType);
 
@@ -189,7 +114,16 @@ public class SampleSQLBuilder {
 
 		final CharPipe charPipe = new CharPipe(_PIPE_BUFFER_SIZE);
 
-		generateSQL(charPipe);
+		File rawSQLFile = new File(_outputDir, "sample.sql");
+
+		Map<String, Object> context = initContext(properties);
+
+		generateSQL(
+			_TPL_ROOT + "sample.ftl", context, charPipe, rawSQLFile, _outputDir,
+			new String[] {
+				"assetPublisher", "blog", "company", "documentLibrary",
+				"dynamicDataList", "layout", "messageBoard", "repository",
+				"wiki"});
 
 		try {
 
@@ -309,7 +243,11 @@ public class SampleSQLBuilder {
 		};
 	}
 
-	protected void generateSQL(final CharPipe charPipe) {
+	protected void generateSQL(
+		final String script, final Map<String, Object> context,
+		final CharPipe charPipe, final File outputFile, final String outputDir,
+		final String[] csvFileNames) {
+
 		final Writer charPipeWriter = createUnsyncBufferedWriter(
 			charPipe.getWriter());
 
@@ -318,21 +256,13 @@ public class SampleSQLBuilder {
 			@Override
 			public void run() {
 				try {
-					Map<String, Object> context = getContext();
-
 					List<Writer> csvWriters = initCSVWriters(
-						context,
-						new String[] {
-							"assetPublisher", "blog", "company",
-							"documentLibrary", "dynamicDataList", "layout",
-							"messageBoard", "repository", "wiki"});
+						context, outputDir, csvFileNames);
 
 					Writer writerSampleSQL = new UnsyncTeeWriter(
-						charPipeWriter,
-						createFileWriter(new File(_outputDir, "sample.sql")));
+						charPipeWriter, createFileWriter(outputFile));
 
-					FreeMarkerUtil.process(
-						_tplSample, context, writerSampleSQL);
+					FreeMarkerUtil.process(script, context, writerSampleSQL);
 
 					for (Writer csvWriter : csvWriters) {
 						csvWriter.close();
@@ -352,50 +282,128 @@ public class SampleSQLBuilder {
 		thread.start();
 	}
 
-	protected Map<String, Object> getContext() {
-		Map<String, Object> context = new HashMap<String, Object>();
-
-		context.put("counter", _dataFactory.getCounter());
-		context.put("dataFactory", _dataFactory);
-		context.put("maxAssetPublisherPageCount", _maxAssetPublisherPageCount);
-		context.put("maxDLFileEntrySize", _maxDLFileEntrySize);
-		context.put("maxBlogsEntryCommentCount", _maxBlogsEntryCommentCount);
-		context.put("maxBlogsEntryCount", _maxBlogsEntryCount);
-		context.put("maxDDLRecordCount", _maxDDLRecordCount);
-		context.put("maxDDLRecordSetCount", _maxDDLRecordSetCount);
-		context.put("maxDLFileEntryCount", _maxDLFileEntryCount);
-		context.put("maxDLFolderCount", _maxDLFolderCount);
-		context.put("maxDLFolderDepth", _maxDLFolderDepth);
-		context.put("maxGroupCount", _maxGroupCount);
-		context.put("maxJournalArticleCount", _maxJournalArticleCount);
-		context.put("maxJournalArticlePageCount", _maxJournalArticlePageCount);
-		context.put(
-			"maxJournalArticleVersionCount", _maxJournalArticleVersionCount);
-		context.put("maxMBCategoryCount", _maxMBCategoryCount);
-		context.put("maxMBMessageCount", _maxMBMessageCount);
-		context.put("maxMBThreadCount", _maxMBThreadCount);
-		context.put("maxUserCount", _maxUserCount);
-		context.put("maxUserToGroupCount", _maxUserToGroupCount);
-		context.put("maxWikiNodeCount", _maxWikiNodeCount);
-		context.put("maxWikiPageCommentCount", _maxWikiPageCommentCount);
-		context.put("maxWikiPageCount", _maxWikiPageCount);
-
-		return context;
-	}
-
 	protected File getInsertSQLFile(String tableName) {
 		return new File(_tempDir, tableName + ".sql");
 	}
 
+	protected Map<String, Object> initContext(Properties properties)
+		throws Exception {
+
+		String baseDir = System.getProperty("sample.sql.base.dir");
+
+		int maxAssetCategoryCount = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.asset.category.count"));
+		int maxAssetEntryToAssetCategoryCount = GetterUtil.getInteger(
+			properties.getProperty(
+				"sample.sql.max.asset.entry.to.asset.category.count"));
+		int maxAssetEntryToAssetTagCount = GetterUtil.getInteger(
+			properties.getProperty(
+				"sample.sql.max.asset.entry.to.asset.tag.count"));
+		int maxAssetPublisherFilterRuleCount = GetterUtil.getInteger(
+			properties.getProperty(
+				"sample.sql.max.asset.publisher.filter.rule.count"));
+		int maxAssetPublisherPageCount = GetterUtil.getInteger(
+			properties.getProperty(
+				"sample.sql.max.asset.publisher.page.count"));
+		int maxAssetTagCount = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.asset.tag.count"));
+		int maxAssetVocabularyCount = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.asset.vocabulary.count"));
+		int maxBlogsEntryCommentCount = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.blogs.entry.comment.count"));
+		int maxBlogsEntryCount = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.blogs.entry.count"));
+		int maxDDLCustomFieldCount = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.ddl.custom.field.count"));
+		int maxDDLRecordCount = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.ddl.record.count"));
+		int maxDDLRecordSetCount = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.ddl.record.set.count"));
+		int maxDLFileEntryCount = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.dl.file.entry.count"));
+		int maxDLFileEntrySize = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.dl.file.entry.size"));
+		int maxDLFolderCount = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.dl.folder.count"));
+		int maxDLFolderDepth = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.dl.folder.depth"));
+		int maxGroupCount = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.group.count"));
+		int maxJournalArticleCount = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.journal.article.count"));
+		int maxJournalArticlePageCount = GetterUtil.getInteger(
+			properties.getProperty(
+				"sample.sql.max.journal.article.page.count"));
+		int maxJournalArticleSize = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.journal.article.size"));
+		int maxJournalArticleVersionCount = GetterUtil.getInteger(
+			properties.getProperty(
+				"sample.sql.max.journal.article.version.count"));
+		int maxMBCategoryCount = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.mb.category.count"));
+		int maxMBMessageCount = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.mb.message.count"));
+		int maxMBThreadCount = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.mb.thread.count"));
+		int maxUserCount = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.user.count"));
+		int maxUserToGroupCount = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.user.to.group.count"));
+		int maxWikiNodeCount = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.wiki.node.count"));
+		int maxWikiPageCommentCount = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.wiki.page.comment.count"));
+		int maxWikiPageCount = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.wiki.page.count"));
+
+		DataFactory dataFactory = new DataFactory(
+			baseDir, maxAssetCategoryCount, maxAssetEntryToAssetCategoryCount,
+			maxAssetEntryToAssetTagCount, maxAssetPublisherFilterRuleCount,
+			maxAssetPublisherPageCount, maxAssetTagCount,
+			maxAssetVocabularyCount, maxBlogsEntryCount, maxDDLCustomFieldCount,
+			maxGroupCount, maxJournalArticleCount, maxJournalArticleSize,
+			maxMBCategoryCount, maxMBThreadCount, maxMBMessageCount,
+			maxUserToGroupCount);
+
+		Map<String, Object> context = new HashMap<String, Object>();
+
+		context.put("counter", dataFactory.getCounter());
+		context.put("dataFactory", dataFactory);
+		context.put("maxAssetPublisherPageCount", maxAssetPublisherPageCount);
+		context.put("maxDLFileEntrySize", maxDLFileEntrySize);
+		context.put("maxBlogsEntryCommentCount", maxBlogsEntryCommentCount);
+		context.put("maxBlogsEntryCount", maxBlogsEntryCount);
+		context.put("maxDDLRecordCount", maxDDLRecordCount);
+		context.put("maxDDLRecordSetCount", maxDDLRecordSetCount);
+		context.put("maxDLFileEntryCount", maxDLFileEntryCount);
+		context.put("maxDLFolderCount", maxDLFolderCount);
+		context.put("maxDLFolderDepth", maxDLFolderDepth);
+		context.put("maxGroupCount", maxGroupCount);
+		context.put("maxJournalArticleCount", maxJournalArticleCount);
+		context.put("maxJournalArticlePageCount", maxJournalArticlePageCount);
+		context.put(
+			"maxJournalArticleVersionCount", maxJournalArticleVersionCount);
+		context.put("maxMBCategoryCount", maxMBCategoryCount);
+		context.put("maxMBMessageCount", maxMBMessageCount);
+		context.put("maxMBThreadCount", maxMBThreadCount);
+		context.put("maxUserCount", maxUserCount);
+		context.put("maxUserToGroupCount", maxUserToGroupCount);
+		context.put("maxWikiNodeCount", maxWikiNodeCount);
+		context.put("maxWikiPageCommentCount", maxWikiPageCommentCount);
+		context.put("maxWikiPageCount", maxWikiPageCount);
+
+		return context;
+	}
+
 	protected List<Writer> initCSVWriters(
-			Map<String, Object> context, String[] fileNames)
+			Map<String, Object> context, String outputDir, String[] fileNames)
 		throws Exception {
 
 		List<Writer> writers = new ArrayList<Writer>();
 
 		for (String fileName : fileNames) {
 			Writer writer = createFileWriter(
-				new File(_outputDir, fileName + ".csv"));
+				new File(outputDir, fileName + ".csv"));
 
 			context.put(fileName + "CSVWriter", writer);
 
@@ -502,47 +510,16 @@ public class SampleSQLBuilder {
 
 	private static final int _WRITER_BUFFER_SIZE = 16 * 1024;
 
-	private DataFactory _dataFactory;
 	private DB _db;
 	private String _dbType;
 	private Map<String, StringBundler> _insertSQLs =
 		new ConcurrentHashMap<String, StringBundler>();
 	private Map<String, Writer> _insertSQLWriters =
 		new ConcurrentHashMap<String, Writer>();
-	private int _maxAssetCategoryCount;
-	private int _maxAssetEntryToAssetCategoryCount;
-	private int _maxAssetEntryToAssetTagCount;
-	private int _maxAssetPublisherFilterRuleCount;
-	private int _maxAssetPublisherPageCount;
-	private int _maxAssetTagCount;
-	private int _maxAssetVocabularyCount;
-	private int _maxBlogsEntryCommentCount;
-	private int _maxBlogsEntryCount;
-	private int _maxDDLCustomFieldCount;
-	private int _maxDDLRecordCount;
-	private int _maxDDLRecordSetCount;
-	private int _maxDLFileEntryCount;
-	private int _maxDLFileEntrySize;
-	private int _maxDLFolderCount;
-	private int _maxDLFolderDepth;
-	private int _maxGroupCount;
-	private int _maxJournalArticleCount;
-	private int _maxJournalArticlePageCount;
-	private int _maxJournalArticleSize;
-	private int _maxJournalArticleVersionCount;
-	private int _maxMBCategoryCount;
-	private int _maxMBMessageCount;
-	private int _maxMBThreadCount;
-	private int _maxUserCount;
-	private int _maxUserToGroupCount;
-	private int _maxWikiNodeCount;
-	private int _maxWikiPageCommentCount;
-	private int _maxWikiPageCount;
 	private int _optimizeBufferSize;
 	private List<String> _otherSQLs = new ArrayList<String>();
 	private String _outputDir;
 	private boolean _outputMerge;
 	private File _tempDir;
-	private String _tplSample = _TPL_ROOT + "sample.ftl";
 
 }
