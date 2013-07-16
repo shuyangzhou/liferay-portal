@@ -1664,6 +1664,32 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 		String wsadminContent = FileUtil.read(
 			DeployUtil.getResourcePath("wsadmin.py"));
 
+		String adminAppListOptions =
+			PropsValues.AUTO_DEPLOY_WEBSPHERE_WSADMIN_APP_MANAGER_LIST_OPTIONS;
+
+		if (Validator.isNotNull(adminAppListOptions)) {
+			adminAppListOptions =
+				StringPool.APOSTROPHE + adminAppListOptions +
+					StringPool.APOSTROPHE;
+		}
+
+		wsadminContent = StringUtil.replace(
+			wsadminContent,
+			new String[] {
+				"${auto.deploy.websphere.wsadmin.app.manager.install.options}",
+				"${auto.deploy.websphere.wsadmin.app.manager.list.options}",
+				"${auto.deploy.websphere.wsadmin.app.manager.query}",
+				"${auto.deploy.websphere.wsadmin.app.manager.update.options}"
+			},
+			new String[] {
+				PropsValues.
+					AUTO_DEPLOY_WEBSPHERE_WSADMIN_APP_MANAGER_INSTALL_OPTIONS,
+				adminAppListOptions,
+				PropsValues.AUTO_DEPLOY_WEBSPHERE_WSADMIN_APP_MANAGER_QUERY,
+				PropsValues.
+					AUTO_DEPLOY_WEBSPHERE_WSADMIN_APP_MANAGER_UPDATE_OPTIONS
+			});
+
 		String pluginServletContextName = deployDir.substring(
 			0, deployDir.length() - 4);
 
@@ -1680,14 +1706,11 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 			wsadminContent,
 			new String[] {
 				"${auto.deploy.dest.dir}",
-				"${auto.deploy.websphere.wsadmin.app.manager.query}",
 				"${auto.deploy.websphere.wsadmin.app.name}",
 				"${plugin.servlet.context.name}"
 			},
 			new String[] {
-				destDir,
-				PropsValues.AUTO_DEPLOY_WEBSPHERE_WSADMIN_APP_MANAGER_QUERY,
-				pluginApplicationName, pluginServletContextName
+				destDir, pluginApplicationName, pluginServletContextName
 			});
 
 		String wsadminFileName = FileUtil.createTempFileName("py");

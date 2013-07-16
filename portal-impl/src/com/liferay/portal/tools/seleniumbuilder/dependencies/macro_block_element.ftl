@@ -107,21 +107,11 @@
 
 		liferaySelenium.sendLogger("${macroName?uncap_first}Macro${lineNumber}", "pass");
 	<#elseif name == "var">
-		<#assign varName = element.attributeValue("name")>
+		<#assign varElement = element>
 
-		<#if element.attributeValue("value")??>
-			<#assign varValue = element.attributeValue("value")>
-		<#elseif element.getText()??>
-			<#assign varValue = element.getText()>
-		</#if>
+		<#assign context = "commandScopeVariables">
 
-		<#if varValue?contains("${") && varValue?contains("}")>
-			<#assign varValue = varValue?replace("${", "\" + commandScopeVariables.get(\"")>
-
-			<#assign varValue = varValue?replace("}", "\") + \"")>
-		</#if>
-
-		commandScopeVariables.put("${varName}", "${varValue}");
+		<#include "var_element.ftl">
 
 		<#assign lineNumber = element.attributeValue("line-number")>
 

@@ -21,13 +21,88 @@ import com.liferay.util.ContextReplace;
 
 import java.io.File;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Brian Wing Shun Chan
  */
 public class RuntimeVariables {
+
+	public static String evaluateVariable(
+		String value, Map<String, String> context) {
+
+		String varValue = value;
+
+		Pattern pattern = Pattern.compile("\\$\\{([^}]*?)\\}");
+
+		Matcher matcher = pattern.matcher(varValue);
+
+		while (matcher.find()) {
+			String statement = matcher.group(1);
+
+			Pattern statementPattern = Pattern.compile(
+				"(.*)\\?(.*)\\(([^\\)]*?)\\)");
+
+			Matcher statementMatcher = statementPattern.matcher(statement);
+
+			if (statementMatcher.find()) {
+				String operand = statementMatcher.group(1);
+
+				if (!context.containsKey(operand)) {
+					continue;
+				}
+
+				String[] arguments = StringUtil.split(
+					statementMatcher.group(3));
+
+				List<String> argumentsList = new ArrayList<String>();
+
+				for (int i = 1; i < arguments.length; i++) {
+					if ((i % 2) == 1) {
+						argumentsList.add(arguments[i]);
+					}
+				}
+
+				String method = statementMatcher.group(2);
+
+				String operandValue = context.get(operand);
+
+				String replaceRegex = "\\$\\{([^}]*?)\\}";
+
+				if (method.startsWith("replace")) {
+					String result = operandValue.replace(
+						argumentsList.get(0), argumentsList.get(1));
+
+					varValue = varValue.replaceFirst(replaceRegex, result);
+				}
+				else if (method.startsWith("lowercase")) {
+					String result = operandValue.toLowerCase();
+
+					varValue = varValue.replaceFirst(replaceRegex, result);
+				}
+			}
+			else {
+				String varName = statement;
+
+				if (!context.containsKey(varName)) {
+					continue;
+				}
+
+				String replaceRegex = "\\$\\{([^}]*?)\\}";
+
+				String result = context.get(varName);
+
+				varValue = varValue.replaceFirst(replaceRegex, result);
+			}
+		}
+
+		return varValue;
+	}
 
 	public static String getValue(String key) {
 		return _instance._getValue(key);

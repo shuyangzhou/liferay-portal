@@ -30,7 +30,7 @@ portletURL.setParameter("tabs3", "all-export-processes");
 	refresh="<%= false %>"
 >
 	<liferay-ui:section>
-		<portlet:actionURL var="exportPortletURL" windowState="<%= LiferayWindowState.EXCLUSIVE.toString() %>">
+		<portlet:actionURL var="exportPortletURL">
 			<portlet:param name="struts_action" value="/portlet_configuration/export_import" />
 		</portlet:actionURL>
 
@@ -236,7 +236,7 @@ portletURL.setParameter("tabs3", "all-export-processes");
 													<span class="badge badge-info"><%= exportModelCount > 0 ? exportModelCount : StringPool.BLANK %></span>
 												</liferay-util:buffer>
 
-												<aui:input label='<%= LanguageUtil.get(pageContext, "content") + badgeHTML %>' name='<%= PortletDataHandlerKeys.PORTLET_DATA + "_" + selPortlet.getRootPortletId() %>' type="checkbox" value="<%= portletDataHandler.isPublishToLiveByDefault() %>" />
+												<aui:input label='<%= LanguageUtil.get(pageContext, "content") + badgeHTML %>' name='<%= PortletDataHandlerKeys.PORTLET_DATA + "_" + selPortlet.getRootPortletId() %>' type="checkbox" value="<%= true %>" />
 
 												<%
 												PortletDataHandlerControl[] exportControls = portletDataHandler.getExportControls();

@@ -203,7 +203,7 @@ searchContainer.setRowChecker(rowChecker);
 							groupId: <%= themeDisplay.getSiteGroupId() %>,
 							plid: node.val(),
 							privateLayout: <%= privateLayout %>,
-							treeId: '<%= treeKey %>' + 'SelectedNode'
+							treeId: '<%= treeId %>' + 'SelectedNode'
 						}
 					}
 				);

@@ -26,7 +26,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.model.Repository;
-import com.liferay.portal.model.StagedModel;
 import com.liferay.portal.repository.liferayrepository.LiferayRepository;
 import com.liferay.portal.repository.liferayrepository.model.LiferayFolder;
 import com.liferay.portal.service.RepositoryLocalServiceUtil;
@@ -114,7 +113,7 @@ public class FolderStagedModelDataHandler
 				portletDataContext, folder.getParentFolder());
 		}
 
-		exportFolderFileEntryTypes(portletDataContext, folder, folderElement);
+		exportFolderFileEntryTypes(portletDataContext, folderElement, folder);
 
 		portletDataContext.addClassedModel(
 			folderElement, folderPath, folder, DLPortletDataHandler.NAMESPACE);
@@ -133,19 +132,13 @@ public class FolderStagedModelDataHandler
 		Element folderElement = portletDataContext.getImportDataElement(
 			Folder.class.getSimpleName(), "path", path);
 
-		List<Element> referenceDataElements =
-			portletDataContext.getReferenceDataElements(
-				folderElement, Repository.class);
+		Element referenceDataElement =
+			portletDataContext.getReferenceDataElement(
+				folderElement, Repository.class, folder.getRepositoryId());
 
-		for (Element referenceDataElement : referenceDataElements) {
-			String referencePath = referenceDataElement.attributeValue("path");
-
-			StagedModel referenceStagedModel =
-				(StagedModel)portletDataContext.getZipEntryAsObject(
-					referencePath);
-
+		if (referenceDataElement != null) {
 			StagedModelDataHandlerUtil.importStagedModel(
-				portletDataContext, referenceStagedModel);
+				portletDataContext, referenceDataElement);
 
 			return;
 		}
@@ -225,8 +218,8 @@ public class FolderStagedModelDataHandler
 	}
 
 	protected void exportFolderFileEntryTypes(
-			PortletDataContext portletDataContext, Folder folder,
-			Element folderElement)
+			PortletDataContext portletDataContext, Element folderElement,
+			Folder folder)
 		throws Exception {
 
 		List<DLFileEntryType> dlFileEntryTypes =

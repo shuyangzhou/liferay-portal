@@ -56,6 +56,24 @@ if (endDateTime > 0) {
 	endDate = new Date(endDateTime);
 }
 
+String treeId = "layoutsExportTree";
+
+long[] selectedLayoutIds = GetterUtil.getLongValues(StringUtil.split(SessionTreeJSClicks.getOpenNodes(request, treeId + "SelectedNode"), ','));
+
+List<Layout> selectedLayouts = new ArrayList<Layout>();
+
+for (int i = 0; i < selectedLayoutIds.length; i++) {
+	try {
+		selectedLayouts.add(LayoutLocalServiceUtil.getLayout(groupId, privateLayout, selectedLayoutIds[i]));
+	}
+	catch (NoSuchLayoutException nsle) {
+	}
+}
+
+if (selectedLayouts.isEmpty()) {
+	selectedLayouts = LayoutLocalServiceUtil.getLayouts(groupId, privateLayout);
+}
+
 PortletURL portletURL = renderResponse.createRenderURL();
 
 portletURL.setParameter("struts_action", "/layouts_admin/export_layouts");
@@ -99,10 +117,10 @@ portletURL.setParameter("rootNodeName", rootNodeName);
 								<aui:fieldset cssClass="portlet-data-section" label="pages-to-export">
 									<liferay-util:include page="/html/portlet/layouts_admin/tree_js.jsp">
 										<liferay-util:param name="tabs1" value='<%= privateLayout ? "private-pages" : "public-pages" %>' />
-										<liferay-util:param name="treeId" value="layoutsExportTree" />
+										<liferay-util:param name="treeId" value="<%= treeId %>" />
 										<liferay-util:param name="defaultStateChecked" value="1" />
 										<liferay-util:param name="expandFirstNode" value="1" />
-										<liferay-util:param name="saveState" value="0" />
+										<liferay-util:param name="saveState" value="1" />
 										<liferay-util:param name="selectableTree" value="1" />
 									</liferay-util:include>
 
@@ -121,7 +139,7 @@ portletURL.setParameter("rootNodeName", rootNodeName);
 					</c:if>
 
 					<%
-					List<Portlet> portletDataHandlerPortlets = LayoutExporter.getPortletDataHandlerPortlets(liveGroupId, privateLayout);
+					List<Portlet> portletDataHandlerPortlets = LayoutExporter.getPortletDataHandlerPortlets(selectedLayouts);
 					%>
 
 					<c:if test="<%= !portletDataHandlerPortlets.isEmpty() %>">

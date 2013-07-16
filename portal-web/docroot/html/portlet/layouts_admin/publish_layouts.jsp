@@ -83,18 +83,18 @@ else if (cmd.equals("publish_to_remote") || selGroup.isCompany()) {
 	localPublishing = false;
 }
 
-String treeKey = "liveLayoutsTree";
+String treeId = "liveLayoutsTree";
 
 if (liveGroup.isStaged()) {
 	if (!liveGroup.isStagedRemotely()) {
-		treeKey = "stageLayoutsTree";
+		treeId = "stageLayoutsTree";
 	}
 	else {
-		treeKey = "remoteLayoutsTree";
+		treeId = "remoteLayoutsTree";
 	}
 }
 
-treeKey = treeKey + selGroupId;
+treeId = treeId + selGroupId;
 
 String publishActionKey = "copy";
 
@@ -119,13 +119,11 @@ try {
 catch (NoSuchLayoutException nsle) {
 }
 
-long[] selectedLayoutIds = new long[0];
-
 boolean privateLayout = ParamUtil.getBoolean(request, "privateLayout", tabs1.equals("private-pages"));
 
-treeKey = treeKey + privateLayout + layoutSetBranchId;
+treeId = treeId + privateLayout + layoutSetBranchId;
 
-selectedLayoutIds = GetterUtil.getLongValues(StringUtil.split(SessionTreeJSClicks.getOpenNodes(request, treeKey + "SelectedNode"), ','));
+long[] selectedLayoutIds = GetterUtil.getLongValues(StringUtil.split(SessionTreeJSClicks.getOpenNodes(request, treeId + "SelectedNode"), ','));
 
 List<Layout> selectedLayouts = new ArrayList<Layout>();
 
@@ -333,7 +331,7 @@ response.setHeader("Ajax-ID", request.getHeader("Ajax-ID"));
 					<div class="selected-pages" id="<portlet:namespace />pane">
 						<liferay-util:include page="/html/portlet/layouts_admin/tree_js.jsp">
 							<liferay-util:param name="selectableTree" value="1" />
-							<liferay-util:param name="treeId" value="<%= treeKey %>" />
+							<liferay-util:param name="treeId" value="<%= treeId %>" />
 							<liferay-util:param name="incomplete" value="<%= String.valueOf(false) %>" />
 							<liferay-util:param name="tabs1" value='<%= (privateLayout) ? "private-pages" : "public-pages" %>' />
 						</liferay-util:include>

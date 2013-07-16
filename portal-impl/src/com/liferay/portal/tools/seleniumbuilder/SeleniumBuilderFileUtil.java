@@ -459,6 +459,10 @@ public class SeleniumBuilderFileUtil {
 				prefix + "Invalid " + string1 + " command " + string2 + " at " +
 					suffix);
 		}
+		else if (errorCode == 1013) {
+			throw new IllegalArgumentException(
+				prefix + "Invalid method " + string1 + " at " + suffix);
+		}
 		else if (errorCode == 2000) {
 			throw new IllegalArgumentException(
 				prefix + "Too many child elements in the " + string1 +
@@ -1187,6 +1191,44 @@ public class SeleniumBuilderFileUtil {
 				if (attributeValue == null) {
 					throwValidationException(
 						1006, fileName, element, attributeName);
+				}
+
+				Pattern pattern = Pattern.compile("\\$\\{([^}]*?)\\}");
+
+				Matcher matcher = pattern.matcher(attributeValue);
+
+				while (matcher.find()) {
+					String statement = matcher.group(1);
+
+					Pattern statementPattern = Pattern.compile(
+						"(.*)\\?(.*)\\(([^\\)]*?)\\)");
+
+					Matcher statementMatcher = statementPattern.matcher(
+						statement);
+
+					if (statementMatcher.find()) {
+						String operand = statementMatcher.group(1);
+
+						String method = statementMatcher.group(2);
+
+						if (operand.equals("") || method.equals("")) {
+							throwValidationException(
+								1006, fileName, element, attributeName);
+						}
+
+						if (!method.equals("lowercase") ||
+							!method.equals("replace")) {
+
+							throwValidationException(
+								1013, fileName, element, method);
+						}
+					}
+					else {
+						if (!statement.matches("[\\w]*")) {
+							throwValidationException(
+								1006, fileName, element, attributeName);
+						}
+					}
 				}
 			}
 			else {

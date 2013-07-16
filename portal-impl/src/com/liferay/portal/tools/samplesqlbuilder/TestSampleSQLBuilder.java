@@ -14,14 +14,17 @@
 
 package com.liferay.portal.tools.samplesqlbuilder;
 
-import com.liferay.portal.tools.ArgumentsUtil;
 import com.liferay.portal.tools.DBLoader;
+
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 
-import java.util.Map;
+import java.util.Properties;
 
 /**
  * @author Tina Tian
@@ -30,12 +33,32 @@ import java.util.Map;
 public class TestSampleSQLBuilder {
 
 	public static void main(String[] args) throws Exception {
-		Map<String, String> arguments = ArgumentsUtil.parseArguments(args);
+		Properties properties = new Properties();
+		Reader reader = null;
 
-		String sqlDir = arguments.get("sql.dir");
-		String outputDir = arguments.get("sample.sql.output.dir");
+		try {
+			reader = new FileReader(args[0]);
 
-		SampleSQLBuilder.main(args);
+			properties.load(reader);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			if (reader != null) {
+				try {
+					reader.close();
+				}
+				catch (IOException ioe) {
+					ioe.printStackTrace();
+				}
+			}
+		}
+
+		String sqlDir = properties.getProperty("sql.dir");
+		String outputDir = properties.getProperty("sample.sql.output.dir");
+
+		new SampleSQLBuilder(properties);
 
 		new TestSampleSQLBuilder(sqlDir, outputDir);
 	}
