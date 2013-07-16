@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.io.OutputStreamWriter;
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedWriter;
 import com.liferay.portal.kernel.io.unsync.UnsyncTeeWriter;
+import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -47,7 +48,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Brian Wing Shun Chan
@@ -88,55 +88,65 @@ public class SampleSQLBuilder {
 
 		InitUtil.initWithSpring(false, extraConfigLocations);
 
-		_dbType = properties.getProperty("sample.sql.db.type");
-		_optimizeBufferSize = GetterUtil.getInteger(
+		String dbType = properties.getProperty("sample.sql.db.type");
+		int optimizeBufferSize = GetterUtil.getInteger(
 			properties.getProperty("sample.sql.optimize.buffer.size"));
-		_outputDir = properties.getProperty("sample.sql.output.dir");
-		_outputMerge = GetterUtil.getBoolean(
+		String outputDir = properties.getProperty("sample.sql.output.dir");
+		boolean outputMerge = GetterUtil.getBoolean(
 			properties.getProperty("sample.sql.output.merge"));
-
-		_db = DBFactoryUtil.getDB(_dbType);
-
-		if (_db instanceof MySQLDB) {
-			_db = new SampleMySQLDB();
-		}
 
 		// Clean up previous output
 
-		FileUtil.delete(_outputDir + "/sample-" + _dbType + ".sql");
-		FileUtil.deltree(_outputDir + "/output");
+		File rawSQLFile = new File(outputDir, "sample.sql");
+		File mergedSQLFile = new File(outputDir, "sample-" + dbType + ".sql");
+		File dividedSQLFolder = new File(outputDir, "output");
+
+		FileUtil.delete(rawSQLFile);
+		FileUtil.delete(mergedSQLFile);
+		FileUtil.deltree(dividedSQLFolder);
 
 		// Generic
 
-		_tempDir = new File(_outputDir, "temp");
-
-		_tempDir.mkdirs();
-
 		final CharPipe charPipe = new CharPipe(_PIPE_BUFFER_SIZE);
-
-		File rawSQLFile = new File(_outputDir, "sample.sql");
 
 		Map<String, Object> context = initContext(properties);
 
 		generateSQL(
-			_TPL_ROOT + "sample.ftl", context, charPipe, rawSQLFile, _outputDir,
+			_TPL_ROOT + "sample.ftl", context, charPipe, rawSQLFile, outputDir,
 			new String[] {
 				"assetPublisher", "blog", "company", "documentLibrary",
 				"dynamicDataList", "layout", "messageBoard", "repository",
 				"wiki"});
 
+		File tempDir = new File(outputDir, "temp");
+
+		tempDir.mkdirs();
+
+		String lastSQLFileName = "others.sql";
+
 		try {
 
 			// Specific
 
-			compressSQL(charPipe.getReader());
+			compressSQL(
+				dbType, charPipe.getReader(), optimizeBufferSize, tempDir,
+				lastSQLFileName);
 
 			// Merge
 
-			mergeSQL();
+			if (outputMerge) {
+				mergeSQL(mergedSQLFile, tempDir, lastSQLFileName);
+			}
+			else if (!tempDir.renameTo(dividedSQLFolder)) {
+
+				// This will only happen when temp and output folders are on
+				// different file systems
+
+				FileUtil.copyDirectory(tempDir, dividedSQLFolder);
+			}
 		}
 		finally {
-			FileUtil.deltree(_tempDir);
+			FileUtil.deltree(tempDir);
 		}
 
 		StringBundler sb = new StringBundler();
@@ -161,23 +171,28 @@ public class SampleSQLBuilder {
 		}
 
 		FileUtil.write(
-			new File(_outputDir, "benchmarks-actual.properties"),
-			sb.toString());
+			new File(outputDir, "benchmarks-actual.properties"), sb.toString());
 	}
 
-	protected void compressInsertSQL(String insertSQL) throws IOException {
-		String tableName = insertSQL.substring(0, insertSQL.indexOf(' '));
+	protected void compressInsertSQL(
+			DB db, String insertSQL, int optimizeBufferSize, File tempDir,
+			Map<String, StringBundler> insertSQLs,
+			Map<String, Writer> insertSQLWriters)
+		throws IOException {
+
+		String fileName =
+			insertSQL.substring(0, insertSQL.indexOf(CharPool.SPACE)) + ".sql";
 
 		int pos = insertSQL.indexOf(" values ") + 8;
 
 		String values = insertSQL.substring(pos, insertSQL.length() - 1);
 
-		StringBundler sb = _insertSQLs.get(tableName);
+		StringBundler sb = insertSQLs.get(fileName);
 
 		if ((sb == null) || (sb.index() == 0)) {
 			sb = new StringBundler();
 
-			_insertSQLs.put(tableName, sb);
+			insertSQLs.put(fileName, sb);
 
 			sb.append("insert into ");
 			sb.append(insertSQL.substring(0, pos));
@@ -189,37 +204,91 @@ public class SampleSQLBuilder {
 
 		sb.append(values);
 
-		if (sb.index() >= _optimizeBufferSize) {
+		if (sb.index() >= optimizeBufferSize) {
 			sb.append(";\n");
 
-			String sql = _db.buildSQL(sb.toString());
+			String sql = db.buildSQL(sb.toString());
 
 			sb.setIndex(0);
 
-			writeToInsertSQLFile(tableName, sql);
+			Writer insertSQLWriter = insertSQLWriters.get(fileName);
+
+			if (insertSQLWriter == null) {
+				insertSQLWriter = createFileWriter(new File(tempDir, fileName));
+
+				insertSQLWriters.put(fileName, insertSQLWriter);
+			}
+
+			insertSQLWriter.write(sql);
 		}
 	}
 
-	protected void compressSQL(Reader reader) throws IOException {
+	protected void compressSQL(
+			String dbType, Reader reader, int optimizeBufferSize, File tempDir,
+			String lastSQLFileName)
+		throws IOException {
+
+		DB db = DBFactoryUtil.getDB(dbType);
+
+		if (db instanceof MySQLDB) {
+			db = new SampleMySQLDB();
+		}
+
+		Map<String, StringBundler> insertSQLs =
+			new HashMap<String, StringBundler>();
+		Map<String, Writer> insertSQLWriters = new HashMap<String, Writer>();
+		List<String> otherSQLs = new ArrayList<String>();
+
 		UnsyncBufferedReader unsyncBufferedReader = new UnsyncBufferedReader(
 			reader);
 
-		String s = null;
+		String line = null;
 
-		while ((s = unsyncBufferedReader.readLine()) != null) {
-			s = s.trim();
+		while ((line = unsyncBufferedReader.readLine()) != null) {
+			line = line.trim();
 
-			if (s.length() > 0) {
-				if (s.startsWith("insert into ")) {
-					compressInsertSQL(s.substring(12));
-				}
-				else if (s.length() > 0) {
-					_otherSQLs.add(s);
-				}
+			if (line.length() == 0) {
+				continue;
+			}
+
+			if (line.startsWith("insert into ")) {
+				compressInsertSQL(
+					db, line.substring(12), optimizeBufferSize, tempDir,
+					insertSQLs, insertSQLWriters);
+			}
+			else {
+				otherSQLs.add(line);
 			}
 		}
 
 		unsyncBufferedReader.close();
+
+		for (Map.Entry<String, StringBundler> entry : insertSQLs.entrySet()) {
+			String fileName = entry.getKey();
+
+			String sql = db.buildSQL(entry.getValue().toString());
+
+			Writer insertSQLWriter = insertSQLWriters.remove(fileName);
+
+			if (insertSQLWriter == null) {
+				insertSQLWriter = createFileWriter(new File(tempDir, fileName));
+			}
+
+			insertSQLWriter.write(sql);
+			insertSQLWriter.write(";\n");
+
+			insertSQLWriter.close();
+		}
+
+		Writer lastSQLFileWriter = new FileWriter(
+			new File(tempDir, lastSQLFileName));
+
+		for (String sql : otherSQLs) {
+			lastSQLFileWriter.write(db.buildSQL(sql));
+			lastSQLFileWriter.write(StringPool.NEW_LINE);
+		}
+
+		lastSQLFileWriter.close();
 	}
 
 	protected Writer createFileWriter(File file) throws IOException {
@@ -241,6 +310,19 @@ public class SampleSQLBuilder {
 			}
 
 		};
+	}
+
+	protected void doMergeSQL(File SQLFile, FileChannel outputFileChannel)
+		throws IOException {
+
+		FileInputStream fileInputStream = new FileInputStream(SQLFile);
+
+		FileChannel inputFileChannel = fileInputStream.getChannel();
+
+		inputFileChannel.transferTo(
+			0, inputFileChannel.size(), outputFileChannel);
+
+		inputFileChannel.close();
 	}
 
 	protected void generateSQL(
@@ -280,10 +362,6 @@ public class SampleSQLBuilder {
 		};
 
 		thread.start();
-	}
-
-	protected File getInsertSQLFile(String tableName) {
-		return new File(_tempDir, tableName + ".sql");
 	}
 
 	protected Map<String, Object> initContext(Properties properties)
@@ -413,94 +491,34 @@ public class SampleSQLBuilder {
 		return writers;
 	}
 
-	protected void mergeSQL() throws IOException {
-		File outputFile = new File(_outputDir + "/sample-" + _dbType + ".sql");
-
-		FileOutputStream fileOutputStream = null;
-		FileChannel fileChannel = null;
-
-		if (_outputMerge) {
-			fileOutputStream = new FileOutputStream(outputFile);
-			fileChannel = fileOutputStream.getChannel();
-		}
-
-		Set<Map.Entry<String, StringBundler>> insertSQLs =
-			_insertSQLs.entrySet();
-
-		for (Map.Entry<String, StringBundler> entry : insertSQLs) {
-			String tableName = entry.getKey();
-
-			String sql = _db.buildSQL(entry.getValue().toString());
-
-			writeToInsertSQLFile(tableName, sql);
-
-			Writer insertSQLWriter = _insertSQLWriters.remove(tableName);
-
-			insertSQLWriter.write(";\n");
-
-			insertSQLWriter.close();
-
-			if (_outputMerge) {
-				File insertSQLFile = getInsertSQLFile(tableName);
-
-				FileInputStream insertSQLFileInputStream = new FileInputStream(
-					insertSQLFile);
-
-				FileChannel insertSQLFileChannel =
-					insertSQLFileInputStream.getChannel();
-
-				insertSQLFileChannel.transferTo(
-					0, insertSQLFileChannel.size(), fileChannel);
-
-				insertSQLFileChannel.close();
-
-				insertSQLFile.delete();
-			}
-		}
-
-		Writer writer = null;
-
-		if (_outputMerge) {
-			writer = new OutputStreamWriter(fileOutputStream);
-		}
-		else {
-			writer = new FileWriter(getInsertSQLFile("others"));
-		}
-
-		for (String sql : _otherSQLs) {
-			sql = _db.buildSQL(sql);
-
-			writer.write(sql);
-			writer.write(StringPool.NEW_LINE);
-		}
-
-		writer.close();
-
-		File outputFolder = new File(_outputDir, "output");
-
-		if (!_outputMerge && !_tempDir.renameTo(outputFolder)) {
-
-			// This will only happen when temp and output folders are on
-			// different file systems
-
-			FileUtil.copyDirectory(_tempDir, outputFolder);
-		}
-	}
-
-	protected void writeToInsertSQLFile(String tableName, String sql)
+	protected void mergeSQL(
+			File mergedSQLFile, File tempDir, String lastSQLFileName)
 		throws IOException {
 
-		Writer writer = _insertSQLWriters.get(tableName);
+		FileOutputStream fileOutputStream = new FileOutputStream(mergedSQLFile);
+		FileChannel fileChannel = fileOutputStream.getChannel();
 
-		if (writer == null) {
-			File file = getInsertSQLFile(tableName);
+		File lastSQLFile = null;
 
-			writer = createFileWriter(file);
+		for (File tableFile : tempDir.listFiles()) {
+			if (tableFile.getName().equals(lastSQLFileName)) {
+				lastSQLFile = tableFile;
 
-			_insertSQLWriters.put(tableName, writer);
+				continue;
+			}
+
+			doMergeSQL(tableFile, fileChannel);
+
+			tableFile.delete();
 		}
 
-		writer.write(sql);
+		if (lastSQLFile != null) {
+			doMergeSQL(lastSQLFile, fileChannel);
+
+			lastSQLFile.delete();
+		}
+
+		fileChannel.close();
 	}
 
 	private static final int _PIPE_BUFFER_SIZE = 16 * 1024 * 1024;
@@ -509,17 +527,5 @@ public class SampleSQLBuilder {
 		"com/liferay/portal/tools/samplesqlbuilder/dependencies/";
 
 	private static final int _WRITER_BUFFER_SIZE = 16 * 1024;
-
-	private DB _db;
-	private String _dbType;
-	private Map<String, StringBundler> _insertSQLs =
-		new ConcurrentHashMap<String, StringBundler>();
-	private Map<String, Writer> _insertSQLWriters =
-		new ConcurrentHashMap<String, Writer>();
-	private int _optimizeBufferSize;
-	private List<String> _otherSQLs = new ArrayList<String>();
-	private String _outputDir;
-	private boolean _outputMerge;
-	private File _tempDir;
 
 }
