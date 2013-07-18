@@ -11,7 +11,6 @@
 			classpathref="project.classpath"
 		>
 			<sysproperty key="external-properties" value="com/liferay/portal/tools/dependencies/portal-tools.properties" />
-			<sysproperty key="sample.sql.base.dir" value="${basedir}" />
 			<arg value="${properties.file}" />
 		</java>
 	</target>

@@ -88,8 +88,6 @@ public class SampleSQLBuilder {
 
 		InitUtil.initWithSpring(false, extraConfigLocations);
 
-		String baseDir = System.getProperty("sample.sql.base.dir");
-
 		_dbType = properties.getProperty("sample.sql.db.type");
 		_maxAssetCategoryCount = GetterUtil.getInteger(
 			properties.getProperty("sample.sql.max.asset.category.count"));
@@ -162,7 +160,7 @@ public class SampleSQLBuilder {
 			properties.getProperty("sample.sql.output.merge"));
 
 		_dataFactory = new DataFactory(
-			baseDir, _maxAssetCategoryCount, _maxAssetEntryToAssetCategoryCount,
+			_maxAssetCategoryCount, _maxAssetEntryToAssetCategoryCount,
 			_maxAssetEntryToAssetTagCount, _maxAssetPublisherFilterRuleCount,
 			_maxAssetPublisherPageCount, _maxAssetTagCount,
 			_maxAssetVocabularyCount, _maxBlogsEntryCount,
