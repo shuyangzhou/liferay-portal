@@ -46,12 +46,12 @@
 		/>
 	</#list>
 
-	<#assign publicPageCount = publicLayoutModels?size + maxDDLRecordSetCount + maxJournalArticleCount>
+	<#assign publicPageCount = publicLayoutModels?size + dataFactory.maxDDLRecordSetCount + dataFactory.maxJournalArticleCount>
 
 	<@insertGroup
 		_groupModel = groupModel
 		_publicPageCount = publicPageCount
 	/>
 
-	${writerRepositoryCSV.write(groupId + ", " + groupModel.name + "\n")}
+	${repositoryCSVWriter.write(groupId + ", " + groupModel.name + "\n")}
 </#list>

@@ -1,9 +1,9 @@
-<#list 1..maxAssetPublisherPageCount as pageCount>
+<#list 1..dataFactory.maxAssetPublisherPageCount as pageCount>
 	<#assign portletId = "101_INSTANCE_TEST_" + pageCount>
 
 	<#assign layoutModel = dataFactory.newLayoutModel(groupId, groupId + "_asset_publisher_" + pageCount, "", portletId)>
 
-	${writerAssetPublisherCSV.write(layoutModel.friendlyURL + "\n")}
+	${assetPublisherCSVWriter.write(layoutModel.friendlyURL + "\n")}
 
 	<@insertLayout
 		_layoutModel = layoutModel
