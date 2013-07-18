@@ -79,6 +79,7 @@ import com.liferay.portal.security.auth.FullNameGeneratorFactory;
 import com.liferay.portal.service.permission.PortletPermissionUtil;
 import com.liferay.portal.util.PortletKeys;
 import com.liferay.portal.util.PropsValues;
+import com.liferay.portlet.PortletPreferencesFactoryImpl;
 import com.liferay.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portlet.asset.model.AssetCategory;
 import com.liferay.portlet.asset.model.AssetCategoryConstants;
@@ -1841,8 +1842,7 @@ public class DataFactory {
 		}
 
 		return newPortletPreferencesModel(
-			plid, portletId,
-			PortletPreferencesFactoryUtil.toXML(jxPortletPreferences));
+			plid, portletId, jxPortletPreferences);
 	}
 
 	public PortletPreferencesModel newPortletPreferencesModel(
@@ -1858,8 +1858,7 @@ public class DataFactory {
 		jxPortletPreferences.setValue("spreadsheet", "false");
 
 		return newPortletPreferencesModel(
-			plid, portletId,
-			PortletPreferencesFactoryUtil.toXML(jxPortletPreferences));
+			plid, portletId, jxPortletPreferences);
 	}
 
 	public PortletPreferencesModel newPortletPreferencesModel(
@@ -1884,8 +1883,7 @@ public class DataFactory {
 		jxPortletPreferences.setValue("showAvailableLocales", "false");
 
 		return newPortletPreferencesModel(
-			plid, portletId,
-			PortletPreferencesFactoryUtil.toXML(jxPortletPreferences));
+			plid, portletId, jxPortletPreferences);
 	}
 
 	public List<PortletPreferencesModel> newPortletPreferencesModels(
@@ -2523,6 +2521,25 @@ public class DataFactory {
 		mbThreadModel.setStatusDate(new Date());
 
 		return mbThreadModel;
+	}
+
+	protected PortletPreferencesModel newPortletPreferencesModel(
+		long plid, String portletId,
+		javax.portlet.PortletPreferences jxPortletPreferences) {
+
+		if (PortletPreferencesFactoryUtil.getPortletPreferencesFactory() ==
+				null) {
+
+			PortletPreferencesFactoryUtil portletPreferencesFactoryUtil =
+				new PortletPreferencesFactoryUtil();
+
+			portletPreferencesFactoryUtil.setPortletPreferencesFactory(
+				new PortletPreferencesFactoryImpl());
+		}
+
+		return newPortletPreferencesModel(
+			plid, portletId,
+			PortletPreferencesFactoryUtil.toXML(jxPortletPreferences));
 	}
 
 	protected PortletPreferencesModel newPortletPreferencesModel(

@@ -57,6 +57,8 @@ import java.util.Set;
 public class SampleSQLBuilder {
 
 	public static void main(String[] args) {
+		InitUtil.initWithSpring();
+
 		Properties properties = new Properties();
 		Reader reader = null;
 
@@ -83,12 +85,6 @@ public class SampleSQLBuilder {
 	}
 
 	public SampleSQLBuilder(Properties properties) throws Exception {
-		List<String> extraConfigLocations = new ArrayList<String>();
-
-		extraConfigLocations.add("META-INF/portlet-container-spring.xml");
-
-		InitUtil.initWithSpring(false, extraConfigLocations);
-
 		_dataFactory = new DataFactory(properties);
 		_dbType = properties.getProperty("sample.sql.db.type");
 		_optimizeBufferSize = GetterUtil.getInteger(
