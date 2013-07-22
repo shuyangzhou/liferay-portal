@@ -23,17 +23,18 @@ import com.liferay.portal.kernel.io.OutputStreamWriter;
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedWriter;
 import com.liferay.portal.kernel.io.unsync.UnsyncTeeWriter;
+import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.tools.ArgumentsUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.util.InitUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
@@ -46,8 +47,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Brian Wing Shun Chan
@@ -56,172 +57,108 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SampleSQLBuilder {
 
 	public static void main(String[] args) {
-		Map<String, String> arguments = ArgumentsUtil.parseArguments(args);
+		InitUtil.initWithSpring();
 
-		List<String> extraConfigLocations = new ArrayList<String>();
-
-		extraConfigLocations.add("META-INF/portlet-container-spring.xml");
-
-		InitUtil.initWithSpring(false, extraConfigLocations);
+		Properties properties = new Properties();
+		Reader reader = null;
 
 		try {
-			new SampleSQLBuilder(arguments);
+			reader = new FileReader(args[0]);
+
+			properties.load(reader);
+
+			new SampleSQLBuilder(properties);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+		finally {
+			if (reader != null) {
+				try {
+					reader.close();
+				}
+				catch (IOException ioe) {
+					ioe.printStackTrace();
+				}
+			}
+		}
 	}
 
-	public SampleSQLBuilder(Map<String, String> arguments) throws Exception {
-		String baseDir = arguments.get("sample.sql.base.dir");
-
-		_dbType = arguments.get("sample.sql.db.type");
-		_maxAssetCategoryCount = GetterUtil.getInteger(
-			arguments.get("sample.sql.max.asset.category.count"));
-		_maxAssetEntryToAssetCategoryCount = GetterUtil.getInteger(
-			arguments.get(
-				"sample.sql.max.asset.entry.to.asset.category.count"));
-		_maxAssetEntryToAssetTagCount = GetterUtil.getInteger(
-			arguments.get("sample.sql.max.asset.entry.to.asset.tag.count"));
-		_maxAssetPublisherFilterRuleCount = GetterUtil.getInteger(
-			arguments.get("sample.sql.max.asset.publisher.filter.rule.count"));
-		_maxAssetPublisherPageCount = GetterUtil.getInteger(
-			arguments.get("sample.sql.max.asset.publisher.page.count"));
-		_maxAssetTagCount = GetterUtil.getInteger(
-			arguments.get("sample.sql.max.asset.tag.count"));
-		_maxAssetVocabularyCount = GetterUtil.getInteger(
-			arguments.get("sample.sql.max.asset.vocabulary.count"));
-		_maxBlogsEntryCommentCount = GetterUtil.getInteger(
-			arguments.get("sample.sql.max.blogs.entry.comment.count"));
-		_maxBlogsEntryCount = GetterUtil.getInteger(
-			arguments.get("sample.sql.max.blogs.entry.count"));
-		_maxDDLCustomFieldCount = GetterUtil.getInteger(
-			arguments.get("sample.sql.max.ddl.custom.field.count"));
-		_maxDDLRecordCount = GetterUtil.getInteger(
-			arguments.get("sample.sql.max.ddl.record.count"));
-		_maxDDLRecordSetCount = GetterUtil.getInteger(
-			arguments.get("sample.sql.max.ddl.record.set.count"));
-		_maxDLFileEntryCount = GetterUtil.getInteger(
-			arguments.get("sample.sql.max.dl.file.entry.count"));
-		_maxDLFileEntrySize = GetterUtil.getInteger(
-			arguments.get("sample.sql.max.dl.file.entry.size"));
-		_maxDLFolderCount = GetterUtil.getInteger(
-			arguments.get("sample.sql.max.dl.folder.count"));
-		_maxDLFolderDepth = GetterUtil.getInteger(
-			arguments.get("sample.sql.max.dl.folder.depth"));
-		_maxGroupCount = GetterUtil.getInteger(
-			arguments.get("sample.sql.max.group.count"));
-		_maxJournalArticleCount = GetterUtil.getInteger(
-			arguments.get("sample.sql.max.journal.article.count"));
-		_maxJournalArticlePageCount = GetterUtil.getInteger(
-			arguments.get("sample.sql.max.journal.article.page.count"));
-		_maxJournalArticleSize = GetterUtil.getInteger(
-			arguments.get("sample.sql.max.journal.article.size"));
-		_maxJournalArticleVersionCount = GetterUtil.getInteger(
-			arguments.get("sample.sql.max.journal.article.version.count"));
-		_maxMBCategoryCount = GetterUtil.getInteger(
-			arguments.get("sample.sql.max.mb.category.count"));
-		_maxMBMessageCount = GetterUtil.getInteger(
-			arguments.get("sample.sql.max.mb.message.count"));
-		_maxMBThreadCount = GetterUtil.getInteger(
-			arguments.get("sample.sql.max.mb.thread.count"));
-		_maxUserCount = GetterUtil.getInteger(
-			arguments.get("sample.sql.max.user.count"));
-		_maxUserToGroupCount = GetterUtil.getInteger(
-			arguments.get("sample.sql.max.user.to.group.count"));
-		_maxWikiNodeCount = GetterUtil.getInteger(
-			arguments.get("sample.sql.max.wiki.node.count"));
-		_maxWikiPageCommentCount = GetterUtil.getInteger(
-			arguments.get("sample.sql.max.wiki.page.comment.count"));
-		_maxWikiPageCount = GetterUtil.getInteger(
-			arguments.get("sample.sql.max.wiki.page.count"));
+	public SampleSQLBuilder(Properties properties) throws Exception {
+		_dataFactory = new DataFactory(properties);
+		_dbType = properties.getProperty("sample.sql.db.type");
 		_optimizeBufferSize = GetterUtil.getInteger(
-			arguments.get("sample.sql.optimize.buffer.size"));
-		_outputDir = arguments.get("sample.sql.output.dir");
-		_outputMerge = GetterUtil.getBoolean(
-			arguments.get("sample.sql.output.merge"));
+			properties.getProperty("sample.sql.optimize.buffer.size"));
+		_outputCSVFiles = StringUtil.split(
+			getPropertyWithDefault(
+				properties, "sample.sql.output.csv.files", _DEFAULT_CSV_FILES));
+		_outputDir = properties.getProperty("sample.sql.output.dir");
+		boolean outputMerge = GetterUtil.getBoolean(
+			properties.getProperty("sample.sql.output.merge"));
+		_script = getPropertyWithDefault(
+			properties, "sample.sql.script.file", _DEFAULT_SCRIPT);
 
-		_dataFactory = new DataFactory(
-			baseDir, _maxAssetCategoryCount, _maxAssetEntryToAssetCategoryCount,
-			_maxAssetEntryToAssetTagCount, _maxAssetPublisherFilterRuleCount,
-			_maxAssetPublisherPageCount, _maxAssetTagCount,
-			_maxAssetVocabularyCount, _maxBlogsEntryCount,
-			_maxDDLCustomFieldCount, _maxGroupCount, _maxJournalArticleCount,
-			_maxJournalArticleSize, _maxMBCategoryCount, _maxMBThreadCount,
-			_maxMBMessageCount, _maxUserToGroupCount);
+		CharPipe charPipe = generateSQL();
 
-		_db = DBFactoryUtil.getDB(_dbType);
+		String endSQLFileName = "others.sql";
+		File tempDir = new File(_outputDir, "temp");
 
-		if (_db instanceof MySQLDB) {
-			_db = new SampleMySQLDB();
-		}
-
-		// Clean up previous output
-
-		FileUtil.delete(_outputDir + "/sample-" + _dbType + ".sql");
-		FileUtil.deltree(_outputDir + "/output");
-
-		// Generic
-
-		_tempDir = new File(_outputDir, "temp");
-
-		_tempDir.mkdirs();
-
-		final CharPipe charPipe = new CharPipe(_PIPE_BUFFER_SIZE);
-
-		generateSQL(charPipe);
+		tempDir.mkdirs();
 
 		try {
+			compressSQL(charPipe.getReader(), tempDir, endSQLFileName);
 
-			// Specific
+			if (outputMerge) {
+				File mergedSQLFile = new File(
+					_outputDir, "sample-" + _dbType + ".sql");
 
-			compressSQL(charPipe.getReader());
+				FileUtil.delete(mergedSQLFile);
 
-			// Merge
+				mergeSQL(mergedSQLFile, tempDir, endSQLFileName);
+			}
+			else {
+				File dividedSQLDir = new File(_outputDir, _dbType);
 
-			mergeSQL();
+				// Clean up previous output
+
+				FileUtil.deltree(dividedSQLDir);
+
+				if (!tempDir.renameTo(dividedSQLDir)) {
+
+					// This will only happen when temp and output folders are on
+					// different file systems
+
+					FileUtil.copyDirectory(tempDir, dividedSQLDir);
+				}
+			}
 		}
 		finally {
-			FileUtil.deltree(_tempDir);
+			FileUtil.deltree(tempDir);
 		}
 
-		StringBundler sb = new StringBundler();
-
-		List<String> keys = ListUtil.fromMapKeys(arguments);
-
-		Collections.sort(keys);
-
-		for (String key : keys) {
-			if (!key.startsWith("sample.sql")) {
-				continue;
-			}
-
-			String value = arguments.get(key);
-
-			sb.append(key);
-			sb.append(StringPool.EQUAL);
-			sb.append(value);
-			sb.append(StringPool.NEW_LINE);
-		}
-
-		FileUtil.write(
-			new File(_outputDir, "benchmarks-actual.properties"),
-			sb.toString());
+		writeOutProperties(
+			properties, new File(_outputDir, "benchmarks-actual.properties"));
 	}
 
-	protected void compressInsertSQL(String insertSQL) throws IOException {
-		String tableName = insertSQL.substring(0, insertSQL.indexOf(' '));
+	protected void compressInsertSQL(
+			DB db, String insertSQL, File dir,
+			Map<String, StringBundler> insertSQLs,
+			Map<String, Writer> insertSQLWriters, int optimizeBufferSize)
+		throws IOException {
+
+		String fileName =
+			insertSQL.substring(0, insertSQL.indexOf(CharPool.SPACE)) + ".sql";
 
 		int pos = insertSQL.indexOf(" values ") + 8;
 
 		String values = insertSQL.substring(pos, insertSQL.length() - 1);
 
-		StringBundler sb = _insertSQLs.get(tableName);
+		StringBundler sb = insertSQLs.get(fileName);
 
 		if ((sb == null) || (sb.index() == 0)) {
 			sb = new StringBundler();
 
-			_insertSQLs.put(tableName, sb);
+			insertSQLs.put(fileName, sb);
 
 			sb.append("insert into ");
 			sb.append(insertSQL.substring(0, pos));
@@ -233,37 +170,88 @@ public class SampleSQLBuilder {
 
 		sb.append(values);
 
-		if (sb.index() >= _optimizeBufferSize) {
+		if (sb.index() >= optimizeBufferSize) {
 			sb.append(";\n");
 
-			String sql = _db.buildSQL(sb.toString());
+			String sql = db.buildSQL(sb.toString());
 
 			sb.setIndex(0);
 
-			writeToInsertSQLFile(tableName, sql);
+			Writer insertSQLWriter = insertSQLWriters.get(fileName);
+
+			if (insertSQLWriter == null) {
+				insertSQLWriter = createFileWriter(new File(dir, fileName));
+
+				insertSQLWriters.put(fileName, insertSQLWriter);
+			}
+
+			insertSQLWriter.write(sql);
 		}
 	}
 
-	protected void compressSQL(Reader reader) throws IOException {
+	protected void compressSQL(Reader reader, File dir, String endSQLFileName)
+		throws IOException {
+
+		DB db = DBFactoryUtil.getDB(_dbType);
+
+		if (db instanceof MySQLDB) {
+			db = new SampleMySQLDB();
+		}
+
+		Map<String, StringBundler> insertSQLs =
+			new HashMap<String, StringBundler>();
+		Map<String, Writer> insertSQLWriters = new HashMap<String, Writer>();
+		List<String> otherSQLs = new ArrayList<String>();
+
 		UnsyncBufferedReader unsyncBufferedReader = new UnsyncBufferedReader(
 			reader);
 
-		String s = null;
+		String line = null;
 
-		while ((s = unsyncBufferedReader.readLine()) != null) {
-			s = s.trim();
+		while ((line = unsyncBufferedReader.readLine()) != null) {
+			line = line.trim();
 
-			if (s.length() > 0) {
-				if (s.startsWith("insert into ")) {
-					compressInsertSQL(s.substring(12));
-				}
-				else if (s.length() > 0) {
-					_otherSQLs.add(s);
-				}
+			if (line.length() == 0) {
+				continue;
+			}
+
+			if (line.startsWith("insert into ")) {
+				compressInsertSQL(
+					db, line.substring(12), dir, insertSQLs, insertSQLWriters,
+					_optimizeBufferSize);
+			}
+			else {
+				otherSQLs.add(line);
 			}
 		}
 
 		unsyncBufferedReader.close();
+
+		for (Map.Entry<String, StringBundler> entry : insertSQLs.entrySet()) {
+			String fileName = entry.getKey();
+
+			String sql = db.buildSQL(entry.getValue().toString());
+
+			Writer insertSQLWriter = insertSQLWriters.remove(fileName);
+
+			if (insertSQLWriter == null) {
+				insertSQLWriter = createFileWriter(new File(dir, fileName));
+			}
+
+			insertSQLWriter.write(sql);
+			insertSQLWriter.write(";\n");
+
+			insertSQLWriter.close();
+		}
+
+		Writer endSQLFileWriter = new FileWriter(new File(dir, endSQLFileName));
+
+		for (String sql : otherSQLs) {
+			endSQLFileWriter.write(db.buildSQL(sql));
+			endSQLFileWriter.write(StringPool.NEW_LINE);
+		}
+
+		endSQLFileWriter.close();
 	}
 
 	protected Writer createFileWriter(File file) throws IOException {
@@ -272,12 +260,6 @@ public class SampleSQLBuilder {
 		Writer writer = new OutputStreamWriter(fileOutputStream);
 
 		return createUnsyncBufferedWriter(writer);
-	}
-
-	protected Writer createFileWriter(String fileName) throws IOException {
-		File file = new File(fileName);
-
-		return createFileWriter(file);
 	}
 
 	protected Writer createUnsyncBufferedWriter(Writer writer) {
@@ -293,20 +275,44 @@ public class SampleSQLBuilder {
 		};
 	}
 
-	protected void generateSQL(final CharPipe charPipe) {
-		final Writer writer = createUnsyncBufferedWriter(charPipe.getWriter());
+	protected void doMergeSQL(File SQLFile, FileChannel outputFileChannel)
+		throws IOException {
 
-		Thread thread = new Thread() {
+		FileInputStream fileInputStream = new FileInputStream(SQLFile);
+
+		FileChannel inputFileChannel = fileInputStream.getChannel();
+
+		inputFileChannel.transferTo(
+			0, inputFileChannel.size(), outputFileChannel);
+
+		inputFileChannel.close();
+	}
+
+	protected CharPipe generateSQL() {
+		final CharPipe charPipe = new CharPipe(_PIPE_BUFFER_SIZE);
+
+		new Thread() {
 
 			@Override
 			public void run() {
 				try {
-					_writerSampleSQL = new UnsyncTeeWriter(
-						writer, createFileWriter(_outputDir + "/sample.sql"));
+					Map<String, Object> context = getContext();
 
-					createSample();
+					Writer writerSampleSQL = new UnsyncTeeWriter(
+						charPipe.getWriter(),
+						createFileWriter(new File(_outputDir, "sample.sql")));
 
-					_writerSampleSQL.close();
+					FreeMarkerUtil.process(_script, context, writerSampleSQL);
+
+					for (Object value : context.values()) {
+						if (value instanceof Writer) {
+							Writer writer = (Writer)value;
+
+							writer.close();
+						}
+					}
+
+					writerSampleSQL.close();
 
 					charPipe.close();
 				}
@@ -315,245 +321,111 @@ public class SampleSQLBuilder {
 				}
 			}
 
-			protected void createSample() throws Exception {
-				_writerAssetPublisherCSV = getWriter("asset_publisher.csv");
-				_writerBlogsCSV = getWriter("blogs.csv");
-				_writerCompanyCSV = getWriter("company.csv");
-				_writerDocumentLibraryCSV = getWriter("document_library.csv");
-				_writerDynamicDataListsCSV = getWriter(
-					"dynamic_data_lists.csv");
-				_writerLayoutCSV = getWriter("layout.csv");
-				_writerMessageBoardsCSV = getWriter("message_boards.csv");
-				_writerRepositoryCSV = getWriter("repository.csv");
-				_writerWikiCSV = getWriter("wiki.csv");
+		}.start();
 
-				Map<String, Object> context = getContext();
-
-				processTemplate(_tplSample, context);
-
-				_writerAssetPublisherCSV.close();
-				_writerBlogsCSV.close();
-				_writerCompanyCSV.close();
-				_writerDocumentLibraryCSV.close();
-				_writerDynamicDataListsCSV.close();
-				_writerLayoutCSV.close();
-				_writerMessageBoardsCSV.close();
-				_writerRepositoryCSV.close();
-				_writerWikiCSV.close();
-			}
-
-			protected Writer getWriter(String fileName) throws Exception {
-				return createFileWriter(new File(_outputDir + "/" + fileName));
-			}
-
-		};
-
-		thread.start();
+		return charPipe;
 	}
 
-	protected Map<String, Object> getContext() {
+	protected Map<String, Object> getContext() throws Exception {
 		Map<String, Object> context = new HashMap<String, Object>();
 
-		put(context, "counter", _dataFactory.getCounter());
-		put(context, "dataFactory", _dataFactory);
-		put(context, "maxAssetPublisherPageCount", _maxAssetPublisherPageCount);
-		put(context, "maxDLFileEntrySize", _maxDLFileEntrySize);
-		put(context, "maxBlogsEntryCommentCount", _maxBlogsEntryCommentCount);
-		put(context, "maxBlogsEntryCount", _maxBlogsEntryCount);
-		put(context, "maxDDLRecordCount", _maxDDLRecordCount);
-		put(context, "maxDDLRecordSetCount", _maxDDLRecordSetCount);
-		put(context, "maxDLFileEntryCount", _maxDLFileEntryCount);
-		put(context, "maxDLFolderCount", _maxDLFolderCount);
-		put(context, "maxDLFolderDepth", _maxDLFolderDepth);
-		put(context, "maxGroupCount", _maxGroupCount);
-		put(context, "maxJournalArticleCount", _maxJournalArticleCount);
-		put(context, "maxJournalArticlePageCount", _maxJournalArticlePageCount);
-		put(
-			context, "maxJournalArticleVersionCount",
-			_maxJournalArticleVersionCount);
-		put(context, "maxMBCategoryCount", _maxMBCategoryCount);
-		put(context, "maxMBMessageCount", _maxMBMessageCount);
-		put(context, "maxMBThreadCount", _maxMBThreadCount);
-		put(context, "maxUserCount", _maxUserCount);
-		put(context, "maxUserToGroupCount", _maxUserToGroupCount);
-		put(context, "maxWikiNodeCount", _maxWikiNodeCount);
-		put(context, "maxWikiPageCommentCount", _maxWikiPageCommentCount);
-		put(context, "maxWikiPageCount", _maxWikiPageCount);
-		put(context, "writerAssetPublisherCSV", _writerAssetPublisherCSV);
-		put(context, "writerBlogsCSV", _writerBlogsCSV);
-		put(context, "writerCompanyCSV", _writerCompanyCSV);
-		put(context, "writerDocumentLibraryCSV", _writerDocumentLibraryCSV);
-		put(context, "writerDynamicDataListsCSV", _writerDynamicDataListsCSV);
-		put(context, "writerLayoutCSV", _writerLayoutCSV);
-		put(context, "writerMessageBoardsCSV", _writerMessageBoardsCSV);
-		put(context, "writerRepositoryCSV", _writerRepositoryCSV);
-		put(context, "writerWikiCSV", _writerWikiCSV);
+		context.put("dataFactory", _dataFactory);
+
+		for (String fileName : _outputCSVFiles) {
+			Writer writer = createFileWriter(
+				new File(_outputDir, fileName + ".csv"));
+
+			context.put(fileName + "CSVWriter", writer);
+		}
 
 		return context;
 	}
 
-	protected File getInsertSQLFile(String tableName) {
-		return new File(_tempDir, tableName + ".sql");
+	protected String getPropertyWithDefault(
+		Properties properties, String key, String defaultValue) {
+
+		String value = properties.getProperty(key);
+
+		if ((value == null) || value.equals(StringPool.BLANK)) {
+			return defaultValue;
+		}
+
+		return value;
 	}
 
-	protected void mergeSQL() throws IOException {
-		File outputFile = new File(_outputDir + "/sample-" + _dbType + ".sql");
-
-		FileOutputStream fileOutputStream = null;
-		FileChannel fileChannel = null;
-
-		if (_outputMerge) {
-			fileOutputStream = new FileOutputStream(outputFile);
-			fileChannel = fileOutputStream.getChannel();
-		}
-
-		Set<Map.Entry<String, StringBundler>> insertSQLs =
-			_insertSQLs.entrySet();
-
-		for (Map.Entry<String, StringBundler> entry : insertSQLs) {
-			String tableName = entry.getKey();
-
-			String sql = _db.buildSQL(entry.getValue().toString());
-
-			writeToInsertSQLFile(tableName, sql);
-
-			Writer insertSQLWriter = _insertSQLWriters.remove(tableName);
-
-			insertSQLWriter.write(";\n");
-
-			insertSQLWriter.close();
-
-			if (_outputMerge) {
-				File insertSQLFile = getInsertSQLFile(tableName);
-
-				FileInputStream insertSQLFileInputStream = new FileInputStream(
-					insertSQLFile);
-
-				FileChannel insertSQLFileChannel =
-					insertSQLFileInputStream.getChannel();
-
-				insertSQLFileChannel.transferTo(
-					0, insertSQLFileChannel.size(), fileChannel);
-
-				insertSQLFileChannel.close();
-
-				insertSQLFile.delete();
-			}
-		}
-
-		Writer writer = null;
-
-		if (_outputMerge) {
-			writer = new OutputStreamWriter(fileOutputStream);
-		}
-		else {
-			writer = new FileWriter(getInsertSQLFile("others"));
-		}
-
-		for (String sql : _otherSQLs) {
-			sql = _db.buildSQL(sql);
-
-			writer.write(sql);
-			writer.write(StringPool.NEW_LINE);
-		}
-
-		writer.close();
-
-		File outputFolder = new File(_outputDir, "output");
-
-		if (!_outputMerge && !_tempDir.renameTo(outputFolder)) {
-
-			// This will only happen when temp and output folders are on
-			// different file systems
-
-			FileUtil.copyDirectory(_tempDir, outputFolder);
-		}
-	}
-
-	protected void processTemplate(String name, Map<String, Object> context)
-		throws Exception {
-
-		FreeMarkerUtil.process(name, context, _writerSampleSQL);
-	}
-
-	protected void put(Map<String, Object> context, String key, Object value) {
-		context.put(key, value);
-	}
-
-	protected void writeToInsertSQLFile(String tableName, String sql)
+	protected void mergeSQL(
+			File mergedSQLFile, File tempDir, String endSQLFileName)
 		throws IOException {
 
-		Writer writer = _insertSQLWriters.get(tableName);
+		FileOutputStream fileOutputStream = new FileOutputStream(mergedSQLFile);
+		FileChannel fileChannel = fileOutputStream.getChannel();
 
-		if (writer == null) {
-			File file = getInsertSQLFile(tableName);
+		File lastSQLFile = null;
 
-			writer = createFileWriter(file);
+		for (File tableFile : tempDir.listFiles()) {
+			if (tableFile.getName().equals(endSQLFileName)) {
+				lastSQLFile = tableFile;
 
-			_insertSQLWriters.put(tableName, writer);
+				continue;
+			}
+
+			doMergeSQL(tableFile, fileChannel);
+
+			tableFile.delete();
 		}
 
-		writer.write(sql);
+		if (lastSQLFile != null) {
+			doMergeSQL(lastSQLFile, fileChannel);
+
+			lastSQLFile.delete();
+		}
+
+		fileChannel.close();
 	}
 
-	private static final int _PIPE_BUFFER_SIZE = 16 * 1024 * 1024;
+	protected void writeOutProperties(Properties properties, File outputFile)
+		throws Exception {
 
-	private static final String _TPL_ROOT =
-		"com/liferay/portal/tools/samplesqlbuilder/dependencies/";
+		StringBundler sb = new StringBundler();
+
+		Set<String> propertyNames = properties.stringPropertyNames();
+
+		List<String> keys = new ArrayList<String>(propertyNames);
+
+		Collections.sort(keys);
+
+		for (String key : keys) {
+			if (!key.startsWith("sample.sql")) {
+				continue;
+			}
+
+			String value = properties.getProperty(key);
+
+			sb.append(key);
+			sb.append(StringPool.EQUAL);
+			sb.append(value);
+			sb.append(StringPool.NEW_LINE);
+		}
+
+		FileUtil.write(outputFile, sb.toString());
+	}
+
+	private static final String _DEFAULT_CSV_FILES =
+		"assetPublisher,blog,company,documentLibrary,dynamicDataList,layout," +
+		"messageBoard,repository,wiki";
+
+	private static final String _DEFAULT_SCRIPT =
+		"com/liferay/portal/tools/samplesqlbuilder/dependencies/sample.ftl";
+
+	private static final int _PIPE_BUFFER_SIZE = 16 * 1024 * 1024;
 
 	private static final int _WRITER_BUFFER_SIZE = 16 * 1024;
 
 	private DataFactory _dataFactory;
-	private DB _db;
 	private String _dbType;
-	private Map<String, StringBundler> _insertSQLs =
-		new ConcurrentHashMap<String, StringBundler>();
-	private Map<String, Writer> _insertSQLWriters =
-		new ConcurrentHashMap<String, Writer>();
-	private int _maxAssetCategoryCount;
-	private int _maxAssetEntryToAssetCategoryCount;
-	private int _maxAssetEntryToAssetTagCount;
-	private int _maxAssetPublisherFilterRuleCount;
-	private int _maxAssetPublisherPageCount;
-	private int _maxAssetTagCount;
-	private int _maxAssetVocabularyCount;
-	private int _maxBlogsEntryCommentCount;
-	private int _maxBlogsEntryCount;
-	private int _maxDDLCustomFieldCount;
-	private int _maxDDLRecordCount;
-	private int _maxDDLRecordSetCount;
-	private int _maxDLFileEntryCount;
-	private int _maxDLFileEntrySize;
-	private int _maxDLFolderCount;
-	private int _maxDLFolderDepth;
-	private int _maxGroupCount;
-	private int _maxJournalArticleCount;
-	private int _maxJournalArticlePageCount;
-	private int _maxJournalArticleSize;
-	private int _maxJournalArticleVersionCount;
-	private int _maxMBCategoryCount;
-	private int _maxMBMessageCount;
-	private int _maxMBThreadCount;
-	private int _maxUserCount;
-	private int _maxUserToGroupCount;
-	private int _maxWikiNodeCount;
-	private int _maxWikiPageCommentCount;
-	private int _maxWikiPageCount;
 	private int _optimizeBufferSize;
-	private List<String> _otherSQLs = new ArrayList<String>();
+	private String[] _outputCSVFiles;
 	private String _outputDir;
-	private boolean _outputMerge;
-	private File _tempDir;
-	private String _tplSample = _TPL_ROOT + "sample.ftl";
-	private Writer _writerAssetPublisherCSV;
-	private Writer _writerBlogsCSV;
-	private Writer _writerCompanyCSV;
-	private Writer _writerDocumentLibraryCSV;
-	private Writer _writerDynamicDataListsCSV;
-	private Writer _writerLayoutCSV;
-	private Writer _writerMessageBoardsCSV;
-	private Writer _writerRepositoryCSV;
-	private Writer _writerSampleSQL;
-	private Writer _writerWikiCSV;
+	private String _script;
 
 }

@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -78,6 +79,7 @@ import com.liferay.portal.security.auth.FullNameGeneratorFactory;
 import com.liferay.portal.service.permission.PortletPermissionUtil;
 import com.liferay.portal.util.PortletKeys;
 import com.liferay.portal.util.PropsValues;
+import com.liferay.portlet.PortletPreferencesFactoryImpl;
 import com.liferay.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portlet.asset.model.AssetCategory;
 import com.liferay.portlet.asset.model.AssetCategoryConstants;
@@ -183,9 +185,8 @@ import com.liferay.portlet.wiki.social.WikiActivityKeys;
 import com.liferay.util.PwdGenerator;
 import com.liferay.util.SimpleCounter;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import java.text.Format;
 
@@ -195,43 +196,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * @author Brian Wing Shun Chan
  */
 public class DataFactory {
 
-	public DataFactory(
-			String baseDir, int maxAssetCategoryCount,
-			int maxAssetEntryToAssetCategoryCount,
-			int maxAssetEntryToAssetTagCount,
-			int maxAssetPublisherFilterRuleCount,
-			int maxAssetPublisherPageCount, int maxAssetTagCount,
-			int maxAssetVocabularyCount, int maxBlogsEntryCount,
-			int maxDDLCustomFieldCount, int maxGroupsCount,
-			int maxJournalArticleCount, int maxJournalArticleSize,
-			int maxMBCategoryCount, int maxMBThreadCount, int maxMBMessageCount,
-			int maxUserToGroupCount)
-		throws Exception {
-
-		_baseDir = baseDir;
-		_maxAssetCategoryCount = maxAssetCategoryCount;
-		_maxAssetEntryToAssetCategoryCount = maxAssetEntryToAssetCategoryCount;
-		_maxAssetEntryToAssetTagCount = maxAssetEntryToAssetTagCount;
-		_maxAssetPublisherFilterRuleCount = maxAssetPublisherFilterRuleCount;
-		_maxAssetPublisherPageCount = maxAssetPublisherPageCount;
-		_maxAssetTagCount = maxAssetTagCount;
-		_maxAssetVocabularyCount = maxAssetVocabularyCount;
-		_maxBlogsEntryCount = maxBlogsEntryCount;
-		_maxDDLCustomFieldCount = maxDDLCustomFieldCount;
-		_maxGroupsCount = maxGroupsCount;
-		_maxJournalArticleCount = maxJournalArticleCount;
-		_maxMBCategoryCount = maxMBCategoryCount;
-		_maxMBThreadCount = maxMBThreadCount;
-		_maxMBMessageCount = maxMBMessageCount;
-		_maxUserToGroupCount = maxUserToGroupCount;
-
-		_counter = new SimpleCounter(_maxGroupsCount + 1);
+	public DataFactory(Properties properties) throws Exception {
+		_counter = new SimpleCounter(_maxGroupCount + 1);
 		_timeCounter = new SimpleCounter();
 		_futureDateCounter = new SimpleCounter();
 		_resourcePermissionCounter = new SimpleCounter();
@@ -264,16 +237,19 @@ public class DataFactory {
 		_sampleUserId = _counter.get();
 
 		_dlDDMStructureContent = StringUtil.read(
-			new FileInputStream(
-				new File(
-					_baseDir,
-					_DEPENDENCIES_DIR + "ddm_structure_basic_document.xml")));
+			_getResourceInputStream("ddm_structure_basic_document.xml"));
+
+		initContext(properties);
 
 		initAssetCategoryModels();
 		initAssetTagModels();
 		initCompanyModel();
 		initDLFileEntryTypeModel();
 		initGroupModels();
+
+		int maxJournalArticleSize = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.journal.article.size"));
+
 		initJournalArticleContent(maxJournalArticleSize);
 		initRoleModels();
 		initUserNames();
@@ -493,12 +469,88 @@ public class DataFactory {
 		return _classNameModelsMap.get(Layout.class.getName());
 	}
 
+	public int getMaxAssetPublisherPageCount() {
+		return _maxAssetPublisherPageCount;
+	}
+
+	public int getMaxBlogsEntryCommentCount() {
+		return _maxBlogsEntryCommentCount;
+	}
+
+	public int getMaxBlogsEntryCount() {
+		return _maxBlogsEntryCount;
+	}
+
+	public int getMaxDDLRecordCount() {
+		return _maxDDLRecordCount;
+	}
+
+	public int getMaxDDLRecordSetCount() {
+		return _maxDDLRecordSetCount;
+	}
+
+	public int getMaxDLFileEntryCount() {
+		return _maxDLFileEntryCount;
+	}
+
+	public int getMaxDLFolderCount() {
+		return _maxDLFolderCount;
+	}
+
+	public int getMaxDLFolderDepth() {
+		return _maxDLFolderDepth;
+	}
+
+	public int getMaxGroupCount() {
+		return _maxGroupCount;
+	}
+
+	public int getMaxJournalArticleCount() {
+		return _maxJournalArticleCount;
+	}
+
+	public int getMaxJournalArticlePageCount() {
+		return _maxJournalArticlePageCount;
+	}
+
+	public int getMaxJournalArticleVersionCount() {
+		return _maxJournalArticleVersionCount;
+	}
+
+	public int getMaxMBCategoryCount() {
+		return _maxMBCategoryCount;
+	}
+
+	public int getMaxMBMessageCount() {
+		return _maxMBMessageCount;
+	}
+
+	public int getMaxMBThreadCount() {
+		return _maxMBThreadCount;
+	}
+
+	public int getMaxUserCount() {
+		return _maxUserCount;
+	}
+
+	public int getMaxWikiNodeCount() {
+		return _maxWikiNodeCount;
+	}
+
+	public int getMaxWikiPageCommentCount() {
+		return _maxWikiPageCommentCount;
+	}
+
+	public int getMaxWikiPageCount() {
+		return _maxWikiPageCount;
+	}
+
 	public List<Long> getNewUserGroupIds(long groupId) {
 		List<Long> groupIds = new ArrayList<Long>(_maxUserToGroupCount + 1);
 
 		groupIds.add(_guestGroupModel.getGroupId());
 
-		if ((groupId + _maxUserToGroupCount) > _maxGroupsCount) {
+		if ((groupId + _maxUserToGroupCount) > _maxGroupCount) {
 			groupId = groupId - _maxUserToGroupCount + 1;
 		}
 
@@ -535,16 +587,16 @@ public class DataFactory {
 
 	public void initAssetCategoryModels() {
 		_assetCategoryModelsArray =
-			(List<AssetCategoryModel>[])new List<?>[_maxGroupsCount];
+			(List<AssetCategoryModel>[])new List<?>[_maxGroupCount];
 		_assetVocabularyModelsArray =
-			(List<AssetVocabularyModel>[])new List<?>[_maxGroupsCount];
+			(List<AssetVocabularyModel>[])new List<?>[_maxGroupCount];
 		_defaultAssetVocabularyModel = newAssetVocabularyModel(
 			_globalGroupId, _defaultUserId, null,
 			PropsValues.ASSET_VOCABULARY_DEFAULT);
 
 		StringBundler sb = new StringBundler(4);
 
-		for (int i = 1; i <= _maxGroupsCount; i++) {
+		for (int i = 1; i <= _maxGroupCount; i++) {
 			List<AssetVocabularyModel> assetVocabularyModels =
 				new ArrayList<AssetVocabularyModel>(_maxAssetVocabularyCount);
 			List<AssetCategoryModel> assetCategoryModels =
@@ -593,11 +645,11 @@ public class DataFactory {
 
 	public void initAssetTagModels() {
 		_assetTagModelsArray =
-			(List<AssetTagModel>[])new List<?>[_maxGroupsCount];
+			(List<AssetTagModel>[])new List<?>[_maxGroupCount];
 		_assetTagStatsModelsArray =
-			(List<AssetTagStatsModel>[])new List<?>[_maxGroupsCount];
+			(List<AssetTagStatsModel>[])new List<?>[_maxGroupCount];
 
-		for (int i = 1; i <= _maxGroupsCount; i++) {
+		for (int i = 1; i <= _maxGroupCount; i++) {
 			List<AssetTagModel> assetTagModels = new ArrayList<AssetTagModel>(
 				_maxAssetTagCount);
 			List<AssetTagStatsModel> assetTagStatsModels =
@@ -660,6 +712,71 @@ public class DataFactory {
 		_accountModel.setLegalName("Liferay, Inc.");
 	}
 
+	public void initContext(Properties properties) {
+		_maxAssetCategoryCount = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.asset.category.count"));
+		_maxAssetEntryToAssetCategoryCount = GetterUtil.getInteger(
+			properties.getProperty(
+				"sample.sql.max.asset.entry.to.asset.category.count"));
+		_maxAssetEntryToAssetTagCount = GetterUtil.getInteger(
+			properties.getProperty(
+				"sample.sql.max.asset.entry.to.asset.tag.count"));
+		_maxAssetPublisherFilterRuleCount = GetterUtil.getInteger(
+			properties.getProperty(
+				"sample.sql.max.asset.publisher.filter.rule.count"));
+		_maxAssetPublisherPageCount = GetterUtil.getInteger(
+			properties.getProperty(
+				"sample.sql.max.asset.publisher.page.count"));
+		_maxAssetTagCount = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.asset.tag.count"));
+		_maxAssetVocabularyCount = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.asset.vocabulary.count"));
+		_maxBlogsEntryCommentCount = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.blogs.entry.comment.count"));
+		_maxBlogsEntryCount = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.blogs.entry.count"));
+		_maxDDLCustomFieldCount = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.ddl.custom.field.count"));
+		_maxDDLRecordCount = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.ddl.record.count"));
+		_maxDDLRecordSetCount = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.ddl.record.set.count"));
+		_maxDLFileEntryCount = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.dl.file.entry.count"));
+		_maxDLFileEntrySize = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.dl.file.entry.size"));
+		_maxDLFolderCount = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.dl.folder.count"));
+		_maxDLFolderDepth = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.dl.folder.depth"));
+		_maxGroupCount = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.group.count"));
+		_maxJournalArticleCount = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.journal.article.count"));
+		_maxJournalArticlePageCount = GetterUtil.getInteger(
+			properties.getProperty(
+				"sample.sql.max.journal.article.page.count"));
+		_maxJournalArticleVersionCount = GetterUtil.getInteger(
+			properties.getProperty(
+				"sample.sql.max.journal.article.version.count"));
+		_maxMBCategoryCount = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.mb.category.count"));
+		_maxMBMessageCount = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.mb.message.count"));
+		_maxMBThreadCount = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.mb.thread.count"));
+		_maxUserCount = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.user.count"));
+		_maxUserToGroupCount = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.user.to.group.count"));
+		_maxWikiNodeCount = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.wiki.node.count"));
+		_maxWikiPageCommentCount = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.wiki.page.comment.count"));
+		_maxWikiPageCount = GetterUtil.getInteger(
+			properties.getProperty("sample.sql.max.wiki.page.count"));
+	}
+
 	public void initDLFileEntryTypeModel() {
 		_defaultDLFileEntryTypeModel = new DLFileEntryTypeModelImpl();
 
@@ -697,9 +814,9 @@ public class DataFactory {
 			_guestGroupId, groupClassNameId, _guestGroupId,
 			GroupConstants.GUEST, true);
 
-		_groupModels = new ArrayList<GroupModel>(_maxGroupsCount);
+		_groupModels = new ArrayList<GroupModel>(_maxGroupCount);
 
-		for (int i = 1; i <= _maxGroupsCount; i++) {
+		for (int i = 1; i <= _maxGroupCount; i++) {
 			GroupModel groupModel = newGroupModel(
 				i, groupClassNameId, i, "Site " + i, true);
 
@@ -825,10 +942,10 @@ public class DataFactory {
 	}
 
 	public void initUserNames() throws IOException {
-		_firstNames = ListUtil.fromFile(
-			new File(_baseDir, _DEPENDENCIES_DIR + "first_names.txt"));
-		_lastNames = ListUtil.fromFile(
-			new File(_baseDir, _DEPENDENCIES_DIR + "last_names.txt"));
+		_firstNames = ListUtil.fromString(
+			StringUtil.read(_getResourceInputStream("first_names.txt")));
+		_lastNames = ListUtil.fromString(
+			StringUtil.read(_getResourceInputStream("last_names.txt")));
 	}
 
 	public void initVirtualHostModel() {
@@ -1725,8 +1842,7 @@ public class DataFactory {
 		}
 
 		return newPortletPreferencesModel(
-			plid, portletId,
-			PortletPreferencesFactoryUtil.toXML(jxPortletPreferences));
+			plid, portletId, jxPortletPreferences);
 	}
 
 	public PortletPreferencesModel newPortletPreferencesModel(
@@ -1742,8 +1858,7 @@ public class DataFactory {
 		jxPortletPreferences.setValue("spreadsheet", "false");
 
 		return newPortletPreferencesModel(
-			plid, portletId,
-			PortletPreferencesFactoryUtil.toXML(jxPortletPreferences));
+			plid, portletId, jxPortletPreferences);
 	}
 
 	public PortletPreferencesModel newPortletPreferencesModel(
@@ -1768,8 +1883,7 @@ public class DataFactory {
 		jxPortletPreferences.setValue("showAvailableLocales", "false");
 
 		return newPortletPreferencesModel(
-			plid, portletId,
-			PortletPreferencesFactoryUtil.toXML(jxPortletPreferences));
+			plid, portletId, jxPortletPreferences);
 	}
 
 	public List<PortletPreferencesModel> newPortletPreferencesModels(
@@ -2410,6 +2524,25 @@ public class DataFactory {
 	}
 
 	protected PortletPreferencesModel newPortletPreferencesModel(
+		long plid, String portletId,
+		javax.portlet.PortletPreferences jxPortletPreferences) {
+
+		if (PortletPreferencesFactoryUtil.getPortletPreferencesFactory() ==
+				null) {
+
+			PortletPreferencesFactoryUtil portletPreferencesFactoryUtil =
+				new PortletPreferencesFactoryUtil();
+
+			portletPreferencesFactoryUtil.setPortletPreferencesFactory(
+				new PortletPreferencesFactoryImpl());
+		}
+
+		return newPortletPreferencesModel(
+			plid, portletId,
+			PortletPreferencesFactoryUtil.toXML(jxPortletPreferences));
+	}
+
+	protected PortletPreferencesModel newPortletPreferencesModel(
 		long plid, String portletId, String preferences) {
 
 		PortletPreferencesModel portletPreferencesModel =
@@ -2574,11 +2707,21 @@ public class DataFactory {
 			_FUTURE_TIME + (_futureDateCounter.get() * Time.SECOND));
 	}
 
+	private InputStream _getResourceInputStream(String resourceName)
+		throws IOException {
+
+		Class<?> clazz = getClass();
+
+		ClassLoader classLoader = clazz.getClassLoader();
+
+		return classLoader.getResourceAsStream(
+			_DEPENDENCIES_DIR + resourceName);
+	}
+
 	private static final long _CURRENT_TIME = System.currentTimeMillis();
 
 	private static final String _DEPENDENCIES_DIR=
-		"../portal-impl/src/com/liferay/portal/tools/samplesqlbuilder/" +
-			"dependencies/";
+		"com/liferay/portal/tools/samplesqlbuilder/dependencies/";
 
 	private static final long _FUTURE_TIME =
 		System.currentTimeMillis() + Time.YEAR;
@@ -2598,7 +2741,6 @@ public class DataFactory {
 	private List<AssetTagModel>[] _assetTagModelsArray;
 	private List<AssetTagStatsModel>[] _assetTagStatsModelsArray;
 	private List<AssetVocabularyModel>[] _assetVocabularyModelsArray;
-	private String _baseDir;
 	private List<ClassNameModel> _classNameModels;
 	private Map<String, Long> _classNameModelsMap = new HashMap<String, Long>();
 	private long _companyId;
@@ -2630,15 +2772,27 @@ public class DataFactory {
 	private int _maxAssetPublisherPageCount;
 	private int _maxAssetTagCount;
 	private int _maxAssetVocabularyCount;
+	private int _maxBlogsEntryCommentCount;
 	private int _maxBlogsEntryCount;
 	private int _maxDDLCustomFieldCount;
+	private int _maxDDLRecordCount;
+	private int _maxDDLRecordSetCount;
+	private int _maxDLFileEntryCount;
 	private int _maxDLFileEntrySize;
-	private int _maxGroupsCount;
+	private int _maxDLFolderCount;
+	private int _maxDLFolderDepth;
+	private int _maxGroupCount;
 	private int _maxJournalArticleCount;
+	private int _maxJournalArticlePageCount;
+	private int _maxJournalArticleVersionCount;
 	private int _maxMBCategoryCount;
 	private int _maxMBMessageCount;
 	private int _maxMBThreadCount;
+	private int _maxUserCount;
 	private int _maxUserToGroupCount;
+	private int _maxWikiNodeCount;
+	private int _maxWikiPageCommentCount;
+	private int _maxWikiPageCount;
 	private RoleModel _ownerRoleModel;
 	private RoleModel _powerUserRoleModel;
 	private SimpleCounter _resourcePermissionCounter;
