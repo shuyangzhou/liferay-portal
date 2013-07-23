@@ -23,6 +23,7 @@ import java.lang.reflect.Array;
 import java.text.DateFormat;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Date;
@@ -716,16 +717,15 @@ public class ArrayUtil {
 			return array;
 		}
 
-		List<Boolean> filteredArray = new ArrayList<Boolean>();
+		List<Boolean> filteredList = new ArrayList<Boolean>();
 
 		for (boolean b : array) {
 			if (predicateFilter.filter(b)) {
-				filteredArray.add(b);
+				filteredList.add(b);
 			}
 		}
 
-		return toArray(
-			filteredArray.toArray(new Boolean[filteredArray.size()]));
+		return toArray(filteredList.toArray(new Boolean[filteredList.size()]));
 	}
 
 	public static byte[] filter(
@@ -735,15 +735,15 @@ public class ArrayUtil {
 			return array;
 		}
 
-		List<Byte> filteredArray = new ArrayList<Byte>();
+		List<Byte> filteredList = new ArrayList<Byte>();
 
 		for (byte b : array) {
 			if (predicateFilter.filter(b)) {
-				filteredArray.add(b);
+				filteredList.add(b);
 			}
 		}
 
-		return toArray(filteredArray.toArray(new Byte[filteredArray.size()]));
+		return toArray(filteredList.toArray(new Byte[filteredList.size()]));
 	}
 
 	public static char[] filter(
@@ -753,16 +753,16 @@ public class ArrayUtil {
 			return array;
 		}
 
-		List<Character> filteredArray = new ArrayList<Character>();
+		List<Character> filteredList = new ArrayList<Character>();
 
 		for (char c : array) {
 			if (predicateFilter.filter(c)) {
-				filteredArray.add(c);
+				filteredList.add(c);
 			}
 		}
 
 		return toArray(
-			filteredArray.toArray(new Character[filteredArray.size()]));
+			filteredList.toArray(new Character[filteredList.size()]));
 	}
 
 	public static double[] filter(
@@ -772,15 +772,15 @@ public class ArrayUtil {
 			return array;
 		}
 
-		List<Double> filteredArray = new ArrayList<Double>();
+		List<Double> filteredList = new ArrayList<Double>();
 
 		for (double d : array) {
 			if (predicateFilter.filter(d)) {
-				filteredArray.add(d);
+				filteredList.add(d);
 			}
 		}
 
-		return toArray(filteredArray.toArray(new Double[filteredArray.size()]));
+		return toArray(filteredList.toArray(new Double[filteredList.size()]));
 	}
 
 	public static float[] filter(
@@ -790,15 +790,15 @@ public class ArrayUtil {
 			return array;
 		}
 
-		List<Float> filteredArray = new ArrayList<Float>();
+		List<Float> filteredList = new ArrayList<Float>();
 
 		for (float f : array) {
 			if (predicateFilter.filter(f)) {
-				filteredArray.add(f);
+				filteredList.add(f);
 			}
 		}
 
-		return toArray(filteredArray.toArray(new Float[filteredArray.size()]));
+		return toArray(filteredList.toArray(new Float[filteredList.size()]));
 	}
 
 	public static int[] filter(
@@ -808,16 +808,15 @@ public class ArrayUtil {
 			return array;
 		}
 
-		List<Integer> filteredArray = new ArrayList<Integer>();
+		List<Integer> filteredList = new ArrayList<Integer>();
 
 		for (int i : array) {
 			if (predicateFilter.filter(i)) {
-				filteredArray.add(i);
+				filteredList.add(i);
 			}
 		}
 
-		return toArray(
-			filteredArray.toArray(new Integer[filteredArray.size()]));
+		return toArray(filteredList.toArray(new Integer[filteredList.size()]));
 	}
 
 	public static long[] filter(
@@ -827,15 +826,15 @@ public class ArrayUtil {
 			return array;
 		}
 
-		List<Long> filteredArray = new ArrayList<Long>();
+		List<Long> filteredList = new ArrayList<Long>();
 
 		for (long l : array) {
 			if (predicateFilter.filter(l)) {
-				filteredArray.add(l);
+				filteredList.add(l);
 			}
 		}
 
-		return toArray(filteredArray.toArray(new Long[filteredArray.size()]));
+		return toArray(filteredList.toArray(new Long[filteredList.size()]));
 	}
 
 	public static short[] filter(
@@ -845,15 +844,36 @@ public class ArrayUtil {
 			return array;
 		}
 
-		List<Short> filteredArray = new ArrayList<Short>();
+		List<Short> filteredList = new ArrayList<Short>();
 
 		for (short s : array) {
 			if (predicateFilter.filter(s)) {
-				filteredArray.add(s);
+				filteredList.add(s);
 			}
 		}
 
-		return toArray(filteredArray.toArray(new Short[filteredArray.size()]));
+		return toArray(filteredList.toArray(new Short[filteredList.size()]));
+	}
+
+	public static <T> T[] filter(
+		T[] array, PredicateFilter<T> filterPredicate) {
+
+		if ((array == null) || (array.length == 0)) {
+			return array;
+		}
+
+		List<T> filteredList = new ArrayList<T>();
+
+		for (T t : array) {
+			if (filterPredicate.filter(t)) {
+				filteredList.add(t);
+			}
+		}
+
+		Object[] filteredArray = filteredList.toArray();
+
+		return (T[])Arrays.copyOf(
+			filteredArray, filteredArray.length, filteredArray.getClass());
 	}
 
 	public static int getLength(Object[] array) {
