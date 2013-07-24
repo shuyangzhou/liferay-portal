@@ -276,6 +276,11 @@ public class ArrayUtil_IW {
 		return ArrayUtil.filter(array, predicateFilter);
 	}
 
+	public <T> T[] filter(T[] array,
+		com.liferay.portal.kernel.util.PredicateFilter<T> filterPredicate) {
+		return ArrayUtil.filter(array, filterPredicate);
+	}
+
 	public int getLength(java.lang.Object[] array) {
 		return ArrayUtil.getLength(array);
 	}

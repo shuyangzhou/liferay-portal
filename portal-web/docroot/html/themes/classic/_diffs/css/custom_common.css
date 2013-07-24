@@ -19,6 +19,10 @@
 		}
 	}
 
+	.alert {
+		word-wrap: break-word;
+	}
+
 	.table {
 		font-size: 15px;
 		overflow: hidden;
@@ -325,7 +329,15 @@
 	}
 
 	.lfr-has-add-content .nav-add-controls {
-		left: 349px;
+		left: 350px;
+	}
+
+	.lfr-has-device-preview .nav-add-controls {
+		left: 220px;
+	}
+
+	.lfr-has-edit-layout .nav-add-controls {
+		left: 460px;
 	}
 
 	/* ---------- Nav#Navigation ---------- */

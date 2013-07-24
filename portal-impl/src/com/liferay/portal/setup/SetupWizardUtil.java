@@ -116,6 +116,29 @@ public class SetupWizardUtil {
 		return true;
 	}
 
+	public static void reloadDataSources(Properties jdbcProperties)
+		throws Exception {
+
+		// Data sources
+
+		jdbcProperties = PropertiesUtil.getProperties(
+			jdbcProperties,"jdbc.default.",true);
+
+		DataSourceSwapper.swapCounterDataSource(jdbcProperties);
+		DataSourceSwapper.swapLiferayDataSource(jdbcProperties);
+
+		// Caches
+
+		CacheRegistryUtil.clear();
+		MultiVMPoolUtil.clear();
+		WebCachePoolUtil.clear();
+		CentralizedThreadLocal.clearShortLivedThreadLocals();
+
+		// Persistence beans
+
+		_reconfigurePersistenceBeans();
+	}
+
 	public static void setSetupFinished(boolean setupFinished) {
 		_setupFinished = setupFinished;
 	}
@@ -291,22 +314,7 @@ public class SetupWizardUtil {
 
 		jdbcProperties.putAll(unicodeProperties);
 
-		jdbcProperties = PropertiesUtil.getProperties(
-			jdbcProperties,"jdbc.default.",true);
-
-		DataSourceSwapper.swapCounterDataSource(jdbcProperties);
-		DataSourceSwapper.swapLiferayDataSource(jdbcProperties);
-
-		// Caches
-
-		CacheRegistryUtil.clear();
-		MultiVMPoolUtil.clear();
-		WebCachePoolUtil.clear();
-		CentralizedThreadLocal.clearShortLivedThreadLocals();
-
-		// Persistence beans
-
-		_reconfigurePersistenceBeans();
+		reloadDataSources(jdbcProperties);
 
 		// Quartz
 

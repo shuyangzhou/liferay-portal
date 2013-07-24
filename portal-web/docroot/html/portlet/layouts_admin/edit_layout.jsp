@@ -104,13 +104,18 @@ if (!group.isUser() && selLayout.isTypePortlet()) {
 }
 
 String[][] categorySections = {mainSections};
+
+String displayStyle = ParamUtil.getString(request, "displayStyle");
+boolean showAddAction = ParamUtil.getBoolean(request, "showAddAction", true);
 %>
 
-<liferay-util:include page="/html/portlet/layouts_admin/add_layout.jsp" />
+<c:if test="<%= !portletName.equals(PortletKeys.DOCKBAR) %>">
+	<liferay-util:include page="/html/portlet/layouts_admin/add_layout.jsp" />
+</c:if>
 
 <aui:nav-bar>
 	<aui:nav id="layoutsNav">
-		<c:if test="<%= LayoutPermissionUtil.contains(permissionChecker, selPlid, ActionKeys.ADD_LAYOUT) && PortalUtil.isLayoutParentable(selLayout.getType()) && SitesUtil.isLayoutSortable(selLayout) %>">
+		<c:if test="<%= LayoutPermissionUtil.contains(permissionChecker, selPlid, ActionKeys.ADD_LAYOUT) && PortalUtil.isLayoutParentable(selLayout.getType()) && SitesUtil.isLayoutSortable(selLayout) && showAddAction %>">
 			<aui:nav-item data-value="add-child-page" iconClass="icon-plus" label="add-child-page" />
 		</c:if>
 		<c:if test="<%= LayoutPermissionUtil.contains(permissionChecker, selPlid, ActionKeys.PERMISSIONS) %>">
@@ -129,7 +134,7 @@ String[][] categorySections = {mainSections};
 	<portlet:param name="struts_action" value="/layouts_admin/edit_layouts" />
 </portlet:actionURL>
 
-<aui:form action="<%= editLayoutURL %>" cssClass="edit-layout-form" enctype="multipart/form-data" method="post" name="fm" onSubmit='<%= "event.preventDefault(); " + liferayPortletResponse.getNamespace() + "saveLayout();" %>'>
+<aui:form action='<%= HttpUtil.addParameter(editLayoutURL, "refererPlid", plid) %>' cssClass="edit-layout-form" enctype="multipart/form-data" method="post" name="fm" onSubmit='<%= "event.preventDefault(); " + liferayPortletResponse.getNamespace() + "saveLayout();" %>'>
 	<aui:input name="<%= Constants.CMD %>" type="hidden" />
 	<aui:input name="redirect" type="hidden" value='<%= HttpUtil.addParameter(redirectURL.toString(), liferayPortletResponse.getNamespace() + "selPlid", selPlid) %>' />
 	<aui:input name="closeRedirect" type="hidden" value="<%= closeRedirect %>" />
@@ -235,7 +240,9 @@ String[][] categorySections = {mainSections};
 					var popup;
 
 					var clickHandler = function(event) {
-						var dataValue = event.target.ancestor().attr('data-value');
+						var target = event.target;
+
+						var dataValue = target.ancestor().attr('data-value') || target.attr('data-value');
 
 						if (dataValue === 'add-child-page') {
 							content = A.one('#<portlet:namespace />addLayout');
@@ -314,12 +321,12 @@ String[][] categorySections = {mainSections};
 
 					A.one('#<portlet:namespace />layoutsNav').delegate('click', clickHandler, 'li a');
 				</aui:script>
-
 			</c:if>
 
 			<liferay-ui:form-navigator
 				categoryNames="<%= _CATEGORY_NAMES %>"
 				categorySections="<%= categorySections %>"
+				displayStyle="<%= displayStyle %>"
 				jspPath="/html/portlet/layouts_admin/layout/"
 				showButtons="<%= (selLayout.getGroupId() == groupId) && SitesUtil.isLayoutUpdateable(selLayout) && LayoutPermissionUtil.contains(permissionChecker, selPlid, ActionKeys.UPDATE) %>"
 			/>

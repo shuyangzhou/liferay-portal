@@ -69,6 +69,19 @@ else {
 <aui:fieldset>
 	<aui:input name="devices" type="hidden" value='<%= PropsValues.MOBILE_DEVICE_STYLING_WAP_ENABLED ? "regular,wap" : "regular" %>' />
 
+	<liferay-util:buffer var="rootNodeNameLink">
+		<c:choose>
+			<c:when test="<%= themeDisplay.isStateExclusive() %>">
+				<%= HtmlUtil.escape(rootNodeName) %>
+			</c:when>
+			<c:otherwise>
+				<aui:a href="<%= redirectURL.toString() %>">
+					<%= HtmlUtil.escape(rootNodeName) %>
+				</aui:a>
+			</c:otherwise>
+		</c:choose>
+	</liferay-util:buffer>
+
 	<%
 	String taglibLabel = null;
 
@@ -76,7 +89,7 @@ else {
 		taglibLabel = LanguageUtil.get(pageContext, "use-the-same-look-and-feel-of-the-pages-in-which-this-template-is-used");
 	}
 	else {
-		taglibLabel = LanguageUtil.format(pageContext, "use-the-same-look-and-feel-of-the-x-x", new String[] {HtmlUtil.escape(rootNodeName), redirectURL.toString()});
+		taglibLabel = LanguageUtil.format(pageContext, "use-the-same-look-and-feel-of-the-x", rootNodeNameLink);
 	}
 	%>
 

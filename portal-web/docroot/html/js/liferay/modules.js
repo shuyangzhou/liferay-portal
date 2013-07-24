@@ -324,12 +324,6 @@ window.YUI_config = {
 						'aui-toolbar'
 					]
 				},
-				'liferay-toggler-key-filter': {
-					path: 'toggler_key_filter.js',
-					requires: [
-						'aui-event-base'
-					]
-				},
 				'liferay-layout': {
 					path: 'layout.js'
 				},
@@ -338,6 +332,15 @@ window.YUI_config = {
 					requires: [
 						'aui-sortable-layout',
 						'dd'
+					]
+				},
+				'liferay-layout-customization-settings': {
+					path: 'layout_customization_settings.js',
+					requires: [
+						'aui-base',
+						'aui-io-request',
+						'aui-overlay-mask-deprecated',
+						'liferay-portlet-base'
 					]
 				},
 				'liferay-layout-freeform': {
@@ -553,6 +556,12 @@ window.YUI_config = {
 					path: 'store.js',
 					requires: [
 						'aui-io-request'
+					]
+				},
+				'liferay-toggler-key-filter': {
+					path: 'toggler_key_filter.js',
+					requires: [
+						'aui-event-base'
 					]
 				},
 				'liferay-token-list': {
