@@ -41,7 +41,12 @@
 	_publicPageCount = 1
 />
 
-<#assign groupIds = 1..maxGroupCount>
+<#if (maxGroupCount > 0)>
+	<#assign groupIds = 1..maxGroupCount>
+<#else>
+	<#assign groupIds = []>
+</#if>
+
 <#assign roleIds = [dataFactory.administratorRoleModel.roleId, dataFactory.powerUserRoleModel.roleId, dataFactory.userRoleModel.roleId]>
 
 <@insertUser

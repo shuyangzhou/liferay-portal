@@ -56,7 +56,7 @@
 	_groupId
 	_parentDLFolderId
 >
-	<#if (_dlFolderDepth <= maxDLFolderDepth)>
+	<#if (_dlFolderDepth <= maxDLFolderDepth) && (maxDLFolderCount > 0)>
 		<#list 1..maxDLFolderCount as dlFolderCount>
 			<#local dlFolderModel = dataFactory.newDLFolderModel(_groupId, _parentDLFolderId, dlFolderCount)>
 
