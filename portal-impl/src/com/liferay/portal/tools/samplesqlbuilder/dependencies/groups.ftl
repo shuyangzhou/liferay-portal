@@ -31,7 +31,7 @@
 
 	<#include "wiki.ftl">
 
-	<#if (maxDLFolderDepth > 0)>
+	<#if (dataFactory.maxDLFolderDepth > 0)>
 		<@insertDLFolder
 			_ddmStructureId = dataFactory.defaultDLDDMStructureId
 			_dlFolderDepth = 1
@@ -48,7 +48,7 @@
 		/>
 	</#list>
 
-	<#assign publicPageCount = publicLayoutModels?size + maxDDLRecordSetCount + maxJournalArticleCount>
+	<#assign publicPageCount = publicLayoutModels?size + dataFactory.maxDDLRecordSetCount + dataFactory.maxJournalArticleCount>
 
 	<@insertGroup
 		_groupModel = groupModel

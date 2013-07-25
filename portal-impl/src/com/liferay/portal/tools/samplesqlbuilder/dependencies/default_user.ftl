@@ -41,8 +41,8 @@
 	_publicPageCount = 1
 />
 
-<#if (maxGroupCount > 0)>
-	<#assign groupIds = 1..maxGroupCount>
+<#if (dataFactory.maxGroupCount > 0)>
+	<#assign groupIds = 1..dataFactory.maxGroupCount>
 <#else>
 	<#assign groupIds = []>
 </#if>

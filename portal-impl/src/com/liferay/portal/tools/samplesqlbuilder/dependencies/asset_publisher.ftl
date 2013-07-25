@@ -1,5 +1,5 @@
-<#if (maxAssetPublisherPageCount > 0)>
-	<#list 1..maxAssetPublisherPageCount as pageCount>
+<#if (dataFactory.maxAssetPublisherPageCount > 0)>
+	<#list 1..dataFactory.maxAssetPublisherPageCount as pageCount>
 		<#assign portletId = "101_INSTANCE_TEST_" + pageCount>
 
 		<#assign layoutModel = dataFactory.newLayoutModel(groupId, groupId + "_asset_publisher_" + pageCount, "", portletId)>
