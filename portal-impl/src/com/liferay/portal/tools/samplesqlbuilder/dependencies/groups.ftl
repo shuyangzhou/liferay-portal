@@ -31,12 +31,14 @@
 
 	<#include "wiki.ftl">
 
-	<@insertDLFolder
-		_ddmStructureId = dataFactory.defaultDLDDMStructureId
-		_dlFolderDepth = 1
-		_groupId = groupId
-		_parentDLFolderId = 0
-	/>
+	<#if (dataFactory.maxDLFolderDepth > 0)>
+		<@insertDLFolder
+			_ddmStructureId = dataFactory.defaultDLDDMStructureId
+			_dlFolderDepth = 1
+			_groupId = groupId
+			_parentDLFolderId = 0
+		/>
+	</#if>
 
 	<#assign publicLayoutModels = dataFactory.newPublicLayoutModels(groupId)>
 
@@ -46,7 +48,7 @@
 		/>
 	</#list>
 
-	<#assign publicPageCount = publicLayoutModels?size + maxDDLRecordSetCount + maxJournalArticleCount>
+	<#assign publicPageCount = publicLayoutModels?size + dataFactory.maxDDLRecordSetCount + dataFactory.maxJournalArticleCount>
 
 	<@insertGroup
 		_groupModel = groupModel
