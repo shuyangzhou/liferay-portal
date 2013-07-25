@@ -584,7 +584,7 @@ public class DataFactory {
 		return _classNameModelsMap.get(WikiPage.class.getName());
 	}
 
-	public void initAssetCategoryModels() {
+	protected void initAssetCategoryModels() {
 		_assetCategoryModelsArray =
 			(List<AssetCategoryModel>[])new List<?>[_maxGroupCount];
 		_assetVocabularyModelsArray =
@@ -642,7 +642,7 @@ public class DataFactory {
 		}
 	}
 
-	public void initAssetTagModels() {
+	protected void initAssetTagModels() {
 		_assetTagModelsArray =
 			(List<AssetTagModel>[])new List<?>[_maxGroupCount];
 		_assetTagStatsModelsArray =
@@ -692,7 +692,7 @@ public class DataFactory {
 		}
 	}
 
-	public void initCompanyModel() {
+	protected void initCompanyModel() {
 		_companyModel = new CompanyModelImpl();
 
 		_companyModel.setCompanyId(_companyId);
@@ -711,7 +711,7 @@ public class DataFactory {
 		_accountModel.setLegalName("Liferay, Inc.");
 	}
 
-	public void initContext(Properties properties) {
+	protected void initContext(Properties properties) {
 		_maxAssetCategoryCount = GetterUtil.getInteger(
 			properties.getProperty("sample.sql.max.asset.category.count"));
 		_maxAssetEntryToAssetCategoryCount = GetterUtil.getInteger(
@@ -776,7 +776,7 @@ public class DataFactory {
 			properties.getProperty("sample.sql.max.wiki.page.count"));
 	}
 
-	public void initDLFileEntryTypeModel() {
+	protected void initDLFileEntryTypeModel() {
 		_defaultDLFileEntryTypeModel = new DLFileEntryTypeModelImpl();
 
 		_defaultDLFileEntryTypeModel.setUuid(SequentialUUID.generate());
@@ -802,7 +802,7 @@ public class DataFactory {
 			_dlDDMStructureContent);
 	}
 
-	public void initGroupModels() throws Exception {
+	protected void initGroupModels() throws Exception {
 		long groupClassNameId = getGroupClassNameId();
 
 		_globalGroupModel = newGroupModel(
@@ -823,7 +823,7 @@ public class DataFactory {
 		}
 	}
 
-	public void initJournalArticleContent(int maxJournalArticleSize) {
+	protected void initJournalArticleContent(int maxJournalArticleSize) {
 		StringBundler sb = new StringBundler(5);
 
 		sb.append("<?xml version=\"1.0\"?><root available-locales=\"en_US\" ");
@@ -847,7 +847,7 @@ public class DataFactory {
 		_journalArticleContent = sb.toString();
 	}
 
-	public void initRoleModels() {
+	protected void initRoleModels() {
 		_roleModels = new ArrayList<RoleModel>();
 
 		// Administrator
@@ -929,7 +929,7 @@ public class DataFactory {
 		_roleModels.add(_userRoleModel);
 	}
 
-	public void initUserModels() {
+	protected void initUserModels() {
 		_defaultUserModel = newUserModel(
 			_defaultUserId, StringPool.BLANK, StringPool.BLANK,
 			StringPool.BLANK, true);
@@ -940,14 +940,14 @@ public class DataFactory {
 			_SAMPLE_USER_NAME, false);
 	}
 
-	public void initUserNames() throws IOException {
+	protected void initUserNames() throws IOException {
 		_firstNames = ListUtil.fromString(
 			StringUtil.read(getResourceInputStream("first_names.txt")));
 		_lastNames = ListUtil.fromString(
 			StringUtil.read(getResourceInputStream("last_names.txt")));
 	}
 
-	public void initVirtualHostModel() {
+	protected void initVirtualHostModel() {
 		_virtualHostModel = new VirtualHostModelImpl();
 
 		_virtualHostModel.setVirtualHostId(_counter.get());
