@@ -59,8 +59,13 @@ public class TeamFinderImpl
 			LinkedHashMap<String, Object> params)
 		throws SystemException {
 
-		name = CustomSQLUtil.keywords(name)[0];
-		description = CustomSQLUtil.keywords(description)[0];
+		if (Validator.isNotNull(name)) {
+			name = CustomSQLUtil.keywords(name)[0];
+		}
+
+		if (Validator.isNotNull(name)) {
+			description = CustomSQLUtil.keywords(description)[0];
+		}
 
 		Session session = null;
 
@@ -113,8 +118,13 @@ public class TeamFinderImpl
 			OrderByComparator obc)
 		throws SystemException {
 
-		name = CustomSQLUtil.keywords(name)[0];
-		description = CustomSQLUtil.keywords(description)[0];
+		if (Validator.isNotNull(name)) {
+			name = CustomSQLUtil.keywords(name)[0];
+		}
+
+		if (Validator.isNotNull(description)) {
+			description = CustomSQLUtil.keywords(description)[0];
+		}
 
 		Session session = null;
 

@@ -16,13 +16,13 @@ package com.liferay.portal.service.impl;
 
 import com.liferay.portal.RequiredUserException;
 import com.liferay.portal.ReservedUserEmailAddressException;
-import com.liferay.portal.UserEmailAddressException;
-import com.liferay.portal.UserScreenNameException;
+import com.liferay.portal.UserFieldException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -65,6 +65,7 @@ import com.liferay.portlet.announcements.model.AnnouncementsDelivery;
 import com.liferay.portlet.usersadmin.util.UsersAdminUtil;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -1806,11 +1807,10 @@ public class UserServiceImpl extends UserServiceBaseImpl {
 		long curUserId = getUserId();
 
 		if (curUserId == userId) {
-			screenName = screenName.trim().toLowerCase();
-
-			if (!screenName.equalsIgnoreCase(user.getScreenName())) {
-				validateScreenName(user, screenName);
-			}
+			validateUpdatePermission(
+				user, screenName, emailAddress, firstName, middleName, lastName,
+				prefixId, suffixId, birthdayMonth, birthdayDay, birthdayYear,
+				male, jobTitle);
 
 			emailAddress = emailAddress.trim().toLowerCase();
 
@@ -2557,12 +2557,6 @@ public class UserServiceImpl extends UserServiceBaseImpl {
 	protected void validateEmailAddress(User user, String emailAddress)
 		throws PortalException, SystemException {
 
-		PermissionChecker permissionChecker = getPermissionChecker();
-
-		if (!UsersAdminUtil.hasUpdateEmailAddress(permissionChecker, user)) {
-			throw new UserEmailAddressException();
-		}
-
 		if (!user.hasCompanyMx() && user.hasCompanyMx(emailAddress)) {
 			Company company = companyPersistence.findByPrimaryKey(
 				user.getCompanyId());
@@ -2607,13 +2601,74 @@ public class UserServiceImpl extends UserServiceBaseImpl {
 		}
 	}
 
-	protected void validateScreenName(User user, String screenName)
+	protected void validateUpdatePermission(
+			User user, String screenName, String emailAddress, String firstName,
+			String middleName, String lastName, int prefixId, int suffixId,
+			int birthdayMonth, int birthdayDay, int birthdayYear, boolean male,
+			String jobTitle)
 		throws PortalException, SystemException {
 
-		PermissionChecker permissionChecker = getPermissionChecker();
+		List<String> fields = new ArrayList<String>();
 
-		if (!UsersAdminUtil.hasUpdateScreenName(permissionChecker, user)) {
-			throw new UserScreenNameException();
+		Contact contact = user.getContact();
+
+		Calendar birthday = CalendarFactoryUtil.getCalendar();
+
+		birthday.setTime(contact.getBirthday());
+
+		if ((birthdayMonth != birthday.get(Calendar.MONTH)) ||
+			(birthdayDay != birthday.get(Calendar.DAY_OF_MONTH)) ||
+			(birthdayYear != birthday.get(Calendar.YEAR))) {
+
+			fields.add("birthday");
+		}
+
+		if (!emailAddress.equalsIgnoreCase(user.getEmailAddress())) {
+			fields.add("emailAddress");
+		}
+
+		if (!firstName.equalsIgnoreCase(user.getFirstName())) {
+			fields.add("firstName");
+		}
+
+		if (male != contact.getMale()) {
+			fields.add("gender");
+		}
+
+		if (!jobTitle.equalsIgnoreCase(user.getJobTitle())) {
+			fields.add("jobTitle");
+		}
+
+		if (!lastName.equalsIgnoreCase(user.getLastName())) {
+			fields.add("lastName");
+		}
+
+		if (!middleName.equalsIgnoreCase(user.getMiddleName())) {
+			fields.add("middleName");
+		}
+
+		if (prefixId != contact.getPrefixId()) {
+			fields.add("prefix");
+		}
+
+		if (!screenName.equalsIgnoreCase(user.getScreenName())) {
+			fields.add("screenName");
+		}
+
+		if (suffixId != contact.getSuffixId()) {
+			fields.add("suffix");
+		}
+
+		UserFieldException ufe = new UserFieldException();
+
+		for (String field : fields) {
+			if (!UsersAdminUtil.hasUpdateFieldPermission(user, field)) {
+				ufe.addField(field);
+			}
+		}
+
+		if (ufe.hasFields()) {
+			throw ufe;
 		}
 	}
 

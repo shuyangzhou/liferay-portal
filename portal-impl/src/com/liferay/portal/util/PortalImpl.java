@@ -947,7 +947,7 @@ public class PortalImpl implements Portal {
 
 	/**
 	 * @deprecated As of 6.2.0, replaced by {@link
-	 *             LanguageUtil#getAvailableLocales( )}
+	 *             LanguageUtil#getAvailableLocales}
 	 */
 	@Override
 	public Locale[] getAlternateLocales(HttpServletRequest request) {
@@ -1039,8 +1039,7 @@ public class PortalImpl implements Portal {
 
 	/**
 	 * @deprecated As of 6.2.0, replaced by {@link
-	 *             com.liferay.portal.security.auth.AuthTokenWhitelistUtil#getPortletCSRFWhitelistActions(
-	 *             )}
+	 *             AuthTokenWhitelistUtil#getPortletCSRFWhitelistActions}
 	 */
 	@Override
 	public Set<String> getAuthTokenIgnoreActions() {
@@ -1049,8 +1048,7 @@ public class PortalImpl implements Portal {
 
 	/**
 	 * @deprecated As of 6.2.0, replaced by {@link
-	 *             com.liferay.portal.security.auth.AuthTokenWhitelistUtil#getPortletCSRFWhitelist(
-	 *             )}
+	 *             AuthTokenWhitelistUtil#getPortletCSRFWhitelist}
 	 */
 	@Override
 	public Set<String> getAuthTokenIgnorePortlets() {
@@ -3900,8 +3898,7 @@ public class PortalImpl implements Portal {
 
 	/**
 	 * @deprecated As of 6.2.0, replaced by {@link
-	 *             com.liferay.portal.security.auth.AuthTokenWhitelistUtil#getPortletInvocationWhitelist(
-	 *             )}
+	 *             AuthTokenWhitelistUtil#getPortletInvocationWhitelist}
 	 */
 	@Override
 	public Set<String> getPortletAddDefaultResourceCheckWhitelist() {
@@ -3910,8 +3907,7 @@ public class PortalImpl implements Portal {
 
 	/**
 	 * @deprecated As of 6.2.0, replaced by {@link
-	 *             com.liferay.portal.security.auth.AuthTokenWhitelistUtil#getPortletInvocationWhitelistActions(
-	 *             )}
+	 *             AuthTokenWhitelistUtil#getPortletInvocationWhitelistActions}
 	 */
 	@Override
 	public Set<String> getPortletAddDefaultResourceCheckWhitelistActions() {
@@ -6294,8 +6290,7 @@ public class PortalImpl implements Portal {
 
 	/**
 	 * @deprecated As of 6.2.0, replaced by {@link
-	 *             com.liferay.portal.security.auth.AuthTokenWhitelistUtil#resetPortletInvocationWhitelist(
-	 *             )}
+	 *             AuthTokenWhitelistUtil#resetPortletInvocationWhitelist}
 	 */
 	@Override
 	public Set<String> resetPortletAddDefaultResourceCheckWhitelist() {
@@ -6304,8 +6299,7 @@ public class PortalImpl implements Portal {
 
 	/**
 	 * @deprecated As of 6.2.0, replaced by {@link
-	 *             com.liferay.portal.security.auth.AuthTokenWhitelistUtil#resetPortletInvocationWhitelistActions(
-	 *             )}
+	 *             AuthTokenWhitelistUtil#resetPortletInvocationWhitelistActions}
 	 */
 	@Override
 	public Set<String> resetPortletAddDefaultResourceCheckWhitelistActions() {
