@@ -110,6 +110,34 @@ public class CustomSQL {
 		return sql.concat(criteria);
 	}
 
+	private String escapeSingleWildCards(String keywords) {
+		if (isVendorMySQL() || isVendorOracle()) {
+			char[] chars = keywords.toCharArray();
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < chars.length; ++i) {
+				if(chars[i] == '\\') {
+					sb.append(chars[i]);
+					i++;
+					sb.append(chars[i]);
+					continue;
+				}
+				if(chars[i] == '_') {
+					sb.append('\\');
+					sb.append('_');
+					continue;
+				}
+				if(chars[i] == '%') {
+					sb.append('\\');
+					sb.append('%');
+					continue;
+				}
+				sb.append(chars[i]);
+			}
+			keywords = sb.toString();
+		}
+		return keywords;
+	}
+
 	public String get(String id) {
 		return _sqlPool.get(id);
 	}
@@ -146,6 +174,13 @@ public class CustomSQL {
 		}
 
 		return sql;
+	}
+
+	protected String getWildcardProperty() {
+		Properties propsUtil = PortalUtil.getPortalProperties();
+
+		return propsUtil.getProperty(
+			"custom.sql.escape.single.wildcards.disabled");
 	}
 
 	/**
@@ -232,8 +267,10 @@ public class CustomSQL {
 			return new String[] {null};
 		}
 
-		if (isVendorMySQL() || isVendorOracle()) {
-			keywords = StringUtil.replace(keywords, "_", "\\_");
+		Boolean wildcard_enabled = Boolean.parseBoolean(getWildcardProperty());
+
+		if(!wildcard_enabled) {
+			keywords = escapeSingleWildCards(keywords);
 		}
 
 		if (lowerCase) {

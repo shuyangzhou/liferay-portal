@@ -495,6 +495,8 @@ public interface PropsKeys {
 
 	public static final String COUNTER_INCREMENT_PREFIX = "counter.increment.";
 
+	public static final String CUSTOM_SQL_ESCAPE_SINGLE_WILDCARDS_DISABLED = "custom.sql.escape.single.wildcards.disabled";
+
 	public static final String CUSTOM_SQL_FUNCTION_ISNOTNULL = "custom.sql.function.isnotnull";
 
 	public static final String CUSTOM_SQL_FUNCTION_ISNULL = "custom.sql.function.isnull";
