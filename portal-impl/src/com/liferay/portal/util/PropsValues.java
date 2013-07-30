@@ -428,6 +428,8 @@ public class PropsValues {
 
 	public static final int COUNTER_INCREMENT = GetterUtil.getInteger(PropsUtil.get(PropsKeys.COUNTER_INCREMENT));
 
+	public static final boolean CUSTOM_SQL_ESCAPE_SINGLE_WILDCARDS_DISABLED = GetterUtil.getBoolean(PropsUtil.get(PropsKeys.CUSTOM_SQL_ESCAPE_SINGLE_WILDCARDS_DISABLED));
+
 	public static final String CUSTOM_SQL_FUNCTION_ISNOTNULL = PropsUtil.get(PropsKeys.CUSTOM_SQL_FUNCTION_ISNOTNULL);
 
 	public static final String CUSTOM_SQL_FUNCTION_ISNULL = PropsUtil.get(PropsKeys.CUSTOM_SQL_FUNCTION_ISNULL);
