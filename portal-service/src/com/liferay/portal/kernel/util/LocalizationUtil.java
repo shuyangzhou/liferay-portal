@@ -43,8 +43,16 @@ public class LocalizationUtil {
 		return getLocalization().deserialize(jsonObject);
 	}
 
+	public static String[] getAvailableLanguageIds(String xml) {
+		return getLocalization().getAvailableLanguageIds(xml);
+	}
+
+	/**
+	 * @deprecated As of 6.2.0, replaced by {@link
+	 *             #getAvailableLanguageIds(String)}
+	 */
 	public static String[] getAvailableLocales(String xml) {
-		return getLocalization().getAvailableLocales(xml);
+		return getAvailableLanguageIds(xml);
 	}
 
 	public static Locale getDefaultImportLocale(
@@ -55,8 +63,16 @@ public class LocalizationUtil {
 			className, classPK, contentDefaultLocale, contentAvailableLocales);
 	}
 
-	public static String getDefaultLocale(String xml) {
+	public static String getDefaultLanguageId(String xml) {
 		return getLocalization().getDefaultLocale(xml);
+	}
+
+	/**
+	 * @deprecated As of 6.2.0, replaced by {@link
+	 *             #getDefaultLanguageId(String)}
+	 */
+	public static String getDefaultLocale(String xml) {
+		return getDefaultLanguageId(xml);
 	}
 
 	public static Localization getLocalization() {

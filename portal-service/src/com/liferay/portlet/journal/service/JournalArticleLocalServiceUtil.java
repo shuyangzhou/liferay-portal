@@ -884,6 +884,13 @@ public class JournalArticleLocalServiceUtil {
 		return getService().fetchArticle(groupId, articleId, version);
 	}
 
+	public static com.liferay.portlet.journal.model.JournalArticle fetchLatestArticle(
+		long resourcePrimKey, int status, boolean preferApproved)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .fetchLatestArticle(resourcePrimKey, status, preferApproved);
+	}
+
 	/**
 	* Returns the web content article with the ID.
 	*

@@ -1125,6 +1125,13 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	@Override
+	public List<Element> getReferenceElements(
+		StagedModel parentStagedModel, Class<?> clazz) {
+
+		return getReferenceElements(parentStagedModel, clazz, null);
+	}
+
+	@Override
 	public String getRootPath() {
 		return ExportImportPathUtil.getRootPath(this);
 	}

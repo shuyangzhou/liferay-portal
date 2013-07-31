@@ -1526,6 +1526,14 @@ public class JournalArticleWrapper implements JournalArticle,
 	}
 
 	@Override
+	public java.lang.String[] getAvailableLanguageIds() {
+		return _journalArticle.getAvailableLanguageIds();
+	}
+
+	/**
+	* @deprecated As of 6.2.0, replaced by {@link #getAvailableLanguageIds}
+	*/
+	@Override
 	public java.lang.String[] getAvailableLocales() {
 		return _journalArticle.getAvailableLocales();
 	}

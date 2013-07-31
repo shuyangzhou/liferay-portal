@@ -284,6 +284,25 @@ public class LayoutTypePortletImpl
 	}
 
 	@Override
+	public List<Portlet> getAllPortlets(boolean includeSystem)
+		throws PortalException, SystemException {
+
+		List<Portlet> filteredPortlets = new ArrayList<Portlet>();
+
+		List<Portlet> portlets = getAllPortlets();
+
+		for (Portlet portlet : portlets) {
+			if (portlet.isSystem() && !includeSystem) {
+				continue;
+			}
+
+			filteredPortlets.add(portlet);
+		}
+
+		return filteredPortlets;
+	}
+
+	@Override
 	public List<Portlet> getAllPortlets(String columnId)
 		throws PortalException, SystemException {
 
@@ -1390,7 +1409,7 @@ public class LayoutTypePortletImpl
 
 			if (Validator.isNull(portletId) ||
 				columnPortlets.contains(portlet) ||
-				staticPortlets.contains(portlet) || portlet.isSystem() ||
+				staticPortlets.contains(portlet) || !portlet.isReady() ||
 				portlet.isUndeployedPortlet() || !portlet.isActive()) {
 
 				continue;

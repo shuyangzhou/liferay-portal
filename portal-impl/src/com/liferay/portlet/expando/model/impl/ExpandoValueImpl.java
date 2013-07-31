@@ -58,7 +58,7 @@ public class ExpandoValueImpl extends ExpandoValueBaseImpl {
 		List<Locale> locales = new ArrayList<Locale>();
 
 		for (String languageId :
-				LocalizationUtil.getAvailableLocales(getData())) {
+				LocalizationUtil.getAvailableLanguageIds(getData())) {
 
 			locales.add(LocaleUtil.fromLanguageId(languageId));
 		}
@@ -123,7 +123,8 @@ public class ExpandoValueImpl extends ExpandoValueBaseImpl {
 			return null;
 		}
 
-		String defaultLanguageId = LocalizationUtil.getDefaultLocale(getData());
+		String defaultLanguageId = LocalizationUtil.getDefaultLanguageId(
+			getData());
 
 		return LocaleUtil.fromLanguageId(defaultLanguageId);
 	}

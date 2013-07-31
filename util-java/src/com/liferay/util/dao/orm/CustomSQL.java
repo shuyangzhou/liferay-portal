@@ -24,6 +24,8 @@ import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -59,6 +61,9 @@ public class CustomSQL {
 
 	public static final String DB2_FUNCTION_IS_NULL =
 		"CAST(? AS VARCHAR(32672)) IS NULL";
+
+	public static final boolean escapeWildCardsEnabled = GetterUtil.getBoolean(
+		PropsUtil.get(PropsKeys.CUSTOM_SQL_AUTO_ESCAPE_WILDCARDS_ENABLED));
 
 	public static final String INFORMIX_FUNCTION_IS_NOT_NULL =
 		"NOT lportal.isnull(?)";
@@ -232,8 +237,8 @@ public class CustomSQL {
 			return new String[] {null};
 		}
 
-		if (isVendorMySQL() || isVendorOracle()) {
-			keywords = StringUtil.replace(keywords, "_", "\\_");
+		if (escapeWildCardsEnabled) {
+			keywords = escapeWildCards(keywords);
 		}
 
 		if (lowerCase) {
@@ -784,6 +789,35 @@ public class CustomSQL {
 		}
 		catch (IOException ioe) {
 			return sql;
+		}
+
+		return sb.toString();
+	}
+
+	private String escapeWildCards(String keywords) {
+		if (!isVendorMySQL() && !isVendorOracle()) {
+			return keywords;
+		}
+
+		StringBuilder sb = new StringBuilder(keywords);
+
+		for (int i = 0; i < sb.length(); ++i) {
+			if (sb.charAt(i) == '\\') {
+				i++;
+				continue;
+			}
+
+			if (sb.charAt(i) == '_') {
+				sb.insert(i,'\\');
+				i++;
+				continue;
+			}
+
+			if (sb.charAt(i) == '%') {
+				sb.insert(i,'\\');
+				i++;
+				continue;
+			}
 		}
 
 		return sb.toString();

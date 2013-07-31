@@ -334,7 +334,7 @@ public class JournalArticleIndexer extends BaseIndexer {
 		document.addUID(
 			PORTLET_ID, article.getGroupId(), article.getArticleId());
 
-		String articleDefaultLanguageId = LocalizationUtil.getDefaultLocale(
+		String articleDefaultLanguageId = LocalizationUtil.getDefaultLanguageId(
 			article.getContent());
 
 		Locale defaultLocale = LocaleUtil.getSiteDefault();
@@ -551,7 +551,8 @@ public class JournalArticleIndexer extends BaseIndexer {
 	protected String[] getLanguageIds(
 		String defaultLanguageId, String content) {
 
-		String[] languageIds = LocalizationUtil.getAvailableLocales(content);
+		String[] languageIds = LocalizationUtil.getAvailableLanguageIds(
+			content);
 
 		if (languageIds.length == 0) {
 			languageIds = new String[] {defaultLanguageId};
@@ -604,6 +605,14 @@ public class JournalArticleIndexer extends BaseIndexer {
 
 				junction.add(draftArticlesJunction);
 
+				Junction expiredArticlesJunction =
+					RestrictionsFactoryUtil.conjunction();
+
+				expiredArticlesJunction.add(
+					statusProperty.eq(WorkflowConstants.STATUS_EXPIRED));
+
+				junction.add(expiredArticlesJunction);
+
 				dynamicQuery.add(junction);
 
 				Property indexableProperty = PropertyFactoryUtil.forName(
@@ -618,11 +627,30 @@ public class JournalArticleIndexer extends BaseIndexer {
 
 				JournalArticle article = (JournalArticle)object;
 
-				if (article.isApproved()) {
-					JournalArticle latestArticle =
-						JournalArticleLocalServiceUtil.getLatestArticle(
-							article.getResourcePrimKey(),
-							WorkflowConstants.STATUS_APPROVED);
+				if (article.isApproved() || article.isExpired()) {
+					JournalArticle latestArticle = null;
+
+					if (article.isApproved()) {
+						latestArticle =
+							JournalArticleLocalServiceUtil.getLatestArticle(
+								article.getResourcePrimKey(),
+								WorkflowConstants.STATUS_APPROVED);
+					}
+					else if (article.isExpired()) {
+						latestArticle =
+							JournalArticleLocalServiceUtil.fetchLatestArticle(
+								article.getResourcePrimKey(),
+								WorkflowConstants.STATUS_APPROVED, true);
+
+						if (latestArticle != null) {
+							return;
+						}
+
+						latestArticle =
+							JournalArticleLocalServiceUtil.getLatestArticle(
+								article.getResourcePrimKey(),
+								WorkflowConstants.STATUS_EXPIRED);
+					}
 
 					String latestArticleId = latestArticle.getArticleId();
 

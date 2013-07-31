@@ -67,7 +67,7 @@ public class DDMWebDavUtil {
 
 			String xsd = StringUtil.read(request.getInputStream());
 
-			String defaultLocale = LocalizationUtil.getDefaultLocale(xsd);
+			String defaultLocale = LocalizationUtil.getDefaultLanguageId(xsd);
 
 			Map<Locale, String> nameMap = new HashMap<Locale, String>();
 

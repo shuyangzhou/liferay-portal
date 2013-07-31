@@ -46,6 +46,11 @@ public interface AssetRenderer {
 
 	public int getAssetRendererType();
 
+	public String[] getAvailableLanguageIds() throws Exception;
+
+	/**
+	 * @deprecated As of 6.2.0, replaced by {@link #getAvailableLanguageIds}
+	 */
 	public String[] getAvailableLocales() throws Exception;
 
 	public String getClassName();

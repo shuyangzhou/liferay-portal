@@ -78,8 +78,16 @@ public abstract class BaseAssetRenderer implements AssetRenderer {
 	}
 
 	@Override
+	public String[] getAvailableLanguageIds() {
+		return _AVAILABLE_LANGUAGE_IDS;
+	}
+
+	/**
+	 * @deprecated As of 6.2.0, replaced by {@link #getAvailableLanguageIds}
+	 */
+	@Override
 	public String[] getAvailableLocales() {
-		return _AVAILABLE_LOCALES;
+		return getAvailableLanguageIds();
 	}
 
 	@Override
@@ -359,7 +367,7 @@ public abstract class BaseAssetRenderer implements AssetRenderer {
 		return sb.toString();
 	}
 
-	private static final String[] _AVAILABLE_LOCALES = new String[0];
+	private static final String[] _AVAILABLE_LANGUAGE_IDS = new String[0];
 
 	private AssetRendererFactory _assetRendererFactory;
 	private int _assetRendererType = AssetRendererFactory.TYPE_LATEST_APPROVED;

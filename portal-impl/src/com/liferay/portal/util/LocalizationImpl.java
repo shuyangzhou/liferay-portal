@@ -83,7 +83,7 @@ public class LocalizationImpl implements Localization {
 	}
 
 	@Override
-	public String[] getAvailableLocales(String xml) {
+	public String[] getAvailableLanguageIds(String xml) {
 		String attributeValue = _getRootAttribute(
 			xml, _AVAILABLE_LOCALES, StringPool.BLANK);
 

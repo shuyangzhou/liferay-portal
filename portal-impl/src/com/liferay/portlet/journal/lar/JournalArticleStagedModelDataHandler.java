@@ -758,7 +758,7 @@ public class JournalArticleStagedModelDataHandler
 			article.getDefaultLocale());
 
 		Locale[] articleAvailableLocales = LocaleUtil.fromLanguageIds(
-			article.getAvailableLocales());
+			article.getAvailableLanguageIds());
 
 		Locale defaultImportLocale = LocalizationUtil.getDefaultImportLocale(
 			JournalArticle.class.getName(), article.getPrimaryKey(),

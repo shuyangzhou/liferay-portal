@@ -93,8 +93,8 @@ public class JournalArticleImpl extends JournalArticleBaseImpl {
 	}
 
 	@Override
-	public String[] getAvailableLocales() {
-		Set<String> availableLocales = new TreeSet<String>();
+	public String[] getAvailableLanguageIds() {
+		Set<String> availableLanguageIds = new TreeSet<String>();
 
 		// Title
 
@@ -105,7 +105,7 @@ public class JournalArticleImpl extends JournalArticleBaseImpl {
 			String value = entry.getValue();
 
 			if (Validator.isNotNull(value)) {
-				availableLocales.add(locale.toString());
+				availableLanguageIds.add(locale.toString());
 			}
 		}
 
@@ -118,20 +118,29 @@ public class JournalArticleImpl extends JournalArticleBaseImpl {
 			String value = entry.getValue();
 
 			if (Validator.isNotNull(value)) {
-				availableLocales.add(locale.toString());
+				availableLanguageIds.add(locale.toString());
 			}
 		}
 
 		// Content
 
-		String[] availableLocalesArray = LocalizationUtil.getAvailableLocales(
-			getContent());
+		String[] availableLanguageIdsArray =
+			LocalizationUtil.getAvailableLanguageIds(getContent());
 
-		for (String availableLocale : availableLocalesArray) {
-			availableLocales.add(availableLocale);
+		for (String availableLanguageId : availableLanguageIdsArray) {
+			availableLanguageIds.add(availableLanguageId);
 		}
 
-		return availableLocales.toArray(new String[availableLocales.size()]);
+		return availableLanguageIds.toArray(
+			new String[availableLanguageIds.size()]);
+	}
+
+	/**
+	 * @deprecated As of 6.2.0, replaced by {@link #getAvailableLanguageIds}
+	 */
+	@Override
+	public String[] getAvailableLocales() {
+		return getAvailableLanguageIds();
 	}
 
 	@Override
@@ -147,7 +156,7 @@ public class JournalArticleImpl extends JournalArticleBaseImpl {
 			return StringPool.BLANK;
 		}
 
-		String defaultLanguageId = LocalizationUtil.getDefaultLocale(xml);
+		String defaultLanguageId = LocalizationUtil.getDefaultLanguageId(xml);
 
 		if (isTemplateDriven() && Validator.isNull(defaultLanguageId)) {
 			defaultLanguageId = LocaleUtil.toLanguageId(

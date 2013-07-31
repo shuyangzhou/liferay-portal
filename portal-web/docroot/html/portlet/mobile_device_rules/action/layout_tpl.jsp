@@ -19,13 +19,17 @@
 <%
 String layoutTemplateId = GetterUtil.getString(typeSettingsProperties.getProperty("layoutTemplateId"));
 
-List<LayoutTemplate> layoutTemplates = LayoutTemplateLocalServiceUtil.getLayoutTemplates();
+if (Validator.isNull(layoutTemplateId)) {
+	layoutTemplateId = PropsValues.DEFAULT_LAYOUT_TEMPLATE_ID;
+}
 
-int columnsCount = 3;
+String layoutTemplateIdPrefix = StringPool.BLANK;
+
+List<LayoutTemplate> layoutTemplates = LayoutTemplateLocalServiceUtil.getLayoutTemplates();
 %>
 
 <liferay-ui:error-marker key="errorSection" value="layout" />
 
 <h5><%= LanguageUtil.get(pageContext, "layout-template") %></h5>
 
-<%@ include file="/html/portlet/layouts_admin/layout/layout_templates.jspf" %>
+<%@ include file="/html/portlet/layouts_admin/layout/layout_templates_list.jspf" %>

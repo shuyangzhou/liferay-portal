@@ -91,8 +91,8 @@ import java.io.IOException;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.lang.time.StopWatch;
 
@@ -491,7 +491,8 @@ public class PortletExporter {
 		exportExpandoTables(portletDataContext);
 		exportLocks(portletDataContext);
 
-		_deletionSystemEventExporter.export(portletDataContext);
+		_deletionSystemEventExporter.exportDeletionSystemEvents(
+			portletDataContext);
 
 		if (exportPermissions) {
 			_permissionExporter.exportPortletDataPermissions(

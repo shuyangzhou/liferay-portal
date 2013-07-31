@@ -43,7 +43,10 @@ import java.util.Set;
  */
 public class DeletionSystemEventExporter {
 
-	public void export(PortletDataContext portletDataContext) throws Exception {
+	public void exportDeletionSystemEvents(
+			PortletDataContext portletDataContext)
+		throws Exception {
+
 		Document document = SAXReaderUtil.createDocument();
 
 		Element rootElement = document.addElement("deletion-system-events");
@@ -52,7 +55,7 @@ public class DeletionSystemEventExporter {
 			portletDataContext.getDeletionSystemEventStagedModelTypes();
 
 		if (!deletionSystemEventStagedModelTypes.isEmpty()) {
-			doExport(
+			doExportDeletionSystemEvents(
 				portletDataContext, rootElement,
 				deletionSystemEventStagedModelTypes);
 		}
@@ -63,7 +66,7 @@ public class DeletionSystemEventExporter {
 			document.formattedString());
 	}
 
-	protected void doExport(
+	protected void doExportDeletionSystemEvents(
 			final PortletDataContext portletDataContext,
 			final Element rootElement,
 			final Set<StagedModelType> deletionSystemEventStagedModelTypes)

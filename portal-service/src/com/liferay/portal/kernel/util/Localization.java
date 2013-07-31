@@ -61,7 +61,7 @@ public interface Localization {
 	 * @param  xml the localizations XML
 	 * @return the language IDs of the available locales
 	 */
-	public String[] getAvailableLocales(String xml);
+	public String[] getAvailableLanguageIds(String xml);
 
 	/**
 	 * Returns a valid default locale for importing a localized entity.

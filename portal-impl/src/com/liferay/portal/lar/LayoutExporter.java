@@ -14,7 +14,6 @@
 
 package com.liferay.portal.lar;
 
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.lar.ExportImportHelperUtil;
 import com.liferay.portal.kernel.lar.ExportImportPathUtil;
@@ -22,6 +21,7 @@ import com.liferay.portal.kernel.lar.ExportImportThreadLocal;
 import com.liferay.portal.kernel.lar.PortletDataContext;
 import com.liferay.portal.kernel.lar.PortletDataContextFactoryUtil;
 import com.liferay.portal.kernel.lar.PortletDataHandler;
+import com.liferay.portal.kernel.lar.PortletDataHandlerControl;
 import com.liferay.portal.kernel.lar.PortletDataHandlerKeys;
 import com.liferay.portal.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.portal.kernel.lar.StagedModelType;
@@ -138,22 +138,22 @@ public class LayoutExporter {
 
 	public static List<Portlet> getPortletDataHandlerPortlets(
 			List<Layout> layouts)
-		throws SystemException {
+		throws Exception {
 
 		List<Portlet> portlets = new ArrayList<Portlet>();
 		Set<String> rootPortletIds = new HashSet<String>();
 
-		for (Layout curLayout : layouts) {
-			if (!curLayout.isTypePortlet()) {
+		for (Layout layout : layouts) {
+			if (!layout.isTypePortlet()) {
 				continue;
 			}
 
-			LayoutTypePortlet curLayoutTypePortlet =
-				(LayoutTypePortlet)curLayout.getLayoutType();
+			LayoutTypePortlet layoutTypePortlet =
+				(LayoutTypePortlet)layout.getLayoutType();
 
-			for (String portletId : curLayoutTypePortlet.getPortletIds()) {
+			for (String portletId : layoutTypePortlet.getPortletIds()) {
 				Portlet portlet = PortletLocalServiceUtil.getPortletById(
-					curLayout.getCompanyId(), portletId);
+					layout.getCompanyId(), portletId);
 
 				if ((portlet == null) ||
 					rootPortletIds.contains(portlet.getRootPortletId())) {
@@ -161,9 +161,21 @@ public class LayoutExporter {
 					continue;
 				}
 
-				rootPortletIds.add(portlet.getRootPortletId());
+				PortletDataHandler portletDataHandler =
+					portlet.getPortletDataHandlerInstance();
 
-				portlets.add(portlet);
+				PortletDataHandlerControl[] portletDataHandlerControls =
+					portletDataHandler.getExportConfigurationControls(
+						layout.getCompanyId(), layout.getGroupId(), portlet,
+						layout.getPrivateLayout());
+
+				if ((portletDataHandlerControls != null) &&
+					(portletDataHandlerControls.length > 0)) {
+
+					rootPortletIds.add(portlet.getRootPortletId());
+
+					portlets.add(portlet);
+				}
 			}
 		}
 
@@ -172,7 +184,7 @@ public class LayoutExporter {
 
 	public static List<Portlet> getPortletDataHandlerPortlets(
 			long groupId, boolean privateLayout)
-		throws SystemException {
+		throws Exception {
 
 		return getPortletDataHandlerPortlets(
 			LayoutLocalServiceUtil.getLayouts(groupId, privateLayout));
@@ -569,7 +581,8 @@ public class LayoutExporter {
 		_portletExporter.exportExpandoTables(portletDataContext);
 		_portletExporter.exportLocks(portletDataContext);
 
-		_deletionSystemEventExporter.export(portletDataContext);
+		_deletionSystemEventExporter.exportDeletionSystemEvents(
+			portletDataContext);
 
 		if (exportPermissions) {
 			_permissionExporter.exportPortletDataPermissions(
@@ -694,11 +707,11 @@ public class LayoutExporter {
 		LayoutTypePortlet layoutTypePortlet =
 			(LayoutTypePortlet)layout.getLayoutType();
 
-		// The getAllPortlets method returns all effective portlets for any
-		// layout type, including embedded portlets, or in the case of panel
-		// type layout, selected portlets
+		// The getAllPortlets method returns all effective nonsystem portlets
+		// for any layout type, including embedded portlets, or in the case of
+		// panel type layout, selected portlets
 
-		for (Portlet portlet : layoutTypePortlet.getAllPortlets()) {
+		for (Portlet portlet : layoutTypePortlet.getAllPortlets(false)) {
 			String portletId = portlet.getPortletId();
 
 			javax.portlet.PortletPreferences jxPortletPreferences =

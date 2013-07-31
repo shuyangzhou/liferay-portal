@@ -282,7 +282,7 @@ request.setAttribute("edit_article.jsp-toLanguageId", toLanguageId);
 							<aui:button name="translateButton" onClick='<%= renderResponse.getNamespace() + "translateArticle()" %>' type="submit" value="save" />
 
 							<%
-							String[] translations = article.getAvailableLocales();
+							String[] translations = article.getAvailableLanguageIds();
 							%>
 
 							<aui:button disabled="<%= languageId.equals(defaultLanguageId) || !ArrayUtil.contains(translations, languageId) %>" name="removeArticleLocaleButton" onClick='<%= renderResponse.getNamespace() + "removeArticleLocale();" %>' value="remove-translation" />

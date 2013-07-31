@@ -91,8 +91,8 @@ public class JournalArticleAssetRenderer
 	}
 
 	@Override
-	public String[] getAvailableLocales() {
-		return _article.getAvailableLocales();
+	public String[] getAvailableLanguageIds() {
+		return _article.getAvailableLanguageIds();
 	}
 
 	@Override
