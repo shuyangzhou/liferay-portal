@@ -137,6 +137,8 @@ public class WikiUtil {
 			for (Map<String, Boolean> pageTitle : pageTitles) {
 				String pageTitleLowerCase = page.getTitle();
 
+				pageTitleLowerCase = pageTitleLowerCase.toLowerCase();
+
 				if (pageTitle.get(pageTitleLowerCase) != null) {
 					notOrphans.add(page);
 
