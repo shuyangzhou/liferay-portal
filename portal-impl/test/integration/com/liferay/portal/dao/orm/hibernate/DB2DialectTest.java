@@ -45,6 +45,7 @@ public class DB2DialectTest {
 		DB db = DBFactoryUtil.getDB();
 
 		String dbType = db.getType();
+		count = count();
 
 		Assume.assumeTrue(dbType.equals(DB.TYPE_DB2));
 	}
@@ -52,6 +53,11 @@ public class DB2DialectTest {
 	@Test
 	public void testPagingWithOffset() {
 		testPaging(_SQL, 10, 20);
+	}
+
+	@Test
+	public void testPagingWithOffsetZeroLimit() {
+		testPaging(_SQL, 10, 0);
 	}
 
 	@Test
@@ -64,7 +70,36 @@ public class DB2DialectTest {
 		testPaging(_SQL, 0, 0);
 	}
 
+	@Test
+	public void testPagingWithTooBigOffset() {
+		testPaging(_SQL, count + 1, 20, 0);
+	}
+
+	protected Integer count() {
+		Session session = null;
+
+		try {
+			session = _sessionFactory.openSession();
+
+			SQLQuery q = session.createSQLQuery(_SQL_COUNT);
+
+			List<Integer> result = q.list();
+
+			return result.get(0);
+
+		}
+		finally {
+			_sessionFactory.closeSession(session);
+		}
+	}
+
 	protected void testPaging(String sql, int offset, int limit) {
+		testPaging(sql, offset, limit, limit);
+	}
+
+	protected void testPaging(
+		String sql, int offset, int limit, int expectedCount) {
+
 		Session session = null;
 
 		try {
@@ -82,7 +117,7 @@ public class DB2DialectTest {
 			List<?> result = q.list(true);
 
 			Assert.assertNotNull(result);
-			Assert.assertEquals(limit, result.size());
+			Assert.assertEquals(expectedCount, result.size());
 		}
 		finally {
 			_sessionFactory.closeSession(session);
@@ -93,7 +128,11 @@ public class DB2DialectTest {
 		"SELECT tabname FROM syscat.tables WHERE tabschema = 'SYSIBM' ORDER " +
 		"BY tabname";
 
+	private static final String _SQL_COUNT =
+		"SELECT count(tabname) FROM syscat.tables WHERE tabschema = 'SYSIBM'";
+
 	private SessionFactory _sessionFactory =
 		(SessionFactory)PortalBeanLocatorUtil.locate("liferaySessionFactory");
+	private int count;
 
 }
