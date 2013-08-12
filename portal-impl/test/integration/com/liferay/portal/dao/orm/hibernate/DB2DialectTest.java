@@ -35,6 +35,7 @@ import org.junit.runner.RunWith;
 
 /**
  * @author Laszlo Csontos
+ * @author Sampsa Sohlman 
  */
 @ExecutionTestListeners(listeners = {PersistenceExecutionTestListener.class})
 @RunWith(LiferayIntegrationJUnitTestRunner.class)
@@ -57,6 +58,11 @@ public class DB2DialectTest {
 	@Test
 	public void testPagingWithoutOffset() {
 		testPaging(_SQL, 0, 20);
+	}
+
+	@Test
+	public void  testPagingWithoutOffsetZeroLimit() {
+		testPaging(_SQL, 0, 0);
 	}
 
 	protected void testPaging(String sql, int offset, int limit) {
