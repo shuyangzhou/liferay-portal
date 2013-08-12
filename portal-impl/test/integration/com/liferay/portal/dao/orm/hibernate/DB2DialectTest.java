@@ -17,7 +17,6 @@ package com.liferay.portal.dao.orm.hibernate;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
@@ -35,9 +34,9 @@ import org.junit.runner.RunWith;
 
 /**
  * @author Laszlo Csontos
- * @author Sampsa Sohlman 
+ * @author Sampsa Sohlman
  */
-@ExecutionTestListeners(listeners = {PersistenceExecutionTestListener.class})
+@ExecutionTestListeners(listeners = { PersistenceExecutionTestListener.class })
 @RunWith(LiferayIntegrationJUnitTestRunner.class)
 public class DB2DialectTest {
 
@@ -61,7 +60,7 @@ public class DB2DialectTest {
 	}
 
 	@Test
-	public void  testPagingWithoutOffsetZeroLimit() {
+	public void testPagingWithoutOffsetZeroLimit() {
 		testPaging(_SQL, 0, 0);
 	}
 
@@ -73,8 +72,14 @@ public class DB2DialectTest {
 
 			SQLQuery q = session.createSQLQuery(sql);
 
-			List<?> result = QueryUtil.list(
-				q, _sessionFactory.getDialect(), offset, offset + limit);
+			Assert.assertTrue(
+				"Verify that limit is supported",
+				_sessionFactory.getDialect().supportsLimit());
+
+			q.setMaxResults(limit);
+			q.setFirstResult(offset);
+
+			List<?> result = q.list(true);
 
 			Assert.assertNotNull(result);
 			Assert.assertEquals(limit, result.size());
@@ -86,7 +91,7 @@ public class DB2DialectTest {
 
 	private static final String _SQL =
 		"SELECT tabname FROM syscat.tables WHERE tabschema = 'SYSIBM' ORDER " +
-			"BY tabname";
+		"BY tabname";
 
 	private SessionFactory _sessionFactory =
 		(SessionFactory)PortalBeanLocatorUtil.locate("liferaySessionFactory");
