@@ -40,7 +40,18 @@ public class DB2Dialect extends org.hibernate.dialect.DB2Dialect {
 
 	@Override
 	public String getLimitString(String sql, int offset, int limit) {
-		if ((offset > 0) || forceLimitUsage()) {
+		if (limit <= 0) {
+			StringBundler sb = new StringBundler(4);
+
+			sb.append("SELECT outerQuery.* FROM (");
+
+			addQueryForLimitedRows(sb, sql, 1);
+
+			sb.append(") AS outerQuery WHERE 1=2");
+
+			return sb.toString();
+		}
+		else if ((offset > 0) || forceLimitUsage()) {
 			StringBundler sb = new StringBundler(11);
 
 			// Outer query
