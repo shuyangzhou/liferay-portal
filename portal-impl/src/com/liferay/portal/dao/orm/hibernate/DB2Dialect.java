@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.util.StringUtil;
  * @author Shepherd Ching
  * @author Jian Cao
  * @author Laszlo Csontos
+ * @author Sampsa Sohlman
  */
 public class DB2Dialect extends org.hibernate.dialect.DB2Dialect {
 
@@ -39,49 +40,39 @@ public class DB2Dialect extends org.hibernate.dialect.DB2Dialect {
 
 	@Override
 	public String getLimitString(String sql, int offset, int limit) {
-		boolean hasOffset = false;
-
 		if ((offset > 0) || forceLimitUsage()) {
-			hasOffset = true;
-		}
+			StringBundler sb = new StringBundler(11);
 
-		StringBundler sb = null;
+			// Outer query
 
-		if (hasOffset) {
-			sb = new StringBundler(11);
+			sb.append("SELECT outerQuery.* FROM (");
+			sb.append("SELECT ROW_NUMBER() OVER() AS rowNumber_, ");
+
+			// Inner query
+
+			sb.append("innerQuery.* FROM (");
+
+			addQueryForLimitedRows(sb, sql, limit);
+
+			sb.append(") AS innerQuery");
+
+			// Offset
+
+			sb.append(") AS outerQuery WHERE rowNumber_ > ");
+			sb.append(offset);
+
+			addOptimizeForLimitedRows(sb, limit);
+
+			return sb.toString();
 		}
 		else {
-			sb = new StringBundler(5);
-		}
+			StringBundler sb = new StringBundler(5);
 
-		if (!hasOffset) {
 			addQueryForLimitedRows(sb, sql, limit);
 			addOptimizeForLimitedRows(sb, limit);
 
 			return sb.toString();
 		}
-
-		// Outer query
-
-		sb.append("SELECT outerQuery.* FROM (");
-		sb.append("SELECT ROW_NUMBER() OVER() AS rowNumber_, ");
-
-		// Inner query
-
-		sb.append("innerQuery.* FROM (");
-
-		addQueryForLimitedRows(sb, sql, limit);
-
-		sb.append(") AS innerQuery");
-
-		// Offset
-
-		sb.append(") AS outerQuery WHERE rowNumber_ > ");
-		sb.append(offset);
-
-		addOptimizeForLimitedRows(sb, limit);
-
-		return sb.toString();
 	}
 
 	@Override
