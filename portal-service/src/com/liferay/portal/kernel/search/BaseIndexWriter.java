@@ -24,7 +24,8 @@ public abstract class BaseIndexWriter
 	implements IndexWriter, SpellCheckIndexWriter {
 
 	@Override
-	public void clearDictionaryIndexes(SearchContext searchContext)
+	public void clearQuerySuggestionDictionaryIndexes(
+			SearchContext searchContext)
 		throws SearchException {
 
 		if (_spellCheckIndexWriter == null) {
@@ -33,11 +34,12 @@ public abstract class BaseIndexWriter
 			}
 		}
 
-		_spellCheckIndexWriter.clearDictionaryIndexes(searchContext);
+		_spellCheckIndexWriter.clearQuerySuggestionDictionaryIndexes(
+			searchContext);
 	}
 
 	@Override
-	public void indexDictionaries(SearchContext searchContext)
+	public void clearSpellCheckerDictionaryIndexes(SearchContext searchContext)
 		throws SearchException {
 
 		if (_spellCheckIndexWriter == null) {
@@ -46,11 +48,12 @@ public abstract class BaseIndexWriter
 			}
 		}
 
-		_spellCheckIndexWriter.indexDictionaries(searchContext);
+		_spellCheckIndexWriter.clearSpellCheckerDictionaryIndexes(
+			searchContext);
 	}
 
 	@Override
-	public void indexDictionary(SearchContext searchContext)
+	public void indexQuerySuggestionDictionaries(SearchContext searchContext)
 		throws SearchException {
 
 		if (_spellCheckIndexWriter == null) {
@@ -59,7 +62,46 @@ public abstract class BaseIndexWriter
 			}
 		}
 
-		_spellCheckIndexWriter.indexDictionary(searchContext);
+		_spellCheckIndexWriter.indexQuerySuggestionDictionaries(searchContext);
+	}
+
+	@Override
+	public void indexQuerySuggestionDictionary(SearchContext searchContext)
+		throws SearchException {
+
+		if (_spellCheckIndexWriter == null) {
+			if (_log.isDebugEnabled()) {
+				_log.debug("No spell check index writer configured");
+			}
+		}
+
+		_spellCheckIndexWriter.indexQuerySuggestionDictionary(searchContext);
+	}
+
+	@Override
+	public void indexSpellCheckerDictionaries(SearchContext searchContext)
+		throws SearchException {
+
+		if (_spellCheckIndexWriter == null) {
+			if (_log.isDebugEnabled()) {
+				_log.debug("No spell check index writer configured");
+			}
+		}
+
+		_spellCheckIndexWriter.indexSpellCheckerDictionaries(searchContext);
+	}
+
+	@Override
+	public void indexSpellCheckerDictionary(SearchContext searchContext)
+		throws SearchException {
+
+		if (_spellCheckIndexWriter == null) {
+			if (_log.isDebugEnabled()) {
+				_log.debug("No spell check index writer configured");
+			}
+		}
+
+		_spellCheckIndexWriter.indexSpellCheckerDictionary(searchContext);
 	}
 
 	public void setSpellCheckIndexWriter(

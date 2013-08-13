@@ -319,17 +319,18 @@ public class SearchEngineUtil {
 			searchEngineId);
 	}
 
-	public static void indexDictionaries(long companyId)
+	public static void indexQuerySuggestionDictionaries(long companyId)
 		throws SearchException {
 
 		Set<String> searchEngineIds = getSearchEngineIds();
 
 		for (String searchEngineId : searchEngineIds) {
-			indexDictionaries(searchEngineId, companyId);
+			indexQuerySuggestionDictionaries(searchEngineId, companyId);
 		}
 	}
 
-	public static void indexDictionaries(String searchEngineId, long companyId)
+	public static void indexQuerySuggestionDictionaries(
+			String searchEngineId, long companyId)
 		throws SearchException {
 
 		SearchEngine searchEngine = getSearchEngine(searchEngineId);
@@ -341,20 +342,21 @@ public class SearchEngineUtil {
 		searchContext.setCompanyId(companyId);
 		searchContext.setSearchEngineId(searchEngineId);
 
-		indexWriter.indexDictionaries(searchContext);
+		indexWriter.indexQuerySuggestionDictionaries(searchContext);
 	}
 
-	public static void indexDictionary(long companyId, Locale locale)
+	public static void indexQuerySuggestionDictionary(
+			long companyId, Locale locale)
 		throws SearchException {
 
 		Set<String> searchEngineIds = getSearchEngineIds();
 
 		for (String searchEngineId : searchEngineIds) {
-			indexDictionary(searchEngineId, companyId, locale);
+			indexQuerySuggestionDictionary(searchEngineId, companyId, locale);
 		}
 	}
 
-	public static void indexDictionary(
+	public static void indexQuerySuggestionDictionary(
 			String searchEngineId, long companyId, Locale locale)
 		throws SearchException {
 
@@ -368,7 +370,61 @@ public class SearchEngineUtil {
 		searchContext.setSearchEngineId(searchEngineId);
 		searchContext.setLocale(locale);
 
-		indexWriter.indexDictionary(searchContext);
+		indexWriter.indexQuerySuggestionDictionary(searchContext);
+	}
+
+	public static void indexSpellCheckerDictionaries(long companyId)
+		throws SearchException {
+
+		Set<String> searchEngineIds = getSearchEngineIds();
+
+		for (String searchEngineId : searchEngineIds) {
+			indexSpellCheckerDictionaries(searchEngineId, companyId);
+		}
+	}
+
+	public static void indexSpellCheckerDictionaries(
+			String searchEngineId, long companyId)
+		throws SearchException {
+
+		SearchEngine searchEngine = getSearchEngine(searchEngineId);
+
+		IndexWriter indexWriter = searchEngine.getIndexWriter();
+
+		SearchContext searchContext = new SearchContext();
+
+		searchContext.setCompanyId(companyId);
+		searchContext.setSearchEngineId(searchEngineId);
+
+		indexWriter.indexSpellCheckerDictionaries(searchContext);
+	}
+
+	public static void indexSpellCheckerDictionary(
+			long companyId, Locale locale)
+		throws SearchException {
+
+		Set<String> searchEngineIds = getSearchEngineIds();
+
+		for (String searchEngineId : searchEngineIds) {
+			indexSpellCheckerDictionary(searchEngineId, companyId, locale);
+		}
+	}
+
+	public static void indexSpellCheckerDictionary(
+			String searchEngineId, long companyId, Locale locale)
+		throws SearchException {
+
+		SearchEngine searchEngine = getSearchEngine(searchEngineId);
+
+		IndexWriter indexWriter = searchEngine.getIndexWriter();
+
+		SearchContext searchContext = new SearchContext();
+
+		searchContext.setCompanyId(companyId);
+		searchContext.setSearchEngineId(searchEngineId);
+		searchContext.setLocale(locale);
+
+		indexWriter.indexSpellCheckerDictionary(searchContext);
 	}
 
 	public static boolean isIndexReadOnly() {
