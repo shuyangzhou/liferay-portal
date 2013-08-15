@@ -299,6 +299,16 @@ public class EhcacheStreamBootstrapHelpUtil {
 
 						Element element = ehcache.get(key);
 
+						if (element == null) {
+							if (_log.isDebugEnabled()) {
+								_log.debug(
+									"Element for key " + key +
+										" is not available or has expired");
+							}
+
+							continue;
+						}
+
 						Object value = element.getObjectValue();
 
 						if (!(value instanceof Serializable)) {
