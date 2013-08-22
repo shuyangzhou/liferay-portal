@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.util.SocketUtil;
 import com.liferay.portal.kernel.util.SocketUtil.ServerSocketConfigurator;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.io.ByteArrayOutputStream;
@@ -1052,6 +1053,9 @@ public class ProcessExecutorTest {
 
 	private static List<String> _createArguments(String jpdaOptions) {
 		List<String> arguments = new ArrayList<String>();
+
+		arguments.add(
+			"-D" + SystemProperties.SYSTEM_PROPERTIES_QUIET + "=true");
 
 		boolean coberturaParentDynamicallyInstrumented = Boolean.getBoolean(
 			"cobertura.parent.dynamically.instrumented");

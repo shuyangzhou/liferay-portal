@@ -1485,6 +1485,25 @@ public class Creole10Parser]]></replacevalue>
 
 		<echo file="${portal-impl.classes.dir}/com/liferay/portal/deploy/dependencies/osgi/portal/jars.txt">${osgi.portal.jars.list}</echo>
 
+		<for list="1,2,3,4,5,6,7,8,9" param="index">
+			<sequential>
+				<if>
+					<available file="${portal-impl.classes.dir}/com/liferay/portal/deploy/dependencies/plugins@{index}" />
+					<then>
+						<fileset dir="${portal-impl.classes.dir}/com/liferay/portal/deploy/dependencies/plugins@{index}" id="plugins@{index}.wars">
+							<include name="*.war" />
+						</fileset>
+
+						<pathconvert property="plugins@{index}.wars.list" pathsep="," refid="plugins@{index}.wars">
+							<flattenmapper />
+						</pathconvert>
+
+						<echo file="${portal-impl.classes.dir}/com/liferay/portal/deploy/dependencies/plugins@{index}/wars.txt">${plugins@{index}.wars.list}</echo>
+					</then>
+				</if>
+			</sequential>
+		</for>
+
 		<if>
 			<not>
 				<and>

@@ -36,6 +36,9 @@ public class SystemProperties {
 	public static final String SYSTEM_PROPERTIES_LOAD =
 		"system.properties.load";
 
+	public static final String SYSTEM_PROPERTIES_QUIET =
+		"system.properties.quiet";
+
 	public static final String TMP_DIR = "java.io.tmpdir";
 
 	public static String get(String key) {
@@ -76,6 +79,9 @@ public class SystemProperties {
 
 		ClassLoader classLoader = currentThread.getContextClassLoader();
 
+		boolean systemPropertiesQuiet = GetterUtil.getBoolean(
+			System.getProperty(SYSTEM_PROPERTIES_QUIET), true);
+
 		// system.properties
 
 		try {
@@ -88,7 +94,9 @@ public class SystemProperties {
 
 				inputStream.close();
 
-				System.out.println("Loading " + url);
+				if (!systemPropertiesQuiet) {
+					System.out.println("Loading " + url);
+				}
 			}
 		}
 		catch (Exception e) {
@@ -107,7 +115,9 @@ public class SystemProperties {
 
 				inputStream.close();
 
-				System.out.println("Loading " + url);
+				if (!systemPropertiesQuiet) {
+					System.out.println("Loading " + url);
+				}
 			}
 		}
 		catch (Exception e) {

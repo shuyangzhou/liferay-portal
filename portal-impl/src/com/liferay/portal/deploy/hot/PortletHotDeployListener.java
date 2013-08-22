@@ -557,7 +557,7 @@ public class PortletHotDeployListener extends BaseHotDeployListener {
 			else {
 				_log.info(
 					portlets.size() + " portlets for " + servletContextName +
-						" was unregistered");
+						" were unregistered");
 			}
 		}
 	}

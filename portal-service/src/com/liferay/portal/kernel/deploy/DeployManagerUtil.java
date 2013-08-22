@@ -56,8 +56,20 @@ public class DeployManagerUtil {
 		return getDeployManager().getInstalledPluginPackages();
 	}
 
+	public static List<String[]> getLevelsRequiredDeploymentContexts() {
+		return getDeployManager().getLevelsRequiredDeploymentContexts();
+	}
+
+	public static List<String[]> getLevelsRequiredDeploymentWARFileNames() {
+		return getDeployManager().getLevelsRequiredDeploymentWARFileNames();
+	}
+
 	public static boolean isDeployed(String context) {
 		return getDeployManager().isDeployed(context);
+	}
+
+	public static boolean isRequiredDeploymentContext(String context) {
+		return getDeployManager().isRequiredDeploymentContext(context);
 	}
 
 	public static PluginPackage readPluginPackageProperties(

@@ -166,7 +166,7 @@ public class ThemeHotDeployListener extends BaseHotDeployListener {
 			else {
 				_log.info(
 					themes.size() + " themes for " + servletContextName +
-						" was unregistered");
+						" were unregistered");
 			}
 		}
 	}

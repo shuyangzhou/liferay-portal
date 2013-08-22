@@ -155,7 +155,7 @@ public class LayoutTemplateHotDeployListener extends BaseHotDeployListener {
 			else {
 				_log.info(
 					layoutTemplates.size() + " layout templates for " +
-						servletContextName + " was unregistered");
+						servletContextName + " were unregistered");
 			}
 		}
 	}

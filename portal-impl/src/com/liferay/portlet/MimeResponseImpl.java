@@ -21,17 +21,18 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
-import java.util.Enumeration;
 import java.util.Locale;
 
 import javax.portlet.CacheControl;
 import javax.portlet.MimeResponse;
 import javax.portlet.PortletRequest;
+import javax.portlet.WindowState;
 
 import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Brian Wing Shun Chan
+ * @author Shuyang Zhou
  */
 public abstract class MimeResponseImpl
 	extends PortletResponseImpl implements MimeResponse {
@@ -147,36 +148,18 @@ public abstract class MimeResponseImpl
 			throw new IllegalArgumentException("Content type cannot be null");
 		}
 
-		Enumeration<String> enu = _portletRequestImpl.getResponseContentTypes();
+		String lifecycle = getLifecycle();
+		WindowState windowState = _portletRequestImpl.getWindowState();
 
-		boolean valid = false;
+		if (contentType.startsWith(
+				_portletRequestImpl.getResponseContentType()) ||
+			lifecycle.equals(PortletRequest.RESOURCE_PHASE) ||
+			windowState.equals(LiferayWindowState.EXCLUSIVE)) {
 
-		if (getLifecycle().equals(PortletRequest.RESOURCE_PHASE) ||
-			_portletRequestImpl.getWindowState().equals(
-				LiferayWindowState.EXCLUSIVE)) {
+			_contentType = contentType;
 
-			valid = true;
+			_response.setContentType(contentType);
 		}
-		else {
-			while (enu.hasMoreElements()) {
-				String resContentType = enu.nextElement();
-
-				if (contentType.startsWith(resContentType)) {
-					valid = true;
-
-					break;
-				}
-			}
-		}
-
-		if (!valid) {
-			throw new IllegalArgumentException(
-				contentType + " is not a supported mime type");
-		}
-
-		_contentType = contentType;
-
-		_response.setContentType(contentType);
 	}
 
 	@Override
