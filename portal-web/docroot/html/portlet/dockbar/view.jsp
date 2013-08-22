@@ -370,17 +370,6 @@ String toggleControlsState = GetterUtil.getString(SessionClicks.get(request, "li
 		</aui:script>
 	</c:if>
 
-	<%!
-	private boolean _hasPortlets(String category, ThemeDisplay themeDisplay) throws SystemException {
-		List<Portlet> portlets = PortalUtil.getControlPanelPortlets(category, themeDisplay);
-
-		if (portlets.isEmpty()) {
-			return false;
-		}
-
-		return true;
-	}
-	%>
 </c:if>
 
 <aui:script position="inline" use="liferay-dockbar">
@@ -392,3 +381,15 @@ String toggleControlsState = GetterUtil.getString(SessionClicks.get(request, "li
 		customizableColumns.get('parentNode').addClass('customizable');
 	}
 </aui:script>
+
+<%!
+private boolean _hasPortlets(String category, ThemeDisplay themeDisplay) throws SystemException {
+	List<Portlet> portlets = PortalUtil.getControlPanelPortlets(category, themeDisplay);
+
+	if (portlets.isEmpty()) {
+		return false;
+	}
+
+	return true;
+}
+%>
