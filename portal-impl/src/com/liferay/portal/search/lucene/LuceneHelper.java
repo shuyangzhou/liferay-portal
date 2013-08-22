@@ -69,6 +69,9 @@ public interface LuceneHelper {
 	public void addTerm(
 		BooleanQuery booleanQuery, String field, String[] values, boolean like);
 
+	/**
+	 * @deprecated as of 6.2.0. No replacement.
+	 */
 	public void cleanUp(IndexSearcher indexSearcher);
 
 	public int countScoredFieldNames(Query query, String[] fieldNames);

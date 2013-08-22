@@ -286,6 +286,9 @@ public class LuceneHelperUtil {
 		getLuceneHelper().addTerm(booleanQuery, field, values, like);
 	}
 
+	/**
+	 * @deprecated as of 6.2.0. No replacement.
+	 */
 	public static void cleanUp(IndexSearcher indexSearcher) {
 		getLuceneHelper().cleanUp(indexSearcher);
 	}

@@ -71,6 +71,8 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.commons.lang.time.StopWatch;
 import org.apache.lucene.analysis.Analyzer;
@@ -112,6 +114,8 @@ public class LuceneHelperImpl implements LuceneHelper {
 		IndexAccessor indexAccessor = getIndexAccessor(companyId);
 
 		indexAccessor.addDocument(document);
+
+		_cleanUp(_indexSearchers.remove(companyId));
 	}
 
 	@Override
@@ -272,24 +276,11 @@ public class LuceneHelperImpl implements LuceneHelper {
 		}
 	}
 
+	/**
+	 * @deprecated as of 6.2.0. No replacement.
+	 */
 	@Override
 	public void cleanUp(IndexSearcher indexSearcher) {
-		if (indexSearcher == null) {
-			return;
-		}
-
-		try {
-			indexSearcher.close();
-
-			IndexReader indexReader = indexSearcher.getIndexReader();
-
-			if (indexReader != null) {
-				indexReader.close();
-			}
-		}
-		catch (IOException ioe) {
-			_log.error(ioe, ioe);
-		}
 	}
 
 	@Override
@@ -319,6 +310,8 @@ public class LuceneHelperImpl implements LuceneHelper {
 		}
 
 		indexAccessor.delete();
+
+		_cleanUp(_indexSearchers.remove(companyId));
 	}
 
 	@Override
@@ -330,6 +323,8 @@ public class LuceneHelperImpl implements LuceneHelper {
 		}
 
 		indexAccessor.deleteDocuments(term);
+
+		_cleanUp(_indexSearchers.remove(companyId));
 	}
 
 	@Override
@@ -406,6 +401,8 @@ public class LuceneHelperImpl implements LuceneHelper {
 				}
 
 				_indexAccessors.put(companyId, indexAccessor);
+
+				_cleanUp(_indexSearchers.remove(companyId));
 			}
 		}
 
@@ -512,15 +509,47 @@ public class LuceneHelperImpl implements LuceneHelper {
 	public IndexSearcher getSearcher(long companyId, boolean readOnly)
 		throws IOException {
 
-		IndexAccessor indexAccessor = getIndexAccessor(companyId);
+		IndexSearcher[] indexSearchers = _indexSearchers.get(companyId);
 
-		IndexReader indexReader = IndexReader.open(
-			indexAccessor.getLuceneDir(), readOnly);
+		if (indexSearchers == null) {
+			indexSearchers = new IndexSearcher[2];
 
-		IndexSearcher indexSearcher = new IndexSearcher(indexReader);
+			_indexSearchers.put(companyId, indexSearchers);
+		}
 
-		indexSearcher.setDefaultFieldSortScoring(true, true);
-		indexSearcher.setSimilarity(new FieldWeightSimilarity());
+		IndexSearcher indexSearcher = indexSearchers[0];
+
+		if (!readOnly) {
+			indexSearcher = indexSearchers[1];
+		}
+
+		if (indexSearcher != null) {
+			return indexSearcher;
+		}
+
+		_lock.lock();
+
+		try {
+			IndexAccessor indexAccessor = getIndexAccessor(companyId);
+
+			IndexReader indexReader = IndexReader.open(
+				indexAccessor.getLuceneDir(), readOnly);
+
+			indexSearcher = new IndexSearcher(indexReader);
+
+			indexSearcher.setDefaultFieldSortScoring(true, true);
+			indexSearcher.setSimilarity(new FieldWeightSimilarity());
+
+			if (readOnly) {
+				indexSearchers[0] = indexSearcher;
+			}
+			else {
+				indexSearchers[1] = indexSearcher;
+			}
+		}
+		finally {
+			_lock.unlock();
+		}
 
 		return indexSearcher;
 	}
@@ -611,6 +640,8 @@ public class LuceneHelperImpl implements LuceneHelper {
 
 		indexAccessor.loadIndex(inputStream);
 
+		_cleanUp(_indexSearchers.remove(companyId));
+
 		if (_log.isInfoEnabled()) {
 			_log.info(
 				"Finished loading index files for company " + companyId +
@@ -633,6 +664,8 @@ public class LuceneHelperImpl implements LuceneHelper {
 		long localLastGeneration = getLastGeneration(companyId);
 
 		_loadIndexFromCluster(indexAccessor, localLastGeneration);
+
+		_cleanUp(_indexSearchers.remove(companyId));
 	}
 
 	public void setAnalyzer(Analyzer analyzer) {
@@ -665,6 +698,10 @@ public class LuceneHelperImpl implements LuceneHelper {
 		for (IndexAccessor indexAccessor : _indexAccessors.values()) {
 			indexAccessor.close();
 		}
+
+		for (Long key : _indexSearchers.keySet()) {
+			_cleanUp(_indexSearchers.remove(key));
+		}
 	}
 
 	@Override
@@ -674,6 +711,8 @@ public class LuceneHelperImpl implements LuceneHelper {
 		_indexAccessors.remove(indexAccessor);
 
 		indexAccessor.close();
+
+		_cleanUp(_indexSearchers.remove(companyId));
 	}
 
 	@Override
@@ -714,6 +753,8 @@ public class LuceneHelperImpl implements LuceneHelper {
 		IndexAccessor indexAccessor = getIndexAccessor(companyId);
 
 		indexAccessor.updateDocument(term, document);
+
+		_indexSearchers.remove(companyId);
 	}
 
 	private LuceneHelperImpl() {
@@ -732,6 +773,35 @@ public class LuceneHelperImpl implements LuceneHelper {
 		}
 
 		BooleanQuery.setMaxClauseCount(_LUCENE_BOOLEAN_QUERY_CLAUSE_MAX_SIZE);
+	}
+
+	private void _cleanUp(IndexSearcher indexSearcher) {
+		if (indexSearcher == null) {
+			return;
+		}
+
+		try {
+			indexSearcher.close();
+
+			IndexReader indexReader = indexSearcher.getIndexReader();
+
+			if (indexReader != null) {
+				indexReader.close();
+			}
+		}
+		catch (IOException ioe) {
+			_log.error(ioe, ioe);
+		}
+	}
+
+	private void _cleanUp(IndexSearcher[] indexSearchers) {
+		if (indexSearchers == null) {
+			return;
+		}
+
+		for (IndexSearcher indexSearcher : indexSearchers) {
+			_cleanUp(indexSearcher);
+		}
 	}
 
 	private ObjectValuePair<String, URL>
@@ -901,8 +971,11 @@ public class LuceneHelperImpl implements LuceneHelper {
 	private Analyzer _analyzer;
 	private Map<Long, IndexAccessor> _indexAccessors =
 		new ConcurrentHashMap<Long, IndexAccessor>();
+	private Map<Long, IndexSearcher[]> _indexSearchers =
+		new ConcurrentHashMap<Long, IndexSearcher[]>();
 	private LoadIndexClusterEventListener _loadIndexClusterEventListener;
 	private ThreadPoolExecutor _luceneIndexThreadPoolExecutor;
+	private Lock _lock = new ReentrantLock();
 	private Version _version;
 
 	private class LoadIndexClusterEventListener
