@@ -1,7 +1,7 @@
 AUI.add(
 	'liferay-navigation',
 	function(A) {
-		var Dockbar = Liferay.Dockbar;
+		var Dockbar = Liferay.Dockbar || {};
 		var Util = Liferay.Util;
 		var Lang = A.Lang;
 
@@ -140,7 +140,7 @@ AUI.add(
 					_addPage: function(event) {
 						var instance = this;
 
-						if (!event.shiftKey) {
+						if (false && !event.shiftKey) {
 							Dockbar.UnderlayManager.hideAll();
 						}
 
@@ -225,7 +225,7 @@ AUI.add(
 								instance._prototypeMenuTemplate = prototypeMenuNode.html();
 							}
 
-							if (instance.get('hasAddLayoutPermission')) {
+							if (false && instance.get('hasAddLayoutPermission')) {
 								var addPageButton = A.one('#' + Dockbar._namespace + 'addPage');
 
 								if (addPageButton) {
