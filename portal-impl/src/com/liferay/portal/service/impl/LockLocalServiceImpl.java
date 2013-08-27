@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.lock.LockListener;
 import com.liferay.portal.kernel.lock.LockListenerRegistryUtil;
+import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.Validator;
@@ -36,6 +37,10 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @author Shuyang Zhou
  */
+@Transactional(
+	isolation = Isolation.PORTAL,
+	rollbackFor = {PortalException.class, SystemException.class},
+	splitReadWrite = false)
 public class LockLocalServiceImpl extends LockLocalServiceBaseImpl {
 
 	@Override
@@ -181,7 +186,8 @@ public class LockLocalServiceImpl extends LockLocalServiceBaseImpl {
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	@Transactional(
+		propagation = Propagation.REQUIRES_NEW, splitReadWrite = false)
 	public Lock lock(String className, String key, String owner)
 		throws SystemException {
 
@@ -193,7 +199,8 @@ public class LockLocalServiceImpl extends LockLocalServiceBaseImpl {
 	 *             String)}
 	 */
 	@Override
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	@Transactional(
+		propagation = Propagation.REQUIRES_NEW, splitReadWrite = false)
 	public Lock lock(
 			String className, String key, String owner,
 			boolean retrieveFromCache)
@@ -203,7 +210,8 @@ public class LockLocalServiceImpl extends LockLocalServiceBaseImpl {
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	@Transactional(
+		propagation = Propagation.REQUIRES_NEW, splitReadWrite = false)
 	public Lock lock(
 			String className, String key, String expectedOwner,
 			String updatedOwner)
@@ -248,7 +256,8 @@ public class LockLocalServiceImpl extends LockLocalServiceBaseImpl {
 	 *             String)}
 	 */
 	@Override
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	@Transactional(
+		propagation = Propagation.REQUIRES_NEW, splitReadWrite = false)
 	public Lock lock(
 			String className, String key, String expectedOwner,
 			String updatedOwner, boolean retrieveFromCache)
@@ -317,7 +326,8 @@ public class LockLocalServiceImpl extends LockLocalServiceBaseImpl {
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	@Transactional(
+		propagation = Propagation.REQUIRES_NEW, splitReadWrite = false)
 	public void unlock(String className, String key, String owner)
 		throws SystemException {
 
@@ -338,7 +348,8 @@ public class LockLocalServiceImpl extends LockLocalServiceBaseImpl {
 	 *             String)}
 	 */
 	@Override
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	@Transactional(
+		propagation = Propagation.REQUIRES_NEW, splitReadWrite = false)
 	public void unlock(
 			String className, String key, String owner,
 			boolean retrieveFromCache)

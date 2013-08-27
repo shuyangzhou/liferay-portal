@@ -46,6 +46,8 @@ public @interface Transactional {
 
 	public String[] rollbackForClassName() default {};
 
+	public boolean splitReadWrite() default true;
+
 	public int timeout() default TransactionDefinition.TIMEOUT_DEFAULT;
 
 }

@@ -23,8 +23,6 @@ import java.util.List;
 
 import org.springframework.transaction.interceptor.NoRollbackRuleAttribute;
 import org.springframework.transaction.interceptor.RollbackRuleAttribute;
-import org.springframework.transaction.interceptor.RuleBasedTransactionAttribute;
-import org.springframework.transaction.interceptor.TransactionAttribute;
 
 /**
  * @author Shuyang Zhou
@@ -40,40 +38,40 @@ public class TransactionAttributeBuilder {
 		return _build(
 			transactional.enabled(), transactional.isolation().value(),
 			transactional.propagation().value(), transactional.readOnly(),
-			transactional.timeout(), transactional.rollbackFor(),
-			transactional.rollbackForClassName(), transactional.noRollbackFor(),
+			transactional.splitReadWrite(), transactional.timeout(),
+			transactional.rollbackFor(), transactional.rollbackForClassName(),
+			transactional.noRollbackFor(),
 			transactional.noRollbackForClassName());
 	}
 
 	private static TransactionAttribute _build(
 		boolean enabled, int isolationLevel, int propagationBehavior,
-		boolean readOnly, int timeout, Class<?>[] rollbackFor,
-		String[] rollbackForClassName, Class<?>[] noRollbackFor,
-		String[] noRollbackForClassName) {
+		boolean readOnly, boolean splitReadWrite, int timeout,
+		Class<?>[] rollbackFor, String[] rollbackForClassName,
+		Class<?>[] noRollbackFor, String[] noRollbackForClassName) {
 
 		if (!enabled) {
 			return null;
 		}
 
-		RuleBasedTransactionAttribute ruleBasedTransactionAttribute =
-			new RuleBasedTransactionAttribute();
+		TransactionAttribute transactionAttribute = new TransactionAttribute();
 
 		if (isolationLevel == TransactionDefinition.ISOLATION_COUNTER) {
-			ruleBasedTransactionAttribute.setIsolationLevel(
+			transactionAttribute.setIsolationLevel(
 				PropsValues.TRANSACTION_ISOLATION_COUNTER);
 		}
 		else if (isolationLevel == TransactionDefinition.ISOLATION_PORTAL) {
-			ruleBasedTransactionAttribute.setIsolationLevel(
+			transactionAttribute.setIsolationLevel(
 				PropsValues.TRANSACTION_ISOLATION_PORTAL);
 		}
 		else {
-			ruleBasedTransactionAttribute.setIsolationLevel(isolationLevel);
+			transactionAttribute.setIsolationLevel(isolationLevel);
 		}
 
-		ruleBasedTransactionAttribute.setPropagationBehavior(
-			propagationBehavior);
-		ruleBasedTransactionAttribute.setReadOnly(readOnly);
-		ruleBasedTransactionAttribute.setTimeout(timeout);
+		transactionAttribute.setPropagationBehavior(propagationBehavior);
+		transactionAttribute.setReadOnly(readOnly);
+		transactionAttribute.setSplitReadWrite(splitReadWrite);
+		transactionAttribute.setTimeout(timeout);
 
 		List<RollbackRuleAttribute> rollbackRuleAttributes =
 			new ArrayList<RollbackRuleAttribute>();
@@ -107,11 +105,11 @@ public class TransactionAttributeBuilder {
 		}
 
 		List<RollbackRuleAttribute> ruleBasedRollbackRuleAttributes =
-			ruleBasedTransactionAttribute.getRollbackRules();
+			transactionAttribute.getRollbackRules();
 
 		ruleBasedRollbackRuleAttributes.addAll(rollbackRuleAttributes);
 
-		return ruleBasedTransactionAttribute;
+		return transactionAttribute;
 	}
 
 }

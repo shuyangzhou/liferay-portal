@@ -16,13 +16,12 @@ package com.liferay.portal.dao.jdbc.aop;
 
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.spring.transaction.TransactionAttribute;
 import com.liferay.portal.spring.transaction.TransactionInterceptor;
 
 import java.lang.reflect.Method;
 
 import org.aopalliance.intercept.MethodInvocation;
-
-import org.springframework.transaction.interceptor.TransactionAttribute;
 
 /**
  * @author Michael Young
@@ -55,10 +54,11 @@ public class DynamicDataSourceTransactionInterceptor
 		Method targetMethod = methodInvocation.getMethod();
 
 		TransactionAttribute transactionAttribute =
-			transactionAttributeSource.getTransactionAttribute(
-				targetMethod, targetClass);
+			(TransactionAttribute)transactionAttributeSource.
+				getTransactionAttribute(targetMethod, targetClass);
 
 		if ((transactionAttribute != null) &&
+			transactionAttribute.isSplitReadWrite() &&
 			transactionAttribute.isReadOnly()) {
 
 			_dynamicDataSourceTargetSource.setOperation(Operation.READ);

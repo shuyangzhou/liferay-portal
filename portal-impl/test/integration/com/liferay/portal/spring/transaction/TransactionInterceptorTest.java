@@ -37,9 +37,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionException;
-import org.springframework.transaction.TransactionStatus;
 
 /**
  * @author Shuyang Zhou
@@ -62,7 +59,8 @@ public class TransactionInterceptorTest {
 				InfrastructureUtil.getTransactionManager();
 
 		MockPlatformTransactionManager platformTransactionManagerWrapper =
-			new MockPlatformTransactionManager(platformTransactionManager);
+			new MockPlatformTransactionManager(
+				platformTransactionManager, true);
 
 		TransactionInterceptor transactionInterceptor =
 			(TransactionInterceptor)PortalBeanLocatorUtil.locate(
@@ -101,44 +99,6 @@ public class TransactionInterceptorTest {
 			true, ClassNameImpl.class, classNameId);
 
 		Assert.assertNull(cachedClassName);
-	}
-
-	private class MockPlatformTransactionManager
-		implements PlatformTransactionManager {
-
-		public MockPlatformTransactionManager(
-			PlatformTransactionManager platformTransactionManager) {
-
-			_platformTransactionManager = platformTransactionManager;
-		}
-
-		@Override
-		public void commit(TransactionStatus transactionStatus)
-			throws TransactionException {
-
-			_platformTransactionManager.rollback(transactionStatus);
-
-			throw new RuntimeException("MockPlatformTransactionManager");
-		}
-
-		@Override
-		public TransactionStatus getTransaction(
-				TransactionDefinition transactionDefinition)
-			throws TransactionException {
-
-			return _platformTransactionManager.getTransaction(
-				transactionDefinition);
-		}
-
-		@Override
-		public void rollback(TransactionStatus transactionStatus)
-			throws TransactionException {
-
-			_platformTransactionManager.rollback(transactionStatus);
-		}
-
-		private PlatformTransactionManager _platformTransactionManager;
-
 	}
 
 }
