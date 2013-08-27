@@ -602,7 +602,7 @@ public class AssetPublisherExportImportTest
 	}
 
 	@Override
-	protected void doExportImportPortlet(String portletId) throws Exception {
+	protected void exportImportPortlet(String portletId) throws Exception {
 		larFile = LayoutLocalServiceUtil.exportLayoutsAsFile(
 			layout.getGroupId(), layout.isPrivateLayout(), null,
 			getExportParameterMap(), null, null);

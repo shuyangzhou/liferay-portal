@@ -144,7 +144,7 @@ public class JournalExportImportTest extends BasePortletExportImportTestCase {
 
 		String exportedResourceUuid = article.getArticleResourceUuid();
 
-		doExportImportPortlet(PortletKeys.JOURNAL);
+		exportImportPortlet(PortletKeys.JOURNAL);
 
 		int articlesCount = JournalArticleLocalServiceUtil.getArticlesCount(
 			importedGroup.getGroupId());

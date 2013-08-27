@@ -82,7 +82,7 @@ public class BasePortletExportImportTestCase extends BaseExportImportTestCase {
 			group.getGroupId(), getStagedModelUuid(stagedModel),
 			getStagedModelUuid(relatedStagedModel2), 2);
 
-		doExportImportPortlet(getPortletId());
+		exportImportPortlet(getPortletId());
 
 		StagedModel importedStagedModel = getStagedModel(
 			getStagedModelUuid(stagedModel), importedGroup.getGroupId());
@@ -102,11 +102,11 @@ public class BasePortletExportImportTestCase extends BaseExportImportTestCase {
 
 		String stagedModelUuid = getStagedModelUuid(stagedModel);
 
-		doExportImportPortlet(getPortletId());
+		exportImportPortlet(getPortletId());
 
 		deleteStagedModel(stagedModel);
 
-		doExportImportPortlet(getPortletId());
+		exportImportPortlet(getPortletId());
 
 		StagedModel importedStagedModel = getStagedModel(
 			stagedModelUuid, importedGroup.getGroupId());
@@ -120,7 +120,7 @@ public class BasePortletExportImportTestCase extends BaseExportImportTestCase {
 			PortletDataHandlerKeys.DELETIONS,
 			new String[]{ String.valueOf(true)});
 
-		doExportImportPortlet(
+		exportImportPortlet(
 			getPortletId(), exportParameterMap, getImportParameterMap());
 
 		importedStagedModel = getStagedModel(
@@ -135,7 +135,7 @@ public class BasePortletExportImportTestCase extends BaseExportImportTestCase {
 			PortletDataHandlerKeys.DELETIONS,
 			new String[]{ String.valueOf(true)});
 
-		doExportImportPortlet(
+		exportImportPortlet(
 			getPortletId(), exportParameterMap, importParameterMap);
 
 		try {
@@ -213,13 +213,13 @@ public class BasePortletExportImportTestCase extends BaseExportImportTestCase {
 		addParameter(parameterMap, getNamespace(), name, value);
 	}
 
-	protected void doExportImportPortlet(String portletId) throws Exception {
-		doExportImportPortlet(
+	protected void exportImportPortlet(String portletId) throws Exception {
+		exportImportPortlet(
 			portletId, new LinkedHashMap<String, String[]>(),
 			new LinkedHashMap<String, String[]>());
 	}
 
-	protected void doExportImportPortlet(
+	protected void exportImportPortlet(
 		String portletId, Map<String, String[]> exportParameterMap,
 		Map<String, String[]> importParameterMap) throws Exception {
 
@@ -247,7 +247,7 @@ public class BasePortletExportImportTestCase extends BaseExportImportTestCase {
 			TestPropsValues.getUserId(), this.layout, getPortletId(),
 			"column-1", preferenceMap);
 
-		doExportImportPortlet(portletId);
+		exportImportPortlet(portletId);
 
 		return LayoutTestUtil.getPortletPreferences(
 			importedLayout.getCompanyId(), importedLayout.getPlid(), portletId);
@@ -280,7 +280,7 @@ public class BasePortletExportImportTestCase extends BaseExportImportTestCase {
 			importedGroup.getGroupId(), targetAvailableLocales, null);
 
 		try {
-			doExportImportPortlet(getPortletId());
+			exportImportPortlet(getPortletId());
 
 			if (fail) {
 				Assert.fail();

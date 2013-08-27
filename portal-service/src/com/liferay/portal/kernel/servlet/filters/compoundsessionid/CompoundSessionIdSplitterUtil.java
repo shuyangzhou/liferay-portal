@@ -14,40 +14,64 @@
 
 package com.liferay.portal.kernel.servlet.filters.compoundsessionid;
 
-import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.ServerDetector;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 
 /**
+ * <p>
+ * See http://issues.liferay.com/browse/LPS-18587.
+ * </p>
+ *
  * @author Michael C. Han
+ * @author Shuyang Zhou
  */
 public class CompoundSessionIdSplitterUtil {
 
-	public static CompoundSessionIdSplitter getCompoundSessionIdSplitter() {
-		PortalRuntimePermission.checkGetBeanProperty(
-			CompoundSessionIdSplitterUtil.class);
-
-		return _compoundSessionIdSplitter;
-	}
-
 	public static String getSessionIdDelimiter() {
-		return getCompoundSessionIdSplitter().getSessionIdDelimiter();
+		return _sessionIdDelimiter;
 	}
 
 	public static boolean hasSessionDelimiter() {
-		return getCompoundSessionIdSplitter().hasSessionDelimiter();
+		return _hasSessionDelimiter;
 	}
 
 	public static String parseSessionId(String sessionId) {
-		return getCompoundSessionIdSplitter().parseSessionId(sessionId);
+		if (!_hasSessionDelimiter) {
+			return sessionId;
+		}
+
+		int pos = sessionId.indexOf(_sessionIdDelimiter);
+
+		if (pos == -1) {
+			return sessionId;
+		}
+
+		return sessionId.substring(0, pos);
 	}
 
-	public void setCompoundSessionIdSplitter(
-		CompoundSessionIdSplitter compoundSessionIdSplitter) {
+	private static final boolean _hasSessionDelimiter;
+	private static final String _sessionIdDelimiter;
 
-		PortalRuntimePermission.checkSetBeanProperty(getClass());
+	static {
+		String sessionIdDelimiter = PropsUtil.get(
+			PropsKeys.SESSION_ID_DELIMITER);
 
-		_compoundSessionIdSplitter = compoundSessionIdSplitter;
+		if (Validator.isNull(sessionIdDelimiter)) {
+			sessionIdDelimiter = PropsUtil.get(
+				"session.id." + ServerDetector.getServerId() + ".delimiter");
+		}
+
+		if (Validator.isNotNull(sessionIdDelimiter)) {
+			_hasSessionDelimiter = true;
+			_sessionIdDelimiter = sessionIdDelimiter;
+		}
+		else {
+			_hasSessionDelimiter = false;
+			_sessionIdDelimiter = StringPool.BLANK;
+		}
 	}
-
-	private static CompoundSessionIdSplitter _compoundSessionIdSplitter;
 
 }

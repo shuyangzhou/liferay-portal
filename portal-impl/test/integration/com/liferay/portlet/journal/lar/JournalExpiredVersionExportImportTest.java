@@ -82,7 +82,7 @@ public class JournalExpiredVersionExportImportTest
 			JournalTestUtil.getSearchArticlesCount(
 				group.getCompanyId(), group.getGroupId()));
 
-		doExportImportPortlet(PortletKeys.JOURNAL);
+		exportImportPortlet(PortletKeys.JOURNAL);
 
 		Assert.assertEquals(
 			initialArticlesCount + 2,
@@ -102,7 +102,7 @@ public class JournalExpiredVersionExportImportTest
 			JournalTestUtil.getSearchArticlesCount(
 				group.getCompanyId(), group.getGroupId()));
 
-		doExportImportPortlet(PortletKeys.JOURNAL);
+		exportImportPortlet(PortletKeys.JOURNAL);
 
 		Assert.assertEquals(
 			initialSearchArticlesCount,
