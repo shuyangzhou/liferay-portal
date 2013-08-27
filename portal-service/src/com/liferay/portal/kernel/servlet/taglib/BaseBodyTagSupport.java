@@ -64,15 +64,15 @@ public class BaseBodyTagSupport extends TagSupport {
 
 		BodyContent bodyContent = getBodyContent();
 
+		if (bodyContent == null) {
+			return new StringBundler();
+		}
+
 		if (bodyContent instanceof BodyContentWrapper) {
 			BodyContentWrapper bodyContentWrapper =
 				(BodyContentWrapper)bodyContent;
 
 			return bodyContentWrapper.getStringBundler();
-		}
-
-		if (bodyContent == null) {
-			return new StringBundler();
 		}
 
 		if (ServerDetector.isTomcat() && _log.isWarnEnabled()) {
