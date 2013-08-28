@@ -17,6 +17,7 @@ package com.liferay.portal.service.impl;
 import com.liferay.portal.DuplicateLockException;
 import com.liferay.portal.ExpiredLockException;
 import com.liferay.portal.NoSuchLockException;
+import com.liferay.portal.kernel.dao.jdbc.UseDefaultDataSource;
 import com.liferay.portal.kernel.dao.orm.LockMode;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -36,6 +37,7 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @author Shuyang Zhou
  */
+@UseDefaultDataSource
 public class LockLocalServiceImpl extends LockLocalServiceBaseImpl {
 
 	@Override

@@ -12,19 +12,20 @@
  * details.
  */
 
-package com.liferay.portal.spring.transaction;
+package com.liferay.portal.kernel.dao.jdbc;
 
-import com.liferay.portal.kernel.spring.util.FactoryBean;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * @author Shuyang Zhou
+ * @author László Csontos
  */
-public class TransactionInterceptorFactoryBean
-	implements FactoryBean<TransactionInterceptor> {
-
-	@Override
-	public TransactionInterceptor create() {
-		return new TransactionInterceptor();
-	}
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.METHOD, ElementType.TYPE})
+public @interface UseDefaultDataSource {
 
 }

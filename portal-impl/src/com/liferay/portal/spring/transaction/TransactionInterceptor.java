@@ -31,19 +31,8 @@ public class TransactionInterceptor implements MethodInterceptor {
 
 	@Override
 	public Object invoke(MethodInvocation methodInvocation) throws Throwable {
-		Method method = methodInvocation.getMethod();
-
-		Class<?> targetClass = null;
-
-		Object targetBean = methodInvocation.getThis();
-
-		if (targetBean != null) {
-			targetClass = targetBean.getClass();
-		}
-
-		TransactionAttribute transactionAttribute =
-			transactionAttributeSource.getTransactionAttribute(
-				method, targetClass);
+		TransactionAttribute transactionAttribute = getTransactionAttribute(
+			methodInvocation);
 
 		if (transactionAttribute == null) {
 			return methodInvocation.proceed();
@@ -51,6 +40,19 @@ public class TransactionInterceptor implements MethodInterceptor {
 
 		return transactionExecutor.execute(
 			platformTransactionManager, transactionAttribute, methodInvocation);
+	}
+
+	public boolean isReadOnlyMethod(MethodInvocation methodInvocation) {
+		TransactionAttribute transactionAttribute = getTransactionAttribute(
+			methodInvocation);
+
+		if ((transactionAttribute != null) &&
+			transactionAttribute.isReadOnly()) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	public void setPlatformTransactionManager(
@@ -82,6 +84,26 @@ public class TransactionInterceptor implements MethodInterceptor {
 		PlatformTransactionManager platformTransactionManager) {
 
 		setPlatformTransactionManager(platformTransactionManager);
+	}
+
+	protected TransactionAttribute getTransactionAttribute(
+		MethodInvocation methodInvocation) {
+
+		Method method = methodInvocation.getMethod();
+
+		Class<?> targetClass = null;
+
+		Object targetBean = methodInvocation.getThis();
+
+		if (targetBean != null) {
+			targetClass = targetBean.getClass();
+		}
+
+		TransactionAttribute transactionAttribute =
+			transactionAttributeSource.getTransactionAttribute(
+				method, targetClass);
+
+		return transactionAttribute;
 	}
 
 	protected PlatformTransactionManager platformTransactionManager;

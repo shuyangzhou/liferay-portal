@@ -51,6 +51,10 @@
 		<property name="nextMethodInterceptor" ref="systemEventAdvice" />
 	</bean>
 	<bean id="systemEventAdvice" class="com.liferay.portal.systemevent.SystemEventAdvice">
+		<property name="nextMethodInterceptor" ref="dynamicDataSourceAdvice" />
+	</bean>
+	<bean id="dynamicDataSourceAdvice" class="com.liferay.portal.dao.jdbc.aop.DynamicDataSourceAdvice">
+		<property name="transactionInterceptor" ref="transactionAdvice" />
 		<property name="nextMethodInterceptor" ref="transactionAdvice" />
 	</bean>
 	<bean id="counterTransactionAdvice" class="com.liferay.portal.spring.transaction.TransactionInterceptor">
