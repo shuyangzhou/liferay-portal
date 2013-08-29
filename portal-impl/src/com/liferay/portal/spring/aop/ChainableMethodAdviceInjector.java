@@ -14,7 +14,10 @@
 
 package com.liferay.portal.spring.aop;
 
+import org.aopalliance.intercept.MethodInterceptor;
+
 /**
+ * @author László Csontos
  * @author Shuyang Zhou
  */
 public class ChainableMethodAdviceInjector {
@@ -32,18 +35,75 @@ public class ChainableMethodAdviceInjector {
 				"New Chainable method advice is null");
 		}
 
+		MethodInterceptor childMethodInterceptor = getChildMethodInterceptor();
+
+		ChainableMethodAdvice headChainableMethodAdvice =
+			getHeadChainableMethodAdvice();
+
 		ChainableMethodAdvice parentChainableMethodAdvice =
 			getParentChainableMethodAdvice();
 
-		if (parentChainableMethodAdvice == null) {
+		if ((parentChainableMethodAdvice == null) &&
+			((childMethodInterceptor == null) ||
+			 (headChainableMethodAdvice == null))) {
+
 			throw new IllegalArgumentException(
-				"Parent chainable method advice is null");
+				"Parent chainable method advice is null and either the head " +
+					"of chainable method advices or child method interceptor " +
+					"is null");
+		}
+
+		if (parentChainableMethodAdvice == null) {
+			ChainableMethodAdvice nextAdvice = headChainableMethodAdvice;
+
+			while ((nextAdvice.nextMethodInterceptor !=
+						childMethodInterceptor) &&
+				   (nextAdvice.nextMethodInterceptor instanceof
+					ChainableMethodAdvice)) {
+
+				nextAdvice =
+					(ChainableMethodAdvice)nextAdvice.nextMethodInterceptor;
+			}
+
+			if (nextAdvice.nextMethodInterceptor == childMethodInterceptor) {
+				parentChainableMethodAdvice = nextAdvice;
+			}
+			else {
+				throw new IllegalStateException(
+					"Child method interceptor has not been found in chain");
+			}
 		}
 
 		newChainableMethodAdvice.nextMethodInterceptor =
 			parentChainableMethodAdvice.nextMethodInterceptor;
 		parentChainableMethodAdvice.nextMethodInterceptor =
 			newChainableMethodAdvice;
+
+		// Advices created after the chain has already been created doesn't have
+		// a reference to ServiceBeanAopCacheManager. This happens because
+		// instances of ServiceBeanAopProxy see only an older view of the
+		// chain's state. Having this in mind we need to fix this manually after
+		// wiring a new advice into an existing chain.
+
+		ServiceBeanAopCacheManager chainAopCacheManager =
+			parentChainableMethodAdvice.serviceBeanAopCacheManager;
+
+		chainAopCacheManager.reset();
+
+		newChainableMethodAdvice.setServiceBeanAopCacheManager(
+			chainAopCacheManager);
+	}
+
+	public void setChildMethodInterceptor(
+		MethodInterceptor childMethodInterceptor) {
+
+		_childMethodInterceptor = childMethodInterceptor;
+	}
+
+	public void setHeadChainableMethodAdvice(
+		ChainableMethodAdvice headChainableMethodAdvice) {
+
+		_headChainableMethodAdvice = headChainableMethodAdvice;
 	}
 
 	public void setInjectCondition(boolean injectCondition) {
@@ -62,6 +122,14 @@ public class ChainableMethodAdviceInjector {
 		_parentChainableMethodAdvice = parentChainableMethodAdvice;
 	}
 
+	protected MethodInterceptor getChildMethodInterceptor() {
+		return _childMethodInterceptor;
+	}
+
+	protected ChainableMethodAdvice getHeadChainableMethodAdvice() {
+		return _headChainableMethodAdvice;
+	}
+
 	protected ChainableMethodAdvice getNewChainableMethodAdvice() {
 		return _newChainableMethodAdvice;
 	}
@@ -74,6 +142,8 @@ public class ChainableMethodAdviceInjector {
 		return _injectCondition;
 	}
 
+	private MethodInterceptor _childMethodInterceptor;
+	private ChainableMethodAdvice _headChainableMethodAdvice;
 	private boolean _injectCondition;
 	private ChainableMethodAdvice _newChainableMethodAdvice;
 	private ChainableMethodAdvice _parentChainableMethodAdvice;

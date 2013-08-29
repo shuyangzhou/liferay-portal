@@ -75,63 +75,11 @@ public class ServiceBeanAopProxy implements AopProxy, InvocationHandler {
 		_mergeSpringMethodInterceptors = !ArrayUtil.contains(
 			proxyInterfaces, SpringProxy.class);
 
-		ArrayList<MethodInterceptor> classLevelMethodInterceptors =
-			new ArrayList<MethodInterceptor>();
-		ArrayList<MethodInterceptor> fullMethodInterceptors =
-			new ArrayList<MethodInterceptor>();
-
-		while (true) {
-			if (!(methodInterceptor instanceof ChainableMethodAdvice)) {
-				classLevelMethodInterceptors.add(methodInterceptor);
-				fullMethodInterceptors.add(methodInterceptor);
-
-				break;
-			}
-
-			ChainableMethodAdvice chainableMethodAdvice =
-				(ChainableMethodAdvice)methodInterceptor;
-
-			chainableMethodAdvice.setServiceBeanAopCacheManager(
-				serviceBeanAopCacheManager);
-
-			if (methodInterceptor instanceof AnnotationChainableMethodAdvice) {
-				AnnotationChainableMethodAdvice<?>
-					annotationChainableMethodAdvice =
-						(AnnotationChainableMethodAdvice<?>)methodInterceptor;
-
-				Class<? extends Annotation> annotationClass =
-					annotationChainableMethodAdvice.getAnnotationClass();
-
-				Target target = annotationClass.getAnnotation(Target.class);
-
-				if (target == null) {
-					classLevelMethodInterceptors.add(methodInterceptor);
-				}
-				else {
-					for (ElementType elementType : target.value()) {
-						if (elementType == ElementType.TYPE) {
-							classLevelMethodInterceptors.add(methodInterceptor);
-
-							break;
-						}
-					}
-				}
-			}
-			else {
-				classLevelMethodInterceptors.add(methodInterceptor);
-			}
-
-			fullMethodInterceptors.add(methodInterceptor);
-
-			methodInterceptor = chainableMethodAdvice.nextMethodInterceptor;
-		}
-
-		classLevelMethodInterceptors.trimToSize();
-
-		_classLevelMethodInterceptors = classLevelMethodInterceptors;
-		_fullMethodInterceptors = fullMethodInterceptors;
+		_methodInterceptor = methodInterceptor;
 
 		_serviceBeanAopCacheManager = serviceBeanAopCacheManager;
+
+		_initMethodInterceptors();
 	}
 
 	@Override
@@ -235,6 +183,67 @@ public class ServiceBeanAopProxy implements AopProxy, InvocationHandler {
 		return methodInterceptors;
 	}
 
+	private void _initMethodInterceptors() {
+		ArrayList<MethodInterceptor> classLevelMethodInterceptors =
+			new ArrayList<MethodInterceptor>();
+		ArrayList<MethodInterceptor> fullMethodInterceptors =
+			new ArrayList<MethodInterceptor>();
+
+		MethodInterceptor methodInterceptor = _methodInterceptor;
+
+		while (true) {
+			if (!(methodInterceptor instanceof ChainableMethodAdvice)) {
+				classLevelMethodInterceptors.add(methodInterceptor);
+				fullMethodInterceptors.add(methodInterceptor);
+
+				break;
+			}
+
+			ChainableMethodAdvice chainableMethodAdvice =
+				(ChainableMethodAdvice)methodInterceptor;
+
+			chainableMethodAdvice.setServiceBeanAopCacheManager(
+				_serviceBeanAopCacheManager);
+
+			if (methodInterceptor instanceof AnnotationChainableMethodAdvice) {
+				AnnotationChainableMethodAdvice<?>
+					annotationChainableMethodAdvice =
+						(AnnotationChainableMethodAdvice<?>)methodInterceptor;
+
+				Class<? extends Annotation> annotationClass =
+					annotationChainableMethodAdvice.getAnnotationClass();
+
+				Target target = annotationClass.getAnnotation(Target.class);
+
+				if (target == null) {
+					classLevelMethodInterceptors.add(methodInterceptor);
+				}
+				else {
+					for (ElementType elementType : target.value()) {
+						if (elementType == ElementType.TYPE) {
+							classLevelMethodInterceptors.add(methodInterceptor);
+
+							break;
+						}
+					}
+				}
+			}
+			else {
+				classLevelMethodInterceptors.add(methodInterceptor);
+			}
+
+			fullMethodInterceptors.add(methodInterceptor);
+
+			methodInterceptor = chainableMethodAdvice.nextMethodInterceptor;
+		}
+
+		classLevelMethodInterceptors.trimToSize();
+
+		_classLevelMethodInterceptors = classLevelMethodInterceptors;
+		_fullMethodInterceptors = fullMethodInterceptors;
+
+	}
+
 	private void _setMethodInterceptors(
 		ServiceBeanMethodInvocation serviceBeanMethodInvocation) {
 
@@ -243,6 +252,8 @@ public class ServiceBeanAopProxy implements AopProxy, InvocationHandler {
 				serviceBeanMethodInvocation);
 
 		if (methodInterceptorsBag == null) {
+			_initMethodInterceptors();
+
 			List<MethodInterceptor> methodInterceptors = _getMethodInterceptors(
 				serviceBeanMethodInvocation);
 
@@ -264,9 +275,10 @@ public class ServiceBeanAopProxy implements AopProxy, InvocationHandler {
 
 	private AdvisedSupport _advisedSupport;
 	private AdvisorChainFactory _advisorChainFactory;
-	private final List<MethodInterceptor> _classLevelMethodInterceptors;
-	private final List<MethodInterceptor> _fullMethodInterceptors;
+	private List<MethodInterceptor> _classLevelMethodInterceptors;
+	private List<MethodInterceptor> _fullMethodInterceptors;
 	private boolean _mergeSpringMethodInterceptors;
+	private MethodInterceptor _methodInterceptor;
 	private ServiceBeanAopCacheManager _serviceBeanAopCacheManager;
 
 	private static class NoPACL implements PACL {
