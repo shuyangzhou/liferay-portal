@@ -20,13 +20,22 @@ import com.liferay.portal.kernel.test.NewClassLoaderJUnitTestRunner;
 import com.liferay.portal.kernel.util.ReflectionUtil;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.Provider;
 import java.security.SecureRandom;
+import java.security.Security;
 
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -72,24 +81,119 @@ public class SecureRandomUtilTest {
 		Thread reloadThread = new Thread(futureTask);
 
 		long gapValue = -1;
+		long secretState = getSecretState();
 
 		synchronized (secureRandom) {
 			reloadThread.start();
 
 			while (reloadThread.getState() != Thread.State.BLOCKED);
 
-			long gapSeed = getGapSeed();
-
 			gapValue = reload();
 
-			Assert.assertEquals(getFirstLong() ^ gapSeed, gapValue);
-			Assert.assertEquals(gapValue, getGapSeed());
+			Assert.assertEquals(
+				getGapValueFromSecretSeed(secretState), gapValue);
 		}
 
 		reloadThread.join();
 
+		secretState = getNextSecretState(secretState + 1);
+
 		Assert.assertEquals(
-			(Long)(getFirstLong() ^ gapValue), futureTask.get());
+			(Long)(getGapValueFromSecretSeed(secretState)), futureTask.get());
+	}
+
+	@Test
+	public void testConcurrentReloadWeaknesses() throws Exception {
+		SecureRandom secureRandom = installPredictableRandom();
+
+		FutureTask<Long> futureTask = new FutureTask<Long>(
+			new Callable<Long>() {
+
+				@Override
+				public Long call() throws Exception {
+					return reload();
+				}
+
+			});
+
+		Thread reloadThread = new Thread(futureTask);
+
+		Set<Long> even = new HashSet<Long>(100);
+		Set<Long> odd = new HashSet<Long>(100);
+
+		synchronized (secureRandom) {
+			reloadThread.start();
+
+			while (reloadThread.getState() != Thread.State.BLOCKED);
+
+			for (int i = 0; i < 50; i++) {
+				odd.add(reload());
+				even.add(reload());
+			}
+
+			Assert.assertEquals(odd.size(), 50);
+			Assert.assertEquals(even.size(), 50);
+		}
+
+		reloadThread.join();
+
+		for (int i = 0; i < 50; i++) {
+			odd.add(reload());
+			even.add(reload());
+		}
+
+		Assert.assertEquals(odd.size(), 100);
+		Assert.assertEquals(even.size(), 100);
+	}
+
+	@Test
+	public void testConcurrentReloadWithoutSHA() throws Exception {
+		Security.insertProviderAt(new ExceptionThrowingProvider(), 1);
+
+		try {
+			SecureRandom secureRandom = installPredictableRandom();
+
+			FutureTask<Long> futureTask = new FutureTask<Long>(
+				new Callable<Long>() {
+
+					@Override
+					public Long call() throws Exception {
+						return reload();
+					}
+
+				});
+
+			Thread reloadThread = new Thread(futureTask);
+
+			synchronized (secureRandom) {
+				reloadThread.start();
+
+				while (reloadThread.getState() != Thread.State.BLOCKED);
+
+				try {
+					reload();
+					Assert.fail();
+				}
+				catch (InvocationTargetException e) {
+					Assert.assertEquals(
+						"SHA1 is not available!", e.getCause().getMessage());
+				}
+			}
+
+			reloadThread.join();
+
+			try {
+				reload();
+				Assert.fail();
+			}
+			catch (InvocationTargetException e) {
+				Assert.assertEquals(
+					"SHA1 is not available!", e.getCause().getMessage());
+			}
+		}
+		finally {
+			Security.removeProvider(ExceptionThrowingProvider._NAME);
+		}
 	}
 
 	@Test
@@ -129,16 +233,19 @@ public class SecureRandomUtilTest {
 
 		// Gap number
 
-		long firstLong = getFirstLong();
-		long gapSeed = getGapSeed();
+		long secretState = getSecretState();
 
-		long result = firstLong ^ gapSeed;
+		boolean nextBoolean = SecureRandomUtil.nextBoolean();
+
+		secretState = getNextSecretState(secretState);
+
+		long result = getGapValueFromSecretSeed(secretState);
 
 		if ((byte)result < 0) {
-			Assert.assertFalse(SecureRandomUtil.nextBoolean());
+			Assert.assertFalse(nextBoolean);
 		}
 		else {
-			Assert.assertTrue(SecureRandomUtil.nextBoolean());
+			Assert.assertTrue(nextBoolean);
 		}
 
 		// Second load
@@ -168,12 +275,15 @@ public class SecureRandomUtilTest {
 
 		// Gap number
 
-		long firstLong = getFirstLong();
-		long gapSeed = getGapSeed();
+		long secretState = getSecretState();
 
-		long result = firstLong ^ gapSeed;
+		byte nextByte = SecureRandomUtil.nextByte();
 
-		Assert.assertEquals((byte)result, SecureRandomUtil.nextByte());
+		secretState = getNextSecretState(secretState);
+
+		long result = getGapValueFromSecretSeed(secretState);
+
+		Assert.assertEquals((byte)result, nextByte);
 
 		// Second load
 
@@ -205,13 +315,15 @@ public class SecureRandomUtilTest {
 
 		// Gap number
 
-		long firstLong = getFirstLong();
-		long gapSeed = getGapSeed();
+		long secretState = getSecretState();
 
-		long result = firstLong ^ gapSeed;
+		double nextDouble = SecureRandomUtil.nextDouble();
 
-		Assert.assertEquals(
-			Double.longBitsToDouble(result), SecureRandomUtil.nextDouble(), 0);
+		secretState = getNextSecretState(secretState);
+
+		long result = getGapValueFromSecretSeed(secretState);
+
+		Assert.assertEquals(Double.longBitsToDouble(result), nextDouble, 0);
 
 		// Second load
 
@@ -253,13 +365,15 @@ public class SecureRandomUtilTest {
 
 		// Gap number
 
-		long firstLong = getFirstLong();
-		long gapSeed = getGapSeed();
+		long secretState = getSecretState();
 
-		long result = firstLong ^ gapSeed;
+		float nextFloat = SecureRandomUtil.nextFloat();
 
-		Assert.assertEquals(
-			Float.intBitsToFloat((int)result), SecureRandomUtil.nextFloat(), 0);
+		secretState = getNextSecretState(secretState);
+
+		long result = getGapValueFromSecretSeed(secretState);
+
+		Assert.assertEquals(Float.intBitsToFloat((int)result), nextFloat, 0);
 
 		// Second load
 
@@ -300,12 +414,15 @@ public class SecureRandomUtilTest {
 
 		// Gap number
 
-		long firstLong = getFirstLong();
-		long gapSeed = getGapSeed();
+		long secretState = getSecretState();
 
-		long result = firstLong ^ gapSeed;
+		int nextInt = SecureRandomUtil.nextInt();
 
-		Assert.assertEquals((int)result, SecureRandomUtil.nextInt(), 0);
+		secretState = getNextSecretState(secretState);
+
+		long result = getGapValueFromSecretSeed(secretState);
+
+		Assert.assertEquals((int)result, nextInt, 0);
 
 		// Second load
 
@@ -346,12 +463,15 @@ public class SecureRandomUtilTest {
 
 		// Gap number
 
-		long firstLong = getFirstLong();
-		long gapSeed = getGapSeed();
+		long secretState = getSecretState();
 
-		long result = firstLong ^ gapSeed;
+		long nextLong = SecureRandomUtil.nextLong();
 
-		Assert.assertEquals(result, SecureRandomUtil.nextLong(), 0);
+		secretState = getNextSecretState(secretState);
+
+		long result = getGapValueFromSecretSeed(secretState);
+
+		Assert.assertEquals(result, nextLong, 0);
 
 		// Second load
 
@@ -370,20 +490,57 @@ public class SecureRandomUtilTest {
 		}
 	}
 
-	protected long getFirstLong() throws Exception {
+	protected long getGapValueFromSecretSeed(long secretState)
+		throws Exception {
+
+		try {
+			byte[] secretStateBytes = new byte[8];
+			BigEndianCodec.putLong(secretStateBytes, 0, secretState);
+
+			MessageDigest mDigest = MessageDigest.getInstance("SHA1");
+			byte[] result = mDigest.digest(secretStateBytes);
+
+			int pos = ((int)secretState & 0xF) % 11;
+			return BigEndianCodec.getLong(result, pos & 0xF);
+		}
+		catch (NoSuchAlgorithmException e) {
+			return new Random(secretState).nextLong();
+		}
+	}
+
+	protected int getIntAtPos(int pos) throws Exception {
 		Field bytesField = ReflectionUtil.getDeclaredField(
 			SecureRandomUtil.class, "_bytes");
 
 		byte[] bytes = (byte[])bytesField.get(null);
 
-		return BigEndianCodec.getLong(bytes, 0);
+		return BigEndianCodec.getInt(bytes, pos);
 	}
 
-	protected long getGapSeed() throws Exception {
-		Field gapSeedField = ReflectionUtil.getDeclaredField(
-			SecureRandomUtil.class, "_gapSeed");
+	protected long getLongAtPos(int pos) throws Exception {
+		Field bytesField = ReflectionUtil.getDeclaredField(
+			SecureRandomUtil.class, "_bytes");
 
-		return gapSeedField.getLong(null);
+		byte[] bytes = (byte[])bytesField.get(null);
+
+		return BigEndianCodec.getLong(bytes, pos);
+	}
+
+	protected long getNextSecretState(long secretState) throws Exception {
+		int pos = getIntAtPos(2048 - 4) & 0x7FFFFFFF;
+		pos = pos % (2048 - 12);
+
+		long l = getLongAtPos(pos);
+
+		return secretState ^ l;
+	}
+
+	protected long getSecretState() throws Exception {
+		Field secretStateField = ReflectionUtil.getDeclaredField(
+			SecureRandomUtil.class, "_secretState");
+
+		AtomicLong secretState = (AtomicLong)secretStateField.get(null);
+		return secretState.get();
 	}
 
 	protected SecureRandom installPredictableRandom() throws Exception {
@@ -413,6 +570,24 @@ public class SecureRandomUtilTest {
 
 	private static final String _KEY_BUFFER_SIZE =
 		SecureRandomUtil.class.getName() + ".buffer.size";
+
+	private static class ExceptionThrowingProvider extends Provider {
+
+		public ExceptionThrowingProvider() {
+			super(_NAME, 1.0, "Provider for SHA1");
+		}
+
+		public synchronized Service getService(String type, String algorithm) {
+			if (algorithm.equals("SHA1") && type.equals("MessageDigest")) {
+				throw new RuntimeException();
+			}
+
+			return null;
+		}
+
+		private static final String _NAME = "Liferay";
+
+	}
 
 	private static class PredictableRandom extends SecureRandom {
 

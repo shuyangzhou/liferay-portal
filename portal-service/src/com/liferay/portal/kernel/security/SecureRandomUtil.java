@@ -17,14 +17,17 @@ package com.liferay.portal.kernel.security;
 import com.liferay.portal.kernel.io.BigEndianCodec;
 import com.liferay.portal.kernel.util.GetterUtil;
 
+import java.security.MessageDigest;
 import java.security.SecureRandom;
 
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * @author Shuyang Zhou
+ * @author Tomas Polesovsky
  */
 public class SecureRandomUtil {
 
@@ -95,25 +98,44 @@ public class SecureRandomUtil {
 
 			_index.set(0);
 
+			int pos = BigEndianCodec.getInt(
+				_bytes, _BUFFER_SIZE - 4) & 0x7FFFFFFF;
+			pos = pos % (_BUFFER_SIZE - 12);
+
+			long l = BigEndianCodec.getLong(_bytes, pos);
+
+			_secretState.set(_secretState.get() ^ l);
+
 			_reloadingFlag.set(false);
 		}
 
-		long l = BigEndianCodec.getLong(_bytes, 0) ^ _gapSeed;
+		long secretState = _secretState.getAndIncrement();
+		try {
+			byte[] secretStateBytes = new byte[8];
+			BigEndianCodec.putLong(secretStateBytes, 0, secretState);
 
-		_gapSeed = l;
+			MessageDigest mDigest = MessageDigest.getInstance("SHA1");
+			byte[] result = mDigest.digest(secretStateBytes);
 
-		return l;
+			int pos = ((int)secretState & 0xF) % (_SHA1_SIZE - 9);
+			return BigEndianCodec.getLong(result, pos);
+		}
+		catch (Exception e) {
+			throw new RuntimeException("SHA1 is not available!", e);
+		}
 	}
 
 	private static final int _BUFFER_SIZE;
 
 	private static final int _MIN_BUFFER_SIZE = 1024;
 
+	private static final int _SHA1_SIZE = 20;
+
 	private static byte[] _bytes;
-	private static long _gapSeed;
 	private static AtomicInteger _index = new AtomicInteger();
 	private static Random _random = new SecureRandom();
 	private static AtomicBoolean _reloadingFlag = new AtomicBoolean();
+	private static AtomicLong _secretState = new AtomicLong();
 
 	static {
 		int bufferSize = GetterUtil.getInteger(
@@ -130,7 +152,7 @@ public class SecureRandomUtil {
 
 		_random.nextBytes(_bytes);
 
-		_gapSeed = _random.nextLong();
+		_secretState.set(_random.nextLong());
 	}
 
 }
