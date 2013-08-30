@@ -701,7 +701,6 @@ public class LicenseUtil {
 	private static String _encryptedSymmetricKey;
 	private static MethodHandler _getServerInfoMethodHandler =
 		new MethodHandler(new MethodKey(LicenseUtil.class, "getServerInfo"));
-	private static String _hostName;
 	private static Set<String> _ipAddresses;
 	private static Set<String> _macAddresses;
 	private static Pattern _macAddressPattern1 = Pattern.compile(
