@@ -24,13 +24,18 @@ import com.liferay.portal.model.LayoutConstants;
 import com.liferay.portal.service.LayoutLocalServiceUtil;
 
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Brian Wing Shun Chan
+ * @author László Csontos
  */
 public class LayoutLister {
 
@@ -59,8 +64,9 @@ public class LayoutLister {
 		List<Layout> layouts = LayoutLocalServiceUtil.getLayouts(
 			groupId, privateLayout);
 
-		_createList(
-			layouts, LayoutConstants.DEFAULT_PARENT_LAYOUT_ID, _nodeId, 0);
+		Map<Long, Deque<Layout>> layoutsBag = getLayoutsBag(layouts);
+
+		createList(layoutsBag);
 
 		if (_log.isDebugEnabled()) {
 			stopWatch.stop();
@@ -71,57 +77,99 @@ public class LayoutLister {
 		return new LayoutView(_list, _depth);
 	}
 
-	private void _createList(
-			List<Layout> layouts, long parentLayoutId, int parentId, int depth)
-		throws PortalException, SystemException {
+	protected void createList(Map<Long, Deque<Layout>> layoutsBag) {
+		Deque<LayoutNode> layoutNodeStack = new LinkedList<LayoutNode>();
 
-		List<Layout> matchedLayouts = new ArrayList<Layout>();
+		pushLayouts(
+			layoutNodeStack, layoutsBag,
+			LayoutConstants.DEFAULT_PARENT_LAYOUT_ID, 1, _nodeId);
+
+		while (!layoutNodeStack.isEmpty()) {
+			LayoutNode layoutNode = layoutNodeStack.pop();
+
+			visitLayout(layoutNode);
+
+			pushLayouts(
+				layoutNodeStack, layoutsBag, layoutNode.layout.getLayoutId(),
+				layoutNode.depth + 1, _nodeId);
+		}
+	}
+
+	protected Map<Long, Deque<Layout>> getLayoutsBag(List<Layout> layouts) {
+		Map<Long, Deque<Layout>> layoutsBag =
+			new HashMap<Long, Deque<Layout>>();
 
 		for (Layout layout : layouts) {
-			if (layout.getParentLayoutId() == parentLayoutId) {
-				matchedLayouts.add(layout);
+			long parentLayoutId = layout.getParentLayoutId();
+
+			Deque<Layout> matchedLayouts = layoutsBag.get(parentLayoutId);
+
+			if (matchedLayouts == null) {
+				matchedLayouts = new LinkedList<Layout>();
+
+				layoutsBag.put(parentLayoutId, matchedLayouts);
 			}
+
+			matchedLayouts.offer(layout);
 		}
 
-		for (int i = 0; i < matchedLayouts.size(); i++) {
-			Layout layout = matchedLayouts.get(i);
+		return layoutsBag;
+	}
 
-			if (i == 0) {
-				depth++;
+	protected void pushLayouts(
+		Deque<LayoutNode> layoutNodeStack, Map<Long, Deque<Layout>> layoutsBag,
+		long parentLayoutId, int depth, int parentId) {
 
-				if (depth > _depth) {
-					_depth = depth;
-				}
-			}
+		Deque<Layout> matchedLayouts = layoutsBag.get(parentLayoutId);
 
-			StringBundler sb = new StringBundler(13);
-
-			sb.append(++_nodeId);
-			sb.append("|");
-			sb.append(parentId);
-			sb.append("|");
-
-			if ((i + 1) == matchedLayouts.size()) {
-				sb.append("1");
-			}
-			else {
-				sb.append("0");
-			}
-
-			sb.append("|");
-			sb.append(layout.getPlid());
-			sb.append("|");
-			sb.append(layout.getName(_locale));
-			sb.append("|");
-			//sb.append("9");
-			sb.append("11");
-			sb.append("|");
-			sb.append(depth);
-
-			_list.add(sb.toString());
-
-			_createList(layouts, layout.getLayoutId(), _nodeId, depth);
+		if ((matchedLayouts == null) || matchedLayouts.isEmpty()) {
+			return;
 		}
+
+		int siblingCount = matchedLayouts.size();
+
+		int index = siblingCount;
+
+		Layout layout = null;
+
+		while ((layout = matchedLayouts.pollLast()) != null) {
+			LayoutNode layoutNode = new LayoutNode(
+				layout, --index, siblingCount, depth, parentId);
+
+			layoutNodeStack.push(layoutNode);
+		}
+
+		if (depth > _depth) {
+			_depth = depth;
+		}
+	}
+
+	protected void visitLayout(LayoutNode layoutNode) {
+		StringBundler sb = new StringBundler(13);
+
+		sb.append(++_nodeId);
+		sb.append("|");
+		sb.append(layoutNode.parentId);
+		sb.append("|");
+
+		if ((layoutNode.index + 1) == layoutNode.siblingCount) {
+			sb.append("1");
+		}
+		else {
+			sb.append("0");
+		}
+
+		sb.append("|");
+		sb.append(layoutNode.layout.getPlid());
+		sb.append("|");
+		sb.append(layoutNode.layout.getName(_locale));
+		sb.append("|");
+		//sb.append("9");
+		sb.append("11");
+		sb.append("|");
+		sb.append(layoutNode.depth);
+
+		_list.add(sb.toString());
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(LayoutLister.class);
@@ -130,5 +178,25 @@ public class LayoutLister {
 	private List<String> _list;
 	private Locale _locale;
 	private int _nodeId;
+
+	private class LayoutNode {
+
+		public LayoutNode(
+			Layout layout, int index, int siblingCount, int depth,
+			int parentId) {
+
+			this.index = index;
+			this.depth = depth;
+			this.layout = layout;
+			this.parentId = parentId;
+			this.siblingCount = siblingCount;
+		}
+
+		int index;
+		int depth;
+		Layout layout;
+		int parentId;
+		int siblingCount;
+	}
 
 }
