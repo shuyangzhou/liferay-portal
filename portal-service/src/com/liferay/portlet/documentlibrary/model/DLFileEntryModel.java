@@ -15,14 +15,18 @@
 package com.liferay.portlet.documentlibrary.model;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.trash.TrashHandler;
 import com.liferay.portal.model.AttachedModel;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.StagedGroupedModel;
+import com.liferay.portal.model.TrashedModel;
 import com.liferay.portal.service.ServiceContext;
 
 import com.liferay.portlet.expando.model.ExpandoBridge;
+import com.liferay.portlet.trash.model.TrashEntry;
 
 import java.io.Serializable;
 
@@ -42,7 +46,7 @@ import java.util.Date;
  * @generated
  */
 public interface DLFileEntryModel extends AttachedModel, BaseModel<DLFileEntry>,
-	StagedGroupedModel {
+	StagedGroupedModel, TrashedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -501,6 +505,182 @@ public interface DLFileEntryModel extends AttachedModel, BaseModel<DLFileEntry>,
 	 * @param manualCheckInRequired the manual check in required of this document library file entry
 	 */
 	public void setManualCheckInRequired(boolean manualCheckInRequired);
+
+	/**
+	 * Returns the status of this document library file entry.
+	 *
+	 * @return the status of this document library file entry
+	 */
+	@Override
+	public int getStatus();
+
+	/**
+	 * Sets the status of this document library file entry.
+	 *
+	 * @param status the status of this document library file entry
+	 */
+	@Override
+	public void setStatus(int status);
+
+	/**
+	 * Returns the status by user ID of this document library file entry.
+	 *
+	 * @return the status by user ID of this document library file entry
+	 */
+	@Override
+	public long getStatusByUserId();
+
+	/**
+	 * Sets the status by user ID of this document library file entry.
+	 *
+	 * @param statusByUserId the status by user ID of this document library file entry
+	 */
+	@Override
+	public void setStatusByUserId(long statusByUserId);
+
+	/**
+	 * Returns the status by user uuid of this document library file entry.
+	 *
+	 * @return the status by user uuid of this document library file entry
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public String getStatusByUserUuid() throws SystemException;
+
+	/**
+	 * Sets the status by user uuid of this document library file entry.
+	 *
+	 * @param statusByUserUuid the status by user uuid of this document library file entry
+	 */
+	@Override
+	public void setStatusByUserUuid(String statusByUserUuid);
+
+	/**
+	 * Returns the status by user name of this document library file entry.
+	 *
+	 * @return the status by user name of this document library file entry
+	 */
+	@AutoEscape
+	@Override
+	public String getStatusByUserName();
+
+	/**
+	 * Sets the status by user name of this document library file entry.
+	 *
+	 * @param statusByUserName the status by user name of this document library file entry
+	 */
+	@Override
+	public void setStatusByUserName(String statusByUserName);
+
+	/**
+	 * Returns the status date of this document library file entry.
+	 *
+	 * @return the status date of this document library file entry
+	 */
+	@Override
+	public Date getStatusDate();
+
+	/**
+	 * Sets the status date of this document library file entry.
+	 *
+	 * @param statusDate the status date of this document library file entry
+	 */
+	@Override
+	public void setStatusDate(Date statusDate);
+
+	/**
+	 * Returns the trash entry ID of this document library file entry.
+	 *
+	 * @return the trash entry ID of this document library file entry
+	 */
+	public long getTrashEntryId();
+
+	/**
+	 * Sets the trash entry ID of this document library file entry.
+	 *
+	 * @param trashEntryId the trash entry ID of this document library file entry
+	 */
+	public void setTrashEntryId(long trashEntryId);
+
+	public TrashEntry getTrashEntry() throws PortalException, SystemException;
+
+	public TrashHandler getTrashHandler();
+
+	public boolean isInTrash();
+
+	public boolean isInTrashContainer() throws PortalException, SystemException;
+
+	public boolean isTrashEntry();
+
+	/**
+	 * @deprecated As of 6.1.0, replaced by {@link #isApproved()}
+	 */
+	@Override
+	public boolean getApproved();
+
+	/**
+	 * Returns <code>true</code> if this document library file entry is approved.
+	 *
+	 * @return <code>true</code> if this document library file entry is approved; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isApproved();
+
+	/**
+	 * Returns <code>true</code> if this document library file entry is denied.
+	 *
+	 * @return <code>true</code> if this document library file entry is denied; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isDenied();
+
+	/**
+	 * Returns <code>true</code> if this document library file entry is a draft.
+	 *
+	 * @return <code>true</code> if this document library file entry is a draft; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isDraft();
+
+	/**
+	 * Returns <code>true</code> if this document library file entry is expired.
+	 *
+	 * @return <code>true</code> if this document library file entry is expired; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isExpired();
+
+	/**
+	 * Returns <code>true</code> if this document library file entry is inactive.
+	 *
+	 * @return <code>true</code> if this document library file entry is inactive; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isInactive();
+
+	/**
+	 * Returns <code>true</code> if this document library file entry is incomplete.
+	 *
+	 * @return <code>true</code> if this document library file entry is incomplete; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isIncomplete();
+
+	/**
+	 * Returns <code>true</code> if this document library file entry is pending.
+	 *
+	 * @return <code>true</code> if this document library file entry is pending; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isPending();
+
+	/**
+	 * Returns <code>true</code> if this document library file entry is scheduled.
+	 *
+	 * @return <code>true</code> if this document library file entry is scheduled; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isScheduled();
 
 	@Override
 	public boolean isNew();

@@ -156,6 +156,8 @@ public class MBThreadPersistenceTest {
 
 		newMBThread.setStatusDate(ServiceTestUtil.nextDate());
 
+		newMBThread.setTrashEntryId(ServiceTestUtil.nextLong());
+
 		_persistence.update(newMBThread);
 
 		MBThread existingMBThread = _persistence.findByPrimaryKey(newMBThread.getPrimaryKey());
@@ -205,6 +207,8 @@ public class MBThreadPersistenceTest {
 		Assert.assertEquals(Time.getShortTimestamp(
 				existingMBThread.getStatusDate()),
 			Time.getShortTimestamp(newMBThread.getStatusDate()));
+		Assert.assertEquals(existingMBThread.getTrashEntryId(),
+			newMBThread.getTrashEntryId());
 	}
 
 	@Test
@@ -259,7 +263,7 @@ public class MBThreadPersistenceTest {
 			true, "messageCount", true, "viewCount", true, "lastPostByUserId",
 			true, "lastPostDate", true, "priority", true, "question", true,
 			"status", true, "statusByUserId", true, "statusByUserName", true,
-			"statusDate", true);
+			"statusDate", true, "trashEntryId", true);
 	}
 
 	@Test
@@ -438,6 +442,8 @@ public class MBThreadPersistenceTest {
 		mbThread.setStatusByUserName(ServiceTestUtil.randomString());
 
 		mbThread.setStatusDate(ServiceTestUtil.nextDate());
+
+		mbThread.setTrashEntryId(ServiceTestUtil.nextLong());
 
 		_persistence.update(mbThread);
 

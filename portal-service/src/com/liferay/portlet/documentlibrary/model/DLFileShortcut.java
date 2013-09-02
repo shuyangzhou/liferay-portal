@@ -42,8 +42,4 @@ public interface DLFileShortcut extends DLFileShortcutModel, PersistedModel {
 			com.liferay.portal.kernel.exception.SystemException;
 
 	public boolean isInHiddenFolder();
-
-	public boolean isInTrashContainer()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
 }

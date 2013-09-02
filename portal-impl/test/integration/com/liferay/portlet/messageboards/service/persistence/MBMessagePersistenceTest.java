@@ -164,6 +164,8 @@ public class MBMessagePersistenceTest {
 
 		newMBMessage.setStatusDate(ServiceTestUtil.nextDate());
 
+		newMBMessage.setTrashEntryId(ServiceTestUtil.nextLong());
+
 		_persistence.update(newMBMessage);
 
 		MBMessage existingMBMessage = _persistence.findByPrimaryKey(newMBMessage.getPrimaryKey());
@@ -219,6 +221,8 @@ public class MBMessagePersistenceTest {
 		Assert.assertEquals(Time.getShortTimestamp(
 				existingMBMessage.getStatusDate()),
 			Time.getShortTimestamp(newMBMessage.getStatusDate()));
+		Assert.assertEquals(existingMBMessage.getTrashEntryId(),
+			newMBMessage.getTrashEntryId());
 	}
 
 	@Test
@@ -274,7 +278,7 @@ public class MBMessagePersistenceTest {
 			"subject", true, "body", true, "format", true, "anonymous", true,
 			"priority", true, "allowPingbacks", true, "answer", true, "status",
 			true, "statusByUserId", true, "statusByUserName", true,
-			"statusDate", true);
+			"statusDate", true, "trashEntryId", true);
 	}
 
 	@Test
@@ -458,6 +462,8 @@ public class MBMessagePersistenceTest {
 		mbMessage.setStatusByUserName(ServiceTestUtil.randomString());
 
 		mbMessage.setStatusDate(ServiceTestUtil.nextDate());
+
+		mbMessage.setTrashEntryId(ServiceTestUtil.nextLong());
 
 		_persistence.update(mbMessage);
 

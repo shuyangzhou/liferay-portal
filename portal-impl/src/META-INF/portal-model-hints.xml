@@ -1325,6 +1325,7 @@
 		<field name="statusByUserId" type="long" />
 		<field name="statusByUserName" type="String" />
 		<field name="statusDate" type="Date" />
+		<field name="trashEntryId" type="long" />
 	</model>
 	<model name="com.liferay.portlet.blogs.model.BlogsStatsUser">
 		<field name="statsUserId" type="long" />
@@ -1367,6 +1368,7 @@
 		<field name="statusByUserId" type="long" />
 		<field name="statusByUserName" type="String" />
 		<field name="statusDate" type="Date" />
+		<field name="trashEntryId" type="long" />
 	</model>
 	<model name="com.liferay.portlet.bookmarks.model.BookmarksFolder">
 		<field name="uuid" type="String" />
@@ -1389,6 +1391,7 @@
 		<field name="statusByUserId" type="long" />
 		<field name="statusByUserName" type="String" />
 		<field name="statusDate" type="Date" />
+		<field name="trashEntryId" type="long" />
 	</model>
 	<model name="com.liferay.portlet.calendar.model.CalEvent">
 		<field name="uuid" type="String" />
@@ -1473,6 +1476,11 @@
 		<field name="custom1ImageId" type="long" />
 		<field name="custom2ImageId" type="long" />
 		<field name="manualCheckInRequired" type="boolean" />
+		<field name="status" type="int" />
+		<field name="statusByUserId" type="long" />
+		<field name="statusByUserName" type="String" />
+		<field name="statusDate" type="Date" />
+		<field name="trashEntryId" type="long" />
 	</model>
 	<model name="com.liferay.portlet.documentlibrary.model.DLFileEntryMetadata">
 		<field name="uuid" type="String" />
@@ -1527,6 +1535,7 @@
 		<field name="statusByUserId" type="long" />
 		<field name="statusByUserName" type="String" />
 		<field name="statusDate" type="Date" />
+		<field name="trashEntryId" type="long" />
 	</model>
 	<model name="com.liferay.portlet.documentlibrary.model.DLFileVersion">
 		<field name="uuid" type="String" />
@@ -1560,6 +1569,7 @@
 		<field name="statusByUserId" type="long" />
 		<field name="statusByUserName" type="String" />
 		<field name="statusDate" type="Date" />
+		<field name="trashEntryId" type="long" />
 	</model>
 	<model name="com.liferay.portlet.documentlibrary.model.DLFolder">
 		<field name="uuid" type="String" />
@@ -1588,6 +1598,7 @@
 		<field name="statusByUserId" type="long" />
 		<field name="statusByUserName" type="String" />
 		<field name="statusDate" type="Date" />
+		<field name="trashEntryId" type="long" />
 	</model>
 	<model name="com.liferay.portlet.documentlibrary.model.DLSyncEvent">
 		<field name="syncEventId" type="long" />
@@ -1839,6 +1850,7 @@
 		<field name="statusByUserId" type="long" />
 		<field name="statusByUserName" type="String" />
 		<field name="statusDate" type="Date" />
+		<field name="trashEntryId" type="long" />
 	</model>
 	<model name="com.liferay.portlet.journal.model.JournalArticleImage">
 		<field name="articleImageId" type="long" />
@@ -1928,6 +1940,7 @@
 		<field name="statusByUserId" type="long" />
 		<field name="statusByUserName" type="String" />
 		<field name="statusDate" type="Date" />
+		<field name="trashEntryId" type="long" />
 	</model>
 	<model name="com.liferay.portlet.messageboards.model.MBBan">
 		<field name="uuid" type="String" />
@@ -1964,6 +1977,7 @@
 		<field name="statusByUserId" type="long" />
 		<field name="statusByUserName" type="String" />
 		<field name="statusDate" type="Date" />
+		<field name="trashEntryId" type="long" />
 	</model>
 	<model name="com.liferay.portlet.messageboards.model.MBDiscussion">
 		<field name="uuid" type="String" />
@@ -2042,6 +2056,7 @@
 		<field name="statusByUserId" type="long" />
 		<field name="statusByUserName" type="String" />
 		<field name="statusDate" type="Date" />
+		<field name="trashEntryId" type="long" />
 	</model>
 	<model name="com.liferay.portlet.messageboards.model.MBStatsUser">
 		<field name="statsUserId" type="long" />
@@ -2072,6 +2087,7 @@
 		<field name="statusByUserId" type="long" />
 		<field name="statusByUserName" type="String" />
 		<field name="statusDate" type="Date" />
+		<field name="trashEntryId" type="long" />
 	</model>
 	<model name="com.liferay.portlet.messageboards.model.MBThreadFlag">
 		<field name="uuid" type="String" />
@@ -2700,6 +2716,7 @@
 		<field name="statusByUserId" type="long" />
 		<field name="statusByUserName" type="String" />
 		<field name="statusDate" type="Date" />
+		<field name="trashEntryId" type="long" />
 	</model>
 	<model name="com.liferay.portlet.wiki.model.WikiPage">
 		<field name="uuid" type="String" />
@@ -2741,6 +2758,7 @@
 		<field name="statusByUserId" type="long" />
 		<field name="statusByUserName" type="String" />
 		<field name="statusDate" type="Date" />
+		<field name="trashEntryId" type="long" />
 	</model>
 	<model name="com.liferay.portlet.wiki.model.WikiPageResource">
 		<field name="uuid" type="String" />

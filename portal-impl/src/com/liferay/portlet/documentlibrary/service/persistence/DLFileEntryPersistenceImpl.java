@@ -11084,6 +11084,11 @@ public class DLFileEntryPersistenceImpl extends BasePersistenceImpl<DLFileEntry>
 		dlFileEntryImpl.setCustom1ImageId(dlFileEntry.getCustom1ImageId());
 		dlFileEntryImpl.setCustom2ImageId(dlFileEntry.getCustom2ImageId());
 		dlFileEntryImpl.setManualCheckInRequired(dlFileEntry.isManualCheckInRequired());
+		dlFileEntryImpl.setStatus(dlFileEntry.getStatus());
+		dlFileEntryImpl.setStatusByUserId(dlFileEntry.getStatusByUserId());
+		dlFileEntryImpl.setStatusByUserName(dlFileEntry.getStatusByUserName());
+		dlFileEntryImpl.setStatusDate(dlFileEntry.getStatusDate());
+		dlFileEntryImpl.setTrashEntryId(dlFileEntry.getTrashEntryId());
 
 		return dlFileEntryImpl;
 	}

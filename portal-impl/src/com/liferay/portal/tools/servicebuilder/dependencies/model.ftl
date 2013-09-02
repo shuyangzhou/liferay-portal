@@ -6,7 +6,9 @@ package ${packagePath}.model;
 
 import com.liferay.portal.LocaleException;
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.trash.TrashHandler;
 import com.liferay.portal.model.AttachedModel;
 import com.liferay.portal.model.AuditedModel;
 import com.liferay.portal.model.BaseModel;
@@ -14,6 +16,7 @@ import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ContainerModel;
 import com.liferay.portal.model.GroupedModel;
 import com.liferay.portal.model.ResourcedModel;
+import com.liferay.portal.model.TrashedModel;
 import com.liferay.portal.model.TypedModel;
 import com.liferay.portal.model.StagedAuditedModel;
 import com.liferay.portal.model.StagedGroupedModel;
@@ -22,6 +25,7 @@ import com.liferay.portal.model.WorkflowedModel;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portlet.expando.model.ExpandoBridge;
 import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
+import com.liferay.portlet.trash.model.TrashEntry;
 
 import java.io.Serializable;
 
@@ -95,13 +99,19 @@ public interface ${entity.name}Model extends
 		<#assign overrideColumnNames = overrideColumnNames + ["companyId", "createDate", "modifiedDate", "stagedModelType", "uuid"]>
 	</#if>
 
+	<#if entity.isTrashedModel()>
+		, TrashedModel
+
+		<#assign overrideColumnNames = overrideColumnNames + ["status", "statusByUserId", "statusByUserName", "statusByUserUuid", "statusDate"]>
+	</#if>
+
 	<#if entity.isTypedModel() && !entity.isAttachedModel()>
 		, TypedModel
 
 		<#assign overrideColumnNames = overrideColumnNames + ["className", "classNameId"]>
 	</#if>
 
-	<#if entity.isWorkflowEnabled()>
+	<#if entity.isWorkflowEnabled() && !entity.isTrashedModel()>
 		, WorkflowedModel
 
 		<#assign overrideColumnNames = overrideColumnNames + ["status", "statusByUserId", "statusByUserName", "statusByUserUuid", "statusDate"]>
@@ -323,6 +333,18 @@ public interface ${entity.name}Model extends
 		</#if>
 	</#list>
 
+	<#if entity.isTrashedModel()>
+		public TrashEntry getTrashEntry() throws PortalException, SystemException;
+
+		public TrashHandler getTrashHandler();
+
+		public boolean isInTrash();
+
+		public boolean isInTrashContainer() throws PortalException, SystemException;
+
+		public boolean isTrashEntry();
+	</#if>
+
 	<#if entity.isWorkflowEnabled()>
 		/**
 		 * @deprecated As of 6.1.0, replaced by {@link #isApproved()}
@@ -377,14 +399,6 @@ public interface ${entity.name}Model extends
 		 */
 		@Override
 		public boolean isIncomplete();
-
-		/**
-		 * Returns <code>true</code> if this ${entity.humanName} is in the Recycle Bin.
-		 *
-		 * @return <code>true</code> if this ${entity.humanName} is in the Recycle Bin; <code>false</code> otherwise
-		 */
-		@Override
-		public boolean isInTrash();
 
 		/**
 		 * Returns <code>true</code> if this ${entity.humanName} is pending.

@@ -373,6 +373,14 @@ public interface TrashEntryLocalService extends BaseLocalService,
 		com.liferay.portal.kernel.util.OrderByComparator obc)
 		throws com.liferay.portal.kernel.exception.SystemException;
 
+	/**
+	* Returns the trash entries with the matching group ID and class name.
+	*
+	* @param groupId the primary key of the group
+	* @param className the class name
+	* @return the trash entries with the group ID and class name
+	* @throws SystemException if a system exception occurred
+	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public java.util.List<com.liferay.portlet.trash.model.TrashEntry> getEntries(
 		long groupId, java.lang.String className)

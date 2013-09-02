@@ -66,6 +66,7 @@ public class JournalFolderWrapper implements JournalFolder,
 		attributes.put("statusByUserId", getStatusByUserId());
 		attributes.put("statusByUserName", getStatusByUserName());
 		attributes.put("statusDate", getStatusDate());
+		attributes.put("trashEntryId", getTrashEntryId());
 
 		return attributes;
 	}
@@ -160,6 +161,12 @@ public class JournalFolderWrapper implements JournalFolder,
 
 		if (statusDate != null) {
 			setStatusDate(statusDate);
+		}
+
+		Long trashEntryId = (Long)attributes.get("trashEntryId");
+
+		if (trashEntryId != null) {
+			setTrashEntryId(trashEntryId);
 		}
 	}
 
@@ -528,6 +535,55 @@ public class JournalFolderWrapper implements JournalFolder,
 	}
 
 	/**
+	* Returns the trash entry ID of this journal folder.
+	*
+	* @return the trash entry ID of this journal folder
+	*/
+	@Override
+	public long getTrashEntryId() {
+		return _journalFolder.getTrashEntryId();
+	}
+
+	/**
+	* Sets the trash entry ID of this journal folder.
+	*
+	* @param trashEntryId the trash entry ID of this journal folder
+	*/
+	@Override
+	public void setTrashEntryId(long trashEntryId) {
+		_journalFolder.setTrashEntryId(trashEntryId);
+	}
+
+	@Override
+	public com.liferay.portlet.trash.model.TrashEntry getTrashEntry()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _journalFolder.getTrashEntry();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.trash.TrashHandler getTrashHandler() {
+		return _journalFolder.getTrashHandler();
+	}
+
+	@Override
+	public boolean isInTrash() {
+		return _journalFolder.isInTrash();
+	}
+
+	@Override
+	public boolean isInTrashContainer()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _journalFolder.isInTrashContainer();
+	}
+
+	@Override
+	public boolean isTrashEntry() {
+		return _journalFolder.isTrashEntry();
+	}
+
+	/**
 	* @deprecated As of 6.1.0, replaced by {@link #isApproved()}
 	*/
 	@Override
@@ -593,16 +649,6 @@ public class JournalFolderWrapper implements JournalFolder,
 	@Override
 	public boolean isIncomplete() {
 		return _journalFolder.isIncomplete();
-	}
-
-	/**
-	* Returns <code>true</code> if this journal folder is in the Recycle Bin.
-	*
-	* @return <code>true</code> if this journal folder is in the Recycle Bin; <code>false</code> otherwise
-	*/
-	@Override
-	public boolean isInTrash() {
-		return _journalFolder.isInTrash();
 	}
 
 	/**
@@ -804,11 +850,6 @@ public class JournalFolderWrapper implements JournalFolder,
 	@Override
 	public com.liferay.portlet.journal.model.JournalFolder getTrashContainer() {
 		return _journalFolder.getTrashContainer();
-	}
-
-	@Override
-	public boolean isInTrashContainer() {
-		return _journalFolder.isInTrashContainer();
 	}
 
 	@Override

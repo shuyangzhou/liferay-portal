@@ -624,10 +624,31 @@ public class MBCategoryLocalServiceWrapper implements MBCategoryLocalService,
 	}
 
 	@Override
+	public com.liferay.portlet.messageboards.model.MBCategory moveCategoryToTrash(
+		long userId,
+		com.liferay.portlet.messageboards.model.MBCategory category,
+		com.liferay.portal.kernel.trash.TrashContext trashContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _mbCategoryLocalService.moveCategoryToTrash(userId, category,
+			trashContext);
+	}
+
+	@Override
 	public void restoreCategoryFromTrash(long userId, long categoryId)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
 		_mbCategoryLocalService.restoreCategoryFromTrash(userId, categoryId);
+	}
+
+	@Override
+	public void restoreCategoryFromTrash(long userId,
+		com.liferay.portlet.messageboards.model.MBCategory category,
+		int status, com.liferay.portal.kernel.trash.TrashContext trashContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_mbCategoryLocalService.restoreCategoryFromTrash(userId, category,
+			status, trashContext);
 	}
 
 	@Override
@@ -669,20 +690,14 @@ public class MBCategoryLocalServiceWrapper implements MBCategoryLocalService,
 	}
 
 	@Override
-	public void updateDependentStatus(com.liferay.portal.model.User user,
-		java.util.List<java.lang.Object> categoriesAndThreads, int status)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
-		_mbCategoryLocalService.updateDependentStatus(user,
-			categoriesAndThreads, status);
-	}
-
-	@Override
 	public com.liferay.portlet.messageboards.model.MBCategory updateStatus(
-		long userId, long categoryId, int status)
+		long userId,
+		com.liferay.portlet.messageboards.model.MBCategory category,
+		int status, com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
-		return _mbCategoryLocalService.updateStatus(userId, categoryId, status);
+		return _mbCategoryLocalService.updateStatus(userId, category, status,
+			serviceContext);
 	}
 
 	/**

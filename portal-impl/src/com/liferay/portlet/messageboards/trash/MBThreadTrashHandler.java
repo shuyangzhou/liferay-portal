@@ -35,6 +35,7 @@ import com.liferay.portlet.messageboards.service.MBThreadLocalServiceUtil;
 import com.liferay.portlet.messageboards.service.permission.MBCategoryPermission;
 import com.liferay.portlet.messageboards.service.permission.MBMessagePermission;
 import com.liferay.portlet.messageboards.util.MBUtil;
+import com.liferay.portlet.trash.model.TrashEntry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +60,13 @@ public class MBThreadTrashHandler extends BaseTrashHandler {
 	@Override
 	public String getClassName() {
 		return MBThread.class.getName();
+	}
+
+	@Override
+	public ContainerModel getContainerModel(long containerModelId)
+		throws PortalException, SystemException {
+
+		return MBCategoryLocalServiceUtil.getCategory(containerModelId);
 	}
 
 	@Override
@@ -147,12 +155,12 @@ public class MBThreadTrashHandler extends BaseTrashHandler {
 	}
 
 	@Override
-	public ContainerModel getTrashContainer(long classPK)
+	public TrashEntry getTrashEntry(long classPK)
 		throws PortalException, SystemException {
 
 		MBThread thread = MBThreadLocalServiceUtil.getThread(classPK);
 
-		return thread.getTrashContainer();
+		return thread.getTrashEntry();
 	}
 
 	@Override

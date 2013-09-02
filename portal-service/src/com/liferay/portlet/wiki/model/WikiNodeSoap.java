@@ -46,6 +46,7 @@ public class WikiNodeSoap implements Serializable {
 		soapModel.setStatusByUserId(model.getStatusByUserId());
 		soapModel.setStatusByUserName(model.getStatusByUserName());
 		soapModel.setStatusDate(model.getStatusDate());
+		soapModel.setTrashEntryId(model.getTrashEntryId());
 
 		return soapModel;
 	}
@@ -218,6 +219,14 @@ public class WikiNodeSoap implements Serializable {
 		_statusDate = statusDate;
 	}
 
+	public long getTrashEntryId() {
+		return _trashEntryId;
+	}
+
+	public void setTrashEntryId(long trashEntryId) {
+		_trashEntryId = trashEntryId;
+	}
+
 	private String _uuid;
 	private long _nodeId;
 	private long _groupId;
@@ -233,4 +242,5 @@ public class WikiNodeSoap implements Serializable {
 	private long _statusByUserId;
 	private String _statusByUserName;
 	private Date _statusDate;
+	private long _trashEntryId;
 }

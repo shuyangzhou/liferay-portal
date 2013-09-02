@@ -75,6 +75,7 @@ public class MBMessageWrapper implements MBMessage, ModelWrapper<MBMessage> {
 		attributes.put("statusByUserId", getStatusByUserId());
 		attributes.put("statusByUserName", getStatusByUserName());
 		attributes.put("statusDate", getStatusDate());
+		attributes.put("trashEntryId", getTrashEntryId());
 
 		return attributes;
 	}
@@ -229,6 +230,12 @@ public class MBMessageWrapper implements MBMessage, ModelWrapper<MBMessage> {
 
 		if (statusDate != null) {
 			setStatusDate(statusDate);
+		}
+
+		Long trashEntryId = (Long)attributes.get("trashEntryId");
+
+		if (trashEntryId != null) {
+			setTrashEntryId(trashEntryId);
 		}
 	}
 
@@ -842,6 +849,55 @@ public class MBMessageWrapper implements MBMessage, ModelWrapper<MBMessage> {
 	}
 
 	/**
+	* Returns the trash entry ID of this message-boards message.
+	*
+	* @return the trash entry ID of this message-boards message
+	*/
+	@Override
+	public long getTrashEntryId() {
+		return _mbMessage.getTrashEntryId();
+	}
+
+	/**
+	* Sets the trash entry ID of this message-boards message.
+	*
+	* @param trashEntryId the trash entry ID of this message-boards message
+	*/
+	@Override
+	public void setTrashEntryId(long trashEntryId) {
+		_mbMessage.setTrashEntryId(trashEntryId);
+	}
+
+	@Override
+	public com.liferay.portlet.trash.model.TrashEntry getTrashEntry()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _mbMessage.getTrashEntry();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.trash.TrashHandler getTrashHandler() {
+		return _mbMessage.getTrashHandler();
+	}
+
+	@Override
+	public boolean isInTrash() {
+		return _mbMessage.isInTrash();
+	}
+
+	@Override
+	public boolean isInTrashContainer()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _mbMessage.isInTrashContainer();
+	}
+
+	@Override
+	public boolean isTrashEntry() {
+		return _mbMessage.isTrashEntry();
+	}
+
+	/**
 	* @deprecated As of 6.1.0, replaced by {@link #isApproved()}
 	*/
 	@Override
@@ -907,16 +963,6 @@ public class MBMessageWrapper implements MBMessage, ModelWrapper<MBMessage> {
 	@Override
 	public boolean isIncomplete() {
 		return _mbMessage.isIncomplete();
-	}
-
-	/**
-	* Returns <code>true</code> if this message-boards message is in the Recycle Bin.
-	*
-	* @return <code>true</code> if this message-boards message is in the Recycle Bin; <code>false</code> otherwise
-	*/
-	@Override
-	public boolean isInTrash() {
-		return _mbMessage.isInTrash();
 	}
 
 	/**
@@ -1132,13 +1178,6 @@ public class MBMessageWrapper implements MBMessage, ModelWrapper<MBMessage> {
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
 		return _mbMessage.getThreadAttachmentsFolderId();
-	}
-
-	@Override
-	public com.liferay.portal.model.ContainerModel getTrashContainer()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
-		return _mbMessage.getTrashContainer();
 	}
 
 	@Override

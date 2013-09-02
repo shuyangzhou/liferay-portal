@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.security.auth.FullNameGenerator;
 import com.liferay.portal.security.auth.FullNameGeneratorFactory;
@@ -30,6 +31,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -106,6 +108,10 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 		// Temp directory
 
 		deleteTempDirectory();
+
+		// DLFileEntry
+
+		updateFileEntryStatus();
 	}
 
 	protected String getUserName(long userId) throws Exception {
@@ -153,6 +159,29 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 		return LocalizationUtil.updateLocalization(
 			localizationMap, StringPool.BLANK, key,
 			LocaleUtil.toLanguageId(locale));
+	}
+
+	protected void updateFileEntryStatus() throws Exception {
+		Connection con = null;
+		Statement st = null;
+
+		try {
+			con = DataAccess.getUpgradeOptimizedConnection();
+
+			StringBundler sb = new StringBundler(4);
+
+			sb.append("update DLFileEntry set status = ");
+			sb.append("(select status from DLFileVersion where ");
+			sb.append("DLFileVersion.fileEntryId = DLFileEntry.fileEntryId ");
+			sb.append("and DLFileVersion.version = DLFileEntry.version)");
+
+			st = con.createStatement();
+
+			st.execute(sb.toString());
+		}
+		finally {
+			DataAccess.cleanUp(con, st);
+		}
 	}
 
 	protected void updateFileEntryType(

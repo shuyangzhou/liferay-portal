@@ -38,7 +38,7 @@ public class DLFileShortcutCacheModel implements CacheModel<DLFileShortcut>,
 	Externalizable {
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(33);
+		StringBundler sb = new StringBundler(35);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -72,6 +72,8 @@ public class DLFileShortcutCacheModel implements CacheModel<DLFileShortcut>,
 		sb.append(statusByUserName);
 		sb.append(", statusDate=");
 		sb.append(statusDate);
+		sb.append(", trashEntryId=");
+		sb.append(trashEntryId);
 		sb.append("}");
 
 		return sb.toString();
@@ -135,6 +137,8 @@ public class DLFileShortcutCacheModel implements CacheModel<DLFileShortcut>,
 			dlFileShortcutImpl.setStatusDate(new Date(statusDate));
 		}
 
+		dlFileShortcutImpl.setTrashEntryId(trashEntryId);
+
 		dlFileShortcutImpl.resetOriginalValues();
 
 		return dlFileShortcutImpl;
@@ -158,6 +162,7 @@ public class DLFileShortcutCacheModel implements CacheModel<DLFileShortcut>,
 		statusByUserId = objectInput.readLong();
 		statusByUserName = objectInput.readUTF();
 		statusDate = objectInput.readLong();
+		trashEntryId = objectInput.readLong();
 	}
 
 	@Override
@@ -199,6 +204,7 @@ public class DLFileShortcutCacheModel implements CacheModel<DLFileShortcut>,
 		}
 
 		objectOutput.writeLong(statusDate);
+		objectOutput.writeLong(trashEntryId);
 	}
 
 	public String uuid;
@@ -217,4 +223,5 @@ public class DLFileShortcutCacheModel implements CacheModel<DLFileShortcut>,
 	public long statusByUserId;
 	public String statusByUserName;
 	public long statusDate;
+	public long trashEntryId;
 }

@@ -435,6 +435,14 @@ public class TrashEntryLocalServiceWrapper implements TrashEntryLocalService,
 		return _trashEntryLocalService.getEntries(groupId, start, end, obc);
 	}
 
+	/**
+	* Returns the trash entries with the matching group ID and class name.
+	*
+	* @param groupId the primary key of the group
+	* @param className the class name
+	* @return the trash entries with the group ID and class name
+	* @throws SystemException if a system exception occurred
+	*/
 	@Override
 	public java.util.List<com.liferay.portlet.trash.model.TrashEntry> getEntries(
 		long groupId, java.lang.String className)

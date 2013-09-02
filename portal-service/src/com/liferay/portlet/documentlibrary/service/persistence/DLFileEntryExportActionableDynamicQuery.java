@@ -22,6 +22,8 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.lar.ExportImportHelperUtil;
 import com.liferay.portal.kernel.lar.ManifestSummary;
 import com.liferay.portal.kernel.lar.PortletDataContext;
+import com.liferay.portal.kernel.lar.StagedModelDataHandler;
+import com.liferay.portal.kernel.lar.StagedModelDataHandlerRegistryUtil;
 import com.liferay.portal.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.portal.kernel.lar.StagedModelType;
 import com.liferay.portal.util.PortalUtil;
@@ -74,6 +76,13 @@ public class DLFileEntryExportActionableDynamicQuery
 			dynamicQuery.add(classNameIdProperty.eq(getStagedModelType()
 														.getReferrerClassNameId()));
 		}
+
+		StagedModelDataHandler<?> stagedModelDataHandler = StagedModelDataHandlerRegistryUtil.getStagedModelDataHandler(DLFileEntry.class.getName());
+
+		Property workflowStatusProperty = PropertyFactoryUtil.forName("status");
+
+		dynamicQuery.add(workflowStatusProperty.in(
+				stagedModelDataHandler.getExportableStatuses()));
 	}
 
 	protected StagedModelType getStagedModelType() {

@@ -15,14 +15,17 @@
 package com.liferay.portlet.documentlibrary.model;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.trash.TrashHandler;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.StagedGroupedModel;
-import com.liferay.portal.model.WorkflowedModel;
+import com.liferay.portal.model.TrashedModel;
 import com.liferay.portal.service.ServiceContext;
 
 import com.liferay.portlet.expando.model.ExpandoBridge;
+import com.liferay.portlet.trash.model.TrashEntry;
 
 import java.io.Serializable;
 
@@ -42,7 +45,7 @@ import java.util.Date;
  * @generated
  */
 public interface DLFileVersionModel extends BaseModel<DLFileVersion>,
-	StagedGroupedModel, WorkflowedModel {
+	StagedGroupedModel, TrashedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -481,6 +484,30 @@ public interface DLFileVersionModel extends BaseModel<DLFileVersion>,
 	public void setStatusDate(Date statusDate);
 
 	/**
+	 * Returns the trash entry ID of this document library file version.
+	 *
+	 * @return the trash entry ID of this document library file version
+	 */
+	public long getTrashEntryId();
+
+	/**
+	 * Sets the trash entry ID of this document library file version.
+	 *
+	 * @param trashEntryId the trash entry ID of this document library file version
+	 */
+	public void setTrashEntryId(long trashEntryId);
+
+	public TrashEntry getTrashEntry() throws PortalException, SystemException;
+
+	public TrashHandler getTrashHandler();
+
+	public boolean isInTrash();
+
+	public boolean isInTrashContainer() throws PortalException, SystemException;
+
+	public boolean isTrashEntry();
+
+	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #isApproved()}
 	 */
 	@Override
@@ -533,14 +560,6 @@ public interface DLFileVersionModel extends BaseModel<DLFileVersion>,
 	 */
 	@Override
 	public boolean isIncomplete();
-
-	/**
-	 * Returns <code>true</code> if this document library file version is in the Recycle Bin.
-	 *
-	 * @return <code>true</code> if this document library file version is in the Recycle Bin; <code>false</code> otherwise
-	 */
-	@Override
-	public boolean isInTrash();
 
 	/**
 	 * Returns <code>true</code> if this document library file version is pending.

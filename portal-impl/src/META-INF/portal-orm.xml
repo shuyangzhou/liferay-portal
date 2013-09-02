@@ -1863,6 +1863,7 @@
 			<basic name="statusDate">
 				<temporal>TIMESTAMP</temporal>
 			</basic>
+			<basic name="trashEntryId" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
@@ -1919,6 +1920,7 @@
 			<basic name="statusDate">
 				<temporal>TIMESTAMP</temporal>
 			</basic>
+			<basic name="trashEntryId" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
@@ -1952,6 +1954,7 @@
 			<basic name="statusDate">
 				<temporal>TIMESTAMP</temporal>
 			</basic>
+			<basic name="trashEntryId" />
 			<transient name="containerModelId" />
 			<transient name="modelAttributes" />
 			<transient name="parentContainerModelId" />
@@ -2062,10 +2065,18 @@
 			<basic name="custom1ImageId" />
 			<basic name="custom2ImageId" />
 			<basic name="manualCheckInRequired" />
+			<basic name="status" />
+			<basic name="statusByUserId" />
+			<basic name="statusByUserName" />
+			<basic name="statusDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="trashEntryId" />
 			<transient name="className" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
+			<transient name="statusByUserUuid" />
 			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>
@@ -2161,6 +2172,7 @@
 			<basic name="statusDate">
 				<temporal>TIMESTAMP</temporal>
 			</basic>
+			<basic name="trashEntryId" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
@@ -2205,6 +2217,7 @@
 			<basic name="statusDate">
 				<temporal>TIMESTAMP</temporal>
 			</basic>
+			<basic name="trashEntryId" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
@@ -2247,6 +2260,7 @@
 			<basic name="statusDate">
 				<temporal>TIMESTAMP</temporal>
 			</basic>
+			<basic name="trashEntryId" />
 			<transient name="containerModelId" />
 			<transient name="modelAttributes" />
 			<transient name="parentContainerModelId" />
@@ -2614,6 +2628,7 @@
 			<basic name="statusDate">
 				<temporal>TIMESTAMP</temporal>
 			</basic>
+			<basic name="trashEntryId" />
 			<transient name="className" />
 			<transient name="descriptionCurrentLanguageId" />
 			<transient name="descriptionMap" />
@@ -2734,6 +2749,7 @@
 			<basic name="statusDate">
 				<temporal>TIMESTAMP</temporal>
 			</basic>
+			<basic name="trashEntryId" />
 			<transient name="containerModelId" />
 			<transient name="modelAttributes" />
 			<transient name="parentContainerModelId" />
@@ -2798,6 +2814,7 @@
 			<basic name="statusDate">
 				<temporal>TIMESTAMP</temporal>
 			</basic>
+			<basic name="trashEntryId" />
 			<transient name="containerModelId" />
 			<transient name="modelAttributes" />
 			<transient name="parentContainerModelId" />
@@ -2910,6 +2927,7 @@
 			<basic name="statusDate">
 				<temporal>TIMESTAMP</temporal>
 			</basic>
+			<basic name="trashEntryId" />
 			<transient name="className" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
@@ -2967,6 +2985,7 @@
 			<basic name="statusDate">
 				<temporal>TIMESTAMP</temporal>
 			</basic>
+			<basic name="trashEntryId" />
 			<transient name="containerModelId" />
 			<transient name="lastPostByUserUuid" />
 			<transient name="modelAttributes" />
@@ -3832,6 +3851,7 @@
 			<basic name="statusDate">
 				<temporal>TIMESTAMP</temporal>
 			</basic>
+			<basic name="trashEntryId" />
 			<transient name="containerModelId" />
 			<transient name="modelAttributes" />
 			<transient name="parentContainerModelId" />
@@ -3874,6 +3894,7 @@
 			<basic name="statusDate">
 				<temporal>TIMESTAMP</temporal>
 			</basic>
+			<basic name="trashEntryId" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />

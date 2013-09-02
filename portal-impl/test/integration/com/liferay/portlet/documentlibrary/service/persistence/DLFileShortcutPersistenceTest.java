@@ -145,6 +145,8 @@ public class DLFileShortcutPersistenceTest {
 
 		newDLFileShortcut.setStatusDate(ServiceTestUtil.nextDate());
 
+		newDLFileShortcut.setTrashEntryId(ServiceTestUtil.nextLong());
+
 		_persistence.update(newDLFileShortcut);
 
 		DLFileShortcut existingDLFileShortcut = _persistence.findByPrimaryKey(newDLFileShortcut.getPrimaryKey());
@@ -184,6 +186,8 @@ public class DLFileShortcutPersistenceTest {
 		Assert.assertEquals(Time.getShortTimestamp(
 				existingDLFileShortcut.getStatusDate()),
 			Time.getShortTimestamp(newDLFileShortcut.getStatusDate()));
+		Assert.assertEquals(existingDLFileShortcut.getTrashEntryId(),
+			newDLFileShortcut.getTrashEntryId());
 	}
 
 	@Test
@@ -226,7 +230,8 @@ public class DLFileShortcutPersistenceTest {
 			"userId", true, "userName", true, "createDate", true,
 			"modifiedDate", true, "repositoryId", true, "folderId", true,
 			"toFileEntryId", true, "active", true, "status", true,
-			"statusByUserId", true, "statusByUserName", true, "statusDate", true);
+			"statusByUserId", true, "statusByUserName", true, "statusDate",
+			true, "trashEntryId", true);
 	}
 
 	@Test
@@ -394,6 +399,8 @@ public class DLFileShortcutPersistenceTest {
 		dlFileShortcut.setStatusByUserName(ServiceTestUtil.randomString());
 
 		dlFileShortcut.setStatusDate(ServiceTestUtil.nextDate());
+
+		dlFileShortcut.setTrashEntryId(ServiceTestUtil.nextLong());
 
 		_persistence.update(dlFileShortcut);
 

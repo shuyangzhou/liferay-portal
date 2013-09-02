@@ -159,6 +159,8 @@ public class BlogsEntryPersistenceTest {
 
 		newBlogsEntry.setStatusDate(ServiceTestUtil.nextDate());
 
+		newBlogsEntry.setTrashEntryId(ServiceTestUtil.nextLong());
+
 		_persistence.update(newBlogsEntry);
 
 		BlogsEntry existingBlogsEntry = _persistence.findByPrimaryKey(newBlogsEntry.getPrimaryKey());
@@ -213,6 +215,8 @@ public class BlogsEntryPersistenceTest {
 		Assert.assertEquals(Time.getShortTimestamp(
 				existingBlogsEntry.getStatusDate()),
 			Time.getShortTimestamp(newBlogsEntry.getStatusDate()));
+		Assert.assertEquals(existingBlogsEntry.getTrashEntryId(),
+			newBlogsEntry.getTrashEntryId());
 	}
 
 	@Test
@@ -267,7 +271,8 @@ public class BlogsEntryPersistenceTest {
 			true, "displayDate", true, "allowPingbacks", true,
 			"allowTrackbacks", true, "trackbacks", true, "smallImage", true,
 			"smallImageId", true, "smallImageURL", true, "status", true,
-			"statusByUserId", true, "statusByUserName", true, "statusDate", true);
+			"statusByUserId", true, "statusByUserName", true, "statusDate",
+			true, "trashEntryId", true);
 	}
 
 	@Test
@@ -453,6 +458,8 @@ public class BlogsEntryPersistenceTest {
 		blogsEntry.setStatusByUserName(ServiceTestUtil.randomString());
 
 		blogsEntry.setStatusDate(ServiceTestUtil.nextDate());
+
+		blogsEntry.setTrashEntryId(ServiceTestUtil.nextLong());
 
 		_persistence.update(blogsEntry);
 

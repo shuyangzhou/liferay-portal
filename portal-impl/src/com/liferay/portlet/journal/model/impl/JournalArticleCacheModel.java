@@ -38,7 +38,7 @@ public class JournalArticleCacheModel implements CacheModel<JournalArticle>,
 	Externalizable {
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(67);
+		StringBundler sb = new StringBundler(69);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -106,6 +106,8 @@ public class JournalArticleCacheModel implements CacheModel<JournalArticle>,
 		sb.append(statusByUserName);
 		sb.append(", statusDate=");
 		sb.append(statusDate);
+		sb.append(", trashEntryId=");
+		sb.append(trashEntryId);
 		sb.append("}");
 
 		return sb.toString();
@@ -267,6 +269,8 @@ public class JournalArticleCacheModel implements CacheModel<JournalArticle>,
 			journalArticleImpl.setStatusDate(new Date(statusDate));
 		}
 
+		journalArticleImpl.setTrashEntryId(trashEntryId);
+
 		journalArticleImpl.resetOriginalValues();
 
 		return journalArticleImpl;
@@ -307,6 +311,7 @@ public class JournalArticleCacheModel implements CacheModel<JournalArticle>,
 		statusByUserId = objectInput.readLong();
 		statusByUserName = objectInput.readUTF();
 		statusDate = objectInput.readLong();
+		trashEntryId = objectInput.readLong();
 	}
 
 	@Override
@@ -428,6 +433,7 @@ public class JournalArticleCacheModel implements CacheModel<JournalArticle>,
 		}
 
 		objectOutput.writeLong(statusDate);
+		objectOutput.writeLong(trashEntryId);
 	}
 
 	public String uuid;
@@ -463,4 +469,5 @@ public class JournalArticleCacheModel implements CacheModel<JournalArticle>,
 	public long statusByUserId;
 	public String statusByUserName;
 	public long statusDate;
+	public long trashEntryId;
 }

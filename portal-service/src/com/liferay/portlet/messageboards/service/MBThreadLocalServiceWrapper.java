@@ -663,10 +663,30 @@ public class MBThreadLocalServiceWrapper implements MBThreadLocalService,
 	}
 
 	@Override
+	public com.liferay.portlet.messageboards.model.MBThread moveThreadToTrash(
+		long userId, com.liferay.portlet.messageboards.model.MBThread thread,
+		com.liferay.portal.kernel.trash.TrashContext trashContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _mbThreadLocalService.moveThreadToTrash(userId, thread,
+			trashContext);
+	}
+
+	@Override
 	public void restoreThreadFromTrash(long userId, long threadId)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
 		_mbThreadLocalService.restoreThreadFromTrash(userId, threadId);
+	}
+
+	@Override
+	public void restoreThreadFromTrash(long userId,
+		com.liferay.portlet.messageboards.model.MBThread thread, int status,
+		com.liferay.portal.kernel.trash.TrashContext trashContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_mbThreadLocalService.restoreThreadFromTrash(userId, thread, status,
+			trashContext);
 	}
 
 	@Override
@@ -707,11 +727,22 @@ public class MBThreadLocalServiceWrapper implements MBThreadLocalService,
 
 	@Override
 	public com.liferay.portlet.messageboards.model.MBThread updateStatus(
-		long userId, long threadId, int status, int categoryStatus)
+		long userId, long threadId, int status,
+		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
 		return _mbThreadLocalService.updateStatus(userId, threadId, status,
-			categoryStatus);
+			serviceContext);
+	}
+
+	@Override
+	public com.liferay.portlet.messageboards.model.MBThread updateStatus(
+		long userId, com.liferay.portlet.messageboards.model.MBThread thread,
+		int status, com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _mbThreadLocalService.updateStatus(userId, thread, status,
+			serviceContext);
 	}
 
 	/**

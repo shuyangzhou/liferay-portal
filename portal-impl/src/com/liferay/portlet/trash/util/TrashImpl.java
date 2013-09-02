@@ -49,8 +49,10 @@ import com.liferay.portal.util.PropsValues;
 import com.liferay.portal.util.WebKeys;
 import com.liferay.portlet.documentlibrary.store.DLStoreUtil;
 import com.liferay.portlet.trash.model.TrashEntry;
+import com.liferay.portlet.trash.model.TrashVersion;
 import com.liferay.portlet.trash.model.impl.TrashEntryImpl;
 import com.liferay.portlet.trash.service.TrashEntryLocalServiceUtil;
+import com.liferay.portlet.trash.service.TrashVersionLocalServiceUtil;
 import com.liferay.portlet.trash.util.comparator.EntryCreateDateComparator;
 import com.liferay.portlet.trash.util.comparator.EntryTypeComparator;
 import com.liferay.portlet.trash.util.comparator.EntryUserNameComparator;
@@ -60,6 +62,7 @@ import java.text.Format;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.portlet.PortletRequest;
@@ -132,6 +135,23 @@ public class TrashImpl implements Trash {
 					companyId, repositoryId, attachmentFileName);
 			}
 		}
+	}
+
+	@Override
+	public HashMap<Long, Integer> getDependentStatuses(
+			long entryId, String className)
+		throws SystemException {
+
+		List<TrashVersion> versions = TrashVersionLocalServiceUtil.getVersions(
+			entryId, className);
+
+		HashMap<Long, Integer> dependentStatuses = new HashMap<Long, Integer>();
+
+		for (TrashVersion version : versions) {
+			dependentStatuses.put(version.getClassPK(), version.getStatus());
+		}
+
+		return dependentStatuses;
 	}
 
 	@Override
@@ -321,11 +341,10 @@ public class TrashImpl implements Trash {
 			className);
 
 		if (trashHandler.isInTrashContainer(classPK)) {
-			ContainerModel containerModel = trashHandler.getTrashContainer(
-				classPK);
+			TrashEntry trashEntry = trashHandler.getTrashEntry(classPK);
 
-			className = containerModel.getModelClassName();
-			classPK = containerModel.getContainerModelId();
+			className = trashEntry.getClassName();
+			classPK = trashEntry.getClassPK();
 
 			trashHandler = TrashHandlerRegistryUtil.getTrashHandler(className);
 		}

@@ -772,6 +772,20 @@ public class Entity {
 		return false;
 	}
 
+	public boolean isTrashedModel() {
+		if (!isWorkflowEnabled()) {
+			return false;
+		}
+
+		String pkColumnName = getPKVarName();
+
+		if (hasColumn("trashEntryId") && !pkColumnName.equals("trashEntryId")) {
+			return true;
+		}
+
+		return false;
+	}
+
 	public boolean isTypedModel() {
 		if (hasColumn("classNameId")) {
 			EntityColumn classNameIdCol = getColumn("classNameId");

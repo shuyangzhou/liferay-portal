@@ -38,7 +38,7 @@ public class DLFileEntryCacheModel implements CacheModel<DLFileEntry>,
 	Externalizable {
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(55);
+		StringBundler sb = new StringBundler(65);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -94,6 +94,16 @@ public class DLFileEntryCacheModel implements CacheModel<DLFileEntry>,
 		sb.append(custom2ImageId);
 		sb.append(", manualCheckInRequired=");
 		sb.append(manualCheckInRequired);
+		sb.append(", status=");
+		sb.append(status);
+		sb.append(", statusByUserId=");
+		sb.append(statusByUserId);
+		sb.append(", statusByUserName=");
+		sb.append(statusByUserName);
+		sb.append(", statusDate=");
+		sb.append(statusDate);
+		sb.append(", trashEntryId=");
+		sb.append(trashEntryId);
 		sb.append("}");
 
 		return sb.toString();
@@ -199,6 +209,24 @@ public class DLFileEntryCacheModel implements CacheModel<DLFileEntry>,
 		dlFileEntryImpl.setCustom1ImageId(custom1ImageId);
 		dlFileEntryImpl.setCustom2ImageId(custom2ImageId);
 		dlFileEntryImpl.setManualCheckInRequired(manualCheckInRequired);
+		dlFileEntryImpl.setStatus(status);
+		dlFileEntryImpl.setStatusByUserId(statusByUserId);
+
+		if (statusByUserName == null) {
+			dlFileEntryImpl.setStatusByUserName(StringPool.BLANK);
+		}
+		else {
+			dlFileEntryImpl.setStatusByUserName(statusByUserName);
+		}
+
+		if (statusDate == Long.MIN_VALUE) {
+			dlFileEntryImpl.setStatusDate(null);
+		}
+		else {
+			dlFileEntryImpl.setStatusDate(new Date(statusDate));
+		}
+
+		dlFileEntryImpl.setTrashEntryId(trashEntryId);
 
 		dlFileEntryImpl.resetOriginalValues();
 
@@ -234,6 +262,11 @@ public class DLFileEntryCacheModel implements CacheModel<DLFileEntry>,
 		custom1ImageId = objectInput.readLong();
 		custom2ImageId = objectInput.readLong();
 		manualCheckInRequired = objectInput.readBoolean();
+		status = objectInput.readInt();
+		statusByUserId = objectInput.readLong();
+		statusByUserName = objectInput.readUTF();
+		statusDate = objectInput.readLong();
+		trashEntryId = objectInput.readLong();
 	}
 
 	@Override
@@ -323,6 +356,18 @@ public class DLFileEntryCacheModel implements CacheModel<DLFileEntry>,
 		objectOutput.writeLong(custom1ImageId);
 		objectOutput.writeLong(custom2ImageId);
 		objectOutput.writeBoolean(manualCheckInRequired);
+		objectOutput.writeInt(status);
+		objectOutput.writeLong(statusByUserId);
+
+		if (statusByUserName == null) {
+			objectOutput.writeUTF(StringPool.BLANK);
+		}
+		else {
+			objectOutput.writeUTF(statusByUserName);
+		}
+
+		objectOutput.writeLong(statusDate);
+		objectOutput.writeLong(trashEntryId);
 	}
 
 	public String uuid;
@@ -352,4 +397,9 @@ public class DLFileEntryCacheModel implements CacheModel<DLFileEntry>,
 	public long custom1ImageId;
 	public long custom2ImageId;
 	public boolean manualCheckInRequired;
+	public int status;
+	public long statusByUserId;
+	public String statusByUserName;
+	public long statusDate;
+	public long trashEntryId;
 }

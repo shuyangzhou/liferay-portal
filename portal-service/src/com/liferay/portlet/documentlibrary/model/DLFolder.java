@@ -59,8 +59,6 @@ public interface DLFolder extends DLFolderModel, PersistedModel {
 
 	public boolean isInHiddenFolder();
 
-	public boolean isInTrashContainer();
-
 	public boolean isLocked();
 
 	public boolean isRoot();

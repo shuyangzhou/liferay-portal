@@ -38,7 +38,7 @@ public abstract class JournalBaseTrashHandler extends BaseTrashHandler {
 	public ContainerModel getContainerModel(long containerModelId)
 		throws PortalException, SystemException {
 
-		return JournalFolderLocalServiceUtil.getFolder(containerModelId);
+		return JournalFolderLocalServiceUtil.fetchFolder(containerModelId);
 	}
 
 	@Override

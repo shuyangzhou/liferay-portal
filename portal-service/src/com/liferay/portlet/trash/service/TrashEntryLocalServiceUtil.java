@@ -417,6 +417,14 @@ public class TrashEntryLocalServiceUtil {
 		return getService().getEntries(groupId, start, end, obc);
 	}
 
+	/**
+	* Returns the trash entries with the matching group ID and class name.
+	*
+	* @param groupId the primary key of the group
+	* @param className the class name
+	* @return the trash entries with the group ID and class name
+	* @throws SystemException if a system exception occurred
+	*/
 	public static java.util.List<com.liferay.portlet.trash.model.TrashEntry> getEntries(
 		long groupId, java.lang.String className)
 		throws com.liferay.portal.kernel.exception.SystemException {

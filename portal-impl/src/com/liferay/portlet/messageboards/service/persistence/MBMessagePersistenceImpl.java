@@ -21150,6 +21150,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 		mbMessageImpl.setStatusByUserId(mbMessage.getStatusByUserId());
 		mbMessageImpl.setStatusByUserName(mbMessage.getStatusByUserName());
 		mbMessageImpl.setStatusDate(mbMessage.getStatusDate());
+		mbMessageImpl.setTrashEntryId(mbMessage.getTrashEntryId());
 
 		return mbMessageImpl;
 	}

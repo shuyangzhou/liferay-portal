@@ -167,6 +167,16 @@ public class DLFileEntryPersistenceTest {
 
 		newDLFileEntry.setManualCheckInRequired(ServiceTestUtil.randomBoolean());
 
+		newDLFileEntry.setStatus(ServiceTestUtil.nextInt());
+
+		newDLFileEntry.setStatusByUserId(ServiceTestUtil.nextLong());
+
+		newDLFileEntry.setStatusByUserName(ServiceTestUtil.randomString());
+
+		newDLFileEntry.setStatusDate(ServiceTestUtil.nextDate());
+
+		newDLFileEntry.setTrashEntryId(ServiceTestUtil.nextLong());
+
 		_persistence.update(newDLFileEntry);
 
 		DLFileEntry existingDLFileEntry = _persistence.findByPrimaryKey(newDLFileEntry.getPrimaryKey());
@@ -227,6 +237,17 @@ public class DLFileEntryPersistenceTest {
 			newDLFileEntry.getCustom2ImageId());
 		Assert.assertEquals(existingDLFileEntry.getManualCheckInRequired(),
 			newDLFileEntry.getManualCheckInRequired());
+		Assert.assertEquals(existingDLFileEntry.getStatus(),
+			newDLFileEntry.getStatus());
+		Assert.assertEquals(existingDLFileEntry.getStatusByUserId(),
+			newDLFileEntry.getStatusByUserId());
+		Assert.assertEquals(existingDLFileEntry.getStatusByUserName(),
+			newDLFileEntry.getStatusByUserName());
+		Assert.assertEquals(Time.getShortTimestamp(
+				existingDLFileEntry.getStatusDate()),
+			Time.getShortTimestamp(newDLFileEntry.getStatusDate()));
+		Assert.assertEquals(existingDLFileEntry.getTrashEntryId(),
+			newDLFileEntry.getTrashEntryId());
 	}
 
 	@Test
@@ -283,7 +304,9 @@ public class DLFileEntryPersistenceTest {
 			"fileEntryTypeId", true, "version", true, "size", true,
 			"readCount", true, "smallImageId", true, "largeImageId", true,
 			"custom1ImageId", true, "custom2ImageId", true,
-			"manualCheckInRequired", true);
+			"manualCheckInRequired", true, "status", true, "statusByUserId",
+			true, "statusByUserName", true, "statusDate", true, "trashEntryId",
+			true);
 	}
 
 	@Test
@@ -487,6 +510,16 @@ public class DLFileEntryPersistenceTest {
 		dlFileEntry.setCustom2ImageId(ServiceTestUtil.nextLong());
 
 		dlFileEntry.setManualCheckInRequired(ServiceTestUtil.randomBoolean());
+
+		dlFileEntry.setStatus(ServiceTestUtil.nextInt());
+
+		dlFileEntry.setStatusByUserId(ServiceTestUtil.nextLong());
+
+		dlFileEntry.setStatusByUserName(ServiceTestUtil.randomString());
+
+		dlFileEntry.setStatusDate(ServiceTestUtil.nextDate());
+
+		dlFileEntry.setTrashEntryId(ServiceTestUtil.nextLong());
 
 		_persistence.update(dlFileEntry);
 

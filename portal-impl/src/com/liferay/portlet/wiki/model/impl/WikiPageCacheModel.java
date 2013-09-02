@@ -37,7 +37,7 @@ import java.util.Date;
 public class WikiPageCacheModel implements CacheModel<WikiPage>, Externalizable {
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(47);
+		StringBundler sb = new StringBundler(49);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -85,6 +85,8 @@ public class WikiPageCacheModel implements CacheModel<WikiPage>, Externalizable 
 		sb.append(statusByUserName);
 		sb.append(", statusDate=");
 		sb.append(statusDate);
+		sb.append(", trashEntryId=");
+		sb.append(trashEntryId);
 		sb.append("}");
 
 		return sb.toString();
@@ -194,6 +196,8 @@ public class WikiPageCacheModel implements CacheModel<WikiPage>, Externalizable 
 			wikiPageImpl.setStatusDate(new Date(statusDate));
 		}
 
+		wikiPageImpl.setTrashEntryId(trashEntryId);
+
 		wikiPageImpl.resetOriginalValues();
 
 		return wikiPageImpl;
@@ -224,6 +228,7 @@ public class WikiPageCacheModel implements CacheModel<WikiPage>, Externalizable 
 		statusByUserId = objectInput.readLong();
 		statusByUserName = objectInput.readUTF();
 		statusDate = objectInput.readLong();
+		trashEntryId = objectInput.readLong();
 	}
 
 	@Override
@@ -311,6 +316,7 @@ public class WikiPageCacheModel implements CacheModel<WikiPage>, Externalizable 
 		}
 
 		objectOutput.writeLong(statusDate);
+		objectOutput.writeLong(trashEntryId);
 	}
 
 	public String uuid;
@@ -336,4 +342,5 @@ public class WikiPageCacheModel implements CacheModel<WikiPage>, Externalizable 
 	public long statusByUserId;
 	public String statusByUserName;
 	public long statusDate;
+	public long trashEntryId;
 }

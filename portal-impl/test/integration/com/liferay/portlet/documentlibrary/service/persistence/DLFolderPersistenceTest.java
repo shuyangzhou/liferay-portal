@@ -155,6 +155,8 @@ public class DLFolderPersistenceTest {
 
 		newDLFolder.setStatusDate(ServiceTestUtil.nextDate());
 
+		newDLFolder.setTrashEntryId(ServiceTestUtil.nextLong());
+
 		_persistence.update(newDLFolder);
 
 		DLFolder existingDLFolder = _persistence.findByPrimaryKey(newDLFolder.getPrimaryKey());
@@ -203,6 +205,8 @@ public class DLFolderPersistenceTest {
 		Assert.assertEquals(Time.getShortTimestamp(
 				existingDLFolder.getStatusDate()),
 			Time.getShortTimestamp(newDLFolder.getStatusDate()));
+		Assert.assertEquals(existingDLFolder.getTrashEntryId(),
+			newDLFolder.getTrashEntryId());
 	}
 
 	@Test
@@ -257,7 +261,8 @@ public class DLFolderPersistenceTest {
 			"name", true, "description", true, "lastPostDate", true,
 			"defaultFileEntryTypeId", true, "hidden", true,
 			"overrideFileEntryTypes", true, "status", true, "statusByUserId",
-			true, "statusByUserName", true, "statusDate", true);
+			true, "statusByUserName", true, "statusDate", true, "trashEntryId",
+			true);
 	}
 
 	@Test
@@ -444,6 +449,8 @@ public class DLFolderPersistenceTest {
 		dlFolder.setStatusByUserName(ServiceTestUtil.randomString());
 
 		dlFolder.setStatusDate(ServiceTestUtil.nextDate());
+
+		dlFolder.setTrashEntryId(ServiceTestUtil.nextLong());
 
 		_persistence.update(dlFolder);
 
