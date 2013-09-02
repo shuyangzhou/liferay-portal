@@ -321,14 +321,16 @@ else {
 
 long previousSiteGroupId = themeDisplay.getSiteGroupId();
 
-Group siteGroup = GroupLocalServiceUtil.getGroup(themeDisplay.getSiteGroupId());
+Group siteGroup = GroupLocalServiceUtil.fetchGroup(themeDisplay.getSiteGroupId());
 
-if (siteGroup.isStagingGroup()) {
-	siteGroup = siteGroup.getLiveGroup();
-}
+if (siteGroup != null) {
+	if (siteGroup.isStagingGroup()) {
+		siteGroup = siteGroup.getLiveGroup();
+	}
 
-if (siteGroup.isStaged() && !siteGroup.isStagedRemotely() && !siteGroup.isStagedPortlet(portletId)) {
-	themeDisplay.setParentGroupId(siteGroup.getGroupId());
+	if (siteGroup.isStaged() && !siteGroup.isStagedRemotely() && !siteGroup.isStagedPortlet(portletId)) {
+		themeDisplay.setParentGroupId(siteGroup.getGroupId());
+	}
 }
 
 portletDisplay.recycle();

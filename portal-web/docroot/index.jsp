@@ -38,19 +38,20 @@ String redirect = null;
 LayoutSet layoutSet = (LayoutSet)request.getAttribute(WebKeys.VIRTUAL_HOST_LAYOUT_SET);
 
 if (layoutSet != null) {
+	redirect = PortalUtil.getPathMain();
+
 	long defaultPlid = LayoutLocalServiceUtil.getDefaultPlid(layoutSet.getGroupId(), layoutSet.isPrivateLayout());
 
 	if (defaultPlid != LayoutConstants.DEFAULT_PLID) {
-		Layout layout = LayoutLocalServiceUtil.getLayout(defaultPlid);
+		Layout layout = LayoutLocalServiceUtil.fetchLayout(defaultPlid);
 
-		ServicePreAction servicePreAction = (ServicePreAction)InstancePool.get(ServicePreAction.class.getName());
+		if (layout != null) {
+			ServicePreAction servicePreAction = (ServicePreAction)InstancePool.get(ServicePreAction.class.getName());
 
-		ThemeDisplay themeDisplay = servicePreAction.initThemeDisplay(request, response);
+			ThemeDisplay themeDisplay = servicePreAction.initThemeDisplay(request, response);
 
-		redirect = PortalUtil.getLayoutURL(layout, themeDisplay);
-	}
-	else {
-		redirect = PortalUtil.getPathMain();
+			redirect = PortalUtil.getLayoutURL(layout, themeDisplay);
+		}
 	}
 }
 else {

@@ -88,9 +88,11 @@ request.setAttribute("control_panel.jsp-ppid", ppid);
 		Group group = themeDisplay.getScopeGroup();
 
 		if (group.isLayout()) {
-			Layout scopeLayout = LayoutLocalServiceUtil.getLayout(group.getClassPK());
+			Layout scopeLayout = LayoutLocalServiceUtil.fetchLayout(group.getClassPK());
 
-			group = scopeLayout.getGroup();
+			if (scopeLayout != null) {
+				group = scopeLayout.getGroup();
+			}
 		}
 		%>
 

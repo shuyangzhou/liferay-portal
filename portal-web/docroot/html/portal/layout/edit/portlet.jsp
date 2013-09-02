@@ -58,11 +58,7 @@ Boolean showLayoutTemplates = ParamUtil.getBoolean(request, "showLayoutTemplates
 
 			Layout copiableLayout = null;
 
-			try {
-				copiableLayout = LayoutLocalServiceUtil.getLayout(objId);
-			}
-			catch (Exception e) {
-			}
+			copiableLayout = LayoutLocalServiceUtil.fetchLayout(objId);
 
 			if (copiableLayout != null) {
 		%>
