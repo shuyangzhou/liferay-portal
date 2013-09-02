@@ -98,6 +98,24 @@ public class StringUtilTest {
 	}
 
 	@Test
+	public void testIsLowerCase() throws Exception {
+		Assert.assertTrue(StringUtil.isLowerCase("hello world"));
+		Assert.assertFalse(StringUtil.isLowerCase("Hello World"));
+		Assert.assertFalse(StringUtil.isLowerCase("HELLO WORLD"));
+		Assert.assertTrue(StringUtil.isLowerCase("hello-world-1"));
+		Assert.assertFalse(StringUtil.isLowerCase("HELLO-WORLD-1"));
+	}
+
+	@Test
+	public void testIsUpperCase() throws Exception {
+		Assert.assertFalse(StringUtil.isUpperCase("hello world"));
+		Assert.assertFalse(StringUtil.isUpperCase("Hello World"));
+		Assert.assertTrue(StringUtil.isUpperCase("HELLO WORLD"));
+		Assert.assertFalse(StringUtil.isUpperCase("hello-world-1"));
+		Assert.assertTrue(StringUtil.isUpperCase("HELLO-WORLD-1"));
+	}
+
+	@Test
 	public void testLastIndexOfAny() throws Exception {
 		char[] chars = {CharPool.COLON, CharPool.COMMA};
 
@@ -162,6 +180,10 @@ public class StringUtilTest {
 			"Aloha World HELLO WORLD Hello World",
 			StringUtil.replaceFirst(
 				"Hello World HELLO WORLD Hello World", "Hello", "Aloha"));
+		Assert.assertEquals(
+			"Hello World HELLO WORLD Aloha World",
+			StringUtil.replaceFirst(
+				"Hello World HELLO WORLD Hello World", "Hello", "Aloha", 10));
 	}
 
 	@Test

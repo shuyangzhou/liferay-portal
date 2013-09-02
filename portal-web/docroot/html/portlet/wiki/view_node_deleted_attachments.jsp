@@ -77,26 +77,19 @@ iteratorURL.setParameter("viewTrashAttachments", Boolean.TRUE.toString());
 
 		<%
 		WikiPage wikiPage = WikiPageAttachmentsUtil.getPage(fileEntry.getFileEntryId());
+
+		String rowHREF = PortletFileRepositoryUtil.getPortletFileEntryURL(themeDisplay, fileEntry, "status=" + WorkflowConstants.STATUS_IN_TRASH);
 		%>
 
-		<liferay-portlet:resourceURL varImpl="rowURL">
-			<portlet:param name="struts_action" value="/wiki/get_page_attachment" />
-			<portlet:param name="redirect" value="<%= currentURL %>" />
-			<portlet:param name="nodeId" value="<%= String.valueOf(node.getNodeId()) %>" />
-			<portlet:param name="title" value="<%= wikiPage.getTitle() %>" />
-			<portlet:param name="fileName" value="<%= fileEntry.getTitle() %>" />
-			<portlet:param name="status" value="<%= String.valueOf(WorkflowConstants.STATUS_IN_TRASH) %>" />
-		</liferay-portlet:resourceURL>
-
 		<liferay-ui:search-container-column-text
-			href="<%= rowURL %>"
+			href="<%= rowHREF %>"
 			name="file-name"
 		>
 			<img align="left" alt="" border="0" src="<%= themeDisplay.getPathThemeImages() %>/file_system/small/<%= DLUtil.getFileIcon(fileEntry.getExtension()) %>.png"> <%= TrashUtil.getOriginalTitle(fileEntry.getTitle()) %>
 		</liferay-ui:search-container-column-text>
 
 		<liferay-ui:search-container-column-text
-			href="<%= rowURL %>"
+			href="<%= rowHREF %>"
 			name="size"
 			value="<%= TextFormatter.formatStorageSize(fileEntry.getSize(), locale) %>"
 		/>

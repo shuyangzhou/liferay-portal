@@ -42,6 +42,7 @@ import java.util.regex.Pattern;
  * @author Sandeep Soni
  * @author Ganesh Ram
  * @author Shuyang Zhou
+ * @author Hugo Huijser
  */
 public class StringUtil {
 
@@ -1006,6 +1007,34 @@ public class StringUtil {
 
 			return prefix.concat(insert).concat(postfix);
 		}
+	}
+
+	public static boolean isLowerCase(String s) {
+		if (s == null) {
+			return false;
+		}
+
+		for (char c : s.toCharArray()) {
+			if (Character.isLetter(c) && Character.isUpperCase(c)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	public static boolean isUpperCase(String s) {
+		if (s == null) {
+			return false;
+		}
+
+		for (char c : s.toCharArray()) {
+			if (Character.isLetter(c) && Character.isLowerCase(c)) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**
@@ -2394,6 +2423,12 @@ public class StringUtil {
 	 *         string <code>newSub</code>
 	 */
 	public static String replaceFirst(String s, String oldSub, String newSub) {
+		return replaceFirst(s, oldSub, newSub, 0);
+	}
+
+	public static String replaceFirst(
+		String s, String oldSub, String newSub, int fromIndex) {
+
 		if ((s == null) || (oldSub == null) || (newSub == null)) {
 			return null;
 		}
@@ -2402,7 +2437,7 @@ public class StringUtil {
 			return s;
 		}
 
-		int y = s.indexOf(oldSub);
+		int y = s.indexOf(oldSub, fromIndex);
 
 		if (y >= 0) {
 			return s.substring(0, y).concat(newSub).concat(

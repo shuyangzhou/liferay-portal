@@ -18,7 +18,9 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Enumeration;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
@@ -29,24 +31,35 @@ import java.util.TreeSet;
 public class SortedProperties extends Properties {
 
 	public SortedProperties() {
-		super();
+		this(null, null);
+	}
 
-		_names = new TreeSet<String>();
+	public SortedProperties(Comparator<String> comparator) {
+		this(comparator, null);
+	}
+
+	public SortedProperties(
+		Comparator<String> comparator, Properties properties) {
+
+		if (comparator != null) {
+			_names = new TreeSet<String>(comparator);
+		}
+		else {
+			_names = new TreeSet<String>();
+		}
+
+		if (properties != null) {
+			for (Map.Entry<Object, Object> entry : properties.entrySet()) {
+				String key = (String)entry.getKey();
+				String value = (String)entry.getValue();
+
+				setProperty(key, value);
+			}
+		}
 	}
 
 	public SortedProperties(Properties properties) {
-		this();
-
-		Enumeration<String> enu =
-			(Enumeration<String>)properties.propertyNames();
-
-		while (enu.hasMoreElements()) {
-			String key = enu.nextElement();
-
-			String value = properties.getProperty(key);
-
-			setProperty(key, value);
-		}
+		this(null, properties);
 	}
 
 	@Override

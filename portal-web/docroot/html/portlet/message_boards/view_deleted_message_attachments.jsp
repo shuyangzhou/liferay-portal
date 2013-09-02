@@ -77,15 +77,13 @@ iteratorURL.setParameter("messageId", String.valueOf(messageId));
 		keyProperty="fileEntryId"
 		modelVar="fileEntry"
 	>
-		<portlet:resourceURL var="rowURL">
-			<portlet:param name="struts_action" value="/message_boards/get_message_attachment" />
-			<portlet:param name="messageId" value="<%= String.valueOf(message.getMessageId()) %>" />
-			<portlet:param name="attachment" value="<%= fileEntry.getTitle() %>" />
-			<portlet:param name="status" value="<%= String.valueOf(WorkflowConstants.STATUS_IN_TRASH) %>" />
-		</portlet:resourceURL>
+
+		<%
+		String rowHREF = PortletFileRepositoryUtil.getPortletFileEntryURL(themeDisplay, fileEntry, "status=" + WorkflowConstants.STATUS_IN_TRASH);
+		%>
 
 		<liferay-ui:search-container-column-text
-			href="<%= rowURL %>"
+			href="<%= rowHREF %>"
 			name="file-name"
 		>
 			<liferay-ui:icon
@@ -96,7 +94,7 @@ iteratorURL.setParameter("messageId", String.valueOf(messageId));
 		</liferay-ui:search-container-column-text>
 
 		<liferay-ui:search-container-column-text
-			href="<%= rowURL %>"
+			href="<%= rowHREF %>"
 			name="size"
 			value="<%= TextFormatter.formatStorageSize(fileEntry.getSize(), locale) %>"
 		/>
