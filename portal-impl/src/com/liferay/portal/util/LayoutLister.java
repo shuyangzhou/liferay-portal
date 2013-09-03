@@ -16,6 +16,8 @@ package com.liferay.portal.util;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.Layout;
 import com.liferay.portal.model.LayoutConstants;
@@ -24,6 +26,8 @@ import com.liferay.portal.service.LayoutLocalServiceUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Brian Wing Shun Chan
@@ -34,6 +38,14 @@ public class LayoutLister {
 			long groupId, boolean privateLayout, String rootNodeName,
 			Locale locale)
 		throws PortalException, SystemException {
+
+		StopWatch stopWatch = null;
+
+		if (_log.isDebugEnabled()) {
+			stopWatch = new StopWatch();
+
+			stopWatch.start();
+		}
 
 		_locale = locale;
 		_nodeId = 1;
@@ -49,6 +61,12 @@ public class LayoutLister {
 
 		_createList(
 			layouts, LayoutConstants.DEFAULT_PARENT_LAYOUT_ID, _nodeId, 0);
+
+		if (_log.isDebugEnabled()) {
+			stopWatch.stop();
+
+			_log.debug("Runtime: " + stopWatch.getTime());
+		}
 
 		return new LayoutView(_list, _depth);
 	}
@@ -105,6 +123,8 @@ public class LayoutLister {
 			_createList(layouts, layout.getLayoutId(), _nodeId, depth);
 		}
 	}
+
+	private static Log _log = LogFactoryUtil.getLog(LayoutLister.class);
 
 	private int _depth;
 	private List<String> _list;
