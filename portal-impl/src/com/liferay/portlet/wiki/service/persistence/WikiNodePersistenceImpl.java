@@ -4958,6 +4958,7 @@ public class WikiNodePersistenceImpl extends BasePersistenceImpl<WikiNode>
 		wikiNodeImpl.setStatusByUserId(wikiNode.getStatusByUserId());
 		wikiNodeImpl.setStatusByUserName(wikiNode.getStatusByUserName());
 		wikiNodeImpl.setStatusDate(wikiNode.getStatusDate());
+		wikiNodeImpl.setTrashEntryId(wikiNode.getTrashEntryId());
 
 		return wikiNodeImpl;
 	}

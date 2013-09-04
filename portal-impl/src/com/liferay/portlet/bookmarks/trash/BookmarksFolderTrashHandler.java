@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.trash.TrashActionKeys;
 import com.liferay.portal.kernel.trash.TrashRenderer;
 import com.liferay.portal.model.ContainerModel;
+import com.liferay.portal.model.TrashedModel;
 import com.liferay.portal.security.permission.ActionKeys;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.service.ServiceContext;
@@ -27,6 +28,7 @@ import com.liferay.portlet.bookmarks.model.BookmarksFolder;
 import com.liferay.portlet.bookmarks.service.BookmarksFolderLocalServiceUtil;
 import com.liferay.portlet.bookmarks.service.permission.BookmarksFolderPermission;
 import com.liferay.portlet.bookmarks.util.BookmarksUtil;
+import com.liferay.portlet.trash.model.TrashEntry;
 
 import javax.portlet.PortletRequest;
 
@@ -60,6 +62,15 @@ public class BookmarksFolderTrashHandler extends BookmarksBaseTrashHandler {
 
 		BookmarksFolder folder = getBookmarksFolder(classPK);
 
+		return getParentContainerModel(folder);
+	}
+
+	@Override
+	public ContainerModel getParentContainerModel(TrashedModel trashedModel)
+		throws PortalException, SystemException {
+
+		BookmarksFolder folder = (BookmarksFolder)trashedModel;
+
 		long parentFolderId = folder.getParentFolderId();
 
 		if (parentFolderId <= 0) {
@@ -90,12 +101,12 @@ public class BookmarksFolderTrashHandler extends BookmarksBaseTrashHandler {
 	}
 
 	@Override
-	public ContainerModel getTrashContainer(long classPK)
+	public TrashEntry getTrashEntry(long classPK)
 		throws PortalException, SystemException {
 
 		BookmarksFolder folder = getBookmarksFolder(classPK);
 
-		return folder.getTrashContainer();
+		return folder.getTrashEntry();
 	}
 
 	@Override

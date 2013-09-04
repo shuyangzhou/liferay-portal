@@ -126,15 +126,16 @@ public class DLFileVersionImpl extends DLFileVersionBaseImpl {
 	}
 
 	@Override
-	public boolean isInTrashContainer()
-		throws PortalException, SystemException {
+	public boolean isInTrashContainer() {
+		try {
+			if (getTrashContainer() != null) {
+				return true;
+			}
+		}
+		catch (Exception e) {
+		}
 
-		if (getTrashContainer() != null) {
-			return true;
-		}
-		else {
-			return false;
-		}
+		return false;
 	}
 
 	@Override

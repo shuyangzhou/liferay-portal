@@ -131,6 +131,11 @@
 		<column name="custom1ImageId" type="long" />
 		<column name="custom2ImageId" type="long" />
 		<column name="manualCheckInRequired" type="boolean" />
+		<column name="status" type="int" />
+		<column name="statusByUserId" type="long" />
+		<column name="statusByUserName" type="String" />
+		<column name="statusDate" type="Date" />
+		<column name="trashEntryId" type="long" />
 
 		<!-- Order -->
 
@@ -368,6 +373,7 @@
 		<column name="statusByUserId" type="long" />
 		<column name="statusByUserName" type="String" />
 		<column name="statusDate" type="Date" />
+		<column name="trashEntryId" type="long" />
 
 		<!-- Finder methods -->
 
@@ -433,6 +439,7 @@
 		<column name="statusByUserId" type="long" />
 		<column name="statusByUserName" type="String" />
 		<column name="statusDate" type="Date" />
+		<column name="trashEntryId" type="long" />
 
 		<!-- Order -->
 
@@ -502,6 +509,7 @@
 		<column name="statusByUserId" type="long" />
 		<column name="statusByUserName" type="String" />
 		<column name="statusDate" type="Date" />
+		<column name="trashEntryId" type="long" />
 
 		<!-- Relationships -->
 

@@ -70,6 +70,7 @@ public class BookmarksEntryWrapper implements BookmarksEntry,
 		attributes.put("statusByUserId", getStatusByUserId());
 		attributes.put("statusByUserName", getStatusByUserName());
 		attributes.put("statusDate", getStatusDate());
+		attributes.put("trashEntryId", getTrashEntryId());
 
 		return attributes;
 	}
@@ -188,6 +189,12 @@ public class BookmarksEntryWrapper implements BookmarksEntry,
 
 		if (statusDate != null) {
 			setStatusDate(statusDate);
+		}
+
+		Long trashEntryId = (Long)attributes.get("trashEntryId");
+
+		if (trashEntryId != null) {
+			setTrashEntryId(trashEntryId);
 		}
 	}
 
@@ -636,6 +643,55 @@ public class BookmarksEntryWrapper implements BookmarksEntry,
 	}
 
 	/**
+	* Returns the trash entry ID of this bookmarks entry.
+	*
+	* @return the trash entry ID of this bookmarks entry
+	*/
+	@Override
+	public long getTrashEntryId() {
+		return _bookmarksEntry.getTrashEntryId();
+	}
+
+	/**
+	* Sets the trash entry ID of this bookmarks entry.
+	*
+	* @param trashEntryId the trash entry ID of this bookmarks entry
+	*/
+	@Override
+	public void setTrashEntryId(long trashEntryId) {
+		_bookmarksEntry.setTrashEntryId(trashEntryId);
+	}
+
+	@Override
+	public com.liferay.portlet.trash.model.TrashEntry getTrashEntry()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _bookmarksEntry.getTrashEntry();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.trash.TrashHandler getTrashHandler() {
+		return _bookmarksEntry.getTrashHandler();
+	}
+
+	@Override
+	public boolean isInTrash() {
+		return _bookmarksEntry.isInTrash();
+	}
+
+	@Override
+	public boolean isInTrashContainer()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _bookmarksEntry.isInTrashContainer();
+	}
+
+	@Override
+	public boolean isTrashEntry() {
+		return _bookmarksEntry.isTrashEntry();
+	}
+
+	/**
 	* @deprecated As of 6.1.0, replaced by {@link #isApproved()}
 	*/
 	@Override
@@ -701,16 +757,6 @@ public class BookmarksEntryWrapper implements BookmarksEntry,
 	@Override
 	public boolean isIncomplete() {
 		return _bookmarksEntry.isIncomplete();
-	}
-
-	/**
-	* Returns <code>true</code> if this bookmarks entry is in the Recycle Bin.
-	*
-	* @return <code>true</code> if this bookmarks entry is in the Recycle Bin; <code>false</code> otherwise
-	*/
-	@Override
-	public boolean isInTrash() {
-		return _bookmarksEntry.isInTrash();
 	}
 
 	/**
@@ -850,13 +896,6 @@ public class BookmarksEntryWrapper implements BookmarksEntry,
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
 		return _bookmarksEntry.getTrashContainer();
-	}
-
-	@Override
-	public boolean isInTrashContainer()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
-		return _bookmarksEntry.isInTrashContainer();
 	}
 
 	@Override

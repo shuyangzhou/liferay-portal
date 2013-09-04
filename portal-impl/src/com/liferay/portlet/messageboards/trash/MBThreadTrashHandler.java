@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.trash.TrashRenderer;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.ContainerModel;
 import com.liferay.portal.model.LayoutConstants;
+import com.liferay.portal.model.TrashedModel;
 import com.liferay.portal.security.permission.ActionKeys;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.service.ServiceContext;
@@ -35,6 +36,7 @@ import com.liferay.portlet.messageboards.service.MBThreadLocalServiceUtil;
 import com.liferay.portlet.messageboards.service.permission.MBCategoryPermission;
 import com.liferay.portlet.messageboards.service.permission.MBMessagePermission;
 import com.liferay.portlet.messageboards.util.MBUtil;
+import com.liferay.portlet.trash.model.TrashEntry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +61,13 @@ public class MBThreadTrashHandler extends BaseTrashHandler {
 	@Override
 	public String getClassName() {
 		return MBThread.class.getName();
+	}
+
+	@Override
+	public ContainerModel getContainerModel(long containerModelId)
+		throws PortalException, SystemException {
+
+		return MBCategoryLocalServiceUtil.getCategory(containerModelId);
 	}
 
 	@Override
@@ -101,6 +110,15 @@ public class MBThreadTrashHandler extends BaseTrashHandler {
 		return MBCategoryLocalServiceUtil.getCategoriesCount(
 			thread.getGroupId(), parentContainerModelId,
 			WorkflowConstants.STATUS_APPROVED);
+	}
+
+	@Override
+	public ContainerModel getParentContainerModel(TrashedModel trashedModel)
+		throws PortalException, SystemException {
+
+		MBThread thread = (MBThread)trashedModel;
+
+		return getContainerModel(thread.getCategoryId());
 	}
 
 	@Override
@@ -147,12 +165,12 @@ public class MBThreadTrashHandler extends BaseTrashHandler {
 	}
 
 	@Override
-	public ContainerModel getTrashContainer(long classPK)
+	public TrashEntry getTrashEntry(long classPK)
 		throws PortalException, SystemException {
 
 		MBThread thread = MBThreadLocalServiceUtil.getThread(classPK);
 
-		return thread.getTrashContainer();
+		return thread.getTrashEntry();
 	}
 
 	@Override

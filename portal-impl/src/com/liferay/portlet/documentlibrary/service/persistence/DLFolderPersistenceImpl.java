@@ -8560,6 +8560,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 		dlFolderImpl.setStatusByUserId(dlFolder.getStatusByUserId());
 		dlFolderImpl.setStatusByUserName(dlFolder.getStatusByUserName());
 		dlFolderImpl.setStatusDate(dlFolder.getStatusDate());
+		dlFolderImpl.setTrashEntryId(dlFolder.getTrashEntryId());
 
 		return dlFolderImpl;
 	}

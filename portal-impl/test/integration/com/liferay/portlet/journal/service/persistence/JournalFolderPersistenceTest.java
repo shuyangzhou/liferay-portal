@@ -143,6 +143,8 @@ public class JournalFolderPersistenceTest {
 
 		newJournalFolder.setStatusDate(ServiceTestUtil.nextDate());
 
+		newJournalFolder.setTrashEntryId(ServiceTestUtil.nextLong());
+
 		_persistence.update(newJournalFolder);
 
 		JournalFolder existingJournalFolder = _persistence.findByPrimaryKey(newJournalFolder.getPrimaryKey());
@@ -180,6 +182,8 @@ public class JournalFolderPersistenceTest {
 		Assert.assertEquals(Time.getShortTimestamp(
 				existingJournalFolder.getStatusDate()),
 			Time.getShortTimestamp(newJournalFolder.getStatusDate()));
+		Assert.assertEquals(existingJournalFolder.getTrashEntryId(),
+			newJournalFolder.getTrashEntryId());
 	}
 
 	@Test
@@ -232,7 +236,7 @@ public class JournalFolderPersistenceTest {
 			"userId", true, "userName", true, "createDate", true,
 			"modifiedDate", true, "parentFolderId", true, "name", true,
 			"description", true, "status", true, "statusByUserId", true,
-			"statusByUserName", true, "statusDate", true);
+			"statusByUserName", true, "statusDate", true, "trashEntryId", true);
 	}
 
 	@Test
@@ -410,6 +414,8 @@ public class JournalFolderPersistenceTest {
 		journalFolder.setStatusByUserName(ServiceTestUtil.randomString());
 
 		journalFolder.setStatusDate(ServiceTestUtil.nextDate());
+
+		journalFolder.setTrashEntryId(ServiceTestUtil.nextLong());
 
 		_persistence.update(journalFolder);
 

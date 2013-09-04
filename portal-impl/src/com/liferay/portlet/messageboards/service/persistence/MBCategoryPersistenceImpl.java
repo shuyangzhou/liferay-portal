@@ -7724,6 +7724,7 @@ public class MBCategoryPersistenceImpl extends BasePersistenceImpl<MBCategory>
 		mbCategoryImpl.setStatusByUserId(mbCategory.getStatusByUserId());
 		mbCategoryImpl.setStatusByUserName(mbCategory.getStatusByUserName());
 		mbCategoryImpl.setStatusDate(mbCategory.getStatusDate());
+		mbCategoryImpl.setTrashEntryId(mbCategory.getTrashEntryId());
 
 		return mbCategoryImpl;
 	}

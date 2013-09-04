@@ -38,7 +38,7 @@ public class MBMessageCacheModel implements CacheModel<MBMessage>,
 	Externalizable {
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(51);
+		StringBundler sb = new StringBundler(53);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -90,6 +90,8 @@ public class MBMessageCacheModel implements CacheModel<MBMessage>,
 		sb.append(statusByUserName);
 		sb.append(", statusDate=");
 		sb.append(statusDate);
+		sb.append(", trashEntryId=");
+		sb.append(trashEntryId);
 		sb.append("}");
 
 		return sb.toString();
@@ -181,6 +183,8 @@ public class MBMessageCacheModel implements CacheModel<MBMessage>,
 			mbMessageImpl.setStatusDate(new Date(statusDate));
 		}
 
+		mbMessageImpl.setTrashEntryId(trashEntryId);
+
 		mbMessageImpl.resetOriginalValues();
 
 		return mbMessageImpl;
@@ -213,6 +217,7 @@ public class MBMessageCacheModel implements CacheModel<MBMessage>,
 		statusByUserId = objectInput.readLong();
 		statusByUserName = objectInput.readUTF();
 		statusDate = objectInput.readLong();
+		trashEntryId = objectInput.readLong();
 	}
 
 	@Override
@@ -282,6 +287,7 @@ public class MBMessageCacheModel implements CacheModel<MBMessage>,
 		}
 
 		objectOutput.writeLong(statusDate);
+		objectOutput.writeLong(trashEntryId);
 	}
 
 	public String uuid;
@@ -309,4 +315,5 @@ public class MBMessageCacheModel implements CacheModel<MBMessage>,
 	public long statusByUserId;
 	public String statusByUserName;
 	public long statusDate;
+	public long trashEntryId;
 }

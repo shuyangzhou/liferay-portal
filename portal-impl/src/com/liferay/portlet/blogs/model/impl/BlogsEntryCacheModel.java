@@ -38,7 +38,7 @@ public class BlogsEntryCacheModel implements CacheModel<BlogsEntry>,
 	Externalizable {
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(47);
+		StringBundler sb = new StringBundler(49);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -86,6 +86,8 @@ public class BlogsEntryCacheModel implements CacheModel<BlogsEntry>,
 		sb.append(statusByUserName);
 		sb.append(", statusDate=");
 		sb.append(statusDate);
+		sb.append(", trashEntryId=");
+		sb.append(trashEntryId);
 		sb.append("}");
 
 		return sb.toString();
@@ -200,6 +202,8 @@ public class BlogsEntryCacheModel implements CacheModel<BlogsEntry>,
 			blogsEntryImpl.setStatusDate(new Date(statusDate));
 		}
 
+		blogsEntryImpl.setTrashEntryId(trashEntryId);
+
 		blogsEntryImpl.resetOriginalValues();
 
 		return blogsEntryImpl;
@@ -230,6 +234,7 @@ public class BlogsEntryCacheModel implements CacheModel<BlogsEntry>,
 		statusByUserId = objectInput.readLong();
 		statusByUserName = objectInput.readUTF();
 		statusDate = objectInput.readLong();
+		trashEntryId = objectInput.readLong();
 	}
 
 	@Override
@@ -317,6 +322,7 @@ public class BlogsEntryCacheModel implements CacheModel<BlogsEntry>,
 		}
 
 		objectOutput.writeLong(statusDate);
+		objectOutput.writeLong(trashEntryId);
 	}
 
 	public String uuid;
@@ -342,4 +348,5 @@ public class BlogsEntryCacheModel implements CacheModel<BlogsEntry>,
 	public long statusByUserId;
 	public String statusByUserName;
 	public long statusDate;
+	public long trashEntryId;
 }

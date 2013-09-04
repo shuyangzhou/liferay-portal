@@ -160,6 +160,8 @@ public class WikiPagePersistenceTest {
 
 		newWikiPage.setStatusDate(ServiceTestUtil.nextDate());
 
+		newWikiPage.setTrashEntryId(ServiceTestUtil.nextLong());
+
 		_persistence.update(newWikiPage);
 
 		WikiPage existingWikiPage = _persistence.findByPrimaryKey(newWikiPage.getPrimaryKey());
@@ -210,6 +212,8 @@ public class WikiPagePersistenceTest {
 		Assert.assertEquals(Time.getShortTimestamp(
 				existingWikiPage.getStatusDate()),
 			Time.getShortTimestamp(newWikiPage.getStatusDate()));
+		Assert.assertEquals(existingWikiPage.getTrashEntryId(),
+			newWikiPage.getTrashEntryId());
 	}
 
 	@Test
@@ -253,7 +257,7 @@ public class WikiPagePersistenceTest {
 			"version", true, "minorEdit", true, "content", true, "summary",
 			true, "format", true, "head", true, "parentTitle", true,
 			"redirectTitle", true, "status", true, "statusByUserId", true,
-			"statusByUserName", true, "statusDate", true);
+			"statusByUserName", true, "statusDate", true, "trashEntryId", true);
 	}
 
 	@Test
@@ -448,6 +452,8 @@ public class WikiPagePersistenceTest {
 		wikiPage.setStatusByUserName(ServiceTestUtil.randomString());
 
 		wikiPage.setStatusDate(ServiceTestUtil.nextDate());
+
+		wikiPage.setTrashEntryId(ServiceTestUtil.nextLong());
 
 		_persistence.update(wikiPage);
 

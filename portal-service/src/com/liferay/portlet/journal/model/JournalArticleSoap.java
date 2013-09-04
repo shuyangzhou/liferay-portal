@@ -64,6 +64,7 @@ public class JournalArticleSoap implements Serializable {
 		soapModel.setStatusByUserId(model.getStatusByUserId());
 		soapModel.setStatusByUserName(model.getStatusByUserName());
 		soapModel.setStatusDate(model.getStatusDate());
+		soapModel.setTrashEntryId(model.getTrashEntryId());
 
 		return soapModel;
 	}
@@ -388,6 +389,14 @@ public class JournalArticleSoap implements Serializable {
 		_statusDate = statusDate;
 	}
 
+	public long getTrashEntryId() {
+		return _trashEntryId;
+	}
+
+	public void setTrashEntryId(long trashEntryId) {
+		_trashEntryId = trashEntryId;
+	}
+
 	private String _uuid;
 	private long _id;
 	private long _resourcePrimKey;
@@ -421,4 +430,5 @@ public class JournalArticleSoap implements Serializable {
 	private long _statusByUserId;
 	private String _statusByUserName;
 	private Date _statusDate;
+	private long _trashEntryId;
 }

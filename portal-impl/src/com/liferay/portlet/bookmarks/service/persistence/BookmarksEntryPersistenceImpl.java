@@ -10073,6 +10073,7 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 		bookmarksEntryImpl.setStatusByUserId(bookmarksEntry.getStatusByUserId());
 		bookmarksEntryImpl.setStatusByUserName(bookmarksEntry.getStatusByUserName());
 		bookmarksEntryImpl.setStatusDate(bookmarksEntry.getStatusDate());
+		bookmarksEntryImpl.setTrashEntryId(bookmarksEntry.getTrashEntryId());
 
 		return bookmarksEntryImpl;
 	}

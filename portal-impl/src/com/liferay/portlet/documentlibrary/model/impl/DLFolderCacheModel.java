@@ -37,7 +37,7 @@ import java.util.Date;
 public class DLFolderCacheModel implements CacheModel<DLFolder>, Externalizable {
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(43);
+		StringBundler sb = new StringBundler(45);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -81,6 +81,8 @@ public class DLFolderCacheModel implements CacheModel<DLFolder>, Externalizable 
 		sb.append(statusByUserName);
 		sb.append(", statusDate=");
 		sb.append(statusDate);
+		sb.append(", trashEntryId=");
+		sb.append(trashEntryId);
 		sb.append("}");
 
 		return sb.toString();
@@ -168,6 +170,8 @@ public class DLFolderCacheModel implements CacheModel<DLFolder>, Externalizable 
 			dlFolderImpl.setStatusDate(new Date(statusDate));
 		}
 
+		dlFolderImpl.setTrashEntryId(trashEntryId);
+
 		dlFolderImpl.resetOriginalValues();
 
 		return dlFolderImpl;
@@ -196,6 +200,7 @@ public class DLFolderCacheModel implements CacheModel<DLFolder>, Externalizable 
 		statusByUserId = objectInput.readLong();
 		statusByUserName = objectInput.readUTF();
 		statusDate = objectInput.readLong();
+		trashEntryId = objectInput.readLong();
 	}
 
 	@Override
@@ -255,6 +260,7 @@ public class DLFolderCacheModel implements CacheModel<DLFolder>, Externalizable 
 		}
 
 		objectOutput.writeLong(statusDate);
+		objectOutput.writeLong(trashEntryId);
 	}
 
 	public String uuid;
@@ -278,4 +284,5 @@ public class DLFolderCacheModel implements CacheModel<DLFolder>, Externalizable 
 	public long statusByUserId;
 	public String statusByUserName;
 	public long statusDate;
+	public long trashEntryId;
 }

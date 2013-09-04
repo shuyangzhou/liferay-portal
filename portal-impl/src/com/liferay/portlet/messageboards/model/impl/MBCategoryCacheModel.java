@@ -38,7 +38,7 @@ public class MBCategoryCacheModel implements CacheModel<MBCategory>,
 	Externalizable {
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(39);
+		StringBundler sb = new StringBundler(41);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -78,6 +78,8 @@ public class MBCategoryCacheModel implements CacheModel<MBCategory>,
 		sb.append(statusByUserName);
 		sb.append(", statusDate=");
 		sb.append(statusDate);
+		sb.append(", trashEntryId=");
+		sb.append(trashEntryId);
 		sb.append("}");
 
 		return sb.toString();
@@ -170,6 +172,8 @@ public class MBCategoryCacheModel implements CacheModel<MBCategory>,
 			mbCategoryImpl.setStatusDate(new Date(statusDate));
 		}
 
+		mbCategoryImpl.setTrashEntryId(trashEntryId);
+
 		mbCategoryImpl.resetOriginalValues();
 
 		return mbCategoryImpl;
@@ -196,6 +200,7 @@ public class MBCategoryCacheModel implements CacheModel<MBCategory>,
 		statusByUserId = objectInput.readLong();
 		statusByUserName = objectInput.readUTF();
 		statusDate = objectInput.readLong();
+		trashEntryId = objectInput.readLong();
 	}
 
 	@Override
@@ -259,6 +264,7 @@ public class MBCategoryCacheModel implements CacheModel<MBCategory>,
 		}
 
 		objectOutput.writeLong(statusDate);
+		objectOutput.writeLong(trashEntryId);
 	}
 
 	public String uuid;
@@ -280,4 +286,5 @@ public class MBCategoryCacheModel implements CacheModel<MBCategory>,
 	public long statusByUserId;
 	public String statusByUserName;
 	public long statusDate;
+	public long trashEntryId;
 }

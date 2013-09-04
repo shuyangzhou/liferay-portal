@@ -84,6 +84,7 @@ public class JournalArticleWrapper implements JournalArticle,
 		attributes.put("statusByUserId", getStatusByUserId());
 		attributes.put("statusByUserName", getStatusByUserName());
 		attributes.put("statusDate", getStatusDate());
+		attributes.put("trashEntryId", getTrashEntryId());
 
 		return attributes;
 	}
@@ -286,6 +287,12 @@ public class JournalArticleWrapper implements JournalArticle,
 
 		if (statusDate != null) {
 			setStatusDate(statusDate);
+		}
+
+		Long trashEntryId = (Long)attributes.get("trashEntryId");
+
+		if (trashEntryId != null) {
+			setTrashEntryId(trashEntryId);
 		}
 	}
 
@@ -1296,6 +1303,55 @@ public class JournalArticleWrapper implements JournalArticle,
 	}
 
 	/**
+	* Returns the trash entry ID of this journal article.
+	*
+	* @return the trash entry ID of this journal article
+	*/
+	@Override
+	public long getTrashEntryId() {
+		return _journalArticle.getTrashEntryId();
+	}
+
+	/**
+	* Sets the trash entry ID of this journal article.
+	*
+	* @param trashEntryId the trash entry ID of this journal article
+	*/
+	@Override
+	public void setTrashEntryId(long trashEntryId) {
+		_journalArticle.setTrashEntryId(trashEntryId);
+	}
+
+	@Override
+	public com.liferay.portlet.trash.model.TrashEntry getTrashEntry()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _journalArticle.getTrashEntry();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.trash.TrashHandler getTrashHandler() {
+		return _journalArticle.getTrashHandler();
+	}
+
+	@Override
+	public boolean isInTrash() {
+		return _journalArticle.isInTrash();
+	}
+
+	@Override
+	public boolean isInTrashContainer()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _journalArticle.isInTrashContainer();
+	}
+
+	@Override
+	public boolean isTrashEntry() {
+		return _journalArticle.isTrashEntry();
+	}
+
+	/**
 	* @deprecated As of 6.1.0, replaced by {@link #isApproved()}
 	*/
 	@Override
@@ -1361,16 +1417,6 @@ public class JournalArticleWrapper implements JournalArticle,
 	@Override
 	public boolean isIncomplete() {
 		return _journalArticle.isIncomplete();
-	}
-
-	/**
-	* Returns <code>true</code> if this journal article is in the Recycle Bin.
-	*
-	* @return <code>true</code> if this journal article is in the Recycle Bin; <code>false</code> otherwise
-	*/
-	@Override
-	public boolean isInTrash() {
-		return _journalArticle.isInTrash();
 	}
 
 	/**
@@ -1587,13 +1633,6 @@ public class JournalArticleWrapper implements JournalArticle,
 	public boolean hasApprovedVersion()
 		throws com.liferay.portal.kernel.exception.SystemException {
 		return _journalArticle.hasApprovedVersion();
-	}
-
-	@Override
-	public boolean isInTrashContainer()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
-		return _journalArticle.isInTrashContainer();
 	}
 
 	@Override

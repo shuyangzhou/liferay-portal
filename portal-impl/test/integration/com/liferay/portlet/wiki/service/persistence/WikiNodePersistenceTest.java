@@ -143,6 +143,8 @@ public class WikiNodePersistenceTest {
 
 		newWikiNode.setStatusDate(ServiceTestUtil.nextDate());
 
+		newWikiNode.setTrashEntryId(ServiceTestUtil.nextLong());
+
 		_persistence.update(newWikiNode);
 
 		WikiNode existingWikiNode = _persistence.findByPrimaryKey(newWikiNode.getPrimaryKey());
@@ -179,6 +181,8 @@ public class WikiNodePersistenceTest {
 		Assert.assertEquals(Time.getShortTimestamp(
 				existingWikiNode.getStatusDate()),
 			Time.getShortTimestamp(newWikiNode.getStatusDate()));
+		Assert.assertEquals(existingWikiNode.getTrashEntryId(),
+			newWikiNode.getTrashEntryId());
 	}
 
 	@Test
@@ -230,7 +234,8 @@ public class WikiNodePersistenceTest {
 			"nodeId", true, "groupId", true, "companyId", true, "userId", true,
 			"userName", true, "createDate", true, "modifiedDate", true, "name",
 			true, "description", true, "lastPostDate", true, "status", true,
-			"statusByUserId", true, "statusByUserName", true, "statusDate", true);
+			"statusByUserId", true, "statusByUserName", true, "statusDate",
+			true, "trashEntryId", true);
 	}
 
 	@Test
@@ -400,6 +405,8 @@ public class WikiNodePersistenceTest {
 		wikiNode.setStatusByUserName(ServiceTestUtil.randomString());
 
 		wikiNode.setStatusDate(ServiceTestUtil.nextDate());
+
+		wikiNode.setTrashEntryId(ServiceTestUtil.nextLong());
 
 		_persistence.update(wikiNode);
 

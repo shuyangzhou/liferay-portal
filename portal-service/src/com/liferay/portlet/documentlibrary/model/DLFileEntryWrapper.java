@@ -78,6 +78,11 @@ public class DLFileEntryWrapper implements DLFileEntry,
 		attributes.put("custom1ImageId", getCustom1ImageId());
 		attributes.put("custom2ImageId", getCustom2ImageId());
 		attributes.put("manualCheckInRequired", getManualCheckInRequired());
+		attributes.put("status", getStatus());
+		attributes.put("statusByUserId", getStatusByUserId());
+		attributes.put("statusByUserName", getStatusByUserName());
+		attributes.put("statusDate", getStatusDate());
+		attributes.put("trashEntryId", getTrashEntryId());
 
 		return attributes;
 	}
@@ -245,6 +250,36 @@ public class DLFileEntryWrapper implements DLFileEntry,
 
 		if (manualCheckInRequired != null) {
 			setManualCheckInRequired(manualCheckInRequired);
+		}
+
+		Integer status = (Integer)attributes.get("status");
+
+		if (status != null) {
+			setStatus(status);
+		}
+
+		Long statusByUserId = (Long)attributes.get("statusByUserId");
+
+		if (statusByUserId != null) {
+			setStatusByUserId(statusByUserId);
+		}
+
+		String statusByUserName = (String)attributes.get("statusByUserName");
+
+		if (statusByUserName != null) {
+			setStatusByUserName(statusByUserName);
+		}
+
+		Date statusDate = (Date)attributes.get("statusDate");
+
+		if (statusDate != null) {
+			setStatusDate(statusDate);
+		}
+
+		Long trashEntryId = (Long)attributes.get("trashEntryId");
+
+		if (trashEntryId != null) {
+			setTrashEntryId(trashEntryId);
 		}
 	}
 
@@ -855,6 +890,245 @@ public class DLFileEntryWrapper implements DLFileEntry,
 		_dlFileEntry.setManualCheckInRequired(manualCheckInRequired);
 	}
 
+	/**
+	* Returns the status of this document library file entry.
+	*
+	* @return the status of this document library file entry
+	*/
+	@Override
+	public int getStatus() {
+		return _dlFileEntry.getStatus();
+	}
+
+	/**
+	* Sets the status of this document library file entry.
+	*
+	* @param status the status of this document library file entry
+	*/
+	@Override
+	public void setStatus(int status) {
+		_dlFileEntry.setStatus(status);
+	}
+
+	/**
+	* Returns the status by user ID of this document library file entry.
+	*
+	* @return the status by user ID of this document library file entry
+	*/
+	@Override
+	public long getStatusByUserId() {
+		return _dlFileEntry.getStatusByUserId();
+	}
+
+	/**
+	* Sets the status by user ID of this document library file entry.
+	*
+	* @param statusByUserId the status by user ID of this document library file entry
+	*/
+	@Override
+	public void setStatusByUserId(long statusByUserId) {
+		_dlFileEntry.setStatusByUserId(statusByUserId);
+	}
+
+	/**
+	* Returns the status by user uuid of this document library file entry.
+	*
+	* @return the status by user uuid of this document library file entry
+	* @throws SystemException if a system exception occurred
+	*/
+	@Override
+	public java.lang.String getStatusByUserUuid()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _dlFileEntry.getStatusByUserUuid();
+	}
+
+	/**
+	* Sets the status by user uuid of this document library file entry.
+	*
+	* @param statusByUserUuid the status by user uuid of this document library file entry
+	*/
+	@Override
+	public void setStatusByUserUuid(java.lang.String statusByUserUuid) {
+		_dlFileEntry.setStatusByUserUuid(statusByUserUuid);
+	}
+
+	/**
+	* Returns the status by user name of this document library file entry.
+	*
+	* @return the status by user name of this document library file entry
+	*/
+	@Override
+	public java.lang.String getStatusByUserName() {
+		return _dlFileEntry.getStatusByUserName();
+	}
+
+	/**
+	* Sets the status by user name of this document library file entry.
+	*
+	* @param statusByUserName the status by user name of this document library file entry
+	*/
+	@Override
+	public void setStatusByUserName(java.lang.String statusByUserName) {
+		_dlFileEntry.setStatusByUserName(statusByUserName);
+	}
+
+	/**
+	* Returns the status date of this document library file entry.
+	*
+	* @return the status date of this document library file entry
+	*/
+	@Override
+	public java.util.Date getStatusDate() {
+		return _dlFileEntry.getStatusDate();
+	}
+
+	/**
+	* Sets the status date of this document library file entry.
+	*
+	* @param statusDate the status date of this document library file entry
+	*/
+	@Override
+	public void setStatusDate(java.util.Date statusDate) {
+		_dlFileEntry.setStatusDate(statusDate);
+	}
+
+	/**
+	* Returns the trash entry ID of this document library file entry.
+	*
+	* @return the trash entry ID of this document library file entry
+	*/
+	@Override
+	public long getTrashEntryId() {
+		return _dlFileEntry.getTrashEntryId();
+	}
+
+	/**
+	* Sets the trash entry ID of this document library file entry.
+	*
+	* @param trashEntryId the trash entry ID of this document library file entry
+	*/
+	@Override
+	public void setTrashEntryId(long trashEntryId) {
+		_dlFileEntry.setTrashEntryId(trashEntryId);
+	}
+
+	@Override
+	public com.liferay.portlet.trash.model.TrashEntry getTrashEntry()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _dlFileEntry.getTrashEntry();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.trash.TrashHandler getTrashHandler() {
+		return _dlFileEntry.getTrashHandler();
+	}
+
+	@Override
+	public boolean isInTrash() {
+		return _dlFileEntry.isInTrash();
+	}
+
+	@Override
+	public boolean isInTrashContainer()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _dlFileEntry.isInTrashContainer();
+	}
+
+	@Override
+	public boolean isTrashEntry() {
+		return _dlFileEntry.isTrashEntry();
+	}
+
+	/**
+	* @deprecated As of 6.1.0, replaced by {@link #isApproved()}
+	*/
+	@Override
+	public boolean getApproved() {
+		return _dlFileEntry.getApproved();
+	}
+
+	/**
+	* Returns <code>true</code> if this document library file entry is approved.
+	*
+	* @return <code>true</code> if this document library file entry is approved; <code>false</code> otherwise
+	*/
+	@Override
+	public boolean isApproved() {
+		return _dlFileEntry.isApproved();
+	}
+
+	/**
+	* Returns <code>true</code> if this document library file entry is denied.
+	*
+	* @return <code>true</code> if this document library file entry is denied; <code>false</code> otherwise
+	*/
+	@Override
+	public boolean isDenied() {
+		return _dlFileEntry.isDenied();
+	}
+
+	/**
+	* Returns <code>true</code> if this document library file entry is a draft.
+	*
+	* @return <code>true</code> if this document library file entry is a draft; <code>false</code> otherwise
+	*/
+	@Override
+	public boolean isDraft() {
+		return _dlFileEntry.isDraft();
+	}
+
+	/**
+	* Returns <code>true</code> if this document library file entry is expired.
+	*
+	* @return <code>true</code> if this document library file entry is expired; <code>false</code> otherwise
+	*/
+	@Override
+	public boolean isExpired() {
+		return _dlFileEntry.isExpired();
+	}
+
+	/**
+	* Returns <code>true</code> if this document library file entry is inactive.
+	*
+	* @return <code>true</code> if this document library file entry is inactive; <code>false</code> otherwise
+	*/
+	@Override
+	public boolean isInactive() {
+		return _dlFileEntry.isInactive();
+	}
+
+	/**
+	* Returns <code>true</code> if this document library file entry is incomplete.
+	*
+	* @return <code>true</code> if this document library file entry is incomplete; <code>false</code> otherwise
+	*/
+	@Override
+	public boolean isIncomplete() {
+		return _dlFileEntry.isIncomplete();
+	}
+
+	/**
+	* Returns <code>true</code> if this document library file entry is pending.
+	*
+	* @return <code>true</code> if this document library file entry is pending; <code>false</code> otherwise
+	*/
+	@Override
+	public boolean isPending() {
+		return _dlFileEntry.isPending();
+	}
+
+	/**
+	* Returns <code>true</code> if this document library file entry is scheduled.
+	*
+	* @return <code>true</code> if this document library file entry is scheduled; <code>false</code> otherwise
+	*/
+	@Override
+	public boolean isScheduled() {
+		return _dlFileEntry.isScheduled();
+	}
+
 	@Override
 	public boolean isNew() {
 		return _dlFileEntry.isNew();
@@ -1093,13 +1367,6 @@ public class DLFileEntryWrapper implements DLFileEntry,
 	@Override
 	public boolean isInHiddenFolder() {
 		return _dlFileEntry.isInHiddenFolder();
-	}
-
-	@Override
-	public boolean isInTrashContainer()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
-		return _dlFileEntry.isInTrashContainer();
 	}
 
 	@Override

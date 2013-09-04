@@ -45,7 +45,5 @@ public interface BookmarksFolder extends BookmarksFolderModel, PermissionedModel
 
 	public com.liferay.portlet.bookmarks.model.BookmarksFolder getTrashContainer();
 
-	public boolean isInTrashContainer();
-
 	public boolean isRoot();
 }

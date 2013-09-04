@@ -54,6 +54,7 @@ public class WikiPageSoap implements Serializable {
 		soapModel.setStatusByUserId(model.getStatusByUserId());
 		soapModel.setStatusByUserName(model.getStatusByUserName());
 		soapModel.setStatusDate(model.getStatusDate());
+		soapModel.setTrashEntryId(model.getTrashEntryId());
 
 		return soapModel;
 	}
@@ -298,6 +299,14 @@ public class WikiPageSoap implements Serializable {
 		_statusDate = statusDate;
 	}
 
+	public long getTrashEntryId() {
+		return _trashEntryId;
+	}
+
+	public void setTrashEntryId(long trashEntryId) {
+		_trashEntryId = trashEntryId;
+	}
+
 	private String _uuid;
 	private long _pageId;
 	private long _resourcePrimKey;
@@ -321,4 +330,5 @@ public class WikiPageSoap implements Serializable {
 	private long _statusByUserId;
 	private String _statusByUserName;
 	private Date _statusDate;
+	private long _trashEntryId;
 }

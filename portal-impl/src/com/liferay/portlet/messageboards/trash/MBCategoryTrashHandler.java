@@ -36,6 +36,7 @@ import com.liferay.portlet.messageboards.service.MBCategoryLocalServiceUtil;
 import com.liferay.portlet.messageboards.service.MBThreadLocalServiceUtil;
 import com.liferay.portlet.messageboards.service.permission.MBCategoryPermission;
 import com.liferay.portlet.messageboards.util.MBUtil;
+import com.liferay.portlet.trash.model.TrashEntry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -201,7 +202,7 @@ public class MBCategoryTrashHandler extends BaseTrashHandler {
 		MBCategory category = MBCategoryLocalServiceUtil.getCategory(classPK);
 
 		return MBThreadLocalServiceUtil.getThreadsCount(
-			category.getGroupId(), classPK, WorkflowConstants.STATUS_APPROVED);
+			category.getGroupId(), classPK, WorkflowConstants.STATUS_IN_TRASH);
 	}
 
 	@Override
@@ -214,7 +215,7 @@ public class MBCategoryTrashHandler extends BaseTrashHandler {
 		MBCategory category = MBCategoryLocalServiceUtil.getCategory(classPK);
 
 		List<MBThread> threads = MBThreadLocalServiceUtil.getThreads(
-			category.getGroupId(), classPK, WorkflowConstants.STATUS_APPROVED,
+			category.getGroupId(), classPK, WorkflowConstants.STATUS_IN_TRASH,
 			start, end);
 
 		for (MBThread thread : threads) {
@@ -232,15 +233,6 @@ public class MBCategoryTrashHandler extends BaseTrashHandler {
 	}
 
 	@Override
-	public ContainerModel getTrashContainer(long classPK)
-		throws PortalException, SystemException {
-
-		MBCategory category = MBCategoryLocalServiceUtil.getCategory(classPK);
-
-		return category.getTrashContainer();
-	}
-
-	@Override
 	public String getTrashContainerModelName() {
 		return "categories";
 	}
@@ -252,7 +244,7 @@ public class MBCategoryTrashHandler extends BaseTrashHandler {
 		MBCategory category = MBCategoryLocalServiceUtil.getCategory(classPK);
 
 		return MBCategoryLocalServiceUtil.getCategoriesCount(
-			category.getGroupId(), classPK, WorkflowConstants.STATUS_APPROVED);
+			category.getGroupId(), classPK, WorkflowConstants.STATUS_IN_TRASH);
 	}
 
 	@Override
@@ -265,7 +257,7 @@ public class MBCategoryTrashHandler extends BaseTrashHandler {
 		MBCategory category = MBCategoryLocalServiceUtil.getCategory(classPK);
 
 		List<MBCategory> categories = MBCategoryLocalServiceUtil.getCategories(
-			category.getGroupId(), classPK, WorkflowConstants.STATUS_APPROVED,
+			category.getGroupId(), classPK, WorkflowConstants.STATUS_IN_TRASH,
 			start, end);
 
 		for (MBCategory curCategory : categories) {
@@ -280,6 +272,15 @@ public class MBCategoryTrashHandler extends BaseTrashHandler {
 		}
 
 		return trashRenderers;
+	}
+
+	@Override
+	public TrashEntry getTrashEntry(long classPK)
+		throws PortalException, SystemException {
+
+		MBCategory category = MBCategoryLocalServiceUtil.getCategory(classPK);
+
+		return category.getTrashEntry();
 	}
 
 	@Override

@@ -15,16 +15,22 @@
 package com.liferay.portlet.documentlibrary.model.impl;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.lar.StagedModelType;
+import com.liferay.portal.kernel.trash.TrashHandler;
+import com.liferay.portal.kernel.trash.TrashHandlerRegistryUtil;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.CacheModel;
+import com.liferay.portal.model.ContainerModel;
+import com.liferay.portal.model.TrashedModel;
 import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.util.PortalUtil;
@@ -34,6 +40,8 @@ import com.liferay.portlet.documentlibrary.model.DLFileVersionModel;
 import com.liferay.portlet.documentlibrary.model.DLFileVersionSoap;
 import com.liferay.portlet.expando.model.ExpandoBridge;
 import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
+import com.liferay.portlet.trash.model.TrashEntry;
+import com.liferay.portlet.trash.service.TrashEntryLocalServiceUtil;
 
 import java.io.Serializable;
 
@@ -92,9 +100,10 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 			{ "status", Types.INTEGER },
 			{ "statusByUserId", Types.BIGINT },
 			{ "statusByUserName", Types.VARCHAR },
-			{ "statusDate", Types.TIMESTAMP }
+			{ "statusDate", Types.TIMESTAMP },
+			{ "trashEntryId", Types.BIGINT }
 		};
-	public static final String TABLE_SQL_CREATE = "create table DLFileVersion (uuid_ VARCHAR(75) null,fileVersionId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,repositoryId LONG,folderId LONG,fileEntryId LONG,extension VARCHAR(75) null,mimeType VARCHAR(75) null,title VARCHAR(255) null,description STRING null,changeLog VARCHAR(75) null,extraSettings TEXT null,fileEntryTypeId LONG,version VARCHAR(75) null,size_ LONG,checksum VARCHAR(75) null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null)";
+	public static final String TABLE_SQL_CREATE = "create table DLFileVersion (uuid_ VARCHAR(75) null,fileVersionId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,repositoryId LONG,folderId LONG,fileEntryId LONG,extension VARCHAR(75) null,mimeType VARCHAR(75) null,title VARCHAR(255) null,description STRING null,changeLog VARCHAR(75) null,extraSettings TEXT null,fileEntryTypeId LONG,version VARCHAR(75) null,size_ LONG,checksum VARCHAR(75) null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,trashEntryId LONG)";
 	public static final String TABLE_SQL_DROP = "drop table DLFileVersion";
 	public static final String ORDER_BY_JPQL = " ORDER BY dlFileVersion.fileEntryId DESC, dlFileVersion.createDate DESC";
 	public static final String ORDER_BY_SQL = " ORDER BY DLFileVersion.fileEntryId DESC, DLFileVersion.createDate DESC";
@@ -159,6 +168,7 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 		model.setStatusByUserId(soapModel.getStatusByUserId());
 		model.setStatusByUserName(soapModel.getStatusByUserName());
 		model.setStatusDate(soapModel.getStatusDate());
+		model.setTrashEntryId(soapModel.getTrashEntryId());
 
 		return model;
 	}
@@ -248,6 +258,7 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 		attributes.put("statusByUserId", getStatusByUserId());
 		attributes.put("statusByUserName", getStatusByUserName());
 		attributes.put("statusDate", getStatusDate());
+		attributes.put("trashEntryId", getTrashEntryId());
 
 		return attributes;
 	}
@@ -402,6 +413,12 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 
 		if (statusDate != null) {
 			setStatusDate(statusDate);
+		}
+
+		Long trashEntryId = (Long)attributes.get("trashEntryId");
+
+		if (trashEntryId != null) {
+			setTrashEntryId(trashEntryId);
 		}
 	}
 
@@ -856,10 +873,104 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 		_statusDate = statusDate;
 	}
 
+	@JSON
+	@Override
+	public long getTrashEntryId() {
+		return _trashEntryId;
+	}
+
+	@Override
+	public void setTrashEntryId(long trashEntryId) {
+		_trashEntryId = trashEntryId;
+	}
+
 	@Override
 	public StagedModelType getStagedModelType() {
 		return new StagedModelType(PortalUtil.getClassNameId(
 				DLFileVersion.class.getName()));
+	}
+
+	@Override
+	public TrashEntry getTrashEntry() throws PortalException, SystemException {
+		if (!isInTrash() && !isInTrashContainer()) {
+			return null;
+		}
+
+		if (getTrashEntryId() > 0) {
+			return TrashEntryLocalServiceUtil.getEntry(getTrashEntryId());
+		}
+		else {
+			TrashEntry trashEntry = TrashEntryLocalServiceUtil.fetchEntry(getModelClassName(),
+					getPrimaryKey());
+
+			if (trashEntry != null) {
+				return trashEntry;
+			}
+		}
+
+		TrashHandler trashHandler = TrashHandlerRegistryUtil.getTrashHandler(getModelClassName());
+
+		if (!Validator.isNull(trashHandler.getContainerModelClassName())) {
+			ContainerModel containerModel = trashHandler.getParentContainerModel(this);
+
+			while (containerModel != null) {
+				if (containerModel instanceof TrashedModel) {
+					return ((TrashedModel)containerModel).getTrashEntry();
+				}
+
+				trashHandler = TrashHandlerRegistryUtil.getTrashHandler(trashHandler.getContainerModelClassName());
+
+				if (trashHandler == null) {
+					return null;
+				}
+
+				containerModel = trashHandler.getContainerModel(containerModel.getParentContainerModelId());
+			}
+		}
+
+		return null;
+	}
+
+	@Override
+	public TrashHandler getTrashHandler() {
+		return TrashHandlerRegistryUtil.getTrashHandler(getModelClassName());
+	}
+
+	@Override
+	public boolean isInTrash() {
+		if (getStatus() == WorkflowConstants.STATUS_IN_TRASH) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isInTrashContainer() throws PortalException, SystemException {
+		TrashHandler trashHandler = TrashHandlerRegistryUtil.getTrashHandler(getModelClassName());
+
+		if ((trashHandler == null) ||
+				Validator.isNull(trashHandler.getContainerModelClassName())) {
+			return false;
+		}
+
+		ContainerModel containerModel = trashHandler.getParentContainerModel(this);
+
+		if (containerModel == null) {
+			return false;
+		}
+
+		if (containerModel instanceof TrashedModel) {
+			return ((TrashedModel)containerModel).isInTrash();
+		}
+
+		return false;
+	}
+
+	@Override
+	public boolean isTrashEntry() {
+		return (getTrashEntryId() > 0);
 	}
 
 	/**
@@ -923,16 +1034,6 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 	@Override
 	public boolean isIncomplete() {
 		if (getStatus() == WorkflowConstants.STATUS_INCOMPLETE) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
-	@Override
-	public boolean isInTrash() {
-		if (getStatus() == WorkflowConstants.STATUS_IN_TRASH) {
 			return true;
 		}
 		else {
@@ -1016,6 +1117,7 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 		dlFileVersionImpl.setStatusByUserId(getStatusByUserId());
 		dlFileVersionImpl.setStatusByUserName(getStatusByUserName());
 		dlFileVersionImpl.setStatusDate(getStatusDate());
+		dlFileVersionImpl.setTrashEntryId(getTrashEntryId());
 
 		dlFileVersionImpl.resetOriginalValues();
 
@@ -1257,12 +1359,14 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 			dlFileVersionCacheModel.statusDate = Long.MIN_VALUE;
 		}
 
+		dlFileVersionCacheModel.trashEntryId = getTrashEntryId();
+
 		return dlFileVersionCacheModel;
 	}
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(51);
+		StringBundler sb = new StringBundler(53);
 
 		sb.append("{uuid=");
 		sb.append(getUuid());
@@ -1314,6 +1418,8 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 		sb.append(getStatusByUserName());
 		sb.append(", statusDate=");
 		sb.append(getStatusDate());
+		sb.append(", trashEntryId=");
+		sb.append(getTrashEntryId());
 		sb.append("}");
 
 		return sb.toString();
@@ -1321,7 +1427,7 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(79);
+		StringBundler sb = new StringBundler(82);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.portlet.documentlibrary.model.DLFileVersion");
@@ -1427,6 +1533,10 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 			"<column><column-name>statusDate</column-name><column-value><![CDATA[");
 		sb.append(getStatusDate());
 		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>trashEntryId</column-name><column-value><![CDATA[");
+		sb.append(getTrashEntryId());
+		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -1478,6 +1588,7 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 	private String _statusByUserUuid;
 	private String _statusByUserName;
 	private Date _statusDate;
+	private long _trashEntryId;
 	private long _columnBitmask;
 	private DLFileVersion _escapedModel;
 }

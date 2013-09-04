@@ -38,7 +38,7 @@ public class BookmarksEntryCacheModel implements CacheModel<BookmarksEntry>,
 	Externalizable {
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(39);
+		StringBundler sb = new StringBundler(41);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -78,6 +78,8 @@ public class BookmarksEntryCacheModel implements CacheModel<BookmarksEntry>,
 		sb.append(statusByUserName);
 		sb.append(", statusDate=");
 		sb.append(statusDate);
+		sb.append(", trashEntryId=");
+		sb.append(trashEntryId);
 		sb.append("}");
 
 		return sb.toString();
@@ -163,6 +165,8 @@ public class BookmarksEntryCacheModel implements CacheModel<BookmarksEntry>,
 			bookmarksEntryImpl.setStatusDate(new Date(statusDate));
 		}
 
+		bookmarksEntryImpl.setTrashEntryId(trashEntryId);
+
 		bookmarksEntryImpl.resetOriginalValues();
 
 		return bookmarksEntryImpl;
@@ -189,6 +193,7 @@ public class BookmarksEntryCacheModel implements CacheModel<BookmarksEntry>,
 		statusByUserId = objectInput.readLong();
 		statusByUserName = objectInput.readUTF();
 		statusDate = objectInput.readLong();
+		trashEntryId = objectInput.readLong();
 	}
 
 	@Override
@@ -252,6 +257,7 @@ public class BookmarksEntryCacheModel implements CacheModel<BookmarksEntry>,
 		}
 
 		objectOutput.writeLong(statusDate);
+		objectOutput.writeLong(trashEntryId);
 	}
 
 	public String uuid;
@@ -273,4 +279,5 @@ public class BookmarksEntryCacheModel implements CacheModel<BookmarksEntry>,
 	public long statusByUserId;
 	public String statusByUserName;
 	public long statusDate;
+	public long trashEntryId;
 }

@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.repository.Repository;
 import com.liferay.portal.kernel.trash.TrashActionKeys;
 import com.liferay.portal.kernel.trash.TrashRenderer;
 import com.liferay.portal.model.ContainerModel;
+import com.liferay.portal.model.TrashedModel;
 import com.liferay.portal.repository.liferayrepository.LiferayRepository;
 import com.liferay.portal.security.permission.ActionKeys;
 import com.liferay.portal.security.permission.PermissionChecker;
@@ -34,6 +35,7 @@ import com.liferay.portlet.documentlibrary.service.DLFileShortcutLocalServiceUti
 import com.liferay.portlet.documentlibrary.service.permission.DLFileShortcutPermission;
 import com.liferay.portlet.documentlibrary.service.permission.DLFolderPermission;
 import com.liferay.portlet.documentlibrary.util.DLUtil;
+import com.liferay.portlet.trash.model.TrashEntry;
 
 import javax.portlet.PortletRequest;
 
@@ -61,6 +63,15 @@ public class DLFileShortcutTrashHandler extends DLBaseTrashHandler {
 		throws PortalException, SystemException {
 
 		DLFileShortcut dlFileShortcut = getDLFileShortcut(classPK);
+
+		return getParentContainerModel(dlFileShortcut);
+	}
+
+	@Override
+	public ContainerModel getParentContainerModel(TrashedModel trashedModel)
+		throws PortalException, SystemException {
+
+		DLFileShortcut dlFileShortcut = (DLFileShortcut)trashedModel;
 
 		long parentFolderId = dlFileShortcut.getFolderId();
 
@@ -92,13 +103,13 @@ public class DLFileShortcutTrashHandler extends DLBaseTrashHandler {
 	}
 
 	@Override
-	public ContainerModel getTrashContainer(long classPK)
+	public TrashEntry getTrashEntry(long classPK)
 		throws PortalException, SystemException {
 
 		DLFileShortcut dlFileShortcut =
 			DLFileShortcutLocalServiceUtil.getDLFileShortcut(classPK);
 
-		return dlFileShortcut.getTrashContainer();
+		return dlFileShortcut.getTrashEntry();
 	}
 
 	@Override

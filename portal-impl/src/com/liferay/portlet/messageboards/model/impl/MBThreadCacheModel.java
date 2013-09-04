@@ -37,7 +37,7 @@ import java.util.Date;
 public class MBThreadCacheModel implements CacheModel<MBThread>, Externalizable {
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(43);
+		StringBundler sb = new StringBundler(45);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -81,6 +81,8 @@ public class MBThreadCacheModel implements CacheModel<MBThread>, Externalizable 
 		sb.append(statusByUserName);
 		sb.append(", statusDate=");
 		sb.append(statusDate);
+		sb.append(", trashEntryId=");
+		sb.append(trashEntryId);
 		sb.append("}");
 
 		return sb.toString();
@@ -156,6 +158,8 @@ public class MBThreadCacheModel implements CacheModel<MBThread>, Externalizable 
 			mbThreadImpl.setStatusDate(new Date(statusDate));
 		}
 
+		mbThreadImpl.setTrashEntryId(trashEntryId);
+
 		mbThreadImpl.resetOriginalValues();
 
 		return mbThreadImpl;
@@ -184,6 +188,7 @@ public class MBThreadCacheModel implements CacheModel<MBThread>, Externalizable 
 		statusByUserId = objectInput.readLong();
 		statusByUserName = objectInput.readUTF();
 		statusDate = objectInput.readLong();
+		trashEntryId = objectInput.readLong();
 	}
 
 	@Override
@@ -230,6 +235,7 @@ public class MBThreadCacheModel implements CacheModel<MBThread>, Externalizable 
 		}
 
 		objectOutput.writeLong(statusDate);
+		objectOutput.writeLong(trashEntryId);
 	}
 
 	public String uuid;
@@ -253,4 +259,5 @@ public class MBThreadCacheModel implements CacheModel<MBThread>, Externalizable 
 	public long statusByUserId;
 	public String statusByUserName;
 	public long statusDate;
+	public long trashEntryId;
 }

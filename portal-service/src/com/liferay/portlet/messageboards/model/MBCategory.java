@@ -43,9 +43,5 @@ public interface MBCategory extends MBCategoryModel, PersistedModel {
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException;
 
-	public com.liferay.portlet.messageboards.model.MBCategory getTrashContainer();
-
-	public boolean isInTrashContainer();
-
 	public boolean isRoot();
 }

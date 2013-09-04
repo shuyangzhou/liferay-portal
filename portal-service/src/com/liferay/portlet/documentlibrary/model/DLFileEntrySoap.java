@@ -58,6 +58,11 @@ public class DLFileEntrySoap implements Serializable {
 		soapModel.setCustom1ImageId(model.getCustom1ImageId());
 		soapModel.setCustom2ImageId(model.getCustom2ImageId());
 		soapModel.setManualCheckInRequired(model.getManualCheckInRequired());
+		soapModel.setStatus(model.getStatus());
+		soapModel.setStatusByUserId(model.getStatusByUserId());
+		soapModel.setStatusByUserName(model.getStatusByUserName());
+		soapModel.setStatusDate(model.getStatusDate());
+		soapModel.setTrashEntryId(model.getTrashEntryId());
 
 		return soapModel;
 	}
@@ -330,6 +335,46 @@ public class DLFileEntrySoap implements Serializable {
 		_manualCheckInRequired = manualCheckInRequired;
 	}
 
+	public int getStatus() {
+		return _status;
+	}
+
+	public void setStatus(int status) {
+		_status = status;
+	}
+
+	public long getStatusByUserId() {
+		return _statusByUserId;
+	}
+
+	public void setStatusByUserId(long statusByUserId) {
+		_statusByUserId = statusByUserId;
+	}
+
+	public String getStatusByUserName() {
+		return _statusByUserName;
+	}
+
+	public void setStatusByUserName(String statusByUserName) {
+		_statusByUserName = statusByUserName;
+	}
+
+	public Date getStatusDate() {
+		return _statusDate;
+	}
+
+	public void setStatusDate(Date statusDate) {
+		_statusDate = statusDate;
+	}
+
+	public long getTrashEntryId() {
+		return _trashEntryId;
+	}
+
+	public void setTrashEntryId(long trashEntryId) {
+		_trashEntryId = trashEntryId;
+	}
+
 	private String _uuid;
 	private long _fileEntryId;
 	private long _groupId;
@@ -357,4 +402,9 @@ public class DLFileEntrySoap implements Serializable {
 	private long _custom1ImageId;
 	private long _custom2ImageId;
 	private boolean _manualCheckInRequired;
+	private int _status;
+	private long _statusByUserId;
+	private String _statusByUserName;
+	private Date _statusDate;
+	private long _trashEntryId;
 }

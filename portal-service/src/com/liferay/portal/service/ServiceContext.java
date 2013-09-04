@@ -243,6 +243,16 @@ public class ServiceContext implements Cloneable, Serializable {
 		return _attributes.get(name);
 	}
 
+	public Serializable getAttribute(String name, Serializable defaultValue) {
+		Serializable value = _attributes.get(name);
+
+		if (value == null) {
+			return defaultValue;
+		}
+
+		return value;
+	}
+
 	/**
 	 * Returns the map of name/value pairs that are the standard parameters of
 	 * this service context. Each value is serializable.
