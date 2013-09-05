@@ -43,9 +43,7 @@ List hitLayoutIds = JournalContentSearchLocalServiceUtil.getLayoutIds(layout.get
 		for (int i = 0; i < hitLayoutIds.size(); i++) {
 			Long hitLayoutId = (Long)hitLayoutIds.get(i);
 
-			Layout hitLayout = null;
-
-			hitLayout = LayoutLocalServiceUtil.fetchLayout(layout.getGroupId(), layout.isPrivateLayout(), hitLayoutId.longValue());
+			Layout hitLayout = LayoutLocalServiceUtil.fetchLayout(layout.getGroupId(), layout.isPrivateLayout(), hitLayoutId.longValue());
 
 			if (hitLayout == null) {
 				if (_log.isWarnEnabled()) {

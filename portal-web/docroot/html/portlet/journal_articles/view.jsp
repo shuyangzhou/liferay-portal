@@ -212,7 +212,6 @@ double version = ParamUtil.getDouble(request, "version");
 		JournalArticle article = JournalArticleLocalServiceUtil.fetchArticle(groupId, articleId, version);
 
 		if (article != null) {
-
 			boolean expired = article.isExpired();
 
 			if (!expired) {
