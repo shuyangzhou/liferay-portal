@@ -45,21 +45,13 @@ if (Validator.isNotNull(viewUsersRedirect)) {
 	Organization organization = null;
 
 	if (organizationId > 0) {
-		try {
-			organization = OrganizationLocalServiceUtil.getOrganization(organizationId);
-		}
-		catch (NoSuchOrganizationException nsoe) {
-		}
+		organization = OrganizationLocalServiceUtil.fetchOrganization(organizationId);
 	}
 
 	UserGroup userGroup = null;
 
 	if (userGroupId > 0) {
-		try {
-			userGroup = UserGroupLocalServiceUtil.getUserGroup(userGroupId);
-		}
-		catch (NoSuchUserGroupException nsuge) {
-		}
+		userGroup = UserGroupLocalServiceUtil.fetchUserGroup(userGroupId);
 	}
 	%>
 
