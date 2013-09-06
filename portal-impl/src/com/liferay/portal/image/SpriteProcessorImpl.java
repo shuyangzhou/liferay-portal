@@ -32,7 +32,11 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.util.PropertyComparator;
 
 import java.awt.Point;
+import java.awt.RenderingHints;
 import java.awt.Transparency;
+import java.awt.color.ColorSpace;
+import java.awt.image.BufferedImage;
+import java.awt.image.ColorConvertOp;
 import java.awt.image.ColorModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferByte;
@@ -40,6 +44,7 @@ import java.awt.image.IndexColorModel;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
+import java.awt.image.WritableRaster;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -170,6 +175,36 @@ public class SpriteProcessorImpl implements SpriteProcessor {
 
 				int height = renderedImage.getHeight();
 				int width = renderedImage.getWidth();
+
+				ColorModel colorModel = renderedImage.getColorModel();
+
+				WritableRaster raster =
+					colorModel.createCompatibleWritableRaster(width, height);
+
+				boolean isAlphaPremultiplied =
+					colorModel.isAlphaPremultiplied();
+
+				BufferedImage result =
+					new BufferedImage(
+						colorModel, raster, isAlphaPremultiplied, null);
+
+				renderedImage.copyData(raster);
+
+				ColorSpace colorSpace = ColorSpace.getInstance(
+					ColorSpace.CS_sRGB);
+
+				RenderingHints renderingHints =
+					new RenderingHints(
+						RenderingHints.KEY_COLOR_RENDERING,
+						RenderingHints.VALUE_COLOR_RENDER_SPEED);
+
+				ColorConvertOp colorConvertOp = new ColorConvertOp(
+					colorSpace, renderingHints);
+
+				BufferedImage bufferedImage = colorConvertOp.filter(
+					result, null);
+
+				renderedImage = (RenderedImage)bufferedImage;
 
 				if ((height <= maxHeight) && (width <= maxWidth)) {
 					renderedImage = convert(renderedImage);
@@ -378,6 +413,7 @@ public class SpriteProcessorImpl implements SpriteProcessor {
 		SampleModel sampleModel =
 			RasterFactory.createPixelInterleavedSampleModel(
 				DataBuffer.TYPE_BYTE, width, height, _NUM_OF_BANDS);
+
 		ColorModel colorModel = PlanarImage.createColorModel(sampleModel);
 
 		TiledImage tiledImage = new TiledImage(
