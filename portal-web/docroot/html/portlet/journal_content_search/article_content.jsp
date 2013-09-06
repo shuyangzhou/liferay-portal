@@ -45,10 +45,9 @@ List hitLayoutIds = JournalContentSearchLocalServiceUtil.getLayoutIds(layout.get
 
 			Layout hitLayout = null;
 
-			try {
-				hitLayout = LayoutLocalServiceUtil.getLayout(layout.getGroupId(), layout.isPrivateLayout(), hitLayoutId.longValue());
-			}
-			catch (Exception e) {
+			hitLayout = LayoutLocalServiceUtil.fetchLayout(layout.getGroupId(), layout.isPrivateLayout(), hitLayoutId.longValue());
+
+			if (hitLayout == null) {
 				if (_log.isWarnEnabled()) {
 					_log.warn("Journal content search is stale and contains layout {" + layout.getGroupId() + ", " + layout.isPrivateLayout() + ", " + hitLayoutId.longValue() + "}");
 				}
