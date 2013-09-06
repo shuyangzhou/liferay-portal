@@ -111,11 +111,7 @@ SitesUtil.addPortletBreadcrumbEntries(group, pagesName, redirectURL, request, re
 					LayoutSetBranch layoutSetBranch = null;
 
 					if (layoutSetBranchId > 0) {
-						try {
-							layoutSetBranch = LayoutSetBranchLocalServiceUtil.getLayoutSetBranch(layoutSetBranchId);
-						}
-						catch (NoSuchLayoutSetBranchException nslsbe) {
-						}
+						layoutSetBranch = LayoutSetBranchLocalServiceUtil.fetchLayoutSetBranch(layoutSetBranchId);
 					}
 
 					if (layoutSetBranch == null) {
