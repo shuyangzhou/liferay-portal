@@ -64,6 +64,7 @@ List<Layout> selectedLayouts = new ArrayList<Layout>();
 
 for (int i = 0; i < selectedLayoutIds.length; i++) {
 	Layout layout = LayoutLocalServiceUtil.fetchLayout(groupId, privateLayout, selectedLayoutIds[i]);
+
 	if (layout != null) {
 		selectedLayouts.add(layout);
 	}
