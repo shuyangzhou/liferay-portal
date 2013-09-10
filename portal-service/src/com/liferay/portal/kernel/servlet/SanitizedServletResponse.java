@@ -14,7 +14,6 @@
 
 package com.liferay.portal.kernel.servlet;
 
-import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.KeyValuePair;
@@ -30,9 +29,8 @@ import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Enumeration;
 import java.util.List;
-import java.util.Map;
-import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -119,6 +117,10 @@ public class SanitizedServletResponse extends HttpServletResponseWrapper {
 			String url = _xFrameOptionKVP.getKey();
 
 			if (requestURI.startsWith(url)) {
+				if (Validator.isNull(_xFrameOptionKVP.getValue())) {
+					return;
+				}
+
 				response.setHeader(
 					HttpHeaders.X_FRAME_OPTIONS, _xFrameOptionKVP.getValue());
 
@@ -160,12 +162,12 @@ public class SanitizedServletResponse extends HttpServletResponseWrapper {
 	private static final KeyValuePair[] _xFrameOptionKVPs;
 
 	static {
-		Properties properties = new SortedProperties(
+		SortedProperties properties = new SortedProperties(
 			new Comparator<String>() {
 
 				@Override
 				public int compare(String key1, String key2) {
-					return GetterUtil.getIntegerStrict(key1) -
+					return GetterUtil.getIntegerStrict(key1)-
 						GetterUtil.getIntegerStrict(key2);
 				}
 
@@ -178,26 +180,23 @@ public class SanitizedServletResponse extends HttpServletResponseWrapper {
 		List<KeyValuePair> xFrameOptionKVPs = new ArrayList<KeyValuePair>(
 			properties.size());
 
-		for (Map.Entry<Object, Object> entry : properties.entrySet()) {
-			String propertyValue = (String)entry.getValue();
+		Enumeration<String> sortedNames = properties.propertyNames();
+		while (sortedNames.hasMoreElements()) {
+			String propertyName = sortedNames.nextElement();
+			String propertyValue = properties.getProperty(propertyName);
 
-			String[] propertyValueParts = StringUtil.split(
-				propertyValue, CharPool.COMMA);
+			int commaPos = propertyValue.indexOf(StringPool.COMMA);
 
-			if (propertyValueParts.length != 2) {
+			if (commaPos < 1) {
 				continue;
 			}
 
-			String url = StringUtil.trim(propertyValueParts[0]);
+			String url = StringUtil.trim(propertyValue.substring(0, commaPos));
 
-			if (Validator.isNull(url)) {
-				continue;
-			}
+			String value = StringPool.BLANK;
 
-			String value = StringUtil.trim(propertyValueParts[1]);
-
-			if (Validator.isNull(value)) {
-				continue;
+			if ((commaPos + 1) < propertyValue.length()) {
+				value = StringUtil.trim(propertyValue.substring(commaPos + 1));
 			}
 
 			KeyValuePair x = new KeyValuePair(url, value);
