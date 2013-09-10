@@ -49,12 +49,10 @@ long parentCategoryId = BeanParamUtil.getLong(category, request, "parentCategory
 			<%
 			String parentCategoryName = StringPool.BLANK;
 
-			try {
-				MBCategory parentCategory = MBCategoryLocalServiceUtil.getCategory(parentCategoryId);
+			MBCategory parentCategory = MBCategoryLocalServiceUtil.fetchCategory(parentCategoryId);
 
+			if (parentCategory != null) {
 				parentCategoryName = parentCategory.getName();
-			}
-			catch (NoSuchCategoryException nsce) {
 			}
 			%>
 
