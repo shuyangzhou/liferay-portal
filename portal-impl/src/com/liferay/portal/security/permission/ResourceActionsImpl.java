@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.pacl.DoPrivileged;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -50,6 +51,7 @@ import com.liferay.portal.service.GroupServiceUtil;
 import com.liferay.portal.service.PortletLocalService;
 import com.liferay.portal.service.ResourceActionLocalService;
 import com.liferay.portal.service.RoleLocalService;
+import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.util.PortletKeys;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.PortletResourceBundles;
@@ -556,23 +558,14 @@ public class ResourceActionsImpl implements ResourceActions {
 			long companyId, Group group, String modelResource, int[] roleTypes)
 		throws SystemException {
 
-		List<Role> allRoles = roleLocalService.getRoles(companyId);
-
 		if (roleTypes == null) {
 			roleTypes = getRoleTypes(companyId, group, modelResource);
 		}
 
-		List<Role> roles = new ArrayList<Role>();
+		List<Role> roles = RoleLocalServiceUtil.getRoles(
+			companyId, ArrayUtil.toArray(roleTypes));
 
-		for (int roleType : roleTypes) {
-			for (Role role : allRoles) {
-				if (role.getType() == roleType) {
-					roles.add(role);
-				}
-			}
-		}
-
-		return roles;
+		return ListUtil.copy(roles);
 	}
 
 	@Override
