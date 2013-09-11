@@ -18,7 +18,9 @@
 
 $theme.include($body_top_include)
 
-#dockbar()
+#if ($is_signed_in)
+	#dockbar()
+#end
 
 <div class="container-fluid" id="wrapper">
 	<header id="banner" role="banner">

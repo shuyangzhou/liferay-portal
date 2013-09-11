@@ -62,9 +62,12 @@
 					}
 					%>
 
+					<h1><liferay-ui:message key="add" /></h1>
+
 					<liferay-ui:tabs
 						names="<%= StringUtil.merge(tabs1Names) %>"
 						refresh="<%= false %>"
+						type="pills"
 						value="<%= selectedTab %>"
 					>
 						<c:if test="<%= hasAddContentAndApplicationsPermission %>">

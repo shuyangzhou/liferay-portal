@@ -1,401 +1,574 @@
-<%--
-/**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
- *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
- */
---%>
+AUI.add(
+	'liferay-dockbar',
+	function(A) {
+		var Lang = A.Lang;
 
-<%@ include file="/html/portlet/dockbar/init.jsp" %>
+		var LayoutConfiguration = Liferay.LayoutConfiguration;
+		var Portlet = Liferay.Portlet;
+		var Util = Liferay.Util;
 
-<%
-Group group = null;
-LayoutSet layoutSet = null;
+		var BODY = A.getBody();
 
-if (layout != null) {
-	group = layout.getGroup();
-	layoutSet = layout.getLayoutSet();
-}
+		var CSS_ADD_CONTENT = 'lfr-has-add-content';
 
-boolean hasLayoutCustomizePermission = LayoutPermissionUtil.contains(permissionChecker, layout, ActionKeys.CUSTOMIZE);
-boolean hasLayoutUpdatePermission = LayoutPermissionUtil.contains(permissionChecker, layout, ActionKeys.UPDATE);
+		var BODY_CONTENT = 'bodyContent';
 
-String toggleControlsState = GetterUtil.getString(SessionClicks.get(request, "liferay_toggle_controls", ""));
-%>
+		var BOUNDING_BOX = 'boundingBox';
 
-<aui:nav-bar cssClass="navbar-static-top dockbar" data-namespace="<%= renderResponse.getNamespace() %>" id="dockbar">
-	<c:if test="<%= group.isControlPanel() %>">
+		var CONTENT_BOX = 'contentBox';
 
-		<%
-		String controlPanelCategory = themeDisplay.getControlPanelCategory();
+		var EVENT_CLICK = 'click';
 
-		String refererGroupDescriptiveName = null;
-		String backURL = null;
+		var TPL_ADD_CONTENT = '<div class="lfr-add-panel" />';
 
-		if (themeDisplay.getRefererPlid() > 0) {
-			Layout refererLayout = LayoutLocalServiceUtil.fetchLayout(themeDisplay.getRefererPlid());
+		var TPL_LOADING = '<div class="loading-animation" />';
 
-			if (refererLayout != null) {
-				Group refererGroup = refererLayout.getGroup();
+		var Dockbar = {
+			init: function(containerId) {
+				var instance = this;
 
-				if (refererGroup.isUserGroup() && (themeDisplay.getRefererGroupId() > 0)) {
-					refererGroup = GroupLocalServiceUtil.getGroup(themeDisplay.getRefererGroupId());
+				var dockBar = A.one(containerId);
 
-					refererLayout = new VirtualLayout(refererLayout, refererGroup);
+				if (dockBar) {
+					instance.dockBar = dockBar;
+
+					instance._namespace = dockBar.attr('data-namespace');
+
+					Liferay.once('initDockbar', instance._init, instance);
+
+					var eventHandle = dockBar.on(
+						['focus', 'mousemove', 'touchstart'],
+						function(event) {
+							Liferay.fire('initDockbar');
+
+							eventHandle.detach();
+						}
+					);
+
+					BODY.addClass('dockbar-ready');
+				}
+			},
+
+			addItem: function(options) {
+				var instance = this;
+
+				if (options.url) {
+					options.text = '<a href="' + options.url + '">' + options.text + '</a>';
 				}
 
-				refererGroupDescriptiveName = refererGroup.getDescriptiveName(locale);
+				var item = A.Node.create('<li class="' + (options.className || '') + '">' + options.text + '</li>');
 
-				if (refererGroup.isUser() && (refererGroup.getClassPK() == user.getUserId())) {
-					if (refererLayout.isPublicLayout()) {
-						refererGroupDescriptiveName = LanguageUtil.get(pageContext, "my-profile");
+				instance.dockBar.one('> ul').appendChild(item);
+
+				instance._toolbarItems[options.name] = item;
+
+				return item;
+			},
+
+			addMessage: function(message, messageId) {
+				var instance = this;
+
+				var messages = instance.messages;
+
+				if (!instance.messageList) {
+					instance.messageList = [];
+					instance.messageIdList = [];
+				}
+
+				messages.show();
+
+				if (!messageId) {
+					messageId = A.guid();
+				}
+
+				instance.messageList.push(message);
+				instance.messageIdList.push(messageId);
+
+				var currentBody = messages.get(BODY_CONTENT);
+
+				message = instance._createMessage(message, messageId);
+
+				messages.setStdModContent('body', message, 'after');
+
+				var messagesContainer = messages.get(BOUNDING_BOX);
+
+				var action = 'removeClass';
+
+				if (instance.messageList.length > 1) {
+					action = 'addClass';
+				}
+
+				messagesContainer[action]('multiple-messages');
+
+				return messageId;
+			},
+
+			clearMessages: function(event) {
+				var instance = this;
+
+				instance.messages.set(BODY_CONTENT, ' ');
+
+				instance.messageList = [];
+				instance.messageIdList = [];
+			},
+
+			loadPanel: function() {
+				var instance = this;
+
+				Dockbar._loadAddPanel();
+			},
+
+			setMessage: function(message, messageId) {
+				var instance = this;
+
+				var messages = instance.messages;
+
+				if (!messageId) {
+					messageId = A.guid();
+				}
+
+				instance.messageList = [message];
+				instance.messageIdList = [messageId];
+
+				messages.show();
+
+				message = instance._createMessage(message, messageId);
+
+				messages.set(BODY_CONTENT, message);
+
+				var messagesContainer = messages.get(BOUNDING_BOX);
+
+				messagesContainer.removeClass('multiple-messages');
+
+				return messageId;
+			},
+
+			_createCustomizationMask: function(column) {
+				var instance = this;
+
+				var columnId = column.attr('id');
+
+				var customizable = !!column.one('.portlet-column-content.customizable');
+
+				var cssClass = 'customizable-layout-column';
+
+				var overlayMask = new A.OverlayMask(
+					{
+						cssClass: cssClass,
+						target: column,
+						zIndex: 10
+
 					}
-					else {
-						refererGroupDescriptiveName = LanguageUtil.get(pageContext, "my-dashboard");
+				).render();
+
+				if (customizable) {
+					overlayMask.get(BOUNDING_BOX).addClass('customizable');
+				}
+
+				var columnControls = instance._controls.clone();
+
+				var input = columnControls.one('.layout-customizable-checkbox');
+				var label = columnControls.one('label');
+
+				var oldName = input.attr('name');
+				var newName = oldName.replace('[COLUMN_ID]', columnId);
+
+				input.attr(
+					{
+						checked: customizable,
+						id: newName,
+						name: newName
+					}
+				);
+
+				label.attr('for', newName);
+
+				overlayMask.get(BOUNDING_BOX).prepend(columnControls);
+
+				columnControls.show();
+
+				input.setData('customizationControls', overlayMask);
+				column.setData('customizationControls', overlayMask);
+
+				return overlayMask;
+			},
+
+			_createMessage: function(message, messageId) {
+				var instance = this;
+
+				var cssClass = '';
+
+				if (instance.messageList.length == 1) {
+					cssClass = 'first';
+				}
+
+				return '<div class="dockbar-message ' + cssClass + '" id="' + messageId + '">' + message + '</div>';
+			},
+
+			_getPanelNode: function() {
+				var instance = this;
+
+				var addPanelNode = instance._addPanelNode;
+
+				if (!addPanelNode) {
+					addPanelNode = A.one('#' + instance._namespace + 'addPanelSidebar');
+
+					if (!addPanelNode) {
+						addPanelNode = A.Node.create(TPL_ADD_CONTENT);
+
+						addPanelNode.plug(A.Plugin.ParseContent);
+
+						BODY.appendChild(addPanelNode);
+
+						addPanelNode.set('id', instance._namespace + 'addPanelSidebar');
+
+						instance._addPanelNode = addPanelNode;
 					}
 				}
 
-				backURL = PortalUtil.getLayoutURL(refererLayout, themeDisplay);
+				return addPanelNode;
+			},
 
-				if (!CookieKeys.hasSessionId(request)) {
-					backURL = PortalUtil.getURLWithSessionId(backURL, session.getId());
+			_loadAddPanel: function() {
+				var instance = this;
+
+				BODY.toggleClass(CSS_ADD_CONTENT);
+
+				var addPanelNode = instance._getPanelNode();
+
+				if (BODY.hasClass(CSS_ADD_CONTENT)) {
+					instance._setPanelOffset();
+
+					instance._addPanel();
+
+					addPanelNode.show();
 				}
-			}
-		}
-
-		if (Validator.isNull(refererGroupDescriptiveName) || Validator.isNull(backURL)) {
-			refererGroupDescriptiveName = themeDisplay.getAccount().getName();
-			backURL = themeDisplay.getURLHome();
-		}
-
-		if (Validator.isNotNull(themeDisplay.getDoAsUserId())) {
-			backURL = HttpUtil.addParameter(backURL, "doAsUserId", themeDisplay.getDoAsUserId());
-		}
-
-		if (Validator.isNotNull(themeDisplay.getDoAsUserLanguageId())) {
-			backURL = HttpUtil.addParameter(backURL, "doAsUserLanguageId", themeDisplay.getDoAsUserLanguageId());
-		}
-		%>
-
-		<c:if test="<%= controlPanelCategory.startsWith(PortletCategoryKeys.CURRENT_SITE) || !controlPanelCategory.equals(PortletCategoryKeys.MY) %>">
-			<div class="brand">
-				<a class="control-panel-back-link" href="<%= backURL %>" title="<liferay-ui:message key="back" />">
-					<i class="control-panel-back-icon icon-chevron-sign-left"></i>
-
-					<span class="control-panel-back-text helper-hidden-accessible">
-						<liferay-ui:message key="back" />
-					</span>
-				</a>
-
-				<h1>
-					<c:choose>
-						<c:when test="<%= controlPanelCategory.startsWith(PortletCategoryKeys.CURRENT_SITE) %>">
-							<%@ include file="/html/portal/layout/view/control_panel_site_selector.jspf" %>
-
-							<span class="divider">/</span>
-
-							<span class="site-administration-title">
-								<liferay-ui:message key="site-administration" />
-							</span>
-						</c:when>
-						<c:otherwise>
-							<a href="<%= themeDisplay.getURLControlPanel() %>">
-								<liferay-ui:message key="control-panel" />
-							</a>
-						</c:otherwise>
-					</c:choose>
-				</h1>
-			</div>
-		</c:if>
-	</c:if>
-
-	<aui:nav collapsible="<%= true %>" cssClass="nav-navigation" icon="reorder" id="navSiteNavigation">
-		<aui:nav-item />
-	</aui:nav>
-
-	<aui:nav ariaLabel='<%= LanguageUtil.get(pageContext, "layout-controls") %>' collapsible="<%= true %>" cssClass="nav-add-controls" icon="pencil" id="navAddControls">
-		<c:if test="<%= group.isControlPanel() %>">
-
-			<%
-			String controlPanelCategory = themeDisplay.getControlPanelCategory();
-			%>
-
-			<c:if test="<%= !controlPanelCategory.equals(PortletCategoryKeys.MY) && !controlPanelCategory.startsWith(PortletCategoryKeys.CURRENT_SITE) %>">
-
-				<%
-				String[] categories = PortletCategoryKeys.ALL;
-
-				for (String curCategory : categories) {
-					String urlControlPanelCategory = HttpUtil.setParameter(themeDisplay.getURLControlPanel(), "controlPanelCategory", curCategory);
-
-					String cssClass = StringPool.BLANK;
-					String iconClass = StringPool.BLANK;
-
-					if (curCategory.equals(PortletCategoryKeys.APPS)) {
-						cssClass = "control-panel-apps";
-						iconClass = "icon-th";
-					}
-					else if (curCategory.equals(PortletCategoryKeys.CONFIGURATION)) {
-						cssClass = "control-panel-configuration";
-						iconClass = "icon-cog";
-					}
-					else if (curCategory.equals(PortletCategoryKeys.SITES)) {
-						cssClass = "control-panel-sites";
-						iconClass = "icon-globe";
-					}
-					else if (curCategory.equals(PortletCategoryKeys.USERS)) {
-						cssClass = "control-panel-users";
-						iconClass = "icon-user";
-					}
-				%>
-
-					<c:if test="<%= _hasPortlets(curCategory, themeDisplay) %>">
-						<aui:nav-item anchorId='<%= "controlPanelNav" + curCategory + "Link" %>' cssClass="<%= cssClass %>" href="<%= urlControlPanelCategory %>" iconClass="<%= iconClass %>" label='<%= "category." + curCategory %>' selected="<%= controlPanelCategory.equals(curCategory) %>" />
-					</c:if>
-
-				<%
+				else {
+					addPanelNode.hide();
 				}
-				%>
+			},
 
-			</c:if>
-		</c:if>
+			_openWindow: function(config, item) {
+				if (item) {
+					A.mix(
+						config,
+						{
+							id: item.guid(),
+							title: item.attr('title'),
+							uri: item.attr('href')
+						}
+					);
+				}
 
-		<%
-		boolean hasLayoutAddPermission = false;
+				Util.openWindow(config);
+			},
 
-		if (layout.getParentLayoutId() == LayoutConstants.DEFAULT_PARENT_LAYOUT_ID) {
-			hasLayoutAddPermission = GroupPermissionUtil.contains(permissionChecker, group.getGroupId(), ActionKeys.ADD_LAYOUT);
-		}
-		else {
-			hasLayoutAddPermission = LayoutPermissionUtil.contains(permissionChecker, layout, ActionKeys.ADD_LAYOUT);
-		}
-		%>
+			_setLoadingAnimation: function() {
+				var instance = this;
 
-		<c:if test="<%= !group.isControlPanel() && (hasLayoutAddPermission || hasLayoutUpdatePermission || (layoutTypePortlet.isCustomizable() && layoutTypePortlet.isCustomizedView() && hasLayoutCustomizePermission)) %>">
-			<portlet:renderURL var="addURL" windowState="<%= LiferayWindowState.EXCLUSIVE.toString() %>">
-				<portlet:param name="struts_action" value="/dockbar/add_panel" />
-				<portlet:param name="stateMaximized" value="<%= String.valueOf(themeDisplay.isStateMaximized()) %>" />
-				<portlet:param name="viewEntries" value="<%= Boolean.TRUE.toString() %>" />
-			</portlet:renderURL>
+				instance._getPanelNode().html(TPL_LOADING);
+			},
 
-			<aui:nav-item anchorId="addPanel" cssClass="site-add-controls" data-panelURL="<%= addURL %>" href="javascript:;" iconClass="icon-plus" label="add" />
-		</c:if>
+			_setPanelOffset: function() {
+				var instance = this;
 
-		<c:if test="<%= !group.isControlPanel() && (hasLayoutUpdatePermission || GroupPermissionUtil.contains(permissionChecker, group.getGroupId(), ActionKeys.PREVIEW_IN_DEVICE)) %>">
-			<portlet:renderURL var="previewContentURL" windowState="<%= LiferayWindowState.EXCLUSIVE.toString() %>">
-				<portlet:param name="struts_action" value="/dockbar/preview_panel" />
-			</portlet:renderURL>
+				instance._addPanelNode.setStyle('top', instance.dockBar.height());
+			},
 
-			<aui:nav-item anchorId="previewPanel" cssClass="page-preview-controls" data-panelURL="<%= previewContentURL %>" href="javascript:;" iconClass="icon-desktop" label="preview" />
-		</c:if>
+			_toggleAppShortcut: function(item, force) {
+				var instance = this;
 
-		<c:if test="<%= !group.isControlPanel() && (themeDisplay.isShowLayoutTemplatesIcon() || themeDisplay.isShowPageSettingsIcon()) %>">
-			<portlet:renderURL var="editLayoutURL" windowState="<%= LiferayWindowState.EXCLUSIVE.toString() %>">
-				<portlet:param name="struts_action" value="/dockbar/edit_layout_panel" />
-				<portlet:param name="closeRedirect" value="<%= PortalUtil.getLayoutURL(layout, themeDisplay) %>" />
-				<portlet:param name="groupId" value="<%= String.valueOf(scopeGroupId) %>" />
-				<portlet:param name="selPlid" value="<%= String.valueOf(plid) %>" />
-			</portlet:renderURL>
+				item.toggleClass('lfr-portlet-used', force);
 
-			<aui:nav-item anchorId="editLayoutPanel" cssClass="page-edit-controls" data-panelURL="<%= editLayoutURL %>" href="javascript:;" iconClass="icon-edit" label="edit" />
-		</c:if>
-
-		<c:if test="<%= !group.isControlPanel() && (!group.hasStagingGroup() || group.isStagingGroup()) && (hasLayoutUpdatePermission || (layoutTypePortlet.isCustomizable() && layoutTypePortlet.isCustomizedView() && hasLayoutCustomizePermission) || PortletPermissionUtil.hasConfigurationPermission(permissionChecker, themeDisplay.getSiteGroupId(), layout, ActionKeys.CONFIGURATION)) %>">
-			<aui:nav-item anchorCssClass="toggle-controls-link" cssClass="toggle-controls" iconClass='<%= "controls-state-icon " + (toggleControlsState.equals("visible") ? "icon-eye-open" : "icon-eye-close") %>' id="toggleControls" label="edit-controls" />
-		</c:if>
-	</aui:nav>
-
-	<%@ include file="/html/portlet/dockbar/view_user_panel.jspf" %>
-</aui:nav-bar>
-
-<div class="dockbar-messages" id="<portlet:namespace />dockbarMessages">
-	<div class="header"></div>
-
-	<div class="body"></div>
-
-	<div class="footer"></div>
-</div>
-
-<%
-List<LayoutPrototype> layoutPrototypes = LayoutPrototypeServiceUtil.search(company.getCompanyId(), Boolean.TRUE, null);
-%>
-
-<c:if test="<%= !layoutPrototypes.isEmpty() %>">
-	<div class="html-template" id="layoutPrototypeTemplate">
-		<ul class="unstyled">
-
-			<%
-			for (LayoutPrototype layoutPrototype : layoutPrototypes) {
-			%>
-
-				<li>
-					<a href="javascript:;">
-						<label>
-							<input name="template" type="radio" value="<%= layoutPrototype.getLayoutPrototypeId() %>" /> <%= HtmlUtil.escape(layoutPrototype.getName(user.getLanguageId())) %>
-						</label>
-					</a>
-				</li>
-
-			<%
+				instance._addContentNode.focusManager.refresh();
 			}
-			%>
+		};
 
-		</ul>
-	</div>
-</c:if>
-
-<c:if test="<%= (layoutSet != null) && layoutSet.isLayoutSetPrototypeLinkActive() && SitesUtil.isLayoutModifiedSinceLastMerge(layout) && hasLayoutUpdatePermission %>">
-	<div class="page-customization-bar">
-		<img alt="" class="customized-icon" src="<%= themeDisplay.getPathThemeImages() %>/common/edit.png" />
-
-		<liferay-ui:message key="this-page-has-been-changed-since-the-last-update-from-the-site-template" />
-
-		<liferay-portlet:actionURL portletName="<%= PortletKeys.LAYOUTS_ADMIN %>" var="resetPrototypeURL">
-			<portlet:param name="struts_action" value="/layouts_admin/edit_layouts" />
-		</liferay-portlet:actionURL>
-
-		<aui:form action="<%= resetPrototypeURL %>" cssClass="reset-prototype" name="resetFm" portletNamespace="<%= PortalUtil.getPortletNamespace(PortletKeys.LAYOUTS_ADMIN) %>">
-			<aui:input name="<%= Constants.CMD %>" type="hidden" value="reset_prototype" />
-			<aui:input name="redirect" type="hidden" value="<%= PortalUtil.getLayoutURL(themeDisplay) %>" />
-			<aui:input name="groupId" type="hidden" value="<%= String.valueOf(themeDisplay.getSiteGroupId()) %>" />
-
-			<aui:button name="submit" type="submit" value="reset" />
-		</aui:form>
-	</div>
-</c:if>
-
-<c:if test="<%= (!SitesUtil.isLayoutUpdateable(layout) || (layout.isLayoutPrototypeLinkActive() && !group.hasStagingGroup())) && LayoutPermissionUtil.containsWithoutViewableGroup(themeDisplay.getPermissionChecker(), layout, false, ActionKeys.UPDATE) %>">
-	<div class="page-customization-bar">
-		<img alt="" class="customized-icon" src="<%= themeDisplay.getPathThemeImages() %>/common/site_icon.png" />
-
-		<c:choose>
-			<c:when test="<%= layout.isLayoutPrototypeLinkActive() && !group.hasStagingGroup() %>">
-				<liferay-ui:message key="this-page-is-linked-to-a-page-template" />
-			</c:when>
-			<c:when test="<%= layout instanceof VirtualLayout %>">
-				<liferay-ui:message key="this-page-belongs-to-a-user-group" />
-			</c:when>
-			<c:otherwise>
-				<liferay-ui:message key="this-page-is-linked-to-a-site-template-which-does-not-allow-modifications-to-it" />
-			</c:otherwise>
-		</c:choose>
-	</div>
-</c:if>
-
-<c:if test="<%= !(group.isLayoutPrototype() || group.isLayoutSetPrototype() || group.isUserGroup()) && layoutTypePortlet.isCustomizable() && LayoutPermissionUtil.containsWithoutViewableGroup(permissionChecker, layout, false, ActionKeys.CUSTOMIZE) %>">
-	<div class="page-customization-bar">
-		<img alt="" class="customized-icon" src="<%= themeDisplay.getPathThemeImages() %>/common/guest_icon.png" />
-
-		<c:choose>
-			<c:when test="<%= layoutTypePortlet.isCustomizedView() %>">
-				<liferay-ui:message key="you-can-customize-this-page" />
-
-				<liferay-ui:icon-help message="customizable-user-help" />
-			</c:when>
-			<c:otherwise>
-				<liferay-ui:message key="this-is-the-default-page-without-your-customizations" />
-
-				<c:if test="<%= hasLayoutUpdatePermission %>">
-					<liferay-ui:icon-help message="customizable-admin-help" />
-				</c:if>
-			</c:otherwise>
-		</c:choose>
-
-		<span class="page-customization-actions">
-
-			<%
-			String taglibImage = "search";
-			String taglibMessage = "view-default-page";
-
-			if (!layoutTypePortlet.isCustomizedView()) {
-				taglibMessage = "view-my-customized-page";
-			}
-			else if (layoutTypePortlet.isDefaultUpdated()) {
-				taglibImage = "activate";
-				taglibMessage = "the-defaults-for-the-current-page-have-been-updated-click-here-to-see-them";
-			}
-			%>
-
-			<liferay-ui:icon cssClass='<%= layoutTypePortlet.isCustomizedView() ? StringPool.BLANK : "false" %>' id="toggleCustomizedView" image="<%= taglibImage %>" label="<%= true %>" message="<%= taglibMessage %>" url="javascript:;" />
-
-			<c:if test="<%= layoutTypePortlet.isCustomizedView() %>">
-				<liferay-portlet:actionURL portletName="<%= PortletKeys.LAYOUTS_ADMIN %>" var="resetCustomizationViewURL">
-					<portlet:param name="struts_action" value="/layouts_admin/edit_layouts" />
-					<portlet:param name="groupId" value="<%= String.valueOf(themeDisplay.getSiteGroupId()) %>" />
-					<portlet:param name="<%= Constants.CMD %>" value="reset_customized_view" />
-				</liferay-portlet:actionURL>
-
-				<%
-				String taglibURL = "javascript:if (confirm('" + UnicodeLanguageUtil.get(pageContext, "are-you-sure-you-want-to-reset-your-customizations-to-default") + "')){submitForm(document.hrefFm, '" + HttpUtil.encodeURL(resetCustomizationViewURL) + "');}";
-				%>
-
-				<liferay-ui:icon image="../portlet/refresh" label="<%= true %>" message="reset-my-customizations" url="<%= taglibURL %>" />
-			</c:if>
-		</span>
-	</div>
-
-	<aui:script>
 		Liferay.provide(
-			window,
-			'<portlet:namespace />toggleCustomizedView',
+			Dockbar,
+			'addUnderlay',
+			function(options) {
+				var instance = this;
+
+				instance._addUnderlay(options);
+			},
+			['liferay-dockbar-underlay']
+		);
+
+		Liferay.provide(
+			Dockbar,
+			'_init',
+			function() {
+				var instance = this;
+
+				var dockBar = instance.dockBar;
+				var namespace = instance._namespace;
+
+				dockBar.one('.pin-dockbar').on(
+					EVENT_CLICK,
+					function(event) {
+						event.halt();
+
+						BODY.toggleClass('lfr-dockbar-pinned');
+
+						dockBar.toggleClass('aui-navbar-fixed-top');
+						dockBar.toggleClass('aui-navbar-static-top');
+
+						var pinned = BODY.hasClass('lfr-dockbar-pinned');
+
+						Liferay.Store('liferay_dockbar_pinned', pinned);
+
+						Liferay.fire(
+							'dockbar:pinned',
+							{
+								pinned: pinned
+							}
+						);
+					}
+				);
+
+				Liferay.Util.toggleControls(dockBar);
+
+				var UnderlayManager = new A.OverlayManager(
+					{
+						zIndexBase: 300
+					}
+				);
+
+				Dockbar.UnderlayManager = UnderlayManager;
+
+				instance._toolbarItems = {};
+
+				var messages = instance._addUnderlay(
+					{
+						align: {
+							node: instance.dockBar,
+							points: ['tc', 'bc']
+						},
+						bodyContent: '',
+						boundingBox: '#' + namespace + 'dockbarMessages',
+						header: 'My messages',
+						name: 'messages',
+						visible: false
+					}
+				);
+
+				messages.on(
+					'visibleChange',
+					function(event) {
+						if (event.newVal) {
+							BODY.addClass('showing-messages');
+						}
+						else {
+							BODY.removeClass('showing-messages');
+						}
+					}
+				);
+
+				messages.closeTool.on(EVENT_CLICK, instance.clearMessages, instance);
+
+				Liferay.fire('initLayout');
+				Liferay.fire('initNavigation');
+
+				var addContent = A.one('#' + namespace + 'addContent');
+
+				var addPanel = A.one('#' + namespace + 'addPanel');
+
+				if (addPanel) {
+					addPanel.on(
+						EVENT_CLICK,
+						function(event) {
+							event.halt();
+
+							instance._loadAddPanel();
+
+							addContent.removeClass('aui-open');
+						}
+					);
+				}
+
+				var manageContent = A.one('#' + namespace + 'manageContent');
+
+				if (manageContent) {
+					manageContent.delegate(
+						EVENT_CLICK,
+						function(event) {
+							event.preventDefault();
+
+							manageContent.removeClass('aui-open');
+
+							instance._openWindow(
+								{
+									id: '#' + namespace + 'manageContentDialog'
+								},
+								event.currentTarget
+							);
+						},
+						'.use-dialog a'
+					);
+				}
+
+				var manageCustomization = A.one('#' + namespace + 'manageCustomization');
+
+				if (manageCustomization) {
+					if (!manageCustomization.hasClass('disabled')) {
+						instance._controls = dockBar.one('.layout-customizable-controls');
+
+						var columns = A.all('.portlet-column');
+
+						var customizationsHandle;
+
+						manageCustomization.on(
+							EVENT_CLICK,
+							function(event) {
+								event.halt();
+
+								if (!customizationsHandle) {
+									customizationsHandle = BODY.delegate(EVENT_CLICK, instance._onChangeCustomization, '.layout-customizable-checkbox', instance);
+								}
+								else {
+									customizationsHandle.detach();
+
+									customizationsHandle = null;
+								}
+
+								manageContent.removeClass('aui-open');
+
+								columns.each(
+									function(item, index, collection) {
+										var overlayMask = item.getData('customizationControls');
+
+										if (!overlayMask) {
+											overlayMask = instance._createCustomizationMask(item);
+										}
+
+										overlayMask.toggle();
+									}
+								);
+							}
+						);
+
+						Liferay.publish(
+							'updatedLayout',
+							{
+								defaultFn: function(event) {
+									columns.each(
+										function(item, index, collection) {
+											var overlayMask = item.getData('customizationControls');
+
+											if (overlayMask) {
+												item.setData('customizationControls', null);
+											}
+										}
+									);
+								}
+							}
+						);
+					}
+				}
+
+				var myAccount = A.one('#' + namespace + 'userAvatar');
+
+				if (myAccount) {
+					myAccount.delegate(
+						EVENT_CLICK,
+						function(event) {
+							event.preventDefault();
+
+							instance._openWindow(
+								{},
+								event.currentTarget
+							);
+						},
+						'a.use-dialog'
+					);
+				}
+
+				Liferay.fire('dockbarLoaded');
+			},
+			['aui-io-request', 'aui-overlay-context-deprecated', 'liferay-dockbar-underlay', 'liferay-store', 'node-focusmanager']
+		);
+
+		Liferay.provide(
+			Dockbar,
+			'_addPanel',
+			function() {
+				var instance = this;
+
+				instance._setLoadingAnimation();
+
+				var addPanel = A.one('#' + instance._namespace + 'addPanel');
+
+				if (addPanel) {
+					var uri = addPanel.attr('href');
+
+					Liferay.LayoutConfiguration.toggle();
+
+					A.io.request(
+						uri,
+						{
+							after: {
+								success: function(event, id, obj) {
+									var response = this.get('responseData');
+
+									var panelNode = instance._getPanelNode();
+
+									panelNode.plug(A.Plugin.ParseContent);
+
+									panelNode.setContent(response);
+								}
+							}
+						}
+					);
+				}
+			},
+			['aui-io-request']
+		);
+
+		Liferay.provide(
+			Dockbar,
+			'_onChangeCustomization',
 			function(event) {
-				var A = AUI();
+				var instance = this;
+
+				var checkbox = event.currentTarget;
+
+				var overlayMask = checkbox.getData('customizationControls');
+
+				var boundingBox = overlayMask.get(BOUNDING_BOX);
+				var column = overlayMask.get('target');
+
+				boundingBox.toggleClass('customizable');
+				column.toggleClass('customizable');
+
+				var data = {
+					cmd: 'update_type_settings',
+					doAsUserId: themeDisplay.getDoAsUserIdEncoded(),
+					p_auth: Liferay.authToken,
+					p_l_id: themeDisplay.getPlid(),
+					p_v_l_s_g_id: themeDisplay.getSiteGroupId()
+				};
+
+				var checkboxName = checkbox.attr('name');
+
+				checkboxName = checkboxName.replace('Checkbox', '');
+
+				data[checkboxName] = checkbox.attr('checked');
 
 				A.io.request(
 					themeDisplay.getPathMain() + '/portal/update_layout',
 					{
-						data: {
-							cmd: 'toggle_customized_view',
-							customized_view: '<%= String.valueOf(!layoutTypePortlet.isCustomizedView()) %>',
-							p_auth: '<%= AuthTokenUtil.getToken(request) %>'
-						},
-						on: {
-							success: function(event, id, obj) {
-								window.location.href = themeDisplay.getLayoutURL();
-							}
-						}
+						data: data
 					}
 				);
 			},
 			['aui-io-request']
 		);
-	</aui:script>
 
-	<aui:script use="aui-base">
-		var toggleCustomizedView = A.one('#<portlet:namespace />toggleCustomizedView');
-
-		if (toggleCustomizedView) {
-			toggleCustomizedView.on('click', <portlet:namespace />toggleCustomizedView);
-		}
-	</aui:script>
-</c:if>
-
-<aui:script position="inline" use="liferay-dockbar">
-	Liferay.Dockbar.init('#<portlet:namespace />dockbar');
-
-	var customizableColumns = A.all('.portlet-column-content.customizable');
-
-	if (customizableColumns.size() > 0) {
-		customizableColumns.get('parentNode').addClass('customizable');
+		Liferay.Dockbar = Dockbar;
+	},
+	'',
+	{
+		requires: ['aui-node', 'aui-overlay-context-deprecated', 'aui-overlay-manager-deprecated', 'event-touch']
 	}
-</aui:script>
-
-<%!
-private boolean _hasPortlets(String category, ThemeDisplay themeDisplay) throws SystemException {
-	List<Portlet> portlets = PortalUtil.getControlPanelPortlets(category, themeDisplay);
-
-	if (portlets.isEmpty()) {
-		return false;
-	}
-
-	return true;
-}
-%>
+);

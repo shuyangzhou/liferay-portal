@@ -62,6 +62,7 @@ public class DLFileShortcutWrapper implements DLFileShortcut,
 		attributes.put("repositoryId", getRepositoryId());
 		attributes.put("folderId", getFolderId());
 		attributes.put("toFileEntryId", getToFileEntryId());
+		attributes.put("treePath", getTreePath());
 		attributes.put("active", getActive());
 		attributes.put("status", getStatus());
 		attributes.put("statusByUserId", getStatusByUserId());
@@ -137,6 +138,12 @@ public class DLFileShortcutWrapper implements DLFileShortcut,
 
 		if (toFileEntryId != null) {
 			setToFileEntryId(toFileEntryId);
+		}
+
+		String treePath = (String)attributes.get("treePath");
+
+		if (treePath != null) {
+			setTreePath(treePath);
 		}
 
 		Boolean active = (Boolean)attributes.get("active");
@@ -430,6 +437,26 @@ public class DLFileShortcutWrapper implements DLFileShortcut,
 	@Override
 	public void setToFileEntryId(long toFileEntryId) {
 		_dlFileShortcut.setToFileEntryId(toFileEntryId);
+	}
+
+	/**
+	* Returns the tree path of this document library file shortcut.
+	*
+	* @return the tree path of this document library file shortcut
+	*/
+	@Override
+	public java.lang.String getTreePath() {
+		return _dlFileShortcut.getTreePath();
+	}
+
+	/**
+	* Sets the tree path of this document library file shortcut.
+	*
+	* @param treePath the tree path of this document library file shortcut
+	*/
+	@Override
+	public void setTreePath(java.lang.String treePath) {
+		_dlFileShortcut.setTreePath(treePath);
 	}
 
 	/**
@@ -765,6 +792,20 @@ public class DLFileShortcutWrapper implements DLFileShortcut,
 	public void persist()
 		throws com.liferay.portal.kernel.exception.SystemException {
 		_dlFileShortcut.persist();
+	}
+
+	@Override
+	public java.lang.String buildTreePath()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _dlFileShortcut.buildTreePath();
+	}
+
+	@Override
+	public com.liferay.portlet.documentlibrary.model.DLFolder getDLFolder()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _dlFileShortcut.getDLFolder();
 	}
 
 	@Override

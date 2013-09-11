@@ -27604,6 +27604,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		journalArticleImpl.setFolderId(journalArticle.getFolderId());
 		journalArticleImpl.setClassNameId(journalArticle.getClassNameId());
 		journalArticleImpl.setClassPK(journalArticle.getClassPK());
+		journalArticleImpl.setTreePath(journalArticle.getTreePath());
 		journalArticleImpl.setArticleId(journalArticle.getArticleId());
 		journalArticleImpl.setVersion(journalArticle.getVersion());
 		journalArticleImpl.setTitle(journalArticle.getTitle());
