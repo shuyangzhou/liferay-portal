@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.Contact;
@@ -102,8 +103,6 @@ public class FacebookConnectAction extends PortletAction {
 			themeDisplay.getCompanyId(), redirect, code);
 
 		if (Validator.isNotNull(token)) {
-			session.setAttribute(WebKeys.FACEBOOK_ACCESS_TOKEN, token);
-
 			User user = setFacebookCredentials(
 				session, themeDisplay.getCompanyId(), token);
 
@@ -238,6 +237,8 @@ public class FacebookConnectAction extends PortletAction {
 		long facebookId = jsonObject.getLong("id");
 
 		if (facebookId > 0) {
+			session.setAttribute(WebKeys.FACEBOOK_ACCESS_TOKEN, token);
+
 			user = UserLocalServiceUtil.fetchUserByFacebookId(
 				companyId, facebookId);
 
@@ -319,7 +320,9 @@ public class FacebookConnectAction extends PortletAction {
 
 		ServiceContext serviceContext = new ServiceContext();
 
-		if (!emailAddress.equalsIgnoreCase(user.getEmailAddress())) {
+		if (!StringUtil.equalsIgnoreCase(
+				emailAddress, user.getEmailAddress())) {
+
 			UserLocalServiceUtil.updateEmailAddress(
 				user.getUserId(), StringPool.BLANK, emailAddress, emailAddress);
 		}

@@ -379,8 +379,6 @@
 				<classpath mode="compile">lib/portal/freshcookies-security.jar</classpath>
 				<classpath mode="compile">lib/portal/gif89.jar</classpath>
 				<classpath mode="compile">lib/portal/groovy.jar</classpath>
-				<classpath mode="compile">lib/portal/gt-coverage.jar</classpath>
-				<classpath mode="compile">lib/portal/gt-metadata.jar</classpath>
 				<classpath mode="compile">lib/portal/hessian.jar</classpath>
 				<classpath mode="compile">lib/portal/hibernate3.jar</classpath>
 				<classpath mode="compile">lib/portal/htmlparser.jar</classpath>

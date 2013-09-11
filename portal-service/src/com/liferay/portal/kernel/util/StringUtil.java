@@ -378,12 +378,57 @@ public class StringUtil {
 
 		String temp = s.substring(s.length() - end.length());
 
-		if (temp.equalsIgnoreCase(end)) {
+		if (equalsIgnoreCase(temp, end)) {
 			return true;
 		}
 		else {
 			return false;
 		}
+	}
+
+	public static boolean equalsIgnoreCase(String s1, String s2) {
+		if (s1 == s2) {
+			return true;
+		}
+
+		if ((s1 == null) || (s2 == null)) {
+			return false;
+		}
+
+		if (s1.length() != s2.length()) {
+			return false;
+		}
+
+		for (int i = 0; i < s1.length(); i++) {
+			char c1 = s1.charAt(i);
+
+			char c2 = s2.charAt(i);
+
+			if (c1 == c2) {
+				continue;
+			}
+
+			if ((c1 > 127) || (c2 > 127)) {
+
+				// Georgian alphabet needs to check both upper and lower case
+
+				if ((Character.toLowerCase(c1) == Character.toLowerCase(c2)) ||
+					(Character.toUpperCase(c1) == Character.toUpperCase(c2))) {
+
+					continue;
+				}
+
+				return false;
+			}
+
+			int delta = c1 - c2;
+
+			if ((delta != 32) && (delta != -32)) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**
@@ -1016,7 +1061,7 @@ public class StringUtil {
 
 			// Fast path for ascii code, fallback to the slow unicode detection
 
-			if (c <= 255) {
+			if (c <= 127) {
 				if ((c >= CharPool.UPPER_CASE_A) &&
 					(c <= CharPool.UPPER_CASE_Z)) {
 
@@ -1044,7 +1089,7 @@ public class StringUtil {
 
 			// Fast path for ascii code, fallback to the slow unicode detection
 
-			if (c <= 255) {
+			if (c <= 127) {
 				if ((c >= CharPool.LOWER_CASE_A) &&
 					(c <= CharPool.LOWER_CASE_Z)) {
 
@@ -3443,7 +3488,7 @@ public class StringUtil {
 
 		String temp = s.substring(0, start.length());
 
-		if (temp.equalsIgnoreCase(start)) {
+		if (equalsIgnoreCase(temp, start)) {
 			return true;
 		}
 		else {
@@ -3671,7 +3716,7 @@ public class StringUtil {
 		for (int i = 0; i < s.length(); i++) {
 			char c = s.charAt(i);
 
-			if (c > 255) {
+			if (c > 127) {
 
 				// Found non-ascii char, fallback to the slow unicode detection
 
@@ -3708,7 +3753,7 @@ public class StringUtil {
 		for (int i = 0; i < s.length(); i++) {
 			char c = s.charAt(i);
 
-			if (c > 255) {
+			if (c > 127) {
 
 				// Found non-ascii char, fallback to the slow unicode detection
 
@@ -4119,7 +4164,7 @@ public class StringUtil {
 			return null;
 		}
 		else {
-			return StringUtil.toUpperCase(s);
+			return toUpperCase(s);
 		}
 	}
 

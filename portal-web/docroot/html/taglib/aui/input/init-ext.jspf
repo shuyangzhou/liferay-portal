@@ -59,29 +59,33 @@ if (choiceField && Validator.isNull(inlineLabel)) {
 	inlineLabel = "right";
 }
 
-String addOnCss = StringPool.BLANK;
+String addOnCssClass = StringPool.BLANK;
 
 if (helpTextCssClass.equals("add-on")) {
 	if (Validator.isNotNull(prefix)) {
-		addOnCss = addOnCss.concat("input-prepend ");
+		addOnCssClass = addOnCssClass.concat("input-prepend ");
 	}
 
 	if (Validator.isNotNull(suffix)) {
-		addOnCss = addOnCss.concat("input-append");
+		addOnCssClass = addOnCssClass.concat("input-append");
 	}
 }
 
-String controlGroupCss = "control-group";
+String controlGroupCssClass = "control-group";
 
 if (inlineField) {
-	controlGroupCss = controlGroupCss.concat(" control-group-inline");
+	controlGroupCssClass = controlGroupCssClass.concat(" control-group-inline");
 }
 
 if (Validator.isNotNull(inlineLabel)) {
-	controlGroupCss = controlGroupCss.concat(" form-inline");
+	controlGroupCssClass = controlGroupCssClass.concat(" form-inline");
 }
 
-String baseTypeCss = TextFormatter.format(baseType.toLowerCase(), TextFormatter.K);
-String fieldCss = AUIUtil.buildCss(AUIUtil.FIELD_PREFIX, disabled, first, last, cssClass);
-String labelTag = AUIUtil.buildLabel(baseTypeCss, inlineField, showForLabel, forLabel);
+if (Validator.isNotNull(wrapperCssClass)) {
+	controlGroupCssClass = controlGroupCssClass.concat(StringPool.SPACE).concat(wrapperCssClass);
+}
+
+String baseTypeCssClass = TextFormatter.format(StringUtil.toLowerCase(baseType), TextFormatter.K);
+String fieldCssClass = AUIUtil.buildCss(AUIUtil.FIELD_PREFIX, disabled, first, last, cssClass);
+String labelTag = AUIUtil.buildLabel(baseTypeCssClass, inlineField, showForLabel, forLabel);
 %>

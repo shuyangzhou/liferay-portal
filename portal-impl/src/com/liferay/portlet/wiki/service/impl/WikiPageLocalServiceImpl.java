@@ -1284,7 +1284,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 
 		// Check if the new title already exists
 
-		if (title.equalsIgnoreCase(newTitle)) {
+		if (StringUtil.equalsIgnoreCase(title, newTitle)) {
 			throw new DuplicatePageException(newTitle);
 		}
 
@@ -1931,6 +1931,8 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 		page.setStatusByUserId(userId);
 		page.setStatusByUserName(user.getFullName());
 		page.setStatusDate(now);
+
+		wikiPagePersistence.update(page);
 
 		if (status == WorkflowConstants.STATUS_APPROVED) {
 

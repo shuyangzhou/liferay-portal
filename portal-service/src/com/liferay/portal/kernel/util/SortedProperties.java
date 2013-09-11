@@ -41,6 +41,8 @@ public class SortedProperties extends Properties {
 	public SortedProperties(
 		Comparator<String> comparator, Properties properties) {
 
+		_comparator = comparator;
+
 		if (comparator != null) {
 			_names = new TreeSet<String>(comparator);
 		}
@@ -67,6 +69,34 @@ public class SortedProperties extends Properties {
 		super.clear();
 
 		_names.clear();
+	}
+
+	@Override
+	public Set<Map.Entry<Object, Object>> entrySet() {
+		Set<Map.Entry<Object, Object>> set =
+			new TreeSet<Map.Entry<Object, Object>>(
+				new Comparator<Map.Entry<Object, Object>>() {
+
+					@Override
+					public int compare(
+						Map.Entry<Object, Object> object1,
+						Map.Entry<Object, Object> object2) {
+
+						String key1 = String.valueOf(object1.getKey());
+						String key2 = String.valueOf(object2.getKey());
+
+						if (_comparator == null) {
+							return key1.compareTo(key2);
+						}
+
+						return _comparator.compare(key1, key2);
+					}
+
+				});
+
+		set.addAll(super.entrySet());
+
+		return set;
 	}
 
 	@Override
@@ -122,6 +152,7 @@ public class SortedProperties extends Properties {
 		return put(key, value);
 	}
 
+	private Comparator<String> _comparator;
 	private Set<String> _names;
 
 }

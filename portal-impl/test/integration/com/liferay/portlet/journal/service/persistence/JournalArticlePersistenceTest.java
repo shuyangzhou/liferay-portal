@@ -138,6 +138,8 @@ public class JournalArticlePersistenceTest {
 
 		newJournalArticle.setClassPK(ServiceTestUtil.nextLong());
 
+		newJournalArticle.setTreePath(ServiceTestUtil.randomString());
+
 		newJournalArticle.setArticleId(ServiceTestUtil.randomString());
 
 		newJournalArticle.setVersion(ServiceTestUtil.nextDouble());
@@ -210,6 +212,8 @@ public class JournalArticlePersistenceTest {
 			newJournalArticle.getClassNameId());
 		Assert.assertEquals(existingJournalArticle.getClassPK(),
 			newJournalArticle.getClassPK());
+		Assert.assertEquals(existingJournalArticle.getTreePath(),
+			newJournalArticle.getTreePath());
 		Assert.assertEquals(existingJournalArticle.getArticleId(),
 			newJournalArticle.getArticleId());
 		AssertUtils.assertEquals(existingJournalArticle.getVersion(),
@@ -307,13 +311,13 @@ public class JournalArticlePersistenceTest {
 			true, "id", true, "resourcePrimKey", true, "groupId", true,
 			"companyId", true, "userId", true, "userName", true, "createDate",
 			true, "modifiedDate", true, "folderId", true, "classNameId", true,
-			"classPK", true, "articleId", true, "version", true, "title", true,
-			"urlTitle", true, "description", true, "content", true, "type",
-			true, "structureId", true, "templateId", true, "layoutUuid", true,
-			"displayDate", true, "expirationDate", true, "reviewDate", true,
-			"indexable", true, "smallImage", true, "smallImageId", true,
-			"smallImageURL", true, "status", true, "statusByUserId", true,
-			"statusByUserName", true, "statusDate", true);
+			"classPK", true, "treePath", true, "articleId", true, "version",
+			true, "title", true, "urlTitle", true, "description", true,
+			"content", true, "type", true, "structureId", true, "templateId",
+			true, "layoutUuid", true, "displayDate", true, "expirationDate",
+			true, "reviewDate", true, "indexable", true, "smallImage", true,
+			"smallImageId", true, "smallImageURL", true, "status", true,
+			"statusByUserId", true, "statusByUserName", true, "statusDate", true);
 	}
 
 	@Test
@@ -486,6 +490,8 @@ public class JournalArticlePersistenceTest {
 		journalArticle.setClassNameId(ServiceTestUtil.nextLong());
 
 		journalArticle.setClassPK(ServiceTestUtil.nextLong());
+
+		journalArticle.setTreePath(ServiceTestUtil.randomString());
 
 		journalArticle.setArticleId(ServiceTestUtil.randomString());
 

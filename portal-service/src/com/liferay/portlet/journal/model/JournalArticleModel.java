@@ -290,6 +290,21 @@ public interface JournalArticleModel extends AttachedModel,
 	public void setClassPK(long classPK);
 
 	/**
+	 * Returns the tree path of this journal article.
+	 *
+	 * @return the tree path of this journal article
+	 */
+	@AutoEscape
+	public String getTreePath();
+
+	/**
+	 * Sets the tree path of this journal article.
+	 *
+	 * @param treePath the tree path of this journal article
+	 */
+	public void setTreePath(String treePath);
+
+	/**
 	 * Returns the article ID of this journal article.
 	 *
 	 * @return the article ID of this journal article

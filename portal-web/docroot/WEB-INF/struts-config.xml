@@ -63,6 +63,8 @@
 
 		<action path="/portal/progress_poller" forward="portal.progress_poller" />
 
+		<action path="/portal/protected" forward="/portal/protected.jsp" />
+
 		<action path="/portal/render_portlet" type="com.liferay.portal.action.RenderPortletAction">
 			<forward name="/portal/render_portlet" path="/portal/render_portlet.jsp" />
 		</action>
@@ -954,6 +956,8 @@
 		</action>
 
 		<!-- Layout Prototypes -->
+
+		<action path="/layout_prototypes/delete_background_task" type="com.liferay.portlet.backgroundtask.action.DeleteBackgroundTaskAction" />
 
 		<action path="/layout_prototypes/edit_layout_prototype" type="com.liferay.portlet.layoutprototypes.action.EditLayoutPrototypeAction">
 			<forward name="portlet.layout_prototypes.edit_layout_prototype" path="portlet.layout_prototypes.edit_layout_prototype" />
