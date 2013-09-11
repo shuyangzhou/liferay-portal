@@ -14,7 +14,6 @@
 
 package com.liferay.portal.kernel.servlet;
 
-import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.KeyValuePair;
@@ -119,6 +118,10 @@ public class SanitizedServletResponse extends HttpServletResponseWrapper {
 			String url = _xFrameOptionKVP.getKey();
 
 			if (requestURI.startsWith(url)) {
+				if (Validator.isNull(_xFrameOptionKVP.getValue())) {
+					return;
+				}
+
 				response.setHeader(
 					HttpHeaders.X_FRAME_OPTIONS, _xFrameOptionKVP.getValue());
 
@@ -181,23 +184,18 @@ public class SanitizedServletResponse extends HttpServletResponseWrapper {
 		for (Map.Entry<Object, Object> entry : properties.entrySet()) {
 			String propertyValue = (String)entry.getValue();
 
-			String[] propertyValueParts = StringUtil.split(
-				propertyValue, CharPool.COMMA);
+			int commaPos = propertyValue.lastIndexOf(StringPool.COMMA);
 
-			if (propertyValueParts.length != 2) {
+			if (commaPos < 1) {
 				continue;
 			}
 
-			String url = StringUtil.trim(propertyValueParts[0]);
+			String url = StringUtil.trim(propertyValue.substring(0, commaPos));
 
-			if (Validator.isNull(url)) {
-				continue;
-			}
+			String value = StringPool.BLANK;
 
-			String value = StringUtil.trim(propertyValueParts[1]);
-
-			if (Validator.isNull(value)) {
-				continue;
+			if ((commaPos + 1) < propertyValue.length()) {
+				value = StringUtil.trim(propertyValue.substring(commaPos + 1));
 			}
 
 			KeyValuePair x = new KeyValuePair(url, value);
