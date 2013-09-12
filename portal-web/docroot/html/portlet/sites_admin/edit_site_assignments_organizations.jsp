@@ -110,13 +110,12 @@ searchContainer.setEmptyResultsMessage(emptyResultsMessage);
 
 			<%
 			if (organization.getParentOrganizationId() > 0) {
-				try {
-					Organization parentOrganization = OrganizationLocalServiceUtil.getOrganization(organization.getParentOrganizationId());
+				Organization parentOrganization = OrganizationLocalServiceUtil.fetchOrganization(organization.getParentOrganizationId());
 
+				if (parentOrganization != null) {
 					buffer.append(HtmlUtil.escape(parentOrganization.getName()));
 				}
-				catch (Exception e) {
-				}
+
 			}
 			%>
 

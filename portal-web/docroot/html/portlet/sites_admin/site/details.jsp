@@ -491,11 +491,8 @@ boolean hasUnlinkLayoutSetPrototypePermission = PortalPermissionUtil.contains(pe
 	}
 
 	if (parentGroupId != GroupConstants.DEFAULT_PARENT_GROUP_ID) {
-		try {
-			parentGroup = GroupLocalServiceUtil.getGroup(parentGroupId);
-		}
-		catch (NoSuchGroupException nsoe) {
-		}
+		parentGroup = GroupLocalServiceUtil.fetchGroup(parentGroupId);
+
 	}
 
 	List<Group> parentGroups = new ArrayList<Group>();

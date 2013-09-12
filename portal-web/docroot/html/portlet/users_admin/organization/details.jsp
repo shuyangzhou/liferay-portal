@@ -170,12 +170,10 @@ if ((organization == null) && (parentOrganizationId == OrganizationConstants.DEF
 }
 
 if (parentOrganizationId != OrganizationConstants.DEFAULT_PARENT_ORGANIZATION_ID) {
-	try {
-		parentOrganization = OrganizationLocalServiceUtil.getOrganization(parentOrganizationId);
+	parentOrganization = OrganizationLocalServiceUtil.fetchOrganization(parentOrganizationId);
 
+	if (parentOrganization != null) {
 		parentOrganizationName = parentOrganization.getName();
-	}
-	catch (NoSuchOrganizationException nsoe) {
 	}
 }
 

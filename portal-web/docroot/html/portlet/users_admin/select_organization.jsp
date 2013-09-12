@@ -95,12 +95,10 @@ if (Validator.isNotNull(target)) {
 				String parentOrganizationName = StringPool.BLANK;
 
 				if (organization.getParentOrganizationId() > 0) {
-					try {
-						Organization parentOrganization = OrganizationLocalServiceUtil.getOrganization(organization.getParentOrganizationId());
+					Organization parentOrganization = OrganizationLocalServiceUtil.fetchOrganization(organization.getParentOrganizationId());
 
+					if (parentOrganization != null) {
 						parentOrganizationName = parentOrganization.getName();
-					}
-					catch (Exception e) {
 					}
 				}
 

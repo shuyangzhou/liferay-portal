@@ -33,15 +33,14 @@ if (!layout.isTypeControlPanel()) {
 		errorMessageKey = "this-portlet-is-placed-in-a-page-that-does-not-exist-in-the-live-site-publish-the-page-first";
 	}
 	else {
-		try {
-			if (stagingGroup.isLayout()) {
-				targetLayout = LayoutLocalServiceUtil.getLayout(liveGroup.getClassPK());
-			}
-			else {
-				targetLayout = LayoutLocalServiceUtil.getLayoutByUuidAndGroupId(exportableLayout.getUuid(), liveGroup.getGroupId(), exportableLayout.isPrivateLayout());
-			}
+		if (stagingGroup.isLayout()) {
+			targetLayout = LayoutLocalServiceUtil.fetchLayout(liveGroup.getClassPK());
 		}
-		catch (NoSuchLayoutException nsle) {
+		else {
+			targetLayout = LayoutLocalServiceUtil.fetchLayoutByUuidAndGroupId(exportableLayout.getUuid(), liveGroup.getGroupId(), exportableLayout.isPrivateLayout());
+		}
+
+		if (targetLayout == null) {
 			errorMessageKey = "this-portlet-is-placed-in-a-page-that-does-not-exist-in-the-live-site-publish-the-page-first";
 		}
 
@@ -59,10 +58,9 @@ else if (stagingGroup.isLayout()) {
 		errorMessageKey = "a-portlet-is-placed-in-this-page-of-scope-that-does-not-exist-in-the-live-site-publish-the-page-first";
 	}
 	else {
-		try {
-			targetLayout = LayoutLocalServiceUtil.getLayout(liveGroup.getClassPK());
-		}
-		catch (NoSuchLayoutException nsle) {
+		targetLayout = LayoutLocalServiceUtil.fetchLayout(liveGroup.getClassPK());
+
+		if (targetLayout == null) {
 			errorMessageKey = "a-portlet-is-placed-in-this-page-of-scope-that-does-not-exist-in-the-live-site-publish-the-page-first";
 		}
 	}

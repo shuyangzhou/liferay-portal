@@ -114,13 +114,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("search.jsp-portletURL"
 					for (int i = 0; i < assetCategoryIds.length; i++) {
 						long assetCategoryId = GetterUtil.getLong(assetCategoryIds[i]);
 
-						AssetCategory assetCategory = null;
-
-						try {
-							assetCategory = AssetCategoryLocalServiceUtil.getCategory(assetCategoryId);
-						}
-						catch (NoSuchCategoryException nsce) {
-						}
+						AssetCategory assetCategory = AssetCategoryLocalServiceUtil.fetchCategory(assetCategoryId);
 
 						if (assetCategory == null) {
 							continue;
