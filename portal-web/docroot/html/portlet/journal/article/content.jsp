@@ -67,18 +67,16 @@ if (ddmTemplate != null) {
 }
 
 if ((ddmStructure == null) && (ddmTemplate == null) && Validator.isNotNull(templateId)) {
-	try {
-		ddmTemplate = DDMTemplateLocalServiceUtil.getTemplate(groupId, PortalUtil.getClassNameId(DDMStructure.class), templateId, true);
-	}
-	catch (NoSuchTemplateException nste) {
-	}
+	ddmTemplate = DDMTemplateLocalServiceUtil.fetchTemplate(groupId, PortalUtil.getClassNameId(DDMStructure.class), templateId, true);
 
 	if (ddmTemplate != null) {
-		ddmStructure = DDMStructureLocalServiceUtil.getStructure(ddmTemplate.getClassPK());
+		ddmStructure = DDMStructureLocalServiceUtil.fetchStructure(ddmTemplate.getClassPK());
 
-		ddmStructureName = ddmStructure.getName(locale);
+		if (ddmStructure != null) {
+			ddmStructureName = ddmStructure.getName(locale);
 
-		ddmTemplates = DDMTemplateLocalServiceUtil.getTemplates(ddmStructureGroupId, PortalUtil.getClassNameId(DDMStructure.class), ddmTemplate.getClassPK());
+			ddmTemplates = DDMTemplateLocalServiceUtil.getTemplates(ddmStructureGroupId, PortalUtil.getClassNameId(DDMStructure.class), ddmTemplate.getClassPK());
+		}
 	}
 }
 

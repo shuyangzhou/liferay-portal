@@ -34,7 +34,6 @@ page import="com.liferay.portal.kernel.xml.SAXReaderUtil" %><%@
 page import="com.liferay.portal.kernel.xml.XPath" %><%@
 page import="com.liferay.portal.layoutconfiguration.util.RuntimePageUtil" %><%@
 page import="com.liferay.portlet.asset.AssetRendererFactoryRegistryUtil" %><%@
-page import="com.liferay.portlet.asset.NoSuchEntryException" %><%@
 page import="com.liferay.portlet.asset.model.AssetEntry" %><%@
 page import="com.liferay.portlet.asset.model.AssetRenderer" %><%@
 page import="com.liferay.portlet.asset.model.AssetRendererFactory" %><%@

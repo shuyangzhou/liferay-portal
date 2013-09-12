@@ -27,9 +27,9 @@ String xmlRequest = PortletRequestUtil.toXML(renderRequest, renderResponse);
 
 JournalArticleDisplay articleDisplay = JournalContentUtil.getDisplay(groupId, articleId, null, null, languageId, themeDisplay, articlePage, xmlRequest);
 
-try {
-	article = JournalArticleLocalServiceUtil.getLatestArticle(groupId, articleId, WorkflowConstants.STATUS_ANY);
+article = JournalArticleLocalServiceUtil.fetchLatestArticle(groupId, articleId, WorkflowConstants.STATUS_ANY);
 
+if (article != null) {
 	boolean expired = article.isExpired();
 
 	if (!expired) {
@@ -57,8 +57,7 @@ try {
 	</c:choose>
 
 <%
-} catch (NoSuchArticleException nsae) {
-%>
+} else { %>
 
 	<div class="alert alert-error">
 		<%= LanguageUtil.get(pageContext, "the-selected-web-content-no-longer-exists") %>
