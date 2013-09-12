@@ -52,7 +52,8 @@ if (layout != null) {
 
 		if (liveLayout != null) {
 			liveFriendlyURL = PortalUtil.getLayoutFriendlyURL(liveLayout, themeDisplay);
-		} else {
+		}
+		else {
 			liveFriendlyURL = PortalUtil.getGroupFriendlyURL(liveGroup, layout.isPrivateLayout(), themeDisplay);
 		}
 
@@ -66,7 +67,8 @@ if (layout != null) {
 
 		if (stagingLayout != null) {
 			stagingFriendlyURL = PortalUtil.getLayoutFriendlyURL(stagingLayout, themeDisplay);
-		} else {
+		}
+		else {
 			stagingFriendlyURL = PortalUtil.getGroupFriendlyURL(stagingGroup, layout.isPrivateLayout(), themeDisplay);
 		}
 

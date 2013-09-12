@@ -115,7 +115,6 @@ searchContainer.setEmptyResultsMessage(emptyResultsMessage);
 				if (parentOrganization != null) {
 					buffer.append(HtmlUtil.escape(parentOrganization.getName()));
 				}
-
 			}
 			%>
 

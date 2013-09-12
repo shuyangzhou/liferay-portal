@@ -43,8 +43,7 @@ if (!layout.isTypeControlPanel()) {
 		if (targetLayout == null) {
 			errorMessageKey = "this-portlet-is-placed-in-a-page-that-does-not-exist-in-the-live-site-publish-the-page-first";
 		}
-
-		if (targetLayout != null) {
+		else {
 			LayoutType layoutType = targetLayout.getLayoutType();
 
 			if (!(layoutType instanceof LayoutTypePortlet) || !((LayoutTypePortlet)layoutType).hasPortletId(selPortlet.getPortletId())) {
