@@ -98,12 +98,8 @@ if (PropsValues.MOBILE_DEVICE_STYLING_WAP_ENABLED) {
 
 							Layout linkableLayout = null;
 
-							try {
-								if (objId > 0) {
-									linkableLayout = LayoutLocalServiceUtil.getLayout(objId);
-								}
-							}
-							catch (Exception e) {
+							if (objId > 0) {
+								linkableLayout = LayoutLocalServiceUtil.fetchLayout(objId);
 							}
 
 							if (linkableLayout != null) {

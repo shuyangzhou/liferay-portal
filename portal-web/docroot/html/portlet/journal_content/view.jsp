@@ -285,12 +285,8 @@ boolean expired = true;
 <%
 JournalArticle latestArticle = null;
 
-try {
-	if (articleDisplay != null) {
-		latestArticle = JournalArticleLocalServiceUtil.getLatestArticle(articleDisplay.getGroupId(), articleDisplay.getArticleId(), WorkflowConstants.STATUS_ANY);
-	}
-}
-catch (NoSuchArticleException nsae) {
+if (articleDisplay != null) {
+	latestArticle = JournalArticleLocalServiceUtil.fetchLatestArticle(articleDisplay.getGroupId(), articleDisplay.getArticleId(), WorkflowConstants.STATUS_ANY);
 }
 
 DDMTemplate ddmTemplate = null;

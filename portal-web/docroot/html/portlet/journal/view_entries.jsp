@@ -84,16 +84,15 @@ ArticleDisplayTerms displayTerms = (ArticleDisplayTerms)searchContainer.getDispl
 
 	<%
 	if (!displayTerms.getStructureId().equals("0")) {
-		DDMStructure ddmStructure = null;
+		DDMStructure ddmStructure = DDMStructureLocalServiceUtil.fetchStructure(themeDisplay.getSiteGroupId(), PortalUtil.getClassNameId(JournalArticle.class), displayTerms.getStructureId());
 
-		try {
-			ddmStructure = DDMStructureLocalServiceUtil.getStructure(themeDisplay.getSiteGroupId(), PortalUtil.getClassNameId(JournalArticle.class), displayTerms.getStructureId());
-		}
-		catch (NoSuchStructureException nsse) {
+		if (ddmStructure == null) {
 			ddmStructure = DDMStructureLocalServiceUtil.getStructure(themeDisplay.getCompanyGroupId(), PortalUtil.getClassNameId(JournalArticle.class), displayTerms.getStructureId());
 		}
 
-		ddmStructureName = ddmStructure.getName(locale);
+		if (ddmStructure != null) {
+			ddmStructureName = ddmStructure.getName(locale);
+		}
 	}
 	%>
 
