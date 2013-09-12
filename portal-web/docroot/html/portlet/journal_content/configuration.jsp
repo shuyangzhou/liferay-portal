@@ -27,17 +27,15 @@ groupId = ParamUtil.getLong(request, "groupId", themeDisplay.getScopeGroupId());
 
 String type = ParamUtil.getString(request, "type");
 
-try {
-	if (Validator.isNotNull(articleId)) {
-		article = JournalArticleLocalServiceUtil.getLatestArticle(groupId, articleId);
+if (Validator.isNotNull(articleId)) {
+	article = JournalArticleLocalServiceUtil.fetchLatestArticle(groupId, articleId);
 
+	if (article != null) {
 		article = article.toEscapedModel();
 
 		groupId = article.getGroupId();
 		type = article.getType();
 	}
-}
-catch (NoSuchArticleException nsae) {
 }
 %>
 

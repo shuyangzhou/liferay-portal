@@ -29,22 +29,14 @@ Layout selLayout = null;
 String layoutBreadcrumb = StringPool.BLANK;
 
 if (Validator.isNotNull(layoutUuid)) {
-	try {
-		selLayout = LayoutLocalServiceUtil.getLayoutByUuidAndGroupId(layoutUuid, themeDisplay.getSiteGroupId(), false);
-
-		layoutBreadcrumb = _getLayoutBreadcrumb(selLayout, locale);
-	}
-	catch (NoSuchLayoutException nsle) {
-	}
+	selLayout = LayoutLocalServiceUtil.fetchLayoutByUuidAndGroupId(layoutUuid, themeDisplay.getSiteGroupId(), false);
 
 	if (selLayout == null) {
-		try {
-			selLayout = LayoutLocalServiceUtil.getLayoutByUuidAndGroupId(layoutUuid, themeDisplay.getSiteGroupId(), true);
+		selLayout = LayoutLocalServiceUtil.fetchLayoutByUuidAndGroupId(layoutUuid, themeDisplay.getSiteGroupId(), true);
+	}
 
-			layoutBreadcrumb = _getLayoutBreadcrumb(selLayout, locale);
-		}
-		catch (NoSuchLayoutException nsle) {
-		}
+	if (selLayout != null) {
+		layoutBreadcrumb = _getLayoutBreadcrumb(selLayout, locale);
 	}
 }
 
@@ -561,16 +553,17 @@ Group parentGroup = themeDisplay.getSiteGroup();
 <c:if test="<%= (article != null) && Validator.isNotNull(layoutUuid) %>">
 
 	<%
-	Layout defaultDisplayLayout = null;
+	Layout defaultDisplayLayout = LayoutLocalServiceUtil.fetchLayoutByUuidAndGroupId(layoutUuid, scopeGroupId, false);
 
-	try {
-		defaultDisplayLayout = LayoutLocalServiceUtil.getLayoutByUuidAndGroupId(layoutUuid, scopeGroupId, false);
-	}
-	catch (NoSuchLayoutException nsle) {
-		defaultDisplayLayout = LayoutLocalServiceUtil.getLayoutByUuidAndGroupId(layoutUuid, scopeGroupId, true);
+	if (defaultDisplayLayout == null) {
+		defaultDisplayLayout = LayoutLocalServiceUtil.fetchLayoutByUuidAndGroupId(layoutUuid, scopeGroupId, true);
 	}
 
-	defaultDisplayLayout = defaultDisplayLayout.toEscapedModel();
+	String defautDisplayLayoutName = null;
+	if (defaultDisplayLayout != null) {
+		defaultDisplayLayout = defaultDisplayLayout.toEscapedModel();
+		defautDisplayLayoutName = defaultDisplayLayout.getName(locale);
+	}
 
 	AssetRendererFactory assetRendererFactory = AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByClassName(JournalArticle.class.getName());
 
@@ -580,7 +573,7 @@ Group parentGroup = themeDisplay.getSiteGroup();
 	%>
 
 	<c:if test="<%= Validator.isNotNull(urlViewInContext) %>">
-		<a href="<%= urlViewInContext %>" target="blank"><%= LanguageUtil.format(pageContext, "view-content-in-x", defaultDisplayLayout.getName(locale)) %></a>
+		<a href="<%= urlViewInContext %>" target="blank"><%= LanguageUtil.format(pageContext, "view-content-in-x", defautDisplayLayoutName) %></a>
 	</c:if>
 </c:if>
 
