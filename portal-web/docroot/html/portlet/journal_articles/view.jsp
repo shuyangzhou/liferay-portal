@@ -209,11 +209,9 @@ double version = ParamUtil.getDouble(request, "version");
 
 		JournalArticleDisplay articleDisplay = JournalContentUtil.getDisplay(groupId, articleId, null, null, languageId, themeDisplay, articlePage, xmlRequest);
 
-		JournalArticle article = null;
+		JournalArticle article = JournalArticleLocalServiceUtil.fetchArticle(groupId, articleId, version);
 
-		try {
-			article = JournalArticleLocalServiceUtil.getArticle(groupId, articleId, version);
-
+		if (article != null) {
 			boolean expired = article.isExpired();
 
 			if (!expired) {
@@ -281,7 +279,7 @@ double version = ParamUtil.getDouble(request, "version");
 			</c:choose>
 
 		<%
-		} catch (NoSuchArticleException nsae) {
+		} else {
 		%>
 
 			<div class="alert alert-error">

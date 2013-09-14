@@ -26,11 +26,7 @@ String type = displayTerms.getType();
 Organization organization = null;
 
 if (displayTerms.getParentOrganizationId() > 0) {
-	try {
-		organization = OrganizationLocalServiceUtil.getOrganization(displayTerms.getParentOrganizationId());
-	}
-	catch (NoSuchOrganizationException nsoe) {
-	}
+	organization = OrganizationLocalServiceUtil.fetchOrganization(displayTerms.getParentOrganizationId());
 }
 %>
 

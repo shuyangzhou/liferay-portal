@@ -43,20 +43,15 @@ Set<Long> parentPlids = new HashSet<Long>();
 long parentPlid = refererPlid;
 
 while (parentPlid > 0) {
-	try {
-		Layout parentLayout = LayoutLocalServiceUtil.getLayout(parentPlid);
+	Layout parentLayout = LayoutLocalServiceUtil.fetchLayout(parentPlid);
 
-		if (parentLayout.isRootLayout()) {
-			break;
-		}
-
-		parentPlid = parentLayout.getParentPlid();
-
-		parentPlids.add(parentPlid);
-	}
-	catch (Exception e) {
+	if ((parentLayout == null) || parentLayout.isRootLayout()) {
 		break;
 	}
+
+	parentPlid = parentLayout.getParentPlid();
+
+	parentPlids.add(parentPlid);
 }
 
 LayoutRevision layoutRevision = LayoutStagingUtil.getLayoutRevision(selLayout);

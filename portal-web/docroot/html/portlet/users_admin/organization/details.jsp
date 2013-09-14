@@ -154,6 +154,7 @@ User selUser = (User)request.getAttribute("user.selUser");
 
 <%
 Organization parentOrganization = null;
+List<Organization> parentOrganizations = new ArrayList<Organization>();
 
 if ((organization == null) && (parentOrganizationId == OrganizationConstants.DEFAULT_PARENT_ORGANIZATION_ID) && !permissionChecker.isCompanyAdmin()) {
 	List<Organization> manageableOrganizations = new ArrayList<Organization>();
@@ -170,19 +171,13 @@ if ((organization == null) && (parentOrganizationId == OrganizationConstants.DEF
 }
 
 if (parentOrganizationId != OrganizationConstants.DEFAULT_PARENT_ORGANIZATION_ID) {
-	try {
-		parentOrganization = OrganizationLocalServiceUtil.getOrganization(parentOrganizationId);
+	parentOrganization = OrganizationLocalServiceUtil.fetchOrganization(parentOrganizationId);
 
+	if (parentOrganization != null) {
 		parentOrganizationName = parentOrganization.getName();
-	}
-	catch (NoSuchOrganizationException nsoe) {
-	}
-}
 
-List<Organization> parentOrganizations = new ArrayList<Organization>();
-
-if (parentOrganization != null) {
-	parentOrganizations.add(parentOrganization);
+		parentOrganizations.add(parentOrganization);
+	}
 }
 %>
 

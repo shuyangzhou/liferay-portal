@@ -63,10 +63,10 @@ long[] selectedLayoutIds = GetterUtil.getLongValues(StringUtil.split(SessionTree
 List<Layout> selectedLayouts = new ArrayList<Layout>();
 
 for (int i = 0; i < selectedLayoutIds.length; i++) {
-	try {
-		selectedLayouts.add(LayoutLocalServiceUtil.getLayout(groupId, privateLayout, selectedLayoutIds[i]));
-	}
-	catch (NoSuchLayoutException nsle) {
+	Layout layout = LayoutLocalServiceUtil.fetchLayout(groupId, privateLayout, selectedLayoutIds[i]);
+
+	if (layout != null) {
+		selectedLayouts.add(layout);
 	}
 }
 

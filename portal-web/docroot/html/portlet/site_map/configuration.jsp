@@ -59,13 +59,7 @@ List layoutList = layoutView.getList();
 					name = "-&nbsp;" + name;
 				}
 
-				Layout curRootLayout = null;
-
-				try {
-					curRootLayout = LayoutLocalServiceUtil.getLayout(objId);
-				}
-				catch (Exception e) {
-				}
+				Layout curRootLayout = LayoutLocalServiceUtil.fetchLayout(objId);
 
 				if (curRootLayout != null) {
 			%>
