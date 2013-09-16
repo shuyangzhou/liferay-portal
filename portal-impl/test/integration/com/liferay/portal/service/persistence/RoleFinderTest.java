@@ -16,7 +16,9 @@ package com.liferay.portal.service.persistence;
 
 import com.liferay.portal.kernel.test.ExecutionTestListeners;
 import com.liferay.portal.kernel.transaction.Transactional;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.UnmodifiableList;
 import com.liferay.portal.model.ResourceAction;
 import com.liferay.portal.model.ResourceBlock;
 import com.liferay.portal.model.ResourceBlockPermission;
@@ -35,8 +37,11 @@ import com.liferay.portal.test.TransactionalExecutionTestListener;
 import com.liferay.portal.util.ResourceBlockPermissionTestUtil;
 import com.liferay.portal.util.ResourceBlockTestUtil;
 import com.liferay.portal.util.ResourcePermissionTestUtil;
+import com.liferay.portal.util.comparator.RoleRoleIdComparator;
 import com.liferay.portlet.bookmarks.model.BookmarksFolder;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.junit.AfterClass;
@@ -47,6 +52,7 @@ import org.junit.runner.RunWith;
 
 /**
  * @author Alberto Chaparro
+ * @author László Csontos
  */
 @ExecutionTestListeners(
 	listeners = {
@@ -115,16 +121,51 @@ public class RoleFinderTest {
 				_arbitraryRole.getRoleId());
 	}
 
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testFindByC_T() throws Exception {
+		List<Role> roles = RoleFinderUtil.findByC_T(
+			_resourcePermission.getCompanyId(),
+			new Integer[] {RoleConstants.TYPE_REGULAR});
+
+		Assert.assertTrue(roles.contains(_arbitraryRole));
+
+		roles = RoleFinderUtil.findByC_T(
+			_resourcePermission.getCompanyId(),
+			new Integer[] {RoleConstants.TYPE_SITE});
+
+		Assert.assertFalse(roles.contains(_arbitraryRole));
+
+		roles = RoleFinderUtil.findByC_T(
+			_resourcePermission.getCompanyId(), new Integer[0]);
+
+		List<Role> expectedRoles = RoleLocalServiceUtil.getRoles(
+			_resourcePermission.getCompanyId());
+
+		Assert.assertEquals(expectedRoles.size(), roles.size());
+
+		Assert.assertTrue(expectedRoles instanceof UnmodifiableList<?>);
+		Assert.assertTrue(roles instanceof UnmodifiableList<?>);
+
+		expectedRoles = ListUtil.copy(expectedRoles);
+		roles = ListUtil.copy(roles);
+
+		Comparator<Role> roleIdComparator = new RoleRoleIdComparator();
+
+		Collections.sort(expectedRoles, roleIdComparator);
+		Collections.sort(roles, roleIdComparator);
+
+		Assert.assertEquals(expectedRoles, roles);
+	}
+
 	@Test
 	public void testFindByR_N_A() throws Exception {
 		List<Role> roles = RoleFinderUtil.findByR_N_A(
 			_resourceBlock.getResourceBlockId(), _resourceBlock.getName(),
 			_bookmarkFolderResourceAction.getActionId());
 
-		for (Role role : roles) {
-			if (role.getRoleId() == _arbitraryRole.getRoleId()) {
-				return;
-			}
+		if (roles.contains(_arbitraryRole)) {
+			return;
 		}
 
 		Assert.fail(
