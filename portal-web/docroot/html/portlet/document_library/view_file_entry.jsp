@@ -555,12 +555,10 @@ request.setAttribute("view_file_entry.jsp-fileEntry", fileEntry);
 								for (DDMStructure ddmStructure : ddmStructures) {
 									Fields fields = null;
 
-									try {
-										DLFileEntryMetadata fileEntryMetadata = DLFileEntryMetadataLocalServiceUtil.getFileEntryMetadata(ddmStructure.getStructureId(), fileVersionId);
+									DLFileEntryMetadata fileEntryMetadata = DLFileEntryMetadataLocalServiceUtil.fetchFileEntryMetadata(ddmStructure.getStructureId(), fileVersionId);
 
+									if (fileEntryMetadata != null) {
 										fields = StorageEngineUtil.getFields(fileEntryMetadata.getDDMStorageId());
-									}
-									catch (Exception e) {
 									}
 						%>
 
@@ -603,12 +601,10 @@ request.setAttribute("view_file_entry.jsp-fileEntry", fileEntry);
 							for (DDMStructure ddmStructure : ddmStructures) {
 								Fields fields = null;
 
-								try {
-									DLFileEntryMetadata fileEntryMetadata = DLFileEntryMetadataLocalServiceUtil.getFileEntryMetadata(ddmStructure.getStructureId(), fileVersionId);
+								DLFileEntryMetadata fileEntryMetadata = DLFileEntryMetadataLocalServiceUtil.fetchFileEntryMetadata(ddmStructure.getStructureId(), fileVersionId);
 
+								if (fileEntryMetadata != null) {
 									fields = StorageEngineUtil.getFields(fileEntryMetadata.getDDMStorageId());
-								}
-								catch (Exception e) {
 								}
 
 								if (fields != null) {
