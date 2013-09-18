@@ -988,7 +988,7 @@ public class AssetPublisherImpl implements AssetPublisher {
 			}
 
 			return GroupPermissionUtil.contains(
-				permissionChecker, groupId, ActionKeys.UPDATE);
+				permissionChecker, group, ActionKeys.UPDATE);
 		}
 		else if (groupId != companyGroupId) {
 			return GroupPermissionUtil.contains(

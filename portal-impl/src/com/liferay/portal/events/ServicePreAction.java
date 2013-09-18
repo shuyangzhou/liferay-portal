@@ -412,8 +412,7 @@ public class ServicePreAction extends Action {
 			boolean viewableStaging =
 				!group.isControlPanel() &&
 				GroupPermissionUtil.contains(
-					permissionChecker, group.getGroupId(),
-					ActionKeys.VIEW_STAGING);
+					permissionChecker, group, ActionKeys.VIEW_STAGING);
 
 			if (viewableStaging) {
 				layouts = LayoutLocalServiceUtil.getLayouts(
@@ -1050,23 +1049,34 @@ public class ServicePreAction extends Action {
 				}
 			}
 
-			boolean hasAddLayoutGroupPermission = GroupPermissionUtil.contains(
-				permissionChecker, scopeGroupId, ActionKeys.ADD_LAYOUT);
 			boolean hasAddLayoutLayoutPermission =
 				!layout.isTypeControlPanel() &&
 				LayoutPermissionUtil.contains(
 					permissionChecker, layout, ActionKeys.ADD_LAYOUT);
-			boolean hasManageLayoutsGroupPermission =
-				GroupPermissionUtil.contains(
-					permissionChecker, scopeGroupId, ActionKeys.MANAGE_LAYOUTS);
-			boolean hasManageStagingPermission = GroupPermissionUtil.contains(
-				permissionChecker, scopeGroupId, ActionKeys.MANAGE_STAGING);
-			boolean hasPublishStagingPermission = GroupPermissionUtil.contains(
-				permissionChecker, scopeGroupId, ActionKeys.PUBLISH_STAGING);
-			boolean hasUpdateGroupPermission = GroupPermissionUtil.contains(
-				permissionChecker, scopeGroupId, ActionKeys.UPDATE);
-			boolean hasViewStagingPermission = GroupPermissionUtil.contains(
-				permissionChecker, scopeGroupId, ActionKeys.VIEW_STAGING);
+
+			boolean hasAddLayoutGroupPermission = false;
+			boolean hasManageLayoutsGroupPermission = false;
+			boolean hasManageStagingPermission = false;
+			boolean hasPublishStagingPermission = false;
+			boolean hasUpdateGroupPermission = false;
+			boolean hasViewStagingPermission = false;
+
+			if (scopeGroupId > 0) {
+				Group scopeGroup = GroupLocalServiceUtil.getGroup(scopeGroupId);
+
+				hasAddLayoutGroupPermission = GroupPermissionUtil.contains(
+					permissionChecker, scopeGroup, ActionKeys.ADD_LAYOUT);
+				hasManageLayoutsGroupPermission = GroupPermissionUtil.contains(
+					permissionChecker, scopeGroup, ActionKeys.MANAGE_LAYOUTS);
+				hasManageStagingPermission = GroupPermissionUtil.contains(
+					permissionChecker, scopeGroup, ActionKeys.MANAGE_STAGING);
+				hasPublishStagingPermission = GroupPermissionUtil.contains(
+					permissionChecker, scopeGroup, ActionKeys.PUBLISH_STAGING);
+				hasUpdateGroupPermission = GroupPermissionUtil.contains(
+					permissionChecker, scopeGroup, ActionKeys.UPDATE);
+				hasViewStagingPermission = GroupPermissionUtil.contains(
+					permissionChecker, scopeGroup, ActionKeys.VIEW_STAGING);
+			}
 
 			if (!group.isControlPanel() && !group.isUser() &&
 				!group.isUserGroup() && hasUpdateGroupPermission) {
@@ -1762,8 +1772,7 @@ public class ServicePreAction extends Action {
 			(group.isStagingGroup() || group.isStagedRemotely()) &&
 			 !group.isControlPanel() &&
 			 GroupPermissionUtil.contains(
-				 permissionChecker, group.getGroupId(),
-				 ActionKeys.VIEW_STAGING);
+				 permissionChecker, group, ActionKeys.VIEW_STAGING);
 
 		if (hasAccessPermission(
 				permissionChecker, layout, doAsGroupId, controlPanelCategory,
@@ -1838,7 +1847,7 @@ public class ServicePreAction extends Action {
 				}
 
 				if (GroupPermissionUtil.contains(
-						permissionChecker, group.getGroupId(),
+						permissionChecker, group,
 						ActionKeys.VIEW_SITE_ADMINISTRATION)) {
 
 					return true;

@@ -1754,8 +1754,7 @@ public class StagingImpl implements Staging {
 		Group scopeGroup = themeDisplay.getScopeGroup();
 
 		if (!GroupPermissionUtil.contains(
-				permissionChecker, liveGroup.getGroupId(),
-				ActionKeys.MANAGE_STAGING)) {
+				permissionChecker, liveGroup, ActionKeys.MANAGE_STAGING)) {
 
 			return;
 		}

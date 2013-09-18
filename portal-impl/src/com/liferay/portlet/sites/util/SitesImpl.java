@@ -496,9 +496,9 @@ public class SitesImpl implements Sites {
 
 		if (group.isStagingGroup() &&
 			!GroupPermissionUtil.contains(
-				permissionChecker, groupId, ActionKeys.MANAGE_STAGING) &&
+				permissionChecker, group, ActionKeys.MANAGE_STAGING) &&
 			!GroupPermissionUtil.contains(
-				permissionChecker, groupId, ActionKeys.PUBLISH_STAGING)) {
+				permissionChecker, group, ActionKeys.PUBLISH_STAGING)) {
 
 			throw new PrincipalException();
 		}
@@ -1084,8 +1084,7 @@ public class SitesImpl implements Sites {
 		}
 
 		if (GroupPermissionUtil.contains(
-				permissionChecker, userGroupGroup.getGroupId(),
-				ActionKeys.VIEW)) {
+				permissionChecker, userGroupGroup, ActionKeys.VIEW)) {
 
 			return true;
 		}

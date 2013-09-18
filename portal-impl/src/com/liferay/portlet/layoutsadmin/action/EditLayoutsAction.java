@@ -414,8 +414,7 @@ public class EditLayoutsAction extends PortletAction {
 
 			if (parentPlid == LayoutConstants.DEFAULT_PARENT_LAYOUT_ID) {
 				if (!GroupPermissionUtil.contains(
-						permissionChecker, group.getGroupId(),
-						ActionKeys.ADD_LAYOUT)) {
+						permissionChecker, group, ActionKeys.ADD_LAYOUT)) {
 
 					throw new PrincipalException();
 				}
@@ -478,8 +477,7 @@ public class EditLayoutsAction extends PortletAction {
 
 			if (group.isCompany() || group.isSite()) {
 				boolean publishToLive = GroupPermissionUtil.contains(
-					permissionChecker, group.getGroupId(),
-					ActionKeys.PUBLISH_STAGING);
+					permissionChecker, group, ActionKeys.PUBLISH_STAGING);
 
 				if (!hasUpdateLayoutPermission && !publishToLive) {
 					throw new PrincipalException();
