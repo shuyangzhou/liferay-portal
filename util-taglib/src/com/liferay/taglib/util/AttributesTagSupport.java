@@ -62,14 +62,19 @@ public class AttributesTagSupport
 	}
 
 	public void setNamespacedAttribute(
-		HttpServletRequest request, String key, Object value) {
+		HttpServletRequest request, String key, Boolean value) {
 
-		if (value instanceof Boolean) {
-			value = String.valueOf(value);
-		}
-		else if (value instanceof Number) {
-			value = String.valueOf(value);
-		}
+		request.setAttribute(_encodeKey(key), String.valueOf(value));
+	}
+
+	public void setNamespacedAttribute(
+		HttpServletRequest request, String key, Number value) {
+
+		request.setAttribute(_encodeKey(key), String.valueOf(value));
+	}
+
+	public void setNamespacedAttribute(
+		HttpServletRequest request, String key, Object value) {
 
 		request.setAttribute(_encodeKey(key), value);
 	}
