@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.model.Layout;
+import com.liferay.portal.model.LayoutConstants;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,12 +31,26 @@ import java.util.Map;
  */
 public class LayoutSettings {
 
+	public static void addLayoutSetting(String type) {
+		new LayoutSettings(type);
+	}
+
 	public static LayoutSettings getInstance(Layout layout) {
 		return getInstance(layout.getType());
 	}
 
 	public static LayoutSettings getInstance(String type) {
 		return _layoutSettingsMap.get(type);
+	}
+
+	public static Map<String, LayoutSettings> getLayoutSettingsMap() {
+		return _layoutSettingsMap;
+	}
+
+	public static void removeLayoutSetting(String type) {
+		if (_layoutSettingsMap.containsKey(type)) {
+			_layoutSettingsMap.remove(type);
+		}
 	}
 
 	public String[] getConfigurationActionDelete() {
@@ -119,7 +134,7 @@ public class LayoutSettings {
 		new HashMap<String, LayoutSettings>();
 
 	static {
-		new LayoutSettings("control_panel");
+		new LayoutSettings(LayoutConstants.TYPE_CONTROL_PANEL);
 
 		for (String type : PropsValues.LAYOUT_TYPES) {
 			new LayoutSettings(type);
