@@ -554,7 +554,7 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 			return _compatClassNamesMap;
 		}
 
-		_compatClassNamesMap = new HashMap<String, String>();
+		Map<String, String> compatClassNamesMap = new HashMap<String, String>();
 
 		String[] includes = new String[] {
 			"**\\portal-compat-shared\\src\\com\\liferay\\compat\\**\\*.java"
@@ -596,9 +596,11 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 				compatClassName, "compat.", StringPool.BLANK);
 
 			if (content.contains("extends " + extendedClassName)) {
-				_compatClassNamesMap.put(compatClassName, extendedClassName);
+				compatClassNamesMap.put(compatClassName, extendedClassName);
 			}
 		}
+
+		_compatClassNamesMap = compatClassNamesMap;
 
 		return _compatClassNamesMap;
 	}

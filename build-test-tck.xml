@@ -21,7 +21,23 @@ tck.url=true</echo>
 
 		<delete dir="tools/tck" />
 
-		<unzip src="${portlet.tck.zip}" dest="tools/tck" />
+		<if>
+			<isset property="portlet.tck.url" />
+			<then>
+				<tstamp>
+					<format property="tstamp.value" pattern="yyyyMMddkkmmssSSS" />
+				</tstamp>
+
+				<get dest="${tstamp.value}.zip" src="${portlet.tck.url}" />
+
+				<unzip src="${tstamp.value}.zip" dest="tools/tck" />
+
+				<delete file="${tstamp.value}.zip" />
+			</then>
+			<else>
+				<unzip src="${portlet.tck.zip}" dest="tools/tck" />
+			</else>
+		</if>
 
 		<replace file="tools/tck/bin/ts.jte">
 			<replacefilter token="http://localhost:8080/pluto/tck" value="http://localhost:8080/c/portal/tck" />

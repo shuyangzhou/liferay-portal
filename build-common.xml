@@ -717,39 +717,51 @@ Please set the environment variable ANT_OPTS to the recommended value of
 
 	<target name="test-class" depends="compile,compile-test">
 		<if>
-			<available file="test/functional" type="dir" />
+			<not>
+				<isset property="test.type" />
+			</not>
 			<then>
-				<resourcecount property="test.functional.count">
-					<fileset dir="test-classes/functional" includes="**/${class}.class" />
-				</resourcecount>
-			</then>
-		</if>
+				<if>
+					<available file="test/functional" type="dir" />
+					<then>
+						<resourcecount property="test.functional.count">
+							<fileset dir="test-classes/functional" includes="**/${test.class}.class" />
+						</resourcecount>
+					</then>
+				</if>
 
-		<if>
-			<available file="test/functional-generated" type="dir" />
-			<then>
-				<resourcecount property="test.functional-generated.count">
-					<fileset dir="test-classes/functional-generated" includes="**/${class}.class" />
-				</resourcecount>
-			</then>
-		</if>
+				<if>
+					<available file="test/functional-generated" type="dir" />
+					<then>
+						<resourcecount property="test.functional-generated.count">
+							<fileset dir="test-classes/functional-generated" includes="**/${test.class}.class" />
+						</resourcecount>
+					</then>
+				</if>
 
-		<if>
-			<available file="test/integration" type="dir" />
-			<then>
-				<resourcecount property="test.integration.count">
-					<fileset dir="test-classes/integration" includes="**/${class}.class" />
-				</resourcecount>
-			</then>
-		</if>
+				<if>
+					<available file="test/integration" type="dir" />
+					<then>
+						<resourcecount property="test.integration.count">
+							<fileset dir="test-classes/integration" includes="**/${test.class}.class" />
+						</resourcecount>
+					</then>
+				</if>
 
-		<if>
-			<available file="test/unit" type="dir" />
-			<then>
-				<resourcecount property="test.unit.count">
-					<fileset dir="test-classes/unit" includes="**/${class}.class" />
-				</resourcecount>
+				<if>
+					<available file="test/unit" type="dir" />
+					<then>
+						<resourcecount property="test.unit.count">
+							<fileset dir="test-classes/unit" includes="**/${test.class}.class" />
+						</resourcecount>
+					</then>
+				</if>
 			</then>
+			<else>
+				<resourcecount property="test.${test.type}.count">
+					<fileset dir="test-classes/${test.type}" includes="**/${test.class}.class" />
+				</resourcecount>
+			</else>
 		</if>
 
 		<if>
@@ -799,17 +811,17 @@ Please set the environment variable ANT_OPTS to the recommended value of
 			<else>
 				<if>
 					<not>
-						<isset property="class" />
+						<isset property="test.class" />
 					</not>
 					<then>
-						<fail>Missing class argument. Use "ant test-class -Dclass=TestClassName".</fail>
+						<fail>Use "ant test-class -Dtest.class=StringUtilTest".</fail>
 					</then>
 					<elseif>
 						<not>
 							<isset property="test.type" />
 						</not>
 						<then>
-							<fail>Class ${class} cannot be found.</fail>
+							<fail>Test class ${test.class} cannot be found.</fail>
 						</then>
 					</elseif>
 				</if>
@@ -858,7 +870,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 					<formatter type="brief" usefile="false" />
 					<formatter type="xml" />
 					<batchtest todir="test-results/${test.type}">
-						<fileset dir="test-classes/${test.dir}" includes="**/${class}.class">
+						<fileset dir="test-classes/${test.dir}" includes="**/${test.class}.class">
 							<exclude name="**/DLAppServiceHttpTest.class" />
 							<exclude name="**/DLAppServiceJsonTest.class" />
 							<exclude name="**/DLAppServiceSoapTest.class" />
@@ -874,7 +886,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 	</target>
 
 	<target name="test-integration" depends="compile,compile-test-integration">
-		<var name="class" value="*Test" />
+		<var name="test.class" value="*Test" />
 
 		<ant target="test-cmd">
 			<property name="junit.forkmode" value="once" />
@@ -882,7 +894,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 			<property name="test.type" value="integration" />
 		</ant>
 
-		<var name="class" value="*PersistenceTest" />
+		<var name="test.class" value="*PersistenceTest" />
 
 		<ant target="test-cmd">
 			<property name="junit.forkmode" value="once" />
@@ -922,12 +934,29 @@ Please set the environment variable ANT_OPTS to the recommended value of
 			<classpath refid="test.classpath" />
 			<formatter type="brief" usefile="false" />
 			<formatter type="xml" />
-			<test name="${class}" methods="${methods}" todir="test-results/${test.type}" />
+			<test name="${test.class}" methods="${test.methods}" todir="test-results/${test.type}" />
 		</junit>
 	</target>
 
+	<target name="test-package">
+		<if>
+			<not>
+				<isset property="test.package" />
+			</not>
+			<then>
+				<fail>Use "ant test-package -Dtest.package=com.liferay.portal.kernel.util".</fail>
+			</then>
+		</if>
+
+		<propertyregex property="test.class" input="${test.package}." regexp="\." replace="/" global="true" />
+
+		<ant target="test-class">
+			<property name="test.class" value="${test.class}**/*Test" />
+		</ant>
+	</target>
+
 	<target name="test-unit" depends="compile,compile-test-unit">
-		<property name="class" value="*Test" />
+		<property name="test.class" value="*Test" />
 
 		<ant target="test-cmd">
 			<property name="junit.forkmode" value="perTest" />

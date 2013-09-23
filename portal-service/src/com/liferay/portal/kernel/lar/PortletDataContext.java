@@ -97,10 +97,27 @@ public interface PortletDataContext extends Serializable {
 		String className, long classPK, String[] assetTagNames);
 
 	public void addClassedModel(
+			Element element, String path, ClassedModel classedModel)
+		throws PortalException, SystemException;
+
+	public void addClassedModel(
+			Element element, String path, ClassedModel classedModel,
+			Class<?> clazz)
+		throws PortalException, SystemException;
+
+	/**
+	 * @deprecated As of 6.2.0, replaced by {@link #addClassedModel(Element,
+	 *             ClassedModel, Class)}
+	 */
+	public void addClassedModel(
 			Element element, String path, ClassedModel classedModel,
 			Class<?> clazz, String namespace)
 		throws PortalException, SystemException;
 
+	/**
+	 * @deprecated As of 6.2.0, replaced by {@link #addClassedModel(Element,
+	 *             String, ClassedModel)}
+	 */
 	public void addClassedModel(
 			Element element, String path, ClassedModel classedModel,
 			String namespace)
@@ -188,14 +205,27 @@ public interface PortletDataContext extends Serializable {
 	public void clearScopedPrimaryKeys();
 
 	public ServiceContext createServiceContext(
+		Element element, ClassedModel classedModel);
+
+	/**
+	 * @deprecated As of 6.2.0, replaced by {@link
+	 *             #createServiceContext(Element, ClassedModel)}
+	 */
+	public ServiceContext createServiceContext(
 		Element element, ClassedModel classedModel, String namespace);
 
-	public ServiceContext createServiceContext(
-		StagedModel stagedModel, Class<?> clazz, String namespace);
+	public ServiceContext createServiceContext(StagedModel stagedModel);
 
 	public ServiceContext createServiceContext(
-		StagedModel stagedModel, String namespace);
+		StagedModel stagedModel, Class<?> clazz);
 
+	public ServiceContext createServiceContext(
+		String path, ClassedModel classedModel);
+
+	/**
+	 * @deprecated As of 6.2.0, replaced by {@link #createServiceContext(String,
+	 *             ClassedModel)}
+	 */
 	public ServiceContext createServiceContext(
 		String path, ClassedModel classedModel, String namespace);
 
@@ -404,10 +434,27 @@ public interface PortletDataContext extends Serializable {
 	public boolean hasScopedPrimaryKey(Class<?> clazz, String primaryKey);
 
 	public void importClassedModel(
+			ClassedModel classedModel, ClassedModel newClassedModel)
+		throws PortalException, SystemException;
+
+	public void importClassedModel(
+			ClassedModel classedModel, ClassedModel newClassedModel,
+			Class<?> clazz)
+		throws PortalException, SystemException;
+
+	/**
+	 * @deprecated As of 6.2.0, replaced by {@link
+	 *             #importClassedModel(ClassedModel, ClassedModel, Class)}
+	 */
+	public void importClassedModel(
 			ClassedModel classedModel, ClassedModel newClassedModel,
 			Class<?> clazz, String namespace)
 		throws PortalException, SystemException;
 
+	/**
+	 * @deprecated As of 6.2.0, replaced by {@link
+	 *             #importClassedModel(ClassedModel, ClassedModel)}
+	 */
 	public void importClassedModel(
 			ClassedModel classedModel, ClassedModel newClassedModel,
 			String namespace)
