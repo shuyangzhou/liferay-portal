@@ -23,11 +23,15 @@ import com.liferay.portal.model.User;
  */
 public class UserLoginDateComparator extends OrderByComparator {
 
-	public static final String ORDER_BY_ASC = "loginDate ASC";
+	public static final String ORDER_BY_ASC =
+		"loginDate ASC, lastName ASC, firstName ASC, middleName ASC";
 
-	public static final String ORDER_BY_DESC = "loginDate DESC";
+	public static final String ORDER_BY_DESC =
+		"loginDate DESC, lastName DESC, firstName DESC, middleName DESC";
 
-	public static final String[] ORDER_BY_FIELDS = {"loginDate"};
+	public static final String[] ORDER_BY_FIELDS = {
+		"loginDate", "lastName", "firstName", "middleName"
+	};
 
 	public UserLoginDateComparator() {
 		this(false);
@@ -44,6 +48,27 @@ public class UserLoginDateComparator extends OrderByComparator {
 
 		int value = DateUtil.compareTo(
 			user1.getLoginDate(), user2.getLoginDate());
+
+		if (value == 0) {
+			String lastName1 = user1.getLastName();
+			String lastName2 = user2.getLastName();
+
+			value = lastName1.compareTo(lastName2);
+		}
+
+		if (value == 0) {
+			String firstName1 = user1.getFirstName();
+			String firstName2 = user2.getFirstName();
+
+			value = firstName1.compareTo(firstName2);
+		}
+
+		if (value == 0) {
+			String middleName1 = user1.getMiddleName();
+			String middleName2 = user2.getMiddleName();
+
+			value = middleName1.compareTo(middleName2);
+		}
 
 		if (_ascending) {
 			return value;

@@ -415,9 +415,6 @@ public class PortletExporter {
 
 		serviceContext.setAttribute("layoutSetBranchId", layoutSetBranchId);
 
-		long defaultUserId = UserLocalServiceUtil.getDefaultUserId(
-			layout.getCompanyId());
-
 		ZipWriter zipWriter = ZipWriterFactoryUtil.getZipWriter();
 
 		long scopeGroupId = groupId;

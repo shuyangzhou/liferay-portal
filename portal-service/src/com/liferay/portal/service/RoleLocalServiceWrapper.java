@@ -969,6 +969,30 @@ public class RoleLocalServiceWrapper implements RoleLocalService,
 		return _roleLocalService.getTeamRole(companyId, teamId);
 	}
 
+	@Override
+	public java.util.Map<com.liferay.portal.model.Team, com.liferay.portal.model.Role> getTeamRoleMap(
+		long groupId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _roleLocalService.getTeamRoleMap(groupId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.portal.model.Role> getTeamRoles(
+		long groupId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _roleLocalService.getTeamRoles(groupId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.portal.model.Role> getTeamRoles(
+		long groupId, long[] skipRoleIds)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _roleLocalService.getTeamRoles(groupId, skipRoleIds);
+	}
+
 	/**
 	* Returns all the roles of the type.
 	*
