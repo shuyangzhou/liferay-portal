@@ -1818,6 +1818,8 @@ public class PropsValues {
 
 	public static final String TRANSACTION_MANAGER_IMPL = PropsUtil.get(PropsKeys.TRANSACTION_MANAGER_IMPL);
 
+	public static String[] TRANSACTIONAL_CACHE_CACHES = PropsUtil.getArray(PropsKeys.TRANSACTIONAL_CACHE_CACHES);
+
 	public static boolean TRANSACTIONAL_CACHE_ENABLED = GetterUtil.getBoolean(PropsUtil.get(PropsKeys.TRANSACTIONAL_CACHE_ENABLED));
 
 	public static final boolean TRANSLATIONS_DISABLED = GetterUtil.getBoolean(PropsUtil.get(PropsKeys.TRANSLATIONS_DISABLED));
