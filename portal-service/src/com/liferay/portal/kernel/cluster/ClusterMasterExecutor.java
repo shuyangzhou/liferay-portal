@@ -12,22 +12,29 @@
  * details.
  */
 
-package com.liferay.portal.service.impl;
+package com.liferay.portal.kernel.cluster;
 
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.service.base.BackgroundTaskServiceBaseImpl;
+import com.liferay.portal.kernel.util.MethodKey;
 
 /**
  * @author Michael C. Han
  */
-public class BackgroundTaskServiceImpl extends BackgroundTaskServiceBaseImpl {
+public interface ClusterMasterExecutor {
 
-	@Override
-	public String getBackgroundTaskStatusJSON(long backgroundTaskId)
-		throws SystemException {
+	public <T> T executeOnMaster(MethodKey methodKey, Object... arguments)
+		throws SystemException;
 
-		return backgroundTaskLocalService.getBackgroundTaskStatusJSON(
-			backgroundTaskId);
-	}
+	public void initialize();
+
+	public boolean isMaster();
+
+	public void registerClusterMasterTokenAcquisitionListener(
+		ClusterMasterTokenAcquisitionListener
+			clusterMasterTokenAcquisitionListener);
+
+	public void unregisterClusterMasterTokenAcquisitionListener(
+		ClusterMasterTokenAcquisitionListener
+			clusterMasterTokenAcquisitionListener);
 
 }

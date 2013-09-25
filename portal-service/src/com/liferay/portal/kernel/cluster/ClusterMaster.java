@@ -12,22 +12,24 @@
  * details.
  */
 
-package com.liferay.portal.service.impl;
+package com.liferay.portal.kernel.cluster;
 
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.service.base.BackgroundTaskServiceBaseImpl;
+import com.liferay.portal.kernel.util.MethodKeyFactory;
+
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * @author Michael C. Han
  */
-public class BackgroundTaskServiceImpl extends BackgroundTaskServiceBaseImpl {
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface ClusterMaster {
 
-	@Override
-	public String getBackgroundTaskStatusJSON(long backgroundTaskId)
-		throws SystemException {
-
-		return backgroundTaskLocalService.getBackgroundTaskStatusJSON(
-			backgroundTaskId);
-	}
+	public Class<? extends MethodKeyFactory> methodKeyFactory();
 
 }

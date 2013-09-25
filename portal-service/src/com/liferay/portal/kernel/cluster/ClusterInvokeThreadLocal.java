@@ -12,22 +12,25 @@
  * details.
  */
 
-package com.liferay.portal.service.impl;
+package com.liferay.portal.kernel.cluster;
 
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.service.base.BackgroundTaskServiceBaseImpl;
+import com.liferay.portal.kernel.util.AutoResetThreadLocal;
 
 /**
- * @author Michael C. Han
+ * @author Shuyang Zhou
  */
-public class BackgroundTaskServiceImpl extends BackgroundTaskServiceBaseImpl {
+public class ClusterInvokeThreadLocal {
 
-	@Override
-	public String getBackgroundTaskStatusJSON(long backgroundTaskId)
-		throws SystemException {
-
-		return backgroundTaskLocalService.getBackgroundTaskStatusJSON(
-			backgroundTaskId);
+	public static boolean isEnabled() {
+		return _enabled.get();
 	}
+
+	public static void setEnabled(boolean enabled) {
+		_enabled.set(enabled);
+	}
+
+	private static ThreadLocal<Boolean> _enabled =
+		new AutoResetThreadLocal<Boolean>(
+			ClusterInvokeThreadLocal.class + "._enabled", true);
 
 }

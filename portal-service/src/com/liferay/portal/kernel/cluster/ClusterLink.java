@@ -30,6 +30,8 @@ public interface ClusterLink {
 
 	public static final int MAX_CHANNEL_COUNT = Priority.values().length;
 
+	public Address deserializeAddress(String serializedAddress);
+
 	public InetAddress getBindInetAddress();
 
 	public List<Address> getLocalTransportAddresses();
@@ -42,5 +44,7 @@ public interface ClusterLink {
 
 	public void sendUnicastMessage(
 		Address address, Message message, Priority priority);
+
+	public String serializeAddress(Address address);
 
 }

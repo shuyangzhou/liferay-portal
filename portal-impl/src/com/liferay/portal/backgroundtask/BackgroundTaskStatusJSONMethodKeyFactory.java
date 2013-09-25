@@ -12,22 +12,25 @@
  * details.
  */
 
-package com.liferay.portal.service.impl;
+package com.liferay.portal.backgroundtask;
 
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.service.base.BackgroundTaskServiceBaseImpl;
+import com.liferay.portal.kernel.util.MethodKey;
+import com.liferay.portal.kernel.util.MethodKeyFactory;
+import com.liferay.portal.service.BackgroundTaskLocalServiceUtil;
 
 /**
  * @author Michael C. Han
  */
-public class BackgroundTaskServiceImpl extends BackgroundTaskServiceBaseImpl {
+public class BackgroundTaskStatusJSONMethodKeyFactory
+	implements MethodKeyFactory {
 
 	@Override
-	public String getBackgroundTaskStatusJSON(long backgroundTaskId)
-		throws SystemException {
-
-		return backgroundTaskLocalService.getBackgroundTaskStatusJSON(
-			backgroundTaskId);
+	public MethodKey getMethodKey() {
+		return _getBackgroundTaskStatusJSON;
 	}
+
+	private static MethodKey _getBackgroundTaskStatusJSON = new MethodKey(
+		BackgroundTaskLocalServiceUtil.class, "getBackgroundTaskStatusJSON",
+		Long.class);
 
 }

@@ -57,7 +57,8 @@ public class BackgroundTaskServiceUtil {
 	}
 
 	public static java.lang.String getBackgroundTaskStatusJSON(
-		long backgroundTaskId) {
+		long backgroundTaskId)
+		throws com.liferay.portal.kernel.exception.SystemException {
 		return getService().getBackgroundTaskStatusJSON(backgroundTaskId);
 	}
 

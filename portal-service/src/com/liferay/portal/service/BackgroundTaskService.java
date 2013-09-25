@@ -59,5 +59,6 @@ public interface BackgroundTaskService extends BaseService {
 	public void setBeanIdentifier(java.lang.String beanIdentifier);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.lang.String getBackgroundTaskStatusJSON(long backgroundTaskId);
+	public java.lang.String getBackgroundTaskStatusJSON(long backgroundTaskId)
+		throws com.liferay.portal.kernel.exception.SystemException;
 }

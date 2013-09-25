@@ -324,6 +324,11 @@ public class BackgroundTaskLocalServiceUtil {
 			status, statusMessage, serviceContext);
 	}
 
+	public static void cleanUpBackgroundTask(
+		com.liferay.portal.model.BackgroundTask backgroundTask, int status) {
+		getService().cleanUpBackgroundTask(backgroundTask, status);
+	}
+
 	public static void cleanUpBackgroundTasks()
 		throws com.liferay.portal.kernel.exception.SystemException {
 		getService().cleanUpBackgroundTasks();
@@ -497,13 +502,18 @@ public class BackgroundTaskLocalServiceUtil {
 	}
 
 	public static java.lang.String getBackgroundTaskStatusJSON(
-		long backgroundTaskId) {
+		long backgroundTaskId)
+		throws com.liferay.portal.kernel.exception.SystemException {
 		return getService().getBackgroundTaskStatusJSON(backgroundTaskId);
 	}
 
 	public static void resumeBackgroundTask(long backgroundTaskId)
 		throws com.liferay.portal.kernel.exception.SystemException {
 		getService().resumeBackgroundTask(backgroundTaskId);
+	}
+
+	public static void triggerBackgroundTask(long backgroundTaskId) {
+		getService().triggerBackgroundTask(backgroundTaskId);
 	}
 
 	public static BackgroundTaskLocalService getService() {

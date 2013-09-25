@@ -12,22 +12,32 @@
  * details.
  */
 
-package com.liferay.portal.service.impl;
+package com.liferay.portal.kernel.cluster;
 
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.service.base.BackgroundTaskServiceBaseImpl;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 /**
  * @author Michael C. Han
  */
-public class BackgroundTaskServiceImpl extends BackgroundTaskServiceBaseImpl {
+public abstract class BaseClusterMasterTokenAcquisitionListener
+	implements ClusterMasterTokenAcquisitionListener {
 
 	@Override
-	public String getBackgroundTaskStatusJSON(long backgroundTaskId)
-		throws SystemException {
-
-		return backgroundTaskLocalService.getBackgroundTaskStatusJSON(
-			backgroundTaskId);
+	public void masterTokenAcquired() {
+		try {
+			doMasterTokenAcquired();
+		}
+		catch (Exception e) {
+			if (_log.isWarnEnabled()) {
+				_log.warn("Unable to process token acquired event", e);
+			}
+		}
 	}
+
+	protected abstract void doMasterTokenAcquired() throws Exception;
+
+	private static Log _log = LogFactoryUtil.getLog(
+		BaseClusterMasterTokenAcquisitionListener.class);
 
 }
