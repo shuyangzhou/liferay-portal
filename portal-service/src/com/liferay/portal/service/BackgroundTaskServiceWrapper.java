@@ -49,7 +49,8 @@ public class BackgroundTaskServiceWrapper implements BackgroundTaskService,
 	}
 
 	@Override
-	public java.lang.String getBackgroundTaskStatusJSON(long backgroundTaskId) {
+	public java.lang.String getBackgroundTaskStatusJSON(long backgroundTaskId)
+		throws com.liferay.portal.kernel.exception.SystemException {
 		return _backgroundTaskService.getBackgroundTaskStatusJSON(backgroundTaskId);
 	}
 

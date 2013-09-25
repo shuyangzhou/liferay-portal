@@ -295,6 +295,11 @@ public class BackgroundTaskLocalServiceWrapper
 	}
 
 	@Override
+	public void triggerBackgroundTask(long backgroundTaskId) {
+		_backgroundTaskLocalService.triggerBackgroundTask(backgroundTaskId);
+	}
+
+	@Override
 	public void addBackgroundTaskAttachment(long userId, long backgroundTaskId,
 		java.lang.String fileName, java.io.File file)
 		throws com.liferay.portal.kernel.exception.PortalException,
@@ -331,6 +336,12 @@ public class BackgroundTaskLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.SystemException {
 		return _backgroundTaskLocalService.amendBackgroundTask(backgroundTaskId,
 			taskContextMap, status, statusMessage, serviceContext);
+	}
+
+	@Override
+	public void cleanUpBackgroundTask(
+		com.liferay.portal.model.BackgroundTask backgroundTask, int status) {
+		_backgroundTaskLocalService.cleanUpBackgroundTask(backgroundTask, status);
 	}
 
 	@Override
@@ -523,7 +534,8 @@ public class BackgroundTaskLocalServiceWrapper
 	}
 
 	@Override
-	public java.lang.String getBackgroundTaskStatusJSON(long backgroundTaskId) {
+	public java.lang.String getBackgroundTaskStatusJSON(long backgroundTaskId)
+		throws com.liferay.portal.kernel.exception.SystemException {
 		return _backgroundTaskLocalService.getBackgroundTaskStatusJSON(backgroundTaskId);
 	}
 
