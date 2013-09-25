@@ -37,6 +37,17 @@ public class ClusterLinkUtil {
 	public static final String CLUSTER_FORWARD_MESSAGE =
 		ClusterLink.CLUSTER_FORWARD_MESSAGE;
 
+	public static Address deserializeAddress(String serializedAddress) {
+
+			ClusterLink clusterLink = getClusterLink();
+
+		if (clusterLink == null) {
+			return null;
+		}
+
+		return clusterLink.deserializeAddress(serializedAddress);
+	}
+
 	public static Address getAddress(Message message) {
 		return (Address)message.get(_ADDRESS);
 	}
@@ -119,6 +130,16 @@ public class ClusterLinkUtil {
 		}
 
 		clusterLink.sendUnicastMessage(address, message, priority);
+	}
+
+	public static String serializeAddress(Address address) {
+		ClusterLink clusterLink = getClusterLink();
+
+		if (clusterLink == null) {
+			return null;
+		}
+
+		return clusterLink.serializeAddress(address);
 	}
 
 	public static Message setAddress(Message message, Address address) {
