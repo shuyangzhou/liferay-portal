@@ -943,6 +943,11 @@ public class GroupWrapper implements Group, ModelWrapper<Group> {
 		return _group.hasStagingGroup();
 	}
 
+	@Override
+	public boolean isChild(long groupId) {
+		return _group.isChild(groupId);
+	}
+
 	/**
 	* @deprecated As of 6.1.0, renamed to {@link #isRegularSite}
 	*/

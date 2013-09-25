@@ -15,13 +15,13 @@
 package com.liferay.portal.scheduler;
 
 import com.liferay.portal.cluster.AddressImpl;
-import com.liferay.portal.cluster.ClusterInvokeThreadLocal;
 import com.liferay.portal.cluster.ClusterableContextThreadLocal;
 import com.liferay.portal.kernel.cluster.Address;
 import com.liferay.portal.kernel.cluster.ClusterEventListener;
 import com.liferay.portal.kernel.cluster.ClusterExecutor;
 import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
 import com.liferay.portal.kernel.cluster.ClusterInvokeAcceptor;
+import com.liferay.portal.kernel.cluster.ClusterInvokeThreadLocal;
 import com.liferay.portal.kernel.cluster.ClusterMessageType;
 import com.liferay.portal.kernel.cluster.ClusterNode;
 import com.liferay.portal.kernel.cluster.ClusterNodeResponse;
@@ -286,8 +286,7 @@ public class ClusterSchedulerEngineTest {
 
 		Assert.assertTrue(schedulerResponseMap.isEmpty());
 
-		String newMaster = _clusterSchedulerEngine.getSerializedString(
-			MockClusterExecutor._anotherAddress);
+		String newMaster = MockClusterExecutor._anotherAddress.serialize();
 
 		MockLockLocalService.setLock(newMaster);
 
@@ -311,8 +310,7 @@ public class ClusterSchedulerEngineTest {
 
 		Assert.assertTrue(schedulerResponseMap.isEmpty());
 
-		String newMaster = _clusterSchedulerEngine.getSerializedString(
-			MockClusterExecutor._anotherAddress);
+		String newMaster = MockClusterExecutor._anotherAddress.serialize();
 
 		MockLockLocalService.setLock(newMaster);
 
@@ -625,8 +623,8 @@ public class ClusterSchedulerEngineTest {
 
 		Assert.assertEquals(2, schedulerResponseMap.size());
 
-		String newMaster = _clusterSchedulerEngine.getSerializedString(
-			ClusterExecutorUtil.getLocalClusterNodeAddress());
+		String newMaster =
+			ClusterExecutorUtil.getLocalClusterNodeAddress().serialize();
 
 		MockLockLocalService.setLock(newMaster);
 
@@ -939,8 +937,7 @@ public class ClusterSchedulerEngineTest {
 			masterAddress = MockClusterExecutor._anotherAddress;
 		}
 
-		MockLockLocalService.setLock(
-			clusterSchedulerEngine.getSerializedString(masterAddress));
+		MockLockLocalService.setLock(masterAddress.serialize());
 
 		SchedulerEngineHelperImpl schedulerEngineHelperImpl =
 			new SchedulerEngineHelperImpl();

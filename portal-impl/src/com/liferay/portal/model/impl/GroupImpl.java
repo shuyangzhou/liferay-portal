@@ -593,6 +593,18 @@ public class GroupImpl extends GroupBaseImpl {
 		}
 	}
 
+	@Override
+	public boolean isChild(long groupId) {
+		String treePath = getTreePath();
+
+		if (treePath.contains(StringPool.SLASH + groupId + StringPool.SLASH)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
 	/**
 	 * @deprecated As of 6.1.0, renamed to {@link #isRegularSite}
 	 */

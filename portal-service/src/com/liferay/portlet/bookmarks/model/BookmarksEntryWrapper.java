@@ -676,6 +676,16 @@ public class BookmarksEntryWrapper implements BookmarksEntry,
 	}
 
 	/**
+	* Returns the classPK of this bookmarks entry
+	*
+	* @return the classPK of this bookmarks entry
+	*/
+	@Override
+	public long getTrashEntryClassPK() {
+		return _bookmarksEntry.getTrashEntryClassPK();
+	}
+
+	/**
 	* Returns the trash handler for this bookmarks entry.
 	*
 	* @return the trash handler for this bookmarks entry
@@ -911,13 +921,6 @@ public class BookmarksEntryWrapper implements BookmarksEntry,
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
 		return _bookmarksEntry.getFolder();
-	}
-
-	@Override
-	public com.liferay.portlet.bookmarks.model.BookmarksFolder getTrashContainer()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
-		return _bookmarksEntry.getTrashContainer();
 	}
 
 	@Override

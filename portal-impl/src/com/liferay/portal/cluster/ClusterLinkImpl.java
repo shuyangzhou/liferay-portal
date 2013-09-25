@@ -18,12 +18,18 @@ import com.liferay.portal.kernel.cluster.Address;
 import com.liferay.portal.kernel.cluster.ClusterLink;
 import com.liferay.portal.kernel.cluster.Priority;
 import com.liferay.portal.kernel.cluster.messaging.ClusterForwardMessageListener;
+import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
+import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.security.pacl.DoPrivileged;
+import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.util.PropsUtil;
+
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import java.net.InetAddress;
 
@@ -39,6 +45,35 @@ import org.jgroups.JChannel;
  */
 @DoPrivileged
 public class ClusterLinkImpl extends ClusterBase implements ClusterLink {
+
+	public Address deserializeAddress(String serializedAddress) {
+
+		byte[] bytes = Base64.decode(serializedAddress);
+
+		UnsyncByteArrayInputStream byteArrayInputStream =
+			new UnsyncByteArrayInputStream(bytes);
+
+		ObjectInputStream objectInputStream = null;
+
+		try {
+			objectInputStream = new ObjectInputStream(byteArrayInputStream);
+
+			Object object = objectInputStream.readObject();
+
+			return (Address)object;
+		}
+		catch (Exception e) {
+			throw new IllegalStateException(
+				"Unable to deserialize address: " + serializedAddress, e);
+		}
+		finally {
+			try {
+				objectInputStream.close();
+			}
+			catch (Exception e) {
+			}
+		}
+	}
 
 	@Override
 	public void destroy() {
@@ -117,6 +152,27 @@ public class ClusterLinkImpl extends ClusterBase implements ClusterLink {
 		}
 		catch (Exception e) {
 			_log.error("Unable to send unicast message " + message, e);
+		}
+	}
+
+	public String serializeAddress(Address address) {
+		try {
+			UnsyncByteArrayOutputStream byteArrayOutputStream =
+				new UnsyncByteArrayOutputStream();
+
+			ObjectOutputStream objectOutputStream = new ObjectOutputStream(
+				byteArrayOutputStream);
+
+			objectOutputStream.writeObject(address);
+			objectOutputStream.close();
+
+			byte[] bytes = byteArrayOutputStream.toByteArray();
+
+			return Base64.encode(bytes);
+		}
+		catch (Exception e) {
+			throw new IllegalStateException(
+				"Unable to serialize address: " + address, e);
 		}
 	}
 

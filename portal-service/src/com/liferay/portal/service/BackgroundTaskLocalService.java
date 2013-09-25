@@ -252,6 +252,8 @@ public interface BackgroundTaskLocalService extends BaseLocalService,
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException;
 
+	public void triggerBackgroundTask(long backgroundTaskId);
+
 	public void addBackgroundTaskAttachment(long userId, long backgroundTaskId,
 		java.lang.String fileName, java.io.File file)
 		throws com.liferay.portal.kernel.exception.PortalException,
@@ -274,6 +276,9 @@ public interface BackgroundTaskLocalService extends BaseLocalService,
 		int status, java.lang.String statusMessage,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.SystemException;
+
+	public void cleanUpBackgroundTask(
+		com.liferay.portal.model.BackgroundTask backgroundTask, int status);
 
 	public void cleanUpBackgroundTasks()
 		throws com.liferay.portal.kernel.exception.SystemException;
@@ -397,7 +402,8 @@ public interface BackgroundTaskLocalService extends BaseLocalService,
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.lang.String getBackgroundTaskStatusJSON(long backgroundTaskId);
+	public java.lang.String getBackgroundTaskStatusJSON(long backgroundTaskId)
+		throws com.liferay.portal.kernel.exception.SystemException;
 
 	public void resumeBackgroundTask(long backgroundTaskId)
 		throws com.liferay.portal.kernel.exception.SystemException;

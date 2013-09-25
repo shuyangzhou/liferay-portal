@@ -116,6 +116,8 @@ public interface Group extends GroupModel, PersistedModel {
 
 	public boolean hasStagingGroup();
 
+	public boolean isChild(long groupId);
+
 	/**
 	* @deprecated As of 6.1.0, renamed to {@link #isRegularSite}
 	*/

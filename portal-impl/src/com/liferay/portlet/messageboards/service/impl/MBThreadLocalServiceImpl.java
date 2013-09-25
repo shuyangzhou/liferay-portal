@@ -690,13 +690,6 @@ public class MBThreadLocalServiceImpl extends MBThreadLocalServiceBaseImpl {
 
 			userIds.add(message.getUserId());
 
-			// Asset
-
-			if (oldStatus == WorkflowConstants.STATUS_APPROVED) {
-				assetEntryLocalService.updateVisible(
-					MBMessage.class.getName(), message.getMessageId(), false);
-			}
-
 			// Trash
 
 			int status = oldStatus;
@@ -709,6 +702,13 @@ public class MBThreadLocalServiceImpl extends MBThreadLocalServiceBaseImpl {
 				trashVersionLocalService.addTrashVersion(
 					trashEntryId, MBMessage.class.getName(),
 					message.getMessageId(), status);
+			}
+
+			// Asset
+
+			if (oldStatus == WorkflowConstants.STATUS_APPROVED) {
+				assetEntryLocalService.updateVisible(
+					MBMessage.class.getName(), message.getMessageId(), false);
 			}
 
 			// Indexer
@@ -813,11 +813,7 @@ public class MBThreadLocalServiceImpl extends MBThreadLocalServiceBaseImpl {
 
 		TrashEntry trashEntry = thread.getTrashEntry();
 
-		String className = trashEntry.getClassName();
-
-		if (className.equals(MBThread.class.getName()) &&
-			(trashEntry.getClassPK() == threadId)) {
-
+		if (trashEntry.isTrashEntry(MBThread.class, threadId)) {
 			restoreThreadFromTrash(userId, threadId);
 		}
 		else {

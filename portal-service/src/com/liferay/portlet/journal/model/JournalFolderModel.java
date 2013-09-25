@@ -363,6 +363,9 @@ public interface JournalFolderModel extends BaseModel<JournalFolder>,
 	@Override
 	public TrashEntry getTrashEntry() throws PortalException, SystemException;
 
+	@Override
+	public long getTrashEntryClassPK();
+
 	/**
 	 * Returns the trash handler for this journal folder.
 	 *
