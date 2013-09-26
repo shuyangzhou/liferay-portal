@@ -62,7 +62,7 @@ if (stagedLocally) {
 				Liferay.Util.openWindow(
 					{
 						id: 'publishProcesses',
-						title: Liferay.Language.get('current-and-previous'),
+						title: Liferay.Language.get('initial-publication'),
 						uri: '<%= HtmlUtil.escapeJS(publishProcessesURL.toString()) %>'
 					}
 				);
@@ -131,6 +131,15 @@ if (stagedLocally) {
 
 		<div class="<%= showRemoteOptions ? StringPool.BLANK : "hide" %> staging-section" id="<portlet:namespace />remoteStagingOptions">
 			<br />
+
+			<liferay-ui:error exception="<%= InvalidKeyException.class %>">
+
+				<%
+				InvalidKeyException ike = (InvalidKeyException)errorException;
+				%>
+
+				<%= ike.getMessage() %>
+			</liferay-ui:error>
 
 			<liferay-ui:error exception="<%= RemoteExportException.class %>">
 

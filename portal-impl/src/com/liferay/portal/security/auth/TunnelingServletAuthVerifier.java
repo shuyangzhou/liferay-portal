@@ -30,12 +30,16 @@ import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.Encryptor;
 import com.liferay.util.EncryptorException;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
 import java.security.InvalidKeyException;
 
 import java.util.Properties;
 import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Zsolt Berentey
@@ -54,12 +58,41 @@ public class TunnelingServletAuthVerifier implements AuthVerifier {
 
 		AuthVerifierResult authVerifierResult = new AuthVerifierResult();
 
-		String[] credentials = verify(accessControlContext.getRequest());
+		try {
+			String[] credentials = verify(accessControlContext.getRequest());
 
-		if (credentials != null) {
-			authVerifierResult.setPassword(credentials[1]);
-			authVerifierResult.setState(AuthVerifierResult.State.SUCCESS);
-			authVerifierResult.setUserId(Long.valueOf(credentials[0]));
+			if (credentials != null) {
+				authVerifierResult.setPassword(credentials[1]);
+				authVerifierResult.setState(AuthVerifierResult.State.SUCCESS);
+				authVerifierResult.setUserId(Long.valueOf(credentials[0]));
+			}
+		}
+		catch (AuthException ae) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(ae.getMessage());
+			}
+
+			HttpServletResponse response = accessControlContext.getResponse();
+
+			try {
+				ObjectOutputStream objectOutputStream = new ObjectOutputStream(
+					response.getOutputStream());
+
+				objectOutputStream.writeObject(
+					new SystemException(ae.getMessage()));
+
+				objectOutputStream.flush();
+
+				objectOutputStream.close();
+
+				authVerifierResult.setState(
+					AuthVerifierResult.State.INVALID_CREDENTIALS);
+			}
+			catch (IOException ioe) {
+				_log.error(ioe, ioe);
+
+				throw ae;
+			}
 		}
 
 		return authVerifierResult;
@@ -116,10 +149,10 @@ public class TunnelingServletAuthVerifier implements AuthVerifier {
 				TunnelUtil.getSharedSecretKey(), login);
 		}
 		catch (EncryptorException ee) {
-			throw new AuthException("Unable to decrypt login.", ee);
+			throw new AuthException("Unable to decrypt login", ee);
 		}
 		catch (InvalidKeyException ike) {
-			throw new AuthException(ike);
+			throw new AuthException(ike.getMessage());
 		}
 
 		if (!password.equals(expectedPassword)) {
@@ -156,7 +189,7 @@ public class TunnelingServletAuthVerifier implements AuthVerifier {
 		}
 
 		if (user == null) {
-			throw new AuthException();
+			throw new AuthException("Internal server error");
 		}
 
 		String[] credentials = new String[2];
