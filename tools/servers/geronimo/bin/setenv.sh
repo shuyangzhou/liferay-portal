@@ -1,1 +1,1 @@
-GERONIMO_OPTS="$GERONIMO_OPTS -Dfile.encoding=UTF8 -Duser.timezone=GMT -Xmx1024m -XX:MaxPermSize=512m"
+GERONIMO_OPTS="$GERONIMO_OPTS -Dfile.encoding=UTF8 -Djava.net.preferIPv4Stack=true @java.security.manager.option@ -Djava.security.policy==@app.server.geronimo.dir@/etc/server.policy -Duser.timezone=GMT -DXorg.apache.geronimo.deployment.LenientMFCP=true -Xmx1024m -XX:MaxPermSize=512m"

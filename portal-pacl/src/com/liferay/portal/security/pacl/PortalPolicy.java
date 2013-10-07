@@ -14,75 +14,72 @@
 
 package com.liferay.portal.security.pacl;
 
+import com.liferay.portal.kernel.security.pacl.permission.PortalHookPermission;
+import com.liferay.portal.kernel.security.pacl.permission.PortalMessageBusPermission;
+import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;
+import com.liferay.portal.kernel.security.pacl.permission.PortalServicePermission;
+import com.liferay.portal.kernel.util.JavaDetector;
 import com.liferay.portal.kernel.util.WeakValueConcurrentHashMap;
-import com.liferay.portal.util.Portal;
 
 import java.lang.reflect.Field;
 
+import java.security.AccessControlException;
 import java.security.AccessController;
 import java.security.AllPermission;
 import java.security.CodeSource;
 import java.security.Permission;
 import java.security.PermissionCollection;
-import java.security.Permissions;
 import java.security.Policy;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
 import java.security.ProtectionDomain;
-import java.security.Provider;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Enumeration;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-
-import javax.servlet.Servlet;
 
 /**
  * @author Raymond Augé
  */
 public class PortalPolicy extends Policy {
 
-	public PortalPolicy(Policy policy) {
+	public PortalPolicy(Policy policy) throws PrivilegedActionException {
+		if (policy instanceof PortalPolicy) {
+			throw new IllegalArgumentException(
+				"Liferay's PortalPolicy class should not wrap itself");
+		}
+
 		_policy = policy;
 
-		try {
-			_init();
-		}
-		catch (PrivilegedActionException pae) {
-			throw new IllegalStateException(
-				"Liferay needs to be able to change the accessibility of the " +
-					"'key' field in " + ProtectionDomain.class.getName() +
-						" as well as get the protection domains of classes",
-				pae.getException());
-		}
-	}
-
-	@Override
-	public Parameters getParameters() {
-		Parameters parameters = null;
-
-		if (_policy != null) {
-			parameters = _policy.getParameters();
-		}
-
-		return parameters;
+		_field = AccessController.doPrivileged(
+			new FieldPrivilegedExceptionAction());
 	}
 
 	@Override
 	public PermissionCollection getPermissions(CodeSource codeSource) {
-		PermissionCollection permissionCollection = null;
-
-		if (_policy != null) {
-			permissionCollection = _policy.getPermissions(codeSource);
+		if ((codeSource == null) || (codeSource.getLocation() == null)) {
+			return new LenientPermissionCollection();
 		}
 
-		if (permissionCollection == null) {
-			permissionCollection = new Permissions();
+		URLWrapper urlWrapper = new URLWrapper(codeSource.getLocation());
+
+		PermissionCollection permissionCollection =
+			_urlPermissionCollections.get(urlWrapper);
+
+		if (permissionCollection != null) {
+			return permissionCollection;
 		}
+
+		PACLPolicy paclPolicy = PACLPolicyManager.getPACLPolicy(
+			codeSource.getLocation());
+
+		if (paclPolicy != null) {
+			permissionCollection = new PortalPermissionCollection(paclPolicy);
+		}
+		else {
+			permissionCollection = new LenientPermissionCollection();
+		}
+
+		_urlPermissionCollections.put(urlWrapper, permissionCollection);
 
 		return permissionCollection;
 	}
@@ -92,111 +89,114 @@ public class PortalPolicy extends Policy {
 		ProtectionDomain protectionDomain) {
 
 		if (protectionDomain == null) {
-			return new Permissions();
+			return new LenientPermissionCollection();
 		}
 
 		Object key = _getKey(protectionDomain);
 
-		PermissionCollection permissionCollection = _getPermissionCollection(
-			key);
+		PermissionCollection permissionCollection = null;
+
+		if (key != null) {
+			permissionCollection = _permissionCollections.get(key);
+		}
+
+		if (permissionCollection == null) {
+			CodeSource codeSource = protectionDomain.getCodeSource();
+
+			if ((codeSource != null) && (codeSource.getLocation() != null)) {
+				permissionCollection = _urlPermissionCollections.get(
+					new URLWrapper(codeSource.getLocation()));
+			}
+		}
 
 		if (permissionCollection != null) {
 			return permissionCollection;
 		}
 
-		permissionCollection = getPermissions(protectionDomain.getCodeSource());
-
-		if (permissionCollection == null) {
-			permissionCollection = new Permissions();
-		}
-
-		if (_policy != null) {
-			_addExtraPermissions(
-				permissionCollection, _policy.getPermissions(protectionDomain));
-		}
-
-		_addExtraPermissions(
-			permissionCollection, protectionDomain.getPermissions());
-
 		PACLPolicy paclPolicy = PACLPolicyManager.getPACLPolicy(
-			protectionDomain.getClassLoader());
+			protectionDomain);
 
 		if (paclPolicy != null) {
-			return new PortalPermissionCollection(
-				paclPolicy, permissionCollection);
+			permissionCollection = new PortalPermissionCollection(paclPolicy);
+		}
+		else {
+			if (JavaDetector.isIBM()) {
+				permissionCollection = _policy.getPermissions(protectionDomain);
+			}
+			else {
+				permissionCollection = new LenientPermissionCollection();
+			}
 		}
 
-		permissionCollection.add(_allPermission);
+		if (key != null) {
+			_permissionCollections.put(key, permissionCollection);
+		}
 
 		return permissionCollection;
-	}
-
-	@Override
-	public Provider getProvider() {
-		Provider provider = null;
-
-		if (_policy != null) {
-			provider = _policy.getProvider();
-		}
-
-		return provider;
-	}
-
-	@Override
-	public String getType() {
-		String type = null;
-
-		if (_policy != null) {
-			type = _policy.getType();
-		}
-
-		return type;
 	}
 
 	@Override
 	public boolean implies(
 		ProtectionDomain protectionDomain, Permission permission) {
 
-		if (!(permission instanceof PACLUtil.Permission) &&
-			((protectionDomain.getClassLoader() == null) ||
-			 !PACLPolicyManager.isActive() ||
-			 !_paclPolicy.isCheckablePermission(permission))) {
-
-			return _checkWithParentPolicy(protectionDomain, permission);
+		if (_started.get()) {
+			return true;
 		}
 
-		Object key = _getKey(protectionDomain);
+		try {
+			_started.set(true);
 
-		PermissionCollection permissionCollection = _getPermissionCollection(
-			key);
+			PermissionCollection permissionCollection = null;
 
-		if (permissionCollection != null) {
-			if (permissionCollection.implies(permission)) {
+			if (JavaDetector.isIBM()) {
+				permissionCollection = getPermissions(protectionDomain);
+
+				if ((permissionCollection != null) &&
+					!(permissionCollection instanceof
+						PortalPermissionCollection)) {
+
+					Enumeration<Permission> enumeration =
+						permissionCollection.elements();
+
+					while (enumeration.hasMoreElements()) {
+						Permission curPermission = enumeration.nextElement();
+
+						if (curPermission instanceof AllPermission) {
+							return true;
+						}
+					}
+				}
+			}
+
+			if (!(permission instanceof PACLUtil.Permission) &&
+				!_paclPolicy.isCheckablePermission(permission)) {
+
 				return _checkWithParentPolicy(protectionDomain, permission);
 			}
-			else if (_checkWithPACLPolicyPolicy(
+
+			if (!JavaDetector.isIBM()) {
+				permissionCollection = getPermissions(protectionDomain);
+			}
+
+			if (permissionCollection instanceof
+					PortalPermissionCollection) {
+
+				if (permissionCollection.implies(permission) ||
+					_checkWithPACLPolicyPolicy(
 						protectionDomain, permission, permissionCollection)) {
 
-				return _checkWithParentPolicy(protectionDomain, permission);
+					return true;
+				}
+
+				throw new AccessControlException(
+					"Access denied " + permission, permission);
 			}
 
-			return false;
-		}
-
-		permissionCollection = getPermissions(protectionDomain);
-
-		_permissionCollections.putIfAbsent(key, permissionCollection);
-
-		if (permissionCollection.implies(permission)) {
 			return _checkWithParentPolicy(protectionDomain, permission);
 		}
-		else if (_checkWithPACLPolicyPolicy(
-					protectionDomain, permission, permissionCollection)) {
-
-			return _checkWithParentPolicy(protectionDomain, permission);
+		finally {
+			_started.set(false);
 		}
-
-		return false;
 	}
 
 	@Override
@@ -207,36 +207,13 @@ public class PortalPolicy extends Policy {
 
 		synchronized (_permissionCollections) {
 			_permissionCollections.clear();
-
-			_permissionCollections.putAll(_rootPermissionCollections);
-		}
-	}
-
-	private void _addExtraPermissions(
-		PermissionCollection permissionCollection,
-		PermissionCollection staticPermissionCollection) {
-
-		if (staticPermissionCollection == null) {
-			return;
-		}
-
-		synchronized (staticPermissionCollection) {
-			Enumeration<Permission> enumeration =
-				staticPermissionCollection.elements();
-
-			while (enumeration.hasMoreElements()) {
-				permissionCollection.add(enumeration.nextElement());
-			}
+			_urlPermissionCollections.clear();
 		}
 	}
 
 	private boolean _checkWithPACLPolicyPolicy(
 		ProtectionDomain protectionDomain, Permission permission,
 		PermissionCollection permissionCollection) {
-
-		if (!(permissionCollection instanceof PortalPermissionCollection)) {
-			return false;
-		}
 
 		PortalPermissionCollection portalPermissionCollection =
 			(PortalPermissionCollection)permissionCollection;
@@ -254,10 +231,20 @@ public class PortalPolicy extends Policy {
 		return false;
 	}
 
+	@SuppressWarnings("deprecation")
 	private boolean _checkWithParentPolicy(
 		ProtectionDomain protectionDomain, Permission permission) {
 
-		if (_policy != null) {
+		if ((_policy != null) &&
+			!(permission instanceof
+				com.liferay.portal.kernel.security.pacl.permission.
+					CheckMemberAccessPermission) &&
+			!(permission instanceof PortalHookPermission) &&
+			!(permission instanceof PortalMessageBusPermission) &&
+			!(permission instanceof PortalRuntimePermission) &&
+			!(permission instanceof PortalServicePermission) &&
+			!(permission instanceof PACLUtil.Permission)) {
+
 			return _policy.implies(protectionDomain, permission);
 		}
 
@@ -269,59 +256,27 @@ public class PortalPolicy extends Policy {
 			return _field.get(protectionDomain);
 		}
 		catch (Exception e) {
-			String string = protectionDomain.toString();
-
-			return string.hashCode();
+			return null;
 		}
 	}
 
-	private PermissionCollection _getPermissionCollection(Object key) {
-		PermissionCollection permissionCollection = _permissionCollections.get(
-			key);
+	private static ThreadLocal<Boolean> _started = new ThreadLocal<Boolean>() {
 
-		if (permissionCollection == null) {
-			permissionCollection = _rootPermissionCollections.get(key);
-
-			if (permissionCollection != null) {
-				_permissionCollections.putIfAbsent(key, permissionCollection);
-			}
+		@Override
+		protected Boolean initialValue() {
+			return Boolean.FALSE;
 		}
 
-		return permissionCollection;
-	}
-
-	private void _init() throws PrivilegedActionException {
-		_field = AccessController.doPrivileged(
-			new FieldPrivilegedExceptionAction());
-
-		List<ProtectionDomain> protectionDomains =
-			AccessController.doPrivileged(
-				new ProtectionDomainsPrivilegedExceptionAction());
-
-		PermissionCollection permissionCollection = new Permissions();
-
-		permissionCollection.add(_allPermission);
-
-		_rootPermissionCollections =
-			new ConcurrentHashMap<Object, PermissionCollection>();
-
-		for (ProtectionDomain protectionDomain : protectionDomains) {
-			_rootPermissionCollections.put(
-				_getKey(protectionDomain), permissionCollection);
-		}
-
-		_rootPermissionCollections = Collections.unmodifiableMap(
-			_rootPermissionCollections);
-	}
-
-	private static AllPermission _allPermission = new AllPermission();
+	};
 
 	private Field _field;
 	private PACLPolicy _paclPolicy = PACLPolicyManager.getDefaultPACLPolicy();
 	private ConcurrentMap<Object, PermissionCollection> _permissionCollections =
 		new WeakValueConcurrentHashMap<Object, PermissionCollection>();
 	private Policy _policy;
-	private Map<Object, PermissionCollection> _rootPermissionCollections;
+	private ConcurrentMap<URLWrapper, PermissionCollection>
+		_urlPermissionCollections =
+			new WeakValueConcurrentHashMap<URLWrapper, PermissionCollection>();
 
 	private class FieldPrivilegedExceptionAction
 		implements PrivilegedExceptionAction<Field> {
@@ -333,26 +288,6 @@ public class PortalPolicy extends Policy {
 			field.setAccessible(true);
 
 			return field;
-		}
-
-	}
-
-	private class ProtectionDomainsPrivilegedExceptionAction
-		implements PrivilegedExceptionAction<List<ProtectionDomain>> {
-
-		@Override
-		public List<ProtectionDomain> run() throws Exception {
-			List<ProtectionDomain> protectionDomains =
-				new ArrayList<ProtectionDomain>();
-
-			Class<?> clazz = getClass();
-
-			protectionDomains.add(clazz.getProtectionDomain());
-			protectionDomains.add(Object.class.getProtectionDomain());
-			protectionDomains.add(Portal.class.getProtectionDomain());
-			protectionDomains.add(Servlet.class.getProtectionDomain());
-
-			return protectionDomains;
 		}
 
 	}

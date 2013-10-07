@@ -60,6 +60,13 @@
 		</if>
 
 		<if>
+			<equals arg1="${app.server.type}" arg2="resin" />
+			<then>
+				<ant dir="support-resin" target="clean" inheritAll="false" />
+			</then>
+		</if>
+
+		<if>
 			<equals arg1="${app.server.type}" arg2="tomcat" />
 			<then>
 				<delete failonerror="false">
@@ -70,6 +77,13 @@
 				</delete>
 
 				<ant dir="support-tomcat" target="clean" inheritAll="false" />
+			</then>
+		</if>
+
+		<if>
+			<equals arg1="${app.server.type}" arg2="websphere" />
+			<then>
+				<ant dir="support-websphere" target="clean" inheritAll="false" />
 			</then>
 		</if>
 
@@ -383,6 +397,8 @@ ${app.server.tomcat.dir}, then run "ant -buildfile build-dist.xml unzip-tomcat".
 		<if>
 			<equals arg1="${app.server.type}" arg2="resin" />
 			<then>
+				<ant dir="support-resin" target="deploy" inheritAll="false" />
+
 				<copy todir="${app.server.lib.global.dir}">
 					<fileset
 						dir="lib/development"
@@ -482,6 +498,8 @@ ${app.server.tomcat.dir}, then run "ant -buildfile build-dist.xml unzip-tomcat".
 		<if>
 			<equals arg1="${app.server.type}" arg2="websphere" />
 			<then>
+				<ant dir="support-websphere" target="deploy" inheritAll="false" />
+
 				<exec dir="${app.server.websphere.bin.dir}" executable="/bin/sh" os="${os.unix}">
 					<arg line="startServer.sh server1" />
 				</exec>
