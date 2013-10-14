@@ -2067,12 +2067,45 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 	public void rebuildTree(long companyId)
 		throws PortalException, SystemException {
 
-		List<Group> groups = groupPersistence.findByCompanyId(companyId);
+		OrderByComparator orderByComparator = new OrderByComparator() {
 
-		for (Group group : groups) {
-			group.setTreePath(group.buildTreePath());
+			@Override
+			public int compare(Object obj1, Object obj2) {
+				Group group1 = (Group)obj1;
+				Group group2 = (Group)obj2;
 
-			groupPersistence.update(group);
+				Long groupPrimaryKey1 = (Long)group1.getPrimaryKeyObj();
+				Long groupPrimaryKey2 = (Long)group2.getPrimaryKeyObj();
+
+				return groupPrimaryKey1.compareTo(groupPrimaryKey2);
+			}
+
+			@Override
+			public String getOrderBy() {
+				return "groupId ASC";
+			}
+
+		};
+
+		int start = 0;
+
+		while (true) {
+			int end = start + PropsValues.BULK_OPERATIONS_CHUNK_SIZE;
+
+			List<Group> groups = groupPersistence.findByCompanyId(
+				companyId, start, end, orderByComparator);
+
+			if (groups.isEmpty()) {
+				break;
+			}
+
+			for (Group group : groups) {
+				group.setTreePath(group.buildTreePath());
+
+				groupPersistence.update(group);
+			}
+
+			start = end;
 		}
 	}
 
