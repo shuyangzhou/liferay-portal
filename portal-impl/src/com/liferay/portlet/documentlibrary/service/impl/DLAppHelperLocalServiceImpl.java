@@ -1219,13 +1219,11 @@ public class DLAppHelperLocalServiceImpl
 
 				// Social
 
-				Date activityDate = latestFileVersion.getModifiedDate();
-
+				Date activityCreateDate = latestFileVersion.getModifiedDate();
 				int activityType = DLActivityKeys.UPDATE_FILE_ENTRY;
 
 				if (event.equals(DLSyncConstants.EVENT_ADD)) {
-					activityDate = latestFileVersion.getCreateDate();
-
+					activityCreateDate = latestFileVersion.getCreateDate();
 					activityType = DLActivityKeys.ADD_FILE_ENTRY;
 				}
 
@@ -1236,7 +1234,7 @@ public class DLAppHelperLocalServiceImpl
 
 				socialActivityLocalService.addUniqueActivity(
 					latestFileVersion.getStatusByUserId(),
-					fileEntry.getGroupId(), activityDate,
+					fileEntry.getGroupId(), activityCreateDate,
 					DLFileEntryConstants.getClassName(),
 					fileEntry.getFileEntryId(), activityType,
 					extraDataJSONObject.toString(), 0);

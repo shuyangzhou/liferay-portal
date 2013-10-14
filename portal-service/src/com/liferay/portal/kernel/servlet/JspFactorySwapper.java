@@ -24,7 +24,7 @@ import javax.servlet.jsp.JspFactory;
 public class JspFactorySwapper {
 
 	public static void swap() {
-		if (!ServerDetector.isTomcat()) {
+		if (!ServerDetector.isTomcat() && !ServerDetector.isGlassfish()) {
 			return;
 		}
 
