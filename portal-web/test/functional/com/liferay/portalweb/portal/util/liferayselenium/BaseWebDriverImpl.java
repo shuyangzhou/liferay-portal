@@ -25,7 +25,9 @@ import com.liferay.portalweb.portal.util.TestPropsValues;
 
 import java.io.File;
 
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
@@ -355,7 +357,11 @@ public abstract class BaseWebDriverImpl
 			return false;
 		}
 
-		return !pattern.equals(getSelectedLabel(selectLocator, "1"));
+		String[] selectedLabels = getSelectedLabels(selectLocator);
+
+		List<String> selectedLabelsList = Arrays.asList(selectedLabels);
+
+		return !selectedLabelsList.contains(pattern);
 	}
 
 	@Override
@@ -580,7 +586,13 @@ public abstract class BaseWebDriverImpl
 
 	@Override
 	public void uploadTempFile(String location, String value) {
-		uploadFile(location, TestPropsValues.OUTPUT_DIR + value);
+		String slash = "/";
+
+		if (OSDetector.isWindows()) {
+			slash = "\\";
+		}
+
+		uploadFile(location, TestPropsValues.OUTPUT_DIR + slash + value);
 	}
 
 	@Override

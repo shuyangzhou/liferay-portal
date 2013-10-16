@@ -112,7 +112,7 @@ birthdayCalendar.set(Calendar.YEAR, 1970);
 	<liferay-ui:error exception="<%= UserScreenNameException.class %>" message="please-enter-a-valid-screen-name" />
 	<liferay-ui:error exception="<%= WebsiteURLException.class %>" message="please-enter-a-valid-url" />
 
-	<c:if test='<%= SessionMessages.contains(request, "missingOpenIdUserInformation") %>'>
+	<c:if test='<%= SessionMessages.contains(request, "openIdUserInformationMissing") %>'>
 		<div class="alert alert-info">
 			<liferay-ui:message key="you-have-successfully-authenticated-please-provide-the-following-required-information-to-access-the-portal" />
 		</div>

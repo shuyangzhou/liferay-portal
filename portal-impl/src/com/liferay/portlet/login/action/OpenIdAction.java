@@ -324,7 +324,7 @@ public class OpenIdAction extends PortletAction {
 		if (Validator.isNull(firstName) || Validator.isNull(lastName) ||
 			Validator.isNull(emailAddress)) {
 
-			SessionMessages.add(request, "missingOpenIdUserInformation");
+			SessionMessages.add(request, "openIdUserInformationMissing");
 
 			if (_log.isInfoEnabled()) {
 				_log.info(
