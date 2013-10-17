@@ -218,8 +218,7 @@ public class ActionUtil {
 			resourceRequest, portletPreferences);
 	}
 
-	protected static String checkPortletConfigurationPermission(
-			PortletRequest portletRequest)
+	protected static Portlet getPortlet(PortletRequest portletRequest)
 		throws Exception {
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
@@ -240,17 +239,8 @@ public class ActionUtil {
 			throw new PrincipalException();
 		}
 
-		return portletId;
-	}
-
-	protected static Portlet getPortlet(PortletRequest portletRequest)
-		throws Exception {
-
-		long companyId = PortalUtil.getCompanyId(portletRequest);
-
-		String portletId = checkPortletConfigurationPermission(portletRequest);
-
-		return PortletLocalServiceUtil.getPortletById(companyId, portletId);
+		return PortletLocalServiceUtil.getPortletById(
+			themeDisplay.getCompanyId(), portletId);
 	}
 
 	protected static PortletPreferences getPortletPreferences(

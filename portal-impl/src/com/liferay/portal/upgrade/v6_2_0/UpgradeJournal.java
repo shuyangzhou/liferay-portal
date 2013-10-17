@@ -72,8 +72,8 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 
 			StringBundler sb = new StringBundler(6);
 
-			sb.append("insert into DDMStructure(uuid_, structureId, groupId, ");
-			sb.append("companyId, userId, userName, createDate, ");
+			sb.append("insert into DDMStructure (uuid_, structureId, ");
+			sb.append("groupId, companyId, userId, userName, createDate, ");
 			sb.append("modifiedDate, parentStructureId, classNameId, ");
 			sb.append("structureKey, name, description, xsd, storageType, ");
 			sb.append("type_) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ");
@@ -101,6 +101,13 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 			ps.setInt(16, type);
 
 			ps.executeUpdate();
+		}
+		catch (Exception e) {
+			_log.error(
+				"Unable to upgrade dynamic data mapping structure with UUID " +
+					uuid_);
+
+			throw e;
 		}
 		finally {
 			DataAccess.cleanUp(con, ps);
@@ -146,7 +153,7 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 
 			StringBundler sb = new StringBundler(6);
 
-			sb.append("insert into DDMTemplate(uuid_, templateId, groupId, ");
+			sb.append("insert into DDMTemplate (uuid_, templateId, groupId, ");
 			sb.append("companyId, userId, userName, createDate, modifiedDate,");
 			sb.append("classNameId, classPK , templateKey, name, description,");
 			sb.append("type_, mode_, language, script, cacheable, smallImage,");
@@ -180,6 +187,13 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 			ps.setString(21, smallImageURL);
 
 			ps.executeUpdate();
+		}
+		catch (Exception e) {
+			_log.error(
+				"Unable to upgrade dynamic data mapping template with UUID " +
+					uuid_);
+
+			throw e;
 		}
 		finally {
 			DataAccess.cleanUp(con, ps);
@@ -345,6 +359,13 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 			}
 
 			return 0;
+		}
+		catch (Exception e) {
+			_log.error(
+				"Unable to update journal structure with structure ID " +
+					structureId);
+
+			throw e;
 		}
 		finally {
 			DataAccess.cleanUp(con, ps, rs);

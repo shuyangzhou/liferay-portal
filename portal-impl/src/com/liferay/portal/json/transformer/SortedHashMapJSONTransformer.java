@@ -12,24 +12,33 @@
  * details.
  */
 
-package com.liferay.portal.messaging.async;
+package com.liferay.portal.json.transformer;
 
-import com.liferay.portal.kernel.messaging.BaseMessageListener;
-import com.liferay.portal.kernel.messaging.Message;
-import com.liferay.portal.kernel.process.ProcessCallable;
+import flexjson.JSONContext;
+
+import java.util.HashMap;
+import java.util.TreeMap;
 
 /**
- * @author Shuyang Zhou
- * @author Brian Wing Shun Chan
+ * @author Igor Spasic
  */
-public class AsyncMessageListener extends BaseMessageListener {
+public class SortedHashMapJSONTransformer extends BaseJSONTransformer {
 
 	@Override
-	protected void doReceive(Message message) throws Exception {
-		ProcessCallable<?> processCallable =
-			(ProcessCallable<?>)message.getPayload();
+	public void transform(Object object) {
+		if (object instanceof HashMap) {
+			HashMap hashMap = (HashMap)object;
 
-		processCallable.call();
+			TreeMap treeMap = new TreeMap();
+
+			treeMap.putAll(hashMap);
+
+			object = treeMap;
+		}
+
+		JSONContext jsonContext = getContext();
+
+		jsonContext.transform(object);
 	}
 
 }
