@@ -2022,6 +2022,22 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		</if>
 	</target>
 
+	<target name="prepare-test-build">
+		<antcall target="record-git-commit-portal" inheritAll="false" />
+
+		<ant antfile="build-dist.xml" target="unzip-tomcat" inheritAll="false" />
+
+		<antcall target="start" inheritAll="false" />
+
+		<antcall target="deploy" inheritAll="false" />
+
+		<ant dir="portal-impl" target="build-selenium-new" inheritAll="false" />
+
+		<antcall target="compile-test" inheritAll="false" />
+
+		<antcall target="record-test-package-names" inheritAll="false" />
+	</target>
+
 	<target name="prepare-test-properties" depends="generate-test-properties">
 		<echo file="portal-impl/test/portal-test-ext.properties">
 jdbc.default.driverClassName=${database.driver}
@@ -2322,7 +2338,7 @@ custom.sql.function.isnotnull=CONVERT(VARCHAR,?) IS NOT NULL</echo>
 							<socket server="${database.host}" port="5000" />
 						</waitfor>
 
-						<sleep seconds="5" />
+						<sleep seconds="10" />
 					</sequential>
 				</parallel>
 			</then>
