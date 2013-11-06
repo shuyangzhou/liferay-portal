@@ -15,6 +15,7 @@
 package com.liferay.portal.service.impl;
 
 import com.liferay.portal.LayoutFriendlyURLException;
+import com.liferay.portal.LayoutFriendlyURLsException;
 import com.liferay.portal.LayoutNameException;
 import com.liferay.portal.LayoutParentLayoutIdException;
 import com.liferay.portal.LayoutTypeException;
@@ -46,6 +47,7 @@ import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.persistence.LayoutFriendlyURLPersistence;
 import com.liferay.portal.service.persistence.LayoutPersistence;
 import com.liferay.portal.service.persistence.LayoutSetPersistence;
+import com.liferay.portal.util.Portal;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.comparator.LayoutPriorityComparator;
 import com.liferay.portlet.sites.util.SitesUtil;
@@ -325,6 +327,16 @@ public class LayoutLocalServiceHelper implements IdentifiableBean {
 
 		LayoutImpl.validateFriendlyURLKeyword(friendlyURL);
 
+		if (friendlyURL.contains(Portal.FRIENDLY_URL_SEPARATOR)) {
+			LayoutFriendlyURLException lfurle =
+				new LayoutFriendlyURLException(
+					LayoutFriendlyURLException.KEYWORD_CONFLICT);
+
+			lfurle.setKeywordConflict(Portal.FRIENDLY_URL_SEPARATOR);
+
+			throw lfurle;
+		}
+
 		List<FriendlyURLMapper> friendlyURLMappers =
 			PortletLocalServiceUtil.getFriendlyURLMappers();
 
@@ -367,10 +379,28 @@ public class LayoutLocalServiceHelper implements IdentifiableBean {
 			Map<Locale, String> friendlyURLMap)
 		throws PortalException, SystemException {
 
+		LayoutFriendlyURLsException layoutFriendlyURLsException = null;
+
 		for (Map.Entry<Locale, String> entry : friendlyURLMap.entrySet()) {
 			String friendlyURL = entry.getValue();
 
-			validateFriendlyURL(groupId, privateLayout, layoutId, friendlyURL);
+			try {
+				validateFriendlyURL(
+					groupId, privateLayout, layoutId, friendlyURL);
+			}
+			catch (LayoutFriendlyURLException lfurle) {
+				if (layoutFriendlyURLsException == null) {
+					layoutFriendlyURLsException =
+						new LayoutFriendlyURLsException();
+				}
+
+				layoutFriendlyURLsException.addLayoutFriendlyURLException(
+					lfurle);
+			}
+		}
+
+		if (layoutFriendlyURLsException != null) {
+			throw layoutFriendlyURLsException;
 		}
 	}
 

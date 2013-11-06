@@ -1513,8 +1513,8 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 
 		Map<String, String> filterMap = new HashMap<String, String>();
 
-		filterMap.put("author", pluginPackage.getAuthor());
-		filterMap.put("change_log", pluginPackage.getChangeLog());
+		filterMap.put("author", wrapCDATA(pluginPackage.getAuthor()));
+		filterMap.put("change_log", wrapCDATA(pluginPackage.getChangeLog()));
 		filterMap.put(
 			"licenses",
 			getPluginPackageLicensesXml(pluginPackage.getLicenses()));
@@ -1522,12 +1522,13 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 			"liferay_versions",
 			getPluginPackageLiferayVersionsXml(
 				pluginPackage.getLiferayVersions()));
-		filterMap.put("long_description", pluginPackage.getLongDescription());
+		filterMap.put(
+			"long_description", wrapCDATA(pluginPackage.getLongDescription()));
 		filterMap.put("module_artifact_id", pluginPackage.getArtifactId());
 		filterMap.put("module_group_id", pluginPackage.getGroupId());
 		filterMap.put("module_version", pluginPackage.getVersion());
 		filterMap.put("page_url", pluginPackage.getPageURL());
-		filterMap.put("plugin_name", pluginPackage.getName());
+		filterMap.put("plugin_name", wrapCDATA(pluginPackage.getName()));
 		filterMap.put("plugin_type", pluginType);
 		filterMap.put(
 			"plugin_type_name",
@@ -1539,7 +1540,9 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 			"required_deployment_contexts",
 			getPluginPackageRequiredDeploymentContextsXml(
 				pluginPackage.getRequiredDeploymentContexts()));
-		filterMap.put("short_description", pluginPackage.getShortDescription());
+		filterMap.put(
+			"short_description",
+			wrapCDATA(pluginPackage.getShortDescription()));
 		filterMap.put("tags", getPluginPackageTagsXml(pluginPackage.getTags()));
 
 		return filterMap;
@@ -2379,6 +2382,11 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 		if (_log.isInfoEnabled()) {
 			_log.info("Modifying Servlet " + webXmlVersion + " " + webXml);
 		}
+	}
+
+	@Override
+	public String wrapCDATA(String string) {
+		return StringPool.CDATA_OPEN + string + StringPool.CDATA_CLOSE;
 	}
 
 	protected String appServerType;

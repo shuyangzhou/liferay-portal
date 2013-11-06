@@ -102,4 +102,6 @@ public interface Deployer {
 			PluginPackage pluginPackage)
 		throws Exception;
 
+	public String wrapCDATA(String string);
+
 }

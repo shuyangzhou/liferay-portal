@@ -201,6 +201,8 @@ public interface PermissionChecker extends Cloneable {
 	 */
 	public boolean isCompanyAdmin(long companyId);
 
+	public boolean isContentReviewer(long companyId, long groupId);
+
 	/**
 	 * Returns <code>true</code> if the user is an administrator of the group.
 	 *
