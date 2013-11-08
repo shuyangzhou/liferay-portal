@@ -382,7 +382,7 @@ if (hints != null) {
 					availableLocales = LanguageUtil.getAvailableLocales();
 				}
 
-				if (Validator.isNotNull(bean)) {
+				if (bean != null) {
 					xml = BeanPropertiesUtil.getString(bean, field);
 				}
 				else {

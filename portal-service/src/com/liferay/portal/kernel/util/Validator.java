@@ -989,6 +989,8 @@ public class Validator {
 	 * @param  l the long number object to check
 	 * @return <code>true</code> if the long number object is not
 	 *         <code>null</code>; <code>false</code> otherwise
+	 *
+	 * @deprecated As of 6.2.0
 	 */
 	public static boolean isNotNull(Long l) {
 		return !isNull(l);
@@ -1002,6 +1004,8 @@ public class Validator {
 	 * @param  obj the object to check
 	 * @return <code>true</code> if the object is not <code>null</code>;
 	 *         <code>false</code> otherwise
+	 * 
+	 * @deprecated As of 6.2.0
 	 */
 	public static boolean isNotNull(Object obj) {
 		return !isNull(obj);
@@ -1035,6 +1039,8 @@ public class Validator {
 	 * @param  l the long number object to check
 	 * @return <code>true</code> if the long number object is <code>null</code>;
 	 *         <code>false</code> otherwise
+	 * 
+	 * @deprecated As of 6.2.0
 	 */
 	public static boolean isNull(Long l) {
 		if ((l == null) || (l.longValue() == 0)) {
@@ -1053,6 +1059,8 @@ public class Validator {
 	 * @param  obj the object to check
 	 * @return <code>true</code> if the object is <code>null</code>;
 	 *         <code>false</code> otherwise
+	 * 
+	 * @deprecated As of 6.2.0
 	 */
 	public static boolean isNull(Object obj) {
 		if (obj instanceof Long) {

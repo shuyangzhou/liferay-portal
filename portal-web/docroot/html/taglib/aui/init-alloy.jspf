@@ -23,19 +23,19 @@ Object srcNode = (Object)request.getAttribute(_NAMESPACE.concat("srcNode"));
 
 boolean hasBoundingBox = false;
 
-if (Validator.isNotNull(boundingBox)) {
+if (boundingBox != null) {
 	hasBoundingBox = true;
 }
 
 boolean hasContentBox = false;
 
-if (Validator.isNotNull(contentBox)) {
+if (contentBox != null) {
 	hasContentBox = true;
 }
 
 boolean hasSrcNode = false;
 
-if (Validator.isNotNull(srcNode)) {
+if (srcNode != null) {
 	hasSrcNode = true;
 }
 

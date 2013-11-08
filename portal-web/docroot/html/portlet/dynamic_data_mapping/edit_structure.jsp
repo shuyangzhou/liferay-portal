@@ -181,7 +181,7 @@ if (Validator.isNotNull(script)) {
 
 					<div class="input-append">
 						<c:choose>
-							<c:when test="<%= (structure == null) || Validator.isNotNull(parentStructureId) %>">
+							<c:when test="<%= (structure == null) || (parentStructureId > 0) %>">
 								<portlet:renderURL var="parentStructureURL">
 									<portlet:param name="struts_action" value="/dynamic_data_mapping/edit_structure" />
 									<portlet:param name="redirect" value="<%= currentURL %>" />

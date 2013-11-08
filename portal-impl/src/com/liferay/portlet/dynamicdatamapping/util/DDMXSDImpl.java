@@ -462,7 +462,7 @@ public class DDMXSDImpl implements DDMXSD {
 
 		String name = element.attributeValue("name");
 
-		if ((field != null) && Validator.isNotNull(field.getValue())) {
+		if ((field != null) && (field.getValue() != null)) {
 			Fields fields = new Fields();
 
 			fields.put(field);
