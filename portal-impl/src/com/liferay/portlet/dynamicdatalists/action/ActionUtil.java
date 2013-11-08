@@ -15,7 +15,6 @@
 package com.liferay.portlet.dynamicdatalists.action;
 
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.WebKeys;
 import com.liferay.portlet.dynamicdatalists.model.DDLRecord;
@@ -62,7 +61,7 @@ public class ActionUtil {
 
 		DDLRecordSet recordSet = null;
 
-		if (Validator.isNotNull(recordSetId)) {
+		if (recordSetId > 0) {
 			recordSet = DDLRecordSetLocalServiceUtil.getRecordSet(recordSetId);
 		}
 

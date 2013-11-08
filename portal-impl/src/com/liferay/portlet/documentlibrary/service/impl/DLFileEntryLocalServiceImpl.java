@@ -211,9 +211,7 @@ public class DLFileEntryLocalServiceImpl
 				(String)serviceContext.getAttribute("className"));
 			long classPK = ParamUtil.getLong(serviceContext, "classPK");
 
-			if (Validator.isNotNull(classNameId) &&
-				Validator.isNotNull(classPK)) {
-
+			if ((classNameId > 0) && (classPK > 0)) {
 				dlFileEntry.setClassNameId(classNameId);
 				dlFileEntry.setClassPK(classPK);
 			}

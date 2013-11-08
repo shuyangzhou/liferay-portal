@@ -16,7 +16,6 @@ package com.liferay.portlet.layoutsetprototypes.action;
 
 import com.liferay.portal.NoSuchLayoutSetPrototypeException;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.LayoutSetPrototype;
 import com.liferay.portal.service.LayoutSetPrototypeLocalServiceUtil;
@@ -44,7 +43,7 @@ public class ActionUtil {
 			long layoutSetPrototypeId = ParamUtil.getLong(
 				request, "layoutSetPrototypeId");
 
-			if (Validator.isNotNull(layoutSetPrototypeId)) {
+			if (layoutSetPrototypeId > 0) {
 				layoutSetPrototype =
 					LayoutSetPrototypeServiceUtil.getLayoutSetPrototype(
 						layoutSetPrototypeId);

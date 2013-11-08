@@ -437,7 +437,11 @@ public class OrganizationFinderImpl
 
 		Long groupOrganization = (Long)params.get("groupOrganization");
 
-		boolean doUnion = Validator.isNotNull(groupOrganization);
+		boolean doUnion = false;
+
+		if ((groupOrganization != null) && (groupOrganization > 0)) {
+			doUnion = true;
+		}
 
 		if (doUnion) {
 			sb.append(CustomSQLUtil.get(FIND_BY_GROUP_ID));
@@ -803,7 +807,7 @@ public class OrganizationFinderImpl
 			else if (value instanceof Long) {
 				Long valueLong = (Long)value;
 
-				if (Validator.isNotNull(valueLong)) {
+				if (valueLong > 0) {
 					qPos.add(valueLong);
 				}
 			}
@@ -811,7 +815,7 @@ public class OrganizationFinderImpl
 				Long[] valueArray = (Long[])value;
 
 				for (Long element : valueArray) {
-					if (Validator.isNotNull(element)) {
+					if ((element != null) && (element > 0)) {
 						qPos.add(element);
 					}
 				}
