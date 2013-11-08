@@ -1056,7 +1056,7 @@ public class UserFinderImpl
 
 			Long groupId = valueArray[0];
 
-			if (Validator.isNull(groupId)) {
+			if ((groupId == null) || (groupId <= 0)) {
 				join = StringUtil.replace(
 					join, "(UserGroupRole.groupId = ?) AND", StringPool.BLANK);
 			}
