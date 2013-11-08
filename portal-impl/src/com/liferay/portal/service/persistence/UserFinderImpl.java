@@ -942,7 +942,7 @@ public class UserFinderImpl
 
 			Object value = entry.getValue();
 
-			if (Validator.isNotNull(value)) {
+			if (value != null) {
 				sb.append(getJoin(key, value));
 			}
 		}
@@ -1032,7 +1032,7 @@ public class UserFinderImpl
 
 			Object value = entry.getValue();
 
-			if (Validator.isNotNull(value)) {
+			if (value != null) {
 				sb.append(getWhere(key, value));
 			}
 		}

@@ -161,7 +161,7 @@ public class DLFileEntryIndexer extends BaseIndexer {
 			"ddmStructureFieldValue");
 
 		if (Validator.isNotNull(ddmStructureFieldName) &&
-			Validator.isNotNull(ddmStructureFieldValue)) {
+			(ddmStructureFieldValue != null)) {
 
 			String[] ddmStructureFieldNameParts = StringUtil.split(
 				ddmStructureFieldName, StringPool.SLASH);

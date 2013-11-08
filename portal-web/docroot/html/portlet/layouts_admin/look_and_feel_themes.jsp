@@ -71,7 +71,7 @@ Map<String, ThemeSetting> configurableSettings = selTheme.getConfigurableSetting
 						</dd>
 					</c:if>
 
-					<c:if test="<%= !editable && !colorSchemes.isEmpty() && Validator.isNotNull(selColorScheme) %>">
+					<c:if test="<%= !editable && !colorSchemes.isEmpty() && (selColorScheme != null) %>">
 						<dt class="current-color-scheme">
 							<liferay-ui:message key="color-scheme" />
 						</dt>

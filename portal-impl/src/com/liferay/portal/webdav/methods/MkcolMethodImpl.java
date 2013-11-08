@@ -16,7 +16,6 @@ package com.liferay.portal.webdav.methods;
 
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.webdav.Status;
 import com.liferay.portal.kernel.webdav.WebDAVException;
 import com.liferay.portal.kernel.webdav.WebDAVRequest;
@@ -43,7 +42,7 @@ public class MkcolMethodImpl implements Method {
 		if (groupId != 0) {
 			Status status = storage.makeCollection(webDAVRequest);
 
-			if (Validator.isNotNull(status.getObject())) {
+			if (status.getObject() != null) {
 				response.setHeader(
 					HttpHeaders.LOCATION,
 					PortalUtil.getPortalURL(request) +
