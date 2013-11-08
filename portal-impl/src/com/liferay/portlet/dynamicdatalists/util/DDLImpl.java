@@ -120,7 +120,7 @@ public class DDLImpl implements DDL {
 				jsonObject.put(fieldName, ((Date)fieldValue).getTime());
 			}
 			else if (fieldType.equals(DDMImpl.TYPE_DDM_DOCUMENTLIBRARY) &&
-					 Validator.isNotNull(fieldValue)) {
+					 (fieldValue != null)) {
 
 				JSONObject fieldValueJSONObject =
 					JSONFactoryUtil.createJSONObject(
@@ -136,7 +136,7 @@ public class DDLImpl implements DDL {
 			}
 			else if ((fieldType.equals(DDMImpl.TYPE_RADIO) ||
 					  fieldType.equals(DDMImpl.TYPE_SELECT)) &&
-					 Validator.isNotNull(fieldValue)) {
+					 (fieldValue != null)) {
 
 				fieldValue = JSONFactoryUtil.createJSONArray(
 					String.valueOf(fieldValue));

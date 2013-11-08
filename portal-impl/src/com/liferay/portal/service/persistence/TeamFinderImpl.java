@@ -162,7 +162,7 @@ public class TeamFinderImpl
 			String key = entry.getKey();
 			Object value = entry.getValue();
 
-			if (Validator.isNotNull(value)) {
+			if (value != null) {
 				sb.append(getJoin(key));
 			}
 		}
@@ -202,7 +202,7 @@ public class TeamFinderImpl
 			String key = entry.getKey();
 			Object value = entry.getValue();
 
-			if (Validator.isNotNull(value)) {
+			if (value != null) {
 				sb.append(getWhere(key));
 			}
 		}
@@ -247,7 +247,7 @@ public class TeamFinderImpl
 			if (value instanceof Long) {
 				Long valueLong = (Long)value;
 
-				if (Validator.isNotNull(valueLong)) {
+				if (valueLong > 0) {
 					qPos.add(valueLong);
 				}
 			}

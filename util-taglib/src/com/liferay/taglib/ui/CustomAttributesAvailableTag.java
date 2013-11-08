@@ -20,7 +20,6 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ServerDetector;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.UnicodeProperties;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.security.permission.ActionKeys;
 import com.liferay.portal.security.permission.PermissionChecker;
@@ -88,7 +87,7 @@ public class CustomAttributesAvailableTag extends TagSupport {
 			for (String attributeName : attributeNames) {
 				Serializable value = expandoBridge.getAttribute(attributeName);
 
-				if (Validator.isNull(value)) {
+				if (value == null) {
 					continue;
 				}
 

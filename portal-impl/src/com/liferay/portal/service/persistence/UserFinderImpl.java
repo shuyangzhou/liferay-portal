@@ -942,7 +942,7 @@ public class UserFinderImpl
 
 			Object value = entry.getValue();
 
-			if (Validator.isNotNull(value)) {
+			if (value != null) {
 				sb.append(getJoin(key, value));
 			}
 		}
@@ -1032,7 +1032,7 @@ public class UserFinderImpl
 
 			Object value = entry.getValue();
 
-			if (Validator.isNotNull(value)) {
+			if (value != null) {
 				sb.append(getWhere(key, value));
 			}
 		}
@@ -1056,7 +1056,7 @@ public class UserFinderImpl
 
 			Long groupId = valueArray[0];
 
-			if (Validator.isNull(groupId)) {
+			if ((groupId == null) || (groupId <= 0)) {
 				join = StringUtil.replace(
 					join, "(UserGroupRole.groupId = ?) AND", StringPool.BLANK);
 			}
@@ -1255,7 +1255,7 @@ public class UserFinderImpl
 			else if (value instanceof Long) {
 				Long valueLong = (Long)value;
 
-				if (Validator.isNotNull(valueLong)) {
+				if (valueLong > 0) {
 					qPos.add(valueLong);
 				}
 			}
@@ -1263,7 +1263,7 @@ public class UserFinderImpl
 				Long[] valueArray = (Long[])value;
 
 				for (Long element : valueArray) {
-					if (Validator.isNotNull(element)) {
+					if ((element != null) && (element > 0)) {
 						qPos.add(element);
 					}
 				}

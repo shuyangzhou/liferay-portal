@@ -30,7 +30,7 @@ String sessionKey = GetterUtil.getString(request.getAttribute("liferay-ui:progre
 		{
 			boundingBox: '#<%= id %>Bar',
 
-			<c:if test="<%= Validator.isNotNull(height) %>">
+			<c:if test="<%= (height != null) && (height > 0) %>">
 				height: <%= height %>,
 			</c:if>
 

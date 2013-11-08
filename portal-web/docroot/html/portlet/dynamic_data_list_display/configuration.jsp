@@ -24,7 +24,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 DDLRecordSet selRecordSet = null;
 
 try {
-	if (Validator.isNotNull(recordSetId)) {
+	if (recordSetId > 0) {
 		selRecordSet = DDLRecordSetLocalServiceUtil.getRecordSet(recordSetId);
 
 		if (selRecordSet.getGroupId() != scopeGroupId) {

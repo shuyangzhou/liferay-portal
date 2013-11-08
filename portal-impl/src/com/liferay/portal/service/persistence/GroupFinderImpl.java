@@ -259,7 +259,11 @@ public class GroupFinderImpl
 
 		Long userId = (Long)params.get("usersGroups");
 
-		boolean doUnion = Validator.isNotNull(userId);
+		boolean doUnion = false;
+
+		if ((userId != null) && (userId > 0)) {
+			doUnion = true;
+		}
 
 		if (doUnion) {
 			params2 = new LinkedHashMap<String, Object>(params1);
@@ -479,7 +483,11 @@ public class GroupFinderImpl
 		Long userId = (Long)params.get("usersGroups");
 		boolean inherit = GetterUtil.getBoolean(params.get("inherit"), true);
 
-		boolean doUnion = Validator.isNotNull(userId) && inherit;
+		boolean doUnion = false;
+
+		if (inherit && (userId != null) && (userId > 0)) {
+			doUnion = true;
+		}
 
 		if (doUnion) {
 			params2 = new LinkedHashMap<String, Object>(params1);
@@ -716,7 +724,11 @@ public class GroupFinderImpl
 		Long userId = (Long)params.get("usersGroups");
 		boolean inherit = GetterUtil.getBoolean(params.get("inherit"), true);
 
-		boolean doUnion = Validator.isNotNull(userId) && inherit;
+		boolean doUnion = false;
+
+		if (inherit && (userId != null) && (userId > 0)) {
+			doUnion = true;
+		}
 
 		if (doUnion) {
 			params2 = new LinkedHashMap<String, Object>(params1);
@@ -962,7 +974,7 @@ public class GroupFinderImpl
 			String key = entry.getKey();
 			Object value = entry.getValue();
 
-			if (Validator.isNull(value)) {
+			if (value == null) {
 				continue;
 			}
 
@@ -1216,14 +1228,14 @@ public class GroupFinderImpl
 				if (value instanceof Integer) {
 					Integer valueInteger = (Integer)value;
 
-					if (Validator.isNotNull(valueInteger)) {
+					if (valueInteger > 0) {
 						qPos.add(valueInteger);
 					}
 				}
 				else if (value instanceof Long) {
 					Long valueLong = (Long)value;
 
-					if (Validator.isNotNull(valueLong)) {
+					if (valueLong > 0) {
 						qPos.add(valueLong);
 					}
 				}
