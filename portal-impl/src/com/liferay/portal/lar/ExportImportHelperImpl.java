@@ -1400,7 +1400,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 					}
 				}
 
-				if (Validator.isNull(newPrimaryKey)) {
+				if ((newPrimaryKey == null) || (newPrimaryKey <= 0)) {
 					if (_log.isWarnEnabled()) {
 						StringBundler sb = new StringBundler(8);
 
