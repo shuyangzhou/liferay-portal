@@ -1492,13 +1492,13 @@ public class JournalArticleFinderImpl
 		return articles.get(0);
 	}
 
-	protected boolean isNullArray(Object[] array) {
+	protected boolean isNullArray(String[] array) {
 		if (ArrayUtil.isEmpty(array)) {
 			return true;
 		}
 
-		for (Object obj : array) {
-			if (Validator.isNotNull(obj)) {
+		for (String string : array) {
+			if (Validator.isNotNull(string)) {
 				return false;
 			}
 		}

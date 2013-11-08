@@ -91,9 +91,9 @@ if (selectionStyle.equals("dynamic")) {
 
 		ddmStructureDisplayFieldValue = GetterUtil.getString(portletPreferences.getValue("ddmStructureDisplayFieldValue", StringPool.BLANK));
 		ddmStructureFieldName = GetterUtil.getString(portletPreferences.getValue("ddmStructureFieldName", StringPool.BLANK));
-		ddmStructureFieldValue = portletPreferences.getValue("ddmStructureFieldValue", StringPool.BLANK);
+		ddmStructureFieldValue = portletPreferences.getValue("ddmStructureFieldValue", null);
 
-		if (Validator.isNotNull(ddmStructureFieldName) && Validator.isNotNull(ddmStructureFieldValue)) {
+		if (Validator.isNotNull(ddmStructureFieldName) && (ddmStructureFieldValue != null)) {
 			List<Tuple> classTypeFieldNames = assetRendererFactory.getClassTypeFieldNames(classTypeIds[0], locale, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
 			for (Tuple classTypeFieldName : classTypeFieldNames) {
