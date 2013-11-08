@@ -76,7 +76,7 @@ if (message == null) {
 	message = StringUtil.replace(message, "../aui/", StringPool.BLANK);
 }
 
-if (useDialog && Validator.isNull(data.get("title"))) {
+if (useDialog && (data.get("title") == null)) {
 	data.put("title", HtmlUtil.stripHtml(localizeMessage ? LanguageUtil.get(pageContext, message) : message));
 }
 

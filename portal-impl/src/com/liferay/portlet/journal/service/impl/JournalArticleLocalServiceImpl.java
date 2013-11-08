@@ -6723,7 +6723,7 @@ public class JournalArticleLocalServiceImpl
 			}
 
 			if (ddmStructure.getFieldRequired(field.getName()) &&
-				Validator.isNull(field.getValue())) {
+				(field.getValue() == null)) {
 
 				throw new StorageFieldRequiredException();
 			}
