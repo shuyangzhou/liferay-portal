@@ -195,10 +195,16 @@ public class Validator_IW {
 		return Validator.isName(name);
 	}
 
+	/**
+	 * @deprecated As of 6.2.0
+	 */
 	public boolean isNotNull(java.lang.Long l) {
 		return Validator.isNotNull(l);
 	}
 
+	/**
+	 * @deprecated As of 6.2.0
+	 */
 	public boolean isNotNull(java.lang.Object obj) {
 		return Validator.isNotNull(obj);
 	}
@@ -214,10 +220,16 @@ public class Validator_IW {
 		return Validator.isNotNull(s);
 	}
 
+	/**
+	 * @deprecated As of 6.2.0
+	 */
 	public boolean isNull(java.lang.Long l) {
 		return Validator.isNull(l);
 	}
 
+	/**
+	 * @deprecated As of 6.2.0
+	 */
 	public boolean isNull(java.lang.Object obj) {
 		return Validator.isNull(obj);
 	}
