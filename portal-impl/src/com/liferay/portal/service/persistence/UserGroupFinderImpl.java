@@ -304,7 +304,7 @@ public class UserGroupFinderImpl
 			String key = entry.getKey();
 			Object value = entry.getValue();
 
-			if (Validator.isNotNull(value)) {
+			if (value != null) {
 				sb.append(getJoin(key));
 			}
 		}
@@ -353,7 +353,7 @@ public class UserGroupFinderImpl
 			String key = entry.getKey();
 			Object value = entry.getValue();
 
-			if (Validator.isNotNull(value)) {
+			if (value != null) {
 				sb.append(getWhere(key, value));
 			}
 		}

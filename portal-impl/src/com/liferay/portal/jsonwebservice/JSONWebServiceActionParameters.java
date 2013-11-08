@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.util.CamelCaseUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextFactory;
 
@@ -257,7 +256,7 @@ public class JSONWebServiceActionParameters {
 					key = key.substring(0, pos);
 				}
 
-				if (Validator.isNotNull(value)) {
+				if (value != null) {
 					if (_parameterTypes == null) {
 						_parameterTypes = new HashMap<String, String>();
 					}

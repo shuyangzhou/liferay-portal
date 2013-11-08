@@ -25,7 +25,7 @@ if (relative) {
 
 iframeSrc += (String)request.getAttribute(WebKeys.IFRAME_SRC);
 
-if (Validator.isNotNull(iframeVariables)) {
+if (iframeVariables != null) {
 	if (iframeSrc.contains(StringPool.QUESTION)) {
 		iframeSrc = iframeSrc.concat(StringPool.AMPERSAND).concat(StringUtil.merge(iframeVariables, StringPool.AMPERSAND));
 	}
