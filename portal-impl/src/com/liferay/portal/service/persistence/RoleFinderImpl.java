@@ -858,7 +858,7 @@ public class RoleFinderImpl
 			if (value instanceof Long) {
 				Long valueLong = (Long)value;
 
-				if (Validator.isNotNull(valueLong)) {
+				if (valueLong > 0) {
 					qPos.add(valueLong);
 				}
 			}

@@ -174,7 +174,7 @@ for (int i = 0; i < portlets.size(); i++) {
 
 				long entryScopeGroupId = GetterUtil.getLong(element.elementText(OpenSearchUtil.getQName("scopeGroupId", OpenSearchUtil.LIFERAY_NAMESPACE)));
 
-				if (Validator.isNotNull(entryScopeGroupId) && (inactiveGroupsCount > 0)) {
+				if ((entryScopeGroupId > 0) && (inactiveGroupsCount > 0)) {
 					Group entryGroup = GroupServiceUtil.getGroup(entryScopeGroupId);
 
 					if (entryGroup.isLayout()) {

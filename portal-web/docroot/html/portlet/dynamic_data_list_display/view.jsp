@@ -20,7 +20,7 @@
 DDLRecordSet recordSet = null;
 
 try {
-	if (Validator.isNotNull(recordSetId)) {
+	if (recordSetId > 0) {
 		recordSet = DDLRecordSetLocalServiceUtil.getRecordSet(recordSetId);
 
 		if (recordSet.getGroupId() != scopeGroupId) {

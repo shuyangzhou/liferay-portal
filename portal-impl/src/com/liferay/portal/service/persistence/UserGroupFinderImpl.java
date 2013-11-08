@@ -434,7 +434,7 @@ public class UserGroupFinderImpl
 			if (value instanceof Long) {
 				Long valueLong = (Long)value;
 
-				if (Validator.isNotNull(valueLong)) {
+				if (valueLong > 0) {
 					qPos.add(valueLong);
 				}
 			}
@@ -442,7 +442,7 @@ public class UserGroupFinderImpl
 				Long[] valueArray = (Long[])value;
 
 				for (int i = 0; i < valueArray.length; i++) {
-					if (Validator.isNotNull(valueArray[i])) {
+					if ((valueArray[i] != null) && (valueArray[i] > 0)) {
 						qPos.add(valueArray[i]);
 					}
 				}

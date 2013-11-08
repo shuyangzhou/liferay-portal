@@ -1255,7 +1255,7 @@ public class UserFinderImpl
 			else if (value instanceof Long) {
 				Long valueLong = (Long)value;
 
-				if (Validator.isNotNull(valueLong)) {
+				if (valueLong > 0) {
 					qPos.add(valueLong);
 				}
 			}
@@ -1263,7 +1263,7 @@ public class UserFinderImpl
 				Long[] valueArray = (Long[])value;
 
 				for (Long element : valueArray) {
-					if (Validator.isNotNull(element)) {
+					if ((element != null) && (element > 0)) {
 						qPos.add(element);
 					}
 				}
