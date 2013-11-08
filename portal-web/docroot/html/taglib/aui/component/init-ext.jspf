@@ -21,7 +21,7 @@ Map<String, Object> jsonifiedOptions = (Map<String, Object>)request.getAttribute
 
 Object render = String.valueOf(_options.get("render"));
 
-if (Validator.isNull(render)) {
+if (render == null) {
 	render = true;
 }
 else if (render.equals("true") || render.equals("false")) {

@@ -59,7 +59,7 @@ public class Fields implements Iterable<Field>, Serializable {
 			return Validator.equals(_fieldsMap, fields._fieldsMap);
 		}
 
-		if (Validator.isNull(fields)) {
+		if (fields == null) {
 			return false;
 		}
 

@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeFormatter;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.Layout;
 import com.liferay.portal.service.LayoutLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
@@ -131,7 +130,7 @@ public class DDMImpl implements DDM {
 			}
 		}
 		else if (type.equals(DDMImpl.TYPE_DDM_DOCUMENTLIBRARY)) {
-			if (Validator.isNull(fieldValue)) {
+			if (fieldValue == null) {
 				return StringPool.BLANK;
 			}
 
@@ -152,7 +151,7 @@ public class DDMImpl implements DDM {
 				false, true);
 		}
 		else if (type.equals(DDMImpl.TYPE_DDM_LINK_TO_PAGE)) {
-			if (Validator.isNull(fieldValue)) {
+			if (fieldValue == null) {
 				return StringPool.BLANK;
 			}
 
@@ -484,7 +483,7 @@ public class DDMImpl implements DDM {
 				}
 			}
 			else if (fieldDataType.equals(FieldConstants.IMAGE) &&
-					 Validator.isNull(fieldValue)) {
+					 (fieldValue == null)) {
 
 				HttpServletRequest request = serviceContext.getRequest();
 

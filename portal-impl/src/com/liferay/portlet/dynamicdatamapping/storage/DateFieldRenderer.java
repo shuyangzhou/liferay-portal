@@ -17,7 +17,6 @@ package com.liferay.portlet.dynamicdatamapping.storage;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
 
 import java.io.Serializable;
 
@@ -40,7 +39,7 @@ public class DateFieldRenderer extends BaseFieldRenderer {
 		List<String> values = new ArrayList<String>();
 
 		for (Serializable value : field.getValues(locale)) {
-			if (Validator.isNull(value)) {
+			if (value == null) {
 				continue;
 			}
 
@@ -54,7 +53,7 @@ public class DateFieldRenderer extends BaseFieldRenderer {
 	protected String doRender(Field field, Locale locale, int valueIndex) {
 		Serializable value = field.getValue(locale, valueIndex);
 
-		if (Validator.isNull(value)) {
+		if (value == null) {
 			return StringPool.BLANK;
 		}
 
