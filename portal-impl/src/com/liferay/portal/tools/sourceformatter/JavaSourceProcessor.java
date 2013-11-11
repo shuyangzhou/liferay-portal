@@ -1070,12 +1070,15 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 		// LPS-39508
 
 		if (!fileName.contains("SecureRandomUtil") &&
+			!fileName.contains(
+				"com.liferay.portal.kernel.security.SecureRandom") &&
 			content.contains("java.security.SecureRandom") &&
 			!content.contains("javax.crypto.KeyGenerator")) {
 
 			processErrorMessage(
 				fileName,
-				"Use SecureRandomUtil instead of java.security.SecureRandom: " +
+				"Use SecureRandomUtil or com.liferay.portal.kernel.security." +
+					"SecureRandom instead of java.security.SecureRandom: " +
 					fileName);
 		}
 
