@@ -14,11 +14,16 @@
 
 package com.liferay.portal.util;
 
+import com.liferay.portal.kernel.cache.Lifecycle;
+import com.liferay.portal.kernel.cache.ThreadLocalCache;
+import com.liferay.portal.kernel.cache.ThreadLocalCacheManager;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.model.Layout;
 import com.liferay.portal.model.LayoutConstants;
 import com.liferay.portal.service.LayoutLocalServiceUtil;
@@ -52,8 +57,20 @@ public class LayoutLister {
 			stopWatch.start();
 		}
 
-		LayoutView layoutView = doGetLayoutView(
-			groupId, privateLayout, rootNodeName, locale);
+		ThreadLocalCache<LayoutView> threadLocalCache =
+			ThreadLocalCacheManager.getThreadLocalCache(
+				Lifecycle.REQUEST, LayoutLister.class.getName());
+
+		String key = getKey(groupId, privateLayout, rootNodeName, locale);
+
+		LayoutView layoutView = threadLocalCache.get(key);
+
+		if (layoutView == null) {
+			layoutView = doGetLayoutView(
+				groupId, privateLayout, rootNodeName, locale);
+
+			threadLocalCache.put(key, layoutView);
+		}
 
 		if (_log.isDebugEnabled()) {
 			stopWatch.stop();
@@ -104,6 +121,29 @@ public class LayoutLister {
 		createList(layoutsBag);
 
 		return new LayoutView(_list, _depth);
+	}
+
+	protected String getKey(
+		long groupId, boolean privateLayout, String rootNodeName,
+		Locale locale) {
+
+		StringBundler sb = new StringBundler(5);
+
+		sb.append(StringUtil.toHexString(groupId));
+		sb.append(StringPool.POUND);
+		sb.append(privateLayout);
+		sb.append(StringPool.POUND);
+		sb.append(rootNodeName);
+		sb.append(StringPool.POUND);
+
+		if (locale != null) {
+			sb.append(locale.toString());
+		}
+		else {
+			sb.append(StringPool.NULL);
+		}
+
+		return sb.toString();
 	}
 
 	protected Map<Long, Deque<Layout>> getLayoutsBag(List<Layout> layouts) {
