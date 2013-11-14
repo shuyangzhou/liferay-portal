@@ -52,21 +52,8 @@ public class LayoutLister {
 			stopWatch.start();
 		}
 
-		_locale = locale;
-		_nodeId = 1;
-
-		_list = new ArrayList<String>();
-
-		_list.add(
-			"1|0|0|" + LayoutConstants.DEFAULT_PLID + "|" + rootNodeName +
-				"|0");
-
-		List<Layout> layouts = LayoutLocalServiceUtil.getLayouts(
-			groupId, privateLayout);
-
-		Map<Long, Deque<Layout>> layoutsBag = getLayoutsBag(layouts);
-
-		createList(layoutsBag);
+		LayoutView layoutView = doGetLayoutView(
+			groupId, privateLayout, rootNodeName, locale);
 
 		if (_log.isDebugEnabled()) {
 			stopWatch.stop();
@@ -74,7 +61,7 @@ public class LayoutLister {
 			_log.debug("Runtime: " + stopWatch.getTime());
 		}
 
-		return new LayoutView(_list, _depth);
+		return layoutView;
 	}
 
 	protected void createList(Map<Long, Deque<Layout>> layoutsBag) {
@@ -93,6 +80,30 @@ public class LayoutLister {
 				layoutNodeStack, layoutsBag, layoutNode.layout.getLayoutId(),
 				layoutNode.depth + 1, _nodeId);
 		}
+	}
+
+	protected LayoutView doGetLayoutView(
+			long groupId, boolean privateLayout, String rootNodeName,
+			Locale locale)
+		throws PortalException, SystemException {
+
+		_locale = locale;
+		_nodeId = 1;
+
+		_list = new ArrayList<String>();
+
+		_list.add(
+			"1|0|0|" + LayoutConstants.DEFAULT_PLID + "|" + rootNodeName +
+				"|0");
+
+		List<Layout> layouts = LayoutLocalServiceUtil.getLayouts(
+			groupId, privateLayout);
+
+		Map<Long, Deque<Layout>> layoutsBag = getLayoutsBag(layouts);
+
+		createList(layoutsBag);
+
+		return new LayoutView(_list, _depth);
 	}
 
 	protected Map<Long, Deque<Layout>> getLayoutsBag(List<Layout> layouts) {
