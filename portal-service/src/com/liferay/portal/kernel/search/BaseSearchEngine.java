@@ -23,6 +23,8 @@ import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 
 /**
  * @author Bruno Farache
+ * @author Carlos Sierra Andrés
+ * @author Marcellus Tavares
  */
 @DoPrivileged
 public class BaseSearchEngine implements SearchEngine {
@@ -216,8 +218,8 @@ public class BaseSearchEngine implements SearchEngine {
 	private BooleanQueryFactory _booleanQueryFactory;
 	private boolean _clusteredWrite;
 	private Priority _clusteredWritePriority;
-	private IndexSearcher _indexSearcher;
-	private IndexWriter _indexWriter;
+	private IndexSearcher _indexSearcher = new DummyIndexSearcher();
+	private IndexWriter _indexWriter = new DummyIndexWriter();
 	private boolean _luceneBased;
 	private TermQueryFactory _termQueryFactory;
 	private TermRangeQueryFactory _termRangeQueryFactory;

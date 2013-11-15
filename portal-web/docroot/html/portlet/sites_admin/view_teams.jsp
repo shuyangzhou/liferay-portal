@@ -86,7 +86,7 @@ pageContext.setAttribute("portletURL", portletURL);
 
 		PortletURL rowURL = null;
 
-		if (TeamPermissionUtil.contains(permissionChecker, team.getTeamId(), ActionKeys.UPDATE)) {
+		if (TeamPermissionUtil.contains(permissionChecker, team, ActionKeys.UPDATE)) {
 			rowURL = renderResponse.createRenderURL();
 
 			rowURL.setParameter("struts_action", "/sites_admin/edit_team");
@@ -112,7 +112,7 @@ pageContext.setAttribute("portletURL", portletURL);
 	}
 	%>
 
-	<c:if test="<%= GroupPermissionUtil.contains(permissionChecker, groupId, ActionKeys.MANAGE_TEAMS) %>">
+	<c:if test="<%= GroupPermissionUtil.contains(permissionChecker, group, ActionKeys.MANAGE_TEAMS) %>">
 		<portlet:renderURL var="addTeamURL">
 			<portlet:param name="struts_action" value="/sites_admin/edit_team" />
 			<portlet:param name="redirect" value="<%= currentURL %>" />

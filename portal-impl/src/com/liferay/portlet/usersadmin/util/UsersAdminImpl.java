@@ -234,7 +234,7 @@ public class UsersAdminImpl implements UsersAdmin {
 		Group group = GroupLocalServiceUtil.getGroup(groupId);
 
 		if (GroupPermissionUtil.contains(
-				permissionChecker, groupId, ActionKeys.ASSIGN_USER_ROLES) ||
+				permissionChecker, group, ActionKeys.ASSIGN_USER_ROLES) ||
 			OrganizationPermissionUtil.contains(
 				permissionChecker, group.getOrganizationId(),
 				ActionKeys.ASSIGN_USER_ROLES)) {
@@ -275,8 +275,7 @@ public class UsersAdminImpl implements UsersAdmin {
 			Group group = itr.next();
 
 			if (!GroupPermissionUtil.contains(
-					permissionChecker, group.getGroupId(),
-					ActionKeys.ASSIGN_MEMBERS)) {
+					permissionChecker, group, ActionKeys.ASSIGN_MEMBERS)) {
 
 				itr.remove();
 			}
@@ -303,7 +302,7 @@ public class UsersAdminImpl implements UsersAdmin {
 			Organization organization = itr.next();
 
 			if (!OrganizationPermissionUtil.contains(
-					permissionChecker, organization.getOrganizationId(),
+					permissionChecker, organization,
 					ActionKeys.ASSIGN_MEMBERS)) {
 
 				itr.remove();

@@ -513,7 +513,7 @@ public class LayoutServiceImpl extends LayoutServiceBaseImpl {
 		Group companyGroup = groupLocalService.getCompanyGroup(companyId);
 
 		GroupPermissionUtil.check(
-			getPermissionChecker(), companyGroup.getGroupId(),
+			getPermissionChecker(), companyGroup,
 			ActionKeys.EXPORT_IMPORT_PORTLET_INFO);
 
 		return layoutLocalService.exportPortletInfo(
@@ -568,7 +568,7 @@ public class LayoutServiceImpl extends LayoutServiceBaseImpl {
 			user.getCompanyId());
 
 		GroupPermissionUtil.check(
-			getPermissionChecker(), companyGroup.getGroupId(),
+			getPermissionChecker(), companyGroup,
 			ActionKeys.EXPORT_IMPORT_PORTLET_INFO);
 
 		return layoutLocalService.exportPortletInfoAsFile(
@@ -606,7 +606,7 @@ public class LayoutServiceImpl extends LayoutServiceBaseImpl {
 			user.getCompanyId());
 
 		GroupPermissionUtil.check(
-			getPermissionChecker(), companyGroup.getGroupId(),
+			getPermissionChecker(), companyGroup,
 			ActionKeys.EXPORT_IMPORT_PORTLET_INFO);
 
 		return layoutLocalService.exportPortletInfoAsFileInBackground(
@@ -1054,7 +1054,7 @@ public class LayoutServiceImpl extends LayoutServiceBaseImpl {
 			user.getCompanyId());
 
 		GroupPermissionUtil.check(
-			getPermissionChecker(), companyGroup.getGroupId(),
+			getPermissionChecker(), companyGroup,
 			ActionKeys.EXPORT_IMPORT_PORTLET_INFO);
 
 		layoutLocalService.importPortletInfo(
@@ -1073,7 +1073,7 @@ public class LayoutServiceImpl extends LayoutServiceBaseImpl {
 			user.getCompanyId());
 
 		GroupPermissionUtil.check(
-			getPermissionChecker(), companyGroup.getGroupId(),
+			getPermissionChecker(), companyGroup,
 			ActionKeys.EXPORT_IMPORT_PORTLET_INFO);
 
 		layoutLocalService.importPortletInfo(
@@ -1121,7 +1121,7 @@ public class LayoutServiceImpl extends LayoutServiceBaseImpl {
 			user.getCompanyId());
 
 		GroupPermissionUtil.check(
-			getPermissionChecker(), companyGroup.getGroupId(),
+			getPermissionChecker(), companyGroup,
 			ActionKeys.EXPORT_IMPORT_PORTLET_INFO);
 
 		layoutLocalService.importPortletInfoInBackground(
@@ -1140,7 +1140,7 @@ public class LayoutServiceImpl extends LayoutServiceBaseImpl {
 			user.getCompanyId());
 
 		GroupPermissionUtil.check(
-			getPermissionChecker(), companyGroup.getGroupId(),
+			getPermissionChecker(), companyGroup,
 			ActionKeys.EXPORT_IMPORT_PORTLET_INFO);
 
 		layoutLocalService.importPortletInfoInBackground(
@@ -1768,8 +1768,7 @@ public class LayoutServiceImpl extends LayoutServiceBaseImpl {
 
 		for (Layout layout : layouts) {
 			if (LayoutPermissionUtil.contains(
-					getPermissionChecker(), layout.getPlid(),
-					ActionKeys.VIEW)) {
+					getPermissionChecker(), layout, ActionKeys.VIEW)) {
 
 				filteredLayouts.add(layout);
 			}

@@ -171,7 +171,7 @@ portletURL.setParameter("tabs3", "current-and-previous");
 							</aui:fieldset>
 						</c:if>
 
-						<c:if test="<%= !portletDataHandler.isDataPortletInstanceLevel() %>">
+						<c:if test="<%= !portletDataHandler.isDisplayPortlet() %>">
 
 							<%
 							DateRange dateRange = ExportImportHelperUtil.getDateRange(renderRequest, themeDisplay.getScopeGroupId(), false, plid, selPortlet.getPortletId(), "fromLastPublishDate");
