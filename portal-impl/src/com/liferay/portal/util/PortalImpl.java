@@ -3048,7 +3048,9 @@ public class PortalImpl implements Portal {
 			}
 		}
 
-		if (Validator.isNotNull(virtualHostname)) {
+		if (Validator.isNotNull(virtualHostname) &&
+			!StringUtil.equalsIgnoreCase(virtualHostname, _LOCALHOST)) {
+
 			String portalURL = getPortalURL(
 				virtualHostname, themeDisplay.getServerPort(),
 				themeDisplay.isSecure());
@@ -3150,6 +3152,26 @@ public class PortalImpl implements Portal {
 			themeDisplay, layout, layoutURL, doAsUser);
 
 		return layoutURL;
+	}
+
+	@Override
+	public String getLayoutURL(
+			Layout layout, ThemeDisplay themeDisplay, Locale locale)
+		throws PortalException, SystemException {
+
+		String i18nLanguageId = themeDisplay.getI18nLanguageId();
+		String i18nPath = themeDisplay.getI18nPath();
+		Locale originalLocale = themeDisplay.getLocale();
+
+		try {
+			setThemeDisplayI18n(themeDisplay, locale);
+
+			return getLayoutURL(layout, themeDisplay, true);
+		}
+		finally {
+			resetThemeDisplayI18n(
+				themeDisplay, i18nLanguageId, i18nPath, originalLocale);
+		}
 	}
 
 	@Override
@@ -7315,7 +7337,10 @@ public class PortalImpl implements Portal {
 
 		String portalURL = themeDisplay.getPortalURL();
 
-		if (canonicalURL || !themeDisplay.getServerName().equals(_LOCALHOST)) {
+		if (canonicalURL ||
+			!StringUtil.equalsIgnoreCase(
+				themeDisplay.getServerName(), _LOCALHOST)) {
+
 			String virtualHostname = layoutSet.getVirtualHostname();
 
 			if (Validator.isNull(virtualHostname) &&

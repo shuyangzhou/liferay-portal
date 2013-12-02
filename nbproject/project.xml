@@ -479,6 +479,7 @@
 				<classpath mode="compile">lib/portal/saaj-api.jar</classpath>
 				<classpath mode="compile">lib/portal/saaj-impl.jar</classpath>
 				<classpath mode="compile">lib/portal/scala-library.jar</classpath>
+				<classpath mode="compile">lib/portal/scala-reflect.jar</classpath>
 				<classpath mode="compile">lib/portal/scribe.jar</classpath>
 				<classpath mode="compile">lib/portal/serializer.jar</classpath>
 				<classpath mode="compile">lib/portal/simplecaptcha.jar</classpath>
