@@ -2297,7 +2297,7 @@ public class UserServiceImpl extends UserServiceBaseImpl {
 				if (!ArrayUtil.contains(
 						organizationIds, organization.getOrganizationId()) &&
 					(!OrganizationPermissionUtil.contains(
-						permissionChecker, organization.getOrganizationId(),
+						permissionChecker, organization,
 						ActionKeys.ASSIGN_MEMBERS) ||
 					 OrganizationMembershipPolicyUtil.isMembershipProtected(
 						permissionChecker, userId,
@@ -2469,8 +2469,7 @@ public class UserServiceImpl extends UserServiceBaseImpl {
 							group.getOrganizationId());
 
 					if (!UserGroupRolePermissionUtil.contains(
-							permissionChecker, oldUserGroupRole.getGroupId(),
-							oldUserGroupRole.getRoleId()) ||
+							permissionChecker, group, role) ||
 						OrganizationMembershipPolicyUtil.isRoleProtected(
 							getPermissionChecker(), userId,
 							organization.getOrganizationId(),
@@ -2485,8 +2484,7 @@ public class UserServiceImpl extends UserServiceBaseImpl {
 				else if (role.getType() == RoleConstants.TYPE_SITE) {
 					if (!userGroupRoles.contains(oldUserGroupRole) &&
 						(!UserGroupRolePermissionUtil.contains(
-							permissionChecker, oldUserGroupRole.getGroupId(),
-							oldUserGroupRole.getRoleId()) ||
+							permissionChecker, group, role) ||
 						 SiteMembershipPolicyUtil.isRoleProtected(
 							 getPermissionChecker(), userId, group.getGroupId(),
 							 role.getRoleId()) ||
