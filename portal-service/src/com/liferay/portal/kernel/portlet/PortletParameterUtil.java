@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 
 /**
  * @author Shuyang Zhou
+ * @author Sampsa Sohlman
  */
 public class PortletParameterUtil {
 
@@ -28,14 +29,15 @@ public class PortletParameterUtil {
 
 		StringBundler sb = new StringBundler(2 + parameters.length * 4);
 
-		sb.append("p_p_id=");
-		sb.append(portletId);
+		for (int i = 0; i < parameters.length; i++) {
+			if (i > 0) {
+				sb.append("&");
+			}
 
-		for (String parameter : parameters) {
-			sb.append("&_");
+			sb.append("_");
 			sb.append(portletId);
 			sb.append("_");
-			sb.append(parameter);
+			sb.append(parameters[i]);
 		}
 
 		return sb.toString();
