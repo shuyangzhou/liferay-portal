@@ -701,7 +701,7 @@ $editLayoutPanelWidth: 460px;
 		}
 	}
 
-	&.dialog-iframe-root-node .dockbar .nav-add-controls .page-preview-controls {
+	&.dialog-iframe-root-node .dockbar .navbar-inner .container .nav-collapse > .nav.nav-add-controls .dropdown-menu .page-preview-controls {
 		display: none;
 	}
 
@@ -868,8 +868,10 @@ $editLayoutPanelWidth: 460px;
 
 	/* ---------- Menus ---------- */
 
-	.dropdown-menu > li > a:focus > [class^="icon-"] {
-		background-image: none;
+	.dropdown-menu > li > a:focus, .dropdown-submenu:focus > a {
+		> [class^="icon-"], > [class*=" icon-"] {
+			background-image: none;
+		}
 	}
 
 	.my-sites-menu {

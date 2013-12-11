@@ -32,6 +32,7 @@ import javax.servlet.http.HttpServletRequestWrapper;
 /**
  * @author Brian Wing Shun Chan
  * @author Shuyang Zhou
+ * @author Sampsa Sohlman
  */
 public class DynamicServletRequest extends HttpServletRequestWrapper {
 
@@ -46,13 +47,25 @@ public class DynamicServletRequest extends HttpServletRequestWrapper {
 	public static HttpServletRequest addQueryString(
 		HttpServletRequest request, String queryString, boolean inherit) {
 
-		String[] parameters = StringUtil.split(queryString, CharPool.AMPERSAND);
+		Map<String, String[]> parameterMap = new HashMap<String, String[]>();
 
-		if (parameters.length == 0) {
+		addQueryStringToParameterMap(parameterMap, queryString);
+
+		if (parameterMap.size() == 0) {
 			return request;
 		}
 
-		Map<String, String[]> parameterMap = new HashMap<String, String[]>();
+		request = new DynamicServletRequest(request, parameterMap, inherit);
+
+		request.setAttribute(DYNAMIC_QUERY_STRING, queryString);
+
+		return request;
+	}
+
+	public static void addQueryStringToParameterMap(
+			Map<String, String[]> parameterMap, String queryString) {
+
+		String[] parameters = StringUtil.split(queryString, CharPool.AMPERSAND);
 
 		for (String parameter : parameters) {
 			String[] parameterParts = StringUtil.split(
@@ -80,12 +93,6 @@ public class DynamicServletRequest extends HttpServletRequestWrapper {
 				parameterMap.put(name, newValues);
 			}
 		}
-
-		request = new DynamicServletRequest(request, parameterMap, inherit);
-
-		request.setAttribute(DYNAMIC_QUERY_STRING, queryString);
-
-		return request;
 	}
 
 	public DynamicServletRequest(HttpServletRequest request) {
