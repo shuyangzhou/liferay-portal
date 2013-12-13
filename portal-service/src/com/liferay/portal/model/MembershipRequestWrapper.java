@@ -531,6 +531,16 @@ public class MembershipRequestWrapper implements MembershipRequest,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _membershipRequest.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _membershipRequest.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_membershipRequest.resetOriginalValues();
 	}

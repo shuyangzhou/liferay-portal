@@ -1163,6 +1163,16 @@ public class DLFolderWrapper implements DLFolder, ModelWrapper<DLFolder> {
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _dlFolder.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _dlFolder.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_dlFolder.resetOriginalValues();
 	}

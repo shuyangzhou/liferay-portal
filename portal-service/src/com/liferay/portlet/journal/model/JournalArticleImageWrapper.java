@@ -443,6 +443,16 @@ public class JournalArticleImageWrapper implements JournalArticleImage,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _journalArticleImage.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _journalArticleImage.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_journalArticleImage.resetOriginalValues();
 	}

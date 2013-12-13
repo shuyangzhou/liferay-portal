@@ -325,6 +325,16 @@ public class WikiPageResourceWrapper implements WikiPageResource,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _wikiPageResource.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _wikiPageResource.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_wikiPageResource.resetOriginalValues();
 	}

@@ -690,6 +690,16 @@ public class SocialActivityWrapper implements SocialActivity,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _socialActivity.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _socialActivity.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_socialActivity.resetOriginalValues();
 	}

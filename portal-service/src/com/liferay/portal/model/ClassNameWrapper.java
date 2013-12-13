@@ -282,6 +282,16 @@ public class ClassNameWrapper implements ClassName, ModelWrapper<ClassName> {
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _className.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _className.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_className.resetOriginalValues();
 	}

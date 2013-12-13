@@ -181,6 +181,16 @@ public class ${entity.name}Wrapper implements ${entity.name}, ModelWrapper<${ent
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _${entity.varName}.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _${entity.varName}.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_${entity.varName}.resetOriginalValues();
 	}

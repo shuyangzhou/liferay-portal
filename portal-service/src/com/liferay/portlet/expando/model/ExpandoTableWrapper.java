@@ -344,6 +344,16 @@ public class ExpandoTableWrapper implements ExpandoTable,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _expandoTable.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _expandoTable.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_expandoTable.resetOriginalValues();
 	}

@@ -868,6 +868,16 @@ public class JournalFeedWrapper implements JournalFeed,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _journalFeed.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _journalFeed.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_journalFeed.resetOriginalValues();
 	}

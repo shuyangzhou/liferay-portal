@@ -626,6 +626,16 @@ public class SocialRequestWrapper implements SocialRequest,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _socialRequest.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _socialRequest.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_socialRequest.resetOriginalValues();
 	}

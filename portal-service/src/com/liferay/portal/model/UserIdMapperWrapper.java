@@ -371,6 +371,16 @@ public class UserIdMapperWrapper implements UserIdMapper,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _userIdMapper.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _userIdMapper.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_userIdMapper.resetOriginalValues();
 	}

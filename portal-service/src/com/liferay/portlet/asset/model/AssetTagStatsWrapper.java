@@ -339,6 +339,16 @@ public class AssetTagStatsWrapper implements AssetTagStats,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _assetTagStats.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _assetTagStats.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_assetTagStats.resetOriginalValues();
 	}

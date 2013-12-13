@@ -976,6 +976,16 @@ public class BookmarksEntryWrapper implements BookmarksEntry,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _bookmarksEntry.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _bookmarksEntry.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_bookmarksEntry.resetOriginalValues();
 	}

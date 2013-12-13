@@ -362,6 +362,16 @@ public class ShoppingItemFieldWrapper implements ShoppingItemField,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _shoppingItemField.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _shoppingItemField.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_shoppingItemField.resetOriginalValues();
 	}

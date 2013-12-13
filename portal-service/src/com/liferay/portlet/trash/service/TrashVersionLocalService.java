@@ -253,8 +253,7 @@ public interface TrashVersionLocalService extends BaseLocalService,
 
 	public com.liferay.portlet.trash.model.TrashVersion deleteTrashVersion(
 		java.lang.String className, long classPK)
-		throws PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.SystemException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public com.liferay.portlet.trash.model.TrashVersion fetchVersion(

@@ -763,6 +763,16 @@ public class DDLRecordVersionWrapper implements DDLRecordVersion,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _ddlRecordVersion.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _ddlRecordVersion.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_ddlRecordVersion.resetOriginalValues();
 	}

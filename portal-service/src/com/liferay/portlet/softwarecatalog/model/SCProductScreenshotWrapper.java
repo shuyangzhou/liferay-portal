@@ -406,6 +406,16 @@ public class SCProductScreenshotWrapper implements SCProductScreenshot,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _scProductScreenshot.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _scProductScreenshot.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_scProductScreenshot.resetOriginalValues();
 	}

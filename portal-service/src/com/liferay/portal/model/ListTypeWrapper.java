@@ -288,6 +288,16 @@ public class ListTypeWrapper implements ListType, ModelWrapper<ListType> {
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _listType.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _listType.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_listType.resetOriginalValues();
 	}

@@ -339,6 +339,16 @@ public class PasswordPolicyRelWrapper implements PasswordPolicyRel,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _passwordPolicyRel.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _passwordPolicyRel.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_passwordPolicyRel.resetOriginalValues();
 	}

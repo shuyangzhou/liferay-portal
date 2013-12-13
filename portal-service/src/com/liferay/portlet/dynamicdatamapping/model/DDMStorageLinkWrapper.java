@@ -381,6 +381,16 @@ public class DDMStorageLinkWrapper implements DDMStorageLink,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _ddmStorageLink.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _ddmStorageLink.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_ddmStorageLink.resetOriginalValues();
 	}

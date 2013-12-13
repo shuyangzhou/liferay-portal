@@ -844,6 +844,16 @@ public class OrganizationWrapper implements Organization,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _organization.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _organization.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_organization.resetOriginalValues();
 	}

@@ -893,6 +893,16 @@ public class LayoutSetBranchWrapper implements LayoutSetBranch,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _layoutSetBranch.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _layoutSetBranch.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_layoutSetBranch.resetOriginalValues();
 	}

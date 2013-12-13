@@ -679,6 +679,16 @@ public class OrgLaborWrapper implements OrgLabor, ModelWrapper<OrgLabor> {
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _orgLabor.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _orgLabor.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_orgLabor.resetOriginalValues();
 	}

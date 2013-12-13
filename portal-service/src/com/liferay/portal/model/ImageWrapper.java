@@ -386,6 +386,16 @@ public class ImageWrapper implements Image, ModelWrapper<Image> {
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _image.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _image.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_image.resetOriginalValues();
 	}

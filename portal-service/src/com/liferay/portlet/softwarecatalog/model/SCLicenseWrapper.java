@@ -407,6 +407,16 @@ public class SCLicenseWrapper implements SCLicense, ModelWrapper<SCLicense> {
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _scLicense.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _scLicense.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_scLicense.resetOriginalValues();
 	}

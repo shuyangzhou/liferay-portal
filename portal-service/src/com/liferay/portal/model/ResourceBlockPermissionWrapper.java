@@ -327,6 +327,16 @@ public class ResourceBlockPermissionWrapper implements ResourceBlockPermission,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _resourceBlockPermission.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _resourceBlockPermission.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_resourceBlockPermission.resetOriginalValues();
 	}

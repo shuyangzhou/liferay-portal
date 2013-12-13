@@ -819,6 +819,16 @@ public class DLFileEntryTypeWrapper implements DLFileEntryType,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _dlFileEntryType.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _dlFileEntryType.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_dlFileEntryType.resetOriginalValues();
 	}
