@@ -662,6 +662,16 @@ public class CompanyWrapper implements Company, ModelWrapper<Company> {
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _company.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _company.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_company.resetOriginalValues();
 	}

@@ -1881,6 +1881,16 @@ public class UserWrapper implements User, ModelWrapper<User> {
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _user.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _user.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_user.resetOriginalValues();
 	}

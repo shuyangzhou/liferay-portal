@@ -164,6 +164,9 @@ public class ListTypeModelImpl extends BaseModelImpl<ListType>
 		attributes.put("name", getName());
 		attributes.put("type", getType());
 
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
+
 		return attributes;
 	}
 
@@ -308,6 +311,16 @@ public class ListTypeModelImpl extends BaseModelImpl<ListType>
 	@Override
 	public int hashCode() {
 		return getPrimaryKey();
+	}
+
+	@Override
+	public boolean isEntityCacheEnabled() {
+		return ENTITY_CACHE_ENABLED;
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return FINDER_CACHE_ENABLED;
 	}
 
 	@Override

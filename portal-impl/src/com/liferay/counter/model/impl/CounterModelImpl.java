@@ -114,6 +114,9 @@ public class CounterModelImpl extends BaseModelImpl<Counter>
 		attributes.put("name", getName());
 		attributes.put("currentId", getCurrentId());
 
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
+
 		return attributes;
 	}
 
@@ -211,6 +214,16 @@ public class CounterModelImpl extends BaseModelImpl<Counter>
 	@Override
 	public int hashCode() {
 		return getPrimaryKey().hashCode();
+	}
+
+	@Override
+	public boolean isEntityCacheEnabled() {
+		return ENTITY_CACHE_ENABLED;
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return FINDER_CACHE_ENABLED;
 	}
 
 	@Override

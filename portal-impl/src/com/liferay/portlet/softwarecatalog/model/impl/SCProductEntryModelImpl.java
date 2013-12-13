@@ -229,6 +229,9 @@ public class SCProductEntryModelImpl extends BaseModelImpl<SCProductEntry>
 		attributes.put("repoGroupId", getRepoGroupId());
 		attributes.put("repoArtifactId", getRepoArtifactId());
 
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
+
 		return attributes;
 	}
 
@@ -729,6 +732,16 @@ public class SCProductEntryModelImpl extends BaseModelImpl<SCProductEntry>
 	@Override
 	public int hashCode() {
 		return (int)getPrimaryKey();
+	}
+
+	@Override
+	public boolean isEntityCacheEnabled() {
+		return ENTITY_CACHE_ENABLED;
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return FINDER_CACHE_ENABLED;
 	}
 
 	@Override

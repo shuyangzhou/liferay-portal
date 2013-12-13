@@ -547,6 +547,16 @@ public class PollsVoteWrapper implements PollsVote, ModelWrapper<PollsVote> {
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _pollsVote.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _pollsVote.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_pollsVote.resetOriginalValues();
 	}

@@ -135,6 +135,9 @@ public class JournalContentSearchModelImpl extends BaseModelImpl<JournalContentS
 		attributes.put("portletId", getPortletId());
 		attributes.put("articleId", getArticleId());
 
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
+
 		return attributes;
 	}
 
@@ -408,6 +411,16 @@ public class JournalContentSearchModelImpl extends BaseModelImpl<JournalContentS
 	@Override
 	public int hashCode() {
 		return (int)getPrimaryKey();
+	}
+
+	@Override
+	public boolean isEntityCacheEnabled() {
+		return ENTITY_CACHE_ENABLED;
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return FINDER_CACHE_ENABLED;
 	}
 
 	@Override

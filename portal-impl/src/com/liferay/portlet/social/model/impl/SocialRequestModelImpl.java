@@ -210,6 +210,9 @@ public class SocialRequestModelImpl extends BaseModelImpl<SocialRequest>
 		attributes.put("receiverUserId", getReceiverUserId());
 		attributes.put("status", getStatus());
 
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
+
 		return attributes;
 	}
 
@@ -692,6 +695,16 @@ public class SocialRequestModelImpl extends BaseModelImpl<SocialRequest>
 	@Override
 	public int hashCode() {
 		return (int)getPrimaryKey();
+	}
+
+	@Override
+	public boolean isEntityCacheEnabled() {
+		return ENTITY_CACHE_ENABLED;
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return FINDER_CACHE_ENABLED;
 	}
 
 	@Override

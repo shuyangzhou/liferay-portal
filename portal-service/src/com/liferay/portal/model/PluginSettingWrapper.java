@@ -436,6 +436,16 @@ public class PluginSettingWrapper implements PluginSetting,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _pluginSetting.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _pluginSetting.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_pluginSetting.resetOriginalValues();
 	}

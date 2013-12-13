@@ -786,6 +786,16 @@ public class MDRRuleGroupWrapper implements MDRRuleGroup,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _mdrRuleGroup.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _mdrRuleGroup.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_mdrRuleGroup.resetOriginalValues();
 	}

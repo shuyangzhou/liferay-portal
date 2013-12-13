@@ -1087,6 +1087,16 @@ public class BlogsEntryWrapper implements BlogsEntry, ModelWrapper<BlogsEntry> {
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _blogsEntry.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _blogsEntry.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_blogsEntry.resetOriginalValues();
 	}

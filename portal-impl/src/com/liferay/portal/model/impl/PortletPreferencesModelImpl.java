@@ -181,6 +181,9 @@ public class PortletPreferencesModelImpl extends BaseModelImpl<PortletPreference
 		attributes.put("portletId", getPortletId());
 		attributes.put("preferences", getPreferences());
 
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
+
 		return attributes;
 	}
 
@@ -428,6 +431,16 @@ public class PortletPreferencesModelImpl extends BaseModelImpl<PortletPreference
 	@Override
 	public int hashCode() {
 		return (int)getPrimaryKey();
+	}
+
+	@Override
+	public boolean isEntityCacheEnabled() {
+		return ENTITY_CACHE_ENABLED;
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return FINDER_CACHE_ENABLED;
 	}
 
 	@Override

@@ -480,6 +480,16 @@ public class AssetLinkWrapper implements AssetLink, ModelWrapper<AssetLink> {
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _assetLink.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _assetLink.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_assetLink.resetOriginalValues();
 	}

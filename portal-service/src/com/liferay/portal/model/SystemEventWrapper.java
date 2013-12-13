@@ -640,6 +640,16 @@ public class SystemEventWrapper implements SystemEvent,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _systemEvent.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _systemEvent.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_systemEvent.resetOriginalValues();
 	}

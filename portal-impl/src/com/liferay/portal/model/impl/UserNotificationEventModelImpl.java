@@ -142,6 +142,9 @@ public class UserNotificationEventModelImpl extends BaseModelImpl<UserNotificati
 		attributes.put("payload", getPayload());
 		attributes.put("archived", getArchived());
 
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
+
 		return attributes;
 	}
 
@@ -497,6 +500,16 @@ public class UserNotificationEventModelImpl extends BaseModelImpl<UserNotificati
 	@Override
 	public int hashCode() {
 		return (int)getPrimaryKey();
+	}
+
+	@Override
+	public boolean isEntityCacheEnabled() {
+		return ENTITY_CACHE_ENABLED;
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return FINDER_CACHE_ENABLED;
 	}
 
 	@Override

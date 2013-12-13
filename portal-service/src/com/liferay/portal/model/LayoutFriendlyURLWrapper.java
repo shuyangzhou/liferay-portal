@@ -579,6 +579,16 @@ public class LayoutFriendlyURLWrapper implements LayoutFriendlyURL,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _layoutFriendlyURL.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _layoutFriendlyURL.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_layoutFriendlyURL.resetOriginalValues();
 	}

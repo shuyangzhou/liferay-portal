@@ -133,6 +133,9 @@ public class TrashVersionModelImpl extends BaseModelImpl<TrashVersion>
 		attributes.put("typeSettings", getTypeSettings());
 		attributes.put("status", getStatus());
 
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
+
 		return attributes;
 	}
 
@@ -379,6 +382,16 @@ public class TrashVersionModelImpl extends BaseModelImpl<TrashVersion>
 	@Override
 	public int hashCode() {
 		return (int)getPrimaryKey();
+	}
+
+	@Override
+	public boolean isEntityCacheEnabled() {
+		return ENTITY_CACHE_ENABLED;
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return FINDER_CACHE_ENABLED;
 	}
 
 	@Override

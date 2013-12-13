@@ -1253,6 +1253,16 @@ public class PasswordPolicyWrapper implements PasswordPolicy,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _passwordPolicy.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _passwordPolicy.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_passwordPolicy.resetOriginalValues();
 	}

@@ -366,6 +366,16 @@ public class ServiceComponentWrapper implements ServiceComponent,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _serviceComponent.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _serviceComponent.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_serviceComponent.resetOriginalValues();
 	}

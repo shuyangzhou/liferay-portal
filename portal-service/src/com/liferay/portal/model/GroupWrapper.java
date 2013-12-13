@@ -1115,6 +1115,16 @@ public class GroupWrapper implements Group, ModelWrapper<Group> {
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _group.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _group.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_group.resetOriginalValues();
 	}

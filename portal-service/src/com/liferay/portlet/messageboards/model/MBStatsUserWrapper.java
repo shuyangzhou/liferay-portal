@@ -396,6 +396,16 @@ public class MBStatsUserWrapper implements MBStatsUser,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _mbStatsUser.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _mbStatsUser.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_mbStatsUser.resetOriginalValues();
 	}

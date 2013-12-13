@@ -322,6 +322,16 @@ public class VirtualHostWrapper implements VirtualHost,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _virtualHost.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _virtualHost.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_virtualHost.resetOriginalValues();
 	}

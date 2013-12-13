@@ -508,6 +508,16 @@ public class ShoppingItemPriceWrapper implements ShoppingItemPrice,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _shoppingItemPrice.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _shoppingItemPrice.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_shoppingItemPrice.resetOriginalValues();
 	}

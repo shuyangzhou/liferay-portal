@@ -482,6 +482,16 @@ public class UserNotificationDeliveryWrapper implements UserNotificationDelivery
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _userNotificationDelivery.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _userNotificationDelivery.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_userNotificationDelivery.resetOriginalValues();
 	}

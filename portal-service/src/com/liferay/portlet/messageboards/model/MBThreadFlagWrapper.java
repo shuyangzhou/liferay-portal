@@ -488,6 +488,16 @@ public class MBThreadFlagWrapper implements MBThreadFlag,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _mbThreadFlag.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _mbThreadFlag.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_mbThreadFlag.resetOriginalValues();
 	}

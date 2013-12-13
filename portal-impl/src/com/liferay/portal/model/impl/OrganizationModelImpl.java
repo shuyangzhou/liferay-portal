@@ -234,6 +234,9 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 		attributes.put("comments", getComments());
 		attributes.put("logoId", getLogoId());
 
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
+
 		return attributes;
 	}
 
@@ -736,6 +739,16 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 	@Override
 	public int hashCode() {
 		return (int)getPrimaryKey();
+	}
+
+	@Override
+	public boolean isEntityCacheEnabled() {
+		return ENTITY_CACHE_ENABLED;
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return FINDER_CACHE_ENABLED;
 	}
 
 	@Override

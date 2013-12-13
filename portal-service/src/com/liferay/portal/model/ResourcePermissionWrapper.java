@@ -437,6 +437,16 @@ public class ResourcePermissionWrapper implements ResourcePermission,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _resourcePermission.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _resourcePermission.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_resourcePermission.resetOriginalValues();
 	}

@@ -376,6 +376,16 @@ public class ResourceBlockWrapper implements ResourceBlock,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _resourceBlock.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _resourceBlock.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_resourceBlock.resetOriginalValues();
 	}

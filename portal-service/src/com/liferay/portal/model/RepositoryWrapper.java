@@ -646,6 +646,16 @@ public class RepositoryWrapper implements Repository, ModelWrapper<Repository> {
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _repository.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _repository.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_repository.resetOriginalValues();
 	}

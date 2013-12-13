@@ -486,6 +486,16 @@ public class TeamWrapper implements Team, ModelWrapper<Team> {
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _team.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _team.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_team.resetOriginalValues();
 	}
