@@ -599,6 +599,16 @@ public class SocialActivityCounterWrapper implements SocialActivityCounter,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _socialActivityCounter.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _socialActivityCounter.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_socialActivityCounter.resetOriginalValues();
 	}

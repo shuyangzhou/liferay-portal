@@ -143,6 +143,9 @@ public class ShoppingCartModelImpl extends BaseModelImpl<ShoppingCart>
 		attributes.put("altShipping", getAltShipping());
 		attributes.put("insure", getInsure());
 
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
+
 		return attributes;
 	}
 
@@ -467,6 +470,16 @@ public class ShoppingCartModelImpl extends BaseModelImpl<ShoppingCart>
 	@Override
 	public int hashCode() {
 		return (int)getPrimaryKey();
+	}
+
+	@Override
+	public boolean isEntityCacheEnabled() {
+		return ENTITY_CACHE_ENABLED;
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return FINDER_CACHE_ENABLED;
 	}
 
 	@Override

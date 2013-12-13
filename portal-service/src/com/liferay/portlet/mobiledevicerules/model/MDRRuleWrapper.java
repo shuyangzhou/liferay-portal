@@ -871,6 +871,16 @@ public class MDRRuleWrapper implements MDRRule, ModelWrapper<MDRRule> {
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _mdrRule.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _mdrRule.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_mdrRule.resetOriginalValues();
 	}

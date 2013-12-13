@@ -693,6 +693,16 @@ public class PollsChoiceWrapper implements PollsChoice,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _pollsChoice.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _pollsChoice.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_pollsChoice.resetOriginalValues();
 	}

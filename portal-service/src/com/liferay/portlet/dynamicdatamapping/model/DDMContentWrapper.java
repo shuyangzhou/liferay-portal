@@ -684,6 +684,16 @@ public class DDMContentWrapper implements DDMContent, ModelWrapper<DDMContent> {
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _ddmContent.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _ddmContent.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_ddmContent.resetOriginalValues();
 	}

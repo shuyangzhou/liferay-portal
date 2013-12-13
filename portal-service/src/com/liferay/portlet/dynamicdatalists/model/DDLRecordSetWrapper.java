@@ -916,6 +916,16 @@ public class DDLRecordSetWrapper implements DDLRecordSet,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _ddlRecordSet.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _ddlRecordSet.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_ddlRecordSet.resetOriginalValues();
 	}

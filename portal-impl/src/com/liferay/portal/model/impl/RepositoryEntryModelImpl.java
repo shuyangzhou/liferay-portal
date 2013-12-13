@@ -146,6 +146,9 @@ public class RepositoryEntryModelImpl extends BaseModelImpl<RepositoryEntry>
 		attributes.put("mappedId", getMappedId());
 		attributes.put("manualCheckInRequired", getManualCheckInRequired());
 
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
+
 		return attributes;
 	}
 
@@ -507,6 +510,16 @@ public class RepositoryEntryModelImpl extends BaseModelImpl<RepositoryEntry>
 	@Override
 	public int hashCode() {
 		return (int)getPrimaryKey();
+	}
+
+	@Override
+	public boolean isEntityCacheEnabled() {
+		return ENTITY_CACHE_ENABLED;
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return FINDER_CACHE_ENABLED;
 	}
 
 	@Override

@@ -151,6 +151,9 @@ public class SocialActivityCounterModelImpl extends BaseModelImpl<SocialActivity
 		attributes.put("endPeriod", getEndPeriod());
 		attributes.put("active", getActive());
 
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
+
 		return attributes;
 	}
 
@@ -567,6 +570,16 @@ public class SocialActivityCounterModelImpl extends BaseModelImpl<SocialActivity
 	@Override
 	public int hashCode() {
 		return (int)getPrimaryKey();
+	}
+
+	@Override
+	public boolean isEntityCacheEnabled() {
+		return ENTITY_CACHE_ENABLED;
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return FINDER_CACHE_ENABLED;
 	}
 
 	@Override

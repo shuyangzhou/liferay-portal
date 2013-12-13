@@ -762,6 +762,16 @@ public class LayoutSetWrapper implements LayoutSet, ModelWrapper<LayoutSet> {
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _layoutSet.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _layoutSet.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_layoutSet.resetOriginalValues();
 	}

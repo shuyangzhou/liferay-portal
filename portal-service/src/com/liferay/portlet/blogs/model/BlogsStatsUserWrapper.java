@@ -507,6 +507,16 @@ public class BlogsStatsUserWrapper implements BlogsStatsUser,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _blogsStatsUser.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _blogsStatsUser.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_blogsStatsUser.resetOriginalValues();
 	}

@@ -455,6 +455,16 @@ public class WebDAVPropsWrapper implements WebDAVProps,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _webDAVProps.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _webDAVProps.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_webDAVProps.resetOriginalValues();
 	}

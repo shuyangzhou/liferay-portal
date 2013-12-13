@@ -427,6 +427,16 @@ public class DLFileEntryMetadataWrapper implements DLFileEntryMetadata,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _dlFileEntryMetadata.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _dlFileEntryMetadata.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_dlFileEntryMetadata.resetOriginalValues();
 	}

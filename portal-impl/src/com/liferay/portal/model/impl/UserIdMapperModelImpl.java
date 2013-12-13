@@ -130,6 +130,9 @@ public class UserIdMapperModelImpl extends BaseModelImpl<UserIdMapper>
 		attributes.put("description", getDescription());
 		attributes.put("externalUserId", getExternalUserId());
 
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
+
 		return attributes;
 	}
 
@@ -355,6 +358,16 @@ public class UserIdMapperModelImpl extends BaseModelImpl<UserIdMapper>
 	@Override
 	public int hashCode() {
 		return (int)getPrimaryKey();
+	}
+
+	@Override
+	public boolean isEntityCacheEnabled() {
+		return ENTITY_CACHE_ENABLED;
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return FINDER_CACHE_ENABLED;
 	}
 
 	@Override

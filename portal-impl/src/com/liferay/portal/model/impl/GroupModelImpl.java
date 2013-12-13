@@ -260,6 +260,9 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		attributes.put("remoteStagingGroupCount", getRemoteStagingGroupCount());
 		attributes.put("active", getActive());
 
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
+
 		return attributes;
 	}
 
@@ -897,6 +900,16 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 	@Override
 	public int hashCode() {
 		return (int)getPrimaryKey();
+	}
+
+	@Override
+	public boolean isEntityCacheEnabled() {
+		return ENTITY_CACHE_ENABLED;
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return FINDER_CACHE_ENABLED;
 	}
 
 	@Override

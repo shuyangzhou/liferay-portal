@@ -1161,6 +1161,16 @@ public class WikiPageWrapper implements WikiPage, ModelWrapper<WikiPage> {
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _wikiPage.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _wikiPage.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_wikiPage.resetOriginalValues();
 	}

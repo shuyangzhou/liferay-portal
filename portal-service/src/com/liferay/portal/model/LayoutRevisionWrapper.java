@@ -1937,6 +1937,16 @@ public class LayoutRevisionWrapper implements LayoutRevision,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _layoutRevision.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _layoutRevision.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_layoutRevision.resetOriginalValues();
 	}

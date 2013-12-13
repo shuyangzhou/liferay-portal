@@ -922,6 +922,16 @@ public class DLFileShortcutWrapper implements DLFileShortcut,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _dlFileShortcut.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _dlFileShortcut.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_dlFileShortcut.resetOriginalValues();
 	}

@@ -325,6 +325,16 @@ public class UserTrackerPathWrapper implements UserTrackerPath,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _userTrackerPath.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _userTrackerPath.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_userTrackerPath.resetOriginalValues();
 	}

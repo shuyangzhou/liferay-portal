@@ -441,6 +441,16 @@ public class SocialActivityAchievementWrapper
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _socialActivityAchievement.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _socialActivityAchievement.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_socialActivityAchievement.resetOriginalValues();
 	}

@@ -347,6 +347,16 @@ public class PasswordTrackerWrapper implements PasswordTracker,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _passwordTracker.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _passwordTracker.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_passwordTracker.resetOriginalValues();
 	}
