@@ -558,6 +558,16 @@ public class LockWrapper implements Lock, ModelWrapper<Lock> {
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _lock.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _lock.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_lock.resetOriginalValues();
 	}

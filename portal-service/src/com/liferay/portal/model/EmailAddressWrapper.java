@@ -599,6 +599,16 @@ public class EmailAddressWrapper implements EmailAddress,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _emailAddress.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _emailAddress.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_emailAddress.resetOriginalValues();
 	}

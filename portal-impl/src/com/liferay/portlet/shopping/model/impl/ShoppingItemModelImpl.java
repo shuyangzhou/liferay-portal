@@ -271,6 +271,9 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 		attributes.put("largeImageId", getLargeImageId());
 		attributes.put("largeImageURL", getLargeImageURL());
 
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
+
 		return attributes;
 	}
 
@@ -1157,6 +1160,16 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 	@Override
 	public int hashCode() {
 		return (int)getPrimaryKey();
+	}
+
+	@Override
+	public boolean isEntityCacheEnabled() {
+		return ENTITY_CACHE_ENABLED;
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return FINDER_CACHE_ENABLED;
 	}
 
 	@Override

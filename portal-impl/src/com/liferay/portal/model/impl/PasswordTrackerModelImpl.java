@@ -128,6 +128,9 @@ public class PasswordTrackerModelImpl extends BaseModelImpl<PasswordTracker>
 		attributes.put("createDate", getCreateDate());
 		attributes.put("password", getPassword());
 
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
+
 		return attributes;
 	}
 
@@ -325,6 +328,16 @@ public class PasswordTrackerModelImpl extends BaseModelImpl<PasswordTracker>
 	@Override
 	public int hashCode() {
 		return (int)getPrimaryKey();
+	}
+
+	@Override
+	public boolean isEntityCacheEnabled() {
+		return ENTITY_CACHE_ENABLED;
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return FINDER_CACHE_ENABLED;
 	}
 
 	@Override

@@ -516,6 +516,16 @@ public class LayoutBranchWrapper implements LayoutBranch,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _layoutBranch.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _layoutBranch.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_layoutBranch.resetOriginalValues();
 	}

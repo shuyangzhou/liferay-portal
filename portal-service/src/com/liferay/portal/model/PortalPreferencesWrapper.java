@@ -324,6 +324,16 @@ public class PortalPreferencesWrapper implements PortalPreferences,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _portalPreferences.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _portalPreferences.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_portalPreferences.resetOriginalValues();
 	}

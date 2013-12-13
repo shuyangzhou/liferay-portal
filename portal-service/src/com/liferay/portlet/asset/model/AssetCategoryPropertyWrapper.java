@@ -484,6 +484,16 @@ public class AssetCategoryPropertyWrapper implements AssetCategoryProperty,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _assetCategoryProperty.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _assetCategoryProperty.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_assetCategoryProperty.resetOriginalValues();
 	}

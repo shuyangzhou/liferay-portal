@@ -375,6 +375,16 @@ public class AnnouncementsFlagWrapper implements AnnouncementsFlag,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _announcementsFlag.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _announcementsFlag.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_announcementsFlag.resetOriginalValues();
 	}

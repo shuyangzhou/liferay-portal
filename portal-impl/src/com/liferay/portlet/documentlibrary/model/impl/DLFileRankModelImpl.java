@@ -138,6 +138,9 @@ public class DLFileRankModelImpl extends BaseModelImpl<DLFileRank>
 		attributes.put("fileEntryId", getFileEntryId());
 		attributes.put("active", getActive());
 
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
+
 		return attributes;
 	}
 
@@ -417,6 +420,16 @@ public class DLFileRankModelImpl extends BaseModelImpl<DLFileRank>
 	@Override
 	public int hashCode() {
 		return (int)getPrimaryKey();
+	}
+
+	@Override
+	public boolean isEntityCacheEnabled() {
+		return ENTITY_CACHE_ENABLED;
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return FINDER_CACHE_ENABLED;
 	}
 
 	@Override

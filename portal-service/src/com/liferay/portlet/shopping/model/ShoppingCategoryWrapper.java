@@ -515,6 +515,16 @@ public class ShoppingCategoryWrapper implements ShoppingCategory,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _shoppingCategory.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _shoppingCategory.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_shoppingCategory.resetOriginalValues();
 	}

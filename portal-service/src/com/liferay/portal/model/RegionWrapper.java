@@ -352,6 +352,16 @@ public class RegionWrapper implements Region, ModelWrapper<Region> {
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _region.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _region.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_region.resetOriginalValues();
 	}

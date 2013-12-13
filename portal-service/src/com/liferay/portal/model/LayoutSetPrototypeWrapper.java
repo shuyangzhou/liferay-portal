@@ -732,6 +732,16 @@ public class LayoutSetPrototypeWrapper implements LayoutSetPrototype,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _layoutSetPrototype.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _layoutSetPrototype.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_layoutSetPrototype.resetOriginalValues();
 	}

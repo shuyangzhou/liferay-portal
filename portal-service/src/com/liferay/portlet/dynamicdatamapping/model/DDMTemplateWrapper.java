@@ -1140,6 +1140,16 @@ public class DDMTemplateWrapper implements DDMTemplate,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _ddmTemplate.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _ddmTemplate.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_ddmTemplate.resetOriginalValues();
 	}

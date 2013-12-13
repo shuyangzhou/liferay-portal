@@ -497,6 +497,16 @@ public class RatingsEntryWrapper implements RatingsEntry,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _ratingsEntry.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _ratingsEntry.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_ratingsEntry.resetOriginalValues();
 	}

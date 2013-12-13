@@ -557,6 +557,16 @@ public class MBDiscussionWrapper implements MBDiscussion,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _mbDiscussion.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _mbDiscussion.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_mbDiscussion.resetOriginalValues();
 	}

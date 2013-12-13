@@ -302,6 +302,16 @@ public class OrgGroupRoleWrapper implements OrgGroupRole,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _orgGroupRole.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _orgGroupRole.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_orgGroupRole.resetOriginalValues();
 	}

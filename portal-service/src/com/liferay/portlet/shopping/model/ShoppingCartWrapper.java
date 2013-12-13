@@ -569,6 +569,16 @@ public class ShoppingCartWrapper implements ShoppingCart,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _shoppingCart.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _shoppingCart.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_shoppingCart.resetOriginalValues();
 	}

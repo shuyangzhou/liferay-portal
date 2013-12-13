@@ -1271,6 +1271,16 @@ public class ShoppingItemWrapper implements ShoppingItem,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _shoppingItem.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _shoppingItem.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_shoppingItem.resetOriginalValues();
 	}

@@ -702,6 +702,16 @@ public class BackgroundTaskWrapper implements BackgroundTask,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _backgroundTask.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _backgroundTask.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_backgroundTask.resetOriginalValues();
 	}

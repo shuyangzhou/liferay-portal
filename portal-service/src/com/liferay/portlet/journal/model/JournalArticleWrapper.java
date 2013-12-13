@@ -1615,17 +1615,17 @@ public class JournalArticleWrapper implements JournalArticle,
 	}
 
 	@Override
-	public java.lang.String getArticleImageURL(
-		com.liferay.portal.theme.ThemeDisplay themeDisplay) {
-		return _journalArticle.getArticleImageURL(themeDisplay);
-	}
-
-	@Override
 	public long getArticleImageId(java.lang.String elInstanceId,
 		java.lang.String elName, java.lang.String languageId)
 		throws com.liferay.portal.kernel.exception.SystemException {
 		return _journalArticle.getArticleImageId(elInstanceId, elName,
 			languageId);
+	}
+
+	@Override
+	public java.lang.String getArticleImageURL(
+		com.liferay.portal.theme.ThemeDisplay themeDisplay) {
+		return _journalArticle.getArticleImageURL(themeDisplay);
 	}
 
 	@Override
@@ -1728,6 +1728,16 @@ public class JournalArticleWrapper implements JournalArticle,
 	@Override
 	public JournalArticle getWrappedModel() {
 		return _journalArticle;
+	}
+
+	@Override
+	public boolean isEntityCacheEnabled() {
+		return _journalArticle.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _journalArticle.isFinderCacheEnabled();
 	}
 
 	@Override

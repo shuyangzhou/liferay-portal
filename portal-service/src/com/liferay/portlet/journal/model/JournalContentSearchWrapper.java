@@ -417,6 +417,16 @@ public class JournalContentSearchWrapper implements JournalContentSearch,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _journalContentSearch.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _journalContentSearch.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_journalContentSearch.resetOriginalValues();
 	}

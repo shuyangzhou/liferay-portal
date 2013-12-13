@@ -690,6 +690,16 @@ public class SCProductEntryWrapper implements SCProductEntry,
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _scProductEntry.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _scProductEntry.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_scProductEntry.resetOriginalValues();
 	}

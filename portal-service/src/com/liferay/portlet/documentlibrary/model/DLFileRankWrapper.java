@@ -437,6 +437,16 @@ public class DLFileRankWrapper implements DLFileRank, ModelWrapper<DLFileRank> {
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _dlFileRank.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _dlFileRank.isFinderCacheEnabled();
+	}
+
+	@Override
 	public void resetOriginalValues() {
 		_dlFileRank.resetOriginalValues();
 	}
