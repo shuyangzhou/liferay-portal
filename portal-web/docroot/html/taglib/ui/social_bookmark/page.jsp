@@ -19,22 +19,28 @@
 <c:choose>
 	<c:when test='<%= displayStyle.equals("menu") %>'>
 		<c:if test="<%= Validator.isNotNull(postUrl) %>">
-			<liferay-ui:icon
-				cssClass="social-bookmark"
-				image="<%= icon %>"
-				message="<%= type %>"
-				method="get"
-				url="<%= postUrl %>"
-			/>
+			<a href="<%= postUrl %>" class=" taglib-icon" role="menuitem" tabindex="0">
+				<span>
+
+					<%
+						if (type.equals("plusone")) {
+							type = "google-plus";
+						}
+
+						String iconType = "icon-" + type + "-sign";
+					%>
+
+					<i class='<%= iconType %>'></i>
+				</span>
+
+				<span class="taglib-text-icon">Share on <%= type %></span>
+			</a>
+
 		</c:if>
 	</c:when>
 	<c:otherwise>
 		<liferay-util:html-bottom outputKey='<%= "taglib_ui_social_bookmark_link_" + type %>'>
-			<style type="text/css">
-				.taglib-social-bookmarks .taglib-social-bookmark-<%= type %> a.social-bookmark-link {
-					background-image: url(/html/taglib/ui/social_bookmark/icons/<%= type %>.png);
-				}
-			</style>
+
 		</liferay-util:html-bottom>
 
 		<aui:a cssClass="social-bookmark-link" href="<%= postUrl %>" target="<%= target %>"><liferay-ui:message key="<%= messageKey %>" /></aui:a>
