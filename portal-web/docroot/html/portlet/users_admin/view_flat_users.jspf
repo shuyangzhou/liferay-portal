@@ -21,7 +21,11 @@
 <%
 SearchContainer searchContainer = new UserSearch(renderRequest, "cur2", currentURLObj);
 
-searchContainer.setRowChecker(new RowChecker(renderResponse));
+RowChecker rowChecker = new RowChecker(renderResponse);
+
+rowChecker.setRowIds("rowIdsUserCheckbox");
+
+searchContainer.setRowChecker(rowChecker);
 
 if (!ParamUtil.getBoolean(renderRequest, "advancedSearch")) {
 	currentURLObj.setParameter("status", String.valueOf(status));
