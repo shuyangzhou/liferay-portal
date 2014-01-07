@@ -15,6 +15,8 @@
 package com.liferay.portal.events;
 
 import com.liferay.portal.kernel.events.ActionException;
+import com.liferay.portal.kernel.events.LifecycleAction;
+import com.liferay.portal.kernel.events.LifecycleEvent;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,7 +31,7 @@ public class EventsProcessorUtil {
 	public static void process(String key, String[] classes)
 		throws ActionException {
 
-		_instance.process(key, classes, null, null, null, null);
+		_instance.process(key, classes, new LifecycleEvent());
 	}
 
 	public static void process(
@@ -37,20 +39,34 @@ public class EventsProcessorUtil {
 			HttpServletResponse response)
 		throws ActionException {
 
-		_instance.process(key, classes, null, request, response, null);
+		_instance.process(key, classes, new LifecycleEvent(request, response));
 	}
 
 	public static void process(
 			String key, String[] classes, HttpSession session)
 		throws ActionException {
 
-		_instance.process(key, classes, null, null, null, session);
+		_instance.process(key, classes, new LifecycleEvent(session));
+	}
+
+	public static void process(
+			String key, String[] classes, LifecycleEvent lifecycleEvent)
+		throws ActionException {
+
+		_instance.process(key, classes, lifecycleEvent);
 	}
 
 	public static void process(String key, String[] classes, String[] ids)
 		throws ActionException {
 
-		_instance.process(key, classes, ids, null, null, null);
+		_instance.process(key, classes, new LifecycleEvent(ids));
+	}
+
+	public static void processEvent(
+			LifecycleAction lifecycleAction, LifecycleEvent lifecycleEvent)
+		throws ActionException {
+
+		_instance.processEvent(lifecycleAction, lifecycleEvent);
 	}
 
 	public static void registerEvent(String key, Object event) {

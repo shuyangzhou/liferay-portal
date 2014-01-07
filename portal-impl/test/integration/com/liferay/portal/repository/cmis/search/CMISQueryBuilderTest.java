@@ -71,6 +71,10 @@ public class CMISQueryBuilderTest extends PowerMockito {
 			new BeanLocator() {
 
 				@Override
+				public void destroy() {
+				}
+
+				@Override
 				public ClassLoader getClassLoader() {
 					return _beanLocator.getClassLoader();
 				}

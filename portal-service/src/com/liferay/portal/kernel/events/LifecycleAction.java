@@ -14,20 +14,12 @@
 
 package com.liferay.portal.kernel.events;
 
-import javax.servlet.http.HttpSession;
-
 /**
- * @author Brian Wing Shun Chan
+ * @author Raymond Augé
  */
-public abstract class SessionAction implements LifecycleAction {
+public interface LifecycleAction {
 
-	@Override
-	public final void processLifecycleEvent(LifecycleEvent lifecycleEvent)
-		throws ActionException {
-
-		run(lifecycleEvent.getSession());
-	}
-
-	public abstract void run(HttpSession session) throws ActionException;
+	public void processLifecycleEvent(LifecycleEvent lifecycleEvent)
+		throws ActionException;
 
 }

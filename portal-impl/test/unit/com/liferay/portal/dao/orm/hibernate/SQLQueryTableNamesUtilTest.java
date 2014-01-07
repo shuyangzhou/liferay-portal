@@ -77,8 +77,8 @@ public class SQLQueryTableNamesUtilTest {
 			String[] expectedTableNames = StringUtil.split(
 				line.substring(index + 1), CharPool.COMMA);
 
-			String[] actualTableNames =
-				SQLQueryTableNamesUtil.getTableNames(sql);
+			String[] actualTableNames = SQLQueryTableNamesUtil.getTableNames(
+				sql);
 
 			Arrays.sort(actualTableNames);
 
