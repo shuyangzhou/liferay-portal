@@ -15,7 +15,6 @@
 package com.liferay.portal.kernel.search;
 
 import com.liferay.portal.kernel.util.ObjectValuePair;
-import com.liferay.portal.kernel.util.Tuple;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.security.permission.PermissionChecker;
 
