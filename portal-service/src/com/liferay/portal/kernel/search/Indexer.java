@@ -50,9 +50,13 @@ public interface Indexer {
 
 	public IndexerPostProcessor[] getIndexerPostProcessors();
 
+	public PageSearchResult<?> getPageSearchResult(Hits hits);
+
 	public String getPortletId();
 
 	public String getSearchEngineId();
+
+	public String[] getSelectedFieldNames();
 
 	public String getSortField(String orderByCol);
 
@@ -95,6 +99,10 @@ public interface Indexer {
 		throws SearchException;
 
 	public Hits search(SearchContext searchContext) throws SearchException;
+
+	public PageSearchResult<?> search(
+			SearchContext searchContext, Class<?> entryClass)
+		throws SearchException;
 
 	public void unregisterIndexerPostProcessor(
 		IndexerPostProcessor indexerPostProcessor);

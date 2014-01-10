@@ -67,6 +67,11 @@ public class DummyIndexer implements Indexer {
 	}
 
 	@Override
+	public PageSearchResult<?> getPageSearchResult(Hits hits) {
+		return null;
+	}
+
+	@Override
 	public String getPortletId() {
 		return StringPool.BLANK;
 	}
@@ -74,6 +79,11 @@ public class DummyIndexer implements Indexer {
 	@Override
 	public String getSearchEngineId() {
 		return StringPool.BLANK;
+	}
+
+	@Override
+	public String[] getSelectedFieldNames() {
+		return null;
 	}
 
 	@Override
@@ -150,6 +160,14 @@ public class DummyIndexer implements Indexer {
 
 	@Override
 	public Hits search(SearchContext searchContext) {
+		return null;
+	}
+
+	@Override
+	public PageSearchResult<?> search(
+			SearchContext searchContext, Class<?> entryClass)
+		throws SearchException {
+
 		return null;
 	}
 

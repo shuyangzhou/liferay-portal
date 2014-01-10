@@ -18,12 +18,9 @@
 
 <%@ page import="com.liferay.portal.kernel.util.ContentTypes" %>
 <%@ page import="com.liferay.portal.kernel.util.HtmlUtil" %>
-<%@ page import="com.liferay.portal.kernel.util.LocaleUtil" %>
 <%@ page import="com.liferay.portal.kernel.util.ParamUtil" %>
 <%@ page import="com.liferay.portal.kernel.xuggler.XugglerUtil" %>
 <%@ page import="com.liferay.portal.util.PortalUtil" %>
-
-<%@ page import="java.util.Locale" %>
 
 <%
 String contentsLanguageId = ParamUtil.getString(request, "contentsLanguageId");
