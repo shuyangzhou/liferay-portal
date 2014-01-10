@@ -265,6 +265,11 @@ public abstract class BaseIndexer implements Indexer {
 	}
 
 	@Override
+	public PageSearchResult<?> getPageSearchResult(Hits hits) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
 	public String getSearchEngineId() {
 		if (_searchEngineId != null) {
 			return _searchEngineId;
@@ -296,6 +301,11 @@ public abstract class BaseIndexer implements Indexer {
 		}
 
 		return _searchEngineId;
+	}
+
+	@Override
+	public String[] getSelectedFieldNames() {
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -522,6 +532,24 @@ public abstract class BaseIndexer implements Indexer {
 		catch (Exception e) {
 			throw new SearchException(e);
 		}
+	}
+
+	@Override
+	public PageSearchResult<?> search(
+			SearchContext searchContext, Class<?> entryClass)
+		throws SearchException {
+
+		Indexer indexer = IndexerRegistryUtil.getIndexer(entryClass.getName());
+
+		String[] selectedFieldNames = indexer.getSelectedFieldNames();
+
+		QueryConfig queryConfig = searchContext.getQueryConfig();
+
+		queryConfig.setSelectedFieldNames(selectedFieldNames);
+
+		Hits hits = search(searchContext);
+
+		return indexer.getPageSearchResult(hits);
 	}
 
 	@Override
