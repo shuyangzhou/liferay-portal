@@ -41,6 +41,8 @@ public interface Indexer {
 
 	public Document getDocument(Object obj) throws SearchException;
 
+	public PageSearchResult<?> getEntries(Hits hits);
+
 	public BooleanQuery getFacetQuery(
 			String className, SearchContext searchContext)
 		throws Exception;
@@ -53,6 +55,8 @@ public interface Indexer {
 	public String getPortletId();
 
 	public String getSearchEngineId();
+
+	public String[] getSelectedFieldNames();
 
 	public String getSortField(String orderByCol);
 
@@ -95,6 +99,10 @@ public interface Indexer {
 		throws SearchException;
 
 	public Hits search(SearchContext searchContext) throws SearchException;
+
+	public PageSearchResult<?> search(
+			SearchContext searchContext, Class<?> entryClass)
+		throws SearchException;
 
 	public void unregisterIndexerPostProcessor(
 		IndexerPostProcessor indexerPostProcessor);

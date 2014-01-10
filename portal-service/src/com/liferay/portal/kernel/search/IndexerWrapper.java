@@ -58,6 +58,11 @@ public class IndexerWrapper implements Indexer {
 	}
 
 	@Override
+	public PageSearchResult<?> getEntries(Hits hits) {
+		return _indexer.getEntries(hits);
+	}
+
+	@Override
 	public BooleanQuery getFacetQuery(
 			String className, SearchContext searchContext)
 		throws Exception {
@@ -85,6 +90,11 @@ public class IndexerWrapper implements Indexer {
 	@Override
 	public String getSearchEngineId() {
 		return _indexer.getSearchEngineId();
+	}
+
+	@Override
+	public String[] getSelectedFieldNames() {
+		return _indexer.getSelectedFieldNames();
 	}
 
 	@Override
@@ -179,6 +189,14 @@ public class IndexerWrapper implements Indexer {
 	@Override
 	public Hits search(SearchContext searchContext) throws SearchException {
 		return _indexer.search(searchContext);
+	}
+
+	@Override
+	public PageSearchResult<?> search(
+			SearchContext searchContext, Class<?> entryClass)
+		throws SearchException {
+
+		return _indexer.search(searchContext, entryClass);
 	}
 
 	@Override
