@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.PageSearchResult;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.SearchContextFactory;
 import com.liferay.portal.kernel.search.Sort;
@@ -577,7 +578,7 @@ public class AssetUtil {
 		return true;
 	}
 
-	public static Hits search(
+	public static PageSearchResult<AssetEntry> search(
 			HttpServletRequest request, AssetEntryQuery assetEntryQuery,
 			int start, int end)
 		throws Exception {
@@ -587,7 +588,7 @@ public class AssetUtil {
 		return search(searchContext, assetEntryQuery, start, end);
 	}
 
-	public static Hits search(
+	public static PageSearchResult<AssetEntry> search(
 			SearchContext searchContext, AssetEntryQuery assetEntryQuery,
 			int start, int end)
 		throws Exception {
@@ -639,7 +640,8 @@ public class AssetUtil {
 			getSorts(assetEntryQuery, searchContext.getLocale()));
 		searchContext.setStart(start);
 
-		return assetSearcher.search(searchContext);
+		return (PageSearchResult<AssetEntry>)assetSearcher.search(
+			searchContext, AssetEntry.class);
 	}
 
 	public static String substituteCategoryPropertyVariables(
