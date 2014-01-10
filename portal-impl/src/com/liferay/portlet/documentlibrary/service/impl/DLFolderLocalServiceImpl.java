@@ -22,6 +22,9 @@ import com.liferay.portal.kernel.dao.orm.QueryDefinition;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.increment.BufferedIncrement;
+import com.liferay.portal.kernel.increment.LastDateIncrement;
+import com.liferay.portal.kernel.lar.ExportImportThreadLocal;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.Indexable;
@@ -50,6 +53,7 @@ import com.liferay.portlet.documentlibrary.DuplicateFolderNameException;
 import com.liferay.portlet.documentlibrary.FolderNameException;
 import com.liferay.portlet.documentlibrary.NoSuchDirectoryException;
 import com.liferay.portlet.documentlibrary.NoSuchFileEntryException;
+import com.liferay.portlet.documentlibrary.NoSuchFolderException;
 import com.liferay.portlet.documentlibrary.model.DLFileEntryType;
 import com.liferay.portlet.documentlibrary.model.DLFileEntryTypeConstants;
 import com.liferay.portlet.documentlibrary.model.DLFolder;
@@ -135,12 +139,7 @@ public class DLFolderLocalServiceImpl extends DLFolderLocalServiceBaseImpl {
 		// Parent folder
 
 		if (parentFolderId != DLFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
-			DLFolder parentDLFolder = dlFolderPersistence.findByPrimaryKey(
-				parentFolderId);
-
-			parentDLFolder.setLastPostDate(now);
-
-			dlFolderPersistence.update(parentDLFolder);
+			dlFolderLocalService.setLastPostDate(parentFolderId, now);
 		}
 
 		// App helper
@@ -812,6 +811,30 @@ public class DLFolderLocalServiceImpl extends DLFolderLocalServiceBaseImpl {
 		);
 	}
 
+	@BufferedIncrement(
+		configuration = "DLFolderEntry",
+		incrementClass = LastDateIncrement.class)
+	@Override
+	public DLFolder setLastPostDate(long folderId, Date lastPostDate)
+		throws NoSuchFolderException, SystemException {
+
+		DLFolder dlFolder = dlFolderPersistence.findByPrimaryKey(folderId);
+
+		if (ExportImportThreadLocal.isImportInProcess() ||
+			(folderId == DLFolderConstants.DEFAULT_PARENT_FOLDER_ID) ||
+			(lastPostDate == null) ||
+			lastPostDate.before(dlFolder.getLastPostDate())) {
+
+			return dlFolder;
+		}
+
+		dlFolder.setLastPostDate(lastPostDate);
+
+		dlFolderPersistence.update(dlFolder);
+
+		return dlFolder;
+	}
+
 	@Override
 	public void unlockFolder(
 			long groupId, long parentFolderId, String name, String lockUuid)
@@ -1026,11 +1049,7 @@ public class DLFolderLocalServiceImpl extends DLFolderLocalServiceBaseImpl {
 	public void updateLastPostDate(long folderId, Date lastPostDate)
 		throws PortalException, SystemException {
 
-		DLFolder dlFolder = dlFolderPersistence.findByPrimaryKey(folderId);
-
-		dlFolder.setLastPostDate(lastPostDate);
-
-		dlFolderPersistence.update(dlFolder);
+		setLastPostDate(folderId, lastPostDate);
 	}
 
 	@Override

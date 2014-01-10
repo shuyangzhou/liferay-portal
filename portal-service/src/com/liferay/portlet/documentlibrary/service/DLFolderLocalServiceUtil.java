@@ -831,6 +831,13 @@ public class DLFolderLocalServiceUtil {
 		getService().rebuildTree(companyId);
 	}
 
+	public static com.liferay.portlet.documentlibrary.model.DLFolder setLastPostDate(
+		long folderId, java.util.Date lastPostDate)
+		throws com.liferay.portal.kernel.exception.SystemException,
+			com.liferay.portlet.documentlibrary.NoSuchFolderException {
+		return getService().setLastPostDate(folderId, lastPostDate);
+	}
+
 	public static void unlockFolder(long groupId, long parentFolderId,
 		java.lang.String name, java.lang.String lockUuid)
 		throws com.liferay.portal.kernel.exception.PortalException,

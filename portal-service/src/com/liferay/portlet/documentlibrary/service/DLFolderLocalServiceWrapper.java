@@ -901,6 +901,14 @@ public class DLFolderLocalServiceWrapper implements DLFolderLocalService,
 	}
 
 	@Override
+	public com.liferay.portlet.documentlibrary.model.DLFolder setLastPostDate(
+		long folderId, java.util.Date lastPostDate)
+		throws com.liferay.portal.kernel.exception.SystemException,
+			com.liferay.portlet.documentlibrary.NoSuchFolderException {
+		return _dlFolderLocalService.setLastPostDate(folderId, lastPostDate);
+	}
+
+	@Override
 	public void unlockFolder(long groupId, long parentFolderId,
 		java.lang.String name, java.lang.String lockUuid)
 		throws com.liferay.portal.kernel.exception.PortalException,
