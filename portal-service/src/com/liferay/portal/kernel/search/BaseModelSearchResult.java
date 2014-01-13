@@ -26,7 +26,9 @@ import java.util.List;
 public class BaseModelSearchResult<T extends BaseModel<T>>
 	implements Serializable {
 
-	public BaseModelSearchResult(List<T> baseModels, int length) {
+	public BaseModelSearchResult(
+		List<T> baseModels, int length, boolean corruptIndex) {
+
 		_baseModels = baseModels;
 		_length = length;
 	}
@@ -39,7 +41,12 @@ public class BaseModelSearchResult<T extends BaseModel<T>>
 		return _length;
 	}
 
+	public boolean hasCorruptIndex() {
+		return _corruptIndex;
+	}
+
 	private List<T> _baseModels;
+	private boolean _corruptIndex;
 	private int _length;
 
 }
