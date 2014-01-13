@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -462,25 +463,10 @@ public class AssetUtil {
 	}
 
 	public static List<AssetEntry> getAssetEntries(Hits hits) {
-		List<AssetEntry> assetEntries = new ArrayList<AssetEntry>();
+		ObjectValuePair<List<AssetEntry>, Boolean> searchResult =
+			getSearchResult(hits);
 
-		for (Document document : hits.getDocs()) {
-			String className = GetterUtil.getString(
-				document.get(Field.ENTRY_CLASS_NAME));
-			long classPK = GetterUtil.getLong(
-				document.get(Field.ENTRY_CLASS_PK));
-
-			try {
-				AssetEntry assetEntry = AssetEntryLocalServiceUtil.getEntry(
-					className, classPK);
-
-				assetEntries.add(assetEntry);
-			}
-			catch (Exception e) {
-			}
-		}
-
-		return assetEntries;
+		return searchResult.getKey();
 	}
 
 	public static String getAssetKeywords(String className, long classPK)
@@ -622,10 +608,11 @@ public class AssetUtil {
 
 		Hits hits = assetSearcher.search(searchContext, SELECTED_FIELD_NAMES);
 
-		List<AssetEntry> assetEntries = getAssetEntries(hits);
+		ObjectValuePair<List<AssetEntry>, Boolean> searchResult =
+			getSearchResult(hits);
 
 		return new BaseModelSearchResult<AssetEntry>(
-			assetEntries, hits.getLength());
+			searchResult.getKey(), hits.getLength(), searchResult.getValue());
 	}
 
 	public static String substituteCategoryPropertyVariables(
@@ -761,6 +748,37 @@ public class AssetUtil {
 		searchContext.setStart(start);
 
 		return assetSearcher;
+	}
+
+	protected static ObjectValuePair<List<AssetEntry>, Boolean>
+		getSearchResult(Hits hits) {
+
+		List<AssetEntry> assetEntries = new ArrayList<AssetEntry>();
+		boolean corruptIndex = false;
+
+		for (Document document : hits.getDocs()) {
+			String className = GetterUtil.getString(
+				document.get(Field.ENTRY_CLASS_NAME));
+			long classPK = GetterUtil.getLong(
+				document.get(Field.ENTRY_CLASS_PK));
+
+			try {
+				AssetEntry assetEntry = AssetEntryLocalServiceUtil.fetchEntry(
+					className, classPK);
+
+				if (assetEntry != null) {
+					assetEntries.add(assetEntry);
+				}
+				else {
+					corruptIndex = true;
+				}
+			}
+			catch (Exception e) {
+			}
+		}
+
+		return new ObjectValuePair<List<AssetEntry>, Boolean>(
+			assetEntries, corruptIndex);
 	}
 
 	protected static Sort getSort(
