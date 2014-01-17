@@ -64,6 +64,8 @@ public class RenderPortletAction extends Action {
 		String columnId = ParamUtil.getString(request, "p_p_col_id");
 		int columnPos = ParamUtil.getInteger(request, "p_p_col_pos");
 		int columnCount = ParamUtil.getInteger(request, "p_p_col_count");
+		boolean boundary = ParamUtil.getBoolean(request, "p_p_boundary", true);
+		boolean decorate = ParamUtil.getBoolean(request, "p_p_decorate", true);
 		boolean staticPortlet = ParamUtil.getBoolean(request, "p_p_static");
 		boolean staticStartPortlet = ParamUtil.getBoolean(
 			request, "p_p_static_start");
@@ -86,7 +88,8 @@ public class RenderPortletAction extends Action {
 			portletId, user, layout, windowState, request);
 
 		request = PortletContainerUtil.setupOptionalRenderParameters(
-			request, null, columnId, columnPos, columnCount);
+			request, null, columnId, columnPos, columnCount, boundary,
+			decorate);
 
 		PortletContainerUtil.render(request, response, portlet);
 
