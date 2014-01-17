@@ -14,6 +14,8 @@
 
 package com.liferay.portal.kernel.servlet;
 
+import com.liferay.portal.kernel.util.Validator;
+
 import java.util.Enumeration;
 
 import javax.servlet.ServletContext;
@@ -26,6 +28,25 @@ public class HttpSessionWrapper implements HttpSession {
 
 	public HttpSessionWrapper(HttpSession session) {
 		_session = session;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof HttpSessionWrapper)) {
+			return false;
+		}
+
+		HttpSessionWrapper httpSessionWrapper = (HttpSessionWrapper)obj;
+
+		if (Validator.equals(_session, httpSessionWrapper._session)) {
+			return true;
+		}
+
+		return false;
 	}
 
 	@Override
@@ -92,6 +113,11 @@ public class HttpSessionWrapper implements HttpSession {
 
 	public HttpSession getWrappedSession() {
 		return _session;
+	}
+
+	@Override
+	public int hashCode() {
+		return _session.hashCode();
 	}
 
 	@Override
