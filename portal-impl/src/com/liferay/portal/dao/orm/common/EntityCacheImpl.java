@@ -179,7 +179,7 @@ public class EntityCacheImpl
 
 		Serializable loadResult = null;
 
-		if (result == null) {
+		if ((result == null) || (result == StringPool.BLANK)) {
 			PortalCache<Serializable, Serializable> portalCache =
 				_getPortalCache(clazz.getName(), true);
 
@@ -187,7 +187,7 @@ public class EntityCacheImpl
 
 			result = portalCache.get(cacheKey);
 
-			if (result == null) {
+			if ((result == null) || (result == StringPool.BLANK)) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(
 						"Load " + clazz + " " + primaryKey + " from session");
