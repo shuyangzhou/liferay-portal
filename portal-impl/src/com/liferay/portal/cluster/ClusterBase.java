@@ -122,32 +122,40 @@ public abstract class ClusterBase {
 		String autodetectAddress = PropsValues.CLUSTER_LINK_AUTODETECT_ADDRESS;
 
 		if (Validator.isNull(autodetectAddress)) {
-			bindInetAddress = InetAddressUtil.getLocalInetAddress();
+			String bindAddress = PropsValues.CLUSTER_LINK_BIND_ADDRESS;
 
-			return;
+			if (Validator.isNull(bindAddress)) {
+				bindInetAddress = InetAddressUtil.getLocalInetAddress();
+			}
+			else {
+				bindInetAddress = InetAddress.getByName(bindAddress);
+			}
+		}
+		else {
+			String host = autodetectAddress;
+			int port = 80;
+
+			int index = autodetectAddress.indexOf(CharPool.COLON);
+
+			if (index != -1) {
+				host = autodetectAddress.substring(0, index);
+				port = GetterUtil.getInteger(
+					autodetectAddress.substring(index + 1), port);
+			}
+
+			if (_log.isInfoEnabled()) {
+				_log.info(
+					"Autodetecting JGroups outgoing IP address and interface " +
+						"for " + host + ":" + port);
+			}
+
+			SocketUtil.BindInfo bindInfo = SocketUtil.getBindInfo(host, port);
+
+			bindInetAddress = bindInfo.getInetAddress();
 		}
 
-		String host = autodetectAddress;
-		int port = 80;
-
-		int index = autodetectAddress.indexOf(CharPool.COLON);
-
-		if (index != -1) {
-			host = autodetectAddress.substring(0, index);
-			port = GetterUtil.getInteger(
-				autodetectAddress.substring(index + 1), port);
-		}
-
-		if (_log.isInfoEnabled()) {
-			_log.info(
-				"Autodetecting JGroups outgoing IP address and interface for " +
-					host + ":" + port);
-		}
-
-		SocketUtil.BindInfo bindInfo = SocketUtil.getBindInfo(host, port);
-
-		bindInetAddress = bindInfo.getInetAddress();
-		NetworkInterface networkInterface = bindInfo.getNetworkInterface();
+		NetworkInterface networkInterface = NetworkInterface.getByInetAddress(
+			bindInetAddress);
 
 		System.setProperty(
 			"jgroups.bind_addr", bindInetAddress.getHostAddress());

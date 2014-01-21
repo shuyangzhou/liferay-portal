@@ -263,6 +263,8 @@ public class VerifyProperties extends VerifyProcess {
 		"buffered.increment.parallel.queue.size",
 		"buffered.increment.serial.queue.size", "cas.validate.url",
 		"cluster.executor.heartbeat.interval",
+		"cluster.link.bind.addr[\"cluster-link-control\"]",
+		"cluster.link.bind.addr[\"cluster-link-udp\"]",
 		"com.liferay.filters.doubleclick.DoubleClickFilter",
 		"com.liferay.portal.servlet.filters.doubleclick.DoubleClickFilter",
 		"commons.pool.enabled", "dl.file.entry.read.count.enabled",
