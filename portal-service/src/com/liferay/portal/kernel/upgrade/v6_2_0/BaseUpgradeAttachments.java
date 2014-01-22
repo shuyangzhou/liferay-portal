@@ -25,9 +25,11 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.model.CompanyConstants;
+import com.liferay.portal.model.RoleConstants;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.documentlibrary.NoSuchDirectoryException;
 import com.liferay.portlet.documentlibrary.model.DLFileEntry;
+import com.liferay.portlet.documentlibrary.model.DLFolder;
 import com.liferay.portlet.documentlibrary.model.DLFolderConstants;
 import com.liferay.portlet.documentlibrary.store.DLStoreUtil;
 
@@ -100,6 +102,24 @@ public abstract class BaseUpgradeAttachments extends UpgradeProcess {
 			ps.setLong(26, 0);
 
 			ps.executeUpdate();
+
+			String fileEntryClassName = DLFileEntry.class.getName();
+
+			if (_guestRoleId == 0) {
+				_guestRoleId = getGuestRoleId();
+			}
+
+			addDLPermission(
+				fileEntryId, companyId, groupId, fileEntryClassName,
+				_guestRoleId, 3);
+
+			if (_siteMemberRoleId == 0) {
+				_siteMemberRoleId = getSiteMemberRoleId();
+			}
+
+			addDLPermission(
+				fileEntryId, companyId, groupId, fileEntryClassName,
+				_siteMemberRoleId, 3);
 
 			return fileEntryId;
 		}
@@ -234,6 +254,23 @@ public abstract class BaseUpgradeAttachments extends UpgradeProcess {
 
 			ps.executeUpdate();
 
+			String folderClassName = DLFolder.class.getName();
+
+			if (_guestRoleId == 0) {
+				_guestRoleId = getGuestRoleId();
+			}
+
+			addDLPermission(
+				folderId, companyId, groupId, folderClassName, _guestRoleId, 1);
+
+			if (_siteMemberRoleId == 0) {
+				_siteMemberRoleId = getSiteMemberRoleId();
+			}
+
+			addDLPermission(
+				folderId, companyId, groupId, folderClassName,
+				_siteMemberRoleId, 29);
+
 			return folderId;
 		}
 		catch (Exception e) {
@@ -242,6 +279,50 @@ public abstract class BaseUpgradeAttachments extends UpgradeProcess {
 			}
 
 			return -1;
+		}
+		finally {
+			DataAccess.cleanUp(con, ps);
+		}
+	}
+
+	protected void addDLPermission(
+		long id, long companyId, long groupId, String className, long roleId,
+		long actionIds)
+	throws Exception {
+
+		Connection con = null;
+		PreparedStatement ps = null;
+
+		try {
+			long resourcePermissionId = increment();
+
+			con = DataAccess.getUpgradeOptimizedConnection();
+
+			StringBundler sb = new StringBundler();
+
+			sb.append("insert into resourcepermission(resourcePermissionId, ");
+			sb.append("companyId, name, scope, primKey, roleId, ownerId, ");
+			sb.append("actionIds) values (?, ?, ?, ?, ?, ?, ?, ?)");
+
+			String sql = sb.toString();
+
+			ps = con.prepareStatement(sql);
+
+			ps.setLong(1, resourcePermissionId);
+			ps.setLong(2, companyId);
+			ps.setString(3, className);
+			ps.setInt(4, 4);
+			ps.setLong(5, id);
+			ps.setLong(6, roleId);
+			ps.setLong(7, 0);
+			ps.setLong(8, actionIds);
+
+			ps.executeUpdate();
+		}
+		catch (Exception e) {
+			if (_log.isWarnEnabled()) {
+				_log.warn("Unable to add permission " + className, e);
+			}
 		}
 		finally {
 			DataAccess.cleanUp(con, ps);
@@ -395,6 +476,34 @@ public abstract class BaseUpgradeAttachments extends UpgradeProcess {
 			repositoryId, false, parentFolderId, name, hidden);
 	}
 
+	protected long getGuestRoleId() throws Exception {
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			con = DataAccess.getUpgradeOptimizedConnection();
+
+			ps = con.prepareStatement(
+				"select roleId from role_ where name = ?");
+
+			ps.setString(1, RoleConstants.GUEST);
+
+			rs = ps.executeQuery();
+
+			int roleId = 0;
+
+			while (rs.next()) {
+				roleId = rs.getInt(1);
+			}
+
+			return roleId;
+		}
+		finally {
+			DataAccess.cleanUp(con, ps);
+		}
+	}
+
 	protected abstract String getPortletId();
 
 	protected long getRepositoryId(
@@ -432,6 +541,34 @@ public abstract class BaseUpgradeAttachments extends UpgradeProcess {
 		return addRepository(
 			groupId, companyId, userId, userName, createDate, classNameId,
 			portletId);
+	}
+
+	protected long getSiteMemberRoleId() throws Exception {
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			con = DataAccess.getUpgradeOptimizedConnection();
+
+			ps = con.prepareStatement(
+				"select roleId from role_ where name = ?");
+
+			ps.setString(1, RoleConstants.SITE_MEMBER);
+
+			rs = ps.executeQuery();
+
+			int roleId = 0;
+
+			while (rs.next()) {
+				roleId = rs.getInt(1);
+			}
+
+			return roleId;
+		}
+		finally {
+			DataAccess.cleanUp(con, ps);
+		}
 	}
 
 	protected abstract void updateAttachments() throws Exception;
@@ -524,5 +661,8 @@ public abstract class BaseUpgradeAttachments extends UpgradeProcess {
 
 	private static Log _log = LogFactoryUtil.getLog(
 		BaseUpgradeAttachments.class);
+
+	private static long _guestRoleId;
+	private static long _siteMemberRoleId;
 
 }
