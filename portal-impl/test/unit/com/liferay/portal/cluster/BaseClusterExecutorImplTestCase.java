@@ -108,15 +108,56 @@ public abstract class BaseClusterExecutorImplTestCase
 	}
 
 	@Aspect
-	public static class InetAddressUtilExceptionAdvice {
+	public static class SetBadPortalAddressAdvice {
+
+		public static final String BAD_ADDRESS = "bad address";
 
 		@Around(
-			"call(* com.liferay.portal.kernel.util.InetAddressUtil." +
-				"getLocalInetAddress())")
-		public Object throwException(ProceedingJoinPoint proceedingJoinPoint)
+			"set(* com.liferay.portal.util.PropsValues." +
+				"PORTAL_INSTANCE_HTTP_ADDRESS)")
+		public Object setPortalAddress(ProceedingJoinPoint proceedingJoinPoint)
 			throws Throwable {
 
-			throw new Exception();
+			return proceedingJoinPoint.proceed(new Object[] {BAD_ADDRESS});
+		}
+
+		@Around(
+			"set(* com.liferay.portal.util.PropsValues." +
+				"PORTAL_INSTANCE_HTTPS_ADDRESS)")
+		public Object setSecurePortalAddress(
+				ProceedingJoinPoint proceedingJoinPoint)
+			throws Throwable {
+
+			return proceedingJoinPoint.proceed(new Object[] {BAD_ADDRESS});
+		}
+
+	}
+
+	@Aspect
+	public static class SetPortalAddressAdvice {
+
+		public static final String PORTAL_ADDRESS = "127.0.0.1";
+
+		public static final String SECURE_PORTAL_ADDRESS = "127.0.1.1";
+
+		@Around(
+			"set(* com.liferay.portal.util.PropsValues." +
+				"PORTAL_INSTANCE_HTTP_ADDRESS)")
+		public Object setPortalAddress(ProceedingJoinPoint proceedingJoinPoint)
+			throws Throwable {
+
+			return proceedingJoinPoint.proceed(new Object[] {PORTAL_ADDRESS});
+		}
+
+		@Around(
+			"set(* com.liferay.portal.util.PropsValues." +
+				"PORTAL_INSTANCE_HTTPS_ADDRESS)")
+		public Object setSecurePortalAddress(
+				ProceedingJoinPoint proceedingJoinPoint)
+			throws Throwable {
+
+			return proceedingJoinPoint.proceed(
+				new Object[] {SECURE_PORTAL_ADDRESS});
 		}
 
 	}
@@ -277,8 +318,6 @@ public abstract class BaseClusterExecutorImplTestCase
 
 			channel.setReceiver(
 				new MockClusterRequestReceiver(clusterExecutorImpl));
-
-			ClusterExecutorImpl.bindInetAddress = null;
 		}
 
 		clusterExecutorImpl.initialize();
