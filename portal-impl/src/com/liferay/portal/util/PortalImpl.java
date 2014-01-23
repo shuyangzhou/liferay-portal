@@ -566,6 +566,10 @@ public class PortalImpl implements Portal {
 		}
 	}
 
+	/**
+	 * @deprecated As of 7.0.0
+	 */
+	@Deprecated
 	@Override
 	public void addPortalPortEventListener(
 		PortalPortEventListener portalPortEventListener) {
@@ -6497,6 +6501,10 @@ public class PortalImpl implements Portal {
 		_portalEventListeners.remove(portalEventListener);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0
+	 */
+	@Deprecated
 	@Override
 	public void removePortalPortEventListener(
 		PortalPortEventListener portalPortEventListener) {

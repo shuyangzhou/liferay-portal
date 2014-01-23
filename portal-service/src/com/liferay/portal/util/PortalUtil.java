@@ -129,6 +129,10 @@ public class PortalUtil {
 		getPortal().addPortalEventListener(portalEventListener);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0
+	 */
+	@Deprecated
 	public static void addPortalPortEventListener(
 		PortalPortEventListener portalPortEventListener) {
 
@@ -2055,6 +2059,10 @@ public class PortalUtil {
 		getPortal().removePortalEventListener(portalEventListener);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0
+	 */
+	@Deprecated
 	public void removePortalPortEventListener(
 		PortalPortEventListener portalPortEventListener) {
 

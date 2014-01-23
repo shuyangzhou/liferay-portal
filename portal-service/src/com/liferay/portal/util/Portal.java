@@ -146,7 +146,9 @@ public interface Portal {
 	 * notified whenever the portal port is set.
 	 *
 	 * @param portalPortEventListener the portal port event listener to add
+	 * @deprecated As of 7.0.0
 	 */
+	@Deprecated
 	public void addPortalPortEventListener(
 		PortalPortEventListener portalPortEventListener);
 
@@ -1309,6 +1311,10 @@ public interface Portal {
 	public void removePortalEventListener(
 		PortalEventListener portalEventListener);
 
+	/**
+	 * @deprecated As of 7.0.0
+	 */
+	@Deprecated
 	public void removePortalPortEventListener(
 		PortalPortEventListener portalPortEventListener);
 
