@@ -418,7 +418,7 @@ public class MainServlet extends ActionServlet {
 			_log.debug("Set portal port");
 		}
 
-		setPortalPort(request);
+		setPortalAddressAndPort(request);
 
 		if (_log.isDebugEnabled()) {
 			_log.debug("Check variables");
@@ -1269,7 +1269,9 @@ public class MainServlet extends ActionServlet {
 		PortalUtil.sendError(status, (Exception)t, dynamicRequest, response);
 	}
 
-	protected void setPortalPort(HttpServletRequest request) {
+	protected void setPortalAddressAndPort(HttpServletRequest request) {
+		PortalUtil.setPortalAddress(request);
+
 		PortalUtil.setPortalPort(request);
 	}
 

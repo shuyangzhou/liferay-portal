@@ -32,13 +32,13 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.pacl.DoPrivileged;
 import com.liferay.portal.kernel.util.Http;
-import com.liferay.portal.kernel.util.InetAddressUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WeakValueConcurrentHashMap;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
-import com.liferay.portal.util.PortalPortEventListener;
+import com.liferay.portal.util.PortalEventListener;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PropsUtil;
 import com.liferay.portal.util.PropsValues;
@@ -46,6 +46,7 @@ import com.liferay.portal.util.PropsValues;
 import java.io.Serializable;
 
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -68,7 +69,7 @@ import org.jgroups.JChannel;
  */
 @DoPrivileged
 public class ClusterExecutorImpl
-	extends ClusterBase implements ClusterExecutor, PortalPortEventListener {
+	extends ClusterBase implements ClusterExecutor, PortalEventListener {
 
 	public static final String CLUSTER_EXECUTOR_CALLBACK_THREAD_POOL =
 		"CLUSTER_EXECUTOR_CALLBACK_THREAD_POOL";
@@ -97,11 +98,26 @@ public class ClusterExecutorImpl
 		_secure = StringUtil.equalsIgnoreCase(
 			Http.HTTPS, PropsValues.WEB_SERVER_PROTOCOL);
 
+		String portalAddress = null;
+
 		if (_secure) {
+			portalAddress = PropsValues.PORTAL_INSTANCE_HTTPS_ADDRESS;
 			_port = PropsValues.PORTAL_INSTANCE_HTTPS_PORT;
 		}
 		else {
+			portalAddress = PropsValues.PORTAL_INSTANCE_HTTP_ADDRESS;
 			_port = PropsValues.PORTAL_INSTANCE_HTTP_PORT;
+		}
+
+		if (Validator.isNotNull(portalAddress)) {
+			try {
+				_portalAddress = InetAddress.getByName(portalAddress);
+			}
+			catch (UnknownHostException uhex) {
+				_log.error(
+					"Unable to get InetAddress by name :" + portalAddress,
+					uhex);
+			}
 		}
 
 		super.afterPropertiesSet();
@@ -266,20 +282,15 @@ public class ClusterExecutorImpl
 		_executorService = PortalExecutorManagerUtil.getPortalExecutor(
 			CLUSTER_EXECUTOR_CALLBACK_THREAD_POOL);
 
-		PortalUtil.addPortalPortEventListener(this);
+		PortalUtil.addPortalEventListener(this);
 
 		_localAddress = new AddressImpl(_controlJChannel.getAddress());
 
-		try {
-			initLocalClusterNode();
+		initLocalClusterNode();
 
-			memberJoined(_localAddress, _localClusterNode);
+		memberJoined(_localAddress, _localClusterNode);
 
-			sendNotifyRequest();
-		}
-		catch (Exception e) {
-			_log.error("Unable to determine local network address", e);
-		}
+		sendNotifyRequest();
 
 		ClusterRequestReceiver clusterRequestReceiver =
 			(ClusterRequestReceiver)_controlJChannel.getReceiver();
@@ -305,6 +316,37 @@ public class ClusterExecutorImpl
 		}
 
 		return _clusterNodeAddresses.containsKey(clusterNodeId);
+	}
+
+	@Override
+	public void portalAddressConfigured(InetAddress inetAddress) {
+		if (!isEnabled()) {
+			return;
+		}
+
+		if (_portalAddress != null) {
+			if (_portalAddress.equals(_localClusterNode.getPortalAddress())) {
+				return;
+			}
+			else {
+				throw new IllegalStateException(
+					"Portal address is not configured correctly");
+			}
+		}
+
+		_localClusterNode.setPortalAddress(inetAddress);
+
+		memberJoined(_localAddress, _localClusterNode);
+
+		ClusterRequest clusterRequest = ClusterRequest.createClusterRequest(
+			ClusterMessageType.UPDATE, _localClusterNode);
+
+		try {
+			_controlJChannel.send(null, clusterRequest);
+		}
+		catch (Exception e) {
+			_log.error("Unable to determine configure portal address", e);
+		}
 	}
 
 	@Override
@@ -415,12 +457,8 @@ public class ClusterExecutorImpl
 			controlProperty, clusterRequestReceiver, _DEFAULT_CLUSTER_NAME);
 	}
 
-	protected void initLocalClusterNode() throws Exception {
-		InetAddress inetAddress = bindInetAddress;
-
-		if (inetAddress == null) {
-			inetAddress = InetAddressUtil.getLocalInetAddress();
-		}
+	protected void initLocalClusterNode() {
+		InetAddress inetAddress = getBindInetAddress(_controlJChannel);
 
 		ClusterNode localClusterNode = new ClusterNode(
 			PortalUUIDUtil.generate(), inetAddress);
@@ -432,6 +470,14 @@ public class ClusterExecutorImpl
 		}
 
 		localClusterNode.setPort(port);
+
+		InetAddress portalAddress = _portalAddress;
+
+		if (portalAddress == null) {
+			portalAddress = PortalUtil.getPortalAddress(_secure);
+		}
+
+		localClusterNode.setPortalAddress(portalAddress);
 
 		_localClusterNode = localClusterNode;
 	}
@@ -578,6 +624,7 @@ public class ClusterExecutorImpl
 	private Address _localAddress;
 	private ClusterNode _localClusterNode;
 	private int _port;
+	private InetAddress _portalAddress;
 	private boolean _secure;
 	private boolean _shortcutLocalMethod;
 

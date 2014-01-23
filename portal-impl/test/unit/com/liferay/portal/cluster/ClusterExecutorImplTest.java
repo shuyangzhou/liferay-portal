@@ -40,6 +40,9 @@ import com.liferay.portal.uuid.PortalUUIDImpl;
 
 import java.lang.reflect.Field;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -241,8 +244,8 @@ public class ClusterExecutorImplTest extends BaseClusterExecutorImplTestCase {
 
 	@AdviseWith(
 		adviceClasses = {
-			EnableClusterLinkAdvice.class, InetAddressUtilExceptionAdvice.class,
-			JChannelExceptionAdvice.class
+			EnableClusterLinkAdvice.class, JChannelExceptionAdvice.class,
+			SetBadPortalAddressAdvice.class
 		}
 	)
 	@Test
@@ -274,16 +277,13 @@ public class ClusterExecutorImplTest extends BaseClusterExecutorImplTestCase {
 
 			clusterExecutorImpl = new ClusterExecutorImpl();
 
-			clusterExecutorImpl.initChannels();
-			clusterExecutorImpl.initSystemProperties();
-
-			clusterExecutorImpl.initialize();
+			clusterExecutorImpl.afterPropertiesSet();
 
 			assertLogger(
-				logRecords, "Unable to determine local network address",
-				Exception.class);
-
-			clusterExecutorImpl.initBindAddress();
+				logRecords,
+				"Unable to get InetAddress by name :" +
+					SetBadPortalAddressAdvice.BAD_ADDRESS,
+				UnknownHostException.class);
 
 			clusterExecutorImpl.initialize();
 
@@ -294,6 +294,13 @@ public class ClusterExecutorImplTest extends BaseClusterExecutorImplTestCase {
 
 			assertLogger(
 				logRecords, "Unable to determine configure node port",
+				Exception.class);
+
+			clusterExecutorImpl.portalAddressConfigured(
+				InetAddress.getLocalHost());
+
+			assertLogger(
+				logRecords, "Unable to determine configure portal address",
 				Exception.class);
 
 			ClusterRequest clusterRequest =
@@ -901,6 +908,193 @@ public class ClusterExecutorImplTest extends BaseClusterExecutorImplTestCase {
 				mockClusterEventListener.waitDepartMessage();
 
 			Assert.assertNull(clusterEvent);
+		}
+		finally {
+			if (clusterExecutorImpl != null) {
+				clusterExecutorImpl.destroy();
+			}
+		}
+	}
+
+	@AdviseWith(adviceClasses = {EnableClusterLinkAdvice.class})
+	@Test
+	public void testPortalAddressConfigured1() throws Exception {
+		ClusterExecutorImpl clusterExecutorImpl1 = null;
+		ClusterExecutorImpl clusterExecutorImpl2 = null;
+
+		try {
+			clusterExecutorImpl1 = getClusterExecutorImpl(false, false);
+
+			MockClusterEventListener mockClusterEventListener =
+				new MockClusterEventListener();
+
+			clusterExecutorImpl1.addClusterEventListener(
+				mockClusterEventListener);
+
+			clusterExecutorImpl2 = getClusterExecutorImpl(false, false);
+
+			ClusterNode clusterNode2 =
+				clusterExecutorImpl2.getLocalClusterNode();
+
+			ClusterEvent clusterEvent =
+				mockClusterEventListener.waitJoinMessage();
+
+			assertClusterEvent(
+				clusterEvent, ClusterEventType.JOIN, clusterNode2);
+
+			updateView(clusterExecutorImpl1);
+
+			clusterEvent = mockClusterEventListener.waitDepartMessage();
+
+			assertClusterEvent(
+				clusterEvent, ClusterEventType.DEPART, clusterNode2);
+
+			Assert.assertEquals(null, clusterNode2.getPortalAddress());
+
+			InetAddress inetAddress = InetAddress.getLocalHost();
+
+			clusterExecutorImpl2.portalAddressConfigured(inetAddress);
+
+			Assert.assertEquals(inetAddress, clusterNode2.getPortalAddress());
+
+			clusterEvent = mockClusterEventListener.waitJoinMessage();
+
+			assertClusterEvent(
+				clusterEvent, ClusterEventType.JOIN, clusterNode2);
+		}
+		finally {
+			if (clusterExecutorImpl1 != null) {
+				clusterExecutorImpl1.destroy();
+			}
+
+			if (clusterExecutorImpl2 != null) {
+				clusterExecutorImpl2.destroy();
+			}
+		}
+	}
+
+	@AdviseWith(
+		adviceClasses = {
+			EnableClusterLinkAdvice.class, SetPortalAddressAdvice.class
+		}
+
+	)
+	@Test
+	public void testPortalAddressConfigured2() throws Exception {
+		ClusterExecutorImpl clusterExecutorImpl = null;
+
+		try {
+			clusterExecutorImpl = getClusterExecutorImpl(false, false);
+
+			ClusterNode clusterNode = clusterExecutorImpl.getLocalClusterNode();
+
+			InetAddress inetAddress = InetAddress.getByName(
+				SetPortalAddressAdvice.PORTAL_ADDRESS);
+
+			Assert.assertEquals(inetAddress, clusterNode.getPortalAddress());
+
+			InetAddress secureAddress = InetAddress.getByName(
+				SetPortalAddressAdvice.SECURE_PORTAL_ADDRESS);
+
+			clusterExecutorImpl.portalAddressConfigured(secureAddress);
+
+			Assert.assertEquals(inetAddress, clusterNode.getPortalAddress());
+		}
+		finally {
+			if (clusterExecutorImpl != null) {
+				clusterExecutorImpl.destroy();
+			}
+		}
+	}
+
+	@AdviseWith(
+		adviceClasses = {
+			EnableClusterLinkAdvice.class, SetPortalAddressAdvice.class,
+			SetWebServerProtocolAdvice.class
+		}
+
+	)
+	@Test
+	public void testPortalAddressConfigured3() throws Exception {
+		ClusterExecutorImpl clusterExecutorImpl = null;
+
+		try {
+			clusterExecutorImpl = getClusterExecutorImpl(false, false);
+
+			ClusterNode clusterNode = clusterExecutorImpl.getLocalClusterNode();
+
+			InetAddress secureAddress = InetAddress.getByName(
+				SetPortalAddressAdvice.SECURE_PORTAL_ADDRESS);
+
+			Assert.assertEquals(secureAddress, clusterNode.getPortalAddress());
+
+			InetAddress inetAddress = InetAddress.getByName(
+				SetPortalAddressAdvice.PORTAL_ADDRESS);
+
+			clusterExecutorImpl.portalAddressConfigured(inetAddress);
+
+			Assert.assertEquals(secureAddress, clusterNode.getPortalAddress());
+		}
+		finally {
+			if (clusterExecutorImpl != null) {
+				clusterExecutorImpl.destroy();
+			}
+		}
+	}
+
+	@AdviseWith(
+		adviceClasses = {
+			EnableClusterLinkAdvice.class, SetPortalAddressAdvice.class,
+		}
+
+	)
+	@Test
+	public void testPortalAddressConfigured4() throws Exception {
+		ClusterExecutorImpl clusterExecutorImpl = null;
+
+		try {
+			clusterExecutorImpl = getClusterExecutorImpl(false, false);
+
+			ClusterNode clusterNode = clusterExecutorImpl.getLocalClusterNode();
+
+			InetAddress secureAddress = InetAddress.getByName(
+				SetPortalAddressAdvice.PORTAL_ADDRESS);
+
+			Assert.assertEquals(secureAddress, clusterNode.getPortalAddress());
+
+			clusterNode.setPortalAddress(null);
+
+			InetAddress inetAddress = InetAddress.getByName(
+				SetPortalAddressAdvice.PORTAL_ADDRESS);
+
+			try {
+				clusterExecutorImpl.portalAddressConfigured(inetAddress);
+
+				Assert.fail();
+			}
+			catch (Exception e) {
+				Assert.assertEquals(
+					"Portal address is not configured correctly",
+					e.getMessage());
+			}
+		}
+		finally {
+			if (clusterExecutorImpl != null) {
+				clusterExecutorImpl.destroy();
+			}
+		}
+	}
+
+	@AdviseWith(adviceClasses = {DisableClusterLinkAdvice.class})
+	@Test
+	public void testPortalAddressConfigured5() throws Exception {
+		ClusterExecutorImpl clusterExecutorImpl = null;
+
+		try {
+			clusterExecutorImpl = getClusterExecutorImpl(false, false);
+
+			clusterExecutorImpl.portalAddressConfigured(
+				InetAddress.getLocalHost());
 		}
 		finally {
 			if (clusterExecutorImpl != null) {

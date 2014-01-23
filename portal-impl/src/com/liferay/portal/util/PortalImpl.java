@@ -240,6 +240,7 @@ import java.util.TimeZone;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -556,6 +557,19 @@ public class PortalImpl implements Portal {
 		titleListMergeable.add(title);
 	}
 
+	@Override
+	public void addPortalEventListener(
+		PortalEventListener portalEventListener) {
+
+		if (!_portalEventListeners.contains(portalEventListener)) {
+			_portalEventListeners.add(portalEventListener);
+		}
+	}
+
+	/**
+	 * @deprecated As of 7.0.0
+	 */
+	@Deprecated
 	@Override
 	public void addPortalPortEventListener(
 		PortalPortEventListener portalPortEventListener) {
@@ -3864,6 +3878,16 @@ public class PortalImpl implements Portal {
 	}
 
 	@Override
+	public InetAddress getPortalAddress(boolean secure) {
+		if (secure) {
+			return _securePortalAddress.get();
+		}
+		else {
+			return _portalAddress.get();
+		}
+	}
+
+	@Override
 	public String getPortalLibDir() {
 		return PropsValues.LIFERAY_LIB_PORTAL_DIR;
 	}
@@ -6478,6 +6502,17 @@ public class PortalImpl implements Portal {
 	}
 
 	@Override
+	public void removePortalEventListener(
+		PortalEventListener portalEventListener) {
+
+		_portalEventListeners.remove(portalEventListener);
+	}
+
+	/**
+	 * @deprecated As of 7.0.0
+	 */
+	@Deprecated
+	@Override
 	public void removePortalPortEventListener(
 		PortalPortEventListener portalPortEventListener) {
 
@@ -6739,6 +6774,41 @@ public class PortalImpl implements Portal {
 	}
 
 	@Override
+	public void setPortalAddress(HttpServletRequest request) {
+		String serverName = request.getServerName();
+		InetAddress inetAddress = null;
+
+		try {
+			inetAddress = InetAddress.getByName(serverName);
+		}
+		catch (Exception ex) {
+			return;
+		}
+
+		if (request.isSecure()) {
+			if (_securePortalAddress.get() != null) {
+				return;
+			}
+
+			if (_securePortalAddress.compareAndSet(null, inetAddress) &&
+				StringUtil.equalsIgnoreCase(
+					Http.HTTPS, PropsValues.WEB_SERVER_PROTOCOL)) {
+
+				notifyPortalEventListeners(inetAddress);
+			}
+		}
+		else {
+			if (_portalAddress.get() != null) {
+				return;
+			}
+
+			if (_portalAddress.compareAndSet(null, inetAddress)) {
+				notifyPortalEventListeners(inetAddress);
+			}
+		}
+	}
+
+	@Override
 	public void setPortalPort(HttpServletRequest request) {
 		if (request.isSecure()) {
 			if (_securePortalPort.get() == -1) {
@@ -6748,7 +6818,7 @@ public class PortalImpl implements Portal {
 					StringUtil.equalsIgnoreCase(
 						Http.HTTPS, PropsValues.WEB_SERVER_PROTOCOL)) {
 
-					notifyPortalPortEventListeners(securePortalPort);
+					notifyPortalEventListeners(securePortalPort);
 				}
 			}
 		}
@@ -6757,7 +6827,7 @@ public class PortalImpl implements Portal {
 				int portalPort = request.getServerPort();
 
 				if (_portalPort.compareAndSet(-1, portalPort)) {
-					notifyPortalPortEventListeners(portalPort);
+					notifyPortalEventListeners(portalPort);
 				}
 			}
 		}
@@ -7758,6 +7828,34 @@ public class PortalImpl implements Portal {
 		return false;
 	}
 
+	protected void notifyPortalEventListeners(InetAddress inetAddress) {
+		notifyPortalEventListeners(inetAddress, -1);
+	}
+
+	protected void notifyPortalEventListeners(
+		InetAddress inetAddress, int portalPort) {
+
+		if (inetAddress != null) {
+			for (PortalEventListener portalEventListener :
+					_portalEventListeners) {
+
+				portalEventListener.portalAddressConfigured(inetAddress);
+			}
+		}
+
+		if (portalPort != -1) {
+			for (PortalEventListener portalEventListener :
+					_portalEventListeners) {
+
+				portalEventListener.portalPortConfigured(portalPort);
+			}
+		}
+	}
+
+	protected void notifyPortalEventListeners(int portalPort) {
+		notifyPortalEventListeners(null, portalPort);
+	}
+
 	protected void notifyPortalPortEventListeners(int portalPort) {
 		for (PortalPortEventListener portalPortEventListener :
 				_portalPortEventListeners) {
@@ -7872,10 +7970,16 @@ public class PortalImpl implements Portal {
 	private String _pathProxy;
 	private Map<String, Long> _plidToPortletIdMap =
 		new ConcurrentHashMap<String, Long>();
+	private final AtomicReference<InetAddress> _portalAddress =
+		new AtomicReference<InetAddress>(null);
+	private List<PortalEventListener> _portalEventListeners =
+		new ArrayList<PortalEventListener>();
 	private final AtomicInteger _portalPort = new AtomicInteger(-1);
 	private List<PortalPortEventListener> _portalPortEventListeners =
 		new ArrayList<PortalPortEventListener>();
 	private Set<String> _reservedParams;
+	private final AtomicReference<InetAddress> _securePortalAddress =
+		new AtomicReference<InetAddress>(null);
 	private final AtomicInteger _securePortalPort = new AtomicInteger(-1);
 	private final String _servletContextName;
 	private String[] _sortedSystemGroups;

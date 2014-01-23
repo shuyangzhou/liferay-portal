@@ -45,6 +45,8 @@ import com.liferay.portlet.expando.model.ExpandoBridge;
 import java.io.IOException;
 import java.io.Serializable;
 
+import java.net.InetAddress;
+
 import java.sql.SQLException;
 
 import java.util.Date;
@@ -121,6 +123,16 @@ public class PortalUtil {
 		getPortal().addPageTitle(title, request);
 	}
 
+	public static void addPortalEventListener(
+		PortalEventListener portalEventListener) {
+
+		getPortal().addPortalEventListener(portalEventListener);
+	}
+
+	/**
+	 * @deprecated As of 7.0.0
+	 */
+	@Deprecated
 	public static void addPortalPortEventListener(
 		PortalPortEventListener portalPortEventListener) {
 
@@ -1079,6 +1091,10 @@ public class PortalUtil {
 		return _portal;
 	}
 
+	public static InetAddress getPortalAddress(boolean secure) {
+		return getPortal().getPortalAddress(secure);
+	}
+
 	public static String getPortalLibDir() {
 		return getPortal().getPortalLibDir();
 	}
@@ -1975,6 +1991,13 @@ public class PortalUtil {
 	}
 
 	/**
+	 * Sets the address obtained on the first request to the portal.
+	 */
+	public static void setPortalAddress(HttpServletRequest request) {
+		getPortal().setPortalAddress(request);
+	}
+
+	/**
 	 * Sets the port obtained on the first request to the portal.
 	 */
 	public static void setPortalPort(HttpServletRequest request) {
@@ -2030,6 +2053,16 @@ public class PortalUtil {
 			portletId, user, layout, windowState, request);
 	}
 
+	public void removePortalEventListener(
+		PortalEventListener portalEventListener) {
+
+		getPortal().removePortalEventListener(portalEventListener);
+	}
+
+	/**
+	 * @deprecated As of 7.0.0
+	 */
+	@Deprecated
 	public void removePortalPortEventListener(
 		PortalPortEventListener portalPortEventListener) {
 
