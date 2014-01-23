@@ -41,7 +41,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import org.mockito.Matchers;
+import org.mockito.Mockito;
 
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -61,15 +61,25 @@ public class LayoutListerTest extends PowerMockito {
 	public static void setUpClass() throws Exception {
 		mockStatic(ConfigurationSerializer.class);
 
-		when(ConfigurationSerializer.getSerializer()).thenReturn(null);
+		when(
+			ConfigurationSerializer.getSerializer()
+		).thenReturn(
+			null
+		);
 
 		mockStatic(PropsUtil.class);
 
-		when(PropsUtil.get(Matchers.anyString())).thenReturn(StringPool.BLANK);
+		when(
+			PropsUtil.get(Mockito.anyString())
+		).thenReturn(
+			StringPool.BLANK
+		);
 
 		when(
-			PropsUtil.getArray(Matchers.anyString())
-		).thenReturn(new String[0]);
+			PropsUtil.getArray(Mockito.anyString())
+		).thenReturn(
+			new String[0]
+		);
 
 		mockStatic(LayoutLocalServiceUtil.class);
 
@@ -77,14 +87,18 @@ public class LayoutListerTest extends PowerMockito {
 
 		when(
 			LayoutLocalServiceUtil.getLayouts(
-				Matchers.anyLong(), Matchers.anyBoolean())
-		).thenReturn(_layouts);
+				Mockito.anyLong(), Mockito.anyBoolean())
+		).thenReturn(
+			_layouts
+		);
 
 		mockStatic(LocalizationUtil.class);
 
 		when(
 			LocalizationUtil.getLocalization()
-		).thenReturn(new LocalizationImpl());
+		).thenReturn(
+			new LocalizationImpl()
+		);
 
 		String jsonData = ContentUtil.get(
 			"com/liferay/portal/util/dependencies/layout_view_list.json");

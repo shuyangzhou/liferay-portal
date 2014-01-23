@@ -93,9 +93,11 @@ public class LayoutLister {
 
 			visitLayout(layoutNode);
 
+			Layout layout = layoutNode.getLayout();
+
 			pushLayouts(
-				layoutNodeStack, layoutsBag, layoutNode.layout.getLayoutId(),
-				layoutNode.depth + 1, _nodeId);
+				layoutNodeStack, layoutsBag, layout.getLayoutId(),
+				layoutNode.getDepth() + 1, _nodeId);
 		}
 	}
 
@@ -109,9 +111,15 @@ public class LayoutLister {
 
 		_list = new ArrayList<String>();
 
-		_list.add(
-			"1|0|0|" + LayoutConstants.DEFAULT_PLID + "|" + rootNodeName +
-				"|0");
+		StringBundler sb = new StringBundler(5);
+
+		sb.append("1|0|0|");
+		sb.append(LayoutConstants.DEFAULT_PLID);
+		sb.append("|");
+		sb.append(rootNodeName);
+		sb.append("|0");
+
+		_list.add(sb.toString());
 
 		List<Layout> layouts = LayoutLocalServiceUtil.getLayouts(
 			groupId, privateLayout);
@@ -127,7 +135,7 @@ public class LayoutLister {
 		long groupId, boolean privateLayout, String rootNodeName,
 		Locale locale) {
 
-		StringBundler sb = new StringBundler(5);
+		StringBundler sb = new StringBundler(7);
 
 		sb.append(StringUtil.toHexString(groupId));
 		sb.append(StringPool.POUND);
@@ -200,25 +208,26 @@ public class LayoutLister {
 
 		sb.append(++_nodeId);
 		sb.append("|");
-		sb.append(layoutNode.parentId);
+		sb.append(layoutNode.getParentId());
 		sb.append("|");
 
-		if ((layoutNode.index + 1) == layoutNode.siblingCount) {
+		if ((layoutNode.getIndex() + 1) == layoutNode.getSiblingCount()) {
 			sb.append("1");
 		}
 		else {
 			sb.append("0");
 		}
 
+		Layout layout = layoutNode.getLayout();
+
 		sb.append("|");
-		sb.append(layoutNode.layout.getPlid());
+		sb.append(layout.getPlid());
 		sb.append("|");
-		sb.append(layoutNode.layout.getName(_locale));
+		sb.append(layout.getName(_locale));
 		sb.append("|");
-		//sb.append("9");
 		sb.append("11");
 		sb.append("|");
-		sb.append(layoutNode.depth);
+		sb.append(layoutNode.getDepth());
 
 		_list.add(sb.toString());
 	}
@@ -236,18 +245,59 @@ public class LayoutLister {
 			Layout layout, int index, int siblingCount, int depth,
 			int parentId) {
 
-			this.index = index;
-			this.depth = depth;
-			this.layout = layout;
-			this.parentId = parentId;
-			this.siblingCount = siblingCount;
+			_depth = depth;
+			_index = index;
+			_layout = layout;
+			_parentId = parentId;
+			_siblingCount = siblingCount;
 		}
 
-		int index;
-		int depth;
-		Layout layout;
-		int parentId;
-		int siblingCount;
+		public int getDepth() {
+			return _depth;
+		}
+
+		public int getIndex() {
+			return _index;
+		}
+
+		public Layout getLayout() {
+			return _layout;
+		}
+
+		public int getParentId() {
+			return _parentId;
+		}
+
+		public int getSiblingCount() {
+			return _siblingCount;
+		}
+
+		public void setDepth(int depth) {
+			_depth = depth;
+		}
+
+		public void setIndex(int index) {
+			_index = index;
+		}
+
+		public void setLayout(Layout layout) {
+			_layout = layout;
+		}
+
+		public void setParentId(int parentId) {
+			_parentId = parentId;
+		}
+
+		public void setSiblingCount(int siblingCount) {
+			_siblingCount = siblingCount;
+		}
+
+		private int _depth;
+		private int _index;
+		private Layout _layout;
+		private int _parentId;
+		private int _siblingCount;
+
 	}
 
 }
