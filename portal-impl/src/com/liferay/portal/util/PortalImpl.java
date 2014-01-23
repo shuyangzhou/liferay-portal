@@ -6803,7 +6803,7 @@ public class PortalImpl implements Portal {
 					StringUtil.equalsIgnoreCase(
 						Http.HTTPS, PropsValues.WEB_SERVER_PROTOCOL)) {
 
-					notifyPortalPortEventListeners(securePortalPort);
+					notifyPortalEventListeners(securePortalPort);
 				}
 			}
 		}
@@ -6812,7 +6812,7 @@ public class PortalImpl implements Portal {
 				int portalPort = request.getServerPort();
 
 				if (_portalPort.compareAndSet(-1, portalPort)) {
-					notifyPortalPortEventListeners(portalPort);
+					notifyPortalEventListeners(portalPort);
 				}
 			}
 		}
