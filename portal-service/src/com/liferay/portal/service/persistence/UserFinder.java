@@ -46,6 +46,13 @@ public interface UserFinder {
 		boolean andOperator)
 		throws com.liferay.portal.kernel.exception.SystemException;
 
+	public int countUsers(
+		com.liferay.portal.kernel.dao.orm.Session session, long groupId,
+		long companyId, java.lang.String[] firstNames,
+		java.lang.String[] middleNames, java.lang.String[] lastNames,
+		java.lang.String[] screenNames, java.lang.String[] emailAddresses,
+		int status, boolean andOperator, java.lang.String sqlQuery);
+
 	public java.util.List<com.liferay.portal.model.User> findByKeywords(
 		long companyId, java.lang.String keywords, int status,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,

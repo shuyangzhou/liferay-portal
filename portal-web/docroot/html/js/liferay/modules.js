@@ -283,7 +283,6 @@
 						]
 					},
 					'liferay-history-html5': {
-						path: 'history_html5.js',
 						condition: {
 							name: 'liferay-history-html5',
 							test: function(A) {
@@ -298,9 +297,10 @@
 							},
 							trigger: 'liferay-history'
 						},
+						path: 'history_html5.js',
 						requires: [
-							'liferay-history',
 							'history-html5',
+							'liferay-history',
 							'querystring-stringify-simple'
 						]
 					},
@@ -531,6 +531,17 @@
 							'aui-io-request',
 							'aui-rating'
 						]
+					},
+					'liferay-resize-rtl': {
+						path: 'resize_rtl.js',
+						condition: {
+							test: function(A) {
+								var MAP_DIR = Liferay.Language.direction;
+
+								return (MAP_DIR && MAP_DIR[themeDisplay.getLanguageId()] === 'rtl');
+							},
+							trigger: 'resize-base'
+						}
 					},
 					'liferay-restore-entry': {
 						path: 'restore_entry.js',
