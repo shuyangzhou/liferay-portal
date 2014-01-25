@@ -32,19 +32,15 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Organization;
 import com.liferay.portal.model.User;
-import com.liferay.portal.model.UserGroup;
 import com.liferay.portal.model.impl.UserImpl;
-import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Brian Wing Shun Chan
@@ -58,6 +54,24 @@ public class UserFinderImpl
 
 	public static final String COUNT_BY_USER =
 		UserFinder.class.getName() + ".countByUser";
+
+	public static final String COUNT_BY_USER_ORGANIZATIONS =
+		UserFinder.class.getName() + ".countByUserOrganizations";
+
+	public static final String COUNT_BY_USER_USERS_GROUPS =
+		UserFinder.class.getName() + ".countByUserUsersGroups";
+
+	public static final String COUNT_BY_USER_GROUPS =
+		UserFinder.class.getName() + ".countByUserGroups";
+
+	public static final String FIND_BY_USER_ORGANIZATIONS =
+		UserFinder.class.getName() + ".findByUserOrganizations";
+
+	public static final String FIND_BY_USER_USERS_GROUPS =
+		UserFinder.class.getName() + ".findByUserUsersGroups";
+
+	public static final String FIND_BY_USER_GROUPS =
+		UserFinder.class.getName() + ".findByUserGroups";
 
 	public static final String COUNT_BY_C_FN_MN_LN_SN_EA_S =
 		UserFinder.class.getName() + ".countByC_FN_MN_LN_SN_EA_S";
@@ -227,14 +241,6 @@ public class UserFinderImpl
 			params = _emptyLinkedHashMap;
 		}
 
-		LinkedHashMap<String, Object> params1 = params;
-
-		LinkedHashMap<String, Object> params2 = null;
-
-		LinkedHashMap<String, Object> params3 = null;
-
-		LinkedHashMap<String, Object> params4 = null;
-
 		Long[] groupIds = null;
 
 		if (params.get("usersGroups") instanceof Long) {
@@ -263,162 +269,43 @@ public class UserFinderImpl
 
 		boolean inherit = GetterUtil.getBoolean(params.get("inherit"));
 
-		if (ArrayUtil.isNotEmpty(groupIds) && inherit) {
-			List<Long> organizationIds = new ArrayList<Long>();
-			List<Long> userGroupIds = new ArrayList<Long>();
-
-			for (long groupId : groupIds) {
-				Group group = GroupLocalServiceUtil.fetchGroup(groupId);
-
-				if (group == null) {
-					continue;
-				}
-
-				if (group.isOrganization()) {
-					organizationIds.add(group.getOrganizationId());
-				}
-				else if (group.isUserGroup()) {
-					userGroupIds.add(group.getClassPK());
-				}
-				else {
-					for (Organization organization :
-							GroupUtil.getOrganizations(groupId)) {
-
-						organizationIds.add(organization.getOrganizationId());
-					}
-
-					for (UserGroup userGroup :
-							GroupUtil.getUserGroups(groupId)) {
-
-						userGroupIds.add(userGroup.getUserGroupId());
-					}
-				}
-			}
-
-			if (!organizationIds.isEmpty()) {
-				params2 = new LinkedHashMap<String, Object>(params1);
-
-				params2.remove("usersGroups");
-
-				params2.put(
-					"usersOrgs",
-					organizationIds.toArray(new Long[organizationIds.size()]));
-			}
-
-			if (!userGroupIds.isEmpty()) {
-				params3 = new LinkedHashMap<String, Object>(params1);
-
-				params3.remove("usersGroups");
-
-				params3.put(
-					"usersUserGroups",
-					userGroupIds.toArray(new Long[userGroupIds.size()]));
-			}
-		}
-
-		if (ArrayUtil.isNotEmpty(roleIds) && inherit) {
-			List<Long> organizationIds = new ArrayList<Long>();
-			List<Long> roleGroupIds = new ArrayList<Long>();
-			List<Long> userGroupIds = new ArrayList<Long>();
-
-			for (long roleId : roleIds) {
-				List<Group> groups = RoleUtil.getGroups(roleId);
-
-				for (Group group : groups) {
-					if (group.isOrganization()) {
-						organizationIds.add(group.getOrganizationId());
-					}
-					else if (group.isUserGroup()) {
-						userGroupIds.add(group.getClassPK());
-					}
-					else {
-						roleGroupIds.add(group.getGroupId());
-
-						for (Organization organization :
-								GroupUtil.getOrganizations(
-									group.getGroupId())) {
-
-							organizationIds.add(
-								organization.getOrganizationId());
-						}
-
-						for (UserGroup userGroup :
-								GroupUtil.getUserGroups(group.getGroupId())) {
-
-							userGroupIds.add(userGroup.getUserGroupId());
-						}
-					}
-				}
-			}
-
-			if (!roleGroupIds.isEmpty()) {
-				params2 = new LinkedHashMap<String, Object>(params1);
-
-				params2.remove("usersRoles");
-
-				params2.put(
-					"usersGroups",
-					roleGroupIds.toArray(new Long[roleGroupIds.size()]));
-			}
-
-			if (!userGroupIds.isEmpty()) {
-				params3 = new LinkedHashMap<String, Object>(params1);
-
-				params3.remove("usersRoles");
-
-				params3.put(
-					"usersUserGroups",
-					userGroupIds.toArray(new Long[userGroupIds.size()]));
-			}
-
-			if (!organizationIds.isEmpty()) {
-				params4 = new LinkedHashMap<String, Object>(params1);
-
-				params4.remove("usersRoles");
-
-				params4.put(
-					"usersOrgs",
-					organizationIds.toArray(new Long[organizationIds.size()]));
-			}
-		}
-
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Set<Long> userIds = new HashSet<Long>();
+			int userCount = countByC_FN_MN_LN_SN_EA_S(
+				session, companyId, firstNames, middleNames, lastNames,
+				screenNames, emailAddresses, status, params, andOperator);
 
-			userIds.addAll(
-				countByC_FN_MN_LN_SN_EA_S(
-					session, companyId, firstNames, middleNames, lastNames,
-					screenNames, emailAddresses, status, params1, andOperator));
+			if (ArrayUtil.isNotEmpty(groupIds) && inherit) {
+				for (long groupId : groupIds) {
+					userCount += countUsers(
+						session, groupId, companyId, firstNames, middleNames,
+						lastNames, screenNames, emailAddresses, status,
+						andOperator, COUNT_BY_USER_ORGANIZATIONS);
 
-			if (params2 != null) {
-				userIds.addAll(
-					countByC_FN_MN_LN_SN_EA_S(
-						session, companyId, firstNames, middleNames, lastNames,
-						screenNames, emailAddresses, status, params2,
-						andOperator));
+					userCount += countUsers(
+						session, groupId, companyId, firstNames, middleNames,
+						lastNames, screenNames, emailAddresses, status,
+						andOperator, COUNT_BY_USER_USERS_GROUPS);
+				}
 			}
 
-			if (params3 != null) {
-				userIds.addAll(
-					countByC_FN_MN_LN_SN_EA_S(
-						session, companyId, firstNames, middleNames, lastNames,
-						screenNames, emailAddresses, status, params3,
-						andOperator));
+			if (ArrayUtil.isNotEmpty(roleIds) && inherit) {
+				for (long roleId : roleIds) {
+					List<Group> groups = RoleUtil.getGroups(roleId);
+
+					for (Group group : groups) {
+						userCount += countUsers(
+							session, group.getGroupId(), companyId, firstNames,
+							middleNames, lastNames, screenNames, emailAddresses,
+							status, andOperator, COUNT_BY_USER_GROUPS);
+					}
+				}
 			}
 
-			if (params4 != null) {
-				userIds.addAll(
-					countByC_FN_MN_LN_SN_EA_S(
-						session, companyId, firstNames, middleNames, lastNames,
-						screenNames, emailAddresses, status, params4,
-						andOperator));
-			}
-
-			return userIds.size();
+			return userCount;
 		}
 		catch (Exception e) {
 			throw new SystemException(e);
@@ -426,6 +313,67 @@ public class UserFinderImpl
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	public int countUsers(
+		Session session, long groupId, long companyId, String[] firstNames,
+		String[] middleNames, String[] lastNames, String[] screenNames,
+		String[] emailAddresses, int status, boolean andOperator,
+		String sqlQuery) {
+
+		String sql = CustomSQLUtil.get(sqlQuery);
+
+		sql = CustomSQLUtil.replaceKeywords(
+			sql, "lower(User_.firstName)", StringPool.LIKE, false, firstNames);
+		sql = CustomSQLUtil.replaceKeywords(
+			sql, "lower(User_.middleName)", StringPool.LIKE, false,
+			middleNames);
+		sql = CustomSQLUtil.replaceKeywords(
+			sql, "lower(User_.lastName)", StringPool.LIKE, false, lastNames);
+		sql = CustomSQLUtil.replaceKeywords(
+			sql, "lower(User_.screenName)", StringPool.LIKE, false,
+			screenNames);
+		sql = CustomSQLUtil.replaceKeywords(
+			sql, "lower(User_.emailAddress)", StringPool.LIKE, true,
+			emailAddresses);
+
+		if (status == WorkflowConstants.STATUS_ANY) {
+			sql = StringUtil.replace(sql, _STATUS_SQL, StringPool.BLANK);
+		}
+
+		sql = CustomSQLUtil.replaceAndOperator(sql, andOperator);
+
+		SQLQuery q = session.createSynchronizedSQLQuery(sql);
+
+		q.addScalar(COUNT_COLUMN_NAME, Type.LONG);
+
+		QueryPos qPos = QueryPos.getInstance(q);
+
+		qPos.add(groupId);
+		qPos.add(companyId);
+		qPos.add(false);
+		qPos.add(firstNames, 2);
+		qPos.add(middleNames, 2);
+		qPos.add(lastNames, 2);
+		qPos.add(screenNames, 2);
+		qPos.add(emailAddresses, 2);
+
+		if (status != WorkflowConstants.STATUS_ANY) {
+			qPos.add(status);
+		}
+
+		Iterator<Long> itr = q.iterate();
+
+		if (itr.hasNext()) {
+			Long count = itr.next();
+
+			if (count != null) {
+				return count.intValue();
+			}
+		}
+
+		return 0;
 	}
 
 	@Override
@@ -570,14 +518,6 @@ public class UserFinderImpl
 			params = _emptyLinkedHashMap;
 		}
 
-		LinkedHashMap<String, Object> params1 = params;
-
-		LinkedHashMap<String, Object> params2 = null;
-
-		LinkedHashMap<String, Object> params3 = null;
-
-		LinkedHashMap<String, Object> params4 = null;
-
 		Long[] groupIds = null;
 
 		if (params.get("usersGroups") instanceof Long) {
@@ -606,255 +546,49 @@ public class UserFinderImpl
 
 		boolean inherit = GetterUtil.getBoolean(params.get("inherit"));
 
-		if (ArrayUtil.isNotEmpty(groupIds) && inherit) {
-			List<Long> organizationIds = new ArrayList<Long>();
-			List<Long> userGroupIds = new ArrayList<Long>();
-
-			for (long groupId : groupIds) {
-				Group group = GroupLocalServiceUtil.fetchGroup(groupId);
-
-				if (group == null) {
-					continue;
-				}
-
-				if (group.isOrganization()) {
-					organizationIds.add(group.getOrganizationId());
-				}
-				else if (group.isUserGroup()) {
-					userGroupIds.add(group.getClassPK());
-				}
-				else {
-					for (Organization organization :
-							GroupUtil.getOrganizations(groupId)) {
-
-						organizationIds.add(organization.getOrganizationId());
-					}
-
-					for (UserGroup userGroup :
-							GroupUtil.getUserGroups(groupId)) {
-
-						userGroupIds.add(userGroup.getUserGroupId());
-					}
-				}
-			}
-
-			if (!organizationIds.isEmpty()) {
-				params2 = new LinkedHashMap<String, Object>(params1);
-
-				params2.remove("usersGroups");
-
-				params2.put(
-					"usersOrgs",
-					organizationIds.toArray(new Long[organizationIds.size()]));
-			}
-
-			if (!userGroupIds.isEmpty()) {
-				params3 = new LinkedHashMap<String, Object>(params1);
-
-				params3.remove("usersGroups");
-
-				params3.put(
-					"usersUserGroups",
-					userGroupIds.toArray(new Long[userGroupIds.size()]));
-			}
-		}
-
-		if (ArrayUtil.isNotEmpty(roleIds) && inherit) {
-			List<Long> organizationIds = new ArrayList<Long>();
-			List<Long> roleGroupIds = new ArrayList<Long>();
-			List<Long> userGroupIds = new ArrayList<Long>();
-
-			for (long roleId : roleIds) {
-				List<Group> groups = RoleUtil.getGroups(roleId);
-
-				for (Group group : groups) {
-					if (group.isOrganization()) {
-						organizationIds.add(group.getOrganizationId());
-					}
-					else if (group.isUserGroup()) {
-						userGroupIds.add(group.getClassPK());
-					}
-					else {
-						roleGroupIds.add(group.getGroupId());
-
-						for (Organization organization :
-								GroupUtil.getOrganizations(
-									group.getGroupId())) {
-
-							organizationIds.add(
-								organization.getOrganizationId());
-						}
-
-						for (UserGroup userGroup :
-								GroupUtil.getUserGroups(group.getGroupId())) {
-
-							userGroupIds.add(userGroup.getUserGroupId());
-						}
-					}
-				}
-			}
-
-			if (!roleGroupIds.isEmpty()) {
-				params2 = new LinkedHashMap<String, Object>(params1);
-
-				params2.remove("usersRoles");
-
-				params2.put(
-					"usersGroups",
-					roleGroupIds.toArray(new Long[roleGroupIds.size()]));
-			}
-
-			if (!userGroupIds.isEmpty()) {
-				params3 = new LinkedHashMap<String, Object>(params1);
-
-				params3.remove("usersRoles");
-
-				params3.put(
-					"usersUserGroups",
-					userGroupIds.toArray(new Long[userGroupIds.size()]));
-			}
-
-			if (!organizationIds.isEmpty()) {
-				params4 = new LinkedHashMap<String, Object>(params1);
-
-				params4.remove("usersRoles");
-
-				params4.put(
-					"usersOrgs",
-					organizationIds.toArray(new Long[organizationIds.size()]));
-			}
-		}
-
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			String sql = CustomSQLUtil.get(FIND_BY_C_FN_MN_LN_SN_EA_S);
+			List<Long> userIds = new ArrayList<Long>();
 
-			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(User_.firstName)", StringPool.LIKE, false,
-				firstNames);
-			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(User_.middleName)", StringPool.LIKE, false,
-				middleNames);
-			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(User_.lastName)", StringPool.LIKE, false,
-				lastNames);
-			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(User_.screenName)", StringPool.LIKE, false,
-				screenNames);
-			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(User_.emailAddress)", StringPool.LIKE, true,
-				emailAddresses);
+			userIds.addAll(
+				findByC_FN_MN_LN_SN_EA_S(
+					session, companyId, firstNames, middleNames, lastNames,
+					screenNames, emailAddresses, status, params, andOperator,
+					start, end, obc));
 
-			if (status == WorkflowConstants.STATUS_ANY) {
-				sql = StringUtil.replace(sql, _STATUS_SQL, StringPool.BLANK);
-			}
+			if (ArrayUtil.isNotEmpty(groupIds) && inherit) {
+				for (long groupId : groupIds) {
+					userIds.addAll(
+						findUsers(
+							session, groupId, companyId, firstNames,
+							middleNames, lastNames, screenNames, emailAddresses,
+							status, andOperator, FIND_BY_USER_ORGANIZATIONS));
 
-			StringBundler sb = new StringBundler(14);
-
-			sb.append(StringPool.OPEN_PARENTHESIS);
-			sb.append(replaceJoinAndWhere(sql, params1));
-			sb.append(StringPool.CLOSE_PARENTHESIS);
-
-			if (params2 != null) {
-				sb.append(" UNION (");
-				sb.append(replaceJoinAndWhere(sql, params2));
-				sb.append(StringPool.CLOSE_PARENTHESIS);
-			}
-
-			if (params3 != null) {
-				sb.append(" UNION (");
-				sb.append(replaceJoinAndWhere(sql, params3));
-				sb.append(StringPool.CLOSE_PARENTHESIS);
-			}
-
-			if (params4 != null) {
-				sb.append(" UNION (");
-				sb.append(replaceJoinAndWhere(sql, params4));
-				sb.append(StringPool.CLOSE_PARENTHESIS);
-			}
-
-			if (obc != null) {
-				sb.append(" ORDER BY ");
-				sb.append(obc.toString());
-			}
-
-			sql = sb.toString();
-
-			sql = CustomSQLUtil.replaceAndOperator(sql, andOperator);
-
-			SQLQuery q = session.createSynchronizedSQLQuery(sql);
-
-			q.addScalar("userId", Type.LONG);
-
-			QueryPos qPos = QueryPos.getInstance(q);
-
-			setJoin(qPos, params1);
-
-			qPos.add(companyId);
-			qPos.add(false);
-			qPos.add(firstNames, 2);
-			qPos.add(middleNames, 2);
-			qPos.add(lastNames, 2);
-			qPos.add(screenNames, 2);
-			qPos.add(emailAddresses, 2);
-
-			if (status != WorkflowConstants.STATUS_ANY) {
-				qPos.add(status);
-			}
-
-			if (params2 != null) {
-				setJoin(qPos, params2);
-
-				qPos.add(companyId);
-				qPos.add(false);
-				qPos.add(firstNames, 2);
-				qPos.add(middleNames, 2);
-				qPos.add(lastNames, 2);
-				qPos.add(screenNames, 2);
-				qPos.add(emailAddresses, 2);
-
-				if (status != WorkflowConstants.STATUS_ANY) {
-					qPos.add(status);
+					userIds.addAll(
+						findUsers(
+							session, groupId, companyId, firstNames,
+							middleNames, lastNames, screenNames, emailAddresses,
+							status, andOperator, FIND_BY_USER_USERS_GROUPS));
 				}
 			}
 
-			if (params3 != null) {
-				setJoin(qPos, params3);
+			if (ArrayUtil.isNotEmpty(roleIds) && inherit) {
+				for (long roleId : roleIds) {
+					List<Group> groups = RoleUtil.getGroups(roleId);
 
-				qPos.add(companyId);
-				qPos.add(false);
-				qPos.add(firstNames, 2);
-				qPos.add(middleNames, 2);
-				qPos.add(lastNames, 2);
-				qPos.add(screenNames, 2);
-				qPos.add(emailAddresses, 2);
-
-				if (status != WorkflowConstants.STATUS_ANY) {
-					qPos.add(status);
+					for (Group group : groups) {
+						userIds.addAll(
+							findUsers(
+								session, group.getGroupId(), companyId,
+								firstNames, middleNames, lastNames, screenNames,
+								emailAddresses, status, andOperator,
+								FIND_BY_USER_GROUPS));
+					}
 				}
 			}
-
-			if (params4 != null) {
-				setJoin(qPos, params4);
-
-				qPos.add(companyId);
-				qPos.add(false);
-				qPos.add(firstNames, 2);
-				qPos.add(middleNames, 2);
-				qPos.add(lastNames, 2);
-				qPos.add(screenNames, 2);
-				qPos.add(emailAddresses, 2);
-
-				if (status != WorkflowConstants.STATUS_ANY) {
-					qPos.add(status);
-				}
-			}
-
-			List<Long> userIds = (List<Long>)QueryUtil.list(
-				q, getDialect(), start, end);
 
 			List<User> users = new ArrayList<User>(userIds.size());
 
@@ -874,7 +608,126 @@ public class UserFinderImpl
 		}
 	}
 
-	protected List<Long> countByC_FN_MN_LN_SN_EA_S(
+	@Override
+	public List<Long> findByC_FN_MN_LN_SN_EA_S(
+			Session session, long companyId, String[] firstNames,
+			String[] middleNames, String[] lastNames, String[] screenNames,
+			String[] emailAddresses, int status,
+			LinkedHashMap<String, Object> params, boolean andOperator,
+			int start, int end, OrderByComparator obc)
+		throws SystemException {
+
+		if (params == null) {
+			params = _emptyLinkedHashMap;
+		}
+
+		String sql = CustomSQLUtil.get(FIND_BY_C_FN_MN_LN_SN_EA_S);
+
+		sql = CustomSQLUtil.replaceKeywords(
+			sql, "lower(User_.firstName)", StringPool.LIKE, false, firstNames);
+		sql = CustomSQLUtil.replaceKeywords(
+			sql, "lower(User_.middleName)", StringPool.LIKE, false,
+			middleNames);
+		sql = CustomSQLUtil.replaceKeywords(
+			sql, "lower(User_.lastName)", StringPool.LIKE, false, lastNames);
+		sql = CustomSQLUtil.replaceKeywords(
+			sql, "lower(User_.screenName)", StringPool.LIKE, false,
+			screenNames);
+		sql = CustomSQLUtil.replaceKeywords(
+			sql, "lower(User_.emailAddress)", StringPool.LIKE, true,
+			emailAddresses);
+
+		if (status == WorkflowConstants.STATUS_ANY) {
+			sql = StringUtil.replace(sql, _STATUS_SQL, StringPool.BLANK);
+		}
+
+		if (obc != null) {
+			String obcClause = " ORDER BY " + obc.toString();
+
+			sql.concat(obcClause);
+		}
+
+		sql = replaceJoinAndWhere(sql, params);
+		sql = CustomSQLUtil.replaceAndOperator(sql, andOperator);
+
+		SQLQuery q = session.createSynchronizedSQLQuery(sql);
+
+		q.addScalar("userId", Type.LONG);
+
+		QueryPos qPos = QueryPos.getInstance(q);
+
+		setJoin(qPos, params);
+
+		qPos.add(companyId);
+		qPos.add(false);
+		qPos.add(firstNames, 2);
+		qPos.add(middleNames, 2);
+		qPos.add(lastNames, 2);
+		qPos.add(screenNames, 2);
+		qPos.add(emailAddresses, 2);
+
+		if (status != WorkflowConstants.STATUS_ANY) {
+			qPos.add(status);
+		}
+
+		List<Long> userIds = (List<Long>)QueryUtil.list(
+			q, getDialect(), start, end);
+
+		return userIds;
+	}
+
+	@Override
+	public List<Long> findUsers(
+		Session session, long groupId, long companyId, String[] firstNames,
+		String[] middleNames, String[] lastNames, String[] screenNames,
+		String[] emailAddresses, int status, boolean andOperator,
+		String sqlQuery) {
+
+		String sql = CustomSQLUtil.get(sqlQuery);
+
+		sql = CustomSQLUtil.replaceKeywords(
+			sql, "lower(User_.firstName)", StringPool.LIKE, false, firstNames);
+		sql = CustomSQLUtil.replaceKeywords(
+			sql, "lower(User_.middleName)", StringPool.LIKE, false,
+			middleNames);
+		sql = CustomSQLUtil.replaceKeywords(
+			sql, "lower(User_.lastName)", StringPool.LIKE, false, lastNames);
+		sql = CustomSQLUtil.replaceKeywords(
+			sql, "lower(User_.screenName)", StringPool.LIKE, false,
+			screenNames);
+		sql = CustomSQLUtil.replaceKeywords(
+			sql, "lower(User_.emailAddress)", StringPool.LIKE, true,
+			emailAddresses);
+
+		if (status == WorkflowConstants.STATUS_ANY) {
+			sql = StringUtil.replace(sql, _STATUS_SQL, StringPool.BLANK);
+		}
+
+		sql = CustomSQLUtil.replaceAndOperator(sql, andOperator);
+
+		SQLQuery q = session.createSynchronizedSQLQuery(sql);
+
+		q.addScalar("userId", Type.LONG);
+
+		QueryPos qPos = QueryPos.getInstance(q);
+
+		qPos.add(groupId);
+		qPos.add(companyId);
+		qPos.add(false);
+		qPos.add(firstNames, 2);
+		qPos.add(middleNames, 2);
+		qPos.add(lastNames, 2);
+		qPos.add(screenNames, 2);
+		qPos.add(emailAddresses, 2);
+
+		if (status != WorkflowConstants.STATUS_ANY) {
+			qPos.add(status);
+		}
+
+		return q.list(true);
+	}
+
+	protected int countByC_FN_MN_LN_SN_EA_S(
 		Session session, long companyId, String[] firstNames,
 		String[] middleNames, String[] lastNames, String[] screenNames,
 		String[] emailAddresses, int status,
@@ -905,7 +758,7 @@ public class UserFinderImpl
 
 		SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
-		q.addScalar("userId", Type.LONG);
+		q.addScalar(COUNT_COLUMN_NAME, Type.LONG);
 
 		QueryPos qPos = QueryPos.getInstance(q);
 
@@ -923,7 +776,17 @@ public class UserFinderImpl
 			qPos.add(status);
 		}
 
-		return q.list(true);
+		Iterator<Long> itr = q.iterate();
+
+		if (itr.hasNext()) {
+			Long count = itr.next();
+
+			if (count != null) {
+				return count.intValue();
+			}
+		}
+
+		return 0;
 	}
 
 	protected String getJoin(LinkedHashMap<String, Object> params) {

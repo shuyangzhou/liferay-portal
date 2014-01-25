@@ -1353,10 +1353,144 @@
 				(User_.userId = ?)
 		]]>
 	</sql>
+	<sql id="com.liferay.portal.service.persistence.UserFinder.countByUserOrganizations">
+		<![CDATA[
+			SELECT
+				COUNT(User_.userId) AS COUNT_VALUE
+			FROM
+				User_
+			INNER JOIN
+				Users_Orgs on (Users_Orgs.userId = User_.userId)
+			INNER JOIN
+				Groups_Orgs on (Groups_Orgs.organizationId = Users_Orgs.organizationId)
+			WHERE
+				(Groups_Orgs.groupId = ?) AND
+				(User_.companyId = ?) AND
+				(User_.defaultUser = ?) AND
+				(
+					(lower(User_.firstName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(User_.middleName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(User_.lastName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(User_.screenName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(User_.emailAddress) LIKE ? [$AND_OR_NULL_CHECK$])
+				) AND (User_.status = ?)
+		]]>
+	</sql>
+	<sql id="com.liferay.portal.service.persistence.UserFinder.countByUserUsersGroups">
+		<![CDATA[
+			SELECT
+				COUNT(User_.userId) AS COUNT_VALUE
+			FROM
+				User_
+			INNER JOIN
+				Users_UserGroups on (Users_UserGroups.userId = User_.userId)
+			INNER JOIN
+				Groups_userGroups on (Groups_userGroups.userGroupId = Users_UserGroups.userGroupId)
+			WHERE
+				(Groups_userGroups.groupId = ?) AND
+				(User_.companyId = ?) AND
+				(User_.defaultUser = ?) AND
+				(
+					(lower(User_.firstName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(User_.middleName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(User_.lastName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(User_.screenName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(User_.emailAddress) LIKE ? [$AND_OR_NULL_CHECK$])
+				) AND (User_.status = ?)
+		]]>
+	</sql>
+	<sql id="com.liferay.portal.service.persistence.UserFinder.countByUserGroups">
+		<![CDATA[
+			SELECT
+				COUNT(User_.userId) AS COUNT_VALUE
+			FROM
+				User_
+			INNER JOIN
+				Users_Groups on (Users_Groups.userId = User_.userId)
+			WHERE
+				(Users_Groups.groupId = ?) AND
+				(User_.companyId = ?) AND
+				(User_.defaultUser = ?) AND
+				(
+					(lower(User_.firstName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(User_.middleName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(User_.lastName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(User_.screenName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(User_.emailAddress) LIKE ? [$AND_OR_NULL_CHECK$])
+				) AND (User_.status = ?)
+		]]>
+	</sql>
+	<sql id="com.liferay.portal.service.persistence.UserFinder.findByUserOrganizations">
+		<![CDATA[
+			SELECT
+				DISTINCT User_.userId AS userId, User_.screenName AS screenName, User_.emailAddress AS emailAddress, User_.firstName AS firstName, User_.middleName AS middleName, User_.lastName AS lastName, User_.jobTitle AS jobTitle, User_.loginDate AS loginDate
+			FROM
+				User_
+			INNER JOIN
+				Users_Orgs on (Users_Orgs.userId = User_.userId)
+			INNER JOIN
+				Groups_Orgs on (Groups_Orgs.organizationId = Users_Orgs.organizationId)
+			WHERE
+				(Groups_Orgs.groupId = ?) AND
+				(User_.companyId = ?) AND
+				(User_.defaultUser = ?) AND
+				(
+					(lower(User_.firstName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(User_.middleName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(User_.lastName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(User_.screenName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(User_.emailAddress) LIKE ? [$AND_OR_NULL_CHECK$])
+				) AND (User_.status = ?)
+		]]>
+	</sql>
+	<sql id="com.liferay.portal.service.persistence.UserFinder.findByUserUsersGroups">
+		<![CDATA[
+			SELECT
+				DISTINCT User_.userId AS userId, User_.screenName AS screenName, User_.emailAddress AS emailAddress, User_.firstName AS firstName, User_.middleName AS middleName, User_.lastName AS lastName, User_.jobTitle AS jobTitle, User_.loginDate AS loginDate
+			FROM
+				User_
+			INNER JOIN
+				Users_UserGroups on (Users_UserGroups.userId = User_.userId)
+			INNER JOIN
+				Groups_userGroups on (Groups_userGroups.userGroupId = Users_UserGroups.userGroupId)
+			WHERE
+				(Groups_userGroups.groupId = ?) AND
+				(User_.companyId = ?) AND
+				(User_.defaultUser = ?) AND
+				(
+					(lower(User_.firstName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(User_.middleName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(User_.lastName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(User_.screenName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(User_.emailAddress) LIKE ? [$AND_OR_NULL_CHECK$])
+				) AND (User_.status = ?)
+		]]>
+	</sql>
+	<sql id="com.liferay.portal.service.persistence.UserFinder.findByUserGroups">
+		<![CDATA[
+			SELECT
+				DISTINCT User_.userId AS userId, User_.screenName AS screenName, User_.emailAddress AS emailAddress, User_.firstName AS firstName, User_.middleName AS middleName, User_.lastName AS lastName, User_.jobTitle AS jobTitle, User_.loginDate AS loginDate
+			FROM
+				User_
+			INNER JOIN
+				Users_Groups on (Users_Groups.userId = User_.userId)
+			WHERE
+				(Users_Groups.groupId = ?) AND
+				(User_.companyId = ?) AND
+				(User_.defaultUser = ?) AND
+				(
+					(lower(User_.firstName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(User_.middleName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(User_.lastName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(User_.screenName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(User_.emailAddress) LIKE ? [$AND_OR_NULL_CHECK$])
+				) AND (User_.status = ?)
+		]]>
+	</sql>
 	<sql id="com.liferay.portal.service.persistence.UserFinder.countByC_FN_MN_LN_SN_EA_S">
 		<![CDATA[
 			SELECT
-				DISTINCT User_.userId AS userId
+				COUNT(DISTINCT User_.userId) AS COUNT_VALUE
 			FROM
 				User_
 			[$JOIN$]
