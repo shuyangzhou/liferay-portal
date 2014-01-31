@@ -77,6 +77,7 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
+import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.ReleaseInfo;
@@ -240,6 +241,7 @@ import java.util.TimeZone;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -556,6 +558,19 @@ public class PortalImpl implements Portal {
 		titleListMergeable.add(title);
 	}
 
+	@Override
+	public void addPortalEventListener(
+		PortalEventListener portalEventListener) {
+
+		if (!_portalEventListeners.contains(portalEventListener)) {
+			_portalEventListeners.add(portalEventListener);
+		}
+	}
+
+	/**
+	 * @deprecated As of 7.0.0
+	 */
+	@Deprecated
 	@Override
 	public void addPortalPortEventListener(
 		PortalPortEventListener portalPortEventListener) {
@@ -3868,6 +3883,42 @@ public class PortalImpl implements Portal {
 		return PropsValues.LIFERAY_LIB_PORTAL_DIR;
 	}
 
+	@Override
+	public InetAddress getPortalLocalAddress(boolean secure) {
+		ObjectValuePair<InetAddress, Integer> objectValuePair = null;
+
+		if (secure) {
+			objectValuePair = _securePortalLocalAddress.get();
+		}
+		else {
+			objectValuePair = _portalLocalAddress.get();
+		}
+
+		if (objectValuePair == null) {
+			return null;
+		}
+
+		return objectValuePair.getKey();
+	}
+
+	@Override
+	public int getPortalLocalPort(boolean secure) {
+		ObjectValuePair<InetAddress, Integer> objectValuePair = null;
+
+		if (secure) {
+			objectValuePair = _securePortalLocalAddress.get();
+		}
+		else {
+			objectValuePair = _portalLocalAddress.get();
+		}
+
+		if (objectValuePair == null) {
+			return -1;
+		}
+
+		return objectValuePair.getValue();
+	}
+
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getPortalPort(boolean)}
 	 */
@@ -3877,6 +3928,11 @@ public class PortalImpl implements Portal {
 		return _portalPort.get();
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by the more general {@link
+	 *             #getPortalServerPort(boolean)}
+	 */
+	@Deprecated
 	@Override
 	public int getPortalPort(boolean secure) {
 		if (secure) {
@@ -3890,6 +3946,42 @@ public class PortalImpl implements Portal {
 	@Override
 	public Properties getPortalProperties() {
 		return PropsUtil.getProperties();
+	}
+
+	@Override
+	public InetAddress getPortalServerAddress(boolean secure) {
+		ObjectValuePair<InetAddress, Integer> objectValuePair = null;
+
+		if (secure) {
+			objectValuePair = _securePortalServerAddress.get();
+		}
+		else {
+			objectValuePair = _portalServerAddress.get();
+		}
+
+		if (objectValuePair == null) {
+			return null;
+		}
+
+		return objectValuePair.getKey();
+	}
+
+	@Override
+	public int getPortalServerPort(boolean secure) {
+		ObjectValuePair<InetAddress, Integer> objectValuePair = null;
+
+		if (secure) {
+			objectValuePair = _securePortalServerAddress.get();
+		}
+		else {
+			objectValuePair = _portalServerAddress.get();
+		}
+
+		if (objectValuePair == null) {
+			return -1;
+		}
+
+		return objectValuePair.getValue();
 	}
 
 	@Override
@@ -6478,6 +6570,17 @@ public class PortalImpl implements Portal {
 	}
 
 	@Override
+	public void removePortalEventListener(
+		PortalEventListener portalEventListener) {
+
+		_portalEventListeners.remove(portalEventListener);
+	}
+
+	/**
+	 * @deprecated As of 7.0.0
+	 */
+	@Deprecated
+	@Override
 	public void removePortalPortEventListener(
 		PortalPortEventListener portalPortEventListener) {
 
@@ -6738,6 +6841,87 @@ public class PortalImpl implements Portal {
 		request.setAttribute(WebKeys.PAGE_TITLE, titleListMergeable);
 	}
 
+	@Override
+	public void setPortalAddresses(HttpServletRequest request) {
+		boolean secure = request.isSecure();
+
+		if ((secure && (_securePortalLocalAddress.get() != null) &&
+			 (_securePortalServerAddress.get() != null)) ||
+			(!secure && (_portalLocalAddress.get() != null) &&
+			 (_portalServerAddress.get() != null))) {
+
+			return;
+		}
+
+		String localAddress = request.getLocalAddr();
+		int localPort = request.getLocalPort();
+		String serverAddress = request.getServerName();
+		int serverPort = request.getServerPort();
+
+		InetAddress localInetAddress = null;
+		InetAddress serverInetAddress = null;
+
+		try {
+			localInetAddress = InetAddress.getByName(localAddress);
+			serverInetAddress = InetAddress.getByName(serverAddress);
+		}
+		catch (Exception ex) {
+			return;
+		}
+
+		ObjectValuePair<InetAddress, Integer> portalLocalAddress =
+			new ObjectValuePair<InetAddress, Integer>(
+				localInetAddress, localPort);
+
+		ObjectValuePair<InetAddress, Integer> portalServerAddress =
+			new ObjectValuePair<InetAddress, Integer>(
+				serverInetAddress, serverPort);
+
+		boolean updateLocal;
+		boolean updateServer;
+
+		if (secure) {
+			updateLocal = _securePortalLocalAddress.compareAndSet(
+				null, portalLocalAddress);
+			updateServer = _securePortalServerAddress.compareAndSet(
+				null, portalServerAddress);
+
+			if (StringUtil.equalsIgnoreCase(
+					Http.HTTPS, PropsValues.WEB_SERVER_PROTOCOL)) {
+
+				if (updateLocal) {
+					notifyPortalEventListeners(
+						localInetAddress, localPort, true);
+				}
+
+				if (updateServer) {
+					notifyPortalEventListeners(
+						serverInetAddress, serverPort, false);
+				}
+			}
+		}
+		else {
+			updateLocal = _portalLocalAddress.compareAndSet(
+				null, portalLocalAddress);
+			updateServer = _portalServerAddress.compareAndSet(
+				null, portalServerAddress);
+
+			if (updateLocal) {
+				notifyPortalEventListeners(localInetAddress, localPort, true);
+			}
+
+			if (updateServer) {
+				notifyPortalEventListeners(
+					serverInetAddress, serverPort, false);
+			}
+		}
+	}
+
+	/**
+	 * @deprecated As of 7.0.0, replaced by the more general {@link
+	 *             #setPortalAddresses(HttpServletRequest)}
+	 */
+	@Deprecated
 	@Override
 	public void setPortalPort(HttpServletRequest request) {
 		if (request.isSecure()) {
@@ -7758,6 +7942,21 @@ public class PortalImpl implements Portal {
 		return false;
 	}
 
+	protected void notifyPortalEventListeners(
+		InetAddress inetAddress, int portalPort, boolean local) {
+
+		for (PortalEventListener portalEventListener : _portalEventListeners) {
+			if (local) {
+				portalEventListener.portalLocalAddressConfigured(
+					inetAddress, portalPort);
+			}
+			else {
+				portalEventListener.portalServerAddressConfigured(
+					inetAddress, portalPort);
+			}
+		}
+	}
+
 	protected void notifyPortalPortEventListeners(int portalPort) {
 		for (PortalPortEventListener portalPortEventListener :
 				_portalPortEventListeners) {
@@ -7872,11 +8071,25 @@ public class PortalImpl implements Portal {
 	private String _pathProxy;
 	private Map<String, Long> _plidToPortletIdMap =
 		new ConcurrentHashMap<String, Long>();
+	private List<PortalEventListener> _portalEventListeners =
+		new ArrayList<PortalEventListener>();
+	private final AtomicReference<ObjectValuePair<InetAddress, Integer>>
+		_portalLocalAddress =
+			new AtomicReference<ObjectValuePair<InetAddress, Integer>>(null);
 	private final AtomicInteger _portalPort = new AtomicInteger(-1);
 	private List<PortalPortEventListener> _portalPortEventListeners =
 		new ArrayList<PortalPortEventListener>();
+	private final AtomicReference<ObjectValuePair<InetAddress, Integer>>
+		_portalServerAddress =
+			new AtomicReference<ObjectValuePair<InetAddress, Integer>>(null);
 	private Set<String> _reservedParams;
+	private final AtomicReference<ObjectValuePair<InetAddress, Integer>>
+		_securePortalLocalAddress =
+			new AtomicReference<ObjectValuePair<InetAddress, Integer>>(null);
 	private final AtomicInteger _securePortalPort = new AtomicInteger(-1);
+	private final AtomicReference<ObjectValuePair<InetAddress, Integer>>
+		_securePortalServerAddress =
+			new AtomicReference<ObjectValuePair<InetAddress, Integer>>(null);
 	private final String _servletContextName;
 	private String[] _sortedSystemGroups;
 	private String[] _sortedSystemOrganizationRoles;

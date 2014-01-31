@@ -14,14 +14,16 @@
 
 package com.liferay.portal.util;
 
-/**
- * @author Michael C. Han
- * @deprecated As of 7.0.0, replaced by {@link
- *             com.liferay.portal.util.PortalEventListener}
- */
-@Deprecated
-public interface PortalPortEventListener {
+import java.net.InetAddress;
 
-	public void portalPortConfigured(int port);
+/**
+ * @author Tina Tian
+ */
+public interface PortalEventListener {
+
+	public void portalLocalAddressConfigured(InetAddress inetAddress, int port);
+
+	public void portalServerAddressConfigured(
+		InetAddress inetAddress, int port);
 
 }
