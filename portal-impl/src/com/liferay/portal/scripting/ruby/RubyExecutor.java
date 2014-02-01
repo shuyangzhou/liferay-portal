@@ -49,6 +49,7 @@ import jodd.io.ZipUtil;
 import org.jruby.Ruby;
 import org.jruby.RubyInstanceConfig;
 import org.jruby.RubyInstanceConfig.CompileMode;
+import org.jruby.embed.AttributeName;
 import org.jruby.embed.LocalContextScope;
 import org.jruby.embed.ScriptingContainer;
 import org.jruby.embed.internal.LocalContextProvider;
@@ -72,6 +73,9 @@ public class RubyExecutor extends BaseScriptingExecutor {
 
 		_scriptingContainer = new ScriptingContainer(
 			LocalContextScope.THREADSAFE);
+
+		_scriptingContainer.setAttribute(
+			AttributeName.SHARING_VARIABLES, false);
 
 		LocalContextProvider localContextProvider =
 			_scriptingContainer.getProvider();
@@ -134,6 +138,10 @@ public class RubyExecutor extends BaseScriptingExecutor {
 	@Override
 	public String getLanguage() {
 		return LANGUAGE;
+	}
+
+	public ScriptingContainer getScriptingContainer() {
+		return _scriptingContainer;
 	}
 
 	public void setExecuteInSeparateThread(boolean executeInSeparateThread) {
