@@ -259,7 +259,6 @@
 				<classpath mode="compile">lib/development/hsql.jar</classpath>
 				<classpath mode="compile">lib/development/interbase.jar</classpath>
 				<classpath mode="compile">lib/development/j2h.jar</classpath>
-				<classpath mode="compile">lib/development/jaas.jar</classpath>
 				<classpath mode="compile">lib/development/jalopy.jar</classpath>
 				<classpath mode="compile">lib/development/jargs.jar</classpath>
 				<classpath mode="compile">lib/development/jarjar.jar</classpath>
