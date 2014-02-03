@@ -173,8 +173,7 @@ public class SassToCssBuilder {
 
 		Runtime runtime = Runtime.getRuntime();
 
-		ExecutorService executorService = Executors.newFixedThreadPool(
-			runtime.availableProcessors());
+		ExecutorService executorService = Executors.newFixedThreadPool(1);
 
 		List<Future<String>> futures = new ArrayList<Future<String>>(
 			fileNames.size());
