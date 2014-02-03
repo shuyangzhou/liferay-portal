@@ -26,6 +26,7 @@ import com.liferay.portal.model.ModelHintsConstants;
 import com.liferay.portal.scripting.ruby.RubyExecutor;
 import com.liferay.portal.servlet.filters.aggregate.AggregateFilter;
 import com.liferay.portal.servlet.filters.aggregate.FileAggregateContext;
+import com.liferay.portal.servlet.filters.aggregate.SassFileAggregateContext;
 import com.liferay.portal.servlet.filters.dynamiccss.RTLCSSUtil;
 import com.liferay.portal.util.FastDateFormatFactoryImpl;
 import com.liferay.portal.util.FileImpl;
@@ -43,6 +44,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.tools.ant.DirectoryScanner;
 
@@ -78,19 +81,6 @@ public class SassToCssBuilder {
 		return cacheFileName.substring(0, x + 1) + ".sass-cache/" +
 			cacheFileName.substring(x + 1, y) + suffix +
 				cacheFileName.substring(y);
-	}
-
-	public static String getContent(String docrootDirName, String fileName)
-		throws Exception {
-
-		File file = new File(docrootDirName.concat(fileName));
-
-		String content = FileUtil.read(file);
-
-		content = AggregateFilter.aggregateCss(
-			new FileAggregateContext(docrootDirName, fileName), content);
-
-		return parseStaticTokens(content);
 	}
 
 	public static String getRtlCustomFileName(String fileName) {
@@ -268,6 +258,16 @@ public class SassToCssBuilder {
 		return fileName.substring(0, pos + 4);
 	}
 
+	private boolean _hasNonImportContent(String content) {
+		Matcher matcher = _importPattern.matcher(content);
+
+		String nonImportContent = matcher.replaceAll(StringPool.BLANK);
+
+		nonImportContent = nonImportContent.trim();
+
+		return !nonImportContent.isEmpty();
+	}
+
 	private void _initUtil(ClassLoader classLoader) {
 		FastDateFormatFactoryUtil fastDateFormatFactoryUtil =
 			new FastDateFormatFactoryUtil();
@@ -324,7 +324,22 @@ public class SassToCssBuilder {
 			String docrootDirName, String portalCommonDirName, String fileName)
 		throws Exception {
 
-		String content = getContent(docrootDirName, fileName);
+		File file = new File(docrootDirName.concat(fileName));
+
+		String content = FileUtil.read(file);
+		boolean hasNonImportContent = _hasNonImportContent(content);
+
+		SassFileAggregateContext aggregateContext =
+			new SassFileAggregateContext(docrootDirName, fileName);
+
+		content = AggregateFilter.aggregateCss(aggregateContext, content);
+
+		content = parseStaticTokens(content);
+
+		if (!hasNonImportContent && !aggregateContext.hasCacheMiss()) {
+			return content;
+		}
+
 		String filePath = docrootDirName.concat(fileName);
 
 		Object[] arguments = new Object[] {
@@ -364,6 +379,7 @@ public class SassToCssBuilder {
 		return content;
 	}
 
+	private Pattern _importPattern = Pattern.compile("@import\\s+url\\([^\\)]+\\);");
 	private String _tempDir = SystemProperties.get(SystemProperties.TMP_DIR);
 
 	private class CacheSassCallable implements Callable<String> {
