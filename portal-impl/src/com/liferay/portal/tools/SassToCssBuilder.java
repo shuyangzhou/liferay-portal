@@ -36,6 +36,7 @@ import com.liferay.portal.util.PropsImpl;
 import java.io.File;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -174,7 +175,7 @@ public class SassToCssBuilder {
 
 		Object scriptObject = scriptingContainer.runScriptlet(rubyScript);
 
-		List<String> fileNames = new ArrayList<String>();
+		LinkedHashSet<String> fileNames = new LinkedHashSet<String>();
 
 		for (String dirName : dirNames) {
 			_collectSassFiles(fileNames, dirName, docrootDirName);
@@ -204,7 +205,8 @@ public class SassToCssBuilder {
 	}
 
 	private void _collectSassFiles(
-			List<String> fileNames, String dirName, String docrootDirName)
+			LinkedHashSet<String> fileNames, String dirName,
+			String docrootDirName)
 		throws Exception {
 
 		DirectoryScanner directoryScanner = new DirectoryScanner();
@@ -234,8 +236,30 @@ public class SassToCssBuilder {
 				continue;
 			}
 
-			fileNames.add(_normalizeFileName(dirName, fileName));
+			_collectSassFiles(fileNames, dirName, docrootDirName, fileName);
 		}
+	}
+
+	private void _collectSassFiles(
+			LinkedHashSet<String> fileNames, String dirName,
+			String docrootDirName, String fileName)
+		throws Exception {
+
+		String normalizedFileName = _normalizeFileName(dirName, fileName);
+
+		if (fileNames.contains(normalizedFileName)) {
+			return;
+		}
+
+		File file = new File(docrootDirName, normalizedFileName);
+
+		String content = FileUtil.read(file);
+
+		AggregateFilter.aggregateCss(
+			new FileAggregateContext(docrootDirName, normalizedFileName),
+			content, fileNames);
+
+		fileNames.add(normalizedFileName);
 	}
 
 	private String _getCssThemePath(String fileName) {
