@@ -49,6 +49,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
 
+import java.util.LinkedHashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -70,6 +71,19 @@ public class AggregateFilter extends IgnoreModuleRequestFilter {
 	 */
 	public static String aggregateCss(
 			AggregateContext aggregateContext, String content)
+		throws IOException {
+
+		LinkedHashSet<String> dependencies = new LinkedHashSet<String>();
+
+		return aggregateCss(aggregateContext, content, dependencies);
+	}
+
+	/**
+	 * @see DynamicCSSUtil#propagateQueryString(String, String)
+	 */
+	public static String aggregateCss(
+			AggregateContext aggregateContext, String content,
+			LinkedHashSet<String> dependencies)
 		throws IOException {
 
 		StringBundler sb = new StringBundler();
@@ -149,10 +163,18 @@ public class AggregateFilter extends IgnoreModuleRequestFilter {
 
 				aggregateContext.pushPath(importDirName);
 
-				importContent = aggregateCss(aggregateContext, importContent);
+				importContent = aggregateCss(
+					aggregateContext, importContent, dependencies);
 
 				if (Validator.isNotNull(importDirName)) {
 					aggregateContext.popPath();
+				}
+
+				String resourcePath = aggregateContext.getResourcePath(
+					importFileName);
+
+				if (!dependencies.contains(resourcePath)) {
+					dependencies.add(resourcePath);
 				}
 
 				// LEP-7540
