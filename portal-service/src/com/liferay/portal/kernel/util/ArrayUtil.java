@@ -826,7 +826,7 @@ public class ArrayUtil {
 		}
 
 		for (String s : array) {
-			set.add(s);
+			set.add(String.valueOf(s));
 		}
 
 		return set.toArray(new String[set.size()]);
