@@ -488,10 +488,11 @@ public abstract class BaseIndexer implements Indexer {
 			PermissionChecker permissionChecker =
 				PermissionThreadLocal.getPermissionChecker();
 
-			boolean permissionChecking = isPermissionChecking(
-				searchContext, permissionChecker);
+			boolean isUseSearchResultPermissionFilter =
+				isUseSearchResultPermissionFilter(
+					searchContext, permissionChecker);
 
-			if (permissionChecking) {
+			if (isUseSearchResultPermissionFilter) {
 				SearchResultPermissionFilter searchResultPermissionFilter =
 					new IndexerSearchResultPermissionFilter(permissionChecker);
 
@@ -1528,7 +1529,7 @@ public abstract class BaseIndexer implements Indexer {
 		return null;
 	}
 
-	protected boolean isPermissionChecking(
+	protected boolean isUseSearchResultPermissionFilter(
 		SearchContext searchContext, PermissionChecker permissionChecker) {
 
 		return isFilterSearch() && (permissionChecker != null);
