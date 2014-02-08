@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.notifications.UserNotificationFeedEntry;
 import com.liferay.portal.kernel.notifications.UserNotificationHandler;
 import com.liferay.portal.kernel.notifications.UserNotificationManager;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.model.UserNotificationDeliveryConstants;
 import com.liferay.portal.model.UserNotificationEvent;
 import com.liferay.portal.service.ServiceContext;
 
@@ -214,6 +215,10 @@ public class UserNotificationManagerImpl implements UserNotificationManager {
 			userNotificationHandlers.get(portletId);
 
 		if (userNotificationHandler == null) {
+			if (deliveryType == UserNotificationDeliveryConstants.TYPE_EMAIL) {
+				return true;
+			}
+
 			return false;
 		}
 

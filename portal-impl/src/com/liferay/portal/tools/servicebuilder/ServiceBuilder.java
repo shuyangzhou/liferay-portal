@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.StringUtil_IW;
 import com.liferay.portal.kernel.util.TextFormatter;
 import com.liferay.portal.kernel.util.Time;
+import com.liferay.portal.kernel.util.UniqueList;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.Validator_IW;
 import com.liferay.portal.kernel.xml.Document;
@@ -4281,7 +4282,7 @@ public class ServiceBuilder {
 	private List<Entity> _mergeReferenceList(Entity entity) {
 		List<Entity> referenceList = entity.getReferenceList();
 
-		List<Entity> list = new ArrayList<Entity>(
+		List<Entity> list = new UniqueList<Entity>(
 			_ejbList.size() + referenceList.size());
 
 		if (_autoImportDefaultReferences) {
@@ -4716,7 +4717,7 @@ public class ServiceBuilder {
 				referenceSet.add("com.liferay.counter.Counter");
 			}
 
-			if (!_packagePath.equals("com.liferay.portal")) {
+			if (_autoImportDefaultReferences) {
 				referenceSet.add("com.liferay.portal.ClassName");
 				referenceSet.add("com.liferay.portal.Resource");
 				referenceSet.add("com.liferay.portal.User");
@@ -4800,7 +4801,7 @@ public class ServiceBuilder {
 						ListUtil.toString(_ejbList, Entity.NAME_ACCESSOR));
 			}
 
-			entity.addReference(entity);
+			entity.addReference(referenceEntity);
 		}
 
 		entity.setResolved();
