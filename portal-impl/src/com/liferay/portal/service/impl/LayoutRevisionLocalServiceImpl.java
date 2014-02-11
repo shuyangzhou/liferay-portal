@@ -511,6 +511,8 @@ public class LayoutRevisionLocalServiceImpl
 		boolean head = false;
 
 		if (status == WorkflowConstants.STATUS_APPROVED) {
+			head = true;
+
 			List<LayoutRevision> layoutRevisions =
 				layoutRevisionPersistence.findByL_P(
 					layoutRevision.getLayoutSetBranchId(),
@@ -525,8 +527,6 @@ public class LayoutRevisionLocalServiceImpl
 					layoutRevisionPersistence.update(curLayoutRevision);
 				}
 			}
-
-			head = true;
 		}
 		else {
 			List<LayoutRevision> layoutRevisions =
@@ -548,10 +548,10 @@ public class LayoutRevisionLocalServiceImpl
 			}
 		}
 
+		User user = userPersistence.findByPrimaryKey(userId);
+
 		layoutRevision = layoutRevisionPersistence.findByPrimaryKey(
 			layoutRevisionId);
-
-		User user = userPersistence.findByPrimaryKey(userId);
 
 		layoutRevision.setHead(head);
 		layoutRevision.setStatus(status);
