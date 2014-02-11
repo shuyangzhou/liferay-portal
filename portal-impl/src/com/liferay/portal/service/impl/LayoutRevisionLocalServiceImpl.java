@@ -477,7 +477,7 @@ public class LayoutRevisionLocalServiceImpl
 			layoutRevision.setWapColorSchemeId(wapColorSchemeId);
 			layoutRevision.setCss(css);
 
-			layoutRevisionPersistence.update(layoutRevision);
+			layoutRevision = layoutRevisionPersistence.update(layoutRevision);
 
 			_layoutRevisionId.set(layoutRevision.getLayoutRevisionId());
 		}
@@ -505,19 +505,12 @@ public class LayoutRevisionLocalServiceImpl
 			ServiceContext serviceContext)
 		throws PortalException, SystemException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
-
 		LayoutRevision layoutRevision =
 			layoutRevisionPersistence.findByPrimaryKey(layoutRevisionId);
 
-		layoutRevision.setStatus(status);
-		layoutRevision.setStatusByUserId(user.getUserId());
-		layoutRevision.setStatusByUserName(user.getFullName());
-		layoutRevision.setStatusDate(new Date());
+		boolean head = false;
 
 		if (status == WorkflowConstants.STATUS_APPROVED) {
-			layoutRevision.setHead(true);
-
 			List<LayoutRevision> layoutRevisions =
 				layoutRevisionPersistence.findByL_P(
 					layoutRevision.getLayoutSetBranchId(),
@@ -532,10 +525,10 @@ public class LayoutRevisionLocalServiceImpl
 					layoutRevisionPersistence.update(curLayoutRevision);
 				}
 			}
+
+			head = true;
 		}
 		else {
-			layoutRevision.setHead(false);
-
 			List<LayoutRevision> layoutRevisions =
 				layoutRevisionPersistence.findByL_P_S(
 					layoutRevision.getLayoutSetBranchId(),
@@ -554,6 +547,17 @@ public class LayoutRevisionLocalServiceImpl
 				}
 			}
 		}
+
+		layoutRevision = layoutRevisionPersistence.findByPrimaryKey(
+			layoutRevisionId);
+
+		User user = userPersistence.findByPrimaryKey(userId);
+
+		layoutRevision.setHead(head);
+		layoutRevision.setStatus(status);
+		layoutRevision.setStatusByUserId(user.getUserId());
+		layoutRevision.setStatusByUserName(user.getFullName());
+		layoutRevision.setStatusDate(new Date());
 
 		layoutRevisionPersistence.update(layoutRevision);
 
@@ -638,6 +642,9 @@ public class LayoutRevisionLocalServiceImpl
 					parentLayoutRevision);
 			}
 		}
+
+		layoutRevision = layoutRevisionPersistence.findByPrimaryKey(
+			layoutRevision.getLayoutRevisionId());
 
 		layoutRevision.setParentLayoutRevisionId(parentLayoutRevisionId);
 		layoutRevision.setMajor(true);
