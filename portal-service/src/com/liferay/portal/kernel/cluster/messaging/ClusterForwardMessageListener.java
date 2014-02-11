@@ -28,6 +28,17 @@ public class ClusterForwardMessageListener implements ClusterMessageListener {
 
 	@Override
 	public void receive(Message message) {
+		byte[] data = (byte[])message.getPayload();
+
+		try {
+			message = Message.fromByteArray(data);
+		}
+		catch (Exception e) {
+			if (_log.isErrorEnabled()) {
+				_log.error("Unexpected class", e);
+			}
+		}
+
 		String destinationName = message.getDestinationName();
 
 		if (Validator.isNotNull(destinationName)) {
