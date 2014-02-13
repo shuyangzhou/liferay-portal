@@ -506,7 +506,7 @@ public abstract class BaseIndexer implements Indexer {
 
 			if (isUseSearchResultPermissionFilter) {
 				SearchResultPermissionFilter searchResultPermissionFilter =
-					new IndexerSearchResultPermissionFilter(permissionChecker);
+					getSearchResultPermissionFilter(permissionChecker);
 
 				hits = searchResultPermissionFilter.search(searchContext);
 			}
@@ -1504,6 +1504,12 @@ public abstract class BaseIndexer implements Indexer {
 	}
 
 	protected abstract String getPortletId(SearchContext searchContext);
+
+	protected SearchResultPermissionFilter getSearchResultPermissionFilter(
+		PermissionChecker permissionChecker) {
+
+		return new IndexerSearchResultPermissionFilter(permissionChecker);
+	}
 
 	protected long getSiteGroupId(long groupId) {
 		long siteGroupId = groupId;
