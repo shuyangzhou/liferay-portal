@@ -508,11 +508,7 @@ public class LayoutRevisionLocalServiceImpl
 		LayoutRevision layoutRevision =
 			layoutRevisionPersistence.findByPrimaryKey(layoutRevisionId);
 
-		boolean head = false;
-
 		if (status == WorkflowConstants.STATUS_APPROVED) {
-			head = true;
-
 			List<LayoutRevision> layoutRevisions =
 				layoutRevisionPersistence.findByL_P(
 					layoutRevision.getLayoutSetBranchId(),
@@ -553,7 +549,13 @@ public class LayoutRevisionLocalServiceImpl
 		layoutRevision = layoutRevisionPersistence.findByPrimaryKey(
 			layoutRevisionId);
 
-		layoutRevision.setHead(head);
+		if (status == WorkflowConstants.STATUS_APPROVED) {
+			layoutRevision.setHead(true);
+		}
+		else {
+			layoutRevision.setHead(false);
+		}
+
 		layoutRevision.setStatus(status);
 		layoutRevision.setStatusByUserId(user.getUserId());
 		layoutRevision.setStatusByUserName(user.getFullName());
