@@ -57,6 +57,7 @@ import com.liferay.portal.util.InitUtil;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portal.util.WebAppPool;
 import com.liferay.portlet.PortletContextBagPool;
+import com.liferay.portlet.PortletSettingsFactoryUtil;
 import com.liferay.portlet.wiki.util.WikiCacheUtil;
 
 import java.beans.PropertyDescriptor;
@@ -142,6 +143,13 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 
 		try {
 			PortalLifecycleUtil.reset();
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+		}
+
+		try {
+			PortletSettingsFactoryUtil.clearCache();
 		}
 		catch (Exception e) {
 			_log.error(e, e);
