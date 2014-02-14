@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.cluster.Clusterable;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.increment.BufferedIncrementThreadLocal;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.Message;
@@ -118,6 +119,11 @@ public class BackgroundTaskLocalServiceImpl
 
 		BackgroundTask backgroundTask = getBackgroundTask(backgroundTaskId);
 
+		boolean bufferedIncrementEnabled =
+			BufferedIncrementThreadLocal.isEnabled();
+
+		BufferedIncrementThreadLocal.setEnabled(false);
+
 		Folder folder = backgroundTask.addAttachmentsFolder();
 
 		PortletFileRepositoryUtil.addPortletFileEntry(
@@ -125,6 +131,8 @@ public class BackgroundTaskLocalServiceImpl
 			backgroundTask.getPrimaryKey(), PortletKeys.BACKGROUND_TASK,
 			folder.getFolderId(), file, fileName, ContentTypes.APPLICATION_ZIP,
 			false);
+
+		BufferedIncrementThreadLocal.setEnabled(bufferedIncrementEnabled);
 	}
 
 	@Override
