@@ -104,9 +104,10 @@ public class LuceneQuerySuggester extends BaseQuerySuggester {
 
 		IndexSearcher indexSearcher = null;
 
+		long companyId = searchContext.getCompanyId();
+
 		try {
-			indexSearcher = LuceneHelperUtil.getSearcher(
-				searchContext.getCompanyId(), true);
+			indexSearcher = LuceneHelperUtil.getSearcher(companyId);
 
 			String localizedKeywordFieldName = DocumentImpl.getLocalizedName(
 				searchContext.getLanguageId(), Field.KEYWORD_SEARCH);
@@ -125,7 +126,7 @@ public class LuceneQuerySuggester extends BaseQuerySuggester {
 			throw new SearchException("Unable to suggest query", e);
 		}
 		finally {
-			LuceneHelperUtil.cleanUp(indexSearcher);
+			LuceneHelperUtil.releaseSearcher(companyId, indexSearcher);
 		}
 	}
 
@@ -296,6 +297,8 @@ public class LuceneQuerySuggester extends BaseQuerySuggester {
 
 		IndexSearcher indexSearcher = null;
 
+		long companyId = searchContext.getCompanyId();
+
 		try {
 			Map<String, List<String>> suggestions =
 				new LinkedHashMap<String, List<String>>();
@@ -306,8 +309,7 @@ public class LuceneQuerySuggester extends BaseQuerySuggester {
 				scoresThreshold = _SCORES_THRESHOLD_DEFAULT;
 			}
 
-			indexSearcher = LuceneHelperUtil.getSearcher(
-				searchContext.getCompanyId(), true);
+			indexSearcher = LuceneHelperUtil.getSearcher(companyId);
 
 			List<IndexReader> indexReaders = new ArrayList<IndexReader>();
 
@@ -356,7 +358,7 @@ public class LuceneQuerySuggester extends BaseQuerySuggester {
 			throw new SearchException("Unable to find suggestions", ioe);
 		}
 		finally {
-			LuceneHelperUtil.cleanUp(indexSearcher);
+			LuceneHelperUtil.releaseSearcher(companyId, indexSearcher);
 		}
 	}
 
