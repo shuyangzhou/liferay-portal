@@ -106,12 +106,18 @@ public class IndexAccessorImpl implements IndexAccessor {
 	}
 
 	@Override
+	public IndexSearcher aquireIndexSearcher() throws IOException {
+		return _indexSearcherManager.aquire();
+	}
+
+	@Override
 	public void close() {
 		if (SPIUtil.isSPI()) {
 			return;
 		}
 
 		try {
+			_indexSearcherManager.close();
 			_indexWriter.close();
 		}
 		catch (Exception e) {
@@ -146,7 +152,8 @@ public class IndexAccessorImpl implements IndexAccessor {
 
 	@Override
 	public void dumpIndex(OutputStream outputStream) throws IOException {
-		_dumpIndexDeletionPolicy.dump(outputStream, _indexWriter, _commitLock);
+		_dumpIndexDeletionPolicy.dump(
+			outputStream, _indexWriter, _commitLock, _indexSearcherManager);
 	}
 
 	@Override
@@ -227,6 +234,13 @@ public class IndexAccessorImpl implements IndexAccessor {
 	}
 
 	@Override
+	public void releaseIndexSearcher(IndexSearcher indexSearcher)
+		throws IOException {
+
+		_indexSearcherManager.release(indexSearcher);
+	}
+
+	@Override
 	public void updateDocument(Term term, Document document)
 		throws IOException {
 
@@ -266,21 +280,6 @@ public class IndexAccessorImpl implements IndexAccessor {
 		}
 	}
 
-	private void _deleteAll() {
-		String path = _getPath();
-
-		try {
-			_indexWriter.deleteAll();
-
-			_indexWriter.commit();
-		}
-		catch (Exception e) {
-			if (_log.isWarnEnabled()) {
-				_log.warn("Unable to delete index in directory " + path);
-			}
-		}
-	}
-
 	private void _deleteDirectory() {
 		if (_log.isDebugEnabled()) {
 			_log.debug("Lucene store type " + PropsValues.LUCENE_STORE_TYPE);
@@ -289,7 +288,20 @@ public class IndexAccessorImpl implements IndexAccessor {
 		if (PropsValues.LUCENE_STORE_TYPE.equals(_LUCENE_STORE_TYPE_FILE) ||
 			PropsValues.LUCENE_STORE_TYPE.equals(_LUCENE_STORE_TYPE_RAM)) {
 
-			_deleteAll();
+			try {
+				try {
+					_indexWriter.deleteAll();
+				}
+				finally {
+					_doCommit();
+				}
+			}
+			catch (Exception e) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						"Unable to delete index in directory " + _getPath());
+				}
+			}
 		}
 		else if (PropsValues.LUCENE_STORE_TYPE.equals(
 					_LUCENE_STORE_TYPE_JDBC)) {
@@ -313,6 +325,8 @@ public class IndexAccessorImpl implements IndexAccessor {
 			finally {
 				_commitLock.unlock();
 			}
+
+			_indexSearcherManager.invalid();
 		}
 
 		_batchCount = 0;
@@ -457,8 +471,10 @@ public class IndexAccessorImpl implements IndexAccessor {
 					_log.debug("Creating missing index");
 				}
 
-				_doCommit();
+				_indexWriter.commit();
 			}
+
+			_indexSearcherManager = new IndexSearcherManager(_indexWriter);
 		}
 		catch (Exception e) {
 			_log.error(
@@ -495,6 +511,7 @@ public class IndexAccessorImpl implements IndexAccessor {
 	private long _companyId;
 	private DumpIndexDeletionPolicy _dumpIndexDeletionPolicy =
 		new DumpIndexDeletionPolicy();
+	private IndexSearcherManager _indexSearcherManager;
 	private IndexWriter _indexWriter;
 	private Map<String, Directory> _ramDirectories =
 		new ConcurrentHashMap<String, Directory>();
