@@ -14,10 +14,18 @@
 
 package com.liferay.portal.search.lucene.dump;
 
+import com.liferay.portal.kernel.concurrent.ThreadPoolExecutor;
+import com.liferay.portal.kernel.executor.PortalExecutorManager;
+import com.liferay.portal.kernel.executor.PortalExecutorManagerUtil;
+import com.liferay.portal.search.lucene.IndexSearcherManager;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
 import java.util.Arrays;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -339,8 +347,18 @@ public class DumpIndexDeletionPolicyTest {
 		ByteArrayOutputStream byteArrayOutputStream =
 			new ByteArrayOutputStream();
 
+		PortalExecutorManagerUtil portalExecutorManagerUtil =
+			new PortalExecutorManagerUtil();
+
+		portalExecutorManagerUtil.setPortalExecutorManager(
+			new MockPortalExecutorManager());
+
+		IndexSearcherManager indexSearcherManager = new IndexSearcherManager(
+			_indexWriter);
+
 		_dumpIndexDeletionPolicy.dump(
-			byteArrayOutputStream, indexWriter, new ReentrantLock());
+			byteArrayOutputStream, indexWriter, new ReentrantLock(),
+			indexSearcherManager);
 
 		byte[] bytes = byteArrayOutputStream.toByteArray();
 
@@ -355,5 +373,57 @@ public class DumpIndexDeletionPolicyTest {
 	private DumpIndexDeletionPolicy _dumpIndexDeletionPolicy;
 	private IndexWriter _indexWriter;
 	private Directory _sourceDirectory;
+
+	private class MockPortalExecutorManager implements PortalExecutorManager {
+
+		@Override
+		public <T> Future<T> execute(String name, Callable<T> callable) {
+			return null;
+		}
+
+		@Override
+		public <T> T execute(
+			String name, Callable<T> callable, long timeout,
+			TimeUnit timeUnit) {
+
+			return null;
+		}
+
+		@Override
+		public ThreadPoolExecutor getPortalExecutor(String name) {
+			return null;
+		}
+
+		@Override
+		public ThreadPoolExecutor getPortalExecutor(
+			String name, boolean createIfAbsent) {
+
+			return null;
+		}
+
+		@Override
+		public ThreadPoolExecutor registerPortalExecutor(
+			String name, ThreadPoolExecutor threadPoolExecutor) {
+
+			return null;
+		}
+
+		@Override
+		public void shutdown() {
+		}
+
+		@Override
+		public void shutdown(boolean interrupt) {
+		}
+
+		@Override
+		public void shutdown(String name) {
+		}
+
+		@Override
+		public void shutdown(String name, boolean interrupt) {
+		}
+
+	}
 
 }
