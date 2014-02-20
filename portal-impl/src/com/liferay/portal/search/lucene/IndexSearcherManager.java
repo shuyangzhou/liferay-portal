@@ -34,33 +34,29 @@ public class IndexSearcherManager {
 	}
 
 	public IndexSearcher aquire() throws IOException {
-		IndexSearcher indexSearcher = _indexSearcher;
-
 		if (_invalid) {
 			synchronized (this) {
 				if (_invalid) {
-					indexSearcher = _indexSearcher;
-
-					if (indexSearcher == null) {
+					if (_indexSearcher == null) {
 						throw new AlreadyClosedException(
 							"IndexSearcherManager is closed");
 					}
 
 					IndexReader newIndexReader = IndexReader.openIfChanged(
-						indexSearcher.getIndexReader());
+						_indexSearcher.getIndexReader());
 
 					if (newIndexReader != null) {
-						release(indexSearcher);
+						release(_indexSearcher);
 
-						indexSearcher = _createIndexSearcher(newIndexReader);
-
-						_indexSearcher = indexSearcher;
+						_indexSearcher = _createIndexSearcher(newIndexReader);
 					}
 
 					_invalid = false;
 				}
 			}
 		}
+
+		IndexSearcher indexSearcher = _indexSearcher;
 
 		while (indexSearcher != null) {
 			IndexReader indexReader = indexSearcher.getIndexReader();
