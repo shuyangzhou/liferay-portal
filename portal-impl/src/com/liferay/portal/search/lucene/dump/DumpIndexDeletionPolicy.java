@@ -14,6 +14,8 @@
 
 package com.liferay.portal.search.lucene.dump;
 
+import com.liferay.portal.search.lucene.IndexSearcherManager;
+
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -31,7 +33,8 @@ import org.apache.lucene.index.IndexWriter;
 public class DumpIndexDeletionPolicy implements IndexDeletionPolicy {
 
 	public void dump(
-			OutputStream outputStream, IndexWriter indexWriter, Lock commitLock)
+			OutputStream outputStream, IndexWriter indexWriter, Lock commitLock,
+			IndexSearcherManager indexSearcherManager)
 		throws IOException {
 
 		IndexCommit indexCommit = null;
@@ -52,6 +55,8 @@ public class DumpIndexDeletionPolicy implements IndexDeletionPolicy {
 		finally {
 			commitLock.unlock();
 		}
+
+		indexSearcherManager.invalid();
 
 		try {
 			IndexCommitSerializationUtil.serializeIndex(
