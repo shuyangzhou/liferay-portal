@@ -2123,15 +2123,9 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	public User getDefaultUser(long companyId)
 		throws PortalException, SystemException {
 
-		User userModel = _defaultUsers.get(companyId);
+		long userId = getDefaultUserId(companyId);
 
-		if (userModel == null) {
-			userModel = userLocalService.loadGetDefaultUser(companyId);
-
-			_defaultUsers.put(companyId, userModel);
-		}
-
-		return userModel;
+		return getUser(userId);
 	}
 
 	/**
@@ -2148,9 +2142,19 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	public long getDefaultUserId(long companyId)
 		throws PortalException, SystemException {
 
-		User user = getDefaultUser(companyId);
+		long userId = GetterUtil.getLong(_defaultUserIds.get(companyId));
 
-		return user.getUserId();
+		if (userId != 0) {
+			return userId;
+		}
+
+		User user = userLocalService.loadGetDefaultUser(companyId);
+
+		userId = user.getUserId();
+
+		_defaultUserIds.put(companyId, userId);
+
+		return userId;
 	}
 
 	/**
@@ -6407,6 +6411,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 	private static Log _log = LogFactoryUtil.getLog(UserLocalServiceImpl.class);
 
-	private Map<Long, User> _defaultUsers = new ConcurrentHashMap<Long, User>();
+	private Map<Long, Long> _defaultUserIds =
+		new ConcurrentHashMap<Long, Long>();
 
 }
