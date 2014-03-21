@@ -12,27 +12,13 @@
  * details.
  */
 
-package com.liferay.portal.kernel.cache;
-
-import java.io.Serializable;
+package com.liferay.portlet.wiki.util;
 
 /**
- * @author Brian Wing Shun Chan
- * @author Michael Young
+ * @author Iván Zaera
  */
-public interface MultiVMPool {
+public class WikiConstants {
 
-	public void clear();
-
-	public PortalCache<? extends Serializable, ? extends Serializable> getCache(
-		String name);
-
-	public PortalCache<? extends Serializable, ? extends Serializable> getCache(
-		String name, boolean blocking);
-
-	public PortalCacheManager<? extends Serializable, ? extends Serializable>
-		getCacheManager();
-
-	public void removeCache(String name);
+	public static final String SERVICE_NAME = "com.liferay.portlet.wiki";
 
 }
