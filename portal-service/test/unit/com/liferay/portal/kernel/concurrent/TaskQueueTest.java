@@ -55,45 +55,13 @@ public class TaskQueueTest {
 	}
 
 	@Test
-	public void testDrainTo() {
+	public void testDrainToListMoreThanTwoElements() {
 		TaskQueue<Object> taskQueue = new TaskQueue<Object>();
-
-		try {
-			taskQueue.drainTo(null);
-
-			Assert.fail();
-		}
-		catch (NullPointerException npe) {
-		}
 
 		Object object1 = new Object();
 		Object object2 = new Object();
 		Object object3 = new Object();
 		Object object4 = new Object();
-
-		taskQueue = new TaskQueue<Object>();
-
-		Assert.assertTrue(taskQueue.offer(object1, new boolean[1]));
-		Assert.assertTrue(taskQueue.offer(object2, new boolean[1]));
-		Assert.assertTrue(taskQueue.offer(object3, new boolean[1]));
-		Assert.assertTrue(taskQueue.offer(object4, new boolean[1]));
-
-		Set<Object> set = new HashSet<Object>();
-
-		taskQueue.drainTo(set);
-
-		Assert.assertEquals(4, set.size());
-		Assert.assertTrue(set.contains(object1));
-		Assert.assertTrue(set.contains(object2));
-		Assert.assertTrue(set.contains(object3));
-		Assert.assertTrue(set.contains(object4));
-
-		object1 = new Object();
-		object2 = new Object();
-		object3 = new Object();
-		object4 = new Object();
-
-		taskQueue = new TaskQueue<Object>();
 
 		Assert.assertTrue(taskQueue.offer(object1, new boolean[1]));
 		Assert.assertTrue(taskQueue.offer(object2, new boolean[1]));
@@ -127,6 +95,40 @@ public class TaskQueueTest {
 		Assert.assertEquals(2, taskQueue.size());
 		Assert.assertSame(object3, taskQueue.poll());
 		Assert.assertSame(object4, taskQueue.poll());
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void testDrainToNull() {
+		TaskQueue<Object> taskQueue = new TaskQueue<Object>();
+
+		taskQueue.drainTo(null);
+
+		Assert.fail();
+	}
+
+	@Test
+	public void testDrainToSet() {
+		TaskQueue<Object> taskQueue = new TaskQueue<Object>();
+
+		Object object1 = new Object();
+		Object object2 = new Object();
+		Object object3 = new Object();
+		Object object4 = new Object();
+
+		Assert.assertTrue(taskQueue.offer(object1, new boolean[1]));
+		Assert.assertTrue(taskQueue.offer(object2, new boolean[1]));
+		Assert.assertTrue(taskQueue.offer(object3, new boolean[1]));
+		Assert.assertTrue(taskQueue.offer(object4, new boolean[1]));
+
+		Set<Object> set = new HashSet<Object>();
+
+		taskQueue.drainTo(set);
+
+		Assert.assertEquals(4, set.size());
+		Assert.assertTrue(set.contains(object1));
+		Assert.assertTrue(set.contains(object2));
+		Assert.assertTrue(set.contains(object3));
+		Assert.assertTrue(set.contains(object4));
 	}
 
 	@Test
