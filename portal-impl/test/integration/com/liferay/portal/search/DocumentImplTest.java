@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerPostProcessor;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.search.Query;
 import com.liferay.portal.kernel.search.SearchContext;
@@ -45,6 +46,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -67,32 +69,31 @@ public class DocumentImplTest {
 	public void setUp() throws Exception {
 		_indexer = IndexerRegistryUtil.getIndexer(UserIndexer.class);
 
-		_indexer.registerIndexerPostProcessor(
-			new BaseIndexerPostProcessor() {
+		_indexerPostProcessor = new BaseIndexerPostProcessor() {
 
-				@Override
-				public void postProcessDocument(Document document, Object obj)
-					throws Exception {
+			@Override
+			public void postProcessDocument(Document document, Object obj)
+				throws Exception {
 
-					String screenName = document.get("screenName");
+				String screenName = document.get("screenName");
 
-					document.addNumber(
-						_FIELD_DOUBLE_ARRAY, _doubleArrays.get(screenName));
-					document.addNumber(
-						_FIELD_FLOAT_ARRAY, _floatArrays.get(screenName));
-					document.addNumber(
-						_FIELD_INTEGER_ARRAY, _integerArrays.get(screenName));
-					document.addNumber(
-						_FIELD_LONG_ARRAY, _longArrays.get(screenName));
-					document.addNumber(_FIELD_DOUBLE, _doubles.get(screenName));
-					document.addNumber(_FIELD_FLOAT, _floats.get(screenName));
-					document.addNumber(
-						_FIELD_INTEGER, _integers.get(screenName));
-					document.addNumber(_FIELD_LONG, _longs.get(screenName));
-				}
-
+				document.addNumber(
+					_FIELD_DOUBLE_ARRAY, _doubleArrays.get(screenName));
+				document.addNumber(
+					_FIELD_FLOAT_ARRAY, _floatArrays.get(screenName));
+				document.addNumber(
+					_FIELD_INTEGER_ARRAY, _integerArrays.get(screenName));
+				document.addNumber(
+					_FIELD_LONG_ARRAY, _longArrays.get(screenName));
+				document.addNumber(_FIELD_DOUBLE, _doubles.get(screenName));
+				document.addNumber(_FIELD_FLOAT, _floats.get(screenName));
+				document.addNumber(_FIELD_INTEGER, _integers.get(screenName));
+				document.addNumber(_FIELD_LONG, _longs.get(screenName));
 			}
-		);
+
+		};
+
+		_indexer.registerIndexerPostProcessor(_indexerPostProcessor);
 
 		populateNumbers();
 
@@ -105,6 +106,11 @@ public class DocumentImplTest {
 
 			_indexer.reindex(user);
 		}
+	}
+
+	@After
+	public void tearDown() {
+		_indexer.unregisterIndexerPostProcessor(_indexerPostProcessor);
 	}
 
 	@Test
@@ -491,6 +497,7 @@ public class DocumentImplTest {
 	private Map<String, Float[]> _floatArrays = new HashMap<String, Float[]>();
 	private Map<String, Float> _floats = new HashMap<String, Float>();
 	private Indexer _indexer;
+	private IndexerPostProcessor _indexerPostProcessor;
 	private Map<String, Integer[]> _integerArrays =
 		new HashMap<String, Integer[]>();
 	private Map<String, Integer> _integers = new HashMap<String, Integer>();
