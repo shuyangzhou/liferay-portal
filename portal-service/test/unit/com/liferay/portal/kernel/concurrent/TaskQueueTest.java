@@ -25,6 +25,7 @@ import org.junit.Test;
 
 /**
  * @author Shuyang Zhou
+ * @author Manuel de la Peña
  */
 public class TaskQueueTest {
 
@@ -140,6 +141,7 @@ public class TaskQueueTest {
 		TaskQueue<Object> taskQueue = new TaskQueue<Object>();
 
 		Assert.assertTrue(taskQueue.offer(new Object(), new boolean[1]));
+
 		Assert.assertFalse(taskQueue.isEmpty());
 	}
 
@@ -210,6 +212,7 @@ public class TaskQueueTest {
 		Object object1 = new Object();
 
 		Assert.assertTrue(taskQueue.offer(object1, new boolean[1]));
+
 		Assert.assertSame(object1, taskQueue.poll());
 	}
 
@@ -225,6 +228,7 @@ public class TaskQueueTest {
 
 		for (Object object : objects) {
 			Assert.assertTrue(taskQueue.offer(object, new boolean[1]));
+
 			Assert.assertSame(object, taskQueue.poll());
 		}
 	}
@@ -234,6 +238,35 @@ public class TaskQueueTest {
 		TaskQueue<Object>taskQueue = new TaskQueue<Object>();
 
 		Assert.assertNull(taskQueue.poll(0, TimeUnit.MILLISECONDS));
+	}
+
+	@Test
+	public void testPollWithTimeoutAfterOffer() throws InterruptedException {
+		TaskQueue<Object>taskQueue = new TaskQueue<Object>();
+
+		Object object1 = new Object();
+
+		Assert.assertTrue(taskQueue.offer(object1, new boolean[1]));
+
+		Assert.assertSame(object1, taskQueue.poll(100, TimeUnit.MILLISECONDS));
+	}
+
+	@Test
+	public void testPollWithTimeoutAfterOffers() throws InterruptedException {
+		TaskQueue<Object>taskQueue = new TaskQueue<Object>();
+
+		Object[] objects = new Object[1000];
+
+		for (int i = 0; i < objects.length; i++) {
+			objects[i] = new Object();
+		}
+
+		for (Object object : objects) {
+			Assert.assertTrue(taskQueue.offer(object, new boolean[1]));
+
+			Assert.assertSame(
+				object, taskQueue.poll(100, TimeUnit.MILLISECONDS));
+		}
 	}
 
 	@Test
@@ -255,33 +288,6 @@ public class TaskQueueTest {
 	}
 
 	@Test
-	public void testPollWithTimeoutAfterOffer() throws InterruptedException {
-		TaskQueue<Object>taskQueue = new TaskQueue<Object>();
-
-		Object object1 = new Object();
-
-		Assert.assertTrue(taskQueue.offer(object1, new boolean[1]));
-		Assert.assertSame(object1, taskQueue.poll(100, TimeUnit.MILLISECONDS));
-	}
-
-	@Test
-	public void testPollWithTimeoutAfterOffers() throws InterruptedException {
-		TaskQueue<Object>taskQueue = new TaskQueue<Object>();
-
-		Object[] objects = new Object[1000];
-
-		for (int i = 0; i < objects.length; i++) {
-			objects[i] = new Object();
-		}
-
-		for (Object object : objects) {
-			Assert.assertTrue(taskQueue.offer(object, new boolean[1]));
-			Assert.assertSame(
-				object, taskQueue.poll(100, TimeUnit.MILLISECONDS));
-		}
-	}
-
-	@Test
 	public void testRemainingCapacity() {
 		TaskQueue<Object> taskQueue = new TaskQueue<Object>(10);
 
@@ -294,6 +300,7 @@ public class TaskQueueTest {
 
 		for (int i = 1; i <= 10; i++) {
 			Assert.assertTrue(taskQueue.offer(new Object(), new boolean[1]));
+
 			Assert.assertEquals(10 - i, taskQueue.remainingCapacity());
 		}
 	}
@@ -399,6 +406,7 @@ public class TaskQueueTest {
 
 		for (int i = 1; i <= maxCapacity; i++) {
 			Assert.assertTrue(taskQueue.offer(new Object(), new boolean[1]));
+
 			Assert.assertEquals(i, taskQueue.size());
 		}
 	}
@@ -413,6 +421,7 @@ public class TaskQueueTest {
 
 		for (int i = 1; i <= maxCapacity; i++) {
 			taskQueue.offer(new Object(), new boolean[1]);
+
 			Assert.assertEquals(i, taskQueue.size());
 		}
 
@@ -427,7 +436,9 @@ public class TaskQueueTest {
 		TaskQueue<Object> taskQueue = new TaskQueue<Object>(1);
 
 		Assert.assertEquals(0, taskQueue.size());
+
 		Assert.assertTrue(taskQueue.offer(new Object(), new boolean[1]));
+
 		Assert.assertEquals(1, taskQueue.size());
 	}
 
@@ -468,6 +479,7 @@ public class TaskQueueTest {
 		final Object object = new Object();
 
 		Assert.assertTrue(taskQueue.offer(object, new boolean[1]));
+
 		Assert.assertSame(object, taskQueue.take());
 
 		Thread thread = new Thread() {
