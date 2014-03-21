@@ -131,8 +131,22 @@ public class TaskQueueTest {
 		TaskQueue<Object> taskQueue = new TaskQueue<Object>();
 
 		Assert.assertTrue(taskQueue.isEmpty());
+	}
+
+	@Test
+	public void testIsEmptyAfterOffer() {
+		TaskQueue<Object> taskQueue = new TaskQueue<Object>();
+
 		Assert.assertTrue(taskQueue.offer(new Object(), new boolean[1]));
 		Assert.assertFalse(taskQueue.isEmpty());
+	}
+
+	@Test
+	public void testIsEmptyAfterOfferAndPoll() {
+		TaskQueue<Object> taskQueue = new TaskQueue<Object>();
+
+		taskQueue.offer(new Object(), new boolean[1]);
+
 		Assert.assertNotNull(taskQueue.poll());
 		Assert.assertTrue(taskQueue.isEmpty());
 	}
