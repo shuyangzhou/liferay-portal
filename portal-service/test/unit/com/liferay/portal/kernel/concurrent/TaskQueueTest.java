@@ -30,28 +30,23 @@ public class TaskQueueTest {
 
 	@Test
 	public void testConstructor() {
-		try {
-			new TaskQueue<Object>(0);
-
-			Assert.fail();
-		}
-		catch (IllegalArgumentException iae) {
-		}
-
-		try {
-			new TaskQueue<Object>(-1);
-			Assert.fail();
-		}
-		catch (IllegalArgumentException iae) {
-		}
-
 		TaskQueue<Object> taskQueue = new TaskQueue<Object>(10);
 
 		Assert.assertEquals(10, taskQueue.remainingCapacity());
+	}
 
-		taskQueue = new TaskQueue<Object>();
+	@Test
+	public void testConstructorDefault() {
+		TaskQueue<Object> taskQueue = new TaskQueue<Object>();
 
 		Assert.assertEquals(Integer.MAX_VALUE, taskQueue.remainingCapacity());
+	}
+
+	@Test(expected=IllegalArgumentException.class)
+	public void testConstructorWithZeroCapacity() {
+		new TaskQueue<Object>(0);
+
+		Assert.fail();
 	}
 
 	@Test
