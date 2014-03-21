@@ -61,10 +61,10 @@ public class TaskQueueTest {
 		Object object3 = new Object();
 		Object object4 = new Object();
 
-		Assert.assertTrue(taskQueue.offer(object1, new boolean[1]));
-		Assert.assertTrue(taskQueue.offer(object2, new boolean[1]));
-		Assert.assertTrue(taskQueue.offer(object3, new boolean[1]));
-		Assert.assertTrue(taskQueue.offer(object4, new boolean[1]));
+		taskQueue.offer(object1, new boolean[1]);
+		taskQueue.offer(object2, new boolean[1]);
+		taskQueue.offer(object3, new boolean[1]);
+		taskQueue.offer(object4, new boolean[1]);
 
 		List<Object> list = new ArrayList<Object>() {
 
@@ -113,10 +113,10 @@ public class TaskQueueTest {
 		Object object3 = new Object();
 		Object object4 = new Object();
 
-		Assert.assertTrue(taskQueue.offer(object1, new boolean[1]));
-		Assert.assertTrue(taskQueue.offer(object2, new boolean[1]));
-		Assert.assertTrue(taskQueue.offer(object3, new boolean[1]));
-		Assert.assertTrue(taskQueue.offer(object4, new boolean[1]));
+		taskQueue.offer(object1, new boolean[1]);
+		taskQueue.offer(object2, new boolean[1]);
+		taskQueue.offer(object3, new boolean[1]);
+		taskQueue.offer(object4, new boolean[1]);
 
 		Set<Object> set = new HashSet<Object>();
 
@@ -140,7 +140,7 @@ public class TaskQueueTest {
 	public void testIsEmptyAfterOffer() {
 		TaskQueue<Object> taskQueue = new TaskQueue<Object>();
 
-		Assert.assertTrue(taskQueue.offer(new Object(), new boolean[1]));
+		taskQueue.offer(new Object(), new boolean[1]);
 
 		Assert.assertFalse(taskQueue.isEmpty());
 	}
@@ -168,9 +168,9 @@ public class TaskQueueTest {
 	public void testOfferWaiterMakerEmpty() {
 		TaskQueue<Object> taskQueue = new TaskQueue<Object>(10);
 
-			taskQueue.offer(new Object(), new boolean[0]);
+		taskQueue.offer(new Object(), new boolean[0]);
 
-			Assert.fail();
+		Assert.fail();
 	}
 
 	@Test
@@ -211,7 +211,7 @@ public class TaskQueueTest {
 
 		Object object1 = new Object();
 
-		Assert.assertTrue(taskQueue.offer(object1, new boolean[1]));
+		taskQueue.offer(object1, new boolean[1]);
 
 		Assert.assertSame(object1, taskQueue.poll());
 	}
@@ -227,7 +227,7 @@ public class TaskQueueTest {
 		}
 
 		for (Object object : objects) {
-			Assert.assertTrue(taskQueue.offer(object, new boolean[1]));
+			taskQueue.offer(object, new boolean[1]);
 
 			Assert.assertSame(object, taskQueue.poll());
 		}
@@ -246,7 +246,7 @@ public class TaskQueueTest {
 
 		Object object1 = new Object();
 
-		Assert.assertTrue(taskQueue.offer(object1, new boolean[1]));
+		taskQueue.offer(object1, new boolean[1]);
 
 		Assert.assertSame(object1, taskQueue.poll(100, TimeUnit.MILLISECONDS));
 	}
@@ -262,7 +262,7 @@ public class TaskQueueTest {
 		}
 
 		for (Object object : objects) {
-			Assert.assertTrue(taskQueue.offer(object, new boolean[1]));
+			taskQueue.offer(object, new boolean[1]);
 
 			Assert.assertSame(
 				object, taskQueue.poll(100, TimeUnit.MILLISECONDS));
@@ -299,7 +299,7 @@ public class TaskQueueTest {
 		TaskQueue<Object> taskQueue = new TaskQueue<Object>(10);
 
 		for (int i = 1; i <= 10; i++) {
-			Assert.assertTrue(taskQueue.offer(new Object(), new boolean[1]));
+			taskQueue.offer(new Object(), new boolean[1]);
 
 			Assert.assertEquals(10 - i, taskQueue.remainingCapacity());
 		}
@@ -405,7 +405,7 @@ public class TaskQueueTest {
 		Assert.assertEquals(0, taskQueue.size());
 
 		for (int i = 1; i <= maxCapacity; i++) {
-			Assert.assertTrue(taskQueue.offer(new Object(), new boolean[1]));
+			taskQueue.offer(new Object(), new boolean[1]);
 
 			Assert.assertEquals(i, taskQueue.size());
 		}
@@ -437,7 +437,7 @@ public class TaskQueueTest {
 
 		Assert.assertEquals(0, taskQueue.size());
 
-		Assert.assertTrue(taskQueue.offer(new Object(), new boolean[1]));
+		taskQueue.offer(new Object(), new boolean[1]);
 
 		Assert.assertEquals(1, taskQueue.size());
 	}
@@ -478,7 +478,7 @@ public class TaskQueueTest {
 		final TaskQueue<Object> taskQueue = new TaskQueue<Object>();
 		final Object object = new Object();
 
-		Assert.assertTrue(taskQueue.offer(object, new boolean[1]));
+		taskQueue.offer(object, new boolean[1]);
 
 		Assert.assertSame(object, taskQueue.take());
 
@@ -508,7 +508,7 @@ public class TaskQueueTest {
 		thread.start();
 
 		for (int i = 0; i < capacity; i++) {
-			Assert.assertTrue(taskQueue.offer(i, new boolean[1]));
+			taskQueue.offer(i, new boolean[1]);
 		}
 
 		Thread.sleep(sleep);
