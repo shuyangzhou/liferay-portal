@@ -298,25 +298,93 @@ public class TaskQueueTest {
 
 	@Test
 	public void testRemove() {
+		int max = 1000;
+
+		TaskQueue<Object> taskQueue = new TaskQueue<Object>(max);
+
+		Object[] objects = new Object[max];
+
+		for (int i = 0; i < objects.length; i++) {
+			objects[i] = new Object();
+
+			taskQueue.offer(objects[i], new boolean[1]);
+		}
+
+		for (int i = 0; i < objects.length; i++) {
+			Object object = objects[i];
+
+			int currentCount = objects.length - i;
+
+			Assert.assertEquals(currentCount, taskQueue.size());
+			Assert.assertTrue(taskQueue.remove(object));
+			Assert.assertEquals(currentCount - 1, taskQueue.size());
+		}
+	}
+
+	@Test
+	public void testRemoveElementFromEmptyQueue() {
+		int max = 1000;
+
+		TaskQueue<Object> taskQueue = new TaskQueue<Object>(max);
+
+		Object[] objects = new Object[max];
+
+		for (int i = 0; i < objects.length; i++) {
+			objects[i] = new Object();
+
+			taskQueue.offer(objects[i], new boolean[1]);
+		}
+
+		for (Object object : objects) {
+			taskQueue.remove(object);
+		}
+
+		Assert.assertFalse(taskQueue.remove(objects[1]));
+	}
+
+	@Test
+	public void testRemoveElementTwice() {
+		int max = 1000;
+
+		TaskQueue<Object> taskQueue = new TaskQueue<Object>(max);
+
+		Object[] objects = new Object[max];
+
+		for (int i = 0; i < objects.length; i++) {
+			objects[i] = new Object();
+
+			taskQueue.offer(objects[i], new boolean[1]);
+		}
+
+		for (int i = 0; i < objects.length; i++) {
+			Object object = objects[i];
+
+			int currentCount = objects.length - i;
+
+			taskQueue.remove(object);
+
+			Assert.assertEquals(currentCount - 1, taskQueue.size());
+
+			Assert.assertFalse(taskQueue.remove(object));
+
+			Assert.assertEquals(currentCount - 1, taskQueue.size());
+		}
+
+		Assert.assertEquals(0, taskQueue.size());
+	}
+
+	@Test
+	public void testRemoveFromEmptyQueue() {
+		TaskQueue<Object> taskQueue = new TaskQueue<Object>(10);
+
+		Assert.assertFalse(taskQueue.remove(new Object()));
+	}
+
+	@Test
+	public void testRemoveNullFromEmptyQueue() {
 		TaskQueue<Object> taskQueue = new TaskQueue<Object>(10);
 
 		Assert.assertFalse(taskQueue.remove(null));
-		Assert.assertFalse(taskQueue.remove(new Object()));
-
-		Object object1 = new Object();
-		Object object2 = new Object();
-		Object object3 = new Object();
-
-		Assert.assertTrue(taskQueue.offer(object1, new boolean[1]));
-		Assert.assertTrue(taskQueue.offer(object2, new boolean[1]));
-		Assert.assertTrue(taskQueue.offer(object3, new boolean[1]));
-		Assert.assertEquals(3, taskQueue.size());
-		Assert.assertTrue(taskQueue.remove(object2));
-		Assert.assertEquals(2, taskQueue.size());
-		Assert.assertTrue(taskQueue.remove(object1));
-		Assert.assertEquals(1, taskQueue.size());
-		Assert.assertTrue(taskQueue.remove(object3));
-		Assert.assertEquals(0, taskQueue.size());
 	}
 
 	@Test
