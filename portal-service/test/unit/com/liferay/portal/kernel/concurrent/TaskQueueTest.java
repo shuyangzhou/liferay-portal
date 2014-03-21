@@ -284,6 +284,11 @@ public class TaskQueueTest {
 		TaskQueue<Object> taskQueue = new TaskQueue<Object>(10);
 
 		Assert.assertEquals(10, taskQueue.remainingCapacity());
+	}
+
+	@Test
+	public void testRemainingCapacityAfterOffer() {
+		TaskQueue<Object> taskQueue = new TaskQueue<Object>(10);
 
 		for (int i = 1; i <= 10; i++) {
 			Assert.assertTrue(taskQueue.offer(new Object(), new boolean[1]));
