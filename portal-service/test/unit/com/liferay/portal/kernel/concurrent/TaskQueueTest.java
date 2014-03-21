@@ -33,6 +33,7 @@ public class TaskQueueTest {
 		TaskQueue<Object> taskQueue = new TaskQueue<Object>(10);
 
 		Assert.assertEquals(10, taskQueue.remainingCapacity());
+		Assert.assertEquals(0, taskQueue.size());
 	}
 
 	@Test
@@ -40,6 +41,7 @@ public class TaskQueueTest {
 		TaskQueue<Object> taskQueue = new TaskQueue<Object>();
 
 		Assert.assertEquals(Integer.MAX_VALUE, taskQueue.remainingCapacity());
+		Assert.assertEquals(0, taskQueue.size());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -389,14 +391,44 @@ public class TaskQueueTest {
 
 	@Test
 	public void testSize() {
-		TaskQueue<Object> taskQueue = new TaskQueue<Object>(10);
+		int maxCapacity = 1000;
+
+		TaskQueue<Object> taskQueue = new TaskQueue<Object>(maxCapacity);
 
 		Assert.assertEquals(0, taskQueue.size());
 
-		for (int i = 1; i <= 10; i++) {
+		for (int i = 1; i <= maxCapacity; i++) {
 			Assert.assertTrue(taskQueue.offer(new Object(), new boolean[1]));
 			Assert.assertEquals(i, taskQueue.size());
 		}
+	}
+
+	@Test
+	public void testSizeFromFullQueue() {
+		int maxCapacity = 1000;
+
+		TaskQueue<Object> taskQueue = new TaskQueue<Object>(maxCapacity);
+
+		Assert.assertEquals(0, taskQueue.size());
+
+		for (int i = 1; i <= maxCapacity; i++) {
+			taskQueue.offer(new Object(), new boolean[1]);
+			Assert.assertEquals(i, taskQueue.size());
+		}
+
+		taskQueue.offer(new Object(), new boolean[1]);
+
+		Assert.assertEquals(maxCapacity, taskQueue.size());
+		Assert.assertEquals(0, taskQueue.remainingCapacity());
+	}
+
+	@Test
+	public void testSizeOne() {
+		TaskQueue<Object> taskQueue = new TaskQueue<Object>(1);
+
+		Assert.assertEquals(0, taskQueue.size());
+		Assert.assertTrue(taskQueue.offer(new Object(), new boolean[1]));
+		Assert.assertEquals(1, taskQueue.size());
 	}
 
 	@Test
