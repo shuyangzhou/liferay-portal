@@ -42,7 +42,7 @@ public class TaskQueueTest {
 		Assert.assertEquals(Integer.MAX_VALUE, taskQueue.remainingCapacity());
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testConstructorWithZeroCapacity() {
 		new TaskQueue<Object>(0);
 
@@ -151,39 +151,27 @@ public class TaskQueueTest {
 		Assert.assertTrue(taskQueue.isEmpty());
 	}
 
-	@Test
-	public void testOffer() {
+	@Test(expected = NullPointerException.class)
+	public void testOfferNull() {
 		TaskQueue<Object> taskQueue = new TaskQueue<Object>(10);
 
-		try {
-			taskQueue.offer(null, new boolean[1]);
+		taskQueue.offer(null, new boolean[1]);
 
-			Assert.fail();
-		}
-		catch (NullPointerException npe) {
-		}
+		Assert.fail();
+	}
 
-		taskQueue = new TaskQueue<Object>(10);
+	@Test(expected = IllegalArgumentException.class)
+	public void testOfferWaiterMakerEmpty() {
+		TaskQueue<Object> taskQueue = new TaskQueue<Object>(10);
 
-		try {
-			taskQueue.offer(new Object(), null);
-
-			Assert.fail();
-		}
-		catch (NullPointerException npe) {
-		}
-
-		taskQueue = new TaskQueue<Object>(10);
-
-		try {
 			taskQueue.offer(new Object(), new boolean[0]);
 
 			Assert.fail();
-		}
-		catch (IllegalArgumentException iae) {
-		}
+	}
 
-		taskQueue = new TaskQueue<Object>(10);
+	@Test
+	public void testOfferWaiterMakerFalse() {
+		TaskQueue<Object> taskQueue = new TaskQueue<Object>(10);
 
 		boolean[] hasWaiterMarker = new boolean[1];
 
@@ -191,6 +179,19 @@ public class TaskQueueTest {
 
 		Assert.assertTrue(result);
 		Assert.assertFalse(hasWaiterMarker[0]);
+	}
+
+	@Test
+	public void testOfferWaiterMakerTrue() {
+		TaskQueue<Object> taskQueue = new TaskQueue<Object>(10);
+
+		boolean[] hasWaiterMarker = new boolean[1];
+		hasWaiterMarker[0] = true;
+
+		boolean result = taskQueue.offer(new Object(), hasWaiterMarker);
+
+		Assert.assertTrue(result);
+		Assert.assertTrue(hasWaiterMarker[0]);
 	}
 
 	@Test
