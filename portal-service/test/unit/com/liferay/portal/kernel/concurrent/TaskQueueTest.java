@@ -432,7 +432,38 @@ public class TaskQueueTest {
 	}
 
 	@Test
-	public void testTake() throws InterruptedException {
+	public void testTake10() throws InterruptedException {
+		testTake(10, TestUtil.SHORT_WAIT);
+	}
+
+	@Test
+	public void testTake10KeepAlive() throws InterruptedException {
+		testTake(10, TestUtil.KEEPALIVE_TIME);
+	}
+
+	@Test
+	public void testTake100() throws InterruptedException {
+		testTake(100, TestUtil.SHORT_WAIT);
+	}
+
+	@Test
+	public void testTake100KeepAlive() throws InterruptedException {
+		testTake(100, TestUtil.KEEPALIVE_TIME);
+	}
+
+	@Test
+	public void testTake1000() throws InterruptedException {
+		testTake(1000, TestUtil.SHORT_WAIT);
+	}
+
+	@Test
+	public void testTake1000KeepAlive() throws InterruptedException {
+		testTake(1000, TestUtil.KEEPALIVE_TIME);
+	}
+
+	protected void testTake(final int capacity, long sleep)
+		throws InterruptedException {
+
 		final TaskQueue<Object> taskQueue = new TaskQueue<Object>();
 		final Object object = new Object();
 
@@ -444,7 +475,7 @@ public class TaskQueueTest {
 			@Override
 			public void run() {
 				try {
-					for (int i = 0; i < 10; i++) {
+					for (int i = 0; i < capacity; i++) {
 						Assert.assertEquals(i, taskQueue.take());
 					}
 				}
@@ -464,11 +495,11 @@ public class TaskQueueTest {
 
 		thread.start();
 
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < capacity; i++) {
 			Assert.assertTrue(taskQueue.offer(i, new boolean[1]));
 		}
 
-		Thread.sleep(TestUtil.SHORT_WAIT);
+		Thread.sleep(sleep);
 
 		thread.interrupt();
 		thread.join();
