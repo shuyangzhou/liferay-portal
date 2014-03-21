@@ -187,50 +187,84 @@ public class TaskQueueTest {
 		TaskQueue<Object> taskQueue = new TaskQueue<Object>();
 
 		Assert.assertNull(taskQueue.poll());
+	}
 
-		taskQueue = new TaskQueue<Object>();
+	@Test
+	public void testPollAfterOffer() throws InterruptedException {
+		TaskQueue<Object> taskQueue = new TaskQueue<Object>();
 
 		Object object1 = new Object();
 
 		Assert.assertTrue(taskQueue.offer(object1, new boolean[1]));
 		Assert.assertSame(object1, taskQueue.poll());
+	}
 
-		taskQueue = new TaskQueue<Object>();
+	@Test
+	public void testPollAfterOffers() throws InterruptedException {
+		TaskQueue<Object> taskQueue = new TaskQueue<Object>();
 
-		object1 = new Object();
-		Object object2 = new Object();
+		Object[] objects = new Object[1000];
 
-		Assert.assertTrue(taskQueue.offer(object1, new boolean[1]));
-		Assert.assertTrue(taskQueue.offer(object2, new boolean[1]));
-		Assert.assertSame(object1, taskQueue.poll());
+		for (int i = 0; i < objects.length; i++) {
+			objects[i] = new Object();
+		}
 
-		taskQueue = new TaskQueue<Object>();
+		for (Object object : objects) {
+			Assert.assertTrue(taskQueue.offer(object, new boolean[1]));
+			Assert.assertSame(object, taskQueue.poll());
+		}
+	}
+
+	@Test
+	public void testPollWithTimeout() throws InterruptedException {
+		TaskQueue<Object>taskQueue = new TaskQueue<Object>();
 
 		Assert.assertNull(taskQueue.poll(0, TimeUnit.MILLISECONDS));
+	}
 
-		taskQueue = new TaskQueue<Object>();
+	@Test
+	public void testPollWithTimeoutNegativeMilliseconds()
+		throws InterruptedException {
+
+		TaskQueue<Object>taskQueue = new TaskQueue<Object>();
 
 		Assert.assertNull(taskQueue.poll(-1, TimeUnit.MILLISECONDS));
+	}
 
-		taskQueue = new TaskQueue<Object>();
+	@Test
+	public void testPollWithTimeoutPositiveMilliseconds()
+		throws InterruptedException {
+
+		TaskQueue<Object>taskQueue = new TaskQueue<Object>();
 
 		Assert.assertNull(taskQueue.poll(100, TimeUnit.MILLISECONDS));
+	}
 
-		taskQueue = new TaskQueue<Object>();
+	@Test
+	public void testPollWithTimeoutAfterOffer() throws InterruptedException {
+		TaskQueue<Object>taskQueue = new TaskQueue<Object>();
 
-		object1 = new Object();
+		Object object1 = new Object();
 
 		Assert.assertTrue(taskQueue.offer(object1, new boolean[1]));
 		Assert.assertSame(object1, taskQueue.poll(100, TimeUnit.MILLISECONDS));
+	}
 
-		taskQueue = new TaskQueue<Object>();
+	@Test
+	public void testPollWithTimeoutAfterOffers() throws InterruptedException {
+		TaskQueue<Object>taskQueue = new TaskQueue<Object>();
 
-		object1 = new Object();
-		object2 = new Object();
+		Object[] objects = new Object[1000];
 
-		Assert.assertTrue(taskQueue.offer(object1, new boolean[1]));
-		Assert.assertTrue(taskQueue.offer(object2, new boolean[1]));
-		Assert.assertSame(object1, taskQueue.poll(100, TimeUnit.MILLISECONDS));
+		for (int i = 0; i < objects.length; i++) {
+			objects[i] = new Object();
+		}
+
+		for (Object object : objects) {
+			Assert.assertTrue(taskQueue.offer(object, new boolean[1]));
+			Assert.assertSame(
+				object, taskQueue.poll(100, TimeUnit.MILLISECONDS));
+		}
 	}
 
 	@Test
