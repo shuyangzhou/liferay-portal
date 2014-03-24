@@ -35,59 +35,29 @@ import org.junit.Test;
 public class ThreadPoolExecutorTest {
 
 	@Test
-	public void testAdjustPoolSize1() {
-		ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
-			5, 10, TestUtil.KEEPALIVE_TIME, TimeUnit.MILLISECONDS, true, 10);
-
-		try {
-			threadPoolExecutor.adjustPoolSize(-1, 10);
-
-			Assert.fail();
-		}
-		catch (IllegalArgumentException iae) {
-		}
-
-		threadPoolExecutor = new ThreadPoolExecutor(
-			5, 10, TestUtil.KEEPALIVE_TIME, TimeUnit.MILLISECONDS, true, 10);
-
-		try {
-			threadPoolExecutor.adjustPoolSize(1, -1);
-
-			Assert.fail();
-		}
-		catch (IllegalArgumentException iae) {
-		}
-
-		threadPoolExecutor = new ThreadPoolExecutor(
-			5, 10, TestUtil.KEEPALIVE_TIME, TimeUnit.MILLISECONDS, true, 10);
-
-		try {
-			threadPoolExecutor.adjustPoolSize(1, 0);
-
-			Assert.fail();
-		}
-		catch (IllegalArgumentException iae) {
-		}
-
-		threadPoolExecutor = new ThreadPoolExecutor(
-			5, 10, TestUtil.KEEPALIVE_TIME, TimeUnit.MILLISECONDS, true, 10);
-
-		try {
-			threadPoolExecutor.adjustPoolSize(2, 1);
-
-			Assert.fail();
-		}
-		catch (IllegalArgumentException iae) {
-		}
-	}
-
-	@Test
-	public void testAdjustPoolSize2() {
+	public void testAdjustPoolSize() {
 		ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
 			5, 10, TestUtil.KEEPALIVE_TIME, TimeUnit.MILLISECONDS, true, 10);
 
 		Assert.assertEquals(5, threadPoolExecutor.getCorePoolSize());
 		Assert.assertEquals(10, threadPoolExecutor.getMaxPoolSize());
+	}
+
+	@Test
+	public void testAdjustPoolSizeDecrease() {
+		ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
+			10, 20, TestUtil.KEEPALIVE_TIME, TimeUnit.MILLISECONDS, true, 10);
+
+		threadPoolExecutor.adjustPoolSize(5, 10);
+
+		Assert.assertEquals(5, threadPoolExecutor.getCorePoolSize());
+		Assert.assertEquals(10, threadPoolExecutor.getMaxPoolSize());
+	}
+
+	@Test
+	public void testAdjustPoolSizeIncrease() {
+		ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
+			5, 10, TestUtil.KEEPALIVE_TIME, TimeUnit.MILLISECONDS, true, 10);
 
 		threadPoolExecutor.adjustPoolSize(10, 20);
 
@@ -95,18 +65,44 @@ public class ThreadPoolExecutorTest {
 		Assert.assertEquals(20, threadPoolExecutor.getMaxPoolSize());
 	}
 
-	@Test
-	public void testAdjustPoolSize3() {
+	@Test(expected = IllegalArgumentException.class)
+	public void testAdjustPoolSizeNegativeCorePoolSize() {
 		ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
-			10, 20, TestUtil.KEEPALIVE_TIME, TimeUnit.MILLISECONDS, true, 10);
+			5, 10, TestUtil.KEEPALIVE_TIME, TimeUnit.MILLISECONDS, true, 10);
 
-		Assert.assertEquals(10, threadPoolExecutor.getCorePoolSize());
-		Assert.assertEquals(20, threadPoolExecutor.getMaxPoolSize());
+		threadPoolExecutor.adjustPoolSize(-1, 10);
 
-		threadPoolExecutor.adjustPoolSize(5, 10);
+		Assert.fail();
+	}
 
-		Assert.assertEquals(5, threadPoolExecutor.getCorePoolSize());
-		Assert.assertEquals(10, threadPoolExecutor.getMaxPoolSize());
+	@Test(expected = IllegalArgumentException.class)
+	public void testAdjustPoolSizeNegativeMaxPoolSize() {
+		ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
+			5, 10, TestUtil.KEEPALIVE_TIME, TimeUnit.MILLISECONDS, true, 10);
+
+		threadPoolExecutor.adjustPoolSize(1, -1);
+
+		Assert.fail();
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testAdjustPoolSizeZeroMaxPoolSize() {
+		ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
+			5, 10, TestUtil.KEEPALIVE_TIME, TimeUnit.MILLISECONDS, true, 10);
+
+		threadPoolExecutor.adjustPoolSize(1, 0);
+
+		Assert.fail();
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testAdjustPoolSizeMaxPoolSizeSmallerThanCorePoolSize() {
+		ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
+			5, 10, TestUtil.KEEPALIVE_TIME, TimeUnit.MILLISECONDS, true, 10);
+
+		threadPoolExecutor.adjustPoolSize(2, 1);
+
+		Assert.fail();
 	}
 
 	@Test
@@ -528,104 +524,91 @@ public class ThreadPoolExecutorTest {
 		Assert.assertTrue(waitTime < TestUtil.SHORT_WAIT);
 	}
 
-	@Test
-	public void testConstructor1() {
-		try {
-			new ThreadPoolExecutor(
-				-1, 1, TestUtil.KEEPALIVE_TIME, TimeUnit.MILLISECONDS, true, 1);
+	@Test(expected = IllegalArgumentException.class)
+	public void testConstructorCorePoolSizeNegative() {
+		new ThreadPoolExecutor(
+			-1, 1, TestUtil.KEEPALIVE_TIME, TimeUnit.MILLISECONDS, true, 1);
 
-			Assert.fail();
-		}
-		catch (IllegalArgumentException iae) {
-		}
+		Assert.fail();
+	}
 
-		try {
-			new ThreadPoolExecutor(
-				1, -1, TestUtil.KEEPALIVE_TIME, TimeUnit.MILLISECONDS, true, 1);
+	@Test(expected = IllegalArgumentException.class)
+	public void testConstructorKeepAliveTimeNegative() {
+		new ThreadPoolExecutor(1, 1, -1, TimeUnit.MILLISECONDS, true, 1);
 
-			Assert.fail();
-		}
-		catch (IllegalArgumentException iae) {
-		}
+		Assert.fail();
+	}
 
-		try {
-			new ThreadPoolExecutor(
-				1, 0, TestUtil.KEEPALIVE_TIME, TimeUnit.MILLISECONDS, true, 1);
+	@Test(expected = IllegalArgumentException.class)
+	public void testConstructorMaxPoolSizeNegative() {
+		new ThreadPoolExecutor(
+			1, -1, TestUtil.KEEPALIVE_TIME, TimeUnit.MILLISECONDS, true, 1);
 
-			Assert.fail();
-		}
-		catch (IllegalArgumentException iae) {
-		}
+		Assert.fail();
+	}
 
-		try {
-			new ThreadPoolExecutor(
-				2, 1, TestUtil.KEEPALIVE_TIME, TimeUnit.MILLISECONDS, true, 1);
+	@Test(expected = IllegalArgumentException.class)
+	public void testConstructorMaxPoolSizeSmallerThanCorePoolSize() {
+		new ThreadPoolExecutor(
+			2, 1, TestUtil.KEEPALIVE_TIME, TimeUnit.MILLISECONDS, true, 1);
 
-			Assert.fail();
-		}
-		catch (IllegalArgumentException iae) {
-		}
+		Assert.fail();
+	}
 
-		try {
-			new ThreadPoolExecutor(1, 1, -1, TimeUnit.MILLISECONDS, true, 1);
+	@Test(expected = IllegalArgumentException.class)
+	public void testConstructorMaxPoolSizeZero() {
+		new ThreadPoolExecutor(
+			1, 0, TestUtil.KEEPALIVE_TIME, TimeUnit.MILLISECONDS, true, 1);
 
-			Assert.fail();
-		}
-		catch (IllegalArgumentException iae) {
-		}
+		Assert.fail();
+	}
 
-		try {
-			new ThreadPoolExecutor(
-				1, 1, TestUtil.KEEPALIVE_TIME, TimeUnit.MILLISECONDS, true, -1);
+	@Test(expected = IllegalArgumentException.class)
+	public void testConstructorMaxQueueSizeNegative() {
+		new ThreadPoolExecutor(
+			1, 1, TestUtil.KEEPALIVE_TIME, TimeUnit.MILLISECONDS, true, -1);
 
-			Assert.fail();
-		}
-		catch (IllegalArgumentException iae) {
-		}
+		Assert.fail();
+	}
 
-		try {
-			new ThreadPoolExecutor(
-				1, 1, TestUtil.KEEPALIVE_TIME, TimeUnit.MILLISECONDS, true, 0);
+	@Test(expected = IllegalArgumentException.class)
+	public void testConstructorMaxQueueSizeZero() {
+		new ThreadPoolExecutor(
+			1, 1, TestUtil.KEEPALIVE_TIME, TimeUnit.MILLISECONDS, true, 0);
 
-			Assert.fail();
-		}
-		catch (IllegalArgumentException iae) {
-		}
+		Assert.fail();
+	}
 
-		try {
-			new ThreadPoolExecutor(
-				1, 1, TestUtil.KEEPALIVE_TIME, TimeUnit.MILLISECONDS, true, 1,
-				null, Executors.defaultThreadFactory(),
-				new ThreadPoolHandlerAdapter());
+	@Test(expected = NullPointerException.class)
+	public void testConstructorRejectedExecutionHandlerNull() {
+		new ThreadPoolExecutor(
+			1, 1, TestUtil.KEEPALIVE_TIME, TimeUnit.MILLISECONDS, true, 1,
+			null, Executors.defaultThreadFactory(),
+			new ThreadPoolHandlerAdapter());
 
-			Assert.fail();
-		}
-		catch (NullPointerException npe) {
-		}
+		Assert.fail();
+	}
 
-		try {
-			new ThreadPoolExecutor(
-				1, 1, TestUtil.KEEPALIVE_TIME, TimeUnit.MILLISECONDS, true, 1,
-				new AbortPolicy(), null, new ThreadPoolHandlerAdapter());
+	@Test(expected = NullPointerException.class)
+	public void testConstructorThreadFactoryNull() {
+		new ThreadPoolExecutor(
+			1, 1, TestUtil.KEEPALIVE_TIME, TimeUnit.MILLISECONDS, true, 1,
+			new AbortPolicy(), null, new ThreadPoolHandlerAdapter());
 
-			Assert.fail();
-		}
-		catch (NullPointerException npe) {
-		}
+		Assert.fail();
+	}
 
-		try {
-			new ThreadPoolExecutor(
-				1, 1, TestUtil.KEEPALIVE_TIME, TimeUnit.MILLISECONDS, true, 1,
-				new AbortPolicy(), Executors.defaultThreadFactory(), null);
+	@Test(expected = NullPointerException.class)
+	public void testConstructorThreadPoolHandlerNull() {
+		new ThreadPoolExecutor(
+			1, 1, TestUtil.KEEPALIVE_TIME, TimeUnit.MILLISECONDS, true, 1,
+			new AbortPolicy(), Executors.defaultThreadFactory(), null);
 
-			Assert.fail();
-		}
-		catch (NullPointerException npe) {
-		}
+		Assert.fail();
 	}
 
 	@Test
-	public void testConstructor2() {
+	public void testConstructorWithCorePoolSizeAndMaxPoolSize() {
 		ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(1, 2);
 
 		Assert.assertEquals(1, threadPoolExecutor.getCorePoolSize());
@@ -655,7 +638,7 @@ public class ThreadPoolExecutorTest {
 	}
 
 	@Test
-	public void testConstructor3() {
+	public void testConstructorWithSizes() {
 		ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
 			1, 2, TestUtil.KEEPALIVE_TIME, TimeUnit.MILLISECONDS, true, 3);
 
@@ -685,7 +668,7 @@ public class ThreadPoolExecutorTest {
 	}
 
 	@Test
-	public void testConstructor4() {
+	public void testConstructor() {
 		RejectedExecutionHandler rejectedExecutionHandler =
 			new CallerRunsPolicy();
 
