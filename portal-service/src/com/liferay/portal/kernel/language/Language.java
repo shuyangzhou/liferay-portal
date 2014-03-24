@@ -17,6 +17,8 @@ package com.liferay.portal.kernel.language;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
+import java.io.Serializable;
+
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -31,7 +33,7 @@ import javax.servlet.jsp.PageContext;
 /**
  * @author Brian Wing Shun Chan
  */
-public interface Language {
+public interface Language extends Serializable {
 
 	public String format(Locale locale, String pattern, List<Object> arguments);
 

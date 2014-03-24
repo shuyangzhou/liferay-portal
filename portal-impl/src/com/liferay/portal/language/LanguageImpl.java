@@ -14,6 +14,8 @@
 
 package com.liferay.portal.language;
 
+import com.liferay.portal.kernel.cache.MultiVMPoolUtil;
+import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.language.Language;
@@ -55,7 +57,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import javax.portlet.PortletConfig;
 import javax.portlet.PortletRequest;
@@ -605,7 +606,7 @@ public class LanguageImpl implements Language {
 
 	@Override
 	public void init() {
-		_instances.clear();
+		_instances.removeAll();
 	}
 
 	@Override
@@ -961,8 +962,8 @@ public class LanguageImpl implements Language {
 
 	private static Log _log = LogFactoryUtil.getLog(LanguageImpl.class);
 
-	private static Map<Long, LanguageImpl> _instances =
-		new ConcurrentHashMap<Long, LanguageImpl>();
+	private static PortalCache<Long, LanguageImpl> _instances =
+		MultiVMPoolUtil.getCache(LanguageImpl.class.getName());
 
 	private Map<String, String> _charEncodings;
 	private Set<String> _duplicateLanguageCodes;
