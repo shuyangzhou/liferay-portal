@@ -43,6 +43,11 @@ public class MBCategoryAssetRendererFactory extends BaseAssetRendererFactory {
 
 	public static final String TYPE = "category";
 
+	public MBCategoryAssetRendererFactory() {
+		setCategorizable(false);
+		setSelectable(false);
+	}
+
 	@Override
 	public AssetRenderer getAssetRenderer(long classPK, int type)
 		throws PortalException, SystemException {
@@ -97,20 +102,8 @@ public class MBCategoryAssetRendererFactory extends BaseAssetRendererFactory {
 	}
 
 	@Override
-	public boolean isCategorizable() {
-		return false;
-	}
-
-	@Override
-	public boolean isSelectable() {
-		return _SELECTABLE;
-	}
-
-	@Override
 	protected String getIconPath(ThemeDisplay themeDisplay) {
 		return themeDisplay.getPathThemeImages() + "/common/conversation.png";
 	}
-
-	private static final boolean _SELECTABLE = false;
 
 }

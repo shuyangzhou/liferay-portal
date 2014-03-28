@@ -43,7 +43,7 @@ public class GetUrlTag extends TagSupport {
 			else {
 				JspWriter jspWriter = pageContext.getOut();
 
-				jspWriter.print(content);
+				jspWriter.write(content);
 			}
 
 			return EVAL_PAGE;

@@ -278,7 +278,7 @@ public class IconMenuTag extends BaseBodyTagSupport implements BodyTag {
 
 					if (Validator.isNotNull(_cssClass)) {
 						jspWriter.write(StringPool.SPACE);
-						jspWriter.print(_cssClass);
+						jspWriter.write(_cssClass);
 					}
 
 					jspWriter.write("\" id=\"");
@@ -290,7 +290,7 @@ public class IconMenuTag extends BaseBodyTagSupport implements BodyTag {
 
 					if (Validator.isNotNull(_cssClass)) {
 						jspWriter.write(StringPool.SPACE);
-						jspWriter.print(_cssClass);
+						jspWriter.write(_cssClass);
 					}
 
 					if (_direction.equals("up")) {

@@ -37,6 +37,10 @@ public class UserAssetRendererFactory extends BaseAssetRendererFactory {
 
 	public static final String TYPE = "user";
 
+	public UserAssetRendererFactory() {
+		setSelectable(false);
+	}
+
 	@Override
 	public AssetRenderer getAssetRenderer(long classPK, int type)
 		throws PortalException, SystemException {
@@ -90,15 +94,8 @@ public class UserAssetRendererFactory extends BaseAssetRendererFactory {
 	}
 
 	@Override
-	public boolean isSelectable() {
-		return _SELECTABLE;
-	}
-
-	@Override
 	protected String getIconPath(ThemeDisplay themeDisplay) {
 		return themeDisplay.getPathThemeImages() + "/common/user_icon.png";
 	}
-
-	private static final boolean _SELECTABLE = false;
 
 }

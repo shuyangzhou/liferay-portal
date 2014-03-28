@@ -39,6 +39,11 @@ public class LayoutRevisionAssetRendererFactory
 
 	public static final String TYPE = "layout_revision";
 
+	public LayoutRevisionAssetRendererFactory() {
+		setCategorizable(false);
+		setSelectable(false);
+	}
+
 	@Override
 	public AssetEntry getAssetEntry(long assetEntryId)
 		throws PortalException, SystemException {
@@ -110,20 +115,8 @@ public class LayoutRevisionAssetRendererFactory
 	}
 
 	@Override
-	public boolean isCategorizable() {
-		return false;
-	}
-
-	@Override
-	public boolean isSelectable() {
-		return _SELECTABLE;
-	}
-
-	@Override
 	protected String getIconPath(ThemeDisplay themeDisplay) {
 		return themeDisplay.getPathThemeImages() + "/common/pages.png";
 	}
-
-	private static final boolean _SELECTABLE = false;
 
 }

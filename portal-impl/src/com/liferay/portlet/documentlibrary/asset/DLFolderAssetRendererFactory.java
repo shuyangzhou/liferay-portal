@@ -40,6 +40,10 @@ public class DLFolderAssetRendererFactory extends BaseAssetRendererFactory {
 
 	public static final String TYPE = "document_folder";
 
+	public DLFolderAssetRendererFactory() {
+		setCategorizable(false);
+	}
+
 	@Override
 	public AssetRenderer getAssetRenderer(long classPK, int type)
 		throws PortalException, SystemException {
@@ -94,22 +98,8 @@ public class DLFolderAssetRendererFactory extends BaseAssetRendererFactory {
 	}
 
 	@Override
-	public boolean isCategorizable() {
-		return _CATEGORIZABLE;
-	}
-
-	@Override
-	public boolean isLinkable() {
-		return _LINKABLE;
-	}
-
-	@Override
 	protected String getIconPath(ThemeDisplay themeDisplay) {
 		return themeDisplay.getPathThemeImages() + "/common/folder.png";
 	}
-
-	private static final boolean _CATEGORIZABLE = false;
-
-	private static final boolean _LINKABLE = false;
 
 }
