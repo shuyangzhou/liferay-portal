@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.search;
 
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -93,6 +94,22 @@ public class QueryConfig implements Serializable {
 
 	public String[] getSelectedFieldNames() {
 		return (String[])_attributes.get(_SELECTED_FIELD_NAMES);
+	}
+
+	public boolean isAllFieldsSelected() {
+		String[] selectedFieldNames = getSelectedFieldNames();
+
+		if (ArrayUtil.isEmpty(selectedFieldNames)) {
+			return true;
+		}
+
+		if ((selectedFieldNames.length == 1) &&
+			selectedFieldNames[0].equals(Field.ANY)) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	public boolean isCollatedSpellCheckResultEnabled() {
