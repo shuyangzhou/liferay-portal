@@ -30,6 +30,17 @@ public class AggregateResourceBundle extends ResourceBundle {
 	}
 
 	@Override
+	public boolean containsKey(String key) {
+		for (ResourceBundle resourceBundle : _resourceBundles) {
+			if (resourceBundle.containsKey(key)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	@Override
 	public Enumeration<String> getKeys() {
 		Enumeration<String>[] enumerations =
 			new Enumeration[_resourceBundles.length];
@@ -43,8 +54,12 @@ public class AggregateResourceBundle extends ResourceBundle {
 
 	@Override
 	protected Object handleGetObject(String key) {
+		Object object = null;
+
 		for (ResourceBundle resourceBundle : _resourceBundles) {
-			Object object = null;
+			if (!resourceBundle.containsKey(key)) {
+				continue;
+			}
 
 			try {
 				object = resourceBundle.getObject(key);
@@ -58,7 +73,7 @@ public class AggregateResourceBundle extends ResourceBundle {
 			}
 		}
 
-		return null;
+		return object;
 	}
 
 	private ResourceBundle[] _resourceBundles;
