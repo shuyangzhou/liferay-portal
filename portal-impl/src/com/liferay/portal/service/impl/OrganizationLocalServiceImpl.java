@@ -1933,7 +1933,7 @@ public class OrganizationLocalServiceImpl
 			String street, String city, String zip, Long regionId,
 			Long countryId, LinkedHashMap<String, Object> params,
 			boolean andSearch, int start, int end, Sort sort)
-		throws PortalException, SystemException {
+		throws SystemException {
 
 		String regionCode = null;
 
