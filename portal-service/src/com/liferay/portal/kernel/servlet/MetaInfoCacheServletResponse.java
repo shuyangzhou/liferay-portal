@@ -104,6 +104,8 @@ public class MetaInfoCacheServletResponse extends HttpServletResponseWrapper {
 
 	public MetaInfoCacheServletResponse(HttpServletResponse response) {
 		super(response);
+
+		setStatus(response.getStatus());
 	}
 
 	@Override
