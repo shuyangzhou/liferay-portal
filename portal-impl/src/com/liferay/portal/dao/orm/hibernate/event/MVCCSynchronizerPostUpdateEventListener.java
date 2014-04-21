@@ -15,6 +15,7 @@
 package com.liferay.portal.dao.orm.hibernate.event;
 
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
+import com.liferay.portal.kernel.dao.shard.ShardUtil;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.MVCCModel;
 
@@ -37,9 +38,23 @@ public class MVCCSynchronizerPostUpdateEventListener
 		if (entity instanceof MVCCModel) {
 			BaseModel<?> baseModel = (BaseModel<?>)entity;
 
-			EntityCacheUtil.putResult(
-				baseModel.isEntityCacheEnabled(), entity.getClass(),
-				baseModel.getPrimaryKeyObj(), baseModel, false);
+			Long companyId =
+				(Long)baseModel.getModelAttributes().get("companyId");
+
+			if (companyId != null) {
+				ShardUtil.pushCompanyService(companyId);
+			}
+
+			try {
+				EntityCacheUtil.putResult(
+					baseModel.isEntityCacheEnabled(), entity.getClass(),
+					baseModel.getPrimaryKeyObj(), baseModel, false);
+			}
+			finally {
+				if (companyId != null) {
+					ShardUtil.popCompanyService();
+				}
+			}
 		}
 	}
 
