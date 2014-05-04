@@ -16,6 +16,8 @@ package com.liferay.portal.spring.context;
 
 import com.liferay.portal.bean.BeanLocatorImpl;
 import com.liferay.portal.cache.ehcache.ClearEhcacheThreadUtil;
+import com.liferay.portal.deploy.hot.IndexerPostProcessorRegistry;
+import com.liferay.portal.deploy.hot.ServiceWrapperRegistry;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.cache.MultiVMPoolUtil;
@@ -135,6 +137,9 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 		catch (Exception e) {
 			_log.error(e, e);
 		}
+
+		_indexerPostProcessorRegistry.close();
+		_serviceWrapperRegistry.close();
 
 		try {
 			ModuleFrameworkUtilAdapter.stopRuntime();
@@ -293,6 +298,9 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 
 		clearFilteredPropertyDescriptorsCache(autowireCapableBeanFactory);
 
+		_indexerPostProcessorRegistry = new IndexerPostProcessorRegistry();
+		_serviceWrapperRegistry = new ServiceWrapperRegistry();
+
 		try {
 			PortalLifecycleUtil.register(
 				new PortalLifecycle() {
@@ -350,6 +358,9 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 	private static Field _filteredPropertyDescriptorsCacheField;
 	private static String _portalServlerContextName = StringPool.BLANK;
 	private static String _portalServletContextPath = StringPool.SLASH;
+
+	private IndexerPostProcessorRegistry _indexerPostProcessorRegistry;
+	private ServiceWrapperRegistry _serviceWrapperRegistry;
 
 	static {
 		try {

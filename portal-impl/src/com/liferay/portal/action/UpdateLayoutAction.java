@@ -307,7 +307,8 @@ public class UpdateLayoutAction extends JSONAction {
 
 		dynamicRequest.setParameter("p_p_id", portletId);
 
-		String dataType = ParamUtil.getString(request, "dataType");
+		String dataType = StringUtil.toLowerCase(
+			ParamUtil.getString(request, "dataType"));
 
 		if (dataType.equals("json")) {
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();

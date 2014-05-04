@@ -5,22 +5,19 @@
 
 	<target name="deploy-simple-server-plugins">
 		<if>
-			<equals arg1="${app.server.type}" arg2="websphere" />
+			<equals arg1="${app.server.type}" arg2="jboss" />
 			<then>
-				<echo file="${lp.plugins.dir}/build.${user.name}.properties">app.server.type=websphere
-app.server.dir=${app.server.dir}
-app.server.deploy.dir=${app.server.dir}/profiles/liferay/wsadmin-deploy
-app.server.lib.global.dir=${app.server.dir}/lib/ext
-app.server.portal.dir=${app.server.dir}/profiles/liferay/installedApps/liferay-cell/liferay-portal.ear/liferay-portal.war
+				<echo file="${lp.plugins.dir}/build.${user.name}.properties">app.server.parent.dir=${app.server.parent.dir}
+app.server.type=${app.server.type}
+app.server.jboss.dir=${app.server.dir}
 
 auto.deploy.dir=${liferay.home}/deploy
 
 plugins.includes=${plugins.includes}</echo>
 			</then>
 			<else>
-				<echo file="${lp.plugins.dir}/build.${user.name}.properties">app.server.dir=${app.server.dir}
-app.server.lib.global.dir=${app.server.lib.global.dir}
-app.server.portal.dir=${app.server.portal.dir}
+				<echo file="${lp.plugins.dir}/build.${user.name}.properties">app.server.parent.dir=${app.server.parent.dir}
+app.server.type=${app.server.type}
 
 auto.deploy.dir=${liferay.home}/deploy
 

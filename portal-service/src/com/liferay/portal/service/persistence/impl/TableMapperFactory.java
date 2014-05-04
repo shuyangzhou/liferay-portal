@@ -17,9 +17,6 @@ package com.liferay.portal.service.persistence.impl;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.service.persistence.BasePersistence;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 /**
  * @author Shuyang Zhou
  */
@@ -32,29 +29,15 @@ public class TableMapperFactory {
 				BasePersistence<L> leftPersistence,
 				BasePersistence<R> rightPersistence) {
 
-		TableMapper<?, ?> tableMapper = tableMappers.get(tableName);
+		TableMapperImpl<L, R> tableMapperImpl =
+			new TableMapperImpl<L, R>(
+				tableName, leftColumnName, rightColumnName, leftPersistence,
+				rightPersistence);
 
-		if (tableMapper == null) {
-			TableMapperImpl<L, R> tableMapperImpl =
-				new TableMapperImpl<L, R>(
-					tableName, leftColumnName, rightColumnName, leftPersistence,
-					rightPersistence);
+		tableMapperImpl.setReverseTableMapper(
+			new ReverseTableMapper<R, L>(tableMapperImpl));
 
-			tableMapperImpl.setReverseTableMapper(
-				new ReverseTableMapper<R, L>(tableMapperImpl));
-
-			tableMapper = tableMapperImpl;
-
-			tableMappers.put(tableName, tableMapper);
-		}
-		else if (!tableMapper.matches(leftColumnName, rightColumnName)) {
-			tableMapper = tableMapper.getReverseTableMapper();
-		}
-
-		return (TableMapper<L, R>)tableMapper;
+		return tableMapperImpl;
 	}
-
-	protected static Map<String, TableMapper<?, ?>> tableMappers =
-		new ConcurrentHashMap<String, TableMapper<?, ?>>();
 
 }
