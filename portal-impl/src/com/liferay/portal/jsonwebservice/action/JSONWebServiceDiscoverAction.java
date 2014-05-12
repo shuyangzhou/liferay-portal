@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.json.JSONSerializer;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceAction;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceActionMapping;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceActionsManagerUtil;
+import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceNaming;
 import com.liferay.portal.kernel.util.MethodParameter;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.ReleaseInfo;
@@ -68,6 +69,8 @@ public class JSONWebServiceDiscoverAction implements JSONWebServiceAction {
 		_baseURL = String.valueOf(request.getRequestURL());
 		_contextPath = ParamUtil.getString(
 			request, "contextPath", request.getContextPath());
+		_jsonWebServiceNaming =
+			JSONWebServiceActionsManagerUtil.getJSONWebServiceNaming();
 	}
 
 	@Override
@@ -128,6 +131,10 @@ public class JSONWebServiceDiscoverAction implements JSONWebServiceAction {
 			Map<String, Object> jsonWebServiceActionMappingMap =
 				new LinkedHashMap<String, Object>();
 
+			if (jsonWebServiceActionMapping.isDeprecated()) {
+				jsonWebServiceActionMappingMap.put("deprecated", Boolean.TRUE);
+			}
+
 			JavadocMethod javadocMethod =
 				JavadocManagerUtil.lookupJavadocMethod(
 					jsonWebServiceActionMapping.getRealActionMethod());
@@ -140,6 +147,9 @@ public class JSONWebServiceDiscoverAction implements JSONWebServiceAction {
 						"description", javadocMethod.getComment());
 				}
 			}
+
+			jsonWebServiceActionMappingMap.put(
+				"id", _getId(jsonWebServiceActionMapping));
 
 			jsonWebServiceActionMappingMap.put(
 				"method", jsonWebServiceActionMapping.getMethod());
@@ -260,13 +270,9 @@ public class JSONWebServiceDiscoverAction implements JSONWebServiceAction {
 
 					ClassLoader classLoader = clazz.getClassLoader();
 
-					String modelImplClassName = type.getName();
-
-					modelImplClassName =
-						StringUtil.replace(
-							modelImplClassName, ".model.", ".model.impl.");
-
-					modelImplClassName += "ModelImpl";
+					String modelImplClassName =
+						_jsonWebServiceNaming.convertModelClassToImplClassName(
+							type);
 
 					modelType = classLoader.loadClass(modelImplClassName);
 				}
@@ -277,7 +283,7 @@ public class JSONWebServiceDiscoverAction implements JSONWebServiceAction {
 			if (modelType.isInterface() ||
 				Modifier.isAbstract(modelType.getModifiers())) {
 
-				map.put("interface", "true");
+				map.put("interface", Boolean.TRUE);
 			}
 
 			List<Map<String, String>> propertiesList = _buildPropertiesList(
@@ -419,9 +425,23 @@ public class JSONWebServiceDiscoverAction implements JSONWebServiceAction {
 		return genericReturnTypes;
 	}
 
+	private String _getId(
+		JSONWebServiceActionMapping jsonWebServiceActionMapping) {
+
+		Class<?> clazz = jsonWebServiceActionMapping.getActionClass();
+
+		String className =
+			_jsonWebServiceNaming.convertServiceClassToSimpleName(clazz);
+
+		Method method = jsonWebServiceActionMapping.getRealActionMethod();
+
+		return className.concat(StringPool.POUND).concat(method.getName());
+	}
+
 	private String _basePath;
 	private String _baseURL;
 	private String _contextPath;
+	private JSONWebServiceNaming _jsonWebServiceNaming;
 	private List<Class<?>> _types = new ArrayList<Class<?>>();
 
 }

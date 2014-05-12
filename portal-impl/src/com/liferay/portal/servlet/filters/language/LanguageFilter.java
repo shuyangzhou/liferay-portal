@@ -130,7 +130,14 @@ public class LanguageFilter extends BasePortalFilter {
 			sb.append(content.substring(x, y));
 			sb.append(StringPool.APOSTROPHE);
 
-			String value = UnicodeLanguageUtil.get(resourceBundle, key);
+			String value = null;
+
+			if (resourceBundle.containsKey(key)) {
+				value = UnicodeLanguageUtil.get(resourceBundle, key);
+			}
+			else {
+				value = UnicodeLanguageUtil.get(locale, key);
+			}
 
 			sb.append(value);
 			sb.append(StringPool.APOSTROPHE);

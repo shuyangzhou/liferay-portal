@@ -109,7 +109,7 @@ public class PollerRequestHandlerImpl
 		}
 
 		List<PollerRequest> pollerRequests = createPollerRequests(
-			request, pollerHeader, pollerRequestChunks, receiveRequest);
+			pollerHeader, pollerRequestChunks, receiveRequest);
 
 		executePollerRequests(pollerSession, pollerRequests);
 
@@ -148,19 +148,18 @@ public class PollerRequestHandlerImpl
 	}
 
 	protected PollerRequest createPollerRequest(
-			HttpServletRequest request, boolean receiveRequest,
-			PollerHeader pollerHeader, String portletId)
+			PollerHeader pollerHeader, String portletId, boolean receiveRequest)
 		throws Exception {
 
 		return createPollerRequest(
-			request, receiveRequest, pollerHeader, portletId,
-			new HashMap<String, String>(), null);
+			pollerHeader, portletId, new HashMap<String, String>(), null,
+			receiveRequest);
 	}
 
 	protected PollerRequest createPollerRequest(
-			HttpServletRequest request, boolean receiveRequest,
 			PollerHeader pollerHeader, String portletId,
-			Map<String, String> parameterMap, String chunkId)
+			Map<String, String> parameterMap, String chunkId,
+			boolean receiveRequest)
 		throws Exception {
 
 		PollerProcessor pollerProcessor =
@@ -176,12 +175,11 @@ public class PollerRequestHandlerImpl
 		}
 
 		return new PollerRequest(
-			request, pollerHeader, portletId, parameterMap, chunkId,
-			receiveRequest);
+			pollerHeader, portletId, parameterMap, chunkId, receiveRequest);
 	}
 
 	protected List<PollerRequest> createPollerRequests(
-			HttpServletRequest request, PollerHeader pollerHeader,
+			PollerHeader pollerHeader,
 			Map<String, Object>[] pollerRequestChunks, boolean receiveRequest)
 		throws Exception {
 
@@ -206,8 +204,8 @@ public class PollerRequestHandlerImpl
 
 			try {
 				PollerRequest pollerRequest = createPollerRequest(
-					request, receiveRequest, pollerHeader, portletId,
-					parameterMap, chunkId);
+					pollerHeader, portletId, parameterMap, chunkId,
+					receiveRequest);
 
 				pollerRequests.add(pollerRequest);
 
@@ -230,7 +228,7 @@ public class PollerRequestHandlerImpl
 
 				try {
 					PollerRequest pollerRequest = createPollerRequest(
-						request, receiveRequest, pollerHeader, portletId);
+						pollerHeader, portletId, receiveRequest);
 
 					pollerRequests.add(pollerRequest);
 				}
