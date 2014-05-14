@@ -1630,6 +1630,23 @@
 				(lower(UserGroup.name) = ?)
 		]]>
 	</sql>
+	<sql id="com.liferay.portal.service.persistence.UserGroupFinder.findByU_G">
+		<![CDATA[
+			SELECT
+				DISTINCT {UserGroup.*}
+			FROM
+				UserGroup
+			INNER JOIN
+				Users_UserGroups ON
+					(Users_UserGroups.userGroupId = UserGroup.userGroupId)
+			INNER JOIN
+				Groups_UserGroups ON
+					(Groups_UserGroups.userGroupId = UserGroup.userGroupId)
+			WHERE
+				(Users_UserGroups.userId = ?) AND
+				(Groups_UserGroups.groupId = ?)
+		]]>
+	</sql>
 	<sql id="com.liferay.portal.service.persistence.UserGroupFinder.findByC_N_D">
 		<![CDATA[
 			SELECT
@@ -1646,23 +1663,6 @@
 				)
 			ORDER BY
 				UserGroup.name ASC
-		]]>
-	</sql>
-	<sql id="com.liferay.portal.service.persistence.UserGroupFinder.findByU_G">
-		<![CDATA[
-			SELECT
-				DISTINCT {UserGroup.*}
-			FROM
-				UserGroup
-			INNER JOIN
-				Users_UserGroups ON
-					(Users_UserGroups.userGroupId = UserGroup.userGroupId)
-			INNER JOIN
-				Groups_UserGroups ON
-					(Groups_UserGroups.userGroupId = UserGroup.userGroupId)
-			WHERE
-				(Users_UserGroups.userId = ?) AND
-				(Groups_UserGroups.groupId = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.portal.service.persistence.UserGroupFinder.joinByUserGroupGroupRole">
