@@ -706,8 +706,8 @@
 				Users_Orgs ON
 					(Users_Orgs.organizationId = Organization_.organizationId)
 			INNER JOIN
-				 Groups_Orgs ON
-				 	(Groups_Orgs.organizationId = Organization_.organizationId)
+				Groups_Orgs ON
+					(Groups_Orgs.organizationId = Organization_.organizationId)
 			WHERE
 				(Users_Orgs.userId = ?) AND
 				(Groups_Orgs.groupId = ?)
