@@ -461,6 +461,13 @@ public class UserGroupLocalServiceImpl extends UserGroupLocalServiceBaseImpl {
 		return userGroupPersistence.findByCompanyId(companyId);
 	}
 
+	@Override
+	public List<UserGroup> getUserGroups(long userId, long groupId)
+		throws SystemException {
+
+		return userGroupFinder.findByU_G(userId, groupId);
+	}
+
 	/**
 	 * Returns all the user groups with the primary keys.
 	 *

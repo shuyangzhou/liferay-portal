@@ -48,6 +48,9 @@ public class UserGroupFinderImpl
 	public static final String FIND_BY_C_N =
 		UserGroupFinder.class.getName() + ".findByC_N";
 
+	public static final String FIND_BY_U_G =
+		UserGroupFinder.class.getName() + ".findByU_G";
+
 	public static final String FIND_BY_C_N_D =
 		UserGroupFinder.class.getName() + ".findByC_N_D";
 
@@ -226,6 +229,36 @@ public class UserGroupFinderImpl
 		sb.append("}");
 
 		throw new NoSuchUserGroupException(sb.toString());
+	}
+
+	@Override
+	public List<UserGroup> findByU_G(long userId, long groupId)
+		throws SystemException {
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			String sql = CustomSQLUtil.get(FIND_BY_U_G);
+
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
+
+			q.addEntity("UserGroup", UserGroupImpl.class);
+
+			QueryPos qPos = QueryPos.getInstance(q);
+
+			qPos.add(userId);
+			qPos.add(groupId);
+
+			return q.list();
+		}
+		catch (Exception e) {
+			throw new SystemException(e);
+		}
+		finally {
+			closeSession(session);
+		}
 	}
 
 	@Override

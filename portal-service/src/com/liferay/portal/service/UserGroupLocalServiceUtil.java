@@ -877,6 +877,12 @@ public class UserGroupLocalServiceUtil {
 		return getService().getUserGroups(companyId);
 	}
 
+	public static java.util.List<com.liferay.portal.model.UserGroup> getUserGroups(
+		long userId, long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getUserGroups(userId, groupId);
+	}
+
 	/**
 	* Returns all the user groups with the primary keys.
 	*

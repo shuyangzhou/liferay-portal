@@ -68,6 +68,9 @@ public class OrganizationFinderImpl
 	public static final String FIND_BY_C_P =
 		OrganizationFinder.class.getName() + ".findByC_P";
 
+	public static final String FIND_BY_U_G =
+		OrganizationFinder.class.getName() + ".findByU_G";
+
 	public static final String FIND_BY_C_PO_N_S_C_Z_R_C =
 		OrganizationFinder.class.getName() + ".findByC_PO_N_S_C_Z_R_C";
 
@@ -385,6 +388,36 @@ public class OrganizationFinderImpl
 			qPos.add(parentOrganizationId);
 
 			return (List<Long>)QueryUtil.list(q, getDialect(), 0, size);
+		}
+		catch (Exception e) {
+			throw new SystemException(e);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	@Override
+	public List<Organization> findByU_G(long userId, long groupId)
+		throws SystemException {
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			String sql = CustomSQLUtil.get(FIND_BY_U_G);
+
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
+
+			q.addEntity("Organization_", OrganizationImpl.class);
+
+			QueryPos qPos = QueryPos.getInstance(q);
+
+			qPos.add(userId);
+			qPos.add(groupId);
+
+			return q.list(true);
 		}
 		catch (Exception e) {
 			throw new SystemException(e);

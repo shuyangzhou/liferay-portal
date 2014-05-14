@@ -696,6 +696,23 @@
 				organizationId ASC
 		]]>
 	</sql>
+	<sql id="com.liferay.portal.service.persistence.OrganizationFinder.findByU_G">
+		<![CDATA[
+			SELECT
+				DISTINCT {Organization_.*}
+			FROM
+				Organization_
+			INNER JOIN
+				Users_Orgs ON
+					(Users_Orgs.organizationId = Organization_.organizationId)
+			INNER JOIN
+				Groups_Orgs ON
+					(Groups_Orgs.organizationId = Organization_.organizationId)
+			WHERE
+				(Users_Orgs.userId = ?) AND
+				(Groups_Orgs.groupId = ?)
+		]]>
+	</sql>
 	<sql id="com.liferay.portal.service.persistence.OrganizationFinder.findByC_PO_N_L_S_C_Z_R_C">
 		<![CDATA[
 			SELECT
@@ -1611,6 +1628,23 @@
 			WHERE
 				(UserGroup.companyId = ?) AND
 				(lower(UserGroup.name) = ?)
+		]]>
+	</sql>
+	<sql id="com.liferay.portal.service.persistence.UserGroupFinder.findByU_G">
+		<![CDATA[
+			SELECT
+				DISTINCT {UserGroup.*}
+			FROM
+				UserGroup
+			INNER JOIN
+				Users_UserGroups ON
+					(Users_UserGroups.userGroupId = UserGroup.userGroupId)
+			INNER JOIN
+				Groups_UserGroups ON
+					(Groups_UserGroups.userGroupId = UserGroup.userGroupId)
+			WHERE
+				(Users_UserGroups.userId = ?) AND
+				(Groups_UserGroups.groupId = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.portal.service.persistence.UserGroupFinder.findByC_N_D">

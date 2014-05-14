@@ -895,6 +895,12 @@ public class OrganizationLocalServiceUtil {
 				   .getOrganizationsCount(companyId, parentOrganizationId);
 	}
 
+	public static java.util.List<com.liferay.portal.model.Organization> getOrganzations(
+		long userId, long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getOrganzations(userId, groupId);
+	}
+
 	/**
 	* Returns the parent organizations in order by closest ancestor. The list
 	* starts with the organization itself.

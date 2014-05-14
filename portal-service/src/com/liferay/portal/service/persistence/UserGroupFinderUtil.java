@@ -67,6 +67,12 @@ public class UserGroupFinderUtil {
 		return getFinder().findByC_N(companyId, name);
 	}
 
+	public static java.util.List<com.liferay.portal.model.UserGroup> findByU_G(
+		long userId, long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getFinder().findByU_G(userId, groupId);
+	}
+
 	public static java.util.List<com.liferay.portal.model.UserGroup> findByC_N_D(
 		long companyId, java.lang.String name, java.lang.String description,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,

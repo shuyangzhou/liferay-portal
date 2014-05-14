@@ -705,6 +705,13 @@ public class OrganizationLocalServiceImpl
 		}
 	}
 
+	@Override
+	public List<Organization> getOrganzations(long userId, long groupId)
+		throws SystemException {
+
+		return organizationFinder.findByU_G(userId, groupId);
+	}
+
 	/**
 	 * Returns the parent organizations in order by closest ancestor. The list
 	 * starts with the organization itself.

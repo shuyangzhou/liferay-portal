@@ -100,6 +100,12 @@ public class OrganizationFinderUtil {
 			previousOrganizationId, size);
 	}
 
+	public static java.util.List<com.liferay.portal.model.Organization> findByU_G(
+		long userId, long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getFinder().findByU_G(userId, groupId);
+	}
+
 	public static java.util.List<com.liferay.portal.model.Organization> findByC_PO_N_T_S_C_Z_R_C(
 		long companyId, long parentOrganizationId,
 		java.lang.String parentOrganizationIdComparator, java.lang.String name,

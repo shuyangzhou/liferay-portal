@@ -774,6 +774,11 @@ public interface OrganizationLocalService extends BaseLocalService,
 	public int getOrganizationsCount(long companyId, long parentOrganizationId)
 		throws com.liferay.portal.kernel.exception.SystemException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public java.util.List<com.liferay.portal.model.Organization> getOrganzations(
+		long userId, long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
 	/**
 	* Returns the parent organizations in order by closest ancestor. The list
 	* starts with the organization itself.
