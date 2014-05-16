@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.settings.impl;
+package com.liferay.portal.settings;
 
 import com.liferay.portal.NoSuchPortletItemException;
 import com.liferay.portal.kernel.exception.PortalException;

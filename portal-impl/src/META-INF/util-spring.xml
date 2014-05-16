@@ -309,7 +309,7 @@
 	</bean>
 	<bean id="com.liferay.portal.kernel.settings.SettingsFactoryUtil" class="com.liferay.portal.kernel.settings.SettingsFactoryUtil">
 		<property name="settingsFactory">
-			<bean class="com.liferay.portal.settings.impl.SettingsFactoryImpl" />
+			<bean class="com.liferay.portal.settings.SettingsFactoryImpl" />
 		</property>
 	</bean>
 	<bean id="com.liferay.portal.kernel.spring.util.SpringFactory" class="com.liferay.portal.spring.util.SpringFactoryImpl">
