@@ -13,8 +13,99 @@
  * details.
  */
 --%>
+<%@ page import="com.liferay.portal.model.Group" %>
+<%@ page import="com.liferay.portal.service.GroupLocalServiceUtil" %>
+<%@ page import="com.liferay.portal.model.GroupConstants" %>
+<%@ page import="com.liferay.portlet.polls.model.PollsQuestion" %>
+<%@ page import="java.util.HashMap" %>
+<%@ page import="com.liferay.portal.kernel.lar.PortletDataHandlerKeys" %>
+<%@ page import="java.util.Date" %>
+<%@ page import="com.liferay.portal.kernel.util.Time" %>
+<%@ page import="com.liferay.portal.service.LayoutLocalServiceUtil" %>
+<%@ page import="com.liferay.portal.kernel.zip.ZipReader" %>
+<%@ page import="com.liferay.portal.kernel.zip.ZipReaderFactoryUtil" %>
+<%@ page import="java.io.ByteArrayInputStream" %>
+<%@ page
+	import="com.liferay.portlet.polls.service.PollsQuestionLocalServiceUtil" %>
+<%@ page import="com.liferay.portal.model.LayoutConstants" %>
+<%@ page import="com.liferay.portal.service.ServiceContext" %>
+<%@ page import="com.liferay.portal.util.PortalUtil" %>
+<%@ page import="java.util.Locale" %>
+<%@ page import="com.liferay.portal.model.Layout" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="com.liferay.portal.kernel.util.LocaleUtil" %>
+<%@ page import="com.liferay.portal.kernel.util.StringUtil" %>
+<%@ page import="com.liferay.portal.util.PortletKeys" %>
 
 <%@ include file="/html/portlet/polls/init.jsp" %>
+
+<%
+	try{
+		Group group2 = GroupLocalServiceUtil.getGroup(
+			PortalUtil.getCompanyId(renderRequest), GroupConstants.GUEST);
+		long groupId2 = group2.getGroupId();
+
+		ServiceContext serviceContext = new ServiceContext();
+
+		serviceContext.setAddGroupPermissions(true);
+		serviceContext.setAddGuestPermissions(true);
+		serviceContext.setCompanyId(PortalUtil.getDefaultCompanyId());
+		serviceContext.setScopeGroupId(groupId2);
+		serviceContext.setUserId(user.getUserId());
+
+		Map<Locale, String> map = new HashMap<Locale, String>();
+
+		String layout2Name = StringUtil.randomString(10);
+		map.put(LocaleUtil.getDefault(), layout2Name);
+
+		Layout layout2 = LayoutLocalServiceUtil.addLayout(
+			user.getUserId(), groupId2, false,
+			LayoutConstants.DEFAULT_PARENT_LAYOUT_ID, layout2Name, null, layout2Name,
+			LayoutConstants.TYPE_PORTLET, false, "/" + layout2Name, serviceContext);
+
+		HashMap<String, String[]> parameterMap = new HashMap<String, String[]>();
+
+		parameterMap.put(
+			PortletDataHandlerKeys.PORTLET_DATA,
+			new String[]{Boolean.TRUE.toString()});
+
+		parameterMap.put(
+			PortletDataHandlerKeys.PORTLET_DATA_ALL,
+			new String[]{Boolean.TRUE.toString()});
+
+		parameterMap.put(
+			PortletDataHandlerKeys.PORTLET_SETUP_ALL,
+			new String[]{Boolean.FALSE.toString()});
+		parameterMap.put(
+			PortletDataHandlerKeys.PORTLET_CONFIGURATION,
+			new String[]{Boolean.FALSE.toString()});
+		parameterMap.put(
+			PortletDataHandlerKeys.PORTLET_CONFIGURATION_ALL,
+			new String[]{Boolean.FALSE.toString()});
+
+		Date startDate = new Date(System.currentTimeMillis() - Time.HOUR);
+		Date endDate = new Date();
+
+		PollsQuestion pollsQuestion = PollsQuestionLocalServiceUtil.addQuestion(
+			user.getUserId(), map, map, 0, 0, 0, 0, 0, true, null,serviceContext);
+
+		byte[] bytes = LayoutLocalServiceUtil.exportPortletInfo(
+			layout2.getPlid(), layout2.getGroupId(), PortletKeys.POLLS,
+			parameterMap, startDate, endDate);
+
+		ZipReader zipReader = ZipReaderFactoryUtil.getZipReader(
+			new ByteArrayInputStream(bytes));
+
+		out.println(zipReader.getEntries());
+
+		PollsQuestionLocalServiceUtil.deleteQuestion(pollsQuestion);
+
+		LayoutLocalServiceUtil.deleteLayout(layout2);
+	}
+	catch (Exception e) {
+		e.printStackTrace();
+	}
+%>
 
 <aui:form method="post" name="fm">
 
