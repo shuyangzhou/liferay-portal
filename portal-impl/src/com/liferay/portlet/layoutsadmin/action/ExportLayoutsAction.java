@@ -84,21 +84,21 @@ public class ExportLayoutsAction extends PortletAction {
 				actionRequest, groupId, privateLayout, 0, null,
 				ExportImportDateUtil.RANGE_ALL);
 
-			String fileName = StringPool.BLANK;
+			String taskName = StringPool.BLANK;
 
 			if (privateLayout) {
-				fileName = LanguageUtil.get(
+				taskName = LanguageUtil.get(
 					actionRequest.getLocale(), "private-pages");
 			}
 			else {
-				fileName = LanguageUtil.get(
+				taskName = LanguageUtil.get(
 					actionRequest.getLocale(), "public-pages");
 			}
 
 			LayoutServiceUtil.exportLayoutsAsFileInBackground(
-				fileName, groupId, privateLayout, layoutIds,
+				taskName, groupId, privateLayout, layoutIds,
 				actionRequest.getParameterMap(), dateRange.getStartDate(),
-				dateRange.getEndDate(), fileName);
+				dateRange.getEndDate());
 
 			String redirect = ParamUtil.getString(actionRequest, "redirect");
 
