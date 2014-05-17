@@ -677,6 +677,18 @@ import ${packagePath}.service.${entity.name}${sessionTypeName}Service;
 				<#assign serviceBaseExceptions = serviceBuilder.getServiceBaseExceptions(methods, "add" + tempEntity.name + entity.name, [tempEntity.PKClassName, entity.PKClassName], ["SystemException"])>
 
 				/**
+				 * Returns the ${tempEntity.PKVarName}s of the ${tempEntity.humanNames} associated with the ${entity.humanName}.
+				 *
+				 * @param ${entity.PKVarName} the ${entity.PKVarName} of the ${entity.humanName}
+				 * @return List<Long> the ${tempEntity.PKVarName}s of ${tempEntity.humanNames} associated with the ${entity.humanName}
+				 * @throws SystemException if a system exception occurred
+				 */
+				@Override
+				public List<Long> get${tempEntity.name}Ids(${entity.PKClassName} ${entity.PKVarName}) throws SystemException {
+					return ${entity.varName}Persistence.get${tempEntity.name}PrimaryKeys(${entity.PKVarName});
+				}
+
+				/**
 				<#list serviceBaseExceptions as exception>
 				<#if exception == "SystemException">
 				 * @throws SystemException if a system exception occurred
