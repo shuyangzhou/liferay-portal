@@ -522,17 +522,17 @@ public class OrganizationLocalServiceImpl
 			long groupId, long userId)
 		throws PortalException, SystemException {
 
-		List<Long> groupOrganizationIds =
+		long[] groupOrganizationIds =
 			groupPersistence.getOrganizationPrimaryKeys(groupId);
 
-		if (groupOrganizationIds.isEmpty()) {
+		if (groupOrganizationIds.length == 0) {
 			return Collections.emptyList();
 		}
 
-		List<Long> userOrganizationIds =
-			userPersistence.getOrganizationPrimaryKeys(userId);
+		long[] userOrganizationIds = userPersistence.getOrganizationPrimaryKeys(
+			userId);
 
-		if (userOrganizationIds.isEmpty()) {
+		if (userOrganizationIds.length == 0) {
 			return Collections.emptyList();
 		}
 
