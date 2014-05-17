@@ -346,6 +346,19 @@ public class DLFileEntryTypeLocalServiceWrapper
 	}
 
 	/**
+	* Returns the folderIds of the document library folders associated with the document library file entry type.
+	*
+	* @param fileEntryTypeId the fileEntryTypeId of the document library file entry type
+	* @return List<Long> the folderIds of document library folders associated with the document library file entry type
+	* @throws SystemException if a system exception occurred
+	*/
+	@Override
+	public java.util.List<java.lang.Long> getDLFolderIds(long fileEntryTypeId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _dlFileEntryTypeLocalService.getDLFolderIds(fileEntryTypeId);
+	}
+
+	/**
 	* @throws SystemException if a system exception occurred
 	*/
 	@Override
@@ -512,6 +525,20 @@ public class DLFileEntryTypeLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.SystemException {
 		_dlFileEntryTypeLocalService.setDLFolderDLFileEntryTypes(folderId,
 			fileEntryTypeIds);
+	}
+
+	/**
+	* Returns the structureIds of the d d m structures associated with the document library file entry type.
+	*
+	* @param fileEntryTypeId the fileEntryTypeId of the document library file entry type
+	* @return List<Long> the structureIds of d d m structures associated with the document library file entry type
+	* @throws SystemException if a system exception occurred
+	*/
+	@Override
+	public java.util.List<java.lang.Long> getDDMStructureIds(
+		long fileEntryTypeId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _dlFileEntryTypeLocalService.getDDMStructureIds(fileEntryTypeId);
 	}
 
 	/**

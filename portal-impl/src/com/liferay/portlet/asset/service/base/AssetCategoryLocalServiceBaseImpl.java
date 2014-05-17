@@ -443,6 +443,19 @@ public abstract class AssetCategoryLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the entryIds of the asset entries associated with the asset category.
+	 *
+	 * @param categoryId the categoryId of the asset category
+	 * @return List<Long> the entryIds of asset entries associated with the asset category
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public List<Long> getAssetEntryIds(long categoryId)
+		throws SystemException {
+		return assetCategoryPersistence.getAssetEntryPrimaryKeys(categoryId);
+	}
+
+	/**
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override

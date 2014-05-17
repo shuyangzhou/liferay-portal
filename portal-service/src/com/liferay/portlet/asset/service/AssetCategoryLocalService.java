@@ -298,6 +298,17 @@ public interface AssetCategoryLocalService extends BaseLocalService,
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**
+	* Returns the entryIds of the asset entries associated with the asset category.
+	*
+	* @param categoryId the categoryId of the asset category
+	* @return List<Long> the entryIds of asset entries associated with the asset category
+	* @throws SystemException if a system exception occurred
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public java.util.List<java.lang.Long> getAssetEntryIds(long categoryId)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
 	* @throws SystemException if a system exception occurred
 	*/
 	public void addAssetEntryAssetCategory(long entryId, long categoryId)

@@ -341,6 +341,19 @@ public class DLFolderLocalServiceWrapper implements DLFolderLocalService,
 	}
 
 	/**
+	* Returns the fileEntryTypeIds of the document library file entry types associated with the document library folder.
+	*
+	* @param folderId the folderId of the document library folder
+	* @return List<Long> the fileEntryTypeIds of document library file entry types associated with the document library folder
+	* @throws SystemException if a system exception occurred
+	*/
+	@Override
+	public java.util.List<java.lang.Long> getDLFileEntryTypeIds(long folderId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _dlFolderLocalService.getDLFileEntryTypeIds(folderId);
+	}
+
+	/**
 	* @throws SystemException if a system exception occurred
 	*/
 	@Override

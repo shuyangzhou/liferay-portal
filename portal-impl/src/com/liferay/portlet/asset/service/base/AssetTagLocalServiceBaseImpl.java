@@ -314,6 +314,18 @@ public abstract class AssetTagLocalServiceBaseImpl extends BaseLocalServiceImpl
 	}
 
 	/**
+	 * Returns the entryIds of the asset entries associated with the asset tag.
+	 *
+	 * @param tagId the tagId of the asset tag
+	 * @return List<Long> the entryIds of asset entries associated with the asset tag
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public List<Long> getAssetEntryIds(long tagId) throws SystemException {
+		return assetTagPersistence.getAssetEntryPrimaryKeys(tagId);
+	}
+
+	/**
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override

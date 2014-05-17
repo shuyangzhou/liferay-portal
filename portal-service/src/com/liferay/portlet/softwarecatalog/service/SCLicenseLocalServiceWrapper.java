@@ -268,6 +268,19 @@ public class SCLicenseLocalServiceWrapper implements SCLicenseLocalService,
 	}
 
 	/**
+	* Returns the productEntryIds of the s c product entries associated with the s c license.
+	*
+	* @param licenseId the licenseId of the s c license
+	* @return List<Long> the productEntryIds of s c product entries associated with the s c license
+	* @throws SystemException if a system exception occurred
+	*/
+	@Override
+	public java.util.List<java.lang.Long> getSCProductEntryIds(long licenseId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _scLicenseLocalService.getSCProductEntryIds(licenseId);
+	}
+
+	/**
 	* @throws SystemException if a system exception occurred
 	*/
 	@Override

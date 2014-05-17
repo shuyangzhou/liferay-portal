@@ -259,6 +259,19 @@ public class AssetEntryLocalServiceUtil {
 	}
 
 	/**
+	* Returns the categoryIds of the asset categories associated with the asset entry.
+	*
+	* @param entryId the entryId of the asset entry
+	* @return List<Long> the categoryIds of asset categories associated with the asset entry
+	* @throws SystemException if a system exception occurred
+	*/
+	public static java.util.List<java.lang.Long> getAssetCategoryIds(
+		long entryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getAssetCategoryIds(entryId);
+	}
+
+	/**
 	* @throws SystemException if a system exception occurred
 	*/
 	public static void addAssetCategoryAssetEntry(long categoryId, long entryId)
@@ -399,6 +412,18 @@ public class AssetEntryLocalServiceUtil {
 		long[] entryIds)
 		throws com.liferay.portal.kernel.exception.SystemException {
 		getService().setAssetCategoryAssetEntries(categoryId, entryIds);
+	}
+
+	/**
+	* Returns the tagIds of the asset tags associated with the asset entry.
+	*
+	* @param entryId the entryId of the asset entry
+	* @return List<Long> the tagIds of asset tags associated with the asset entry
+	* @throws SystemException if a system exception occurred
+	*/
+	public static java.util.List<java.lang.Long> getAssetTagIds(long entryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getAssetTagIds(entryId);
 	}
 
 	/**

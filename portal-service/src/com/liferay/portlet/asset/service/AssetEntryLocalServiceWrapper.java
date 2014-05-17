@@ -269,6 +269,19 @@ public class AssetEntryLocalServiceWrapper implements AssetEntryLocalService,
 	}
 
 	/**
+	* Returns the categoryIds of the asset categories associated with the asset entry.
+	*
+	* @param entryId the entryId of the asset entry
+	* @return List<Long> the categoryIds of asset categories associated with the asset entry
+	* @throws SystemException if a system exception occurred
+	*/
+	@Override
+	public java.util.List<java.lang.Long> getAssetCategoryIds(long entryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _assetEntryLocalService.getAssetCategoryIds(entryId);
+	}
+
+	/**
 	* @throws SystemException if a system exception occurred
 	*/
 	@Override
@@ -429,6 +442,19 @@ public class AssetEntryLocalServiceWrapper implements AssetEntryLocalService,
 		throws com.liferay.portal.kernel.exception.SystemException {
 		_assetEntryLocalService.setAssetCategoryAssetEntries(categoryId,
 			entryIds);
+	}
+
+	/**
+	* Returns the tagIds of the asset tags associated with the asset entry.
+	*
+	* @param entryId the entryId of the asset entry
+	* @return List<Long> the tagIds of asset tags associated with the asset entry
+	* @throws SystemException if a system exception occurred
+	*/
+	@Override
+	public java.util.List<java.lang.Long> getAssetTagIds(long entryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _assetEntryLocalService.getAssetTagIds(entryId);
 	}
 
 	/**

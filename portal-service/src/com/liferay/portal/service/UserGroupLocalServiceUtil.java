@@ -297,6 +297,18 @@ public class UserGroupLocalServiceUtil {
 	}
 
 	/**
+	* Returns the groupIds of the groups associated with the user group.
+	*
+	* @param userGroupId the userGroupId of the user group
+	* @return List<Long> the groupIds of groups associated with the user group
+	* @throws SystemException if a system exception occurred
+	*/
+	public static java.util.List<java.lang.Long> getGroupIds(long userGroupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getGroupIds(userGroupId);
+	}
+
+	/**
 	* @throws SystemException if a system exception occurred
 	*/
 	public static void addGroupUserGroup(long groupId, long userGroupId)
@@ -434,6 +446,18 @@ public class UserGroupLocalServiceUtil {
 	}
 
 	/**
+	* Returns the teamIds of the teams associated with the user group.
+	*
+	* @param userGroupId the userGroupId of the user group
+	* @return List<Long> the teamIds of teams associated with the user group
+	* @throws SystemException if a system exception occurred
+	*/
+	public static java.util.List<java.lang.Long> getTeamIds(long userGroupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getTeamIds(userGroupId);
+	}
+
+	/**
 	* @throws SystemException if a system exception occurred
 	*/
 	public static void addTeamUserGroup(long teamId, long userGroupId)
@@ -567,6 +591,18 @@ public class UserGroupLocalServiceUtil {
 	public static void setTeamUserGroups(long teamId, long[] userGroupIds)
 		throws com.liferay.portal.kernel.exception.SystemException {
 		getService().setTeamUserGroups(teamId, userGroupIds);
+	}
+
+	/**
+	* Returns the userIds of the users associated with the user group.
+	*
+	* @param userGroupId the userGroupId of the user group
+	* @return List<Long> the userIds of users associated with the user group
+	* @throws SystemException if a system exception occurred
+	*/
+	public static java.util.List<java.lang.Long> getUserIds(long userGroupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getUserIds(userGroupId);
 	}
 
 	/**

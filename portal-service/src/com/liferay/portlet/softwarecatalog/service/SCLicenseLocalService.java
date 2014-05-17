@@ -237,6 +237,17 @@ public interface SCLicenseLocalService extends BaseLocalService,
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**
+	* Returns the productEntryIds of the s c product entries associated with the s c license.
+	*
+	* @param licenseId the licenseId of the s c license
+	* @return List<Long> the productEntryIds of s c product entries associated with the s c license
+	* @throws SystemException if a system exception occurred
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public java.util.List<java.lang.Long> getSCProductEntryIds(long licenseId)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
 	* @throws SystemException if a system exception occurred
 	*/
 	public void addSCProductEntrySCLicense(long productEntryId, long licenseId)

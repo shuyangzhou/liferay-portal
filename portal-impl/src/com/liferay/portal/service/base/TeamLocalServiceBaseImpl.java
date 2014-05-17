@@ -306,6 +306,18 @@ public abstract class TeamLocalServiceBaseImpl extends BaseLocalServiceImpl
 	}
 
 	/**
+	 * Returns the userIds of the users associated with the team.
+	 *
+	 * @param teamId the teamId of the team
+	 * @return List<Long> the userIds of users associated with the team
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public List<Long> getUserIds(long teamId) throws SystemException {
+		return teamPersistence.getUserPrimaryKeys(teamId);
+	}
+
+	/**
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
@@ -441,6 +453,18 @@ public abstract class TeamLocalServiceBaseImpl extends BaseLocalServiceImpl
 	public void setUserTeams(long userId, long[] teamIds)
 		throws SystemException {
 		userPersistence.setTeams(userId, teamIds);
+	}
+
+	/**
+	 * Returns the userGroupIds of the user groups associated with the team.
+	 *
+	 * @param teamId the teamId of the team
+	 * @return List<Long> the userGroupIds of user groups associated with the team
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public List<Long> getUserGroupIds(long teamId) throws SystemException {
+		return teamPersistence.getUserGroupPrimaryKeys(teamId);
 	}
 
 	/**

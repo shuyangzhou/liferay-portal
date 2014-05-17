@@ -456,6 +456,19 @@ public abstract class DDMStructureLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the fileEntryTypeIds of the document library file entry types associated with the d d m structure.
+	 *
+	 * @param structureId the structureId of the d d m structure
+	 * @return List<Long> the fileEntryTypeIds of document library file entry types associated with the d d m structure
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public List<Long> getDLFileEntryTypeIds(long structureId)
+		throws SystemException {
+		return ddmStructurePersistence.getDLFileEntryTypePrimaryKeys(structureId);
+	}
+
+	/**
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
@@ -608,6 +621,19 @@ public abstract class DDMStructureLocalServiceBaseImpl
 		long[] structureIds) throws SystemException {
 		dlFileEntryTypePersistence.setDDMStructures(fileEntryTypeId,
 			structureIds);
+	}
+
+	/**
+	 * Returns the folderIds of the journal folders associated with the d d m structure.
+	 *
+	 * @param structureId the structureId of the d d m structure
+	 * @return List<Long> the folderIds of journal folders associated with the d d m structure
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public List<Long> getJournalFolderIds(long structureId)
+		throws SystemException {
+		return ddmStructurePersistence.getJournalFolderPrimaryKeys(structureId);
 	}
 
 	/**

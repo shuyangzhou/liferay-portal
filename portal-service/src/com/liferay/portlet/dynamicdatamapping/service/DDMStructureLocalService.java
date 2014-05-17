@@ -298,6 +298,18 @@ public interface DDMStructureLocalService extends BaseLocalService,
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**
+	* Returns the fileEntryTypeIds of the document library file entry types associated with the d d m structure.
+	*
+	* @param structureId the structureId of the d d m structure
+	* @return List<Long> the fileEntryTypeIds of document library file entry types associated with the d d m structure
+	* @throws SystemException if a system exception occurred
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public java.util.List<java.lang.Long> getDLFileEntryTypeIds(
+		long structureId)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
 	* @throws SystemException if a system exception occurred
 	*/
 	public void addDLFileEntryTypeDDMStructure(long fileEntryTypeId,
@@ -411,6 +423,17 @@ public interface DDMStructureLocalService extends BaseLocalService,
 	*/
 	public void setDLFileEntryTypeDDMStructures(long fileEntryTypeId,
 		long[] structureIds)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
+	* Returns the folderIds of the journal folders associated with the d d m structure.
+	*
+	* @param structureId the structureId of the d d m structure
+	* @return List<Long> the folderIds of journal folders associated with the d d m structure
+	* @throws SystemException if a system exception occurred
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public java.util.List<java.lang.Long> getJournalFolderIds(long structureId)
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**

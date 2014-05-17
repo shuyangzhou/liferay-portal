@@ -314,6 +314,19 @@ public abstract class SCFrameworkVersionLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the productVersionIds of the s c product versions associated with the s c framework version.
+	 *
+	 * @param frameworkVersionId the frameworkVersionId of the s c framework version
+	 * @return List<Long> the productVersionIds of s c product versions associated with the s c framework version
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public List<Long> getSCProductVersionIds(long frameworkVersionId)
+		throws SystemException {
+		return scFrameworkVersionPersistence.getSCProductVersionPrimaryKeys(frameworkVersionId);
+	}
+
+	/**
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override

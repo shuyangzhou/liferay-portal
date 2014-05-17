@@ -260,6 +260,17 @@ public interface GroupLocalService extends BaseLocalService,
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**
+	* Returns the organizationIds of the organizations associated with the group.
+	*
+	* @param groupId the groupId of the group
+	* @return List<Long> the organizationIds of organizations associated with the group
+	* @throws SystemException if a system exception occurred
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public java.util.List<java.lang.Long> getOrganizationIds(long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
 	* @throws SystemException if a system exception occurred
 	*/
 	public void addOrganizationGroup(long organizationId, long groupId)
@@ -367,6 +378,17 @@ public interface GroupLocalService extends BaseLocalService,
 	* @throws SystemException if a system exception occurred
 	*/
 	public void setOrganizationGroups(long organizationId, long[] groupIds)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
+	* Returns the roleIds of the roles associated with the group.
+	*
+	* @param groupId the groupId of the group
+	* @return List<Long> the roleIds of roles associated with the group
+	* @throws SystemException if a system exception occurred
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public java.util.List<java.lang.Long> getRoleIds(long groupId)
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**
@@ -478,6 +500,17 @@ public interface GroupLocalService extends BaseLocalService,
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**
+	* Returns the userGroupIds of the user groups associated with the group.
+	*
+	* @param groupId the groupId of the group
+	* @return List<Long> the userGroupIds of user groups associated with the group
+	* @throws SystemException if a system exception occurred
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public java.util.List<java.lang.Long> getUserGroupIds(long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
 	* @throws SystemException if a system exception occurred
 	*/
 	public void addUserGroupGroup(long userGroupId, long groupId)
@@ -585,6 +618,17 @@ public interface GroupLocalService extends BaseLocalService,
 	* @throws SystemException if a system exception occurred
 	*/
 	public void setUserGroupGroups(long userGroupId, long[] groupIds)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
+	* Returns the userIds of the users associated with the group.
+	*
+	* @param groupId the groupId of the group
+	* @return List<Long> the userIds of users associated with the group
+	* @throws SystemException if a system exception occurred
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public java.util.List<java.lang.Long> getUserIds(long groupId)
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**

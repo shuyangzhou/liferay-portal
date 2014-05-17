@@ -287,6 +287,19 @@ public class GroupLocalServiceUtil {
 	}
 
 	/**
+	* Returns the organizationIds of the organizations associated with the group.
+	*
+	* @param groupId the groupId of the group
+	* @return List<Long> the organizationIds of organizations associated with the group
+	* @throws SystemException if a system exception occurred
+	*/
+	public static java.util.List<java.lang.Long> getOrganizationIds(
+		long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getOrganizationIds(groupId);
+	}
+
+	/**
 	* @throws SystemException if a system exception occurred
 	*/
 	public static void addOrganizationGroup(long organizationId, long groupId)
@@ -428,6 +441,18 @@ public class GroupLocalServiceUtil {
 	}
 
 	/**
+	* Returns the roleIds of the roles associated with the group.
+	*
+	* @param groupId the groupId of the group
+	* @return List<Long> the roleIds of roles associated with the group
+	* @throws SystemException if a system exception occurred
+	*/
+	public static java.util.List<java.lang.Long> getRoleIds(long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getRoleIds(groupId);
+	}
+
+	/**
 	* @throws SystemException if a system exception occurred
 	*/
 	public static void addRoleGroup(long roleId, long groupId)
@@ -560,6 +585,18 @@ public class GroupLocalServiceUtil {
 	public static void setRoleGroups(long roleId, long[] groupIds)
 		throws com.liferay.portal.kernel.exception.SystemException {
 		getService().setRoleGroups(roleId, groupIds);
+	}
+
+	/**
+	* Returns the userGroupIds of the user groups associated with the group.
+	*
+	* @param groupId the groupId of the group
+	* @return List<Long> the userGroupIds of user groups associated with the group
+	* @throws SystemException if a system exception occurred
+	*/
+	public static java.util.List<java.lang.Long> getUserGroupIds(long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getUserGroupIds(groupId);
 	}
 
 	/**
@@ -698,6 +735,18 @@ public class GroupLocalServiceUtil {
 	public static void setUserGroupGroups(long userGroupId, long[] groupIds)
 		throws com.liferay.portal.kernel.exception.SystemException {
 		getService().setUserGroupGroups(userGroupId, groupIds);
+	}
+
+	/**
+	* Returns the userIds of the users associated with the group.
+	*
+	* @param groupId the groupId of the group
+	* @return List<Long> the userIds of users associated with the group
+	* @throws SystemException if a system exception occurred
+	*/
+	public static java.util.List<java.lang.Long> getUserIds(long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getUserIds(groupId);
 	}
 
 	/**

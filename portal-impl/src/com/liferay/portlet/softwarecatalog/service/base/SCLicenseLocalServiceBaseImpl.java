@@ -308,6 +308,19 @@ public abstract class SCLicenseLocalServiceBaseImpl extends BaseLocalServiceImpl
 	}
 
 	/**
+	 * Returns the productEntryIds of the s c product entries associated with the s c license.
+	 *
+	 * @param licenseId the licenseId of the s c license
+	 * @return List<Long> the productEntryIds of s c product entries associated with the s c license
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public List<Long> getSCProductEntryIds(long licenseId)
+		throws SystemException {
+		return scLicensePersistence.getSCProductEntryPrimaryKeys(licenseId);
+	}
+
+	/**
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override

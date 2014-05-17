@@ -258,6 +258,18 @@ public class AssetTagLocalServiceUtil {
 	}
 
 	/**
+	* Returns the entryIds of the asset entries associated with the asset tag.
+	*
+	* @param tagId the tagId of the asset tag
+	* @return List<Long> the entryIds of asset entries associated with the asset tag
+	* @throws SystemException if a system exception occurred
+	*/
+	public static java.util.List<java.lang.Long> getAssetEntryIds(long tagId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getAssetEntryIds(tagId);
+	}
+
+	/**
 	* @throws SystemException if a system exception occurred
 	*/
 	public static void addAssetEntryAssetTag(long entryId, long tagId)
