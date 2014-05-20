@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Digester;
 import com.liferay.portal.kernel.util.DigesterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
@@ -65,6 +66,7 @@ import com.liferay.portal.service.PhoneLocalServiceUtil;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.TeamLocalServiceUtil;
 import com.liferay.portal.service.UserGroupLocalServiceUtil;
+import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.service.WebsiteLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.Portal;
@@ -516,17 +518,9 @@ public class UserImpl extends UserBaseImpl {
 
 	@Override
 	public long[] getGroupIds() throws SystemException {
-		List<Group> groups = getGroups();
+		List<Long> groupIds = UserLocalServiceUtil.getGroupIds(getUserId());
 
-		long[] groupIds = new long[groups.size()];
-
-		for (int i = 0; i < groups.size(); i++) {
-			Group group = groups.get(i);
-
-			groupIds[i] = group.getGroupId();
-		}
-
-		return groupIds;
+		return ArrayUtil.toLongArray(groupIds);
 	}
 
 	@Override
@@ -675,18 +669,11 @@ public class UserImpl extends UserBaseImpl {
 	public long[] getOrganizationIds(boolean includeAdministrative)
 		throws PortalException, SystemException {
 
-		List<Organization> organizations = getOrganizations(
-			includeAdministrative);
+		List<Long> organizationIds =
+			OrganizationLocalServiceUtil.getUserOrganizationIds(
+				getUserId(), includeAdministrative);
 
-		long[] organizationIds = new long[organizations.size()];
-
-		for (int i = 0; i < organizations.size(); i++) {
-			Organization organization = organizations.get(i);
-
-			organizationIds[i] = organization.getOrganizationId();
-		}
-
-		return organizationIds;
+		return ArrayUtil.toLongArray(organizationIds);
 	}
 
 	@Override
@@ -812,17 +799,9 @@ public class UserImpl extends UserBaseImpl {
 
 	@Override
 	public long[] getRoleIds() throws SystemException {
-		List<Role> roles = getRoles();
+		List<Long> roleIds = UserLocalServiceUtil.getRoleIds(getUserId());
 
-		long[] roleIds = new long[roles.size()];
-
-		for (int i = 0; i < roles.size(); i++) {
-			Role role = roles.get(i);
-
-			roleIds[i] = role.getRoleId();
-		}
-
-		return roleIds;
+		return ArrayUtil.toLongArray(roleIds);
 	}
 
 	@Override
@@ -845,17 +824,9 @@ public class UserImpl extends UserBaseImpl {
 
 	@Override
 	public long[] getTeamIds() throws SystemException {
-		List<Team> teams = getTeams();
+		List<Long> teamIds = UserLocalServiceUtil.getTeamIds(getUserId());
 
-		long[] teamIds = new long[teams.size()];
-
-		for (int i = 0; i < teams.size(); i++) {
-			Team team = teams.get(i);
-
-			teamIds[i] = team.getTeamId();
-		}
-
-		return teamIds;
+		return ArrayUtil.toLongArray(teamIds);
 	}
 
 	@Override
@@ -870,17 +841,10 @@ public class UserImpl extends UserBaseImpl {
 
 	@Override
 	public long[] getUserGroupIds() throws SystemException {
-		List<UserGroup> userGroups = getUserGroups();
+		List<Long> userGroupIds = UserLocalServiceUtil.getUserGroupIds(
+			getUserId());
 
-		long[] userGroupIds = new long[userGroups.size()];
-
-		for (int i = 0; i < userGroups.size(); i++) {
-			UserGroup userGroup = userGroups.get(i);
-
-			userGroupIds[i] = userGroup.getUserGroupId();
-		}
-
-		return userGroupIds;
+		return ArrayUtil.toLongArray(userGroupIds);
 	}
 
 	@Override
@@ -936,9 +900,14 @@ public class UserImpl extends UserBaseImpl {
 
 	@Override
 	public boolean hasOrganization() throws PortalException, SystemException {
-		List<Organization> organizations = getOrganizations();
+		long[] organizations = getOrganizationIds();
 
-		return !organizations.isEmpty();
+		if (organizations.length > 0) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 	@Override

@@ -855,6 +855,52 @@ public class OrganizationLocalServiceImpl
 	}
 
 	/**
+	 * Returns all the organizationIds associated with the user. If
+	 * includeAdministrative is <code>true</code>, the result includes those
+	 * organizationIds that are not directly associated to the user but he is an
+	 * administrator or an owner of the organization.
+	 *
+	 * @param  userId the primary key of the user
+	 * @param  includeAdministrative whether to includes organizations that are
+	 *         indirectly associated to the user because he is an administrator
+	 *         or an owner of the organization
+	 * @return the organizationIds of organizations associated with the user
+	 * @throws PortalException if a user with the primary key could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public List<Long> getUserOrganizationIds(
+			long userId, boolean includeAdministrative)
+		throws PortalException, SystemException {
+
+		Set<Long> organizationsIds = new HashSet<Long>();
+
+		if (includeAdministrative) {
+			List<UserGroupRole> userGroupRoles =
+				userGroupRoleLocalService.getUserGroupRoles(userId);
+
+			for (UserGroupRole userGroupRole : userGroupRoles) {
+				Role role = userGroupRole.getRole();
+
+				String roleName = role.getName();
+
+				if (roleName.equals(RoleConstants.ORGANIZATION_ADMINISTRATOR) ||
+					roleName.equals(RoleConstants.ORGANIZATION_OWNER)) {
+
+					Group group = userGroupRole.getGroup();
+
+					organizationsIds.add(group.getOrganizationId());
+				}
+			}
+		}
+
+		organizationsIds.addAll(
+			userPersistence.getOrganizationPrimaryKeys(userId));
+
+		return new ArrayList<Long>(organizationsIds);
+	}
+
+	/**
 	 * Returns all the organizations associated with the user. If
 	 * includeAdministrative is <code>true</code>, the result includes those
 	 * organizations that are not directly associated to the user but he is an
