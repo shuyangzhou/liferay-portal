@@ -873,29 +873,29 @@ public class OrganizationLocalServiceImpl
 			long userId, boolean includeAdministrative)
 		throws PortalException, SystemException {
 
-		Set<Long> organizationsIds = new HashSet<Long>();
-
-		if (includeAdministrative) {
-			List<UserGroupRole> userGroupRoles =
-				userGroupRoleLocalService.getUserGroupRoles(userId);
-
-			for (UserGroupRole userGroupRole : userGroupRoles) {
-				Role role = userGroupRole.getRole();
-
-				String roleName = role.getName();
-
-				if (roleName.equals(RoleConstants.ORGANIZATION_ADMINISTRATOR) ||
-					roleName.equals(RoleConstants.ORGANIZATION_OWNER)) {
-
-					Group group = userGroupRole.getGroup();
-
-					organizationsIds.add(group.getOrganizationId());
-				}
-			}
+		if (!includeAdministrative) {
+			return userPersistence.getOrganizationPrimaryKeys(userId);
 		}
 
-		organizationsIds.addAll(
+		Set<Long> organizationsIds = new HashSet<Long>(
 			userPersistence.getOrganizationPrimaryKeys(userId));
+
+		List<UserGroupRole> userGroupRoles =
+			userGroupRoleLocalService.getUserGroupRoles(userId);
+
+		for (UserGroupRole userGroupRole : userGroupRoles) {
+			Role role = userGroupRole.getRole();
+
+			String roleName = role.getName();
+
+			if (roleName.equals(RoleConstants.ORGANIZATION_ADMINISTRATOR) ||
+				roleName.equals(RoleConstants.ORGANIZATION_OWNER)) {
+
+				Group group = userGroupRole.getGroup();
+
+				organizationsIds.add(group.getOrganizationId());
+			}
+		}
 
 		return new ArrayList<Long>(organizationsIds);
 	}
@@ -923,7 +923,8 @@ public class OrganizationLocalServiceImpl
 			return getUserOrganizations(userId);
 		}
 
-		Set<Organization> organizations = new HashSet<Organization>();
+		Set<Organization> organizations = new HashSet<Organization>(
+			getUserOrganizations(userId));
 
 		List<UserGroupRole> userGroupRoles =
 			userGroupRoleLocalService.getUserGroupRoles(userId);
@@ -945,8 +946,6 @@ public class OrganizationLocalServiceImpl
 				organizations.add(organization);
 			}
 		}
-
-		organizations.addAll(getUserOrganizations(userId));
 
 		return new ArrayList<Organization>(organizations);
 	}
