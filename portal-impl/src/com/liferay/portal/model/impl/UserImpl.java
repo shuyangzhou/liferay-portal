@@ -900,14 +900,9 @@ public class UserImpl extends UserBaseImpl {
 
 	@Override
 	public boolean hasOrganization() throws PortalException, SystemException {
-		long[] organizations = getOrganizationIds();
+		List<Organization> organizations = getOrganizations();
 
-		if (organizations.length > 0) {
-			return true;
-		}
-		else {
-			return false;
-		}
+		return !organizations.isEmpty();
 	}
 
 	@Override
