@@ -298,6 +298,17 @@ public interface JournalFolderLocalService extends BaseLocalService,
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**
+	* Returns the structureIds of the d d m structures associated with the journal folder.
+	*
+	* @param folderId the folderId of the journal folder
+	* @return List<Long> the structureIds of d d m structures associated with the journal folder
+	* @throws SystemException if a system exception occurred
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public java.util.List<java.lang.Long> getDDMStructureIds(long folderId)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
 	* @throws SystemException if a system exception occurred
 	*/
 	public void addDDMStructureJournalFolder(long structureId, long folderId)

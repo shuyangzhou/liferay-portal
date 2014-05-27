@@ -297,6 +297,19 @@ public class OrganizationLocalServiceUtil {
 	}
 
 	/**
+	* Returns the groupIds of the groups associated with the organization.
+	*
+	* @param organizationId the organizationId of the organization
+	* @return List<Long> the groupIds of groups associated with the organization
+	* @throws SystemException if a system exception occurred
+	*/
+	public static java.util.List<java.lang.Long> getGroupIds(
+		long organizationId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getGroupIds(organizationId);
+	}
+
+	/**
 	* @throws SystemException if a system exception occurred
 	*/
 	public static void addGroupOrganization(long groupId, long organizationId)
@@ -440,6 +453,18 @@ public class OrganizationLocalServiceUtil {
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
 		getService().setGroupOrganizations(groupId, organizationIds);
+	}
+
+	/**
+	* Returns the userIds of the users associated with the organization.
+	*
+	* @param organizationId the organizationId of the organization
+	* @return List<Long> the userIds of users associated with the organization
+	* @throws SystemException if a system exception occurred
+	*/
+	public static java.util.List<java.lang.Long> getUserIds(long organizationId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getUserIds(organizationId);
 	}
 
 	/**
@@ -976,6 +1001,27 @@ public class OrganizationLocalServiceUtil {
 		return getService()
 				   .getSubsetOrganizations(allOrganizations,
 			availableOrganizations);
+	}
+
+	/**
+	* Returns all the organizationIds associated with the user. If
+	* includeAdministrative is <code>true</code>, the result includes those
+	* organizationIds that are not directly associated to the user but he is an
+	* administrator or an owner of the organization.
+	*
+	* @param userId the primary key of the user
+	* @param includeAdministrative whether to includes organizations that are
+	indirectly associated to the user because he is an administrator
+	or an owner of the organization
+	* @return the organizationIds of organizations associated with the user
+	* @throws PortalException if a user with the primary key could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public static java.util.List<java.lang.Long> getUserOrganizationIds(
+		long userId, boolean includeAdministrative)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().getUserOrganizationIds(userId, includeAdministrative);
 	}
 
 	/**

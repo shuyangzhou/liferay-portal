@@ -427,6 +427,19 @@ public abstract class OrganizationLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the groupIds of the groups associated with the organization.
+	 *
+	 * @param organizationId the organizationId of the organization
+	 * @return List<Long> the groupIds of groups associated with the organization
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public List<Long> getGroupIds(long organizationId)
+		throws SystemException {
+		return organizationPersistence.getGroupPrimaryKeys(organizationId);
+	}
+
+	/**
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
@@ -572,6 +585,18 @@ public abstract class OrganizationLocalServiceBaseImpl
 	public void setGroupOrganizations(long groupId, long[] organizationIds)
 		throws PortalException, SystemException {
 		groupPersistence.setOrganizations(groupId, organizationIds);
+	}
+
+	/**
+	 * Returns the userIds of the users associated with the organization.
+	 *
+	 * @param organizationId the organizationId of the organization
+	 * @return List<Long> the userIds of users associated with the organization
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public List<Long> getUserIds(long organizationId) throws SystemException {
+		return organizationPersistence.getUserPrimaryKeys(organizationId);
 	}
 
 	/**

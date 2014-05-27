@@ -455,6 +455,19 @@ public abstract class DLFolderLocalServiceBaseImpl extends BaseLocalServiceImpl
 	}
 
 	/**
+	 * Returns the fileEntryTypeIds of the document library file entry types associated with the document library folder.
+	 *
+	 * @param folderId the folderId of the document library folder
+	 * @return List<Long> the fileEntryTypeIds of document library file entry types associated with the document library folder
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public List<Long> getDLFileEntryTypeIds(long folderId)
+		throws SystemException {
+		return dlFolderPersistence.getDLFileEntryTypePrimaryKeys(folderId);
+	}
+
+	/**
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override

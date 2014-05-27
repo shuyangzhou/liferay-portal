@@ -322,6 +322,19 @@ public abstract class SCProductEntryLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the licenseIds of the s c licenses associated with the s c product entry.
+	 *
+	 * @param productEntryId the productEntryId of the s c product entry
+	 * @return List<Long> the licenseIds of s c licenses associated with the s c product entry
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public List<Long> getSCLicenseIds(long productEntryId)
+		throws SystemException {
+		return scProductEntryPersistence.getSCLicensePrimaryKeys(productEntryId);
+	}
+
+	/**
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
