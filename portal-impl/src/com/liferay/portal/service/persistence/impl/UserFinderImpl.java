@@ -120,6 +120,12 @@ public class UserFinderImpl
 	public static final String JOIN_BY_SOCIAL_MUTUAL_RELATION_TYPE =
 		UserFinder.class.getName() + ".joinBySocialMutualRelationType";
 
+	public static final String JOIN_BY_SOCIAL_RELATION =
+		UserFinder.class.getName() + ".joinBySocialRelation";
+
+	public static final String JOIN_BY_SOCIAL_RELATION_TYPE =
+		UserFinder.class.getName() + ".joinBySocialRelationType";
+
 	@Override
 	public int countBySocialUsers(
 			long companyId, long userId, int type,
@@ -970,16 +976,6 @@ public class UserFinderImpl
 		}
 	}
 
-	protected String buildTypeSQL(String sql, boolean equal) {
-		if (equal) {
-			return StringUtil.replace(
-				sql, "[$SOCIAL_RELATION_TYPE$]", "SocialRelation.type_ = ?");
-		}
-
-		return StringUtil.replace(
-			sql, "[$SOCIAL_RELATION_TYPE$]", "SocialRelation.type_ <> ?");
-	}
-
 	protected List<Long> countByC_FN_MN_LN_SN_EA_S(
 		Session session, long companyId, String[] firstNames,
 		String[] middleNames, String[] lastNames, String[] screenNames,
@@ -1098,6 +1094,12 @@ public class UserFinderImpl
 		}
 		else if (key.equals("socialMutualRelationType")) {
 			join = CustomSQLUtil.get(JOIN_BY_SOCIAL_MUTUAL_RELATION_TYPE);
+		}
+		else if (key.equals("socialRelation")) {
+			join = CustomSQLUtil.get(JOIN_BY_SOCIAL_RELATION);
+		}
+		else if (key.equals("socialRelationType")) {
+			join = CustomSQLUtil.get(JOIN_BY_SOCIAL_RELATION_TYPE);
 		}
 		else if (value instanceof CustomSQLParam) {
 			CustomSQLParam customSQLParam = (CustomSQLParam)value;
@@ -1277,6 +1279,36 @@ public class UserFinderImpl
 		}
 		else if (key.equals("socialMutualRelationType")) {
 			join = CustomSQLUtil.get(JOIN_BY_SOCIAL_MUTUAL_RELATION_TYPE);
+		}
+		else if (key.equals("socialRelation")) {
+			join = CustomSQLUtil.get(JOIN_BY_SOCIAL_RELATION);
+		}
+		else if (key.equals("socialRelationType")) {
+			if (value instanceof Long[]) {
+				join = CustomSQLUtil.get(JOIN_BY_SOCIAL_RELATION_TYPE);
+			}
+			else if (value instanceof Long[][]) {
+				StringBundler sb = new StringBundler();
+
+				sb.append("WHERE (SocialRelation.userId1 = ?) AND ");
+				sb.append("(SocialRelation.type_ IN (");
+
+				Long[][] valueDoubleArray = (Long[][])value;
+
+				Long[] socialRelationTypes = valueDoubleArray[1];
+
+				for (int i = 0; i < socialRelationTypes.length; i++) {
+					sb.append(StringPool.QUESTION);
+
+					if ((i + 1) < socialRelationTypes.length) {
+						sb.append(StringPool.COMMA);
+					}
+				}
+
+				sb.append("))");
+
+				join = sb.toString();
+			}
 		}
 		else if (value instanceof CustomSQLParam) {
 			CustomSQLParam customSQLParam = (CustomSQLParam)value;
