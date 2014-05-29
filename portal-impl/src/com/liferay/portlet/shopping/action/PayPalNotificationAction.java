@@ -153,7 +153,7 @@ public class PayPalNotificationAction extends Action {
 
 		ShoppingOrder order = ShoppingOrderLocalServiceUtil.getOrder(ppInvoice);
 
-		ShoppingSettings shoppingSettings = ShoppingUtil.getShoppingSettings(
+		ShoppingSettings shoppingSettings = ShoppingSettings.getInstance(
 			order.getGroupId());
 
 		// Receiver email address

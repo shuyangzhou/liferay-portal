@@ -14,13 +14,21 @@
 
 package com.liferay.portlet.wiki;
 
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.settings.FallbackKeys;
 import com.liferay.portal.kernel.settings.LocalizedValuesMap;
+import com.liferay.portal.kernel.settings.ParameterMapSettings;
 import com.liferay.portal.kernel.settings.Settings;
+import com.liferay.portal.kernel.settings.SettingsFactory;
+import com.liferay.portal.kernel.settings.SettingsFactoryUtil;
 import com.liferay.portal.kernel.settings.TypedSettings;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portlet.wiki.util.WikiConstants;
 
 import java.io.IOException;
+
+import java.util.Map;
 
 import javax.portlet.ValidatorException;
 
@@ -31,31 +39,24 @@ public class WikiSettings {
 
 	public static final String[] MULTI_VALUED_KEYS = {};
 
-	public static FallbackKeys getFallbackKeys() {
-		FallbackKeys fallbackKeys = new FallbackKeys();
+	public static WikiSettings getInstance(long groupId)
+		throws PortalException, SystemException {
 
-		fallbackKeys.add(
-			"emailFromAddress", PropsKeys.WIKI_EMAIL_FROM_ADDRESS,
-			PropsKeys.ADMIN_EMAIL_FROM_ADDRESS);
-		fallbackKeys.add(
-			"emailFromName", PropsKeys.WIKI_EMAIL_FROM_NAME,
-			PropsKeys.ADMIN_EMAIL_FROM_NAME);
-		fallbackKeys.add(
-			"emailPageAddedBody", PropsKeys.WIKI_EMAIL_PAGE_ADDED_BODY);
-		fallbackKeys.add(
-			"emailPageAddedEnabled", PropsKeys.WIKI_EMAIL_PAGE_ADDED_ENABLED);
-		fallbackKeys.add(
-			"emailPageAddedSubject", PropsKeys.WIKI_EMAIL_PAGE_ADDED_SUBJECT);
-		fallbackKeys.add(
-			"emailPageUpdatedBody", PropsKeys.WIKI_EMAIL_PAGE_UPDATED_BODY);
-		fallbackKeys.add(
-			"emailPageUpdatedEnabled",
-			PropsKeys.WIKI_EMAIL_PAGE_UPDATED_ENABLED);
-		fallbackKeys.add(
-			"emailPageUpdatedSubject",
-			PropsKeys.WIKI_EMAIL_PAGE_UPDATED_SUBJECT);
+		Settings settings = SettingsFactoryUtil.getGroupServiceSettings(
+			groupId, WikiConstants.SERVICE_NAME);
 
-		return fallbackKeys;
+		return new WikiSettings(settings);
+	}
+
+	public static WikiSettings getInstance(
+			long groupId, Map<String, String[]> parameterMap)
+		throws PortalException, SystemException {
+
+		Settings settings = SettingsFactoryUtil.getGroupServiceSettings(
+			groupId, WikiConstants.SERVICE_NAME);
+
+		return new WikiSettings(
+			new ParameterMapSettings(parameterMap, settings));
 	}
 
 	public WikiSettings(Settings settings) {
@@ -124,6 +125,43 @@ public class WikiSettings {
 		Settings settings = _typedSettings.getWrappedSettings();
 
 		settings.store();
+	}
+
+	private static FallbackKeys _getFallbackKeys() {
+		FallbackKeys fallbackKeys = new FallbackKeys();
+
+		fallbackKeys.add(
+			"emailFromAddress", PropsKeys.WIKI_EMAIL_FROM_ADDRESS,
+			PropsKeys.ADMIN_EMAIL_FROM_ADDRESS);
+		fallbackKeys.add(
+			"emailFromName", PropsKeys.WIKI_EMAIL_FROM_NAME,
+			PropsKeys.ADMIN_EMAIL_FROM_NAME);
+		fallbackKeys.add(
+			"emailPageAddedBody", PropsKeys.WIKI_EMAIL_PAGE_ADDED_BODY);
+		fallbackKeys.add(
+			"emailPageAddedEnabled", PropsKeys.WIKI_EMAIL_PAGE_ADDED_ENABLED);
+		fallbackKeys.add(
+			"emailPageAddedSubject", PropsKeys.WIKI_EMAIL_PAGE_ADDED_SUBJECT);
+		fallbackKeys.add(
+			"emailPageUpdatedBody", PropsKeys.WIKI_EMAIL_PAGE_UPDATED_BODY);
+		fallbackKeys.add(
+			"emailPageUpdatedEnabled",
+			PropsKeys.WIKI_EMAIL_PAGE_UPDATED_ENABLED);
+		fallbackKeys.add(
+			"emailPageUpdatedSubject",
+			PropsKeys.WIKI_EMAIL_PAGE_UPDATED_SUBJECT);
+
+		return fallbackKeys;
+	}
+
+	static {
+		FallbackKeys fallbackKeys = _getFallbackKeys();
+
+		SettingsFactory settingsFactory =
+			SettingsFactoryUtil.getSettingsFactory();
+
+		settingsFactory.registerFallbackKeys(
+			WikiConstants.SERVICE_NAME, fallbackKeys);
 	}
 
 	private TypedSettings _typedSettings;

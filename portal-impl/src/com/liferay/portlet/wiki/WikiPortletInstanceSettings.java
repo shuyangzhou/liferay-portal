@@ -14,13 +14,22 @@
 
 package com.liferay.portlet.wiki;
 
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.settings.FallbackKeys;
+import com.liferay.portal.kernel.settings.ParameterMapSettings;
 import com.liferay.portal.kernel.settings.Settings;
+import com.liferay.portal.kernel.settings.SettingsFactory;
+import com.liferay.portal.kernel.settings.SettingsFactoryUtil;
 import com.liferay.portal.kernel.settings.TypedSettings;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.model.Layout;
 import com.liferay.portal.util.PortalUtil;
+import com.liferay.portal.util.PortletKeys;
 
 import java.io.IOException;
+
+import java.util.Map;
 
 import javax.portlet.ValidatorException;
 
@@ -33,25 +42,25 @@ public class WikiPortletInstanceSettings {
 		"visibleNodes", "hiddenNodes"
 	};
 
-	public static FallbackKeys getFallbackKeys() {
-		FallbackKeys fallbackKeys = new FallbackKeys();
+	public static WikiPortletInstanceSettings getInstance(
+			Layout layout, String portletId)
+		throws PortalException, SystemException {
 
-		fallbackKeys.add(
-			"enableComments", PropsKeys.WIKI_PAGE_COMMENTS_ENABLED);
-		fallbackKeys.add(
-			"enableCommentRatings", PropsKeys.WIKI_COMMENT_RATINGS_ENABLED);
-		fallbackKeys.add(
-			"enablePageRatings", PropsKeys.WIKI_PAGE_RATINGS_ENABLED);
-		fallbackKeys.add(
-			"enableRelatedAssets", PropsKeys.WIKI_RELATED_ASSETS_ENABLED);
-		fallbackKeys.add("enableRss", PropsKeys.WIKI_RSS_ENABLED);
-		fallbackKeys.add(
-			"rssDelta", PropsKeys.SEARCH_CONTAINER_PAGE_DEFAULT_DELTA);
-		fallbackKeys.add(
-			"rssDisplayStyle", PropsKeys.RSS_FEED_DISPLAY_STYLE_DEFAULT);
-		fallbackKeys.add("rssFeedType", PropsKeys.RSS_FEED_TYPE_DEFAULT);
+		Settings settings = SettingsFactoryUtil.getPortletInstanceSettings(
+			layout, portletId);
 
-		return fallbackKeys;
+		return new WikiPortletInstanceSettings(settings);
+	}
+
+	public static WikiPortletInstanceSettings getInstance(
+			Layout layout, String portletId, Map<String, String[]> parameterMap)
+		throws PortalException, SystemException {
+
+		Settings settings = SettingsFactoryUtil.getPortletInstanceSettings(
+			layout, portletId);
+
+		return new WikiPortletInstanceSettings(
+			new ParameterMapSettings(parameterMap, settings));
 	}
 
 	public WikiPortletInstanceSettings(Settings settings) {
@@ -121,6 +130,40 @@ public class WikiPortletInstanceSettings {
 
 	public void store() throws IOException, ValidatorException {
 		_typedSettings.getWrappedSettings().store();
+	}
+
+	private static FallbackKeys _getFallbackKeys() {
+		FallbackKeys fallbackKeys = new FallbackKeys();
+
+		fallbackKeys.add(
+			"enableComments", PropsKeys.WIKI_PAGE_COMMENTS_ENABLED);
+		fallbackKeys.add(
+			"enableCommentRatings", PropsKeys.WIKI_COMMENT_RATINGS_ENABLED);
+		fallbackKeys.add(
+			"enablePageRatings", PropsKeys.WIKI_PAGE_RATINGS_ENABLED);
+		fallbackKeys.add(
+			"enableRelatedAssets", PropsKeys.WIKI_RELATED_ASSETS_ENABLED);
+		fallbackKeys.add("enableRss", PropsKeys.WIKI_RSS_ENABLED);
+		fallbackKeys.add(
+			"rssDelta", PropsKeys.SEARCH_CONTAINER_PAGE_DEFAULT_DELTA);
+		fallbackKeys.add(
+			"rssDisplayStyle", PropsKeys.RSS_FEED_DISPLAY_STYLE_DEFAULT);
+		fallbackKeys.add("rssFeedType", PropsKeys.RSS_FEED_TYPE_DEFAULT);
+
+		return fallbackKeys;
+	}
+
+	static {
+		FallbackKeys fallbackKeys = _getFallbackKeys();
+
+		SettingsFactory settingsFactory =
+			SettingsFactoryUtil.getSettingsFactory();
+
+		settingsFactory.registerFallbackKeys(PortletKeys.WIKI, fallbackKeys);
+		settingsFactory.registerFallbackKeys(
+			PortletKeys.WIKI_ADMIN, fallbackKeys);
+		settingsFactory.registerFallbackKeys(
+			PortletKeys.WIKI_DISPLAY, fallbackKeys);
 	}
 
 	private TypedSettings _typedSettings;

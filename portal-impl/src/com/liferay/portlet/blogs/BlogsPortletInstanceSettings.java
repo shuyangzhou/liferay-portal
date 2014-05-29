@@ -14,11 +14,20 @@
 
 package com.liferay.portlet.blogs;
 
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.settings.FallbackKeys;
+import com.liferay.portal.kernel.settings.ParameterMapSettings;
 import com.liferay.portal.kernel.settings.Settings;
+import com.liferay.portal.kernel.settings.SettingsFactory;
+import com.liferay.portal.kernel.settings.SettingsFactoryUtil;
 import com.liferay.portal.kernel.settings.TypedSettings;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.model.Layout;
 import com.liferay.portal.util.PortalUtil;
+import com.liferay.portal.util.PortletKeys;
+
+import java.util.Map;
 
 /**
  * @author Iván Zaera
@@ -27,38 +36,25 @@ public class BlogsPortletInstanceSettings {
 
 	public static final String[] MULTI_VALUED_KEYS = {};
 
-	public static FallbackKeys getFallbackKeys() {
-		FallbackKeys fallbackKeys = new FallbackKeys();
+	public static BlogsPortletInstanceSettings getInstance(
+			Layout layout, String portletId)
+		throws PortalException, SystemException {
 
-		fallbackKeys.add(
-			"enableComments", PropsKeys.BLOGS_ENTRY_COMMENTS_ENABLED);
-		fallbackKeys.add(
-			"enableCommentRatings", PropsKeys.BLOGS_COMMENT_RATINGS_ENABLED);
-		fallbackKeys.add("enableFlags", PropsKeys.BLOGS_FLAGS_ENABLED);
-		fallbackKeys.add("enableRatings", PropsKeys.BLOGS_RATINGS_ENABLED);
-		fallbackKeys.add(
-			"enableRelatedAssets", PropsKeys.BLOGS_RELATED_ASSETS_ENABLED);
-		fallbackKeys.add("enableRss", PropsKeys.BLOGS_RSS_ENABLED);
-		fallbackKeys.add(
-			"enableSocialBookmarks", PropsKeys.BLOGS_SOCIAL_BOOKMARKS_ENABLED);
-		fallbackKeys.add("displayStyle", PropsKeys.BLOGS_DISPLAY_STYLE);
-		fallbackKeys.add(
-			"pageDelta", PropsKeys.SEARCH_CONTAINER_PAGE_DEFAULT_DELTA);
-		fallbackKeys.add(
-			"rssDelta", PropsKeys.SEARCH_CONTAINER_PAGE_DEFAULT_DELTA);
-		fallbackKeys.add(
-			"rssDisplayStyle", PropsKeys.RSS_FEED_DISPLAY_STYLE_DEFAULT);
-		fallbackKeys.add("rssFeedType", PropsKeys.RSS_FEED_TYPE_DEFAULT);
-		fallbackKeys.add(
-			"socialBookmarksDisplayPosition",
-			PropsKeys.BLOGS_SOCIAL_BOOKMARKS_DISPLAY_POSITION);
-		fallbackKeys.add(
-			"socialBookmarksDisplayStyle",
-			PropsKeys.BLOGS_SOCIAL_BOOKMARKS_DISPLAY_STYLE);
-		fallbackKeys.add(
-			"socialBookmarksTypes", PropsKeys.SOCIAL_BOOKMARK_TYPES);
+		Settings settings = SettingsFactoryUtil.getPortletInstanceSettings(
+			layout, portletId);
 
-		return fallbackKeys;
+		return new BlogsPortletInstanceSettings(settings);
+	}
+
+	public static BlogsPortletInstanceSettings getInstance(
+			Layout layout, String portletId, Map<String, String[]> parameterMap)
+		throws PortalException, SystemException {
+
+		Settings settings = SettingsFactoryUtil.getPortletInstanceSettings(
+			layout, portletId);
+
+		return new BlogsPortletInstanceSettings(
+			new ParameterMapSettings(parameterMap, settings));
 	}
 
 	public BlogsPortletInstanceSettings(Settings settings) {
@@ -132,6 +128,51 @@ public class BlogsPortletInstanceSettings {
 
 	public String getSocialBookmarksTypes() {
 		return _typedSettings.getValue("socialBookmarksTypes");
+	}
+
+	private static FallbackKeys _getFallbackKeys() {
+		FallbackKeys fallbackKeys = new FallbackKeys();
+
+		fallbackKeys.add(
+			"enableComments", PropsKeys.BLOGS_ENTRY_COMMENTS_ENABLED);
+		fallbackKeys.add(
+			"enableCommentRatings", PropsKeys.BLOGS_COMMENT_RATINGS_ENABLED);
+		fallbackKeys.add("enableFlags", PropsKeys.BLOGS_FLAGS_ENABLED);
+		fallbackKeys.add("enableRatings", PropsKeys.BLOGS_RATINGS_ENABLED);
+		fallbackKeys.add(
+			"enableRelatedAssets", PropsKeys.BLOGS_RELATED_ASSETS_ENABLED);
+		fallbackKeys.add("enableRss", PropsKeys.BLOGS_RSS_ENABLED);
+		fallbackKeys.add(
+			"enableSocialBookmarks", PropsKeys.BLOGS_SOCIAL_BOOKMARKS_ENABLED);
+		fallbackKeys.add("displayStyle", PropsKeys.BLOGS_DISPLAY_STYLE);
+		fallbackKeys.add(
+			"pageDelta", PropsKeys.SEARCH_CONTAINER_PAGE_DEFAULT_DELTA);
+		fallbackKeys.add(
+			"rssDelta", PropsKeys.SEARCH_CONTAINER_PAGE_DEFAULT_DELTA);
+		fallbackKeys.add(
+			"rssDisplayStyle", PropsKeys.RSS_FEED_DISPLAY_STYLE_DEFAULT);
+		fallbackKeys.add("rssFeedType", PropsKeys.RSS_FEED_TYPE_DEFAULT);
+		fallbackKeys.add(
+			"socialBookmarksDisplayPosition",
+			PropsKeys.BLOGS_SOCIAL_BOOKMARKS_DISPLAY_POSITION);
+		fallbackKeys.add(
+			"socialBookmarksDisplayStyle",
+			PropsKeys.BLOGS_SOCIAL_BOOKMARKS_DISPLAY_STYLE);
+		fallbackKeys.add(
+			"socialBookmarksTypes", PropsKeys.SOCIAL_BOOKMARK_TYPES);
+
+		return fallbackKeys;
+	}
+
+	static {
+		FallbackKeys fallbackKeys = _getFallbackKeys();
+
+		SettingsFactory settingsFactory =
+			SettingsFactoryUtil.getSettingsFactory();
+
+		settingsFactory.registerFallbackKeys(PortletKeys.BLOGS, fallbackKeys);
+		settingsFactory.registerFallbackKeys(
+			PortletKeys.BLOGS_ADMIN, fallbackKeys);
 	}
 
 	private TypedSettings _typedSettings;

@@ -17,7 +17,7 @@
 <%@ include file="/html/portlet/bookmarks/init.jsp" %>
 
 <%
-bookmarksSettings = BookmarksUtil.getBookmarksSettings(scopeGroupId, request);
+bookmarksSettings = BookmarksSettings.getInstance(scopeGroupId, request.getParameterMap());
 
 try {
 	BookmarksFolder rootFolder = BookmarksFolderLocalServiceUtil.getFolder(rootFolderId);

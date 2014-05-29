@@ -148,7 +148,7 @@ public class CheckoutAction extends CartAction {
 		ShoppingOrder order = (ShoppingOrder)actionRequest.getAttribute(
 			WebKeys.SHOPPING_ORDER);
 
-		ShoppingSettings shoppingSettings = ShoppingUtil.getShoppingSettings(
+		ShoppingSettings shoppingSettings = ShoppingSettings.getInstance(
 			themeDisplay.getScopeGroupId());
 
 		String returnURL = ShoppingUtil.getPayPalReturnURL(

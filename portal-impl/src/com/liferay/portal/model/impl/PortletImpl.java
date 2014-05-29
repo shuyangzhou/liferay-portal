@@ -157,6 +157,7 @@ public class PortletImpl extends PortletBaseImpl {
 		String popMessageListenerClass,
 		List<String> socialActivityInterpreterClasses,
 		String socialRequestInterpreterClass,
+		boolean socialInteractionsConfiguration,
 		String userNotificationDefinitions,
 		List<String> userNotificationHandlerClasses, String webDAVStorageToken,
 		String webDAVStorageClass, String xmlRpcMethodClass,
@@ -224,6 +225,7 @@ public class PortletImpl extends PortletBaseImpl {
 		_popMessageListenerClass = popMessageListenerClass;
 		_socialActivityInterpreterClasses = socialActivityInterpreterClasses;
 		_socialRequestInterpreterClass = socialRequestInterpreterClass;
+		_socialInteractionsConfiguration = socialInteractionsConfiguration;
 		_userNotificationHandlerClasses = userNotificationHandlerClasses;
 		_userNotificationDefinitions = userNotificationDefinitions;
 		_webDAVStorageToken = webDAVStorageToken;
@@ -372,6 +374,7 @@ public class PortletImpl extends PortletBaseImpl {
 			getPollerProcessorClass(), getPopMessageListenerClass(),
 			getSocialActivityInterpreterClasses(),
 			getSocialRequestInterpreterClass(),
+			getSocialInteractionsConfiguration(),
 			getUserNotificationDefinitions(),
 			getUserNotificationHandlerClasses(), getWebDAVStorageToken(),
 			getWebDAVStorageClass(), getXmlRpcMethodClass(),
@@ -1720,6 +1723,18 @@ public class PortletImpl extends PortletBaseImpl {
 	}
 
 	/**
+	 * Returns <code>true</code> if the portlet uses Social Interactions
+	 * Configuration
+	 *
+	 * @return <code>true</code> if the portlet uses Social Interactions
+	 *         Configuration
+	 */
+	@Override
+	public boolean getSocialInteractionsConfiguration() {
+		return _socialInteractionsConfiguration;
+	}
+
+	/**
 	 * Returns the name of the social request interpreter class of the portlet.
 	 *
 	 * @return the name of the social request interpreter class of the portlet
@@ -2598,6 +2613,18 @@ public class PortletImpl extends PortletBaseImpl {
 	@Override
 	public boolean isShowPortletInactive() {
 		return _showPortletInactive;
+	}
+
+	/**
+	 * Returns <code>true</code> if the portlet uses Social Interactions
+	 * Configuration
+	 *
+	 * @return <code>true</code> if the portlet uses Social Interactions
+	 *         Configuration
+	 */
+	@Override
+	public boolean isSocialInteractionsConfiguration() {
+		return _socialInteractionsConfiguration;
 	}
 
 	/**
@@ -3623,6 +3650,13 @@ public class PortletImpl extends PortletBaseImpl {
 		_socialActivityInterpreterClasses = socialActivityInterpreterClasses;
 	}
 
+	@Override
+	public void setSocialInteractionsConfiguration(
+		boolean socialInteractionsConfiguration) {
+
+		_socialInteractionsConfiguration = socialInteractionsConfiguration;
+	}
+
 	/**
 	 * Sets the name of the social request interpreter class of the portlet.
 	 *
@@ -4348,6 +4382,11 @@ public class PortletImpl extends PortletBaseImpl {
 	 * associated with the portlet.
 	 */
 	private List<String> _socialActivityInterpreterClasses;
+
+	/**
+	 * <code>True</code> if the portlet uses Social Interactions Configuration.
+	 */
+	private boolean _socialInteractionsConfiguration;
 
 	/**
 	 * The name of the social request interpreter class of the portlet.
