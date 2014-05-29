@@ -1916,7 +1916,7 @@ public class UserLocalServiceUtil {
 	* @param type the type of social relation. The possible types can be found
 	in {@link
 	com.liferay.portlet.social.model.SocialRelationConstants}.
-	* @param equal the value of type of social relation equals true or false
+	* @param equalType the value of type of social relation equals true or false
 	* @param start the lower bound of the range of users
 	* @param end the upper bound of the range of users (not inclusive)
 	* @param obc the comparator to order the users by (optionally
@@ -1926,11 +1926,12 @@ public class UserLocalServiceUtil {
 	* @throws SystemException if a system exception occurred
 	*/
 	public static java.util.List<com.liferay.portal.model.User> getSocialUsers(
-		long userId, int type, boolean equal, int start, int end,
+		long userId, int type, boolean equalType, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator obc)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
-		return getService().getSocialUsers(userId, type, equal, start, end, obc);
+		return getService()
+				   .getSocialUsers(userId, type, equalType, start, end, obc);
 	}
 
 	/**
@@ -2121,15 +2122,17 @@ public class UserLocalServiceUtil {
 	* @param type the type of social relation. The possible types can be found
 	in {@link
 	com.liferay.portlet.social.model.SocialRelationConstants}.
-	* @param equal the value of type of social relation equals true or false
+	* @param equalType the value of type of social relation
+	equals true or false
 	* @return the number of users with a social relation with the user
 	* @throws PortalException if a user with the primary key could not be found
 	* @throws SystemException if a system exception occurred
 	*/
-	public static int getSocialUsersCount(long userId, int type, boolean equal)
+	public static int getSocialUsersCount(long userId, int type,
+		boolean equalType)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
-		return getService().getSocialUsersCount(userId, type, equal);
+		return getService().getSocialUsersCount(userId, type, equalType);
 	}
 
 	/**

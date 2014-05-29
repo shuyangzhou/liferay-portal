@@ -22,7 +22,7 @@ import aQute.bnd.annotation.ProviderType;
 @ProviderType
 public interface UserFinder {
 	public int countBySocialUsers(long companyId, long userId, int type,
-		boolean equal, int status)
+		java.lang.String socialRelationTypeComparator, int status)
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	public int countByUser(long userId,
@@ -67,8 +67,9 @@ public interface UserFinder {
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	public java.util.List<com.liferay.portal.model.User> findBySocialUsers(
-		long companyId, long userId, int type, boolean equal, int status,
-		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc)
+		long companyId, long userId, int type,
+		java.lang.String socialRelationTypeComparator, int status, int start,
+		int end, com.liferay.portal.kernel.util.OrderByComparator obc)
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	public java.util.List<com.liferay.portal.model.User> findByC_FN_MN_LN_SN_EA_S(
