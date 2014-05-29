@@ -402,6 +402,19 @@ public class OrganizationLocalServiceWrapper implements OrganizationLocalService
 	}
 
 	/**
+	* Returns the groupIds of the groups associated with the organization.
+	*
+	* @param organizationId the organizationId of the organization
+	* @return long[] the groupIds of groups associated with the organization
+	* @throws SystemException if a system exception occurred
+	*/
+	@Override
+	public long[] getGroupPrimaryKeys(long organizationId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _organizationLocalService.getGroupPrimaryKeys(organizationId);
+	}
+
+	/**
 	* @throws SystemException if a system exception occurred
 	*/
 	@Override
@@ -557,6 +570,19 @@ public class OrganizationLocalServiceWrapper implements OrganizationLocalService
 		java.util.List<com.liferay.portal.model.Organization> Organizations)
 		throws com.liferay.portal.kernel.exception.SystemException {
 		_organizationLocalService.deleteUserOrganizations(userId, Organizations);
+	}
+
+	/**
+	* Returns the userIds of the users associated with the organization.
+	*
+	* @param organizationId the organizationId of the organization
+	* @return long[] the userIds of users associated with the organization
+	* @throws SystemException if a system exception occurred
+	*/
+	@Override
+	public long[] getUserPrimaryKeys(long organizationId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _organizationLocalService.getUserPrimaryKeys(organizationId);
 	}
 
 	/**
@@ -1047,6 +1073,15 @@ public class OrganizationLocalServiceWrapper implements OrganizationLocalService
 		java.util.List<com.liferay.portal.model.Organization> availableOrganizations) {
 		return _organizationLocalService.getSubsetOrganizations(allOrganizations,
 			availableOrganizations);
+	}
+
+	@Override
+	public long[] getUserOrganizationIds(long userId,
+		boolean includeAdministrative)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _organizationLocalService.getUserOrganizationIds(userId,
+			includeAdministrative);
 	}
 
 	/**

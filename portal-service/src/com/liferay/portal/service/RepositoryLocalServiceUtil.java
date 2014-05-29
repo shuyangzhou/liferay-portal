@@ -420,6 +420,10 @@ public class RepositoryLocalServiceUtil {
 				   .getLocalRepositoryImpl(folderId, fileEntryId, fileVersionId);
 	}
 
+	public static java.lang.String getRegistryName() {
+		return getService().getRegistryName();
+	}
+
 	public static com.liferay.portal.model.Repository getRepository(
 		long groupId, java.lang.String portletId)
 		throws com.liferay.portal.kernel.exception.PortalException,
@@ -454,6 +458,10 @@ public class RepositoryLocalServiceUtil {
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
 		return getService().getTypeSettingsProperties(repositoryId);
+	}
+
+	public static void invalidate() {
+		getService().invalidate();
 	}
 
 	public static void updateRepository(long repositoryId,

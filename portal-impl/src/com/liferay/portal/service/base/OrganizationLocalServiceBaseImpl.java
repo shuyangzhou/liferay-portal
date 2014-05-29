@@ -510,6 +510,19 @@ public abstract class OrganizationLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the groupIds of the groups associated with the organization.
+	 *
+	 * @param organizationId the organizationId of the organization
+	 * @return long[] the groupIds of groups associated with the organization
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public long[] getGroupPrimaryKeys(long organizationId)
+		throws SystemException {
+		return organizationPersistence.getGroupPrimaryKeys(organizationId);
+	}
+
+	/**
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
@@ -652,6 +665,19 @@ public abstract class OrganizationLocalServiceBaseImpl
 	public void deleteUserOrganizations(long userId,
 		List<Organization> Organizations) throws SystemException {
 		userPersistence.removeOrganizations(userId, Organizations);
+	}
+
+	/**
+	 * Returns the userIds of the users associated with the organization.
+	 *
+	 * @param organizationId the organizationId of the organization
+	 * @return long[] the userIds of users associated with the organization
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public long[] getUserPrimaryKeys(long organizationId)
+		throws SystemException {
+		return organizationPersistence.getUserPrimaryKeys(organizationId);
 	}
 
 	/**

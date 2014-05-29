@@ -406,6 +406,18 @@ public class DLFileEntryTypeLocalServiceUtil {
 	}
 
 	/**
+	* Returns the folderIds of the document library folders associated with the document library file entry type.
+	*
+	* @param fileEntryTypeId the fileEntryTypeId of the document library file entry type
+	* @return long[] the folderIds of document library folders associated with the document library file entry type
+	* @throws SystemException if a system exception occurred
+	*/
+	public static long[] getDLFolderPrimaryKeys(long fileEntryTypeId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getDLFolderPrimaryKeys(fileEntryTypeId);
+	}
+
+	/**
 	* @throws SystemException if a system exception occurred
 	*/
 	public static java.util.List<com.liferay.portlet.documentlibrary.model.DLFileEntryType> getDLFolderDLFileEntryTypes(
@@ -553,6 +565,18 @@ public class DLFileEntryTypeLocalServiceUtil {
 		throws com.liferay.portal.kernel.exception.SystemException {
 		getService()
 			.deleteDDMStructureDLFileEntryTypes(structureId, DLFileEntryTypes);
+	}
+
+	/**
+	* Returns the structureIds of the d d m structures associated with the document library file entry type.
+	*
+	* @param fileEntryTypeId the fileEntryTypeId of the document library file entry type
+	* @return long[] the structureIds of d d m structures associated with the document library file entry type
+	* @throws SystemException if a system exception occurred
+	*/
+	public static long[] getDDMStructurePrimaryKeys(long fileEntryTypeId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getDDMStructurePrimaryKeys(fileEntryTypeId);
 	}
 
 	/**

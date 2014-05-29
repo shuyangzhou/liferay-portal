@@ -384,6 +384,19 @@ public class RoleLocalServiceWrapper implements RoleLocalService,
 	}
 
 	/**
+	* Returns the groupIds of the groups associated with the role.
+	*
+	* @param roleId the roleId of the role
+	* @return long[] the groupIds of groups associated with the role
+	* @throws SystemException if a system exception occurred
+	*/
+	@Override
+	public long[] getGroupPrimaryKeys(long roleId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _roleLocalService.getGroupPrimaryKeys(roleId);
+	}
+
+	/**
 	* @throws SystemException if a system exception occurred
 	*/
 	@Override
@@ -536,6 +549,19 @@ public class RoleLocalServiceWrapper implements RoleLocalService,
 		java.util.List<com.liferay.portal.model.Role> Roles)
 		throws com.liferay.portal.kernel.exception.SystemException {
 		_roleLocalService.deleteUserRoles(userId, Roles);
+	}
+
+	/**
+	* Returns the userIds of the users associated with the role.
+	*
+	* @param roleId the roleId of the role
+	* @return long[] the userIds of users associated with the role
+	* @throws SystemException if a system exception occurred
+	*/
+	@Override
+	public long[] getUserPrimaryKeys(long roleId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _roleLocalService.getUserPrimaryKeys(roleId);
 	}
 
 	/**

@@ -368,6 +368,9 @@ public interface RepositoryLocalService extends BaseLocalService,
 			com.liferay.portal.kernel.exception.SystemException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public java.lang.String getRegistryName();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public com.liferay.portal.model.Repository getRepository(long groupId,
 		java.lang.String portletId)
 		throws com.liferay.portal.kernel.exception.PortalException,
@@ -396,6 +399,8 @@ public interface RepositoryLocalService extends BaseLocalService,
 		long repositoryId)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException;
+
+	public void invalidate();
 
 	public void updateRepository(long repositoryId, java.lang.String name,
 		java.lang.String description)

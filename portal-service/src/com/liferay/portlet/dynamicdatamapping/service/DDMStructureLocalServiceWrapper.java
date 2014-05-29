@@ -441,6 +441,19 @@ public class DDMStructureLocalServiceWrapper implements DDMStructureLocalService
 	}
 
 	/**
+	* Returns the fileEntryTypeIds of the document library file entry types associated with the d d m structure.
+	*
+	* @param structureId the structureId of the d d m structure
+	* @return long[] the fileEntryTypeIds of document library file entry types associated with the d d m structure
+	* @throws SystemException if a system exception occurred
+	*/
+	@Override
+	public long[] getDLFileEntryTypePrimaryKeys(long structureId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _ddmStructureLocalService.getDLFileEntryTypePrimaryKeys(structureId);
+	}
+
+	/**
 	* @throws SystemException if a system exception occurred
 	*/
 	@Override
@@ -605,6 +618,19 @@ public class DDMStructureLocalServiceWrapper implements DDMStructureLocalService
 		throws com.liferay.portal.kernel.exception.SystemException {
 		_ddmStructureLocalService.deleteJournalFolderDDMStructures(folderId,
 			DDMStructures);
+	}
+
+	/**
+	* Returns the folderIds of the journal folders associated with the d d m structure.
+	*
+	* @param structureId the structureId of the d d m structure
+	* @return long[] the folderIds of journal folders associated with the d d m structure
+	* @throws SystemException if a system exception occurred
+	*/
+	@Override
+	public long[] getJournalFolderPrimaryKeys(long structureId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _ddmStructureLocalService.getJournalFolderPrimaryKeys(structureId);
 	}
 
 	/**

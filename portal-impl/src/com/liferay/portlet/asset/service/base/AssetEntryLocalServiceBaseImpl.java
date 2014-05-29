@@ -420,6 +420,19 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the categoryIds of the asset categories associated with the asset entry.
+	 *
+	 * @param entryId the entryId of the asset entry
+	 * @return long[] the categoryIds of asset categories associated with the asset entry
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public long[] getAssetCategoryPrimaryKeys(long entryId)
+		throws SystemException {
+		return assetEntryPersistence.getAssetCategoryPrimaryKeys(entryId);
+	}
+
+	/**
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
@@ -562,6 +575,19 @@ public abstract class AssetEntryLocalServiceBaseImpl
 	public void deleteAssetTagAssetEntries(long tagId,
 		List<AssetEntry> AssetEntries) throws SystemException {
 		assetTagPersistence.removeAssetEntries(tagId, AssetEntries);
+	}
+
+	/**
+	 * Returns the tagIds of the asset tags associated with the asset entry.
+	 *
+	 * @param entryId the entryId of the asset entry
+	 * @return long[] the tagIds of asset tags associated with the asset entry
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public long[] getAssetTagPrimaryKeys(long entryId)
+		throws SystemException {
+		return assetEntryPersistence.getAssetTagPrimaryKeys(entryId);
 	}
 
 	/**

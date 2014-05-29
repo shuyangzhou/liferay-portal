@@ -472,6 +472,19 @@ public abstract class GroupLocalServiceBaseImpl extends BaseLocalServiceImpl
 	}
 
 	/**
+	 * Returns the organizationIds of the organizations associated with the group.
+	 *
+	 * @param groupId the groupId of the group
+	 * @return long[] the organizationIds of organizations associated with the group
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public long[] getOrganizationPrimaryKeys(long groupId)
+		throws SystemException {
+		return groupPersistence.getOrganizationPrimaryKeys(groupId);
+	}
+
+	/**
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
@@ -616,6 +629,18 @@ public abstract class GroupLocalServiceBaseImpl extends BaseLocalServiceImpl
 	}
 
 	/**
+	 * Returns the roleIds of the roles associated with the group.
+	 *
+	 * @param groupId the groupId of the group
+	 * @return long[] the roleIds of roles associated with the group
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public long[] getRolePrimaryKeys(long groupId) throws SystemException {
+		return groupPersistence.getRolePrimaryKeys(groupId);
+	}
+
+	/**
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
@@ -754,6 +779,19 @@ public abstract class GroupLocalServiceBaseImpl extends BaseLocalServiceImpl
 	public void deleteUserGroupGroups(long userGroupId, List<Group> Groups)
 		throws SystemException {
 		userGroupPersistence.removeGroups(userGroupId, Groups);
+	}
+
+	/**
+	 * Returns the userGroupIds of the user groups associated with the group.
+	 *
+	 * @param groupId the groupId of the group
+	 * @return long[] the userGroupIds of user groups associated with the group
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public long[] getUserGroupPrimaryKeys(long groupId)
+		throws SystemException {
+		return groupPersistence.getUserGroupPrimaryKeys(groupId);
 	}
 
 	/**
@@ -898,6 +936,18 @@ public abstract class GroupLocalServiceBaseImpl extends BaseLocalServiceImpl
 	public void deleteUserGroups(long userId, List<Group> Groups)
 		throws SystemException {
 		userPersistence.removeGroups(userId, Groups);
+	}
+
+	/**
+	 * Returns the userIds of the users associated with the group.
+	 *
+	 * @param groupId the groupId of the group
+	 * @return long[] the userIds of users associated with the group
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public long[] getUserPrimaryKeys(long groupId) throws SystemException {
+		return groupPersistence.getUserPrimaryKeys(groupId);
 	}
 
 	/**

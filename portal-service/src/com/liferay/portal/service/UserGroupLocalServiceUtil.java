@@ -373,6 +373,18 @@ public class UserGroupLocalServiceUtil {
 	}
 
 	/**
+	* Returns the groupIds of the groups associated with the user group.
+	*
+	* @param userGroupId the userGroupId of the user group
+	* @return long[] the groupIds of groups associated with the user group
+	* @throws SystemException if a system exception occurred
+	*/
+	public static long[] getGroupPrimaryKeys(long userGroupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getGroupPrimaryKeys(userGroupId);
+	}
+
+	/**
 	* @throws SystemException if a system exception occurred
 	*/
 	public static java.util.List<com.liferay.portal.model.UserGroup> getGroupUserGroups(
@@ -510,6 +522,18 @@ public class UserGroupLocalServiceUtil {
 	}
 
 	/**
+	* Returns the teamIds of the teams associated with the user group.
+	*
+	* @param userGroupId the userGroupId of the user group
+	* @return long[] the teamIds of teams associated with the user group
+	* @throws SystemException if a system exception occurred
+	*/
+	public static long[] getTeamPrimaryKeys(long userGroupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getTeamPrimaryKeys(userGroupId);
+	}
+
+	/**
 	* @throws SystemException if a system exception occurred
 	*/
 	public static java.util.List<com.liferay.portal.model.UserGroup> getTeamUserGroups(
@@ -643,6 +667,18 @@ public class UserGroupLocalServiceUtil {
 		java.util.List<com.liferay.portal.model.UserGroup> UserGroups)
 		throws com.liferay.portal.kernel.exception.SystemException {
 		getService().deleteUserUserGroups(userId, UserGroups);
+	}
+
+	/**
+	* Returns the userIds of the users associated with the user group.
+	*
+	* @param userGroupId the userGroupId of the user group
+	* @return long[] the userIds of users associated with the user group
+	* @throws SystemException if a system exception occurred
+	*/
+	public static long[] getUserPrimaryKeys(long userGroupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getUserPrimaryKeys(userGroupId);
 	}
 
 	/**

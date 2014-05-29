@@ -373,6 +373,18 @@ public class UserLocalServiceUtil {
 	}
 
 	/**
+	* Returns the groupIds of the groups associated with the user.
+	*
+	* @param userId the userId of the user
+	* @return long[] the groupIds of groups associated with the user
+	* @throws SystemException if a system exception occurred
+	*/
+	public static long[] getGroupPrimaryKeys(long userId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getGroupPrimaryKeys(userId);
+	}
+
+	/**
 	* @throws SystemException if a system exception occurred
 	*/
 	public static java.util.List<com.liferay.portal.model.User> getGroupUsers(
@@ -511,6 +523,18 @@ public class UserLocalServiceUtil {
 		java.util.List<com.liferay.portal.model.User> Users)
 		throws com.liferay.portal.kernel.exception.SystemException {
 		getService().deleteOrganizationUsers(organizationId, Users);
+	}
+
+	/**
+	* Returns the organizationIds of the organizations associated with the user.
+	*
+	* @param userId the userId of the user
+	* @return long[] the organizationIds of organizations associated with the user
+	* @throws SystemException if a system exception occurred
+	*/
+	public static long[] getOrganizationPrimaryKeys(long userId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getOrganizationPrimaryKeys(userId);
 	}
 
 	/**
@@ -660,6 +684,18 @@ public class UserLocalServiceUtil {
 	}
 
 	/**
+	* Returns the roleIds of the roles associated with the user.
+	*
+	* @param userId the userId of the user
+	* @return long[] the roleIds of roles associated with the user
+	* @throws SystemException if a system exception occurred
+	*/
+	public static long[] getRolePrimaryKeys(long userId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getRolePrimaryKeys(userId);
+	}
+
+	/**
 	* @throws SystemException if a system exception occurred
 	*/
 	public static java.util.List<com.liferay.portal.model.User> getRoleUsers(
@@ -798,6 +834,18 @@ public class UserLocalServiceUtil {
 		java.util.List<com.liferay.portal.model.User> Users)
 		throws com.liferay.portal.kernel.exception.SystemException {
 		getService().deleteTeamUsers(teamId, Users);
+	}
+
+	/**
+	* Returns the teamIds of the teams associated with the user.
+	*
+	* @param userId the userId of the user
+	* @return long[] the teamIds of teams associated with the user
+	* @throws SystemException if a system exception occurred
+	*/
+	public static long[] getTeamPrimaryKeys(long userId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getTeamPrimaryKeys(userId);
 	}
 
 	/**
@@ -941,6 +989,18 @@ public class UserLocalServiceUtil {
 		java.util.List<com.liferay.portal.model.User> Users)
 		throws com.liferay.portal.kernel.exception.SystemException {
 		getService().deleteUserGroupUsers(userGroupId, Users);
+	}
+
+	/**
+	* Returns the userGroupIds of the user groups associated with the user.
+	*
+	* @param userId the userId of the user
+	* @return long[] the userGroupIds of user groups associated with the user
+	* @throws SystemException if a system exception occurred
+	*/
+	public static long[] getUserGroupPrimaryKeys(long userId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getUserGroupPrimaryKeys(userId);
 	}
 
 	/**
@@ -1899,6 +1959,43 @@ public class UserLocalServiceUtil {
 	}
 
 	/**
+	* Returns an ordered range of all the users with a social relation with the
+	* user.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end -
+	* start</code> instances. <code>start</code> and <code>end</code> are not
+	* primary keys, they are indexes in the result set. Thus, <code>0</code>
+	* refers to the first result in the set. Setting both <code>start</code>
+	* and <code>end</code> to {@link
+	* com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full
+	* result set.
+	* </p>
+	*
+	* @param userId the primary key of the user
+	* @param type the type of social relation. The possible types can be found
+	in {@link
+	com.liferay.portlet.social.model.SocialRelationConstants}.
+	* @param equalType the value of type of social relation equals <code>true
+	</code> or <code>false</code>
+	* @param start the lower bound of the range of users
+	* @param end the upper bound of the range of users (not inclusive)
+	* @param obc the comparator to order the users by (optionally
+	<code>null</code>)
+	* @return the ordered range of users with a social relation with the user
+	* @throws PortalException if a user with the primary key could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public static java.util.List<com.liferay.portal.model.User> getSocialUsers(
+		long userId, int type, boolean equalType, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator obc)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .getSocialUsers(userId, type, equalType, start, end, obc);
+	}
+
+	/**
 	* Returns an ordered range of all the users with a social relation of the
 	* type with the user.
 	*
@@ -1924,7 +2021,10 @@ public class UserLocalServiceUtil {
 	with the user
 	* @throws PortalException if a user with the primary key could not be found
 	* @throws SystemException if a system exception occurred
+	* @deprecated As of 7.0.0, replaced by {@link
+	#getSocialUsers(long, int, boolean, int, int, OrderByComparator)}
 	*/
+	@Deprecated
 	public static java.util.List<com.liferay.portal.model.User> getSocialUsers(
 		long userId, int type, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator obc)
@@ -1955,7 +2055,10 @@ public class UserLocalServiceUtil {
 	* @return the ordered range of users with a social relation with the user
 	* @throws PortalException if a user with the primary key could not be found
 	* @throws SystemException if a system exception occurred
+	* @deprecated As of 7.0.0, replaced by {@link
+	#getSocialUsers(long, int, boolean, int, int, OrderByComparator)}
 	*/
+	@Deprecated
 	public static java.util.List<com.liferay.portal.model.User> getSocialUsers(
 		long userId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator obc)
@@ -2041,7 +2144,10 @@ public class UserLocalServiceUtil {
 	* @return the number of users with a social relation with the user
 	* @throws PortalException if a user with the primary key could not be found
 	* @throws SystemException if a system exception occurred
+	* @deprecated As of 7.0.0, replaced by {@link
+	#getSocialUsersCount(long, int, boolean)}
 	*/
+	@Deprecated
 	public static int getSocialUsersCount(long userId)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
@@ -2060,11 +2166,34 @@ public class UserLocalServiceUtil {
 	user
 	* @throws PortalException if a user with the primary key could not be found
 	* @throws SystemException if a system exception occurred
+	* @deprecated As of 7.0.0, replaced by {@link
+	#getSocialUsersCount(long, int, boolean)}
 	*/
+	@Deprecated
 	public static int getSocialUsersCount(long userId, int type)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
 		return getService().getSocialUsersCount(userId, type);
+	}
+
+	/**
+	* Returns the number of users with a social relation with the user.
+	*
+	* @param userId the primary key of the user
+	* @param type the type of social relation. The possible types can be found
+	in {@link
+	com.liferay.portlet.social.model.SocialRelationConstants}.
+	* @param equalType the value of type of social relation equals <code>true
+	</code> or <code>false</code>
+	* @return the number of users with a social relation with the user
+	* @throws PortalException if a user with the primary key could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public static int getSocialUsersCount(long userId, int type,
+		boolean equalType)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().getSocialUsersCount(userId, type, equalType);
 	}
 
 	/**

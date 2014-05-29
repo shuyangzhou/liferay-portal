@@ -490,6 +490,19 @@ public abstract class UserGroupLocalServiceBaseImpl extends BaseLocalServiceImpl
 	}
 
 	/**
+	 * Returns the groupIds of the groups associated with the user group.
+	 *
+	 * @param userGroupId the userGroupId of the user group
+	 * @return long[] the groupIds of groups associated with the user group
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public long[] getGroupPrimaryKeys(long userGroupId)
+		throws SystemException {
+		return userGroupPersistence.getGroupPrimaryKeys(userGroupId);
+	}
+
+	/**
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
@@ -632,6 +645,19 @@ public abstract class UserGroupLocalServiceBaseImpl extends BaseLocalServiceImpl
 	}
 
 	/**
+	 * Returns the teamIds of the teams associated with the user group.
+	 *
+	 * @param userGroupId the userGroupId of the user group
+	 * @return long[] the teamIds of teams associated with the user group
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public long[] getTeamPrimaryKeys(long userGroupId)
+		throws SystemException {
+		return userGroupPersistence.getTeamPrimaryKeys(userGroupId);
+	}
+
+	/**
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
@@ -771,6 +797,19 @@ public abstract class UserGroupLocalServiceBaseImpl extends BaseLocalServiceImpl
 	public void deleteUserUserGroups(long userId, List<UserGroup> UserGroups)
 		throws SystemException {
 		userPersistence.removeUserGroups(userId, UserGroups);
+	}
+
+	/**
+	 * Returns the userIds of the users associated with the user group.
+	 *
+	 * @param userGroupId the userGroupId of the user group
+	 * @return long[] the userIds of users associated with the user group
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public long[] getUserPrimaryKeys(long userGroupId)
+		throws SystemException {
+		return userGroupPersistence.getUserPrimaryKeys(userGroupId);
 	}
 
 	/**

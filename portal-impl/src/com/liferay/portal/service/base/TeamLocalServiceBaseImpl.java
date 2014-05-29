@@ -384,6 +384,18 @@ public abstract class TeamLocalServiceBaseImpl extends BaseLocalServiceImpl
 	}
 
 	/**
+	 * Returns the userIds of the users associated with the team.
+	 *
+	 * @param teamId the teamId of the team
+	 * @return long[] the userIds of users associated with the team
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public long[] getUserPrimaryKeys(long teamId) throws SystemException {
+		return teamPersistence.getUserPrimaryKeys(teamId);
+	}
+
+	/**
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
@@ -521,6 +533,19 @@ public abstract class TeamLocalServiceBaseImpl extends BaseLocalServiceImpl
 	public void deleteUserGroupTeams(long userGroupId, List<Team> Teams)
 		throws SystemException {
 		userGroupPersistence.removeTeams(userGroupId, Teams);
+	}
+
+	/**
+	 * Returns the userGroupIds of the user groups associated with the team.
+	 *
+	 * @param teamId the teamId of the team
+	 * @return long[] the userGroupIds of user groups associated with the team
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public long[] getUserGroupPrimaryKeys(long teamId)
+		throws SystemException {
+		return teamPersistence.getUserGroupPrimaryKeys(teamId);
 	}
 
 	/**

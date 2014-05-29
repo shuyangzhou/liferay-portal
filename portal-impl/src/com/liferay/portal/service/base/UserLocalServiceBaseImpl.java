@@ -90,6 +90,7 @@ import com.liferay.portlet.messageboards.service.persistence.MBThreadFlagPersist
 import com.liferay.portlet.shopping.service.persistence.ShoppingCartPersistence;
 import com.liferay.portlet.social.service.persistence.SocialActivityFinder;
 import com.liferay.portlet.social.service.persistence.SocialActivityPersistence;
+import com.liferay.portlet.social.service.persistence.SocialRelationPersistence;
 import com.liferay.portlet.social.service.persistence.SocialRequestPersistence;
 
 import java.io.Serializable;
@@ -518,6 +519,18 @@ public abstract class UserLocalServiceBaseImpl extends BaseLocalServiceImpl
 	}
 
 	/**
+	 * Returns the groupIds of the groups associated with the user.
+	 *
+	 * @param userId the userId of the user
+	 * @return long[] the groupIds of groups associated with the user
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public long[] getGroupPrimaryKeys(long userId) throws SystemException {
+		return userPersistence.getGroupPrimaryKeys(userId);
+	}
+
+	/**
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
@@ -658,6 +671,19 @@ public abstract class UserLocalServiceBaseImpl extends BaseLocalServiceImpl
 	public void deleteOrganizationUsers(long organizationId, List<User> Users)
 		throws SystemException {
 		organizationPersistence.removeUsers(organizationId, Users);
+	}
+
+	/**
+	 * Returns the organizationIds of the organizations associated with the user.
+	 *
+	 * @param userId the userId of the user
+	 * @return long[] the organizationIds of organizations associated with the user
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public long[] getOrganizationPrimaryKeys(long userId)
+		throws SystemException {
+		return userPersistence.getOrganizationPrimaryKeys(userId);
 	}
 
 	/**
@@ -807,6 +833,18 @@ public abstract class UserLocalServiceBaseImpl extends BaseLocalServiceImpl
 	}
 
 	/**
+	 * Returns the roleIds of the roles associated with the user.
+	 *
+	 * @param userId the userId of the user
+	 * @return long[] the roleIds of roles associated with the user
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public long[] getRolePrimaryKeys(long userId) throws SystemException {
+		return userPersistence.getRolePrimaryKeys(userId);
+	}
+
+	/**
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
@@ -945,6 +983,18 @@ public abstract class UserLocalServiceBaseImpl extends BaseLocalServiceImpl
 	public void deleteTeamUsers(long teamId, List<User> Users)
 		throws SystemException {
 		teamPersistence.removeUsers(teamId, Users);
+	}
+
+	/**
+	 * Returns the teamIds of the teams associated with the user.
+	 *
+	 * @param userId the userId of the user
+	 * @return long[] the teamIds of teams associated with the user
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public long[] getTeamPrimaryKeys(long userId) throws SystemException {
+		return userPersistence.getTeamPrimaryKeys(userId);
 	}
 
 	/**
@@ -1089,6 +1139,19 @@ public abstract class UserLocalServiceBaseImpl extends BaseLocalServiceImpl
 	public void deleteUserGroupUsers(long userGroupId, List<User> Users)
 		throws SystemException {
 		userGroupPersistence.removeUsers(userGroupId, Users);
+	}
+
+	/**
+	 * Returns the userGroupIds of the user groups associated with the user.
+	 *
+	 * @param userId the userId of the user
+	 * @return long[] the userGroupIds of user groups associated with the user
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public long[] getUserGroupPrimaryKeys(long userId)
+		throws SystemException {
+		return userPersistence.getUserGroupPrimaryKeys(userId);
 	}
 
 	/**
@@ -2827,6 +2890,44 @@ public abstract class UserLocalServiceBaseImpl extends BaseLocalServiceImpl
 	}
 
 	/**
+	 * Returns the social relation local service.
+	 *
+	 * @return the social relation local service
+	 */
+	public com.liferay.portlet.social.service.SocialRelationLocalService getSocialRelationLocalService() {
+		return socialRelationLocalService;
+	}
+
+	/**
+	 * Sets the social relation local service.
+	 *
+	 * @param socialRelationLocalService the social relation local service
+	 */
+	public void setSocialRelationLocalService(
+		com.liferay.portlet.social.service.SocialRelationLocalService socialRelationLocalService) {
+		this.socialRelationLocalService = socialRelationLocalService;
+	}
+
+	/**
+	 * Returns the social relation persistence.
+	 *
+	 * @return the social relation persistence
+	 */
+	public SocialRelationPersistence getSocialRelationPersistence() {
+		return socialRelationPersistence;
+	}
+
+	/**
+	 * Sets the social relation persistence.
+	 *
+	 * @param socialRelationPersistence the social relation persistence
+	 */
+	public void setSocialRelationPersistence(
+		SocialRelationPersistence socialRelationPersistence) {
+		this.socialRelationPersistence = socialRelationPersistence;
+	}
+
+	/**
 	 * Returns the social request local service.
 	 *
 	 * @return the social request local service
@@ -3349,6 +3450,10 @@ public abstract class UserLocalServiceBaseImpl extends BaseLocalServiceImpl
 	protected SocialActivityPersistence socialActivityPersistence;
 	@BeanReference(type = SocialActivityFinder.class)
 	protected SocialActivityFinder socialActivityFinder;
+	@BeanReference(type = com.liferay.portlet.social.service.SocialRelationLocalService.class)
+	protected com.liferay.portlet.social.service.SocialRelationLocalService socialRelationLocalService;
+	@BeanReference(type = SocialRelationPersistence.class)
+	protected SocialRelationPersistence socialRelationPersistence;
 	@BeanReference(type = com.liferay.portlet.social.service.SocialRequestLocalService.class)
 	protected com.liferay.portlet.social.service.SocialRequestLocalService socialRequestLocalService;
 	@BeanReference(type = com.liferay.portlet.social.service.SocialRequestService.class)

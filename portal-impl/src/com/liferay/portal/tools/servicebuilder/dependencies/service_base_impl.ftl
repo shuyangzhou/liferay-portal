@@ -818,6 +818,18 @@ import ${packagePath}.service.${entity.name}${sessionTypeName}Service;
 					${tempEntity.varName}Persistence.remove${entity.names}(${tempEntity.PKVarName}, ${entity.names});
 				}
 
+				/**
+				 * Returns the ${tempEntity.PKVarName}s of the ${tempEntity.humanNames} associated with the ${entity.humanName}.
+				 *
+				 * @param ${entity.PKVarName} the ${entity.PKVarName} of the ${entity.humanName}
+				 * @return long[] the ${tempEntity.PKVarName}s of ${tempEntity.humanNames} associated with the ${entity.humanName}
+				 * @throws SystemException if a system exception occurred
+				 */
+				@Override
+				public long[] get${tempEntity.name}PrimaryKeys(${entity.PKClassName} ${entity.PKVarName}) throws SystemException {
+					return ${entity.varName}Persistence.get${tempEntity.name}PrimaryKeys(${entity.PKVarName});
+				}
+
 				<#assign serviceBaseExceptions = serviceBuilder.getServiceBaseExceptions(methods, "get" + tempEntity.name + entity.names, [tempEntity.PKClassName], ["SystemException"])>
 
 				/**

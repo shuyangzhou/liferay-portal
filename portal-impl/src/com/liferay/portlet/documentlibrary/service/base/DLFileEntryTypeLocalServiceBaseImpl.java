@@ -526,6 +526,19 @@ public abstract class DLFileEntryTypeLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the folderIds of the document library folders associated with the document library file entry type.
+	 *
+	 * @param fileEntryTypeId the fileEntryTypeId of the document library file entry type
+	 * @return long[] the folderIds of document library folders associated with the document library file entry type
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public long[] getDLFolderPrimaryKeys(long fileEntryTypeId)
+		throws SystemException {
+		return dlFileEntryTypePersistence.getDLFolderPrimaryKeys(fileEntryTypeId);
+	}
+
+	/**
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
@@ -676,6 +689,19 @@ public abstract class DLFileEntryTypeLocalServiceBaseImpl
 		List<DLFileEntryType> DLFileEntryTypes) throws SystemException {
 		ddmStructurePersistence.removeDLFileEntryTypes(structureId,
 			DLFileEntryTypes);
+	}
+
+	/**
+	 * Returns the structureIds of the d d m structures associated with the document library file entry type.
+	 *
+	 * @param fileEntryTypeId the fileEntryTypeId of the document library file entry type
+	 * @return long[] the structureIds of d d m structures associated with the document library file entry type
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public long[] getDDMStructurePrimaryKeys(long fileEntryTypeId)
+		throws SystemException {
+		return dlFileEntryTypePersistence.getDDMStructurePrimaryKeys(fileEntryTypeId);
 	}
 
 	/**

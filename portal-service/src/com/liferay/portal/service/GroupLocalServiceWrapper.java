@@ -379,6 +379,19 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	}
 
 	/**
+	* Returns the organizationIds of the organizations associated with the group.
+	*
+	* @param groupId the groupId of the group
+	* @return long[] the organizationIds of organizations associated with the group
+	* @throws SystemException if a system exception occurred
+	*/
+	@Override
+	public long[] getOrganizationPrimaryKeys(long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _groupLocalService.getOrganizationPrimaryKeys(groupId);
+	}
+
+	/**
 	* @throws SystemException if a system exception occurred
 	*/
 	@Override
@@ -529,6 +542,19 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 		java.util.List<com.liferay.portal.model.Group> Groups)
 		throws com.liferay.portal.kernel.exception.SystemException {
 		_groupLocalService.deleteRoleGroups(roleId, Groups);
+	}
+
+	/**
+	* Returns the roleIds of the roles associated with the group.
+	*
+	* @param groupId the groupId of the group
+	* @return long[] the roleIds of roles associated with the group
+	* @throws SystemException if a system exception occurred
+	*/
+	@Override
+	public long[] getRolePrimaryKeys(long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _groupLocalService.getRolePrimaryKeys(groupId);
 	}
 
 	/**
@@ -684,6 +710,19 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	}
 
 	/**
+	* Returns the userGroupIds of the user groups associated with the group.
+	*
+	* @param groupId the groupId of the group
+	* @return long[] the userGroupIds of user groups associated with the group
+	* @throws SystemException if a system exception occurred
+	*/
+	@Override
+	public long[] getUserGroupPrimaryKeys(long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _groupLocalService.getUserGroupPrimaryKeys(groupId);
+	}
+
+	/**
 	* @throws SystemException if a system exception occurred
 	*/
 	@Override
@@ -833,6 +872,19 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 		java.util.List<com.liferay.portal.model.Group> Groups)
 		throws com.liferay.portal.kernel.exception.SystemException {
 		_groupLocalService.deleteUserGroups(userId, Groups);
+	}
+
+	/**
+	* Returns the userIds of the users associated with the group.
+	*
+	* @param groupId the groupId of the group
+	* @return long[] the userIds of users associated with the group
+	* @throws SystemException if a system exception occurred
+	*/
+	@Override
+	public long[] getUserPrimaryKeys(long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _groupLocalService.getUserPrimaryKeys(groupId);
 	}
 
 	/**

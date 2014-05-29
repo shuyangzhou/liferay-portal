@@ -447,6 +447,11 @@ public class RepositoryLocalServiceWrapper implements RepositoryLocalService,
 	}
 
 	@Override
+	public java.lang.String getRegistryName() {
+		return _repositoryLocalService.getRegistryName();
+	}
+
+	@Override
 	public com.liferay.portal.model.Repository getRepository(long groupId,
 		java.lang.String portletId)
 		throws com.liferay.portal.kernel.exception.PortalException,
@@ -485,6 +490,11 @@ public class RepositoryLocalServiceWrapper implements RepositoryLocalService,
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
 		return _repositoryLocalService.getTypeSettingsProperties(repositoryId);
+	}
+
+	@Override
+	public void invalidate() {
+		_repositoryLocalService.invalidate();
 	}
 
 	@Override
