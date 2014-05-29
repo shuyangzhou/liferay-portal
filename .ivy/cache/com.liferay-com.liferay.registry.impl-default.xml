@@ -4,18 +4,18 @@
 	<info
 		organisation="com.liferay"
 		module="com.liferay.registry.impl"
-		revision="working@mbpro.cherrydale.liferay.com"
+		revision="working@new-host-6.cherrydale.liferay.com"
 		conf="default"
 		confs="default"
-		date="20140523110127"/>
+		date="20140528223109"/>
 	<dependencies>
 		<module organisation="org.eclipse.tycho" name="org.eclipse.osgi">
-			<revision name="3.9.1.v20130814-1242" status="release" pubdate="20131011044141" resolver="liferay-public" artresolver="default" homepage="http://www.eclipse.org/tycho/" downloaded="true" searched="true" default="false" conf="default, compile, runtime, master" position="0">
+			<revision name="3.9.1.v20130814-1242" status="release" pubdate="20131011044141" resolver="liferay-public" artresolver="default" homepage="http://www.eclipse.org/tycho/" downloaded="false" searched="false" default="false" conf="default, compile, runtime, master" position="0">
 				<license name="Eclipse Public License" url="http://www.eclipse.org/legal/epl-v10.html"/>
-				<metadata-artifact status="successful" details="" size="1501" time="35" location="/Users/brian/dev/projects/github/liferay-portal/.ivy/cache/org.eclipse.tycho/org.eclipse.osgi/ivy-3.9.1.v20130814-1242.xml" searched="true" original-local-location="/Users/brian/dev/projects/github/liferay-portal/.ivy/cache/org.eclipse.tycho/org.eclipse.osgi/ivy-3.9.1.v20130814-1242.xml.original" origin-is-local="false" origin-location="http://cdn.repository.liferay.com/nexus/content/groups/public/org/eclipse/tycho/org.eclipse.osgi/3.9.1.v20130814-1242/org.eclipse.osgi-3.9.1.v20130814-1242.pom"/>
-				<caller organisation="com.liferay" name="com.liferay.registry.impl" conf="default" rev="3.9.1.v20130814-1242" rev-constraint-default="3.9.1.v20130814-1242" rev-constraint-dynamic="3.9.1.v20130814-1242" callerrev="working@mbpro.cherrydale.liferay.com"/>
+				<metadata-artifact status="no" details="" size="2506" time="0" location="/Users/brian/dev/projects/github/liferay-portal/.ivy/cache/org.eclipse.tycho/org.eclipse.osgi/ivy-3.9.1.v20130814-1242.xml" searched="false" origin-is-local="false" origin-location="http://cdn.repository.liferay.com/nexus/content/groups/public/org/eclipse/tycho/org.eclipse.osgi/3.9.1.v20130814-1242/org.eclipse.osgi-3.9.1.v20130814-1242.pom"/>
+				<caller organisation="com.liferay" name="com.liferay.registry.impl" conf="default" rev="3.9.1.v20130814-1242" rev-constraint-default="3.9.1.v20130814-1242" rev-constraint-dynamic="3.9.1.v20130814-1242" callerrev="working@new-host-6.cherrydale.liferay.com"/>
 				<artifacts>
-					<artifact name="org.eclipse.osgi" type="jar" ext="jar" status="successful" details="" size="1392230" time="192" location="/Users/brian/dev/projects/github/liferay-portal/.ivy/cache/org.eclipse.tycho/org.eclipse.osgi/jars/org.eclipse.osgi-3.9.1.v20130814-1242.jar">
+					<artifact name="org.eclipse.osgi" type="jar" ext="jar" status="no" details="" size="1392230" time="0" location="/Users/brian/dev/projects/github/liferay-portal/.ivy/cache/org.eclipse.tycho/org.eclipse.osgi/jars/org.eclipse.osgi-3.9.1.v20130814-1242.jar">
 						<origin-location is-local="false" location="http://cdn.repository.liferay.com/nexus/content/groups/public/org/eclipse/tycho/org.eclipse.osgi/3.9.1.v20130814-1242/org.eclipse.osgi-3.9.1.v20130814-1242.jar"/>
 					</artifact>
 				</artifacts>

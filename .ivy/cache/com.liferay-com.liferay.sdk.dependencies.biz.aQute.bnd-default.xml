@@ -4,17 +4,17 @@
 	<info
 		organisation="com.liferay"
 		module="com.liferay.sdk.dependencies.biz.aQute.bnd"
-		revision="working@mbpro.cherrydale.liferay.com"
+		revision="working@new-host-6.cherrydale.liferay.com"
 		conf="default"
 		confs="default"
-		date="20140523110114"/>
+		date="20140528222352"/>
 	<dependencies>
 		<module organisation="com.liferay" name="aQute.bnd">
-			<revision name="2.3.0" status="release" pubdate="20140517151338" resolver="liferay-public" artresolver="default" homepage="" downloaded="true" searched="true" default="false" conf="default, compile, runtime, master" position="0">
-				<metadata-artifact status="successful" details="" size="456" time="41" location="/Users/brian/dev/projects/github/liferay-portal/.ivy/cache/com.liferay/aQute.bnd/ivy-2.3.0.xml" searched="true" original-local-location="/Users/brian/dev/projects/github/liferay-portal/.ivy/cache/com.liferay/aQute.bnd/ivy-2.3.0.xml.original" origin-is-local="false" origin-location="http://cdn.repository.liferay.com/nexus/content/groups/public/com/liferay/aQute.bnd/2.3.0/aQute.bnd-2.3.0.pom"/>
-				<caller organisation="com.liferay" name="com.liferay.sdk.dependencies.biz.aQute.bnd" conf="default" rev="2.3.0" rev-constraint-default="2.3.0" rev-constraint-dynamic="2.3.0" callerrev="working@mbpro.cherrydale.liferay.com"/>
+			<revision name="2.3.0" status="release" pubdate="20140517151338" resolver="liferay-public" artresolver="default" homepage="" downloaded="false" searched="false" default="false" conf="default, compile, runtime, master" position="0">
+				<metadata-artifact status="no" details="" size="2241" time="0" location="/Users/brian/dev/projects/github/liferay-portal/.ivy/cache/com.liferay/aQute.bnd/ivy-2.3.0.xml" searched="false" origin-is-local="false" origin-location="http://cdn.repository.liferay.com/nexus/content/groups/public/com/liferay/aQute.bnd/2.3.0/aQute.bnd-2.3.0.pom"/>
+				<caller organisation="com.liferay" name="com.liferay.sdk.dependencies.biz.aQute.bnd" conf="default" rev="2.3.0" rev-constraint-default="2.3.0" rev-constraint-dynamic="2.3.0" callerrev="working@new-host-6.cherrydale.liferay.com"/>
 				<artifacts>
-					<artifact name="aQute.bnd" type="jar" ext="jar" status="successful" details="" size="2034464" time="415" location="/Users/brian/dev/projects/github/liferay-portal/.ivy/cache/com.liferay/aQute.bnd/jars/aQute.bnd-2.3.0.jar">
+					<artifact name="aQute.bnd" type="jar" ext="jar" status="no" details="" size="2034464" time="0" location="/Users/brian/dev/projects/github/liferay-portal/.ivy/cache/com.liferay/aQute.bnd/jars/aQute.bnd-2.3.0.jar">
 						<origin-location is-local="false" location="http://cdn.repository.liferay.com/nexus/content/groups/public/com/liferay/aQute.bnd/2.3.0/aQute.bnd-2.3.0.jar"/>
 					</artifact>
 				</artifacts>
