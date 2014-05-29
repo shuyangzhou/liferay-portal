@@ -2382,7 +2382,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 * @param  type the type of social relation. The possible types can be found
 	 *         in {@link
 	 *         com.liferay.portlet.social.model.SocialRelationConstants}.
-	 * @param  equal the value of type of social relation equals true or false
+	 * @param  equalType the value of type of social relation equals true or false
 	 * @param  start the lower bound of the range of users
 	 * @param  end the upper bound of the range of users (not inclusive)
 	 * @param  obc the comparator to order the users by (optionally
@@ -2393,7 +2393,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 */
 	@Override
 	public List<User> getSocialUsers(
-			long userId, int type, boolean equal, int start, int end,
+			long userId, int type, boolean equalType, int start, int end,
 			OrderByComparator obc)
 		throws PortalException, SystemException {
 
@@ -2401,7 +2401,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 			List<SocialRelation> socialRelations =
 				socialRelationPersistence.findByU1_T(userId, type);
 
-			if (!equal) {
+			if (!equalType) {
 				socialRelations = ListUtil.remove(
 					socialRelationPersistence.findByUserId1(userId),
 					socialRelations);
@@ -2419,7 +2419,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 					continue;
 				}
 
-				if (!users.contains(user)) { 
+				if (!users.contains(user)) {
 					users.add(user);
 				}
 			}
@@ -2433,8 +2433,14 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 
+		String socialRelationTypeComparator = StringPool.EQUAL;
+
+		if (!equalType) {
+			socialRelationTypeComparator = StringPool.NOT_EQUAL;
+		}
+
 		return userFinder.findBySocialUsers(
-			user.getCompanyId(), userId, type, equal,
+			user.getCompanyId(), userId, type, socialRelationTypeComparator,
 			WorkflowConstants.STATUS_APPROVED, start, end, obc);
 	}
 
@@ -2652,20 +2658,27 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 * @param  type the type of social relation. The possible types can be found
 	 *         in {@link
 	 *         com.liferay.portlet.social.model.SocialRelationConstants}.
-	 * @param  equal the value of type of social relation equals true or false
+	 * @param  equalType the value of type of social relation
+	 *         equals true or false
 	 * @return the number of users with a social relation with the user
 	 * @throws PortalException if a user with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int getSocialUsersCount(long userId, int type, boolean equal)
+	public int getSocialUsersCount(long userId, int type, boolean equalType)
 		throws PortalException, SystemException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 
+		String socialRelationTypeComparator = StringPool.EQUAL;
+
+		if (!equalType) {
+			socialRelationTypeComparator = StringPool.NOT_EQUAL;
+		}
+
 		return userFinder.countBySocialUsers(
-			user.getCompanyId(), user.getUserId(), type, equal,
-			WorkflowConstants.STATUS_APPROVED);
+			user.getCompanyId(), user.getUserId(), type,
+			socialRelationTypeComparator, WorkflowConstants.STATUS_APPROVED);
 	}
 
 	/**
