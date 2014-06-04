@@ -66,8 +66,7 @@ public class SchedulerEntryImpl implements SchedulerEntry {
 		}
 
 		if (_triggerType.equals(TriggerType.CRON)) {
-			_trigger = new CronTrigger(
-				className, className, _triggerValue);
+			_trigger = new CronTrigger(className, className, _triggerValue);
 		}
 		else if (_triggerType.equals(TriggerType.SIMPLE)) {
 			long intervalTime = GetterUtil.getLong(_triggerValue);
@@ -88,8 +87,7 @@ public class SchedulerEntryImpl implements SchedulerEntry {
 				intervalTime = intervalTime * Time.SECOND;
 			}
 
-			_trigger = new IntervalTrigger(
-				className, className, intervalTime);
+			_trigger = new IntervalTrigger(className, className, intervalTime);
 		}
 		else {
 			throw new SchedulerException(
