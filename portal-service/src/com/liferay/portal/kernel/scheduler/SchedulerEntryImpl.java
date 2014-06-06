@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
+import com.liferay.portal.kernel.util.Validator;
 
 /**
  * @author Shuyang Zhou
@@ -56,9 +57,16 @@ public class SchedulerEntryImpl implements SchedulerEntry {
 			return _trigger;
 		}
 
+		String className = _eventListenerClass;
+
+		if (Validator.isNull(className)) {
+			Class<?> clazz = _eventListener.getClass();
+
+			className = clazz.getName();
+		}
+
 		if (_triggerType.equals(TriggerType.CRON)) {
-			_trigger = new CronTrigger(
-				_eventListenerClass, _eventListenerClass, _triggerValue);
+			_trigger = new CronTrigger(className, className, _triggerValue);
 		}
 		else if (_triggerType.equals(TriggerType.SIMPLE)) {
 			long intervalTime = GetterUtil.getLong(_triggerValue);
@@ -79,8 +87,7 @@ public class SchedulerEntryImpl implements SchedulerEntry {
 				intervalTime = intervalTime * Time.SECOND;
 			}
 
-			_trigger = new IntervalTrigger(
-				_eventListenerClass, _eventListenerClass, intervalTime);
+			_trigger = new IntervalTrigger(className, className, intervalTime);
 		}
 		else {
 			throw new SchedulerException(
