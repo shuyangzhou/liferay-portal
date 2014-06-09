@@ -312,7 +312,7 @@ public class IntrabandProxyUtil {
 
 				Class<?>[] parameterTypes = method.getParameterTypes();
 
-				if ((parameterTypes.length > 0)) {
+				if (parameterTypes.length > 0) {
 					throw new IllegalArgumentException(
 						"The @Id annotated method " + method +
 							" must not have parameters");
