@@ -14,8 +14,20 @@
 
 package com.liferay.portal.wab.extender.internal;
 
+import com.liferay.portal.wab.extender.internal.artifact.WarArtifactUrlTransformer;
+import com.liferay.portal.wab.extender.internal.handler.WabURLStreamHandlerService;
+
+import java.util.Dictionary;
+import java.util.Hashtable;
+
+import org.apache.felix.fileinstall.ArtifactUrlTransformer;
+
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
+import org.osgi.service.url.URLConstants;
+import org.osgi.service.url.URLStreamHandlerService;
 
 /**
  * @author Miguel Pastor
@@ -23,10 +35,46 @@ import org.osgi.framework.BundleContext;
  */
 public class WabExtenderActivator implements BundleActivator {
 
+	@Override
 	public void start(BundleContext bundleContext) throws Exception {
+		registerURLStreamHandlerService(bundleContext);
+
+		registerArtifactUrlTransformer(bundleContext);
 	}
 
+	@Override
 	public void stop(BundleContext bundleContext) throws Exception {
+		_serviceRegistration.unregister();
+
+		_serviceRegistration = null;
 	}
+
+	protected void registerArtifactUrlTransformer(BundleContext bundleContext) {
+		_serviceRegistration = bundleContext.registerService(
+			ArtifactUrlTransformer.class, new WarArtifactUrlTransformer(),
+			null);
+	}
+
+	protected void registerURLStreamHandlerService(
+		BundleContext bundleContext) {
+
+		Bundle bundle = bundleContext.getBundle(0);
+
+		Class<?> clazz = bundle.getClass();
+
+		ClassLoader classLoader = clazz.getClassLoader();
+
+		Dictionary<String, Object> properties = new Hashtable<String, Object>();
+
+		properties.put(
+			URLConstants.URL_HANDLER_PROTOCOL, new String[] {"webbundle"});
+
+		bundleContext.registerService(
+			URLStreamHandlerService.class.getName(),
+			new WabURLStreamHandlerService(bundleContext, classLoader),
+			properties);
+	}
+
+	private ServiceRegistration<ArtifactUrlTransformer> _serviceRegistration;
 
 }

@@ -2,6 +2,7 @@
 <!DOCTYPE project>
 
 <project>
+	<property name="osgi.ide.dependencies" value="asm-debug-all.jar,felix-fileinstall.jar" />
 	<property name="plugin.full.version" value="7.0.0.1" />
 	<property name="plugin.name" value="com.liferay.portal.wab.extender" />
 
