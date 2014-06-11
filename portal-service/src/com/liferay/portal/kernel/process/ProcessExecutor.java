@@ -24,8 +24,10 @@ import com.liferay.portal.kernel.process.log.ProcessOutputStream;
 import com.liferay.portal.kernel.util.ClassLoaderObjectInputStream;
 import com.liferay.portal.kernel.util.NamedThreadFactory;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
+import com.liferay.portal.kernel.util.ServerDetector;
 import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.EOFException;
 import java.io.File;
@@ -84,6 +86,10 @@ public class ProcessExecutor {
 		throws ProcessException {
 
 		try {
+			String workingDir = new File("").getAbsolutePath();
+
+			classPath = _filterClassPath(workingDir, classPath);
+
 			List<String> commands = new ArrayList<String>(arguments.size() + 4);
 
 			commands.add(java);
@@ -93,6 +99,8 @@ public class ProcessExecutor {
 			commands.add(ProcessExecutor.class.getName());
 
 			ProcessBuilder processBuilder = new ProcessBuilder(commands);
+
+			processBuilder.directory(new File(workingDir));
 
 			Process process = processBuilder.start();
 
@@ -320,6 +328,86 @@ public class ProcessExecutor {
 
 		public boolean shutdown(int shutdownCode, Throwable shutdownThrowable);
 
+	}
+
+	private static String _calculateRelativePath(
+			String baseDir, String targetPath) {
+
+		String[] base = StringUtil.split(baseDir, File.separator);
+
+		String[] target = StringUtil.split(targetPath, File.separator);
+
+		int commonCount = 0;
+		int commonLength = 0;
+		int maxCount = Math.min(target.length, base.length);
+
+		while (commonCount < maxCount) {
+			String targetElement = target[commonCount];
+
+			if (!targetElement.equals(base[commonCount])) {
+				break;
+			}
+
+			commonCount++;
+			commonLength += targetElement.length() + 1;
+		}
+
+		if (commonCount == 0) {
+			return targetPath;
+		}
+
+		int targetLength = targetPath.length();
+
+		int dirsUp = base.length - commonCount;
+
+		StringBuilder relative = new StringBuilder(
+			dirsUp * 3 + targetLength - commonLength + 1);
+
+		for (int i = 0; i < dirsUp; i++) {
+			relative.append("..").append(File.separatorChar);
+		}
+
+		if (commonLength < targetLength) {
+			relative.append(targetPath.substring(commonLength));
+		}
+
+		return relative.toString();
+	}
+
+	private static String _filterClassPath(
+		String workingDir, String classPath) {
+
+		String[] elements = StringUtil.split(classPath, File.pathSeparatorChar);
+
+		StringBuilder newClassPath = new StringBuilder(classPath.length());
+
+		for (String element : elements) {
+			if (ServerDetector.isWebSphere()) {
+				if (element.contains("plugins")) {
+
+					if (element.contains("com.ibm.") ||
+						element.contains("org.eclipse.") ||
+						element.contains("com.tivoli.") ||
+						element.contains("org.apache.") ||
+						element.contains("javax.j2ee.")
+						) {
+
+						continue;
+					}
+				}
+			}
+
+			String relativePath = _calculateRelativePath(workingDir, element);
+
+			if (relativePath.length() < element.length()) {
+				element = relativePath;
+			}
+
+			newClassPath.append(element);
+			newClassPath.append(File.pathSeparatorChar);
+		}
+
+		return newClassPath.toString();
 	}
 
 	private static ExecutorService _getExecutorService() {
