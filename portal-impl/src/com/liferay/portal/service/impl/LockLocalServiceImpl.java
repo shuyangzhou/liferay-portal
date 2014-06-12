@@ -241,6 +241,16 @@ public class LockLocalServiceImpl extends LockLocalServiceBaseImpl {
 
 			lockPersistence.flush();
 		}
+		else {
+
+			// Workaround to release the lock (see LPS-47099)
+
+			lock.setCreateDate(new Date());
+
+			lockPersistence.update(lock);
+
+			lockPersistence.flush();
+		}
 
 		return lock;
 	}
