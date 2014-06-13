@@ -22,8 +22,8 @@ import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Layout;
-import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.PortletPreferencesLocalServiceUtil;
+import com.liferay.portal.test.DeleteAfterTestRun;
 import com.liferay.portal.util.test.GroupTestUtil;
 import com.liferay.portal.util.test.LayoutTestUtil;
 import com.liferay.portal.util.test.MailServiceTestUtil;
@@ -54,8 +54,6 @@ public abstract class BaseSubscriptionTestCase {
 
 	@After
 	public void tearDown() throws Exception {
-		GroupLocalServiceUtil.deleteGroup(group);
-
 		LocaleThreadLocal.setDefaultLocale(defaultLocale);
 	}
 
@@ -292,7 +290,10 @@ public abstract class BaseSubscriptionTestCase {
 	protected static final String SPANISH_BODY = "Hola Mundo";
 
 	protected Locale defaultLocale;
+
+	@DeleteAfterTestRun
 	protected Group group;
+
 	protected Layout layout;
 
 	private static final long _PARENT_CONTAINER_MODEL_ID_DEFAULT = 0;
