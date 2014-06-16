@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.util.NamedThreadFactory;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.ServerDetector;
 import com.liferay.portal.kernel.util.StreamUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
@@ -331,47 +332,48 @@ public class ProcessExecutor {
 	}
 
 	private static String _calculateRelativePath(
-			String baseDir, String targetPath) {
+		String baseDir, String targetPath) {
 
-		String[] base = StringUtil.split(baseDir, File.separator);
+		String[] baseElements = StringUtil.split(baseDir, File.separator);
+		String[] targetElements = StringUtil.split(targetPath, File.separator);
 
-		String[] target = StringUtil.split(targetPath, File.separator);
+		int commonElementsCount = 0;
+		int commonElementsLength = 0;
+		int maxCount = Math.min(targetElements.length, baseElements.length);
 
-		int commonCount = 0;
-		int commonLength = 0;
-		int maxCount = Math.min(target.length, base.length);
+		while (commonElementsCount < maxCount) {
+			String targetElement = targetElements[commonElementsCount];
 
-		while (commonCount < maxCount) {
-			String targetElement = target[commonCount];
+			if (!StringUtil.equalsIgnoreCase(
+					targetElement, baseElements[commonElementsCount])) {
 
-			if (!targetElement.equals(base[commonCount])) {
 				break;
 			}
 
-			commonCount++;
-			commonLength += targetElement.length() + 1;
+			commonElementsCount++;
+
+			commonElementsLength += targetElement.length() + 1;
 		}
 
-		if (commonCount == 0) {
+		if (commonElementsCount == 0) {
 			return targetPath;
 		}
 
 		int targetLength = targetPath.length();
+		int dirsUp = baseElements.length - commonElementsCount;
 
-		int dirsUp = base.length - commonCount;
-
-		StringBuilder relative = new StringBuilder(
-			dirsUp * 3 + targetLength - commonLength + 1);
+		StringBundler relativePath = new StringBundler((dirsUp * 2) + 1);
 
 		for (int i = 0; i < dirsUp; i++) {
-			relative.append("..").append(File.separatorChar);
+			relativePath.append(StringPool.DOUBLE_PERIOD);
+			relativePath.append(File.separatorChar);
 		}
 
-		if (commonLength < targetLength) {
-			relative.append(targetPath.substring(commonLength));
+		if (commonElementsLength < targetLength) {
+			relativePath.append(targetPath.substring(commonElementsLength));
 		}
 
-		return relative.toString();
+		return relativePath.toString();
 	}
 
 	private static String _filterClassPath(
@@ -379,21 +381,18 @@ public class ProcessExecutor {
 
 		String[] elements = StringUtil.split(classPath, File.pathSeparatorChar);
 
-		StringBuilder newClassPath = new StringBuilder(classPath.length());
+		StringBundler relativeClassPaths = new StringBundler(
+			elements.length * 2);
 
 		for (String element : elements) {
-			if (ServerDetector.isWebSphere()) {
-				if (element.contains("plugins")) {
+			if (ServerDetector.isWebSphere() && element.contains("plugins")) {
+				if (element.contains("com.ibm.") ||
+					element.contains("com.tivoli.") ||
+					element.contains("javax.j2ee.") ||
+					element.contains("org.apache.") ||
+					element.contains("org.eclipse.")) {
 
-					if (element.contains("com.ibm.") ||
-						element.contains("org.eclipse.") ||
-						element.contains("com.tivoli.") ||
-						element.contains("org.apache.") ||
-						element.contains("javax.j2ee.")
-						) {
-
-						continue;
-					}
+					continue;
 				}
 			}
 
@@ -403,11 +402,11 @@ public class ProcessExecutor {
 				element = relativePath;
 			}
 
-			newClassPath.append(element);
-			newClassPath.append(File.pathSeparatorChar);
+			relativeClassPaths.append(element);
+			relativeClassPaths.append(File.pathSeparatorChar);
 		}
 
-		return newClassPath.toString();
+		return relativeClassPaths.toString();
 	}
 
 	private static ExecutorService _getExecutorService() {
