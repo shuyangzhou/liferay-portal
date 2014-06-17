@@ -332,49 +332,6 @@ public class ProcessExecutor {
 
 	}
 
-	private static String _getRelativePath(String baseDir, String targetPath) {
-		String[] baseElements = StringUtil.split(baseDir, File.separator);
-		String[] targetElements = StringUtil.split(targetPath, File.separator);
-
-		int commonElementsCount = 0;
-		int commonElementsLength = 0;
-		int maxCount = Math.min(targetElements.length, baseElements.length);
-
-		while (commonElementsCount < maxCount) {
-			String targetElement = targetElements[commonElementsCount];
-
-			if (!StringUtil.equalsIgnoreCase(
-					targetElement, baseElements[commonElementsCount])) {
-
-				break;
-			}
-
-			commonElementsCount++;
-
-			commonElementsLength += targetElement.length() + 1;
-		}
-
-		if (commonElementsCount == 0) {
-			return targetPath;
-		}
-
-		int targetLength = targetPath.length();
-		int dirsUp = baseElements.length - commonElementsCount;
-
-		StringBundler relativePath = new StringBundler((dirsUp * 2) + 1);
-
-		for (int i = 0; i < dirsUp; i++) {
-			relativePath.append(StringPool.DOUBLE_PERIOD);
-			relativePath.append(File.separatorChar);
-		}
-
-		if (commonElementsLength < targetLength) {
-			relativePath.append(targetPath.substring(commonElementsLength));
-		}
-
-		return relativePath.toString();
-	}
-
 	private static String _filterClassPath(
 		String workingDir, String classPath) {
 
@@ -422,6 +379,49 @@ public class ProcessExecutor {
 		}
 
 		return _executorService;
+	}
+
+	private static String _getRelativePath(String baseDir, String targetPath) {
+		String[] baseElements = StringUtil.split(baseDir, File.separator);
+		String[] targetElements = StringUtil.split(targetPath, File.separator);
+
+		int commonElementsCount = 0;
+		int commonElementsLength = 0;
+		int maxCount = Math.min(targetElements.length, baseElements.length);
+
+		while (commonElementsCount < maxCount) {
+			String targetElement = targetElements[commonElementsCount];
+
+			if (!StringUtil.equalsIgnoreCase(
+					targetElement, baseElements[commonElementsCount])) {
+
+				break;
+			}
+
+			commonElementsCount++;
+
+			commonElementsLength += targetElement.length() + 1;
+		}
+
+		if (commonElementsCount == 0) {
+			return targetPath;
+		}
+
+		int targetLength = targetPath.length();
+		int dirsUp = baseElements.length - commonElementsCount;
+
+		StringBundler relativePath = new StringBundler((dirsUp * 2) + 1);
+
+		for (int i = 0; i < dirsUp; i++) {
+			relativePath.append(StringPool.DOUBLE_PERIOD);
+			relativePath.append(File.separatorChar);
+		}
+
+		if (commonElementsLength < targetLength) {
+			relativePath.append(targetPath.substring(commonElementsLength));
+		}
+
+		return relativePath.toString();
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(ProcessExecutor.class);
