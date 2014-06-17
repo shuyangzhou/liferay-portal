@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.SystemProperties;
 
 import java.io.EOFException;
 import java.io.File;
@@ -87,7 +88,7 @@ public class ProcessExecutor {
 		throws ProcessException {
 
 		try {
-			String workingDir = new File("").getAbsolutePath();
+			String workingDir = SystemProperties.get("user.dir");
 
 			classPath = _filterClassPath(workingDir, classPath);
 
@@ -331,9 +332,7 @@ public class ProcessExecutor {
 
 	}
 
-	private static String _calculateRelativePath(
-		String baseDir, String targetPath) {
-
+	private static String _getRelativePath(String baseDir, String targetPath) {
 		String[] baseElements = StringUtil.split(baseDir, File.separator);
 		String[] targetElements = StringUtil.split(targetPath, File.separator);
 
@@ -385,18 +384,17 @@ public class ProcessExecutor {
 			elements.length * 2);
 
 		for (String element : elements) {
-			if (ServerDetector.isWebSphere() && element.contains("plugins")) {
-				if (element.contains("com.ibm.") ||
-					element.contains("com.tivoli.") ||
-					element.contains("javax.j2ee.") ||
-					element.contains("org.apache.") ||
-					element.contains("org.eclipse.")) {
+			if (ServerDetector.isWebSphere() && element.contains("plugins") &&
+				(element.contains("com.ibm.") ||
+				 element.contains("com.tivoli.") ||
+				 element.contains("javax.j2ee.") ||
+				 element.contains("org.apache.") ||
+				 element.contains("org.eclipse."))) {
 
-					continue;
-				}
+				continue;
 			}
 
-			String relativePath = _calculateRelativePath(workingDir, element);
+			String relativePath = _getRelativePath(workingDir, element);
 
 			if (relativePath.length() < element.length()) {
 				element = relativePath;
