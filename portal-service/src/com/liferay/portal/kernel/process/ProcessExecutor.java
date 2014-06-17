@@ -24,8 +24,12 @@ import com.liferay.portal.kernel.process.log.ProcessOutputStream;
 import com.liferay.portal.kernel.util.ClassLoaderObjectInputStream;
 import com.liferay.portal.kernel.util.NamedThreadFactory;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
+import com.liferay.portal.kernel.util.ServerDetector;
 import com.liferay.portal.kernel.util.StreamUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.SystemProperties;
 
 import java.io.EOFException;
 import java.io.File;
@@ -84,6 +88,10 @@ public class ProcessExecutor {
 		throws ProcessException {
 
 		try {
+			String workingDir = SystemProperties.get("user.dir");
+
+			classPath = _filterClassPath(workingDir, classPath);
+
 			List<String> commands = new ArrayList<String>(arguments.size() + 4);
 
 			commands.add(java);
@@ -93,6 +101,8 @@ public class ProcessExecutor {
 			commands.add(ProcessExecutor.class.getName());
 
 			ProcessBuilder processBuilder = new ProcessBuilder(commands);
+
+			processBuilder.directory(new File(workingDir));
 
 			Process process = processBuilder.start();
 
@@ -322,6 +332,38 @@ public class ProcessExecutor {
 
 	}
 
+	private static String _filterClassPath(
+		String workingDir, String classPath) {
+
+		String[] elements = StringUtil.split(classPath, File.pathSeparatorChar);
+
+		StringBundler relativeClassPaths = new StringBundler(
+			elements.length * 2);
+
+		for (String element : elements) {
+			if (ServerDetector.isWebSphere() && element.contains("plugins") &&
+				(element.contains("com.ibm.") ||
+				 element.contains("com.tivoli.") ||
+				 element.contains("javax.j2ee.") ||
+				 element.contains("org.apache.") ||
+				 element.contains("org.eclipse."))) {
+
+				continue;
+			}
+
+			String relativePath = _getRelativePath(workingDir, element);
+
+			if (relativePath.length() < element.length()) {
+				element = relativePath;
+			}
+
+			relativeClassPaths.append(element);
+			relativeClassPaths.append(File.pathSeparatorChar);
+		}
+
+		return relativeClassPaths.toString();
+	}
+
 	private static ExecutorService _getExecutorService() {
 		if (_executorService != null) {
 			return _executorService;
@@ -337,6 +379,49 @@ public class ProcessExecutor {
 		}
 
 		return _executorService;
+	}
+
+	private static String _getRelativePath(String baseDir, String targetPath) {
+		String[] baseElements = StringUtil.split(baseDir, File.separator);
+		String[] targetElements = StringUtil.split(targetPath, File.separator);
+
+		int commonElementsCount = 0;
+		int commonElementsLength = 0;
+		int maxCount = Math.min(targetElements.length, baseElements.length);
+
+		while (commonElementsCount < maxCount) {
+			String targetElement = targetElements[commonElementsCount];
+
+			if (!StringUtil.equalsIgnoreCase(
+					targetElement, baseElements[commonElementsCount])) {
+
+				break;
+			}
+
+			commonElementsCount++;
+
+			commonElementsLength += targetElement.length() + 1;
+		}
+
+		if (commonElementsCount == 0) {
+			return targetPath;
+		}
+
+		int targetLength = targetPath.length();
+		int dirsUp = baseElements.length - commonElementsCount;
+
+		StringBundler relativePath = new StringBundler((dirsUp * 2) + 1);
+
+		for (int i = 0; i < dirsUp; i++) {
+			relativePath.append(StringPool.DOUBLE_PERIOD);
+			relativePath.append(File.separatorChar);
+		}
+
+		if (commonElementsLength < targetLength) {
+			relativePath.append(targetPath.substring(commonElementsLength));
+		}
+
+		return relativePath.toString();
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(ProcessExecutor.class);
