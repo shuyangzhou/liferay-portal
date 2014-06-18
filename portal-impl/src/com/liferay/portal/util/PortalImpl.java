@@ -286,6 +286,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.PageContext;
 
+import jodd.util.Wildcard;
+
 import org.apache.struts.Globals;
 
 /**
@@ -8195,10 +8197,12 @@ public class PortalImpl implements Portal {
 	}
 
 	protected String getValidPortalDomain(long companyId, String domain) {
-		for (String validVirtualHost : PropsValues.VIRTUAL_HOSTS_VALID_HOSTS) {
-			if (StringUtil.equalsIgnoreCase(domain, validVirtualHost)) {
-				return validVirtualHost;
-			}
+		String domainLowerCase = StringUtil.toLowerCase(domain);
+
+		if (Wildcard.matchOne(
+				domainLowerCase, PropsValues.VIRTUAL_HOSTS_VALID_HOSTS) > -1) {
+
+			return domainLowerCase;
 		}
 
 		if (StringUtil.equalsIgnoreCase(domain, PropsValues.WEB_SERVER_HOST)) {
@@ -8220,8 +8224,8 @@ public class PortalImpl implements Portal {
 		if (_log.isWarnEnabled()) {
 			_log.warn(
 				"Set the property \"" + PropsKeys.VIRTUAL_HOSTS_VALID_HOSTS +
-					"\" in portal.properties to allow " + domain +
-						" as a domain");
+					"\" in portal.properties to allow \"" + domain +
+						"\" as a domain");
 		}
 
 		try {
