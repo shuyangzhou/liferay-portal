@@ -101,8 +101,8 @@ public class PACLIntegrationJUnitTestRunner
 	private static final String _PACKAGE_PATH =
 		"com.liferay.portal.security.pacl.test.";
 
-	private static boolean _initialized = false;
 	private static IndexerPostProcessorRegistry _indexerPostProcessorRegistry;
+	private static boolean _initialized = false;
 	private static SchedulerEntryRegistry _schedulerEntryRegistry;
 	private static ServiceWrapperRegistry _serviceWrapperRegistry;
 
