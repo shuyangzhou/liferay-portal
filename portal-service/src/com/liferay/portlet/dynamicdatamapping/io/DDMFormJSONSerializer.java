@@ -12,22 +12,15 @@
  * details.
  */
 
-package com.liferay.portal.test;
+package com.liferay.portlet.dynamicdatamapping.io;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import com.liferay.portlet.dynamicdatamapping.model.DDMForm;
 
 /**
- * @author Miguel Pastor
+ * @author Marcellus Tavares
  */
-@Documented
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD, ElementType.TYPE})
-public @interface Sync {
+public interface DDMFormJSONSerializer {
 
-	public boolean cleanTransaction() default false;
+	public String serialize(DDMForm ddmForm);
 
 }
