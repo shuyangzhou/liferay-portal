@@ -4,10 +4,13 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
+import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
+import com.liferay.portal.model.SystemEventConstants;
 import com.liferay.portal.security.ac.AccessControlled;
 import com.liferay.portal.service.Base${sessionTypeName}Service;
 import com.liferay.portal.service.Invokable${sessionTypeName}Service;
@@ -95,19 +98,17 @@ public interface ${entity.name}${sessionTypeName}Service
 	 */
 
 	<#list methods as method>
-		<#if !method.isConstructor() && !method.isStatic() && method.isPublic() && serviceBuilder.isCustomMethod(method) && !serviceBuilder.isDuplicateMethod(method, tempMap)>
+		<#if !method.isConstructor() && !method.isStatic() && method.isPublic() && serviceBuilder.isCustomMethod(method)>
 			${serviceBuilder.getJavadocComment(method)}
 
-			<#if serviceBuilder.hasAnnotation(method, "Deprecated")>
-				@Deprecated
-			</#if>
+			<#list method.annotations as annotation>
+				<#if annotation != "@java.lang.Override()">
+					${annotation}
+				</#if>
+			</#list>
 
 			<#if overrideMethodNames?seq_index_of(method.name) != -1>
 				@Override
-			</#if>
-
-			<#if method.name = "dynamicQuery" && (method.parameters?size != 0)>
-				@SuppressWarnings("rawtypes")
 			</#if>
 
 			<#if serviceBuilder.isServiceReadOnlyMethod(method, entity.txRequiredList) && (method.name != "getBeanIdentifier")>
