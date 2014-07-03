@@ -1514,19 +1514,6 @@ public class ServiceBuilder {
 		}
 	}
 
-	public boolean isDuplicateMethod(
-		JavaMethod method, Map<String, Object> tempMap) {
-
-		String key = _getMethodKey(method);
-
-		if (tempMap.put(key, key) != null) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
 	public boolean isHBMCamelCasePropertyAccessor(String propertyName) {
 		if (propertyName.length() < 3) {
 			return false;
@@ -2439,19 +2426,19 @@ public class ServiceBuilder {
 		JavaClass modelJavaClass = _getJavaClass(
 			_serviceOutputPath + "/model/" + entity.getName() + "Model.java");
 
-		Object[] methods = _getMethods(modelJavaClass);
+		JavaMethod[] methods = _getMethods(modelJavaClass);
 
 		JavaClass extendedModelBaseImplJavaClass = _getJavaClass(
 			_outputPath + "/model/impl/" + entity.getName() + "BaseImpl.java");
 
-		methods = ArrayUtil.append(
-			methods, _getMethods(extendedModelBaseImplJavaClass));
+		methods = _mergeMethods(
+			methods, _getMethods(extendedModelBaseImplJavaClass), false);
 
 		JavaClass extendedModelJavaClass = _getJavaClass(
 			_serviceOutputPath + "/model/" + entity.getName() + ".java");
 
-		methods = ArrayUtil.append(
-			methods, _getMethods(extendedModelJavaClass));
+		methods = _mergeMethods(
+			methods, _getMethods(extendedModelJavaClass), false);
 
 		Map<String, Object> context = _getContext();
 
