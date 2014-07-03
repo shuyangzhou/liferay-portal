@@ -4,18 +4,19 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
-import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
-import com.liferay.portal.model.SystemEventConstants;
 import com.liferay.portal.security.ac.AccessControlled;
 import com.liferay.portal.service.Base${sessionTypeName}Service;
 import com.liferay.portal.service.Invokable${sessionTypeName}Service;
 import com.liferay.portal.service.PermissionedModelLocalService;
 import com.liferay.portal.service.PersistedModelLocalService;
+
+<#list imports as import>
+import ${import};
+</#list>
 
 <#if sessionTypeName == "Local">
 /**

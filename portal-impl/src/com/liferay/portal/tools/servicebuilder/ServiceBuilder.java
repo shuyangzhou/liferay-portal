@@ -59,6 +59,7 @@ import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaField;
 import com.thoughtworks.qdox.model.JavaMethod;
 import com.thoughtworks.qdox.model.JavaParameter;
+import com.thoughtworks.qdox.model.JavaSource;
 import com.thoughtworks.qdox.model.Type;
 
 import de.hunsicker.io.FileFormat;
@@ -2737,9 +2738,15 @@ public class ServiceBuilder {
 	private void _createService(Entity entity, int sessionType)
 		throws Exception {
 
+		Set<String> imports = new HashSet<String>();
+
 		JavaClass javaClass = _getJavaClass(
 			_outputPath + "/service/impl/" + entity.getName() +
 				_getSessionTypeName(sessionType) + "ServiceImpl.java");
+
+		JavaSource javaSource = javaClass.getSource();
+
+		imports.addAll(Arrays.asList(javaSource.getImports()));
 
 		JavaMethod[] methods = _getMethods(javaClass);
 
@@ -2755,6 +2762,10 @@ public class ServiceBuilder {
 				_outputPath + "/service/base/" + entity.getName() +
 					_getSessionTypeName(sessionType) + "ServiceBaseImpl.java");
 
+			JavaSource parentJavaSource = parentJavaClass.getSource();
+
+			imports.addAll(Arrays.asList(parentJavaSource.getImports()));
+
 			methods = _mergeMethods(
 				methods, parentJavaClass.getMethods(), true);
 		}
@@ -2762,6 +2773,7 @@ public class ServiceBuilder {
 		Map<String, Object> context = _getContext();
 
 		context.put("entity", entity);
+		context.put("imports", imports);
 		context.put("methods", methods);
 		context.put("sessionTypeName", _getSessionTypeName(sessionType));
 
@@ -4387,7 +4399,8 @@ public class ServiceBuilder {
 
 		for (Annotation annotation : annotations2) {
 			Type type = annotation.getType();
-
+//			AnnotationValue property = annotation.getProperty("a");
+//			property.
 			annotationsMap.put(type.getValue(), annotation);
 		}
 
@@ -4412,6 +4425,10 @@ public class ServiceBuilder {
 			new LinkedHashMap<String, JavaMethod>();
 
 		for (JavaMethod method : methods2) {
+			if (method.isConstructor()) {
+				continue;
+			}
+
 			String key = _getMethodKey(method);
 
 			methodsMap.put(key, method);
