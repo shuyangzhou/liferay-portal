@@ -248,6 +248,18 @@ public class AssetEntryPersistenceTest {
 	}
 
 	@Test
+	public void testCountByGroupId() {
+		try {
+			_persistence.countByGroupId(RandomTestUtil.nextLong());
+
+			_persistence.countByGroupId(0L);
+		}
+		catch (Exception e) {
+			Assert.fail(e.getMessage());
+		}
+	}
+
+	@Test
 	public void testCountByCompanyId() {
 		try {
 			_persistence.countByCompanyId(RandomTestUtil.nextLong());
