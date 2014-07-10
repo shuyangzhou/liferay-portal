@@ -102,20 +102,18 @@ public class EhcacheConfigurationUtil {
 				}
 			}
 			else if (usingDefault) {
-				if (!PropsValues.CLUSTER_LINK_ENABLED) {
-					_clearCacheManagerPeerConfigurations(configuration);
-				}
-
 				List<CacheConfiguration> cacheConfigurations =
 					_getAllCacheConfigurations(configuration);
 
 				_disableBootstrapCacheLoader(cacheConfigurations);
 
-				for (
-					CacheConfiguration cacheConfiguration :
-						cacheConfigurations) {
+				if (!PropsValues.CLUSTER_LINK_ENABLED) {
+					_clearCacheManagerPeerConfigurations(configuration);
 
-					if (!PropsValues.CLUSTER_LINK_ENABLED) {
+					for (
+						CacheConfiguration cacheConfiguration :
+							cacheConfigurations) {
+
 						_clearCacheEventListenerConfigurations(
 							cacheConfiguration);
 					}
