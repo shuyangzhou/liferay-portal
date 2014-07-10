@@ -82,21 +82,16 @@ public class EhcacheConfigurationUtil {
 			if (PropsValues.CLUSTER_LINK_ENABLED &&
 				PropsValues.EHCACHE_CLUSTER_LINK_REPLICATION_ENABLED) {
 
-				configuration.
-					getCacheManagerPeerListenerFactoryConfigurations(). clear();
-				configuration.
-					getCacheManagerPeerProviderFactoryConfiguration(). clear();
+				_clearCacheManagerPeerConfigurations(configuration);
 
 				List<CacheConfiguration> cacheConfigurations =
 					_getAllCacheConfigurations(configuration);
 
+				_disableBootstrapCacheLoader(cacheConfigurations);
+
 				for (
 					CacheConfiguration cacheConfiguration :
 						cacheConfigurations) {
-
-					if (!PropsValues.EHCACHE_BOOTSTRAP_CACHE_LOADER_ENABLED) {
-						cacheConfiguration.addBootstrapCacheLoaderFactory(null);
-					}
 
 					String cacheEventListenerProperties =
 						_clearCacheEventListenerConfigurations(
@@ -108,24 +103,17 @@ public class EhcacheConfigurationUtil {
 			}
 			else if (usingDefault) {
 				if (!PropsValues.CLUSTER_LINK_ENABLED) {
-					configuration.
-						getCacheManagerPeerListenerFactoryConfigurations().
-						clear();
-					configuration.
-						getCacheManagerPeerProviderFactoryConfiguration().
-						clear();
+					_clearCacheManagerPeerConfigurations(configuration);
 				}
 
 				List<CacheConfiguration> cacheConfigurations =
 					_getAllCacheConfigurations(configuration);
 
+				_disableBootstrapCacheLoader(cacheConfigurations);
+
 				for (
 					CacheConfiguration cacheConfiguration :
 						cacheConfigurations) {
-
-					if (!PropsValues.EHCACHE_BOOTSTRAP_CACHE_LOADER_ENABLED) {
-						cacheConfiguration.addBootstrapCacheLoaderFactory(null);
-					}
 
 					if (!PropsValues.CLUSTER_LINK_ENABLED) {
 						_clearCacheEventListenerConfigurations(
@@ -173,6 +161,24 @@ public class EhcacheConfigurationUtil {
 		cacheEventListenerConfigurations.clear();
 
 		return cacheEventListenerProperties;
+	}
+
+	private static void _clearCacheManagerPeerConfigurations(
+		Configuration configuration) {
+
+		configuration.getCacheManagerPeerListenerFactoryConfigurations().
+			clear();
+		configuration.getCacheManagerPeerProviderFactoryConfiguration().clear();
+	}
+
+	private static void _disableBootstrapCacheLoader(
+		List<CacheConfiguration> cacheConfigurations) {
+
+		for (CacheConfiguration cacheConfiguration : cacheConfigurations) {
+			if (!PropsValues.EHCACHE_BOOTSTRAP_CACHE_LOADER_ENABLED) {
+				cacheConfiguration.addBootstrapCacheLoaderFactory(null);
+			}
+		}
 	}
 
 	private static void _enableClusterLinkReplication(
