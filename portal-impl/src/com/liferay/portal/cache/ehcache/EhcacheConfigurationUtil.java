@@ -20,6 +20,7 @@ import com.liferay.portal.util.PropsValues;
 
 import java.net.URL;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -77,17 +78,47 @@ public class EhcacheConfigurationUtil {
 		Configuration configuration = ConfigurationFactory.parseConfiguration(
 			configurationURL);
 
-		boolean enableClusterLinkReplication = false;
+		if (clusterAware) {
+			if (PropsValues.CLUSTER_LINK_ENABLED &&
+				PropsValues.EHCACHE_CLUSTER_LINK_REPLICATION_ENABLED) {
 
-		if (PropsValues.CLUSTER_LINK_ENABLED &&
-			PropsValues.EHCACHE_CLUSTER_LINK_REPLICATION_ENABLED) {
+				_clearCacheManagerPeerConfigurations(configuration);
 
-			enableClusterLinkReplication = true;
-		}
+				List<CacheConfiguration> cacheConfigurations =
+					_getAllCacheConfigurations(configuration);
 
-		if (clusterAware && (usingDefault || enableClusterLinkReplication)) {
-			return _processDefaultClusterLinkReplication(
-				configuration, usingDefault, enableClusterLinkReplication);
+				_disableBootstrapCacheLoader(cacheConfigurations);
+
+				for (
+					CacheConfiguration cacheConfiguration :
+						cacheConfigurations) {
+
+					String cacheEventListenerProperties =
+						_clearCacheEventListenerConfigurations(
+							cacheConfiguration);
+
+					_enableClusterLinkReplication(
+						cacheConfiguration, cacheEventListenerProperties);
+				}
+			}
+			else if (usingDefault) {
+				List<CacheConfiguration> cacheConfigurations =
+					_getAllCacheConfigurations(configuration);
+
+				_disableBootstrapCacheLoader(cacheConfigurations);
+
+				if (!PropsValues.CLUSTER_LINK_ENABLED) {
+					_clearCacheManagerPeerConfigurations(configuration);
+
+					for (
+						CacheConfiguration cacheConfiguration :
+							cacheConfigurations) {
+
+						_clearCacheEventListenerConfigurations(
+							cacheConfiguration);
+					}
+				}
+			}
 		}
 
 		return configuration;
@@ -130,51 +161,20 @@ public class EhcacheConfigurationUtil {
 		return cacheEventListenerProperties;
 	}
 
-	private static void _configureCacheEventListeners(
-		boolean enableClusterLinkReplication,
-		boolean clearCachePeerProviderConfigurations, boolean usingDefault,
-		CacheConfiguration cacheConfiguration) {
+	private static void _clearCacheManagerPeerConfigurations(
+		Configuration configuration) {
 
-		if (cacheConfiguration == null) {
-			return;
-		}
+		configuration.getCacheManagerPeerListenerFactoryConfigurations().
+			clear();
+		configuration.getCacheManagerPeerProviderFactoryConfiguration().clear();
+	}
 
-		if (!PropsValues.EHCACHE_BOOTSTRAP_CACHE_LOADER_ENABLED) {
-			cacheConfiguration.addBootstrapCacheLoaderFactory(null);
-		}
+	private static void _disableBootstrapCacheLoader(
+		List<CacheConfiguration> cacheConfigurations) {
 
-		List<CacheEventListenerFactoryConfiguration>
-			cacheEventListenerFactoryConfigurations =
-				cacheConfiguration.getCacheEventListenerConfigurations();
-
-		boolean usingLiferayCacheEventListenerFactory = false;
-
-		for (CacheEventListenerFactoryConfiguration
-				cacheEventListenerFactoryConfiguration :
-					cacheEventListenerFactoryConfigurations) {
-
-			String className =
-				cacheEventListenerFactoryConfiguration.
-					getFullyQualifiedClassPath();
-
-			if (className.equals(
-					LiferayCacheEventListenerFactory.class.getName())) {
-
-				usingLiferayCacheEventListenerFactory = true;
-
-				break;
-			}
-		}
-
-		if (clearCachePeerProviderConfigurations ||
-			(!usingDefault && usingLiferayCacheEventListenerFactory)) {
-
-			String cacheEventListenerProperties =
-				_clearCacheEventListenerConfigurations(cacheConfiguration);
-
-			if (enableClusterLinkReplication) {
-				_enableClusterLinkReplication(
-					cacheConfiguration, cacheEventListenerProperties);
+		for (CacheConfiguration cacheConfiguration : cacheConfigurations) {
+			if (!PropsValues.EHCACHE_BOOTSTRAP_CACHE_LOADER_ENABLED) {
+				cacheConfiguration.addBootstrapCacheLoaderFactory(null);
 			}
 		}
 	}
@@ -196,45 +196,29 @@ public class EhcacheConfigurationUtil {
 			cacheEventListenerFactoryConfiguration);
 	}
 
-	private static Configuration _processDefaultClusterLinkReplication(
-		Configuration configuration, boolean usingDefault,
-		boolean enableClusterLinkReplication) {
+	private static List<CacheConfiguration> _getAllCacheConfigurations(
+		Configuration configuration) {
 
-		boolean clearCachePeerProviderConfigurations = false;
-
-		if ((enableClusterLinkReplication) ||
-			(usingDefault && !PropsValues.CLUSTER_LINK_ENABLED)) {
-
-			clearCachePeerProviderConfigurations = true;
-		}
-
-		if (clearCachePeerProviderConfigurations) {
-			configuration.getCacheManagerPeerListenerFactoryConfigurations().
-				clear();
-			configuration.getCacheManagerPeerProviderFactoryConfiguration().
-				clear();
-		}
+		List<CacheConfiguration> cacheConfigurations =
+			new ArrayList<CacheConfiguration>();
 
 		CacheConfiguration defaultCacheConfiguration =
 			configuration.getDefaultCacheConfiguration();
 
-		_configureCacheEventListeners(
-			enableClusterLinkReplication, clearCachePeerProviderConfigurations,
-			usingDefault, defaultCacheConfiguration);
-
-		Map<String, CacheConfiguration> cacheConfigurations =
-			configuration.getCacheConfigurations();
-
-		for (CacheConfiguration cacheConfiguration :
-				cacheConfigurations.values()) {
-
-			_configureCacheEventListeners(
-				enableClusterLinkReplication,
-				clearCachePeerProviderConfigurations, usingDefault,
-				cacheConfiguration);
+		if (defaultCacheConfiguration != null) {
+			cacheConfigurations.add(defaultCacheConfiguration);
 		}
 
-		return configuration;
+		Map<String, CacheConfiguration> configurations =
+			configuration.getCacheConfigurations();
+
+		for (CacheConfiguration value : configurations.values()) {
+			if (value != null) {
+				cacheConfigurations.add(value);
+			}
+		}
+
+		return cacheConfigurations;
 	}
 
 }
