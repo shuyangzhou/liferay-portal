@@ -14,7 +14,10 @@
 
 package com.liferay.portal.search.elasticsearch.connection;
 
+import org.elasticsearch.action.admin.cluster.health.ClusterHealthResponse;
+import org.elasticsearch.client.AdminClient;
 import org.elasticsearch.client.Client;
+import org.elasticsearch.client.ClusterAdminClient;
 
 /**
  * @author Michael C. Han
@@ -22,10 +25,13 @@ import org.elasticsearch.client.Client;
 public class ElasticsearchConnectionManager {
 
 	public void afterPropertiesSet() {
-		ElasticsearchConnection elasticsearchConnection =
-			getElasticsearchConnection();
+		_elasticsearchConnection.initialize();
+	}
 
-		elasticsearchConnection.initialize();
+	public AdminClient getAdminClient() {
+		Client client = getClient();
+
+		return client.admin();
 	}
 
 	public Client getClient() {
@@ -35,6 +41,16 @@ public class ElasticsearchConnectionManager {
 		}
 
 		return _elasticsearchConnection.getClient();
+	}
+
+	public ClusterAdminClient getClusterAdminClient() {
+		AdminClient adminClient = getAdminClient();
+
+		return adminClient.cluster();
+	}
+
+	public ClusterHealthResponse getClusterHealthResponse() {
+		return _elasticsearchConnection.getClusterHealthResponse();
 	}
 
 	public ElasticsearchConnection getElasticsearchConnection() {

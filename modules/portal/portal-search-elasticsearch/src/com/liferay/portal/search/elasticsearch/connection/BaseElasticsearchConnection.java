@@ -45,6 +45,7 @@ public abstract class BaseElasticsearchConnection
 		return _client;
 	}
 
+	@Override
 	public ClusterHealthResponse getClusterHealthResponse() {
 		AdminClient adminClient = _client.admin();
 

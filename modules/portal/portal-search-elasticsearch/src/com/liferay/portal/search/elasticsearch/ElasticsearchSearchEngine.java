@@ -17,14 +17,22 @@ package com.liferay.portal.search.elasticsearch;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.BaseSearchEngine;
-import com.liferay.portal.search.elasticsearch.connection.ElasticsearchConnection;
+import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.search.elasticsearch.connection.ElasticsearchConnectionManager;
 import com.liferay.portal.search.elasticsearch.index.IndexFactory;
+import com.liferay.portal.search.elasticsearch.util.LogUtil;
+
+import java.util.concurrent.Future;
 
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthResponse;
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthStatus;
-import org.elasticsearch.client.AdminClient;
-import org.elasticsearch.client.Client;
+import org.elasticsearch.action.admin.cluster.snapshots.create.CreateSnapshotRequestBuilder;
+import org.elasticsearch.action.admin.cluster.snapshots.create.CreateSnapshotResponse;
+import org.elasticsearch.action.admin.cluster.snapshots.delete.DeleteSnapshotRequestBuilder;
+import org.elasticsearch.action.admin.cluster.snapshots.delete.DeleteSnapshotResponse;
+import org.elasticsearch.action.admin.cluster.snapshots.restore.RestoreSnapshotRequestBuilder;
+import org.elasticsearch.action.admin.cluster.snapshots.restore.RestoreSnapshotResponse;
+import org.elasticsearch.client.ClusterAdminClient;
 
 /**
  * @author Michael C. Han
@@ -32,14 +40,39 @@ import org.elasticsearch.client.Client;
 public class ElasticsearchSearchEngine extends BaseSearchEngine {
 
 	@Override
+	public synchronized String backup(long companyId, String backupName)
+		throws SearchException {
+
+		ClusterAdminClient clusterAdminClient =
+			_elasticsearchConnectionManager.getClusterAdminClient();
+
+		CreateSnapshotRequestBuilder createSnapshotRequestBuilder =
+			clusterAdminClient.prepareCreateSnapshot(
+				_BACKUP_REPOSITORY_NAME, backupName);
+
+		createSnapshotRequestBuilder.setWaitForCompletion(true);
+
+		try {
+			Future<CreateSnapshotResponse> future =
+				createSnapshotRequestBuilder.execute();
+
+			CreateSnapshotResponse createSnapshotResponse = future.get();
+
+			LogUtil.logActionResponse(_log, createSnapshotResponse);
+
+			return backupName;
+		}
+		catch (Exception e) {
+			throw new SearchException(e);
+		}
+	}
+
+	@Override
 	public void initialize(long companyId) {
 		super.initialize(companyId);
 
-		ElasticsearchConnection elasticsearchConnection =
-			_elasticsearchConnectionManager.getElasticsearchConnection();
-
 		ClusterHealthResponse clusterHealthResponse =
-			elasticsearchConnection.getClusterHealthResponse();
+			_elasticsearchConnectionManager.getClusterHealthResponse();
 
 		if (clusterHealthResponse.getStatus() == ClusterHealthStatus.RED) {
 			throw new IllegalStateException(
@@ -47,12 +80,9 @@ public class ElasticsearchSearchEngine extends BaseSearchEngine {
 					clusterHealthResponse);
 		}
 
-		Client client = elasticsearchConnection.getClient();
-
-		AdminClient adminClient = client.admin();
-
 		try {
-			_indexFactory.createIndices(adminClient, companyId);
+			_indexFactory.createIndices(
+				_elasticsearchConnectionManager.getAdminClient(), companyId);
 		}
 		catch (Exception e) {
 			throw new IllegalStateException(e);
@@ -60,23 +90,74 @@ public class ElasticsearchSearchEngine extends BaseSearchEngine {
 	}
 
 	@Override
+	public synchronized void removeBackup(long companyId, String backupName)
+		throws SearchException {
+
+		ClusterAdminClient clusterAdminClient =
+			_elasticsearchConnectionManager.getClusterAdminClient();
+
+		DeleteSnapshotRequestBuilder deleteSnapshotRequestBuilder =
+			clusterAdminClient.prepareDeleteSnapshot(
+				_BACKUP_REPOSITORY_NAME, backupName);
+
+		try {
+			Future<DeleteSnapshotResponse> future =
+				deleteSnapshotRequestBuilder.execute();
+
+			DeleteSnapshotResponse deleteSnapshotResponse = future.get();
+
+			LogUtil.logActionResponse(_log, deleteSnapshotResponse);
+		}
+		catch (Exception e) {
+			throw new SearchException(e);
+		}
+	}
+
+	@Override
 	public void removeCompany(long companyId) {
 		super.removeCompany(companyId);
 
-		ElasticsearchConnection elasticsearchConnection =
-			_elasticsearchConnectionManager.getElasticsearchConnection();
-
-		Client client = elasticsearchConnection.getClient();
-
-		AdminClient adminClient = client.admin();
-
 		try {
-			_indexFactory.deleteIndices(adminClient, companyId);
+			_indexFactory.deleteIndices(
+				_elasticsearchConnectionManager.getAdminClient(), companyId);
 		}
 		catch (Exception e) {
 			if (_log.isWarnEnabled()) {
 				_log.warn("Unable to delete index for " + companyId, e);
 			}
+		}
+	}
+
+	@Override
+	public synchronized void restore(long companyId, String backupName)
+		throws SearchException {
+
+		ClusterAdminClient clusterAdminClient =
+			_elasticsearchConnectionManager.getClusterAdminClient();
+
+		RestoreSnapshotRequestBuilder restoreSnapshotRequestBuilder =
+			clusterAdminClient.prepareRestoreSnapshot(
+				_BACKUP_REPOSITORY_NAME, backupName);
+
+		try {
+			Future<RestoreSnapshotResponse> future =
+				restoreSnapshotRequestBuilder.execute();
+
+			RestoreSnapshotResponse restoreSnapshotResponse = future.get();
+
+			LogUtil.logActionResponse(_log, restoreSnapshotResponse);
+		}
+		catch (Exception e) {
+			throw new SearchException(e);
+		}
+
+		ClusterHealthResponse clusterHealthResponse =
+			_elasticsearchConnectionManager.getClusterHealthResponse();
+
+		if (clusterHealthResponse.getStatus() == ClusterHealthStatus.RED) {
+			throw new IllegalStateException(
+				"Unable to initialize Elasticsearch cluster: " +
+					clusterHealthResponse);
 		}
 	}
 
@@ -89,6 +170,8 @@ public class ElasticsearchSearchEngine extends BaseSearchEngine {
 	public void setIndexFactory(IndexFactory indexFactory) {
 		_indexFactory = indexFactory;
 	}
+
+	private static final String _BACKUP_REPOSITORY_NAME = "liferay_backup";
 
 	private static Log _log = LogFactoryUtil.getLog(
 		ElasticsearchSearchEngine.class);

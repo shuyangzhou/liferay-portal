@@ -19,11 +19,13 @@
 <%
 String toolbarItem = ParamUtil.getString(request, "toolbarItem", "browse");
 
+long groupId = ParamUtil.getLong(request, "groupId");
 String sitesListView = ParamUtil.get(request, "sitesListView", SiteConstants.LIST_VIEW_TREE);
 
 PortletURL portletURL = renderResponse.createRenderURL();
 
 portletURL.setParameter("struts_action", "/sites_admin/view");
+portletURL.setParameter("groupId", String.valueOf(groupId));
 portletURL.setParameter("sitesListView", sitesListView);
 
 String portletURLString = portletURL.toString();
