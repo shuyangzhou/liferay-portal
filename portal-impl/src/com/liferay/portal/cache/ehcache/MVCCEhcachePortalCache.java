@@ -15,13 +15,11 @@
 package com.liferay.portal.cache.ehcache;
 
 import com.liferay.portal.cache.cluster.ClusterReplicationThreadLocal;
+import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cache.PortalCacheWrapper;
 import com.liferay.portal.model.MVCCModel;
 
 import java.io.Serializable;
-
-import net.sf.ehcache.Ehcache;
-import net.sf.ehcache.Element;
 
 /**
  * @author Shuyang Zhou
@@ -29,10 +27,8 @@ import net.sf.ehcache.Element;
 public class MVCCEhcachePortalCache<K extends Serializable, V extends MVCCModel>
 	extends PortalCacheWrapper<K, V> {
 
-	public MVCCEhcachePortalCache(EhcachePortalCache<K, V> ehcachePortalCache) {
-		super(ehcachePortalCache);
-
-		this.ehcachePortalCache = ehcachePortalCache;
+	public MVCCEhcachePortalCache(PortalCache<K, V> portalCache) {
+		super(portalCache);
 	}
 
 	@Override
@@ -65,37 +61,38 @@ public class MVCCEhcachePortalCache<K extends Serializable, V extends MVCCModel>
 		}
 
 		try {
-			Element newElement = null;
-
-			if (timeToLive >= 0) {
-				newElement = new Element(key, value, timeToLive);
-			}
-			else {
-				newElement = new Element(key, value);
-			}
-
-			Ehcache ehcache = getEhcache();
-
 			while (true) {
-				Element oldElement = ehcache.get(key);
+				V oldValue = portalCache.get(key);
 
-				if (oldElement == null) {
-					oldElement = ehcache.putIfAbsent(newElement);
+				if (oldValue == null) {
+					if (timeToLive >= 0) {
+						oldValue = portalCache.putIfAbsent(
+							key, value, timeToLive);
+					}
+					else {
+						oldValue = portalCache.putIfAbsent(key, value);
+					}
 
-					if (oldElement == null) {
+					if (oldValue == null) {
 						return;
 					}
 				}
 
-				V oldValue = (V)oldElement.getObjectValue();
-
-				if ((oldValue != null) &&
-					(value.getMvccVersion() <= oldValue.getMvccVersion())) {
-
+				if (value.getMvccVersion() <= oldValue.getMvccVersion()) {
 					return;
 				}
 
-				if (ehcache.replace(oldElement, newElement)) {
+				boolean replaced;
+
+				if (timeToLive >= 0) {
+					replaced = portalCache.replace(
+						key, oldValue, value, timeToLive);
+				}
+				else {
+					replaced = portalCache.replace(key, oldValue, value);
+				}
+
+				if (replaced) {
 					return;
 				}
 			}
@@ -106,11 +103,5 @@ public class MVCCEhcachePortalCache<K extends Serializable, V extends MVCCModel>
 			}
 		}
 	}
-
-	protected Ehcache getEhcache() {
-		return ehcachePortalCache.ehcache;
-	}
-
-	protected EhcachePortalCache<K, V> ehcachePortalCache;
 
 }

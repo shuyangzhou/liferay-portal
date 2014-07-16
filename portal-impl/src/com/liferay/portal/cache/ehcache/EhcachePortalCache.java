@@ -14,9 +14,9 @@
 
 package com.liferay.portal.cache.ehcache;
 
+import com.liferay.portal.kernel.cache.AbstractPortalCache;
 import com.liferay.portal.kernel.cache.CacheListener;
 import com.liferay.portal.kernel.cache.CacheListenerScope;
-import com.liferay.portal.kernel.cache.PortalCache;
 
 import java.io.Serializable;
 
@@ -35,7 +35,7 @@ import net.sf.ehcache.event.RegisteredEventListeners;
  * @author Shuyang Zhou
  */
 public class EhcachePortalCache<K extends Serializable, V>
-	implements PortalCache<K, V> {
+	extends AbstractPortalCache<K, V> {
 
 	public EhcachePortalCache(Ehcache ehcache) {
 		this.ehcache = ehcache;
@@ -59,33 +59,40 @@ public class EhcachePortalCache<K extends Serializable, V>
 	}
 
 	@Override
-	public void put(K key, V value) {
-		Element element = new Element(key, value);
-
-		ehcache.put(element);
-	}
-
-	@Override
 	public void put(K key, V value, int timeToLive) {
 		Element element = new Element(key, value);
 
-		element.setTimeToLive(timeToLive);
+		if (timeToLive >= 0) {
+			element.setTimeToLive(timeToLive);
+		}
 
 		ehcache.put(element);
 	}
 
 	@Override
-	public void putQuiet(K key, V value) {
+	public V putIfAbsent(K key, V value, int timeToLive) {
 		Element element = new Element(key, value);
 
-		ehcache.putQuiet(element);
+		if (timeToLive >= 0) {
+			element.setTimeToLive(timeToLive);
+		}
+
+		Element oldElement = ehcache.putIfAbsent(element);
+
+		if (oldElement == null) {
+			return null;
+		}
+
+		return (V)oldElement.getObjectValue();
 	}
 
 	@Override
 	public void putQuiet(K key, V value, int timeToLive) {
 		Element element = new Element(key, value);
 
-		element.setTimeToLive(timeToLive);
+		if (timeToLive >= 0) {
+			element.setTimeToLive(timeToLive);
+		}
 
 		ehcache.putQuiet(element);
 	}
@@ -127,8 +134,44 @@ public class EhcachePortalCache<K extends Serializable, V>
 	}
 
 	@Override
+	public boolean remove(K key, V value) {
+		Element element = new Element(key, value);
+
+		return ehcache.removeElement(element);
+	}
+
+	@Override
 	public void removeAll() {
 		ehcache.removeAll();
+	}
+
+	@Override
+	public V replace(K key, V value, int timeToLive) {
+		Element element = new Element(key, value);
+
+		if (timeToLive >= 0) {
+			element.setTimeToLive(timeToLive);
+		}
+
+		Element oldElement = ehcache.replace(element);
+
+		if (oldElement == null) {
+			return null;
+		}
+
+		return (V)oldElement.getObjectValue();
+	}
+
+	@Override
+	public boolean replace(K key, V oldValue, V newValue, int timeToLive) {
+		Element oldElement = new Element(key, oldValue);
+		Element newElement = new Element(key, newValue);
+
+		if (timeToLive >= 0) {
+			newElement.setTimeToLive(timeToLive);
+		}
+
+		return ehcache.replace(oldElement, newElement);
 	}
 
 	public void setEhcache(Ehcache ehcache) {
