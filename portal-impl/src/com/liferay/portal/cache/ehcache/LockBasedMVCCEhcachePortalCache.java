@@ -32,6 +32,8 @@ public class LockBasedMVCCEhcachePortalCache
 		EhcachePortalCache<K, V> ehcachePortalCache) {
 
 		super(ehcachePortalCache);
+
+		this.ehcachePortalCache = ehcachePortalCache;
 	}
 
 	@Override
@@ -86,5 +88,11 @@ public class LockBasedMVCCEhcachePortalCache
 			ehcache.releaseWriteLockOnKey(key);
 		}
 	}
+
+	protected Ehcache getEhcache() {
+		return ehcachePortalCache.ehcache;
+	}
+
+	protected EhcachePortalCache<K, V> ehcachePortalCache;
 
 }
