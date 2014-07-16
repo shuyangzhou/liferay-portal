@@ -14,9 +14,9 @@
 
 package com.liferay.portal.cache.memory;
 
+import com.liferay.portal.kernel.cache.AbstractPortalCache;
 import com.liferay.portal.kernel.cache.CacheListener;
 import com.liferay.portal.kernel.cache.CacheListenerScope;
-import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.concurrent.ConcurrentHashSet;
 
 import java.io.Serializable;
@@ -30,7 +30,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Shuyang Zhou
  */
 public class MemoryPortalCache<K extends Serializable, V>
-	implements PortalCache<K, V> {
+	extends AbstractPortalCache<K, V> {
 
 	public MemoryPortalCache(String name, int initialCapacity) {
 		_name = name;
@@ -56,13 +56,6 @@ public class MemoryPortalCache<K extends Serializable, V>
 	}
 
 	@Override
-	public void put(K key, V value) {
-		V oldValue = _concurrentHashMap.put(key, value);
-
-		notifyPutEvents(key, value, oldValue != null);
-	}
-
-	@Override
 	public void put(K key, V value, int timeToLive) {
 		V oldValue = _concurrentHashMap.put(key, value);
 
@@ -70,7 +63,7 @@ public class MemoryPortalCache<K extends Serializable, V>
 	}
 
 	@Override
-	public V putIfAbsent(K key, V value) {
+	public V putIfAbsent(K key, V value, int timeToLive) {
 		V oldValue = _concurrentHashMap.putIfAbsent(key, value);
 
 		if (oldValue == null) {
@@ -78,16 +71,6 @@ public class MemoryPortalCache<K extends Serializable, V>
 		}
 
 		return oldValue;
-	}
-
-	@Override
-	public V putIfAbsent(K key, V value, int timeToLive) {
-		return putIfAbsent(key, value);
-	}
-
-	@Override
-	public void putQuiet(K key, V value) {
-		_concurrentHashMap.put(key, value);
 	}
 
 	@Override
@@ -142,7 +125,7 @@ public class MemoryPortalCache<K extends Serializable, V>
 	}
 
 	@Override
-	public V replace(K key, V value) {
+	public V replace(K key, V value, int timeToLive) {
 		V oldValue = _concurrentHashMap.replace(key, value);
 
 		if (oldValue == null) {
@@ -155,12 +138,7 @@ public class MemoryPortalCache<K extends Serializable, V>
 	}
 
 	@Override
-	public V replace(K key, V value, int timeToLive) {
-		return replace(key, value);
-	}
-
-	@Override
-	public boolean replace(K key, V oldValue, V newValue) {
+	public boolean replace(K key, V oldValue, V newValue, int timeToLive) {
 		boolean replaced = _concurrentHashMap.replace(key, oldValue, newValue);
 
 		if (!replaced) {
@@ -170,11 +148,6 @@ public class MemoryPortalCache<K extends Serializable, V>
 		notifyPutEvents(key, newValue, true);
 
 		return true;
-	}
-
-	@Override
-	public boolean replace(K key, V oldValue, V newValue, int timeToLive) {
-		return replace(key, oldValue, newValue);
 	}
 
 	@Override

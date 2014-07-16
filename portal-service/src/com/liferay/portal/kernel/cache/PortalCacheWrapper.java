@@ -20,7 +20,7 @@ import java.io.Serializable;
  * @author Shuyang Zhou
  */
 public class PortalCacheWrapper<K extends Serializable, V>
-	implements PortalCache<K, V> {
+	extends AbstractPortalCache<K, V> {
 
 	public PortalCacheWrapper(PortalCache<K, V> portalCache) {
 		this.portalCache = portalCache;
@@ -41,28 +41,13 @@ public class PortalCacheWrapper<K extends Serializable, V>
 	}
 
 	@Override
-	public void put(K key, V value) {
-		portalCache.put(key, value);
-	}
-
-	@Override
 	public void put(K key, V value, int timeToLive) {
 		portalCache.put(key, value, timeToLive);
 	}
 
 	@Override
-	public V putIfAbsent(K key, V value) {
-		return portalCache.putIfAbsent(key, value);
-	}
-
-	@Override
 	public V putIfAbsent(K key, V value, int timeToLive) {
 		return portalCache.putIfAbsent(key, value, timeToLive);
-	}
-
-	@Override
-	public void putQuiet(K key, V value) {
-		portalCache.putQuiet(key, value);
 	}
 
 	@Override
@@ -99,18 +84,8 @@ public class PortalCacheWrapper<K extends Serializable, V>
 	}
 
 	@Override
-	public V replace(K key, V value) {
-		return portalCache.replace(key, value);
-	}
-
-	@Override
 	public V replace(K key, V value, int timeToLive) {
 		return portalCache.replace(key, value, timeToLive);
-	}
-
-	@Override
-	public boolean replace(K key, V oldValue, V newValue) {
-		return portalCache.replace(key, oldValue, newValue);
 	}
 
 	@Override
