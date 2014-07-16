@@ -82,21 +82,50 @@ public class LayoutSetPrototypePropagationTest
 	extends BasePrototypePropagationTestCase {
 
 	@Test
+	public void testSleep() throws Exception {
+		setLinkEnabled(true);
+
+		Layout layout = LayoutTestUtil.addLayout(
+			_layoutSetPrototypeGroup.getGroupId(),
+			RandomTestUtil.randomString(), true);
+
+		propagateChanges(group);
+
+//		Thread.sleep(2000);
+
+		LayoutLocalServiceUtil.deleteLayout(
+			layout, true, ServiceContextTestUtil.getServiceContext());
+
+//		Thread.sleep(2000);
+
+//		System.out.println("LinkEnabled: " + linkEnabled);
+
+//		System.out.println("Here" + getGroupLayoutCount());
+
+		propagateChanges(group);
+
+//		System.out.println("There" + getGroupLayoutCount());
+
+		Assert.assertEquals(
+			_initialPrototypeLayoutCount, getGroupLayoutCount());
+	}
+
+	//@Test
 	public void testAddChildLayoutWithLinkDisabled() throws Exception {
 		testAddChildLayout(false);
 	}
 
-	@Test
+	//@Test
 	public void testAddChildLayoutWithLinkEnabled() throws Exception {
 		testAddChildLayout(true);
 	}
 
-	@Test
+	//@Test
 	public void testAddGroup() throws Exception {
 		Assert.assertEquals(_initialPrototypeLayoutCount, _initialLayoutCount);
 	}
 
-	@Test
+	//@Test
 	public void testIsLayoutDeleteable() throws Exception {
 		Assert.assertFalse(SitesUtil.isLayoutDeleteable(layout));
 
@@ -105,7 +134,7 @@ public class LayoutSetPrototypePropagationTest
 		Assert.assertTrue(SitesUtil.isLayoutDeleteable(layout));
 	}
 
-	@Test
+	//@Test
 	public void testIsLayoutSortable() throws Exception {
 		Assert.assertFalse(SitesUtil.isLayoutSortable(layout));
 
@@ -114,12 +143,12 @@ public class LayoutSetPrototypePropagationTest
 		Assert.assertTrue(SitesUtil.isLayoutSortable(layout));
 	}
 
-	@Test
+	//@Test
 	public void testIsLayoutUpdateable() throws Exception {
 		doTestIsLayoutUpdateable();
 	}
 
-	@Test
+	//@Test
 	public void testLayoutPermissionPropagationWithLinkEnabled()
 		throws Exception {
 
@@ -150,55 +179,55 @@ public class LayoutSetPrototypePropagationTest
 				ActionKeys.CUSTOMIZE));
 	}
 
-	@Test
+	//@Test
 	public void testLayoutPropagationWithLayoutPrototypeLinkDisabled()
 		throws Exception {
 
 		doTestLayoutPropagationWithLayoutPrototype(false);
 	}
 
-	@Test
+	//@Test
 	public void testLayoutPropagationWithLayoutPrototypeLinkEnabled()
 		throws Exception {
 
 		doTestLayoutPropagationWithLayoutPrototype(true);
 	}
 
-	@Test
+	//@Test
 	public void testLayoutPropagationWithLinkDisabled() throws Exception {
 		doTestLayoutPropagation(false);
 	}
 
-	@Test
+	//@Test
 	public void testLayoutPropagationWithLinkEnabled() throws Exception {
 		doTestLayoutPropagation(true);
 	}
 
-	@Test
+	//@Test
 	public void testPortletDataPropagationWithLinkDisabled() throws Exception {
 		doTestPortletDataPropagation(false);
 	}
 
-	@Test
+	//@Test
 	public void testPortletDataPropagationWithLinkEnabled() throws Exception {
 		doTestPortletDataPropagation(true);
 	}
 
-	@Test
+	//@Test
 	public void testPortletPreferencesPropagationWithGlobalScopeLinkDisabled()
 		throws Exception {
 
 		doTestPortletPreferencesPropagation(false, true);
 	}
 
-	@Test
+	//@Test
 	public void testPortletPreferencesPropagationWithGlobalScopeLinkEnabled()
 		throws Exception {
 
 		doTestPortletPreferencesPropagation(true, true);
 	}
 
-	@Test
+	//@Test
 	public void testPortletPreferencesPropagationWithPreferencesUniquePerLayoutEnabled()
 		throws Exception {
 
@@ -259,7 +288,7 @@ public class LayoutSetPrototypePropagationTest
 				"bulletStyle", StringPool.BLANK));
 	}
 
-	@Test
+	//@Test
 	public void testResetLayoutTemplate() throws Exception {
 		SitesUtil.resetPrototype(layout);
 		SitesUtil.resetPrototype(_layout);
@@ -293,7 +322,7 @@ public class LayoutSetPrototypePropagationTest
 			"1_column", LayoutTestUtil.getLayoutTemplateId(_layout));
 	}
 
-	@Test
+	//@Test
 	public void testResetPortletPreferences() throws Exception {
 		LayoutTestUtil.updateLayoutPortletPreference(
 			prototypeLayout, journalContentPortletId, "showAvailableLocales",
@@ -566,8 +595,6 @@ public class LayoutSetPrototypePropagationTest
 			group.getGroupId(), false);
 
 		SitesUtil.mergeLayoutSetPrototypeLayouts(group, layoutSet);
-
-		Thread.sleep(2000);
 	}
 
 	protected void setLayoutsUpdateable(boolean layoutsUpdateable)

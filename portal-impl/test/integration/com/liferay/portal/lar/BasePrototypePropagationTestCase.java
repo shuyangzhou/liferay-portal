@@ -79,24 +79,24 @@ public abstract class BasePrototypePropagationTestCase {
 		doSetUp();
 	}
 
-	@Test
+	//@Test
 	public void testLayoutTypePropagationWithLinkDisabled() throws Exception {
 		doTestLayoutTypePropagation(false);
 	}
 
-	@Test
+	//@Test
 	public void testLayoutTypePropagationWithLinkEnabled() throws Exception {
 		doTestLayoutTypePropagation(true);
 	}
 
-	@Test
+	//@Test
 	public void testPortletPreferencesPropagationWithLinkDisabled()
 		throws Exception {
 
 		doTestPortletPreferencesPropagation(false);
 	}
 
-	@Test
+	//@Test
 	public void testPortletPreferencesPropagationWithLinkEnabled()
 		throws Exception {
 
