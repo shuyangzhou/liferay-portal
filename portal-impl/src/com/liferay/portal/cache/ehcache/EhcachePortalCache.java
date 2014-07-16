@@ -75,6 +75,34 @@ public class EhcachePortalCache<K extends Serializable, V>
 	}
 
 	@Override
+	public V putIfAbsent(K key, V value) {
+		Element element = new Element(key, value);
+
+		Element oldElement = ehcache.putIfAbsent(element);
+
+		if (oldElement == null) {
+			return null;
+		}
+
+		return (V)oldElement.getObjectValue();
+	}
+
+	@Override
+	public V putIfAbsent(K key, V value, int timeToLive) {
+		Element element = new Element(key, value);
+
+		element.setTimeToLive(timeToLive);
+
+		Element oldElement = ehcache.putIfAbsent(element);
+
+		if (oldElement == null) {
+			return null;
+		}
+
+		return (V)oldElement.getObjectValue();
+	}
+
+	@Override
 	public void putQuiet(K key, V value) {
 		Element element = new Element(key, value);
 
@@ -127,8 +155,61 @@ public class EhcachePortalCache<K extends Serializable, V>
 	}
 
 	@Override
+	public boolean remove(K key, V value) {
+		Element element = new Element(key, value);
+
+		return ehcache.removeElement(element);
+	}
+
+	@Override
 	public void removeAll() {
 		ehcache.removeAll();
+	}
+
+	@Override
+	public V replace(K key, V value) {
+		Element element = new Element(key, value);
+
+		Element oldElement = ehcache.replace(element);
+
+		if (oldElement == null) {
+			return null;
+		}
+
+		return (V)oldElement.getObjectValue();
+	}
+
+	@Override
+	public V replace(K key, V value, int timeToLive) {
+		Element element = new Element(key, value);
+
+		element.setTimeToLive(timeToLive);
+
+		Element oldElement = ehcache.replace(element);
+
+		if (oldElement == null) {
+			return null;
+		}
+
+		return (V)oldElement.getObjectValue();
+	}
+
+	@Override
+	public boolean replace(K key, V oldValue, V newValue) {
+		Element oldElement = new Element(key, oldValue);
+		Element newElement = new Element(key, newValue);
+
+		return ehcache.replace(oldElement, newElement);
+	}
+
+	@Override
+	public boolean replace(K key, V oldValue, V newValue, int timeToLive) {
+		Element oldElement = new Element(key, oldValue);
+		Element newElement = new Element(key, newValue);
+
+		newElement.setTimeToLive(timeToLive);
+
+		return ehcache.replace(oldElement, newElement);
 	}
 
 	public void setEhcache(Ehcache ehcache) {

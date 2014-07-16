@@ -39,6 +39,12 @@ public interface PortalCache<K extends Serializable, V> {
 	public void put(K key, V value, int timeToLive);
 
 	@Proxy
+	public V putIfAbsent(K key, V value);
+
+	@Proxy
+	public V putIfAbsent(K key, V value, int timeToLive);
+
+	@Proxy
 	public void putQuiet(K key, V value);
 
 	@Proxy
@@ -54,7 +60,22 @@ public interface PortalCache<K extends Serializable, V> {
 	public void remove(K key);
 
 	@Proxy
+	public boolean remove(K key, V value);
+
+	@Proxy
 	public void removeAll();
+
+	@Proxy
+	public V replace(K key, V value);
+
+	@Proxy
+	public V replace(K key, V value, int timeToLive);
+
+	@Proxy
+	public boolean replace(K key, V oldValue, V newValue);
+
+	@Proxy
+	public boolean replace(K key, V oldValue, V newValue, int timeToLive);
 
 	public void unregisterCacheListener(CacheListener<K, V> cacheListener);
 
