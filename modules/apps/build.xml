@@ -2,5 +2,11 @@
 <!DOCTYPE project>
 
 <project>
-	<import file="../../tools/sdk/build-common-plugins.xml" />
+	<path id="plugins.includes.path">
+		<dirset dir="analytics" includes="*" />
+	</path>
+
+	<pathconvert pathsep="," property="plugins.includes.path" refid="plugins.includes.path" targetos="unix" />
+
+	<import file="../../tools/sdk/build-common.xml" />
 </project>

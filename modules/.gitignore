@@ -8,3 +8,13 @@
 /*/*/lib
 /*/*/test-classes
 /*/*/test-results
+/*/*/*/bin
+/*/*/*/docroot/WEB-INF/classes
+/*/*/*/docroot/WEB-INF/lib
+/*/*/*/docroot/WEB-INF/tld
+/*/*/*/classes
+/*/*/*/ivy.xml.MD5
+/*/*/*/javadoc
+/*/*/*/lib
+/*/*/*/test-classes
+/*/*/*/test-results

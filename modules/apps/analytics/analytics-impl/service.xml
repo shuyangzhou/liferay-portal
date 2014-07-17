@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 6.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_6_2_0.dtd">
+
+<service-builder package-path="com.liferay.analytics">
+	<namespace>Analytics</namespace>
+	<entity name="AnalyticsEvent" local-service="true" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="analyticsEventId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="createDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="anonymousUserId" type="long" />
+		<column name="className" type="String" />
+		<column name="classPK" type="long" />
+		<column name="referrerClassName" type="String" />
+		<column name="referrerClassPK" type="long" />
+		<column name="elementKey" type="String" />
+		<column name="type" type="String" />
+		<column name="clientIP" type="String" />
+		<column name="userAgent" type="String" />
+		<column name="languageId" type="String" />
+		<column name="url" type="String" />
+		<column name="additionalInfo" type="String" />
+
+		<!-- Order -->
+
+		<order by="desc">
+			<order-column name="createDate" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="CompanyId" return-type="Collection">
+			<finder-column name="companyId" />
+		</finder>
+		<finder name="C_GtCD" return-type="Collection">
+			<finder-column name="companyId" />
+			<finder-column name="createDate" comparator="&gt;" />
+		</finder>
+		<finder name="C_LtCD" return-type="Collection">
+			<finder-column name="companyId" />
+			<finder-column name="createDate" comparator="&lt;" />
+		</finder>
+		<finder name="GtCD_E_E" return-type="Collection">
+			<finder-column name="createDate" comparator="&gt;" />
+			<finder-column name="elementKey" />
+			<finder-column name="type" />
+		</finder>
+		<finder name="GtCD_C_C_E" return-type="Collection">
+			<finder-column name="createDate" comparator="&gt;" />
+			<finder-column name="className" />
+			<finder-column name="classPK" />
+			<finder-column name="type" />
+		</finder>
+		<finder name="GtCD_C_C_R_R_E" return-type="Collection">
+			<finder-column name="createDate" comparator="&gt;" />
+			<finder-column name="className" />
+			<finder-column name="classPK" />
+			<finder-column name="referrerClassName" />
+			<finder-column name="referrerClassPK" />
+			<finder-column name="type" />
+		</finder>
+		<finder name="GtCD_R_R_E_E" return-type="Collection">
+			<finder-column name="createDate" comparator="&gt;" />
+			<finder-column name="referrerClassName" />
+			<finder-column name="referrerClassPK" />
+			<finder-column name="elementKey" />
+			<finder-column name="type" />
+		</finder>
+	</entity>
+</service-builder>

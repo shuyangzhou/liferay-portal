@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:osgi="http://www.springframework.org/schema/osgi" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" default-destroy-method="destroy" default-init-method="afterPropertiesSet" xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd">
+	<bean id="com.liferay.analytics.service.AnalyticsEventLocalService" class="com.liferay.analytics.service.impl.AnalyticsEventLocalServiceImpl" />
+	<osgi:service interface="com.liferay.analytics.service.AnalyticsEventLocalService" ref="com.liferay.analytics.service.AnalyticsEventLocalService" />
+	<bean id="com.liferay.analytics.service.persistence.AnalyticsEventPersistence" class="com.liferay.analytics.service.persistence.impl.AnalyticsEventPersistenceImpl" parent="basePersistence" />
+	<osgi:service ref="com.liferay.analytics.service.persistence.AnalyticsEventPersistence" interface="com.liferay.analytics.service.persistence.AnalyticsEventPersistence" />
+</beans>

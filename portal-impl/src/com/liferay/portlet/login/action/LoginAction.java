@@ -255,6 +255,12 @@ public class LoginAction extends PortletAction {
 
 		portletURL.setParameter("saveLastPath", Boolean.FALSE.toString());
 
+		String redirect = ParamUtil.getString(actionRequest, "redirect");
+
+		if (Validator.isNotNull(redirect)) {
+			portletURL.setParameter("redirect", redirect);
+		}
+
 		portletURL.setWindowState(WindowState.MAXIMIZED);
 
 		actionResponse.sendRedirect(portletURL.toString());
