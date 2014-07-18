@@ -17,7 +17,9 @@ package com.liferay.portal.service;
 import com.liferay.portal.AccountNameException;
 import com.liferay.portal.CompanyMxException;
 import com.liferay.portal.CompanyVirtualHostException;
+import com.liferay.portal.NoSuchRepositoryEntryException;
 import com.liferay.portal.RequiredCompanyException;
+import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.test.ExecutionTestListeners;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ReflectionUtil;
@@ -52,9 +54,9 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -74,20 +76,15 @@ import org.springframework.mock.web.MockServletContext;
 @Sync
 public class CompanyLocalServiceTest {
 
-	@Before
-	public void setUp() {
+	@BeforeClass
+	public static void setUpClass() {
 		_companyId = CompanyThreadLocal.getCompanyId();
 
 		CompanyThreadLocal.setCompanyId(PortalInstances.getDefaultCompanyId());
-
-		File file = new File("portal-web/docroot");
-
-		_mockServletContext = new MockServletContext(
-			"file:" + file.getAbsolutePath(), new FileSystemResourceLoader());
 	}
 
-	@After
-	public void tearDown() {
+	@AfterClass
+	public static void tearDownClass() {
 		CompanyThreadLocal.setCompanyId(_companyId);
 	}
 
@@ -143,9 +140,16 @@ public class CompanyLocalServiceTest {
 		Assert.assertNull(companyStagingGroup);
 	}
 
-	@Test
+	@Test(expected = NoSuchRepositoryEntryException.class)
 	public void testAddAndDeleteCompanyWithDLFileEntryTypes() throws Exception {
 		Company company = addCompany();
+
+		File file = new File("portal-web/docroot");
+
+		_mockServletContext = new MockServletContext(
+			"file:" + file.getAbsolutePath(), new FileSystemResourceLoader());
+
+		PortalInstances.initCompany(_mockServletContext, company.getWebId());
 
 		long companyId = company.getCompanyId();
 
@@ -168,11 +172,14 @@ public class CompanyLocalServiceTest {
 		serviceContext.setScopeGroupId(guestGroup.getGroupId());
 		serviceContext.setUserId(userId);
 
-		DLAppLocalServiceUtil.addFileEntry(
+		FileEntry fileEntry = DLAppLocalServiceUtil.addFileEntry(
 			userId, guestGroup.getGroupId(), 0, "test.xml", "text/xml",
 			"test.xml", "", "", "test".getBytes(), serviceContext);
 
+		long fileEntryId = fileEntry.getFileEntryId();
 		CompanyLocalServiceUtil.deleteCompany(companyId);
+
+		DLAppLocalServiceUtil.getFileEntry(fileEntryId);
 	}
 
 	@Test
@@ -252,6 +259,13 @@ public class CompanyLocalServiceTest {
 	public void testUpdateDisplay() throws Exception {
 		Company company = addCompany();
 
+		File file = new File("portal-web/docroot");
+
+		_mockServletContext = new MockServletContext(
+			"file:" + file.getAbsolutePath(), new FileSystemResourceLoader());
+
+		PortalInstances.initCompany(_mockServletContext, company.getWebId());
+
 		User user = UserLocalServiceUtil.getDefaultUser(company.getCompanyId());
 
 		UserLocalServiceUtil.updateUser(user);
@@ -318,8 +332,6 @@ public class CompanyLocalServiceTest {
 		Company company = CompanyLocalServiceUtil.addCompany(
 			webId, webId, "test.com", PropsValues.SHARD_DEFAULT_NAME, false, 0,
 			true);
-
-		PortalInstances.initCompany(_mockServletContext, webId);
 
 		return company;
 	}
@@ -465,7 +477,8 @@ public class CompanyLocalServiceTest {
 		CompanyLocalServiceUtil.deleteCompany(company.getCompanyId());
 	}
 
-	private long _companyId;
+	private static long _companyId;
+
 	private MockServletContext _mockServletContext;
 
 }
