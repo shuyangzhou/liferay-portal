@@ -56,7 +56,6 @@ import java.util.Map;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -80,12 +79,12 @@ public class CompanyLocalServiceTest {
 	@BeforeClass
 	public static void setUpClass() {
 		_companyId = CompanyThreadLocal.getCompanyId();
-		
+
 		CompanyThreadLocal.setCompanyId(PortalInstances.getDefaultCompanyId());
 	}
 
 	@AfterClass
-	public static void tearDown() {
+	public static void tearDownClass() {
 		CompanyThreadLocal.setCompanyId(_companyId);
 	}
 
@@ -141,17 +140,17 @@ public class CompanyLocalServiceTest {
 		Assert.assertNull(companyStagingGroup);
 	}
 
-	@Test(expected=NoSuchRepositoryEntryException.class)
+	@Test(expected = NoSuchRepositoryEntryException.class)
 	public void testAddAndDeleteCompanyWithDLFileEntryTypes() throws Exception {
 		Company company = addCompany();
-		
+
 		File file = new File("portal-web/docroot");
 
 		_mockServletContext = new MockServletContext(
 			"file:" + file.getAbsolutePath(), new FileSystemResourceLoader());
-		
+
 		PortalInstances.initCompany(_mockServletContext, company.getWebId());
-		
+
 		long companyId = company.getCompanyId();
 
 		long userId = UserLocalServiceUtil.getDefaultUserId(companyId);
@@ -176,10 +175,10 @@ public class CompanyLocalServiceTest {
 		FileEntry fileEntry = DLAppLocalServiceUtil.addFileEntry(
 			userId, guestGroup.getGroupId(), 0, "test.xml", "text/xml",
 			"test.xml", "", "", "test".getBytes(), serviceContext);
-		
+
 		long fileEntryId = fileEntry.getFileEntryId();
 		CompanyLocalServiceUtil.deleteCompany(companyId);
-		
+
 		DLAppLocalServiceUtil.getFileEntry(fileEntryId);
 	}
 
@@ -259,14 +258,14 @@ public class CompanyLocalServiceTest {
 	@Test
 	public void testUpdateDisplay() throws Exception {
 		Company company = addCompany();
-		
+
 		File file = new File("portal-web/docroot");
 
 		_mockServletContext = new MockServletContext(
 			"file:" + file.getAbsolutePath(), new FileSystemResourceLoader());
-		
+
 		PortalInstances.initCompany(_mockServletContext, company.getWebId());
-		
+
 		User user = UserLocalServiceUtil.getDefaultUser(company.getCompanyId());
 
 		UserLocalServiceUtil.updateUser(user);
@@ -479,6 +478,7 @@ public class CompanyLocalServiceTest {
 	}
 
 	private static long _companyId;
+
 	private MockServletContext _mockServletContext;
 
 }
