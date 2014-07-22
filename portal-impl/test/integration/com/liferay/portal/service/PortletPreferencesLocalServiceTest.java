@@ -43,7 +43,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -62,8 +62,8 @@ import org.springframework.aop.framework.AdvisedSupport;
 @RunWith(LiferayIntegrationJUnitTestRunner.class)
 public class PortletPreferencesLocalServiceTest {
 
-	@Before
-	public void setUp() throws Exception {
+	@BeforeClass
+	public static void setUpClass() throws Exception {
 		_group = GroupTestUtil.addGroup();
 
 		_layout = LayoutTestUtil.addLayout(_group);
@@ -607,20 +607,27 @@ public class PortletPreferencesLocalServiceTest {
 			testGetGroupPortletPreferencesCountByOwnerAndPlidAndPortletExcludeDefault()
 		throws Exception {
 
+		Group group = GroupTestUtil.addGroup();
+
+		Layout layout = LayoutTestUtil.addLayout(group);
+
+		Portlet portlet = PortletLocalServiceUtil.getPortletById(
+			layout.getCompanyId(), String.valueOf(_PORTLET_ID));
+
 		Assert.assertEquals(
 			0,
 			PortletPreferencesLocalServiceUtil.getPortletPreferencesCount(
-				_group.getGroupId(), PortletKeys.PREFS_OWNER_TYPE_GROUP,
-				_layout.getPlid(), _portlet, true));
+				group.getGroupId(), PortletKeys.PREFS_OWNER_TYPE_GROUP,
+				layout.getPlid(), portlet, true));
 
 		PortletPreferencesTestUtil.addGroupPortletPreferences(
-			_layout, _portlet);
+			layout, portlet);
 
 		Assert.assertEquals(
 			0,
 			PortletPreferencesLocalServiceUtil.getPortletPreferencesCount(
-				_group.getGroupId(), PortletKeys.PREFS_OWNER_TYPE_GROUP,
-				_layout.getPlid(), _portlet, true));
+				group.getGroupId(), PortletKeys.PREFS_OWNER_TYPE_GROUP,
+				layout.getPlid(), portlet, true));
 	}
 
 	@Test
@@ -648,20 +655,27 @@ public class PortletPreferencesLocalServiceTest {
 			testGetGroupPortletPreferencesCountByOwnerAndPortletIdExcludeDefault()
 		throws Exception {
 
+		Group group = GroupTestUtil.addGroup();
+
+		Layout layout = LayoutTestUtil.addLayout(group);
+
+		Portlet portlet = PortletLocalServiceUtil.getPortletById(
+			layout.getCompanyId(), String.valueOf(_PORTLET_ID));
+
 		Assert.assertEquals(
 			0,
 			PortletPreferencesLocalServiceUtil.getPortletPreferencesCount(
-				_group.getGroupId(), PortletKeys.PREFS_OWNER_TYPE_GROUP,
-				_portlet.getPortletId(), true));
+				group.getGroupId(), PortletKeys.PREFS_OWNER_TYPE_GROUP,
+				portlet.getPortletId(), true));
 
 		PortletPreferencesTestUtil.addGroupPortletPreferences(
-			_layout, _portlet);
+			layout, portlet);
 
 		Assert.assertEquals(
 			0,
 			PortletPreferencesLocalServiceUtil.getPortletPreferencesCount(
-				_group.getGroupId(), PortletKeys.PREFS_OWNER_TYPE_GROUP,
-				_portlet.getPortletId(), true));
+				group.getGroupId(), PortletKeys.PREFS_OWNER_TYPE_GROUP,
+				portlet.getPortletId(), true));
 	}
 
 	@Test
@@ -1500,9 +1514,10 @@ public class PortletPreferencesLocalServiceTest {
 
 	private static final String[] _SINGLE_VALUE = {"value"};
 
-	private Group _group;
-	private Layout _layout;
-	private Portlet _portlet;
+	private static Group _group;
+	private static Layout _layout;
+	private static Portlet _portlet;
+
 	private ServiceBag _serviceBag;
 
 	private class TestPortletPreferencesLocalServiceWrapper
