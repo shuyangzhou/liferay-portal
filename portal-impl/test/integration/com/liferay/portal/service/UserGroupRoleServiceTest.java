@@ -14,6 +14,7 @@
 
 package com.liferay.portal.service;
 
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.test.ExecutionTestListeners;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Organization;
@@ -25,13 +26,13 @@ import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.security.permission.PermissionThreadLocal;
 import com.liferay.portal.test.listeners.MainServletExecutionTestListener;
-import com.liferay.portal.test.listeners.ResetDatabaseExecutionTestListener;
 import com.liferay.portal.test.runners.LiferayIntegrationJUnitTestRunner;
 import com.liferay.portal.util.test.GroupTestUtil;
 import com.liferay.portal.util.test.OrganizationTestUtil;
 import com.liferay.portal.util.test.TestPropsValues;
 import com.liferay.portal.util.test.UserTestUtil;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,104 +42,122 @@ import org.junit.runner.RunWith;
  */
 @ExecutionTestListeners(
 	listeners = {
-		MainServletExecutionTestListener.class,
-		ResetDatabaseExecutionTestListener.class
+		MainServletExecutionTestListener.class
 	})
 @RunWith(LiferayIntegrationJUnitTestRunner.class)
 public class UserGroupRoleServiceTest {
 
+	@After
+	public void tearDown() throws PortalException {
+		if (_organization!= null) {
+			long organizationId = _organization.getOrganizationId();
+			long[] userIds = UserLocalServiceUtil.getOrganizationUserIds(
+				organizationId);
+
+			for (long userId : userIds) {
+				UserLocalServiceUtil.deleteUser(userId);
+			}
+
+			OrganizationLocalServiceUtil.deleteOrganization(organizationId);
+		}
+
+		if (_group!= null) {
+			GroupLocalServiceUtil.deleteGroup(_group);
+		}
+	}
+
 	@Test
 	public void testGroupAdminRemovingGroupAdminRoleByRoles() throws Exception {
-		Group group = GroupTestUtil.addGroup();
+		_group = GroupTestUtil.addGroup();
 
 		Role role = RoleLocalServiceUtil.getRole(
 			TestPropsValues.getCompanyId(), RoleConstants.SITE_ADMINISTRATOR);
 
-		User subjectUser = UserTestUtil.addGroupAdminUser(group);
-		User objectUser = UserTestUtil.addGroupAdminUser(group);
+		User subjectUser = UserTestUtil.addGroupAdminUser(_group);
+		User objectUser = UserTestUtil.addGroupAdminUser(_group);
 
 		try {
 			deleteUserGroupRolesByRole(
-				group.getGroupId(), role.getRoleId(), subjectUser, objectUser);
+				_group.getGroupId(), role.getRoleId(), subjectUser, objectUser);
 
 			Assert.fail();
 		}
 		catch (PrincipalException pe) {
 			Assert.assertTrue(
 				UserGroupRoleLocalServiceUtil.hasUserGroupRole(
-					objectUser.getUserId(), group.getGroupId(),
+					objectUser.getUserId(), _group.getGroupId(),
 					role.getRoleId()));
 		}
 	}
 
 	@Test
 	public void testGroupAdminRemovingGroupAdminRoleByUsers() throws Exception {
-		Group group = GroupTestUtil.addGroup();
+		_group = GroupTestUtil.addGroup();
 
 		Role role = RoleLocalServiceUtil.getRole(
 			TestPropsValues.getCompanyId(), RoleConstants.SITE_ADMINISTRATOR);
 
-		User subjectUser = UserTestUtil.addGroupAdminUser(group);
-		User objectUser = UserTestUtil.addGroupAdminUser(group);
+		User subjectUser = UserTestUtil.addGroupAdminUser(_group);
+		User objectUser = UserTestUtil.addGroupAdminUser(_group);
 
 		try {
 			deleteUserGroupRolesByUser(
-				group.getGroupId(), role.getRoleId(), subjectUser, objectUser);
+				_group.getGroupId(), role.getRoleId(), subjectUser, objectUser);
 
 			Assert.fail();
 		}
 		catch (PrincipalException pe) {
 			Assert.assertTrue(
 				UserGroupRoleLocalServiceUtil.hasUserGroupRole(
-					objectUser.getUserId(), group.getGroupId(),
+					objectUser.getUserId(), _group.getGroupId(),
 					role.getRoleId()));
 		}
 	}
 
 	@Test
 	public void testGroupAdminRemovingGroupOwnerRoleByRoles() throws Exception {
-		Group group = GroupTestUtil.addGroup();
+		_group = GroupTestUtil.addGroup();
 
 		Role role = RoleLocalServiceUtil.getRole(
 			TestPropsValues.getCompanyId(), RoleConstants.SITE_OWNER);
 
-		User subjectUser = UserTestUtil.addGroupAdminUser(group);
-		User objectUser = UserTestUtil.addGroupOwnerUser(group);
+		User subjectUser = UserTestUtil.addGroupAdminUser(_group);
+		User objectUser = UserTestUtil.addGroupOwnerUser(_group);
 
 		try {
 			deleteUserGroupRolesByRole(
-				group.getGroupId(), role.getRoleId(), subjectUser, objectUser);
+				_group.getGroupId(), role.getRoleId(), subjectUser, objectUser);
 
 			Assert.fail();
 		}
 		catch (PrincipalException pe) {
 			Assert.assertTrue(
 				UserGroupRoleLocalServiceUtil.hasUserGroupRole(
-					objectUser.getUserId(), group.getGroupId(),
+					objectUser.getUserId(), _group.getGroupId(),
 					role.getRoleId()));
 		}
 	}
 
 	@Test
 	public void testGroupAdminRemovingGroupOwnerRoleByUsers() throws Exception {
-		Group group = GroupTestUtil.addGroup();
+		_group = GroupTestUtil.addGroup();
 
 		Role role = RoleLocalServiceUtil.getRole(
 			TestPropsValues.getCompanyId(), RoleConstants.SITE_OWNER);
 
-		User subjectUser = UserTestUtil.addGroupAdminUser(group);
-		User objectUser = UserTestUtil.addGroupOwnerUser(group);
+		User subjectUser = UserTestUtil.addGroupAdminUser(_group);
+		User objectUser = UserTestUtil.addGroupOwnerUser(_group);
 
 		try {
 			deleteUserGroupRolesByUser(
-				group.getGroupId(), role.getRoleId(), subjectUser, objectUser);
+				_group.getGroupId(), role.getRoleId(), subjectUser, objectUser);
 
 			Assert.fail();
 		}
 		catch (PrincipalException pe) {
 			Assert.assertTrue(
 				UserGroupRoleLocalServiceUtil.hasUserGroupRole(
-					objectUser.getUserId(), group.getGroupId(),
+					objectUser.getUserId(), _group.getGroupId(),
 					role.getRoleId()));
 		}
 	}
@@ -147,16 +166,16 @@ public class UserGroupRoleServiceTest {
 	public void testGroupAdminRemovingOrganizationAdminRoleByRoles()
 		throws Exception {
 
-		Organization organization = OrganizationTestUtil.addOrganization();
+		_organization = OrganizationTestUtil.addOrganization();
 
-		Group group = organization.getGroup();
+		Group group = _organization.getGroup();
 
 		Role role = RoleLocalServiceUtil.getRole(
 			TestPropsValues.getCompanyId(),
 			RoleConstants.ORGANIZATION_ADMINISTRATOR);
 
 		User subjectUser = UserTestUtil.addGroupAdminUser(group);
-		User objectUser = UserTestUtil.addOrganizationAdminUser(organization);
+		User objectUser = UserTestUtil.addOrganizationAdminUser(_organization);
 
 		try {
 			deleteUserGroupRolesByRole(
@@ -176,16 +195,16 @@ public class UserGroupRoleServiceTest {
 	public void testGroupAdminRemovingOrganizationAdminRoleByUsers()
 		throws Exception {
 
-		Organization organization = OrganizationTestUtil.addOrganization();
+		_organization = OrganizationTestUtil.addOrganization();
 
-		Group group = organization.getGroup();
+		Group group = _organization.getGroup();
 
 		Role role = RoleLocalServiceUtil.getRole(
 			TestPropsValues.getCompanyId(),
 			RoleConstants.ORGANIZATION_ADMINISTRATOR);
 
 		User subjectUser = UserTestUtil.addGroupAdminUser(group);
-		User objectUser = UserTestUtil.addOrganizationAdminUser(organization);
+		User objectUser = UserTestUtil.addOrganizationAdminUser(_organization);
 
 		try {
 			deleteUserGroupRolesByUser(
@@ -205,15 +224,15 @@ public class UserGroupRoleServiceTest {
 	public void testGroupAdminRemovingOrganizationOwnerRoleByRoles()
 		throws Exception {
 
-		Organization organization = OrganizationTestUtil.addOrganization();
+		_organization = OrganizationTestUtil.addOrganization();
 
-		Group group = organization.getGroup();
+		Group group = _organization.getGroup();
 
 		Role role = RoleLocalServiceUtil.getRole(
 			TestPropsValues.getCompanyId(), RoleConstants.ORGANIZATION_OWNER);
 
 		User subjectUser = UserTestUtil.addGroupAdminUser(group);
-		User objectUser = UserTestUtil.addOrganizationOwnerUser(organization);
+		User objectUser = UserTestUtil.addOrganizationOwnerUser(_organization);
 
 		try {
 			deleteUserGroupRolesByRole(
@@ -233,15 +252,15 @@ public class UserGroupRoleServiceTest {
 	public void testGroupAdminRemovingOrganizationOwnerRoleByUsers()
 		throws Exception {
 
-		Organization organization = OrganizationTestUtil.addOrganization();
+		_organization = OrganizationTestUtil.addOrganization();
 
-		Group group = organization.getGroup();
+		Group group = _organization.getGroup();
 
 		Role role = RoleLocalServiceUtil.getRole(
 			TestPropsValues.getCompanyId(), RoleConstants.ORGANIZATION_OWNER);
 
 		User subjectUser = UserTestUtil.addGroupAdminUser(group);
-		User objectUser = UserTestUtil.addOrganizationOwnerUser(organization);
+		User objectUser = UserTestUtil.addOrganizationOwnerUser(_organization);
 
 		try {
 			deleteUserGroupRolesByUser(
@@ -259,20 +278,20 @@ public class UserGroupRoleServiceTest {
 
 	@Test
 	public void testGroupOwnerRemovingGroupAdminRoleByRoles() throws Exception {
-		Group group = GroupTestUtil.addGroup();
+		_group = GroupTestUtil.addGroup();
 
 		Role role = RoleLocalServiceUtil.getRole(
 			TestPropsValues.getCompanyId(), RoleConstants.SITE_ADMINISTRATOR);
 
-		User subjectUser = UserTestUtil.addGroupOwnerUser(group);
-		User objectUser = UserTestUtil.addGroupAdminUser(group);
+		User subjectUser = UserTestUtil.addGroupOwnerUser(_group);
+		User objectUser = UserTestUtil.addGroupAdminUser(_group);
 
 		deleteUserGroupRolesByRole(
-			group.getGroupId(), role.getRoleId(), subjectUser, objectUser);
+			_group.getGroupId(), role.getRoleId(), subjectUser, objectUser);
 
 		Assert.assertFalse(
 			UserGroupRoleLocalServiceUtil.hasUserGroupRole(
-				objectUser.getUserId(), group.getGroupId(), role.getRoleId()));
+				objectUser.getUserId(), _group.getGroupId(), role.getRoleId()));
 	}
 
 	@Test
@@ -295,54 +314,54 @@ public class UserGroupRoleServiceTest {
 
 	@Test
 	public void testGroupOwnerRemovingGroupOwnerRoleByRoles() throws Exception {
-		Group group = GroupTestUtil.addGroup();
+		_group = GroupTestUtil.addGroup();
 
 		Role role = RoleLocalServiceUtil.getRole(
 			TestPropsValues.getCompanyId(), RoleConstants.SITE_OWNER);
 
-		User subjectUser = UserTestUtil.addGroupOwnerUser(group);
-		User objectUser = UserTestUtil.addGroupOwnerUser(group);
+		User subjectUser = UserTestUtil.addGroupOwnerUser(_group);
+		User objectUser = UserTestUtil.addGroupOwnerUser(_group);
 
 		deleteUserGroupRolesByRole(
-			group.getGroupId(), role.getRoleId(), subjectUser, objectUser);
+			_group.getGroupId(), role.getRoleId(), subjectUser, objectUser);
 
 		Assert.assertFalse(
 			UserGroupRoleLocalServiceUtil.hasUserGroupRole(
-				objectUser.getUserId(), group.getGroupId(), role.getRoleId()));
+				objectUser.getUserId(), _group.getGroupId(), role.getRoleId()));
 	}
 
 	@Test
 	public void testGroupOwnerRemovingGroupOwnerRoleByUsers() throws Exception {
-		Group group = GroupTestUtil.addGroup();
+		_group = GroupTestUtil.addGroup();
 
 		Role role = RoleLocalServiceUtil.getRole(
 			TestPropsValues.getCompanyId(), RoleConstants.SITE_OWNER);
 
-		User subjectUser = UserTestUtil.addGroupOwnerUser(group);
-		User objectUser = UserTestUtil.addGroupOwnerUser(group);
+		User subjectUser = UserTestUtil.addGroupOwnerUser(_group);
+		User objectUser = UserTestUtil.addGroupOwnerUser(_group);
 
 		deleteUserGroupRolesByUser(
-			group.getGroupId(), role.getRoleId(), subjectUser, objectUser);
+			_group.getGroupId(), role.getRoleId(), subjectUser, objectUser);
 
 		Assert.assertFalse(
 			UserGroupRoleLocalServiceUtil.hasUserGroupRole(
-				objectUser.getUserId(), group.getGroupId(), role.getRoleId()));
+				objectUser.getUserId(), _group.getGroupId(), role.getRoleId()));
 	}
 
 	@Test
 	public void testGroupOwnerRemovingOrganizationAdminRoleByRoles()
 		throws Exception {
 
-		Organization organization = OrganizationTestUtil.addOrganization();
+		_organization = OrganizationTestUtil.addOrganization();
 
-		Group group = organization.getGroup();
+		Group group = _organization.getGroup();
 
 		Role role = RoleLocalServiceUtil.getRole(
 			TestPropsValues.getCompanyId(),
 			RoleConstants.ORGANIZATION_ADMINISTRATOR);
 
 		User subjectUser = UserTestUtil.addGroupOwnerUser(group);
-		User objectUser = UserTestUtil.addOrganizationAdminUser(organization);
+		User objectUser = UserTestUtil.addOrganizationAdminUser(_organization);
 
 		try {
 			deleteUserGroupRolesByRole(
@@ -362,16 +381,16 @@ public class UserGroupRoleServiceTest {
 	public void testGroupOwnerRemovingOrganizationAdminRoleByUsers()
 		throws Exception {
 
-		Organization organization = OrganizationTestUtil.addOrganization();
+		_organization = OrganizationTestUtil.addOrganization();
 
-		Group group = organization.getGroup();
+		Group group = _organization.getGroup();
 
 		Role role = RoleLocalServiceUtil.getRole(
 			TestPropsValues.getCompanyId(),
 			RoleConstants.ORGANIZATION_ADMINISTRATOR);
 
 		User subjectUser = UserTestUtil.addGroupOwnerUser(group);
-		User objectUser = UserTestUtil.addOrganizationAdminUser(organization);
+		User objectUser = UserTestUtil.addOrganizationAdminUser(_organization);
 
 		try {
 			deleteUserGroupRolesByUser(
@@ -391,15 +410,15 @@ public class UserGroupRoleServiceTest {
 	public void testGroupOwnerRemovingOrganizationOwnerRoleByRoles()
 		throws Exception {
 
-		Organization organization = OrganizationTestUtil.addOrganization();
+		_organization = OrganizationTestUtil.addOrganization();
 
-		Group group = organization.getGroup();
+		Group group = _organization.getGroup();
 
 		Role role = RoleLocalServiceUtil.getRole(
 			TestPropsValues.getCompanyId(), RoleConstants.ORGANIZATION_OWNER);
 
 		User subjectUser = UserTestUtil.addGroupOwnerUser(group);
-		User objectUser = UserTestUtil.addOrganizationOwnerUser(organization);
+		User objectUser = UserTestUtil.addOrganizationOwnerUser(_organization);
 
 		try {
 			deleteUserGroupRolesByRole(
@@ -419,15 +438,15 @@ public class UserGroupRoleServiceTest {
 	public void testGroupOwnerRemovingOrganizationOwnerRoleByUsers()
 		throws Exception {
 
-		Organization organization = OrganizationTestUtil.addOrganization();
+		_organization = OrganizationTestUtil.addOrganization();
 
-		Group group = organization.getGroup();
+		Group group = _organization.getGroup();
 
 		Role role = RoleLocalServiceUtil.getRole(
 			TestPropsValues.getCompanyId(), RoleConstants.ORGANIZATION_OWNER);
 
 		User subjectUser = UserTestUtil.addGroupAdminUser(group);
-		User objectUser = UserTestUtil.addOrganizationOwnerUser(organization);
+		User objectUser = UserTestUtil.addOrganizationOwnerUser(_organization);
 
 		try {
 			deleteUserGroupRolesByUser(
@@ -447,18 +466,18 @@ public class UserGroupRoleServiceTest {
 	public void testOrganizationAdminRemovingOrganizationAdminRoleByRoles()
 		throws Exception {
 
-		Organization organization = OrganizationTestUtil.addOrganization();
+		_organization = OrganizationTestUtil.addOrganization();
 
 		Role role = RoleLocalServiceUtil.getRole(
 			TestPropsValues.getCompanyId(),
 			RoleConstants.ORGANIZATION_ADMINISTRATOR);
 
-		User subjectUser = UserTestUtil.addOrganizationAdminUser(organization);
-		User objectUser = UserTestUtil.addOrganizationAdminUser(organization);
+		User subjectUser = UserTestUtil.addOrganizationAdminUser(_organization);
+		User objectUser = UserTestUtil.addOrganizationAdminUser(_organization);
 
 		try {
 			deleteUserGroupRolesByRole(
-				organization.getGroupId(), role.getRoleId(), subjectUser,
+				_organization.getGroupId(), role.getRoleId(), subjectUser,
 				objectUser);
 
 			Assert.fail();
@@ -466,7 +485,7 @@ public class UserGroupRoleServiceTest {
 		catch (PrincipalException pe) {
 			Assert.assertTrue(
 				UserGroupRoleLocalServiceUtil.hasUserGroupRole(
-					objectUser.getUserId(), organization.getGroupId(),
+					objectUser.getUserId(), _organization.getGroupId(),
 					role.getRoleId()));
 		}
 	}
@@ -475,18 +494,18 @@ public class UserGroupRoleServiceTest {
 	public void testOrganizationAdminRemovingOrganizationAdminRoleByUsers()
 		throws Exception {
 
-		Organization organization = OrganizationTestUtil.addOrganization();
+		_organization = OrganizationTestUtil.addOrganization();
 
 		Role role = RoleLocalServiceUtil.getRole(
 			TestPropsValues.getCompanyId(),
 			RoleConstants.ORGANIZATION_ADMINISTRATOR);
 
-		User subjectUser = UserTestUtil.addOrganizationAdminUser(organization);
-		User objectUser = UserTestUtil.addOrganizationAdminUser(organization);
+		User subjectUser = UserTestUtil.addOrganizationAdminUser(_organization);
+		User objectUser = UserTestUtil.addOrganizationAdminUser(_organization);
 
 		try {
 			deleteUserGroupRolesByUser(
-				organization.getGroupId(), role.getRoleId(), subjectUser,
+				_organization.getGroupId(), role.getRoleId(), subjectUser,
 				objectUser);
 
 			Assert.fail();
@@ -494,7 +513,7 @@ public class UserGroupRoleServiceTest {
 		catch (PrincipalException pe) {
 			Assert.assertTrue(
 				UserGroupRoleLocalServiceUtil.hasUserGroupRole(
-					objectUser.getUserId(), organization.getGroupId(),
+					objectUser.getUserId(), _organization.getGroupId(),
 					role.getRoleId()));
 		}
 	}
@@ -503,17 +522,17 @@ public class UserGroupRoleServiceTest {
 	public void testOrganizationAdminRemovingOrganizationOwnerRoleByRoles()
 		throws Exception {
 
-		Organization organization = OrganizationTestUtil.addOrganization();
+		_organization = OrganizationTestUtil.addOrganization();
 
 		Role role = RoleLocalServiceUtil.getRole(
 			TestPropsValues.getCompanyId(), RoleConstants.ORGANIZATION_OWNER);
 
-		User subjectUser = UserTestUtil.addOrganizationAdminUser(organization);
-		User objectUser = UserTestUtil.addOrganizationOwnerUser(organization);
+		User subjectUser = UserTestUtil.addOrganizationAdminUser(_organization);
+		User objectUser = UserTestUtil.addOrganizationOwnerUser(_organization);
 
 		try {
 			deleteUserGroupRolesByRole(
-				organization.getGroupId(), role.getRoleId(), subjectUser,
+				_organization.getGroupId(), role.getRoleId(), subjectUser,
 				objectUser);
 
 			Assert.fail();
@@ -521,7 +540,7 @@ public class UserGroupRoleServiceTest {
 		catch (PrincipalException pe) {
 			Assert.assertTrue(
 				UserGroupRoleLocalServiceUtil.hasUserGroupRole(
-					objectUser.getUserId(), organization.getGroupId(),
+					objectUser.getUserId(), _organization.getGroupId(),
 					role.getRoleId()));
 		}
 	}
@@ -530,17 +549,17 @@ public class UserGroupRoleServiceTest {
 	public void testOrganizationAdminRemovingOrganizationOwnerRoleByUsers()
 		throws Exception {
 
-		Organization organization = OrganizationTestUtil.addOrganization();
+		_organization = OrganizationTestUtil.addOrganization();
 
 		Role role = RoleLocalServiceUtil.getRole(
 			TestPropsValues.getCompanyId(), RoleConstants.ORGANIZATION_OWNER);
 
-		User subjectUser = UserTestUtil.addOrganizationAdminUser(organization);
-		User objectUser = UserTestUtil.addOrganizationOwnerUser(organization);
+		User subjectUser = UserTestUtil.addOrganizationAdminUser(_organization);
+		User objectUser = UserTestUtil.addOrganizationOwnerUser(_organization);
 
 		try {
 			deleteUserGroupRolesByUser(
-				organization.getGroupId(), role.getRoleId(), subjectUser,
+				_organization.getGroupId(), role.getRoleId(), subjectUser,
 				objectUser);
 
 			Assert.fail();
@@ -548,7 +567,7 @@ public class UserGroupRoleServiceTest {
 		catch (PrincipalException pe) {
 			Assert.assertTrue(
 				UserGroupRoleLocalServiceUtil.hasUserGroupRole(
-					objectUser.getUserId(), organization.getGroupId(),
+					objectUser.getUserId(), _organization.getGroupId(),
 					role.getRoleId()));
 		}
 	}
@@ -557,18 +576,18 @@ public class UserGroupRoleServiceTest {
 	public void testOrganizationAdminRemovingSiteAdminRoleByRoles()
 		throws Exception {
 
-		Organization organization = OrganizationTestUtil.addOrganization(true);
+		_organization = OrganizationTestUtil.addOrganization(true);
 
 		Role role = RoleLocalServiceUtil.getRole(
 			TestPropsValues.getCompanyId(), RoleConstants.SITE_ADMINISTRATOR);
 
-		User subjectUser = UserTestUtil.addOrganizationAdminUser(organization);
+		User subjectUser = UserTestUtil.addOrganizationAdminUser(_organization);
 		User objectUser = UserTestUtil.addGroupAdminUser(
-			organization.getGroup());
+			_organization.getGroup());
 
 		try {
 			deleteUserGroupRolesByRole(
-				organization.getGroupId(), role.getRoleId(), subjectUser,
+				_organization.getGroupId(), role.getRoleId(), subjectUser,
 				objectUser);
 
 			Assert.fail();
@@ -576,7 +595,7 @@ public class UserGroupRoleServiceTest {
 		catch (PrincipalException pe) {
 			Assert.assertTrue(
 				UserGroupRoleLocalServiceUtil.hasUserGroupRole(
-					objectUser.getUserId(), organization.getGroupId(),
+					objectUser.getUserId(), _organization.getGroupId(),
 					role.getRoleId()));
 		}
 	}
@@ -585,18 +604,18 @@ public class UserGroupRoleServiceTest {
 	public void testOrganizationAdminRemovingSiteAdminRoleByUsers()
 		throws Exception {
 
-		Organization organization = OrganizationTestUtil.addOrganization(true);
+		_organization = OrganizationTestUtil.addOrganization(true);
 
 		Role role = RoleLocalServiceUtil.getRole(
 			TestPropsValues.getCompanyId(), RoleConstants.SITE_ADMINISTRATOR);
 
-		User subjectUser = UserTestUtil.addOrganizationAdminUser(organization);
+		User subjectUser = UserTestUtil.addOrganizationAdminUser(_organization);
 		User objectUser = UserTestUtil.addGroupAdminUser(
-			organization.getGroup());
+			_organization.getGroup());
 
 		try {
 			deleteUserGroupRolesByUser(
-				organization.getGroupId(), role.getRoleId(), subjectUser,
+				_organization.getGroupId(), role.getRoleId(), subjectUser,
 				objectUser);
 
 			Assert.fail();
@@ -604,7 +623,7 @@ public class UserGroupRoleServiceTest {
 		catch (PrincipalException pe) {
 			Assert.assertTrue(
 				UserGroupRoleLocalServiceUtil.hasUserGroupRole(
-					objectUser.getUserId(), organization.getGroupId(),
+					objectUser.getUserId(), _organization.getGroupId(),
 					role.getRoleId()));
 		}
 	}
@@ -613,18 +632,18 @@ public class UserGroupRoleServiceTest {
 	public void testOrganizationAdminRemovingSiteOwnerRoleByRoles()
 		throws Exception {
 
-		Organization organization = OrganizationTestUtil.addOrganization(true);
+		_organization = OrganizationTestUtil.addOrganization(true);
 
 		Role role = RoleLocalServiceUtil.getRole(
 			TestPropsValues.getCompanyId(), RoleConstants.SITE_OWNER);
 
-		User subjectUser = UserTestUtil.addOrganizationAdminUser(organization);
+		User subjectUser = UserTestUtil.addOrganizationAdminUser(_organization);
 		User objectUser = UserTestUtil.addGroupOwnerUser(
-			organization.getGroup());
+			_organization.getGroup());
 
 		try {
 			deleteUserGroupRolesByRole(
-				organization.getGroupId(), role.getRoleId(), subjectUser,
+				_organization.getGroupId(), role.getRoleId(), subjectUser,
 				objectUser);
 
 			Assert.fail();
@@ -632,7 +651,7 @@ public class UserGroupRoleServiceTest {
 		catch (PrincipalException pe) {
 			Assert.assertTrue(
 				UserGroupRoleLocalServiceUtil.hasUserGroupRole(
-					objectUser.getUserId(), organization.getGroupId(),
+					objectUser.getUserId(), _organization.getGroupId(),
 					role.getRoleId()));
 		}
 	}
@@ -641,18 +660,18 @@ public class UserGroupRoleServiceTest {
 	public void testOrganizationAdminRemovingSiteOwnerRoleByUsers()
 		throws Exception {
 
-		Organization organization = OrganizationTestUtil.addOrganization(true);
+		_organization = OrganizationTestUtil.addOrganization(true);
 
 		Role role = RoleLocalServiceUtil.getRole(
 			TestPropsValues.getCompanyId(), RoleConstants.SITE_OWNER);
 
-		User subjectUser = UserTestUtil.addOrganizationAdminUser(organization);
+		User subjectUser = UserTestUtil.addOrganizationAdminUser(_organization);
 		User objectUser = UserTestUtil.addGroupOwnerUser(
-			organization.getGroup());
+			_organization.getGroup());
 
 		try {
 			deleteUserGroupRolesByUser(
-				organization.getGroupId(), role.getRoleId(), subjectUser,
+				_organization.getGroupId(), role.getRoleId(), subjectUser,
 				objectUser);
 
 			Assert.fail();
@@ -660,7 +679,7 @@ public class UserGroupRoleServiceTest {
 		catch (PrincipalException pe) {
 			Assert.assertTrue(
 				UserGroupRoleLocalServiceUtil.hasUserGroupRole(
-					objectUser.getUserId(), organization.getGroupId(),
+					objectUser.getUserId(), _organization.getGroupId(),
 					role.getRoleId()));
 		}
 	}
@@ -669,22 +688,22 @@ public class UserGroupRoleServiceTest {
 	public void testOrganizationOwnerRemovingOrganizationAdminRoleByRoles()
 		throws Exception {
 
-		Organization organization = OrganizationTestUtil.addOrganization();
+		_organization = OrganizationTestUtil.addOrganization();
 
 		Role role = RoleLocalServiceUtil.getRole(
 			TestPropsValues.getCompanyId(),
 			RoleConstants.ORGANIZATION_ADMINISTRATOR);
 
-		User subjectUser = UserTestUtil.addOrganizationOwnerUser(organization);
-		User objectUser = UserTestUtil.addOrganizationAdminUser(organization);
+		User subjectUser = UserTestUtil.addOrganizationOwnerUser(_organization);
+		User objectUser = UserTestUtil.addOrganizationAdminUser(_organization);
 
 		deleteUserGroupRolesByRole(
-			organization.getGroupId(), role.getRoleId(), subjectUser,
+			_organization.getGroupId(), role.getRoleId(), subjectUser,
 			objectUser);
 
 		Assert.assertFalse(
 			UserGroupRoleLocalServiceUtil.hasUserGroupRole(
-				objectUser.getUserId(), organization.getGroupId(),
+				objectUser.getUserId(), _organization.getGroupId(),
 				role.getRoleId()));
 	}
 
@@ -692,22 +711,22 @@ public class UserGroupRoleServiceTest {
 	public void testOrganizationOwnerRemovingOrganizationAdminRoleByUsers()
 		throws Exception {
 
-		Organization organization = OrganizationTestUtil.addOrganization();
+		_organization = OrganizationTestUtil.addOrganization();
 
 		Role role = RoleLocalServiceUtil.getRole(
 			TestPropsValues.getCompanyId(),
 			RoleConstants.ORGANIZATION_ADMINISTRATOR);
 
-		User subjectUser = UserTestUtil.addOrganizationOwnerUser(organization);
-		User objectUser = UserTestUtil.addOrganizationAdminUser(organization);
+		User subjectUser = UserTestUtil.addOrganizationOwnerUser(_organization);
+		User objectUser = UserTestUtil.addOrganizationAdminUser(_organization);
 
 		deleteUserGroupRolesByUser(
-			organization.getGroupId(), role.getRoleId(), subjectUser,
+			_organization.getGroupId(), role.getRoleId(), subjectUser,
 			objectUser);
 
 		Assert.assertFalse(
 			UserGroupRoleLocalServiceUtil.hasUserGroupRole(
-				objectUser.getUserId(), organization.getGroupId(),
+				objectUser.getUserId(), _organization.getGroupId(),
 				role.getRoleId()));
 	}
 
@@ -715,21 +734,21 @@ public class UserGroupRoleServiceTest {
 	public void testOrganizationOwnerRemovingOrganizationOwnerRoleByRoles()
 		throws Exception {
 
-		Organization organization = OrganizationTestUtil.addOrganization();
+		_organization = OrganizationTestUtil.addOrganization();
 
 		Role role = RoleLocalServiceUtil.getRole(
 			TestPropsValues.getCompanyId(), RoleConstants.ORGANIZATION_OWNER);
 
-		User subjectUser = UserTestUtil.addOrganizationOwnerUser(organization);
-		User objectUser = UserTestUtil.addOrganizationOwnerUser(organization);
+		User subjectUser = UserTestUtil.addOrganizationOwnerUser(_organization);
+		User objectUser = UserTestUtil.addOrganizationOwnerUser(_organization);
 
 		deleteUserGroupRolesByRole(
-			organization.getGroupId(), role.getRoleId(), subjectUser,
+			_organization.getGroupId(), role.getRoleId(), subjectUser,
 			objectUser);
 
 		Assert.assertFalse(
 			UserGroupRoleLocalServiceUtil.hasUserGroupRole(
-				objectUser.getUserId(), organization.getGroupId(),
+				objectUser.getUserId(), _organization.getGroupId(),
 				role.getRoleId()));
 	}
 
@@ -737,21 +756,21 @@ public class UserGroupRoleServiceTest {
 	public void testOrganizationOwnerRemovingOrganizationOwnerRoleByUsers()
 		throws Exception {
 
-		Organization organization = OrganizationTestUtil.addOrganization();
+		_organization = OrganizationTestUtil.addOrganization();
 
 		Role role = RoleLocalServiceUtil.getRole(
 			TestPropsValues.getCompanyId(), RoleConstants.ORGANIZATION_OWNER);
 
-		User subjectUser = UserTestUtil.addOrganizationOwnerUser(organization);
-		User objectUser = UserTestUtil.addOrganizationOwnerUser(organization);
+		User subjectUser = UserTestUtil.addOrganizationOwnerUser(_organization);
+		User objectUser = UserTestUtil.addOrganizationOwnerUser(_organization);
 
 		deleteUserGroupRolesByUser(
-			organization.getGroupId(), role.getRoleId(), subjectUser,
+			_organization.getGroupId(), role.getRoleId(), subjectUser,
 			objectUser);
 
 		Assert.assertFalse(
 			UserGroupRoleLocalServiceUtil.hasUserGroupRole(
-				objectUser.getUserId(), organization.getGroupId(),
+				objectUser.getUserId(), _organization.getGroupId(),
 				role.getRoleId()));
 	}
 
@@ -759,22 +778,22 @@ public class UserGroupRoleServiceTest {
 	public void testOrganizationOwnerRemovingSiteAdminRoleByRoles()
 		throws Exception {
 
-		Organization organization = OrganizationTestUtil.addOrganization(true);
+		_organization = OrganizationTestUtil.addOrganization(true);
 
 		Role role = RoleLocalServiceUtil.getRole(
 			TestPropsValues.getCompanyId(), RoleConstants.SITE_ADMINISTRATOR);
 
-		User subjectUser = UserTestUtil.addOrganizationOwnerUser(organization);
+		User subjectUser = UserTestUtil.addOrganizationOwnerUser(_organization);
 		User objectUser = UserTestUtil.addGroupAdminUser(
-			organization.getGroup());
+			_organization.getGroup());
 
 		deleteUserGroupRolesByRole(
-			organization.getGroupId(), role.getRoleId(), subjectUser,
+			_organization.getGroupId(), role.getRoleId(), subjectUser,
 			objectUser);
 
 		Assert.assertFalse(
 			UserGroupRoleLocalServiceUtil.hasUserGroupRole(
-				objectUser.getUserId(), organization.getGroupId(),
+				objectUser.getUserId(), _organization.getGroupId(),
 				role.getRoleId()));
 	}
 
@@ -782,22 +801,22 @@ public class UserGroupRoleServiceTest {
 	public void testOrganizationOwnerRemovingSiteAdminRoleByUsers()
 		throws Exception {
 
-		Organization organization = OrganizationTestUtil.addOrganization(true);
+		_organization = OrganizationTestUtil.addOrganization(true);
 
 		Role role = RoleLocalServiceUtil.getRole(
 			TestPropsValues.getCompanyId(), RoleConstants.SITE_ADMINISTRATOR);
 
-		User subjectUser = UserTestUtil.addOrganizationOwnerUser(organization);
+		User subjectUser = UserTestUtil.addOrganizationOwnerUser(_organization);
 		User objectUser = UserTestUtil.addGroupAdminUser(
-			organization.getGroup());
+			_organization.getGroup());
 
 		deleteUserGroupRolesByUser(
-			organization.getGroupId(), role.getRoleId(), subjectUser,
+			_organization.getGroupId(), role.getRoleId(), subjectUser,
 			objectUser);
 
 		Assert.assertFalse(
 			UserGroupRoleLocalServiceUtil.hasUserGroupRole(
-				objectUser.getUserId(), organization.getGroupId(),
+				objectUser.getUserId(), _organization.getGroupId(),
 				role.getRoleId()));
 	}
 
@@ -805,22 +824,22 @@ public class UserGroupRoleServiceTest {
 	public void testOrganizationOwnerRemovingSiteOwnerRoleByRoles()
 		throws Exception {
 
-		Organization organization = OrganizationTestUtil.addOrganization(true);
+		_organization = OrganizationTestUtil.addOrganization(true);
 
 		Role role = RoleLocalServiceUtil.getRole(
 			TestPropsValues.getCompanyId(), RoleConstants.SITE_OWNER);
 
-		User subjectUser = UserTestUtil.addOrganizationOwnerUser(organization);
+		User subjectUser = UserTestUtil.addOrganizationOwnerUser(_organization);
 		User objectUser = UserTestUtil.addGroupOwnerUser(
-			organization.getGroup());
+			_organization.getGroup());
 
 		deleteUserGroupRolesByRole(
-			organization.getGroupId(), role.getRoleId(), subjectUser,
+			_organization.getGroupId(), role.getRoleId(), subjectUser,
 			objectUser);
 
 		Assert.assertFalse(
 			UserGroupRoleLocalServiceUtil.hasUserGroupRole(
-				objectUser.getUserId(), organization.getGroupId(),
+				objectUser.getUserId(), _organization.getGroupId(),
 				role.getRoleId()));
 	}
 
@@ -828,22 +847,22 @@ public class UserGroupRoleServiceTest {
 	public void testOrganizationOwnerRemovingSiteOwnerRoleByUsers()
 		throws Exception {
 
-		Organization organization = OrganizationTestUtil.addOrganization(true);
+		_organization = OrganizationTestUtil.addOrganization(true);
 
 		Role role = RoleLocalServiceUtil.getRole(
 			TestPropsValues.getCompanyId(), RoleConstants.SITE_OWNER);
 
-		User subjectUser = UserTestUtil.addOrganizationOwnerUser(organization);
+		User subjectUser = UserTestUtil.addOrganizationOwnerUser(_organization);
 		User objectUser = UserTestUtil.addGroupOwnerUser(
-			organization.getGroup());
+			_organization.getGroup());
 
 		deleteUserGroupRolesByUser(
-			organization.getGroupId(), role.getRoleId(), subjectUser,
+			_organization.getGroupId(), role.getRoleId(), subjectUser,
 			objectUser);
 
 		Assert.assertFalse(
 			UserGroupRoleLocalServiceUtil.hasUserGroupRole(
-				objectUser.getUserId(), organization.getGroupId(),
+				objectUser.getUserId(), _organization.getGroupId(),
 				role.getRoleId()));
 	}
 
@@ -872,5 +891,8 @@ public class UserGroupRoleServiceTest {
 		UserGroupRoleServiceUtil.deleteUserGroupRoles(
 			new long[] {objectUser.getUserId()}, groupId, roleId);
 	}
+
+	private Group _group;
+	private Organization _organization;
 
 }
