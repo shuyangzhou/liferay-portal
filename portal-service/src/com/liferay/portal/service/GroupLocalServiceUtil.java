@@ -1327,7 +1327,7 @@ public class GroupLocalServiceUtil {
 	* @throws PortalException if a user with the primary key could not be found
 	or if another portal exception occurred
 	*/
-	public static java.util.List<com.liferay.portal.model.Group> getUserOrganizationsGroups(
+	public static java.util.Set<com.liferay.portal.model.Group> getUserOrganizationsGroups(
 		long userId, int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getUserOrganizationsGroups(userId, start, end);
