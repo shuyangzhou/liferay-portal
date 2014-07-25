@@ -50,10 +50,7 @@ public class ThemeHotDeployListener extends BaseHotDeployListener {
 		}
 		catch (Throwable t) {
 			throwHotDeployException(
-				hotDeployEvent,
-				"Error registering themes for " +
-					hotDeployEvent.getServletContextName(),
-				t);
+				hotDeployEvent, "Error registering themes for ", t);
 		}
 	}
 
@@ -66,10 +63,7 @@ public class ThemeHotDeployListener extends BaseHotDeployListener {
 		}
 		catch (Throwable t) {
 			throwHotDeployException(
-				hotDeployEvent,
-				"Error unregistering themes for " +
-					hotDeployEvent.getServletContextName(),
-				t);
+				hotDeployEvent, "Error unregistering themes for ", t);
 		}
 	}
 

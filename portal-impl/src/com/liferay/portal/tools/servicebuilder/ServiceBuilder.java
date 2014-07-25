@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.StringUtil_IW;
 import com.liferay.portal.kernel.util.TextFormatter;
 import com.liferay.portal.kernel.util.Time;
-import com.liferay.portal.kernel.util.UniqueList;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.Validator_IW;
 import com.liferay.portal.kernel.xml.Document;
@@ -93,6 +92,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -2542,7 +2542,7 @@ public class ServiceBuilder {
 		Map<String, Object> context = _getContext();
 
 		context.put("entity", entity);
-		context.put("referenceList", _mergeReferenceList(entity));
+		context.put("referenceList", _mergeReferenceSet(entity));
 
 		// Content
 
@@ -2840,7 +2840,8 @@ public class ServiceBuilder {
 		context.put("entity", entity);
 		context.put("methods", methods);
 		context.put("sessionTypeName",_getSessionTypeName(sessionType));
-		context.put("referenceList", _mergeReferenceList(entity));
+		context.put(
+			"referenceList", new ArrayList<Entity>(_mergeReferenceSet(entity)));
 
 		context = _putDeprecatedKeys(context, javaClass);
 
@@ -4509,22 +4510,22 @@ public class ServiceBuilder {
 		return javaMethods.toArray(new JavaMethod[javaMethods.size()]);
 	}
 
-	private List<Entity> _mergeReferenceList(Entity entity) {
+	private Set<Entity> _mergeReferenceSet(Entity entity) {
 		List<Entity> referenceList = entity.getReferenceList();
 
-		List<Entity> list = new UniqueList<Entity>(
+		Set<Entity> set = new LinkedHashSet<Entity>(
 			_ejbList.size() + referenceList.size());
 
 		if (_autoImportDefaultReferences) {
-			list.addAll(_ejbList);
+			set.addAll(_ejbList);
 		}
 		else {
-			list.add(entity);
+			set.add(entity);
 		}
 
-		list.addAll(referenceList);
+		set.addAll(referenceList);
 
-		return list;
+		return set;
 	}
 
 	private void _parseEntity(Element entityElement) throws Exception {

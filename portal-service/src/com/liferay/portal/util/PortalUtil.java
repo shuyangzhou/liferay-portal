@@ -725,7 +725,7 @@ public class PortalUtil {
 		return getPortal().getCurrentAndAncestorSiteGroupIds(groupId);
 	}
 
-	public static List<Group> getCurrentAndAncestorSiteGroups(long groupId)
+	public static Set<Group> getCurrentAndAncestorSiteGroups(long groupId)
 		throws PortalException {
 
 		return getPortal().getCurrentAndAncestorSiteGroups(groupId);
