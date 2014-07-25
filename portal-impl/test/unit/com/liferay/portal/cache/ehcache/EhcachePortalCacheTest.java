@@ -51,6 +51,11 @@ public class EhcachePortalCacheTest {
 		_cacheManager = CacheManager.getInstance();
 	}
 
+	@AfterClass
+	public static void shutdownCacheManager() {
+		_cacheManager.shutdown();
+	}
+
 	@Before
 	public void setUp() {
 		_cacheManager.addCache(_CACHE_NAME);
@@ -64,11 +69,6 @@ public class EhcachePortalCacheTest {
 		_defaultCacheListener = new TestCacheListener<String, String>();
 
 		_ehcachePortalCache.registerCacheListener(_defaultCacheListener);
-	}
-
-	@AfterClass
-	public static void shutdownCacheManager() {
-		_cacheManager.shutdown();
 	}
 
 	@After
@@ -484,6 +484,7 @@ public class EhcachePortalCacheTest {
 	private static final String _VALUE_2 = "VALUE_2";
 
 	private static CacheManager _cacheManager;
+
 	private TestCacheListener<String, String> _defaultCacheListener;
 	private EhcachePortalCache<String, String> _ehcachePortalCache;
 
