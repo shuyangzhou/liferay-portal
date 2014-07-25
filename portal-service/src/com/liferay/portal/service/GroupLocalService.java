@@ -1139,7 +1139,7 @@ public interface GroupLocalService extends BaseLocalService,
 	or if another portal exception occurred
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.util.List<com.liferay.portal.model.Group> getUserOrganizationsGroups(
+	public java.util.Set<com.liferay.portal.model.Group> getUserOrganizationsGroups(
 		long userId, int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
