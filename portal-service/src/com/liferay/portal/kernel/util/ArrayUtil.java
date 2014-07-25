@@ -28,6 +28,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -2042,7 +2043,7 @@ public class ArrayUtil {
 	}
 
 	public static byte[] unique(byte[] array) {
-		List<Byte> list = new UniqueList<Byte>();
+		Set<Byte> list = new LinkedHashSet<Byte>();
 
 		for (int i = 0; i < array.length; i++) {
 			list.add(array[i]);
@@ -2052,7 +2053,7 @@ public class ArrayUtil {
 	}
 
 	public static double[] unique(double[] array) {
-		List<Double> list = new UniqueList<Double>();
+		Set<Double> list = new LinkedHashSet<Double>();
 
 		for (int i = 0; i < array.length; i++) {
 			list.add(array[i]);
@@ -2062,7 +2063,7 @@ public class ArrayUtil {
 	}
 
 	public static float[] unique(float[] array) {
-		List<Float> list = new UniqueList<Float>();
+		Set<Float> list = new LinkedHashSet<Float>();
 
 		for (int i = 0; i < array.length; i++) {
 			list.add(array[i]);
@@ -2072,7 +2073,7 @@ public class ArrayUtil {
 	}
 
 	public static int[] unique(int[] array) {
-		List<Integer> list = new UniqueList<Integer>();
+		Set<Integer> list = new LinkedHashSet<Integer>();
 
 		for (int i = 0; i < array.length; i++) {
 			list.add(array[i]);
@@ -2082,7 +2083,7 @@ public class ArrayUtil {
 	}
 
 	public static long[] unique(long[] array) {
-		List<Long> list = new UniqueList<Long>();
+		Set<Long> list = new LinkedHashSet<Long>();
 
 		for (int i = 0; i < array.length; i++) {
 			list.add(array[i]);
@@ -2092,7 +2093,7 @@ public class ArrayUtil {
 	}
 
 	public static short[] unique(short[] array) {
-		List<Short> list = new UniqueList<Short>();
+		Set<Short> list = new LinkedHashSet<Short>();
 
 		for (int i = 0; i < array.length; i++) {
 			list.add(array[i]);

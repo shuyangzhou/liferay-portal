@@ -16,7 +16,6 @@ package com.liferay.portal.upgrade.v6_2_0;
 
 import com.liferay.portal.kernel.test.ExecutionTestListeners;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.UniqueList;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Layout;
 import com.liferay.portal.model.PortletConstants;
@@ -38,7 +37,10 @@ import com.liferay.portlet.PortletPreferencesFactoryUtil;
 import java.io.IOException;
 import java.io.InputStream;
 
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import jodd.util.ArraysUtil;
 
@@ -82,19 +84,21 @@ public class UpgradeCustomizablePortletsTest
 		upgradeCustomizablePreferences(
 			portalPreferencesWrapper, ownerId, ownerType, preferences);
 
+		Iterator<String> iter = _newPortletIds.iterator();
+		String portletId1 = iter.next();
+		String portletId2 = iter.next();
+		String portletId3 = iter.next();
+		String portletId4 = iter.next();
+
 		Assert.assertEquals(_newPortletIds.size(), 4);
-		Assert.assertFalse(PortletConstants.hasUserId(_newPortletIds.get(0)));
-		Assert.assertTrue(PortletConstants.hasUserId(_newPortletIds.get(1)));
-		Assert.assertTrue(PortletConstants.hasUserId(_newPortletIds.get(2)));
-		Assert.assertTrue(PortletConstants.hasUserId(_newPortletIds.get(3)));
-		Assert.assertFalse(
-			PortletConstants.hasInstanceId(_newPortletIds.get(0)));
-		Assert.assertTrue(
-			PortletConstants.hasInstanceId(_newPortletIds.get(1)));
-		Assert.assertTrue(
-			PortletConstants.hasInstanceId(_newPortletIds.get(2)));
-		Assert.assertTrue(
-			PortletConstants.hasInstanceId(_newPortletIds.get(3)));
+		Assert.assertFalse(PortletConstants.hasUserId(portletId1));
+		Assert.assertTrue(PortletConstants.hasUserId(portletId2));
+		Assert.assertTrue(PortletConstants.hasUserId(portletId3));
+		Assert.assertTrue(PortletConstants.hasUserId(portletId4));
+		Assert.assertFalse(PortletConstants.hasInstanceId(portletId1));
+		Assert.assertTrue(PortletConstants.hasInstanceId(portletId2));
+		Assert.assertTrue(PortletConstants.hasInstanceId(portletId3));
+		Assert.assertTrue(PortletConstants.hasInstanceId(portletId4));
 	}
 
 	@Test
@@ -133,29 +137,31 @@ public class UpgradeCustomizablePortletsTest
 
 		doUpgrade();
 
+		Iterator<String> iter = _newPortletIds.iterator();
+		String portletId1 = iter.next();
+		String portletId2 = iter.next();
+		String portletId3 = iter.next();
+		String portletId4 = iter.next();
+
 		Assert.assertEquals(_newPortletIds.size(), 4);
-		Assert.assertFalse(PortletConstants.hasUserId(_newPortletIds.get(0)));
-		Assert.assertTrue(PortletConstants.hasUserId(_newPortletIds.get(1)));
-		Assert.assertTrue(PortletConstants.hasUserId(_newPortletIds.get(2)));
-		Assert.assertTrue(PortletConstants.hasUserId(_newPortletIds.get(3)));
-		Assert.assertFalse(
-			PortletConstants.hasInstanceId(_newPortletIds.get(0)));
-		Assert.assertTrue(
-			PortletConstants.hasInstanceId(_newPortletIds.get(1)));
-		Assert.assertTrue(
-			PortletConstants.hasInstanceId(_newPortletIds.get(2)));
-		Assert.assertTrue(
-			PortletConstants.hasInstanceId(_newPortletIds.get(3)));
+		Assert.assertFalse(PortletConstants.hasUserId(portletId1));
+		Assert.assertTrue(PortletConstants.hasUserId(portletId2));
+		Assert.assertTrue(PortletConstants.hasUserId(portletId3));
+		Assert.assertTrue(PortletConstants.hasUserId(portletId4));
+		Assert.assertFalse(PortletConstants.hasInstanceId(portletId1));
+		Assert.assertTrue(PortletConstants.hasInstanceId(portletId2));
+		Assert.assertTrue(PortletConstants.hasInstanceId(portletId3));
+		Assert.assertTrue(PortletConstants.hasInstanceId(portletId4));
 
 		List<PortletPreferences> portletPreferencesList =
 			PortletPreferencesLocalServiceUtil.getPortletPreferences(
-				layout1.getPlid(), _newPortletIds.get(0));
+				layout1.getPlid(), portletId1);
 
 		Assert.assertEquals(portletPreferencesList.size(), 1);
 
 		portletPreferencesList =
 			PortletPreferencesLocalServiceUtil.getPortletPreferences(
-				layout1.getPlid(), _newPortletIds.get(1));
+				layout1.getPlid(), portletId2);
 
 		Assert.assertEquals(portletPreferencesList.size(), 1);
 
@@ -167,7 +173,7 @@ public class UpgradeCustomizablePortletsTest
 
 		portletPreferencesList =
 			PortletPreferencesLocalServiceUtil.getPortletPreferences(
-				layout1.getPlid(), _newPortletIds.get(2));
+				layout1.getPlid(), portletId3);
 
 		Assert.assertEquals(portletPreferencesList.size(), 1);
 
@@ -179,7 +185,7 @@ public class UpgradeCustomizablePortletsTest
 
 		portletPreferencesList =
 			PortletPreferencesLocalServiceUtil.getPortletPreferences(
-				layout1.getPlid(), _newPortletIds.get(3));
+				layout1.getPlid(), portletId4);
 
 		Assert.assertEquals(portletPreferencesList.size(), 1);
 
@@ -267,6 +273,6 @@ public class UpgradeCustomizablePortletsTest
 	};
 
 	private boolean _invokeSuper;
-	private List<String> _newPortletIds = new UniqueList<String>();
+	private Set<String> _newPortletIds = new LinkedHashSet<String>();
 
 }

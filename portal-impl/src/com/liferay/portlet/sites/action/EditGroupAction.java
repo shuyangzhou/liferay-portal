@@ -44,7 +44,6 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
-import com.liferay.portal.kernel.util.UniqueList;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.liveusers.LiveUsers;
 import com.liferay.portal.model.Group;
@@ -83,7 +82,9 @@ import com.liferay.portlet.sites.util.Sites;
 import com.liferay.portlet.sites.util.SitesUtil;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -329,7 +330,7 @@ public class EditGroupAction extends PortletAction {
 	protected List<Team> getTeams(PortletRequest portletRequest)
 		throws Exception {
 
-		List<Team> teams = new UniqueList<Team>();
+		Set<Team> teams = new LinkedHashSet<Team>();
 
 		long[] teamsTeamIds = StringUtil.split(
 			ParamUtil.getString(portletRequest, "teamsTeamIds"), 0L);
@@ -344,7 +345,8 @@ public class EditGroupAction extends PortletAction {
 			teams.add(team);
 		}
 
-		return teams;
+		ArrayList<Team> teamsList = new ArrayList<Team>(teams);
+		return teamsList;
 	}
 
 	/**
