@@ -78,7 +78,6 @@ import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.UniqueList;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
@@ -157,6 +156,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -2855,20 +2855,20 @@ public class HookHotDeployListener
 
 		@Override
 		public String[] getStringArray() {
-			List<String> mergedStringList = new UniqueList<String>();
+			Set<String> mergedStringSet = new LinkedHashSet<String>();
 
-			mergedStringList.addAll(ListUtil.fromArray(_portalStringArray));
+			mergedStringSet.addAll(ListUtil.fromArray(_portalStringArray));
 
 			for (Map.Entry<String, String[]> entry :
 					_pluginStringArrayMap.entrySet()) {
 
 				String[] pluginStringArray = entry.getValue();
 
-				mergedStringList.addAll(ListUtil.fromArray(pluginStringArray));
+				mergedStringSet.addAll(ListUtil.fromArray(pluginStringArray));
 			}
 
-			return mergedStringList.toArray(
-				new String[mergedStringList.size()]);
+			return mergedStringSet.toArray(
+				new String[mergedStringSet.size()]);
 		}
 
 		@Override
