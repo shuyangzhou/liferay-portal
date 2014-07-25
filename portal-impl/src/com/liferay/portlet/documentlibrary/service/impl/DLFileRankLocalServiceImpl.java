@@ -53,6 +53,8 @@ public class DLFileRankLocalServiceImpl extends DLFileRankLocalServiceBaseImpl {
 
 		try {
 			dlFileRankPersistence.update(dlFileRank);
+
+			dlFileRankPersistence.flush();
 		}
 		catch (SystemException se) {
 			if (_log.isWarnEnabled()) {
