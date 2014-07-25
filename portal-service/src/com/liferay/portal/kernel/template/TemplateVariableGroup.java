@@ -16,9 +16,10 @@ package com.liferay.portal.kernel.template;
 
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.TextFormatter;
-import com.liferay.portal.kernel.util.UniqueList;
 
 import java.util.Collection;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * @author Jorge Ferrer
@@ -158,6 +159,6 @@ public class TemplateVariableGroup {
 	private String[] _restrictedVariables;
 	private Collection<TemplateVariableDefinition>
 		_templateVariableDefinitions =
-			new UniqueList<TemplateVariableDefinition>();
+			new LinkedHashSet<TemplateVariableDefinition>();
 
 }
