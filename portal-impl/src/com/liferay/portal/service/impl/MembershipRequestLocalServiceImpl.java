@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.UniqueList;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.MembershipRequest;
@@ -40,7 +39,9 @@ import com.liferay.portal.util.SubscriptionSender;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Jorge Ferrer
@@ -191,10 +192,10 @@ public class
 		}
 	}
 
-	protected List<Long> getGroupAdministratorUserIds(long groupId)
+	protected Set<Long> getGroupAdministratorUserIds(long groupId)
 		throws PortalException {
 
-		List<Long> userIds = new UniqueList<Long>();
+		Set<Long> userIds = new LinkedHashSet<Long>();
 
 		Group group = groupLocalService.getGroup(groupId);
 		String modelResource = Group.class.getName();
@@ -347,7 +348,7 @@ public class
 			MembershipRequest membershipRequest, ServiceContext serviceContext)
 		throws PortalException {
 
-		List<Long> userIds = getGroupAdministratorUserIds(
+		Set<Long> userIds = getGroupAdministratorUserIds(
 			membershipRequest.getGroupId());
 
 		for (Long userId : userIds) {

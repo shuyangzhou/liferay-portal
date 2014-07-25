@@ -18,7 +18,6 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.UniqueList;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.util.FileImpl;
 import com.liferay.portal.util.PropsValues;
@@ -31,6 +30,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -384,11 +385,11 @@ public class PluginsEnvironmentBuilder {
 			return;
 		}
 
-		List<String> globalJars = new UniqueList<String>();
-		List<String> portalJars = new UniqueList<String>();
+		Set<String> globalJars = new LinkedHashSet<String>();
+		List<String> portalJars = new ArrayList<String>();
 
-		List<String> extGlobalJars = new UniqueList<String>();
-		List<String> extPortalJars = new UniqueList<String>();
+		Set<String> extGlobalJars = new LinkedHashSet<String>();
+		Set<String> extPortalJars = new LinkedHashSet<String>();
 
 		String libDirPath = StringUtil.replace(
 			libDir.getPath(), StringPool.BACK_SLASH, StringPool.SLASH);
@@ -442,7 +443,7 @@ public class PluginsEnvironmentBuilder {
 		if (customJarsArray != null) {
 			customJars = ListUtil.toList(customJarsArray);
 
-			for (String jar : portalJars) {
+			for (String jar : new LinkedHashSet<String>(portalJars)) {
 				customJars.remove(jar);
 			}
 
@@ -519,7 +520,7 @@ public class PluginsEnvironmentBuilder {
 
 		Collections.sort(portalJars);
 
-		for (String jar : portalJars) {
+		for (String jar : new LinkedHashSet<String>(portalJars)) {
 			if (!jar.equals("util-slf4j.jar")) {
 				addClasspathEntry(sb, "/portal/lib/portal/" + jar, attributes);
 			}

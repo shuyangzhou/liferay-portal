@@ -23,7 +23,6 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.UnicodeProperties;
-import com.liferay.portal.kernel.util.UniqueList;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.GroupConstants;
 import com.liferay.portal.model.Organization;
@@ -54,8 +53,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Provides the remote service for accessing, adding, deleting, and updating
@@ -364,12 +365,15 @@ public class GroupServiceImpl extends GroupServiceBaseImpl {
 
 			params.put("site", Boolean.TRUE);
 
-			return groupLocalService.search(
-				permissionChecker.getCompanyId(), null, null, null, params,
-				true, 0, max);
+			Set<Group> groups =
+				new LinkedHashSet<Group>(groupLocalService.search(
+					permissionChecker.getCompanyId(), null, null, null, params,
+					true, 0, max));
+
+			return new ArrayList<Group>(groups);
 		}
 
-		List<Group> groups = new UniqueList<Group>();
+		Set<Group> groups = new LinkedHashSet<Group>();
 
 		List<Group> userSitesGroups = getUserSitesGroups(null, max);
 
@@ -386,7 +390,7 @@ public class GroupServiceImpl extends GroupServiceBaseImpl {
 			}
 		}
 
-		return groups;
+		return new ArrayList<Group>(groups);
 	}
 
 	/**
@@ -494,10 +498,10 @@ public class GroupServiceImpl extends GroupServiceBaseImpl {
 			long userId, int start, int end)
 		throws PortalException {
 
-		List<Group> groups = groupLocalService.getUserOrganizationsGroups(
+		Set<Group> groups = groupLocalService.getUserOrganizationsGroups(
 			userId, start, end);
 
-		return filterGroups(groups);
+		return filterGroups(new ArrayList<Group>(groups));
 	}
 
 	/**
@@ -647,7 +651,7 @@ public class GroupServiceImpl extends GroupServiceBaseImpl {
 			return Collections.emptyList();
 		}
 
-		List<Group> userSiteGroups = new UniqueList<Group>();
+		List<Group> userSiteGroups = new ArrayList<Group>();
 
 		int start = QueryUtil.ALL_POS;
 		int end = QueryUtil.ALL_POS;
@@ -737,8 +741,11 @@ public class GroupServiceImpl extends GroupServiceBaseImpl {
 			userSiteGroups.add(0, controlPanelGroup);
 		}
 
+		Set<Group> userSiteGroupsSet = new LinkedHashSet<Group>(userSiteGroups);
+
 		return Collections.unmodifiableList(
-			ListUtil.subList(userSiteGroups, start, end));
+			ListUtil.subList(
+				new ArrayList<Group>(userSiteGroupsSet), start, end));
 	}
 
 	/**

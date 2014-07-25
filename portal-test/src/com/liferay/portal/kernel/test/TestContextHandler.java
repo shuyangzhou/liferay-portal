@@ -18,12 +18,14 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ReflectionUtil;
-import com.liferay.portal.kernel.util.UniqueList;
 
 import java.lang.reflect.Method;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Miguel Pastor
@@ -87,9 +89,9 @@ public class TestContextHandler {
 		Class<?> declaringClass = ReflectionUtil.getAnnotationDeclaringClass(
 			ExecutionTestListeners.class, clazz);
 
-		List<Class<? extends ExecutionTestListener>>
+		Set<Class<? extends ExecutionTestListener>>
 			executionTestListenerClasses =
-				new UniqueList<Class<? extends ExecutionTestListener>>();
+				new LinkedHashSet<Class<? extends ExecutionTestListener>>();
 
 		while (declaringClass != null) {
 			ExecutionTestListeners executionTestListeners =
@@ -105,13 +107,15 @@ public class TestContextHandler {
 		ExecutionTestListener[] executionTestListeners =
 			new ExecutionTestListener[executionTestListenerClasses.size()];
 
+		Iterator<Class<? extends ExecutionTestListener>> iter =
+			executionTestListenerClasses.iterator();
+
 		for (int i = 0; i < executionTestListeners.length; i++) {
 			Class<? extends ExecutionTestListener> executionTestListenerClass =
 				null;
 
 			try {
-				executionTestListenerClass = executionTestListenerClasses.get(
-					i);
+				executionTestListenerClass = iter.next();
 
 				executionTestListeners[i] =
 					executionTestListenerClass.newInstance();

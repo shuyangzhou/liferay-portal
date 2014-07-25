@@ -1430,7 +1430,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	or if another portal exception occurred
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getUserOrganizationsGroups(
+	public java.util.Set<com.liferay.portal.model.Group> getUserOrganizationsGroups(
 		long userId, int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupLocalService.getUserOrganizationsGroups(userId, start, end);
