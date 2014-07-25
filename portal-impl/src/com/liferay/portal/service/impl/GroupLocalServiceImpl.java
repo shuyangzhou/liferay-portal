@@ -61,7 +61,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TreeModelFinder;
 import com.liferay.portal.kernel.util.TreePathUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
-import com.liferay.portal.kernel.util.UniqueList;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowHandler;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
@@ -120,6 +119,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -1891,11 +1891,11 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 	 *         or if another portal exception occurred
 	 */
 	@Override
-	public List<Group> getUserOrganizationsGroups(
+	public Set<Group> getUserOrganizationsGroups(
 			long userId, int start, int end)
 		throws PortalException {
 
-		List<Group> userOrgsGroups = new UniqueList<Group>();
+		List<Group> userOrgsGroups = new ArrayList<Group>();
 
 		List<Organization> userOrgs =
 			organizationLocalService.getUserOrganizations(userId, start, end);
@@ -1912,7 +1912,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 			}
 		}
 
-		return userOrgsGroups;
+		return new LinkedHashSet<Group>(userOrgsGroups);
 	}
 
 	/**
