@@ -18,9 +18,12 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.model.Group;
 import com.liferay.portal.service.GroupServiceUtil;
 
 import java.rmi.RemoteException;
+
+import java.util.ArrayList;
 
 /**
  * Provides the SOAP utility for the
@@ -381,8 +384,9 @@ public class GroupServiceSoap {
 		java.util.Collection<com.liferay.portal.model.Portlet> portlets, int max)
 		throws RemoteException {
 		try {
-			java.util.List<com.liferay.portal.model.Group> returnValue = GroupServiceUtil.getManageableSiteGroups(portlets,
-					max);
+			java.util.List<com.liferay.portal.model.Group> returnValue = 
+				new ArrayList<Group>(GroupServiceUtil.getManageableSiteGroups(portlets,
+					max));
 
 			return com.liferay.portal.model.GroupSoap.toSoapModels(returnValue);
 		}
@@ -411,8 +415,9 @@ public class GroupServiceSoap {
 		java.util.Collection<com.liferay.portal.model.Portlet> portlets, int max)
 		throws RemoteException {
 		try {
-			java.util.List<com.liferay.portal.model.Group> returnValue = GroupServiceUtil.getManageableSites(portlets,
-					max);
+			java.util.List<com.liferay.portal.model.Group> returnValue = 
+				new ArrayList<Group>(GroupServiceUtil.getManageableSites(portlets,
+					max));
 
 			return com.liferay.portal.model.GroupSoap.toSoapModels(returnValue);
 		}

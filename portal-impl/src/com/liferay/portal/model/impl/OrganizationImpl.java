@@ -26,7 +26,6 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.UniqueList;
 import com.liferay.portal.model.Address;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Organization;
@@ -40,6 +39,7 @@ import com.liferay.portal.util.PropsUtil;
 import com.liferay.portal.util.PropsValues;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -141,13 +141,15 @@ public class OrganizationImpl extends OrganizationBaseImpl {
 
 	@Override
 	public List<Organization> getDescendants() {
-		List<Organization> descendants = new UniqueList<Organization>();
+		Set<Organization> descendantsSet = new LinkedHashSet<Organization>();
 
 		for (Organization suborganization : getSuborganizations()) {
-			descendants.add(suborganization);
-			descendants.addAll(suborganization.getDescendants());
+			descendantsSet.add(suborganization);
+			descendantsSet.addAll(suborganization.getDescendants());
 		}
 
+		ArrayList<Organization> descendants = new ArrayList<Organization>(
+			descendantsSet);
 		return descendants;
 	}
 
