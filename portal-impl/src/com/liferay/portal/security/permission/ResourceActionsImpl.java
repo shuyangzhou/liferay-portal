@@ -441,8 +441,8 @@ public class ResourceActionsImpl implements ResourceActions {
 	public List<String> getPortletResourceGuestUnsupportedActions(String name) {
 		name = PortletConstants.getRootPortletId(name);
 
-		Set<String> actions = new LinkedHashSet(getActions(
-			_portletResourceGuestUnsupportedActions, name));
+		Set<String> actions = new LinkedHashSet(
+			getActions(_portletResourceGuestUnsupportedActions, name));
 
 		if (actions.contains(ActionKeys.CONFIGURATION) &&
 			actions.contains(ActionKeys.PERMISSIONS)) {
@@ -454,8 +454,8 @@ public class ResourceActionsImpl implements ResourceActions {
 		actions.add(ActionKeys.PERMISSIONS);
 
 		setActions(
-			_portletResourceGuestUnsupportedActions, 
-			name, new ArrayList<String>(actions));
+			_portletResourceGuestUnsupportedActions, name,
+			new ArrayList<String>(actions));
 
 		return new ArrayList<String>(actions);
 	}

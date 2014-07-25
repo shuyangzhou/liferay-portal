@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.util.TextFormatter;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;
-import java.util.Set;
 
 /**
  * @author Jorge Ferrer
