@@ -61,7 +61,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TreeModelFinder;
 import com.liferay.portal.kernel.util.TreePathUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
-import com.liferay.portal.kernel.util.UniqueList;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowHandler;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
@@ -120,6 +119,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -1895,24 +1895,27 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 			long userId, int start, int end)
 		throws PortalException {
 
-		List<Group> userOrgsGroups = new UniqueList<Group>();
+		Set<Group> userOrgsGroups = new LinkedHashSet<Group>();
 
 		List<Organization> userOrgs =
 			organizationLocalService.getUserOrganizations(userId, start, end);
 
 		for (Organization organization : userOrgs) {
-			userOrgsGroups.add(0, organization.getGroup());
+			userOrgsGroups.add(organization.getGroup());
 
 			if (!PropsValues.ORGANIZATIONS_MEMBERSHIP_STRICT) {
 				for (Organization ancestorOrganization :
 						organization.getAncestors()) {
 
-					userOrgsGroups.add(0, ancestorOrganization.getGroup());
+					userOrgsGroups.add(ancestorOrganization.getGroup());
 				}
 			}
 		}
-
-		return userOrgsGroups;
+		List<Group> userOrgsGroupsList = new ArrayList<Group>(userOrgsGroups);
+		
+		Collections.reverse(userOrgsGroupsList);
+		
+		return userOrgsGroupsList;
 	}
 
 	/**
