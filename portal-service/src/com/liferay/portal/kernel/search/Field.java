@@ -19,6 +19,8 @@ import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Serializable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -181,6 +183,10 @@ public class Field implements Serializable {
 
 	public static final String VIEW_COUNT = "viewCount";
 
+	public Field(String name) {
+		_name = name;
+	}
+
 	public Field(String name, Map<Locale, String> localizedValues) {
 		_name = name;
 		_localizedValues = localizedValues;
@@ -226,8 +232,16 @@ public class Field implements Serializable {
 		setTokenized(tokenized);
 	}
 
+	public void addField(Field field) {
+		_nestedFields.add(field);
+	}
+
 	public float getBoost() {
 		return _boost;
+	}
+
+	public List<Field> getFields() {
+		return _nestedFields;
 	}
 
 	public Map<Locale, String> getLocalizedValues() {
@@ -240,6 +254,10 @@ public class Field implements Serializable {
 
 	public Class<? extends Number> getNumericClass() {
 		return _numericClass;
+	}
+
+	public Field getParentField() {
+		return _parentField;
 	}
 
 	public String getValue() {
@@ -255,6 +273,14 @@ public class Field implements Serializable {
 		return _values;
 	}
 
+	public boolean hasChildren() {
+		return !getFields().isEmpty();
+	}
+
+	public boolean isArray() {
+		return false;
+	}
+
 	public boolean isLocalized() {
 		if (_localizedValues != null) {
 			return true;
@@ -262,6 +288,14 @@ public class Field implements Serializable {
 		else {
 			return false;
 		}
+	}
+
+	public boolean isNested() {
+		if (getParentField() != null) {
+			return true;
+		}
+
+		return false;
 	}
 
 	public boolean isNumeric() {
@@ -276,6 +310,10 @@ public class Field implements Serializable {
 		_boost = boost;
 	}
 
+	public void setLocalizedValues(Map<Locale, String> localizedValues) {
+		_localizedValues = localizedValues;
+	}
+
 	public void setName(String name) {
 		_name = name;
 	}
@@ -286,6 +324,10 @@ public class Field implements Serializable {
 
 	public void setNumericClass(Class<? extends Number> numericClass) {
 		_numericClass = numericClass;
+	}
+
+	public void setParentField(Field parentField) {
+		_parentField = parentField;
 	}
 
 	public void setTokenized(boolean tokenized) {
@@ -303,8 +345,10 @@ public class Field implements Serializable {
 	private float _boost = 1;
 	private Map<Locale, String> _localizedValues;
 	private String _name;
+	private List<Field> _nestedFields = new ArrayList<Field>();
 	private boolean _numeric;
 	private Class<? extends Number> _numericClass;
+	private Field _parentField;
 	private boolean _tokenized;
 	private String[] _values;
 
