@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.StringUtil_IW;
 import com.liferay.portal.kernel.util.TextFormatter;
 import com.liferay.portal.kernel.util.Time;
-import com.liferay.portal.kernel.util.UniqueList;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.Validator_IW;
 import com.liferay.portal.kernel.xml.Document;
@@ -93,6 +92,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -4512,19 +4512,18 @@ public class ServiceBuilder {
 	private List<Entity> _mergeReferenceList(Entity entity) {
 		List<Entity> referenceList = entity.getReferenceList();
 
-		List<Entity> list = new UniqueList<Entity>(
-			_ejbList.size() + referenceList.size());
+		Set<Entity> set = new LinkedHashSet<Entity>();
 
 		if (_autoImportDefaultReferences) {
-			list.addAll(_ejbList);
+			set.addAll(_ejbList);
 		}
 		else {
-			list.add(entity);
+			set.add(entity);
 		}
 
-		list.addAll(referenceList);
+		set.addAll(referenceList);
 
-		return list;
+		return new ArrayList<Entity>(set);
 	}
 
 	private void _parseEntity(Element entityElement) throws Exception {

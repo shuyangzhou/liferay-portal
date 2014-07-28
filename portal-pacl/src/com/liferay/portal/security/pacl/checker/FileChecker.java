@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.ServerDetector;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.UniqueList;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.spring.context.PortalContextLoaderListener;
 import com.liferay.portal.util.PropsUtil;
@@ -45,10 +44,13 @@ import java.net.URLConnection;
 
 import java.security.Permission;
 import java.security.Permissions;
+import java.util.ArrayList;
 
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.ServletContext;
 
@@ -383,7 +385,7 @@ public class FileChecker extends BaseChecker {
 			return;
 		}
 
-		List<String> paths = new UniqueList<String>();
+		Set<String> paths = new LinkedHashSet<String>();
 
 		// JDK
 
@@ -393,7 +395,7 @@ public class FileChecker extends BaseChecker {
 		try {
 			File file = new File(System.getProperty("java.home") + "/lib");
 
-			addCanonicalPaths(paths, file);
+			addCanonicalPaths(new ArrayList<String>(paths), file);
 
 			ClassLoader classLoader = ClassLoader.getSystemClassLoader();
 
@@ -444,7 +446,7 @@ public class FileChecker extends BaseChecker {
 						}
 					}
 
-					addCanonicalPath(paths, fileName);
+					addCanonicalPath(new ArrayList<String>(paths), fileName);
 				}
 			}
 		}
@@ -467,7 +469,8 @@ public class FileChecker extends BaseChecker {
 
 		// Portal
 
-		addDefaultReadPaths(paths, ServerDetector.getServerId());
+		addDefaultReadPaths(
+			new ArrayList<String>(paths), ServerDetector.getServerId());
 
 		for (String path : paths) {
 			addPermission(path, actions);
