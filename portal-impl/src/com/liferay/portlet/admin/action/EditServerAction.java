@@ -210,6 +210,13 @@ public class EditServerAction extends PortletAction {
 		}
 		else if (cmd.equals("threadDumpClusterWide")) {
 			ThreadUtil.writeThreadDump(true);
+
+			Address localClusterNodeAddress =
+				ClusterExecutorUtil.getLocalClusterNodeAddress();
+
+			SessionMessages.add(
+				actionRequest, "localClusterNodeAddress",
+				localClusterNodeAddress.getDescription());
 		}
 		else if (cmd.equals("threadDumpLocal")) {
 			ThreadUtil.writeThreadDump(false);

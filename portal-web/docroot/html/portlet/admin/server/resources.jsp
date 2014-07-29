@@ -23,6 +23,8 @@ numberFormat = NumberFormat.getInstance(locale);
 
 long totalMemory = runtime.totalMemory();
 long usedMemory = totalMemory - runtime.freeMemory();
+
+String localClusterNodeAddress = (String)SessionMessages.get(renderRequest, "localClusterNodeAddress");
 %>
 
 <div>
@@ -46,6 +48,8 @@ long usedMemory = totalMemory - runtime.freeMemory();
 </div>
 
 <br />
+
+<liferay-ui:success key="localClusterNodeAddress" message='<%= LanguageUtil.format(request, "cluster-wide-thread-dump-generation-has-been-initiated-on-node-x", new Object [] {localClusterNodeAddress}) %>' translateMessage="false" />
 
 <table class="lfr-table">
 <tr>
