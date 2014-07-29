@@ -98,7 +98,7 @@ public class SelectTag extends BaseSelectTag {
 		String id = getId();
 
 		if (Validator.isNull(id)) {
-			id = AUIUtil.getId(request, name);
+			id = name;
 		}
 
 		String label = getLabel();

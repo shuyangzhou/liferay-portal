@@ -3581,42 +3581,6 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		subscriptionSender.flushNotificationsAsync();
 	}
 
-	@Override
-	public boolean sendPasswordByEmailAddress(
-			long companyId, String emailAddress, ServiceContext serviceContext)
-		throws PortalException {
-
-		User user = userPersistence.findByC_EA(companyId, emailAddress);
-
-		return sendPassword(
-			user.getCompanyId(), user.getEmailAddress(), null, null, null, null,
-			serviceContext);
-	}
-
-	@Override
-	public boolean sendPasswordByScreenName(
-			long companyId, String screenName, ServiceContext serviceContext)
-		throws PortalException {
-
-		User user = userPersistence.findByC_SN(companyId, screenName);
-
-		return sendPassword(
-			user.getCompanyId(), user.getEmailAddress(), null, null, null, null,
-			serviceContext);
-	}
-
-	@Override
-	public boolean sendPasswordByUserId(
-			long companyId, long userId, ServiceContext serviceContext)
-		throws PortalException {
-
-		User user = userPersistence.findByPrimaryKey(userId);
-
-		return sendPassword(
-			user.getCompanyId(), user.getEmailAddress(), null, null, null, null,
-			serviceContext);
-	}
-	
 	/**
 	 * Sends the password email to the user with the email address. The content
 	 * of this email can be specified in <code>portal.properties</code> with the
@@ -3798,6 +3762,42 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		subscriptionSender.flushNotificationsAsync();
 
 		return company.isSendPassword();
+	}
+
+	@Override
+	public boolean sendPasswordByEmailAddress(
+			long companyId, String emailAddress, ServiceContext serviceContext)
+		throws PortalException {
+
+		User user = userPersistence.findByC_EA(companyId, emailAddress);
+
+		return sendPassword(
+			user.getCompanyId(), user.getEmailAddress(), null, null, null, null,
+			serviceContext);
+	}
+
+	@Override
+	public boolean sendPasswordByScreenName(
+			long companyId, String screenName, ServiceContext serviceContext)
+		throws PortalException {
+
+		User user = userPersistence.findByC_SN(companyId, screenName);
+
+		return sendPassword(
+			user.getCompanyId(), user.getEmailAddress(), null, null, null, null,
+			serviceContext);
+	}
+
+	@Override
+	public boolean sendPasswordByUserId(
+			long companyId, long userId, ServiceContext serviceContext)
+		throws PortalException {
+
+		User user = userPersistence.findByPrimaryKey(userId);
+
+		return sendPassword(
+			user.getCompanyId(), user.getEmailAddress(), null, null, null, null,
+			serviceContext);
 	}
 
 	/**

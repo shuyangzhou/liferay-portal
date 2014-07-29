@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TextFormatter;
 import com.liferay.portal.kernel.util.Tuple;
 import com.liferay.portal.kernel.util.Validator;
@@ -206,10 +207,15 @@ public class InputTag extends BaseInputTag {
 			if ((model != null) && Validator.isNull(type) &&
 				Validator.isNotNull(fieldParam)) {
 
-				id = AUIUtil.getId(request, fieldParam);
+				id = fieldParam;
+			}
+			else if (!Validator.equals(type, "assetTags") &&
+					 !Validator.equals(type, "radio")) {
+
+				id = name;
 			}
 			else {
-				id = AUIUtil.getId(request, name);
+				id = StringUtil.randomId();
 			}
 		}
 
