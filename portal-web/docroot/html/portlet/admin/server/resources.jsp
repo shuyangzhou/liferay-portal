@@ -145,10 +145,10 @@ long usedMemory = totalMemory - runtime.freeMemory();
 		</tr>
 		<tr>
 			<td>
-				<liferay-ui:message key="generate-thread-dump" />
+				<liferay-ui:message key="generate-local-thread-dump" />
 			</td>
 			<td>
-				<aui:button cssClass="save-server-button" data-cmd="threadDump" value="execute" />
+				<aui:button cssClass="save-server-button" data-cmd="threadDumpLocal" value="execute" />
 			</td>
 		</tr>
 		<tr>

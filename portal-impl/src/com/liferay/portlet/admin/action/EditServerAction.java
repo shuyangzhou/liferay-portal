@@ -208,7 +208,7 @@ public class EditServerAction extends PortletAction {
 		else if (cmd.equals("shutdown")) {
 			shutdown(actionRequest);
 		}
-		else if (cmd.equals("threadDump")) {
+		else if (cmd.equals("threadDumpLocal")) {
 			threadDump();
 		}
 		else if (cmd.equals("updateCaptcha")) {
