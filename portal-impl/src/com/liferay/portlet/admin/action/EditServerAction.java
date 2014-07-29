@@ -608,14 +608,7 @@ public class EditServerAction extends PortletAction {
 	}
 
 	protected void threadDump() throws Exception {
-		if (_log.isInfoEnabled()) {
-			_log.info(ThreadUtil.threadDump());
-		}
-		else {
-			_log.error(
-				"Thread dumps require the log level to be at least INFO for " +
-					getClass().getName());
-		}
+		ThreadUtil.writeThreadDump();
 	}
 
 	protected void updateCaptcha(

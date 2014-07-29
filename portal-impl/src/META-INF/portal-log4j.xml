@@ -384,6 +384,10 @@
 		<priority value="INFO" />
 	</category>
 
+	<category name="com.liferay.portal.kernel.util.ThreadUtil">
+		<priority value="INFO" />
+	</category>
+
 	<category name="com.liferay.portal.language.LanguageResources">
 		<priority value="WARN" />
 	</category>
