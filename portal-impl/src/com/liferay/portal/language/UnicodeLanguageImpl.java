@@ -27,15 +27,16 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * You'll find documentation for the behaviour of many of the methods in this
- * class by looking up the equivalent descriptions in {@link LanguageImpl}  
- * 
+ * class by looking up the equivalent descriptions in {@link LanguageImpl}
+ *
  * @author Brian Wing Shun Chan
  */
 @DoPrivileged
 public class UnicodeLanguageImpl implements UnicodeLanguage {
 
 	/**
-	 * @see {@link LanguageImpl.format(HttpServletRequest, String, LanguageWrapper)}
+	 * @see {@link LanguageImpl.format(HttpServletRequest, String,
+	 *      LanguageWrapper)}
 	 */
 	@Override
 	public String format(
@@ -46,7 +47,8 @@ public class UnicodeLanguageImpl implements UnicodeLanguage {
 	}
 
 	/**
-	 * @see {@link LanguageImpl.format(HttpServletRequest, String, LanguageWrapper, boolean)}
+	 * @see {@link LanguageImpl.format(HttpServletRequest, String,
+	 *      LanguageWrapper, boolean)}
 	 */
 	@Override
 	public String format(
@@ -59,7 +61,8 @@ public class UnicodeLanguageImpl implements UnicodeLanguage {
 	}
 
 	/**
-	 * @see {@link LanguageImpl.format(HttpServletRequest, String, LanguageWrapper[])}
+	 * @see {@link LanguageImpl.format(HttpServletRequest, String,
+	 *      LanguageWrapper[])}
 	 */
 	@Override
 	public String format(
@@ -71,7 +74,8 @@ public class UnicodeLanguageImpl implements UnicodeLanguage {
 	}
 
 	/**
-	 * @see {@link LanguageImpl.format(HttpServletRequest, String, LanguageWrapper[], boolean)}
+	 * @see {@link LanguageImpl.format(HttpServletRequest, String,
+	 *      LanguageWrapper[], boolean)}
 	 */
 	@Override
 	public String format(
@@ -95,7 +99,8 @@ public class UnicodeLanguageImpl implements UnicodeLanguage {
 	}
 
 	/**
-	 * @see {@link LanguageImpl.format(HttpServletRequest, String, Object, boolean)}
+	 * @see {@link LanguageImpl.format(HttpServletRequest, String, Object,
+	 *      boolean)}
 	 */
 	@Override
 	public String format(
@@ -119,7 +124,8 @@ public class UnicodeLanguageImpl implements UnicodeLanguage {
 	}
 
 	/**
-	 * @see {@link LanguageImpl.format(HttpServletRequest, String, Object[], boolean)}
+	 * @see {@link LanguageImpl.format(HttpServletRequest, String, Object[],
+	 *      boolean)}
 	 */
 	@Override
 	public String format(
@@ -210,7 +216,8 @@ public class UnicodeLanguageImpl implements UnicodeLanguage {
 	}
 
 	/**
-	 * @see {@link LanguageImpl.format(ResourceBundle, String, Object[], boolean)}
+	 * @see {@link LanguageImpl.format(ResourceBundle, String, Object[],
+	 *      boolean)}
 	 */
 	@Override
 	public String format(

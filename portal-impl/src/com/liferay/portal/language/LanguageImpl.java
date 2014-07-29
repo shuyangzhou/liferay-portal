@@ -77,21 +77,21 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Various translation related functionality. Features not documented in every
  * single method include: You can disable translation in total by configuring
- * <code>translations.disabled=true</code> in portal.properties.
- * 
- * If a translation for a given key does not exist, these methods typically 
+ * <code>translations.disabled=<code>true</code></code> in portal.properties.
+ *
+ * If a translation for a given key does not exist, these methods typically
  * return the requested key as the translation.
- * 
- * Parameter substitution follows the standard Java Resourcebundle notion of 
+ *
+ * Parameter substitution follows the standard Java Resourcebundle notion of
  * index based substitution - e.g. substitutable characters have to be named as
  * {0}, {1} etc., in any order or cardinality.
- * 
+ *
  * Depending on the context passed into these functions, the lookup might be
  * limited to the portal's resource bundle (e.g. when only a locale is passed),
  * or extended to include an individual portlet's resource bundle (e.g. when a
- * request object is passed) - a portlet's resource bundle will override the 
- * portal's resources in that case. 
-
+ * request object is passed) - a portlet's resource bundle will override the
+ * portal's resources in that case.
+ *
  * @author Brian Wing Shun Chan
  * @author Andrius Vitkauskas
  * @author Eduardo Lundgren
@@ -100,17 +100,17 @@ import javax.servlet.http.HttpServletResponse;
 public class LanguageImpl implements Language, Serializable {
 
 	/**
-	 * Translate a given key (pattern), using the current request's locale
-	 * or - if current request locale is not available - the server's default
-	 * locale. Substitute placeholders <code>{0}</code> with argument.
-	 * 
-	 * @param request is used to determine the current locale
-	 * @param pattern key to look up in the current locale's resource file. 
-	 *        Follows standard Java resource spec
-	 * @param argument single argument to be substituted in pattern. Will be 
-	 *        translated if possible
-	 * @return translated pattern, with argument substituted for placeholder
-	 *         in pattern.
+	 * Translate a given key (pattern), using the current request's locale or -
+	 * if current request locale is not available - the server's default locale.
+	 * Substitute placeholders <code>{0}</code> with argument.
+	 *
+	 * @param  request is used to determine the current locale
+	 * @param  pattern key to look up in the current locale's resource file.
+	 *         Follows standard Java resource spec
+	 * @param  argument single argument to be substituted in pattern. Will be
+	 *         translated if possible
+	 * @return translated pattern, with argument substituted for placeholder in
+	 *         pattern.
 	 */
 	@Override
 	public String format(
@@ -120,18 +120,18 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * Translate a given key (pattern), using the current request's locale
-	 * or - if current request locale is not available - the server's default
-	 * locale. Substitute placeholders <code>{0}</code> with argument.
-	 * 
-	 * @param request is used to determine the current locale
-	 * @param pattern key to look up in the current locale's resource file. 
-	 *        Follows standard Java resource spec
-	 * @param argument single argument to be substituted in pattern. 
-	 * @param translateArguments determine if arguments should be substituted 
-	 *        as is (false) or translated (true)
-	 * @return translated pattern, with argument substituted for placeholder
-	 *         in pattern.
+	 * Translate a given key (pattern), using the current request's locale or -
+	 * if current request locale is not available - the server's default locale.
+	 * Substitute placeholders <code>{0}</code> with argument.
+	 *
+	 * @param  request is used to determine the current locale
+	 * @param  pattern key to look up in the current locale's resource file.
+	 *         Follows standard Java resource spec
+	 * @param  argument single argument to be substituted in pattern.
+	 * @param  translateArguments determine if arguments should be substituted
+	 *         as is (<code>false</code>) or translated (<code>true</code>)
+	 * @return translated pattern, with argument substituted for placeholder in
+	 *         pattern.
 	 */
 	@Override
 	public String format(
@@ -144,17 +144,17 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * Translate a given key (pattern), using the current request's locale
-	 * or - if current request locale is not available - the server's default
-	 * locale. Substitute placeholders like <code>{0}</code> with arguments.
-	 * 
-	 * @param request is used to determine the current locale
-	 * @param pattern key to look up in the current locale's resource file. 
-	 *        Follows standard Java resource spec
-	 * @param arguments arguments to be substituted in pattern. Will be 
-	 *        translated if possible
-	 * @return translated pattern, with argument substituted for placeholder
-	 *         in pattern.
+	 * Translate a given key (pattern), using the current request's locale or -
+	 * if current request locale is not available - the server's default locale.
+	 * Substitute placeholders like <code>{0}</code> with arguments.
+	 *
+	 * @param  request is used to determine the current locale
+	 * @param  pattern key to look up in the current locale's resource file.
+	 *         Follows standard Java resource spec
+	 * @param  arguments arguments to be substituted in pattern. Will be
+	 *         translated if possible
+	 * @return translated pattern, with argument substituted for placeholder in
+	 *         pattern.
 	 */
 	@Override
 	public String format(
@@ -165,16 +165,16 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * Translate a given key (pattern), using the current request's locale
-	 * or - if current request locale is not available - the server's default
-	 * locale. Substitute placeholders like <code>{0}</code> with arguments.
-	 * 
-	 * @param request is used to determine the current locale
-	 * @param pattern key to look up in the current locale's resource file. 
-	 *        Follows standard Java resource spec
-	 * @param arguments the arguments to be substituted in pattern. 
-	 * @param translateArguments determine if arguments should be substituted 
-	 *        as is (false) or translated (true)
+	 * Translate a given key (pattern), using the current request's locale or -
+	 * if current request locale is not available - the server's default locale.
+	 * Substitute placeholders like <code>{0}</code> with arguments.
+	 *
+	 * @param  request is used to determine the current locale
+	 * @param  pattern key to look up in the current locale's resource file.
+	 *         Follows standard Java resource spec
+	 * @param  arguments the arguments to be substituted in pattern.
+	 * @param  translateArguments determine if arguments should be substituted
+	 *         as is (<code>false</code>) or translated (<code>true</code>)
 	 * @return translated pattern, with arguments substituted for placeholders
 	 *         in pattern.
 	 */
@@ -228,17 +228,17 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * Translate a given key (pattern), using the current request's locale
-	 * or - if current request locale is not available - the server's default
-	 * locale. Substitute placeholders <code>{0}</code> with argument.
-	 * 
-	 * @param request is used to determine the current locale
-	 * @param pattern key to look up in the current locale's resource file. 
-	 *        Follows standard Java resource spec
-	 * @param argument single argument to be substituted in pattern. Will be 
-	 *        translated if possible
-	 * @return translated pattern, with argument substituted for placeholder
-	 *         in pattern.
+	 * Translate a given key (pattern), using the current request's locale or -
+	 * if current request locale is not available - the server's default locale.
+	 * Substitute placeholders <code>{0}</code> with argument.
+	 *
+	 * @param  request is used to determine the current locale
+	 * @param  pattern key to look up in the current locale's resource file.
+	 *         Follows standard Java resource spec
+	 * @param  argument single argument to be substituted in pattern. Will be
+	 *         translated if possible
+	 * @return translated pattern, with argument substituted for placeholder in
+	 *         pattern.
 	 */
 	@Override
 	public String format(
@@ -248,18 +248,18 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * Translate a given key (pattern), using the current request's locale
-	 * or - if current request locale is not available - the server's default
-	 * locale. Substitute placeholders <code>{0}</code> with argument.
-	 * 
-	 * @param request is used to determine the current locale
-	 * @param pattern key to look up in the current locale's resource file. 
-	 *        Follows standard Java resource spec
-	 * @param argument single argument to be substituted in pattern. 
-	 * @param translateArguments determine if arguments should be substituted 
-	 *        as is (false) or translated (true)
-	 * @return translated pattern, with argument substituted for placeholder
-	 *         in pattern.
+	 * Translate a given key (pattern), using the current request's locale or -
+	 * if current request locale is not available - the server's default locale.
+	 * Substitute placeholders <code>{0}</code> with argument.
+	 *
+	 * @param  request is used to determine the current locale
+	 * @param  pattern key to look up in the current locale's resource file.
+	 *         Follows standard Java resource spec
+	 * @param  argument single argument to be substituted in pattern.
+	 * @param  translateArguments determine if arguments should be substituted
+	 *         as is (<code>false</code>) or translated (<code>true</code>)
+	 * @return translated pattern, with argument substituted for placeholder in
+	 *         pattern.
 	 */
 	@Override
 	public String format(
@@ -271,17 +271,17 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * Translate a given key (pattern), using the current request's locale
-	 * or - if current request locale is not available - the server's default
-	 * locale. Substitute placeholders like <code>{0}</code> with arguments.
-	 * 
-	 * @param request is used to determine the current locale
-	 * @param pattern key to look up in the current locale's resource file. 
-	 *        Follows standard Java resource spec
-	 * @param arguments arguments to be substituted in pattern. Will be 
-	 *        translated if possible
-	 * @return translated pattern, with argument substituted for placeholder
-	 *         in pattern.
+	 * Translate a given key (pattern), using the current request's locale or -
+	 * if current request locale is not available - the server's default locale.
+	 * Substitute placeholders like <code>{0}</code> with arguments.
+	 *
+	 * @param  request is used to determine the current locale
+	 * @param  pattern key to look up in the current locale's resource file.
+	 *         Follows standard Java resource spec
+	 * @param  arguments arguments to be substituted in pattern. Will be
+	 *         translated if possible
+	 * @return translated pattern, with argument substituted for placeholder in
+	 *         pattern.
 	 */
 	@Override
 	public String format(
@@ -291,16 +291,17 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * Translate a given key (pattern), using the current request's locale
-	 * or - if current request locale is not available - the server's default
-	 * locale. Substitute placeholders like <code>{0}</code> with arguments.
-	 * 
-	 * @param request is used to determine the current locale
-	 * @param pattern key to look up in the current locale's resource file. 
-	 *        Follows standard Java resource spec
-	 * @param arguments arguments to be substituted in pattern. 
-	 * @param translateArguments determine if all arguments should be 
-	 *        substituted as-is (false) or translated (true)
+	 * Translate a given key (pattern), using the current request's locale or -
+	 * if current request locale is not available - the server's default locale.
+	 * Substitute placeholders like <code>{0}</code> with arguments.
+	 *
+	 * @param  request is used to determine the current locale
+	 * @param  pattern key to look up in the current locale's resource file.
+	 *         Follows standard Java resource spec
+	 * @param  arguments arguments to be substituted in pattern.
+	 * @param  translateArguments determine if all arguments should be
+	 *         substituted as-is (<code>false</code>) or translated
+	 *         (<code>true</code>)
 	 * @return translated pattern, with arguments substituted for placeholders
 	 *         in pattern.
 	 */
@@ -349,15 +350,15 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * Translate a given key (pattern) to the given locale. Uses the server default
-	 * locale if requested one is not available. Substitute placeholders like 
-	 * <code>{0}</code> with arguments.
-	 * 
-	 * @param locale language/locale to translate to
-	 * @param pattern key to look up in the current locale's resource file. 
-	 *        Follows standard Java resource spec
-	 * @param arguments arguments to be substituted in pattern. Will be 
-	 *        translated if possible
+	 * Translate a given key (pattern) to the given locale. Uses the server
+	 * default locale if requested one is not available. Substitute placeholders
+	 * like <code>{0}</code> with arguments.
+	 *
+	 * @param  locale language/locale to translate to
+	 * @param  pattern key to look up in the current locale's resource file.
+	 *         Follows standard Java resource spec
+	 * @param  arguments arguments to be substituted in pattern. Will be
+	 *         translated if possible
 	 * @return translated pattern, with arguments substituted for placeholders
 	 *         in pattern.
 	 */
@@ -369,17 +370,17 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * Translate a given key (pattern) to the given locale. Uses the server default
-	 * locale if requested one is not available. Substitute placeholders 
+	 * Translate a given key (pattern) to the given locale. Uses the server
+	 * default locale if requested one is not available. Substitute placeholders
 	 * <code>{0}</code> with argument.
-	 * 
-	 * @param locale language/locale to translate to
-	 * @param pattern key to look up in the current locale's resource file. 
-	 *        Follows standard Java resource spec
-	 * @param argument argument to be substituted in pattern. Will be 
-	 *        translated if possible
-	 * @return translated pattern, with argument substituted for placeholders
-	 *         in pattern.
+	 *
+	 * @param  locale language/locale to translate to
+	 * @param  pattern key to look up in the current locale's resource file.
+	 *         Follows standard Java resource spec
+	 * @param  argument argument to be substituted in pattern. Will be
+	 *         translated if possible
+	 * @return translated pattern, with argument substituted for placeholders in
+	 *         pattern.
 	 */
 	@Override
 	public String format(Locale locale, String pattern, Object argument) {
@@ -536,8 +537,9 @@ public class LanguageImpl implements Language, Serializable {
 	/**
 	 * Retrieve the translation for the given key from portlet configuration
 	 * (determined by request) or - if not set - from portal's resource bundle
-	 * @param request determining the context and requested locale
-	 * @param key translation key
+	 *
+	 * @param  request determining the context and requested locale
+	 * @param  key translation key
 	 * @return translation - if exists - or key otherwise.
 	 */
 	@Override
@@ -548,10 +550,10 @@ public class LanguageImpl implements Language, Serializable {
 	/**
 	 * Retrieve the translation for the given key from portlet configuration
 	 * (determined by request) or - if not set - from portal's resource bundle
-	 * 
-	 * @param request determining the context and requested locale
-	 * @param key translation key
-	 * @param defaultValue default in case there's no matching translatoin
+	 *
+	 * @param  request determining the context and requested locale
+	 * @param  key translation key
+	 * @param  defaultValue default in case there's no matching translatoin
 	 * @return translation - if exists - or defaultValue otherwise.
 	 */
 	@Override
@@ -581,8 +583,8 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * @see {@link #get(HttpServletRequest, String)},
-	 * this method only looks up portal resources, no portlet resources.
+	 * @see {@link #get(HttpServletRequest, String)}, this method only looks up
+	 *      portal resources, no portlet resources.
 	 */
 	@Override
 	public String get(Locale locale, String key) {
@@ -590,8 +592,8 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * @see {@link #get(HttpServletRequest, String, String)},
- 	 * this method only looks up portal resources, no portlet resources.
+	 * @see {@link #get(HttpServletRequest, String, String)}, this method only
+	 *      looks up portal resources, no portlet resources.
 	 */
 	@Override
 	public String get(Locale locale, String key, String defaultValue) {
@@ -651,8 +653,8 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * retrieves the locales configured for the portal. Configuration is done
-	 * in portal.properties with keys "locales" and "locales.enabled"
+	 * retrieves the locales configured for the portal. Configuration is done in
+	 * portal.properties with keys "locales" and "locales.enabled"
 	 */
 	@Override
 	public Locale[] getAvailableLocales() {
@@ -710,10 +712,10 @@ public class LanguageImpl implements Language, Serializable {
 
 	/**
 	 * retrieve the languageId that the given request should be served with.
-	 * LanguageId might be just a language or a specific variant, e.g. "en" 
-	 * or "en_GB"
-	 * 
-	 * @param request
+	 * LanguageId might be just a language or a specific variant, e.g. "en" or
+	 * "en_GB"
+	 *
+	 * @param  request
 	 * @return
 	 */
 	@Override
@@ -734,11 +736,10 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * retrieve the languageId of the given Locale
-	 * LanguageId might be just a language or a specific variant, e.g. "en" 
-	 * or "en_GB"
-	 * 
-	 * @param locale
+	 * retrieve the languageId of the given Locale LanguageId might be just a
+	 * language or a specific variant, e.g. "en" or "en_GB"
+	 *
+	 * @param  locale
 	 * @return
 	 */
 	@Override
@@ -747,12 +748,9 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * retrieve the languageId that the given PortletRequest should be served with.
-	 * LanguageId might be just a language or a specific variant, e.g. "en" 
-	 * or "en_GB"
-	 * 
-	 * @param locale
-	 * @return
+	 * retrieve the languageId that the given PortletRequest should be served
+	 * with. LanguageId might be just a language or a specific variant, e.g.
+	 * "en" or "en_GB"
 	 */
 	@Override
 	public String getLanguageId(PortletRequest portletRequest) {
@@ -764,7 +762,8 @@ public class LanguageImpl implements Language, Serializable {
 
 	/**
 	 * retrieve the Locale for the given languageCode (e.g. "en" or "en_GB")
-	 * @param languageCode
+	 *
+	 * @param  languageCode
 	 * @return
 	 */
 	@Override
@@ -773,9 +772,9 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * retrieve the supported locales. These are defined as the available locales
-	 * (configured in portal.properties as "locales") without the ones configured
-	 * as beta resources ("locales.beta" in portal.properties)
+	 * retrieve the supported locales. These are defined as the available
+	 * locales (configured in portal.properties as "locales") without the ones
+	 * configured as beta resources ("locales.beta" in portal.properties)
 	 */
 	@Override
 	public Locale[] getSupportedLocales() {
@@ -844,14 +843,15 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * Retrieve a localized description of the given timespan in the largest unit
-	 * possible - e.g. 1000ms will be localized to english as "1 second", while 1001ms 
-	 * will be "1001 milliseconds". Similarly 86400000ms will result in "1 day", while
-	 * 86401000ms will be "86401 seconds". Follows english grammar rules for plural. 
-	 * 
-	 * @param locale determines the requested language
-	 * @param milliseconds the timespan to describe
-	 * @return exact description of the timespan as explained 
+	 * Retrieve a localized description of the given timespan in the largest
+	 * unit possible - e.g. 1000ms will be localized to english as "1 second",
+	 * while 1001ms will be "1001 milliseconds". Similarly 86400000ms will
+	 * result in "1 day", while 86401000ms will be "86401 seconds". Follows
+	 * english grammar rules for plural.
+	 *
+	 * @param  locale determines the requested language
+	 * @param  milliseconds the timespan to describe
+	 * @return exact description of the timespan as explained
 	 */
 	@Override
 	public String getTimeDescription(Locale locale, long milliseconds) {
@@ -860,19 +860,25 @@ public class LanguageImpl implements Language, Serializable {
 
 	/**
 	 * <p>
-	 * Retrieve a localized description. For accurate output (e.g. 
-	 * approximate==false), @see {@link #getTimeDescription(HttpServletRequest, long)}.
-	 * </p><p>
+	 * Retrieve a localized description. For accurate output (e.g.
+	 * approximate==<code>false</code>), @see {@link
+	 * #getTimeDescription(HttpServletRequest, long)}.
+	 * </p>
+	 *
+	 * <p>
 	 * Approximate description rounds the time to the largest possible unit and
-	 * ignores the rest, e.g. 1000-1999ms will be returned as "1 second", 
+	 * ignores the rest, e.g. 1000-1999ms will be returned as "1 second",
 	 * 86400000-172799999ms as "1 day".
 	 * </p>
+	 *
 	 * <p>
 	 * follows english grammar rules for plural
 	 * </p>
-	 * @param locale determines the requested language
-	 * @param milliseconds time span to be described
-	 * @param approximate determines exact or approximate description
+	 *
+	 * @param  locale determines the requested language
+	 * @param  milliseconds time span to be described
+	 * @param  approximate determines exact or approximate description
+	 * @return
 	 */
 	@Override
 	public String getTimeDescription(
@@ -916,11 +922,11 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * determines if given language code (e.g. "en", "en_GB") is configured
-	 * to be available. @see {@link #getAvailableLocales()} for configuration
+	 * determines if given language code (e.g. "en", "en_GB") is configured to
+	 * be available. @see {@link #getAvailableLocales()} for configuration
 	 * options.
-	 * 
-	 * @param languageCode
+	 *
+	 * @param  languageCode
 	 * @return
 	 */
 	@Override
@@ -929,11 +935,11 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * determines if given locale is configured to be available. 
-	 * @see {@link #getAvailableLocales()} for configuration options.
-	 * 
-	 * @param locale
+	 * determines if given locale is configured to be available.
+	 *
+	 * @param  locale
 	 * @return
+	 * @see    {@link #getAvailableLocales()} for configuration options.
 	 */
 	@Override
 	public boolean isAvailableLocale(Locale locale) {
@@ -941,7 +947,8 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * determines if given locale is configured to be available in the given group 
+	 * determines if given locale is configured to be available in the given
+	 * group
 	 */
 	@Override
 	public boolean isAvailableLocale(long groupId, Locale locale) {
@@ -971,7 +978,8 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * determines if given language code is configured to be available in the given group 
+	 * determines if given language code is configured to be available in the
+	 * given group
 	 */
 	@Override
 	public boolean isAvailableLocale(long groupId, String languageId) {
@@ -1004,7 +1012,8 @@ public class LanguageImpl implements Language, Serializable {
 
 	/**
 	 * determines if given locale is configured to be among the beta languages
-	 * @see {@link #getSupportedLocales()} 
+	 *
+	 * @see {@link #getSupportedLocales()}
 	 */
 	@Override
 	public boolean isBetaLocale(Locale locale) {
