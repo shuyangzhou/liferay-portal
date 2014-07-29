@@ -30,7 +30,7 @@ public class ThreadDumper implements Runnable {
 
 	@Override
 	public void run() {
-		ThreadUtil.writeThreadDump();
+		ThreadUtil.writeThreadDump(false);
 
 		_executed = true;
 	}
