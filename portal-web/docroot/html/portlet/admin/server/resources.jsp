@@ -151,6 +151,16 @@ long usedMemory = totalMemory - runtime.freeMemory();
 				<aui:button cssClass="save-server-button" data-cmd="threadDumpLocal" value="execute" />
 			</td>
 		</tr>
+		<c:if test="<%= ClusterExecutorUtil.isEnabled() %>">
+			<tr>
+				<td>
+					<liferay-ui:message key="generate-cluster-wide-thread-dump" />
+				</td>
+				<td>
+					<aui:button cssClass="save-server-button" data-cmd="threadDumpClusterWide" value="execute" />
+				</td>
+			</tr>
+		</c:if>
 		<tr>
 			<td>
 				<liferay-ui:message key="verify-database-tables-of-all-plugins" />

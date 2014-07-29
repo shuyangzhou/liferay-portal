@@ -208,6 +208,8 @@ public class EditServerAction extends PortletAction {
 		else if (cmd.equals("shutdown")) {
 			shutdown(actionRequest);
 		}
+		else if (cmd.equals("threadDumpClusterWide")) {
+		}
 		else if (cmd.equals("threadDumpLocal")) {
 			threadDump();
 		}
