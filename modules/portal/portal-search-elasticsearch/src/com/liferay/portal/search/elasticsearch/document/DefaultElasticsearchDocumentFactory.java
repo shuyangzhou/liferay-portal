@@ -79,9 +79,15 @@ public class DefaultElasticsearchDocumentFactory
 				return;
 			}
 
-			doAddField(
-				xContentBuilder, field, name,
-				valuesList.toArray(new String[valuesList.size()]));
+			values = valuesList.toArray(new String[valuesList.size()]);
+
+			addField(xContentBuilder, field, name, values);
+
+			if (field.isSortable()) {
+				String sortFieldName = DocumentImpl.getSortableFieldName(name);
+
+				addField(xContentBuilder, field, sortFieldName, values);
+			}
 		}
 		else {
 			Map<Locale, String> localizedValues = field.getLocalizedValues();
@@ -100,15 +106,44 @@ public class DefaultElasticsearchDocumentFactory
 				String defaultLanguageId = LocaleUtil.toLanguageId(
 					LocaleUtil.getDefault());
 
+				value = value.trim();
+
 				if (languageId.equals(defaultLanguageId)) {
-					doAddField(xContentBuilder, field, name, value.trim());
+					addField(xContentBuilder, field, name, value);
 				}
 
 				String localizedName = DocumentImpl.getLocalizedName(
 					languageId, name);
 
-				doAddField(xContentBuilder, field, localizedName, value.trim());
+				addField(xContentBuilder, field, localizedName, value);
+
+				if (field.isSortable()) {
+					String sortableFieldName =
+						DocumentImpl.getSortableFieldName(localizedName);
+
+					addField(xContentBuilder, field, sortableFieldName, value);
+				}
 			}
+		}
+	}
+
+	protected void addField(
+			XContentBuilder xContentBuilder, Field field, String fieldName,
+			String... values)
+		throws IOException {
+
+		xContentBuilder.field(fieldName);
+
+		if (field.isArray() || (values.length > 1)) {
+			xContentBuilder.startArray();
+		}
+
+		for (String value : values) {
+			xContentBuilder.value(translateValue(field, value));
+		}
+
+		if (field.isArray() || (values.length > 1)) {
+			xContentBuilder.endArray();
 		}
 	}
 
@@ -148,26 +183,6 @@ public class DefaultElasticsearchDocumentFactory
 		}
 		else {
 			xContentBuilder.endObject();
-		}
-	}
-
-	protected void doAddField(
-			XContentBuilder xContentBuilder, Field field, String fieldName,
-			String... values)
-		throws IOException {
-
-		xContentBuilder.field(fieldName);
-
-		if (field.isArray() || (values.length > 1)) {
-			xContentBuilder.startArray();
-		}
-
-		for (String value : values) {
-			xContentBuilder.value(translateValue(field, value));
-		}
-
-		if (field.isArray() || (values.length > 1)) {
-			xContentBuilder.endArray();
 		}
 	}
 

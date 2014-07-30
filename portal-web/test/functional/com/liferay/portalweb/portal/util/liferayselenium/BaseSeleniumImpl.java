@@ -609,6 +609,10 @@ public abstract class BaseSeleniumImpl
 	}
 
 	@Override
+	public void setWindowSize(String coordString) {
+	}
+
+	@Override
 	public void sikuliAssertElementNotPresent(String image) throws Exception {
 		LiferaySeleniumHelper.sikuliAssertElementNotPresent(this, image);
 	}
@@ -707,6 +711,11 @@ public abstract class BaseSeleniumImpl
 	@Override
 	public void typeKeys(String locator, String value, boolean typeAceEditor) {
 		sendKeys(locator, value);
+	}
+
+	@Override
+	public void typeScreen(String value) {
+		LiferaySeleniumHelper.typeScreen(value);
 	}
 
 	@Override

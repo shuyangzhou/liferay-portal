@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.cache.cluster;
 
+import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
@@ -29,16 +30,42 @@ public class PortalCacheClusterEvent implements Serializable {
 		String cacheName, Serializable elementKey,
 		PortalCacheClusterEventType portalCacheClusterEventType) {
 
-		this(cacheName, elementKey, null, portalCacheClusterEventType);
+		this(
+			cacheName, elementKey, null, PortalCache.DEFAULT_TIME_TO_LIVE,
+			portalCacheClusterEventType);
 	}
 
 	public PortalCacheClusterEvent(
 		String cacheName, Serializable elementKey, Serializable elementValue,
+		int timeToLive,
 		PortalCacheClusterEventType portalCacheClusterEventType) {
+
+		if (cacheName == null) {
+			throw new NullPointerException("Cache name is null");
+		}
+
+		if (portalCacheClusterEventType == null) {
+			throw new NullPointerException(
+				"Portal cache cluster event type is null");
+		}
+
+		if ((elementKey == null) &&
+			!portalCacheClusterEventType.equals(
+				PortalCacheClusterEventType.REMOVE_ALL)) {
+
+			throw new NullPointerException("Element key is null");
+		}
+
+		if ((timeToLive != PortalCache.DEFAULT_TIME_TO_LIVE) &&
+			(timeToLive < 0)) {
+
+			throw new IllegalArgumentException("Time to live is negative");
+		}
 
 		_cacheName = cacheName;
 		_elementKey = elementKey;
 		_elementValue = elementValue;
+		_timeToLive = timeToLive;
 		_portalCacheClusterEventType = portalCacheClusterEventType;
 	}
 
@@ -86,6 +113,10 @@ public class PortalCacheClusterEvent implements Serializable {
 		return _portalCacheClusterEventType;
 	}
 
+	public int getTimeToLive() {
+		return _timeToLive;
+	}
+
 	@Override
 	public int hashCode() {
 		return toString().hashCode();
@@ -93,6 +124,16 @@ public class PortalCacheClusterEvent implements Serializable {
 
 	public void setElementValue(Serializable elementValue) {
 		_elementValue = elementValue;
+	}
+
+	public void setTimeToLive(int timeToLive) {
+		if ((timeToLive != PortalCache.DEFAULT_TIME_TO_LIVE) &&
+			(timeToLive < 0)) {
+
+			throw new IllegalArgumentException("Time to live is negative");
+		}
+
+		_timeToLive = timeToLive;
 	}
 
 	@Override
@@ -118,5 +159,6 @@ public class PortalCacheClusterEvent implements Serializable {
 	private Serializable _elementKey;
 	private Serializable _elementValue;
 	private PortalCacheClusterEventType _portalCacheClusterEventType;
+	private int _timeToLive;
 
 }

@@ -223,6 +223,8 @@ public interface LiferaySelenium extends Selenium {
 
 	public void setTimeoutImplicit(String timeout);
 
+	public void setWindowSize(String coordString);
+
 	public void sikuliAssertElementNotPresent(String image) throws Exception;
 
 	public void sikuliAssertElementPresent(String image) throws Exception;
@@ -262,6 +264,8 @@ public interface LiferaySelenium extends Selenium {
 	public void typeFrame(String locator, String value);
 
 	public void typeKeys(String locator, String value, boolean typeAceEditor);
+
+	public void typeScreen(String value);
 
 	public void uploadCommonFile(String locator, String value);
 

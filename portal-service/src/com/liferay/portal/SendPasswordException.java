@@ -23,26 +23,6 @@ import com.liferay.portal.model.Company;
  */
 public class SendPasswordException extends PortalException {
 
-	public static class MustBeEnabled extends SendPasswordException {
-
-		public MustBeEnabled(Company company) {
-			super(
-				String.format(
-					"The Forgot Password notification must be enabled for " +
-						"company %s",
-				company));
-
-			_company = company;
-		}
-
-		public Company getCompany() {
-			return _company;
-		}
-
-		private Company _company;
-
-	}
-
 	/**
 	 * @deprecated As of 7.0.0, replaced by the inner classes
 	 */
@@ -62,6 +42,26 @@ public class SendPasswordException extends PortalException {
 	 */
 	public SendPasswordException(Throwable cause) {
 		super(cause);
+	}
+
+	public static class MustBeEnabled extends SendPasswordException {
+
+		public MustBeEnabled(Company company) {
+			super(
+				String.format(
+					"The Forgot Password notification must be enabled for " +
+						"company %s",
+				company));
+
+			_company = company;
+		}
+
+		public Company getCompany() {
+			return _company;
+		}
+
+		private Company _company;
+
 	}
 
 	protected SendPasswordException(String msg) {
