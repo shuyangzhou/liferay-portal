@@ -67,6 +67,7 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.ThreadDumpType;
 import com.liferay.portal.kernel.util.ThreadUtil;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.UnsyncPrintWriterPool;
@@ -209,7 +210,7 @@ public class EditServerAction extends PortletAction {
 			shutdown(actionRequest);
 		}
 		else if (cmd.equals("threadDumpClusterWide")) {
-			ThreadUtil.writeThreadDump(true);
+			ThreadUtil.writeThreadDump(ThreadDumpType.CLUSTER_WIDE);
 
 			Address localClusterNodeAddress =
 				ClusterExecutorUtil.getLocalClusterNodeAddress();
@@ -219,7 +220,7 @@ public class EditServerAction extends PortletAction {
 				localClusterNodeAddress.getDescription());
 		}
 		else if (cmd.equals("threadDumpLocal")) {
-			ThreadUtil.writeThreadDump(false);
+			ThreadUtil.writeThreadDump(ThreadDumpType.LOCAL);
 		}
 		else if (cmd.equals("updateCaptcha")) {
 			updateCaptcha(actionRequest, portletPreferences);

@@ -96,8 +96,12 @@ public class ThreadUtil {
 		return "\n\n".concat(threadDump.getThreadDump());
 	}
 
-	public static void writeThreadDump(boolean clusterWide) {
-		if (clusterWide) {
+	public static void writeThreadDump(ThreadDumpType threadDumpType) {
+		if (threadDumpType == null) {
+			throw new IllegalArgumentException("threadDumpType cannot be null");
+		}
+
+		if (ThreadDumpType.CLUSTER_WIDE.equals(threadDumpType)) {
 			ClusterRequest clusterRequest =
 				ClusterRequest.createMulticastRequest(
 					new MethodHandler(_TAKE_THREAD_DUMP_METHOD_KEY), false);
@@ -122,7 +126,8 @@ public class ThreadUtil {
 		ThreadDump threadDump = takeThreadDump();
 
 		File threadDumpFile = _getThreadDumpFile(
-			threadDump.getTakenAt(), threadDump.getTargetHost(), false);
+			threadDumpType, threadDump.getTakenAt(),
+			threadDump.getTargetHost());
 
 		try {
 			FileUtil.write(threadDumpFile, threadDump.getThreadDump());
@@ -151,17 +156,18 @@ public class ThreadUtil {
 	}
 
 	private static File _getThreadDumpFile(
-		Date takenAt, String targetHost, boolean clusterWide) {
+		ThreadDumpType threadDumpType, Date takenAt, String targetHost) {
 
-		int size = 5;
+		int size = 6;
 
 		if (Validator.isNotNull(targetHost)) {
-			size = 7;
+			size = 8;
 		}
 
 		StringBundler sb = new StringBundler(size);
 
-		sb.append("threadDump");
+		sb.append(threadDumpType.getDescription());
+		sb.append("ThreadDump");
 
 		if (takenAt == null) {
 			takenAt = new Date();
@@ -179,7 +185,7 @@ public class ThreadUtil {
 
 		String extension = "txt";
 
-		if (clusterWide) {
+		if (ThreadDumpType.CLUSTER_WIDE.equals(threadDumpType)) {
 			extension = "zip";
 		}
 
@@ -417,7 +423,8 @@ public class ThreadUtil {
 
 		private boolean _addDump(Address clusterNodeAddress, Exception e) {
 			File threadDumpFile = _getThreadDumpFile(
-				new Date(), clusterNodeAddress.getDescription(), true);
+				ThreadDumpType.LOCAL, new Date(),
+				clusterNodeAddress.getDescription());
 
 			String stackTrace = StackTraceUtil.getStackTrace(e);
 
@@ -426,7 +433,8 @@ public class ThreadUtil {
 
 		private boolean _addDump(ThreadDump threadDump) {
 			File threadDumpFile = _getThreadDumpFile(
-				threadDump.getTakenAt(), threadDump.getTargetHost(), true);
+				ThreadDumpType.LOCAL, threadDump.getTakenAt(),
+				threadDump.getTargetHost());
 
 			return _addZipEntry(threadDumpFile, threadDump.getThreadDump());
 		}
@@ -452,7 +460,8 @@ public class ThreadUtil {
 			boolean success = false;
 
 			try {
-				File threadDumpsFile = _getThreadDumpFile(null, null, true);
+				File threadDumpsFile = _getThreadDumpFile(
+					ThreadDumpType.CLUSTER_WIDE, null, null);
 
 				success = FileUtil.move(_zipWriter.getFile(), threadDumpsFile);
 
