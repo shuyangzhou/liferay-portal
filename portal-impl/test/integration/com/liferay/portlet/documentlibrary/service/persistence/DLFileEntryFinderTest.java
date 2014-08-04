@@ -28,7 +28,6 @@ import com.liferay.portal.model.Repository;
 import com.liferay.portal.model.User;
 import com.liferay.portal.repository.liferayrepository.LiferayRepository;
 import com.liferay.portal.repository.liferayrepository.model.LiferayFileEntry;
-import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.RepositoryLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.spring.hibernate.LastSessionRecorderUtil;
@@ -56,9 +55,8 @@ import com.liferay.portlet.documentlibrary.util.test.DLAppTestUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -74,8 +72,8 @@ import org.junit.runner.RunWith;
 @Sync
 public class DLFileEntryFinderTest {
 
-	@Before
-	public void setUp() throws Exception {
+	@BeforeClass
+	public static void setUpClass() throws Exception {
 		long classNameId = PortalUtil.getClassNameId(
 			LiferayRepository.class.getName());
 
@@ -102,11 +100,6 @@ public class DLFileEntryFinderTest {
 			_repository.getRepositoryId(), "-NewRepository", serviceContext);
 
 		_newRepositoryFolder = (Folder)objects[0];
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		GroupLocalServiceUtil.deleteGroup(_group);
 	}
 
 	@Test
@@ -1488,7 +1481,7 @@ public class DLFileEntryFinderTest {
 			queryDefinition);
 	}
 
-	protected Object[] setUp(
+	protected static Object[] setUp(
 			long repositoryId, String titleSuffix,
 			ServiceContext serviceContext)
 		throws Exception {
@@ -1563,10 +1556,10 @@ public class DLFileEntryFinderTest {
 
 	private static final long _SMALL_IMAGE_ID = 1234L;
 
-	private DLFileVersion _defaultRepositoryDLFileVersion;
-	private Folder _defaultRepositoryFolder;
-	private Group _group;
-	private Folder _newRepositoryFolder;
-	private Repository _repository;
+	private static DLFileVersion _defaultRepositoryDLFileVersion;
+	private static Folder _defaultRepositoryFolder;
+	private static Group _group;
+	private static Folder _newRepositoryFolder;
+	private static Repository _repository;
 
 }
