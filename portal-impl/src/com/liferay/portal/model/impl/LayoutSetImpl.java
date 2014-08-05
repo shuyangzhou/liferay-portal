@@ -15,26 +15,36 @@
 package com.liferay.portal.model.impl;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.DateUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.CacheField;
 import com.liferay.portal.model.ColorScheme;
 import com.liferay.portal.model.Group;
+import com.liferay.portal.model.Layout;
 import com.liferay.portal.model.LayoutSet;
 import com.liferay.portal.model.LayoutSetPrototype;
 import com.liferay.portal.model.Theme;
 import com.liferay.portal.model.VirtualHost;
 import com.liferay.portal.service.GroupLocalServiceUtil;
+import com.liferay.portal.service.LayoutLocalServiceUtil;
 import com.liferay.portal.service.LayoutSetPrototypeLocalServiceUtil;
 import com.liferay.portal.service.ThemeLocalServiceUtil;
 import com.liferay.portal.service.VirtualHostLocalServiceUtil;
 import com.liferay.portal.util.PrefsPropsUtil;
+import com.liferay.portlet.sites.util.Sites;
 
 import java.io.IOException;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Brian Wing Shun Chan
@@ -221,6 +231,72 @@ public class LayoutSetImpl extends LayoutSetBaseImpl {
 	@Override
 	public boolean isLogo() {
 		return getLogo();
+	}
+
+	@Override
+	public void setModifiedDate(Date modifiedDate) {
+		if ((modifiedDate == null) || isNew()) {
+			super.setModifiedDate(modifiedDate);
+
+			return;
+		}
+
+		List<Layout> layouts = LayoutLocalServiceUtil.getLayouts(
+			getGroupId(), isPrivateLayout());
+
+		LayoutSetPrototype layoutSetPrototype = null;
+
+		try {
+			long layoutSetPrototypeId = getLayoutSetPrototypeId();
+
+			if (layoutSetPrototypeId != 0) {
+				layoutSetPrototype =
+					LayoutSetPrototypeLocalServiceUtil.getLayoutSetPrototype(
+						getLayoutSetPrototypeId());
+			}
+		}
+		catch (Exception e) {
+			throw new SystemException(e);
+		}
+
+		long maxLastMergedTime = GetterUtil.getLong(
+			getSettingsProperty(Sites.LAST_MERGE_TIME));
+
+		modifiedDate = DateUtil.getDBSafeDate(modifiedDate);
+
+		UnicodeProperties typeSettingsProperties;
+
+		for (Layout layout : layouts) {
+			typeSettingsProperties = layout.getTypeSettingsProperties();
+
+			String layoutLastMergedTimeString = typeSettingsProperties.get(
+				Sites.LAST_MERGE_TIME);
+
+			if (layoutLastMergedTimeString != null) {
+				long layoutLastMergedTime = GetterUtil.getLong(
+					layoutLastMergedTimeString);
+
+				if (layoutLastMergedTime > maxLastMergedTime) {
+					maxLastMergedTime = layoutLastMergedTime;
+				}
+			}
+		}
+
+		if (layoutSetPrototype != null) {
+			Date parentModifiedDate = layoutSetPrototype.getModifiedDate();
+
+			long parentLastMergedTime = parentModifiedDate.getTime();
+
+			if (parentLastMergedTime > maxLastMergedTime) {
+				maxLastMergedTime = parentLastMergedTime;
+			}
+		}
+
+		if (maxLastMergedTime >= modifiedDate.getTime()) {
+			modifiedDate = new Date(maxLastMergedTime + Time.SECOND);
+		}
+
+		super.setModifiedDate(modifiedDate);
 	}
 
 	@Override
