@@ -79,34 +79,40 @@ public class DLFileEntryFinderTest {
 		long classNameId = PortalUtil.getClassNameId(
 			LiferayRepository.class.getName());
 
-		UnicodeProperties typeSettingsProperties = new UnicodeProperties();
+		if (!_readOnly) {
+			UnicodeProperties typeSettingsProperties = new UnicodeProperties();
 
-		_group = GroupTestUtil.addGroup();
+			_group = GroupTestUtil.addGroup();
 
-		ServiceContext serviceContext =
-			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
+			ServiceContext serviceContext =
+				ServiceContextTestUtil.getServiceContext(_group.getGroupId());
 
-		_repository = RepositoryLocalServiceUtil.addRepository(
-			TestPropsValues.getUserId(), _group.getGroupId(), classNameId,
-			DLFolderConstants.DEFAULT_PARENT_FOLDER_ID, "Repository A",
-			StringPool.BLANK, "Test Portlet", typeSettingsProperties, true,
-			serviceContext);
+			_repository = RepositoryLocalServiceUtil.addRepository(
+				TestPropsValues.getUserId(), _group.getGroupId(), classNameId,
+				DLFolderConstants.DEFAULT_PARENT_FOLDER_ID, "Repository A",
+				StringPool.BLANK, "Test Portlet", typeSettingsProperties, true,
+				serviceContext);
 
-		Object[] objects = setUp(
-			_group.getGroupId(), StringPool.BLANK, serviceContext);
+			Object[] objects = setUp(
+				_group.getGroupId(), StringPool.BLANK, serviceContext);
 
-		_defaultRepositoryFolder = (Folder)objects[0];
-		_defaultRepositoryDLFileVersion = (DLFileVersion)objects[1];
+			_defaultRepositoryFolder = (Folder)objects[0];
+			_defaultRepositoryDLFileVersion = (DLFileVersion)objects[1];
 
-		objects = setUp(
-			_repository.getRepositoryId(), "-NewRepository", serviceContext);
+			objects = setUp(
+				_repository.getRepositoryId(), "-NewRepository", serviceContext);
 
-		_newRepositoryFolder = (Folder)objects[0];
+			_newRepositoryFolder = (Folder)objects[0];
+
+			_readOnly = true;
+		}
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		GroupLocalServiceUtil.deleteGroup(_group);
+		if (!_readOnly) {
+			GroupLocalServiceUtil.deleteGroup(_group);
+		}
 	}
 
 	@Test
@@ -1284,6 +1290,8 @@ public class DLFileEntryFinderTest {
 
 	@Test
 	public void testFindByNoAssets() throws Exception {
+		_readOnly = false;
+
 		AssetEntryLocalServiceUtil.deleteEntry(
 			DLFileEntry.class.getName(),
 			_defaultRepositoryDLFileVersion.getFileEntryId());
@@ -1563,10 +1571,11 @@ public class DLFileEntryFinderTest {
 
 	private static final long _SMALL_IMAGE_ID = 1234L;
 
-	private DLFileVersion _defaultRepositoryDLFileVersion;
-	private Folder _defaultRepositoryFolder;
-	private Group _group;
-	private Folder _newRepositoryFolder;
-	private Repository _repository;
+	private static DLFileVersion _defaultRepositoryDLFileVersion;
+	private static Folder _defaultRepositoryFolder;
+	private static Group _group;
+	private static Folder _newRepositoryFolder;
+	private static Boolean _readOnly = false;
+	private static Repository _repository;
 
 }
