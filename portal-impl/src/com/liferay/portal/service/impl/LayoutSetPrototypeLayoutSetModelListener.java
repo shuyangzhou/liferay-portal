@@ -61,6 +61,18 @@ public class LayoutSetPrototypeLayoutSetModelListener
 				LayoutSetPrototypeLocalServiceUtil.getLayoutSetPrototype(
 					group.getClassPK());
 
+			// This call causes a flush to database, invalidating the first
+			// get of layoutSetPrototype
+
+			layoutSetPrototype.setModifiedDate(modifiedDate);
+
+			// In order to account for this, get it again
+
+			layoutSetPrototype =
+				LayoutSetPrototypeLocalServiceUtil.getLayoutSetPrototype(
+					group.getClassPK());
+
+			//and retry the date set
 			layoutSetPrototype.setModifiedDate(modifiedDate);
 
 			UnicodeProperties settingsProperties =

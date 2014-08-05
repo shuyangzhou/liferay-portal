@@ -1,0 +1,3 @@
+Bundle-Name: Liferay Portal WAB Generator
+Export-Package: com.liferay.portal.wab.generator
+Include-Resource: classes

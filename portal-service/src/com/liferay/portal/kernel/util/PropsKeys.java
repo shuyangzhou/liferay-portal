@@ -1803,17 +1803,17 @@ public interface PropsKeys {
 
 	public static final String MODULE_FRAMEWORK_SYSTEM_PACKAGES_EXTRA = "module.framework.system.packages.extra";
 
-	public static final String MODULE_FRAMEWORK_WEB_EXTENDER_DEFAULT_SERVLET_PACKAGES = "module.framework.web.extender.default.servlet.packages";
+	public static final String MODULE_FRAMEWORK_WEB_GENERATOR_DEFAULT_SERVLET_PACKAGES = "module.framework.web.generator.default.servlet.packages";
 
-	public static final String MODULE_FRAMEWORK_WEB_EXTENDER_EXCLUDED_PATHS = "module.framework.web.extender.excluded.paths";
+	public static final String MODULE_FRAMEWORK_WEB_GENERATOR_EXCLUDED_PATHS = "module.framework.web.generator.excluded.paths";
 
-	public static final String MODULE_FRAMEWORK_WEB_EXTENDER_GENERATED_WABS_STORE = "module.framework.web.extender.generated.wabs.store";
+	public static final String MODULE_FRAMEWORK_WEB_GENERATOR_GENERATED_WABS_STORE = "module.framework.web.generator.generated.wabs.store";
 
-	public static final String MODULE_FRAMEWORK_WEB_EXTENDER_GENERATED_WABS_STORE_DIR = "module.framework.web.extender.generated.wabs.store.dir";
+	public static final String MODULE_FRAMEWORK_WEB_GENERATOR_GENERATED_WABS_STORE_DIR = "module.framework.web.generator.generated.wabs.store.dir";
 
-	public static final String MODULE_FRAMEWORK_WEB_EXTENDER_HEADERS = "module.framework.web.extender.headers.";
+	public static final String MODULE_FRAMEWORK_WEB_GENERATOR_HEADERS = "module.framework.web.generator.headers.";
 
-	public static final String MODULE_FRAMEWORK_WEB_EXTENDER_JSP_COMPILER_DEPENDENCIES = "module.framework.web.extender.jsp.compiler.dependencies";
+	public static final String MODULE_FRAMEWORK_WEB_GENERATOR_JSP_COMPILER_DEPENDENCIES = "module.framework.web.generator.jsp.compiler.dependencies";
 
 	public static final String MONITORING_PORTAL_REQUEST = "monitoring.portal.request";
 

@@ -83,6 +83,8 @@ public class LayoutSetPrototypeCacheModel implements CacheModel<LayoutSetPrototy
 	public LayoutSetPrototype toEntityModel() {
 		LayoutSetPrototypeImpl layoutSetPrototypeImpl = new LayoutSetPrototypeImpl();
 
+		layoutSetPrototypeImpl.setNew(true);
+
 		layoutSetPrototypeImpl.setMvccVersion(mvccVersion);
 
 		if (uuid == null) {
@@ -141,6 +143,8 @@ public class LayoutSetPrototypeCacheModel implements CacheModel<LayoutSetPrototy
 		layoutSetPrototypeImpl.setActive(active);
 
 		layoutSetPrototypeImpl.resetOriginalValues();
+
+		layoutSetPrototypeImpl.setNew(false);
 
 		return layoutSetPrototypeImpl;
 	}
