@@ -15,15 +15,24 @@
 package com.liferay.portal.model.impl;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.DateUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.LayoutSet;
 import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.LayoutSetLocalServiceUtil;
+import com.liferay.portlet.sites.util.Sites;
 
 import java.io.IOException;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Brian Wing Shun Chan
@@ -74,6 +83,67 @@ public class LayoutSetPrototypeImpl extends LayoutSetPrototypeBaseImpl {
 		UnicodeProperties settingsProperties = getSettingsProperties();
 
 		return settingsProperties.getProperty(key);
+	}
+
+	@Override
+	public void setModifiedDate(Date modifiedDate) {
+		if ((modifiedDate == null) || isNew()) {
+			super.setModifiedDate(modifiedDate);
+
+			return;
+		}
+
+		Date currentModifiedDate = getModifiedDate();
+
+		if (currentModifiedDate != null) {
+			if (currentModifiedDate.before(modifiedDate) ) {
+				modifiedDate = DateUtil.getDBSafeDate(modifiedDate);
+			}
+			else {
+				modifiedDate = DateUtil.getDBSafeDate(currentModifiedDate);
+			}
+		}
+		else {
+			modifiedDate = DateUtil.getDBSafeDate(modifiedDate);
+		}
+
+		LayoutSet privateLayoutSet = null;
+
+		try {
+			privateLayoutSet = getLayoutSet();
+		}
+		catch (PortalException e) {
+			throw new SystemException(e);
+		}
+
+		List<LayoutSet> layoutSets = new ArrayList(
+			LayoutSetLocalServiceUtil.getLayoutSetsByLayoutSetPrototypeUuid(
+				getUuid()));
+
+		layoutSets.add(privateLayoutSet);
+
+		long maxLastMergedTime = 0;
+
+		for (LayoutSet layoutSet : layoutSets) {
+			String lastMergedTimeString = layoutSet.getSettingsProperty(
+				Sites.LAST_MERGE_TIME);
+
+			if (lastMergedTimeString == null) {
+				continue;
+			}
+
+			long lastMergedTime = GetterUtil.getLong(lastMergedTimeString);
+
+			if (lastMergedTime > maxLastMergedTime) {
+				maxLastMergedTime = lastMergedTime;
+			}
+		}
+
+		if (maxLastMergedTime >= modifiedDate.getTime()) {
+			modifiedDate = new Date(maxLastMergedTime + Time.SECOND);
+		}
+
+		super.setModifiedDate(modifiedDate);
 	}
 
 	@Override

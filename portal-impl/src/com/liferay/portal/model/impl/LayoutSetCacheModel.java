@@ -93,6 +93,8 @@ public class LayoutSetCacheModel implements CacheModel<LayoutSet>,
 	public LayoutSet toEntityModel() {
 		LayoutSetImpl layoutSetImpl = new LayoutSetImpl();
 
+		layoutSetImpl.setNew(true);
+
 		layoutSetImpl.setMvccVersion(mvccVersion);
 		layoutSetImpl.setLayoutSetId(layoutSetId);
 		layoutSetImpl.setGroupId(groupId);
@@ -171,6 +173,8 @@ public class LayoutSetCacheModel implements CacheModel<LayoutSet>,
 		layoutSetImpl.resetOriginalValues();
 
 		layoutSetImpl.setVirtualHostname(_virtualHostname);
+
+		layoutSetImpl.setNew(false);
 
 		return layoutSetImpl;
 	}
