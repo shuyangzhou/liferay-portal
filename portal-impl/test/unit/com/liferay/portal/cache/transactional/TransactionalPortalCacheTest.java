@@ -123,7 +123,8 @@ public class TransactionalPortalCacheTest {
 			Assert.fail();
 		}
 		catch (IllegalArgumentException iae) {
-			Assert.assertEquals("Time to live is negative", iae.getMessage());
+			Assert.assertEquals(
+				"Time to live is either 0 or negative", iae.getMessage());
 		}
 
 		_transactionalPortalCache.remove(_KEY_1);
@@ -174,7 +175,8 @@ public class TransactionalPortalCacheTest {
 			Assert.fail();
 		}
 		catch (IllegalArgumentException iae) {
-			Assert.assertEquals("Time to live is negative", iae.getMessage());
+			Assert.assertEquals(
+				"Time to live is either 0 or negative", iae.getMessage());
 		}
 	}
 
@@ -230,7 +232,8 @@ public class TransactionalPortalCacheTest {
 			Assert.fail();
 		}
 		catch (IllegalArgumentException iae) {
-			Assert.assertEquals("Time to live is negative", iae.getMessage());
+			Assert.assertEquals(
+				"Time to live is either 0 or negative", iae.getMessage());
 		}
 
 		// Remove with null key

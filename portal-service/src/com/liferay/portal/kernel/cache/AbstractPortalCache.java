@@ -57,7 +57,8 @@ public abstract class AbstractPortalCache<K extends Serializable, V>
 		}
 
 		if ((timeToLive != DEFAULT_TIME_TO_LIVE) && (timeToLive < 0)) {
-			throw new IllegalArgumentException("Time to live is negative");
+			throw new IllegalArgumentException(
+				"Time to live is either 0 or negative");
 		}
 
 		return doPutIfAbsent(key, value, timeToLive);
@@ -111,7 +112,8 @@ public abstract class AbstractPortalCache<K extends Serializable, V>
 		}
 
 		if ((timeToLive != DEFAULT_TIME_TO_LIVE) && (timeToLive < 0)) {
-			throw new IllegalArgumentException("Time to live is negative");
+			throw new IllegalArgumentException(
+				"Time to live is either 0 or negative");
 		}
 
 		return doReplace(key, value, timeToLive);
@@ -137,7 +139,8 @@ public abstract class AbstractPortalCache<K extends Serializable, V>
 		}
 
 		if ((timeToLive != DEFAULT_TIME_TO_LIVE) && (timeToLive < 0)) {
-			throw new IllegalArgumentException("Time to live is negative");
+			throw new IllegalArgumentException(
+				"Time to live is either 0 or negative");
 		}
 
 		return doReplace(key, oldValue, newValue, timeToLive);
@@ -169,7 +172,8 @@ public abstract class AbstractPortalCache<K extends Serializable, V>
 		}
 
 		if ((timeToLive != DEFAULT_TIME_TO_LIVE) && (timeToLive < 0)) {
-			throw new IllegalArgumentException("Time to live is negative");
+			throw new IllegalArgumentException(
+				"Time to live is either 0 or negative");
 		}
 
 		doPut(key, value, timeToLive, quiet);
