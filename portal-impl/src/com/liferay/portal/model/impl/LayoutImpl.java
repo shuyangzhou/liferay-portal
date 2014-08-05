@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.CookieKeys;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -29,6 +30,7 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ColorScheme;
@@ -56,10 +58,13 @@ import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portal.util.WebKeys;
 import com.liferay.portlet.PortletURLImpl;
+import com.liferay.portlet.sites.util.Sites;
+import com.liferay.portlet.sites.util.SitesImpl;
 
 import java.io.IOException;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -786,6 +791,59 @@ public class LayoutImpl extends LayoutBaseImpl {
 	@Override
 	public void setLayoutSet(LayoutSet layoutSet) {
 		_layoutSet = layoutSet;
+	}
+
+	@Override
+	public void setModifiedDate(Date modifiedDate) {
+		if (modifiedDate == null) {
+			super.setModifiedDate(null);
+
+			return;
+		}
+
+		LayoutSet layoutSet = null;
+		try {
+			layoutSet = getLayoutSet();
+		}
+		catch(Exception e) {
+			throw new SystemException(e);
+		}
+
+		modifiedDate = DateUtil.getDBSafeDate(modifiedDate);
+
+		String lastMergeTimeString = getTypeSettingsProperty(
+			SitesImpl.LAST_MERGE_TIME);
+
+		if (lastMergeTimeString == null) {
+			super.setModifiedDate(modifiedDate);
+
+			return;
+		}
+
+		long lastMergeTime = GetterUtil.getLong(lastMergeTimeString);
+
+		if (layoutSet != null) {
+			UnicodeProperties typeSettingsProperties = layoutSet.getSettingsProperties();
+
+			String layoutSetLastMergedTimeString = typeSettingsProperties.get(
+				Sites.LAST_MERGE_TIME);
+
+			if (layoutSetLastMergedTimeString != null) {
+
+				long layoutSetLastMergedTime = GetterUtil.getLong(
+					layoutSetLastMergedTimeString);
+
+				if (layoutSetLastMergedTime > lastMergeTime) {
+					lastMergeTime = layoutSetLastMergedTime;
+				}
+			}
+		}
+
+		if (lastMergeTime >= modifiedDate.getTime()) {
+			modifiedDate = new Date(lastMergeTime + Time.SECOND);
+		}
+
+		super.setModifiedDate(modifiedDate);
 	}
 
 	@Override

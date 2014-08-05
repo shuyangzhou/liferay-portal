@@ -771,7 +771,10 @@ public class LayoutImporter {
 					layout.getTypeSettingsProperties();
 
 				typeSettingsProperties.setProperty(
-					Sites.LAST_MERGE_TIME, String.valueOf(lastMergeTime));
+					Sites.LAST_MERGE_TIME,
+					String.valueOf(
+						SitesUtil.getDBSafeLastMergeTime(
+							layout.getModifiedDate(), lastMergeTime)));
 
 				LayoutUtil.update(layout);
 			}
@@ -794,7 +797,10 @@ public class LayoutImporter {
 				modifiedLayouts.isEmpty()) {
 
 				settingsProperties.setProperty(
-					Sites.LAST_MERGE_TIME, String.valueOf(lastMergeTime));
+					Sites.LAST_MERGE_TIME,
+					String.valueOf(
+						SitesUtil.getDBSafeLastMergeTime(
+							layoutSet.getModifiedDate(), lastMergeTime)));
 
 				LayoutSetLocalServiceUtil.updateLayoutSet(layoutSet);
 			}
