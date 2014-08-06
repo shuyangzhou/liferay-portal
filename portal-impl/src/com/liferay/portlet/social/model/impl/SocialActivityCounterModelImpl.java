@@ -245,7 +245,17 @@ public class SocialActivityCounterModelImpl extends BaseModelImpl<SocialActivity
 
 	@Override
 	public void setActivityCounterId(long activityCounterId) {
+		if (!_setOriginalActivityCounterId) {
+			_setOriginalActivityCounterId = true;
+
+			_originalActivityCounterId = _activityCounterId;
+		}
+
 		_activityCounterId = activityCounterId;
+	}
+
+	public long getOriginalActivityCounterId() {
+		return _originalActivityCounterId;
 	}
 
 	@Override
@@ -277,7 +287,17 @@ public class SocialActivityCounterModelImpl extends BaseModelImpl<SocialActivity
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if (!_setOriginalCompanyId) {
+			_setOriginalCompanyId = true;
+
+			_originalCompanyId = _companyId;
+		}
+
 		_companyId = companyId;
+	}
+
+	public long getOriginalCompanyId() {
+		return _originalCompanyId;
 	}
 
 	@Override
@@ -398,7 +418,17 @@ public class SocialActivityCounterModelImpl extends BaseModelImpl<SocialActivity
 
 	@Override
 	public void setCurrentValue(int currentValue) {
+		if (!_setOriginalCurrentValue) {
+			_setOriginalCurrentValue = true;
+
+			_originalCurrentValue = _currentValue;
+		}
+
 		_currentValue = currentValue;
+	}
+
+	public int getOriginalCurrentValue() {
+		return _originalCurrentValue;
 	}
 
 	@Override
@@ -408,7 +438,17 @@ public class SocialActivityCounterModelImpl extends BaseModelImpl<SocialActivity
 
 	@Override
 	public void setTotalValue(int totalValue) {
+		if (!_setOriginalTotalValue) {
+			_setOriginalTotalValue = true;
+
+			_originalTotalValue = _totalValue;
+		}
+
 		_totalValue = totalValue;
+	}
+
+	public int getOriginalTotalValue() {
+		return _originalTotalValue;
 	}
 
 	@Override
@@ -418,7 +458,17 @@ public class SocialActivityCounterModelImpl extends BaseModelImpl<SocialActivity
 
 	@Override
 	public void setGraceValue(int graceValue) {
+		if (!_setOriginalGraceValue) {
+			_setOriginalGraceValue = true;
+
+			_originalGraceValue = _graceValue;
+		}
+
 		_graceValue = graceValue;
+	}
+
+	public int getOriginalGraceValue() {
+		return _originalGraceValue;
 	}
 
 	@Override
@@ -477,7 +527,17 @@ public class SocialActivityCounterModelImpl extends BaseModelImpl<SocialActivity
 
 	@Override
 	public void setActive(boolean active) {
+		if (!_setOriginalActive) {
+			_setOriginalActive = true;
+
+			_originalActive = _active;
+		}
+
 		_active = active;
+	}
+
+	public boolean getOriginalActive() {
+		return _originalActive;
 	}
 
 	public long getColumnBitmask() {
@@ -586,9 +646,17 @@ public class SocialActivityCounterModelImpl extends BaseModelImpl<SocialActivity
 	public void resetOriginalValues() {
 		SocialActivityCounterModelImpl socialActivityCounterModelImpl = this;
 
+		socialActivityCounterModelImpl._originalActivityCounterId = socialActivityCounterModelImpl._activityCounterId;
+
+		socialActivityCounterModelImpl._setOriginalActivityCounterId = false;
+
 		socialActivityCounterModelImpl._originalGroupId = socialActivityCounterModelImpl._groupId;
 
 		socialActivityCounterModelImpl._setOriginalGroupId = false;
+
+		socialActivityCounterModelImpl._originalCompanyId = socialActivityCounterModelImpl._companyId;
+
+		socialActivityCounterModelImpl._setOriginalCompanyId = false;
 
 		socialActivityCounterModelImpl._originalClassNameId = socialActivityCounterModelImpl._classNameId;
 
@@ -604,6 +672,18 @@ public class SocialActivityCounterModelImpl extends BaseModelImpl<SocialActivity
 
 		socialActivityCounterModelImpl._setOriginalOwnerType = false;
 
+		socialActivityCounterModelImpl._originalCurrentValue = socialActivityCounterModelImpl._currentValue;
+
+		socialActivityCounterModelImpl._setOriginalCurrentValue = false;
+
+		socialActivityCounterModelImpl._originalTotalValue = socialActivityCounterModelImpl._totalValue;
+
+		socialActivityCounterModelImpl._setOriginalTotalValue = false;
+
+		socialActivityCounterModelImpl._originalGraceValue = socialActivityCounterModelImpl._graceValue;
+
+		socialActivityCounterModelImpl._setOriginalGraceValue = false;
+
 		socialActivityCounterModelImpl._originalStartPeriod = socialActivityCounterModelImpl._startPeriod;
 
 		socialActivityCounterModelImpl._setOriginalStartPeriod = false;
@@ -611,6 +691,10 @@ public class SocialActivityCounterModelImpl extends BaseModelImpl<SocialActivity
 		socialActivityCounterModelImpl._originalEndPeriod = socialActivityCounterModelImpl._endPeriod;
 
 		socialActivityCounterModelImpl._setOriginalEndPeriod = false;
+
+		socialActivityCounterModelImpl._originalActive = socialActivityCounterModelImpl._active;
+
+		socialActivityCounterModelImpl._setOriginalActive = false;
 
 		socialActivityCounterModelImpl._columnBitmask = 0;
 	}
@@ -760,10 +844,14 @@ public class SocialActivityCounterModelImpl extends BaseModelImpl<SocialActivity
 			SocialActivityCounter.class
 		};
 	private long _activityCounterId;
+	private long _originalActivityCounterId;
+	private boolean _setOriginalActivityCounterId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
 	private long _companyId;
+	private long _originalCompanyId;
+	private boolean _setOriginalCompanyId;
 	private long _classNameId;
 	private long _originalClassNameId;
 	private boolean _setOriginalClassNameId;
@@ -776,8 +864,14 @@ public class SocialActivityCounterModelImpl extends BaseModelImpl<SocialActivity
 	private int _originalOwnerType;
 	private boolean _setOriginalOwnerType;
 	private int _currentValue;
+	private int _originalCurrentValue;
+	private boolean _setOriginalCurrentValue;
 	private int _totalValue;
+	private int _originalTotalValue;
+	private boolean _setOriginalTotalValue;
 	private int _graceValue;
+	private int _originalGraceValue;
+	private boolean _setOriginalGraceValue;
 	private int _startPeriod;
 	private int _originalStartPeriod;
 	private boolean _setOriginalStartPeriod;
@@ -785,6 +879,8 @@ public class SocialActivityCounterModelImpl extends BaseModelImpl<SocialActivity
 	private int _originalEndPeriod;
 	private boolean _setOriginalEndPeriod;
 	private boolean _active;
+	private boolean _originalActive;
+	private boolean _setOriginalActive;
 	private long _columnBitmask;
 	private SocialActivityCounter _escapedModel;
 }

@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.WebDAVProps;
 import com.liferay.portal.model.WebDAVPropsModel;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.util.PortalUtil;
 
@@ -200,7 +201,17 @@ public class WebDAVPropsModelImpl extends BaseModelImpl<WebDAVProps>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@Override
@@ -210,7 +221,17 @@ public class WebDAVPropsModelImpl extends BaseModelImpl<WebDAVProps>
 
 	@Override
 	public void setWebDavPropsId(long webDavPropsId) {
+		if (!_setOriginalWebDavPropsId) {
+			_setOriginalWebDavPropsId = true;
+
+			_originalWebDavPropsId = _webDavPropsId;
+		}
+
 		_webDavPropsId = webDavPropsId;
+	}
+
+	public long getOriginalWebDavPropsId() {
+		return _originalWebDavPropsId;
 	}
 
 	@Override
@@ -220,7 +241,17 @@ public class WebDAVPropsModelImpl extends BaseModelImpl<WebDAVProps>
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if (!_setOriginalCompanyId) {
+			_setOriginalCompanyId = true;
+
+			_originalCompanyId = _companyId;
+		}
+
 		_companyId = companyId;
+	}
+
+	public long getOriginalCompanyId() {
+		return _originalCompanyId;
 	}
 
 	@Override
@@ -230,7 +261,15 @@ public class WebDAVPropsModelImpl extends BaseModelImpl<WebDAVProps>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@Override
@@ -240,7 +279,15 @@ public class WebDAVPropsModelImpl extends BaseModelImpl<WebDAVProps>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@Override
@@ -319,7 +366,15 @@ public class WebDAVPropsModelImpl extends BaseModelImpl<WebDAVProps>
 
 	@Override
 	public void setProps(String props) {
+		if (_originalProps == null) {
+			_originalProps = _props;
+		}
+
 		_props = props;
+	}
+
+	public String getOriginalProps() {
+		return GetterUtil.getString(_originalProps);
 	}
 
 	public long getColumnBitmask() {
@@ -423,6 +478,22 @@ public class WebDAVPropsModelImpl extends BaseModelImpl<WebDAVProps>
 	public void resetOriginalValues() {
 		WebDAVPropsModelImpl webDAVPropsModelImpl = this;
 
+		webDAVPropsModelImpl._originalMvccVersion = webDAVPropsModelImpl._mvccVersion;
+
+		webDAVPropsModelImpl._setOriginalMvccVersion = false;
+
+		webDAVPropsModelImpl._originalWebDavPropsId = webDAVPropsModelImpl._webDavPropsId;
+
+		webDAVPropsModelImpl._setOriginalWebDavPropsId = false;
+
+		webDAVPropsModelImpl._originalCompanyId = webDAVPropsModelImpl._companyId;
+
+		webDAVPropsModelImpl._setOriginalCompanyId = false;
+
+		webDAVPropsModelImpl._originalCreateDate = webDAVPropsModelImpl._createDate;
+
+		webDAVPropsModelImpl._originalModifiedDate = webDAVPropsModelImpl._modifiedDate;
+
 		webDAVPropsModelImpl._originalClassNameId = webDAVPropsModelImpl._classNameId;
 
 		webDAVPropsModelImpl._setOriginalClassNameId = false;
@@ -430,6 +501,8 @@ public class WebDAVPropsModelImpl extends BaseModelImpl<WebDAVProps>
 		webDAVPropsModelImpl._originalClassPK = webDAVPropsModelImpl._classPK;
 
 		webDAVPropsModelImpl._setOriginalClassPK = false;
+
+		webDAVPropsModelImpl._originalProps = webDAVPropsModelImpl._props;
 
 		webDAVPropsModelImpl._columnBitmask = 0;
 	}
@@ -553,10 +626,18 @@ public class WebDAVPropsModelImpl extends BaseModelImpl<WebDAVProps>
 			WebDAVProps.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _webDavPropsId;
+	private long _originalWebDavPropsId;
+	private boolean _setOriginalWebDavPropsId;
 	private long _companyId;
+	private long _originalCompanyId;
+	private boolean _setOriginalCompanyId;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _classNameId;
 	private long _originalClassNameId;
 	private boolean _setOriginalClassNameId;
@@ -564,6 +645,7 @@ public class WebDAVPropsModelImpl extends BaseModelImpl<WebDAVProps>
 	private long _originalClassPK;
 	private boolean _setOriginalClassPK;
 	private String _props;
+	private String _originalProps;
 	private long _columnBitmask;
 	private WebDAVProps _escapedModel;
 }

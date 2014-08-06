@@ -455,7 +455,17 @@ public class MBMessageModelImpl extends BaseModelImpl<MBMessage>
 	public void setMessageId(long messageId) {
 		_columnBitmask = -1L;
 
+		if (!_setOriginalMessageId) {
+			_setOriginalMessageId = true;
+
+			_originalMessageId = _messageId;
+		}
+
 		_messageId = messageId;
+	}
+
+	public long getOriginalMessageId() {
+		return _originalMessageId;
 	}
 
 	@JSON
@@ -556,7 +566,15 @@ public class MBMessageModelImpl extends BaseModelImpl<MBMessage>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -569,7 +587,15 @@ public class MBMessageModelImpl extends BaseModelImpl<MBMessage>
 	public void setCreateDate(Date createDate) {
 		_columnBitmask = -1L;
 
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -580,7 +606,15 @@ public class MBMessageModelImpl extends BaseModelImpl<MBMessage>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@Override
@@ -703,7 +737,17 @@ public class MBMessageModelImpl extends BaseModelImpl<MBMessage>
 
 	@Override
 	public void setRootMessageId(long rootMessageId) {
+		if (!_setOriginalRootMessageId) {
+			_setOriginalRootMessageId = true;
+
+			_originalRootMessageId = _rootMessageId;
+		}
+
 		_rootMessageId = rootMessageId;
+	}
+
+	public long getOriginalRootMessageId() {
+		return _originalRootMessageId;
 	}
 
 	@JSON
@@ -742,7 +786,15 @@ public class MBMessageModelImpl extends BaseModelImpl<MBMessage>
 
 	@Override
 	public void setSubject(String subject) {
+		if (_originalSubject == null) {
+			_originalSubject = _subject;
+		}
+
 		_subject = subject;
+	}
+
+	public String getOriginalSubject() {
+		return GetterUtil.getString(_originalSubject);
 	}
 
 	@JSON
@@ -758,7 +810,15 @@ public class MBMessageModelImpl extends BaseModelImpl<MBMessage>
 
 	@Override
 	public void setBody(String body) {
+		if (_originalBody == null) {
+			_originalBody = _body;
+		}
+
 		_body = body;
+	}
+
+	public String getOriginalBody() {
+		return GetterUtil.getString(_originalBody);
 	}
 
 	@JSON
@@ -774,7 +834,15 @@ public class MBMessageModelImpl extends BaseModelImpl<MBMessage>
 
 	@Override
 	public void setFormat(String format) {
+		if (_originalFormat == null) {
+			_originalFormat = _format;
+		}
+
 		_format = format;
+	}
+
+	public String getOriginalFormat() {
+		return GetterUtil.getString(_originalFormat);
 	}
 
 	@JSON
@@ -790,7 +858,17 @@ public class MBMessageModelImpl extends BaseModelImpl<MBMessage>
 
 	@Override
 	public void setAnonymous(boolean anonymous) {
+		if (!_setOriginalAnonymous) {
+			_setOriginalAnonymous = true;
+
+			_originalAnonymous = _anonymous;
+		}
+
 		_anonymous = anonymous;
+	}
+
+	public boolean getOriginalAnonymous() {
+		return _originalAnonymous;
 	}
 
 	@JSON
@@ -801,7 +879,17 @@ public class MBMessageModelImpl extends BaseModelImpl<MBMessage>
 
 	@Override
 	public void setPriority(double priority) {
+		if (!_setOriginalPriority) {
+			_setOriginalPriority = true;
+
+			_originalPriority = _priority;
+		}
+
 		_priority = priority;
+	}
+
+	public double getOriginalPriority() {
+		return _originalPriority;
 	}
 
 	@JSON
@@ -817,7 +905,17 @@ public class MBMessageModelImpl extends BaseModelImpl<MBMessage>
 
 	@Override
 	public void setAllowPingbacks(boolean allowPingbacks) {
+		if (!_setOriginalAllowPingbacks) {
+			_setOriginalAllowPingbacks = true;
+
+			_originalAllowPingbacks = _allowPingbacks;
+		}
+
 		_allowPingbacks = allowPingbacks;
+	}
+
+	public boolean getOriginalAllowPingbacks() {
+		return _originalAllowPingbacks;
 	}
 
 	@JSON
@@ -879,6 +977,12 @@ public class MBMessageModelImpl extends BaseModelImpl<MBMessage>
 
 	@Override
 	public void setStatusByUserId(long statusByUserId) {
+		if (!_setOriginalStatusByUserId) {
+			_setOriginalStatusByUserId = true;
+
+			_originalStatusByUserId = _statusByUserId;
+		}
+
 		_statusByUserId = statusByUserId;
 	}
 
@@ -898,6 +1002,10 @@ public class MBMessageModelImpl extends BaseModelImpl<MBMessage>
 	public void setStatusByUserUuid(String statusByUserUuid) {
 	}
 
+	public long getOriginalStatusByUserId() {
+		return _originalStatusByUserId;
+	}
+
 	@JSON
 	@Override
 	public String getStatusByUserName() {
@@ -911,7 +1019,15 @@ public class MBMessageModelImpl extends BaseModelImpl<MBMessage>
 
 	@Override
 	public void setStatusByUserName(String statusByUserName) {
+		if (_originalStatusByUserName == null) {
+			_originalStatusByUserName = _statusByUserName;
+		}
+
 		_statusByUserName = statusByUserName;
+	}
+
+	public String getOriginalStatusByUserName() {
+		return GetterUtil.getString(_originalStatusByUserName);
 	}
 
 	@JSON
@@ -922,7 +1038,15 @@ public class MBMessageModelImpl extends BaseModelImpl<MBMessage>
 
 	@Override
 	public void setStatusDate(Date statusDate) {
+		if (_originalStatusDate == null) {
+			_originalStatusDate = _statusDate;
+		}
+
 		_statusDate = statusDate;
+	}
+
+	public Date getOriginalStatusDate() {
+		return _originalStatusDate;
 	}
 
 	@Override
@@ -1278,6 +1402,10 @@ public class MBMessageModelImpl extends BaseModelImpl<MBMessage>
 
 		mbMessageModelImpl._originalUuid = mbMessageModelImpl._uuid;
 
+		mbMessageModelImpl._originalMessageId = mbMessageModelImpl._messageId;
+
+		mbMessageModelImpl._setOriginalMessageId = false;
+
 		mbMessageModelImpl._originalGroupId = mbMessageModelImpl._groupId;
 
 		mbMessageModelImpl._setOriginalGroupId = false;
@@ -1289,6 +1417,12 @@ public class MBMessageModelImpl extends BaseModelImpl<MBMessage>
 		mbMessageModelImpl._originalUserId = mbMessageModelImpl._userId;
 
 		mbMessageModelImpl._setOriginalUserId = false;
+
+		mbMessageModelImpl._originalUserName = mbMessageModelImpl._userName;
+
+		mbMessageModelImpl._originalCreateDate = mbMessageModelImpl._createDate;
+
+		mbMessageModelImpl._originalModifiedDate = mbMessageModelImpl._modifiedDate;
 
 		mbMessageModelImpl._originalClassNameId = mbMessageModelImpl._classNameId;
 
@@ -1306,9 +1440,31 @@ public class MBMessageModelImpl extends BaseModelImpl<MBMessage>
 
 		mbMessageModelImpl._setOriginalThreadId = false;
 
+		mbMessageModelImpl._originalRootMessageId = mbMessageModelImpl._rootMessageId;
+
+		mbMessageModelImpl._setOriginalRootMessageId = false;
+
 		mbMessageModelImpl._originalParentMessageId = mbMessageModelImpl._parentMessageId;
 
 		mbMessageModelImpl._setOriginalParentMessageId = false;
+
+		mbMessageModelImpl._originalSubject = mbMessageModelImpl._subject;
+
+		mbMessageModelImpl._originalBody = mbMessageModelImpl._body;
+
+		mbMessageModelImpl._originalFormat = mbMessageModelImpl._format;
+
+		mbMessageModelImpl._originalAnonymous = mbMessageModelImpl._anonymous;
+
+		mbMessageModelImpl._setOriginalAnonymous = false;
+
+		mbMessageModelImpl._originalPriority = mbMessageModelImpl._priority;
+
+		mbMessageModelImpl._setOriginalPriority = false;
+
+		mbMessageModelImpl._originalAllowPingbacks = mbMessageModelImpl._allowPingbacks;
+
+		mbMessageModelImpl._setOriginalAllowPingbacks = false;
 
 		mbMessageModelImpl._originalAnswer = mbMessageModelImpl._answer;
 
@@ -1317,6 +1473,14 @@ public class MBMessageModelImpl extends BaseModelImpl<MBMessage>
 		mbMessageModelImpl._originalStatus = mbMessageModelImpl._status;
 
 		mbMessageModelImpl._setOriginalStatus = false;
+
+		mbMessageModelImpl._originalStatusByUserId = mbMessageModelImpl._statusByUserId;
+
+		mbMessageModelImpl._setOriginalStatusByUserId = false;
+
+		mbMessageModelImpl._originalStatusByUserName = mbMessageModelImpl._statusByUserName;
+
+		mbMessageModelImpl._originalStatusDate = mbMessageModelImpl._statusDate;
 
 		mbMessageModelImpl._columnBitmask = 0;
 	}
@@ -1615,6 +1779,8 @@ public class MBMessageModelImpl extends BaseModelImpl<MBMessage>
 	private String _uuid;
 	private String _originalUuid;
 	private long _messageId;
+	private long _originalMessageId;
+	private boolean _setOriginalMessageId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -1625,8 +1791,11 @@ public class MBMessageModelImpl extends BaseModelImpl<MBMessage>
 	private long _originalUserId;
 	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _classNameId;
 	private long _originalClassNameId;
 	private boolean _setOriginalClassNameId;
@@ -1640,15 +1809,26 @@ public class MBMessageModelImpl extends BaseModelImpl<MBMessage>
 	private long _originalThreadId;
 	private boolean _setOriginalThreadId;
 	private long _rootMessageId;
+	private long _originalRootMessageId;
+	private boolean _setOriginalRootMessageId;
 	private long _parentMessageId;
 	private long _originalParentMessageId;
 	private boolean _setOriginalParentMessageId;
 	private String _subject;
+	private String _originalSubject;
 	private String _body;
+	private String _originalBody;
 	private String _format;
+	private String _originalFormat;
 	private boolean _anonymous;
+	private boolean _originalAnonymous;
+	private boolean _setOriginalAnonymous;
 	private double _priority;
+	private double _originalPriority;
+	private boolean _setOriginalPriority;
 	private boolean _allowPingbacks;
+	private boolean _originalAllowPingbacks;
+	private boolean _setOriginalAllowPingbacks;
 	private boolean _answer;
 	private boolean _originalAnswer;
 	private boolean _setOriginalAnswer;
@@ -1656,8 +1836,12 @@ public class MBMessageModelImpl extends BaseModelImpl<MBMessage>
 	private int _originalStatus;
 	private boolean _setOriginalStatus;
 	private long _statusByUserId;
+	private long _originalStatusByUserId;
+	private boolean _setOriginalStatusByUserId;
 	private String _statusByUserName;
+	private String _originalStatusByUserName;
 	private Date _statusDate;
+	private Date _originalStatusDate;
 	private long _columnBitmask;
 	private MBMessage _escapedModel;
 }

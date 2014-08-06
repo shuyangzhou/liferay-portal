@@ -24,6 +24,7 @@ import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ListType;
 import com.liferay.portal.model.ListTypeModel;
 import com.liferay.portal.model.ListTypeSoap;
+import com.liferay.portal.model.impl.BaseModelImpl;
 
 import java.io.Serializable;
 
@@ -208,7 +209,17 @@ public class ListTypeModelImpl extends BaseModelImpl<ListType>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@JSON
@@ -219,7 +230,17 @@ public class ListTypeModelImpl extends BaseModelImpl<ListType>
 
 	@Override
 	public void setListTypeId(int listTypeId) {
+		if (!_setOriginalListTypeId) {
+			_setOriginalListTypeId = true;
+
+			_originalListTypeId = _listTypeId;
+		}
+
 		_listTypeId = listTypeId;
+	}
+
+	public int getOriginalListTypeId() {
+		return _originalListTypeId;
 	}
 
 	@JSON
@@ -237,7 +258,15 @@ public class ListTypeModelImpl extends BaseModelImpl<ListType>
 	public void setName(String name) {
 		_columnBitmask = -1L;
 
+		if (_originalName == null) {
+			_originalName = _name;
+		}
+
 		_name = name;
+	}
+
+	public String getOriginalName() {
+		return GetterUtil.getString(_originalName);
 	}
 
 	@JSON
@@ -348,6 +377,16 @@ public class ListTypeModelImpl extends BaseModelImpl<ListType>
 	public void resetOriginalValues() {
 		ListTypeModelImpl listTypeModelImpl = this;
 
+		listTypeModelImpl._originalMvccVersion = listTypeModelImpl._mvccVersion;
+
+		listTypeModelImpl._setOriginalMvccVersion = false;
+
+		listTypeModelImpl._originalListTypeId = listTypeModelImpl._listTypeId;
+
+		listTypeModelImpl._setOriginalListTypeId = false;
+
+		listTypeModelImpl._originalName = listTypeModelImpl._name;
+
 		listTypeModelImpl._originalType = listTypeModelImpl._type;
 
 		listTypeModelImpl._columnBitmask = 0;
@@ -432,8 +471,13 @@ public class ListTypeModelImpl extends BaseModelImpl<ListType>
 			ListType.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private int _listTypeId;
+	private int _originalListTypeId;
+	private boolean _setOriginalListTypeId;
 	private String _name;
+	private String _originalName;
 	private String _type;
 	private String _originalType;
 	private long _columnBitmask;

@@ -211,7 +211,17 @@ public class AssetLinkModelImpl extends BaseModelImpl<AssetLink>
 
 	@Override
 	public void setLinkId(long linkId) {
+		if (!_setOriginalLinkId) {
+			_setOriginalLinkId = true;
+
+			_originalLinkId = _linkId;
+		}
+
 		_linkId = linkId;
+	}
+
+	public long getOriginalLinkId() {
+		return _originalLinkId;
 	}
 
 	@Override
@@ -221,7 +231,17 @@ public class AssetLinkModelImpl extends BaseModelImpl<AssetLink>
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if (!_setOriginalCompanyId) {
+			_setOriginalCompanyId = true;
+
+			_originalCompanyId = _companyId;
+		}
+
 		_companyId = companyId;
+	}
+
+	public long getOriginalCompanyId() {
+		return _originalCompanyId;
 	}
 
 	@Override
@@ -231,6 +251,12 @@ public class AssetLinkModelImpl extends BaseModelImpl<AssetLink>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -250,6 +276,10 @@ public class AssetLinkModelImpl extends BaseModelImpl<AssetLink>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -262,7 +292,15 @@ public class AssetLinkModelImpl extends BaseModelImpl<AssetLink>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@Override
@@ -272,7 +310,15 @@ public class AssetLinkModelImpl extends BaseModelImpl<AssetLink>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@Override
@@ -350,7 +396,17 @@ public class AssetLinkModelImpl extends BaseModelImpl<AssetLink>
 	public void setWeight(int weight) {
 		_columnBitmask = -1L;
 
+		if (!_setOriginalWeight) {
+			_setOriginalWeight = true;
+
+			_originalWeight = _weight;
+		}
+
 		_weight = weight;
+	}
+
+	public int getOriginalWeight() {
+		return _originalWeight;
 	}
 
 	public long getColumnBitmask() {
@@ -461,6 +517,22 @@ public class AssetLinkModelImpl extends BaseModelImpl<AssetLink>
 	public void resetOriginalValues() {
 		AssetLinkModelImpl assetLinkModelImpl = this;
 
+		assetLinkModelImpl._originalLinkId = assetLinkModelImpl._linkId;
+
+		assetLinkModelImpl._setOriginalLinkId = false;
+
+		assetLinkModelImpl._originalCompanyId = assetLinkModelImpl._companyId;
+
+		assetLinkModelImpl._setOriginalCompanyId = false;
+
+		assetLinkModelImpl._originalUserId = assetLinkModelImpl._userId;
+
+		assetLinkModelImpl._setOriginalUserId = false;
+
+		assetLinkModelImpl._originalUserName = assetLinkModelImpl._userName;
+
+		assetLinkModelImpl._originalCreateDate = assetLinkModelImpl._createDate;
+
 		assetLinkModelImpl._originalEntryId1 = assetLinkModelImpl._entryId1;
 
 		assetLinkModelImpl._setOriginalEntryId1 = false;
@@ -472,6 +544,10 @@ public class AssetLinkModelImpl extends BaseModelImpl<AssetLink>
 		assetLinkModelImpl._originalType = assetLinkModelImpl._type;
 
 		assetLinkModelImpl._setOriginalType = false;
+
+		assetLinkModelImpl._originalWeight = assetLinkModelImpl._weight;
+
+		assetLinkModelImpl._setOriginalWeight = false;
 
 		assetLinkModelImpl._columnBitmask = 0;
 	}
@@ -596,10 +672,18 @@ public class AssetLinkModelImpl extends BaseModelImpl<AssetLink>
 			AssetLink.class
 		};
 	private long _linkId;
+	private long _originalLinkId;
+	private boolean _setOriginalLinkId;
 	private long _companyId;
+	private long _originalCompanyId;
+	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private long _entryId1;
 	private long _originalEntryId1;
 	private boolean _setOriginalEntryId1;
@@ -610,6 +694,8 @@ public class AssetLinkModelImpl extends BaseModelImpl<AssetLink>
 	private int _originalType;
 	private boolean _setOriginalType;
 	private int _weight;
+	private int _originalWeight;
+	private boolean _setOriginalWeight;
 	private long _columnBitmask;
 	private AssetLink _escapedModel;
 }

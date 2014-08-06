@@ -369,7 +369,17 @@ public class AnnouncementsEntryModelImpl extends BaseModelImpl<AnnouncementsEntr
 
 	@Override
 	public void setEntryId(long entryId) {
+		if (!_setOriginalEntryId) {
+			_setOriginalEntryId = true;
+
+			_originalEntryId = _entryId;
+		}
+
 		_entryId = entryId;
+	}
+
+	public long getOriginalEntryId() {
+		return _originalEntryId;
 	}
 
 	@JSON
@@ -447,7 +457,15 @@ public class AnnouncementsEntryModelImpl extends BaseModelImpl<AnnouncementsEntr
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -458,7 +476,15 @@ public class AnnouncementsEntryModelImpl extends BaseModelImpl<AnnouncementsEntr
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -471,7 +497,15 @@ public class AnnouncementsEntryModelImpl extends BaseModelImpl<AnnouncementsEntr
 	public void setModifiedDate(Date modifiedDate) {
 		_columnBitmask = -1L;
 
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@Override
@@ -553,7 +587,15 @@ public class AnnouncementsEntryModelImpl extends BaseModelImpl<AnnouncementsEntr
 
 	@Override
 	public void setTitle(String title) {
+		if (_originalTitle == null) {
+			_originalTitle = _title;
+		}
+
 		_title = title;
+	}
+
+	public String getOriginalTitle() {
+		return GetterUtil.getString(_originalTitle);
 	}
 
 	@JSON
@@ -569,7 +611,15 @@ public class AnnouncementsEntryModelImpl extends BaseModelImpl<AnnouncementsEntr
 
 	@Override
 	public void setContent(String content) {
+		if (_originalContent == null) {
+			_originalContent = _content;
+		}
+
 		_content = content;
+	}
+
+	public String getOriginalContent() {
+		return GetterUtil.getString(_originalContent);
 	}
 
 	@JSON
@@ -585,7 +635,15 @@ public class AnnouncementsEntryModelImpl extends BaseModelImpl<AnnouncementsEntr
 
 	@Override
 	public void setUrl(String url) {
+		if (_originalUrl == null) {
+			_originalUrl = _url;
+		}
+
 		_url = url;
+	}
+
+	public String getOriginalUrl() {
+		return GetterUtil.getString(_originalUrl);
 	}
 
 	@JSON
@@ -601,7 +659,15 @@ public class AnnouncementsEntryModelImpl extends BaseModelImpl<AnnouncementsEntr
 
 	@Override
 	public void setType(String type) {
+		if (_originalType == null) {
+			_originalType = _type;
+		}
+
 		_type = type;
+	}
+
+	public String getOriginalType() {
+		return GetterUtil.getString(_originalType);
 	}
 
 	@JSON
@@ -612,7 +678,15 @@ public class AnnouncementsEntryModelImpl extends BaseModelImpl<AnnouncementsEntr
 
 	@Override
 	public void setDisplayDate(Date displayDate) {
+		if (_originalDisplayDate == null) {
+			_originalDisplayDate = _displayDate;
+		}
+
 		_displayDate = displayDate;
+	}
+
+	public Date getOriginalDisplayDate() {
+		return _originalDisplayDate;
 	}
 
 	@JSON
@@ -623,7 +697,15 @@ public class AnnouncementsEntryModelImpl extends BaseModelImpl<AnnouncementsEntr
 
 	@Override
 	public void setExpirationDate(Date expirationDate) {
+		if (_originalExpirationDate == null) {
+			_originalExpirationDate = _expirationDate;
+		}
+
 		_expirationDate = expirationDate;
+	}
+
+	public Date getOriginalExpirationDate() {
+		return _originalExpirationDate;
 	}
 
 	@JSON
@@ -636,7 +718,17 @@ public class AnnouncementsEntryModelImpl extends BaseModelImpl<AnnouncementsEntr
 	public void setPriority(int priority) {
 		_columnBitmask = -1L;
 
+		if (!_setOriginalPriority) {
+			_setOriginalPriority = true;
+
+			_originalPriority = _priority;
+		}
+
 		_priority = priority;
+	}
+
+	public int getOriginalPriority() {
+		return _originalPriority;
 	}
 
 	@JSON
@@ -798,6 +890,10 @@ public class AnnouncementsEntryModelImpl extends BaseModelImpl<AnnouncementsEntr
 
 		announcementsEntryModelImpl._originalUuid = announcementsEntryModelImpl._uuid;
 
+		announcementsEntryModelImpl._originalEntryId = announcementsEntryModelImpl._entryId;
+
+		announcementsEntryModelImpl._setOriginalEntryId = false;
+
 		announcementsEntryModelImpl._originalCompanyId = announcementsEntryModelImpl._companyId;
 
 		announcementsEntryModelImpl._setOriginalCompanyId = false;
@@ -806,6 +902,12 @@ public class AnnouncementsEntryModelImpl extends BaseModelImpl<AnnouncementsEntr
 
 		announcementsEntryModelImpl._setOriginalUserId = false;
 
+		announcementsEntryModelImpl._originalUserName = announcementsEntryModelImpl._userName;
+
+		announcementsEntryModelImpl._originalCreateDate = announcementsEntryModelImpl._createDate;
+
+		announcementsEntryModelImpl._originalModifiedDate = announcementsEntryModelImpl._modifiedDate;
+
 		announcementsEntryModelImpl._originalClassNameId = announcementsEntryModelImpl._classNameId;
 
 		announcementsEntryModelImpl._setOriginalClassNameId = false;
@@ -813,6 +915,22 @@ public class AnnouncementsEntryModelImpl extends BaseModelImpl<AnnouncementsEntr
 		announcementsEntryModelImpl._originalClassPK = announcementsEntryModelImpl._classPK;
 
 		announcementsEntryModelImpl._setOriginalClassPK = false;
+
+		announcementsEntryModelImpl._originalTitle = announcementsEntryModelImpl._title;
+
+		announcementsEntryModelImpl._originalContent = announcementsEntryModelImpl._content;
+
+		announcementsEntryModelImpl._originalUrl = announcementsEntryModelImpl._url;
+
+		announcementsEntryModelImpl._originalType = announcementsEntryModelImpl._type;
+
+		announcementsEntryModelImpl._originalDisplayDate = announcementsEntryModelImpl._displayDate;
+
+		announcementsEntryModelImpl._originalExpirationDate = announcementsEntryModelImpl._expirationDate;
+
+		announcementsEntryModelImpl._originalPriority = announcementsEntryModelImpl._priority;
+
+		announcementsEntryModelImpl._setOriginalPriority = false;
 
 		announcementsEntryModelImpl._originalAlert = announcementsEntryModelImpl._alert;
 
@@ -1058,6 +1176,8 @@ public class AnnouncementsEntryModelImpl extends BaseModelImpl<AnnouncementsEntr
 	private String _uuid;
 	private String _originalUuid;
 	private long _entryId;
+	private long _originalEntryId;
+	private boolean _setOriginalEntryId;
 	private long _companyId;
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
@@ -1065,8 +1185,11 @@ public class AnnouncementsEntryModelImpl extends BaseModelImpl<AnnouncementsEntr
 	private long _originalUserId;
 	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _classNameId;
 	private long _originalClassNameId;
 	private boolean _setOriginalClassNameId;
@@ -1074,12 +1197,20 @@ public class AnnouncementsEntryModelImpl extends BaseModelImpl<AnnouncementsEntr
 	private long _originalClassPK;
 	private boolean _setOriginalClassPK;
 	private String _title;
+	private String _originalTitle;
 	private String _content;
+	private String _originalContent;
 	private String _url;
+	private String _originalUrl;
 	private String _type;
+	private String _originalType;
 	private Date _displayDate;
+	private Date _originalDisplayDate;
 	private Date _expirationDate;
+	private Date _originalExpirationDate;
 	private int _priority;
+	private int _originalPriority;
+	private boolean _setOriginalPriority;
 	private boolean _alert;
 	private boolean _originalAlert;
 	private boolean _setOriginalAlert;

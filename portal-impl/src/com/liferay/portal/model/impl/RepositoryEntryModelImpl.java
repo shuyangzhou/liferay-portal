@@ -25,6 +25,7 @@ import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.RepositoryEntry;
 import com.liferay.portal.model.RepositoryEntryModel;
 import com.liferay.portal.model.User;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
@@ -239,7 +240,17 @@ public class RepositoryEntryModelImpl extends BaseModelImpl<RepositoryEntry>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@Override
@@ -272,7 +283,17 @@ public class RepositoryEntryModelImpl extends BaseModelImpl<RepositoryEntry>
 
 	@Override
 	public void setRepositoryEntryId(long repositoryEntryId) {
+		if (!_setOriginalRepositoryEntryId) {
+			_setOriginalRepositoryEntryId = true;
+
+			_originalRepositoryEntryId = _repositoryEntryId;
+		}
+
 		_repositoryEntryId = repositoryEntryId;
+	}
+
+	public long getOriginalRepositoryEntryId() {
+		return _originalRepositoryEntryId;
 	}
 
 	@Override
@@ -326,6 +347,12 @@ public class RepositoryEntryModelImpl extends BaseModelImpl<RepositoryEntry>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -345,6 +372,10 @@ public class RepositoryEntryModelImpl extends BaseModelImpl<RepositoryEntry>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -357,7 +388,15 @@ public class RepositoryEntryModelImpl extends BaseModelImpl<RepositoryEntry>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@Override
@@ -367,7 +406,15 @@ public class RepositoryEntryModelImpl extends BaseModelImpl<RepositoryEntry>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@Override
@@ -377,7 +424,15 @@ public class RepositoryEntryModelImpl extends BaseModelImpl<RepositoryEntry>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@Override
@@ -439,7 +494,17 @@ public class RepositoryEntryModelImpl extends BaseModelImpl<RepositoryEntry>
 
 	@Override
 	public void setManualCheckInRequired(boolean manualCheckInRequired) {
+		if (!_setOriginalManualCheckInRequired) {
+			_setOriginalManualCheckInRequired = true;
+
+			_originalManualCheckInRequired = _manualCheckInRequired;
+		}
+
 		_manualCheckInRequired = manualCheckInRequired;
+	}
+
+	public boolean getOriginalManualCheckInRequired() {
+		return _originalManualCheckInRequired;
 	}
 
 	@Override
@@ -553,7 +618,15 @@ public class RepositoryEntryModelImpl extends BaseModelImpl<RepositoryEntry>
 	public void resetOriginalValues() {
 		RepositoryEntryModelImpl repositoryEntryModelImpl = this;
 
+		repositoryEntryModelImpl._originalMvccVersion = repositoryEntryModelImpl._mvccVersion;
+
+		repositoryEntryModelImpl._setOriginalMvccVersion = false;
+
 		repositoryEntryModelImpl._originalUuid = repositoryEntryModelImpl._uuid;
+
+		repositoryEntryModelImpl._originalRepositoryEntryId = repositoryEntryModelImpl._repositoryEntryId;
+
+		repositoryEntryModelImpl._setOriginalRepositoryEntryId = false;
 
 		repositoryEntryModelImpl._originalGroupId = repositoryEntryModelImpl._groupId;
 
@@ -563,11 +636,25 @@ public class RepositoryEntryModelImpl extends BaseModelImpl<RepositoryEntry>
 
 		repositoryEntryModelImpl._setOriginalCompanyId = false;
 
+		repositoryEntryModelImpl._originalUserId = repositoryEntryModelImpl._userId;
+
+		repositoryEntryModelImpl._setOriginalUserId = false;
+
+		repositoryEntryModelImpl._originalUserName = repositoryEntryModelImpl._userName;
+
+		repositoryEntryModelImpl._originalCreateDate = repositoryEntryModelImpl._createDate;
+
+		repositoryEntryModelImpl._originalModifiedDate = repositoryEntryModelImpl._modifiedDate;
+
 		repositoryEntryModelImpl._originalRepositoryId = repositoryEntryModelImpl._repositoryId;
 
 		repositoryEntryModelImpl._setOriginalRepositoryId = false;
 
 		repositoryEntryModelImpl._originalMappedId = repositoryEntryModelImpl._mappedId;
+
+		repositoryEntryModelImpl._originalManualCheckInRequired = repositoryEntryModelImpl._manualCheckInRequired;
+
+		repositoryEntryModelImpl._setOriginalManualCheckInRequired = false;
 
 		repositoryEntryModelImpl._columnBitmask = 0;
 	}
@@ -735,9 +822,13 @@ public class RepositoryEntryModelImpl extends BaseModelImpl<RepositoryEntry>
 			RepositoryEntry.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private String _uuid;
 	private String _originalUuid;
 	private long _repositoryEntryId;
+	private long _originalRepositoryEntryId;
+	private boolean _setOriginalRepositoryEntryId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -745,15 +836,22 @@ public class RepositoryEntryModelImpl extends BaseModelImpl<RepositoryEntry>
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _repositoryId;
 	private long _originalRepositoryId;
 	private boolean _setOriginalRepositoryId;
 	private String _mappedId;
 	private String _originalMappedId;
 	private boolean _manualCheckInRequired;
+	private boolean _originalManualCheckInRequired;
+	private boolean _setOriginalManualCheckInRequired;
 	private long _columnBitmask;
 	private RepositoryEntry _escapedModel;
 }

@@ -26,6 +26,7 @@ import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.User;
 import com.liferay.portal.model.UserModel;
 import com.liferay.portal.model.UserSoap;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
@@ -605,7 +606,17 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@JSON
@@ -800,7 +811,15 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setPassword(String password) {
+		if (_originalPassword == null) {
+			_originalPassword = _password;
+		}
+
 		_password = password;
+	}
+
+	public String getOriginalPassword() {
+		return GetterUtil.getString(_originalPassword);
 	}
 
 	@JSON(include = false)
@@ -816,7 +835,17 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setPasswordEncrypted(boolean passwordEncrypted) {
+		if (!_setOriginalPasswordEncrypted) {
+			_setOriginalPasswordEncrypted = true;
+
+			_originalPasswordEncrypted = _passwordEncrypted;
+		}
+
 		_passwordEncrypted = passwordEncrypted;
+	}
+
+	public boolean getOriginalPasswordEncrypted() {
+		return _originalPasswordEncrypted;
 	}
 
 	@JSON(include = false)
@@ -832,7 +861,17 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setPasswordReset(boolean passwordReset) {
+		if (!_setOriginalPasswordReset) {
+			_setOriginalPasswordReset = true;
+
+			_originalPasswordReset = _passwordReset;
+		}
+
 		_passwordReset = passwordReset;
+	}
+
+	public boolean getOriginalPasswordReset() {
+		return _originalPasswordReset;
 	}
 
 	@JSON(include = false)
@@ -843,7 +882,15 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setPasswordModifiedDate(Date passwordModifiedDate) {
+		if (_originalPasswordModifiedDate == null) {
+			_originalPasswordModifiedDate = _passwordModifiedDate;
+		}
+
 		_passwordModifiedDate = passwordModifiedDate;
+	}
+
+	public Date getOriginalPasswordModifiedDate() {
+		return _originalPasswordModifiedDate;
 	}
 
 	@JSON(include = false)
@@ -859,7 +906,15 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setDigest(String digest) {
+		if (_originalDigest == null) {
+			_originalDigest = _digest;
+		}
+
 		_digest = digest;
+	}
+
+	public String getOriginalDigest() {
+		return GetterUtil.getString(_originalDigest);
 	}
 
 	@JSON
@@ -875,7 +930,15 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setReminderQueryQuestion(String reminderQueryQuestion) {
+		if (_originalReminderQueryQuestion == null) {
+			_originalReminderQueryQuestion = _reminderQueryQuestion;
+		}
+
 		_reminderQueryQuestion = reminderQueryQuestion;
+	}
+
+	public String getOriginalReminderQueryQuestion() {
+		return GetterUtil.getString(_originalReminderQueryQuestion);
 	}
 
 	@JSON
@@ -891,7 +954,15 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setReminderQueryAnswer(String reminderQueryAnswer) {
+		if (_originalReminderQueryAnswer == null) {
+			_originalReminderQueryAnswer = _reminderQueryAnswer;
+		}
+
 		_reminderQueryAnswer = reminderQueryAnswer;
+	}
+
+	public String getOriginalReminderQueryAnswer() {
+		return GetterUtil.getString(_originalReminderQueryAnswer);
 	}
 
 	@JSON
@@ -902,7 +973,17 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setGraceLoginCount(int graceLoginCount) {
+		if (!_setOriginalGraceLoginCount) {
+			_setOriginalGraceLoginCount = true;
+
+			_originalGraceLoginCount = _graceLoginCount;
+		}
+
 		_graceLoginCount = graceLoginCount;
+	}
+
+	public int getOriginalGraceLoginCount() {
+		return _originalGraceLoginCount;
 	}
 
 	@JSON
@@ -988,7 +1069,17 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setLdapServerId(long ldapServerId) {
+		if (!_setOriginalLdapServerId) {
+			_setOriginalLdapServerId = true;
+
+			_originalLdapServerId = _ldapServerId;
+		}
+
 		_ldapServerId = ldapServerId;
+	}
+
+	public long getOriginalLdapServerId() {
+		return _originalLdapServerId;
 	}
 
 	@JSON
@@ -1053,7 +1144,15 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setLanguageId(String languageId) {
+		if (_originalLanguageId == null) {
+			_originalLanguageId = _languageId;
+		}
+
 		_languageId = languageId;
+	}
+
+	public String getOriginalLanguageId() {
+		return GetterUtil.getString(_originalLanguageId);
 	}
 
 	@JSON
@@ -1069,7 +1168,15 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setTimeZoneId(String timeZoneId) {
+		if (_originalTimeZoneId == null) {
+			_originalTimeZoneId = _timeZoneId;
+		}
+
 		_timeZoneId = timeZoneId;
+	}
+
+	public String getOriginalTimeZoneId() {
+		return GetterUtil.getString(_originalTimeZoneId);
 	}
 
 	@JSON
@@ -1085,7 +1192,15 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setGreeting(String greeting) {
+		if (_originalGreeting == null) {
+			_originalGreeting = _greeting;
+		}
+
 		_greeting = greeting;
+	}
+
+	public String getOriginalGreeting() {
+		return GetterUtil.getString(_originalGreeting);
 	}
 
 	@JSON
@@ -1101,7 +1216,15 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setComments(String comments) {
+		if (_originalComments == null) {
+			_originalComments = _comments;
+		}
+
 		_comments = comments;
+	}
+
+	public String getOriginalComments() {
+		return GetterUtil.getString(_originalComments);
 	}
 
 	@JSON
@@ -1117,7 +1240,15 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setFirstName(String firstName) {
+		if (_originalFirstName == null) {
+			_originalFirstName = _firstName;
+		}
+
 		_firstName = firstName;
+	}
+
+	public String getOriginalFirstName() {
+		return GetterUtil.getString(_originalFirstName);
 	}
 
 	@JSON
@@ -1133,7 +1264,15 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setMiddleName(String middleName) {
+		if (_originalMiddleName == null) {
+			_originalMiddleName = _middleName;
+		}
+
 		_middleName = middleName;
+	}
+
+	public String getOriginalMiddleName() {
+		return GetterUtil.getString(_originalMiddleName);
 	}
 
 	@JSON
@@ -1149,7 +1288,15 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setLastName(String lastName) {
+		if (_originalLastName == null) {
+			_originalLastName = _lastName;
+		}
+
 		_lastName = lastName;
+	}
+
+	public String getOriginalLastName() {
+		return GetterUtil.getString(_originalLastName);
 	}
 
 	@JSON
@@ -1165,7 +1312,15 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setJobTitle(String jobTitle) {
+		if (_originalJobTitle == null) {
+			_originalJobTitle = _jobTitle;
+		}
+
 		_jobTitle = jobTitle;
+	}
+
+	public String getOriginalJobTitle() {
+		return GetterUtil.getString(_originalJobTitle);
 	}
 
 	@JSON
@@ -1176,7 +1331,15 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setLoginDate(Date loginDate) {
+		if (_originalLoginDate == null) {
+			_originalLoginDate = _loginDate;
+		}
+
 		_loginDate = loginDate;
+	}
+
+	public Date getOriginalLoginDate() {
+		return _originalLoginDate;
 	}
 
 	@JSON
@@ -1192,7 +1355,15 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setLoginIP(String loginIP) {
+		if (_originalLoginIP == null) {
+			_originalLoginIP = _loginIP;
+		}
+
 		_loginIP = loginIP;
+	}
+
+	public String getOriginalLoginIP() {
+		return GetterUtil.getString(_originalLoginIP);
 	}
 
 	@JSON
@@ -1203,7 +1374,15 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setLastLoginDate(Date lastLoginDate) {
+		if (_originalLastLoginDate == null) {
+			_originalLastLoginDate = _lastLoginDate;
+		}
+
 		_lastLoginDate = lastLoginDate;
+	}
+
+	public Date getOriginalLastLoginDate() {
+		return _originalLastLoginDate;
 	}
 
 	@JSON
@@ -1219,7 +1398,15 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setLastLoginIP(String lastLoginIP) {
+		if (_originalLastLoginIP == null) {
+			_originalLastLoginIP = _lastLoginIP;
+		}
+
 		_lastLoginIP = lastLoginIP;
+	}
+
+	public String getOriginalLastLoginIP() {
+		return GetterUtil.getString(_originalLastLoginIP);
 	}
 
 	@JSON
@@ -1230,7 +1417,15 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setLastFailedLoginDate(Date lastFailedLoginDate) {
+		if (_originalLastFailedLoginDate == null) {
+			_originalLastFailedLoginDate = _lastFailedLoginDate;
+		}
+
 		_lastFailedLoginDate = lastFailedLoginDate;
+	}
+
+	public Date getOriginalLastFailedLoginDate() {
+		return _originalLastFailedLoginDate;
 	}
 
 	@JSON
@@ -1241,7 +1436,17 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setFailedLoginAttempts(int failedLoginAttempts) {
+		if (!_setOriginalFailedLoginAttempts) {
+			_setOriginalFailedLoginAttempts = true;
+
+			_originalFailedLoginAttempts = _failedLoginAttempts;
+		}
+
 		_failedLoginAttempts = failedLoginAttempts;
+	}
+
+	public int getOriginalFailedLoginAttempts() {
+		return _originalFailedLoginAttempts;
 	}
 
 	@JSON
@@ -1257,7 +1462,17 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setLockout(boolean lockout) {
+		if (!_setOriginalLockout) {
+			_setOriginalLockout = true;
+
+			_originalLockout = _lockout;
+		}
+
 		_lockout = lockout;
+	}
+
+	public boolean getOriginalLockout() {
+		return _originalLockout;
 	}
 
 	@JSON
@@ -1268,7 +1483,15 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setLockoutDate(Date lockoutDate) {
+		if (_originalLockoutDate == null) {
+			_originalLockoutDate = _lockoutDate;
+		}
+
 		_lockoutDate = lockoutDate;
+	}
+
+	public Date getOriginalLockoutDate() {
+		return _originalLockoutDate;
 	}
 
 	@JSON
@@ -1284,7 +1507,17 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setAgreedToTermsOfUse(boolean agreedToTermsOfUse) {
+		if (!_setOriginalAgreedToTermsOfUse) {
+			_setOriginalAgreedToTermsOfUse = true;
+
+			_originalAgreedToTermsOfUse = _agreedToTermsOfUse;
+		}
+
 		_agreedToTermsOfUse = agreedToTermsOfUse;
+	}
+
+	public boolean getOriginalAgreedToTermsOfUse() {
+		return _originalAgreedToTermsOfUse;
 	}
 
 	@JSON
@@ -1300,7 +1533,17 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setEmailAddressVerified(boolean emailAddressVerified) {
+		if (!_setOriginalEmailAddressVerified) {
+			_setOriginalEmailAddressVerified = true;
+
+			_originalEmailAddressVerified = _emailAddressVerified;
+		}
+
 		_emailAddressVerified = emailAddressVerified;
+	}
+
+	public boolean getOriginalEmailAddressVerified() {
+		return _originalEmailAddressVerified;
 	}
 
 	@JSON
@@ -1466,6 +1709,10 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 	public void resetOriginalValues() {
 		UserModelImpl userModelImpl = this;
 
+		userModelImpl._originalMvccVersion = userModelImpl._mvccVersion;
+
+		userModelImpl._setOriginalMvccVersion = false;
+
 		userModelImpl._originalUuid = userModelImpl._uuid;
 
 		userModelImpl._originalUserId = userModelImpl._userId;
@@ -1488,6 +1735,28 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 		userModelImpl._setOriginalContactId = false;
 
+		userModelImpl._originalPassword = userModelImpl._password;
+
+		userModelImpl._originalPasswordEncrypted = userModelImpl._passwordEncrypted;
+
+		userModelImpl._setOriginalPasswordEncrypted = false;
+
+		userModelImpl._originalPasswordReset = userModelImpl._passwordReset;
+
+		userModelImpl._setOriginalPasswordReset = false;
+
+		userModelImpl._originalPasswordModifiedDate = userModelImpl._passwordModifiedDate;
+
+		userModelImpl._originalDigest = userModelImpl._digest;
+
+		userModelImpl._originalReminderQueryQuestion = userModelImpl._reminderQueryQuestion;
+
+		userModelImpl._originalReminderQueryAnswer = userModelImpl._reminderQueryAnswer;
+
+		userModelImpl._originalGraceLoginCount = userModelImpl._graceLoginCount;
+
+		userModelImpl._setOriginalGraceLoginCount = false;
+
 		userModelImpl._originalScreenName = userModelImpl._screenName;
 
 		userModelImpl._originalEmailAddress = userModelImpl._emailAddress;
@@ -1496,11 +1765,59 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 		userModelImpl._setOriginalFacebookId = false;
 
+		userModelImpl._originalLdapServerId = userModelImpl._ldapServerId;
+
+		userModelImpl._setOriginalLdapServerId = false;
+
 		userModelImpl._originalOpenId = userModelImpl._openId;
 
 		userModelImpl._originalPortraitId = userModelImpl._portraitId;
 
 		userModelImpl._setOriginalPortraitId = false;
+
+		userModelImpl._originalLanguageId = userModelImpl._languageId;
+
+		userModelImpl._originalTimeZoneId = userModelImpl._timeZoneId;
+
+		userModelImpl._originalGreeting = userModelImpl._greeting;
+
+		userModelImpl._originalComments = userModelImpl._comments;
+
+		userModelImpl._originalFirstName = userModelImpl._firstName;
+
+		userModelImpl._originalMiddleName = userModelImpl._middleName;
+
+		userModelImpl._originalLastName = userModelImpl._lastName;
+
+		userModelImpl._originalJobTitle = userModelImpl._jobTitle;
+
+		userModelImpl._originalLoginDate = userModelImpl._loginDate;
+
+		userModelImpl._originalLoginIP = userModelImpl._loginIP;
+
+		userModelImpl._originalLastLoginDate = userModelImpl._lastLoginDate;
+
+		userModelImpl._originalLastLoginIP = userModelImpl._lastLoginIP;
+
+		userModelImpl._originalLastFailedLoginDate = userModelImpl._lastFailedLoginDate;
+
+		userModelImpl._originalFailedLoginAttempts = userModelImpl._failedLoginAttempts;
+
+		userModelImpl._setOriginalFailedLoginAttempts = false;
+
+		userModelImpl._originalLockout = userModelImpl._lockout;
+
+		userModelImpl._setOriginalLockout = false;
+
+		userModelImpl._originalLockoutDate = userModelImpl._lockoutDate;
+
+		userModelImpl._originalAgreedToTermsOfUse = userModelImpl._agreedToTermsOfUse;
+
+		userModelImpl._setOriginalAgreedToTermsOfUse = false;
+
+		userModelImpl._originalEmailAddressVerified = userModelImpl._emailAddressVerified;
+
+		userModelImpl._setOriginalEmailAddressVerified = false;
 
 		userModelImpl._originalStatus = userModelImpl._status;
 
@@ -2029,6 +2346,8 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 	private static ClassLoader _classLoader = User.class.getClassLoader();
 	private static Class<?>[] _escapedModelInterfaces = new Class[] { User.class };
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private String _uuid;
 	private String _originalUuid;
 	private long _userId;
@@ -2048,13 +2367,24 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 	private long _originalContactId;
 	private boolean _setOriginalContactId;
 	private String _password;
+	private String _originalPassword;
 	private boolean _passwordEncrypted;
+	private boolean _originalPasswordEncrypted;
+	private boolean _setOriginalPasswordEncrypted;
 	private boolean _passwordReset;
+	private boolean _originalPasswordReset;
+	private boolean _setOriginalPasswordReset;
 	private Date _passwordModifiedDate;
+	private Date _originalPasswordModifiedDate;
 	private String _digest;
+	private String _originalDigest;
 	private String _reminderQueryQuestion;
+	private String _originalReminderQueryQuestion;
 	private String _reminderQueryAnswer;
+	private String _originalReminderQueryAnswer;
 	private int _graceLoginCount;
+	private int _originalGraceLoginCount;
+	private boolean _setOriginalGraceLoginCount;
 	private String _screenName;
 	private String _originalScreenName;
 	private String _emailAddress;
@@ -2063,29 +2393,53 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 	private long _originalFacebookId;
 	private boolean _setOriginalFacebookId;
 	private long _ldapServerId;
+	private long _originalLdapServerId;
+	private boolean _setOriginalLdapServerId;
 	private String _openId;
 	private String _originalOpenId;
 	private long _portraitId;
 	private long _originalPortraitId;
 	private boolean _setOriginalPortraitId;
 	private String _languageId;
+	private String _originalLanguageId;
 	private String _timeZoneId;
+	private String _originalTimeZoneId;
 	private String _greeting;
+	private String _originalGreeting;
 	private String _comments;
+	private String _originalComments;
 	private String _firstName;
+	private String _originalFirstName;
 	private String _middleName;
+	private String _originalMiddleName;
 	private String _lastName;
+	private String _originalLastName;
 	private String _jobTitle;
+	private String _originalJobTitle;
 	private Date _loginDate;
+	private Date _originalLoginDate;
 	private String _loginIP;
+	private String _originalLoginIP;
 	private Date _lastLoginDate;
+	private Date _originalLastLoginDate;
 	private String _lastLoginIP;
+	private String _originalLastLoginIP;
 	private Date _lastFailedLoginDate;
+	private Date _originalLastFailedLoginDate;
 	private int _failedLoginAttempts;
+	private int _originalFailedLoginAttempts;
+	private boolean _setOriginalFailedLoginAttempts;
 	private boolean _lockout;
+	private boolean _originalLockout;
+	private boolean _setOriginalLockout;
 	private Date _lockoutDate;
+	private Date _originalLockoutDate;
 	private boolean _agreedToTermsOfUse;
+	private boolean _originalAgreedToTermsOfUse;
+	private boolean _setOriginalAgreedToTermsOfUse;
 	private boolean _emailAddressVerified;
+	private boolean _originalEmailAddressVerified;
+	private boolean _setOriginalEmailAddressVerified;
 	private int _status;
 	private int _originalStatus;
 	private boolean _setOriginalStatus;
