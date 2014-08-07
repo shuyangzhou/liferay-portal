@@ -63,7 +63,7 @@ public class ThreadUtil {
 		return threads;
 	}
 
-	public static ThreadDump threadDump() {
+	public static ThreadDump takeThreadDump() {
 		String threadDump = _getThreadDumpFromJstack();
 
 		if (Validator.isNull(threadDump)) {
@@ -73,8 +73,18 @@ public class ThreadUtil {
 		return new ThreadDump(threadDump);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0
+	 */
+	@Deprecated
+	public static String threadDump() {
+		ThreadDump threadDump = takeThreadDump();
+
+		return "\n\n".concat(threadDump.getThreadDump());
+	}
+
 	public static void writeThreadDump() {
-		ThreadDump threadDump = threadDump();
+		ThreadDump threadDump = takeThreadDump();
 
 		Date takenAt = threadDump.getTakenAt();
 
