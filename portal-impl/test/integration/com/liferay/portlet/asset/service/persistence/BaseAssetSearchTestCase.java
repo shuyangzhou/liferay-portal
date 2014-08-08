@@ -274,8 +274,6 @@ public abstract class BaseAssetSearchTestCase {
 
 		searchContext.setGroupIds(assetEntryQuery.getGroupIds());
 
-		int initialEntries = searchCount(assetEntryQuery, searchContext);
-
 		ServiceContext serviceContext1 =
 			ServiceContextTestUtil.getServiceContext(group1.getGroupId());
 
@@ -292,8 +290,7 @@ public abstract class BaseAssetSearchTestCase {
 
 		addBaseModel(parentBaseModel2, getSearchKeywords(), serviceContext2);
 
-		Assert.assertEquals(
-			initialEntries + 2, searchCount(assetEntryQuery, searchContext));
+		Assert.assertEquals(2, searchCount(assetEntryQuery, searchContext));
 	}
 
 	@Test
@@ -1129,87 +1126,43 @@ public abstract class BaseAssetSearchTestCase {
 			AssetEntryQuery assetEntryQuery, int expectedResults)
 		throws Exception {
 
-		ServiceContext serviceContext =
-			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
-
-		BaseModel<?> parentBaseModel = getParentBaseModel(
-			_group, serviceContext);
-
 		SearchContext searchContext = SearchContextTestUtil.getSearchContext();
 
 		searchContext.setGroupIds(assetEntryQuery.getGroupIds());
 
-		int initialEntries = searchCount(assetEntryQuery, searchContext);
-
-		serviceContext.setAssetTagNames(_assetTagsNames1);
-		serviceContext.setAssetCategoryIds(_assetCategoryIds1);
-
-		addBaseModel(parentBaseModel, getSearchKeywords(), serviceContext);
-
-		serviceContext.setAssetTagNames(_assetTagsNames2);
-		serviceContext.setAssetCategoryIds(_assetCategoryIds2);
-
-		addBaseModel(parentBaseModel, getSearchKeywords(), serviceContext);
-
 		Assert.assertEquals(
-			initialEntries + expectedResults,
-			searchCount(assetEntryQuery, searchContext));
+			expectedResults, searchCount(assetEntryQuery, searchContext));
 	}
 
 	protected void testClassNames(
 			AssetEntryQuery assetEntryQuery, int expectedResult)
 		throws Exception {
 
-		ServiceContext serviceContext =
-			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
-
-		BaseModel<?> parentBaseModel = getParentBaseModel(
-			_group, serviceContext);
-
 		SearchContext searchContext = SearchContextTestUtil.getSearchContext();
 
 		searchContext.setGroupIds(assetEntryQuery.getGroupIds());
 
-		int initialEntries = searchCount(assetEntryQuery, searchContext);
-
-		addBaseModel(parentBaseModel, getSearchKeywords(), serviceContext);
-
 		Assert.assertEquals(
-			initialEntries + expectedResult,
-			searchCount(assetEntryQuery, searchContext));
+			expectedResult, searchCount(assetEntryQuery, searchContext));
 	}
 
 	protected void testClassTypeIds(
 			AssetEntryQuery assetEntryQuery, boolean classType)
 		throws Exception {
 
-		ServiceContext serviceContext =
-			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
-
-		BaseModel<?> parentBaseModel = getParentBaseModel(
-			_group, serviceContext);
-
 		SearchContext searchContext = SearchContextTestUtil.getSearchContext();
 
 		searchContext.setGroupIds(assetEntryQuery.getGroupIds());
 
-		int initialEntries = searchCount(assetEntryQuery, searchContext);
-
-		addBaseModelWithClassType(
-			parentBaseModel, getSearchKeywords(), serviceContext);
-
 		if (classType) {
 			assetEntryQuery.setClassTypeIds(getClassTypeIds());
 
-			Assert.assertEquals(
-				initialEntries + 1,
-				searchCount(assetEntryQuery, searchContext));
+			Assert.assertEquals(1, searchCount(assetEntryQuery, searchContext));
 		}
 		else {
 			assetEntryQuery.setClassTypeIds(new long[] {0});
 
-			Assert.assertEquals(
-				initialEntries, searchCount(assetEntryQuery, searchContext));
+			Assert.assertEquals(0, searchCount(assetEntryQuery, searchContext));
 		}
 	}
 
@@ -1218,24 +1171,9 @@ public abstract class BaseAssetSearchTestCase {
 			String[] titles, String[] orderedTitles)
 		throws Exception {
 
-		ServiceContext serviceContext =
-			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
-
-		BaseModel<?> parentBaseModel = getParentBaseModel(
-			_group, serviceContext);
-
 		SearchContext searchContext = SearchContextTestUtil.getSearchContext();
 
 		searchContext.setGroupIds(assetEntryQuery.getGroupIds());
-
-		BaseModel<?>[] baseModels = new BaseModel[titles.length];
-
-		for (int i = 0; i < titles.length; i++) {
-			String title = titles[i];
-
-			baseModels[i] = addBaseModel(
-				parentBaseModel, title, serviceContext);
-		}
 
 		assetEntryQuery.setOrderByCol1("createDate");
 		assetEntryQuery.setOrderByType1(orderByType);
@@ -1256,21 +1194,9 @@ public abstract class BaseAssetSearchTestCase {
 			Date[] expirationDates)
 		throws Exception {
 
-		ServiceContext serviceContext =
-			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
-
-		BaseModel<?> parentBaseModel = getParentBaseModel(
-			_group, serviceContext);
-
 		SearchContext searchContext = SearchContextTestUtil.getSearchContext();
 
 		searchContext.setGroupIds(assetEntryQuery.getGroupIds());
-
-		for (Date expirationDate : expirationDates) {
-			addBaseModel(
-				parentBaseModel, RandomTestUtil.randomString(), expirationDate,
-				serviceContext);
-		}
 
 		assetEntryQuery.setOrderByCol1("expirationDate");
 		assetEntryQuery.setOrderByType1(orderByType);
@@ -1304,19 +1230,9 @@ public abstract class BaseAssetSearchTestCase {
 			String[] titles, String[] orderedTitles)
 		throws Exception {
 
-		ServiceContext serviceContext =
-			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
-
-		BaseModel<?> parentBaseModel = getParentBaseModel(
-			_group, serviceContext);
-
 		SearchContext searchContext = SearchContextTestUtil.getSearchContext();
 
 		searchContext.setGroupIds(assetEntryQuery.getGroupIds());
-
-		for (String title : titles) {
-			addBaseModel(parentBaseModel, title, serviceContext);
-		}
 
 		assetEntryQuery.setOrderByCol1("title");
 		assetEntryQuery.setOrderByType1(orderByType);
@@ -1335,20 +1251,9 @@ public abstract class BaseAssetSearchTestCase {
 	protected void testPaginationType(AssetEntryQuery assetEntryQuery, int size)
 		throws Exception {
 
-		ServiceContext serviceContext =
-			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
-
-		BaseModel<?> parentBaseModel = getParentBaseModel(
-			_group, serviceContext);
-
 		SearchContext searchContext = SearchContextTestUtil.getSearchContext();
 
 		searchContext.setGroupIds(assetEntryQuery.getGroupIds());
-
-		for (int i = 0; i < size; i++) {
-			addBaseModel(
-				parentBaseModel, RandomTestUtil.randomString(), serviceContext);
-		}
 
 		Assert.assertEquals(
 			size, searchCount(assetEntryQuery, searchContext, 0, 1));
