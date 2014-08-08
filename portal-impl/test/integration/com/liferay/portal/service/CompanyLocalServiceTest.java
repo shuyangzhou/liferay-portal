@@ -75,15 +75,18 @@ import org.springframework.mock.web.MockServletContext;
 public class CompanyLocalServiceTest {
 
 	@Before
-	public void setUp() {
+	public void setUp() throws Exception {
 		_companyId = CompanyThreadLocal.getCompanyId();
-
 		CompanyThreadLocal.setCompanyId(PortalInstances.getDefaultCompanyId());
 
 		File file = new File("portal-web/docroot");
 
 		_mockServletContext = new MockServletContext(
 			"file:" + file.getAbsolutePath(), new FileSystemResourceLoader());
+
+		if (_company == null) {
+			_company = addCompany();
+		}
 	}
 
 	@After
@@ -250,69 +253,63 @@ public class CompanyLocalServiceTest {
 
 	@Test
 	public void testUpdateDisplay() throws Exception {
-		Company company = addCompany();
+		_company = addCompany();
 
-		User user = UserLocalServiceUtil.getDefaultUser(company.getCompanyId());
+		User user = UserLocalServiceUtil.getDefaultUser(
+			_company.getCompanyId());
 
 		UserLocalServiceUtil.updateUser(user);
 
 		CompanyLocalServiceUtil.updateDisplay(
-			company.getCompanyId(), "hu", "CET");
+			_company.getCompanyId(), "hu", "CET");
 
-		user = UserLocalServiceUtil.getDefaultUser(company.getCompanyId());
+		user = UserLocalServiceUtil.getDefaultUser(_company.getCompanyId());
 
 		Assert.assertEquals("hu", user.getLanguageId());
 		Assert.assertEquals("CET", user.getTimeZoneId());
+
+		CompanyLocalServiceUtil.updateDisplay(
+			_company.getCompanyId(), "en_US", "UTC");
 	}
 
 	@Test
 	public void testUpdateInvalidAccountNames() throws Exception {
-		Company company = addCompany();
-
 		Group group = GroupTestUtil.addGroup();
 
-		group.setCompanyId(company.getCompanyId());
+		group.setCompanyId(_company.getCompanyId());
 
 		GroupLocalServiceUtil.updateGroup(group);
 
 		testUpdateAccountNames(
-			company, new String[] {StringPool.BLANK, group.getName()}, true);
+			_company, new String[] {StringPool.BLANK, group.getName()}, true);
 
 		GroupLocalServiceUtil.deleteGroup(group);
-
-		CompanyLocalServiceUtil.deleteCompany(company.getCompanyId());
-	}
-
-	@Test
-	public void testUpdateInvalidVirtualHostNames() throws Exception {
-		testUpdateVirtualHostNames(
-			new String[] {StringPool.BLANK, "localhost", ".abc",}, true);
 	}
 
 	@Test
 	public void testUpdateMx() throws Exception {
-		testUpdateMx("abc.com", true, true);
-		testUpdateMx("abc.com", true, false);
-		testUpdateMx(StringPool.BLANK, false, true);
-		testUpdateMx(StringPool.BLANK, false, false);
+		testUpdateMx(_company, "abc.com", true, true);
+		testUpdateMx(_company, "abc.com", true, false);
+		testUpdateMx(_company, StringPool.BLANK, false, true);
+		testUpdateMx(_company, StringPool.BLANK, false, false);
 	}
 
 	@Test
 	public void testUpdateValidAccountNames() throws Exception {
-		Company company = addCompany();
-
 		testUpdateAccountNames(
-			company, new String[] {RandomTestUtil.randomString()}, false);
-
-		CompanyLocalServiceUtil.deleteCompany(company.getCompanyId());
+			_company, new String[] {RandomTestUtil.randomString()}, false);
 	}
 
 	@Test
-	public void testUpdateValidVirtualHostNames() throws Exception {
-		testUpdateVirtualHostNames(new String[] {"abc.com"}, false);
+	public void testUpdateVirtualHostNames() throws Exception {
+		testUpdateVirtualHostNames(
+			_company, new String[] {StringPool.BLANK, "localhost", ".abc",},
+				true);
+
+		testUpdateVirtualHostNames(_company, new String[] {"abc.com"}, false);
 	}
 
-	protected Company addCompany() throws Exception {
+	protected static Company addCompany() throws Exception {
 		String webId = RandomTestUtil.randomString() + "test.com";
 
 		Company company = CompanyLocalServiceUtil.addCompany(
@@ -369,9 +366,11 @@ public class CompanyLocalServiceTest {
 		Account account = AccountLocalServiceUtil.getAccount(
 			company.getAccountId());
 
+		String originalAccountName = account.getName();
+
 		for (String accountName : accountNames) {
 			try {
-				company = CompanyLocalServiceUtil.updateCompany(
+				CompanyLocalServiceUtil.updateCompany(
 					company.getCompanyId(), company.getVirtualHostname(),
 					company.getMx(), company.getHomeURL(), true, null,
 					accountName, account.getLegalName(), account.getLegalId(),
@@ -389,12 +388,20 @@ public class CompanyLocalServiceTest {
 				}
 			}
 		}
+
+		CompanyLocalServiceUtil.updateCompany(
+					company.getCompanyId(), company.getVirtualHostname(),
+					company.getMx(), company.getHomeURL(), true, null,
+					originalAccountName, account.getLegalName(),
+					account.getLegalId(), account.getLegalType(),
+					account.getSicCode(), account.getTickerSymbol(),
+					account.getIndustry(), account.getType(),
+					account.getSize());
 	}
 
-	protected void testUpdateMx(String mx, boolean valid, boolean mailMxUpdate)
+	protected void testUpdateMx(
+			Company company, String mx, boolean valid, boolean mailMxUpdate)
 		throws Exception {
-
-		Company company = addCompany();
 
 		String originalMx = company.getMx();
 
@@ -433,17 +440,19 @@ public class CompanyLocalServiceTest {
 			}
 		}
 		finally {
-			CompanyLocalServiceUtil.deleteCompany(company.getCompanyId());
+			CompanyLocalServiceUtil.updateCompany(
+				company.getCompanyId(), company.getVirtualHostname(),
+				originalMx, company.getMaxUsers(), company.getActive());
 
 			field.set(null, value);
 		}
 	}
 
 	protected void testUpdateVirtualHostNames(
-			String[] virtualHostNames, boolean expectFailure)
+			Company company, String[] virtualHostNames, boolean expectFailure)
 		throws Exception {
 
-		Company company = addCompany();
+		String originalVirtualHostName = company.getVirtualHostname();
 
 		for (String virtualHostName : virtualHostNames) {
 			try {
@@ -462,10 +471,13 @@ public class CompanyLocalServiceTest {
 			}
 		}
 
-		CompanyLocalServiceUtil.deleteCompany(company.getCompanyId());
+		CompanyLocalServiceUtil.updateCompany(
+			company.getCompanyId(), originalVirtualHostName, company.getMx(),
+			company.getMaxUsers(), company.getActive());
 	}
 
-	private long _companyId;
-	private MockServletContext _mockServletContext;
+	private static Company _company;
+	private static long _companyId;
+	private static MockServletContext _mockServletContext;
 
 }
