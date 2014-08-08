@@ -771,27 +771,19 @@ public abstract class BaseAssetSearchTestCase {
 	}
 
 	
-	protected void doTestOrderByCreateDateAsc() throws Exception {
+	protected void doTestOrderByCreateDateAsc(String[] titles) throws Exception {
 		AssetEntryQuery assetEntryQuery =
 			AssetEntryQueryTestUtil.createAssetEntryQuery(
 				_group.getGroupId(), new String[] {getBaseModelClassName()});
-
-		String[] titles = {
-			"open", "liferay", "social", "osgi", "content", "life"
-		};
 
 		testOrderByCreateDate(assetEntryQuery, "asc", titles, titles);
 	}
 
 	
-	protected void doTestOrderByCreateDateDesc() throws Exception {
+	protected void doTestOrderByCreateDateDesc(String[] titles) throws Exception {
 		AssetEntryQuery assetEntryQuery =
 			AssetEntryQueryTestUtil.createAssetEntryQuery(
 				_group.getGroupId(), new String[] {getBaseModelClassName()});
-
-		String[] titles = {
-			"open", "liferay", "social", "osgi", "content", "life"
-		};
 
 		String[] orderedTitles = {
 			"life", "content", "osgi", "social", "liferay", "open"
@@ -801,36 +793,28 @@ public abstract class BaseAssetSearchTestCase {
 	}
 
 	
-	protected void doTestOrderByExpirationDateAsc() throws Exception {
+	protected void doTestOrderByExpirationDateAsc(Date[] expirationDates) throws Exception {
 		AssetEntryQuery assetEntryQuery =
 			AssetEntryQueryTestUtil.createAssetEntryQuery(
 				_group.getGroupId(), new String[] {getBaseModelClassName()});
-
-		Date[] expirationDates = generateRandomDates(new Date(), 6);
 
 		testOrderByExpirationDate(assetEntryQuery, "asc", expirationDates);
 	}
 
 	
-	protected void doTestOrderByExpirationDateDesc() throws Exception {
+	protected void doTestOrderByExpirationDateDesc(Date[] expirationDates) throws Exception {
 		AssetEntryQuery assetEntryQuery =
 			AssetEntryQueryTestUtil.createAssetEntryQuery(
 				_group.getGroupId(), new String[] {getBaseModelClassName()});
-
-		Date[] expirationDates = generateRandomDates(new Date(), 6);
 
 		testOrderByExpirationDate(assetEntryQuery, "desc", expirationDates);
 	}
 
 	
-	protected void doTestOrderByTitleAsc() throws Exception {
+	protected void doTestOrderByTitleAsc(String[] titles) throws Exception {
 		AssetEntryQuery assetEntryQuery =
 			AssetEntryQueryTestUtil.createAssetEntryQuery(
 				_group.getGroupId(), new String[] {getBaseModelClassName()});
-
-		String[] titles = {
-			"open", "liferay", "social", "osgi", "content", "life"
-		};
 
 		String[] orderedTitles = {
 			"content", "life", "liferay", "open", "osgi", "social"
@@ -840,14 +824,10 @@ public abstract class BaseAssetSearchTestCase {
 	}
 
 	
-	protected void doTestOrderByTitleDesc() throws Exception {
+	protected void doTestOrderByTitleDesc(String[] titles) throws Exception {
 		AssetEntryQuery assetEntryQuery =
 			AssetEntryQueryTestUtil.createAssetEntryQuery(
 				_group.getGroupId(), new String[] {getBaseModelClassName()});
-
-		String[] titles = {
-			"open", "liferay", "social", "osgi", "content", "life"
-		};
 
 		String[] orderedTitles = {
 			"social", "osgi", "open", "liferay", "life", "content"
@@ -857,36 +837,36 @@ public abstract class BaseAssetSearchTestCase {
 	}
 
 	
-	protected void doTestPaginationTypeNone() throws Exception {
+	protected void doTestPaginationTypeNone(int size) throws Exception {
 		AssetEntryQuery assetEntryQuery =
 			AssetEntryQueryTestUtil.createAssetEntryQuery(
 				_group.getGroupId(), new String[] {getBaseModelClassName()});
 
 		assetEntryQuery.setPaginationType("none");
 
-		testPaginationType(assetEntryQuery, 5);
+		testPaginationType(assetEntryQuery, size);
 	}
 
 	
-	protected void doTestPaginationTypeRegular() throws Exception {
+	protected void doTestPaginationTypeRegular(int size) throws Exception {
 		AssetEntryQuery assetEntryQuery =
 			AssetEntryQueryTestUtil.createAssetEntryQuery(
 				_group.getGroupId(), new String[] {getBaseModelClassName()});
 
 		assetEntryQuery.setPaginationType("regular");
 
-		testPaginationType(assetEntryQuery, 5);
+		testPaginationType(assetEntryQuery, size);
 	}
 
 	
-	protected void doTestPaginationTypeSimple() throws Exception {
+	protected void doTestPaginationTypeSimple(int size) throws Exception {
 		AssetEntryQuery assetEntryQuery =
 			AssetEntryQueryTestUtil.createAssetEntryQuery(
 				_group.getGroupId(), new String[] {getBaseModelClassName()});
 
 		assetEntryQuery.setPaginationType("simple");
 
-		testPaginationType(assetEntryQuery, 5);
+		testPaginationType(assetEntryQuery, size);
 	}
 
 	protected BaseModel<?> addBaseModel(
@@ -1220,6 +1200,207 @@ public abstract class BaseAssetSearchTestCase {
 
 		Assert.assertEquals(
 			size, searchCount(assetEntryQuery, searchContext, 0, 1));
+	}
+	
+	@Test
+	public void testAssetCategories() throws Exception {
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
+
+		BaseModel<?> parentBaseModel = getParentBaseModel(
+			_group, serviceContext);
+
+		serviceContext.setAssetCategoryIds(_assetCategoryIds1);
+
+		addBaseModel(parentBaseModel, getSearchKeywords(), serviceContext);
+
+		serviceContext.setAssetCategoryIds(_assetCategoryIds2);
+
+		addBaseModel(parentBaseModel, getSearchKeywords(), serviceContext);
+
+		doTestAllAssetCategories1();
+		doTestAllAssetCategories2();
+		doTestAllAssetCategories3();
+		doTestAllAssetCategories4();
+
+		doTestAnyAssetCategories1();
+		doTestAnyAssetCategories2();
+		doTestAnyAssetCategories3();
+		doTestAnyAssetCategories4();
+
+		doTestAssetCategoryAllAndAny();
+		doTestAssetCategoryNotAllAndAll();
+		doTestAssetCategoryNotAllAndAny();
+		doTestAssetCategoryNotAllAndNotAny();
+		doTestAssetCategoryNotAnyAndAll();
+		doTestAssetCategoryNotAnyAndAny();
+
+		doTestNotAllAssetCategories1();
+		doTestNotAllAssetCategories2();
+		doTestNotAllAssetCategories3();
+		doTestNotAllAssetCategories4();
+
+		doTestAnyAssetCategories1();
+		doTestAnyAssetCategories2();
+		doTestAnyAssetCategories3();
+		doTestAnyAssetCategories4();
+	}
+
+	@Test
+	public void testAssetTags() throws Exception {
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
+
+		BaseModel<?> parentBaseModel = getParentBaseModel(
+			_group, serviceContext);
+
+		serviceContext.setAssetTagNames(_assetTagsNames1);
+		serviceContext.setAssetCategoryIds(_assetCategoryIds1);
+
+		addBaseModel(parentBaseModel, getSearchKeywords(), serviceContext);
+
+		serviceContext.setAssetTagNames(_assetTagsNames2);
+		serviceContext.setAssetCategoryIds(_assetCategoryIds2);
+
+		addBaseModel(parentBaseModel, getSearchKeywords(), serviceContext);
+
+		doTestAllAssetTags1();
+		doTestAllAssetTags2();
+		doTestAllAssetTags3();
+		doTestAllAssetTags4();
+
+		doTestAnyAssetTags1();
+		doTestAnyAssetTags2();
+		doTestAnyAssetTags3();
+		doTestAnyAssetTags4();
+
+		doTestAssetTagsAllAndAny();
+		doTestAssetTagsNotAllAndAll();
+		doTestAssetTagsNotAllAndAny();
+		doTestAssetTagsNotAllAndNotAny();
+		doTestAssetTagsNotAnyAndAll();
+		doTestAssetTagsNotAnyAndAny();
+
+		doTestAllAssetTags1();
+		doTestAllAssetTags2();
+		doTestAllAssetTags3();
+		doTestAllAssetTags4();
+
+		doTestNotAnyAssetTags1();
+		doTestNotAnyAssetTags2();
+		doTestNotAnyAssetTags2();
+		doTestNotAnyAssetTags2();
+	}
+
+	@Test
+	public void testClassName() throws Exception {
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
+
+		BaseModel<?> parentBaseModel = getParentBaseModel(
+			_group, serviceContext);
+
+		addBaseModel(parentBaseModel, getSearchKeywords(), serviceContext);
+
+		doTestClassName1();
+		doTestClassName2();
+	}
+
+	@Test
+	public void testClassTypeIds() throws Exception {
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
+
+		BaseModel<?> parentBaseModel = getParentBaseModel(
+			_group, serviceContext);
+
+		addBaseModelWithClassType(
+			parentBaseModel, getSearchKeywords(), serviceContext);
+
+		doTestClassTypeIds1();
+		doTestClassTypeIds2();
+	}
+
+	@Test
+	public void testOrderByCreateDate() throws Exception {
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
+
+		BaseModel<?> parentBaseModel = getParentBaseModel(
+			_group, serviceContext);
+		String[] titles = {
+			"open", "liferay", "social", "osgi", "content", "life"
+		};
+
+		BaseModel<?>[] baseModels = new BaseModel[titles.length];
+
+		for (int i = 0; i < titles.length; i++) {
+			String title = titles[i];
+
+			baseModels[i] = addBaseModel(
+				parentBaseModel, title, serviceContext);
+		}
+
+		doTestOrderByCreateDateAsc(titles);
+		doTestOrderByCreateDateDesc(titles);
+	}
+
+	@Test
+	public void testOrderByExpirationDate() throws Exception {
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
+
+		BaseModel<?> parentBaseModel = getParentBaseModel(
+			_group, serviceContext);
+		Date[] expirationDates = generateRandomDates(new Date(), 6);
+
+		for (Date expirationDate : expirationDates) {
+			addBaseModel(
+				parentBaseModel, RandomTestUtil.randomString(), expirationDate,
+				serviceContext);
+		}
+
+		doTestOrderByExpirationDateAsc(expirationDates);
+		doTestOrderByExpirationDateDesc(expirationDates);
+	}
+
+	@Test
+	public void testOrderByTitle() throws Exception {
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
+
+		BaseModel<?> parentBaseModel = getParentBaseModel(
+			_group, serviceContext);
+		String[] titles = {
+			"open", "liferay", "social", "osgi", "content", "life"
+		};
+
+		for (String title : titles) {
+			addBaseModel(parentBaseModel, title, serviceContext);
+		}
+
+		doTestOrderByTitleAsc(titles);
+		doTestOrderByTitleDesc(titles);
+	}
+
+	@Test
+	public void testPaginationType() throws Exception {
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
+
+		BaseModel<?> parentBaseModel = getParentBaseModel(
+			_group, serviceContext);
+
+		int size = 5;
+
+		for (int i = 0; i < size; i++) {
+			addBaseModel(
+				parentBaseModel, RandomTestUtil.randomString(), serviceContext);
+		}
+
+		doTestPaginationTypeNone(size);
+		doTestPaginationTypeRegular(size);
+		doTestPaginationTypeSimple(size);
 	}
 
 	private long[] _assetCategoryIds1;
