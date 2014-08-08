@@ -108,7 +108,7 @@ public class TransactionalPortalCacheTest {
 		_transactionalPortalCache.put(_KEY_1, _VALUE_2, 10);
 
 		_testCacheListener.assertActionsCount(1);
-		_testCacheListener.assertUpdated(_KEY_1, _VALUE_2);
+		_testCacheListener.assertUpdated(_KEY_1, _VALUE_2, 10);
 
 		_testCacheListener.reset();
 
@@ -123,7 +123,8 @@ public class TransactionalPortalCacheTest {
 			Assert.fail();
 		}
 		catch (IllegalArgumentException iae) {
-			Assert.assertEquals("Time to live is negative", iae.getMessage());
+			Assert.assertEquals(
+				"Time to live is either 0 or negative", iae.getMessage());
 		}
 
 		_transactionalPortalCache.remove(_KEY_1);
@@ -174,7 +175,8 @@ public class TransactionalPortalCacheTest {
 			Assert.fail();
 		}
 		catch (IllegalArgumentException iae) {
-			Assert.assertEquals("Time to live is negative", iae.getMessage());
+			Assert.assertEquals(
+				"Time to live is either 0 or negative", iae.getMessage());
 		}
 	}
 
@@ -230,7 +232,8 @@ public class TransactionalPortalCacheTest {
 			Assert.fail();
 		}
 		catch (IllegalArgumentException iae) {
-			Assert.assertEquals("Time to live is negative", iae.getMessage());
+			Assert.assertEquals(
+				"Time to live is either 0 or negative", iae.getMessage());
 		}
 
 		// Remove with null key
@@ -465,8 +468,14 @@ public class TransactionalPortalCacheTest {
 		TransactionalPortalCacheHelper.commit();
 
 		_testCacheListener.assertActionsCount(2);
-		_testCacheListener.assertPut(_KEY_2, _VALUE_1);
 		_testCacheListener.assertRemoved(_KEY_1, _VALUE_1);
+
+		if (ttl) {
+			_testCacheListener.assertPut(_KEY_2, _VALUE_1, 10);
+		}
+		else {
+			_testCacheListener.assertPut(_KEY_2, _VALUE_1);
+		}
 
 		_testCacheListener.reset();
 

@@ -109,7 +109,8 @@ public class TransactionalPortalCache<K extends Serializable, V>
 			}
 
 			if ((timeToLive != DEFAULT_TIME_TO_LIVE) && (timeToLive < 0)) {
-				throw new IllegalArgumentException("Time to live is negative");
+				throw new IllegalArgumentException(
+					"Time to live is either 0 or negative");
 			}
 
 			TransactionalPortalCacheHelper.put(

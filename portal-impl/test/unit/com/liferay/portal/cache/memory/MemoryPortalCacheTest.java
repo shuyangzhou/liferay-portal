@@ -169,7 +169,7 @@ public class MemoryPortalCacheTest {
 		Assert.assertEquals(_VALUE_1, _memoryPortalCache.get(_KEY_2));
 
 		_defaultCacheListener.assertActionsCount(1);
-		_defaultCacheListener.assertUpdated(_KEY_2, _VALUE_1);
+		_defaultCacheListener.assertUpdated(_KEY_2, _VALUE_1, 10);
 
 		_defaultCacheListener.reset();
 
@@ -207,7 +207,8 @@ public class MemoryPortalCacheTest {
 			Assert.fail();
 		}
 		catch (IllegalArgumentException iae) {
-			Assert.assertEquals("Time to live is negative", iae.getMessage());
+			Assert.assertEquals(
+				"Time to live is either 0 or negative", iae.getMessage());
 		}
 
 		_defaultCacheListener.assertActionsCount(0);
@@ -274,7 +275,8 @@ public class MemoryPortalCacheTest {
 			Assert.fail();
 		}
 		catch (IllegalArgumentException iae) {
-			Assert.assertEquals("Time to live is negative", iae.getMessage());
+			Assert.assertEquals(
+				"Time to live is either 0 or negative", iae.getMessage());
 		}
 
 		_defaultCacheListener.assertActionsCount(0);
@@ -337,7 +339,8 @@ public class MemoryPortalCacheTest {
 			Assert.fail();
 		}
 		catch (IllegalArgumentException iae) {
-			Assert.assertEquals("Time to live is negative", iae.getMessage());
+			Assert.assertEquals(
+				"Time to live is either 0 or negative", iae.getMessage());
 		}
 
 		_defaultCacheListener.assertActionsCount(0);
@@ -538,7 +541,8 @@ public class MemoryPortalCacheTest {
 			Assert.fail();
 		}
 		catch (IllegalArgumentException iae) {
-			Assert.assertEquals("Time to live is negative", iae.getMessage());
+			Assert.assertEquals(
+				"Time to live is either 0 or negative", iae.getMessage());
 		}
 
 		_defaultCacheListener.assertActionsCount(0);
@@ -590,7 +594,8 @@ public class MemoryPortalCacheTest {
 			Assert.fail();
 		}
 		catch (IllegalArgumentException iae) {
-			Assert.assertEquals("Time to live is negative", iae.getMessage());
+			Assert.assertEquals(
+				"Time to live is either 0 or negative", iae.getMessage());
 		}
 
 		_defaultCacheListener.assertActionsCount(0);

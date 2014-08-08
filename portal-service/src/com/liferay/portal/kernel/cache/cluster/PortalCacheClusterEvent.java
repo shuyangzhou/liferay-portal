@@ -59,7 +59,8 @@ public class PortalCacheClusterEvent implements Serializable {
 		if ((timeToLive != PortalCache.DEFAULT_TIME_TO_LIVE) &&
 			(timeToLive < 0)) {
 
-			throw new IllegalArgumentException("Time to live is negative");
+			throw new IllegalArgumentException(
+				"Time to live is either 0 or negative");
 		}
 
 		_cacheName = cacheName;
@@ -130,7 +131,8 @@ public class PortalCacheClusterEvent implements Serializable {
 		if ((timeToLive != PortalCache.DEFAULT_TIME_TO_LIVE) &&
 			(timeToLive < 0)) {
 
-			throw new IllegalArgumentException("Time to live is negative");
+			throw new IllegalArgumentException(
+				"Time to live is either 0 or negative");
 		}
 
 		_timeToLive = timeToLive;
