@@ -17,6 +17,7 @@ package com.liferay.portlet.blogs.asset;
 import com.liferay.portal.kernel.test.ExecutionTestListeners;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.test.DeleteAfterTestRun;
 import com.liferay.portal.test.Sync;
 import com.liferay.portal.test.SynchronousDestinationExecutionTestListener;
 import com.liferay.portal.test.listeners.MainServletExecutionTestListener;
@@ -25,6 +26,9 @@ import com.liferay.portal.util.test.TestPropsValues;
 import com.liferay.portlet.asset.service.persistence.BaseAssetSearchTestCase;
 import com.liferay.portlet.blogs.model.BlogsEntry;
 import com.liferay.portlet.blogs.util.test.BlogsTestUtil;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -45,25 +49,13 @@ public class BlogsEntryAssetSearchTest extends BaseAssetSearchTestCase {
 	@Ignore()
 	@Override
 	@Test
-	public void testClassTypeIds1() throws Exception {
+	public void testClassTypeIds() throws Exception {
 	}
 
 	@Ignore()
 	@Override
 	@Test
-	public void testClassTypeIds2() throws Exception {
-	}
-
-	@Ignore()
-	@Override
-	@Test
-	public void testOrderByExpirationDateAsc() throws Exception {
-	}
-
-	@Ignore()
-	@Override
-	@Test
-	public void testOrderByExpirationDateDesc() throws Exception {
+	public void testOrderByExpirationDate() throws Exception {
 	}
 
 	@Override
@@ -72,8 +64,11 @@ public class BlogsEntryAssetSearchTest extends BaseAssetSearchTestCase {
 			ServiceContext serviceContext)
 		throws Exception {
 
-		return BlogsTestUtil.addEntry(
+		BlogsEntry blogsEntry = BlogsTestUtil.addEntry(
 			TestPropsValues.getUserId(), keywords, true, serviceContext);
+
+		_blogsEntries.add(blogsEntry);
+		return blogsEntry;
 	}
 
 	@Override
@@ -85,5 +80,8 @@ public class BlogsEntryAssetSearchTest extends BaseAssetSearchTestCase {
 	protected String getSearchKeywords() {
 		return "title";
 	}
+
+	@DeleteAfterTestRun
+	private Set<BlogsEntry> _blogsEntries = new HashSet<BlogsEntry>();
 
 }

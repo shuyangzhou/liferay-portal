@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.test.ExecutionTestListeners;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.test.DeleteAfterTestRun;
 import com.liferay.portal.test.Sync;
 import com.liferay.portal.test.SynchronousDestinationExecutionTestListener;
 import com.liferay.portal.test.listeners.MainServletExecutionTestListener;
@@ -31,6 +32,8 @@ import com.liferay.portlet.journal.model.JournalArticle;
 import com.liferay.portlet.journal.util.test.JournalTestUtil;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.runner.RunWith;
 
@@ -54,9 +57,12 @@ public class JournalArticleAssetSearchTest extends BaseAssetSearchTestCase {
 
 		serviceContext.setWorkflowAction(WorkflowConstants.ACTION_PUBLISH);
 
-		return JournalTestUtil.addArticle(
+		JournalArticle journalArticle = JournalTestUtil.addArticle(
 			serviceContext.getScopeGroupId(), keywords, "Content",
 			expirationDate, serviceContext);
+
+		_journalArticles.add(journalArticle);
+		return journalArticle;
 	}
 
 	@Override
@@ -67,9 +73,12 @@ public class JournalArticleAssetSearchTest extends BaseAssetSearchTestCase {
 
 		serviceContext.setWorkflowAction(WorkflowConstants.ACTION_PUBLISH);
 
-		return JournalTestUtil.addArticle(
+		JournalArticle journalArticle = JournalTestUtil.addArticle(
 			serviceContext.getScopeGroupId(), keywords, "Content",
 			serviceContext);
+
+		_journalArticles.add(journalArticle);
+		return journalArticle;
 	}
 
 	@Override
@@ -92,9 +101,13 @@ public class JournalArticleAssetSearchTest extends BaseAssetSearchTestCase {
 
 		String content = DDMStructureTestUtil.getSampleStructuredContent();
 
-		return JournalTestUtil.addArticleWithXMLContent(
-			serviceContext.getScopeGroupId(), content,
-			_ddmStructure.getStructureKey(), _ddmTemplate.getTemplateKey());
+		JournalArticle journalArticle =
+			JournalTestUtil.addArticleWithXMLContent(
+				serviceContext.getScopeGroupId(), content,
+				_ddmStructure.getStructureKey(), _ddmTemplate.getTemplateKey());
+
+		_journalArticles.add(journalArticle);
+		return journalArticle;
 	}
 
 	@Override
@@ -118,5 +131,9 @@ public class JournalArticleAssetSearchTest extends BaseAssetSearchTestCase {
 
 	protected DDMStructure _ddmStructure;
 	protected DDMTemplate _ddmTemplate;
+
+	@DeleteAfterTestRun
+	private Set<JournalArticle> _journalArticles =
+		new HashSet<JournalArticle>();
 
 }
