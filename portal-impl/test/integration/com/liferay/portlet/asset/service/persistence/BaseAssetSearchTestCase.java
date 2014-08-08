@@ -23,8 +23,8 @@ import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.Group;
+import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
-import com.liferay.portal.test.DeleteAfterTestRun;
 import com.liferay.portal.test.Sync;
 import com.liferay.portal.test.listeners.MainServletExecutionTestListener;
 import com.liferay.portal.test.runners.LiferayIntegrationJUnitTestRunner;
@@ -53,8 +53,9 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -66,8 +67,8 @@ import org.junit.runner.RunWith;
 @Sync
 public abstract class BaseAssetSearchTestCase {
 
-	@Before
-	public void setUp() throws Exception {
+	@BeforeClass
+	public static void setUpClass() throws Exception {
 		_group = GroupTestUtil.addGroup();
 
 		ServiceContext serviceContext =
@@ -137,6 +138,11 @@ public abstract class BaseAssetSearchTestCase {
 		_assetTagsNames1 =
 			new String[] {"liferay", "architecture", "modularity", "osgi"};
 		_assetTagsNames2 = new String[] {"liferay", "architecture", "services"};
+	}
+
+	@AfterClass
+	public static void tearDownClass() throws Exception {
+		GroupLocalServiceUtil.deleteGroup(_group);
 	}
 
 	@Test
@@ -1264,19 +1270,16 @@ public abstract class BaseAssetSearchTestCase {
 		return results.getLength();
 	}
 
-	private long[] _assetCategoryIds1;
-	private long[] _assetCategoryIds2;
-	private String[] _assetTagsNames1;
-	private String[] _assetTagsNames2;
-	private long _fashionCategoryId;
-	private long _foodCategoryId;
-
-	@DeleteAfterTestRun
-	private Group _group;
-
-	private long _healthCategoryId;
-	private long _sportCategoryId;
-	private long _travelCategoryId;
-	private long _vocabularyId;
+	private static long[] _assetCategoryIds1;
+	private static long[] _assetCategoryIds2;
+	private static String[] _assetTagsNames1;
+	private static String[] _assetTagsNames2;
+	private static long _fashionCategoryId;
+	private static long _foodCategoryId;
+	private static Group _group;
+	private static long _healthCategoryId;
+	private static long _sportCategoryId;
+	private static long _travelCategoryId;
+	private static long _vocabularyId;
 
 }
