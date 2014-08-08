@@ -139,8 +139,8 @@ public abstract class BaseAssetSearchTestCase {
 		_assetTagsNames2 = new String[] {"liferay", "architecture", "services"};
 	}
 
-	@Test
-	public void testAllAssetCategories1() throws Exception {
+	
+	protected void doTestAllAssetCategories1() throws Exception {
 		long[] allCategoryIds = {_healthCategoryId};
 
 		AssetEntryQuery assetEntryQuery =
@@ -151,8 +151,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 2);
 	}
 
-	@Test
-	public void testAllAssetCategories2() throws Exception {
+	
+	protected void doTestAllAssetCategories2() throws Exception {
 		long[] allCategoryIds = {_healthCategoryId, _sportCategoryId};
 
 		AssetEntryQuery assetEntryQuery =
@@ -163,8 +163,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 2);
 	}
 
-	@Test
-	public void testAllAssetCategories3() throws Exception {
+	
+	protected void doTestAllAssetCategories3() throws Exception {
 		long[] allCategoryIds =
 			{_healthCategoryId, _sportCategoryId, _foodCategoryId};
 
@@ -176,8 +176,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 1);
 	}
 
-	@Test
-	public void testAllAssetCategories4() throws Exception {
+	
+	protected void doTestAllAssetCategories4() throws Exception {
 		long[] allCategoryIds = {
 			_healthCategoryId, _sportCategoryId, _foodCategoryId,
 			_travelCategoryId
@@ -191,8 +191,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 0);
 	}
 
-	@Test
-	public void testAllAssetTags1() throws Exception {
+	
+	protected void doTestAllAssetTags1() throws Exception {
 		String[] allTags = {"liferay"};
 
 		AssetEntryQuery assetEntryQuery =
@@ -203,8 +203,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 2);
 	}
 
-	@Test
-	public void testAllAssetTags2() throws Exception {
+	
+	protected void doTestAllAssetTags2() throws Exception {
 		String[] allTags = {"liferay", "architecture"};
 
 		AssetEntryQuery assetEntryQuery =
@@ -215,8 +215,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 2);
 	}
 
-	@Test
-	public void testAllAssetTags3() throws Exception {
+	
+	protected void doTestAllAssetTags3() throws Exception {
 		String[] allTags = {"liferay", "architecture", "services"};
 
 		AssetEntryQuery assetEntryQuery =
@@ -227,8 +227,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 1);
 	}
 
-	@Test
-	public void testAllAssetTags4() throws Exception {
+	
+	protected void doTestAllAssetTags4() throws Exception {
 		String[] allTags = {"liferay", "architecture", "services", "osgi"};
 
 		AssetEntryQuery assetEntryQuery =
@@ -239,8 +239,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 0);
 	}
 
-	@Test
-	public void testAnyAssetCategories1() throws Exception {
+	
+	protected void doTestAnyAssetCategories1() throws Exception {
 		long[] anyCategoryIds = {_healthCategoryId};
 
 		AssetEntryQuery assetEntryQuery =
@@ -251,8 +251,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 2);
 	}
 
-	@Test
-	public void testAnyAssetCategories2() throws Exception {
+	
+	protected void doTestAnyAssetCategories2() throws Exception {
 		long[] anyCategoryIds = {_healthCategoryId, _sportCategoryId};
 
 		AssetEntryQuery assetEntryQuery =
@@ -263,8 +263,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 2);
 	}
 
-	@Test
-	public void testAnyAssetCategories3() throws Exception {
+	
+	protected void doTestAnyAssetCategories3() throws Exception {
 		long[] anyCategoryIds =
 			{_healthCategoryId, _sportCategoryId, _foodCategoryId};
 
@@ -276,8 +276,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 2);
 	}
 
-	@Test
-	public void testAnyAssetCategories4() throws Exception {
+	
+	protected void doTestAnyAssetCategories4() throws Exception {
 		long[] anyCategoryIds = {_fashionCategoryId, _foodCategoryId};
 
 		AssetEntryQuery assetEntryQuery =
@@ -288,8 +288,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 1);
 	}
 
-	@Test
-	public void testAnyAssetTags1() throws Exception {
+	
+	protected void doTestAnyAssetTags1() throws Exception {
 		String[] anyTags = {"liferay"};
 
 		AssetEntryQuery assetEntryQuery =
@@ -300,8 +300,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 2);
 	}
 
-	@Test
-	public void testAnyAssetTags2() throws Exception {
+	
+	protected void doTestAnyAssetTags2() throws Exception {
 		String[] anyTags = {"liferay", "architecture"};
 
 		AssetEntryQuery assetEntryQuery =
@@ -312,8 +312,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 2);
 	}
 
-	@Test
-	public void testAnyAssetTags3() throws Exception {
+	
+	protected void doTestAnyAssetTags3() throws Exception {
 		String[] anyTags = {"liferay", "architecture", "services"};
 
 		AssetEntryQuery assetEntryQuery =
@@ -324,8 +324,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 2);
 	}
 
-	@Test
-	public void testAnyAssetTags4() throws Exception {
+	
+	protected void doTestAnyAssetTags4() throws Exception {
 		String[] anyTags = {"modularity", "osgi"};
 
 		AssetEntryQuery assetEntryQuery =
@@ -336,8 +336,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 1);
 	}
 
-	@Test
-	public void testAssetCategoryAllAndAny() throws Exception {
+	
+	protected void doTestAssetCategoryAllAndAny() throws Exception {
 		long[] allCategoryIds =
 			{_healthCategoryId, _sportCategoryId, _travelCategoryId};
 		long[] anyCategoryIds = {_healthCategoryId};
@@ -350,8 +350,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 1);
 	}
 
-	@Test
-	public void testAssetCategoryNotAllAndAll() throws Exception {
+	
+	protected void doTestAssetCategoryNotAllAndAll() throws Exception {
 		long[] notAllCategoryIds = {_fashionCategoryId, _foodCategoryId};
 		long[] allCategoryIds =
 			{_healthCategoryId, _sportCategoryId, _travelCategoryId};
@@ -364,8 +364,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 1);
 	}
 
-	@Test
-	public void testAssetCategoryNotAllAndAny() throws Exception {
+	
+	protected void doTestAssetCategoryNotAllAndAny() throws Exception {
 		long[] notAllCategoryIds = {_fashionCategoryId};
 		long[] anyCategoryIds = {_sportCategoryId, _travelCategoryId};
 
@@ -377,8 +377,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 1);
 	}
 
-	@Test
-	public void testAssetCategoryNotAllAndNotAny() throws Exception {
+	
+	protected void doTestAssetCategoryNotAllAndNotAny() throws Exception {
 		long[] notAllCategoryIds = {_fashionCategoryId, _foodCategoryId};
 		long[] notAnyCategoryIds = {_travelCategoryId};
 
@@ -390,8 +390,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 0);
 	}
 
-	@Test
-	public void testAssetCategoryNotAnyAndAll() throws Exception {
+	
+	protected void doTestAssetCategoryNotAnyAndAll() throws Exception {
 		long[] notAnyCategoryIds = {_fashionCategoryId};
 		long[] allCategoryIds = {_healthCategoryId, _sportCategoryId};
 
@@ -403,8 +403,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 1);
 	}
 
-	@Test
-	public void testAssetCategoryNotAnyAndAny() throws Exception {
+	
+	protected void doTestAssetCategoryNotAnyAndAny() throws Exception {
 		long[] notAnyCategoryIds = {_fashionCategoryId, _foodCategoryId};
 		long[] anyCategoryIds =
 			{_healthCategoryId, _sportCategoryId, _travelCategoryId};
@@ -417,8 +417,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 1);
 	}
 
-	@Test
-	public void testAssetTagsAllAndAny() throws Exception {
+	
+	protected void doTestAssetTagsAllAndAny() throws Exception {
 		String[] allTags = {"liferay", "architecture", "services"};
 		String[] anyTags = {"liferay"};
 
@@ -430,8 +430,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 1);
 	}
 
-	@Test
-	public void testAssetTagsNotAllAndAll() throws Exception {
+	
+	protected void doTestAssetTagsNotAllAndAll() throws Exception {
 		String[] notAllTags = {"osgi", "modularity"};
 		String[] allTags = {"liferay", "architecture", "services"};
 
@@ -443,8 +443,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 1);
 	}
 
-	@Test
-	public void testAssetTagsNotAllAndAny() throws Exception {
+	
+	protected void doTestAssetTagsNotAllAndAny() throws Exception {
 		String[] notAllTags = {"services"};
 		String[] anyTags = {"liferay", "architecture"};
 
@@ -456,8 +456,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 1);
 	}
 
-	@Test
-	public void testAssetTagsNotAllAndNotAny() throws Exception {
+	
+	protected void doTestAssetTagsNotAllAndNotAny() throws Exception {
 		String[] notAllTags = {"osgi", "modularity"};
 		String[] notAnyTags = {"services"};
 
@@ -469,8 +469,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 0);
 	}
 
-	@Test
-	public void testAssetTagsNotAnyAndAll() throws Exception {
+	
+	protected void doTestAssetTagsNotAnyAndAll() throws Exception {
 		String[] notAnyTags = {"modularity"};
 		String[] allTags = {"liferay", "architecture"};
 
@@ -482,8 +482,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 1);
 	}
 
-	@Test
-	public void testAssetTagsNotAnyAndAny() throws Exception {
+	
+	protected void doTestAssetTagsNotAnyAndAny() throws Exception {
 		String[] notAnyTags = {"modularity", "osgi"};
 		String[] anyTags = {"liferay", "architecture", "services"};
 
@@ -495,8 +495,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 1);
 	}
 
-	@Test
-	public void testClassName1() throws Exception {
+	
+	protected void doTestClassName1() throws Exception {
 		AssetEntryQuery assetEntryQuery =
 			AssetEntryQueryTestUtil.createAssetEntryQuery(
 				_group.getGroupId(), new String[] {getBaseModelClassName()});
@@ -504,8 +504,8 @@ public abstract class BaseAssetSearchTestCase {
 		testClassNames(assetEntryQuery, 1);
 	}
 
-	@Test
-	public void testClassName2() throws Exception {
+	
+	protected void doTestClassName2() throws Exception {
 		long[] classNameIds =
 			AssetRendererFactoryRegistryUtil.getClassNameIds(
 				TestPropsValues.getCompanyId());
@@ -520,8 +520,8 @@ public abstract class BaseAssetSearchTestCase {
 		testClassNames(assetEntryQuery, 0);
 	}
 
-	@Test
-	public void testClassTypeIds1() throws Exception {
+	
+	protected void doTestClassTypeIds1() throws Exception {
 		AssetEntryQuery assetEntryQuery =
 			AssetEntryQueryTestUtil.createAssetEntryQuery(
 				_group.getGroupId(), new String[] {getBaseModelClassName()});
@@ -529,8 +529,8 @@ public abstract class BaseAssetSearchTestCase {
 		testClassTypeIds(assetEntryQuery, true);
 	}
 
-	@Test
-	public void testClassTypeIds2() throws Exception {
+	
+	protected void doTestClassTypeIds2() throws Exception {
 		AssetEntryQuery assetEntryQuery =
 			AssetEntryQueryTestUtil.createAssetEntryQuery(
 				_group.getGroupId(), new String[] {getBaseModelClassName()});
@@ -576,8 +576,8 @@ public abstract class BaseAssetSearchTestCase {
 			initialEntries + 2, searchCount(assetEntryQuery, searchContext));
 	}
 
-	@Test
-	public void testNotAllAssetCategories1() throws Exception {
+	
+	protected void doTestNotAllAssetCategories1() throws Exception {
 		long[] notAllCategoryIds = {_healthCategoryId};
 
 		AssetEntryQuery assetEntryQuery =
@@ -588,8 +588,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 0);
 	}
 
-	@Test
-	public void testNotAllAssetCategories2() throws Exception {
+	
+	protected void doTestNotAllAssetCategories2() throws Exception {
 		long[] notAllCategoryIds = {_healthCategoryId, _sportCategoryId};
 
 		AssetEntryQuery assetEntryQuery =
@@ -600,8 +600,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 0);
 	}
 
-	@Test
-	public void testNotAllAssetCategories3() throws Exception {
+	
+	protected void doTestNotAllAssetCategories3() throws Exception {
 		long[] notAllCategoryIds = {_fashionCategoryId, _foodCategoryId};
 
 		AssetEntryQuery assetEntryQuery =
@@ -612,8 +612,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 1);
 	}
 
-	@Test
-	public void testNotAllAssetCategories4() throws Exception {
+	
+	protected void doTestNotAllAssetCategories4() throws Exception {
 		long[] notAllCategoryIds =
 			{_fashionCategoryId, _foodCategoryId, _travelCategoryId};
 
@@ -625,8 +625,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 2);
 	}
 
-	@Test
-	public void testNotAllAssetTags1() throws Exception {
+	
+	protected void doTestNotAllAssetTags1() throws Exception {
 		String[] notAllTags = {"liferay"};
 
 		AssetEntryQuery assetEntryQuery =
@@ -637,8 +637,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 0);
 	}
 
-	@Test
-	public void testNotAllAssetTags2() throws Exception {
+	
+	protected void doTestNotAllAssetTags2() throws Exception {
 		String[] notAllTags = {"liferay", "architecture"};
 
 		AssetEntryQuery assetEntryQuery =
@@ -649,8 +649,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 0);
 	}
 
-	@Test
-	public void testNotAllAssetTags3() throws Exception {
+	
+	protected void doTestNotAllAssetTags3() throws Exception {
 		String[] notAllTags = {"liferay", "architecture", "services"};
 
 		AssetEntryQuery assetEntryQuery =
@@ -661,8 +661,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 1);
 	}
 
-	@Test
-	public void testNotAllAssetTags4() throws Exception {
+	
+	protected void doTestNotAllAssetTags4() throws Exception {
 		String[] notAllTags = {"liferay", "architecture", "services", "osgi"};
 
 		AssetEntryQuery assetEntryQuery =
@@ -673,8 +673,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 2);
 	}
 
-	@Test
-	public void testNotAnyAssetCategories1() throws Exception {
+	
+	protected void doTestNotAnyAssetCategories1() throws Exception {
 		long[] notAnyCategoryIds = {_healthCategoryId};
 
 		AssetEntryQuery assetEntryQuery =
@@ -685,8 +685,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 0);
 	}
 
-	@Test
-	public void testNotAnyAssetCategories2() throws Exception {
+	
+	protected void doTestNotAnyAssetCategories2() throws Exception {
 		long[] notAnyCategoryIds = {_healthCategoryId, _sportCategoryId};
 
 		AssetEntryQuery assetEntryQuery =
@@ -697,8 +697,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 0);
 	}
 
-	@Test
-	public void testNotAnyAssetCategories3() throws Exception {
+	
+	protected void doTestNotAnyAssetCategories3() throws Exception {
 		long[] notAnyCategoryIds =
 			{_fashionCategoryId, _foodCategoryId, _travelCategoryId};
 
@@ -710,8 +710,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 0);
 	}
 
-	@Test
-	public void testNotAnyAssetCategories4() throws Exception {
+	
+	protected void doTestNotAnyAssetCategories4() throws Exception {
 		long[] notAnyCategoryIds = {_fashionCategoryId, _foodCategoryId};
 
 		AssetEntryQuery assetEntryQuery =
@@ -722,8 +722,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 1);
 	}
 
-	@Test
-	public void testNotAnyAssetTags1() throws Exception {
+	
+	protected void doTestNotAnyAssetTags1() throws Exception {
 		String[] notAnyTags = {"liferay"};
 
 		AssetEntryQuery assetEntryQuery =
@@ -734,8 +734,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 0);
 	}
 
-	@Test
-	public void testNotAnyAssetTags2() throws Exception {
+	
+	protected void doTestNotAnyAssetTags2() throws Exception {
 		String[] notAnyTags = {"liferay", "architecture"};
 
 		AssetEntryQuery assetEntryQuery =
@@ -746,8 +746,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 0);
 	}
 
-	@Test
-	public void testNotAnyAssetTags3() throws Exception {
+	
+	protected void doTestNotAnyAssetTags3() throws Exception {
 		String[] notAnyTags = {"liferay", "architecture", "services"};
 
 		AssetEntryQuery assetEntryQuery =
@@ -758,8 +758,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 0);
 	}
 
-	@Test
-	public void testNotAnyAssetTags4() throws Exception {
+	
+	protected void doTestNotAnyAssetTags4() throws Exception {
 		String[] notAnyTags = {"modularity", "osgi"};
 
 		AssetEntryQuery assetEntryQuery =
@@ -770,8 +770,8 @@ public abstract class BaseAssetSearchTestCase {
 		testAssetCategorization(assetEntryQuery, 1);
 	}
 
-	@Test
-	public void testOrderByCreateDateAsc() throws Exception {
+	
+	protected void doTestOrderByCreateDateAsc() throws Exception {
 		AssetEntryQuery assetEntryQuery =
 			AssetEntryQueryTestUtil.createAssetEntryQuery(
 				_group.getGroupId(), new String[] {getBaseModelClassName()});
@@ -783,8 +783,8 @@ public abstract class BaseAssetSearchTestCase {
 		testOrderByCreateDate(assetEntryQuery, "asc", titles, titles);
 	}
 
-	@Test
-	public void testOrderByCreateDateDesc() throws Exception {
+	
+	protected void doTestOrderByCreateDateDesc() throws Exception {
 		AssetEntryQuery assetEntryQuery =
 			AssetEntryQueryTestUtil.createAssetEntryQuery(
 				_group.getGroupId(), new String[] {getBaseModelClassName()});
@@ -800,8 +800,8 @@ public abstract class BaseAssetSearchTestCase {
 		testOrderByCreateDate(assetEntryQuery, "desc", titles, orderedTitles);
 	}
 
-	@Test
-	public void testOrderByExpirationDateAsc() throws Exception {
+	
+	protected void doTestOrderByExpirationDateAsc() throws Exception {
 		AssetEntryQuery assetEntryQuery =
 			AssetEntryQueryTestUtil.createAssetEntryQuery(
 				_group.getGroupId(), new String[] {getBaseModelClassName()});
@@ -811,8 +811,8 @@ public abstract class BaseAssetSearchTestCase {
 		testOrderByExpirationDate(assetEntryQuery, "asc", expirationDates);
 	}
 
-	@Test
-	public void testOrderByExpirationDateDesc() throws Exception {
+	
+	protected void doTestOrderByExpirationDateDesc() throws Exception {
 		AssetEntryQuery assetEntryQuery =
 			AssetEntryQueryTestUtil.createAssetEntryQuery(
 				_group.getGroupId(), new String[] {getBaseModelClassName()});
@@ -822,8 +822,8 @@ public abstract class BaseAssetSearchTestCase {
 		testOrderByExpirationDate(assetEntryQuery, "desc", expirationDates);
 	}
 
-	@Test
-	public void testOrderByTitleAsc() throws Exception {
+	
+	protected void doTestOrderByTitleAsc() throws Exception {
 		AssetEntryQuery assetEntryQuery =
 			AssetEntryQueryTestUtil.createAssetEntryQuery(
 				_group.getGroupId(), new String[] {getBaseModelClassName()});
@@ -839,8 +839,8 @@ public abstract class BaseAssetSearchTestCase {
 		testOrderByTitle(assetEntryQuery, "asc", titles, orderedTitles);
 	}
 
-	@Test
-	public void testOrderByTitleDesc() throws Exception {
+	
+	protected void doTestOrderByTitleDesc() throws Exception {
 		AssetEntryQuery assetEntryQuery =
 			AssetEntryQueryTestUtil.createAssetEntryQuery(
 				_group.getGroupId(), new String[] {getBaseModelClassName()});
@@ -856,8 +856,8 @@ public abstract class BaseAssetSearchTestCase {
 		testOrderByTitle(assetEntryQuery, "desc", titles, orderedTitles);
 	}
 
-	@Test
-	public void testPaginationTypeNone() throws Exception {
+	
+	protected void doTestPaginationTypeNone() throws Exception {
 		AssetEntryQuery assetEntryQuery =
 			AssetEntryQueryTestUtil.createAssetEntryQuery(
 				_group.getGroupId(), new String[] {getBaseModelClassName()});
@@ -867,8 +867,8 @@ public abstract class BaseAssetSearchTestCase {
 		testPaginationType(assetEntryQuery, 5);
 	}
 
-	@Test
-	public void testPaginationTypeRegular() throws Exception {
+	
+	protected void doTestPaginationTypeRegular() throws Exception {
 		AssetEntryQuery assetEntryQuery =
 			AssetEntryQueryTestUtil.createAssetEntryQuery(
 				_group.getGroupId(), new String[] {getBaseModelClassName()});
@@ -878,8 +878,8 @@ public abstract class BaseAssetSearchTestCase {
 		testPaginationType(assetEntryQuery, 5);
 	}
 
-	@Test
-	public void testPaginationTypeSimple() throws Exception {
+	
+	protected void doTestPaginationTypeSimple() throws Exception {
 		AssetEntryQuery assetEntryQuery =
 			AssetEntryQueryTestUtil.createAssetEntryQuery(
 				_group.getGroupId(), new String[] {getBaseModelClassName()});
