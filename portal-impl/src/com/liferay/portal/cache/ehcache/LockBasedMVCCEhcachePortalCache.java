@@ -92,6 +92,6 @@ public class LockBasedMVCCEhcachePortalCache
 		}
 	}
 
-	private Ehcache _ehcache;
+	private final Ehcache _ehcache;
 
 }

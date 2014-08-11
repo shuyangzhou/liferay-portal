@@ -351,16 +351,16 @@ public class DLFileEntryActionsDisplayContext {
 		return _portletDisplay.isWebDAVEnabled();
 	}
 
-	private long _companyId;
-	private DLActionsDisplayContext _dlActionsDisplayContext;
-	private DLFileEntryActionsDisplayContextHelper
+	private final long _companyId;
+	private final DLActionsDisplayContext _dlActionsDisplayContext;
+	private final DLFileEntryActionsDisplayContextHelper
 		_dlFileEntryActionsDisplayContextHelper;
-	private long _fileEntryTypeId;
-	private long _folderId;
+	private final long _fileEntryTypeId;
+	private final long _folderId;
 	private Boolean _ieOnWin32;
-	private PortletDisplay _portletDisplay;
-	private HttpServletRequest _request;
-	private long _scopeGroupId;
+	private final PortletDisplay _portletDisplay;
+	private final HttpServletRequest _request;
+	private final long _scopeGroupId;
 	private Boolean _trashEnabled;
 
 }
