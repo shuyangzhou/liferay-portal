@@ -91,6 +91,6 @@ public class MVCCEhcachePortalCache<K extends Serializable, V extends MVCCModel>
 		}
 	}
 
-	private LowLevelCache<K, V> _lowLevelCache;
+	private final LowLevelCache<K, V> _lowLevelCache;
 
 }

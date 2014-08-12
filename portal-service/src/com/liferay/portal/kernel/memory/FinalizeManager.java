@@ -54,9 +54,9 @@ public class FinalizeManager {
 		}
 	}
 
-	private static Map<Reference<?>, FinalizeAction> _referenceActionMap =
+	private static final Map<Reference<?>, FinalizeAction> _referenceActionMap =
 		new ConcurrentHashMap<Reference<?>, FinalizeAction>();
-	private static ReferenceQueue<Object> _referenceQueue =
+	private static final ReferenceQueue<Object> _referenceQueue =
 		new ReferenceQueue<Object>();
 
 	private static class FinalizeThread extends Thread {

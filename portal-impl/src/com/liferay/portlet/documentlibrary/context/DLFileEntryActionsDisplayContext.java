@@ -66,15 +66,18 @@ public class DLFileEntryActionsDisplayContext {
 			new DLFileEntryActionsDisplayContextHelper(
 				themeDisplay.getPermissionChecker(), fileEntry, fileVersion);
 
-		_fileEntryTypeId = ParamUtil.getLong(request, "fileEntryTypeId", -1);
+		long fileEntryTypeId = ParamUtil.getLong(
+			request, "fileEntryTypeId", -1);
 
-		if ((_fileEntryTypeId == -1) && (fileEntry != null) &&
+		if ((fileEntryTypeId == -1) && (fileEntry != null) &&
 			(fileEntry.getModel() instanceof DLFileEntry)) {
 
 			DLFileEntry dlFileEntry = (DLFileEntry)fileEntry.getModel();
 
-			_fileEntryTypeId = dlFileEntry.getFileEntryTypeId();
+			fileEntryTypeId = dlFileEntry.getFileEntryTypeId();
 		}
+
+		_fileEntryTypeId = fileEntryTypeId;
 
 		_folderId = BeanParamUtil.getLong(fileEntry, request, "folderId");
 		_portletDisplay = themeDisplay.getPortletDisplay();
@@ -351,16 +354,16 @@ public class DLFileEntryActionsDisplayContext {
 		return _portletDisplay.isWebDAVEnabled();
 	}
 
-	private long _companyId;
-	private DLActionsDisplayContext _dlActionsDisplayContext;
-	private DLFileEntryActionsDisplayContextHelper
+	private final long _companyId;
+	private final DLActionsDisplayContext _dlActionsDisplayContext;
+	private final DLFileEntryActionsDisplayContextHelper
 		_dlFileEntryActionsDisplayContextHelper;
-	private long _fileEntryTypeId;
-	private long _folderId;
+	private final long _fileEntryTypeId;
+	private final long _folderId;
 	private Boolean _ieOnWin32;
-	private PortletDisplay _portletDisplay;
-	private HttpServletRequest _request;
-	private long _scopeGroupId;
+	private final PortletDisplay _portletDisplay;
+	private final HttpServletRequest _request;
+	private final long _scopeGroupId;
 	private Boolean _trashEnabled;
 
 }
