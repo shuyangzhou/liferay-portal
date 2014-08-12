@@ -90,10 +90,14 @@ public class CacheManagerUtil {
 			_statisticsExecutorField = ReflectionUtil.getDeclaredField(
 				CacheManager.class, "statisticsExecutor");
 
+			Field workQueueField = null;
+
 			if (JavaDetector.isJDK6()) {
-				_workQueueField = ReflectionUtil.getDeclaredField(
+				workQueueField = ReflectionUtil.getDeclaredField(
 					ThreadPoolExecutor.class, "workQueue");
 			}
+
+			_workQueueField = workQueueField;
 		}
 		catch (Exception e) {
 			throw new ExceptionInInitializerError(e);
