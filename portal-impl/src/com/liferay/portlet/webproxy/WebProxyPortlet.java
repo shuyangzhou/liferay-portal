@@ -122,7 +122,8 @@ public class WebProxyPortlet extends PortletBridgePortlet {
 		writer.close();
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(WebProxyPortlet.class);
+	private static final Log _log = LogFactoryUtil.getLog(
+		WebProxyPortlet.class);
 
 	private boolean _enabled;
 

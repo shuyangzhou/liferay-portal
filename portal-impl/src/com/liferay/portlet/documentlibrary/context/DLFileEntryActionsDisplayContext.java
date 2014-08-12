@@ -66,7 +66,8 @@ public class DLFileEntryActionsDisplayContext {
 			new DLFileEntryActionsDisplayContextHelper(
 				themeDisplay.getPermissionChecker(), fileEntry, fileVersion);
 
-		long fileEntryTypeId = ParamUtil.getLong(request, "fileEntryTypeId", -1);
+		long fileEntryTypeId = ParamUtil.getLong(
+			request, "fileEntryTypeId", -1);
 
 		if ((fileEntryTypeId == -1) && (fileEntry != null) &&
 			(fileEntry.getModel() instanceof DLFileEntry)) {
