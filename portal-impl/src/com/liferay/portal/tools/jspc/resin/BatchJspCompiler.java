@@ -40,9 +40,13 @@ public class BatchJspCompiler {
 	}
 
 	public BatchJspCompiler(String appDir, String classDir) {
+
+		String tempAppDir = null;
+		String tempClassDir = null;
+
 		try {
-			_appDir = appDir;
-			_classDir = classDir;
+			tempAppDir = appDir;
+			tempClassDir = classDir;
 
 			DirectoryScanner ds = new DirectoryScanner();
 
@@ -60,6 +64,9 @@ public class BatchJspCompiler {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		_appDir = tempAppDir;
+		_classDir = tempClassDir;
 	}
 
 	private void _compile(String[] fileNames) throws Exception {
@@ -89,9 +96,9 @@ public class BatchJspCompiler {
 		}
 	}
 
-	private static FileImpl _fileUtil = FileImpl.getInstance();
+	private static final FileImpl _fileUtil = FileImpl.getInstance();
 
-	private String _appDir;
-	private String _classDir;
+	private final String _appDir;
+	private final String _classDir;
 
 }

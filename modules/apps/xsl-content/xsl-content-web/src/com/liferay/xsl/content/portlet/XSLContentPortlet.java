@@ -24,8 +24,7 @@ import org.osgi.service.component.annotations.Component;
  * @author Raymond Augé
  */
 @Component(
-	immediate = true,
-	property = {
+	immediate = true, property = {
 		"com.liferay.portlet.css-class-wrapper=portlet-xsl-content",
 		"com.liferay.portlet.instanceable=true",
 		"com.liferay.portlet.layout-cacheable=true",

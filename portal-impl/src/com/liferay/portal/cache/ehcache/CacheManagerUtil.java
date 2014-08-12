@@ -82,18 +82,22 @@ public class CacheManagerUtil {
 		return cacheManager;
 	}
 
-	private static Field _statisticsExecutorField;
-	private static Field _workQueueField;
+	private static final Field _statisticsExecutorField;
+	private static final Field _workQueueField;
 
 	static {
 		try {
 			_statisticsExecutorField = ReflectionUtil.getDeclaredField(
 				CacheManager.class, "statisticsExecutor");
 
+			Field workQueueField = null;
+
 			if (JavaDetector.isJDK6()) {
-				_workQueueField = ReflectionUtil.getDeclaredField(
+				workQueueField = ReflectionUtil.getDeclaredField(
 					ThreadPoolExecutor.class, "workQueue");
 			}
+
+			_workQueueField = workQueueField;
 		}
 		catch (Exception e) {
 			throw new ExceptionInInitializerError(e);

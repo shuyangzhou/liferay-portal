@@ -235,16 +235,16 @@ public class EhcacheStreamBootstrapHelpUtil {
 
 	private static final String _COMMAND_SOCKET_CLOSE = "${SOCKET_CLOSE}";
 
-	private static Log _log = LogFactoryUtil.getLog(
-		EhcacheStreamBootstrapHelpUtil.class);
-
-	private static MethodKey _createServerSocketFromClusterMethodKey =
+	private static final MethodKey _createServerSocketFromClusterMethodKey =
 		new MethodKey(
 			EhcacheStreamBootstrapHelpUtil.class,
 			"createServerSocketFromCluster", List.class);
-	private static volatile PortalCacheManager<?, ?> _portalCacheManager;
-	private static ServerSocketConfigurator _serverSocketConfigurator =
+	private static final Log _log = LogFactoryUtil.getLog(
+		EhcacheStreamBootstrapHelpUtil.class);
+	private static final ServerSocketConfigurator _serverSocketConfigurator =
 		new SocketCacheServerSocketConfiguration();
+
+	private static volatile PortalCacheManager<?, ?> _portalCacheManager;
 
 	private static class CacheElement implements Serializable {
 

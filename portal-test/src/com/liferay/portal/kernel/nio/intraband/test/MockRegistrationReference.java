@@ -26,15 +26,23 @@ import java.nio.channels.ScatteringByteChannel;
 public class MockRegistrationReference implements RegistrationReference {
 
 	public MockRegistrationReference(Intraband intraband) {
+		this(intraband, null, null);
+	}
+
+	public MockRegistrationReference(
+		Intraband intraband, ScatteringByteChannel scatteringByteChannel,
+		GatheringByteChannel gatherByteChannel) {
+
 		_intraband = intraband;
+		_gatheringByteChannel = gatherByteChannel;
+		_scatteringByteChannel = scatteringByteChannel;
 	}
 
 	public MockRegistrationReference(
 		ScatteringByteChannel scatteringByteChannel,
 		GatheringByteChannel gatheringByteChannel) {
 
-		_gatheringByteChannel = gatheringByteChannel;
-		_scatteringByteChannel = scatteringByteChannel;
+		this(null, scatteringByteChannel, gatheringByteChannel);
 	}
 
 	@Override
@@ -61,8 +69,8 @@ public class MockRegistrationReference implements RegistrationReference {
 	}
 
 	private boolean _cancelled;
-	private GatheringByteChannel _gatheringByteChannel;
-	private Intraband _intraband;
-	private ScatteringByteChannel _scatteringByteChannel;
+	private final GatheringByteChannel _gatheringByteChannel;
+	private final Intraband _intraband;
+	private final ScatteringByteChannel _scatteringByteChannel;
 
 }

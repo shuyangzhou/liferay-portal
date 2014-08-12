@@ -27,6 +27,8 @@ public class StrictPortletPreferencesImpl
 
 	public StrictPortletPreferencesImpl() {
 		super();
+
+		_companyId = 0;
 	}
 
 	public StrictPortletPreferencesImpl(
@@ -42,6 +44,8 @@ public class StrictPortletPreferencesImpl
 		String xml, Map<String, Preference > preferences) {
 
 		super(xml, preferences);
+
+		_companyId = 0;
 	}
 
 	@Override
@@ -64,6 +68,6 @@ public class StrictPortletPreferencesImpl
 		return super.equals(obj);
 	}
 
-	private long _companyId;
+	private final long _companyId;
 
 }
