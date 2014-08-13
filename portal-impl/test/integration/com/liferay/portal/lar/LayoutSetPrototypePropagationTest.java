@@ -286,8 +286,6 @@ public class LayoutSetPrototypePropagationTest
 			initialLayoutTemplateId,
 			LayoutTestUtil.getLayoutTemplateId(layout));
 
-		_layout = propagateChanges(_layout);
-
 		Assert.assertTrue(SitesUtil.isLayoutModifiedSinceLastMerge(_layout));
 		Assert.assertEquals(
 			"1_column", LayoutTestUtil.getLayoutTemplateId(_layout));
@@ -478,7 +476,10 @@ public class LayoutSetPrototypePropagationTest
 			RandomTestUtil.randomString(), true, layoutPrototype,
 			layoutSetLayoutLinkEnabled);
 
-		layoutSetPrototypeLayout = propagateChanges(layoutSetPrototypeLayout);
+		if (layoutSetLayoutLinkEnabled) {
+			layoutSetPrototypeLayout = propagateChanges(
+				layoutSetPrototypeLayout);
+		}
 
 		propagateChanges(group);
 
@@ -566,8 +567,6 @@ public class LayoutSetPrototypePropagationTest
 			group.getGroupId(), false);
 
 		SitesUtil.mergeLayoutSetPrototypeLayouts(group, layoutSet);
-
-		Thread.sleep(2000);
 	}
 
 	protected void setLayoutsUpdateable(boolean layoutsUpdateable)
@@ -618,8 +617,6 @@ public class LayoutSetPrototypePropagationTest
 		SitesUtil.updateLayoutSetPrototypesLinks(
 			group, _layoutSetPrototype.getLayoutSetPrototypeId(), 0,
 			linkEnabled, linkEnabled);
-
-		Thread.sleep(2000);
 	}
 
 	protected void testAddChildLayout(boolean layoutSetPrototypeLinkEnabled)
