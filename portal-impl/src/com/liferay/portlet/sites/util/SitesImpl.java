@@ -265,9 +265,13 @@ public class SitesImpl implements Sites {
 		UnicodeProperties typeSettingsProperties =
 			targetLayout.getTypeSettingsProperties();
 
+		Date modifiedDate = targetLayout.getModifiedDate();
+
 		typeSettingsProperties.setProperty(
 			LAST_MERGE_TIME,
-			String.valueOf(targetLayout.getModifiedDate().getTime()));
+			String.valueOf(
+				SitesUtil.getDBSafeLastMergeTime(
+					modifiedDate, modifiedDate.getTime())));
 
 		LayoutLocalServiceUtil.updateLayout(targetLayout);
 
