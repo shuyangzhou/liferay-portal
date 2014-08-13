@@ -14,6 +14,9 @@
 
 package com.liferay.portal.kernel.util;
 
+import com.liferay.portal.kernel.dao.db.DB;
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
+
 import java.text.DateFormat;
 import java.text.Format;
 import java.text.ParseException;
@@ -173,6 +176,22 @@ public class DateUtil {
 		}
 
 		return daysBetween;
+	}
+
+	public static Date getDBSafeDate(Date date) {
+		DB db = DBFactoryUtil.getDB();
+
+		if (db.isSupportsDateMilliseconds() || (date == null)) {
+			return date;
+		}
+
+		long dbSafeTime = date.getTime();
+
+		dbSafeTime -= dbSafeTime % 1000;
+
+		date.setTime(dbSafeTime);
+
+		return date;
 	}
 
 	public static DateFormat getISO8601Format() {
