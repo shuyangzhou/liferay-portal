@@ -233,7 +233,17 @@ public class SocialActivitySetModelImpl extends BaseModelImpl<SocialActivitySet>
 
 	@Override
 	public void setActivitySetId(long activitySetId) {
+		if (!_setOriginalActivitySetId) {
+			_setOriginalActivitySetId = true;
+
+			_originalActivitySetId = _activitySetId;
+		}
+
 		_activitySetId = activitySetId;
+	}
+
+	public long getOriginalActivitySetId() {
+		return _originalActivitySetId;
 	}
 
 	@Override
@@ -265,7 +275,17 @@ public class SocialActivitySetModelImpl extends BaseModelImpl<SocialActivitySet>
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if (!_setOriginalCompanyId) {
+			_setOriginalCompanyId = true;
+
+			_originalCompanyId = _companyId;
+		}
+
 		_companyId = companyId;
+	}
+
+	public long getOriginalCompanyId() {
+		return _originalCompanyId;
 	}
 
 	@Override
@@ -313,7 +333,17 @@ public class SocialActivitySetModelImpl extends BaseModelImpl<SocialActivitySet>
 
 	@Override
 	public void setCreateDate(long createDate) {
+		if (!_setOriginalCreateDate) {
+			_setOriginalCreateDate = true;
+
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public long getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@Override
@@ -325,7 +355,17 @@ public class SocialActivitySetModelImpl extends BaseModelImpl<SocialActivitySet>
 	public void setModifiedDate(long modifiedDate) {
 		_columnBitmask = -1L;
 
+		if (!_setOriginalModifiedDate) {
+			_setOriginalModifiedDate = true;
+
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public long getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@Override
@@ -426,7 +466,15 @@ public class SocialActivitySetModelImpl extends BaseModelImpl<SocialActivitySet>
 
 	@Override
 	public void setExtraData(String extraData) {
+		if (_originalExtraData == null) {
+			_originalExtraData = _extraData;
+		}
+
 		_extraData = extraData;
+	}
+
+	public String getOriginalExtraData() {
+		return GetterUtil.getString(_originalExtraData);
 	}
 
 	@Override
@@ -436,7 +484,17 @@ public class SocialActivitySetModelImpl extends BaseModelImpl<SocialActivitySet>
 
 	@Override
 	public void setActivityCount(int activityCount) {
+		if (!_setOriginalActivityCount) {
+			_setOriginalActivityCount = true;
+
+			_originalActivityCount = _activityCount;
+		}
+
 		_activityCount = activityCount;
+	}
+
+	public int getOriginalActivityCount() {
+		return _originalActivityCount;
 	}
 
 	public long getColumnBitmask() {
@@ -551,13 +609,29 @@ public class SocialActivitySetModelImpl extends BaseModelImpl<SocialActivitySet>
 	public void resetOriginalValues() {
 		SocialActivitySetModelImpl socialActivitySetModelImpl = this;
 
+		socialActivitySetModelImpl._originalActivitySetId = socialActivitySetModelImpl._activitySetId;
+
+		socialActivitySetModelImpl._setOriginalActivitySetId = false;
+
 		socialActivitySetModelImpl._originalGroupId = socialActivitySetModelImpl._groupId;
 
 		socialActivitySetModelImpl._setOriginalGroupId = false;
 
+		socialActivitySetModelImpl._originalCompanyId = socialActivitySetModelImpl._companyId;
+
+		socialActivitySetModelImpl._setOriginalCompanyId = false;
+
 		socialActivitySetModelImpl._originalUserId = socialActivitySetModelImpl._userId;
 
 		socialActivitySetModelImpl._setOriginalUserId = false;
+
+		socialActivitySetModelImpl._originalCreateDate = socialActivitySetModelImpl._createDate;
+
+		socialActivitySetModelImpl._setOriginalCreateDate = false;
+
+		socialActivitySetModelImpl._originalModifiedDate = socialActivitySetModelImpl._modifiedDate;
+
+		socialActivitySetModelImpl._setOriginalModifiedDate = false;
 
 		socialActivitySetModelImpl._originalClassNameId = socialActivitySetModelImpl._classNameId;
 
@@ -570,6 +644,12 @@ public class SocialActivitySetModelImpl extends BaseModelImpl<SocialActivitySet>
 		socialActivitySetModelImpl._originalType = socialActivitySetModelImpl._type;
 
 		socialActivitySetModelImpl._setOriginalType = false;
+
+		socialActivitySetModelImpl._originalExtraData = socialActivitySetModelImpl._extraData;
+
+		socialActivitySetModelImpl._originalActivityCount = socialActivitySetModelImpl._activityCount;
+
+		socialActivitySetModelImpl._setOriginalActivityCount = false;
 
 		socialActivitySetModelImpl._columnBitmask = 0;
 	}
@@ -703,15 +783,23 @@ public class SocialActivitySetModelImpl extends BaseModelImpl<SocialActivitySet>
 			SocialActivitySet.class
 		};
 	private long _activitySetId;
+	private long _originalActivitySetId;
+	private boolean _setOriginalActivitySetId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
 	private long _companyId;
+	private long _originalCompanyId;
+	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private long _originalUserId;
 	private boolean _setOriginalUserId;
 	private long _createDate;
+	private long _originalCreateDate;
+	private boolean _setOriginalCreateDate;
 	private long _modifiedDate;
+	private long _originalModifiedDate;
+	private boolean _setOriginalModifiedDate;
 	private long _classNameId;
 	private long _originalClassNameId;
 	private boolean _setOriginalClassNameId;
@@ -722,7 +810,10 @@ public class SocialActivitySetModelImpl extends BaseModelImpl<SocialActivitySet>
 	private int _originalType;
 	private boolean _setOriginalType;
 	private String _extraData;
+	private String _originalExtraData;
 	private int _activityCount;
+	private int _originalActivityCount;
+	private boolean _setOriginalActivityCount;
 	private long _columnBitmask;
 	private SocialActivitySet _escapedModel;
 }

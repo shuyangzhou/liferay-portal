@@ -28,6 +28,7 @@ import com.liferay.portal.model.AccountModel;
 import com.liferay.portal.model.AccountSoap;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.User;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
@@ -332,7 +333,17 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@JSON
@@ -343,7 +354,17 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 
 	@Override
 	public void setAccountId(long accountId) {
+		if (!_setOriginalAccountId) {
+			_setOriginalAccountId = true;
+
+			_originalAccountId = _accountId;
+		}
+
 		_accountId = accountId;
+	}
+
+	public long getOriginalAccountId() {
+		return _originalAccountId;
 	}
 
 	@JSON
@@ -354,7 +375,17 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if (!_setOriginalCompanyId) {
+			_setOriginalCompanyId = true;
+
+			_originalCompanyId = _companyId;
+		}
+
 		_companyId = companyId;
+	}
+
+	public long getOriginalCompanyId() {
+		return _originalCompanyId;
 	}
 
 	@JSON
@@ -365,6 +396,12 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -384,6 +421,10 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -397,7 +438,15 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -408,7 +457,15 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -419,7 +476,15 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -430,7 +495,17 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 
 	@Override
 	public void setParentAccountId(long parentAccountId) {
+		if (!_setOriginalParentAccountId) {
+			_setOriginalParentAccountId = true;
+
+			_originalParentAccountId = _parentAccountId;
+		}
+
 		_parentAccountId = parentAccountId;
+	}
+
+	public long getOriginalParentAccountId() {
+		return _originalParentAccountId;
 	}
 
 	@JSON
@@ -446,7 +521,15 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 
 	@Override
 	public void setName(String name) {
+		if (_originalName == null) {
+			_originalName = _name;
+		}
+
 		_name = name;
+	}
+
+	public String getOriginalName() {
+		return GetterUtil.getString(_originalName);
 	}
 
 	@JSON
@@ -462,7 +545,15 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 
 	@Override
 	public void setLegalName(String legalName) {
+		if (_originalLegalName == null) {
+			_originalLegalName = _legalName;
+		}
+
 		_legalName = legalName;
+	}
+
+	public String getOriginalLegalName() {
+		return GetterUtil.getString(_originalLegalName);
 	}
 
 	@JSON
@@ -478,7 +569,15 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 
 	@Override
 	public void setLegalId(String legalId) {
+		if (_originalLegalId == null) {
+			_originalLegalId = _legalId;
+		}
+
 		_legalId = legalId;
+	}
+
+	public String getOriginalLegalId() {
+		return GetterUtil.getString(_originalLegalId);
 	}
 
 	@JSON
@@ -494,7 +593,15 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 
 	@Override
 	public void setLegalType(String legalType) {
+		if (_originalLegalType == null) {
+			_originalLegalType = _legalType;
+		}
+
 		_legalType = legalType;
+	}
+
+	public String getOriginalLegalType() {
+		return GetterUtil.getString(_originalLegalType);
 	}
 
 	@JSON
@@ -510,7 +617,15 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 
 	@Override
 	public void setSicCode(String sicCode) {
+		if (_originalSicCode == null) {
+			_originalSicCode = _sicCode;
+		}
+
 		_sicCode = sicCode;
+	}
+
+	public String getOriginalSicCode() {
+		return GetterUtil.getString(_originalSicCode);
 	}
 
 	@JSON
@@ -526,7 +641,15 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 
 	@Override
 	public void setTickerSymbol(String tickerSymbol) {
+		if (_originalTickerSymbol == null) {
+			_originalTickerSymbol = _tickerSymbol;
+		}
+
 		_tickerSymbol = tickerSymbol;
+	}
+
+	public String getOriginalTickerSymbol() {
+		return GetterUtil.getString(_originalTickerSymbol);
 	}
 
 	@JSON
@@ -542,7 +665,15 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 
 	@Override
 	public void setIndustry(String industry) {
+		if (_originalIndustry == null) {
+			_originalIndustry = _industry;
+		}
+
 		_industry = industry;
+	}
+
+	public String getOriginalIndustry() {
+		return GetterUtil.getString(_originalIndustry);
 	}
 
 	@JSON
@@ -558,7 +689,15 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 
 	@Override
 	public void setType(String type) {
+		if (_originalType == null) {
+			_originalType = _type;
+		}
+
 		_type = type;
+	}
+
+	public String getOriginalType() {
+		return GetterUtil.getString(_originalType);
 	}
 
 	@JSON
@@ -574,7 +713,15 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 
 	@Override
 	public void setSize(String size) {
+		if (_originalSize == null) {
+			_originalSize = _size;
+		}
+
 		_size = size;
+	}
+
+	public String getOriginalSize() {
+		return GetterUtil.getString(_originalSize);
 	}
 
 	@Override
@@ -681,6 +828,51 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 
 	@Override
 	public void resetOriginalValues() {
+		AccountModelImpl accountModelImpl = this;
+
+		accountModelImpl._originalMvccVersion = accountModelImpl._mvccVersion;
+
+		accountModelImpl._setOriginalMvccVersion = false;
+
+		accountModelImpl._originalAccountId = accountModelImpl._accountId;
+
+		accountModelImpl._setOriginalAccountId = false;
+
+		accountModelImpl._originalCompanyId = accountModelImpl._companyId;
+
+		accountModelImpl._setOriginalCompanyId = false;
+
+		accountModelImpl._originalUserId = accountModelImpl._userId;
+
+		accountModelImpl._setOriginalUserId = false;
+
+		accountModelImpl._originalUserName = accountModelImpl._userName;
+
+		accountModelImpl._originalCreateDate = accountModelImpl._createDate;
+
+		accountModelImpl._originalModifiedDate = accountModelImpl._modifiedDate;
+
+		accountModelImpl._originalParentAccountId = accountModelImpl._parentAccountId;
+
+		accountModelImpl._setOriginalParentAccountId = false;
+
+		accountModelImpl._originalName = accountModelImpl._name;
+
+		accountModelImpl._originalLegalName = accountModelImpl._legalName;
+
+		accountModelImpl._originalLegalId = accountModelImpl._legalId;
+
+		accountModelImpl._originalLegalType = accountModelImpl._legalType;
+
+		accountModelImpl._originalSicCode = accountModelImpl._sicCode;
+
+		accountModelImpl._originalTickerSymbol = accountModelImpl._tickerSymbol;
+
+		accountModelImpl._originalIndustry = accountModelImpl._industry;
+
+		accountModelImpl._originalType = accountModelImpl._type;
+
+		accountModelImpl._originalSize = accountModelImpl._size;
 	}
 
 	@Override
@@ -928,21 +1120,43 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 			Account.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _accountId;
+	private long _originalAccountId;
+	private boolean _setOriginalAccountId;
 	private long _companyId;
+	private long _originalCompanyId;
+	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _parentAccountId;
+	private long _originalParentAccountId;
+	private boolean _setOriginalParentAccountId;
 	private String _name;
+	private String _originalName;
 	private String _legalName;
+	private String _originalLegalName;
 	private String _legalId;
+	private String _originalLegalId;
 	private String _legalType;
+	private String _originalLegalType;
 	private String _sicCode;
+	private String _originalSicCode;
 	private String _tickerSymbol;
+	private String _originalTickerSymbol;
 	private String _industry;
+	private String _originalIndustry;
 	private String _type;
+	private String _originalType;
 	private String _size;
+	private String _originalSize;
 	private Account _escapedModel;
 }

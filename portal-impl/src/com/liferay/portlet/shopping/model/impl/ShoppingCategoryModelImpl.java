@@ -276,7 +276,17 @@ public class ShoppingCategoryModelImpl extends BaseModelImpl<ShoppingCategory>
 
 	@Override
 	public void setCategoryId(long categoryId) {
+		if (!_setOriginalCategoryId) {
+			_setOriginalCategoryId = true;
+
+			_originalCategoryId = _categoryId;
+		}
+
 		_categoryId = categoryId;
+	}
+
+	public long getOriginalCategoryId() {
+		return _originalCategoryId;
 	}
 
 	@JSON
@@ -310,7 +320,17 @@ public class ShoppingCategoryModelImpl extends BaseModelImpl<ShoppingCategory>
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if (!_setOriginalCompanyId) {
+			_setOriginalCompanyId = true;
+
+			_originalCompanyId = _companyId;
+		}
+
 		_companyId = companyId;
+	}
+
+	public long getOriginalCompanyId() {
+		return _originalCompanyId;
 	}
 
 	@JSON
@@ -321,6 +341,12 @@ public class ShoppingCategoryModelImpl extends BaseModelImpl<ShoppingCategory>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -340,6 +366,10 @@ public class ShoppingCategoryModelImpl extends BaseModelImpl<ShoppingCategory>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -353,7 +383,15 @@ public class ShoppingCategoryModelImpl extends BaseModelImpl<ShoppingCategory>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -364,7 +402,15 @@ public class ShoppingCategoryModelImpl extends BaseModelImpl<ShoppingCategory>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -375,7 +421,15 @@ public class ShoppingCategoryModelImpl extends BaseModelImpl<ShoppingCategory>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -440,7 +494,15 @@ public class ShoppingCategoryModelImpl extends BaseModelImpl<ShoppingCategory>
 
 	@Override
 	public void setDescription(String description) {
+		if (_originalDescription == null) {
+			_originalDescription = _description;
+		}
+
 		_description = description;
+	}
+
+	public String getOriginalDescription() {
+		return GetterUtil.getString(_originalDescription);
 	}
 
 	public long getColumnBitmask() {
@@ -558,15 +620,35 @@ public class ShoppingCategoryModelImpl extends BaseModelImpl<ShoppingCategory>
 	public void resetOriginalValues() {
 		ShoppingCategoryModelImpl shoppingCategoryModelImpl = this;
 
+		shoppingCategoryModelImpl._originalCategoryId = shoppingCategoryModelImpl._categoryId;
+
+		shoppingCategoryModelImpl._setOriginalCategoryId = false;
+
 		shoppingCategoryModelImpl._originalGroupId = shoppingCategoryModelImpl._groupId;
 
 		shoppingCategoryModelImpl._setOriginalGroupId = false;
+
+		shoppingCategoryModelImpl._originalCompanyId = shoppingCategoryModelImpl._companyId;
+
+		shoppingCategoryModelImpl._setOriginalCompanyId = false;
+
+		shoppingCategoryModelImpl._originalUserId = shoppingCategoryModelImpl._userId;
+
+		shoppingCategoryModelImpl._setOriginalUserId = false;
+
+		shoppingCategoryModelImpl._originalUserName = shoppingCategoryModelImpl._userName;
+
+		shoppingCategoryModelImpl._originalCreateDate = shoppingCategoryModelImpl._createDate;
+
+		shoppingCategoryModelImpl._originalModifiedDate = shoppingCategoryModelImpl._modifiedDate;
 
 		shoppingCategoryModelImpl._originalParentCategoryId = shoppingCategoryModelImpl._parentCategoryId;
 
 		shoppingCategoryModelImpl._setOriginalParentCategoryId = false;
 
 		shoppingCategoryModelImpl._originalName = shoppingCategoryModelImpl._name;
+
+		shoppingCategoryModelImpl._originalDescription = shoppingCategoryModelImpl._description;
 
 		shoppingCategoryModelImpl._columnBitmask = 0;
 	}
@@ -718,20 +800,30 @@ public class ShoppingCategoryModelImpl extends BaseModelImpl<ShoppingCategory>
 			ShoppingCategory.class
 		};
 	private long _categoryId;
+	private long _originalCategoryId;
+	private boolean _setOriginalCategoryId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
 	private long _companyId;
+	private long _originalCompanyId;
+	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _parentCategoryId;
 	private long _originalParentCategoryId;
 	private boolean _setOriginalParentCategoryId;
 	private String _name;
 	private String _originalName;
 	private String _description;
+	private String _originalDescription;
 	private long _columnBitmask;
 	private ShoppingCategory _escapedModel;
 }

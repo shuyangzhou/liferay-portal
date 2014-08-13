@@ -27,6 +27,7 @@ import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ClassName;
 import com.liferay.portal.model.ClassNameModel;
 import com.liferay.portal.model.ClassNameSoap;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.util.PortalUtil;
 
@@ -208,7 +209,17 @@ public class ClassNameModelImpl extends BaseModelImpl<ClassName>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@Override
@@ -239,7 +250,17 @@ public class ClassNameModelImpl extends BaseModelImpl<ClassName>
 
 	@Override
 	public void setClassNameId(long classNameId) {
+		if (!_setOriginalClassNameId) {
+			_setOriginalClassNameId = true;
+
+			_originalClassNameId = _classNameId;
+		}
+
 		_classNameId = classNameId;
+	}
+
+	public long getOriginalClassNameId() {
+		return _originalClassNameId;
 	}
 
 	@JSON
@@ -364,6 +385,14 @@ public class ClassNameModelImpl extends BaseModelImpl<ClassName>
 	public void resetOriginalValues() {
 		ClassNameModelImpl classNameModelImpl = this;
 
+		classNameModelImpl._originalMvccVersion = classNameModelImpl._mvccVersion;
+
+		classNameModelImpl._setOriginalMvccVersion = false;
+
+		classNameModelImpl._originalClassNameId = classNameModelImpl._classNameId;
+
+		classNameModelImpl._setOriginalClassNameId = false;
+
 		classNameModelImpl._originalValue = classNameModelImpl._value;
 
 		classNameModelImpl._columnBitmask = 0;
@@ -434,7 +463,11 @@ public class ClassNameModelImpl extends BaseModelImpl<ClassName>
 			ClassName.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _classNameId;
+	private long _originalClassNameId;
+	private boolean _setOriginalClassNameId;
 	private String _value;
 	private String _originalValue;
 	private long _columnBitmask;

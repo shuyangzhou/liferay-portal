@@ -219,7 +219,17 @@ public class SocialRelationModelImpl extends BaseModelImpl<SocialRelation>
 
 	@Override
 	public void setRelationId(long relationId) {
+		if (!_setOriginalRelationId) {
+			_setOriginalRelationId = true;
+
+			_originalRelationId = _relationId;
+		}
+
 		_relationId = relationId;
+	}
+
+	public long getOriginalRelationId() {
+		return _originalRelationId;
 	}
 
 	@Override
@@ -251,7 +261,17 @@ public class SocialRelationModelImpl extends BaseModelImpl<SocialRelation>
 
 	@Override
 	public void setCreateDate(long createDate) {
+		if (!_setOriginalCreateDate) {
+			_setOriginalCreateDate = true;
+
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public long getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@Override
@@ -422,9 +442,17 @@ public class SocialRelationModelImpl extends BaseModelImpl<SocialRelation>
 
 		socialRelationModelImpl._originalUuid = socialRelationModelImpl._uuid;
 
+		socialRelationModelImpl._originalRelationId = socialRelationModelImpl._relationId;
+
+		socialRelationModelImpl._setOriginalRelationId = false;
+
 		socialRelationModelImpl._originalCompanyId = socialRelationModelImpl._companyId;
 
 		socialRelationModelImpl._setOriginalCompanyId = false;
+
+		socialRelationModelImpl._originalCreateDate = socialRelationModelImpl._createDate;
+
+		socialRelationModelImpl._setOriginalCreateDate = false;
 
 		socialRelationModelImpl._originalUserId1 = socialRelationModelImpl._userId1;
 
@@ -540,10 +568,14 @@ public class SocialRelationModelImpl extends BaseModelImpl<SocialRelation>
 	private String _uuid;
 	private String _originalUuid;
 	private long _relationId;
+	private long _originalRelationId;
+	private boolean _setOriginalRelationId;
 	private long _companyId;
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _createDate;
+	private long _originalCreateDate;
+	private boolean _setOriginalCreateDate;
 	private long _userId1;
 	private long _originalUserId1;
 	private boolean _setOriginalUserId1;

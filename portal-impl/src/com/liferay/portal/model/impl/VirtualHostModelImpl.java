@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.VirtualHost;
 import com.liferay.portal.model.VirtualHostModel;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 
 import com.liferay.portlet.expando.model.ExpandoBridge;
@@ -177,7 +178,17 @@ public class VirtualHostModelImpl extends BaseModelImpl<VirtualHost>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@Override
@@ -187,7 +198,17 @@ public class VirtualHostModelImpl extends BaseModelImpl<VirtualHost>
 
 	@Override
 	public void setVirtualHostId(long virtualHostId) {
+		if (!_setOriginalVirtualHostId) {
+			_setOriginalVirtualHostId = true;
+
+			_originalVirtualHostId = _virtualHostId;
+		}
+
 		_virtualHostId = virtualHostId;
+	}
+
+	public long getOriginalVirtualHostId() {
+		return _originalVirtualHostId;
 	}
 
 	@Override
@@ -357,6 +378,14 @@ public class VirtualHostModelImpl extends BaseModelImpl<VirtualHost>
 	public void resetOriginalValues() {
 		VirtualHostModelImpl virtualHostModelImpl = this;
 
+		virtualHostModelImpl._originalMvccVersion = virtualHostModelImpl._mvccVersion;
+
+		virtualHostModelImpl._setOriginalMvccVersion = false;
+
+		virtualHostModelImpl._originalVirtualHostId = virtualHostModelImpl._virtualHostId;
+
+		virtualHostModelImpl._setOriginalVirtualHostId = false;
+
 		virtualHostModelImpl._originalCompanyId = virtualHostModelImpl._companyId;
 
 		virtualHostModelImpl._setOriginalCompanyId = false;
@@ -451,7 +480,11 @@ public class VirtualHostModelImpl extends BaseModelImpl<VirtualHost>
 			VirtualHost.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _virtualHostId;
+	private long _originalVirtualHostId;
+	private boolean _setOriginalVirtualHostId;
 	private long _companyId;
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;

@@ -27,6 +27,7 @@ import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.Subscription;
 import com.liferay.portal.model.SubscriptionModel;
 import com.liferay.portal.model.User;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
@@ -224,7 +225,17 @@ public class SubscriptionModelImpl extends BaseModelImpl<Subscription>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@Override
@@ -234,7 +245,17 @@ public class SubscriptionModelImpl extends BaseModelImpl<Subscription>
 
 	@Override
 	public void setSubscriptionId(long subscriptionId) {
+		if (!_setOriginalSubscriptionId) {
+			_setOriginalSubscriptionId = true;
+
+			_originalSubscriptionId = _subscriptionId;
+		}
+
 		_subscriptionId = subscriptionId;
+	}
+
+	public long getOriginalSubscriptionId() {
+		return _originalSubscriptionId;
 	}
 
 	@Override
@@ -309,7 +330,15 @@ public class SubscriptionModelImpl extends BaseModelImpl<Subscription>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@Override
@@ -319,7 +348,15 @@ public class SubscriptionModelImpl extends BaseModelImpl<Subscription>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@Override
@@ -329,7 +366,15 @@ public class SubscriptionModelImpl extends BaseModelImpl<Subscription>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@Override
@@ -408,7 +453,15 @@ public class SubscriptionModelImpl extends BaseModelImpl<Subscription>
 
 	@Override
 	public void setFrequency(String frequency) {
+		if (_originalFrequency == null) {
+			_originalFrequency = _frequency;
+		}
+
 		_frequency = frequency;
+	}
+
+	public String getOriginalFrequency() {
+		return GetterUtil.getString(_originalFrequency);
 	}
 
 	public long getColumnBitmask() {
@@ -514,6 +567,14 @@ public class SubscriptionModelImpl extends BaseModelImpl<Subscription>
 	public void resetOriginalValues() {
 		SubscriptionModelImpl subscriptionModelImpl = this;
 
+		subscriptionModelImpl._originalMvccVersion = subscriptionModelImpl._mvccVersion;
+
+		subscriptionModelImpl._setOriginalMvccVersion = false;
+
+		subscriptionModelImpl._originalSubscriptionId = subscriptionModelImpl._subscriptionId;
+
+		subscriptionModelImpl._setOriginalSubscriptionId = false;
+
 		subscriptionModelImpl._originalCompanyId = subscriptionModelImpl._companyId;
 
 		subscriptionModelImpl._setOriginalCompanyId = false;
@@ -522,6 +583,12 @@ public class SubscriptionModelImpl extends BaseModelImpl<Subscription>
 
 		subscriptionModelImpl._setOriginalUserId = false;
 
+		subscriptionModelImpl._originalUserName = subscriptionModelImpl._userName;
+
+		subscriptionModelImpl._originalCreateDate = subscriptionModelImpl._createDate;
+
+		subscriptionModelImpl._originalModifiedDate = subscriptionModelImpl._modifiedDate;
+
 		subscriptionModelImpl._originalClassNameId = subscriptionModelImpl._classNameId;
 
 		subscriptionModelImpl._setOriginalClassNameId = false;
@@ -529,6 +596,8 @@ public class SubscriptionModelImpl extends BaseModelImpl<Subscription>
 		subscriptionModelImpl._originalClassPK = subscriptionModelImpl._classPK;
 
 		subscriptionModelImpl._setOriginalClassPK = false;
+
+		subscriptionModelImpl._originalFrequency = subscriptionModelImpl._frequency;
 
 		subscriptionModelImpl._columnBitmask = 0;
 	}
@@ -674,7 +743,11 @@ public class SubscriptionModelImpl extends BaseModelImpl<Subscription>
 			Subscription.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _subscriptionId;
+	private long _originalSubscriptionId;
+	private boolean _setOriginalSubscriptionId;
 	private long _companyId;
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
@@ -682,8 +755,11 @@ public class SubscriptionModelImpl extends BaseModelImpl<Subscription>
 	private long _originalUserId;
 	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _classNameId;
 	private long _originalClassNameId;
 	private boolean _setOriginalClassNameId;
@@ -691,6 +767,7 @@ public class SubscriptionModelImpl extends BaseModelImpl<Subscription>
 	private long _originalClassPK;
 	private boolean _setOriginalClassPK;
 	private String _frequency;
+	private String _originalFrequency;
 	private long _columnBitmask;
 	private Subscription _escapedModel;
 }

@@ -405,7 +405,17 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 
 	@Override
 	public void setEntryId(long entryId) {
+		if (!_setOriginalEntryId) {
+			_setOriginalEntryId = true;
+
+			_originalEntryId = _entryId;
+		}
+
 		_entryId = entryId;
+	}
+
+	public long getOriginalEntryId() {
+		return _originalEntryId;
 	}
 
 	@JSON
@@ -506,7 +516,15 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -517,7 +535,15 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -528,7 +554,15 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -590,7 +624,15 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 
 	@Override
 	public void setTreePath(String treePath) {
+		if (_originalTreePath == null) {
+			_originalTreePath = _treePath;
+		}
+
 		_treePath = treePath;
+	}
+
+	public String getOriginalTreePath() {
+		return GetterUtil.getString(_originalTreePath);
 	}
 
 	@JSON
@@ -608,7 +650,15 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 	public void setName(String name) {
 		_columnBitmask = -1L;
 
+		if (_originalName == null) {
+			_originalName = _name;
+		}
+
 		_name = name;
+	}
+
+	public String getOriginalName() {
+		return GetterUtil.getString(_originalName);
 	}
 
 	@JSON
@@ -624,7 +674,15 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 
 	@Override
 	public void setUrl(String url) {
+		if (_originalUrl == null) {
+			_originalUrl = _url;
+		}
+
 		_url = url;
+	}
+
+	public String getOriginalUrl() {
+		return GetterUtil.getString(_originalUrl);
 	}
 
 	@JSON
@@ -640,7 +698,15 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 
 	@Override
 	public void setDescription(String description) {
+		if (_originalDescription == null) {
+			_originalDescription = _description;
+		}
+
 		_description = description;
+	}
+
+	public String getOriginalDescription() {
+		return GetterUtil.getString(_originalDescription);
 	}
 
 	@JSON
@@ -651,7 +717,17 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 
 	@Override
 	public void setVisits(int visits) {
+		if (!_setOriginalVisits) {
+			_setOriginalVisits = true;
+
+			_originalVisits = _visits;
+		}
+
 		_visits = visits;
+	}
+
+	public int getOriginalVisits() {
+		return _originalVisits;
 	}
 
 	@JSON
@@ -662,7 +738,17 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 
 	@Override
 	public void setPriority(int priority) {
+		if (!_setOriginalPriority) {
+			_setOriginalPriority = true;
+
+			_originalPriority = _priority;
+		}
+
 		_priority = priority;
+	}
+
+	public int getOriginalPriority() {
+		return _originalPriority;
 	}
 
 	@JSON
@@ -696,6 +782,12 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 
 	@Override
 	public void setStatusByUserId(long statusByUserId) {
+		if (!_setOriginalStatusByUserId) {
+			_setOriginalStatusByUserId = true;
+
+			_originalStatusByUserId = _statusByUserId;
+		}
+
 		_statusByUserId = statusByUserId;
 	}
 
@@ -715,6 +807,10 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 	public void setStatusByUserUuid(String statusByUserUuid) {
 	}
 
+	public long getOriginalStatusByUserId() {
+		return _originalStatusByUserId;
+	}
+
 	@JSON
 	@Override
 	public String getStatusByUserName() {
@@ -728,7 +824,15 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 
 	@Override
 	public void setStatusByUserName(String statusByUserName) {
+		if (_originalStatusByUserName == null) {
+			_originalStatusByUserName = _statusByUserName;
+		}
+
 		_statusByUserName = statusByUserName;
+	}
+
+	public String getOriginalStatusByUserName() {
+		return GetterUtil.getString(_originalStatusByUserName);
 	}
 
 	@JSON
@@ -739,7 +843,15 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 
 	@Override
 	public void setStatusDate(Date statusDate) {
+		if (_originalStatusDate == null) {
+			_originalStatusDate = _statusDate;
+		}
+
 		_statusDate = statusDate;
+	}
+
+	public Date getOriginalStatusDate() {
+		return _originalStatusDate;
 	}
 
 	@Override
@@ -1090,6 +1202,10 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 
 		bookmarksEntryModelImpl._originalUuid = bookmarksEntryModelImpl._uuid;
 
+		bookmarksEntryModelImpl._originalEntryId = bookmarksEntryModelImpl._entryId;
+
+		bookmarksEntryModelImpl._setOriginalEntryId = false;
+
 		bookmarksEntryModelImpl._originalGroupId = bookmarksEntryModelImpl._groupId;
 
 		bookmarksEntryModelImpl._setOriginalGroupId = false;
@@ -1102,6 +1218,12 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 
 		bookmarksEntryModelImpl._setOriginalUserId = false;
 
+		bookmarksEntryModelImpl._originalUserName = bookmarksEntryModelImpl._userName;
+
+		bookmarksEntryModelImpl._originalCreateDate = bookmarksEntryModelImpl._createDate;
+
+		bookmarksEntryModelImpl._originalModifiedDate = bookmarksEntryModelImpl._modifiedDate;
+
 		bookmarksEntryModelImpl._originalResourceBlockId = bookmarksEntryModelImpl._resourceBlockId;
 
 		bookmarksEntryModelImpl._setOriginalResourceBlockId = false;
@@ -1110,9 +1232,33 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 
 		bookmarksEntryModelImpl._setOriginalFolderId = false;
 
+		bookmarksEntryModelImpl._originalTreePath = bookmarksEntryModelImpl._treePath;
+
+		bookmarksEntryModelImpl._originalName = bookmarksEntryModelImpl._name;
+
+		bookmarksEntryModelImpl._originalUrl = bookmarksEntryModelImpl._url;
+
+		bookmarksEntryModelImpl._originalDescription = bookmarksEntryModelImpl._description;
+
+		bookmarksEntryModelImpl._originalVisits = bookmarksEntryModelImpl._visits;
+
+		bookmarksEntryModelImpl._setOriginalVisits = false;
+
+		bookmarksEntryModelImpl._originalPriority = bookmarksEntryModelImpl._priority;
+
+		bookmarksEntryModelImpl._setOriginalPriority = false;
+
 		bookmarksEntryModelImpl._originalStatus = bookmarksEntryModelImpl._status;
 
 		bookmarksEntryModelImpl._setOriginalStatus = false;
+
+		bookmarksEntryModelImpl._originalStatusByUserId = bookmarksEntryModelImpl._statusByUserId;
+
+		bookmarksEntryModelImpl._setOriginalStatusByUserId = false;
+
+		bookmarksEntryModelImpl._originalStatusByUserName = bookmarksEntryModelImpl._statusByUserName;
+
+		bookmarksEntryModelImpl._originalStatusDate = bookmarksEntryModelImpl._statusDate;
 
 		bookmarksEntryModelImpl._columnBitmask = 0;
 	}
@@ -1377,6 +1523,8 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 	private String _uuid;
 	private String _originalUuid;
 	private long _entryId;
+	private long _originalEntryId;
+	private boolean _setOriginalEntryId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -1387,8 +1535,11 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 	private long _originalUserId;
 	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _resourceBlockId;
 	private long _originalResourceBlockId;
 	private boolean _setOriginalResourceBlockId;
@@ -1396,17 +1547,29 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 	private long _originalFolderId;
 	private boolean _setOriginalFolderId;
 	private String _treePath;
+	private String _originalTreePath;
 	private String _name;
+	private String _originalName;
 	private String _url;
+	private String _originalUrl;
 	private String _description;
+	private String _originalDescription;
 	private int _visits;
+	private int _originalVisits;
+	private boolean _setOriginalVisits;
 	private int _priority;
+	private int _originalPriority;
+	private boolean _setOriginalPriority;
 	private int _status;
 	private int _originalStatus;
 	private boolean _setOriginalStatus;
 	private long _statusByUserId;
+	private long _originalStatusByUserId;
+	private boolean _setOriginalStatusByUserId;
 	private String _statusByUserName;
+	private String _originalStatusByUserName;
 	private Date _statusDate;
+	private Date _originalStatusDate;
 	private long _columnBitmask;
 	private BookmarksEntry _escapedModel;
 }

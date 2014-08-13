@@ -415,7 +415,17 @@ public class DDMTemplateModelImpl extends BaseModelImpl<DDMTemplate>
 
 	@Override
 	public void setTemplateId(long templateId) {
+		if (!_setOriginalTemplateId) {
+			_setOriginalTemplateId = true;
+
+			_originalTemplateId = _templateId;
+		}
+
 		_templateId = templateId;
+	}
+
+	public long getOriginalTemplateId() {
+		return _originalTemplateId;
 	}
 
 	@JSON
@@ -472,6 +482,12 @@ public class DDMTemplateModelImpl extends BaseModelImpl<DDMTemplate>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -491,6 +507,10 @@ public class DDMTemplateModelImpl extends BaseModelImpl<DDMTemplate>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -504,7 +524,15 @@ public class DDMTemplateModelImpl extends BaseModelImpl<DDMTemplate>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -515,7 +543,15 @@ public class DDMTemplateModelImpl extends BaseModelImpl<DDMTemplate>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -526,7 +562,15 @@ public class DDMTemplateModelImpl extends BaseModelImpl<DDMTemplate>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@Override
@@ -677,6 +721,10 @@ public class DDMTemplateModelImpl extends BaseModelImpl<DDMTemplate>
 
 	@Override
 	public void setName(String name) {
+		if (_originalName == null) {
+			_originalName = _name;
+		}
+
 		_name = name;
 	}
 
@@ -718,6 +766,10 @@ public class DDMTemplateModelImpl extends BaseModelImpl<DDMTemplate>
 
 		setName(LocalizationUtil.updateLocalization(nameMap, getName(), "Name",
 				LocaleUtil.toLanguageId(defaultLocale)));
+	}
+
+	public String getOriginalName() {
+		return GetterUtil.getString(_originalName);
 	}
 
 	@JSON
@@ -776,6 +828,10 @@ public class DDMTemplateModelImpl extends BaseModelImpl<DDMTemplate>
 
 	@Override
 	public void setDescription(String description) {
+		if (_originalDescription == null) {
+			_originalDescription = _description;
+		}
+
 		_description = description;
 	}
 
@@ -821,6 +877,10 @@ public class DDMTemplateModelImpl extends BaseModelImpl<DDMTemplate>
 		setDescription(LocalizationUtil.updateLocalization(descriptionMap,
 				getDescription(), "Description",
 				LocaleUtil.toLanguageId(defaultLocale)));
+	}
+
+	public String getOriginalDescription() {
+		return GetterUtil.getString(_originalDescription);
 	}
 
 	@JSON
@@ -914,7 +974,15 @@ public class DDMTemplateModelImpl extends BaseModelImpl<DDMTemplate>
 
 	@Override
 	public void setScript(String script) {
+		if (_originalScript == null) {
+			_originalScript = _script;
+		}
+
 		_script = script;
+	}
+
+	public String getOriginalScript() {
+		return GetterUtil.getString(_originalScript);
 	}
 
 	@JSON
@@ -930,7 +998,17 @@ public class DDMTemplateModelImpl extends BaseModelImpl<DDMTemplate>
 
 	@Override
 	public void setCacheable(boolean cacheable) {
+		if (!_setOriginalCacheable) {
+			_setOriginalCacheable = true;
+
+			_originalCacheable = _cacheable;
+		}
+
 		_cacheable = cacheable;
+	}
+
+	public boolean getOriginalCacheable() {
+		return _originalCacheable;
 	}
 
 	@JSON
@@ -946,7 +1024,17 @@ public class DDMTemplateModelImpl extends BaseModelImpl<DDMTemplate>
 
 	@Override
 	public void setSmallImage(boolean smallImage) {
+		if (!_setOriginalSmallImage) {
+			_setOriginalSmallImage = true;
+
+			_originalSmallImage = _smallImage;
+		}
+
 		_smallImage = smallImage;
+	}
+
+	public boolean getOriginalSmallImage() {
+		return _originalSmallImage;
 	}
 
 	@JSON
@@ -985,7 +1073,15 @@ public class DDMTemplateModelImpl extends BaseModelImpl<DDMTemplate>
 
 	@Override
 	public void setSmallImageURL(String smallImageURL) {
+		if (_originalSmallImageURL == null) {
+			_originalSmallImageURL = _smallImageURL;
+		}
+
 		_smallImageURL = smallImageURL;
+	}
+
+	public String getOriginalSmallImageURL() {
+		return GetterUtil.getString(_originalSmallImageURL);
 	}
 
 	@Override
@@ -1192,6 +1288,10 @@ public class DDMTemplateModelImpl extends BaseModelImpl<DDMTemplate>
 
 		ddmTemplateModelImpl._originalUuid = ddmTemplateModelImpl._uuid;
 
+		ddmTemplateModelImpl._originalTemplateId = ddmTemplateModelImpl._templateId;
+
+		ddmTemplateModelImpl._setOriginalTemplateId = false;
+
 		ddmTemplateModelImpl._originalGroupId = ddmTemplateModelImpl._groupId;
 
 		ddmTemplateModelImpl._setOriginalGroupId = false;
@@ -1199,6 +1299,16 @@ public class DDMTemplateModelImpl extends BaseModelImpl<DDMTemplate>
 		ddmTemplateModelImpl._originalCompanyId = ddmTemplateModelImpl._companyId;
 
 		ddmTemplateModelImpl._setOriginalCompanyId = false;
+
+		ddmTemplateModelImpl._originalUserId = ddmTemplateModelImpl._userId;
+
+		ddmTemplateModelImpl._setOriginalUserId = false;
+
+		ddmTemplateModelImpl._originalUserName = ddmTemplateModelImpl._userName;
+
+		ddmTemplateModelImpl._originalCreateDate = ddmTemplateModelImpl._createDate;
+
+		ddmTemplateModelImpl._originalModifiedDate = ddmTemplateModelImpl._modifiedDate;
 
 		ddmTemplateModelImpl._originalClassNameId = ddmTemplateModelImpl._classNameId;
 
@@ -1210,15 +1320,31 @@ public class DDMTemplateModelImpl extends BaseModelImpl<DDMTemplate>
 
 		ddmTemplateModelImpl._originalTemplateKey = ddmTemplateModelImpl._templateKey;
 
+		ddmTemplateModelImpl._originalName = ddmTemplateModelImpl._name;
+
+		ddmTemplateModelImpl._originalDescription = ddmTemplateModelImpl._description;
+
 		ddmTemplateModelImpl._originalType = ddmTemplateModelImpl._type;
 
 		ddmTemplateModelImpl._originalMode = ddmTemplateModelImpl._mode;
 
 		ddmTemplateModelImpl._originalLanguage = ddmTemplateModelImpl._language;
 
+		ddmTemplateModelImpl._originalScript = ddmTemplateModelImpl._script;
+
+		ddmTemplateModelImpl._originalCacheable = ddmTemplateModelImpl._cacheable;
+
+		ddmTemplateModelImpl._setOriginalCacheable = false;
+
+		ddmTemplateModelImpl._originalSmallImage = ddmTemplateModelImpl._smallImage;
+
+		ddmTemplateModelImpl._setOriginalSmallImage = false;
+
 		ddmTemplateModelImpl._originalSmallImageId = ddmTemplateModelImpl._smallImageId;
 
 		ddmTemplateModelImpl._setOriginalSmallImageId = false;
+
+		ddmTemplateModelImpl._originalSmallImageURL = ddmTemplateModelImpl._smallImageURL;
 
 		ddmTemplateModelImpl._columnBitmask = 0;
 	}
@@ -1502,6 +1628,8 @@ public class DDMTemplateModelImpl extends BaseModelImpl<DDMTemplate>
 	private String _uuid;
 	private String _originalUuid;
 	private long _templateId;
+	private long _originalTemplateId;
+	private boolean _setOriginalTemplateId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -1509,9 +1637,14 @@ public class DDMTemplateModelImpl extends BaseModelImpl<DDMTemplate>
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _classNameId;
 	private long _originalClassNameId;
 	private boolean _setOriginalClassNameId;
@@ -1522,8 +1655,10 @@ public class DDMTemplateModelImpl extends BaseModelImpl<DDMTemplate>
 	private String _originalTemplateKey;
 	private String _name;
 	private String _nameCurrentLanguageId;
+	private String _originalName;
 	private String _description;
 	private String _descriptionCurrentLanguageId;
+	private String _originalDescription;
 	private String _type;
 	private String _originalType;
 	private String _mode;
@@ -1531,12 +1666,18 @@ public class DDMTemplateModelImpl extends BaseModelImpl<DDMTemplate>
 	private String _language;
 	private String _originalLanguage;
 	private String _script;
+	private String _originalScript;
 	private boolean _cacheable;
+	private boolean _originalCacheable;
+	private boolean _setOriginalCacheable;
 	private boolean _smallImage;
+	private boolean _originalSmallImage;
+	private boolean _setOriginalSmallImage;
 	private long _smallImageId;
 	private long _originalSmallImageId;
 	private boolean _setOriginalSmallImageId;
 	private String _smallImageURL;
+	private String _originalSmallImageURL;
 	private long _columnBitmask;
 	private DDMTemplate _escapedModel;
 }

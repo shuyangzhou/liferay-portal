@@ -172,7 +172,17 @@ public class ExpandoTableModelImpl extends BaseModelImpl<ExpandoTable>
 
 	@Override
 	public void setTableId(long tableId) {
+		if (!_setOriginalTableId) {
+			_setOriginalTableId = true;
+
+			_originalTableId = _tableId;
+		}
+
 		_tableId = tableId;
+	}
+
+	public long getOriginalTableId() {
+		return _originalTableId;
 	}
 
 	@JSON
@@ -351,6 +361,10 @@ public class ExpandoTableModelImpl extends BaseModelImpl<ExpandoTable>
 	public void resetOriginalValues() {
 		ExpandoTableModelImpl expandoTableModelImpl = this;
 
+		expandoTableModelImpl._originalTableId = expandoTableModelImpl._tableId;
+
+		expandoTableModelImpl._setOriginalTableId = false;
+
 		expandoTableModelImpl._originalCompanyId = expandoTableModelImpl._companyId;
 
 		expandoTableModelImpl._setOriginalCompanyId = false;
@@ -437,6 +451,8 @@ public class ExpandoTableModelImpl extends BaseModelImpl<ExpandoTable>
 			ExpandoTable.class
 		};
 	private long _tableId;
+	private long _originalTableId;
+	private boolean _setOriginalTableId;
 	private long _companyId;
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;

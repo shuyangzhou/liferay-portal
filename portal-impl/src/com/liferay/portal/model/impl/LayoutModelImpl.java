@@ -33,6 +33,7 @@ import com.liferay.portal.model.Layout;
 import com.liferay.portal.model.LayoutModel;
 import com.liferay.portal.model.LayoutSoap;
 import com.liferay.portal.model.User;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
@@ -486,7 +487,17 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@JSON
@@ -521,7 +532,17 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 
 	@Override
 	public void setPlid(long plid) {
+		if (!_setOriginalPlid) {
+			_setOriginalPlid = true;
+
+			_originalPlid = _plid;
+		}
+
 		_plid = plid;
+	}
+
+	public long getOriginalPlid() {
+		return _originalPlid;
 	}
 
 	@JSON
@@ -578,6 +599,12 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -597,6 +624,10 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -610,7 +641,15 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -621,7 +660,15 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -632,7 +679,15 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -765,6 +820,10 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 
 	@Override
 	public void setName(String name) {
+		if (_originalName == null) {
+			_originalName = _name;
+		}
+
 		_name = name;
 	}
 
@@ -806,6 +865,10 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 
 		setName(LocalizationUtil.updateLocalization(nameMap, getName(), "Name",
 				LocaleUtil.toLanguageId(defaultLocale)));
+	}
+
+	public String getOriginalName() {
+		return GetterUtil.getString(_originalName);
 	}
 
 	@JSON
@@ -864,6 +927,10 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 
 	@Override
 	public void setTitle(String title) {
+		if (_originalTitle == null) {
+			_originalTitle = _title;
+		}
+
 		_title = title;
 	}
 
@@ -905,6 +972,10 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 
 		setTitle(LocalizationUtil.updateLocalization(titleMap, getTitle(),
 				"Title", LocaleUtil.toLanguageId(defaultLocale)));
+	}
+
+	public String getOriginalTitle() {
+		return GetterUtil.getString(_originalTitle);
 	}
 
 	@JSON
@@ -963,6 +1034,10 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 
 	@Override
 	public void setDescription(String description) {
+		if (_originalDescription == null) {
+			_originalDescription = _description;
+		}
+
 		_description = description;
 	}
 
@@ -1008,6 +1083,10 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 		setDescription(LocalizationUtil.updateLocalization(descriptionMap,
 				getDescription(), "Description",
 				LocaleUtil.toLanguageId(defaultLocale)));
+	}
+
+	public String getOriginalDescription() {
+		return GetterUtil.getString(_originalDescription);
 	}
 
 	@JSON
@@ -1066,6 +1145,10 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 
 	@Override
 	public void setKeywords(String keywords) {
+		if (_originalKeywords == null) {
+			_originalKeywords = _keywords;
+		}
+
 		_keywords = keywords;
 	}
 
@@ -1109,6 +1192,10 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 		setKeywords(LocalizationUtil.updateLocalization(keywordsMap,
 				getKeywords(), "Keywords",
 				LocaleUtil.toLanguageId(defaultLocale)));
+	}
+
+	public String getOriginalKeywords() {
+		return GetterUtil.getString(_originalKeywords);
 	}
 
 	@JSON
@@ -1167,6 +1254,10 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 
 	@Override
 	public void setRobots(String robots) {
+		if (_originalRobots == null) {
+			_originalRobots = _robots;
+		}
+
 		_robots = robots;
 	}
 
@@ -1210,6 +1301,10 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 				"Robots", LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
+	public String getOriginalRobots() {
+		return GetterUtil.getString(_originalRobots);
+	}
+
 	@JSON
 	@Override
 	public String getType() {
@@ -1249,7 +1344,15 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 
 	@Override
 	public void setTypeSettings(String typeSettings) {
+		if (_originalTypeSettings == null) {
+			_originalTypeSettings = _typeSettings;
+		}
+
 		_typeSettings = typeSettings;
+	}
+
+	public String getOriginalTypeSettings() {
+		return GetterUtil.getString(_originalTypeSettings);
 	}
 
 	@JSON
@@ -1265,7 +1368,17 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 
 	@Override
 	public void setHidden(boolean hidden) {
+		if (!_setOriginalHidden) {
+			_setOriginalHidden = true;
+
+			_originalHidden = _hidden;
+		}
+
 		_hidden = hidden;
+	}
+
+	public boolean getOriginalHidden() {
+		return _originalHidden;
 	}
 
 	@JSON
@@ -1330,7 +1443,15 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 
 	@Override
 	public void setThemeId(String themeId) {
+		if (_originalThemeId == null) {
+			_originalThemeId = _themeId;
+		}
+
 		_themeId = themeId;
+	}
+
+	public String getOriginalThemeId() {
+		return GetterUtil.getString(_originalThemeId);
 	}
 
 	@JSON
@@ -1346,7 +1467,15 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 
 	@Override
 	public void setColorSchemeId(String colorSchemeId) {
+		if (_originalColorSchemeId == null) {
+			_originalColorSchemeId = _colorSchemeId;
+		}
+
 		_colorSchemeId = colorSchemeId;
+	}
+
+	public String getOriginalColorSchemeId() {
+		return GetterUtil.getString(_originalColorSchemeId);
 	}
 
 	@JSON
@@ -1362,7 +1491,15 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 
 	@Override
 	public void setWapThemeId(String wapThemeId) {
+		if (_originalWapThemeId == null) {
+			_originalWapThemeId = _wapThemeId;
+		}
+
 		_wapThemeId = wapThemeId;
+	}
+
+	public String getOriginalWapThemeId() {
+		return GetterUtil.getString(_originalWapThemeId);
 	}
 
 	@JSON
@@ -1378,7 +1515,15 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 
 	@Override
 	public void setWapColorSchemeId(String wapColorSchemeId) {
+		if (_originalWapColorSchemeId == null) {
+			_originalWapColorSchemeId = _wapColorSchemeId;
+		}
+
 		_wapColorSchemeId = wapColorSchemeId;
+	}
+
+	public String getOriginalWapColorSchemeId() {
+		return GetterUtil.getString(_originalWapColorSchemeId);
 	}
 
 	@JSON
@@ -1394,7 +1539,15 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 
 	@Override
 	public void setCss(String css) {
+		if (_originalCss == null) {
+			_originalCss = _css;
+		}
+
 		_css = css;
+	}
+
+	public String getOriginalCss() {
+		return GetterUtil.getString(_originalCss);
 	}
 
 	@JSON
@@ -1407,7 +1560,17 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 	public void setPriority(int priority) {
 		_columnBitmask = -1L;
 
+		if (!_setOriginalPriority) {
+			_setOriginalPriority = true;
+
+			_originalPriority = _priority;
+		}
+
 		_priority = priority;
+	}
+
+	public int getOriginalPriority() {
+		return _originalPriority;
 	}
 
 	@JSON
@@ -1450,7 +1613,17 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 	@Override
 	public void setLayoutPrototypeLinkEnabled(
 		boolean layoutPrototypeLinkEnabled) {
+		if (!_setOriginalLayoutPrototypeLinkEnabled) {
+			_setOriginalLayoutPrototypeLinkEnabled = true;
+
+			_originalLayoutPrototypeLinkEnabled = _layoutPrototypeLinkEnabled;
+		}
+
 		_layoutPrototypeLinkEnabled = layoutPrototypeLinkEnabled;
+	}
+
+	public boolean getOriginalLayoutPrototypeLinkEnabled() {
+		return _originalLayoutPrototypeLinkEnabled;
 	}
 
 	@JSON
@@ -1771,7 +1944,15 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 	public void resetOriginalValues() {
 		LayoutModelImpl layoutModelImpl = this;
 
+		layoutModelImpl._originalMvccVersion = layoutModelImpl._mvccVersion;
+
+		layoutModelImpl._setOriginalMvccVersion = false;
+
 		layoutModelImpl._originalUuid = layoutModelImpl._uuid;
+
+		layoutModelImpl._originalPlid = layoutModelImpl._plid;
+
+		layoutModelImpl._setOriginalPlid = false;
 
 		layoutModelImpl._originalGroupId = layoutModelImpl._groupId;
 
@@ -1780,6 +1961,16 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 		layoutModelImpl._originalCompanyId = layoutModelImpl._companyId;
 
 		layoutModelImpl._setOriginalCompanyId = false;
+
+		layoutModelImpl._originalUserId = layoutModelImpl._userId;
+
+		layoutModelImpl._setOriginalUserId = false;
+
+		layoutModelImpl._originalUserName = layoutModelImpl._userName;
+
+		layoutModelImpl._originalCreateDate = layoutModelImpl._createDate;
+
+		layoutModelImpl._originalModifiedDate = layoutModelImpl._modifiedDate;
 
 		layoutModelImpl._originalPrivateLayout = layoutModelImpl._privateLayout;
 
@@ -1793,7 +1984,23 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 
 		layoutModelImpl._setOriginalParentLayoutId = false;
 
+		layoutModelImpl._originalName = layoutModelImpl._name;
+
+		layoutModelImpl._originalTitle = layoutModelImpl._title;
+
+		layoutModelImpl._originalDescription = layoutModelImpl._description;
+
+		layoutModelImpl._originalKeywords = layoutModelImpl._keywords;
+
+		layoutModelImpl._originalRobots = layoutModelImpl._robots;
+
 		layoutModelImpl._originalType = layoutModelImpl._type;
+
+		layoutModelImpl._originalTypeSettings = layoutModelImpl._typeSettings;
+
+		layoutModelImpl._originalHidden = layoutModelImpl._hidden;
+
+		layoutModelImpl._setOriginalHidden = false;
 
 		layoutModelImpl._originalFriendlyURL = layoutModelImpl._friendlyURL;
 
@@ -1801,7 +2008,25 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 
 		layoutModelImpl._setOriginalIconImageId = false;
 
+		layoutModelImpl._originalThemeId = layoutModelImpl._themeId;
+
+		layoutModelImpl._originalColorSchemeId = layoutModelImpl._colorSchemeId;
+
+		layoutModelImpl._originalWapThemeId = layoutModelImpl._wapThemeId;
+
+		layoutModelImpl._originalWapColorSchemeId = layoutModelImpl._wapColorSchemeId;
+
+		layoutModelImpl._originalCss = layoutModelImpl._css;
+
+		layoutModelImpl._originalPriority = layoutModelImpl._priority;
+
+		layoutModelImpl._setOriginalPriority = false;
+
 		layoutModelImpl._originalLayoutPrototypeUuid = layoutModelImpl._layoutPrototypeUuid;
+
+		layoutModelImpl._originalLayoutPrototypeLinkEnabled = layoutModelImpl._layoutPrototypeLinkEnabled;
+
+		layoutModelImpl._setOriginalLayoutPrototypeLinkEnabled = false;
 
 		layoutModelImpl._originalSourcePrototypeLayoutUuid = layoutModelImpl._sourcePrototypeLayoutUuid;
 
@@ -2209,9 +2434,13 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 			Layout.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private String _uuid;
 	private String _originalUuid;
 	private long _plid;
+	private long _originalPlid;
+	private boolean _setOriginalPlid;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -2219,9 +2448,14 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private boolean _privateLayout;
 	private boolean _originalPrivateLayout;
 	private boolean _setOriginalPrivateLayout;
@@ -2233,32 +2467,49 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 	private boolean _setOriginalParentLayoutId;
 	private String _name;
 	private String _nameCurrentLanguageId;
+	private String _originalName;
 	private String _title;
 	private String _titleCurrentLanguageId;
+	private String _originalTitle;
 	private String _description;
 	private String _descriptionCurrentLanguageId;
+	private String _originalDescription;
 	private String _keywords;
 	private String _keywordsCurrentLanguageId;
+	private String _originalKeywords;
 	private String _robots;
 	private String _robotsCurrentLanguageId;
+	private String _originalRobots;
 	private String _type;
 	private String _originalType;
 	private String _typeSettings;
+	private String _originalTypeSettings;
 	private boolean _hidden;
+	private boolean _originalHidden;
+	private boolean _setOriginalHidden;
 	private String _friendlyURL;
 	private String _originalFriendlyURL;
 	private long _iconImageId;
 	private long _originalIconImageId;
 	private boolean _setOriginalIconImageId;
 	private String _themeId;
+	private String _originalThemeId;
 	private String _colorSchemeId;
+	private String _originalColorSchemeId;
 	private String _wapThemeId;
+	private String _originalWapThemeId;
 	private String _wapColorSchemeId;
+	private String _originalWapColorSchemeId;
 	private String _css;
+	private String _originalCss;
 	private int _priority;
+	private int _originalPriority;
+	private boolean _setOriginalPriority;
 	private String _layoutPrototypeUuid;
 	private String _originalLayoutPrototypeUuid;
 	private boolean _layoutPrototypeLinkEnabled;
+	private boolean _originalLayoutPrototypeLinkEnabled;
+	private boolean _setOriginalLayoutPrototypeLinkEnabled;
 	private String _sourcePrototypeLayoutUuid;
 	private String _originalSourcePrototypeLayoutUuid;
 	private long _columnBitmask;

@@ -29,6 +29,7 @@ import com.liferay.portal.model.Contact;
 import com.liferay.portal.model.ContactModel;
 import com.liferay.portal.model.ContactSoap;
 import com.liferay.portal.model.User;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
@@ -494,7 +495,17 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@JSON
@@ -505,7 +516,17 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 
 	@Override
 	public void setContactId(long contactId) {
+		if (!_setOriginalContactId) {
+			_setOriginalContactId = true;
+
+			_originalContactId = _contactId;
+		}
+
 		_contactId = contactId;
+	}
+
+	public long getOriginalContactId() {
+		return _originalContactId;
 	}
 
 	@JSON
@@ -539,6 +560,12 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -558,6 +585,10 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -571,7 +602,15 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -582,7 +621,15 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -593,7 +640,15 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@Override
@@ -693,7 +748,17 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 
 	@Override
 	public void setParentContactId(long parentContactId) {
+		if (!_setOriginalParentContactId) {
+			_setOriginalParentContactId = true;
+
+			_originalParentContactId = _parentContactId;
+		}
+
 		_parentContactId = parentContactId;
+	}
+
+	public long getOriginalParentContactId() {
+		return _originalParentContactId;
 	}
 
 	@JSON
@@ -709,7 +774,15 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 
 	@Override
 	public void setEmailAddress(String emailAddress) {
+		if (_originalEmailAddress == null) {
+			_originalEmailAddress = _emailAddress;
+		}
+
 		_emailAddress = emailAddress;
+	}
+
+	public String getOriginalEmailAddress() {
+		return GetterUtil.getString(_originalEmailAddress);
 	}
 
 	@JSON
@@ -725,7 +798,15 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 
 	@Override
 	public void setFirstName(String firstName) {
+		if (_originalFirstName == null) {
+			_originalFirstName = _firstName;
+		}
+
 		_firstName = firstName;
+	}
+
+	public String getOriginalFirstName() {
+		return GetterUtil.getString(_originalFirstName);
 	}
 
 	@JSON
@@ -741,7 +822,15 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 
 	@Override
 	public void setMiddleName(String middleName) {
+		if (_originalMiddleName == null) {
+			_originalMiddleName = _middleName;
+		}
+
 		_middleName = middleName;
+	}
+
+	public String getOriginalMiddleName() {
+		return GetterUtil.getString(_originalMiddleName);
 	}
 
 	@JSON
@@ -757,7 +846,15 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 
 	@Override
 	public void setLastName(String lastName) {
+		if (_originalLastName == null) {
+			_originalLastName = _lastName;
+		}
+
 		_lastName = lastName;
+	}
+
+	public String getOriginalLastName() {
+		return GetterUtil.getString(_originalLastName);
 	}
 
 	@JSON
@@ -768,7 +865,17 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 
 	@Override
 	public void setPrefixId(int prefixId) {
+		if (!_setOriginalPrefixId) {
+			_setOriginalPrefixId = true;
+
+			_originalPrefixId = _prefixId;
+		}
+
 		_prefixId = prefixId;
+	}
+
+	public int getOriginalPrefixId() {
+		return _originalPrefixId;
 	}
 
 	@JSON
@@ -779,7 +886,17 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 
 	@Override
 	public void setSuffixId(int suffixId) {
+		if (!_setOriginalSuffixId) {
+			_setOriginalSuffixId = true;
+
+			_originalSuffixId = _suffixId;
+		}
+
 		_suffixId = suffixId;
+	}
+
+	public int getOriginalSuffixId() {
+		return _originalSuffixId;
 	}
 
 	@JSON
@@ -795,7 +912,17 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 
 	@Override
 	public void setMale(boolean male) {
+		if (!_setOriginalMale) {
+			_setOriginalMale = true;
+
+			_originalMale = _male;
+		}
+
 		_male = male;
+	}
+
+	public boolean getOriginalMale() {
+		return _originalMale;
 	}
 
 	@JSON
@@ -806,7 +933,15 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 
 	@Override
 	public void setBirthday(Date birthday) {
+		if (_originalBirthday == null) {
+			_originalBirthday = _birthday;
+		}
+
 		_birthday = birthday;
+	}
+
+	public Date getOriginalBirthday() {
+		return _originalBirthday;
 	}
 
 	@JSON
@@ -822,7 +957,15 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 
 	@Override
 	public void setSmsSn(String smsSn) {
+		if (_originalSmsSn == null) {
+			_originalSmsSn = _smsSn;
+		}
+
 		_smsSn = smsSn;
+	}
+
+	public String getOriginalSmsSn() {
+		return GetterUtil.getString(_originalSmsSn);
 	}
 
 	@JSON
@@ -838,7 +981,15 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 
 	@Override
 	public void setAimSn(String aimSn) {
+		if (_originalAimSn == null) {
+			_originalAimSn = _aimSn;
+		}
+
 		_aimSn = aimSn;
+	}
+
+	public String getOriginalAimSn() {
+		return GetterUtil.getString(_originalAimSn);
 	}
 
 	@JSON
@@ -854,7 +1005,15 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 
 	@Override
 	public void setFacebookSn(String facebookSn) {
+		if (_originalFacebookSn == null) {
+			_originalFacebookSn = _facebookSn;
+		}
+
 		_facebookSn = facebookSn;
+	}
+
+	public String getOriginalFacebookSn() {
+		return GetterUtil.getString(_originalFacebookSn);
 	}
 
 	@JSON
@@ -870,7 +1029,15 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 
 	@Override
 	public void setIcqSn(String icqSn) {
+		if (_originalIcqSn == null) {
+			_originalIcqSn = _icqSn;
+		}
+
 		_icqSn = icqSn;
+	}
+
+	public String getOriginalIcqSn() {
+		return GetterUtil.getString(_originalIcqSn);
 	}
 
 	@JSON
@@ -886,7 +1053,15 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 
 	@Override
 	public void setJabberSn(String jabberSn) {
+		if (_originalJabberSn == null) {
+			_originalJabberSn = _jabberSn;
+		}
+
 		_jabberSn = jabberSn;
+	}
+
+	public String getOriginalJabberSn() {
+		return GetterUtil.getString(_originalJabberSn);
 	}
 
 	@JSON
@@ -902,7 +1077,15 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 
 	@Override
 	public void setMsnSn(String msnSn) {
+		if (_originalMsnSn == null) {
+			_originalMsnSn = _msnSn;
+		}
+
 		_msnSn = msnSn;
+	}
+
+	public String getOriginalMsnSn() {
+		return GetterUtil.getString(_originalMsnSn);
 	}
 
 	@JSON
@@ -918,7 +1101,15 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 
 	@Override
 	public void setMySpaceSn(String mySpaceSn) {
+		if (_originalMySpaceSn == null) {
+			_originalMySpaceSn = _mySpaceSn;
+		}
+
 		_mySpaceSn = mySpaceSn;
+	}
+
+	public String getOriginalMySpaceSn() {
+		return GetterUtil.getString(_originalMySpaceSn);
 	}
 
 	@JSON
@@ -934,7 +1125,15 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 
 	@Override
 	public void setSkypeSn(String skypeSn) {
+		if (_originalSkypeSn == null) {
+			_originalSkypeSn = _skypeSn;
+		}
+
 		_skypeSn = skypeSn;
+	}
+
+	public String getOriginalSkypeSn() {
+		return GetterUtil.getString(_originalSkypeSn);
 	}
 
 	@JSON
@@ -950,7 +1149,15 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 
 	@Override
 	public void setTwitterSn(String twitterSn) {
+		if (_originalTwitterSn == null) {
+			_originalTwitterSn = _twitterSn;
+		}
+
 		_twitterSn = twitterSn;
+	}
+
+	public String getOriginalTwitterSn() {
+		return GetterUtil.getString(_originalTwitterSn);
 	}
 
 	@JSON
@@ -966,7 +1173,15 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 
 	@Override
 	public void setYmSn(String ymSn) {
+		if (_originalYmSn == null) {
+			_originalYmSn = _ymSn;
+		}
+
 		_ymSn = ymSn;
+	}
+
+	public String getOriginalYmSn() {
+		return GetterUtil.getString(_originalYmSn);
 	}
 
 	@JSON
@@ -982,7 +1197,15 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 
 	@Override
 	public void setEmployeeStatusId(String employeeStatusId) {
+		if (_originalEmployeeStatusId == null) {
+			_originalEmployeeStatusId = _employeeStatusId;
+		}
+
 		_employeeStatusId = employeeStatusId;
+	}
+
+	public String getOriginalEmployeeStatusId() {
+		return GetterUtil.getString(_originalEmployeeStatusId);
 	}
 
 	@JSON
@@ -998,7 +1221,15 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 
 	@Override
 	public void setEmployeeNumber(String employeeNumber) {
+		if (_originalEmployeeNumber == null) {
+			_originalEmployeeNumber = _employeeNumber;
+		}
+
 		_employeeNumber = employeeNumber;
+	}
+
+	public String getOriginalEmployeeNumber() {
+		return GetterUtil.getString(_originalEmployeeNumber);
 	}
 
 	@JSON
@@ -1014,7 +1245,15 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 
 	@Override
 	public void setJobTitle(String jobTitle) {
+		if (_originalJobTitle == null) {
+			_originalJobTitle = _jobTitle;
+		}
+
 		_jobTitle = jobTitle;
+	}
+
+	public String getOriginalJobTitle() {
+		return GetterUtil.getString(_originalJobTitle);
 	}
 
 	@JSON
@@ -1030,7 +1269,15 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 
 	@Override
 	public void setJobClass(String jobClass) {
+		if (_originalJobClass == null) {
+			_originalJobClass = _jobClass;
+		}
+
 		_jobClass = jobClass;
+	}
+
+	public String getOriginalJobClass() {
+		return GetterUtil.getString(_originalJobClass);
 	}
 
 	@JSON
@@ -1046,7 +1293,15 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 
 	@Override
 	public void setHoursOfOperation(String hoursOfOperation) {
+		if (_originalHoursOfOperation == null) {
+			_originalHoursOfOperation = _hoursOfOperation;
+		}
+
 		_hoursOfOperation = hoursOfOperation;
+	}
+
+	public String getOriginalHoursOfOperation() {
+		return GetterUtil.getString(_originalHoursOfOperation);
 	}
 
 	public long getColumnBitmask() {
@@ -1176,9 +1431,27 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 	public void resetOriginalValues() {
 		ContactModelImpl contactModelImpl = this;
 
+		contactModelImpl._originalMvccVersion = contactModelImpl._mvccVersion;
+
+		contactModelImpl._setOriginalMvccVersion = false;
+
+		contactModelImpl._originalContactId = contactModelImpl._contactId;
+
+		contactModelImpl._setOriginalContactId = false;
+
 		contactModelImpl._originalCompanyId = contactModelImpl._companyId;
 
 		contactModelImpl._setOriginalCompanyId = false;
+
+		contactModelImpl._originalUserId = contactModelImpl._userId;
+
+		contactModelImpl._setOriginalUserId = false;
+
+		contactModelImpl._originalUserName = contactModelImpl._userName;
+
+		contactModelImpl._originalCreateDate = contactModelImpl._createDate;
+
+		contactModelImpl._originalModifiedDate = contactModelImpl._modifiedDate;
 
 		contactModelImpl._originalClassNameId = contactModelImpl._classNameId;
 
@@ -1191,6 +1464,62 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 		contactModelImpl._originalAccountId = contactModelImpl._accountId;
 
 		contactModelImpl._setOriginalAccountId = false;
+
+		contactModelImpl._originalParentContactId = contactModelImpl._parentContactId;
+
+		contactModelImpl._setOriginalParentContactId = false;
+
+		contactModelImpl._originalEmailAddress = contactModelImpl._emailAddress;
+
+		contactModelImpl._originalFirstName = contactModelImpl._firstName;
+
+		contactModelImpl._originalMiddleName = contactModelImpl._middleName;
+
+		contactModelImpl._originalLastName = contactModelImpl._lastName;
+
+		contactModelImpl._originalPrefixId = contactModelImpl._prefixId;
+
+		contactModelImpl._setOriginalPrefixId = false;
+
+		contactModelImpl._originalSuffixId = contactModelImpl._suffixId;
+
+		contactModelImpl._setOriginalSuffixId = false;
+
+		contactModelImpl._originalMale = contactModelImpl._male;
+
+		contactModelImpl._setOriginalMale = false;
+
+		contactModelImpl._originalBirthday = contactModelImpl._birthday;
+
+		contactModelImpl._originalSmsSn = contactModelImpl._smsSn;
+
+		contactModelImpl._originalAimSn = contactModelImpl._aimSn;
+
+		contactModelImpl._originalFacebookSn = contactModelImpl._facebookSn;
+
+		contactModelImpl._originalIcqSn = contactModelImpl._icqSn;
+
+		contactModelImpl._originalJabberSn = contactModelImpl._jabberSn;
+
+		contactModelImpl._originalMsnSn = contactModelImpl._msnSn;
+
+		contactModelImpl._originalMySpaceSn = contactModelImpl._mySpaceSn;
+
+		contactModelImpl._originalSkypeSn = contactModelImpl._skypeSn;
+
+		contactModelImpl._originalTwitterSn = contactModelImpl._twitterSn;
+
+		contactModelImpl._originalYmSn = contactModelImpl._ymSn;
+
+		contactModelImpl._originalEmployeeStatusId = contactModelImpl._employeeStatusId;
+
+		contactModelImpl._originalEmployeeNumber = contactModelImpl._employeeNumber;
+
+		contactModelImpl._originalJobTitle = contactModelImpl._jobTitle;
+
+		contactModelImpl._originalJobClass = contactModelImpl._jobClass;
+
+		contactModelImpl._originalHoursOfOperation = contactModelImpl._hoursOfOperation;
 
 		contactModelImpl._columnBitmask = 0;
 	}
@@ -1643,14 +1972,23 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 			Contact.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _contactId;
+	private long _originalContactId;
+	private boolean _setOriginalContactId;
 	private long _companyId;
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _classNameId;
 	private long _originalClassNameId;
 	private boolean _setOriginalClassNameId;
@@ -1661,29 +1999,57 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 	private long _originalAccountId;
 	private boolean _setOriginalAccountId;
 	private long _parentContactId;
+	private long _originalParentContactId;
+	private boolean _setOriginalParentContactId;
 	private String _emailAddress;
+	private String _originalEmailAddress;
 	private String _firstName;
+	private String _originalFirstName;
 	private String _middleName;
+	private String _originalMiddleName;
 	private String _lastName;
+	private String _originalLastName;
 	private int _prefixId;
+	private int _originalPrefixId;
+	private boolean _setOriginalPrefixId;
 	private int _suffixId;
+	private int _originalSuffixId;
+	private boolean _setOriginalSuffixId;
 	private boolean _male;
+	private boolean _originalMale;
+	private boolean _setOriginalMale;
 	private Date _birthday;
+	private Date _originalBirthday;
 	private String _smsSn;
+	private String _originalSmsSn;
 	private String _aimSn;
+	private String _originalAimSn;
 	private String _facebookSn;
+	private String _originalFacebookSn;
 	private String _icqSn;
+	private String _originalIcqSn;
 	private String _jabberSn;
+	private String _originalJabberSn;
 	private String _msnSn;
+	private String _originalMsnSn;
 	private String _mySpaceSn;
+	private String _originalMySpaceSn;
 	private String _skypeSn;
+	private String _originalSkypeSn;
 	private String _twitterSn;
+	private String _originalTwitterSn;
 	private String _ymSn;
+	private String _originalYmSn;
 	private String _employeeStatusId;
+	private String _originalEmployeeStatusId;
 	private String _employeeNumber;
+	private String _originalEmployeeNumber;
 	private String _jobTitle;
+	private String _originalJobTitle;
 	private String _jobClass;
+	private String _originalJobClass;
 	private String _hoursOfOperation;
+	private String _originalHoursOfOperation;
 	private long _columnBitmask;
 	private Contact _escapedModel;
 }

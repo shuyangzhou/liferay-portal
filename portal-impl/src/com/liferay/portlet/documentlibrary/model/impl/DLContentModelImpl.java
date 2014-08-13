@@ -205,7 +205,17 @@ public class DLContentModelImpl extends BaseModelImpl<DLContent>
 
 	@Override
 	public void setContentId(long contentId) {
+		if (!_setOriginalContentId) {
+			_setOriginalContentId = true;
+
+			_originalContentId = _contentId;
+		}
+
 		_contentId = contentId;
+	}
+
+	public long getOriginalContentId() {
+		return _originalContentId;
 	}
 
 	@Override
@@ -215,7 +225,17 @@ public class DLContentModelImpl extends BaseModelImpl<DLContent>
 
 	@Override
 	public void setGroupId(long groupId) {
+		if (!_setOriginalGroupId) {
+			_setOriginalGroupId = true;
+
+			_originalGroupId = _groupId;
+		}
+
 		_groupId = groupId;
+	}
+
+	public long getOriginalGroupId() {
+		return _originalGroupId;
 	}
 
 	@Override
@@ -348,7 +368,17 @@ public class DLContentModelImpl extends BaseModelImpl<DLContent>
 
 	@Override
 	public void setSize(long size) {
+		if (!_setOriginalSize) {
+			_setOriginalSize = true;
+
+			_originalSize = _size;
+		}
+
 		_size = size;
+	}
+
+	public long getOriginalSize() {
+		return _originalSize;
 	}
 
 	public long getColumnBitmask() {
@@ -451,6 +481,14 @@ public class DLContentModelImpl extends BaseModelImpl<DLContent>
 	public void resetOriginalValues() {
 		DLContentModelImpl dlContentModelImpl = this;
 
+		dlContentModelImpl._originalContentId = dlContentModelImpl._contentId;
+
+		dlContentModelImpl._setOriginalContentId = false;
+
+		dlContentModelImpl._originalGroupId = dlContentModelImpl._groupId;
+
+		dlContentModelImpl._setOriginalGroupId = false;
+
 		dlContentModelImpl._originalCompanyId = dlContentModelImpl._companyId;
 
 		dlContentModelImpl._setOriginalCompanyId = false;
@@ -464,6 +502,9 @@ public class DLContentModelImpl extends BaseModelImpl<DLContent>
 		dlContentModelImpl._originalVersion = dlContentModelImpl._version;
 
 		dlContentModelImpl._dataBlobModel = null;
+		dlContentModelImpl._originalSize = dlContentModelImpl._size;
+
+		dlContentModelImpl._setOriginalSize = false;
 
 		dlContentModelImpl._columnBitmask = 0;
 	}
@@ -571,7 +612,11 @@ public class DLContentModelImpl extends BaseModelImpl<DLContent>
 			DLContent.class
 		};
 	private long _contentId;
+	private long _originalContentId;
+	private boolean _setOriginalContentId;
 	private long _groupId;
+	private long _originalGroupId;
+	private boolean _setOriginalGroupId;
 	private long _companyId;
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
@@ -584,6 +629,8 @@ public class DLContentModelImpl extends BaseModelImpl<DLContent>
 	private String _originalVersion;
 	private DLContentDataBlobModel _dataBlobModel;
 	private long _size;
+	private long _originalSize;
+	private boolean _setOriginalSize;
 	private long _columnBitmask;
 	private DLContent _escapedModel;
 }

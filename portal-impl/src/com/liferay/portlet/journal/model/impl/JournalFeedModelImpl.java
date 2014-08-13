@@ -420,7 +420,17 @@ public class JournalFeedModelImpl extends BaseModelImpl<JournalFeed>
 
 	@Override
 	public void setId(long id) {
+		if (!_setOriginalId) {
+			_setOriginalId = true;
+
+			_originalId = _id;
+		}
+
 		_id = id;
+	}
+
+	public long getOriginalId() {
+		return _originalId;
 	}
 
 	@JSON
@@ -477,6 +487,12 @@ public class JournalFeedModelImpl extends BaseModelImpl<JournalFeed>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -496,6 +512,10 @@ public class JournalFeedModelImpl extends BaseModelImpl<JournalFeed>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -509,7 +529,15 @@ public class JournalFeedModelImpl extends BaseModelImpl<JournalFeed>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -520,7 +548,15 @@ public class JournalFeedModelImpl extends BaseModelImpl<JournalFeed>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -531,7 +567,15 @@ public class JournalFeedModelImpl extends BaseModelImpl<JournalFeed>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -573,7 +617,15 @@ public class JournalFeedModelImpl extends BaseModelImpl<JournalFeed>
 
 	@Override
 	public void setName(String name) {
+		if (_originalName == null) {
+			_originalName = _name;
+		}
+
 		_name = name;
+	}
+
+	public String getOriginalName() {
+		return GetterUtil.getString(_originalName);
 	}
 
 	@JSON
@@ -589,7 +641,15 @@ public class JournalFeedModelImpl extends BaseModelImpl<JournalFeed>
 
 	@Override
 	public void setDescription(String description) {
+		if (_originalDescription == null) {
+			_originalDescription = _description;
+		}
+
 		_description = description;
+	}
+
+	public String getOriginalDescription() {
+		return GetterUtil.getString(_originalDescription);
 	}
 
 	@JSON
@@ -605,7 +665,15 @@ public class JournalFeedModelImpl extends BaseModelImpl<JournalFeed>
 
 	@Override
 	public void setType(String type) {
+		if (_originalType == null) {
+			_originalType = _type;
+		}
+
 		_type = type;
+	}
+
+	public String getOriginalType() {
+		return GetterUtil.getString(_originalType);
 	}
 
 	@JSON
@@ -621,7 +689,15 @@ public class JournalFeedModelImpl extends BaseModelImpl<JournalFeed>
 
 	@Override
 	public void setStructureId(String structureId) {
+		if (_originalStructureId == null) {
+			_originalStructureId = _structureId;
+		}
+
 		_structureId = structureId;
+	}
+
+	public String getOriginalStructureId() {
+		return GetterUtil.getString(_originalStructureId);
 	}
 
 	@JSON
@@ -637,7 +713,15 @@ public class JournalFeedModelImpl extends BaseModelImpl<JournalFeed>
 
 	@Override
 	public void setTemplateId(String templateId) {
+		if (_originalTemplateId == null) {
+			_originalTemplateId = _templateId;
+		}
+
 		_templateId = templateId;
+	}
+
+	public String getOriginalTemplateId() {
+		return GetterUtil.getString(_originalTemplateId);
 	}
 
 	@JSON
@@ -653,7 +737,15 @@ public class JournalFeedModelImpl extends BaseModelImpl<JournalFeed>
 
 	@Override
 	public void setRendererTemplateId(String rendererTemplateId) {
+		if (_originalRendererTemplateId == null) {
+			_originalRendererTemplateId = _rendererTemplateId;
+		}
+
 		_rendererTemplateId = rendererTemplateId;
+	}
+
+	public String getOriginalRendererTemplateId() {
+		return GetterUtil.getString(_originalRendererTemplateId);
 	}
 
 	@JSON
@@ -664,7 +756,17 @@ public class JournalFeedModelImpl extends BaseModelImpl<JournalFeed>
 
 	@Override
 	public void setDelta(int delta) {
+		if (!_setOriginalDelta) {
+			_setOriginalDelta = true;
+
+			_originalDelta = _delta;
+		}
+
 		_delta = delta;
+	}
+
+	public int getOriginalDelta() {
+		return _originalDelta;
 	}
 
 	@JSON
@@ -680,7 +782,15 @@ public class JournalFeedModelImpl extends BaseModelImpl<JournalFeed>
 
 	@Override
 	public void setOrderByCol(String orderByCol) {
+		if (_originalOrderByCol == null) {
+			_originalOrderByCol = _orderByCol;
+		}
+
 		_orderByCol = orderByCol;
+	}
+
+	public String getOriginalOrderByCol() {
+		return GetterUtil.getString(_originalOrderByCol);
 	}
 
 	@JSON
@@ -696,7 +806,15 @@ public class JournalFeedModelImpl extends BaseModelImpl<JournalFeed>
 
 	@Override
 	public void setOrderByType(String orderByType) {
+		if (_originalOrderByType == null) {
+			_originalOrderByType = _orderByType;
+		}
+
 		_orderByType = orderByType;
+	}
+
+	public String getOriginalOrderByType() {
+		return GetterUtil.getString(_originalOrderByType);
 	}
 
 	@JSON
@@ -712,7 +830,15 @@ public class JournalFeedModelImpl extends BaseModelImpl<JournalFeed>
 
 	@Override
 	public void setTargetLayoutFriendlyUrl(String targetLayoutFriendlyUrl) {
+		if (_originalTargetLayoutFriendlyUrl == null) {
+			_originalTargetLayoutFriendlyUrl = _targetLayoutFriendlyUrl;
+		}
+
 		_targetLayoutFriendlyUrl = targetLayoutFriendlyUrl;
+	}
+
+	public String getOriginalTargetLayoutFriendlyUrl() {
+		return GetterUtil.getString(_originalTargetLayoutFriendlyUrl);
 	}
 
 	@JSON
@@ -728,7 +854,15 @@ public class JournalFeedModelImpl extends BaseModelImpl<JournalFeed>
 
 	@Override
 	public void setTargetPortletId(String targetPortletId) {
+		if (_originalTargetPortletId == null) {
+			_originalTargetPortletId = _targetPortletId;
+		}
+
 		_targetPortletId = targetPortletId;
+	}
+
+	public String getOriginalTargetPortletId() {
+		return GetterUtil.getString(_originalTargetPortletId);
 	}
 
 	@JSON
@@ -744,7 +878,15 @@ public class JournalFeedModelImpl extends BaseModelImpl<JournalFeed>
 
 	@Override
 	public void setContentField(String contentField) {
+		if (_originalContentField == null) {
+			_originalContentField = _contentField;
+		}
+
 		_contentField = contentField;
+	}
+
+	public String getOriginalContentField() {
+		return GetterUtil.getString(_originalContentField);
 	}
 
 	@JSON
@@ -760,7 +902,15 @@ public class JournalFeedModelImpl extends BaseModelImpl<JournalFeed>
 
 	@Override
 	public void setFeedFormat(String feedFormat) {
+		if (_originalFeedFormat == null) {
+			_originalFeedFormat = _feedFormat;
+		}
+
 		_feedFormat = feedFormat;
+	}
+
+	public String getOriginalFeedFormat() {
+		return GetterUtil.getString(_originalFeedFormat);
 	}
 
 	@JSON
@@ -771,7 +921,17 @@ public class JournalFeedModelImpl extends BaseModelImpl<JournalFeed>
 
 	@Override
 	public void setFeedVersion(double feedVersion) {
+		if (!_setOriginalFeedVersion) {
+			_setOriginalFeedVersion = true;
+
+			_originalFeedVersion = _feedVersion;
+		}
+
 		_feedVersion = feedVersion;
+	}
+
+	public double getOriginalFeedVersion() {
+		return _originalFeedVersion;
 	}
 
 	@Override
@@ -896,6 +1056,10 @@ public class JournalFeedModelImpl extends BaseModelImpl<JournalFeed>
 
 		journalFeedModelImpl._originalUuid = journalFeedModelImpl._uuid;
 
+		journalFeedModelImpl._originalId = journalFeedModelImpl._id;
+
+		journalFeedModelImpl._setOriginalId = false;
+
 		journalFeedModelImpl._originalGroupId = journalFeedModelImpl._groupId;
 
 		journalFeedModelImpl._setOriginalGroupId = false;
@@ -904,7 +1068,49 @@ public class JournalFeedModelImpl extends BaseModelImpl<JournalFeed>
 
 		journalFeedModelImpl._setOriginalCompanyId = false;
 
+		journalFeedModelImpl._originalUserId = journalFeedModelImpl._userId;
+
+		journalFeedModelImpl._setOriginalUserId = false;
+
+		journalFeedModelImpl._originalUserName = journalFeedModelImpl._userName;
+
+		journalFeedModelImpl._originalCreateDate = journalFeedModelImpl._createDate;
+
+		journalFeedModelImpl._originalModifiedDate = journalFeedModelImpl._modifiedDate;
+
 		journalFeedModelImpl._originalFeedId = journalFeedModelImpl._feedId;
+
+		journalFeedModelImpl._originalName = journalFeedModelImpl._name;
+
+		journalFeedModelImpl._originalDescription = journalFeedModelImpl._description;
+
+		journalFeedModelImpl._originalType = journalFeedModelImpl._type;
+
+		journalFeedModelImpl._originalStructureId = journalFeedModelImpl._structureId;
+
+		journalFeedModelImpl._originalTemplateId = journalFeedModelImpl._templateId;
+
+		journalFeedModelImpl._originalRendererTemplateId = journalFeedModelImpl._rendererTemplateId;
+
+		journalFeedModelImpl._originalDelta = journalFeedModelImpl._delta;
+
+		journalFeedModelImpl._setOriginalDelta = false;
+
+		journalFeedModelImpl._originalOrderByCol = journalFeedModelImpl._orderByCol;
+
+		journalFeedModelImpl._originalOrderByType = journalFeedModelImpl._orderByType;
+
+		journalFeedModelImpl._originalTargetLayoutFriendlyUrl = journalFeedModelImpl._targetLayoutFriendlyUrl;
+
+		journalFeedModelImpl._originalTargetPortletId = journalFeedModelImpl._targetPortletId;
+
+		journalFeedModelImpl._originalContentField = journalFeedModelImpl._contentField;
+
+		journalFeedModelImpl._originalFeedFormat = journalFeedModelImpl._feedFormat;
+
+		journalFeedModelImpl._originalFeedVersion = journalFeedModelImpl._feedVersion;
+
+		journalFeedModelImpl._setOriginalFeedVersion = false;
 
 		journalFeedModelImpl._columnBitmask = 0;
 	}
@@ -1235,6 +1441,8 @@ public class JournalFeedModelImpl extends BaseModelImpl<JournalFeed>
 	private String _uuid;
 	private String _originalUuid;
 	private long _id;
+	private long _originalId;
+	private boolean _setOriginalId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -1242,25 +1450,46 @@ public class JournalFeedModelImpl extends BaseModelImpl<JournalFeed>
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private String _feedId;
 	private String _originalFeedId;
 	private String _name;
+	private String _originalName;
 	private String _description;
+	private String _originalDescription;
 	private String _type;
+	private String _originalType;
 	private String _structureId;
+	private String _originalStructureId;
 	private String _templateId;
+	private String _originalTemplateId;
 	private String _rendererTemplateId;
+	private String _originalRendererTemplateId;
 	private int _delta;
+	private int _originalDelta;
+	private boolean _setOriginalDelta;
 	private String _orderByCol;
+	private String _originalOrderByCol;
 	private String _orderByType;
+	private String _originalOrderByType;
 	private String _targetLayoutFriendlyUrl;
+	private String _originalTargetLayoutFriendlyUrl;
 	private String _targetPortletId;
+	private String _originalTargetPortletId;
 	private String _contentField;
+	private String _originalContentField;
 	private String _feedFormat;
+	private String _originalFeedFormat;
 	private double _feedVersion;
+	private double _originalFeedVersion;
+	private boolean _setOriginalFeedVersion;
 	private long _columnBitmask;
 	private JournalFeed _escapedModel;
 }

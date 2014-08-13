@@ -348,7 +348,17 @@ public class ShoppingCouponModelImpl extends BaseModelImpl<ShoppingCoupon>
 
 	@Override
 	public void setCouponId(long couponId) {
+		if (!_setOriginalCouponId) {
+			_setOriginalCouponId = true;
+
+			_originalCouponId = _couponId;
+		}
+
 		_couponId = couponId;
+	}
+
+	public long getOriginalCouponId() {
+		return _originalCouponId;
 	}
 
 	@JSON
@@ -382,7 +392,17 @@ public class ShoppingCouponModelImpl extends BaseModelImpl<ShoppingCoupon>
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if (!_setOriginalCompanyId) {
+			_setOriginalCompanyId = true;
+
+			_originalCompanyId = _companyId;
+		}
+
 		_companyId = companyId;
+	}
+
+	public long getOriginalCompanyId() {
+		return _originalCompanyId;
 	}
 
 	@JSON
@@ -393,6 +413,12 @@ public class ShoppingCouponModelImpl extends BaseModelImpl<ShoppingCoupon>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -412,6 +438,10 @@ public class ShoppingCouponModelImpl extends BaseModelImpl<ShoppingCoupon>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -425,7 +455,15 @@ public class ShoppingCouponModelImpl extends BaseModelImpl<ShoppingCoupon>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -438,7 +476,15 @@ public class ShoppingCouponModelImpl extends BaseModelImpl<ShoppingCoupon>
 	public void setCreateDate(Date createDate) {
 		_columnBitmask = -1L;
 
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -449,7 +495,15 @@ public class ShoppingCouponModelImpl extends BaseModelImpl<ShoppingCoupon>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -491,7 +545,15 @@ public class ShoppingCouponModelImpl extends BaseModelImpl<ShoppingCoupon>
 
 	@Override
 	public void setName(String name) {
+		if (_originalName == null) {
+			_originalName = _name;
+		}
+
 		_name = name;
+	}
+
+	public String getOriginalName() {
+		return GetterUtil.getString(_originalName);
 	}
 
 	@JSON
@@ -507,7 +569,15 @@ public class ShoppingCouponModelImpl extends BaseModelImpl<ShoppingCoupon>
 
 	@Override
 	public void setDescription(String description) {
+		if (_originalDescription == null) {
+			_originalDescription = _description;
+		}
+
 		_description = description;
+	}
+
+	public String getOriginalDescription() {
+		return GetterUtil.getString(_originalDescription);
 	}
 
 	@JSON
@@ -518,7 +588,15 @@ public class ShoppingCouponModelImpl extends BaseModelImpl<ShoppingCoupon>
 
 	@Override
 	public void setStartDate(Date startDate) {
+		if (_originalStartDate == null) {
+			_originalStartDate = _startDate;
+		}
+
 		_startDate = startDate;
+	}
+
+	public Date getOriginalStartDate() {
+		return _originalStartDate;
 	}
 
 	@JSON
@@ -529,7 +607,15 @@ public class ShoppingCouponModelImpl extends BaseModelImpl<ShoppingCoupon>
 
 	@Override
 	public void setEndDate(Date endDate) {
+		if (_originalEndDate == null) {
+			_originalEndDate = _endDate;
+		}
+
 		_endDate = endDate;
+	}
+
+	public Date getOriginalEndDate() {
+		return _originalEndDate;
 	}
 
 	@JSON
@@ -545,7 +631,17 @@ public class ShoppingCouponModelImpl extends BaseModelImpl<ShoppingCoupon>
 
 	@Override
 	public void setActive(boolean active) {
+		if (!_setOriginalActive) {
+			_setOriginalActive = true;
+
+			_originalActive = _active;
+		}
+
 		_active = active;
+	}
+
+	public boolean getOriginalActive() {
+		return _originalActive;
 	}
 
 	@JSON
@@ -561,7 +657,15 @@ public class ShoppingCouponModelImpl extends BaseModelImpl<ShoppingCoupon>
 
 	@Override
 	public void setLimitCategories(String limitCategories) {
+		if (_originalLimitCategories == null) {
+			_originalLimitCategories = _limitCategories;
+		}
+
 		_limitCategories = limitCategories;
+	}
+
+	public String getOriginalLimitCategories() {
+		return GetterUtil.getString(_originalLimitCategories);
 	}
 
 	@JSON
@@ -577,7 +681,15 @@ public class ShoppingCouponModelImpl extends BaseModelImpl<ShoppingCoupon>
 
 	@Override
 	public void setLimitSkus(String limitSkus) {
+		if (_originalLimitSkus == null) {
+			_originalLimitSkus = _limitSkus;
+		}
+
 		_limitSkus = limitSkus;
+	}
+
+	public String getOriginalLimitSkus() {
+		return GetterUtil.getString(_originalLimitSkus);
 	}
 
 	@JSON
@@ -588,7 +700,17 @@ public class ShoppingCouponModelImpl extends BaseModelImpl<ShoppingCoupon>
 
 	@Override
 	public void setMinOrder(double minOrder) {
+		if (!_setOriginalMinOrder) {
+			_setOriginalMinOrder = true;
+
+			_originalMinOrder = _minOrder;
+		}
+
 		_minOrder = minOrder;
+	}
+
+	public double getOriginalMinOrder() {
+		return _originalMinOrder;
 	}
 
 	@JSON
@@ -599,7 +721,17 @@ public class ShoppingCouponModelImpl extends BaseModelImpl<ShoppingCoupon>
 
 	@Override
 	public void setDiscount(double discount) {
+		if (!_setOriginalDiscount) {
+			_setOriginalDiscount = true;
+
+			_originalDiscount = _discount;
+		}
+
 		_discount = discount;
+	}
+
+	public double getOriginalDiscount() {
+		return _originalDiscount;
 	}
 
 	@JSON
@@ -615,7 +747,15 @@ public class ShoppingCouponModelImpl extends BaseModelImpl<ShoppingCoupon>
 
 	@Override
 	public void setDiscountType(String discountType) {
+		if (_originalDiscountType == null) {
+			_originalDiscountType = _discountType;
+		}
+
 		_discountType = discountType;
+	}
+
+	public String getOriginalDiscountType() {
+		return GetterUtil.getString(_originalDiscountType);
 	}
 
 	public long getColumnBitmask() {
@@ -728,11 +868,55 @@ public class ShoppingCouponModelImpl extends BaseModelImpl<ShoppingCoupon>
 	public void resetOriginalValues() {
 		ShoppingCouponModelImpl shoppingCouponModelImpl = this;
 
+		shoppingCouponModelImpl._originalCouponId = shoppingCouponModelImpl._couponId;
+
+		shoppingCouponModelImpl._setOriginalCouponId = false;
+
 		shoppingCouponModelImpl._originalGroupId = shoppingCouponModelImpl._groupId;
 
 		shoppingCouponModelImpl._setOriginalGroupId = false;
 
+		shoppingCouponModelImpl._originalCompanyId = shoppingCouponModelImpl._companyId;
+
+		shoppingCouponModelImpl._setOriginalCompanyId = false;
+
+		shoppingCouponModelImpl._originalUserId = shoppingCouponModelImpl._userId;
+
+		shoppingCouponModelImpl._setOriginalUserId = false;
+
+		shoppingCouponModelImpl._originalUserName = shoppingCouponModelImpl._userName;
+
+		shoppingCouponModelImpl._originalCreateDate = shoppingCouponModelImpl._createDate;
+
+		shoppingCouponModelImpl._originalModifiedDate = shoppingCouponModelImpl._modifiedDate;
+
 		shoppingCouponModelImpl._originalCode = shoppingCouponModelImpl._code;
+
+		shoppingCouponModelImpl._originalName = shoppingCouponModelImpl._name;
+
+		shoppingCouponModelImpl._originalDescription = shoppingCouponModelImpl._description;
+
+		shoppingCouponModelImpl._originalStartDate = shoppingCouponModelImpl._startDate;
+
+		shoppingCouponModelImpl._originalEndDate = shoppingCouponModelImpl._endDate;
+
+		shoppingCouponModelImpl._originalActive = shoppingCouponModelImpl._active;
+
+		shoppingCouponModelImpl._setOriginalActive = false;
+
+		shoppingCouponModelImpl._originalLimitCategories = shoppingCouponModelImpl._limitCategories;
+
+		shoppingCouponModelImpl._originalLimitSkus = shoppingCouponModelImpl._limitSkus;
+
+		shoppingCouponModelImpl._originalMinOrder = shoppingCouponModelImpl._minOrder;
+
+		shoppingCouponModelImpl._setOriginalMinOrder = false;
+
+		shoppingCouponModelImpl._originalDiscount = shoppingCouponModelImpl._discount;
+
+		shoppingCouponModelImpl._setOriginalDiscount = false;
+
+		shoppingCouponModelImpl._originalDiscountType = shoppingCouponModelImpl._discountType;
 
 		shoppingCouponModelImpl._columnBitmask = 0;
 	}
@@ -986,26 +1170,48 @@ public class ShoppingCouponModelImpl extends BaseModelImpl<ShoppingCoupon>
 			ShoppingCoupon.class
 		};
 	private long _couponId;
+	private long _originalCouponId;
+	private boolean _setOriginalCouponId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
 	private long _companyId;
+	private long _originalCompanyId;
+	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private String _code;
 	private String _originalCode;
 	private String _name;
+	private String _originalName;
 	private String _description;
+	private String _originalDescription;
 	private Date _startDate;
+	private Date _originalStartDate;
 	private Date _endDate;
+	private Date _originalEndDate;
 	private boolean _active;
+	private boolean _originalActive;
+	private boolean _setOriginalActive;
 	private String _limitCategories;
+	private String _originalLimitCategories;
 	private String _limitSkus;
+	private String _originalLimitSkus;
 	private double _minOrder;
+	private double _originalMinOrder;
+	private boolean _setOriginalMinOrder;
 	private double _discount;
+	private double _originalDiscount;
+	private boolean _setOriginalDiscount;
 	private String _discountType;
+	private String _originalDiscountType;
 	private long _columnBitmask;
 	private ShoppingCoupon _escapedModel;
 }

@@ -26,6 +26,7 @@ import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.PluginSetting;
 import com.liferay.portal.model.PluginSettingModel;
 import com.liferay.portal.model.PluginSettingSoap;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 
 import com.liferay.portlet.expando.model.ExpandoBridge;
@@ -244,7 +245,17 @@ public class PluginSettingModelImpl extends BaseModelImpl<PluginSetting>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@JSON
@@ -255,7 +266,17 @@ public class PluginSettingModelImpl extends BaseModelImpl<PluginSetting>
 
 	@Override
 	public void setPluginSettingId(long pluginSettingId) {
+		if (!_setOriginalPluginSettingId) {
+			_setOriginalPluginSettingId = true;
+
+			_originalPluginSettingId = _pluginSettingId;
+		}
+
 		_pluginSettingId = pluginSettingId;
+	}
+
+	public long getOriginalPluginSettingId() {
+		return _originalPluginSettingId;
 	}
 
 	@JSON
@@ -346,7 +367,15 @@ public class PluginSettingModelImpl extends BaseModelImpl<PluginSetting>
 
 	@Override
 	public void setRoles(String roles) {
+		if (_originalRoles == null) {
+			_originalRoles = _roles;
+		}
+
 		_roles = roles;
+	}
+
+	public String getOriginalRoles() {
+		return GetterUtil.getString(_originalRoles);
 	}
 
 	@JSON
@@ -362,7 +391,17 @@ public class PluginSettingModelImpl extends BaseModelImpl<PluginSetting>
 
 	@Override
 	public void setActive(boolean active) {
+		if (!_setOriginalActive) {
+			_setOriginalActive = true;
+
+			_originalActive = _active;
+		}
+
 		_active = active;
+	}
+
+	public boolean getOriginalActive() {
+		return _originalActive;
 	}
 
 	public long getColumnBitmask() {
@@ -465,6 +504,14 @@ public class PluginSettingModelImpl extends BaseModelImpl<PluginSetting>
 	public void resetOriginalValues() {
 		PluginSettingModelImpl pluginSettingModelImpl = this;
 
+		pluginSettingModelImpl._originalMvccVersion = pluginSettingModelImpl._mvccVersion;
+
+		pluginSettingModelImpl._setOriginalMvccVersion = false;
+
+		pluginSettingModelImpl._originalPluginSettingId = pluginSettingModelImpl._pluginSettingId;
+
+		pluginSettingModelImpl._setOriginalPluginSettingId = false;
+
 		pluginSettingModelImpl._originalCompanyId = pluginSettingModelImpl._companyId;
 
 		pluginSettingModelImpl._setOriginalCompanyId = false;
@@ -472,6 +519,12 @@ public class PluginSettingModelImpl extends BaseModelImpl<PluginSetting>
 		pluginSettingModelImpl._originalPluginId = pluginSettingModelImpl._pluginId;
 
 		pluginSettingModelImpl._originalPluginType = pluginSettingModelImpl._pluginType;
+
+		pluginSettingModelImpl._originalRoles = pluginSettingModelImpl._roles;
+
+		pluginSettingModelImpl._originalActive = pluginSettingModelImpl._active;
+
+		pluginSettingModelImpl._setOriginalActive = false;
 
 		pluginSettingModelImpl._columnBitmask = 0;
 	}
@@ -585,7 +638,11 @@ public class PluginSettingModelImpl extends BaseModelImpl<PluginSetting>
 			PluginSetting.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _pluginSettingId;
+	private long _originalPluginSettingId;
+	private boolean _setOriginalPluginSettingId;
 	private long _companyId;
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
@@ -594,7 +651,10 @@ public class PluginSettingModelImpl extends BaseModelImpl<PluginSetting>
 	private String _pluginType;
 	private String _originalPluginType;
 	private String _roles;
+	private String _originalRoles;
 	private boolean _active;
+	private boolean _originalActive;
+	private boolean _setOriginalActive;
 	private long _columnBitmask;
 	private PluginSetting _escapedModel;
 }

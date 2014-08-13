@@ -26,6 +26,7 @@ import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.Company;
 import com.liferay.portal.model.CompanyModel;
 import com.liferay.portal.model.CompanySoap;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 
 import com.liferay.portlet.expando.model.ExpandoBridge;
@@ -281,7 +282,17 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@JSON
@@ -292,7 +303,17 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if (!_setOriginalCompanyId) {
+			_setOriginalCompanyId = true;
+
+			_originalCompanyId = _companyId;
+		}
+
 		_companyId = companyId;
+	}
+
+	public long getOriginalCompanyId() {
+		return _originalCompanyId;
 	}
 
 	@JSON
@@ -303,7 +324,17 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 
 	@Override
 	public void setAccountId(long accountId) {
+		if (!_setOriginalAccountId) {
+			_setOriginalAccountId = true;
+
+			_originalAccountId = _accountId;
+		}
+
 		_accountId = accountId;
+	}
+
+	public long getOriginalAccountId() {
+		return _originalAccountId;
 	}
 
 	@JSON
@@ -345,7 +376,15 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 
 	@Override
 	public void setKey(String key) {
+		if (_originalKey == null) {
+			_originalKey = _key;
+		}
+
 		_key = key;
+	}
+
+	public String getOriginalKey() {
+		return GetterUtil.getString(_originalKey);
 	}
 
 	@JSON
@@ -387,7 +426,15 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 
 	@Override
 	public void setHomeURL(String homeURL) {
+		if (_originalHomeURL == null) {
+			_originalHomeURL = _homeURL;
+		}
+
 		_homeURL = homeURL;
+	}
+
+	public String getOriginalHomeURL() {
+		return GetterUtil.getString(_originalHomeURL);
 	}
 
 	@JSON
@@ -449,7 +496,17 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 
 	@Override
 	public void setMaxUsers(int maxUsers) {
+		if (!_setOriginalMaxUsers) {
+			_setOriginalMaxUsers = true;
+
+			_originalMaxUsers = _maxUsers;
+		}
+
 		_maxUsers = maxUsers;
+	}
+
+	public int getOriginalMaxUsers() {
+		return _originalMaxUsers;
 	}
 
 	@JSON
@@ -465,7 +522,17 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 
 	@Override
 	public void setActive(boolean active) {
+		if (!_setOriginalActive) {
+			_setOriginalActive = true;
+
+			_originalActive = _active;
+		}
+
 		_active = active;
+	}
+
+	public boolean getOriginalActive() {
+		return _originalActive;
 	}
 
 	public java.security.Key getKeyObj() {
@@ -586,9 +653,25 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 	public void resetOriginalValues() {
 		CompanyModelImpl companyModelImpl = this;
 
+		companyModelImpl._originalMvccVersion = companyModelImpl._mvccVersion;
+
+		companyModelImpl._setOriginalMvccVersion = false;
+
+		companyModelImpl._originalCompanyId = companyModelImpl._companyId;
+
+		companyModelImpl._setOriginalCompanyId = false;
+
+		companyModelImpl._originalAccountId = companyModelImpl._accountId;
+
+		companyModelImpl._setOriginalAccountId = false;
+
 		companyModelImpl._originalWebId = companyModelImpl._webId;
 
+		companyModelImpl._originalKey = companyModelImpl._key;
+
 		companyModelImpl._originalMx = companyModelImpl._mx;
+
+		companyModelImpl._originalHomeURL = companyModelImpl._homeURL;
 
 		companyModelImpl._originalLogoId = companyModelImpl._logoId;
 
@@ -597,6 +680,14 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 		companyModelImpl._originalSystem = companyModelImpl._system;
 
 		companyModelImpl._setOriginalSystem = false;
+
+		companyModelImpl._originalMaxUsers = companyModelImpl._maxUsers;
+
+		companyModelImpl._setOriginalMaxUsers = false;
+
+		companyModelImpl._originalActive = companyModelImpl._active;
+
+		companyModelImpl._setOriginalActive = false;
 
 		setKeyObj(null);
 
@@ -756,14 +847,22 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 			Company.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _companyId;
+	private long _originalCompanyId;
+	private boolean _setOriginalCompanyId;
 	private long _accountId;
+	private long _originalAccountId;
+	private boolean _setOriginalAccountId;
 	private String _webId;
 	private String _originalWebId;
 	private String _key;
+	private String _originalKey;
 	private String _mx;
 	private String _originalMx;
 	private String _homeURL;
+	private String _originalHomeURL;
 	private long _logoId;
 	private long _originalLogoId;
 	private boolean _setOriginalLogoId;
@@ -771,7 +870,11 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 	private boolean _originalSystem;
 	private boolean _setOriginalSystem;
 	private int _maxUsers;
+	private int _originalMaxUsers;
+	private boolean _setOriginalMaxUsers;
 	private boolean _active;
+	private boolean _originalActive;
+	private boolean _setOriginalActive;
 	private long _columnBitmask;
 	private Company _escapedModel;
 }

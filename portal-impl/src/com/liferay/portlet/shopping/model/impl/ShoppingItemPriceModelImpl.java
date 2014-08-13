@@ -218,7 +218,17 @@ public class ShoppingItemPriceModelImpl extends BaseModelImpl<ShoppingItemPrice>
 	public void setItemPriceId(long itemPriceId) {
 		_columnBitmask = -1L;
 
+		if (!_setOriginalItemPriceId) {
+			_setOriginalItemPriceId = true;
+
+			_originalItemPriceId = _itemPriceId;
+		}
+
 		_itemPriceId = itemPriceId;
+	}
+
+	public long getOriginalItemPriceId() {
+		return _originalItemPriceId;
 	}
 
 	@Override
@@ -250,7 +260,17 @@ public class ShoppingItemPriceModelImpl extends BaseModelImpl<ShoppingItemPrice>
 
 	@Override
 	public void setMinQuantity(int minQuantity) {
+		if (!_setOriginalMinQuantity) {
+			_setOriginalMinQuantity = true;
+
+			_originalMinQuantity = _minQuantity;
+		}
+
 		_minQuantity = minQuantity;
+	}
+
+	public int getOriginalMinQuantity() {
+		return _originalMinQuantity;
 	}
 
 	@Override
@@ -260,7 +280,17 @@ public class ShoppingItemPriceModelImpl extends BaseModelImpl<ShoppingItemPrice>
 
 	@Override
 	public void setMaxQuantity(int maxQuantity) {
+		if (!_setOriginalMaxQuantity) {
+			_setOriginalMaxQuantity = true;
+
+			_originalMaxQuantity = _maxQuantity;
+		}
+
 		_maxQuantity = maxQuantity;
+	}
+
+	public int getOriginalMaxQuantity() {
+		return _originalMaxQuantity;
 	}
 
 	@Override
@@ -270,7 +300,17 @@ public class ShoppingItemPriceModelImpl extends BaseModelImpl<ShoppingItemPrice>
 
 	@Override
 	public void setPrice(double price) {
+		if (!_setOriginalPrice) {
+			_setOriginalPrice = true;
+
+			_originalPrice = _price;
+		}
+
 		_price = price;
+	}
+
+	public double getOriginalPrice() {
+		return _originalPrice;
 	}
 
 	@Override
@@ -280,7 +320,17 @@ public class ShoppingItemPriceModelImpl extends BaseModelImpl<ShoppingItemPrice>
 
 	@Override
 	public void setDiscount(double discount) {
+		if (!_setOriginalDiscount) {
+			_setOriginalDiscount = true;
+
+			_originalDiscount = _discount;
+		}
+
 		_discount = discount;
+	}
+
+	public double getOriginalDiscount() {
+		return _originalDiscount;
 	}
 
 	@Override
@@ -295,7 +345,17 @@ public class ShoppingItemPriceModelImpl extends BaseModelImpl<ShoppingItemPrice>
 
 	@Override
 	public void setTaxable(boolean taxable) {
+		if (!_setOriginalTaxable) {
+			_setOriginalTaxable = true;
+
+			_originalTaxable = _taxable;
+		}
+
 		_taxable = taxable;
+	}
+
+	public boolean getOriginalTaxable() {
+		return _originalTaxable;
 	}
 
 	@Override
@@ -305,7 +365,17 @@ public class ShoppingItemPriceModelImpl extends BaseModelImpl<ShoppingItemPrice>
 
 	@Override
 	public void setShipping(double shipping) {
+		if (!_setOriginalShipping) {
+			_setOriginalShipping = true;
+
+			_originalShipping = _shipping;
+		}
+
 		_shipping = shipping;
+	}
+
+	public double getOriginalShipping() {
+		return _originalShipping;
 	}
 
 	@Override
@@ -320,7 +390,17 @@ public class ShoppingItemPriceModelImpl extends BaseModelImpl<ShoppingItemPrice>
 
 	@Override
 	public void setUseShippingFormula(boolean useShippingFormula) {
+		if (!_setOriginalUseShippingFormula) {
+			_setOriginalUseShippingFormula = true;
+
+			_originalUseShippingFormula = _useShippingFormula;
+		}
+
 		_useShippingFormula = useShippingFormula;
+	}
+
+	public boolean getOriginalUseShippingFormula() {
+		return _originalUseShippingFormula;
 	}
 
 	@Override
@@ -330,7 +410,17 @@ public class ShoppingItemPriceModelImpl extends BaseModelImpl<ShoppingItemPrice>
 
 	@Override
 	public void setStatus(int status) {
+		if (!_setOriginalStatus) {
+			_setOriginalStatus = true;
+
+			_originalStatus = _status;
+		}
+
 		_status = status;
+	}
+
+	public int getOriginalStatus() {
+		return _originalStatus;
 	}
 
 	public long getColumnBitmask() {
@@ -456,9 +546,45 @@ public class ShoppingItemPriceModelImpl extends BaseModelImpl<ShoppingItemPrice>
 	public void resetOriginalValues() {
 		ShoppingItemPriceModelImpl shoppingItemPriceModelImpl = this;
 
+		shoppingItemPriceModelImpl._originalItemPriceId = shoppingItemPriceModelImpl._itemPriceId;
+
+		shoppingItemPriceModelImpl._setOriginalItemPriceId = false;
+
 		shoppingItemPriceModelImpl._originalItemId = shoppingItemPriceModelImpl._itemId;
 
 		shoppingItemPriceModelImpl._setOriginalItemId = false;
+
+		shoppingItemPriceModelImpl._originalMinQuantity = shoppingItemPriceModelImpl._minQuantity;
+
+		shoppingItemPriceModelImpl._setOriginalMinQuantity = false;
+
+		shoppingItemPriceModelImpl._originalMaxQuantity = shoppingItemPriceModelImpl._maxQuantity;
+
+		shoppingItemPriceModelImpl._setOriginalMaxQuantity = false;
+
+		shoppingItemPriceModelImpl._originalPrice = shoppingItemPriceModelImpl._price;
+
+		shoppingItemPriceModelImpl._setOriginalPrice = false;
+
+		shoppingItemPriceModelImpl._originalDiscount = shoppingItemPriceModelImpl._discount;
+
+		shoppingItemPriceModelImpl._setOriginalDiscount = false;
+
+		shoppingItemPriceModelImpl._originalTaxable = shoppingItemPriceModelImpl._taxable;
+
+		shoppingItemPriceModelImpl._setOriginalTaxable = false;
+
+		shoppingItemPriceModelImpl._originalShipping = shoppingItemPriceModelImpl._shipping;
+
+		shoppingItemPriceModelImpl._setOriginalShipping = false;
+
+		shoppingItemPriceModelImpl._originalUseShippingFormula = shoppingItemPriceModelImpl._useShippingFormula;
+
+		shoppingItemPriceModelImpl._setOriginalUseShippingFormula = false;
+
+		shoppingItemPriceModelImpl._originalStatus = shoppingItemPriceModelImpl._status;
+
+		shoppingItemPriceModelImpl._setOriginalStatus = false;
 
 		shoppingItemPriceModelImpl._columnBitmask = 0;
 	}
@@ -578,17 +704,35 @@ public class ShoppingItemPriceModelImpl extends BaseModelImpl<ShoppingItemPrice>
 			ShoppingItemPrice.class
 		};
 	private long _itemPriceId;
+	private long _originalItemPriceId;
+	private boolean _setOriginalItemPriceId;
 	private long _itemId;
 	private long _originalItemId;
 	private boolean _setOriginalItemId;
 	private int _minQuantity;
+	private int _originalMinQuantity;
+	private boolean _setOriginalMinQuantity;
 	private int _maxQuantity;
+	private int _originalMaxQuantity;
+	private boolean _setOriginalMaxQuantity;
 	private double _price;
+	private double _originalPrice;
+	private boolean _setOriginalPrice;
 	private double _discount;
+	private double _originalDiscount;
+	private boolean _setOriginalDiscount;
 	private boolean _taxable;
+	private boolean _originalTaxable;
+	private boolean _setOriginalTaxable;
 	private double _shipping;
+	private double _originalShipping;
+	private boolean _setOriginalShipping;
 	private boolean _useShippingFormula;
+	private boolean _originalUseShippingFormula;
+	private boolean _setOriginalUseShippingFormula;
 	private int _status;
+	private int _originalStatus;
+	private boolean _setOriginalStatus;
 	private long _columnBitmask;
 	private ShoppingItemPrice _escapedModel;
 }

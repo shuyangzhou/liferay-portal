@@ -357,7 +357,17 @@ public class WikiNodeModelImpl extends BaseModelImpl<WikiNode>
 
 	@Override
 	public void setNodeId(long nodeId) {
+		if (!_setOriginalNodeId) {
+			_setOriginalNodeId = true;
+
+			_originalNodeId = _nodeId;
+		}
+
 		_nodeId = nodeId;
+	}
+
+	public long getOriginalNodeId() {
+		return _originalNodeId;
 	}
 
 	@JSON
@@ -414,6 +424,12 @@ public class WikiNodeModelImpl extends BaseModelImpl<WikiNode>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -433,6 +449,10 @@ public class WikiNodeModelImpl extends BaseModelImpl<WikiNode>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -446,7 +466,15 @@ public class WikiNodeModelImpl extends BaseModelImpl<WikiNode>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -457,7 +485,15 @@ public class WikiNodeModelImpl extends BaseModelImpl<WikiNode>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -468,7 +504,15 @@ public class WikiNodeModelImpl extends BaseModelImpl<WikiNode>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -510,7 +554,15 @@ public class WikiNodeModelImpl extends BaseModelImpl<WikiNode>
 
 	@Override
 	public void setDescription(String description) {
+		if (_originalDescription == null) {
+			_originalDescription = _description;
+		}
+
 		_description = description;
+	}
+
+	public String getOriginalDescription() {
+		return GetterUtil.getString(_originalDescription);
 	}
 
 	@JSON
@@ -521,7 +573,15 @@ public class WikiNodeModelImpl extends BaseModelImpl<WikiNode>
 
 	@Override
 	public void setLastPostDate(Date lastPostDate) {
+		if (_originalLastPostDate == null) {
+			_originalLastPostDate = _lastPostDate;
+		}
+
 		_lastPostDate = lastPostDate;
+	}
+
+	public Date getOriginalLastPostDate() {
+		return _originalLastPostDate;
 	}
 
 	@JSON
@@ -555,6 +615,12 @@ public class WikiNodeModelImpl extends BaseModelImpl<WikiNode>
 
 	@Override
 	public void setStatusByUserId(long statusByUserId) {
+		if (!_setOriginalStatusByUserId) {
+			_setOriginalStatusByUserId = true;
+
+			_originalStatusByUserId = _statusByUserId;
+		}
+
 		_statusByUserId = statusByUserId;
 	}
 
@@ -574,6 +640,10 @@ public class WikiNodeModelImpl extends BaseModelImpl<WikiNode>
 	public void setStatusByUserUuid(String statusByUserUuid) {
 	}
 
+	public long getOriginalStatusByUserId() {
+		return _originalStatusByUserId;
+	}
+
 	@JSON
 	@Override
 	public String getStatusByUserName() {
@@ -587,7 +657,15 @@ public class WikiNodeModelImpl extends BaseModelImpl<WikiNode>
 
 	@Override
 	public void setStatusByUserName(String statusByUserName) {
+		if (_originalStatusByUserName == null) {
+			_originalStatusByUserName = _statusByUserName;
+		}
+
 		_statusByUserName = statusByUserName;
+	}
+
+	public String getOriginalStatusByUserName() {
+		return GetterUtil.getString(_originalStatusByUserName);
 	}
 
 	@JSON
@@ -598,7 +676,15 @@ public class WikiNodeModelImpl extends BaseModelImpl<WikiNode>
 
 	@Override
 	public void setStatusDate(Date statusDate) {
+		if (_originalStatusDate == null) {
+			_originalStatusDate = _statusDate;
+		}
+
 		_statusDate = statusDate;
+	}
+
+	public Date getOriginalStatusDate() {
+		return _originalStatusDate;
 	}
 
 	@Override
@@ -954,6 +1040,10 @@ public class WikiNodeModelImpl extends BaseModelImpl<WikiNode>
 
 		wikiNodeModelImpl._originalUuid = wikiNodeModelImpl._uuid;
 
+		wikiNodeModelImpl._originalNodeId = wikiNodeModelImpl._nodeId;
+
+		wikiNodeModelImpl._setOriginalNodeId = false;
+
 		wikiNodeModelImpl._originalGroupId = wikiNodeModelImpl._groupId;
 
 		wikiNodeModelImpl._setOriginalGroupId = false;
@@ -962,11 +1052,33 @@ public class WikiNodeModelImpl extends BaseModelImpl<WikiNode>
 
 		wikiNodeModelImpl._setOriginalCompanyId = false;
 
+		wikiNodeModelImpl._originalUserId = wikiNodeModelImpl._userId;
+
+		wikiNodeModelImpl._setOriginalUserId = false;
+
+		wikiNodeModelImpl._originalUserName = wikiNodeModelImpl._userName;
+
+		wikiNodeModelImpl._originalCreateDate = wikiNodeModelImpl._createDate;
+
+		wikiNodeModelImpl._originalModifiedDate = wikiNodeModelImpl._modifiedDate;
+
 		wikiNodeModelImpl._originalName = wikiNodeModelImpl._name;
+
+		wikiNodeModelImpl._originalDescription = wikiNodeModelImpl._description;
+
+		wikiNodeModelImpl._originalLastPostDate = wikiNodeModelImpl._lastPostDate;
 
 		wikiNodeModelImpl._originalStatus = wikiNodeModelImpl._status;
 
 		wikiNodeModelImpl._setOriginalStatus = false;
+
+		wikiNodeModelImpl._originalStatusByUserId = wikiNodeModelImpl._statusByUserId;
+
+		wikiNodeModelImpl._setOriginalStatusByUserId = false;
+
+		wikiNodeModelImpl._originalStatusByUserName = wikiNodeModelImpl._statusByUserName;
+
+		wikiNodeModelImpl._originalStatusDate = wikiNodeModelImpl._statusDate;
 
 		wikiNodeModelImpl._columnBitmask = 0;
 	}
@@ -1186,6 +1298,8 @@ public class WikiNodeModelImpl extends BaseModelImpl<WikiNode>
 	private String _uuid;
 	private String _originalUuid;
 	private long _nodeId;
+	private long _originalNodeId;
+	private boolean _setOriginalNodeId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -1193,19 +1307,30 @@ public class WikiNodeModelImpl extends BaseModelImpl<WikiNode>
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private String _name;
 	private String _originalName;
 	private String _description;
+	private String _originalDescription;
 	private Date _lastPostDate;
+	private Date _originalLastPostDate;
 	private int _status;
 	private int _originalStatus;
 	private boolean _setOriginalStatus;
 	private long _statusByUserId;
+	private long _originalStatusByUserId;
+	private boolean _setOriginalStatusByUserId;
 	private String _statusByUserName;
+	private String _originalStatusByUserName;
 	private Date _statusDate;
+	private Date _originalStatusDate;
 	private long _columnBitmask;
 	private WikiNode _escapedModel;
 }

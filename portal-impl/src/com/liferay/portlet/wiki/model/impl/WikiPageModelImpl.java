@@ -437,7 +437,17 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 
 	@Override
 	public void setPageId(long pageId) {
+		if (!_setOriginalPageId) {
+			_setOriginalPageId = true;
+
+			_originalPageId = _pageId;
+		}
+
 		_pageId = pageId;
+	}
+
+	public long getOriginalPageId() {
+		return _originalPageId;
 	}
 
 	@JSON
@@ -566,7 +576,15 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -577,7 +595,15 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -588,7 +614,15 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -676,7 +710,17 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 
 	@Override
 	public void setMinorEdit(boolean minorEdit) {
+		if (!_setOriginalMinorEdit) {
+			_setOriginalMinorEdit = true;
+
+			_originalMinorEdit = _minorEdit;
+		}
+
 		_minorEdit = minorEdit;
+	}
+
+	public boolean getOriginalMinorEdit() {
+		return _originalMinorEdit;
 	}
 
 	@JSON
@@ -692,7 +736,15 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 
 	@Override
 	public void setContent(String content) {
+		if (_originalContent == null) {
+			_originalContent = _content;
+		}
+
 		_content = content;
+	}
+
+	public String getOriginalContent() {
+		return GetterUtil.getString(_originalContent);
 	}
 
 	@JSON
@@ -708,7 +760,15 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 
 	@Override
 	public void setSummary(String summary) {
+		if (_originalSummary == null) {
+			_originalSummary = _summary;
+		}
+
 		_summary = summary;
+	}
+
+	public String getOriginalSummary() {
+		return GetterUtil.getString(_originalSummary);
 	}
 
 	@JSON
@@ -848,6 +908,12 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 
 	@Override
 	public void setStatusByUserId(long statusByUserId) {
+		if (!_setOriginalStatusByUserId) {
+			_setOriginalStatusByUserId = true;
+
+			_originalStatusByUserId = _statusByUserId;
+		}
+
 		_statusByUserId = statusByUserId;
 	}
 
@@ -867,6 +933,10 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 	public void setStatusByUserUuid(String statusByUserUuid) {
 	}
 
+	public long getOriginalStatusByUserId() {
+		return _originalStatusByUserId;
+	}
+
 	@JSON
 	@Override
 	public String getStatusByUserName() {
@@ -880,7 +950,15 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 
 	@Override
 	public void setStatusByUserName(String statusByUserName) {
+		if (_originalStatusByUserName == null) {
+			_originalStatusByUserName = _statusByUserName;
+		}
+
 		_statusByUserName = statusByUserName;
+	}
+
+	public String getOriginalStatusByUserName() {
+		return GetterUtil.getString(_originalStatusByUserName);
 	}
 
 	@JSON
@@ -891,7 +969,15 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 
 	@Override
 	public void setStatusDate(Date statusDate) {
+		if (_originalStatusDate == null) {
+			_originalStatusDate = _statusDate;
+		}
+
 		_statusDate = statusDate;
+	}
+
+	public Date getOriginalStatusDate() {
+		return _originalStatusDate;
 	}
 
 	@Override
@@ -1285,6 +1371,10 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 
 		wikiPageModelImpl._originalUuid = wikiPageModelImpl._uuid;
 
+		wikiPageModelImpl._originalPageId = wikiPageModelImpl._pageId;
+
+		wikiPageModelImpl._setOriginalPageId = false;
+
 		wikiPageModelImpl._originalResourcePrimKey = wikiPageModelImpl._resourcePrimKey;
 
 		wikiPageModelImpl._setOriginalResourcePrimKey = false;
@@ -1301,6 +1391,12 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 
 		wikiPageModelImpl._setOriginalUserId = false;
 
+		wikiPageModelImpl._originalUserName = wikiPageModelImpl._userName;
+
+		wikiPageModelImpl._originalCreateDate = wikiPageModelImpl._createDate;
+
+		wikiPageModelImpl._originalModifiedDate = wikiPageModelImpl._modifiedDate;
+
 		wikiPageModelImpl._originalNodeId = wikiPageModelImpl._nodeId;
 
 		wikiPageModelImpl._setOriginalNodeId = false;
@@ -1310,6 +1406,14 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 		wikiPageModelImpl._originalVersion = wikiPageModelImpl._version;
 
 		wikiPageModelImpl._setOriginalVersion = false;
+
+		wikiPageModelImpl._originalMinorEdit = wikiPageModelImpl._minorEdit;
+
+		wikiPageModelImpl._setOriginalMinorEdit = false;
+
+		wikiPageModelImpl._originalContent = wikiPageModelImpl._content;
+
+		wikiPageModelImpl._originalSummary = wikiPageModelImpl._summary;
 
 		wikiPageModelImpl._originalFormat = wikiPageModelImpl._format;
 
@@ -1324,6 +1428,14 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 		wikiPageModelImpl._originalStatus = wikiPageModelImpl._status;
 
 		wikiPageModelImpl._setOriginalStatus = false;
+
+		wikiPageModelImpl._originalStatusByUserId = wikiPageModelImpl._statusByUserId;
+
+		wikiPageModelImpl._setOriginalStatusByUserId = false;
+
+		wikiPageModelImpl._originalStatusByUserName = wikiPageModelImpl._statusByUserName;
+
+		wikiPageModelImpl._originalStatusDate = wikiPageModelImpl._statusDate;
 
 		wikiPageModelImpl._columnBitmask = 0;
 	}
@@ -1624,6 +1736,8 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 	private String _uuid;
 	private String _originalUuid;
 	private long _pageId;
+	private long _originalPageId;
+	private boolean _setOriginalPageId;
 	private long _resourcePrimKey;
 	private long _originalResourcePrimKey;
 	private boolean _setOriginalResourcePrimKey;
@@ -1637,8 +1751,11 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 	private long _originalUserId;
 	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _nodeId;
 	private long _originalNodeId;
 	private boolean _setOriginalNodeId;
@@ -1648,8 +1765,12 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 	private double _originalVersion;
 	private boolean _setOriginalVersion;
 	private boolean _minorEdit;
+	private boolean _originalMinorEdit;
+	private boolean _setOriginalMinorEdit;
 	private String _content;
+	private String _originalContent;
 	private String _summary;
+	private String _originalSummary;
 	private String _format;
 	private String _originalFormat;
 	private boolean _head;
@@ -1663,8 +1784,12 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 	private int _originalStatus;
 	private boolean _setOriginalStatus;
 	private long _statusByUserId;
+	private long _originalStatusByUserId;
+	private boolean _setOriginalStatusByUserId;
 	private String _statusByUserName;
+	private String _originalStatusByUserName;
 	private Date _statusDate;
+	private Date _originalStatusDate;
 	private long _columnBitmask;
 	private WikiPage _escapedModel;
 }
