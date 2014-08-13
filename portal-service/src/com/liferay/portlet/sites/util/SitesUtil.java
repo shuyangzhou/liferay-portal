@@ -28,6 +28,7 @@ import com.liferay.portal.service.ServiceContext;
 import java.io.File;
 import java.io.InputStream;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -147,6 +148,12 @@ public class SitesUtil {
 
 	public static Long[] filterGroups(List<Group> groups, String[] names) {
 		return getSites().filterGroups(groups, names);
+	}
+
+	public static long getDBSafeLastMergeTime(
+		Date modifiedDate, long lastMergeTime) {
+
+		return getSites().getDBSafeLastMergeTime(modifiedDate, lastMergeTime);
 	}
 
 	public static Layout getLayoutSetPrototypeLayout(Layout layout) {
