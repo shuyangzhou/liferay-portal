@@ -190,7 +190,17 @@ public class SCProductScreenshotModelImpl extends BaseModelImpl<SCProductScreens
 
 	@Override
 	public void setProductScreenshotId(long productScreenshotId) {
+		if (!_setOriginalProductScreenshotId) {
+			_setOriginalProductScreenshotId = true;
+
+			_originalProductScreenshotId = _productScreenshotId;
+		}
+
 		_productScreenshotId = productScreenshotId;
+	}
+
+	public long getOriginalProductScreenshotId() {
+		return _originalProductScreenshotId;
 	}
 
 	@Override
@@ -200,7 +210,17 @@ public class SCProductScreenshotModelImpl extends BaseModelImpl<SCProductScreens
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if (!_setOriginalCompanyId) {
+			_setOriginalCompanyId = true;
+
+			_originalCompanyId = _companyId;
+		}
+
 		_companyId = companyId;
+	}
+
+	public long getOriginalCompanyId() {
+		return _originalCompanyId;
 	}
 
 	@Override
@@ -210,7 +230,17 @@ public class SCProductScreenshotModelImpl extends BaseModelImpl<SCProductScreens
 
 	@Override
 	public void setGroupId(long groupId) {
+		if (!_setOriginalGroupId) {
+			_setOriginalGroupId = true;
+
+			_originalGroupId = _groupId;
+		}
+
 		_groupId = groupId;
+	}
+
+	public long getOriginalGroupId() {
+		return _originalGroupId;
 	}
 
 	@Override
@@ -421,6 +451,18 @@ public class SCProductScreenshotModelImpl extends BaseModelImpl<SCProductScreens
 	public void resetOriginalValues() {
 		SCProductScreenshotModelImpl scProductScreenshotModelImpl = this;
 
+		scProductScreenshotModelImpl._originalProductScreenshotId = scProductScreenshotModelImpl._productScreenshotId;
+
+		scProductScreenshotModelImpl._setOriginalProductScreenshotId = false;
+
+		scProductScreenshotModelImpl._originalCompanyId = scProductScreenshotModelImpl._companyId;
+
+		scProductScreenshotModelImpl._setOriginalCompanyId = false;
+
+		scProductScreenshotModelImpl._originalGroupId = scProductScreenshotModelImpl._groupId;
+
+		scProductScreenshotModelImpl._setOriginalGroupId = false;
+
 		scProductScreenshotModelImpl._originalProductEntryId = scProductScreenshotModelImpl._productEntryId;
 
 		scProductScreenshotModelImpl._setOriginalProductEntryId = false;
@@ -532,8 +574,14 @@ public class SCProductScreenshotModelImpl extends BaseModelImpl<SCProductScreens
 			SCProductScreenshot.class
 		};
 	private long _productScreenshotId;
+	private long _originalProductScreenshotId;
+	private boolean _setOriginalProductScreenshotId;
 	private long _companyId;
+	private long _originalCompanyId;
+	private boolean _setOriginalCompanyId;
 	private long _groupId;
+	private long _originalGroupId;
+	private boolean _setOriginalGroupId;
 	private long _productEntryId;
 	private long _originalProductEntryId;
 	private boolean _setOriginalProductEntryId;

@@ -252,7 +252,17 @@ public class ExpandoValueModelImpl extends BaseModelImpl<ExpandoValue>
 
 	@Override
 	public void setValueId(long valueId) {
+		if (!_setOriginalValueId) {
+			_setOriginalValueId = true;
+
+			_originalValueId = _valueId;
+		}
+
 		_valueId = valueId;
+	}
+
+	public long getOriginalValueId() {
+		return _originalValueId;
 	}
 
 	@JSON
@@ -263,7 +273,17 @@ public class ExpandoValueModelImpl extends BaseModelImpl<ExpandoValue>
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if (!_setOriginalCompanyId) {
+			_setOriginalCompanyId = true;
+
+			_originalCompanyId = _companyId;
+		}
+
 		_companyId = companyId;
+	}
+
+	public long getOriginalCompanyId() {
+		return _originalCompanyId;
 	}
 
 	@JSON
@@ -549,6 +569,14 @@ public class ExpandoValueModelImpl extends BaseModelImpl<ExpandoValue>
 	public void resetOriginalValues() {
 		ExpandoValueModelImpl expandoValueModelImpl = this;
 
+		expandoValueModelImpl._originalValueId = expandoValueModelImpl._valueId;
+
+		expandoValueModelImpl._setOriginalValueId = false;
+
+		expandoValueModelImpl._originalCompanyId = expandoValueModelImpl._companyId;
+
+		expandoValueModelImpl._setOriginalCompanyId = false;
+
 		expandoValueModelImpl._originalTableId = expandoValueModelImpl._tableId;
 
 		expandoValueModelImpl._setOriginalTableId = false;
@@ -679,7 +707,11 @@ public class ExpandoValueModelImpl extends BaseModelImpl<ExpandoValue>
 			ExpandoValue.class
 		};
 	private long _valueId;
+	private long _originalValueId;
+	private boolean _setOriginalValueId;
 	private long _companyId;
+	private long _originalCompanyId;
+	private boolean _setOriginalCompanyId;
 	private long _tableId;
 	private long _originalTableId;
 	private boolean _setOriginalTableId;

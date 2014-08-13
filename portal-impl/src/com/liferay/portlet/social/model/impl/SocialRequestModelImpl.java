@@ -333,7 +333,17 @@ public class SocialRequestModelImpl extends BaseModelImpl<SocialRequest>
 	public void setRequestId(long requestId) {
 		_columnBitmask = -1L;
 
+		if (!_setOriginalRequestId) {
+			_setOriginalRequestId = true;
+
+			_originalRequestId = _requestId;
+		}
+
 		_requestId = requestId;
+	}
+
+	public long getOriginalRequestId() {
+		return _originalRequestId;
 	}
 
 	@JSON
@@ -429,7 +439,17 @@ public class SocialRequestModelImpl extends BaseModelImpl<SocialRequest>
 
 	@Override
 	public void setCreateDate(long createDate) {
+		if (!_setOriginalCreateDate) {
+			_setOriginalCreateDate = true;
+
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public long getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -440,7 +460,17 @@ public class SocialRequestModelImpl extends BaseModelImpl<SocialRequest>
 
 	@Override
 	public void setModifiedDate(long modifiedDate) {
+		if (!_setOriginalModifiedDate) {
+			_setOriginalModifiedDate = true;
+
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public long getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@Override
@@ -545,7 +575,15 @@ public class SocialRequestModelImpl extends BaseModelImpl<SocialRequest>
 
 	@Override
 	public void setExtraData(String extraData) {
+		if (_originalExtraData == null) {
+			_originalExtraData = _extraData;
+		}
+
 		_extraData = extraData;
+	}
+
+	public String getOriginalExtraData() {
+		return GetterUtil.getString(_originalExtraData);
 	}
 
 	@JSON
@@ -726,6 +764,10 @@ public class SocialRequestModelImpl extends BaseModelImpl<SocialRequest>
 
 		socialRequestModelImpl._originalUuid = socialRequestModelImpl._uuid;
 
+		socialRequestModelImpl._originalRequestId = socialRequestModelImpl._requestId;
+
+		socialRequestModelImpl._setOriginalRequestId = false;
+
 		socialRequestModelImpl._originalGroupId = socialRequestModelImpl._groupId;
 
 		socialRequestModelImpl._setOriginalGroupId = false;
@@ -738,6 +780,14 @@ public class SocialRequestModelImpl extends BaseModelImpl<SocialRequest>
 
 		socialRequestModelImpl._setOriginalUserId = false;
 
+		socialRequestModelImpl._originalCreateDate = socialRequestModelImpl._createDate;
+
+		socialRequestModelImpl._setOriginalCreateDate = false;
+
+		socialRequestModelImpl._originalModifiedDate = socialRequestModelImpl._modifiedDate;
+
+		socialRequestModelImpl._setOriginalModifiedDate = false;
+
 		socialRequestModelImpl._originalClassNameId = socialRequestModelImpl._classNameId;
 
 		socialRequestModelImpl._setOriginalClassNameId = false;
@@ -749,6 +799,8 @@ public class SocialRequestModelImpl extends BaseModelImpl<SocialRequest>
 		socialRequestModelImpl._originalType = socialRequestModelImpl._type;
 
 		socialRequestModelImpl._setOriginalType = false;
+
+		socialRequestModelImpl._originalExtraData = socialRequestModelImpl._extraData;
 
 		socialRequestModelImpl._originalReceiverUserId = socialRequestModelImpl._receiverUserId;
 
@@ -914,6 +966,8 @@ public class SocialRequestModelImpl extends BaseModelImpl<SocialRequest>
 	private String _uuid;
 	private String _originalUuid;
 	private long _requestId;
+	private long _originalRequestId;
+	private boolean _setOriginalRequestId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -924,7 +978,11 @@ public class SocialRequestModelImpl extends BaseModelImpl<SocialRequest>
 	private long _originalUserId;
 	private boolean _setOriginalUserId;
 	private long _createDate;
+	private long _originalCreateDate;
+	private boolean _setOriginalCreateDate;
 	private long _modifiedDate;
+	private long _originalModifiedDate;
+	private boolean _setOriginalModifiedDate;
 	private long _classNameId;
 	private long _originalClassNameId;
 	private boolean _setOriginalClassNameId;
@@ -935,6 +993,7 @@ public class SocialRequestModelImpl extends BaseModelImpl<SocialRequest>
 	private int _originalType;
 	private boolean _setOriginalType;
 	private String _extraData;
+	private String _originalExtraData;
 	private long _receiverUserId;
 	private long _originalReceiverUserId;
 	private boolean _setOriginalReceiverUserId;

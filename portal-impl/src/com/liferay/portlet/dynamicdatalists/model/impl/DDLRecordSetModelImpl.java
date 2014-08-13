@@ -343,7 +343,17 @@ public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 
 	@Override
 	public void setRecordSetId(long recordSetId) {
+		if (!_setOriginalRecordSetId) {
+			_setOriginalRecordSetId = true;
+
+			_originalRecordSetId = _recordSetId;
+		}
+
 		_recordSetId = recordSetId;
+	}
+
+	public long getOriginalRecordSetId() {
+		return _originalRecordSetId;
 	}
 
 	@JSON
@@ -400,6 +410,12 @@ public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -419,6 +435,10 @@ public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -432,7 +452,15 @@ public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -443,7 +471,15 @@ public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -454,7 +490,15 @@ public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -465,7 +509,17 @@ public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 
 	@Override
 	public void setDDMStructureId(long DDMStructureId) {
+		if (!_setOriginalDDMStructureId) {
+			_setOriginalDDMStructureId = true;
+
+			_originalDDMStructureId = _DDMStructureId;
+		}
+
 		_DDMStructureId = DDMStructureId;
+	}
+
+	public long getOriginalDDMStructureId() {
+		return _originalDDMStructureId;
 	}
 
 	@JSON
@@ -550,6 +604,10 @@ public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 
 	@Override
 	public void setName(String name) {
+		if (_originalName == null) {
+			_originalName = _name;
+		}
+
 		_name = name;
 	}
 
@@ -591,6 +649,10 @@ public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 
 		setName(LocalizationUtil.updateLocalization(nameMap, getName(), "Name",
 				LocaleUtil.toLanguageId(defaultLocale)));
+	}
+
+	public String getOriginalName() {
+		return GetterUtil.getString(_originalName);
 	}
 
 	@JSON
@@ -649,6 +711,10 @@ public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 
 	@Override
 	public void setDescription(String description) {
+		if (_originalDescription == null) {
+			_originalDescription = _description;
+		}
+
 		_description = description;
 	}
 
@@ -696,6 +762,10 @@ public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
+	public String getOriginalDescription() {
+		return GetterUtil.getString(_originalDescription);
+	}
+
 	@JSON
 	@Override
 	public int getMinDisplayRows() {
@@ -704,7 +774,17 @@ public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 
 	@Override
 	public void setMinDisplayRows(int minDisplayRows) {
+		if (!_setOriginalMinDisplayRows) {
+			_setOriginalMinDisplayRows = true;
+
+			_originalMinDisplayRows = _minDisplayRows;
+		}
+
 		_minDisplayRows = minDisplayRows;
+	}
+
+	public int getOriginalMinDisplayRows() {
+		return _originalMinDisplayRows;
 	}
 
 	@JSON
@@ -715,7 +795,17 @@ public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 
 	@Override
 	public void setScope(int scope) {
+		if (!_setOriginalScope) {
+			_setOriginalScope = true;
+
+			_originalScope = _scope;
+		}
+
 		_scope = scope;
+	}
+
+	public int getOriginalScope() {
+		return _originalScope;
 	}
 
 	@Override
@@ -915,6 +1005,10 @@ public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 
 		ddlRecordSetModelImpl._originalUuid = ddlRecordSetModelImpl._uuid;
 
+		ddlRecordSetModelImpl._originalRecordSetId = ddlRecordSetModelImpl._recordSetId;
+
+		ddlRecordSetModelImpl._setOriginalRecordSetId = false;
+
 		ddlRecordSetModelImpl._originalGroupId = ddlRecordSetModelImpl._groupId;
 
 		ddlRecordSetModelImpl._setOriginalGroupId = false;
@@ -923,7 +1017,33 @@ public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 
 		ddlRecordSetModelImpl._setOriginalCompanyId = false;
 
+		ddlRecordSetModelImpl._originalUserId = ddlRecordSetModelImpl._userId;
+
+		ddlRecordSetModelImpl._setOriginalUserId = false;
+
+		ddlRecordSetModelImpl._originalUserName = ddlRecordSetModelImpl._userName;
+
+		ddlRecordSetModelImpl._originalCreateDate = ddlRecordSetModelImpl._createDate;
+
+		ddlRecordSetModelImpl._originalModifiedDate = ddlRecordSetModelImpl._modifiedDate;
+
+		ddlRecordSetModelImpl._originalDDMStructureId = ddlRecordSetModelImpl._DDMStructureId;
+
+		ddlRecordSetModelImpl._setOriginalDDMStructureId = false;
+
 		ddlRecordSetModelImpl._originalRecordSetKey = ddlRecordSetModelImpl._recordSetKey;
+
+		ddlRecordSetModelImpl._originalName = ddlRecordSetModelImpl._name;
+
+		ddlRecordSetModelImpl._originalDescription = ddlRecordSetModelImpl._description;
+
+		ddlRecordSetModelImpl._originalMinDisplayRows = ddlRecordSetModelImpl._minDisplayRows;
+
+		ddlRecordSetModelImpl._setOriginalMinDisplayRows = false;
+
+		ddlRecordSetModelImpl._originalScope = ddlRecordSetModelImpl._scope;
+
+		ddlRecordSetModelImpl._setOriginalScope = false;
 
 		ddlRecordSetModelImpl._columnBitmask = 0;
 	}
@@ -1121,6 +1241,8 @@ public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 	private String _uuid;
 	private String _originalUuid;
 	private long _recordSetId;
+	private long _originalRecordSetId;
+	private boolean _setOriginalRecordSetId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -1128,18 +1250,31 @@ public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _DDMStructureId;
+	private long _originalDDMStructureId;
+	private boolean _setOriginalDDMStructureId;
 	private String _recordSetKey;
 	private String _originalRecordSetKey;
 	private String _name;
 	private String _nameCurrentLanguageId;
+	private String _originalName;
 	private String _description;
 	private String _descriptionCurrentLanguageId;
+	private String _originalDescription;
 	private int _minDisplayRows;
+	private int _originalMinDisplayRows;
+	private boolean _setOriginalMinDisplayRows;
 	private int _scope;
+	private int _originalScope;
+	private boolean _setOriginalScope;
 	private long _columnBitmask;
 	private DDLRecordSet _escapedModel;
 }

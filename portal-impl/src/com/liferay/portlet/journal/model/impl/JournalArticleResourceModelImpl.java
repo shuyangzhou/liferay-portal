@@ -190,7 +190,17 @@ public class JournalArticleResourceModelImpl extends BaseModelImpl<JournalArticl
 
 	@Override
 	public void setResourcePrimKey(long resourcePrimKey) {
+		if (!_setOriginalResourcePrimKey) {
+			_setOriginalResourcePrimKey = true;
+
+			_originalResourcePrimKey = _resourcePrimKey;
+		}
+
 		_resourcePrimKey = resourcePrimKey;
+	}
+
+	public long getOriginalResourcePrimKey() {
+		return _originalResourcePrimKey;
 	}
 
 	@Override
@@ -339,6 +349,10 @@ public class JournalArticleResourceModelImpl extends BaseModelImpl<JournalArticl
 
 		journalArticleResourceModelImpl._originalUuid = journalArticleResourceModelImpl._uuid;
 
+		journalArticleResourceModelImpl._originalResourcePrimKey = journalArticleResourceModelImpl._resourcePrimKey;
+
+		journalArticleResourceModelImpl._setOriginalResourcePrimKey = false;
+
 		journalArticleResourceModelImpl._originalGroupId = journalArticleResourceModelImpl._groupId;
 
 		journalArticleResourceModelImpl._setOriginalGroupId = false;
@@ -429,6 +443,8 @@ public class JournalArticleResourceModelImpl extends BaseModelImpl<JournalArticl
 	private String _uuid;
 	private String _originalUuid;
 	private long _resourcePrimKey;
+	private long _originalResourcePrimKey;
+	private boolean _setOriginalResourcePrimKey;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;

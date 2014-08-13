@@ -306,7 +306,17 @@ public class MDRRuleGroupModelImpl extends BaseModelImpl<MDRRuleGroup>
 
 	@Override
 	public void setRuleGroupId(long ruleGroupId) {
+		if (!_setOriginalRuleGroupId) {
+			_setOriginalRuleGroupId = true;
+
+			_originalRuleGroupId = _ruleGroupId;
+		}
+
 		_ruleGroupId = ruleGroupId;
+	}
+
+	public long getOriginalRuleGroupId() {
+		return _originalRuleGroupId;
 	}
 
 	@JSON
@@ -363,6 +373,12 @@ public class MDRRuleGroupModelImpl extends BaseModelImpl<MDRRuleGroup>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -382,6 +398,10 @@ public class MDRRuleGroupModelImpl extends BaseModelImpl<MDRRuleGroup>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -395,7 +415,15 @@ public class MDRRuleGroupModelImpl extends BaseModelImpl<MDRRuleGroup>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -406,7 +434,15 @@ public class MDRRuleGroupModelImpl extends BaseModelImpl<MDRRuleGroup>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -417,7 +453,15 @@ public class MDRRuleGroupModelImpl extends BaseModelImpl<MDRRuleGroup>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -476,6 +520,10 @@ public class MDRRuleGroupModelImpl extends BaseModelImpl<MDRRuleGroup>
 
 	@Override
 	public void setName(String name) {
+		if (_originalName == null) {
+			_originalName = _name;
+		}
+
 		_name = name;
 	}
 
@@ -517,6 +565,10 @@ public class MDRRuleGroupModelImpl extends BaseModelImpl<MDRRuleGroup>
 
 		setName(LocalizationUtil.updateLocalization(nameMap, getName(), "Name",
 				LocaleUtil.toLanguageId(defaultLocale)));
+	}
+
+	public String getOriginalName() {
+		return GetterUtil.getString(_originalName);
 	}
 
 	@JSON
@@ -575,6 +627,10 @@ public class MDRRuleGroupModelImpl extends BaseModelImpl<MDRRuleGroup>
 
 	@Override
 	public void setDescription(String description) {
+		if (_originalDescription == null) {
+			_originalDescription = _description;
+		}
+
 		_description = description;
 	}
 
@@ -620,6 +676,10 @@ public class MDRRuleGroupModelImpl extends BaseModelImpl<MDRRuleGroup>
 		setDescription(LocalizationUtil.updateLocalization(descriptionMap,
 				getDescription(), "Description",
 				LocaleUtil.toLanguageId(defaultLocale)));
+	}
+
+	public String getOriginalDescription() {
+		return GetterUtil.getString(_originalDescription);
 	}
 
 	@Override
@@ -815,6 +875,10 @@ public class MDRRuleGroupModelImpl extends BaseModelImpl<MDRRuleGroup>
 
 		mdrRuleGroupModelImpl._originalUuid = mdrRuleGroupModelImpl._uuid;
 
+		mdrRuleGroupModelImpl._originalRuleGroupId = mdrRuleGroupModelImpl._ruleGroupId;
+
+		mdrRuleGroupModelImpl._setOriginalRuleGroupId = false;
+
 		mdrRuleGroupModelImpl._originalGroupId = mdrRuleGroupModelImpl._groupId;
 
 		mdrRuleGroupModelImpl._setOriginalGroupId = false;
@@ -822,6 +886,20 @@ public class MDRRuleGroupModelImpl extends BaseModelImpl<MDRRuleGroup>
 		mdrRuleGroupModelImpl._originalCompanyId = mdrRuleGroupModelImpl._companyId;
 
 		mdrRuleGroupModelImpl._setOriginalCompanyId = false;
+
+		mdrRuleGroupModelImpl._originalUserId = mdrRuleGroupModelImpl._userId;
+
+		mdrRuleGroupModelImpl._setOriginalUserId = false;
+
+		mdrRuleGroupModelImpl._originalUserName = mdrRuleGroupModelImpl._userName;
+
+		mdrRuleGroupModelImpl._originalCreateDate = mdrRuleGroupModelImpl._createDate;
+
+		mdrRuleGroupModelImpl._originalModifiedDate = mdrRuleGroupModelImpl._modifiedDate;
+
+		mdrRuleGroupModelImpl._originalName = mdrRuleGroupModelImpl._name;
+
+		mdrRuleGroupModelImpl._originalDescription = mdrRuleGroupModelImpl._description;
 
 		mdrRuleGroupModelImpl._columnBitmask = 0;
 	}
@@ -981,6 +1059,8 @@ public class MDRRuleGroupModelImpl extends BaseModelImpl<MDRRuleGroup>
 	private String _uuid;
 	private String _originalUuid;
 	private long _ruleGroupId;
+	private long _originalRuleGroupId;
+	private boolean _setOriginalRuleGroupId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -988,13 +1068,20 @@ public class MDRRuleGroupModelImpl extends BaseModelImpl<MDRRuleGroup>
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private String _name;
 	private String _nameCurrentLanguageId;
+	private String _originalName;
 	private String _description;
 	private String _descriptionCurrentLanguageId;
+	private String _originalDescription;
 	private long _columnBitmask;
 	private MDRRuleGroup _escapedModel;
 }

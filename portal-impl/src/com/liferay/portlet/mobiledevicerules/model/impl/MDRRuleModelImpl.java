@@ -334,7 +334,17 @@ public class MDRRuleModelImpl extends BaseModelImpl<MDRRule>
 
 	@Override
 	public void setRuleId(long ruleId) {
+		if (!_setOriginalRuleId) {
+			_setOriginalRuleId = true;
+
+			_originalRuleId = _ruleId;
+		}
+
 		_ruleId = ruleId;
+	}
+
+	public long getOriginalRuleId() {
+		return _originalRuleId;
 	}
 
 	@JSON
@@ -391,6 +401,12 @@ public class MDRRuleModelImpl extends BaseModelImpl<MDRRule>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -410,6 +426,10 @@ public class MDRRuleModelImpl extends BaseModelImpl<MDRRule>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -423,7 +443,15 @@ public class MDRRuleModelImpl extends BaseModelImpl<MDRRule>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -434,7 +462,15 @@ public class MDRRuleModelImpl extends BaseModelImpl<MDRRule>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -445,7 +481,15 @@ public class MDRRuleModelImpl extends BaseModelImpl<MDRRule>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -527,6 +571,10 @@ public class MDRRuleModelImpl extends BaseModelImpl<MDRRule>
 
 	@Override
 	public void setName(String name) {
+		if (_originalName == null) {
+			_originalName = _name;
+		}
+
 		_name = name;
 	}
 
@@ -568,6 +616,10 @@ public class MDRRuleModelImpl extends BaseModelImpl<MDRRule>
 
 		setName(LocalizationUtil.updateLocalization(nameMap, getName(), "Name",
 				LocaleUtil.toLanguageId(defaultLocale)));
+	}
+
+	public String getOriginalName() {
+		return GetterUtil.getString(_originalName);
 	}
 
 	@JSON
@@ -626,6 +678,10 @@ public class MDRRuleModelImpl extends BaseModelImpl<MDRRule>
 
 	@Override
 	public void setDescription(String description) {
+		if (_originalDescription == null) {
+			_originalDescription = _description;
+		}
+
 		_description = description;
 	}
 
@@ -673,6 +729,10 @@ public class MDRRuleModelImpl extends BaseModelImpl<MDRRule>
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
+	public String getOriginalDescription() {
+		return GetterUtil.getString(_originalDescription);
+	}
+
 	@JSON
 	@Override
 	public String getType() {
@@ -686,7 +746,15 @@ public class MDRRuleModelImpl extends BaseModelImpl<MDRRule>
 
 	@Override
 	public void setType(String type) {
+		if (_originalType == null) {
+			_originalType = _type;
+		}
+
 		_type = type;
+	}
+
+	public String getOriginalType() {
+		return GetterUtil.getString(_originalType);
 	}
 
 	@JSON
@@ -702,7 +770,15 @@ public class MDRRuleModelImpl extends BaseModelImpl<MDRRule>
 
 	@Override
 	public void setTypeSettings(String typeSettings) {
+		if (_originalTypeSettings == null) {
+			_originalTypeSettings = _typeSettings;
+		}
+
 		_typeSettings = typeSettings;
+	}
+
+	public String getOriginalTypeSettings() {
+		return GetterUtil.getString(_originalTypeSettings);
 	}
 
 	@Override
@@ -901,6 +977,10 @@ public class MDRRuleModelImpl extends BaseModelImpl<MDRRule>
 
 		mdrRuleModelImpl._originalUuid = mdrRuleModelImpl._uuid;
 
+		mdrRuleModelImpl._originalRuleId = mdrRuleModelImpl._ruleId;
+
+		mdrRuleModelImpl._setOriginalRuleId = false;
+
 		mdrRuleModelImpl._originalGroupId = mdrRuleModelImpl._groupId;
 
 		mdrRuleModelImpl._setOriginalGroupId = false;
@@ -909,9 +989,27 @@ public class MDRRuleModelImpl extends BaseModelImpl<MDRRule>
 
 		mdrRuleModelImpl._setOriginalCompanyId = false;
 
+		mdrRuleModelImpl._originalUserId = mdrRuleModelImpl._userId;
+
+		mdrRuleModelImpl._setOriginalUserId = false;
+
+		mdrRuleModelImpl._originalUserName = mdrRuleModelImpl._userName;
+
+		mdrRuleModelImpl._originalCreateDate = mdrRuleModelImpl._createDate;
+
+		mdrRuleModelImpl._originalModifiedDate = mdrRuleModelImpl._modifiedDate;
+
 		mdrRuleModelImpl._originalRuleGroupId = mdrRuleModelImpl._ruleGroupId;
 
 		mdrRuleModelImpl._setOriginalRuleGroupId = false;
+
+		mdrRuleModelImpl._originalName = mdrRuleModelImpl._name;
+
+		mdrRuleModelImpl._originalDescription = mdrRuleModelImpl._description;
+
+		mdrRuleModelImpl._originalType = mdrRuleModelImpl._type;
+
+		mdrRuleModelImpl._originalTypeSettings = mdrRuleModelImpl._typeSettings;
 
 		mdrRuleModelImpl._columnBitmask = 0;
 	}
@@ -1107,6 +1205,8 @@ public class MDRRuleModelImpl extends BaseModelImpl<MDRRule>
 	private String _uuid;
 	private String _originalUuid;
 	private long _ruleId;
+	private long _originalRuleId;
+	private boolean _setOriginalRuleId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -1114,18 +1214,27 @@ public class MDRRuleModelImpl extends BaseModelImpl<MDRRule>
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _ruleGroupId;
 	private long _originalRuleGroupId;
 	private boolean _setOriginalRuleGroupId;
 	private String _name;
 	private String _nameCurrentLanguageId;
+	private String _originalName;
 	private String _description;
 	private String _descriptionCurrentLanguageId;
+	private String _originalDescription;
 	private String _type;
+	private String _originalType;
 	private String _typeSettings;
+	private String _originalTypeSettings;
 	private long _columnBitmask;
 	private MDRRule _escapedModel;
 }

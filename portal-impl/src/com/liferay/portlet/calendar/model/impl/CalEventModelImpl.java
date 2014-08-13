@@ -353,7 +353,17 @@ public class CalEventModelImpl extends BaseModelImpl<CalEvent>
 
 	@Override
 	public void setEventId(long eventId) {
+		if (!_setOriginalEventId) {
+			_setOriginalEventId = true;
+
+			_originalEventId = _eventId;
+		}
+
 		_eventId = eventId;
+	}
+
+	public long getOriginalEventId() {
+		return _originalEventId;
 	}
 
 	@Override
@@ -407,6 +417,12 @@ public class CalEventModelImpl extends BaseModelImpl<CalEvent>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -426,6 +442,10 @@ public class CalEventModelImpl extends BaseModelImpl<CalEvent>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -438,7 +458,15 @@ public class CalEventModelImpl extends BaseModelImpl<CalEvent>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@Override
@@ -448,7 +476,15 @@ public class CalEventModelImpl extends BaseModelImpl<CalEvent>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@Override
@@ -458,7 +494,15 @@ public class CalEventModelImpl extends BaseModelImpl<CalEvent>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@Override
@@ -475,7 +519,15 @@ public class CalEventModelImpl extends BaseModelImpl<CalEvent>
 	public void setTitle(String title) {
 		_columnBitmask = -1L;
 
+		if (_originalTitle == null) {
+			_originalTitle = _title;
+		}
+
 		_title = title;
+	}
+
+	public String getOriginalTitle() {
+		return GetterUtil.getString(_originalTitle);
 	}
 
 	@Override
@@ -490,7 +542,15 @@ public class CalEventModelImpl extends BaseModelImpl<CalEvent>
 
 	@Override
 	public void setDescription(String description) {
+		if (_originalDescription == null) {
+			_originalDescription = _description;
+		}
+
 		_description = description;
+	}
+
+	public String getOriginalDescription() {
+		return GetterUtil.getString(_originalDescription);
 	}
 
 	@Override
@@ -505,7 +565,15 @@ public class CalEventModelImpl extends BaseModelImpl<CalEvent>
 
 	@Override
 	public void setLocation(String location) {
+		if (_originalLocation == null) {
+			_originalLocation = _location;
+		}
+
 		_location = location;
+	}
+
+	public String getOriginalLocation() {
+		return GetterUtil.getString(_originalLocation);
 	}
 
 	@Override
@@ -517,7 +585,15 @@ public class CalEventModelImpl extends BaseModelImpl<CalEvent>
 	public void setStartDate(Date startDate) {
 		_columnBitmask = -1L;
 
+		if (_originalStartDate == null) {
+			_originalStartDate = _startDate;
+		}
+
 		_startDate = startDate;
+	}
+
+	public Date getOriginalStartDate() {
+		return _originalStartDate;
 	}
 
 	@Override
@@ -527,7 +603,15 @@ public class CalEventModelImpl extends BaseModelImpl<CalEvent>
 
 	@Override
 	public void setEndDate(Date endDate) {
+		if (_originalEndDate == null) {
+			_originalEndDate = _endDate;
+		}
+
 		_endDate = endDate;
+	}
+
+	public Date getOriginalEndDate() {
+		return _originalEndDate;
 	}
 
 	@Override
@@ -537,7 +621,17 @@ public class CalEventModelImpl extends BaseModelImpl<CalEvent>
 
 	@Override
 	public void setDurationHour(int durationHour) {
+		if (!_setOriginalDurationHour) {
+			_setOriginalDurationHour = true;
+
+			_originalDurationHour = _durationHour;
+		}
+
 		_durationHour = durationHour;
+	}
+
+	public int getOriginalDurationHour() {
+		return _originalDurationHour;
 	}
 
 	@Override
@@ -547,7 +641,17 @@ public class CalEventModelImpl extends BaseModelImpl<CalEvent>
 
 	@Override
 	public void setDurationMinute(int durationMinute) {
+		if (!_setOriginalDurationMinute) {
+			_setOriginalDurationMinute = true;
+
+			_originalDurationMinute = _durationMinute;
+		}
+
 		_durationMinute = durationMinute;
+	}
+
+	public int getOriginalDurationMinute() {
+		return _originalDurationMinute;
 	}
 
 	@Override
@@ -562,7 +666,17 @@ public class CalEventModelImpl extends BaseModelImpl<CalEvent>
 
 	@Override
 	public void setAllDay(boolean allDay) {
+		if (!_setOriginalAllDay) {
+			_setOriginalAllDay = true;
+
+			_originalAllDay = _allDay;
+		}
+
 		_allDay = allDay;
+	}
+
+	public boolean getOriginalAllDay() {
+		return _originalAllDay;
 	}
 
 	@Override
@@ -577,7 +691,17 @@ public class CalEventModelImpl extends BaseModelImpl<CalEvent>
 
 	@Override
 	public void setTimeZoneSensitive(boolean timeZoneSensitive) {
+		if (!_setOriginalTimeZoneSensitive) {
+			_setOriginalTimeZoneSensitive = true;
+
+			_originalTimeZoneSensitive = _timeZoneSensitive;
+		}
+
 		_timeZoneSensitive = timeZoneSensitive;
+	}
+
+	public boolean getOriginalTimeZoneSensitive() {
+		return _originalTimeZoneSensitive;
 	}
 
 	@Override
@@ -644,7 +768,15 @@ public class CalEventModelImpl extends BaseModelImpl<CalEvent>
 
 	@Override
 	public void setRecurrence(String recurrence) {
+		if (_originalRecurrence == null) {
+			_originalRecurrence = _recurrence;
+		}
+
 		_recurrence = recurrence;
+	}
+
+	public String getOriginalRecurrence() {
+		return GetterUtil.getString(_originalRecurrence);
 	}
 
 	@Override
@@ -676,7 +808,17 @@ public class CalEventModelImpl extends BaseModelImpl<CalEvent>
 
 	@Override
 	public void setFirstReminder(int firstReminder) {
+		if (!_setOriginalFirstReminder) {
+			_setOriginalFirstReminder = true;
+
+			_originalFirstReminder = _firstReminder;
+		}
+
 		_firstReminder = firstReminder;
+	}
+
+	public int getOriginalFirstReminder() {
+		return _originalFirstReminder;
 	}
 
 	@Override
@@ -686,7 +828,17 @@ public class CalEventModelImpl extends BaseModelImpl<CalEvent>
 
 	@Override
 	public void setSecondReminder(int secondReminder) {
+		if (!_setOriginalSecondReminder) {
+			_setOriginalSecondReminder = true;
+
+			_originalSecondReminder = _secondReminder;
+		}
+
 		_secondReminder = secondReminder;
+	}
+
+	public int getOriginalSecondReminder() {
+		return _originalSecondReminder;
 	}
 
 	@Override
@@ -817,6 +969,10 @@ public class CalEventModelImpl extends BaseModelImpl<CalEvent>
 
 		calEventModelImpl._originalUuid = calEventModelImpl._uuid;
 
+		calEventModelImpl._originalEventId = calEventModelImpl._eventId;
+
+		calEventModelImpl._setOriginalEventId = false;
+
 		calEventModelImpl._originalGroupId = calEventModelImpl._groupId;
 
 		calEventModelImpl._setOriginalGroupId = false;
@@ -825,15 +981,61 @@ public class CalEventModelImpl extends BaseModelImpl<CalEvent>
 
 		calEventModelImpl._setOriginalCompanyId = false;
 
+		calEventModelImpl._originalUserId = calEventModelImpl._userId;
+
+		calEventModelImpl._setOriginalUserId = false;
+
+		calEventModelImpl._originalUserName = calEventModelImpl._userName;
+
+		calEventModelImpl._originalCreateDate = calEventModelImpl._createDate;
+
+		calEventModelImpl._originalModifiedDate = calEventModelImpl._modifiedDate;
+
+		calEventModelImpl._originalTitle = calEventModelImpl._title;
+
+		calEventModelImpl._originalDescription = calEventModelImpl._description;
+
+		calEventModelImpl._originalLocation = calEventModelImpl._location;
+
+		calEventModelImpl._originalStartDate = calEventModelImpl._startDate;
+
+		calEventModelImpl._originalEndDate = calEventModelImpl._endDate;
+
+		calEventModelImpl._originalDurationHour = calEventModelImpl._durationHour;
+
+		calEventModelImpl._setOriginalDurationHour = false;
+
+		calEventModelImpl._originalDurationMinute = calEventModelImpl._durationMinute;
+
+		calEventModelImpl._setOriginalDurationMinute = false;
+
+		calEventModelImpl._originalAllDay = calEventModelImpl._allDay;
+
+		calEventModelImpl._setOriginalAllDay = false;
+
+		calEventModelImpl._originalTimeZoneSensitive = calEventModelImpl._timeZoneSensitive;
+
+		calEventModelImpl._setOriginalTimeZoneSensitive = false;
+
 		calEventModelImpl._originalType = calEventModelImpl._type;
 
 		calEventModelImpl._originalRepeating = calEventModelImpl._repeating;
 
 		calEventModelImpl._setOriginalRepeating = false;
 
+		calEventModelImpl._originalRecurrence = calEventModelImpl._recurrence;
+
 		calEventModelImpl._originalRemindBy = calEventModelImpl._remindBy;
 
 		calEventModelImpl._setOriginalRemindBy = false;
+
+		calEventModelImpl._originalFirstReminder = calEventModelImpl._firstReminder;
+
+		calEventModelImpl._setOriginalFirstReminder = false;
+
+		calEventModelImpl._originalSecondReminder = calEventModelImpl._secondReminder;
+
+		calEventModelImpl._setOriginalSecondReminder = false;
 
 		calEventModelImpl._columnBitmask = 0;
 	}
@@ -1129,6 +1331,8 @@ public class CalEventModelImpl extends BaseModelImpl<CalEvent>
 	private String _uuid;
 	private String _originalUuid;
 	private long _eventId;
+	private long _originalEventId;
+	private boolean _setOriginalEventId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -1136,29 +1340,52 @@ public class CalEventModelImpl extends BaseModelImpl<CalEvent>
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private String _title;
+	private String _originalTitle;
 	private String _description;
+	private String _originalDescription;
 	private String _location;
+	private String _originalLocation;
 	private Date _startDate;
+	private Date _originalStartDate;
 	private Date _endDate;
+	private Date _originalEndDate;
 	private int _durationHour;
+	private int _originalDurationHour;
+	private boolean _setOriginalDurationHour;
 	private int _durationMinute;
+	private int _originalDurationMinute;
+	private boolean _setOriginalDurationMinute;
 	private boolean _allDay;
+	private boolean _originalAllDay;
+	private boolean _setOriginalAllDay;
 	private boolean _timeZoneSensitive;
+	private boolean _originalTimeZoneSensitive;
+	private boolean _setOriginalTimeZoneSensitive;
 	private String _type;
 	private String _originalType;
 	private boolean _repeating;
 	private boolean _originalRepeating;
 	private boolean _setOriginalRepeating;
 	private String _recurrence;
+	private String _originalRecurrence;
 	private int _remindBy;
 	private int _originalRemindBy;
 	private boolean _setOriginalRemindBy;
 	private int _firstReminder;
+	private int _originalFirstReminder;
+	private boolean _setOriginalFirstReminder;
 	private int _secondReminder;
+	private int _originalSecondReminder;
+	private boolean _setOriginalSecondReminder;
 	private long _columnBitmask;
 	private CalEvent _escapedModel;
 }

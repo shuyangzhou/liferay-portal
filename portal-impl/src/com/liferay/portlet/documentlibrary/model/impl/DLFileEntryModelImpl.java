@@ -476,7 +476,17 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 
 	@Override
 	public void setFileEntryId(long fileEntryId) {
+		if (!_setOriginalFileEntryId) {
+			_setOriginalFileEntryId = true;
+
+			_originalFileEntryId = _fileEntryId;
+		}
+
 		_fileEntryId = fileEntryId;
+	}
+
+	public long getOriginalFileEntryId() {
+		return _originalFileEntryId;
 	}
 
 	@JSON
@@ -577,7 +587,15 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -588,7 +606,15 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -599,7 +625,15 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@Override
@@ -630,7 +664,17 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 
 	@Override
 	public void setClassNameId(long classNameId) {
+		if (!_setOriginalClassNameId) {
+			_setOriginalClassNameId = true;
+
+			_originalClassNameId = _classNameId;
+		}
+
 		_classNameId = classNameId;
+	}
+
+	public long getOriginalClassNameId() {
+		return _originalClassNameId;
 	}
 
 	@JSON
@@ -641,7 +685,17 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 
 	@Override
 	public void setClassPK(long classPK) {
+		if (!_setOriginalClassPK) {
+			_setOriginalClassPK = true;
+
+			_originalClassPK = _classPK;
+		}
+
 		_classPK = classPK;
+	}
+
+	public long getOriginalClassPK() {
+		return _originalClassPK;
 	}
 
 	@JSON
@@ -652,7 +706,17 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 
 	@Override
 	public void setRepositoryId(long repositoryId) {
+		if (!_setOriginalRepositoryId) {
+			_setOriginalRepositoryId = true;
+
+			_originalRepositoryId = _repositoryId;
+		}
+
 		_repositoryId = repositoryId;
+	}
+
+	public long getOriginalRepositoryId() {
+		return _originalRepositoryId;
 	}
 
 	@JSON
@@ -691,7 +755,15 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 
 	@Override
 	public void setTreePath(String treePath) {
+		if (_originalTreePath == null) {
+			_originalTreePath = _treePath;
+		}
+
 		_treePath = treePath;
+	}
+
+	public String getOriginalTreePath() {
+		return GetterUtil.getString(_originalTreePath);
 	}
 
 	@JSON
@@ -733,7 +805,15 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 
 	@Override
 	public void setExtension(String extension) {
+		if (_originalExtension == null) {
+			_originalExtension = _extension;
+		}
+
 		_extension = extension;
+	}
+
+	public String getOriginalExtension() {
+		return GetterUtil.getString(_originalExtension);
 	}
 
 	@JSON
@@ -801,7 +881,15 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 
 	@Override
 	public void setDescription(String description) {
+		if (_originalDescription == null) {
+			_originalDescription = _description;
+		}
+
 		_description = description;
+	}
+
+	public String getOriginalDescription() {
+		return GetterUtil.getString(_originalDescription);
 	}
 
 	@JSON
@@ -817,7 +905,15 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 
 	@Override
 	public void setExtraSettings(String extraSettings) {
+		if (_originalExtraSettings == null) {
+			_originalExtraSettings = _extraSettings;
+		}
+
 		_extraSettings = extraSettings;
+	}
+
+	public String getOriginalExtraSettings() {
+		return GetterUtil.getString(_originalExtraSettings);
 	}
 
 	@JSON
@@ -856,7 +952,15 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 
 	@Override
 	public void setVersion(String version) {
+		if (_originalVersion == null) {
+			_originalVersion = _version;
+		}
+
 		_version = version;
+	}
+
+	public String getOriginalVersion() {
+		return GetterUtil.getString(_originalVersion);
 	}
 
 	@JSON
@@ -867,7 +971,17 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 
 	@Override
 	public void setSize(long size) {
+		if (!_setOriginalSize) {
+			_setOriginalSize = true;
+
+			_originalSize = _size;
+		}
+
 		_size = size;
+	}
+
+	public long getOriginalSize() {
+		return _originalSize;
 	}
 
 	@JSON
@@ -878,7 +992,17 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 
 	@Override
 	public void setReadCount(int readCount) {
+		if (!_setOriginalReadCount) {
+			_setOriginalReadCount = true;
+
+			_originalReadCount = _readCount;
+		}
+
 		_readCount = readCount;
+	}
+
+	public int getOriginalReadCount() {
+		return _originalReadCount;
 	}
 
 	@JSON
@@ -889,7 +1013,17 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 
 	@Override
 	public void setSmallImageId(long smallImageId) {
+		if (!_setOriginalSmallImageId) {
+			_setOriginalSmallImageId = true;
+
+			_originalSmallImageId = _smallImageId;
+		}
+
 		_smallImageId = smallImageId;
+	}
+
+	public long getOriginalSmallImageId() {
+		return _originalSmallImageId;
 	}
 
 	@JSON
@@ -900,7 +1034,17 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 
 	@Override
 	public void setLargeImageId(long largeImageId) {
+		if (!_setOriginalLargeImageId) {
+			_setOriginalLargeImageId = true;
+
+			_originalLargeImageId = _largeImageId;
+		}
+
 		_largeImageId = largeImageId;
+	}
+
+	public long getOriginalLargeImageId() {
+		return _originalLargeImageId;
 	}
 
 	@JSON
@@ -911,7 +1055,17 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 
 	@Override
 	public void setCustom1ImageId(long custom1ImageId) {
+		if (!_setOriginalCustom1ImageId) {
+			_setOriginalCustom1ImageId = true;
+
+			_originalCustom1ImageId = _custom1ImageId;
+		}
+
 		_custom1ImageId = custom1ImageId;
+	}
+
+	public long getOriginalCustom1ImageId() {
+		return _originalCustom1ImageId;
 	}
 
 	@JSON
@@ -922,7 +1076,17 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 
 	@Override
 	public void setCustom2ImageId(long custom2ImageId) {
+		if (!_setOriginalCustom2ImageId) {
+			_setOriginalCustom2ImageId = true;
+
+			_originalCustom2ImageId = _custom2ImageId;
+		}
+
 		_custom2ImageId = custom2ImageId;
+	}
+
+	public long getOriginalCustom2ImageId() {
+		return _originalCustom2ImageId;
 	}
 
 	@JSON
@@ -938,7 +1102,17 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 
 	@Override
 	public void setManualCheckInRequired(boolean manualCheckInRequired) {
+		if (!_setOriginalManualCheckInRequired) {
+			_setOriginalManualCheckInRequired = true;
+
+			_originalManualCheckInRequired = _manualCheckInRequired;
+		}
+
 		_manualCheckInRequired = manualCheckInRequired;
+	}
+
+	public boolean getOriginalManualCheckInRequired() {
+		return _originalManualCheckInRequired;
 	}
 
 	@Override
@@ -1213,6 +1387,10 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 
 		dlFileEntryModelImpl._originalUuid = dlFileEntryModelImpl._uuid;
 
+		dlFileEntryModelImpl._originalFileEntryId = dlFileEntryModelImpl._fileEntryId;
+
+		dlFileEntryModelImpl._setOriginalFileEntryId = false;
+
 		dlFileEntryModelImpl._originalGroupId = dlFileEntryModelImpl._groupId;
 
 		dlFileEntryModelImpl._setOriginalGroupId = false;
@@ -1225,19 +1403,75 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 
 		dlFileEntryModelImpl._setOriginalUserId = false;
 
+		dlFileEntryModelImpl._originalUserName = dlFileEntryModelImpl._userName;
+
+		dlFileEntryModelImpl._originalCreateDate = dlFileEntryModelImpl._createDate;
+
+		dlFileEntryModelImpl._originalModifiedDate = dlFileEntryModelImpl._modifiedDate;
+
+		dlFileEntryModelImpl._originalClassNameId = dlFileEntryModelImpl._classNameId;
+
+		dlFileEntryModelImpl._setOriginalClassNameId = false;
+
+		dlFileEntryModelImpl._originalClassPK = dlFileEntryModelImpl._classPK;
+
+		dlFileEntryModelImpl._setOriginalClassPK = false;
+
+		dlFileEntryModelImpl._originalRepositoryId = dlFileEntryModelImpl._repositoryId;
+
+		dlFileEntryModelImpl._setOriginalRepositoryId = false;
+
 		dlFileEntryModelImpl._originalFolderId = dlFileEntryModelImpl._folderId;
 
 		dlFileEntryModelImpl._setOriginalFolderId = false;
 
+		dlFileEntryModelImpl._originalTreePath = dlFileEntryModelImpl._treePath;
+
 		dlFileEntryModelImpl._originalName = dlFileEntryModelImpl._name;
+
+		dlFileEntryModelImpl._originalExtension = dlFileEntryModelImpl._extension;
 
 		dlFileEntryModelImpl._originalMimeType = dlFileEntryModelImpl._mimeType;
 
 		dlFileEntryModelImpl._originalTitle = dlFileEntryModelImpl._title;
 
+		dlFileEntryModelImpl._originalDescription = dlFileEntryModelImpl._description;
+
+		dlFileEntryModelImpl._originalExtraSettings = dlFileEntryModelImpl._extraSettings;
+
 		dlFileEntryModelImpl._originalFileEntryTypeId = dlFileEntryModelImpl._fileEntryTypeId;
 
 		dlFileEntryModelImpl._setOriginalFileEntryTypeId = false;
+
+		dlFileEntryModelImpl._originalVersion = dlFileEntryModelImpl._version;
+
+		dlFileEntryModelImpl._originalSize = dlFileEntryModelImpl._size;
+
+		dlFileEntryModelImpl._setOriginalSize = false;
+
+		dlFileEntryModelImpl._originalReadCount = dlFileEntryModelImpl._readCount;
+
+		dlFileEntryModelImpl._setOriginalReadCount = false;
+
+		dlFileEntryModelImpl._originalSmallImageId = dlFileEntryModelImpl._smallImageId;
+
+		dlFileEntryModelImpl._setOriginalSmallImageId = false;
+
+		dlFileEntryModelImpl._originalLargeImageId = dlFileEntryModelImpl._largeImageId;
+
+		dlFileEntryModelImpl._setOriginalLargeImageId = false;
+
+		dlFileEntryModelImpl._originalCustom1ImageId = dlFileEntryModelImpl._custom1ImageId;
+
+		dlFileEntryModelImpl._setOriginalCustom1ImageId = false;
+
+		dlFileEntryModelImpl._originalCustom2ImageId = dlFileEntryModelImpl._custom2ImageId;
+
+		dlFileEntryModelImpl._setOriginalCustom2ImageId = false;
+
+		dlFileEntryModelImpl._originalManualCheckInRequired = dlFileEntryModelImpl._manualCheckInRequired;
+
+		dlFileEntryModelImpl._setOriginalManualCheckInRequired = false;
 
 		dlFileEntryModelImpl._columnBitmask = 0;
 	}
@@ -1577,6 +1811,8 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 	private String _uuid;
 	private String _originalUuid;
 	private long _fileEntryId;
+	private long _originalFileEntryId;
+	private boolean _setOriginalFileEntryId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -1587,35 +1823,63 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 	private long _originalUserId;
 	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _classNameId;
+	private long _originalClassNameId;
+	private boolean _setOriginalClassNameId;
 	private long _classPK;
+	private long _originalClassPK;
+	private boolean _setOriginalClassPK;
 	private long _repositoryId;
+	private long _originalRepositoryId;
+	private boolean _setOriginalRepositoryId;
 	private long _folderId;
 	private long _originalFolderId;
 	private boolean _setOriginalFolderId;
 	private String _treePath;
+	private String _originalTreePath;
 	private String _name;
 	private String _originalName;
 	private String _extension;
+	private String _originalExtension;
 	private String _mimeType;
 	private String _originalMimeType;
 	private String _title;
 	private String _originalTitle;
 	private String _description;
+	private String _originalDescription;
 	private String _extraSettings;
+	private String _originalExtraSettings;
 	private long _fileEntryTypeId;
 	private long _originalFileEntryTypeId;
 	private boolean _setOriginalFileEntryTypeId;
 	private String _version;
+	private String _originalVersion;
 	private long _size;
+	private long _originalSize;
+	private boolean _setOriginalSize;
 	private int _readCount;
+	private int _originalReadCount;
+	private boolean _setOriginalReadCount;
 	private long _smallImageId;
+	private long _originalSmallImageId;
+	private boolean _setOriginalSmallImageId;
 	private long _largeImageId;
+	private long _originalLargeImageId;
+	private boolean _setOriginalLargeImageId;
 	private long _custom1ImageId;
+	private long _originalCustom1ImageId;
+	private boolean _setOriginalCustom1ImageId;
 	private long _custom2ImageId;
+	private long _originalCustom2ImageId;
+	private boolean _setOriginalCustom2ImageId;
 	private boolean _manualCheckInRequired;
+	private boolean _originalManualCheckInRequired;
+	private boolean _setOriginalManualCheckInRequired;
 	private long _columnBitmask;
 	private DLFileEntry _escapedModel;
 }

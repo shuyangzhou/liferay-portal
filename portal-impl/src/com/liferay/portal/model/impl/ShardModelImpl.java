@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.Shard;
 import com.liferay.portal.model.ShardModel;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.util.PortalUtil;
 
@@ -175,7 +176,17 @@ public class ShardModelImpl extends BaseModelImpl<Shard> implements ShardModel {
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@Override
@@ -185,7 +196,17 @@ public class ShardModelImpl extends BaseModelImpl<Shard> implements ShardModel {
 
 	@Override
 	public void setShardId(long shardId) {
+		if (!_setOriginalShardId) {
+			_setOriginalShardId = true;
+
+			_originalShardId = _shardId;
+		}
+
 		_shardId = shardId;
+	}
+
+	public long getOriginalShardId() {
+		return _originalShardId;
 	}
 
 	@Override
@@ -375,6 +396,14 @@ public class ShardModelImpl extends BaseModelImpl<Shard> implements ShardModel {
 	public void resetOriginalValues() {
 		ShardModelImpl shardModelImpl = this;
 
+		shardModelImpl._originalMvccVersion = shardModelImpl._mvccVersion;
+
+		shardModelImpl._setOriginalMvccVersion = false;
+
+		shardModelImpl._originalShardId = shardModelImpl._shardId;
+
+		shardModelImpl._setOriginalShardId = false;
+
 		shardModelImpl._originalClassNameId = shardModelImpl._classNameId;
 
 		shardModelImpl._setOriginalClassNameId = false;
@@ -467,7 +496,11 @@ public class ShardModelImpl extends BaseModelImpl<Shard> implements ShardModel {
 	private static ClassLoader _classLoader = Shard.class.getClassLoader();
 	private static Class<?>[] _escapedModelInterfaces = new Class[] { Shard.class };
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _shardId;
+	private long _originalShardId;
+	private boolean _setOriginalShardId;
 	private long _classNameId;
 	private long _originalClassNameId;
 	private boolean _setOriginalClassNameId;
