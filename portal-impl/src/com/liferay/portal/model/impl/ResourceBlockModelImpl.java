@@ -24,6 +24,7 @@ import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ResourceBlock;
 import com.liferay.portal.model.ResourceBlockModel;
 import com.liferay.portal.model.ResourceBlockSoap;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 
 import com.liferay.portlet.expando.model.ExpandoBridge;
@@ -242,7 +243,17 @@ public class ResourceBlockModelImpl extends BaseModelImpl<ResourceBlock>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@JSON
@@ -253,7 +264,17 @@ public class ResourceBlockModelImpl extends BaseModelImpl<ResourceBlock>
 
 	@Override
 	public void setResourceBlockId(long resourceBlockId) {
+		if (!_setOriginalResourceBlockId) {
+			_setOriginalResourceBlockId = true;
+
+			_originalResourceBlockId = _resourceBlockId;
+		}
+
 		_resourceBlockId = resourceBlockId;
+	}
+
+	public long getOriginalResourceBlockId() {
+		return _originalResourceBlockId;
 	}
 
 	@JSON
@@ -362,7 +383,17 @@ public class ResourceBlockModelImpl extends BaseModelImpl<ResourceBlock>
 
 	@Override
 	public void setReferenceCount(long referenceCount) {
+		if (!_setOriginalReferenceCount) {
+			_setOriginalReferenceCount = true;
+
+			_originalReferenceCount = _referenceCount;
+		}
+
 		_referenceCount = referenceCount;
+	}
+
+	public long getOriginalReferenceCount() {
+		return _originalReferenceCount;
 	}
 
 	public long getColumnBitmask() {
@@ -465,6 +496,14 @@ public class ResourceBlockModelImpl extends BaseModelImpl<ResourceBlock>
 	public void resetOriginalValues() {
 		ResourceBlockModelImpl resourceBlockModelImpl = this;
 
+		resourceBlockModelImpl._originalMvccVersion = resourceBlockModelImpl._mvccVersion;
+
+		resourceBlockModelImpl._setOriginalMvccVersion = false;
+
+		resourceBlockModelImpl._originalResourceBlockId = resourceBlockModelImpl._resourceBlockId;
+
+		resourceBlockModelImpl._setOriginalResourceBlockId = false;
+
 		resourceBlockModelImpl._originalCompanyId = resourceBlockModelImpl._companyId;
 
 		resourceBlockModelImpl._setOriginalCompanyId = false;
@@ -476,6 +515,10 @@ public class ResourceBlockModelImpl extends BaseModelImpl<ResourceBlock>
 		resourceBlockModelImpl._originalName = resourceBlockModelImpl._name;
 
 		resourceBlockModelImpl._originalPermissionsHash = resourceBlockModelImpl._permissionsHash;
+
+		resourceBlockModelImpl._originalReferenceCount = resourceBlockModelImpl._referenceCount;
+
+		resourceBlockModelImpl._setOriginalReferenceCount = false;
 
 		resourceBlockModelImpl._columnBitmask = 0;
 	}
@@ -583,7 +626,11 @@ public class ResourceBlockModelImpl extends BaseModelImpl<ResourceBlock>
 			ResourceBlock.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _resourceBlockId;
+	private long _originalResourceBlockId;
+	private boolean _setOriginalResourceBlockId;
 	private long _companyId;
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
@@ -595,6 +642,8 @@ public class ResourceBlockModelImpl extends BaseModelImpl<ResourceBlock>
 	private String _permissionsHash;
 	private String _originalPermissionsHash;
 	private long _referenceCount;
+	private long _originalReferenceCount;
+	private boolean _setOriginalReferenceCount;
 	private long _columnBitmask;
 	private ResourceBlock _escapedModel;
 }

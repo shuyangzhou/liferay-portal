@@ -24,6 +24,7 @@ import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.Image;
 import com.liferay.portal.model.ImageModel;
 import com.liferay.portal.model.ImageSoap;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 
 import com.liferay.portlet.expando.model.ExpandoBridge;
@@ -239,7 +240,17 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@JSON
@@ -252,7 +263,17 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 	public void setImageId(long imageId) {
 		_columnBitmask = -1L;
 
+		if (!_setOriginalImageId) {
+			_setOriginalImageId = true;
+
+			_originalImageId = _imageId;
+		}
+
 		_imageId = imageId;
+	}
+
+	public long getOriginalImageId() {
+		return _originalImageId;
 	}
 
 	@JSON
@@ -263,7 +284,15 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -279,7 +308,15 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 
 	@Override
 	public void setType(String type) {
+		if (_originalType == null) {
+			_originalType = _type;
+		}
+
 		_type = type;
+	}
+
+	public String getOriginalType() {
+		return GetterUtil.getString(_originalType);
 	}
 
 	@JSON
@@ -290,7 +327,17 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 
 	@Override
 	public void setHeight(int height) {
+		if (!_setOriginalHeight) {
+			_setOriginalHeight = true;
+
+			_originalHeight = _height;
+		}
+
 		_height = height;
+	}
+
+	public int getOriginalHeight() {
+		return _originalHeight;
 	}
 
 	@JSON
@@ -301,7 +348,17 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 
 	@Override
 	public void setWidth(int width) {
+		if (!_setOriginalWidth) {
+			_setOriginalWidth = true;
+
+			_originalWidth = _width;
+		}
+
 		_width = width;
+	}
+
+	public int getOriginalWidth() {
+		return _originalWidth;
 	}
 
 	@JSON
@@ -433,6 +490,26 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 	public void resetOriginalValues() {
 		ImageModelImpl imageModelImpl = this;
 
+		imageModelImpl._originalMvccVersion = imageModelImpl._mvccVersion;
+
+		imageModelImpl._setOriginalMvccVersion = false;
+
+		imageModelImpl._originalImageId = imageModelImpl._imageId;
+
+		imageModelImpl._setOriginalImageId = false;
+
+		imageModelImpl._originalModifiedDate = imageModelImpl._modifiedDate;
+
+		imageModelImpl._originalType = imageModelImpl._type;
+
+		imageModelImpl._originalHeight = imageModelImpl._height;
+
+		imageModelImpl._setOriginalHeight = false;
+
+		imageModelImpl._originalWidth = imageModelImpl._width;
+
+		imageModelImpl._setOriginalWidth = false;
+
 		imageModelImpl._originalSize = imageModelImpl._size;
 
 		imageModelImpl._setOriginalSize = false;
@@ -542,11 +619,21 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 	private static ClassLoader _classLoader = Image.class.getClassLoader();
 	private static Class<?>[] _escapedModelInterfaces = new Class[] { Image.class };
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _imageId;
+	private long _originalImageId;
+	private boolean _setOriginalImageId;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private String _type;
+	private String _originalType;
 	private int _height;
+	private int _originalHeight;
+	private boolean _setOriginalHeight;
 	private int _width;
+	private int _originalWidth;
+	private boolean _setOriginalWidth;
 	private int _size;
 	private int _originalSize;
 	private boolean _setOriginalSize;

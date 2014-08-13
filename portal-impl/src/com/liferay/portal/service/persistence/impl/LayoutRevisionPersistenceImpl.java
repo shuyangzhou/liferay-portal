@@ -35,6 +35,7 @@ import com.liferay.portal.model.MVCCModel;
 import com.liferay.portal.model.impl.LayoutRevisionImpl;
 import com.liferay.portal.model.impl.LayoutRevisionModelImpl;
 import com.liferay.portal.service.persistence.LayoutRevisionPersistence;
+import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
 

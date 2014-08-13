@@ -316,7 +316,17 @@ public class SocialActivityModelImpl extends BaseModelImpl<SocialActivity>
 
 	@Override
 	public void setActivityId(long activityId) {
+		if (!_setOriginalActivityId) {
+			_setOriginalActivityId = true;
+
+			_originalActivityId = _activityId;
+		}
+
 		_activityId = activityId;
+	}
+
+	public long getOriginalActivityId() {
+		return _originalActivityId;
 	}
 
 	@JSON
@@ -547,7 +557,17 @@ public class SocialActivityModelImpl extends BaseModelImpl<SocialActivity>
 
 	@Override
 	public void setParentClassNameId(long parentClassNameId) {
+		if (!_setOriginalParentClassNameId) {
+			_setOriginalParentClassNameId = true;
+
+			_originalParentClassNameId = _parentClassNameId;
+		}
+
 		_parentClassNameId = parentClassNameId;
+	}
+
+	public long getOriginalParentClassNameId() {
+		return _originalParentClassNameId;
 	}
 
 	@JSON
@@ -558,7 +578,17 @@ public class SocialActivityModelImpl extends BaseModelImpl<SocialActivity>
 
 	@Override
 	public void setParentClassPK(long parentClassPK) {
+		if (!_setOriginalParentClassPK) {
+			_setOriginalParentClassPK = true;
+
+			_originalParentClassPK = _parentClassPK;
+		}
+
 		_parentClassPK = parentClassPK;
+	}
+
+	public long getOriginalParentClassPK() {
+		return _originalParentClassPK;
 	}
 
 	@JSON
@@ -597,7 +627,15 @@ public class SocialActivityModelImpl extends BaseModelImpl<SocialActivity>
 
 	@Override
 	public void setExtraData(String extraData) {
+		if (_originalExtraData == null) {
+			_originalExtraData = _extraData;
+		}
+
 		_extraData = extraData;
+	}
+
+	public String getOriginalExtraData() {
+		return GetterUtil.getString(_originalExtraData);
 	}
 
 	@JSON
@@ -754,6 +792,10 @@ public class SocialActivityModelImpl extends BaseModelImpl<SocialActivity>
 	public void resetOriginalValues() {
 		SocialActivityModelImpl socialActivityModelImpl = this;
 
+		socialActivityModelImpl._originalActivityId = socialActivityModelImpl._activityId;
+
+		socialActivityModelImpl._setOriginalActivityId = false;
+
 		socialActivityModelImpl._originalGroupId = socialActivityModelImpl._groupId;
 
 		socialActivityModelImpl._setOriginalGroupId = false;
@@ -786,9 +828,19 @@ public class SocialActivityModelImpl extends BaseModelImpl<SocialActivity>
 
 		socialActivityModelImpl._setOriginalClassPK = false;
 
+		socialActivityModelImpl._originalParentClassNameId = socialActivityModelImpl._parentClassNameId;
+
+		socialActivityModelImpl._setOriginalParentClassNameId = false;
+
+		socialActivityModelImpl._originalParentClassPK = socialActivityModelImpl._parentClassPK;
+
+		socialActivityModelImpl._setOriginalParentClassPK = false;
+
 		socialActivityModelImpl._originalType = socialActivityModelImpl._type;
 
 		socialActivityModelImpl._setOriginalType = false;
+
+		socialActivityModelImpl._originalExtraData = socialActivityModelImpl._extraData;
 
 		socialActivityModelImpl._originalReceiverUserId = socialActivityModelImpl._receiverUserId;
 
@@ -950,6 +1002,8 @@ public class SocialActivityModelImpl extends BaseModelImpl<SocialActivity>
 			SocialActivity.class
 		};
 	private long _activityId;
+	private long _originalActivityId;
+	private boolean _setOriginalActivityId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -975,11 +1029,16 @@ public class SocialActivityModelImpl extends BaseModelImpl<SocialActivity>
 	private long _originalClassPK;
 	private boolean _setOriginalClassPK;
 	private long _parentClassNameId;
+	private long _originalParentClassNameId;
+	private boolean _setOriginalParentClassNameId;
 	private long _parentClassPK;
+	private long _originalParentClassPK;
+	private boolean _setOriginalParentClassPK;
 	private int _type;
 	private int _originalType;
 	private boolean _setOriginalType;
 	private String _extraData;
+	private String _originalExtraData;
 	private long _receiverUserId;
 	private long _originalReceiverUserId;
 	private boolean _setOriginalReceiverUserId;

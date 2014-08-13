@@ -214,6 +214,12 @@ public class BlogsStatsUserModelImpl extends BaseModelImpl<BlogsStatsUser>
 
 	@Override
 	public void setStatsUserId(long statsUserId) {
+		if (!_setOriginalStatsUserId) {
+			_setOriginalStatsUserId = true;
+
+			_originalStatsUserId = _statsUserId;
+		}
+
 		_statsUserId = statsUserId;
 	}
 
@@ -231,6 +237,10 @@ public class BlogsStatsUserModelImpl extends BaseModelImpl<BlogsStatsUser>
 
 	@Override
 	public void setStatsUserUuid(String statsUserUuid) {
+	}
+
+	public long getOriginalStatsUserId() {
+		return _originalStatsUserId;
 	}
 
 	@Override
@@ -364,7 +374,17 @@ public class BlogsStatsUserModelImpl extends BaseModelImpl<BlogsStatsUser>
 
 	@Override
 	public void setRatingsTotalEntries(int ratingsTotalEntries) {
+		if (!_setOriginalRatingsTotalEntries) {
+			_setOriginalRatingsTotalEntries = true;
+
+			_originalRatingsTotalEntries = _ratingsTotalEntries;
+		}
+
 		_ratingsTotalEntries = ratingsTotalEntries;
+	}
+
+	public int getOriginalRatingsTotalEntries() {
+		return _originalRatingsTotalEntries;
 	}
 
 	@Override
@@ -374,7 +394,17 @@ public class BlogsStatsUserModelImpl extends BaseModelImpl<BlogsStatsUser>
 
 	@Override
 	public void setRatingsTotalScore(double ratingsTotalScore) {
+		if (!_setOriginalRatingsTotalScore) {
+			_setOriginalRatingsTotalScore = true;
+
+			_originalRatingsTotalScore = _ratingsTotalScore;
+		}
+
 		_ratingsTotalScore = ratingsTotalScore;
+	}
+
+	public double getOriginalRatingsTotalScore() {
+		return _originalRatingsTotalScore;
 	}
 
 	@Override
@@ -384,7 +414,17 @@ public class BlogsStatsUserModelImpl extends BaseModelImpl<BlogsStatsUser>
 
 	@Override
 	public void setRatingsAverageScore(double ratingsAverageScore) {
+		if (!_setOriginalRatingsAverageScore) {
+			_setOriginalRatingsAverageScore = true;
+
+			_originalRatingsAverageScore = _ratingsAverageScore;
+		}
+
 		_ratingsAverageScore = ratingsAverageScore;
+	}
+
+	public double getOriginalRatingsAverageScore() {
+		return _originalRatingsAverageScore;
 	}
 
 	public long getColumnBitmask() {
@@ -497,6 +537,10 @@ public class BlogsStatsUserModelImpl extends BaseModelImpl<BlogsStatsUser>
 	public void resetOriginalValues() {
 		BlogsStatsUserModelImpl blogsStatsUserModelImpl = this;
 
+		blogsStatsUserModelImpl._originalStatsUserId = blogsStatsUserModelImpl._statsUserId;
+
+		blogsStatsUserModelImpl._setOriginalStatsUserId = false;
+
 		blogsStatsUserModelImpl._originalGroupId = blogsStatsUserModelImpl._groupId;
 
 		blogsStatsUserModelImpl._setOriginalGroupId = false;
@@ -514,6 +558,18 @@ public class BlogsStatsUserModelImpl extends BaseModelImpl<BlogsStatsUser>
 		blogsStatsUserModelImpl._setOriginalEntryCount = false;
 
 		blogsStatsUserModelImpl._originalLastPostDate = blogsStatsUserModelImpl._lastPostDate;
+
+		blogsStatsUserModelImpl._originalRatingsTotalEntries = blogsStatsUserModelImpl._ratingsTotalEntries;
+
+		blogsStatsUserModelImpl._setOriginalRatingsTotalEntries = false;
+
+		blogsStatsUserModelImpl._originalRatingsTotalScore = blogsStatsUserModelImpl._ratingsTotalScore;
+
+		blogsStatsUserModelImpl._setOriginalRatingsTotalScore = false;
+
+		blogsStatsUserModelImpl._originalRatingsAverageScore = blogsStatsUserModelImpl._ratingsAverageScore;
+
+		blogsStatsUserModelImpl._setOriginalRatingsAverageScore = false;
 
 		blogsStatsUserModelImpl._columnBitmask = 0;
 	}
@@ -632,6 +688,8 @@ public class BlogsStatsUserModelImpl extends BaseModelImpl<BlogsStatsUser>
 			BlogsStatsUser.class
 		};
 	private long _statsUserId;
+	private long _originalStatsUserId;
+	private boolean _setOriginalStatsUserId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -647,8 +705,14 @@ public class BlogsStatsUserModelImpl extends BaseModelImpl<BlogsStatsUser>
 	private Date _lastPostDate;
 	private Date _originalLastPostDate;
 	private int _ratingsTotalEntries;
+	private int _originalRatingsTotalEntries;
+	private boolean _setOriginalRatingsTotalEntries;
 	private double _ratingsTotalScore;
+	private double _originalRatingsTotalScore;
+	private boolean _setOriginalRatingsTotalScore;
 	private double _ratingsAverageScore;
+	private double _originalRatingsAverageScore;
+	private boolean _setOriginalRatingsAverageScore;
 	private long _columnBitmask;
 	private BlogsStatsUser _escapedModel;
 }

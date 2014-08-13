@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ResourceTypePermission;
 import com.liferay.portal.model.ResourceTypePermissionModel;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 
 import com.liferay.portlet.expando.model.ExpandoBridge;
@@ -192,7 +193,17 @@ public class ResourceTypePermissionModelImpl extends BaseModelImpl<ResourceTypeP
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@Override
@@ -202,7 +213,17 @@ public class ResourceTypePermissionModelImpl extends BaseModelImpl<ResourceTypeP
 
 	@Override
 	public void setResourceTypePermissionId(long resourceTypePermissionId) {
+		if (!_setOriginalResourceTypePermissionId) {
+			_setOriginalResourceTypePermissionId = true;
+
+			_originalResourceTypePermissionId = _resourceTypePermissionId;
+		}
+
 		_resourceTypePermissionId = resourceTypePermissionId;
+	}
+
+	public long getOriginalResourceTypePermissionId() {
+		return _originalResourceTypePermissionId;
 	}
 
 	@Override
@@ -303,7 +324,17 @@ public class ResourceTypePermissionModelImpl extends BaseModelImpl<ResourceTypeP
 
 	@Override
 	public void setActionIds(long actionIds) {
+		if (!_setOriginalActionIds) {
+			_setOriginalActionIds = true;
+
+			_originalActionIds = _actionIds;
+		}
+
 		_actionIds = actionIds;
+	}
+
+	public long getOriginalActionIds() {
+		return _originalActionIds;
 	}
 
 	public long getColumnBitmask() {
@@ -406,6 +437,14 @@ public class ResourceTypePermissionModelImpl extends BaseModelImpl<ResourceTypeP
 	public void resetOriginalValues() {
 		ResourceTypePermissionModelImpl resourceTypePermissionModelImpl = this;
 
+		resourceTypePermissionModelImpl._originalMvccVersion = resourceTypePermissionModelImpl._mvccVersion;
+
+		resourceTypePermissionModelImpl._setOriginalMvccVersion = false;
+
+		resourceTypePermissionModelImpl._originalResourceTypePermissionId = resourceTypePermissionModelImpl._resourceTypePermissionId;
+
+		resourceTypePermissionModelImpl._setOriginalResourceTypePermissionId = false;
+
 		resourceTypePermissionModelImpl._originalCompanyId = resourceTypePermissionModelImpl._companyId;
 
 		resourceTypePermissionModelImpl._setOriginalCompanyId = false;
@@ -419,6 +458,10 @@ public class ResourceTypePermissionModelImpl extends BaseModelImpl<ResourceTypeP
 		resourceTypePermissionModelImpl._originalRoleId = resourceTypePermissionModelImpl._roleId;
 
 		resourceTypePermissionModelImpl._setOriginalRoleId = false;
+
+		resourceTypePermissionModelImpl._originalActionIds = resourceTypePermissionModelImpl._actionIds;
+
+		resourceTypePermissionModelImpl._setOriginalActionIds = false;
 
 		resourceTypePermissionModelImpl._columnBitmask = 0;
 	}
@@ -520,7 +563,11 @@ public class ResourceTypePermissionModelImpl extends BaseModelImpl<ResourceTypeP
 			ResourceTypePermission.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _resourceTypePermissionId;
+	private long _originalResourceTypePermissionId;
+	private boolean _setOriginalResourceTypePermissionId;
 	private long _companyId;
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
@@ -533,6 +580,8 @@ public class ResourceTypePermissionModelImpl extends BaseModelImpl<ResourceTypeP
 	private long _originalRoleId;
 	private boolean _setOriginalRoleId;
 	private long _actionIds;
+	private long _originalActionIds;
+	private boolean _setOriginalActionIds;
 	private long _columnBitmask;
 	private ResourceTypePermission _escapedModel;
 }

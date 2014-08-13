@@ -325,7 +325,17 @@ public class PollsQuestionModelImpl extends BaseModelImpl<PollsQuestion>
 
 	@Override
 	public void setQuestionId(long questionId) {
+		if (!_setOriginalQuestionId) {
+			_setOriginalQuestionId = true;
+
+			_originalQuestionId = _questionId;
+		}
+
 		_questionId = questionId;
+	}
+
+	public long getOriginalQuestionId() {
+		return _originalQuestionId;
 	}
 
 	@JSON
@@ -382,6 +392,12 @@ public class PollsQuestionModelImpl extends BaseModelImpl<PollsQuestion>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -401,6 +417,10 @@ public class PollsQuestionModelImpl extends BaseModelImpl<PollsQuestion>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -414,7 +434,15 @@ public class PollsQuestionModelImpl extends BaseModelImpl<PollsQuestion>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -427,7 +455,15 @@ public class PollsQuestionModelImpl extends BaseModelImpl<PollsQuestion>
 	public void setCreateDate(Date createDate) {
 		_columnBitmask = -1L;
 
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -438,7 +474,15 @@ public class PollsQuestionModelImpl extends BaseModelImpl<PollsQuestion>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -497,6 +541,10 @@ public class PollsQuestionModelImpl extends BaseModelImpl<PollsQuestion>
 
 	@Override
 	public void setTitle(String title) {
+		if (_originalTitle == null) {
+			_originalTitle = _title;
+		}
+
 		_title = title;
 	}
 
@@ -538,6 +586,10 @@ public class PollsQuestionModelImpl extends BaseModelImpl<PollsQuestion>
 
 		setTitle(LocalizationUtil.updateLocalization(titleMap, getTitle(),
 				"Title", LocaleUtil.toLanguageId(defaultLocale)));
+	}
+
+	public String getOriginalTitle() {
+		return GetterUtil.getString(_originalTitle);
 	}
 
 	@JSON
@@ -596,6 +648,10 @@ public class PollsQuestionModelImpl extends BaseModelImpl<PollsQuestion>
 
 	@Override
 	public void setDescription(String description) {
+		if (_originalDescription == null) {
+			_originalDescription = _description;
+		}
+
 		_description = description;
 	}
 
@@ -643,6 +699,10 @@ public class PollsQuestionModelImpl extends BaseModelImpl<PollsQuestion>
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
+	public String getOriginalDescription() {
+		return GetterUtil.getString(_originalDescription);
+	}
+
 	@JSON
 	@Override
 	public Date getExpirationDate() {
@@ -651,7 +711,15 @@ public class PollsQuestionModelImpl extends BaseModelImpl<PollsQuestion>
 
 	@Override
 	public void setExpirationDate(Date expirationDate) {
+		if (_originalExpirationDate == null) {
+			_originalExpirationDate = _expirationDate;
+		}
+
 		_expirationDate = expirationDate;
+	}
+
+	public Date getOriginalExpirationDate() {
+		return _originalExpirationDate;
 	}
 
 	@JSON
@@ -662,7 +730,15 @@ public class PollsQuestionModelImpl extends BaseModelImpl<PollsQuestion>
 
 	@Override
 	public void setLastVoteDate(Date lastVoteDate) {
+		if (_originalLastVoteDate == null) {
+			_originalLastVoteDate = _lastVoteDate;
+		}
+
 		_lastVoteDate = lastVoteDate;
+	}
+
+	public Date getOriginalLastVoteDate() {
+		return _originalLastVoteDate;
 	}
 
 	@Override
@@ -861,6 +937,10 @@ public class PollsQuestionModelImpl extends BaseModelImpl<PollsQuestion>
 
 		pollsQuestionModelImpl._originalUuid = pollsQuestionModelImpl._uuid;
 
+		pollsQuestionModelImpl._originalQuestionId = pollsQuestionModelImpl._questionId;
+
+		pollsQuestionModelImpl._setOriginalQuestionId = false;
+
 		pollsQuestionModelImpl._originalGroupId = pollsQuestionModelImpl._groupId;
 
 		pollsQuestionModelImpl._setOriginalGroupId = false;
@@ -868,6 +948,24 @@ public class PollsQuestionModelImpl extends BaseModelImpl<PollsQuestion>
 		pollsQuestionModelImpl._originalCompanyId = pollsQuestionModelImpl._companyId;
 
 		pollsQuestionModelImpl._setOriginalCompanyId = false;
+
+		pollsQuestionModelImpl._originalUserId = pollsQuestionModelImpl._userId;
+
+		pollsQuestionModelImpl._setOriginalUserId = false;
+
+		pollsQuestionModelImpl._originalUserName = pollsQuestionModelImpl._userName;
+
+		pollsQuestionModelImpl._originalCreateDate = pollsQuestionModelImpl._createDate;
+
+		pollsQuestionModelImpl._originalModifiedDate = pollsQuestionModelImpl._modifiedDate;
+
+		pollsQuestionModelImpl._originalTitle = pollsQuestionModelImpl._title;
+
+		pollsQuestionModelImpl._originalDescription = pollsQuestionModelImpl._description;
+
+		pollsQuestionModelImpl._originalExpirationDate = pollsQuestionModelImpl._expirationDate;
+
+		pollsQuestionModelImpl._originalLastVoteDate = pollsQuestionModelImpl._lastVoteDate;
 
 		pollsQuestionModelImpl._columnBitmask = 0;
 	}
@@ -1057,6 +1155,8 @@ public class PollsQuestionModelImpl extends BaseModelImpl<PollsQuestion>
 	private String _uuid;
 	private String _originalUuid;
 	private long _questionId;
+	private long _originalQuestionId;
+	private boolean _setOriginalQuestionId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -1064,15 +1164,24 @@ public class PollsQuestionModelImpl extends BaseModelImpl<PollsQuestion>
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private String _title;
 	private String _titleCurrentLanguageId;
+	private String _originalTitle;
 	private String _description;
 	private String _descriptionCurrentLanguageId;
+	private String _originalDescription;
 	private Date _expirationDate;
+	private Date _originalExpirationDate;
 	private Date _lastVoteDate;
+	private Date _originalLastVoteDate;
 	private long _columnBitmask;
 	private PollsQuestion _escapedModel;
 }

@@ -29,6 +29,7 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.model.Website;
 import com.liferay.portal.model.WebsiteModel;
 import com.liferay.portal.model.WebsiteSoap;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
@@ -306,7 +307,17 @@ public class WebsiteModelImpl extends BaseModelImpl<Website>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@JSON
@@ -341,7 +352,17 @@ public class WebsiteModelImpl extends BaseModelImpl<Website>
 
 	@Override
 	public void setWebsiteId(long websiteId) {
+		if (!_setOriginalWebsiteId) {
+			_setOriginalWebsiteId = true;
+
+			_originalWebsiteId = _websiteId;
+		}
+
 		_websiteId = websiteId;
+	}
+
+	public long getOriginalWebsiteId() {
+		return _originalWebsiteId;
 	}
 
 	@JSON
@@ -419,7 +440,15 @@ public class WebsiteModelImpl extends BaseModelImpl<Website>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -432,7 +461,15 @@ public class WebsiteModelImpl extends BaseModelImpl<Website>
 	public void setCreateDate(Date createDate) {
 		_columnBitmask = -1L;
 
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -443,7 +480,15 @@ public class WebsiteModelImpl extends BaseModelImpl<Website>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@Override
@@ -525,7 +570,15 @@ public class WebsiteModelImpl extends BaseModelImpl<Website>
 
 	@Override
 	public void setUrl(String url) {
+		if (_originalUrl == null) {
+			_originalUrl = _url;
+		}
+
 		_url = url;
+	}
+
+	public String getOriginalUrl() {
+		return GetterUtil.getString(_originalUrl);
 	}
 
 	@JSON
@@ -536,7 +589,17 @@ public class WebsiteModelImpl extends BaseModelImpl<Website>
 
 	@Override
 	public void setTypeId(int typeId) {
+		if (!_setOriginalTypeId) {
+			_setOriginalTypeId = true;
+
+			_originalTypeId = _typeId;
+		}
+
 		_typeId = typeId;
+	}
+
+	public int getOriginalTypeId() {
+		return _originalTypeId;
 	}
 
 	@JSON
@@ -677,7 +740,15 @@ public class WebsiteModelImpl extends BaseModelImpl<Website>
 	public void resetOriginalValues() {
 		WebsiteModelImpl websiteModelImpl = this;
 
+		websiteModelImpl._originalMvccVersion = websiteModelImpl._mvccVersion;
+
+		websiteModelImpl._setOriginalMvccVersion = false;
+
 		websiteModelImpl._originalUuid = websiteModelImpl._uuid;
+
+		websiteModelImpl._originalWebsiteId = websiteModelImpl._websiteId;
+
+		websiteModelImpl._setOriginalWebsiteId = false;
 
 		websiteModelImpl._originalCompanyId = websiteModelImpl._companyId;
 
@@ -687,6 +758,12 @@ public class WebsiteModelImpl extends BaseModelImpl<Website>
 
 		websiteModelImpl._setOriginalUserId = false;
 
+		websiteModelImpl._originalUserName = websiteModelImpl._userName;
+
+		websiteModelImpl._originalCreateDate = websiteModelImpl._createDate;
+
+		websiteModelImpl._originalModifiedDate = websiteModelImpl._modifiedDate;
+
 		websiteModelImpl._originalClassNameId = websiteModelImpl._classNameId;
 
 		websiteModelImpl._setOriginalClassNameId = false;
@@ -694,6 +771,12 @@ public class WebsiteModelImpl extends BaseModelImpl<Website>
 		websiteModelImpl._originalClassPK = websiteModelImpl._classPK;
 
 		websiteModelImpl._setOriginalClassPK = false;
+
+		websiteModelImpl._originalUrl = websiteModelImpl._url;
+
+		websiteModelImpl._originalTypeId = websiteModelImpl._typeId;
+
+		websiteModelImpl._setOriginalTypeId = false;
 
 		websiteModelImpl._originalPrimary = websiteModelImpl._primary;
 
@@ -873,9 +956,13 @@ public class WebsiteModelImpl extends BaseModelImpl<Website>
 			Website.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private String _uuid;
 	private String _originalUuid;
 	private long _websiteId;
+	private long _originalWebsiteId;
+	private boolean _setOriginalWebsiteId;
 	private long _companyId;
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
@@ -883,8 +970,11 @@ public class WebsiteModelImpl extends BaseModelImpl<Website>
 	private long _originalUserId;
 	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _classNameId;
 	private long _originalClassNameId;
 	private boolean _setOriginalClassNameId;
@@ -892,7 +982,10 @@ public class WebsiteModelImpl extends BaseModelImpl<Website>
 	private long _originalClassPK;
 	private boolean _setOriginalClassPK;
 	private String _url;
+	private String _originalUrl;
 	private int _typeId;
+	private int _originalTypeId;
+	private boolean _setOriginalTypeId;
 	private boolean _primary;
 	private boolean _originalPrimary;
 	private boolean _setOriginalPrimary;

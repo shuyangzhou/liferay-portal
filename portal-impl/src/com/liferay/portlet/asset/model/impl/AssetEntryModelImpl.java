@@ -452,7 +452,17 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 
 	@Override
 	public void setEntryId(long entryId) {
+		if (!_setOriginalEntryId) {
+			_setOriginalEntryId = true;
+
+			_originalEntryId = _entryId;
+		}
+
 		_entryId = entryId;
+	}
+
+	public long getOriginalEntryId() {
+		return _originalEntryId;
 	}
 
 	@JSON
@@ -509,6 +519,12 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -528,6 +544,10 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -541,7 +561,15 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -552,7 +580,15 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -563,7 +599,15 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@Override
@@ -666,7 +710,17 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 
 	@Override
 	public void setClassTypeId(long classTypeId) {
+		if (!_setOriginalClassTypeId) {
+			_setOriginalClassTypeId = true;
+
+			_originalClassTypeId = _classTypeId;
+		}
+
 		_classTypeId = classTypeId;
+	}
+
+	public long getOriginalClassTypeId() {
+		return _originalClassTypeId;
 	}
 
 	@JSON
@@ -705,7 +759,15 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 
 	@Override
 	public void setStartDate(Date startDate) {
+		if (_originalStartDate == null) {
+			_originalStartDate = _startDate;
+		}
+
 		_startDate = startDate;
+	}
+
+	public Date getOriginalStartDate() {
+		return _originalStartDate;
 	}
 
 	@JSON
@@ -716,7 +778,15 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 
 	@Override
 	public void setEndDate(Date endDate) {
+		if (_originalEndDate == null) {
+			_originalEndDate = _endDate;
+		}
+
 		_endDate = endDate;
+	}
+
+	public Date getOriginalEndDate() {
+		return _originalEndDate;
 	}
 
 	@JSON
@@ -774,7 +844,15 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 
 	@Override
 	public void setMimeType(String mimeType) {
+		if (_originalMimeType == null) {
+			_originalMimeType = _mimeType;
+		}
+
 		_mimeType = mimeType;
+	}
+
+	public String getOriginalMimeType() {
+		return GetterUtil.getString(_originalMimeType);
 	}
 
 	@JSON
@@ -833,6 +911,10 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 
 	@Override
 	public void setTitle(String title) {
+		if (_originalTitle == null) {
+			_originalTitle = _title;
+		}
+
 		_title = title;
 	}
 
@@ -874,6 +956,10 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 
 		setTitle(LocalizationUtil.updateLocalization(titleMap, getTitle(),
 				"Title", LocaleUtil.toLanguageId(defaultLocale)));
+	}
+
+	public String getOriginalTitle() {
+		return GetterUtil.getString(_originalTitle);
 	}
 
 	@JSON
@@ -932,6 +1018,10 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 
 	@Override
 	public void setDescription(String description) {
+		if (_originalDescription == null) {
+			_originalDescription = _description;
+		}
+
 		_description = description;
 	}
 
@@ -977,6 +1067,10 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 		setDescription(LocalizationUtil.updateLocalization(descriptionMap,
 				getDescription(), "Description",
 				LocaleUtil.toLanguageId(defaultLocale)));
+	}
+
+	public String getOriginalDescription() {
+		return GetterUtil.getString(_originalDescription);
 	}
 
 	@JSON
@@ -1035,6 +1129,10 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 
 	@Override
 	public void setSummary(String summary) {
+		if (_originalSummary == null) {
+			_originalSummary = _summary;
+		}
+
 		_summary = summary;
 	}
 
@@ -1079,6 +1177,10 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 				getSummary(), "Summary", LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
+	public String getOriginalSummary() {
+		return GetterUtil.getString(_originalSummary);
+	}
+
 	@JSON
 	@Override
 	public String getUrl() {
@@ -1092,7 +1194,15 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 
 	@Override
 	public void setUrl(String url) {
+		if (_originalUrl == null) {
+			_originalUrl = _url;
+		}
+
 		_url = url;
+	}
+
+	public String getOriginalUrl() {
+		return GetterUtil.getString(_originalUrl);
 	}
 
 	@JSON
@@ -1129,7 +1239,17 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 
 	@Override
 	public void setHeight(int height) {
+		if (!_setOriginalHeight) {
+			_setOriginalHeight = true;
+
+			_originalHeight = _height;
+		}
+
 		_height = height;
+	}
+
+	public int getOriginalHeight() {
+		return _originalHeight;
 	}
 
 	@JSON
@@ -1140,7 +1260,17 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 
 	@Override
 	public void setWidth(int width) {
+		if (!_setOriginalWidth) {
+			_setOriginalWidth = true;
+
+			_originalWidth = _width;
+		}
+
 		_width = width;
+	}
+
+	public int getOriginalWidth() {
+		return _originalWidth;
 	}
 
 	@JSON
@@ -1151,7 +1281,17 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 
 	@Override
 	public void setPriority(double priority) {
+		if (!_setOriginalPriority) {
+			_setOriginalPriority = true;
+
+			_originalPriority = _priority;
+		}
+
 		_priority = priority;
+	}
+
+	public double getOriginalPriority() {
+		return _originalPriority;
 	}
 
 	@JSON
@@ -1162,7 +1302,17 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 
 	@Override
 	public void setViewCount(int viewCount) {
+		if (!_setOriginalViewCount) {
+			_setOriginalViewCount = true;
+
+			_originalViewCount = _viewCount;
+		}
+
 		_viewCount = viewCount;
+	}
+
+	public int getOriginalViewCount() {
+		return _originalViewCount;
 	}
 
 	public long getColumnBitmask() {
@@ -1386,6 +1536,10 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 	public void resetOriginalValues() {
 		AssetEntryModelImpl assetEntryModelImpl = this;
 
+		assetEntryModelImpl._originalEntryId = assetEntryModelImpl._entryId;
+
+		assetEntryModelImpl._setOriginalEntryId = false;
+
 		assetEntryModelImpl._originalGroupId = assetEntryModelImpl._groupId;
 
 		assetEntryModelImpl._setOriginalGroupId = false;
@@ -1393,6 +1547,16 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 		assetEntryModelImpl._originalCompanyId = assetEntryModelImpl._companyId;
 
 		assetEntryModelImpl._setOriginalCompanyId = false;
+
+		assetEntryModelImpl._originalUserId = assetEntryModelImpl._userId;
+
+		assetEntryModelImpl._setOriginalUserId = false;
+
+		assetEntryModelImpl._originalUserName = assetEntryModelImpl._userName;
+
+		assetEntryModelImpl._originalCreateDate = assetEntryModelImpl._createDate;
+
+		assetEntryModelImpl._originalModifiedDate = assetEntryModelImpl._modifiedDate;
 
 		assetEntryModelImpl._originalClassNameId = assetEntryModelImpl._classNameId;
 
@@ -1404,15 +1568,49 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 
 		assetEntryModelImpl._originalClassUuid = assetEntryModelImpl._classUuid;
 
+		assetEntryModelImpl._originalClassTypeId = assetEntryModelImpl._classTypeId;
+
+		assetEntryModelImpl._setOriginalClassTypeId = false;
+
 		assetEntryModelImpl._originalVisible = assetEntryModelImpl._visible;
 
 		assetEntryModelImpl._setOriginalVisible = false;
+
+		assetEntryModelImpl._originalStartDate = assetEntryModelImpl._startDate;
+
+		assetEntryModelImpl._originalEndDate = assetEntryModelImpl._endDate;
 
 		assetEntryModelImpl._originalPublishDate = assetEntryModelImpl._publishDate;
 
 		assetEntryModelImpl._originalExpirationDate = assetEntryModelImpl._expirationDate;
 
+		assetEntryModelImpl._originalMimeType = assetEntryModelImpl._mimeType;
+
+		assetEntryModelImpl._originalTitle = assetEntryModelImpl._title;
+
+		assetEntryModelImpl._originalDescription = assetEntryModelImpl._description;
+
+		assetEntryModelImpl._originalSummary = assetEntryModelImpl._summary;
+
+		assetEntryModelImpl._originalUrl = assetEntryModelImpl._url;
+
 		assetEntryModelImpl._originalLayoutUuid = assetEntryModelImpl._layoutUuid;
+
+		assetEntryModelImpl._originalHeight = assetEntryModelImpl._height;
+
+		assetEntryModelImpl._setOriginalHeight = false;
+
+		assetEntryModelImpl._originalWidth = assetEntryModelImpl._width;
+
+		assetEntryModelImpl._setOriginalWidth = false;
+
+		assetEntryModelImpl._originalPriority = assetEntryModelImpl._priority;
+
+		assetEntryModelImpl._setOriginalPriority = false;
+
+		assetEntryModelImpl._originalViewCount = assetEntryModelImpl._viewCount;
+
+		assetEntryModelImpl._setOriginalViewCount = false;
 
 		assetEntryModelImpl._columnBitmask = 0;
 	}
@@ -1750,6 +1948,8 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 			AssetEntry.class
 		};
 	private long _entryId;
+	private long _originalEntryId;
+	private boolean _setOriginalEntryId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -1757,9 +1957,14 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _classNameId;
 	private long _originalClassNameId;
 	private boolean _setOriginalClassNameId;
@@ -1769,29 +1974,46 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 	private String _classUuid;
 	private String _originalClassUuid;
 	private long _classTypeId;
+	private long _originalClassTypeId;
+	private boolean _setOriginalClassTypeId;
 	private boolean _visible;
 	private boolean _originalVisible;
 	private boolean _setOriginalVisible;
 	private Date _startDate;
+	private Date _originalStartDate;
 	private Date _endDate;
+	private Date _originalEndDate;
 	private Date _publishDate;
 	private Date _originalPublishDate;
 	private Date _expirationDate;
 	private Date _originalExpirationDate;
 	private String _mimeType;
+	private String _originalMimeType;
 	private String _title;
 	private String _titleCurrentLanguageId;
+	private String _originalTitle;
 	private String _description;
 	private String _descriptionCurrentLanguageId;
+	private String _originalDescription;
 	private String _summary;
 	private String _summaryCurrentLanguageId;
+	private String _originalSummary;
 	private String _url;
+	private String _originalUrl;
 	private String _layoutUuid;
 	private String _originalLayoutUuid;
 	private int _height;
+	private int _originalHeight;
+	private boolean _setOriginalHeight;
 	private int _width;
+	private int _originalWidth;
+	private boolean _setOriginalWidth;
 	private double _priority;
+	private double _originalPriority;
+	private boolean _setOriginalPriority;
 	private int _viewCount;
+	private int _originalViewCount;
+	private boolean _setOriginalViewCount;
 	private long _columnBitmask;
 	private AssetEntry _escapedModel;
 }

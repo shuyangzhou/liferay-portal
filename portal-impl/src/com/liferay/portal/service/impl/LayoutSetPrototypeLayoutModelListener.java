@@ -59,7 +59,7 @@ public class LayoutSetPrototypeLayoutModelListener
 		Group group = null;
 
 		try {
-			 group = layout.getGroup();
+			group = layout.getGroup();
 
 			if (!group.isLayoutSetPrototype()) {
 				return;

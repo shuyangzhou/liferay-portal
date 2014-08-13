@@ -173,7 +173,17 @@ public class DLSyncEventModelImpl extends BaseModelImpl<DLSyncEvent>
 
 	@Override
 	public void setSyncEventId(long syncEventId) {
+		if (!_setOriginalSyncEventId) {
+			_setOriginalSyncEventId = true;
+
+			_originalSyncEventId = _syncEventId;
+		}
+
 		_syncEventId = syncEventId;
+	}
+
+	public long getOriginalSyncEventId() {
+		return _originalSyncEventId;
 	}
 
 	@Override
@@ -210,7 +220,15 @@ public class DLSyncEventModelImpl extends BaseModelImpl<DLSyncEvent>
 
 	@Override
 	public void setEvent(String event) {
+		if (_originalEvent == null) {
+			_originalEvent = _event;
+		}
+
 		_event = event;
+	}
+
+	public String getOriginalEvent() {
+		return GetterUtil.getString(_originalEvent);
 	}
 
 	@Override
@@ -225,7 +243,15 @@ public class DLSyncEventModelImpl extends BaseModelImpl<DLSyncEvent>
 
 	@Override
 	public void setType(String type) {
+		if (_originalType == null) {
+			_originalType = _type;
+		}
+
 		_type = type;
+	}
+
+	public String getOriginalType() {
+		return GetterUtil.getString(_originalType);
 	}
 
 	@Override
@@ -354,9 +380,17 @@ public class DLSyncEventModelImpl extends BaseModelImpl<DLSyncEvent>
 	public void resetOriginalValues() {
 		DLSyncEventModelImpl dlSyncEventModelImpl = this;
 
+		dlSyncEventModelImpl._originalSyncEventId = dlSyncEventModelImpl._syncEventId;
+
+		dlSyncEventModelImpl._setOriginalSyncEventId = false;
+
 		dlSyncEventModelImpl._originalModifiedTime = dlSyncEventModelImpl._modifiedTime;
 
 		dlSyncEventModelImpl._setOriginalModifiedTime = false;
+
+		dlSyncEventModelImpl._originalEvent = dlSyncEventModelImpl._event;
+
+		dlSyncEventModelImpl._originalType = dlSyncEventModelImpl._type;
 
 		dlSyncEventModelImpl._originalTypePK = dlSyncEventModelImpl._typePK;
 
@@ -452,11 +486,15 @@ public class DLSyncEventModelImpl extends BaseModelImpl<DLSyncEvent>
 			DLSyncEvent.class
 		};
 	private long _syncEventId;
+	private long _originalSyncEventId;
+	private boolean _setOriginalSyncEventId;
 	private long _modifiedTime;
 	private long _originalModifiedTime;
 	private boolean _setOriginalModifiedTime;
 	private String _event;
+	private String _originalEvent;
 	private String _type;
+	private String _originalType;
 	private long _typePK;
 	private long _originalTypePK;
 	private boolean _setOriginalTypePK;
