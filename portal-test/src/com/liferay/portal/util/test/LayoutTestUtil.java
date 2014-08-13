@@ -34,6 +34,7 @@ import com.liferay.portal.service.LayoutServiceUtil;
 import com.liferay.portal.service.LayoutSetPrototypeLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portlet.PortletPreferencesFactoryUtil;
+import com.liferay.portlet.sites.util.Sites;
 
 import java.util.HashMap;
 import java.util.List;
@@ -252,10 +253,7 @@ public class LayoutTestUtil {
 	}
 
 	public static String getLayoutTemplateId(Layout layout) {
-		LayoutTypePortlet layoutTypePortlet =
-			(LayoutTypePortlet)layout.getLayoutType();
-
-		return layoutTypePortlet.getLayoutTemplateId();
+		return layout.getTypeSettingsProperty(Sites.LAYOUT_TEMPLATE_ID);
 	}
 
 	public static PortletPreferences getPortletPreferences(
