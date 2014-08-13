@@ -26,6 +26,7 @@ import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.SystemEvent;
 import com.liferay.portal.model.SystemEventModel;
 import com.liferay.portal.model.User;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
@@ -263,7 +264,17 @@ public class SystemEventModelImpl extends BaseModelImpl<SystemEvent>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@Override
@@ -273,7 +284,17 @@ public class SystemEventModelImpl extends BaseModelImpl<SystemEvent>
 
 	@Override
 	public void setSystemEventId(long systemEventId) {
+		if (!_setOriginalSystemEventId) {
+			_setOriginalSystemEventId = true;
+
+			_originalSystemEventId = _systemEventId;
+		}
+
 		_systemEventId = systemEventId;
+	}
+
+	public long getOriginalSystemEventId() {
+		return _originalSystemEventId;
 	}
 
 	@Override
@@ -305,7 +326,17 @@ public class SystemEventModelImpl extends BaseModelImpl<SystemEvent>
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if (!_setOriginalCompanyId) {
+			_setOriginalCompanyId = true;
+
+			_originalCompanyId = _companyId;
+		}
+
 		_companyId = companyId;
+	}
+
+	public long getOriginalCompanyId() {
+		return _originalCompanyId;
 	}
 
 	@Override
@@ -315,6 +346,12 @@ public class SystemEventModelImpl extends BaseModelImpl<SystemEvent>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -334,6 +371,10 @@ public class SystemEventModelImpl extends BaseModelImpl<SystemEvent>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -346,7 +387,15 @@ public class SystemEventModelImpl extends BaseModelImpl<SystemEvent>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@Override
@@ -358,7 +407,15 @@ public class SystemEventModelImpl extends BaseModelImpl<SystemEvent>
 	public void setCreateDate(Date createDate) {
 		_columnBitmask = -1L;
 
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@Override
@@ -437,7 +494,15 @@ public class SystemEventModelImpl extends BaseModelImpl<SystemEvent>
 
 	@Override
 	public void setClassUuid(String classUuid) {
+		if (_originalClassUuid == null) {
+			_originalClassUuid = _classUuid;
+		}
+
 		_classUuid = classUuid;
+	}
+
+	public String getOriginalClassUuid() {
+		return GetterUtil.getString(_originalClassUuid);
 	}
 
 	@Override
@@ -447,7 +512,17 @@ public class SystemEventModelImpl extends BaseModelImpl<SystemEvent>
 
 	@Override
 	public void setReferrerClassNameId(long referrerClassNameId) {
+		if (!_setOriginalReferrerClassNameId) {
+			_setOriginalReferrerClassNameId = true;
+
+			_originalReferrerClassNameId = _referrerClassNameId;
+		}
+
 		_referrerClassNameId = referrerClassNameId;
+	}
+
+	public long getOriginalReferrerClassNameId() {
+		return _originalReferrerClassNameId;
 	}
 
 	@Override
@@ -457,7 +532,17 @@ public class SystemEventModelImpl extends BaseModelImpl<SystemEvent>
 
 	@Override
 	public void setParentSystemEventId(long parentSystemEventId) {
+		if (!_setOriginalParentSystemEventId) {
+			_setOriginalParentSystemEventId = true;
+
+			_originalParentSystemEventId = _parentSystemEventId;
+		}
+
 		_parentSystemEventId = parentSystemEventId;
+	}
+
+	public long getOriginalParentSystemEventId() {
+		return _originalParentSystemEventId;
 	}
 
 	@Override
@@ -516,7 +601,15 @@ public class SystemEventModelImpl extends BaseModelImpl<SystemEvent>
 
 	@Override
 	public void setExtraData(String extraData) {
+		if (_originalExtraData == null) {
+			_originalExtraData = _extraData;
+		}
+
 		_extraData = extraData;
+	}
+
+	public String getOriginalExtraData() {
+		return GetterUtil.getString(_originalExtraData);
 	}
 
 	public long getColumnBitmask() {
@@ -627,9 +720,29 @@ public class SystemEventModelImpl extends BaseModelImpl<SystemEvent>
 	public void resetOriginalValues() {
 		SystemEventModelImpl systemEventModelImpl = this;
 
+		systemEventModelImpl._originalMvccVersion = systemEventModelImpl._mvccVersion;
+
+		systemEventModelImpl._setOriginalMvccVersion = false;
+
+		systemEventModelImpl._originalSystemEventId = systemEventModelImpl._systemEventId;
+
+		systemEventModelImpl._setOriginalSystemEventId = false;
+
 		systemEventModelImpl._originalGroupId = systemEventModelImpl._groupId;
 
 		systemEventModelImpl._setOriginalGroupId = false;
+
+		systemEventModelImpl._originalCompanyId = systemEventModelImpl._companyId;
+
+		systemEventModelImpl._setOriginalCompanyId = false;
+
+		systemEventModelImpl._originalUserId = systemEventModelImpl._userId;
+
+		systemEventModelImpl._setOriginalUserId = false;
+
+		systemEventModelImpl._originalUserName = systemEventModelImpl._userName;
+
+		systemEventModelImpl._originalCreateDate = systemEventModelImpl._createDate;
 
 		systemEventModelImpl._originalClassNameId = systemEventModelImpl._classNameId;
 
@@ -639,6 +752,16 @@ public class SystemEventModelImpl extends BaseModelImpl<SystemEvent>
 
 		systemEventModelImpl._setOriginalClassPK = false;
 
+		systemEventModelImpl._originalClassUuid = systemEventModelImpl._classUuid;
+
+		systemEventModelImpl._originalReferrerClassNameId = systemEventModelImpl._referrerClassNameId;
+
+		systemEventModelImpl._setOriginalReferrerClassNameId = false;
+
+		systemEventModelImpl._originalParentSystemEventId = systemEventModelImpl._parentSystemEventId;
+
+		systemEventModelImpl._setOriginalParentSystemEventId = false;
+
 		systemEventModelImpl._originalSystemEventSetKey = systemEventModelImpl._systemEventSetKey;
 
 		systemEventModelImpl._setOriginalSystemEventSetKey = false;
@@ -646,6 +769,8 @@ public class SystemEventModelImpl extends BaseModelImpl<SystemEvent>
 		systemEventModelImpl._originalType = systemEventModelImpl._type;
 
 		systemEventModelImpl._setOriginalType = false;
+
+		systemEventModelImpl._originalExtraData = systemEventModelImpl._extraData;
 
 		systemEventModelImpl._columnBitmask = 0;
 	}
@@ -830,14 +955,24 @@ public class SystemEventModelImpl extends BaseModelImpl<SystemEvent>
 			SystemEvent.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _systemEventId;
+	private long _originalSystemEventId;
+	private boolean _setOriginalSystemEventId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
 	private long _companyId;
+	private long _originalCompanyId;
+	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private long _classNameId;
 	private long _originalClassNameId;
 	private boolean _setOriginalClassNameId;
@@ -845,8 +980,13 @@ public class SystemEventModelImpl extends BaseModelImpl<SystemEvent>
 	private long _originalClassPK;
 	private boolean _setOriginalClassPK;
 	private String _classUuid;
+	private String _originalClassUuid;
 	private long _referrerClassNameId;
+	private long _originalReferrerClassNameId;
+	private boolean _setOriginalReferrerClassNameId;
 	private long _parentSystemEventId;
+	private long _originalParentSystemEventId;
+	private boolean _setOriginalParentSystemEventId;
 	private long _systemEventSetKey;
 	private long _originalSystemEventSetKey;
 	private boolean _setOriginalSystemEventSetKey;
@@ -854,6 +994,7 @@ public class SystemEventModelImpl extends BaseModelImpl<SystemEvent>
 	private int _originalType;
 	private boolean _setOriginalType;
 	private String _extraData;
+	private String _originalExtraData;
 	private long _columnBitmask;
 	private SystemEvent _escapedModel;
 }

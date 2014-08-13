@@ -169,7 +169,17 @@ public class DDMStructureLinkModelImpl extends BaseModelImpl<DDMStructureLink>
 
 	@Override
 	public void setStructureLinkId(long structureLinkId) {
+		if (!_setOriginalStructureLinkId) {
+			_setOriginalStructureLinkId = true;
+
+			_originalStructureLinkId = _structureLinkId;
+		}
+
 		_structureLinkId = structureLinkId;
+	}
+
+	public long getOriginalStructureLinkId() {
+		return _originalStructureLinkId;
 	}
 
 	@Override
@@ -355,6 +365,10 @@ public class DDMStructureLinkModelImpl extends BaseModelImpl<DDMStructureLink>
 	public void resetOriginalValues() {
 		DDMStructureLinkModelImpl ddmStructureLinkModelImpl = this;
 
+		ddmStructureLinkModelImpl._originalStructureLinkId = ddmStructureLinkModelImpl._structureLinkId;
+
+		ddmStructureLinkModelImpl._setOriginalStructureLinkId = false;
+
 		ddmStructureLinkModelImpl._originalClassNameId = ddmStructureLinkModelImpl._classNameId;
 
 		ddmStructureLinkModelImpl._setOriginalClassNameId = false;
@@ -438,6 +452,8 @@ public class DDMStructureLinkModelImpl extends BaseModelImpl<DDMStructureLink>
 			DDMStructureLink.class
 		};
 	private long _structureLinkId;
+	private long _originalStructureLinkId;
+	private boolean _setOriginalStructureLinkId;
 	private long _classNameId;
 	private long _originalClassNameId;
 	private boolean _setOriginalClassNameId;

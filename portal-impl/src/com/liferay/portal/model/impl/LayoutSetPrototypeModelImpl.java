@@ -31,6 +31,7 @@ import com.liferay.portal.model.LayoutSetPrototype;
 import com.liferay.portal.model.LayoutSetPrototypeModel;
 import com.liferay.portal.model.LayoutSetPrototypeSoap;
 import com.liferay.portal.model.User;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
@@ -300,7 +301,17 @@ public class LayoutSetPrototypeModelImpl extends BaseModelImpl<LayoutSetPrototyp
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@JSON
@@ -335,7 +346,17 @@ public class LayoutSetPrototypeModelImpl extends BaseModelImpl<LayoutSetPrototyp
 
 	@Override
 	public void setLayoutSetPrototypeId(long layoutSetPrototypeId) {
+		if (!_setOriginalLayoutSetPrototypeId) {
+			_setOriginalLayoutSetPrototypeId = true;
+
+			_originalLayoutSetPrototypeId = _layoutSetPrototypeId;
+		}
+
 		_layoutSetPrototypeId = layoutSetPrototypeId;
+	}
+
+	public long getOriginalLayoutSetPrototypeId() {
+		return _originalLayoutSetPrototypeId;
 	}
 
 	@JSON
@@ -369,6 +390,12 @@ public class LayoutSetPrototypeModelImpl extends BaseModelImpl<LayoutSetPrototyp
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -388,6 +415,10 @@ public class LayoutSetPrototypeModelImpl extends BaseModelImpl<LayoutSetPrototyp
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -401,7 +432,15 @@ public class LayoutSetPrototypeModelImpl extends BaseModelImpl<LayoutSetPrototyp
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -412,7 +451,15 @@ public class LayoutSetPrototypeModelImpl extends BaseModelImpl<LayoutSetPrototyp
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -423,7 +470,15 @@ public class LayoutSetPrototypeModelImpl extends BaseModelImpl<LayoutSetPrototyp
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -482,6 +537,10 @@ public class LayoutSetPrototypeModelImpl extends BaseModelImpl<LayoutSetPrototyp
 
 	@Override
 	public void setName(String name) {
+		if (_originalName == null) {
+			_originalName = _name;
+		}
+
 		_name = name;
 	}
 
@@ -523,6 +582,10 @@ public class LayoutSetPrototypeModelImpl extends BaseModelImpl<LayoutSetPrototyp
 
 		setName(LocalizationUtil.updateLocalization(nameMap, getName(), "Name",
 				LocaleUtil.toLanguageId(defaultLocale)));
+	}
+
+	public String getOriginalName() {
+		return GetterUtil.getString(_originalName);
 	}
 
 	@JSON
@@ -581,6 +644,10 @@ public class LayoutSetPrototypeModelImpl extends BaseModelImpl<LayoutSetPrototyp
 
 	@Override
 	public void setDescription(String description) {
+		if (_originalDescription == null) {
+			_originalDescription = _description;
+		}
+
 		_description = description;
 	}
 
@@ -628,6 +695,10 @@ public class LayoutSetPrototypeModelImpl extends BaseModelImpl<LayoutSetPrototyp
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
+	public String getOriginalDescription() {
+		return GetterUtil.getString(_originalDescription);
+	}
+
 	@JSON
 	@Override
 	public String getSettings() {
@@ -641,7 +712,15 @@ public class LayoutSetPrototypeModelImpl extends BaseModelImpl<LayoutSetPrototyp
 
 	@Override
 	public void setSettings(String settings) {
+		if (_originalSettings == null) {
+			_originalSettings = _settings;
+		}
+
 		_settings = settings;
+	}
+
+	public String getOriginalSettings() {
+		return GetterUtil.getString(_originalSettings);
 	}
 
 	@JSON
@@ -865,11 +944,35 @@ public class LayoutSetPrototypeModelImpl extends BaseModelImpl<LayoutSetPrototyp
 	public void resetOriginalValues() {
 		LayoutSetPrototypeModelImpl layoutSetPrototypeModelImpl = this;
 
+		layoutSetPrototypeModelImpl._originalMvccVersion = layoutSetPrototypeModelImpl._mvccVersion;
+
+		layoutSetPrototypeModelImpl._setOriginalMvccVersion = false;
+
 		layoutSetPrototypeModelImpl._originalUuid = layoutSetPrototypeModelImpl._uuid;
+
+		layoutSetPrototypeModelImpl._originalLayoutSetPrototypeId = layoutSetPrototypeModelImpl._layoutSetPrototypeId;
+
+		layoutSetPrototypeModelImpl._setOriginalLayoutSetPrototypeId = false;
 
 		layoutSetPrototypeModelImpl._originalCompanyId = layoutSetPrototypeModelImpl._companyId;
 
 		layoutSetPrototypeModelImpl._setOriginalCompanyId = false;
+
+		layoutSetPrototypeModelImpl._originalUserId = layoutSetPrototypeModelImpl._userId;
+
+		layoutSetPrototypeModelImpl._setOriginalUserId = false;
+
+		layoutSetPrototypeModelImpl._originalUserName = layoutSetPrototypeModelImpl._userName;
+
+		layoutSetPrototypeModelImpl._originalCreateDate = layoutSetPrototypeModelImpl._createDate;
+
+		layoutSetPrototypeModelImpl._originalModifiedDate = layoutSetPrototypeModelImpl._modifiedDate;
+
+		layoutSetPrototypeModelImpl._originalName = layoutSetPrototypeModelImpl._name;
+
+		layoutSetPrototypeModelImpl._originalDescription = layoutSetPrototypeModelImpl._description;
+
+		layoutSetPrototypeModelImpl._originalSettings = layoutSetPrototypeModelImpl._settings;
 
 		layoutSetPrototypeModelImpl._originalActive = layoutSetPrototypeModelImpl._active;
 
@@ -1053,21 +1156,33 @@ public class LayoutSetPrototypeModelImpl extends BaseModelImpl<LayoutSetPrototyp
 			LayoutSetPrototype.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private String _uuid;
 	private String _originalUuid;
 	private long _layoutSetPrototypeId;
+	private long _originalLayoutSetPrototypeId;
+	private boolean _setOriginalLayoutSetPrototypeId;
 	private long _companyId;
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private String _name;
 	private String _nameCurrentLanguageId;
+	private String _originalName;
 	private String _description;
 	private String _descriptionCurrentLanguageId;
+	private String _originalDescription;
 	private String _settings;
+	private String _originalSettings;
 	private boolean _active;
 	private boolean _originalActive;
 	private boolean _setOriginalActive;

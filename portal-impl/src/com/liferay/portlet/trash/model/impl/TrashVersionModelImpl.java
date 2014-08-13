@@ -185,7 +185,17 @@ public class TrashVersionModelImpl extends BaseModelImpl<TrashVersion>
 
 	@Override
 	public void setVersionId(long versionId) {
+		if (!_setOriginalVersionId) {
+			_setOriginalVersionId = true;
+
+			_originalVersionId = _versionId;
+		}
+
 		_versionId = versionId;
+	}
+
+	public long getOriginalVersionId() {
+		return _originalVersionId;
 	}
 
 	@Override
@@ -286,7 +296,15 @@ public class TrashVersionModelImpl extends BaseModelImpl<TrashVersion>
 
 	@Override
 	public void setTypeSettings(String typeSettings) {
+		if (_originalTypeSettings == null) {
+			_originalTypeSettings = _typeSettings;
+		}
+
 		_typeSettings = typeSettings;
+	}
+
+	public String getOriginalTypeSettings() {
+		return GetterUtil.getString(_originalTypeSettings);
 	}
 
 	@Override
@@ -296,7 +314,17 @@ public class TrashVersionModelImpl extends BaseModelImpl<TrashVersion>
 
 	@Override
 	public void setStatus(int status) {
+		if (!_setOriginalStatus) {
+			_setOriginalStatus = true;
+
+			_originalStatus = _status;
+		}
+
 		_status = status;
+	}
+
+	public int getOriginalStatus() {
+		return _originalStatus;
 	}
 
 	public long getColumnBitmask() {
@@ -398,6 +426,10 @@ public class TrashVersionModelImpl extends BaseModelImpl<TrashVersion>
 	public void resetOriginalValues() {
 		TrashVersionModelImpl trashVersionModelImpl = this;
 
+		trashVersionModelImpl._originalVersionId = trashVersionModelImpl._versionId;
+
+		trashVersionModelImpl._setOriginalVersionId = false;
+
 		trashVersionModelImpl._originalEntryId = trashVersionModelImpl._entryId;
 
 		trashVersionModelImpl._setOriginalEntryId = false;
@@ -409,6 +441,12 @@ public class TrashVersionModelImpl extends BaseModelImpl<TrashVersion>
 		trashVersionModelImpl._originalClassPK = trashVersionModelImpl._classPK;
 
 		trashVersionModelImpl._setOriginalClassPK = false;
+
+		trashVersionModelImpl._originalTypeSettings = trashVersionModelImpl._typeSettings;
+
+		trashVersionModelImpl._originalStatus = trashVersionModelImpl._status;
+
+		trashVersionModelImpl._setOriginalStatus = false;
 
 		trashVersionModelImpl._columnBitmask = 0;
 	}
@@ -502,6 +540,8 @@ public class TrashVersionModelImpl extends BaseModelImpl<TrashVersion>
 			TrashVersion.class
 		};
 	private long _versionId;
+	private long _originalVersionId;
+	private boolean _setOriginalVersionId;
 	private long _entryId;
 	private long _originalEntryId;
 	private boolean _setOriginalEntryId;
@@ -512,7 +552,10 @@ public class TrashVersionModelImpl extends BaseModelImpl<TrashVersion>
 	private long _originalClassPK;
 	private boolean _setOriginalClassPK;
 	private String _typeSettings;
+	private String _originalTypeSettings;
 	private int _status;
+	private int _originalStatus;
+	private boolean _setOriginalStatus;
 	private long _columnBitmask;
 	private TrashVersion _escapedModel;
 }

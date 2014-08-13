@@ -323,7 +323,17 @@ public class MDRRuleGroupInstanceModelImpl extends BaseModelImpl<MDRRuleGroupIns
 
 	@Override
 	public void setRuleGroupInstanceId(long ruleGroupInstanceId) {
+		if (!_setOriginalRuleGroupInstanceId) {
+			_setOriginalRuleGroupInstanceId = true;
+
+			_originalRuleGroupInstanceId = _ruleGroupInstanceId;
+		}
+
 		_ruleGroupInstanceId = ruleGroupInstanceId;
+	}
+
+	public long getOriginalRuleGroupInstanceId() {
+		return _originalRuleGroupInstanceId;
 	}
 
 	@JSON
@@ -380,6 +390,12 @@ public class MDRRuleGroupInstanceModelImpl extends BaseModelImpl<MDRRuleGroupIns
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -399,6 +415,10 @@ public class MDRRuleGroupInstanceModelImpl extends BaseModelImpl<MDRRuleGroupIns
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -412,7 +432,15 @@ public class MDRRuleGroupInstanceModelImpl extends BaseModelImpl<MDRRuleGroupIns
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -423,7 +451,15 @@ public class MDRRuleGroupInstanceModelImpl extends BaseModelImpl<MDRRuleGroupIns
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -434,7 +470,15 @@ public class MDRRuleGroupInstanceModelImpl extends BaseModelImpl<MDRRuleGroupIns
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@Override
@@ -534,7 +578,17 @@ public class MDRRuleGroupInstanceModelImpl extends BaseModelImpl<MDRRuleGroupIns
 
 	@Override
 	public void setPriority(int priority) {
+		if (!_setOriginalPriority) {
+			_setOriginalPriority = true;
+
+			_originalPriority = _priority;
+		}
+
 		_priority = priority;
+	}
+
+	public int getOriginalPriority() {
+		return _originalPriority;
 	}
 
 	@Override
@@ -650,6 +704,10 @@ public class MDRRuleGroupInstanceModelImpl extends BaseModelImpl<MDRRuleGroupIns
 
 		mdrRuleGroupInstanceModelImpl._originalUuid = mdrRuleGroupInstanceModelImpl._uuid;
 
+		mdrRuleGroupInstanceModelImpl._originalRuleGroupInstanceId = mdrRuleGroupInstanceModelImpl._ruleGroupInstanceId;
+
+		mdrRuleGroupInstanceModelImpl._setOriginalRuleGroupInstanceId = false;
+
 		mdrRuleGroupInstanceModelImpl._originalGroupId = mdrRuleGroupInstanceModelImpl._groupId;
 
 		mdrRuleGroupInstanceModelImpl._setOriginalGroupId = false;
@@ -657,6 +715,16 @@ public class MDRRuleGroupInstanceModelImpl extends BaseModelImpl<MDRRuleGroupIns
 		mdrRuleGroupInstanceModelImpl._originalCompanyId = mdrRuleGroupInstanceModelImpl._companyId;
 
 		mdrRuleGroupInstanceModelImpl._setOriginalCompanyId = false;
+
+		mdrRuleGroupInstanceModelImpl._originalUserId = mdrRuleGroupInstanceModelImpl._userId;
+
+		mdrRuleGroupInstanceModelImpl._setOriginalUserId = false;
+
+		mdrRuleGroupInstanceModelImpl._originalUserName = mdrRuleGroupInstanceModelImpl._userName;
+
+		mdrRuleGroupInstanceModelImpl._originalCreateDate = mdrRuleGroupInstanceModelImpl._createDate;
+
+		mdrRuleGroupInstanceModelImpl._originalModifiedDate = mdrRuleGroupInstanceModelImpl._modifiedDate;
 
 		mdrRuleGroupInstanceModelImpl._originalClassNameId = mdrRuleGroupInstanceModelImpl._classNameId;
 
@@ -669,6 +737,10 @@ public class MDRRuleGroupInstanceModelImpl extends BaseModelImpl<MDRRuleGroupIns
 		mdrRuleGroupInstanceModelImpl._originalRuleGroupId = mdrRuleGroupInstanceModelImpl._ruleGroupId;
 
 		mdrRuleGroupInstanceModelImpl._setOriginalRuleGroupId = false;
+
+		mdrRuleGroupInstanceModelImpl._originalPriority = mdrRuleGroupInstanceModelImpl._priority;
+
+		mdrRuleGroupInstanceModelImpl._setOriginalPriority = false;
 
 		mdrRuleGroupInstanceModelImpl._columnBitmask = 0;
 	}
@@ -833,6 +905,8 @@ public class MDRRuleGroupInstanceModelImpl extends BaseModelImpl<MDRRuleGroupIns
 	private String _uuid;
 	private String _originalUuid;
 	private long _ruleGroupInstanceId;
+	private long _originalRuleGroupInstanceId;
+	private boolean _setOriginalRuleGroupInstanceId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -840,9 +914,14 @@ public class MDRRuleGroupInstanceModelImpl extends BaseModelImpl<MDRRuleGroupIns
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _classNameId;
 	private long _originalClassNameId;
 	private boolean _setOriginalClassNameId;
@@ -853,6 +932,8 @@ public class MDRRuleGroupInstanceModelImpl extends BaseModelImpl<MDRRuleGroupIns
 	private long _originalRuleGroupId;
 	private boolean _setOriginalRuleGroupId;
 	private int _priority;
+	private int _originalPriority;
+	private boolean _setOriginalPriority;
 	private long _columnBitmask;
 	private MDRRuleGroupInstance _escapedModel;
 }

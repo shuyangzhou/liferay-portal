@@ -29,6 +29,7 @@ import com.liferay.portal.model.EmailAddress;
 import com.liferay.portal.model.EmailAddressModel;
 import com.liferay.portal.model.EmailAddressSoap;
 import com.liferay.portal.model.User;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
@@ -306,7 +307,17 @@ public class EmailAddressModelImpl extends BaseModelImpl<EmailAddress>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@JSON
@@ -341,7 +352,17 @@ public class EmailAddressModelImpl extends BaseModelImpl<EmailAddress>
 
 	@Override
 	public void setEmailAddressId(long emailAddressId) {
+		if (!_setOriginalEmailAddressId) {
+			_setOriginalEmailAddressId = true;
+
+			_originalEmailAddressId = _emailAddressId;
+		}
+
 		_emailAddressId = emailAddressId;
+	}
+
+	public long getOriginalEmailAddressId() {
+		return _originalEmailAddressId;
 	}
 
 	@JSON
@@ -419,7 +440,15 @@ public class EmailAddressModelImpl extends BaseModelImpl<EmailAddress>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -432,7 +461,15 @@ public class EmailAddressModelImpl extends BaseModelImpl<EmailAddress>
 	public void setCreateDate(Date createDate) {
 		_columnBitmask = -1L;
 
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -443,7 +480,15 @@ public class EmailAddressModelImpl extends BaseModelImpl<EmailAddress>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@Override
@@ -525,7 +570,15 @@ public class EmailAddressModelImpl extends BaseModelImpl<EmailAddress>
 
 	@Override
 	public void setAddress(String address) {
+		if (_originalAddress == null) {
+			_originalAddress = _address;
+		}
+
 		_address = address;
+	}
+
+	public String getOriginalAddress() {
+		return GetterUtil.getString(_originalAddress);
 	}
 
 	@JSON
@@ -536,7 +589,17 @@ public class EmailAddressModelImpl extends BaseModelImpl<EmailAddress>
 
 	@Override
 	public void setTypeId(int typeId) {
+		if (!_setOriginalTypeId) {
+			_setOriginalTypeId = true;
+
+			_originalTypeId = _typeId;
+		}
+
 		_typeId = typeId;
+	}
+
+	public int getOriginalTypeId() {
+		return _originalTypeId;
 	}
 
 	@JSON
@@ -677,7 +740,15 @@ public class EmailAddressModelImpl extends BaseModelImpl<EmailAddress>
 	public void resetOriginalValues() {
 		EmailAddressModelImpl emailAddressModelImpl = this;
 
+		emailAddressModelImpl._originalMvccVersion = emailAddressModelImpl._mvccVersion;
+
+		emailAddressModelImpl._setOriginalMvccVersion = false;
+
 		emailAddressModelImpl._originalUuid = emailAddressModelImpl._uuid;
+
+		emailAddressModelImpl._originalEmailAddressId = emailAddressModelImpl._emailAddressId;
+
+		emailAddressModelImpl._setOriginalEmailAddressId = false;
 
 		emailAddressModelImpl._originalCompanyId = emailAddressModelImpl._companyId;
 
@@ -687,6 +758,12 @@ public class EmailAddressModelImpl extends BaseModelImpl<EmailAddress>
 
 		emailAddressModelImpl._setOriginalUserId = false;
 
+		emailAddressModelImpl._originalUserName = emailAddressModelImpl._userName;
+
+		emailAddressModelImpl._originalCreateDate = emailAddressModelImpl._createDate;
+
+		emailAddressModelImpl._originalModifiedDate = emailAddressModelImpl._modifiedDate;
+
 		emailAddressModelImpl._originalClassNameId = emailAddressModelImpl._classNameId;
 
 		emailAddressModelImpl._setOriginalClassNameId = false;
@@ -694,6 +771,12 @@ public class EmailAddressModelImpl extends BaseModelImpl<EmailAddress>
 		emailAddressModelImpl._originalClassPK = emailAddressModelImpl._classPK;
 
 		emailAddressModelImpl._setOriginalClassPK = false;
+
+		emailAddressModelImpl._originalAddress = emailAddressModelImpl._address;
+
+		emailAddressModelImpl._originalTypeId = emailAddressModelImpl._typeId;
+
+		emailAddressModelImpl._setOriginalTypeId = false;
 
 		emailAddressModelImpl._originalPrimary = emailAddressModelImpl._primary;
 
@@ -873,9 +956,13 @@ public class EmailAddressModelImpl extends BaseModelImpl<EmailAddress>
 			EmailAddress.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private String _uuid;
 	private String _originalUuid;
 	private long _emailAddressId;
+	private long _originalEmailAddressId;
+	private boolean _setOriginalEmailAddressId;
 	private long _companyId;
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
@@ -883,8 +970,11 @@ public class EmailAddressModelImpl extends BaseModelImpl<EmailAddress>
 	private long _originalUserId;
 	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _classNameId;
 	private long _originalClassNameId;
 	private boolean _setOriginalClassNameId;
@@ -892,7 +982,10 @@ public class EmailAddressModelImpl extends BaseModelImpl<EmailAddress>
 	private long _originalClassPK;
 	private boolean _setOriginalClassPK;
 	private String _address;
+	private String _originalAddress;
 	private int _typeId;
+	private int _originalTypeId;
+	private boolean _setOriginalTypeId;
 	private boolean _primary;
 	private boolean _originalPrimary;
 	private boolean _setOriginalPrimary;

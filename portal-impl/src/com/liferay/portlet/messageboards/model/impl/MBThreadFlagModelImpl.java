@@ -238,7 +238,17 @@ public class MBThreadFlagModelImpl extends BaseModelImpl<MBThreadFlag>
 
 	@Override
 	public void setThreadFlagId(long threadFlagId) {
+		if (!_setOriginalThreadFlagId) {
+			_setOriginalThreadFlagId = true;
+
+			_originalThreadFlagId = _threadFlagId;
+		}
+
 		_threadFlagId = threadFlagId;
+	}
+
+	public long getOriginalThreadFlagId() {
+		return _originalThreadFlagId;
 	}
 
 	@Override
@@ -335,7 +345,15 @@ public class MBThreadFlagModelImpl extends BaseModelImpl<MBThreadFlag>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@Override
@@ -345,7 +363,15 @@ public class MBThreadFlagModelImpl extends BaseModelImpl<MBThreadFlag>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@Override
@@ -355,7 +381,15 @@ public class MBThreadFlagModelImpl extends BaseModelImpl<MBThreadFlag>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@Override
@@ -490,6 +524,10 @@ public class MBThreadFlagModelImpl extends BaseModelImpl<MBThreadFlag>
 
 		mbThreadFlagModelImpl._originalUuid = mbThreadFlagModelImpl._uuid;
 
+		mbThreadFlagModelImpl._originalThreadFlagId = mbThreadFlagModelImpl._threadFlagId;
+
+		mbThreadFlagModelImpl._setOriginalThreadFlagId = false;
+
 		mbThreadFlagModelImpl._originalGroupId = mbThreadFlagModelImpl._groupId;
 
 		mbThreadFlagModelImpl._setOriginalGroupId = false;
@@ -501,6 +539,12 @@ public class MBThreadFlagModelImpl extends BaseModelImpl<MBThreadFlag>
 		mbThreadFlagModelImpl._originalUserId = mbThreadFlagModelImpl._userId;
 
 		mbThreadFlagModelImpl._setOriginalUserId = false;
+
+		mbThreadFlagModelImpl._originalUserName = mbThreadFlagModelImpl._userName;
+
+		mbThreadFlagModelImpl._originalCreateDate = mbThreadFlagModelImpl._createDate;
+
+		mbThreadFlagModelImpl._originalModifiedDate = mbThreadFlagModelImpl._modifiedDate;
 
 		mbThreadFlagModelImpl._originalThreadId = mbThreadFlagModelImpl._threadId;
 
@@ -644,6 +688,8 @@ public class MBThreadFlagModelImpl extends BaseModelImpl<MBThreadFlag>
 	private String _uuid;
 	private String _originalUuid;
 	private long _threadFlagId;
+	private long _originalThreadFlagId;
+	private boolean _setOriginalThreadFlagId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -654,8 +700,11 @@ public class MBThreadFlagModelImpl extends BaseModelImpl<MBThreadFlag>
 	private long _originalUserId;
 	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _threadId;
 	private long _originalThreadId;
 	private boolean _setOriginalThreadId;

@@ -27,6 +27,7 @@ import com.liferay.portal.model.Organization;
 import com.liferay.portal.model.OrganizationModel;
 import com.liferay.portal.model.OrganizationSoap;
 import com.liferay.portal.model.User;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
@@ -364,7 +365,17 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@JSON
@@ -445,6 +456,12 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -464,6 +481,10 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -477,7 +498,15 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -488,7 +517,15 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -499,7 +536,15 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -590,7 +635,15 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 
 	@Override
 	public void setType(String type) {
+		if (_originalType == null) {
+			_originalType = _type;
+		}
+
 		_type = type;
+	}
+
+	public String getOriginalType() {
+		return GetterUtil.getString(_originalType);
 	}
 
 	@JSON
@@ -606,7 +659,17 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 
 	@Override
 	public void setRecursable(boolean recursable) {
+		if (!_setOriginalRecursable) {
+			_setOriginalRecursable = true;
+
+			_originalRecursable = _recursable;
+		}
+
 		_recursable = recursable;
+	}
+
+	public boolean getOriginalRecursable() {
+		return _originalRecursable;
 	}
 
 	@JSON
@@ -617,7 +680,17 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 
 	@Override
 	public void setRegionId(long regionId) {
+		if (!_setOriginalRegionId) {
+			_setOriginalRegionId = true;
+
+			_originalRegionId = _regionId;
+		}
+
 		_regionId = regionId;
+	}
+
+	public long getOriginalRegionId() {
+		return _originalRegionId;
 	}
 
 	@JSON
@@ -628,7 +701,17 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 
 	@Override
 	public void setCountryId(long countryId) {
+		if (!_setOriginalCountryId) {
+			_setOriginalCountryId = true;
+
+			_originalCountryId = _countryId;
+		}
+
 		_countryId = countryId;
+	}
+
+	public long getOriginalCountryId() {
+		return _originalCountryId;
 	}
 
 	@JSON
@@ -639,7 +722,17 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 
 	@Override
 	public void setStatusId(int statusId) {
+		if (!_setOriginalStatusId) {
+			_setOriginalStatusId = true;
+
+			_originalStatusId = _statusId;
+		}
+
 		_statusId = statusId;
+	}
+
+	public int getOriginalStatusId() {
+		return _originalStatusId;
 	}
 
 	@JSON
@@ -655,7 +748,15 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 
 	@Override
 	public void setComments(String comments) {
+		if (_originalComments == null) {
+			_originalComments = _comments;
+		}
+
 		_comments = comments;
+	}
+
+	public String getOriginalComments() {
+		return GetterUtil.getString(_originalComments);
 	}
 
 	@JSON
@@ -666,7 +767,17 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 
 	@Override
 	public void setLogoId(long logoId) {
+		if (!_setOriginalLogoId) {
+			_setOriginalLogoId = true;
+
+			_originalLogoId = _logoId;
+		}
+
 		_logoId = logoId;
+	}
+
+	public long getOriginalLogoId() {
+		return _originalLogoId;
 	}
 
 	@Override
@@ -784,6 +895,10 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 	public void resetOriginalValues() {
 		OrganizationModelImpl organizationModelImpl = this;
 
+		organizationModelImpl._originalMvccVersion = organizationModelImpl._mvccVersion;
+
+		organizationModelImpl._setOriginalMvccVersion = false;
+
 		organizationModelImpl._originalUuid = organizationModelImpl._uuid;
 
 		organizationModelImpl._originalOrganizationId = organizationModelImpl._organizationId;
@@ -794,6 +909,16 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 
 		organizationModelImpl._setOriginalCompanyId = false;
 
+		organizationModelImpl._originalUserId = organizationModelImpl._userId;
+
+		organizationModelImpl._setOriginalUserId = false;
+
+		organizationModelImpl._originalUserName = organizationModelImpl._userName;
+
+		organizationModelImpl._originalCreateDate = organizationModelImpl._createDate;
+
+		organizationModelImpl._originalModifiedDate = organizationModelImpl._modifiedDate;
+
 		organizationModelImpl._originalParentOrganizationId = organizationModelImpl._parentOrganizationId;
 
 		organizationModelImpl._setOriginalParentOrganizationId = false;
@@ -801,6 +926,30 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 		organizationModelImpl._originalTreePath = organizationModelImpl._treePath;
 
 		organizationModelImpl._originalName = organizationModelImpl._name;
+
+		organizationModelImpl._originalType = organizationModelImpl._type;
+
+		organizationModelImpl._originalRecursable = organizationModelImpl._recursable;
+
+		organizationModelImpl._setOriginalRecursable = false;
+
+		organizationModelImpl._originalRegionId = organizationModelImpl._regionId;
+
+		organizationModelImpl._setOriginalRegionId = false;
+
+		organizationModelImpl._originalCountryId = organizationModelImpl._countryId;
+
+		organizationModelImpl._setOriginalCountryId = false;
+
+		organizationModelImpl._originalStatusId = organizationModelImpl._statusId;
+
+		organizationModelImpl._setOriginalStatusId = false;
+
+		organizationModelImpl._originalComments = organizationModelImpl._comments;
+
+		organizationModelImpl._originalLogoId = organizationModelImpl._logoId;
+
+		organizationModelImpl._setOriginalLogoId = false;
 
 		organizationModelImpl._columnBitmask = 0;
 	}
@@ -1034,6 +1183,8 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 			Organization.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private String _uuid;
 	private String _originalUuid;
 	private long _organizationId;
@@ -1043,9 +1194,14 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _parentOrganizationId;
 	private long _originalParentOrganizationId;
 	private boolean _setOriginalParentOrganizationId;
@@ -1054,12 +1210,24 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 	private String _name;
 	private String _originalName;
 	private String _type;
+	private String _originalType;
 	private boolean _recursable;
+	private boolean _originalRecursable;
+	private boolean _setOriginalRecursable;
 	private long _regionId;
+	private long _originalRegionId;
+	private boolean _setOriginalRegionId;
 	private long _countryId;
+	private long _originalCountryId;
+	private boolean _setOriginalCountryId;
 	private int _statusId;
+	private int _originalStatusId;
+	private boolean _setOriginalStatusId;
 	private String _comments;
+	private String _originalComments;
 	private long _logoId;
+	private long _originalLogoId;
+	private boolean _setOriginalLogoId;
 	private long _columnBitmask;
 	private Organization _escapedModel;
 }

@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.PortalPreferences;
 import com.liferay.portal.model.PortalPreferencesModel;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 
 import com.liferay.portlet.expando.model.ExpandoBridge;
@@ -173,7 +174,17 @@ public class PortalPreferencesModelImpl extends BaseModelImpl<PortalPreferences>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@Override
@@ -183,7 +194,17 @@ public class PortalPreferencesModelImpl extends BaseModelImpl<PortalPreferences>
 
 	@Override
 	public void setPortalPreferencesId(long portalPreferencesId) {
+		if (!_setOriginalPortalPreferencesId) {
+			_setOriginalPortalPreferencesId = true;
+
+			_originalPortalPreferencesId = _portalPreferencesId;
+		}
+
 		_portalPreferencesId = portalPreferencesId;
+	}
+
+	public long getOriginalPortalPreferencesId() {
+		return _originalPortalPreferencesId;
 	}
 
 	@Override
@@ -242,7 +263,15 @@ public class PortalPreferencesModelImpl extends BaseModelImpl<PortalPreferences>
 
 	@Override
 	public void setPreferences(String preferences) {
+		if (_originalPreferences == null) {
+			_originalPreferences = _preferences;
+		}
+
 		_preferences = preferences;
+	}
+
+	public String getOriginalPreferences() {
+		return GetterUtil.getString(_originalPreferences);
 	}
 
 	public long getColumnBitmask() {
@@ -343,6 +372,14 @@ public class PortalPreferencesModelImpl extends BaseModelImpl<PortalPreferences>
 	public void resetOriginalValues() {
 		PortalPreferencesModelImpl portalPreferencesModelImpl = this;
 
+		portalPreferencesModelImpl._originalMvccVersion = portalPreferencesModelImpl._mvccVersion;
+
+		portalPreferencesModelImpl._setOriginalMvccVersion = false;
+
+		portalPreferencesModelImpl._originalPortalPreferencesId = portalPreferencesModelImpl._portalPreferencesId;
+
+		portalPreferencesModelImpl._setOriginalPortalPreferencesId = false;
+
 		portalPreferencesModelImpl._originalOwnerId = portalPreferencesModelImpl._ownerId;
 
 		portalPreferencesModelImpl._setOriginalOwnerId = false;
@@ -350,6 +387,8 @@ public class PortalPreferencesModelImpl extends BaseModelImpl<PortalPreferences>
 		portalPreferencesModelImpl._originalOwnerType = portalPreferencesModelImpl._ownerType;
 
 		portalPreferencesModelImpl._setOriginalOwnerType = false;
+
+		portalPreferencesModelImpl._originalPreferences = portalPreferencesModelImpl._preferences;
 
 		portalPreferencesModelImpl._columnBitmask = 0;
 	}
@@ -435,7 +474,11 @@ public class PortalPreferencesModelImpl extends BaseModelImpl<PortalPreferences>
 			PortalPreferences.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _portalPreferencesId;
+	private long _originalPortalPreferencesId;
+	private boolean _setOriginalPortalPreferencesId;
 	private long _ownerId;
 	private long _originalOwnerId;
 	private boolean _setOriginalOwnerId;
@@ -443,6 +486,7 @@ public class PortalPreferencesModelImpl extends BaseModelImpl<PortalPreferences>
 	private int _originalOwnerType;
 	private boolean _setOriginalOwnerType;
 	private String _preferences;
+	private String _originalPreferences;
 	private long _columnBitmask;
 	private PortalPreferences _escapedModel;
 }

@@ -25,6 +25,7 @@ import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.LayoutFriendlyURL;
 import com.liferay.portal.model.LayoutFriendlyURLModel;
 import com.liferay.portal.model.User;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
@@ -248,7 +249,17 @@ public class LayoutFriendlyURLModelImpl extends BaseModelImpl<LayoutFriendlyURL>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@Override
@@ -281,7 +292,17 @@ public class LayoutFriendlyURLModelImpl extends BaseModelImpl<LayoutFriendlyURL>
 
 	@Override
 	public void setLayoutFriendlyURLId(long layoutFriendlyURLId) {
+		if (!_setOriginalLayoutFriendlyURLId) {
+			_setOriginalLayoutFriendlyURLId = true;
+
+			_originalLayoutFriendlyURLId = _layoutFriendlyURLId;
+		}
+
 		_layoutFriendlyURLId = layoutFriendlyURLId;
+	}
+
+	public long getOriginalLayoutFriendlyURLId() {
+		return _originalLayoutFriendlyURLId;
 	}
 
 	@Override
@@ -335,6 +356,12 @@ public class LayoutFriendlyURLModelImpl extends BaseModelImpl<LayoutFriendlyURL>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -354,6 +381,10 @@ public class LayoutFriendlyURLModelImpl extends BaseModelImpl<LayoutFriendlyURL>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -366,7 +397,15 @@ public class LayoutFriendlyURLModelImpl extends BaseModelImpl<LayoutFriendlyURL>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@Override
@@ -376,7 +415,15 @@ public class LayoutFriendlyURLModelImpl extends BaseModelImpl<LayoutFriendlyURL>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@Override
@@ -386,7 +433,15 @@ public class LayoutFriendlyURLModelImpl extends BaseModelImpl<LayoutFriendlyURL>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@Override
@@ -600,7 +655,15 @@ public class LayoutFriendlyURLModelImpl extends BaseModelImpl<LayoutFriendlyURL>
 	public void resetOriginalValues() {
 		LayoutFriendlyURLModelImpl layoutFriendlyURLModelImpl = this;
 
+		layoutFriendlyURLModelImpl._originalMvccVersion = layoutFriendlyURLModelImpl._mvccVersion;
+
+		layoutFriendlyURLModelImpl._setOriginalMvccVersion = false;
+
 		layoutFriendlyURLModelImpl._originalUuid = layoutFriendlyURLModelImpl._uuid;
+
+		layoutFriendlyURLModelImpl._originalLayoutFriendlyURLId = layoutFriendlyURLModelImpl._layoutFriendlyURLId;
+
+		layoutFriendlyURLModelImpl._setOriginalLayoutFriendlyURLId = false;
 
 		layoutFriendlyURLModelImpl._originalGroupId = layoutFriendlyURLModelImpl._groupId;
 
@@ -609,6 +672,16 @@ public class LayoutFriendlyURLModelImpl extends BaseModelImpl<LayoutFriendlyURL>
 		layoutFriendlyURLModelImpl._originalCompanyId = layoutFriendlyURLModelImpl._companyId;
 
 		layoutFriendlyURLModelImpl._setOriginalCompanyId = false;
+
+		layoutFriendlyURLModelImpl._originalUserId = layoutFriendlyURLModelImpl._userId;
+
+		layoutFriendlyURLModelImpl._setOriginalUserId = false;
+
+		layoutFriendlyURLModelImpl._originalUserName = layoutFriendlyURLModelImpl._userName;
+
+		layoutFriendlyURLModelImpl._originalCreateDate = layoutFriendlyURLModelImpl._createDate;
+
+		layoutFriendlyURLModelImpl._originalModifiedDate = layoutFriendlyURLModelImpl._modifiedDate;
 
 		layoutFriendlyURLModelImpl._originalPlid = layoutFriendlyURLModelImpl._plid;
 
@@ -802,9 +875,13 @@ public class LayoutFriendlyURLModelImpl extends BaseModelImpl<LayoutFriendlyURL>
 			LayoutFriendlyURL.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private String _uuid;
 	private String _originalUuid;
 	private long _layoutFriendlyURLId;
+	private long _originalLayoutFriendlyURLId;
+	private boolean _setOriginalLayoutFriendlyURLId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -812,9 +889,14 @@ public class LayoutFriendlyURLModelImpl extends BaseModelImpl<LayoutFriendlyURL>
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _plid;
 	private long _originalPlid;
 	private boolean _setOriginalPlid;
