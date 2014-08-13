@@ -325,7 +325,17 @@ public class AssetVocabularyModelImpl extends BaseModelImpl<AssetVocabulary>
 
 	@Override
 	public void setVocabularyId(long vocabularyId) {
+		if (!_setOriginalVocabularyId) {
+			_setOriginalVocabularyId = true;
+
+			_originalVocabularyId = _vocabularyId;
+		}
+
 		_vocabularyId = vocabularyId;
+	}
+
+	public long getOriginalVocabularyId() {
+		return _originalVocabularyId;
 	}
 
 	@JSON
@@ -382,6 +392,12 @@ public class AssetVocabularyModelImpl extends BaseModelImpl<AssetVocabulary>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -401,6 +417,10 @@ public class AssetVocabularyModelImpl extends BaseModelImpl<AssetVocabulary>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -414,7 +434,15 @@ public class AssetVocabularyModelImpl extends BaseModelImpl<AssetVocabulary>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -425,7 +453,15 @@ public class AssetVocabularyModelImpl extends BaseModelImpl<AssetVocabulary>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -436,7 +472,15 @@ public class AssetVocabularyModelImpl extends BaseModelImpl<AssetVocabulary>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -521,6 +565,10 @@ public class AssetVocabularyModelImpl extends BaseModelImpl<AssetVocabulary>
 
 	@Override
 	public void setTitle(String title) {
+		if (_originalTitle == null) {
+			_originalTitle = _title;
+		}
+
 		_title = title;
 	}
 
@@ -562,6 +610,10 @@ public class AssetVocabularyModelImpl extends BaseModelImpl<AssetVocabulary>
 
 		setTitle(LocalizationUtil.updateLocalization(titleMap, getTitle(),
 				"Title", LocaleUtil.toLanguageId(defaultLocale)));
+	}
+
+	public String getOriginalTitle() {
+		return GetterUtil.getString(_originalTitle);
 	}
 
 	@JSON
@@ -620,6 +672,10 @@ public class AssetVocabularyModelImpl extends BaseModelImpl<AssetVocabulary>
 
 	@Override
 	public void setDescription(String description) {
+		if (_originalDescription == null) {
+			_originalDescription = _description;
+		}
+
 		_description = description;
 	}
 
@@ -667,6 +723,10 @@ public class AssetVocabularyModelImpl extends BaseModelImpl<AssetVocabulary>
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
+	public String getOriginalDescription() {
+		return GetterUtil.getString(_originalDescription);
+	}
+
 	@JSON
 	@Override
 	public String getSettings() {
@@ -680,7 +740,15 @@ public class AssetVocabularyModelImpl extends BaseModelImpl<AssetVocabulary>
 
 	@Override
 	public void setSettings(String settings) {
+		if (_originalSettings == null) {
+			_originalSettings = _settings;
+		}
+
 		_settings = settings;
+	}
+
+	public String getOriginalSettings() {
+		return GetterUtil.getString(_originalSettings);
 	}
 
 	@Override
@@ -876,6 +944,10 @@ public class AssetVocabularyModelImpl extends BaseModelImpl<AssetVocabulary>
 
 		assetVocabularyModelImpl._originalUuid = assetVocabularyModelImpl._uuid;
 
+		assetVocabularyModelImpl._originalVocabularyId = assetVocabularyModelImpl._vocabularyId;
+
+		assetVocabularyModelImpl._setOriginalVocabularyId = false;
+
 		assetVocabularyModelImpl._originalGroupId = assetVocabularyModelImpl._groupId;
 
 		assetVocabularyModelImpl._setOriginalGroupId = false;
@@ -884,7 +956,23 @@ public class AssetVocabularyModelImpl extends BaseModelImpl<AssetVocabulary>
 
 		assetVocabularyModelImpl._setOriginalCompanyId = false;
 
+		assetVocabularyModelImpl._originalUserId = assetVocabularyModelImpl._userId;
+
+		assetVocabularyModelImpl._setOriginalUserId = false;
+
+		assetVocabularyModelImpl._originalUserName = assetVocabularyModelImpl._userName;
+
+		assetVocabularyModelImpl._originalCreateDate = assetVocabularyModelImpl._createDate;
+
+		assetVocabularyModelImpl._originalModifiedDate = assetVocabularyModelImpl._modifiedDate;
+
 		assetVocabularyModelImpl._originalName = assetVocabularyModelImpl._name;
+
+		assetVocabularyModelImpl._originalTitle = assetVocabularyModelImpl._title;
+
+		assetVocabularyModelImpl._originalDescription = assetVocabularyModelImpl._description;
+
+		assetVocabularyModelImpl._originalSettings = assetVocabularyModelImpl._settings;
 
 		assetVocabularyModelImpl._columnBitmask = 0;
 	}
@@ -1072,6 +1160,8 @@ public class AssetVocabularyModelImpl extends BaseModelImpl<AssetVocabulary>
 	private String _uuid;
 	private String _originalUuid;
 	private long _vocabularyId;
+	private long _originalVocabularyId;
+	private boolean _setOriginalVocabularyId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -1079,16 +1169,24 @@ public class AssetVocabularyModelImpl extends BaseModelImpl<AssetVocabulary>
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private String _name;
 	private String _originalName;
 	private String _title;
 	private String _titleCurrentLanguageId;
+	private String _originalTitle;
 	private String _description;
 	private String _descriptionCurrentLanguageId;
+	private String _originalDescription;
 	private String _settings;
+	private String _originalSettings;
 	private long _columnBitmask;
 	private AssetVocabulary _escapedModel;
 }

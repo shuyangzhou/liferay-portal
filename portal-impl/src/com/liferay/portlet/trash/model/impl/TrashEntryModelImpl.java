@@ -286,7 +286,17 @@ public class TrashEntryModelImpl extends BaseModelImpl<TrashEntry>
 
 	@Override
 	public void setEntryId(long entryId) {
+		if (!_setOriginalEntryId) {
+			_setOriginalEntryId = true;
+
+			_originalEntryId = _entryId;
+		}
+
 		_entryId = entryId;
+	}
+
+	public long getOriginalEntryId() {
+		return _originalEntryId;
 	}
 
 	@JSON
@@ -343,6 +353,12 @@ public class TrashEntryModelImpl extends BaseModelImpl<TrashEntry>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -362,6 +378,10 @@ public class TrashEntryModelImpl extends BaseModelImpl<TrashEntry>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -375,7 +395,15 @@ public class TrashEntryModelImpl extends BaseModelImpl<TrashEntry>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -473,7 +501,17 @@ public class TrashEntryModelImpl extends BaseModelImpl<TrashEntry>
 
 	@Override
 	public void setSystemEventSetKey(long systemEventSetKey) {
+		if (!_setOriginalSystemEventSetKey) {
+			_setOriginalSystemEventSetKey = true;
+
+			_originalSystemEventSetKey = _systemEventSetKey;
+		}
+
 		_systemEventSetKey = systemEventSetKey;
+	}
+
+	public long getOriginalSystemEventSetKey() {
+		return _originalSystemEventSetKey;
 	}
 
 	@JSON
@@ -489,7 +527,15 @@ public class TrashEntryModelImpl extends BaseModelImpl<TrashEntry>
 
 	@Override
 	public void setTypeSettings(String typeSettings) {
+		if (_originalTypeSettings == null) {
+			_originalTypeSettings = _typeSettings;
+		}
+
 		_typeSettings = typeSettings;
+	}
+
+	public String getOriginalTypeSettings() {
+		return GetterUtil.getString(_originalTypeSettings);
 	}
 
 	@JSON
@@ -500,7 +546,17 @@ public class TrashEntryModelImpl extends BaseModelImpl<TrashEntry>
 
 	@Override
 	public void setStatus(int status) {
+		if (!_setOriginalStatus) {
+			_setOriginalStatus = true;
+
+			_originalStatus = _status;
+		}
+
 		_status = status;
+	}
+
+	public int getOriginalStatus() {
+		return _originalStatus;
 	}
 
 	public long getColumnBitmask() {
@@ -607,6 +663,10 @@ public class TrashEntryModelImpl extends BaseModelImpl<TrashEntry>
 	public void resetOriginalValues() {
 		TrashEntryModelImpl trashEntryModelImpl = this;
 
+		trashEntryModelImpl._originalEntryId = trashEntryModelImpl._entryId;
+
+		trashEntryModelImpl._setOriginalEntryId = false;
+
 		trashEntryModelImpl._originalGroupId = trashEntryModelImpl._groupId;
 
 		trashEntryModelImpl._setOriginalGroupId = false;
@@ -614,6 +674,12 @@ public class TrashEntryModelImpl extends BaseModelImpl<TrashEntry>
 		trashEntryModelImpl._originalCompanyId = trashEntryModelImpl._companyId;
 
 		trashEntryModelImpl._setOriginalCompanyId = false;
+
+		trashEntryModelImpl._originalUserId = trashEntryModelImpl._userId;
+
+		trashEntryModelImpl._setOriginalUserId = false;
+
+		trashEntryModelImpl._originalUserName = trashEntryModelImpl._userName;
 
 		trashEntryModelImpl._originalCreateDate = trashEntryModelImpl._createDate;
 
@@ -624,6 +690,16 @@ public class TrashEntryModelImpl extends BaseModelImpl<TrashEntry>
 		trashEntryModelImpl._originalClassPK = trashEntryModelImpl._classPK;
 
 		trashEntryModelImpl._setOriginalClassPK = false;
+
+		trashEntryModelImpl._originalSystemEventSetKey = trashEntryModelImpl._systemEventSetKey;
+
+		trashEntryModelImpl._setOriginalSystemEventSetKey = false;
+
+		trashEntryModelImpl._originalTypeSettings = trashEntryModelImpl._typeSettings;
+
+		trashEntryModelImpl._originalStatus = trashEntryModelImpl._status;
+
+		trashEntryModelImpl._setOriginalStatus = false;
 
 		trashEntryModelImpl._columnBitmask = 0;
 	}
@@ -770,6 +846,8 @@ public class TrashEntryModelImpl extends BaseModelImpl<TrashEntry>
 			TrashEntry.class
 		};
 	private long _entryId;
+	private long _originalEntryId;
+	private boolean _setOriginalEntryId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -777,7 +855,10 @@ public class TrashEntryModelImpl extends BaseModelImpl<TrashEntry>
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
 	private Date _originalCreateDate;
 	private long _classNameId;
@@ -787,8 +868,13 @@ public class TrashEntryModelImpl extends BaseModelImpl<TrashEntry>
 	private long _originalClassPK;
 	private boolean _setOriginalClassPK;
 	private long _systemEventSetKey;
+	private long _originalSystemEventSetKey;
+	private boolean _setOriginalSystemEventSetKey;
 	private String _typeSettings;
+	private String _originalTypeSettings;
 	private int _status;
+	private int _originalStatus;
+	private boolean _setOriginalStatus;
 	private long _columnBitmask;
 	private TrashEntry _escapedModel;
 }

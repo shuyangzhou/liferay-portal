@@ -412,7 +412,17 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 
 	@Override
 	public void setThreadId(long threadId) {
+		if (!_setOriginalThreadId) {
+			_setOriginalThreadId = true;
+
+			_originalThreadId = _threadId;
+		}
+
 		_threadId = threadId;
+	}
+
+	public long getOriginalThreadId() {
+		return _originalThreadId;
 	}
 
 	@JSON
@@ -469,6 +479,12 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -488,6 +504,10 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -501,7 +521,15 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -512,7 +540,15 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -523,7 +559,15 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -580,6 +624,12 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 
 	@Override
 	public void setRootMessageUserId(long rootMessageUserId) {
+		if (!_setOriginalRootMessageUserId) {
+			_setOriginalRootMessageUserId = true;
+
+			_originalRootMessageUserId = _rootMessageUserId;
+		}
+
 		_rootMessageUserId = rootMessageUserId;
 	}
 
@@ -599,6 +649,10 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 	public void setRootMessageUserUuid(String rootMessageUserUuid) {
 	}
 
+	public long getOriginalRootMessageUserId() {
+		return _originalRootMessageUserId;
+	}
+
 	@JSON
 	@Override
 	public int getMessageCount() {
@@ -607,7 +661,17 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 
 	@Override
 	public void setMessageCount(int messageCount) {
+		if (!_setOriginalMessageCount) {
+			_setOriginalMessageCount = true;
+
+			_originalMessageCount = _messageCount;
+		}
+
 		_messageCount = messageCount;
+	}
+
+	public int getOriginalMessageCount() {
+		return _originalMessageCount;
 	}
 
 	@JSON
@@ -618,7 +682,17 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 
 	@Override
 	public void setViewCount(int viewCount) {
+		if (!_setOriginalViewCount) {
+			_setOriginalViewCount = true;
+
+			_originalViewCount = _viewCount;
+		}
+
 		_viewCount = viewCount;
+	}
+
+	public int getOriginalViewCount() {
+		return _originalViewCount;
 	}
 
 	@JSON
@@ -629,6 +703,12 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 
 	@Override
 	public void setLastPostByUserId(long lastPostByUserId) {
+		if (!_setOriginalLastPostByUserId) {
+			_setOriginalLastPostByUserId = true;
+
+			_originalLastPostByUserId = _lastPostByUserId;
+		}
+
 		_lastPostByUserId = lastPostByUserId;
 	}
 
@@ -646,6 +726,10 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 
 	@Override
 	public void setLastPostByUserUuid(String lastPostByUserUuid) {
+	}
+
+	public long getOriginalLastPostByUserId() {
+		return _originalLastPostByUserId;
 	}
 
 	@JSON
@@ -705,7 +789,17 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 
 	@Override
 	public void setQuestion(boolean question) {
+		if (!_setOriginalQuestion) {
+			_setOriginalQuestion = true;
+
+			_originalQuestion = _question;
+		}
+
 		_question = question;
+	}
+
+	public boolean getOriginalQuestion() {
+		return _originalQuestion;
 	}
 
 	@JSON
@@ -739,6 +833,12 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 
 	@Override
 	public void setStatusByUserId(long statusByUserId) {
+		if (!_setOriginalStatusByUserId) {
+			_setOriginalStatusByUserId = true;
+
+			_originalStatusByUserId = _statusByUserId;
+		}
+
 		_statusByUserId = statusByUserId;
 	}
 
@@ -758,6 +858,10 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 	public void setStatusByUserUuid(String statusByUserUuid) {
 	}
 
+	public long getOriginalStatusByUserId() {
+		return _originalStatusByUserId;
+	}
+
 	@JSON
 	@Override
 	public String getStatusByUserName() {
@@ -771,7 +875,15 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 
 	@Override
 	public void setStatusByUserName(String statusByUserName) {
+		if (_originalStatusByUserName == null) {
+			_originalStatusByUserName = _statusByUserName;
+		}
+
 		_statusByUserName = statusByUserName;
+	}
+
+	public String getOriginalStatusByUserName() {
+		return GetterUtil.getString(_originalStatusByUserName);
 	}
 
 	@JSON
@@ -782,7 +894,15 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 
 	@Override
 	public void setStatusDate(Date statusDate) {
+		if (_originalStatusDate == null) {
+			_originalStatusDate = _statusDate;
+		}
+
 		_statusDate = statusDate;
+	}
+
+	public Date getOriginalStatusDate() {
+		return _originalStatusDate;
 	}
 
 	@Override
@@ -1163,6 +1283,10 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 
 		mbThreadModelImpl._originalUuid = mbThreadModelImpl._uuid;
 
+		mbThreadModelImpl._originalThreadId = mbThreadModelImpl._threadId;
+
+		mbThreadModelImpl._setOriginalThreadId = false;
+
 		mbThreadModelImpl._originalGroupId = mbThreadModelImpl._groupId;
 
 		mbThreadModelImpl._setOriginalGroupId = false;
@@ -1170,6 +1294,16 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 		mbThreadModelImpl._originalCompanyId = mbThreadModelImpl._companyId;
 
 		mbThreadModelImpl._setOriginalCompanyId = false;
+
+		mbThreadModelImpl._originalUserId = mbThreadModelImpl._userId;
+
+		mbThreadModelImpl._setOriginalUserId = false;
+
+		mbThreadModelImpl._originalUserName = mbThreadModelImpl._userName;
+
+		mbThreadModelImpl._originalCreateDate = mbThreadModelImpl._createDate;
+
+		mbThreadModelImpl._originalModifiedDate = mbThreadModelImpl._modifiedDate;
 
 		mbThreadModelImpl._originalCategoryId = mbThreadModelImpl._categoryId;
 
@@ -1179,15 +1313,43 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 
 		mbThreadModelImpl._setOriginalRootMessageId = false;
 
+		mbThreadModelImpl._originalRootMessageUserId = mbThreadModelImpl._rootMessageUserId;
+
+		mbThreadModelImpl._setOriginalRootMessageUserId = false;
+
+		mbThreadModelImpl._originalMessageCount = mbThreadModelImpl._messageCount;
+
+		mbThreadModelImpl._setOriginalMessageCount = false;
+
+		mbThreadModelImpl._originalViewCount = mbThreadModelImpl._viewCount;
+
+		mbThreadModelImpl._setOriginalViewCount = false;
+
+		mbThreadModelImpl._originalLastPostByUserId = mbThreadModelImpl._lastPostByUserId;
+
+		mbThreadModelImpl._setOriginalLastPostByUserId = false;
+
 		mbThreadModelImpl._originalLastPostDate = mbThreadModelImpl._lastPostDate;
 
 		mbThreadModelImpl._originalPriority = mbThreadModelImpl._priority;
 
 		mbThreadModelImpl._setOriginalPriority = false;
 
+		mbThreadModelImpl._originalQuestion = mbThreadModelImpl._question;
+
+		mbThreadModelImpl._setOriginalQuestion = false;
+
 		mbThreadModelImpl._originalStatus = mbThreadModelImpl._status;
 
 		mbThreadModelImpl._setOriginalStatus = false;
+
+		mbThreadModelImpl._originalStatusByUserId = mbThreadModelImpl._statusByUserId;
+
+		mbThreadModelImpl._setOriginalStatusByUserId = false;
+
+		mbThreadModelImpl._originalStatusByUserName = mbThreadModelImpl._statusByUserName;
+
+		mbThreadModelImpl._originalStatusDate = mbThreadModelImpl._statusDate;
 
 		mbThreadModelImpl._columnBitmask = 0;
 	}
@@ -1443,6 +1605,8 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 	private String _uuid;
 	private String _originalUuid;
 	private long _threadId;
+	private long _originalThreadId;
+	private boolean _setOriginalThreadId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -1450,9 +1614,14 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _categoryId;
 	private long _originalCategoryId;
 	private boolean _setOriginalCategoryId;
@@ -1460,21 +1629,35 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 	private long _originalRootMessageId;
 	private boolean _setOriginalRootMessageId;
 	private long _rootMessageUserId;
+	private long _originalRootMessageUserId;
+	private boolean _setOriginalRootMessageUserId;
 	private int _messageCount;
+	private int _originalMessageCount;
+	private boolean _setOriginalMessageCount;
 	private int _viewCount;
+	private int _originalViewCount;
+	private boolean _setOriginalViewCount;
 	private long _lastPostByUserId;
+	private long _originalLastPostByUserId;
+	private boolean _setOriginalLastPostByUserId;
 	private Date _lastPostDate;
 	private Date _originalLastPostDate;
 	private double _priority;
 	private double _originalPriority;
 	private boolean _setOriginalPriority;
 	private boolean _question;
+	private boolean _originalQuestion;
+	private boolean _setOriginalQuestion;
 	private int _status;
 	private int _originalStatus;
 	private boolean _setOriginalStatus;
 	private long _statusByUserId;
+	private long _originalStatusByUserId;
+	private boolean _setOriginalStatusByUserId;
 	private String _statusByUserName;
+	private String _originalStatusByUserName;
 	private Date _statusDate;
+	private Date _originalStatusDate;
 	private long _columnBitmask;
 	private MBThread _escapedModel;
 }

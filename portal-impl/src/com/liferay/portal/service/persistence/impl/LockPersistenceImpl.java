@@ -37,6 +37,7 @@ import com.liferay.portal.model.MVCCModel;
 import com.liferay.portal.model.impl.LockImpl;
 import com.liferay.portal.model.impl.LockModelImpl;
 import com.liferay.portal.service.persistence.LockPersistence;
+import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
 

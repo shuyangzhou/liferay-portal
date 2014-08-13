@@ -375,7 +375,17 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 
 	@Override
 	public void setFileShortcutId(long fileShortcutId) {
+		if (!_setOriginalFileShortcutId) {
+			_setOriginalFileShortcutId = true;
+
+			_originalFileShortcutId = _fileShortcutId;
+		}
+
 		_fileShortcutId = fileShortcutId;
+	}
+
+	public long getOriginalFileShortcutId() {
+		return _originalFileShortcutId;
 	}
 
 	@JSON
@@ -432,6 +442,12 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -451,6 +467,10 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -464,7 +484,15 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -475,7 +503,15 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -486,7 +522,15 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -497,7 +541,17 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 
 	@Override
 	public void setRepositoryId(long repositoryId) {
+		if (!_setOriginalRepositoryId) {
+			_setOriginalRepositoryId = true;
+
+			_originalRepositoryId = _repositoryId;
+		}
+
 		_repositoryId = repositoryId;
+	}
+
+	public long getOriginalRepositoryId() {
+		return _originalRepositoryId;
 	}
 
 	@JSON
@@ -559,7 +613,15 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 
 	@Override
 	public void setTreePath(String treePath) {
+		if (_originalTreePath == null) {
+			_originalTreePath = _treePath;
+		}
+
 		_treePath = treePath;
+	}
+
+	public String getOriginalTreePath() {
+		return GetterUtil.getString(_originalTreePath);
 	}
 
 	@JSON
@@ -621,6 +683,12 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 
 	@Override
 	public void setStatusByUserId(long statusByUserId) {
+		if (!_setOriginalStatusByUserId) {
+			_setOriginalStatusByUserId = true;
+
+			_originalStatusByUserId = _statusByUserId;
+		}
+
 		_statusByUserId = statusByUserId;
 	}
 
@@ -640,6 +708,10 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 	public void setStatusByUserUuid(String statusByUserUuid) {
 	}
 
+	public long getOriginalStatusByUserId() {
+		return _originalStatusByUserId;
+	}
+
 	@JSON
 	@Override
 	public String getStatusByUserName() {
@@ -653,7 +725,15 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 
 	@Override
 	public void setStatusByUserName(String statusByUserName) {
+		if (_originalStatusByUserName == null) {
+			_originalStatusByUserName = _statusByUserName;
+		}
+
 		_statusByUserName = statusByUserName;
+	}
+
+	public String getOriginalStatusByUserName() {
+		return GetterUtil.getString(_originalStatusByUserName);
 	}
 
 	@JSON
@@ -664,7 +744,15 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 
 	@Override
 	public void setStatusDate(Date statusDate) {
+		if (_originalStatusDate == null) {
+			_originalStatusDate = _statusDate;
+		}
+
 		_statusDate = statusDate;
+	}
+
+	public Date getOriginalStatusDate() {
+		return _originalStatusDate;
 	}
 
 	@Override
@@ -1000,6 +1088,10 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 
 		dlFileShortcutModelImpl._originalUuid = dlFileShortcutModelImpl._uuid;
 
+		dlFileShortcutModelImpl._originalFileShortcutId = dlFileShortcutModelImpl._fileShortcutId;
+
+		dlFileShortcutModelImpl._setOriginalFileShortcutId = false;
+
 		dlFileShortcutModelImpl._originalGroupId = dlFileShortcutModelImpl._groupId;
 
 		dlFileShortcutModelImpl._setOriginalGroupId = false;
@@ -1007,6 +1099,20 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 		dlFileShortcutModelImpl._originalCompanyId = dlFileShortcutModelImpl._companyId;
 
 		dlFileShortcutModelImpl._setOriginalCompanyId = false;
+
+		dlFileShortcutModelImpl._originalUserId = dlFileShortcutModelImpl._userId;
+
+		dlFileShortcutModelImpl._setOriginalUserId = false;
+
+		dlFileShortcutModelImpl._originalUserName = dlFileShortcutModelImpl._userName;
+
+		dlFileShortcutModelImpl._originalCreateDate = dlFileShortcutModelImpl._createDate;
+
+		dlFileShortcutModelImpl._originalModifiedDate = dlFileShortcutModelImpl._modifiedDate;
+
+		dlFileShortcutModelImpl._originalRepositoryId = dlFileShortcutModelImpl._repositoryId;
+
+		dlFileShortcutModelImpl._setOriginalRepositoryId = false;
 
 		dlFileShortcutModelImpl._originalFolderId = dlFileShortcutModelImpl._folderId;
 
@@ -1016,6 +1122,8 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 
 		dlFileShortcutModelImpl._setOriginalToFileEntryId = false;
 
+		dlFileShortcutModelImpl._originalTreePath = dlFileShortcutModelImpl._treePath;
+
 		dlFileShortcutModelImpl._originalActive = dlFileShortcutModelImpl._active;
 
 		dlFileShortcutModelImpl._setOriginalActive = false;
@@ -1023,6 +1131,14 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 		dlFileShortcutModelImpl._originalStatus = dlFileShortcutModelImpl._status;
 
 		dlFileShortcutModelImpl._setOriginalStatus = false;
+
+		dlFileShortcutModelImpl._originalStatusByUserId = dlFileShortcutModelImpl._statusByUserId;
+
+		dlFileShortcutModelImpl._setOriginalStatusByUserId = false;
+
+		dlFileShortcutModelImpl._originalStatusByUserName = dlFileShortcutModelImpl._statusByUserName;
+
+		dlFileShortcutModelImpl._originalStatusDate = dlFileShortcutModelImpl._statusDate;
 
 		dlFileShortcutModelImpl._columnBitmask = 0;
 	}
@@ -1245,6 +1361,8 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 	private String _uuid;
 	private String _originalUuid;
 	private long _fileShortcutId;
+	private long _originalFileShortcutId;
+	private boolean _setOriginalFileShortcutId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -1252,10 +1370,17 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _repositoryId;
+	private long _originalRepositoryId;
+	private boolean _setOriginalRepositoryId;
 	private long _folderId;
 	private long _originalFolderId;
 	private boolean _setOriginalFolderId;
@@ -1263,6 +1388,7 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 	private long _originalToFileEntryId;
 	private boolean _setOriginalToFileEntryId;
 	private String _treePath;
+	private String _originalTreePath;
 	private boolean _active;
 	private boolean _originalActive;
 	private boolean _setOriginalActive;
@@ -1270,8 +1396,12 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 	private int _originalStatus;
 	private boolean _setOriginalStatus;
 	private long _statusByUserId;
+	private long _originalStatusByUserId;
+	private boolean _setOriginalStatusByUserId;
 	private String _statusByUserName;
+	private String _originalStatusByUserName;
 	private Date _statusDate;
+	private Date _originalStatusDate;
 	private long _columnBitmask;
 	private DLFileShortcut _escapedModel;
 }

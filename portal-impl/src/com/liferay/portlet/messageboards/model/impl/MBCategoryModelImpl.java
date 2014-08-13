@@ -461,6 +461,12 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -480,6 +486,10 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -493,7 +503,15 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -504,7 +522,15 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -515,7 +541,15 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -556,7 +590,15 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 	public void setName(String name) {
 		_columnBitmask = -1L;
 
+		if (_originalName == null) {
+			_originalName = _name;
+		}
+
 		_name = name;
+	}
+
+	public String getOriginalName() {
+		return GetterUtil.getString(_originalName);
 	}
 
 	@JSON
@@ -572,7 +614,15 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 
 	@Override
 	public void setDescription(String description) {
+		if (_originalDescription == null) {
+			_originalDescription = _description;
+		}
+
 		_description = description;
+	}
+
+	public String getOriginalDescription() {
+		return GetterUtil.getString(_originalDescription);
 	}
 
 	@JSON
@@ -588,7 +638,15 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 
 	@Override
 	public void setDisplayStyle(String displayStyle) {
+		if (_originalDisplayStyle == null) {
+			_originalDisplayStyle = _displayStyle;
+		}
+
 		_displayStyle = displayStyle;
+	}
+
+	public String getOriginalDisplayStyle() {
+		return GetterUtil.getString(_originalDisplayStyle);
 	}
 
 	@JSON
@@ -599,7 +657,17 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 
 	@Override
 	public void setThreadCount(int threadCount) {
+		if (!_setOriginalThreadCount) {
+			_setOriginalThreadCount = true;
+
+			_originalThreadCount = _threadCount;
+		}
+
 		_threadCount = threadCount;
+	}
+
+	public int getOriginalThreadCount() {
+		return _originalThreadCount;
 	}
 
 	@JSON
@@ -610,7 +678,17 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 
 	@Override
 	public void setMessageCount(int messageCount) {
+		if (!_setOriginalMessageCount) {
+			_setOriginalMessageCount = true;
+
+			_originalMessageCount = _messageCount;
+		}
+
 		_messageCount = messageCount;
+	}
+
+	public int getOriginalMessageCount() {
+		return _originalMessageCount;
 	}
 
 	@JSON
@@ -621,7 +699,15 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 
 	@Override
 	public void setLastPostDate(Date lastPostDate) {
+		if (_originalLastPostDate == null) {
+			_originalLastPostDate = _lastPostDate;
+		}
+
 		_lastPostDate = lastPostDate;
+	}
+
+	public Date getOriginalLastPostDate() {
+		return _originalLastPostDate;
 	}
 
 	@JSON
@@ -655,6 +741,12 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 
 	@Override
 	public void setStatusByUserId(long statusByUserId) {
+		if (!_setOriginalStatusByUserId) {
+			_setOriginalStatusByUserId = true;
+
+			_originalStatusByUserId = _statusByUserId;
+		}
+
 		_statusByUserId = statusByUserId;
 	}
 
@@ -674,6 +766,10 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 	public void setStatusByUserUuid(String statusByUserUuid) {
 	}
 
+	public long getOriginalStatusByUserId() {
+		return _originalStatusByUserId;
+	}
+
 	@JSON
 	@Override
 	public String getStatusByUserName() {
@@ -687,7 +783,15 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 
 	@Override
 	public void setStatusByUserName(String statusByUserName) {
+		if (_originalStatusByUserName == null) {
+			_originalStatusByUserName = _statusByUserName;
+		}
+
 		_statusByUserName = statusByUserName;
+	}
+
+	public String getOriginalStatusByUserName() {
+		return GetterUtil.getString(_originalStatusByUserName);
 	}
 
 	@JSON
@@ -698,7 +802,15 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 
 	@Override
 	public void setStatusDate(Date statusDate) {
+		if (_originalStatusDate == null) {
+			_originalStatusDate = _statusDate;
+		}
+
 		_statusDate = statusDate;
+	}
+
+	public Date getOriginalStatusDate() {
+		return _originalStatusDate;
 	}
 
 	@Override
@@ -1085,13 +1197,47 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 
 		mbCategoryModelImpl._setOriginalCompanyId = false;
 
+		mbCategoryModelImpl._originalUserId = mbCategoryModelImpl._userId;
+
+		mbCategoryModelImpl._setOriginalUserId = false;
+
+		mbCategoryModelImpl._originalUserName = mbCategoryModelImpl._userName;
+
+		mbCategoryModelImpl._originalCreateDate = mbCategoryModelImpl._createDate;
+
+		mbCategoryModelImpl._originalModifiedDate = mbCategoryModelImpl._modifiedDate;
+
 		mbCategoryModelImpl._originalParentCategoryId = mbCategoryModelImpl._parentCategoryId;
 
 		mbCategoryModelImpl._setOriginalParentCategoryId = false;
 
+		mbCategoryModelImpl._originalName = mbCategoryModelImpl._name;
+
+		mbCategoryModelImpl._originalDescription = mbCategoryModelImpl._description;
+
+		mbCategoryModelImpl._originalDisplayStyle = mbCategoryModelImpl._displayStyle;
+
+		mbCategoryModelImpl._originalThreadCount = mbCategoryModelImpl._threadCount;
+
+		mbCategoryModelImpl._setOriginalThreadCount = false;
+
+		mbCategoryModelImpl._originalMessageCount = mbCategoryModelImpl._messageCount;
+
+		mbCategoryModelImpl._setOriginalMessageCount = false;
+
+		mbCategoryModelImpl._originalLastPostDate = mbCategoryModelImpl._lastPostDate;
+
 		mbCategoryModelImpl._originalStatus = mbCategoryModelImpl._status;
 
 		mbCategoryModelImpl._setOriginalStatus = false;
+
+		mbCategoryModelImpl._originalStatusByUserId = mbCategoryModelImpl._statusByUserId;
+
+		mbCategoryModelImpl._setOriginalStatusByUserId = false;
+
+		mbCategoryModelImpl._originalStatusByUserName = mbCategoryModelImpl._statusByUserName;
+
+		mbCategoryModelImpl._originalStatusDate = mbCategoryModelImpl._statusDate;
 
 		mbCategoryModelImpl._columnBitmask = 0;
 	}
@@ -1358,24 +1504,41 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _parentCategoryId;
 	private long _originalParentCategoryId;
 	private boolean _setOriginalParentCategoryId;
 	private String _name;
+	private String _originalName;
 	private String _description;
+	private String _originalDescription;
 	private String _displayStyle;
+	private String _originalDisplayStyle;
 	private int _threadCount;
+	private int _originalThreadCount;
+	private boolean _setOriginalThreadCount;
 	private int _messageCount;
+	private int _originalMessageCount;
+	private boolean _setOriginalMessageCount;
 	private Date _lastPostDate;
+	private Date _originalLastPostDate;
 	private int _status;
 	private int _originalStatus;
 	private boolean _setOriginalStatus;
 	private long _statusByUserId;
+	private long _originalStatusByUserId;
+	private boolean _setOriginalStatusByUserId;
 	private String _statusByUserName;
+	private String _originalStatusByUserName;
 	private Date _statusDate;
+	private Date _originalStatusDate;
 	private long _columnBitmask;
 	private MBCategory _escapedModel;
 }

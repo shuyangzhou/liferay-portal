@@ -216,7 +216,17 @@ public class SocialActivityLimitModelImpl extends BaseModelImpl<SocialActivityLi
 
 	@Override
 	public void setActivityLimitId(long activityLimitId) {
+		if (!_setOriginalActivityLimitId) {
+			_setOriginalActivityLimitId = true;
+
+			_originalActivityLimitId = _activityLimitId;
+		}
+
 		_activityLimitId = activityLimitId;
+	}
+
+	public long getOriginalActivityLimitId() {
+		return _originalActivityLimitId;
 	}
 
 	@Override
@@ -248,7 +258,17 @@ public class SocialActivityLimitModelImpl extends BaseModelImpl<SocialActivityLi
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if (!_setOriginalCompanyId) {
+			_setOriginalCompanyId = true;
+
+			_originalCompanyId = _companyId;
+		}
+
 		_companyId = companyId;
+	}
+
+	public long getOriginalCompanyId() {
+		return _originalCompanyId;
 	}
 
 	@Override
@@ -412,7 +432,15 @@ public class SocialActivityLimitModelImpl extends BaseModelImpl<SocialActivityLi
 
 	@Override
 	public void setValue(String value) {
+		if (_originalValue == null) {
+			_originalValue = _value;
+		}
+
 		_value = value;
+	}
+
+	public String getOriginalValue() {
+		return GetterUtil.getString(_originalValue);
 	}
 
 	public long getColumnBitmask() {
@@ -517,9 +545,17 @@ public class SocialActivityLimitModelImpl extends BaseModelImpl<SocialActivityLi
 	public void resetOriginalValues() {
 		SocialActivityLimitModelImpl socialActivityLimitModelImpl = this;
 
+		socialActivityLimitModelImpl._originalActivityLimitId = socialActivityLimitModelImpl._activityLimitId;
+
+		socialActivityLimitModelImpl._setOriginalActivityLimitId = false;
+
 		socialActivityLimitModelImpl._originalGroupId = socialActivityLimitModelImpl._groupId;
 
 		socialActivityLimitModelImpl._setOriginalGroupId = false;
+
+		socialActivityLimitModelImpl._originalCompanyId = socialActivityLimitModelImpl._companyId;
+
+		socialActivityLimitModelImpl._setOriginalCompanyId = false;
 
 		socialActivityLimitModelImpl._originalUserId = socialActivityLimitModelImpl._userId;
 
@@ -538,6 +574,8 @@ public class SocialActivityLimitModelImpl extends BaseModelImpl<SocialActivityLi
 		socialActivityLimitModelImpl._setOriginalActivityType = false;
 
 		socialActivityLimitModelImpl._originalActivityCounterName = socialActivityLimitModelImpl._activityCounterName;
+
+		socialActivityLimitModelImpl._originalValue = socialActivityLimitModelImpl._value;
 
 		socialActivityLimitModelImpl._columnBitmask = 0;
 	}
@@ -662,10 +700,14 @@ public class SocialActivityLimitModelImpl extends BaseModelImpl<SocialActivityLi
 			SocialActivityLimit.class
 		};
 	private long _activityLimitId;
+	private long _originalActivityLimitId;
+	private boolean _setOriginalActivityLimitId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
 	private long _companyId;
+	private long _originalCompanyId;
+	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private long _originalUserId;
 	private boolean _setOriginalUserId;
@@ -681,6 +723,7 @@ public class SocialActivityLimitModelImpl extends BaseModelImpl<SocialActivityLi
 	private String _activityCounterName;
 	private String _originalActivityCounterName;
 	private String _value;
+	private String _originalValue;
 	private long _columnBitmask;
 	private SocialActivityLimit _escapedModel;
 }

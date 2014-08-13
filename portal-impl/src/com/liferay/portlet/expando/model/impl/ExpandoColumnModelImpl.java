@@ -237,7 +237,17 @@ public class ExpandoColumnModelImpl extends BaseModelImpl<ExpandoColumn>
 
 	@Override
 	public void setColumnId(long columnId) {
+		if (!_setOriginalColumnId) {
+			_setOriginalColumnId = true;
+
+			_originalColumnId = _columnId;
+		}
+
 		_columnId = columnId;
+	}
+
+	public long getOriginalColumnId() {
+		return _originalColumnId;
 	}
 
 	@JSON
@@ -248,7 +258,17 @@ public class ExpandoColumnModelImpl extends BaseModelImpl<ExpandoColumn>
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if (!_setOriginalCompanyId) {
+			_setOriginalCompanyId = true;
+
+			_originalCompanyId = _companyId;
+		}
+
 		_companyId = companyId;
+	}
+
+	public long getOriginalCompanyId() {
+		return _originalCompanyId;
 	}
 
 	@JSON
@@ -308,7 +328,17 @@ public class ExpandoColumnModelImpl extends BaseModelImpl<ExpandoColumn>
 
 	@Override
 	public void setType(int type) {
+		if (!_setOriginalType) {
+			_setOriginalType = true;
+
+			_originalType = _type;
+		}
+
 		_type = type;
+	}
+
+	public int getOriginalType() {
+		return _originalType;
 	}
 
 	@JSON
@@ -324,7 +354,15 @@ public class ExpandoColumnModelImpl extends BaseModelImpl<ExpandoColumn>
 
 	@Override
 	public void setDefaultData(String defaultData) {
+		if (_originalDefaultData == null) {
+			_originalDefaultData = _defaultData;
+		}
+
 		_defaultData = defaultData;
+	}
+
+	public String getOriginalDefaultData() {
+		return GetterUtil.getString(_originalDefaultData);
 	}
 
 	@JSON
@@ -340,7 +378,15 @@ public class ExpandoColumnModelImpl extends BaseModelImpl<ExpandoColumn>
 
 	@Override
 	public void setTypeSettings(String typeSettings) {
+		if (_originalTypeSettings == null) {
+			_originalTypeSettings = _typeSettings;
+		}
+
 		_typeSettings = typeSettings;
+	}
+
+	public String getOriginalTypeSettings() {
+		return GetterUtil.getString(_originalTypeSettings);
 	}
 
 	public long getColumnBitmask() {
@@ -428,11 +474,27 @@ public class ExpandoColumnModelImpl extends BaseModelImpl<ExpandoColumn>
 	public void resetOriginalValues() {
 		ExpandoColumnModelImpl expandoColumnModelImpl = this;
 
+		expandoColumnModelImpl._originalColumnId = expandoColumnModelImpl._columnId;
+
+		expandoColumnModelImpl._setOriginalColumnId = false;
+
+		expandoColumnModelImpl._originalCompanyId = expandoColumnModelImpl._companyId;
+
+		expandoColumnModelImpl._setOriginalCompanyId = false;
+
 		expandoColumnModelImpl._originalTableId = expandoColumnModelImpl._tableId;
 
 		expandoColumnModelImpl._setOriginalTableId = false;
 
 		expandoColumnModelImpl._originalName = expandoColumnModelImpl._name;
+
+		expandoColumnModelImpl._originalType = expandoColumnModelImpl._type;
+
+		expandoColumnModelImpl._setOriginalType = false;
+
+		expandoColumnModelImpl._originalDefaultData = expandoColumnModelImpl._defaultData;
+
+		expandoColumnModelImpl._originalTypeSettings = expandoColumnModelImpl._typeSettings;
 
 		expandoColumnModelImpl._columnBitmask = 0;
 	}
@@ -546,15 +608,23 @@ public class ExpandoColumnModelImpl extends BaseModelImpl<ExpandoColumn>
 			ExpandoColumn.class
 		};
 	private long _columnId;
+	private long _originalColumnId;
+	private boolean _setOriginalColumnId;
 	private long _companyId;
+	private long _originalCompanyId;
+	private boolean _setOriginalCompanyId;
 	private long _tableId;
 	private long _originalTableId;
 	private boolean _setOriginalTableId;
 	private String _name;
 	private String _originalName;
 	private int _type;
+	private int _originalType;
+	private boolean _setOriginalType;
 	private String _defaultData;
+	private String _originalDefaultData;
 	private String _typeSettings;
+	private String _originalTypeSettings;
 	private long _columnBitmask;
 	private ExpandoColumn _escapedModel;
 }
