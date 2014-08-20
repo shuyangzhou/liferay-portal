@@ -25,6 +25,7 @@ import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.UserGroupGroupRole;
 import com.liferay.portal.model.UserGroupGroupRoleModel;
 import com.liferay.portal.model.UserGroupGroupRoleSoap;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.persistence.UserGroupGroupRolePK;
 
 import java.io.Serializable;
@@ -215,7 +216,17 @@ public class UserGroupGroupRoleModelImpl extends BaseModelImpl<UserGroupGroupRol
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@JSON
@@ -363,6 +374,10 @@ public class UserGroupGroupRoleModelImpl extends BaseModelImpl<UserGroupGroupRol
 	public void resetOriginalValues() {
 		UserGroupGroupRoleModelImpl userGroupGroupRoleModelImpl = this;
 
+		userGroupGroupRoleModelImpl._originalMvccVersion = userGroupGroupRoleModelImpl._mvccVersion;
+
+		userGroupGroupRoleModelImpl._setOriginalMvccVersion = false;
+
 		userGroupGroupRoleModelImpl._originalUserGroupId = userGroupGroupRoleModelImpl._userGroupId;
 
 		userGroupGroupRoleModelImpl._setOriginalUserGroupId = false;
@@ -445,6 +460,8 @@ public class UserGroupGroupRoleModelImpl extends BaseModelImpl<UserGroupGroupRol
 			UserGroupGroupRole.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _userGroupId;
 	private long _originalUserGroupId;
 	private boolean _setOriginalUserGroupId;

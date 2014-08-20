@@ -27,6 +27,7 @@ import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.PortletItem;
 import com.liferay.portal.model.PortletItemModel;
 import com.liferay.portal.model.User;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
@@ -232,7 +233,17 @@ public class PortletItemModelImpl extends BaseModelImpl<PortletItem>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@Override
@@ -242,7 +253,17 @@ public class PortletItemModelImpl extends BaseModelImpl<PortletItem>
 
 	@Override
 	public void setPortletItemId(long portletItemId) {
+		if (!_setOriginalPortletItemId) {
+			_setOriginalPortletItemId = true;
+
+			_originalPortletItemId = _portletItemId;
+		}
+
 		_portletItemId = portletItemId;
+	}
+
+	public long getOriginalPortletItemId() {
+		return _originalPortletItemId;
 	}
 
 	@Override
@@ -274,7 +295,17 @@ public class PortletItemModelImpl extends BaseModelImpl<PortletItem>
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if (!_setOriginalCompanyId) {
+			_setOriginalCompanyId = true;
+
+			_originalCompanyId = _companyId;
+		}
+
 		_companyId = companyId;
+	}
+
+	public long getOriginalCompanyId() {
+		return _originalCompanyId;
 	}
 
 	@Override
@@ -284,6 +315,12 @@ public class PortletItemModelImpl extends BaseModelImpl<PortletItem>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -303,6 +340,10 @@ public class PortletItemModelImpl extends BaseModelImpl<PortletItem>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -315,7 +356,15 @@ public class PortletItemModelImpl extends BaseModelImpl<PortletItem>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@Override
@@ -325,7 +374,15 @@ public class PortletItemModelImpl extends BaseModelImpl<PortletItem>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@Override
@@ -335,7 +392,15 @@ public class PortletItemModelImpl extends BaseModelImpl<PortletItem>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@Override
@@ -534,9 +599,31 @@ public class PortletItemModelImpl extends BaseModelImpl<PortletItem>
 	public void resetOriginalValues() {
 		PortletItemModelImpl portletItemModelImpl = this;
 
+		portletItemModelImpl._originalMvccVersion = portletItemModelImpl._mvccVersion;
+
+		portletItemModelImpl._setOriginalMvccVersion = false;
+
+		portletItemModelImpl._originalPortletItemId = portletItemModelImpl._portletItemId;
+
+		portletItemModelImpl._setOriginalPortletItemId = false;
+
 		portletItemModelImpl._originalGroupId = portletItemModelImpl._groupId;
 
 		portletItemModelImpl._setOriginalGroupId = false;
+
+		portletItemModelImpl._originalCompanyId = portletItemModelImpl._companyId;
+
+		portletItemModelImpl._setOriginalCompanyId = false;
+
+		portletItemModelImpl._originalUserId = portletItemModelImpl._userId;
+
+		portletItemModelImpl._setOriginalUserId = false;
+
+		portletItemModelImpl._originalUserName = portletItemModelImpl._userName;
+
+		portletItemModelImpl._originalCreateDate = portletItemModelImpl._createDate;
+
+		portletItemModelImpl._originalModifiedDate = portletItemModelImpl._modifiedDate;
 
 		portletItemModelImpl._originalName = portletItemModelImpl._name;
 
@@ -704,15 +791,26 @@ public class PortletItemModelImpl extends BaseModelImpl<PortletItem>
 			PortletItem.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _portletItemId;
+	private long _originalPortletItemId;
+	private boolean _setOriginalPortletItemId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
 	private long _companyId;
+	private long _originalCompanyId;
+	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private String _name;
 	private String _originalName;
 	private String _portletId;

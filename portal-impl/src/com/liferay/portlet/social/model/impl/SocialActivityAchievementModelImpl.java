@@ -199,7 +199,17 @@ public class SocialActivityAchievementModelImpl extends BaseModelImpl<SocialActi
 
 	@Override
 	public void setActivityAchievementId(long activityAchievementId) {
+		if (!_setOriginalActivityAchievementId) {
+			_setOriginalActivityAchievementId = true;
+
+			_originalActivityAchievementId = _activityAchievementId;
+		}
+
 		_activityAchievementId = activityAchievementId;
+	}
+
+	public long getOriginalActivityAchievementId() {
+		return _originalActivityAchievementId;
 	}
 
 	@Override
@@ -231,7 +241,17 @@ public class SocialActivityAchievementModelImpl extends BaseModelImpl<SocialActi
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if (!_setOriginalCompanyId) {
+			_setOriginalCompanyId = true;
+
+			_originalCompanyId = _companyId;
+		}
+
 		_companyId = companyId;
+	}
+
+	public long getOriginalCompanyId() {
+		return _originalCompanyId;
 	}
 
 	@Override
@@ -279,7 +299,17 @@ public class SocialActivityAchievementModelImpl extends BaseModelImpl<SocialActi
 
 	@Override
 	public void setCreateDate(long createDate) {
+		if (!_setOriginalCreateDate) {
+			_setOriginalCreateDate = true;
+
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public long getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@Override
@@ -434,13 +464,25 @@ public class SocialActivityAchievementModelImpl extends BaseModelImpl<SocialActi
 	public void resetOriginalValues() {
 		SocialActivityAchievementModelImpl socialActivityAchievementModelImpl = this;
 
+		socialActivityAchievementModelImpl._originalActivityAchievementId = socialActivityAchievementModelImpl._activityAchievementId;
+
+		socialActivityAchievementModelImpl._setOriginalActivityAchievementId = false;
+
 		socialActivityAchievementModelImpl._originalGroupId = socialActivityAchievementModelImpl._groupId;
 
 		socialActivityAchievementModelImpl._setOriginalGroupId = false;
 
+		socialActivityAchievementModelImpl._originalCompanyId = socialActivityAchievementModelImpl._companyId;
+
+		socialActivityAchievementModelImpl._setOriginalCompanyId = false;
+
 		socialActivityAchievementModelImpl._originalUserId = socialActivityAchievementModelImpl._userId;
 
 		socialActivityAchievementModelImpl._setOriginalUserId = false;
+
+		socialActivityAchievementModelImpl._originalCreateDate = socialActivityAchievementModelImpl._createDate;
+
+		socialActivityAchievementModelImpl._setOriginalCreateDate = false;
 
 		socialActivityAchievementModelImpl._originalName = socialActivityAchievementModelImpl._name;
 
@@ -548,14 +590,20 @@ public class SocialActivityAchievementModelImpl extends BaseModelImpl<SocialActi
 			SocialActivityAchievement.class
 		};
 	private long _activityAchievementId;
+	private long _originalActivityAchievementId;
+	private boolean _setOriginalActivityAchievementId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
 	private long _companyId;
+	private long _originalCompanyId;
+	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private long _originalUserId;
 	private boolean _setOriginalUserId;
 	private long _createDate;
+	private long _originalCreateDate;
+	private boolean _setOriginalCreateDate;
 	private String _name;
 	private String _originalName;
 	private boolean _firstInGroup;

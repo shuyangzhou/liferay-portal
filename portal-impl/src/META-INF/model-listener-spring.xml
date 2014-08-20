@@ -10,7 +10,9 @@
 	<bean id="com.liferay.portal.model.BackgroundTaskModelListener" class="com.liferay.portal.model.BackgroundTaskModelListener" />
 	<bean id="com.liferay.portal.model.ContactModelListener" class="com.liferay.portal.model.ContactModelListener" />
 	<bean id="com.liferay.portal.model.LayoutModelListener" class="com.liferay.portal.model.LayoutModelListener" />
+	<bean id="com.liferay.portal.model.LayoutPrototypeModelListener" class="com.liferay.portal.model.LayoutPrototypeModelListener" />
 	<bean id="com.liferay.portal.model.LayoutSetModelListener" class="com.liferay.portal.model.LayoutSetModelListener" />
+	<bean id="com.liferay.portal.model.LayoutSetPrototypeModelListener" class="com.liferay.portal.model.LayoutSetPrototypeModelListener" />
 	<bean id="com.liferay.portal.model.PortletPreferencesModelListener" class="com.liferay.portal.model.PortletPreferencesModelListener" />
 	<bean id="com.liferay.portal.model.UserGroupModelListener" class="com.liferay.portal.model.UserGroupModelListener" />
 	<bean id="com.liferay.portal.model.UserModelListener" class="com.liferay.portal.model.UserModelListener" />

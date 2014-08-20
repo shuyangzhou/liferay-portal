@@ -218,7 +218,17 @@ public class ShoppingOrderItemModelImpl extends BaseModelImpl<ShoppingOrderItem>
 
 	@Override
 	public void setOrderItemId(long orderItemId) {
+		if (!_setOriginalOrderItemId) {
+			_setOriginalOrderItemId = true;
+
+			_originalOrderItemId = _orderItemId;
+		}
+
 		_orderItemId = orderItemId;
+	}
+
+	public long getOriginalOrderItemId() {
+		return _originalOrderItemId;
 	}
 
 	@Override
@@ -255,7 +265,15 @@ public class ShoppingOrderItemModelImpl extends BaseModelImpl<ShoppingOrderItem>
 
 	@Override
 	public void setItemId(String itemId) {
+		if (_originalItemId == null) {
+			_originalItemId = _itemId;
+		}
+
 		_itemId = itemId;
+	}
+
+	public String getOriginalItemId() {
+		return GetterUtil.getString(_originalItemId);
 	}
 
 	@Override
@@ -270,7 +288,15 @@ public class ShoppingOrderItemModelImpl extends BaseModelImpl<ShoppingOrderItem>
 
 	@Override
 	public void setSku(String sku) {
+		if (_originalSku == null) {
+			_originalSku = _sku;
+		}
+
 		_sku = sku;
+	}
+
+	public String getOriginalSku() {
+		return GetterUtil.getString(_originalSku);
 	}
 
 	@Override
@@ -287,7 +313,15 @@ public class ShoppingOrderItemModelImpl extends BaseModelImpl<ShoppingOrderItem>
 	public void setName(String name) {
 		_columnBitmask = -1L;
 
+		if (_originalName == null) {
+			_originalName = _name;
+		}
+
 		_name = name;
+	}
+
+	public String getOriginalName() {
+		return GetterUtil.getString(_originalName);
 	}
 
 	@Override
@@ -304,7 +338,15 @@ public class ShoppingOrderItemModelImpl extends BaseModelImpl<ShoppingOrderItem>
 	public void setDescription(String description) {
 		_columnBitmask = -1L;
 
+		if (_originalDescription == null) {
+			_originalDescription = _description;
+		}
+
 		_description = description;
+	}
+
+	public String getOriginalDescription() {
+		return GetterUtil.getString(_originalDescription);
 	}
 
 	@Override
@@ -319,7 +361,15 @@ public class ShoppingOrderItemModelImpl extends BaseModelImpl<ShoppingOrderItem>
 
 	@Override
 	public void setProperties(String properties) {
+		if (_originalProperties == null) {
+			_originalProperties = _properties;
+		}
+
 		_properties = properties;
+	}
+
+	public String getOriginalProperties() {
+		return GetterUtil.getString(_originalProperties);
 	}
 
 	@Override
@@ -329,7 +379,17 @@ public class ShoppingOrderItemModelImpl extends BaseModelImpl<ShoppingOrderItem>
 
 	@Override
 	public void setPrice(double price) {
+		if (!_setOriginalPrice) {
+			_setOriginalPrice = true;
+
+			_originalPrice = _price;
+		}
+
 		_price = price;
+	}
+
+	public double getOriginalPrice() {
+		return _originalPrice;
 	}
 
 	@Override
@@ -339,7 +399,17 @@ public class ShoppingOrderItemModelImpl extends BaseModelImpl<ShoppingOrderItem>
 
 	@Override
 	public void setQuantity(int quantity) {
+		if (!_setOriginalQuantity) {
+			_setOriginalQuantity = true;
+
+			_originalQuantity = _quantity;
+		}
+
 		_quantity = quantity;
+	}
+
+	public int getOriginalQuantity() {
+		return _originalQuantity;
 	}
 
 	@Override
@@ -349,7 +419,15 @@ public class ShoppingOrderItemModelImpl extends BaseModelImpl<ShoppingOrderItem>
 
 	@Override
 	public void setShippedDate(Date shippedDate) {
+		if (_originalShippedDate == null) {
+			_originalShippedDate = _shippedDate;
+		}
+
 		_shippedDate = shippedDate;
+	}
+
+	public Date getOriginalShippedDate() {
+		return _originalShippedDate;
 	}
 
 	public long getColumnBitmask() {
@@ -459,9 +537,33 @@ public class ShoppingOrderItemModelImpl extends BaseModelImpl<ShoppingOrderItem>
 	public void resetOriginalValues() {
 		ShoppingOrderItemModelImpl shoppingOrderItemModelImpl = this;
 
+		shoppingOrderItemModelImpl._originalOrderItemId = shoppingOrderItemModelImpl._orderItemId;
+
+		shoppingOrderItemModelImpl._setOriginalOrderItemId = false;
+
 		shoppingOrderItemModelImpl._originalOrderId = shoppingOrderItemModelImpl._orderId;
 
 		shoppingOrderItemModelImpl._setOriginalOrderId = false;
+
+		shoppingOrderItemModelImpl._originalItemId = shoppingOrderItemModelImpl._itemId;
+
+		shoppingOrderItemModelImpl._originalSku = shoppingOrderItemModelImpl._sku;
+
+		shoppingOrderItemModelImpl._originalName = shoppingOrderItemModelImpl._name;
+
+		shoppingOrderItemModelImpl._originalDescription = shoppingOrderItemModelImpl._description;
+
+		shoppingOrderItemModelImpl._originalProperties = shoppingOrderItemModelImpl._properties;
+
+		shoppingOrderItemModelImpl._originalPrice = shoppingOrderItemModelImpl._price;
+
+		shoppingOrderItemModelImpl._setOriginalPrice = false;
+
+		shoppingOrderItemModelImpl._originalQuantity = shoppingOrderItemModelImpl._quantity;
+
+		shoppingOrderItemModelImpl._setOriginalQuantity = false;
+
+		shoppingOrderItemModelImpl._originalShippedDate = shoppingOrderItemModelImpl._shippedDate;
 
 		shoppingOrderItemModelImpl._columnBitmask = 0;
 	}
@@ -618,17 +720,29 @@ public class ShoppingOrderItemModelImpl extends BaseModelImpl<ShoppingOrderItem>
 			ShoppingOrderItem.class
 		};
 	private long _orderItemId;
+	private long _originalOrderItemId;
+	private boolean _setOriginalOrderItemId;
 	private long _orderId;
 	private long _originalOrderId;
 	private boolean _setOriginalOrderId;
 	private String _itemId;
+	private String _originalItemId;
 	private String _sku;
+	private String _originalSku;
 	private String _name;
+	private String _originalName;
 	private String _description;
+	private String _originalDescription;
 	private String _properties;
+	private String _originalProperties;
 	private double _price;
+	private double _originalPrice;
+	private boolean _setOriginalPrice;
 	private int _quantity;
+	private int _originalQuantity;
+	private boolean _setOriginalQuantity;
 	private Date _shippedDate;
+	private Date _originalShippedDate;
 	private long _columnBitmask;
 	private ShoppingOrderItem _escapedModel;
 }

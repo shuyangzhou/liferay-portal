@@ -250,7 +250,17 @@ public class SocialActivitySettingModelImpl extends BaseModelImpl<SocialActivity
 
 	@Override
 	public void setActivitySettingId(long activitySettingId) {
+		if (!_setOriginalActivitySettingId) {
+			_setOriginalActivitySettingId = true;
+
+			_originalActivitySettingId = _activitySettingId;
+		}
+
 		_activitySettingId = activitySettingId;
+	}
+
+	public long getOriginalActivitySettingId() {
+		return _originalActivitySettingId;
 	}
 
 	@JSON
@@ -284,7 +294,17 @@ public class SocialActivitySettingModelImpl extends BaseModelImpl<SocialActivity
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if (!_setOriginalCompanyId) {
+			_setOriginalCompanyId = true;
+
+			_originalCompanyId = _companyId;
+		}
+
 		_companyId = companyId;
+	}
+
+	public long getOriginalCompanyId() {
+		return _originalCompanyId;
 	}
 
 	@Override
@@ -392,7 +412,15 @@ public class SocialActivitySettingModelImpl extends BaseModelImpl<SocialActivity
 
 	@Override
 	public void setValue(String value) {
+		if (_originalValue == null) {
+			_originalValue = _value;
+		}
+
 		_value = value;
+	}
+
+	public String getOriginalValue() {
+		return GetterUtil.getString(_originalValue);
 	}
 
 	public long getColumnBitmask() {
@@ -495,9 +523,17 @@ public class SocialActivitySettingModelImpl extends BaseModelImpl<SocialActivity
 	public void resetOriginalValues() {
 		SocialActivitySettingModelImpl socialActivitySettingModelImpl = this;
 
+		socialActivitySettingModelImpl._originalActivitySettingId = socialActivitySettingModelImpl._activitySettingId;
+
+		socialActivitySettingModelImpl._setOriginalActivitySettingId = false;
+
 		socialActivitySettingModelImpl._originalGroupId = socialActivitySettingModelImpl._groupId;
 
 		socialActivitySettingModelImpl._setOriginalGroupId = false;
+
+		socialActivitySettingModelImpl._originalCompanyId = socialActivitySettingModelImpl._companyId;
+
+		socialActivitySettingModelImpl._setOriginalCompanyId = false;
 
 		socialActivitySettingModelImpl._originalClassNameId = socialActivitySettingModelImpl._classNameId;
 
@@ -508,6 +544,8 @@ public class SocialActivitySettingModelImpl extends BaseModelImpl<SocialActivity
 		socialActivitySettingModelImpl._setOriginalActivityType = false;
 
 		socialActivitySettingModelImpl._originalName = socialActivitySettingModelImpl._name;
+
+		socialActivitySettingModelImpl._originalValue = socialActivitySettingModelImpl._value;
 
 		socialActivitySettingModelImpl._columnBitmask = 0;
 	}
@@ -615,10 +653,14 @@ public class SocialActivitySettingModelImpl extends BaseModelImpl<SocialActivity
 			SocialActivitySetting.class
 		};
 	private long _activitySettingId;
+	private long _originalActivitySettingId;
+	private boolean _setOriginalActivitySettingId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
 	private long _companyId;
+	private long _originalCompanyId;
+	private boolean _setOriginalCompanyId;
 	private long _classNameId;
 	private long _originalClassNameId;
 	private boolean _setOriginalClassNameId;
@@ -628,6 +670,7 @@ public class SocialActivitySettingModelImpl extends BaseModelImpl<SocialActivity
 	private String _name;
 	private String _originalName;
 	private String _value;
+	private String _originalValue;
 	private long _columnBitmask;
 	private SocialActivitySetting _escapedModel;
 }

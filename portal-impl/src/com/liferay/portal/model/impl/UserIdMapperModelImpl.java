@@ -26,6 +26,7 @@ import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.User;
 import com.liferay.portal.model.UserIdMapper;
 import com.liferay.portal.model.UserIdMapperModel;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
@@ -188,7 +189,17 @@ public class UserIdMapperModelImpl extends BaseModelImpl<UserIdMapper>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@Override
@@ -198,7 +209,17 @@ public class UserIdMapperModelImpl extends BaseModelImpl<UserIdMapper>
 
 	@Override
 	public void setUserIdMapperId(long userIdMapperId) {
+		if (!_setOriginalUserIdMapperId) {
+			_setOriginalUserIdMapperId = true;
+
+			_originalUserIdMapperId = _userIdMapperId;
+		}
+
 		_userIdMapperId = userIdMapperId;
+	}
+
+	public long getOriginalUserIdMapperId() {
+		return _originalUserIdMapperId;
 	}
 
 	@Override
@@ -276,7 +297,15 @@ public class UserIdMapperModelImpl extends BaseModelImpl<UserIdMapper>
 
 	@Override
 	public void setDescription(String description) {
+		if (_originalDescription == null) {
+			_originalDescription = _description;
+		}
+
 		_description = description;
+	}
+
+	public String getOriginalDescription() {
+		return GetterUtil.getString(_originalDescription);
 	}
 
 	@Override
@@ -403,11 +432,21 @@ public class UserIdMapperModelImpl extends BaseModelImpl<UserIdMapper>
 	public void resetOriginalValues() {
 		UserIdMapperModelImpl userIdMapperModelImpl = this;
 
+		userIdMapperModelImpl._originalMvccVersion = userIdMapperModelImpl._mvccVersion;
+
+		userIdMapperModelImpl._setOriginalMvccVersion = false;
+
+		userIdMapperModelImpl._originalUserIdMapperId = userIdMapperModelImpl._userIdMapperId;
+
+		userIdMapperModelImpl._setOriginalUserIdMapperId = false;
+
 		userIdMapperModelImpl._originalUserId = userIdMapperModelImpl._userId;
 
 		userIdMapperModelImpl._setOriginalUserId = false;
 
 		userIdMapperModelImpl._originalType = userIdMapperModelImpl._type;
+
+		userIdMapperModelImpl._originalDescription = userIdMapperModelImpl._description;
 
 		userIdMapperModelImpl._originalExternalUserId = userIdMapperModelImpl._externalUserId;
 
@@ -515,13 +554,18 @@ public class UserIdMapperModelImpl extends BaseModelImpl<UserIdMapper>
 			UserIdMapper.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _userIdMapperId;
+	private long _originalUserIdMapperId;
+	private boolean _setOriginalUserIdMapperId;
 	private long _userId;
 	private long _originalUserId;
 	private boolean _setOriginalUserId;
 	private String _type;
 	private String _originalType;
 	private String _description;
+	private String _originalDescription;
 	private String _externalUserId;
 	private String _originalExternalUserId;
 	private long _columnBitmask;

@@ -26,6 +26,7 @@ import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.Lock;
 import com.liferay.portal.model.LockModel;
 import com.liferay.portal.model.User;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
@@ -238,7 +239,17 @@ public class LockModelImpl extends BaseModelImpl<Lock> implements LockModel {
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@Override
@@ -271,7 +282,17 @@ public class LockModelImpl extends BaseModelImpl<Lock> implements LockModel {
 
 	@Override
 	public void setLockId(long lockId) {
+		if (!_setOriginalLockId) {
+			_setOriginalLockId = true;
+
+			_originalLockId = _lockId;
+		}
+
 		_lockId = lockId;
+	}
+
+	public long getOriginalLockId() {
+		return _originalLockId;
 	}
 
 	@Override
@@ -303,6 +324,12 @@ public class LockModelImpl extends BaseModelImpl<Lock> implements LockModel {
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -322,6 +349,10 @@ public class LockModelImpl extends BaseModelImpl<Lock> implements LockModel {
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -334,7 +365,15 @@ public class LockModelImpl extends BaseModelImpl<Lock> implements LockModel {
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@Override
@@ -344,7 +383,15 @@ public class LockModelImpl extends BaseModelImpl<Lock> implements LockModel {
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@Override
@@ -409,7 +456,15 @@ public class LockModelImpl extends BaseModelImpl<Lock> implements LockModel {
 
 	@Override
 	public void setOwner(String owner) {
+		if (_originalOwner == null) {
+			_originalOwner = _owner;
+		}
+
 		_owner = owner;
+	}
+
+	public String getOriginalOwner() {
+		return GetterUtil.getString(_originalOwner);
 	}
 
 	@Override
@@ -424,7 +479,17 @@ public class LockModelImpl extends BaseModelImpl<Lock> implements LockModel {
 
 	@Override
 	public void setInheritable(boolean inheritable) {
+		if (!_setOriginalInheritable) {
+			_setOriginalInheritable = true;
+
+			_originalInheritable = _inheritable;
+		}
+
 		_inheritable = inheritable;
+	}
+
+	public boolean getOriginalInheritable() {
+		return _originalInheritable;
 	}
 
 	@Override
@@ -552,15 +617,37 @@ public class LockModelImpl extends BaseModelImpl<Lock> implements LockModel {
 	public void resetOriginalValues() {
 		LockModelImpl lockModelImpl = this;
 
+		lockModelImpl._originalMvccVersion = lockModelImpl._mvccVersion;
+
+		lockModelImpl._setOriginalMvccVersion = false;
+
 		lockModelImpl._originalUuid = lockModelImpl._uuid;
+
+		lockModelImpl._originalLockId = lockModelImpl._lockId;
+
+		lockModelImpl._setOriginalLockId = false;
 
 		lockModelImpl._originalCompanyId = lockModelImpl._companyId;
 
 		lockModelImpl._setOriginalCompanyId = false;
 
+		lockModelImpl._originalUserId = lockModelImpl._userId;
+
+		lockModelImpl._setOriginalUserId = false;
+
+		lockModelImpl._originalUserName = lockModelImpl._userName;
+
+		lockModelImpl._originalCreateDate = lockModelImpl._createDate;
+
 		lockModelImpl._originalClassName = lockModelImpl._className;
 
 		lockModelImpl._originalKey = lockModelImpl._key;
+
+		lockModelImpl._originalOwner = lockModelImpl._owner;
+
+		lockModelImpl._originalInheritable = lockModelImpl._inheritable;
+
+		lockModelImpl._setOriginalInheritable = false;
 
 		lockModelImpl._originalExpirationDate = lockModelImpl._expirationDate;
 
@@ -742,21 +829,32 @@ public class LockModelImpl extends BaseModelImpl<Lock> implements LockModel {
 			Lock.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private String _uuid;
 	private String _originalUuid;
 	private long _lockId;
+	private long _originalLockId;
+	private boolean _setOriginalLockId;
 	private long _companyId;
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private String _className;
 	private String _originalClassName;
 	private String _key;
 	private String _originalKey;
 	private String _owner;
+	private String _originalOwner;
 	private boolean _inheritable;
+	private boolean _originalInheritable;
+	private boolean _setOriginalInheritable;
 	private Date _expirationDate;
 	private Date _originalExpirationDate;
 	private long _columnBitmask;

@@ -233,7 +233,17 @@ public class AnnouncementsFlagModelImpl extends BaseModelImpl<AnnouncementsFlag>
 
 	@Override
 	public void setFlagId(long flagId) {
+		if (!_setOriginalFlagId) {
+			_setOriginalFlagId = true;
+
+			_originalFlagId = _flagId;
+		}
+
 		_flagId = flagId;
+	}
+
+	public long getOriginalFlagId() {
+		return _originalFlagId;
 	}
 
 	@JSON
@@ -285,7 +295,15 @@ public class AnnouncementsFlagModelImpl extends BaseModelImpl<AnnouncementsFlag>
 	public void setCreateDate(Date createDate) {
 		_columnBitmask = -1L;
 
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -445,9 +463,15 @@ public class AnnouncementsFlagModelImpl extends BaseModelImpl<AnnouncementsFlag>
 	public void resetOriginalValues() {
 		AnnouncementsFlagModelImpl announcementsFlagModelImpl = this;
 
+		announcementsFlagModelImpl._originalFlagId = announcementsFlagModelImpl._flagId;
+
+		announcementsFlagModelImpl._setOriginalFlagId = false;
+
 		announcementsFlagModelImpl._originalUserId = announcementsFlagModelImpl._userId;
 
 		announcementsFlagModelImpl._setOriginalUserId = false;
+
+		announcementsFlagModelImpl._originalCreateDate = announcementsFlagModelImpl._createDate;
 
 		announcementsFlagModelImpl._originalEntryId = announcementsFlagModelImpl._entryId;
 
@@ -542,10 +566,13 @@ public class AnnouncementsFlagModelImpl extends BaseModelImpl<AnnouncementsFlag>
 			AnnouncementsFlag.class
 		};
 	private long _flagId;
+	private long _originalFlagId;
+	private boolean _setOriginalFlagId;
 	private long _userId;
 	private long _originalUserId;
 	private boolean _setOriginalUserId;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private long _entryId;
 	private long _originalEntryId;
 	private boolean _setOriginalEntryId;

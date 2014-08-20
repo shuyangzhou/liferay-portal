@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.UserTrackerPath;
 import com.liferay.portal.model.UserTrackerPathModel;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 
 import com.liferay.portlet.expando.model.ExpandoBridge;
@@ -176,7 +177,17 @@ public class UserTrackerPathModelImpl extends BaseModelImpl<UserTrackerPath>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@Override
@@ -186,7 +197,17 @@ public class UserTrackerPathModelImpl extends BaseModelImpl<UserTrackerPath>
 
 	@Override
 	public void setUserTrackerPathId(long userTrackerPathId) {
+		if (!_setOriginalUserTrackerPathId) {
+			_setOriginalUserTrackerPathId = true;
+
+			_originalUserTrackerPathId = _userTrackerPathId;
+		}
+
 		_userTrackerPathId = userTrackerPathId;
+	}
+
+	public long getOriginalUserTrackerPathId() {
+		return _originalUserTrackerPathId;
 	}
 
 	@Override
@@ -223,7 +244,15 @@ public class UserTrackerPathModelImpl extends BaseModelImpl<UserTrackerPath>
 
 	@Override
 	public void setPath(String path) {
+		if (_originalPath == null) {
+			_originalPath = _path;
+		}
+
 		_path = path;
+	}
+
+	public String getOriginalPath() {
+		return GetterUtil.getString(_originalPath);
 	}
 
 	@Override
@@ -233,7 +262,15 @@ public class UserTrackerPathModelImpl extends BaseModelImpl<UserTrackerPath>
 
 	@Override
 	public void setPathDate(Date pathDate) {
+		if (_originalPathDate == null) {
+			_originalPathDate = _pathDate;
+		}
+
 		_pathDate = pathDate;
+	}
+
+	public Date getOriginalPathDate() {
+		return _originalPathDate;
 	}
 
 	public long getColumnBitmask() {
@@ -334,9 +371,21 @@ public class UserTrackerPathModelImpl extends BaseModelImpl<UserTrackerPath>
 	public void resetOriginalValues() {
 		UserTrackerPathModelImpl userTrackerPathModelImpl = this;
 
+		userTrackerPathModelImpl._originalMvccVersion = userTrackerPathModelImpl._mvccVersion;
+
+		userTrackerPathModelImpl._setOriginalMvccVersion = false;
+
+		userTrackerPathModelImpl._originalUserTrackerPathId = userTrackerPathModelImpl._userTrackerPathId;
+
+		userTrackerPathModelImpl._setOriginalUserTrackerPathId = false;
+
 		userTrackerPathModelImpl._originalUserTrackerId = userTrackerPathModelImpl._userTrackerId;
 
 		userTrackerPathModelImpl._setOriginalUserTrackerId = false;
+
+		userTrackerPathModelImpl._originalPath = userTrackerPathModelImpl._path;
+
+		userTrackerPathModelImpl._originalPathDate = userTrackerPathModelImpl._pathDate;
 
 		userTrackerPathModelImpl._columnBitmask = 0;
 	}
@@ -429,12 +478,18 @@ public class UserTrackerPathModelImpl extends BaseModelImpl<UserTrackerPath>
 			UserTrackerPath.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _userTrackerPathId;
+	private long _originalUserTrackerPathId;
+	private boolean _setOriginalUserTrackerPathId;
 	private long _userTrackerId;
 	private long _originalUserTrackerId;
 	private boolean _setOriginalUserTrackerId;
 	private String _path;
+	private String _originalPath;
 	private Date _pathDate;
+	private Date _originalPathDate;
 	private long _columnBitmask;
 	private UserTrackerPath _escapedModel;
 }

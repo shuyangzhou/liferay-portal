@@ -308,7 +308,17 @@ public class SCProductVersionModelImpl extends BaseModelImpl<SCProductVersion>
 
 	@Override
 	public void setProductVersionId(long productVersionId) {
+		if (!_setOriginalProductVersionId) {
+			_setOriginalProductVersionId = true;
+
+			_originalProductVersionId = _productVersionId;
+		}
+
 		_productVersionId = productVersionId;
+	}
+
+	public long getOriginalProductVersionId() {
+		return _originalProductVersionId;
 	}
 
 	@JSON
@@ -319,7 +329,17 @@ public class SCProductVersionModelImpl extends BaseModelImpl<SCProductVersion>
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if (!_setOriginalCompanyId) {
+			_setOriginalCompanyId = true;
+
+			_originalCompanyId = _companyId;
+		}
+
 		_companyId = companyId;
+	}
+
+	public long getOriginalCompanyId() {
+		return _originalCompanyId;
 	}
 
 	@JSON
@@ -330,6 +350,12 @@ public class SCProductVersionModelImpl extends BaseModelImpl<SCProductVersion>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -349,6 +375,10 @@ public class SCProductVersionModelImpl extends BaseModelImpl<SCProductVersion>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -362,7 +392,15 @@ public class SCProductVersionModelImpl extends BaseModelImpl<SCProductVersion>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -375,7 +413,15 @@ public class SCProductVersionModelImpl extends BaseModelImpl<SCProductVersion>
 	public void setCreateDate(Date createDate) {
 		_columnBitmask = -1L;
 
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -386,7 +432,15 @@ public class SCProductVersionModelImpl extends BaseModelImpl<SCProductVersion>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -425,7 +479,15 @@ public class SCProductVersionModelImpl extends BaseModelImpl<SCProductVersion>
 
 	@Override
 	public void setVersion(String version) {
+		if (_originalVersion == null) {
+			_originalVersion = _version;
+		}
+
 		_version = version;
+	}
+
+	public String getOriginalVersion() {
+		return GetterUtil.getString(_originalVersion);
 	}
 
 	@JSON
@@ -441,7 +503,15 @@ public class SCProductVersionModelImpl extends BaseModelImpl<SCProductVersion>
 
 	@Override
 	public void setChangeLog(String changeLog) {
+		if (_originalChangeLog == null) {
+			_originalChangeLog = _changeLog;
+		}
+
 		_changeLog = changeLog;
+	}
+
+	public String getOriginalChangeLog() {
+		return GetterUtil.getString(_originalChangeLog);
 	}
 
 	@JSON
@@ -457,7 +527,15 @@ public class SCProductVersionModelImpl extends BaseModelImpl<SCProductVersion>
 
 	@Override
 	public void setDownloadPageURL(String downloadPageURL) {
+		if (_originalDownloadPageURL == null) {
+			_originalDownloadPageURL = _downloadPageURL;
+		}
+
 		_downloadPageURL = downloadPageURL;
+	}
+
+	public String getOriginalDownloadPageURL() {
+		return GetterUtil.getString(_originalDownloadPageURL);
 	}
 
 	@JSON
@@ -499,7 +577,17 @@ public class SCProductVersionModelImpl extends BaseModelImpl<SCProductVersion>
 
 	@Override
 	public void setRepoStoreArtifact(boolean repoStoreArtifact) {
+		if (!_setOriginalRepoStoreArtifact) {
+			_setOriginalRepoStoreArtifact = true;
+
+			_originalRepoStoreArtifact = _repoStoreArtifact;
+		}
+
 		_repoStoreArtifact = repoStoreArtifact;
+	}
+
+	public boolean getOriginalRepoStoreArtifact() {
+		return _originalRepoStoreArtifact;
 	}
 
 	public long getColumnBitmask() {
@@ -608,11 +696,39 @@ public class SCProductVersionModelImpl extends BaseModelImpl<SCProductVersion>
 	public void resetOriginalValues() {
 		SCProductVersionModelImpl scProductVersionModelImpl = this;
 
+		scProductVersionModelImpl._originalProductVersionId = scProductVersionModelImpl._productVersionId;
+
+		scProductVersionModelImpl._setOriginalProductVersionId = false;
+
+		scProductVersionModelImpl._originalCompanyId = scProductVersionModelImpl._companyId;
+
+		scProductVersionModelImpl._setOriginalCompanyId = false;
+
+		scProductVersionModelImpl._originalUserId = scProductVersionModelImpl._userId;
+
+		scProductVersionModelImpl._setOriginalUserId = false;
+
+		scProductVersionModelImpl._originalUserName = scProductVersionModelImpl._userName;
+
+		scProductVersionModelImpl._originalCreateDate = scProductVersionModelImpl._createDate;
+
+		scProductVersionModelImpl._originalModifiedDate = scProductVersionModelImpl._modifiedDate;
+
 		scProductVersionModelImpl._originalProductEntryId = scProductVersionModelImpl._productEntryId;
 
 		scProductVersionModelImpl._setOriginalProductEntryId = false;
 
+		scProductVersionModelImpl._originalVersion = scProductVersionModelImpl._version;
+
+		scProductVersionModelImpl._originalChangeLog = scProductVersionModelImpl._changeLog;
+
+		scProductVersionModelImpl._originalDownloadPageURL = scProductVersionModelImpl._downloadPageURL;
+
 		scProductVersionModelImpl._originalDirectDownloadURL = scProductVersionModelImpl._directDownloadURL;
+
+		scProductVersionModelImpl._originalRepoStoreArtifact = scProductVersionModelImpl._repoStoreArtifact;
+
+		scProductVersionModelImpl._setOriginalRepoStoreArtifact = false;
 
 		scProductVersionModelImpl._columnBitmask = 0;
 	}
@@ -792,20 +908,34 @@ public class SCProductVersionModelImpl extends BaseModelImpl<SCProductVersion>
 			SCProductVersion.class
 		};
 	private long _productVersionId;
+	private long _originalProductVersionId;
+	private boolean _setOriginalProductVersionId;
 	private long _companyId;
+	private long _originalCompanyId;
+	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _productEntryId;
 	private long _originalProductEntryId;
 	private boolean _setOriginalProductEntryId;
 	private String _version;
+	private String _originalVersion;
 	private String _changeLog;
+	private String _originalChangeLog;
 	private String _downloadPageURL;
+	private String _originalDownloadPageURL;
 	private String _directDownloadURL;
 	private String _originalDirectDownloadURL;
 	private boolean _repoStoreArtifact;
+	private boolean _originalRepoStoreArtifact;
+	private boolean _setOriginalRepoStoreArtifact;
 	private long _columnBitmask;
 	private SCProductVersion _escapedModel;
 }

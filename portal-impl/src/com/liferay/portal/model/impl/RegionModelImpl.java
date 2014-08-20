@@ -26,6 +26,7 @@ import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.Region;
 import com.liferay.portal.model.RegionModel;
 import com.liferay.portal.model.RegionSoap;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 
 import com.liferay.portlet.expando.model.ExpandoBridge;
@@ -235,7 +236,17 @@ public class RegionModelImpl extends BaseModelImpl<Region>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@JSON
@@ -246,7 +257,17 @@ public class RegionModelImpl extends BaseModelImpl<Region>
 
 	@Override
 	public void setRegionId(long regionId) {
+		if (!_setOriginalRegionId) {
+			_setOriginalRegionId = true;
+
+			_originalRegionId = _regionId;
+		}
+
 		_regionId = regionId;
+	}
+
+	public long getOriginalRegionId() {
+		return _originalRegionId;
 	}
 
 	@JSON
@@ -313,7 +334,15 @@ public class RegionModelImpl extends BaseModelImpl<Region>
 	public void setName(String name) {
 		_columnBitmask = -1L;
 
+		if (_originalName == null) {
+			_originalName = _name;
+		}
+
 		_name = name;
+	}
+
+	public String getOriginalName() {
+		return GetterUtil.getString(_originalName);
 	}
 
 	@JSON
@@ -441,11 +470,21 @@ public class RegionModelImpl extends BaseModelImpl<Region>
 	public void resetOriginalValues() {
 		RegionModelImpl regionModelImpl = this;
 
+		regionModelImpl._originalMvccVersion = regionModelImpl._mvccVersion;
+
+		regionModelImpl._setOriginalMvccVersion = false;
+
+		regionModelImpl._originalRegionId = regionModelImpl._regionId;
+
+		regionModelImpl._setOriginalRegionId = false;
+
 		regionModelImpl._originalCountryId = regionModelImpl._countryId;
 
 		regionModelImpl._setOriginalCountryId = false;
 
 		regionModelImpl._originalRegionCode = regionModelImpl._regionCode;
+
+		regionModelImpl._originalName = regionModelImpl._name;
 
 		regionModelImpl._originalActive = regionModelImpl._active;
 
@@ -549,13 +588,18 @@ public class RegionModelImpl extends BaseModelImpl<Region>
 			Region.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _regionId;
+	private long _originalRegionId;
+	private boolean _setOriginalRegionId;
 	private long _countryId;
 	private long _originalCountryId;
 	private boolean _setOriginalCountryId;
 	private String _regionCode;
 	private String _originalRegionCode;
 	private String _name;
+	private String _originalName;
 	private boolean _active;
 	private boolean _originalActive;
 	private boolean _setOriginalActive;

@@ -27,6 +27,7 @@ import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.PasswordTracker;
 import com.liferay.portal.model.PasswordTrackerModel;
 import com.liferay.portal.model.User;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
@@ -180,7 +181,17 @@ public class PasswordTrackerModelImpl extends BaseModelImpl<PasswordTracker>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@Override
@@ -190,7 +201,17 @@ public class PasswordTrackerModelImpl extends BaseModelImpl<PasswordTracker>
 
 	@Override
 	public void setPasswordTrackerId(long passwordTrackerId) {
+		if (!_setOriginalPasswordTrackerId) {
+			_setOriginalPasswordTrackerId = true;
+
+			_originalPasswordTrackerId = _passwordTrackerId;
+		}
+
 		_passwordTrackerId = passwordTrackerId;
+	}
+
+	public long getOriginalPasswordTrackerId() {
+		return _originalPasswordTrackerId;
 	}
 
 	@Override
@@ -240,7 +261,15 @@ public class PasswordTrackerModelImpl extends BaseModelImpl<PasswordTracker>
 	public void setCreateDate(Date createDate) {
 		_columnBitmask = -1L;
 
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@Override
@@ -255,7 +284,15 @@ public class PasswordTrackerModelImpl extends BaseModelImpl<PasswordTracker>
 
 	@Override
 	public void setPassword(String password) {
+		if (_originalPassword == null) {
+			_originalPassword = _password;
+		}
+
 		_password = password;
+	}
+
+	public String getOriginalPassword() {
+		return GetterUtil.getString(_originalPassword);
 	}
 
 	public long getColumnBitmask() {
@@ -373,9 +410,21 @@ public class PasswordTrackerModelImpl extends BaseModelImpl<PasswordTracker>
 	public void resetOriginalValues() {
 		PasswordTrackerModelImpl passwordTrackerModelImpl = this;
 
+		passwordTrackerModelImpl._originalMvccVersion = passwordTrackerModelImpl._mvccVersion;
+
+		passwordTrackerModelImpl._setOriginalMvccVersion = false;
+
+		passwordTrackerModelImpl._originalPasswordTrackerId = passwordTrackerModelImpl._passwordTrackerId;
+
+		passwordTrackerModelImpl._setOriginalPasswordTrackerId = false;
+
 		passwordTrackerModelImpl._originalUserId = passwordTrackerModelImpl._userId;
 
 		passwordTrackerModelImpl._setOriginalUserId = false;
+
+		passwordTrackerModelImpl._originalCreateDate = passwordTrackerModelImpl._createDate;
+
+		passwordTrackerModelImpl._originalPassword = passwordTrackerModelImpl._password;
 
 		passwordTrackerModelImpl._columnBitmask = 0;
 	}
@@ -468,12 +517,18 @@ public class PasswordTrackerModelImpl extends BaseModelImpl<PasswordTracker>
 			PasswordTracker.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _passwordTrackerId;
+	private long _originalPasswordTrackerId;
+	private boolean _setOriginalPasswordTrackerId;
 	private long _userId;
 	private long _originalUserId;
 	private boolean _setOriginalUserId;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private String _password;
+	private String _originalPassword;
 	private long _columnBitmask;
 	private PasswordTracker _escapedModel;
 }

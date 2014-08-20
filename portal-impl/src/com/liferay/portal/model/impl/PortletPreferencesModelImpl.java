@@ -26,6 +26,7 @@ import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.PortletPreferences;
 import com.liferay.portal.model.PortletPreferencesModel;
 import com.liferay.portal.model.PortletPreferencesSoap;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 
 import com.liferay.portlet.expando.model.ExpandoBridge;
@@ -246,7 +247,17 @@ public class PortletPreferencesModelImpl extends BaseModelImpl<PortletPreference
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@JSON
@@ -257,7 +268,17 @@ public class PortletPreferencesModelImpl extends BaseModelImpl<PortletPreference
 
 	@Override
 	public void setPortletPreferencesId(long portletPreferencesId) {
+		if (!_setOriginalPortletPreferencesId) {
+			_setOriginalPortletPreferencesId = true;
+
+			_originalPortletPreferencesId = _portletPreferencesId;
+		}
+
 		_portletPreferencesId = portletPreferencesId;
+	}
+
+	public long getOriginalPortletPreferencesId() {
+		return _originalPortletPreferencesId;
 	}
 
 	@JSON
@@ -368,7 +389,15 @@ public class PortletPreferencesModelImpl extends BaseModelImpl<PortletPreference
 
 	@Override
 	public void setPreferences(String preferences) {
+		if (_originalPreferences == null) {
+			_originalPreferences = _preferences;
+		}
+
 		_preferences = preferences;
+	}
+
+	public String getOriginalPreferences() {
+		return GetterUtil.getString(_originalPreferences);
 	}
 
 	public long getColumnBitmask() {
@@ -471,6 +500,14 @@ public class PortletPreferencesModelImpl extends BaseModelImpl<PortletPreference
 	public void resetOriginalValues() {
 		PortletPreferencesModelImpl portletPreferencesModelImpl = this;
 
+		portletPreferencesModelImpl._originalMvccVersion = portletPreferencesModelImpl._mvccVersion;
+
+		portletPreferencesModelImpl._setOriginalMvccVersion = false;
+
+		portletPreferencesModelImpl._originalPortletPreferencesId = portletPreferencesModelImpl._portletPreferencesId;
+
+		portletPreferencesModelImpl._setOriginalPortletPreferencesId = false;
+
 		portletPreferencesModelImpl._originalOwnerId = portletPreferencesModelImpl._ownerId;
 
 		portletPreferencesModelImpl._setOriginalOwnerId = false;
@@ -484,6 +521,8 @@ public class PortletPreferencesModelImpl extends BaseModelImpl<PortletPreference
 		portletPreferencesModelImpl._setOriginalPlid = false;
 
 		portletPreferencesModelImpl._originalPortletId = portletPreferencesModelImpl._portletId;
+
+		portletPreferencesModelImpl._originalPreferences = portletPreferencesModelImpl._preferences;
 
 		portletPreferencesModelImpl._columnBitmask = 0;
 	}
@@ -591,7 +630,11 @@ public class PortletPreferencesModelImpl extends BaseModelImpl<PortletPreference
 			PortletPreferences.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _portletPreferencesId;
+	private long _originalPortletPreferencesId;
+	private boolean _setOriginalPortletPreferencesId;
 	private long _ownerId;
 	private long _originalOwnerId;
 	private boolean _setOriginalOwnerId;
@@ -604,6 +647,7 @@ public class PortletPreferencesModelImpl extends BaseModelImpl<PortletPreference
 	private String _portletId;
 	private String _originalPortletId;
 	private String _preferences;
+	private String _originalPreferences;
 	private long _columnBitmask;
 	private PortletPreferences _escapedModel;
 }

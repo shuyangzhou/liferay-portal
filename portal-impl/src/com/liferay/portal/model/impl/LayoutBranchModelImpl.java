@@ -28,6 +28,7 @@ import com.liferay.portal.model.LayoutBranch;
 import com.liferay.portal.model.LayoutBranchModel;
 import com.liferay.portal.model.LayoutBranchSoap;
 import com.liferay.portal.model.User;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
@@ -284,7 +285,17 @@ public class LayoutBranchModelImpl extends BaseModelImpl<LayoutBranch>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@JSON
@@ -295,7 +306,17 @@ public class LayoutBranchModelImpl extends BaseModelImpl<LayoutBranch>
 
 	@Override
 	public void setLayoutBranchId(long LayoutBranchId) {
+		if (!_setOriginalLayoutBranchId) {
+			_setOriginalLayoutBranchId = true;
+
+			_originalLayoutBranchId = _LayoutBranchId;
+		}
+
 		_LayoutBranchId = LayoutBranchId;
+	}
+
+	public long getOriginalLayoutBranchId() {
+		return _originalLayoutBranchId;
 	}
 
 	@JSON
@@ -306,7 +327,17 @@ public class LayoutBranchModelImpl extends BaseModelImpl<LayoutBranch>
 
 	@Override
 	public void setGroupId(long groupId) {
+		if (!_setOriginalGroupId) {
+			_setOriginalGroupId = true;
+
+			_originalGroupId = _groupId;
+		}
+
 		_groupId = groupId;
+	}
+
+	public long getOriginalGroupId() {
+		return _originalGroupId;
 	}
 
 	@JSON
@@ -317,7 +348,17 @@ public class LayoutBranchModelImpl extends BaseModelImpl<LayoutBranch>
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if (!_setOriginalCompanyId) {
+			_setOriginalCompanyId = true;
+
+			_originalCompanyId = _companyId;
+		}
+
 		_companyId = companyId;
+	}
+
+	public long getOriginalCompanyId() {
+		return _originalCompanyId;
 	}
 
 	@JSON
@@ -328,6 +369,12 @@ public class LayoutBranchModelImpl extends BaseModelImpl<LayoutBranch>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -347,6 +394,10 @@ public class LayoutBranchModelImpl extends BaseModelImpl<LayoutBranch>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -360,7 +411,15 @@ public class LayoutBranchModelImpl extends BaseModelImpl<LayoutBranch>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -448,7 +507,15 @@ public class LayoutBranchModelImpl extends BaseModelImpl<LayoutBranch>
 
 	@Override
 	public void setDescription(String description) {
+		if (_originalDescription == null) {
+			_originalDescription = _description;
+		}
+
 		_description = description;
+	}
+
+	public String getOriginalDescription() {
+		return GetterUtil.getString(_originalDescription);
 	}
 
 	@JSON
@@ -583,6 +650,28 @@ public class LayoutBranchModelImpl extends BaseModelImpl<LayoutBranch>
 	public void resetOriginalValues() {
 		LayoutBranchModelImpl layoutBranchModelImpl = this;
 
+		layoutBranchModelImpl._originalMvccVersion = layoutBranchModelImpl._mvccVersion;
+
+		layoutBranchModelImpl._setOriginalMvccVersion = false;
+
+		layoutBranchModelImpl._originalLayoutBranchId = layoutBranchModelImpl._LayoutBranchId;
+
+		layoutBranchModelImpl._setOriginalLayoutBranchId = false;
+
+		layoutBranchModelImpl._originalGroupId = layoutBranchModelImpl._groupId;
+
+		layoutBranchModelImpl._setOriginalGroupId = false;
+
+		layoutBranchModelImpl._originalCompanyId = layoutBranchModelImpl._companyId;
+
+		layoutBranchModelImpl._setOriginalCompanyId = false;
+
+		layoutBranchModelImpl._originalUserId = layoutBranchModelImpl._userId;
+
+		layoutBranchModelImpl._setOriginalUserId = false;
+
+		layoutBranchModelImpl._originalUserName = layoutBranchModelImpl._userName;
+
 		layoutBranchModelImpl._originalLayoutSetBranchId = layoutBranchModelImpl._layoutSetBranchId;
 
 		layoutBranchModelImpl._setOriginalLayoutSetBranchId = false;
@@ -592,6 +681,8 @@ public class LayoutBranchModelImpl extends BaseModelImpl<LayoutBranch>
 		layoutBranchModelImpl._setOriginalPlid = false;
 
 		layoutBranchModelImpl._originalName = layoutBranchModelImpl._name;
+
+		layoutBranchModelImpl._originalDescription = layoutBranchModelImpl._description;
 
 		layoutBranchModelImpl._originalMaster = layoutBranchModelImpl._master;
 
@@ -741,11 +832,22 @@ public class LayoutBranchModelImpl extends BaseModelImpl<LayoutBranch>
 			LayoutBranch.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _LayoutBranchId;
+	private long _originalLayoutBranchId;
+	private boolean _setOriginalLayoutBranchId;
 	private long _groupId;
+	private long _originalGroupId;
+	private boolean _setOriginalGroupId;
 	private long _companyId;
+	private long _originalCompanyId;
+	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private long _layoutSetBranchId;
 	private long _originalLayoutSetBranchId;
 	private boolean _setOriginalLayoutSetBranchId;
@@ -755,6 +857,7 @@ public class LayoutBranchModelImpl extends BaseModelImpl<LayoutBranch>
 	private String _name;
 	private String _originalName;
 	private String _description;
+	private String _originalDescription;
 	private boolean _master;
 	private boolean _originalMaster;
 	private boolean _setOriginalMaster;

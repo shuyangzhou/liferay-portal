@@ -29,6 +29,7 @@ import com.liferay.portal.model.MembershipRequest;
 import com.liferay.portal.model.MembershipRequestModel;
 import com.liferay.portal.model.MembershipRequestSoap;
 import com.liferay.portal.model.User;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
@@ -286,7 +287,17 @@ public class MembershipRequestModelImpl extends BaseModelImpl<MembershipRequest>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@JSON
@@ -297,7 +308,17 @@ public class MembershipRequestModelImpl extends BaseModelImpl<MembershipRequest>
 
 	@Override
 	public void setMembershipRequestId(long membershipRequestId) {
+		if (!_setOriginalMembershipRequestId) {
+			_setOriginalMembershipRequestId = true;
+
+			_originalMembershipRequestId = _membershipRequestId;
+		}
+
 		_membershipRequestId = membershipRequestId;
+	}
+
+	public long getOriginalMembershipRequestId() {
+		return _originalMembershipRequestId;
 	}
 
 	@JSON
@@ -331,7 +352,17 @@ public class MembershipRequestModelImpl extends BaseModelImpl<MembershipRequest>
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if (!_setOriginalCompanyId) {
+			_setOriginalCompanyId = true;
+
+			_originalCompanyId = _companyId;
+		}
+
 		_companyId = companyId;
+	}
+
+	public long getOriginalCompanyId() {
+		return _originalCompanyId;
 	}
 
 	@JSON
@@ -383,7 +414,15 @@ public class MembershipRequestModelImpl extends BaseModelImpl<MembershipRequest>
 	public void setCreateDate(Date createDate) {
 		_columnBitmask = -1L;
 
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -399,7 +438,15 @@ public class MembershipRequestModelImpl extends BaseModelImpl<MembershipRequest>
 
 	@Override
 	public void setComments(String comments) {
+		if (_originalComments == null) {
+			_originalComments = _comments;
+		}
+
 		_comments = comments;
+	}
+
+	public String getOriginalComments() {
+		return GetterUtil.getString(_originalComments);
 	}
 
 	@JSON
@@ -415,7 +462,15 @@ public class MembershipRequestModelImpl extends BaseModelImpl<MembershipRequest>
 
 	@Override
 	public void setReplyComments(String replyComments) {
+		if (_originalReplyComments == null) {
+			_originalReplyComments = _replyComments;
+		}
+
 		_replyComments = replyComments;
+	}
+
+	public String getOriginalReplyComments() {
+		return GetterUtil.getString(_originalReplyComments);
 	}
 
 	@JSON
@@ -426,7 +481,15 @@ public class MembershipRequestModelImpl extends BaseModelImpl<MembershipRequest>
 
 	@Override
 	public void setReplyDate(Date replyDate) {
+		if (_originalReplyDate == null) {
+			_originalReplyDate = _replyDate;
+		}
+
 		_replyDate = replyDate;
+	}
+
+	public Date getOriginalReplyDate() {
+		return _originalReplyDate;
 	}
 
 	@JSON
@@ -437,6 +500,12 @@ public class MembershipRequestModelImpl extends BaseModelImpl<MembershipRequest>
 
 	@Override
 	public void setReplierUserId(long replierUserId) {
+		if (!_setOriginalReplierUserId) {
+			_setOriginalReplierUserId = true;
+
+			_originalReplierUserId = _replierUserId;
+		}
+
 		_replierUserId = replierUserId;
 	}
 
@@ -454,6 +523,10 @@ public class MembershipRequestModelImpl extends BaseModelImpl<MembershipRequest>
 
 	@Override
 	public void setReplierUserUuid(String replierUserUuid) {
+	}
+
+	public long getOriginalReplierUserId() {
+		return _originalReplierUserId;
 	}
 
 	@JSON
@@ -584,13 +657,37 @@ public class MembershipRequestModelImpl extends BaseModelImpl<MembershipRequest>
 	public void resetOriginalValues() {
 		MembershipRequestModelImpl membershipRequestModelImpl = this;
 
+		membershipRequestModelImpl._originalMvccVersion = membershipRequestModelImpl._mvccVersion;
+
+		membershipRequestModelImpl._setOriginalMvccVersion = false;
+
+		membershipRequestModelImpl._originalMembershipRequestId = membershipRequestModelImpl._membershipRequestId;
+
+		membershipRequestModelImpl._setOriginalMembershipRequestId = false;
+
 		membershipRequestModelImpl._originalGroupId = membershipRequestModelImpl._groupId;
 
 		membershipRequestModelImpl._setOriginalGroupId = false;
 
+		membershipRequestModelImpl._originalCompanyId = membershipRequestModelImpl._companyId;
+
+		membershipRequestModelImpl._setOriginalCompanyId = false;
+
 		membershipRequestModelImpl._originalUserId = membershipRequestModelImpl._userId;
 
 		membershipRequestModelImpl._setOriginalUserId = false;
+
+		membershipRequestModelImpl._originalCreateDate = membershipRequestModelImpl._createDate;
+
+		membershipRequestModelImpl._originalComments = membershipRequestModelImpl._comments;
+
+		membershipRequestModelImpl._originalReplyComments = membershipRequestModelImpl._replyComments;
+
+		membershipRequestModelImpl._originalReplyDate = membershipRequestModelImpl._replyDate;
+
+		membershipRequestModelImpl._originalReplierUserId = membershipRequestModelImpl._replierUserId;
+
+		membershipRequestModelImpl._setOriginalReplierUserId = false;
 
 		membershipRequestModelImpl._originalStatusId = membershipRequestModelImpl._statusId;
 
@@ -748,19 +845,31 @@ public class MembershipRequestModelImpl extends BaseModelImpl<MembershipRequest>
 			MembershipRequest.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _membershipRequestId;
+	private long _originalMembershipRequestId;
+	private boolean _setOriginalMembershipRequestId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
 	private long _companyId;
+	private long _originalCompanyId;
+	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private long _originalUserId;
 	private boolean _setOriginalUserId;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private String _comments;
+	private String _originalComments;
 	private String _replyComments;
+	private String _originalReplyComments;
 	private Date _replyDate;
+	private Date _originalReplyDate;
 	private long _replierUserId;
+	private long _originalReplierUserId;
+	private boolean _setOriginalReplierUserId;
 	private int _statusId;
 	private int _originalStatusId;
 	private boolean _setOriginalStatusId;

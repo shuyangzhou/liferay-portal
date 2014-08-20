@@ -294,7 +294,17 @@ public class MBBanModelImpl extends BaseModelImpl<MBBan> implements MBBanModel {
 
 	@Override
 	public void setBanId(long banId) {
+		if (!_setOriginalBanId) {
+			_setOriginalBanId = true;
+
+			_originalBanId = _banId;
+		}
+
 		_banId = banId;
+	}
+
+	public long getOriginalBanId() {
+		return _originalBanId;
 	}
 
 	@JSON
@@ -395,7 +405,15 @@ public class MBBanModelImpl extends BaseModelImpl<MBBan> implements MBBanModel {
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -406,7 +424,15 @@ public class MBBanModelImpl extends BaseModelImpl<MBBan> implements MBBanModel {
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -417,7 +443,15 @@ public class MBBanModelImpl extends BaseModelImpl<MBBan> implements MBBanModel {
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -569,6 +603,10 @@ public class MBBanModelImpl extends BaseModelImpl<MBBan> implements MBBanModel {
 
 		mbBanModelImpl._originalUuid = mbBanModelImpl._uuid;
 
+		mbBanModelImpl._originalBanId = mbBanModelImpl._banId;
+
+		mbBanModelImpl._setOriginalBanId = false;
+
 		mbBanModelImpl._originalGroupId = mbBanModelImpl._groupId;
 
 		mbBanModelImpl._setOriginalGroupId = false;
@@ -580,6 +618,12 @@ public class MBBanModelImpl extends BaseModelImpl<MBBan> implements MBBanModel {
 		mbBanModelImpl._originalUserId = mbBanModelImpl._userId;
 
 		mbBanModelImpl._setOriginalUserId = false;
+
+		mbBanModelImpl._originalUserName = mbBanModelImpl._userName;
+
+		mbBanModelImpl._originalCreateDate = mbBanModelImpl._createDate;
+
+		mbBanModelImpl._originalModifiedDate = mbBanModelImpl._modifiedDate;
 
 		mbBanModelImpl._originalBanUserId = mbBanModelImpl._banUserId;
 
@@ -723,6 +767,8 @@ public class MBBanModelImpl extends BaseModelImpl<MBBan> implements MBBanModel {
 	private String _uuid;
 	private String _originalUuid;
 	private long _banId;
+	private long _originalBanId;
+	private boolean _setOriginalBanId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -733,8 +779,11 @@ public class MBBanModelImpl extends BaseModelImpl<MBBan> implements MBBanModel {
 	private long _originalUserId;
 	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _banUserId;
 	private long _originalBanUserId;
 	private boolean _setOriginalBanUserId;

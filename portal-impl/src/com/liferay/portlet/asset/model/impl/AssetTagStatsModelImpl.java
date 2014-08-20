@@ -171,7 +171,17 @@ public class AssetTagStatsModelImpl extends BaseModelImpl<AssetTagStats>
 
 	@Override
 	public void setTagStatsId(long tagStatsId) {
+		if (!_setOriginalTagStatsId) {
+			_setOriginalTagStatsId = true;
+
+			_originalTagStatsId = _tagStatsId;
+		}
+
 		_tagStatsId = tagStatsId;
+	}
+
+	public long getOriginalTagStatsId() {
+		return _originalTagStatsId;
 	}
 
 	@Override
@@ -247,7 +257,17 @@ public class AssetTagStatsModelImpl extends BaseModelImpl<AssetTagStats>
 	public void setAssetCount(int assetCount) {
 		_columnBitmask = -1L;
 
+		if (!_setOriginalAssetCount) {
+			_setOriginalAssetCount = true;
+
+			_originalAssetCount = _assetCount;
+		}
+
 		_assetCount = assetCount;
+	}
+
+	public int getOriginalAssetCount() {
+		return _originalAssetCount;
 	}
 
 	public long getColumnBitmask() {
@@ -355,6 +375,10 @@ public class AssetTagStatsModelImpl extends BaseModelImpl<AssetTagStats>
 	public void resetOriginalValues() {
 		AssetTagStatsModelImpl assetTagStatsModelImpl = this;
 
+		assetTagStatsModelImpl._originalTagStatsId = assetTagStatsModelImpl._tagStatsId;
+
+		assetTagStatsModelImpl._setOriginalTagStatsId = false;
+
 		assetTagStatsModelImpl._originalTagId = assetTagStatsModelImpl._tagId;
 
 		assetTagStatsModelImpl._setOriginalTagId = false;
@@ -362,6 +386,10 @@ public class AssetTagStatsModelImpl extends BaseModelImpl<AssetTagStats>
 		assetTagStatsModelImpl._originalClassNameId = assetTagStatsModelImpl._classNameId;
 
 		assetTagStatsModelImpl._setOriginalClassNameId = false;
+
+		assetTagStatsModelImpl._originalAssetCount = assetTagStatsModelImpl._assetCount;
+
+		assetTagStatsModelImpl._setOriginalAssetCount = false;
 
 		assetTagStatsModelImpl._columnBitmask = 0;
 	}
@@ -433,6 +461,8 @@ public class AssetTagStatsModelImpl extends BaseModelImpl<AssetTagStats>
 			AssetTagStats.class
 		};
 	private long _tagStatsId;
+	private long _originalTagStatsId;
+	private boolean _setOriginalTagStatsId;
 	private long _tagId;
 	private long _originalTagId;
 	private boolean _setOriginalTagId;
@@ -440,6 +470,8 @@ public class AssetTagStatsModelImpl extends BaseModelImpl<AssetTagStats>
 	private long _originalClassNameId;
 	private boolean _setOriginalClassNameId;
 	private int _assetCount;
+	private int _originalAssetCount;
+	private boolean _setOriginalAssetCount;
 	private long _columnBitmask;
 	private AssetTagStats _escapedModel;
 }

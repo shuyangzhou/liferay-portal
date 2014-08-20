@@ -458,6 +458,12 @@ public class JournalFolderModelImpl extends BaseModelImpl<JournalFolder>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -477,6 +483,10 @@ public class JournalFolderModelImpl extends BaseModelImpl<JournalFolder>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -490,7 +500,15 @@ public class JournalFolderModelImpl extends BaseModelImpl<JournalFolder>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -501,7 +519,15 @@ public class JournalFolderModelImpl extends BaseModelImpl<JournalFolder>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -512,7 +538,15 @@ public class JournalFolderModelImpl extends BaseModelImpl<JournalFolder>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -551,7 +585,15 @@ public class JournalFolderModelImpl extends BaseModelImpl<JournalFolder>
 
 	@Override
 	public void setTreePath(String treePath) {
+		if (_originalTreePath == null) {
+			_originalTreePath = _treePath;
+		}
+
 		_treePath = treePath;
+	}
+
+	public String getOriginalTreePath() {
+		return GetterUtil.getString(_originalTreePath);
 	}
 
 	@JSON
@@ -593,7 +635,15 @@ public class JournalFolderModelImpl extends BaseModelImpl<JournalFolder>
 
 	@Override
 	public void setDescription(String description) {
+		if (_originalDescription == null) {
+			_originalDescription = _description;
+		}
+
 		_description = description;
+	}
+
+	public String getOriginalDescription() {
+		return GetterUtil.getString(_originalDescription);
 	}
 
 	@JSON
@@ -604,7 +654,17 @@ public class JournalFolderModelImpl extends BaseModelImpl<JournalFolder>
 
 	@Override
 	public void setRestrictionType(int restrictionType) {
+		if (!_setOriginalRestrictionType) {
+			_setOriginalRestrictionType = true;
+
+			_originalRestrictionType = _restrictionType;
+		}
+
 		_restrictionType = restrictionType;
+	}
+
+	public int getOriginalRestrictionType() {
+		return _originalRestrictionType;
 	}
 
 	@JSON
@@ -638,6 +698,12 @@ public class JournalFolderModelImpl extends BaseModelImpl<JournalFolder>
 
 	@Override
 	public void setStatusByUserId(long statusByUserId) {
+		if (!_setOriginalStatusByUserId) {
+			_setOriginalStatusByUserId = true;
+
+			_originalStatusByUserId = _statusByUserId;
+		}
+
 		_statusByUserId = statusByUserId;
 	}
 
@@ -657,6 +723,10 @@ public class JournalFolderModelImpl extends BaseModelImpl<JournalFolder>
 	public void setStatusByUserUuid(String statusByUserUuid) {
 	}
 
+	public long getOriginalStatusByUserId() {
+		return _originalStatusByUserId;
+	}
+
 	@JSON
 	@Override
 	public String getStatusByUserName() {
@@ -670,7 +740,15 @@ public class JournalFolderModelImpl extends BaseModelImpl<JournalFolder>
 
 	@Override
 	public void setStatusByUserName(String statusByUserName) {
+		if (_originalStatusByUserName == null) {
+			_originalStatusByUserName = _statusByUserName;
+		}
+
 		_statusByUserName = statusByUserName;
+	}
+
+	public String getOriginalStatusByUserName() {
+		return GetterUtil.getString(_originalStatusByUserName);
 	}
 
 	@JSON
@@ -681,7 +759,15 @@ public class JournalFolderModelImpl extends BaseModelImpl<JournalFolder>
 
 	@Override
 	public void setStatusDate(Date statusDate) {
+		if (_originalStatusDate == null) {
+			_originalStatusDate = _statusDate;
+		}
+
 		_statusDate = statusDate;
+	}
+
+	public Date getOriginalStatusDate() {
+		return _originalStatusDate;
 	}
 
 	@Override
@@ -1066,15 +1152,41 @@ public class JournalFolderModelImpl extends BaseModelImpl<JournalFolder>
 
 		journalFolderModelImpl._setOriginalCompanyId = false;
 
+		journalFolderModelImpl._originalUserId = journalFolderModelImpl._userId;
+
+		journalFolderModelImpl._setOriginalUserId = false;
+
+		journalFolderModelImpl._originalUserName = journalFolderModelImpl._userName;
+
+		journalFolderModelImpl._originalCreateDate = journalFolderModelImpl._createDate;
+
+		journalFolderModelImpl._originalModifiedDate = journalFolderModelImpl._modifiedDate;
+
 		journalFolderModelImpl._originalParentFolderId = journalFolderModelImpl._parentFolderId;
 
 		journalFolderModelImpl._setOriginalParentFolderId = false;
 
+		journalFolderModelImpl._originalTreePath = journalFolderModelImpl._treePath;
+
 		journalFolderModelImpl._originalName = journalFolderModelImpl._name;
+
+		journalFolderModelImpl._originalDescription = journalFolderModelImpl._description;
+
+		journalFolderModelImpl._originalRestrictionType = journalFolderModelImpl._restrictionType;
+
+		journalFolderModelImpl._setOriginalRestrictionType = false;
 
 		journalFolderModelImpl._originalStatus = journalFolderModelImpl._status;
 
 		journalFolderModelImpl._setOriginalStatus = false;
+
+		journalFolderModelImpl._originalStatusByUserId = journalFolderModelImpl._statusByUserId;
+
+		journalFolderModelImpl._setOriginalStatusByUserId = false;
+
+		journalFolderModelImpl._originalStatusByUserName = journalFolderModelImpl._statusByUserName;
+
+		journalFolderModelImpl._originalStatusDate = journalFolderModelImpl._statusDate;
 
 		journalFolderModelImpl._columnBitmask = 0;
 	}
@@ -1318,23 +1430,36 @@ public class JournalFolderModelImpl extends BaseModelImpl<JournalFolder>
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _parentFolderId;
 	private long _originalParentFolderId;
 	private boolean _setOriginalParentFolderId;
 	private String _treePath;
+	private String _originalTreePath;
 	private String _name;
 	private String _originalName;
 	private String _description;
+	private String _originalDescription;
 	private int _restrictionType;
+	private int _originalRestrictionType;
+	private boolean _setOriginalRestrictionType;
 	private int _status;
 	private int _originalStatus;
 	private boolean _setOriginalStatus;
 	private long _statusByUserId;
+	private long _originalStatusByUserId;
+	private boolean _setOriginalStatusByUserId;
 	private String _statusByUserName;
+	private String _originalStatusByUserName;
 	private Date _statusDate;
+	private Date _originalStatusDate;
 	private long _columnBitmask;
 	private JournalFolder _escapedModel;
 }

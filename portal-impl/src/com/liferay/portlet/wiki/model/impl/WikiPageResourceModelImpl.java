@@ -193,7 +193,17 @@ public class WikiPageResourceModelImpl extends BaseModelImpl<WikiPageResource>
 
 	@Override
 	public void setResourcePrimKey(long resourcePrimKey) {
+		if (!_setOriginalResourcePrimKey) {
+			_setOriginalResourcePrimKey = true;
+
+			_originalResourcePrimKey = _resourcePrimKey;
+		}
+
 		_resourcePrimKey = resourcePrimKey;
+	}
+
+	public long getOriginalResourcePrimKey() {
+		return _originalResourcePrimKey;
 	}
 
 	@Override
@@ -342,6 +352,10 @@ public class WikiPageResourceModelImpl extends BaseModelImpl<WikiPageResource>
 
 		wikiPageResourceModelImpl._originalUuid = wikiPageResourceModelImpl._uuid;
 
+		wikiPageResourceModelImpl._originalResourcePrimKey = wikiPageResourceModelImpl._resourcePrimKey;
+
+		wikiPageResourceModelImpl._setOriginalResourcePrimKey = false;
+
 		wikiPageResourceModelImpl._originalNodeId = wikiPageResourceModelImpl._nodeId;
 
 		wikiPageResourceModelImpl._setOriginalNodeId = false;
@@ -432,6 +446,8 @@ public class WikiPageResourceModelImpl extends BaseModelImpl<WikiPageResource>
 	private String _uuid;
 	private String _originalUuid;
 	private long _resourcePrimKey;
+	private long _originalResourcePrimKey;
+	private boolean _setOriginalResourcePrimKey;
 	private long _nodeId;
 	private long _originalNodeId;
 	private boolean _setOriginalNodeId;

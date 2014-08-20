@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.Release;
 import com.liferay.portal.model.ReleaseModel;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 
 import com.liferay.portlet.expando.model.ExpandoBridge;
@@ -216,7 +217,17 @@ public class ReleaseModelImpl extends BaseModelImpl<Release>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@Override
@@ -226,7 +237,17 @@ public class ReleaseModelImpl extends BaseModelImpl<Release>
 
 	@Override
 	public void setReleaseId(long releaseId) {
+		if (!_setOriginalReleaseId) {
+			_setOriginalReleaseId = true;
+
+			_originalReleaseId = _releaseId;
+		}
+
 		_releaseId = releaseId;
+	}
+
+	public long getOriginalReleaseId() {
+		return _originalReleaseId;
 	}
 
 	@Override
@@ -236,7 +257,15 @@ public class ReleaseModelImpl extends BaseModelImpl<Release>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@Override
@@ -246,7 +275,15 @@ public class ReleaseModelImpl extends BaseModelImpl<Release>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@Override
@@ -281,7 +318,17 @@ public class ReleaseModelImpl extends BaseModelImpl<Release>
 
 	@Override
 	public void setBuildNumber(int buildNumber) {
+		if (!_setOriginalBuildNumber) {
+			_setOriginalBuildNumber = true;
+
+			_originalBuildNumber = _buildNumber;
+		}
+
 		_buildNumber = buildNumber;
+	}
+
+	public int getOriginalBuildNumber() {
+		return _originalBuildNumber;
 	}
 
 	@Override
@@ -291,7 +338,15 @@ public class ReleaseModelImpl extends BaseModelImpl<Release>
 
 	@Override
 	public void setBuildDate(Date buildDate) {
+		if (_originalBuildDate == null) {
+			_originalBuildDate = _buildDate;
+		}
+
 		_buildDate = buildDate;
+	}
+
+	public Date getOriginalBuildDate() {
+		return _originalBuildDate;
 	}
 
 	@Override
@@ -306,7 +361,17 @@ public class ReleaseModelImpl extends BaseModelImpl<Release>
 
 	@Override
 	public void setVerified(boolean verified) {
+		if (!_setOriginalVerified) {
+			_setOriginalVerified = true;
+
+			_originalVerified = _verified;
+		}
+
 		_verified = verified;
+	}
+
+	public boolean getOriginalVerified() {
+		return _originalVerified;
 	}
 
 	@Override
@@ -316,7 +381,17 @@ public class ReleaseModelImpl extends BaseModelImpl<Release>
 
 	@Override
 	public void setState(int state) {
+		if (!_setOriginalState) {
+			_setOriginalState = true;
+
+			_originalState = _state;
+		}
+
 		_state = state;
+	}
+
+	public int getOriginalState() {
+		return _originalState;
 	}
 
 	@Override
@@ -331,7 +406,15 @@ public class ReleaseModelImpl extends BaseModelImpl<Release>
 
 	@Override
 	public void setTestString(String testString) {
+		if (_originalTestString == null) {
+			_originalTestString = _testString;
+		}
+
 		_testString = testString;
+	}
+
+	public String getOriginalTestString() {
+		return GetterUtil.getString(_originalTestString);
 	}
 
 	public long getColumnBitmask() {
@@ -437,7 +520,35 @@ public class ReleaseModelImpl extends BaseModelImpl<Release>
 	public void resetOriginalValues() {
 		ReleaseModelImpl releaseModelImpl = this;
 
+		releaseModelImpl._originalMvccVersion = releaseModelImpl._mvccVersion;
+
+		releaseModelImpl._setOriginalMvccVersion = false;
+
+		releaseModelImpl._originalReleaseId = releaseModelImpl._releaseId;
+
+		releaseModelImpl._setOriginalReleaseId = false;
+
+		releaseModelImpl._originalCreateDate = releaseModelImpl._createDate;
+
+		releaseModelImpl._originalModifiedDate = releaseModelImpl._modifiedDate;
+
 		releaseModelImpl._originalServletContextName = releaseModelImpl._servletContextName;
+
+		releaseModelImpl._originalBuildNumber = releaseModelImpl._buildNumber;
+
+		releaseModelImpl._setOriginalBuildNumber = false;
+
+		releaseModelImpl._originalBuildDate = releaseModelImpl._buildDate;
+
+		releaseModelImpl._originalVerified = releaseModelImpl._verified;
+
+		releaseModelImpl._setOriginalVerified = false;
+
+		releaseModelImpl._originalState = releaseModelImpl._state;
+
+		releaseModelImpl._setOriginalState = false;
+
+		releaseModelImpl._originalTestString = releaseModelImpl._testString;
 
 		releaseModelImpl._columnBitmask = 0;
 	}
@@ -590,16 +701,30 @@ public class ReleaseModelImpl extends BaseModelImpl<Release>
 			Release.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _releaseId;
+	private long _originalReleaseId;
+	private boolean _setOriginalReleaseId;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private String _servletContextName;
 	private String _originalServletContextName;
 	private int _buildNumber;
+	private int _originalBuildNumber;
+	private boolean _setOriginalBuildNumber;
 	private Date _buildDate;
+	private Date _originalBuildDate;
 	private boolean _verified;
+	private boolean _originalVerified;
+	private boolean _setOriginalVerified;
 	private int _state;
+	private int _originalState;
+	private boolean _setOriginalState;
 	private String _testString;
+	private String _originalTestString;
 	private long _columnBitmask;
 	private Release _escapedModel;
 }

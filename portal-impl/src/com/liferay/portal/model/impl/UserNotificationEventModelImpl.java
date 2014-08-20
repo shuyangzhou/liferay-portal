@@ -26,6 +26,7 @@ import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.User;
 import com.liferay.portal.model.UserNotificationEvent;
 import com.liferay.portal.model.UserNotificationEventModel;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
@@ -249,7 +250,17 @@ public class UserNotificationEventModelImpl extends BaseModelImpl<UserNotificati
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@Override
@@ -282,7 +293,17 @@ public class UserNotificationEventModelImpl extends BaseModelImpl<UserNotificati
 
 	@Override
 	public void setUserNotificationEventId(long userNotificationEventId) {
+		if (!_setOriginalUserNotificationEventId) {
+			_setOriginalUserNotificationEventId = true;
+
+			_originalUserNotificationEventId = _userNotificationEventId;
+		}
+
 		_userNotificationEventId = userNotificationEventId;
+	}
+
+	public long getOriginalUserNotificationEventId() {
+		return _originalUserNotificationEventId;
 	}
 
 	@Override
@@ -357,7 +378,15 @@ public class UserNotificationEventModelImpl extends BaseModelImpl<UserNotificati
 
 	@Override
 	public void setType(String type) {
+		if (_originalType == null) {
+			_originalType = _type;
+		}
+
 		_type = type;
+	}
+
+	public String getOriginalType() {
+		return GetterUtil.getString(_originalType);
 	}
 
 	@Override
@@ -369,7 +398,17 @@ public class UserNotificationEventModelImpl extends BaseModelImpl<UserNotificati
 	public void setTimestamp(long timestamp) {
 		_columnBitmask = -1L;
 
+		if (!_setOriginalTimestamp) {
+			_setOriginalTimestamp = true;
+
+			_originalTimestamp = _timestamp;
+		}
+
 		_timestamp = timestamp;
+	}
+
+	public long getOriginalTimestamp() {
+		return _originalTimestamp;
 	}
 
 	@Override
@@ -401,7 +440,17 @@ public class UserNotificationEventModelImpl extends BaseModelImpl<UserNotificati
 
 	@Override
 	public void setDeliverBy(long deliverBy) {
+		if (!_setOriginalDeliverBy) {
+			_setOriginalDeliverBy = true;
+
+			_originalDeliverBy = _deliverBy;
+		}
+
 		_deliverBy = deliverBy;
+	}
+
+	public long getOriginalDeliverBy() {
+		return _originalDeliverBy;
 	}
 
 	@Override
@@ -443,7 +492,15 @@ public class UserNotificationEventModelImpl extends BaseModelImpl<UserNotificati
 
 	@Override
 	public void setPayload(String payload) {
+		if (_originalPayload == null) {
+			_originalPayload = _payload;
+		}
+
 		_payload = payload;
+	}
+
+	public String getOriginalPayload() {
+		return GetterUtil.getString(_originalPayload);
 	}
 
 	@Override
@@ -614,7 +671,15 @@ public class UserNotificationEventModelImpl extends BaseModelImpl<UserNotificati
 	public void resetOriginalValues() {
 		UserNotificationEventModelImpl userNotificationEventModelImpl = this;
 
+		userNotificationEventModelImpl._originalMvccVersion = userNotificationEventModelImpl._mvccVersion;
+
+		userNotificationEventModelImpl._setOriginalMvccVersion = false;
+
 		userNotificationEventModelImpl._originalUuid = userNotificationEventModelImpl._uuid;
+
+		userNotificationEventModelImpl._originalUserNotificationEventId = userNotificationEventModelImpl._userNotificationEventId;
+
+		userNotificationEventModelImpl._setOriginalUserNotificationEventId = false;
 
 		userNotificationEventModelImpl._originalCompanyId = userNotificationEventModelImpl._companyId;
 
@@ -624,13 +689,25 @@ public class UserNotificationEventModelImpl extends BaseModelImpl<UserNotificati
 
 		userNotificationEventModelImpl._setOriginalUserId = false;
 
+		userNotificationEventModelImpl._originalType = userNotificationEventModelImpl._type;
+
+		userNotificationEventModelImpl._originalTimestamp = userNotificationEventModelImpl._timestamp;
+
+		userNotificationEventModelImpl._setOriginalTimestamp = false;
+
 		userNotificationEventModelImpl._originalDeliveryType = userNotificationEventModelImpl._deliveryType;
 
 		userNotificationEventModelImpl._setOriginalDeliveryType = false;
 
+		userNotificationEventModelImpl._originalDeliverBy = userNotificationEventModelImpl._deliverBy;
+
+		userNotificationEventModelImpl._setOriginalDeliverBy = false;
+
 		userNotificationEventModelImpl._originalDelivered = userNotificationEventModelImpl._delivered;
 
 		userNotificationEventModelImpl._setOriginalDelivered = false;
+
+		userNotificationEventModelImpl._originalPayload = userNotificationEventModelImpl._payload;
 
 		userNotificationEventModelImpl._originalActionRequired = userNotificationEventModelImpl._actionRequired;
 
@@ -800,9 +877,13 @@ public class UserNotificationEventModelImpl extends BaseModelImpl<UserNotificati
 			UserNotificationEvent.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private String _uuid;
 	private String _originalUuid;
 	private long _userNotificationEventId;
+	private long _originalUserNotificationEventId;
+	private boolean _setOriginalUserNotificationEventId;
 	private long _companyId;
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
@@ -810,15 +891,21 @@ public class UserNotificationEventModelImpl extends BaseModelImpl<UserNotificati
 	private long _originalUserId;
 	private boolean _setOriginalUserId;
 	private String _type;
+	private String _originalType;
 	private long _timestamp;
+	private long _originalTimestamp;
+	private boolean _setOriginalTimestamp;
 	private int _deliveryType;
 	private int _originalDeliveryType;
 	private boolean _setOriginalDeliveryType;
 	private long _deliverBy;
+	private long _originalDeliverBy;
+	private boolean _setOriginalDeliverBy;
 	private boolean _delivered;
 	private boolean _originalDelivered;
 	private boolean _setOriginalDelivered;
 	private String _payload;
+	private String _originalPayload;
 	private boolean _actionRequired;
 	private boolean _originalActionRequired;
 	private boolean _setOriginalActionRequired;

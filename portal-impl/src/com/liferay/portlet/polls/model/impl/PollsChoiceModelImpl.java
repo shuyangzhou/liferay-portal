@@ -319,7 +319,17 @@ public class PollsChoiceModelImpl extends BaseModelImpl<PollsChoice>
 
 	@Override
 	public void setChoiceId(long choiceId) {
+		if (!_setOriginalChoiceId) {
+			_setOriginalChoiceId = true;
+
+			_originalChoiceId = _choiceId;
+		}
+
 		_choiceId = choiceId;
+	}
+
+	public long getOriginalChoiceId() {
+		return _originalChoiceId;
 	}
 
 	@JSON
@@ -376,6 +386,12 @@ public class PollsChoiceModelImpl extends BaseModelImpl<PollsChoice>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -395,6 +411,10 @@ public class PollsChoiceModelImpl extends BaseModelImpl<PollsChoice>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -408,7 +428,15 @@ public class PollsChoiceModelImpl extends BaseModelImpl<PollsChoice>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -419,7 +447,15 @@ public class PollsChoiceModelImpl extends BaseModelImpl<PollsChoice>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -430,7 +466,15 @@ public class PollsChoiceModelImpl extends BaseModelImpl<PollsChoice>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -538,6 +582,10 @@ public class PollsChoiceModelImpl extends BaseModelImpl<PollsChoice>
 
 	@Override
 	public void setDescription(String description) {
+		if (_originalDescription == null) {
+			_originalDescription = _description;
+		}
+
 		_description = description;
 	}
 
@@ -583,6 +631,10 @@ public class PollsChoiceModelImpl extends BaseModelImpl<PollsChoice>
 		setDescription(LocalizationUtil.updateLocalization(descriptionMap,
 				getDescription(), "Description",
 				LocaleUtil.toLanguageId(defaultLocale)));
+	}
+
+	public String getOriginalDescription() {
+		return GetterUtil.getString(_originalDescription);
 	}
 
 	@Override
@@ -771,6 +823,10 @@ public class PollsChoiceModelImpl extends BaseModelImpl<PollsChoice>
 
 		pollsChoiceModelImpl._originalUuid = pollsChoiceModelImpl._uuid;
 
+		pollsChoiceModelImpl._originalChoiceId = pollsChoiceModelImpl._choiceId;
+
+		pollsChoiceModelImpl._setOriginalChoiceId = false;
+
 		pollsChoiceModelImpl._originalGroupId = pollsChoiceModelImpl._groupId;
 
 		pollsChoiceModelImpl._setOriginalGroupId = false;
@@ -779,11 +835,23 @@ public class PollsChoiceModelImpl extends BaseModelImpl<PollsChoice>
 
 		pollsChoiceModelImpl._setOriginalCompanyId = false;
 
+		pollsChoiceModelImpl._originalUserId = pollsChoiceModelImpl._userId;
+
+		pollsChoiceModelImpl._setOriginalUserId = false;
+
+		pollsChoiceModelImpl._originalUserName = pollsChoiceModelImpl._userName;
+
+		pollsChoiceModelImpl._originalCreateDate = pollsChoiceModelImpl._createDate;
+
+		pollsChoiceModelImpl._originalModifiedDate = pollsChoiceModelImpl._modifiedDate;
+
 		pollsChoiceModelImpl._originalQuestionId = pollsChoiceModelImpl._questionId;
 
 		pollsChoiceModelImpl._setOriginalQuestionId = false;
 
 		pollsChoiceModelImpl._originalName = pollsChoiceModelImpl._name;
+
+		pollsChoiceModelImpl._originalDescription = pollsChoiceModelImpl._description;
 
 		pollsChoiceModelImpl._columnBitmask = 0;
 	}
@@ -951,6 +1019,8 @@ public class PollsChoiceModelImpl extends BaseModelImpl<PollsChoice>
 	private String _uuid;
 	private String _originalUuid;
 	private long _choiceId;
+	private long _originalChoiceId;
+	private boolean _setOriginalChoiceId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -958,9 +1028,14 @@ public class PollsChoiceModelImpl extends BaseModelImpl<PollsChoice>
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _questionId;
 	private long _originalQuestionId;
 	private boolean _setOriginalQuestionId;
@@ -968,6 +1043,7 @@ public class PollsChoiceModelImpl extends BaseModelImpl<PollsChoice>
 	private String _originalName;
 	private String _description;
 	private String _descriptionCurrentLanguageId;
+	private String _originalDescription;
 	private long _columnBitmask;
 	private PollsChoice _escapedModel;
 }

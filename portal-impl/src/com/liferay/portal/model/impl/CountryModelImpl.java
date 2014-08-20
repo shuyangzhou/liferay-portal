@@ -26,6 +26,7 @@ import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.Country;
 import com.liferay.portal.model.CountryModel;
 import com.liferay.portal.model.CountrySoap;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 
 import com.liferay.portlet.expando.model.ExpandoBridge;
@@ -262,7 +263,17 @@ public class CountryModelImpl extends BaseModelImpl<Country>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@JSON
@@ -273,7 +284,17 @@ public class CountryModelImpl extends BaseModelImpl<Country>
 
 	@Override
 	public void setCountryId(long countryId) {
+		if (!_setOriginalCountryId) {
+			_setOriginalCountryId = true;
+
+			_originalCountryId = _countryId;
+		}
+
 		_countryId = countryId;
+	}
+
+	public long getOriginalCountryId() {
+		return _originalCountryId;
 	}
 
 	@JSON
@@ -367,7 +388,15 @@ public class CountryModelImpl extends BaseModelImpl<Country>
 
 	@Override
 	public void setNumber(String number) {
+		if (_originalNumber == null) {
+			_originalNumber = _number;
+		}
+
 		_number = number;
+	}
+
+	public String getOriginalNumber() {
+		return GetterUtil.getString(_originalNumber);
 	}
 
 	@JSON
@@ -383,7 +412,15 @@ public class CountryModelImpl extends BaseModelImpl<Country>
 
 	@Override
 	public void setIdd(String idd) {
+		if (_originalIdd == null) {
+			_originalIdd = _idd;
+		}
+
 		_idd = idd;
+	}
+
+	public String getOriginalIdd() {
+		return GetterUtil.getString(_originalIdd);
 	}
 
 	@JSON
@@ -399,7 +436,17 @@ public class CountryModelImpl extends BaseModelImpl<Country>
 
 	@Override
 	public void setZipRequired(boolean zipRequired) {
+		if (!_setOriginalZipRequired) {
+			_setOriginalZipRequired = true;
+
+			_originalZipRequired = _zipRequired;
+		}
+
 		_zipRequired = zipRequired;
+	}
+
+	public boolean getOriginalZipRequired() {
+		return _originalZipRequired;
 	}
 
 	@JSON
@@ -530,11 +577,27 @@ public class CountryModelImpl extends BaseModelImpl<Country>
 	public void resetOriginalValues() {
 		CountryModelImpl countryModelImpl = this;
 
+		countryModelImpl._originalMvccVersion = countryModelImpl._mvccVersion;
+
+		countryModelImpl._setOriginalMvccVersion = false;
+
+		countryModelImpl._originalCountryId = countryModelImpl._countryId;
+
+		countryModelImpl._setOriginalCountryId = false;
+
 		countryModelImpl._originalName = countryModelImpl._name;
 
 		countryModelImpl._originalA2 = countryModelImpl._a2;
 
 		countryModelImpl._originalA3 = countryModelImpl._a3;
+
+		countryModelImpl._originalNumber = countryModelImpl._number;
+
+		countryModelImpl._originalIdd = countryModelImpl._idd;
+
+		countryModelImpl._originalZipRequired = countryModelImpl._zipRequired;
+
+		countryModelImpl._setOriginalZipRequired = false;
 
 		countryModelImpl._originalActive = countryModelImpl._active;
 
@@ -680,7 +743,11 @@ public class CountryModelImpl extends BaseModelImpl<Country>
 			Country.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _countryId;
+	private long _originalCountryId;
+	private boolean _setOriginalCountryId;
 	private String _name;
 	private String _originalName;
 	private String _a2;
@@ -688,8 +755,12 @@ public class CountryModelImpl extends BaseModelImpl<Country>
 	private String _a3;
 	private String _originalA3;
 	private String _number;
+	private String _originalNumber;
 	private String _idd;
+	private String _originalIdd;
 	private boolean _zipRequired;
+	private boolean _originalZipRequired;
+	private boolean _setOriginalZipRequired;
 	private boolean _active;
 	private boolean _originalActive;
 	private boolean _setOriginalActive;

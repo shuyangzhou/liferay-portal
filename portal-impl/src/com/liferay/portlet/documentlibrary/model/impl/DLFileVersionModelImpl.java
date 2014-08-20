@@ -454,7 +454,17 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 
 	@Override
 	public void setFileVersionId(long fileVersionId) {
+		if (!_setOriginalFileVersionId) {
+			_setOriginalFileVersionId = true;
+
+			_originalFileVersionId = _fileVersionId;
+		}
+
 		_fileVersionId = fileVersionId;
+	}
+
+	public long getOriginalFileVersionId() {
+		return _originalFileVersionId;
 	}
 
 	@JSON
@@ -511,6 +521,12 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -530,6 +546,10 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -543,7 +563,15 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -556,7 +584,15 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 	public void setCreateDate(Date createDate) {
 		_columnBitmask = -1L;
 
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -567,7 +603,15 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -578,7 +622,17 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 
 	@Override
 	public void setRepositoryId(long repositoryId) {
+		if (!_setOriginalRepositoryId) {
+			_setOriginalRepositoryId = true;
+
+			_originalRepositoryId = _repositoryId;
+		}
+
 		_repositoryId = repositoryId;
+	}
+
+	public long getOriginalRepositoryId() {
+		return _originalRepositoryId;
 	}
 
 	@JSON
@@ -640,7 +694,15 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 
 	@Override
 	public void setTreePath(String treePath) {
+		if (_originalTreePath == null) {
+			_originalTreePath = _treePath;
+		}
+
 		_treePath = treePath;
+	}
+
+	public String getOriginalTreePath() {
+		return GetterUtil.getString(_originalTreePath);
 	}
 
 	@JSON
@@ -656,7 +718,15 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 
 	@Override
 	public void setExtension(String extension) {
+		if (_originalExtension == null) {
+			_originalExtension = _extension;
+		}
+
 		_extension = extension;
+	}
+
+	public String getOriginalExtension() {
+		return GetterUtil.getString(_originalExtension);
 	}
 
 	@JSON
@@ -724,7 +794,15 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 
 	@Override
 	public void setDescription(String description) {
+		if (_originalDescription == null) {
+			_originalDescription = _description;
+		}
+
 		_description = description;
+	}
+
+	public String getOriginalDescription() {
+		return GetterUtil.getString(_originalDescription);
 	}
 
 	@JSON
@@ -740,7 +818,15 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 
 	@Override
 	public void setChangeLog(String changeLog) {
+		if (_originalChangeLog == null) {
+			_originalChangeLog = _changeLog;
+		}
+
 		_changeLog = changeLog;
+	}
+
+	public String getOriginalChangeLog() {
+		return GetterUtil.getString(_originalChangeLog);
 	}
 
 	@JSON
@@ -756,7 +842,15 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 
 	@Override
 	public void setExtraSettings(String extraSettings) {
+		if (_originalExtraSettings == null) {
+			_originalExtraSettings = _extraSettings;
+		}
+
 		_extraSettings = extraSettings;
+	}
+
+	public String getOriginalExtraSettings() {
+		return GetterUtil.getString(_originalExtraSettings);
 	}
 
 	@JSON
@@ -767,7 +861,17 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 
 	@Override
 	public void setFileEntryTypeId(long fileEntryTypeId) {
+		if (!_setOriginalFileEntryTypeId) {
+			_setOriginalFileEntryTypeId = true;
+
+			_originalFileEntryTypeId = _fileEntryTypeId;
+		}
+
 		_fileEntryTypeId = fileEntryTypeId;
+	}
+
+	public long getOriginalFileEntryTypeId() {
+		return _originalFileEntryTypeId;
 	}
 
 	@JSON
@@ -804,7 +908,17 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 
 	@Override
 	public void setSize(long size) {
+		if (!_setOriginalSize) {
+			_setOriginalSize = true;
+
+			_originalSize = _size;
+		}
+
 		_size = size;
+	}
+
+	public long getOriginalSize() {
+		return _originalSize;
 	}
 
 	@JSON
@@ -820,7 +934,15 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 
 	@Override
 	public void setChecksum(String checksum) {
+		if (_originalChecksum == null) {
+			_originalChecksum = _checksum;
+		}
+
 		_checksum = checksum;
+	}
+
+	public String getOriginalChecksum() {
+		return GetterUtil.getString(_originalChecksum);
 	}
 
 	@JSON
@@ -854,6 +976,12 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 
 	@Override
 	public void setStatusByUserId(long statusByUserId) {
+		if (!_setOriginalStatusByUserId) {
+			_setOriginalStatusByUserId = true;
+
+			_originalStatusByUserId = _statusByUserId;
+		}
+
 		_statusByUserId = statusByUserId;
 	}
 
@@ -873,6 +1001,10 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 	public void setStatusByUserUuid(String statusByUserUuid) {
 	}
 
+	public long getOriginalStatusByUserId() {
+		return _originalStatusByUserId;
+	}
+
 	@JSON
 	@Override
 	public String getStatusByUserName() {
@@ -886,7 +1018,15 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 
 	@Override
 	public void setStatusByUserName(String statusByUserName) {
+		if (_originalStatusByUserName == null) {
+			_originalStatusByUserName = _statusByUserName;
+		}
+
 		_statusByUserName = statusByUserName;
+	}
+
+	public String getOriginalStatusByUserName() {
+		return GetterUtil.getString(_originalStatusByUserName);
 	}
 
 	@JSON
@@ -897,7 +1037,15 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 
 	@Override
 	public void setStatusDate(Date statusDate) {
+		if (_originalStatusDate == null) {
+			_originalStatusDate = _statusDate;
+		}
+
 		_statusDate = statusDate;
+	}
+
+	public Date getOriginalStatusDate() {
+		return _originalStatusDate;
 	}
 
 	@Override
@@ -1133,6 +1281,10 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 
 		dlFileVersionModelImpl._originalUuid = dlFileVersionModelImpl._uuid;
 
+		dlFileVersionModelImpl._originalFileVersionId = dlFileVersionModelImpl._fileVersionId;
+
+		dlFileVersionModelImpl._setOriginalFileVersionId = false;
+
 		dlFileVersionModelImpl._originalGroupId = dlFileVersionModelImpl._groupId;
 
 		dlFileVersionModelImpl._setOriginalGroupId = false;
@@ -1140,6 +1292,20 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 		dlFileVersionModelImpl._originalCompanyId = dlFileVersionModelImpl._companyId;
 
 		dlFileVersionModelImpl._setOriginalCompanyId = false;
+
+		dlFileVersionModelImpl._originalUserId = dlFileVersionModelImpl._userId;
+
+		dlFileVersionModelImpl._setOriginalUserId = false;
+
+		dlFileVersionModelImpl._originalUserName = dlFileVersionModelImpl._userName;
+
+		dlFileVersionModelImpl._originalCreateDate = dlFileVersionModelImpl._createDate;
+
+		dlFileVersionModelImpl._originalModifiedDate = dlFileVersionModelImpl._modifiedDate;
+
+		dlFileVersionModelImpl._originalRepositoryId = dlFileVersionModelImpl._repositoryId;
+
+		dlFileVersionModelImpl._setOriginalRepositoryId = false;
 
 		dlFileVersionModelImpl._originalFolderId = dlFileVersionModelImpl._folderId;
 
@@ -1149,15 +1315,43 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 
 		dlFileVersionModelImpl._setOriginalFileEntryId = false;
 
+		dlFileVersionModelImpl._originalTreePath = dlFileVersionModelImpl._treePath;
+
+		dlFileVersionModelImpl._originalExtension = dlFileVersionModelImpl._extension;
+
 		dlFileVersionModelImpl._originalMimeType = dlFileVersionModelImpl._mimeType;
 
 		dlFileVersionModelImpl._originalTitle = dlFileVersionModelImpl._title;
 
+		dlFileVersionModelImpl._originalDescription = dlFileVersionModelImpl._description;
+
+		dlFileVersionModelImpl._originalChangeLog = dlFileVersionModelImpl._changeLog;
+
+		dlFileVersionModelImpl._originalExtraSettings = dlFileVersionModelImpl._extraSettings;
+
+		dlFileVersionModelImpl._originalFileEntryTypeId = dlFileVersionModelImpl._fileEntryTypeId;
+
+		dlFileVersionModelImpl._setOriginalFileEntryTypeId = false;
+
 		dlFileVersionModelImpl._originalVersion = dlFileVersionModelImpl._version;
+
+		dlFileVersionModelImpl._originalSize = dlFileVersionModelImpl._size;
+
+		dlFileVersionModelImpl._setOriginalSize = false;
+
+		dlFileVersionModelImpl._originalChecksum = dlFileVersionModelImpl._checksum;
 
 		dlFileVersionModelImpl._originalStatus = dlFileVersionModelImpl._status;
 
 		dlFileVersionModelImpl._setOriginalStatus = false;
+
+		dlFileVersionModelImpl._originalStatusByUserId = dlFileVersionModelImpl._statusByUserId;
+
+		dlFileVersionModelImpl._setOriginalStatusByUserId = false;
+
+		dlFileVersionModelImpl._originalStatusByUserName = dlFileVersionModelImpl._statusByUserName;
+
+		dlFileVersionModelImpl._originalStatusDate = dlFileVersionModelImpl._statusDate;
 
 		dlFileVersionModelImpl._columnBitmask = 0;
 	}
@@ -1500,6 +1694,8 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 	private String _uuid;
 	private String _originalUuid;
 	private long _fileVersionId;
+	private long _originalFileVersionId;
+	private boolean _setOriginalFileVersionId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -1507,10 +1703,17 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _repositoryId;
+	private long _originalRepositoryId;
+	private boolean _setOriginalRepositoryId;
 	private long _folderId;
 	private long _originalFolderId;
 	private boolean _setOriginalFolderId;
@@ -1518,25 +1721,39 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 	private long _originalFileEntryId;
 	private boolean _setOriginalFileEntryId;
 	private String _treePath;
+	private String _originalTreePath;
 	private String _extension;
+	private String _originalExtension;
 	private String _mimeType;
 	private String _originalMimeType;
 	private String _title;
 	private String _originalTitle;
 	private String _description;
+	private String _originalDescription;
 	private String _changeLog;
+	private String _originalChangeLog;
 	private String _extraSettings;
+	private String _originalExtraSettings;
 	private long _fileEntryTypeId;
+	private long _originalFileEntryTypeId;
+	private boolean _setOriginalFileEntryTypeId;
 	private String _version;
 	private String _originalVersion;
 	private long _size;
+	private long _originalSize;
+	private boolean _setOriginalSize;
 	private String _checksum;
+	private String _originalChecksum;
 	private int _status;
 	private int _originalStatus;
 	private boolean _setOriginalStatus;
 	private long _statusByUserId;
+	private long _originalStatusByUserId;
+	private boolean _setOriginalStatusByUserId;
 	private String _statusByUserName;
+	private String _originalStatusByUserName;
 	private Date _statusDate;
+	private Date _originalStatusDate;
 	private long _columnBitmask;
 	private DLFileVersion _escapedModel;
 }

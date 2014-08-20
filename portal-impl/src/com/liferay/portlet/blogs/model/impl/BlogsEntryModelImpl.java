@@ -442,7 +442,17 @@ public class BlogsEntryModelImpl extends BaseModelImpl<BlogsEntry>
 
 	@Override
 	public void setEntryId(long entryId) {
+		if (!_setOriginalEntryId) {
+			_setOriginalEntryId = true;
+
+			_originalEntryId = _entryId;
+		}
+
 		_entryId = entryId;
+	}
+
+	public long getOriginalEntryId() {
+		return _originalEntryId;
 	}
 
 	@JSON
@@ -543,7 +553,15 @@ public class BlogsEntryModelImpl extends BaseModelImpl<BlogsEntry>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -556,7 +574,15 @@ public class BlogsEntryModelImpl extends BaseModelImpl<BlogsEntry>
 	public void setCreateDate(Date createDate) {
 		_columnBitmask = -1L;
 
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -567,7 +593,15 @@ public class BlogsEntryModelImpl extends BaseModelImpl<BlogsEntry>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -583,7 +617,15 @@ public class BlogsEntryModelImpl extends BaseModelImpl<BlogsEntry>
 
 	@Override
 	public void setTitle(String title) {
+		if (_originalTitle == null) {
+			_originalTitle = _title;
+		}
+
 		_title = title;
+	}
+
+	public String getOriginalTitle() {
+		return GetterUtil.getString(_originalTitle);
 	}
 
 	@JSON
@@ -599,7 +641,15 @@ public class BlogsEntryModelImpl extends BaseModelImpl<BlogsEntry>
 
 	@Override
 	public void setSubtitle(String subtitle) {
+		if (_originalSubtitle == null) {
+			_originalSubtitle = _subtitle;
+		}
+
 		_subtitle = subtitle;
+	}
+
+	public String getOriginalSubtitle() {
+		return GetterUtil.getString(_originalSubtitle);
 	}
 
 	@JSON
@@ -641,7 +691,15 @@ public class BlogsEntryModelImpl extends BaseModelImpl<BlogsEntry>
 
 	@Override
 	public void setDescription(String description) {
+		if (_originalDescription == null) {
+			_originalDescription = _description;
+		}
+
 		_description = description;
+	}
+
+	public String getOriginalDescription() {
+		return GetterUtil.getString(_originalDescription);
 	}
 
 	@JSON
@@ -657,7 +715,15 @@ public class BlogsEntryModelImpl extends BaseModelImpl<BlogsEntry>
 
 	@Override
 	public void setContent(String content) {
+		if (_originalContent == null) {
+			_originalContent = _content;
+		}
+
 		_content = content;
+	}
+
+	public String getOriginalContent() {
+		return GetterUtil.getString(_originalContent);
 	}
 
 	@JSON
@@ -694,7 +760,17 @@ public class BlogsEntryModelImpl extends BaseModelImpl<BlogsEntry>
 
 	@Override
 	public void setAllowPingbacks(boolean allowPingbacks) {
+		if (!_setOriginalAllowPingbacks) {
+			_setOriginalAllowPingbacks = true;
+
+			_originalAllowPingbacks = _allowPingbacks;
+		}
+
 		_allowPingbacks = allowPingbacks;
+	}
+
+	public boolean getOriginalAllowPingbacks() {
+		return _originalAllowPingbacks;
 	}
 
 	@JSON
@@ -710,7 +786,17 @@ public class BlogsEntryModelImpl extends BaseModelImpl<BlogsEntry>
 
 	@Override
 	public void setAllowTrackbacks(boolean allowTrackbacks) {
+		if (!_setOriginalAllowTrackbacks) {
+			_setOriginalAllowTrackbacks = true;
+
+			_originalAllowTrackbacks = _allowTrackbacks;
+		}
+
 		_allowTrackbacks = allowTrackbacks;
+	}
+
+	public boolean getOriginalAllowTrackbacks() {
+		return _originalAllowTrackbacks;
 	}
 
 	@JSON
@@ -726,7 +812,15 @@ public class BlogsEntryModelImpl extends BaseModelImpl<BlogsEntry>
 
 	@Override
 	public void setTrackbacks(String trackbacks) {
+		if (_originalTrackbacks == null) {
+			_originalTrackbacks = _trackbacks;
+		}
+
 		_trackbacks = trackbacks;
+	}
+
+	public String getOriginalTrackbacks() {
+		return GetterUtil.getString(_originalTrackbacks);
 	}
 
 	@JSON
@@ -742,7 +836,17 @@ public class BlogsEntryModelImpl extends BaseModelImpl<BlogsEntry>
 
 	@Override
 	public void setSmallImage(boolean smallImage) {
+		if (!_setOriginalSmallImage) {
+			_setOriginalSmallImage = true;
+
+			_originalSmallImage = _smallImage;
+		}
+
 		_smallImage = smallImage;
+	}
+
+	public boolean getOriginalSmallImage() {
+		return _originalSmallImage;
 	}
 
 	@JSON
@@ -753,7 +857,17 @@ public class BlogsEntryModelImpl extends BaseModelImpl<BlogsEntry>
 
 	@Override
 	public void setSmallImageId(long smallImageId) {
+		if (!_setOriginalSmallImageId) {
+			_setOriginalSmallImageId = true;
+
+			_originalSmallImageId = _smallImageId;
+		}
+
 		_smallImageId = smallImageId;
+	}
+
+	public long getOriginalSmallImageId() {
+		return _originalSmallImageId;
 	}
 
 	@JSON
@@ -769,7 +883,15 @@ public class BlogsEntryModelImpl extends BaseModelImpl<BlogsEntry>
 
 	@Override
 	public void setSmallImageURL(String smallImageURL) {
+		if (_originalSmallImageURL == null) {
+			_originalSmallImageURL = _smallImageURL;
+		}
+
 		_smallImageURL = smallImageURL;
+	}
+
+	public String getOriginalSmallImageURL() {
+		return GetterUtil.getString(_originalSmallImageURL);
 	}
 
 	@JSON
@@ -803,6 +925,12 @@ public class BlogsEntryModelImpl extends BaseModelImpl<BlogsEntry>
 
 	@Override
 	public void setStatusByUserId(long statusByUserId) {
+		if (!_setOriginalStatusByUserId) {
+			_setOriginalStatusByUserId = true;
+
+			_originalStatusByUserId = _statusByUserId;
+		}
+
 		_statusByUserId = statusByUserId;
 	}
 
@@ -822,6 +950,10 @@ public class BlogsEntryModelImpl extends BaseModelImpl<BlogsEntry>
 	public void setStatusByUserUuid(String statusByUserUuid) {
 	}
 
+	public long getOriginalStatusByUserId() {
+		return _originalStatusByUserId;
+	}
+
 	@JSON
 	@Override
 	public String getStatusByUserName() {
@@ -835,7 +967,15 @@ public class BlogsEntryModelImpl extends BaseModelImpl<BlogsEntry>
 
 	@Override
 	public void setStatusByUserName(String statusByUserName) {
+		if (_originalStatusByUserName == null) {
+			_originalStatusByUserName = _statusByUserName;
+		}
+
 		_statusByUserName = statusByUserName;
+	}
+
+	public String getOriginalStatusByUserName() {
+		return GetterUtil.getString(_originalStatusByUserName);
 	}
 
 	@JSON
@@ -846,7 +986,15 @@ public class BlogsEntryModelImpl extends BaseModelImpl<BlogsEntry>
 
 	@Override
 	public void setStatusDate(Date statusDate) {
+		if (_originalStatusDate == null) {
+			_originalStatusDate = _statusDate;
+		}
+
 		_statusDate = statusDate;
+	}
+
+	public Date getOriginalStatusDate() {
+		return _originalStatusDate;
 	}
 
 	@Override
@@ -1197,6 +1345,10 @@ public class BlogsEntryModelImpl extends BaseModelImpl<BlogsEntry>
 
 		blogsEntryModelImpl._originalUuid = blogsEntryModelImpl._uuid;
 
+		blogsEntryModelImpl._originalEntryId = blogsEntryModelImpl._entryId;
+
+		blogsEntryModelImpl._setOriginalEntryId = false;
+
 		blogsEntryModelImpl._originalGroupId = blogsEntryModelImpl._groupId;
 
 		blogsEntryModelImpl._setOriginalGroupId = false;
@@ -1209,13 +1361,55 @@ public class BlogsEntryModelImpl extends BaseModelImpl<BlogsEntry>
 
 		blogsEntryModelImpl._setOriginalUserId = false;
 
+		blogsEntryModelImpl._originalUserName = blogsEntryModelImpl._userName;
+
+		blogsEntryModelImpl._originalCreateDate = blogsEntryModelImpl._createDate;
+
+		blogsEntryModelImpl._originalModifiedDate = blogsEntryModelImpl._modifiedDate;
+
+		blogsEntryModelImpl._originalTitle = blogsEntryModelImpl._title;
+
+		blogsEntryModelImpl._originalSubtitle = blogsEntryModelImpl._subtitle;
+
 		blogsEntryModelImpl._originalUrlTitle = blogsEntryModelImpl._urlTitle;
 
+		blogsEntryModelImpl._originalDescription = blogsEntryModelImpl._description;
+
+		blogsEntryModelImpl._originalContent = blogsEntryModelImpl._content;
+
 		blogsEntryModelImpl._originalDisplayDate = blogsEntryModelImpl._displayDate;
+
+		blogsEntryModelImpl._originalAllowPingbacks = blogsEntryModelImpl._allowPingbacks;
+
+		blogsEntryModelImpl._setOriginalAllowPingbacks = false;
+
+		blogsEntryModelImpl._originalAllowTrackbacks = blogsEntryModelImpl._allowTrackbacks;
+
+		blogsEntryModelImpl._setOriginalAllowTrackbacks = false;
+
+		blogsEntryModelImpl._originalTrackbacks = blogsEntryModelImpl._trackbacks;
+
+		blogsEntryModelImpl._originalSmallImage = blogsEntryModelImpl._smallImage;
+
+		blogsEntryModelImpl._setOriginalSmallImage = false;
+
+		blogsEntryModelImpl._originalSmallImageId = blogsEntryModelImpl._smallImageId;
+
+		blogsEntryModelImpl._setOriginalSmallImageId = false;
+
+		blogsEntryModelImpl._originalSmallImageURL = blogsEntryModelImpl._smallImageURL;
 
 		blogsEntryModelImpl._originalStatus = blogsEntryModelImpl._status;
 
 		blogsEntryModelImpl._setOriginalStatus = false;
+
+		blogsEntryModelImpl._originalStatusByUserId = blogsEntryModelImpl._statusByUserId;
+
+		blogsEntryModelImpl._setOriginalStatusByUserId = false;
+
+		blogsEntryModelImpl._originalStatusByUserName = blogsEntryModelImpl._statusByUserName;
+
+		blogsEntryModelImpl._originalStatusDate = blogsEntryModelImpl._statusDate;
 
 		blogsEntryModelImpl._columnBitmask = 0;
 	}
@@ -1537,6 +1731,8 @@ public class BlogsEntryModelImpl extends BaseModelImpl<BlogsEntry>
 	private String _uuid;
 	private String _originalUuid;
 	private long _entryId;
+	private long _originalEntryId;
+	private boolean _setOriginalEntryId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -1547,28 +1743,49 @@ public class BlogsEntryModelImpl extends BaseModelImpl<BlogsEntry>
 	private long _originalUserId;
 	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private String _title;
+	private String _originalTitle;
 	private String _subtitle;
+	private String _originalSubtitle;
 	private String _urlTitle;
 	private String _originalUrlTitle;
 	private String _description;
+	private String _originalDescription;
 	private String _content;
+	private String _originalContent;
 	private Date _displayDate;
 	private Date _originalDisplayDate;
 	private boolean _allowPingbacks;
+	private boolean _originalAllowPingbacks;
+	private boolean _setOriginalAllowPingbacks;
 	private boolean _allowTrackbacks;
+	private boolean _originalAllowTrackbacks;
+	private boolean _setOriginalAllowTrackbacks;
 	private String _trackbacks;
+	private String _originalTrackbacks;
 	private boolean _smallImage;
+	private boolean _originalSmallImage;
+	private boolean _setOriginalSmallImage;
 	private long _smallImageId;
+	private long _originalSmallImageId;
+	private boolean _setOriginalSmallImageId;
 	private String _smallImageURL;
+	private String _originalSmallImageURL;
 	private int _status;
 	private int _originalStatus;
 	private boolean _setOriginalStatus;
 	private long _statusByUserId;
+	private long _originalStatusByUserId;
+	private boolean _setOriginalStatusByUserId;
 	private String _statusByUserName;
+	private String _originalStatusByUserName;
 	private Date _statusDate;
+	private Date _originalStatusDate;
 	private long _columnBitmask;
 	private BlogsEntry _escapedModel;
 }

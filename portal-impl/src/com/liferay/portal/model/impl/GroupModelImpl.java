@@ -29,6 +29,7 @@ import com.liferay.portal.model.Group;
 import com.liferay.portal.model.GroupModel;
 import com.liferay.portal.model.GroupSoap;
 import com.liferay.portal.model.User;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
@@ -407,7 +408,17 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@JSON
@@ -488,6 +499,12 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setCreatorUserId(long creatorUserId) {
+		if (!_setOriginalCreatorUserId) {
+			_setOriginalCreatorUserId = true;
+
+			_originalCreatorUserId = _creatorUserId;
+		}
+
 		_creatorUserId = creatorUserId;
 	}
 
@@ -505,6 +522,10 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setCreatorUserUuid(String creatorUserUuid) {
+	}
+
+	public long getOriginalCreatorUserId() {
+		return _originalCreatorUserId;
 	}
 
 	@Override
@@ -632,7 +653,15 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setTreePath(String treePath) {
+		if (_originalTreePath == null) {
+			_originalTreePath = _treePath;
+		}
+
 		_treePath = treePath;
+	}
+
+	public String getOriginalTreePath() {
+		return GetterUtil.getString(_originalTreePath);
 	}
 
 	@JSON
@@ -674,7 +703,15 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setDescription(String description) {
+		if (_originalDescription == null) {
+			_originalDescription = _description;
+		}
+
 		_description = description;
+	}
+
+	public String getOriginalDescription() {
+		return GetterUtil.getString(_originalDescription);
 	}
 
 	@JSON
@@ -713,7 +750,15 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setTypeSettings(String typeSettings) {
+		if (_originalTypeSettings == null) {
+			_originalTypeSettings = _typeSettings;
+		}
+
 		_typeSettings = typeSettings;
+	}
+
+	public String getOriginalTypeSettings() {
+		return GetterUtil.getString(_originalTypeSettings);
 	}
 
 	@JSON
@@ -729,7 +774,17 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setManualMembership(boolean manualMembership) {
+		if (!_setOriginalManualMembership) {
+			_setOriginalManualMembership = true;
+
+			_originalManualMembership = _manualMembership;
+		}
+
 		_manualMembership = manualMembership;
+	}
+
+	public boolean getOriginalManualMembership() {
+		return _originalManualMembership;
 	}
 
 	@JSON
@@ -740,7 +795,17 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setMembershipRestriction(int membershipRestriction) {
+		if (!_setOriginalMembershipRestriction) {
+			_setOriginalMembershipRestriction = true;
+
+			_originalMembershipRestriction = _membershipRestriction;
+		}
+
 		_membershipRestriction = membershipRestriction;
+	}
+
+	public int getOriginalMembershipRestriction() {
+		return _originalMembershipRestriction;
 	}
 
 	@JSON
@@ -805,7 +870,17 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setRemoteStagingGroupCount(int remoteStagingGroupCount) {
+		if (!_setOriginalRemoteStagingGroupCount) {
+			_setOriginalRemoteStagingGroupCount = true;
+
+			_originalRemoteStagingGroupCount = _remoteStagingGroupCount;
+		}
+
 		_remoteStagingGroupCount = remoteStagingGroupCount;
+	}
+
+	public int getOriginalRemoteStagingGroupCount() {
+		return _originalRemoteStagingGroupCount;
 	}
 
 	@JSON
@@ -947,6 +1022,10 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 	public void resetOriginalValues() {
 		GroupModelImpl groupModelImpl = this;
 
+		groupModelImpl._originalMvccVersion = groupModelImpl._mvccVersion;
+
+		groupModelImpl._setOriginalMvccVersion = false;
+
 		groupModelImpl._originalUuid = groupModelImpl._uuid;
 
 		groupModelImpl._originalGroupId = groupModelImpl._groupId;
@@ -956,6 +1035,10 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		groupModelImpl._originalCompanyId = groupModelImpl._companyId;
 
 		groupModelImpl._setOriginalCompanyId = false;
+
+		groupModelImpl._originalCreatorUserId = groupModelImpl._creatorUserId;
+
+		groupModelImpl._setOriginalCreatorUserId = false;
 
 		groupModelImpl._originalClassNameId = groupModelImpl._classNameId;
 
@@ -973,17 +1056,35 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 		groupModelImpl._setOriginalLiveGroupId = false;
 
+		groupModelImpl._originalTreePath = groupModelImpl._treePath;
+
 		groupModelImpl._originalName = groupModelImpl._name;
+
+		groupModelImpl._originalDescription = groupModelImpl._description;
 
 		groupModelImpl._originalType = groupModelImpl._type;
 
 		groupModelImpl._setOriginalType = false;
+
+		groupModelImpl._originalTypeSettings = groupModelImpl._typeSettings;
+
+		groupModelImpl._originalManualMembership = groupModelImpl._manualMembership;
+
+		groupModelImpl._setOriginalManualMembership = false;
+
+		groupModelImpl._originalMembershipRestriction = groupModelImpl._membershipRestriction;
+
+		groupModelImpl._setOriginalMembershipRestriction = false;
 
 		groupModelImpl._originalFriendlyURL = groupModelImpl._friendlyURL;
 
 		groupModelImpl._originalSite = groupModelImpl._site;
 
 		groupModelImpl._setOriginalSite = false;
+
+		groupModelImpl._originalRemoteStagingGroupCount = groupModelImpl._remoteStagingGroupCount;
+
+		groupModelImpl._setOriginalRemoteStagingGroupCount = false;
 
 		groupModelImpl._originalActive = groupModelImpl._active;
 
@@ -1223,6 +1324,8 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 			Group.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private String _uuid;
 	private String _originalUuid;
 	private long _groupId;
@@ -1232,6 +1335,8 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _creatorUserId;
+	private long _originalCreatorUserId;
+	private boolean _setOriginalCreatorUserId;
 	private long _classNameId;
 	private long _originalClassNameId;
 	private boolean _setOriginalClassNameId;
@@ -1245,21 +1350,30 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 	private long _originalLiveGroupId;
 	private boolean _setOriginalLiveGroupId;
 	private String _treePath;
+	private String _originalTreePath;
 	private String _name;
 	private String _originalName;
 	private String _description;
+	private String _originalDescription;
 	private int _type;
 	private int _originalType;
 	private boolean _setOriginalType;
 	private String _typeSettings;
+	private String _originalTypeSettings;
 	private boolean _manualMembership;
+	private boolean _originalManualMembership;
+	private boolean _setOriginalManualMembership;
 	private int _membershipRestriction;
+	private int _originalMembershipRestriction;
+	private boolean _setOriginalMembershipRestriction;
 	private String _friendlyURL;
 	private String _originalFriendlyURL;
 	private boolean _site;
 	private boolean _originalSite;
 	private boolean _setOriginalSite;
 	private int _remoteStagingGroupCount;
+	private int _originalRemoteStagingGroupCount;
+	private boolean _setOriginalRemoteStagingGroupCount;
 	private boolean _active;
 	private boolean _originalActive;
 	private boolean _setOriginalActive;

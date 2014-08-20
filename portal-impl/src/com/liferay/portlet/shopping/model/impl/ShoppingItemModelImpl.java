@@ -499,7 +499,17 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 	public void setItemId(long itemId) {
 		_columnBitmask = -1L;
 
+		if (!_setOriginalItemId) {
+			_setOriginalItemId = true;
+
+			_originalItemId = _itemId;
+		}
+
 		_itemId = itemId;
+	}
+
+	public long getOriginalItemId() {
+		return _originalItemId;
 	}
 
 	@JSON
@@ -556,6 +566,12 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -575,6 +591,10 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -588,7 +608,15 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -599,7 +627,15 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -610,7 +646,15 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -675,7 +719,15 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 
 	@Override
 	public void setName(String name) {
+		if (_originalName == null) {
+			_originalName = _name;
+		}
+
 		_name = name;
+	}
+
+	public String getOriginalName() {
+		return GetterUtil.getString(_originalName);
 	}
 
 	@JSON
@@ -691,7 +743,15 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 
 	@Override
 	public void setDescription(String description) {
+		if (_originalDescription == null) {
+			_originalDescription = _description;
+		}
+
 		_description = description;
+	}
+
+	public String getOriginalDescription() {
+		return GetterUtil.getString(_originalDescription);
 	}
 
 	@JSON
@@ -707,7 +767,15 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 
 	@Override
 	public void setProperties(String properties) {
+		if (_originalProperties == null) {
+			_originalProperties = _properties;
+		}
+
 		_properties = properties;
+	}
+
+	public String getOriginalProperties() {
+		return GetterUtil.getString(_originalProperties);
 	}
 
 	@JSON
@@ -723,7 +791,17 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 
 	@Override
 	public void setFields(boolean fields) {
+		if (!_setOriginalFields) {
+			_setOriginalFields = true;
+
+			_originalFields = _fields;
+		}
+
 		_fields = fields;
+	}
+
+	public boolean getOriginalFields() {
+		return _originalFields;
 	}
 
 	@JSON
@@ -739,7 +817,15 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 
 	@Override
 	public void setFieldsQuantities(String fieldsQuantities) {
+		if (_originalFieldsQuantities == null) {
+			_originalFieldsQuantities = _fieldsQuantities;
+		}
+
 		_fieldsQuantities = fieldsQuantities;
+	}
+
+	public String getOriginalFieldsQuantities() {
+		return GetterUtil.getString(_originalFieldsQuantities);
 	}
 
 	@JSON
@@ -750,7 +836,17 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 
 	@Override
 	public void setMinQuantity(int minQuantity) {
+		if (!_setOriginalMinQuantity) {
+			_setOriginalMinQuantity = true;
+
+			_originalMinQuantity = _minQuantity;
+		}
+
 		_minQuantity = minQuantity;
+	}
+
+	public int getOriginalMinQuantity() {
+		return _originalMinQuantity;
 	}
 
 	@JSON
@@ -761,7 +857,17 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 
 	@Override
 	public void setMaxQuantity(int maxQuantity) {
+		if (!_setOriginalMaxQuantity) {
+			_setOriginalMaxQuantity = true;
+
+			_originalMaxQuantity = _maxQuantity;
+		}
+
 		_maxQuantity = maxQuantity;
+	}
+
+	public int getOriginalMaxQuantity() {
+		return _originalMaxQuantity;
 	}
 
 	@JSON
@@ -772,7 +878,17 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 
 	@Override
 	public void setPrice(double price) {
+		if (!_setOriginalPrice) {
+			_setOriginalPrice = true;
+
+			_originalPrice = _price;
+		}
+
 		_price = price;
+	}
+
+	public double getOriginalPrice() {
+		return _originalPrice;
 	}
 
 	@JSON
@@ -783,7 +899,17 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 
 	@Override
 	public void setDiscount(double discount) {
+		if (!_setOriginalDiscount) {
+			_setOriginalDiscount = true;
+
+			_originalDiscount = _discount;
+		}
+
 		_discount = discount;
+	}
+
+	public double getOriginalDiscount() {
+		return _originalDiscount;
 	}
 
 	@JSON
@@ -799,7 +925,17 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 
 	@Override
 	public void setTaxable(boolean taxable) {
+		if (!_setOriginalTaxable) {
+			_setOriginalTaxable = true;
+
+			_originalTaxable = _taxable;
+		}
+
 		_taxable = taxable;
+	}
+
+	public boolean getOriginalTaxable() {
+		return _originalTaxable;
 	}
 
 	@JSON
@@ -810,7 +946,17 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 
 	@Override
 	public void setShipping(double shipping) {
+		if (!_setOriginalShipping) {
+			_setOriginalShipping = true;
+
+			_originalShipping = _shipping;
+		}
+
 		_shipping = shipping;
+	}
+
+	public double getOriginalShipping() {
+		return _originalShipping;
 	}
 
 	@JSON
@@ -826,7 +972,17 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 
 	@Override
 	public void setUseShippingFormula(boolean useShippingFormula) {
+		if (!_setOriginalUseShippingFormula) {
+			_setOriginalUseShippingFormula = true;
+
+			_originalUseShippingFormula = _useShippingFormula;
+		}
+
 		_useShippingFormula = useShippingFormula;
+	}
+
+	public boolean getOriginalUseShippingFormula() {
+		return _originalUseShippingFormula;
 	}
 
 	@JSON
@@ -842,7 +998,17 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 
 	@Override
 	public void setRequiresShipping(boolean requiresShipping) {
+		if (!_setOriginalRequiresShipping) {
+			_setOriginalRequiresShipping = true;
+
+			_originalRequiresShipping = _requiresShipping;
+		}
+
 		_requiresShipping = requiresShipping;
+	}
+
+	public boolean getOriginalRequiresShipping() {
+		return _originalRequiresShipping;
 	}
 
 	@JSON
@@ -853,7 +1019,17 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 
 	@Override
 	public void setStockQuantity(int stockQuantity) {
+		if (!_setOriginalStockQuantity) {
+			_setOriginalStockQuantity = true;
+
+			_originalStockQuantity = _stockQuantity;
+		}
+
 		_stockQuantity = stockQuantity;
+	}
+
+	public int getOriginalStockQuantity() {
+		return _originalStockQuantity;
 	}
 
 	@JSON
@@ -869,7 +1045,17 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 
 	@Override
 	public void setFeatured(boolean featured) {
+		if (!_setOriginalFeatured) {
+			_setOriginalFeatured = true;
+
+			_originalFeatured = _featured;
+		}
+
 		_featured = featured;
+	}
+
+	public boolean getOriginalFeatured() {
+		return _originalFeatured;
 	}
 
 	@JSON
@@ -885,7 +1071,17 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 
 	@Override
 	public void setSale(boolean sale) {
+		if (!_setOriginalSale) {
+			_setOriginalSale = true;
+
+			_originalSale = _sale;
+		}
+
 		_sale = sale;
+	}
+
+	public boolean getOriginalSale() {
+		return _originalSale;
 	}
 
 	@JSON
@@ -901,7 +1097,17 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 
 	@Override
 	public void setSmallImage(boolean smallImage) {
+		if (!_setOriginalSmallImage) {
+			_setOriginalSmallImage = true;
+
+			_originalSmallImage = _smallImage;
+		}
+
 		_smallImage = smallImage;
+	}
+
+	public boolean getOriginalSmallImage() {
+		return _originalSmallImage;
 	}
 
 	@JSON
@@ -940,7 +1146,15 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 
 	@Override
 	public void setSmallImageURL(String smallImageURL) {
+		if (_originalSmallImageURL == null) {
+			_originalSmallImageURL = _smallImageURL;
+		}
+
 		_smallImageURL = smallImageURL;
+	}
+
+	public String getOriginalSmallImageURL() {
+		return GetterUtil.getString(_originalSmallImageURL);
 	}
 
 	@JSON
@@ -956,7 +1170,17 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 
 	@Override
 	public void setMediumImage(boolean mediumImage) {
+		if (!_setOriginalMediumImage) {
+			_setOriginalMediumImage = true;
+
+			_originalMediumImage = _mediumImage;
+		}
+
 		_mediumImage = mediumImage;
+	}
+
+	public boolean getOriginalMediumImage() {
+		return _originalMediumImage;
 	}
 
 	@JSON
@@ -995,7 +1219,15 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 
 	@Override
 	public void setMediumImageURL(String mediumImageURL) {
+		if (_originalMediumImageURL == null) {
+			_originalMediumImageURL = _mediumImageURL;
+		}
+
 		_mediumImageURL = mediumImageURL;
+	}
+
+	public String getOriginalMediumImageURL() {
+		return GetterUtil.getString(_originalMediumImageURL);
 	}
 
 	@JSON
@@ -1011,7 +1243,17 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 
 	@Override
 	public void setLargeImage(boolean largeImage) {
+		if (!_setOriginalLargeImage) {
+			_setOriginalLargeImage = true;
+
+			_originalLargeImage = _largeImage;
+		}
+
 		_largeImage = largeImage;
+	}
+
+	public boolean getOriginalLargeImage() {
+		return _originalLargeImage;
 	}
 
 	@JSON
@@ -1050,7 +1292,15 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 
 	@Override
 	public void setLargeImageURL(String largeImageURL) {
+		if (_originalLargeImageURL == null) {
+			_originalLargeImageURL = _largeImageURL;
+		}
+
 		_largeImageURL = largeImageURL;
+	}
+
+	public String getOriginalLargeImageURL() {
+		return GetterUtil.getString(_originalLargeImageURL);
 	}
 
 	public long getColumnBitmask() {
@@ -1186,6 +1436,10 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 	public void resetOriginalValues() {
 		ShoppingItemModelImpl shoppingItemModelImpl = this;
 
+		shoppingItemModelImpl._originalItemId = shoppingItemModelImpl._itemId;
+
+		shoppingItemModelImpl._setOriginalItemId = false;
+
 		shoppingItemModelImpl._originalGroupId = shoppingItemModelImpl._groupId;
 
 		shoppingItemModelImpl._setOriginalGroupId = false;
@@ -1194,23 +1448,107 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 
 		shoppingItemModelImpl._setOriginalCompanyId = false;
 
+		shoppingItemModelImpl._originalUserId = shoppingItemModelImpl._userId;
+
+		shoppingItemModelImpl._setOriginalUserId = false;
+
+		shoppingItemModelImpl._originalUserName = shoppingItemModelImpl._userName;
+
+		shoppingItemModelImpl._originalCreateDate = shoppingItemModelImpl._createDate;
+
+		shoppingItemModelImpl._originalModifiedDate = shoppingItemModelImpl._modifiedDate;
+
 		shoppingItemModelImpl._originalCategoryId = shoppingItemModelImpl._categoryId;
 
 		shoppingItemModelImpl._setOriginalCategoryId = false;
 
 		shoppingItemModelImpl._originalSku = shoppingItemModelImpl._sku;
 
+		shoppingItemModelImpl._originalName = shoppingItemModelImpl._name;
+
+		shoppingItemModelImpl._originalDescription = shoppingItemModelImpl._description;
+
+		shoppingItemModelImpl._originalProperties = shoppingItemModelImpl._properties;
+
+		shoppingItemModelImpl._originalFields = shoppingItemModelImpl._fields;
+
+		shoppingItemModelImpl._setOriginalFields = false;
+
+		shoppingItemModelImpl._originalFieldsQuantities = shoppingItemModelImpl._fieldsQuantities;
+
+		shoppingItemModelImpl._originalMinQuantity = shoppingItemModelImpl._minQuantity;
+
+		shoppingItemModelImpl._setOriginalMinQuantity = false;
+
+		shoppingItemModelImpl._originalMaxQuantity = shoppingItemModelImpl._maxQuantity;
+
+		shoppingItemModelImpl._setOriginalMaxQuantity = false;
+
+		shoppingItemModelImpl._originalPrice = shoppingItemModelImpl._price;
+
+		shoppingItemModelImpl._setOriginalPrice = false;
+
+		shoppingItemModelImpl._originalDiscount = shoppingItemModelImpl._discount;
+
+		shoppingItemModelImpl._setOriginalDiscount = false;
+
+		shoppingItemModelImpl._originalTaxable = shoppingItemModelImpl._taxable;
+
+		shoppingItemModelImpl._setOriginalTaxable = false;
+
+		shoppingItemModelImpl._originalShipping = shoppingItemModelImpl._shipping;
+
+		shoppingItemModelImpl._setOriginalShipping = false;
+
+		shoppingItemModelImpl._originalUseShippingFormula = shoppingItemModelImpl._useShippingFormula;
+
+		shoppingItemModelImpl._setOriginalUseShippingFormula = false;
+
+		shoppingItemModelImpl._originalRequiresShipping = shoppingItemModelImpl._requiresShipping;
+
+		shoppingItemModelImpl._setOriginalRequiresShipping = false;
+
+		shoppingItemModelImpl._originalStockQuantity = shoppingItemModelImpl._stockQuantity;
+
+		shoppingItemModelImpl._setOriginalStockQuantity = false;
+
+		shoppingItemModelImpl._originalFeatured = shoppingItemModelImpl._featured;
+
+		shoppingItemModelImpl._setOriginalFeatured = false;
+
+		shoppingItemModelImpl._originalSale = shoppingItemModelImpl._sale;
+
+		shoppingItemModelImpl._setOriginalSale = false;
+
+		shoppingItemModelImpl._originalSmallImage = shoppingItemModelImpl._smallImage;
+
+		shoppingItemModelImpl._setOriginalSmallImage = false;
+
 		shoppingItemModelImpl._originalSmallImageId = shoppingItemModelImpl._smallImageId;
 
 		shoppingItemModelImpl._setOriginalSmallImageId = false;
+
+		shoppingItemModelImpl._originalSmallImageURL = shoppingItemModelImpl._smallImageURL;
+
+		shoppingItemModelImpl._originalMediumImage = shoppingItemModelImpl._mediumImage;
+
+		shoppingItemModelImpl._setOriginalMediumImage = false;
 
 		shoppingItemModelImpl._originalMediumImageId = shoppingItemModelImpl._mediumImageId;
 
 		shoppingItemModelImpl._setOriginalMediumImageId = false;
 
+		shoppingItemModelImpl._originalMediumImageURL = shoppingItemModelImpl._mediumImageURL;
+
+		shoppingItemModelImpl._originalLargeImage = shoppingItemModelImpl._largeImage;
+
+		shoppingItemModelImpl._setOriginalLargeImage = false;
+
 		shoppingItemModelImpl._originalLargeImageId = shoppingItemModelImpl._largeImageId;
 
 		shoppingItemModelImpl._setOriginalLargeImageId = false;
+
+		shoppingItemModelImpl._originalLargeImageURL = shoppingItemModelImpl._largeImageURL;
 
 		shoppingItemModelImpl._columnBitmask = 0;
 	}
@@ -1590,6 +1928,8 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 			ShoppingItem.class
 		};
 	private long _itemId;
+	private long _originalItemId;
+	private boolean _setOriginalItemId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -1597,45 +1937,87 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _categoryId;
 	private long _originalCategoryId;
 	private boolean _setOriginalCategoryId;
 	private String _sku;
 	private String _originalSku;
 	private String _name;
+	private String _originalName;
 	private String _description;
+	private String _originalDescription;
 	private String _properties;
+	private String _originalProperties;
 	private boolean _fields;
+	private boolean _originalFields;
+	private boolean _setOriginalFields;
 	private String _fieldsQuantities;
+	private String _originalFieldsQuantities;
 	private int _minQuantity;
+	private int _originalMinQuantity;
+	private boolean _setOriginalMinQuantity;
 	private int _maxQuantity;
+	private int _originalMaxQuantity;
+	private boolean _setOriginalMaxQuantity;
 	private double _price;
+	private double _originalPrice;
+	private boolean _setOriginalPrice;
 	private double _discount;
+	private double _originalDiscount;
+	private boolean _setOriginalDiscount;
 	private boolean _taxable;
+	private boolean _originalTaxable;
+	private boolean _setOriginalTaxable;
 	private double _shipping;
+	private double _originalShipping;
+	private boolean _setOriginalShipping;
 	private boolean _useShippingFormula;
+	private boolean _originalUseShippingFormula;
+	private boolean _setOriginalUseShippingFormula;
 	private boolean _requiresShipping;
+	private boolean _originalRequiresShipping;
+	private boolean _setOriginalRequiresShipping;
 	private int _stockQuantity;
+	private int _originalStockQuantity;
+	private boolean _setOriginalStockQuantity;
 	private boolean _featured;
+	private boolean _originalFeatured;
+	private boolean _setOriginalFeatured;
 	private boolean _sale;
+	private boolean _originalSale;
+	private boolean _setOriginalSale;
 	private boolean _smallImage;
+	private boolean _originalSmallImage;
+	private boolean _setOriginalSmallImage;
 	private long _smallImageId;
 	private long _originalSmallImageId;
 	private boolean _setOriginalSmallImageId;
 	private String _smallImageURL;
+	private String _originalSmallImageURL;
 	private boolean _mediumImage;
+	private boolean _originalMediumImage;
+	private boolean _setOriginalMediumImage;
 	private long _mediumImageId;
 	private long _originalMediumImageId;
 	private boolean _setOriginalMediumImageId;
 	private String _mediumImageURL;
+	private String _originalMediumImageURL;
 	private boolean _largeImage;
+	private boolean _originalLargeImage;
+	private boolean _setOriginalLargeImage;
 	private long _largeImageId;
 	private long _originalLargeImageId;
 	private boolean _setOriginalLargeImageId;
 	private String _largeImageURL;
+	private String _originalLargeImageURL;
 	private long _columnBitmask;
 	private ShoppingItem _escapedModel;
 }

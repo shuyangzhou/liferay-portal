@@ -247,7 +247,17 @@ public class SCLicenseModelImpl extends BaseModelImpl<SCLicense>
 
 	@Override
 	public void setLicenseId(long licenseId) {
+		if (!_setOriginalLicenseId) {
+			_setOriginalLicenseId = true;
+
+			_originalLicenseId = _licenseId;
+		}
+
 		_licenseId = licenseId;
+	}
+
+	public long getOriginalLicenseId() {
+		return _originalLicenseId;
 	}
 
 	@JSON
@@ -265,7 +275,15 @@ public class SCLicenseModelImpl extends BaseModelImpl<SCLicense>
 	public void setName(String name) {
 		_columnBitmask = -1L;
 
+		if (_originalName == null) {
+			_originalName = _name;
+		}
+
 		_name = name;
+	}
+
+	public String getOriginalName() {
+		return GetterUtil.getString(_originalName);
 	}
 
 	@JSON
@@ -281,7 +299,15 @@ public class SCLicenseModelImpl extends BaseModelImpl<SCLicense>
 
 	@Override
 	public void setUrl(String url) {
+		if (_originalUrl == null) {
+			_originalUrl = _url;
+		}
+
 		_url = url;
+	}
+
+	public String getOriginalUrl() {
+		return GetterUtil.getString(_originalUrl);
 	}
 
 	@JSON
@@ -297,7 +323,17 @@ public class SCLicenseModelImpl extends BaseModelImpl<SCLicense>
 
 	@Override
 	public void setOpenSource(boolean openSource) {
+		if (!_setOriginalOpenSource) {
+			_setOriginalOpenSource = true;
+
+			_originalOpenSource = _openSource;
+		}
+
 		_openSource = openSource;
+	}
+
+	public boolean getOriginalOpenSource() {
+		return _originalOpenSource;
 	}
 
 	@JSON
@@ -453,6 +489,18 @@ public class SCLicenseModelImpl extends BaseModelImpl<SCLicense>
 	public void resetOriginalValues() {
 		SCLicenseModelImpl scLicenseModelImpl = this;
 
+		scLicenseModelImpl._originalLicenseId = scLicenseModelImpl._licenseId;
+
+		scLicenseModelImpl._setOriginalLicenseId = false;
+
+		scLicenseModelImpl._originalName = scLicenseModelImpl._name;
+
+		scLicenseModelImpl._originalUrl = scLicenseModelImpl._url;
+
+		scLicenseModelImpl._originalOpenSource = scLicenseModelImpl._openSource;
+
+		scLicenseModelImpl._setOriginalOpenSource = false;
+
 		scLicenseModelImpl._originalActive = scLicenseModelImpl._active;
 
 		scLicenseModelImpl._setOriginalActive = false;
@@ -559,9 +607,15 @@ public class SCLicenseModelImpl extends BaseModelImpl<SCLicense>
 			SCLicense.class
 		};
 	private long _licenseId;
+	private long _originalLicenseId;
+	private boolean _setOriginalLicenseId;
 	private String _name;
+	private String _originalName;
 	private String _url;
+	private String _originalUrl;
 	private boolean _openSource;
+	private boolean _originalOpenSource;
+	private boolean _setOriginalOpenSource;
 	private boolean _active;
 	private boolean _originalActive;
 	private boolean _setOriginalActive;
