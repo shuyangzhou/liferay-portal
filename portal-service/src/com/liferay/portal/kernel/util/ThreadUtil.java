@@ -332,7 +332,7 @@ public class ThreadUtil {
 					_log.error(
 						"Unable to get cluster node response in " +
 							_THREAD_DUMP_CLUSTER_WIDE_TIMEOUT +
-							TimeUnit.SECONDS);
+								TimeUnit.SECONDS);
 				}
 
 				if (clusterNodeResponse == null) {
@@ -346,33 +346,36 @@ public class ThreadUtil {
 						"Processing response of node " + clusterNodeAddress);
 				}
 
-				ThreadDumpResult threadDumpResult = null;
-
-				boolean addDumpSuccess = false;
+				boolean success = false;
 
 				try {
-					threadDumpResult =
+					ThreadDumpResult threadDumpResult =
 						(ThreadDumpResult)clusterNodeResponse.getResult();
 
 					_silentClusterNodeAddresses.remove(clusterNodeAddress);
+
+					if (threadDumpResult == null) {
+						continue;
+					}
+
+					success = _addDump(
+						threadDumpResult.getThreadDump(),
+						threadDumpResult.getHostName(),
+						threadDumpResult.getCreateDate());
 				}
 				catch (Exception e) {
 					if (_log.isDebugEnabled()) {
 						_log.debug(
-							"Exception occured on node " +
-								clusterNodeAddress, e);
+							"Exception occured on node " + clusterNodeAddress,
+							e);
 					}
 
-					addDumpSuccess = _addDump(clusterNodeAddress, e);
+					success = _addDump(
+						StackTraceUtil.getStackTrace(e),
+						clusterNodeAddress.getDescription(), new Date());
 				}
 
-				if (threadDumpResult == null) {
-					continue;
-				}
-
-				addDumpSuccess = _addDump(threadDumpResult);
-
-				if (!addDumpSuccess) {
+				if (!success) {
 					_log.error(
 						"Writing thread dump bundle has failed; aborting.");
 
@@ -426,28 +429,15 @@ public class ThreadUtil {
 				clusterNodeAddresses);
 		}
 
-		private boolean _addDump(Address clusterNodeAddress, Exception e) {
+		private boolean _addDump(
+			String content, String hostName, Date createDate) {
+
 			File threadDumpFile = _getThreadDumpFile(
-				ThreadDumpType.LOCAL, new Date(),
-				clusterNodeAddress.getDescription());
+				ThreadDumpType.LOCAL, createDate, hostName);
 
-			String stackTrace = StackTraceUtil.getStackTrace(e);
-
-			return _addZipEntry(threadDumpFile, stackTrace);
-		}
-
-		private boolean _addDump(ThreadDumpResult threadDumpResult) {
-			File threadDumpFile = _getThreadDumpFile(
-				ThreadDumpType.LOCAL, threadDumpResult.getCreateDate(),
-				threadDumpResult.getHostName());
-
-			return _addZipEntry(
-				threadDumpFile, threadDumpResult.getThreadDump());
-		}
-
-		private boolean _addZipEntry(File file, String content) {
 			try {
-				_zipWriter.addEntry(StringPool.SLASH + file.getName(), content);
+				_zipWriter.addEntry(
+					StringPool.SLASH + threadDumpFile.getName(), content);
 			}
 			catch (IOException ioe) {
 				_log.error(ioe);
@@ -463,30 +453,27 @@ public class ThreadUtil {
 		}
 
 		private void _endDumpBundle() {
-			boolean success = false;
-
 			try {
 				File threadDumpsFile = _getThreadDumpFile(
 					ThreadDumpType.CLUSTER_WIDE, null, null);
 
-				success = FileUtil.move(_zipWriter.getFile(), threadDumpsFile);
+				boolean success = FileUtil.move(
+					_zipWriter.getFile(), threadDumpsFile);
 
-				if (_log.isInfoEnabled() && success) {
-					_log.info(
-						"Cluster wide thread dump has been written to " +
-							threadDumpsFile);
+				if (success) {
+					if (_log.isInfoEnabled()) {
+						_log.info(
+							"Cluster wide thread dump has been written to " +
+								threadDumpsFile);
+					}
+				}
+				else {
+					_log.error(
+						"Cluster wide thread dump generation has failed");
 				}
 			}
 			catch (Exception e) {
-				success = false;
-
-				if (_log.isDebugEnabled()) {
-					_log.debug(e);
-				}
-			}
-
-			if (!success) {
-				_log.error("Cluster wide thread dump generation has failed.");
+				_log.error("Cluster wide thread dump generation has failed", e);
 			}
 		}
 
