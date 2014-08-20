@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.zip.ZipWriter;
 import com.liferay.portal.kernel.zip.ZipWriterFactoryUtil;
+import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
 import java.io.IOException;
@@ -101,28 +102,35 @@ public class ThreadUtil {
 			throw new IllegalArgumentException("threadDumpType cannot be null");
 		}
 
-		if (ThreadDumpType.CLUSTER_WIDE.equals(threadDumpType)) {
-			ClusterRequest clusterRequest =
-				ClusterRequest.createMulticastRequest(
-					new MethodHandler(_TAKE_THREAD_DUMP_METHOD_KEY), false);
+		if (PropsValues.CLUSTER_LINK_ENABLED &&
+			threadDumpType.equals(ThreadDumpType.CLUSTER_WIDE)) {
 
-			List<Address> clusterNodeAddresses =
-				ClusterExecutorUtil.getClusterNodeAddresses();
-
-			ClusterResponseCallback threadDumpClusterResponseCallback =
-				new ThreadDumpClusterResponseCallback(clusterNodeAddresses);
-
-			ClusterExecutorUtil.execute(
-				clusterRequest, threadDumpClusterResponseCallback);
-
-			if (_log.isInfoEnabled()) {
-				_log.info(
-					"Cluster wide thread dump request has been submitted.");
-			}
-
-			return;
+			_doClusterThreadDump();
 		}
+		else {
+			_doLocalThreadDump(threadDumpType);
+		}
+	}
 
+	private static void _doClusterThreadDump() {
+		ClusterRequest clusterRequest = ClusterRequest.createMulticastRequest(
+			new MethodHandler(_TAKE_THREAD_DUMP_METHOD_KEY), false);
+
+		List<Address> clusterNodeAddresses =
+			ClusterExecutorUtil.getClusterNodeAddresses();
+
+		ClusterResponseCallback threadDumpClusterResponseCallback =
+			new ThreadDumpClusterResponseCallback(clusterNodeAddresses);
+
+		ClusterExecutorUtil.execute(
+			clusterRequest, threadDumpClusterResponseCallback);
+
+		if (_log.isInfoEnabled()) {
+			_log.info("Cluster wide thread dump request has been submitted.");
+		}
+	}
+
+	private static void _doLocalThreadDump(ThreadDumpType threadDumpType) {
 		ThreadDumpResult threadDumpResult = takeThreadDump();
 
 		File threadDumpFile = _getThreadDumpFile(
