@@ -25,9 +25,9 @@ import java.util.Date;
 /**
  * @author László Csontos
  */
-public class ThreadDump implements Serializable {
+public class ThreadDumpResult implements Serializable {
 
-	public ThreadDump(String threadDump) {
+	public ThreadDumpResult(String threadDump) {
 		if (ClusterExecutorUtil.isEnabled()) {
 			Address localClusterNodeAddress =
 				ClusterExecutorUtil.getLocalClusterNodeAddress();
