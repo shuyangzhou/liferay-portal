@@ -32,31 +32,31 @@ public class ThreadDumpResult implements Serializable {
 			Address localClusterNodeAddress =
 				ClusterExecutorUtil.getLocalClusterNodeAddress();
 
-			_targetHost = localClusterNodeAddress.getDescription();
+			_hostName = localClusterNodeAddress.getDescription();
 		}
 
-		if (Validator.isNull(_targetHost)) {
-			_targetHost = PortalUtil.getComputerName();
+		if (Validator.isNull(_hostName)) {
+			_hostName = PortalUtil.getComputerName();
 		}
 
-		_takenAt = new Date();
+		_createDate = new Date();
 		_threadDump = threadDump;
 	}
 
-	public Date getTakenAt() {
-		return _takenAt;
+	public Date getCreateDate() {
+		return _createDate;
 	}
 
-	public String getTargetHost() {
-		return _targetHost;
+	public String getHostName() {
+		return _hostName;
 	}
 
 	public String getThreadDump() {
 		return _threadDump;
 	}
 
-	private Date _takenAt;
-	private String _targetHost;
+	private Date _createDate;
+	private String _hostName;
 	private String _threadDump;
 
 }
