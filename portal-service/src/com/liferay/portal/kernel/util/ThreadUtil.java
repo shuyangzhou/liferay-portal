@@ -149,38 +149,24 @@ public class ThreadUtil {
 		}
 	}
 
-	private static String _getThreadDumpDestDir() {
-		String destDir = PropsUtil.get(PropsKeys.THREAD_DUMP_DEST_DIR);
-
-		if (Validator.isBlank(destDir)) {
-			destDir = SystemProperties.get(SystemProperties.TMP_DIR);
-		}
-
-		if (!FileUtil.exists(destDir)) {
-			FileUtil.mkdirs(destDir);
-		}
-
-		return destDir;
-	}
-
 	private static File _getThreadDumpFile(
 		ThreadDumpType threadDumpType, Date createdate, String hostName) {
 
-		int size = 6;
+		StringBundler sb = null;
 
 		if (Validator.isNotNull(hostName)) {
-			size = 8;
+			sb = new StringBundler(8);
 		}
-
-		StringBundler sb = new StringBundler(size);
-
-		sb.append(threadDumpType.getDescription());
-		sb.append("ThreadDump");
+		else {
+			sb = new StringBundler(6);
+		}
 
 		if (createdate == null) {
 			createdate = new Date();
 		}
 
+		sb.append(threadDumpType.getDescription());
+		sb.append("ThreadDump");
 		sb.append(StringPool.DASH);
 		sb.append(_ISO_DATE_FORMAT.format(createdate));
 
@@ -199,7 +185,17 @@ public class ThreadUtil {
 
 		sb.append(extension);
 
-		File threadDumpFile = new File(_getThreadDumpDestDir(), sb.toString());
+		String destDir = PropsValues.THREAD_DUMP_DEST_DIR;
+
+		if (Validator.isBlank(destDir)) {
+			destDir = SystemProperties.get(SystemProperties.TMP_DIR);
+		}
+
+		if (!FileUtil.exists(destDir)) {
+			FileUtil.mkdirs(destDir);
+		}
+
+		File threadDumpFile = new File(destDir, sb.toString());
 
 		return threadDumpFile;
 	}
