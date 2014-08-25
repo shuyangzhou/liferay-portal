@@ -1,5 +1,5 @@
 Bundle-Name: Liferay Dictionary Web
-Bundle-SymbolicName: com.liferay.dictionary
+Bundle-SymbolicName: com.liferay.dictionary.web
 Bundle-Version: 1.0.0
 Import-Package:\
 	${bnd.jsp.support.imports},\

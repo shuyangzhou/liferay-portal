@@ -1,5 +1,5 @@
 Bundle-Name: Liferay Social Activities Web
-Bundle-SymbolicName: com.liferay.social.activities
+Bundle-SymbolicName: com.liferay.social.activities.web
 Bundle-Version: 1.0.0
 Import-Package:\
 	${bnd.jsp.support.imports},\

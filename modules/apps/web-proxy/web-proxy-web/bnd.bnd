@@ -1,5 +1,5 @@
 Bundle-Name: Liferay Web Proxy Web
-Bundle-SymbolicName: com.liferay.web.proxy
+Bundle-SymbolicName: com.liferay.web.proxy.web
 Bundle-Version: 1.0.0
 Import-Package:\
 	${bnd.jsp.support.imports},\
