@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.zip.ZipWriter;
 import com.liferay.portal.kernel.zip.ZipWriterFactoryUtil;
-import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
 import java.io.IOException;
@@ -102,7 +101,7 @@ public class ThreadUtil {
 			throw new IllegalArgumentException("threadDumpType cannot be null");
 		}
 
-		if (PropsValues.CLUSTER_LINK_ENABLED &&
+		if (ClusterExecutorUtil.isEnabled() &&
 			threadDumpType.equals(ThreadDumpType.CLUSTER_WIDE)) {
 
 			_doClusterThreadDump();
@@ -185,7 +184,7 @@ public class ThreadUtil {
 
 		sb.append(extension);
 
-		String destDir = PropsValues.THREAD_DUMP_DEST_DIR;
+		String destDir = PropsUtil.get(PropsKeys.THREAD_DUMP_DEST_DIR);
 
 		if (Validator.isBlank(destDir)) {
 			destDir = SystemProperties.get(SystemProperties.TMP_DIR);
