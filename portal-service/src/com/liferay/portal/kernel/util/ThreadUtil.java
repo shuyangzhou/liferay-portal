@@ -104,14 +104,14 @@ public class ThreadUtil {
 		if (ClusterExecutorUtil.isEnabled() &&
 			threadDumpType.equals(ThreadDumpType.CLUSTER_WIDE)) {
 
-			_doClusterThreadDump();
+			_doClusterWideThreadDump();
 		}
 		else {
 			_doLocalThreadDump(threadDumpType);
 		}
 	}
 
-	private static void _doClusterThreadDump() {
+	private static void _doClusterWideThreadDump() {
 		ClusterRequest clusterRequest = ClusterRequest.createMulticastRequest(
 			new MethodHandler(_TAKE_THREAD_DUMP_METHOD_KEY), false);
 
