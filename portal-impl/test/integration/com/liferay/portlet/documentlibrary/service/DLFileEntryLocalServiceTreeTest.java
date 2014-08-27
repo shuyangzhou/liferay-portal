@@ -56,21 +56,21 @@ public class DLFileEntryLocalServiceTreeTest {
 	public void testFileEntryTreepathWhenMovingSubfolderWithFileEntry()
 		throws Exception {
 
-		Folder folder = DLAppTestUtil.addFolder(
+		Folder folderA = DLAppTestUtil.addFolder(
 			_group.getGroupId(), DLFolderConstants.DEFAULT_PARENT_FOLDER_ID,
-			"Folder 1");
+			"Folder A");
 
-		Folder subfolder = DLAppTestUtil.addFolder(
-			_group.getGroupId(), folder.getFolderId(), "Folder 1.1");
+		Folder folderAA = DLAppTestUtil.addFolder(
+			_group.getGroupId(), folderA.getFolderId(), "Folder AA");
 
 		FileEntry fileEntry = DLAppTestUtil.addFileEntry(
-			_group.getGroupId(), subfolder.getFolderId(), "Entry.txt");
+			_group.getGroupId(), folderAA.getFolderId(), "Entry.txt");
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
 
 		DLAppLocalServiceUtil.moveFolder(
-			TestPropsValues.getUserId(), subfolder.getFolderId(),
+			TestPropsValues.getUserId(), folderAA.getFolderId(),
 			DLFolderConstants.DEFAULT_PARENT_FOLDER_ID, serviceContext);
 
 		DLFileEntry dlFileEntry = DLFileEntryLocalServiceUtil.getDLFileEntry(
@@ -86,27 +86,27 @@ public class DLFileEntryLocalServiceTreeTest {
 
 		List<Folder> folders = new ArrayList<Folder>();
 
-		Folder folder = DLAppTestUtil.addFolder(
+		Folder folderA = DLAppTestUtil.addFolder(
 			_group.getGroupId(), DLFolderConstants.DEFAULT_PARENT_FOLDER_ID,
-			"Folder 1");
+			"Folder A");
 
-		folders.add(folder);
+		folders.add(folderA);
 
-		Folder subfolder = DLAppTestUtil.addFolder(
-			_group.getGroupId(), folder.getFolderId(), "Folder 1.1");
+		Folder folderAA = DLAppTestUtil.addFolder(
+			_group.getGroupId(), folderA.getFolderId(), "Folder AA");
 
-		folders.add(subfolder);
+		folders.add(folderAA);
 
-		Folder subsubfolder = DLAppTestUtil.addFolder(
-			_group.getGroupId(), subfolder.getFolderId(), "Folder 1.1.1");
+		Folder folderAAA = DLAppTestUtil.addFolder(
+			_group.getGroupId(), folderAA.getFolderId(), "Folder AAA");
 
-		folders.add(subsubfolder);
+		folders.add(folderAAA);
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
 
 		DLAppLocalServiceUtil.moveFolder(
-			TestPropsValues.getUserId(), subfolder.getFolderId(),
+			TestPropsValues.getUserId(), folderAA.getFolderId(),
 			DLFolderConstants.DEFAULT_PARENT_FOLDER_ID, serviceContext);
 
 		for (Folder curFolder : folders) {

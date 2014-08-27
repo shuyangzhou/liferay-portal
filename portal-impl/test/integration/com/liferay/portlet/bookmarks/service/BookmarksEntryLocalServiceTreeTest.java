@@ -53,65 +53,58 @@ public class BookmarksEntryLocalServiceTreeTest {
 	public void testBookmarksEntryTreePathWhenMovingSubfolderWithEntry()
 		throws Exception {
 
-		BookmarksFolder folder = BookmarksTestUtil.addFolder(
+		BookmarksFolder folderA = BookmarksTestUtil.addFolder(
 			_group.getGroupId(),
-			BookmarksFolderConstants.DEFAULT_PARENT_FOLDER_ID, "Folder 1");
+			BookmarksFolderConstants.DEFAULT_PARENT_FOLDER_ID, "Folder A");
 
-		BookmarksFolder subFolder = BookmarksTestUtil.addFolder(
-			_group.getGroupId(), folder.getFolderId(), "Folder 1.1");
+		BookmarksFolder folderAA = BookmarksTestUtil.addFolder(
+			_group.getGroupId(), folderA.getFolderId(), "Folder AA");
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
 
 		BookmarksEntry entry = BookmarksTestUtil.addEntry(
-			subFolder.getFolderId(), true, serviceContext);
+			folderAA.getFolderId(), true, serviceContext);
 
 		BookmarksFolderLocalServiceUtil.moveFolder(
-			subFolder.getFolderId(),
+			folderAA.getFolderId(),
 			BookmarksFolderConstants.DEFAULT_PARENT_FOLDER_ID);
 
-		BookmarksEntry bookmarksEntry =
-			BookmarksEntryLocalServiceUtil.getBookmarksEntry(
-				entry.getEntryId());
+		entry = BookmarksEntryLocalServiceUtil.getBookmarksEntry(
+			entry.getEntryId());
 
-		Assert.assertEquals(
-			bookmarksEntry.buildTreePath(), bookmarksEntry.getTreePath());
+		Assert.assertEquals(entry.buildTreePath(), entry.getTreePath());
 	}
 
 	@Test
 	public void testBookmarksFolderTreePathWhenMovingFolderWithSubfolder()
 		throws Exception {
 
-		List<BookmarksFolder> bookmarksFolders =
-			new ArrayList<BookmarksFolder>();
+		List<BookmarksFolder> folders = new ArrayList<BookmarksFolder>();
 
-		BookmarksFolder folder = BookmarksTestUtil.addFolder(
-			_group.getGroupId(),
-			BookmarksFolderConstants.DEFAULT_PARENT_FOLDER_ID, "Folder 1");
+		BookmarksFolder folderA = BookmarksTestUtil.addFolder(
+			_group.getGroupId(), "Folder A");
 
-		bookmarksFolders.add(folder);
+		folders.add(folderA);
 
-		BookmarksFolder subFolder = BookmarksTestUtil.addFolder(
-			_group.getGroupId(), folder.getFolderId(), "Folder 1.1");
+		BookmarksFolder folderAA = BookmarksTestUtil.addFolder(
+			_group.getGroupId(), folderA.getFolderId(), "Folder AA");
 
-		bookmarksFolders.add(subFolder);
+		folders.add(folderAA);
 
-		BookmarksFolder subsubFolder = BookmarksTestUtil.addFolder(
-			_group.getGroupId(), subFolder.getFolderId(), "Folder 1.1.1");
+		BookmarksFolder folderAAA = BookmarksTestUtil.addFolder(
+			_group.getGroupId(), folderAA.getFolderId(), "Folder AAA");
 
-		bookmarksFolders.add(subsubFolder);
+		folders.add(folderAAA);
 
-		ServiceContext serviceContext =
-			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
-
-		BookmarksFolderLocalServiceUtil.moveFolder(
-			subFolder.getFolderId(),
+		BookmarksFolderServiceUtil.moveFolder(
+			folderAA.getFolderId(),
 			BookmarksFolderConstants.DEFAULT_PARENT_FOLDER_ID);
 
-		for (BookmarksFolder curbookmarksFolder : bookmarksFolders) {
+		for (BookmarksFolder curFolder : folders) {
 			BookmarksFolder bookmarksFolder =
-				BookmarksFolderLocalServiceUtil.getBookmarksFolder(
-					curbookmarksFolder.getFolderId());
+				BookmarksFolderLocalServiceUtil.getFolder(
+					curFolder.getFolderId());
 
 			Assert.assertEquals(
 				bookmarksFolder.buildTreePath(), bookmarksFolder.getTreePath());
