@@ -767,6 +767,12 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		return null;
 	}
 
+	protected List<String> getImmutableFields() {
+		return ListUtil.fromString(
+			GetterUtil.getString(_properties.getProperty("immutable.fields")),
+			StringPool.COMMA);
+	}
+
 	protected List<String> getExclusions(String key) {
 		return ListUtil.fromString(
 			GetterUtil.getString(_properties.getProperty(key)),

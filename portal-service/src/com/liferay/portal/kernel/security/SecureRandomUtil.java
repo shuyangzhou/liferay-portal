@@ -43,7 +43,7 @@ public class SecureRandomUtil {
 		int index = _index.getAndIncrement();
 
 		if (index < _BUFFER_SIZE) {
-			return _bytes[index];
+			return _BYTES[index];
 		}
 
 		return (byte)_reload();
@@ -53,7 +53,7 @@ public class SecureRandomUtil {
 		int index = _index.getAndAdd(8);
 
 		if ((index + 7) < _BUFFER_SIZE) {
-			return BigEndianCodec.getDouble(_bytes, index);
+			return BigEndianCodec.getDouble(_BYTES, index);
 		}
 
 		return Double.longBitsToDouble(_reload());
@@ -63,7 +63,7 @@ public class SecureRandomUtil {
 		int index = _index.getAndAdd(4);
 
 		if ((index + 3) < _BUFFER_SIZE) {
-			return BigEndianCodec.getFloat(_bytes, index);
+			return BigEndianCodec.getFloat(_BYTES, index);
 		}
 
 		return Float.intBitsToFloat((int)_reload());
@@ -73,7 +73,7 @@ public class SecureRandomUtil {
 		int index = _index.getAndAdd(4);
 
 		if ((index + 3) < _BUFFER_SIZE) {
-			return BigEndianCodec.getInt(_bytes, index);
+			return BigEndianCodec.getInt(_BYTES, index);
 		}
 
 		return (int)_reload();
@@ -83,7 +83,7 @@ public class SecureRandomUtil {
 		int index = _index.getAndAdd(8);
 
 		if ((index + 7) < _BUFFER_SIZE) {
-			return BigEndianCodec.getLong(_bytes, index);
+			return BigEndianCodec.getLong(_BYTES, index);
 		}
 
 		return _reload();
@@ -91,7 +91,7 @@ public class SecureRandomUtil {
 
 	private static long _reload() {
 		if (_reloadingFlag.compareAndSet(false, true)) {
-			_random.nextBytes(_bytes);
+			_random.nextBytes(_BYTES);
 
 			_index.set(0);
 
@@ -100,7 +100,7 @@ public class SecureRandomUtil {
 
 		int offset = _index.get() % (_BUFFER_SIZE - 7);
 
-		long l = BigEndianCodec.getLong(_bytes, offset) ^ _gapSeed;
+		long l = BigEndianCodec.getLong(_BYTES, offset) ^ _gapSeed;
 
 		_gapSeed = l;
 
@@ -109,9 +109,10 @@ public class SecureRandomUtil {
 
 	private static final int _BUFFER_SIZE;
 
+	private static final byte[] _BYTES;
+
 	private static final int _MIN_BUFFER_SIZE = 1024;
 
-	private static final byte[] _bytes;
 	private static final AtomicInteger _index = new AtomicInteger();
 	private static final Random _random = new SecureRandom();
 	private static final AtomicBoolean _reloadingFlag = new AtomicBoolean();
@@ -127,9 +128,9 @@ public class SecureRandomUtil {
 
 		_BUFFER_SIZE = bufferSize;
 
-		_bytes = new byte[_BUFFER_SIZE];
+		_BYTES = new byte[_BUFFER_SIZE];
 
-		_random.nextBytes(_bytes);
+		_random.nextBytes(_BYTES);
 
 		_gapSeed = _random.nextLong();
 	}
