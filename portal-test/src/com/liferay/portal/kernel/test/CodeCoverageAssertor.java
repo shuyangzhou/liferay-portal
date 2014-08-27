@@ -72,7 +72,7 @@ public class CodeCoverageAssertor implements TestRule {
 					includes = _generateIncludes(className);
 				}
 
-				_dynamicallyInstrumentMethod.invoke(null, includes, _excludes);
+				_DYNAMICALLY_INSTRUMENT_METHOD.invoke(null, includes, _excludes);
 
 				try {
 					statement.evaluate();
@@ -90,7 +90,7 @@ public class CodeCoverageAssertor implements TestRule {
 
 					_purgeSyntheticClasses(assertClasses);
 
-					_assertCoverageMethod.invoke(
+					_ASSERT_COVERAGE_METHOD.invoke(
 						null, _includeInnerClasses,
 						assertClasses.toArray(
 							new Class<?>[assertClasses.size()]));
@@ -168,8 +168,9 @@ public class CodeCoverageAssertor implements TestRule {
 		return includes;
 	}
 
-	private static final Method _assertCoverageMethod;
-	private static final Method _dynamicallyInstrumentMethod;
+	private static final Method _ASSERT_COVERAGE_METHOD;
+
+	private static final Method _DYNAMICALLY_INSTRUMENT_METHOD;
 
 	private final String[] _excludes;
 	private final boolean _includeInnerClasses;
@@ -182,9 +183,9 @@ public class CodeCoverageAssertor implements TestRule {
 			Class<?> instrumentationAgentClass = systemClassLoader.loadClass(
 				"com.liferay.cobertura.instrument.InstrumentationAgent");
 
-			_assertCoverageMethod = instrumentationAgentClass.getMethod(
+			_ASSERT_COVERAGE_METHOD = instrumentationAgentClass.getMethod(
 				"assertCoverage", boolean.class, Class[].class);
-			_dynamicallyInstrumentMethod = instrumentationAgentClass.getMethod(
+			_DYNAMICALLY_INSTRUMENT_METHOD = instrumentationAgentClass.getMethod(
 				"dynamicallyInstrument", String[].class, String[].class);
 		}
 		catch (Exception e) {
