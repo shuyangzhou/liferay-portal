@@ -15,6 +15,7 @@
 package com.liferay.portal.events;
 
 import com.liferay.portal.cache.bootstrap.EhcacheStreamBootstrapCacheLoader;
+import com.liferay.portal.cache.bootstrap.StreamBootstrapLoader;
 import com.liferay.portal.jericho.CachedLoggerProvider;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
@@ -190,6 +191,8 @@ public class StartupAction extends SimpleAction {
 		// Ehache bootstrap
 
 		EhcacheStreamBootstrapCacheLoader.start();
+
+		StreamBootstrapLoader.start();
 
 		// Scheduler
 

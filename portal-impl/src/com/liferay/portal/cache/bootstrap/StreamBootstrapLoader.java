@@ -18,7 +18,6 @@ import com.liferay.portal.kernel.cache.BootstrapLoader;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.InitialThreadLocal;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,14 +29,6 @@ import java.util.Properties;
  * @author Tina Tian
  */
 public class StreamBootstrapLoader implements BootstrapLoader {
-
-	public static void resetSkip() {
-		_skipBootstrapThreadLocal.remove();
-	}
-
-	public static void setSkip() {
-		_skipBootstrapThreadLocal.set(Boolean.TRUE);
-	}
 
 	public static synchronized void start() {
 		if (!_started) {
@@ -126,7 +117,7 @@ public class StreamBootstrapLoader implements BootstrapLoader {
 			}
 		}
 
-		if (_skipBootstrapThreadLocal.get()) {
+		if (StreamBootstrapHelpUtil.isSkipped()) {
 			return;
 		}
 
@@ -150,9 +141,6 @@ public class StreamBootstrapLoader implements BootstrapLoader {
 
 	private static Map<String, List<String>> _deferredPortalCaches =
 		new HashMap<String, List<String>>();
-	private static ThreadLocal<Boolean> _skipBootstrapThreadLocal =
-		new InitialThreadLocal<Boolean>(
-			StreamBootstrapLoader.class + "._skipBootstrapThreadLocal", false);
 	private static boolean _started;
 
 	private boolean _bootstrapAsynchronously = true;

@@ -17,7 +17,7 @@ package com.liferay.portal.cache.bootstrap;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.InitialThreadLocal;
+import com.liferay.portal.util.PropsValues;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,15 +35,13 @@ import net.sf.ehcache.bootstrap.BootstrapCacheLoader;
  */
 public class EhcacheStreamBootstrapCacheLoader implements BootstrapCacheLoader {
 
-	public static void resetSkip() {
-		_skipBootstrapThreadLocal.remove();
-	}
-
-	public static void setSkip() {
-		_skipBootstrapThreadLocal.set(Boolean.TRUE);
-	}
-
 	public static synchronized void start() {
+		if (!PropsValues.HIBERNATE_CACHE_USE_QUERY_CACHE &&
+			!PropsValues.HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE) {
+
+			return;
+		}
+
 		if (!_started) {
 			_started = true;
 		}
@@ -114,7 +112,7 @@ public class EhcacheStreamBootstrapCacheLoader implements BootstrapCacheLoader {
 			}
 		}
 
-		if (_skipBootstrapThreadLocal.get()) {
+		if (StreamBootstrapHelpUtil.isSkipped()) {
 			return;
 		}
 
@@ -158,11 +156,6 @@ public class EhcacheStreamBootstrapCacheLoader implements BootstrapCacheLoader {
 
 	private static Map<String, List<String>> _deferredEhcaches =
 		new HashMap<String, List<String>>();
-	private static ThreadLocal<Boolean> _skipBootstrapThreadLocal =
-		new InitialThreadLocal<Boolean>(
-			EhcacheStreamBootstrapCacheLoader.class +
-				"._skipBootstrapThreadLocal",
-			false);
 	private static boolean _started;
 
 	private boolean _bootstrapAsynchronously = true;

@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.io.AnnotatedObjectInputStream;
 import com.liferay.portal.kernel.io.AnnotatedObjectOutputStream;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.InitialThreadLocal;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.kernel.util.SocketUtil;
@@ -77,6 +78,10 @@ public class StreamBootstrapHelpUtil {
 		ehcacheStreamServerThread.start();
 
 		return serverSocket.getLocalSocketAddress();
+	}
+
+	protected static boolean isSkipped() {
+		return _skipBootstrapThreadLocal.get();
 	}
 
 	protected static void loadCachesFromCluster(
@@ -186,7 +191,7 @@ public class StreamBootstrapHelpUtil {
 							break;
 						}
 
-						EhcacheStreamBootstrapCacheLoader.setSkip();
+						_skipBootstrapThreadLocal.set(Boolean.TRUE);
 
 						try {
 							portalCache =
@@ -194,7 +199,7 @@ public class StreamBootstrapHelpUtil {
 									portalCacheManager.getCache((String)object);
 						}
 						finally {
-							EhcacheStreamBootstrapCacheLoader.resetSkip();
+							_skipBootstrapThreadLocal.remove();
 						}
 					}
 					else {
@@ -234,6 +239,10 @@ public class StreamBootstrapHelpUtil {
 			String.class, List.class);
 	private static ServerSocketConfigurator _serverSocketConfigurator =
 		new SocketCacheServerSocketConfiguration();
+	private static ThreadLocal<Boolean> _skipBootstrapThreadLocal =
+		new InitialThreadLocal<Boolean>(
+			StreamBootstrapHelpUtil.class + "._skipBootstrapThreadLocal",
+			false);
 
 	private static class CacheElement implements Serializable {
 
@@ -309,13 +318,13 @@ public class StreamBootstrapHelpUtil {
 							portalCacheManager.getCache(portalCacheName);
 
 					if (portalCache == null) {
-						EhcacheStreamBootstrapCacheLoader.setSkip();
+						_skipBootstrapThreadLocal.set(Boolean.TRUE);
 
 						try {
 							portalCacheManager.getCache(portalCacheName);
 						}
 						finally {
-							EhcacheStreamBootstrapCacheLoader.resetSkip();
+							_skipBootstrapThreadLocal.remove();
 						}
 
 						continue;
