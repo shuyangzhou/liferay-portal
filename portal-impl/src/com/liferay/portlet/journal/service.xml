@@ -123,10 +123,6 @@
 			<finder-column name="groupId" />
 			<finder-column name="status" />
 		</finder>
-		<finder name="C_T" return-type="Collection" db-index="false">
-			<finder-column name="companyId" />
-			<finder-column name="treePath" comparator="LIKE" />
-		</finder>
 		<finder name="C_V" return-type="Collection">
 			<finder-column name="companyId" />
 			<finder-column name="version" />
@@ -485,10 +481,6 @@
 		<finder name="G_N" return-type="JournalFolder">
 			<finder-column name="groupId" />
 			<finder-column name="name" />
-		</finder>
-		<finder name="C_T" return-type="Collection" db-index="false">
-			<finder-column name="companyId" />
-			<finder-column name="treePath" comparator="LIKE" />
 		</finder>
 		<finder name="C_NotS" return-type="Collection">
 			<finder-column name="companyId" />
