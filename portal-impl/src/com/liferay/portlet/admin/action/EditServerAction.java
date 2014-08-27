@@ -67,6 +67,7 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.ThreadDumpType;
 import com.liferay.portal.kernel.util.ThreadUtil;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.UnsyncPrintWriterPool;
@@ -208,8 +209,18 @@ public class EditServerAction extends PortletAction {
 		else if (cmd.equals("shutdown")) {
 			shutdown(actionRequest);
 		}
-		else if (cmd.equals("threadDump")) {
-			threadDump();
+		else if (cmd.equals("threadDumpClusterWide")) {
+			ThreadUtil.writeThreadDump(ThreadDumpType.CLUSTER_WIDE);
+
+			Address localClusterNodeAddress =
+				ClusterExecutorUtil.getLocalClusterNodeAddress();
+
+			SessionMessages.add(
+				actionRequest, "localClusterNodeAddress",
+				localClusterNodeAddress.getDescription());
+		}
+		else if (cmd.equals("threadDumpLocal")) {
+			ThreadUtil.writeThreadDump(ThreadDumpType.LOCAL);
 		}
 		else if (cmd.equals("updateCaptcha")) {
 			updateCaptcha(actionRequest, portletPreferences);
@@ -605,17 +616,6 @@ public class EditServerAction extends PortletAction {
 				EditServerAction.class.getName());
 
 		threadPoolExecutor.execute(masterClusterLoadingSyncJob);
-	}
-
-	protected void threadDump() throws Exception {
-		if (_log.isInfoEnabled()) {
-			_log.info(ThreadUtil.threadDump());
-		}
-		else {
-			_log.error(
-				"Thread dumps require the log level to be at least INFO for " +
-					getClass().getName());
-		}
 	}
 
 	protected void updateCaptcha(

@@ -23,6 +23,8 @@ numberFormat = NumberFormat.getInstance(locale);
 
 long totalMemory = runtime.totalMemory();
 long usedMemory = totalMemory - runtime.freeMemory();
+
+String localClusterNodeAddress = (String)SessionMessages.get(renderRequest, "localClusterNodeAddress");
 %>
 
 <div>
@@ -46,6 +48,8 @@ long usedMemory = totalMemory - runtime.freeMemory();
 </div>
 
 <br />
+
+<liferay-ui:success key="localClusterNodeAddress" message='<%= LanguageUtil.format(request, "cluster-wide-thread-dump-generation-has-been-initiated-on-node-x", new Object [] {localClusterNodeAddress}) %>' translateMessage="false" />
 
 <table class="lfr-table">
 <tr>
@@ -145,12 +149,22 @@ long usedMemory = totalMemory - runtime.freeMemory();
 		</tr>
 		<tr>
 			<td>
-				<liferay-ui:message key="generate-thread-dump" />
+				<liferay-ui:message key="generate-local-thread-dump" />
 			</td>
 			<td>
-				<aui:button cssClass="save-server-button" data-cmd="threadDump" value="execute" />
+				<aui:button cssClass="save-server-button" data-cmd="threadDumpLocal" value="execute" />
 			</td>
 		</tr>
+		<c:if test="<%= ClusterExecutorUtil.isEnabled() %>">
+			<tr>
+				<td>
+					<liferay-ui:message key="generate-cluster-wide-thread-dump" />
+				</td>
+				<td>
+					<aui:button cssClass="save-server-button" data-cmd="threadDumpClusterWide" value="execute" />
+				</td>
+			</tr>
+		</c:if>
 		<tr>
 			<td>
 				<liferay-ui:message key="verify-database-tables-of-all-plugins" />
