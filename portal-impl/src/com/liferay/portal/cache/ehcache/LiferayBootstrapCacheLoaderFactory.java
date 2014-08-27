@@ -14,7 +14,7 @@
 
 package com.liferay.portal.cache.ehcache;
 
-import com.liferay.portal.cache.bootstrap.EhcacheStreamBootstrapCacheLoaderFactory;
+import com.liferay.portal.cache.bootstrap.HibernateStreamBootstrapCacheLoaderFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.InstanceFactory;
@@ -41,7 +41,7 @@ public class LiferayBootstrapCacheLoaderFactory<T extends BootstrapCacheLoader>
 			PropsValues.EHCACHE_CLUSTER_LINK_REPLICATION_ENABLED) {
 
 			className =
-				EhcacheStreamBootstrapCacheLoaderFactory.class.getName();
+				HibernateStreamBootstrapCacheLoaderFactory.class.getName();
 		}
 
 		if (_log.isDebugEnabled()) {

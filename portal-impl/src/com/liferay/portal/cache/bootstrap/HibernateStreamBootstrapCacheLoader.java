@@ -33,7 +33,8 @@ import net.sf.ehcache.bootstrap.BootstrapCacheLoader;
  * @author Shuyang Zhou
  * @author Sherry Yang
  */
-public class EhcacheStreamBootstrapCacheLoader implements BootstrapCacheLoader {
+public class HibernateStreamBootstrapCacheLoader
+	implements BootstrapCacheLoader {
 
 	public static synchronized void start() {
 		if (!PropsValues.HIBERNATE_CACHE_USE_QUERY_CACHE &&
@@ -78,7 +79,7 @@ public class EhcacheStreamBootstrapCacheLoader implements BootstrapCacheLoader {
 		}
 	}
 
-	public EhcacheStreamBootstrapCacheLoader(Properties properties) {
+	public HibernateStreamBootstrapCacheLoader(Properties properties) {
 		if (properties != null) {
 			_bootstrapAsynchronously = GetterUtil.getBoolean(
 				properties.getProperty("bootstrapAsynchronously"));
@@ -91,7 +92,7 @@ public class EhcacheStreamBootstrapCacheLoader implements BootstrapCacheLoader {
 	}
 
 	public void doLoad(Ehcache ehcache) {
-		synchronized (EhcacheStreamBootstrapCacheLoader.class) {
+		synchronized (HibernateStreamBootstrapCacheLoader.class) {
 			if (!_started) {
 				CacheManager cacheManager = ehcache.getCacheManager();
 
@@ -152,7 +153,7 @@ public class EhcacheStreamBootstrapCacheLoader implements BootstrapCacheLoader {
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(
-		EhcacheStreamBootstrapCacheLoader.class);
+		HibernateStreamBootstrapCacheLoader.class);
 
 	private static Map<String, List<String>> _deferredEhcaches =
 		new HashMap<String, List<String>>();

@@ -22,12 +22,12 @@ import net.sf.ehcache.event.CacheEventListenerFactory;
 /**
  * @author Shuyang Zhou
  */
-public class EhcachePortalCacheClusterReplicatorFactory
+public class HibernatePortalCacheClusterReplicatorFactory
 	extends CacheEventListenerFactory {
 
 	@Override
 	public CacheEventListener createCacheEventListener(Properties properties) {
-		return new EhcachePortalCacheClusterReplicator(properties);
+		return new HibernatePortalCacheClusterReplicator(properties);
 	}
 
 }
