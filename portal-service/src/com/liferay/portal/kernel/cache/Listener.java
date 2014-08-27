@@ -15,16 +15,7 @@
 package com.liferay.portal.kernel.cache;
 
 /**
- * @author Shuyang Zhou
+ * @author Tina Tian
  */
-public interface CacheManagerListener extends Listener {
-
-	public void dispose() throws PortalCacheException;
-
-	public void init() throws PortalCacheException;
-
-	public void notifyCacheAdded(String name);
-
-	public void notifyCacheRemoved(String name);
-
+public interface Listener {
 }

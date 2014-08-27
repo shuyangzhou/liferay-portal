@@ -14,17 +14,13 @@
 
 package com.liferay.portal.kernel.cache;
 
+import java.util.Properties;
+
 /**
- * @author Shuyang Zhou
+ * @author Tina Tian
  */
-public interface CacheManagerListener extends Listener {
+public interface ListenerFactory<T extends Listener> {
 
-	public void dispose() throws PortalCacheException;
-
-	public void init() throws PortalCacheException;
-
-	public void notifyCacheAdded(String name);
-
-	public void notifyCacheRemoved(String name);
+	public T createListener(Properties properties);
 
 }
