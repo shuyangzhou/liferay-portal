@@ -148,7 +148,8 @@ public class LiferayIntegrationJUnitTestRunner
 				ThreadLocal.class.getName().concat("$ThreadLocalMap"));
 
 			_CREATE_INHERITED_MAP_METHOD = ReflectionUtil.getDeclaredMethod(
-				ThreadLocal.class, "createInheritedMap", _THREAD_LOCAL_MAP_CLASS);
+				ThreadLocal.class, "createInheritedMap",
+				_THREAD_LOCAL_MAP_CLASS);
 
 			_INHERITABLE_THREAD_LOCALS_FIELD = ReflectionUtil.getDeclaredField(
 				Thread.class, "inheritableThreadLocals");

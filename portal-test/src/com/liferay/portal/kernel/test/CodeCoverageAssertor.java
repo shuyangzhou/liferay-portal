@@ -71,7 +71,8 @@ public class CodeCoverageAssertor implements TestRule {
 					includes = _generateIncludes(className);
 				}
 
-				_DYNAMICALLY_INSTRUMENT_METHOD.invoke(null, includes, _excludes);
+				_DYNAMICALLY_INSTRUMENT_METHOD.invoke(
+					null, includes, _excludes);
 
 				try {
 					statement.evaluate();
@@ -168,8 +169,9 @@ public class CodeCoverageAssertor implements TestRule {
 
 			_ASSERT_COVERAGE_METHOD = instrumentationAgentClass.getMethod(
 				"assertCoverage", boolean.class, Class[].class);
-			_DYNAMICALLY_INSTRUMENT_METHOD = instrumentationAgentClass.getMethod(
-				"dynamicallyInstrument", String[].class, String[].class);
+			_DYNAMICALLY_INSTRUMENT_METHOD =
+				instrumentationAgentClass.getMethod(
+					"dynamicallyInstrument", String[].class, String[].class);
 		}
 		catch (Exception e) {
 			throw new ExceptionInInitializerError(e);
