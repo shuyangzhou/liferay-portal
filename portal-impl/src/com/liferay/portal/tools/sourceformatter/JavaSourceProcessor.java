@@ -1068,17 +1068,17 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 			fileNames = getPluginJavaFiles();
 		}
 
-		_fitOnSingleLineExclusions = getExclusions(
+		_fitOnSingleLineExclusions = getList(
 			"fit.on.single.line.exludes");
-		_hibernateSQLQueryExclusions = getExclusions(
+		_hibernateSQLQueryExclusions = getList(
 			"hibernate.sql.query.excludes");
-		_javaTermSortExclusions = getExclusions("javaterm.sort.excludes");
-		_lineLengthExclusions = getExclusions("line.length.excludes");
-		_proxyExclusions = getExclusions("proxy.excludes");
-		_secureRandomExclusions = getExclusions("secure.random.excludes");
-		_staticLogVariableExclusions = getExclusions("static.log.excludes");
-		_testAnnotationsExclusions = getExclusions("test.annotations.excludes");
-		_upgradeServiceUtilExclusions = getExclusions(
+		_javaTermSortExclusions = getList("javaterm.sort.excludes");
+		_lineLengthExclusions = getList("line.length.excludes");
+		_proxyExclusions = getList("proxy.excludes");
+		_secureRandomExclusions = getList("secure.random.excludes");
+		_staticLogVariableExclusions = getList("static.log.excludes");
+		_testAnnotationsExclusions = getList("test.annotations.excludes");
+		_upgradeServiceUtilExclusions = getList(
 			"upgrade.service.util.excludes");
 
 		for (String fileName : fileNames) {
