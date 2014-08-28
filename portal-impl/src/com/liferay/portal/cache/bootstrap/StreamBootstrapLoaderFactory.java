@@ -12,19 +12,21 @@
  * details.
  */
 
-package com.liferay.portal.kernel.cache;
+package com.liferay.portal.cache.bootstrap;
+
+import com.liferay.portal.kernel.cache.ListenerFactory;
+
+import java.util.Properties;
 
 /**
- * @author Shuyang Zhou
+ * @author Tina Tian
  */
-public interface CacheManagerListener extends Listener {
+public class StreamBootstrapLoaderFactory
+	implements ListenerFactory<StreamBootstrapLoader> {
 
-	public void dispose() throws PortalCacheException;
-
-	public void init() throws PortalCacheException;
-
-	public void notifyCacheAdded(String name);
-
-	public void notifyCacheRemoved(String name);
+	@Override
+	public StreamBootstrapLoader createListener(Properties properties) {
+		return new StreamBootstrapLoader(properties);
+	}
 
 }

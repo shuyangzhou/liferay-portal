@@ -12,19 +12,22 @@
  * details.
  */
 
-package com.liferay.portal.kernel.cache;
+package com.liferay.portal.cache.cluster;
+
+import java.util.Properties;
+
+import net.sf.ehcache.event.CacheEventListener;
+import net.sf.ehcache.event.CacheEventListenerFactory;
 
 /**
  * @author Shuyang Zhou
  */
-public interface CacheManagerListener extends Listener {
+public class HibernatePortalCacheClusterReplicatorFactory
+	extends CacheEventListenerFactory {
 
-	public void dispose() throws PortalCacheException;
-
-	public void init() throws PortalCacheException;
-
-	public void notifyCacheAdded(String name);
-
-	public void notifyCacheRemoved(String name);
+	@Override
+	public CacheEventListener createCacheEventListener(Properties properties) {
+		return new HibernatePortalCacheClusterReplicator(properties);
+	}
 
 }

@@ -20,7 +20,7 @@ import java.io.Serializable;
  * @author Edward Han
  * @author Shuyang Zhou
  */
-public interface CacheListener<K extends Serializable, V> {
+public interface CacheListener<K extends Serializable, V> extends Listener {
 
 	public void notifyEntryEvicted(
 			PortalCache<K, V> portalCache, K key, V value, int timeToLive)

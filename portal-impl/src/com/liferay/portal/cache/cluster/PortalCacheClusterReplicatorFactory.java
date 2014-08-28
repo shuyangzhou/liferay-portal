@@ -12,19 +12,26 @@
  * details.
  */
 
-package com.liferay.portal.kernel.cache;
+package com.liferay.portal.cache.cluster;
+
+import com.liferay.portal.kernel.cache.ListenerFactory;
+
+import java.io.Serializable;
+
+import java.util.Properties;
 
 /**
- * @author Shuyang Zhou
+ * @author Tina Tian
  */
-public interface CacheManagerListener extends Listener {
+public class PortalCacheClusterReplicatorFactory
+	<K extends Serializable, V extends Serializable>
+		implements ListenerFactory<PortalCacheClusterReplicator<K, V>> {
 
-	public void dispose() throws PortalCacheException;
+	@Override
+	public PortalCacheClusterReplicator<K, V> createListener(
+		Properties properties) {
 
-	public void init() throws PortalCacheException;
-
-	public void notifyCacheAdded(String name);
-
-	public void notifyCacheRemoved(String name);
+		return new PortalCacheClusterReplicator<K, V>(properties);
+	}
 
 }

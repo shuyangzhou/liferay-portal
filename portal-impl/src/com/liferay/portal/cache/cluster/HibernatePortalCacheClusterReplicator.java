@@ -32,9 +32,10 @@ import net.sf.ehcache.event.CacheEventListener;
 /**
  * @author Shuyang Zhou
  */
-public class EhcachePortalCacheClusterReplicator implements CacheEventListener {
+public class HibernatePortalCacheClusterReplicator
+	implements CacheEventListener {
 
-	public EhcachePortalCacheClusterReplicator(Properties properties) {
+	public HibernatePortalCacheClusterReplicator(Properties properties) {
 		if (properties != null) {
 			_replicatePuts = GetterUtil.getBoolean(
 				properties.getProperty(_REPLICATE_PUTS), true);

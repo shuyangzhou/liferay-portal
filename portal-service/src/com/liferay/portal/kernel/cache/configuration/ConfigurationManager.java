@@ -12,19 +12,16 @@
  * details.
  */
 
-package com.liferay.portal.kernel.cache;
+package com.liferay.portal.kernel.cache.configuration;
 
 /**
- * @author Shuyang Zhou
+ * @author Tina Tian
  */
-public interface CacheManagerListener extends Listener {
+public interface ConfigurationManager<T> {
 
-	public void dispose() throws PortalCacheException;
+	public PortalCacheManagerConfiguration
+		getPortalCacheManagerConfiguration();
 
-	public void init() throws PortalCacheException;
-
-	public void notifyCacheAdded(String name);
-
-	public void notifyCacheRemoved(String name);
+	public T getVendorConfiguration();
 
 }

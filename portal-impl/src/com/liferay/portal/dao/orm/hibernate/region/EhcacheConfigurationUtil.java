@@ -12,9 +12,9 @@
  * details.
  */
 
-package com.liferay.portal.cache.ehcache;
+package com.liferay.portal.dao.orm.hibernate.region;
 
-import com.liferay.portal.cache.cluster.EhcachePortalCacheClusterReplicatorFactory;
+import com.liferay.portal.cache.cluster.HibernatePortalCacheClusterReplicatorFactory;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.util.PropsValues;
 
@@ -187,7 +187,7 @@ public class EhcacheConfigurationUtil {
 				new CacheEventListenerFactoryConfiguration();
 
 		cacheEventListenerFactoryConfiguration.setClass(
-			EhcachePortalCacheClusterReplicatorFactory.class.getName());
+			HibernatePortalCacheClusterReplicatorFactory.class.getName());
 		cacheEventListenerFactoryConfiguration.setProperties(
 			cacheEventListenerProperties);
 

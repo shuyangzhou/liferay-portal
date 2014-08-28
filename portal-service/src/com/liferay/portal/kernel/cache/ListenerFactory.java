@@ -12,22 +12,15 @@
  * details.
  */
 
-package com.liferay.portal.cache.cluster;
+package com.liferay.portal.kernel.cache;
 
 import java.util.Properties;
 
-import net.sf.ehcache.event.CacheEventListener;
-import net.sf.ehcache.event.CacheEventListenerFactory;
-
 /**
- * @author Shuyang Zhou
+ * @author Tina Tian
  */
-public class EhcachePortalCacheClusterReplicatorFactory
-	extends CacheEventListenerFactory {
+public interface ListenerFactory<T extends Listener> {
 
-	@Override
-	public CacheEventListener createCacheEventListener(Properties properties) {
-		return new EhcachePortalCacheClusterReplicator(properties);
-	}
+	public T createListener(Properties properties);
 
 }

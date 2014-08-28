@@ -22,14 +22,14 @@ import net.sf.ehcache.bootstrap.BootstrapCacheLoaderFactory;
  * @author Shuyang Zhou
  * @author Sherry Yang
  */
-public class EhcacheStreamBootstrapCacheLoaderFactory
-	extends BootstrapCacheLoaderFactory<EhcacheStreamBootstrapCacheLoader> {
+public class HibernateStreamBootstrapCacheLoaderFactory
+	extends BootstrapCacheLoaderFactory<HibernateStreamBootstrapCacheLoader> {
 
 	@Override
-	public EhcacheStreamBootstrapCacheLoader createBootstrapCacheLoader(
+	public HibernateStreamBootstrapCacheLoader createBootstrapCacheLoader(
 		Properties properties) {
 
-		return new EhcacheStreamBootstrapCacheLoader(properties);
+		return new HibernateStreamBootstrapCacheLoader(properties);
 	}
 
 }

@@ -15,7 +15,6 @@
 package com.liferay.portal.dao.orm.hibernate.region;
 
 import com.liferay.portal.cache.ehcache.CacheManagerUtil;
-import com.liferay.portal.cache.ehcache.EhcacheConfigurationUtil;
 import com.liferay.portal.cache.ehcache.EhcachePortalCache;
 import com.liferay.portal.cache.ehcache.ModifiableEhcacheWrapper;
 import com.liferay.portal.kernel.cache.CacheManagerListener;
@@ -347,7 +346,7 @@ public class LiferayEhcacheRegionFactory extends EhCacheRegionFactory {
 
 					portalCache =
 						new EhcachePortalCache<Serializable, Serializable>(
-							this, cache);
+							this, cache, null);
 
 					_portalCaches.put(name, portalCache);
 				}

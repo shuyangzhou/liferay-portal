@@ -12,19 +12,16 @@
  * details.
  */
 
-package com.liferay.portal.kernel.cache;
+package com.liferay.portal.cache.ehcache;
 
 /**
- * @author Shuyang Zhou
+ * @author Tina Tian
  */
-public interface CacheManagerListener extends Listener {
+public interface EhcacheConstants {
 
-	public void dispose() throws PortalCacheException;
+	public static final String FACTORY_NAME = "FACTORY_NAME";
 
-	public void init() throws PortalCacheException;
-
-	public void notifyCacheAdded(String name);
-
-	public void notifyCacheRemoved(String name);
+	public static final String PORTAL_CACHE_MANAGER_NAME =
+		"PORTAL_CACHE_MANAGER_NAME";
 
 }

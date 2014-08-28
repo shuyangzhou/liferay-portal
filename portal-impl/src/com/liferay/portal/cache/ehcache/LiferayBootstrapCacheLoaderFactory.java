@@ -14,7 +14,7 @@
 
 package com.liferay.portal.cache.ehcache;
 
-import com.liferay.portal.cache.bootstrap.EhcacheStreamBootstrapCacheLoaderFactory;
+import com.liferay.portal.cache.bootstrap.HibernateStreamBootstrapCacheLoaderFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.InstanceFactory;
@@ -35,11 +35,13 @@ public class LiferayBootstrapCacheLoaderFactory<T extends BootstrapCacheLoader>
 	public LiferayBootstrapCacheLoaderFactory() {
 		String className = PropsValues.EHCACHE_BOOTSTRAP_CACHE_LOADER_FACTORY;
 
-		if (PropsValues.CLUSTER_LINK_ENABLED &&
+		if ((PropsValues.HIBERNATE_CACHE_USE_QUERY_CACHE ||
+			 PropsValues.HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE) &&
+			PropsValues.CLUSTER_LINK_ENABLED &&
 			PropsValues.EHCACHE_CLUSTER_LINK_REPLICATION_ENABLED) {
 
 			className =
-				EhcacheStreamBootstrapCacheLoaderFactory.class.getName();
+				HibernateStreamBootstrapCacheLoaderFactory.class.getName();
 		}
 
 		if (_log.isDebugEnabled()) {
