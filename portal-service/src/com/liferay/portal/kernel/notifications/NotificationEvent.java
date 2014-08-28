@@ -14,8 +14,11 @@
 
 package com.liferay.portal.kernel.notifications;
 
+import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 
@@ -32,6 +35,7 @@ public class NotificationEvent implements Serializable {
 		_timestamp = timestamp;
 		_type = type;
 		_payloadJSONObject = payloadJSONObject;
+		_payloadJSONString = payloadJSONObject.toString();
 	}
 
 	@Override
@@ -62,6 +66,16 @@ public class NotificationEvent implements Serializable {
 	}
 
 	public JSONObject getPayload() {
+		if (_payloadJSONObject == null) {
+			try {
+				_payloadJSONObject = JSONFactoryUtil.createJSONObject(
+					_payloadJSONString);
+			}
+			catch (JSONException jsone) {
+				_log.error("unable to create JSONObject", jsone);
+			}
+		}
+
 		return _payloadJSONObject;
 	}
 
@@ -142,7 +156,7 @@ public class NotificationEvent implements Serializable {
 		jsonObject.put(_KEY_DELIVERY_BY, _deliverBy);
 		jsonObject.put(_KEY_DELIVERY_REQUIRED, _deliveryRequired);
 		jsonObject.put(_KEY_DELIVERY_TYPE, _deliveryType);
-		jsonObject.put(_KEY_PAYLOAD, _payloadJSONObject);
+		jsonObject.put(_KEY_PAYLOAD, getPayload());
 		jsonObject.put(_KEY_TIMESTAMP, _timestamp);
 		jsonObject.put(_KEY_TYPE, _type);
 		jsonObject.put(_KEY_UUID, _uuid);
@@ -166,11 +180,14 @@ public class NotificationEvent implements Serializable {
 
 	private static final String _KEY_UUID = "uuid";
 
+	private static Log _log = LogFactoryUtil.getLog(NotificationEvent.class);
+
 	private boolean _archived;
 	private long _deliverBy;
 	private boolean _deliveryRequired;
 	private int _deliveryType;
-	private JSONObject _payloadJSONObject;
+	private transient JSONObject _payloadJSONObject;
+	private String _payloadJSONString;
 	private long _timestamp;
 	private String _type;
 	private String _uuid;
