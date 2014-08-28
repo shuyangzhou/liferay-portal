@@ -102,7 +102,7 @@ public interface ChannelHub {
 			long userId, Collection<String> notificationEventUuids)
 		throws ChannelException;
 
-	void sendClusterNotificationEvent(
+	public void sendClusterNotificationEvent(
 		long companyId, long userId, NotificationEvent notificationEvent);
 
 	public void sendNotificationEvent(
