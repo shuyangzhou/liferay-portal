@@ -26,13 +26,18 @@ import com.liferay.portal.kernel.util.Tuple;
 import com.liferay.portal.kernel.util.Validator;
 
 import com.thoughtworks.qdox.JavaDocBuilder;
+import com.thoughtworks.qdox.model.ClassLibrary;
+import com.thoughtworks.qdox.model.JavaField;
 import com.thoughtworks.qdox.model.JavaSource;
+import com.thoughtworks.qdox.model.Type;
+import com.thoughtworks.qdox.parser.ParseException;
 
 import java.io.File;
 import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -202,6 +207,45 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 		return content;
 	}
 
+	protected String checkFields(
+			String fileName, String packagePath, String className,
+			String content)
+		throws IOException {
+
+		if (_immutableFieldTypes == null) {
+			_immutableFieldTypes = new HashSet<String>(
+				getList("immutable.field.types"));
+		}
+
+		ClassLibrary classLibrary = new ClassLibrary();
+
+		classLibrary.addClassLoader(JavaSourceProcessor.class.getClassLoader());
+
+		JavaDocBuilder javaDocBuilder = new JavaDocBuilder(classLibrary);
+
+		try {
+			javaDocBuilder.addSource(
+				new UnsyncStringReader(sanitizeContent(content)));
+		}
+		catch (ParseException pe) {
+			System.err.println(
+				"Unable to parse " + fileName + StringPool.COMMA_AND_SPACE +
+					pe.getMessage());
+
+			return content;
+		}
+
+		com.thoughtworks.qdox.model.JavaClass javaClass =
+			javaDocBuilder.getClassByName(
+				packagePath.concat(StringPool.PERIOD).concat(className));
+
+		content = checkImmutableFields(javaClass, content);
+
+		content = checkStaticableFields(javaClass, content);
+
+		return content;
+	}
+
 	protected String checkIfClause(
 			String ifClause, String fileName, int lineCount)
 		throws IOException {
@@ -318,6 +362,69 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 		return ifClause;
 	}
 
+	protected String checkImmutableFields(
+			com.thoughtworks.qdox.model.JavaClass javaClass, String content)
+		throws IOException {
+
+		javaField:
+		for (JavaField javaField : javaClass.getFields()) {
+			Type type = javaField.getType();
+
+			String fieldTypeName = type.getFullyQualifiedName();
+
+			String oldName = javaField.getName();
+
+			if (!javaField.isPrivate() || !javaField.isFinal() ||
+				!javaField.isStatic() || oldName.equals("serialVersionUID") ||
+				!_immutableFieldTypes.contains(fieldTypeName)) {
+
+				continue;
+			}
+
+			Matcher matcher = _camelCasePattern.matcher(oldName);
+
+			String newName = matcher.replaceAll("$1_$2");
+
+			newName = newName.toUpperCase();
+
+			if (!newName.substring(0, 1).equals("_")) {
+				newName = "_" + newName;
+			}
+
+			Pattern pattern = Pattern.compile(
+				"(?<=[\\W&&[^.\"]])(" + oldName + ")\\b");
+
+			matcher = pattern.matcher(content);
+
+			List<int[]> positionPairs = new ArrayList<int[]>();
+
+			while (matcher.find()) {
+				positionPairs.add(new int[]{matcher.start(), matcher.end()});
+			}
+
+			StringBundler sb = new StringBundler(positionPairs.size()*2 + 1);
+
+			int index = 0;
+
+			for (int[] positionPair : positionPairs) {
+				sb.append(content.substring(index, positionPair[0]));
+
+				sb.append(newName);
+
+				index = positionPair[1];
+			}
+
+			int[] lastPair = positionPairs.get(positionPairs.size() - 1);
+
+			sb.append(content.substring(lastPair[1]));
+
+			content = sb.toString();
+
+		}
+
+		return content;
+	}
+
 	protected void checkLogLevel(
 		String content, String fileName, String logLevel) {
 
@@ -394,6 +501,43 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 				fileName,
 				"create pattern as global var: " + fileName + " " + lineCount);
 		}
+	}
+
+	protected String checkStaticableFields(
+			com.thoughtworks.qdox.model.JavaClass javaClass, String content)
+		throws IOException {
+
+		String[] lines = null;
+
+		javaField:
+		for (JavaField javaField : javaClass.getFields()) {
+			Type type = javaField.getType();
+
+			String initializationExpression =
+				javaField.getInitializationExpression().trim();
+
+			String fieldTypeName = type.getFullyQualifiedName();
+
+			if (!javaField.isPrivate() || !javaField.isFinal() ||
+				javaField.isStatic() || initializationExpression.isEmpty() ||
+				!_immutableFieldTypes.contains(fieldTypeName)) {
+
+				continue;
+			}
+
+			if (lines == null) {
+				lines = StringUtil.splitLines(content);
+			}
+
+			String line = lines[javaField.getLineNumber() - 1];
+
+			String newLine = StringUtil.replace(
+				line, "private final", "private static final");
+
+			content = StringUtil.replace(content, line, newLine);
+		}
+
+		return content;
 	}
 
 	protected void checkSystemEventAnnotations(String content, String fileName)
@@ -597,6 +741,10 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 		int packagePathX = packagePath.indexOf("/src/");
 		int packagePathY = packagePath.lastIndexOf(StringPool.SLASH);
 
+		if (packagePathX == -1) {
+			packagePathX = packagePath.indexOf("/integration/") + 8;
+		}
+
 		if ((packagePathX + 5) >= packagePathY) {
 			packagePath = StringPool.BLANK;
 		}
@@ -613,7 +761,8 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 			}
 		}
 
-		String newContent = content;
+		String newContent = checkFields(
+			fileName, packagePath, className, content);
 
 		if (newContent.contains("$\n */")) {
 			processErrorMessage(fileName, "*: " + fileName);
@@ -2237,6 +2386,22 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 		return false;
 	}
 
+	protected String sanitizeContent(String content) {
+		Matcher componentPropertyMatcher = _componentPropertyPattern.matcher(
+			content);
+
+		if (componentPropertyMatcher.find()) {
+			String prefix = content.substring(
+				0, componentPropertyMatcher.start(1));
+
+			String postfix = content.substring(componentPropertyMatcher.end(1));
+
+			content = prefix.concat(postfix);
+		}
+
+		return content;
+	}
+
 	protected String sortExceptions(String line) {
 		if (!line.endsWith(StringPool.OPEN_CURLY_BRACE) &&
 			!line.endsWith(StringPool.SEMICOLON)) {
@@ -2289,14 +2454,19 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 
 	private Pattern _annotationPattern = Pattern.compile(
 		"\n(\t*)@(.+)\\(\n([\\s\\S]*?)\n(\t*)\\)");
+	private final Pattern _camelCasePattern = Pattern.compile(
+		"([a-z])([A-Z0-9])");
 	private Pattern _catchExceptionPattern = Pattern.compile(
 		"\n(\t+)catch \\((.+Exception) (.+)\\) \\{\n");
 	private boolean _checkUnprocessedExceptions;
+	private final Pattern _componentPropertyPattern = Pattern.compile(
+		"(?s)@Component\\(.*?\\sproperty = \\{(.*?)\\}");
 	private Pattern _diamondOperatorPattern = Pattern.compile(
 		"(return|=)\n?(\t+| )new ([A-Za-z]+)(Map|Set|List)<(.+)>" +
 			"\\(\n*\t*(.*)\\);\n");
 	private List<String> _fitOnSingleLineExclusions;
 	private List<String> _hibernateSQLQueryExclusions;
+	private Set<String> _immutableFieldTypes;
 	private Pattern _incorrectCloseCurlyBracePattern = Pattern.compile(
 		"\n(.+)\n\n(\t+)}\n");
 	private Pattern _incorrectLineBreakPattern = Pattern.compile(
