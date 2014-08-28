@@ -102,6 +102,9 @@ public interface ChannelHub {
 			long userId, Collection<String> notificationEventUuids)
 		throws ChannelException;
 
+	void sendClusterNotificationEvent(
+		long companyId, long userId, NotificationEvent notificationEvent);
+
 	public void sendNotificationEvent(
 			long userId, NotificationEvent notificationEvent)
 		throws ChannelException;

@@ -14,6 +14,9 @@
 
 package com.liferay.portal.kernel.notifications;
 
+import com.liferay.portal.kernel.cluster.Clusterable;
+import com.liferay.portal.notifications.ChannelHubClusterInvokeAcceptor;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -110,6 +113,11 @@ public interface ChannelHubManager {
 	public void removeTransientNotificationEventsByUuid(
 			long companyId, long userId,
 			Collection<String> notificationEventUuids)
+		throws ChannelException;
+
+	@Clusterable (acceptor = ChannelHubClusterInvokeAcceptor.class)
+	public void sendClusterNotificationEvent(
+			long companyId, long userId, NotificationEvent notificationEvent)
 		throws ChannelException;
 
 	public void sendNotificationEvent(

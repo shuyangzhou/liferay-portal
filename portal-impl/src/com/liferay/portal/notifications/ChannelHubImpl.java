@@ -14,9 +14,12 @@
 
 package com.liferay.portal.notifications;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.notifications.Channel;
 import com.liferay.portal.kernel.notifications.ChannelException;
 import com.liferay.portal.kernel.notifications.ChannelHub;
+import com.liferay.portal.kernel.notifications.ChannelHubManagerUtil;
 import com.liferay.portal.kernel.notifications.ChannelListener;
 import com.liferay.portal.kernel.notifications.NotificationEvent;
 import com.liferay.portal.kernel.notifications.UnknownChannelException;
@@ -319,6 +322,25 @@ public class ChannelHubImpl implements ChannelHub {
 	}
 
 	@Override
+	public void sendClusterNotificationEvent(
+		long companyId, long userId, NotificationEvent notificatioEvent) {
+
+		Channel channel = null;
+
+		try {
+			channel = ChannelHubManagerUtil.getChannel(
+				companyId, userId, false);
+
+			channel.sendNotificationEvent(notificatioEvent);
+		}
+		catch (ChannelException e) {
+			if (_log.isWarnEnabled()) {
+				_log.warn("Unable to create channel for userId " + userId);
+			}
+		}
+	}
+
+	@Override
 	public void sendNotificationEvent(
 			long userId, NotificationEvent notificationEvent)
 		throws ChannelException {
@@ -340,6 +362,9 @@ public class ChannelHubImpl implements ChannelHub {
 		try {
 			UserNotificationEventLocalServiceUtil.addUserNotificationEvent(
 				userId, notificationEvent);
+
+			ChannelHubManagerUtil.sendClusterNotificationEvent(
+				_companyId, userId, notificationEvent);
 		}
 		catch (Exception e) {
 			throw new ChannelException("Unable to send event", e);
@@ -398,6 +423,8 @@ public class ChannelHubImpl implements ChannelHub {
 
 		channel.unregisterChannelListener(channelListener);
 	}
+
+	private static Log _log = LogFactoryUtil.getLog(ChannelHubImpl.class);
 
 	private Channel _channel;
 	private ConcurrentMap<Long, Channel> _channels =
