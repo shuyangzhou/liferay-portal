@@ -793,9 +793,10 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		return null;
 	}
 
-	protected List<String> getExclusions(String key) {
+	protected List<String> getImmutableFieldTypes() {
 		return ListUtil.fromString(
-			GetterUtil.getString(_properties.getProperty(key)),
+			GetterUtil.getString(
+				_properties.getProperty("immutable.field.types")),
 			StringPool.COMMA);
 	}
 
@@ -900,6 +901,12 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		return new String[0];
 	}
 
+	protected List<String> getList(String key) {
+		return ListUtil.fromString(
+			GetterUtil.getString(_properties.getProperty(key)),
+			StringPool.COMMA);
+	}
+
 	protected boolean hasMissingParentheses(String s) {
 		if (Validator.isNull(s)) {
 			return false;
@@ -1000,7 +1007,7 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 
 	protected boolean isRunsOutsidePortal(String absolutePath) {
 		if (_runOutsidePortalExclusions == null) {
-			_runOutsidePortalExclusions = getExclusions(
+			_runOutsidePortalExclusions = getList(
 				"run.outside.portal.excludes");
 		}
 
@@ -1434,7 +1441,7 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 			GetterUtil.getString(
 				System.getProperty("source.formatter.excludes")));
 
-		excludesList.addAll(getExclusions("source.formatter.excludes"));
+		excludesList.addAll(getList("source.formatter.excludes"));
 
 		DirectoryScanner directoryScanner = new DirectoryScanner();
 
