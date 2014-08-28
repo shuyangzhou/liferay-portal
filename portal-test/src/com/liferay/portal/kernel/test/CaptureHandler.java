@@ -14,6 +14,8 @@
 
 package com.liferay.portal.kernel.test;
 
+import com.liferay.portal.kernel.util.ReflectionUtil;
+
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Handler;
@@ -42,16 +44,22 @@ public class CaptureHandler extends Handler {
 	}
 
 	@Override
-	public void close() throws SecurityException {
+	public void close() {
 		_logRecords.clear();
 
-		_logger.removeHandler(this);
+		try {
+			_logger.removeHandler(this);
 
-		for (Handler handler : _handlers) {
-			_logger.addHandler(handler);
+			for (Handler handler : _handlers) {
+				_logger.addHandler(handler);
+			}
+
+			_logger.setLevel(_level);
+		}
+		catch (SecurityException se) {
+			ReflectionUtil.throwException(se);
 		}
 
-		_logger.setLevel(_level);
 		_logger.setUseParentHandlers(_useParentHandlers);
 	}
 
