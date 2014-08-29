@@ -323,7 +323,7 @@ public class ChannelHubImpl implements ChannelHub {
 
 	@Override
 	public void sendClusterNotificationEvent(
-		long companyId, long userId, NotificationEvent notificatioEvent) {
+		long companyId, long userId, NotificationEvent notificationEvent) {
 
 		Channel channel = null;
 
@@ -331,7 +331,7 @@ public class ChannelHubImpl implements ChannelHub {
 			channel = ChannelHubManagerUtil.getChannel(
 				companyId, userId, false);
 
-			channel.sendNotificationEvent(notificatioEvent);
+			channel.sendNotificationEvent(notificationEvent);
 		}
 		catch (ChannelException e) {
 			if (_log.isWarnEnabled()) {
