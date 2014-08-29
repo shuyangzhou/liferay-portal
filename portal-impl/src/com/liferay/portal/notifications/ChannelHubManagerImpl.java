@@ -14,6 +14,8 @@
 
 package com.liferay.portal.notifications;
 
+import com.liferay.portal.kernel.bean.IdentifiableBean;
+import com.liferay.portal.kernel.cluster.Clusterable;
 import com.liferay.portal.kernel.notifications.Channel;
 import com.liferay.portal.kernel.notifications.ChannelException;
 import com.liferay.portal.kernel.notifications.ChannelHub;
@@ -36,7 +38,8 @@ import java.util.concurrent.ConcurrentMap;
  * @author Shuyang Zhou
  */
 @DoPrivileged
-public class ChannelHubManagerImpl implements ChannelHubManager {
+public class ChannelHubManagerImpl
+	implements ChannelHubManager, IdentifiableBean {
 
 	@Override
 	public void confirmDelivery(
@@ -206,6 +209,11 @@ public class ChannelHubManagerImpl implements ChannelHubManager {
 	}
 
 	@Override
+	public String getBeanIdentifier() {
+		return _beanIdentifier;
+	}
+
+	@Override
 	public Channel getChannel(long companyId, long userId)
 		throws ChannelException {
 
@@ -302,6 +310,18 @@ public class ChannelHubManagerImpl implements ChannelHubManager {
 			userId, notificationEventUuids);
 	}
 
+	@Clusterable(acceptor = ChannelHubClusterInvokeAcceptor.class)
+	@Override
+	public void sendClusterNotificationEvent(
+			long companyId, long userId, NotificationEvent notificationEvent)
+		throws ChannelException {
+
+		ChannelHub channelHub = getChannelHub(companyId);
+
+		channelHub.sendClusterNotificationEvent(
+			companyId, userId, notificationEvent);
+	}
+
 	@Override
 	public void sendNotificationEvent(
 			long companyId, long userId, NotificationEvent notificationEvent)
@@ -323,6 +343,10 @@ public class ChannelHubManagerImpl implements ChannelHubManager {
 		channelHub.sendNotificationEvents(userId, notificationEvents);
 	}
 
+	public void setBeanIdentifier(String beanIdentifier) {
+		_beanIdentifier = beanIdentifier;
+	}
+
 	public void setChannelHubPrototype(ChannelHub channelHub) {
 		_channelHub = channelHub;
 	}
@@ -337,6 +361,7 @@ public class ChannelHubManagerImpl implements ChannelHubManager {
 		channelHub.unregisterChannelListener(userId, channelListener);
 	}
 
+	private String _beanIdentifier;
 	private ChannelHub _channelHub;
 	private ConcurrentMap<Long, ChannelHub> _channelHubs =
 		new ConcurrentHashMap<Long, ChannelHub>();
