@@ -740,6 +740,17 @@ public class JournalArticleServiceSoap {
 		}
 	}
 
+	/**
+	* Returns the number of web content articles matching the group, folder,
+	* and status.
+	*
+	* @param groupId the primary key of the web content article's group
+	* @param folderId the primary key of the web content article's folder
+	* @param status the web content article's workflow status. For more
+	information see {@link WorkflowConstants} for constants starting
+	with the "STATUS_" prefix.
+	* @return the number of matching web content articles
+	*/
 	public static int getArticlesCount(long groupId, long folderId, int status)
 		throws RemoteException {
 		try {
@@ -886,6 +897,37 @@ public class JournalArticleServiceSoap {
 		}
 	}
 
+	/**
+	* Returns an ordered range of all the web content articles matching the
+	* group, user, the root folder or any of its subfolders.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end -
+	* start</code> instances. <code>start</code> and <code>end</code> are not
+	* primary keys, they are indexes in the result set. Thus, <code>0</code>
+	* refers to the first result in the set. Setting both <code>start</code>
+	* and <code>end</code> to {@link
+	* com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full
+	* result set.
+	* </p>
+	*
+	* @param groupId the primary key of the web content article's group
+	* @param userId the primary key of the user (optionally <code>0</code>)
+	* @param rootFolderId the primary key of the root folder to begin the
+	search
+	* @param status the web content article's workflow status. For more
+	information see {@link WorkflowConstants} for constants starting
+	with the "STATUS_" prefix.
+	* @param start the lower bound of the range of web content articles to
+	return
+	* @param end the upper bound of the range of web content articles to
+	return (not inclusive)
+	* @param orderByComparator the comparator to order the web content
+	articles
+	* @return the range of matching web content articles ordered by the
+	comparator
+	* @throws PortalException if a portal exception occurred
+	*/
 	public static com.liferay.portlet.journal.model.JournalArticleSoap[] getGroupArticles(
 		long groupId, long userId, long rootFolderId, int status, int start,
 		int end,
@@ -908,6 +950,16 @@ public class JournalArticleServiceSoap {
 	/**
 	* Returns an ordered range of all the web content articles matching the
 	* group, user, the root folder or any of its subfolders.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end -
+	* start</code> instances. <code>start</code> and <code>end</code> are not
+	* primary keys, they are indexes in the result set. Thus, <code>0</code>
+	* refers to the first result in the set. Setting both <code>start</code>
+	* and <code>end</code> to {@link
+	* com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full
+	* result set.
+	* </p>
 	*
 	* @param groupId the primary key of the web content article's group
 	* @param userId the primary key of the user (optionally <code>0</code>)
@@ -971,6 +1023,20 @@ public class JournalArticleServiceSoap {
 		}
 	}
 
+	/**
+	* Returns the number of web content articles matching the group, user, and
+	* the root folder or any of its subfolders.
+	*
+	* @param groupId the primary key of the web content article's group
+	* @param userId the primary key of the user (optionally <code>0</code>)
+	* @param rootFolderId the primary key of the root folder to begin the
+	search
+	* @param status the web content article's workflow status. For more
+	information see {@link WorkflowConstants} for constants starting
+	with the "STATUS_" prefix.
+	* @return the number of matching web content articles
+	* @throws PortalException if a portal exception occurred
+	*/
 	public static int getGroupArticlesCount(long groupId, long userId,
 		long rootFolderId, int status) throws RemoteException {
 		try {
@@ -1771,6 +1837,15 @@ public class JournalArticleServiceSoap {
 		}
 	}
 
+	/**
+	* Subscribes the user to changes in elements that belong to the web content
+	* article's DDM structure.
+	*
+	* @param groupId the primary key of the folder's group
+	* @param userId the primary key of the user to be subscribed
+	* @param ddmStructureId the primary key of the structure to subscribe to
+	* @throws PortalException if a matching user or group could not be found
+	*/
 	public static void subscribeStructure(long groupId, long userId,
 		long ddmStructureId) throws RemoteException {
 		try {
@@ -1784,6 +1859,16 @@ public class JournalArticleServiceSoap {
 		}
 	}
 
+	/**
+	* Unsubscribes the user from changes in elements that belong to the web
+	* content article's DDM structure.
+	*
+	* @param groupId the primary key of the folder's group
+	* @param userId the primary key of the user to be subscribed
+	* @param ddmStructureId the primary key of the structure to subscribe to
+	* @throws PortalException if a matching user or subscription could not be
+	found
+	*/
 	public static void unsubscribeStructure(long groupId, long userId,
 		long ddmStructureId) throws RemoteException {
 		try {

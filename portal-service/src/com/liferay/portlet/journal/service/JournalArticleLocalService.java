@@ -603,6 +603,17 @@ public interface JournalArticleLocalService extends BaseLocalService,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
+	/**
+	* Returns the web content article matching the group, article ID, and
+	* version.
+	*
+	* @param groupId the primary key of the web content article's group
+	* @param articleId the primary key of the web content article
+	* @param version the web content article's version
+	* @return the web content article matching the group, article ID, and
+	version, or <code>null</code> if no web content article could be
+	found
+	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public com.liferay.portlet.journal.model.JournalArticle fetchArticle(
 		long groupId, java.lang.String articleId, double version);
@@ -622,10 +633,40 @@ public interface JournalArticleLocalService extends BaseLocalService,
 	public com.liferay.portlet.journal.model.JournalArticle fetchJournalArticleByUuidAndGroupId(
 		java.lang.String uuid, long groupId);
 
+	/**
+	* Returns the latest web content article matching the group, article ID, and
+	* workflow status.
+	*
+	* @param groupId the primary key of the web content article's group
+	* @param articleId the primary key of the web content article
+	* @param status the web content article's workflow status. For more
+	information see {@link WorkflowConstants} for constants starting
+	with the "STATUS_" prefix.
+	* @return the latest matching web content article, or <code>null</code> if no
+	matching web content article could be found
+	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public com.liferay.portlet.journal.model.JournalArticle fetchLatestArticle(
 		long groupId, java.lang.String articleId, int status);
 
+	/**
+	* Returns the latest web content article matching the resource primary key
+	* and workflow status, optionally preferring articles with approved
+	* workflow status.
+	*
+	* @param resourcePrimKey the primary key of the resource instance
+	* @param status the web content article's workflow status. For more
+	information see {@link WorkflowConstants} for constants starting
+	with the "STATUS_" prefix.
+	* @param preferApproved whether to prefer returning the latest matching
+	article that has workflow status {@link
+	WorkflowConstants#STATUS_APPROVED} over returning one that has a
+	different status
+	* @return the latest web content article matching the resource primary key
+	and workflow status, optionally preferring articles with an
+	approved workflow status, or <code>null</code> if no matching web
+	content article could be found
+	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public com.liferay.portlet.journal.model.JournalArticle fetchLatestArticle(
 		long resourcePrimKey, int status, boolean preferApproved);
@@ -634,6 +675,15 @@ public interface JournalArticleLocalService extends BaseLocalService,
 	public com.liferay.portlet.journal.model.JournalArticle fetchLatestArticle(
 		long resourcePrimKey, int[] statuses);
 
+	/**
+	* Returns the latest indexable web content article matching the resource
+	* primary key.
+	*
+	* @param resourcePrimKey the primary key of the resource instance
+	* @return the latest indexable web content article matching the resource
+	primary key, or <code>null</code> if no matching web content
+	article could be found
+	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public com.liferay.portlet.journal.model.JournalArticle fetchLatestIndexableArticle(
 		long resourcePrimKey);
@@ -932,6 +982,25 @@ public interface JournalArticleLocalService extends BaseLocalService,
 		com.liferay.portal.theme.ThemeDisplay themeDisplay)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
+	/**
+	* Returns a web content article display for the specified page of the
+	* latest version of the web content article, based on the DDM template. Web
+	* content transformation tokens are added using the portlet request model
+	* and theme display.
+	*
+	* @param article the primary key of the web content article
+	* @param ddmTemplateKey the primary key of the web content article's DDM
+	template
+	* @param viewMode the mode in which the web content is being viewed
+	* @param languageId the primary key of the language translation to get
+	* @param page the web content article page to display
+	* @param portletRequestModel the portlet request model
+	* @param themeDisplay the theme display
+	* @return the web content article display, or <code>null</code> if the
+	article has expired or if article's display date/time is after
+	the current date/time
+	* @throws PortalException if a portal exception occurred
+	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public com.liferay.portlet.journal.model.JournalArticleDisplay getArticleDisplay(
 		com.liferay.portlet.journal.model.JournalArticle article,
@@ -941,6 +1010,26 @@ public interface JournalArticleLocalService extends BaseLocalService,
 		com.liferay.portal.theme.ThemeDisplay themeDisplay)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
+	/**
+	* Returns a web content article display for the specified page of the
+	* latest version of the web content article matching the group, article ID,
+	* and DDM template. Web content transformation tokens are added using the
+	* portlet request model and theme display.
+	*
+	* @param groupId the primary key of the web content article's group
+	* @param articleId the primary key of the web content article
+	* @param ddmTemplateKey the primary key of the web content article's DDM
+	template
+	* @param viewMode the mode in which the web content is being viewed
+	* @param languageId the primary key of the language translation to get
+	* @param page the web content article page to display
+	* @param portletRequestModel the portlet request model
+	* @param themeDisplay the theme display
+	* @return the web content article display, or <code>null</code> if the
+	article has expired or if article's display date/time is after
+	the current date/time
+	* @throws PortalException if a portal exception occurred
+	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public com.liferay.portlet.journal.model.JournalArticleDisplay getArticleDisplay(
 		long groupId, java.lang.String articleId,
@@ -952,10 +1041,9 @@ public interface JournalArticleLocalService extends BaseLocalService,
 
 	/**
 	* Returns a web content article display for the first page of the latest
-	* version of the web content article matching the group and article ID,
-	* optionally based on the DDM template if the article is template driven.
-	* If the article is template driven, web content transformation tokens are
-	* added from the theme display (if not <code>null</code>).
+	* version of the web content article matching the group, article ID, and
+	* DDM template. Web content transformation tokens are added from the theme
+	* display (if not <code>null</code>).
 	*
 	* @param groupId the primary key of the web content article's group
 	* @param articleId the primary key of the web content article
@@ -978,6 +1066,27 @@ public interface JournalArticleLocalService extends BaseLocalService,
 		com.liferay.portal.theme.ThemeDisplay themeDisplay)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
+	/**
+	* Returns a web content article display for the specified page of the
+	* specified version of the web content article matching the group, article
+	* ID, and DDM template. Web content transformation tokens are added using
+	* the portlet request model and theme display.
+	*
+	* @param groupId the primary key of the web content article's group
+	* @param articleId the primary key of the web content article
+	* @param version the web content article's version
+	* @param ddmTemplateKey the primary key of the web content article's DDM
+	template
+	* @param viewMode the mode in which the web content is being viewed
+	* @param languageId the primary key of the language translation to get
+	* @param page the web content article page to display
+	* @param portletRequestModel the portlet request model
+	* @param themeDisplay the theme display
+	* @return the web content article display, or <code>null</code> if the
+	article has expired or if article's display date/time is after
+	the current date/time
+	* @throws PortalException if a portal exception occurred
+	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public com.liferay.portlet.journal.model.JournalArticleDisplay getArticleDisplay(
 		long groupId, java.lang.String articleId, double version,
@@ -989,10 +1098,9 @@ public interface JournalArticleLocalService extends BaseLocalService,
 
 	/**
 	* Returns a web content article display for the first page of the specified
-	* version of the web content article matching the group and article ID,
-	* optionally based on the DDM template if the article is template driven.
-	* If the article is template driven, web content transformation tokens are
-	* added from the theme display (if not <code>null</code>).
+	* version of the web content article matching the group, article ID, and
+	* DDM template. Web content transformation tokens are added from the theme
+	* display (if not <code>null</code>).
 	*
 	* @param groupId the primary key of the web content article's group
 	* @param articleId the primary key of the web content article
@@ -1016,6 +1124,24 @@ public interface JournalArticleLocalService extends BaseLocalService,
 		com.liferay.portal.theme.ThemeDisplay themeDisplay)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
+	/**
+	* Returns a web content article display for the specified page of the
+	* latest version of the web content article matching the group and article
+	* ID. Web content transformation tokens are added from the theme display
+	* (if not <code>null</code>).
+	*
+	* @param groupId the primary key of the web content article's group
+	* @param articleId the primary key of the web content article
+	* @param viewMode the mode in which the web content is being viewed
+	* @param languageId the primary key of the language translation to get
+	* @param page the web content article page to display
+	* @param portletRequestModel the portlet request model
+	* @param themeDisplay the theme display
+	* @return the web content article display, or <code>null</code> if the
+	article has expired or if article's display date/time is after
+	the current date/time
+	* @throws PortalException if a portal exception occurred
+	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public com.liferay.portlet.journal.model.JournalArticleDisplay getArticleDisplay(
 		long groupId, java.lang.String articleId, java.lang.String viewMode,
@@ -1026,9 +1152,9 @@ public interface JournalArticleLocalService extends BaseLocalService,
 
 	/**
 	* Returns a web content article display for the first page of the latest
-	* version of the web content article matching the group and article ID. If
-	* the article is template driven, web content transformation tokens are
-	* added from the theme display (if not <code>null</code>).
+	* version of the web content article matching the group and article ID. Web
+	* content transformation tokens are added from the theme display (if not
+	* <code>null</code>).
 	*
 	* @param groupId the primary key of the web content article's group
 	* @param articleId the primary key of the web content article
@@ -1147,6 +1273,30 @@ public interface JournalArticleLocalService extends BaseLocalService,
 		long groupId, long folderId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portlet.journal.model.JournalArticle> orderByComparator);
 
+	/**
+	* Returns a range of all the web content articles matching the group,
+	* folder, and status.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end -
+	* start</code> instances. <code>start</code> and <code>end</code> are not
+	* primary keys, they are indexes in the result set. Thus, <code>0</code>
+	* refers to the first result in the set. Setting both <code>start</code>
+	* and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full
+	* result set.
+	* </p>
+	*
+	* @param groupId the primary key of the web content article's group
+	* @param folderId the primary key of the web content article's folder
+	* @param status the web content article's workflow status. For more
+	information see {@link WorkflowConstants} for constants starting
+	with the "STATUS_" prefix.
+	* @param start the lower bound of the range of web content articles to
+	return
+	* @param end the upper bound of the range of web content articles to
+	return (not inclusive)
+	* @return the range of matching web content articles
+	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public java.util.List<com.liferay.portlet.journal.model.JournalArticle> getArticles(
 		long groupId, long folderId, int status, int start, int end);
@@ -1201,6 +1351,12 @@ public interface JournalArticleLocalService extends BaseLocalService,
 		long groupId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portlet.journal.model.JournalArticle> obc);
 
+	/**
+	* Returns all the web content articles matching the resource primary key.
+	*
+	* @param resourcePrimKey the primary key of the resource instance
+	* @return the web content articles matching the resource primary key
+	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public java.util.List<com.liferay.portlet.journal.model.JournalArticle> getArticlesByResourcePrimKey(
 		long resourcePrimKey);
@@ -1238,6 +1394,17 @@ public interface JournalArticleLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getArticlesCount(long groupId, long folderId);
 
+	/**
+	* Returns the number of web content articles matching the group, folder,
+	* and status.
+	*
+	* @param groupId the primary key of the web content article's group
+	* @param folderId the primary key of the web content article's folder
+	* @param status the web content article's workflow status. For more
+	information see {@link WorkflowConstants} for constants starting
+	with the "STATUS_" prefix.
+	* @return the number of matching web content articles
+	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getArticlesCount(long groupId, long folderId, int status);
 
@@ -1382,6 +1549,14 @@ public interface JournalArticleLocalService extends BaseLocalService,
 	public com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery getExportActionableDynamicQuery(
 		com.liferay.portal.kernel.lar.PortletDataContext portletDataContext);
 
+	/**
+	* Returns the indexable web content articles matching the resource primary
+	* key.
+	*
+	* @param resourcePrimKey the primary key of the resource instance
+	* @return the indexable web content articles matching the resource primary
+	key
+	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public java.util.List<com.liferay.portlet.journal.model.JournalArticle> getIndexableArticlesByResourcePrimKey(
 		long resourcePrimKey);
@@ -1613,11 +1788,33 @@ public interface JournalArticleLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getNotInTrashArticlesCount(long groupId, long folderId);
 
+	/**
+	* Returns the oldest web content article with the group and article ID.
+	*
+	* @param groupId the primary key of the web content article's group
+	* @param articleId the primary key of the web content article
+	* @return the oldest matching web content article
+	* @throws PortalException if a matching web content article could not be
+	found
+	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public com.liferay.portlet.journal.model.JournalArticle getOldestArticle(
 		long groupId, java.lang.String articleId)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
+	/**
+	* Returns the oldest web content article matching the group, article ID,
+	* and workflow status.
+	*
+	* @param groupId the primary key of the web content article's group
+	* @param articleId the primary key of the web content article
+	* @param status the web content article's workflow status. For more
+	information see {@link WorkflowConstants} for constants starting
+	with the "STATUS_" prefix.
+	* @return the oldest matching web content article
+	* @throws PortalException if a matching web content article could not be
+	found
+	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public com.liferay.portlet.journal.model.JournalArticle getOldestArticle(
 		long groupId, java.lang.String articleId, int status)
@@ -1629,10 +1826,27 @@ public interface JournalArticleLocalService extends BaseLocalService,
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
+	/**
+	* Returns the previously approved version of the web content article. For
+	* more information on the approved workflow status, see {@link
+	* WorkflowConstants#STATUS_APPROVED}.
+	*
+	* @param article the web content article
+	* @return the previously approved version of the web content article, or
+	the current web content article if there are no previously
+	approved web content articles
+	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public com.liferay.portlet.journal.model.JournalArticle getPreviousApprovedArticle(
 		com.liferay.portlet.journal.model.JournalArticle article);
 
+	/**
+	* Returns the web content articles matching the DDM structure keys.
+	*
+	* @param ddmStructureKeys the primary keys of the web content article's
+	DDM structures
+	* @return the web content articles matching the DDM structure keys
+	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public java.util.List<com.liferay.portlet.journal.model.JournalArticle> getStructureArticles(
 		java.lang.String[] ddmStructureKeys);
@@ -1746,6 +1960,15 @@ public interface JournalArticleLocalService extends BaseLocalService,
 	public int getTemplateArticlesCount(long groupId,
 		java.lang.String ddmTemplateKey);
 
+	/**
+	* Returns the web content article's unique URL title.
+	*
+	* @param groupId the primary key of the web content article's group
+	* @param articleId the primary key of the web content article
+	* @param urlTitle the web content article's accessible URL title
+	* @return the web content article's unique URL title
+	* @throws PortalException if a portal exception occurred
+	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public java.lang.String getUniqueUrlTitle(long groupId,
 		java.lang.String articleId, java.lang.String urlTitle)
@@ -1886,6 +2109,25 @@ public interface JournalArticleLocalService extends BaseLocalService,
 		long userId, long groupId, java.lang.String articleId)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
+	/**
+	* Rebuilds the web content article's tree path using tree traversal.
+	*
+	* <p>
+	* For example, here is a conceptualization of a web content article tree
+	* path:
+	* </p>
+	*
+	* <p>
+	* <pre>
+	* <code>
+	* /(Folder's folderId)/(Subfolder's folderId)/(article's articleId)
+	* </code>
+	* </pre>
+	* </p>
+	*
+	* @param companyId the primary key of the web content article's company
+	* @throws PortalException if a portal exception occurred
+	*/
 	public void rebuildTree(long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
@@ -1968,8 +2210,8 @@ public interface JournalArticleLocalService extends BaseLocalService,
 	<code>null</code> otherwise
 	* @param ddmTemplateKey the primary key of the web content article's DDM
 	template
-	* @param params the finder parameters (optionally <code>null</code>). Can
-	set parameter <code>"includeDiscussions"</code> to
+	* @param params the finder parameters (optionally <code>null</code>). The
+	<code>includeDiscussions</code> parameter can be set to
 	<code>true</code> to search for the keywords in the web content
 	article discussions.
 	* @param andSearch whether every field must match its value or keywords,
@@ -2285,15 +2527,97 @@ public interface JournalArticleLocalService extends BaseLocalService,
 		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portlet.journal.model.JournalArticle> obc);
 
+	/**
+	* Returns a range of all the web content articles in a single folder matching
+	* the parameters without using the indexer. It is preferable to use the
+	* indexed version {@link #search(long, long, long, int, int, int)} instead of
+	* this method wherever possible for performance reasons.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end -
+	* start</code> instances. <code>start</code> and <code>end</code> are not
+	* primary keys, they are indexes in the result set. Thus, <code>0</code>
+	* refers to the first result in the set. Setting both <code>start</code>
+	* and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full
+	* result set.
+	* </p>
+	*
+	* @param groupId the primary key of the group (optionally <code>0</code>)
+	* @param folderId the primary key of the web content article folder
+	* @param status the web content article's workflow status. For more
+	information see {@link WorkflowConstants} for constants starting
+	with the "STATUS_" prefix.
+	* @param start the lower bound of the range of web content articles to
+	return
+	* @param end the upper bound of the range of web content articles to
+	return (not inclusive)
+	* @return the matching web content articles
+	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public java.util.List<com.liferay.portlet.journal.model.JournalArticle> search(
 		long groupId, long folderId, int status, int start, int end);
 
+	/**
+	* Returns a range of all the web content articles matching the parameters
+	* without using the indexer. It is preferable to use the indexed version
+	* {@link #search(long, long, long, int, int, int)} instead of this method
+	* wherever possible for performance reasons.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end -
+	* start</code> instances. <code>start</code> and <code>end</code> are not
+	* primary keys, they are indexes in the result set. Thus, <code>0</code>
+	* refers to the first result in the set. Setting both <code>start</code>
+	* and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full
+	* result set.
+	* </p>
+	*
+	* @param groupId the primary key of the group (optionally <code>0</code>)
+	* @param folderIds the primary keys of the web content article folders
+	(optionally {@link java.util.Collections#EMPTY_LIST})
+	* @param status the web content article's workflow status. For more
+	information see {@link WorkflowConstants} for constants starting
+	with the "STATUS_" prefix.
+	* @param start the lower bound of the range of web content articles to
+	return
+	* @param end the upper bound of the range of web content articles to
+	return (not inclusive)
+	* @return the matching web content articles
+	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public java.util.List<com.liferay.portlet.journal.model.JournalArticle> search(
 		long groupId, java.util.List<java.lang.Long> folderIds, int status,
 		int start, int end);
 
+	/**
+	* Returns a range of all the web content articles matching the group, creator,
+	* and status using the indexer. It is preferable to use this method instead of
+	* the non-indexed version whenever possible for performance reasons.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end -
+	* start</code> instances. <code>start</code> and <code>end</code> are not
+	* primary keys, they are indexes in the result set. Thus, <code>0</code>
+	* refers to the first result in the set. Setting both <code>start</code>
+	* and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full
+	* result set.
+	* </p>
+	*
+	* @param groupId the primary key of the group (optionally <code>0</code>)
+	* @param userId the primary key of the user searching for web content
+	articles
+	* @param creatorUserId the primary key of the web content article's
+	creator
+	* @param status the web content article's workflow status. For more
+	information see {@link WorkflowConstants} for constants starting
+	with the "STATUS_" prefix.
+	* @param start the lower bound of the range of web content articles to
+	return
+	* @param end the upper bound of the range of web content articles to
+	return (not inclusive)
+	* @return the matching web content articles
+	* @throws PortalException if a portal exception occurred
+	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public com.liferay.portal.kernel.search.Hits search(long groupId,
 		long userId, long creatorUserId, int status, int start, int end)
@@ -2465,13 +2789,101 @@ public interface JournalArticleLocalService extends BaseLocalService,
 		java.lang.String ddmTemplateKey, java.util.Date displayDateGT,
 		java.util.Date displayDateLT, int status, java.util.Date reviewDate);
 
+	/**
+	* Returns the number of web content articles matching the group, folder,
+	* and status.
+	*
+	* @param groupId the primary key of the group (optionally <code>0</code>)
+	* @param folderId the primary key of the web content article folder
+	* @param status the web content article's workflow status. For more
+	information see {@link WorkflowConstants} for constants starting
+	with the "STATUS_" prefix.
+	* @return the number of matching web content articles
+	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(long groupId, long folderId, int status);
 
+	/**
+	* Returns the number of web content articles matching the group, folders,
+	* and status.
+	*
+	* @param groupId the primary key of the group (optionally <code>0</code>)
+	* @param folderIds the primary keys of the web content article folders
+	(optionally {@link java.util.Collections#EMPTY_LIST})
+	* @param status the web content article's workflow status. For more
+	information see {@link WorkflowConstants} for constants starting
+	with the "STATUS_" prefix.
+	* @return the number of matching web content articles
+	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(long groupId,
 		java.util.List<java.lang.Long> folderIds, int status);
 
+	/**
+	* Returns a {@link BaseModelSearchResult} containing the total number of hits
+	* and an ordered range of all the web content articles matching the parameters
+	* using the indexer, including keyword parameters for article ID, title,
+	* description, or content, a DDM structure key parameter, a DDM template key
+	* parameter, an AND operator switch, and parameters for type, status, and a
+	* finder hash map. It is preferable to use this method instead of the
+	* non-indexed version whenever possible for performance reasons.
+	*
+	* <p>
+	* The <code>start</code> and <code>end</code> parameters only affect the
+	* amount of web content articles returned as results, not the total number
+	* of hits.
+	* </p>
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end -
+	* start</code> instances. <code>start</code> and <code>end</code> are not
+	* primary keys, they are indexes in the result set. Thus, <code>0</code>
+	* refers to the first result in the set. Setting both <code>start</code>
+	* and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full
+	* result set.
+	* </p>
+	*
+	* @param companyId the primary key of the web content article's company
+	* @param groupId the primary key of the group (optionally <code>0</code>)
+	* @param folderIds the primary keys of the web content article folders
+	(optionally {@link java.util.Collections#EMPTY_LIST})
+	* @param classNameId the primary key of the DDMStructure class, the
+	primary key of the class name associated with the article, or
+	{@link JournalArticleConstants#CLASSNAME_ID_DEFAULT} otherwise
+	* @param articleId the article ID keywords (space separated, optionally
+	<code>null</code>)
+	* @param title the title keywords (space separated, optionally
+	<code>null</code>)
+	* @param description the description keywords (space separated, optionally
+	<code>null</code>)
+	* @param content the content keywords (space separated, optionally
+	<code>null</code>)
+	* @param type the web content article's type (optionally
+	<code>null</code>)
+	* @param status the web content article's workflow status. For more
+	information see {@link WorkflowConstants} for constants starting
+	with the "STATUS_" prefix.
+	* @param ddmStructureKey the primary key of the web content article's DDM
+	structure
+	* @param ddmTemplateKey the primary key of the web content article's DDM
+	template
+	* @param params the finder parameters (optionally <code>null</code>). The
+	<code>includeDiscussions</code> parameter can be set to
+	<code>true</code> to search for the keywords in the web content
+	article discussions.
+	* @param andSearch whether every field must match its value or keywords,
+	or just one field must match
+	* @param start the lower bound of the range of web content articles to
+	return
+	* @param end the upper bound of the range of web content articles to
+	return (not inclusive)
+	* @param sort the field, type, and direction by which to sort (optionally
+	<code>null</code>)
+	* @return a {@link BaseModelSearchResult} containing the total number of hits
+	and an ordered range of all the matching web content articles
+	ordered by <code>sort</code>
+	* @throws PortalException if a portal exception occurred
+	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public com.liferay.portal.kernel.search.BaseModelSearchResult<com.liferay.portlet.journal.model.JournalArticle> searchJournalArticles(
 		long companyId, long groupId, java.util.List<java.lang.Long> folderIds,
@@ -2484,6 +2896,58 @@ public interface JournalArticleLocalService extends BaseLocalService,
 		com.liferay.portal.kernel.search.Sort sort)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
+	/**
+	* Returns a {@link BaseModelSearchResult} containing the total number of hits
+	* and an ordered range of all the web content articles matching the parameters
+	* using the indexer, including a keywords parameter for matching an article's
+	* ID, title, description, or content, a DDM structure key parameter, a DDM
+	* template key parameter, and a finder hash map parameter. It is preferable to
+	* use this method instead of the non-indexed version whenever possible for
+	* performance reasons.
+	*
+	* <p>
+	* The <code>start</code> and <code>end</code> parameters only affect the
+	* amount of web content articles returned as results, not the total number
+	* of hits.
+	* </p>
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end -
+	* start</code> instances. <code>start</code> and <code>end</code> are not
+	* primary keys, they are indexes in the result set. Thus, <code>0</code>
+	* refers to the first result in the set. Setting both <code>start</code>
+	* and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full
+	* result set.
+	* </p>
+	*
+	* @param companyId the primary key of the web content article's company
+	* @param groupId the primary key of the group (optionally <code>0</code>)
+	* @param folderIds the primary keys of the web content article folders
+	(optionally {@link java.util.Collections#EMPTY_LIST})
+	* @param classNameId the primary key of the DDMStructure class, the
+	primary key of the class name associated with the article, or
+	{@link JournalArticleConstants#CLASSNAME_ID_DEFAULT} otherwise
+	* @param ddmStructureKey the primary key of the web content article's DDM
+	structure
+	* @param ddmTemplateKey the primary key of the web content article's DDM
+	template
+	* @param keywords the keywords (space separated), which may occur in the
+	web content article ID, title, description, or content
+	(optionally <code>null</code>). If the keywords value is not
+	<code>null</code>, the search uses the OR operator in connecting
+	query criteria; otherwise it uses the AND operator.
+	* @param params the finder parameters (optionally <code>null</code>)
+	* @param start the lower bound of the range of web content articles to
+	return
+	* @param end the upper bound of the range of web content articles to
+	return (not inclusive)
+	* @param sort the field, type, and direction by which to sort (optionally
+	<code>null</code>)
+	* @return a {@link BaseModelSearchResult} containing the total number of hits
+	and an ordered range of all the matching web content articles
+	ordered by <code>sort</code>
+	* @throws PortalException if a portal exception occurred
+	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public com.liferay.portal.kernel.search.BaseModelSearchResult<com.liferay.portlet.journal.model.JournalArticle> searchJournalArticles(
 		long companyId, long groupId, java.util.List<java.lang.Long> folderIds,
@@ -2493,6 +2957,45 @@ public interface JournalArticleLocalService extends BaseLocalService,
 		int start, int end, com.liferay.portal.kernel.search.Sort sort)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
+	/**
+	* Returns a {@link BaseModelSearchResult} containing the total number of hits
+	* and an ordered range of all the web content articles matching the parameters
+	* using the indexer, including the web content article's creator ID and
+	* status. It is preferable to use this method instead of the non-indexed
+	* version whenever possible for performance reasons.
+	*
+	* <p>
+	* The <code>start</code> and <code>end</code> parameters only affect the
+	* amount of web content articles returned as results, not the total number
+	* of hits.
+	* </p>
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end -
+	* start</code> instances. <code>start</code> and <code>end</code> are not
+	* primary keys, they are indexes in the result set. Thus, <code>0</code>
+	* refers to the first result in the set. Setting both <code>start</code>
+	* and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full
+	* result set.
+	* </p>
+	*
+	* @param groupId the primary key of the group (optionally <code>0</code>)
+	* @param userId the primary key of the user searching for web content
+	articles
+	* @param creatorUserId the primary key of the web content article's
+	creator
+	* @param status the web content article's workflow status. For more
+	information see {@link WorkflowConstants} for constants starting
+	with the "STATUS_" prefix.
+	* @param start the lower bound of the range of web content articles to
+	return
+	* @param end the upper bound of the range of web content articles to
+	return (not inclusive)
+	* @return a {@link BaseModelSearchResult} containing the total number of hits
+	and an ordered range of all the matching web content articles
+	ordered by <code>sort</code>
+	* @throws PortalException if a portal exception occurred
+	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public com.liferay.portal.kernel.search.BaseModelSearchResult<com.liferay.portlet.journal.model.JournalArticle> searchJournalArticles(
 		long groupId, long userId, long creatorUserId, int status, int start,
@@ -2508,10 +3011,29 @@ public interface JournalArticleLocalService extends BaseLocalService,
 	public void setTreePaths(long folderId, java.lang.String treePath)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
+	/**
+	* Subscribes the user to changes in elements that belong to the web content
+	* article's DDM structure.
+	*
+	* @param groupId the primary key of the folder's group
+	* @param userId the primary key of the user to be subscribed
+	* @param ddmStructureId the primary key of the structure to subscribe to
+	* @throws PortalException if a matching user or group could not be found
+	*/
 	public void subscribeStructure(long groupId, long userId,
 		long ddmStructureId)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
+	/**
+	* Unsubscribes the user from changes in elements that belong to the web
+	* content article's DDM structure.
+	*
+	* @param groupId the primary key of the folder's group
+	* @param userId the primary key of the user to be subscribed
+	* @param ddmStructureId the primary key of the structure to subscribe to
+	* @throws PortalException if a matching user or subscription could not be
+	found
+	*/
 	public void unsubscribeStructure(long groupId, long userId,
 		long ddmStructureId)
 		throws com.liferay.portal.kernel.exception.PortalException;
