@@ -330,21 +330,20 @@ public class LocalProcessLauncher {
 					UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
 						new UnsyncByteArrayOutputStream();
 
-					UnsyncPrintWriter unsyncPrintWriter = new UnsyncPrintWriter(
-						unsyncByteArrayOutputStream);
+					try (UnsyncPrintWriter unsyncPrintWriter =
+						new UnsyncPrintWriter(unsyncByteArrayOutputStream)) {
 
-					unsyncPrintWriter.println(e);
+						unsyncPrintWriter.println(e);
 
-					e.printStackTrace(unsyncPrintWriter);
+						e.printStackTrace(unsyncPrintWriter);
 
-					unsyncPrintWriter.println();
+						unsyncPrintWriter.println();
+					}
 
-					unsyncPrintWriter.close();
-
-					System.err.write(
-						unsyncByteArrayOutputStream.unsafeGetByteArray(), 0,
-						unsyncByteArrayOutputStream.size());
-					System.err.flush();
+				System.err.write(
+					unsyncByteArrayOutputStream.unsafeGetByteArray(), 0,
+					unsyncByteArrayOutputStream.size());
+				System.err.flush();
 				}
 			}
 		}
