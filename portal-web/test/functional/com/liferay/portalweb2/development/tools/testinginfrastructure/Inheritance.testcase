@@ -1,4 +1,5 @@
 <definition component-name="portal-tools" extends="Parent">
+	<property name="portal.url" value="" />
 	<property name="testray.main.component.name" value="Tools" />
 
 	<var name="commitMessage" value="LPS-42016" />
@@ -6,8 +7,6 @@
 	<var name="ticketSummary" value="LIFERAYQA-6190: Add Portal Resiliency setup to all tests" />
 
 	<set-up>
-		<execute macro="User#firstLoginPG" />
-
 		<execute test-case="super#set-up" />
 
 		<if>
