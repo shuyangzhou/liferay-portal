@@ -75,22 +75,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Various translation related functionality. Features not documented in every
- * single method include: You can disable translation in total by configuring
- * <code>translations.disabled=<code>true</code></code> in portal.properties.
+ * Provides various translation related functionalities for language keys
+ * specified in portlet configurations and portal resource bundles.
  *
- * If a translation for a given key does not exist, these methods typically
- * return the requested key as the translation.
+ * <p>
+ * You can disable translations by setting the
+ * <code>translations.disabled</code> property to <code>true</code> in
+ * <code>portal.properties</code>.
+ * </p>
  *
- * Parameter substitution follows the standard Java Resourcebundle notion of
- * index based substitution - e.g. substitutable characters have to be named as
- * {0}, {1} etc., in any order or cardinality.
- *
- * Depending on the context passed into these functions, the lookup might be
+ * <p>
+ * Depending on the context passed into these methods, the lookup might be
  * limited to the portal's resource bundle (e.g. when only a locale is passed),
  * or extended to include an individual portlet's resource bundle (e.g. when a
- * request object is passed) - a portlet's resource bundle will override the
- * portal's resources in that case.
+ * request object is passed). A portlet's resource bundle overrides the portal's
+ * resources when both are present.
+ * </p>
  *
  * @author Brian Wing Shun Chan
  * @author Andrius Vitkauskas
@@ -100,17 +100,24 @@ import javax.servlet.http.HttpServletResponse;
 public class LanguageImpl implements Language, Serializable {
 
 	/**
-	 * Translate a given key (pattern), using the current request's locale or -
-	 * if current request locale is not available - the server's default locale.
-	 * Substitute placeholders <code>{0}</code> with argument.
+	 * Returns the translated pattern using the current request's locale or, if
+	 * the current request locale is not available, the server's default locale.
+	 * If a translation for a given key does not exist, this method returns the
+	 * requested key as the translation.
 	 *
-	 * @param  request is used to determine the current locale
-	 * @param  pattern key to look up in the current locale's resource file.
-	 *         Follows standard Java resource spec
-	 * @param  argument single argument to be substituted in pattern. Will be
-	 *         translated if possible
-	 * @return translated pattern, with argument substituted for placeholder in
-	 *         pattern.
+	 * <p>
+	 * The substitute placeholder (e.g. <code>{0}</code>) is replaced with the
+	 * argument, following the standard Java <code>ResourceBundle</code> notion
+	 * of index based substitution.
+	 * </p>
+	 *
+	 * @param  request the request used to determine the current locale
+	 * @param  pattern the key to look up in the current locale's resource file.
+	 *         The key follows the standard Java resource specification.
+	 * @param  argument the single argument to be substituted into the pattern
+	 *         and translated, if possible
+	 * @return the translated pattern, with the argument substituted in for the
+	 *         pattern's placeholder
 	 */
 	@Override
 	public String format(
@@ -120,18 +127,25 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * Translate a given key (pattern), using the current request's locale or -
-	 * if current request locale is not available - the server's default locale.
-	 * Substitute placeholders <code>{0}</code> with argument.
+	 * Returns the translated pattern using the current request's locale or, if
+	 * the current request locale is not available, the server's default locale.
+	 * If a translation for a given key does not exist, this method returns the
+	 * requested key as the translation.
 	 *
-	 * @param  request is used to determine the current locale
-	 * @param  pattern key to look up in the current locale's resource file.
-	 *         Follows standard Java resource spec
-	 * @param  argument single argument to be substituted in pattern.
-	 * @param  translateArguments determine if arguments should be substituted
-	 *         as is (<code>false</code>) or translated (<code>true</code>)
-	 * @return translated pattern, with argument substituted for placeholder in
-	 *         pattern.
+	 * <p>
+	 * The substitute placeholder (e.g. <code>{0}</code>) is replaced with the
+	 * argument, following the standard Java <code>ResourceBundle</code> notion
+	 * of index based substitution.
+	 * </p>
+	 *
+	 * @param  request the request used to determine the current locale
+	 * @param  pattern the key to look up in the current locale's resource file.
+	 *         The key follows the standard Java resource specification.
+	 * @param  argument the single argument to be substituted into the pattern
+	 *         and translated, if possible
+	 * @param  translateArguments whether the argument is translated
+	 * @return the translated pattern, with the argument substituted in for the
+	 *         pattern's placeholder
 	 */
 	@Override
 	public String format(
@@ -144,17 +158,25 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * Translate a given key (pattern), using the current request's locale or -
-	 * if current request locale is not available - the server's default locale.
-	 * Substitute placeholders like <code>{0}</code> with arguments.
+	 * Returns the translated pattern using the current request's locale or, if
+	 * the current request locale is not available, the server's default locale.
+	 * If a translation for a given key does not exist, this method returns the
+	 * requested key as the translation.
 	 *
-	 * @param  request is used to determine the current locale
-	 * @param  pattern key to look up in the current locale's resource file.
-	 *         Follows standard Java resource spec
-	 * @param  arguments arguments to be substituted in pattern. Will be
-	 *         translated if possible
-	 * @return translated pattern, with argument substituted for placeholder in
-	 *         pattern.
+	 * <p>
+	 * The substitute placeholders (e.g. <code>{0}</code>, <code>{1}</code>,
+	 * <code>{2}</code>, etc.) are replaced with the arguments, following the
+	 * standard Java <code>ResourceBundle</code> notion of index based
+	 * substitution.
+	 * </p>
+	 *
+	 * @param  request the request used to determine the current locale
+	 * @param  pattern the key to look up in the current locale's resource file.
+	 *         The key follows the standard Java resource specification.
+	 * @param  arguments the arguments to be substituted into the pattern and
+	 *         translated, if possible
+	 * @return the translated pattern, with the arguments substituted in for the
+	 *         pattern's placeholders
 	 */
 	@Override
 	public String format(
@@ -165,18 +187,25 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * Translate a given key (pattern), using the current request's locale or -
-	 * if current request locale is not available - the server's default locale.
-	 * Substitute placeholders like <code>{0}</code> with arguments.
+	 * Returns the translated pattern using the current request's locale or, if
+	 * the current request locale is not available, the server's default locale.
+	 * If a translation for a given key does not exist, this method returns the
+	 * requested key as the translation.
 	 *
-	 * @param  request is used to determine the current locale
-	 * @param  pattern key to look up in the current locale's resource file.
-	 *         Follows standard Java resource spec
-	 * @param  arguments the arguments to be substituted in pattern.
-	 * @param  translateArguments determine if arguments should be substituted
-	 *         as is (<code>false</code>) or translated (<code>true</code>)
-	 * @return translated pattern, with arguments substituted for placeholders
-	 *         in pattern.
+	 * <p>
+	 * The substitute placeholders (e.g. <code>{0}</code>, <code>{1}</code>,
+	 * <code>{2}</code>, etc.) are replaced with the arguments, following the
+	 * standard Java <code>ResourceBundle</code> notion of index based
+	 * substitution.
+	 * </p>
+	 *
+	 * @param  request the request used to determine the current locale
+	 * @param  pattern the key to look up in the current locale's resource file.
+	 *         The key follows the standard Java resource specification.
+	 * @param  arguments the arguments to be substituted into the pattern
+	 * @param  translateArguments whether the arguments are translated
+	 * @return the translated pattern, with the arguments substituted in for the
+	 *         pattern's placeholders
 	 */
 	@Override
 	public String format(
@@ -228,17 +257,24 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * Translate a given key (pattern), using the current request's locale or -
-	 * if current request locale is not available - the server's default locale.
-	 * Substitute placeholders <code>{0}</code> with argument.
+	 * Returns the translated pattern using the current request's locale or, if
+	 * the current request locale is not available, the server's default locale.
+	 * If a translation for a given key does not exist, this method returns the
+	 * requested key as the translation.
 	 *
-	 * @param  request is used to determine the current locale
-	 * @param  pattern key to look up in the current locale's resource file.
-	 *         Follows standard Java resource spec
-	 * @param  argument single argument to be substituted in pattern. Will be
-	 *         translated if possible
-	 * @return translated pattern, with argument substituted for placeholder in
-	 *         pattern.
+	 * <p>
+	 * The substitute placeholder (e.g. <code>{0}</code>) is replaced with the
+	 * argument, following the standard Java <code>ResourceBundle</code> notion
+	 * of index based substitution.
+	 * </p>
+	 *
+	 * @param  request the request used to determine the current locale
+	 * @param  pattern the key to look up in the current locale's resource file.
+	 *         The key follows the standard Java resource specification.
+	 * @param  argument the single argument to be substituted into the pattern
+	 *         and translated, if possible
+	 * @return the translated pattern, with the argument substituted in for the
+	 *         pattern's placeholder
 	 */
 	@Override
 	public String format(
@@ -248,18 +284,25 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * Translate a given key (pattern), using the current request's locale or -
-	 * if current request locale is not available - the server's default locale.
-	 * Substitute placeholders <code>{0}</code> with argument.
+	 * Returns the translated pattern using the current request's locale or, if
+	 * the current request locale is not available, the server's default locale.
+	 * If a translation for a given key does not exist, this method returns the
+	 * requested key as the translation.
 	 *
-	 * @param  request is used to determine the current locale
-	 * @param  pattern key to look up in the current locale's resource file.
-	 *         Follows standard Java resource spec
-	 * @param  argument single argument to be substituted in pattern.
-	 * @param  translateArguments determine if arguments should be substituted
-	 *         as is (<code>false</code>) or translated (<code>true</code>)
-	 * @return translated pattern, with argument substituted for placeholder in
-	 *         pattern.
+	 * <p>
+	 * The substitute placeholder (e.g. <code>{0}</code>) is replaced with the
+	 * argument, following the standard Java <code>ResourceBundle</code> notion
+	 * of index based substitution.
+	 * </p>
+	 *
+	 * @param  request the request used to determine the current locale
+	 * @param  pattern the key to look up in the current locale's resource file.
+	 *         The key follows the standard Java resource specification.
+	 * @param  argument the single argument to be substituted into the pattern
+	 *         and translated, if possible
+	 * @param  translateArguments whether the argument is translated
+	 * @return the translated pattern, with the argument substituted in for the
+	 *         pattern's placeholder
 	 */
 	@Override
 	public String format(
@@ -271,17 +314,25 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * Translate a given key (pattern), using the current request's locale or -
-	 * if current request locale is not available - the server's default locale.
-	 * Substitute placeholders like <code>{0}</code> with arguments.
+	 * Returns the translated pattern using the current request's locale or, if
+	 * the current request locale is not available, the server's default locale.
+	 * If a translation for a given key does not exist, this method returns the
+	 * requested key as the translation.
 	 *
-	 * @param  request is used to determine the current locale
-	 * @param  pattern key to look up in the current locale's resource file.
-	 *         Follows standard Java resource spec
-	 * @param  arguments arguments to be substituted in pattern. Will be
-	 *         translated if possible
-	 * @return translated pattern, with argument substituted for placeholder in
-	 *         pattern.
+	 * <p>
+	 * The substitute placeholders (e.g. <code>{0}</code>, <code>{1}</code>,
+	 * <code>{2}</code>, etc.) are replaced with the arguments, following the
+	 * standard Java <code>ResourceBundle</code> notion of index based
+	 * substitution.
+	 * </p>
+	 *
+	 * @param  request the request used to determine the current locale
+	 * @param  pattern the key to look up in the current locale's resource file.
+	 *         The key follows the standard Java resource specification.
+	 * @param  arguments the arguments to be substituted into the pattern and
+	 *         translated, if possible
+	 * @return the translated pattern, with the arguments substituted in for the
+	 *         pattern's placeholders
 	 */
 	@Override
 	public String format(
@@ -291,19 +342,25 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * Translate a given key (pattern), using the current request's locale or -
-	 * if current request locale is not available - the server's default locale.
-	 * Substitute placeholders like <code>{0}</code> with arguments.
+	 * Returns the translated pattern using the current request's locale or, if
+	 * the current request locale is not available, the server's default locale.
+	 * If a translation for a given key does not exist, this method returns the
+	 * requested key as the translation.
 	 *
-	 * @param  request is used to determine the current locale
-	 * @param  pattern key to look up in the current locale's resource file.
-	 *         Follows standard Java resource spec
-	 * @param  arguments arguments to be substituted in pattern.
-	 * @param  translateArguments determine if all arguments should be
-	 *         substituted as-is (<code>false</code>) or translated
-	 *         (<code>true</code>)
-	 * @return translated pattern, with arguments substituted for placeholders
-	 *         in pattern.
+	 * <p>
+	 * The substitute placeholders (e.g. <code>{0}</code>, <code>{1}</code>,
+	 * <code>{2}</code>, etc.) are replaced with the arguments, following the
+	 * standard Java <code>ResourceBundle</code> notion of index based
+	 * substitution.
+	 * </p>
+	 *
+	 * @param  request the request used to determine the current locale
+	 * @param  pattern the key to look up in the current locale's resource file.
+	 *         The key follows the standard Java resource specification.
+	 * @param  arguments the arguments to be substituted into the pattern
+	 * @param  translateArguments whether the arguments are translated
+	 * @return the translated pattern, with the arguments substituted in for the
+	 *         pattern's placeholders
 	 */
 	@Override
 	public String format(
@@ -350,17 +407,23 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * Translate a given key (pattern) to the given locale. Uses the server
-	 * default locale if requested one is not available. Substitute placeholders
-	 * like <code>{0}</code> with arguments.
+	 * Returns the translated pattern using the locale or, if the locale is not
+	 * available, the server's default locale. If a translation for a given key
+	 * does not exist, this method returns the requested key as the translation.
 	 *
-	 * @param  locale language/locale to translate to
-	 * @param  pattern key to look up in the current locale's resource file.
-	 *         Follows standard Java resource spec
-	 * @param  arguments arguments to be substituted in pattern. Will be
-	 *         translated if possible
-	 * @return translated pattern, with arguments substituted for placeholders
-	 *         in pattern.
+	 * <p>
+	 * The substitute placeholders (e.g. <code>{0}</code>, <code>{1}</code>,
+	 * <code>{2}</code>, etc.) are replaced with the arguments, following the
+	 * standard Java <code>ResourceBundle</code> notion of index based
+	 * substitution.
+	 * </p>
+	 *
+	 * @param  locale the locale to translate to
+	 * @param  pattern the key to look up in the current locale's resource file.
+	 *         The key follows the standard Java resource specification.
+	 * @param  arguments the arguments to be substituted into the pattern
+	 * @return the translated pattern, with the arguments substituted in for the
+	 *         pattern's placeholders
 	 */
 	@Override
 	public String format(
@@ -370,17 +433,22 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * Translate a given key (pattern) to the given locale. Uses the server
-	 * default locale if requested one is not available. Substitute placeholders
-	 * <code>{0}</code> with argument.
+	 * Returns the translated pattern using the locale or, if the locale is not
+	 * available, the server's default locale. If a translation for a given key
+	 * does not exist, this method returns the requested key as the translation.
 	 *
-	 * @param  locale language/locale to translate to
-	 * @param  pattern key to look up in the current locale's resource file.
-	 *         Follows standard Java resource spec
-	 * @param  argument argument to be substituted in pattern. Will be
-	 *         translated if possible
-	 * @return translated pattern, with argument substituted for placeholders in
-	 *         pattern.
+	 * <p>
+	 * The substitute placeholder (e.g. <code>{0}</code>) is replaced with the
+	 * argument, following the standard Java <code>ResourceBundle</code> notion
+	 * of index based substitution.
+	 * </p>
+	 *
+	 * @param  locale the locale to translate to
+	 * @param  pattern the key to look up in the current locale's resource file.
+	 *         The key follows the standard Java resource specification.
+	 * @param  argument the argument to be substituted into the pattern
+	 * @return the translated pattern, with the argument substituted in for the
+	 *         pattern's placeholder
 	 */
 	@Override
 	public String format(Locale locale, String pattern, Object argument) {
@@ -388,7 +456,23 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * @see {@link #format(HttpServletRequest, String, Object, boolean)}
+	 * Returns the translated pattern using the locale or, if the locale is not
+	 * available, the server's default locale. If a translation for a given key
+	 * does not exist, this method returns the requested key as the translation.
+	 *
+	 * <p>
+	 * The substitute placeholder (e.g. <code>{0}</code>) is replaced with the
+	 * argument, following the standard Java <code>ResourceBundle</code> notion
+	 * of index based substitution.
+	 * </p>
+	 *
+	 * @param  locale the locale to translate to
+	 * @param  pattern the key to look up in the current locale's resource file.
+	 *         The key follows the standard Java resource specification.
+	 * @param  argument the argument to be substituted into the pattern
+	 * @param  translateArguments whether the argument is translated
+	 * @return the translated pattern, with the argument substituted in for the
+	 *         pattern's placeholder
 	 */
 	@Override
 	public String format(
@@ -400,7 +484,23 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * @see {@link #format(HttpServletRequest, String, Object[])}
+	 * Returns the translated pattern using the locale or, if the locale is not
+	 * available, the server's default locale. If a translation for a given key
+	 * does not exist, this method returns the requested key as the translation.
+	 *
+	 * <p>
+	 * The substitute placeholders (e.g. <code>{0}</code>, <code>{1}</code>,
+	 * <code>{2}</code>, etc.) are replaced with the arguments, following the
+	 * standard Java <code>ResourceBundle</code> notion of index based
+	 * substitution.
+	 * </p>
+	 *
+	 * @param  locale the locale to translate to
+	 * @param  pattern the key to look up in the current locale's resource file.
+	 *         The key follows the standard Java resource specification.
+	 * @param  arguments the arguments to be substituted into the pattern
+	 * @return the translated pattern, with the arguments substituted in for the
+	 *         pattern's placeholders
 	 */
 	@Override
 	public String format(Locale locale, String pattern, Object[] arguments) {
@@ -408,7 +508,24 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * @see {@link #format(HttpServletRequest, String, Object[], boolean)}
+	 * Returns the translated pattern using the locale or, if the locale is not
+	 * available, the server's default locale. If a translation for a given key
+	 * does not exist, this method returns the requested key as the translation.
+	 *
+	 * <p>
+	 * The substitute placeholders (e.g. <code>{0}</code>, <code>{1}</code>,
+	 * <code>{2}</code>, etc.) are replaced with the arguments, following the
+	 * standard Java <code>ResourceBundle</code> notion of index based
+	 * substitution.
+	 * </p>
+	 *
+	 * @param  locale the locale to translate to
+	 * @param  pattern the key to look up in the current locale's resource file.
+	 *         The key follows the standard Java resource specification.
+	 * @param  arguments the arguments to be substituted into the pattern
+	 * @param  translateArguments whether the arguments are translated
+	 * @return the translated pattern, with the arguments substituted in for the
+	 *         pattern's placeholders
 	 */
 	@Override
 	public String format(
@@ -455,7 +572,23 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * @see {@link #format(HttpServletRequest, String, Object)}
+	 * Returns the translated pattern in the resource bundle or, if the resource
+	 * bundle is not available, the untranslated key. If a translation for a
+	 * given key does not exist, this method returns the requested key as the
+	 * translation.
+	 *
+	 * <p>
+	 * The substitute placeholder (e.g. <code>{0}</code>) is replaced with the
+	 * argument, following the standard Java <code>ResourceBundle</code> notion
+	 * of index based substitution.
+	 * </p>
+	 *
+	 * @param  resourceBundle the requested key's resource bundle
+	 * @param  pattern the key to look up in the resource bundle. The key
+	 *         follows the standard Java resource specification.
+	 * @param  argument the argument to be substituted into the pattern
+	 * @return the translated pattern, with the argument substituted in for the
+	 *         pattern's placeholder
 	 */
 	@Override
 	public String format(
@@ -465,7 +598,24 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * @see {@link #format(HttpServletRequest, String, Object, boolean)}
+	 * Returns the translated pattern in the resource bundle or, if the resource
+	 * bundle is not available, the untranslated key. If a translation for a
+	 * given key does not exist, this method returns the requested key as the
+	 * translation.
+	 *
+	 * <p>
+	 * The substitute placeholder (e.g. <code>{0}</code>) is replaced with the
+	 * argument, following the standard Java <code>ResourceBundle</code> notion
+	 * of index based substitution.
+	 * </p>
+	 *
+	 * @param  resourceBundle the requested key's resource bundle
+	 * @param  pattern the key to look up in the resource bundle. The key
+	 *         follows the standard Java resource specification.
+	 * @param  argument the argument to be substituted into the pattern
+	 * @param  translateArguments whether the argument is translated
+	 * @return the translated pattern, with the argument substituted in for the
+	 *         pattern's placeholder
 	 */
 	@Override
 	public String format(
@@ -478,7 +628,24 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * @see {@link #format(HttpServletRequest, String, Object[])}
+	 * Returns the translated pattern in the resource bundle or, if the resource
+	 * bundle is not available, the untranslated key. If a translation for a
+	 * given key does not exist, this method returns the requested key as the
+	 * translation.
+	 *
+	 * <p>
+	 * The substitute placeholders (e.g. <code>{0}</code>, <code>{1}</code>,
+	 * <code>{2}</code>, etc.) are replaced with the arguments, following the
+	 * standard Java <code>ResourceBundle</code> notion of index based
+	 * substitution.
+	 * </p>
+	 *
+	 * @param  resourceBundle the requested key's resource bundle
+	 * @param  pattern the key to look up in the resource bundle. The key
+	 *         follows the standard Java resource specification.
+	 * @param  arguments the arguments to be substituted into the pattern
+	 * @return the translated pattern, with the arguments substituted in for the
+	 *         pattern's placeholder
 	 */
 	@Override
 	public String format(
@@ -488,7 +655,25 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * @see {@link #format(HttpServletRequest, String, Object[], boolean)}
+	 * Returns the translated pattern in the resource bundle or, if the resource
+	 * bundle is not available, the untranslated key. If a translation for a
+	 * given key does not exist, this method returns the requested key as the
+	 * translation.
+	 *
+	 * <p>
+	 * The substitute placeholders (e.g. <code>{0}</code>, <code>{1}</code>,
+	 * <code>{2}</code>, etc.) are replaced with the arguments, following the
+	 * standard Java <code>ResourceBundle</code> notion of index based
+	 * substitution.
+	 * </p>
+	 *
+	 * @param  resourceBundle the requested key's resource bundle
+	 * @param  pattern the key to look up in the resource bundle. The key
+	 *         follows the standard Java resource specification.
+	 * @param  arguments the arguments to be substituted into the pattern
+	 * @param  translateArguments whether the arguments are translated
+	 * @return the translated pattern, with the arguments substituted in for the
+	 *         pattern's placeholder
 	 */
 	@Override
 	public String format(
@@ -715,7 +900,7 @@ public class LanguageImpl implements Language, Serializable {
 	 * LanguageId might be just a language or a specific variant, e.g. "en" or
 	 * "en_GB"
 	 *
-	 * @param  request
+	 * @param request
 	 * @return
 	 */
 	@Override
@@ -739,7 +924,7 @@ public class LanguageImpl implements Language, Serializable {
 	 * retrieve the languageId of the given Locale LanguageId might be just a
 	 * language or a specific variant, e.g. "en" or "en_GB"
 	 *
-	 * @param  locale
+	 * @param locale
 	 * @return
 	 */
 	@Override
@@ -763,7 +948,7 @@ public class LanguageImpl implements Language, Serializable {
 	/**
 	 * retrieve the Locale for the given languageCode (e.g. "en" or "en_GB")
 	 *
-	 * @param  languageCode
+	 * @param languageCode
 	 * @return
 	 */
 	@Override
@@ -875,9 +1060,9 @@ public class LanguageImpl implements Language, Serializable {
 	 * follows english grammar rules for plural
 	 * </p>
 	 *
-	 * @param  locale determines the requested language
-	 * @param  milliseconds time span to be described
-	 * @param  approximate determines exact or approximate description
+	 * @param locale determines the requested language
+	 * @param milliseconds time span to be described
+	 * @param approximate determines exact or approximate description
 	 * @return
 	 */
 	@Override
@@ -926,7 +1111,7 @@ public class LanguageImpl implements Language, Serializable {
 	 * be available. @see {@link #getAvailableLocales()} for configuration
 	 * options.
 	 *
-	 * @param  languageCode
+	 * @param languageCode
 	 * @return
 	 */
 	@Override
@@ -937,9 +1122,9 @@ public class LanguageImpl implements Language, Serializable {
 	/**
 	 * determines if given locale is configured to be available.
 	 *
-	 * @param  locale
+	 * @param locale
 	 * @return
-	 * @see    {@link #getAvailableLocales()} for configuration options.
+	 * @see   {@link #getAvailableLocales()} for configuration options.
 	 */
 	@Override
 	public boolean isAvailableLocale(Locale locale) {
