@@ -45,29 +45,28 @@ public class WhoisWebCacheItem implements WebCacheItem {
 		Whois whois = null;
 
 		try {
-			Socket socket = new Socket(WHOIS_SERVER, WHOIS_SERVER_PORT);
+			StringBundler sb;
 
-			UnsyncBufferedReader unsyncBufferedReader =
-				new UnsyncBufferedReader(
-					new InputStreamReader(socket.getInputStream()));
+			try (Socket socket = new Socket(WHOIS_SERVER, WHOIS_SERVER_PORT);
+				UnsyncBufferedReader unsyncBufferedReader =
+					new UnsyncBufferedReader(
+						new InputStreamReader(socket.getInputStream()))) {
 
-			PrintStream out = new PrintStream(socket.getOutputStream());
+				PrintStream out = new PrintStream(socket.getOutputStream());
 
-			out.println(_domain);
+				out.println(_domain);
 
-			StringBundler sb = new StringBundler();
-			String line = null;
+				sb = new StringBundler();
+				String line = null;
 
-			while ((line = unsyncBufferedReader.readLine()) != null) {
-				if (line.startsWith("Results ")) {
-					break;
+				while ((line = unsyncBufferedReader.readLine()) != null) {
+					if (line.startsWith("Results ")) {
+						break;
+					}
+
+					sb.append(line).append("\n");
 				}
-
-				sb.append(line).append("\n");
 			}
-
-			unsyncBufferedReader.close();
-			socket.close();
 
 			whois = new Whois(
 				_domain,
