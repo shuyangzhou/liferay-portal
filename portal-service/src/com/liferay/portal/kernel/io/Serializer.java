@@ -232,13 +232,10 @@ public class Serializer {
 			writeByte(SerializationConstants.TC_OBJECT);
 		}
 
-		try {
-			ObjectOutputStream objectOutputStream =
-				new AnnotatedObjectOutputStream(new BufferOutputStream());
+		try (ObjectOutputStream objectOutputStream =
+			new AnnotatedObjectOutputStream(new BufferOutputStream())) {
 
 			objectOutputStream.writeObject(serializable);
-
-			objectOutputStream.close();
 		}
 		catch (IOException ioe) {
 			throw new RuntimeException(
