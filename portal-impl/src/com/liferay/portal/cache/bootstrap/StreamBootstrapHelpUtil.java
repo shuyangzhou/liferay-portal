@@ -295,49 +295,49 @@ public class StreamBootstrapHelpUtil {
 
 				socket.shutdownInput();
 
-				ObjectOutputStream objectOutputStream =
-					new AnnotatedObjectOutputStream(socket.getOutputStream());
+				try (ObjectOutputStream objectOutputStream =
+						new AnnotatedObjectOutputStream(
+							socket.getOutputStream())) {
 
-				PortalCacheManager<? extends Serializable, ?>
-					portalCacheManager =
-						PortalCacheProvider.getPortalCacheManager(
-							_portalCacheManagerName);
+					PortalCacheManager<? extends Serializable, ?>
+						portalCacheManager =
+							PortalCacheProvider.getPortalCacheManager(
+								_portalCacheManagerName);
 
-				for (String portalCacheName : _portalCacheNames) {
-					PortalCache<Serializable, Serializable> portalCache =
-						(PortalCache<Serializable, Serializable>)
+					for (String portalCacheName : _portalCacheNames) {
+						PortalCache<Serializable, Serializable> portalCache =
+							(PortalCache<Serializable, Serializable>)
 							portalCacheManager.getCache(portalCacheName);
 
-					if (portalCache == null) {
-						EhcacheStreamBootstrapCacheLoader.setSkip();
+						if (portalCache == null) {
+							EhcacheStreamBootstrapCacheLoader.setSkip();
 
-						try {
-							portalCacheManager.getCache(portalCacheName);
-						}
-						finally {
-							EhcacheStreamBootstrapCacheLoader.resetSkip();
+							try {
+								portalCacheManager.getCache(portalCacheName);
+							}
+							finally {
+								EhcacheStreamBootstrapCacheLoader.resetSkip();
+							}
+
+							continue;
 						}
 
-						continue;
+						objectOutputStream.writeObject(portalCacheName);
+
+						List<Serializable> keys = portalCache.getKeys();
+
+						for (Serializable key : keys) {
+							Serializable value = portalCache.get(key);
+
+							CacheElement cacheElement = new CacheElement(
+								key, value);
+
+							objectOutputStream.writeObject(cacheElement);
+						}
 					}
 
-					objectOutputStream.writeObject(portalCacheName);
-
-					List<Serializable> keys = portalCache.getKeys();
-
-					for (Serializable key : keys) {
-						Serializable value = portalCache.get(key);
-
-						CacheElement cacheElement = new CacheElement(
-							key, value);
-
-						objectOutputStream.writeObject(cacheElement);
-					}
+					objectOutputStream.writeObject(_COMMAND_SOCKET_CLOSE);
 				}
-
-				objectOutputStream.writeObject(_COMMAND_SOCKET_CLOSE);
-
-				objectOutputStream.close();
 			}
 			catch (Exception e) {
 				throw new RuntimeException(e);

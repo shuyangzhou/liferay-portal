@@ -37,17 +37,19 @@ public class StreamUtilTest {
 
 		fromFile.deleteOnExit();
 
-		FileOutputStream fromFileOutputStream = new FileOutputStream(fromFile);
+		byte[] fromBytes;
 
-		Random random = new Random();
+		try (FileOutputStream fromFileOutputStream = new FileOutputStream(
+				fromFile)) {
 
-		byte[] fromBytes = new byte[1024 * 1024];
+			Random random = new Random();
 
-		random.nextBytes(fromBytes);
+			fromBytes = new byte[1024 * 1024];
 
-		fromFileOutputStream.write(fromBytes);
+			random.nextBytes(fromBytes);
 
-		fromFileOutputStream.close();
+			fromFileOutputStream.write(fromBytes);
+		}
 
 		File toFile = new File("to-file");
 
@@ -63,29 +65,31 @@ public class StreamUtilTest {
 			(length += fromFileInputStream.read(
 				buffer, length, buffer.length - length)) < buffer.length);
 
-		FileOutputStream toFileOutputStream = new FileOutputStream(toFile);
+		try (FileOutputStream toFileOutputStream = new FileOutputStream(
+				toFile)) {
 
-		toFileOutputStream.write(buffer);
+			toFileOutputStream.write(buffer);
 
-		FileChannel fromFileChannel = fromFileInputStream.getChannel();
+			try (FileChannel fromFileChannel = fromFileInputStream.getChannel())
+					{
 
-		StreamUtil.transferFileChannel(
-			fromFileChannel, toFileOutputStream.getChannel(),
-			fromBytes.length - buffer.length);
+				StreamUtil.transferFileChannel(
+					fromFileChannel, toFileOutputStream.getChannel(),
+					fromBytes.length - buffer.length);
+			}
+		}
 
-		fromFileChannel.close();
+		byte[] toBytes;
 
-		toFileOutputStream.close();
+		try (RandomAccessFile toRandomAccessFile = new RandomAccessFile(
+				toFile, "r")) {
 
-		RandomAccessFile toRandomAccessFile = new RandomAccessFile(toFile, "r");
+			Assert.assertEquals(fromBytes.length, toRandomAccessFile.length());
 
-		Assert.assertEquals(fromBytes.length, toRandomAccessFile.length());
+			toBytes = new byte[fromBytes.length];
 
-		byte[] toBytes = new byte[fromBytes.length];
-
-		toRandomAccessFile.readFully(toBytes);
-
-		toRandomAccessFile.close();
+			toRandomAccessFile.readFully(toBytes);
+		}
 
 		Assert.assertArrayEquals(fromBytes, toBytes);
 	}

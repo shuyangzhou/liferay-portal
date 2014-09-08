@@ -83,12 +83,13 @@ public class ReaderInputStreamTest {
 	public void testRead1() throws IOException {
 		Reader reader = new StringReader(_TEST_STRING_ENGLISH);
 
-		ReaderInputStream readerInputStream = new ReaderInputStream(
-			reader, StringPool.UTF8);
+		int result;
 
-		int result = readerInputStream.read();
+		try (ReaderInputStream readerInputStream = new ReaderInputStream(
+				reader, StringPool.UTF8)) {
 
-		readerInputStream.close();
+			result = readerInputStream.read();
+		}
 
 		Assert.assertEquals(_expectedBytesForEnglish[0], result);
 	}
@@ -97,14 +98,17 @@ public class ReaderInputStreamTest {
 	public void testRead2() throws IOException {
 		Reader reader = new StringReader(_TEST_STRING_ENGLISH);
 
-		ReaderInputStream readerInputStream = new ReaderInputStream(
-			reader, StringPool.UTF8);
+		byte[] bytes;
 
-		byte[] bytes = new byte[_expectedBytesForEnglish.length];
+		int result;
 
-		int result = readerInputStream.read(bytes);
+		try (ReaderInputStream readerInputStream = new ReaderInputStream(
+				reader, StringPool.UTF8)) {
 
-		readerInputStream.close();
+			bytes = new byte[_expectedBytesForEnglish.length];
+
+			result = readerInputStream.read(bytes);
+		}
 
 		Assert.assertEquals(_expectedBytesForEnglish.length, result);
 		assertEquals(_expectedBytesForEnglish, bytes);
@@ -114,14 +118,17 @@ public class ReaderInputStreamTest {
 	public void testRead3() throws IOException {
 		Reader reader = new StringReader(_TEST_STRING_CHINESE);
 
-		ReaderInputStream readerInputStream = new ReaderInputStream(
-			reader, StringPool.UTF8);
+		byte[] bytes;
 
-		byte[] bytes = new byte[_expectedBytesForChinese.length];
+		int result;
 
-		int result = readerInputStream.read(bytes);
+		try (ReaderInputStream readerInputStream = new ReaderInputStream(
+				reader, StringPool.UTF8)) {
 
-		readerInputStream.close();
+			bytes = new byte[_expectedBytesForChinese.length];
+
+			result = readerInputStream.read(bytes);
+		}
 
 		Assert.assertEquals(_expectedBytesForChinese.length, result);
 		assertEquals(_expectedBytesForChinese, bytes);
@@ -131,14 +138,17 @@ public class ReaderInputStreamTest {
 	public void testRead4() throws IOException {
 		Reader reader = new StringReader(_TEST_STRING_CHINESE);
 
-		ReaderInputStream readerInputStream = new ReaderInputStream(
-			reader, StringPool.UTF8, 6, 6);
+		byte[] bytes;
 
-		byte[] bytes = new byte[_expectedBytesForChinese.length];
+		int result;
 
-		int result = readerInputStream.read(bytes);
+		try (ReaderInputStream readerInputStream = new ReaderInputStream(
+				reader, StringPool.UTF8, 6, 6)) {
 
-		readerInputStream.close();
+			bytes = new byte[_expectedBytesForChinese.length];
+
+			result = readerInputStream.read(bytes);
+		}
 
 		Assert.assertEquals(_expectedBytesForChinese.length, result);
 		assertEquals(_expectedBytesForChinese, bytes);
@@ -148,14 +158,17 @@ public class ReaderInputStreamTest {
 	public void testRead5() throws IOException {
 		Reader reader = new StringReader(_TEST_STRING_CHINESE);
 
-		ReaderInputStream readerInputStream = new ReaderInputStream(
-			reader, StringPool.UTF8, 4, 6);
+		byte[] bytes;
 
-		byte[] bytes = new byte[_expectedBytesForChinese.length];
+		int result;
 
-		int result = readerInputStream.read(bytes);
+		try (ReaderInputStream readerInputStream = new ReaderInputStream(
+				reader, StringPool.UTF8, 4, 6)) {
 
-		readerInputStream.close();
+			bytes = new byte[_expectedBytesForChinese.length];
+
+			result = readerInputStream.read(bytes);
+		}
 
 		Assert.assertEquals(_expectedBytesForChinese.length, result);
 		assertEquals(_expectedBytesForChinese, bytes);
@@ -165,14 +178,17 @@ public class ReaderInputStreamTest {
 	public void testRead6() throws IOException {
 		Reader reader = new StringReader(_TEST_STRING_CHINESE);
 
-		ReaderInputStream readerInputStream = new ReaderInputStream(
-			reader, StringPool.UTF8, 6, 4);
+		byte[] bytes;
 
-		byte[] bytes = new byte[_expectedBytesForChinese.length];
+		int result;
 
-		int result = readerInputStream.read(bytes);
+		try (ReaderInputStream readerInputStream = new ReaderInputStream(
+				reader, StringPool.UTF8, 6, 4)) {
 
-		readerInputStream.close();
+			bytes = new byte[_expectedBytesForChinese.length];
+
+			result = readerInputStream.read(bytes);
+		}
 
 		Assert.assertEquals(_expectedBytesForChinese.length, result);
 		assertEquals(_expectedBytesForChinese, bytes);
@@ -182,13 +198,17 @@ public class ReaderInputStreamTest {
 	public void testRead7() throws IOException {
 		Reader reader = new StringReader(_TEST_STRING_ENGLISH);
 
-		ReaderInputStream readerInputStream = new ReaderInputStream(reader);
+		byte[] bytes;
 
-		byte[] bytes = new byte[_expectedBytesForEnglish.length + 1];
+		int result;
 
-		int result = readerInputStream.read(bytes);
+		try (ReaderInputStream readerInputStream = new ReaderInputStream(
+				reader)) {
 
-		readerInputStream.close();
+			bytes = new byte[_expectedBytesForEnglish.length + 1];
+
+			result = readerInputStream.read(bytes);
+		}
 
 		Assert.assertEquals(_expectedBytesForEnglish.length, result);
 
@@ -203,10 +223,8 @@ public class ReaderInputStreamTest {
 	public void testRead8() throws IOException {
 		Reader reader = new StringReader(_TEST_STRING_ENGLISH);
 
-		ReaderInputStream readerInputStream = null;
-
-		try {
-			readerInputStream = new ReaderInputStream(reader, StringPool.UTF8);
+		try (ReaderInputStream readerInputStream = new ReaderInputStream(
+				reader, StringPool.UTF8)) {
 
 			readerInputStream.read(null, 0, 0);
 
@@ -215,19 +233,14 @@ public class ReaderInputStreamTest {
 		catch (Exception e) {
 			Assert.assertTrue(e instanceof NullPointerException);
 		}
-		finally {
-			readerInputStream.close();
-		}
 	}
 
 	@Test
 	public void testRead9() throws IOException {
 		Reader reader = new StringReader(_TEST_STRING_ENGLISH);
 
-		ReaderInputStream readerInputStream = null;
-
-		try {
-			readerInputStream = new ReaderInputStream(reader, StringPool.UTF8);
+		try (ReaderInputStream readerInputStream = new ReaderInputStream(
+				reader, StringPool.UTF8)) {
 
 			readerInputStream.read(new byte[1], 0, 2);
 
@@ -236,27 +249,29 @@ public class ReaderInputStreamTest {
 		catch (Exception e) {
 			Assert.assertTrue(e instanceof IndexOutOfBoundsException);
 		}
-		finally {
-			readerInputStream.close();
-		}
 	}
 
 	@Test
 	public void testSkip1()  throws IOException {
 		Reader reader = new StringReader(_TEST_STRING_ENGLISH);
 
-		ReaderInputStream readerInputStream = new ReaderInputStream(
-			reader, StringPool.UTF8);
+		int skipLength;
 
-		int skipLength = 3;
+		byte[] bytes;
 
-		readerInputStream.skip(skipLength);
+		int result;
 
-		byte[] bytes = new byte[_expectedBytesForEnglish.length - skipLength];
+		try (ReaderInputStream readerInputStream = new ReaderInputStream(
+				reader, StringPool.UTF8)) {
 
-		int result = readerInputStream.read(bytes);
+			skipLength = 3;
 
-		readerInputStream.close();
+			readerInputStream.skip(skipLength);
+
+			bytes = new byte[_expectedBytesForEnglish.length - skipLength];
+
+			result = readerInputStream.read(bytes);
+		}
 
 		Assert.assertEquals(
 			_expectedBytesForEnglish.length - skipLength, result);
@@ -273,18 +288,19 @@ public class ReaderInputStreamTest {
 	public void testSkip2()  throws IOException {
 		Reader reader = new StringReader(_TEST_STRING_ENGLISH);
 
-		ReaderInputStream readerInputStream = new ReaderInputStream(
-			reader, StringPool.UTF8);
+		int result;
 
-		int skipLength = _expectedBytesForEnglish.length;
+		try (ReaderInputStream readerInputStream = new ReaderInputStream(
+				reader, StringPool.UTF8)) {
 
-		int result  = (int)readerInputStream.skip(skipLength);
+			int skipLength = _expectedBytesForEnglish.length;
 
-		Assert.assertEquals(skipLength, result);
+			result = (int)readerInputStream.skip(skipLength);
 
-		result = readerInputStream.read();
+			Assert.assertEquals(skipLength, result);
 
-		readerInputStream.close();
+			result = readerInputStream.read();
+		}
 
 		Assert.assertEquals(-1, result);
 	}
@@ -293,14 +309,15 @@ public class ReaderInputStreamTest {
 	public void testSkip3()  throws IOException {
 		Reader reader = new StringReader(_TEST_STRING_ENGLISH);
 
-		ReaderInputStream readerInputStream = new ReaderInputStream(
-			reader, StringPool.UTF8);
+		int result;
 
-		int skipLength = _expectedBytesForEnglish.length + 1;
+		try (ReaderInputStream readerInputStream = new ReaderInputStream(
+				reader, StringPool.UTF8)) {
 
-		int result  = (int)readerInputStream.skip(skipLength);
+			int skipLength = _expectedBytesForEnglish.length + 1;
 
-		readerInputStream.close();
+			result = (int)readerInputStream.skip(skipLength);
+		}
 
 		Assert.assertEquals(_expectedBytesForEnglish.length, result);
 	}

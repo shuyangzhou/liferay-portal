@@ -168,7 +168,7 @@ public class SPIAgentRequest extends SPIAgentSerializable {
 						false);
 				}
 				finally {
-					fileOutputStream.close();
+					fileOutputStream.flush();
 				}
 
 				uploadServletRequest = new UploadServletRequestImpl(

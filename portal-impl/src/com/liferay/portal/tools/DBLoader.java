@@ -46,41 +46,40 @@ public class DBLoader {
 
 		StringBundler sb = new StringBundler();
 
-		UnsyncBufferedReader unsyncBufferedReader = new UnsyncBufferedReader(
-			new FileReader(fileName));
+		try (UnsyncBufferedReader unsyncBufferedReader =
+				new UnsyncBufferedReader(new FileReader(fileName))) {
 
-		String line = null;
+			String line = null;
 
-		while ((line = unsyncBufferedReader.readLine()) != null) {
-			if (!line.startsWith("//")) {
-				sb.append(line);
+			while ((line = unsyncBufferedReader.readLine()) != null) {
+				if (!line.startsWith("//")) {
+					sb.append(line);
 
-				if (line.endsWith(";")) {
-					String sql = sb.toString();
+					if (line.endsWith(";")) {
+						String sql = sb.toString();
 
-					sql = StringUtil.replace(
-						sql, new String[] {"\\\"", "\\\\", "\\n", "\\r"},
-						new String[] {"\"", "\\", "\\u000a", "\\u000a"});
+						sql = StringUtil.replace(
+							sql, new String[] {"\\\"", "\\\\", "\\n", "\\r"},
+							new String[] {"\"", "\\", "\\u000a", "\\u000a"});
 
-					sb.setIndex(0);
+						sb.setIndex(0);
 
-					try {
-						PreparedStatement ps = con.prepareStatement(sql);
+						try {
+							try (PreparedStatement ps =
+									con.prepareStatement(sql)) {
 
-						ps.executeUpdate();
+								ps.executeUpdate();
+							}
+						}
+						catch (Exception e) {
+							System.out.println(sql);
 
-						ps.close();
-					}
-					catch (Exception e) {
-						System.out.println(sql);
-
-						throw e;
+							throw e;
+						}
 					}
 				}
 			}
 		}
-
-		unsyncBufferedReader.close();
 	}
 
 	public static void main(String[] args) {
@@ -163,41 +162,42 @@ public class DBLoader {
 	private void _loadDerby(Connection con, String fileName) throws Exception {
 		StringBundler sb = new StringBundler();
 
-		UnsyncBufferedReader unsyncBufferedReader = new UnsyncBufferedReader(
-			new UnsyncStringReader(_fileUtil.read(fileName)));
+		try (UnsyncBufferedReader unsyncBufferedReader =
+				new UnsyncBufferedReader(
+					new UnsyncStringReader(_fileUtil.read(fileName)))) {
 
-		String line = null;
+			String line = null;
 
-		while ((line = unsyncBufferedReader.readLine()) != null) {
-			if (!line.startsWith("--")) {
-				sb.append(line);
+			while ((line = unsyncBufferedReader.readLine()) != null) {
+				if (!line.startsWith("--")) {
+					sb.append(line);
 
-				if (line.endsWith(";")) {
-					String sql = sb.toString();
+					if (line.endsWith(";")) {
+						String sql = sb.toString();
 
-					sql = StringUtil.replace(
-						sql, new String[] {"\\'", "\\\"", "\\\\", "\\n", "\\r"},
-						new String[] {"''", "\"", "\\", "\n", "\r"});
+						sql = StringUtil.replace(
+							sql,
+							new String[] {"\\'", "\\\"", "\\\\", "\\n", "\\r"},
+							new String[] {"''", "\"", "\\", "\n", "\r"});
 
-					sql = sql.substring(0, sql.length() - 1);
+						sql = sql.substring(0, sql.length() - 1);
 
-					sb.setIndex(0);
+						sb.setIndex(0);
 
-					if (sql.startsWith("commit")) {
-						continue;
+						if (sql.startsWith("commit")) {
+							continue;
+						}
+
+						ij.runScript(
+							con,
+							new UnsyncByteArrayInputStream(
+								sql.getBytes(StringPool.UTF8)),
+							StringPool.UTF8, new UnsyncByteArrayOutputStream(),
+							StringPool.UTF8);
 					}
-
-					ij.runScript(
-						con,
-						new UnsyncByteArrayInputStream(
-							sql.getBytes(StringPool.UTF8)),
-						StringPool.UTF8, new UnsyncByteArrayOutputStream(),
-						StringPool.UTF8);
 				}
 			}
 		}
-
-		unsyncBufferedReader.close();
 	}
 
 	private void _loadHypersonic() throws Exception {
@@ -206,13 +206,10 @@ public class DBLoader {
 		// See LEP-2927. Appending ;shutdown=true to the database connection URL
 		// guarantees that ${_databaseName}.log is purged.
 
-		Connection con = null;
-
-		try {
-			con = DriverManager.getConnection(
+		try (Connection con = DriverManager.getConnection(
 				"jdbc:hsqldb:" + _sqlDir + "/" + _databaseName +
 					";shutdown=true",
-				"sa", "");
+				"sa", "")) {
 
 			if (Validator.isNull(_fileName)) {
 				loadHypersonic(con, _sqlDir + "/portal/portal-hypersonic.sql");
@@ -224,15 +221,8 @@ public class DBLoader {
 
 			// Shutdown Hypersonic
 
-			Statement statement = con.createStatement();
-
-			statement.execute("SHUTDOWN COMPACT");
-
-			statement.close();
-		}
-		finally {
-			if (con != null) {
-				con.close();
+			try (Statement statement = con.createStatement()) {
+				statement.execute("SHUTDOWN COMPACT");
 			}
 		}
 

@@ -67,19 +67,21 @@ public class IntrabandTestUtil {
 	public static SocketChannel[] createSocketChannelPeers()
 		throws IOException {
 
-		ServerSocketChannel serverSocketChannel =
-			SocketUtil.createServerSocketChannel(
-				InetAddress.getLocalHost(), 15238, _serverSocketConfigurator);
+		SocketChannel clientPeerSocketChannel;
+		SocketChannel serverPeerSocketChannel;
 
-		ServerSocket serverSocket = serverSocketChannel.socket();
+		try (ServerSocketChannel serverSocketChannel =
+				SocketUtil.createServerSocketChannel(
+					InetAddress.getLocalHost(), 15238,
+					_serverSocketConfigurator)) {
 
-		SocketChannel clientPeerSocketChannel = SocketChannel.open(
-			new InetSocketAddress(
-				InetAddress.getLocalHost(), serverSocket.getLocalPort()));
+			ServerSocket serverSocket = serverSocketChannel.socket();
+			clientPeerSocketChannel = SocketChannel.open(
+				new InetSocketAddress(
+					InetAddress.getLocalHost(), serverSocket.getLocalPort()));
 
-		SocketChannel serverPeerSocketChannel = serverSocketChannel.accept();
-
-		serverSocketChannel.close();
+			serverPeerSocketChannel = serverSocketChannel.accept();
+		}
 
 		SocketChannel[] socketChannels = new SocketChannel[2];
 
