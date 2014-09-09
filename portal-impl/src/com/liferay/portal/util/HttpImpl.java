@@ -1213,24 +1213,23 @@ public class HttpImpl implements Http {
 
 		URLConnection urlConnection = url.openConnection();
 
-		InputStream inputStream = urlConnection.getInputStream();
-
-		UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
-			new UnsyncByteArrayOutputStream();
+		UnsyncByteArrayOutputStream unsyncByteArrayOutputStream;
 
 		byte[] bytes = new byte[512];
 
-		for (int i = inputStream.read(bytes, 0, 512); i != -1;
+		try (InputStream inputStream = urlConnection.getInputStream()) {
+			unsyncByteArrayOutputStream = new UnsyncByteArrayOutputStream();
+
+			for (int i = inputStream.read(bytes, 0, 512); i != -1;
 				i = inputStream.read(bytes, 0, 512)) {
 
-			unsyncByteArrayOutputStream.write(bytes, 0, i);
+				unsyncByteArrayOutputStream.write(bytes, 0, i);
+			}
+
+			xml = new String(
+				unsyncByteArrayOutputStream.unsafeGetByteArray(), 0,
+				unsyncByteArrayOutputStream.size());
 		}
-
-		xml = new String(
-			unsyncByteArrayOutputStream.unsafeGetByteArray(), 0,
-			unsyncByteArrayOutputStream.size());
-
-		inputStream.close();
 
 		unsyncByteArrayOutputStream.close();
 
@@ -1564,20 +1563,22 @@ public class HttpImpl implements Http {
 							portletRequest, inputStream, contentLength,
 							progressId);
 
-					UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
-						new UnsyncByteArrayOutputStream(contentLength);
+					try (UnsyncByteArrayOutputStream
+							unsyncByteArrayOutputStream =
+								new UnsyncByteArrayOutputStream(
+									contentLength)) {
 
-					try {
-						progressInputStream.readAll(
-							unsyncByteArrayOutputStream);
+						try {
+							progressInputStream.readAll(
+								unsyncByteArrayOutputStream);
+						}
+						finally {
+							progressInputStream.clearProgress();
+						}
+
+						bytes =
+							unsyncByteArrayOutputStream.unsafeGetByteArray();
 					}
-					finally {
-						progressInputStream.clearProgress();
-					}
-
-					bytes = unsyncByteArrayOutputStream.unsafeGetByteArray();
-
-					unsyncByteArrayOutputStream.close();
 				}
 				else {
 					bytes = FileUtil.getBytes(inputStream);
