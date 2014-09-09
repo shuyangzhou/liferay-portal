@@ -174,8 +174,6 @@ public class IPGeocoderImpl implements IPGeocoder {
 			while ((i = bufferedInputStream.read()) != -1) {
 				bufferedOutputStream.write(i);
 			}
-
-			bufferedOutputStream.flush();
 		}
 	}
 

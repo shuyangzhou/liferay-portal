@@ -190,8 +190,6 @@ public class ClassLoaderProxy {
 					unsyncByteArrayOutputStream)) {
 
 				objectOutputStream.writeObject(throwable);
-
-				objectOutputStream.flush();
 			}
 
 			UnsyncByteArrayInputStream unsyncByteArrayInputStream =
