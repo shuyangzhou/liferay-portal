@@ -35,19 +35,18 @@ public class AssertUtils {
 	public static void assertEquals(Blob expectedBlob, Blob actualBlob)
 		throws Exception {
 
-		try (InputStream actualInputStream = actualBlob.getBinaryStream()) {
-			try (InputStream expectInputStream =
+		try (InputStream actualInputStream = actualBlob.getBinaryStream();
+				InputStream expectInputStream =
 					expectedBlob.getBinaryStream()) {
 
-				while (true) {
-					int expectValue = expectInputStream.read();
-					int actualValue = actualInputStream.read();
+			while (true) {
+				int expectValue = expectInputStream.read();
+				int actualValue = actualInputStream.read();
 
-					assertEquals(expectValue, actualValue);
+				assertEquals(expectValue, actualValue);
 
-					if (expectValue == -1) {
-						break;
-					}
+				if (expectValue == -1) {
+					break;
 				}
 			}
 		}
