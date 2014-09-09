@@ -115,4 +115,10 @@ public class SortJavaTerms1 {
 
 	private final String _var12;
 
+	private static final int _VAR_13;
+
+	static {
+		_VAR_13 = 42;
+	}
+
 }

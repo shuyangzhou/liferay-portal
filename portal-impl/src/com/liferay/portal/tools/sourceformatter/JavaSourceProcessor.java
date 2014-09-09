@@ -343,34 +343,7 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 	}
 
 	protected String checkImmutableAndStaticableFieldTypes(
-		String fileName, String packagePath, String className,
-		String content) {
-
-		if (!portalSource) {
-			return content;
-		}
-
-		ClassLibrary classLibrary = new ClassLibrary();
-
-		classLibrary.addClassLoader(JavaSourceProcessor.class.getClassLoader());
-
-		JavaDocBuilder javaDocBuilder = new JavaDocBuilder(classLibrary);
-
-		try {
-			javaDocBuilder.addSource(
-				new UnsyncStringReader(sanitizeContent(content)));
-		}
-		catch (ParseException pe) {
-			System.err.println(
-				"Unable to parse " + fileName + StringPool.COMMA_AND_SPACE +
-					pe.getMessage());
-
-			return content;
-		}
-
-		com.thoughtworks.qdox.model.JavaClass javaClass =
-			javaDocBuilder.getClassByName(
-				packagePath.concat(StringPool.PERIOD).concat(className));
+		com.thoughtworks.qdox.model.JavaClass javaClass, String content) {
 
 		String[] lines = null;
 
@@ -1002,9 +975,35 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 		//newContent = applyDiamondOperator(newContent);
 
 		// LPS-49294
+		if (portalSource) {
+			ClassLibrary classLibrary = new ClassLibrary();
 
-		newContent = checkImmutableAndStaticableFieldTypes(
-			fileName, packagePath, className, newContent);
+			classLibrary.addClassLoader(
+				JavaSourceProcessor.class.getClassLoader());
+
+			JavaDocBuilder javaDocBuilder = new JavaDocBuilder(classLibrary);
+
+			try {
+				javaDocBuilder.addSource(
+					new UnsyncStringReader(sanitizeContent(content)));
+			}
+			catch (ParseException pe) {
+				System.err.println(
+					"Unable to parse " + fileName + StringPool.COMMA_AND_SPACE +
+						pe.getMessage());
+
+				return content;
+			}
+
+			com.thoughtworks.qdox.model.JavaClass javaClass =
+				javaDocBuilder.getClassByName(
+					packagePath.concat(StringPool.PERIOD).concat(className));
+
+			newContent = checkImmutableAndStaticableFieldTypes(javaClass, 
+				newContent);
+
+			newContent = sortStaticInitializations(javaClass, newContent);
+		}
 
 		// LPS-49552
 
@@ -2451,6 +2450,104 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 		return line;
 	}
 
+	protected String sortStaticInitializations(
+			com.thoughtworks.qdox.model.JavaClass javaClass, String content)
+		throws Exception {
+
+		int lastStaticLineNumber = -1;
+		String lastStaticFieldName = null;
+
+		for (JavaField javaField : javaClass.getFields()) {
+			if (javaField.isStatic() &&
+					(javaField.getLineNumber() > lastStaticLineNumber)) {
+
+				lastStaticLineNumber = javaField.getLineNumber();
+
+				lastStaticFieldName = javaField.getName();
+			}
+		}
+
+		if (lastStaticLineNumber != -1) {
+			Pattern lastStaticNamePattern = Pattern.compile(
+				"static [^\\{]*" + lastStaticFieldName + ".*;");
+
+			Matcher matcher = lastStaticNamePattern.matcher(content);
+
+			int lastStaticCharacterPos;
+
+			if (matcher.find()) {
+				lastStaticCharacterPos = matcher.end();
+			}
+			else {
+				return content;
+			}
+
+			matcher = _staticInitializationBlockPattern.matcher(content);
+
+			if (matcher.find()) {
+				int startIndex = matcher.start();
+
+				int openBrackets = 1;
+				int endIndex = startIndex;
+
+				for (int pos = matcher.end(); pos < content.length();
+						++pos) {
+
+					// Currently not checking for open brackets or closed 
+					// brackets placed in strings - will account for this if 
+					//necessary.
+
+					if (content.charAt(pos) == CharPool.CLOSE_CURLY_BRACE) {
+						openBrackets -= 1;
+					}
+					else if (content.charAt(pos) == CharPool.OPEN_CURLY_BRACE) {
+						openBrackets += 1;
+					}
+
+					if (openBrackets == 0) {
+						endIndex = ++pos;
+
+						break;
+					}
+				}
+
+				String contentBegin = null;
+				String chunk1 = null;
+				String chunk2 = null;
+				String contentEnd = null;
+
+				StringBundler sb = new StringBundler(4);
+
+				if (lastStaticCharacterPos > endIndex) {
+					contentBegin = content.substring(0, startIndex);
+					chunk1 = content.substring(
+						endIndex, lastStaticCharacterPos);
+					chunk2 = content.substring(startIndex, endIndex);
+					contentEnd = content.substring(lastStaticCharacterPos);
+				}
+				else {
+					contentBegin = content.substring(0, lastStaticCharacterPos);
+					chunk1 = content.substring(startIndex, endIndex);
+					chunk2 = content.substring(
+						lastStaticCharacterPos, startIndex);
+					contentEnd = content.substring(endIndex);
+				}
+
+				sb.append(contentBegin);
+				sb.append(chunk1);
+				sb.append(chunk2);
+				sb.append(contentEnd);
+
+				content = sb.toString();
+			}
+			else {
+				return content;
+			}
+		}
+
+		return content;
+	}
+
 	private static Pattern _importsPattern = Pattern.compile(
 		"(^[ \t]*import\\s+.*;\n+)+", Pattern.MULTILINE);
 
@@ -2486,6 +2583,8 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 	private List<String> _secureRandomExclusions;
 	private Pattern _stagedModelTypesPattern = Pattern.compile(
 		"StagedModelType\\(([a-zA-Z.]*(class|getClassName[\\(\\)]*))\\)");
+	private Pattern _staticInitializationBlockPattern = Pattern.compile(
+		"\\s*static\\s*\\{");
 	private List<String> _staticLogVariableExclusions;
 	private List<String> _testAnnotationsExclusions;
 	private Pattern _throwsSystemExceptionPattern = Pattern.compile(
