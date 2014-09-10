@@ -30,14 +30,14 @@ public class EntrySearch extends SearchContainer<BlogsEntry> {
 
 	static List<String> headerNames = new ArrayList<String>();
 
+	public static final String EMPTY_RESULTS_MESSAGE = "no-entries-were-found";
+
 	static {
 		headerNames.add("title");
 		headerNames.add("author");
 		headerNames.add("createDate");
 		headerNames.add("status");
 	}
-
-	public static final String EMPTY_RESULTS_MESSAGE = "no-entries-were-found";
 
 	public EntrySearch(PortletRequest portletRequest, PortletURL iteratorURL) {
 		super(

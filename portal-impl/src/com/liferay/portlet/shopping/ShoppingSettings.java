@@ -57,36 +57,6 @@ public class ShoppingSettings {
 
 	public static final String[] CURRENCY_IDS;
 
-	static {
-		String[] ids = null;
-
-		try {
-			Set<String> set = new TreeSet<String>();
-
-			Locale[] locales = Locale.getAvailableLocales();
-
-			for (int i = 0; i < locales.length; i++) {
-				Locale locale = locales[i];
-
-				if (locale.getCountry().length() == 2) {
-					Currency currency = Currency.getInstance(locale);
-
-					String currencyId = currency.getCurrencyCode();
-
-					set.add(currencyId);
-				}
-			}
-
-			ids = set.toArray(new String[set.size()]);
-		}
-		catch (Exception e) {
-			ids = new String[] {"USD", "CAD", "EUR", "GBP", "JPY"};
-		}
-		finally {
-			CURRENCY_IDS = ids;
-		}
-	}
-
 	public static final double[] INSURANCE_RANGE = {
 		0.01, 9.99, 10.00, 49.99, 50.00, 99.99, 100.00, 199.99, 200.00,
 		Double.POSITIVE_INFINITY
@@ -338,6 +308,34 @@ public class ShoppingSettings {
 	};
 
 	static {
+		String[] ids = null;
+
+		try {
+			Set<String> set = new TreeSet<String>();
+
+			Locale[] locales = Locale.getAvailableLocales();
+
+			for (int i = 0; i < locales.length; i++) {
+				Locale locale = locales[i];
+
+				if (locale.getCountry().length() == 2) {
+					Currency currency = Currency.getInstance(locale);
+
+					String currencyId = currency.getCurrencyCode();
+
+					set.add(currencyId);
+				}
+			}
+
+			ids = set.toArray(new String[set.size()]);
+		}
+		catch (Exception e) {
+			ids = new String[] {"USD", "CAD", "EUR", "GBP", "JPY"};
+		}
+		finally {
+			CURRENCY_IDS = ids;
+		}
+
 		SettingsFactory settingsFactory =
 			SettingsFactoryUtil.getSettingsFactory();
 
