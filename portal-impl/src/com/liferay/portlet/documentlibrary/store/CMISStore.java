@@ -559,9 +559,7 @@ public class CMISStore extends BaseStore {
 
 	private static class SessionHolder {
 
-		private final static Session session;
-
-		static {
+		private static Session createSession() {
 			Map<String, String> parameters = new HashMap<String, String>();
 
 			parameters.put(
@@ -593,10 +591,14 @@ public class CMISStore extends BaseStore {
 
 			Repository repository = repositories.get(0);
 
-			session = repository.createSession();
+			Session session = repository.createSession();
 
 			session.setDefaultContext(CMISRepositoryUtil.getOperationContext());
+
+			return session;
 		}
+
+		private final static Session session = createSession();
 
 	}
 
