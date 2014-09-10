@@ -46,24 +46,6 @@ public class ArticleSearch extends SearchContainer<JournalArticle> {
 	static List<String> headerNames = new ArrayList<String>();
 	static Map<String, String> orderableHeaders = new HashMap<String, String>();
 
-	static {
-		headerNames.add("id");
-		headerNames.add("title");
-		headerNames.add("status");
-		//headerNames.add("version");
-		headerNames.add("modified-date");
-		headerNames.add("display-date");
-		headerNames.add("author");
-		headerNames.add("structure");
-		headerNames.add(StringPool.BLANK);
-
-		//orderableHeaders.put("id", "id");
-		//orderableHeaders.put("title", "title");
-		//orderableHeaders.put("version", "version");
-		orderableHeaders.put("modified-date", "modified-date");
-		orderableHeaders.put("display-date", "display-date");
-	}
-
 	public ArticleSearch(
 		PortletRequest portletRequest, int cur, int delta,
 		PortletURL iteratorURL) {
@@ -163,5 +145,23 @@ public class ArticleSearch extends SearchContainer<JournalArticle> {
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(ArticleSearch.class);
+
+	static {
+		headerNames.add("id");
+		headerNames.add("title");
+		headerNames.add("status");
+		//headerNames.add("version");
+		headerNames.add("modified-date");
+		headerNames.add("display-date");
+		headerNames.add("author");
+		headerNames.add("structure");
+		headerNames.add(StringPool.BLANK);
+
+		//orderableHeaders.put("id", "id");
+		//orderableHeaders.put("title", "title");
+		//orderableHeaders.put("version", "version");
+		orderableHeaders.put("modified-date", "modified-date");
+		orderableHeaders.put("display-date", "display-date");
+	}
 
 }

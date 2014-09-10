@@ -42,18 +42,6 @@ public class EntrySearch extends SearchContainer<TrashEntry> {
 	static List<String> headerNames = new ArrayList<String>();
 	static Map<String, String> orderableHeaders = new HashMap<String, String>();
 
-	static {
-		headerNames.add("name");
-		headerNames.add("type");
-		headerNames.add("removed-date");
-		headerNames.add("removed-by");
-
-		orderableHeaders.put("name", "name");
-		orderableHeaders.put("type", "type");
-		orderableHeaders.put("removed-date", "removed-date");
-		orderableHeaders.put("removed-by", "removed-by");
-	}
-
 	public static final String EMPTY_RESULTS_MESSAGE =
 		"the-recycle-bin-is-empty";
 
@@ -105,5 +93,17 @@ public class EntrySearch extends SearchContainer<TrashEntry> {
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(EntrySearch.class);
+
+	static {
+		headerNames.add("name");
+		headerNames.add("type");
+		headerNames.add("removed-date");
+		headerNames.add("removed-by");
+
+		orderableHeaders.put("name", "name");
+		orderableHeaders.put("type", "type");
+		orderableHeaders.put("removed-date", "removed-date");
+		orderableHeaders.put("removed-by", "removed-by");
+	}
 
 }

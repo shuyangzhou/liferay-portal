@@ -30,6 +30,8 @@ public class CouponSearch extends SearchContainer<ShoppingCoupon> {
 
 	static List<String> headerNames = new ArrayList<String>();
 
+	public static final String EMPTY_RESULTS_MESSAGE = "no-coupons-were-found";
+
 	static {
 		headerNames.add("code");
 		headerNames.add("description");
@@ -37,8 +39,6 @@ public class CouponSearch extends SearchContainer<ShoppingCoupon> {
 		headerNames.add("expiration-date");
 		headerNames.add("discount-type");
 	}
-
-	public static final String EMPTY_RESULTS_MESSAGE = "no-coupons-were-found";
 
 	public CouponSearch(PortletRequest portletRequest, PortletURL iteratorURL) {
 		super(

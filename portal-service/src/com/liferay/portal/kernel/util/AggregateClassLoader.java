@@ -323,10 +323,6 @@ public class AggregateClassLoader extends ClassLoader {
 	private static Method _getResourcesMethod;
 	private static Method _loadClassMethod;
 
-	private List<EqualityWeakReference<ClassLoader>> _classLoaderReferences =
-		new ArrayList<EqualityWeakReference<ClassLoader>>();
-	private WeakReference<ClassLoader> _parentClassLoaderReference;
-
 	static {
 		try {
 			_findClassMethod = ReflectionUtil.getDeclaredMethod(
@@ -344,5 +340,9 @@ public class AggregateClassLoader extends ClassLoader {
 			}
 		}
 	}
+
+	private List<EqualityWeakReference<ClassLoader>> _classLoaderReferences =
+		new ArrayList<EqualityWeakReference<ClassLoader>>();
+	private WeakReference<ClassLoader> _parentClassLoaderReference;
 
 }

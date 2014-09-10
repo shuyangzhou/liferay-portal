@@ -42,18 +42,6 @@ public class OrganizationSearch extends SearchContainer<Organization> {
 	static List<String> headerNames = new ArrayList<String>();
 	static Map<String, String> orderableHeaders = new HashMap<String, String>();
 
-	static {
-		headerNames.add("name");
-		headerNames.add("parent-organization");
-		headerNames.add("type");
-		headerNames.add("city");
-		headerNames.add("region");
-		headerNames.add("country");
-
-		orderableHeaders.put("name", "name");
-		orderableHeaders.put("type", "type");
-	}
-
 	public static final String EMPTY_RESULTS_MESSAGE =
 		"no-organizations-were-found";
 
@@ -139,5 +127,17 @@ public class OrganizationSearch extends SearchContainer<Organization> {
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(OrganizationSearch.class);
+
+	static {
+		headerNames.add("name");
+		headerNames.add("parent-organization");
+		headerNames.add("type");
+		headerNames.add("city");
+		headerNames.add("region");
+		headerNames.add("country");
+
+		orderableHeaders.put("name", "name");
+		orderableHeaders.put("type", "type");
+	}
 
 }

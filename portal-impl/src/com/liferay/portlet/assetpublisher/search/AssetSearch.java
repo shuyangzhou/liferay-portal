@@ -31,6 +31,8 @@ public class AssetSearch extends SearchContainer<AssetEntry> {
 
 	static List<String> headerNames = new ArrayList<String>();
 
+	public static final String EMPTY_RESULTS_MESSAGE = "there-are-no-results";
+
 	static {
 		headerNames.add("title");
 		headerNames.add("description");
@@ -38,8 +40,6 @@ public class AssetSearch extends SearchContainer<AssetEntry> {
 		headerNames.add("modified-date");
 		headerNames.add("scope");
 	}
-
-	public static final String EMPTY_RESULTS_MESSAGE = "there-are-no-results";
 
 	public AssetSearch(
 		PortletRequest portletRequest, int delta, PortletURL iteratorURL) {

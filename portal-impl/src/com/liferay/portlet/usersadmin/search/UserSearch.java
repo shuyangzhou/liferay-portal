@@ -45,21 +45,6 @@ public class UserSearch extends SearchContainer<User> {
 	static List<String> headerNames = new ArrayList<String>();
 	static Map<String, String> orderableHeaders = new HashMap<String, String>();
 
-	static {
-		headerNames.add("first-name");
-		headerNames.add("last-name");
-		headerNames.add("screen-name");
-		//headerNames.add("email-address");
-		headerNames.add("job-title");
-		headerNames.add("organizations");
-
-		orderableHeaders.put("first-name", "first-name");
-		orderableHeaders.put("last-name", "last-name");
-		orderableHeaders.put("screen-name", "screen-name");
-		//orderableHeaders.put("email-address", "email-address");
-		orderableHeaders.put("job-title", "job-title");
-	}
-
 	public static final String EMPTY_RESULTS_MESSAGE = "no-users-were-found";
 
 	public UserSearch(PortletRequest portletRequest, PortletURL iteratorURL) {
@@ -152,5 +137,20 @@ public class UserSearch extends SearchContainer<User> {
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(UserSearch.class);
+
+	static {
+		headerNames.add("first-name");
+		headerNames.add("last-name");
+		headerNames.add("screen-name");
+		//headerNames.add("email-address");
+		headerNames.add("job-title");
+		headerNames.add("organizations");
+
+		orderableHeaders.put("first-name", "first-name");
+		orderableHeaders.put("last-name", "last-name");
+		orderableHeaders.put("screen-name", "screen-name");
+		//orderableHeaders.put("email-address", "email-address");
+		orderableHeaders.put("job-title", "job-title");
+	}
 
 }
