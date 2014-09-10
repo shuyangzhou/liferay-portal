@@ -42,14 +42,6 @@ public class GroupSearch extends SearchContainer<Group> {
 	static List<String> headerNames = new ArrayList<String>();
 	static Map<String, String> orderableHeaders = new HashMap<String, String>();
 
-	static {
-		headerNames.add("name");
-		headerNames.add("type");
-
-		orderableHeaders.put("name", "name");
-		orderableHeaders.put("type", "type");
-	}
-
 	public static final String EMPTY_RESULTS_MESSAGE = "no-sites-were-found";
 
 	public GroupSearch(PortletRequest portletRequest, PortletURL iteratorURL) {
@@ -106,5 +98,13 @@ public class GroupSearch extends SearchContainer<Group> {
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(GroupSearch.class);
+
+	static {
+		headerNames.add("name");
+		headerNames.add("type");
+
+		orderableHeaders.put("name", "name");
+		orderableHeaders.put("type", "type");
+	}
 
 }

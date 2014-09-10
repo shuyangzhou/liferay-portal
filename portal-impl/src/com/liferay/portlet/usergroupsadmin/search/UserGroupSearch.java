@@ -42,14 +42,6 @@ public class UserGroupSearch extends SearchContainer<UserGroup> {
 	static List<String> headerNames = new ArrayList<String>();
 	static Map<String, String> orderableHeaders = new HashMap<String, String>();
 
-	static {
-		headerNames.add("name");
-		headerNames.add("description");
-
-		orderableHeaders.put("name", "name");
-		orderableHeaders.put("description", "description");
-	}
-
 	public static final String EMPTY_RESULTS_MESSAGE =
 		"no-user-groups-were-found";
 
@@ -113,5 +105,13 @@ public class UserGroupSearch extends SearchContainer<UserGroup> {
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(UserGroupSearch.class);
+
+	static {
+		headerNames.add("name");
+		headerNames.add("description");
+
+		orderableHeaders.put("name", "name");
+		orderableHeaders.put("description", "description");
+	}
 
 }
