@@ -342,6 +342,8 @@ public class StringBundler implements Serializable {
 	private static int _threadLocalBufferLimit;
 	private static int _unsafeCreateLimit;
 
+	private static final long serialVersionUID = 1L;
+
 	static {
 		if (_THREADLOCAL_BUFFER_LIMIT > 0) {
 			_stringBuilderThreadLocal =
@@ -370,8 +372,6 @@ public class StringBundler implements Serializable {
 			_stringConstructor = null;
 		}
 	}
-
-	private static final long serialVersionUID = 1L;
 
 	private String[] _array;
 	private int _arrayIndex;

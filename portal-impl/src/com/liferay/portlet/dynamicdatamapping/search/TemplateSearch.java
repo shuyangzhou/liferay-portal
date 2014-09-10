@@ -30,6 +30,8 @@ public class TemplateSearch extends SearchContainer<DDMTemplate> {
 
 	static List<String> headerNames = new ArrayList<String>();
 
+	public static final String EMPTY_RESULTS_MESSAGE = "there-are-no-templates";
+
 	static {
 		headerNames.add("id");
 		headerNames.add("name");
@@ -37,8 +39,6 @@ public class TemplateSearch extends SearchContainer<DDMTemplate> {
 		headerNames.add("language");
 		headerNames.add("modified-date");
 	}
-
-	public static final String EMPTY_RESULTS_MESSAGE = "there-are-no-templates";
 
 	public TemplateSearch(
 		PortletRequest portletRequest, PortletURL iteratorURL) {

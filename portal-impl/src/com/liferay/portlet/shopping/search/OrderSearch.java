@@ -30,14 +30,14 @@ public class OrderSearch extends SearchContainer<ShoppingOrder> {
 
 	static List<String> headerNames = new ArrayList<String>();
 
+	public static final String EMPTY_RESULTS_MESSAGE = "no-orders-were-found";
+
 	static {
 		headerNames.add("number");
 		headerNames.add("date");
 		headerNames.add("status");
 		headerNames.add("customer");
 	}
-
-	public static final String EMPTY_RESULTS_MESSAGE = "no-orders-were-found";
 
 	public OrderSearch(PortletRequest portletRequest, PortletURL iteratorURL) {
 		super(

@@ -130,6 +130,8 @@ public class QueryTranslatorImpl implements QueryTranslator {
 
 	private static final Field _TEXT_FIELD;
 
+	private static Log _log = LogFactoryUtil.getLog(QueryTranslatorImpl.class);
+
 	static {
 		Field textField = null;
 
@@ -144,7 +146,5 @@ public class QueryTranslatorImpl implements QueryTranslator {
 
 		_TEXT_FIELD = textField;
 	}
-
-	private static Log _log = LogFactoryUtil.getLog(QueryTranslatorImpl.class);
 
 }

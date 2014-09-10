@@ -43,24 +43,6 @@ public class RoleSearch extends SearchContainer<Role> {
 	static List<String> headerNames = new ArrayList<String>();
 	static Map<String, String> orderableHeaders = new HashMap<String, String>();
 
-	static {
-		headerNames.add("title");
-		headerNames.add("type");
-
-		if ((PropsValues.ROLES_ORGANIZATION_SUBTYPES.length > 0) ||
-			(PropsValues.ROLES_REGULAR_SUBTYPES.length > 0) ||
-			(PropsValues.ROLES_SITE_SUBTYPES.length > 0)) {
-
-			headerNames.add("subtype");
-		}
-
-		headerNames.add("description");
-
-		orderableHeaders.put("title", "title");
-		orderableHeaders.put("type", "type");
-		orderableHeaders.put("description", "description");
-	}
-
 	public static final String EMPTY_RESULTS_MESSAGE = "no-roles-were-found";
 
 	public RoleSearch(PortletRequest portletRequest, PortletURL iteratorURL) {
@@ -118,5 +100,23 @@ public class RoleSearch extends SearchContainer<Role> {
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(RoleSearch.class);
+
+	static {
+		headerNames.add("title");
+		headerNames.add("type");
+
+		if ((PropsValues.ROLES_ORGANIZATION_SUBTYPES.length > 0) ||
+			(PropsValues.ROLES_REGULAR_SUBTYPES.length > 0) ||
+			(PropsValues.ROLES_SITE_SUBTYPES.length > 0)) {
+
+			headerNames.add("subtype");
+		}
+
+		headerNames.add("description");
+
+		orderableHeaders.put("title", "title");
+		orderableHeaders.put("type", "type");
+		orderableHeaders.put("description", "description");
+	}
 
 }
