@@ -14,6 +14,8 @@
 
 package com.liferay.portal.cache.ehcache;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.util.PropsValues;
 
@@ -35,7 +37,11 @@ public class LiferayCacheManagerPeerListenerFactory
 
 	public LiferayCacheManagerPeerListenerFactory() {
 		String className =
-			"net.sf.ehcache.distribution.RMICacheManagerPeerListenerFactory";
+			PropsValues.EHCACHE_CACHE_MANAGER_PEER_LISTENER_FACTORY;
+
+		if (_log.isDebugEnabled()) {
+			_log.debug("Instantiating " + className + " " + hashCode());
+		}
 
 		try {
 			_cacheManagerPeerListenerFactory =
@@ -64,6 +70,9 @@ public class LiferayCacheManagerPeerListenerFactory
 
 		return cacheManagerPeerListener;
 	}
+
+	private static Log _log = LogFactoryUtil.getLog(
+		LiferayCacheManagerPeerListenerFactory.class);
 
 	private CacheManagerPeerListenerFactory _cacheManagerPeerListenerFactory;
 
