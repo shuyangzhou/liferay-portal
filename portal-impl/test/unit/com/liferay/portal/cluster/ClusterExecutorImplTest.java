@@ -137,7 +137,7 @@ public class ClusterExecutorImplTest extends BaseClusterExecutorImplTestCase {
 			clusterExecutorImpl = getClusterExecutorImpl(false, false);
 
 			List<ClusterEventListener> fieldClusterEventListeners =
-				(List<ClusterEventListener>)ReflectionTestUtil.getFieldValue(
+				ReflectionTestUtil.getFieldValue(
 					clusterExecutorImpl, "_clusterEventListeners");
 
 			ClusterEventListener clusterEventListener =
@@ -813,7 +813,7 @@ public class ClusterExecutorImplTest extends BaseClusterExecutorImplTestCase {
 				clusterRequest, mockClusterResponseCallback);
 
 			ExecutorService executorService =
-				(ExecutorService)ReflectionTestUtil.getFieldValue(
+				ReflectionTestUtil.getFieldValue(
 					clusterExecutorImpl, "_executorService");
 
 			executorService.shutdownNow();
