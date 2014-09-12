@@ -64,7 +64,7 @@ public class ClusterLinkCacheReplicator
 			PortalCache<K, V> portalCache, K key, V value, int timeToLive)
 		throws PortalCacheException {
 
-		if (!_replicatePuts || !ClusterReplicationThreadLocal.isReplicate()) {
+		if (!_replicatePuts) {
 			return;
 		}
 
@@ -89,9 +89,7 @@ public class ClusterLinkCacheReplicator
 			PortalCache<K, V> portalCache, K key, V value, int timeToLive)
 		throws PortalCacheException {
 
-		if (!_replicateRemovals ||
-			!ClusterReplicationThreadLocal.isReplicate()) {
-
+		if (!_replicateRemovals) {
 			return;
 		}
 
@@ -111,9 +109,7 @@ public class ClusterLinkCacheReplicator
 			PortalCache<K, V> portalCache, K key, V value, int timeToLive)
 		throws PortalCacheException {
 
-		if (!_replicateUpdates ||
-			!ClusterReplicationThreadLocal.isReplicate()) {
-
+		if (!_replicateUpdates) {
 			return;
 		}
 
@@ -137,9 +133,7 @@ public class ClusterLinkCacheReplicator
 	public void notifyRemoveAll(PortalCache<K, V> portalCache)
 		throws PortalCacheException {
 
-		if (!_replicateRemovals ||
-			!ClusterReplicationThreadLocal.isReplicate()) {
-
+		if (!_replicateRemovals) {
 			return;
 		}
 
