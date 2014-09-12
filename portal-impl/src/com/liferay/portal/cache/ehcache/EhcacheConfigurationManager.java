@@ -31,12 +31,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import net.sf.ehcache.Ehcache;
+import net.sf.ehcache.Element;
 import net.sf.ehcache.config.CacheConfiguration;
 import net.sf.ehcache.config.CacheConfiguration.BootstrapCacheLoaderFactoryConfiguration;
 import net.sf.ehcache.config.CacheConfiguration.CacheEventListenerFactoryConfiguration;
 import net.sf.ehcache.config.Configuration;
 import net.sf.ehcache.config.ConfigurationFactory;
 import net.sf.ehcache.config.FactoryConfiguration;
+import net.sf.ehcache.distribution.CacheReplicator;
+import net.sf.ehcache.event.CacheEventListener;
+import net.sf.ehcache.event.CacheEventListenerFactory;
 import net.sf.ehcache.event.NotificationScope;
 
 /**
@@ -102,6 +107,70 @@ public class EhcacheConfigurationManager
 	@Override
 	public Configuration getVendorConfiguration() {
 		return _ehcacheConfiguration;
+	}
+
+	public static class DummyCacheEventListenerFactory
+		extends CacheEventListenerFactory {
+
+		@Override
+		public CacheEventListener createCacheEventListener(
+			Properties properties) {
+
+			return new DummyCacheReplicator();
+		}
+
+	}
+
+	public static class DummyCacheReplicator implements CacheReplicator {
+
+		@Override
+		public boolean alive() {
+			return true;
+		}
+
+		@Override
+		public Object clone() {
+			return new DummyCacheReplicator();
+		}
+
+		@Override
+		public void dispose() {
+		}
+
+		@Override
+		public boolean isReplicateUpdatesViaCopy() {
+			return false;
+		}
+
+		@Override
+		public boolean notAlive() {
+			return false;
+		}
+
+		@Override
+		public void notifyElementEvicted(Ehcache ehcache, Element element) {
+		}
+
+		@Override
+		public void notifyElementExpired(Ehcache ehcache, Element element) {
+		}
+
+		@Override
+		public void notifyElementPut(Ehcache ehcache, Element element) {
+		}
+
+		@Override
+		public void notifyElementRemoved(Ehcache ehcache, Element element) {
+		}
+
+		@Override
+		public void notifyElementUpdated(Ehcache ehcache, Element element) {
+		}
+
+		@Override
+		public void notifyRemoveAll(Ehcache ehch) {
+		}
+
 	}
 
 	private CacheListenerScope _getCacheListenerScope(
@@ -235,6 +304,8 @@ public class EhcacheConfigurationManager
 			cacheEventListenerConfigurations =
 				cacheConfiguration.getCacheEventListenerConfigurations();
 
+		CacheEventListenerFactoryConfiguration placeHolderConfiguration = null;
+
 		for (CacheEventListenerFactoryConfiguration
 				cacheEventListenerFactoryConfiguration :
 					cacheEventListenerConfigurations) {
@@ -270,6 +341,12 @@ public class EhcacheConfigurationManager
 						portalCacheConfiguration.addCacheListenerConfiguration(
 							EhcacheListenerFactory.class.getName(), properties,
 							cacheListenerScope);
+
+						placeHolderConfiguration =
+							new CacheEventListenerFactoryConfiguration();
+
+						placeHolderConfiguration.setClass(
+							DummyCacheEventListenerFactory.class.getName());
 					}
 				}
 			}
@@ -286,6 +363,10 @@ public class EhcacheConfigurationManager
 		}
 
 		cacheEventListenerConfigurations.clear();
+
+		if (placeHolderConfiguration != null) {
+			cacheEventListenerConfigurations.add(placeHolderConfiguration);
+		}
 
 		return portalCacheConfiguration;
 	}
