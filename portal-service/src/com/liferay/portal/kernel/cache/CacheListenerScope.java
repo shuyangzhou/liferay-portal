@@ -19,6 +19,22 @@ package com.liferay.portal.kernel.cache;
  */
 public enum CacheListenerScope {
 
-	ALL, LOCAL, REMOTE
+	ALL(true, true), LOCAL(true, false), REMOTE(false, true);
+
+	public boolean isDeliverLocal() {
+		return _deliverLocal;
+	}
+
+	public boolean isDeliverRemote() {
+		return _deliverRemote;
+	}
+
+	private CacheListenerScope(boolean deliverLocal, boolean deliverRemote) {
+		_deliverLocal = deliverLocal;
+		_deliverRemote = deliverRemote;
+	}
+
+	private boolean _deliverLocal;
+	private boolean _deliverRemote;
 
 }
