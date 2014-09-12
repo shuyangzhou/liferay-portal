@@ -16,6 +16,8 @@ package com.liferay.portal.cache.ehcache;
 
 import com.liferay.portal.cache.MockPortalCacheManager;
 import com.liferay.portal.cache.TestCacheListener;
+import com.liferay.portal.kernel.cache.AggregatedCacheListener;
+import com.liferay.portal.kernel.cache.CacheListener;
 import com.liferay.portal.kernel.cache.CacheListenerScope;
 import com.liferay.portal.kernel.cache.PortalCacheManager;
 import com.liferay.portal.kernel.test.CodeCoverageAssertor;
@@ -24,6 +26,7 @@ import java.io.Serializable;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import net.sf.ehcache.Cache;
@@ -223,11 +226,24 @@ public class EhcachePortalCacheTest {
 					cacheEventListener;
 
 		Assert.assertSame(
-			_defaultCacheListener,
-			portalCacheCacheEventListener.getCacheListener());
-		Assert.assertSame(
 			_ehcachePortalCache,
 			portalCacheCacheEventListener.getPortalCache());
+
+		CacheListener<Serializable, Serializable> cacheListener =
+			portalCacheCacheEventListener.getCacheListener();
+
+		Assert.assertTrue(cacheListener instanceof AggregatedCacheListener);
+
+		AggregatedCacheListener<Serializable, Serializable>
+			aggregatedCacheListener =
+				(AggregatedCacheListener<Serializable, Serializable>)
+					cacheListener;
+
+		Map<CacheListener<Serializable, Serializable>, CacheListenerScope>
+			cacheListeners = aggregatedCacheListener.getCacheListeners();
+
+		Assert.assertTrue(cacheListeners.containsKey(_defaultCacheListener));
+		Assert.assertEquals(1, cacheListeners.size());
 
 		String newCacheName = "newCache";
 
@@ -253,11 +269,20 @@ public class EhcachePortalCacheTest {
 				cacheEventListener;
 
 		Assert.assertSame(
-			_defaultCacheListener,
-			portalCacheCacheEventListener.getCacheListener());
-		Assert.assertSame(
 			_ehcachePortalCache,
 			portalCacheCacheEventListener.getPortalCache());
+
+		cacheListener = portalCacheCacheEventListener.getCacheListener();
+
+		Assert.assertTrue(cacheListener instanceof AggregatedCacheListener);
+
+		aggregatedCacheListener =
+			(AggregatedCacheListener<Serializable, Serializable>)cacheListener;
+
+		cacheListeners = aggregatedCacheListener.getCacheListeners();
+
+		Assert.assertTrue(cacheListeners.containsKey(_defaultCacheListener));
+		Assert.assertEquals(1, cacheListeners.size());
 	}
 
 	@Test
