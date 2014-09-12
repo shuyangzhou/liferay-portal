@@ -118,7 +118,7 @@ public class RestrictedByteBufferCacheServletResponseTest {
 					stubHttpServletResponse, 1024);
 
 		ByteBuffer emptyByteBuffer =
-			(ByteBuffer)ReflectionTestUtil.getFieldValue(
+			ReflectionTestUtil.getFieldValue(
 				restrictedByteBufferCacheServletResponse, "_emptyByteBuffer");
 
 		Assert.assertSame(
