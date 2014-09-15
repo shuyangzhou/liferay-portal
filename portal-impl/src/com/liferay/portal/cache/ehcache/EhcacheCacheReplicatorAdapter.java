@@ -12,29 +12,26 @@
  * details.
  */
 
-package com.liferay.portal.kernel.cache;
+package com.liferay.portal.cache.ehcache;
+
+import com.liferay.portal.kernel.cache.CacheReplicator;
+
+import java.io.Serializable;
+
+import net.sf.ehcache.event.CacheEventListener;
 
 /**
- * @author Edward Han
+ * @author Tina Tian
  */
-public enum CacheListenerScope {
+public class EhcacheCacheReplicatorAdapter
+	<K extends Serializable, V extends Serializable>
+		extends EhcacheCacheListenerAdapter<K, V>
+		implements CacheReplicator<K, V> {
 
-	ALL(true, true), LOCAL(true, false), REMOTE(false, true);
+	public EhcacheCacheReplicatorAdapter(
+		CacheEventListener cacheEventListener) {
 
-	public boolean isDeliverLocal() {
-		return _deliverLocal;
+		super(cacheEventListener);
 	}
-
-	public boolean isDeliverRemote() {
-		return _deliverRemote;
-	}
-
-	private CacheListenerScope(boolean deliverLocal, boolean deliverRemote) {
-		_deliverLocal = deliverLocal;
-		_deliverRemote = deliverRemote;
-	}
-
-	private boolean _deliverLocal;
-	private boolean _deliverRemote;
 
 }

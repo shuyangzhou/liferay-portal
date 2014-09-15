@@ -14,27 +14,21 @@
 
 package com.liferay.portal.kernel.cache;
 
+import java.io.Serializable;
+
+import java.util.Properties;
+
 /**
- * @author Edward Han
+ * @author Tina Tian
  */
-public enum CacheListenerScope {
+public interface ListenerFactory {
 
-	ALL(true, true), LOCAL(true, false), REMOTE(false, true);
+	public BootstrapLoader createBootstrapLoader(Properties properties);
 
-	public boolean isDeliverLocal() {
-		return _deliverLocal;
-	}
+	public CacheListener<? extends Serializable, ?> createCacheListener(
+		Properties properties);
 
-	public boolean isDeliverRemote() {
-		return _deliverRemote;
-	}
-
-	private CacheListenerScope(boolean deliverLocal, boolean deliverRemote) {
-		_deliverLocal = deliverLocal;
-		_deliverRemote = deliverRemote;
-	}
-
-	private boolean _deliverLocal;
-	private boolean _deliverRemote;
+	public CacheManagerListener createCacheManagerListener(
+		Properties properties);
 
 }
