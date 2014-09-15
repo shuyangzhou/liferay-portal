@@ -2591,7 +2591,8 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 			wikiPagePersistence.update(childPage);
 
 			if (!childPage.isInTrashExplicitly()) {
-				moveDependentToTrash(childPage, trashEntryId, createTrashVersion);
+				moveDependentToTrash(
+					childPage, trashEntryId, createTrashVersion);
 			}
 		}
 	}
@@ -2856,7 +2857,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 	protected void movePageFromTrash(
 			long userId, WikiPage page, long newNodeId, String newParentTitle)
 		throws PortalException {
-		
+
 		// Page
 
 		String trashTitle = page.getTitle();
