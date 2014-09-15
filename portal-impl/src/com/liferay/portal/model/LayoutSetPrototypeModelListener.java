@@ -35,13 +35,6 @@ public class LayoutSetPrototypeModelListener
 	extends BaseModelListener<LayoutSetPrototype> {
 
 	@Override
-	public void onBeforeCreate(LayoutSetPrototype layoutSetPrototype)
-		throws ModelListenerException {
-
-		updateModifiedDate(layoutSetPrototype);
-	}
-
-	@Override
 	public void onBeforeUpdate(LayoutSetPrototype layoutSetPrototype)
 		throws ModelListenerException {
 
@@ -52,13 +45,11 @@ public class LayoutSetPrototypeModelListener
 		LayoutSetPrototypeModelImpl layoutSetPrototypeImpl =
 			(LayoutSetPrototypeModelImpl)layoutSetPrototype;
 
-		Date originalModifiedDate =
-			layoutSetPrototypeImpl.getOriginalModifiedDate();
-
 		Date currentModifiedDate = layoutSetPrototype.getModifiedDate();
 
-		if ((currentModifiedDate == null) || (originalModifiedDate == null) ||
-			currentModifiedDate.equals(originalModifiedDate)) {
+		if ((currentModifiedDate == null) ||
+			currentModifiedDate.equals(
+				layoutSetPrototypeImpl.getOriginalModifiedDate())) {
 
 			return;
 		}

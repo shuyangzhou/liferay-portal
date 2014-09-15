@@ -21,10 +21,9 @@ import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.model.impl.LayoutPrototypeModelImpl;
 import com.liferay.portal.service.LayoutLocalServiceUtil;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * @author Will Newbury
@@ -33,16 +32,7 @@ public class LayoutPrototypeModelListener
 	extends BaseModelListener<LayoutPrototype> {
 
 	@Override
-	public void onBeforeCreate(LayoutPrototype layoutPrototype)
-		throws ModelListenerException {
-
-		updateModifiedDate(layoutPrototype);
-	}
-
-	@Override
-	public void onBeforeUpdate(LayoutPrototype layoutPrototype)
-		throws ModelListenerException {
-
+	public void onBeforeUpdate(LayoutPrototype layoutPrototype) {
 		updateModifiedDate(layoutPrototype);
 	}
 
@@ -50,41 +40,36 @@ public class LayoutPrototypeModelListener
 		LayoutPrototypeModelImpl layoutPrototypeModelImpl =
 			(LayoutPrototypeModelImpl)layoutPrototype;
 
-		Date originalModifiedDate =
-			layoutPrototypeModelImpl.getOriginalModifiedDate();
+		Date modifiedDate = layoutPrototype.getModifiedDate();
 
-		Date currentModifiedDate = layoutPrototype.getModifiedDate();
-
-		if ((currentModifiedDate == null) || (originalModifiedDate == null) ||
-			currentModifiedDate.equals(originalModifiedDate)) {
+		if ((modifiedDate == null) ||
+			modifiedDate.equals(
+				layoutPrototypeModelImpl.getOriginalModifiedDate())) {
 
 			return;
 		}
 
 		try {
-			currentModifiedDate = DateUtil.getDBSafeDate(currentModifiedDate);
+			modifiedDate = DateUtil.getDBSafeDate(modifiedDate);
 
-			List<Layout> layoutList =
+			Collection<Layout> layouts =
 				LayoutLocalServiceUtil.getLayoutsByLayoutPrototypeUuid(
 					layoutPrototype.getUuid());
-
-			Set<Layout> layouts = new HashSet(layoutList);
 
 			Layout privateLayout = layoutPrototype.getLayout();
 
 			if (privateLayout != null) {
+				layouts = new HashSet<Layout>(layouts);
+
 				layouts.add(privateLayout);
 			}
 
-			long maxLastMergeTime = 0;
+			long maxLastMergeTime = MaxMergeTimeUtil.findMaxMergeTimeInLayouts(
+				layouts, 0);
 
-			MaxMergeTimeUtil.findMaxMergeTimeInLayouts(
-				layouts, maxLastMergeTime);
-
-			if (maxLastMergeTime >= currentModifiedDate.getTime()) {
-				currentModifiedDate = new Date(maxLastMergeTime + Time.SECOND);
-
-				layoutPrototype.setModifiedDate(currentModifiedDate);
+			if (maxLastMergeTime >= modifiedDate.getTime()) {
+				layoutPrototype.setModifiedDate(
+					new Date(maxLastMergeTime + Time.SECOND));
 			}
 		}
 		catch (PortalException pe) {

@@ -17,7 +17,7 @@ package com.liferay.portal.model;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portlet.sites.util.Sites;
 
-import java.util.Set;
+import java.util.Collection;
 
 /**
  * @author Will Newbury
@@ -25,13 +25,11 @@ import java.util.Set;
 public class MaxMergeTimeUtil {
 
 	public static long findMaxMergeTimeInLayouts(
-		Set<Layout> layouts, long maxLastMergeTime) {
+		Collection<Layout> layouts, long maxLastMergeTime) {
 
-		for (Layout layoutToCheck : layouts) {
-			String lastMergeTimeString = layoutToCheck.getTypeSettingsProperty(
-				Sites.LAST_MERGE_TIME);
-
-			long lastMergeTime = GetterUtil.getLong(lastMergeTimeString);
+		for (Layout layout : layouts) {
+			long lastMergeTime = GetterUtil.getLong(
+				layout.getTypeSettingsProperty(Sites.LAST_MERGE_TIME));
 
 			if (lastMergeTime > maxLastMergeTime) {
 				maxLastMergeTime = lastMergeTime;
