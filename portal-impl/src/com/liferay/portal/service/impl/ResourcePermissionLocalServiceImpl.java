@@ -615,25 +615,25 @@ public class ResourcePermissionLocalServiceImpl
 				"The list of resources must contain at least two values");
 		}
 
-		Resource fristResource = resources.get(0);
+		Resource firstResource = resources.get(0);
 
-		if (fristResource.getScope() != ResourceConstants.SCOPE_INDIVIDUAL) {
+		if (firstResource.getScope() != ResourceConstants.SCOPE_INDIVIDUAL) {
 			throw new IllegalArgumentException(
-				"The first resource must be individual scope");
+				"The first resource must be an individual scope");
 		}
 
 		Resource lastResource = resources.get(size - 1);
 
 		if (lastResource.getScope() != ResourceConstants.SCOPE_COMPANY) {
 			throw new IllegalArgumentException(
-				"The last resource must be company scope");
+				"The last resource must be a company scope");
 		}
 
 		// See LPS-47464
 
 		if (resourcePermissionPersistence.countByC_N_S_P(
-				fristResource.getCompanyId(), fristResource.getName(),
-				fristResource.getScope(), fristResource.getPrimKey()) < 1) {
+				firstResource.getCompanyId(), firstResource.getName(),
+				firstResource.getScope(), firstResource.getPrimKey()) < 1) {
 
 			return false;
 		}

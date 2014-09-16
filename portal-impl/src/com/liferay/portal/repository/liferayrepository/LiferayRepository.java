@@ -145,7 +145,7 @@ public class LiferayRepository
 
 	@Override
 	public Folder addFolder(
-			long parentFolderId, String title, String description,
+			long parentFolderId, String name, String description,
 			ServiceContext serviceContext)
 		throws PortalException {
 
@@ -153,7 +153,7 @@ public class LiferayRepository
 
 		DLFolder dlFolder = dlFolderService.addFolder(
 			getGroupId(), getRepositoryId(), mountPoint,
-			toFolderId(parentFolderId), title, description, serviceContext);
+			toFolderId(parentFolderId), name, description, serviceContext);
 
 		return new LiferayFolder(dlFolder);
 	}
@@ -263,11 +263,11 @@ public class LiferayRepository
 	}
 
 	@Override
-	public void deleteFolder(long parentFolderId, String title)
+	public void deleteFolder(long parentFolderId, String name)
 		throws PortalException {
 
 		dlFolderService.deleteFolder(
-			getGroupId(), toFolderId(parentFolderId), title);
+			getGroupId(), toFolderId(parentFolderId), name);
 	}
 
 	@Override
@@ -403,11 +403,11 @@ public class LiferayRepository
 	}
 
 	@Override
-	public Folder getFolder(long parentFolderId, String title)
+	public Folder getFolder(long parentFolderId, String name)
 		throws PortalException {
 
 		DLFolder dlFolder = dlFolderService.getFolder(
-			getGroupId(), toFolderId(parentFolderId), title);
+			getGroupId(), toFolderId(parentFolderId), name);
 
 		return new LiferayFolder(dlFolder);
 	}
@@ -740,11 +740,11 @@ public class LiferayRepository
 	}
 
 	@Override
-	public void unlockFolder(long parentFolderId, String title, String lockUuid)
+	public void unlockFolder(long parentFolderId, String name, String lockUuid)
 		throws PortalException {
 
 		dlFolderService.unlockFolder(
-			getGroupId(), toFolderId(parentFolderId), title, lockUuid);
+			getGroupId(), toFolderId(parentFolderId), name, lockUuid);
 	}
 
 	@Override
@@ -798,7 +798,7 @@ public class LiferayRepository
 
 	@Override
 	public Folder updateFolder(
-			long folderId, String title, String description,
+			long folderId, String name, String description,
 			ServiceContext serviceContext)
 		throws PortalException {
 
@@ -810,7 +810,7 @@ public class LiferayRepository
 			serviceContext, "overrideFileEntryTypes");
 
 		DLFolder dlFolder = dlFolderService.updateFolder(
-			toFolderId(folderId), title, description, defaultFileEntryTypeId,
+			toFolderId(folderId), name, description, defaultFileEntryTypeId,
 			fileEntryTypeIds, overrideFileEntryTypes, serviceContext);
 
 		return new LiferayFolder(dlFolder);

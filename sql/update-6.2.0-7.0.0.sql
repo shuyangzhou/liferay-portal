@@ -1,4 +1,5 @@
 alter table BlogsEntry add subtitle STRING null;
+alter table BlogsEntry add smallImageFileEntryId LONG;
 
 create table ExportImportConfiguration (
 	mvccVersion LONG default 0,

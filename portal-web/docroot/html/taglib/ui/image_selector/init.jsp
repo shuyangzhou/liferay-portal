@@ -1,3 +1,4 @@
+<%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
@@ -11,22 +12,8 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
+--%>
 
-package com.liferay.portal.repository.registry;
+<%@ include file="/html/taglib/init.jsp" %>
 
-import com.liferay.portal.kernel.repository.capabilities.Capability;
-
-import java.util.Map;
-import java.util.Set;
-
-/**
- * @author Iván Zaera
- */
-public interface RepositoryInstanceDefinition {
-
-	public Set<Class<? extends Capability>> getExportedCapabilities();
-
-	public Map<Class<? extends Capability>, Capability>
-		getSupportedCapabilities();
-
-}
+<portlet:defineObjects />

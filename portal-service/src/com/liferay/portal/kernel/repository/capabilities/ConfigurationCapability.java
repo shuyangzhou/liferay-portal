@@ -1,4 +1,3 @@
-<%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
@@ -12,8 +11,17 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
---%>
 
-<%@ include file="/html/portlet/init.jsp" %>
+package com.liferay.portal.kernel.repository.capabilities;
 
-<%@ include file="/html/portlet/loan_calculator/init-ext.jsp" %>
+/**
+ * @author Iván Zaera
+ */
+public interface ConfigurationCapability extends Capability {
+
+	public String getProperty(Class<? extends Capability> owner, String key);
+
+	public void setProperty(
+		Class<? extends Capability> owner, String key, String value);
+
+}

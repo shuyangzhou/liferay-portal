@@ -469,8 +469,8 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 * Assigns the password policy to the users, removing any other currently
 	 * assigned password policies.
 	 *
-	 * @param  passwordPolicyId the primary key of the password policy
-	 * @param  userIds the primary keys of the users
+	 * @param passwordPolicyId the primary key of the password policy
+	 * @param userIds the primary keys of the users
 	 */
 	@Override
 	public void addPasswordPolicyUsers(long passwordPolicyId, long[] userIds) {
@@ -807,7 +807,11 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		user.setEmailAddress(emailAddress);
 		user.setFacebookId(facebookId);
 
-		Long ldapServerId = (Long)serviceContext.getAttribute("ldapServerId");
+		Long ldapServerId = null;
+
+		if (serviceContext != null) {
+			ldapServerId = (Long)serviceContext.getAttribute("ldapServerId");
+		}
 
 		if (ldapServerId != null) {
 			user.setLdapServerId(ldapServerId);
@@ -1452,7 +1456,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 * Adds a failed login attempt to the user and updates the user's last
 	 * failed login date.
 	 *
-	 * @param  user the user
+	 * @param user the user
 	 */
 	@Override
 	public void checkLoginFailure(User user) {
@@ -1568,7 +1572,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	/**
 	 * Removes all the users from the organization.
 	 *
-	 * @param  organizationId the primary key of the organization
+	 * @param organizationId the primary key of the organization
 	 */
 	@Override
 	public void clearOrganizationUsers(long organizationId) {
@@ -1580,7 +1584,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	/**
 	 * Removes all the users from the user group.
 	 *
-	 * @param  userGroupId the primary key of the user group
+	 * @param userGroupId the primary key of the user group
 	 */
 	@Override
 	public void clearUserGroupUsers(long userGroupId) {
@@ -1960,6 +1964,18 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		catch (EncryptorException ee) {
 			throw new SystemException(ee);
 		}
+	}
+
+	/**
+	 * Returns the user with the contact ID.
+	 *
+	 * @param  contactId the user's contact ID
+	 * @return the user with the contact ID, or <code>null</code> if a user with
+	 *         the contact ID could not be found
+	 */
+	@Override
+	public User fetchUserByContactId(long contactId) {
+		return userPersistence.fetchByContactId(contactId);
 	}
 
 	/**
@@ -3925,7 +3941,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		final Group group = organization.getGroup();
 
 		userGroupRoleLocalService.deleteUserGroupRoles(
-			userIds, group.getGroupId(), RoleConstants.TYPE_ORGANIZATION);
+			userIds, group.getGroupId());
 
 		organizationPersistence.removeUsers(organizationId, userIds);
 
@@ -3958,8 +3974,8 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	/**
 	 * Removes the users from the password policy.
 	 *
-	 * @param  passwordPolicyId the primary key of the password policy
-	 * @param  userIds the primary keys of the users
+	 * @param passwordPolicyId the primary key of the password policy
+	 * @param userIds the primary keys of the users
 	 */
 	@Override
 	public void unsetPasswordPolicyUsers(
@@ -4290,9 +4306,13 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 			long userId, long[] newGroupIds, ServiceContext serviceContext)
 		throws PortalException {
 
-		updateGroups(
-			userId, newGroupIds, serviceContext,
-			serviceContext.isIndexingEnabled());
+		boolean indexingEnabled = true;
+
+		if (serviceContext != null) {
+			indexingEnabled = serviceContext.isIndexingEnabled();
+		}
+
+		updateGroups(userId, newGroupIds, serviceContext, indexingEnabled);
 	}
 
 	/**

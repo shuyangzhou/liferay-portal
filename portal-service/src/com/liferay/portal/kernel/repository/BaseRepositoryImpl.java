@@ -117,10 +117,10 @@ public abstract class BaseRepositoryImpl
 	}
 
 	@Override
-	public void deleteFolder(long parentFolderId, String title)
+	public void deleteFolder(long parentFolderId, String name)
 		throws PortalException {
 
-		Folder folder = getFolder(parentFolderId, title);
+		Folder folder = getFolder(parentFolderId, name);
 
 		deleteFolder(folder.getFolderId());
 	}
@@ -405,10 +405,10 @@ public abstract class BaseRepositoryImpl
 	}
 
 	@Override
-	public void unlockFolder(long parentFolderId, String title, String lockUuid)
+	public void unlockFolder(long parentFolderId, String name, String lockUuid)
 		throws PortalException {
 
-		Folder folder = getFolder(parentFolderId, title);
+		Folder folder = getFolder(parentFolderId, name);
 
 		unlockFolder(folder.getFolderId(), lockUuid);
 	}
