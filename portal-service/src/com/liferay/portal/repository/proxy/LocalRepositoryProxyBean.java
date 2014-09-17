@@ -72,12 +72,12 @@ public class LocalRepositoryProxyBean
 
 	@Override
 	public Folder addFolder(
-			long userId, long parentFolderId, String title, String description,
+			long userId, long parentFolderId, String name, String description,
 			ServiceContext serviceContext)
 		throws PortalException {
 
 		Folder folder = _localRepository.addFolder(
-			userId, parentFolderId, title, description, serviceContext);
+			userId, parentFolderId, name, description, serviceContext);
 
 		return newFolderProxyBean(folder);
 	}
@@ -143,10 +143,10 @@ public class LocalRepositoryProxyBean
 	}
 
 	@Override
-	public Folder getFolder(long parentFolderId, String title)
+	public Folder getFolder(long parentFolderId, String name)
 		throws PortalException {
 
-		return _localRepository.getFolder(parentFolderId, title);
+		return _localRepository.getFolder(parentFolderId, name);
 	}
 
 	@Override
@@ -238,12 +238,12 @@ public class LocalRepositoryProxyBean
 
 	@Override
 	public Folder updateFolder(
-			long folderId, long parentFolderId, String title,
-			String description, ServiceContext serviceContext)
+			long folderId, long parentFolderId, String name, String description,
+			ServiceContext serviceContext)
 		throws PortalException {
 
 		return _localRepository.updateFolder(
-			folderId, parentFolderId, title, description, serviceContext);
+			folderId, parentFolderId, name, description, serviceContext);
 	}
 
 	private LocalRepository _localRepository;

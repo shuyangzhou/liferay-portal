@@ -777,6 +777,17 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 				"private static Log _log"
 			});
 
+		newContent = StringUtil.replace(
+			newContent,
+			new String[] {
+				StringPool.TAB + "static ", StringPool.TAB + "public static {",
+				" final static "
+			},
+			new String[] {
+				StringPool.TAB + "public static ", StringPool.TAB + "static {",
+				" static final "
+			});
+
 		newContent = fixCompatClassImports(absolutePath, newContent);
 
 		newContent = stripJavaImports(newContent, packagePath, className);
@@ -1665,7 +1676,8 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 						fileName, "line break: " + fileName + " " + lineCount);
 				}
 
-				if (trimmedLine.startsWith(StringPool.CLOSE_CURLY_BRACE) &&
+				if (!trimmedLine.equals("}) {") &&
+					trimmedLine.startsWith(StringPool.CLOSE_CURLY_BRACE) &&
 					line.endsWith(StringPool.OPEN_CURLY_BRACE)) {
 
 					processErrorMessage(

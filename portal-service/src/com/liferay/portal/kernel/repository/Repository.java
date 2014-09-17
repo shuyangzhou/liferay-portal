@@ -49,7 +49,7 @@ public interface Repository extends DocumentRepository {
 		throws PortalException;
 
 	public Folder addFolder(
-			long parentFolderId, String title, String description,
+			long parentFolderId, String name, String description,
 			ServiceContext serviceContext)
 		throws PortalException;
 
@@ -96,7 +96,7 @@ public interface Repository extends DocumentRepository {
 
 	public void deleteFolder(long folderId) throws PortalException;
 
-	public void deleteFolder(long parentFolderId, String title)
+	public void deleteFolder(long parentFolderId, String name)
 		throws PortalException;
 
 	public List<FileEntry> getFileEntries(
@@ -144,7 +144,7 @@ public interface Repository extends DocumentRepository {
 
 	public Folder getFolder(long folderId) throws PortalException;
 
-	public Folder getFolder(long parentFolderId, String title)
+	public Folder getFolder(long parentFolderId, String name)
 		throws PortalException;
 
 	public List<Folder> getFolders(
@@ -277,7 +277,7 @@ public interface Repository extends DocumentRepository {
 	public void unlockFolder(long folderId, String lockUuid)
 		throws PortalException;
 
-	public void unlockFolder(long parentFolderId, String title, String lockUuid)
+	public void unlockFolder(long parentFolderId, String name, String lockUuid)
 		throws PortalException;
 
 	public FileEntry updateFileEntry(
@@ -294,7 +294,7 @@ public interface Repository extends DocumentRepository {
 		throws PortalException;
 
 	public Folder updateFolder(
-			long folderId, String title, String description,
+			long folderId, String name, String description,
 			ServiceContext serviceContext)
 		throws PortalException;
 

@@ -195,21 +195,21 @@ public class CMISRepository extends BaseCmisRepository {
 
 	@Override
 	public Folder addFolder(
-			long parentFolderId, String title, String description,
+			long parentFolderId, String name, String description,
 			ServiceContext serviceContext)
 		throws PortalException {
 
 		try {
 			Session session = getSession();
 
-			validateTitle(session, parentFolderId, title);
+			validateTitle(session, parentFolderId, name);
 
 			org.apache.chemistry.opencmis.client.api.Folder cmisFolder =
 				getCmisFolder(session, parentFolderId);
 
 			Map<String, Object> properties = new HashMap<String, Object>();
 
-			properties.put(PropertyIds.NAME, title);
+			properties.put(PropertyIds.NAME, name);
 			properties.put(
 				PropertyIds.OBJECT_TYPE_ID, BaseTypeId.CMIS_FOLDER.value());
 
@@ -650,14 +650,13 @@ public class CMISRepository extends BaseCmisRepository {
 	}
 
 	@Override
-	public Folder getFolder(long parentFolderId, String title)
+	public Folder getFolder(long parentFolderId, String name)
 		throws PortalException {
 
 		try {
 			Session session = getSession();
 
-			String objectId = getObjectId(
-				session, parentFolderId, false, title);
+			String objectId = getObjectId(session, parentFolderId, false, name);
 
 			if (objectId != null) {
 				CmisObject cmisObject = session.getObject(objectId);
@@ -670,7 +669,7 @@ public class CMISRepository extends BaseCmisRepository {
 		catch (CmisObjectNotFoundException confe) {
 			throw new NoSuchFolderException(
 				"No CMIS folder with {parentFolderId=" + parentFolderId +
-					", title=" + title + "}",
+					", name=" + name + "}",
 				confe);
 		}
 		catch (PortalException pe) {
@@ -687,7 +686,7 @@ public class CMISRepository extends BaseCmisRepository {
 
 		throw new NoSuchFolderException(
 			"No CMIS folder with {parentFolderId=" + parentFolderId +
-				", title=" + title + "}");
+				", name=" + name + "}");
 	}
 
 	@Override
@@ -1426,7 +1425,7 @@ public class CMISRepository extends BaseCmisRepository {
 
 	@Override
 	public Folder updateFolder(
-			long folderId, String title, String description,
+			long folderId, String name, String description,
 			ServiceContext serviceContext)
 		throws PortalException {
 
@@ -1443,8 +1442,8 @@ public class CMISRepository extends BaseCmisRepository {
 
 			Map<String, Object> properties = new HashMap<String, Object>();
 
-			if (Validator.isNotNull(title) && !title.equals(currentTitle)) {
-				properties.put(PropertyIds.NAME, title);
+			if (Validator.isNotNull(name) && !name.equals(currentTitle)) {
+				properties.put(PropertyIds.NAME, name);
 			}
 
 			ObjectId cmisFolderObjectId = cmisFolder.updateProperties(

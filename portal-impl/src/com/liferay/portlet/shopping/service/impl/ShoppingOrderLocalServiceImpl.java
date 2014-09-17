@@ -181,7 +181,7 @@ public class ShoppingOrderLocalServiceImpl
 				ShoppingItem item = shoppingItemLocalService.getItem(
 					ShoppingUtil.getItemId(orderItem.getItemId()));
 
-				if (item.hasInfiniteStock()) {
+				if (item.isInfiniteStock()) {
 					continue;
 				}
 

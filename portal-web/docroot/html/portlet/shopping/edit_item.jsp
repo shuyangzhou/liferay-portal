@@ -25,7 +25,7 @@ long itemId = BeanParamUtil.getLong(item, request, "itemId");
 
 long categoryId = BeanParamUtil.getLong(item, request, "categoryId", ShoppingCategoryConstants.DEFAULT_PARENT_CATEGORY_ID);
 
-boolean hasInfiniteStock = BeanParamUtil.getBoolean(item, request, "hasInfiniteStock");
+boolean infiniteStock = BeanParamUtil.getBoolean(item, request, "infiniteStock");
 
 // Fields
 
@@ -153,9 +153,9 @@ int priceId = ParamUtil.getInteger(request, "priceId", -1);
 
 		<aui:input bean="<%= item %>" model="<%= ShoppingItem.class %>" name="featured" />
 
-		<aui:input checked="<%= hasInfiniteStock %>" helpMessage="disable-stock-checking-help" label="disable-stock-checking" name="hasInfiniteStock" onChange='<%= renderResponse.getNamespace() + "toggleInfiniteStock(this);" %>' type="checkbox" />
+		<aui:input checked="<%= infiniteStock %>" helpMessage="disable-stock-checking-help" label="disable-stock-checking" name="infiniteStock" onChange='<%= renderResponse.getNamespace() + "toggleInfiniteStock(this);" %>' type="checkbox" />
 
-		<c:if test="<%= (fieldsCount == 0) && !hasInfiniteStock %>">
+		<c:if test="<%= (fieldsCount == 0) && !infiniteStock %>">
 			<aui:input bean="<%= item %>" model="<%= ShoppingItem.class %>" name="stockQuantity" />
 		</c:if>
 
@@ -250,13 +250,13 @@ int priceId = ParamUtil.getInteger(request, "priceId", -1);
 
 			</table>
 
-			<c:if test="<%= (fieldsCount > 0) && !hasInfiniteStock %>">
+			<c:if test="<%= (fieldsCount > 0) && !infiniteStock %>">
 				<br />
 			</c:if>
 
 			<aui:button onClick='<%= renderResponse.getNamespace() + "addField();" %>' value="add-field" />
 
-			<c:if test="<%= (fieldsCount > 0) && !hasInfiniteStock %>">
+			<c:if test="<%= (fieldsCount > 0) && !infiniteStock %>">
 				<aui:button onClick='<%= renderResponse.getNamespace() + "editItemQuantities();" %>' value="edit-stock-quantity" />
 			</c:if>
 

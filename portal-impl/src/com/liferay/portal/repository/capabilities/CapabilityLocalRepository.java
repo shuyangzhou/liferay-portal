@@ -16,7 +16,6 @@ package com.liferay.portal.repository.capabilities;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.repository.LocalRepository;
-import com.liferay.portal.kernel.repository.capabilities.Capability;
 import com.liferay.portal.kernel.repository.event.RepositoryEventTrigger;
 import com.liferay.portal.kernel.repository.event.RepositoryEventType;
 import com.liferay.portal.kernel.repository.model.FileEntry;
@@ -29,8 +28,6 @@ import java.io.File;
 import java.io.InputStream;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Adolfo Pérez
@@ -41,12 +38,9 @@ public class CapabilityLocalRepository
 
 	public CapabilityLocalRepository(
 		LocalRepository localRepository,
-		Map<Class<? extends Capability>, Capability> supportedCapabilities,
-		Set<Class<? extends Capability>> exportedCapabilityClasses,
 		RepositoryEventTrigger repositoryEventTrigger) {
 
-		super(
-			localRepository, supportedCapabilities, exportedCapabilityClasses);
+		super(localRepository);
 
 		_repositoryEventTrigger = repositoryEventTrigger;
 	}
@@ -91,14 +85,14 @@ public class CapabilityLocalRepository
 
 	@Override
 	public Folder addFolder(
-			long userId, long parentFolderId, String title, String description,
+			long userId, long parentFolderId, String name, String description,
 			ServiceContext serviceContext)
 		throws PortalException {
 
 		LocalRepository localRepository = getRepository();
 
 		Folder folder = localRepository.addFolder(
-			userId, parentFolderId, title, description, serviceContext);
+			userId, parentFolderId, name, description, serviceContext);
 
 		_repositoryEventTrigger.trigger(
 			RepositoryEventType.Add.class, Folder.class, folder);
@@ -171,10 +165,10 @@ public class CapabilityLocalRepository
 	}
 
 	@Override
-	public Folder getFolder(long parentFolderId, String title)
+	public Folder getFolder(long parentFolderId, String name)
 		throws PortalException {
 
-		return getRepository().getFolder(parentFolderId, title);
+		return getRepository().getFolder(parentFolderId, name);
 	}
 
 	@Override
@@ -279,14 +273,14 @@ public class CapabilityLocalRepository
 
 	@Override
 	public Folder updateFolder(
-			long folderId, long parentFolderId, String title,
-			String description, ServiceContext serviceContext)
+			long folderId, long parentFolderId, String name, String description,
+			ServiceContext serviceContext)
 		throws PortalException {
 
 		LocalRepository localRepository = getRepository();
 
 		Folder folder = localRepository.updateFolder(
-			folderId, parentFolderId, title, description, serviceContext);
+			folderId, parentFolderId, name, description, serviceContext);
 
 		_repositoryEventTrigger.trigger(
 			RepositoryEventType.Update.class, Folder.class, folder);

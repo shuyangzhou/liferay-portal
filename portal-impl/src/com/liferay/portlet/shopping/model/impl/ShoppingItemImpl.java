@@ -79,7 +79,7 @@ public class ShoppingItemImpl extends ShoppingItemBaseImpl {
 	}
 
 	@Override
-	public boolean hasInfiniteStock() {
+	public boolean isInfiniteStock() {
 		if (getStockQuantity() == STOCK_QUANTITY_INFINITE_STOCK) {
 			return true;
 		}

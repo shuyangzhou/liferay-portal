@@ -68,7 +68,7 @@ public class DefaultLocalRepositoryImpl implements LocalRepository {
 
 	@Override
 	public Folder addFolder(
-		long userId, long parentFolderId, String title, String description,
+		long userId, long parentFolderId, String name, String description,
 		ServiceContext serviceContext) {
 
 		throw new UnsupportedOperationException();
@@ -124,10 +124,10 @@ public class DefaultLocalRepositoryImpl implements LocalRepository {
 	}
 
 	@Override
-	public Folder getFolder(long parentFolderId, String title)
+	public Folder getFolder(long parentFolderId, String name)
 		throws PortalException {
 
-		return _repository.getFolder(parentFolderId, title);
+		return _repository.getFolder(parentFolderId, name);
 	}
 
 	@Override
@@ -198,7 +198,7 @@ public class DefaultLocalRepositoryImpl implements LocalRepository {
 
 	@Override
 	public Folder updateFolder(
-		long folderId, long parentFolderId, String title, String description,
+		long folderId, long parentFolderId, String name, String description,
 		ServiceContext serviceContext) {
 
 		throw new UnsupportedOperationException();

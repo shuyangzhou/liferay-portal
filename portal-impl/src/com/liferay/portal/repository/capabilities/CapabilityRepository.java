@@ -16,7 +16,6 @@ package com.liferay.portal.repository.capabilities;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.repository.Repository;
-import com.liferay.portal.kernel.repository.capabilities.Capability;
 import com.liferay.portal.kernel.repository.event.RepositoryEventTrigger;
 import com.liferay.portal.kernel.repository.event.RepositoryEventType;
 import com.liferay.portal.kernel.repository.model.FileEntry;
@@ -35,8 +34,6 @@ import java.io.File;
 import java.io.InputStream;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Adolfo Pérez
@@ -45,12 +42,9 @@ public class CapabilityRepository
 	extends BaseCapabilityRepository<Repository> implements Repository {
 
 	public CapabilityRepository(
-		Repository repository,
-		Map<Class<? extends Capability>, Capability> supportedCapabilities,
-		Set<Class<? extends Capability>> exportedCapabilityClasses,
-		RepositoryEventTrigger repositoryEventTrigger) {
+		Repository repository, RepositoryEventTrigger repositoryEventTrigger) {
 
-		super(repository, supportedCapabilities, exportedCapabilityClasses);
+		super(repository);
 
 		_repositoryEventTrigger = repositoryEventTrigger;
 	}
@@ -95,14 +89,14 @@ public class CapabilityRepository
 
 	@Override
 	public Folder addFolder(
-			long parentFolderId, String title, String description,
+			long parentFolderId, String name, String description,
 			ServiceContext serviceContext)
 		throws PortalException {
 
 		Repository repository = getRepository();
 
 		Folder folder = repository.addFolder(
-			parentFolderId, title, description, serviceContext);
+			parentFolderId, name, description, serviceContext);
 
 		_repositoryEventTrigger.trigger(
 			RepositoryEventType.Add.class, Folder.class, folder);
@@ -237,17 +231,17 @@ public class CapabilityRepository
 	}
 
 	@Override
-	public void deleteFolder(long parentFolderId, String title)
+	public void deleteFolder(long parentFolderId, String name)
 		throws PortalException {
 
 		Repository repository = getRepository();
 
-		Folder folder = repository.getFolder(parentFolderId, title);
+		Folder folder = repository.getFolder(parentFolderId, name);
 
 		_repositoryEventTrigger.trigger(
 			RepositoryEventType.Delete.class, Folder.class, folder);
 
-		repository.deleteFolder(parentFolderId, title);
+		repository.deleteFolder(parentFolderId, name);
 	}
 
 	@Override
@@ -353,10 +347,10 @@ public class CapabilityRepository
 	}
 
 	@Override
-	public Folder getFolder(long parentFolderId, String title)
+	public Folder getFolder(long parentFolderId, String name)
 		throws PortalException {
 
-		return getRepository().getFolder(parentFolderId, title);
+		return getRepository().getFolder(parentFolderId, name);
 	}
 
 	@Override
@@ -642,10 +636,10 @@ public class CapabilityRepository
 	}
 
 	@Override
-	public void unlockFolder(long parentFolderId, String title, String lockUuid)
+	public void unlockFolder(long parentFolderId, String name, String lockUuid)
 		throws PortalException {
 
-		getRepository().unlockFolder(parentFolderId, title, lockUuid);
+		getRepository().unlockFolder(parentFolderId, name, lockUuid);
 	}
 
 	@Override
@@ -689,14 +683,14 @@ public class CapabilityRepository
 
 	@Override
 	public Folder updateFolder(
-			long folderId, String title, String description,
+			long folderId, String name, String description,
 			ServiceContext serviceContext)
 		throws PortalException {
 
 		Repository repository = getRepository();
 
 		Folder folder = repository.updateFolder(
-			folderId, title, description, serviceContext);
+			folderId, name, description, serviceContext);
 
 		if (folderId != DLFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
 			_repositoryEventTrigger.trigger(

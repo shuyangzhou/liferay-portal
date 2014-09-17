@@ -26,6 +26,7 @@ import com.liferay.portal.upgrade.v7_0_0.UpgradeDynamicDataMapping;
 import com.liferay.portal.upgrade.v7_0_0.UpgradeEmailNotificationPreferences;
 import com.liferay.portal.upgrade.v7_0_0.UpgradeExpando;
 import com.liferay.portal.upgrade.v7_0_0.UpgradeJournal;
+import com.liferay.portal.upgrade.v7_0_0.UpgradeJournalDisplayPreferences;
 import com.liferay.portal.upgrade.v7_0_0.UpgradeLanguagePreferences;
 import com.liferay.portal.upgrade.v7_0_0.UpgradeLock;
 import com.liferay.portal.upgrade.v7_0_0.UpgradeMessageBoards;
@@ -61,6 +62,7 @@ public class UpgradeProcess_7_0_0 extends UpgradeProcess {
 		upgrade(UpgradeExpando.class);
 		upgrade(UpgradeLanguagePreferences.class);
 		upgrade(UpgradeJournal.class);
+		upgrade(UpgradeJournalDisplayPreferences.class);
 		upgrade(UpgradeLock.class);
 		upgrade(UpgradeMessageBoards.class);
 		upgrade(UpgradeRepositoryEntry.class);

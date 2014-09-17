@@ -44,7 +44,7 @@ public interface LocalRepository extends DocumentRepository {
 		throws PortalException;
 
 	public Folder addFolder(
-			long userId, long parentFolderId, String title, String description,
+			long userId, long parentFolderId, String name, String description,
 			ServiceContext serviceContext)
 		throws PortalException;
 
@@ -66,7 +66,7 @@ public interface LocalRepository extends DocumentRepository {
 
 	public Folder getFolder(long folderId) throws PortalException;
 
-	public Folder getFolder(long parentFolderId, String title)
+	public Folder getFolder(long parentFolderId, String name)
 		throws PortalException;
 
 	public List<FileEntry> getRepositoryFileEntries(
@@ -104,8 +104,8 @@ public interface LocalRepository extends DocumentRepository {
 		throws PortalException;
 
 	public Folder updateFolder(
-			long folderId, long parentFolderId, String title,
-			String description, ServiceContext serviceContext)
+			long folderId, long parentFolderId, String name, String description,
+			ServiceContext serviceContext)
 		throws PortalException;
 
 }
