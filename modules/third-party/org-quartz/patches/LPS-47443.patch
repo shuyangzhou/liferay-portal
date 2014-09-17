@@ -1,0 +1,162 @@
+diff --git a/JobStoreSupport.java b/JobStoreSupport.java
+index 03033cf..ba86d35 100644
+--- a/JobStoreSupport.java
++++ b/JobStoreSupport.java
+@@ -3224,61 +3224,54 @@ public abstract class JobStoreSupport implements JobStore, Constants {
+ 
+     protected long lastCheckin = System.currentTimeMillis();
+ 
+-    protected boolean doCheckin() throws JobPersistenceException {
+-        boolean transOwner = false;
+-        boolean transStateOwner = false;
+-        boolean recovered = false;
+-
+-        Connection conn = getNonManagedTXConnection();
+-        try {
+-            // Other than the first time, always checkin first to make sure there is
+-            // work to be done before we acquire the lock (since that is expensive,
+-            // and is almost never necessary).  This must be done in a separate
+-            // transaction to prevent a deadlock under recovery conditions.
+-            List<SchedulerStateRecord> failedRecords = null;
+-            if (firstCheckIn == false) {
+-                failedRecords = clusterCheckIn(conn);
+-                commitConnection(conn);
+-            }
+-
+-            if (firstCheckIn || (failedRecords.size() > 0)) {
+-                getLockHandler().obtainLock(conn, LOCK_STATE_ACCESS);
+-                transStateOwner = true;
+-
+-                // Now that we own the lock, make sure we still have work to do.
+-                // The first time through, we also need to make sure we update/create our state record
+-                failedRecords = (firstCheckIn) ? clusterCheckIn(conn) : findFailedInstances(conn);
+-
+-                if (failedRecords.size() > 0) {
+-                    getLockHandler().obtainLock(conn, LOCK_TRIGGER_ACCESS);
+-                    //getLockHandler().obtainLock(conn, LOCK_JOB_ACCESS);
+-                    transOwner = true;
+-
+-                    clusterRecover(conn, failedRecords);
+-                    recovered = true;
+-                }
+-            }
+-
+-            commitConnection(conn);
+-        } catch (JobPersistenceException e) {
+-            rollbackConnection(conn);
+-            throw e;
+-        } finally {
+-            try {
+-                releaseLock(conn, LOCK_TRIGGER_ACCESS, transOwner);
+-            } finally {
+-                try {
+-                    releaseLock(conn, LOCK_STATE_ACCESS, transStateOwner);
+-                } finally {
+-                    cleanupConnection(conn);
+-                }
+-            }
+-        }
+-
+-        firstCheckIn = false;
+-
+-        return recovered;
+-    }
++	protected boolean doCheckin() throws JobPersistenceException {
++		boolean transOwner = false;
++		boolean transStateOwner = false;
++		boolean recovered = false;
++
++		Connection conn = getNonManagedTXConnection();
++		try {
++			// Liferay: First checkin still needs a lock even if in another
++			// transaction.
++			clusterCheckIn(conn);
++			commitConnection(conn);
++
++			getLockHandler().obtainLock(conn, LOCK_STATE_ACCESS);
++			transStateOwner = true;
++
++			List<SchedulerStateRecord> failedRecords = findFailedInstances(conn);
++
++			if (failedRecords.size() > 0) {
++				getLockHandler().obtainLock(conn, LOCK_TRIGGER_ACCESS);
++				//getLockHandler().obtainLock(conn, LOCK_JOB_ACCESS);
++				transOwner = true;
++
++				clusterRecover(conn, failedRecords);
++				recovered = true;
++			}
++
++			commitConnection(conn);
++		}
++		catch (JobPersistenceException e) {
++			rollbackConnection(conn);
++			throw e;
++		}
++		finally {
++			try {
++				releaseLock(conn, LOCK_TRIGGER_ACCESS, transOwner);
++			} finally {
++				try {
++					releaseLock(conn, LOCK_STATE_ACCESS, transStateOwner);
++				} finally {
++					cleanupConnection(conn);
++				}
++			}
++		}
++
++		firstCheckIn = false;
++
++		return recovered;
++	}
+ 
+     /**
+      * Get a list of all scheduler instances in the cluster that may have failed.
+@@ -3373,29 +3366,27 @@ public abstract class JobStoreSupport implements JobStore, Constants {
+                     (System.currentTimeMillis() - lastCheckin)) +
+             7500L;
+     }
+-    
+-    protected List<SchedulerStateRecord> clusterCheckIn(Connection conn)
+-        throws JobPersistenceException {
+ 
+-        List<SchedulerStateRecord> failedInstances = findFailedInstances(conn);
+-        
+-        try {
+-            // TODO: handle self-failed-out
++	protected List<SchedulerStateRecord> clusterCheckIn(Connection conn)
++			throws JobPersistenceException {
+ 
+-            // check in...
+-            lastCheckin = System.currentTimeMillis();
+-            if(getDelegate().updateSchedulerState(conn, getInstanceId(), lastCheckin) == 0) {
+-                getDelegate().insertSchedulerState(conn, getInstanceId(),
+-                        lastCheckin, getClusterCheckinInterval());
+-            }
+-            
+-        } catch (Exception e) {
+-            throw new JobPersistenceException("Failure updating scheduler state when checking-in: "
+-                    + e.getMessage(), e);
+-        }
++		// Liferay: Update scheduler state before we find failed instances
++		// instead return null.
+ 
+-        return failedInstances;
+-    }
++		try {
++			lastCheckin = System.currentTimeMillis();
++			if(getDelegate().updateSchedulerState(conn, getInstanceId(), lastCheckin) == 0) {
++				getDelegate().insertSchedulerState(conn, getInstanceId(),
++						lastCheckin, getClusterCheckinInterval());
++			}
++
++		} catch (Exception e) {
++			throw new JobPersistenceException("Failure updating scheduler state when checking-in: "
++					+ e.getMessage(), e);
++		}
++
++		return null;
++	}
+ 
+     protected void clusterRecover(Connection conn, List<SchedulerStateRecord> failedInstances)
+         throws JobPersistenceException {
