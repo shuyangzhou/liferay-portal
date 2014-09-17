@@ -15,6 +15,16 @@
 --%>
 
 <%
+Object bodyContent = request.getAttribute("aui:button:bodyContent");
+
+String bodyContentString = StringPool.BLANK;
+
+if (bodyContent != null) {
+	bodyContentString = bodyContent.toString();
+}
+
+boolean dropdown = Validator.isNotNull(bodyContentString.trim());
+
 String escapedHREF = StringPool.BLANK;
 
 if (Validator.isNotNull(href)) {
@@ -44,6 +54,12 @@ if (useDialog && Validator.isNotNull(escapedHREF)) {
 	if (Validator.isNull(name)) {
 		name = StringUtil.randomId();
 	}
+}
+
+String id = namespace + name;
+
+if (Validator.isNull(name)) {
+	id = namespace + StringUtil.randomId();
 }
 
 if (primary == null) {
