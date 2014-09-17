@@ -720,12 +720,14 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * Retrieve the translation for the given key from portlet configuration
-	 * (determined by request) or - if not set - from portal's resource bundle
+	 * Returns the key's translation from the portlet configuration, or from the
+	 * portal's resource bundle if the portlet configuration is unavailable.
 	 *
-	 * @param  request determining the context and requested locale
-	 * @param  key translation key
-	 * @return translation - if exists - or key otherwise.
+	 * @param  request the request used to determine the key's context and
+	 *         locale
+	 * @param  key the translation key
+	 * @return the key's translation, or the key if the translation is
+	 *         unavailable
 	 */
 	@Override
 	public String get(HttpServletRequest request, String key) {
@@ -733,13 +735,16 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * Retrieve the translation for the given key from portlet configuration
-	 * (determined by request) or - if not set - from portal's resource bundle
+	 * Returns the key's translation from the portlet configuration, or from the
+	 * portal's resource bundle if the portlet configuration is unavailable.
 	 *
-	 * @param  request determining the context and requested locale
-	 * @param  key translation key
-	 * @param  defaultValue default in case there's no matching translatoin
-	 * @return translation - if exists - or defaultValue otherwise.
+	 * @param  request the request used to determine the key's context and
+	 *         locale
+	 * @param  key the translation key
+	 * @param  defaultValue the value to return if there is no matching
+	 *         translation
+	 * @return the key's translation, or the default value if the translation is
+	 *         unavailable
 	 */
 	@Override
 	public String get(
@@ -768,8 +773,11 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * @see {@link #get(HttpServletRequest, String)}, this method only looks up
-	 *      portal resources, no portlet resources.
+	 * Returns the key's translation from the portal's resource bundle.
+	 *
+	 * @param  locale the key's locale
+	 * @param  key the translation key
+	 * @return the key's translation
 	 */
 	@Override
 	public String get(Locale locale, String key) {
@@ -777,8 +785,14 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * @see {@link #get(HttpServletRequest, String, String)}, this method only
-	 *      looks up portal resources, no portlet resources.
+	 * Returns the key's translation from the portal's resource bundle.
+	 *
+	 * @param  locale the key's locale
+	 * @param  key the translation key
+	 * @param  defaultValue the value to return if there is no matching
+	 *         translation
+	 * @return the key's translation, or the default value if the translation is
+	 *         unavailable
 	 */
 	@Override
 	public String get(Locale locale, String key, String defaultValue) {
@@ -814,7 +828,11 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * @see {@link #get(HttpServletRequest, String)}
+	 * Returns the key's translation from the resource bundle.
+	 *
+	 * @param  resourceBundle the requested key's resource bundle
+	 * @param  key the translation key
+	 * @return the key's translation
 	 */
 	@Override
 	public String get(ResourceBundle resourceBundle, String key) {
@@ -822,7 +840,14 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * @see {@link #get(HttpServletRequest, String, String)}
+	 * Returns the key's translation from the resource bundle.
+	 *
+	 * @param  resourceBundle the requested key's resource bundle
+	 * @param  key the translation key
+	 * @param  defaultValue the value to return if there is no matching
+	 *         translation
+	 * @return the key's translation, or the default value if the translation is
+	 *         unavailable
 	 */
 	@Override
 	public String get(
@@ -838,8 +863,11 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * retrieves the locales configured for the portal. Configuration is done in
-	 * portal.properties with keys "locales" and "locales.enabled"
+	 * Returns the locales configured for the portal. Locales can be configured
+	 * in <code>portal.properties</code> using the <code>locales</code> and
+	 * <code>locales.enabled</code> keys.
+	 *
+	 * @return the locales configured for the portal
 	 */
 	@Override
 	public Locale[] getAvailableLocales() {
@@ -896,12 +924,12 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * retrieve the languageId that the given request should be served with.
-	 * LanguageId might be just a language or a specific variant, e.g. "en" or
-	 * "en_GB"
+	 * Returns the language ID that the request is served with. The language ID
+	 * is returned as a language code (e.g. <code>en</code>) or a specific
+	 * variant (e.g. <code>en_GB</code>).
 	 *
-	 * @param request
-	 * @return
+	 * @param  request the request used to determine the language ID
+	 * @return the language ID that the request is served with
 	 */
 	@Override
 	public String getLanguageId(HttpServletRequest request) {
@@ -921,11 +949,12 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * retrieve the languageId of the given Locale LanguageId might be just a
-	 * language or a specific variant, e.g. "en" or "en_GB"
+	 * Returns the language ID from the locale. The language ID is returned as a
+	 * language code (e.g. <code>en</code>) or a specific variant (e.g.
+	 * <code>en_GB</code>).
 	 *
-	 * @param locale
-	 * @return
+	 * @param  locale the locale used to determine the language ID
+	 * @return the language ID from the locale
 	 */
 	@Override
 	public String getLanguageId(Locale locale) {
@@ -933,9 +962,13 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * retrieve the languageId that the given PortletRequest should be served
-	 * with. LanguageId might be just a language or a specific variant, e.g.
-	 * "en" or "en_GB"
+	 * Returns the language ID that the {@link PortletRequest} is served with.
+	 * The language ID is returned as a language code (e.g. <code>en</code>) or
+	 * a specific variant (e.g. <code>en_GB</code>).
+	 *
+	 * @param  portletRequest the portlet request used to determine the language
+	 *         ID
+	 * @return the language ID that the portlet request is served with
 	 */
 	@Override
 	public String getLanguageId(PortletRequest portletRequest) {
@@ -946,10 +979,11 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * retrieve the Locale for the given languageCode (e.g. "en" or "en_GB")
+	 * Returns the locale associated with the language code.
 	 *
-	 * @param languageCode
-	 * @return
+	 * @param  languageCode the code representation of a language (e.g.
+	 *         <code>en</code> and <code>en_GB</code>)
+	 * @return the locale associated with the language code
 	 */
 	@Override
 	public Locale getLocale(String languageCode) {
@@ -957,9 +991,13 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * retrieve the supported locales. These are defined as the available
-	 * locales (configured in portal.properties as "locales") without the ones
-	 * configured as beta resources ("locales.beta" in portal.properties)
+	 * Returns the supported locales, which are defined in
+	 * <code>portal.properties</code> using the <code>locales</code> key. The
+	 * unsupported locales are configured as beta resources, which are defined
+	 * in <code>portal.properties</code> using the <code>locales.beta</code>
+	 * key.
+	 *
+	 * @return the supported locales
 	 */
 	@Override
 	public Locale[] getSupportedLocales() {
@@ -977,7 +1015,33 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * @see {@link #getTimeDescription(Locale, long)}
+	 * Returns an exact localized description of the time interval (in
+	 * milliseconds) in the largest unit possible.
+	 *
+	 * <p>
+	 * For example, the following time intervals would be converted to the
+	 * following time descriptions, using the English locale:
+	 * </p>
+	 *
+	 * <ul>
+	 * <li>
+	 * 1000 = 1 Second
+	 * </li>
+	 * <li>
+	 * 1001 = 1001 Milliseconds
+	 * </li>
+	 * <li>
+	 * 86400000 = 1 Day
+	 * </li>
+	 * <li>
+	 * 86401000 = 86401 Seconds
+	 * </li>
+	 * </ul>
+	 *
+	 * @param  request the request used to determine the current locale
+	 * @param  milliseconds the time interval in milliseconds to describe
+	 * @return an exact localized description of the time interval in the
+	 *         largest unit possible
 	 */
 	@Override
 	public String getTimeDescription(
@@ -987,7 +1051,48 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * @see {@link #getTimeDescription(Locale, long, boolean)}
+	 * Returns an approximate or exact localized description of the time
+	 * interval (in milliseconds) in the largest unit possible.
+	 *
+	 * <p>
+	 * Approximate descriptions round the time to the largest possible unit and
+	 * ignores the rest. For example, using the English locale:
+	 * </p>
+	 *
+	 * <ul>
+	 * <li>
+	 * Any time interval 1000-1999 = 1 Second
+	 * </li>
+	 * <li>
+	 * Any time interval 86400000-172799999 = 1 Day
+	 * </li>
+	 * </ul>
+	 *
+	 * <p>
+	 * Otherwise, exact descriptions would follow a similar conversion pattern
+	 * as below:
+	 * </p>
+	 *
+	 * <ul>
+	 * <li>
+	 * 1000 = 1 Second
+	 * </li>
+	 * <li>
+	 * 1001 = 1001 Milliseconds
+	 * </li>
+	 * <li>
+	 * 86400000 = 1 Day
+	 * </li>
+	 * <li>
+	 * 86401000 = 86401 Seconds
+	 * </li>
+	 * </ul>
+	 *
+	 * @param  request the request used to determine the current locale
+	 * @param  milliseconds the time interval in milliseconds to describe
+	 * @param  approximate whether the time description is approximate
+	 * @return a localized description of the time interval in the largest unit
+	 *         possible
 	 */
 	@Override
 	public String getTimeDescription(
@@ -1018,7 +1123,33 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * @see {@link #getTimeDescription(Locale, long)}
+	 * Returns an exact localized description of the time interval (in
+	 * milliseconds) in the largest unit possible.
+	 *
+	 * <p>
+	 * For example, the following time intervals would be converted to the
+	 * following time descriptions, using the English locale:
+	 * </p>
+	 *
+	 * <ul>
+	 * <li>
+	 * 1000 = 1 Second
+	 * </li>
+	 * <li>
+	 * 1001 = 1001 Milliseconds
+	 * </li>
+	 * <li>
+	 * 86400000 = 1 Day
+	 * </li>
+	 * <li>
+	 * 86401000 = 86401 Seconds
+	 * </li>
+	 * </ul>
+	 *
+	 * @param  request the request used to determine the current locale
+	 * @param  milliseconds the time interval in milliseconds to describe
+	 * @return an exact localized description of the time interval in the
+	 *         largest unit possible
 	 */
 	@Override
 	public String getTimeDescription(
@@ -1028,15 +1159,33 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * Retrieve a localized description of the given timespan in the largest
-	 * unit possible - e.g. 1000ms will be localized to english as "1 second",
-	 * while 1001ms will be "1001 milliseconds". Similarly 86400000ms will
-	 * result in "1 day", while 86401000ms will be "86401 seconds". Follows
-	 * english grammar rules for plural.
+	 * Returns an exact localized description of the time interval (in
+	 * milliseconds) in the largest unit possible.
 	 *
-	 * @param  locale determines the requested language
-	 * @param  milliseconds the timespan to describe
-	 * @return exact description of the timespan as explained
+	 * <p>
+	 * For example, the following time intervals would be converted to the
+	 * following time descriptions, using the English locale:
+	 * </p>
+	 *
+	 * <ul>
+	 * <li>
+	 * 1000 = 1 Second
+	 * </li>
+	 * <li>
+	 * 1001 = 1001 Milliseconds
+	 * </li>
+	 * <li>
+	 * 86400000 = 1 Day
+	 * </li>
+	 * <li>
+	 * 86401000 = 86401 Seconds
+	 * </li>
+	 * </ul>
+	 *
+	 * @param  locale the locale used to determine the language
+	 * @param  milliseconds the time interval in milliseconds to describe
+	 * @return an exact localized description of the time interval in the
+	 *         largest unit possible
 	 */
 	@Override
 	public String getTimeDescription(Locale locale, long milliseconds) {
@@ -1044,26 +1193,48 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * <p>
-	 * Retrieve a localized description. For accurate output (e.g.
-	 * approximate==<code>false</code>), @see {@link
-	 * #getTimeDescription(HttpServletRequest, long)}.
-	 * </p>
+	 * Returns an approximate or exact localized description of the time
+	 * interval (in milliseconds) in the largest unit possible.
 	 *
 	 * <p>
-	 * Approximate description rounds the time to the largest possible unit and
-	 * ignores the rest, e.g. 1000-1999ms will be returned as "1 second",
-	 * 86400000-172799999ms as "1 day".
+	 * Approximate descriptions round the time to the largest possible unit and
+	 * ignores the rest. For example, using the English locale:
 	 * </p>
+	 *
+	 * <ul>
+	 * <li>
+	 * Any time interval 1000-1999 = 1 Second
+	 * </li>
+	 * <li>
+	 * Any time interval 86400000-172799999 = 1 Day
+	 * </li>
+	 * </ul>
 	 *
 	 * <p>
-	 * follows english grammar rules for plural
+	 * Otherwise, exact descriptions would follow a similar conversion pattern
+	 * as below:
 	 * </p>
 	 *
-	 * @param locale determines the requested language
-	 * @param milliseconds time span to be described
-	 * @param approximate determines exact or approximate description
-	 * @return
+	 * <ul>
+	 * <li>
+	 * 1000 = 1 Second
+	 * </li>
+	 * <li>
+	 * 1001 = 1001 Milliseconds
+	 * </li>
+	 * <li>
+	 * 86400000 = 1 Day
+	 * </li>
+	 * <li>
+	 * 86401000 = 86401 Seconds
+	 * </li>
+	 * </ul>
+	 *
+	 * @param  locale the locale used to determine the language
+	 * @param  milliseconds the time interval in milliseconds to describe
+	 * @param  approximate whether the time description is approximate
+	 * @return a localized description of the time interval in the largest unit
+	 *         possible
 	 */
 	@Override
 	public String getTimeDescription(
@@ -1094,7 +1265,33 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * @see {@link #getTimeDescription(Locale, long)}
+	 * Returns an exact localized description of the time interval (in
+	 * milliseconds) in the largest unit possible.
+	 *
+	 * <p>
+	 * For example, the following time intervals would be converted to the
+	 * following time descriptions, using the English locale:
+	 * </p>
+	 *
+	 * <ul>
+	 * <li>
+	 * 1000 = 1 Second
+	 * </li>
+	 * <li>
+	 * 1001 = 1001 Milliseconds
+	 * </li>
+	 * <li>
+	 * 86400000 = 1 Day
+	 * </li>
+	 * <li>
+	 * 86401000 = 86401 Seconds
+	 * </li>
+	 * </ul>
+	 *
+	 * @param  locale the locale used to determine the language
+	 * @param  milliseconds the time interval in milliseconds to describe
+	 * @return an exact localized description of the time interval in the
+	 *         largest unit possible
 	 */
 	@Override
 	public String getTimeDescription(Locale locale, Long milliseconds) {
@@ -1107,12 +1304,14 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * determines if given language code (e.g. "en", "en_GB") is configured to
-	 * be available. @see {@link #getAvailableLocales()} for configuration
-	 * options.
+	 * Returns <code>true</code> if the language code is configured to be
+	 * available. Locales can be configured in <code>portal.properties</code>
+	 * using the <code>locales</code> and <code>locales.enabled</code> keys.
 	 *
-	 * @param languageCode
-	 * @return
+	 * @param  languageCode the code representation of a language (e.g.
+	 *         <code>en</code> and <code>en_GB</code>) to search for
+	 * @return <code>true</code> if the language code is configured to be
+	 *         available; <code>false</code> otherwise
 	 */
 	@Override
 	public boolean isAvailableLanguageCode(String languageCode) {
@@ -1120,11 +1319,13 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * determines if given locale is configured to be available.
+	 * Returns <code>true</code> if the locale is configured to be available.
+	 * Locales can be configured in <code>portal.properties</code> using the
+	 * <code>locales</code> and <code>locales.enabled</code> keys.
 	 *
-	 * @param locale
-	 * @return
-	 * @see   {@link #getAvailableLocales()} for configuration options.
+	 * @param  locale the locale to search for
+	 * @return <code>true</code> if the locale is configured to be available;
+	 *         <code>false</code> otherwise
 	 */
 	@Override
 	public boolean isAvailableLocale(Locale locale) {
@@ -1132,8 +1333,13 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * determines if given locale is configured to be available in the given
-	 * group
+	 * Returns <code>true</code> if the locale is configured to be available in
+	 * the group.
+	 *
+	 * @param  groupId the primary key of the group
+	 * @param  locale the locale to search for
+	 * @return <code>true</code> if the locale is configured to be available in
+	 *         the group; <code>false</code> otherwise
 	 */
 	@Override
 	public boolean isAvailableLocale(long groupId, Locale locale) {
@@ -1163,8 +1369,13 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * determines if given language code is configured to be available in the
-	 * given group
+	 * Returns <code>true</code> if the language ID is configured to be
+	 * available in the group.
+	 *
+	 * @param  groupId the primary key of the group
+	 * @param  languageId the language ID to search for
+	 * @return <code>true</code> if the language ID is configured to be
+	 *         available in the group; <code>false</code> otherwise
 	 */
 	@Override
 	public boolean isAvailableLocale(long groupId, String languageId) {
@@ -1180,7 +1391,12 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * determines if given languageId is configured to be available
+	 * Returns <code>true</code> if the language ID is configured to be
+	 * available.
+	 *
+	 * @param  languageId the language ID to search for
+	 * @return <code>true</code> if the language ID is configured to be
+	 *         available; <code>false</code> otherwise
 	 */
 	@Override
 	public boolean isAvailableLocale(String languageId) {
@@ -1196,9 +1412,12 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	/**
-	 * determines if given locale is configured to be among the beta languages
+	 * Returns <code>true</code> if the locale is configured to be a beta
+	 * language.
 	 *
-	 * @see {@link #getSupportedLocales()}
+	 * @param  locale the locale to search for
+	 * @return <code>true</code> if the locale is configured to be a beta
+	 *         language; <code>false</code> otherwise
 	 */
 	@Override
 	public boolean isBetaLocale(Locale locale) {
