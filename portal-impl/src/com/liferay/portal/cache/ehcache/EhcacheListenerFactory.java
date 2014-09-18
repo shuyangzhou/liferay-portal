@@ -58,8 +58,7 @@ public class EhcacheListenerFactory implements ListenerFactory {
 			try {
 				bootstrapCacheLoaderFactory =
 					(BootstrapCacheLoaderFactory<?>)InstanceFactory.newInstance(
-						ClassLoaderUtil.getPortalClassLoader(),
-						className);
+						ClassLoaderUtil.getPortalClassLoader(), className);
 			}
 			catch (Exception e) {
 				_log.error(
@@ -96,8 +95,7 @@ public class EhcacheListenerFactory implements ListenerFactory {
 			try {
 				cacheEventListenerFactory =
 					(CacheEventListenerFactory)InstanceFactory.newInstance(
-						ClassLoaderUtil.getPortalClassLoader(),
-						className);
+						ClassLoaderUtil.getPortalClassLoader(), className);
 			}
 			catch (Exception e) {
 				_log.error(
@@ -123,7 +121,7 @@ public class EhcacheListenerFactory implements ListenerFactory {
 					cacheEventListener);
 		}
 
-		return new EhcacheCacheListenerAdapter<Serializable, Serializable>(
+		return new EhcacheCacheListenerAdapter<Serializable, Object>(
 			cacheEventListener);
 	}
 
@@ -165,8 +163,7 @@ public class EhcacheListenerFactory implements ListenerFactory {
 				cacheManagerEventListenerFactory =
 					(CacheManagerEventListenerFactory)
 						InstanceFactory.newInstance(
-							ClassLoaderUtil.getPortalClassLoader(),
-							className);
+							ClassLoaderUtil.getPortalClassLoader(), className);
 			}
 			catch (Exception e) {
 				_log.error(
