@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.repository.model;
 
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.model.StagedGroupedModel;
 
 import java.io.Serializable;
@@ -24,6 +25,9 @@ import java.util.Map;
  * @author Alexander Chow
  */
 public interface RepositoryModel<T> extends StagedGroupedModel, Serializable {
+
+	public void execute(RepositoryModelOperation repositoryModelOperation)
+		throws PortalException;
 
 	public Map<String, Serializable> getAttributes();
 

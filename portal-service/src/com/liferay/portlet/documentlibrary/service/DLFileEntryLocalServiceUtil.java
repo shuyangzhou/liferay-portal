@@ -715,6 +715,15 @@ public class DLFileEntryLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
+	public static java.util.List<com.liferay.portlet.documentlibrary.model.DLFileEntry> getRepositoryFileEntries(
+		long repositoryId, int start, int end) {
+		return getService().getRepositoryFileEntries(repositoryId, start, end);
+	}
+
+	public static int getRepositoryFileEntriesCount(long repositoryId) {
+		return getService().getRepositoryFileEntriesCount(repositoryId);
+	}
+
 	public static boolean hasExtraSettings() {
 		return getService().hasExtraSettings();
 	}
@@ -837,6 +846,13 @@ public class DLFileEntryLocalServiceUtil {
 		return getService()
 				   .updateStatus(userId, fileVersionId, status, serviceContext,
 			workflowContext);
+	}
+
+	public static void validateFile(long groupId, long folderId,
+		long fileEntryId, java.lang.String fileName, java.lang.String title)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService()
+			.validateFile(groupId, folderId, fileEntryId, fileName, title);
 	}
 
 	public static boolean verifyFileEntryCheckOut(long fileEntryId,

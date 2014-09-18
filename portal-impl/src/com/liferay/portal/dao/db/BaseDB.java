@@ -373,8 +373,10 @@ public abstract class BaseDB implements DB {
 
 			String line = null;
 
-			while (((line = unsyncBufferedReader.readLine()) != null) &&
-				   !line.startsWith("##")) {
+			while ((line = unsyncBufferedReader.readLine()) != null) {
+				if (line.startsWith("##")) {
+					continue;
+				}
 
 				if (line.startsWith("@include ")) {
 					int pos = line.indexOf(" ");
@@ -977,7 +979,6 @@ public abstract class BaseDB implements DB {
 
 			return sb.toString();
 		}
-
 	}
 
 	protected String removeNull(String content) {

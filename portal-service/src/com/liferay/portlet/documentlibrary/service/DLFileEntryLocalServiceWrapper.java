@@ -793,6 +793,18 @@ public class DLFileEntryLocalServiceWrapper implements DLFileEntryLocalService,
 	}
 
 	@Override
+	public java.util.List<com.liferay.portlet.documentlibrary.model.DLFileEntry> getRepositoryFileEntries(
+		long repositoryId, int start, int end) {
+		return _dlFileEntryLocalService.getRepositoryFileEntries(repositoryId,
+			start, end);
+	}
+
+	@Override
+	public int getRepositoryFileEntriesCount(long repositoryId) {
+		return _dlFileEntryLocalService.getRepositoryFileEntriesCount(repositoryId);
+	}
+
+	@Override
 	public boolean hasExtraSettings() {
 		return _dlFileEntryLocalService.hasExtraSettings();
 	}
@@ -928,6 +940,14 @@ public class DLFileEntryLocalServiceWrapper implements DLFileEntryLocalService,
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _dlFileEntryLocalService.updateStatus(userId, fileVersionId,
 			status, serviceContext, workflowContext);
+	}
+
+	@Override
+	public void validateFile(long groupId, long folderId, long fileEntryId,
+		java.lang.String fileName, java.lang.String title)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_dlFileEntryLocalService.validateFile(groupId, folderId, fileEntryId,
+			fileName, title);
 	}
 
 	@Override
