@@ -194,7 +194,7 @@ public class ReaderInputStreamTest {
 	}
 
 	@Test
-	public void testRead8() throws IOException {
+	public void testRead8() {
 		Reader reader = new StringReader(_TEST_STRING_ENGLISH);
 
 		try (ReaderInputStream readerInputStream = new ReaderInputStream(
@@ -210,7 +210,7 @@ public class ReaderInputStreamTest {
 	}
 
 	@Test
-	public void testRead9() throws IOException {
+	public void testRead9() {
 		Reader reader = new StringReader(_TEST_STRING_ENGLISH);
 
 		try (ReaderInputStream readerInputStream = new ReaderInputStream(
