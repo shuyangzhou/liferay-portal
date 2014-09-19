@@ -386,10 +386,11 @@ public class SyncEngine {
 		retryFileTransfers(syncAccountId);
 	}
 
-	private static Logger _logger = LoggerFactory.getLogger(SyncEngine.class);
+	private static Logger _logger = LoggerFactory.getLogger(
+		SyncEngine.class);
 
-	private static ScheduledExecutorService _eventScheduledExecutorService =
-		Executors.newScheduledThreadPool(5);
+	private static ScheduledExecutorService 
+		_eventScheduledExecutorService = Executors.newScheduledThreadPool(5);
 	private static ExecutorService _executorService =
 		Executors.newCachedThreadPool();
 	private static boolean _running;

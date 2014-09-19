@@ -273,7 +273,9 @@ public class ExpressionImpl<T> implements Expression<T> {
 	private String _expressionString;
 	private VariableNamesExtractor _variableNamesExtractor =
 		new VariableNamesExtractor();
-	private Map<String, Variable> _variables = new TreeMap<String, Variable>();
-	private Map<String, Object> _variableValues = new HashMap<String, Object>();
+	private Map<String, Variable> _variables =
+		new TreeMap<String, Variable>();
+	private Map<String, Object> _variableValues =
+		new HashMap<String, Object>();
 
 }

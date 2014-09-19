@@ -96,7 +96,8 @@ public class MissingReference implements Serializable {
 	private String _displayName;
 	private long _groupId;
 	private String _referrerClassName;
-	private Map<String, String> _referrers = new HashMap<String, String>();
+	private Map<String, String> _referrers =
+		new HashMap<String, String>();
 	private String _type;
 
 }

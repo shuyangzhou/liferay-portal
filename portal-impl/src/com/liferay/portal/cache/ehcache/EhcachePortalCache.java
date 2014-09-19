@@ -254,8 +254,9 @@ public class EhcachePortalCache<K extends Serializable, V>
 	protected Ehcache ehcache;
 
 	private BootstrapLoader _bootstrapLoader;
-	private Map<CacheListener<K, V>, RegistrationPair> _cacheEventListeners =
-		new ConcurrentHashMap<CacheListener<K, V>, RegistrationPair>();
+	private Map<CacheListener<K, V>, RegistrationPair>
+		_cacheEventListeners =
+			new ConcurrentHashMap<CacheListener<K, V>, RegistrationPair>();
 	private PortalCacheManager<K, V> _portalCacheManager;
 
 	private static class RegistrationPair {

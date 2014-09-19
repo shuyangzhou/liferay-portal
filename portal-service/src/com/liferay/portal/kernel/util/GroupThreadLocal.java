@@ -54,7 +54,8 @@ public class GroupThreadLocal {
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(GroupThreadLocal.class);
+	private static Log _log = LogFactoryUtil.getLog(
+		GroupThreadLocal.class);
 
 	private static ThreadLocal<Boolean> _deleteInProcess =
 		new AutoResetThreadLocal<Boolean>(

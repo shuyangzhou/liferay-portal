@@ -119,7 +119,8 @@ public class MaintenanceUtil {
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(MaintenanceUtil.class);
+	private static Log _log = LogFactoryUtil.getLog(
+		MaintenanceUtil.class);
 
 	private static MaintenanceUtil _instance = new MaintenanceUtil();
 

@@ -73,7 +73,8 @@ public class ConverterAdapter implements Converter {
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(ConverterAdapter.class);
+	private static Log _log = LogFactoryUtil.getLog(
+		ConverterAdapter.class);
 
 	private XStreamConverter _xStreamConverter;
 

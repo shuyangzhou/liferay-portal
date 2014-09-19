@@ -41,6 +41,7 @@ public class PreloadClassLoader extends ClassLoader {
 		return super.loadClass(name);
 	}
 
-	private Map<String, Class<?>> _classes = new HashMap<String, Class<?>>();
+	private Map<String, Class<?>> _classes =
+		new HashMap<String, Class<?>>();
 
 }

@@ -1212,7 +1212,8 @@ public class PortletExporter {
 	private PortletExporter() {
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(PortletExporter.class);
+	private static Log _log = LogFactoryUtil.getLog(
+		PortletExporter.class);
 
 	private static PortletExporter _instance = new PortletExporter();
 

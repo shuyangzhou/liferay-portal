@@ -140,9 +140,10 @@ public class POPServerUtil {
 
 	private static POPServerUtil _instance = new POPServerUtil();
 
-	private List<MessageListener> _listeners = new ArrayList<MessageListener>();
-	private ServiceRegistrationMap<MessageListener> _serviceRegistrations =
-		new ServiceRegistrationMap<MessageListener>();
+	private List<MessageListener> _listeners =
+		new ArrayList<MessageListener>();
+	private ServiceRegistrationMap<MessageListener>
+		_serviceRegistrations = new ServiceRegistrationMap<MessageListener>();
 	private ServiceTracker<MessageListener, MessageListenerWrapper>
 		_serviceTracker;
 

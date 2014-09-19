@@ -79,11 +79,13 @@ public class ServiceTrackerMapImpl<K, S, R> implements ServiceTrackerMap<K, R> {
 	}
 
 	private ServiceReferenceMapper<K> _serviceReferenceMapper;
-	private ServiceTracker<S, ServiceReferenceServiceTuple<S>> _serviceTracker;
+	private ServiceTracker<S, ServiceReferenceServiceTuple<S>> 
+		_serviceTracker;
 	private ConcurrentHashMap<K, ServiceTrackerBucket<S, R>>
 		_serviceTrackerBuckets =
 			new ConcurrentHashMap<K, ServiceTrackerBucket<S, R>>();
-	private ServiceTrackerBucketFactory<S, R> _serviceTrackerMapBucketFactory;
+	private ServiceTrackerBucketFactory<S, R> 
+		_serviceTrackerMapBucketFactory;
 
 	private class Holder<T> {
 

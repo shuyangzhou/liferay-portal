@@ -85,7 +85,8 @@ public class CaptureHandler extends Handler {
 	private Handler[] _handlers;
 	private Level _level;
 	private Logger _logger;
-	private List<LogRecord> _logRecords = new CopyOnWriteArrayList<LogRecord>();
+	private List<LogRecord> _logRecords =
+		new CopyOnWriteArrayList<LogRecord>();
 	private boolean _useParentHandlers;
 
 }

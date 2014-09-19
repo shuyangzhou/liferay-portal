@@ -77,6 +77,7 @@ public class ServiceRegistrationWrapper<T> implements ServiceRegistration<T> {
 		_serviceRegistration.unregister();
 	}
 
-	private org.osgi.framework.ServiceRegistration<T> _serviceRegistration;
+	private org.osgi.framework.ServiceRegistration<T> 
+		_serviceRegistration;
 
 }

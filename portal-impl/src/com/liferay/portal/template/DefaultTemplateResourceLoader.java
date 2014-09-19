@@ -283,8 +283,8 @@ public class DefaultTemplateResourceLoader implements TemplateResourceLoader {
 	private static Log _log = LogFactoryUtil.getLog(
 		DefaultTemplateResourceLoader.class);
 
-	private static NullHolderTemplateResource _nullHolderTemplateResource =
-		new NullHolderTemplateResource();
+	private static NullHolderTemplateResource
+		_nullHolderTemplateResource = new NullHolderTemplateResource();
 
 	private long _modificationCheckInterval;
 	private PortalCache<String, TemplateResource> _multiVMPortalCache;

@@ -151,10 +151,12 @@ public class StagedModelDataHandlerRegistryUtil {
 	private ServiceRegistrationMap<StagedModelDataHandler<?>>
 		_serviceRegistrations =
 			new ServiceRegistrationMap<StagedModelDataHandler<?>>();
-	private ServiceTracker<StagedModelDataHandler<?>, StagedModelDataHandler<?>>
-		_serviceTracker;
-	private Map<String, StagedModelDataHandler<?>> _stagedModelDataHandlers =
-		new ConcurrentHashMap<String, StagedModelDataHandler<?>>();
+	private 
+		ServiceTracker<StagedModelDataHandler<?>, StagedModelDataHandler<?>>
+			_serviceTracker;
+	private Map<String, StagedModelDataHandler<?>>
+		_stagedModelDataHandlers =
+			new ConcurrentHashMap<String, StagedModelDataHandler<?>>();
 
 	private class StagedModelDataHandlerServiceTrackerCustomizer
 		implements ServiceTrackerCustomizer

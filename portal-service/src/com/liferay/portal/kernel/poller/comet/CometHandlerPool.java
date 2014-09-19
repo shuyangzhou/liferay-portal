@@ -126,7 +126,8 @@ public class CometHandlerPool {
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(CometHandlerPool.class);
+	private static Log _log = LogFactoryUtil.getLog(
+		CometHandlerPool.class);
 
 	private ReadWriteLock _cometHandlerPoolReadWriteLock =
 		new ReentrantReadWriteLock();

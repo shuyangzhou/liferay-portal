@@ -194,6 +194,7 @@ public class SubscriptionSenderTest extends PowerMockito {
 	}
 
 	private BeanLocator _beanLocator = mock(BeanLocator.class);
-	private List<Class<?>> _serviceUtilClasses = new ArrayList<Class<?>>();
+	private List<Class<?>> _serviceUtilClasses =
+		new ArrayList<Class<?>>();
 
 }

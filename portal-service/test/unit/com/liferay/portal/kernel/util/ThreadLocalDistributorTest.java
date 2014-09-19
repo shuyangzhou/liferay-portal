@@ -215,7 +215,8 @@ public class ThreadLocalDistributorTest {
 		return clazz.getClassLoader();
 	}
 
-	private List<KeyValuePair> _keyValuePairs = new ArrayList<KeyValuePair>();
+	private List<KeyValuePair> _keyValuePairs =
+		new ArrayList<KeyValuePair>();
 
 	private static class TestClass {
 

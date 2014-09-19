@@ -33,6 +33,7 @@ public class LogoutPreAction extends Action {
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(LogoutPreAction.class);
+	private static Log _log = LogFactoryUtil.getLog(
+		LogoutPreAction.class);
 
 }

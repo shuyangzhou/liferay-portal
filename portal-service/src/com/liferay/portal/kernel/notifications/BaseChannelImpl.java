@@ -120,7 +120,8 @@ public abstract class BaseChannelImpl implements Channel {
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(BaseChannelImpl.class);
+	private static Log _log = LogFactoryUtil.getLog(
+		BaseChannelImpl.class);
 
 	private List<ChannelListener> _channelListeners =
 		new CopyOnWriteArrayList<ChannelListener>();

@@ -220,7 +220,8 @@ public class PACLIntegrationJUnitTestRunner
 
 		private Map<String, Class<?>> _classes =
 			new ConcurrentHashMap<String, Class<?>>();
-		private Map<String, URL> _urls = new ConcurrentHashMap<String, URL>();
+		private Map<String, URL> _urls =
+			new ConcurrentHashMap<String, URL>();
 
 	}
 

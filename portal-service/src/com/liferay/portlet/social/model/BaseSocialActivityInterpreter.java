@@ -585,7 +585,8 @@ public abstract class BaseSocialActivityInterpreter
 	private static Log _log = LogFactoryUtil.getLog(
 		BaseSocialActivityInterpreter.class);
 
-	private SocialActivityFeedEntry _deprecatedMarkerSocialActivityFeedEntry =
-		new SocialActivityFeedEntry(StringPool.BLANK, StringPool.BLANK);
+	private SocialActivityFeedEntry
+		_deprecatedMarkerSocialActivityFeedEntry =
+			new SocialActivityFeedEntry(StringPool.BLANK, StringPool.BLANK);
 
 }

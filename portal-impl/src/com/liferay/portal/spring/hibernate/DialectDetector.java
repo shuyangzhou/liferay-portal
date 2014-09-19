@@ -142,7 +142,8 @@ public class DialectDetector {
 		return dialect;
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(DialectDetector.class);
+	private static Log _log = LogFactoryUtil.getLog(
+		DialectDetector.class);
 
 	private static Map<String, Dialect> _dialects =
 		new ConcurrentHashMap<String, Dialect>();

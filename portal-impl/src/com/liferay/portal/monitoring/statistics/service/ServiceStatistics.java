@@ -135,7 +135,8 @@ public class ServiceStatistics
 	}
 
 	private String _className;
-	private Map<MethodSignature, RequestStatistics> _methodRequestStatistics =
-		new ConcurrentHashMap<MethodSignature, RequestStatistics>();
+	private Map<MethodSignature, RequestStatistics>
+		_methodRequestStatistics =
+			new ConcurrentHashMap<MethodSignature, RequestStatistics>();
 
 }

@@ -310,7 +310,8 @@ public abstract class AbstractMessagingConfigurator
 	private static Log _log = LogFactoryUtil.getLog(
 		AbstractMessagingConfigurator.class);
 
-	private List<Destination> _destinations = new ArrayList<Destination>();
+	private List<Destination> _destinations =
+		new ArrayList<Destination>();
 	private List<DestinationEventListener> _globalDestinationEventListeners =
 		new ArrayList<DestinationEventListener>();
 	private Map<String, List<MessageListener>> _messageListeners =

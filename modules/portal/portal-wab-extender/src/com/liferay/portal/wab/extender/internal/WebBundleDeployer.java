@@ -119,7 +119,8 @@ public class WebBundleDeployer {
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(WebBundleDeployer.class);
+	private static Log _log = LogFactoryUtil.getLog(
+		WebBundleDeployer.class);
 
 	private BundleContext _bundleContext;
 	private ExtendedHttpService _extendedHttpService;

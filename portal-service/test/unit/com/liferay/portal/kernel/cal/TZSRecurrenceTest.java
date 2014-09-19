@@ -227,8 +227,10 @@ public class TZSRecurrenceTest extends RecurrenceTestCase {
 	}
 
 	private Duration _durationHour = getDuration(0, 0, 1, 0, 0);
-	private Calendar _insideDSTCalendar = getCalendar(2011, JULY, 3, 4, 0);
-	private Calendar _outsideDSTCalendar = getCalendar(2011, FEBRUARY, 7, 5, 0);
+	private Calendar _insideDSTCalendar =
+		getCalendar(2011, JULY, 3, 4, 0);
+	private Calendar _outsideDSTCalendar =
+		getCalendar(2011, FEBRUARY, 7, 5, 0);
 	private TimeZone _timeZone = TimeZone.getTimeZone("America/New_York");
 
 }

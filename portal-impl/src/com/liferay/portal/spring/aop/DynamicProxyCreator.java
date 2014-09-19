@@ -86,7 +86,8 @@ public class DynamicProxyCreator
 
 	}
 
-	private static DynamicProxyCreator _instance = new DynamicProxyCreator();
+	private static DynamicProxyCreator _instance =
+		new DynamicProxyCreator();
 
 	private List<ObjectValuePair<BeanMatcher, InvocationHandlerFactory>>
 		_beanMatcherInvocationHandlerFactories =

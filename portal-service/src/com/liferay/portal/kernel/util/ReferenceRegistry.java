@@ -85,7 +85,8 @@ public class ReferenceRegistry {
 
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(ReferenceRegistry.class);
+	private static Log _log = LogFactoryUtil.getLog(
+		ReferenceRegistry.class);
 
 	private static PACL _pacl = new NoPACL();
 	private static Set<ReferenceEntry> _referenceEntries =

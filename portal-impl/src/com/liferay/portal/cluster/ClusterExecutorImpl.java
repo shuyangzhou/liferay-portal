@@ -594,10 +594,12 @@ public class ClusterExecutorImpl
 	private static final String _DEFAULT_CLUSTER_NAME =
 		"LIFERAY-CONTROL-CHANNEL";
 
-	private static Log _log = LogFactoryUtil.getLog(ClusterExecutorImpl.class);
+	private static Log _log = LogFactoryUtil.getLog(
+		ClusterExecutorImpl.class);
 
-	private CopyOnWriteArrayList<ClusterEventListener> _clusterEventListeners =
-		new CopyOnWriteArrayList<ClusterEventListener>();
+	private CopyOnWriteArrayList<ClusterEventListener>
+		_clusterEventListeners =
+			new CopyOnWriteArrayList<ClusterEventListener>();
 	private Map<String, Address> _clusterNodeAddresses =
 		new ConcurrentHashMap<String, Address>();
 	private JChannel _controlJChannel;

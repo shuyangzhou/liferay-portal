@@ -217,7 +217,8 @@ public class DeployManagerImpl implements DeployManager {
 		DeployUtil.undeploy(ServerDetector.getServerId(), deployDir);
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(DeployManagerImpl.class);
+	private static Log _log = LogFactoryUtil.getLog(
+		DeployManagerImpl.class);
 
 	private List<String[]> _levelsRequiredDeploymentContexts =
 		new ArrayList<String[]>();

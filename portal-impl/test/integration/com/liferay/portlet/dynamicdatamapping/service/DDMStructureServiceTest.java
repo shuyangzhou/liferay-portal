@@ -248,7 +248,8 @@ public class DDMStructureServiceTest extends BaseDDMServiceTestCase {
 
 	@Test
 	public void testSearch() throws Exception {
-		DDMStructure structure = addStructure(_classNameId, "Test Structure 1");
+		DDMStructure structure = addStructure(
+			_classNameId, "Test Structure 1");
 
 		addStructure(_classNameId, "Test Structure 2");
 
@@ -262,7 +263,8 @@ public class DDMStructureServiceTest extends BaseDDMServiceTestCase {
 
 	@Test
 	public void testSearchByKeywords() throws Exception {
-		DDMStructure structure = addStructure(_classNameId, "Test Structure 1");
+		DDMStructure structure = addStructure(
+			_classNameId, "Test Structure 1");
 
 		addStructure(_classNameId, "Test Structure 2");
 
@@ -324,6 +326,7 @@ public class DDMStructureServiceTest extends BaseDDMServiceTestCase {
 			ServiceContextTestUtil.getServiceContext(group.getGroupId()));
 	}
 
-	private long _classNameId = PortalUtil.getClassNameId(DDLRecord.class);
+	private long _classNameId =
+		PortalUtil.getClassNameId(DDLRecord.class);
 
 }

@@ -49,7 +49,8 @@ public class RoleUserChecker extends RowChecker {
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(RoleUserChecker.class);
+	private static Log _log = LogFactoryUtil.getLog(
+		RoleUserChecker.class);
 
 	private User _user;
 

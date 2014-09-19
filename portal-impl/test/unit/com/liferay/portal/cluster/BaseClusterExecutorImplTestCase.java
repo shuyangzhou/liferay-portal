@@ -532,8 +532,9 @@ public abstract class BaseClusterExecutorImplTestCase
 			}
 		}
 
-		private Exchanger<InterruptedException> _interruptedExceptionExchanger =
-			new Exchanger<InterruptedException>();
+		private Exchanger<InterruptedException>
+			_interruptedExceptionExchanger =
+				new Exchanger<InterruptedException>();
 		private Exchanger<ClusterNodeResponses> _messageExchanger =
 			new Exchanger<ClusterNodeResponses>();
 		private Exchanger<TimeoutException> _timeoutExceptionExchanger =
@@ -610,8 +611,8 @@ public abstract class BaseClusterExecutorImplTestCase
 			}
 		}
 
-		private ThreadPoolExecutor _threadPoolExecutor = new ThreadPoolExecutor(
-			10, 10);
+		private ThreadPoolExecutor _threadPoolExecutor =
+			new ThreadPoolExecutor(10, 10);
 
 	}
 

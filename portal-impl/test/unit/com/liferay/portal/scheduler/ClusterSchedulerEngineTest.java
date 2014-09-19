@@ -1347,7 +1347,8 @@ public class ClusterSchedulerEngineTest {
 			return namespaceGroupName;
 		}
 
-		private static List<Address> _addresses = new ArrayList<Address>();
+		private static List<Address> _addresses =
+			new ArrayList<Address>();
 		private static Address _anotherAddress;
 		private static List<ClusterEventListener> _clusterEventListeners =
 			new ArrayList<ClusterEventListener>();

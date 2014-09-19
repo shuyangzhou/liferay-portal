@@ -1056,7 +1056,8 @@ public class PortletBagFactory {
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(PortletBagFactory.class);
+	private static Log _log = LogFactoryUtil.getLog(
+		PortletBagFactory.class);
 
 	private ClassLoader _classLoader;
 	private ServletContext _servletContext;

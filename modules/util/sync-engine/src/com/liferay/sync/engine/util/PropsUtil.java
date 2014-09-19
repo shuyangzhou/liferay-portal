@@ -77,7 +77,8 @@ public class PropsUtil {
 		_compositeConfiguration.setProperty(key, value);
 	}
 
-	private static Logger _logger = LoggerFactory.getLogger(PropsUtil.class);
+	private static Logger _logger = LoggerFactory.getLogger(
+		PropsUtil.class);
 
 	private static PropsUtil _instance = new PropsUtil();
 

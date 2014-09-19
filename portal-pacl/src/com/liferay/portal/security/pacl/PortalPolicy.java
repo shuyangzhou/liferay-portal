@@ -265,7 +265,8 @@ public class PortalPolicy extends Policy {
 		}
 	}
 
-	private static ThreadLocal<Boolean> _started = new ThreadLocal<Boolean>() {
+	private static ThreadLocal<Boolean> _started =
+		new ThreadLocal<Boolean>() {
 
 		@Override
 		protected Boolean initialValue() {
@@ -275,10 +276,12 @@ public class PortalPolicy extends Policy {
 	};
 
 	private Field _field;
-	private PACLPolicy _paclPolicy = PACLPolicyManager.getDefaultPACLPolicy();
-	private ConcurrentMap<Object, PermissionCollection> _permissionCollections =
-		new ConcurrentReferenceValueHashMap<Object, PermissionCollection>(
-			FinalizeManager.WEAK_REFERENCE_FACTORY);
+	private PACLPolicy _paclPolicy =
+		PACLPolicyManager.getDefaultPACLPolicy();
+	private ConcurrentMap<Object, PermissionCollection>
+		_permissionCollections =
+			new ConcurrentReferenceValueHashMap<Object, PermissionCollection>(
+				FinalizeManager.WEAK_REFERENCE_FACTORY);
 	private Policy _policy;
 	private ConcurrentMap<URLWrapper, PermissionCollection>
 		_urlPermissionCollections = new ConcurrentReferenceValueHashMap
