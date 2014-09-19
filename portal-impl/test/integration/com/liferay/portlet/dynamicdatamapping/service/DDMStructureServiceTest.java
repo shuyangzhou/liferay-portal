@@ -248,7 +248,8 @@ public class DDMStructureServiceTest extends BaseDDMServiceTestCase {
 
 	@Test
 	public void testSearch() throws Exception {
-		DDMStructure structure = addStructure(_CLASS_NAME_ID, "Test Structure 1");
+		DDMStructure structure = addStructure(
+			_CLASS_NAME_ID, "Test Structure 1");
 
 		addStructure(_CLASS_NAME_ID, "Test Structure 2");
 
@@ -262,7 +263,8 @@ public class DDMStructureServiceTest extends BaseDDMServiceTestCase {
 
 	@Test
 	public void testSearchByKeywords() throws Exception {
-		DDMStructure structure = addStructure(_CLASS_NAME_ID, "Test Structure 1");
+		DDMStructure structure = addStructure(
+			_CLASS_NAME_ID, "Test Structure 1");
 
 		addStructure(_CLASS_NAME_ID, "Test Structure 2");
 
