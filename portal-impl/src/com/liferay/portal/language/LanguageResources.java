@@ -295,11 +295,13 @@ public class LanguageResources {
 		private LanguageResourcesBundle(Locale locale) {
 			_locale = locale;
 
-			_languageMap = _languageMaps.get(locale);
+			Map<String, String> languageMap = _languageMaps.get(locale);
 
-			if (_languageMap == null) {
-				_languageMap = _loadLocale(locale);
+			if (languageMap == null) {
+				languageMap = _loadLocale(locale);
 			}
+
+			_languageMap = languageMap;
 
 			Locale superLocale = getSuperLocale(locale);
 

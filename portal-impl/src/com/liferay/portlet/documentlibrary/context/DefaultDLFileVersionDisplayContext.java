@@ -92,9 +92,13 @@ public class DefaultDLFileVersionDisplayContext
 
 		_companyId = _themeDisplay.getCompanyId();
 
+		FileEntry fileEntry = null;
+
 		if (fileVersion != null) {
-			_fileEntry = fileVersion.getFileEntry();
+			fileEntry = fileVersion.getFileEntry();
 		}
+
+		_fileEntry = fileEntry;
 
 		_defaultDLFileEntryActionsDisplayContextHelper =
 			new DefaultDLFileVersionDisplayContextHelper(
@@ -103,7 +107,7 @@ public class DefaultDLFileVersionDisplayContext
 		long fileEntryTypeId = ParamUtil.getLong(
 			request, "fileEntryTypeId", -1);
 
-		if ((_fileEntryTypeId == -1) && (_fileEntry != null) &&
+		if ((fileEntryTypeId == -1) && (_fileEntry != null) &&
 			(_fileEntry.getModel() instanceof DLFileEntry)) {
 
 			DLFileEntry dlFileEntry = (DLFileEntry)_fileEntry.getModel();
