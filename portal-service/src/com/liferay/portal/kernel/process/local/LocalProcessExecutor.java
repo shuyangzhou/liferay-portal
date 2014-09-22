@@ -233,7 +233,7 @@ public class LocalProcessExecutor implements ProcessExecutor {
 		return _threadPoolExecutor;
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		LocalProcessExecutor.class);
 
 	private final Map<Process, NoticeableFuture<?>> _managedProcesses =

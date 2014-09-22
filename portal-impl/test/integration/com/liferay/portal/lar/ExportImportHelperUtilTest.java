@@ -923,8 +923,7 @@ public class ExportImportHelperUtilTest extends PowerMockito {
 		}
 
 		private List<String> _binaryEntries = new ArrayList<String>();
-		private Map<String, String> _entries =
-			new HashMap<String, String>();
+		private Map<String, String> _entries = new HashMap<String, String>();
 
 	}
 

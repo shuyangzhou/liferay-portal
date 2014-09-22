@@ -102,7 +102,7 @@ public class FacebookServlet extends HttpServlet {
 		return fbml;
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		FacebookServlet.class);
 
 }

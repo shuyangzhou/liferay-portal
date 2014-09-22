@@ -137,7 +137,7 @@ public class RememberMeAutoLogin extends BaseAutoLogin {
 		CookieKeys.addCookie(request, response, cookie);
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		RememberMeAutoLogin.class);
 
 }

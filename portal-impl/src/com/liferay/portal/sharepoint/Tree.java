@@ -50,7 +50,7 @@ public class Tree implements ResponseElement {
 		return sb.toString();
 	}
 
-	private List<ResponseElement> _children =
+	private final List<ResponseElement> _children =
 		new ArrayList<ResponseElement>();
 
 }

@@ -1566,7 +1566,7 @@ public class RoleLocalServiceImpl extends RoleLocalServiceBaseImpl {
 		}
 	}
 
-	private Map<String, Role> _systemRolesMap =
+	private final Map<String, Role> _systemRolesMap =
 		new HashMap<String, Role>();
 
 }

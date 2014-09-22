@@ -35,10 +35,10 @@ public class DynamicIncludeUtil {
 		_dynamicIncludes.open();
 	}
 
-	private static DynamicIncludeUtil _instance =
+	private static final DynamicIncludeUtil _instance =
 		new DynamicIncludeUtil();
 
-	private ServiceTrackerMap<String, List<DynamicInclude>>
+	private final ServiceTrackerMap<String, List<DynamicInclude>>
 		_dynamicIncludes;
 
 }

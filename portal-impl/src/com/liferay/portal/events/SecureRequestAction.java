@@ -96,7 +96,7 @@ public class SecureRequestAction extends Action {
 
 	private static final boolean _REQUIRES_SECURE = true;
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		SecureRequestAction.class);
 
 }

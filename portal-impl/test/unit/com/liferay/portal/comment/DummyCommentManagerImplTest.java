@@ -58,7 +58,7 @@ public class DummyCommentManagerImplTest {
 			0, _commentManager.getCommentsCount(className, classPK));
 	}
 
-	private CommentManager _commentManager =
+	private final CommentManager _commentManager =
 		new DummyCommentManagerImpl();
 
 }

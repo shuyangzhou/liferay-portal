@@ -752,7 +752,7 @@ public class InvokerPortletImpl implements InvokerPortlet {
 		setPortletFilters();
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		InvokerPortletImpl.class);
 
 	private List<ActionFilter> _actionFilters;
@@ -770,7 +770,7 @@ public class InvokerPortletImpl implements InvokerPortlet {
 		new ArrayList<ResourceFilter>();
 	private boolean _strutsBridgePortlet;
 	private boolean _strutsPortlet;
-	private List<PortletFilter> _systemPortletFilters =
+	private final List<PortletFilter> _systemPortletFilters =
 		new ArrayList<PortletFilter>();
 
 	private class PortletFilterServiceTrackerCustomizer<T extends PortletFilter>
@@ -832,7 +832,7 @@ public class InvokerPortletImpl implements InvokerPortlet {
 			portletFilter.destroy();
 		}
 
-		private PortletContext _portletContext;
+		private final PortletContext _portletContext;
 
 	}
 

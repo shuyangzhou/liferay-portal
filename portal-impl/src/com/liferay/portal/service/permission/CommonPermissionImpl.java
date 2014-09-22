@@ -75,7 +75,7 @@ public class CommonPermissionImpl implements CommonPermission {
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		CommonPermissionImpl.class);
 
 }

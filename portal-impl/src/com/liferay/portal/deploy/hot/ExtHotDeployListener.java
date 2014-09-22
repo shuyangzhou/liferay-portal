@@ -255,7 +255,7 @@ public class ExtHotDeployListener extends BaseHotDeployListener {
 		FileUtil.deltree(tmpDir);
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		ExtHotDeployListener.class);
 
 }

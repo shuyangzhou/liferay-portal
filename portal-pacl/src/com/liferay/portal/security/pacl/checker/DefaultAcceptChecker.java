@@ -55,7 +55,7 @@ public class DefaultAcceptChecker extends BaseChecker {
 		return true;
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		DefaultAcceptChecker.class);
 
 }

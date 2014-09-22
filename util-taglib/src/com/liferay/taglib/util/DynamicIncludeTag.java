@@ -108,7 +108,7 @@ public class DynamicIncludeTag extends TagSupport {
 		};
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		DynamicIncludeTag.class);
 
 	private String _key;

@@ -182,12 +182,12 @@ public class GeneratingPACLPolicy extends ActivePACLPolicy {
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		GeneratingPACLPolicy.class);
 
-	private Map<String, Set<String>> _properties =
+	private final Map<String, Set<String>> _properties =
 		new ConcurrentSkipListMap<String, Set<String>>();
-	private ReentrantLock _reentrantLock = new ReentrantLock();
+	private final ReentrantLock _reentrantLock = new ReentrantLock();
 
 	private class AuthorizationPropertyPrivilegedAction
 		implements PrivilegedAction<Void> {
@@ -247,7 +247,7 @@ public class GeneratingPACLPolicy extends ActivePACLPolicy {
 			return null;
 		}
 
-		private AuthorizationProperty _authorizationProperty;
+		private final AuthorizationProperty _authorizationProperty;
 
 	}
 

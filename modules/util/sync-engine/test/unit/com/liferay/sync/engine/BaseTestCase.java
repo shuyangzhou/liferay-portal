@@ -243,7 +243,7 @@ public abstract class BaseTestCase {
 	protected String filePathName;
 	protected SyncAccount syncAccount;
 
-	private static Logger _logger = LoggerFactory.getLogger(
+	private static final Logger _logger = LoggerFactory.getLogger(
 		BaseTestCase.class);
 
 }

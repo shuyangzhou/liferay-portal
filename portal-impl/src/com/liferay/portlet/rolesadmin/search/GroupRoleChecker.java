@@ -49,9 +49,9 @@ public class GroupRoleChecker extends RowChecker {
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		GroupRoleChecker.class);
 
-	private Role _role;
+	private final Role _role;
 
 }

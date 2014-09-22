@@ -157,7 +157,7 @@ public class PermissionExporter {
 	private PermissionExporter() {
 	}
 
-	private static PermissionExporter _instance =
+	private static final PermissionExporter _instance =
 		new PermissionExporter();
 
 }

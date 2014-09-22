@@ -53,7 +53,7 @@ public class CaptchaPortletAction extends PortletAction {
 
 	private static final boolean _CHECK_METHOD_ON_PROCESS_ACTION = false;
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		CaptchaPortletAction.class);
 
 }

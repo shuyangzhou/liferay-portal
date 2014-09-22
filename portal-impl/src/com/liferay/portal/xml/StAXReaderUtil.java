@@ -55,7 +55,7 @@ public class StAXReaderUtil {
 		return xmlInputFactory;
 	}
 
-	private static XMLInputFactory _xmlInputFactory =
+	private static final XMLInputFactory _xmlInputFactory =
 		_createXMLInputFactory();
 
 }

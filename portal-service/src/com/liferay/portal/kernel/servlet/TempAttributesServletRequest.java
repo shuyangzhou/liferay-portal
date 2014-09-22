@@ -82,9 +82,9 @@ public class TempAttributesServletRequest extends HttpServletRequestWrapper {
 		_attributes.put(name, value);
 	}
 
-	private static Object _nullValue = new Object();
+	private static final Object _nullValue = new Object();
 
-	private Map<String, Object> _attributes =
+	private final Map<String, Object> _attributes =
 		new HashMap<String, Object>();
 
 }

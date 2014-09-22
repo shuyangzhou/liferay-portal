@@ -43,5 +43,4 @@ public class SuccessStrutsAction extends BaseStrutsAction {
 
 	private static final AtomicBoolean _INSTANTIATED = new AtomicBoolean();
 
-
 }

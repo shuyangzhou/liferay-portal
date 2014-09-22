@@ -71,7 +71,7 @@ public class ThemeResourceParser extends URLResourceParser {
 		return new File(fileStorage, templateId).toURI().toURL();
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		ThemeResourceParser.class);
 
 }

@@ -251,7 +251,7 @@ public class PermissionImporter {
 	private PermissionImporter() {
 	}
 
-	private static PermissionImporter _instance =
+	private static final PermissionImporter _instance =
 		new PermissionImporter();
 
 }

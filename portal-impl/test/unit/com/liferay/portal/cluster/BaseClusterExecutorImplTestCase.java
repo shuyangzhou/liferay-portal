@@ -413,9 +413,9 @@ public abstract class BaseClusterExecutorImplTestCase
 			}
 		}
 
-		private Exchanger<ClusterEvent> _departMessageExchanger =
+		private final Exchanger<ClusterEvent> _departMessageExchanger =
 			new Exchanger<ClusterEvent>();
-		private Exchanger<ClusterEvent> _joinMessageExchanger =
+		private final Exchanger<ClusterEvent> _joinMessageExchanger =
 			new Exchanger<ClusterEvent>();
 
 	}
@@ -462,8 +462,8 @@ public abstract class BaseClusterExecutorImplTestCase
 			}
 		}
 
-		private ClusterExecutorImpl _clusterExecutorImpl;
-		private Exchanger<ClusterRequest> _localRequestExchanger =
+		private final ClusterExecutorImpl _clusterExecutorImpl;
+		private final Exchanger<ClusterRequest> _localRequestExchanger =
 			new Exchanger<ClusterRequest>();
 
 	}
@@ -532,12 +532,12 @@ public abstract class BaseClusterExecutorImplTestCase
 			}
 		}
 
-		private Exchanger<InterruptedException>
+		private final Exchanger<InterruptedException>
 			_interruptedExceptionExchanger =
 				new Exchanger<InterruptedException>();
-		private Exchanger<ClusterNodeResponses> _messageExchanger =
+		private final Exchanger<ClusterNodeResponses> _messageExchanger =
 			new Exchanger<ClusterNodeResponses>();
-		private Exchanger<TimeoutException> _timeoutExceptionExchanger =
+		private final Exchanger<TimeoutException> _timeoutExceptionExchanger =
 			new Exchanger<TimeoutException>();
 
 	}
@@ -611,7 +611,7 @@ public abstract class BaseClusterExecutorImplTestCase
 			}
 		}
 
-		private ThreadPoolExecutor _threadPoolExecutor =
+		private final ThreadPoolExecutor _threadPoolExecutor =
 			new ThreadPoolExecutor(10, 10);
 
 	}

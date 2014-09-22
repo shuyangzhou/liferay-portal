@@ -73,9 +73,9 @@ public class PortletModeFactory {
 
 	private static final String _VIEW = PortletMode.VIEW.toString();
 
-	private static PortletModeFactory _instance =
+	private static final PortletModeFactory _instance =
 		new PortletModeFactory();
 
-	private Map<String, PortletMode> _portletModes;
+	private final Map<String, PortletMode> _portletModes;
 
 }
