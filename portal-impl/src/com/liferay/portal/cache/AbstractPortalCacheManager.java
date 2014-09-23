@@ -15,6 +15,7 @@
 package com.liferay.portal.cache;
 
 import com.liferay.portal.cache.transactional.TransactionalPortalCache;
+import com.liferay.portal.kernel.cache.AggregatedCacheManagerListener;
 import com.liferay.portal.kernel.cache.BlockingPortalCache;
 import com.liferay.portal.kernel.cache.BootstrapLoader;
 import com.liferay.portal.kernel.cache.CacheListener;
@@ -47,6 +48,7 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.management.MBeanServer;
@@ -148,6 +150,11 @@ public abstract class AbstractPortalCacheManager<K extends Serializable, V>
 	}
 
 	@Override
+	public Set<CacheManagerListener> getCacheManagerListeners() {
+		return aggregatedCacheManagerListener.getCacheManagerListeners();
+	}
+
+	@Override
 	public String getName() {
 		return cacheManagerName;
 	}
@@ -165,6 +172,14 @@ public abstract class AbstractPortalCacheManager<K extends Serializable, V>
 		reconfigVendorCache(configurationParser);
 
 		reconfigPortalCache(configurationParser);
+	}
+
+	@Override
+	public boolean registerCacheManagerListener(
+		CacheManagerListener cacheManagerListener) {
+
+		return aggregatedCacheManagerListener.addCacheListener(
+			cacheManagerListener);
 	}
 
 	@Override
@@ -188,6 +203,19 @@ public abstract class AbstractPortalCacheManager<K extends Serializable, V>
 
 	public void setMpiOnly(boolean mpiOnly) {
 		_mpiOnly = mpiOnly;
+	}
+
+	@Override
+	public boolean unregisterCacheManagerListener(
+		CacheManagerListener cacheManagerListener) {
+
+		return aggregatedCacheManagerListener.removeCacheListener(
+			cacheManagerListener);
+	}
+
+	@Override
+	public void unregisterCacheManagerListeners() {
+		aggregatedCacheManagerListener.clearAll();
 	}
 
 	protected PortalCache<K, V> createPortalCache(
@@ -382,6 +410,9 @@ public abstract class AbstractPortalCacheManager<K extends Serializable, V>
 
 		return callbackFactory;
 	}
+
+	protected final AggregatedCacheManagerListener
+		aggregatedCacheManagerListener = new AggregatedCacheManagerListener();
 
 	private static Log _log = LogFactoryUtil.getLog(
 		AbstractPortalCacheManager.class);

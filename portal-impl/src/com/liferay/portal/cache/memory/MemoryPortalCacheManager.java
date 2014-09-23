@@ -16,7 +16,6 @@ package com.liferay.portal.cache.memory;
 
 import com.liferay.portal.cache.AbstractPortalCacheManager;
 import com.liferay.portal.kernel.cache.BootstrapLoader;
-import com.liferay.portal.kernel.cache.CacheManagerListener;
 import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cache.configuration.ConfigurationParser;
 import com.liferay.portal.kernel.util.StringPool;
@@ -25,29 +24,14 @@ import java.io.Serializable;
 
 import java.net.URL;
 
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * @author Brian Wing Shun Chan
  */
 public class MemoryPortalCacheManager<K extends Serializable, V>
 	extends AbstractPortalCacheManager<K, V> {
-
-	@Override
-	public Set<CacheManagerListener> getCacheManagerListeners() {
-		return new HashSet<CacheManagerListener>(_cacheManagerListeners);
-	}
-
-	@Override
-	public boolean registerCacheManagerListener(
-		CacheManagerListener cacheManagerListener) {
-
-		return _cacheManagerListeners.add(cacheManagerListener);
-	}
 
 	public void setCacheInitialCapacity(int cacheInitialCapacity) {
 		_cacheInitialCapacity = cacheInitialCapacity;
@@ -61,18 +45,6 @@ public class MemoryPortalCacheManager<K extends Serializable, V>
 
 	public void setName(String name) {
 		cacheManagerName = name;
-	}
-
-	@Override
-	public boolean unregisterCacheManagerListener(
-		CacheManagerListener cacheManagerListener) {
-
-		return _cacheManagerListeners.remove(cacheManagerListener);
-	}
-
-	@Override
-	public void unregisterCacheManagerListeners() {
-		_cacheManagerListeners.clear();
 	}
 
 	@Override
@@ -97,11 +69,7 @@ public class MemoryPortalCacheManager<K extends Serializable, V>
 
 			_memoryPortalCaches.put(cacheName, portalCache);
 
-			for (CacheManagerListener cacheManagerListener :
-					_cacheManagerListeners) {
-
-				cacheManagerListener.notifyCacheAdded(cacheName);
-			}
+			aggregatedCacheManagerListener.notifyCacheAdded(cacheName);
 		}
 
 		return portalCache;
@@ -115,11 +83,7 @@ public class MemoryPortalCacheManager<K extends Serializable, V>
 			memoryPortalCache.destroy();
 		}
 
-		for (CacheManagerListener cacheManagerListener :
-				_cacheManagerListeners) {
-
-			cacheManagerListener.dispose();
-		}
+		aggregatedCacheManagerListener.dispose();
 	}
 
 	@Override
@@ -129,11 +93,7 @@ public class MemoryPortalCacheManager<K extends Serializable, V>
 
 		memoryPortalCache.destroy();
 
-		for (CacheManagerListener cacheManagerListener :
-				_cacheManagerListeners) {
-
-			cacheManagerListener.notifyCacheRemoved(cacheName);
-		}
+		aggregatedCacheManagerListener.notifyCacheRemoved(cacheName);
 	}
 
 	@Override
@@ -167,11 +127,7 @@ public class MemoryPortalCacheManager<K extends Serializable, V>
 			new ConcurrentHashMap<String, MemoryPortalCache<K, V>>(
 				_cacheManagerInitialCapacity);
 
-		for (CacheManagerListener cacheManagerListener :
-				_cacheManagerListeners) {
-
-			cacheManagerListener.init();
-		}
+		aggregatedCacheManagerListener.init();
 	}
 
 	@Override
@@ -181,8 +137,6 @@ public class MemoryPortalCacheManager<K extends Serializable, V>
 
 	private int _cacheInitialCapacity = 10000;
 	private int _cacheManagerInitialCapacity = 10000;
-	private Set<CacheManagerListener> _cacheManagerListeners =
-		new CopyOnWriteArraySet<CacheManagerListener>();
 	private Map<String, MemoryPortalCache<K, V>> _memoryPortalCaches;
 
 }
