@@ -755,12 +755,12 @@ public abstract class BaseMobileDriverImpl
 		throw new UnsupportedOperationException();
 	}
 
-	private String _dependenciesDirName =
+	private final String _dependenciesDirName =
 		"portal-web//test//functional//com//liferay//portalweb//dependencies//";
-	private String _outputDirName = TestPropsValues.OUTPUT_DIR_NAME;
+	private final String _outputDirName = TestPropsValues.OUTPUT_DIR_NAME;
 	private String _primaryTestSuiteName;
-	private String _projectDirName;
-	private String _sikuliImagesDirName =
+	private final String _projectDirName;
+	private final String _sikuliImagesDirName =
 		_dependenciesDirName + "sikuli//linux//";
 
 }

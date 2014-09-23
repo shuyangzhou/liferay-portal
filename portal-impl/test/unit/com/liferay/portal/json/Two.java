@@ -34,7 +34,7 @@ public class Two {
 		return _not;
 	}
 
-	private String _fone = "string";
+	private final String _fone = "string";
 
 	@JSON
 	private int _ftwo = 173;

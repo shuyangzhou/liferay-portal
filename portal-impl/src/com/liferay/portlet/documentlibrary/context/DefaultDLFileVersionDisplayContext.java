@@ -92,9 +92,13 @@ public class DefaultDLFileVersionDisplayContext
 
 		_companyId = _themeDisplay.getCompanyId();
 
+		FileEntry fileEntry = null;
+
 		if (fileVersion != null) {
-			_fileEntry = fileVersion.getFileEntry();
+			fileEntry = fileVersion.getFileEntry();
 		}
+
+		_fileEntry = fileEntry;
 
 		_defaultDLFileEntryActionsDisplayContextHelper =
 			new DefaultDLFileVersionDisplayContextHelper(
@@ -103,7 +107,7 @@ public class DefaultDLFileVersionDisplayContext
 		long fileEntryTypeId = ParamUtil.getLong(
 			request, "fileEntryTypeId", -1);
 
-		if ((_fileEntryTypeId == -1) && (_fileEntry != null) &&
+		if ((fileEntryTypeId == -1) && (_fileEntry != null) &&
 			(_fileEntry.getModel() instanceof DLFileEntry)) {
 
 			DLFileEntry dlFileEntry = (DLFileEntry)_fileEntry.getModel();
@@ -854,22 +858,22 @@ public class DefaultDLFileVersionDisplayContext
 	private static final UUID _UUID = UUID.fromString(
 		"85F6C50E-3893-4E32-9D63-208528A503FA");
 
-	private long _companyId;
+	private final long _companyId;
 	private String _currentURL;
-	private DefaultDLFileVersionDisplayContextHelper
+	private final DefaultDLFileVersionDisplayContextHelper
 		_defaultDLFileEntryActionsDisplayContextHelper;
 	private DLActionsDisplayContext _dlActionsDisplayContext;
-	private FileEntry _fileEntry;
-	private long _fileEntryTypeId;
-	private FileVersion _fileVersion;
-	private long _folderId;
+	private final FileEntry _fileEntry;
+	private final long _fileEntryTypeId;
+	private final FileVersion _fileVersion;
+	private final long _folderId;
 	private Boolean _ieOnWin32;
-	private LiferayPortletRequest _liferayPortletRequest;
-	private LiferayPortletResponse _liferayPortletResponse;
-	private PortletDisplay _portletDisplay;
-	private HttpServletRequest _request;
-	private long _scopeGroupId;
-	private ThemeDisplay _themeDisplay;
+	private final LiferayPortletRequest _liferayPortletRequest;
+	private final LiferayPortletResponse _liferayPortletResponse;
+	private final PortletDisplay _portletDisplay;
+	private final HttpServletRequest _request;
+	private final long _scopeGroupId;
+	private final ThemeDisplay _themeDisplay;
 	private Boolean _trashEnabled;
 
 }

@@ -35,8 +35,8 @@ public class One {
 		return _not;
 	}
 
-	private String _fone = "string";
-	private int _ftwo = 173;
+	private final String _fone = "string";
+	private final int _ftwo = 173;
 
 	@JSON(include = false)
 	private long _not = -1;

@@ -44,7 +44,7 @@ public class Three {
 		this._ignore = ignore;
 	}
 
-	private boolean _feature = true;
+	private final boolean _feature = true;
 	private boolean _flag = true;
 	private String _ignore;
 

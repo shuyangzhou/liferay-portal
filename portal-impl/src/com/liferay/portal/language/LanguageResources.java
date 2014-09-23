@@ -253,14 +253,15 @@ public class LanguageResources {
 		return properties;
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(LanguageResources.class);
+	private static final Log _log = LogFactoryUtil.getLog(
+		LanguageResources.class);
 
-	private static Locale _blankLocale = new Locale(StringPool.BLANK);
+	private static final Locale _blankLocale = new Locale(StringPool.BLANK);
 	private static String[] _configNames;
-	private static Map<Locale, Map<String, String>> _languageMaps =
+	private static final Map<Locale, Map<String, String>> _languageMaps =
 		new ConcurrentHashMap<Locale, Map<String, String>>(64);
-	private static Locale _nullLocale = new Locale(StringPool.BLANK);
-	private static Map<Locale, Locale> _superLocales =
+	private static final Locale _nullLocale = new Locale(StringPool.BLANK);
+	private static final Map<Locale, Locale> _superLocales =
 		new ConcurrentHashMap<Locale, Locale>();
 
 	private static class LanguageResourcesBundle extends ResourceBundle {
@@ -294,11 +295,13 @@ public class LanguageResources {
 		private LanguageResourcesBundle(Locale locale) {
 			_locale = locale;
 
-			_languageMap = _languageMaps.get(locale);
+			Map<String, String> languageMap = _languageMaps.get(locale);
 
-			if (_languageMap == null) {
-				_languageMap = _loadLocale(locale);
+			if (languageMap == null) {
+				languageMap = _loadLocale(locale);
 			}
+
+			_languageMap = languageMap;
 
 			Locale superLocale = getSuperLocale(locale);
 
@@ -307,8 +310,8 @@ public class LanguageResources {
 			}
 		}
 
-		private Map<String, String> _languageMap;
-		private Locale _locale;
+		private final Map<String, String> _languageMap;
+		private final Locale _locale;
 
 	}
 
