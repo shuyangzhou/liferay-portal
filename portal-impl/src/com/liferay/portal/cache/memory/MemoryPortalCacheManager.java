@@ -14,10 +14,12 @@
 
 package com.liferay.portal.cache.memory;
 
+import com.liferay.portal.cache.AbstractPortalCacheManager;
+import com.liferay.portal.kernel.cache.BootstrapLoader;
 import com.liferay.portal.kernel.cache.CacheManagerListener;
 import com.liferay.portal.kernel.cache.PortalCache;
-import com.liferay.portal.kernel.cache.PortalCacheManager;
-import com.liferay.portal.kernel.cache.PortalCacheProvider;
+import com.liferay.portal.kernel.cache.configuration.ConfigurationParser;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Serializable;
 
@@ -33,76 +35,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
  * @author Brian Wing Shun Chan
  */
 public class MemoryPortalCacheManager<K extends Serializable, V>
-	implements PortalCacheManager<K, V> {
-
-	public void afterPropertiesSet() {
-		if (_name == null) {
-			throw new NullPointerException("Name is null");
-		}
-
-		_memoryPortalCaches =
-			new ConcurrentHashMap<String, MemoryPortalCache<K, V>>(
-				_cacheManagerInitialCapacity);
-
-		for (CacheManagerListener cacheManagerListener :
-				_cacheManagerListeners) {
-
-			cacheManagerListener.init();
-		}
-
-		PortalCacheProvider.registerPortalCacheManager(this);
-	}
-
-	@Override
-	public void clearAll() {
-		for (MemoryPortalCache<K, V> memoryPortalCache :
-				_memoryPortalCaches.values()) {
-
-			memoryPortalCache.removeAll();
-		}
-	}
-
-	@Override
-	public void destroy() {
-		PortalCacheProvider.unregisterPortalCacheManager(_name);
-
-		for (MemoryPortalCache<K, V> memoryPortalCache :
-				_memoryPortalCaches.values()) {
-
-			memoryPortalCache.destroy();
-		}
-
-		for (CacheManagerListener cacheManagerListener :
-				_cacheManagerListeners) {
-
-			cacheManagerListener.dispose();
-		}
-	}
-
-	@Override
-	public PortalCache<K, V> getCache(String name) {
-		return getCache(name, false);
-	}
-
-	@Override
-	public PortalCache<K, V> getCache(String name, boolean blocking) {
-		MemoryPortalCache<K, V> portalCache = _memoryPortalCaches.get(name);
-
-		if (portalCache == null) {
-			portalCache = new MemoryPortalCache<K, V>(
-				this, name, _cacheInitialCapacity);
-
-			_memoryPortalCaches.put(name, portalCache);
-
-			for (CacheManagerListener cacheManagerListener :
-					_cacheManagerListeners) {
-
-				cacheManagerListener.notifyCacheAdded(name);
-			}
-		}
-
-		return portalCache;
-	}
+	extends AbstractPortalCacheManager<K, V> {
 
 	@Override
 	public Set<CacheManagerListener> getCacheManagerListeners() {
@@ -110,38 +43,10 @@ public class MemoryPortalCacheManager<K extends Serializable, V>
 	}
 
 	@Override
-	public String getName() {
-		return _name;
-	}
-
-	@Override
-	public boolean isClusterAware() {
-		return _clusterAware;
-	}
-
-	@Override
-	public void reconfigureCaches(URL configurationURL) {
-	}
-
-	@Override
 	public boolean registerCacheManagerListener(
 		CacheManagerListener cacheManagerListener) {
 
 		return _cacheManagerListeners.add(cacheManagerListener);
-	}
-
-	@Override
-	public void removeCache(String name) {
-		MemoryPortalCache<K, V> memoryPortalCache = _memoryPortalCaches.remove(
-			name);
-
-		memoryPortalCache.destroy();
-
-		for (CacheManagerListener cacheManagerListener :
-				_cacheManagerListeners) {
-
-			cacheManagerListener.notifyCacheRemoved(name);
-		}
 	}
 
 	public void setCacheInitialCapacity(int cacheInitialCapacity) {
@@ -154,12 +59,8 @@ public class MemoryPortalCacheManager<K extends Serializable, V>
 		_cacheManagerInitialCapacity = cacheManagerInitialCapacity;
 	}
 
-	public void setClusterAware(boolean clusterAware) {
-		_clusterAware = clusterAware;
-	}
-
 	public void setName(String name) {
-		_name = name;
+		cacheManagerName = name;
 	}
 
 	@Override
@@ -174,12 +75,114 @@ public class MemoryPortalCacheManager<K extends Serializable, V>
 		_cacheManagerListeners.clear();
 	}
 
+	@Override
+	protected void doClearAll() {
+		for (MemoryPortalCache<K, V> memoryPortalCache :
+				_memoryPortalCaches.values()) {
+
+			memoryPortalCache.removeAll();
+		}
+	}
+
+	@Override
+	protected PortalCache<K, V> doCreatePortalCache(
+		String cacheName, BootstrapLoader bootstrapLoader) {
+
+		MemoryPortalCache<K, V> portalCache = _memoryPortalCaches.get(
+			cacheName);
+
+		if (portalCache == null) {
+			portalCache = new MemoryPortalCache<K, V>(
+				this, cacheName, _cacheInitialCapacity);
+
+			_memoryPortalCaches.put(cacheName, portalCache);
+
+			for (CacheManagerListener cacheManagerListener :
+					_cacheManagerListeners) {
+
+				cacheManagerListener.notifyCacheAdded(cacheName);
+			}
+		}
+
+		return portalCache;
+	}
+
+	@Override
+	protected void doDestroy() {
+		for (MemoryPortalCache<K, V> memoryPortalCache :
+				_memoryPortalCaches.values()) {
+
+			memoryPortalCache.destroy();
+		}
+
+		for (CacheManagerListener cacheManagerListener :
+				_cacheManagerListeners) {
+
+			cacheManagerListener.dispose();
+		}
+	}
+
+	@Override
+	protected void doRemoveCache(String cacheName) {
+		MemoryPortalCache<K, V> memoryPortalCache = _memoryPortalCaches.remove(
+			cacheName);
+
+		memoryPortalCache.destroy();
+
+		for (CacheManagerListener cacheManagerListener :
+				_cacheManagerListeners) {
+
+			cacheManagerListener.notifyCacheRemoved(cacheName);
+		}
+	}
+
+	@Override
+	protected ConfigurationParser<?> getConfigurationParser(
+		String configurationPath, boolean clusterAware, boolean usingDefault) {
+
+		return new MemoryConfigurationParser(clusterAware);
+	}
+
+	@Override
+	protected ConfigurationParser<?> getConfigurationParser(
+		URL configurationURL, boolean clusterAware, boolean usingDefault) {
+
+		return new MemoryConfigurationParser(clusterAware);
+	}
+
+	@Override
+	protected String getDefaultConfigurationPath() {
+		return StringPool.BLANK;
+	}
+
+	@Override
+	protected void initVendorManager(
+		ConfigurationParser<?> configurationParser) {
+
+		if (cacheManagerName == null) {
+			throw new NullPointerException("Name is null");
+		}
+
+		_memoryPortalCaches =
+			new ConcurrentHashMap<String, MemoryPortalCache<K, V>>(
+				_cacheManagerInitialCapacity);
+
+		for (CacheManagerListener cacheManagerListener :
+				_cacheManagerListeners) {
+
+			cacheManagerListener.init();
+		}
+	}
+
+	@Override
+	protected void reconfigVendorCache(
+		ConfigurationParser<?> configurationParser) {
+	}
+
 	private int _cacheInitialCapacity = 10000;
 	private int _cacheManagerInitialCapacity = 10000;
 	private Set<CacheManagerListener> _cacheManagerListeners =
 		new CopyOnWriteArraySet<CacheManagerListener>();
-	private boolean _clusterAware;
 	private Map<String, MemoryPortalCache<K, V>> _memoryPortalCaches;
-	private String _name;
 
 }
