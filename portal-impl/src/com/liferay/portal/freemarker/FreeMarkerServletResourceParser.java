@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.ServletContextPool;
 import com.liferay.portal.kernel.template.TemplateConstants;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.template.URLResourceParser;
 import com.liferay.portal.util.PortalUtil;
 
@@ -42,7 +43,17 @@ public class FreeMarkerServletResourceParser extends URLResourceParser {
 
 		String servletContextName = name.substring(0, pos);
 
-		if (servletContextName.equals(PortalUtil.getPathContext())) {
+		// LPS-50259 Leading slash is removed by
+		// freemarker.cache.TemplateCache.normalizeName(java.lang.String)
+
+		String servletContextNameWithSlash = servletContextName;
+
+		if (!servletContextNameWithSlash.startsWith(StringPool.SLASH)) {
+			servletContextNameWithSlash = StringPool.SLASH.concat(
+				servletContextNameWithSlash);
+		}
+
+		if (servletContextNameWithSlash.equals(PortalUtil.getPathContext())) {
 			servletContextName = PortalUtil.getServletContextName();
 		}
 
