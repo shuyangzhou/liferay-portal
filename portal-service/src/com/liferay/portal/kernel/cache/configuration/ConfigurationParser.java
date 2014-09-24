@@ -12,23 +12,16 @@
  * details.
  */
 
-package com.liferay.portal.kernel.cache;
-
-import java.io.Serializable;
-
-import java.util.Properties;
+package com.liferay.portal.kernel.cache.configuration;
 
 /**
  * @author Tina Tian
  */
-public interface ListenerFactory {
+public interface ConfigurationParser<T> {
 
-	public BootstrapLoader createBootstrapLoader(Properties properties);
+	public PortalCacheManagerConfiguration
+		getPortalCacheManagerConfiguration();
 
-	public CacheListener<? extends Serializable, ?> createCacheListener(
-		Properties properties);
-
-	public CacheManagerListener createCacheManagerListener(
-		Properties properties);
+	public T getVendorConfiguration();
 
 }

@@ -12,29 +12,15 @@
  * details.
  */
 
-package com.liferay.portal.kernel.cache;
+package com.liferay.portal.cache;
+
+import com.liferay.portal.kernel.cache.CacheReplicator;
+
+import java.io.Serializable;
 
 /**
- * @author Edward Han
+ * @author Tina Tian
  */
-public enum CacheListenerScope {
-
-	ALL(true, true), LOCAL(true, false), REMOTE(false, true);
-
-	public boolean isDeliverLocal() {
-		return _deliverLocal;
-	}
-
-	public boolean isDeliverRemote() {
-		return _deliverRemote;
-	}
-
-	private CacheListenerScope(boolean deliverLocal, boolean deliverRemote) {
-		_deliverLocal = deliverLocal;
-		_deliverRemote = deliverRemote;
-	}
-
-	private final boolean _deliverLocal;
-	private final boolean _deliverRemote;
-
+public class TestCacheReplicator<K extends Serializable, V>
+	extends TestCacheListener<K, V> implements CacheReplicator {
 }
