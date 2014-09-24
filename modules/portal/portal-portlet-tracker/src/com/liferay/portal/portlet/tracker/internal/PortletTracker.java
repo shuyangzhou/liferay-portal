@@ -1282,7 +1282,8 @@ public class PortletTracker
 
 	private class ServiceRegistrations {
 
-		private ServiceRegistration<?> _bundlePortletAppServiceRegistration;
+		private ServiceRegistration<?>
+			_bundlePortletAppServiceRegistration;
 		private Configuration _configuration;
 		private int _counter;
 		private ServiceRegistration<?> _jspServletServiceRegistration;
