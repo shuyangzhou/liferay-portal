@@ -58,7 +58,8 @@ public class LiferayConvertCmd extends ConvertCmd {
 		return getProcessTask(arguments);
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(LiferayConvertCmd.class);
+	private static Log _log = LogFactoryUtil.getLog(
+		LiferayConvertCmd.class);
 
 	private static LiferayConvertCmd _instance = new LiferayConvertCmd();
 

@@ -337,7 +337,8 @@ public class JSONFactoryImpl implements JSONFactory {
 
 	private static final String _NULL_JSON = "{}";
 
-	private static Log _log = LogFactoryUtil.getLog(JSONFactoryImpl.class);
+	private static Log _log = LogFactoryUtil.getLog(
+		JSONFactoryImpl.class);
 
 	private org.jabsorb.JSONSerializer _jsonSerializer;
 	private JSONObject _unmodifiableJSONObject =

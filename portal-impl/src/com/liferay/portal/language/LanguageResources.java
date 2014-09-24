@@ -253,7 +253,8 @@ public class LanguageResources {
 		return properties;
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(LanguageResources.class);
+	private static Log _log = LogFactoryUtil.getLog(
+		LanguageResources.class);
 
 	private static Locale _blankLocale = new Locale(StringPool.BLANK);
 	private static String[] _configNames;

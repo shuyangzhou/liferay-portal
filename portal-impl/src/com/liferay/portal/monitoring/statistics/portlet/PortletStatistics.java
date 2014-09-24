@@ -127,8 +127,9 @@ public class PortletStatistics
 	private String _portletId;
 	private String _portletName;
 	private RequestStatistics _renderRequestStatistics;
-	private Map<PortletRequestType, RequestStatistics> _requestStatistics =
-		new HashMap<PortletRequestType, RequestStatistics>();
+	private Map<PortletRequestType, RequestStatistics>
+		_requestStatistics =
+			new HashMap<PortletRequestType, RequestStatistics>();
 	private RequestStatistics _resourceRequestStatistics;
 
 }
