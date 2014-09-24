@@ -144,7 +144,8 @@ public class WeavingClassLoader extends URLClassLoader {
 		return clazz;
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(WeavingClassLoader.class);
+	private static Log _log = LogFactoryUtil.getLog(
+		WeavingClassLoader.class);
 
 	private File _dumpDir;
 	private URLWeavingAdapter _urlWeavingAdapter;
