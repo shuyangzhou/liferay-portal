@@ -85,9 +85,10 @@ public class AuthPublicPathRegistry {
 		new AuthPublicPathRegistry();
 
 	private Set<String> _paths = new ConcurrentHashSet<>();
-	private StringServiceRegistrationMap<AuthPublicPath> _serviceRegistrations =
-		new StringServiceRegistrationMap<>();
-	private ServiceTracker<AuthPublicPath, AuthPublicPath> _serviceTracker;
+	private StringServiceRegistrationMap<AuthPublicPath>
+		_serviceRegistrations = new StringServiceRegistrationMap<>();
+	private ServiceTracker<AuthPublicPath, AuthPublicPath>
+		_serviceTracker;
 
 	private class AuthPublicTrackerCustomizer
 		implements ServiceTrackerCustomizer<AuthPublicPath, AuthPublicPath> {

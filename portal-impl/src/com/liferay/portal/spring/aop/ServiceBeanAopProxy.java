@@ -253,7 +253,8 @@ public class ServiceBeanAopProxy
 			methodInterceptorsBag.getMergedMethodInterceptors());
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(ServiceBeanAopProxy.class);
+	private static Log _log = LogFactoryUtil.getLog(
+		ServiceBeanAopProxy.class);
 
 	private static PACL _pacl = new NoPACL();
 

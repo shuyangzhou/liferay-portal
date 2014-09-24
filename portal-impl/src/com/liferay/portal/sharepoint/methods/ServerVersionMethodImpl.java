@@ -57,6 +57,7 @@ public class ServerVersionMethodImpl extends BaseMethodImpl {
 
 	private static final String _METHOD_NAME = "server version";
 
-	private List<ResponseElement> _elements = new ArrayList<ResponseElement>();
+	private List<ResponseElement> _elements =
+		new ArrayList<ResponseElement>();
 
 }

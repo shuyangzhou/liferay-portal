@@ -300,8 +300,9 @@ public class PortalHibernateConfiguration
 	private static Log _log = LogFactoryUtil.getLog(
 		PortalHibernateConfiguration.class);
 
-	private static Map<ProxyFactory, ClassLoader> _proxyFactoryClassLoaders =
-		new WeakHashMap<ProxyFactory, ClassLoader>();
+	private static Map<ProxyFactory, ClassLoader>
+		_proxyFactoryClassLoaders =
+			new WeakHashMap<ProxyFactory, ClassLoader>();
 
 	static {
 		ProxyFactory.classLoaderProvider =

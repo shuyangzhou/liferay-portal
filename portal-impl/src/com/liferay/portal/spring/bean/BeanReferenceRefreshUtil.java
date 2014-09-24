@@ -105,8 +105,9 @@ public class BeanReferenceRefreshUtil {
 		BeanReferenceRefreshUtil.class);
 
 	private static PACL _pacl = new NoPACL();
-	private static Map<Object, List<RefreshPoint>> _registeredRefreshPoints =
-		new IdentityHashMap<Object, List<RefreshPoint>>();
+	private static Map<Object, List<RefreshPoint>>
+		_registeredRefreshPoints =
+			new IdentityHashMap<Object, List<RefreshPoint>>();
 
 	private static class NoPACL implements PACL {
 
