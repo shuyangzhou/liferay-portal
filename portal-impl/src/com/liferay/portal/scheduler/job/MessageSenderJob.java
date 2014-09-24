@@ -124,7 +124,8 @@ public class MessageSenderJob implements Job {
 		ClusterExecutorUtil.execute(clusterRequest);
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(MessageSenderJob.class);
+	private static Log _log = LogFactoryUtil.getLog(
+		MessageSenderJob.class);
 
 	private static MethodKey _deleteJobMethodKey = new MethodKey(
 		SchedulerEngineHelperUtil.class, "delete", String.class, String.class,

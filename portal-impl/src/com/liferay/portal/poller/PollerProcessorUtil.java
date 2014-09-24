@@ -98,7 +98,8 @@ public class PollerProcessorUtil {
 		return _pollerPorcessors.get(portletId);
 	}
 
-	private static PollerProcessorUtil _instance = new PollerProcessorUtil();
+	private static PollerProcessorUtil _instance =
+		new PollerProcessorUtil();
 
 	private StubMap<PollerProcessor> _pollerPorcessors =
 		new StubMap<PollerProcessor>(
@@ -159,7 +160,8 @@ public class PollerProcessorUtil {
 	private StringServiceRegistrationMap<PollerProcessor>
 		_serviceRegistrations =
 			new StringServiceRegistrationMap<PollerProcessor>();
-	private ServiceTracker<PollerProcessor, PollerProcessor> _serviceTracker;
+	private ServiceTracker<PollerProcessor, PollerProcessor>
+		_serviceTracker;
 
 	private static class PollerProcessorTargetLocator implements TargetLocator {
 

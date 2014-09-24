@@ -135,7 +135,8 @@ public abstract class CMISModel {
 
 	private static Map<String, Action> _mappedActionKeys =
 		new HashMap<String, Action>();
-	private static Set<String> _unsupportedActionKeys = new HashSet<String>();
+	private static Set<String> _unsupportedActionKeys =
+		new HashSet<String>();
 
 	static {
 		_mappedActionKeys.put(ActionKeys.ACCESS, Action.CAN_GET_FOLDER_TREE);

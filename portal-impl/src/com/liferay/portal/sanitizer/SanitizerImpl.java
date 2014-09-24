@@ -126,7 +126,8 @@ public class SanitizerImpl implements Sanitizer {
 		_sanitizers.remove(sanitizer);
 	}
 
-	private List<Sanitizer> _sanitizers = new CopyOnWriteArrayList<Sanitizer>();
+	private List<Sanitizer> _sanitizers =
+		new CopyOnWriteArrayList<Sanitizer>();
 	private ServiceTracker<?, Sanitizer> _serviceTracker;
 
 	private class SanitizerServiceTrackerCustomizer
