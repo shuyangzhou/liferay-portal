@@ -77,9 +77,10 @@ public class XStreamConverterRegistryUtil {
 	private static XStreamConverterRegistryUtil _instance =
 		new XStreamConverterRegistryUtil();
 
-	private ServiceRegistrationMap<XStreamConverter> _serviceRegistrations =
-		new ServiceRegistrationMap<XStreamConverter>();
-	private ServiceTracker <XStreamConverter, XStreamConverter> _serviceTracker;
+	private ServiceRegistrationMap<XStreamConverter> 
+		_serviceRegistrations = new ServiceRegistrationMap<XStreamConverter>();
+	private ServiceTracker <XStreamConverter, XStreamConverter> 
+		_serviceTracker;
 	private Set<XStreamConverter> _xStreamConverters =
 		new HashSet<XStreamConverter>();
 

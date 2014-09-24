@@ -240,7 +240,8 @@ public class DefaultMessageBus implements MessageBus {
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(DefaultMessageBus.class);
+	private static Log _log = LogFactoryUtil.getLog(
+		DefaultMessageBus.class);
 
 	private Set<DestinationEventListener> _destinationEventListeners =
 		new ConcurrentHashSet<DestinationEventListener>();

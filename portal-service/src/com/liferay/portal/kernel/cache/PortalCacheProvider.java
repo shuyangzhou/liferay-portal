@@ -24,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @author Tina Tian
  */
-public class PortalCacheProvider {
+	public class PortalCacheProvider {
 
 	public static PortalCacheManager<? extends Serializable, ?>
 		getPortalCacheManager(String portalCacheManagerName) {
@@ -52,9 +52,10 @@ public class PortalCacheProvider {
 		_portalCacheManagers.remove(portalCacheManagerName);
 	}
 
-	private static Map<String, PortalCacheManager<? extends Serializable, ?>>
-		_portalCacheManagers =
-			new ConcurrentHashMap
-				<String, PortalCacheManager<? extends Serializable, ?>>();
+	private static
+		Map<String, PortalCacheManager<? extends Serializable, ?>>
+			_portalCacheManagers =
+				new ConcurrentHashMap
+					<String, PortalCacheManager<? extends Serializable, ?>>();
 
 }
