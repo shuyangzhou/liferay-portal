@@ -432,7 +432,8 @@ public class StorageAdapterTest extends BaseDDMServiceTestCase {
 			expectedFieldsString, jsonSerializer.serializeDeep(actualFields));
 	}
 
-	private long _classNameId = PortalUtil.getClassNameId(DDLRecordSet.class);
+	private long _classNameId =
+		PortalUtil.getClassNameId(DDLRecordSet.class);
 	private Locale _enLocale = LocaleUtil.fromLanguageId("en_US");
 	private StorageAdapter _expandoStorageAdapater =
 		new ExpandoStorageAdapter();
