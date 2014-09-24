@@ -156,7 +156,8 @@ public class PortletFilterFactory {
 		return portletFilter;
 	}
 
-	private static PortletFilterFactory _instance = new PortletFilterFactory();
+	private static PortletFilterFactory _instance =
+		new PortletFilterFactory();
 
 	private Map<String, Map<String, PortletFilter>> _portletFilters;
 

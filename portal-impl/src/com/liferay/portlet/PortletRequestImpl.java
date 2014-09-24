@@ -947,7 +947,8 @@ public abstract class PortletRequestImpl implements LiferayPortletRequest {
 		return name;
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(PortletRequestImpl.class);
+	private static Log _log = LogFactoryUtil.getLog(
+		PortletRequestImpl.class);
 
 	private static Pattern _strutsPortletIgnoredParamtersPattern =
 		Pattern.compile(PropsValues.STRUTS_PORTLET_IGNORED_PARAMETERS_REGEXP);
