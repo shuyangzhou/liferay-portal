@@ -363,7 +363,8 @@ public class AuthPipeline {
 	private Map<AuthFailure, ServiceRegistration<AuthFailure>>
 		_authFailureServiceRegistrations =
 			new ServiceRegistrationMap<AuthFailure>();
-	private ServiceTracker<AuthFailure, AuthFailure> _authFailureServiceTracker;
+	private ServiceTracker<AuthFailure, AuthFailure>
+		_authFailureServiceTracker;
 
 	private class AuthenticatorServiceTrackerCustomizer
 		implements ServiceTrackerCustomizer<Authenticator, Authenticator> {
