@@ -120,6 +120,7 @@ public class VerifyOrganization extends VerifyProcess {
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(VerifyOrganization.class);
+	private static Log _log = LogFactoryUtil.getLog(
+		VerifyOrganization.class);
 
 }

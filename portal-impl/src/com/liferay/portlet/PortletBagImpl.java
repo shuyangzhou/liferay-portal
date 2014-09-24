@@ -373,10 +373,12 @@ public class PortletBagImpl implements PortletBag {
 	}
 
 	private List<AssetRendererFactory> _assetRendererFactoryInstances;
-	private List<AtomCollectionAdapter<?>> _atomCollectionAdapterInstances;
+	private List<AtomCollectionAdapter<?>>
+		_atomCollectionAdapterInstances;
 	private List<ConfigurationAction> _configurationActionInstances;
 	private List<ControlPanelEntry> _controlPanelEntryInstances;
-	private List<CustomAttributesDisplay> _customAttributesDisplayInstances;
+	private List<CustomAttributesDisplay>
+		_customAttributesDisplayInstances;
 	private List<DDMDisplay> _ddmDisplayInstances;
 	private FriendlyURLMapperTracker _friendlyURLMapperTracker;
 	private List<Indexer> _indexerInstances;
@@ -392,9 +394,12 @@ public class PortletBagImpl implements PortletBag {
 	private ResourceBundleTracker _resourceBundleTracker;
 	private List<SchedulerEntry> _schedulerEntryInstances;
 	private ServletContext _servletContext;
-	private List<SocialActivityInterpreter> _socialActivityInterpreterInstances;
-	private List<SocialRequestInterpreter> _socialRequestInterpreterInstances;
-	private List<StagedModelDataHandler<?>> _stagedModelDataHandlerInstances;
+	private List<SocialActivityInterpreter>
+		_socialActivityInterpreterInstances;
+	private List<SocialRequestInterpreter>
+		_socialRequestInterpreterInstances;
+	private List<StagedModelDataHandler<?>>
+		_stagedModelDataHandlerInstances;
 	private List<TemplateHandler> _templateHandlerInstances;
 	private List<TrashHandler> _trashHandlerInstances;
 	private List<URLEncoder> _urlEncoderInstances;
