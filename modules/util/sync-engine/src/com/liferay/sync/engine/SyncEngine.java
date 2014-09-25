@@ -389,7 +389,7 @@ public class SyncEngine {
 	private static Logger _logger = LoggerFactory.getLogger(
 		SyncEngine.class);
 
-	private static ScheduledExecutorService 
+	private static ScheduledExecutorService
 		_eventScheduledExecutorService = Executors.newScheduledThreadPool(5);
 	private static ExecutorService _executorService =
 		Executors.newCachedThreadPool();

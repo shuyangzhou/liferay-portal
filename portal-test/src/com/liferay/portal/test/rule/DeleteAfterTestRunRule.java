@@ -317,8 +317,8 @@ public class DeleteAfterTestRunRule implements TestRule {
 	private static Log _log = LogFactoryUtil.getLog(
 		DeleteAfterTestRunRule.class);
 
-	private static Set<Class<?>> _orderedClasses = new LinkedHashSet<Class<?>>(
-		Arrays.<Class<?>>asList(
+	private static Set<Class<?>> _orderedClasses =
+		new LinkedHashSet<Class<?>>(Arrays.<Class<?>>asList(
 			User.class, Organization.class, Role.class, UserGroup.class,
 			Group.class, Company.class));
 

@@ -105,7 +105,8 @@ public class MulticastDatagramHandler implements DatagramHandler {
 		return ubaos.toByteArray();
 	}
 
-	private static Log _log = LogFactory.getLog(MulticastDatagramHandler.class);
+	private static Log _log = LogFactory.getLog(
+		MulticastDatagramHandler.class);
 
 	private boolean _gzipData;
 	private boolean _shortData;

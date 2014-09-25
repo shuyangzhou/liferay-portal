@@ -268,7 +268,8 @@ public class ResetDatabaseUtil {
 		return null;
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(ResetDatabaseUtil.class);
+	private static Log _log = LogFactoryUtil.getLog(
+		ResetDatabaseUtil.class);
 
 	private static ConcurrentMap<String, Table> _cachedTables =
 		new ConcurrentHashMap<String, Table>();
