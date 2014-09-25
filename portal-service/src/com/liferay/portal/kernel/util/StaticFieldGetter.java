@@ -48,7 +48,8 @@ public class StaticFieldGetter {
 	private StaticFieldGetter() {
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(StaticFieldGetter.class);
+	private static Log _log = LogFactoryUtil.getLog(
+		StaticFieldGetter.class);
 
 	private static StaticFieldGetter _instance = new StaticFieldGetter();
 

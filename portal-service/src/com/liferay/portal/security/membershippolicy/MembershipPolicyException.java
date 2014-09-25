@@ -94,7 +94,8 @@ public class MembershipPolicyException extends PortalException {
 	}
 
 	private List<Group> _groups = new ArrayList<Group>();
-	private List<Organization> _organizations = new ArrayList<Organization>();
+	private List<Organization> _organizations =
+		new ArrayList<Organization>();
 	private List<Role> _roles = new ArrayList<Role>();
 	private int _type;
 	private List<UserGroup> _userGroups = new ArrayList<UserGroup>();

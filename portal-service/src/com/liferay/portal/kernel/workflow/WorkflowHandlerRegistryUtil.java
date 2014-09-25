@@ -320,8 +320,9 @@ public class WorkflowHandlerRegistryUtil {
 
 	private Map<String, WorkflowHandler<?>> _scopeableWorkflowHandlerMap =
 		new ConcurrentSkipListMap<String, WorkflowHandler<?>>();
-	private ServiceRegistrationMap<WorkflowHandler<?>> _serviceRegistrations =
-		new ServiceRegistrationMap<WorkflowHandler<?>>();
+	private ServiceRegistrationMap<WorkflowHandler<?>>
+		_serviceRegistrations =
+			new ServiceRegistrationMap<WorkflowHandler<?>>();
 	private ServiceTracker<WorkflowHandler<?>, WorkflowHandler<?>>
 		_serviceTracker;
 	private Map<String, WorkflowHandler<?>> _workflowHandlerMap =
