@@ -27,7 +27,16 @@ public abstract class BaseCapabilityProvider implements CapabilityProvider {
 	@Override
 	public <S extends Capability> S getCapability(Class<S> capabilityClass) {
 		if (_exportedCapabilityClasses.contains(capabilityClass)) {
-			return getInternalCapability(capabilityClass);
+			Capability capability = getInternalCapability(capabilityClass);
+
+			if (capability == null) {
+				throw new IllegalArgumentException(
+					String.format(
+						"Capability %s is not supported by provider %s",
+						capabilityClass.getName(), getProviderKey()));
+			}
+
+			return (S)capability;
 		}
 
 		throw new IllegalArgumentException(
@@ -65,23 +74,14 @@ public abstract class BaseCapabilityProvider implements CapabilityProvider {
 	protected <S extends Capability> S getInternalCapability(
 		Class<S> capabilityClass) {
 
-		Capability capability = _supportedCapabilities.get(capabilityClass);
-
-		if (capability == null) {
-			throw new IllegalArgumentException(
-				String.format(
-					"Capability %s is not supported by provider %s",
-					capabilityClass.getName(), getProviderKey()));
-		}
-
-		return (S)capability;
+		return (S)_supportedCapabilities.get(capabilityClass);
 	}
 
 	protected abstract String getProviderKey();
 
-	private Set<Class<? extends Capability>> _exportedCapabilityClasses =
+	private final Set<Class<? extends Capability>> _exportedCapabilityClasses =
 		new HashSet<>();
-	private Map<Class<? extends Capability>, Capability>
+	private final Map<Class<? extends Capability>, Capability>
 		_supportedCapabilities = new HashMap<>();
 
 }

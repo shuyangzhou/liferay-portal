@@ -14,13 +14,15 @@
 
 package com.liferay.portal.model;
 
+import java.io.Serializable;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Raymond Augé
  */
-public interface LayoutTypeController {
+public interface LayoutTypeController extends Serializable {
 
 	public String[] getConfigurationActionDelete();
 

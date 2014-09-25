@@ -192,6 +192,6 @@ public class TunnelUtil {
 	private static final boolean _VERIFY_SSL_HOSTNAME = GetterUtil.getBoolean(
 		PropsUtil.get(TunnelUtil.class.getName() + ".verify.ssl.hostname"));
 
-	private static Log _log = LogFactoryUtil.getLog(TunnelUtil.class);
+	private static final Log _log = LogFactoryUtil.getLog(TunnelUtil.class);
 
 }

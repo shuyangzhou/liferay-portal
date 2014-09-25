@@ -45,7 +45,7 @@ public class SingleValueServiceTrackerBucketFactory<S>
 		return new SingleBucket();
 	}
 
-	private Comparator<ServiceReference<S>> _comparator;
+	private final Comparator<ServiceReference<S>> _comparator;
 
 	private class SingleBucket implements ServiceTrackerBucket<S, S> {
 
@@ -95,7 +95,7 @@ public class SingleValueServiceTrackerBucketFactory<S>
 		}
 
 		private S _service;
-		private PriorityQueue<ServiceReferenceServiceTuple<S>>
+		private final PriorityQueue<ServiceReferenceServiceTuple<S>>
 			_serviceReferences;
 
 	}

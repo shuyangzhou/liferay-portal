@@ -44,6 +44,6 @@ public class MockWelder implements Welder {
 	}
 
 	private boolean _clientWelded;
-	private boolean _serverWelded;
+	private final boolean _serverWelded = false;
 
 }

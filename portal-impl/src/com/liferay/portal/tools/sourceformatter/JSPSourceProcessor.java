@@ -423,9 +423,19 @@ public class JSPSourceProcessor extends BaseSourceProcessor {
 		Matcher matcher = _javaClassPattern.matcher(newContent);
 
 		if (matcher.find()) {
+			String javaClassContent = matcher.group();
+
+			javaClassContent = javaClassContent.substring(1);
+
+			String beforeJavaClass = newContent.substring(
+				0, matcher.start() + 1);
+
+			int javaClassLineCount =
+				StringUtil.count(beforeJavaClass, "\n") + 1;
+
 			newContent = formatJavaTerms(
-				fileName, absolutePath, newContent, matcher.group(), null,
-				null);
+				fileName, absolutePath, newContent, javaClassContent,
+				javaClassLineCount, null, null, null);
 		}
 
 		if (!content.equals(newContent)) {
@@ -511,7 +521,7 @@ public class JSPSourceProcessor extends BaseSourceProcessor {
 
 		boolean hasUnsortedExceptions = false;
 
-		try (UnsyncBufferedReader unsyncBufferedReader = 
+		try (UnsyncBufferedReader unsyncBufferedReader =
 				new UnsyncBufferedReader(new UnsyncStringReader(content))) {
 
 			_checkedForIncludesFileNames = new HashSet<String>();
@@ -602,7 +612,7 @@ public class JSPSourceProcessor extends BaseSourceProcessor {
 					line = StringUtil.replace(line, "<%=", "<%= ");
 				}
 
-				if (trimmedPreviousLine.equals("%>") && 
+				if (trimmedPreviousLine.equals("%>") &&
 					Validator.isNotNull(line) &&  !trimmedLine.equals("-->")) {
 
 					sb.append("\n");
@@ -678,7 +688,7 @@ public class JSPSourceProcessor extends BaseSourceProcessor {
 
 									processErrorMessage(
 										fileName,
-										"attribute: " + fileName + " " + 
+										"attribute: " + fileName + " " +
 											lineCount);
 
 									readAttributes = false;

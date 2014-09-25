@@ -171,6 +171,19 @@ request.setAttribute("edit_article.jsp-toLanguageId", toLanguageId);
 
 		<liferay-ui:error exception="<%= ArticleContentSizeException.class %>" message="you-have-exceeded-the-maximum-web-content-size-allowed" />
 
+		<liferay-ui:error exception="<%= FileSizeException.class %>">
+
+			<%
+			long fileMaxSize = PrefsPropsUtil.getLong(PropsKeys.DL_FILE_MAX_SIZE);
+
+			if (fileMaxSize == 0) {
+				fileMaxSize = PrefsPropsUtil.getLong(PropsKeys.UPLOAD_SERVLET_REQUEST_IMPL_MAX_SIZE);
+			}
+			%>
+
+			<liferay-ui:message arguments="<%= TextFormatter.formatStorageSize(fileMaxSize, locale) %>" key="please-enter-a-file-with-a-valid-file-size-no-larger-than-x" translateArguments="<%= false %>" />
+		</liferay-ui:error>
+
 		<liferay-ui:error exception="<%= LiferayFileItemException.class %>">
 			<liferay-ui:message arguments="<%= TextFormatter.formatStorageSize(LiferayFileItem.THRESHOLD_SIZE, locale) %>" key="please-enter-valid-content-with-valid-content-size-no-larger-than-x" translateArguments="<%= false %>" />
 		</liferay-ui:error>

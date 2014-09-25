@@ -17,7 +17,6 @@
 <%@ include file="/html/portal/layout/view/portlet_js.jspf" %>
 
 <aui:script position="inline">
-	Liferay.Util.addInputFocus();
 
 	<%
 	String controlPanelCategory = ParamUtil.getString(request, "controlPanelCategory");
@@ -53,14 +52,6 @@
 </aui:script>
 
 <aui:script use="aui-base">
-	Liferay.Util.addInputType();
-
-	Liferay.Portlet.ready(
-		function(portletId, node) {
-			Liferay.Util.addInputType(node);
-		}
-	);
-
 	if (A.UA.mobile) {
 		Liferay.Util.addInputCancel();
 	}

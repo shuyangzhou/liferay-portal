@@ -14,12 +14,7 @@
 
 package com.liferay.portlet.messageboards.subscriptions;
 
-import com.liferay.portal.kernel.settings.ModifiableSettings;
-import com.liferay.portal.kernel.settings.Settings;
-import com.liferay.portal.kernel.settings.SettingsFactoryUtil;
 import com.liferay.portal.kernel.test.ExecutionTestListeners;
-import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.test.Sync;
 import com.liferay.portal.test.SynchronousMailExecutionTestListener;
 import com.liferay.portal.test.listeners.MainServletExecutionTestListener;
@@ -69,37 +64,13 @@ public class MBSubscriptionLocalizedContentTest
 	}
 
 	@Override
-	protected String getSubscriptionBodyPreferenceName() throws Exception {
-		return "emailMessageAddedBody";
+	protected String getServiceName() {
+		return MBConstants.SERVICE_NAME;
 	}
 
 	@Override
-	protected void setAddBaseModelSubscriptionBodyPreferences()
-		throws Exception {
-
-		Settings settings = SettingsFactoryUtil.getGroupServiceSettings(
-			group.getGroupId(), MBConstants.SERVICE_NAME);
-
-		ModifiableSettings modifiableSettings =
-			settings.getModifiableSettings();
-
-		String germanSubscriptionBodyPreferencesKey =
-			LocalizationUtil.getPreferencesKey(
-				getSubscriptionBodyPreferenceName(),
-				LocaleUtil.toLanguageId(LocaleUtil.GERMANY));
-
-		modifiableSettings.setValue(
-			germanSubscriptionBodyPreferencesKey, GERMAN_BODY);
-
-		String spanishSubscriptionBodyPreferencesKey =
-			LocalizationUtil.getPreferencesKey(
-				getSubscriptionBodyPreferenceName(),
-				LocaleUtil.toLanguageId(LocaleUtil.SPAIN));
-
-		modifiableSettings.setValue(
-			spanishSubscriptionBodyPreferencesKey, SPANISH_BODY);
-
-		modifiableSettings.store();
+	protected String getSubscriptionBodyPreferenceName() throws Exception {
+		return "emailMessageAddedBody";
 	}
 
 }

@@ -57,19 +57,22 @@ public class FileEventUtil {
 		parameters.put("folderId", folderId);
 		parameters.put("mimeType", mimeType);
 		parameters.put("repositoryId", repositoryId);
+		parameters.put("serviceContext.attributes.overwrite", true);
 
 		SyncSite syncSite = SyncSiteService.fetchSyncSite(
 			repositoryId, syncAccountId);
 
 		if (syncSite.getType() != SyncSite.TYPE_SYSTEM) {
-			parameters.put("serviceContext.addGroupPermissions", true);
+			parameters.put(
+				"serviceContext.groupPermissions",
+				"ADD_DISCUSSION,DELETE,UPDATE,VIEW");
 		}
 
 		if (syncSite.getType() == SyncSite.TYPE_OPEN) {
-			parameters.put("serviceContext.addGuestPermissions", true);
+			parameters.put(
+				"serviceContext.guestPermissions", "ADD_DISCUSSION,VIEW");
 		}
 
-		parameters.put("serviceContext.attributes.overwrite", true);
 		parameters.put("sourceFileName", name);
 		parameters.put("syncFile", syncFile);
 		parameters.put("title", name);
@@ -90,19 +93,22 @@ public class FileEventUtil {
 		parameters.put("name", name);
 		parameters.put("parentFolderId", parentFolderId);
 		parameters.put("repositoryId", repositoryId);
+		parameters.put("serviceContext.attributes.overwrite", true);
 
 		SyncSite syncSite = SyncSiteService.fetchSyncSite(
 			repositoryId, syncAccountId);
 
 		if (syncSite.getType() != SyncSite.TYPE_SYSTEM) {
-			parameters.put("serviceContext.addGroupPermissions", true);
+			parameters.put(
+				"serviceContext.groupPermissions",
+				"ADD_DOCUMENT,ADD_SUBFOLDER,ADD_SHORTCUT,SUBSCRIBE,UPDATE," +
+					"VIEW");
 		}
 
 		if (syncSite.getType() == SyncSite.TYPE_OPEN) {
-			parameters.put("serviceContext.addGuestPermissions", true);
+			parameters.put("serviceContext.guestPermissions", "VIEW");
 		}
 
-		parameters.put("serviceContext.attributes.overwrite", true);
 		parameters.put("syncFile", syncFile);
 
 		AddFolderEvent addFolderEvent = new AddFolderEvent(

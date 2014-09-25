@@ -17,6 +17,7 @@ package com.liferay.social.activities.web.portlet.action;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortletResponseUtil;
+import com.liferay.portal.kernel.portlet.bridges.mvc.ActionCommand;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
@@ -35,7 +36,6 @@ import com.liferay.portlet.social.model.SocialActivityFeedEntry;
 import com.liferay.portlet.social.service.SocialActivityInterpreterLocalServiceUtil;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 import com.liferay.util.RSSUtil;
-import com.liferay.util.bridges.mvc.ActionCommand;
 
 import com.sun.syndication.feed.synd.SyndContent;
 import com.sun.syndication.feed.synd.SyndContentImpl;

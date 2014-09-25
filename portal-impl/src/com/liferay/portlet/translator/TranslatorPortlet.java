@@ -15,6 +15,7 @@
 package com.liferay.portlet.translator;
 
 import com.liferay.portal.kernel.microsofttranslator.MicrosoftTranslatorException;
+import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -22,7 +23,6 @@ import com.liferay.portal.kernel.webcache.WebCacheException;
 import com.liferay.portal.util.WebKeys;
 import com.liferay.portlet.translator.model.Translation;
 import com.liferay.portlet.translator.util.TranslatorUtil;
-import com.liferay.util.bridges.mvc.MVCPortlet;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;

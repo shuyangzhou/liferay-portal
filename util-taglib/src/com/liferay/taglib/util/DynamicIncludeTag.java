@@ -14,16 +14,11 @@
 
 package com.liferay.taglib.util;
 
-import com.liferay.kernel.servlet.taglib.DynamicInclude;
 import com.liferay.kernel.servlet.taglib.DynamicIncludeUtil;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.taglib.TagSupport;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-
-import java.util.List;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -39,29 +34,14 @@ public class DynamicIncludeTag extends TagSupport {
 
 	@Override
 	public int doEndTag() throws JspException {
-		List<DynamicInclude> dynamicIncludes =
-			DynamicIncludeUtil.getDynamicIncludes(getKey());
-
-		if ((dynamicIncludes != null) && !dynamicIncludes.isEmpty()) {
-			for (DynamicInclude dynamicInclude : dynamicIncludes) {
-				try {
-					dynamicInclude.include(getRequest(), getResponse());
-				}
-				catch (Exception e) {
-					_log.error(e, e);
-				}
-			}
-		}
+		DynamicIncludeUtil.include(getRequest(), getResponse(), getKey());
 
 		return super.doEndTag();
 	}
 
 	@Override
 	public int doStartTag() {
-		List<DynamicInclude> dynamicIncludes =
-			DynamicIncludeUtil.getDynamicIncludes(getKey());
-
-		if ((dynamicIncludes == null) || dynamicIncludes.isEmpty()) {
+		if (!DynamicIncludeUtil.hasDynamicInclude(getKey())) {
 			return SKIP_BODY;
 		}
 
@@ -107,8 +87,6 @@ public class DynamicIncludeTag extends TagSupport {
 
 		};
 	}
-
-	private static Log _log = LogFactoryUtil.getLog(DynamicIncludeTag.class);
 
 	private String _key;
 

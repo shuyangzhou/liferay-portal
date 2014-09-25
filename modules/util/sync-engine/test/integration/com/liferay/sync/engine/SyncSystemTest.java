@@ -23,6 +23,7 @@ import com.liferay.sync.engine.model.SyncSite;
 import com.liferay.sync.engine.service.SyncAccountService;
 import com.liferay.sync.engine.service.SyncFileService;
 import com.liferay.sync.engine.service.SyncSiteService;
+import com.liferay.sync.engine.service.SyncUserService;
 import com.liferay.sync.engine.util.FileUtil;
 import com.liferay.sync.engine.util.LoggerUtil;
 import com.liferay.sync.engine.util.PropsKeys;
@@ -207,13 +208,11 @@ public class SyncSystemTest {
 			});
 
 		for (long syncAccountId : _syncAccountIds.values()) {
-			SyncAccount syncAccount = SyncAccountService.fetchSyncAccount(
-				syncAccountId);
-
-			SyncSystemTestUtil.deleteUser(
-				syncAccount.getUserId(), _syncAccount.getSyncAccountId());
-
 			SyncAccountService.deleteSyncAccount(syncAccountId);
+
+			SyncUser syncUser = SyncUserService.fetchSyncUser(syncAccountId);
+
+			SyncSystemTestUtil.deleteUser(syncUser.getUserId(), syncAccountId);
 		}
 
 		SyncAccountService.deleteSyncAccount(_syncAccount.getSyncAccountId());
@@ -556,16 +555,16 @@ public class SyncSystemTest {
 		}
 	}
 
-	private static Logger _logger = LoggerFactory.getLogger(
+	private static final Logger _logger = LoggerFactory.getLogger(
 		SyncSystemTest.class);
 
 	private static boolean _liferayStarted;
 	private static String _rootFilePathName;
 	private static SyncAccount _syncAccount;
-	private static Map<String, Long> _syncAccountIds =
+	private static final Map<String, Long> _syncAccountIds =
 		new HashMap<String, Long>();
 
-	private Map<String, Long> _syncSiteIds = new HashMap<String, Long>();
-	private Path _testFilePath;
+	private final Map<String, Long> _syncSiteIds = new HashMap<String, Long>();
+	private final Path _testFilePath;
 
 }

@@ -17,7 +17,7 @@ package com.liferay.portal.kernel.servlet.taglib.ui;
 /**
  * @author Iván Zaera
  */
-public class JavascriptMenuItem extends MenuItem {
+public class JavascriptMenuItem extends MenuItem implements JavascriptUIItem {
 
 	public String getJavascript() {
 		return _javascript;

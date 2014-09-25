@@ -29,13 +29,13 @@ import com.liferay.portal.kernel.util.Validator;
 import com.thoughtworks.qdox.JavaDocBuilder;
 import com.thoughtworks.qdox.model.ClassLibrary;
 import com.thoughtworks.qdox.model.JavaField;
-import com.thoughtworks.qdox.model.JavaSource;
 import com.thoughtworks.qdox.model.Type;
+import com.thoughtworks.qdox.model.JavaMethod;
+import com.thoughtworks.qdox.model.JavaSource;
 import com.thoughtworks.qdox.parser.ParseException;
 
 import java.io.File;
 import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -224,6 +224,106 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 				"LPS-49552: Missing override of BasePersistenceImpl." +
 					"fetchByPrimaryKeys(Set<Serializable>): " + fileName);
 		}
+	}
+
+	protected String checkFinalableFields(
+			String fileName, String packagePath, String className,
+			String content)
+		throws IOException {
+
+		ClassLibrary classLibrary = new ClassLibrary();
+
+		classLibrary.addClassLoader(JavaSourceProcessor.class.getClassLoader());
+
+		JavaDocBuilder javaDocBuilder = new JavaDocBuilder(classLibrary);
+
+		try {
+			javaDocBuilder.addSource(
+				new UnsyncStringReader(sanitizeContent(content)));
+		}
+		catch (ParseException pe) {
+			System.err.println(
+				"Unable to parse " + fileName + StringPool.COMMA_AND_SPACE +
+					pe.getMessage());
+
+			return content;
+		}
+
+		String[] lines = null;
+		com.thoughtworks.qdox.model.JavaClass[] javaClasses =
+			javaDocBuilder.getClasses();
+
+		for (com.thoughtworks.qdox.model.JavaClass javaClass: javaClasses) {
+
+			javaField:
+			for (JavaField javaField : javaClass.getFields()) {
+				if (javaClass.isEnum() &&
+					(javaClass.asType().equals(javaField.getType()))) {
+					continue;
+				}
+
+				if (!javaField.isPrivate() || javaField.isFinal()) {
+					continue;
+				}
+
+				StringBundler sb = new StringBundler(4);
+
+				sb.append("(\\b|\\.)");
+				sb.append(javaField.getName());
+				sb.append(" (=)|(\\+\\+)|(--)|(\\+=)|(-=)|(\\*=)|(/=)|(%=)");
+				sb.append("|(\\|=)|(&=)|(^=) ");
+
+				Pattern pattern = Pattern.compile(sb.toString());
+
+				for (com.thoughtworks.qdox.model.JavaClass javaSubClass :
+					javaClasses) {
+
+					for (JavaMethod javaMethod : javaSubClass.getMethods()) {
+						if (javaMethod.isConstructor() &&
+							(javaSubClass == javaClass)) {
+							continue;
+						}
+
+						Matcher matcher = pattern.matcher(
+							javaMethod.getCodeBlock());
+
+						if (matcher.find()) {
+							continue javaField;
+						}
+					}
+				}
+
+				if (lines == null) {
+					lines = StringUtil.splitLines(content);
+				}
+
+				String line = lines[javaField.getLineNumber() - 1];
+
+				if (javaField.isStatic()) {
+					lines[javaField.getLineNumber() - 1] = StringUtil.replace(
+						line, "private static ", "private static final ");
+				}
+				else {
+					lines[javaField.getLineNumber() - 1] = StringUtil.replace(
+						line, "private ", "private final ");
+				}
+			}
+
+			if (lines != null) {
+				StringBundler sb = new StringBundler(2 * lines.length);
+
+				for (String line: lines) {
+					sb.append(line);
+					sb.append(StringPool.NEW_LINE);
+				}
+
+				sb.setIndex(sb.index() - 1);
+
+				content = sb.toString();
+			}
+		}
+
+		return content;
 	}
 
 	protected String checkIfClause(
@@ -736,7 +836,8 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 			}
 		}
 
-		String newContent = content;
+		String newContent = checkFinalableFields(
+			absolutePath, packagePath, className, content);
 
 		if (newContent.contains("$\n */")) {
 			processErrorMessage(fileName, "*: " + fileName);
@@ -767,28 +868,16 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 			new String[] {
 				"com.liferay.portal.PortalException",
 				"com.liferay.portal.SystemException",
-				"com.liferay.util.LocalizationUtil",
-				"private static final Log _log"
+				"com.liferay.util.LocalizationUtil"
 			},
 			new String[] {
 				"com.liferay.portal.kernel.exception.PortalException",
 				"com.liferay.portal.kernel.exception.SystemException",
-				"com.liferay.portal.kernel.util.LocalizationUtil",
-				"private static Log _log"
+				"com.liferay.portal.kernel.util.LocalizationUtil"
 			});
 
-		/*
 		newContent = StringUtil.replace(
-			newContent,
-			new String[] {
-				StringPool.TAB + "static ", StringPool.TAB + "public static {",
-				" final static "
-			},
-			new String[] {
-				StringPool.TAB + "public static ", StringPool.TAB + "static {",
-				" static final "
-			});
-		*/
+			newContent, " final static ", " static final ");
 
 		newContent = fixCompatClassImports(absolutePath, newContent);
 
@@ -833,7 +922,8 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 
 		if (!isExcluded(_staticLogVariableExclusions, absolutePath)) {
 			newContent = StringUtil.replace(
-				newContent, "private Log _log", "private static Log _log");
+				newContent, "private Log _log",
+				"private static final Log _log");
 		}
 
 		if (newContent.contains("*/\npackage ")) {
@@ -1029,10 +1119,16 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 		pos = newContent.indexOf("\npublic ");
 
 		if (pos != -1) {
-			String javaClassContent = newContent.substring(pos);
+			String javaClassContent = newContent.substring(pos + 1);
+
+			String beforeJavaClass = newContent.substring(0, pos + 1);
+
+			int javaClassLineCount =
+				StringUtil.count(beforeJavaClass, "\n") + 1;
 
 			newContent = formatJavaTerms(
 				fileName, absolutePath, newContent, javaClassContent,
+				javaClassLineCount, _javaTermAccessLevelModifierExclusions,
 				_javaTermSortExclusions, _testAnnotationsExclusions);
 		}
 
@@ -1221,6 +1317,8 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 			"fit.on.single.line.exludes");
 		_hibernateSQLQueryExclusions = getPropertyList(
 			"hibernate.sql.query.excludes");
+		_javaTermAccessLevelModifierExclusions = getPropertyList(
+			"javaterm.access.level.modifier.excludes");
 		_javaTermSortExclusions = getPropertyList("javaterm.sort.excludes");
 		_lineLengthExclusions = getPropertyList("line.length.excludes");
 		_proxyExclusions = getPropertyList("proxy.excludes");
@@ -1242,7 +1340,7 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 
 		StringBundler sb = new StringBundler();
 
-		try (UnsyncBufferedReader unsyncBufferedReader = 
+		try (UnsyncBufferedReader unsyncBufferedReader =
 				new UnsyncBufferedReader(new UnsyncStringReader(content))) {
 
 			String line = null;
@@ -1281,7 +1379,7 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 					}
 				}
 
-				if (line.contains(StringPool.TAB + "for (") && 
+				if (line.contains(StringPool.TAB + "for (") &&
 					line.contains(":") && !line.contains(" :")) {
 
 					line = StringUtil.replace(line, ":" , " :");
@@ -1515,7 +1613,7 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 							line, StringPool.DOUBLE_SPACE, StringPool.SPACE);
 
 						trimmedLine = StringUtil.replaceLast(
-							trimmedLine, StringPool.DOUBLE_SPACE, 
+							trimmedLine, StringPool.DOUBLE_SPACE,
 							StringPool.SPACE);
 					}
 
@@ -1531,7 +1629,7 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 								!linePart.startsWith("throws")) {
 
 								line = StringUtil.replaceLast(
-									line, StringPool.SPACE + linePart, 
+									line, StringPool.SPACE + linePart,
 									linePart);
 							}
 						}
@@ -1716,7 +1814,7 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 				Tuple combinedLines = null;
 				int lineLength = getLineLength(line);
 
-				if (!line.startsWith("import ") && 
+				if (!line.startsWith("import ") &&
 					!line.startsWith("package ") &&
 					!line.matches("\\s*\\*.*")) {
 
@@ -2516,10 +2614,11 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 		"\n(.+)\n\n(\t+)}\n");
 	private Pattern _incorrectLineBreakPattern = Pattern.compile(
 		"\t(catch |else |finally |for |if |try |while ).*\\{\n\n\t+\\w");
+	private List<String> _javaTermAccessLevelModifierExclusions;
 	private List<String> _javaTermSortExclusions;
 	private List<String> _lineLengthExclusions;
 	private Pattern _logPattern = Pattern.compile(
-		"\n\tprivate static Log _log = LogFactoryUtil.getLog\\(\n*" +
+		"\n\tprivate static final Log _log = LogFactoryUtil.getLog\\(\n*" +
 			"\t*(.+)\\.class\\)");
 	private List<String> _proxyExclusions;
 	private List<String> _secureRandomExclusions;
