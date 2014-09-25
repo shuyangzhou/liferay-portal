@@ -183,7 +183,7 @@ public class ExportLayoutsAction extends PortletAction {
 			new ArrayList<Layout>(layouts));
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		ExportLayoutsAction.class);
 
 }

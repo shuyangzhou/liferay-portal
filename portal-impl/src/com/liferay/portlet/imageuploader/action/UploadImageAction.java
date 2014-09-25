@@ -407,7 +407,7 @@ public class UploadImageAction extends PortletAction {
 		PortletResponseUtil.write(mimeResponse, bytes);
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		UploadImageAction.class);
 
 }

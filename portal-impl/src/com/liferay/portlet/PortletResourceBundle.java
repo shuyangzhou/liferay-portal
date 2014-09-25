@@ -109,7 +109,7 @@ public class PortletResourceBundle extends ResourceBundle {
 		return _portletInfos.keySet();
 	}
 
-	private Map<String, String> _portletInfos =
+	private final Map<String, String> _portletInfos =
 		new HashMap<String, String>();
 
 }

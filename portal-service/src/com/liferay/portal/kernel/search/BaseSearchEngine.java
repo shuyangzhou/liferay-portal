@@ -246,7 +246,7 @@ public class BaseSearchEngine implements SearchEngine {
 		_vendor = vendor;
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		BaseSearchEngine.class);
 
 	private BooleanClauseFactory _booleanClauseFactory;

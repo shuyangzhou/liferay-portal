@@ -139,7 +139,7 @@ public class MicrosoftTranslatorImpl implements MicrosoftTranslator {
 		return languageId;
 	}
 
-	private MicrosoftTranslatorAuthenticator
+	private final MicrosoftTranslatorAuthenticator
 		_microsoftTranslatorAuthenticator;
 
 }

@@ -86,7 +86,7 @@ public class SyncAccountModelListener implements ModelListener<SyncAccount> {
 		}
 	}
 
-	private static Logger _logger = LoggerFactory.getLogger(
+	private static final Logger _logger = LoggerFactory.getLogger(
 		SyncEngine.class);
 
 }

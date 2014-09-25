@@ -180,7 +180,7 @@ public class VerifyGroupedModel extends VerifyProcess {
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		VerifyGroupedModel.class);
 
 }

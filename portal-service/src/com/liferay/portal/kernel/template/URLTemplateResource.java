@@ -155,7 +155,7 @@ public class URLTemplateResource implements TemplateResource {
 		objectOutput.writeUTF(_templateURLExternalForm);
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		URLTemplateResource.class);
 
 	private String _templateId;

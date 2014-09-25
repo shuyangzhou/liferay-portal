@@ -303,7 +303,7 @@ public class XhtmlTranslator extends XhtmlTranslationVisitor {
 
 	private static final String _HEADING_ANCHOR_PREFIX = "section-";
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		XhtmlTranslator.class);
 
 	private String _attachmentURLPrefix;

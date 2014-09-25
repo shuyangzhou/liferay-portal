@@ -140,7 +140,7 @@ public class CreoleWikiEngine implements WikiEngine {
 		return creole10Parser.getWikiPageNode();
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		CreoleWikiEngine.class);
 
 }

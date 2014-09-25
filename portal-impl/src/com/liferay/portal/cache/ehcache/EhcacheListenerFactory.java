@@ -183,7 +183,7 @@ public class EhcacheListenerFactory implements ListenerFactory {
 				ehcachePortalCacheManager.getEhcacheManager(), properties));
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		EhcacheListenerFactory.class);
 
 	private static final Map<String, BootstrapCacheLoaderFactory<?>>

@@ -32,7 +32,7 @@ public class SessionCreateAction extends SessionAction {
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		SessionCreateAction.class);
 
 }

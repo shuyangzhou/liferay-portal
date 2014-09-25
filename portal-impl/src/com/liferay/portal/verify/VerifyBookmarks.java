@@ -101,7 +101,7 @@ public class VerifyBookmarks extends VerifyProcess {
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		VerifyBookmarks.class);
 
 }

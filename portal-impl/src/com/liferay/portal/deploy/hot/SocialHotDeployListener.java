@@ -154,10 +154,10 @@ public class SocialHotDeployListener extends BaseHotDeployListener {
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		SocialHotDeployListener.class);
 
-	private static Map<String, Object> _objects =
+	private static final Map<String, Object> _objects =
 		new HashMap<String, Object>();
 
 }

@@ -39,9 +39,9 @@ public class Verifier {
 		_verifyResourcePermissions.verify(new PollsQuestionVerifiableModel());
 	}
 
-	private VerifyAuditedModel _verifyAuditedModel =
+	private final VerifyAuditedModel _verifyAuditedModel =
 		new VerifyAuditedModel();
-	private VerifyResourcePermissions _verifyResourcePermissions =
+	private final VerifyResourcePermissions _verifyResourcePermissions =
 		new VerifyResourcePermissions();
 
 }

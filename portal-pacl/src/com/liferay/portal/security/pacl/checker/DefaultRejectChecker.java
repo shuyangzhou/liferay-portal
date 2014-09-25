@@ -54,7 +54,7 @@ public class DefaultRejectChecker extends BaseChecker {
 		return false;
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		DefaultRejectChecker.class);
 
 }

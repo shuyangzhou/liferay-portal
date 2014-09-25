@@ -15,6 +15,7 @@
 package com.liferay.portal.security.pacl.test.hook.indexer;
 
 import com.liferay.portal.kernel.search.BaseIndexerPostProcessor;
+
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -31,4 +32,5 @@ public class OrganizationIndexerPostProcessor extends BaseIndexerPostProcessor {
 	}
 
 	private static final AtomicBoolean _INSTANTIATED = new AtomicBoolean();
+
 }

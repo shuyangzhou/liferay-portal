@@ -102,7 +102,7 @@ public class VerifySystemEvent extends VerifyProcess {
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		VerifySystemEvent.class);
 
 }

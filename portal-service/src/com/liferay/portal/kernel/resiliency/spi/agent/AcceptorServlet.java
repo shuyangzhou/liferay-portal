@@ -103,7 +103,7 @@ public class AcceptorServlet extends HttpServlet {
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		AcceptorServlet.class);
 
 }

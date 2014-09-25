@@ -155,7 +155,7 @@ public class NetvibesServlet extends HttpServlet {
 	private static final String _NETVIBES_JS =
 		"http://www.netvibes.com/js/UWA/load.js.php?env=Standalone";
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		NetvibesServlet.class);
 
 }

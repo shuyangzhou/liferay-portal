@@ -2538,8 +2538,7 @@ public class HookHotDeployListener
 			_dlProcessors.clear();
 		}
 
-		private List<DLProcessor> _dlProcessors =
-			new ArrayList<DLProcessor>();
+		private List<DLProcessor> _dlProcessors = new ArrayList<DLProcessor>();
 
 	}
 
@@ -2785,8 +2784,7 @@ public class HookHotDeployListener
 			new HashMap<String, FilterConfig>();
 		private List<FilterMapping> _filterMappings =
 			new ArrayList<FilterMapping>();
-		private Map<String, Filter> _filters =
-			new HashMap<String, Filter>();
+		private Map<String, Filter> _filters = new HashMap<String, Filter>();
 
 	}
 

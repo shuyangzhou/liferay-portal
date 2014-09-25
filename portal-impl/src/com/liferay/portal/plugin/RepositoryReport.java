@@ -84,7 +84,7 @@ public class RepositoryReport implements Serializable {
 		return sb.toString();
 	}
 
-	private Map<String, String> _reportMap =
+	private final Map<String, String> _reportMap =
 		new TreeMap<String, String>();
 
 }
