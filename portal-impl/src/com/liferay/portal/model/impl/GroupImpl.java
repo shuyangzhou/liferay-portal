@@ -181,7 +181,7 @@ public class GroupImpl extends GroupBaseImpl {
 
 	@Override
 	public String getDescriptiveName() throws PortalException {
-		return getDescriptiveName(LocaleUtil.getDefault());
+		return getDescriptiveName(LocaleUtil.getMostRelevantLocale());
 	}
 
 	@Override
