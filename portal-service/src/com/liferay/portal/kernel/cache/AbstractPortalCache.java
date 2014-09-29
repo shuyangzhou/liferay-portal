@@ -80,26 +80,6 @@ public abstract class AbstractPortalCache<K extends Serializable, V>
 	}
 
 	@Override
-	public void putQuiet(K key, V value) {
-		putQuiet(key, value, DEFAULT_TIME_TO_LIVE);
-	}
-
-	@Override
-	public void putQuiet(K key, V value, int timeToLive) {
-		boolean skipListener =
-			AggregatedCacheListener.getSkipListenerThreadLocal();
-
-		AggregatedCacheListener.setSkipListenerThreadLocal(true);
-
-		try {
-			put(key, value, timeToLive);
-		}
-		finally {
-			AggregatedCacheListener.setSkipListenerThreadLocal(skipListener);
-		}
-	}
-
-	@Override
 	public void registerCacheListener(CacheListener<K, V> cacheListener) {
 		aggregatedCacheListener.addCacheListener(cacheListener);
 	}
