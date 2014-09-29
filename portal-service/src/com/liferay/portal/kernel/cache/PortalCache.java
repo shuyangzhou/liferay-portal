@@ -67,6 +67,8 @@ public interface PortalCache<K extends Serializable, V> {
 	@Proxy
 	public void removeAll();
 
+	public void setBootstrapLoader(BootstrapLoader bootstrapLoader);
+
 	public void unregisterCacheListener(CacheListener<K, V> cacheListener);
 
 	public void unregisterCacheListeners();

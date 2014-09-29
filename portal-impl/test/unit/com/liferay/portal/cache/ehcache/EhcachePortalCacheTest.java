@@ -80,7 +80,7 @@ public class EhcachePortalCacheTest {
 		_ehcachePortalCache = new EhcachePortalCache<String, String>(
 			new MockPortalCacheManager<String, String>(
 				_PORTAL_CACHE_MANAGER_NAME),
-			cache, null);
+			cache);
 
 		_ehcachePortalCache.put(_KEY_1, _VALUE_1);
 

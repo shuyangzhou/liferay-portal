@@ -100,6 +100,11 @@ public class PortalCacheWrapper<K extends Serializable, V>
 		portalCache.removeAll();
 	}
 
+	@Override
+	public void setBootstrapLoader(BootstrapLoader bootstrapLoader) {
+		portalCache.setBootstrapLoader(bootstrapLoader);
+	}
+
 	public void setPortalCache(PortalCache<K, V> portalCache) {
 		this.portalCache = portalCache;
 	}

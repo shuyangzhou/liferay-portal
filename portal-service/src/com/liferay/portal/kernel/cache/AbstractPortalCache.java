@@ -32,6 +32,11 @@ public abstract class AbstractPortalCache<K extends Serializable, V>
 	}
 
 	@Override
+	public BootstrapLoader getBootstrapLoader() {
+		return _bootstrapLoader;
+	}
+
+	@Override
 	public void put(K key, V value) {
 		put(key, value, DEFAULT_TIME_TO_LIVE, false);
 	}
@@ -143,6 +148,11 @@ public abstract class AbstractPortalCache<K extends Serializable, V>
 		return doReplace(key, oldValue, newValue, timeToLive);
 	}
 
+	@Override
+	public void setBootstrapLoader(BootstrapLoader bootstrapLoader) {
+		_bootstrapLoader = bootstrapLoader;
+	}
+
 	protected abstract V doGet(K key);
 
 	protected abstract void doPut(
@@ -174,5 +184,7 @@ public abstract class AbstractPortalCache<K extends Serializable, V>
 
 		doPut(key, value, timeToLive, quiet);
 	}
+
+	private BootstrapLoader _bootstrapLoader;
 
 }
