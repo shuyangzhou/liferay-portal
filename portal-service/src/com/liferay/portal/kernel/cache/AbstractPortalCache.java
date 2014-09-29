@@ -22,6 +22,10 @@ import java.io.Serializable;
 public abstract class AbstractPortalCache<K extends Serializable, V>
 	implements LowLevelCache<K, V> {
 
+	public AbstractPortalCache(PortalCacheManager<K, V> portalCacheManager) {
+		_portalCacheManager = portalCacheManager;
+	}
+
 	@Override
 	public V get(K key) {
 		if (key == null) {
@@ -34,6 +38,11 @@ public abstract class AbstractPortalCache<K extends Serializable, V>
 	@Override
 	public BootstrapLoader getBootstrapLoader() {
 		return _bootstrapLoader;
+	}
+
+	@Override
+	public PortalCacheManager<K, V> getPortalCacheManager() {
+		return _portalCacheManager;
 	}
 
 	@Override
@@ -197,5 +206,6 @@ public abstract class AbstractPortalCache<K extends Serializable, V>
 		new AggregatedCacheListener<K, V>();
 
 	private BootstrapLoader _bootstrapLoader;
+	private final PortalCacheManager<K, V> _portalCacheManager;
 
 }
