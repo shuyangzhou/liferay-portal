@@ -16,6 +16,7 @@ package com.liferay.portal.cache.mvcc;
 
 import com.liferay.portal.kernel.cache.AggregatedCacheListener;
 import com.liferay.portal.kernel.cache.LowLevelCache;
+import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cache.PortalCacheWrapper;
 import com.liferay.portal.model.MVCCModel;
 
@@ -26,6 +27,36 @@ import java.io.Serializable;
  */
 public class MVCCPortalCache<K extends Serializable, V extends MVCCModel>
 	extends PortalCacheWrapper<K, V> {
+
+	@SuppressWarnings("unchecked")
+	public static <K extends Serializable>
+		PortalCache<K, ?> createMVCCEhcachePortalCache(
+			PortalCache<K, ?> portalCache) {
+
+		PortalCache<K, ?> nextPortalCache = portalCache;
+		PortalCacheWrapper<K, MVCCModel> portalCacheWrapper = null;
+
+		while (true) {
+			if (nextPortalCache instanceof LowLevelCache) {
+				MVCCPortalCache<K, MVCCModel> mvccPortalCache =
+					new MVCCPortalCache<K, MVCCModel>(
+						(LowLevelCache<K, MVCCModel>)nextPortalCache);
+
+				if (portalCacheWrapper != null) {
+					portalCacheWrapper.setPortalCache(mvccPortalCache);
+
+					return portalCache;
+				}
+				else {
+					return mvccPortalCache;
+				}
+			}
+
+			portalCacheWrapper = (PortalCacheWrapper<K, MVCCModel>)portalCache;
+
+			nextPortalCache = portalCacheWrapper.getWrappedPortalCache();
+		}
+	}
 
 	public MVCCPortalCache(LowLevelCache<K, V> lowLevelCache) {
 		super(lowLevelCache);
