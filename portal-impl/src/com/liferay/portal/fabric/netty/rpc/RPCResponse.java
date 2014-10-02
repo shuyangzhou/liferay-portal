@@ -44,12 +44,16 @@ public class RPCResponse<T extends Serializable> extends RPCSerializable {
 		if (_throwable != null) {
 			if (!asyncBroker.takeWithException(id, _throwable)) {
 				_log.error(
-					"ID " + id + " does not match exception", _throwable);
+					"Unable to place exception because no future exists with " +
+						"ID " + id,
+					_throwable);
 			}
 		}
 		else {
 			if (!asyncBroker.takeWithResult(id, _result)) {
-				_log.error("ID " + id + " does not match result " + _result);
+				_log.error(
+					"Unable to place result " + _result +
+						" because no future exists with ID " + id);
 			}
 		}
 	}

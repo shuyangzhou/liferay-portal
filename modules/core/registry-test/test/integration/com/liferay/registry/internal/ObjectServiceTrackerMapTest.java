@@ -262,7 +262,8 @@ public class ObjectServiceTrackerMapTest {
 									serviceReference.getProperty("target"));
 						}
 
-					})) {
+					}
+				)) {
 
 			serviceTrackerMap.open();
 
@@ -327,7 +328,8 @@ public class ObjectServiceTrackerMapTest {
 							registry.ungetService(serviceReference);
 						}
 
-					})) {
+					}
+				)) {
 
 			serviceTrackerMap.open();
 
@@ -409,7 +411,8 @@ public class ObjectServiceTrackerMapTest {
 							registry.ungetService(serviceReference);
 						}
 
-					})) {
+					}
+				)) {
 
 			serviceTrackerMap.open();
 
