@@ -16,10 +16,11 @@ package com.liferay.portal.cache.mvcc;
 
 import com.liferay.portal.cache.MockPortalCacheManager;
 import com.liferay.portal.cache.TestCacheListener;
-import com.liferay.portal.cache.cluster.ClusterReplicationThreadLocal;
+import com.liferay.portal.cache.TestCacheReplicator;
 import com.liferay.portal.cache.memory.MemoryPortalCache;
-import com.liferay.portal.kernel.cache.LowLevelCache;
 import com.liferay.portal.kernel.cache.PortalCache;
+import com.liferay.portal.kernel.cache.PortalCacheHelperUtil;
+import com.liferay.portal.kernel.cache.PortalCacheWrapper;
 import com.liferay.portal.kernel.test.CodeCoverageAssertor;
 import com.liferay.portal.model.MVCCModel;
 import com.liferay.portal.test.AdviseWith;
@@ -56,12 +57,48 @@ public class MVCCPortalCacheTest {
 				_PORTAL_CACHE_MANAGER_NAME),
 			_PORTAL_CACHE_NAME, 16);
 
-		_mvccPortalCache = new MVCCPortalCache<String, MVCCModel>(
-			(LowLevelCache<String, MVCCModel>)_portalCache);
+		_mvccPortalCache =
+			(MVCCPortalCache<String, MVCCModel>)
+				MVCCPortalCache.createMVCCEhcachePortalCache(_portalCache);
 
-		_testCacheListener = new ThreadLocalAwareCacheListener();
+		_testCacheListener = new TestCacheListener<String, MVCCModel>();
 
 		_portalCache.registerCacheListener(_testCacheListener);
+
+		_testCacheReplicator = new TestCacheReplicator<String, MVCCModel>();
+
+		_portalCache.registerCacheListener(_testCacheReplicator);
+	}
+
+	@Test
+	public void testCreateMVCCEhcachePortalCache() {
+		PortalCache<String, MVCCModel> portalCache =
+			new PortalCacheWrapper<String, MVCCModel>(_portalCache);
+
+		PortalCache<String, MVCCModel> currentPortalCache =
+			(PortalCache<String, MVCCModel>)
+				MVCCPortalCache.createMVCCEhcachePortalCache(portalCache);
+
+		boolean isMVCCPortalCache = false;
+
+		while (currentPortalCache instanceof PortalCacheWrapper) {
+			PortalCacheWrapper<String, MVCCModel> portalCacheWrapper =
+				(PortalCacheWrapper<String, MVCCModel>)currentPortalCache;
+
+			PortalCache<String, MVCCModel> nextPortalCache =
+				portalCacheWrapper.getWrappedPortalCache();
+
+			if (nextPortalCache instanceof MVCCPortalCache) {
+				isMVCCPortalCache = true;
+
+				break;
+			}
+			else {
+				currentPortalCache = nextPortalCache;
+			}
+		}
+
+		Assert.assertTrue(isMVCCPortalCache);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -78,8 +115,6 @@ public class MVCCPortalCacheTest {
 
 		mvccPortalCache.put(key, value);
 		mvccPortalCache.put(key, value, 10);
-		mvccPortalCache.putQuiet(key, value);
-		mvccPortalCache.putQuiet(key, value, 10);
 	}
 
 	@AdviseWith(adviceClasses = {MemoryPortalCacheAdvice.class})
@@ -288,6 +323,18 @@ public class MVCCPortalCacheTest {
 		_testCacheListener.assertActionsCount(1);
 		_testCacheListener.reset();
 
+		if (timeToLive) {
+			_testCacheReplicator.assertPut(
+				_KEY_1, new MockMVCCModel(_VERSION_1), 10);
+		}
+		else {
+			_testCacheReplicator.assertPut(
+				_KEY_1, new MockMVCCModel(_VERSION_1));
+		}
+
+		_testCacheReplicator.assertActionsCount(1);
+		_testCacheReplicator.reset();
+
 		// Put 2
 
 		if (timeToLive) {
@@ -300,6 +347,7 @@ public class MVCCPortalCacheTest {
 		_assertVersion(_VERSION_1, _mvccPortalCache.get(_KEY_1));
 
 		_testCacheListener.assertActionsCount(0);
+		_testCacheReplicator.assertActionsCount(0);
 
 		// Put 3
 
@@ -324,19 +372,44 @@ public class MVCCPortalCacheTest {
 		_testCacheListener.assertActionsCount(1);
 		_testCacheListener.reset();
 
-		// Putquiet
-
 		if (timeToLive) {
-			_mvccPortalCache.putQuiet(
-				_KEY_2, new MockMVCCModel(_VERSION_1), 10);
+			_testCacheReplicator.assertUpdated(
+				_KEY_1, new MockMVCCModel(_VERSION_2), 10);
 		}
 		else {
-			_mvccPortalCache.putQuiet(_KEY_2, new MockMVCCModel(_VERSION_1));
+			_testCacheReplicator.assertUpdated(
+				_KEY_1, new MockMVCCModel(_VERSION_2));
+		}
+
+		_testCacheReplicator.assertActionsCount(1);
+		_testCacheReplicator.reset();
+
+		// Put 4
+
+		if (timeToLive) {
+			PortalCacheHelperUtil.put(
+				_mvccPortalCache, _KEY_2, new MockMVCCModel(_VERSION_1), 10,
+				true);
+		}
+		else {
+			PortalCacheHelperUtil.put(
+				_mvccPortalCache, _KEY_2, new MockMVCCModel(_VERSION_1), true);
 		}
 
 		_assertVersion(_VERSION_1, _mvccPortalCache.get(_KEY_2));
 
-		_testCacheListener.assertActionsCount(0);
+		if (timeToLive) {
+			_testCacheListener.assertPut(
+				_KEY_2, new MockMVCCModel(_VERSION_1), 10);
+		}
+		else {
+			_testCacheListener.assertPut(_KEY_2, new MockMVCCModel(_VERSION_1));
+		}
+
+		_testCacheListener.assertActionsCount(1);
+		_testCacheListener.reset();
+
+		_testCacheReplicator.assertActionsCount(0);
 	}
 
 	private void _assertVersion(long version, MVCCModel mvccModel) {
@@ -361,6 +434,7 @@ public class MVCCPortalCacheTest {
 	private MVCCPortalCache<String, MVCCModel> _mvccPortalCache;
 	private PortalCache<String, MVCCModel> _portalCache;
 	private TestCacheListener<String, MVCCModel> _testCacheListener;
+	private TestCacheReplicator<String, MVCCModel> _testCacheReplicator;
 
 	private static class MockMVCCModel implements MVCCModel {
 
@@ -399,82 +473,6 @@ public class MVCCPortalCacheTest {
 		}
 
 		private long _version;
-
-	}
-
-	private static class ThreadLocalAwareCacheListener
-		extends TestCacheListener<String, MVCCModel> {
-
-		@Override
-		public void notifyEntryEvicted(
-			PortalCache<String, MVCCModel> portalCache, String key,
-			MVCCModel value, int timeToLive) {
-
-			if (!ClusterReplicationThreadLocal.isReplicate()) {
-				return;
-			}
-
-			super.notifyEntryEvicted(portalCache, key, value, timeToLive);
-		}
-
-		@Override
-		public void notifyEntryExpired(
-			PortalCache<String, MVCCModel> portalCache, String key,
-			MVCCModel value, int timeToLive) {
-
-			if (!ClusterReplicationThreadLocal.isReplicate()) {
-				return;
-			}
-
-			super.notifyEntryExpired(portalCache, key, value, timeToLive);
-		}
-
-		@Override
-		public void notifyEntryPut(
-			PortalCache<String, MVCCModel> portalCache, String key,
-			MVCCModel value, int timeToLive) {
-
-			if (!ClusterReplicationThreadLocal.isReplicate()) {
-				return;
-			}
-
-			super.notifyEntryPut(portalCache, key, value, timeToLive);
-		}
-
-		@Override
-		public void notifyEntryRemoved(
-			PortalCache<String, MVCCModel> portalCache, String key,
-			MVCCModel value, int timeToLive) {
-
-			if (!ClusterReplicationThreadLocal.isReplicate()) {
-				return;
-			}
-
-			super.notifyEntryRemoved(portalCache, key, value, timeToLive);
-		}
-
-		@Override
-		public void notifyEntryUpdated(
-			PortalCache<String, MVCCModel> portalCache, String key,
-			MVCCModel value, int timeToLive) {
-
-			if (!ClusterReplicationThreadLocal.isReplicate()) {
-				return;
-			}
-
-			super.notifyEntryUpdated(portalCache, key, value, timeToLive);
-		}
-
-		@Override
-		public void notifyRemoveAll(
-			PortalCache<String, MVCCModel> portalCache) {
-
-			if (!ClusterReplicationThreadLocal.isReplicate()) {
-				return;
-			}
-
-			super.notifyRemoveAll(portalCache);
-		}
 
 	}
 

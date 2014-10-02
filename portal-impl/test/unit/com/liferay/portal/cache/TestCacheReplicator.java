@@ -12,23 +12,15 @@
  * details.
  */
 
-package com.liferay.portal.kernel.cache;
+package com.liferay.portal.cache;
+
+import com.liferay.portal.kernel.cache.CacheReplicator;
 
 import java.io.Serializable;
-
-import java.util.Properties;
 
 /**
  * @author Tina Tian
  */
-public interface ListenerFactory {
-
-	public BootstrapLoader createBootstrapLoader(Properties properties);
-
-	public CacheListener<? extends Serializable, ?> createCacheListener(
-		Properties properties);
-
-	public CacheManagerListener createCacheManagerListener(
-		Properties properties);
-
+public class TestCacheReplicator<K extends Serializable, V>
+	extends TestCacheListener<K, V> implements CacheReplicator {
 }
