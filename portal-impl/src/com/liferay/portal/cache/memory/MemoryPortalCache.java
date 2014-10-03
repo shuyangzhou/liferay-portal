@@ -15,17 +15,12 @@
 package com.liferay.portal.cache.memory;
 
 import com.liferay.portal.kernel.cache.AbstractPortalCache;
-import com.liferay.portal.kernel.cache.BootstrapLoader;
-import com.liferay.portal.kernel.cache.CacheListener;
-import com.liferay.portal.kernel.cache.CacheListenerScope;
 import com.liferay.portal.kernel.cache.PortalCacheManager;
-import com.liferay.portal.kernel.concurrent.ConcurrentHashSet;
 
 import java.io.Serializable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -41,7 +36,8 @@ public class MemoryPortalCache<K extends Serializable, V>
 		PortalCacheManager<K, V> portalCacheManager, String name,
 		int initialCapacity) {
 
-		_portalCacheManager = portalCacheManager;
+		super(portalCacheManager);
+
 		_name = name;
 
 		_concurrentMap = new ConcurrentHashMap<K, V>(initialCapacity);
@@ -50,14 +46,8 @@ public class MemoryPortalCache<K extends Serializable, V>
 	public void destroy() {
 		removeAll();
 
-		_cacheListeners = null;
 		_concurrentMap = null;
 		_name = null;
-	}
-
-	@Override
-	public BootstrapLoader getBootstrapLoader() {
-		return null;
 	}
 
 	@Override
@@ -77,40 +67,10 @@ public class MemoryPortalCache<K extends Serializable, V>
 	}
 
 	@Override
-	public PortalCacheManager<K, V> getPortalCacheManager() {
-		return _portalCacheManager;
-	}
-
-	@Override
-	public void registerCacheListener(CacheListener<K, V> cacheListener) {
-		_cacheListeners.add(cacheListener);
-	}
-
-	@Override
-	public void registerCacheListener(
-		CacheListener<K, V> cacheListener,
-		CacheListenerScope cacheListenerScope) {
-
-		registerCacheListener(cacheListener);
-	}
-
-	@Override
 	public void removeAll() {
 		_concurrentMap.clear();
 
-		for (CacheListener<K, V> cacheListener : _cacheListeners) {
-			cacheListener.notifyRemoveAll(this);
-		}
-	}
-
-	@Override
-	public void unregisterCacheListener(CacheListener<K, V> cacheListener) {
-		_cacheListeners.remove(cacheListener);
-	}
-
-	@Override
-	public void unregisterCacheListeners() {
-		_cacheListeners.clear();
+		aggregatedCacheListener.notifyRemoveAll(this);
 	}
 
 	@Override
@@ -119,11 +79,16 @@ public class MemoryPortalCache<K extends Serializable, V>
 	}
 
 	@Override
-	protected void doPut(K key, V value, int timeToLive, boolean quiet) {
+	protected void doPut(K key, V value, int timeToLive) {
 		V oldValue = _concurrentMap.put(key, value);
 
-		if (!quiet) {
-			notifyPutEvents(key, value, timeToLive, oldValue != null);
+		if (oldValue != null) {
+			aggregatedCacheListener.notifyEntryUpdated(
+				this, key, value, timeToLive);
+		}
+		else {
+			aggregatedCacheListener.notifyEntryPut(
+				this, key, value, timeToLive);
 		}
 	}
 
@@ -132,7 +97,8 @@ public class MemoryPortalCache<K extends Serializable, V>
 		V oldValue = _concurrentMap.putIfAbsent(key, value);
 
 		if (oldValue == null) {
-			notifyPutEvents(key, value, timeToLive, false);
+			aggregatedCacheListener.notifyEntryPut(
+				this, key, value, timeToLive);
 		}
 
 		return oldValue;
@@ -143,10 +109,8 @@ public class MemoryPortalCache<K extends Serializable, V>
 		V value = _concurrentMap.remove(key);
 
 		if (value != null) {
-			for (CacheListener<K, V> cacheListener : _cacheListeners) {
-				cacheListener.notifyEntryRemoved(
-					this, key, value, DEFAULT_TIME_TO_LIVE);
-			}
+			aggregatedCacheListener.notifyEntryRemoved(
+				this, key, value, DEFAULT_TIME_TO_LIVE);
 		}
 	}
 
@@ -155,10 +119,8 @@ public class MemoryPortalCache<K extends Serializable, V>
 		boolean removed = _concurrentMap.remove(key, value);
 
 		if (removed) {
-			for (CacheListener<K, V> cacheListener : _cacheListeners) {
-				cacheListener.notifyEntryRemoved(
-					this, key, value, DEFAULT_TIME_TO_LIVE);
-			}
+			aggregatedCacheListener.notifyEntryRemoved(
+				this, key, value, DEFAULT_TIME_TO_LIVE);
 		}
 
 		return removed;
@@ -169,7 +131,8 @@ public class MemoryPortalCache<K extends Serializable, V>
 		V oldValue = _concurrentMap.replace(key, value);
 
 		if (oldValue != null) {
-			notifyPutEvents(key, value, timeToLive, true);
+			aggregatedCacheListener.notifyEntryUpdated(
+				this, key, value, timeToLive);
 		}
 
 		return oldValue;
@@ -180,31 +143,14 @@ public class MemoryPortalCache<K extends Serializable, V>
 		boolean replaced = _concurrentMap.replace(key, oldValue, newValue);
 
 		if (replaced) {
-			notifyPutEvents(key, newValue, timeToLive, true);
+			aggregatedCacheListener.notifyEntryUpdated(
+				this, key, newValue, timeToLive);
 		}
 
 		return replaced;
 	}
 
-	protected void notifyPutEvents(
-		K key, V value, int timeToLive, boolean updated) {
-
-		if (updated) {
-			for (CacheListener<K, V> cacheListener : _cacheListeners) {
-				cacheListener.notifyEntryUpdated(this, key, value, timeToLive);
-			}
-		}
-		else {
-			for (CacheListener<K, V> cacheListener : _cacheListeners) {
-				cacheListener.notifyEntryPut(this, key, value, timeToLive);
-			}
-		}
-	}
-
-	private Set<CacheListener<K, V>> _cacheListeners =
-		new ConcurrentHashSet<CacheListener<K, V>>();
 	private ConcurrentMap<K, V> _concurrentMap;
 	private String _name;
-	private PortalCacheManager<K, V> _portalCacheManager;
 
 }

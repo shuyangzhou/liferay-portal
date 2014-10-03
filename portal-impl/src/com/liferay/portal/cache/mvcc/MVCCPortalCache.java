@@ -14,8 +14,8 @@
 
 package com.liferay.portal.cache.mvcc;
 
-import com.liferay.portal.cache.cluster.ClusterReplicationThreadLocal;
 import com.liferay.portal.kernel.cache.LowLevelCache;
+import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cache.PortalCacheWrapper;
 import com.liferay.portal.model.MVCCModel;
 
@@ -27,6 +27,36 @@ import java.io.Serializable;
 public class MVCCPortalCache<K extends Serializable, V extends MVCCModel>
 	extends PortalCacheWrapper<K, V> {
 
+	@SuppressWarnings("unchecked")
+	public static <K extends Serializable>
+		PortalCache<K, ?> createMVCCEhcachePortalCache(
+			PortalCache<K, ?> portalCache) {
+
+		PortalCache<K, ?> nextPortalCache = portalCache;
+		PortalCacheWrapper<K, MVCCModel> portalCacheWrapper = null;
+
+		while (true) {
+			if (nextPortalCache instanceof LowLevelCache) {
+				MVCCPortalCache<K, MVCCModel> mvccPortalCache =
+					new MVCCPortalCache<K, MVCCModel>(
+						(LowLevelCache<K, MVCCModel>)nextPortalCache);
+
+				if (portalCacheWrapper != null) {
+					portalCacheWrapper.setPortalCache(mvccPortalCache);
+
+					return portalCache;
+				}
+				else {
+					return mvccPortalCache;
+				}
+			}
+
+			portalCacheWrapper = (PortalCacheWrapper<K, MVCCModel>)portalCache;
+
+			nextPortalCache = portalCacheWrapper.getWrappedPortalCache();
+		}
+	}
+
 	public MVCCPortalCache(LowLevelCache<K, V> lowLevelCache) {
 		super(lowLevelCache);
 
@@ -35,58 +65,28 @@ public class MVCCPortalCache<K extends Serializable, V extends MVCCModel>
 
 	@Override
 	public void put(K key, V value) {
-		doPut(key, value, DEFAULT_TIME_TO_LIVE, false);
+		put(key, value, DEFAULT_TIME_TO_LIVE);
 	}
 
 	@Override
 	public void put(K key, V value, int timeToLive) {
-		doPut(key, value, timeToLive, false);
-	}
+		while (true) {
+			V oldValue = _lowLevelCache.get(key);
 
-	@Override
-	public void putQuiet(K key, V value) {
-		doPut(key, value, DEFAULT_TIME_TO_LIVE, true);
-	}
-
-	@Override
-	public void putQuiet(K key, V value, int timeToLive) {
-		doPut(key, value, timeToLive, true);
-	}
-
-	protected void doPut(K key, V value, int timeToLive, boolean quiet) {
-		boolean replicate = false;
-
-		if (quiet) {
-			replicate = ClusterReplicationThreadLocal.isReplicate();
-
-			ClusterReplicationThreadLocal.setReplicate(false);
-		}
-
-		try {
-			while (true) {
-				V oldValue = _lowLevelCache.get(key);
+			if (oldValue == null) {
+				oldValue = _lowLevelCache.putIfAbsent(key, value, timeToLive);
 
 				if (oldValue == null) {
-					oldValue = _lowLevelCache.putIfAbsent(
-						key, value, timeToLive);
-
-					if (oldValue == null) {
-						return;
-					}
-				}
-
-				if (value.getMvccVersion() <= oldValue.getMvccVersion()) {
-					return;
-				}
-
-				if (_lowLevelCache.replace(key, oldValue, value, timeToLive)) {
 					return;
 				}
 			}
-		}
-		finally {
-			if (quiet) {
-				ClusterReplicationThreadLocal.setReplicate(replicate);
+
+			if (value.getMvccVersion() <= oldValue.getMvccVersion()) {
+				return;
+			}
+
+			if (_lowLevelCache.replace(key, oldValue, value, timeToLive)) {
+				return;
 			}
 		}
 	}

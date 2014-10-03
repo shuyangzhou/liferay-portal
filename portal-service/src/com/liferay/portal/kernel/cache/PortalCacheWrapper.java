@@ -34,11 +34,6 @@ public class PortalCacheWrapper<K extends Serializable, V>
 	}
 
 	@Override
-	public BootstrapLoader getBootstrapLoader() {
-		return portalCache.getBootstrapLoader();
-	}
-
-	@Override
 	public List<K> getKeys() {
 		return portalCache.getKeys();
 	}
@@ -65,16 +60,6 @@ public class PortalCacheWrapper<K extends Serializable, V>
 	@Override
 	public void put(K key, V value, int timeToLive) {
 		portalCache.put(key, value, timeToLive);
-	}
-
-	@Override
-	public void putQuiet(K key, V value) {
-		portalCache.putQuiet(key, value);
-	}
-
-	@Override
-	public void putQuiet(K key, V value, int timeToLive) {
-		portalCache.putQuiet(key, value, timeToLive);
 	}
 
 	@Override
