@@ -35,16 +35,8 @@ public class AggregatedCacheListener <K extends Serializable, V>
 		return _remoteInvokeThreadLocal.get();
 	}
 
-	public static boolean getSkipListenerThreadLocal() {
-		return _skipListenerThreadLocal.get();
-	}
-
 	public static void setRemoteInvokeThreadLocal(boolean remoteInvoke) {
 		_remoteInvokeThreadLocal.set(remoteInvoke);
-	}
-
-	public static void setSkipListenerThreadLocal(boolean skipListener) {
-		_skipListenerThreadLocal.set(skipListener);
 	}
 
 	public void addCacheListener(CacheListener<K, V> cacheListener) {
@@ -71,10 +63,6 @@ public class AggregatedCacheListener <K extends Serializable, V>
 			PortalCache<K, V> portalCache, K key, V value, int timeToLive)
 		throws PortalCacheException {
 
-		if (_skipListenerThreadLocal.get()) {
-			return;
-		}
-
 		for ( Map.Entry<CacheListener<K, V>, CacheListenerScope> entry :
 				_cacheListeners.entrySet()) {
 
@@ -93,10 +81,6 @@ public class AggregatedCacheListener <K extends Serializable, V>
 	public void notifyEntryExpired(
 			PortalCache<K, V> portalCache, K key, V value, int timeToLive)
 		throws PortalCacheException {
-
-		if (_skipListenerThreadLocal.get()) {
-			return;
-		}
 
 		for ( Map.Entry<CacheListener<K, V>, CacheListenerScope> entry :
 				_cacheListeners.entrySet()) {
@@ -117,10 +101,6 @@ public class AggregatedCacheListener <K extends Serializable, V>
 			PortalCache<K, V> portalCache, K key, V value, int timeToLive)
 		throws PortalCacheException {
 
-		if (_skipListenerThreadLocal.get()) {
-			return;
-		}
-
 		for ( Map.Entry<CacheListener<K, V>, CacheListenerScope> entry :
 				_cacheListeners.entrySet()) {
 
@@ -139,10 +119,6 @@ public class AggregatedCacheListener <K extends Serializable, V>
 	public void notifyEntryRemoved(
 			PortalCache<K, V> portalCache, K key, V value, int timeToLive)
 		throws PortalCacheException {
-
-		if (_skipListenerThreadLocal.get()) {
-			return;
-		}
 
 		for ( Map.Entry<CacheListener<K, V>, CacheListenerScope> entry :
 				_cacheListeners.entrySet()) {
@@ -163,10 +139,6 @@ public class AggregatedCacheListener <K extends Serializable, V>
 			PortalCache<K, V> portalCache, K key, V value, int timeToLive)
 		throws PortalCacheException {
 
-		if (_skipListenerThreadLocal.get()) {
-			return;
-		}
-
 		for ( Map.Entry<CacheListener<K, V>, CacheListenerScope> entry :
 				_cacheListeners.entrySet()) {
 
@@ -184,10 +156,6 @@ public class AggregatedCacheListener <K extends Serializable, V>
 	@Override
 	public void notifyRemoveAll(PortalCache<K, V> portalCache)
 		throws PortalCacheException {
-
-		if (_skipListenerThreadLocal.get()) {
-			return;
-		}
 
 		for ( Map.Entry<CacheListener<K, V>, CacheListenerScope> entry :
 				_cacheListeners.entrySet()) {
@@ -239,9 +207,6 @@ public class AggregatedCacheListener <K extends Serializable, V>
 	private static final ThreadLocal<Boolean> _remoteInvokeThreadLocal =
 		new InitialThreadLocal<Boolean>(
 			AggregatedCacheListener.class + "._remoteInvokeThreadLocal", false);
-	private static final ThreadLocal<Boolean> _skipListenerThreadLocal =
-		new InitialThreadLocal<Boolean>(
-			AggregatedCacheListener.class + "._skipListenerThreadLocal", false);
 
 	private final ConcurrentMap<CacheListener<K, V>, CacheListenerScope>
 		_cacheListeners =
