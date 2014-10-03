@@ -17,8 +17,8 @@ package com.liferay.portal.cache.mvcc;
 import com.liferay.portal.cache.MockPortalCacheManager;
 import com.liferay.portal.cache.TestCacheListener;
 import com.liferay.portal.cache.memory.MemoryPortalCache;
-import com.liferay.portal.kernel.cache.LowLevelCache;
 import com.liferay.portal.kernel.cache.PortalCache;
+import com.liferay.portal.kernel.cache.PortalCacheWrapper;
 import com.liferay.portal.kernel.test.CodeCoverageAssertor;
 import com.liferay.portal.model.MVCCModel;
 import com.liferay.portal.test.AdviseWith;
@@ -55,12 +55,44 @@ public class MVCCPortalCacheTest {
 				_PORTAL_CACHE_MANAGER_NAME),
 			_PORTAL_CACHE_NAME, 16);
 
-		_mvccPortalCache = new MVCCPortalCache<String, MVCCModel>(
-			(LowLevelCache<String, MVCCModel>)_portalCache);
+		_mvccPortalCache =
+			(MVCCPortalCache<String, MVCCModel>)
+				MVCCPortalCache.createMVCCEhcachePortalCache(_portalCache);
 
 		_testCacheListener = new TestCacheListener<String, MVCCModel>();
 
 		_portalCache.registerCacheListener(_testCacheListener);
+	}
+
+	@Test
+	public void testCreateMVCCEhcachePortalCache() {
+		PortalCache<String, MVCCModel> portalCache =
+			new PortalCacheWrapper<String, MVCCModel>(_portalCache);
+
+		PortalCache<String, MVCCModel> currentPortalCache =
+			(PortalCache<String, MVCCModel>)
+				MVCCPortalCache.createMVCCEhcachePortalCache(portalCache);
+
+		boolean isMVCCPortalCache = false;
+
+		while (currentPortalCache instanceof PortalCacheWrapper) {
+			PortalCacheWrapper<String, MVCCModel> portalCacheWrapper =
+				(PortalCacheWrapper<String, MVCCModel>)currentPortalCache;
+
+			PortalCache<String, MVCCModel> nextPortalCache =
+				portalCacheWrapper.getWrappedPortalCache();
+
+			if (nextPortalCache instanceof MVCCPortalCache) {
+				isMVCCPortalCache = true;
+
+				break;
+			}
+			else {
+				currentPortalCache = nextPortalCache;
+			}
+		}
+
+		Assert.assertTrue(isMVCCPortalCache);
 	}
 
 	@SuppressWarnings("unchecked")
