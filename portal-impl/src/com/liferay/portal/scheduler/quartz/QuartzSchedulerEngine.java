@@ -43,6 +43,7 @@ import com.liferay.portal.kernel.scheduler.messaging.SchedulerEventMessageListen
 import com.liferay.portal.kernel.scheduler.messaging.SchedulerResponse;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.ClassLoaderPool;
+import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.scheduler.job.MessageSenderJob;
@@ -110,10 +111,21 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		}
 
 		try {
-			Scheduler scheduler = getScheduler(groupName);
+			ObjectValuePair<String, StorageType> objectValuePair =
+				resolveGroupName(groupName);
 
-			groupName = fixMaxLength(
-				getOriginalGroupName(groupName), GROUP_NAME_MAX_LENGTH);
+			groupName = objectValuePair.getKey();
+
+			Scheduler scheduler = null;
+
+			if (StorageType.PERSISTED.equals(objectValuePair.getValue())) {
+				scheduler = _persistedScheduler;
+
+				groupName = fixMaxLength(groupName, GROUP_NAME_MAX_LENGTH);
+			}
+			else {
+				scheduler = _memoryScheduler;
+			}
 
 			Set<JobKey> jobKeys = scheduler.getJobKeys(
 				GroupMatcher.jobGroupEquals(groupName));
@@ -139,11 +151,22 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		}
 
 		try {
-			Scheduler scheduler = getScheduler(groupName);
+			ObjectValuePair<String, StorageType> objectValuePair =
+				resolveGroupName(groupName);
 
-			jobName = fixMaxLength(jobName, JOB_NAME_MAX_LENGTH);
-			groupName = fixMaxLength(
-				getOriginalGroupName(groupName), GROUP_NAME_MAX_LENGTH);
+			groupName = objectValuePair.getKey();
+
+			Scheduler scheduler = null;
+
+			if (StorageType.PERSISTED.equals(objectValuePair.getValue())) {
+				scheduler = _persistedScheduler;
+
+				jobName = fixMaxLength(jobName, JOB_NAME_MAX_LENGTH);
+				groupName = fixMaxLength(groupName, GROUP_NAME_MAX_LENGTH);
+			}
+			else {
+				scheduler = _memoryScheduler;
+			}
 
 			JobKey jobKey = new JobKey(jobName, groupName);
 
@@ -179,11 +202,22 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		}
 
 		try {
-			Scheduler scheduler = getScheduler(groupName);
+			ObjectValuePair<String, StorageType> objectValuePair =
+				resolveGroupName(groupName);
 
-			jobName = fixMaxLength(jobName, JOB_NAME_MAX_LENGTH);
-			groupName = fixMaxLength(
-				getOriginalGroupName(groupName), GROUP_NAME_MAX_LENGTH);
+			groupName = objectValuePair.getKey();
+
+			Scheduler scheduler = null;
+
+			if (StorageType.PERSISTED.equals(objectValuePair.getValue())) {
+				scheduler = _persistedScheduler;
+
+				jobName = fixMaxLength(jobName, JOB_NAME_MAX_LENGTH);
+				groupName = fixMaxLength(groupName, GROUP_NAME_MAX_LENGTH);
+			}
+			else {
+				scheduler = _memoryScheduler;
+			}
 
 			JobKey jobKey = new JobKey(jobName, groupName);
 
@@ -239,7 +273,21 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		}
 
 		try {
-			Scheduler scheduler = getScheduler(groupName);
+			ObjectValuePair<String, StorageType> objectValuePair =
+				resolveGroupName(groupName);
+
+			groupName = objectValuePair.getKey();
+
+			Scheduler scheduler = null;
+
+			if (StorageType.PERSISTED.equals(objectValuePair.getValue())) {
+				scheduler = _persistedScheduler;
+
+				groupName = fixMaxLength(groupName, GROUP_NAME_MAX_LENGTH);
+			}
+			else {
+				scheduler = _memoryScheduler;
+			}
 
 			return getScheduledJobs(scheduler, groupName);
 		}
@@ -256,10 +304,21 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		}
 
 		try {
-			Scheduler scheduler = getScheduler(groupName);
+			ObjectValuePair<String, StorageType> objectValuePair =
+				resolveGroupName(groupName);
 
-			groupName = fixMaxLength(
-				getOriginalGroupName(groupName), GROUP_NAME_MAX_LENGTH);
+			groupName = objectValuePair.getKey();
+
+			Scheduler scheduler = null;
+
+			if (StorageType.PERSISTED.equals(objectValuePair.getValue())) {
+				scheduler = _persistedScheduler;
+
+				groupName = fixMaxLength(groupName, GROUP_NAME_MAX_LENGTH);
+			}
+			else {
+				scheduler = _memoryScheduler;
+			}
 
 			Set<JobKey> jobKeys = scheduler.getJobKeys(
 				GroupMatcher.jobGroupEquals(groupName));
@@ -285,11 +344,22 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		}
 
 		try {
-			Scheduler scheduler = getScheduler(groupName);
+			ObjectValuePair<String, StorageType> objectValuePair =
+				resolveGroupName(groupName);
 
-			jobName = fixMaxLength(jobName, JOB_NAME_MAX_LENGTH);
-			groupName = fixMaxLength(
-				getOriginalGroupName(groupName), GROUP_NAME_MAX_LENGTH);
+			groupName = objectValuePair.getKey();
+
+			Scheduler scheduler = null;
+
+			if (StorageType.PERSISTED.equals(objectValuePair.getValue())) {
+				scheduler = _persistedScheduler;
+
+				jobName = fixMaxLength(jobName, JOB_NAME_MAX_LENGTH);
+				groupName = fixMaxLength(groupName, GROUP_NAME_MAX_LENGTH);
+			}
+			else {
+				scheduler = _memoryScheduler;
+			}
 
 			JobKey jobKey = new JobKey(jobName, groupName);
 
@@ -312,10 +382,21 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		}
 
 		try {
-			Scheduler scheduler = getScheduler(groupName);
+			ObjectValuePair<String, StorageType> objectValuePair =
+				resolveGroupName(groupName);
 
-			groupName = fixMaxLength(
-				getOriginalGroupName(groupName), GROUP_NAME_MAX_LENGTH);
+			groupName = objectValuePair.getKey();
+
+			Scheduler scheduler = null;
+
+			if (StorageType.PERSISTED.equals(objectValuePair.getValue())) {
+				scheduler = _persistedScheduler;
+
+				groupName = fixMaxLength(groupName, GROUP_NAME_MAX_LENGTH);
+			}
+			else {
+				scheduler = _memoryScheduler;
+			}
 
 			Set<JobKey> jobKeys = scheduler.getJobKeys(
 				GroupMatcher.jobGroupEquals(groupName));
@@ -341,11 +422,22 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		}
 
 		try {
-			Scheduler scheduler = getScheduler(groupName);
+			ObjectValuePair<String, StorageType> objectValuePair =
+				resolveGroupName(groupName);
 
-			jobName = fixMaxLength(jobName, JOB_NAME_MAX_LENGTH);
-			groupName = fixMaxLength(
-				getOriginalGroupName(groupName), GROUP_NAME_MAX_LENGTH);
+			groupName = objectValuePair.getKey();
+
+			Scheduler scheduler = null;
+
+			if (StorageType.PERSISTED.equals(objectValuePair.getValue())) {
+				scheduler = _persistedScheduler;
+
+				jobName = fixMaxLength(jobName, JOB_NAME_MAX_LENGTH);
+				groupName = fixMaxLength(groupName, GROUP_NAME_MAX_LENGTH);
+			}
+			else {
+				scheduler = _memoryScheduler;
+			}
 
 			JobKey jobKey = new JobKey(jobName, groupName);
 
@@ -372,13 +464,29 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		}
 
 		try {
-			Scheduler scheduler = getScheduler(trigger.getGroupName());
+			String jobName = trigger.getJobName();
+			String groupName = trigger.getGroupName();
 
-			StorageType storageType = getStorageType(trigger.getGroupName());
+			ObjectValuePair<String, StorageType> objectValuePair =
+				resolveGroupName(groupName);
+
+			groupName = objectValuePair.getKey();
+			StorageType storageType = objectValuePair.getValue();
+
+			Scheduler scheduler = null;
+
+			if (StorageType.PERSISTED.equals(storageType)) {
+				scheduler = _persistedScheduler;
+
+				jobName = fixMaxLength(jobName, JOB_NAME_MAX_LENGTH);
+				groupName = fixMaxLength(groupName, GROUP_NAME_MAX_LENGTH);
+			}
+			else {
+				scheduler = _memoryScheduler;
+			}
 
 			trigger = TriggerFactoryUtil.buildTrigger(
-				trigger.getTriggerType(), trigger.getJobName(),
-				getOriginalGroupName(trigger.getGroupName()),
+				trigger.getTriggerType(), jobName, groupName,
 				trigger.getStartDate(), trigger.getEndDate(),
 				trigger.getTriggerContent());
 
@@ -397,9 +505,7 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 				message = message.clone();
 			}
 
-			registerMessageListeners(
-				trigger.getJobName(), trigger.getGroupName(), destination,
-				message);
+			registerMessageListeners(jobName, groupName, destination, message);
 
 			schedule(
 				scheduler, storageType, quartzTrigger, description, destination,
@@ -463,11 +569,22 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		}
 
 		try {
-			Scheduler scheduler = getScheduler(groupName);
+			ObjectValuePair<String, StorageType> objectValuePair =
+				resolveGroupName(groupName);
 
-			jobName = fixMaxLength(jobName, JOB_NAME_MAX_LENGTH);
-			groupName = fixMaxLength(
-				getOriginalGroupName(groupName), GROUP_NAME_MAX_LENGTH);
+			groupName = objectValuePair.getKey();
+
+			Scheduler scheduler = null;
+
+			if (StorageType.PERSISTED.equals(objectValuePair.getValue())) {
+				scheduler = _persistedScheduler;
+
+				jobName = fixMaxLength(jobName, JOB_NAME_MAX_LENGTH);
+				groupName = fixMaxLength(groupName, GROUP_NAME_MAX_LENGTH);
+			}
+			else {
+				scheduler = _memoryScheduler;
+			}
 
 			JobKey jobKey = new JobKey(jobName, groupName);
 
@@ -488,10 +605,21 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		}
 
 		try {
-			Scheduler scheduler = getScheduler(groupName);
+			ObjectValuePair<String, StorageType> objectValuePair =
+				resolveGroupName(groupName);
 
-			groupName = fixMaxLength(
-				getOriginalGroupName(groupName), GROUP_NAME_MAX_LENGTH);
+			groupName = objectValuePair.getKey();
+
+			Scheduler scheduler = null;
+
+			if (StorageType.PERSISTED.equals(objectValuePair.getValue())) {
+				scheduler = _persistedScheduler;
+
+				groupName = fixMaxLength(groupName, GROUP_NAME_MAX_LENGTH);
+			}
+			else {
+				scheduler = _memoryScheduler;
+			}
 
 			Set<JobKey> jobKeys = scheduler.getJobKeys(
 				GroupMatcher.jobGroupEquals(groupName));
@@ -515,11 +643,22 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		}
 
 		try {
-			Scheduler scheduler = getScheduler(groupName);
+			ObjectValuePair<String, StorageType> objectValuePair =
+				resolveGroupName(groupName);
 
-			jobName = fixMaxLength(jobName, JOB_NAME_MAX_LENGTH);
-			groupName = fixMaxLength(
-				getOriginalGroupName(groupName), GROUP_NAME_MAX_LENGTH);
+			groupName = objectValuePair.getKey();
+
+			Scheduler scheduler = null;
+
+			if (StorageType.PERSISTED.equals(objectValuePair.getValue())) {
+				scheduler = _persistedScheduler;
+
+				jobName = fixMaxLength(jobName, JOB_NAME_MAX_LENGTH);
+				groupName = fixMaxLength(groupName, GROUP_NAME_MAX_LENGTH);
+			}
+			else {
+				scheduler = _memoryScheduler;
+			}
 
 			JobKey jobKey = new JobKey(jobName, groupName);
 
@@ -542,11 +681,28 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		}
 
 		try {
-			Scheduler scheduler = getScheduler(trigger.getGroupName());
+			String jobName = trigger.getJobName();
+			String groupName = trigger.getGroupName();
+
+			ObjectValuePair<String, StorageType> objectValuePair =
+				resolveGroupName(groupName);
+
+			groupName = objectValuePair.getKey();
+
+			Scheduler scheduler = null;
+
+			if (StorageType.PERSISTED.equals(objectValuePair.getValue())) {
+				scheduler = _persistedScheduler;
+
+				jobName = fixMaxLength(jobName, JOB_NAME_MAX_LENGTH);
+				groupName = fixMaxLength(groupName, GROUP_NAME_MAX_LENGTH);
+			}
+			else {
+				scheduler = _memoryScheduler;
+			}
 
 			trigger = TriggerFactoryUtil.buildTrigger(
-				trigger.getTriggerType(), trigger.getJobName(),
-				getOriginalGroupName(trigger.getGroupName()),
+				trigger.getTriggerType(), jobName, groupName,
 				trigger.getStartDate(), trigger.getEndDate(),
 				trigger.getTriggerContent());
 
@@ -564,6 +720,12 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 
 		if (argument.length() > maxLength) {
 			argument = argument.substring(0, maxLength);
+
+			_log.error(
+				"Argument '" + argument + "' is too long and will be " +
+					"truncated to " + maxLength + " characters. This may " +
+						"cause your scheduled job does not work properly, " +
+							"please consider using a short argument");
 		}
 
 		return argument;
@@ -611,12 +773,6 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		return schedulerEventListener;
 	}
 
-	protected String getOriginalGroupName(String groupName) {
-		int pos = groupName.indexOf(CharPool.POUND);
-
-		return groupName.substring(pos + 1);
-	}
-
 	protected Trigger getQuartzTrigger(
 			com.liferay.portal.kernel.scheduler.Trigger trigger)
 		throws SchedulerException {
@@ -626,10 +782,8 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		}
 
 		Date endDate = trigger.getEndDate();
-		String jobName = fixMaxLength(
-			trigger.getJobName(), JOB_NAME_MAX_LENGTH);
-		String groupName = fixMaxLength(
-			trigger.getGroupName(), GROUP_NAME_MAX_LENGTH);
+		String jobName = trigger.getJobName();
+		String groupName = trigger.getGroupName();
 
 		Date startDate = trigger.getStartDate();
 
@@ -783,9 +937,6 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 			Scheduler scheduler, String groupName)
 		throws Exception {
 
-		groupName = fixMaxLength(
-			getOriginalGroupName(groupName), GROUP_NAME_MAX_LENGTH);
-
 		List<SchedulerResponse> schedulerResponses =
 			new ArrayList<SchedulerResponse>();
 
@@ -802,23 +953,6 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		}
 
 		return schedulerResponses;
-	}
-
-	protected Scheduler getScheduler(String groupName) throws Exception {
-		if (groupName.startsWith(StorageType.PERSISTED.toString())) {
-			return _persistedScheduler;
-		}
-		else {
-			return _memoryScheduler;
-		}
-	}
-
-	protected StorageType getStorageType(String groupName) {
-		int pos = groupName.indexOf(CharPool.POUND);
-
-		String storageTypeString = groupName.substring(0, pos);
-
-		return StorageType.valueOf(storageTypeString);
 	}
 
 	protected Scheduler initializeScheduler(
@@ -952,6 +1086,21 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 			schedulerEventListenerWrapper.getMessageListenerUUID());
 
 		message.put(RECEIVER_KEY, new ReceiverKey(jobName, groupName));
+	}
+
+	protected ObjectValuePair<String, StorageType> resolveGroupName(
+		String groupName) {
+
+		int index = groupName.indexOf(CharPool.POUND);
+
+		String storageTypeString = groupName.substring(0, index);
+
+		StorageType storageType = StorageType.valueOf(storageTypeString);
+
+		String orginalGroupName = groupName.substring(index + 1);
+
+		return new ObjectValuePair<String, StorageType>(
+			orginalGroupName, storageType);
 	}
 
 	protected void schedule(
