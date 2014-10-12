@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
@@ -3979,11 +3980,47 @@ public class StringUtil {
 	 *         object
 	 */
 	public static String toHexString(Object obj) {
-		if (obj instanceof Integer) {
+		if (obj instanceof Collection) {
+			Collection collection = (Collection)obj;
+
+			StringBundler sb = new StringBundler(collection.size());
+
+			for (Object object : collection) {
+				sb.append(toHexString(object));
+			}
+
+			return sb.toString();
+		}
+		else if (obj instanceof Integer) {
 			return toHexString(((Integer)obj).intValue());
 		}
 		else if (obj instanceof Long) {
 			return toHexString(((Long)obj).longValue());
+		}
+		else if (obj instanceof Map) {
+			Map map = (Map)obj;
+
+			Set<Map.Entry> entrySet = map.entrySet();
+
+			StringBundler sb = new StringBundler(entrySet.size() * 2);
+
+			for (Map.Entry entry : entrySet) {
+				sb.append(toHexString(entry.getKey()));
+				sb.append(toHexString(entry.getValue()));
+			}
+
+			return sb.toString();
+		}
+		else if (obj instanceof Object[]) {
+			Object[] objects = (Object[])obj;
+
+			StringBundler sb = new StringBundler(objects.length);
+
+			for (Object object : objects) {
+				sb.append(toHexString(object));
+			}
+
+			return sb.toString();
 		}
 		else {
 			return String.valueOf(obj);

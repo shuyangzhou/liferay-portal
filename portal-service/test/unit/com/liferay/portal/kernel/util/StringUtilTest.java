@@ -14,6 +14,8 @@
 
 package com.liferay.portal.kernel.util;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -403,6 +405,89 @@ public class StringUtilTest {
 	@Test
 	public void testStripChar() {
 		Assert.assertEquals("abcd", StringUtil.strip(" a b  c   d", ' '));
+	}
+
+	@Test
+	public void testToHexStringArray() throws Exception {
+		String[] strings = {null, "ab", "cd"};
+
+		String[] strings2 = strings.clone();
+
+		Assert.assertEquals(
+			StringUtil.toHexString(strings), StringUtil.toHexString(strings2));
+	}
+
+	@Test
+	public void testToHexStringCollection() throws Exception {
+		Collection<String> stringList = new ArrayList<String>(2);
+
+		stringList.add("Hello");
+		stringList.add("Aloha");
+
+		Collection<String> stringList2 = new ArrayList<String>(2);
+
+		stringList2.add("Hello");
+		stringList2.add("Aloha");
+
+		Assert.assertEquals(
+			StringUtil.toHexString(stringList),
+			StringUtil.toHexString(stringList2));
+	}
+
+	@Test
+	public void testToHexStringMap() throws Exception {
+		Map<String, String> stringMap = new HashMap<String, String>();
+
+		stringMap.put("Hello", "Aloha");
+
+		Map<String, String> stringMap2 = new HashMap<String, String>();
+
+		stringMap2.put("Hello", "Aloha");
+
+		Assert.assertEquals(
+			StringUtil.toHexString(stringMap),
+			StringUtil.toHexString(stringMap2));
+	}
+
+	@Test
+	public void testToHexStringMapWithMapArrayCollection() throws Exception {
+		String[] strings = {null, "ab", "cd"};
+
+		String[] strings2 = strings.clone();
+
+		Collection<String> stringList = new ArrayList<String>(2);
+
+		stringList.add("Hello");
+		stringList.add("Aloha");
+
+		Collection<String> stringList2 = new ArrayList<String>(2);
+
+		stringList2.add("Hello");
+		stringList2.add("Aloha");
+
+		Map<String, String> stringMap = new HashMap<String, String>();
+
+		stringMap.put("Hello", "Aloha");
+
+		Map<String, String> stringMap2 = new HashMap<String, String>();
+
+		stringMap2.put("Hello", "Aloha");
+
+		Map<String, Object> objectMap = new HashMap<String, Object>();
+
+		objectMap.put("array", strings);
+		objectMap.put("collection", stringList);
+		objectMap.put("map", stringMap);
+
+		Map<String, Object> objectMap2 = new HashMap<String, Object>();
+
+		objectMap2.put("array", strings2);
+		objectMap2.put("collection", stringList2);
+		objectMap2.put("map", stringMap2);
+
+		Assert.assertEquals(
+			StringUtil.toHexString(objectMap),
+			StringUtil.toHexString(objectMap2));
 	}
 
 	@Test
