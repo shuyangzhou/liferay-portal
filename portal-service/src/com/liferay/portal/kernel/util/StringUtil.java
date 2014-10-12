@@ -30,10 +30,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -2489,11 +2491,44 @@ public class StringUtil {
 			return s;
 		}
 
+		Map<String, String> values = new HashMap<String, String>(
+			oldSubs.length);
+
 		for (int i = 0; i < oldSubs.length; i++) {
-			s = replace(s, oldSubs[i], newSubs[i]);
+			if (oldSubs[i].length() <= s.length()) {
+				values.put(oldSubs[i], newSubs[i]);
+			}
 		}
 
-		return s;
+		if (values.isEmpty()) {
+			return s;
+		}
+
+		StringBundler expression = new StringBundler(oldSubs.length * 2 + 1);
+
+		expression.append(StringPool.OPEN_PARENTHESIS);
+
+		for (String key : values.keySet()) {
+			expression.append(Pattern.quote(key));
+			expression.append(StringPool.PIPE);
+		}
+
+		expression.setStringAt(
+			StringPool.CLOSE_PARENTHESIS, expression.index() - 1);
+
+		Pattern pattern = Pattern.compile(expression.toString());
+
+		Matcher matcher = pattern.matcher(s);
+
+		StringBuffer result = new StringBuffer(s.length());
+
+		while (matcher.find()) {
+			matcher.appendReplacement(result, values.get(matcher.group(1)));
+		}
+
+		matcher.appendTail(result);
+
+		return result.toString();
 	}
 
 	/**

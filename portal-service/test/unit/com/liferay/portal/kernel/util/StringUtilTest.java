@@ -300,6 +300,24 @@ public class StringUtilTest {
 				new String[] {"Aloha", "ALOHA"}));
 	}
 
+	@Test
+	public void testReplaceStringArrayResult() throws Exception {
+		Assert.assertEquals(
+			"CC",
+			StringUtil.replace(
+				"ABC", new String[] {"AB", "CC"},
+				new String[] {"C", StringPool.BLANK}));
+	}
+
+	@Test
+	public void testReplaceStringArraySpecial() throws Exception {
+		Assert.assertEquals(
+			"Hello World",
+			StringUtil.replace(
+				".*Hello|World.*", new String[] {".*", "|"},
+				new String[] {StringPool.BLANK, StringPool.SPACE}));
+	}
+
 	@Test(timeout = 1000)
 	public void testReplaceWithStringBundle() throws Exception {
 		Map<String, StringBundler> map = new HashMap<String, StringBundler>();
