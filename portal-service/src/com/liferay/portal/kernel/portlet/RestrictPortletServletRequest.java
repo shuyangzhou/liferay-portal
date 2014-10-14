@@ -30,22 +30,146 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Shuyang Zhou
+ * @author László Csontos
  */
 public class RestrictPortletServletRequest
 	extends PersistentHttpServletRequestWrapper {
 
 	public RestrictPortletServletRequest(HttpServletRequest request) {
 		super(request);
+
+		ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+
+		_readLock = readWriteLock.readLock();
+		_writeLock = readWriteLock.writeLock();
 	}
 
 	@Override
 	public Object getAttribute(String name) {
+		_readLock.lock();
+
+		try {
+			return doGetAttribute(name);
+		}
+		finally {
+			_readLock.unlock();
+		}
+	}
+
+	@Override
+	public Enumeration<String> getAttributeNames() {
+		_readLock.lock();
+
+		try {
+			return doGetAttributeNames();
+		}
+		finally {
+			_readLock.unlock();
+		}
+	}
+
+	public Map<String, Object> getAttributes() {
+		_readLock.lock();
+
+		try {
+			return doGetAttributes();
+		}
+		finally {
+			_readLock.unlock();
+		}
+	}
+
+	public void mergeSharedAttributes() {
+		ServletRequest servletRequest = getRequest();
+
+		Lock lock = (Lock)servletRequest.getAttribute(
+			WebKeys.PARALLEL_RENDERING_MERGE_LOCK);
+
+		if (lock != null) {
+			lock.lock();
+		}
+
+		_writeLock.lock();
+
+		try {
+			doMergeSharedAttributes(servletRequest);
+		}
+		finally {
+			_writeLock.unlock();
+
+			if (lock != null) {
+				lock.unlock();
+			}
+		}
+	}
+
+	@Override
+	public void removeAttribute(String name) {
+		_writeLock.lock();
+
+		try {
+			doRemoveAttribute(name);
+		}
+		finally {
+			_writeLock.unlock();
+		}
+	}
+
+	@Override
+	public void setAttribute(String name, Object value) {
+		_writeLock.lock();
+
+		try {
+			doSetAttribute(name, value);
+		}
+		finally {
+			_writeLock.unlock();
+		}
+	}
+
+	public Object setAttributeIfAbsent(String name, Object value) {
+		_readLock.lock();
+
+		Object originalValue = null;
+
+		try {
+			originalValue = doGetAttribute(name);
+
+			if (originalValue != null) {
+				return originalValue;
+			}
+		}
+		finally {
+			_readLock.unlock();
+		}
+
+		_writeLock.lock();
+
+		try {
+			originalValue = doGetAttribute(name);
+
+			if (originalValue != null) {
+				return originalValue;
+			}
+
+			doSetAttribute(name, value);
+
+			return value;
+		}
+		finally {
+			_writeLock.unlock();
+		}
+	}
+
+	protected Object doGetAttribute(String name) {
 		if (RequestDispatcherAttributeNames.contains(name)) {
 			return super.getAttribute(name);
 		}
@@ -63,8 +187,7 @@ public class RestrictPortletServletRequest
 		return super.getAttribute(name);
 	}
 
-	@Override
-	public Enumeration<String> getAttributeNames() {
+	protected Enumeration<String> doGetAttributeNames() {
 		Enumeration<String> superEnumeration = super.getAttributeNames();
 
 		if (_attributes.isEmpty()) {
@@ -94,52 +217,8 @@ public class RestrictPortletServletRequest
 		return Collections.enumeration(names);
 	}
 
-	public Map<String, Object> getAttributes() {
-		return _attributes;
-	}
-
-	public void mergeSharedAttributes() {
-		ServletRequest servletRequest = getRequest();
-
-		Lock lock = (Lock)servletRequest.getAttribute(
-			WebKeys.PARALLEL_RENDERING_MERGE_LOCK);
-
-		if (lock != null) {
-			lock.lock();
-		}
-
-		try {
-			doMergeSharedAttributes(servletRequest);
-		}
-		finally {
-			if (lock != null) {
-				lock.unlock();
-			}
-		}
-	}
-
-	@Override
-	public void removeAttribute(String name) {
-		if (RequestDispatcherAttributeNames.contains(name)) {
-			super.removeAttribute(name);
-		}
-		else {
-			_attributes.put(name, _nullValue);
-		}
-	}
-
-	@Override
-	public void setAttribute(String name, Object value) {
-		if (RequestDispatcherAttributeNames.contains(name)) {
-			super.setAttribute(name, value);
-		}
-		else {
-			if (value == null) {
-				value = _nullValue;
-			}
-
-			_attributes.put(name, value);
-		}
+	protected Map<String, Object> doGetAttributes() {
+		return Collections.unmodifiableMap(_attributes);
 	}
 
 	protected void doMergeSharedAttributes(ServletRequest servletRequest) {
@@ -192,6 +271,28 @@ public class RestrictPortletServletRequest
 		}
 	}
 
+	protected void doRemoveAttribute(String name) {
+		if (RequestDispatcherAttributeNames.contains(name)) {
+			super.removeAttribute(name);
+		}
+		else {
+			_attributes.put(name, _nullValue);
+		}
+	}
+
+	protected void doSetAttribute(String name, Object value) {
+		if (RequestDispatcherAttributeNames.contains(name)) {
+			super.setAttribute(name, value);
+		}
+		else {
+			if (value == null) {
+				value = _nullValue;
+			}
+
+			_attributes.put(name, value);
+		}
+	}
+
 	protected boolean isSharedRequestAttribute(String name) {
 		for (String requestSharedAttribute : _REQUEST_SHARED_ATTRIBUTES) {
 			if (name.startsWith(requestSharedAttribute)) {
@@ -205,11 +306,14 @@ public class RestrictPortletServletRequest
 	private static final String[] _REQUEST_SHARED_ATTRIBUTES =
 		PropsUtil.getArray(PropsKeys.REQUEST_SHARED_ATTRIBUTES);
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		RestrictPortletServletRequest.class);
 
-	private static Object _nullValue = new Object();
+	private static final Object _nullValue = new Object();
 
-	private Map<String, Object> _attributes = new HashMap<String, Object>();
+	private final Map<String, Object> _attributes =
+		new HashMap<String, Object>();
+	private final Lock _readLock;
+	private final Lock _writeLock;
 
 }

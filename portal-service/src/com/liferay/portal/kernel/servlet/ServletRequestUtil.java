@@ -16,6 +16,7 @@ package com.liferay.portal.kernel.servlet;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.portlet.RestrictPortletServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
@@ -45,6 +46,28 @@ public class ServletRequestUtil {
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(ServletRequestUtil.class);
+	public static Object setAttributeIfAbsent(
+		HttpServletRequest request, String name, Object value) {
+
+		if (!(request instanceof RestrictPortletServletRequest)) {
+			Object originalValue = request.getAttribute(name);
+
+			if (originalValue != null) {
+				return originalValue;
+			}
+
+			request.setAttribute(name, value);
+
+			return value;
+		}
+
+		RestrictPortletServletRequest restrictPortletServletRequest =
+			(RestrictPortletServletRequest)request;
+
+		return restrictPortletServletRequest.setAttributeIfAbsent(name, value);
+	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		ServletRequestUtil.class);
 
 }
