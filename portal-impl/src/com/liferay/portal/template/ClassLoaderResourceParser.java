@@ -17,6 +17,7 @@ package com.liferay.portal.template;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.template.TemplateConstants;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.net.URL;
 
@@ -44,8 +45,55 @@ public class ClassLoaderResourceParser extends URLResourceParser {
 			_log.debug("Loading " + templateId);
 		}
 
+		templateId = _normalizePath(templateId);
+
 		return classLoader.getResource(templateId);
 	}
+
+	private String _normalizePath(String path) {
+		if (path.startsWith(_CURRENT_DIR_PATH_PREFIX)) {
+			path = path.substring(_CURRENT_DIR_PATH_PREFIX.length());
+		}
+		else if (path.startsWith(_PARENT_DIR_PATH_PREFIX)) {
+			throw new IllegalArgumentException("Unable to parse path " + path);
+		}
+
+		while (true) {
+			int index = path.indexOf(_CURRENT_DIR_PATH);
+
+			if (index < 0) {
+				break;
+			}
+
+			path =
+				path.substring(0, index + 1) +
+					path.substring(index + _CURRENT_DIR_PATH.length());
+		}
+
+		while (true) {
+			int index = path.indexOf(_PARENT_DIR_PATH);
+
+			if (index < 0) {
+				break;
+			}
+
+			int startIndex = path.lastIndexOf(StringPool.SLASH, index - 1);
+
+			int endIndex = index + _PARENT_DIR_PATH.length();
+
+			path = path.substring(0, startIndex + 1) + path.substring(endIndex);
+		}
+
+		return path;
+	}
+
+	private static final String _CURRENT_DIR_PATH = "/./";
+
+	private static final String _CURRENT_DIR_PATH_PREFIX = "./";
+
+	private static final String _PARENT_DIR_PATH = "/../";
+
+	private static final String _PARENT_DIR_PATH_PREFIX = "../";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ClassLoaderResourceParser.class);
