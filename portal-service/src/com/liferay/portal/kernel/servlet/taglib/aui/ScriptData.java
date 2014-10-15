@@ -26,12 +26,12 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.io.Writer;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -172,7 +172,7 @@ public class ScriptData implements Mergeable<ScriptData>, Serializable {
 	private ConcurrentMap<String, PortletData> _portletDataMap =
 		new ConcurrentHashMap<String, PortletData>();
 	private List<ObjectValuePair<StringBundler, Integer>> _sbIndexList =
-		new ArrayList<ObjectValuePair<StringBundler, Integer>>();
+		new CopyOnWriteArrayList<ObjectValuePair<StringBundler, Integer>>();
 
 	private class PortletData implements Serializable {
 
