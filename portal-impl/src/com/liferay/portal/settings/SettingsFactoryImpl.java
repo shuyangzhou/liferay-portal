@@ -16,6 +16,9 @@ package com.liferay.portal.settings;
 
 import com.liferay.portal.NoSuchPortletItemException;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.resource.ResourceRetriever;
+import com.liferay.portal.kernel.resource.manager.ClassLoaderResourceManager;
+import com.liferay.portal.kernel.resource.manager.ResourceManager;
 import com.liferay.portal.kernel.security.pacl.DoPrivileged;
 import com.liferay.portal.kernel.settings.ArchivedSettings;
 import com.liferay.portal.kernel.settings.FallbackKeys;
@@ -23,6 +26,7 @@ import com.liferay.portal.kernel.settings.FallbackSettings;
 import com.liferay.portal.kernel.settings.PortletPreferencesSettings;
 import com.liferay.portal.kernel.settings.Settings;
 import com.liferay.portal.kernel.settings.SettingsFactory;
+import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Layout;
@@ -34,6 +38,8 @@ import com.liferay.portal.service.PortalPreferencesLocalServiceUtil;
 import com.liferay.portal.service.PortletItemLocalServiceUtil;
 import com.liferay.portal.service.PortletPreferencesLocalServiceUtil;
 import com.liferay.portal.util.PortletKeys;
+
+import java.io.InputStream;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -176,7 +182,7 @@ public class SettingsFactoryImpl implements SettingsFactory {
 	@Override
 	public void registerSettingsMetadata(
 		String settingsId, FallbackKeys fallbackKeys,
-		String[] multiValuedKeysArray) {
+		String[] multiValuedKeysArray, ResourceManager resourceManager) {
 
 		settingsId = PortletConstants.getRootPortletId(settingsId);
 
@@ -194,6 +200,8 @@ public class SettingsFactoryImpl implements SettingsFactory {
 		multiValuedKeysList = Collections.unmodifiableList(multiValuedKeysList);
 
 		_multiValuedKeysMap.put(settingsId, multiValuedKeysList);
+
+		_resourceManagers.put(settingsId, resourceManager);
 	}
 
 	protected Settings applyFallbackKeys(String settingsId, Settings settings) {
@@ -254,7 +262,7 @@ public class SettingsFactoryImpl implements SettingsFactory {
 
 		return new PortletPreferencesSettings(
 			getPortalPreferences(companyId),
-			getPortalPropertiesSettings(settingsId));
+			getPortletPropertiesSettings(settingsId));
 	}
 
 	protected Properties getPortalProperties(String settingsId) {
@@ -274,7 +282,10 @@ public class SettingsFactoryImpl implements SettingsFactory {
 	protected PropertiesSettings getPortalPropertiesSettings(
 		String settingsId) {
 
-		return new PropertiesSettings(getPortalProperties(settingsId));
+		return new PropertiesSettings(
+			getPortalProperties(settingsId),
+			new ClassLoaderResourceManager(
+				PortalClassLoaderUtil.getClassLoader()));
 	}
 
 	protected PortletPreferences getPortletInstancePortletPreferences(
@@ -293,11 +304,50 @@ public class SettingsFactoryImpl implements SettingsFactory {
 			portletId);
 	}
 
+	protected Properties getPortletProperties(ResourceManager resourceManager) {
+		Properties properties = new Properties();
+
+		if (resourceManager == null) {
+			return properties;
+		}
+
+		ResourceRetriever resourceRetriever =
+			resourceManager.getResourceRetriever("portlet.properties");
+
+		InputStream inputStream = resourceRetriever.getInputStream();
+
+		try {
+			properties.load(inputStream);
+		}
+		catch (Exception e) {
+		}
+
+		return properties;
+	}
+
+	protected PropertiesSettings getPortletPropertiesSettings(
+		String settingsId) {
+
+		ResourceManager resourceManager = getResourceManager(settingsId);
+
+		return new PropertiesSettings(
+			getPortletProperties(resourceManager), resourceManager,
+			getPortalPropertiesSettings(settingsId));
+	}
+
+	protected ResourceManager getResourceManager(String settingsId) {
+		settingsId = PortletConstants.getRootPortletId(settingsId);
+
+		return _resourceManagers.get(settingsId);
+	}
+
 	private final ConcurrentMap<String, FallbackKeys> _fallbackKeysMap =
 		new ConcurrentHashMap<String, FallbackKeys>();
 	private final ConcurrentMap<String, List<String>> _multiValuedKeysMap =
 		new ConcurrentHashMap<String, List<String>>();
 	private final Map<String, Properties> _propertiesMap =
 		new ConcurrentHashMap<String, Properties>();
+	private final ConcurrentMap<String, ResourceManager> _resourceManagers =
+		new ConcurrentHashMap<String, ResourceManager>();
 
 }

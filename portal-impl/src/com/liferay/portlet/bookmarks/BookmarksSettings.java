@@ -15,6 +15,8 @@
 package com.liferay.portlet.bookmarks;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.resource.manager.ClassLoaderResourceManager;
+import com.liferay.portal.kernel.resource.manager.ResourceManager;
 import com.liferay.portal.kernel.settings.FallbackKeys;
 import com.liferay.portal.kernel.settings.LocalizedValuesMap;
 import com.liferay.portal.kernel.settings.ParameterMapSettings;
@@ -204,13 +206,17 @@ public class BookmarksSettings {
 		"entryColumns", "folderColumns"
 	};
 
+	private static final ResourceManager _resourceManager =
+		new ClassLoaderResourceManager(
+			BookmarksSettings.class.getClassLoader());
+
 	static {
 		SettingsFactory settingsFactory =
 			SettingsFactoryUtil.getSettingsFactory();
 
 		settingsFactory.registerSettingsMetadata(
 			BookmarksConstants.SERVICE_NAME, _getFallbackKeys(),
-			_MULTI_VALUED_KEYS);
+			_MULTI_VALUED_KEYS, _resourceManager);
 	}
 
 	private final TypedSettings _typedSettings;

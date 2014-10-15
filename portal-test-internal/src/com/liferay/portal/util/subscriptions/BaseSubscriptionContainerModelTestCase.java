@@ -48,7 +48,8 @@ public abstract class BaseSubscriptionContainerModelTestCase
 
 		addSubscriptionContainerModel(containerModelId);
 
-		addBaseModel(BaseSubscriptionTestCase.PARENT_CONTAINER_MODEL_ID_DEFAULT);
+		addBaseModel(
+			BaseSubscriptionTestCase.PARENT_CONTAINER_MODEL_ID_DEFAULT);
 
 		Assert.assertEquals(0, MailServiceTestUtil.getInboxSize());
 	}

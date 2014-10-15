@@ -14,14 +14,24 @@
 
 package com.liferay.portal.kernel.resource;
 
-/**
- * @author Shuyang Zhou
- */
-public class ContextClassLoaderResourceRetriever
-	extends ClassLoaderResourceRetriever {
+import java.io.InputStream;
 
-	public ContextClassLoaderResourceRetriever(String fileName) {
-		super(Thread.currentThread().getContextClassLoader(), fileName);
+/**
+ * @author Miguel Pastor
+ */
+public class ClassLoaderResourceRetriever implements ResourceRetriever {
+
+	public ClassLoaderResourceRetriever(
+		ClassLoader classLoader, String fileName) {
+
+		_inputStream = classLoader.getResourceAsStream(fileName);
 	}
+
+	@Override
+	public InputStream getInputStream() {
+		return _inputStream;
+	}
+
+	private final InputStream _inputStream;
 
 }
