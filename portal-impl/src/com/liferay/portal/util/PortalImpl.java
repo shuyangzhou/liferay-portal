@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.bean.BeanPropertiesUtil;
 import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
 import com.liferay.portal.kernel.cluster.ClusterInvokeThreadLocal;
 import com.liferay.portal.kernel.cluster.ClusterRequest;
+import com.liferay.portal.kernel.concurrent.ConcurrentHashSet;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
@@ -5450,33 +5451,23 @@ public class PortalImpl implements Portal {
 
 		String uniqueElementId = elementId;
 
-		Set<String> uniqueElementIds = (Set<String>)request.getAttribute(
-			WebKeys.UNIQUE_ELEMENT_IDS);
+		Set<String> uniqueElementIds = getUniqueElementIds(request);
 
-		if (uniqueElementIds == null) {
-			uniqueElementIds = new HashSet<String>();
+		int i = 1;
 
-			request.setAttribute(WebKeys.UNIQUE_ELEMENT_IDS, uniqueElementIds);
-		}
-		else {
-			int i = 1;
+		while (uniqueElementIds.contains(namespace.concat(uniqueElementId))) {
+			if (Validator.isNull(elementId) ||
+				elementId.endsWith(StringPool.UNDERLINE)) {
 
-			while (uniqueElementIds.contains(
-						namespace.concat(uniqueElementId))) {
-
-				if (Validator.isNull(elementId) ||
-					elementId.endsWith(StringPool.UNDERLINE)) {
-
-					uniqueElementId = elementId.concat(String.valueOf(i));
-				}
-				else {
-					uniqueElementId =
-						elementId.concat(StringPool.UNDERLINE).concat(
-							String.valueOf(i));
-				}
-
-				i++;
+				uniqueElementId = elementId.concat(String.valueOf(i));
 			}
+			else {
+				uniqueElementId =
+					elementId.concat(StringPool.UNDERLINE).concat(
+						String.valueOf(i));
+			}
+
+			i++;
 		}
 
 		uniqueElementIds.add(namespace.concat(uniqueElementId));
@@ -8144,6 +8135,31 @@ public class PortalImpl implements Portal {
 		}
 
 		return sb.toString();
+	}
+
+	@SuppressWarnings("unchecked")
+	protected Set<String> getUniqueElementIds(HttpServletRequest request) {
+		Set<String> uniqueElementIds = (Set<String>)request.getAttribute(
+			WebKeys.UNIQUE_ELEMENT_IDS);
+
+		if (uniqueElementIds != null) {
+			return uniqueElementIds;
+		}
+
+		synchronized(request) {
+			uniqueElementIds = (Set<String>)request.getAttribute(
+				WebKeys.UNIQUE_ELEMENT_IDS);
+
+			if (uniqueElementIds != null) {
+				return uniqueElementIds;
+			}
+
+			uniqueElementIds = new ConcurrentHashSet<>();
+
+			request.setAttribute(WebKeys.UNIQUE_ELEMENT_IDS, uniqueElementIds);
+
+			return uniqueElementIds;
+		}
 	}
 
 	protected boolean isAlwaysAllowDoAsUser(HttpServletRequest request)
