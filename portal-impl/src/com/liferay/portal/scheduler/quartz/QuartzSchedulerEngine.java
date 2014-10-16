@@ -112,8 +112,7 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		try {
 			Scheduler scheduler = getScheduler(groupName);
 
-			groupName = fixMaxLength(
-				getOriginalGroupName(groupName), GROUP_NAME_MAX_LENGTH);
+			groupName = normalizeGroupName(groupName);
 
 			Set<JobKey> jobKeys = scheduler.getJobKeys(
 				GroupMatcher.jobGroupEquals(groupName));
@@ -141,11 +140,7 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		try {
 			Scheduler scheduler = getScheduler(groupName);
 
-			jobName = fixMaxLength(jobName, JOB_NAME_MAX_LENGTH);
-			groupName = fixMaxLength(
-				getOriginalGroupName(groupName), GROUP_NAME_MAX_LENGTH);
-
-			JobKey jobKey = new JobKey(jobName, groupName);
+			JobKey jobKey = normalizeJobAndGroupName(jobName, groupName);
 
 			unregisterMessageListener(scheduler, jobKey);
 
@@ -181,11 +176,7 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		try {
 			Scheduler scheduler = getScheduler(groupName);
 
-			jobName = fixMaxLength(jobName, JOB_NAME_MAX_LENGTH);
-			groupName = fixMaxLength(
-				getOriginalGroupName(groupName), GROUP_NAME_MAX_LENGTH);
-
-			JobKey jobKey = new JobKey(jobName, groupName);
+			JobKey jobKey = normalizeJobAndGroupName(jobName, groupName);
 
 			return getScheduledJob(scheduler, jobKey);
 		}
@@ -241,6 +232,8 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		try {
 			Scheduler scheduler = getScheduler(groupName);
 
+			groupName = normalizeGroupName(groupName);
+
 			return getScheduledJobs(scheduler, groupName);
 		}
 		catch (Exception e) {
@@ -258,8 +251,7 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		try {
 			Scheduler scheduler = getScheduler(groupName);
 
-			groupName = fixMaxLength(
-				getOriginalGroupName(groupName), GROUP_NAME_MAX_LENGTH);
+			groupName = normalizeGroupName(groupName);
 
 			Set<JobKey> jobKeys = scheduler.getJobKeys(
 				GroupMatcher.jobGroupEquals(groupName));
@@ -287,11 +279,7 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		try {
 			Scheduler scheduler = getScheduler(groupName);
 
-			jobName = fixMaxLength(jobName, JOB_NAME_MAX_LENGTH);
-			groupName = fixMaxLength(
-				getOriginalGroupName(groupName), GROUP_NAME_MAX_LENGTH);
-
-			JobKey jobKey = new JobKey(jobName, groupName);
+			JobKey jobKey = normalizeJobAndGroupName(jobName, groupName);
 
 			updateJobState(scheduler, jobKey, TriggerState.PAUSED, false);
 
@@ -314,8 +302,7 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		try {
 			Scheduler scheduler = getScheduler(groupName);
 
-			groupName = fixMaxLength(
-				getOriginalGroupName(groupName), GROUP_NAME_MAX_LENGTH);
+			groupName = normalizeGroupName(groupName);
 
 			Set<JobKey> jobKeys = scheduler.getJobKeys(
 				GroupMatcher.jobGroupEquals(groupName));
@@ -343,11 +330,7 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		try {
 			Scheduler scheduler = getScheduler(groupName);
 
-			jobName = fixMaxLength(jobName, JOB_NAME_MAX_LENGTH);
-			groupName = fixMaxLength(
-				getOriginalGroupName(groupName), GROUP_NAME_MAX_LENGTH);
-
-			JobKey jobKey = new JobKey(jobName, groupName);
+			JobKey jobKey = normalizeJobAndGroupName(jobName, groupName);
 
 			updateJobState(scheduler, jobKey, TriggerState.NORMAL, false);
 
@@ -372,13 +355,29 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		}
 
 		try {
-			Scheduler scheduler = getScheduler(trigger.getGroupName());
+			String jobName = trigger.getJobName();
+			String groupName = trigger.getGroupName();
 
-			StorageType storageType = getStorageType(trigger.getGroupName());
+			int pos = groupName.indexOf(CharPool.POUND);
+
+			String storageTypeString = groupName.substring(0, pos);
+
+			StorageType storageType = StorageType.valueOf(storageTypeString);
+
+			groupName = groupName.substring(pos + 1);
+
+			Scheduler scheduler = _memoryScheduler;
+
+			if (storageType == StorageType.PERSISTED) {
+				jobName = fixMaxLength(jobName, JOB_NAME_MAX_LENGTH);
+				groupName = fixMaxLength(groupName, GROUP_NAME_MAX_LENGTH);
+				description = fixMaxLength(description, DESCRIPTION_MAX_LENGTH);
+
+				scheduler = _persistedScheduler;
+			}
 
 			trigger = TriggerFactoryUtil.buildTrigger(
-				trigger.getTriggerType(), trigger.getJobName(),
-				getOriginalGroupName(trigger.getGroupName()),
+				trigger.getTriggerType(), jobName, groupName,
 				trigger.getStartDate(), trigger.getEndDate(),
 				trigger.getTriggerContent());
 
@@ -388,8 +387,6 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 				return;
 			}
 
-			description = fixMaxLength(description, DESCRIPTION_MAX_LENGTH);
-
 			if (message == null) {
 				message = new Message();
 			}
@@ -397,9 +394,7 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 				message = message.clone();
 			}
 
-			registerMessageListeners(
-				trigger.getJobName(), trigger.getGroupName(), destination,
-				message);
+			registerMessageListeners(jobName, groupName, destination, message);
 
 			schedule(
 				scheduler, storageType, quartzTrigger, description, destination,
@@ -465,11 +460,7 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		try {
 			Scheduler scheduler = getScheduler(groupName);
 
-			jobName = fixMaxLength(jobName, JOB_NAME_MAX_LENGTH);
-			groupName = fixMaxLength(
-				getOriginalGroupName(groupName), GROUP_NAME_MAX_LENGTH);
-
-			JobKey jobKey = new JobKey(jobName, groupName);
+			JobKey jobKey = normalizeJobAndGroupName(jobName, groupName);
 
 			updateJobState(scheduler, jobKey, null, true);
 		}
@@ -490,8 +481,7 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		try {
 			Scheduler scheduler = getScheduler(groupName);
 
-			groupName = fixMaxLength(
-				getOriginalGroupName(groupName), GROUP_NAME_MAX_LENGTH);
+			groupName = normalizeGroupName(groupName);
 
 			Set<JobKey> jobKeys = scheduler.getJobKeys(
 				GroupMatcher.jobGroupEquals(groupName));
@@ -517,11 +507,7 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		try {
 			Scheduler scheduler = getScheduler(groupName);
 
-			jobName = fixMaxLength(jobName, JOB_NAME_MAX_LENGTH);
-			groupName = fixMaxLength(
-				getOriginalGroupName(groupName), GROUP_NAME_MAX_LENGTH);
-
-			JobKey jobKey = new JobKey(jobName, groupName);
+			JobKey jobKey = normalizeJobAndGroupName(jobName, groupName);
 
 			unschedule(scheduler, jobKey);
 		}
@@ -542,11 +528,15 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		}
 
 		try {
-			Scheduler scheduler = getScheduler(trigger.getGroupName());
+			String jobName = trigger.getJobName();
+			String groupName = trigger.getGroupName();
+
+			Scheduler scheduler = getScheduler(groupName);
+
+			JobKey jobKey = normalizeJobAndGroupName(jobName, groupName);
 
 			trigger = TriggerFactoryUtil.buildTrigger(
-				trigger.getTriggerType(), trigger.getJobName(),
-				getOriginalGroupName(trigger.getGroupName()),
+				trigger.getTriggerType(), jobKey.getName(), jobKey.getGroup(),
 				trigger.getStartDate(), trigger.getEndDate(),
 				trigger.getTriggerContent());
 
@@ -564,6 +554,12 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 
 		if (argument.length() > maxLength) {
 			argument = argument.substring(0, maxLength);
+
+			_log.error(
+				"Argument '" + argument + "' is too long and will be " +
+					"truncated to " + maxLength + " characters. This may " +
+						"cause your scheduled job does not work properly, " +
+							"please consider using a short argument");
 		}
 
 		return argument;
@@ -611,12 +607,6 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		return schedulerEventListener;
 	}
 
-	protected String getOriginalGroupName(String groupName) {
-		int pos = groupName.indexOf(CharPool.POUND);
-
-		return groupName.substring(pos + 1);
-	}
-
 	protected Trigger getQuartzTrigger(
 			com.liferay.portal.kernel.scheduler.Trigger trigger)
 		throws SchedulerException {
@@ -626,10 +616,8 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		}
 
 		Date endDate = trigger.getEndDate();
-		String jobName = fixMaxLength(
-			trigger.getJobName(), JOB_NAME_MAX_LENGTH);
-		String groupName = fixMaxLength(
-			trigger.getGroupName(), GROUP_NAME_MAX_LENGTH);
+		String jobName = trigger.getJobName();
+		String groupName = trigger.getGroupName();
 
 		Date startDate = trigger.getStartDate();
 
@@ -783,9 +771,6 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 			Scheduler scheduler, String groupName)
 		throws Exception {
 
-		groupName = fixMaxLength(
-			getOriginalGroupName(groupName), GROUP_NAME_MAX_LENGTH);
-
 		List<SchedulerResponse> schedulerResponses =
 			new ArrayList<SchedulerResponse>();
 
@@ -811,14 +796,6 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		else {
 			return _memoryScheduler;
 		}
-	}
-
-	protected StorageType getStorageType(String groupName) {
-		int pos = groupName.indexOf(CharPool.POUND);
-
-		String storageTypeString = groupName.substring(0, pos);
-
-		return StorageType.valueOf(storageTypeString);
 	}
 
 	protected Scheduler initializeScheduler(
@@ -892,6 +869,37 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 				_persistedScheduler.deleteJob(jobKey);
 			}
 		}
+	}
+
+	protected String normalizeGroupName(String groupName) {
+		int pos = groupName.indexOf(CharPool.POUND);
+
+		String storageTypeString = groupName.substring(0, pos);
+		String orginalGroupName = groupName.substring(pos + 1);
+
+		if (storageTypeString.equals(StorageType.PERSISTED.toString())) {
+			orginalGroupName = fixMaxLength(
+				orginalGroupName, GROUP_NAME_MAX_LENGTH);
+		}
+
+		return orginalGroupName;
+	}
+
+	protected JobKey normalizeJobAndGroupName(
+		String jobName, String groupName) {
+
+		int pos = groupName.indexOf(CharPool.POUND);
+
+		String storageTypeString = groupName.substring(0, pos);
+		String orginalGroupName = groupName.substring(pos + 1);
+
+		if (storageTypeString.equals(StorageType.PERSISTED.toString())) {
+			jobName = fixMaxLength(jobName, JOB_NAME_MAX_LENGTH);
+			orginalGroupName = fixMaxLength(
+				orginalGroupName, GROUP_NAME_MAX_LENGTH);
+		}
+
+		return new JobKey(jobName, orginalGroupName);
 	}
 
 	protected void registerMessageListeners(
