@@ -113,6 +113,8 @@ public interface WebKeys {
 
 	public static final String PAGE_TOP = "PAGE_TOP";
 
+	public static final String PARALLEL_RENDERING_ATTRIBUTE_LOCK = "PARALLEL_RENDERING_ATTRIBUTE_LOCK";
+
 	public static final String PARALLEL_RENDERING_MERGE_LOCK = "PARALLEL_RENDERING_MERGE_LOCK";
 
 	public static final String PARALLEL_RENDERING_TIMEOUT_ERROR = "PARALLEL_RENDERING_TIMEOUT_ERROR";

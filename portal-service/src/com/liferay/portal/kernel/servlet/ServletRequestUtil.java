@@ -16,12 +16,17 @@ package com.liferay.portal.kernel.servlet;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.WebKeys;
+
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
 /**
  * @author Brian Wing Shun Chan
+ * @author László Csontos
  */
 public class ServletRequestUtil {
 
@@ -43,6 +48,59 @@ public class ServletRequestUtil {
 				break;
 			}
 		}
+	}
+
+	public static Object setAttributeIfAbsent(
+		HttpServletRequest request, String name, Object newValue) {
+
+		ReadWriteLock attributeLock = (ReadWriteLock)request.getAttribute(
+			WebKeys.PARALLEL_RENDERING_ATTRIBUTE_LOCK);
+
+		Lock readLock = null;
+		Lock writeLock = null;
+
+		if (attributeLock != null) {
+			readLock = attributeLock.readLock();
+			writeLock = attributeLock.writeLock();
+		}
+
+		if (readLock != null) {
+			readLock.lock();
+		}
+
+		try {
+			Object value = request.getAttribute(name);
+
+			if (value != null) {
+				return value;
+			}
+		}
+		finally {
+			if (readLock != null) {
+				readLock.unlock();
+			}
+		}
+
+		if (writeLock != null) {
+			writeLock.lock();
+		}
+
+		try {
+			Object value = request.getAttribute(name);
+
+			if (value != null) {
+				return value;
+			}
+
+			request.setAttribute(name, newValue);
+		}
+		finally {
+			if (writeLock != null) {
+				writeLock.unlock();
+			}
+		}
+
+		return newValue;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
