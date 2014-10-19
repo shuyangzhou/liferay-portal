@@ -39,8 +39,10 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.URLConnection;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.servlet.ServletContext;
@@ -107,7 +109,11 @@ public class ClassPathUtil {
 		return _portalClassPath;
 	}
 
-	public static ProcessConfig getPortalProcessConfig() {
+	public static ProcessConfig getPortalProcessConfig(boolean headlessAWT) {
+		if (headlessAWT) {
+			return _portalHeadlessAWTProcessConfig;
+		}
+
 		return _portalProcessConfig;
 	}
 
@@ -152,6 +158,14 @@ public class ClassPathUtil {
 		builder.setRuntimeClassPath(_portalClassPath);
 
 		_portalProcessConfig = builder.build();
+
+		List<String> arguments = new ArrayList<String>();
+
+		arguments.add("-Djava.awt.headless=true");
+
+		builder.setArguments(arguments);
+
+		_portalHeadlessAWTProcessConfig = builder.build();
 	}
 
 	private static String _buildClassPath(
@@ -306,6 +320,7 @@ public class ClassPathUtil {
 
 	private static String _globalClassPath;
 	private static String _portalClassPath;
+	private static ProcessConfig _portalHeadlessAWTProcessConfig;
 	private static ProcessConfig _portalProcessConfig;
 
 }

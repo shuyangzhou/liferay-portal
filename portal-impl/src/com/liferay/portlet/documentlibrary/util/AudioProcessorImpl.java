@@ -369,7 +369,7 @@ public class AudioProcessorImpl
 
 				ProcessChannel<String> processChannel =
 					ProcessExecutorUtil.execute(
-						ClassPathUtil.getPortalProcessConfig(),
+						ClassPathUtil.getPortalProcessConfig(true),
 						processCallable);
 
 				Future<String> future =

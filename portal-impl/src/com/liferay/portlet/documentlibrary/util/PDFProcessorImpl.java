@@ -581,7 +581,7 @@ public class PDFProcessorImpl
 					generatePreview, generateThumbnail);
 
 			ProcessChannel<String> processChannel = ProcessExecutorUtil.execute(
-				ClassPathUtil.getPortalProcessConfig(), processCallable);
+				ClassPathUtil.getPortalProcessConfig(true), processCallable);
 
 			Future<String> future = processChannel.getProcessNoticeableFuture();
 
