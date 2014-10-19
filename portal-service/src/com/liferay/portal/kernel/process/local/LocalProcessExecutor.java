@@ -115,6 +115,7 @@ public class LocalProcessExecutor implements ProcessExecutor {
 			commands.add(processConfig.getJavaExecutable());
 			commands.add("-cp");
 			commands.add(processConfig.getBootstrapClassPath());
+			commands.add("-Djava.awt.headless=true");
 			commands.addAll(arguments);
 			commands.add(LocalProcessLauncher.class.getName());
 
