@@ -133,7 +133,7 @@ public class TikaRawMetadataProcessor extends XugglerRawMetadataProcessor {
 			try {
 				ProcessChannel<Metadata> processChannel =
 					ProcessExecutorUtil.execute(
-						ClassPathUtil.getPortalProcessConfig(),
+						ClassPathUtil.getPortalProcessConfig(true),
 						extractMetadataProcessCallable);
 
 				Future<Metadata> future =

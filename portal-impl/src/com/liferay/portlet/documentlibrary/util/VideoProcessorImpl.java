@@ -342,7 +342,7 @@ public class VideoProcessorImpl
 
 					ProcessChannel<String> processChannel =
 						ProcessExecutorUtil.execute(
-							ClassPathUtil.getPortalProcessConfig(),
+							ClassPathUtil.getPortalProcessConfig(true),
 							processCallable);
 
 					Future<String> future =
@@ -518,7 +518,7 @@ public class VideoProcessorImpl
 					PropsUtil.getProperties(PropsKeys.XUGGLER_FFPRESET, true));
 
 			ProcessChannel<String> processChannel = ProcessExecutorUtil.execute(
-				ClassPathUtil.getPortalProcessConfig(), processCallable);
+				ClassPathUtil.getPortalProcessConfig(true), processCallable);
 
 			Future<String> future = processChannel.getProcessNoticeableFuture();
 
