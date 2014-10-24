@@ -45,17 +45,17 @@ public class LayoutSetPrototypeModelListener
 		LayoutSetPrototypeModelImpl layoutSetPrototypeImpl =
 			(LayoutSetPrototypeModelImpl)layoutSetPrototype;
 
-		Date currentModifiedDate = layoutSetPrototype.getModifiedDate();
+		Date modifiedDate = layoutSetPrototype.getModifiedDate();
 
-		if ((currentModifiedDate == null) ||
-			currentModifiedDate.equals(
+		if ((modifiedDate == null) ||
+			modifiedDate.equals(
 				layoutSetPrototypeImpl.getOriginalModifiedDate())) {
 
 			return;
 		}
 
 		try {
-			currentModifiedDate = DateUtil.getDBSafeDate(currentModifiedDate);
+			modifiedDate = DateUtil.getDBSafeDate(modifiedDate);
 
 			List<LayoutSet> layoutSetList =
 				LayoutSetLocalServiceUtil.getLayoutSetsByLayoutSetPrototypeUuid(
@@ -85,10 +85,9 @@ public class LayoutSetPrototypeModelListener
 				}
 			}
 
-			if (maxLastMergeTime >= currentModifiedDate.getTime()) {
-				currentModifiedDate = new Date(maxLastMergeTime + Time.SECOND);
-
-				layoutSetPrototype.setModifiedDate(currentModifiedDate);
+			if (maxLastMergeTime >= modifiedDate.getTime()) {
+				layoutSetPrototype.setModifiedDate(
+					new Date(maxLastMergeTime + Time.SECOND));
 			}
 		}
 		catch (PortalException pe) {

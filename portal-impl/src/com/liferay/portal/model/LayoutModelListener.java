@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.impl.LayoutModelImpl;
 import com.liferay.portal.service.ClassNameLocalServiceUtil;
+import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.LayoutLocalServiceUtil;
 import com.liferay.portal.service.LayoutPrototypeLocalServiceUtil;
 import com.liferay.portal.service.LayoutRevisionLocalServiceUtil;
@@ -153,6 +154,34 @@ public class LayoutModelListener extends BaseModelListener<Layout> {
 					layoutPrototype.getModifiedDate();
 
 				maxLastMergeTime = layoutPrototypeModifiedDate.getTime();
+			}
+
+			String sourcePrototypeLayoutUuid =
+				layout.getSourcePrototypeLayoutUuid();
+
+			LayoutSet layoutSet = layout.getLayoutSet();
+
+			long LayoutSetModifiedDate = layoutSet.getModifiedDate().getTime();
+
+			if (LayoutSetModifiedDate > maxLastMergeTime) {
+				maxLastMergeTime = LayoutSetModifiedDate;
+			}
+
+			long layoutSetPrototypeId = layoutSet.getLayoutSetPrototypeId();
+
+			if (layoutSetPrototypeId > 0) {
+				Group layoutSetPrototypeGroup =
+					GroupLocalServiceUtil.getLayoutSetPrototypeGroup(
+						layout.getCompanyId(), layoutSetPrototypeId);
+
+				Layout sourcePrototypeLayout =
+					LayoutLocalServiceUtil.fetchLayoutByUuidAndGroupId(
+						sourcePrototypeLayoutUuid,
+						layoutSetPrototypeGroup.getGroupId(), true);
+
+				if (sourcePrototypeLayout != null) {
+					layouts.add(sourcePrototypeLayout);
+				}
 			}
 
 			maxLastMergeTime = MaxMergeTimeUtil.findMaxMergeTimeInLayouts(

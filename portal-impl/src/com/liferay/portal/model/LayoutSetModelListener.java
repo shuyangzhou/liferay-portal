@@ -95,14 +95,14 @@ public class LayoutSetModelListener extends BaseModelListener<LayoutSet> {
 					LayoutSetPrototypeLocalServiceUtil.getLayoutSetPrototype(
 						layoutSetPrototypeId);
 
-				Date layoutPrototypeModifiedDate =
+				Date layoutSetPrototypeModifiedDate =
 					layoutSetPrototype.getModifiedDate();
 
-				long layoutPrototypeModifiedTime =
-					layoutPrototypeModifiedDate.getTime();
+				long layoutSetPrototypeModifiedTime =
+					layoutSetPrototypeModifiedDate.getTime();
 
-				if (layoutPrototypeModifiedTime > maxLastMergeTime) {
-					maxLastMergeTime = layoutPrototypeModifiedTime;
+				if (layoutSetPrototypeModifiedTime > maxLastMergeTime) {
+					maxLastMergeTime = layoutSetPrototypeModifiedTime;
 				}
 			}
 
