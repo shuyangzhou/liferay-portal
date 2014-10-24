@@ -163,13 +163,54 @@ public class LuceneHelperImplTest {
 	)
 	@Test
 	public void testLoadIndexClusterEventListener1() throws Exception {
-		_mockClusterExecutor.setNodeNumber(2);
-
 		ClusterEvent clusterEvent = ClusterEvent.join(_clusterNode);
+
+		// Test 1, 2 nodes in cluster
+
+		_mockClusterExecutor.reset();
+		LuceneClusterUtilAdvice.reset();
+
+		_mockClusterExecutor.setNodeNumber(2);
 
 		_fireClusterEventListeners(clusterEvent);
 
 		Assert.assertEquals(_COMPANY_ID, LuceneClusterUtilAdvice._COMPANY_ID);
+
+		// Test 2, more than 2 nodes in cluster with debug enabled
+
+		_mockClusterExecutor.reset();
+		LuceneClusterUtilAdvice.reset();
+
+		_mockClusterExecutor.setNodeNumber(3);
+
+		List<LogRecord> logRecords = _captureHandler.resetLogLevel(Level.FINE);
+
+		_fireClusterEventListeners(clusterEvent);
+
+		Assert.assertEquals(1, logRecords.size());
+
+		_assertLogger(
+			logRecords.get(0),
+			"Number of original cluster members is greater than one", null);
+
+		Assert.assertNotEquals(
+			_COMPANY_ID, LuceneClusterUtilAdvice._COMPANY_ID);
+
+		// Test 3, more than 2 nodes in cluster with debug disabled
+
+		_mockClusterExecutor.reset();
+		LuceneClusterUtilAdvice.reset();
+
+		_mockClusterExecutor.setNodeNumber(3);
+
+		logRecords = _captureHandler.resetLogLevel(Level.INFO);
+
+		_fireClusterEventListeners(clusterEvent);
+
+		Assert.assertTrue(logRecords.isEmpty());
+
+		Assert.assertNotEquals(
+			_COMPANY_ID, LuceneClusterUtilAdvice._COMPANY_ID);
 	}
 
 	@AdviseWith(
@@ -209,82 +250,49 @@ public class LuceneHelperImplTest {
 	@AdviseWith(
 		adviceClasses = {
 			DisableIndexOnStartUpAdvice.class, EnableClusterLinkAdvice.class,
-			EnableLuceneReplicateWriteAdvice.class,
-			LuceneClusterUtilAdvice.class
-		}
-	)
-	@Test
-	public void testLoadIndexClusterEventListener3() {
-		_mockClusterExecutor.setNodeNumber(3);
-
-		// Debug is enabled
-
-		List<LogRecord> logRecords = _captureHandler.resetLogLevel(Level.FINE);
-
-		ClusterEvent clusterEvent = ClusterEvent.join(_clusterNode);
-
-		_fireClusterEventListeners(clusterEvent);
-
-		Assert.assertEquals(1, logRecords.size());
-
-		_assertLogger(
-			logRecords.get(0),
-			"Number of original cluster members is greater than one", null);
-
-		Assert.assertNotEquals(
-			_COMPANY_ID, LuceneClusterUtilAdvice._COMPANY_ID);
-
-		// Debug is disabled
-
-		logRecords = _captureHandler.resetLogLevel(Level.INFO);
-
-		_fireClusterEventListeners(clusterEvent);
-
-		Assert.assertTrue(logRecords.isEmpty());
-
-		Assert.assertNotEquals(
-			_COMPANY_ID, LuceneClusterUtilAdvice._COMPANY_ID);
-	}
-
-	@AdviseWith(
-		adviceClasses = {
-			DisableIndexOnStartUpAdvice.class, EnableClusterLinkAdvice.class,
 			EnableLuceneReplicateWriteAdvice.class
 		}
 	)
 	@Test
-	public void testLoadIndexFromCluster1() throws Exception {
+	public void testLoadIndexFromCluster() throws Exception {
+
+		// Test 1, load index without exception
+
 		MockServer mockServer = new MockServer();
 
 		mockServer.start();
+
+		_mockClusterExecutor.reset();
 
 		_mockClusterExecutor.setNodeNumber(2);
 		_mockClusterExecutor.setPort(mockServer.getPort());
 		_mockClusterExecutor.setPortalInetAddress(mockServer.getInetAddress());
 
+		List<LogRecord> logRecords = _captureHandler.resetLogLevel(Level.INFO);
+
 		_luceneHelperImpl.loadIndexesFromCluster(_COMPANY_ID);
 
-		byte[] responseMessage = _mockIndexAccessor.getResponseMessage();
+		Assert.assertEquals(2, logRecords.size());
 
-		Assert.assertArrayEquals(_RESPONSE_MESSAGE, responseMessage);
+		_assertLogger(
+			logRecords.get(0),
+			"Start loading lucene index files from cluster node", null);
+		_assertLogger(
+			logRecords.get(1), "Lucene index files loaded successfully", null);
+
+		Assert.assertArrayEquals(
+			_RESPONSE_MESSAGE, _mockIndexAccessor.getResponseMessage());
 
 		mockServer.join();
-	}
 
-	@AdviseWith(
-		adviceClasses = {
-			DisableIndexOnStartUpAdvice.class, EnableClusterLinkAdvice.class,
-			EnableLuceneReplicateWriteAdvice.class
-		}
-	)
-	@Test
-	public void testLoadIndexFromCluster2() {
+		// Test 2, unable to get response from cluster with debug enabled
+
+		_mockClusterExecutor.reset();
+
 		_mockClusterExecutor.setNodeNumber(3);
 		_mockClusterExecutor.setAutoResponse(false);
 
-		// Debug is enabled
-
-		List<LogRecord> logRecords = _captureHandler.resetLogLevel(Level.FINE);
+		logRecords = _captureHandler.resetLogLevel(Level.FINE);
 
 		_luceneHelperImpl.loadIndexesFromCluster(_COMPANY_ID);
 
@@ -302,28 +310,26 @@ public class LuceneHelperImplTest {
 				TimeUnit.MILLISECONDS,
 			null);
 
-		// Debug is disabled
+		// Test 3, unable to get response from cluster with debug disabled
+
+		_mockClusterExecutor.reset();
+
+		_mockClusterExecutor.setNodeNumber(3);
+		_mockClusterExecutor.setAutoResponse(false);
 
 		logRecords = _captureHandler.resetLogLevel(Level.INFO);
 
 		_luceneHelperImpl.loadIndexesFromCluster(_COMPANY_ID);
 
 		Assert.assertTrue(logRecords.isEmpty());
-	}
 
-	@AdviseWith(
-		adviceClasses = {
-			DisableIndexOnStartUpAdvice.class, EnableClusterLinkAdvice.class,
-			EnableLuceneReplicateWriteAdvice.class
-		}
-	)
-	@Test
-	public void testLoadIndexFromCluster3() {
+		// Test 4, unable to get address with debug enabled
+
+		_mockClusterExecutor.reset();
+
 		_mockClusterExecutor.setNodeNumber(2);
 
-		// Debug is enabled
-
-		List<LogRecord> logRecords = _captureHandler.resetLogLevel(Level.FINE);
+		logRecords = _captureHandler.resetLogLevel(Level.FINE);
 
 		_luceneHelperImpl.loadIndexesFromCluster(_COMPANY_ID);
 
@@ -331,27 +337,26 @@ public class LuceneHelperImplTest {
 
 		_assertLogger(logRecords.get(0), "invalid InetSocketAddress", null);
 
-		// Debug is disabled
+		// Test 5, unable to get address with debug disabled
+
+		_mockClusterExecutor.reset();
+
+		_mockClusterExecutor.setNodeNumber(2);
 
 		logRecords = _captureHandler.resetLogLevel(Level.INFO);
 
 		_luceneHelperImpl.loadIndexesFromCluster(_COMPANY_ID);
 
 		Assert.assertTrue(logRecords.isEmpty());
-	}
 
-	@AdviseWith(
-		adviceClasses = {
-			DisableIndexOnStartUpAdvice.class, EnableClusterLinkAdvice.class,
-			EnableLuceneReplicateWriteAdvice.class
-		}
-	)
-	@Test
-	public void testLoadIndexFromCluster4() {
+		// Test 6, unable to load index
+
+		_mockClusterExecutor.reset();
+
 		_mockClusterExecutor.setNodeNumber(2);
 		_mockClusterExecutor.setPort(1024);
 
-		List<LogRecord> logRecords = _captureHandler.resetLogLevel(Level.FINE);
+		logRecords = _captureHandler.resetLogLevel(Level.FINE);
 
 		_luceneHelperImpl.loadIndexesFromCluster(_COMPANY_ID);
 
@@ -364,23 +369,16 @@ public class LuceneHelperImplTest {
 			logRecords.get(1),
 			"Unable to load index for company " + _COMPANY_ID,
 			SystemException.class);
-	}
 
-	@AdviseWith(
-		adviceClasses = {
-			DisableIndexOnStartUpAdvice.class, EnableClusterLinkAdvice.class,
-			EnableLuceneReplicateWriteAdvice.class
-		}
-	)
-	@Test
-	public void testLoadIndexFromCluster5() {
+		// Test 7, unable to invoke method on other nodes with debug enabled
+
+		_mockClusterExecutor.reset();
+
 		_mockClusterExecutor.setNodeNumber(2);
 		_mockClusterExecutor.setInvokeMethodThrowException(true);
 		_mockClusterExecutor.setPort(1024);
 
-		// Debug is enabled
-
-		List<LogRecord> logRecords = _captureHandler.resetLogLevel(Level.FINE);
+		logRecords = _captureHandler.resetLogLevel(Level.FINE);
 
 		_luceneHelperImpl.loadIndexesFromCluster(_COMPANY_ID);
 
@@ -391,26 +389,27 @@ public class LuceneHelperImplTest {
 			"Suppress exception caused by remote method invocation",
 			Exception.class);
 
-		// Debug is disabled
+		// Test 8, unable to invoke method on other nodes with debug disabled
+
+		_mockClusterExecutor.reset();
+
+		_mockClusterExecutor.setNodeNumber(2);
+		_mockClusterExecutor.setInvokeMethodThrowException(true);
+		_mockClusterExecutor.setPort(1024);
 
 		logRecords = _captureHandler.resetLogLevel(Level.INFO);
 
 		_luceneHelperImpl.loadIndexesFromCluster(_COMPANY_ID);
 
 		Assert.assertTrue(logRecords.isEmpty());
-	}
 
-	@AdviseWith(
-		adviceClasses = {
-			DisableIndexOnStartUpAdvice.class, EnableClusterLinkAdvice.class,
-			EnableLuceneReplicateWriteAdvice.class
-		}
-	)
-	@Test
-	public void testLoadIndexFromCluster6() {
+		// Test 9, no need to load from cluster
+
+		_mockClusterExecutor.reset();
+
 		_mockClusterExecutor.setNodeNumber(1);
 
-		List<LogRecord> logRecords = _captureHandler.resetLogLevel(Level.FINE);
+		logRecords = _captureHandler.resetLogLevel(Level.FINE);
 
 		_luceneHelperImpl.loadIndexesFromCluster(_COMPANY_ID);
 
@@ -430,7 +429,7 @@ public class LuceneHelperImplTest {
 		}
 	)
 	@Test
-	public void testLoadIndexFromCluster7() {
+	public void testLoadIndexFromClusterWithClusterLinkDisabled() {
 		List<LogRecord> logRecords = _captureHandler.resetLogLevel(Level.FINE);
 
 		_luceneHelperImpl.loadIndexesFromCluster(0);
