@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SystemProperties;
+import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
@@ -598,22 +599,16 @@ public class SitesImpl implements Sites {
 			return lastMergeTime;
 		}
 
-		lastMergeTime -= lastMergeTime % 1000;
+		lastMergeTime = Time.roundDownSecond(lastMergeTime);
 
 		if (modifiedDate == null) {
 			return lastMergeTime;
 		}
 
-		long dbSafeLastMergeTime = modifiedDate.getTime();
+		long modifiedTime = Time.roundUpSecond(modifiedDate.getTime());
 
-		long milliseconds = dbSafeLastMergeTime % 1000;
-
-		if (milliseconds > 0) {
-			dbSafeLastMergeTime += 1000 - milliseconds;
-		}
-
-		if (dbSafeLastMergeTime > lastMergeTime) {
-			lastMergeTime = dbSafeLastMergeTime;
+		if (modifiedTime > lastMergeTime) {
+			lastMergeTime = modifiedTime;
 		}
 
 		return lastMergeTime;

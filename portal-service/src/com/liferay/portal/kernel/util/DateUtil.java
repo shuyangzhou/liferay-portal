@@ -185,11 +185,7 @@ public class DateUtil {
 			return date;
 		}
 
-		long dbSafeTime = date.getTime();
-
-		dbSafeTime -= dbSafeTime % 1000;
-
-		date.setTime(dbSafeTime);
+		date.setTime(Time.roundDownSecond(date.getTime()));
 
 		return date;
 	}

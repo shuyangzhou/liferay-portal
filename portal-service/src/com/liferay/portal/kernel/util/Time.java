@@ -265,4 +265,18 @@ public class Time {
 		return getSimpleDate(date, TIMESTAMP_FORMAT);
 	}
 
+	public static long roundDownSecond(long milliseconds) {
+		return milliseconds - milliseconds % 1000;
+	}
+
+	public static long roundUpSecond(long milliseconds) {
+		long remainder = milliseconds % 1000;
+
+		if (remainder > 0) {
+			milliseconds += 1000 - remainder;
+		}
+
+		return milliseconds;
+	}
+
 }
