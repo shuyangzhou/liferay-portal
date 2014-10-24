@@ -790,6 +790,8 @@ public class LuceneHelperImplTest {
 		}
 
 		public void setNodeNumber(int nodeNumber) {
+			_addresses.clear();
+
 			for (int i = 0; i < nodeNumber; i++) {
 				_addresses.add(new AddressImpl(new MockAddress()));
 			}
