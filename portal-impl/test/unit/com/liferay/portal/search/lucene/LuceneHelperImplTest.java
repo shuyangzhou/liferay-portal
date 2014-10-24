@@ -85,6 +85,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -143,6 +144,14 @@ public class LuceneHelperImplTest {
 		luceneHelperUtil.setLuceneHelper(_luceneHelperImpl);
 
 		_clusterNode = new ClusterNode(_CLUSER_NODE_ID, _localhostInetAddress);
+
+		_captureHandler = JDKLoggerTestUtil.configureJDKLogger(
+			LuceneHelperImpl.class.getName(), Level.ALL);
+	}
+
+	@After
+	public void tearDown() {
+		_captureHandler.close();
 	}
 
 	@AdviseWith(
@@ -174,34 +183,27 @@ public class LuceneHelperImplTest {
 	public void testLoadIndexClusterEventListener2() {
 		_mockClusterExecutor.setNodeNumber(2);
 
-		CaptureHandler captureHandler = JDKLoggerTestUtil.configureJDKLogger(
-			LuceneHelperImpl.class.getName(), Level.SEVERE);
+		List<LogRecord> logRecords = _captureHandler.resetLogLevel(
+			Level.SEVERE);
 
-		try {
-			List<LogRecord> logRecords = captureHandler.getLogRecords();
+		ClusterEvent clusterEvent = ClusterEvent.join(_clusterNode);
 
-			ClusterEvent clusterEvent = ClusterEvent.join(_clusterNode);
+		_fireClusterEventListeners(clusterEvent);
 
-			_fireClusterEventListeners(clusterEvent);
+		Assert.assertEquals(1, logRecords.size());
 
-			Assert.assertEquals(1, logRecords.size());
+		LogRecord logRecord = logRecords.get(0);
 
-			LogRecord logRecord = logRecords.get(0);
+		_assertLogger(
+			logRecord, "Unable to load indexes for company " + _COMPANY_ID,
+			Exception.class);
 
-			_assertLogger(
-				logRecord, "Unable to load indexes for company " + _COMPANY_ID,
-				Exception.class);
+		Exception exception = (Exception)logRecord.getThrown();
 
-			Exception exception = (Exception)logRecord.getThrown();
-
-			Assert.assertEquals(
-				"Unable to execute LuceneClusterUtil.loadIndexesFromCluster(" +
-					"long)",
-				exception.getMessage());
-		}
-		finally {
-			captureHandler.close();
-		}
+		Assert.assertEquals(
+			"Unable to execute LuceneClusterUtil.loadIndexesFromCluster(" +
+				"long)",
+			exception.getMessage());
 	}
 
 	@AdviseWith(
@@ -215,46 +217,33 @@ public class LuceneHelperImplTest {
 	public void testLoadIndexClusterEventListener3() {
 		_mockClusterExecutor.setNodeNumber(3);
 
-		CaptureHandler captureHandler = null;
+		// Debug is enabled
 
-		try {
+		List<LogRecord> logRecords = _captureHandler.resetLogLevel(Level.FINE);
 
-			// Debug is enabled
+		ClusterEvent clusterEvent = ClusterEvent.join(_clusterNode);
 
-			captureHandler = JDKLoggerTestUtil.configureJDKLogger(
-				LuceneHelperImpl.class.getName(), Level.FINE);
+		_fireClusterEventListeners(clusterEvent);
 
-			List<LogRecord> logRecords = captureHandler.getLogRecords();
+		Assert.assertEquals(1, logRecords.size());
 
-			ClusterEvent clusterEvent = ClusterEvent.join(_clusterNode);
+		_assertLogger(
+			logRecords.get(0),
+			"Number of original cluster members is greater than one", null);
 
-			_fireClusterEventListeners(clusterEvent);
+		Assert.assertNotEquals(
+			_COMPANY_ID, LuceneClusterUtilAdvice._COMPANY_ID);
 
-			Assert.assertEquals(1, logRecords.size());
+		// Debug is disabled
 
-			_assertLogger(
-				logRecords.get(0),
-				"Number of original cluster members is greater than one", null);
+		logRecords = _captureHandler.resetLogLevel(Level.INFO);
 
-			Assert.assertNotEquals(
-				_COMPANY_ID, LuceneClusterUtilAdvice._COMPANY_ID);
+		_fireClusterEventListeners(clusterEvent);
 
-			// Debug is disabled
+		Assert.assertTrue(logRecords.isEmpty());
 
-			logRecords = captureHandler.resetLogLevel(Level.INFO);
-
-			_fireClusterEventListeners(clusterEvent);
-
-			Assert.assertTrue(logRecords.isEmpty());
-
-			Assert.assertNotEquals(
-				_COMPANY_ID, LuceneClusterUtilAdvice._COMPANY_ID);
-		}
-		finally {
-			if (captureHandler != null) {
-				captureHandler.close();
-			}
-		}
+		Assert.assertNotEquals(
+			_COMPANY_ID, LuceneClusterUtilAdvice._COMPANY_ID);
 	}
 
 	@AdviseWith(
@@ -293,46 +282,33 @@ public class LuceneHelperImplTest {
 		_mockClusterExecutor.setNodeNumber(3);
 		_mockClusterExecutor.setAutoResponse(false);
 
-		CaptureHandler captureHandler = null;
+		// Debug is enabled
 
-		try {
+		List<LogRecord> logRecords = _captureHandler.resetLogLevel(Level.FINE);
 
-			// Debug is enabled
+		_luceneHelperImpl.loadIndexesFromCluster(_COMPANY_ID);
 
-			captureHandler = JDKLoggerTestUtil.configureJDKLogger(
-				LuceneHelperImpl.class.getName(), Level.FINE);
+		Assert.assertEquals(2, logRecords.size());
 
-			List<LogRecord> logRecords = captureHandler.getLogRecords();
+		_assertLogger(
+			logRecords.get(0),
+			"Unable to get cluster node response in 10000" +
+				TimeUnit.MILLISECONDS,
+			null);
 
-			_luceneHelperImpl.loadIndexesFromCluster(_COMPANY_ID);
+		_assertLogger(
+			logRecords.get(1),
+			"Unable to get cluster node response in 10000" +
+				TimeUnit.MILLISECONDS,
+			null);
 
-			Assert.assertEquals(2, logRecords.size());
+		// Debug is disabled
 
-			_assertLogger(
-				logRecords.get(0),
-				"Unable to get cluster node response in 10000" +
-					TimeUnit.MILLISECONDS,
-				null);
+		logRecords = _captureHandler.resetLogLevel(Level.INFO);
 
-			_assertLogger(
-				logRecords.get(1),
-				"Unable to get cluster node response in 10000" +
-					TimeUnit.MILLISECONDS,
-				null);
+		_luceneHelperImpl.loadIndexesFromCluster(_COMPANY_ID);
 
-			// Debug is disabled
-
-			logRecords = captureHandler.resetLogLevel(Level.INFO);
-
-			_luceneHelperImpl.loadIndexesFromCluster(_COMPANY_ID);
-
-			Assert.assertTrue(logRecords.isEmpty());
-		}
-		finally {
-			if (captureHandler != null) {
-				captureHandler.close();
-			}
-		}
+		Assert.assertTrue(logRecords.isEmpty());
 	}
 
 	@AdviseWith(
@@ -345,36 +321,23 @@ public class LuceneHelperImplTest {
 	public void testLoadIndexFromCluster3() {
 		_mockClusterExecutor.setNodeNumber(2);
 
-		CaptureHandler captureHandler = null;
+		// Debug is enabled
 
-		try {
+		List<LogRecord> logRecords = _captureHandler.resetLogLevel(Level.FINE);
 
-			// Debug is enabled
+		_luceneHelperImpl.loadIndexesFromCluster(_COMPANY_ID);
 
-			captureHandler = JDKLoggerTestUtil.configureJDKLogger(
-				LuceneHelperImpl.class.getName(), Level.FINE);
+		Assert.assertEquals(1, logRecords.size());
 
-			List<LogRecord> logRecords = captureHandler.getLogRecords();
+		_assertLogger(logRecords.get(0), "invalid InetSocketAddress", null);
 
-			_luceneHelperImpl.loadIndexesFromCluster(_COMPANY_ID);
+		// Debug is disabled
 
-			Assert.assertEquals(1, logRecords.size());
+		logRecords = _captureHandler.resetLogLevel(Level.INFO);
 
-			_assertLogger(logRecords.get(0), "invalid InetSocketAddress", null);
+		_luceneHelperImpl.loadIndexesFromCluster(_COMPANY_ID);
 
-			// Debug is disabled
-
-			logRecords = captureHandler.resetLogLevel(Level.INFO);
-
-			_luceneHelperImpl.loadIndexesFromCluster(_COMPANY_ID);
-
-			Assert.assertTrue(logRecords.isEmpty());
-		}
-		finally {
-			if (captureHandler != null) {
-				captureHandler.close();
-			}
-		}
+		Assert.assertTrue(logRecords.isEmpty());
 	}
 
 	@AdviseWith(
@@ -388,27 +351,19 @@ public class LuceneHelperImplTest {
 		_mockClusterExecutor.setNodeNumber(2);
 		_mockClusterExecutor.setPort(1024);
 
-		CaptureHandler captureHandler = JDKLoggerTestUtil.configureJDKLogger(
-			LuceneHelperImpl.class.getName(), Level.FINE);
+		List<LogRecord> logRecords = _captureHandler.resetLogLevel(Level.FINE);
 
-		try {
-			List<LogRecord> logRecords = captureHandler.getLogRecords();
+		_luceneHelperImpl.loadIndexesFromCluster(_COMPANY_ID);
 
-			_luceneHelperImpl.loadIndexesFromCluster(_COMPANY_ID);
+		Assert.assertEquals(2, logRecords.size());
 
-			Assert.assertEquals(2, logRecords.size());
-
-			_assertLogger(
-				logRecords.get(0),
-				"Start loading lucene index files from cluster node", null);
-			_assertLogger(
-				logRecords.get(1),
-				"Unable to load index for company " + _COMPANY_ID,
-				SystemException.class);
-		}
-		finally {
-			captureHandler.close();
-		}
+		_assertLogger(
+			logRecords.get(0),
+			"Start loading lucene index files from cluster node", null);
+		_assertLogger(
+			logRecords.get(1),
+			"Unable to load index for company " + _COMPANY_ID,
+			SystemException.class);
 	}
 
 	@AdviseWith(
@@ -423,39 +378,26 @@ public class LuceneHelperImplTest {
 		_mockClusterExecutor.setInvokeMethodThrowException(true);
 		_mockClusterExecutor.setPort(1024);
 
-		CaptureHandler captureHandler = null;
+		// Debug is enabled
 
-		try {
+		List<LogRecord> logRecords = _captureHandler.resetLogLevel(Level.FINE);
 
-			// Debug is enabled
+		_luceneHelperImpl.loadIndexesFromCluster(_COMPANY_ID);
 
-			captureHandler = JDKLoggerTestUtil.configureJDKLogger(
-				LuceneHelperImpl.class.getName(), Level.FINE);
+		Assert.assertEquals(1, logRecords.size());
 
-			List<LogRecord> logRecords = captureHandler.getLogRecords();
+		_assertLogger(
+			logRecords.get(0),
+			"Suppress exception caused by remote method invocation",
+			Exception.class);
 
-			_luceneHelperImpl.loadIndexesFromCluster(_COMPANY_ID);
+		// Debug is disabled
 
-			Assert.assertEquals(1, logRecords.size());
+		logRecords = _captureHandler.resetLogLevel(Level.INFO);
 
-			_assertLogger(
-				logRecords.get(0),
-				"Suppress exception caused by remote method invocation",
-				Exception.class);
+		_luceneHelperImpl.loadIndexesFromCluster(_COMPANY_ID);
 
-			// Debug is disabled
-
-			logRecords = captureHandler.resetLogLevel(Level.INFO);
-
-			_luceneHelperImpl.loadIndexesFromCluster(_COMPANY_ID);
-
-			Assert.assertTrue(logRecords.isEmpty());
-		}
-		finally {
-			if (captureHandler != null) {
-				captureHandler.close();
-			}
-		}
+		Assert.assertTrue(logRecords.isEmpty());
 	}
 
 	@AdviseWith(
@@ -468,25 +410,17 @@ public class LuceneHelperImplTest {
 	public void testLoadIndexFromCluster6() {
 		_mockClusterExecutor.setNodeNumber(1);
 
-		CaptureHandler captureHandler = JDKLoggerTestUtil.configureJDKLogger(
-			LuceneHelperImpl.class.getName(), Level.FINE);
+		List<LogRecord> logRecords = _captureHandler.resetLogLevel(Level.FINE);
 
-		try {
-			List<LogRecord> logRecords = captureHandler.getLogRecords();
+		_luceneHelperImpl.loadIndexesFromCluster(_COMPANY_ID);
 
-			_luceneHelperImpl.loadIndexesFromCluster(_COMPANY_ID);
+		Assert.assertEquals(1, logRecords.size());
 
-			Assert.assertEquals(1, logRecords.size());
-
-			_assertLogger(
-				logRecords.get(0),
-				"Do not load indexes because there is either one portal " +
-					"instance or no portal instances in the cluster",
-				null);
-		}
-		finally {
-			captureHandler.close();
-		}
+		_assertLogger(
+			logRecords.get(0),
+			"Do not load indexes because there is either one portal " +
+				"instance or no portal instances in the cluster",
+			null);
 	}
 
 	@AdviseWith(
@@ -497,23 +431,14 @@ public class LuceneHelperImplTest {
 	)
 	@Test
 	public void testLoadIndexFromCluster7() {
-		CaptureHandler captureHandler = JDKLoggerTestUtil.configureJDKLogger(
-			LuceneHelperImpl.class.getName(), Level.FINE);
+		List<LogRecord> logRecords = _captureHandler.resetLogLevel(Level.FINE);
 
-		try {
-			List<LogRecord> logRecords = captureHandler.getLogRecords();
+		_luceneHelperImpl.loadIndexesFromCluster(0);
 
-			_luceneHelperImpl.loadIndexesFromCluster(0);
+		Assert.assertEquals(1, logRecords.size());
 
-			Assert.assertEquals(1, logRecords.size());
-
-			_assertLogger(
-				logRecords.get(0), "Load index from cluster is not enabled",
-				null);
-		}
-		finally {
-			captureHandler.close();
-		}
+		_assertLogger(
+			logRecords.get(0), "Load index from cluster is not enabled", null);
 	}
 
 	@Aspect
@@ -647,6 +572,7 @@ public class LuceneHelperImplTest {
 	private static final byte[] _RESPONSE_MESSAGE =
 		"Response Message".getBytes();
 
+	private CaptureHandler _captureHandler;
 	private ClusterNode _clusterNode;
 	private InetAddress _localhostInetAddress;
 	private LuceneHelperImpl _luceneHelperImpl;
