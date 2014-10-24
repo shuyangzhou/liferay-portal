@@ -148,55 +148,31 @@ public class LuceneHelperImplTest {
 	@AdviseWith(
 		adviceClasses = {
 			DisableIndexOnStartUpAdvice.class, EnableClusterLinkAdvice.class,
-			EnableLuceneReplicateWriteAdvice.class
+			EnableLuceneReplicateWriteAdvice.class,
+			LuceneClusterUtilAdvice.class
 		}
 	)
 	@Test
 	public void testLoadIndexClusterEventListener1() throws Exception {
-		MockServer mockServer = new MockServer();
-
-		mockServer.start();
-
-		InetAddress inetAddress = mockServer.getInetAddress();
-		int port = mockServer.getPort();
-
 		_mockClusterExecutor.setNodeNumber(2);
 
-		_mockClusterExecutor.setPort(port);
-		_mockClusterExecutor.setPortalInetAddress(inetAddress);
+		ClusterEvent clusterEvent = ClusterEvent.join(_clusterNode);
 
-		_clusterNode.setPortalInetSocketAddress(
-			new InetSocketAddress(inetAddress, port));
+		_fireClusterEventListeners(clusterEvent);
 
-		CaptureHandler captureHandler = JDKLoggerTestUtil.configureJDKLogger(
-			LuceneHelperImpl.class.getName(), Level.OFF);
-
-		try {
-			ClusterEvent clusterEvent = ClusterEvent.join(_clusterNode);
-
-			_fireClusterEventListeners(clusterEvent);
-
-			byte[] responseMessage = _mockIndexAccessor.getResponseMessage();
-
-			Assert.assertArrayEquals(_RESPONSE_MESSAGE, responseMessage);
-		}
-		finally {
-			captureHandler.close();
-		}
-
-		mockServer.join();
+		Assert.assertEquals(_COMPANY_ID, LuceneClusterUtilAdvice._COMPANY_ID);
 	}
 
 	@AdviseWith(
 		adviceClasses = {
 			DisableIndexOnStartUpAdvice.class, EnableClusterLinkAdvice.class,
-			EnableLuceneReplicateWriteAdvice.class
+			EnableLuceneReplicateWriteAdvice.class,
+			LuceneClusterUtilWithExceptionAdvice.class
 		}
 	)
 	@Test
 	public void testLoadIndexClusterEventListener2() {
 		_mockClusterExecutor.setNodeNumber(2);
-		_mockClusterExecutor.setThrowException(true);
 
 		CaptureHandler captureHandler = JDKLoggerTestUtil.configureJDKLogger(
 			LuceneHelperImpl.class.getName(), Level.SEVERE);
@@ -210,10 +186,18 @@ public class LuceneHelperImplTest {
 
 			Assert.assertEquals(1, logRecords.size());
 
+			LogRecord logRecord = logRecords.get(0);
+
 			_assertLogger(
-				logRecords.get(0),
-				"Unable to load indexes for company " + _COMPANY_ID,
-				SystemException.class);
+				logRecord, "Unable to load indexes for company " + _COMPANY_ID,
+				Exception.class);
+
+			Exception exception = (Exception)logRecord.getThrown();
+
+			Assert.assertEquals(
+				"Unable to execute LuceneClusterUtil.loadIndexesFromCluster(" +
+					"long)",
+				exception.getMessage());
 		}
 		finally {
 			captureHandler.close();
@@ -223,7 +207,8 @@ public class LuceneHelperImplTest {
 	@AdviseWith(
 		adviceClasses = {
 			DisableIndexOnStartUpAdvice.class, EnableClusterLinkAdvice.class,
-			EnableLuceneReplicateWriteAdvice.class
+			EnableLuceneReplicateWriteAdvice.class,
+			LuceneClusterUtilAdvice.class
 		}
 	)
 	@Test
@@ -234,7 +219,7 @@ public class LuceneHelperImplTest {
 
 		try {
 
-		// Debug is enabled
+			// Debug is enabled
 
 			captureHandler = JDKLoggerTestUtil.configureJDKLogger(
 				LuceneHelperImpl.class.getName(), Level.FINE);
@@ -251,6 +236,9 @@ public class LuceneHelperImplTest {
 				logRecords.get(0),
 				"Number of original cluster members is greater than one", null);
 
+			Assert.assertNotEquals(
+				_COMPANY_ID, LuceneClusterUtilAdvice._COMPANY_ID);
+
 			// Debug is disabled
 
 			logRecords = captureHandler.resetLogLevel(Level.INFO);
@@ -258,6 +246,9 @@ public class LuceneHelperImplTest {
 			_fireClusterEventListeners(clusterEvent);
 
 			Assert.assertTrue(logRecords.isEmpty());
+
+			Assert.assertNotEquals(
+				_COMPANY_ID, LuceneClusterUtilAdvice._COMPANY_ID);
 		}
 		finally {
 			if (captureHandler != null) {
@@ -580,6 +571,44 @@ public class LuceneHelperImplTest {
 
 	}
 
+	@Aspect
+	public static class LuceneClusterUtilAdvice {
+
+		@Around(
+			"execution(* com.liferay.portal.search.lucene.cluster." +
+				"LuceneClusterUtil.loadIndexesFromCluster(long))")
+		public void loadIndexesFromCluster(
+				ProceedingJoinPoint proceedingJoinPoint)
+			throws Throwable {
+
+			Object[] arguments = proceedingJoinPoint.getArgs();
+
+			if (arguments[0] instanceof Long) {
+				_COMPANY_ID = (Long)arguments[0];
+			}
+		}
+
+		private static long _COMPANY_ID = Long.MAX_VALUE;
+
+	}
+
+	@Aspect
+	public static class LuceneClusterUtilWithExceptionAdvice {
+
+		@Around(
+			"execution(* com.liferay.portal.search.lucene.cluster." +
+				"LuceneClusterUtil.loadIndexesFromCluster(long))")
+		public void loadIndexesFromClusterWithException(
+				ProceedingJoinPoint proceedingJoinPoint)
+			throws Throwable {
+
+			throw new Exception(
+				"Unable to execute LuceneClusterUtil.loadIndexesFromCluster(" +
+					"long)");
+		}
+
+	}
+
 	private void _assertLogger(
 		LogRecord logRecord, String message, Class<?> exceptionClass) {
 
@@ -686,10 +715,6 @@ public class LuceneHelperImplTest {
 
 		@Override
 		public FutureClusterResponses execute(ClusterRequest clusterRequest) {
-			if (_throwException) {
-				throw new SystemException();
-			}
-
 			if (!_autoResponse) {
 				return new FutureClusterResponses(
 					Collections.<Address>emptyList());
@@ -852,10 +877,6 @@ public class LuceneHelperImplTest {
 			_portalInetAddress = portalInetAddress;
 		}
 
-		public void setThrowException(boolean throwException) {
-			_throwException = throwException;
-		}
-
 		private Object _invoke(MethodHandler methodHandler) throws Exception {
 			if (_invokeMethodThrowException) {
 				throw new Exception();
@@ -886,7 +907,6 @@ public class LuceneHelperImplTest {
 		private boolean _invokeMethodThrowException = false;
 		private int _port = -1;
 		private InetAddress _portalInetAddress;
-		private boolean _throwException = false;
 
 	}
 
