@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.Ticket;
 import com.liferay.portal.model.TicketModel;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.util.PortalUtil;
 
@@ -218,7 +219,17 @@ public class TicketModelImpl extends BaseModelImpl<Ticket>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@Override
@@ -230,7 +241,17 @@ public class TicketModelImpl extends BaseModelImpl<Ticket>
 	public void setTicketId(long ticketId) {
 		_columnBitmask = -1L;
 
+		if (!_setOriginalTicketId) {
+			_setOriginalTicketId = true;
+
+			_originalTicketId = _ticketId;
+		}
+
 		_ticketId = ticketId;
+	}
+
+	public long getOriginalTicketId() {
+		return _originalTicketId;
 	}
 
 	@Override
@@ -240,7 +261,17 @@ public class TicketModelImpl extends BaseModelImpl<Ticket>
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if (!_setOriginalCompanyId) {
+			_setOriginalCompanyId = true;
+
+			_originalCompanyId = _companyId;
+		}
+
 		_companyId = companyId;
+	}
+
+	public long getOriginalCompanyId() {
+		return _originalCompanyId;
 	}
 
 	@Override
@@ -250,7 +281,15 @@ public class TicketModelImpl extends BaseModelImpl<Ticket>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@Override
@@ -280,7 +319,17 @@ public class TicketModelImpl extends BaseModelImpl<Ticket>
 
 	@Override
 	public void setClassNameId(long classNameId) {
+		if (!_setOriginalClassNameId) {
+			_setOriginalClassNameId = true;
+
+			_originalClassNameId = _classNameId;
+		}
+
 		_classNameId = classNameId;
+	}
+
+	public long getOriginalClassNameId() {
+		return _originalClassNameId;
 	}
 
 	@Override
@@ -290,7 +339,17 @@ public class TicketModelImpl extends BaseModelImpl<Ticket>
 
 	@Override
 	public void setClassPK(long classPK) {
+		if (!_setOriginalClassPK) {
+			_setOriginalClassPK = true;
+
+			_originalClassPK = _classPK;
+		}
+
 		_classPK = classPK;
+	}
+
+	public long getOriginalClassPK() {
+		return _originalClassPK;
 	}
 
 	@Override
@@ -325,7 +384,17 @@ public class TicketModelImpl extends BaseModelImpl<Ticket>
 
 	@Override
 	public void setType(int type) {
+		if (!_setOriginalType) {
+			_setOriginalType = true;
+
+			_originalType = _type;
+		}
+
 		_type = type;
+	}
+
+	public int getOriginalType() {
+		return _originalType;
 	}
 
 	@Override
@@ -340,7 +409,15 @@ public class TicketModelImpl extends BaseModelImpl<Ticket>
 
 	@Override
 	public void setExtraInfo(String extraInfo) {
+		if (_originalExtraInfo == null) {
+			_originalExtraInfo = _extraInfo;
+		}
+
 		_extraInfo = extraInfo;
+	}
+
+	public String getOriginalExtraInfo() {
+		return GetterUtil.getString(_originalExtraInfo);
 	}
 
 	@Override
@@ -350,7 +427,15 @@ public class TicketModelImpl extends BaseModelImpl<Ticket>
 
 	@Override
 	public void setExpirationDate(Date expirationDate) {
+		if (_originalExpirationDate == null) {
+			_originalExpirationDate = _expirationDate;
+		}
+
 		_expirationDate = expirationDate;
+	}
+
+	public Date getOriginalExpirationDate() {
+		return _originalExpirationDate;
 	}
 
 	public long getColumnBitmask() {
@@ -462,7 +547,37 @@ public class TicketModelImpl extends BaseModelImpl<Ticket>
 	public void resetOriginalValues() {
 		TicketModelImpl ticketModelImpl = this;
 
+		ticketModelImpl._originalMvccVersion = ticketModelImpl._mvccVersion;
+
+		ticketModelImpl._setOriginalMvccVersion = false;
+
+		ticketModelImpl._originalTicketId = ticketModelImpl._ticketId;
+
+		ticketModelImpl._setOriginalTicketId = false;
+
+		ticketModelImpl._originalCompanyId = ticketModelImpl._companyId;
+
+		ticketModelImpl._setOriginalCompanyId = false;
+
+		ticketModelImpl._originalCreateDate = ticketModelImpl._createDate;
+
+		ticketModelImpl._originalClassNameId = ticketModelImpl._classNameId;
+
+		ticketModelImpl._setOriginalClassNameId = false;
+
+		ticketModelImpl._originalClassPK = ticketModelImpl._classPK;
+
+		ticketModelImpl._setOriginalClassPK = false;
+
 		ticketModelImpl._originalKey = ticketModelImpl._key;
+
+		ticketModelImpl._originalType = ticketModelImpl._type;
+
+		ticketModelImpl._setOriginalType = false;
+
+		ticketModelImpl._originalExtraInfo = ticketModelImpl._extraInfo;
+
+		ticketModelImpl._originalExpirationDate = ticketModelImpl._expirationDate;
 
 		ticketModelImpl._columnBitmask = 0;
 	}
@@ -608,16 +723,31 @@ public class TicketModelImpl extends BaseModelImpl<Ticket>
 			Ticket.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _ticketId;
+	private long _originalTicketId;
+	private boolean _setOriginalTicketId;
 	private long _companyId;
+	private long _originalCompanyId;
+	private boolean _setOriginalCompanyId;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private long _classNameId;
+	private long _originalClassNameId;
+	private boolean _setOriginalClassNameId;
 	private long _classPK;
+	private long _originalClassPK;
+	private boolean _setOriginalClassPK;
 	private String _key;
 	private String _originalKey;
 	private int _type;
+	private int _originalType;
+	private boolean _setOriginalType;
 	private String _extraInfo;
+	private String _originalExtraInfo;
 	private Date _expirationDate;
+	private Date _originalExpirationDate;
 	private long _columnBitmask;
 	private Ticket _escapedModel;
 }

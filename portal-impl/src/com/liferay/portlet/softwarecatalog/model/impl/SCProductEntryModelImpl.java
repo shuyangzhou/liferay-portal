@@ -346,7 +346,17 @@ public class SCProductEntryModelImpl extends BaseModelImpl<SCProductEntry>
 
 	@Override
 	public void setProductEntryId(long productEntryId) {
+		if (!_setOriginalProductEntryId) {
+			_setOriginalProductEntryId = true;
+
+			_originalProductEntryId = _productEntryId;
+		}
+
 		_productEntryId = productEntryId;
+	}
+
+	public long getOriginalProductEntryId() {
+		return _originalProductEntryId;
 	}
 
 	@JSON
@@ -447,7 +457,15 @@ public class SCProductEntryModelImpl extends BaseModelImpl<SCProductEntry>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -458,7 +476,15 @@ public class SCProductEntryModelImpl extends BaseModelImpl<SCProductEntry>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -471,7 +497,15 @@ public class SCProductEntryModelImpl extends BaseModelImpl<SCProductEntry>
 	public void setModifiedDate(Date modifiedDate) {
 		_columnBitmask = -1L;
 
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -489,7 +523,15 @@ public class SCProductEntryModelImpl extends BaseModelImpl<SCProductEntry>
 	public void setName(String name) {
 		_columnBitmask = -1L;
 
+		if (_originalName == null) {
+			_originalName = _name;
+		}
+
 		_name = name;
+	}
+
+	public String getOriginalName() {
+		return GetterUtil.getString(_originalName);
 	}
 
 	@JSON
@@ -505,7 +547,15 @@ public class SCProductEntryModelImpl extends BaseModelImpl<SCProductEntry>
 
 	@Override
 	public void setType(String type) {
+		if (_originalType == null) {
+			_originalType = _type;
+		}
+
 		_type = type;
+	}
+
+	public String getOriginalType() {
+		return GetterUtil.getString(_originalType);
 	}
 
 	@JSON
@@ -521,7 +571,15 @@ public class SCProductEntryModelImpl extends BaseModelImpl<SCProductEntry>
 
 	@Override
 	public void setTags(String tags) {
+		if (_originalTags == null) {
+			_originalTags = _tags;
+		}
+
 		_tags = tags;
+	}
+
+	public String getOriginalTags() {
+		return GetterUtil.getString(_originalTags);
 	}
 
 	@JSON
@@ -537,7 +595,15 @@ public class SCProductEntryModelImpl extends BaseModelImpl<SCProductEntry>
 
 	@Override
 	public void setShortDescription(String shortDescription) {
+		if (_originalShortDescription == null) {
+			_originalShortDescription = _shortDescription;
+		}
+
 		_shortDescription = shortDescription;
+	}
+
+	public String getOriginalShortDescription() {
+		return GetterUtil.getString(_originalShortDescription);
 	}
 
 	@JSON
@@ -553,7 +619,15 @@ public class SCProductEntryModelImpl extends BaseModelImpl<SCProductEntry>
 
 	@Override
 	public void setLongDescription(String longDescription) {
+		if (_originalLongDescription == null) {
+			_originalLongDescription = _longDescription;
+		}
+
 		_longDescription = longDescription;
+	}
+
+	public String getOriginalLongDescription() {
+		return GetterUtil.getString(_originalLongDescription);
 	}
 
 	@JSON
@@ -569,7 +643,15 @@ public class SCProductEntryModelImpl extends BaseModelImpl<SCProductEntry>
 
 	@Override
 	public void setPageURL(String pageURL) {
+		if (_originalPageURL == null) {
+			_originalPageURL = _pageURL;
+		}
+
 		_pageURL = pageURL;
+	}
+
+	public String getOriginalPageURL() {
+		return GetterUtil.getString(_originalPageURL);
 	}
 
 	@JSON
@@ -585,7 +667,15 @@ public class SCProductEntryModelImpl extends BaseModelImpl<SCProductEntry>
 
 	@Override
 	public void setAuthor(String author) {
+		if (_originalAuthor == null) {
+			_originalAuthor = _author;
+		}
+
 		_author = author;
+	}
+
+	public String getOriginalAuthor() {
+		return GetterUtil.getString(_originalAuthor);
 	}
 
 	@JSON
@@ -758,6 +848,10 @@ public class SCProductEntryModelImpl extends BaseModelImpl<SCProductEntry>
 	public void resetOriginalValues() {
 		SCProductEntryModelImpl scProductEntryModelImpl = this;
 
+		scProductEntryModelImpl._originalProductEntryId = scProductEntryModelImpl._productEntryId;
+
+		scProductEntryModelImpl._setOriginalProductEntryId = false;
+
 		scProductEntryModelImpl._originalGroupId = scProductEntryModelImpl._groupId;
 
 		scProductEntryModelImpl._setOriginalGroupId = false;
@@ -769,6 +863,26 @@ public class SCProductEntryModelImpl extends BaseModelImpl<SCProductEntry>
 		scProductEntryModelImpl._originalUserId = scProductEntryModelImpl._userId;
 
 		scProductEntryModelImpl._setOriginalUserId = false;
+
+		scProductEntryModelImpl._originalUserName = scProductEntryModelImpl._userName;
+
+		scProductEntryModelImpl._originalCreateDate = scProductEntryModelImpl._createDate;
+
+		scProductEntryModelImpl._originalModifiedDate = scProductEntryModelImpl._modifiedDate;
+
+		scProductEntryModelImpl._originalName = scProductEntryModelImpl._name;
+
+		scProductEntryModelImpl._originalType = scProductEntryModelImpl._type;
+
+		scProductEntryModelImpl._originalTags = scProductEntryModelImpl._tags;
+
+		scProductEntryModelImpl._originalShortDescription = scProductEntryModelImpl._shortDescription;
+
+		scProductEntryModelImpl._originalLongDescription = scProductEntryModelImpl._longDescription;
+
+		scProductEntryModelImpl._originalPageURL = scProductEntryModelImpl._pageURL;
+
+		scProductEntryModelImpl._originalAuthor = scProductEntryModelImpl._author;
 
 		scProductEntryModelImpl._originalRepoGroupId = scProductEntryModelImpl._repoGroupId;
 
@@ -1014,6 +1128,8 @@ public class SCProductEntryModelImpl extends BaseModelImpl<SCProductEntry>
 			SCProductEntry.class
 		};
 	private long _productEntryId;
+	private long _originalProductEntryId;
+	private boolean _setOriginalProductEntryId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -1024,15 +1140,25 @@ public class SCProductEntryModelImpl extends BaseModelImpl<SCProductEntry>
 	private long _originalUserId;
 	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private String _name;
+	private String _originalName;
 	private String _type;
+	private String _originalType;
 	private String _tags;
+	private String _originalTags;
 	private String _shortDescription;
+	private String _originalShortDescription;
 	private String _longDescription;
+	private String _originalLongDescription;
 	private String _pageURL;
+	private String _originalPageURL;
 	private String _author;
+	private String _originalAuthor;
 	private String _repoGroupId;
 	private String _originalRepoGroupId;
 	private String _repoArtifactId;

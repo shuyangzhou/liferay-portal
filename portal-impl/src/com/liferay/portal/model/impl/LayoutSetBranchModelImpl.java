@@ -28,6 +28,7 @@ import com.liferay.portal.model.LayoutSetBranch;
 import com.liferay.portal.model.LayoutSetBranchModel;
 import com.liferay.portal.model.LayoutSetBranchSoap;
 import com.liferay.portal.model.User;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
@@ -378,7 +379,17 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@JSON
@@ -389,7 +400,17 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 
 	@Override
 	public void setLayoutSetBranchId(long layoutSetBranchId) {
+		if (!_setOriginalLayoutSetBranchId) {
+			_setOriginalLayoutSetBranchId = true;
+
+			_originalLayoutSetBranchId = _layoutSetBranchId;
+		}
+
 		_layoutSetBranchId = layoutSetBranchId;
+	}
+
+	public long getOriginalLayoutSetBranchId() {
+		return _originalLayoutSetBranchId;
 	}
 
 	@JSON
@@ -423,7 +444,17 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if (!_setOriginalCompanyId) {
+			_setOriginalCompanyId = true;
+
+			_originalCompanyId = _companyId;
+		}
+
 		_companyId = companyId;
+	}
+
+	public long getOriginalCompanyId() {
+		return _originalCompanyId;
 	}
 
 	@JSON
@@ -434,6 +465,12 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -453,6 +490,10 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -466,7 +507,15 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -477,7 +526,15 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -488,7 +545,15 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -558,7 +623,15 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 
 	@Override
 	public void setDescription(String description) {
+		if (_originalDescription == null) {
+			_originalDescription = _description;
+		}
+
 		_description = description;
+	}
+
+	public String getOriginalDescription() {
+		return GetterUtil.getString(_originalDescription);
 	}
 
 	@JSON
@@ -597,7 +670,17 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 
 	@Override
 	public void setLogoId(long logoId) {
+		if (!_setOriginalLogoId) {
+			_setOriginalLogoId = true;
+
+			_originalLogoId = _logoId;
+		}
+
 		_logoId = logoId;
+	}
+
+	public long getOriginalLogoId() {
+		return _originalLogoId;
 	}
 
 	@JSON
@@ -613,7 +696,15 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 
 	@Override
 	public void setThemeId(String themeId) {
+		if (_originalThemeId == null) {
+			_originalThemeId = _themeId;
+		}
+
 		_themeId = themeId;
+	}
+
+	public String getOriginalThemeId() {
+		return GetterUtil.getString(_originalThemeId);
 	}
 
 	@JSON
@@ -629,7 +720,15 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 
 	@Override
 	public void setColorSchemeId(String colorSchemeId) {
+		if (_originalColorSchemeId == null) {
+			_originalColorSchemeId = _colorSchemeId;
+		}
+
 		_colorSchemeId = colorSchemeId;
+	}
+
+	public String getOriginalColorSchemeId() {
+		return GetterUtil.getString(_originalColorSchemeId);
 	}
 
 	@JSON
@@ -645,7 +744,15 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 
 	@Override
 	public void setWapThemeId(String wapThemeId) {
+		if (_originalWapThemeId == null) {
+			_originalWapThemeId = _wapThemeId;
+		}
+
 		_wapThemeId = wapThemeId;
+	}
+
+	public String getOriginalWapThemeId() {
+		return GetterUtil.getString(_originalWapThemeId);
 	}
 
 	@JSON
@@ -661,7 +768,15 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 
 	@Override
 	public void setWapColorSchemeId(String wapColorSchemeId) {
+		if (_originalWapColorSchemeId == null) {
+			_originalWapColorSchemeId = _wapColorSchemeId;
+		}
+
 		_wapColorSchemeId = wapColorSchemeId;
+	}
+
+	public String getOriginalWapColorSchemeId() {
+		return GetterUtil.getString(_originalWapColorSchemeId);
 	}
 
 	@JSON
@@ -677,7 +792,15 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 
 	@Override
 	public void setCss(String css) {
+		if (_originalCss == null) {
+			_originalCss = _css;
+		}
+
 		_css = css;
+	}
+
+	public String getOriginalCss() {
+		return GetterUtil.getString(_originalCss);
 	}
 
 	@JSON
@@ -693,7 +816,15 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 
 	@Override
 	public void setSettings(String settings) {
+		if (_originalSettings == null) {
+			_originalSettings = _settings;
+		}
+
 		_settings = settings;
+	}
+
+	public String getOriginalSettings() {
+		return GetterUtil.getString(_originalSettings);
 	}
 
 	@JSON
@@ -709,7 +840,15 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 
 	@Override
 	public void setLayoutSetPrototypeUuid(String layoutSetPrototypeUuid) {
+		if (_originalLayoutSetPrototypeUuid == null) {
+			_originalLayoutSetPrototypeUuid = _layoutSetPrototypeUuid;
+		}
+
 		_layoutSetPrototypeUuid = layoutSetPrototypeUuid;
+	}
+
+	public String getOriginalLayoutSetPrototypeUuid() {
+		return GetterUtil.getString(_originalLayoutSetPrototypeUuid);
 	}
 
 	@JSON
@@ -726,7 +865,17 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 	@Override
 	public void setLayoutSetPrototypeLinkEnabled(
 		boolean layoutSetPrototypeLinkEnabled) {
+		if (!_setOriginalLayoutSetPrototypeLinkEnabled) {
+			_setOriginalLayoutSetPrototypeLinkEnabled = true;
+
+			_originalLayoutSetPrototypeLinkEnabled = _layoutSetPrototypeLinkEnabled;
+		}
+
 		_layoutSetPrototypeLinkEnabled = layoutSetPrototypeLinkEnabled;
+	}
+
+	public boolean getOriginalLayoutSetPrototypeLinkEnabled() {
+		return _originalLayoutSetPrototypeLinkEnabled;
 	}
 
 	public long getColumnBitmask() {
@@ -841,9 +990,31 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 	public void resetOriginalValues() {
 		LayoutSetBranchModelImpl layoutSetBranchModelImpl = this;
 
+		layoutSetBranchModelImpl._originalMvccVersion = layoutSetBranchModelImpl._mvccVersion;
+
+		layoutSetBranchModelImpl._setOriginalMvccVersion = false;
+
+		layoutSetBranchModelImpl._originalLayoutSetBranchId = layoutSetBranchModelImpl._layoutSetBranchId;
+
+		layoutSetBranchModelImpl._setOriginalLayoutSetBranchId = false;
+
 		layoutSetBranchModelImpl._originalGroupId = layoutSetBranchModelImpl._groupId;
 
 		layoutSetBranchModelImpl._setOriginalGroupId = false;
+
+		layoutSetBranchModelImpl._originalCompanyId = layoutSetBranchModelImpl._companyId;
+
+		layoutSetBranchModelImpl._setOriginalCompanyId = false;
+
+		layoutSetBranchModelImpl._originalUserId = layoutSetBranchModelImpl._userId;
+
+		layoutSetBranchModelImpl._setOriginalUserId = false;
+
+		layoutSetBranchModelImpl._originalUserName = layoutSetBranchModelImpl._userName;
+
+		layoutSetBranchModelImpl._originalCreateDate = layoutSetBranchModelImpl._createDate;
+
+		layoutSetBranchModelImpl._originalModifiedDate = layoutSetBranchModelImpl._modifiedDate;
 
 		layoutSetBranchModelImpl._originalPrivateLayout = layoutSetBranchModelImpl._privateLayout;
 
@@ -851,9 +1022,33 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 
 		layoutSetBranchModelImpl._originalName = layoutSetBranchModelImpl._name;
 
+		layoutSetBranchModelImpl._originalDescription = layoutSetBranchModelImpl._description;
+
 		layoutSetBranchModelImpl._originalMaster = layoutSetBranchModelImpl._master;
 
 		layoutSetBranchModelImpl._setOriginalMaster = false;
+
+		layoutSetBranchModelImpl._originalLogoId = layoutSetBranchModelImpl._logoId;
+
+		layoutSetBranchModelImpl._setOriginalLogoId = false;
+
+		layoutSetBranchModelImpl._originalThemeId = layoutSetBranchModelImpl._themeId;
+
+		layoutSetBranchModelImpl._originalColorSchemeId = layoutSetBranchModelImpl._colorSchemeId;
+
+		layoutSetBranchModelImpl._originalWapThemeId = layoutSetBranchModelImpl._wapThemeId;
+
+		layoutSetBranchModelImpl._originalWapColorSchemeId = layoutSetBranchModelImpl._wapColorSchemeId;
+
+		layoutSetBranchModelImpl._originalCss = layoutSetBranchModelImpl._css;
+
+		layoutSetBranchModelImpl._originalSettings = layoutSetBranchModelImpl._settings;
+
+		layoutSetBranchModelImpl._originalLayoutSetPrototypeUuid = layoutSetBranchModelImpl._layoutSetPrototypeUuid;
+
+		layoutSetBranchModelImpl._originalLayoutSetPrototypeLinkEnabled = layoutSetBranchModelImpl._layoutSetPrototypeLinkEnabled;
+
+		layoutSetBranchModelImpl._setOriginalLayoutSetPrototypeLinkEnabled = false;
 
 		layoutSetBranchModelImpl._columnBitmask = 0;
 	}
@@ -1136,33 +1331,56 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 			LayoutSetBranch.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _layoutSetBranchId;
+	private long _originalLayoutSetBranchId;
+	private boolean _setOriginalLayoutSetBranchId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
 	private long _companyId;
+	private long _originalCompanyId;
+	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private boolean _privateLayout;
 	private boolean _originalPrivateLayout;
 	private boolean _setOriginalPrivateLayout;
 	private String _name;
 	private String _originalName;
 	private String _description;
+	private String _originalDescription;
 	private boolean _master;
 	private boolean _originalMaster;
 	private boolean _setOriginalMaster;
 	private long _logoId;
+	private long _originalLogoId;
+	private boolean _setOriginalLogoId;
 	private String _themeId;
+	private String _originalThemeId;
 	private String _colorSchemeId;
+	private String _originalColorSchemeId;
 	private String _wapThemeId;
+	private String _originalWapThemeId;
 	private String _wapColorSchemeId;
+	private String _originalWapColorSchemeId;
 	private String _css;
+	private String _originalCss;
 	private String _settings;
+	private String _originalSettings;
 	private String _layoutSetPrototypeUuid;
+	private String _originalLayoutSetPrototypeUuid;
 	private boolean _layoutSetPrototypeLinkEnabled;
+	private boolean _originalLayoutSetPrototypeLinkEnabled;
+	private boolean _setOriginalLayoutSetPrototypeLinkEnabled;
 	private long _columnBitmask;
 	private LayoutSetBranch _escapedModel;
 }

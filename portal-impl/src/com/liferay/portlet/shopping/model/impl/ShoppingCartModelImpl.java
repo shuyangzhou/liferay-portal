@@ -229,7 +229,17 @@ public class ShoppingCartModelImpl extends BaseModelImpl<ShoppingCart>
 
 	@Override
 	public void setCartId(long cartId) {
+		if (!_setOriginalCartId) {
+			_setOriginalCartId = true;
+
+			_originalCartId = _cartId;
+		}
+
 		_cartId = cartId;
+	}
+
+	public long getOriginalCartId() {
+		return _originalCartId;
 	}
 
 	@Override
@@ -261,7 +271,17 @@ public class ShoppingCartModelImpl extends BaseModelImpl<ShoppingCart>
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if (!_setOriginalCompanyId) {
+			_setOriginalCompanyId = true;
+
+			_originalCompanyId = _companyId;
+		}
+
 		_companyId = companyId;
+	}
+
+	public long getOriginalCompanyId() {
+		return _originalCompanyId;
 	}
 
 	@Override
@@ -314,7 +334,15 @@ public class ShoppingCartModelImpl extends BaseModelImpl<ShoppingCart>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@Override
@@ -324,7 +352,15 @@ public class ShoppingCartModelImpl extends BaseModelImpl<ShoppingCart>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@Override
@@ -334,7 +370,15 @@ public class ShoppingCartModelImpl extends BaseModelImpl<ShoppingCart>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@Override
@@ -349,7 +393,15 @@ public class ShoppingCartModelImpl extends BaseModelImpl<ShoppingCart>
 
 	@Override
 	public void setItemIds(String itemIds) {
+		if (_originalItemIds == null) {
+			_originalItemIds = _itemIds;
+		}
+
 		_itemIds = itemIds;
+	}
+
+	public String getOriginalItemIds() {
+		return GetterUtil.getString(_originalItemIds);
 	}
 
 	@Override
@@ -364,7 +416,15 @@ public class ShoppingCartModelImpl extends BaseModelImpl<ShoppingCart>
 
 	@Override
 	public void setCouponCodes(String couponCodes) {
+		if (_originalCouponCodes == null) {
+			_originalCouponCodes = _couponCodes;
+		}
+
 		_couponCodes = couponCodes;
+	}
+
+	public String getOriginalCouponCodes() {
+		return GetterUtil.getString(_originalCouponCodes);
 	}
 
 	@Override
@@ -374,7 +434,17 @@ public class ShoppingCartModelImpl extends BaseModelImpl<ShoppingCart>
 
 	@Override
 	public void setAltShipping(int altShipping) {
+		if (!_setOriginalAltShipping) {
+			_setOriginalAltShipping = true;
+
+			_originalAltShipping = _altShipping;
+		}
+
 		_altShipping = altShipping;
+	}
+
+	public int getOriginalAltShipping() {
+		return _originalAltShipping;
 	}
 
 	@Override
@@ -389,7 +459,17 @@ public class ShoppingCartModelImpl extends BaseModelImpl<ShoppingCart>
 
 	@Override
 	public void setInsure(boolean insure) {
+		if (!_setOriginalInsure) {
+			_setOriginalInsure = true;
+
+			_originalInsure = _insure;
+		}
+
 		_insure = insure;
+	}
+
+	public boolean getOriginalInsure() {
+		return _originalInsure;
 	}
 
 	public long getColumnBitmask() {
@@ -496,13 +576,39 @@ public class ShoppingCartModelImpl extends BaseModelImpl<ShoppingCart>
 	public void resetOriginalValues() {
 		ShoppingCartModelImpl shoppingCartModelImpl = this;
 
+		shoppingCartModelImpl._originalCartId = shoppingCartModelImpl._cartId;
+
+		shoppingCartModelImpl._setOriginalCartId = false;
+
 		shoppingCartModelImpl._originalGroupId = shoppingCartModelImpl._groupId;
 
 		shoppingCartModelImpl._setOriginalGroupId = false;
 
+		shoppingCartModelImpl._originalCompanyId = shoppingCartModelImpl._companyId;
+
+		shoppingCartModelImpl._setOriginalCompanyId = false;
+
 		shoppingCartModelImpl._originalUserId = shoppingCartModelImpl._userId;
 
 		shoppingCartModelImpl._setOriginalUserId = false;
+
+		shoppingCartModelImpl._originalUserName = shoppingCartModelImpl._userName;
+
+		shoppingCartModelImpl._originalCreateDate = shoppingCartModelImpl._createDate;
+
+		shoppingCartModelImpl._originalModifiedDate = shoppingCartModelImpl._modifiedDate;
+
+		shoppingCartModelImpl._originalItemIds = shoppingCartModelImpl._itemIds;
+
+		shoppingCartModelImpl._originalCouponCodes = shoppingCartModelImpl._couponCodes;
+
+		shoppingCartModelImpl._originalAltShipping = shoppingCartModelImpl._altShipping;
+
+		shoppingCartModelImpl._setOriginalAltShipping = false;
+
+		shoppingCartModelImpl._originalInsure = shoppingCartModelImpl._insure;
+
+		shoppingCartModelImpl._setOriginalInsure = false;
 
 		shoppingCartModelImpl._columnBitmask = 0;
 	}
@@ -662,20 +768,33 @@ public class ShoppingCartModelImpl extends BaseModelImpl<ShoppingCart>
 			ShoppingCart.class
 		};
 	private long _cartId;
+	private long _originalCartId;
+	private boolean _setOriginalCartId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
 	private long _companyId;
+	private long _originalCompanyId;
+	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private long _originalUserId;
 	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private String _itemIds;
+	private String _originalItemIds;
 	private String _couponCodes;
+	private String _originalCouponCodes;
 	private int _altShipping;
+	private int _originalAltShipping;
+	private boolean _setOriginalAltShipping;
 	private boolean _insure;
+	private boolean _originalInsure;
+	private boolean _setOriginalInsure;
 	private long _columnBitmask;
 	private ShoppingCart _escapedModel;
 }

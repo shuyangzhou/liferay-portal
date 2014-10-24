@@ -31,6 +31,7 @@ import com.liferay.portal.model.AddressModel;
 import com.liferay.portal.model.AddressSoap;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.User;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
@@ -373,7 +374,17 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@JSON
@@ -408,7 +419,17 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 
 	@Override
 	public void setAddressId(long addressId) {
+		if (!_setOriginalAddressId) {
+			_setOriginalAddressId = true;
+
+			_originalAddressId = _addressId;
+		}
+
 		_addressId = addressId;
+	}
+
+	public long getOriginalAddressId() {
+		return _originalAddressId;
 	}
 
 	@JSON
@@ -486,7 +507,15 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -499,7 +528,15 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 	public void setCreateDate(Date createDate) {
 		_columnBitmask = -1L;
 
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -510,7 +547,15 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@Override
@@ -592,7 +637,15 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 
 	@Override
 	public void setStreet1(String street1) {
+		if (_originalStreet1 == null) {
+			_originalStreet1 = _street1;
+		}
+
 		_street1 = street1;
+	}
+
+	public String getOriginalStreet1() {
+		return GetterUtil.getString(_originalStreet1);
 	}
 
 	@JSON
@@ -608,7 +661,15 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 
 	@Override
 	public void setStreet2(String street2) {
+		if (_originalStreet2 == null) {
+			_originalStreet2 = _street2;
+		}
+
 		_street2 = street2;
+	}
+
+	public String getOriginalStreet2() {
+		return GetterUtil.getString(_originalStreet2);
 	}
 
 	@JSON
@@ -624,7 +685,15 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 
 	@Override
 	public void setStreet3(String street3) {
+		if (_originalStreet3 == null) {
+			_originalStreet3 = _street3;
+		}
+
 		_street3 = street3;
+	}
+
+	public String getOriginalStreet3() {
+		return GetterUtil.getString(_originalStreet3);
 	}
 
 	@JSON
@@ -640,7 +709,15 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 
 	@Override
 	public void setCity(String city) {
+		if (_originalCity == null) {
+			_originalCity = _city;
+		}
+
 		_city = city;
+	}
+
+	public String getOriginalCity() {
+		return GetterUtil.getString(_originalCity);
 	}
 
 	@JSON
@@ -656,7 +733,15 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 
 	@Override
 	public void setZip(String zip) {
+		if (_originalZip == null) {
+			_originalZip = _zip;
+		}
+
 		_zip = zip;
+	}
+
+	public String getOriginalZip() {
+		return GetterUtil.getString(_originalZip);
 	}
 
 	@JSON
@@ -667,7 +752,17 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 
 	@Override
 	public void setRegionId(long regionId) {
+		if (!_setOriginalRegionId) {
+			_setOriginalRegionId = true;
+
+			_originalRegionId = _regionId;
+		}
+
 		_regionId = regionId;
+	}
+
+	public long getOriginalRegionId() {
+		return _originalRegionId;
 	}
 
 	@JSON
@@ -678,7 +773,17 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 
 	@Override
 	public void setCountryId(long countryId) {
+		if (!_setOriginalCountryId) {
+			_setOriginalCountryId = true;
+
+			_originalCountryId = _countryId;
+		}
+
 		_countryId = countryId;
+	}
+
+	public long getOriginalCountryId() {
+		return _originalCountryId;
 	}
 
 	@JSON
@@ -689,7 +794,17 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 
 	@Override
 	public void setTypeId(int typeId) {
+		if (!_setOriginalTypeId) {
+			_setOriginalTypeId = true;
+
+			_originalTypeId = _typeId;
+		}
+
 		_typeId = typeId;
+	}
+
+	public int getOriginalTypeId() {
+		return _originalTypeId;
 	}
 
 	@JSON
@@ -865,7 +980,15 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 	public void resetOriginalValues() {
 		AddressModelImpl addressModelImpl = this;
 
+		addressModelImpl._originalMvccVersion = addressModelImpl._mvccVersion;
+
+		addressModelImpl._setOriginalMvccVersion = false;
+
 		addressModelImpl._originalUuid = addressModelImpl._uuid;
+
+		addressModelImpl._originalAddressId = addressModelImpl._addressId;
+
+		addressModelImpl._setOriginalAddressId = false;
 
 		addressModelImpl._originalCompanyId = addressModelImpl._companyId;
 
@@ -875,6 +998,12 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 
 		addressModelImpl._setOriginalUserId = false;
 
+		addressModelImpl._originalUserName = addressModelImpl._userName;
+
+		addressModelImpl._originalCreateDate = addressModelImpl._createDate;
+
+		addressModelImpl._originalModifiedDate = addressModelImpl._modifiedDate;
+
 		addressModelImpl._originalClassNameId = addressModelImpl._classNameId;
 
 		addressModelImpl._setOriginalClassNameId = false;
@@ -882,6 +1011,28 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 		addressModelImpl._originalClassPK = addressModelImpl._classPK;
 
 		addressModelImpl._setOriginalClassPK = false;
+
+		addressModelImpl._originalStreet1 = addressModelImpl._street1;
+
+		addressModelImpl._originalStreet2 = addressModelImpl._street2;
+
+		addressModelImpl._originalStreet3 = addressModelImpl._street3;
+
+		addressModelImpl._originalCity = addressModelImpl._city;
+
+		addressModelImpl._originalZip = addressModelImpl._zip;
+
+		addressModelImpl._originalRegionId = addressModelImpl._regionId;
+
+		addressModelImpl._setOriginalRegionId = false;
+
+		addressModelImpl._originalCountryId = addressModelImpl._countryId;
+
+		addressModelImpl._setOriginalCountryId = false;
+
+		addressModelImpl._originalTypeId = addressModelImpl._typeId;
+
+		addressModelImpl._setOriginalTypeId = false;
 
 		addressModelImpl._originalMailing = addressModelImpl._mailing;
 
@@ -1145,9 +1296,13 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 			Address.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private String _uuid;
 	private String _originalUuid;
 	private long _addressId;
+	private long _originalAddressId;
+	private boolean _setOriginalAddressId;
 	private long _companyId;
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
@@ -1155,8 +1310,11 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 	private long _originalUserId;
 	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _classNameId;
 	private long _originalClassNameId;
 	private boolean _setOriginalClassNameId;
@@ -1164,13 +1322,24 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 	private long _originalClassPK;
 	private boolean _setOriginalClassPK;
 	private String _street1;
+	private String _originalStreet1;
 	private String _street2;
+	private String _originalStreet2;
 	private String _street3;
+	private String _originalStreet3;
 	private String _city;
+	private String _originalCity;
 	private String _zip;
+	private String _originalZip;
 	private long _regionId;
+	private long _originalRegionId;
+	private boolean _setOriginalRegionId;
 	private long _countryId;
+	private long _originalCountryId;
+	private boolean _setOriginalCountryId;
 	private int _typeId;
+	private int _originalTypeId;
+	private boolean _setOriginalTypeId;
 	private boolean _mailing;
 	private boolean _originalMailing;
 	private boolean _setOriginalMailing;

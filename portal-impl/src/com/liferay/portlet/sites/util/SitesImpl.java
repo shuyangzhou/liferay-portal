@@ -16,6 +16,8 @@ package com.liferay.portlet.sites.util;
 
 import com.liferay.portal.RequiredLayoutException;
 import com.liferay.portal.events.EventsProcessorUtil;
+import com.liferay.portal.kernel.dao.db.DB;
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.lar.PortletDataHandlerKeys;
@@ -263,9 +265,13 @@ public class SitesImpl implements Sites {
 		UnicodeProperties typeSettingsProperties =
 			targetLayout.getTypeSettingsProperties();
 
+		Date modifiedDate = targetLayout.getModifiedDate();
+
 		typeSettingsProperties.setProperty(
 			LAST_MERGE_TIME,
-			String.valueOf(targetLayout.getModifiedDate().getTime()));
+			String.valueOf(
+				SitesUtil.getDBSafeLastMergeTime(
+					modifiedDate, modifiedDate.getTime())));
 
 		LayoutLocalServiceUtil.updateLayout(targetLayout);
 
@@ -582,6 +588,35 @@ public class SitesImpl implements Sites {
 		}
 
 		return ArrayUtil.toArray(ArrayUtil.toLongArray(groupIds));
+	}
+
+	@Override
+	public long getDBSafeLastMergeTime(Date modifiedDate, long lastMergeTime) {
+		DB db = DBFactoryUtil.getDB();
+
+		if (db.isSupportsDateMilliseconds()) {
+			return lastMergeTime;
+		}
+
+		lastMergeTime -= lastMergeTime % 1000;
+
+		if (modifiedDate == null) {
+			return lastMergeTime;
+		}
+
+		long dbSafeLastMergeTime = modifiedDate.getTime();
+
+		long milliseconds = dbSafeLastMergeTime % 1000;
+
+		if (milliseconds > 0) {
+			dbSafeLastMergeTime += 1000 - milliseconds;
+		}
+
+		if (dbSafeLastMergeTime > lastMergeTime) {
+			lastMergeTime = dbSafeLastMergeTime;
+		}
+
+		return lastMergeTime;
 	}
 
 	@Override

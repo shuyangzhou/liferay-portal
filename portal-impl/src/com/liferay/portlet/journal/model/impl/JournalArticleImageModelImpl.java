@@ -206,7 +206,17 @@ public class JournalArticleImageModelImpl extends BaseModelImpl<JournalArticleIm
 
 	@Override
 	public void setArticleImageId(long articleImageId) {
+		if (!_setOriginalArticleImageId) {
+			_setOriginalArticleImageId = true;
+
+			_originalArticleImageId = _articleImageId;
+		}
+
 		_articleImageId = articleImageId;
+	}
+
+	public long getOriginalArticleImageId() {
+		return _originalArticleImageId;
 	}
 
 	@Override
@@ -481,6 +491,10 @@ public class JournalArticleImageModelImpl extends BaseModelImpl<JournalArticleIm
 	public void resetOriginalValues() {
 		JournalArticleImageModelImpl journalArticleImageModelImpl = this;
 
+		journalArticleImageModelImpl._originalArticleImageId = journalArticleImageModelImpl._articleImageId;
+
+		journalArticleImageModelImpl._setOriginalArticleImageId = false;
+
 		journalArticleImageModelImpl._originalGroupId = journalArticleImageModelImpl._groupId;
 
 		journalArticleImageModelImpl._setOriginalGroupId = false;
@@ -627,6 +641,8 @@ public class JournalArticleImageModelImpl extends BaseModelImpl<JournalArticleIm
 			JournalArticleImage.class
 		};
 	private long _articleImageId;
+	private long _originalArticleImageId;
+	private boolean _setOriginalArticleImageId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;

@@ -14,11 +14,24 @@
 
 package com.liferay.portal.model;
 
+import com.liferay.portal.ModelListenerException;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.util.DateUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.Time;
+import com.liferay.portal.model.impl.LayoutSetModelImpl;
+import com.liferay.portal.service.LayoutLocalServiceUtil;
+import com.liferay.portal.service.LayoutSetPrototypeLocalServiceUtil;
 import com.liferay.portal.servlet.filters.cache.CacheUtil;
+import com.liferay.portlet.sites.util.Sites;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Alexander Chow
  * @author Raymond Augé
+ * @author Will Newbury
  */
 public class LayoutSetModelListener extends BaseModelListener<LayoutSet> {
 
@@ -32,6 +45,16 @@ public class LayoutSetModelListener extends BaseModelListener<LayoutSet> {
 		clearCache(layoutSet);
 	}
 
+	@Override
+	public void onBeforeCreate(LayoutSet layoutSet) {
+		updateModifiedDate(layoutSet);
+	}
+
+	@Override
+	public void onBeforeUpdate(LayoutSet layoutSet) {
+		updateModifiedDate(layoutSet);
+	}
+
 	protected void clearCache(LayoutSet layoutSet) {
 		if (layoutSet == null) {
 			return;
@@ -39,6 +62,57 @@ public class LayoutSetModelListener extends BaseModelListener<LayoutSet> {
 
 		if (!layoutSet.isPrivateLayout()) {
 			CacheUtil.clearCache(layoutSet.getCompanyId());
+		}
+	}
+
+	private void updateModifiedDate(LayoutSet layoutSet) {
+		LayoutSetModelImpl layoutSetModelImpl = (LayoutSetModelImpl)layoutSet;
+
+		Date modifiedDate = layoutSet.getModifiedDate();
+
+		if ((modifiedDate == null) ||
+			modifiedDate.equals(layoutSetModelImpl.getOriginalModifiedDate())) {
+
+			return;
+		}
+
+		try {
+			modifiedDate = DateUtil.getDBSafeDate(modifiedDate);
+
+			long maxLastMergeTime = GetterUtil.getLong(
+				layoutSet.getSettingsProperty(Sites.LAST_MERGE_TIME));
+
+			List<Layout> layouts = LayoutLocalServiceUtil.getLayouts(
+				layoutSet.getGroupId(), layoutSet.isPrivateLayout());
+
+			maxLastMergeTime = MaxMergeTimeUtil.findMaxMergeTimeInLayouts(
+				layouts, maxLastMergeTime);
+
+			long layoutSetPrototypeId = layoutSet.getLayoutSetPrototypeId();
+
+			if (layoutSetPrototypeId != 0) {
+				LayoutSetPrototype layoutSetPrototype =
+					LayoutSetPrototypeLocalServiceUtil.getLayoutSetPrototype(
+						layoutSetPrototypeId);
+
+				Date layoutSetPrototypeModifiedDate =
+					layoutSetPrototype.getModifiedDate();
+
+				long layoutSetPrototypeModifiedTime =
+					layoutSetPrototypeModifiedDate.getTime();
+
+				if (layoutSetPrototypeModifiedTime > maxLastMergeTime) {
+					maxLastMergeTime = layoutSetPrototypeModifiedTime;
+				}
+			}
+
+			if (maxLastMergeTime >= modifiedDate.getTime()) {
+				layoutSet.setModifiedDate(
+					new Date(maxLastMergeTime + Time.SECOND));
+			}
+		}
+		catch (PortalException pe) {
+			throw new ModelListenerException(pe);
 		}
 	}
 

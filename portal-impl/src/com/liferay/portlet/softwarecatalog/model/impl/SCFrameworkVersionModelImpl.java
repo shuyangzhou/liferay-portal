@@ -299,7 +299,17 @@ public class SCFrameworkVersionModelImpl extends BaseModelImpl<SCFrameworkVersio
 
 	@Override
 	public void setFrameworkVersionId(long frameworkVersionId) {
+		if (!_setOriginalFrameworkVersionId) {
+			_setOriginalFrameworkVersionId = true;
+
+			_originalFrameworkVersionId = _frameworkVersionId;
+		}
+
 		_frameworkVersionId = frameworkVersionId;
+	}
+
+	public long getOriginalFrameworkVersionId() {
+		return _originalFrameworkVersionId;
 	}
 
 	@JSON
@@ -356,6 +366,12 @@ public class SCFrameworkVersionModelImpl extends BaseModelImpl<SCFrameworkVersio
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -375,6 +391,10 @@ public class SCFrameworkVersionModelImpl extends BaseModelImpl<SCFrameworkVersio
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -388,7 +408,15 @@ public class SCFrameworkVersionModelImpl extends BaseModelImpl<SCFrameworkVersio
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -399,7 +427,15 @@ public class SCFrameworkVersionModelImpl extends BaseModelImpl<SCFrameworkVersio
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -410,7 +446,15 @@ public class SCFrameworkVersionModelImpl extends BaseModelImpl<SCFrameworkVersio
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -428,7 +472,15 @@ public class SCFrameworkVersionModelImpl extends BaseModelImpl<SCFrameworkVersio
 	public void setName(String name) {
 		_columnBitmask = -1L;
 
+		if (_originalName == null) {
+			_originalName = _name;
+		}
+
 		_name = name;
+	}
+
+	public String getOriginalName() {
+		return GetterUtil.getString(_originalName);
 	}
 
 	@JSON
@@ -444,7 +496,15 @@ public class SCFrameworkVersionModelImpl extends BaseModelImpl<SCFrameworkVersio
 
 	@Override
 	public void setUrl(String url) {
+		if (_originalUrl == null) {
+			_originalUrl = _url;
+		}
+
 		_url = url;
+	}
+
+	public String getOriginalUrl() {
+		return GetterUtil.getString(_originalUrl);
 	}
 
 	@JSON
@@ -483,7 +543,17 @@ public class SCFrameworkVersionModelImpl extends BaseModelImpl<SCFrameworkVersio
 
 	@Override
 	public void setPriority(int priority) {
+		if (!_setOriginalPriority) {
+			_setOriginalPriority = true;
+
+			_originalPriority = _priority;
+		}
+
 		_priority = priority;
+	}
+
+	public int getOriginalPriority() {
+		return _originalPriority;
 	}
 
 	public long getColumnBitmask() {
@@ -590,6 +660,10 @@ public class SCFrameworkVersionModelImpl extends BaseModelImpl<SCFrameworkVersio
 	public void resetOriginalValues() {
 		SCFrameworkVersionModelImpl scFrameworkVersionModelImpl = this;
 
+		scFrameworkVersionModelImpl._originalFrameworkVersionId = scFrameworkVersionModelImpl._frameworkVersionId;
+
+		scFrameworkVersionModelImpl._setOriginalFrameworkVersionId = false;
+
 		scFrameworkVersionModelImpl._originalGroupId = scFrameworkVersionModelImpl._groupId;
 
 		scFrameworkVersionModelImpl._setOriginalGroupId = false;
@@ -598,9 +672,27 @@ public class SCFrameworkVersionModelImpl extends BaseModelImpl<SCFrameworkVersio
 
 		scFrameworkVersionModelImpl._setOriginalCompanyId = false;
 
+		scFrameworkVersionModelImpl._originalUserId = scFrameworkVersionModelImpl._userId;
+
+		scFrameworkVersionModelImpl._setOriginalUserId = false;
+
+		scFrameworkVersionModelImpl._originalUserName = scFrameworkVersionModelImpl._userName;
+
+		scFrameworkVersionModelImpl._originalCreateDate = scFrameworkVersionModelImpl._createDate;
+
+		scFrameworkVersionModelImpl._originalModifiedDate = scFrameworkVersionModelImpl._modifiedDate;
+
+		scFrameworkVersionModelImpl._originalName = scFrameworkVersionModelImpl._name;
+
+		scFrameworkVersionModelImpl._originalUrl = scFrameworkVersionModelImpl._url;
+
 		scFrameworkVersionModelImpl._originalActive = scFrameworkVersionModelImpl._active;
 
 		scFrameworkVersionModelImpl._setOriginalActive = false;
+
+		scFrameworkVersionModelImpl._originalPriority = scFrameworkVersionModelImpl._priority;
+
+		scFrameworkVersionModelImpl._setOriginalPriority = false;
 
 		scFrameworkVersionModelImpl._columnBitmask = 0;
 	}
@@ -761,6 +853,8 @@ public class SCFrameworkVersionModelImpl extends BaseModelImpl<SCFrameworkVersio
 			SCFrameworkVersion.class
 		};
 	private long _frameworkVersionId;
+	private long _originalFrameworkVersionId;
+	private boolean _setOriginalFrameworkVersionId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -768,15 +862,24 @@ public class SCFrameworkVersionModelImpl extends BaseModelImpl<SCFrameworkVersio
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private String _name;
+	private String _originalName;
 	private String _url;
+	private String _originalUrl;
 	private boolean _active;
 	private boolean _originalActive;
 	private boolean _setOriginalActive;
 	private int _priority;
+	private int _originalPriority;
+	private boolean _setOriginalPriority;
 	private long _columnBitmask;
 	private SCFrameworkVersion _escapedModel;
 }

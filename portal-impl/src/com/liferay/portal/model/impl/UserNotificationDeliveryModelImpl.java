@@ -27,6 +27,7 @@ import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.User;
 import com.liferay.portal.model.UserNotificationDelivery;
 import com.liferay.portal.model.UserNotificationDeliveryModel;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
@@ -218,7 +219,17 @@ public class UserNotificationDeliveryModelImpl extends BaseModelImpl<UserNotific
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@Override
@@ -228,7 +239,17 @@ public class UserNotificationDeliveryModelImpl extends BaseModelImpl<UserNotific
 
 	@Override
 	public void setUserNotificationDeliveryId(long userNotificationDeliveryId) {
+		if (!_setOriginalUserNotificationDeliveryId) {
+			_setOriginalUserNotificationDeliveryId = true;
+
+			_originalUserNotificationDeliveryId = _userNotificationDeliveryId;
+		}
+
 		_userNotificationDeliveryId = userNotificationDeliveryId;
+	}
+
+	public long getOriginalUserNotificationDeliveryId() {
+		return _originalUserNotificationDeliveryId;
 	}
 
 	@Override
@@ -238,7 +259,17 @@ public class UserNotificationDeliveryModelImpl extends BaseModelImpl<UserNotific
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if (!_setOriginalCompanyId) {
+			_setOriginalCompanyId = true;
+
+			_originalCompanyId = _companyId;
+		}
+
 		_companyId = companyId;
+	}
+
+	public long getOriginalCompanyId() {
+		return _originalCompanyId;
 	}
 
 	@Override
@@ -402,7 +433,17 @@ public class UserNotificationDeliveryModelImpl extends BaseModelImpl<UserNotific
 
 	@Override
 	public void setDeliver(boolean deliver) {
+		if (!_setOriginalDeliver) {
+			_setOriginalDeliver = true;
+
+			_originalDeliver = _deliver;
+		}
+
 		_deliver = deliver;
+	}
+
+	public boolean getOriginalDeliver() {
+		return _originalDeliver;
 	}
 
 	public long getColumnBitmask() {
@@ -507,6 +548,18 @@ public class UserNotificationDeliveryModelImpl extends BaseModelImpl<UserNotific
 	public void resetOriginalValues() {
 		UserNotificationDeliveryModelImpl userNotificationDeliveryModelImpl = this;
 
+		userNotificationDeliveryModelImpl._originalMvccVersion = userNotificationDeliveryModelImpl._mvccVersion;
+
+		userNotificationDeliveryModelImpl._setOriginalMvccVersion = false;
+
+		userNotificationDeliveryModelImpl._originalUserNotificationDeliveryId = userNotificationDeliveryModelImpl._userNotificationDeliveryId;
+
+		userNotificationDeliveryModelImpl._setOriginalUserNotificationDeliveryId = false;
+
+		userNotificationDeliveryModelImpl._originalCompanyId = userNotificationDeliveryModelImpl._companyId;
+
+		userNotificationDeliveryModelImpl._setOriginalCompanyId = false;
+
 		userNotificationDeliveryModelImpl._originalUserId = userNotificationDeliveryModelImpl._userId;
 
 		userNotificationDeliveryModelImpl._setOriginalUserId = false;
@@ -524,6 +577,10 @@ public class UserNotificationDeliveryModelImpl extends BaseModelImpl<UserNotific
 		userNotificationDeliveryModelImpl._originalDeliveryType = userNotificationDeliveryModelImpl._deliveryType;
 
 		userNotificationDeliveryModelImpl._setOriginalDeliveryType = false;
+
+		userNotificationDeliveryModelImpl._originalDeliver = userNotificationDeliveryModelImpl._deliver;
+
+		userNotificationDeliveryModelImpl._setOriginalDeliver = false;
 
 		userNotificationDeliveryModelImpl._columnBitmask = 0;
 	}
@@ -641,8 +698,14 @@ public class UserNotificationDeliveryModelImpl extends BaseModelImpl<UserNotific
 			UserNotificationDelivery.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _userNotificationDeliveryId;
+	private long _originalUserNotificationDeliveryId;
+	private boolean _setOriginalUserNotificationDeliveryId;
 	private long _companyId;
+	private long _originalCompanyId;
+	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private long _originalUserId;
 	private boolean _setOriginalUserId;
@@ -658,6 +721,8 @@ public class UserNotificationDeliveryModelImpl extends BaseModelImpl<UserNotific
 	private int _originalDeliveryType;
 	private boolean _setOriginalDeliveryType;
 	private boolean _deliver;
+	private boolean _originalDeliver;
+	private boolean _setOriginalDeliver;
 	private long _columnBitmask;
 	private UserNotificationDelivery _escapedModel;
 }

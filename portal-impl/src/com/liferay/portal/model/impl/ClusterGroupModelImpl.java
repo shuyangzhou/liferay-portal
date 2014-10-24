@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ClusterGroup;
 import com.liferay.portal.model.ClusterGroupModel;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 
 import com.liferay.portlet.expando.model.ExpandoBridge;
@@ -171,7 +172,17 @@ public class ClusterGroupModelImpl extends BaseModelImpl<ClusterGroup>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@Override
@@ -181,7 +192,17 @@ public class ClusterGroupModelImpl extends BaseModelImpl<ClusterGroup>
 
 	@Override
 	public void setClusterGroupId(long clusterGroupId) {
+		if (!_setOriginalClusterGroupId) {
+			_setOriginalClusterGroupId = true;
+
+			_originalClusterGroupId = _clusterGroupId;
+		}
+
 		_clusterGroupId = clusterGroupId;
+	}
+
+	public long getOriginalClusterGroupId() {
+		return _originalClusterGroupId;
 	}
 
 	@Override
@@ -196,7 +217,15 @@ public class ClusterGroupModelImpl extends BaseModelImpl<ClusterGroup>
 
 	@Override
 	public void setName(String name) {
+		if (_originalName == null) {
+			_originalName = _name;
+		}
+
 		_name = name;
+	}
+
+	public String getOriginalName() {
+		return GetterUtil.getString(_originalName);
 	}
 
 	@Override
@@ -211,7 +240,15 @@ public class ClusterGroupModelImpl extends BaseModelImpl<ClusterGroup>
 
 	@Override
 	public void setClusterNodeIds(String clusterNodeIds) {
+		if (_originalClusterNodeIds == null) {
+			_originalClusterNodeIds = _clusterNodeIds;
+		}
+
 		_clusterNodeIds = clusterNodeIds;
+	}
+
+	public String getOriginalClusterNodeIds() {
+		return GetterUtil.getString(_originalClusterNodeIds);
 	}
 
 	@Override
@@ -226,7 +263,17 @@ public class ClusterGroupModelImpl extends BaseModelImpl<ClusterGroup>
 
 	@Override
 	public void setWholeCluster(boolean wholeCluster) {
+		if (!_setOriginalWholeCluster) {
+			_setOriginalWholeCluster = true;
+
+			_originalWholeCluster = _wholeCluster;
+		}
+
 		_wholeCluster = wholeCluster;
+	}
+
+	public boolean getOriginalWholeCluster() {
+		return _originalWholeCluster;
 	}
 
 	@Override
@@ -321,6 +368,23 @@ public class ClusterGroupModelImpl extends BaseModelImpl<ClusterGroup>
 
 	@Override
 	public void resetOriginalValues() {
+		ClusterGroupModelImpl clusterGroupModelImpl = this;
+
+		clusterGroupModelImpl._originalMvccVersion = clusterGroupModelImpl._mvccVersion;
+
+		clusterGroupModelImpl._setOriginalMvccVersion = false;
+
+		clusterGroupModelImpl._originalClusterGroupId = clusterGroupModelImpl._clusterGroupId;
+
+		clusterGroupModelImpl._setOriginalClusterGroupId = false;
+
+		clusterGroupModelImpl._originalName = clusterGroupModelImpl._name;
+
+		clusterGroupModelImpl._originalClusterNodeIds = clusterGroupModelImpl._clusterNodeIds;
+
+		clusterGroupModelImpl._originalWholeCluster = clusterGroupModelImpl._wholeCluster;
+
+		clusterGroupModelImpl._setOriginalWholeCluster = false;
 	}
 
 	@Override
@@ -410,9 +474,17 @@ public class ClusterGroupModelImpl extends BaseModelImpl<ClusterGroup>
 			ClusterGroup.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _clusterGroupId;
+	private long _originalClusterGroupId;
+	private boolean _setOriginalClusterGroupId;
 	private String _name;
+	private String _originalName;
 	private String _clusterNodeIds;
+	private String _originalClusterNodeIds;
 	private boolean _wholeCluster;
+	private boolean _originalWholeCluster;
+	private boolean _setOriginalWholeCluster;
 	private ClusterGroup _escapedModel;
 }

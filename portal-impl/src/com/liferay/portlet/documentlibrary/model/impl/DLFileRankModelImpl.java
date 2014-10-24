@@ -201,7 +201,17 @@ public class DLFileRankModelImpl extends BaseModelImpl<DLFileRank>
 
 	@Override
 	public void setFileRankId(long fileRankId) {
+		if (!_setOriginalFileRankId) {
+			_setOriginalFileRankId = true;
+
+			_originalFileRankId = _fileRankId;
+		}
+
 		_fileRankId = fileRankId;
+	}
+
+	public long getOriginalFileRankId() {
+		return _originalFileRankId;
 	}
 
 	@Override
@@ -295,7 +305,15 @@ public class DLFileRankModelImpl extends BaseModelImpl<DLFileRank>
 	public void setCreateDate(Date createDate) {
 		_columnBitmask = -1L;
 
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@Override
@@ -447,6 +465,10 @@ public class DLFileRankModelImpl extends BaseModelImpl<DLFileRank>
 	public void resetOriginalValues() {
 		DLFileRankModelImpl dlFileRankModelImpl = this;
 
+		dlFileRankModelImpl._originalFileRankId = dlFileRankModelImpl._fileRankId;
+
+		dlFileRankModelImpl._setOriginalFileRankId = false;
+
 		dlFileRankModelImpl._originalGroupId = dlFileRankModelImpl._groupId;
 
 		dlFileRankModelImpl._setOriginalGroupId = false;
@@ -458,6 +480,8 @@ public class DLFileRankModelImpl extends BaseModelImpl<DLFileRank>
 		dlFileRankModelImpl._originalUserId = dlFileRankModelImpl._userId;
 
 		dlFileRankModelImpl._setOriginalUserId = false;
+
+		dlFileRankModelImpl._originalCreateDate = dlFileRankModelImpl._createDate;
 
 		dlFileRankModelImpl._originalFileEntryId = dlFileRankModelImpl._fileEntryId;
 
@@ -568,6 +592,8 @@ public class DLFileRankModelImpl extends BaseModelImpl<DLFileRank>
 			DLFileRank.class
 		};
 	private long _fileRankId;
+	private long _originalFileRankId;
+	private boolean _setOriginalFileRankId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -578,6 +604,7 @@ public class DLFileRankModelImpl extends BaseModelImpl<DLFileRank>
 	private long _originalUserId;
 	private boolean _setOriginalUserId;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private long _fileEntryId;
 	private long _originalFileEntryId;
 	private boolean _setOriginalFileEntryId;

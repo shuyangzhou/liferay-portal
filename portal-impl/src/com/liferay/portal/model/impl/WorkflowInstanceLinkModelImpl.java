@@ -28,6 +28,7 @@ import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.User;
 import com.liferay.portal.model.WorkflowInstanceLink;
 import com.liferay.portal.model.WorkflowInstanceLinkModel;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
@@ -234,7 +235,17 @@ public class WorkflowInstanceLinkModelImpl extends BaseModelImpl<WorkflowInstanc
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@Override
@@ -244,7 +255,17 @@ public class WorkflowInstanceLinkModelImpl extends BaseModelImpl<WorkflowInstanc
 
 	@Override
 	public void setWorkflowInstanceLinkId(long workflowInstanceLinkId) {
+		if (!_setOriginalWorkflowInstanceLinkId) {
+			_setOriginalWorkflowInstanceLinkId = true;
+
+			_originalWorkflowInstanceLinkId = _workflowInstanceLinkId;
+		}
+
 		_workflowInstanceLinkId = workflowInstanceLinkId;
+	}
+
+	public long getOriginalWorkflowInstanceLinkId() {
+		return _originalWorkflowInstanceLinkId;
 	}
 
 	@Override
@@ -298,6 +319,12 @@ public class WorkflowInstanceLinkModelImpl extends BaseModelImpl<WorkflowInstanc
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -317,6 +344,10 @@ public class WorkflowInstanceLinkModelImpl extends BaseModelImpl<WorkflowInstanc
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -329,7 +360,15 @@ public class WorkflowInstanceLinkModelImpl extends BaseModelImpl<WorkflowInstanc
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@Override
@@ -341,7 +380,15 @@ public class WorkflowInstanceLinkModelImpl extends BaseModelImpl<WorkflowInstanc
 	public void setCreateDate(Date createDate) {
 		_columnBitmask = -1L;
 
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@Override
@@ -351,7 +398,15 @@ public class WorkflowInstanceLinkModelImpl extends BaseModelImpl<WorkflowInstanc
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@Override
@@ -425,7 +480,17 @@ public class WorkflowInstanceLinkModelImpl extends BaseModelImpl<WorkflowInstanc
 
 	@Override
 	public void setWorkflowInstanceId(long workflowInstanceId) {
+		if (!_setOriginalWorkflowInstanceId) {
+			_setOriginalWorkflowInstanceId = true;
+
+			_originalWorkflowInstanceId = _workflowInstanceId;
+		}
+
 		_workflowInstanceId = workflowInstanceId;
+	}
+
+	public long getOriginalWorkflowInstanceId() {
+		return _originalWorkflowInstanceId;
 	}
 
 	public long getColumnBitmask() {
@@ -533,6 +598,14 @@ public class WorkflowInstanceLinkModelImpl extends BaseModelImpl<WorkflowInstanc
 	public void resetOriginalValues() {
 		WorkflowInstanceLinkModelImpl workflowInstanceLinkModelImpl = this;
 
+		workflowInstanceLinkModelImpl._originalMvccVersion = workflowInstanceLinkModelImpl._mvccVersion;
+
+		workflowInstanceLinkModelImpl._setOriginalMvccVersion = false;
+
+		workflowInstanceLinkModelImpl._originalWorkflowInstanceLinkId = workflowInstanceLinkModelImpl._workflowInstanceLinkId;
+
+		workflowInstanceLinkModelImpl._setOriginalWorkflowInstanceLinkId = false;
+
 		workflowInstanceLinkModelImpl._originalGroupId = workflowInstanceLinkModelImpl._groupId;
 
 		workflowInstanceLinkModelImpl._setOriginalGroupId = false;
@@ -541,6 +614,16 @@ public class WorkflowInstanceLinkModelImpl extends BaseModelImpl<WorkflowInstanc
 
 		workflowInstanceLinkModelImpl._setOriginalCompanyId = false;
 
+		workflowInstanceLinkModelImpl._originalUserId = workflowInstanceLinkModelImpl._userId;
+
+		workflowInstanceLinkModelImpl._setOriginalUserId = false;
+
+		workflowInstanceLinkModelImpl._originalUserName = workflowInstanceLinkModelImpl._userName;
+
+		workflowInstanceLinkModelImpl._originalCreateDate = workflowInstanceLinkModelImpl._createDate;
+
+		workflowInstanceLinkModelImpl._originalModifiedDate = workflowInstanceLinkModelImpl._modifiedDate;
+
 		workflowInstanceLinkModelImpl._originalClassNameId = workflowInstanceLinkModelImpl._classNameId;
 
 		workflowInstanceLinkModelImpl._setOriginalClassNameId = false;
@@ -548,6 +631,10 @@ public class WorkflowInstanceLinkModelImpl extends BaseModelImpl<WorkflowInstanc
 		workflowInstanceLinkModelImpl._originalClassPK = workflowInstanceLinkModelImpl._classPK;
 
 		workflowInstanceLinkModelImpl._setOriginalClassPK = false;
+
+		workflowInstanceLinkModelImpl._originalWorkflowInstanceId = workflowInstanceLinkModelImpl._workflowInstanceId;
+
+		workflowInstanceLinkModelImpl._setOriginalWorkflowInstanceId = false;
 
 		workflowInstanceLinkModelImpl._columnBitmask = 0;
 	}
@@ -695,7 +782,11 @@ public class WorkflowInstanceLinkModelImpl extends BaseModelImpl<WorkflowInstanc
 			WorkflowInstanceLink.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _workflowInstanceLinkId;
+	private long _originalWorkflowInstanceLinkId;
+	private boolean _setOriginalWorkflowInstanceLinkId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -703,9 +794,14 @@ public class WorkflowInstanceLinkModelImpl extends BaseModelImpl<WorkflowInstanc
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _classNameId;
 	private long _originalClassNameId;
 	private boolean _setOriginalClassNameId;
@@ -713,6 +809,8 @@ public class WorkflowInstanceLinkModelImpl extends BaseModelImpl<WorkflowInstanc
 	private long _originalClassPK;
 	private boolean _setOriginalClassPK;
 	private long _workflowInstanceId;
+	private long _originalWorkflowInstanceId;
+	private boolean _setOriginalWorkflowInstanceId;
 	private long _columnBitmask;
 	private WorkflowInstanceLink _escapedModel;
 }

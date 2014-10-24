@@ -26,6 +26,7 @@ import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.LayoutSet;
 import com.liferay.portal.model.LayoutSetModel;
 import com.liferay.portal.model.LayoutSetSoap;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 
 import com.liferay.portlet.expando.model.ExpandoBridge;
@@ -338,7 +339,17 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@JSON
@@ -349,7 +360,17 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 
 	@Override
 	public void setLayoutSetId(long layoutSetId) {
+		if (!_setOriginalLayoutSetId) {
+			_setOriginalLayoutSetId = true;
+
+			_originalLayoutSetId = _layoutSetId;
+		}
+
 		_layoutSetId = layoutSetId;
+	}
+
+	public long getOriginalLayoutSetId() {
+		return _originalLayoutSetId;
 	}
 
 	@JSON
@@ -383,7 +404,17 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if (!_setOriginalCompanyId) {
+			_setOriginalCompanyId = true;
+
+			_originalCompanyId = _companyId;
+		}
+
 		_companyId = companyId;
+	}
+
+	public long getOriginalCompanyId() {
+		return _originalCompanyId;
 	}
 
 	@JSON
@@ -394,7 +425,15 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -405,7 +444,15 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -444,7 +491,17 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 
 	@Override
 	public void setLogoId(long logoId) {
+		if (!_setOriginalLogoId) {
+			_setOriginalLogoId = true;
+
+			_originalLogoId = _logoId;
+		}
+
 		_logoId = logoId;
+	}
+
+	public long getOriginalLogoId() {
+		return _originalLogoId;
 	}
 
 	@JSON
@@ -460,7 +517,15 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 
 	@Override
 	public void setThemeId(String themeId) {
+		if (_originalThemeId == null) {
+			_originalThemeId = _themeId;
+		}
+
 		_themeId = themeId;
+	}
+
+	public String getOriginalThemeId() {
+		return GetterUtil.getString(_originalThemeId);
 	}
 
 	@JSON
@@ -476,7 +541,15 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 
 	@Override
 	public void setColorSchemeId(String colorSchemeId) {
+		if (_originalColorSchemeId == null) {
+			_originalColorSchemeId = _colorSchemeId;
+		}
+
 		_colorSchemeId = colorSchemeId;
+	}
+
+	public String getOriginalColorSchemeId() {
+		return GetterUtil.getString(_originalColorSchemeId);
 	}
 
 	@JSON
@@ -492,7 +565,15 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 
 	@Override
 	public void setWapThemeId(String wapThemeId) {
+		if (_originalWapThemeId == null) {
+			_originalWapThemeId = _wapThemeId;
+		}
+
 		_wapThemeId = wapThemeId;
+	}
+
+	public String getOriginalWapThemeId() {
+		return GetterUtil.getString(_originalWapThemeId);
 	}
 
 	@JSON
@@ -508,7 +589,15 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 
 	@Override
 	public void setWapColorSchemeId(String wapColorSchemeId) {
+		if (_originalWapColorSchemeId == null) {
+			_originalWapColorSchemeId = _wapColorSchemeId;
+		}
+
 		_wapColorSchemeId = wapColorSchemeId;
+	}
+
+	public String getOriginalWapColorSchemeId() {
+		return GetterUtil.getString(_originalWapColorSchemeId);
 	}
 
 	@JSON
@@ -524,7 +613,15 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 
 	@Override
 	public void setCss(String css) {
+		if (_originalCss == null) {
+			_originalCss = _css;
+		}
+
 		_css = css;
+	}
+
+	public String getOriginalCss() {
+		return GetterUtil.getString(_originalCss);
 	}
 
 	@JSON
@@ -535,7 +632,17 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 
 	@Override
 	public void setPageCount(int pageCount) {
+		if (!_setOriginalPageCount) {
+			_setOriginalPageCount = true;
+
+			_originalPageCount = _pageCount;
+		}
+
 		_pageCount = pageCount;
+	}
+
+	public int getOriginalPageCount() {
+		return _originalPageCount;
 	}
 
 	@JSON
@@ -551,7 +658,15 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 
 	@Override
 	public void setSettings(String settings) {
+		if (_originalSettings == null) {
+			_originalSettings = _settings;
+		}
+
 		_settings = settings;
+	}
+
+	public String getOriginalSettings() {
+		return GetterUtil.getString(_originalSettings);
 	}
 
 	@JSON
@@ -594,7 +709,17 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 	@Override
 	public void setLayoutSetPrototypeLinkEnabled(
 		boolean layoutSetPrototypeLinkEnabled) {
+		if (!_setOriginalLayoutSetPrototypeLinkEnabled) {
+			_setOriginalLayoutSetPrototypeLinkEnabled = true;
+
+			_originalLayoutSetPrototypeLinkEnabled = _layoutSetPrototypeLinkEnabled;
+		}
+
 		_layoutSetPrototypeLinkEnabled = layoutSetPrototypeLinkEnabled;
+	}
+
+	public boolean getOriginalLayoutSetPrototypeLinkEnabled() {
+		return _originalLayoutSetPrototypeLinkEnabled;
 	}
 
 	public java.lang.String getVirtualHostname() {
@@ -714,15 +839,55 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 	public void resetOriginalValues() {
 		LayoutSetModelImpl layoutSetModelImpl = this;
 
+		layoutSetModelImpl._originalMvccVersion = layoutSetModelImpl._mvccVersion;
+
+		layoutSetModelImpl._setOriginalMvccVersion = false;
+
+		layoutSetModelImpl._originalLayoutSetId = layoutSetModelImpl._layoutSetId;
+
+		layoutSetModelImpl._setOriginalLayoutSetId = false;
+
 		layoutSetModelImpl._originalGroupId = layoutSetModelImpl._groupId;
 
 		layoutSetModelImpl._setOriginalGroupId = false;
+
+		layoutSetModelImpl._originalCompanyId = layoutSetModelImpl._companyId;
+
+		layoutSetModelImpl._setOriginalCompanyId = false;
+
+		layoutSetModelImpl._originalCreateDate = layoutSetModelImpl._createDate;
+
+		layoutSetModelImpl._originalModifiedDate = layoutSetModelImpl._modifiedDate;
 
 		layoutSetModelImpl._originalPrivateLayout = layoutSetModelImpl._privateLayout;
 
 		layoutSetModelImpl._setOriginalPrivateLayout = false;
 
+		layoutSetModelImpl._originalLogoId = layoutSetModelImpl._logoId;
+
+		layoutSetModelImpl._setOriginalLogoId = false;
+
+		layoutSetModelImpl._originalThemeId = layoutSetModelImpl._themeId;
+
+		layoutSetModelImpl._originalColorSchemeId = layoutSetModelImpl._colorSchemeId;
+
+		layoutSetModelImpl._originalWapThemeId = layoutSetModelImpl._wapThemeId;
+
+		layoutSetModelImpl._originalWapColorSchemeId = layoutSetModelImpl._wapColorSchemeId;
+
+		layoutSetModelImpl._originalCss = layoutSetModelImpl._css;
+
+		layoutSetModelImpl._originalPageCount = layoutSetModelImpl._pageCount;
+
+		layoutSetModelImpl._setOriginalPageCount = false;
+
+		layoutSetModelImpl._originalSettings = layoutSetModelImpl._settings;
+
 		layoutSetModelImpl._originalLayoutSetPrototypeUuid = layoutSetModelImpl._layoutSetPrototypeUuid;
+
+		layoutSetModelImpl._originalLayoutSetPrototypeLinkEnabled = layoutSetModelImpl._layoutSetPrototypeLinkEnabled;
+
+		layoutSetModelImpl._setOriginalLayoutSetPrototypeLinkEnabled = false;
 
 		setVirtualHostname(null);
 
@@ -959,27 +1124,47 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 			LayoutSet.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _layoutSetId;
+	private long _originalLayoutSetId;
+	private boolean _setOriginalLayoutSetId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
 	private long _companyId;
+	private long _originalCompanyId;
+	private boolean _setOriginalCompanyId;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private boolean _privateLayout;
 	private boolean _originalPrivateLayout;
 	private boolean _setOriginalPrivateLayout;
 	private long _logoId;
+	private long _originalLogoId;
+	private boolean _setOriginalLogoId;
 	private String _themeId;
+	private String _originalThemeId;
 	private String _colorSchemeId;
+	private String _originalColorSchemeId;
 	private String _wapThemeId;
+	private String _originalWapThemeId;
 	private String _wapColorSchemeId;
+	private String _originalWapColorSchemeId;
 	private String _css;
+	private String _originalCss;
 	private int _pageCount;
+	private int _originalPageCount;
+	private boolean _setOriginalPageCount;
 	private String _settings;
+	private String _originalSettings;
 	private String _layoutSetPrototypeUuid;
 	private String _originalLayoutSetPrototypeUuid;
 	private boolean _layoutSetPrototypeLinkEnabled;
+	private boolean _originalLayoutSetPrototypeLinkEnabled;
+	private boolean _setOriginalLayoutSetPrototypeLinkEnabled;
 	private long _columnBitmask;
 	private LayoutSet _escapedModel;
 }

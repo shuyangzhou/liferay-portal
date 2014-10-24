@@ -187,7 +187,17 @@ public class RatingsStatsModelImpl extends BaseModelImpl<RatingsStats>
 
 	@Override
 	public void setStatsId(long statsId) {
+		if (!_setOriginalStatsId) {
+			_setOriginalStatsId = true;
+
+			_originalStatsId = _statsId;
+		}
+
 		_statsId = statsId;
+	}
+
+	public long getOriginalStatsId() {
+		return _originalStatsId;
 	}
 
 	@Override
@@ -261,7 +271,17 @@ public class RatingsStatsModelImpl extends BaseModelImpl<RatingsStats>
 
 	@Override
 	public void setTotalEntries(int totalEntries) {
+		if (!_setOriginalTotalEntries) {
+			_setOriginalTotalEntries = true;
+
+			_originalTotalEntries = _totalEntries;
+		}
+
 		_totalEntries = totalEntries;
+	}
+
+	public int getOriginalTotalEntries() {
+		return _originalTotalEntries;
 	}
 
 	@Override
@@ -271,7 +291,17 @@ public class RatingsStatsModelImpl extends BaseModelImpl<RatingsStats>
 
 	@Override
 	public void setTotalScore(double totalScore) {
+		if (!_setOriginalTotalScore) {
+			_setOriginalTotalScore = true;
+
+			_originalTotalScore = _totalScore;
+		}
+
 		_totalScore = totalScore;
+	}
+
+	public double getOriginalTotalScore() {
+		return _originalTotalScore;
 	}
 
 	@Override
@@ -281,7 +311,17 @@ public class RatingsStatsModelImpl extends BaseModelImpl<RatingsStats>
 
 	@Override
 	public void setAverageScore(double averageScore) {
+		if (!_setOriginalAverageScore) {
+			_setOriginalAverageScore = true;
+
+			_originalAverageScore = _averageScore;
+		}
+
 		_averageScore = averageScore;
+	}
+
+	public double getOriginalAverageScore() {
+		return _originalAverageScore;
 	}
 
 	public long getColumnBitmask() {
@@ -383,6 +423,10 @@ public class RatingsStatsModelImpl extends BaseModelImpl<RatingsStats>
 	public void resetOriginalValues() {
 		RatingsStatsModelImpl ratingsStatsModelImpl = this;
 
+		ratingsStatsModelImpl._originalStatsId = ratingsStatsModelImpl._statsId;
+
+		ratingsStatsModelImpl._setOriginalStatsId = false;
+
 		ratingsStatsModelImpl._originalClassNameId = ratingsStatsModelImpl._classNameId;
 
 		ratingsStatsModelImpl._setOriginalClassNameId = false;
@@ -390,6 +434,18 @@ public class RatingsStatsModelImpl extends BaseModelImpl<RatingsStats>
 		ratingsStatsModelImpl._originalClassPK = ratingsStatsModelImpl._classPK;
 
 		ratingsStatsModelImpl._setOriginalClassPK = false;
+
+		ratingsStatsModelImpl._originalTotalEntries = ratingsStatsModelImpl._totalEntries;
+
+		ratingsStatsModelImpl._setOriginalTotalEntries = false;
+
+		ratingsStatsModelImpl._originalTotalScore = ratingsStatsModelImpl._totalScore;
+
+		ratingsStatsModelImpl._setOriginalTotalScore = false;
+
+		ratingsStatsModelImpl._originalAverageScore = ratingsStatsModelImpl._averageScore;
+
+		ratingsStatsModelImpl._setOriginalAverageScore = false;
 
 		ratingsStatsModelImpl._columnBitmask = 0;
 	}
@@ -477,6 +533,8 @@ public class RatingsStatsModelImpl extends BaseModelImpl<RatingsStats>
 			RatingsStats.class
 		};
 	private long _statsId;
+	private long _originalStatsId;
+	private boolean _setOriginalStatsId;
 	private long _classNameId;
 	private long _originalClassNameId;
 	private boolean _setOriginalClassNameId;
@@ -484,8 +542,14 @@ public class RatingsStatsModelImpl extends BaseModelImpl<RatingsStats>
 	private long _originalClassPK;
 	private boolean _setOriginalClassPK;
 	private int _totalEntries;
+	private int _originalTotalEntries;
+	private boolean _setOriginalTotalEntries;
 	private double _totalScore;
+	private double _originalTotalScore;
+	private boolean _setOriginalTotalScore;
 	private double _averageScore;
+	private double _originalAverageScore;
+	private boolean _setOriginalAverageScore;
 	private long _columnBitmask;
 	private RatingsStats _escapedModel;
 }

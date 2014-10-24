@@ -393,7 +393,17 @@ public class DDMStructureModelImpl extends BaseModelImpl<DDMStructure>
 
 	@Override
 	public void setStructureId(long structureId) {
+		if (!_setOriginalStructureId) {
+			_setOriginalStructureId = true;
+
+			_originalStructureId = _structureId;
+		}
+
 		_structureId = structureId;
+	}
+
+	public long getOriginalStructureId() {
+		return _originalStructureId;
 	}
 
 	@JSON
@@ -450,6 +460,12 @@ public class DDMStructureModelImpl extends BaseModelImpl<DDMStructure>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -469,6 +485,10 @@ public class DDMStructureModelImpl extends BaseModelImpl<DDMStructure>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -482,7 +502,15 @@ public class DDMStructureModelImpl extends BaseModelImpl<DDMStructure>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -493,7 +521,15 @@ public class DDMStructureModelImpl extends BaseModelImpl<DDMStructure>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -504,7 +540,15 @@ public class DDMStructureModelImpl extends BaseModelImpl<DDMStructure>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -834,7 +878,15 @@ public class DDMStructureModelImpl extends BaseModelImpl<DDMStructure>
 
 	@Override
 	public void setDefinition(String definition) {
+		if (_originalDefinition == null) {
+			_originalDefinition = _definition;
+		}
+
 		_definition = definition;
+	}
+
+	public String getOriginalDefinition() {
+		return GetterUtil.getString(_originalDefinition);
 	}
 
 	@JSON
@@ -850,7 +902,15 @@ public class DDMStructureModelImpl extends BaseModelImpl<DDMStructure>
 
 	@Override
 	public void setStorageType(String storageType) {
+		if (_originalStorageType == null) {
+			_originalStorageType = _storageType;
+		}
+
 		_storageType = storageType;
+	}
+
+	public String getOriginalStorageType() {
+		return GetterUtil.getString(_originalStorageType);
 	}
 
 	@JSON
@@ -861,7 +921,17 @@ public class DDMStructureModelImpl extends BaseModelImpl<DDMStructure>
 
 	@Override
 	public void setType(int type) {
+		if (!_setOriginalType) {
+			_setOriginalType = true;
+
+			_originalType = _type;
+		}
+
 		_type = type;
+	}
+
+	public int getOriginalType() {
+		return _originalType;
 	}
 
 	public com.liferay.portlet.dynamicdatamapping.model.DDMForm getDDMForm() {
@@ -1079,6 +1149,10 @@ public class DDMStructureModelImpl extends BaseModelImpl<DDMStructure>
 
 		ddmStructureModelImpl._originalUuid = ddmStructureModelImpl._uuid;
 
+		ddmStructureModelImpl._originalStructureId = ddmStructureModelImpl._structureId;
+
+		ddmStructureModelImpl._setOriginalStructureId = false;
+
 		ddmStructureModelImpl._originalGroupId = ddmStructureModelImpl._groupId;
 
 		ddmStructureModelImpl._setOriginalGroupId = false;
@@ -1086,6 +1160,16 @@ public class DDMStructureModelImpl extends BaseModelImpl<DDMStructure>
 		ddmStructureModelImpl._originalCompanyId = ddmStructureModelImpl._companyId;
 
 		ddmStructureModelImpl._setOriginalCompanyId = false;
+
+		ddmStructureModelImpl._originalUserId = ddmStructureModelImpl._userId;
+
+		ddmStructureModelImpl._setOriginalUserId = false;
+
+		ddmStructureModelImpl._originalUserName = ddmStructureModelImpl._userName;
+
+		ddmStructureModelImpl._originalCreateDate = ddmStructureModelImpl._createDate;
+
+		ddmStructureModelImpl._originalModifiedDate = ddmStructureModelImpl._modifiedDate;
 
 		ddmStructureModelImpl._originalParentStructureId = ddmStructureModelImpl._parentStructureId;
 
@@ -1100,6 +1184,14 @@ public class DDMStructureModelImpl extends BaseModelImpl<DDMStructure>
 		ddmStructureModelImpl._originalName = ddmStructureModelImpl._name;
 
 		ddmStructureModelImpl._originalDescription = ddmStructureModelImpl._description;
+
+		ddmStructureModelImpl._originalDefinition = ddmStructureModelImpl._definition;
+
+		ddmStructureModelImpl._originalStorageType = ddmStructureModelImpl._storageType;
+
+		ddmStructureModelImpl._originalType = ddmStructureModelImpl._type;
+
+		ddmStructureModelImpl._setOriginalType = false;
 
 		setDDMForm(null);
 
@@ -1333,6 +1425,8 @@ public class DDMStructureModelImpl extends BaseModelImpl<DDMStructure>
 	private String _uuid;
 	private String _originalUuid;
 	private long _structureId;
+	private long _originalStructureId;
+	private boolean _setOriginalStructureId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -1340,9 +1434,14 @@ public class DDMStructureModelImpl extends BaseModelImpl<DDMStructure>
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _parentStructureId;
 	private long _originalParentStructureId;
 	private boolean _setOriginalParentStructureId;
@@ -1358,8 +1457,12 @@ public class DDMStructureModelImpl extends BaseModelImpl<DDMStructure>
 	private String _descriptionCurrentLanguageId;
 	private String _originalDescription;
 	private String _definition;
+	private String _originalDefinition;
 	private String _storageType;
+	private String _originalStorageType;
 	private int _type;
+	private int _originalType;
+	private boolean _setOriginalType;
 	private long _columnBitmask;
 	private DDMStructure _escapedModel;
 }

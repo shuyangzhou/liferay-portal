@@ -27,6 +27,7 @@ import com.liferay.portal.service.ServiceContext;
 import java.io.File;
 import java.io.InputStream;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -123,6 +124,8 @@ public interface Sites {
 		throws PortalException;
 
 	public Long[] filterGroups(List<Group> groups, String[] names);
+
+	public long getDBSafeLastMergeTime(Date modifiedDate, long lastMergeTime);
 
 	public Layout getLayoutSetPrototypeLayout(Layout layout);
 

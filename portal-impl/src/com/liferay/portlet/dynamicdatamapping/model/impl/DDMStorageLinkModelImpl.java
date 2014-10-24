@@ -203,7 +203,17 @@ public class DDMStorageLinkModelImpl extends BaseModelImpl<DDMStorageLink>
 
 	@Override
 	public void setStorageLinkId(long storageLinkId) {
+		if (!_setOriginalStorageLinkId) {
+			_setOriginalStorageLinkId = true;
+
+			_originalStorageLinkId = _storageLinkId;
+		}
+
 		_storageLinkId = storageLinkId;
+	}
+
+	public long getOriginalStorageLinkId() {
+		return _originalStorageLinkId;
 	}
 
 	@Override
@@ -233,7 +243,17 @@ public class DDMStorageLinkModelImpl extends BaseModelImpl<DDMStorageLink>
 
 	@Override
 	public void setClassNameId(long classNameId) {
+		if (!_setOriginalClassNameId) {
+			_setOriginalClassNameId = true;
+
+			_originalClassNameId = _classNameId;
+		}
+
 		_classNameId = classNameId;
+	}
+
+	public long getOriginalClassNameId() {
+		return _originalClassNameId;
 	}
 
 	@Override
@@ -380,6 +400,14 @@ public class DDMStorageLinkModelImpl extends BaseModelImpl<DDMStorageLink>
 
 		ddmStorageLinkModelImpl._originalUuid = ddmStorageLinkModelImpl._uuid;
 
+		ddmStorageLinkModelImpl._originalStorageLinkId = ddmStorageLinkModelImpl._storageLinkId;
+
+		ddmStorageLinkModelImpl._setOriginalStorageLinkId = false;
+
+		ddmStorageLinkModelImpl._originalClassNameId = ddmStorageLinkModelImpl._classNameId;
+
+		ddmStorageLinkModelImpl._setOriginalClassNameId = false;
+
 		ddmStorageLinkModelImpl._originalClassPK = ddmStorageLinkModelImpl._classPK;
 
 		ddmStorageLinkModelImpl._setOriginalClassPK = false;
@@ -474,7 +502,11 @@ public class DDMStorageLinkModelImpl extends BaseModelImpl<DDMStorageLink>
 	private String _uuid;
 	private String _originalUuid;
 	private long _storageLinkId;
+	private long _originalStorageLinkId;
+	private boolean _setOriginalStorageLinkId;
 	private long _classNameId;
+	private long _originalClassNameId;
+	private boolean _setOriginalClassNameId;
 	private long _classPK;
 	private long _originalClassPK;
 	private boolean _setOriginalClassPK;

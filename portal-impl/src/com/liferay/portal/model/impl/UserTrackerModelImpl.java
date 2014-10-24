@@ -26,6 +26,7 @@ import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.User;
 import com.liferay.portal.model.UserTracker;
 import com.liferay.portal.model.UserTrackerModel;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
@@ -213,7 +214,17 @@ public class UserTrackerModelImpl extends BaseModelImpl<UserTracker>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@Override
@@ -223,7 +234,17 @@ public class UserTrackerModelImpl extends BaseModelImpl<UserTracker>
 
 	@Override
 	public void setUserTrackerId(long userTrackerId) {
+		if (!_setOriginalUserTrackerId) {
+			_setOriginalUserTrackerId = true;
+
+			_originalUserTrackerId = _userTrackerId;
+		}
+
 		_userTrackerId = userTrackerId;
+	}
+
+	public long getOriginalUserTrackerId() {
+		return _originalUserTrackerId;
 	}
 
 	@Override
@@ -293,7 +314,15 @@ public class UserTrackerModelImpl extends BaseModelImpl<UserTracker>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@Override
@@ -333,7 +362,15 @@ public class UserTrackerModelImpl extends BaseModelImpl<UserTracker>
 
 	@Override
 	public void setRemoteAddr(String remoteAddr) {
+		if (_originalRemoteAddr == null) {
+			_originalRemoteAddr = _remoteAddr;
+		}
+
 		_remoteAddr = remoteAddr;
+	}
+
+	public String getOriginalRemoteAddr() {
+		return GetterUtil.getString(_originalRemoteAddr);
 	}
 
 	@Override
@@ -348,7 +385,15 @@ public class UserTrackerModelImpl extends BaseModelImpl<UserTracker>
 
 	@Override
 	public void setRemoteHost(String remoteHost) {
+		if (_originalRemoteHost == null) {
+			_originalRemoteHost = _remoteHost;
+		}
+
 		_remoteHost = remoteHost;
+	}
+
+	public String getOriginalRemoteHost() {
+		return GetterUtil.getString(_originalRemoteHost);
 	}
 
 	@Override
@@ -363,7 +408,15 @@ public class UserTrackerModelImpl extends BaseModelImpl<UserTracker>
 
 	@Override
 	public void setUserAgent(String userAgent) {
+		if (_originalUserAgent == null) {
+			_originalUserAgent = _userAgent;
+		}
+
 		_userAgent = userAgent;
+	}
+
+	public String getOriginalUserAgent() {
+		return GetterUtil.getString(_originalUserAgent);
 	}
 
 	public long getColumnBitmask() {
@@ -468,6 +521,14 @@ public class UserTrackerModelImpl extends BaseModelImpl<UserTracker>
 	public void resetOriginalValues() {
 		UserTrackerModelImpl userTrackerModelImpl = this;
 
+		userTrackerModelImpl._originalMvccVersion = userTrackerModelImpl._mvccVersion;
+
+		userTrackerModelImpl._setOriginalMvccVersion = false;
+
+		userTrackerModelImpl._originalUserTrackerId = userTrackerModelImpl._userTrackerId;
+
+		userTrackerModelImpl._setOriginalUserTrackerId = false;
+
 		userTrackerModelImpl._originalCompanyId = userTrackerModelImpl._companyId;
 
 		userTrackerModelImpl._setOriginalCompanyId = false;
@@ -476,7 +537,15 @@ public class UserTrackerModelImpl extends BaseModelImpl<UserTracker>
 
 		userTrackerModelImpl._setOriginalUserId = false;
 
+		userTrackerModelImpl._originalModifiedDate = userTrackerModelImpl._modifiedDate;
+
 		userTrackerModelImpl._originalSessionId = userTrackerModelImpl._sessionId;
+
+		userTrackerModelImpl._originalRemoteAddr = userTrackerModelImpl._remoteAddr;
+
+		userTrackerModelImpl._originalRemoteHost = userTrackerModelImpl._remoteHost;
+
+		userTrackerModelImpl._originalUserAgent = userTrackerModelImpl._userAgent;
 
 		userTrackerModelImpl._columnBitmask = 0;
 	}
@@ -619,7 +688,11 @@ public class UserTrackerModelImpl extends BaseModelImpl<UserTracker>
 			UserTracker.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _userTrackerId;
+	private long _originalUserTrackerId;
+	private boolean _setOriginalUserTrackerId;
 	private long _companyId;
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
@@ -627,11 +700,15 @@ public class UserTrackerModelImpl extends BaseModelImpl<UserTracker>
 	private long _originalUserId;
 	private boolean _setOriginalUserId;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private String _sessionId;
 	private String _originalSessionId;
 	private String _remoteAddr;
+	private String _originalRemoteAddr;
 	private String _remoteHost;
+	private String _originalRemoteHost;
 	private String _userAgent;
+	private String _originalUserAgent;
 	private long _columnBitmask;
 	private UserTracker _escapedModel;
 }

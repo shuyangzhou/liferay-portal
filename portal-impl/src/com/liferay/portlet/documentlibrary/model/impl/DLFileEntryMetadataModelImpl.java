@@ -219,7 +219,17 @@ public class DLFileEntryMetadataModelImpl extends BaseModelImpl<DLFileEntryMetad
 
 	@Override
 	public void setFileEntryMetadataId(long fileEntryMetadataId) {
+		if (!_setOriginalFileEntryMetadataId) {
+			_setOriginalFileEntryMetadataId = true;
+
+			_originalFileEntryMetadataId = _fileEntryMetadataId;
+		}
+
 		_fileEntryMetadataId = fileEntryMetadataId;
+	}
+
+	public long getOriginalFileEntryMetadataId() {
+		return _originalFileEntryMetadataId;
 	}
 
 	@Override
@@ -229,7 +239,17 @@ public class DLFileEntryMetadataModelImpl extends BaseModelImpl<DLFileEntryMetad
 
 	@Override
 	public void setDDMStorageId(long DDMStorageId) {
+		if (!_setOriginalDDMStorageId) {
+			_setOriginalDDMStorageId = true;
+
+			_originalDDMStorageId = _DDMStorageId;
+		}
+
 		_DDMStorageId = DDMStorageId;
+	}
+
+	public long getOriginalDDMStorageId() {
+		return _originalDDMStorageId;
 	}
 
 	@Override
@@ -422,6 +442,14 @@ public class DLFileEntryMetadataModelImpl extends BaseModelImpl<DLFileEntryMetad
 
 		dlFileEntryMetadataModelImpl._originalUuid = dlFileEntryMetadataModelImpl._uuid;
 
+		dlFileEntryMetadataModelImpl._originalFileEntryMetadataId = dlFileEntryMetadataModelImpl._fileEntryMetadataId;
+
+		dlFileEntryMetadataModelImpl._setOriginalFileEntryMetadataId = false;
+
+		dlFileEntryMetadataModelImpl._originalDDMStorageId = dlFileEntryMetadataModelImpl._DDMStorageId;
+
+		dlFileEntryMetadataModelImpl._setOriginalDDMStorageId = false;
+
 		dlFileEntryMetadataModelImpl._originalDDMStructureId = dlFileEntryMetadataModelImpl._DDMStructureId;
 
 		dlFileEntryMetadataModelImpl._setOriginalDDMStructureId = false;
@@ -541,7 +569,11 @@ public class DLFileEntryMetadataModelImpl extends BaseModelImpl<DLFileEntryMetad
 	private String _uuid;
 	private String _originalUuid;
 	private long _fileEntryMetadataId;
+	private long _originalFileEntryMetadataId;
+	private boolean _setOriginalFileEntryMetadataId;
 	private long _DDMStorageId;
+	private long _originalDDMStorageId;
+	private boolean _setOriginalDDMStorageId;
 	private long _DDMStructureId;
 	private long _originalDDMStructureId;
 	private boolean _setOriginalDDMStructureId;

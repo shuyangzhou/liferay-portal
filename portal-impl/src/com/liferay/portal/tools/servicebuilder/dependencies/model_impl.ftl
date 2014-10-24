@@ -550,8 +550,15 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 					_columnBitmask = -1L;
 				</#if>
 
-				<#if column.isFinderPath() || ((parentPKColumn != "") && (parentPKColumn.name == column.name))>
-					<#if !column.isOrderColumn() && columnBitmaskEnabled>
+				<#if (column.type == "Blob") && column.lazy>
+					if (_${column.name}BlobModel == null) {
+						_${column.name}BlobModel = new ${entity.name}${column.methodName}BlobModel(getPrimaryKey(), ${column.name});
+					}
+					else {
+						_${column.name}BlobModel.set${column.methodName}Blob(${column.name});
+					}
+				<#else>
+					<#if column.isFinderPath() && !column.isOrderColumn() && columnBitmaskEnabled>
 						_columnBitmask |= ${column.name?upper_case}_COLUMN_BITMASK;
 					</#if>
 
@@ -564,16 +571,7 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 
 						_original${column.methodName} = _${column.name};
 					}
-				</#if>
 
-				<#if (column.type == "Blob") && column.lazy>
-					if (_${column.name}BlobModel == null) {
-						_${column.name}BlobModel = new ${entity.name}${column.methodName}BlobModel(getPrimaryKey(), ${column.name});
-					}
-					else {
-						_${column.name}BlobModel.set${column.methodName}Blob(${column.name});
-					}
-				<#else>
 					_${column.name} = ${column.name};
 				</#if>
 			</#if>
@@ -651,7 +649,7 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 			}
 		</#if>
 
-		<#if column.isFinderPath() || ((parentPKColumn != "") && (parentPKColumn.name == column.name))>
+		<#if !(column.type == "Blob") || !column.lazy>
 			public ${column.type} getOriginal${column.methodName}() {
 				<#if column.type == "String" && column.isConvertNull()>
 					return GetterUtil.getString(_original${column.methodName});
@@ -1258,21 +1256,17 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 
 	@Override
 	public void resetOriginalValues() {
-		<#list entity.regularColList as column>
-			<#if column.isFinderPath() || ((parentPKColumn != "") && (parentPKColumn.name == column.name)) || ((column.type == "Blob") && column.lazy)>
-				<#if !cloneCastModelImpl??>
-					<#assign cloneCastModelImpl = true>
+		<#if entity.regularColList?size != 0>
+			${entity.name}ModelImpl ${entity.varName}ModelImpl = this;
+		</#if>
 
-					${entity.name}ModelImpl ${entity.varName}ModelImpl = this;
-				</#if>
+		<#list entity.regularColList as column>
+			<#if (column.type != "Blob") || !column.lazy>
+				${entity.varName}ModelImpl._original${column.methodName} = ${entity.varName}ModelImpl._${column.name};
 			</#if>
 
-			<#if column.isFinderPath() || ((parentPKColumn != "") && (parentPKColumn.name == column.name))>
-				${entity.varName}ModelImpl._original${column.methodName} = ${entity.varName}ModelImpl._${column.name};
-
-				<#if column.isPrimitiveType()>
-					${entity.varName}ModelImpl._setOriginal${column.methodName} = false;
-				</#if>
+			<#if column.isPrimitiveType()>
+				${entity.varName}ModelImpl._setOriginal${column.methodName} = false;
 			</#if>
 
 			<#if (column.type == "Blob") && column.lazy>
@@ -1388,12 +1382,10 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 				private String _${column.name}CurrentLanguageId;
 			</#if>
 
-			<#if column.isFinderPath() || ((parentPKColumn != "") && (parentPKColumn.name == column.name))>
-				private ${column.type} _original${column.methodName};
+			private ${column.type} _original${column.methodName};
 
-				<#if column.isPrimitiveType()>
-					private boolean _setOriginal${column.methodName};
-				</#if>
+			<#if column.isPrimitiveType()>
+				private boolean _setOriginal${column.methodName};
 			</#if>
 		</#if>
 	</#list>

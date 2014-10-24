@@ -34,6 +34,7 @@ import com.liferay.portal.model.LayoutRevision;
 import com.liferay.portal.model.LayoutRevisionModel;
 import com.liferay.portal.model.LayoutRevisionSoap;
 import com.liferay.portal.model.User;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
@@ -477,7 +478,17 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@JSON
@@ -488,7 +499,17 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 
 	@Override
 	public void setLayoutRevisionId(long layoutRevisionId) {
+		if (!_setOriginalLayoutRevisionId) {
+			_setOriginalLayoutRevisionId = true;
+
+			_originalLayoutRevisionId = _layoutRevisionId;
+		}
+
 		_layoutRevisionId = layoutRevisionId;
+	}
+
+	public long getOriginalLayoutRevisionId() {
+		return _originalLayoutRevisionId;
 	}
 
 	@JSON
@@ -499,7 +520,17 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 
 	@Override
 	public void setGroupId(long groupId) {
+		if (!_setOriginalGroupId) {
+			_setOriginalGroupId = true;
+
+			_originalGroupId = _groupId;
+		}
+
 		_groupId = groupId;
+	}
+
+	public long getOriginalGroupId() {
+		return _originalGroupId;
 	}
 
 	@JSON
@@ -510,7 +541,17 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if (!_setOriginalCompanyId) {
+			_setOriginalCompanyId = true;
+
+			_originalCompanyId = _companyId;
+		}
+
 		_companyId = companyId;
+	}
+
+	public long getOriginalCompanyId() {
+		return _originalCompanyId;
 	}
 
 	@JSON
@@ -521,6 +562,12 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -540,6 +587,10 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -553,7 +604,15 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -564,7 +623,15 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -577,7 +644,15 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 	public void setModifiedDate(Date modifiedDate) {
 		_columnBitmask = -1L;
 
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -690,7 +765,17 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 
 	@Override
 	public void setMajor(boolean major) {
+		if (!_setOriginalMajor) {
+			_setOriginalMajor = true;
+
+			_originalMajor = _major;
+		}
+
 		_major = major;
+	}
+
+	public boolean getOriginalMajor() {
+		return _originalMajor;
 	}
 
 	@JSON
@@ -729,7 +814,17 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 
 	@Override
 	public void setPrivateLayout(boolean privateLayout) {
+		if (!_setOriginalPrivateLayout) {
+			_setOriginalPrivateLayout = true;
+
+			_originalPrivateLayout = _privateLayout;
+		}
+
 		_privateLayout = privateLayout;
+	}
+
+	public boolean getOriginalPrivateLayout() {
+		return _originalPrivateLayout;
 	}
 
 	@JSON
@@ -788,6 +883,10 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 
 	@Override
 	public void setName(String name) {
+		if (_originalName == null) {
+			_originalName = _name;
+		}
+
 		_name = name;
 	}
 
@@ -829,6 +928,10 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 
 		setName(LocalizationUtil.updateLocalization(nameMap, getName(), "Name",
 				LocaleUtil.toLanguageId(defaultLocale)));
+	}
+
+	public String getOriginalName() {
+		return GetterUtil.getString(_originalName);
 	}
 
 	@JSON
@@ -887,6 +990,10 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 
 	@Override
 	public void setTitle(String title) {
+		if (_originalTitle == null) {
+			_originalTitle = _title;
+		}
+
 		_title = title;
 	}
 
@@ -928,6 +1035,10 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 
 		setTitle(LocalizationUtil.updateLocalization(titleMap, getTitle(),
 				"Title", LocaleUtil.toLanguageId(defaultLocale)));
+	}
+
+	public String getOriginalTitle() {
+		return GetterUtil.getString(_originalTitle);
 	}
 
 	@JSON
@@ -986,6 +1097,10 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 
 	@Override
 	public void setDescription(String description) {
+		if (_originalDescription == null) {
+			_originalDescription = _description;
+		}
+
 		_description = description;
 	}
 
@@ -1031,6 +1146,10 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 		setDescription(LocalizationUtil.updateLocalization(descriptionMap,
 				getDescription(), "Description",
 				LocaleUtil.toLanguageId(defaultLocale)));
+	}
+
+	public String getOriginalDescription() {
+		return GetterUtil.getString(_originalDescription);
 	}
 
 	@JSON
@@ -1089,6 +1208,10 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 
 	@Override
 	public void setKeywords(String keywords) {
+		if (_originalKeywords == null) {
+			_originalKeywords = _keywords;
+		}
+
 		_keywords = keywords;
 	}
 
@@ -1132,6 +1255,10 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 		setKeywords(LocalizationUtil.updateLocalization(keywordsMap,
 				getKeywords(), "Keywords",
 				LocaleUtil.toLanguageId(defaultLocale)));
+	}
+
+	public String getOriginalKeywords() {
+		return GetterUtil.getString(_originalKeywords);
 	}
 
 	@JSON
@@ -1190,6 +1317,10 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 
 	@Override
 	public void setRobots(String robots) {
+		if (_originalRobots == null) {
+			_originalRobots = _robots;
+		}
+
 		_robots = robots;
 	}
 
@@ -1233,6 +1364,10 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 				"Robots", LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
+	public String getOriginalRobots() {
+		return GetterUtil.getString(_originalRobots);
+	}
+
 	@JSON
 	@Override
 	public String getTypeSettings() {
@@ -1246,7 +1381,15 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 
 	@Override
 	public void setTypeSettings(String typeSettings) {
+		if (_originalTypeSettings == null) {
+			_originalTypeSettings = _typeSettings;
+		}
+
 		_typeSettings = typeSettings;
+	}
+
+	public String getOriginalTypeSettings() {
+		return GetterUtil.getString(_originalTypeSettings);
 	}
 
 	@JSON
@@ -1257,7 +1400,17 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 
 	@Override
 	public void setIconImageId(long iconImageId) {
+		if (!_setOriginalIconImageId) {
+			_setOriginalIconImageId = true;
+
+			_originalIconImageId = _iconImageId;
+		}
+
 		_iconImageId = iconImageId;
+	}
+
+	public long getOriginalIconImageId() {
+		return _originalIconImageId;
 	}
 
 	@JSON
@@ -1273,7 +1426,15 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 
 	@Override
 	public void setThemeId(String themeId) {
+		if (_originalThemeId == null) {
+			_originalThemeId = _themeId;
+		}
+
 		_themeId = themeId;
+	}
+
+	public String getOriginalThemeId() {
+		return GetterUtil.getString(_originalThemeId);
 	}
 
 	@JSON
@@ -1289,7 +1450,15 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 
 	@Override
 	public void setColorSchemeId(String colorSchemeId) {
+		if (_originalColorSchemeId == null) {
+			_originalColorSchemeId = _colorSchemeId;
+		}
+
 		_colorSchemeId = colorSchemeId;
+	}
+
+	public String getOriginalColorSchemeId() {
+		return GetterUtil.getString(_originalColorSchemeId);
 	}
 
 	@JSON
@@ -1305,7 +1474,15 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 
 	@Override
 	public void setWapThemeId(String wapThemeId) {
+		if (_originalWapThemeId == null) {
+			_originalWapThemeId = _wapThemeId;
+		}
+
 		_wapThemeId = wapThemeId;
+	}
+
+	public String getOriginalWapThemeId() {
+		return GetterUtil.getString(_originalWapThemeId);
 	}
 
 	@JSON
@@ -1321,7 +1498,15 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 
 	@Override
 	public void setWapColorSchemeId(String wapColorSchemeId) {
+		if (_originalWapColorSchemeId == null) {
+			_originalWapColorSchemeId = _wapColorSchemeId;
+		}
+
 		_wapColorSchemeId = wapColorSchemeId;
+	}
+
+	public String getOriginalWapColorSchemeId() {
+		return GetterUtil.getString(_originalWapColorSchemeId);
 	}
 
 	@JSON
@@ -1337,7 +1522,15 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 
 	@Override
 	public void setCss(String css) {
+		if (_originalCss == null) {
+			_originalCss = _css;
+		}
+
 		_css = css;
+	}
+
+	public String getOriginalCss() {
+		return GetterUtil.getString(_originalCss);
 	}
 
 	@JSON
@@ -1371,6 +1564,12 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 
 	@Override
 	public void setStatusByUserId(long statusByUserId) {
+		if (!_setOriginalStatusByUserId) {
+			_setOriginalStatusByUserId = true;
+
+			_originalStatusByUserId = _statusByUserId;
+		}
+
 		_statusByUserId = statusByUserId;
 	}
 
@@ -1390,6 +1589,10 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 	public void setStatusByUserUuid(String statusByUserUuid) {
 	}
 
+	public long getOriginalStatusByUserId() {
+		return _originalStatusByUserId;
+	}
+
 	@JSON
 	@Override
 	public String getStatusByUserName() {
@@ -1403,7 +1606,15 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 
 	@Override
 	public void setStatusByUserName(String statusByUserName) {
+		if (_originalStatusByUserName == null) {
+			_originalStatusByUserName = _statusByUserName;
+		}
+
 		_statusByUserName = statusByUserName;
+	}
+
+	public String getOriginalStatusByUserName() {
+		return GetterUtil.getString(_originalStatusByUserName);
 	}
 
 	@JSON
@@ -1414,7 +1625,15 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 
 	@Override
 	public void setStatusDate(Date statusDate) {
+		if (_originalStatusDate == null) {
+			_originalStatusDate = _statusDate;
+		}
+
 		_statusDate = statusDate;
+	}
+
+	public Date getOriginalStatusDate() {
+		return _originalStatusDate;
 	}
 
 	/**
@@ -1773,6 +1992,32 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 	public void resetOriginalValues() {
 		LayoutRevisionModelImpl layoutRevisionModelImpl = this;
 
+		layoutRevisionModelImpl._originalMvccVersion = layoutRevisionModelImpl._mvccVersion;
+
+		layoutRevisionModelImpl._setOriginalMvccVersion = false;
+
+		layoutRevisionModelImpl._originalLayoutRevisionId = layoutRevisionModelImpl._layoutRevisionId;
+
+		layoutRevisionModelImpl._setOriginalLayoutRevisionId = false;
+
+		layoutRevisionModelImpl._originalGroupId = layoutRevisionModelImpl._groupId;
+
+		layoutRevisionModelImpl._setOriginalGroupId = false;
+
+		layoutRevisionModelImpl._originalCompanyId = layoutRevisionModelImpl._companyId;
+
+		layoutRevisionModelImpl._setOriginalCompanyId = false;
+
+		layoutRevisionModelImpl._originalUserId = layoutRevisionModelImpl._userId;
+
+		layoutRevisionModelImpl._setOriginalUserId = false;
+
+		layoutRevisionModelImpl._originalUserName = layoutRevisionModelImpl._userName;
+
+		layoutRevisionModelImpl._originalCreateDate = layoutRevisionModelImpl._createDate;
+
+		layoutRevisionModelImpl._originalModifiedDate = layoutRevisionModelImpl._modifiedDate;
+
 		layoutRevisionModelImpl._originalLayoutSetBranchId = layoutRevisionModelImpl._layoutSetBranchId;
 
 		layoutRevisionModelImpl._setOriginalLayoutSetBranchId = false;
@@ -1789,13 +2034,55 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 
 		layoutRevisionModelImpl._setOriginalHead = false;
 
+		layoutRevisionModelImpl._originalMajor = layoutRevisionModelImpl._major;
+
+		layoutRevisionModelImpl._setOriginalMajor = false;
+
 		layoutRevisionModelImpl._originalPlid = layoutRevisionModelImpl._plid;
 
 		layoutRevisionModelImpl._setOriginalPlid = false;
 
+		layoutRevisionModelImpl._originalPrivateLayout = layoutRevisionModelImpl._privateLayout;
+
+		layoutRevisionModelImpl._setOriginalPrivateLayout = false;
+
+		layoutRevisionModelImpl._originalName = layoutRevisionModelImpl._name;
+
+		layoutRevisionModelImpl._originalTitle = layoutRevisionModelImpl._title;
+
+		layoutRevisionModelImpl._originalDescription = layoutRevisionModelImpl._description;
+
+		layoutRevisionModelImpl._originalKeywords = layoutRevisionModelImpl._keywords;
+
+		layoutRevisionModelImpl._originalRobots = layoutRevisionModelImpl._robots;
+
+		layoutRevisionModelImpl._originalTypeSettings = layoutRevisionModelImpl._typeSettings;
+
+		layoutRevisionModelImpl._originalIconImageId = layoutRevisionModelImpl._iconImageId;
+
+		layoutRevisionModelImpl._setOriginalIconImageId = false;
+
+		layoutRevisionModelImpl._originalThemeId = layoutRevisionModelImpl._themeId;
+
+		layoutRevisionModelImpl._originalColorSchemeId = layoutRevisionModelImpl._colorSchemeId;
+
+		layoutRevisionModelImpl._originalWapThemeId = layoutRevisionModelImpl._wapThemeId;
+
+		layoutRevisionModelImpl._originalWapColorSchemeId = layoutRevisionModelImpl._wapColorSchemeId;
+
+		layoutRevisionModelImpl._originalCss = layoutRevisionModelImpl._css;
+
 		layoutRevisionModelImpl._originalStatus = layoutRevisionModelImpl._status;
 
 		layoutRevisionModelImpl._setOriginalStatus = false;
+
+		layoutRevisionModelImpl._originalStatusByUserId = layoutRevisionModelImpl._statusByUserId;
+
+		layoutRevisionModelImpl._setOriginalStatusByUserId = false;
+
+		layoutRevisionModelImpl._originalStatusByUserName = layoutRevisionModelImpl._statusByUserName;
+
+		layoutRevisionModelImpl._originalStatusDate = layoutRevisionModelImpl._statusDate;
 
 		layoutRevisionModelImpl._columnBitmask = 0;
 	}
@@ -2182,13 +2469,26 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 			LayoutRevision.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _layoutRevisionId;
+	private long _originalLayoutRevisionId;
+	private boolean _setOriginalLayoutRevisionId;
 	private long _groupId;
+	private long _originalGroupId;
+	private boolean _setOriginalGroupId;
 	private long _companyId;
+	private long _originalCompanyId;
+	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _layoutSetBranchId;
 	private long _originalLayoutSetBranchId;
 	private boolean _setOriginalLayoutSetBranchId;
@@ -2202,33 +2502,54 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 	private boolean _originalHead;
 	private boolean _setOriginalHead;
 	private boolean _major;
+	private boolean _originalMajor;
+	private boolean _setOriginalMajor;
 	private long _plid;
 	private long _originalPlid;
 	private boolean _setOriginalPlid;
 	private boolean _privateLayout;
+	private boolean _originalPrivateLayout;
+	private boolean _setOriginalPrivateLayout;
 	private String _name;
 	private String _nameCurrentLanguageId;
+	private String _originalName;
 	private String _title;
 	private String _titleCurrentLanguageId;
+	private String _originalTitle;
 	private String _description;
 	private String _descriptionCurrentLanguageId;
+	private String _originalDescription;
 	private String _keywords;
 	private String _keywordsCurrentLanguageId;
+	private String _originalKeywords;
 	private String _robots;
 	private String _robotsCurrentLanguageId;
+	private String _originalRobots;
 	private String _typeSettings;
+	private String _originalTypeSettings;
 	private long _iconImageId;
+	private long _originalIconImageId;
+	private boolean _setOriginalIconImageId;
 	private String _themeId;
+	private String _originalThemeId;
 	private String _colorSchemeId;
+	private String _originalColorSchemeId;
 	private String _wapThemeId;
+	private String _originalWapThemeId;
 	private String _wapColorSchemeId;
+	private String _originalWapColorSchemeId;
 	private String _css;
+	private String _originalCss;
 	private int _status;
 	private int _originalStatus;
 	private boolean _setOriginalStatus;
 	private long _statusByUserId;
+	private long _originalStatusByUserId;
+	private boolean _setOriginalStatusByUserId;
 	private String _statusByUserName;
+	private String _originalStatusByUserName;
 	private Date _statusDate;
+	private Date _originalStatusDate;
 	private long _columnBitmask;
 	private LayoutRevision _escapedModel;
 }

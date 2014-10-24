@@ -507,6 +507,12 @@ public class DLFolderModelImpl extends BaseModelImpl<DLFolder>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -526,6 +532,10 @@ public class DLFolderModelImpl extends BaseModelImpl<DLFolder>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -539,7 +549,15 @@ public class DLFolderModelImpl extends BaseModelImpl<DLFolder>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -550,7 +568,15 @@ public class DLFolderModelImpl extends BaseModelImpl<DLFolder>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -561,7 +587,15 @@ public class DLFolderModelImpl extends BaseModelImpl<DLFolder>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -651,7 +685,15 @@ public class DLFolderModelImpl extends BaseModelImpl<DLFolder>
 
 	@Override
 	public void setTreePath(String treePath) {
+		if (_originalTreePath == null) {
+			_originalTreePath = _treePath;
+		}
+
 		_treePath = treePath;
+	}
+
+	public String getOriginalTreePath() {
+		return GetterUtil.getString(_originalTreePath);
 	}
 
 	@JSON
@@ -693,7 +735,15 @@ public class DLFolderModelImpl extends BaseModelImpl<DLFolder>
 
 	@Override
 	public void setDescription(String description) {
+		if (_originalDescription == null) {
+			_originalDescription = _description;
+		}
+
 		_description = description;
+	}
+
+	public String getOriginalDescription() {
+		return GetterUtil.getString(_originalDescription);
 	}
 
 	@JSON
@@ -704,7 +754,15 @@ public class DLFolderModelImpl extends BaseModelImpl<DLFolder>
 
 	@Override
 	public void setLastPostDate(Date lastPostDate) {
+		if (_originalLastPostDate == null) {
+			_originalLastPostDate = _lastPostDate;
+		}
+
 		_lastPostDate = lastPostDate;
+	}
+
+	public Date getOriginalLastPostDate() {
+		return _originalLastPostDate;
 	}
 
 	@JSON
@@ -715,7 +773,17 @@ public class DLFolderModelImpl extends BaseModelImpl<DLFolder>
 
 	@Override
 	public void setDefaultFileEntryTypeId(long defaultFileEntryTypeId) {
+		if (!_setOriginalDefaultFileEntryTypeId) {
+			_setOriginalDefaultFileEntryTypeId = true;
+
+			_originalDefaultFileEntryTypeId = _defaultFileEntryTypeId;
+		}
+
 		_defaultFileEntryTypeId = defaultFileEntryTypeId;
+	}
+
+	public long getOriginalDefaultFileEntryTypeId() {
+		return _originalDefaultFileEntryTypeId;
 	}
 
 	@JSON
@@ -759,7 +827,17 @@ public class DLFolderModelImpl extends BaseModelImpl<DLFolder>
 
 	@Override
 	public void setOverrideFileEntryTypes(boolean overrideFileEntryTypes) {
+		if (!_setOriginalOverrideFileEntryTypes) {
+			_setOriginalOverrideFileEntryTypes = true;
+
+			_originalOverrideFileEntryTypes = _overrideFileEntryTypes;
+		}
+
 		_overrideFileEntryTypes = overrideFileEntryTypes;
+	}
+
+	public boolean getOriginalOverrideFileEntryTypes() {
+		return _originalOverrideFileEntryTypes;
 	}
 
 	@JSON
@@ -793,6 +871,12 @@ public class DLFolderModelImpl extends BaseModelImpl<DLFolder>
 
 	@Override
 	public void setStatusByUserId(long statusByUserId) {
+		if (!_setOriginalStatusByUserId) {
+			_setOriginalStatusByUserId = true;
+
+			_originalStatusByUserId = _statusByUserId;
+		}
+
 		_statusByUserId = statusByUserId;
 	}
 
@@ -812,6 +896,10 @@ public class DLFolderModelImpl extends BaseModelImpl<DLFolder>
 	public void setStatusByUserUuid(String statusByUserUuid) {
 	}
 
+	public long getOriginalStatusByUserId() {
+		return _originalStatusByUserId;
+	}
+
 	@JSON
 	@Override
 	public String getStatusByUserName() {
@@ -825,7 +913,15 @@ public class DLFolderModelImpl extends BaseModelImpl<DLFolder>
 
 	@Override
 	public void setStatusByUserName(String statusByUserName) {
+		if (_originalStatusByUserName == null) {
+			_originalStatusByUserName = _statusByUserName;
+		}
+
 		_statusByUserName = statusByUserName;
+	}
+
+	public String getOriginalStatusByUserName() {
+		return GetterUtil.getString(_originalStatusByUserName);
 	}
 
 	@JSON
@@ -836,7 +932,15 @@ public class DLFolderModelImpl extends BaseModelImpl<DLFolder>
 
 	@Override
 	public void setStatusDate(Date statusDate) {
+		if (_originalStatusDate == null) {
+			_originalStatusDate = _statusDate;
+		}
+
 		_statusDate = statusDate;
+	}
+
+	public Date getOriginalStatusDate() {
+		return _originalStatusDate;
 	}
 
 	@Override
@@ -1226,6 +1330,16 @@ public class DLFolderModelImpl extends BaseModelImpl<DLFolder>
 
 		dlFolderModelImpl._setOriginalCompanyId = false;
 
+		dlFolderModelImpl._originalUserId = dlFolderModelImpl._userId;
+
+		dlFolderModelImpl._setOriginalUserId = false;
+
+		dlFolderModelImpl._originalUserName = dlFolderModelImpl._userName;
+
+		dlFolderModelImpl._originalCreateDate = dlFolderModelImpl._createDate;
+
+		dlFolderModelImpl._originalModifiedDate = dlFolderModelImpl._modifiedDate;
+
 		dlFolderModelImpl._originalRepositoryId = dlFolderModelImpl._repositoryId;
 
 		dlFolderModelImpl._setOriginalRepositoryId = false;
@@ -1238,15 +1352,37 @@ public class DLFolderModelImpl extends BaseModelImpl<DLFolder>
 
 		dlFolderModelImpl._setOriginalParentFolderId = false;
 
+		dlFolderModelImpl._originalTreePath = dlFolderModelImpl._treePath;
+
 		dlFolderModelImpl._originalName = dlFolderModelImpl._name;
+
+		dlFolderModelImpl._originalDescription = dlFolderModelImpl._description;
+
+		dlFolderModelImpl._originalLastPostDate = dlFolderModelImpl._lastPostDate;
+
+		dlFolderModelImpl._originalDefaultFileEntryTypeId = dlFolderModelImpl._defaultFileEntryTypeId;
+
+		dlFolderModelImpl._setOriginalDefaultFileEntryTypeId = false;
 
 		dlFolderModelImpl._originalHidden = dlFolderModelImpl._hidden;
 
 		dlFolderModelImpl._setOriginalHidden = false;
 
+		dlFolderModelImpl._originalOverrideFileEntryTypes = dlFolderModelImpl._overrideFileEntryTypes;
+
+		dlFolderModelImpl._setOriginalOverrideFileEntryTypes = false;
+
 		dlFolderModelImpl._originalStatus = dlFolderModelImpl._status;
 
 		dlFolderModelImpl._setOriginalStatus = false;
+
+		dlFolderModelImpl._originalStatusByUserId = dlFolderModelImpl._statusByUserId;
+
+		dlFolderModelImpl._setOriginalStatusByUserId = false;
+
+		dlFolderModelImpl._originalStatusByUserName = dlFolderModelImpl._statusByUserName;
+
+		dlFolderModelImpl._originalStatusDate = dlFolderModelImpl._statusDate;
 
 		dlFolderModelImpl._columnBitmask = 0;
 	}
@@ -1537,9 +1673,14 @@ public class DLFolderModelImpl extends BaseModelImpl<DLFolder>
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _repositoryId;
 	private long _originalRepositoryId;
 	private boolean _setOriginalRepositoryId;
@@ -1550,21 +1691,32 @@ public class DLFolderModelImpl extends BaseModelImpl<DLFolder>
 	private long _originalParentFolderId;
 	private boolean _setOriginalParentFolderId;
 	private String _treePath;
+	private String _originalTreePath;
 	private String _name;
 	private String _originalName;
 	private String _description;
+	private String _originalDescription;
 	private Date _lastPostDate;
+	private Date _originalLastPostDate;
 	private long _defaultFileEntryTypeId;
+	private long _originalDefaultFileEntryTypeId;
+	private boolean _setOriginalDefaultFileEntryTypeId;
 	private boolean _hidden;
 	private boolean _originalHidden;
 	private boolean _setOriginalHidden;
 	private boolean _overrideFileEntryTypes;
+	private boolean _originalOverrideFileEntryTypes;
+	private boolean _setOriginalOverrideFileEntryTypes;
 	private int _status;
 	private int _originalStatus;
 	private boolean _setOriginalStatus;
 	private long _statusByUserId;
+	private long _originalStatusByUserId;
+	private boolean _setOriginalStatusByUserId;
 	private String _statusByUserName;
+	private String _originalStatusByUserName;
 	private Date _statusDate;
+	private Date _originalStatusDate;
 	private long _columnBitmask;
 	private DLFolder _escapedModel;
 }

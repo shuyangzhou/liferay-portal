@@ -263,7 +263,17 @@ public class DDMContentModelImpl extends BaseModelImpl<DDMContent>
 
 	@Override
 	public void setContentId(long contentId) {
+		if (!_setOriginalContentId) {
+			_setOriginalContentId = true;
+
+			_originalContentId = _contentId;
+		}
+
 		_contentId = contentId;
+	}
+
+	public long getOriginalContentId() {
+		return _originalContentId;
 	}
 
 	@Override
@@ -317,6 +327,12 @@ public class DDMContentModelImpl extends BaseModelImpl<DDMContent>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -336,6 +352,10 @@ public class DDMContentModelImpl extends BaseModelImpl<DDMContent>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -348,7 +368,15 @@ public class DDMContentModelImpl extends BaseModelImpl<DDMContent>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@Override
@@ -358,7 +386,15 @@ public class DDMContentModelImpl extends BaseModelImpl<DDMContent>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@Override
@@ -368,7 +404,15 @@ public class DDMContentModelImpl extends BaseModelImpl<DDMContent>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@Override
@@ -426,6 +470,10 @@ public class DDMContentModelImpl extends BaseModelImpl<DDMContent>
 
 	@Override
 	public void setName(String name) {
+		if (_originalName == null) {
+			_originalName = _name;
+		}
+
 		_name = name;
 	}
 
@@ -469,6 +517,10 @@ public class DDMContentModelImpl extends BaseModelImpl<DDMContent>
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
+	public String getOriginalName() {
+		return GetterUtil.getString(_originalName);
+	}
+
 	@Override
 	public String getDescription() {
 		if (_description == null) {
@@ -481,7 +533,15 @@ public class DDMContentModelImpl extends BaseModelImpl<DDMContent>
 
 	@Override
 	public void setDescription(String description) {
+		if (_originalDescription == null) {
+			_originalDescription = _description;
+		}
+
 		_description = description;
+	}
+
+	public String getOriginalDescription() {
+		return GetterUtil.getString(_originalDescription);
 	}
 
 	@Override
@@ -496,7 +556,15 @@ public class DDMContentModelImpl extends BaseModelImpl<DDMContent>
 
 	@Override
 	public void setData(String data) {
+		if (_originalData == null) {
+			_originalData = _data;
+		}
+
 		_data = data;
+	}
+
+	public String getOriginalData() {
+		return GetterUtil.getString(_originalData);
 	}
 
 	@Override
@@ -672,6 +740,10 @@ public class DDMContentModelImpl extends BaseModelImpl<DDMContent>
 
 		ddmContentModelImpl._originalUuid = ddmContentModelImpl._uuid;
 
+		ddmContentModelImpl._originalContentId = ddmContentModelImpl._contentId;
+
+		ddmContentModelImpl._setOriginalContentId = false;
+
 		ddmContentModelImpl._originalGroupId = ddmContentModelImpl._groupId;
 
 		ddmContentModelImpl._setOriginalGroupId = false;
@@ -679,6 +751,22 @@ public class DDMContentModelImpl extends BaseModelImpl<DDMContent>
 		ddmContentModelImpl._originalCompanyId = ddmContentModelImpl._companyId;
 
 		ddmContentModelImpl._setOriginalCompanyId = false;
+
+		ddmContentModelImpl._originalUserId = ddmContentModelImpl._userId;
+
+		ddmContentModelImpl._setOriginalUserId = false;
+
+		ddmContentModelImpl._originalUserName = ddmContentModelImpl._userName;
+
+		ddmContentModelImpl._originalCreateDate = ddmContentModelImpl._createDate;
+
+		ddmContentModelImpl._originalModifiedDate = ddmContentModelImpl._modifiedDate;
+
+		ddmContentModelImpl._originalName = ddmContentModelImpl._name;
+
+		ddmContentModelImpl._originalDescription = ddmContentModelImpl._description;
+
+		ddmContentModelImpl._originalData = ddmContentModelImpl._data;
 
 		ddmContentModelImpl._columnBitmask = 0;
 	}
@@ -852,6 +940,8 @@ public class DDMContentModelImpl extends BaseModelImpl<DDMContent>
 	private String _uuid;
 	private String _originalUuid;
 	private long _contentId;
+	private long _originalContentId;
+	private boolean _setOriginalContentId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -859,13 +949,21 @@ public class DDMContentModelImpl extends BaseModelImpl<DDMContent>
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private String _name;
 	private String _nameCurrentLanguageId;
+	private String _originalName;
 	private String _description;
+	private String _originalDescription;
 	private String _data;
+	private String _originalData;
 	private long _columnBitmask;
 	private DDMContent _escapedModel;
 }
