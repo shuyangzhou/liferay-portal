@@ -56,7 +56,6 @@ import com.liferay.portlet.journal.model.JournalArticle;
 import com.liferay.portlet.journal.model.JournalArticleDisplay;
 import com.liferay.portlet.journal.service.JournalArticleLocalServiceUtil;
 import com.liferay.portlet.journal.service.permission.JournalArticlePermission;
-import com.liferay.portlet.journalcontent.util.JournalContentUtil;
 import com.liferay.portlet.trash.util.TrashUtil;
 
 import java.io.Serializable;
@@ -537,10 +536,10 @@ public class JournalArticleIndexer extends BaseIndexer {
 		String[] ddmStructureKeys = new String[ddmStructureIds.size()];
 
 		for (int i = 0; i < ddmStructureIds.size(); i++) {
-			long structureId = ddmStructureIds.get(i);
+			long ddmStructureId = ddmStructureIds.get(i);
 
 			DDMStructure ddmStructure =
-				DDMStructureLocalServiceUtil.getDDMStructure(structureId);
+				DDMStructureLocalServiceUtil.getDDMStructure(ddmStructureId);
 
 			ddmStructureKeys[i] = ddmStructure.getStructureKey();
 		}

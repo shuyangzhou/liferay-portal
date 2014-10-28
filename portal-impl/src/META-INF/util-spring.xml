@@ -979,6 +979,28 @@
 	<bean id="com.liferay.portlet.dynamicdatamapping.render.DDMFormFieldRendererRegistryUtil" class="com.liferay.portlet.dynamicdatamapping.render.DDMFormFieldRendererRegistryUtil">
 		<property name="DDMFormFieldRendererRegistry" ref="com.liferay.portlet.dynamicdatamapping.render.DDMFormFieldRendererRegistryImpl" />
 	</bean>
+	<bean id="com.liferay.portlet.dynamicdatamapping.render.DDMFormFieldValueRendererRegistryImpl" class="com.liferay.portlet.dynamicdatamapping.render.DDMFormFieldValueRendererRegistryImpl">
+		<property name="defaultDDMFormFieldValueRenderers">
+			<list>
+				<bean class="com.liferay.portlet.dynamicdatamapping.render.CheckboxDDMFormFieldValueRenderer" />
+				<bean class="com.liferay.portlet.dynamicdatamapping.render.DateDDMFormFieldValueRenderer" />
+				<bean class="com.liferay.portlet.dynamicdatamapping.render.DecimalDDMFormFieldValueRenderer" />
+				<bean class="com.liferay.portlet.dynamicdatamapping.render.DocumentLibraryDDMFormFieldValueRenderer" />
+				<bean class="com.liferay.portlet.dynamicdatamapping.render.GeolocationDDMFormFieldValueRenderer" />
+				<bean class="com.liferay.portlet.dynamicdatamapping.render.IntegerDDMFormFieldValueRenderer" />
+				<bean class="com.liferay.portlet.dynamicdatamapping.render.LinkToPageDDMFormFieldValueRenderer" />
+				<bean class="com.liferay.portlet.dynamicdatamapping.render.NumberDDMFormFieldValueRenderer" />
+				<bean class="com.liferay.portlet.dynamicdatamapping.render.RadioDDMFormFieldValueRenderer" />
+				<bean class="com.liferay.portlet.dynamicdatamapping.render.SelectDDMFormFieldValueRenderer" />
+				<bean class="com.liferay.portlet.dynamicdatamapping.render.TextAreaDDMFormFieldValueRenderer" />
+				<bean class="com.liferay.portlet.dynamicdatamapping.render.TextDDMFormFieldValueRenderer" />
+				<bean class="com.liferay.portlet.dynamicdatamapping.render.TextHTMLDDMFormFieldValueRenderer" />
+			</list>
+		</property>
+	</bean>
+	<bean id="com.liferay.portlet.dynamicdatamapping.render.DDMFormFieldValueRendererRegistryUtil" class="com.liferay.portlet.dynamicdatamapping.render.DDMFormFieldValueRendererRegistryUtil">
+		<property name="DDMFormFieldValueRendererRegistry" ref="com.liferay.portlet.dynamicdatamapping.render.DDMFormFieldValueRendererRegistryImpl" />
+	</bean>
 	<bean id="com.liferay.portlet.dynamicdatamapping.render.DDMFormRendererUtil" class="com.liferay.portlet.dynamicdatamapping.render.DDMFormRendererUtil">
 		<property name="DDMFormRenderer">
 			<bean class="com.liferay.portlet.dynamicdatamapping.render.DDMFormRendererImpl" />
@@ -1092,13 +1114,13 @@
 	<bean id="com.liferay.portlet.journal.service.permission.JournalArticlePermission" class="com.liferay.portlet.journal.service.permission.JournalArticlePermission" />
 	<bean id="com.liferay.portlet.journal.service.permission.JournalFeedPermission" class="com.liferay.portlet.journal.service.permission.JournalFeedPermission" />
 	<bean id="com.liferay.portlet.journal.service.permission.JournalPermission" class="com.liferay.portlet.journal.service.permission.JournalPermission" />
+	<bean id="com.liferay.portlet.journal.util.JournalContent" class="com.liferay.portlet.journal.util.JournalContentImpl" />
+	<bean id="com.liferay.portlet.journal.util.JournalContentUtil" class="com.liferay.portlet.journal.util.JournalContentUtil">
+		<property name="journalContent" ref="com.liferay.portlet.journal.util.JournalContent" />
+	</bean>
 	<bean id="com.liferay.portlet.journal.util.JournalConverter" class="com.liferay.portlet.journal.util.JournalConverterImpl" />
 	<bean id="com.liferay.portlet.journal.util.JournalConverterUtil" class="com.liferay.portlet.journal.util.JournalConverterUtil">
 		<property name="journalConverter" ref="com.liferay.portlet.journal.util.JournalConverter" />
-	</bean>
-	<bean id="com.liferay.portlet.journalcontent.util.JournalContent" class="com.liferay.portlet.journalcontent.util.JournalContentImpl" />
-	<bean id="com.liferay.portlet.journalcontent.util.JournalContentUtil" class="com.liferay.portlet.journalcontent.util.JournalContentUtil">
-		<property name="journalContent" ref="com.liferay.portlet.journalcontent.util.JournalContent" />
 	</bean>
 	<bean id="com.liferay.portlet.layoutsadmin.util.SitemapUtil" class="com.liferay.portlet.layoutsadmin.util.SitemapUtil">
 		<property name="sitemap">

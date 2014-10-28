@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portlet.journalcontent.action;
+package com.liferay.portlet.journal.action;
 
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -36,7 +36,7 @@ import com.liferay.portal.util.WebKeys;
 import com.liferay.portlet.documentlibrary.util.DLUtil;
 import com.liferay.portlet.documentlibrary.util.DocumentConversionUtil;
 import com.liferay.portlet.journal.model.JournalArticleDisplay;
-import com.liferay.portlet.journalcontent.util.JournalContentUtil;
+import com.liferay.portlet.journal.util.JournalContentUtil;
 
 import java.io.File;
 import java.io.FileInputStream;

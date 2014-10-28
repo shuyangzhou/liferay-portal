@@ -18,7 +18,7 @@ import com.liferay.portal.kernel.cache.MultiVMPool;
 import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.security.pacl.DoPrivileged;
 import com.liferay.portal.servlet.filters.cache.CacheUtil;
-import com.liferay.portlet.journalcontent.util.JournalContentUtil;
+import com.liferay.portlet.journal.util.JournalContentUtil;
 
 /**
  * @author Brian Wing Shun Chan
