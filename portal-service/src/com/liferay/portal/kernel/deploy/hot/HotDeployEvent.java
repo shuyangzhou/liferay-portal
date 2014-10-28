@@ -159,7 +159,7 @@ public class HotDeployEvent {
 			"osgi-runtime-vendor");
 
 		if ((osgiBundleContext != null) && (osgiRuntimeVendor != null) &&
-			(osgiRuntimeVendor.equals(ReleaseInfo.getVendor()))) {
+			osgiRuntimeVendor.equals(ReleaseInfo.getVendor())) {
 
 			return true;
 		}

@@ -1044,7 +1044,7 @@
 		<priority value="ERROR" />
 	</category>
 
-	<category name="com.liferay.portlet.journalcontent.util.JournalContentUtil">
+	<category name="com.liferay.portlet.journal.util.JournalContentUtil">
 		<priority value="ERROR" />
 	</category>
 

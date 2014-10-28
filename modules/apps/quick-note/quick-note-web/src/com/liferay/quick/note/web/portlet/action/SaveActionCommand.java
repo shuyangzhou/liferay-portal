@@ -54,16 +54,14 @@ public class SaveActionCommand implements ActionCommand {
 		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		String portletId = ParamUtil.getString(portletRequest, "portletId");
-
 		try {
 			PortletPermissionUtil.check(
 				themeDisplay.getPermissionChecker(), themeDisplay.getLayout(),
-				portletId, ActionKeys.CONFIGURATION);
+				themeDisplay.getPpid(), ActionKeys.CONFIGURATION);
 
 			PortletPreferences portletPreferences =
 				PortletPreferencesFactoryUtil.getStrictPortletSetup(
-					themeDisplay.getLayout(), portletId);
+					themeDisplay.getLayout(), themeDisplay.getPpid());
 
 			if (portletPreferences instanceof StrictPortletPreferencesImpl) {
 				throw new PrincipalException();

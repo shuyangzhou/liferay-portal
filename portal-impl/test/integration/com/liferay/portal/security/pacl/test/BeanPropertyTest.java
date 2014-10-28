@@ -27,7 +27,7 @@ import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.test.listeners.PACLExecutionTestListener;
 import com.liferay.portal.test.runners.PACLIntegrationJUnitTestRunner;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.journalcontent.util.JournalContentUtil;
+import com.liferay.portlet.journal.util.JournalContentUtil;
 
 import org.junit.Assert;
 import org.junit.Test;

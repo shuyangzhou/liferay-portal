@@ -382,7 +382,7 @@
 	<cache
 		eternal="false"
 		maxElementsInMemory="10000"
-		name="com.liferay.portlet.journalcontent.util.JournalContent"
+		name="com.liferay.portlet.journal.util.JournalContent"
 		overflowToDisk="false"
 		timeToIdleSeconds="600"
 	>
