@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.portlet.PortletBag;
 import com.liferay.portal.kernel.portlet.PortletBagPool;
 import com.liferay.portal.kernel.servlet.DirectRequestDispatcherFactoryUtil;
 import com.liferay.portal.kernel.servlet.TrackedServletRequest;
+import com.liferay.portal.kernel.servlet.taglib.DynamicIncludeUtil;
 import com.liferay.portal.kernel.staging.StagingUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -81,7 +82,9 @@ public class IncludeTag extends AttributesTagSupport {
 				return processEndTag();
 			}
 
-			doInclude(page);
+			Class<?> clazz = getClass();
+
+			doInclude(page, clazz.getName() + "#doEndTag", false);
 
 			return EVAL_PAGE;
 		}
@@ -121,7 +124,9 @@ public class IncludeTag extends AttributesTagSupport {
 				return processStartTag();
 			}
 
-			doInclude(page);
+			Class<?> clazz = getClass();
+
+			doInclude(page, clazz.getName() + "#doStartTag", true);
 
 			return EVAL_BODY_INCLUDE;
 		}
@@ -188,8 +193,21 @@ public class IncludeTag extends AttributesTagSupport {
 		}
 	}
 
-	protected void doInclude(String page) throws JspException {
+	protected void doInclude(
+			String page, String dynamicIncludeKey,
+			boolean dynamicIncludeAscendingPriority)
+		throws JspException {
+
 		try {
+			HttpServletRequest request =
+				(HttpServletRequest)pageContext.getRequest();
+			HttpServletResponse response =
+				(HttpServletResponse)pageContext.getResponse();
+
+			DynamicIncludeUtil.include(
+				request, response, dynamicIncludeKey,
+				dynamicIncludeAscendingPriority);
+
 			include(page);
 		}
 		catch (Exception e) {

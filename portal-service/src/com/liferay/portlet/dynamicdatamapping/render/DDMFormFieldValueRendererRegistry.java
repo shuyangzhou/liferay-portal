@@ -12,20 +12,14 @@
  * details.
  */
 
-package com.liferay.kernel.servlet.taglib;
-
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+package com.liferay.portlet.dynamicdatamapping.render;
 
 /**
- * @author Carlos Sierra Andrés
+ * @author Marcellus Tavares
  */
-public interface DynamicInclude {
+public interface DDMFormFieldValueRendererRegistry {
 
-	public void include(
-			HttpServletRequest request, HttpServletResponse response)
-		throws IOException;
+	public DDMFormFieldValueRenderer getDDMFormFieldValueRenderer(
+		String ddmFormFieldType);
 
 }

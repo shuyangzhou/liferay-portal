@@ -65,6 +65,8 @@ public class Watcher implements Runnable {
 		_recursive = recursive;
 		_watchEventListener = watchEventListener;
 
+		_dataFilePath = filePath.resolve(".data");
+
 		FileSystem fileSystem = FileSystems.getDefault();
 
 		_watchService = fileSystem.newWatchService();
@@ -239,7 +241,9 @@ public class Watcher implements Runnable {
 							BasicFileAttributes basicFileAttributes)
 						throws IOException {
 
-						doRegister(filePath, false);
+						if (!filePath.equals(_dataFilePath)) {
+							doRegister(filePath, false);
+						}
 
 						return FileVisitResult.CONTINUE;
 					}
@@ -381,6 +385,7 @@ public class Watcher implements Runnable {
 	private static Logger _logger = LoggerFactory.getLogger(Watcher.class);
 
 	private List<String> _createdFilePathNames = new ArrayList<String>();
+	private Path _dataFilePath;
 	private List<String> _downloadedFilePathNames = new ArrayList<String>();
 	private BidirectionalMap<WatchKey, Path> _filePaths =
 		new BidirectionalMap<WatchKey, Path>();

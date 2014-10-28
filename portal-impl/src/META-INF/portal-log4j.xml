@@ -1028,6 +1028,10 @@
 		<priority value="INFO" />
 	</category>
 
+	<category name="com.liferay.portlet.journal.util.JournalContentUtil">
+		<priority value="ERROR" />
+	</category>
+
 	<category name="com.liferay.portlet.journal.util.JournalUtil">
 		<priority value="ERROR" />
 	</category>
@@ -1041,10 +1045,6 @@
 	</category>
 
 	<category name="com.liferay.portlet.journalcontent.JournalContentPortletLayoutListener">
-		<priority value="ERROR" />
-	</category>
-
-	<category name="com.liferay.portlet.journalcontent.util.JournalContentUtil">
 		<priority value="ERROR" />
 	</category>
 

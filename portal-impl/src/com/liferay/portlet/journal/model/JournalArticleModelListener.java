@@ -16,7 +16,7 @@ package com.liferay.portlet.journal.model;
 
 import com.liferay.portal.model.BaseModelListener;
 import com.liferay.portal.servlet.filters.cache.CacheUtil;
-import com.liferay.portlet.journalcontent.util.JournalContentUtil;
+import com.liferay.portlet.journal.util.JournalContentUtil;
 
 /**
  * @author Brian Wing Shun Chan

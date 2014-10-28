@@ -14,7 +14,7 @@
 
 package com.liferay.portal.struts;
 
-import com.liferay.kernel.servlet.taglib.DynamicInclude;
+import com.liferay.portal.kernel.servlet.taglib.BaseDynamicInclude;
 import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -32,11 +32,12 @@ import org.apache.struts.tiles.ComponentContext;
 @OSGiBeanProperties(
 	property = {"key=com.liferay.taglib.util.ThemeUtil#doIncludeJSP"}
 )
-public class DoIncludeJSPDynamicInclude implements DynamicInclude {
+public class DoIncludeJSPDynamicInclude extends BaseDynamicInclude {
 
 	@Override
 	public void include(
-		HttpServletRequest request, HttpServletResponse response) {
+		HttpServletRequest request, HttpServletResponse response, String key,
+		boolean ascendingPriority) {
 
 		ComponentContext componentContext =
 			(ComponentContext)request.getAttribute(

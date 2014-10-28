@@ -12,13 +12,15 @@
  * details.
  */
 
-package com.liferay.kernel.servlet.taglib;
+package com.liferay.portal.kernel.servlet.taglib;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.registry.collections.ServiceTrackerCollections;
 import com.liferay.registry.collections.ServiceTrackerMap;
 
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,18 +47,33 @@ public class DynamicIncludeUtil {
 	}
 
 	public static void include(
-		HttpServletRequest request, HttpServletResponse response, String key) {
+		HttpServletRequest request, HttpServletResponse response, String key,
+		boolean ascendingPriority) {
 
 		List<DynamicInclude> dynamicIncludes = getDynamicIncludes(key);
 
-		if ((dynamicIncludes != null) && !dynamicIncludes.isEmpty()) {
-			for (DynamicInclude dynamicInclude : dynamicIncludes) {
-				try {
-					dynamicInclude.include(request, response);
-				}
-				catch (Exception e) {
-					_log.error(e, e);
-				}
+		if ((dynamicIncludes == null) || dynamicIncludes.isEmpty()) {
+			return;
+		}
+
+		Iterator<DynamicInclude> iterator = null;
+
+		if (ascendingPriority) {
+			iterator = dynamicIncludes.iterator();
+		}
+		else {
+			iterator = ListUtil.reverseIterator(dynamicIncludes);
+		}
+
+		while (iterator.hasNext()) {
+			DynamicInclude dynamicInclude = iterator.next();
+
+			try {
+				dynamicInclude.include(
+					request, response, key, ascendingPriority);
+			}
+			catch (Exception e) {
+				_log.error(e, e);
 			}
 		}
 	}

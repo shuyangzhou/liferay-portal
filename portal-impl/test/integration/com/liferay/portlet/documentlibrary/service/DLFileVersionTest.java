@@ -81,9 +81,11 @@ public class DLFileVersionTest extends BaseDLAppTestCase {
 					group.getGroupId()));
 
 		for (DLFileEntryType dlFileEntryType : dlFileEntryTypes) {
-			String name = dlFileEntryType.getName(LocaleUtil.getSiteDefault());
+			String fileEntryTypeKey = dlFileEntryType.getFileEntryTypeKey();
 
-			if (name.equals(DLFileEntryTypeConstants.NAME_CONTRACT)) {
+			if (fileEntryTypeKey.equals(
+					DLFileEntryTypeConstants.FILE_ENTRY_TYPE_KEY_CONTRACT)) {
+
 				_contractDLFileEntryTypeId =
 					dlFileEntryType.getFileEntryTypeId();
 			}

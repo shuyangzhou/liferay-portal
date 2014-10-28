@@ -88,13 +88,16 @@ public class DLFileEntryTypeServiceTest {
 			PortalUtil.getCurrentAndAncestorSiteGroupIds(_group.getGroupId()));
 
 		for (DLFileEntryType dlFileEntryType : _dlFileEntryTypes) {
-			String name = dlFileEntryType.getName(LocaleUtil.getSiteDefault());
+			String fileEntryTypeKey = dlFileEntryType.getFileEntryTypeKey();
 
-			if (name.equals(DLFileEntryTypeConstants.NAME_CONTRACT)) {
+			if (fileEntryTypeKey.equals(
+					DLFileEntryTypeConstants.FILE_ENTRY_TYPE_KEY_CONTRACT)) {
+
 				_contractDLFileEntryType = dlFileEntryType;
 			}
-			else if (name.equals(
-						DLFileEntryTypeConstants.NAME_MARKETING_BANNER)) {
+			else if (fileEntryTypeKey.equals(
+						DLFileEntryTypeConstants.
+							FILE_ENTRY_TYPE_KEY_MARKETING_BANNER)) {
 
 				_marketingBannerDLFileEntryType = dlFileEntryType;
 			}
