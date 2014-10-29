@@ -701,6 +701,7 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 			List<String> finalableFieldTypesExclusions,
 			List<String> javaTermAccessLevelModifierExclusions,
 			List<String> javaTermSortExclusions,
+			List<String> staticableFieldTypesExclusions,
 			List<String> testAnnotationsExclusions)
 		throws Exception {
 
@@ -712,7 +713,7 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		String newJavaClassContent = javaClass.formatJavaTerms(
 			getAnnotationsExclusions(), getImmutableFieldTypes(),
 			finalableFieldTypesExclusions, javaTermSortExclusions,
-			testAnnotationsExclusions);
+			staticableFieldTypesExclusions, testAnnotationsExclusions);
 
 		if (!javaClassContent.equals(newJavaClassContent)) {
 			return StringUtil.replaceFirst(

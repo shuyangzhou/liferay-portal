@@ -59,6 +59,7 @@ public class JavaClass {
 			Set<String> annotationsExclusions, Set<String> immutableFieldTypes,
 			List<String> finalableFieldTypesExclusions,
 			List<String> javaTermSortExclusions,
+			List<String> staticableFiledTypesExclusions,
 			List<String> testAnnotationsExclusions)
 		throws Exception {
 
@@ -77,7 +78,7 @@ public class JavaClass {
 
 			checkJavaFieldType(
 				javaTerm, annotationsExclusions, immutableFieldTypes,
-				finalableFieldTypesExclusions);
+				finalableFieldTypesExclusions, staticableFiledTypesExclusions);
 
 			if (!originalContent.equals(_content)) {
 				return _content;
@@ -100,7 +101,7 @@ public class JavaClass {
 			String newInnerClassContent = innerClass.formatJavaTerms(
 				annotationsExclusions, immutableFieldTypes,
 				finalableFieldTypesExclusions, javaTermSortExclusions,
-				testAnnotationsExclusions);
+				staticableFiledTypesExclusions, testAnnotationsExclusions);
 
 			if (!innerClassContent.equals(newInnerClassContent)) {
 				_content = StringUtil.replace(
@@ -269,7 +270,8 @@ public class JavaClass {
 	protected void checkJavaFieldType(
 			JavaTerm javaTerm, Set<String> annotationsExclusions,
 			Set<String> immutableFieldTypes,
-			List<String> finalableFieldTypesExclusions)
+			List<String> finalableFieldTypesExclusions,
+			List<String> staticableFieldTypesExclusions)
 		throws Exception {
 
 		if (!BaseSourceProcessor.portalSource || !javaTerm.isVariable()) {
@@ -304,7 +306,8 @@ public class JavaClass {
 					checkImmutableFieldType(javaTerm);
 				}
 				else {
-					checkStaticableFieldType(javaTerm);
+					checkStaticableFieldType(
+						javaTerm, staticableFieldTypesExclusions);
 				}
 			}
 		}
@@ -355,8 +358,16 @@ public class JavaClass {
 		}
 	}
 
-	protected void checkStaticableFieldType(JavaTerm javaTerm) {
+	protected void checkStaticableFieldType(
+		JavaTerm javaTerm, List<String> staticableFieldTypesExclusions) {
 		String javaTermContent = javaTerm.getContent();
+
+		if (BaseSourceProcessor.isExcluded(
+				staticableFieldTypesExclusions, _absolutePath,
+				javaTerm.getLineCount())) {
+
+			return;
+		}
 
 		if (!javaTermContent.contains(StringPool.EQUAL)) {
 			return;
