@@ -932,7 +932,7 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 				className, fileName, absolutePath, newContent, javaClassContent,
 				javaClassLineCount, _finalableFieldTypesExclusions,
 				_javaTermAccessLevelModifierExclusions, _javaTermSortExclusions,
-				_testAnnotationsExclusions);
+				_staticableFieldTypesExclusions, _testAnnotationsExclusions);
 		}
 
 		newContent = formatJava(fileName, absolutePath, newContent);
@@ -1125,6 +1125,8 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 			"secure.random.excludes.files");
 		_staticLogVariableExclusions = getPropertyList(
 			"static.log.excludes.files");
+		_staticableFieldTypesExclusions = getPropertyList(
+			"staticable.field.types.excludes.files");
 		_testAnnotationsExclusions = getPropertyList(
 			"test.annotations.excludes.files");
 		_upgradeServiceUtilExclusions = getPropertyList(
@@ -2709,6 +2711,7 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 	private Pattern _stagedModelTypesPattern = Pattern.compile(
 		"StagedModelType\\(([a-zA-Z.]*(class|getClassName[\\(\\)]*))\\)");
 	private List<String> _staticLogVariableExclusions;
+	private List<String> _staticableFieldTypesExclusions;
 	private List<String> _testAnnotationsExclusions;
 	private Pattern _throwsSystemExceptionPattern = Pattern.compile(
 		"(\n\t+.*)throws(.*) SystemException(.*)( \\{|;\n)");
