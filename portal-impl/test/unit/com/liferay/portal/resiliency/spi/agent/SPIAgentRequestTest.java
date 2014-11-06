@@ -20,7 +20,9 @@ import com.liferay.portal.kernel.cache.MultiVMPoolUtil;
 import com.liferay.portal.kernel.process.local.LocalProcessLauncher;
 import com.liferay.portal.kernel.resiliency.spi.MockSPI;
 import com.liferay.portal.kernel.resiliency.spi.SPI;
+import com.liferay.portal.kernel.test.CaptureHandler;
 import com.liferay.portal.kernel.test.CodeCoverageAssertor;
+import com.liferay.portal.kernel.test.JDKLoggerTestUtil;
 import com.liferay.portal.kernel.test.NewClassLoaderJUnitTestRunner;
 import com.liferay.portal.kernel.upload.FileItem;
 import com.liferay.portal.kernel.util.ContentTypes;
@@ -56,6 +58,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentMap;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
 
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.Cookie;
@@ -81,6 +85,14 @@ public class SPIAgentRequestTest {
 	@ClassRule
 	public static CodeCoverageAssertor codeCoverageAssertor =
 		new CodeCoverageAssertor();
+
+	public void assertMessageStartWith(
+		LogRecord logRecord, String messagePrefix) {
+
+		String message = logRecord.getMessage();
+
+		Assert.assertTrue(message.startsWith(messagePrefix));
+	}
 
 	@Before
 	public void setUp() throws Exception {
@@ -210,198 +222,250 @@ public class SPIAgentRequestTest {
 
 	@Test
 	public void testContentTypeIsMultipart() throws IOException {
-
-		// Upload servlet request with null data
-
-		_mockHttpServletRequest.setContentType(
-			ContentTypes.MULTIPART_FORM_DATA);
-
-		SPIAgentRequest spiAgentRequest = new SPIAgentRequest(
-			new UploadServletRequestImpl(_mockHttpServletRequest, null, null));
-
-		HttpServletRequest populateHttpServletRequest =
-			spiAgentRequest.populateRequest(new MockHttpServletRequest());
-
-		Assert.assertSame(
-			AgentHttpServletRequestWrapper.class,
-			populateHttpServletRequest.getClass());
-		Assert.assertEquals(-1, populateHttpServletRequest.getContentLength());
-		Assert.assertNull(populateHttpServletRequest.getContentType());
-		Assert.assertNull(populateHttpServletRequest.getInputStream());
-
-		// Upload servlet request with empty data
-
-		spiAgentRequest = new SPIAgentRequest(
-			new UploadServletRequestImpl(
-				_mockHttpServletRequest, new HashMap<String, FileItem[]>(),
-				new HashMap<String, List<String>>()));
-
-		populateHttpServletRequest = spiAgentRequest.populateRequest(
-			new MockHttpServletRequest());
-
-		Assert.assertSame(
-			AgentHttpServletRequestWrapper.class,
-			populateHttpServletRequest.getClass());
-		Assert.assertEquals(-1, populateHttpServletRequest.getContentLength());
-		Assert.assertNull(populateHttpServletRequest.getContentType());
-		Assert.assertNull(populateHttpServletRequest.getInputStream());
-
-		// Upload servlet request with multipart data
-
-		Map<String, FileItem[]> fileParameters =
-			new HashMap<String, FileItem[]>();
-
-		String fileParameter = "fileParameter";
-
-		FileItem[] fileItems = new FileItem[0];
-
-		fileParameters.put(fileParameter, fileItems);
-
-		spiAgentRequest = new SPIAgentRequest(
-			new UploadServletRequestImpl(
-				_mockHttpServletRequest, fileParameters,
-				new HashMap<String, List<String>>()));
-
-		populateHttpServletRequest = spiAgentRequest.populateRequest(
-			new MockHttpServletRequest());
-
-		Assert.assertSame(
-			UploadServletRequestImpl.class,
-			populateHttpServletRequest.getClass());
-
-		UploadServletRequestImpl uploadServletRequestImpl =
-			(UploadServletRequestImpl)populateHttpServletRequest;
-
-		Map<String, FileItem[]> populatedFileParameters =
-			uploadServletRequestImpl.getMultipartParameterMap();
-		Map<String, List<String>> populatedRegularParameters =
-			uploadServletRequestImpl.getRegularParameterMap();
-
-		Assert.assertEquals(1, populatedFileParameters.size());
-		Assert.assertSame(
-			fileItems, populatedFileParameters.get(fileParameter));
-		Assert.assertTrue(populatedRegularParameters.isEmpty());
-		Assert.assertEquals(-1, populateHttpServletRequest.getContentLength());
-		Assert.assertNull(populateHttpServletRequest.getContentType());
-		Assert.assertNull(populateHttpServletRequest.getInputStream());
-
-		// Upload servlet request with multipart and regular data
-
-		Map<String, List<String>> regularParameters =
-			new HashMap<String, List<String>>();
-
-		String regularParameter = "regularParameter";
-
-		List<String> parameters = new ArrayList<String>();
-
-		regularParameters.put(regularParameter, parameters);
-
-		spiAgentRequest = new SPIAgentRequest(
-			new UploadServletRequestImpl(
-				_mockHttpServletRequest, fileParameters, regularParameters));
-
-		populateHttpServletRequest = spiAgentRequest.populateRequest(
-			new MockHttpServletRequest());
-
-		Assert.assertSame(
-			UploadServletRequestImpl.class,
-			populateHttpServletRequest.getClass());
-
-		uploadServletRequestImpl =
-			(UploadServletRequestImpl)populateHttpServletRequest;
-
-		populatedFileParameters =
-			uploadServletRequestImpl.getMultipartParameterMap();
-		populatedRegularParameters =
-			uploadServletRequestImpl.getRegularParameterMap();
-
-		Assert.assertEquals(1, populatedFileParameters.size());
-		Assert.assertSame(
-			fileItems, populatedFileParameters.get(fileParameter));
-		Assert.assertEquals(1, populatedRegularParameters.size());
-		Assert.assertSame(
-			parameters, populatedRegularParameters.get(regularParameter));
-		Assert.assertEquals(-1, populateHttpServletRequest.getContentLength());
-		Assert.assertNull(populateHttpServletRequest.getContentType());
-		Assert.assertNull(populateHttpServletRequest.getInputStream());
-
-		// Upload servlet request with regular data
-
-		spiAgentRequest = new SPIAgentRequest(
-			new UploadServletRequestImpl(
-				_mockHttpServletRequest, new HashMap<String, FileItem[]>(),
-				regularParameters));
-
-		populateHttpServletRequest = spiAgentRequest.populateRequest(
-			new MockHttpServletRequest());
-
-		Assert.assertSame(
-			UploadServletRequestImpl.class,
-			populateHttpServletRequest.getClass());
-
-		uploadServletRequestImpl =
-			(UploadServletRequestImpl)populateHttpServletRequest;
-
-		populatedFileParameters =
-			uploadServletRequestImpl.getMultipartParameterMap();
-		populatedRegularParameters =
-			uploadServletRequestImpl.getRegularParameterMap();
-
-		Assert.assertTrue(populatedFileParameters.isEmpty());
-		Assert.assertEquals(1, populatedRegularParameters.size());
-		Assert.assertSame(
-			parameters, populatedRegularParameters.get(regularParameter));
-		Assert.assertEquals(-1, populateHttpServletRequest.getContentLength());
-		Assert.assertNull(populateHttpServletRequest.getContentType());
-		Assert.assertNull(populateHttpServletRequest.getInputStream());
-
-		// Not an upload servlet request
-
-		byte[] content = new byte[1024];
-
-		Random random = new Random();
-
-		random.nextBytes(content);
-
-		_mockHttpServletRequest.setContent(content);
-
-		spiAgentRequest = new SPIAgentRequest(
-			new HttpServletRequestWrapper(_mockHttpServletRequest));
-
-		Assert.assertEquals(
-			ContentTypes.MULTIPART_FORM_DATA, spiAgentRequest.contentType);
-		Assert.assertNotNull(spiAgentRequest.requestBodyFile);
-		Assert.assertArrayEquals(
-			content, FileUtil.getBytes(spiAgentRequest.requestBodyFile));
-
-		populateHttpServletRequest = spiAgentRequest.populateRequest(
-			new MockHttpServletRequest());
-
-		Assert.assertEquals(
-			content.length, populateHttpServletRequest.getContentLength());
-		Assert.assertEquals(
-			ContentTypes.MULTIPART_FORM_DATA,
-			populateHttpServletRequest.getContentType());
-
-		ServletInputStream servletInputStream =
-			populateHttpServletRequest.getInputStream();
-
-		Assert.assertNotNull(servletInputStream);
-		Assert.assertArrayEquals(
-			content, FileUtil.getBytes(servletInputStream));
-
-		// Not an upload servlet request, unable to read
-
-		_mockHttpServletRequest.setContent(null);
+		CaptureHandler captureHandler = JDKLoggerTestUtil.configureJDKLogger(
+			SPIAgentSerializable.class.getName(), Level.WARNING);
 
 		try {
-			new SPIAgentRequest(
+
+			// Upload servlet request with null data
+
+			_mockHttpServletRequest.setContentType(
+				ContentTypes.MULTIPART_FORM_DATA);
+
+			SPIAgentRequest spiAgentRequest =
+				new SPIAgentRequest(
+					new UploadServletRequestImpl(
+						_mockHttpServletRequest, null, null));
+
+			List<LogRecord> logRecords = captureHandler.getLogRecords();
+
+			Assert.assertEquals(1, logRecords.size());
+			assertMessageStartWith(
+				logRecords.get(0),"Nonserializable session attribute name");
+
+			logRecords = captureHandler.resetLogLevel(Level.WARNING);
+
+			HttpServletRequest populateHttpServletRequest =
+				spiAgentRequest.populateRequest(new MockHttpServletRequest());
+
+			Assert.assertSame(
+				AgentHttpServletRequestWrapper.class,
+				populateHttpServletRequest.getClass());
+			Assert.assertEquals(
+				-1, populateHttpServletRequest.getContentLength());
+			Assert.assertNull(populateHttpServletRequest.getContentType());
+			Assert.assertNull(populateHttpServletRequest.getInputStream());
+
+			// Upload servlet request with empty data
+
+			spiAgentRequest = new SPIAgentRequest(
+				new UploadServletRequestImpl(
+					_mockHttpServletRequest, new HashMap<String, FileItem[]>(),
+					new HashMap<String, List<String>>()));
+
+			Assert.assertEquals(1, logRecords.size());
+			assertMessageStartWith(
+				logRecords.get(0), "Nonserializable session attribute name");
+
+			logRecords = captureHandler.resetLogLevel(Level.WARNING);
+
+			populateHttpServletRequest = spiAgentRequest.populateRequest(
+				new MockHttpServletRequest());
+
+			Assert.assertSame(
+				AgentHttpServletRequestWrapper.class,
+				populateHttpServletRequest.getClass());
+			Assert.assertEquals(
+				-1, populateHttpServletRequest.getContentLength());
+			Assert.assertNull(populateHttpServletRequest.getContentType());
+			Assert.assertNull(populateHttpServletRequest.getInputStream());
+
+			// Upload servlet request with multipart data
+
+			Map<String, FileItem[]> fileParameters =
+				new HashMap<String, FileItem[]>();
+
+			String fileParameter = "fileParameter";
+
+			FileItem[] fileItems = new FileItem[0];
+
+			fileParameters.put(fileParameter, fileItems);
+
+			spiAgentRequest = new SPIAgentRequest(
+				new UploadServletRequestImpl(
+					_mockHttpServletRequest, fileParameters,
+					new HashMap<String, List<String>>()));
+
+			Assert.assertEquals(1, logRecords.size());
+			assertMessageStartWith(
+				logRecords.get(0), "Nonserializable session attribute name");
+
+			logRecords = captureHandler.resetLogLevel(Level.WARNING);
+
+			populateHttpServletRequest = spiAgentRequest.populateRequest(
+				new MockHttpServletRequest());
+
+			Assert.assertSame(
+				UploadServletRequestImpl.class,
+				populateHttpServletRequest.getClass());
+
+			UploadServletRequestImpl uploadServletRequestImpl =
+				(UploadServletRequestImpl)populateHttpServletRequest;
+
+			Map<String, FileItem[]> populatedFileParameters =
+				uploadServletRequestImpl.getMultipartParameterMap();
+			Map<String, List<String>> populatedRegularParameters =
+				uploadServletRequestImpl.getRegularParameterMap();
+
+			Assert.assertEquals(1, populatedFileParameters.size());
+			Assert.assertSame(
+				fileItems, populatedFileParameters.get(fileParameter));
+			Assert.assertTrue(populatedRegularParameters.isEmpty());
+			Assert.assertEquals(
+				-1, populateHttpServletRequest.getContentLength());
+			Assert.assertNull(populateHttpServletRequest.getContentType());
+			Assert.assertNull(populateHttpServletRequest.getInputStream());
+
+			// Upload servlet request with multipart and regular data
+
+			Map<String, List<String>> regularParameters =
+				new HashMap<String, List<String>>();
+
+			String regularParameter = "regularParameter";
+
+			List<String> parameters = new ArrayList<String>();
+
+			regularParameters.put(regularParameter, parameters);
+
+			spiAgentRequest = new SPIAgentRequest(
+				new UploadServletRequestImpl(
+					_mockHttpServletRequest, fileParameters,
+					regularParameters));
+
+			Assert.assertEquals(1, logRecords.size());
+			assertMessageStartWith(
+				logRecords.get(0), "Nonserializable session attribute name");
+
+			logRecords = captureHandler.resetLogLevel(Level.WARNING);
+
+			populateHttpServletRequest = spiAgentRequest.populateRequest(
+				new MockHttpServletRequest());
+
+			Assert.assertSame(
+				UploadServletRequestImpl.class,
+				populateHttpServletRequest.getClass());
+
+			uploadServletRequestImpl =
+				(UploadServletRequestImpl)populateHttpServletRequest;
+
+			populatedFileParameters =
+				uploadServletRequestImpl.getMultipartParameterMap();
+			populatedRegularParameters =
+				uploadServletRequestImpl.getRegularParameterMap();
+
+			Assert.assertEquals(1, populatedFileParameters.size());
+			Assert.assertSame(
+				fileItems, populatedFileParameters.get(fileParameter));
+			Assert.assertEquals(1, populatedRegularParameters.size());
+			Assert.assertSame(
+				parameters, populatedRegularParameters.get(regularParameter));
+			Assert.assertEquals(
+				-1, populateHttpServletRequest.getContentLength());
+			Assert.assertNull(populateHttpServletRequest.getContentType());
+			Assert.assertNull(populateHttpServletRequest.getInputStream());
+
+			// Upload servlet request with regular data
+
+			spiAgentRequest = new SPIAgentRequest(
+				new UploadServletRequestImpl(
+					_mockHttpServletRequest, new HashMap<String, FileItem[]>(),
+					regularParameters));
+
+			Assert.assertEquals(1, logRecords.size());
+			assertMessageStartWith(
+				logRecords.get(0), "Nonserializable session attribute name");
+
+			logRecords = captureHandler.resetLogLevel(Level.WARNING);
+
+			populateHttpServletRequest = spiAgentRequest.populateRequest(
+				new MockHttpServletRequest());
+
+			Assert.assertSame(
+				UploadServletRequestImpl.class,
+				populateHttpServletRequest.getClass());
+
+			uploadServletRequestImpl =
+				(UploadServletRequestImpl)populateHttpServletRequest;
+
+			populatedFileParameters =
+				uploadServletRequestImpl.getMultipartParameterMap();
+			populatedRegularParameters =
+				uploadServletRequestImpl.getRegularParameterMap();
+
+			Assert.assertTrue(populatedFileParameters.isEmpty());
+			Assert.assertEquals(1, populatedRegularParameters.size());
+			Assert.assertSame(
+				parameters, populatedRegularParameters.get(regularParameter));
+			Assert.assertEquals(
+				-1, populateHttpServletRequest.getContentLength());
+			Assert.assertNull(populateHttpServletRequest.getContentType());
+			Assert.assertNull(populateHttpServletRequest.getInputStream());
+
+			// Not an upload servlet request
+
+			byte[] content = new byte[1024];
+
+			Random random = new Random();
+
+			random.nextBytes(content);
+
+			_mockHttpServletRequest.setContent(content);
+
+			spiAgentRequest = new SPIAgentRequest(
 				new HttpServletRequestWrapper(_mockHttpServletRequest));
 
-			Assert.fail();
+			Assert.assertEquals(1, logRecords.size());
+			assertMessageStartWith(
+				logRecords.get(0), "Nonserializable session attribute name");
+
+			Assert.assertEquals(
+				ContentTypes.MULTIPART_FORM_DATA, spiAgentRequest.contentType);
+			Assert.assertNotNull(spiAgentRequest.requestBodyFile);
+			Assert.assertArrayEquals(
+				content, FileUtil.getBytes(spiAgentRequest.requestBodyFile));
+
+			populateHttpServletRequest = spiAgentRequest.populateRequest(
+				new MockHttpServletRequest());
+
+			Assert.assertEquals(
+				content.length, populateHttpServletRequest.getContentLength());
+			Assert.assertEquals(
+				ContentTypes.MULTIPART_FORM_DATA,
+				populateHttpServletRequest.getContentType());
+
+			ServletInputStream servletInputStream =
+				populateHttpServletRequest.getInputStream();
+
+			Assert.assertNotNull(servletInputStream);
+			Assert.assertArrayEquals(
+				content, FileUtil.getBytes(servletInputStream));
+
+			// Not an upload servlet request, unable to read
+
+			_mockHttpServletRequest.setContent(null);
+
+			try {
+				new SPIAgentRequest(
+					new HttpServletRequestWrapper(_mockHttpServletRequest));
+
+				Assert.fail();
+			}
+			catch (IllegalArgumentException iae) {
+				Assert.assertEquals("Input stream is null", iae.getMessage());
+			}
 		}
-		catch (IllegalArgumentException iae) {
-			Assert.assertEquals("Input stream is null", iae.getMessage());
+		finally {
+			captureHandler.close();
 		}
 	}
 
@@ -428,282 +492,324 @@ public class SPIAgentRequestTest {
 
 			};
 
-		new SPIAgentRequest(uploadServletRequestImpl);
+		CaptureHandler captureHandler = JDKLoggerTestUtil.configureJDKLogger(
+					SPIAgentSerializable.class.getName(), Level.WARNING);
+
+		try {
+			new SPIAgentRequest(uploadServletRequestImpl);
+
+			List<LogRecord> logRecords = captureHandler.getLogRecords();
+
+			Assert.assertEquals(1, logRecords.size());
+			assertMessageStartWith(
+				logRecords.get(0), "Nonserializable session attribute name");
+		}
+		finally {
+			captureHandler.close();
+		}
 	}
 
 	@Test
 	public void testContentTypeIsNull() throws Exception {
+		CaptureHandler captureHandler = JDKLoggerTestUtil.configureJDKLogger(
+			SPIAgentSerializable.class.getName(), Level.WARNING);
 
-		// Captured session attributes
+		try {
 
-		String threadLocalValue = "threadLocalValue";
+			// Captured session attributes
 
-		_threadLocal.set(threadLocalValue);
+			String threadLocalValue = "threadLocalValue";
 
-		SPIAgentRequest spiAgentRequest = new SPIAgentRequest(
-			_mockHttpServletRequest);
+			_threadLocal.set(threadLocalValue);
 
-		_threadLocal.remove();
+			SPIAgentRequest spiAgentRequest = new SPIAgentRequest(
+				_mockHttpServletRequest);
 
-		Map<String, Serializable> originalSessionAttributes =
-			spiAgentRequest.getOriginalSessionAttributes();
+			List<LogRecord> logRecords = captureHandler.getLogRecords();
 
-		Assert.assertEquals(2, originalSessionAttributes.size());
-		Assert.assertEquals(
-			_SESSION_ATTRIBUTE_VALUE_1,
-			originalSessionAttributes.get(_SESSION_ATTRIBUTE_NAME_1));
-		Assert.assertEquals(
-			_SESSION_ATTRIBUTE_VALUE_2,
-			originalSessionAttributes.get(_SESSION_ATTRIBUTE_NAME_2));
+			Assert.assertEquals(1, logRecords.size());
+			assertMessageStartWith(
+				logRecords.get(0), "Nonserializable session attribute name");
 
-		// Cookies
+			logRecords = captureHandler.resetLogLevel(Level.WARNING);
 
-		HttpServletRequest populatedHttpServletRequest =
-			spiAgentRequest.populateRequest(new MockHttpServletRequest());
+			_threadLocal.remove();
 
-		Assert.assertNull(populatedHttpServletRequest.getCookies());
+			Map<String, Serializable> originalSessionAttributes =
+				spiAgentRequest.getOriginalSessionAttributes();
 
-		_mockHttpServletRequest.setCookies(_cookie1, _cookie2);
+			Assert.assertEquals(2, originalSessionAttributes.size());
+			Assert.assertEquals(
+				_SESSION_ATTRIBUTE_VALUE_1,
+				originalSessionAttributes.get(_SESSION_ATTRIBUTE_NAME_1));
+			Assert.assertEquals(
+				_SESSION_ATTRIBUTE_VALUE_2,
+				originalSessionAttributes.get(_SESSION_ATTRIBUTE_NAME_2));
 
-		spiAgentRequest = new SPIAgentRequest(_mockHttpServletRequest);
+			// Cookies
 
-		populatedHttpServletRequest = spiAgentRequest.populateRequest(
-			new MockHttpServletRequest());
+			HttpServletRequest populatedHttpServletRequest =
+				spiAgentRequest.populateRequest(new MockHttpServletRequest());
 
-		Cookie[] cookies = populatedHttpServletRequest.getCookies();
+			Assert.assertNull(populatedHttpServletRequest.getCookies());
 
-		Assert.assertEquals(2, cookies.length);
-		Assert.assertTrue(CookieUtil.equals(_cookie1, cookies[0]));
-		Assert.assertTrue(CookieUtil.equals(_cookie2, cookies[1]));
+			_mockHttpServletRequest.setCookies(_cookie1, _cookie2);
 
-		// Headers
+			spiAgentRequest = new SPIAgentRequest(_mockHttpServletRequest);
 
-		Assert.assertEquals(
-			_HEADER_VALUE_1,
-			populatedHttpServletRequest.getHeader(_HEADER_NAME_1));
-		Assert.assertEquals(
-			_HEADER_VALUE_3,
-			populatedHttpServletRequest.getHeader(_HEADER_NAME_2));
-		Assert.assertNull(
-			populatedHttpServletRequest.getHeader(_HEADER_NAME_3));
-		Assert.assertNull(
-			populatedHttpServletRequest.getHeader(_HEADER_NAME_4));
+			Assert.assertEquals(1, logRecords.size());
+			assertMessageStartWith(
+				logRecords.get(0), "Nonserializable session attribute name");
 
-		List<String> headerNames = ListUtil.fromEnumeration(
-			populatedHttpServletRequest.getHeaderNames());
+			logRecords = captureHandler.resetLogLevel(Level.WARNING);
 
-		Assert.assertEquals(3, headerNames.size());
-		Assert.assertTrue(
-			headerNames.contains(StringUtil.toLowerCase(_HEADER_NAME_1)));
-		Assert.assertTrue(
-			headerNames.contains(StringUtil.toLowerCase(_HEADER_NAME_2)));
-		Assert.assertTrue(
-			headerNames.contains(StringUtil.toLowerCase(_HEADER_NAME_3)));
+			populatedHttpServletRequest = spiAgentRequest.populateRequest(
+				new MockHttpServletRequest());
 
-		List<String> headers = ListUtil.fromEnumeration(
-			populatedHttpServletRequest.getHeaders(_HEADER_NAME_1));
+			Cookie[] cookies = populatedHttpServletRequest.getCookies();
 
-		Assert.assertEquals(2, headers.size());
-		Assert.assertEquals(_HEADER_VALUE_1, headers.get(0));
-		Assert.assertEquals(_HEADER_VALUE_2, headers.get(1));
+			Assert.assertEquals(2, cookies.length);
+			Assert.assertTrue(CookieUtil.equals(_cookie1, cookies[0]));
+			Assert.assertTrue(CookieUtil.equals(_cookie2, cookies[1]));
 
-		headers = ListUtil.fromEnumeration(
-			populatedHttpServletRequest.getHeaders(_HEADER_NAME_2));
+			// Headers
 
-		Assert.assertEquals(2, headers.size());
-		Assert.assertEquals(_HEADER_VALUE_3, headers.get(0));
-		Assert.assertEquals(_HEADER_VALUE_4, headers.get(1));
+			Assert.assertEquals(
+				_HEADER_VALUE_1,
+				populatedHttpServletRequest.getHeader(_HEADER_NAME_1));
+			Assert.assertEquals(
+				_HEADER_VALUE_3,
+				populatedHttpServletRequest.getHeader(_HEADER_NAME_2));
+			Assert.assertNull(
+				populatedHttpServletRequest.getHeader(_HEADER_NAME_3));
+			Assert.assertNull(
+				populatedHttpServletRequest.getHeader(_HEADER_NAME_4));
 
-		headers = ListUtil.fromEnumeration(
-			populatedHttpServletRequest.getHeaders(_HEADER_NAME_3));
+			List<String> headerNames = ListUtil.fromEnumeration(
+				populatedHttpServletRequest.getHeaderNames());
 
-		Assert.assertTrue(headers.isEmpty());
+			Assert.assertEquals(3, headerNames.size());
+			Assert.assertTrue(
+				headerNames.contains(StringUtil.toLowerCase(_HEADER_NAME_1)));
+			Assert.assertTrue(
+				headerNames.contains(StringUtil.toLowerCase(_HEADER_NAME_2)));
+			Assert.assertTrue(
+				headerNames.contains(StringUtil.toLowerCase(_HEADER_NAME_3)));
 
-		headers = ListUtil.fromEnumeration(
-			populatedHttpServletRequest.getHeaders(_HEADER_NAME_4));
+			List<String> headers = ListUtil.fromEnumeration(
+				populatedHttpServletRequest.getHeaders(_HEADER_NAME_1));
 
-		Assert.assertTrue(headers.isEmpty());
+			Assert.assertEquals(2, headers.size());
+			Assert.assertEquals(_HEADER_VALUE_1, headers.get(0));
+			Assert.assertEquals(_HEADER_VALUE_2, headers.get(1));
 
-		// Parameters
+			headers = ListUtil.fromEnumeration(
+				populatedHttpServletRequest.getHeaders(_HEADER_NAME_2));
 
-		Map<String, String[]> parameterMap =
-			populatedHttpServletRequest.getParameterMap();
+			Assert.assertEquals(2, headers.size());
+			Assert.assertEquals(_HEADER_VALUE_3, headers.get(0));
+			Assert.assertEquals(_HEADER_VALUE_4, headers.get(1));
 
-		Assert.assertEquals(3, parameterMap.size());
+			headers = ListUtil.fromEnumeration(
+				populatedHttpServletRequest.getHeaders(_HEADER_NAME_3));
 
-		String[] parameter1 = parameterMap.get(_PARAMETER_NAME_1);
+			Assert.assertTrue(headers.isEmpty());
 
-		Assert.assertEquals(2, parameter1.length);
-		Assert.assertEquals(_PARAMETER_VALUE_1, parameter1[0]);
-		Assert.assertEquals(_PARAMETER_VALUE_2, parameter1[1]);
+			headers = ListUtil.fromEnumeration(
+				populatedHttpServletRequest.getHeaders(_HEADER_NAME_4));
 
-		String[] parameter2 = parameterMap.get(_PARAMETER_NAME_2);
+			Assert.assertTrue(headers.isEmpty());
 
-		Assert.assertEquals(2, parameter2.length);
-		Assert.assertEquals(_PARAMETER_VALUE_3, parameter2[0]);
-		Assert.assertEquals(_PARAMETER_VALUE_4, parameter2[1]);
+			// Parameters
 
-		String[] parameter3 = parameterMap.get(_PARAMETER_NAME_3);
+			Map<String, String[]> parameterMap =
+				populatedHttpServletRequest.getParameterMap();
 
-		Assert.assertEquals(0, parameter3.length);
-		Assert.assertEquals(
-			_PARAMETER_VALUE_1,
-			populatedHttpServletRequest.getParameter(_PARAMETER_NAME_1));
-		Assert.assertEquals(
-			_PARAMETER_VALUE_3,
-			populatedHttpServletRequest.getParameter(_PARAMETER_NAME_2));
-		Assert.assertNull(
-			populatedHttpServletRequest.getParameter(_PARAMETER_NAME_3));
-		Assert.assertNull(
-			populatedHttpServletRequest.getParameter(_PARAMETER_NAME_4));
+			Assert.assertEquals(3, parameterMap.size());
 
-		List<String> parameterNames = ListUtil.fromEnumeration(
-			populatedHttpServletRequest.getParameterNames());
+			String[] parameter1 = parameterMap.get(_PARAMETER_NAME_1);
 
-		Assert.assertEquals(3, parameterNames.size());
-		Assert.assertTrue(parameterNames.contains(_PARAMETER_NAME_1));
-		Assert.assertTrue(parameterNames.contains(_PARAMETER_NAME_2));
-		Assert.assertTrue(parameterNames.contains(_PARAMETER_NAME_3));
+			Assert.assertEquals(2, parameter1.length);
+			Assert.assertEquals(_PARAMETER_VALUE_1, parameter1[0]);
+			Assert.assertEquals(_PARAMETER_VALUE_2, parameter1[1]);
 
-		parameter1 = populatedHttpServletRequest.getParameterValues(
-			_PARAMETER_NAME_1);
+			String[] parameter2 = parameterMap.get(_PARAMETER_NAME_2);
 
-		Assert.assertEquals(2, parameter1.length);
-		Assert.assertEquals(_PARAMETER_VALUE_1, parameter1[0]);
-		Assert.assertEquals(_PARAMETER_VALUE_2, parameter1[1]);
+			Assert.assertEquals(2, parameter2.length);
+			Assert.assertEquals(_PARAMETER_VALUE_3, parameter2[0]);
+			Assert.assertEquals(_PARAMETER_VALUE_4, parameter2[1]);
 
-		parameter2 = populatedHttpServletRequest.getParameterValues(
-			_PARAMETER_NAME_2);
+			String[] parameter3 = parameterMap.get(_PARAMETER_NAME_3);
 
-		Assert.assertEquals(2, parameter2.length);
-		Assert.assertEquals(_PARAMETER_VALUE_3, parameter2[0]);
-		Assert.assertEquals(_PARAMETER_VALUE_4, parameter2[1]);
+			Assert.assertEquals(0, parameter3.length);
+			Assert.assertEquals(
+				_PARAMETER_VALUE_1,
+				populatedHttpServletRequest.getParameter(_PARAMETER_NAME_1));
+			Assert.assertEquals(
+				_PARAMETER_VALUE_3,
+				populatedHttpServletRequest.getParameter(_PARAMETER_NAME_2));
+			Assert.assertNull(
+				populatedHttpServletRequest.getParameter(_PARAMETER_NAME_3));
+			Assert.assertNull(
+				populatedHttpServletRequest.getParameter(_PARAMETER_NAME_4));
 
-		parameter3 = populatedHttpServletRequest.getParameterValues(
-			_PARAMETER_NAME_3);
+			List<String> parameterNames = ListUtil.fromEnumeration(
+				populatedHttpServletRequest.getParameterNames());
 
-		Assert.assertEquals(0, parameter3.length);
+			Assert.assertEquals(3, parameterNames.size());
+			Assert.assertTrue(parameterNames.contains(_PARAMETER_NAME_1));
+			Assert.assertTrue(parameterNames.contains(_PARAMETER_NAME_2));
+			Assert.assertTrue(parameterNames.contains(_PARAMETER_NAME_3));
 
-		// Remote address, host, port, and user
+			parameter1 = populatedHttpServletRequest.getParameterValues(
+				_PARAMETER_NAME_1);
 
-		Assert.assertEquals(
-			_REMOTE_ADDR, populatedHttpServletRequest.getRemoteAddr());
+			Assert.assertEquals(2, parameter1.length);
+			Assert.assertEquals(_PARAMETER_VALUE_1, parameter1[0]);
+			Assert.assertEquals(_PARAMETER_VALUE_2, parameter1[1]);
 
-		Assert.assertEquals(
-			_REMOTE_HOST, populatedHttpServletRequest.getRemoteHost());
+			parameter2 = populatedHttpServletRequest.getParameterValues(
+				_PARAMETER_NAME_2);
 
-		Assert.assertEquals(
-			_REMOTE_PORT, populatedHttpServletRequest.getRemotePort());
+			Assert.assertEquals(2, parameter2.length);
+			Assert.assertEquals(_PARAMETER_VALUE_3, parameter2[0]);
+			Assert.assertEquals(_PARAMETER_VALUE_4, parameter2[1]);
 
-		Assert.assertEquals(
-			_REMOTE_USER, populatedHttpServletRequest.getRemoteUser());
+			parameter3 = populatedHttpServletRequest.getParameterValues(
+				_PARAMETER_NAME_3);
 
-		// Server name
+			Assert.assertEquals(0, parameter3.length);
 
-		Assert.assertEquals(
-			_SERVER_NAME, populatedHttpServletRequest.getServerName());
+			// Remote address, host, port, and user
 
-		// Server port
+			Assert.assertEquals(
+				_REMOTE_ADDR, populatedHttpServletRequest.getRemoteAddr());
 
-		Assert.assertEquals(
-			_SERVER_PORT, populatedHttpServletRequest.getServerPort());
+			Assert.assertEquals(
+				_REMOTE_HOST, populatedHttpServletRequest.getRemoteHost());
 
-		Assert.assertEquals(threadLocalValue, _threadLocal.get());
+			Assert.assertEquals(
+				_REMOTE_PORT, populatedHttpServletRequest.getRemotePort());
 
-		// Populated session attributes
+			Assert.assertEquals(
+				_REMOTE_USER, populatedHttpServletRequest.getRemoteUser());
 
-		MockHttpSession mockHttpSession = new MockHttpSession();
+			// Server name
 
-		spiAgentRequest.populateSessionAttributes(mockHttpSession);
+			Assert.assertEquals(
+				_SERVER_NAME, populatedHttpServletRequest.getServerName());
 
-		List<String> attributeNames = ListUtil.fromEnumeration(
-			mockHttpSession.getAttributeNames());
+			// Server port
 
-		Assert.assertEquals(2, attributeNames.size());
-		Assert.assertTrue(attributeNames.contains(_SESSION_ATTRIBUTE_NAME_1));
-		Assert.assertTrue(attributeNames.contains(_SESSION_ATTRIBUTE_NAME_2));
+			Assert.assertEquals(
+				_SERVER_PORT, populatedHttpServletRequest.getServerPort());
 
-		Assert.assertEquals(
-			_SESSION_ATTRIBUTE_VALUE_1,
-			mockHttpSession.getAttribute(_SESSION_ATTRIBUTE_NAME_1));
-		Assert.assertEquals(
-			_SESSION_ATTRIBUTE_VALUE_2,
-			mockHttpSession.getAttribute(_SESSION_ATTRIBUTE_NAME_2));
+			Assert.assertEquals(threadLocalValue, _threadLocal.get());
 
-		// To string
+			// Populated session attributes
 
-		StringBundler sb = new StringBundler(
-			13 + cookies.length * 2 + parameterMap.size() * 4);
+			MockHttpSession mockHttpSession = new MockHttpSession();
 
-		sb.append("{contentType=null, cookies=[");
+			spiAgentRequest.populateSessionAttributes(mockHttpSession);
 
-		for (Cookie cookie : cookies) {
-			sb.append(CookieUtil.toString(cookie));
-			sb.append(", ");
+			List<String> attributeNames = ListUtil.fromEnumeration(
+				mockHttpSession.getAttributeNames());
+
+			Assert.assertEquals(2, attributeNames.size());
+			Assert.assertTrue(
+				attributeNames.contains(_SESSION_ATTRIBUTE_NAME_1));
+			Assert.assertTrue(
+				attributeNames.contains(_SESSION_ATTRIBUTE_NAME_2));
+
+			Assert.assertEquals(
+				_SESSION_ATTRIBUTE_VALUE_1,
+				mockHttpSession.getAttribute(_SESSION_ATTRIBUTE_NAME_1));
+			Assert.assertEquals(
+				_SESSION_ATTRIBUTE_VALUE_2,
+				mockHttpSession.getAttribute(_SESSION_ATTRIBUTE_NAME_2));
+
+			// To string
+
+			StringBundler sb = new StringBundler(
+				13 + cookies.length * 2 + parameterMap.size() * 4);
+
+			sb.append("{contentType=null, cookies=[");
+
+			for (Cookie cookie : cookies) {
+				sb.append(CookieUtil.toString(cookie));
+				sb.append(", ");
+			}
+
+			sb.setIndex(sb.index() - 1);
+
+			sb.append("], distributedRequestAttributes=");
+			sb.append(spiAgentRequest.distributedRequestAttributes);
+			sb.append(", headerMap=");
+			sb.append(spiAgentRequest.headerMap);
+			sb.append(", multipartParameterMap=null");
+			sb.append(", originalSessionAttributes=");
+			sb.append(spiAgentRequest.getOriginalSessionAttributes());
+			sb.append(", parameterMap={");
+
+			for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
+				sb.append(entry.getKey());
+				sb.append("=");
+				sb.append(Arrays.toString(entry.getValue()));
+				sb.append(", ");
+			}
+
+			sb.setIndex(sb.index() - 1);
+
+			sb.append("}, regularParameterMap=null, requestBodyFile=null");
+			sb.append(", serverName=");
+			sb.append(_SERVER_NAME);
+			sb.append(", serverPort=");
+			sb.append(_SERVER_PORT);
+			sb.append("}");
+
+			Assert.assertEquals(sb.toString(), spiAgentRequest.toString());
+
+			_mockHttpServletRequest.setCookies((Cookie[])null);
+
+			spiAgentRequest = new SPIAgentRequest(_mockHttpServletRequest);
+
+			Assert.assertEquals(1, logRecords.size());
+			assertMessageStartWith(
+				logRecords.get(0), "Nonserializable session attribute name");
+
+			sb = new StringBundler(13 + parameterMap.size() * 4);
+
+			sb.append(
+				"{contentType=null, cookies=[], distributedRequestAttributes=");
+			sb.append(spiAgentRequest.distributedRequestAttributes);
+			sb.append(", headerMap=");
+			sb.append(spiAgentRequest.headerMap);
+			sb.append(", multipartParameterMap=null");
+			sb.append(", originalSessionAttributes=");
+			sb.append(spiAgentRequest.getOriginalSessionAttributes());
+			sb.append(", parameterMap={");
+
+			for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
+				sb.append(entry.getKey());
+				sb.append("=");
+				sb.append(Arrays.toString(entry.getValue()));
+				sb.append(", ");
+			}
+
+			sb.setIndex(sb.index() - 1);
+
+			sb.append("}, regularParameterMap=null, requestBodyFile=null");
+			sb.append(", serverName=");
+			sb.append(_SERVER_NAME);
+			sb.append(", serverPort=");
+			sb.append(_SERVER_PORT);
+			sb.append("}");
+
+			Assert.assertEquals(sb.toString(), spiAgentRequest.toString());
 		}
-
-		sb.setIndex(sb.index() - 1);
-
-		sb.append("], distributedRequestAttributes=");
-		sb.append(spiAgentRequest.distributedRequestAttributes);
-		sb.append(", headerMap=");
-		sb.append(spiAgentRequest.headerMap);
-		sb.append(", multipartParameterMap=null");
-		sb.append(", originalSessionAttributes=");
-		sb.append(spiAgentRequest.getOriginalSessionAttributes());
-		sb.append(", parameterMap={");
-
-		for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
-			sb.append(entry.getKey());
-			sb.append("=");
-			sb.append(Arrays.toString(entry.getValue()));
-			sb.append(", ");
+		finally {
+			captureHandler.close();
 		}
-
-		sb.setIndex(sb.index() - 1);
-
-		sb.append("}, regularParameterMap=null, requestBodyFile=null");
-		sb.append(", serverName=");
-		sb.append(_SERVER_NAME);
-		sb.append(", serverPort=");
-		sb.append(_SERVER_PORT);
-		sb.append("}");
-
-		Assert.assertEquals(sb.toString(), spiAgentRequest.toString());
-
-		_mockHttpServletRequest.setCookies((Cookie[])null);
-
-		spiAgentRequest = new SPIAgentRequest(_mockHttpServletRequest);
-
-		sb = new StringBundler(13 + parameterMap.size() * 4);
-
-		sb.append(
-			"{contentType=null, cookies=[], distributedRequestAttributes=");
-		sb.append(spiAgentRequest.distributedRequestAttributes);
-		sb.append(", headerMap=");
-		sb.append(spiAgentRequest.headerMap);
-		sb.append(", multipartParameterMap=null");
-		sb.append(", originalSessionAttributes=");
-		sb.append(spiAgentRequest.getOriginalSessionAttributes());
-		sb.append(", parameterMap={");
-
-		for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
-			sb.append(entry.getKey());
-			sb.append("=");
-			sb.append(Arrays.toString(entry.getValue()));
-			sb.append(", ");
-		}
-
-		sb.setIndex(sb.index() - 1);
-
-		sb.append("}, regularParameterMap=null, requestBodyFile=null");
-		sb.append(", serverName=");
-		sb.append(_SERVER_NAME);
-		sb.append(", serverPort=");
-		sb.append(_SERVER_PORT);
-		sb.append("}");
-
-		Assert.assertEquals(sb.toString(), spiAgentRequest.toString());
 	}
 
 	@Test
@@ -951,47 +1057,73 @@ public class SPIAgentRequestTest {
 
 	@Test
 	public void testShowFooter() throws IOException {
+		CaptureHandler captureHandler = JDKLoggerTestUtil.configureJDKLogger(
+			SPIAgentSerializable.class.getName(), Level.WARNING);
 
-		// No theme display
+		try {
 
-		_mockHttpServletRequest.setParameter(
-			"portalResiliencyPortletShowFooter", StringPool.TRUE);
+			// No theme display
 
-		SPIAgentRequest spiAgentRequest = new SPIAgentRequest(
-			_mockHttpServletRequest);
+			_mockHttpServletRequest.setParameter(
+				"portalResiliencyPortletShowFooter", StringPool.TRUE);
 
-		Map<String, String[]> parameterMap = spiAgentRequest.parameterMap;
+			SPIAgentRequest spiAgentRequest = new SPIAgentRequest(
+				_mockHttpServletRequest);
 
-		Assert.assertArrayEquals(
-			new String[] {StringPool.TRUE},
-			parameterMap.get("portalResiliencyPortletShowFooter"));
+			List<LogRecord> logRecords = captureHandler.getLogRecords();
 
-		// Has theme display, without ajax
+			Assert.assertEquals(1, logRecords.size());
+			assertMessageStartWith(
+				logRecords.get(0), "Nonserializable session attribute name");
 
-		ThemeDisplay themeDisplay = new ThemeDisplay();
+			logRecords = captureHandler.resetLogLevel(Level.WARNING);
 
-		_mockHttpServletRequest.setAttribute(
-			WebKeys.THEME_DISPLAY, themeDisplay);
+			Map<String, String[]> parameterMap = spiAgentRequest.parameterMap;
 
-		spiAgentRequest = new SPIAgentRequest(_mockHttpServletRequest);
+			Assert.assertArrayEquals(
+				new String[] {StringPool.TRUE},
+				parameterMap.get("portalResiliencyPortletShowFooter"));
 
-		parameterMap = spiAgentRequest.parameterMap;
+			// Has theme display, without ajax
 
-		Assert.assertArrayEquals(
-			new String[] {StringPool.TRUE},
-			parameterMap.get("portalResiliencyPortletShowFooter"));
+			ThemeDisplay themeDisplay = new ThemeDisplay();
 
-		// Has theme display, with ajax
+			_mockHttpServletRequest.setAttribute(
+				WebKeys.THEME_DISPLAY, themeDisplay);
 
-		themeDisplay.setAjax(true);
+			spiAgentRequest = new SPIAgentRequest(_mockHttpServletRequest);
 
-		spiAgentRequest = new SPIAgentRequest(_mockHttpServletRequest);
+			Assert.assertEquals(1, logRecords.size());
+			assertMessageStartWith(
+				logRecords.get(0), "Nonserializable session attribute name");
 
-		parameterMap = spiAgentRequest.parameterMap;
+			logRecords = captureHandler.resetLogLevel(Level.WARNING);
 
-		Assert.assertArrayEquals(
-			new String[] {StringPool.FALSE},
-			parameterMap.get("portalResiliencyPortletShowFooter"));
+			parameterMap = spiAgentRequest.parameterMap;
+
+			Assert.assertArrayEquals(
+				new String[] {StringPool.TRUE},
+				parameterMap.get("portalResiliencyPortletShowFooter"));
+
+			// Has theme display, with ajax
+
+			themeDisplay.setAjax(true);
+
+			spiAgentRequest = new SPIAgentRequest(_mockHttpServletRequest);
+
+			Assert.assertEquals(1, logRecords.size());
+			assertMessageStartWith(
+				logRecords.get(0), "Nonserializable session attribute name");
+
+			parameterMap = spiAgentRequest.parameterMap;
+
+			Assert.assertArrayEquals(
+				new String[] {StringPool.FALSE},
+				parameterMap.get("portalResiliencyPortletShowFooter"));
+		}
+		finally {
+			captureHandler.close();
+		}
 	}
 
 	private static final String _HEADER_NAME_1 = "HEADER_NAME_1";
