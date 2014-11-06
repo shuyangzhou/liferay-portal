@@ -1035,9 +1035,26 @@ public class SelectorIntrabandTest {
 					recordCompletionHandler, 10, TimeUnit.MILLISECONDS);
 			}
 			finally {
-				recordCompletionHandler.waitUntilTimeouted(selector);
+				CaptureHandler baseCaptureHandler =
+					JDKLoggerTestUtil.configureJDKLogger(
+						BaseIntraband.class.getName(), Level.WARNING);
+				try {
+					recordCompletionHandler.waitUntilTimeouted(selector);
 
-				Jdk14LogImplAdvice.waitUntilErrorCalled();
+					List<LogRecord> baseLogRecords =
+						baseCaptureHandler.getLogRecords();
+
+					Assert.assertEquals(1, baseLogRecords.size());
+
+					IntrabandTestUtil.assertMessageStartWith(
+						baseLogRecords.get(0),
+						"Removed timeout response waiting datagram");
+
+					Jdk14LogImplAdvice.waitUntilErrorCalled();
+				}
+				finally {
+					baseCaptureHandler.close();
+				}
 			}
 
 			Assert.assertFalse(selector.isOpen());

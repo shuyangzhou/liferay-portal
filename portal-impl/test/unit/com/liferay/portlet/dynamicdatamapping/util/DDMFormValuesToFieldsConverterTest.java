@@ -14,6 +14,8 @@
 
 package com.liferay.portlet.dynamicdatamapping.util;
 
+import com.liferay.portal.kernel.test.CaptureHandler;
+import com.liferay.portal.kernel.test.JDKLoggerTestUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portlet.dynamicdatamapping.BaseDDMTestCase;
 import com.liferay.portlet.dynamicdatamapping.model.DDMForm;
@@ -34,6 +36,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -61,251 +65,326 @@ public class DDMFormValuesToFieldsConverterTest extends BaseDDMTestCase {
 
 	@Test
 	public void testConversionWithBooleanField() throws Exception {
-		DDMForm ddmForm = createDDMForm();
+		CaptureHandler captureHandler = JDKLoggerTestUtil.configureJDKLogger(
+			LocaleUtil.class.getName(), Level.WARNING);
 
-		DDMFormField booleanDDMFormField = new DDMFormField(
-			"Boolean", "checkbox");
+		try {
+			DDMForm ddmForm = createDDMForm();
 
-		booleanDDMFormField.setDataType("boolean");
+			DDMFormField booleanDDMFormField = new DDMFormField(
+				"Boolean", "checkbox");
 
-		LocalizedValue localizedValue = booleanDDMFormField.getLabel();
+			booleanDDMFormField.setDataType("boolean");
 
-		localizedValue.addString(LocaleUtil.US, "Boolean Field");
+			LocalizedValue localizedValue = booleanDDMFormField.getLabel();
 
-		addDDMFormFields(ddmForm, booleanDDMFormField);
+			localizedValue.addString(LocaleUtil.US, "Boolean Field");
 
-		DDMStructure ddmStructure = createStructure("Test Structure", ddmForm);
+			addDDMFormFields(ddmForm, booleanDDMFormField);
 
-		DDMFormValues ddmFormValues = createDDMFormValues(
-			ddmForm, _availableLocales, LocaleUtil.US);
+			DDMStructure ddmStructure = createStructure(
+				"Test Structure", ddmForm);
 
-		DDMFormFieldValue titleDDMFormFieldValue = createDDMFormFieldValue(
-			"rztm", "Boolean", new UnlocalizedValue("true"));
+			DDMFormValues ddmFormValues = createDDMFormValues(
+				ddmForm, _availableLocales, LocaleUtil.US);
 
-		ddmFormValues.addDDMFormFieldValue(titleDDMFormFieldValue);
+			DDMFormFieldValue titleDDMFormFieldValue = createDDMFormFieldValue(
+				"rztm", "Boolean", new UnlocalizedValue("true"));
 
-		Fields fields = DDMFormValuesToFieldsConverterUtil.convert(
-			ddmStructure, ddmFormValues);
+			ddmFormValues.addDDMFormFieldValue(titleDDMFormFieldValue);
 
-		Assert.assertNotNull(fields);
+			Fields fields = DDMFormValuesToFieldsConverterUtil.convert(
+				ddmStructure, ddmFormValues);
 
-		Field field = fields.get("Boolean");
+			List<LogRecord> logRecords = captureHandler.getLogRecords();
 
-		Serializable value = field.getValue();
+			Assert.assertEquals(3, logRecords.size());
 
-		Class<?> clazz = value.getClass();
+			for (LogRecord logRecord : logRecords) {
+				Assert.assertEquals(
+					"en_US is not a valid language id", logRecord.getMessage());
+			}
 
-		Assert.assertEquals(true, clazz.isAssignableFrom(Boolean.class));
-		Assert.assertEquals(true, value);
+			Assert.assertNotNull(fields);
 
-		Field fieldsDisplayField = fields.get(DDMImpl.FIELDS_DISPLAY_NAME);
+			Field field = fields.get("Boolean");
 
-		Assert.assertEquals(
-			"Boolean_INSTANCE_rztm", fieldsDisplayField.getValue());
+			Serializable value = field.getValue();
+
+			Class<?> clazz = value.getClass();
+
+			Assert.assertEquals(true, clazz.isAssignableFrom(Boolean.class));
+			Assert.assertEquals(true, value);
+
+			Field fieldsDisplayField = fields.get(DDMImpl.FIELDS_DISPLAY_NAME);
+
+			Assert.assertEquals(
+				"Boolean_INSTANCE_rztm", fieldsDisplayField.getValue());
+		}
+		finally {
+			captureHandler.close();
+		}
 	}
 
 	@Test
 	public void testConversionWithNestedFields() throws Exception {
-		DDMForm ddmForm = createDDMForm();
+		CaptureHandler captureHandler = JDKLoggerTestUtil.configureJDKLogger(
+			LocaleUtil.class.getName(), Level.WARNING);
 
-		DDMFormField nameDDMFormField = createTextDDMFormField("Name");
+		try {
+			DDMForm ddmForm = createDDMForm();
 
-		List<DDMFormField> nestedNameDDMFormFields =
-			nameDDMFormField.getNestedDDMFormFields();
+			DDMFormField nameDDMFormField = createTextDDMFormField("Name");
 
-		nestedNameDDMFormFields.add(createTextDDMFormField("Phone"));
+			List<DDMFormField> nestedNameDDMFormFields =
+				nameDDMFormField.getNestedDDMFormFields();
 
-		addDDMFormFields(ddmForm, nameDDMFormField);
+			nestedNameDDMFormFields.add(createTextDDMFormField("Phone"));
 
-		DDMStructure ddmStructure = createStructure("Test Structure", ddmForm);
+			addDDMFormFields(ddmForm, nameDDMFormField);
 
-		DDMFormValues ddmFormValues = createDDMFormValues(
-			ddmForm, _availableLocales, LocaleUtil.US);
+			DDMStructure ddmStructure = createStructure(
+				"Test Structure", ddmForm);
 
-		DDMFormFieldValue paulDDMFormFieldValue = createDDMFormFieldValue(
-			"rztm", "Name",
-			createLocalizedValue("Paul", "Paulo", LocaleUtil.US));
+			DDMFormValues ddmFormValues = createDDMFormValues(
+				ddmForm, _availableLocales, LocaleUtil.US);
 
-		List<DDMFormFieldValue> paulNestedDDMFormFieldValue =
-			paulDDMFormFieldValue.getNestedDDMFormFieldValues();
+			DDMFormFieldValue paulDDMFormFieldValue = createDDMFormFieldValue(
+				"rztm", "Name",
+				createLocalizedValue("Paul", "Paulo", LocaleUtil.US));
 
-		paulNestedDDMFormFieldValue.add(
-			createDDMFormFieldValue(
-				"ovho", "Phone",
-				createLocalizedValue(
-					"Paul's Phone 1", "Telefone de Paulo 1", LocaleUtil.US)));
+			List<DDMFormFieldValue> paulNestedDDMFormFieldValue =
+				paulDDMFormFieldValue.getNestedDDMFormFieldValues();
 
-		paulNestedDDMFormFieldValue.add(
-			createDDMFormFieldValue(
-				"krvx", "Phone",
-				createLocalizedValue(
-					"Paul's Phone 2", "Telefone de Paulo 2", LocaleUtil.US)));
+			paulNestedDDMFormFieldValue.add(
+				createDDMFormFieldValue(
+					"ovho", "Phone",
+					createLocalizedValue(
+						"Paul's Phone 1", "Telefone de Paulo 1",
+						LocaleUtil.US)));
 
-		ddmFormValues.addDDMFormFieldValue(paulDDMFormFieldValue);
+			paulNestedDDMFormFieldValue.add(
+				createDDMFormFieldValue(
+					"krvx", "Phone",
+					createLocalizedValue(
+						"Paul's Phone 2", "Telefone de Paulo 2",
+						LocaleUtil.US)));
 
-		DDMFormFieldValue joeDDMFormFieldValue = createDDMFormFieldValue(
-			"rght", "Name",
-			createLocalizedValue("Joe", "Joao", LocaleUtil.US));
+			ddmFormValues.addDDMFormFieldValue(paulDDMFormFieldValue);
 
-		List<DDMFormFieldValue> joeNestedDDMFormFieldValue =
-			joeDDMFormFieldValue.getNestedDDMFormFieldValues();
+			DDMFormFieldValue joeDDMFormFieldValue = createDDMFormFieldValue(
+				"rght", "Name",
+				createLocalizedValue("Joe", "Joao", LocaleUtil.US));
 
-		joeNestedDDMFormFieldValue.add(
-			createDDMFormFieldValue(
-				"latb", "Phone",
-				createLocalizedValue(
-					"Joe's Phone 1", "Telefone de Joao 1", LocaleUtil.US)));
+			List<DDMFormFieldValue> joeNestedDDMFormFieldValue =
+				joeDDMFormFieldValue.getNestedDDMFormFieldValues();
 
-		joeNestedDDMFormFieldValue.add(
-			createDDMFormFieldValue(
-				"jewp", "Phone",
-				createLocalizedValue(
-					"Joe's Phone 2", "Telefone de Joao 2", LocaleUtil.US)));
+			joeNestedDDMFormFieldValue.add(
+				createDDMFormFieldValue(
+					"latb", "Phone",
+					createLocalizedValue(
+						"Joe's Phone 1", "Telefone de Joao 1", LocaleUtil.US)));
 
-		joeNestedDDMFormFieldValue.add(
-			createDDMFormFieldValue(
-				"mkar", "Phone",
-				createLocalizedValue(
-					"Joe's Phone 3", "Telefone de Joao 3", LocaleUtil.US)));
+			joeNestedDDMFormFieldValue.add(
+				createDDMFormFieldValue(
+					"jewp", "Phone",
+					createLocalizedValue(
+						"Joe's Phone 2", "Telefone de Joao 2", LocaleUtil.US)));
 
-		ddmFormValues.addDDMFormFieldValue(joeDDMFormFieldValue);
+			joeNestedDDMFormFieldValue.add(
+				createDDMFormFieldValue(
+					"mkar", "Phone",
+					createLocalizedValue(
+						"Joe's Phone 3", "Telefone de Joao 3", LocaleUtil.US)));
 
-		Fields fields = DDMFormValuesToFieldsConverterUtil.convert(
-			ddmStructure, ddmFormValues);
+			ddmFormValues.addDDMFormFieldValue(joeDDMFormFieldValue);
 
-		Assert.assertNotNull(fields);
+			Fields fields = DDMFormValuesToFieldsConverterUtil.convert(
+				ddmStructure, ddmFormValues);
 
-		Field nameField = fields.get("Name");
+			List<LogRecord> logRecords = captureHandler.getLogRecords();
 
-		testField(
-			nameField, createValuesList("Paul", "Joe"),
-			createValuesList("Paulo", "Joao"), _availableLocales,
-			LocaleUtil.US);
+			Assert.assertEquals(4, logRecords.size());
 
-		Field phoneField = fields.get("Phone");
+			for (LogRecord logRecord : logRecords) {
+				Assert.assertEquals(
+					"en_US is not a valid language id", logRecord.getMessage());
+			}
 
-		testField(
-			phoneField,
-			createValuesList(
-				"Paul's Phone 1", "Paul's Phone 2", "Joe's Phone 1",
-				"Joe's Phone 2", "Joe's Phone 3"),
-			createValuesList(
-				"Telefone de Paulo 1", "Telefone de Paulo 2",
-				"Telefone de Joao 1", "Telefone de Joao 2",
-				"Telefone de Joao 3"),
-			_availableLocales, LocaleUtil.US);
+			Assert.assertNotNull(fields);
 
-		Field fieldsDisplayField = fields.get(DDMImpl.FIELDS_DISPLAY_NAME);
+			Field nameField = fields.get("Name");
 
-		Assert.assertEquals(
-			"Name_INSTANCE_rztm,Phone_INSTANCE_ovho,Phone_INSTANCE_krvx," +
-			"Name_INSTANCE_rght,Phone_INSTANCE_latb,Phone_INSTANCE_jewp," +
-			"Phone_INSTANCE_mkar", fieldsDisplayField.getValue());
+			testField(
+				nameField, createValuesList("Paul", "Joe"),
+				createValuesList("Paulo", "Joao"), _availableLocales,
+				LocaleUtil.US);
+
+			Field phoneField = fields.get("Phone");
+
+			testField(
+				phoneField,
+				createValuesList(
+					"Paul's Phone 1", "Paul's Phone 2", "Joe's Phone 1",
+					"Joe's Phone 2", "Joe's Phone 3"),
+				createValuesList(
+					"Telefone de Paulo 1", "Telefone de Paulo 2",
+					"Telefone de Joao 1", "Telefone de Joao 2",
+					"Telefone de Joao 3"),
+				_availableLocales, LocaleUtil.US);
+
+			Field fieldsDisplayField = fields.get(DDMImpl.FIELDS_DISPLAY_NAME);
+
+			Assert.assertEquals(
+				"Name_INSTANCE_rztm,Phone_INSTANCE_ovho,Phone_INSTANCE_krvx," +
+				"Name_INSTANCE_rght,Phone_INSTANCE_latb,Phone_INSTANCE_jewp," +
+				"Phone_INSTANCE_mkar", fieldsDisplayField.getValue());
+		}
+		finally {
+			captureHandler.close();
+		}
 	}
 
 	@Test
 	public void testConversionWithRepeatableField() throws Exception {
-		DDMForm ddmForm = createDDMForm();
+		CaptureHandler captureHandler = JDKLoggerTestUtil.configureJDKLogger(
+			LocaleUtil.class.getName(), Level.WARNING);
 
-		addDDMFormFields(
-			ddmForm, createTextDDMFormField("Name", "", true, true, false));
+		try {
+			DDMForm ddmForm = createDDMForm();
 
-		DDMStructure ddmStructure = createStructure("Test Structure", ddmForm);
+			addDDMFormFields(
+				ddmForm, createTextDDMFormField("Name", "", true, true, false));
 
-		DDMFormValues ddmFormValues = createDDMFormValues(
-			ddmForm, _availableLocales, LocaleUtil.US);
+			DDMStructure ddmStructure = createStructure(
+				"Test Structure", ddmForm);
 
-		List<DDMFormFieldValue> ddmFormFieldValues =
-			ddmFormValues.getDDMFormFieldValues();
+			DDMFormValues ddmFormValues = createDDMFormValues(
+				ddmForm, _availableLocales, LocaleUtil.US);
 
-		DDMFormFieldValue nameDDMFormFieldValue1 = createDDMFormFieldValue(
-			"rztm", "Name",
-			createLocalizedValue("Name 1", "Nome 1", LocaleUtil.US));
+			List<DDMFormFieldValue> ddmFormFieldValues =
+				ddmFormValues.getDDMFormFieldValues();
 
-		ddmFormFieldValues.add(nameDDMFormFieldValue1);
+			DDMFormFieldValue nameDDMFormFieldValue1 = createDDMFormFieldValue(
+				"rztm", "Name",
+				createLocalizedValue("Name 1", "Nome 1", LocaleUtil.US));
 
-		DDMFormFieldValue nameDDMFormFieldValue2 = createDDMFormFieldValue(
-			"uayd", "Name",
-			createLocalizedValue("Name 2", "Nome 2", LocaleUtil.US));
+			ddmFormFieldValues.add(nameDDMFormFieldValue1);
 
-		ddmFormFieldValues.add(nameDDMFormFieldValue2);
+			DDMFormFieldValue nameDDMFormFieldValue2 = createDDMFormFieldValue(
+				"uayd", "Name",
+				createLocalizedValue("Name 2", "Nome 2", LocaleUtil.US));
 
-		DDMFormFieldValue nameDDMFormFieldValue3 = createDDMFormFieldValue(
-			"pamh", "Name",
-			createLocalizedValue("Name 3", "Nome 3", LocaleUtil.US));
+			ddmFormFieldValues.add(nameDDMFormFieldValue2);
 
-		ddmFormFieldValues.add(nameDDMFormFieldValue3);
+			DDMFormFieldValue nameDDMFormFieldValue3 = createDDMFormFieldValue(
+				"pamh", "Name",
+				createLocalizedValue("Name 3", "Nome 3", LocaleUtil.US));
 
-		Fields fields = DDMFormValuesToFieldsConverterUtil.convert(
-			ddmStructure, ddmFormValues);
+			ddmFormFieldValues.add(nameDDMFormFieldValue3);
 
-		Assert.assertNotNull(fields);
+			Fields fields = DDMFormValuesToFieldsConverterUtil.convert(
+				ddmStructure, ddmFormValues);
 
-		Field nameField = fields.get("Name");
+			List<LogRecord> logRecords = captureHandler.getLogRecords();
 
-		testField(
-			nameField, createValuesList("Name 1", "Name 2", "Name 3"),
-			createValuesList("Nome 1", "Nome 2", "Nome 3"), _availableLocales,
-			LocaleUtil.US);
+			Assert.assertEquals(3, logRecords.size());
 
-		Field fieldsDisplayField = fields.get(DDMImpl.FIELDS_DISPLAY_NAME);
+			for (LogRecord logRecord : logRecords) {
+				Assert.assertEquals(
+					"en_US is not a valid language id", logRecord.getMessage());
+			}
 
-		Assert.assertEquals(
-			"Name_INSTANCE_rztm,Name_INSTANCE_uayd,Name_INSTANCE_pamh",
-			fieldsDisplayField.getValue());
+			Assert.assertNotNull(fields);
+
+			Field nameField = fields.get("Name");
+
+			testField(
+				nameField, createValuesList("Name 1", "Name 2", "Name 3"),
+				createValuesList(
+					"Nome 1", "Nome 2", "Nome 3"), _availableLocales,
+					LocaleUtil.US);
+
+			Field fieldsDisplayField = fields.get(DDMImpl.FIELDS_DISPLAY_NAME);
+
+			Assert.assertEquals(
+				"Name_INSTANCE_rztm,Name_INSTANCE_uayd,Name_INSTANCE_pamh",
+				fieldsDisplayField.getValue());
+		}
+		finally {
+			captureHandler.close();
+		}
 	}
 
 	@Test
 	public void testConversionWithTextField() throws Exception {
-		DDMForm ddmForm = createDDMForm();
+		CaptureHandler captureHandler = JDKLoggerTestUtil.configureJDKLogger(
+			LocaleUtil.class.getName(), Level.WARNING);
 
-		addDDMFormFields(
-			ddmForm, createTextDDMFormField("Title"),
-			createTextDDMFormField("Content"));
+		try {
+			DDMForm ddmForm = createDDMForm();
 
-		DDMStructure ddmStructure = createStructure("Test Structure", ddmForm);
+			addDDMFormFields(
+				ddmForm, createTextDDMFormField("Title"),
+				createTextDDMFormField("Content"));
 
-		DDMFormValues ddmFormValues = createDDMFormValues(
-			ddmForm, _availableLocales, LocaleUtil.US);
+			DDMStructure ddmStructure = createStructure(
+				"Test Structure", ddmForm);
 
-		DDMFormFieldValue titleDDMFormFieldValue = createDDMFormFieldValue(
-			"rztm", "Title",
-			createLocalizedValue(
-				"Title Example", "Titulo Exemplo", LocaleUtil.US));
+			DDMFormValues ddmFormValues = createDDMFormValues(
+				ddmForm, _availableLocales, LocaleUtil.US);
 
-		ddmFormValues.addDDMFormFieldValue(titleDDMFormFieldValue);
+			DDMFormFieldValue titleDDMFormFieldValue = createDDMFormFieldValue(
+				"rztm", "Title",
+				createLocalizedValue(
+					"Title Example", "Titulo Exemplo", LocaleUtil.US));
 
-		DDMFormFieldValue contentDDMFormFieldValue = createDDMFormFieldValue(
-			"ovho", "Content",
-			createLocalizedValue(
-				"Content Example", "Conteudo Exemplo", LocaleUtil.US));
+			ddmFormValues.addDDMFormFieldValue(titleDDMFormFieldValue);
 
-		ddmFormValues.addDDMFormFieldValue(contentDDMFormFieldValue);
+			DDMFormFieldValue contentDDMFormFieldValue =
+				createDDMFormFieldValue(
+					"ovho", "Content", createLocalizedValue(
+						"Content Example", "Conteudo Exemplo", LocaleUtil.US));
 
-		Fields fields = DDMFormValuesToFieldsConverterUtil.convert(
-			ddmStructure, ddmFormValues);
+			ddmFormValues.addDDMFormFieldValue(contentDDMFormFieldValue);
 
-		Assert.assertNotNull(fields);
+			Fields fields = DDMFormValuesToFieldsConverterUtil.convert(
+				ddmStructure, ddmFormValues);
 
-		Field titleField = fields.get("Title");
+			List<LogRecord> logRecords = captureHandler.getLogRecords();
 
-		testField(
-			titleField, createValuesList("Title Example"),
-			createValuesList("Titulo Exemplo"), _availableLocales,
-			LocaleUtil.US);
+			Assert.assertEquals(4, logRecords.size());
 
-		Field contentField = fields.get("Content");
+			for (LogRecord logRecord : logRecords) {
+				Assert.assertEquals(
+					"en_US is not a valid language id", logRecord.getMessage());
+			}
 
-		testField(
-			contentField, createValuesList("Content Example"),
-			createValuesList("Conteudo Exemplo"), _availableLocales,
-			LocaleUtil.US);
+			Assert.assertNotNull(fields);
 
-		Field fieldsDisplayField = fields.get(DDMImpl.FIELDS_DISPLAY_NAME);
+			Field titleField = fields.get("Title");
 
-		Assert.assertEquals(
-			"Title_INSTANCE_rztm,Content_INSTANCE_ovho",
-			fieldsDisplayField.getValue());
+			testField(
+				titleField, createValuesList("Title Example"),
+				createValuesList("Titulo Exemplo"), _availableLocales,
+				LocaleUtil.US);
+
+			Field contentField = fields.get("Content");
+
+			testField(
+				contentField, createValuesList("Content Example"),
+				createValuesList("Conteudo Exemplo"), _availableLocales,
+				LocaleUtil.US);
+
+			Field fieldsDisplayField = fields.get(DDMImpl.FIELDS_DISPLAY_NAME);
+
+			Assert.assertEquals(
+				"Title_INSTANCE_rztm,Content_INSTANCE_ovho",
+				fieldsDisplayField.getValue());
+		}
+		finally {
+			captureHandler.close();
+		}
 	}
 
 	@Override
