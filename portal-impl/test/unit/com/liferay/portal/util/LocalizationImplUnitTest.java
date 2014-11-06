@@ -15,11 +15,16 @@
 package com.liferay.portal.util;
 
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.test.CaptureHandler;
+import com.liferay.portal.kernel.test.JDKLoggerTestUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
+import java.util.List;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -59,7 +64,26 @@ public class LocalizationImplUnitTest extends PowerMockito {
 
 	@Test
 	public void testGetDefaultImportLocaleUseCase4() {
-		verifyDefaultImportLocale("bg_BG", "bg_BG,fr_FR", "bg_BG", true);
+		CaptureHandler captureHandler = JDKLoggerTestUtil.configureJDKLogger(
+			LocalizationImpl.class.getName(), Level.WARNING);
+
+		try {
+			verifyDefaultImportLocale("bg_BG", "bg_BG,fr_FR", "bg_BG", true);
+
+			List<LogRecord> logRecords = captureHandler.getLogRecords();
+
+			Assert.assertEquals(1, logRecords.size());
+
+			LogRecord logRecord = logRecords.get(0);
+
+			Assert.assertEquals(
+				"Language es_ES is missing for com.liferay.portal.className " +
+				"with primary key 0. Setting default language to bg_bg.",
+				logRecord.getMessage());
+		}
+		finally {
+			captureHandler.close();
+		}
 	}
 
 	@Test
