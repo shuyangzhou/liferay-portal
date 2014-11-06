@@ -16,13 +16,20 @@ package com.liferay.portal.servlet.filters.strip;
 
 import com.liferay.portal.cache.key.HashCodeCacheKeyGenerator;
 import com.liferay.portal.kernel.cache.key.CacheKeyGeneratorUtil;
+import com.liferay.portal.kernel.test.CaptureHandler;
+import com.liferay.portal.kernel.test.JDKLoggerTestUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.minifier.GoogleJavaScriptMinifier;
 import com.liferay.portal.minifier.MinifierUtil;
 
 import java.io.StringWriter;
 
 import java.nio.CharBuffer;
+
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -97,217 +104,321 @@ public class StripFilterTest extends PowerMockito {
 
 	@Test
 	public void testProcessCSS() throws Exception {
-		StripFilter stripFilter = new StripFilter();
+		CaptureHandler captureHandler = JDKLoggerTestUtil.configureJDKLogger(
+			StripFilter.class.getName(), Level.WARNING);
 
-		_mockCacheGenerationUtil();
+		try {
+			StripFilter stripFilter = new StripFilter();
 
-		// Missing close tag
+			_mockCacheGenerationUtil();
 
-		CharBuffer charBuffer = CharBuffer.wrap("style type=\"text/css\">abc");
+			// Missing close tag
 
-		StringWriter stringWriter = new StringWriter();
+			CharBuffer charBuffer = CharBuffer.wrap(
+				"style type=\"text/css\">abc");
 
-		stripFilter.processCSS(null, null, charBuffer, stringWriter);
+			StringWriter stringWriter = new StringWriter();
 
-		Assert.assertEquals(
-			"style type=\"text/css\">", stringWriter.toString());
-		Assert.assertEquals(22, charBuffer.position());
+			stripFilter.processCSS(null, null, charBuffer, stringWriter);
 
-		// Empty tag
+			List<LogRecord> logRecords = captureHandler.getLogRecords();
 
-		charBuffer = CharBuffer.wrap("style type=\"text/css\"></style>");
-		stringWriter = new StringWriter();
+			Assert.assertEquals(1, logRecords.size());
 
-		stripFilter.processCSS(null, null, charBuffer, stringWriter);
+			LogRecord logRecord = logRecords.get(0);
 
-		Assert.assertEquals(
-			"style type=\"text/css\"></style>", stringWriter.toString());
-		Assert.assertEquals(30, charBuffer.position());
+			Assert.assertEquals(logRecord.getMessage(), "Missing </style>");
 
-		// Minifier spaces
+			Assert.assertEquals(
+				"style type=\"text/css\">", stringWriter.toString());
+			Assert.assertEquals(22, charBuffer.position());
 
-		charBuffer = CharBuffer.wrap("style type=\"text/css\"> \r\t\n</style>");
-		stringWriter = new StringWriter();
+			// Empty tag
 
-		stripFilter.processCSS(null, null, charBuffer, stringWriter);
+			charBuffer = CharBuffer.wrap("style type=\"text/css\"></style>");
+			stringWriter = new StringWriter();
 
-		Assert.assertEquals(
-			"style type=\"text/css\"></style>", stringWriter.toString());
-		Assert.assertEquals(34, charBuffer.position());
+			stripFilter.processCSS(null, null, charBuffer, stringWriter);
 
-		// Minifier code
+			Assert.assertEquals(
+				"style type=\"text/css\"></style>", stringWriter.toString());
+			Assert.assertEquals(30, charBuffer.position());
 
-		String code =
-			".a{ position: relative; outline: none; overflow: " +
-				"hidden; text-align: left /* Force default alignment */ }";
-		String minifiedCode = MinifierUtil.minifyCss(code);
+			// Minifier spaces
 
-		charBuffer = CharBuffer.wrap(
-			"style type=\"text/css\">" + code + "</style>");
-		stringWriter = new StringWriter();
+			charBuffer = CharBuffer.wrap(
+				"style type=\"text/css\"> \r\t\n</style>");
+			stringWriter = new StringWriter();
 
-		stripFilter.processCSS(null, null, charBuffer, stringWriter);
+			stripFilter.processCSS(null, null, charBuffer, stringWriter);
 
-		Assert.assertEquals(
-			"style type=\"text/css\">" + minifiedCode + "</style>",
-			stringWriter.toString());
-		Assert.assertEquals(code.length() + 30, charBuffer.position());
+			Assert.assertEquals(
+				"style type=\"text/css\"></style>", stringWriter.toString());
+			Assert.assertEquals(34, charBuffer.position());
 
-		// Minifier code with trailing spaces
+			// Minifier code
 
-		charBuffer = CharBuffer.wrap(
-			"style type=\"text/css\">" + code + "</style> \r\t\n");
-		stringWriter = new StringWriter();
+			String code =
+				".a{ position: relative; outline: none; overflow: " +
+					"hidden; text-align: left /* Force default alignment */ }";
+			String minifiedCode = MinifierUtil.minifyCss(code);
 
-		stripFilter.processCSS(null, null, charBuffer, stringWriter);
+			charBuffer = CharBuffer.wrap(
+				"style type=\"text/css\">" + code + "</style>");
+			stringWriter = new StringWriter();
 
-		Assert.assertEquals(
-			"style type=\"text/css\">" + minifiedCode + "</style> ",
-			stringWriter.toString());
-		Assert.assertEquals(code.length() + 34, charBuffer.position());
+			stripFilter.processCSS(null, null, charBuffer, stringWriter);
 
-		verifyStatic(Mockito.times(3));
+			Assert.assertEquals(
+				"style type=\"text/css\">" + minifiedCode + "</style>",
+				stringWriter.toString());
+			Assert.assertEquals(code.length() + 30, charBuffer.position());
+
+			// Minifier code with trailing spaces
+
+			charBuffer = CharBuffer.wrap(
+				"style type=\"text/css\">" + code + "</style> \r\t\n");
+			stringWriter = new StringWriter();
+
+			stripFilter.processCSS(null, null, charBuffer, stringWriter);
+
+			Assert.assertEquals(
+				"style type=\"text/css\">" + minifiedCode + "</style> ",
+				stringWriter.toString());
+			Assert.assertEquals(code.length() + 34, charBuffer.position());
+
+			verifyStatic(Mockito.times(3));
+		}
+		finally {
+			captureHandler.close();
+		}
 	}
 
 	@Test
 	public void testProcessJavaScript() throws Exception {
-		StripFilter stripFilter = new StripFilter();
+		CaptureHandler captureHandler1 = JDKLoggerTestUtil.configureJDKLogger(
+			StripFilter.class.getName(), Level.WARNING);
+		CaptureHandler captureHandler2 = JDKLoggerTestUtil.configureJDKLogger(
+			GoogleJavaScriptMinifier.class.getName(), Level.SEVERE);
 
-		_mockCacheGenerationUtil();
+		try {
+			StripFilter stripFilter = new StripFilter();
 
-		// Missing close tag
+			_mockCacheGenerationUtil();
 
-		CharBuffer charBuffer = CharBuffer.wrap("script>abc");
-		StringWriter stringWriter = new StringWriter();
+			// Missing close tag
 
-		stripFilter.processJavaScript(
-			"test.js", charBuffer, stringWriter, "script".toCharArray());
+			CharBuffer charBuffer = CharBuffer.wrap("script>abc");
+			StringWriter stringWriter = new StringWriter();
 
-		Assert.assertEquals("script>", stringWriter.toString());
-		Assert.assertEquals(7, charBuffer.position());
+			stripFilter.processJavaScript(
+				"test.js", charBuffer, stringWriter, "script".toCharArray());
 
-		// Empty tag
+			List<LogRecord> logRecords1 = captureHandler1.getLogRecords();
 
-		charBuffer = CharBuffer.wrap("script></script>");
-		stringWriter = new StringWriter();
+			Assert.assertEquals(1, logRecords1.size());
 
-		stripFilter.processJavaScript(
-			"test.js", charBuffer, stringWriter, "script".toCharArray());
+			LogRecord logRecord1 = logRecords1.get(0);
 
-		Assert.assertEquals("script></script>", stringWriter.toString());
-		Assert.assertEquals(16, charBuffer.position());
+			Assert.assertEquals(logRecord1.getMessage(), "Missing </script>");
 
-		// Minifier spaces
+			Assert.assertEquals("script>", stringWriter.toString());
 
-		charBuffer = CharBuffer.wrap("script> \t\r\n</script>");
-		stringWriter = new StringWriter();
+			logRecords1 = captureHandler1.resetLogLevel(Level.WARNING);
 
-		stripFilter.processJavaScript(
-			"test.js", charBuffer, stringWriter, "script".toCharArray());
+			Assert.assertEquals(7, charBuffer.position());
 
-		Assert.assertEquals("script></script>", stringWriter.toString());
-		Assert.assertEquals(20, charBuffer.position());
+			// Empty tag
 
-		// Minifier code
+			charBuffer = CharBuffer.wrap("script></script>");
+			stringWriter = new StringWriter();
 
-		String code = "function(){ var abcd; var efgh; }";
-		String minifiedCode = MinifierUtil.minifyJavaScript("test.js", code);
+			stripFilter.processJavaScript(
+				"test.js", charBuffer, stringWriter, "script".toCharArray());
 
-		charBuffer = CharBuffer.wrap("script>" + code + "</script>");
-		stringWriter = new StringWriter();
+			Assert.assertEquals("script></script>", stringWriter.toString());
+			Assert.assertEquals(16, charBuffer.position());
 
-		stripFilter.processJavaScript(
-			"test.js", charBuffer, stringWriter, "script".toCharArray());
+			// Minifier spaces
 
-		Assert.assertEquals(
-			"script>" + minifiedCode + "</script>", stringWriter.toString());
-		Assert.assertEquals(code.length() + 16, charBuffer.position());
+			charBuffer = CharBuffer.wrap("script> \t\r\n</script>");
+			stringWriter = new StringWriter();
 
-		// Minifier code with trailing spaces
+			stripFilter.processJavaScript(
+				"test.js", charBuffer, stringWriter, "script".toCharArray());
 
-		charBuffer = CharBuffer.wrap("script>" + code + "</script> \t\r\n");
-		stringWriter = new StringWriter();
+			Assert.assertEquals("script></script>", stringWriter.toString());
+			Assert.assertEquals(20, charBuffer.position());
 
-		stripFilter.processJavaScript(
-			"test.js", charBuffer, stringWriter, "script".toCharArray());
+			// Minifier code
 
-		Assert.assertEquals(
-			"script>" + minifiedCode + "</script> ", stringWriter.toString());
-		Assert.assertEquals(code.length() + 20, charBuffer.position());
+			String code = "function(){ var abcd; var efgh; }";
+			String minifiedCode = MinifierUtil.minifyJavaScript(
+				"test.js", code);
 
-		verifyStatic(Mockito.times(5));
+			List<LogRecord> logRecords2 = captureHandler2.getLogRecords();
+
+			Assert.assertEquals(2, logRecords2.size());
+
+			LogRecord logRecord2 = logRecords2.get(0);
+
+			Assert.assertEquals(
+				logRecord2.getMessage(),
+				"(test.js:1): Parse error. unnamed function statement");
+
+			logRecord2 = logRecords2.get(1);
+
+			Assert.assertEquals(
+				logRecord2.getMessage(), "{0} error(s), {1} warning(s)");
+
+			logRecords2 = captureHandler2.resetLogLevel(Level.SEVERE);
+
+			charBuffer = CharBuffer.wrap("script>" + code + "</script>");
+			stringWriter = new StringWriter();
+
+			stripFilter.processJavaScript(
+				"test.js", charBuffer, stringWriter, "script".toCharArray());
+
+			Assert.assertEquals(2, logRecords2.size());
+
+			logRecord2 = logRecords2.get(0);
+
+			Assert.assertEquals(
+				logRecord2.getMessage(),
+				"(test.js:1): Parse error. unnamed function statement");
+
+			logRecord2 = logRecords2.get(1);
+
+			Assert.assertEquals(
+				logRecord2.getMessage(), "{0} error(s), {1} warning(s)");
+
+			Assert.assertEquals(
+				"script>" + minifiedCode + "</script>",
+				stringWriter.toString());
+			Assert.assertEquals(code.length() + 16, charBuffer.position());
+
+			// Minifier code with trailing spaces
+
+			charBuffer = CharBuffer.wrap("script>" + code + "</script> \t\r\n");
+			stringWriter = new StringWriter();
+
+			stripFilter.processJavaScript(
+				"test.js", charBuffer, stringWriter, "script".toCharArray());
+
+			Assert.assertEquals(
+				"script>" + minifiedCode + "</script> ",
+				stringWriter.toString());
+			Assert.assertEquals(code.length() + 20, charBuffer.position());
+
+			verifyStatic(Mockito.times(5));
+		}
+		finally {
+			captureHandler1.close();
+		}
 	}
 
 	@Test
 	public void testProcessPre() throws Exception {
-		StripFilter stripFilter = new StripFilter();
+		CaptureHandler captureHandler = JDKLoggerTestUtil.configureJDKLogger(
+			StripFilter.class.getName(), Level.WARNING);
 
-		// Missing close tag
+		try {
+			StripFilter stripFilter = new StripFilter();
 
-		CharBuffer charBuffer = CharBuffer.wrap("pre>abcde");
-		StringWriter stringWriter = new StringWriter();
+			// Missing close tag
 
-		stripFilter.processPre(charBuffer, stringWriter);
+			CharBuffer charBuffer = CharBuffer.wrap("pre>abcde");
+			StringWriter stringWriter = new StringWriter();
 
-		Assert.assertEquals("pre", stringWriter.toString());
-		Assert.assertEquals(3, charBuffer.position());
+			stripFilter.processPre(charBuffer, stringWriter);
 
-		// Without trailing spaces
+			List<LogRecord> logRecords = captureHandler.getLogRecords();
 
-		charBuffer = CharBuffer.wrap("pre>a b </pre>");
-		stringWriter = new StringWriter();
+			Assert.assertEquals(1, logRecords.size());
 
-		stripFilter.processPre(charBuffer, stringWriter);
+			LogRecord logRecord = logRecords.get(0);
 
-		Assert.assertEquals("pre>a b </pre>", stringWriter.toString());
-		Assert.assertEquals(14, charBuffer.position());
+			Assert.assertEquals("Missing </pre>", logRecord.getMessage());
 
-		// With trailing spaces
+			Assert.assertEquals("pre", stringWriter.toString());
+			Assert.assertEquals(3, charBuffer.position());
 
-		charBuffer = CharBuffer.wrap("pre>a b </pre> \r\n\tc");
-		stringWriter = new StringWriter();
+			// Without trailing spaces
 
-		stripFilter.processPre(charBuffer, stringWriter);
+			charBuffer = CharBuffer.wrap("pre>a b </pre>");
+			stringWriter = new StringWriter();
 
-		Assert.assertEquals("pre>a b </pre> ", stringWriter.toString());
-		Assert.assertEquals(18, charBuffer.position());
+			stripFilter.processPre(charBuffer, stringWriter);
+
+			Assert.assertEquals("pre>a b </pre>", stringWriter.toString());
+			Assert.assertEquals(14, charBuffer.position());
+
+			// With trailing spaces
+
+			charBuffer = CharBuffer.wrap("pre>a b </pre> \r\n\tc");
+			stringWriter = new StringWriter();
+
+			stripFilter.processPre(charBuffer, stringWriter);
+
+			Assert.assertEquals("pre>a b </pre> ", stringWriter.toString());
+			Assert.assertEquals(18, charBuffer.position());
+		}
+		finally {
+			captureHandler.close();
+		}
 	}
 
 	@Test
 	public void testProcessTextArea() throws Exception {
-		StripFilter stripFilter = new StripFilter();
+		CaptureHandler captureHandler = JDKLoggerTestUtil.configureJDKLogger(
+			StripFilter.class.getName(), Level.WARNING);
 
-		// Missing close tag
+		try {
+			StripFilter stripFilter = new StripFilter();
 
-		CharBuffer charBuffer = CharBuffer.wrap("textarea >abcde");
-		StringWriter stringWriter = new StringWriter();
+			// Missing close tag
 
-		stripFilter.processTextArea(charBuffer, stringWriter);
+			CharBuffer charBuffer = CharBuffer.wrap("textarea >abcde");
+			StringWriter stringWriter = new StringWriter();
 
-		Assert.assertEquals("textarea ", stringWriter.toString());
-		Assert.assertEquals(9, charBuffer.position());
+			stripFilter.processTextArea(charBuffer, stringWriter);
 
-		// Without trailing spaces
+			List<LogRecord> logRecords = captureHandler.getLogRecords();
 
-		charBuffer = CharBuffer.wrap("textarea >a b </textarea>");
-		stringWriter = new StringWriter();
+			Assert.assertEquals(1, logRecords.size());
 
-		stripFilter.processTextArea(charBuffer, stringWriter);
+			LogRecord logRecord = logRecords.get(0);
 
-		Assert.assertEquals(
-			"textarea >a b </textarea>", stringWriter.toString());
-		Assert.assertEquals(25, charBuffer.position());
+			Assert.assertEquals("Missing </textArea>", logRecord.getMessage());
 
-		// With trailing spaces
+			Assert.assertEquals("textarea ", stringWriter.toString());
+			Assert.assertEquals(9, charBuffer.position());
 
-		charBuffer = CharBuffer.wrap("textarea >a b </textarea> \r\n\tc");
-		stringWriter = new StringWriter();
+			// Without trailing spaces
 
-		stripFilter.processTextArea(charBuffer, stringWriter);
+			charBuffer = CharBuffer.wrap("textarea >a b </textarea>");
+			stringWriter = new StringWriter();
 
-		Assert.assertEquals(
-			"textarea >a b </textarea> ", stringWriter.toString());
-		Assert.assertEquals(29, charBuffer.position());
+			stripFilter.processTextArea(charBuffer, stringWriter);
+
+			Assert.assertEquals(
+				"textarea >a b </textarea>", stringWriter.toString());
+			Assert.assertEquals(25, charBuffer.position());
+
+			// With trailing spaces
+
+			charBuffer = CharBuffer.wrap("textarea >a b </textarea> \r\n\tc");
+			stringWriter = new StringWriter();
+
+			stripFilter.processTextArea(charBuffer, stringWriter);
+
+			Assert.assertEquals(
+				"textarea >a b </textarea> ", stringWriter.toString());
+			Assert.assertEquals(29, charBuffer.position());
+		}
+		finally {
+			captureHandler.close();
+		}
 	}
 
 	@Test
