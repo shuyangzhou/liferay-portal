@@ -150,7 +150,15 @@ public class CounterModelImpl extends BaseModelImpl<Counter>
 
 	@Override
 	public void setName(String name) {
+		if (_originalName == null) {
+			_originalName = _name;
+		}
+
 		_name = name;
+	}
+
+	public String getOriginalName() {
+		return GetterUtil.getString(_originalName);
 	}
 
 	@Override
@@ -160,7 +168,17 @@ public class CounterModelImpl extends BaseModelImpl<Counter>
 
 	@Override
 	public void setCurrentId(long currentId) {
+		if (!_setOriginalCurrentId) {
+			_setOriginalCurrentId = true;
+
+			_originalCurrentId = _currentId;
+		}
+
 		_currentId = currentId;
+	}
+
+	public long getOriginalCurrentId() {
+		return _originalCurrentId;
 	}
 
 	@Override
@@ -231,6 +249,13 @@ public class CounterModelImpl extends BaseModelImpl<Counter>
 
 	@Override
 	public void resetOriginalValues() {
+		CounterModelImpl counterModelImpl = this;
+
+		counterModelImpl._originalName = counterModelImpl._name;
+
+		counterModelImpl._originalCurrentId = counterModelImpl._currentId;
+
+		counterModelImpl._setOriginalCurrentId = false;
 	}
 
 	@Override
@@ -290,6 +315,9 @@ public class CounterModelImpl extends BaseModelImpl<Counter>
 			Counter.class
 		};
 	private String _name;
+	private String _originalName;
 	private long _currentId;
+	private long _originalCurrentId;
+	private boolean _setOriginalCurrentId;
 	private Counter _escapedModel;
 }

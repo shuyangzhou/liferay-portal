@@ -26,6 +26,7 @@ import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ResourcePermission;
 import com.liferay.portal.model.ResourcePermissionModel;
 import com.liferay.portal.model.ResourcePermissionSoap;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 
 import com.liferay.portlet.expando.model.ExpandoBridge;
@@ -265,7 +266,17 @@ public class ResourcePermissionModelImpl extends BaseModelImpl<ResourcePermissio
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@JSON
@@ -276,7 +287,17 @@ public class ResourcePermissionModelImpl extends BaseModelImpl<ResourcePermissio
 
 	@Override
 	public void setResourcePermissionId(long resourcePermissionId) {
+		if (!_setOriginalResourcePermissionId) {
+			_setOriginalResourcePermissionId = true;
+
+			_originalResourcePermissionId = _resourcePermissionId;
+		}
+
 		_resourcePermissionId = resourcePermissionId;
+	}
+
+	public long getOriginalResourcePermissionId() {
+		return _originalResourcePermissionId;
 	}
 
 	@JSON
@@ -408,7 +429,17 @@ public class ResourcePermissionModelImpl extends BaseModelImpl<ResourcePermissio
 
 	@Override
 	public void setOwnerId(long ownerId) {
+		if (!_setOriginalOwnerId) {
+			_setOriginalOwnerId = true;
+
+			_originalOwnerId = _ownerId;
+		}
+
 		_ownerId = ownerId;
+	}
+
+	public long getOriginalOwnerId() {
+		return _originalOwnerId;
 	}
 
 	@JSON
@@ -419,7 +450,17 @@ public class ResourcePermissionModelImpl extends BaseModelImpl<ResourcePermissio
 
 	@Override
 	public void setActionIds(long actionIds) {
+		if (!_setOriginalActionIds) {
+			_setOriginalActionIds = true;
+
+			_originalActionIds = _actionIds;
+		}
+
 		_actionIds = actionIds;
+	}
+
+	public long getOriginalActionIds() {
+		return _originalActionIds;
 	}
 
 	public long getColumnBitmask() {
@@ -524,6 +565,14 @@ public class ResourcePermissionModelImpl extends BaseModelImpl<ResourcePermissio
 	public void resetOriginalValues() {
 		ResourcePermissionModelImpl resourcePermissionModelImpl = this;
 
+		resourcePermissionModelImpl._originalMvccVersion = resourcePermissionModelImpl._mvccVersion;
+
+		resourcePermissionModelImpl._setOriginalMvccVersion = false;
+
+		resourcePermissionModelImpl._originalResourcePermissionId = resourcePermissionModelImpl._resourcePermissionId;
+
+		resourcePermissionModelImpl._setOriginalResourcePermissionId = false;
+
 		resourcePermissionModelImpl._originalCompanyId = resourcePermissionModelImpl._companyId;
 
 		resourcePermissionModelImpl._setOriginalCompanyId = false;
@@ -539,6 +588,14 @@ public class ResourcePermissionModelImpl extends BaseModelImpl<ResourcePermissio
 		resourcePermissionModelImpl._originalRoleId = resourcePermissionModelImpl._roleId;
 
 		resourcePermissionModelImpl._setOriginalRoleId = false;
+
+		resourcePermissionModelImpl._originalOwnerId = resourcePermissionModelImpl._ownerId;
+
+		resourcePermissionModelImpl._setOriginalOwnerId = false;
+
+		resourcePermissionModelImpl._originalActionIds = resourcePermissionModelImpl._actionIds;
+
+		resourcePermissionModelImpl._setOriginalActionIds = false;
 
 		resourcePermissionModelImpl._columnBitmask = 0;
 	}
@@ -662,7 +719,11 @@ public class ResourcePermissionModelImpl extends BaseModelImpl<ResourcePermissio
 			ResourcePermission.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _resourcePermissionId;
+	private long _originalResourcePermissionId;
+	private boolean _setOriginalResourcePermissionId;
 	private long _companyId;
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
@@ -677,7 +738,11 @@ public class ResourcePermissionModelImpl extends BaseModelImpl<ResourcePermissio
 	private long _originalRoleId;
 	private boolean _setOriginalRoleId;
 	private long _ownerId;
+	private long _originalOwnerId;
+	private boolean _setOriginalOwnerId;
 	private long _actionIds;
+	private long _originalActionIds;
+	private boolean _setOriginalActionIds;
 	private long _columnBitmask;
 	private ResourcePermission _escapedModel;
 }

@@ -33,6 +33,7 @@ import com.liferay.portal.model.Role;
 import com.liferay.portal.model.RoleModel;
 import com.liferay.portal.model.RoleSoap;
 import com.liferay.portal.model.User;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
@@ -347,7 +348,17 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@JSON
@@ -382,7 +393,17 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 
 	@Override
 	public void setRoleId(long roleId) {
+		if (!_setOriginalRoleId) {
+			_setOriginalRoleId = true;
+
+			_originalRoleId = _roleId;
+		}
+
 		_roleId = roleId;
+	}
+
+	public long getOriginalRoleId() {
+		return _originalRoleId;
 	}
 
 	@JSON
@@ -416,6 +437,12 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -435,6 +462,10 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -448,7 +479,15 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -459,7 +498,15 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -470,7 +517,15 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@Override
@@ -621,6 +676,10 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 
 	@Override
 	public void setTitle(String title) {
+		if (_originalTitle == null) {
+			_originalTitle = _title;
+		}
+
 		_title = title;
 	}
 
@@ -662,6 +721,10 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 
 		setTitle(LocalizationUtil.updateLocalization(titleMap, getTitle(),
 				"Title", LocaleUtil.toLanguageId(defaultLocale)));
+	}
+
+	public String getOriginalTitle() {
+		return GetterUtil.getString(_originalTitle);
 	}
 
 	@JSON
@@ -720,6 +783,10 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 
 	@Override
 	public void setDescription(String description) {
+		if (_originalDescription == null) {
+			_originalDescription = _description;
+		}
+
 		_description = description;
 	}
 
@@ -765,6 +832,10 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 		setDescription(LocalizationUtil.updateLocalization(descriptionMap,
 				getDescription(), "Description",
 				LocaleUtil.toLanguageId(defaultLocale)));
+	}
+
+	public String getOriginalDescription() {
+		return GetterUtil.getString(_originalDescription);
 	}
 
 	@JSON
@@ -1010,11 +1081,29 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 	public void resetOriginalValues() {
 		RoleModelImpl roleModelImpl = this;
 
+		roleModelImpl._originalMvccVersion = roleModelImpl._mvccVersion;
+
+		roleModelImpl._setOriginalMvccVersion = false;
+
 		roleModelImpl._originalUuid = roleModelImpl._uuid;
+
+		roleModelImpl._originalRoleId = roleModelImpl._roleId;
+
+		roleModelImpl._setOriginalRoleId = false;
 
 		roleModelImpl._originalCompanyId = roleModelImpl._companyId;
 
 		roleModelImpl._setOriginalCompanyId = false;
+
+		roleModelImpl._originalUserId = roleModelImpl._userId;
+
+		roleModelImpl._setOriginalUserId = false;
+
+		roleModelImpl._originalUserName = roleModelImpl._userName;
+
+		roleModelImpl._originalCreateDate = roleModelImpl._createDate;
+
+		roleModelImpl._originalModifiedDate = roleModelImpl._modifiedDate;
 
 		roleModelImpl._originalClassNameId = roleModelImpl._classNameId;
 
@@ -1025,6 +1114,10 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 		roleModelImpl._setOriginalClassPK = false;
 
 		roleModelImpl._originalName = roleModelImpl._name;
+
+		roleModelImpl._originalTitle = roleModelImpl._title;
+
+		roleModelImpl._originalDescription = roleModelImpl._description;
 
 		roleModelImpl._originalType = roleModelImpl._type;
 
@@ -1240,16 +1333,25 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 			Role.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private String _uuid;
 	private String _originalUuid;
 	private long _roleId;
+	private long _originalRoleId;
+	private boolean _setOriginalRoleId;
 	private long _companyId;
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _classNameId;
 	private long _originalClassNameId;
 	private boolean _setOriginalClassNameId;
@@ -1260,8 +1362,10 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 	private String _originalName;
 	private String _title;
 	private String _titleCurrentLanguageId;
+	private String _originalTitle;
 	private String _description;
 	private String _descriptionCurrentLanguageId;
+	private String _originalDescription;
 	private int _type;
 	private int _originalType;
 	private boolean _setOriginalType;

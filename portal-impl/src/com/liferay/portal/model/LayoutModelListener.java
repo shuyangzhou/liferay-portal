@@ -18,12 +18,28 @@ import com.liferay.portal.ModelListenerException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.staging.LayoutStagingUtil;
+import com.liferay.portal.kernel.util.DateUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.Time;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.model.impl.LayoutModelImpl;
+import com.liferay.portal.service.ClassNameLocalServiceUtil;
+import com.liferay.portal.service.GroupLocalServiceUtil;
+import com.liferay.portal.service.LayoutLocalServiceUtil;
+import com.liferay.portal.service.LayoutPrototypeLocalServiceUtil;
 import com.liferay.portal.service.LayoutRevisionLocalServiceUtil;
 import com.liferay.portal.servlet.filters.cache.CacheUtil;
+import com.liferay.portlet.sites.util.Sites;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
 
 /**
  * @author Alexander Chow
  * @author Raymond Augé
+ * @author Will Newbury
  */
 public class LayoutModelListener extends BaseModelListener<Layout> {
 
@@ -43,7 +59,12 @@ public class LayoutModelListener extends BaseModelListener<Layout> {
 	}
 
 	@Override
-	public void onBeforeRemove(Layout layout) throws ModelListenerException {
+	public void onBeforeCreate(Layout layout) {
+		updateModifiedDate(layout);
+	}
+
+	@Override
+	public void onBeforeRemove(Layout layout) {
 		try {
 			if (!LayoutStagingUtil.isBranchingLayout(layout)) {
 				return;
@@ -66,6 +87,11 @@ public class LayoutModelListener extends BaseModelListener<Layout> {
 		}
 	}
 
+	@Override
+	public void onBeforeUpdate(Layout layout) {
+		updateModifiedDate(layout);
+	}
+
 	protected void clearCache(Layout layout) {
 		if (layout == null) {
 			return;
@@ -73,6 +99,124 @@ public class LayoutModelListener extends BaseModelListener<Layout> {
 
 		if (!layout.isPrivateLayout()) {
 			CacheUtil.clearCache(layout.getCompanyId());
+		}
+	}
+
+	protected long layoutPrototypeMaxMergeTime(Layout layout) {
+		try {
+			LayoutPrototype layoutPrototype = null;
+
+			String layoutPrototypeUuid = layout.getLayoutPrototypeUuid();
+
+			if (!Validator.isNull(layoutPrototypeUuid)) {
+				layoutPrototype =
+					LayoutPrototypeLocalServiceUtil.
+						getLayoutPrototypeByUuidAndCompanyId(
+							layoutPrototypeUuid, layout.getCompanyId());
+			}
+			else {
+				Group group = layout.getGroup();
+
+				if (group.getClassNameId() ==
+						ClassNameLocalServiceUtil.getClassNameId(
+							LayoutPrototype.class)) {
+
+					layoutPrototype =
+						LayoutPrototypeLocalServiceUtil.getLayoutPrototype(
+							group.getClassPK());
+				}
+			}
+
+			long maxLastMergeTime = 0;
+
+			Collection<Layout> layouts = new ArrayList();
+
+			layouts.add(layout);
+
+			if (layoutPrototype != null) {
+				layouts = new HashSet(layouts);
+
+				layouts.addAll(
+					LayoutLocalServiceUtil.getLayoutsByLayoutPrototypeUuid(
+						layoutPrototype.getUuid()));
+
+				Date layoutPrototypeModifiedDate =
+					layoutPrototype.getModifiedDate();
+
+				maxLastMergeTime = layoutPrototypeModifiedDate.getTime();
+			}
+
+			maxLastMergeTime = MaxMergeTimeUtil.findMaxMergeTimeInLayouts(
+				layouts, maxLastMergeTime);
+
+			return maxLastMergeTime;
+		}
+		catch (PortalException pe) {
+			throw new ModelListenerException(pe);
+		}
+	}
+
+	protected long layoutSetMaxMergeTime(Layout layout) {
+		try {
+			String sourcePrototypeLayoutUuid =
+				layout.getSourcePrototypeLayoutUuid();
+
+			LayoutSet layoutSet = layout.getLayoutSet();
+
+			long maxLastMergeTime = layoutSet.getModifiedDate().getTime();
+
+			long layoutSetPrototypeId = layoutSet.getLayoutSetPrototypeId();
+
+			if (layoutSetPrototypeId > 0) {
+				Group layoutSetPrototypeGroup =
+					GroupLocalServiceUtil.getLayoutSetPrototypeGroup(
+						layout.getCompanyId(), layoutSetPrototypeId);
+
+				Layout sourcePrototypeLayout =
+					LayoutLocalServiceUtil.fetchLayoutByUuidAndGroupId(
+						sourcePrototypeLayoutUuid,
+						layoutSetPrototypeGroup.getGroupId(), true);
+
+				if (sourcePrototypeLayout != null) {
+					long lastMergeTime = GetterUtil.getLong(
+						layout.getTypeSettingsProperty(Sites.LAST_MERGE_TIME));
+
+					if (lastMergeTime > maxLastMergeTime) {
+						return lastMergeTime;
+					}
+				}
+			}
+
+			return maxLastMergeTime;
+		}
+		catch (PortalException pe) {
+			throw new ModelListenerException(pe);
+		}
+	}
+
+	private void updateModifiedDate(Layout layout) {
+		LayoutModelImpl layoutModelImpl = (LayoutModelImpl)layout;
+
+		Date modifiedDate = layout.getModifiedDate();
+
+		if ((modifiedDate == null) ||
+			modifiedDate.equals(layoutModelImpl.getOriginalModifiedDate())) {
+
+			return;
+		}
+
+		modifiedDate = DateUtil.getDBSafeDate(modifiedDate);
+
+		long maxLastMergeTime = layoutPrototypeMaxMergeTime(layout);
+
+		long layoutSetMaxMergeTime = layoutSetMaxMergeTime(layout);
+
+		if (layoutSetMaxMergeTime > maxLastMergeTime) {
+			maxLastMergeTime = layoutSetMaxMergeTime;
+		}
+
+		if (maxLastMergeTime >= modifiedDate.getTime()) {
+			layout.setModifiedDate(new Date(maxLastMergeTime + Time.SECOND));
 		}
 	}
 

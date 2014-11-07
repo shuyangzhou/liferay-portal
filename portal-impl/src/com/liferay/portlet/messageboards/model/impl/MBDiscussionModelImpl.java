@@ -259,7 +259,17 @@ public class MBDiscussionModelImpl extends BaseModelImpl<MBDiscussion>
 
 	@Override
 	public void setDiscussionId(long discussionId) {
+		if (!_setOriginalDiscussionId) {
+			_setOriginalDiscussionId = true;
+
+			_originalDiscussionId = _discussionId;
+		}
+
 		_discussionId = discussionId;
+	}
+
+	public long getOriginalDiscussionId() {
+		return _originalDiscussionId;
 	}
 
 	@Override
@@ -313,6 +323,12 @@ public class MBDiscussionModelImpl extends BaseModelImpl<MBDiscussion>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -332,6 +348,10 @@ public class MBDiscussionModelImpl extends BaseModelImpl<MBDiscussion>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -344,7 +364,15 @@ public class MBDiscussionModelImpl extends BaseModelImpl<MBDiscussion>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@Override
@@ -354,7 +382,15 @@ public class MBDiscussionModelImpl extends BaseModelImpl<MBDiscussion>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@Override
@@ -364,7 +400,15 @@ public class MBDiscussionModelImpl extends BaseModelImpl<MBDiscussion>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@Override
@@ -565,6 +609,10 @@ public class MBDiscussionModelImpl extends BaseModelImpl<MBDiscussion>
 
 		mbDiscussionModelImpl._originalUuid = mbDiscussionModelImpl._uuid;
 
+		mbDiscussionModelImpl._originalDiscussionId = mbDiscussionModelImpl._discussionId;
+
+		mbDiscussionModelImpl._setOriginalDiscussionId = false;
+
 		mbDiscussionModelImpl._originalGroupId = mbDiscussionModelImpl._groupId;
 
 		mbDiscussionModelImpl._setOriginalGroupId = false;
@@ -572,6 +620,16 @@ public class MBDiscussionModelImpl extends BaseModelImpl<MBDiscussion>
 		mbDiscussionModelImpl._originalCompanyId = mbDiscussionModelImpl._companyId;
 
 		mbDiscussionModelImpl._setOriginalCompanyId = false;
+
+		mbDiscussionModelImpl._originalUserId = mbDiscussionModelImpl._userId;
+
+		mbDiscussionModelImpl._setOriginalUserId = false;
+
+		mbDiscussionModelImpl._originalUserName = mbDiscussionModelImpl._userName;
+
+		mbDiscussionModelImpl._originalCreateDate = mbDiscussionModelImpl._createDate;
+
+		mbDiscussionModelImpl._originalModifiedDate = mbDiscussionModelImpl._modifiedDate;
 
 		mbDiscussionModelImpl._originalClassNameId = mbDiscussionModelImpl._classNameId;
 
@@ -739,6 +797,8 @@ public class MBDiscussionModelImpl extends BaseModelImpl<MBDiscussion>
 	private String _uuid;
 	private String _originalUuid;
 	private long _discussionId;
+	private long _originalDiscussionId;
+	private boolean _setOriginalDiscussionId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -746,9 +806,14 @@ public class MBDiscussionModelImpl extends BaseModelImpl<MBDiscussion>
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _classNameId;
 	private long _originalClassNameId;
 	private boolean _setOriginalClassNameId;

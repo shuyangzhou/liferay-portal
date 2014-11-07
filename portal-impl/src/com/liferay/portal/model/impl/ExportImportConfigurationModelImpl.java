@@ -36,6 +36,7 @@ import com.liferay.portal.model.ExportImportConfigurationModel;
 import com.liferay.portal.model.ExportImportConfigurationSoap;
 import com.liferay.portal.model.TrashedModel;
 import com.liferay.portal.model.User;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
@@ -344,7 +345,17 @@ public class ExportImportConfigurationModelImpl extends BaseModelImpl<ExportImpo
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@JSON
@@ -355,7 +366,17 @@ public class ExportImportConfigurationModelImpl extends BaseModelImpl<ExportImpo
 
 	@Override
 	public void setExportImportConfigurationId(long exportImportConfigurationId) {
+		if (!_setOriginalExportImportConfigurationId) {
+			_setOriginalExportImportConfigurationId = true;
+
+			_originalExportImportConfigurationId = _exportImportConfigurationId;
+		}
+
 		_exportImportConfigurationId = exportImportConfigurationId;
+	}
+
+	public long getOriginalExportImportConfigurationId() {
+		return _originalExportImportConfigurationId;
 	}
 
 	@JSON
@@ -412,6 +433,12 @@ public class ExportImportConfigurationModelImpl extends BaseModelImpl<ExportImpo
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -431,6 +458,10 @@ public class ExportImportConfigurationModelImpl extends BaseModelImpl<ExportImpo
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -444,7 +475,15 @@ public class ExportImportConfigurationModelImpl extends BaseModelImpl<ExportImpo
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -457,7 +496,15 @@ public class ExportImportConfigurationModelImpl extends BaseModelImpl<ExportImpo
 	public void setCreateDate(Date createDate) {
 		_columnBitmask = -1L;
 
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -468,7 +515,15 @@ public class ExportImportConfigurationModelImpl extends BaseModelImpl<ExportImpo
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -484,7 +539,15 @@ public class ExportImportConfigurationModelImpl extends BaseModelImpl<ExportImpo
 
 	@Override
 	public void setName(String name) {
+		if (_originalName == null) {
+			_originalName = _name;
+		}
+
 		_name = name;
+	}
+
+	public String getOriginalName() {
+		return GetterUtil.getString(_originalName);
 	}
 
 	@JSON
@@ -500,7 +563,15 @@ public class ExportImportConfigurationModelImpl extends BaseModelImpl<ExportImpo
 
 	@Override
 	public void setDescription(String description) {
+		if (_originalDescription == null) {
+			_originalDescription = _description;
+		}
+
 		_description = description;
+	}
+
+	public String getOriginalDescription() {
+		return GetterUtil.getString(_originalDescription);
 	}
 
 	@JSON
@@ -539,7 +610,15 @@ public class ExportImportConfigurationModelImpl extends BaseModelImpl<ExportImpo
 
 	@Override
 	public void setSettings(String settings) {
+		if (_originalSettings == null) {
+			_originalSettings = _settings;
+		}
+
 		_settings = settings;
+	}
+
+	public String getOriginalSettings() {
+		return GetterUtil.getString(_originalSettings);
 	}
 
 	@JSON
@@ -573,6 +652,12 @@ public class ExportImportConfigurationModelImpl extends BaseModelImpl<ExportImpo
 
 	@Override
 	public void setStatusByUserId(long statusByUserId) {
+		if (!_setOriginalStatusByUserId) {
+			_setOriginalStatusByUserId = true;
+
+			_originalStatusByUserId = _statusByUserId;
+		}
+
 		_statusByUserId = statusByUserId;
 	}
 
@@ -592,6 +677,10 @@ public class ExportImportConfigurationModelImpl extends BaseModelImpl<ExportImpo
 	public void setStatusByUserUuid(String statusByUserUuid) {
 	}
 
+	public long getOriginalStatusByUserId() {
+		return _originalStatusByUserId;
+	}
+
 	@JSON
 	@Override
 	public String getStatusByUserName() {
@@ -605,7 +694,15 @@ public class ExportImportConfigurationModelImpl extends BaseModelImpl<ExportImpo
 
 	@Override
 	public void setStatusByUserName(String statusByUserName) {
+		if (_originalStatusByUserName == null) {
+			_originalStatusByUserName = _statusByUserName;
+		}
+
 		_statusByUserName = statusByUserName;
+	}
+
+	public String getOriginalStatusByUserName() {
+		return GetterUtil.getString(_originalStatusByUserName);
 	}
 
 	@JSON
@@ -616,7 +713,15 @@ public class ExportImportConfigurationModelImpl extends BaseModelImpl<ExportImpo
 
 	@Override
 	public void setStatusDate(Date statusDate) {
+		if (_originalStatusDate == null) {
+			_originalStatusDate = _statusDate;
+		}
+
 		_statusDate = statusDate;
+	}
+
+	public Date getOriginalStatusDate() {
+		return _originalStatusDate;
 	}
 
 	@Override
@@ -942,6 +1047,14 @@ public class ExportImportConfigurationModelImpl extends BaseModelImpl<ExportImpo
 	public void resetOriginalValues() {
 		ExportImportConfigurationModelImpl exportImportConfigurationModelImpl = this;
 
+		exportImportConfigurationModelImpl._originalMvccVersion = exportImportConfigurationModelImpl._mvccVersion;
+
+		exportImportConfigurationModelImpl._setOriginalMvccVersion = false;
+
+		exportImportConfigurationModelImpl._originalExportImportConfigurationId = exportImportConfigurationModelImpl._exportImportConfigurationId;
+
+		exportImportConfigurationModelImpl._setOriginalExportImportConfigurationId = false;
+
 		exportImportConfigurationModelImpl._originalGroupId = exportImportConfigurationModelImpl._groupId;
 
 		exportImportConfigurationModelImpl._setOriginalGroupId = false;
@@ -950,13 +1063,37 @@ public class ExportImportConfigurationModelImpl extends BaseModelImpl<ExportImpo
 
 		exportImportConfigurationModelImpl._setOriginalCompanyId = false;
 
+		exportImportConfigurationModelImpl._originalUserId = exportImportConfigurationModelImpl._userId;
+
+		exportImportConfigurationModelImpl._setOriginalUserId = false;
+
+		exportImportConfigurationModelImpl._originalUserName = exportImportConfigurationModelImpl._userName;
+
+		exportImportConfigurationModelImpl._originalCreateDate = exportImportConfigurationModelImpl._createDate;
+
+		exportImportConfigurationModelImpl._originalModifiedDate = exportImportConfigurationModelImpl._modifiedDate;
+
+		exportImportConfigurationModelImpl._originalName = exportImportConfigurationModelImpl._name;
+
+		exportImportConfigurationModelImpl._originalDescription = exportImportConfigurationModelImpl._description;
+
 		exportImportConfigurationModelImpl._originalType = exportImportConfigurationModelImpl._type;
 
 		exportImportConfigurationModelImpl._setOriginalType = false;
 
+		exportImportConfigurationModelImpl._originalSettings = exportImportConfigurationModelImpl._settings;
+
 		exportImportConfigurationModelImpl._originalStatus = exportImportConfigurationModelImpl._status;
 
 		exportImportConfigurationModelImpl._setOriginalStatus = false;
+
+		exportImportConfigurationModelImpl._originalStatusByUserId = exportImportConfigurationModelImpl._statusByUserId;
+
+		exportImportConfigurationModelImpl._setOriginalStatusByUserId = false;
+
+		exportImportConfigurationModelImpl._originalStatusByUserName = exportImportConfigurationModelImpl._statusByUserName;
+
+		exportImportConfigurationModelImpl._originalStatusDate = exportImportConfigurationModelImpl._statusDate;
 
 		exportImportConfigurationModelImpl._columnBitmask = 0;
 	}
@@ -1175,7 +1312,11 @@ public class ExportImportConfigurationModelImpl extends BaseModelImpl<ExportImpo
 			ExportImportConfiguration.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _exportImportConfigurationId;
+	private long _originalExportImportConfigurationId;
+	private boolean _setOriginalExportImportConfigurationId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -1183,21 +1324,33 @@ public class ExportImportConfigurationModelImpl extends BaseModelImpl<ExportImpo
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private String _name;
+	private String _originalName;
 	private String _description;
+	private String _originalDescription;
 	private int _type;
 	private int _originalType;
 	private boolean _setOriginalType;
 	private String _settings;
+	private String _originalSettings;
 	private int _status;
 	private int _originalStatus;
 	private boolean _setOriginalStatus;
 	private long _statusByUserId;
+	private long _originalStatusByUserId;
+	private boolean _setOriginalStatusByUserId;
 	private String _statusByUserName;
+	private String _originalStatusByUserName;
 	private Date _statusDate;
+	private Date _originalStatusDate;
 	private long _columnBitmask;
 	private ExportImportConfiguration _escapedModel;
 }

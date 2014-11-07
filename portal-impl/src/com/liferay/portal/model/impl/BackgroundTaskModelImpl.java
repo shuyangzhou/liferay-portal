@@ -29,6 +29,7 @@ import com.liferay.portal.model.BackgroundTaskModel;
 import com.liferay.portal.model.BackgroundTaskSoap;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.User;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
@@ -336,7 +337,17 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@JSON
@@ -347,7 +358,17 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 
 	@Override
 	public void setBackgroundTaskId(long backgroundTaskId) {
+		if (!_setOriginalBackgroundTaskId) {
+			_setOriginalBackgroundTaskId = true;
+
+			_originalBackgroundTaskId = _backgroundTaskId;
+		}
+
 		_backgroundTaskId = backgroundTaskId;
+	}
+
+	public long getOriginalBackgroundTaskId() {
+		return _originalBackgroundTaskId;
 	}
 
 	@JSON
@@ -404,6 +425,12 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -423,6 +450,10 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -436,7 +467,15 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -449,7 +488,15 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 	public void setCreateDate(Date createDate) {
 		_columnBitmask = -1L;
 
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -460,7 +507,15 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -502,7 +557,15 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 
 	@Override
 	public void setServletContextNames(String servletContextNames) {
+		if (_originalServletContextNames == null) {
+			_originalServletContextNames = _servletContextNames;
+		}
+
 		_servletContextNames = servletContextNames;
+	}
+
+	public String getOriginalServletContextNames() {
+		return GetterUtil.getString(_originalServletContextNames);
 	}
 
 	@JSON
@@ -542,6 +605,18 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 		_taskContextMap = taskContextMap;
 	}
 
+	public void setTaskContext(String taskContext) {
+		if (_originalTaskContext == null) {
+			_originalTaskContext = _taskContext;
+		}
+
+		_taskContext = taskContext;
+	}
+
+	public String getOriginalTaskContext() {
+		return GetterUtil.getString(_originalTaskContext);
+	}
+
 	@JSON
 	@Override
 	public boolean getCompleted() {
@@ -578,7 +653,15 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 
 	@Override
 	public void setCompletionDate(Date completionDate) {
+		if (_originalCompletionDate == null) {
+			_originalCompletionDate = _completionDate;
+		}
+
 		_completionDate = completionDate;
+	}
+
+	public Date getOriginalCompletionDate() {
+		return _originalCompletionDate;
 	}
 
 	@JSON
@@ -617,7 +700,15 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 
 	@Override
 	public void setStatusMessage(String statusMessage) {
+		if (_originalStatusMessage == null) {
+			_originalStatusMessage = _statusMessage;
+		}
+
 		_statusMessage = statusMessage;
+	}
+
+	public String getOriginalStatusMessage() {
+		return GetterUtil.getString(_originalStatusMessage);
 	}
 
 	public long getColumnBitmask() {
@@ -728,6 +819,14 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 	public void resetOriginalValues() {
 		BackgroundTaskModelImpl backgroundTaskModelImpl = this;
 
+		backgroundTaskModelImpl._originalMvccVersion = backgroundTaskModelImpl._mvccVersion;
+
+		backgroundTaskModelImpl._setOriginalMvccVersion = false;
+
+		backgroundTaskModelImpl._originalBackgroundTaskId = backgroundTaskModelImpl._backgroundTaskId;
+
+		backgroundTaskModelImpl._setOriginalBackgroundTaskId = false;
+
 		backgroundTaskModelImpl._originalGroupId = backgroundTaskModelImpl._groupId;
 
 		backgroundTaskModelImpl._setOriginalGroupId = false;
@@ -736,17 +835,35 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 
 		backgroundTaskModelImpl._setOriginalCompanyId = false;
 
+		backgroundTaskModelImpl._originalUserId = backgroundTaskModelImpl._userId;
+
+		backgroundTaskModelImpl._setOriginalUserId = false;
+
+		backgroundTaskModelImpl._originalUserName = backgroundTaskModelImpl._userName;
+
+		backgroundTaskModelImpl._originalCreateDate = backgroundTaskModelImpl._createDate;
+
+		backgroundTaskModelImpl._originalModifiedDate = backgroundTaskModelImpl._modifiedDate;
+
 		backgroundTaskModelImpl._originalName = backgroundTaskModelImpl._name;
 
+		backgroundTaskModelImpl._originalServletContextNames = backgroundTaskModelImpl._servletContextNames;
+
 		backgroundTaskModelImpl._originalTaskExecutorClassName = backgroundTaskModelImpl._taskExecutorClassName;
+
+		backgroundTaskModelImpl._originalTaskContext = backgroundTaskModelImpl._taskContext;
 
 		backgroundTaskModelImpl._originalCompleted = backgroundTaskModelImpl._completed;
 
 		backgroundTaskModelImpl._setOriginalCompleted = false;
 
+		backgroundTaskModelImpl._originalCompletionDate = backgroundTaskModelImpl._completionDate;
+
 		backgroundTaskModelImpl._originalStatus = backgroundTaskModelImpl._status;
 
 		backgroundTaskModelImpl._setOriginalStatus = false;
+
+		backgroundTaskModelImpl._originalStatusMessage = backgroundTaskModelImpl._statusMessage;
 
 		backgroundTaskModelImpl._columnBitmask = 0;
 	}
@@ -967,7 +1084,11 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 			BackgroundTask.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _backgroundTaskId;
+	private long _originalBackgroundTaskId;
+	private boolean _setOriginalBackgroundTaskId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -975,23 +1096,33 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private String _name;
 	private String _originalName;
 	private String _servletContextNames;
+	private String _originalServletContextNames;
 	private String _taskExecutorClassName;
 	private String _originalTaskExecutorClassName;
 	private Map<String, Serializable> _taskContextMap;
+	private String _taskContext;
+	private String _originalTaskContext;
 	private boolean _completed;
 	private boolean _originalCompleted;
 	private boolean _setOriginalCompleted;
 	private Date _completionDate;
+	private Date _originalCompletionDate;
 	private int _status;
 	private int _originalStatus;
 	private boolean _setOriginalStatus;
 	private String _statusMessage;
+	private String _originalStatusMessage;
 	private long _columnBitmask;
 	private BackgroundTask _escapedModel;
 }

@@ -174,7 +174,17 @@ public class ExpandoRowModelImpl extends BaseModelImpl<ExpandoRow>
 
 	@Override
 	public void setRowId(long rowId) {
+		if (!_setOriginalRowId) {
+			_setOriginalRowId = true;
+
+			_originalRowId = _rowId;
+		}
+
 		_rowId = rowId;
+	}
+
+	public long getOriginalRowId() {
+		return _originalRowId;
 	}
 
 	@Override
@@ -184,7 +194,17 @@ public class ExpandoRowModelImpl extends BaseModelImpl<ExpandoRow>
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if (!_setOriginalCompanyId) {
+			_setOriginalCompanyId = true;
+
+			_originalCompanyId = _companyId;
+		}
+
 		_companyId = companyId;
+	}
+
+	public long getOriginalCompanyId() {
+		return _originalCompanyId;
 	}
 
 	@Override
@@ -194,7 +214,15 @@ public class ExpandoRowModelImpl extends BaseModelImpl<ExpandoRow>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@Override
@@ -326,6 +354,16 @@ public class ExpandoRowModelImpl extends BaseModelImpl<ExpandoRow>
 	public void resetOriginalValues() {
 		ExpandoRowModelImpl expandoRowModelImpl = this;
 
+		expandoRowModelImpl._originalRowId = expandoRowModelImpl._rowId;
+
+		expandoRowModelImpl._setOriginalRowId = false;
+
+		expandoRowModelImpl._originalCompanyId = expandoRowModelImpl._companyId;
+
+		expandoRowModelImpl._setOriginalCompanyId = false;
+
+		expandoRowModelImpl._originalModifiedDate = expandoRowModelImpl._modifiedDate;
+
 		expandoRowModelImpl._originalTableId = expandoRowModelImpl._tableId;
 
 		expandoRowModelImpl._setOriginalTableId = false;
@@ -419,8 +457,13 @@ public class ExpandoRowModelImpl extends BaseModelImpl<ExpandoRow>
 			ExpandoRow.class
 		};
 	private long _rowId;
+	private long _originalRowId;
+	private boolean _setOriginalRowId;
 	private long _companyId;
+	private long _originalCompanyId;
+	private boolean _setOriginalCompanyId;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _tableId;
 	private long _originalTableId;
 	private boolean _setOriginalTableId;

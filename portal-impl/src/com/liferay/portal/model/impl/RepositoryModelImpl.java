@@ -30,6 +30,7 @@ import com.liferay.portal.model.Repository;
 import com.liferay.portal.model.RepositoryModel;
 import com.liferay.portal.model.RepositorySoap;
 import com.liferay.portal.model.User;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
@@ -325,7 +326,17 @@ public class RepositoryModelImpl extends BaseModelImpl<Repository>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@JSON
@@ -360,7 +371,17 @@ public class RepositoryModelImpl extends BaseModelImpl<Repository>
 
 	@Override
 	public void setRepositoryId(long repositoryId) {
+		if (!_setOriginalRepositoryId) {
+			_setOriginalRepositoryId = true;
+
+			_originalRepositoryId = _repositoryId;
+		}
+
 		_repositoryId = repositoryId;
+	}
+
+	public long getOriginalRepositoryId() {
+		return _originalRepositoryId;
 	}
 
 	@JSON
@@ -417,6 +438,12 @@ public class RepositoryModelImpl extends BaseModelImpl<Repository>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -436,6 +463,10 @@ public class RepositoryModelImpl extends BaseModelImpl<Repository>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -449,7 +480,15 @@ public class RepositoryModelImpl extends BaseModelImpl<Repository>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -460,7 +499,15 @@ public class RepositoryModelImpl extends BaseModelImpl<Repository>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -471,7 +518,15 @@ public class RepositoryModelImpl extends BaseModelImpl<Repository>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@Override
@@ -502,7 +557,17 @@ public class RepositoryModelImpl extends BaseModelImpl<Repository>
 
 	@Override
 	public void setClassNameId(long classNameId) {
+		if (!_setOriginalClassNameId) {
+			_setOriginalClassNameId = true;
+
+			_originalClassNameId = _classNameId;
+		}
+
 		_classNameId = classNameId;
+	}
+
+	public long getOriginalClassNameId() {
+		return _originalClassNameId;
 	}
 
 	@JSON
@@ -544,7 +609,15 @@ public class RepositoryModelImpl extends BaseModelImpl<Repository>
 
 	@Override
 	public void setDescription(String description) {
+		if (_originalDescription == null) {
+			_originalDescription = _description;
+		}
+
 		_description = description;
+	}
+
+	public String getOriginalDescription() {
+		return GetterUtil.getString(_originalDescription);
 	}
 
 	@JSON
@@ -586,7 +659,15 @@ public class RepositoryModelImpl extends BaseModelImpl<Repository>
 
 	@Override
 	public void setTypeSettings(String typeSettings) {
+		if (_originalTypeSettings == null) {
+			_originalTypeSettings = _typeSettings;
+		}
+
 		_typeSettings = typeSettings;
+	}
+
+	public String getOriginalTypeSettings() {
+		return GetterUtil.getString(_originalTypeSettings);
 	}
 
 	@JSON
@@ -597,7 +678,17 @@ public class RepositoryModelImpl extends BaseModelImpl<Repository>
 
 	@Override
 	public void setDlFolderId(long dlFolderId) {
+		if (!_setOriginalDlFolderId) {
+			_setOriginalDlFolderId = true;
+
+			_originalDlFolderId = _dlFolderId;
+		}
+
 		_dlFolderId = dlFolderId;
+	}
+
+	public long getOriginalDlFolderId() {
+		return _originalDlFolderId;
 	}
 
 	@Override
@@ -714,7 +805,15 @@ public class RepositoryModelImpl extends BaseModelImpl<Repository>
 	public void resetOriginalValues() {
 		RepositoryModelImpl repositoryModelImpl = this;
 
+		repositoryModelImpl._originalMvccVersion = repositoryModelImpl._mvccVersion;
+
+		repositoryModelImpl._setOriginalMvccVersion = false;
+
 		repositoryModelImpl._originalUuid = repositoryModelImpl._uuid;
+
+		repositoryModelImpl._originalRepositoryId = repositoryModelImpl._repositoryId;
+
+		repositoryModelImpl._setOriginalRepositoryId = false;
 
 		repositoryModelImpl._originalGroupId = repositoryModelImpl._groupId;
 
@@ -724,9 +823,31 @@ public class RepositoryModelImpl extends BaseModelImpl<Repository>
 
 		repositoryModelImpl._setOriginalCompanyId = false;
 
+		repositoryModelImpl._originalUserId = repositoryModelImpl._userId;
+
+		repositoryModelImpl._setOriginalUserId = false;
+
+		repositoryModelImpl._originalUserName = repositoryModelImpl._userName;
+
+		repositoryModelImpl._originalCreateDate = repositoryModelImpl._createDate;
+
+		repositoryModelImpl._originalModifiedDate = repositoryModelImpl._modifiedDate;
+
+		repositoryModelImpl._originalClassNameId = repositoryModelImpl._classNameId;
+
+		repositoryModelImpl._setOriginalClassNameId = false;
+
 		repositoryModelImpl._originalName = repositoryModelImpl._name;
 
+		repositoryModelImpl._originalDescription = repositoryModelImpl._description;
+
 		repositoryModelImpl._originalPortletId = repositoryModelImpl._portletId;
+
+		repositoryModelImpl._originalTypeSettings = repositoryModelImpl._typeSettings;
+
+		repositoryModelImpl._originalDlFolderId = repositoryModelImpl._dlFolderId;
+
+		repositoryModelImpl._setOriginalDlFolderId = false;
 
 		repositoryModelImpl._columnBitmask = 0;
 	}
@@ -936,9 +1057,13 @@ public class RepositoryModelImpl extends BaseModelImpl<Repository>
 			Repository.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private String _uuid;
 	private String _originalUuid;
 	private long _repositoryId;
+	private long _originalRepositoryId;
+	private boolean _setOriginalRepositoryId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -946,17 +1071,28 @@ public class RepositoryModelImpl extends BaseModelImpl<Repository>
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _classNameId;
+	private long _originalClassNameId;
+	private boolean _setOriginalClassNameId;
 	private String _name;
 	private String _originalName;
 	private String _description;
+	private String _originalDescription;
 	private String _portletId;
 	private String _originalPortletId;
 	private String _typeSettings;
+	private String _originalTypeSettings;
 	private long _dlFolderId;
+	private long _originalDlFolderId;
+	private boolean _setOriginalDlFolderId;
 	private long _columnBitmask;
 	private Repository _escapedModel;
 }

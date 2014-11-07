@@ -25,6 +25,7 @@ import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.OrgLabor;
 import com.liferay.portal.model.OrgLaborModel;
 import com.liferay.portal.model.OrgLaborSoap;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 
 import com.liferay.portlet.expando.model.ExpandoBridge;
@@ -340,7 +341,17 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@JSON
@@ -351,7 +362,17 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 
 	@Override
 	public void setOrgLaborId(long orgLaborId) {
+		if (!_setOriginalOrgLaborId) {
+			_setOriginalOrgLaborId = true;
+
+			_originalOrgLaborId = _orgLaborId;
+		}
+
 		_orgLaborId = orgLaborId;
+	}
+
+	public long getOriginalOrgLaborId() {
+		return _originalOrgLaborId;
 	}
 
 	@JSON
@@ -387,7 +408,17 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 	public void setTypeId(int typeId) {
 		_columnBitmask = -1L;
 
+		if (!_setOriginalTypeId) {
+			_setOriginalTypeId = true;
+
+			_originalTypeId = _typeId;
+		}
+
 		_typeId = typeId;
+	}
+
+	public int getOriginalTypeId() {
+		return _originalTypeId;
 	}
 
 	@JSON
@@ -398,7 +429,17 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 
 	@Override
 	public void setSunOpen(int sunOpen) {
+		if (!_setOriginalSunOpen) {
+			_setOriginalSunOpen = true;
+
+			_originalSunOpen = _sunOpen;
+		}
+
 		_sunOpen = sunOpen;
+	}
+
+	public int getOriginalSunOpen() {
+		return _originalSunOpen;
 	}
 
 	@JSON
@@ -409,7 +450,17 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 
 	@Override
 	public void setSunClose(int sunClose) {
+		if (!_setOriginalSunClose) {
+			_setOriginalSunClose = true;
+
+			_originalSunClose = _sunClose;
+		}
+
 		_sunClose = sunClose;
+	}
+
+	public int getOriginalSunClose() {
+		return _originalSunClose;
 	}
 
 	@JSON
@@ -420,7 +471,17 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 
 	@Override
 	public void setMonOpen(int monOpen) {
+		if (!_setOriginalMonOpen) {
+			_setOriginalMonOpen = true;
+
+			_originalMonOpen = _monOpen;
+		}
+
 		_monOpen = monOpen;
+	}
+
+	public int getOriginalMonOpen() {
+		return _originalMonOpen;
 	}
 
 	@JSON
@@ -431,7 +492,17 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 
 	@Override
 	public void setMonClose(int monClose) {
+		if (!_setOriginalMonClose) {
+			_setOriginalMonClose = true;
+
+			_originalMonClose = _monClose;
+		}
+
 		_monClose = monClose;
+	}
+
+	public int getOriginalMonClose() {
+		return _originalMonClose;
 	}
 
 	@JSON
@@ -442,7 +513,17 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 
 	@Override
 	public void setTueOpen(int tueOpen) {
+		if (!_setOriginalTueOpen) {
+			_setOriginalTueOpen = true;
+
+			_originalTueOpen = _tueOpen;
+		}
+
 		_tueOpen = tueOpen;
+	}
+
+	public int getOriginalTueOpen() {
+		return _originalTueOpen;
 	}
 
 	@JSON
@@ -453,7 +534,17 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 
 	@Override
 	public void setTueClose(int tueClose) {
+		if (!_setOriginalTueClose) {
+			_setOriginalTueClose = true;
+
+			_originalTueClose = _tueClose;
+		}
+
 		_tueClose = tueClose;
+	}
+
+	public int getOriginalTueClose() {
+		return _originalTueClose;
 	}
 
 	@JSON
@@ -464,7 +555,17 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 
 	@Override
 	public void setWedOpen(int wedOpen) {
+		if (!_setOriginalWedOpen) {
+			_setOriginalWedOpen = true;
+
+			_originalWedOpen = _wedOpen;
+		}
+
 		_wedOpen = wedOpen;
+	}
+
+	public int getOriginalWedOpen() {
+		return _originalWedOpen;
 	}
 
 	@JSON
@@ -475,7 +576,17 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 
 	@Override
 	public void setWedClose(int wedClose) {
+		if (!_setOriginalWedClose) {
+			_setOriginalWedClose = true;
+
+			_originalWedClose = _wedClose;
+		}
+
 		_wedClose = wedClose;
+	}
+
+	public int getOriginalWedClose() {
+		return _originalWedClose;
 	}
 
 	@JSON
@@ -486,7 +597,17 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 
 	@Override
 	public void setThuOpen(int thuOpen) {
+		if (!_setOriginalThuOpen) {
+			_setOriginalThuOpen = true;
+
+			_originalThuOpen = _thuOpen;
+		}
+
 		_thuOpen = thuOpen;
+	}
+
+	public int getOriginalThuOpen() {
+		return _originalThuOpen;
 	}
 
 	@JSON
@@ -497,7 +618,17 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 
 	@Override
 	public void setThuClose(int thuClose) {
+		if (!_setOriginalThuClose) {
+			_setOriginalThuClose = true;
+
+			_originalThuClose = _thuClose;
+		}
+
 		_thuClose = thuClose;
+	}
+
+	public int getOriginalThuClose() {
+		return _originalThuClose;
 	}
 
 	@JSON
@@ -508,7 +639,17 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 
 	@Override
 	public void setFriOpen(int friOpen) {
+		if (!_setOriginalFriOpen) {
+			_setOriginalFriOpen = true;
+
+			_originalFriOpen = _friOpen;
+		}
+
 		_friOpen = friOpen;
+	}
+
+	public int getOriginalFriOpen() {
+		return _originalFriOpen;
 	}
 
 	@JSON
@@ -519,7 +660,17 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 
 	@Override
 	public void setFriClose(int friClose) {
+		if (!_setOriginalFriClose) {
+			_setOriginalFriClose = true;
+
+			_originalFriClose = _friClose;
+		}
+
 		_friClose = friClose;
+	}
+
+	public int getOriginalFriClose() {
+		return _originalFriClose;
 	}
 
 	@JSON
@@ -530,7 +681,17 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 
 	@Override
 	public void setSatOpen(int satOpen) {
+		if (!_setOriginalSatOpen) {
+			_setOriginalSatOpen = true;
+
+			_originalSatOpen = _satOpen;
+		}
+
 		_satOpen = satOpen;
+	}
+
+	public int getOriginalSatOpen() {
+		return _originalSatOpen;
 	}
 
 	@JSON
@@ -541,7 +702,17 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 
 	@Override
 	public void setSatClose(int satClose) {
+		if (!_setOriginalSatClose) {
+			_setOriginalSatClose = true;
+
+			_originalSatClose = _satClose;
+		}
+
 		_satClose = satClose;
+	}
+
+	public int getOriginalSatClose() {
+		return _originalSatClose;
 	}
 
 	public long getColumnBitmask() {
@@ -675,9 +846,77 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 	public void resetOriginalValues() {
 		OrgLaborModelImpl orgLaborModelImpl = this;
 
+		orgLaborModelImpl._originalMvccVersion = orgLaborModelImpl._mvccVersion;
+
+		orgLaborModelImpl._setOriginalMvccVersion = false;
+
+		orgLaborModelImpl._originalOrgLaborId = orgLaborModelImpl._orgLaborId;
+
+		orgLaborModelImpl._setOriginalOrgLaborId = false;
+
 		orgLaborModelImpl._originalOrganizationId = orgLaborModelImpl._organizationId;
 
 		orgLaborModelImpl._setOriginalOrganizationId = false;
+
+		orgLaborModelImpl._originalTypeId = orgLaborModelImpl._typeId;
+
+		orgLaborModelImpl._setOriginalTypeId = false;
+
+		orgLaborModelImpl._originalSunOpen = orgLaborModelImpl._sunOpen;
+
+		orgLaborModelImpl._setOriginalSunOpen = false;
+
+		orgLaborModelImpl._originalSunClose = orgLaborModelImpl._sunClose;
+
+		orgLaborModelImpl._setOriginalSunClose = false;
+
+		orgLaborModelImpl._originalMonOpen = orgLaborModelImpl._monOpen;
+
+		orgLaborModelImpl._setOriginalMonOpen = false;
+
+		orgLaborModelImpl._originalMonClose = orgLaborModelImpl._monClose;
+
+		orgLaborModelImpl._setOriginalMonClose = false;
+
+		orgLaborModelImpl._originalTueOpen = orgLaborModelImpl._tueOpen;
+
+		orgLaborModelImpl._setOriginalTueOpen = false;
+
+		orgLaborModelImpl._originalTueClose = orgLaborModelImpl._tueClose;
+
+		orgLaborModelImpl._setOriginalTueClose = false;
+
+		orgLaborModelImpl._originalWedOpen = orgLaborModelImpl._wedOpen;
+
+		orgLaborModelImpl._setOriginalWedOpen = false;
+
+		orgLaborModelImpl._originalWedClose = orgLaborModelImpl._wedClose;
+
+		orgLaborModelImpl._setOriginalWedClose = false;
+
+		orgLaborModelImpl._originalThuOpen = orgLaborModelImpl._thuOpen;
+
+		orgLaborModelImpl._setOriginalThuOpen = false;
+
+		orgLaborModelImpl._originalThuClose = orgLaborModelImpl._thuClose;
+
+		orgLaborModelImpl._setOriginalThuClose = false;
+
+		orgLaborModelImpl._originalFriOpen = orgLaborModelImpl._friOpen;
+
+		orgLaborModelImpl._setOriginalFriOpen = false;
+
+		orgLaborModelImpl._originalFriClose = orgLaborModelImpl._friClose;
+
+		orgLaborModelImpl._setOriginalFriClose = false;
+
+		orgLaborModelImpl._originalSatOpen = orgLaborModelImpl._satOpen;
+
+		orgLaborModelImpl._setOriginalSatOpen = false;
+
+		orgLaborModelImpl._originalSatClose = orgLaborModelImpl._satClose;
+
+		orgLaborModelImpl._setOriginalSatClose = false;
 
 		orgLaborModelImpl._columnBitmask = 0;
 	}
@@ -861,25 +1100,59 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 			OrgLabor.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _orgLaborId;
+	private long _originalOrgLaborId;
+	private boolean _setOriginalOrgLaborId;
 	private long _organizationId;
 	private long _originalOrganizationId;
 	private boolean _setOriginalOrganizationId;
 	private int _typeId;
+	private int _originalTypeId;
+	private boolean _setOriginalTypeId;
 	private int _sunOpen;
+	private int _originalSunOpen;
+	private boolean _setOriginalSunOpen;
 	private int _sunClose;
+	private int _originalSunClose;
+	private boolean _setOriginalSunClose;
 	private int _monOpen;
+	private int _originalMonOpen;
+	private boolean _setOriginalMonOpen;
 	private int _monClose;
+	private int _originalMonClose;
+	private boolean _setOriginalMonClose;
 	private int _tueOpen;
+	private int _originalTueOpen;
+	private boolean _setOriginalTueOpen;
 	private int _tueClose;
+	private int _originalTueClose;
+	private boolean _setOriginalTueClose;
 	private int _wedOpen;
+	private int _originalWedOpen;
+	private boolean _setOriginalWedOpen;
 	private int _wedClose;
+	private int _originalWedClose;
+	private boolean _setOriginalWedClose;
 	private int _thuOpen;
+	private int _originalThuOpen;
+	private boolean _setOriginalThuOpen;
 	private int _thuClose;
+	private int _originalThuClose;
+	private boolean _setOriginalThuClose;
 	private int _friOpen;
+	private int _originalFriOpen;
+	private boolean _setOriginalFriOpen;
 	private int _friClose;
+	private int _originalFriClose;
+	private boolean _setOriginalFriClose;
 	private int _satOpen;
+	private int _originalSatOpen;
+	private boolean _setOriginalSatOpen;
 	private int _satClose;
+	private int _originalSatClose;
+	private boolean _setOriginalSatClose;
 	private long _columnBitmask;
 	private OrgLabor _escapedModel;
 }

@@ -17,15 +17,16 @@ package com.liferay.portal.service.impl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.transaction.TransactionCommitCallbackRegistryUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.model.BaseModelListener;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.LayoutSet;
 import com.liferay.portal.model.LayoutSetPrototype;
 import com.liferay.portal.service.LayoutSetPrototypeLocalServiceUtil;
-import com.liferay.portal.service.persistence.LayoutSetPrototypeUtil;
 
 import java.util.Date;
+import java.util.concurrent.Callable;
 
 /**
  * @author Raymond Augé
@@ -49,42 +50,53 @@ public class LayoutSetPrototypeLayoutSetModelListener
 	}
 
 	protected void updateLayoutSetPrototype(
-		LayoutSet layoutSet, Date modifiedDate) {
+		final LayoutSet layoutSet, final Date modifiedDate) {
 
-		if (layoutSet == null) {
-			return;
-		}
+		TransactionCommitCallbackRegistryUtil.registerCallback(
+			new Callable<Void>() {
 
-		Group group = null;
+				@Override
+				public Void call() throws Exception {
+					if (layoutSet == null) {
+						return null;
+					}
 
-		try {
-			group = layoutSet.getGroup();
+					Group group = null;
 
-			if (!group.isLayoutSetPrototype()) {
-				return;
-			}
-		}
-		catch (PortalException pe) {
-			return;
-		}
+					try {
+						group = layoutSet.getGroup();
 
-		try {
-			LayoutSetPrototype layoutSetPrototype =
-				LayoutSetPrototypeLocalServiceUtil.getLayoutSetPrototype(
-					group.getClassPK());
+						if (!group.isLayoutSetPrototype()) {
+							return null;
+						}
+					}
+					catch (PortalException pe) {
+						return null;
+					}
 
-			layoutSetPrototype.setModifiedDate(modifiedDate);
+					try {
+						LayoutSetPrototype layoutSetPrototype =
+							LayoutSetPrototypeLocalServiceUtil.
+								getLayoutSetPrototype(group.getClassPK());
 
-			UnicodeProperties settingsProperties =
-				layoutSet.getSettingsProperties();
+						layoutSetPrototype.setModifiedDate(modifiedDate);
 
-			settingsProperties.remove("merge-fail-count");
+						UnicodeProperties settingsProperties =
+							layoutSet.getSettingsProperties();
 
-			LayoutSetPrototypeUtil.update(layoutSetPrototype);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-		}
+						settingsProperties.remove("merge-fail-count");
+
+						LayoutSetPrototypeLocalServiceUtil.
+							updateLayoutSetPrototype(layoutSetPrototype);
+					}
+					catch (Exception e) {
+						_log.error(e, e);
+					}
+
+					return null;
+				}
+
+			});
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

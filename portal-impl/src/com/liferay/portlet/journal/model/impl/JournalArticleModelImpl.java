@@ -538,7 +538,17 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 
 	@Override
 	public void setId(long id) {
+		if (!_setOriginalId) {
+			_setOriginalId = true;
+
+			_originalId = _id;
+		}
+
 		_id = id;
+	}
+
+	public long getOriginalId() {
+		return _originalId;
 	}
 
 	@JSON
@@ -667,7 +677,15 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -678,7 +696,15 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -689,7 +715,15 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -794,7 +828,15 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 
 	@Override
 	public void setTreePath(String treePath) {
+		if (_originalTreePath == null) {
+			_originalTreePath = _treePath;
+		}
+
 		_treePath = treePath;
+	}
+
+	public String getOriginalTreePath() {
+		return GetterUtil.getString(_originalTreePath);
 	}
 
 	@JSON
@@ -902,6 +944,10 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 
 	@Override
 	public void setTitle(String title) {
+		if (_originalTitle == null) {
+			_originalTitle = _title;
+		}
+
 		_title = title;
 	}
 
@@ -943,6 +989,10 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 
 		setTitle(LocalizationUtil.updateLocalization(titleMap, getTitle(),
 				"Title", LocaleUtil.toLanguageId(defaultLocale)));
+	}
+
+	public String getOriginalTitle() {
+		return GetterUtil.getString(_originalTitle);
 	}
 
 	@JSON
@@ -1027,6 +1077,10 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 
 	@Override
 	public void setDescription(String description) {
+		if (_originalDescription == null) {
+			_originalDescription = _description;
+		}
+
 		_description = description;
 	}
 
@@ -1074,6 +1128,10 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
+	public String getOriginalDescription() {
+		return GetterUtil.getString(_originalDescription);
+	}
+
 	@JSON
 	@Override
 	public String getContent() {
@@ -1087,7 +1145,15 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 
 	@Override
 	public void setContent(String content) {
+		if (_originalContent == null) {
+			_originalContent = _content;
+		}
+
 		_content = content;
+	}
+
+	public String getOriginalContent() {
+		return GetterUtil.getString(_originalContent);
 	}
 
 	@JSON
@@ -1197,7 +1263,15 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 
 	@Override
 	public void setExpirationDate(Date expirationDate) {
+		if (_originalExpirationDate == null) {
+			_originalExpirationDate = _expirationDate;
+		}
+
 		_expirationDate = expirationDate;
+	}
+
+	public Date getOriginalExpirationDate() {
+		return _originalExpirationDate;
 	}
 
 	@JSON
@@ -1208,7 +1282,15 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 
 	@Override
 	public void setReviewDate(Date reviewDate) {
+		if (_originalReviewDate == null) {
+			_originalReviewDate = _reviewDate;
+		}
+
 		_reviewDate = reviewDate;
+	}
+
+	public Date getOriginalReviewDate() {
+		return _originalReviewDate;
 	}
 
 	@JSON
@@ -1252,7 +1334,17 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 
 	@Override
 	public void setSmallImage(boolean smallImage) {
+		if (!_setOriginalSmallImage) {
+			_setOriginalSmallImage = true;
+
+			_originalSmallImage = _smallImage;
+		}
+
 		_smallImage = smallImage;
+	}
+
+	public boolean getOriginalSmallImage() {
+		return _originalSmallImage;
 	}
 
 	@JSON
@@ -1291,7 +1383,15 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 
 	@Override
 	public void setSmallImageURL(String smallImageURL) {
+		if (_originalSmallImageURL == null) {
+			_originalSmallImageURL = _smallImageURL;
+		}
+
 		_smallImageURL = smallImageURL;
+	}
+
+	public String getOriginalSmallImageURL() {
+		return GetterUtil.getString(_originalSmallImageURL);
 	}
 
 	@JSON
@@ -1325,6 +1425,12 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 
 	@Override
 	public void setStatusByUserId(long statusByUserId) {
+		if (!_setOriginalStatusByUserId) {
+			_setOriginalStatusByUserId = true;
+
+			_originalStatusByUserId = _statusByUserId;
+		}
+
 		_statusByUserId = statusByUserId;
 	}
 
@@ -1344,6 +1450,10 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 	public void setStatusByUserUuid(String statusByUserUuid) {
 	}
 
+	public long getOriginalStatusByUserId() {
+		return _originalStatusByUserId;
+	}
+
 	@JSON
 	@Override
 	public String getStatusByUserName() {
@@ -1357,7 +1467,15 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 
 	@Override
 	public void setStatusByUserName(String statusByUserName) {
+		if (_originalStatusByUserName == null) {
+			_originalStatusByUserName = _statusByUserName;
+		}
+
 		_statusByUserName = statusByUserName;
+	}
+
+	public String getOriginalStatusByUserName() {
+		return GetterUtil.getString(_originalStatusByUserName);
 	}
 
 	@JSON
@@ -1368,7 +1486,15 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 
 	@Override
 	public void setStatusDate(Date statusDate) {
+		if (_originalStatusDate == null) {
+			_originalStatusDate = _statusDate;
+		}
+
 		_statusDate = statusDate;
+	}
+
+	public Date getOriginalStatusDate() {
+		return _originalStatusDate;
 	}
 
 	public void setDefaultLanguageId(java.lang.String defaultLanguageId) {
@@ -1826,6 +1952,10 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 
 		journalArticleModelImpl._originalUuid = journalArticleModelImpl._uuid;
 
+		journalArticleModelImpl._originalId = journalArticleModelImpl._id;
+
+		journalArticleModelImpl._setOriginalId = false;
+
 		journalArticleModelImpl._originalResourcePrimKey = journalArticleModelImpl._resourcePrimKey;
 
 		journalArticleModelImpl._setOriginalResourcePrimKey = false;
@@ -1842,6 +1972,12 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 
 		journalArticleModelImpl._setOriginalUserId = false;
 
+		journalArticleModelImpl._originalUserName = journalArticleModelImpl._userName;
+
+		journalArticleModelImpl._originalCreateDate = journalArticleModelImpl._createDate;
+
+		journalArticleModelImpl._originalModifiedDate = journalArticleModelImpl._modifiedDate;
+
 		journalArticleModelImpl._originalFolderId = journalArticleModelImpl._folderId;
 
 		journalArticleModelImpl._setOriginalFolderId = false;
@@ -1854,13 +1990,21 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 
 		journalArticleModelImpl._setOriginalClassPK = false;
 
+		journalArticleModelImpl._originalTreePath = journalArticleModelImpl._treePath;
+
 		journalArticleModelImpl._originalArticleId = journalArticleModelImpl._articleId;
 
 		journalArticleModelImpl._originalVersion = journalArticleModelImpl._version;
 
 		journalArticleModelImpl._setOriginalVersion = false;
 
+		journalArticleModelImpl._originalTitle = journalArticleModelImpl._title;
+
 		journalArticleModelImpl._originalUrlTitle = journalArticleModelImpl._urlTitle;
+
+		journalArticleModelImpl._originalDescription = journalArticleModelImpl._description;
+
+		journalArticleModelImpl._originalContent = journalArticleModelImpl._content;
 
 		journalArticleModelImpl._originalDDMStructureKey = journalArticleModelImpl._DDMStructureKey;
 
@@ -1870,17 +2014,35 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 
 		journalArticleModelImpl._originalDisplayDate = journalArticleModelImpl._displayDate;
 
+		journalArticleModelImpl._originalExpirationDate = journalArticleModelImpl._expirationDate;
+
+		journalArticleModelImpl._originalReviewDate = journalArticleModelImpl._reviewDate;
+
 		journalArticleModelImpl._originalIndexable = journalArticleModelImpl._indexable;
 
 		journalArticleModelImpl._setOriginalIndexable = false;
+
+		journalArticleModelImpl._originalSmallImage = journalArticleModelImpl._smallImage;
+
+		journalArticleModelImpl._setOriginalSmallImage = false;
 
 		journalArticleModelImpl._originalSmallImageId = journalArticleModelImpl._smallImageId;
 
 		journalArticleModelImpl._setOriginalSmallImageId = false;
 
+		journalArticleModelImpl._originalSmallImageURL = journalArticleModelImpl._smallImageURL;
+
 		journalArticleModelImpl._originalStatus = journalArticleModelImpl._status;
 
 		journalArticleModelImpl._setOriginalStatus = false;
+
+		journalArticleModelImpl._originalStatusByUserId = journalArticleModelImpl._statusByUserId;
+
+		journalArticleModelImpl._setOriginalStatusByUserId = false;
+
+		journalArticleModelImpl._originalStatusByUserName = journalArticleModelImpl._statusByUserName;
+
+		journalArticleModelImpl._originalStatusDate = journalArticleModelImpl._statusDate;
 
 		setDefaultLanguageId(null);
 
@@ -2314,6 +2476,8 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 	private String _uuid;
 	private String _originalUuid;
 	private long _id;
+	private long _originalId;
+	private boolean _setOriginalId;
 	private long _resourcePrimKey;
 	private long _originalResourcePrimKey;
 	private boolean _setOriginalResourcePrimKey;
@@ -2327,8 +2491,11 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 	private long _originalUserId;
 	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _folderId;
 	private long _originalFolderId;
 	private boolean _setOriginalFolderId;
@@ -2339,6 +2506,7 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 	private long _originalClassPK;
 	private boolean _setOriginalClassPK;
 	private String _treePath;
+	private String _originalTreePath;
 	private String _articleId;
 	private String _originalArticleId;
 	private double _version;
@@ -2346,11 +2514,14 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 	private boolean _setOriginalVersion;
 	private String _title;
 	private String _titleCurrentLanguageId;
+	private String _originalTitle;
 	private String _urlTitle;
 	private String _originalUrlTitle;
 	private String _description;
 	private String _descriptionCurrentLanguageId;
+	private String _originalDescription;
 	private String _content;
+	private String _originalContent;
 	private String _DDMStructureKey;
 	private String _originalDDMStructureKey;
 	private String _DDMTemplateKey;
@@ -2360,21 +2531,30 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 	private Date _displayDate;
 	private Date _originalDisplayDate;
 	private Date _expirationDate;
+	private Date _originalExpirationDate;
 	private Date _reviewDate;
+	private Date _originalReviewDate;
 	private boolean _indexable;
 	private boolean _originalIndexable;
 	private boolean _setOriginalIndexable;
 	private boolean _smallImage;
+	private boolean _originalSmallImage;
+	private boolean _setOriginalSmallImage;
 	private long _smallImageId;
 	private long _originalSmallImageId;
 	private boolean _setOriginalSmallImageId;
 	private String _smallImageURL;
+	private String _originalSmallImageURL;
 	private int _status;
 	private int _originalStatus;
 	private boolean _setOriginalStatus;
 	private long _statusByUserId;
+	private long _originalStatusByUserId;
+	private boolean _setOriginalStatusByUserId;
 	private String _statusByUserName;
+	private String _originalStatusByUserName;
 	private Date _statusDate;
+	private Date _originalStatusDate;
 	private long _columnBitmask;
 	private JournalArticle _escapedModel;
 }

@@ -181,6 +181,12 @@ public class MBStatsUserModelImpl extends BaseModelImpl<MBStatsUser>
 
 	@Override
 	public void setStatsUserId(long statsUserId) {
+		if (!_setOriginalStatsUserId) {
+			_setOriginalStatsUserId = true;
+
+			_originalStatsUserId = _statsUserId;
+		}
+
 		_statsUserId = statsUserId;
 	}
 
@@ -198,6 +204,10 @@ public class MBStatsUserModelImpl extends BaseModelImpl<MBStatsUser>
 
 	@Override
 	public void setStatsUserUuid(String statsUserUuid) {
+	}
+
+	public long getOriginalStatsUserId() {
+		return _originalStatsUserId;
 	}
 
 	@Override
@@ -289,7 +299,15 @@ public class MBStatsUserModelImpl extends BaseModelImpl<MBStatsUser>
 
 	@Override
 	public void setLastPostDate(Date lastPostDate) {
+		if (_originalLastPostDate == null) {
+			_originalLastPostDate = _lastPostDate;
+		}
+
 		_lastPostDate = lastPostDate;
+	}
+
+	public Date getOriginalLastPostDate() {
+		return _originalLastPostDate;
 	}
 
 	public long getColumnBitmask() {
@@ -398,6 +416,10 @@ public class MBStatsUserModelImpl extends BaseModelImpl<MBStatsUser>
 	public void resetOriginalValues() {
 		MBStatsUserModelImpl mbStatsUserModelImpl = this;
 
+		mbStatsUserModelImpl._originalStatsUserId = mbStatsUserModelImpl._statsUserId;
+
+		mbStatsUserModelImpl._setOriginalStatsUserId = false;
+
 		mbStatsUserModelImpl._originalGroupId = mbStatsUserModelImpl._groupId;
 
 		mbStatsUserModelImpl._setOriginalGroupId = false;
@@ -409,6 +431,8 @@ public class MBStatsUserModelImpl extends BaseModelImpl<MBStatsUser>
 		mbStatsUserModelImpl._originalMessageCount = mbStatsUserModelImpl._messageCount;
 
 		mbStatsUserModelImpl._setOriginalMessageCount = false;
+
+		mbStatsUserModelImpl._originalLastPostDate = mbStatsUserModelImpl._lastPostDate;
 
 		mbStatsUserModelImpl._columnBitmask = 0;
 	}
@@ -495,6 +519,8 @@ public class MBStatsUserModelImpl extends BaseModelImpl<MBStatsUser>
 			MBStatsUser.class
 		};
 	private long _statsUserId;
+	private long _originalStatsUserId;
+	private boolean _setOriginalStatsUserId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -505,6 +531,7 @@ public class MBStatsUserModelImpl extends BaseModelImpl<MBStatsUser>
 	private int _originalMessageCount;
 	private boolean _setOriginalMessageCount;
 	private Date _lastPostDate;
+	private Date _originalLastPostDate;
 	private long _columnBitmask;
 	private MBStatsUser _escapedModel;
 }

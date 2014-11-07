@@ -268,7 +268,17 @@ public class AssetCategoryPropertyModelImpl extends BaseModelImpl<AssetCategoryP
 
 	@Override
 	public void setCategoryPropertyId(long categoryPropertyId) {
+		if (!_setOriginalCategoryPropertyId) {
+			_setOriginalCategoryPropertyId = true;
+
+			_originalCategoryPropertyId = _categoryPropertyId;
+		}
+
 		_categoryPropertyId = categoryPropertyId;
+	}
+
+	public long getOriginalCategoryPropertyId() {
+		return _originalCategoryPropertyId;
 	}
 
 	@JSON
@@ -302,6 +312,12 @@ public class AssetCategoryPropertyModelImpl extends BaseModelImpl<AssetCategoryP
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -321,6 +337,10 @@ public class AssetCategoryPropertyModelImpl extends BaseModelImpl<AssetCategoryP
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -334,7 +354,15 @@ public class AssetCategoryPropertyModelImpl extends BaseModelImpl<AssetCategoryP
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -345,7 +373,15 @@ public class AssetCategoryPropertyModelImpl extends BaseModelImpl<AssetCategoryP
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -356,7 +392,15 @@ public class AssetCategoryPropertyModelImpl extends BaseModelImpl<AssetCategoryP
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -421,7 +465,15 @@ public class AssetCategoryPropertyModelImpl extends BaseModelImpl<AssetCategoryP
 
 	@Override
 	public void setValue(String value) {
+		if (_originalValue == null) {
+			_originalValue = _value;
+		}
+
 		_value = value;
+	}
+
+	public String getOriginalValue() {
+		return GetterUtil.getString(_originalValue);
 	}
 
 	public long getColumnBitmask() {
@@ -524,15 +576,31 @@ public class AssetCategoryPropertyModelImpl extends BaseModelImpl<AssetCategoryP
 	public void resetOriginalValues() {
 		AssetCategoryPropertyModelImpl assetCategoryPropertyModelImpl = this;
 
+		assetCategoryPropertyModelImpl._originalCategoryPropertyId = assetCategoryPropertyModelImpl._categoryPropertyId;
+
+		assetCategoryPropertyModelImpl._setOriginalCategoryPropertyId = false;
+
 		assetCategoryPropertyModelImpl._originalCompanyId = assetCategoryPropertyModelImpl._companyId;
 
 		assetCategoryPropertyModelImpl._setOriginalCompanyId = false;
+
+		assetCategoryPropertyModelImpl._originalUserId = assetCategoryPropertyModelImpl._userId;
+
+		assetCategoryPropertyModelImpl._setOriginalUserId = false;
+
+		assetCategoryPropertyModelImpl._originalUserName = assetCategoryPropertyModelImpl._userName;
+
+		assetCategoryPropertyModelImpl._originalCreateDate = assetCategoryPropertyModelImpl._createDate;
+
+		assetCategoryPropertyModelImpl._originalModifiedDate = assetCategoryPropertyModelImpl._modifiedDate;
 
 		assetCategoryPropertyModelImpl._originalCategoryId = assetCategoryPropertyModelImpl._categoryId;
 
 		assetCategoryPropertyModelImpl._setOriginalCategoryId = false;
 
 		assetCategoryPropertyModelImpl._originalKey = assetCategoryPropertyModelImpl._key;
+
+		assetCategoryPropertyModelImpl._originalValue = assetCategoryPropertyModelImpl._value;
 
 		assetCategoryPropertyModelImpl._columnBitmask = 0;
 	}
@@ -676,19 +744,27 @@ public class AssetCategoryPropertyModelImpl extends BaseModelImpl<AssetCategoryP
 			AssetCategoryProperty.class
 		};
 	private long _categoryPropertyId;
+	private long _originalCategoryPropertyId;
+	private boolean _setOriginalCategoryPropertyId;
 	private long _companyId;
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _categoryId;
 	private long _originalCategoryId;
 	private boolean _setOriginalCategoryId;
 	private String _key;
 	private String _originalKey;
 	private String _value;
+	private String _originalValue;
 	private long _columnBitmask;
 	private AssetCategoryProperty _escapedModel;
 }

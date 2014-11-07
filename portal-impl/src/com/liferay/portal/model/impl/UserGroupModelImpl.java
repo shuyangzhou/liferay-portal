@@ -29,6 +29,7 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.model.UserGroup;
 import com.liferay.portal.model.UserGroupModel;
 import com.liferay.portal.model.UserGroupSoap;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
@@ -319,7 +320,17 @@ public class UserGroupModelImpl extends BaseModelImpl<UserGroup>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@JSON
@@ -354,7 +365,17 @@ public class UserGroupModelImpl extends BaseModelImpl<UserGroup>
 
 	@Override
 	public void setUserGroupId(long userGroupId) {
+		if (!_setOriginalUserGroupId) {
+			_setOriginalUserGroupId = true;
+
+			_originalUserGroupId = _userGroupId;
+		}
+
 		_userGroupId = userGroupId;
+	}
+
+	public long getOriginalUserGroupId() {
+		return _originalUserGroupId;
 	}
 
 	@JSON
@@ -388,6 +409,12 @@ public class UserGroupModelImpl extends BaseModelImpl<UserGroup>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -407,6 +434,10 @@ public class UserGroupModelImpl extends BaseModelImpl<UserGroup>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -420,7 +451,15 @@ public class UserGroupModelImpl extends BaseModelImpl<UserGroup>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -431,7 +470,15 @@ public class UserGroupModelImpl extends BaseModelImpl<UserGroup>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -442,7 +489,15 @@ public class UserGroupModelImpl extends BaseModelImpl<UserGroup>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -507,7 +562,15 @@ public class UserGroupModelImpl extends BaseModelImpl<UserGroup>
 
 	@Override
 	public void setDescription(String description) {
+		if (_originalDescription == null) {
+			_originalDescription = _description;
+		}
+
 		_description = description;
+	}
+
+	public String getOriginalDescription() {
+		return GetterUtil.getString(_originalDescription);
 	}
 
 	@JSON
@@ -523,7 +586,17 @@ public class UserGroupModelImpl extends BaseModelImpl<UserGroup>
 
 	@Override
 	public void setAddedByLDAPImport(boolean addedByLDAPImport) {
+		if (!_setOriginalAddedByLDAPImport) {
+			_setOriginalAddedByLDAPImport = true;
+
+			_originalAddedByLDAPImport = _addedByLDAPImport;
+		}
+
 		_addedByLDAPImport = addedByLDAPImport;
+	}
+
+	public boolean getOriginalAddedByLDAPImport() {
+		return _originalAddedByLDAPImport;
 	}
 
 	@Override
@@ -635,17 +708,41 @@ public class UserGroupModelImpl extends BaseModelImpl<UserGroup>
 	public void resetOriginalValues() {
 		UserGroupModelImpl userGroupModelImpl = this;
 
+		userGroupModelImpl._originalMvccVersion = userGroupModelImpl._mvccVersion;
+
+		userGroupModelImpl._setOriginalMvccVersion = false;
+
 		userGroupModelImpl._originalUuid = userGroupModelImpl._uuid;
+
+		userGroupModelImpl._originalUserGroupId = userGroupModelImpl._userGroupId;
+
+		userGroupModelImpl._setOriginalUserGroupId = false;
 
 		userGroupModelImpl._originalCompanyId = userGroupModelImpl._companyId;
 
 		userGroupModelImpl._setOriginalCompanyId = false;
+
+		userGroupModelImpl._originalUserId = userGroupModelImpl._userId;
+
+		userGroupModelImpl._setOriginalUserId = false;
+
+		userGroupModelImpl._originalUserName = userGroupModelImpl._userName;
+
+		userGroupModelImpl._originalCreateDate = userGroupModelImpl._createDate;
+
+		userGroupModelImpl._originalModifiedDate = userGroupModelImpl._modifiedDate;
 
 		userGroupModelImpl._originalParentUserGroupId = userGroupModelImpl._parentUserGroupId;
 
 		userGroupModelImpl._setOriginalParentUserGroupId = false;
 
 		userGroupModelImpl._originalName = userGroupModelImpl._name;
+
+		userGroupModelImpl._originalDescription = userGroupModelImpl._description;
+
+		userGroupModelImpl._originalAddedByLDAPImport = userGroupModelImpl._addedByLDAPImport;
+
+		userGroupModelImpl._setOriginalAddedByLDAPImport = false;
 
 		userGroupModelImpl._columnBitmask = 0;
 	}
@@ -819,23 +916,35 @@ public class UserGroupModelImpl extends BaseModelImpl<UserGroup>
 			UserGroup.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private String _uuid;
 	private String _originalUuid;
 	private long _userGroupId;
+	private long _originalUserGroupId;
+	private boolean _setOriginalUserGroupId;
 	private long _companyId;
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _parentUserGroupId;
 	private long _originalParentUserGroupId;
 	private boolean _setOriginalParentUserGroupId;
 	private String _name;
 	private String _originalName;
 	private String _description;
+	private String _originalDescription;
 	private boolean _addedByLDAPImport;
+	private boolean _originalAddedByLDAPImport;
+	private boolean _setOriginalAddedByLDAPImport;
 	private long _columnBitmask;
 	private UserGroup _escapedModel;
 }

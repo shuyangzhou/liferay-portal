@@ -249,7 +249,17 @@ public class AnnouncementsDeliveryModelImpl extends BaseModelImpl<AnnouncementsD
 
 	@Override
 	public void setDeliveryId(long deliveryId) {
+		if (!_setOriginalDeliveryId) {
+			_setOriginalDeliveryId = true;
+
+			_originalDeliveryId = _deliveryId;
+		}
+
 		_deliveryId = deliveryId;
+	}
+
+	public long getOriginalDeliveryId() {
+		return _originalDeliveryId;
 	}
 
 	@JSON
@@ -260,7 +270,17 @@ public class AnnouncementsDeliveryModelImpl extends BaseModelImpl<AnnouncementsD
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if (!_setOriginalCompanyId) {
+			_setOriginalCompanyId = true;
+
+			_originalCompanyId = _companyId;
+		}
+
 		_companyId = companyId;
+	}
+
+	public long getOriginalCompanyId() {
+		return _originalCompanyId;
 	}
 
 	@JSON
@@ -341,7 +361,17 @@ public class AnnouncementsDeliveryModelImpl extends BaseModelImpl<AnnouncementsD
 
 	@Override
 	public void setEmail(boolean email) {
+		if (!_setOriginalEmail) {
+			_setOriginalEmail = true;
+
+			_originalEmail = _email;
+		}
+
 		_email = email;
+	}
+
+	public boolean getOriginalEmail() {
+		return _originalEmail;
 	}
 
 	@JSON
@@ -357,7 +387,17 @@ public class AnnouncementsDeliveryModelImpl extends BaseModelImpl<AnnouncementsD
 
 	@Override
 	public void setSms(boolean sms) {
+		if (!_setOriginalSms) {
+			_setOriginalSms = true;
+
+			_originalSms = _sms;
+		}
+
 		_sms = sms;
+	}
+
+	public boolean getOriginalSms() {
+		return _originalSms;
 	}
 
 	@JSON
@@ -373,7 +413,17 @@ public class AnnouncementsDeliveryModelImpl extends BaseModelImpl<AnnouncementsD
 
 	@Override
 	public void setWebsite(boolean website) {
+		if (!_setOriginalWebsite) {
+			_setOriginalWebsite = true;
+
+			_originalWebsite = _website;
+		}
+
 		_website = website;
+	}
+
+	public boolean getOriginalWebsite() {
+		return _originalWebsite;
 	}
 
 	public long getColumnBitmask() {
@@ -476,11 +526,31 @@ public class AnnouncementsDeliveryModelImpl extends BaseModelImpl<AnnouncementsD
 	public void resetOriginalValues() {
 		AnnouncementsDeliveryModelImpl announcementsDeliveryModelImpl = this;
 
+		announcementsDeliveryModelImpl._originalDeliveryId = announcementsDeliveryModelImpl._deliveryId;
+
+		announcementsDeliveryModelImpl._setOriginalDeliveryId = false;
+
+		announcementsDeliveryModelImpl._originalCompanyId = announcementsDeliveryModelImpl._companyId;
+
+		announcementsDeliveryModelImpl._setOriginalCompanyId = false;
+
 		announcementsDeliveryModelImpl._originalUserId = announcementsDeliveryModelImpl._userId;
 
 		announcementsDeliveryModelImpl._setOriginalUserId = false;
 
 		announcementsDeliveryModelImpl._originalType = announcementsDeliveryModelImpl._type;
+
+		announcementsDeliveryModelImpl._originalEmail = announcementsDeliveryModelImpl._email;
+
+		announcementsDeliveryModelImpl._setOriginalEmail = false;
+
+		announcementsDeliveryModelImpl._originalSms = announcementsDeliveryModelImpl._sms;
+
+		announcementsDeliveryModelImpl._setOriginalSms = false;
+
+		announcementsDeliveryModelImpl._originalWebsite = announcementsDeliveryModelImpl._website;
+
+		announcementsDeliveryModelImpl._setOriginalWebsite = false;
 
 		announcementsDeliveryModelImpl._columnBitmask = 0;
 	}
@@ -583,15 +653,25 @@ public class AnnouncementsDeliveryModelImpl extends BaseModelImpl<AnnouncementsD
 			AnnouncementsDelivery.class
 		};
 	private long _deliveryId;
+	private long _originalDeliveryId;
+	private boolean _setOriginalDeliveryId;
 	private long _companyId;
+	private long _originalCompanyId;
+	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private long _originalUserId;
 	private boolean _setOriginalUserId;
 	private String _type;
 	private String _originalType;
 	private boolean _email;
+	private boolean _originalEmail;
+	private boolean _setOriginalEmail;
 	private boolean _sms;
+	private boolean _originalSms;
+	private boolean _setOriginalSms;
 	private boolean _website;
+	private boolean _originalWebsite;
+	private boolean _setOriginalWebsite;
 	private long _columnBitmask;
 	private AnnouncementsDelivery _escapedModel;
 }

@@ -323,7 +323,17 @@ public class DDLRecordVersionModelImpl extends BaseModelImpl<DDLRecordVersion>
 
 	@Override
 	public void setRecordVersionId(long recordVersionId) {
+		if (!_setOriginalRecordVersionId) {
+			_setOriginalRecordVersionId = true;
+
+			_originalRecordVersionId = _recordVersionId;
+		}
+
 		_recordVersionId = recordVersionId;
+	}
+
+	public long getOriginalRecordVersionId() {
+		return _originalRecordVersionId;
 	}
 
 	@JSON
@@ -334,7 +344,17 @@ public class DDLRecordVersionModelImpl extends BaseModelImpl<DDLRecordVersion>
 
 	@Override
 	public void setGroupId(long groupId) {
+		if (!_setOriginalGroupId) {
+			_setOriginalGroupId = true;
+
+			_originalGroupId = _groupId;
+		}
+
 		_groupId = groupId;
+	}
+
+	public long getOriginalGroupId() {
+		return _originalGroupId;
 	}
 
 	@JSON
@@ -345,7 +365,17 @@ public class DDLRecordVersionModelImpl extends BaseModelImpl<DDLRecordVersion>
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if (!_setOriginalCompanyId) {
+			_setOriginalCompanyId = true;
+
+			_originalCompanyId = _companyId;
+		}
+
 		_companyId = companyId;
+	}
+
+	public long getOriginalCompanyId() {
+		return _originalCompanyId;
 	}
 
 	@JSON
@@ -356,6 +386,12 @@ public class DDLRecordVersionModelImpl extends BaseModelImpl<DDLRecordVersion>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -375,6 +411,10 @@ public class DDLRecordVersionModelImpl extends BaseModelImpl<DDLRecordVersion>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -388,7 +428,15 @@ public class DDLRecordVersionModelImpl extends BaseModelImpl<DDLRecordVersion>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -399,7 +447,15 @@ public class DDLRecordVersionModelImpl extends BaseModelImpl<DDLRecordVersion>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -410,7 +466,17 @@ public class DDLRecordVersionModelImpl extends BaseModelImpl<DDLRecordVersion>
 
 	@Override
 	public void setDDMStorageId(long DDMStorageId) {
+		if (!_setOriginalDDMStorageId) {
+			_setOriginalDDMStorageId = true;
+
+			_originalDDMStorageId = _DDMStorageId;
+		}
+
 		_DDMStorageId = DDMStorageId;
+	}
+
+	public long getOriginalDDMStorageId() {
+		return _originalDDMStorageId;
 	}
 
 	@JSON
@@ -421,7 +487,17 @@ public class DDLRecordVersionModelImpl extends BaseModelImpl<DDLRecordVersion>
 
 	@Override
 	public void setRecordSetId(long recordSetId) {
+		if (!_setOriginalRecordSetId) {
+			_setOriginalRecordSetId = true;
+
+			_originalRecordSetId = _recordSetId;
+		}
+
 		_recordSetId = recordSetId;
+	}
+
+	public long getOriginalRecordSetId() {
+		return _originalRecordSetId;
 	}
 
 	@JSON
@@ -481,7 +557,17 @@ public class DDLRecordVersionModelImpl extends BaseModelImpl<DDLRecordVersion>
 
 	@Override
 	public void setDisplayIndex(int displayIndex) {
+		if (!_setOriginalDisplayIndex) {
+			_setOriginalDisplayIndex = true;
+
+			_originalDisplayIndex = _displayIndex;
+		}
+
 		_displayIndex = displayIndex;
+	}
+
+	public int getOriginalDisplayIndex() {
+		return _originalDisplayIndex;
 	}
 
 	@JSON
@@ -515,6 +601,12 @@ public class DDLRecordVersionModelImpl extends BaseModelImpl<DDLRecordVersion>
 
 	@Override
 	public void setStatusByUserId(long statusByUserId) {
+		if (!_setOriginalStatusByUserId) {
+			_setOriginalStatusByUserId = true;
+
+			_originalStatusByUserId = _statusByUserId;
+		}
+
 		_statusByUserId = statusByUserId;
 	}
 
@@ -534,6 +626,10 @@ public class DDLRecordVersionModelImpl extends BaseModelImpl<DDLRecordVersion>
 	public void setStatusByUserUuid(String statusByUserUuid) {
 	}
 
+	public long getOriginalStatusByUserId() {
+		return _originalStatusByUserId;
+	}
+
 	@JSON
 	@Override
 	public String getStatusByUserName() {
@@ -547,7 +643,15 @@ public class DDLRecordVersionModelImpl extends BaseModelImpl<DDLRecordVersion>
 
 	@Override
 	public void setStatusByUserName(String statusByUserName) {
+		if (_originalStatusByUserName == null) {
+			_originalStatusByUserName = _statusByUserName;
+		}
+
 		_statusByUserName = statusByUserName;
+	}
+
+	public String getOriginalStatusByUserName() {
+		return GetterUtil.getString(_originalStatusByUserName);
 	}
 
 	@JSON
@@ -558,7 +662,15 @@ public class DDLRecordVersionModelImpl extends BaseModelImpl<DDLRecordVersion>
 
 	@Override
 	public void setStatusDate(Date statusDate) {
+		if (_originalStatusDate == null) {
+			_originalStatusDate = _statusDate;
+		}
+
 		_statusDate = statusDate;
+	}
+
+	public Date getOriginalStatusDate() {
+		return _originalStatusDate;
 	}
 
 	/**
@@ -758,15 +870,55 @@ public class DDLRecordVersionModelImpl extends BaseModelImpl<DDLRecordVersion>
 	public void resetOriginalValues() {
 		DDLRecordVersionModelImpl ddlRecordVersionModelImpl = this;
 
+		ddlRecordVersionModelImpl._originalRecordVersionId = ddlRecordVersionModelImpl._recordVersionId;
+
+		ddlRecordVersionModelImpl._setOriginalRecordVersionId = false;
+
+		ddlRecordVersionModelImpl._originalGroupId = ddlRecordVersionModelImpl._groupId;
+
+		ddlRecordVersionModelImpl._setOriginalGroupId = false;
+
+		ddlRecordVersionModelImpl._originalCompanyId = ddlRecordVersionModelImpl._companyId;
+
+		ddlRecordVersionModelImpl._setOriginalCompanyId = false;
+
+		ddlRecordVersionModelImpl._originalUserId = ddlRecordVersionModelImpl._userId;
+
+		ddlRecordVersionModelImpl._setOriginalUserId = false;
+
+		ddlRecordVersionModelImpl._originalUserName = ddlRecordVersionModelImpl._userName;
+
+		ddlRecordVersionModelImpl._originalCreateDate = ddlRecordVersionModelImpl._createDate;
+
+		ddlRecordVersionModelImpl._originalDDMStorageId = ddlRecordVersionModelImpl._DDMStorageId;
+
+		ddlRecordVersionModelImpl._setOriginalDDMStorageId = false;
+
+		ddlRecordVersionModelImpl._originalRecordSetId = ddlRecordVersionModelImpl._recordSetId;
+
+		ddlRecordVersionModelImpl._setOriginalRecordSetId = false;
+
 		ddlRecordVersionModelImpl._originalRecordId = ddlRecordVersionModelImpl._recordId;
 
 		ddlRecordVersionModelImpl._setOriginalRecordId = false;
 
 		ddlRecordVersionModelImpl._originalVersion = ddlRecordVersionModelImpl._version;
 
+		ddlRecordVersionModelImpl._originalDisplayIndex = ddlRecordVersionModelImpl._displayIndex;
+
+		ddlRecordVersionModelImpl._setOriginalDisplayIndex = false;
+
 		ddlRecordVersionModelImpl._originalStatus = ddlRecordVersionModelImpl._status;
 
 		ddlRecordVersionModelImpl._setOriginalStatus = false;
+
+		ddlRecordVersionModelImpl._originalStatusByUserId = ddlRecordVersionModelImpl._statusByUserId;
+
+		ddlRecordVersionModelImpl._setOriginalStatusByUserId = false;
+
+		ddlRecordVersionModelImpl._originalStatusByUserName = ddlRecordVersionModelImpl._statusByUserName;
+
+		ddlRecordVersionModelImpl._originalStatusDate = ddlRecordVersionModelImpl._statusDate;
 
 		ddlRecordVersionModelImpl._columnBitmask = 0;
 	}
@@ -958,25 +1110,45 @@ public class DDLRecordVersionModelImpl extends BaseModelImpl<DDLRecordVersion>
 			DDLRecordVersion.class
 		};
 	private long _recordVersionId;
+	private long _originalRecordVersionId;
+	private boolean _setOriginalRecordVersionId;
 	private long _groupId;
+	private long _originalGroupId;
+	private boolean _setOriginalGroupId;
 	private long _companyId;
+	private long _originalCompanyId;
+	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private long _DDMStorageId;
+	private long _originalDDMStorageId;
+	private boolean _setOriginalDDMStorageId;
 	private long _recordSetId;
+	private long _originalRecordSetId;
+	private boolean _setOriginalRecordSetId;
 	private long _recordId;
 	private long _originalRecordId;
 	private boolean _setOriginalRecordId;
 	private String _version;
 	private String _originalVersion;
 	private int _displayIndex;
+	private int _originalDisplayIndex;
+	private boolean _setOriginalDisplayIndex;
 	private int _status;
 	private int _originalStatus;
 	private boolean _setOriginalStatus;
 	private long _statusByUserId;
+	private long _originalStatusByUserId;
+	private boolean _setOriginalStatusByUserId;
 	private String _statusByUserName;
+	private String _originalStatusByUserName;
 	private Date _statusDate;
+	private Date _originalStatusDate;
 	private long _columnBitmask;
 	private DDLRecordVersion _escapedModel;
 }

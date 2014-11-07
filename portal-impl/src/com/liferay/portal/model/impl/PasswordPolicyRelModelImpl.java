@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.PasswordPolicyRel;
 import com.liferay.portal.model.PasswordPolicyRelModel;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.util.PortalUtil;
 
@@ -179,7 +180,17 @@ public class PasswordPolicyRelModelImpl extends BaseModelImpl<PasswordPolicyRel>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@Override
@@ -189,7 +200,17 @@ public class PasswordPolicyRelModelImpl extends BaseModelImpl<PasswordPolicyRel>
 
 	@Override
 	public void setPasswordPolicyRelId(long passwordPolicyRelId) {
+		if (!_setOriginalPasswordPolicyRelId) {
+			_setOriginalPasswordPolicyRelId = true;
+
+			_originalPasswordPolicyRelId = _passwordPolicyRelId;
+		}
+
 		_passwordPolicyRelId = passwordPolicyRelId;
+	}
+
+	public long getOriginalPasswordPolicyRelId() {
+		return _originalPasswordPolicyRelId;
 	}
 
 	@Override
@@ -376,6 +397,14 @@ public class PasswordPolicyRelModelImpl extends BaseModelImpl<PasswordPolicyRel>
 	public void resetOriginalValues() {
 		PasswordPolicyRelModelImpl passwordPolicyRelModelImpl = this;
 
+		passwordPolicyRelModelImpl._originalMvccVersion = passwordPolicyRelModelImpl._mvccVersion;
+
+		passwordPolicyRelModelImpl._setOriginalMvccVersion = false;
+
+		passwordPolicyRelModelImpl._originalPasswordPolicyRelId = passwordPolicyRelModelImpl._passwordPolicyRelId;
+
+		passwordPolicyRelModelImpl._setOriginalPasswordPolicyRelId = false;
+
 		passwordPolicyRelModelImpl._originalPasswordPolicyId = passwordPolicyRelModelImpl._passwordPolicyId;
 
 		passwordPolicyRelModelImpl._setOriginalPasswordPolicyId = false;
@@ -466,7 +495,11 @@ public class PasswordPolicyRelModelImpl extends BaseModelImpl<PasswordPolicyRel>
 			PasswordPolicyRel.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _passwordPolicyRelId;
+	private long _originalPasswordPolicyRelId;
+	private boolean _setOriginalPasswordPolicyRelId;
 	private long _passwordPolicyId;
 	private long _originalPasswordPolicyId;
 	private boolean _setOriginalPasswordPolicyId;

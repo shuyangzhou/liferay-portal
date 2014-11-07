@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ResourceBlockPermission;
 import com.liferay.portal.model.ResourceBlockPermissionModel;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 
 import com.liferay.portlet.expando.model.ExpandoBridge;
@@ -177,7 +178,17 @@ public class ResourceBlockPermissionModelImpl extends BaseModelImpl<ResourceBloc
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@Override
@@ -187,7 +198,17 @@ public class ResourceBlockPermissionModelImpl extends BaseModelImpl<ResourceBloc
 
 	@Override
 	public void setResourceBlockPermissionId(long resourceBlockPermissionId) {
+		if (!_setOriginalResourceBlockPermissionId) {
+			_setOriginalResourceBlockPermissionId = true;
+
+			_originalResourceBlockPermissionId = _resourceBlockPermissionId;
+		}
+
 		_resourceBlockPermissionId = resourceBlockPermissionId;
+	}
+
+	public long getOriginalResourceBlockPermissionId() {
+		return _originalResourceBlockPermissionId;
 	}
 
 	@Override
@@ -241,7 +262,17 @@ public class ResourceBlockPermissionModelImpl extends BaseModelImpl<ResourceBloc
 
 	@Override
 	public void setActionIds(long actionIds) {
+		if (!_setOriginalActionIds) {
+			_setOriginalActionIds = true;
+
+			_originalActionIds = _actionIds;
+		}
+
 		_actionIds = actionIds;
+	}
+
+	public long getOriginalActionIds() {
+		return _originalActionIds;
 	}
 
 	public long getColumnBitmask() {
@@ -342,6 +373,14 @@ public class ResourceBlockPermissionModelImpl extends BaseModelImpl<ResourceBloc
 	public void resetOriginalValues() {
 		ResourceBlockPermissionModelImpl resourceBlockPermissionModelImpl = this;
 
+		resourceBlockPermissionModelImpl._originalMvccVersion = resourceBlockPermissionModelImpl._mvccVersion;
+
+		resourceBlockPermissionModelImpl._setOriginalMvccVersion = false;
+
+		resourceBlockPermissionModelImpl._originalResourceBlockPermissionId = resourceBlockPermissionModelImpl._resourceBlockPermissionId;
+
+		resourceBlockPermissionModelImpl._setOriginalResourceBlockPermissionId = false;
+
 		resourceBlockPermissionModelImpl._originalResourceBlockId = resourceBlockPermissionModelImpl._resourceBlockId;
 
 		resourceBlockPermissionModelImpl._setOriginalResourceBlockId = false;
@@ -349,6 +388,10 @@ public class ResourceBlockPermissionModelImpl extends BaseModelImpl<ResourceBloc
 		resourceBlockPermissionModelImpl._originalRoleId = resourceBlockPermissionModelImpl._roleId;
 
 		resourceBlockPermissionModelImpl._setOriginalRoleId = false;
+
+		resourceBlockPermissionModelImpl._originalActionIds = resourceBlockPermissionModelImpl._actionIds;
+
+		resourceBlockPermissionModelImpl._setOriginalActionIds = false;
 
 		resourceBlockPermissionModelImpl._columnBitmask = 0;
 	}
@@ -428,7 +471,11 @@ public class ResourceBlockPermissionModelImpl extends BaseModelImpl<ResourceBloc
 			ResourceBlockPermission.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _resourceBlockPermissionId;
+	private long _originalResourceBlockPermissionId;
+	private boolean _setOriginalResourceBlockPermissionId;
 	private long _resourceBlockId;
 	private long _originalResourceBlockId;
 	private boolean _setOriginalResourceBlockId;
@@ -436,6 +483,8 @@ public class ResourceBlockPermissionModelImpl extends BaseModelImpl<ResourceBloc
 	private long _originalRoleId;
 	private boolean _setOriginalRoleId;
 	private long _actionIds;
+	private long _originalActionIds;
+	private boolean _setOriginalActionIds;
 	private long _columnBitmask;
 	private ResourceBlockPermission _escapedModel;
 }
