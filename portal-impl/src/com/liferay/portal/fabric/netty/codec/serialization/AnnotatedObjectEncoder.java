@@ -62,7 +62,4 @@ public class AnnotatedObjectEncoder extends MessageToByteEncoder<Serializable> {
 		byteBuf.setInt(startIndex, endIndex - startIndex - 4);
 	}
 
-	private AnnotatedObjectEncoder() {
-	}
-
 }

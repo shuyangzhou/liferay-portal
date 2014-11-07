@@ -40,7 +40,4 @@ public class NettyRPCChannelHandler
 		rpcSerializable.execute(channelHandlerContext.channel());
 	}
 
-	private NettyRPCChannelHandler() {
-	}
-
 }
