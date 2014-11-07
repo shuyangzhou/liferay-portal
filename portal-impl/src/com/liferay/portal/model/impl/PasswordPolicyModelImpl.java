@@ -29,6 +29,7 @@ import com.liferay.portal.model.PasswordPolicy;
 import com.liferay.portal.model.PasswordPolicyModel;
 import com.liferay.portal.model.PasswordPolicySoap;
 import com.liferay.portal.model.User;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
@@ -504,7 +505,17 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@JSON
@@ -539,7 +550,17 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 
 	@Override
 	public void setPasswordPolicyId(long passwordPolicyId) {
+		if (!_setOriginalPasswordPolicyId) {
+			_setOriginalPasswordPolicyId = true;
+
+			_originalPasswordPolicyId = _passwordPolicyId;
+		}
+
 		_passwordPolicyId = passwordPolicyId;
+	}
+
+	public long getOriginalPasswordPolicyId() {
+		return _originalPasswordPolicyId;
 	}
 
 	@JSON
@@ -573,6 +594,12 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -592,6 +619,10 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -605,7 +636,15 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -616,7 +655,15 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -627,7 +674,15 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -697,7 +752,15 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 
 	@Override
 	public void setDescription(String description) {
+		if (_originalDescription == null) {
+			_originalDescription = _description;
+		}
+
 		_description = description;
+	}
+
+	public String getOriginalDescription() {
+		return GetterUtil.getString(_originalDescription);
 	}
 
 	@JSON
@@ -713,7 +776,17 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 
 	@Override
 	public void setChangeable(boolean changeable) {
+		if (!_setOriginalChangeable) {
+			_setOriginalChangeable = true;
+
+			_originalChangeable = _changeable;
+		}
+
 		_changeable = changeable;
+	}
+
+	public boolean getOriginalChangeable() {
+		return _originalChangeable;
 	}
 
 	@JSON
@@ -729,7 +802,17 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 
 	@Override
 	public void setChangeRequired(boolean changeRequired) {
+		if (!_setOriginalChangeRequired) {
+			_setOriginalChangeRequired = true;
+
+			_originalChangeRequired = _changeRequired;
+		}
+
 		_changeRequired = changeRequired;
+	}
+
+	public boolean getOriginalChangeRequired() {
+		return _originalChangeRequired;
 	}
 
 	@JSON
@@ -740,7 +823,17 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 
 	@Override
 	public void setMinAge(long minAge) {
+		if (!_setOriginalMinAge) {
+			_setOriginalMinAge = true;
+
+			_originalMinAge = _minAge;
+		}
+
 		_minAge = minAge;
+	}
+
+	public long getOriginalMinAge() {
+		return _originalMinAge;
 	}
 
 	@JSON
@@ -756,7 +849,17 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 
 	@Override
 	public void setCheckSyntax(boolean checkSyntax) {
+		if (!_setOriginalCheckSyntax) {
+			_setOriginalCheckSyntax = true;
+
+			_originalCheckSyntax = _checkSyntax;
+		}
+
 		_checkSyntax = checkSyntax;
+	}
+
+	public boolean getOriginalCheckSyntax() {
+		return _originalCheckSyntax;
 	}
 
 	@JSON
@@ -772,7 +875,17 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 
 	@Override
 	public void setAllowDictionaryWords(boolean allowDictionaryWords) {
+		if (!_setOriginalAllowDictionaryWords) {
+			_setOriginalAllowDictionaryWords = true;
+
+			_originalAllowDictionaryWords = _allowDictionaryWords;
+		}
+
 		_allowDictionaryWords = allowDictionaryWords;
+	}
+
+	public boolean getOriginalAllowDictionaryWords() {
+		return _originalAllowDictionaryWords;
 	}
 
 	@JSON
@@ -783,7 +896,17 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 
 	@Override
 	public void setMinAlphanumeric(int minAlphanumeric) {
+		if (!_setOriginalMinAlphanumeric) {
+			_setOriginalMinAlphanumeric = true;
+
+			_originalMinAlphanumeric = _minAlphanumeric;
+		}
+
 		_minAlphanumeric = minAlphanumeric;
+	}
+
+	public int getOriginalMinAlphanumeric() {
+		return _originalMinAlphanumeric;
 	}
 
 	@JSON
@@ -794,7 +917,17 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 
 	@Override
 	public void setMinLength(int minLength) {
+		if (!_setOriginalMinLength) {
+			_setOriginalMinLength = true;
+
+			_originalMinLength = _minLength;
+		}
+
 		_minLength = minLength;
+	}
+
+	public int getOriginalMinLength() {
+		return _originalMinLength;
 	}
 
 	@JSON
@@ -805,7 +938,17 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 
 	@Override
 	public void setMinLowerCase(int minLowerCase) {
+		if (!_setOriginalMinLowerCase) {
+			_setOriginalMinLowerCase = true;
+
+			_originalMinLowerCase = _minLowerCase;
+		}
+
 		_minLowerCase = minLowerCase;
+	}
+
+	public int getOriginalMinLowerCase() {
+		return _originalMinLowerCase;
 	}
 
 	@JSON
@@ -816,7 +959,17 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 
 	@Override
 	public void setMinNumbers(int minNumbers) {
+		if (!_setOriginalMinNumbers) {
+			_setOriginalMinNumbers = true;
+
+			_originalMinNumbers = _minNumbers;
+		}
+
 		_minNumbers = minNumbers;
+	}
+
+	public int getOriginalMinNumbers() {
+		return _originalMinNumbers;
 	}
 
 	@JSON
@@ -827,7 +980,17 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 
 	@Override
 	public void setMinSymbols(int minSymbols) {
+		if (!_setOriginalMinSymbols) {
+			_setOriginalMinSymbols = true;
+
+			_originalMinSymbols = _minSymbols;
+		}
+
 		_minSymbols = minSymbols;
+	}
+
+	public int getOriginalMinSymbols() {
+		return _originalMinSymbols;
 	}
 
 	@JSON
@@ -838,7 +1001,17 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 
 	@Override
 	public void setMinUpperCase(int minUpperCase) {
+		if (!_setOriginalMinUpperCase) {
+			_setOriginalMinUpperCase = true;
+
+			_originalMinUpperCase = _minUpperCase;
+		}
+
 		_minUpperCase = minUpperCase;
+	}
+
+	public int getOriginalMinUpperCase() {
+		return _originalMinUpperCase;
 	}
 
 	@JSON
@@ -854,7 +1027,15 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 
 	@Override
 	public void setRegex(String regex) {
+		if (_originalRegex == null) {
+			_originalRegex = _regex;
+		}
+
 		_regex = regex;
+	}
+
+	public String getOriginalRegex() {
+		return GetterUtil.getString(_originalRegex);
 	}
 
 	@JSON
@@ -870,7 +1051,17 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 
 	@Override
 	public void setHistory(boolean history) {
+		if (!_setOriginalHistory) {
+			_setOriginalHistory = true;
+
+			_originalHistory = _history;
+		}
+
 		_history = history;
+	}
+
+	public boolean getOriginalHistory() {
+		return _originalHistory;
 	}
 
 	@JSON
@@ -881,7 +1072,17 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 
 	@Override
 	public void setHistoryCount(int historyCount) {
+		if (!_setOriginalHistoryCount) {
+			_setOriginalHistoryCount = true;
+
+			_originalHistoryCount = _historyCount;
+		}
+
 		_historyCount = historyCount;
+	}
+
+	public int getOriginalHistoryCount() {
+		return _originalHistoryCount;
 	}
 
 	@JSON
@@ -897,7 +1098,17 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 
 	@Override
 	public void setExpireable(boolean expireable) {
+		if (!_setOriginalExpireable) {
+			_setOriginalExpireable = true;
+
+			_originalExpireable = _expireable;
+		}
+
 		_expireable = expireable;
+	}
+
+	public boolean getOriginalExpireable() {
+		return _originalExpireable;
 	}
 
 	@JSON
@@ -908,7 +1119,17 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 
 	@Override
 	public void setMaxAge(long maxAge) {
+		if (!_setOriginalMaxAge) {
+			_setOriginalMaxAge = true;
+
+			_originalMaxAge = _maxAge;
+		}
+
 		_maxAge = maxAge;
+	}
+
+	public long getOriginalMaxAge() {
+		return _originalMaxAge;
 	}
 
 	@JSON
@@ -919,7 +1140,17 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 
 	@Override
 	public void setWarningTime(long warningTime) {
+		if (!_setOriginalWarningTime) {
+			_setOriginalWarningTime = true;
+
+			_originalWarningTime = _warningTime;
+		}
+
 		_warningTime = warningTime;
+	}
+
+	public long getOriginalWarningTime() {
+		return _originalWarningTime;
 	}
 
 	@JSON
@@ -930,7 +1161,17 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 
 	@Override
 	public void setGraceLimit(int graceLimit) {
+		if (!_setOriginalGraceLimit) {
+			_setOriginalGraceLimit = true;
+
+			_originalGraceLimit = _graceLimit;
+		}
+
 		_graceLimit = graceLimit;
+	}
+
+	public int getOriginalGraceLimit() {
+		return _originalGraceLimit;
 	}
 
 	@JSON
@@ -946,7 +1187,17 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 
 	@Override
 	public void setLockout(boolean lockout) {
+		if (!_setOriginalLockout) {
+			_setOriginalLockout = true;
+
+			_originalLockout = _lockout;
+		}
+
 		_lockout = lockout;
+	}
+
+	public boolean getOriginalLockout() {
+		return _originalLockout;
 	}
 
 	@JSON
@@ -957,7 +1208,17 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 
 	@Override
 	public void setMaxFailure(int maxFailure) {
+		if (!_setOriginalMaxFailure) {
+			_setOriginalMaxFailure = true;
+
+			_originalMaxFailure = _maxFailure;
+		}
+
 		_maxFailure = maxFailure;
+	}
+
+	public int getOriginalMaxFailure() {
+		return _originalMaxFailure;
 	}
 
 	@JSON
@@ -968,7 +1229,17 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 
 	@Override
 	public void setLockoutDuration(long lockoutDuration) {
+		if (!_setOriginalLockoutDuration) {
+			_setOriginalLockoutDuration = true;
+
+			_originalLockoutDuration = _lockoutDuration;
+		}
+
 		_lockoutDuration = lockoutDuration;
+	}
+
+	public long getOriginalLockoutDuration() {
+		return _originalLockoutDuration;
 	}
 
 	@JSON
@@ -984,7 +1255,17 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 
 	@Override
 	public void setRequireUnlock(boolean requireUnlock) {
+		if (!_setOriginalRequireUnlock) {
+			_setOriginalRequireUnlock = true;
+
+			_originalRequireUnlock = _requireUnlock;
+		}
+
 		_requireUnlock = requireUnlock;
+	}
+
+	public boolean getOriginalRequireUnlock() {
+		return _originalRequireUnlock;
 	}
 
 	@JSON
@@ -995,7 +1276,17 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 
 	@Override
 	public void setResetFailureCount(long resetFailureCount) {
+		if (!_setOriginalResetFailureCount) {
+			_setOriginalResetFailureCount = true;
+
+			_originalResetFailureCount = _resetFailureCount;
+		}
+
 		_resetFailureCount = resetFailureCount;
+	}
+
+	public long getOriginalResetFailureCount() {
+		return _originalResetFailureCount;
 	}
 
 	@JSON
@@ -1006,7 +1297,17 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 
 	@Override
 	public void setResetTicketMaxAge(long resetTicketMaxAge) {
+		if (!_setOriginalResetTicketMaxAge) {
+			_setOriginalResetTicketMaxAge = true;
+
+			_originalResetTicketMaxAge = _resetTicketMaxAge;
+		}
+
 		_resetTicketMaxAge = resetTicketMaxAge;
+	}
+
+	public long getOriginalResetTicketMaxAge() {
+		return _originalResetTicketMaxAge;
 	}
 
 	@Override
@@ -1143,17 +1444,131 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 	public void resetOriginalValues() {
 		PasswordPolicyModelImpl passwordPolicyModelImpl = this;
 
+		passwordPolicyModelImpl._originalMvccVersion = passwordPolicyModelImpl._mvccVersion;
+
+		passwordPolicyModelImpl._setOriginalMvccVersion = false;
+
 		passwordPolicyModelImpl._originalUuid = passwordPolicyModelImpl._uuid;
+
+		passwordPolicyModelImpl._originalPasswordPolicyId = passwordPolicyModelImpl._passwordPolicyId;
+
+		passwordPolicyModelImpl._setOriginalPasswordPolicyId = false;
 
 		passwordPolicyModelImpl._originalCompanyId = passwordPolicyModelImpl._companyId;
 
 		passwordPolicyModelImpl._setOriginalCompanyId = false;
+
+		passwordPolicyModelImpl._originalUserId = passwordPolicyModelImpl._userId;
+
+		passwordPolicyModelImpl._setOriginalUserId = false;
+
+		passwordPolicyModelImpl._originalUserName = passwordPolicyModelImpl._userName;
+
+		passwordPolicyModelImpl._originalCreateDate = passwordPolicyModelImpl._createDate;
+
+		passwordPolicyModelImpl._originalModifiedDate = passwordPolicyModelImpl._modifiedDate;
 
 		passwordPolicyModelImpl._originalDefaultPolicy = passwordPolicyModelImpl._defaultPolicy;
 
 		passwordPolicyModelImpl._setOriginalDefaultPolicy = false;
 
 		passwordPolicyModelImpl._originalName = passwordPolicyModelImpl._name;
+
+		passwordPolicyModelImpl._originalDescription = passwordPolicyModelImpl._description;
+
+		passwordPolicyModelImpl._originalChangeable = passwordPolicyModelImpl._changeable;
+
+		passwordPolicyModelImpl._setOriginalChangeable = false;
+
+		passwordPolicyModelImpl._originalChangeRequired = passwordPolicyModelImpl._changeRequired;
+
+		passwordPolicyModelImpl._setOriginalChangeRequired = false;
+
+		passwordPolicyModelImpl._originalMinAge = passwordPolicyModelImpl._minAge;
+
+		passwordPolicyModelImpl._setOriginalMinAge = false;
+
+		passwordPolicyModelImpl._originalCheckSyntax = passwordPolicyModelImpl._checkSyntax;
+
+		passwordPolicyModelImpl._setOriginalCheckSyntax = false;
+
+		passwordPolicyModelImpl._originalAllowDictionaryWords = passwordPolicyModelImpl._allowDictionaryWords;
+
+		passwordPolicyModelImpl._setOriginalAllowDictionaryWords = false;
+
+		passwordPolicyModelImpl._originalMinAlphanumeric = passwordPolicyModelImpl._minAlphanumeric;
+
+		passwordPolicyModelImpl._setOriginalMinAlphanumeric = false;
+
+		passwordPolicyModelImpl._originalMinLength = passwordPolicyModelImpl._minLength;
+
+		passwordPolicyModelImpl._setOriginalMinLength = false;
+
+		passwordPolicyModelImpl._originalMinLowerCase = passwordPolicyModelImpl._minLowerCase;
+
+		passwordPolicyModelImpl._setOriginalMinLowerCase = false;
+
+		passwordPolicyModelImpl._originalMinNumbers = passwordPolicyModelImpl._minNumbers;
+
+		passwordPolicyModelImpl._setOriginalMinNumbers = false;
+
+		passwordPolicyModelImpl._originalMinSymbols = passwordPolicyModelImpl._minSymbols;
+
+		passwordPolicyModelImpl._setOriginalMinSymbols = false;
+
+		passwordPolicyModelImpl._originalMinUpperCase = passwordPolicyModelImpl._minUpperCase;
+
+		passwordPolicyModelImpl._setOriginalMinUpperCase = false;
+
+		passwordPolicyModelImpl._originalRegex = passwordPolicyModelImpl._regex;
+
+		passwordPolicyModelImpl._originalHistory = passwordPolicyModelImpl._history;
+
+		passwordPolicyModelImpl._setOriginalHistory = false;
+
+		passwordPolicyModelImpl._originalHistoryCount = passwordPolicyModelImpl._historyCount;
+
+		passwordPolicyModelImpl._setOriginalHistoryCount = false;
+
+		passwordPolicyModelImpl._originalExpireable = passwordPolicyModelImpl._expireable;
+
+		passwordPolicyModelImpl._setOriginalExpireable = false;
+
+		passwordPolicyModelImpl._originalMaxAge = passwordPolicyModelImpl._maxAge;
+
+		passwordPolicyModelImpl._setOriginalMaxAge = false;
+
+		passwordPolicyModelImpl._originalWarningTime = passwordPolicyModelImpl._warningTime;
+
+		passwordPolicyModelImpl._setOriginalWarningTime = false;
+
+		passwordPolicyModelImpl._originalGraceLimit = passwordPolicyModelImpl._graceLimit;
+
+		passwordPolicyModelImpl._setOriginalGraceLimit = false;
+
+		passwordPolicyModelImpl._originalLockout = passwordPolicyModelImpl._lockout;
+
+		passwordPolicyModelImpl._setOriginalLockout = false;
+
+		passwordPolicyModelImpl._originalMaxFailure = passwordPolicyModelImpl._maxFailure;
+
+		passwordPolicyModelImpl._setOriginalMaxFailure = false;
+
+		passwordPolicyModelImpl._originalLockoutDuration = passwordPolicyModelImpl._lockoutDuration;
+
+		passwordPolicyModelImpl._setOriginalLockoutDuration = false;
+
+		passwordPolicyModelImpl._originalRequireUnlock = passwordPolicyModelImpl._requireUnlock;
+
+		passwordPolicyModelImpl._setOriginalRequireUnlock = false;
+
+		passwordPolicyModelImpl._originalResetFailureCount = passwordPolicyModelImpl._resetFailureCount;
+
+		passwordPolicyModelImpl._setOriginalResetFailureCount = false;
+
+		passwordPolicyModelImpl._originalResetTicketMaxAge = passwordPolicyModelImpl._resetTicketMaxAge;
+
+		passwordPolicyModelImpl._setOriginalResetTicketMaxAge = false;
 
 		passwordPolicyModelImpl._columnBitmask = 0;
 	}
@@ -1517,46 +1932,103 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 			PasswordPolicy.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private String _uuid;
 	private String _originalUuid;
 	private long _passwordPolicyId;
+	private long _originalPasswordPolicyId;
+	private boolean _setOriginalPasswordPolicyId;
 	private long _companyId;
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private boolean _defaultPolicy;
 	private boolean _originalDefaultPolicy;
 	private boolean _setOriginalDefaultPolicy;
 	private String _name;
 	private String _originalName;
 	private String _description;
+	private String _originalDescription;
 	private boolean _changeable;
+	private boolean _originalChangeable;
+	private boolean _setOriginalChangeable;
 	private boolean _changeRequired;
+	private boolean _originalChangeRequired;
+	private boolean _setOriginalChangeRequired;
 	private long _minAge;
+	private long _originalMinAge;
+	private boolean _setOriginalMinAge;
 	private boolean _checkSyntax;
+	private boolean _originalCheckSyntax;
+	private boolean _setOriginalCheckSyntax;
 	private boolean _allowDictionaryWords;
+	private boolean _originalAllowDictionaryWords;
+	private boolean _setOriginalAllowDictionaryWords;
 	private int _minAlphanumeric;
+	private int _originalMinAlphanumeric;
+	private boolean _setOriginalMinAlphanumeric;
 	private int _minLength;
+	private int _originalMinLength;
+	private boolean _setOriginalMinLength;
 	private int _minLowerCase;
+	private int _originalMinLowerCase;
+	private boolean _setOriginalMinLowerCase;
 	private int _minNumbers;
+	private int _originalMinNumbers;
+	private boolean _setOriginalMinNumbers;
 	private int _minSymbols;
+	private int _originalMinSymbols;
+	private boolean _setOriginalMinSymbols;
 	private int _minUpperCase;
+	private int _originalMinUpperCase;
+	private boolean _setOriginalMinUpperCase;
 	private String _regex;
+	private String _originalRegex;
 	private boolean _history;
+	private boolean _originalHistory;
+	private boolean _setOriginalHistory;
 	private int _historyCount;
+	private int _originalHistoryCount;
+	private boolean _setOriginalHistoryCount;
 	private boolean _expireable;
+	private boolean _originalExpireable;
+	private boolean _setOriginalExpireable;
 	private long _maxAge;
+	private long _originalMaxAge;
+	private boolean _setOriginalMaxAge;
 	private long _warningTime;
+	private long _originalWarningTime;
+	private boolean _setOriginalWarningTime;
 	private int _graceLimit;
+	private int _originalGraceLimit;
+	private boolean _setOriginalGraceLimit;
 	private boolean _lockout;
+	private boolean _originalLockout;
+	private boolean _setOriginalLockout;
 	private int _maxFailure;
+	private int _originalMaxFailure;
+	private boolean _setOriginalMaxFailure;
 	private long _lockoutDuration;
+	private long _originalLockoutDuration;
+	private boolean _setOriginalLockoutDuration;
 	private boolean _requireUnlock;
+	private boolean _originalRequireUnlock;
+	private boolean _setOriginalRequireUnlock;
 	private long _resetFailureCount;
+	private long _originalResetFailureCount;
+	private boolean _setOriginalResetFailureCount;
 	private long _resetTicketMaxAge;
+	private long _originalResetTicketMaxAge;
+	private boolean _setOriginalResetTicketMaxAge;
 	private long _columnBitmask;
 	private PasswordPolicy _escapedModel;
 }

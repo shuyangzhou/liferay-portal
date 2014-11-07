@@ -267,7 +267,17 @@ public class AssetTagPropertyModelImpl extends BaseModelImpl<AssetTagProperty>
 
 	@Override
 	public void setTagPropertyId(long tagPropertyId) {
+		if (!_setOriginalTagPropertyId) {
+			_setOriginalTagPropertyId = true;
+
+			_originalTagPropertyId = _tagPropertyId;
+		}
+
 		_tagPropertyId = tagPropertyId;
+	}
+
+	public long getOriginalTagPropertyId() {
+		return _originalTagPropertyId;
 	}
 
 	@JSON
@@ -301,6 +311,12 @@ public class AssetTagPropertyModelImpl extends BaseModelImpl<AssetTagProperty>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -320,6 +336,10 @@ public class AssetTagPropertyModelImpl extends BaseModelImpl<AssetTagProperty>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -333,7 +353,15 @@ public class AssetTagPropertyModelImpl extends BaseModelImpl<AssetTagProperty>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -344,7 +372,15 @@ public class AssetTagPropertyModelImpl extends BaseModelImpl<AssetTagProperty>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -355,7 +391,15 @@ public class AssetTagPropertyModelImpl extends BaseModelImpl<AssetTagProperty>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -420,7 +464,15 @@ public class AssetTagPropertyModelImpl extends BaseModelImpl<AssetTagProperty>
 
 	@Override
 	public void setValue(String value) {
+		if (_originalValue == null) {
+			_originalValue = _value;
+		}
+
 		_value = value;
+	}
+
+	public String getOriginalValue() {
+		return GetterUtil.getString(_originalValue);
 	}
 
 	public long getColumnBitmask() {
@@ -523,15 +575,31 @@ public class AssetTagPropertyModelImpl extends BaseModelImpl<AssetTagProperty>
 	public void resetOriginalValues() {
 		AssetTagPropertyModelImpl assetTagPropertyModelImpl = this;
 
+		assetTagPropertyModelImpl._originalTagPropertyId = assetTagPropertyModelImpl._tagPropertyId;
+
+		assetTagPropertyModelImpl._setOriginalTagPropertyId = false;
+
 		assetTagPropertyModelImpl._originalCompanyId = assetTagPropertyModelImpl._companyId;
 
 		assetTagPropertyModelImpl._setOriginalCompanyId = false;
+
+		assetTagPropertyModelImpl._originalUserId = assetTagPropertyModelImpl._userId;
+
+		assetTagPropertyModelImpl._setOriginalUserId = false;
+
+		assetTagPropertyModelImpl._originalUserName = assetTagPropertyModelImpl._userName;
+
+		assetTagPropertyModelImpl._originalCreateDate = assetTagPropertyModelImpl._createDate;
+
+		assetTagPropertyModelImpl._originalModifiedDate = assetTagPropertyModelImpl._modifiedDate;
 
 		assetTagPropertyModelImpl._originalTagId = assetTagPropertyModelImpl._tagId;
 
 		assetTagPropertyModelImpl._setOriginalTagId = false;
 
 		assetTagPropertyModelImpl._originalKey = assetTagPropertyModelImpl._key;
+
+		assetTagPropertyModelImpl._originalValue = assetTagPropertyModelImpl._value;
 
 		assetTagPropertyModelImpl._columnBitmask = 0;
 	}
@@ -675,19 +743,27 @@ public class AssetTagPropertyModelImpl extends BaseModelImpl<AssetTagProperty>
 			AssetTagProperty.class
 		};
 	private long _tagPropertyId;
+	private long _originalTagPropertyId;
+	private boolean _setOriginalTagPropertyId;
 	private long _companyId;
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _tagId;
 	private long _originalTagId;
 	private boolean _setOriginalTagId;
 	private String _key;
 	private String _originalKey;
 	private String _value;
+	private String _originalValue;
 	private long _columnBitmask;
 	private AssetTagProperty _escapedModel;
 }

@@ -27,6 +27,7 @@ import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.User;
 import com.liferay.portal.model.WorkflowDefinitionLink;
 import com.liferay.portal.model.WorkflowDefinitionLinkModel;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
@@ -254,7 +255,17 @@ public class WorkflowDefinitionLinkModelImpl extends BaseModelImpl<WorkflowDefin
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@Override
@@ -264,7 +275,17 @@ public class WorkflowDefinitionLinkModelImpl extends BaseModelImpl<WorkflowDefin
 
 	@Override
 	public void setWorkflowDefinitionLinkId(long workflowDefinitionLinkId) {
+		if (!_setOriginalWorkflowDefinitionLinkId) {
+			_setOriginalWorkflowDefinitionLinkId = true;
+
+			_originalWorkflowDefinitionLinkId = _workflowDefinitionLinkId;
+		}
+
 		_workflowDefinitionLinkId = workflowDefinitionLinkId;
+	}
+
+	public long getOriginalWorkflowDefinitionLinkId() {
+		return _originalWorkflowDefinitionLinkId;
 	}
 
 	@Override
@@ -318,6 +339,12 @@ public class WorkflowDefinitionLinkModelImpl extends BaseModelImpl<WorkflowDefin
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -337,6 +364,10 @@ public class WorkflowDefinitionLinkModelImpl extends BaseModelImpl<WorkflowDefin
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -349,7 +380,15 @@ public class WorkflowDefinitionLinkModelImpl extends BaseModelImpl<WorkflowDefin
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@Override
@@ -359,7 +398,15 @@ public class WorkflowDefinitionLinkModelImpl extends BaseModelImpl<WorkflowDefin
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@Override
@@ -369,7 +416,15 @@ public class WorkflowDefinitionLinkModelImpl extends BaseModelImpl<WorkflowDefin
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@Override
@@ -610,6 +665,14 @@ public class WorkflowDefinitionLinkModelImpl extends BaseModelImpl<WorkflowDefin
 	public void resetOriginalValues() {
 		WorkflowDefinitionLinkModelImpl workflowDefinitionLinkModelImpl = this;
 
+		workflowDefinitionLinkModelImpl._originalMvccVersion = workflowDefinitionLinkModelImpl._mvccVersion;
+
+		workflowDefinitionLinkModelImpl._setOriginalMvccVersion = false;
+
+		workflowDefinitionLinkModelImpl._originalWorkflowDefinitionLinkId = workflowDefinitionLinkModelImpl._workflowDefinitionLinkId;
+
+		workflowDefinitionLinkModelImpl._setOriginalWorkflowDefinitionLinkId = false;
+
 		workflowDefinitionLinkModelImpl._originalGroupId = workflowDefinitionLinkModelImpl._groupId;
 
 		workflowDefinitionLinkModelImpl._setOriginalGroupId = false;
@@ -617,6 +680,16 @@ public class WorkflowDefinitionLinkModelImpl extends BaseModelImpl<WorkflowDefin
 		workflowDefinitionLinkModelImpl._originalCompanyId = workflowDefinitionLinkModelImpl._companyId;
 
 		workflowDefinitionLinkModelImpl._setOriginalCompanyId = false;
+
+		workflowDefinitionLinkModelImpl._originalUserId = workflowDefinitionLinkModelImpl._userId;
+
+		workflowDefinitionLinkModelImpl._setOriginalUserId = false;
+
+		workflowDefinitionLinkModelImpl._originalUserName = workflowDefinitionLinkModelImpl._userName;
+
+		workflowDefinitionLinkModelImpl._originalCreateDate = workflowDefinitionLinkModelImpl._createDate;
+
+		workflowDefinitionLinkModelImpl._originalModifiedDate = workflowDefinitionLinkModelImpl._modifiedDate;
 
 		workflowDefinitionLinkModelImpl._originalClassNameId = workflowDefinitionLinkModelImpl._classNameId;
 
@@ -805,7 +878,11 @@ public class WorkflowDefinitionLinkModelImpl extends BaseModelImpl<WorkflowDefin
 			WorkflowDefinitionLink.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _workflowDefinitionLinkId;
+	private long _originalWorkflowDefinitionLinkId;
+	private boolean _setOriginalWorkflowDefinitionLinkId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -813,9 +890,14 @@ public class WorkflowDefinitionLinkModelImpl extends BaseModelImpl<WorkflowDefin
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _classNameId;
 	private long _originalClassNameId;
 	private boolean _setOriginalClassNameId;

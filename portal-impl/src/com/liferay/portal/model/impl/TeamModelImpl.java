@@ -28,6 +28,7 @@ import com.liferay.portal.model.Team;
 import com.liferay.portal.model.TeamModel;
 import com.liferay.portal.model.TeamSoap;
 import com.liferay.portal.model.User;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
@@ -288,7 +289,17 @@ public class TeamModelImpl extends BaseModelImpl<Team> implements TeamModel {
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@JSON
@@ -299,7 +310,17 @@ public class TeamModelImpl extends BaseModelImpl<Team> implements TeamModel {
 
 	@Override
 	public void setTeamId(long teamId) {
+		if (!_setOriginalTeamId) {
+			_setOriginalTeamId = true;
+
+			_originalTeamId = _teamId;
+		}
+
 		_teamId = teamId;
+	}
+
+	public long getOriginalTeamId() {
+		return _originalTeamId;
 	}
 
 	@JSON
@@ -310,7 +331,17 @@ public class TeamModelImpl extends BaseModelImpl<Team> implements TeamModel {
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if (!_setOriginalCompanyId) {
+			_setOriginalCompanyId = true;
+
+			_originalCompanyId = _companyId;
+		}
+
 		_companyId = companyId;
+	}
+
+	public long getOriginalCompanyId() {
+		return _originalCompanyId;
 	}
 
 	@JSON
@@ -321,6 +352,12 @@ public class TeamModelImpl extends BaseModelImpl<Team> implements TeamModel {
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -340,6 +377,10 @@ public class TeamModelImpl extends BaseModelImpl<Team> implements TeamModel {
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -353,7 +394,15 @@ public class TeamModelImpl extends BaseModelImpl<Team> implements TeamModel {
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -364,7 +413,15 @@ public class TeamModelImpl extends BaseModelImpl<Team> implements TeamModel {
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -375,7 +432,15 @@ public class TeamModelImpl extends BaseModelImpl<Team> implements TeamModel {
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -440,7 +505,15 @@ public class TeamModelImpl extends BaseModelImpl<Team> implements TeamModel {
 
 	@Override
 	public void setDescription(String description) {
+		if (_originalDescription == null) {
+			_originalDescription = _description;
+		}
+
 		_description = description;
+	}
+
+	public String getOriginalDescription() {
+		return GetterUtil.getString(_originalDescription);
 	}
 
 	public long getColumnBitmask() {
@@ -544,11 +617,35 @@ public class TeamModelImpl extends BaseModelImpl<Team> implements TeamModel {
 	public void resetOriginalValues() {
 		TeamModelImpl teamModelImpl = this;
 
+		teamModelImpl._originalMvccVersion = teamModelImpl._mvccVersion;
+
+		teamModelImpl._setOriginalMvccVersion = false;
+
+		teamModelImpl._originalTeamId = teamModelImpl._teamId;
+
+		teamModelImpl._setOriginalTeamId = false;
+
+		teamModelImpl._originalCompanyId = teamModelImpl._companyId;
+
+		teamModelImpl._setOriginalCompanyId = false;
+
+		teamModelImpl._originalUserId = teamModelImpl._userId;
+
+		teamModelImpl._setOriginalUserId = false;
+
+		teamModelImpl._originalUserName = teamModelImpl._userName;
+
+		teamModelImpl._originalCreateDate = teamModelImpl._createDate;
+
+		teamModelImpl._originalModifiedDate = teamModelImpl._modifiedDate;
+
 		teamModelImpl._originalGroupId = teamModelImpl._groupId;
 
 		teamModelImpl._setOriginalGroupId = false;
 
 		teamModelImpl._originalName = teamModelImpl._name;
+
+		teamModelImpl._originalDescription = teamModelImpl._description;
 
 		teamModelImpl._columnBitmask = 0;
 	}
@@ -700,18 +797,30 @@ public class TeamModelImpl extends BaseModelImpl<Team> implements TeamModel {
 			Team.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _teamId;
+	private long _originalTeamId;
+	private boolean _setOriginalTeamId;
 	private long _companyId;
+	private long _originalCompanyId;
+	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
 	private String _name;
 	private String _originalName;
 	private String _description;
+	private String _originalDescription;
 	private long _columnBitmask;
 	private Team _escapedModel;
 }

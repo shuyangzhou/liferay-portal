@@ -31,6 +31,7 @@ import com.liferay.portal.model.Phone;
 import com.liferay.portal.model.PhoneModel;
 import com.liferay.portal.model.PhoneSoap;
 import com.liferay.portal.model.User;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
@@ -317,7 +318,17 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@JSON
@@ -352,7 +363,17 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 
 	@Override
 	public void setPhoneId(long phoneId) {
+		if (!_setOriginalPhoneId) {
+			_setOriginalPhoneId = true;
+
+			_originalPhoneId = _phoneId;
+		}
+
 		_phoneId = phoneId;
+	}
+
+	public long getOriginalPhoneId() {
+		return _originalPhoneId;
 	}
 
 	@JSON
@@ -430,7 +451,15 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -443,7 +472,15 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 	public void setCreateDate(Date createDate) {
 		_columnBitmask = -1L;
 
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -454,7 +491,15 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@Override
@@ -536,7 +581,15 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 
 	@Override
 	public void setNumber(String number) {
+		if (_originalNumber == null) {
+			_originalNumber = _number;
+		}
+
 		_number = number;
+	}
+
+	public String getOriginalNumber() {
+		return GetterUtil.getString(_originalNumber);
 	}
 
 	@JSON
@@ -552,7 +605,15 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 
 	@Override
 	public void setExtension(String extension) {
+		if (_originalExtension == null) {
+			_originalExtension = _extension;
+		}
+
 		_extension = extension;
+	}
+
+	public String getOriginalExtension() {
+		return GetterUtil.getString(_originalExtension);
 	}
 
 	@JSON
@@ -563,7 +624,17 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 
 	@Override
 	public void setTypeId(int typeId) {
+		if (!_setOriginalTypeId) {
+			_setOriginalTypeId = true;
+
+			_originalTypeId = _typeId;
+		}
+
 		_typeId = typeId;
+	}
+
+	public int getOriginalTypeId() {
+		return _originalTypeId;
 	}
 
 	@JSON
@@ -705,7 +776,15 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 	public void resetOriginalValues() {
 		PhoneModelImpl phoneModelImpl = this;
 
+		phoneModelImpl._originalMvccVersion = phoneModelImpl._mvccVersion;
+
+		phoneModelImpl._setOriginalMvccVersion = false;
+
 		phoneModelImpl._originalUuid = phoneModelImpl._uuid;
+
+		phoneModelImpl._originalPhoneId = phoneModelImpl._phoneId;
+
+		phoneModelImpl._setOriginalPhoneId = false;
 
 		phoneModelImpl._originalCompanyId = phoneModelImpl._companyId;
 
@@ -715,6 +794,12 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 
 		phoneModelImpl._setOriginalUserId = false;
 
+		phoneModelImpl._originalUserName = phoneModelImpl._userName;
+
+		phoneModelImpl._originalCreateDate = phoneModelImpl._createDate;
+
+		phoneModelImpl._originalModifiedDate = phoneModelImpl._modifiedDate;
+
 		phoneModelImpl._originalClassNameId = phoneModelImpl._classNameId;
 
 		phoneModelImpl._setOriginalClassNameId = false;
@@ -722,6 +807,14 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 		phoneModelImpl._originalClassPK = phoneModelImpl._classPK;
 
 		phoneModelImpl._setOriginalClassPK = false;
+
+		phoneModelImpl._originalNumber = phoneModelImpl._number;
+
+		phoneModelImpl._originalExtension = phoneModelImpl._extension;
+
+		phoneModelImpl._originalTypeId = phoneModelImpl._typeId;
+
+		phoneModelImpl._setOriginalTypeId = false;
 
 		phoneModelImpl._originalPrimary = phoneModelImpl._primary;
 
@@ -915,9 +1008,13 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 			Phone.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private String _uuid;
 	private String _originalUuid;
 	private long _phoneId;
+	private long _originalPhoneId;
+	private boolean _setOriginalPhoneId;
 	private long _companyId;
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
@@ -925,8 +1022,11 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 	private long _originalUserId;
 	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _classNameId;
 	private long _originalClassNameId;
 	private boolean _setOriginalClassNameId;
@@ -934,8 +1034,12 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 	private long _originalClassPK;
 	private boolean _setOriginalClassPK;
 	private String _number;
+	private String _originalNumber;
 	private String _extension;
+	private String _originalExtension;
 	private int _typeId;
+	private int _originalTypeId;
+	private boolean _setOriginalTypeId;
 	private boolean _primary;
 	private boolean _originalPrimary;
 	private boolean _setOriginalPrimary;

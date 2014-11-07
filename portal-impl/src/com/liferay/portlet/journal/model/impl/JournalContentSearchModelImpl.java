@@ -196,7 +196,17 @@ public class JournalContentSearchModelImpl extends BaseModelImpl<JournalContentS
 
 	@Override
 	public void setContentSearchId(long contentSearchId) {
+		if (!_setOriginalContentSearchId) {
+			_setOriginalContentSearchId = true;
+
+			_originalContentSearchId = _contentSearchId;
+		}
+
 		_contentSearchId = contentSearchId;
+	}
+
+	public long getOriginalContentSearchId() {
+		return _originalContentSearchId;
 	}
 
 	@Override
@@ -228,7 +238,17 @@ public class JournalContentSearchModelImpl extends BaseModelImpl<JournalContentS
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if (!_setOriginalCompanyId) {
+			_setOriginalCompanyId = true;
+
+			_originalCompanyId = _companyId;
+		}
+
 		_companyId = companyId;
+	}
+
+	public long getOriginalCompanyId() {
+		return _originalCompanyId;
 	}
 
 	@Override
@@ -430,9 +450,17 @@ public class JournalContentSearchModelImpl extends BaseModelImpl<JournalContentS
 	public void resetOriginalValues() {
 		JournalContentSearchModelImpl journalContentSearchModelImpl = this;
 
+		journalContentSearchModelImpl._originalContentSearchId = journalContentSearchModelImpl._contentSearchId;
+
+		journalContentSearchModelImpl._setOriginalContentSearchId = false;
+
 		journalContentSearchModelImpl._originalGroupId = journalContentSearchModelImpl._groupId;
 
 		journalContentSearchModelImpl._setOriginalGroupId = false;
+
+		journalContentSearchModelImpl._originalCompanyId = journalContentSearchModelImpl._companyId;
+
+		journalContentSearchModelImpl._setOriginalCompanyId = false;
 
 		journalContentSearchModelImpl._originalPrivateLayout = journalContentSearchModelImpl._privateLayout;
 
@@ -552,10 +580,14 @@ public class JournalContentSearchModelImpl extends BaseModelImpl<JournalContentS
 			JournalContentSearch.class
 		};
 	private long _contentSearchId;
+	private long _originalContentSearchId;
+	private boolean _setOriginalContentSearchId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
 	private long _companyId;
+	private long _originalCompanyId;
+	private boolean _setOriginalCompanyId;
 	private boolean _privateLayout;
 	private boolean _originalPrivateLayout;
 	private boolean _setOriginalPrivateLayout;

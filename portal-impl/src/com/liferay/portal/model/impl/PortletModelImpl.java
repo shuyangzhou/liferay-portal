@@ -26,6 +26,7 @@ import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.Portlet;
 import com.liferay.portal.model.PortletModel;
 import com.liferay.portal.model.PortletSoap;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 
 import com.liferay.portlet.expando.model.ExpandoBridge;
@@ -234,7 +235,17 @@ public class PortletModelImpl extends BaseModelImpl<Portlet>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@JSON
@@ -245,7 +256,17 @@ public class PortletModelImpl extends BaseModelImpl<Portlet>
 
 	@Override
 	public void setId(long id) {
+		if (!_setOriginalId) {
+			_setOriginalId = true;
+
+			_originalId = _id;
+		}
+
 		_id = id;
+	}
+
+	public long getOriginalId() {
+		return _originalId;
 	}
 
 	@JSON
@@ -310,7 +331,15 @@ public class PortletModelImpl extends BaseModelImpl<Portlet>
 
 	@Override
 	public void setRoles(String roles) {
+		if (_originalRoles == null) {
+			_originalRoles = _roles;
+		}
+
 		_roles = roles;
+	}
+
+	public String getOriginalRoles() {
+		return GetterUtil.getString(_originalRoles);
 	}
 
 	@JSON
@@ -326,7 +355,17 @@ public class PortletModelImpl extends BaseModelImpl<Portlet>
 
 	@Override
 	public void setActive(boolean active) {
+		if (!_setOriginalActive) {
+			_setOriginalActive = true;
+
+			_originalActive = _active;
+		}
+
 		_active = active;
+	}
+
+	public boolean getOriginalActive() {
+		return _originalActive;
 	}
 
 	public long getColumnBitmask() {
@@ -428,11 +467,25 @@ public class PortletModelImpl extends BaseModelImpl<Portlet>
 	public void resetOriginalValues() {
 		PortletModelImpl portletModelImpl = this;
 
+		portletModelImpl._originalMvccVersion = portletModelImpl._mvccVersion;
+
+		portletModelImpl._setOriginalMvccVersion = false;
+
+		portletModelImpl._originalId = portletModelImpl._id;
+
+		portletModelImpl._setOriginalId = false;
+
 		portletModelImpl._originalCompanyId = portletModelImpl._companyId;
 
 		portletModelImpl._setOriginalCompanyId = false;
 
 		portletModelImpl._originalPortletId = portletModelImpl._portletId;
+
+		portletModelImpl._originalRoles = portletModelImpl._roles;
+
+		portletModelImpl._originalActive = portletModelImpl._active;
+
+		portletModelImpl._setOriginalActive = false;
 
 		portletModelImpl._columnBitmask = 0;
 	}
@@ -532,14 +585,21 @@ public class PortletModelImpl extends BaseModelImpl<Portlet>
 			Portlet.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _id;
+	private long _originalId;
+	private boolean _setOriginalId;
 	private long _companyId;
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private String _portletId;
 	private String _originalPortletId;
 	private String _roles;
+	private String _originalRoles;
 	private boolean _active;
+	private boolean _originalActive;
+	private boolean _setOriginalActive;
 	private long _columnBitmask;
 	private Portlet _escapedModel;
 }

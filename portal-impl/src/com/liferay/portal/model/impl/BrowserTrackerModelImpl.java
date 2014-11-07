@@ -26,6 +26,7 @@ import com.liferay.portal.model.BrowserTracker;
 import com.liferay.portal.model.BrowserTrackerModel;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.User;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
@@ -170,7 +171,17 @@ public class BrowserTrackerModelImpl extends BaseModelImpl<BrowserTracker>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@Override
@@ -180,7 +191,17 @@ public class BrowserTrackerModelImpl extends BaseModelImpl<BrowserTracker>
 
 	@Override
 	public void setBrowserTrackerId(long browserTrackerId) {
+		if (!_setOriginalBrowserTrackerId) {
+			_setOriginalBrowserTrackerId = true;
+
+			_originalBrowserTrackerId = _browserTrackerId;
+		}
+
 		_browserTrackerId = browserTrackerId;
+	}
+
+	public long getOriginalBrowserTrackerId() {
+		return _originalBrowserTrackerId;
 	}
 
 	@Override
@@ -228,7 +249,17 @@ public class BrowserTrackerModelImpl extends BaseModelImpl<BrowserTracker>
 
 	@Override
 	public void setBrowserKey(long browserKey) {
+		if (!_setOriginalBrowserKey) {
+			_setOriginalBrowserKey = true;
+
+			_originalBrowserKey = _browserKey;
+		}
+
 		_browserKey = browserKey;
+	}
+
+	public long getOriginalBrowserKey() {
+		return _originalBrowserKey;
 	}
 
 	public long getColumnBitmask() {
@@ -328,9 +359,21 @@ public class BrowserTrackerModelImpl extends BaseModelImpl<BrowserTracker>
 	public void resetOriginalValues() {
 		BrowserTrackerModelImpl browserTrackerModelImpl = this;
 
+		browserTrackerModelImpl._originalMvccVersion = browserTrackerModelImpl._mvccVersion;
+
+		browserTrackerModelImpl._setOriginalMvccVersion = false;
+
+		browserTrackerModelImpl._originalBrowserTrackerId = browserTrackerModelImpl._browserTrackerId;
+
+		browserTrackerModelImpl._setOriginalBrowserTrackerId = false;
+
 		browserTrackerModelImpl._originalUserId = browserTrackerModelImpl._userId;
 
 		browserTrackerModelImpl._setOriginalUserId = false;
+
+		browserTrackerModelImpl._originalBrowserKey = browserTrackerModelImpl._browserKey;
+
+		browserTrackerModelImpl._setOriginalBrowserKey = false;
 
 		browserTrackerModelImpl._columnBitmask = 0;
 	}
@@ -402,11 +445,17 @@ public class BrowserTrackerModelImpl extends BaseModelImpl<BrowserTracker>
 			BrowserTracker.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _browserTrackerId;
+	private long _originalBrowserTrackerId;
+	private boolean _setOriginalBrowserTrackerId;
 	private long _userId;
 	private long _originalUserId;
 	private boolean _setOriginalUserId;
 	private long _browserKey;
+	private long _originalBrowserKey;
+	private boolean _setOriginalBrowserKey;
 	private long _columnBitmask;
 	private BrowserTracker _escapedModel;
 }

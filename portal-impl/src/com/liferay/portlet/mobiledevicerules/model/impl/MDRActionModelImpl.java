@@ -355,7 +355,17 @@ public class MDRActionModelImpl extends BaseModelImpl<MDRAction>
 
 	@Override
 	public void setActionId(long actionId) {
+		if (!_setOriginalActionId) {
+			_setOriginalActionId = true;
+
+			_originalActionId = _actionId;
+		}
+
 		_actionId = actionId;
+	}
+
+	public long getOriginalActionId() {
+		return _originalActionId;
 	}
 
 	@JSON
@@ -412,6 +422,12 @@ public class MDRActionModelImpl extends BaseModelImpl<MDRAction>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -431,6 +447,10 @@ public class MDRActionModelImpl extends BaseModelImpl<MDRAction>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -444,7 +464,15 @@ public class MDRActionModelImpl extends BaseModelImpl<MDRAction>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -455,7 +483,15 @@ public class MDRActionModelImpl extends BaseModelImpl<MDRAction>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -466,7 +502,15 @@ public class MDRActionModelImpl extends BaseModelImpl<MDRAction>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@Override
@@ -497,7 +541,17 @@ public class MDRActionModelImpl extends BaseModelImpl<MDRAction>
 
 	@Override
 	public void setClassNameId(long classNameId) {
+		if (!_setOriginalClassNameId) {
+			_setOriginalClassNameId = true;
+
+			_originalClassNameId = _classNameId;
+		}
+
 		_classNameId = classNameId;
+	}
+
+	public long getOriginalClassNameId() {
+		return _originalClassNameId;
 	}
 
 	@JSON
@@ -508,7 +562,17 @@ public class MDRActionModelImpl extends BaseModelImpl<MDRAction>
 
 	@Override
 	public void setClassPK(long classPK) {
+		if (!_setOriginalClassPK) {
+			_setOriginalClassPK = true;
+
+			_originalClassPK = _classPK;
+		}
+
 		_classPK = classPK;
+	}
+
+	public long getOriginalClassPK() {
+		return _originalClassPK;
 	}
 
 	@JSON
@@ -590,6 +654,10 @@ public class MDRActionModelImpl extends BaseModelImpl<MDRAction>
 
 	@Override
 	public void setName(String name) {
+		if (_originalName == null) {
+			_originalName = _name;
+		}
+
 		_name = name;
 	}
 
@@ -631,6 +699,10 @@ public class MDRActionModelImpl extends BaseModelImpl<MDRAction>
 
 		setName(LocalizationUtil.updateLocalization(nameMap, getName(), "Name",
 				LocaleUtil.toLanguageId(defaultLocale)));
+	}
+
+	public String getOriginalName() {
+		return GetterUtil.getString(_originalName);
 	}
 
 	@JSON
@@ -689,6 +761,10 @@ public class MDRActionModelImpl extends BaseModelImpl<MDRAction>
 
 	@Override
 	public void setDescription(String description) {
+		if (_originalDescription == null) {
+			_originalDescription = _description;
+		}
+
 		_description = description;
 	}
 
@@ -736,6 +812,10 @@ public class MDRActionModelImpl extends BaseModelImpl<MDRAction>
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
+	public String getOriginalDescription() {
+		return GetterUtil.getString(_originalDescription);
+	}
+
 	@JSON
 	@Override
 	public String getType() {
@@ -749,7 +829,15 @@ public class MDRActionModelImpl extends BaseModelImpl<MDRAction>
 
 	@Override
 	public void setType(String type) {
+		if (_originalType == null) {
+			_originalType = _type;
+		}
+
 		_type = type;
+	}
+
+	public String getOriginalType() {
+		return GetterUtil.getString(_originalType);
 	}
 
 	@JSON
@@ -765,7 +853,15 @@ public class MDRActionModelImpl extends BaseModelImpl<MDRAction>
 
 	@Override
 	public void setTypeSettings(String typeSettings) {
+		if (_originalTypeSettings == null) {
+			_originalTypeSettings = _typeSettings;
+		}
+
 		_typeSettings = typeSettings;
+	}
+
+	public String getOriginalTypeSettings() {
+		return GetterUtil.getString(_originalTypeSettings);
 	}
 
 	@Override
@@ -966,6 +1062,10 @@ public class MDRActionModelImpl extends BaseModelImpl<MDRAction>
 
 		mdrActionModelImpl._originalUuid = mdrActionModelImpl._uuid;
 
+		mdrActionModelImpl._originalActionId = mdrActionModelImpl._actionId;
+
+		mdrActionModelImpl._setOriginalActionId = false;
+
 		mdrActionModelImpl._originalGroupId = mdrActionModelImpl._groupId;
 
 		mdrActionModelImpl._setOriginalGroupId = false;
@@ -974,9 +1074,35 @@ public class MDRActionModelImpl extends BaseModelImpl<MDRAction>
 
 		mdrActionModelImpl._setOriginalCompanyId = false;
 
+		mdrActionModelImpl._originalUserId = mdrActionModelImpl._userId;
+
+		mdrActionModelImpl._setOriginalUserId = false;
+
+		mdrActionModelImpl._originalUserName = mdrActionModelImpl._userName;
+
+		mdrActionModelImpl._originalCreateDate = mdrActionModelImpl._createDate;
+
+		mdrActionModelImpl._originalModifiedDate = mdrActionModelImpl._modifiedDate;
+
+		mdrActionModelImpl._originalClassNameId = mdrActionModelImpl._classNameId;
+
+		mdrActionModelImpl._setOriginalClassNameId = false;
+
+		mdrActionModelImpl._originalClassPK = mdrActionModelImpl._classPK;
+
+		mdrActionModelImpl._setOriginalClassPK = false;
+
 		mdrActionModelImpl._originalRuleGroupInstanceId = mdrActionModelImpl._ruleGroupInstanceId;
 
 		mdrActionModelImpl._setOriginalRuleGroupInstanceId = false;
+
+		mdrActionModelImpl._originalName = mdrActionModelImpl._name;
+
+		mdrActionModelImpl._originalDescription = mdrActionModelImpl._description;
+
+		mdrActionModelImpl._originalType = mdrActionModelImpl._type;
+
+		mdrActionModelImpl._originalTypeSettings = mdrActionModelImpl._typeSettings;
 
 		mdrActionModelImpl._columnBitmask = 0;
 	}
@@ -1188,6 +1314,8 @@ public class MDRActionModelImpl extends BaseModelImpl<MDRAction>
 	private String _uuid;
 	private String _originalUuid;
 	private long _actionId;
+	private long _originalActionId;
+	private boolean _setOriginalActionId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -1195,20 +1323,33 @@ public class MDRActionModelImpl extends BaseModelImpl<MDRAction>
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _classNameId;
+	private long _originalClassNameId;
+	private boolean _setOriginalClassNameId;
 	private long _classPK;
+	private long _originalClassPK;
+	private boolean _setOriginalClassPK;
 	private long _ruleGroupInstanceId;
 	private long _originalRuleGroupInstanceId;
 	private boolean _setOriginalRuleGroupInstanceId;
 	private String _name;
 	private String _nameCurrentLanguageId;
+	private String _originalName;
 	private String _description;
 	private String _descriptionCurrentLanguageId;
+	private String _originalDescription;
 	private String _type;
+	private String _originalType;
 	private String _typeSettings;
+	private String _originalTypeSettings;
 	private long _columnBitmask;
 	private MDRAction _escapedModel;
 }

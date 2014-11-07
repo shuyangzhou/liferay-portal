@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ServiceComponent;
 import com.liferay.portal.model.ServiceComponentModel;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 
 import com.liferay.portlet.expando.model.ExpandoBridge;
@@ -183,7 +184,17 @@ public class ServiceComponentModelImpl extends BaseModelImpl<ServiceComponent>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@Override
@@ -193,7 +204,17 @@ public class ServiceComponentModelImpl extends BaseModelImpl<ServiceComponent>
 
 	@Override
 	public void setServiceComponentId(long serviceComponentId) {
+		if (!_setOriginalServiceComponentId) {
+			_setOriginalServiceComponentId = true;
+
+			_originalServiceComponentId = _serviceComponentId;
+		}
+
 		_serviceComponentId = serviceComponentId;
+	}
+
+	public long getOriginalServiceComponentId() {
+		return _originalServiceComponentId;
 	}
 
 	@Override
@@ -250,7 +271,17 @@ public class ServiceComponentModelImpl extends BaseModelImpl<ServiceComponent>
 
 	@Override
 	public void setBuildDate(long buildDate) {
+		if (!_setOriginalBuildDate) {
+			_setOriginalBuildDate = true;
+
+			_originalBuildDate = _buildDate;
+		}
+
 		_buildDate = buildDate;
+	}
+
+	public long getOriginalBuildDate() {
+		return _originalBuildDate;
 	}
 
 	@Override
@@ -265,7 +296,15 @@ public class ServiceComponentModelImpl extends BaseModelImpl<ServiceComponent>
 
 	@Override
 	public void setData(String data) {
+		if (_originalData == null) {
+			_originalData = _data;
+		}
+
 		_data = data;
+	}
+
+	public String getOriginalData() {
+		return GetterUtil.getString(_originalData);
 	}
 
 	public long getColumnBitmask() {
@@ -384,11 +423,25 @@ public class ServiceComponentModelImpl extends BaseModelImpl<ServiceComponent>
 	public void resetOriginalValues() {
 		ServiceComponentModelImpl serviceComponentModelImpl = this;
 
+		serviceComponentModelImpl._originalMvccVersion = serviceComponentModelImpl._mvccVersion;
+
+		serviceComponentModelImpl._setOriginalMvccVersion = false;
+
+		serviceComponentModelImpl._originalServiceComponentId = serviceComponentModelImpl._serviceComponentId;
+
+		serviceComponentModelImpl._setOriginalServiceComponentId = false;
+
 		serviceComponentModelImpl._originalBuildNamespace = serviceComponentModelImpl._buildNamespace;
 
 		serviceComponentModelImpl._originalBuildNumber = serviceComponentModelImpl._buildNumber;
 
 		serviceComponentModelImpl._setOriginalBuildNumber = false;
+
+		serviceComponentModelImpl._originalBuildDate = serviceComponentModelImpl._buildDate;
+
+		serviceComponentModelImpl._setOriginalBuildDate = false;
+
+		serviceComponentModelImpl._originalData = serviceComponentModelImpl._data;
 
 		serviceComponentModelImpl._columnBitmask = 0;
 	}
@@ -488,14 +541,21 @@ public class ServiceComponentModelImpl extends BaseModelImpl<ServiceComponent>
 			ServiceComponent.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _serviceComponentId;
+	private long _originalServiceComponentId;
+	private boolean _setOriginalServiceComponentId;
 	private String _buildNamespace;
 	private String _originalBuildNamespace;
 	private long _buildNumber;
 	private long _originalBuildNumber;
 	private boolean _setOriginalBuildNumber;
 	private long _buildDate;
+	private long _originalBuildDate;
+	private boolean _setOriginalBuildDate;
 	private String _data;
+	private String _originalData;
 	private long _columnBitmask;
 	private ServiceComponent _escapedModel;
 }

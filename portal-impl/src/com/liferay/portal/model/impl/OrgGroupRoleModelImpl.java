@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.OrgGroupRole;
 import com.liferay.portal.model.OrgGroupRoleModel;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.persistence.OrgGroupRolePK;
 
 import java.io.Serializable;
@@ -166,7 +167,17 @@ public class OrgGroupRoleModelImpl extends BaseModelImpl<OrgGroupRole>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@Override
@@ -176,7 +187,17 @@ public class OrgGroupRoleModelImpl extends BaseModelImpl<OrgGroupRole>
 
 	@Override
 	public void setOrganizationId(long organizationId) {
+		if (!_setOriginalOrganizationId) {
+			_setOriginalOrganizationId = true;
+
+			_originalOrganizationId = _organizationId;
+		}
+
 		_organizationId = organizationId;
+	}
+
+	public long getOriginalOrganizationId() {
+		return _originalOrganizationId;
 	}
 
 	@Override
@@ -299,6 +320,14 @@ public class OrgGroupRoleModelImpl extends BaseModelImpl<OrgGroupRole>
 	public void resetOriginalValues() {
 		OrgGroupRoleModelImpl orgGroupRoleModelImpl = this;
 
+		orgGroupRoleModelImpl._originalMvccVersion = orgGroupRoleModelImpl._mvccVersion;
+
+		orgGroupRoleModelImpl._setOriginalMvccVersion = false;
+
+		orgGroupRoleModelImpl._originalOrganizationId = orgGroupRoleModelImpl._organizationId;
+
+		orgGroupRoleModelImpl._setOriginalOrganizationId = false;
+
 		orgGroupRoleModelImpl._originalGroupId = orgGroupRoleModelImpl._groupId;
 
 		orgGroupRoleModelImpl._setOriginalGroupId = false;
@@ -377,7 +406,11 @@ public class OrgGroupRoleModelImpl extends BaseModelImpl<OrgGroupRole>
 			OrgGroupRole.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _organizationId;
+	private long _originalOrganizationId;
+	private boolean _setOriginalOrganizationId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;

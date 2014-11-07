@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ResourceAction;
 import com.liferay.portal.model.ResourceActionModel;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 
 import com.liferay.portlet.expando.model.ExpandoBridge;
@@ -176,7 +177,17 @@ public class ResourceActionModelImpl extends BaseModelImpl<ResourceAction>
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if (!_setOriginalMvccVersion) {
+			_setOriginalMvccVersion = true;
+
+			_originalMvccVersion = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
+	}
+
+	public long getOriginalMvccVersion() {
+		return _originalMvccVersion;
 	}
 
 	@Override
@@ -186,7 +197,17 @@ public class ResourceActionModelImpl extends BaseModelImpl<ResourceAction>
 
 	@Override
 	public void setResourceActionId(long resourceActionId) {
+		if (!_setOriginalResourceActionId) {
+			_setOriginalResourceActionId = true;
+
+			_originalResourceActionId = _resourceActionId;
+		}
+
 		_resourceActionId = resourceActionId;
+	}
+
+	public long getOriginalResourceActionId() {
+		return _originalResourceActionId;
 	}
 
 	@Override
@@ -248,7 +269,17 @@ public class ResourceActionModelImpl extends BaseModelImpl<ResourceAction>
 	public void setBitwiseValue(long bitwiseValue) {
 		_columnBitmask = -1L;
 
+		if (!_setOriginalBitwiseValue) {
+			_setOriginalBitwiseValue = true;
+
+			_originalBitwiseValue = _bitwiseValue;
+		}
+
 		_bitwiseValue = bitwiseValue;
+	}
+
+	public long getOriginalBitwiseValue() {
+		return _originalBitwiseValue;
 	}
 
 	public long getColumnBitmask() {
@@ -361,9 +392,21 @@ public class ResourceActionModelImpl extends BaseModelImpl<ResourceAction>
 	public void resetOriginalValues() {
 		ResourceActionModelImpl resourceActionModelImpl = this;
 
+		resourceActionModelImpl._originalMvccVersion = resourceActionModelImpl._mvccVersion;
+
+		resourceActionModelImpl._setOriginalMvccVersion = false;
+
+		resourceActionModelImpl._originalResourceActionId = resourceActionModelImpl._resourceActionId;
+
+		resourceActionModelImpl._setOriginalResourceActionId = false;
+
 		resourceActionModelImpl._originalName = resourceActionModelImpl._name;
 
 		resourceActionModelImpl._originalActionId = resourceActionModelImpl._actionId;
+
+		resourceActionModelImpl._originalBitwiseValue = resourceActionModelImpl._bitwiseValue;
+
+		resourceActionModelImpl._setOriginalBitwiseValue = false;
 
 		resourceActionModelImpl._columnBitmask = 0;
 	}
@@ -455,12 +498,18 @@ public class ResourceActionModelImpl extends BaseModelImpl<ResourceAction>
 			ResourceAction.class
 		};
 	private long _mvccVersion;
+	private long _originalMvccVersion;
+	private boolean _setOriginalMvccVersion;
 	private long _resourceActionId;
+	private long _originalResourceActionId;
+	private boolean _setOriginalResourceActionId;
 	private String _name;
 	private String _originalName;
 	private String _actionId;
 	private String _originalActionId;
 	private long _bitwiseValue;
+	private long _originalBitwiseValue;
+	private boolean _setOriginalBitwiseValue;
 	private long _columnBitmask;
 	private ResourceAction _escapedModel;
 }

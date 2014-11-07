@@ -368,7 +368,17 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 
 	@Override
 	public void setCategoryId(long categoryId) {
+		if (!_setOriginalCategoryId) {
+			_setOriginalCategoryId = true;
+
+			_originalCategoryId = _categoryId;
+		}
+
 		_categoryId = categoryId;
+	}
+
+	public long getOriginalCategoryId() {
+		return _originalCategoryId;
 	}
 
 	@JSON
@@ -425,6 +435,12 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -444,6 +460,10 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@JSON
 	@Override
 	public String getUserName() {
@@ -457,7 +477,15 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -468,7 +496,15 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -479,7 +515,15 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -513,7 +557,17 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 
 	@Override
 	public void setLeftCategoryId(long leftCategoryId) {
+		if (!_setOriginalLeftCategoryId) {
+			_setOriginalLeftCategoryId = true;
+
+			_originalLeftCategoryId = _leftCategoryId;
+		}
+
 		_leftCategoryId = leftCategoryId;
+	}
+
+	public long getOriginalLeftCategoryId() {
+		return _originalLeftCategoryId;
 	}
 
 	@JSON
@@ -524,7 +578,17 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 
 	@Override
 	public void setRightCategoryId(long rightCategoryId) {
+		if (!_setOriginalRightCategoryId) {
+			_setOriginalRightCategoryId = true;
+
+			_originalRightCategoryId = _rightCategoryId;
+		}
+
 		_rightCategoryId = rightCategoryId;
+	}
+
+	public long getOriginalRightCategoryId() {
+		return _originalRightCategoryId;
 	}
 
 	@JSON
@@ -609,6 +673,10 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 
 	@Override
 	public void setTitle(String title) {
+		if (_originalTitle == null) {
+			_originalTitle = _title;
+		}
+
 		_title = title;
 	}
 
@@ -650,6 +718,10 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 
 		setTitle(LocalizationUtil.updateLocalization(titleMap, getTitle(),
 				"Title", LocaleUtil.toLanguageId(defaultLocale)));
+	}
+
+	public String getOriginalTitle() {
+		return GetterUtil.getString(_originalTitle);
 	}
 
 	@JSON
@@ -708,6 +780,10 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 
 	@Override
 	public void setDescription(String description) {
+		if (_originalDescription == null) {
+			_originalDescription = _description;
+		}
+
 		_description = description;
 	}
 
@@ -753,6 +829,10 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 		setDescription(LocalizationUtil.updateLocalization(descriptionMap,
 				getDescription(), "Description",
 				LocaleUtil.toLanguageId(defaultLocale)));
+	}
+
+	public String getOriginalDescription() {
+		return GetterUtil.getString(_originalDescription);
 	}
 
 	@JSON
@@ -994,6 +1074,10 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 
 		assetCategoryModelImpl._originalUuid = assetCategoryModelImpl._uuid;
 
+		assetCategoryModelImpl._originalCategoryId = assetCategoryModelImpl._categoryId;
+
+		assetCategoryModelImpl._setOriginalCategoryId = false;
+
 		assetCategoryModelImpl._originalGroupId = assetCategoryModelImpl._groupId;
 
 		assetCategoryModelImpl._setOriginalGroupId = false;
@@ -1002,11 +1086,33 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 
 		assetCategoryModelImpl._setOriginalCompanyId = false;
 
+		assetCategoryModelImpl._originalUserId = assetCategoryModelImpl._userId;
+
+		assetCategoryModelImpl._setOriginalUserId = false;
+
+		assetCategoryModelImpl._originalUserName = assetCategoryModelImpl._userName;
+
+		assetCategoryModelImpl._originalCreateDate = assetCategoryModelImpl._createDate;
+
+		assetCategoryModelImpl._originalModifiedDate = assetCategoryModelImpl._modifiedDate;
+
 		assetCategoryModelImpl._originalParentCategoryId = assetCategoryModelImpl._parentCategoryId;
 
 		assetCategoryModelImpl._setOriginalParentCategoryId = false;
 
+		assetCategoryModelImpl._originalLeftCategoryId = assetCategoryModelImpl._leftCategoryId;
+
+		assetCategoryModelImpl._setOriginalLeftCategoryId = false;
+
+		assetCategoryModelImpl._originalRightCategoryId = assetCategoryModelImpl._rightCategoryId;
+
+		assetCategoryModelImpl._setOriginalRightCategoryId = false;
+
 		assetCategoryModelImpl._originalName = assetCategoryModelImpl._name;
+
+		assetCategoryModelImpl._originalTitle = assetCategoryModelImpl._title;
+
+		assetCategoryModelImpl._originalDescription = assetCategoryModelImpl._description;
 
 		assetCategoryModelImpl._originalVocabularyId = assetCategoryModelImpl._vocabularyId;
 
@@ -1216,6 +1322,8 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 	private String _uuid;
 	private String _originalUuid;
 	private long _categoryId;
+	private long _originalCategoryId;
+	private boolean _setOriginalCategoryId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -1223,20 +1331,31 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _parentCategoryId;
 	private long _originalParentCategoryId;
 	private boolean _setOriginalParentCategoryId;
 	private long _leftCategoryId;
+	private long _originalLeftCategoryId;
+	private boolean _setOriginalLeftCategoryId;
 	private long _rightCategoryId;
+	private long _originalRightCategoryId;
+	private boolean _setOriginalRightCategoryId;
 	private String _name;
 	private String _originalName;
 	private String _title;
 	private String _titleCurrentLanguageId;
+	private String _originalTitle;
 	private String _description;
 	private String _descriptionCurrentLanguageId;
+	private String _originalDescription;
 	private long _vocabularyId;
 	private long _originalVocabularyId;
 	private boolean _setOriginalVocabularyId;

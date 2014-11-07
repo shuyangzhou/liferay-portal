@@ -377,7 +377,17 @@ public class MBMailingListModelImpl extends BaseModelImpl<MBMailingList>
 
 	@Override
 	public void setMailingListId(long mailingListId) {
+		if (!_setOriginalMailingListId) {
+			_setOriginalMailingListId = true;
+
+			_originalMailingListId = _mailingListId;
+		}
+
 		_mailingListId = mailingListId;
+	}
+
+	public long getOriginalMailingListId() {
+		return _originalMailingListId;
 	}
 
 	@Override
@@ -431,6 +441,12 @@ public class MBMailingListModelImpl extends BaseModelImpl<MBMailingList>
 
 	@Override
 	public void setUserId(long userId) {
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -450,6 +466,10 @@ public class MBMailingListModelImpl extends BaseModelImpl<MBMailingList>
 	public void setUserUuid(String userUuid) {
 	}
 
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -462,7 +482,15 @@ public class MBMailingListModelImpl extends BaseModelImpl<MBMailingList>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@Override
@@ -472,7 +500,15 @@ public class MBMailingListModelImpl extends BaseModelImpl<MBMailingList>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@Override
@@ -482,7 +518,15 @@ public class MBMailingListModelImpl extends BaseModelImpl<MBMailingList>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@Override
@@ -519,7 +563,15 @@ public class MBMailingListModelImpl extends BaseModelImpl<MBMailingList>
 
 	@Override
 	public void setEmailAddress(String emailAddress) {
+		if (_originalEmailAddress == null) {
+			_originalEmailAddress = _emailAddress;
+		}
+
 		_emailAddress = emailAddress;
+	}
+
+	public String getOriginalEmailAddress() {
+		return GetterUtil.getString(_originalEmailAddress);
 	}
 
 	@Override
@@ -534,7 +586,15 @@ public class MBMailingListModelImpl extends BaseModelImpl<MBMailingList>
 
 	@Override
 	public void setInProtocol(String inProtocol) {
+		if (_originalInProtocol == null) {
+			_originalInProtocol = _inProtocol;
+		}
+
 		_inProtocol = inProtocol;
+	}
+
+	public String getOriginalInProtocol() {
+		return GetterUtil.getString(_originalInProtocol);
 	}
 
 	@Override
@@ -549,7 +609,15 @@ public class MBMailingListModelImpl extends BaseModelImpl<MBMailingList>
 
 	@Override
 	public void setInServerName(String inServerName) {
+		if (_originalInServerName == null) {
+			_originalInServerName = _inServerName;
+		}
+
 		_inServerName = inServerName;
+	}
+
+	public String getOriginalInServerName() {
+		return GetterUtil.getString(_originalInServerName);
 	}
 
 	@Override
@@ -559,7 +627,17 @@ public class MBMailingListModelImpl extends BaseModelImpl<MBMailingList>
 
 	@Override
 	public void setInServerPort(int inServerPort) {
+		if (!_setOriginalInServerPort) {
+			_setOriginalInServerPort = true;
+
+			_originalInServerPort = _inServerPort;
+		}
+
 		_inServerPort = inServerPort;
+	}
+
+	public int getOriginalInServerPort() {
+		return _originalInServerPort;
 	}
 
 	@Override
@@ -574,7 +652,17 @@ public class MBMailingListModelImpl extends BaseModelImpl<MBMailingList>
 
 	@Override
 	public void setInUseSSL(boolean inUseSSL) {
+		if (!_setOriginalInUseSSL) {
+			_setOriginalInUseSSL = true;
+
+			_originalInUseSSL = _inUseSSL;
+		}
+
 		_inUseSSL = inUseSSL;
+	}
+
+	public boolean getOriginalInUseSSL() {
+		return _originalInUseSSL;
 	}
 
 	@Override
@@ -589,7 +677,15 @@ public class MBMailingListModelImpl extends BaseModelImpl<MBMailingList>
 
 	@Override
 	public void setInUserName(String inUserName) {
+		if (_originalInUserName == null) {
+			_originalInUserName = _inUserName;
+		}
+
 		_inUserName = inUserName;
+	}
+
+	public String getOriginalInUserName() {
+		return GetterUtil.getString(_originalInUserName);
 	}
 
 	@Override
@@ -604,7 +700,15 @@ public class MBMailingListModelImpl extends BaseModelImpl<MBMailingList>
 
 	@Override
 	public void setInPassword(String inPassword) {
+		if (_originalInPassword == null) {
+			_originalInPassword = _inPassword;
+		}
+
 		_inPassword = inPassword;
+	}
+
+	public String getOriginalInPassword() {
+		return GetterUtil.getString(_originalInPassword);
 	}
 
 	@Override
@@ -614,7 +718,17 @@ public class MBMailingListModelImpl extends BaseModelImpl<MBMailingList>
 
 	@Override
 	public void setInReadInterval(int inReadInterval) {
+		if (!_setOriginalInReadInterval) {
+			_setOriginalInReadInterval = true;
+
+			_originalInReadInterval = _inReadInterval;
+		}
+
 		_inReadInterval = inReadInterval;
+	}
+
+	public int getOriginalInReadInterval() {
+		return _originalInReadInterval;
 	}
 
 	@Override
@@ -629,7 +743,15 @@ public class MBMailingListModelImpl extends BaseModelImpl<MBMailingList>
 
 	@Override
 	public void setOutEmailAddress(String outEmailAddress) {
+		if (_originalOutEmailAddress == null) {
+			_originalOutEmailAddress = _outEmailAddress;
+		}
+
 		_outEmailAddress = outEmailAddress;
+	}
+
+	public String getOriginalOutEmailAddress() {
+		return GetterUtil.getString(_originalOutEmailAddress);
 	}
 
 	@Override
@@ -644,7 +766,17 @@ public class MBMailingListModelImpl extends BaseModelImpl<MBMailingList>
 
 	@Override
 	public void setOutCustom(boolean outCustom) {
+		if (!_setOriginalOutCustom) {
+			_setOriginalOutCustom = true;
+
+			_originalOutCustom = _outCustom;
+		}
+
 		_outCustom = outCustom;
+	}
+
+	public boolean getOriginalOutCustom() {
+		return _originalOutCustom;
 	}
 
 	@Override
@@ -659,7 +791,15 @@ public class MBMailingListModelImpl extends BaseModelImpl<MBMailingList>
 
 	@Override
 	public void setOutServerName(String outServerName) {
+		if (_originalOutServerName == null) {
+			_originalOutServerName = _outServerName;
+		}
+
 		_outServerName = outServerName;
+	}
+
+	public String getOriginalOutServerName() {
+		return GetterUtil.getString(_originalOutServerName);
 	}
 
 	@Override
@@ -669,7 +809,17 @@ public class MBMailingListModelImpl extends BaseModelImpl<MBMailingList>
 
 	@Override
 	public void setOutServerPort(int outServerPort) {
+		if (!_setOriginalOutServerPort) {
+			_setOriginalOutServerPort = true;
+
+			_originalOutServerPort = _outServerPort;
+		}
+
 		_outServerPort = outServerPort;
+	}
+
+	public int getOriginalOutServerPort() {
+		return _originalOutServerPort;
 	}
 
 	@Override
@@ -684,7 +834,17 @@ public class MBMailingListModelImpl extends BaseModelImpl<MBMailingList>
 
 	@Override
 	public void setOutUseSSL(boolean outUseSSL) {
+		if (!_setOriginalOutUseSSL) {
+			_setOriginalOutUseSSL = true;
+
+			_originalOutUseSSL = _outUseSSL;
+		}
+
 		_outUseSSL = outUseSSL;
+	}
+
+	public boolean getOriginalOutUseSSL() {
+		return _originalOutUseSSL;
 	}
 
 	@Override
@@ -699,7 +859,15 @@ public class MBMailingListModelImpl extends BaseModelImpl<MBMailingList>
 
 	@Override
 	public void setOutUserName(String outUserName) {
+		if (_originalOutUserName == null) {
+			_originalOutUserName = _outUserName;
+		}
+
 		_outUserName = outUserName;
+	}
+
+	public String getOriginalOutUserName() {
+		return GetterUtil.getString(_originalOutUserName);
 	}
 
 	@Override
@@ -714,7 +882,15 @@ public class MBMailingListModelImpl extends BaseModelImpl<MBMailingList>
 
 	@Override
 	public void setOutPassword(String outPassword) {
+		if (_originalOutPassword == null) {
+			_originalOutPassword = _outPassword;
+		}
+
 		_outPassword = outPassword;
+	}
+
+	public String getOriginalOutPassword() {
+		return GetterUtil.getString(_originalOutPassword);
 	}
 
 	@Override
@@ -729,7 +905,17 @@ public class MBMailingListModelImpl extends BaseModelImpl<MBMailingList>
 
 	@Override
 	public void setAllowAnonymous(boolean allowAnonymous) {
+		if (!_setOriginalAllowAnonymous) {
+			_setOriginalAllowAnonymous = true;
+
+			_originalAllowAnonymous = _allowAnonymous;
+		}
+
 		_allowAnonymous = allowAnonymous;
+	}
+
+	public boolean getOriginalAllowAnonymous() {
+		return _originalAllowAnonymous;
 	}
 
 	@Override
@@ -886,6 +1072,10 @@ public class MBMailingListModelImpl extends BaseModelImpl<MBMailingList>
 
 		mbMailingListModelImpl._originalUuid = mbMailingListModelImpl._uuid;
 
+		mbMailingListModelImpl._originalMailingListId = mbMailingListModelImpl._mailingListId;
+
+		mbMailingListModelImpl._setOriginalMailingListId = false;
+
 		mbMailingListModelImpl._originalGroupId = mbMailingListModelImpl._groupId;
 
 		mbMailingListModelImpl._setOriginalGroupId = false;
@@ -894,9 +1084,65 @@ public class MBMailingListModelImpl extends BaseModelImpl<MBMailingList>
 
 		mbMailingListModelImpl._setOriginalCompanyId = false;
 
+		mbMailingListModelImpl._originalUserId = mbMailingListModelImpl._userId;
+
+		mbMailingListModelImpl._setOriginalUserId = false;
+
+		mbMailingListModelImpl._originalUserName = mbMailingListModelImpl._userName;
+
+		mbMailingListModelImpl._originalCreateDate = mbMailingListModelImpl._createDate;
+
+		mbMailingListModelImpl._originalModifiedDate = mbMailingListModelImpl._modifiedDate;
+
 		mbMailingListModelImpl._originalCategoryId = mbMailingListModelImpl._categoryId;
 
 		mbMailingListModelImpl._setOriginalCategoryId = false;
+
+		mbMailingListModelImpl._originalEmailAddress = mbMailingListModelImpl._emailAddress;
+
+		mbMailingListModelImpl._originalInProtocol = mbMailingListModelImpl._inProtocol;
+
+		mbMailingListModelImpl._originalInServerName = mbMailingListModelImpl._inServerName;
+
+		mbMailingListModelImpl._originalInServerPort = mbMailingListModelImpl._inServerPort;
+
+		mbMailingListModelImpl._setOriginalInServerPort = false;
+
+		mbMailingListModelImpl._originalInUseSSL = mbMailingListModelImpl._inUseSSL;
+
+		mbMailingListModelImpl._setOriginalInUseSSL = false;
+
+		mbMailingListModelImpl._originalInUserName = mbMailingListModelImpl._inUserName;
+
+		mbMailingListModelImpl._originalInPassword = mbMailingListModelImpl._inPassword;
+
+		mbMailingListModelImpl._originalInReadInterval = mbMailingListModelImpl._inReadInterval;
+
+		mbMailingListModelImpl._setOriginalInReadInterval = false;
+
+		mbMailingListModelImpl._originalOutEmailAddress = mbMailingListModelImpl._outEmailAddress;
+
+		mbMailingListModelImpl._originalOutCustom = mbMailingListModelImpl._outCustom;
+
+		mbMailingListModelImpl._setOriginalOutCustom = false;
+
+		mbMailingListModelImpl._originalOutServerName = mbMailingListModelImpl._outServerName;
+
+		mbMailingListModelImpl._originalOutServerPort = mbMailingListModelImpl._outServerPort;
+
+		mbMailingListModelImpl._setOriginalOutServerPort = false;
+
+		mbMailingListModelImpl._originalOutUseSSL = mbMailingListModelImpl._outUseSSL;
+
+		mbMailingListModelImpl._setOriginalOutUseSSL = false;
+
+		mbMailingListModelImpl._originalOutUserName = mbMailingListModelImpl._outUserName;
+
+		mbMailingListModelImpl._originalOutPassword = mbMailingListModelImpl._outPassword;
+
+		mbMailingListModelImpl._originalAllowAnonymous = mbMailingListModelImpl._allowAnonymous;
+
+		mbMailingListModelImpl._setOriginalAllowAnonymous = false;
 
 		mbMailingListModelImpl._originalActive = mbMailingListModelImpl._active;
 
@@ -1230,6 +1476,8 @@ public class MBMailingListModelImpl extends BaseModelImpl<MBMailingList>
 	private String _uuid;
 	private String _originalUuid;
 	private long _mailingListId;
+	private long _originalMailingListId;
+	private boolean _setOriginalMailingListId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -1237,28 +1485,56 @@ public class MBMailingListModelImpl extends BaseModelImpl<MBMailingList>
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _categoryId;
 	private long _originalCategoryId;
 	private boolean _setOriginalCategoryId;
 	private String _emailAddress;
+	private String _originalEmailAddress;
 	private String _inProtocol;
+	private String _originalInProtocol;
 	private String _inServerName;
+	private String _originalInServerName;
 	private int _inServerPort;
+	private int _originalInServerPort;
+	private boolean _setOriginalInServerPort;
 	private boolean _inUseSSL;
+	private boolean _originalInUseSSL;
+	private boolean _setOriginalInUseSSL;
 	private String _inUserName;
+	private String _originalInUserName;
 	private String _inPassword;
+	private String _originalInPassword;
 	private int _inReadInterval;
+	private int _originalInReadInterval;
+	private boolean _setOriginalInReadInterval;
 	private String _outEmailAddress;
+	private String _originalOutEmailAddress;
 	private boolean _outCustom;
+	private boolean _originalOutCustom;
+	private boolean _setOriginalOutCustom;
 	private String _outServerName;
+	private String _originalOutServerName;
 	private int _outServerPort;
+	private int _originalOutServerPort;
+	private boolean _setOriginalOutServerPort;
 	private boolean _outUseSSL;
+	private boolean _originalOutUseSSL;
+	private boolean _setOriginalOutUseSSL;
 	private String _outUserName;
+	private String _originalOutUserName;
 	private String _outPassword;
+	private String _originalOutPassword;
 	private boolean _allowAnonymous;
+	private boolean _originalAllowAnonymous;
+	private boolean _setOriginalAllowAnonymous;
 	private boolean _active;
 	private boolean _originalActive;
 	private boolean _setOriginalActive;

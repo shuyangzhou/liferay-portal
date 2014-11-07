@@ -650,7 +650,17 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setOrderId(long orderId) {
+		if (!_setOriginalOrderId) {
+			_setOriginalOrderId = true;
+
+			_originalOrderId = _orderId;
+		}
+
 		_orderId = orderId;
+	}
+
+	public long getOriginalOrderId() {
+		return _originalOrderId;
 	}
 
 	@JSON
@@ -684,7 +694,17 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if (!_setOriginalCompanyId) {
+			_setOriginalCompanyId = true;
+
+			_originalCompanyId = _companyId;
+		}
+
 		_companyId = companyId;
+	}
+
+	public long getOriginalCompanyId() {
+		return _originalCompanyId;
 	}
 
 	@JSON
@@ -739,7 +759,15 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -752,7 +780,15 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 	public void setCreateDate(Date createDate) {
 		_columnBitmask = -1L;
 
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -763,7 +799,15 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@JSON
@@ -800,7 +844,17 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setTax(double tax) {
+		if (!_setOriginalTax) {
+			_setOriginalTax = true;
+
+			_originalTax = _tax;
+		}
+
 		_tax = tax;
+	}
+
+	public double getOriginalTax() {
+		return _originalTax;
 	}
 
 	@JSON
@@ -811,7 +865,17 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setShipping(double shipping) {
+		if (!_setOriginalShipping) {
+			_setOriginalShipping = true;
+
+			_originalShipping = _shipping;
+		}
+
 		_shipping = shipping;
+	}
+
+	public double getOriginalShipping() {
+		return _originalShipping;
 	}
 
 	@JSON
@@ -827,7 +891,15 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setAltShipping(String altShipping) {
+		if (_originalAltShipping == null) {
+			_originalAltShipping = _altShipping;
+		}
+
 		_altShipping = altShipping;
+	}
+
+	public String getOriginalAltShipping() {
+		return GetterUtil.getString(_originalAltShipping);
 	}
 
 	@JSON
@@ -843,7 +915,17 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setRequiresShipping(boolean requiresShipping) {
+		if (!_setOriginalRequiresShipping) {
+			_setOriginalRequiresShipping = true;
+
+			_originalRequiresShipping = _requiresShipping;
+		}
+
 		_requiresShipping = requiresShipping;
+	}
+
+	public boolean getOriginalRequiresShipping() {
+		return _originalRequiresShipping;
 	}
 
 	@JSON
@@ -859,7 +941,17 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setInsure(boolean insure) {
+		if (!_setOriginalInsure) {
+			_setOriginalInsure = true;
+
+			_originalInsure = _insure;
+		}
+
 		_insure = insure;
+	}
+
+	public boolean getOriginalInsure() {
+		return _originalInsure;
 	}
 
 	@JSON
@@ -870,7 +962,17 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setInsurance(double insurance) {
+		if (!_setOriginalInsurance) {
+			_setOriginalInsurance = true;
+
+			_originalInsurance = _insurance;
+		}
+
 		_insurance = insurance;
+	}
+
+	public double getOriginalInsurance() {
+		return _originalInsurance;
 	}
 
 	@JSON
@@ -886,7 +988,15 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setCouponCodes(String couponCodes) {
+		if (_originalCouponCodes == null) {
+			_originalCouponCodes = _couponCodes;
+		}
+
 		_couponCodes = couponCodes;
+	}
+
+	public String getOriginalCouponCodes() {
+		return GetterUtil.getString(_originalCouponCodes);
 	}
 
 	@JSON
@@ -897,7 +1007,17 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setCouponDiscount(double couponDiscount) {
+		if (!_setOriginalCouponDiscount) {
+			_setOriginalCouponDiscount = true;
+
+			_originalCouponDiscount = _couponDiscount;
+		}
+
 		_couponDiscount = couponDiscount;
+	}
+
+	public double getOriginalCouponDiscount() {
+		return _originalCouponDiscount;
 	}
 
 	@JSON
@@ -913,7 +1033,15 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setBillingFirstName(String billingFirstName) {
+		if (_originalBillingFirstName == null) {
+			_originalBillingFirstName = _billingFirstName;
+		}
+
 		_billingFirstName = billingFirstName;
+	}
+
+	public String getOriginalBillingFirstName() {
+		return GetterUtil.getString(_originalBillingFirstName);
 	}
 
 	@JSON
@@ -929,7 +1057,15 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setBillingLastName(String billingLastName) {
+		if (_originalBillingLastName == null) {
+			_originalBillingLastName = _billingLastName;
+		}
+
 		_billingLastName = billingLastName;
+	}
+
+	public String getOriginalBillingLastName() {
+		return GetterUtil.getString(_originalBillingLastName);
 	}
 
 	@JSON
@@ -945,7 +1081,15 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setBillingEmailAddress(String billingEmailAddress) {
+		if (_originalBillingEmailAddress == null) {
+			_originalBillingEmailAddress = _billingEmailAddress;
+		}
+
 		_billingEmailAddress = billingEmailAddress;
+	}
+
+	public String getOriginalBillingEmailAddress() {
+		return GetterUtil.getString(_originalBillingEmailAddress);
 	}
 
 	@JSON
@@ -961,7 +1105,15 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setBillingCompany(String billingCompany) {
+		if (_originalBillingCompany == null) {
+			_originalBillingCompany = _billingCompany;
+		}
+
 		_billingCompany = billingCompany;
+	}
+
+	public String getOriginalBillingCompany() {
+		return GetterUtil.getString(_originalBillingCompany);
 	}
 
 	@JSON
@@ -977,7 +1129,15 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setBillingStreet(String billingStreet) {
+		if (_originalBillingStreet == null) {
+			_originalBillingStreet = _billingStreet;
+		}
+
 		_billingStreet = billingStreet;
+	}
+
+	public String getOriginalBillingStreet() {
+		return GetterUtil.getString(_originalBillingStreet);
 	}
 
 	@JSON
@@ -993,7 +1153,15 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setBillingCity(String billingCity) {
+		if (_originalBillingCity == null) {
+			_originalBillingCity = _billingCity;
+		}
+
 		_billingCity = billingCity;
+	}
+
+	public String getOriginalBillingCity() {
+		return GetterUtil.getString(_originalBillingCity);
 	}
 
 	@JSON
@@ -1009,7 +1177,15 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setBillingState(String billingState) {
+		if (_originalBillingState == null) {
+			_originalBillingState = _billingState;
+		}
+
 		_billingState = billingState;
+	}
+
+	public String getOriginalBillingState() {
+		return GetterUtil.getString(_originalBillingState);
 	}
 
 	@JSON
@@ -1025,7 +1201,15 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setBillingZip(String billingZip) {
+		if (_originalBillingZip == null) {
+			_originalBillingZip = _billingZip;
+		}
+
 		_billingZip = billingZip;
+	}
+
+	public String getOriginalBillingZip() {
+		return GetterUtil.getString(_originalBillingZip);
 	}
 
 	@JSON
@@ -1041,7 +1225,15 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setBillingCountry(String billingCountry) {
+		if (_originalBillingCountry == null) {
+			_originalBillingCountry = _billingCountry;
+		}
+
 		_billingCountry = billingCountry;
+	}
+
+	public String getOriginalBillingCountry() {
+		return GetterUtil.getString(_originalBillingCountry);
 	}
 
 	@JSON
@@ -1057,7 +1249,15 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setBillingPhone(String billingPhone) {
+		if (_originalBillingPhone == null) {
+			_originalBillingPhone = _billingPhone;
+		}
+
 		_billingPhone = billingPhone;
+	}
+
+	public String getOriginalBillingPhone() {
+		return GetterUtil.getString(_originalBillingPhone);
 	}
 
 	@JSON
@@ -1073,7 +1273,17 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setShipToBilling(boolean shipToBilling) {
+		if (!_setOriginalShipToBilling) {
+			_setOriginalShipToBilling = true;
+
+			_originalShipToBilling = _shipToBilling;
+		}
+
 		_shipToBilling = shipToBilling;
+	}
+
+	public boolean getOriginalShipToBilling() {
+		return _originalShipToBilling;
 	}
 
 	@JSON
@@ -1089,7 +1299,15 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setShippingFirstName(String shippingFirstName) {
+		if (_originalShippingFirstName == null) {
+			_originalShippingFirstName = _shippingFirstName;
+		}
+
 		_shippingFirstName = shippingFirstName;
+	}
+
+	public String getOriginalShippingFirstName() {
+		return GetterUtil.getString(_originalShippingFirstName);
 	}
 
 	@JSON
@@ -1105,7 +1323,15 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setShippingLastName(String shippingLastName) {
+		if (_originalShippingLastName == null) {
+			_originalShippingLastName = _shippingLastName;
+		}
+
 		_shippingLastName = shippingLastName;
+	}
+
+	public String getOriginalShippingLastName() {
+		return GetterUtil.getString(_originalShippingLastName);
 	}
 
 	@JSON
@@ -1121,7 +1347,15 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setShippingEmailAddress(String shippingEmailAddress) {
+		if (_originalShippingEmailAddress == null) {
+			_originalShippingEmailAddress = _shippingEmailAddress;
+		}
+
 		_shippingEmailAddress = shippingEmailAddress;
+	}
+
+	public String getOriginalShippingEmailAddress() {
+		return GetterUtil.getString(_originalShippingEmailAddress);
 	}
 
 	@JSON
@@ -1137,7 +1371,15 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setShippingCompany(String shippingCompany) {
+		if (_originalShippingCompany == null) {
+			_originalShippingCompany = _shippingCompany;
+		}
+
 		_shippingCompany = shippingCompany;
+	}
+
+	public String getOriginalShippingCompany() {
+		return GetterUtil.getString(_originalShippingCompany);
 	}
 
 	@JSON
@@ -1153,7 +1395,15 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setShippingStreet(String shippingStreet) {
+		if (_originalShippingStreet == null) {
+			_originalShippingStreet = _shippingStreet;
+		}
+
 		_shippingStreet = shippingStreet;
+	}
+
+	public String getOriginalShippingStreet() {
+		return GetterUtil.getString(_originalShippingStreet);
 	}
 
 	@JSON
@@ -1169,7 +1419,15 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setShippingCity(String shippingCity) {
+		if (_originalShippingCity == null) {
+			_originalShippingCity = _shippingCity;
+		}
+
 		_shippingCity = shippingCity;
+	}
+
+	public String getOriginalShippingCity() {
+		return GetterUtil.getString(_originalShippingCity);
 	}
 
 	@JSON
@@ -1185,7 +1443,15 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setShippingState(String shippingState) {
+		if (_originalShippingState == null) {
+			_originalShippingState = _shippingState;
+		}
+
 		_shippingState = shippingState;
+	}
+
+	public String getOriginalShippingState() {
+		return GetterUtil.getString(_originalShippingState);
 	}
 
 	@JSON
@@ -1201,7 +1467,15 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setShippingZip(String shippingZip) {
+		if (_originalShippingZip == null) {
+			_originalShippingZip = _shippingZip;
+		}
+
 		_shippingZip = shippingZip;
+	}
+
+	public String getOriginalShippingZip() {
+		return GetterUtil.getString(_originalShippingZip);
 	}
 
 	@JSON
@@ -1217,7 +1491,15 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setShippingCountry(String shippingCountry) {
+		if (_originalShippingCountry == null) {
+			_originalShippingCountry = _shippingCountry;
+		}
+
 		_shippingCountry = shippingCountry;
+	}
+
+	public String getOriginalShippingCountry() {
+		return GetterUtil.getString(_originalShippingCountry);
 	}
 
 	@JSON
@@ -1233,7 +1515,15 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setShippingPhone(String shippingPhone) {
+		if (_originalShippingPhone == null) {
+			_originalShippingPhone = _shippingPhone;
+		}
+
 		_shippingPhone = shippingPhone;
+	}
+
+	public String getOriginalShippingPhone() {
+		return GetterUtil.getString(_originalShippingPhone);
 	}
 
 	@JSON
@@ -1249,7 +1539,15 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setCcName(String ccName) {
+		if (_originalCcName == null) {
+			_originalCcName = _ccName;
+		}
+
 		_ccName = ccName;
+	}
+
+	public String getOriginalCcName() {
+		return GetterUtil.getString(_originalCcName);
 	}
 
 	@JSON
@@ -1265,7 +1563,15 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setCcType(String ccType) {
+		if (_originalCcType == null) {
+			_originalCcType = _ccType;
+		}
+
 		_ccType = ccType;
+	}
+
+	public String getOriginalCcType() {
+		return GetterUtil.getString(_originalCcType);
 	}
 
 	@JSON
@@ -1281,7 +1587,15 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setCcNumber(String ccNumber) {
+		if (_originalCcNumber == null) {
+			_originalCcNumber = _ccNumber;
+		}
+
 		_ccNumber = ccNumber;
+	}
+
+	public String getOriginalCcNumber() {
+		return GetterUtil.getString(_originalCcNumber);
 	}
 
 	@JSON
@@ -1292,7 +1606,17 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setCcExpMonth(int ccExpMonth) {
+		if (!_setOriginalCcExpMonth) {
+			_setOriginalCcExpMonth = true;
+
+			_originalCcExpMonth = _ccExpMonth;
+		}
+
 		_ccExpMonth = ccExpMonth;
+	}
+
+	public int getOriginalCcExpMonth() {
+		return _originalCcExpMonth;
 	}
 
 	@JSON
@@ -1303,7 +1627,17 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setCcExpYear(int ccExpYear) {
+		if (!_setOriginalCcExpYear) {
+			_setOriginalCcExpYear = true;
+
+			_originalCcExpYear = _ccExpYear;
+		}
+
 		_ccExpYear = ccExpYear;
+	}
+
+	public int getOriginalCcExpYear() {
+		return _originalCcExpYear;
 	}
 
 	@JSON
@@ -1319,7 +1653,15 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setCcVerNumber(String ccVerNumber) {
+		if (_originalCcVerNumber == null) {
+			_originalCcVerNumber = _ccVerNumber;
+		}
+
 		_ccVerNumber = ccVerNumber;
+	}
+
+	public String getOriginalCcVerNumber() {
+		return GetterUtil.getString(_originalCcVerNumber);
 	}
 
 	@JSON
@@ -1335,7 +1677,15 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setComments(String comments) {
+		if (_originalComments == null) {
+			_originalComments = _comments;
+		}
+
 		_comments = comments;
+	}
+
+	public String getOriginalComments() {
+		return GetterUtil.getString(_originalComments);
 	}
 
 	@JSON
@@ -1398,7 +1748,17 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setPpPaymentGross(double ppPaymentGross) {
+		if (!_setOriginalPpPaymentGross) {
+			_setOriginalPpPaymentGross = true;
+
+			_originalPpPaymentGross = _ppPaymentGross;
+		}
+
 		_ppPaymentGross = ppPaymentGross;
+	}
+
+	public double getOriginalPpPaymentGross() {
+		return _originalPpPaymentGross;
 	}
 
 	@JSON
@@ -1414,7 +1774,15 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setPpReceiverEmail(String ppReceiverEmail) {
+		if (_originalPpReceiverEmail == null) {
+			_originalPpReceiverEmail = _ppReceiverEmail;
+		}
+
 		_ppReceiverEmail = ppReceiverEmail;
+	}
+
+	public String getOriginalPpReceiverEmail() {
+		return GetterUtil.getString(_originalPpReceiverEmail);
 	}
 
 	@JSON
@@ -1430,7 +1798,15 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setPpPayerEmail(String ppPayerEmail) {
+		if (_originalPpPayerEmail == null) {
+			_originalPpPayerEmail = _ppPayerEmail;
+		}
+
 		_ppPayerEmail = ppPayerEmail;
+	}
+
+	public String getOriginalPpPayerEmail() {
+		return GetterUtil.getString(_originalPpPayerEmail);
 	}
 
 	@JSON
@@ -1446,7 +1822,17 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setSendOrderEmail(boolean sendOrderEmail) {
+		if (!_setOriginalSendOrderEmail) {
+			_setOriginalSendOrderEmail = true;
+
+			_originalSendOrderEmail = _sendOrderEmail;
+		}
+
 		_sendOrderEmail = sendOrderEmail;
+	}
+
+	public boolean getOriginalSendOrderEmail() {
+		return _originalSendOrderEmail;
 	}
 
 	@JSON
@@ -1462,7 +1848,17 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 
 	@Override
 	public void setSendShippingEmail(boolean sendShippingEmail) {
+		if (!_setOriginalSendShippingEmail) {
+			_setOriginalSendShippingEmail = true;
+
+			_originalSendShippingEmail = _sendShippingEmail;
+		}
+
 		_sendShippingEmail = sendShippingEmail;
+	}
+
+	public boolean getOriginalSendShippingEmail() {
+		return _originalSendShippingEmail;
 	}
 
 	public long getColumnBitmask() {
@@ -1610,19 +2006,139 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 	public void resetOriginalValues() {
 		ShoppingOrderModelImpl shoppingOrderModelImpl = this;
 
+		shoppingOrderModelImpl._originalOrderId = shoppingOrderModelImpl._orderId;
+
+		shoppingOrderModelImpl._setOriginalOrderId = false;
+
 		shoppingOrderModelImpl._originalGroupId = shoppingOrderModelImpl._groupId;
 
 		shoppingOrderModelImpl._setOriginalGroupId = false;
+
+		shoppingOrderModelImpl._originalCompanyId = shoppingOrderModelImpl._companyId;
+
+		shoppingOrderModelImpl._setOriginalCompanyId = false;
 
 		shoppingOrderModelImpl._originalUserId = shoppingOrderModelImpl._userId;
 
 		shoppingOrderModelImpl._setOriginalUserId = false;
 
+		shoppingOrderModelImpl._originalUserName = shoppingOrderModelImpl._userName;
+
+		shoppingOrderModelImpl._originalCreateDate = shoppingOrderModelImpl._createDate;
+
+		shoppingOrderModelImpl._originalModifiedDate = shoppingOrderModelImpl._modifiedDate;
+
 		shoppingOrderModelImpl._originalNumber = shoppingOrderModelImpl._number;
+
+		shoppingOrderModelImpl._originalTax = shoppingOrderModelImpl._tax;
+
+		shoppingOrderModelImpl._setOriginalTax = false;
+
+		shoppingOrderModelImpl._originalShipping = shoppingOrderModelImpl._shipping;
+
+		shoppingOrderModelImpl._setOriginalShipping = false;
+
+		shoppingOrderModelImpl._originalAltShipping = shoppingOrderModelImpl._altShipping;
+
+		shoppingOrderModelImpl._originalRequiresShipping = shoppingOrderModelImpl._requiresShipping;
+
+		shoppingOrderModelImpl._setOriginalRequiresShipping = false;
+
+		shoppingOrderModelImpl._originalInsure = shoppingOrderModelImpl._insure;
+
+		shoppingOrderModelImpl._setOriginalInsure = false;
+
+		shoppingOrderModelImpl._originalInsurance = shoppingOrderModelImpl._insurance;
+
+		shoppingOrderModelImpl._setOriginalInsurance = false;
+
+		shoppingOrderModelImpl._originalCouponCodes = shoppingOrderModelImpl._couponCodes;
+
+		shoppingOrderModelImpl._originalCouponDiscount = shoppingOrderModelImpl._couponDiscount;
+
+		shoppingOrderModelImpl._setOriginalCouponDiscount = false;
+
+		shoppingOrderModelImpl._originalBillingFirstName = shoppingOrderModelImpl._billingFirstName;
+
+		shoppingOrderModelImpl._originalBillingLastName = shoppingOrderModelImpl._billingLastName;
+
+		shoppingOrderModelImpl._originalBillingEmailAddress = shoppingOrderModelImpl._billingEmailAddress;
+
+		shoppingOrderModelImpl._originalBillingCompany = shoppingOrderModelImpl._billingCompany;
+
+		shoppingOrderModelImpl._originalBillingStreet = shoppingOrderModelImpl._billingStreet;
+
+		shoppingOrderModelImpl._originalBillingCity = shoppingOrderModelImpl._billingCity;
+
+		shoppingOrderModelImpl._originalBillingState = shoppingOrderModelImpl._billingState;
+
+		shoppingOrderModelImpl._originalBillingZip = shoppingOrderModelImpl._billingZip;
+
+		shoppingOrderModelImpl._originalBillingCountry = shoppingOrderModelImpl._billingCountry;
+
+		shoppingOrderModelImpl._originalBillingPhone = shoppingOrderModelImpl._billingPhone;
+
+		shoppingOrderModelImpl._originalShipToBilling = shoppingOrderModelImpl._shipToBilling;
+
+		shoppingOrderModelImpl._setOriginalShipToBilling = false;
+
+		shoppingOrderModelImpl._originalShippingFirstName = shoppingOrderModelImpl._shippingFirstName;
+
+		shoppingOrderModelImpl._originalShippingLastName = shoppingOrderModelImpl._shippingLastName;
+
+		shoppingOrderModelImpl._originalShippingEmailAddress = shoppingOrderModelImpl._shippingEmailAddress;
+
+		shoppingOrderModelImpl._originalShippingCompany = shoppingOrderModelImpl._shippingCompany;
+
+		shoppingOrderModelImpl._originalShippingStreet = shoppingOrderModelImpl._shippingStreet;
+
+		shoppingOrderModelImpl._originalShippingCity = shoppingOrderModelImpl._shippingCity;
+
+		shoppingOrderModelImpl._originalShippingState = shoppingOrderModelImpl._shippingState;
+
+		shoppingOrderModelImpl._originalShippingZip = shoppingOrderModelImpl._shippingZip;
+
+		shoppingOrderModelImpl._originalShippingCountry = shoppingOrderModelImpl._shippingCountry;
+
+		shoppingOrderModelImpl._originalShippingPhone = shoppingOrderModelImpl._shippingPhone;
+
+		shoppingOrderModelImpl._originalCcName = shoppingOrderModelImpl._ccName;
+
+		shoppingOrderModelImpl._originalCcType = shoppingOrderModelImpl._ccType;
+
+		shoppingOrderModelImpl._originalCcNumber = shoppingOrderModelImpl._ccNumber;
+
+		shoppingOrderModelImpl._originalCcExpMonth = shoppingOrderModelImpl._ccExpMonth;
+
+		shoppingOrderModelImpl._setOriginalCcExpMonth = false;
+
+		shoppingOrderModelImpl._originalCcExpYear = shoppingOrderModelImpl._ccExpYear;
+
+		shoppingOrderModelImpl._setOriginalCcExpYear = false;
+
+		shoppingOrderModelImpl._originalCcVerNumber = shoppingOrderModelImpl._ccVerNumber;
+
+		shoppingOrderModelImpl._originalComments = shoppingOrderModelImpl._comments;
 
 		shoppingOrderModelImpl._originalPpTxnId = shoppingOrderModelImpl._ppTxnId;
 
 		shoppingOrderModelImpl._originalPpPaymentStatus = shoppingOrderModelImpl._ppPaymentStatus;
+
+		shoppingOrderModelImpl._originalPpPaymentGross = shoppingOrderModelImpl._ppPaymentGross;
+
+		shoppingOrderModelImpl._setOriginalPpPaymentGross = false;
+
+		shoppingOrderModelImpl._originalPpReceiverEmail = shoppingOrderModelImpl._ppReceiverEmail;
+
+		shoppingOrderModelImpl._originalPpPayerEmail = shoppingOrderModelImpl._ppPayerEmail;
+
+		shoppingOrderModelImpl._originalSendOrderEmail = shoppingOrderModelImpl._sendOrderEmail;
+
+		shoppingOrderModelImpl._setOriginalSendOrderEmail = false;
+
+		shoppingOrderModelImpl._originalSendShippingEmail = shoppingOrderModelImpl._sendShippingEmail;
+
+		shoppingOrderModelImpl._setOriginalSendShippingEmail = false;
 
 		shoppingOrderModelImpl._columnBitmask = 0;
 	}
@@ -2284,63 +2800,123 @@ public class ShoppingOrderModelImpl extends BaseModelImpl<ShoppingOrder>
 			ShoppingOrder.class
 		};
 	private long _orderId;
+	private long _originalOrderId;
+	private boolean _setOriginalOrderId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
 	private long _companyId;
+	private long _originalCompanyId;
+	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private long _originalUserId;
 	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private String _number;
 	private String _originalNumber;
 	private double _tax;
+	private double _originalTax;
+	private boolean _setOriginalTax;
 	private double _shipping;
+	private double _originalShipping;
+	private boolean _setOriginalShipping;
 	private String _altShipping;
+	private String _originalAltShipping;
 	private boolean _requiresShipping;
+	private boolean _originalRequiresShipping;
+	private boolean _setOriginalRequiresShipping;
 	private boolean _insure;
+	private boolean _originalInsure;
+	private boolean _setOriginalInsure;
 	private double _insurance;
+	private double _originalInsurance;
+	private boolean _setOriginalInsurance;
 	private String _couponCodes;
+	private String _originalCouponCodes;
 	private double _couponDiscount;
+	private double _originalCouponDiscount;
+	private boolean _setOriginalCouponDiscount;
 	private String _billingFirstName;
+	private String _originalBillingFirstName;
 	private String _billingLastName;
+	private String _originalBillingLastName;
 	private String _billingEmailAddress;
+	private String _originalBillingEmailAddress;
 	private String _billingCompany;
+	private String _originalBillingCompany;
 	private String _billingStreet;
+	private String _originalBillingStreet;
 	private String _billingCity;
+	private String _originalBillingCity;
 	private String _billingState;
+	private String _originalBillingState;
 	private String _billingZip;
+	private String _originalBillingZip;
 	private String _billingCountry;
+	private String _originalBillingCountry;
 	private String _billingPhone;
+	private String _originalBillingPhone;
 	private boolean _shipToBilling;
+	private boolean _originalShipToBilling;
+	private boolean _setOriginalShipToBilling;
 	private String _shippingFirstName;
+	private String _originalShippingFirstName;
 	private String _shippingLastName;
+	private String _originalShippingLastName;
 	private String _shippingEmailAddress;
+	private String _originalShippingEmailAddress;
 	private String _shippingCompany;
+	private String _originalShippingCompany;
 	private String _shippingStreet;
+	private String _originalShippingStreet;
 	private String _shippingCity;
+	private String _originalShippingCity;
 	private String _shippingState;
+	private String _originalShippingState;
 	private String _shippingZip;
+	private String _originalShippingZip;
 	private String _shippingCountry;
+	private String _originalShippingCountry;
 	private String _shippingPhone;
+	private String _originalShippingPhone;
 	private String _ccName;
+	private String _originalCcName;
 	private String _ccType;
+	private String _originalCcType;
 	private String _ccNumber;
+	private String _originalCcNumber;
 	private int _ccExpMonth;
+	private int _originalCcExpMonth;
+	private boolean _setOriginalCcExpMonth;
 	private int _ccExpYear;
+	private int _originalCcExpYear;
+	private boolean _setOriginalCcExpYear;
 	private String _ccVerNumber;
+	private String _originalCcVerNumber;
 	private String _comments;
+	private String _originalComments;
 	private String _ppTxnId;
 	private String _originalPpTxnId;
 	private String _ppPaymentStatus;
 	private String _originalPpPaymentStatus;
 	private double _ppPaymentGross;
+	private double _originalPpPaymentGross;
+	private boolean _setOriginalPpPaymentGross;
 	private String _ppReceiverEmail;
+	private String _originalPpReceiverEmail;
 	private String _ppPayerEmail;
+	private String _originalPpPayerEmail;
 	private boolean _sendOrderEmail;
+	private boolean _originalSendOrderEmail;
+	private boolean _setOriginalSendOrderEmail;
 	private boolean _sendShippingEmail;
+	private boolean _originalSendShippingEmail;
+	private boolean _setOriginalSendShippingEmail;
 	private long _columnBitmask;
 	private ShoppingOrder _escapedModel;
 }

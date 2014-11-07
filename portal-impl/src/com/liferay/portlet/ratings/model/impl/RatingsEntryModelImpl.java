@@ -306,7 +306,17 @@ public class RatingsEntryModelImpl extends BaseModelImpl<RatingsEntry>
 
 	@Override
 	public void setEntryId(long entryId) {
+		if (!_setOriginalEntryId) {
+			_setOriginalEntryId = true;
+
+			_originalEntryId = _entryId;
+		}
+
 		_entryId = entryId;
+	}
+
+	public long getOriginalEntryId() {
+		return _originalEntryId;
 	}
 
 	@JSON
@@ -384,7 +394,15 @@ public class RatingsEntryModelImpl extends BaseModelImpl<RatingsEntry>
 
 	@Override
 	public void setUserName(String userName) {
+		if (_originalUserName == null) {
+			_originalUserName = _userName;
+		}
+
 		_userName = userName;
+	}
+
+	public String getOriginalUserName() {
+		return GetterUtil.getString(_originalUserName);
 	}
 
 	@JSON
@@ -395,7 +413,15 @@ public class RatingsEntryModelImpl extends BaseModelImpl<RatingsEntry>
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if (_originalCreateDate == null) {
+			_originalCreateDate = _createDate;
+		}
+
 		_createDate = createDate;
+	}
+
+	public Date getOriginalCreateDate() {
+		return _originalCreateDate;
 	}
 
 	@JSON
@@ -406,7 +432,15 @@ public class RatingsEntryModelImpl extends BaseModelImpl<RatingsEntry>
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if (_originalModifiedDate == null) {
+			_originalModifiedDate = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
+	}
+
+	public Date getOriginalModifiedDate() {
+		return _originalModifiedDate;
 	}
 
 	@Override
@@ -609,6 +643,10 @@ public class RatingsEntryModelImpl extends BaseModelImpl<RatingsEntry>
 
 		ratingsEntryModelImpl._originalUuid = ratingsEntryModelImpl._uuid;
 
+		ratingsEntryModelImpl._originalEntryId = ratingsEntryModelImpl._entryId;
+
+		ratingsEntryModelImpl._setOriginalEntryId = false;
+
 		ratingsEntryModelImpl._originalCompanyId = ratingsEntryModelImpl._companyId;
 
 		ratingsEntryModelImpl._setOriginalCompanyId = false;
@@ -616,6 +654,12 @@ public class RatingsEntryModelImpl extends BaseModelImpl<RatingsEntry>
 		ratingsEntryModelImpl._originalUserId = ratingsEntryModelImpl._userId;
 
 		ratingsEntryModelImpl._setOriginalUserId = false;
+
+		ratingsEntryModelImpl._originalUserName = ratingsEntryModelImpl._userName;
+
+		ratingsEntryModelImpl._originalCreateDate = ratingsEntryModelImpl._createDate;
+
+		ratingsEntryModelImpl._originalModifiedDate = ratingsEntryModelImpl._modifiedDate;
 
 		ratingsEntryModelImpl._originalClassNameId = ratingsEntryModelImpl._classNameId;
 
@@ -775,6 +819,8 @@ public class RatingsEntryModelImpl extends BaseModelImpl<RatingsEntry>
 	private String _uuid;
 	private String _originalUuid;
 	private long _entryId;
+	private long _originalEntryId;
+	private boolean _setOriginalEntryId;
 	private long _companyId;
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
@@ -782,8 +828,11 @@ public class RatingsEntryModelImpl extends BaseModelImpl<RatingsEntry>
 	private long _originalUserId;
 	private boolean _setOriginalUserId;
 	private String _userName;
+	private String _originalUserName;
 	private Date _createDate;
+	private Date _originalCreateDate;
 	private Date _modifiedDate;
+	private Date _originalModifiedDate;
 	private long _classNameId;
 	private long _originalClassNameId;
 	private boolean _setOriginalClassNameId;

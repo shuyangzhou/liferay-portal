@@ -176,7 +176,17 @@ public class ShoppingItemFieldModelImpl extends BaseModelImpl<ShoppingItemField>
 
 	@Override
 	public void setItemFieldId(long itemFieldId) {
+		if (!_setOriginalItemFieldId) {
+			_setOriginalItemFieldId = true;
+
+			_originalItemFieldId = _itemFieldId;
+		}
+
 		_itemFieldId = itemFieldId;
+	}
+
+	public long getOriginalItemFieldId() {
+		return _originalItemFieldId;
 	}
 
 	@Override
@@ -215,7 +225,15 @@ public class ShoppingItemFieldModelImpl extends BaseModelImpl<ShoppingItemField>
 	public void setName(String name) {
 		_columnBitmask = -1L;
 
+		if (_originalName == null) {
+			_originalName = _name;
+		}
+
 		_name = name;
+	}
+
+	public String getOriginalName() {
+		return GetterUtil.getString(_originalName);
 	}
 
 	@Override
@@ -230,7 +248,15 @@ public class ShoppingItemFieldModelImpl extends BaseModelImpl<ShoppingItemField>
 
 	@Override
 	public void setValues(String values) {
+		if (_originalValues == null) {
+			_originalValues = _values;
+		}
+
 		_values = values;
+	}
+
+	public String getOriginalValues() {
+		return GetterUtil.getString(_originalValues);
 	}
 
 	@Override
@@ -245,7 +271,15 @@ public class ShoppingItemFieldModelImpl extends BaseModelImpl<ShoppingItemField>
 
 	@Override
 	public void setDescription(String description) {
+		if (_originalDescription == null) {
+			_originalDescription = _description;
+		}
+
 		_description = description;
+	}
+
+	public String getOriginalDescription() {
+		return GetterUtil.getString(_originalDescription);
 	}
 
 	public long getColumnBitmask() {
@@ -358,9 +392,19 @@ public class ShoppingItemFieldModelImpl extends BaseModelImpl<ShoppingItemField>
 	public void resetOriginalValues() {
 		ShoppingItemFieldModelImpl shoppingItemFieldModelImpl = this;
 
+		shoppingItemFieldModelImpl._originalItemFieldId = shoppingItemFieldModelImpl._itemFieldId;
+
+		shoppingItemFieldModelImpl._setOriginalItemFieldId = false;
+
 		shoppingItemFieldModelImpl._originalItemId = shoppingItemFieldModelImpl._itemId;
 
 		shoppingItemFieldModelImpl._setOriginalItemId = false;
+
+		shoppingItemFieldModelImpl._originalName = shoppingItemFieldModelImpl._name;
+
+		shoppingItemFieldModelImpl._originalValues = shoppingItemFieldModelImpl._values;
+
+		shoppingItemFieldModelImpl._originalDescription = shoppingItemFieldModelImpl._description;
 
 		shoppingItemFieldModelImpl._columnBitmask = 0;
 	}
@@ -458,12 +502,17 @@ public class ShoppingItemFieldModelImpl extends BaseModelImpl<ShoppingItemField>
 			ShoppingItemField.class
 		};
 	private long _itemFieldId;
+	private long _originalItemFieldId;
+	private boolean _setOriginalItemFieldId;
 	private long _itemId;
 	private long _originalItemId;
 	private boolean _setOriginalItemId;
 	private String _name;
+	private String _originalName;
 	private String _values;
+	private String _originalValues;
 	private String _description;
+	private String _originalDescription;
 	private long _columnBitmask;
 	private ShoppingItemField _escapedModel;
 }
