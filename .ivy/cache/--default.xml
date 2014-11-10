@@ -7,12 +7,12 @@
 		revision="working@bchan-lion-1.local"
 		conf="default"
 		confs="default"
-		date="20141016212353"/>
+		date="20141110140636"/>
 	<dependencies>
 		<module organisation="com.liferay" name="com.liferay.arquillian.extension">
-			<revision name="1.0.0-SNAPSHOT" status="integration" pubdate="20141007151017" resolver="liferay-public" artresolver="default" homepage="" downloaded="false" searched="true" default="false" conf="system, default, optional, compile, *, provided, runtime, javadoc, sources, master" position="20">
+			<revision name="1.0.0-SNAPSHOT" status="integration" pubdate="20141007151017" resolver="liferay-public" artresolver="default" homepage="" downloaded="false" searched="false" default="false" conf="system, default, optional, compile, *, provided, runtime, javadoc, sources, master" position="20">
 				<license name="LGPL 2.1" url="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt"/>
-				<metadata-artifact status="no" details="" size="2900" time="0" location="/Users/brian/dev/projects/github/liferay-portal/.ivy/cache/com.liferay/com.liferay.arquillian.extension/ivy-1.0.0-SNAPSHOT.xml" searched="true" origin-is-local="false" origin-location="http://cdn.repository.liferay.com/nexus/content/groups/public/com/liferay/com.liferay.arquillian.extension/1.0.0-SNAPSHOT/com.liferay.arquillian.extension-1.0.0-SNAPSHOT.pom"/>
+				<metadata-artifact status="no" details="" size="2900" time="0" location="/Users/brian/dev/projects/github/liferay-portal/.ivy/cache/com.liferay/com.liferay.arquillian.extension/ivy-1.0.0-SNAPSHOT.xml" searched="false" origin-is-local="false" origin-location="http://cdn.repository.liferay.com/nexus/content/groups/public/com/liferay/com.liferay.arquillian.extension/1.0.0-SNAPSHOT/com.liferay.arquillian.extension-1.0.0-SNAPSHOT.pom"/>
 				<caller organisation="" name="" conf="default" rev="latest.integration" rev-constraint-default="latest.integration" rev-constraint-dynamic="latest.integration" callerrev="working@bchan-lion-1.local"/>
 				<artifacts>
 					<artifact name="com.liferay.arquillian.extension" type="source" ext="jar" extra-classifier="sources" status="no" details="" size="6230" time="0" location="/Users/brian/dev/projects/github/liferay-portal/.ivy/cache/com.liferay/com.liferay.arquillian.extension/sources/com.liferay.arquillian.extension-1.0.0-SNAPSHOT-sources.jar">

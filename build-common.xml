@@ -1224,9 +1224,10 @@ rerun your task.
 
 	<macrodef name="test-cmd">
 		<attribute name="junit.forkmode" />
-		<attribute default="" name="test.excludes" />
 		<attribute name="test.class" />
 		<attribute name="test.type" />
+		<attribute default="" name="test.excludes" />
+
 		<attribute default="@{test.type}" name="test.dir" />
 
 		<sequential>
