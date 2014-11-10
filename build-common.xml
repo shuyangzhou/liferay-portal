@@ -1102,16 +1102,6 @@ Please set the environment variable ANT_OPTS to the recommended value of
 
 			<if>
 				<and>
-					<equals arg1="${basedir}" arg2="${project.dir}/portal-service" />
-					<equals arg1="@{test.type}" arg2="unit" />
-				</and>
-				<then>
-					<var name="junit.classpath" value="${classpath.portal-service-unit}" />
-				</then>
-			</if>
-
-			<if>
-				<and>
 					<equals arg1="${basedir}" arg2="${project.dir}/portal-impl" />
 					<equals arg1="@{test.type}" arg2="unit" />
 				</and>
@@ -1127,6 +1117,16 @@ Please set the environment variable ANT_OPTS to the recommended value of
 				</and>
 				<then>
 					<var name="junit.classpath" value="${classpath.portal-impl-integration}" />
+				</then>
+			</if>
+
+			<if>
+				<and>
+					<equals arg1="${basedir}" arg2="${project.dir}/portal-service" />
+					<equals arg1="@{test.type}" arg2="unit" />
+				</and>
+				<then>
+					<var name="junit.classpath" value="${classpath.portal-service-unit}" />
 				</then>
 			</if>
 
