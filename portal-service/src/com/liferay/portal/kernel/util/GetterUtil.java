@@ -17,8 +17,10 @@ package com.liferay.portal.kernel.util;
 import java.math.BigDecimal;
 
 import java.text.DateFormat;
+import java.text.NumberFormat;
 
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * @author Brian Wing Shun Chan
@@ -311,6 +313,22 @@ public class GetterUtil {
 		return _parseInt(value.trim(), defaultValue);
 	}
 
+	public static double get(String value, Locale locale, double defaultValue) {
+		if ((value != null) && (locale != null)) {
+			NumberFormat numberFormat = NumberFormat.getInstance(locale);
+
+			try {
+				Number number = numberFormat.parse(value.trim());
+
+				return number.doubleValue();
+			}
+			catch (Exception e) {
+			}
+		}
+
+		return defaultValue;
+	}
+
 	public static long get(String value, long defaultValue) {
 		if (value == null) {
 			return defaultValue;
@@ -468,6 +486,10 @@ public class GetterUtil {
 
 	public static double getDouble(String value, double defaultValue) {
 		return get(value, defaultValue);
+	}
+
+	public static double getDouble(String value, Locale locale) {
+		return get(value, locale, DEFAULT_DOUBLE);
 	}
 
 	public static double[] getDoubleValues(Object value) {
