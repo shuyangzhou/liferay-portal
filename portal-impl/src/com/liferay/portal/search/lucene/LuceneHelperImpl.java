@@ -816,8 +816,8 @@ public class LuceneHelperImpl implements LuceneHelper {
 
 		BooleanQuery.setMaxClauseCount(_LUCENE_BOOLEAN_QUERY_CLAUSE_MAX_SIZE);
 
-		if (StringUtil.equalsIgnoreCase(
-				Http.HTTPS, PropsValues.WEB_SERVER_PROTOCOL)) {
+		if (Validator.isNotNull(
+			PropsValues.PORTAL_INSTANCE_HTTPS_INET_SOCKET_ADDRESS)) {
 
 			_protocol = Http.HTTPS;
 		}
