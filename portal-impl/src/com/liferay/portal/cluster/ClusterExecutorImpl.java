@@ -386,7 +386,9 @@ public class ClusterExecutorImpl
 
 		String portalInetSocketAddressValue = null;
 
-		if (secure) {
+		if (Validator.isNotNull(
+			PropsValues.PORTAL_INSTANCE_HTTPS_INET_SOCKET_ADDRESS)) {
+			
 			portalInetSocketAddressValue =
 				PropsValues.PORTAL_INSTANCE_HTTPS_INET_SOCKET_ADDRESS;
 		}
