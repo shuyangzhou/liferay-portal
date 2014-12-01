@@ -37,6 +37,31 @@ import java.io.ObjectOutput;
 public class OrgGroupRoleCacheModel implements CacheModel<OrgGroupRole>,
 	Externalizable, MVCCModel {
 	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof OrgGroupRoleCacheModel)) {
+			return false;
+		}
+
+		OrgGroupRoleCacheModel orgGroupRoleCacheModel = (OrgGroupRoleCacheModel)obj;
+
+		if (mvccVersion == orgGroupRoleCacheModel.mvccVersion) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		return (int)mvccVersion;
+	}
+
+	@Override
 	public long getMvccVersion() {
 		return mvccVersion;
 	}

@@ -40,6 +40,31 @@ import java.util.Date;
 public class SubscriptionCacheModel implements CacheModel<Subscription>,
 	Externalizable, MVCCModel {
 	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof SubscriptionCacheModel)) {
+			return false;
+		}
+
+		SubscriptionCacheModel subscriptionCacheModel = (SubscriptionCacheModel)obj;
+
+		if (mvccVersion == subscriptionCacheModel.mvccVersion) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		return (int)mvccVersion;
+	}
+
+	@Override
 	public long getMvccVersion() {
 		return mvccVersion;
 	}

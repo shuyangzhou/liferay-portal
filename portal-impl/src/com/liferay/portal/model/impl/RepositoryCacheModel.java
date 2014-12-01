@@ -40,6 +40,31 @@ import java.util.Date;
 public class RepositoryCacheModel implements CacheModel<Repository>,
 	Externalizable, MVCCModel {
 	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof RepositoryCacheModel)) {
+			return false;
+		}
+
+		RepositoryCacheModel repositoryCacheModel = (RepositoryCacheModel)obj;
+
+		if (mvccVersion == repositoryCacheModel.mvccVersion) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		return (int)mvccVersion;
+	}
+
+	@Override
 	public long getMvccVersion() {
 		return mvccVersion;
 	}

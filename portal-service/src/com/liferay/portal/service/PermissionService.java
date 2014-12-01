@@ -57,9 +57,8 @@ public interface PermissionService extends BaseService {
 	service, if a group with the primary key could not be found or if
 	the permission information was invalid
 	*/
-	@com.liferay.portal.kernel.jsonwebservice.JSONWebService(mode = JSONWebServiceMode.IGNORE)
 	public void checkPermission(long groupId, java.lang.String name,
-		long primKey)
+		java.lang.String primKey)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	/**
@@ -72,8 +71,9 @@ public interface PermissionService extends BaseService {
 	service, if a group with the primary key could not be found or if
 	the permission information was invalid
 	*/
+	@com.liferay.portal.kernel.jsonwebservice.JSONWebService(mode = JSONWebServiceMode.IGNORE)
 	public void checkPermission(long groupId, java.lang.String name,
-		java.lang.String primKey)
+		long primKey)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	/**

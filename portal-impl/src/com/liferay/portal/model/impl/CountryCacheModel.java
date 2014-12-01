@@ -38,6 +38,31 @@ import java.io.ObjectOutput;
 public class CountryCacheModel implements CacheModel<Country>, Externalizable,
 	MVCCModel {
 	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof CountryCacheModel)) {
+			return false;
+		}
+
+		CountryCacheModel countryCacheModel = (CountryCacheModel)obj;
+
+		if (mvccVersion == countryCacheModel.mvccVersion) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		return (int)mvccVersion;
+	}
+
+	@Override
 	public long getMvccVersion() {
 		return mvccVersion;
 	}

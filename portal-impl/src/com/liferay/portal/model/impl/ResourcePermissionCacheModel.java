@@ -38,6 +38,31 @@ import java.io.ObjectOutput;
 public class ResourcePermissionCacheModel implements CacheModel<ResourcePermission>,
 	Externalizable, MVCCModel {
 	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof ResourcePermissionCacheModel)) {
+			return false;
+		}
+
+		ResourcePermissionCacheModel resourcePermissionCacheModel = (ResourcePermissionCacheModel)obj;
+
+		if (mvccVersion == resourcePermissionCacheModel.mvccVersion) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		return (int)mvccVersion;
+	}
+
+	@Override
 	public long getMvccVersion() {
 		return mvccVersion;
 	}

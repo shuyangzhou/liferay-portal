@@ -297,12 +297,12 @@ public class LockLocalServiceWrapper implements LockLocalService,
 	}
 
 	@Override
-	public boolean isLocked(java.lang.String className, java.lang.String key) {
+	public boolean isLocked(java.lang.String className, long key) {
 		return _lockLocalService.isLocked(className, key);
 	}
 
 	@Override
-	public boolean isLocked(java.lang.String className, long key) {
+	public boolean isLocked(java.lang.String className, java.lang.String key) {
 		return _lockLocalService.isLocked(className, key);
 	}
 
@@ -380,12 +380,12 @@ public class LockLocalServiceWrapper implements LockLocalService,
 	}
 
 	@Override
-	public void unlock(java.lang.String className, long key) {
+	public void unlock(java.lang.String className, java.lang.String key) {
 		_lockLocalService.unlock(className, key);
 	}
 
 	@Override
-	public void unlock(java.lang.String className, java.lang.String key) {
+	public void unlock(java.lang.String className, long key) {
 		_lockLocalService.unlock(className, key);
 	}
 

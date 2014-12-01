@@ -38,6 +38,31 @@ import java.io.ObjectOutput;
 public class UserIdMapperCacheModel implements CacheModel<UserIdMapper>,
 	Externalizable, MVCCModel {
 	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof UserIdMapperCacheModel)) {
+			return false;
+		}
+
+		UserIdMapperCacheModel userIdMapperCacheModel = (UserIdMapperCacheModel)obj;
+
+		if (mvccVersion == userIdMapperCacheModel.mvccVersion) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		return (int)mvccVersion;
+	}
+
+	@Override
 	public long getMvccVersion() {
 		return mvccVersion;
 	}

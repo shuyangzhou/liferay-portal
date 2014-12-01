@@ -40,6 +40,31 @@ import java.util.Date;
 public class ContactCacheModel implements CacheModel<Contact>, Externalizable,
 	MVCCModel {
 	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof ContactCacheModel)) {
+			return false;
+		}
+
+		ContactCacheModel contactCacheModel = (ContactCacheModel)obj;
+
+		if (mvccVersion == contactCacheModel.mvccVersion) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		return (int)mvccVersion;
+	}
+
+	@Override
 	public long getMvccVersion() {
 		return mvccVersion;
 	}

@@ -38,6 +38,31 @@ import java.io.ObjectOutput;
 public class ServiceComponentCacheModel implements CacheModel<ServiceComponent>,
 	Externalizable, MVCCModel {
 	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof ServiceComponentCacheModel)) {
+			return false;
+		}
+
+		ServiceComponentCacheModel serviceComponentCacheModel = (ServiceComponentCacheModel)obj;
+
+		if (mvccVersion == serviceComponentCacheModel.mvccVersion) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		return (int)mvccVersion;
+	}
+
+	@Override
 	public long getMvccVersion() {
 		return mvccVersion;
 	}

@@ -40,6 +40,31 @@ import java.util.Date;
 public class WebDAVPropsCacheModel implements CacheModel<WebDAVProps>,
 	Externalizable, MVCCModel {
 	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof WebDAVPropsCacheModel)) {
+			return false;
+		}
+
+		WebDAVPropsCacheModel webDAVPropsCacheModel = (WebDAVPropsCacheModel)obj;
+
+		if (mvccVersion == webDAVPropsCacheModel.mvccVersion) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		return (int)mvccVersion;
+	}
+
+	@Override
 	public long getMvccVersion() {
 		return mvccVersion;
 	}

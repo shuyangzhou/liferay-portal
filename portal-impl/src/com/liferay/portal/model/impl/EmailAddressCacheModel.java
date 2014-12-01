@@ -40,6 +40,31 @@ import java.util.Date;
 public class EmailAddressCacheModel implements CacheModel<EmailAddress>,
 	Externalizable, MVCCModel {
 	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof EmailAddressCacheModel)) {
+			return false;
+		}
+
+		EmailAddressCacheModel emailAddressCacheModel = (EmailAddressCacheModel)obj;
+
+		if (mvccVersion == emailAddressCacheModel.mvccVersion) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		return (int)mvccVersion;
+	}
+
+	@Override
 	public long getMvccVersion() {
 		return mvccVersion;
 	}

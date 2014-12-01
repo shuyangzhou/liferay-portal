@@ -40,6 +40,31 @@ import java.util.Date;
 public class PasswordPolicyCacheModel implements CacheModel<PasswordPolicy>,
 	Externalizable, MVCCModel {
 	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof PasswordPolicyCacheModel)) {
+			return false;
+		}
+
+		PasswordPolicyCacheModel passwordPolicyCacheModel = (PasswordPolicyCacheModel)obj;
+
+		if (mvccVersion == passwordPolicyCacheModel.mvccVersion) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		return (int)mvccVersion;
+	}
+
+	@Override
 	public long getMvccVersion() {
 		return mvccVersion;
 	}
