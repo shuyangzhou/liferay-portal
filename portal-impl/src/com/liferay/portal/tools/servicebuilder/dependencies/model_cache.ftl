@@ -33,6 +33,57 @@ public class ${entity.name}CacheModel implements CacheModel<${entity.name}>, Ext
 
 	{
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof ${entity.name}CacheModel)) {
+			return false;
+		}
+
+		${entity.name}CacheModel ${entity.varName}CacheModel = (${entity.name}CacheModel)obj;
+
+		<#if entity.isMvccEnabled()>
+			if (mvccVersion == ${entity.varName}CacheModel.mvccVersion) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		<#else>
+			<#if entity.hasPrimitivePK()>
+				if (${entity.PKVarName} == ${entity.varName}CacheModel.${entity.PKVarName}) {
+			<#else>
+				if (${entity.PKVarName}.equals(${entity.varName}CacheModel.${entity.PKVarName})) {
+			</#if>
+
+				return true;
+			}
+			else{
+				return false;
+			}
+		</#if>
+	}
+
+	@Override
+	public int hashCode() {
+		<#if entity.isMvccEnabled()>
+			return (int)mvccVersion;
+		<#else>
+			<#if entity.hasPrimitivePK(false)>
+				<#if entity.PKClassName == "int">
+					return ${entity.PKVarName};
+				<#else>
+					return (int)${entity.PKVarName};
+				</#if>
+			<#else>
+				return ${entity.PKVarName}.hashCode();
+			</#if>
+		</#if>
+	}
+
 	<#if entity.isMvccEnabled()>
 		@Override
 		public long getMvccVersion() {
