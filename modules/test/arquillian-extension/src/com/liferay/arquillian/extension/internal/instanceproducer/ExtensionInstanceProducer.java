@@ -14,6 +14,8 @@
 
 package com.liferay.arquillian.extension.internal.instanceproducer;
 
+import com.liferay.arquillian.extension.internal.clearThread.ClearThreadLocalExecutor;
+import com.liferay.arquillian.extension.internal.clearThread.ClearThreadLocalExecutorImpl;
 import com.liferay.arquillian.extension.internal.deleteAfterTest.DeleteAfterTestExecutor;
 import com.liferay.arquillian.extension.internal.deleteAfterTest.DeleteAfterTestExecutorImpl;
 import com.liferay.arquillian.extension.internal.init.InitLiferayContext;
@@ -35,6 +37,9 @@ public class ExtensionInstanceProducer {
 	public void createInstanceProducer(
 		@Observes ArquillianDescriptor arquillianDescriptor) {
 
+		_clearThreadLocalExecutorInstanceProducer.set(
+			new ClearThreadLocalExecutorImpl());
+
 		_deleteAfterTestExecutorInstanceProducer.set(
 			new DeleteAfterTestExecutorImpl());
 
@@ -46,6 +51,11 @@ public class ExtensionInstanceProducer {
 
 		injector.inject(initLiferayContext);
 	}
+
+	@ApplicationScoped
+	@Inject
+	private InstanceProducer<ClearThreadLocalExecutor>
+		_clearThreadLocalExecutorInstanceProducer;
 
 	@ApplicationScoped
 	@Inject
