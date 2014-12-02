@@ -40,6 +40,31 @@ import java.util.Date;
 public class WorkflowInstanceLinkCacheModel implements CacheModel<WorkflowInstanceLink>,
 	Externalizable, MVCCModel {
 	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof WorkflowInstanceLinkCacheModel)) {
+			return false;
+		}
+
+		WorkflowInstanceLinkCacheModel workflowInstanceLinkCacheModel = (WorkflowInstanceLinkCacheModel)obj;
+
+		if (mvccVersion == workflowInstanceLinkCacheModel.mvccVersion) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		return (int)mvccVersion;
+	}
+
+	@Override
 	public long getMvccVersion() {
 		return mvccVersion;
 	}

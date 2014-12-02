@@ -38,6 +38,31 @@ import java.io.ObjectOutput;
 public class GroupCacheModel implements CacheModel<Group>, Externalizable,
 	MVCCModel {
 	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof GroupCacheModel)) {
+			return false;
+		}
+
+		GroupCacheModel groupCacheModel = (GroupCacheModel)obj;
+
+		if (mvccVersion == groupCacheModel.mvccVersion) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		return (int)mvccVersion;
+	}
+
+	@Override
 	public long getMvccVersion() {
 		return mvccVersion;
 	}

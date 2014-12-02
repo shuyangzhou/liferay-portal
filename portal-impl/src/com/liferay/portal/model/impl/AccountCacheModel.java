@@ -40,6 +40,31 @@ import java.util.Date;
 public class AccountCacheModel implements CacheModel<Account>, Externalizable,
 	MVCCModel {
 	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof AccountCacheModel)) {
+			return false;
+		}
+
+		AccountCacheModel accountCacheModel = (AccountCacheModel)obj;
+
+		if (mvccVersion == accountCacheModel.mvccVersion) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		return (int)mvccVersion;
+	}
+
+	@Override
 	public long getMvccVersion() {
 		return mvccVersion;
 	}

@@ -40,6 +40,31 @@ import java.util.Date;
 public class ReleaseCacheModel implements CacheModel<Release>, Externalizable,
 	MVCCModel {
 	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof ReleaseCacheModel)) {
+			return false;
+		}
+
+		ReleaseCacheModel releaseCacheModel = (ReleaseCacheModel)obj;
+
+		if (mvccVersion == releaseCacheModel.mvccVersion) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		return (int)mvccVersion;
+	}
+
+	@Override
 	public long getMvccVersion() {
 		return mvccVersion;
 	}

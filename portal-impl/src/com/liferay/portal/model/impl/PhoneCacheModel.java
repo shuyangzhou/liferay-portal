@@ -40,6 +40,31 @@ import java.util.Date;
 public class PhoneCacheModel implements CacheModel<Phone>, Externalizable,
 	MVCCModel {
 	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof PhoneCacheModel)) {
+			return false;
+		}
+
+		PhoneCacheModel phoneCacheModel = (PhoneCacheModel)obj;
+
+		if (mvccVersion == phoneCacheModel.mvccVersion) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		return (int)mvccVersion;
+	}
+
+	@Override
 	public long getMvccVersion() {
 		return mvccVersion;
 	}

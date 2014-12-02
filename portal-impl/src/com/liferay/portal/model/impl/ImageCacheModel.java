@@ -40,6 +40,31 @@ import java.util.Date;
 public class ImageCacheModel implements CacheModel<Image>, Externalizable,
 	MVCCModel {
 	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof ImageCacheModel)) {
+			return false;
+		}
+
+		ImageCacheModel imageCacheModel = (ImageCacheModel)obj;
+
+		if (mvccVersion == imageCacheModel.mvccVersion) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		return (int)mvccVersion;
+	}
+
+	@Override
 	public long getMvccVersion() {
 		return mvccVersion;
 	}

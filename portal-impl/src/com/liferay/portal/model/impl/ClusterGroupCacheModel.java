@@ -38,6 +38,31 @@ import java.io.ObjectOutput;
 public class ClusterGroupCacheModel implements CacheModel<ClusterGroup>,
 	Externalizable, MVCCModel {
 	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof ClusterGroupCacheModel)) {
+			return false;
+		}
+
+		ClusterGroupCacheModel clusterGroupCacheModel = (ClusterGroupCacheModel)obj;
+
+		if (mvccVersion == clusterGroupCacheModel.mvccVersion) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		return (int)mvccVersion;
+	}
+
+	@Override
 	public long getMvccVersion() {
 		return mvccVersion;
 	}
