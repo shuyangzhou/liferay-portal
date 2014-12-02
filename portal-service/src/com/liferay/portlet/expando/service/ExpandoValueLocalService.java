@@ -60,152 +60,12 @@ public interface ExpandoValueLocalService extends BaseLocalService,
 
 	/**
 	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
-	String, String, long, float[])}
-	*/
-	@java.lang.Deprecated
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, float data)
-		throws com.liferay.portal.kernel.exception.PortalException;
-
-	/**
-	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
-	String, String, long, float[])}
-	*/
-	@java.lang.Deprecated
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, float[] data)
-		throws com.liferay.portal.kernel.exception.PortalException;
-
-	/**
-	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
-	String, String, long, boolean[])}
-	*/
-	@java.lang.Deprecated
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, boolean[] data)
-		throws com.liferay.portal.kernel.exception.PortalException;
-
-	/**
-	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
-	String, String, long, double[])}
-	*/
-	@java.lang.Deprecated
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, double[] data)
-		throws com.liferay.portal.kernel.exception.PortalException;
-
-	/**
-	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
 	String, String, long, int[])}
 	*/
 	@java.lang.Deprecated
 	public com.liferay.portlet.expando.model.ExpandoValue addValue(
 		java.lang.String className, java.lang.String tableName,
 		java.lang.String columnName, long classPK, int data)
-		throws com.liferay.portal.kernel.exception.PortalException;
-
-	/**
-	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
-	String, String, long, short[])}
-	*/
-	@java.lang.Deprecated
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, short data)
-		throws com.liferay.portal.kernel.exception.PortalException;
-
-	/**
-	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
-	String, String, long, long[])}
-	*/
-	@java.lang.Deprecated
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, long data)
-		throws com.liferay.portal.kernel.exception.PortalException;
-
-	/**
-	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
-	String, String, long, Date[])}
-	*/
-	@java.lang.Deprecated
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, java.util.Date[] data)
-		throws com.liferay.portal.kernel.exception.PortalException;
-
-	/**
-	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
-	String, String, long, boolean[])}
-	*/
-	@java.lang.Deprecated
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, boolean data)
-		throws com.liferay.portal.kernel.exception.PortalException;
-
-	/**
-	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
-	String, String, long, long[])}
-	*/
-	@java.lang.Deprecated
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, long[] data)
-		throws com.liferay.portal.kernel.exception.PortalException;
-
-	/**
-	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
-	String, String, long, int[])}
-	*/
-	@java.lang.Deprecated
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, int[] data)
-		throws com.liferay.portal.kernel.exception.PortalException;
-
-	/**
-	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
-	String, String, long, String[])}
-	*/
-	@java.lang.Deprecated
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, java.lang.String data)
-		throws com.liferay.portal.kernel.exception.PortalException;
-
-	/**
-	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
-	String, String, long, short[])}
-	*/
-	@java.lang.Deprecated
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, short[] data)
-		throws com.liferay.portal.kernel.exception.PortalException;
-
-	/**
-	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
-	String, String, long, double[])}
-	*/
-	@java.lang.Deprecated
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, double data)
-		throws com.liferay.portal.kernel.exception.PortalException;
-
-	/**
-	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
-	String, String, long, String[])}
-	*/
-	@java.lang.Deprecated
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, java.lang.String[] data)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	/**
@@ -220,12 +80,152 @@ public interface ExpandoValueLocalService extends BaseLocalService,
 
 	/**
 	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
+	String, String, long, float[])}
+	*/
+	@java.lang.Deprecated
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, float data)
+		throws com.liferay.portal.kernel.exception.PortalException;
+
+	/**
+	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
+	String, String, long, short[])}
+	*/
+	@java.lang.Deprecated
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, short data)
+		throws com.liferay.portal.kernel.exception.PortalException;
+
+	/**
+	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
+	String, String, long, double[])}
+	*/
+	@java.lang.Deprecated
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, double data)
+		throws com.liferay.portal.kernel.exception.PortalException;
+
+	/**
+	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
+	String, String, long, boolean[])}
+	*/
+	@java.lang.Deprecated
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, boolean[] data)
+		throws com.liferay.portal.kernel.exception.PortalException;
+
+	/**
+	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
+	String, String, long, String[])}
+	*/
+	@java.lang.Deprecated
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, java.lang.String[] data)
+		throws com.liferay.portal.kernel.exception.PortalException;
+
+	/**
+	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
+	String, String, long, long[])}
+	*/
+	@java.lang.Deprecated
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, long[] data)
+		throws com.liferay.portal.kernel.exception.PortalException;
+
+	/**
+	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
+	String, String, long, String[])}
+	*/
+	@java.lang.Deprecated
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, java.lang.String data)
+		throws com.liferay.portal.kernel.exception.PortalException;
+
+	/**
+	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
+	String, String, long, float[])}
+	*/
+	@java.lang.Deprecated
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, float[] data)
+		throws com.liferay.portal.kernel.exception.PortalException;
+
+	/**
+	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
+	String, String, long, long[])}
+	*/
+	@java.lang.Deprecated
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, long data)
+		throws com.liferay.portal.kernel.exception.PortalException;
+
+	/**
+	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
+	String, String, long, double[])}
+	*/
+	@java.lang.Deprecated
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, double[] data)
+		throws com.liferay.portal.kernel.exception.PortalException;
+
+	/**
+	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
 	String, String, long, Date[])}
 	*/
 	@java.lang.Deprecated
 	public com.liferay.portlet.expando.model.ExpandoValue addValue(
 		java.lang.String className, java.lang.String tableName,
 		java.lang.String columnName, long classPK, java.util.Date data)
+		throws com.liferay.portal.kernel.exception.PortalException;
+
+	/**
+	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
+	String, String, long, short[])}
+	*/
+	@java.lang.Deprecated
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, short[] data)
+		throws com.liferay.portal.kernel.exception.PortalException;
+
+	/**
+	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
+	String, String, long, Date[])}
+	*/
+	@java.lang.Deprecated
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, java.util.Date[] data)
+		throws com.liferay.portal.kernel.exception.PortalException;
+
+	/**
+	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
+	String, String, long, int[])}
+	*/
+	@java.lang.Deprecated
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, int[] data)
+		throws com.liferay.portal.kernel.exception.PortalException;
+
+	/**
+	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
+	String, String, long, boolean[])}
+	*/
+	@java.lang.Deprecated
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, boolean data)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public com.liferay.portlet.expando.model.ExpandoValue addValue(
@@ -235,17 +235,32 @@ public interface ExpandoValueLocalService extends BaseLocalService,
 
 	public com.liferay.portlet.expando.model.ExpandoValue addValue(
 		long companyId, java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, boolean[] data)
+		throws com.liferay.portal.kernel.exception.PortalException;
+
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		long companyId, java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, java.lang.String[] data)
+		throws com.liferay.portal.kernel.exception.PortalException;
+
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		long companyId, java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, long[] data)
+		throws com.liferay.portal.kernel.exception.PortalException;
+
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		long companyId, java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, java.util.Date data)
+		throws com.liferay.portal.kernel.exception.PortalException;
+
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		long companyId, java.lang.String className, java.lang.String tableName,
 		java.lang.String columnName, long classPK, short data)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public com.liferay.portlet.expando.model.ExpandoValue addValue(
 		long companyId, java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, int data)
-		throws com.liferay.portal.kernel.exception.PortalException;
-
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		long companyId, java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, java.util.Date[] data)
+		java.lang.String columnName, long classPK, boolean data)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public com.liferay.portlet.expando.model.ExpandoValue addValue(
@@ -260,51 +275,6 @@ public interface ExpandoValueLocalService extends BaseLocalService,
 
 	public com.liferay.portlet.expando.model.ExpandoValue addValue(
 		long companyId, java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, double[] data)
-		throws com.liferay.portal.kernel.exception.PortalException;
-
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		long companyId, java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, long[] data)
-		throws com.liferay.portal.kernel.exception.PortalException;
-
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		long companyId, java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, float[] data)
-		throws com.liferay.portal.kernel.exception.PortalException;
-
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		long companyId, java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, boolean data)
-		throws com.liferay.portal.kernel.exception.PortalException;
-
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		long companyId, java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, boolean[] data)
-		throws com.liferay.portal.kernel.exception.PortalException;
-
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		long companyId, java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, java.util.Date data)
-		throws com.liferay.portal.kernel.exception.PortalException;
-
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		long companyId, java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, java.lang.String data)
-		throws com.liferay.portal.kernel.exception.PortalException;
-
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		long companyId, java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, long data)
-		throws com.liferay.portal.kernel.exception.PortalException;
-
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		long companyId, java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, java.lang.Object data)
-		throws com.liferay.portal.kernel.exception.PortalException;
-
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		long companyId, java.lang.String className, java.lang.String tableName,
 		java.lang.String columnName, long classPK, int[] data)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
@@ -315,17 +285,47 @@ public interface ExpandoValueLocalService extends BaseLocalService,
 
 	public com.liferay.portlet.expando.model.ExpandoValue addValue(
 		long companyId, java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, float data)
+		java.lang.String columnName, long classPK, int data)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public com.liferay.portlet.expando.model.ExpandoValue addValue(
 		long companyId, java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, java.lang.String[] data)
+		java.lang.String columnName, long classPK, java.lang.String data)
+		throws com.liferay.portal.kernel.exception.PortalException;
+
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		long companyId, java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, double[] data)
+		throws com.liferay.portal.kernel.exception.PortalException;
+
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		long companyId, java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, java.util.Date[] data)
+		throws com.liferay.portal.kernel.exception.PortalException;
+
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		long companyId, java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, long data)
+		throws com.liferay.portal.kernel.exception.PortalException;
+
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		long companyId, java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, float[] data)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public com.liferay.portlet.expando.model.ExpandoValue addValue(
 		long companyId, java.lang.String className, java.lang.String tableName,
 		java.lang.String columnName, long classPK, short[] data)
+		throws com.liferay.portal.kernel.exception.PortalException;
+
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		long companyId, java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, float data)
+		throws com.liferay.portal.kernel.exception.PortalException;
+
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		long companyId, java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, java.lang.Object data)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public com.liferay.portlet.expando.model.ExpandoValue addValue(
@@ -572,13 +572,24 @@ public interface ExpandoValueLocalService extends BaseLocalService,
 
 	/**
 	* @deprecated As of 6.1.0, replaced by {@link #getData(long, String,
-	String, String, long, float[])}
+	String, String, long, Date[])}
 	*/
 	@java.lang.Deprecated
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public float[] getData(java.lang.String className,
+	public java.util.Date[] getData(java.lang.String className,
 		java.lang.String tableName, java.lang.String columnName, long classPK,
-		float[] defaultData)
+		java.util.Date[] defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException;
+
+	/**
+	* @deprecated As of 6.1.0, replaced by {@link #getData(long, String,
+	String, String, long, short[])}
+	*/
+	@java.lang.Deprecated
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public short[] getData(java.lang.String className,
+		java.lang.String tableName, java.lang.String columnName, long classPK,
+		short[] defaultData)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	/**
@@ -604,24 +615,23 @@ public interface ExpandoValueLocalService extends BaseLocalService,
 
 	/**
 	* @deprecated As of 6.1.0, replaced by {@link #getData(long, String,
-	String, String, long, short[])}
+	String, String, long, String[])}
 	*/
 	@java.lang.Deprecated
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public short[] getData(java.lang.String className,
+	public java.lang.String[] getData(java.lang.String className,
 		java.lang.String tableName, java.lang.String columnName, long classPK,
-		short[] defaultData)
+		java.lang.String[] defaultData)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	/**
 	* @deprecated As of 6.1.0, replaced by {@link #getData(long, String,
-	String, String, long, double[])}
+	String, String, long, long[])}
 	*/
 	@java.lang.Deprecated
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public double[] getData(java.lang.String className,
-		java.lang.String tableName, java.lang.String columnName, long classPK,
-		double[] defaultData)
+	public long getData(java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, long defaultData)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	/**
@@ -637,34 +647,24 @@ public interface ExpandoValueLocalService extends BaseLocalService,
 
 	/**
 	* @deprecated As of 6.1.0, replaced by {@link #getData(long, String,
-	String, String, long, float[])}
-	*/
-	@java.lang.Deprecated
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public float getData(java.lang.String className,
-		java.lang.String tableName, java.lang.String columnName, long classPK,
-		float defaultData)
-		throws com.liferay.portal.kernel.exception.PortalException;
-
-	/**
-	* @deprecated As of 6.1.0, replaced by {@link #getData(long, String,
 	String, String, long, long[])}
 	*/
 	@java.lang.Deprecated
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long getData(java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, long defaultData)
+	public long[] getData(java.lang.String className,
+		java.lang.String tableName, java.lang.String columnName, long classPK,
+		long[] defaultData)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	/**
 	* @deprecated As of 6.1.0, replaced by {@link #getData(long, String,
-	String, String, long, String[])}
+	String, String, long, float[])}
 	*/
 	@java.lang.Deprecated
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.lang.String[] getData(java.lang.String className,
+	public float[] getData(java.lang.String className,
 		java.lang.String tableName, java.lang.String columnName, long classPK,
-		java.lang.String[] defaultData)
+		float[] defaultData)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	/**
@@ -680,35 +680,13 @@ public interface ExpandoValueLocalService extends BaseLocalService,
 
 	/**
 	* @deprecated As of 6.1.0, replaced by {@link #getData(long, String,
-	String, String, long, long[])}
-	*/
-	@java.lang.Deprecated
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long[] getData(java.lang.String className,
-		java.lang.String tableName, java.lang.String columnName, long classPK,
-		long[] defaultData)
-		throws com.liferay.portal.kernel.exception.PortalException;
-
-	/**
-	* @deprecated As of 6.1.0, replaced by {@link #getData(long, String,
-	String, String, long, short[])}
-	*/
-	@java.lang.Deprecated
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public short getData(java.lang.String className,
-		java.lang.String tableName, java.lang.String columnName, long classPK,
-		short defaultData)
-		throws com.liferay.portal.kernel.exception.PortalException;
-
-	/**
-	* @deprecated As of 6.1.0, replaced by {@link #getData(long, String,
 	String, String, long, Date[])}
 	*/
 	@java.lang.Deprecated
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.util.Date[] getData(java.lang.String className,
+	public java.util.Date getData(java.lang.String className,
 		java.lang.String tableName, java.lang.String columnName, long classPK,
-		java.util.Date[] defaultData)
+		java.util.Date defaultData)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	/**
@@ -724,13 +702,35 @@ public interface ExpandoValueLocalService extends BaseLocalService,
 
 	/**
 	* @deprecated As of 6.1.0, replaced by {@link #getData(long, String,
-	String, String, long, Date[])}
+	String, String, long, short[])}
 	*/
 	@java.lang.Deprecated
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.util.Date getData(java.lang.String className,
+	public short getData(java.lang.String className,
 		java.lang.String tableName, java.lang.String columnName, long classPK,
-		java.util.Date defaultData)
+		short defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException;
+
+	/**
+	* @deprecated As of 6.1.0, replaced by {@link #getData(long, String,
+	String, String, long, double[])}
+	*/
+	@java.lang.Deprecated
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public double[] getData(java.lang.String className,
+		java.lang.String tableName, java.lang.String columnName, long classPK,
+		double[] defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException;
+
+	/**
+	* @deprecated As of 6.1.0, replaced by {@link #getData(long, String,
+	String, String, long, float[])}
+	*/
+	@java.lang.Deprecated
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public float getData(java.lang.String className,
+		java.lang.String tableName, java.lang.String columnName, long classPK,
+		float defaultData)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	/**
@@ -751,34 +751,21 @@ public interface ExpandoValueLocalService extends BaseLocalService,
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.lang.String getData(long companyId, java.lang.String className,
+	public boolean[] getData(long companyId, java.lang.String className,
 		java.lang.String tableName, java.lang.String columnName, long classPK,
-		java.lang.String defaultData)
+		boolean[] defaultData)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean getData(long companyId, java.lang.String className,
+	public short[] getData(long companyId, java.lang.String className,
 		java.lang.String tableName, java.lang.String columnName, long classPK,
-		boolean defaultData)
+		short[] defaultData)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.util.Date[] getData(long companyId, java.lang.String className,
+	public long getData(long companyId, java.lang.String className,
 		java.lang.String tableName, java.lang.String columnName, long classPK,
-		java.util.Date[] defaultData)
-		throws com.liferay.portal.kernel.exception.PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public double[] getData(long companyId, java.lang.String className,
-		java.lang.String tableName, java.lang.String columnName, long classPK,
-		double[] defaultData)
-		throws com.liferay.portal.kernel.exception.PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.lang.Number[] getData(long companyId,
-		java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK,
-		java.lang.Number[] defaultData)
+		long defaultData)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -788,9 +775,58 @@ public interface ExpandoValueLocalService extends BaseLocalService,
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public java.lang.Number getData(long companyId, java.lang.String className,
+		java.lang.String tableName, java.lang.String columnName, long classPK,
+		java.lang.Number defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean getData(long companyId, java.lang.String className,
+		java.lang.String tableName, java.lang.String columnName, long classPK,
+		boolean defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public java.lang.String[] getData(long companyId,
+		java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK,
+		java.lang.String[] defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public long[] getData(long companyId, java.lang.String className,
+		java.lang.String tableName, java.lang.String columnName, long classPK,
+		long[] defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public java.util.Date getData(long companyId, java.lang.String className,
+		java.lang.String tableName, java.lang.String columnName, long classPK,
+		java.util.Date defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public double getData(long companyId, java.lang.String className,
+		java.lang.String tableName, java.lang.String columnName, long classPK,
+		double defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public double[] getData(long companyId, java.lang.String className,
+		java.lang.String tableName, java.lang.String columnName, long classPK,
+		double[] defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public float getData(long companyId, java.lang.String className,
 		java.lang.String tableName, java.lang.String columnName, long classPK,
 		float defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getData(long companyId, java.lang.String className,
+		java.lang.String tableName, java.lang.String columnName, long classPK,
+		int defaultData)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -807,40 +843,9 @@ public interface ExpandoValueLocalService extends BaseLocalService,
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.lang.String[] getData(long companyId,
-		java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK,
-		java.lang.String[] defaultData)
-		throws com.liferay.portal.kernel.exception.PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public short[] getData(long companyId, java.lang.String className,
+	public java.lang.String getData(long companyId, java.lang.String className,
 		java.lang.String tableName, java.lang.String columnName, long classPK,
-		short[] defaultData)
-		throws com.liferay.portal.kernel.exception.PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long[] getData(long companyId, java.lang.String className,
-		java.lang.String tableName, java.lang.String columnName, long classPK,
-		long[] defaultData)
-		throws com.liferay.portal.kernel.exception.PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean[] getData(long companyId, java.lang.String className,
-		java.lang.String tableName, java.lang.String columnName, long classPK,
-		boolean[] defaultData)
-		throws com.liferay.portal.kernel.exception.PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public double getData(long companyId, java.lang.String className,
-		java.lang.String tableName, java.lang.String columnName, long classPK,
-		double defaultData)
-		throws com.liferay.portal.kernel.exception.PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long getData(long companyId, java.lang.String className,
-		java.lang.String tableName, java.lang.String columnName, long classPK,
-		long defaultData)
+		java.lang.String defaultData)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -850,21 +855,16 @@ public interface ExpandoValueLocalService extends BaseLocalService,
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.util.Date getData(long companyId, java.lang.String className,
+	public java.util.Date[] getData(long companyId, java.lang.String className,
 		java.lang.String tableName, java.lang.String columnName, long classPK,
-		java.util.Date defaultData)
+		java.util.Date[] defaultData)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getData(long companyId, java.lang.String className,
-		java.lang.String tableName, java.lang.String columnName, long classPK,
-		int defaultData)
-		throws com.liferay.portal.kernel.exception.PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.lang.Number getData(long companyId, java.lang.String className,
-		java.lang.String tableName, java.lang.String columnName, long classPK,
-		java.lang.Number defaultData)
+	public java.lang.Number[] getData(long companyId,
+		java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK,
+		java.lang.Number[] defaultData)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
