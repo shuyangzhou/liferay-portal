@@ -14,6 +14,7 @@
 
 package com.liferay.arquillian.extension.internal.event;
 
+import com.liferay.arquillian.extension.internal.deleteAfterTest.DeleteAfterTestExecutor;
 import com.liferay.arquillian.extension.internal.init.InitLiferayContext;
 
 import org.jboss.arquillian.core.api.Instance;
@@ -33,6 +34,14 @@ public class LiferayEventTestRunnerAdaptor {
 
 	public void after(@Observes EventContext<After> eventContext)
 		throws Throwable {
+
+		DeleteAfterTestExecutor deleteAfterTestExecutor =
+			_deleteAfterTestExecutorInstance.get();
+
+		After afterEvent = eventContext.getEvent();
+
+		deleteAfterTestExecutor.deleteFieldsAfterTest(
+			afterEvent.getTestInstance(), afterEvent.getTestMethod());
 	}
 
 	public void afterClass(@Observes EventContext<AfterClass> eventContext)
@@ -55,6 +64,9 @@ public class LiferayEventTestRunnerAdaptor {
 	public void test(@Observes EventContext<Test> eventContext)
 		throws Throwable {
 	}
+
+	@Inject
+	private Instance<DeleteAfterTestExecutor> _deleteAfterTestExecutorInstance;
 
 	@Inject
 	private Instance<InitLiferayContext> _initLiferayContextInstance;
