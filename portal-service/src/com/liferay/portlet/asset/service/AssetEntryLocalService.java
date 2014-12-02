@@ -392,11 +392,11 @@ public interface AssetEntryLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public java.util.List<com.liferay.portlet.asset.model.AssetEntry> getTopViewedEntries(
-		java.lang.String className, boolean asc, int start, int end);
+		java.lang.String[] className, boolean asc, int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public java.util.List<com.liferay.portlet.asset.model.AssetEntry> getTopViewedEntries(
-		java.lang.String[] className, boolean asc, int start, int end);
+		java.lang.String className, boolean asc, int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public boolean hasAssetCategoryAssetEntries(long categoryId);

@@ -254,10 +254,10 @@ public interface LockLocalService extends BaseLocalService,
 	public boolean hasLock(long userId, java.lang.String className, long key);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean isLocked(java.lang.String className, java.lang.String key);
+	public boolean isLocked(java.lang.String className, long key);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean isLocked(java.lang.String className, long key);
+	public boolean isLocked(java.lang.String className, java.lang.String key);
 
 	@com.liferay.portal.kernel.dao.jdbc.aop.MasterDataSource
 	@com.liferay.portal.kernel.transaction.Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -312,9 +312,9 @@ public interface LockLocalService extends BaseLocalService,
 	*/
 	public void setBeanIdentifier(java.lang.String beanIdentifier);
 
-	public void unlock(java.lang.String className, long key);
-
 	public void unlock(java.lang.String className, java.lang.String key);
+
+	public void unlock(java.lang.String className, long key);
 
 	@com.liferay.portal.kernel.dao.jdbc.aop.MasterDataSource
 	@com.liferay.portal.kernel.transaction.Transactional(propagation = Propagation.REQUIRES_NEW)
