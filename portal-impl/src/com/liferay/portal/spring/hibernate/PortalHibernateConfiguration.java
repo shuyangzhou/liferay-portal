@@ -14,6 +14,7 @@
 
 package com.liferay.portal.spring.hibernate;
 
+import com.liferay.portal.dao.orm.hibernate.event.ClearCachePostAutoFlushEventListener;
 import com.liferay.portal.dao.orm.hibernate.event.MVCCSynchronizerPostUpdateEventListener;
 import com.liferay.portal.dao.orm.hibernate.event.NestableAutoFlushEventListener;
 import com.liferay.portal.dao.shard.ShardSpringSessionContext;
@@ -174,10 +175,9 @@ public class PortalHibernateConfiguration extends LocalSessionFactoryBean {
 				//configuration.setProperty("hibernate.jdbc.batch_size", "0");
 			}
 
-			if (_mvccEnabled) {
-				EventListeners eventListeners =
-					configuration.getEventListeners();
+			EventListeners eventListeners = configuration.getEventListeners();
 
+			if (_mvccEnabled) {
 				eventListeners.setAutoFlushEventListeners(
 					new AutoFlushEventListener[] {
 						NestableAutoFlushEventListener.INSTANCE
@@ -185,6 +185,12 @@ public class PortalHibernateConfiguration extends LocalSessionFactoryBean {
 				eventListeners.setPostUpdateEventListeners(
 					new PostUpdateEventListener[] {
 						MVCCSynchronizerPostUpdateEventListener.INSTANCE
+					});
+			}
+			else {
+				eventListeners.setAutoFlushEventListeners(
+					new AutoFlushEventListener[] {
+						ClearCachePostAutoFlushEventListener.INSTANCE
 					});
 			}
 		}
