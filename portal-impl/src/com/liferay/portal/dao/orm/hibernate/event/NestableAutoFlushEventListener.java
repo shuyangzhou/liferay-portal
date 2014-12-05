@@ -23,7 +23,6 @@ import org.hibernate.engine.PersistenceContext;
 import org.hibernate.engine.SessionFactoryImplementor;
 import org.hibernate.event.AutoFlushEvent;
 import org.hibernate.event.EventSource;
-import org.hibernate.event.def.DefaultAutoFlushEventListener;
 import org.hibernate.stat.Statistics;
 import org.hibernate.stat.StatisticsImplementor;
 
@@ -31,7 +30,7 @@ import org.hibernate.stat.StatisticsImplementor;
  * @author Shuyang Zhou
  */
 public class NestableAutoFlushEventListener
-	extends DefaultAutoFlushEventListener {
+	extends ClearContextAutoFlushEventListener {
 
 	public static final NestableAutoFlushEventListener INSTANCE =
 		new NestableAutoFlushEventListener();
