@@ -284,12 +284,12 @@ public class LockLocalServiceUtil {
 		return getService().hasLock(userId, className, key);
 	}
 
-	public static boolean isLocked(java.lang.String className,
-		java.lang.String key) {
+	public static boolean isLocked(java.lang.String className, long key) {
 		return getService().isLocked(className, key);
 	}
 
-	public static boolean isLocked(java.lang.String className, long key) {
+	public static boolean isLocked(java.lang.String className,
+		java.lang.String key) {
 		return getService().isLocked(className, key);
 	}
 
@@ -362,11 +362,11 @@ public class LockLocalServiceUtil {
 		getService().setBeanIdentifier(beanIdentifier);
 	}
 
-	public static void unlock(java.lang.String className, long key) {
+	public static void unlock(java.lang.String className, java.lang.String key) {
 		getService().unlock(className, key);
 	}
 
-	public static void unlock(java.lang.String className, java.lang.String key) {
+	public static void unlock(java.lang.String className, long key) {
 		getService().unlock(className, key);
 	}
 
