@@ -21,6 +21,7 @@ import com.liferay.portal.RequiredLayoutException;
 import com.liferay.portal.SitemapChangeFrequencyException;
 import com.liferay.portal.SitemapIncludeException;
 import com.liferay.portal.SitemapPagePriorityException;
+import com.liferay.portal.cache.ClearCachePostAutoFlushThreadLocal;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -1812,6 +1813,10 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 			Map<String, String[]> parameterMap, File file)
 		throws PortalException {
 
+		boolean enabled = ClearCachePostAutoFlushThreadLocal.isEnabled();
+
+		ClearCachePostAutoFlushThreadLocal.setEnabled(true);
+
 		try {
 			LayoutImporter layoutImporter = LayoutImporter.getInstance();
 
@@ -1832,6 +1837,9 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 		}
 		catch (Exception e) {
 			throw new SystemException(e);
+		}
+		finally {
+			ClearCachePostAutoFlushThreadLocal.setEnabled(enabled);
 		}
 	}
 
@@ -1942,6 +1950,10 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 			Map<String, String[]> parameterMap, File file)
 		throws PortalException {
 
+		boolean enabled = ClearCachePostAutoFlushThreadLocal.isEnabled();
+
+		ClearCachePostAutoFlushThreadLocal.setEnabled(true);
+
 		try {
 			PortletImporter portletImporter = PortletImporter.getInstance();
 
@@ -1980,6 +1992,9 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 		}
 		catch (Exception e) {
 			throw new SystemException(e);
+		}
+		finally {
+			ClearCachePostAutoFlushThreadLocal.setEnabled(enabled);
 		}
 	}
 
