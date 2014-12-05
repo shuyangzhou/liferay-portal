@@ -14,6 +14,8 @@
 
 package com.liferay.portal.dao.orm.hibernate.event;
 
+import com.liferay.portal.clearonflush.ClearOnFlushThreadLocal;
+
 import org.hibernate.HibernateException;
 import org.hibernate.engine.PersistenceContext;
 import org.hibernate.engine.SessionImplementor;
@@ -33,6 +35,10 @@ public class ClearOnFlushAutoFlushEventListener
 		throws HibernateException {
 
 		super.postFlush(sessionImplementor);
+
+		if (!ClearOnFlushThreadLocal.isEnabled()) {
+			return;
+		}
 
 		PersistenceContext persistenceContext =
 			sessionImplementor.getPersistenceContext();
