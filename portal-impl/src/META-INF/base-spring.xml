@@ -50,6 +50,9 @@
 		<property name="nextMethodInterceptor" ref="bufferedIncrementAdvice" />
 	</bean>
 	<bean id="bufferedIncrementAdvice" class="com.liferay.portal.increment.BufferedIncrementAdvice">
+		<property name="nextMethodInterceptor" ref="clearOnFlushAdvise" />
+	</bean>
+	<bean id="clearOnFlushAdvise" class="com.liferay.portal.clearonflush.ClearOnFlushAdvice">
 		<property name="nextMethodInterceptor" ref="indexableAdvice" />
 	</bean>
 	<bean id="indexableAdvice" class="com.liferay.portal.search.IndexableAdvice">
