@@ -14,8 +14,7 @@
 
 package com.liferay.portal.dao.orm.hibernate.event;
 
-import com.liferay.portal.cache.ClearCachePostAutoFlushThreadLocal;
-
+import com.liferay.portal.kernel.lar.ExportImportThreadLocal;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.PersistenceContext;
 import org.hibernate.engine.SessionImplementor;
@@ -36,7 +35,7 @@ public class ClearCachePostAutoFlushEventListener
 
 		super.postFlush(sessionImplementor);
 
-		if (!ClearCachePostAutoFlushThreadLocal.isEnabled()) {
+		if (!ExportImportThreadLocal.isImportInProcess()) {
 			return;
 		}
 
