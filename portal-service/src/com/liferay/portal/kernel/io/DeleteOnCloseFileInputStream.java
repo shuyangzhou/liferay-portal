@@ -12,28 +12,30 @@
  * details.
  */
 
-package com.liferay.portal.kernel.json;
+package com.liferay.portal.kernel.io;
 
-import com.liferay.portal.kernel.util.StringPool;
-
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 /**
- * @author Igor Spasic
+ * @author Minhchau Dang
  */
-@Documented
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD, ElementType.METHOD, ElementType.TYPE})
-public @interface JSON {
+public class DeleteOnCloseFileInputStream extends FileInputStream {
 
-	public boolean include() default true;
+	public DeleteOnCloseFileInputStream(File file) throws IOException {
+		super(file);
 
-	public String name() default StringPool.BLANK;
+		_file = file;
+	}
 
-	public boolean strict() default false;
+	@Override
+	public void close() throws IOException {
+		super.close();
+
+		_file.delete();
+	}
+
+	private final File _file;
 
 }

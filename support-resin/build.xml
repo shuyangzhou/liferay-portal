@@ -5,7 +5,14 @@
 
 	<property name="deploy.dir" value="${app.server.resin.lib.global.dir}" />
 	<property name="jar.file" value="${ant.project.name}" />
+	<property name="javac.classpathref" value="web.classpath" />
+	<property name="javac.destdir" value="classes" />
+	<property name="javac.srcdir" value="src" />
 	<property name="release.info.version" value="1.0.0" />
+
+	<path id="web-lib.classpath">
+		<fileset dir="${project.dir}/lib/development" includes="resin.jar" />
+	</path>
 
 	<target name="clean">
 		<antcall target="build-common-java.clean" />
@@ -13,25 +20,7 @@
 		<delete file="${deploy.dir}/${jar.file}.jar" />
 	</target>
 
-	<target name="compile">
-		<mkdir dir="classes" />
-
-		<path id="web-lib.classpath">
-			<fileset dir="${project.dir}/lib/development" includes="resin.jar" />
-		</path>
-
-		<javac
-			classpathref="web.classpath"
-			compiler="${javac.compiler}"
-			debug="${javac.debug}"
-			deprecation="${javac.deprecation}"
-			destdir="classes"
-			encoding="${javac.encoding}"
-			includeAntRuntime="false"
-			nowarn="${javac.nowarn}"
-			srcdir="src"
-		/>
-	</target>
+	<target name="compile" depends="compile-java" />
 
 	<target name="deploy" depends="jar">
 		<delete file="${deploy.dir}/${ant.project.name}.jar" />

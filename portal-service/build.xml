@@ -5,30 +5,15 @@
 
 	<property name="deploy.dir" value="${app.server.lib.global.dir}" />
 	<property name="jar.file" value="${ant.project.name}" />
+	<property name="javac.classpathref" value="web.classpath" />
+	<property name="javac.destdir" value="classes" />
+	<property name="javac.srcdir" value="src" />
 	<property name="manifest.bundle.name" value="Liferay Portal Service" />
 	<property name="manifest.bundle.symbolic.name" value="portal-service" />
 
-	<target name="compile">
-		<mkdir dir="classes" />
+	<path id="web-lib.classpath">
+		<fileset dir="${project.dir}/lib/development" includes="junit.jar" />
+	</path>
 
-		<copy todir="classes" preservelastmodified="true">
-			<fileset dir="src" excludes="**/*.java" />
-		</copy>
-
-		<path id="web-lib.classpath">
-			<fileset dir="${project.dir}/lib/development" includes="junit.jar" />
-		</path>
-
-		<javac
-			classpathref="web.classpath"
-			compiler="${javac.compiler}"
-			debug="${javac.debug}"
-			deprecation="${javac.deprecation}"
-			destdir="classes"
-			encoding="${javac.encoding}"
-			includeAntRuntime="false"
-			nowarn="${javac.nowarn}"
-			srcdir="src"
-		/>
-	</target>
+	<target name="compile" depends="compile-java" />
 </project>

@@ -402,6 +402,8 @@
 			ant.target="compile"
 		/>
 
+		<delete file="javac.output.txt" />
+
 		<ant dir="portal-service" target="compile" inheritAll="false" />
 
 		<ant dir="util-bridges" target="compile" inheritAll="false" />
@@ -413,6 +415,13 @@
 		<ant dir="portal-pacl" target="compile" inheritAll="false" />
 		<ant dir="portal-test" target="compile" inheritAll="false" />
 		<ant dir="portal-test-internal" target="compile" inheritAll="false" />
+
+		<if>
+			<available file="javac.output.txt" />
+			<then>
+				<echo message="Deprecated APIs detected. Please see javac.output.txt for details." />
+			</then>
+		</if>
 
 		<ant dir="util-taglib" target="jar" inheritAll="false" />
 
