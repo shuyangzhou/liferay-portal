@@ -14,25 +14,23 @@
 
 package com.liferay.arquillian.extension.persistence.internal.observer;
 
-import com.liferay.arquillian.extension.internal.event.LiferayContextCreatedEvent;
 import com.liferay.arquillian.extension.persistence.internal.annotation.PersistenceTest;
 import com.liferay.portal.kernel.template.TemplateException;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.tools.DBUpgrader;
-
 import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.test.spi.TestClass;
+import org.jboss.arquillian.test.spi.event.suite.BeforeClass;
 
 /**
  * @author Cristina González
  */
 public class PersistenceTestObserver {
 
-	public void afterLiferayContexCreated(
-			@Observes LiferayContextCreatedEvent liferayContextCreatedEvent)
+	public void beforeClass(@Observes BeforeClass beforeClass)
 		throws TemplateException {
 
-		TestClass testClass = liferayContextCreatedEvent.getTestClass();
+		TestClass testClass = beforeClass.getTestClass();
 
 		if (testClass.getAnnotation(PersistenceTest.class) != null) {
 			try {
