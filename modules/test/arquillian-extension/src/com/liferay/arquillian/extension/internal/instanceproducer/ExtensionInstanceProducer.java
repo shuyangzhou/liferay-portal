@@ -20,6 +20,10 @@ import com.liferay.arquillian.extension.internal.deleteAfterTest.DeleteAfterTest
 import com.liferay.arquillian.extension.internal.deleteAfterTest.DeleteAfterTestExecutorImpl;
 import com.liferay.arquillian.extension.internal.init.InitLiferayContext;
 import com.liferay.arquillian.extension.internal.init.InitLiferayContextImpl;
+import com.liferay.arquillian.extension.internal.log.FailOnLogMessageError;
+import com.liferay.arquillian.extension.internal.log.FailOnLogMessageErrorAppender;
+import com.liferay.arquillian.extension.internal.log.FailOnLogMessageErrorHandler;
+import com.liferay.arquillian.extension.internal.log.FailOnLogMessageErrorImpl;
 
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
 import org.jboss.arquillian.core.api.Injector;
@@ -50,6 +54,28 @@ public class ExtensionInstanceProducer {
 		Injector injector = _injectorInstance.get();
 
 		injector.inject(initLiferayContext);
+
+		FailOnLogMessageError failOnErrorLogMessage =
+			new FailOnLogMessageErrorImpl();
+
+		_failOnLogMessageErrorInstanceProducer.set(failOnErrorLogMessage);
+
+		FailOnLogMessageErrorAppender failOnErrorAppender =
+			new FailOnLogMessageErrorAppender();
+
+		_failOnLogMessageErrorAppenderInstanceProducer.set(failOnErrorAppender);
+
+		FailOnLogMessageErrorHandler failOnLogMessageErrorHandler =
+			new FailOnLogMessageErrorHandler();
+
+		_failOnLogMessageErrorHandlerInstanceProducer.set(
+			failOnLogMessageErrorHandler);
+
+		injector.inject(failOnErrorLogMessage);
+
+		injector.inject(failOnErrorAppender);
+
+		injector.inject(failOnLogMessageErrorHandler);
 	}
 
 	@ApplicationScoped
@@ -61,6 +87,21 @@ public class ExtensionInstanceProducer {
 	@Inject
 	private InstanceProducer<DeleteAfterTestExecutor>
 		_deleteAfterTestExecutorInstanceProducer;
+
+	@ApplicationScoped
+	@Inject
+	private InstanceProducer<FailOnLogMessageErrorAppender>
+		_failOnLogMessageErrorAppenderInstanceProducer;
+
+	@ApplicationScoped
+	@Inject
+	private InstanceProducer<FailOnLogMessageErrorHandler>
+		_failOnLogMessageErrorHandlerInstanceProducer;
+
+	@ApplicationScoped
+	@Inject
+	private InstanceProducer<FailOnLogMessageError>
+		_failOnLogMessageErrorInstanceProducer;
 
 	@ApplicationScoped
 	@Inject

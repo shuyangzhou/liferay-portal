@@ -17,6 +17,8 @@ package com.liferay.arquillian.extension.internal.event;
 import com.liferay.arquillian.extension.internal.clearThread.ClearThreadLocalExecutor;
 import com.liferay.arquillian.extension.internal.deleteAfterTest.DeleteAfterTestExecutor;
 import com.liferay.arquillian.extension.internal.init.InitLiferayContext;
+import com.liferay.arquillian.extension.internal.log.FailOnLogMessageError;
+import com.liferay.portal.log.CaptureAppender;
 
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
@@ -36,6 +38,14 @@ public class LiferayEventTestRunnerAdaptor {
 	public void after(@Observes EventContext<After> eventContext)
 		throws Throwable {
 
+		FailOnLogMessageError failOnLogMessageError =
+			_failOnErrorLogMessageInstance.get();
+
+		CaptureAppender captureAppender = failOnLogMessageError.start(
+			eventContext);
+
+		eventContext.proceed();
+
 		DeleteAfterTestExecutor deleteAfterTestExecutor =
 			_deleteAfterTestExecutorInstance.get();
 
@@ -43,32 +53,74 @@ public class LiferayEventTestRunnerAdaptor {
 
 		deleteAfterTestExecutor.deleteFieldsAfterTest(
 			afterEvent.getTestInstance(), afterEvent.getTestMethod());
+
+		failOnLogMessageError.stop(eventContext, captureAppender);
 	}
 
 	public void afterClass(@Observes EventContext<AfterClass> eventContext)
 		throws Throwable {
 
+		FailOnLogMessageError failOnLogMessageError =
+			_failOnErrorLogMessageInstance.get();
+
+		CaptureAppender captureAppender = failOnLogMessageError.start(
+			eventContext);
+
+		eventContext.proceed();
+
 		ClearThreadLocalExecutor clearThreadLocalExecutor =
 			_clearThreadLocalExecutorInstance.get();
 
 		clearThreadLocalExecutor.clearThreadLocal();
+
+		failOnLogMessageError.stop(eventContext, captureAppender);
 	}
 
 	public void before(@Observes EventContext<Before> eventContext)
 		throws Throwable {
+
+		FailOnLogMessageError failOnLogMessageError =
+			_failOnErrorLogMessageInstance.get();
+
+		CaptureAppender captureAppender = failOnLogMessageError.start(
+			eventContext);
+
+		eventContext.proceed();
+
+		failOnLogMessageError.stop(eventContext, captureAppender);
 	}
 
 	public void beforeClass(@Observes EventContext<BeforeClass> eventContext)
 		throws Throwable {
 
+		FailOnLogMessageError failOnLogMessageError =
+			_failOnErrorLogMessageInstance.get();
+
+		CaptureAppender captureAppender = failOnLogMessageError.start(
+			eventContext);
+
 		InitLiferayContext initLiferayContext =
 			_initLiferayContextInstance.get();
 
 		initLiferayContext.init();
+
+		eventContext.proceed();
+
+		failOnLogMessageError.stop(eventContext, captureAppender);
 	}
 
 	public void test(@Observes EventContext<Test> eventContext)
 		throws Throwable {
+
+		FailOnLogMessageError failOnLogMessageError =
+			_failOnErrorLogMessageInstance.get();
+
+		CaptureAppender captureAppender = failOnLogMessageError.start(
+			eventContext);
+
+		eventContext.proceed();
+
+		failOnLogMessageError.stop(eventContext, captureAppender);
 	}
 
 	@Inject
@@ -77,6 +129,9 @@ public class LiferayEventTestRunnerAdaptor {
 
 	@Inject
 	private Instance<DeleteAfterTestExecutor> _deleteAfterTestExecutorInstance;
+
+	@Inject
+	private Instance<FailOnLogMessageError> _failOnErrorLogMessageInstance;
 
 	@Inject
 	private Instance<InitLiferayContext> _initLiferayContextInstance;
