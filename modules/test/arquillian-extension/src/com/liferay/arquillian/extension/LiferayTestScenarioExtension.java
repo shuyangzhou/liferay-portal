@@ -16,7 +16,9 @@ package com.liferay.arquillian.extension;
 
 import com.liferay.arquillian.extension.internal.descriptor.SpringDescriptor;
 import com.liferay.arquillian.extension.internal.descriptor.SpringDescriptorImpl;
-import com.liferay.arquillian.extension.internal.observer.InitializeLiferayTestEnvironment;
+import com.liferay.arquillian.extension.internal.event.LiferayEventTestRunnerAdaptor;
+import com.liferay.arquillian.extension.internal.instanceproducer.ExtensionInstanceProducer;
+import com.liferay.arquillian.extension.internal.log.FailOnLogMessageErrorObserver;
 
 import org.jboss.arquillian.core.spi.LoadableExtension;
 
@@ -27,7 +29,9 @@ public class LiferayTestScenarioExtension implements LoadableExtension {
 
 	@Override
 	public void register(ExtensionBuilder extensionBuilder) {
-		extensionBuilder.observer(InitializeLiferayTestEnvironment.class);
+		extensionBuilder.observer(ExtensionInstanceProducer.class);
+		extensionBuilder.observer(FailOnLogMessageErrorObserver.class);
+		extensionBuilder.observer(LiferayEventTestRunnerAdaptor.class);
 
 		extensionBuilder.service(
 			SpringDescriptor.class, SpringDescriptorImpl.class);
