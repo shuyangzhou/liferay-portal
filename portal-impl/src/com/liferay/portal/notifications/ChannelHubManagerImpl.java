@@ -44,6 +44,54 @@ import java.util.concurrent.ConcurrentMap;
 public class ChannelHubManagerImpl implements ChannelHubManager {
 
 	@Override
+	public void confirmClusterDelivery(
+			long companyId, long userId, String notificationEventUuid,
+			boolean archive)
+		throws ChannelException {
+
+		confirmDelivery(companyId, userId, notificationEventUuid, archive);
+
+		MethodHandler methodHandler = new MethodHandler(
+			_confirmDeliveryMethodKey, companyId, userId,
+			notificationEventUuid, archive);
+
+		ClusterRequest clusterRequest = ClusterRequest.createMulticastRequest(
+			methodHandler, true);
+
+		try {
+			ClusterExecutorUtil.execute(clusterRequest);
+		}
+		catch (Exception e) {
+			throw new ChannelException(
+				"Unable to confirm delivery of event across cluster", e);
+		}
+	}
+
+	@Override
+	public void confirmClusterDelivery(
+			long companyId, long userId,
+			Collection<String> notificationEventUuids, boolean archive)
+		throws ChannelException {
+
+		confirmDelivery(companyId, userId, notificationEventUuids, archive);
+
+		MethodHandler methodHandler = new MethodHandler(
+			_confirmDeliveriesMethodKey, companyId, userId,
+			notificationEventUuids, archive);
+
+		ClusterRequest clusterRequest = ClusterRequest.createMulticastRequest(
+			methodHandler, true);
+
+		try {
+			ClusterExecutorUtil.execute(clusterRequest);
+		}
+		catch (Exception e) {
+			throw new ChannelException(
+				"Unable to confirm delivery of event across cluster", e);
+		}
+	}
+
+	@Override
 	public void confirmDelivery(
 			long companyId, long userId,
 			Collection<String> notificationEventUuids)
@@ -68,7 +116,7 @@ public class ChannelHubManagerImpl implements ChannelHubManager {
 			long companyId, long userId, String notificationEventUuid)
 		throws ChannelException {
 
-		confirmDelivery(companyId, userId, notificationEventUuid, false);
+		confirmClusterDelivery(companyId, userId, notificationEventUuid, false);
 	}
 
 	@Override
@@ -395,6 +443,14 @@ public class ChannelHubManagerImpl implements ChannelHubManager {
 		channelHub.unregisterChannelListener(userId, channelListener);
 	}
 
+	private static final MethodKey _confirmDeliveryMethodKey =
+		new MethodKey(
+			ChannelHubManagerUtil.class, "confirmDelivery", long.class,
+			long.class, String.class, boolean.class);
+	private static final MethodKey _confirmDeliveriesMethodKey =
+		new MethodKey(
+			ChannelHubManagerUtil.class, "confirmDelivery", long.class,
+			long.class, Collection.class, boolean.class);
 	private static final MethodKey _destroyChannelMethodKey =
 		new MethodKey(
 			ChannelHubManagerUtil.class, "destroyChannel", long.class,
