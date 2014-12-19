@@ -60,16 +60,20 @@ public class JSONWebServiceInvokerAction implements JSONWebServiceAction {
 	public JSONWebServiceInvokerAction(HttpServletRequest request) {
 		_request = request;
 
-		_command = request.getParameter(Constants.CMD);
+		String command = null;
 
-		if (_command == null) {
+		command = request.getParameter(Constants.CMD);
+
+		if (command == null) {
 			try {
-				_command = ServletUtil.readRequestBody(request);
+				command = ServletUtil.readRequestBody(request);
 			}
 			catch (IOException ioe) {
 				throw new IllegalArgumentException(ioe);
 			}
 		}
+
+		_command = command;
 	}
 
 	@Override

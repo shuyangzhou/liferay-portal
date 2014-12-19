@@ -60,15 +60,17 @@ public class CustomizationSettingsProcessor implements ColumnProcessor {
 
 		_layoutTypeSettings = selLayout.getTypeSettingsProperties();
 
-		_customizationEnabled = true;
+		boolean customizationEnabled = true;
 
 		if (!SitesUtil.isLayoutUpdateable(selLayout)) {
-			_customizationEnabled = false;
+			customizationEnabled = false;
 		}
 
 		if (selLayout.isLayoutPrototypeLinkActive()) {
-			_customizationEnabled = false;
+			customizationEnabled = false;
 		}
+
+		_customizationEnabled = customizationEnabled;
 	}
 
 	@Override
