@@ -28,10 +28,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
-import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runners.MethodSorters;
 
 /**
  * <p>
@@ -41,7 +39,6 @@ import org.junit.runners.MethodSorters;
  *
  * @author Alexander Chow
  */
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class WebDAVLitmusBasicTest extends BaseWebDAVTestCase {
 
 	@ClassRule
@@ -74,12 +71,7 @@ public class WebDAVLitmusBasicTest extends BaseWebDAVTestCase {
 	}
 
 	@Test
-	public void test04PutGetUTF8() {
-		putGet("res-\u20AC");
-	}
-
-	@Test
-	public void test05PutNoParent() {
+	public void test04PutNoParent() {
 		assertCode(
 			HttpServletResponse.SC_CONFLICT,
 			service(Method.MKCOL, "409me/noparent", null, null));
@@ -89,25 +81,28 @@ public class WebDAVLitmusBasicTest extends BaseWebDAVTestCase {
 	}
 
 	@Test
-	public void test06MkcolOverPlain() {
+	public void test05UTF8() {
+		putGet("res-\u20AC");
+
+		//Make column over plain
+
 		assertCode(
 			HttpServletResponse.SC_METHOD_NOT_ALLOWED,
 			service(Method.MKCOL, "res-\u20AC", null, null));
-	}
 
-	@Test
-	public void test07Delete() {
+		//Delete column
+
 		assertCode(
 			HttpServletResponse.SC_NO_CONTENT, serviceDelete("res-\u20AC"));
 	}
 
 	@Test
-	public void test08DeleteNull() {
+	public void test06DeleteNull() {
 		assertCode(HttpServletResponse.SC_NOT_FOUND, serviceDelete("404me"));
 	}
 
 	@Test
-	public void test09DeleteFragment() {
+	public void test07DeleteFragment() {
 		assertCode(
 			HttpServletResponse.SC_CREATED,
 			service(Method.MKCOL, "frag", null, null));
@@ -117,33 +112,31 @@ public class WebDAVLitmusBasicTest extends BaseWebDAVTestCase {
 	}
 
 	@Test
-	public void test10Mkcol() {
+	public void test08Mkcol() {
 		assertCode(
 			HttpServletResponse.SC_CREATED,
 			service(Method.MKCOL, "col", null, null));
-	}
 
-	@Test
-	public void test11MkcolAgain() {
+		//Make duplicate column
+
 		assertCode(
 			HttpServletResponse.SC_METHOD_NOT_ALLOWED,
 			service(Method.MKCOL, "col", null, null));
-	}
 
-	@Test
-	public void test12DeleteColl() {
+		//Delete Column
+
 		assertCode(HttpServletResponse.SC_NO_CONTENT, serviceDelete("col"));
 	}
 
 	@Test
-	public void test13MkcolNoParent() {
+	public void test09MkcolNoParent() {
 		assertCode(
 			HttpServletResponse.SC_CONFLICT,
 			service(Method.MKCOL, "409me/col", null, null));
 	}
 
 	@Test
-	public void test14MkcolWithBody() {
+	public void test10MkcolWithBody() {
 		Map<String, String> headers = new HashMap<String, String>();
 
 		headers.put(HttpHeaders.CONTENT_TYPE, "xyz-foo/bar-512");
