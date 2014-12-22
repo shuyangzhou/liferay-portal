@@ -24,6 +24,24 @@ import java.util.List;
  */
 public class ChannelHubManagerUtil {
 
+	public void confirmClusterDelivery(
+			long companyId, long userId, String notificationEventUuid,
+			boolean archive)
+		throws ChannelException {
+
+		getChannelHubManager().confirmClusterDelivery(
+			companyId, userId, notificationEventUuid, archive);
+	}
+
+	public static void confirmClusterDelivery(
+			long companyId, long userId,
+			Collection<String> notificationEventUuids, boolean archive)
+		throws ChannelException {
+
+		getChannelHubManager().confirmClusterDelivery(
+			companyId, userId, notificationEventUuids, archive);
+	}
+
 	public static void confirmDelivery(
 			long companyId, long userId,
 			Collection<String> notificationEventUuids)
