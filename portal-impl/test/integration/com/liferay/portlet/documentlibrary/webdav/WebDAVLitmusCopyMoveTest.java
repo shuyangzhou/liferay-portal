@@ -222,9 +222,6 @@ public class WebDAVLitmusCopyMoveTest extends BaseWebDAVTestCase {
 			HttpServletResponse.SC_NO_CONTENT,
 			serviceCopyOrMove(
 				Method.MOVE, "mvdest2", null, "mvnoncoll", -1, true));
-
-		// Clean up
-
 		assertCode(HttpServletResponse.SC_NO_CONTENT, serviceDelete("mvdest"));
 		assertCode(HttpServletResponse.SC_NOT_FOUND, serviceDelete("mvdest2"));
 		assertCode(
