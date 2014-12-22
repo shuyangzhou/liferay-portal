@@ -97,7 +97,8 @@ public class ChannelHubManagerImpl implements ChannelHubManager {
 			Collection<String> notificationEventUuids)
 		throws ChannelException {
 
-		confirmDelivery(companyId, userId, notificationEventUuids, false);
+		confirmClusterDelivery(
+			companyId, userId, notificationEventUuids, false);
 	}
 
 	@Override
