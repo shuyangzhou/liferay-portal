@@ -2933,6 +2933,18 @@
 				</licenses>
 			</library>
 			<library>
+				<file-name>lib/portal/monte-cc.jar</file-name>
+				<version>0.7.7</version>
+				<project-name>Monte Media Library</project-name>
+				<project-url>http://www.randelshofer.ch/monte</project-url>
+				<licenses>
+					<license>
+						<license-name>LGPL 3.0</license-name>
+						<license-url>https://www.gnu.org/licenses/lgpl-3.0</license-url>
+					</license>
+				</licenses>
+			</library>
+			<library>
 				<file-name>lib/portal/msnm.jar</file-name>
 				<version>1.2.2</version>
 				<project-name>JMSN - Open source MSN messenger clone</project-name>
@@ -2973,7 +2985,7 @@
 				<file-name>lib/portal/netty-all.jar</file-name>
 				<version>4.0.23</version>
 				<project-name>Netty</project-name>
-				<project-url>http://netty.io/</project-url>
+				<project-url>http://netty.io</project-url>
 				<licenses>
 					<license>
 						<license-name>Apache License 2.0</license-name>
@@ -3983,8 +3995,8 @@
 				<project-url>http://www.xuggle.com</project-url>
 				<licenses>
 					<license>
-						<license-name>LGPL 3</license-name>
-						<license-url>http://www.gnu.org/licenses/lgpl.html</license-url>
+						<license-name>LGPL 3.0</license-name>
+						<license-url>https://www.gnu.org/licenses/lgpl-3.0</license-url>
 					</license>
 				</licenses>
 			</library>
