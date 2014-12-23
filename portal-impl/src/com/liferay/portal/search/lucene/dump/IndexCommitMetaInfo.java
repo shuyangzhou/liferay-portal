@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.Serializable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.lucene.index.IndexCommit;
@@ -34,6 +35,8 @@ public class IndexCommitMetaInfo implements Serializable {
 	public IndexCommitMetaInfo(IndexCommit indexCommit) throws IOException {
 		if (indexCommit == null) {
 			_empty = true;
+			_generation = 0;
+			_segments = Collections.emptyList();
 
 			return;
 		}
@@ -53,6 +56,7 @@ public class IndexCommitMetaInfo implements Serializable {
 		}
 
 		_generation = indexCommit.getGeneration();
+		_empty = false;
 	}
 
 	public long getGeneration() {
