@@ -23,15 +23,12 @@ import com.liferay.portal.test.LiferayIntegrationTestRule;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
-import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runners.MethodSorters;
 
 /**
  * @author Michael Hashimoto
  */
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SeleniumBuilderContextTest {
 
 	@ClassRule
@@ -489,7 +486,7 @@ public class SeleniumBuilderContextTest {
 	}
 
 	@Test
-	public void testPathExtendPathInvalidAttributeValue() throws Exception {
+	public void testPathExtendPath() throws Exception {
 		test("PathExtend.action");
 
 		test(
@@ -501,10 +498,7 @@ public class SeleniumBuilderContextTest {
 			"PathExtendPathInvalidAttributeValue_2.action",
 			"Error 1010: Invalid locator-key LOCATOR_ at " + _DIR_NAME +
 				"/PathExtendPathInvalidAttributeValue_2.action:3");
-	}
 
-	@Test
-	public void testPathExtendPathInvalidFunctionCommand() throws Exception {
 		test(
 			"PathExtendPathInvalidFunctionCommand.action",
 			"Error 1012: Invalid function command Function at " + _DIR_NAME +
@@ -525,11 +519,6 @@ public class SeleniumBuilderContextTest {
 			"PathVariable1012.action",
 			"Error 1012: Invalid function command HELLOWORLD at " + _DIR_NAME +
 				"/PathVariable1012.action:4");
-	}
-
-	@Test
-	public void testTestCase() throws Exception {
-		test("TestCase.testcase");
 	}
 
 	@Test
@@ -638,6 +627,7 @@ public class SeleniumBuilderContextTest {
 
 	@Test
 	public void testTestCaseSetUpElement1006_2() throws Exception {
+		test("TestCase.testcase");
 		test(
 			"TestCaseSetUpElement1006_2.testcase",
 			"Error 1006: Invalid test-case attribute value in " + _DIR_NAME +
