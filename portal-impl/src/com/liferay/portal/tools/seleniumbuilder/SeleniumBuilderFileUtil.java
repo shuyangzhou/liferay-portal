@@ -2022,7 +2022,6 @@ public class SeleniumBuilderFileUtil {
 			"locator-key", "method", "name", "path", "pattern",
 			"property-value", "value"
 		});
-	private static List<String> _componentNames;
 	private static List<String> _methodNames = ListUtil.fromArray(
 		new String[] {
 			"getFirstNumber", "getIPAddress", "increment", "length",
@@ -2036,8 +2035,10 @@ public class SeleniumBuilderFileUtil {
 			"property", "set-up", "take-screenshot", "td", "tear-down", "then",
 			"tr", "while", "var"
 		});
-	private static List<String> _testcaseAvailablePropertyNames;
-	private static List<String> _testrayAvailableComponentNames;
+
+	private final List<String> _componentNames;
+	private final List<String> _testcaseAvailablePropertyNames;
+	private final List<String> _testrayAvailableComponentNames;
 
 	private String _baseDirName;
 	private Pattern _pathTrElementStatementPattern = Pattern.compile(

@@ -304,51 +304,58 @@ public class PortalImpl implements Portal {
 
 		// Computer name
 
-		_computerName = System.getProperty("env.COMPUTERNAME");
+		String computerName = System.getProperty("env.COMPUTERNAME");
 
-		if (Validator.isNull(_computerName)) {
-			_computerName = System.getProperty("env.HOST");
+		if (Validator.isNull(computerName)) {
+			computerName = System.getProperty("env.HOST");
 		}
 
-		if (Validator.isNull(_computerName)) {
-			_computerName = System.getProperty("env.HOSTNAME");
+		if (Validator.isNull(computerName)) {
+			computerName = System.getProperty("env.HOSTNAME");
 		}
 
-		if (Validator.isNull(_computerName)) {
+		if (Validator.isNull(computerName)) {
 			try {
 				InetAddress inetAddress = InetAddress.getLocalHost();
 
-				_computerName = inetAddress.getHostName();
+				computerName = inetAddress.getHostName();
 			}
 			catch (UnknownHostException uhe) {
 			}
 		}
+
+		_computerName = computerName;
+
+		String computerAddress = null;
 
 		try {
 			InetAddress inetAddress = InetAddress.getByName(_computerName);
 
-			_computerAddress = inetAddress.getHostAddress();
+			computerAddress = inetAddress.getHostAddress();
 		}
 		catch (UnknownHostException uhe) {
 		}
 
-		if (Validator.isNull(_computerAddress)) {
+		if (Validator.isNull(computerAddress)) {
 			try {
 				InetAddress inetAddress = InetAddress.getLocalHost();
 
-				_computerAddress = inetAddress.getHostAddress();
+				computerAddress = inetAddress.getHostAddress();
 			}
 			catch (UnknownHostException uhe) {
 			}
 		}
+
+		_computerAddress = computerAddress;
 
 		// Paths
 
 		_pathProxy = PropsValues.PORTAL_PROXY_PATH;
 
-		_pathContext = ContextPathUtil.getContextPath(
+		String pathContext = ContextPathUtil.getContextPath(
 			PortalContextLoaderListener.getPortalServletContextPath());
-		_pathContext = _pathProxy.concat(_pathContext);
+		pathContext = _pathProxy.concat(pathContext);
+		_pathContext = pathContext;
 
 		_pathFriendlyURLPrivateGroup =
 			_pathContext + _PRIVATE_GROUP_SERVLET_MAPPING;
@@ -504,12 +511,16 @@ public class PortalImpl implements Portal {
 		_servletContextName =
 			PortalContextLoaderListener.getPortalServletContextName();
 
+		boolean validPortalDomainCheckDisabled = false;
+
 		if (ArrayUtil.isEmpty(PropsValues.VIRTUAL_HOSTS_VALID_HOSTS) ||
 			ArrayUtil.contains(
 				PropsValues.VIRTUAL_HOSTS_VALID_HOSTS, StringPool.STAR)) {
 
-			_validPortalDomainCheckDisabled = true;
+			validPortalDomainCheckDisabled = true;
 		}
+
+		_validPortalDomainCheckDisabled = validPortalDomainCheckDisabled;
 	}
 
 	@Override
