@@ -187,11 +187,15 @@ public class PropsUtil {
 		SystemProperties.set(
 			"ehcache.disk.store.dir", liferayHome + "/data/ehcache");
 
+		Map<Long, Configuration> configurations = null;
+
 		if (GetterUtil.getBoolean(
 				SystemProperties.get("company-id-properties"))) {
 
-			_configurations = new HashMap<Long, Configuration>();
+			configurations = new HashMap<Long, Configuration>();
 		}
+
+		_configurations = configurations;
 	}
 
 	private void _addProperties(Properties properties) {

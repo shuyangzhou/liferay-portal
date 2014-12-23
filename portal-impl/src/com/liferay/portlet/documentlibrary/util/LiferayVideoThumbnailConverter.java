@@ -210,11 +210,11 @@ public class LiferayVideoThumbnailConverter extends LiferayConverter {
 		LiferayVideoThumbnailConverter.class);
 
 	private String _extension;
-	private int _height = 240;
+	private int _height;
 	private IContainer _inputIContainer;
 	private String _inputURL;
 	private File _outputFile;
 	private int _percentage;
-	private int _width = 320;
+	private int _width;
 
 }
