@@ -2509,8 +2509,8 @@ public class HookHotDeployListener
 		new HashMap<>();
 	private final Map<String, HotDeployListenersContainer>
 		_hotDeployListenersContainerMap = new HashMap<>();
-	private final Map<String, StringArraysContainer> _mergeStringArraysContainerMap =
-		new HashMap<>();
+	private final Map<String, StringArraysContainer>
+		_mergeStringArraysContainerMap = new HashMap<>();
 	private final Map<String, StringArraysContainer>
 		_overrideStringArraysContainerMap = new HashMap<>();
 	private final Map<String, Properties> _portalPropertiesMap =

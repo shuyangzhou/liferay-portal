@@ -1037,7 +1037,7 @@ public class IntrabandProxyUtil {
 	private static final Set<String> _annotationDescriptors =
 		new HashSet<String>(
 			Arrays.asList(
-			Type.getDescriptor(Id.class), Type.getDescriptor(Proxy.class)));
+				Type.getDescriptor(Id.class), Type.getDescriptor(Proxy.class)));
 	private static final Method _defineClassMethod;
 	private static final Comparator<Method> _methodComparator =
 		new MethodComparator();

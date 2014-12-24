@@ -2012,15 +2012,15 @@ public class SeleniumBuilderFileUtil {
 	private static final List<String> _allowedNullAttributes =
 		ListUtil.fromArray(
 			new String[] {
-			"arg1", "arg2", "delimiter", "message", "string", "substring",
-			"value"
+				"arg1", "arg2", "delimiter", "message", "string", "substring",
+				"value"
 		});
 	private static final List<String> _allowedVarAttributes =
 		ListUtil.fromArray(
 			new String[] {
-			"attribute", "group", "input", "line-number", "locator",
-			"locator-key", "method", "name", "path", "pattern",
-			"property-value", "value"
+				"attribute", "group", "input", "line-number", "locator",
+				"locator-key", "method", "name", "path", "pattern",
+				"property-value", "value"
 		});
 	private static final List<String> _methodNames = ListUtil.fromArray(
 		new String[] {

@@ -2366,10 +2366,11 @@ public class CMISRepository extends BaseCmisRepository {
 
 	private static final Log _log = LogFactoryUtil.getLog(CMISRepository.class);
 
-	private static final ThreadLocal<Map<Long, List<FileEntry>>> _fileEntriesCache =
-		new AutoResetThreadLocal<Map<Long, List<FileEntry>>>(
-			CMISRepository.class + "._fileEntriesCache",
-			new HashMap<Long, List<FileEntry>>());
+	private static final ThreadLocal<Map<Long, List<FileEntry>>>
+		_fileEntriesCache =
+			new AutoResetThreadLocal<Map<Long, List<FileEntry>>>(
+				CMISRepository.class + "._fileEntriesCache",
+				new HashMap<Long, List<FileEntry>>());
 	private static final ThreadLocal<Map<Long, List<Object>>>
 		_foldersAndFileEntriesCache =
 			new AutoResetThreadLocal<Map<Long, List<Object>>>(

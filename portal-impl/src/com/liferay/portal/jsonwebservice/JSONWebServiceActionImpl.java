@@ -481,7 +481,8 @@ public class JSONWebServiceActionImpl implements JSONWebServiceAction {
 		JSONWebServiceActionImpl.class);
 
 	private final JSONWebServiceActionConfig _jsonWebServiceActionConfig;
-	private final JSONWebServiceActionParameters _jsonWebServiceActionParameters;
+	private final JSONWebServiceActionParameters
+		_jsonWebServiceActionParameters;
 	private final JSONWebServiceNaming _jsonWebServiceNaming;
 
 }
