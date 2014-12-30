@@ -24,7 +24,6 @@ import com.liferay.portal.model.CompanyConstants;
 import com.liferay.portal.service.UserNotificationEventLocalServiceUtil;
 import com.liferay.portal.util.PropsValues;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -66,25 +65,6 @@ public class ChannelHubImpl implements ChannelHub {
 	}
 
 	@Override
-	public void confirmDelivery(
-			long userId, Collection<String> notificationEventUuids)
-		throws ChannelException {
-
-		confirmDelivery(userId, notificationEventUuids, false);
-	}
-
-	@Override
-	public void confirmDelivery(
-			long userId, Collection<String> notificationEventUuids,
-			boolean archive)
-		throws ChannelException {
-
-		Channel channel = getChannel(userId);
-
-		channel.confirmDelivery(notificationEventUuids, archive);
-	}
-
-	@Override
 	public void confirmDelivery(long userId, String notificationEventUuid)
 		throws ChannelException {
 
@@ -112,7 +92,11 @@ public class ChannelHubImpl implements ChannelHub {
 		Channel oldChannel = _channels.putIfAbsent(userId, channel);
 
 		if (oldChannel != null) {
-			channel.sendNotificationEvents(oldChannel.getNotificationEvents());
+			for (NotificationEvent notificationEvent :
+					oldChannel.getNotificationEvents()) {
+
+				channel.sendNotificationEvent(notificationEvent);
+			}
 		}
 
 		channel.init();
@@ -128,16 +112,6 @@ public class ChannelHubImpl implements ChannelHub {
 		Channel channel = getChannel(userId);
 
 		channel.deleteUserNotificiationEvent(notificationEventUuid);
-	}
-
-	@Override
-	public void deleteUserNotificiationEvents(
-			long userId, Collection<String> notificationEventUuids)
-		throws ChannelException {
-
-		Channel channel = getChannel(userId);
-
-		channel.deleteUserNotificiationEvents(notificationEventUuids);
 	}
 
 	@Override
@@ -343,41 +317,6 @@ public class ChannelHubImpl implements ChannelHub {
 		}
 		catch (Exception e) {
 			throw new ChannelException("Unable to send event", e);
-		}
-	}
-
-	@Override
-	public void sendNotificationEvents(
-			long userId, Collection<NotificationEvent> notificationEvents)
-		throws ChannelException {
-
-		Channel channel = fetchChannel(userId);
-
-		if (channel != null) {
-			channel.sendNotificationEvents(notificationEvents);
-
-			return;
-		}
-
-		if (!PropsValues.USER_NOTIFICATION_EVENT_CONFIRMATION_ENABLED) {
-			return;
-		}
-
-		List<NotificationEvent> persistedNotificationEvents =
-			new ArrayList<NotificationEvent>(notificationEvents.size());
-
-		for (NotificationEvent notificationEvent : notificationEvents) {
-			if (notificationEvent.isDeliveryRequired()) {
-				persistedNotificationEvents.add(notificationEvent);
-			}
-		}
-
-		try {
-			UserNotificationEventLocalServiceUtil.addUserNotificationEvents(
-				userId, persistedNotificationEvents);
-		}
-		catch (Exception e) {
-			throw new ChannelException("Unable to send events", e);
 		}
 	}
 

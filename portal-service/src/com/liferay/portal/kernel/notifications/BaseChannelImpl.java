@@ -39,9 +39,6 @@ public abstract class BaseChannelImpl implements Channel {
 			try {
 				doCleanUp();
 			}
-			catch (ChannelException ce) {
-				throw ce;
-			}
 			catch (Exception e) {
 				throw new ChannelException(e);
 			}

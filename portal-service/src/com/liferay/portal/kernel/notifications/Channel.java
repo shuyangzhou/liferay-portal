@@ -28,13 +28,6 @@ public interface Channel {
 
 	public void close() throws ChannelException;
 
-	public void confirmDelivery(Collection<String> notificationEventUuids)
-		throws ChannelException;
-
-	public void confirmDelivery(
-			Collection<String> notificationEventUuids, boolean archive)
-		throws ChannelException;
-
 	public void confirmDelivery(String notificationEventUuid)
 		throws ChannelException;
 
@@ -42,10 +35,6 @@ public interface Channel {
 		throws ChannelException;
 
 	public void deleteUserNotificiationEvent(String notificationEventUuid)
-		throws ChannelException;
-
-	public void deleteUserNotificiationEvents(
-			Collection<String> notificationEventUuids)
 		throws ChannelException;
 
 	public void flush() throws ChannelException;
@@ -71,10 +60,6 @@ public interface Channel {
 		Collection<String> notificationEventUuids);
 
 	public void sendNotificationEvent(NotificationEvent notificationEvent)
-		throws ChannelException;
-
-	public void sendNotificationEvents(
-			Collection<NotificationEvent> notificationEvents)
 		throws ChannelException;
 
 	public void storeNotificationEvent(

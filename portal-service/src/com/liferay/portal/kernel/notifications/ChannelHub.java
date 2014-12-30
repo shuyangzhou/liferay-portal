@@ -28,15 +28,6 @@ public interface ChannelHub {
 
 	public ChannelHub clone(long companyId);
 
-	public void confirmDelivery(
-			long userId, Collection<String> notificationEventUuids)
-		throws ChannelException;
-
-	public void confirmDelivery(
-			long userId, Collection<String> notificationEventUuids,
-			boolean archive)
-		throws ChannelException;
-
 	public void confirmDelivery(long userId, String notificationEventUuid)
 		throws ChannelException;
 
@@ -48,10 +39,6 @@ public interface ChannelHub {
 
 	public void deleteUserNotificiationEvent(
 			long userId, String notificationEventUuid)
-		throws ChannelException;
-
-	public void deleteUserNotificiationEvents(
-			long userId, Collection<String> notificationEventUuids)
 		throws ChannelException;
 
 	public void destroy() throws ChannelException;
@@ -104,10 +91,6 @@ public interface ChannelHub {
 
 	public void sendNotificationEvent(
 			long userId, NotificationEvent notificationEvent)
-		throws ChannelException;
-
-	public void sendNotificationEvents(
-			long userId, Collection<NotificationEvent> notificationEvents)
 		throws ChannelException;
 
 	public void storeNotificationEvent(

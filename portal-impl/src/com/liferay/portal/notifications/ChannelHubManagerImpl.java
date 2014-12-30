@@ -58,9 +58,9 @@ public class ChannelHubManagerImpl implements ChannelHubManager {
 			Collection<String> notificationEventUuids, boolean archive)
 		throws ChannelException {
 
-		ChannelHub channelHub = getChannelHub(companyId);
-
-		channelHub.confirmDelivery(userId, notificationEventUuids, archive);
+		for (String notificationEventUuid : notificationEventUuids) {
+			confirmDelivery(companyId, userId, notificationEventUuid, archive);
+		}
 	}
 
 	@Override
@@ -119,10 +119,10 @@ public class ChannelHubManagerImpl implements ChannelHubManager {
 			Collection<String> notificationEventUuids)
 		throws ChannelException {
 
-		ChannelHub channelHub = getChannelHub(companyId);
-
-		channelHub.deleteUserNotificiationEvents(
-			userId, notificationEventUuids);
+		for (String notificationEventUuid : notificationEventUuids) {
+			deleteUserNotificiationEvent(
+				companyId, userId, notificationEventUuid);
+		}
 	}
 
 	@Override
@@ -366,9 +366,9 @@ public class ChannelHubManagerImpl implements ChannelHubManager {
 			Collection<NotificationEvent> notificationEvents)
 		throws ChannelException {
 
-		ChannelHub channelHub = getChannelHub(companyId);
-
-		channelHub.sendNotificationEvents(userId, notificationEvents);
+		for (NotificationEvent notificationEvent : notificationEvents) {
+			sendNotificationEvent(companyId, userId, notificationEvent);
+		}
 	}
 
 	public void setChannelHubPrototype(ChannelHub channelHub) {
