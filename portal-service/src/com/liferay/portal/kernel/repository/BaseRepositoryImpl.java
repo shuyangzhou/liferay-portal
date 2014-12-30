@@ -129,6 +129,7 @@ public abstract class BaseRepositoryImpl
 			serviceContext);
 	}
 
+	@Override
 	public abstract Folder addFolder(
 			long userId, long parentFolderId, String name, String description,
 			ServiceContext serviceContext)
@@ -196,10 +197,12 @@ public abstract class BaseRepositoryImpl
 			fileEntryId, lockUuid, serviceContext);
 	}
 
+	@Override
 	public abstract FileEntry checkOutFileEntry(
 			long fileEntryId, ServiceContext serviceContext)
 		throws PortalException;
 
+	@Override
 	public abstract FileEntry checkOutFileEntry(
 			long fileEntryId, String owner, long expirationTime,
 			ServiceContext serviceContext)

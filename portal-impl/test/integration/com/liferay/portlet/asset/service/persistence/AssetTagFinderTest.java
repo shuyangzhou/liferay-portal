@@ -17,6 +17,7 @@ package com.liferay.portlet.asset.service.persistence;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.test.AggregateTestRule;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.model.Group;
@@ -46,7 +47,10 @@ import com.liferay.portlet.asset.service.AssetTagLocalServiceUtil;
 import com.liferay.portlet.blogs.model.BlogsEntry;
 import com.liferay.portlet.blogs.util.test.BlogsTestUtil;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -375,7 +379,11 @@ public class AssetTagFinderTest {
 
 		Layout layout = LayoutTestUtil.addLayout(group);
 
+		Map<Locale, String> nameMap = new HashMap<Locale, String>();
+
 		String name = RandomTestUtil.randomString();
+
+		nameMap.put(LocaleUtil.getDefault(), name);
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(group.getGroupId());
@@ -383,8 +391,9 @@ public class AssetTagFinderTest {
 		Group scopeGroup = GroupLocalServiceUtil.addGroup(
 			TestPropsValues.getUserId(), group.getParentGroupId(),
 			Layout.class.getName(), layout.getPlid(),
-			GroupConstants.DEFAULT_LIVE_GROUP_ID, name,
-			RandomTestUtil.randomString(), GroupConstants.TYPE_SITE_OPEN, true,
+			GroupConstants.DEFAULT_LIVE_GROUP_ID, nameMap,
+			RandomTestUtil.randomLocaleStringMap(),
+			GroupConstants.TYPE_SITE_OPEN, true,
 			GroupConstants.DEFAULT_MEMBERSHIP_RESTRICTION,
 			StringPool.SLASH + FriendlyURLNormalizerUtil.normalize(name), false,
 			true, serviceContext);

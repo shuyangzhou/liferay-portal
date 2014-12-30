@@ -30,6 +30,8 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * @author Brian Wing Shun Chan
@@ -99,8 +101,8 @@ public class VerifyUser extends VerifyProcess {
 			GroupLocalServiceUtil.addGroup(
 				user.getUserId(), GroupConstants.DEFAULT_PARENT_GROUP_ID,
 				User.class.getName(), user.getUserId(),
-				GroupConstants.DEFAULT_LIVE_GROUP_ID, null, null, 0, true,
-				GroupConstants.DEFAULT_MEMBERSHIP_RESTRICTION,
+				GroupConstants.DEFAULT_LIVE_GROUP_ID, (Map<Locale, String>)null,
+				null, 0, true, GroupConstants.DEFAULT_MEMBERSHIP_RESTRICTION,
 				StringPool.SLASH + user.getScreenName(), false, true, null);
 		}
 

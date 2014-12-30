@@ -214,7 +214,8 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 	@Override
 	public Group addGroup(
 			long userId, long parentGroupId, String className, long classPK,
-			long liveGroupId, String name, String description, int type,
+			long liveGroupId, Map<Locale, String> nameMap,
+			Map<Locale, String> descriptionMap, int type,
 			boolean manualMembership, int membershipRestriction,
 			String friendlyURL, boolean site, boolean inheritContent,
 			boolean active, ServiceContext serviceContext)
@@ -225,8 +226,14 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 		User user = userPersistence.findByPrimaryKey(userId);
 		className = GetterUtil.getString(className);
 		long classNameId = classNameLocalService.getClassNameId(className);
-		String friendlyName = name;
-		String groupKey = name;
+
+		String groupKey = StringPool.BLANK;
+		String friendlyName = StringPool.BLANK;
+
+		if (nameMap != null) {
+			groupKey = nameMap.get(LocaleUtil.getDefault());
+			friendlyName = nameMap.get(LocaleUtil.getDefault());
+		}
 
 		long groupId = 0;
 
@@ -276,7 +283,17 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 
 		if (staging) {
 			groupKey = groupKey.concat("-staging");
-			name = name.concat(ORGANIZATION_STAGING_SUFFIX);
+
+			for (Locale locale : nameMap.keySet()) {
+				String name = nameMap.get(locale);
+
+				if (Validator.isNull(name)) {
+					continue;
+				}
+
+				nameMap.put(locale, name.concat(ORGANIZATION_STAGING_SUFFIX));
+			}
+
 			friendlyURL = getFriendlyURL(friendlyURL.concat("-staging"));
 		}
 
@@ -326,8 +343,8 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 		group.setLiveGroupId(liveGroupId);
 		group.setTreePath(group.buildTreePath());
 		group.setGroupKey(groupKey);
-		group.setName(name);
-		group.setDescription(description);
+		group.setNameMap(nameMap);
+		group.setDescriptionMap(descriptionMap);
 		group.setType(type);
 		group.setManualMembership(manualMembership);
 		group.setMembershipRestriction(membershipRestriction);
@@ -385,35 +402,56 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 		return group;
 	}
 
+	@Override
+	public Group addGroup(
+			long userId, long parentGroupId, String className, long classPK,
+			long liveGroupId, Map<Locale, String> nameMap,
+			Map<Locale, String> descriptionMap, int type,
+			boolean manualMembership, int membershipRestriction,
+			String friendlyURL, boolean site, boolean active,
+			ServiceContext serviceContext)
+		throws PortalException {
+
+		return addGroup(
+			userId, parentGroupId, className, classPK, liveGroupId, nameMap,
+			descriptionMap, type, manualMembership, membershipRestriction,
+			friendlyURL, site, false, active, serviceContext);
+	}
+
 	/**
 	 * Adds a group.
 	 *
-	 * @param  userId the primary key of the group's creator/owner
-	 * @param  parentGroupId the primary key of the parent group
-	 * @param  className the entity's class name
-	 * @param  classPK the primary key of the entity's instance
-	 * @param  liveGroupId the primary key of the live group
-	 * @param  name the entity's name
-	 * @param  description the group's description (optionally
-	 *         <code>null</code>)
-	 * @param  type the group's type. For more information see {@link
-	 *         GroupConstants}.
-	 * @param  manualMembership whether manual membership is allowed for the
-	 *         group
-	 * @param  membershipRestriction the group's membership restriction. For
-	 *         more information see {@link GroupConstants}.
-	 * @param  friendlyURL the group's friendlyURL (optionally
-	 *         <code>null</code>)
-	 * @param  site whether the group is to be associated with a main site
-	 * @param  active whether the group is active
-	 * @param  serviceContext the service context to be applied (optionally
-	 *         <code>null</code>). Can set asset category IDs and asset tag
-	 *         names for the group, and whether the group is for staging.
-	 * @return the group
-	 * @throws PortalException if a creator could not be found, if the group's
-	 *         information was invalid, if a layout could not be found, or if a
-	 *         valid friendly URL could not be created for the group
+	 * @param      userId the primary key of the group's creator/owner
+	 * @param      parentGroupId the primary key of the parent group
+	 * @param      className the entity's class name
+	 * @param      classPK the primary key of the entity's instance
+	 * @param      liveGroupId the primary key of the live group
+	 * @param      name the entity's name
+	 * @param      description the group's description (optionally
+	 *             <code>null</code>)
+	 * @param      type the group's type. For more information see {@link
+	 *             GroupConstants}.
+	 * @param      manualMembership whether manual membership is allowed for the
+	 *             group
+	 * @param      membershipRestriction the group's membership restriction. For
+	 *             more information see {@link GroupConstants}.
+	 * @param      friendlyURL the group's friendlyURL (optionally
+	 *             <code>null</code>)
+	 * @param      site whether the group is to be associated with a main site
+	 * @param      active whether the group is active
+	 * @param      serviceContext the service context to be applied (optionally
+	 *             <code>null</code>). Can set asset category IDs and asset tag
+	 *             names for the group, and whether the group is for staging.
+	 * @return     the group
+	 * @throws     PortalException if a creator could not be found, if the
+	 *             group's information was invalid, if a layout could not be
+	 *             found, or if a valid friendly URL could not be created for
+	 *             the group
+	 * @deprecated As of 7.0.0, replaced by {@link #addGroup(long, long, String,
+	 *             long, long, Map, Map, int, boolean, int, String, boolean,
+	 *             boolean, ServiceContext)}
 	 */
+	@Deprecated
 	@Override
 	public Group addGroup(
 			long userId, long parentGroupId, String className, long classPK,
@@ -424,9 +462,10 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 		throws PortalException {
 
 		return addGroup(
-			userId, parentGroupId, className, classPK, liveGroupId, name,
-			description, type, manualMembership, membershipRestriction,
-			friendlyURL, site, false, active, serviceContext);
+			userId, parentGroupId, className, classPK, liveGroupId,
+			getLocalizationMap(name), getLocalizationMap(description), type,
+			manualMembership, membershipRestriction, friendlyURL, site, false,
+			active, serviceContext);
 	}
 
 	/**
@@ -453,8 +492,8 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 	 *             found, or if a valid friendly URL could not be created for
 	 *             the group
 	 * @deprecated As of 6.2.0, replaced by {@link #addGroup(long, long, String,
-	 *             long, long, String, String, int, boolean, int, String,
-	 *             boolean, boolean, ServiceContext)}
+	 *             long, long, Map, Map, int, boolean, int, String, boolean,
+	 *             boolean, ServiceContext)}
 	 */
 	@Deprecated
 	@Override
@@ -466,7 +505,8 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 
 		return addGroup(
 			userId, parentGroupId, className, classPK,
-			GroupConstants.DEFAULT_LIVE_GROUP_ID, name, description, type, true,
+			GroupConstants.DEFAULT_LIVE_GROUP_ID, getLocalizationMap(name),
+			getLocalizationMap(description), type, true,
 			GroupConstants.DEFAULT_MEMBERSHIP_RESTRICTION, friendlyURL, site,
 			active, serviceContext);
 	}
@@ -496,8 +536,8 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 	 *             found, or if a valid friendly URL could not be created for
 	 *             the group
 	 * @deprecated As of 6.2.0, replaced by {@link #addGroup(long, long, String,
-	 *             long, long, String, String, int, boolean, int, String,
-	 *             boolean, boolean, ServiceContext)}
+	 *             long, long, Map, Map, int, boolean, int, String, boolean,
+	 *             boolean, ServiceContext)}
 	 */
 	@Deprecated
 	@Override
@@ -509,7 +549,8 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 
 		return addGroup(
 			userId, GroupConstants.DEFAULT_PARENT_GROUP_ID, className, classPK,
-			liveGroupId, name, description, type, true,
+			liveGroupId, getLocalizationMap(name),
+			getLocalizationMap(description), type, true,
 			GroupConstants.DEFAULT_MEMBERSHIP_RESTRICTION, friendlyURL, site,
 			active, serviceContext);
 	}
@@ -537,8 +578,8 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 	 *             found, or if a valid friendly URL could not be created for
 	 *             the group
 	 * @deprecated As of 6.2.0, replaced by {@link #addGroup(long, long, String,
-	 *             long, long, String, String, int, boolean, int, String,
-	 *             boolean, boolean, ServiceContext)}
+	 *             long, long, Map, Map, int, boolean, int, String, boolean,
+	 *             boolean, ServiceContext)}
 	 */
 	@Deprecated
 	@Override
@@ -550,7 +591,8 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 
 		return addGroup(
 			userId, GroupConstants.DEFAULT_PARENT_GROUP_ID, className, classPK,
-			GroupConstants.DEFAULT_LIVE_GROUP_ID, name, description, type, true,
+			GroupConstants.DEFAULT_LIVE_GROUP_ID, getLocalizationMap(name),
+			getLocalizationMap(description), type, true,
 			GroupConstants.DEFAULT_MEMBERSHIP_RESTRICTION, friendlyURL, site,
 			active, serviceContext);
 	}
@@ -605,8 +647,9 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 			groupLocalService.addGroup(
 				defaultUserId, GroupConstants.DEFAULT_PARENT_GROUP_ID,
 				Company.class.getName(), companyId,
-				GroupConstants.DEFAULT_LIVE_GROUP_ID, GroupConstants.GLOBAL,
-				null, 0, true, GroupConstants.DEFAULT_MEMBERSHIP_RESTRICTION,
+				GroupConstants.DEFAULT_LIVE_GROUP_ID,
+				getLocalizationMap(GroupConstants.GLOBAL), null, 0, true,
+				GroupConstants.DEFAULT_MEMBERSHIP_RESTRICTION,
 				GroupConstants.GLOBAL_FRIENDLY_URL, true, true, null);
 		}
 	}
@@ -669,7 +712,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 				group = groupLocalService.addGroup(
 					defaultUserId, GroupConstants.DEFAULT_PARENT_GROUP_ID,
 					className, classPK, GroupConstants.DEFAULT_LIVE_GROUP_ID,
-					groupKey, null, type, true,
+					getLocalizationMap(groupKey), null, type, true,
 					GroupConstants.DEFAULT_MEMBERSHIP_RESTRICTION, friendlyURL,
 					site, true, null);
 
@@ -1092,9 +1135,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 	}
 
 	@Override
-	public Group fetchUserGroup(long companyId, long userId)
-		throws PortalException {
-
+	public Group fetchUserGroup(long companyId, long userId) {
 		long classNameId = classNameLocalService.getClassNameId(User.class);
 
 		return groupPersistence.fetchByC_C_C(companyId, classNameId, userId);
@@ -3240,35 +3281,11 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 		return group;
 	}
 
-	/**
-	 * Updates the group.
-	 *
-	 * @param  groupId the primary key of the group
-	 * @param  parentGroupId the primary key of the parent group
-	 * @param  name the group's new name
-	 * @param  description the group's new description (optionally
-	 *         <code>null</code>)
-	 * @param  type the group's new type. For more information see {@link
-	 *         GroupConstants}.
-	 * @param  manualMembership whether manual membership is allowed for the
-	 *         group
-	 * @param  membershipRestriction the group's membership restriction. For
-	 *         more information see {@link GroupConstants}.
-	 * @param  friendlyURL the group's new friendlyURL (optionally
-	 *         <code>null</code>)
-	 * @param  active whether the group is active
-	 * @param  serviceContext the service context to be applied (optionally
-	 *         <code>null</code>). Can set asset category IDs and asset tag
-	 *         names for the group.
-	 * @return the group
-	 * @throws PortalException if a group with the primary key could not be
-	 *         found or if the friendly URL was invalid or could one not be
-	 *         created
-	 */
 	@Override
 	public Group updateGroup(
-			long groupId, long parentGroupId, String name, String description,
-			int type, boolean manualMembership, int membershipRestriction,
+			long groupId, long parentGroupId, Map<Locale, String> nameMap,
+			Map<Locale, String> descriptionMap, int type,
+			boolean manualMembership, int membershipRestriction,
 			String friendlyURL, boolean inheritContent, boolean active,
 			ServiceContext serviceContext)
 		throws PortalException {
@@ -3278,7 +3295,13 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 		String className = group.getClassName();
 		long classNameId = group.getClassNameId();
 		long classPK = group.getClassPK();
-		String groupKey = name;
+
+		String groupKey = StringPool.BLANK;
+
+		if (nameMap != null) {
+			groupKey = nameMap.get(LocaleUtil.getDefault());
+		}
+
 		friendlyURL = getFriendlyURL(
 			group.getCompanyId(), groupId, classNameId, classPK,
 			StringPool.BLANK, friendlyURL);
@@ -3317,8 +3340,8 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 		group.setParentGroupId(parentGroupId);
 		group.setTreePath(group.buildTreePath());
 		group.setGroupKey(groupKey);
-		group.setName(name);
-		group.setDescription(description);
+		group.setNameMap(nameMap);
+		group.setDescriptionMap(descriptionMap);
 		group.setType(type);
 		group.setManualMembership(manualMembership);
 		group.setMembershipRestriction(membershipRestriction);
@@ -3356,6 +3379,50 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 			serviceContext.getAssetTagNames());
 
 		return group;
+	}
+
+	/**
+	 * Updates the group.
+	 *
+	 * @param      groupId the primary key of the group
+	 * @param      parentGroupId the primary key of the parent group
+	 * @param      name the name's key
+	 * @param      description the group's new description (optionally
+	 *             <code>null</code>)
+	 * @param      type the group's new type. For more information see {@link
+	 *             GroupConstants}.
+	 * @param      manualMembership whether manual membership is allowed for the
+	 *             group
+	 * @param      membershipRestriction the group's membership restriction. For
+	 *             more information see {@link GroupConstants}.
+	 * @param      friendlyURL the group's new friendlyURL (optionally
+	 *             <code>null</code>)
+	 * @param      active whether the group is active
+	 * @param      serviceContext the service context to be applied (optionally
+	 *             <code>null</code>). Can set asset category IDs and asset tag
+	 *             names for the group.
+	 * @return     the group
+	 * @throws     PortalException if a group with the primary key could not be
+	 *             found or if the friendly URL was invalid or could one not be
+	 *             created
+	 * @deprecated As of 7.0.0, replaced by {@link #updateGroup(long, long, Map,
+	 *             Map, int, boolean, int, String, boolean, boolean,
+	 *             ServiceContext)}
+	 */
+	@Deprecated
+	@Override
+	public Group updateGroup(
+			long groupId, long parentGroupId, String name, String description,
+			int type, boolean manualMembership, int membershipRestriction,
+			String friendlyURL, boolean inheritContent, boolean active,
+			ServiceContext serviceContext)
+		throws PortalException {
+
+		return updateGroup(
+			groupId, parentGroupId, getLocalizationMap(name),
+			getLocalizationMap(description), type, manualMembership,
+			membershipRestriction, friendlyURL, inheritContent, active,
+			serviceContext);
 	}
 
 	/**

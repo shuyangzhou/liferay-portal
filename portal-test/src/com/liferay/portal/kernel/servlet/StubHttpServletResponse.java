@@ -54,6 +54,10 @@ public class StubHttpServletResponse implements HttpServletResponse {
 		throw new UnsupportedOperationException();
 	}
 
+	/**
+	 * @deprecated As of 7.0.0
+	 */
+	@Deprecated
 	@Override
 	public String encodeRedirectUrl(String url) {
 		throw new UnsupportedOperationException();
@@ -64,6 +68,10 @@ public class StubHttpServletResponse implements HttpServletResponse {
 		throw new UnsupportedOperationException();
 	}
 
+	/**
+	 * @deprecated As of 7.0.0
+	 */
+	@Deprecated
 	@Override
 	public String encodeUrl(String string) {
 		throw new UnsupportedOperationException();
@@ -210,6 +218,10 @@ public class StubHttpServletResponse implements HttpServletResponse {
 		throw new UnsupportedOperationException();
 	}
 
+	/**
+	 * @deprecated As of 7.0.0
+	 */
+	@Deprecated
 	@Override
 	public void setStatus(int status, String message) {
 		throw new UnsupportedOperationException();

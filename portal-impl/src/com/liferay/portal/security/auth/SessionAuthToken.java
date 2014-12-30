@@ -31,6 +31,10 @@ import javax.servlet.http.HttpSession;
  */
 public class SessionAuthToken implements AuthToken {
 
+	/**
+	 * @deprecated As of 7.0.0
+	 */
+	@Deprecated
 	@Override
 	public void check(HttpServletRequest request) throws PrincipalException {
 		checkCSRFToken(

@@ -80,6 +80,7 @@ public interface SchedulerEngine {
 	/**
 	 * @deprecated As of 7.0.0
 	 */
+	@Deprecated
 	public static final String RECEIVER_KEY = "RECEIVER_KEY";
 
 	public static final String SCHEDULER = "SCHEDULER";

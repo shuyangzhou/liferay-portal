@@ -140,8 +140,8 @@ public class CompanyLocalServiceTest {
 		Group companyStagingGroup = GroupLocalServiceUtil.addGroup(
 			userId, GroupConstants.DEFAULT_PARENT_GROUP_ID,
 			companyGroup.getClassName(), companyGroup.getClassPK(),
-			companyGroup.getGroupId(), companyGroup.getDescriptiveName(),
-			companyGroup.getDescription(), companyGroup.getType(),
+			companyGroup.getGroupId(), RandomTestUtil.randomLocaleStringMap(),
+			RandomTestUtil.randomLocaleStringMap(), companyGroup.getType(),
 			companyGroup.isManualMembership(),
 			companyGroup.getMembershipRestriction(),
 			companyGroup.getFriendlyURL(), false, companyGroup.isActive(),

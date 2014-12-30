@@ -465,6 +465,10 @@ public class MetaInfoCacheServletResponseTest {
 					statusReference.set(status);
 				}
 
+				/**
+				 * @deprecated As of 7.0.0
+				 */
+				@Deprecated
 				@Override
 				public void setStatus(int status, String message) {
 					statusReference.set(status);
@@ -1219,6 +1223,10 @@ public class MetaInfoCacheServletResponseTest {
 				statusReference.set(status);
 			}
 
+			/**
+			 * @deprecated As of 7.0.0
+			 */
+			@Deprecated
 			@Override
 			public void setStatus(int status, String message) {
 				statusReference.set(status);
@@ -1380,6 +1388,10 @@ public class MetaInfoCacheServletResponseTest {
 					statusReference.set(status);
 				}
 
+				/**
+				 * @deprecated As of 7.0.0
+				 */
+				@Deprecated
 				@Override
 				public void setStatus(int status, String message) {
 					statusReference.set(status);

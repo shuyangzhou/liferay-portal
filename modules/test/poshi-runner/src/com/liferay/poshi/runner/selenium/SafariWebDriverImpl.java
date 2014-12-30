@@ -12,31 +12,17 @@
  * details.
  */
 
-package com.liferay.portal.service;
+package com.liferay.poshi.runner.selenium;
 
-import com.liferay.portal.kernel.util.LocaleUtil;
-
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+import org.openqa.selenium.safari.SafariDriver;
 
 /**
  * @author Brian Wing Shun Chan
  */
-public abstract class BaseLocalServiceImpl implements BaseLocalService {
+public class SafariWebDriverImpl extends BaseWebDriverImpl {
 
-	protected ClassLoader getClassLoader() {
-		Class<?> clazz = getClass();
-
-		return clazz.getClassLoader();
-	}
-
-	protected Map<Locale, String> getLocalizationMap(String value) {
-		Map<Locale, String> map = new HashMap<Locale, String>();
-
-		map.put(LocaleUtil.getDefault(), value);
-
-		return map;
+	public SafariWebDriverImpl(String projectDirName, String browserURL) {
+		super(projectDirName, browserURL, new SafariDriver());
 	}
 
 }

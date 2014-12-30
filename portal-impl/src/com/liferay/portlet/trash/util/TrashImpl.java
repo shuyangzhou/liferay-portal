@@ -226,6 +226,7 @@ public class TrashImpl implements Trash {
 		}
 	}
 
+	@Override
 	public Group disableTrash(Group group) {
 		UnicodeProperties typeSettingsProperties =
 			group.getParentLiveGroupTypeSettingsProperties();

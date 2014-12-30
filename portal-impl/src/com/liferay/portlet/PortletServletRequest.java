@@ -332,6 +332,10 @@ public class PortletServletRequest extends HttpServletRequestWrapper {
 		}
 	}
 
+	/**
+	 * @deprecated As of 7.0.0
+	 */
+	@Deprecated
 	@Override
 	public String getRealPath(String path) {
 		return null;

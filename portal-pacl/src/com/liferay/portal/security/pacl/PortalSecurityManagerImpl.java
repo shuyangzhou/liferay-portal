@@ -216,6 +216,10 @@ public class PortalSecurityManagerImpl extends SecurityManager
 		}
 	}
 
+	/**
+	 * @deprecated As of 7.0.0
+	 */
+	@Deprecated
 	@Override
 	public void checkMemberAccess(Class<?> clazz, int accessibility) {
 		if (clazz == null) {

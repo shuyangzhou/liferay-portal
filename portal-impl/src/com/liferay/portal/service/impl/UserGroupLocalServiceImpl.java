@@ -199,9 +199,10 @@ public class UserGroupLocalServiceImpl extends UserGroupLocalServiceBaseImpl {
 		groupLocalService.addGroup(
 			userId, GroupConstants.DEFAULT_PARENT_GROUP_ID,
 			UserGroup.class.getName(), userGroup.getUserGroupId(),
-			GroupConstants.DEFAULT_LIVE_GROUP_ID, String.valueOf(userGroupId),
-			null, 0, true, GroupConstants.DEFAULT_MEMBERSHIP_RESTRICTION, null,
-			false, true, null);
+			GroupConstants.DEFAULT_LIVE_GROUP_ID,
+			getLocalizationMap(String.valueOf(userGroupId)), null, 0, true,
+			GroupConstants.DEFAULT_MEMBERSHIP_RESTRICTION, null, false, true,
+			null);
 
 		// Resources
 

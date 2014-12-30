@@ -781,6 +781,7 @@ public class JournalArticleWrapper implements JournalArticle,
 	/**
 	* @deprecated As of 7.0.0, replaced by {@link #getDDMStructureKey()}
 	*/
+	@Deprecated
 	@Override
 	public java.lang.String getStructureId() {
 		return _journalArticle.getStructureId();
@@ -789,6 +790,7 @@ public class JournalArticleWrapper implements JournalArticle,
 	/**
 	* @deprecated As of 7.0.0, replaced by {@link #getDDMTemplateKey()}
 	*/
+	@Deprecated
 	@Override
 	public java.lang.String getTemplateId() {
 		return _journalArticle.getTemplateId();
@@ -1549,6 +1551,7 @@ public class JournalArticleWrapper implements JournalArticle,
 	/**
 	* @deprecated As of 7.0.0, replaced by {@link #setDDMStructureKey(String)}
 	*/
+	@Deprecated
 	@Override
 	public void setStructureId(java.lang.String ddmStructureKey) {
 		_journalArticle.setStructureId(ddmStructureKey);
@@ -1557,6 +1560,7 @@ public class JournalArticleWrapper implements JournalArticle,
 	/**
 	* @deprecated As of 7.0.0, replaced by {@link #setDDMTemplateKey(String)}
 	*/
+	@Deprecated
 	@Override
 	public void setTemplateId(java.lang.String ddmTemplateKey) {
 		_journalArticle.setTemplateId(ddmTemplateKey);

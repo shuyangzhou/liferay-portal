@@ -32,6 +32,7 @@ public class BaseTestCase extends LiferaySeleneseTestCase {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public void setUp() throws Exception {
 		Class<?> clazz = getClass();
 
@@ -47,6 +48,7 @@ public class BaseTestCase extends LiferaySeleneseTestCase {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public void tearDown() throws Exception {
 		String primaryTestSuiteName = selenium.getPrimaryTestSuiteName();
 

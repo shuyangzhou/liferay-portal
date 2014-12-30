@@ -115,7 +115,8 @@ public class PortalImplActualURLTest {
 		_group = GroupLocalServiceUtil.addGroup(
 			TestPropsValues.getUserId(), GroupConstants.DEFAULT_PARENT_GROUP_ID,
 			StringPool.BLANK, 0, GroupConstants.DEFAULT_LIVE_GROUP_ID,
-			"Test " + RandomTestUtil.nextInt(), StringPool.BLANK,
+			RandomTestUtil.randomLocaleStringMap(),
+			RandomTestUtil.randomLocaleStringMap(),
 			GroupConstants.TYPE_SITE_OPEN, true,
 			GroupConstants.DEFAULT_MEMBERSHIP_RESTRICTION, StringPool.BLANK,
 			true, true, serviceContext);

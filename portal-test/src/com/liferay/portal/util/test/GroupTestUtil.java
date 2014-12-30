@@ -34,6 +34,7 @@ import com.liferay.portal.service.StagingLocalServiceUtil;
 import com.liferay.portal.test.randomizerbumpers.NumericStringRandomizerBumper;
 import com.liferay.portal.test.randomizerbumpers.UniqueStringRandomizerBumper;
 
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -65,10 +66,13 @@ public class GroupTestUtil {
 			return scopeGroup;
 		}
 
+		Map<Locale, String> nameMap = new HashMap<Locale, String>();
+
+		nameMap.put(LocaleUtil.getDefault(), String.valueOf(layout.getPlid()));
+
 		return GroupLocalServiceUtil.addGroup(
 			userId, parentGroupId, Layout.class.getName(), layout.getPlid(),
-			GroupConstants.DEFAULT_LIVE_GROUP_ID,
-			String.valueOf(layout.getPlid()), null, 0, true,
+			GroupConstants.DEFAULT_LIVE_GROUP_ID, nameMap, null, 0, true,
 			GroupConstants.DEFAULT_MEMBERSHIP_RESTRICTION, null, false, true,
 			null);
 	}
@@ -87,6 +91,15 @@ public class GroupTestUtil {
 			return group;
 		}
 
+		Map<Locale, String> nameMap = new HashMap<Locale, String>();
+
+		nameMap.put(LocaleUtil.getDefault(), name);
+
+		Map<Locale, String> descriptionMap = new HashMap<Locale, String>();
+
+		descriptionMap.put(
+			LocaleUtil.getDefault(), RandomTestUtil.randomString());
+
 		int type = GroupConstants.TYPE_SITE_OPEN;
 		String friendlyURL =
 			StringPool.SLASH + FriendlyURLNormalizerUtil.normalize(name);
@@ -98,9 +111,8 @@ public class GroupTestUtil {
 
 		return GroupLocalServiceUtil.addGroup(
 			userId, parentGroupId, null, 0,
-			GroupConstants.DEFAULT_LIVE_GROUP_ID, name,
-			RandomTestUtil.randomString(), type, manualMembership,
-			membershipRestriction, friendlyURL, site, active,
+			GroupConstants.DEFAULT_LIVE_GROUP_ID, nameMap, descriptionMap, type,
+			manualMembership, membershipRestriction, friendlyURL, site, active,
 			ServiceContextTestUtil.getServiceContext());
 	}
 
@@ -119,6 +131,15 @@ public class GroupTestUtil {
 			return group;
 		}
 
+		Map<Locale, String> nameMap = new HashMap<Locale, String>();
+
+		nameMap.put(LocaleUtil.getDefault(), name);
+
+		Map<Locale, String> descriptionMap = new HashMap<Locale, String>();
+
+		descriptionMap.put(
+			LocaleUtil.getDefault(), RandomTestUtil.randomString());
+
 		int type = GroupConstants.TYPE_SITE_OPEN;
 		String friendlyURL =
 			StringPool.SLASH + FriendlyURLNormalizerUtil.normalize(name);
@@ -133,9 +154,9 @@ public class GroupTestUtil {
 		}
 
 		return GroupServiceUtil.addGroup(
-			parentGroupId, GroupConstants.DEFAULT_LIVE_GROUP_ID, name,
-			RandomTestUtil.randomString(), type, manualMembership,
-			membershipRestriction, friendlyURL, site, active, serviceContext);
+			parentGroupId, GroupConstants.DEFAULT_LIVE_GROUP_ID, nameMap,
+			descriptionMap, type, manualMembership, membershipRestriction,
+			friendlyURL, site, active, serviceContext);
 	}
 
 	public static void enableLocalStaging(Group group) throws Exception {

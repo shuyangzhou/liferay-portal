@@ -134,6 +134,7 @@ public class SchedulerEventMessageListenerWrapper implements MessageListener {
 	/**
 	 * @deprecated As of 7.0.0
 	 */
+	@Deprecated
 	public void setGroupName(String groupName) {
 		_groupName = groupName;
 	}
@@ -141,6 +142,7 @@ public class SchedulerEventMessageListenerWrapper implements MessageListener {
 	/**
 	 * @deprecated As of 7.0.0
 	 */
+	@Deprecated
 	public void setJobName(String jobName) {
 		_jobName = jobName;
 	}
@@ -167,12 +169,14 @@ public class SchedulerEventMessageListenerWrapper implements MessageListener {
 	/**
 	 * @deprecated As of 7.0.0
 	 */
+	@Deprecated
 	@SuppressWarnings("unused")
 	private String _groupName;
 
 	/**
 	 * @deprecated As of 7.0.0
 	 */
+	@Deprecated
 	@SuppressWarnings("unused")
 	private String _jobName;
 

@@ -467,13 +467,13 @@ public class UserImpl extends UserBaseImpl {
 	}
 
 	@Override
-	public Group getGroup() throws PortalException {
+	public Group getGroup() {
 		return GroupLocalServiceUtil.fetchUserGroup(
 			getCompanyId(), getUserId());
 	}
 
 	@Override
-	public long getGroupId() throws PortalException {
+	public long getGroupId() {
 		Group group = getGroup();
 
 		return group.getGroupId();

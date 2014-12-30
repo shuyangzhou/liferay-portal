@@ -123,6 +123,10 @@ public class PHPServletRequest extends HttpServletRequestWrapper {
 		return _queryString;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0
+	 */
+	@Deprecated
 	@Override
 	public String getRealPath(String path) {
 		return _servletConfig.getServletContext().getRealPath(path);

@@ -58,9 +58,11 @@ import com.liferay.portlet.blogs.service.BlogsEntryLocalServiceUtil;
 import com.liferay.portlet.blogs.util.test.BlogsTestUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -100,8 +102,8 @@ public class GroupServiceTest {
 		Group companyStagingGroup = GroupLocalServiceUtil.addGroup(
 			TestPropsValues.getUserId(), GroupConstants.DEFAULT_PARENT_GROUP_ID,
 			companyGroup.getClassName(), companyGroup.getClassPK(),
-			companyGroup.getGroupId(), companyGroup.getDescriptiveName(),
-			companyGroup.getDescription(), companyGroup.getType(),
+			companyGroup.getGroupId(), companyGroup.getNameMap(),
+			companyGroup.getDescriptionMap(), companyGroup.getType(),
 			companyGroup.isManualMembership(),
 			companyGroup.getMembershipRestriction(),
 			companyGroup.getFriendlyURL(), false, companyGroup.isActive(),
@@ -232,8 +234,8 @@ public class GroupServiceTest {
 		Assert.assertEquals(
 			1,
 			GroupLocalServiceUtil.searchCount(
-				TestPropsValues.getCompanyId(), null, group.getDescription(),
-				groupParams));
+				TestPropsValues.getCompanyId(), null,
+				group.getDescription(getLocale()), groupParams));
 	}
 
 	@Test
@@ -256,8 +258,8 @@ public class GroupServiceTest {
 		Assert.assertEquals(
 			1,
 			GroupLocalServiceUtil.searchCount(
-				TestPropsValues.getCompanyId(), null, group.getDescription(),
-				groupParams));
+				TestPropsValues.getCompanyId(), null,
+				group.getDescription(getLocale()), groupParams));
 	}
 
 	@Test
@@ -274,8 +276,8 @@ public class GroupServiceTest {
 		Assert.assertEquals(
 			1,
 			GroupLocalServiceUtil.searchCount(
-				TestPropsValues.getCompanyId(), null, group.getName(),
-				groupParams));
+				TestPropsValues.getCompanyId(), null,
+				group.getName(getLocale()), groupParams));
 	}
 
 	@Test
@@ -298,8 +300,8 @@ public class GroupServiceTest {
 		Assert.assertEquals(
 			1,
 			GroupLocalServiceUtil.searchCount(
-				TestPropsValues.getCompanyId(), null, group.getName(),
-				groupParams));
+				TestPropsValues.getCompanyId(), null,
+				group.getName(getLocale()), groupParams));
 	}
 
 	@Test
@@ -430,7 +432,9 @@ public class GroupServiceTest {
 		String scopeDescriptiveName = group.getScopeDescriptiveName(
 			themeDisplay);
 
-		Assert.assertTrue(scopeDescriptiveName.equals(group.getName()));
+		Assert.assertTrue(
+			scopeDescriptiveName.equals(
+				group.getName(themeDisplay.getLocale())));
 	}
 
 	@Test
@@ -559,11 +563,16 @@ public class GroupServiceTest {
 
 		Assert.assertFalse(layout.hasScopeGroup());
 
+		Map<Locale, String> nameMap = new HashMap<Locale, String>();
+
+		nameMap.put(
+			LocaleUtil.getDefault(), layout.getName(LocaleUtil.getDefault()));
+
 		Group scope = GroupLocalServiceUtil.addGroup(
 			TestPropsValues.getUserId(), GroupConstants.DEFAULT_PARENT_GROUP_ID,
 			Layout.class.getName(), layout.getPlid(),
-			GroupConstants.DEFAULT_LIVE_GROUP_ID,
-			layout.getName(LocaleUtil.getDefault()), null, 0, true,
+			GroupConstants.DEFAULT_LIVE_GROUP_ID, nameMap,
+			(Map<Locale, String>)null, 0, true,
 			GroupConstants.DEFAULT_MEMBERSHIP_RESTRICTION, null, false, true,
 			null);
 
@@ -589,8 +598,8 @@ public class GroupServiceTest {
 
 		try {
 			GroupLocalServiceUtil.updateGroup(
-				group1.getGroupId(), group11.getGroupId(), group1.getName(),
-				group1.getDescription(), group1.getType(),
+				group1.getGroupId(), group11.getGroupId(), group1.getNameMap(),
+				group1.getDescriptionMap(), group1.getType(),
 				group1.isManualMembership(), group1.getMembershipRestriction(),
 				group1.getFriendlyURL(), group1.isInheritContent(),
 				group1.isActive(), ServiceContextTestUtil.getServiceContext());
@@ -615,11 +624,12 @@ public class GroupServiceTest {
 
 		try {
 			GroupLocalServiceUtil.updateGroup(
-				group1.getGroupId(), group1111.getGroupId(), group1.getName(),
-				group1.getDescription(), group1.getType(),
-				group1.isManualMembership(), group1.getMembershipRestriction(),
-				group1.getFriendlyURL(), group1.isInheritContent(),
-				group1.isActive(), ServiceContextTestUtil.getServiceContext());
+				group1.getGroupId(), group1111.getGroupId(),
+				group1.getNameMap(), group1.getDescriptionMap(),
+				group1.getType(), group1.isManualMembership(),
+				group1.getMembershipRestriction(), group1.getFriendlyURL(),
+				group1.isInheritContent(), group1.isActive(),
+				ServiceContextTestUtil.getServiceContext());
 
 			Assert.fail("A child group cannot be its parent group");
 		}
@@ -642,7 +652,7 @@ public class GroupServiceTest {
 
 			GroupLocalServiceUtil.updateGroup(
 				stagingGroup.getGroupId(), group.getGroupId(),
-				stagingGroup.getName(), stagingGroup.getDescription(),
+				stagingGroup.getNameMap(), stagingGroup.getDescriptionMap(),
 				stagingGroup.getType(), stagingGroup.isManualMembership(),
 				stagingGroup.getMembershipRestriction(),
 				stagingGroup.getFriendlyURL(), stagingGroup.isInheritContent(),
@@ -663,8 +673,8 @@ public class GroupServiceTest {
 
 		try {
 			GroupLocalServiceUtil.updateGroup(
-				group.getGroupId(), group.getGroupId(), group.getName(),
-				group.getDescription(), group.getType(),
+				group.getGroupId(), group.getGroupId(), group.getNameMap(),
+				group.getDescriptionMap(), group.getType(),
 				group.isManualMembership(), group.getMembershipRestriction(),
 				group.getFriendlyURL(), group.isInheritContent(),
 				group.isActive(), ServiceContextTestUtil.getServiceContext());
@@ -813,11 +823,15 @@ public class GroupServiceTest {
 
 			Layout scopeLayout = LayoutTestUtil.addLayout(group);
 
+			Map<Locale, String> nameMap = new HashMap<Locale, String>();
+
+			nameMap.put(LocaleUtil.getDefault(), RandomTestUtil.randomString());
+
 			return GroupLocalServiceUtil.addGroup(
 				TestPropsValues.getUserId(),
 				GroupConstants.DEFAULT_PARENT_GROUP_ID, Layout.class.getName(),
 				scopeLayout.getPlid(), GroupConstants.DEFAULT_LIVE_GROUP_ID,
-				RandomTestUtil.randomString(), null, 0, true,
+				nameMap, (Map<Locale, String>)null, 0, true,
 				GroupConstants.DEFAULT_MEMBERSHIP_RESTRICTION, null, false,
 				true, null);
 		}
@@ -831,6 +845,12 @@ public class GroupServiceTest {
 		else {
 			return GroupTestUtil.addGroup();
 		}
+	}
+
+	protected Locale getLocale() {
+		ThemeDisplay themeDisplay = new ThemeDisplay();
+
+		return themeDisplay.getLocale();
 	}
 
 	protected void givePermissionToManageSubsites(User user, Group group)
