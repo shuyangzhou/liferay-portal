@@ -14,6 +14,9 @@
 
 package com.liferay.portal.kernel.test;
 
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.test.jdbc.DatabaseCleanupTestRule;
+
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -36,6 +39,11 @@ public class AggregateTestRule implements TestRule {
 		if (testRules.length < 2) {
 			throw new IllegalArgumentException(
 				"Rule number " + testRules.length + " is less than 2");
+		}
+
+		if (Boolean.getBoolean("database.cleanup") && sort) {
+			testRules = ArrayUtil.append(
+				testRules, DatabaseCleanupTestRule.INSTANCE);
 		}
 
 		_testRules = testRules;
