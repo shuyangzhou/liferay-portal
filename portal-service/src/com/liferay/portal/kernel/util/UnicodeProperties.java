@@ -44,6 +44,7 @@ import java.util.TreeSet;
 public class UnicodeProperties extends HashMap<String, String> {
 
 	public UnicodeProperties() {
+		_safe = false;
 	}
 
 	public UnicodeProperties(boolean safe) {
@@ -238,7 +239,8 @@ public class UnicodeProperties extends HashMap<String, String> {
 
 	private static Log _log = LogFactoryUtil.getLog(UnicodeProperties.class);
 
+	private final boolean _safe;
+
 	private int _length;
-	private boolean _safe = false;
 
 }

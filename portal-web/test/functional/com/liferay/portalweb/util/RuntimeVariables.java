@@ -215,11 +215,15 @@ public class RuntimeVariables {
 
 		String absolutePath = file.getAbsolutePath();
 
+		String sourceDir = null;
+
 		if (absolutePath.endsWith(StringPool.PERIOD)) {
 			absolutePath = absolutePath.substring(0, absolutePath.length() - 1);
 
-			_sourceDir = absolutePath;
+			sourceDir = absolutePath;
 		}
+
+		_sourceDir = sourceDir;
 	}
 
 	private String _getValue(String key) {
