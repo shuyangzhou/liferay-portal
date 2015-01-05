@@ -26,9 +26,9 @@ import java.sql.Statement;
 /**
  * @author Shuyang Zhou
  */
-public class ResetDatabaseStatementHandler implements InvocationHandler {
+public class DatabaseCleanupStatementHandler implements InvocationHandler {
 
-	public ResetDatabaseStatementHandler(
+	public DatabaseCleanupStatementHandler(
 		Connection connection, Statement statement) {
 
 		_connection = connection;
