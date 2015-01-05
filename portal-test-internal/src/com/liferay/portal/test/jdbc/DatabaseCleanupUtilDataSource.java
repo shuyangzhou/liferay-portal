@@ -48,7 +48,8 @@ public class DatabaseCleanupUtilDataSource extends DataSourceWrapper {
 
 	@Override
 	public Connection getConnection() throws SQLException {
-		return (Connection)ProxyUtil.newProxyInstance(DatabaseCleanupUtilDataSource.class.getClassLoader(),
+		return (Connection)ProxyUtil.newProxyInstance(
+			DatabaseCleanupUtilDataSource.class.getClassLoader(),
 			new Class<?>[] {Connection.class},
 			new DatabaseCleanupConnectionHandler(super.getConnection()));
 	}

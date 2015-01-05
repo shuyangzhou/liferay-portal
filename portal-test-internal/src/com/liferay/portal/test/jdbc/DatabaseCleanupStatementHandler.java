@@ -55,22 +55,38 @@ public class DatabaseCleanupStatementHandler implements InvocationHandler {
 				return System.identityHashCode(proxy);
 			}
 
+			int processAfterInvoke = _PROCESSING_NOT_REQUIRED;
+
 			if (methodName.equals("addBatch") || methodName.equals("execute") ||
 				methodName.equals("executeQuery") ||
 				methodName.equals("executeUpdate")) {
 
 				if (ArrayUtil.isNotEmpty(arguments)) {
-					ResetDatabaseUtil.processSQL(
+					processAfterInvoke = DatabaseCleanupTestRule.processSQL(
 						_connection, (String)arguments[0]);
 				}
 			}
 
-			return method.invoke(_statement, arguments);
+			Object returnValue = method.invoke(_statement, arguments);
+
+			if ((methodName.equals("addBatch") ||
+				 methodName.equals("execute") ||
+				 methodName.equals("executeQuery") ||
+				 methodName.equals("executeUpdate")) &&
+				(processAfterInvoke != _PROCESSING_NOT_REQUIRED)) {
+
+				DatabaseCleanupTestRule.processAfterInvoke( _connection,
+					(String)arguments[0]);
+			}
+
+			return returnValue;
 		}
 		catch (InvocationTargetException ite) {
 			throw ite.getTargetException();
 		}
 	}
+
+	private static final int _PROCESSING_NOT_REQUIRED = 0;
 
 	private final Connection _connection;
 	private final Statement _statement;
