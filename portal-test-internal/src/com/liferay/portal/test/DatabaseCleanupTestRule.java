@@ -50,10 +50,10 @@ import org.junit.runner.Description;
 /**
  * @author Shuyang Zhou
  */
-public class ResetDatabaseTestRule extends BaseTestRule<Object, Level> {
+public class DatabaseCleanupTestRule extends BaseTestRule<Object, Level> {
 
-	public static final ResetDatabaseTestRule INSTANCE =
-		new ResetDatabaseTestRule();
+	public static final DatabaseCleanupTestRule INSTANCE =
+		new DatabaseCleanupTestRule();
 
 	@Override
 	protected void afterMethod(Description description, Level level) {
@@ -278,11 +278,10 @@ public class ResetDatabaseTestRule extends BaseTestRule<Object, Level> {
 		}
 	}
 
-	private ResetDatabaseTestRule() {
+	private DatabaseCleanupTestRule() {
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		ResetDatabaseTestRule.class);
+	private static final Log _log = LogFactoryUtil.getLog(DatabaseCleanupTestRule.class);
 
 	private static String _initializedDLFileSystemStoreDirName;
 	private static String _initializedDLJCRStoreDirName;
