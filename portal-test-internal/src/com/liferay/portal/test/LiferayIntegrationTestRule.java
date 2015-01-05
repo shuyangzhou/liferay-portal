@@ -14,11 +14,16 @@
 
 package com.liferay.portal.test;
 
+import com.liferay.portal.kernel.util.ArrayUtil;
+
 import com.liferay.portal.kernel.test.AggregateTestRule;
 import com.liferay.portal.kernel.test.BaseTestRule;
 import com.liferay.portal.kernel.util.CentralizedThreadLocal;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.test.jdbc.DatabaseCleanupTestRule;
+import com.liferay.portal.test.jdbc.ResetDatabaseUtilDataSource;
+import com.liferay.portal.test.jdbc.DatabaseCleanupUtilDataSource;
 import com.liferay.portal.test.log.LogAssertionTestRule;
 import com.liferay.portal.test.randomizerbumpers.UniqueStringRandomizerBumper;
 import com.liferay.portal.test.rule.DeleteAfterTestRunTestRule;
@@ -36,12 +41,13 @@ import org.junit.runner.Description;
 public class LiferayIntegrationTestRule extends AggregateTestRule {
 
 	public LiferayIntegrationTestRule() {
-		super(
-			false, LogAssertionTestRule.INSTANCE, _clearThreadLocalTestRule,
-			_uniqueStringRandomizerBumperTestRule,
-			new DeleteAfterTestRunTestRule());
+		super(false, buildTestRuleArray());
 
 		System.setProperty("catalina.base", ".");
+
+		ResetDatabaseUtilDataSource.initialize();
+
+		DatabaseCleanupUtilDataSource.initialize();
 
 		List<String> configLocations = ListUtil.fromArray(
 			PropsUtil.getArray(PropsKeys.SPRING_CONFIGS));
@@ -51,6 +57,20 @@ public class LiferayIntegrationTestRule extends AggregateTestRule {
 		if (System.getProperty("external-properties") == null) {
 			System.setProperty("external-properties", "portal-test.properties");
 		}
+	}
+
+	private static TestRule[] buildTestRuleArray() {
+		TestRule[] testRulesArray = new TestRule[] {
+			LogAssertionTestRule.INSTANCE, _clearThreadLocalTestRule,
+			_uniqueStringRandomizerBumperTestRule,
+			new DeleteAfterTestRunTestRule()};
+
+		if (Boolean.getBoolean("database.cleanup")) {
+			testRulesArray = ArrayUtil.append(
+				testRulesArray, DatabaseCleanupTestRule.INSTANCE);
+		}
+
+		return testRulesArray;
 	}
 
 	private static final TestRule _clearThreadLocalTestRule =
