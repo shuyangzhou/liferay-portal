@@ -65,7 +65,8 @@ public class AggregateTestRule implements TestRule {
 		"com.liferay.portal.test.MainServletTestRule",
 		"com.liferay.portal.test.PersistenceTestRule",
 		"com.liferay.portal.test.TransactionalTestRule",
-		"com.liferay.portal.test.SynchronousDestinationTestRule"
+		"com.liferay.portal.test.SynchronousDestinationTestRule",
+		"com.liferay.portal.test.jdbc.DatabaseCleanupTestRule"
 	};
 
 	private static final Comparator<TestRule> _testRuleComparator =
