@@ -28,9 +28,9 @@ import java.sql.Statement;
 /**
  * @author Shuyang Zhou
  */
-public class ResetDatabaseConnectionHandler implements InvocationHandler {
+public class DatabaseCleanupConnectionHandler implements InvocationHandler {
 
-	public ResetDatabaseConnectionHandler(Connection connection) {
+	public DatabaseCleanupConnectionHandler(Connection connection) {
 		_connection = connection;
 	}
 
@@ -67,10 +67,9 @@ public class ResetDatabaseConnectionHandler implements InvocationHandler {
 
 				Statement statement = (Statement)returnValue;
 
-				return ProxyUtil.newProxyInstance(
-					ResetDatabaseConnectionHandler.class.getClassLoader(),
+				return ProxyUtil.newProxyInstance(DatabaseCleanupConnectionHandler.class.getClassLoader(),
 					getInterfaces(statement),
-					new ResetDatabaseStatementHandler(_connection, statement));
+					new DatabaseCleanupStatementHandler(_connection, statement));
 			}
 
 			return returnValue;
