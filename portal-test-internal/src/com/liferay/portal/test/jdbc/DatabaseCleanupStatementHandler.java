@@ -14,8 +14,6 @@
 
 package com.liferay.portal.test.jdbc;
 
-import com.liferay.portal.kernel.util.ArrayUtil;
-
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -55,17 +53,26 @@ public class DatabaseCleanupStatementHandler implements InvocationHandler {
 				return System.identityHashCode(proxy);
 			}
 
-			if (methodName.equals("addBatch") || methodName.equals("execute") ||
+			boolean processAfterInvoke = false;
+
+			if (methodName.equals("executeBatch") ||
+				methodName.equals("execute") ||
 				methodName.equals("executeQuery") ||
 				methodName.equals("executeUpdate")) {
 
-				if (ArrayUtil.isNotEmpty(arguments)) {
-					ResetDatabaseUtil.processSQL(
-						_connection, (String)arguments[0]);
-				}
+				processAfterInvoke =
+					DatabaseCleanupTestRule.processBeforeInvoke(
+						_connection, _statement);
 			}
 
-			return method.invoke(_statement, arguments);
+			Object returnValue = method.invoke(_statement, arguments);
+
+			if (processAfterInvoke) {
+				DatabaseCleanupTestRule.processAfterInvoke(_connection,
+					_statement);
+			}
+
+			return returnValue;
 		}
 		catch (InvocationTargetException ite) {
 			throw ite.getTargetException();
