@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.test.BaseTestRule;
 import com.liferay.portal.kernel.util.CentralizedThreadLocal;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.test.jdbc.DatabaseCleanupDataSource;
 import com.liferay.portal.test.log.LogAssertionTestRule;
 import com.liferay.portal.test.randomizerbumpers.UniqueStringRandomizerBumper;
 import com.liferay.portal.test.rule.DeleteAfterTestRunTestRule;
@@ -36,12 +37,13 @@ import org.junit.runner.Description;
 public class LiferayIntegrationTestRule extends AggregateTestRule {
 
 	public LiferayIntegrationTestRule() {
-		super(
-			false, LogAssertionTestRule.INSTANCE, _clearThreadLocalTestRule,
-			_uniqueStringRandomizerBumperTestRule,
+		super(false, false, LogAssertionTestRule.INSTANCE,
+			_clearThreadLocalTestRule, _uniqueStringRandomizerBumperTestRule,
 			new DeleteAfterTestRunTestRule());
 
 		System.setProperty("catalina.base", ".");
+
+		DatabaseCleanupDataSource.initialize();
 
 		List<String> configLocations = ListUtil.fromArray(
 			PropsUtil.getArray(PropsKeys.SPRING_CONFIGS));
