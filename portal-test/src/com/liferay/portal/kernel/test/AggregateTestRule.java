@@ -22,7 +22,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Set;
 
 import org.junit.rules.TestRule;
@@ -67,7 +66,7 @@ public class AggregateTestRule implements TestRule {
 
 	@Override
 	public Statement apply(Statement statement, Description description) {
-		for (TestRule testRule: _testRules) {
+		for (TestRule testRule : _testRules) {
 			statement = testRule.apply(statement, description);
 		}
 
