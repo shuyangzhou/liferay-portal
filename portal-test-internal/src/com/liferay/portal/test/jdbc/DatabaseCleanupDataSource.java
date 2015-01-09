@@ -29,7 +29,7 @@ import javax.sql.DataSource;
 /**
  * @author Shuyang Zhou
  */
-public class DatabaseCleanupUtilDataSource extends DataSourceWrapper {
+public class DatabaseCleanupDataSource extends DataSourceWrapper {
 
 	public static void initialize() {
 		try {
@@ -42,13 +42,14 @@ public class DatabaseCleanupUtilDataSource extends DataSourceWrapper {
 		}
 	}
 
-	public DatabaseCleanupUtilDataSource(DataSource dataSource) {
+	public DatabaseCleanupDataSource(DataSource dataSource) {
 		super(dataSource);
 	}
 
 	@Override
 	public Connection getConnection() throws SQLException {
-		return (Connection)ProxyUtil.newProxyInstance(DatabaseCleanupUtilDataSource.class.getClassLoader(),
+		return (Connection)ProxyUtil.newProxyInstance(
+			DatabaseCleanupDataSource.class.getClassLoader(),
 			new Class<?>[] {Connection.class},
 			new DatabaseCleanupConnectionHandler(super.getConnection()));
 	}
@@ -58,7 +59,7 @@ public class DatabaseCleanupUtilDataSource extends DataSourceWrapper {
 
 			@Override
 			public DataSource getDataSource(DataSource dataSource) {
-				return new DatabaseCleanupUtilDataSource(dataSource);
+				return new DatabaseCleanupDataSource(dataSource);
 			}
 
 		};

@@ -14,9 +14,15 @@
 
 package com.liferay.portal.kernel.test;
 
+import com.liferay.portal.kernel.util.ArrayUtil;
+
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Set;
 
 import org.junit.rules.TestRule;
@@ -38,10 +44,20 @@ public class AggregateTestRule implements TestRule {
 				"Rule number " + testRules.length + " is less than 2");
 		}
 
-		_testRules = testRules;
+		if (_databaseCleanupTestRule != null) {
+			testRules = ArrayUtil.append(testRules, _databaseCleanupTestRule);
+		}
+
+		_testRules = Arrays.asList(testRules);
+
+		for (TestRule testRule : _testRules) {
+			if (testRule instanceof AggregateTestRule) {
+				((AggregateTestRule)testRule)._setParentAggregateTestRule(this);
+			}
+		}
 
 		if (sort) {
-			Arrays.sort(_testRules, _testRuleComparator);
+			Collections.sort(_testRules, _testRuleComparator);
 		}
 	}
 
@@ -51,11 +67,22 @@ public class AggregateTestRule implements TestRule {
 
 	@Override
 	public Statement apply(Statement statement, Description description) {
-		for (int i = _testRules.length - 1; i >= 0; i--) {
-			statement = _testRules[i].apply(statement, description);
+		for (TestRule testRule: _testRules) {
+			statement = testRule.apply(statement, description);
 		}
 
 		return statement;
+	}
+
+	private void _setParentAggregateTestRule(
+		AggregateTestRule parentAggregateTestRule) {
+
+		_parentAggregateTestRule = parentAggregateTestRule;
+
+		if (_databaseCleanupTestRule != null) {
+			_testRules = new ArrayList<TestRule>(_testRules);
+			_testRules.remove(_databaseCleanupTestRule);
+		}
 	}
 
 	private static final String[] _ORDERED_RULE_CLASS_NAMES = new String[] {
@@ -65,16 +92,19 @@ public class AggregateTestRule implements TestRule {
 		"com.liferay.portal.test.MainServletTestRule",
 		"com.liferay.portal.test.PersistenceTestRule",
 		"com.liferay.portal.test.TransactionalTestRule",
-		"com.liferay.portal.test.SynchronousDestinationTestRule"
+		"com.liferay.portal.test.SynchronousDestinationTestRule",
+		"com.liferay.portal.test.jdbc.DatabaseCleanupTestRule"
 	};
+
+	private static final TestRule _databaseCleanupTestRule;
 
 	private static final Comparator<TestRule> _testRuleComparator =
 		new Comparator<TestRule>() {
 
 			@Override
 			public int compare(TestRule testRule1, TestRule testRule2) {
-				return getIndex(testRule1.getClass()) -
-					getIndex(testRule2.getClass());
+				return getIndex(testRule2.getClass()) -
+					getIndex(testRule1.getClass());
 			}
 
 			private int getIndex(Class<?> testRuleClass) {
@@ -100,6 +130,25 @@ public class AggregateTestRule implements TestRule {
 
 		};
 
-	private final TestRule[] _testRules;
+	static {
+		if (Boolean.getBoolean("database.cleanup")) {
+			try {
+				Class clazz = Class.forName(
+					"com.liferay.portal.test.jdbc.DatabaseCleanupTestRule");
+
+				_databaseCleanupTestRule = ReflectionTestUtil.getFieldValue(
+					clazz, "INSTANCE");
+			}
+			catch (Exception e) {
+				throw new ExceptionInInitializerError(e);
+			}
+		}
+		else {
+			_databaseCleanupTestRule = null;
+		}
+	}
+
+	private AggregateTestRule _parentAggregateTestRule = null;
+	private List<TestRule> _testRules;
 
 }

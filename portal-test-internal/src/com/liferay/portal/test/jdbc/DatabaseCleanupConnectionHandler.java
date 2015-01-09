@@ -53,13 +53,14 @@ public class DatabaseCleanupConnectionHandler implements InvocationHandler {
 				return System.identityHashCode(proxy);
 			}
 
+			Object returnValue = method.invoke(_connection, arguments);
+
 			if (methodName.equals("prepareCall") ||
 				methodName.equals("prepareStatement")) {
 
-				ResetDatabaseUtil.processSQL(_connection, (String)arguments[0]);
+				DatabaseCleanupTestRule.recordStatementSQL(
+					(Statement)returnValue, (String)arguments[0]);
 			}
-
-			Object returnValue = method.invoke(_connection, arguments);
 
 			if (methodName.equals("createStatement") ||
 				methodName.equals("prepareCall") ||
@@ -67,9 +68,11 @@ public class DatabaseCleanupConnectionHandler implements InvocationHandler {
 
 				Statement statement = (Statement)returnValue;
 
-				return ProxyUtil.newProxyInstance(DatabaseCleanupConnectionHandler.class.getClassLoader(),
+				return ProxyUtil.newProxyInstance(
+					DatabaseCleanupConnectionHandler.class.getClassLoader(),
 					getInterfaces(statement),
-					new DatabaseCleanupStatementHandler(_connection, statement));
+					new DatabaseCleanupStatementHandler(
+						_connection, statement));
 			}
 
 			return returnValue;
