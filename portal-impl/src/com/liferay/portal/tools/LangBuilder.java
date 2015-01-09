@@ -83,8 +83,10 @@ public class LangBuilder {
 		_langFile = langFile;
 		_langTranslate = langTranslate;
 
+		Properties portalLanguageProperties = null;
+
 		if (langPlugin) {
-			_portalLanguageProperties = new Properties();
+			portalLanguageProperties = new Properties();
 
 			Class<?> clazz = getClass();
 
@@ -93,14 +95,20 @@ public class LangBuilder {
 			InputStream inputStream = classLoader.getResourceAsStream(
 				"content/Language.properties");
 
-			_portalLanguageProperties.load(inputStream);
+			portalLanguageProperties.load(inputStream);
 		}
+
+		_portalLanguageProperties = portalLanguageProperties;
 
 		File renameKeysFile = new File(_langDir + "/rename.properties");
 
+		Properties renameKeys = null;
+
 		if (renameKeysFile.exists()) {
-			_renameKeys = PropertiesUtil.load(FileUtil.read(renameKeysFile));
+			renameKeys = PropertiesUtil.load(FileUtil.read(renameKeysFile));
 		}
+
+		_renameKeys = renameKeys;
 
 		String content = _orderProperties(
 			new File(_langDir + "/" + _langFile + ".properties"));
