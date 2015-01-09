@@ -128,7 +128,7 @@ public class StringParser {
 	 * @param pattern the pattern string
 	 */
 	public StringParser(String pattern) {
-		_builder = pattern;
+		String builder = pattern;
 
 		String regex = escapeRegex(pattern);
 
@@ -142,7 +142,7 @@ public class StringParser {
 
 			_stringParserFragments.add(stringParserFragment);
 
-			_builder = _builder.replace(chunk, stringParserFragment.getToken());
+			builder = builder.replace(chunk, stringParserFragment.getToken());
 
 			regex = regex.replace(
 				escapeRegex(chunk),
@@ -151,6 +151,7 @@ public class StringParser {
 						StringPool.CLOSE_PARENTHESIS)));
 		}
 
+		_builder = builder;
 		_pattern = Pattern.compile(regex);
 	}
 
