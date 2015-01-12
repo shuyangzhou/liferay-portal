@@ -44,20 +44,28 @@ public abstract class BaseWebDriverImpl
 
 		super(webDriver);
 
-		_projectDirName = projectDirName;
-
 		if (OSDetector.isWindows()) {
-			_dependenciesDirName = StringUtil.replace(
-				_dependenciesDirName, "//", "\\");
+			_dependenciesDirName =
+				"portal-web\\test\\functional\\com\\liferay\\portalweb\\" +
+					"dependencies\\";
 
-			_outputDirName = StringUtil.replace(_outputDirName, "//", "\\");
+			_outputDirName = StringUtil.replace(
+				PropsValues.OUTPUT_DIR_NAME, "//", "\\");
 
-			_projectDirName = StringUtil.replace(_projectDirName, "//", "\\");
+			_projectDirName = StringUtil.replace(projectDirName, "//", "\\");
 
-			_sikuliImagesDirName = StringUtil.replace(
-				_sikuliImagesDirName, "//", "\\");
-			_sikuliImagesDirName = StringUtil.replace(
-				_sikuliImagesDirName, "linux", "windows");
+			_sikuliImagesDirName = _dependenciesDirName + "sikuli\\windows\\";
+		}
+		else {
+			_dependenciesDirName =
+				"portal-web//test//functional//com//liferay//portalweb//" +
+					"dependencies//";
+
+			_outputDirName = PropsValues.OUTPUT_DIR_NAME;
+
+			_projectDirName = projectDirName;
+
+			_sikuliImagesDirName = _dependenciesDirName + "sikuli//linux//";
 		}
 
 		if (!PropsValues.MOBILE_DEVICE_ENABLED) {
@@ -935,12 +943,10 @@ public abstract class BaseWebDriverImpl
 	}
 
 	private String _clipBoard = "";
-	private String _dependenciesDirName =
-		"portal-web//test//functional//com//liferay//portalweb//dependencies//";
-	private String _outputDirName = PropsValues.OUTPUT_DIR_NAME;
+	private final String _dependenciesDirName;
+	private final String _outputDirName;
 	private String _primaryTestSuiteName;
 	private String _projectDirName;
-	private String _sikuliImagesDirName =
-		_dependenciesDirName + "sikuli//linux//";
+	private final String _sikuliImagesDirName;
 
 }
