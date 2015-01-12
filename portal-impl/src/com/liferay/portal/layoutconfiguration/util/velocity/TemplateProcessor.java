@@ -58,13 +58,17 @@ public class TemplateProcessor implements ColumnProcessor {
 		_request = request;
 		_response = response;
 
+		Portlet portlet = null;
+
 		if (Validator.isNotNull(portletId)) {
 			ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
 				WebKeys.THEME_DISPLAY);
 
-			_portlet = PortletLocalServiceUtil.getPortletById(
+			portlet = PortletLocalServiceUtil.getPortletById(
 				themeDisplay.getCompanyId(), portletId);
 		}
+
+		_portlet = portlet;
 
 		_portletAjaxRender = GetterUtil.getBoolean(
 			request.getAttribute(WebKeys.PORTLET_AJAX_RENDER));
