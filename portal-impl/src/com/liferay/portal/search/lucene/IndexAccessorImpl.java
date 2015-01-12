@@ -79,17 +79,18 @@ public class IndexAccessorImpl implements IndexAccessor {
 
 		_path = PropsValues.LUCENE_DIR + _companyId + StringPool.SLASH;
 
+		IndexSearcherManager indexSearcherManager = null;
+
 		try {
 			if (!SPIUtil.isSPI()) {
 				_checkLuceneDir();
 				_initIndexWriter();
 				_initCommitScheduler();
 
-				_indexSearcherManager = new IndexSearcherManager(_indexWriter);
+				indexSearcherManager = new IndexSearcherManager(_indexWriter);
 			}
 			else {
-				_indexSearcherManager = new IndexSearcherManager(
-					getLuceneDir());
+				indexSearcherManager = new IndexSearcherManager(getLuceneDir());
 			}
 		}
 		catch (IOException ioe) {
@@ -98,6 +99,8 @@ public class IndexAccessorImpl implements IndexAccessor {
 					_companyId,
 				ioe);
 		}
+
+		_indexSearcherManager = indexSearcherManager;
 	}
 
 	@Override

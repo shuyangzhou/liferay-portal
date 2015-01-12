@@ -95,12 +95,12 @@ public class DBLoader {
 		String databaseName, String databaseType, String sqlDir,
 		String fileName) {
 
-		try {
-			_databaseName = databaseName;
-			_databaseType = databaseType;
-			_sqlDir = sqlDir;
-			_fileName = fileName;
+		_databaseName = databaseName;
+		_databaseType = databaseType;
+		_sqlDir = sqlDir;
+		_fileName = fileName;
 
+		try {
 			if (_databaseType.equals("derby")) {
 				_loadDerby();
 			}

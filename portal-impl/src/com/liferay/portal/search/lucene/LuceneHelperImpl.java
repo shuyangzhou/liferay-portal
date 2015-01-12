@@ -805,13 +805,16 @@ public class LuceneHelperImpl implements LuceneHelper {
 					LuceneHelperImpl.class.getName());
 		}
 
+		LoadIndexClusterEventListener loadIndexClusterEventListener = null;
+
 		if (isLoadIndexFromClusterEnabled()) {
-			_loadIndexClusterEventListener =
-				new LoadIndexClusterEventListener();
+			loadIndexClusterEventListener = new LoadIndexClusterEventListener();
 
 			ClusterExecutorUtil.addClusterEventListener(
-				_loadIndexClusterEventListener);
+				loadIndexClusterEventListener);
 		}
+
+		_loadIndexClusterEventListener = loadIndexClusterEventListener;
 
 		BooleanQuery.setMaxClauseCount(_LUCENE_BOOLEAN_QUERY_CLAUSE_MAX_SIZE);
 	}
