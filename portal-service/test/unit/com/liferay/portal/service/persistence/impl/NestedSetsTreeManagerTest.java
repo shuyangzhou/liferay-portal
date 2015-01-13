@@ -830,8 +830,8 @@ public class NestedSetsTreeManagerTest {
 			}
 		}
 
-		private final List<SimpleNestedSetsTreeNode> _simpleNestedSetsTreeNodeList =
-			new ArrayList<>();
+		private final List<SimpleNestedSetsTreeNode>
+			_simpleNestedSetsTreeNodeList = new ArrayList<>();
 
 	}
 

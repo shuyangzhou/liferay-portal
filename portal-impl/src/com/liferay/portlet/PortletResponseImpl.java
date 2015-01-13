@@ -740,8 +740,8 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 		PortletResponseImpl.class);
 
 	private long _companyId;
-	private final Map<String, Constructor<? extends PortletURLImpl>> _constructors =
-		new ConcurrentHashMap<>();
+	private final Map<String, Constructor<? extends PortletURLImpl>>
+		_constructors = new ConcurrentHashMap<>();
 	private Document _document;
 	private final Map<String, Object> _headers = new LinkedHashMap<>();
 	private final Map<String, List<Element>> _markupHeadElements =

@@ -916,10 +916,10 @@ public class SubscriptionSender implements Serializable {
 	private String _mailIdPopPortletPrefix;
 	private long _notificationClassNameId;
 	private int _notificationType;
-	private final List<ObjectValuePair<String, Long>> _persistestedSubscribersOVPs =
-		new ArrayList<>();
-	private final List<ObjectValuePair<String, String>> _runtimeSubscribersOVPs =
-		new ArrayList<>();
+	private final List<ObjectValuePair<String, Long>>
+		_persistestedSubscribersOVPs = new ArrayList<>();
+	private final List<ObjectValuePair<String, String>>
+		_runtimeSubscribersOVPs = new ArrayList<>();
 	private final Set<String> _sentEmailAddresses = new HashSet<>();
 
 }

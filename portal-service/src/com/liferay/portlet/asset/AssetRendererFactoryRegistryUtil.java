@@ -235,8 +235,8 @@ public class AssetRendererFactoryRegistryUtil {
 		_assetRenderFactoriesMapByClassName = new ConcurrentHashMap<>();
 	private final Map<String, AssetRendererFactory>
 		_assetRenderFactoriesMapByClassType = new ConcurrentHashMap<>();
-	private final ServiceRegistrationMap<AssetRendererFactory> _serviceRegistrations =
-		new ServiceRegistrationMap<>();
+	private final ServiceRegistrationMap<AssetRendererFactory>
+		_serviceRegistrations = new ServiceRegistrationMap<>();
 	private final ServiceTracker<AssetRendererFactory, AssetRendererFactory>
 		_serviceTracker;
 

@@ -333,8 +333,8 @@ public class SocialActivityInterpreterLocalServiceImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		SocialActivityInterpreterLocalServiceImpl.class);
 
-	private final Map<String, List<SocialActivityInterpreter>> _activityInterpreters =
-		new HashMap<>();
+	private final Map<String, List<SocialActivityInterpreter>>
+		_activityInterpreters = new HashMap<>();
 	private final ServiceRegistrationMap<SocialActivityInterpreter>
 		_serviceRegistrations = new ServiceRegistrationMap<>();
 	private ServiceTracker<SocialActivityInterpreter, SocialActivityInterpreter>
