@@ -641,10 +641,10 @@ public class LayoutLocalServiceStagingAdvice implements MethodInterceptor {
 		String.class, Boolean.class, byte[].class, ServiceContext.class
 	};
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		LayoutLocalServiceStagingAdvice.class);
 
-	private static Set<String> _layoutLocalServiceStagingAdviceMethodNames =
+	private static final Set<String> _layoutLocalServiceStagingAdviceMethodNames =
 		new HashSet<>();
 
 	static {
