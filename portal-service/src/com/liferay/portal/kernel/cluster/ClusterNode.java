@@ -24,6 +24,9 @@ import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * @author Tina Tian
  */
@@ -36,6 +39,10 @@ public class ClusterNode implements Comparable<ClusterNode>, Serializable {
 		}
 
 		_clusterNodeId = clusterNodeId;
+	}
+
+	public void addChannelAddress(String channelName, Address address) {
+		_channelAddresses.put(channelName, address);
 	}
 
 	@Override
@@ -128,6 +135,10 @@ public class ClusterNode implements Comparable<ClusterNode>, Serializable {
 		return false;
 	}
 
+	public Address getChannelAddress(String channelName) {
+		return _channelAddresses.get(channelName);
+	}
+
 	public String getClusterNodeId() {
 		return _clusterNodeId;
 	}
@@ -161,6 +172,10 @@ public class ClusterNode implements Comparable<ClusterNode>, Serializable {
 		return _clusterNodeId.hashCode();
 	}
 
+	public void removeChannelAddress(String clusterName) {
+		_channelAddresses.remove(clusterName);
+	}
+
 	public void setPortalInetSocketAddress(
 		InetSocketAddress portalInetSocketAddress) {
 
@@ -186,6 +201,8 @@ public class ClusterNode implements Comparable<ClusterNode>, Serializable {
 		return sb.toString();
 	}
 
+	private final Map<String, Address> _channelAddresses =
+		new ConcurrentHashMap<>();
 	private final String _clusterNodeId;
 	private InetSocketAddress _portalInetSocketAddress;
 	private String _portalProtocol;
