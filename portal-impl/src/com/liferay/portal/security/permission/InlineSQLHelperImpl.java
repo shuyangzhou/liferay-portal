@@ -183,8 +183,13 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 		String sql, String className, String classPKField, String userIdField,
 		long[] groupIds, String bridgeJoin) {
 
+		String groupIdField = classPKField.substring(
+			0, classPKField.lastIndexOf(CharPool.PERIOD));
+
+		groupIdField += ".groupId";
+
 		return replacePermissionCheck(
-			sql, className, classPKField, userIdField, null, groupIds,
+			sql, className, classPKField, userIdField, groupIdField, groupIds,
 			bridgeJoin);
 	}
 
@@ -542,32 +547,25 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 
 		permissionJoin += CustomSQLUtil.get(JOIN_RESOURCE_PERMISSION);
 
-		StringBundler sb = new StringBundler(10);
+		StringBundler sb = new StringBundler(9);
 
 		sb.append("((InlineSQLResourcePermission.primKey = CAST_TEXT(");
 		sb.append(classPKField);
 		sb.append(StringPool.CLOSE_PARENTHESIS);
 
-		sb.append(") AND (");
-
-		if (Validator.isNull(groupIdField)) {
-			sb.append(
-				classPKField.substring(
-					0, classPKField.lastIndexOf(CharPool.PERIOD)));
-			sb.append(".groupId");
-		}
-		else {
+		if (Validator.isNotNull(groupIdField)) {
+			sb.append(") AND (");
 			sb.append(groupIdField);
-		}
 
-		if (groupIds.length > 1) {
-			sb.append(" IN (");
-			sb.append(StringUtil.merge(groupIds));
-			sb.append(StringPool.CLOSE_PARENTHESIS);
-		}
-		else {
-			sb.append(" = ");
-			sb.append(groupIds[0]);
+			if (groupIds.length > 1) {
+				sb.append(" IN (");
+				sb.append(StringUtil.merge(groupIds));
+				sb.append(StringPool.CLOSE_PARENTHESIS);
+			}
+			else {
+				sb.append(" = ");
+				sb.append(groupIds[0]);
+			}
 		}
 
 		sb.append("))");
