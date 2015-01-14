@@ -73,13 +73,18 @@ public class AggregateTestRule implements TestRule {
 		return statement;
 	}
 
+	public AggregateTestRule getParentAggregateTestRule() {
+		return _parentAggregateTestRule;
+	}
+
 	private void _setParentAggregateTestRule(
 		AggregateTestRule parentAggregateTestRule) {
 
 		_parentAggregateTestRule = parentAggregateTestRule;
 
 		if (_databaseCleanupTestRule != null) {
-			_testRules = new ArrayList<TestRule>(_testRules);
+			_testRules = new ArrayList<>(_testRules);
+
 			_testRules.remove(_databaseCleanupTestRule);
 		}
 	}
@@ -132,7 +137,7 @@ public class AggregateTestRule implements TestRule {
 	static {
 		if (Boolean.getBoolean("database.cleanup")) {
 			try {
-				Class clazz = Class.forName(
+				Class<?> clazz = Class.forName(
 					"com.liferay.portal.test.jdbc.DatabaseCleanupTestRule");
 
 				_databaseCleanupTestRule = ReflectionTestUtil.getFieldValue(

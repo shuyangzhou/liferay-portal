@@ -18,17 +18,24 @@ import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.io.unsync.UnsyncPrintWriter;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 import com.liferay.portal.kernel.test.BaseTestRule;
+import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -50,7 +57,8 @@ public class DatabaseCleanupTestRule extends BaseTestRule<Object, Object> {
 		new DatabaseCleanupTestRule();
 
 	public static void processAfterInvoke(
-		Connection connection, java.sql.Statement statement) {
+			Connection connection, java.sql.Statement statement)
+		throws SQLException {
 
 		String sql = _statementSQLs.get(statement);
 
@@ -63,30 +71,31 @@ public class DatabaseCleanupTestRule extends BaseTestRule<Object, Object> {
 			return;
 		}
 
-		if (parserStatement instanceof Delete) {
-			Delete delete = (Delete)parserStatement;
+		String tableName = getTableName(parserStatement);
 
-			Table table = delete.getTable();
+		if (tableName != null) {
+			try (java.sql.Statement selectResultStatement =
+					connection.createStatement();
+				ResultSet resultSet = selectResultStatement.executeQuery(
+					_SELECT.concat(tableName))) {
 
-			String tableName = table.getName();
+				while (resultSet.next()) {
+					PKObject pkObject = new PKObject(tableName, resultSet);
 
-			_recordAfterExecution(connection, tableName, sql);
-		}
+					if (_tempPKObjects.remove(pkObject) == null) {
+						_insertedPKObjects.put(
+							pkObject, new SQLExecutionContext(sql));
+					}
+				}
+			}
 
-		if (parserStatement instanceof Insert) {
-			Insert insert = (Insert)parserStatement;
-
-			Table table = insert.getTable();
-
-			String tableName = table.getName();
-
-			_recordAfterExecution(connection, tableName, sql);
+			_deletedPKObjects.putAll(_tempPKObjects);
 		}
 	}
 
 	public static boolean processBeforeInvoke(
 			Connection connection, java.sql.Statement statement)
-		throws Exception {
+		throws SQLException {
 
 		if (!_recording) {
 			return false;
@@ -103,31 +112,27 @@ public class DatabaseCleanupTestRule extends BaseTestRule<Object, Object> {
 			return false;
 		}
 
-		if (parserStatement instanceof Delete) {
-			Delete delete = (Delete)parserStatement;
+		String tableName = getTableName(parserStatement);
 
-			Table table = delete.getTable();
+		if ((tableName == null) || tableName.equals("Counter") ||
+			tableName.equals("SystemEvent")) {
 
-			String tableName = table.getName();
-
-			_recordBeforeExecution(connection, tableName, sql);
-
-			return true;
+			return false;
 		}
 
-		if (parserStatement instanceof Insert) {
-			Insert insert = (Insert)parserStatement;
+		try (java.sql.Statement selectStatement =
+				connection.createStatement();
+			ResultSet resultSet = selectStatement.executeQuery(
+				_SELECT.concat(tableName))) {
 
-			Table table = insert.getTable();
-
-			String tableName = table.getName();
-
-			_recordBeforeExecution(connection, tableName, sql);
-
-			return true;
+			while (resultSet.next()) {
+				_tempPKObjects.put(
+					new PKObject(tableName, resultSet),
+					new SQLExecutionContext(sql));
+			}
 		}
 
-		return false;
+		return true;
 	}
 
 	public static void recordStatementSQL(
@@ -136,264 +141,246 @@ public class DatabaseCleanupTestRule extends BaseTestRule<Object, Object> {
 		_statementSQLs.put(statement, sql);
 	}
 
+	protected static String getTableName(Statement parserStatement) {
+		Table table = null;
+
+		if (parserStatement instanceof Delete) {
+			Delete delete = (Delete)parserStatement;
+
+			table = delete.getTable();
+		}
+
+		if (parserStatement instanceof Insert) {
+			Insert insert = (Insert)parserStatement;
+
+			table = insert.getTable();
+		}
+
+		if (table != null) {
+			return table.getName();
+		}
+
+		return null;
+	}
+
 	@Override
-	protected void afterClass(Description description, Object c) {
+	protected void afterClass(Description description, Object c)
+		throws IOException {
+
 		_recording = false;
 
-		_diffTables();
+		Set<PKObject> keySet = _insertedPKObjects.keySet();
+
+		Iterator<PKObject> iterator = keySet.iterator();
+
+		while (iterator.hasNext()) {
+			PKObject pkObject = iterator.next();
+
+			if (_deletedPKObjects.remove(pkObject) != null) {
+				iterator.remove();
+			}
+		}
+
+		_outputResults();
 
 		System.out.println(
-			"Number of deletedObjects = " + _deletedObjects.size());
+			"Number of deletedObjects = " + _deletedPKObjects.size());
 
 		System.out.println(
-			"Number of insertedObjects = " + _insertedObjects.size());
+			"Number of insertedObjects = " + _insertedPKObjects.size());
 
 		System.out.println(
 			"Check files insertedObjects and deletedObjects for " +
 			"more information");
-
-		_outputResults();
 	}
 
 	@Override
-	protected Object beforeClass(Description description) throws Throwable {
-		_dumpDatabaseMetadata();
-
-		_recording = true;
-
-		return super.beforeClass(description);
-	}
-
-	private static void _diffTables() {
-		for (String insertedObject : _insertedObjects.keySet()) {
-			if (_deletedObjects.remove(insertedObject) != null) {
-				_insertedObjects.remove(insertedObject);
-			}
-		}
-	}
-
-	private static void _dumpDatabaseMetadata() {
-		Connection connection = null;
-		ResultSet tableResultSet = null;
-
-		try {
-			connection = DataAccess.getUpgradeOptimizedConnection();
+	protected Object beforeClass(Description description) throws SQLException {
+		try (Connection connection =
+				DataAccess.getUpgradeOptimizedConnection()) {
 
 			DatabaseMetaData databaseMetaData = connection.getMetaData();
 
-			tableResultSet = databaseMetaData.getTables(null, null, null, null);
+			try (ResultSet tableResultSet = databaseMetaData.getTables(
+					null, null, null, null)) {
 
-			while (tableResultSet.next()) {
-				String tableName = tableResultSet.getString("TABLE_NAME");
+				while (tableResultSet.next()) {
+					String tableName = tableResultSet.getString("TABLE_NAME");
 
-				ResultSet primaryKeysResultSet =
-					databaseMetaData.getPrimaryKeys(null, null, tableName);
+					try (ResultSet primaryKeysResultSet =
+						databaseMetaData.getPrimaryKeys(
+							null, null, tableName)) {
 
-				List<String> primaryKeys = new ArrayList<>();
+						List<String> pkColumnNames = new ArrayList<>();
 
-				try {
-					while (primaryKeysResultSet.next()) {
-						primaryKeys.add(
-							primaryKeysResultSet.getString("COLUMN_NAME"));
+						while (primaryKeysResultSet.next()) {
+							pkColumnNames.add(
+								primaryKeysResultSet.getString("COLUMN_NAME"));
+						}
+
+						_pkColumnNamesMap.put(tableName, pkColumnNames);
 					}
 				}
-				finally {
-					DataAccess.cleanUp(primaryKeysResultSet);
-				}
-
-				_primaryKeyColumns.put(tableName, primaryKeys);
 			}
 		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-		finally {
-			DataAccess.cleanUp(connection, null, tableResultSet);
-		}
+
+		_recording = true;
+
+		return null;
 	}
 
-	private static void _outputResults() {
-		try {
-			UnsyncPrintWriter writer = new UnsyncPrintWriter(
-				new FileWriter("insertedObjects"));
+	protected static class PKObject {
 
-			for (String insertedObject : _insertedObjects.keySet()) {
-				writer.println(
-					"Inserted and failed to delete: " + insertedObject);
-
-				List<Object> info = _insertedObjects.get(insertedObject);
-
-				writer.println("Corresponding sql statement: " + info.get(0));
-
-				writer.print("Corresponding stack trace: ");
-
-				for (StackTraceElement ste : (StackTraceElement[])info.get(1)) {
-					writer.println(ste.toString());
-				}
-
-				writer.println();
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
 			}
 
-			writer.flush();
-			writer.close();
-
-			writer = new UnsyncPrintWriter(new FileWriter("deletedObjects"));
-
-			for (String deletedObject : _deletedObjects.keySet()) {
-				writer.println("Deleted pre-existing object: " + deletedObject);
-
-				List<Object> info = _deletedObjects.get(deletedObject);
-
-				writer.println("Corresponding sql statement: " + info.get(0));
-
-				writer.print("Corresponding stack trace: ");
-
-				for (StackTraceElement ste : (StackTraceElement[])info.get(1)) {
-					writer.println(ste.toString());
-				}
-
-				writer.println();
+			if (!(obj instanceof PKObject)) {
+				return false;
 			}
 
-			writer.flush();
-			writer.close();
+			PKObject pkObject = (PKObject)obj;
+
+			if (Validator.equals(tableName, pkObject.tableName) &&
+				Validator.equals(pkColumnValues, pkObject.pkColumnValues)) {
+
+				return true;
+			}
+
+			return false;
 		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
+
+		@Override
+		public int hashCode() {
+			int hash = HashUtil.hash(0, tableName);
+
+			return HashUtil.hash(hash, pkColumnValues);
 		}
+
+		@Override
+		public String toString() {
+			StringBundler sb = new StringBundler(pkColumnNames.size() * 4 + 3);
+
+			sb.append("{tableName=");
+			sb.append(tableName);
+			sb.append(", pkValues=[");
+
+			for (int i = 0; i < pkColumnNames.size(); i++) {
+				sb.append(pkColumnNames.get(i));
+				sb.append(StringPool.EQUAL);
+				sb.append(pkColumnValues.get(i));
+				sb.append(StringPool.COMMA);
+			}
+
+			sb.setIndex(sb.index() - 1);
+			sb.append("]}");
+
+			return sb.toString();
+		}
+
+		protected PKObject(String tableName, ResultSet resultSet)
+			throws SQLException {
+
+			this.tableName = tableName;
+
+			pkColumnNames = _pkColumnNamesMap.get(tableName);
+
+			pkColumnValues = new ArrayList<>(pkColumnNames.size());
+
+			for (String pkName : pkColumnNames) {
+				pkColumnValues.add(resultSet.getObject(pkName));
+			}
+		}
+
+		protected final List<String> pkColumnNames;
+		protected final List<Object> pkColumnValues;
+		protected final String tableName;
+
 	}
 
-	private static void _recordAfterExecution(
-		Connection connection, String tableName, String sql) {
+	protected static class SQLExecutionContext {
 
-		StringBundler sb = new StringBundler(4);
-		sb.append(_SELECT);
-		sb.append(StringPool.STAR);
-		sb.append(_FROM);
-		sb.append(tableName);
+		public void writeTo(UnsyncPrintWriter unsyncPrintWriter) {
+			unsyncPrintWriter.print("Corresponding SQL line: ");
 
-		try {
-			java.sql.Statement selectResultStatement =
-				connection.createStatement(
-					ResultSet.FETCH_FORWARD, ResultSet.CONCUR_READ_ONLY);
+			unsyncPrintWriter.println(sql);
 
-			ResultSet resultSet = selectResultStatement.executeQuery(
-				sb.toString());
+			unsyncPrintWriter.print("Corresponding stack trace: ");
 
-			List<String> primaryKeyColumns = _primaryKeyColumns.get(tableName);
-
-			try {
-				while (resultSet.next()) {
-					StringBundler databaseRow = new StringBundler(
-						4*primaryKeyColumns.size() + 1);
-					databaseRow.append(tableName);
-					databaseRow.append(StringPool.COMMA);
-
-					for (String primaryKeyColumn : primaryKeyColumns) {
-						databaseRow.append(primaryKeyColumn);
-						databaseRow.append(StringPool.EQUAL);
-						databaseRow.append(
-							resultSet.getObject(primaryKeyColumn));
-						databaseRow.append(StringPool.COMMA);
-					}
-
-					databaseRow.setIndex(databaseRow.index() - 1);
-
-					List<Object> context = new ArrayList<>();
-					context.add(sql);
-					context.add(Thread.currentThread().getStackTrace());
-
-					String databaseRowString = databaseRow.toString();
-
-					if (_tempObjects.remove(databaseRowString) == null) {
-						_insertedObjects.put(databaseRowString, context);
-					}
-				}
-			}
-			finally {
-				DataAccess.cleanUp(resultSet);
-			}
-
-			for (String databaseRow : _tempObjects.keySet()) {
-				_deletedObjects.put(databaseRow, _tempObjects.get(databaseRow));
-			}
+			exception.printStackTrace(unsyncPrintWriter);
 		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
+
+		protected SQLExecutionContext(String sql) {
+			this.sql = sql;
+
+			exception = new Exception();
 		}
+
+		protected final Exception exception;
+		protected final String sql;
+
 	}
 
-	private static void _recordBeforeExecution(
-		Connection connection, String tableName, String sql) {
+	private static void _outputResults() throws IOException {
+		try (Writer writer = new FileWriter("insertedObjects");
+			UnsyncPrintWriter unsyncPrintWriter =
+				new UnsyncPrintWriter(writer)) {
 
-		StringBundler sb = new StringBundler(4);
+			int printedCount = 1;
 
-		sb.append(_SELECT);
-		sb.append(StringPool.STAR);
-		sb.append(_FROM);
-		sb.append(tableName);
+			for (PKObject pkObject : _insertedPKObjects.keySet()) {
+				unsyncPrintWriter.println(
+					"Inserted and failed to delete # " + printedCount++ + ": " +
+						pkObject);
 
-		try {
-			java.sql.Statement selectResultStatement =
-				connection.createStatement(
-					ResultSet.FETCH_FORWARD, ResultSet.CONCUR_READ_ONLY);
+				SQLExecutionContext sqlExecutionContext =
+					_insertedPKObjects.get(pkObject);
 
-			ResultSet resultSet = selectResultStatement.executeQuery(
-				sb.toString());
+				sqlExecutionContext.writeTo(unsyncPrintWriter);
 
-			List<String> primaryKeyColumns = _primaryKeyColumns.get(tableName);
-
-			try {
-				while (resultSet.next()) {
-					StringBundler databaseRow = new StringBundler(
-						4*primaryKeyColumns.size() + 1);
-					databaseRow.append(tableName);
-					databaseRow.append(StringPool.COMMA);
-
-					for (String primaryKeyColumn : primaryKeyColumns) {
-						databaseRow.append(primaryKeyColumn);
-						databaseRow.append(StringPool.EQUAL);
-						databaseRow.append(
-							resultSet.getObject(primaryKeyColumn));
-						databaseRow.append(StringPool.COMMA);
-					}
-
-					databaseRow.setIndex(databaseRow.index() - 1);
-
-					List<Object> context = new ArrayList<>();
-					context.add(sql);
-					context.add(Thread.currentThread().getStackTrace());
-
-					_tempObjects.put(databaseRow.toString(), context);
-				}
-			}
-			finally {
-				DataAccess.cleanUp(resultSet);
+				unsyncPrintWriter.println();
 			}
 		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
+
+		try (Writer writer = new FileWriter("deletedObjects");
+			UnsyncPrintWriter unsyncPrintWriter =
+				new UnsyncPrintWriter(writer)) {
+
+			int printedCount = 1;
+
+			for (PKObject pkObject : _deletedPKObjects.keySet()) {
+				unsyncPrintWriter.println(
+					"Deleted pre-existing object # " + printedCount++ + ": " +
+						pkObject);
+
+				SQLExecutionContext sqlExecutionContext = _deletedPKObjects.get(
+					pkObject);
+
+				sqlExecutionContext.writeTo(unsyncPrintWriter);
+
+				unsyncPrintWriter.println();
+			}
 		}
 	}
 
 	private DatabaseCleanupTestRule() {
 	}
 
-	private static final String _FROM = " FROM ";
+	private static final String _SELECT = "SELECT * FROM ";
 
-	private static final String _SELECT = "SELECT ";
-
-	private static final ConcurrentMap<String, List<Object>> _deletedObjects =
-		new ConcurrentHashMap<String, List<Object>>();
-	private static final ConcurrentMap<String, List<Object>> _insertedObjects =
-		new ConcurrentHashMap<String, List<Object>>();
+	private static final ConcurrentMap<PKObject, SQLExecutionContext>
+		_deletedPKObjects = new ConcurrentHashMap<>();
+	private static final ConcurrentMap<PKObject, SQLExecutionContext>
+		_insertedPKObjects = new ConcurrentHashMap<>();
 	private static final JSqlParser _jSqlParser = new CCJSqlParserManager();
-	private static final ConcurrentMap<String, List<String>>
-		_primaryKeyColumns = new ConcurrentHashMap<String, List<String>>();
+	private static final ConcurrentMap<String, List<String>> _pkColumnNamesMap =
+		new ConcurrentHashMap<>();
 	private static volatile boolean _recording = false;
 	private static final ConcurrentMap<java.sql.Statement, String>
-		_statementSQLs = new ConcurrentHashMap<java.sql.Statement, String>();
-	private static final ConcurrentMap<String, List<Object>> _tempObjects =
-		new ConcurrentHashMap<String, List<Object>>();
+		_statementSQLs = new ConcurrentHashMap<>();
+	private static final ConcurrentMap<PKObject, SQLExecutionContext>
+		_tempPKObjects = new ConcurrentHashMap<>();
 
 }
