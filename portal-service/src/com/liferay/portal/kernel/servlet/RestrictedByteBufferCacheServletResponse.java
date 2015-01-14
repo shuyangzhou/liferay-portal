@@ -49,15 +49,7 @@ public class RestrictedByteBufferCacheServletResponse
 
 	@Override
 	public int getBufferSize() {
-		if (_restrictedByteArrayCacheOutputStream == null) {
-			return _cacheCapacity;
-		}
-
-		if (_restrictedByteArrayCacheOutputStream.isOverflowed()) {
-			return 0;
-		}
-
-		return _restrictedByteArrayCacheOutputStream.getCacheCapacity();
+		return _cacheCapacity;
 	}
 
 	public ByteBuffer getByteBuffer() {
@@ -130,13 +122,13 @@ public class RestrictedByteBufferCacheServletResponse
 
 	@Override
 	public void setBufferSize(int bufferSize) {
-		if (isCommitted()) {
-			throw new IllegalStateException("Set buffer size after commit");
-		}
 
 		// Restricted byte buffer cache response cannot accept buffer size
-		// because it has an fixed size internal buffer.
+		// because it has a fixed size internal buffer, but call on the
+		// underlying response with the current buffer size to check if the
+		// application server will throw an exception.
 
+		super.setBufferSize(super.getBufferSize());
 	}
 
 	@Override

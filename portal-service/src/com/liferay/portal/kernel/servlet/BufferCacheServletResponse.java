@@ -42,46 +42,9 @@ public class BufferCacheServletResponse extends MetaInfoCacheServletResponse {
 		super(response);
 	}
 
-	/**
-	 * This method is very expensive when used in char mode because it has to
-	 * encode every char to byte in order to calculate the final byte size.
-	 *
-	 * @return used buffer size in byte.
-	 */
 	@Override
 	public int getBufferSize() {
-		if (_byteBuffer != null) {
-			return _byteBuffer.limit();
-		}
-
-		if (_charBuffer != null) {
-			ByteBuffer byteBuffer = CharsetEncoderUtil.encode(
-				getCharacterEncoding(), _charBuffer.duplicate());
-
-			return byteBuffer.limit();
-		}
-
-		try {
-			_flushInternalBuffer();
-		}
-		catch (IOException ioe) {
-			throw new RuntimeException(ioe);
-		}
-
-		if (_unsyncByteArrayOutputStream != null) {
-			return _unsyncByteArrayOutputStream.size();
-		}
-
-		if (_unsyncStringWriter != null) {
-			String content = _unsyncStringWriter.toString();
-
-			ByteBuffer byteBuffer = CharsetEncoderUtil.encode(
-				getCharacterEncoding(), content);
-
-			return byteBuffer.limit();
-		}
-
-		return 0;
+		return Integer.MAX_VALUE;
 	}
 
 	/**
@@ -309,13 +272,13 @@ public class BufferCacheServletResponse extends MetaInfoCacheServletResponse {
 
 	@Override
 	public void setBufferSize(int bufferSize) {
-		if (isCommitted()) {
-			throw new IllegalStateException("Set buffer size after commit");
-		}
 
 		// Buffered response cannot accept buffer size because it has an
-		// internal buffer that grows as needed
+		// internal buffer that grows as needed, but call on the underlying
+		// response with the current buffer size to check if the application
+		// server will throw an exception.
 
+		super.setBufferSize(super.getBufferSize());
 	}
 
 	public void setByteBuffer(ByteBuffer byteBuffer) {
