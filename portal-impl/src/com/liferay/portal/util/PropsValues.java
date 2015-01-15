@@ -346,9 +346,23 @@ public class PropsValues {
 
 	public static final String CLUSTER_LINK_AUTODETECT_ADDRESS = PropsUtil.get(PropsKeys.CLUSTER_LINK_AUTODETECT_ADDRESS);
 
+	public static final String CLUSTER_CHANNEL_AUTODETECT_BIND_ADDRESS = PropsUtil.get(PropsKeys.CLUSTER_CHANNEL_AUTODETECT_BIND_ADDRESS);
+	
+	public static final String CLUSTER_CHANNEL_NAME_CONTROL = PropsUtil.get(PropsKeys.CLUSTER_CHANNEL_NAME_CONTROL);
+
+	public static final String CLUSTER_CHANNEL_NAME_PREFIX = PropsUtil.get(PropsKeys.CLUSTER_CHANNEL_NAME_PREFIX);
+
+	public static final String CLUSTER_CHANNEL_PROPERTIES_CONTROL = PropsUtil.get(PropsKeys.CLUSTER_CHANNEL_PROPERTIES_CONTROL);
+
 	public static final String[] CLUSTER_LINK_CHANNEL_SYSTEM_PROPERTIES = PropsUtil.getArray(PropsKeys.CLUSTER_LINK_CHANNEL_SYSTEM_PROPERTIES);
 
 	public static final boolean CLUSTER_LINK_ENABLED = GetterUtil.getBoolean(PropsUtil.get(PropsKeys.CLUSTER_LINK_ENABLED));
+
+	public static final boolean CLUSTER_MANAGER_DEBUG_ENABLED = GetterUtil.getBoolean(PropsUtil.get(PropsKeys.CLUSTER_MANAGER_DEBUG_ENABLED));
+	
+	public static final boolean CLUSTER_MANAGER_ENABLED = GetterUtil.getBoolean(PropsUtil.get(PropsKeys.CLUSTER_MANAGER_ENABLED));
+
+	public static final String[] CLUSTER_MANAGER_SYSTEM_PROPERTIES = PropsUtil.getArray(PropsKeys.CLUSTER_MANAGER_SYSTEM_PROPERTIES);
 
 	public static final long CLUSTER_LINK_NODE_BOOTUP_RESPONSE_TIMEOUT = GetterUtil.getLong(PropsUtil.get(PropsKeys.CLUSTER_LINK_NODE_BOOTUP_RESPONSE_TIMEOUT));
 
