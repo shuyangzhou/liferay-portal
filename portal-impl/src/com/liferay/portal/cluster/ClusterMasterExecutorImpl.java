@@ -14,16 +14,17 @@
 
 package com.liferay.portal.cluster;
 
-import com.liferay.portal.kernel.cluster.Address;
-import com.liferay.portal.kernel.cluster.AddressSerializerUtil;
+import com.liferay.portal.kernel.cluster.ChannelMessage;
+import com.liferay.portal.kernel.cluster.ChannelMessageType;
 import com.liferay.portal.kernel.cluster.ClusterEvent;
 import com.liferay.portal.kernel.cluster.ClusterEventListener;
-import com.liferay.portal.kernel.cluster.ClusterExecutor;
+import com.liferay.portal.kernel.cluster.ClusterManager;
 import com.liferay.portal.kernel.cluster.ClusterMasterExecutor;
 import com.liferay.portal.kernel.cluster.ClusterMasterTokenTransitionListener;
+import com.liferay.portal.kernel.cluster.ClusterMessage;
+import com.liferay.portal.kernel.cluster.ClusterNode;
 import com.liferay.portal.kernel.cluster.ClusterNodeResponse;
 import com.liferay.portal.kernel.cluster.ClusterNodeResponses;
-import com.liferay.portal.kernel.cluster.ClusterRequest;
 import com.liferay.portal.kernel.concurrent.DefaultNoticeableFuture;
 import com.liferay.portal.kernel.concurrent.NoticeableFuture;
 import com.liferay.portal.kernel.concurrent.NoticeableFutureConverter;
@@ -49,10 +50,11 @@ public class ClusterMasterExecutorImpl implements ClusterMasterExecutor {
 		}
 
 		try {
-			_clusterExecutor.removeClusterEventListener(_clusterEventListener);
+			_clusterManager.unregisterClusterEventListener(
+				_clusterEventListener);
 
 			LockLocalServiceUtil.unlock(
-				_LOCK_CLASS_NAME, _LOCK_CLASS_NAME, _localClusterNodeAddress);
+				_LOCK_CLASS_NAME, _LOCK_CLASS_NAME, _localClusterNodeId);
 		}
 		catch (SystemException se) {
 			if (_log.isWarnEnabled()) {
@@ -85,17 +87,17 @@ public class ClusterMasterExecutorImpl implements ClusterMasterExecutor {
 			}
 		}
 
-		String masterAddressString = getMasterAddressString();
+		final String masterClusterNodeId = getMasterClusterNodeId();
 
-		final Address address = AddressSerializerUtil.deserialize(
-			masterAddressString);
+		ChannelMessage channelMessage = ChannelMessage.createChannelMessage(
+			ChannelMessageType.EXECUTE, methodHandler, false);
 
-		ClusterRequest clusterRequest = ClusterRequest.createUnicastRequest(
-			methodHandler, address);
+		ClusterMessage clusterMessage = ClusterMessage.createUnicastMessage(
+			channelMessage, masterClusterNodeId);
 
 		try {
 			return new NoticeableFutureConverter<T, ClusterNodeResponses>(
-				_clusterExecutor.execute(clusterRequest)) {
+				_clusterManager.send(clusterMessage)) {
 
 					@Override
 					protected T convert(
@@ -103,7 +105,8 @@ public class ClusterMasterExecutorImpl implements ClusterMasterExecutor {
 						throws Exception {
 
 						ClusterNodeResponse clusterNodeResponse =
-							clusterNodeResponses.getClusterResponse(address);
+							clusterNodeResponses.getClusterResponse(
+								masterClusterNodeId);
 
 						return (T)clusterNodeResponse.getResult();
 					}
@@ -111,30 +114,32 @@ public class ClusterMasterExecutorImpl implements ClusterMasterExecutor {
 				};
 		}
 		catch (Exception e) {
+			ClusterNode clusterNode = _clusterManager.getClusterNode(
+				masterClusterNodeId);
+
 			throw new SystemException(
-				"Unable to execute on master " + address.getDescription(), e);
+				"Unable to execute on master " + clusterNode, e);
 		}
 	}
 
 	@Override
 	public void initialize() {
-		if (!_clusterExecutor.isEnabled()) {
+		if (!_clusterManager.isEnabled()) {
 			return;
 		}
 
-		_localClusterNodeAddress = AddressSerializerUtil.serialize(
-			_clusterExecutor.getLocalClusterNodeAddress());
-
 		_clusterEventListener = new ClusterMasterTokenClusterEventListener();
 
-		_clusterExecutor.addClusterEventListener(_clusterEventListener);
+		_clusterManager.registerClusterEventListener(_clusterEventListener);
 
-		String masterAddressString = getMasterAddressString();
+		_localClusterNodeId = _clusterManager.getLocalClusterNodeId();
+
+		String masterClusterNodeId = getMasterClusterNodeId();
 
 		_enabled = true;
 
 		notifyMasterTokenTransitionListeners(
-			_localClusterNodeAddress.equals(masterAddressString));
+			masterClusterNodeId.equals(_localClusterNodeId));
 	}
 
 	@Override
@@ -160,8 +165,8 @@ public class ClusterMasterExecutorImpl implements ClusterMasterExecutor {
 			clusterMasterTokenTransitionListener);
 	}
 
-	public void setClusterExecutor(ClusterExecutor clusterExecutor) {
-		_clusterExecutor = clusterExecutor;
+	public void setClusterManager(ClusterManager clusterManager) {
+		_clusterManager = clusterManager;
 	}
 
 	public void setClusterMasterTokenTransitionListeners(
@@ -181,7 +186,7 @@ public class ClusterMasterExecutorImpl implements ClusterMasterExecutor {
 			clusterMasterTokenTransitionListener);
 	}
 
-	protected String getMasterAddressString() {
+	protected String getMasterClusterNodeId() {
 		String owner = null;
 
 		while (true) {
@@ -191,19 +196,17 @@ public class ClusterMasterExecutorImpl implements ClusterMasterExecutor {
 				if (owner == null) {
 					lock = LockLocalServiceUtil.lock(
 						_LOCK_CLASS_NAME, _LOCK_CLASS_NAME,
-						_localClusterNodeAddress);
+						_localClusterNodeId);
 				}
 				else {
 					lock = LockLocalServiceUtil.lock(
 						_LOCK_CLASS_NAME, _LOCK_CLASS_NAME, owner,
-						_localClusterNodeAddress);
+						_localClusterNodeId);
 				}
 
 				owner = lock.getOwner();
 
-				Address address = AddressSerializerUtil.deserialize(owner);
-
-				if (_clusterExecutor.isClusterNodeAlive(address)) {
+				if (_clusterManager.getClusterNode(owner) != null) {
 					break;
 				}
 			}
@@ -222,7 +225,7 @@ public class ClusterMasterExecutorImpl implements ClusterMasterExecutor {
 			}
 		}
 
-		boolean master = _localClusterNodeAddress.equals(owner);
+		boolean master = _localClusterNodeId.equals(owner);
 
 		if (master == _master) {
 			return owner;
@@ -262,18 +265,18 @@ public class ClusterMasterExecutorImpl implements ClusterMasterExecutor {
 	private static volatile boolean _master;
 
 	private ClusterEventListener _clusterEventListener;
-	private ClusterExecutor _clusterExecutor;
+	private ClusterManager _clusterManager;
 	private final Set<ClusterMasterTokenTransitionListener>
 		_clusterMasterTokenTransitionListeners = new HashSet<>();
 	private volatile boolean _enabled;
-	private volatile String _localClusterNodeAddress;
+	private volatile String _localClusterNodeId;
 
 	private class ClusterMasterTokenClusterEventListener
 		implements ClusterEventListener {
 
 		@Override
 		public void processClusterEvent(ClusterEvent clusterEvent) {
-			getMasterAddressString();
+			getMasterClusterNodeId();
 		}
 
 	}

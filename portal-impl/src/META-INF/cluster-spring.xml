@@ -43,7 +43,7 @@
 		<property name="clusterLink" ref="com.liferay.portal.kernel.cluster.ClusterLink" />
 	</bean>
 	<bean id="com.liferay.portal.kernel.cluster.ClusterMasterExecutor" class="com.liferay.portal.cluster.ClusterMasterExecutorImpl">
-		<property name="clusterExecutor" ref="com.liferay.portal.kernel.cluster.ClusterExecutor" />
+		<property name="clusterManager" ref="com.liferay.portal.kernel.cluster.ClusterManager" />
 		<property name="clusterMasterTokenTransitionListeners">
 			<util:set>
 				<bean class="com.liferay.portal.backgroundtask.BackgroundTaskClusterMasterTokenTransitionListener" />
