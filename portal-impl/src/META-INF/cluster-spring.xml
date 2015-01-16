@@ -32,6 +32,12 @@
 	<bean id="com.liferay.portal.kernel.cluster.ClusterExecutorUtil" class="com.liferay.portal.kernel.cluster.ClusterExecutorUtil">
 		<property name="clusterExecutor" ref="com.liferay.portal.kernel.cluster.ClusterExecutor" />
 	</bean>
+	<bean id="com.liferay.portal.kernel.cluster.ClusterManager" class="com.liferay.portal.cluster.ClusterManagerImpl">
+		<property name="shortcutLocalMethod" value="true" />
+	</bean>
+	<bean id="com.liferay.portal.kernel.cluster.ClusterManagerUtil" class="com.liferay.portal.kernel.cluster.ClusterManagerUtil">
+		<property name="clusterManager" ref="com.liferay.portal.kernel.cluster.ClusterManager" />
+	</bean>
 	<bean id="com.liferay.portal.kernel.cluster.ClusterLink" class="com.liferay.portal.cluster.ClusterLinkImpl" />
 	<bean id="com.liferay.portal.kernel.cluster.ClusterLinkUtil" class="com.liferay.portal.kernel.cluster.ClusterLinkUtil">
 		<property name="clusterLink" ref="com.liferay.portal.kernel.cluster.ClusterLink" />
