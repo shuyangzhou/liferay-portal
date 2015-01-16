@@ -10,7 +10,7 @@
 >
 	<bean id="chainableMethodAdviceInjector.clusterableAdvice" class="com.liferay.portal.spring.aop.ChainableMethodAdviceInjector">
 		<property name="injectCondition">
-			<util:constant static-field="com.liferay.portal.util.PropsValues.CLUSTER_LINK_ENABLED" />
+			<util:constant static-field="com.liferay.portal.util.PropsValues.CLUSTER_MANAGER_ENABLED" />
 		</property>
 		<property name="newChainableMethodAdvice">
 			<bean class="com.liferay.portal.cluster.ClusterableAdvice" />
@@ -32,12 +32,18 @@
 	<bean id="com.liferay.portal.kernel.cluster.ClusterExecutorUtil" class="com.liferay.portal.kernel.cluster.ClusterExecutorUtil">
 		<property name="clusterExecutor" ref="com.liferay.portal.kernel.cluster.ClusterExecutor" />
 	</bean>
+	<bean id="com.liferay.portal.kernel.cluster.ClusterManager" class="com.liferay.portal.cluster.ClusterManagerImpl">
+		<property name="shortcutLocalMethod" value="true" />
+	</bean>
+	<bean id="com.liferay.portal.kernel.cluster.ClusterManagerUtil" class="com.liferay.portal.kernel.cluster.ClusterManagerUtil">
+		<property name="clusterManager" ref="com.liferay.portal.kernel.cluster.ClusterManager" />
+	</bean>
 	<bean id="com.liferay.portal.kernel.cluster.ClusterLink" class="com.liferay.portal.cluster.ClusterLinkImpl" />
 	<bean id="com.liferay.portal.kernel.cluster.ClusterLinkUtil" class="com.liferay.portal.kernel.cluster.ClusterLinkUtil">
 		<property name="clusterLink" ref="com.liferay.portal.kernel.cluster.ClusterLink" />
 	</bean>
 	<bean id="com.liferay.portal.kernel.cluster.ClusterMasterExecutor" class="com.liferay.portal.cluster.ClusterMasterExecutorImpl">
-		<property name="clusterExecutor" ref="com.liferay.portal.kernel.cluster.ClusterExecutor" />
+		<property name="clusterManager" ref="com.liferay.portal.kernel.cluster.ClusterManager" />
 		<property name="clusterMasterTokenTransitionListeners">
 			<util:set>
 				<bean class="com.liferay.portal.backgroundtask.BackgroundTaskClusterMasterTokenTransitionListener" />

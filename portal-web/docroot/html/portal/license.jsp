@@ -61,7 +61,7 @@ String[] releaseInfoArray = StringUtil.split(ReleaseInfo.getReleaseInfo(), "(");
 String versionInfo = releaseInfoArray[0];
 String buildInfo = StringUtil.replace(releaseInfoArray[1], ")", "");
 
-List<ClusterNode> clusterNodes = ClusterExecutorUtil.getClusterNodes();
+List<ClusterNode> clusterNodes = new ArrayList(ClusterManagerUtil.getClusterNodes());
 
 Collections.sort(clusterNodes);
 

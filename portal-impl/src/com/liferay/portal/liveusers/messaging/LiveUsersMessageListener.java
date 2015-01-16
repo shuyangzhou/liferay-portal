@@ -14,10 +14,12 @@
 
 package com.liferay.portal.liveusers.messaging;
 
-import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
+import com.liferay.portal.kernel.cluster.ChannelMessage;
+import com.liferay.portal.kernel.cluster.ChannelMessageType;
+import com.liferay.portal.kernel.cluster.ClusterManagerUtil;
+import com.liferay.portal.kernel.cluster.ClusterMessage;
 import com.liferay.portal.kernel.cluster.ClusterNodeResponse;
 import com.liferay.portal.kernel.cluster.ClusterNodeResponses;
-import com.liferay.portal.kernel.cluster.ClusterRequest;
 import com.liferay.portal.kernel.cluster.FutureClusterResponses;
 import com.liferay.portal.kernel.concurrent.BaseFutureListener;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -45,11 +47,14 @@ public class LiveUsersMessageListener extends BaseMessageListener {
 
 		String clusterNodeId = jsonObject.getString("clusterNodeId");
 
-		ClusterRequest clusterRequest = ClusterRequest.createUnicastRequest(
-			_getLocalClusterUsersMethodHandler, clusterNodeId);
+		ChannelMessage channelMessage = ChannelMessage.createChannelMessage(
+			ChannelMessageType.EXECUTE, _getLocalClusterUsersMethodHandler);
 
-		FutureClusterResponses futureClusterResponses =
-			ClusterExecutorUtil.execute(clusterRequest);
+		ClusterMessage clusterMessage = ClusterMessage.createUnicastMessage(
+			channelMessage, clusterNodeId);
+
+		FutureClusterResponses futureClusterResponses = ClusterManagerUtil.send(
+			clusterMessage);
 
 		futureClusterResponses.addFutureListener(
 			new LiveUsersClusterResponseFutureListener(clusterNodeId));

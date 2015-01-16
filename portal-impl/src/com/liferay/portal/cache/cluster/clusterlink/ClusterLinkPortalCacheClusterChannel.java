@@ -16,7 +16,10 @@ package com.liferay.portal.cache.cluster.clusterlink;
 
 import com.liferay.portal.kernel.cache.cluster.BasePortalCacheClusterChannel;
 import com.liferay.portal.kernel.cache.cluster.PortalCacheClusterEvent;
-import com.liferay.portal.kernel.cluster.ClusterLinkUtil;
+import com.liferay.portal.kernel.cluster.ChannelMessage;
+import com.liferay.portal.kernel.cluster.ChannelMessageType;
+import com.liferay.portal.kernel.cluster.ClusterManagerUtil;
+import com.liferay.portal.kernel.cluster.ClusterMessage;
 import com.liferay.portal.kernel.cluster.Priority;
 import com.liferay.portal.kernel.io.Serializer;
 import com.liferay.portal.kernel.messaging.Message;
@@ -50,7 +53,13 @@ public class ClusterLinkPortalCacheClusterChannel
 
 		message.setPayload(byteBuffer.array());
 
-		ClusterLinkUtil.sendMulticastMessage(message, _priority);
+		ChannelMessage channelMessage = ChannelMessage.createChannelMessage(
+			ChannelMessageType.FORWARD, message);
+
+		ClusterMessage clusterMessage = ClusterMessage.createMulticastMessage(
+			channelMessage, _priority);
+
+		ClusterManagerUtil.sendAndForget(clusterMessage);
 	}
 
 	private final String _destinationName;

@@ -139,8 +139,7 @@ public class ClusterSchedulerEngineTest {
 
 	@AdviseWith(
 		adviceClasses = {
-			EnableClusterLinkEnabledAdvice.class,
-			EnableSchedulerEnabledAdvice.class
+			EnableClusterAdvice.class, EnableSchedulerAdvice.class
 		}
 	)
 	@Test
@@ -154,8 +153,7 @@ public class ClusterSchedulerEngineTest {
 
 	@AdviseWith(
 		adviceClasses = {
-			EnableClusterLinkEnabledAdvice.class,
-			DisableSchedulerEnabledAdvice.class
+			EnableClusterAdvice.class, DisableSchedulerAdvice.class
 		}
 	)
 	@Test
@@ -169,8 +167,7 @@ public class ClusterSchedulerEngineTest {
 
 	@AdviseWith(
 		adviceClasses = {
-			DisableClusterLinkEnabledAdvice.class,
-			EnableSchedulerEnabledAdvice.class
+			DisableClusterAdvice.class, EnableSchedulerAdvice.class
 		}
 	)
 	@Test
@@ -184,8 +181,7 @@ public class ClusterSchedulerEngineTest {
 
 	@AdviseWith(
 		adviceClasses = {
-			DisableClusterLinkEnabledAdvice.class,
-			DisableSchedulerEnabledAdvice.class
+			DisableClusterAdvice.class, DisableSchedulerAdvice.class
 		}
 	)
 	@Test
@@ -1653,12 +1649,13 @@ public class ClusterSchedulerEngineTest {
 	}
 
 	@Aspect
-	public static class DisableClusterLinkEnabledAdvice {
+	public static class DisableClusterAdvice {
 
 		@Around(
-			"set(* com.liferay.portal.util.PropsValues.CLUSTER_LINK_ENABLED)")
-		public Object clusterLinkEnabled(
-				ProceedingJoinPoint proceedingJoinPoint)
+			"set(* com.liferay.portal.util.PropsValues." +
+				"CLUSTER_MANAGER_ENABLED)"
+		)
+		public Object disableCluster(ProceedingJoinPoint proceedingJoinPoint)
 			throws Throwable {
 
 			return proceedingJoinPoint.proceed(new Object[] {Boolean.FALSE});
@@ -1667,11 +1664,11 @@ public class ClusterSchedulerEngineTest {
 	}
 
 	@Aspect
-	public static class DisableSchedulerEnabledAdvice {
+	public static class DisableSchedulerAdvice {
 
 		@Around(
 			"set(* com.liferay.portal.util.PropsValues.SCHEDULER_ENABLED)")
-		public Object schedulerEnabled(ProceedingJoinPoint proceedingJoinPoint)
+		public Object diableScheduler(ProceedingJoinPoint proceedingJoinPoint)
 			throws Throwable {
 
 			return proceedingJoinPoint.proceed(new Object[] {Boolean.FALSE});
@@ -1680,12 +1677,13 @@ public class ClusterSchedulerEngineTest {
 	}
 
 	@Aspect
-	public static class EnableClusterLinkEnabledAdvice {
+	public static class EnableClusterAdvice {
 
 		@Around(
-			"set(* com.liferay.portal.util.PropsValues.CLUSTER_LINK_ENABLED)")
-		public Object clusterLinkEnabled(
-				ProceedingJoinPoint proceedingJoinPoint)
+			"set(* com.liferay.portal.util.PropsValues." +
+				"CLUSTER_MANAGER_ENABLED)"
+		)
+		public Object enableCluster(ProceedingJoinPoint proceedingJoinPoint)
 			throws Throwable {
 
 			return proceedingJoinPoint.proceed(new Object[] {Boolean.TRUE});
@@ -1694,11 +1692,11 @@ public class ClusterSchedulerEngineTest {
 	}
 
 	@Aspect
-	public static class EnableSchedulerEnabledAdvice {
+	public static class EnableSchedulerAdvice {
 
 		@Around(
 			"set(* com.liferay.portal.util.PropsValues.SCHEDULER_ENABLED)")
-		public Object schedulerEnabled(ProceedingJoinPoint proceedingJoinPoint)
+		public Object enableScheduler(ProceedingJoinPoint proceedingJoinPoint)
 			throws Throwable {
 
 			return proceedingJoinPoint.proceed(new Object[] {Boolean.TRUE});

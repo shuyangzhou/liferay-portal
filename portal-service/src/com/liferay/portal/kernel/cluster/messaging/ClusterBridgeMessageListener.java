@@ -14,22 +14,24 @@
 
 package com.liferay.portal.kernel.cluster.messaging;
 
-import com.liferay.portal.kernel.cluster.Address;
-import com.liferay.portal.kernel.cluster.ClusterLinkUtil;
+import com.liferay.portal.kernel.cluster.ChannelMessage;
+import com.liferay.portal.kernel.cluster.ChannelMessageType;
+import com.liferay.portal.kernel.cluster.ClusterManager;
+import com.liferay.portal.kernel.cluster.ClusterManagerUtil;
+import com.liferay.portal.kernel.cluster.ClusterMessage;
 import com.liferay.portal.kernel.cluster.Priority;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
+import com.liferay.portal.kernel.util.ArrayUtil;
+
+import java.util.Collection;
 
 /**
  * @author Shuyang Zhou
  */
 public class ClusterBridgeMessageListener extends BaseMessageListener {
-
-	public void setActive(boolean active) {
-		_active = active;
-	}
 
 	public void setPriority(Priority priority) {
 		_priority = priority;
@@ -37,38 +39,55 @@ public class ClusterBridgeMessageListener extends BaseMessageListener {
 
 	@Override
 	protected void doReceive(Message message) throws Exception {
-		if (!_active) {
+		if (message.getBoolean(ClusterManager.CLUSTER_FORWARD_MESSAGE)) {
 			return;
 		}
 
-		if (ClusterLinkUtil.isForwardMessage(message)) {
-			return;
-		}
+		ChannelMessage channelMessage = ChannelMessage.createChannelMessage(
+			ChannelMessageType.FORWARD, message, true);
 
-		Address address = ClusterLinkUtil.getAddress(message);
+		Object targetClusterNodeIds = message.get(
+			ClusterManager.TARGET_CLUSTER_NODE_IDS);
 
-		if (address == null) {
+		ClusterMessage clusterMessage = null;
+
+		if (targetClusterNodeIds == null) {
 			if (_log.isInfoEnabled()) {
 				_log.info("Bridging cluster link multicast message " + message);
 			}
 
-			ClusterLinkUtil.sendMulticastMessage(message, _priority);
+			clusterMessage = ClusterMessage.createMulticastMessage(
+				channelMessage, _priority);
 		}
 		else {
+			if (!(targetClusterNodeIds instanceof Collection)) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						"Unable to parse target cluster node Ids " +
+							targetClusterNodeIds);
+				}
+
+				return;
+			}
+
 			if (_log.isInfoEnabled()) {
 				_log.info(
 					"Bridging cluster link unicast message " + message +
-						" to " + address);
+						" to " + targetClusterNodeIds);
 			}
 
-			ClusterLinkUtil.sendUnicastMessage(address, message, _priority);
+			clusterMessage = ClusterMessage.createUnicastMessage(
+				channelMessage, _priority,
+				ArrayUtil.toStringArray(
+					(Collection<String>)targetClusterNodeIds));
 		}
+
+		ClusterManagerUtil.sendAndForget(clusterMessage);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ClusterBridgeMessageListener.class);
 
-	private boolean _active = true;
 	private Priority _priority;
 
 }

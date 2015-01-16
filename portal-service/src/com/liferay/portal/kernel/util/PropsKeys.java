@@ -419,6 +419,16 @@ public interface PropsKeys {
 
 	public static final String CDN_HOST_HTTPS = "cdn.host.https";
 
+	public static final String CLUSTER_CHANNEL_AUTODETECT_BIND_ADDRESS = "cluster.channel.autodetect.bind.address";
+
+	public static final String CLUSTER_CHANNEL_NAME_CONTROL = "cluster.channel.name.control";
+
+	public static final String CLUSTER_CHANNEL_NAME_PREFIX = "cluster.channel.name.prefix";
+
+	public static final String CLUSTER_CHANNEL_PROPERTIES_CONTROL = "cluster.channel.properties.control";
+
+	public static final String CLUSTER_CHANNEL_PROPERTIES_TRANSPORT = "cluster.channel.properties.transport";
+
 	public static final String CLUSTER_EXECUTOR_DEBUG_ENABLED = "cluster.executor.debug.enabled";
 
 	public static final String CLUSTER_LINK_AUTODETECT_ADDRESS = "cluster.link.autodetect.address";
@@ -432,6 +442,12 @@ public interface PropsKeys {
 	public static final String CLUSTER_LINK_ENABLED = "cluster.link.enabled";
 
 	public static final String CLUSTER_LINK_NODE_BOOTUP_RESPONSE_TIMEOUT = "cluster.link.node.bootup.response.timeout";
+
+	public static final String CLUSTER_MANAGER_DEBUG_ENABLED = "cluster.manager.debug.enabled";
+
+	public static final String CLUSTER_MANAGER_ENABLED = "cluster.manager.enabled";
+
+	public static final String CLUSTER_MANAGER_SYSTEM_PROPERTIES = "cluster.manager.system.properties";
 
 	public static final String CLUSTERABLE_ADVICE_CALL_MASTER_TIMEOUT = "clusterable.advice.call.master.timeout";
 

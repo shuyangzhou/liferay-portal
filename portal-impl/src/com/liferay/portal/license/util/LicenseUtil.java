@@ -14,11 +14,13 @@
 
 package com.liferay.portal.license.util;
 
-import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
+import com.liferay.portal.kernel.cluster.ChannelMessage;
+import com.liferay.portal.kernel.cluster.ChannelMessageType;
+import com.liferay.portal.kernel.cluster.ClusterManagerUtil;
+import com.liferay.portal.kernel.cluster.ClusterMessage;
 import com.liferay.portal.kernel.cluster.ClusterNode;
 import com.liferay.portal.kernel.cluster.ClusterNodeResponse;
 import com.liferay.portal.kernel.cluster.ClusterNodeResponses;
-import com.liferay.portal.kernel.cluster.ClusterRequest;
 import com.liferay.portal.kernel.cluster.FutureClusterResponses;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -103,39 +105,28 @@ public class LicenseUtil {
 	public static Map<String, String> getClusterServerInfo(String clusterNodeId)
 		throws Exception {
 
-		ClusterNode localClusterNode =
-			ClusterExecutorUtil.getLocalClusterNode();
-
-		String localClusterNodeId = localClusterNode.getClusterNodeId();
+		String localClusterNodeId = ClusterManagerUtil.getLocalClusterNodeId();
 
 		if (clusterNodeId.equals(localClusterNodeId)) {
 			return getServerInfo();
 		}
 
-		List<ClusterNode> clusterNodes = ClusterExecutorUtil.getClusterNodes();
-
-		ClusterNode clusterNode = null;
-
-		for (ClusterNode curClusterNode : clusterNodes) {
-			String curClusterNodeId = curClusterNode.getClusterNodeId();
-
-			if (curClusterNodeId.equals(clusterNodeId)) {
-				clusterNode = curClusterNode;
-
-				break;
-			}
-		}
+		ClusterNode clusterNode = ClusterManagerUtil.getClusterNode(
+			clusterNodeId);
 
 		if (clusterNode == null) {
 			return null;
 		}
 
 		try {
-			ClusterRequest clusterRequest = ClusterRequest.createUnicastRequest(
-				_getServerInfoMethodHandler, clusterNodeId);
+			ChannelMessage channelMessage = ChannelMessage.createChannelMessage(
+				ChannelMessageType.EXECUTE, _getServerInfoMethodHandler, true);
+
+			ClusterMessage clusterMessage = ClusterMessage.createUnicastMessage(
+				channelMessage, clusterNodeId);
 
 			FutureClusterResponses futureClusterResponses =
-				ClusterExecutorUtil.execute(clusterRequest);
+				ClusterManagerUtil.send(clusterMessage);
 
 			ClusterNodeResponses clusterNodeResponses =
 				futureClusterResponses.get(20000, TimeUnit.MILLISECONDS);
@@ -273,7 +264,7 @@ public class LicenseUtil {
 			request, "productEntryName");
 		int maxServers = ParamUtil.getInteger(request, "maxServers");
 
-		List<ClusterNode> clusterNodes = ClusterExecutorUtil.getClusterNodes();
+		Set<ClusterNode> clusterNodes = ClusterManagerUtil.getClusterNodes();
 
 		if ((clusterNodes.size() <= 1) || Validator.isNull(productEntryName) ||
 			Validator.isNull(orderUuid)) {
@@ -618,11 +609,14 @@ public class LicenseUtil {
 		MethodHandler methodHandler = new MethodHandler(
 			_registerOrderMethodKey, orderUuid, productEntryName, maxServers);
 
-		ClusterRequest clusterRequest = ClusterRequest.createUnicastRequest(
-			methodHandler, clusterNode.getClusterNodeId());
+		ChannelMessage channelMessage = ChannelMessage.createChannelMessage(
+			ChannelMessageType.EXECUTE, _registerOrderMethodKey, true);
 
-		FutureClusterResponses futureClusterResponses =
-			ClusterExecutorUtil.execute(clusterRequest);
+		ClusterMessage clusterMessage = ClusterMessage.createUnicastMessage(
+			channelMessage, clusterNode.getClusterNodeId());
+
+		FutureClusterResponses futureClusterResponses = ClusterManagerUtil.send(
+			clusterMessage);
 
 		ClusterNodeResponses clusterNodeResponses = futureClusterResponses.get(
 			20000, TimeUnit.MILLISECONDS);

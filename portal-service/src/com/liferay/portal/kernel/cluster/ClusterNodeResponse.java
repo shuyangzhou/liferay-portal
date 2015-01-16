@@ -94,37 +94,18 @@ public class ClusterNodeResponse implements Serializable {
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(9);
+		StringBundler sb = new StringBundler(13);
 
 		sb.append("{clusterMessageType=");
 		sb.append(_clusterMessageType);
-
-		boolean clusterMessageTypeNotifyOrUpdate = false;
-
-		if (_clusterMessageType.equals(ClusterMessageType.NOTIFY) ||
-			_clusterMessageType.equals(ClusterMessageType.UPDATE)) {
-
-			clusterMessageTypeNotifyOrUpdate = true;
-		}
-
-		if (clusterMessageTypeNotifyOrUpdate) {
-			sb.append(", clusterNode=");
-			sb.append(_clusterNode);
-		}
-
-		if (!clusterMessageTypeNotifyOrUpdate && hasException()) {
-			sb.append(", exception=");
-			sb.append(_exception);
-		}
-
+		sb.append(", clusterNode=");
+		sb.append(_clusterNode);
+		sb.append(", exception=");
+		sb.append(_exception);
 		sb.append(", multicast=");
 		sb.append(_multicast);
-
-		if (!clusterMessageTypeNotifyOrUpdate && !hasException()) {
-			sb.append(", result=");
-			sb.append(_result);
-		}
-
+		sb.append(", result=");
+		sb.append(_result);
 		sb.append(", uuid=");
 		sb.append(_uuid);
 		sb.append("}");

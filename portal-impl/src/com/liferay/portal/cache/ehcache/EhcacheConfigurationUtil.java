@@ -92,7 +92,7 @@ public class EhcacheConfigurationUtil {
 		}
 
 		if (!clusterAware ||
-			(PropsValues.CLUSTER_LINK_ENABLED &&
+			(PropsValues.CLUSTER_MANAGER_ENABLED &&
 			 !PropsValues.EHCACHE_CLUSTER_LINK_REPLICATION_ENABLED)) {
 
 			return configuration;

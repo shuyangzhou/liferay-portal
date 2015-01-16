@@ -14,8 +14,10 @@
 
 package com.liferay.portal.scheduler.job;
 
-import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
-import com.liferay.portal.kernel.cluster.ClusterRequest;
+import com.liferay.portal.kernel.cluster.ChannelMessage;
+import com.liferay.portal.kernel.cluster.ChannelMessageType;
+import com.liferay.portal.kernel.cluster.ClusterManagerUtil;
+import com.liferay.portal.kernel.cluster.ClusterMessage;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -91,7 +93,7 @@ public class MessageSenderJob implements Job {
 		if (jobExecutionContext.getNextFireTime() == null) {
 			message.put(SchedulerEngine.DISABLE, true);
 
-			if (PropsValues.CLUSTER_LINK_ENABLED &&
+			if (PropsValues.CLUSTER_MANAGER_ENABLED &&
 				(storageType == StorageType.MEMORY_CLUSTERED)) {
 
 				notifyClusterMember(jobKey, storageType);
@@ -119,10 +121,13 @@ public class MessageSenderJob implements Job {
 			_deleteJobMethodKey, jobKey.getName(), jobKey.getGroup(),
 			storageType);
 
-		ClusterRequest clusterRequest = ClusterRequest.createMulticastRequest(
-			methodHandler, true);
+		ChannelMessage channelMessage = ChannelMessage.createChannelMessage(
+			ChannelMessageType.EXECUTE, methodHandler, true);
 
-		ClusterExecutorUtil.execute(clusterRequest);
+		ClusterMessage clusterMessage = ClusterMessage.createMulticastMessage(
+			channelMessage);
+
+		ClusterManagerUtil.sendAndForget(clusterMessage);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

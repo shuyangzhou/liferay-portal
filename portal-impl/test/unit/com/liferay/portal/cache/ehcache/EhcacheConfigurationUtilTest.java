@@ -115,7 +115,7 @@ public class EhcacheConfigurationUtilTest {
 		_assertBootStrap(configuration, true);
 	}
 
-	@AdviseWith(adviceClasses = {DisableClusterLinkAdvice.class})
+	@AdviseWith(adviceClasses = {DisableClusterAdvice.class})
 	@Test
 	public void testClusterDisabled() {
 		Configuration configuration = EhcacheConfigurationUtil.getConfiguration(
@@ -141,8 +141,7 @@ public class EhcacheConfigurationUtilTest {
 
 	@AdviseWith(
 		adviceClasses = {
-			EnableClusterLinkAdvice.class,
-			DisableClusterLinkReplicateAdvice.class
+			EnableClusterAdvice.class, DisableClusterLinkReplicateAdvice.class
 		}
 	)
 	@Test
@@ -170,8 +169,7 @@ public class EhcacheConfigurationUtilTest {
 
 	@AdviseWith(
 		adviceClasses = {
-			EnableClusterLinkAdvice.class,
-			EnableClusterLinkReplicateAdvice.class
+			EnableClusterAdvice.class, EnableClusterLinkReplicateAdvice.class
 		}
 	)
 	@Test
@@ -234,12 +232,12 @@ public class EhcacheConfigurationUtilTest {
 	}
 
 	@Aspect
-	public static class DisableClusterLinkAdvice {
+	public static class DisableClusterAdvice {
 
 		@Around(
-			"set(* com.liferay.portal.util.PropsValues.CLUSTER_LINK_ENABLED)")
-		public Object disableClusterLink(
-				ProceedingJoinPoint proceedingJoinPoint)
+			"set(* com.liferay.portal.util.PropsValues." +
+				"CLUSTER_MANAGER_ENABLED)")
+		public Object disableCluster(ProceedingJoinPoint proceedingJoinPoint)
 			throws Throwable {
 
 			return proceedingJoinPoint.proceed(new Object[] {Boolean.FALSE});
@@ -278,11 +276,12 @@ public class EhcacheConfigurationUtilTest {
 	}
 
 	@Aspect
-	public static class EnableClusterLinkAdvice {
+	public static class EnableClusterAdvice {
 
 		@Around(
-			"set(* com.liferay.portal.util.PropsValues.CLUSTER_LINK_ENABLED)")
-		public Object enableClusterLink(ProceedingJoinPoint proceedingJoinPoint)
+			"set(* com.liferay.portal.util.PropsValues." +
+				"CLUSTER_MANAGER_ENABLED)")
+		public Object enableCluster(ProceedingJoinPoint proceedingJoinPoint)
 			throws Throwable {
 
 			return proceedingJoinPoint.proceed(new Object[] {Boolean.TRUE});
