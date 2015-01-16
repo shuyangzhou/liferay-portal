@@ -14,10 +14,12 @@
 
 package com.liferay.portal.cluster;
 
-import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
+import com.liferay.portal.kernel.cluster.ChannelMessage;
+import com.liferay.portal.kernel.cluster.ChannelMessageType;
 import com.liferay.portal.kernel.cluster.ClusterInvokeThreadLocal;
+import com.liferay.portal.kernel.cluster.ClusterManagerUtil;
 import com.liferay.portal.kernel.cluster.ClusterMasterExecutorUtil;
-import com.liferay.portal.kernel.cluster.ClusterRequest;
+import com.liferay.portal.kernel.cluster.ClusterMessage;
 import com.liferay.portal.kernel.cluster.Clusterable;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.spring.aop.AnnotationChainableMethodAdvice;
@@ -54,10 +56,13 @@ public class ClusterableAdvice
 			ClusterableInvokerUtil.createMethodHandler(
 				clusterable.acceptor(), methodInvocation);
 
-		ClusterRequest clusterRequest = ClusterRequest.createMulticastRequest(
-			methodHandler, true);
+		ChannelMessage channelMessage = ChannelMessage.createChannelMessage(
+			ChannelMessageType.EXECUTE, methodHandler, true);
 
-		ClusterExecutorUtil.execute(clusterRequest);
+		ClusterMessage clusterMessage = ClusterMessage.createMulticastMessage(
+			channelMessage);
+
+		ClusterManagerUtil.sendAndForget(clusterMessage);
 	}
 
 	@Override

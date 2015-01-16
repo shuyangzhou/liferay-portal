@@ -873,7 +873,7 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 				}
 			}
 
-			if (PropsValues.CLUSTER_LINK_ENABLED) {
+			if (PropsValues.CLUSTER_MANAGER_ENABLED) {
 				if (dbType.equals(DB.TYPE_HYPERSONIC)) {
 					_log.error("Unable to cluster scheduler on Hypersonic");
 				}

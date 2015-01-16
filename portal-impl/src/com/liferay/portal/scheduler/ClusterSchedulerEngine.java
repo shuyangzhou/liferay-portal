@@ -62,7 +62,9 @@ public class ClusterSchedulerEngine
 	public static SchedulerEngine createClusterSchedulerEngine(
 		SchedulerEngine schedulerEngine) {
 
-		if (PropsValues.CLUSTER_LINK_ENABLED && PropsValues.SCHEDULER_ENABLED) {
+		if (PropsValues.CLUSTER_MANAGER_ENABLED &&
+			PropsValues.SCHEDULER_ENABLED) {
+
 			schedulerEngine = new ClusterSchedulerEngine(schedulerEngine);
 		}
 
