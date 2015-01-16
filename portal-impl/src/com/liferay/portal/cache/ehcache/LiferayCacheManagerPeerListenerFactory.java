@@ -64,7 +64,7 @@ public class LiferayCacheManagerPeerListenerFactory
 			_cacheManagerPeerListenerFactory.createCachePeerListener(
 				cacheManager, properties);
 
-		if (PropsValues.CLUSTER_LINK_ENABLED &&
+		if (PropsValues.CLUSTER_MANAGER_ENABLED &&
 			!PropsValues.EHCACHE_CLUSTER_LINK_REPLICATION_ENABLED) {
 
 			return new LiferayCacheManagerPeerListener(

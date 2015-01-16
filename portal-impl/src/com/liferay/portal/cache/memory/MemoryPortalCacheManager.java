@@ -138,7 +138,7 @@ public class MemoryPortalCacheManager<K extends Serializable, V>
 
 		PortalCacheConfiguration defaultPortalCacheConfiguration = null;
 
-		if (clusterAware && PropsValues.CLUSTER_LINK_ENABLED) {
+		if (clusterAware && PropsValues.CLUSTER_MANAGER_ENABLED) {
 			CallbackConfiguration cacheListenerConfiguration =
 				new CallbackConfiguration(
 					ClusterLinkCallbackFactory.INSTANCE, new Properties());

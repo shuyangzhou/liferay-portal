@@ -110,7 +110,7 @@ public class EhcacheConfigurationHelperUtil {
 				getCacheManagerPeerProviderFactoryConfiguration();
 
 		if (!peerProviderConfiguration.isEmpty() &&
-			(!clusterAware || !PropsValues.CLUSTER_LINK_ENABLED ||
+			(!clusterAware || !PropsValues.CLUSTER_MANAGER_ENABLED ||
 			 PropsValues.EHCACHE_CLUSTER_LINK_REPLICATION_ENABLED)) {
 
 			peerProviderConfiguration.clear();
@@ -121,7 +121,7 @@ public class EhcacheConfigurationHelperUtil {
 				getCacheManagerPeerListenerFactoryConfigurations();
 
 		if (!peerProviderConfiguration.isEmpty() &&
-			(!clusterAware || !PropsValues.CLUSTER_LINK_ENABLED ||
+			(!clusterAware || !PropsValues.CLUSTER_MANAGER_ENABLED ||
 			 PropsValues.EHCACHE_CLUSTER_LINK_REPLICATION_ENABLED)) {
 
 			peerProviderConfiguration.clear();
@@ -246,7 +246,7 @@ public class EhcacheConfigurationHelperUtil {
 				fullyQualifiedClassPath.contains(
 					"net.sf.ehcache.distribution")) {
 
-				if (clusterAware && PropsValues.CLUSTER_LINK_ENABLED) {
+				if (clusterAware && PropsValues.CLUSTER_MANAGER_ENABLED) {
 					if (PropsValues.EHCACHE_CLUSTER_LINK_REPLICATION_ENABLED) {
 						cacheListenerConfigurations.put(
 							new CallbackConfiguration(
@@ -296,7 +296,7 @@ public class EhcacheConfigurationHelperUtil {
 				bootstrapCacheLoaderFactoryConfiguration.
 					getPropertySeparator());
 
-			if (clusterAware && PropsValues.CLUSTER_LINK_ENABLED) {
+			if (clusterAware && PropsValues.CLUSTER_MANAGER_ENABLED) {
 				if (PropsValues.EHCACHE_CLUSTER_LINK_REPLICATION_ENABLED) {
 					bootstrapLoaderConfiguration = new CallbackConfiguration(
 						ClusterLinkCallbackFactory.INSTANCE, properties);
