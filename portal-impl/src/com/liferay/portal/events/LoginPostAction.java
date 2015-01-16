@@ -14,8 +14,7 @@
 
 package com.liferay.portal.events;
 
-import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
-import com.liferay.portal.kernel.cluster.ClusterNode;
+import com.liferay.portal.kernel.cluster.ClusterManagerUtil;
 import com.liferay.portal.kernel.events.Action;
 import com.liferay.portal.kernel.events.ActionException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -65,14 +64,9 @@ public class LoginPostAction extends Action {
 			if (PropsValues.LIVE_USERS_ENABLED) {
 				JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-				ClusterNode clusterNode =
-					ClusterExecutorUtil.getLocalClusterNode();
-
-				if (clusterNode != null) {
-					jsonObject.put(
-						"clusterNodeId", clusterNode.getClusterNodeId());
-				}
-
+				jsonObject.put(
+					"clusterNodeId",
+					ClusterManagerUtil.getLocalClusterNodeId());
 				jsonObject.put("command", "signIn");
 				jsonObject.put("companyId", companyId);
 				jsonObject.put("remoteAddr", request.getRemoteAddr());

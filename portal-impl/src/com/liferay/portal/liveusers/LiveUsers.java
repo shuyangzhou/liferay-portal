@@ -14,8 +14,7 @@
 
 package com.liferay.portal.liveusers;
 
-import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
-import com.liferay.portal.kernel.cluster.ClusterNode;
+import com.liferay.portal.kernel.cluster.ClusterManagerUtil;
 import com.liferay.portal.kernel.concurrent.ConcurrentHashSet;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -241,13 +240,7 @@ public class LiveUsers {
 	}
 
 	private Map<Long, Map<Long, Set<String>>> _getLocalClusterUsers() {
-		ClusterNode clusterNode = ClusterExecutorUtil.getLocalClusterNode();
-
-		if (clusterNode == null) {
-			return null;
-		}
-
-		return _clusterUsers.get(clusterNode.getClusterNodeId());
+		return _clusterUsers.get(ClusterManagerUtil.getLocalClusterNodeId());
 	}
 
 	private Map<String, UserTracker> _getSessionUsers(long companyId) {

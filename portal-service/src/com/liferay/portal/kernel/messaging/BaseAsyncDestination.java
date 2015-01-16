@@ -14,7 +14,7 @@
 
 package com.liferay.portal.kernel.messaging;
 
-import com.liferay.portal.kernel.cluster.ClusterLink;
+import com.liferay.portal.kernel.cluster.ClusterManager;
 import com.liferay.portal.kernel.concurrent.RejectedExecutionHandler;
 import com.liferay.portal.kernel.concurrent.ThreadPoolExecutor;
 import com.liferay.portal.kernel.concurrent.ThreadPoolHandlerAdapter;
@@ -311,11 +311,11 @@ public abstract class BaseAsyncDestination extends BaseDestination {
 		}
 
 		Boolean clusterForwardMessage = (Boolean)message.get(
-			ClusterLink.CLUSTER_FORWARD_MESSAGE);
+			ClusterManager.CLUSTER_FORWARD_MESSAGE);
 
 		if (clusterForwardMessage != null) {
 			MessageValuesThreadLocal.setValue(
-				ClusterLink.CLUSTER_FORWARD_MESSAGE, clusterForwardMessage);
+				ClusterManager.CLUSTER_FORWARD_MESSAGE, clusterForwardMessage);
 		}
 
 		Locale siteDefaultLocale = (Locale)message.get("siteDefaultLocale");

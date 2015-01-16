@@ -24,6 +24,9 @@ public interface ClusterManager {
 	public static final String CLUSTER_FORWARD_MESSAGE =
 		"CLUSTER_FORWARD_MESSAGE";
 
+	public static final String TARGET_CLUSTER_NODE_IDS =
+		"TARGET_CLUSTER_NODE_IDS";
+
 	public void destroy();
 
 	public ClusterNode getClusterNode(String clusterNodeId);
