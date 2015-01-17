@@ -280,12 +280,14 @@ public class PortletServletResponse extends HttpServletResponseWrapper {
 
 	@Override
 	public void setBufferSize(int bufferSize) {
-		if (_lifecycle.equals(PortletRequest.RENDER_PHASE) ||
-			_lifecycle.equals(PortletRequest.RESOURCE_PHASE)) {
+		if (!_include) {
+			if (_lifecycle.equals(PortletRequest.RENDER_PHASE) ||
+				_lifecycle.equals(PortletRequest.RESOURCE_PHASE)) {
 
-			MimeResponse mimeResponse = _getMimeResponse();
+				MimeResponse mimeResponse = _getMimeResponse();
 
-			mimeResponse.setBufferSize(bufferSize);
+				mimeResponse.setBufferSize(bufferSize);
+			}
 		}
 	}
 
