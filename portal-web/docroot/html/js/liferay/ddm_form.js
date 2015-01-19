@@ -272,6 +272,8 @@ AUI.add(
 						instance.syncLabelUI();
 						instance.syncValueUI();
 
+						AArray.invoke(instance.get('fields'), 'renderUI');
+
 						instance.fire(
 							'render',
 							{
@@ -334,6 +336,8 @@ AUI.add(
 						else if (currentTarget.hasClass('lfr-ddm-repeatable-delete-button')) {
 							instance.remove();
 						}
+
+						event.stopPropagation();
 					},
 
 					_valueLocalizationMap: function() {
@@ -471,7 +475,7 @@ AUI.add(
 
 								var siblings = instance.getSiblings();
 
-								var field = instance._getField(fieldNode);
+								var field = parent._getField(fieldNode);
 
 								var index = AArray.indexOf(siblings, instance);
 
@@ -570,6 +574,8 @@ AUI.add(
 						if (dataType) {
 							instance.updateLocalizationMap(instance.get('displayLocale'));
 
+							instance.updateTranslationsDefaultValue();
+
 							fieldJSON.value = instance.get('localizationMap');
 						}
 
@@ -597,6 +603,27 @@ AUI.add(
 						}
 
 						instance.set('localizationMap', localizationMap);
+					},
+
+					updateTranslationsDefaultValue: function() {
+						var instance = this;
+
+						var parent = instance.get('parent');
+
+						var translationManager = parent.get('translationManager');
+
+						var localizationMap = instance.get('localizationMap');
+
+						AArray.each(
+							translationManager.get('availableLocales'),
+							function(item, index) {
+								var value = localizationMap[item];
+
+								if (Lang.isUndefined(value)) {
+									localizationMap[item] = instance.getValue();
+								}
+							}
+						);
 					}
 				}
 			}
@@ -1001,7 +1028,7 @@ AUI.add(
 						}
 						else if (value.uuid) {
 							imagePreviewURL = [
-							    themeDisplay.getPathContext(),
+								themeDisplay.getPathContext(),
 								'/documents',
 								value.groupId,
 								value.uuid
@@ -1458,8 +1485,6 @@ AUI.add(
 
 							liferayForm.formValidator.set('rules', validatorRules);
 						}
-
-						AArray.invoke(field.getRepeatedSiblings(), 'syncRepeatablelUI');
 					},
 
 					_onLiferaySubmitForm: function(event) {
