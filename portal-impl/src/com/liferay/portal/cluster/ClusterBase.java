@@ -33,8 +33,6 @@ import java.util.List;
 import org.jgroups.JChannel;
 import org.jgroups.Receiver;
 import org.jgroups.View;
-import org.jgroups.stack.Protocol;
-import org.jgroups.stack.ProtocolStack;
 
 /**
  * @author Shuyang Zhou
@@ -105,14 +103,6 @@ public abstract class ClusterBase {
 		}
 
 		return addresses;
-	}
-
-	protected InetAddress getBindInetAddress(JChannel jChannel) {
-		ProtocolStack protocolStack = jChannel.getProtocolStack();
-
-		Protocol protocol = protocolStack.getBottomProtocol();
-
-		return (InetAddress)protocol.getValue("bind_addr");
 	}
 
 	protected void initBindAddress() throws Exception {
