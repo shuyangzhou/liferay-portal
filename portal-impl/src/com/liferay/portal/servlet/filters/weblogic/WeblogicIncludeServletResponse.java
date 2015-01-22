@@ -1,4 +1,3 @@
-<%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
@@ -12,13 +11,22 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
---%>
+package com.liferay.portal.servlet.filters.weblogic;
 
-<c:if test="<%= dlViewFileVersionDisplayContext.isDownloadButtonVisible() && DLFileShortcutPermission.contains(permissionChecker, fileShortcut, ActionKeys.VIEW) %>">
-	<liferay-ui:icon
-		iconCssClass="icon-download"
-		message='<%= LanguageUtil.get(request, "download") + " (" + TextFormatter.formatStorageSize(fileEntry.getSize(), locale) + ")" %>'
-		method="get"
-		url='<%= themeDisplay.getPortalURL() + themeDisplay.getPathContext() + "/documents/" + fileShortcut.getFileShortcutId() %>'
-	/>
-</c:if>
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponseWrapper;
+
+/**
+ * @author Minhchau Dang
+ */
+public class WeblogicIncludeServletResponse extends HttpServletResponseWrapper {
+
+	public WeblogicIncludeServletResponse(HttpServletResponse response) {
+		super(response);
+	}
+
+	@Override
+	public void setBufferSize(int bufferSize) {
+	}
+
+}
