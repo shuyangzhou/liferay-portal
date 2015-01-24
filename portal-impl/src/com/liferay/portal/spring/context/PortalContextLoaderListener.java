@@ -38,6 +38,7 @@ import com.liferay.portal.kernel.process.ClassPathUtil;
 import com.liferay.portal.kernel.servlet.DirectServletRegistryUtil;
 import com.liferay.portal.kernel.servlet.SerializableSessionAttributeListener;
 import com.liferay.portal.kernel.servlet.ServletContextPool;
+import com.liferay.portal.kernel.servlet.WebDirDetector;
 import com.liferay.portal.kernel.settings.SettingsFactoryUtil;
 import com.liferay.portal.kernel.template.TemplateResourceLoaderUtil;
 import com.liferay.portal.kernel.util.ClassLoaderPool;
@@ -202,7 +203,11 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 		final ServletContext servletContext =
 			servletContextEvent.getServletContext();
 
-		String portalLibDir = servletContext.getRealPath("/WEB-INF/lib");
+		Thread currentThread = Thread.currentThread();
+
+		ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+		String portalLibDir = WebDirDetector.getLibDir(contextClassLoader);
 
 		if (Validator.isNotNull(portalLibDir)) {
 			SystemProperties.set(
