@@ -58,6 +58,7 @@ import com.liferay.portal.service.PortletPreferencesLocalServiceUtil;
 import com.liferay.portal.service.SubscriptionLocalServiceUtil;
 import com.liferay.portal.service.permission.GroupPermissionUtil;
 import com.liferay.portal.service.permission.PortletPermissionUtil;
+import com.liferay.portal.theme.PortletDisplay;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PortletKeys;
@@ -348,6 +349,13 @@ public class AssetPublisherImpl implements AssetPublisher {
 		return assetCategoryIds;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             AssetEntryLocalServiceUtil#getEntries(long[], long[], String,
+	 *             String, String, String, boolean, boolean, int, int,
+	 *             String, String, String, String)}
+	 */
+	@Deprecated
 	@Override
 	public List<AssetEntry> getAssetEntries(
 		long[] groupIds, long[] classNameIds, String keywords, String userName,
@@ -355,12 +363,10 @@ public class AssetPublisherImpl implements AssetPublisher {
 		boolean andOperator, int start, int end, String orderByCol1,
 		String orderByCol2, String orderByType1, String orderByType2) {
 
-		AssetEntryQuery assetEntryQuery = getAssetEntryQuery(
+		return AssetEntryLocalServiceUtil.getEntries(
 			groupIds, classNameIds, keywords, userName, title, description,
 			advancedSearch, andOperator, start, end, orderByCol1, orderByCol2,
 			orderByType1, orderByType2);
-
-		return AssetEntryLocalServiceUtil.getEntries(assetEntryQuery);
 	}
 
 	@Override
@@ -608,17 +614,21 @@ public class AssetPublisherImpl implements AssetPublisher {
 			deleteMissingAssetEntries, checkPermission);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             AssetEntryLocalServiceUtil#getEntriesCount(long[], long[],
+	 *             String, String, String, String, boolean, boolean, int, int)}
+	 */
+	@Deprecated
 	@Override
 	public int getAssetEntriesCount(
 		long[] groupIds, long[] classNameIds, String keywords, String userName,
 		String title, String description, boolean advancedSearch,
 		boolean andOperator, int start, int end) {
 
-		AssetEntryQuery assetEntryQuery = getAssetEntryQuery(
+		return AssetEntryLocalServiceUtil.getEntriesCount(
 			groupIds, classNameIds, keywords, userName, title, description,
-			advancedSearch, andOperator, start, end, null, null, null, null);
-
-		return AssetEntryLocalServiceUtil.getEntriesCount(assetEntryQuery);
+			advancedSearch, andOperator);
 	}
 
 	/**
@@ -957,9 +967,11 @@ public class AssetPublisherImpl implements AssetPublisher {
 
 		definitionTerms.put("[$PORTAL_URL$]", company.getVirtualHostname());
 
+		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
+
 		definitionTerms.put(
-			"[$PORTLET_NAME$]",
-			HtmlUtil.escape(PortalUtil.getPortletTitle(portletRequest)));
+			"[$PORTLET_NAME$]", HtmlUtil.escape(portletDisplay.getTitle()));
+
 		definitionTerms.put(
 			"[$SITE_NAME$]",
 			LanguageUtil.get(
@@ -1381,36 +1393,6 @@ public class AssetPublisherImpl implements AssetPublisher {
 			permissionChecker.getUserId(),
 			com.liferay.portal.model.PortletPreferences.class.getName(),
 			getSubscriptionClassPK(plid, portletId));
-	}
-
-	protected AssetEntryQuery getAssetEntryQuery(
-		long[] groupIds, long[] classNameIds, String keywords, String userName,
-		String title, String description, boolean advancedSearch,
-		boolean andOperator, int start, int end, String orderByCol1,
-		String orderByCol2, String orderByType1, String orderByType2) {
-
-		AssetEntryQuery assetEntryQuery = new AssetEntryQuery();
-
-		if (advancedSearch) {
-			assetEntryQuery.setAndOperator(andOperator);
-			assetEntryQuery.setDescription(description);
-			assetEntryQuery.setTitle(title);
-			assetEntryQuery.setUserName(userName);
-		}
-		else {
-			assetEntryQuery.setKeywords(keywords);
-		}
-
-		assetEntryQuery.setClassNameIds(classNameIds);
-		assetEntryQuery.setEnd(end);
-		assetEntryQuery.setGroupIds(groupIds);
-		assetEntryQuery.setOrderByCol1(orderByCol1);
-		assetEntryQuery.setOrderByCol2(orderByCol2);
-		assetEntryQuery.setOrderByType1(orderByType1);
-		assetEntryQuery.setOrderByType2(orderByType2);
-		assetEntryQuery.setStart(start);
-
-		return assetEntryQuery;
 	}
 
 	protected long[] getSiteGroupIds(long[] groupIds) throws PortalException {

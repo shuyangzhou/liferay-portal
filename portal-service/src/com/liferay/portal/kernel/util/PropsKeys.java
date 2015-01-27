@@ -1183,6 +1183,8 @@ public interface PropsKeys {
 
 	public static final String JOURNAL_ARTICLES_SEARCH_WITH_INDEX = "journal.articles.search.with.index";
 
+	public static final String JOURNAL_CHAR_BLACKLIST = "journal.char.blacklist";
+
 	public static final String JOURNAL_CONTENT_SEARCH_SHOW_LISTED = "journal.content.search.show.listed";
 
 	public static final String JOURNAL_DEFAULT_DISPLAY_VIEW = "journal.default.display.view";
@@ -2088,6 +2090,8 @@ public interface PropsKeys {
 	public static final String PORTAL_FABRIC_SHUTDOWN_QUIET_PERIOD = "portal.fabric.shutdown.quiet.period";
 
 	public static final String PORTAL_FABRIC_SHUTDOWN_TIMEOUT = "portal.fabric.shutdown.timeout";
+
+	public static final String PORTAL_IMPERSONATION_DEFAULT_URL = "portal.impersonation.default.url";
 
 	public static final String PORTAL_IMPERSONATION_ENABLE = "portal.impersonation.enable";
 

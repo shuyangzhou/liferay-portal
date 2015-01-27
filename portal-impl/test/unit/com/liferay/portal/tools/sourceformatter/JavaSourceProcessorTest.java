@@ -40,7 +40,7 @@ public class JavaSourceProcessorTest extends BaseSourceProcessorTestCase {
 
 	@Test
 	public void testExceedMaxLineLength() throws Exception {
-		test("ExceedMaxLineLength.testjava", "> 80:", 35);
+		test("ExceedMaxLineLength.testjava", "> 80:", 37);
 	}
 
 	@Test
@@ -163,6 +163,16 @@ public class JavaSourceProcessorTest extends BaseSourceProcessorTestCase {
 			"SecureRandomNumberGeneration.testjava",
 			"Use SecureRandomUtil or com.liferay.portal.kernel.security." +
 				"SecureRandom instead of java.security.SecureRandom:");
+	}
+
+	@Test
+	public void testSortAnnotationParameters() throws Exception {
+		test(
+			"SortAnnotationParameters.testjava",
+			new String[] {
+				"sort: @Component#immediate",
+				"sort: method#@Transactional#propagation",
+			});
 	}
 
 	@Test
