@@ -14,7 +14,6 @@
 
 package com.liferay.portal.search.lucene;
 
-import com.liferay.portal.cluster.AddressImpl;
 import com.liferay.portal.kernel.cluster.Address;
 import com.liferay.portal.kernel.cluster.ClusterEvent;
 import com.liferay.portal.kernel.cluster.ClusterEventListener;
@@ -70,7 +69,7 @@ import java.net.URLStreamHandler;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -173,13 +172,12 @@ public class LuceneHelperImplTest {
 		_mockClusterExecutor.setPortalInetAddress(_localhostInetAddress);
 
 		Method method = LuceneHelperImpl.class.getDeclaredMethod(
-			"_getBootupClusterNodeObjectValuePair", Address.class);
+			"_getBootupClusterNodeObjectValuePair", String.class);
 
 		method.setAccessible(true);
 
 		Object object = method.invoke(
-			_luceneHelperImpl,
-			_mockClusterExecutor.getLocalClusterNodeAddress());
+			_luceneHelperImpl, _mockClusterExecutor.getLocalClusterNodeId());
 
 		Assert.assertNotNull(object);
 
@@ -221,7 +219,7 @@ public class LuceneHelperImplTest {
 
 		InputStream inputStream =
 			_luceneHelperImpl.getLoadIndexesInputStreamFromCluster(
-				_COMPANY_ID, new AddressImpl(new MockAddress()));
+				_COMPANY_ID, StringPool.BLANK);
 
 		Assert.assertNotNull(inputStream);
 
@@ -346,11 +344,12 @@ public class LuceneHelperImplTest {
 			_COMPANY_ID,
 			SkipGetLoadIndexesInputStreamFromClusterAdvice._companyId);
 
-		List<Address> address = _mockClusterExecutor.getClusterNodeAddresses();
+		Set<String> clusterNodeIds = _mockClusterExecutor.getClusterNodeIds();
 
 		Assert.assertTrue(
-			address.contains(
-				SkipGetLoadIndexesInputStreamFromClusterAdvice._bootupAddress));
+			clusterNodeIds.contains(
+				SkipGetLoadIndexesInputStreamFromClusterAdvice.
+					_bootupClusterNodeId));
 
 		Assert.assertEquals(2, logRecords.size());
 
@@ -646,19 +645,18 @@ public class LuceneHelperImplTest {
 
 		@Around(
 			"execution(* com.liferay.portal.search.lucene.LuceneHelperImpl." +
-				"getLoadIndexesInputStreamFromCluster(" +
-					"long, com.liferay.portal.kernel.cluster.Address)) && " +
-						"args(companyId, bootupAddress)")
+				"getLoadIndexesInputStreamFromCluster(long, java.lang.String)" +
+					") && args(companyId, bootupClusterNodeId)")
 		public Object getLoadIndexesInputStreamFromCluster(
-			long companyId, Address bootupAddress) {
+			long companyId, String bootupClusterNodeId) {
 
 			_companyId = companyId;
-			_bootupAddress = bootupAddress;
+			_bootupClusterNodeId = bootupClusterNodeId;
 
 			return new UnsyncByteArrayInputStream(_RESPONSE_MESSAGE);
 		}
 
-		private static Address _bootupAddress;
+		private static String _bootupClusterNodeId;
 		private static long _companyId;
 
 	}
@@ -794,7 +792,7 @@ public class LuceneHelperImplTest {
 
 		@Override
 		public void destroy() {
-			_addresses.clear();
+			_clusterNodes.clear();
 			_clusterEventListeners.clear();
 		}
 
@@ -805,26 +803,19 @@ public class LuceneHelperImplTest {
 					Collections.<String>emptySet());
 			}
 
-			Set<String> clusterNodeIds = new HashSet<>();
-
-			for (Address address : _addresses) {
-				clusterNodeIds.add(address.toString());
-			}
+			Set<String> clusterNodeIds = _clusterNodes.keySet();
 
 			FutureClusterResponses futureClusterResponses =
 				new FutureClusterResponses(clusterNodeIds);
 
-			for (Address address : _addresses) {
+			for (ClusterNode clusterNode : _clusterNodes.values()) {
 				ClusterNodeResponse clusterNodeResponse =
 					new ClusterNodeResponse();
 
-				clusterNodeResponse.setAddress(address);
 				clusterNodeResponse.setClusterMessageType(
 					ClusterMessageType.EXECUTE);
 				clusterNodeResponse.setMulticast(clusterRequest.isMulticast());
 				clusterNodeResponse.setUuid(clusterRequest.getUuid());
-
-				ClusterNode clusterNode = new ClusterNode(address.toString());
 
 				try {
 					clusterNode.setPortalInetSocketAddress(
@@ -883,22 +874,30 @@ public class LuceneHelperImplTest {
 
 		@Override
 		public List<Address> getClusterNodeAddresses() {
-			return Collections.unmodifiableList(_addresses);
+			return null;
+		}
+
+		public Set<String> getClusterNodeIds() {
+			return _clusterNodes.keySet();
 		}
 
 		@Override
 		public List<ClusterNode> getClusterNodes() {
-			return Collections.emptyList();
+			return new ArrayList<>(_clusterNodes.values());
 		}
 
 		@Override
 		public ClusterNode getLocalClusterNode() {
-			return null;
+			return _clusterNodes.get(_CLUSTER_NODE_ID_PREFIX + 0);
 		}
 
 		@Override
 		public Address getLocalClusterNodeAddress() {
-			return _addresses.get(0);
+			return null;
+		}
+
+		public String getLocalClusterNodeId() {
+			return _CLUSTER_NODE_ID_PREFIX + 0;
 		}
 
 		@Override
@@ -907,12 +906,12 @@ public class LuceneHelperImplTest {
 
 		@Override
 		public boolean isClusterNodeAlive(Address address) {
-			return _addresses.contains(address);
+			return false;
 		}
 
 		@Override
 		public boolean isClusterNodeAlive(String clusterNodeId) {
-			return false;
+			return _clusterNodes.containsKey(clusterNodeId);
 		}
 
 		@Override
@@ -928,7 +927,7 @@ public class LuceneHelperImplTest {
 		}
 
 		public void reset() {
-			_addresses.clear();
+			_clusterNodes.clear();
 			_autoResponse = true;
 			_invokeMethodThrowException = false;
 			_port = -1;
@@ -946,10 +945,13 @@ public class LuceneHelperImplTest {
 		}
 
 		public void setNodeNumber(int nodeNumber) {
-			_addresses.clear();
+			_clusterNodes.clear();
 
 			for (int i = 0; i < nodeNumber; i++) {
-				_addresses.add(new AddressImpl(new MockAddress()));
+				String clusterNodeId = _CLUSTER_NODE_ID_PREFIX + i;
+
+				_clusterNodes.put(
+					clusterNodeId, new ClusterNode(clusterNodeId));
 			}
 		}
 
@@ -980,10 +982,12 @@ public class LuceneHelperImplTest {
 			return null;
 		}
 
-		private final List<Address> _addresses = new ArrayList<>();
+		private static final String _CLUSTER_NODE_ID_PREFIX = "CLUSTER_NODE_ID";
+
 		private boolean _autoResponse = true;
 		private final List<ClusterEventListener> _clusterEventListeners =
 			new ArrayList<>();
+		private final Map<String, ClusterNode> _clusterNodes = new HashMap<>();
 		private final MethodKey _createTokenMethodKey = new MethodKey(
 			TransientTokenUtil.class, "createToken", long.class);
 		private final MethodKey _getLastGenerationMethodKey = new MethodKey(
