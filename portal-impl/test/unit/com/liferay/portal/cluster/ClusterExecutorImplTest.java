@@ -267,9 +267,6 @@ public class ClusterExecutorImplTest extends BaseClusterExecutorImplTestCase {
 
 			clusterRequest = ClusterRequest.createUnicastRequest(null, address);
 
-			clusterExecutorImpl.memberJoined(
-				address, new ClusterNode(PortalUUIDUtil.generate()));
-
 			try {
 				clusterExecutorImpl.execute(clusterRequest);
 
