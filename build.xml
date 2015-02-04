@@ -385,7 +385,7 @@
 		<antcall target="print-current-time" />
 	</target>
 
- 	<target name="build-module-sql">
+	<target name="build-module-sql">
 		<java
 			classname="com.liferay.portal.tools.DBBuilder"
 			classpathref="project.classpath"

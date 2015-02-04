@@ -61,7 +61,7 @@ public class DBBuilder {
 		_databaseTypes = databaseTypes;
 
 		try {
-			if(!sqlDir.endsWith("/module-sql"))  {
+			if (!sqlDir.endsWith("/module-sql")) {
 				if (!sqlDir.endsWith("/WEB-INF/sql")) {
 					_buildSQLFile(sqlDir, "portal");
 					_buildSQLFile(sqlDir, "portal-tables");
@@ -69,6 +69,7 @@ public class DBBuilder {
 				else {
 					_buildSQLFile(sqlDir, "tables");
 				}
+
 				_buildSQLFile(sqlDir, "indexes");
 				_buildSQLFile(sqlDir, "sequences");
 				_buildSQLFile(sqlDir, "update-5.0.1-5.1.0");
@@ -89,10 +90,10 @@ public class DBBuilder {
 				_buildSQLFile(sqlDir, "update-6.0.12-6.1.0");
 				_buildSQLFile(sqlDir, "update-6.1.0-6.1.1");
 				_buildSQLFile(sqlDir, "update-6.1.1-6.2.0");
-				
+
 				_buildCreateFile(sqlDir);
 			}
-			else{
+			else {
 				_buildSQLFile(sqlDir, "module-tables");
 				_buildSQLFile(sqlDir, "module-indexes");
 			}
