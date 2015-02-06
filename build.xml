@@ -380,7 +380,25 @@
 			</then>
 		</if>
 
+		<antcall target="build-module-sql" />
+
 		<antcall target="print-current-time" />
+	</target>
+
+	<target name="build-module-sql">
+		<java
+			classname="com.liferay.portal.tools.DBBuilder"
+			classpathref="project.classpath"
+			fork="${fork.mode}"
+		>
+			<jvmarg line="${db.build.debug.jpda}" />
+			<jvmarg value="-Xmx${db.build.java.mx}" />
+			<jvmarg value="-XX:MaxPermSize=${db.build.java.maxpermsize}" />
+			<arg value="-Dexternal-properties=com/liferay/portal/tools/dependencies/portal-tools.properties" />
+			<arg value="db.database.name=${database.name}" />
+			<arg value="db.database.types=${database.types}" />
+			<arg value="db.sql.dir=${basedir}/modules/module-sql" />
+		</java>
 	</target>
 
 	<target name="deploy-additional-jars">
