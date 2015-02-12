@@ -22,7 +22,8 @@ import com.liferay.portal.kernel.cache.PortalCacheManager;
 import com.liferay.portal.kernel.cache.cluster.PortalCacheClusterEvent;
 import com.liferay.portal.kernel.cache.cluster.PortalCacheClusterEventType;
 import com.liferay.portal.kernel.cache.cluster.PortalCacheClusterLinkUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.Serializable;
 
@@ -36,25 +37,15 @@ public class ClusterLinkCacheReplicator
 		implements CacheListener<K, V>, CacheReplicator {
 
 	public ClusterLinkCacheReplicator(Properties properties) {
-		if (properties != null) {
-			_replicatePuts = GetterUtil.getBoolean(
-				properties.getProperty(_REPLICATE_PUTS), true);
-			_replicatePutsViaCopy = GetterUtil.getBoolean(
-				properties.getProperty(_REPLICATE_PUTS_VIA_COPY));
-			_replicateRemovals = GetterUtil.getBoolean(
-				properties.getProperty(_REPLICATE_REMOVALS), true);
-			_replicateUpdates = GetterUtil.getBoolean(
-				properties.getProperty(_REPLICATE_UPDATES), true);
-			_replicateUpdatesViaCopy = GetterUtil.getBoolean(
-				properties.getProperty(_REPLICATE_UPDATES_VIA_COPY));
-		}
-		else {
-			_replicatePuts = true;
-			_replicatePutsViaCopy = false;
-			_replicateRemovals = true;
-			_replicateUpdates = true;
-			_replicateUpdatesViaCopy = false;
-		}
+		_replicatePuts = _extractPropertyValue(properties, _REPLICATE_PUTS);
+		_replicatePutsViaCopy = _extractPropertyValue(
+			properties, _REPLICATE_PUTS_VIA_COPY);
+		_replicateRemovals = _extractPropertyValue(
+			properties, _REPLICATE_REMOVALS);
+		_replicateUpdates = _extractPropertyValue(
+			properties, _REPLICATE_UPDATES);
+		_replicateUpdatesViaCopy = _extractPropertyValue(
+			properties, _REPLICATE_UPDATES_VIA_COPY);
 	}
 
 	@Override
@@ -154,6 +145,22 @@ public class ClusterLinkCacheReplicator
 				PortalCacheClusterEventType.REMOVE_ALL);
 
 		PortalCacheClusterLinkUtil.sendEvent(portalCacheClusterEvent);
+	}
+
+	private boolean _extractPropertyValue(
+		Properties properties, String propertyName) {
+
+		if (properties == null) {
+			return true;
+		}
+
+		String propertyValue = properties.getProperty(propertyName);
+
+		if (propertyValue == null) {
+			return true;
+		}
+
+		return StringUtil.equalsIgnoreCase(propertyName, StringPool.TRUE);
 	}
 
 	private static final String _REPLICATE_PUTS = "replicatePuts";
