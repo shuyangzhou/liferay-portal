@@ -27,7 +27,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicateUpdatesViaCopy=false"
+			properties="replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</defaultCache>
@@ -43,7 +43,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicateUpdatesViaCopy=false"
+			properties="replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -56,7 +56,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicateUpdatesViaCopy=false"
+			properties="replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -69,7 +69,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicateUpdatesViaCopy=false"
+			properties="replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -82,7 +82,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicateUpdatesViaCopy=false"
+			properties="replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -95,7 +95,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicateUpdatesViaCopy=false"
+			properties="replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -108,7 +108,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicateUpdatesViaCopy=false"
+			properties="replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -121,7 +121,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicateUpdatesViaCopy=false"
+			properties="replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -134,7 +134,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicateUpdatesViaCopy=false"
+			properties="replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -147,7 +147,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicateUpdatesViaCopy=false"
+			properties="replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -160,7 +160,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicateUpdatesViaCopy=false"
+			properties="replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -176,7 +176,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicateUpdatesViaCopy=false"
+			properties="replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -189,7 +189,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicateUpdatesViaCopy=false"
+			properties="replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -202,7 +202,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicateUpdatesViaCopy=false"
+			properties="replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -215,7 +215,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicateUpdatesViaCopy=false"
+			properties="replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -228,7 +228,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicateUpdatesViaCopy=false"
+			properties="replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -241,7 +241,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicateUpdatesViaCopy=false"
+			properties="replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -254,7 +254,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicateUpdatesViaCopy=false"
+			properties="replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -267,7 +267,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicateUpdatesViaCopy=false"
+			properties="replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -280,7 +280,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicateUpdatesViaCopy=false"
+			properties="replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -293,7 +293,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicateUpdatesViaCopy=false"
+			properties="replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -306,7 +306,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicateUpdatesViaCopy=false"
+			properties="replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -319,7 +319,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicateUpdatesViaCopy=false"
+			properties="replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -332,7 +332,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicateUpdatesViaCopy=false"
+			properties="replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -345,7 +345,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicateUpdatesViaCopy=false"
+			properties="replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -358,7 +358,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicateUpdatesViaCopy=false"
+			properties="replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -371,7 +371,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicateUpdatesViaCopy=false"
+			properties="replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -384,7 +384,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicateUpdatesViaCopy=false"
+			properties="replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -397,7 +397,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicateUpdatesViaCopy=false"
+			properties="replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -410,7 +410,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicateUpdatesViaCopy=false"
+			properties="replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -423,7 +423,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicateUpdatesViaCopy=false"
+			properties="replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -436,7 +436,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicateUpdatesViaCopy=false"
+			properties="replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -452,7 +452,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicatePuts=false,replicateUpdatesViaCopy=false"
+			properties="replicatePuts=false,replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -465,7 +465,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicatePuts=false,replicateUpdatesViaCopy=false"
+			properties="replicatePuts=false,replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -478,7 +478,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicatePuts=false,replicateUpdatesViaCopy=false"
+			properties="replicatePuts=false,replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -491,7 +491,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicatePuts=false,replicateUpdatesViaCopy=false"
+			properties="replicatePuts=false,replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -504,7 +504,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicatePuts=false,replicateUpdatesViaCopy=false"
+			properties="replicatePuts=false,replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -517,7 +517,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicatePuts=false,replicateUpdatesViaCopy=false"
+			properties="replicatePuts=false,replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -530,7 +530,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicatePuts=false,replicateUpdatesViaCopy=false"
+			properties="replicatePuts=false,replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -543,7 +543,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicatePuts=false,replicateUpdatesViaCopy=false"
+			properties="replicatePuts=false,replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -556,7 +556,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicatePuts=false,replicateUpdatesViaCopy=false"
+			properties="replicatePuts=false,replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -569,7 +569,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicatePuts=false,replicateUpdatesViaCopy=false"
+			properties="replicatePuts=false,replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
@@ -582,7 +582,7 @@
 	>
 		<cacheEventListenerFactory
 			class="com.liferay.portal.cache.ehcache.LiferayCacheEventListenerFactory"
-			properties="replicatePuts=false,replicateUpdatesViaCopy=false"
+			properties="replicatePuts=false,replicatePutsViaCopy=false,replicateUpdatesViaCopy=false"
 			propertySeparator=","
 		/>
 	</cache>
