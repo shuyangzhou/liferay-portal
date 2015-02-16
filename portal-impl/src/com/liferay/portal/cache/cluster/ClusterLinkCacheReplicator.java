@@ -36,25 +36,21 @@ public class ClusterLinkCacheReplicator
 		implements CacheListener<K, V>, CacheReplicator {
 
 	public ClusterLinkCacheReplicator(Properties properties) {
-		if (properties != null) {
-			_replicatePuts = GetterUtil.getBoolean(
-				properties.getProperty(_REPLICATE_PUTS), true);
-			_replicatePutsViaCopy = GetterUtil.getBoolean(
-				properties.getProperty(_REPLICATE_PUTS_VIA_COPY));
-			_replicateRemovals = GetterUtil.getBoolean(
-				properties.getProperty(_REPLICATE_REMOVALS), true);
-			_replicateUpdates = GetterUtil.getBoolean(
-				properties.getProperty(_REPLICATE_UPDATES), true);
-			_replicateUpdatesViaCopy = GetterUtil.getBoolean(
-				properties.getProperty(_REPLICATE_UPDATES_VIA_COPY));
-		}
-		else {
-			_replicatePuts = true;
-			_replicatePutsViaCopy = false;
-			_replicateRemovals = true;
-			_replicateUpdates = true;
-			_replicateUpdatesViaCopy = false;
-		}
+		_replicatePuts = GetterUtil.getBoolean(
+			properties.getProperty(CacheReplicator.REPLICATE_PUTS),
+			CacheReplicator.DEFAULT_REPLICATE_PUTS);
+		_replicatePutsViaCopy = GetterUtil.getBoolean(
+			properties.getProperty(CacheReplicator.REPLICATE_PUTS_VIA_COPY),
+			CacheReplicator.DEFAULT_REPLICATE_PUTS_VIA_COPY);
+		_replicateRemovals = GetterUtil.getBoolean(
+			properties.getProperty(CacheReplicator.REPLICATE_REMOVALS),
+			CacheReplicator.DEFAULT_REPLICATE_REMOVALS);
+		_replicateUpdates = GetterUtil.getBoolean(
+			properties.getProperty(CacheReplicator.REPLICATE_UPDATES),
+			CacheReplicator.DEFAULT_REPLICATE_UPDATES);
+		_replicateUpdatesViaCopy = GetterUtil.getBoolean(
+			properties.getProperty(CacheReplicator.REPLICATE_UPDATES_VIA_COPY),
+			CacheReplicator.DEFAULT_REPLICATE_UPDATES_VIA_COPY);
 	}
 
 	@Override
@@ -155,18 +151,6 @@ public class ClusterLinkCacheReplicator
 
 		PortalCacheClusterLinkUtil.sendEvent(portalCacheClusterEvent);
 	}
-
-	private static final String _REPLICATE_PUTS = "replicatePuts";
-
-	private static final String _REPLICATE_PUTS_VIA_COPY =
-		"replicatePutsViaCopy";
-
-	private static final String _REPLICATE_REMOVALS = "replicateRemovals";
-
-	private static final String _REPLICATE_UPDATES = "replicateUpdates";
-
-	private static final String _REPLICATE_UPDATES_VIA_COPY =
-		"replicateUpdatesViaCopy";
 
 	private final boolean _replicatePuts;
 	private final boolean _replicatePutsViaCopy;

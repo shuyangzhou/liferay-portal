@@ -21,7 +21,7 @@ import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermissio
  */
 public class QueryTranslatorUtil {
 
-	public static QueryTranslator getQueryTranslator() {
+	public static QueryTranslator<?> getQueryTranslator() {
 		PortalRuntimePermission.checkGetBeanProperty(QueryTranslatorUtil.class);
 
 		return _queryTranslator;
@@ -35,12 +35,12 @@ public class QueryTranslatorUtil {
 		return getQueryTranslator().translateForSolr(query);
 	}
 
-	public void setQueryTranslator(QueryTranslator queryTranslator) {
+	public void setQueryTranslator(QueryTranslator<?> queryTranslator) {
 		PortalRuntimePermission.checkSetBeanProperty(getClass());
 
 		_queryTranslator = queryTranslator;
 	}
 
-	private static QueryTranslator _queryTranslator;
+	private static QueryTranslator<?> _queryTranslator;
 
 }

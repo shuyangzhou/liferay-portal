@@ -37,7 +37,7 @@ import org.apache.lucene.search.WildcardQuery;
  * @author Brian Wing Shun Chan
  */
 @DoPrivileged
-public class QueryTranslatorImpl implements QueryTranslator {
+public class QueryTranslatorImpl implements QueryTranslator<Object> {
 
 	@Override
 	public Object translate(Query query) throws ParseException {
