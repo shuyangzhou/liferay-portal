@@ -185,8 +185,13 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 		String sql, String className, String classPKField, String userIdField,
 		long[] groupIds, String bridgeJoin) {
 
+		String groupIdField = classPKField.substring(
+			0, classPKField.lastIndexOf(CharPool.PERIOD));
+
+		groupIdField += ".groupId";
+
 		return replacePermissionCheck(
-			sql, className, classPKField, userIdField, null, groupIds,
+			sql, className, classPKField, userIdField, groupIdField, groupIds,
 			bridgeJoin);
 	}
 
@@ -546,70 +551,72 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 
 		StringBundler sb = new StringBundler();
 
-		sb.append("(((InlineSQLResourcePermission.primKey = CAST_TEXT(");
+		sb.append(StringPool.OPEN_PARENTHESIS);
+
+		sb.append("(InlineSQLResourcePermission.primKey = CAST_TEXT(");
 		sb.append(classPKField);
-		sb.append(")) AND ((");
+		sb.append("))");
 
-		boolean hasPreviousViewableGroup = false;
+		if (Validator.isNotNull(groupIdField) && (groupIds.length > 0)) {
+			boolean hasPreviousViewableGroup = false;
 
-		List<Long> viewableGroupIds = new ArrayList<>();
+			StringBundler nonViewableSB = new StringBundler();
 
-		for (int j = 0; j < groupIds.length; j++) {
-			long groupId = groupIds[j];
+			List<Long> viewableGroupIds = new ArrayList<>();
 
-			if (!permissionChecker.hasPermission(
-					groupId, className, 0, ActionKeys.VIEW)) {
+			for (int j = 0; j < groupIds.length; j++) {
+				long groupId = groupIds[j];
 
-				if ((j > 0) && hasPreviousViewableGroup) {
-					sb.append(" OR ");
-				}
+				if (!permissionChecker.hasPermission(
+						groupId, className, 0, ActionKeys.VIEW)) {
 
-				hasPreviousViewableGroup = true;
+					if ((j > 0) && hasPreviousViewableGroup) {
+						nonViewableSB.append(" OR ");
+					}
 
-				sb.append(StringPool.OPEN_PARENTHESIS);
+					hasPreviousViewableGroup = true;
 
-				if (Validator.isNull(groupIdField)) {
-					sb.append(
-						classPKField.substring(
-							0, classPKField.lastIndexOf(CharPool.PERIOD)));
-					sb.append(".groupId = ");
+					nonViewableSB.append(StringPool.OPEN_PARENTHESIS);
+					nonViewableSB.append(groupIdField);
+					nonViewableSB.append(" = ");
+					nonViewableSB.append(groupId);
+					nonViewableSB.append(StringPool.CLOSE_PARENTHESIS);
 				}
 				else {
-					sb.append(groupIdField);
-					sb.append(" = ");
+					viewableGroupIds.add(groupId);
 				}
+			}
 
-				sb.append(groupId);
+			sb.append(" AND (");
+
+			if (nonViewableSB.length() > 0) {
+				sb.append(StringPool.OPEN_PARENTHESIS);
+				sb.append(nonViewableSB.toString());
 				sb.append(StringPool.CLOSE_PARENTHESIS);
 			}
-			else {
-				viewableGroupIds.add(groupId);
+
+			if (!viewableGroupIds.isEmpty()) {
+				for (int k = 0; k < viewableGroupIds.size(); k++) {
+					long viewableGroupId = viewableGroupIds.get(k);
+
+					if (Validator.isNotNull(groupIdField)) {
+						if (k > 0) {
+							sb.append(" OR ");
+						}
+
+						sb.append(StringPool.OPEN_PARENTHESIS);
+						sb.append(groupIdField);
+						sb.append(" = ");
+						sb.append(viewableGroupId);
+						sb.append(StringPool.CLOSE_PARENTHESIS);
+					}
+				}
 			}
+
+			sb.append(StringPool.CLOSE_PARENTHESIS);
 		}
 
 		sb.append(StringPool.CLOSE_PARENTHESIS);
-
-		if (!viewableGroupIds.isEmpty()) {
-			for (Long viewableGroupId : viewableGroupIds) {
-				sb.append(" OR (");
-
-				if (Validator.isNull(groupIdField)) {
-					sb.append(
-						classPKField.substring(
-							0, classPKField.lastIndexOf(CharPool.PERIOD)));
-					sb.append(".groupId = ");
-				}
-				else {
-					sb.append(groupIdField);
-					sb.append(" = ");
-				}
-
-				sb.append(viewableGroupId);
-				sb.append(StringPool.CLOSE_PARENTHESIS);
-			}
-		}
-
-		sb.append(")))");
 
 		String roleIdsOrOwnerIdSQL = getRoleIdsOrOwnerIdSQL(
 			permissionChecker, groupIds, userIdField);
