@@ -31,11 +31,11 @@
 	</target>
 
 	<target name="build-module-sql" if="module.sql.dir">
-			<java
+		<java
 			classname="com.liferay.portal.tools.DBBuilder"
 			classpathref="project.classpath"
 			fork="${fork.mode}"
-			>
+		>
 			<jvmarg line="${db.build.debug.jpda}" />
 			<jvmarg value="-Xmx${db.build.java.mx}" />
 			<jvmarg value="-XX:MaxPermSize=${db.build.java.maxpermsize}" />
