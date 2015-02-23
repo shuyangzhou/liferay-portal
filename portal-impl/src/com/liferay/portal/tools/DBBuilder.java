@@ -61,36 +61,43 @@ public class DBBuilder {
 		_databaseTypes = databaseTypes;
 
 		try {
-			if (!sqlDir.endsWith("/WEB-INF/sql")) {
-				_buildSQLFile(sqlDir, "portal");
-				_buildSQLFile(sqlDir, "portal-tables");
+			if (!sqlDir.endsWith("/META-INF/sql") ) {
+				if (!sqlDir.endsWith("/WEB-INF/sql")) {
+					_buildSQLFile(sqlDir, "portal");
+					_buildSQLFile(sqlDir, "portal-tables");
+				}
+				else {
+					_buildSQLFile(sqlDir, "tables");
+				}
+
+				_buildSQLFile(sqlDir, "indexes");
+				_buildSQLFile(sqlDir, "sequences");
+				_buildSQLFile(sqlDir, "update-5.0.1-5.1.0");
+				_buildSQLFile(sqlDir, "update-5.1.1-5.1.2");
+				_buildSQLFile(sqlDir, "update-5.1.2-5.2.0");
+				_buildSQLFile(sqlDir, "update-5.2.0-5.2.1");
+				_buildSQLFile(sqlDir, "update-5.2.2-5.2.3");
+				_buildSQLFile(sqlDir, "update-5.2.3-6.0.0");
+				_buildSQLFile(sqlDir, "update-5.2.5-6.0.0");
+				_buildSQLFile(sqlDir, "update-5.2.7-6.0.0");
+				_buildSQLFile(sqlDir, "update-5.2.8-6.0.5");
+				_buildSQLFile(sqlDir, "update-6.0.0-6.0.1");
+				_buildSQLFile(sqlDir, "update-6.0.1-6.0.2");
+				_buildSQLFile(sqlDir, "update-6.0.2-6.0.3");
+				_buildSQLFile(sqlDir, "update-6.0.4-6.0.5");
+				_buildSQLFile(sqlDir, "update-6.0.5-6.0.6");
+				_buildSQLFile(sqlDir, "update-6.0.6-6.1.0");
+				_buildSQLFile(sqlDir, "update-6.0.12-6.1.0");
+				_buildSQLFile(sqlDir, "update-6.1.0-6.1.1");
+				_buildSQLFile(sqlDir, "update-6.1.1-6.2.0");
+
+				_buildCreateFile(sqlDir);
 			}
-			else {
+			else
+			{
 				_buildSQLFile(sqlDir, "tables");
+				_buildSQLFile(sqlDir, "indexes");
 			}
-
-			_buildSQLFile(sqlDir, "indexes");
-			_buildSQLFile(sqlDir, "sequences");
-			_buildSQLFile(sqlDir, "update-5.0.1-5.1.0");
-			_buildSQLFile(sqlDir, "update-5.1.1-5.1.2");
-			_buildSQLFile(sqlDir, "update-5.1.2-5.2.0");
-			_buildSQLFile(sqlDir, "update-5.2.0-5.2.1");
-			_buildSQLFile(sqlDir, "update-5.2.2-5.2.3");
-			_buildSQLFile(sqlDir, "update-5.2.3-6.0.0");
-			_buildSQLFile(sqlDir, "update-5.2.5-6.0.0");
-			_buildSQLFile(sqlDir, "update-5.2.7-6.0.0");
-			_buildSQLFile(sqlDir, "update-5.2.8-6.0.5");
-			_buildSQLFile(sqlDir, "update-6.0.0-6.0.1");
-			_buildSQLFile(sqlDir, "update-6.0.1-6.0.2");
-			_buildSQLFile(sqlDir, "update-6.0.2-6.0.3");
-			_buildSQLFile(sqlDir, "update-6.0.4-6.0.5");
-			_buildSQLFile(sqlDir, "update-6.0.5-6.0.6");
-			_buildSQLFile(sqlDir, "update-6.0.6-6.1.0");
-			_buildSQLFile(sqlDir, "update-6.0.12-6.1.0");
-			_buildSQLFile(sqlDir, "update-6.1.0-6.1.1");
-			_buildSQLFile(sqlDir, "update-6.1.1-6.2.0");
-
-			_buildCreateFile(sqlDir);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
