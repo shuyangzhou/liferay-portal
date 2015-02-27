@@ -131,11 +131,11 @@ public class CASAutoLogin extends BaseAutoLogin {
 			return null;
 		}
 
+		User user = null;
+
 		String authType = PrefsPropsUtil.getString(
 			companyId, PropsKeys.COMPANY_SECURITY_AUTH_TYPE,
 			PropsValues.COMPANY_SECURITY_AUTH_TYPE);
-
-		User user = null;
 
 		if (PrefsPropsUtil.getBoolean(
 				companyId, PropsKeys.CAS_IMPORT_FROM_LDAP,

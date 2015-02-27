@@ -91,6 +91,11 @@ public class DummyIndexer implements Indexer {
 	}
 
 	@Override
+	public String getQueryString(SearchContext searchContext, Query query) {
+		return StringPool.BLANK;
+	}
+
+	@Override
 	public String[] getSearchClassNames() {
 		return new String[0];
 	}

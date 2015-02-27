@@ -42,6 +42,8 @@ public class InitUtilTest {
 		SystemProperties.set(
 			_RESOURCE_ACTIONS_READ_PORTLET_RESOURCES, StringPool.FALSE);
 
+		_fileImpl.deltree(PropsValues.MODULE_FRAMEWORK_STATE_DIR);
+
 		try {
 			InitUtil.initWithSpring(
 				Arrays.asList(
@@ -82,5 +84,7 @@ public class InitUtilTest {
 	private static final String _RESOURCE_ACTIONS_READ_PORTLET_RESOURCES =
 		PropsFiles.PORTAL + StringPool.COLON +
 			PropsKeys.RESOURCE_ACTIONS_READ_PORTLET_RESOURCES;
+
+	private final FileImpl _fileImpl = new FileImpl();
 
 }
