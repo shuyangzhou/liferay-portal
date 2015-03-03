@@ -822,6 +822,9 @@ public class DLFileEntryLocalServiceImpl
 
 			expandoRowLocalService.deleteRows(dlFileVersion.getFileVersionId());
 
+			dlFileEntryMetadataLocalService.deleteFileVersionFileEntryMetadata(
+				dlFileVersion.getFileVersionId());
+
 			workflowInstanceLinkLocalService.deleteWorkflowInstanceLinks(
 				dlFileVersion.getCompanyId(), dlFileVersion.getGroupId(),
 				DLFileEntryConstants.getClassName(),

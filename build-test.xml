@@ -443,49 +443,52 @@
 		<attribute name="property.name" />
 
 		<sequential>
-			<fail message="Please set the property ${test.class}" unless="test.class" />
+			<if>
+				<isset property="test.class" />
+				<then>
+					<property file="${project.dir}/test.generated.properties" />
 
-			<property file="${project.dir}/test.generated.properties" />
+					<var name="property.name" unset="true" />
+					<var name="@{property.name}" unset="true" />
 
-			<var name="property.name" unset="true" />
-			<var name="@{property.name}" unset="true" />
+					<property name="property.name" value="@{property.name}" />
 
-			<property name="property.name" value="@{property.name}" />
+					<get-test-method-name />
+					<get-test-simple-class-name />
 
-			<get-test-method-name />
-			<get-test-simple-class-name />
+					<script classpathref="project.classpath" language="beanshell">
+						<![CDATA[
+							String propertyName = project.getProperty("property.name");
+							String testMethodName = project.getProperty("test.method.name");
+							String testSimpleClassName = project.getProperty("test.simple.class.name");
 
-			<script classpathref="project.classpath" language="beanshell">
-				<![CDATA[
-					String propertyName = project.getProperty("property.name");
-					String testMethodName = project.getProperty("test.method.name");
-					String testSimpleClassName = project.getProperty("test.simple.class.name");
+							StringBuilder sb = new StringBuilder();
 
-					StringBuilder sb = new StringBuilder();
+							sb.append(testSimpleClassName);
+							sb.append(".");
+							sb.append(testMethodName);
+							sb.append(".");
+							sb.append(propertyName);
 
-					sb.append(testSimpleClassName);
-					sb.append(".");
-					sb.append(testMethodName);
-					sb.append(".");
-					sb.append(propertyName);
+							String propertyValue = project.getProperty(sb.toString());
 
-					String propertyValue = project.getProperty(sb.toString());
+							if (propertyValue == null) {
+								sb = new StringBuilder();
 
-					if (propertyValue == null) {
-						sb = new StringBuilder();
+								sb.append(testSimpleClassName);
+								sb.append(".");
+								sb.append("all");
+								sb.append(".");
+								sb.append(propertyName);
 
-						sb.append(testSimpleClassName);
-						sb.append(".");
-						sb.append("all");
-						sb.append(".");
-						sb.append(propertyName);
+								propertyValue = project.getProperty(sb.toString());
+							}
 
-						propertyValue = project.getProperty(sb.toString());
-					}
-
-					project.setProperty(propertyName, propertyValue);
-				]]>
-			</script>
+							project.setProperty(propertyName, propertyValue);
+						]]>
+					</script>
+				</then>
+			</if>
 		</sequential>
 	</macrodef>
 
@@ -1492,13 +1495,21 @@ go]]></replacevalue>
 		</if>
 	</target>
 
-	<target name="build-test-results-xml" depends="generate-test-properties">
+	<target name="build-test-results-xml">
 		<get-env-app-server />
 		<get-env-browser />
 		<get-env-database />
 		<get-env-java-jdk />
 		<get-env-liferay-portal />
 		<get-env-operating-system />
+
+		<get-testcase-property property.name="testray.component.names" />
+		<get-testcase-property property.name="testray.main.component.name" />
+		<get-testcase-property property.name="testray.testcase.description" />
+		<get-testcase-property property.name="testray.testcase.name" />
+		<get-testcase-property property.name="testray.testcase.priority" />
+		<get-testcase-property property.name="testray.testcase.product.edition" />
+
 		<get-testray-components />
 		<get-testray-logs />
 		<get-testray-project-name />
@@ -1856,6 +1867,8 @@ go]]></replacevalue>
 	<target name="deploy-required-plugins">
 		<ant dir="${lp.plugins.dir}/portlets/marketplace-portlet" target="direct-deploy" />
 
+		<get-testcase-property property.name="marketplace.staging.enabled" />
+
 		<if>
 			<equals arg1="${marketplace.staging.enabled}" arg2="true" />
 			<then>
@@ -1872,6 +1885,8 @@ ${marketplace.portlet.properties}</echo>
 		Deploy plugin files to the deploy directory.
 		-->
 
+		<get-testcase-property property.name="hook.plugins.includes" />
+
 		<if>
 			<isset property="hook.plugins.includes" />
 			<then>
@@ -1882,6 +1897,8 @@ ${marketplace.portlet.properties}</echo>
 			</then>
 		</if>
 
+		<get-testcase-property property.name="layouttpl.plugins.includes" />
+
 		<if>
 			<isset property="layouttpl.plugins.includes" />
 			<then>
@@ -1891,6 +1908,8 @@ ${marketplace.portlet.properties}</echo>
 				</ant>
 			</then>
 		</if>
+
+		<get-testcase-property property.name="portlet.plugins.includes" />
 
 		<if>
 			<isset property="portlet.plugins.includes" />
@@ -1912,6 +1931,8 @@ ${marketplace.portlet.properties}</echo>
 			</then>
 		</if>
 
+		<get-testcase-property property.name="theme.plugins.includes" />
+
 		<if>
 			<isset property="theme.plugins.includes" />
 			<then>
@@ -1921,6 +1942,8 @@ ${marketplace.portlet.properties}</echo>
 				</ant>
 			</then>
 		</if>
+
+		<get-testcase-property property.name="web.plugins.includes" />
 
 		<if>
 			<isset property="web.plugins.includes" />
@@ -2587,6 +2610,8 @@ custom.sql.function.isnotnull=CONVERT(VARCHAR,?) IS NOT NULL</echo>
 			</elseif>
 		</if>
 
+		<get-testcase-property property.name="custom.properties" />
+
 		<if>
 			<isset property="custom.properties" />
 			<then>
@@ -3157,6 +3182,8 @@ osb.lcs.portlet.oauth.consumer.secret=${osb.lcs.portlet.oauth.consumer.secret}</
 			</then>
 		</if>
 
+		<get-testcase-property property.name="ignore.errors" />
+
 		<if>
 			<isset property="ignore.errors" />
 			<then>
@@ -3202,6 +3229,8 @@ osb.lcs.portlet.oauth.consumer.secret=${osb.lcs.portlet.oauth.consumer.secret}</
 			</then>
 		</if>
 
+		<get-testcase-property property.name="mobile.device.enabled" />
+
 		<if>
 			<equals arg1="${mobile.device.enabled}" arg2="true" />
 			<then>
@@ -3212,6 +3241,8 @@ osb.lcs.portlet.oauth.consumer.secret=${osb.lcs.portlet.oauth.consumer.secret}</
 				</echo>
 			</then>
 		</if>
+
+		<get-testcase-property property.name="sharepoint.enabled" />
 
 		<if>
 			<equals arg1="${sharepoint.enabled}" arg2="true" />
@@ -3273,6 +3304,8 @@ osb.lcs.portlet.oauth.consumer.secret=${osb.lcs.portlet.oauth.consumer.secret}</
 				</echo>
 			</then>
 		</if>
+
+		<get-testcase-property property.name="test.assert.javascript.errors" />
 
 		<if>
 			<equals arg1="${test.assert.javascript.errors}" arg2="false" />
@@ -3344,6 +3377,8 @@ osb.lcs.portlet.oauth.consumer.secret=${osb.lcs.portlet.oauth.consumer.secret}</
 			</then>
 		</if>
 
+		<get-testcase-property property.name="portal.url" />
+
 		<if>
 			<equals arg1="${test.selenium.unit.enabled}" arg2="true" />
 			<then>
@@ -3408,6 +3443,8 @@ osb.lcs.portlet.oauth.consumer.secret=${osb.lcs.portlet.oauth.consumer.secret}</
 				</echo>
 			</then>
 		</if>
+
+		<get-testcase-property property.name="timeout.explicit.wait" />
 
 		<if>
 			<isset property="timeout.explicit.wait" />
@@ -4125,6 +4162,9 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 			<param name="sql.dir" value="sql/create-bare/" />
 			<param name="sql.file" value="create-bare-${database.type}.sql" />
 		</antcall>
+
+		<get-testcase-property property.name="data.archive.type" />
+		<get-testcase-property property.name="portal.version" />
 
 		<unzip
 			dest="${liferay.home}"

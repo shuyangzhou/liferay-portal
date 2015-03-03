@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.portal.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.lar.xstream.XStreamAliasRegistryUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PropsValues;
@@ -101,6 +102,7 @@ public class JournalPortletDataHandler extends BasePortletDataHandler {
 			new StagedModelType(DDMStructure.class, JournalArticle.class),
 			new StagedModelType(DDMTemplate.class, DDMStructure.class),
 			new StagedModelType(JournalArticle.class),
+			new StagedModelType(JournalArticle.class, DDMStructure.class),
 			new StagedModelType(JournalFeed.class),
 			new StagedModelType(JournalFolder.class));
 		setExportControls(
@@ -196,12 +198,21 @@ public class JournalPortletDataHandler extends BasePortletDataHandler {
 
 			ddmTemplateActionableDynamicQuery.performActions();
 
-			// Export templates that belong to structures
+			// Export DDM templates that belong to DDM structures
 
 			for (DDMTemplate ddmTemplate : ddmTemplates) {
 				StagedModelDataHandlerUtil.exportStagedModel(
 					portletDataContext, ddmTemplate);
 			}
+
+			// Export DDM structure default values
+
+			ActionableDynamicQuery
+				ddmStructureDefaultValueActionableDynamicQuery =
+					getDDMStructureDefaultValuesActionableDynamicQuery(
+						portletDataContext);
+
+			ddmStructureDefaultValueActionableDynamicQuery.performActions();
 		}
 
 		if (portletDataContext.getBooleanParameter(NAMESPACE, "web-content")) {
@@ -241,6 +252,11 @@ public class JournalPortletDataHandler extends BasePortletDataHandler {
 			}
 		}
 
+		Element articlesElement = portletDataContext.getImportDataGroupElement(
+			JournalArticle.class);
+
+		List<Element> articleElements = articlesElement.elements();
+
 		if (portletDataContext.getBooleanParameter(NAMESPACE, "structures")) {
 			Element ddmStructuresElement =
 				portletDataContext.getImportDataGroupElement(
@@ -254,6 +270,8 @@ public class JournalPortletDataHandler extends BasePortletDataHandler {
 					portletDataContext, ddmStructureElement);
 			}
 
+			// Import DDM templates that belong to DDM structures
+
 			Element ddmTemplatesElement =
 				portletDataContext.getImportDataGroupElement(DDMTemplate.class);
 
@@ -262,6 +280,19 @@ public class JournalPortletDataHandler extends BasePortletDataHandler {
 			for (Element ddmTemplateElement : ddmTemplateElements) {
 				StagedModelDataHandlerUtil.importStagedModel(
 					portletDataContext, ddmTemplateElement);
+			}
+
+			// Importing DDM structure default values
+
+			for (Element articleElement : articleElements) {
+				String className = articleElement.attributeValue("class-name");
+
+				if (Validator.isNotNull(className) &&
+					className.equals(DDMStructure.class.getName())) {
+
+					StagedModelDataHandlerUtil.importStagedModel(
+						portletDataContext, articleElement);
+				}
 			}
 		}
 
@@ -278,11 +309,6 @@ public class JournalPortletDataHandler extends BasePortletDataHandler {
 			StagedModelDataHandlerUtil.importStagedModel(
 				portletDataContext, folderElement);
 		}
-
-		Element articlesElement = portletDataContext.getImportDataGroupElement(
-			JournalArticle.class);
-
-		List<Element> articleElements = articlesElement.elements();
 
 		for (Element articleElement : articleElements) {
 			StagedModelDataHandlerUtil.importStagedModel(
@@ -454,6 +480,21 @@ public class JournalPortletDataHandler extends BasePortletDataHandler {
 				DDMStructure.class.getName(), JournalArticle.class.getName()));
 
 		return exportActionableDynamicQuery;
+	}
+
+	protected ActionableDynamicQuery
+		getDDMStructureDefaultValuesActionableDynamicQuery(
+			PortletDataContext portletDataContext) {
+
+		ExportActionableDynamicQuery actionableDynamicQuery =
+			JournalArticleLocalServiceUtil.getExportActionableDynamicQuery(
+				portletDataContext);
+
+		actionableDynamicQuery.setStagedModelType(
+			new StagedModelType(
+				JournalArticle.class.getName(), DDMStructure.class.getName()));
+
+		return actionableDynamicQuery;
 	}
 
 	protected ActionableDynamicQuery getDDMTemplateActionableDynamicQuery(

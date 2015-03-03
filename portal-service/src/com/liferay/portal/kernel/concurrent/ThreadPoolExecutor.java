@@ -438,6 +438,10 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 		return defaultNoticeableFuture;
 	}
 
+	public NoticeableFuture<Void> terminationNoticeableFuture() {
+		return _terminationDefaultNoticeableFuture;
+	}
+
 	@Override
 	protected void finalize() {
 		shutdown();
@@ -583,7 +587,10 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 				_runState = _TERMINATED;
 
 				_terminationCondition.signalAll();
+
 				_threadPoolHandler.terminated();
+
+				_terminationDefaultNoticeableFuture.run();
 
 				return;
 			}
@@ -614,6 +621,18 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 	private volatile int _runState;
 	private final TaskQueue<Runnable> _taskQueue;
 	private final Condition _terminationCondition = _mainLock.newCondition();
+
+	private final DefaultNoticeableFuture<Void>
+		_terminationDefaultNoticeableFuture =
+			new DefaultNoticeableFuture<Void>() {
+
+				@Override
+				public boolean cancel(boolean mayInterruptIfRunning) {
+					return false;
+				}
+
+			};
+
 	private volatile ThreadFactory _threadFactory;
 	private volatile ThreadPoolHandler _threadPoolHandler;
 	private final Set<WorkerTask> _workerTasks;
