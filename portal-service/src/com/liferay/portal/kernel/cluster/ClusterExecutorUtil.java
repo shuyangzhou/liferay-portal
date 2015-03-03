@@ -61,25 +61,12 @@ public class ClusterExecutorUtil {
 		return clusterExecutor.execute(clusterRequest);
 	}
 
-	public static FutureClusterResponses execute(
-		ClusterRequest clusterRequest,
-		ClusterResponseCallback clusterResponseCallback) {
-
-		ClusterExecutor clusterExecutor = getClusterExecutor();
-
-		if (clusterExecutor == null) {
-			return null;
-		}
-
-		return clusterExecutor.execute(clusterRequest, clusterResponseCallback);
-	}
-
 	public static ClusterExecutor getClusterExecutor() {
 		PortalRuntimePermission.checkGetBeanProperty(ClusterExecutorUtil.class);
 
 		if ((_clusterExecutor == null) || !_clusterExecutor.isEnabled()) {
 			if (_log.isWarnEnabled()) {
-				_log.warn("ClusterExecutorUtil has not been initialized");
+				_log.warn("ClusterExecutorUtil was not initialized");
 			}
 
 			return null;

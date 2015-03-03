@@ -47,8 +47,8 @@ import org.osgi.util.tracker.BundleTrackerCustomizer;
 public class AxisExtender {
 
 	@Activate
-	protected void activate(ComponentContext context) {
-		BundleContext bundleContext = context.getBundleContext();
+	protected void activate(ComponentContext componentContext) {
+		BundleContext bundleContext = componentContext.getBundleContext();
 
 		_bundleTracker = new BundleTracker<>(
 			bundleContext, Bundle.ACTIVE,

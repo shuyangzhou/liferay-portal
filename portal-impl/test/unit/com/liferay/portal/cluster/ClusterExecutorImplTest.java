@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.cluster.Address;
 import com.liferay.portal.kernel.cluster.ClusterEvent;
 import com.liferay.portal.kernel.cluster.ClusterEventListener;
 import com.liferay.portal.kernel.cluster.ClusterEventType;
+import com.liferay.portal.kernel.cluster.ClusterInvokeThreadLocal;
 import com.liferay.portal.kernel.cluster.ClusterMessageType;
 import com.liferay.portal.kernel.cluster.ClusterNode;
 import com.liferay.portal.kernel.cluster.ClusterNodeResponse;
@@ -30,6 +31,7 @@ import com.liferay.portal.kernel.test.JDKLoggerTestUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.NewEnv;
 import com.liferay.portal.kernel.util.MethodHandler;
+import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
@@ -40,12 +42,13 @@ import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PropsImpl;
 import com.liferay.portal.uuid.PortalUUIDImpl;
 
+import java.lang.reflect.InvocationTargetException;
+
 import java.net.InetAddress;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
@@ -563,32 +566,63 @@ public class ClusterExecutorImplTest extends BaseClusterExecutorImplTestCase {
 		}
 	)
 	@Test
-	public void testExecuteWithCallBack() throws Exception {
+	public void testExecuteClusterRequest() throws Exception {
 		ClusterExecutorImpl clusterExecutorImpl = getClusterExecutorImpl();
 
 		try {
+
+			// Test 1, method handler is null
+
+			ClusterNodeResponse clusterNodeResponse =
+				clusterExecutorImpl.executeClusterRequest(
+					ClusterRequest.createMulticastRequest(null));
+
+			Exception exception = clusterNodeResponse.getException();
+
+			Assert.assertEquals(
+				"Payload is not of type " + MethodHandler.class.getName(),
+				exception.getMessage());
+
+			// Test 2, invoke with exception
+
 			String timestamp = String.valueOf(System.currentTimeMillis());
 
-			MethodHandler methodHandler = new MethodHandler(
-				testMethod1MethodKey, timestamp);
+			clusterNodeResponse = clusterExecutorImpl.executeClusterRequest(
+				ClusterRequest.createMulticastRequest(
+					new MethodHandler(testMethod3MethodKey, timestamp)));
 
-			ClusterNode clusterNode = clusterExecutorImpl.getLocalClusterNode();
+			try {
+				clusterNodeResponse.getResult();
 
-			ClusterRequest clusterRequest = ClusterRequest.createUnicastRequest(
-				methodHandler, clusterNode.getClusterNodeId());
+				Assert.fail();
+			}
+			catch (InvocationTargetException ite) {
+				Throwable throwable = ite.getTargetException();
 
-			MockClusterResponseCallback mockClusterResponseCallback =
-				new MockClusterResponseCallback();
+				Assert.assertEquals(timestamp, throwable.getMessage());
+			}
 
-			FutureClusterResponses futureClusterResponses =
-				clusterExecutorImpl.execute(
-					clusterRequest, mockClusterResponseCallback);
+			// Test 3, invoke without exception
 
-			BlockingQueue<ClusterNodeResponse> blockingQueue =
-				mockClusterResponseCallback.waitMessage();
+			timestamp = String.valueOf(System.currentTimeMillis());
 
-			Assert.assertSame(
-				futureClusterResponses.getPartialResults(), blockingQueue);
+			clusterNodeResponse = clusterExecutorImpl.executeClusterRequest(
+				ClusterRequest.createMulticastRequest(
+					new MethodHandler(testMethod1MethodKey, timestamp)));
+
+			Assert.assertEquals(timestamp, clusterNodeResponse.getResult());
+
+			// Test 4, test thread local
+
+			Assert.assertTrue(ClusterInvokeThreadLocal.isEnabled());
+
+			clusterNodeResponse = clusterExecutorImpl.executeClusterRequest(
+				ClusterRequest.createMulticastRequest(
+					new MethodHandler(
+						new MethodKey(TestBean.class, "testMethod5"))));
+
+			Assert.assertFalse((Boolean)clusterNodeResponse.getResult());
+			Assert.assertTrue(ClusterInvokeThreadLocal.isEnabled());
 		}
 		finally {
 			clusterExecutorImpl.destroy();
