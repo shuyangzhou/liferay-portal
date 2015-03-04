@@ -17,27 +17,24 @@ package com.liferay.portal.cluster;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
 
-import org.jgroups.Address;
 import org.jgroups.Message;
-import org.jgroups.Receiver;
+import org.jgroups.ReceiverAdapter;
 import org.jgroups.View;
 
 /**
  * @author Tina Tian
  */
-public abstract class BaseReceiver implements Receiver {
+public abstract class BaseReceiver extends ReceiverAdapter {
 
-	@Override
-	public void block() {
-	}
+	public BaseReceiver(ExecutorService executorService) {
+		if (executorService == null) {
+			throw new NullPointerException("Executor service is null");
+		}
 
-	@Override
-	public void getState(OutputStream outputStream) {
+		_executorService = executorService;
 	}
 
 	public View getView() {
@@ -52,26 +49,20 @@ public abstract class BaseReceiver implements Receiver {
 	public void receive(Message message) {
 		try {
 			_countDownLatch.await();
+
+			if (_executorService.isShutdown()) {
+				_log.error("Executor server is already closed");
+
+				return;
+			}
+
+			_executorService.execute(new MessageCallBackJob(this, message));
 		}
 		catch (InterruptedException ie) {
 			_log.error(
 				"Latch opened prematurely by interruption. Dependence may " +
 					"not be ready.");
 		}
-
-		doReceive(message);
-	}
-
-	@Override
-	public void setState(InputStream inputStream) {
-	}
-
-	@Override
-	public void suspect(Address address) {
-	}
-
-	@Override
-	public void unblock() {
 	}
 
 	@Override
@@ -88,18 +79,24 @@ public abstract class BaseReceiver implements Receiver {
 
 		try {
 			_countDownLatch.await();
+
+			if (_executorService.isShutdown()) {
+				_log.error("Executor server is already closed");
+
+				return;
+			}
+
+			View oldView = _view;
+
+			_view = view;
+
+			_executorService.execute(new ViewCallBackJob(this, oldView, view));
 		}
 		catch (InterruptedException ie) {
 			_log.error(
 				"Latch opened prematurely by interruption. Dependence may " +
 					"not be ready.");
 		}
-
-		View oldView = _view;
-
-		_view = view;
-
-		doViewAccepted(oldView, view);
 	}
 
 	protected abstract void doReceive(Message message);
@@ -110,6 +107,45 @@ public abstract class BaseReceiver implements Receiver {
 	private static final Log _log = LogFactoryUtil.getLog(BaseReceiver.class);
 
 	private final CountDownLatch _countDownLatch = new CountDownLatch(1);
+	private final ExecutorService _executorService;
 	private volatile View _view;
+
+	private class MessageCallBackJob implements Runnable {
+
+		public MessageCallBackJob(BaseReceiver baseReceiver, Message message) {
+			_baseReceiver = baseReceiver;
+			_message = message;
+		}
+
+		@Override
+		public void run() {
+			_baseReceiver.doReceive(_message);
+		}
+
+		private final BaseReceiver _baseReceiver;
+		private final Message _message;
+
+	}
+
+	private class ViewCallBackJob implements Runnable {
+
+		public ViewCallBackJob(
+			BaseReceiver baseReceiver, View oldView, View newView) {
+
+			_baseReceiver = baseReceiver;
+			_oldView = oldView;
+			_newView = newView;
+		}
+
+		@Override
+		public void run() {
+			_baseReceiver.doViewAccepted(_oldView, _newView);
+		}
+
+		private final BaseReceiver _baseReceiver;
+		private final View _newView;
+		private final View _oldView;
+
+	}
 
 }
