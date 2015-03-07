@@ -14,6 +14,7 @@
 
 package com.liferay.portal.search.lucene;
 
+import com.liferay.portal.kernel.cluster.Address;
 import com.liferay.portal.kernel.cluster.ClusterEvent;
 import com.liferay.portal.kernel.cluster.ClusterEventListener;
 import com.liferay.portal.kernel.cluster.ClusterExecutor;
@@ -103,7 +104,7 @@ public class LuceneHelperImplTest {
 
 		PortalInstances.addCompanyId(_COMPANY_ID);
 
-		_localhostInetAddress = InetAddress.getLocalHost();
+		_localhostInetAddress = InetAddress.getLoopbackAddress();
 
 		_mockClusterExecutor = new MockClusterExecutor();
 
@@ -815,6 +816,11 @@ public class LuceneHelperImplTest {
 		}
 
 		@Override
+		public List<Address> getView() {
+			return null;
+		}
+
+		@Override
 		public void initialize() {
 		}
 
@@ -826,6 +832,15 @@ public class LuceneHelperImplTest {
 		@Override
 		public boolean isEnabled() {
 			return PropsValues.CLUSTER_LINK_ENABLED;
+		}
+
+		@Override
+		public void openLatch() {
+		}
+
+		@Override
+		public void receive(
+			Object messagePayload, Address srcAddress, Address destAddress) {
 		}
 
 		@Override
@@ -871,6 +886,10 @@ public class LuceneHelperImplTest {
 
 		public void setPortalInetAddress(InetAddress portalInetAddress) {
 			_portalInetAddress = portalInetAddress;
+		}
+
+		@Override
+		public void viewAccepted(List<Address> view) {
 		}
 
 		private Object _invoke(MethodHandler methodHandler) throws Exception {

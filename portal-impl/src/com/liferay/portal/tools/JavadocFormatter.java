@@ -78,18 +78,18 @@ import org.apache.tools.ant.DirectoryScanner;
  */
 public class JavadocFormatter {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
+		Map<String, String> arguments = ArgumentsUtil.parseArguments(args);
+
 		try {
-			new JavadocFormatter(args);
+			new JavadocFormatter(arguments);
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			ArgumentsUtil.processMainException(arguments, e);
 		}
 	}
 
-	public JavadocFormatter(String[] args) throws Exception {
-		Map<String, String> arguments = ArgumentsUtil.parseArguments(args);
-
+	public JavadocFormatter(Map<String, String> arguments) throws Exception {
 		String init = arguments.get("javadoc.init");
 
 		if (Validator.isNotNull(init) && !init.startsWith("$")) {

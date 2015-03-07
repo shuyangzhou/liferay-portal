@@ -2,6 +2,8 @@
 <!DOCTYPE project>
 
 <project>
+	<property name="javac.source" value="1.6" />
+	<property name="javac.target" value="1.6" />
 	<property name="original.lib.name" value="struts" />
 	<property name="original.lib.url" value="http://search.maven.org/remotecontent?filepath=struts" />
 	<property name="original.lib.version" value="1.2.9" />

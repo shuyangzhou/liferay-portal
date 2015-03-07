@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * @author Shuyang Zhou
  */
-public interface ClusterExecutor {
+public interface ClusterExecutor extends ClusterReceiver {
 
 	public void addClusterEventListener(
 		ClusterEventListener clusterEventListener);

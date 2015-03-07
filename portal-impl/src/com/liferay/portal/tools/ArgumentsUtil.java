@@ -14,11 +14,14 @@
 
 package com.liferay.portal.tools;
 
+import com.liferay.portal.kernel.util.GetterUtil;
+
 import java.util.Map;
 
 /**
  * @author Shuyang Zhou
  * @author Raymond Augé
+ * @author Gregory Amerson
  */
 public class ArgumentsUtil {
 
@@ -46,6 +49,19 @@ public class ArgumentsUtil {
 		}
 
 		return arguments;
+	}
+
+	public static void processMainException(
+			Map<String, String> arguments, Exception e)
+		throws Exception {
+
+		String throwMainException = arguments.get("tools.throw.main.exception");
+
+		if (GetterUtil.getBoolean(throwMainException, true)) {
+			throw e;
+		}
+
+		e.printStackTrace();
 	}
 
 }
