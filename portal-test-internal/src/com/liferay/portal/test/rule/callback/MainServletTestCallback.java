@@ -56,6 +56,8 @@ public class MainServletTestCallback extends BaseTestCallback<Object, Object> {
 
 	@Override
 	public Object doBeforeClass(Description description) {
+		ServiceTestUtil.initPermissions();
+
 		if (_mainServlet == null) {
 			ServiceTestUtil.initStaticServices();
 
@@ -95,7 +97,6 @@ public class MainServletTestCallback extends BaseTestCallback<Object, Object> {
 		}
 
 		ServiceTestUtil.initServices();
-		ServiceTestUtil.initPermissions();
 
 		return null;
 	}
