@@ -130,7 +130,20 @@ public class ClassNameLocalServiceImpl
 		ClassName className = _classNames.get(value);
 
 		if (className == null) {
+			System.out.println(
+				"####################Creating class name : " + value);
+
 			className = classNameLocalService.addClassName(value);
+
+			System.out.println(
+				"####################Created class name : " + value);
+
+			if (value.startsWith("com.liferay.bookmarks.") ||
+				value.startsWith("com.liferay.polls.") ||
+				value.startsWith("com.liferay.wiki.")) {
+
+				new Exception("Stack trace").printStackTrace(System.out);
+			}
 
 			_classNames.put(value, className);
 		}
