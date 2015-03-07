@@ -15,7 +15,6 @@
 package com.liferay.portal.service.test;
 
 import com.liferay.portal.jcr.JCRFactoryUtil;
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.BaseDestination;
@@ -23,9 +22,6 @@ import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.messaging.SynchronousDestination;
-import com.liferay.portal.kernel.messaging.sender.MessageSender;
-import com.liferay.portal.kernel.messaging.sender.SynchronousMessageSender;
-import com.liferay.portal.kernel.scheduler.SchedulerEngineHelperUtil;
 import com.liferay.portal.kernel.search.SearchEngineUtil;
 import com.liferay.portal.kernel.test.util.RoleTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
@@ -38,7 +34,6 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.model.impl.PortletImpl;
 import com.liferay.portal.repository.liferayrepository.LiferayRepository;
 import com.liferay.portal.security.auth.PrincipalThreadLocal;
-import com.liferay.portal.security.lang.DoPrivilegedUtil;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.security.permission.PermissionThreadLocal;
@@ -47,7 +42,6 @@ import com.liferay.portal.service.CompanyLocalServiceUtil;
 import com.liferay.portal.service.ResourceActionLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextThreadLocal;
-import com.liferay.portal.tools.DBUpgrader;
 import com.liferay.portal.util.PortalInstances;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PropsUtil;
@@ -167,34 +161,6 @@ public class ServiceTestUtil {
 
 		PortalRegisterTestUtil.registerIndexers();
 
-		// Upgrade
-
-		try {
-			DBUpgrader.upgrade();
-		}
-		catch (AssertionError ae) {
-			_log.error(ae.getMessage(), ae);
-		}
-		catch (Exception e) {
-			_log.error(e.getMessage(), e);
-		}
-
-		// Messaging
-
-		MessageBus messageBus = (MessageBus)PortalBeanLocatorUtil.locate(
-			MessageBus.class.getName());
-		MessageSender messageSender =
-			(MessageSender)PortalBeanLocatorUtil.locate(
-				MessageSender.class.getName());
-		SynchronousMessageSender synchronousMessageSender =
-			(SynchronousMessageSender)PortalBeanLocatorUtil.locate(
-				SynchronousMessageSender.class.getName());
-
-		MessageBusUtil.init(
-			DoPrivilegedUtil.wrap(messageBus),
-			DoPrivilegedUtil.wrap(messageSender),
-			DoPrivilegedUtil.wrap(synchronousMessageSender));
-
 		if (TestPropsValues.DL_FILE_ENTRY_PROCESSORS_TRIGGER_SYNCHRONOUSLY) {
 			_replaceWithSynchronousDestination(
 				DestinationNames.DOCUMENT_LIBRARY_AUDIO_PROCESSOR);
@@ -206,24 +172,6 @@ public class ServiceTestUtil {
 				DestinationNames.DOCUMENT_LIBRARY_RAW_METADATA_PROCESSOR);
 			_replaceWithSynchronousDestination(
 				DestinationNames.DOCUMENT_LIBRARY_VIDEO_PROCESSOR);
-		}
-
-		// Scheduler
-
-		try {
-			SchedulerEngineHelperUtil.start();
-		}
-		catch (Exception e) {
-			_log.error(e.getMessage(), e);
-		}
-
-		// Verify
-
-		try {
-			DBUpgrader.verify();
-		}
-		catch (Exception e) {
-			_log.error(e.getMessage(), e);
 		}
 
 		// Class names
