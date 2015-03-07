@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.spring.aop.Skip;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
+import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ClassName;
 import com.liferay.portal.model.ModelHintsUtil;
@@ -130,7 +131,27 @@ public class ClassNameLocalServiceImpl
 		ClassName className = _classNames.get(value);
 
 		if (className == null) {
-			className = classNameLocalService.addClassName(value);
+			try {
+				className = classNameLocalService.addClassName(value);
+
+				System.out.println(
+					"####################Created class name : " + value);
+
+				if (value.startsWith("com.liferay.bookmarks.") ||
+					value.startsWith("com.liferay.polls.") ||
+					value.startsWith("com.liferay.wiki.")) {
+
+					new Exception("Created localtion").printStackTrace(
+						System.out);
+				}
+			}
+			catch (Throwable t) {
+				System.out.println("Unable to create class name : " + value);
+
+				t.printStackTrace(System.out);
+
+				return ReflectionUtil.throwException(t);
+			}
 
 			_classNames.put(value, className);
 		}
