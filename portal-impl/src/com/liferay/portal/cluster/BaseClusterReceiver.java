@@ -29,13 +29,7 @@ import java.util.concurrent.RejectedExecutionException;
  */
 public abstract class BaseClusterReceiver implements ClusterReceiver {
 
-	public BaseClusterReceiver(ExecutorService executorService) {
-		if (executorService == null) {
-			throw new NullPointerException("Executor service is null");
-		}
-
-		_executorService = executorService;
-
+	public BaseClusterReceiver() {
 		boolean hasDoViewAccepted = false;
 
 		Class<?> clazz = getClass();
@@ -68,7 +62,9 @@ public abstract class BaseClusterReceiver implements ClusterReceiver {
 		try {
 			_countDownLatch.await();
 
-			_executorService.execute(
+			ExecutorService executorService = getExecutorService();
+
+			executorService.execute(
 				new MessageCallBackJob(
 					messagePayload, srcAddress, destAddress));
 		}
@@ -99,7 +95,9 @@ public abstract class BaseClusterReceiver implements ClusterReceiver {
 			_view = view;
 
 			if (_hasDoViewAccepted) {
-				_executorService.execute(new ViewCallBackJob(oldView, view));
+				ExecutorService executorService = getExecutorService();
+
+				executorService.execute(new ViewCallBackJob(oldView, view));
 			}
 		}
 		catch (InterruptedException ie) {
@@ -121,11 +119,12 @@ public abstract class BaseClusterReceiver implements ClusterReceiver {
 		List<Address> oldView, List<Address> newView) {
 	}
 
+	protected abstract ExecutorService getExecutorService();
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		BaseClusterReceiver.class);
 
 	private final CountDownLatch _countDownLatch = new CountDownLatch(1);
-	private final ExecutorService _executorService;
 	private final boolean _hasDoViewAccepted;
 	private volatile List<Address> _view;
 

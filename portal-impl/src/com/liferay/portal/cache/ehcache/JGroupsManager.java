@@ -58,7 +58,7 @@ public class JGroupsManager implements CacheManagerPeerProvider, CachePeer {
 		_executorService = PortalExecutorManagerUtil.getPortalExecutor(
 			JGroupsManager.class.getName());
 
-		_clusterReceiver = new EhcacheJGroupsReceiver(_executorService);
+		_clusterReceiver = new EhcacheJGroupsReceiver();
 
 		JChannel jChannel = null;
 
@@ -313,8 +313,9 @@ public class JGroupsManager implements CacheManagerPeerProvider, CachePeer {
 			}
 		}
 
-		private EhcacheJGroupsReceiver(ExecutorService executorService) {
-			super(executorService);
+		@Override
+		protected ExecutorService getExecutorService() {
+			return _executorService;
 		}
 
 	}
