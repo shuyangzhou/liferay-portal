@@ -19,7 +19,7 @@ import com.liferay.portal.kernel.messaging.Message;
 /**
  * @author Shuyang Zhou
  */
-public interface ClusterLink {
+public interface ClusterLink extends ClusterReceiver {
 
 	public static final int MAX_CHANNEL_COUNT = Priority.values().length;
 

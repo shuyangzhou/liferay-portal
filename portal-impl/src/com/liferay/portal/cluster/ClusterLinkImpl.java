@@ -18,7 +18,6 @@ import com.liferay.portal.kernel.cluster.Address;
 import com.liferay.portal.kernel.cluster.ClusterChannel;
 import com.liferay.portal.kernel.cluster.ClusterInvokeThreadLocal;
 import com.liferay.portal.kernel.cluster.ClusterLink;
-import com.liferay.portal.kernel.cluster.ClusterReceiver;
 import com.liferay.portal.kernel.cluster.Priority;
 import com.liferay.portal.kernel.executor.PortalExecutorManagerUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -41,7 +40,8 @@ import java.util.concurrent.ExecutorService;
  * @author Shuyang Zhou
  */
 @DoPrivileged
-public class ClusterLinkImpl implements ClusterLink {
+public class ClusterLinkImpl
+	extends BaseClusterReceiver implements ClusterLink {
 
 	public void destroy() {
 		if (!isEnabled()) {
@@ -75,9 +75,7 @@ public class ClusterLinkImpl implements ClusterLink {
 			throw new IllegalStateException(e);
 		}
 
-		for (ClusterReceiver clusterReceiver : _clusterReceivers) {
-			clusterReceiver.openLatch();
-		}
+		openLatch();
 	}
 
 	@Override
@@ -115,6 +113,20 @@ public class ClusterLinkImpl implements ClusterLink {
 		clusterChannel.sendUnicastMessage(message, address);
 	}
 
+	@Override
+	protected void doReceive(
+		Object messagePayload, Address srcAddress, Address destAddress) {
+
+		if (_localTransportAddresses.contains(srcAddress)) {
+			if (_log.isDebugEnabled()) {
+				_log.debug("Block received message " + messagePayload);
+			}
+		}
+		else {
+			sendLocalMessage((Message)messagePayload);
+		}
+	}
+
 	protected ClusterChannel getChannel(Priority priority) {
 		int channelIndex =
 			priority.ordinal() * _channelCount / MAX_CHANNEL_COUNT;
@@ -128,12 +140,9 @@ public class ClusterLinkImpl implements ClusterLink {
 		return _transportChannels.get(channelIndex);
 	}
 
+	@Override
 	protected ExecutorService getExecutorService() {
 		return _executorService;
-	}
-
-	protected List<Address> getLocalTransportAddresses() {
-		return _localTransportAddresses;
 	}
 
 	protected void initChannels() throws Exception {
@@ -149,7 +158,6 @@ public class ClusterLinkImpl implements ClusterLink {
 
 		_localTransportAddresses = new ArrayList<>(_channelCount);
 		_transportChannels = new ArrayList<>(_channelCount);
-		_clusterReceivers = new ArrayList<>(_channelCount);
 
 		List<String> keys = new ArrayList<>(_channelCount);
 
@@ -164,12 +172,9 @@ public class ClusterLinkImpl implements ClusterLink {
 
 			String value = transportProperties.getProperty(customName);
 
-			ClusterReceiver clusterReceiver = new ClusterForwardReceiver(this);
-
 			ClusterChannel clusterChannel = new JGroupsClusterChannel(
-				value, _LIFERAY_TRANSPORT_CHANNEL + i, clusterReceiver);
+				value, _LIFERAY_TRANSPORT_CHANNEL + i, this);
 
-			_clusterReceivers.add(clusterReceiver);
 			_localTransportAddresses.add(clusterChannel.getLocalAddress());
 			_transportChannels.add(clusterChannel);
 		}
@@ -207,7 +212,6 @@ public class ClusterLinkImpl implements ClusterLink {
 		ClusterLinkImpl.class);
 
 	private int _channelCount;
-	private List<ClusterReceiver> _clusterReceivers;
 	private ExecutorService _executorService;
 	private List<Address> _localTransportAddresses;
 	private List<ClusterChannel> _transportChannels;
