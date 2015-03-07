@@ -13,3 +13,20 @@
  * details.
  */
 --%>
+
+<%@ include file="/layout/view/init.jsp" %>
+
+<%
+String portletId = ParamUtil.getString(request, "p_p_id");
+%>
+
+<aui:container>
+	<aui:row>
+		<aui:col width="<%= 25 %>">
+			<productivity-center-ui:panel servletContext="<%= application %>" />
+		</aui:col>
+		<aui:col width="<%= 75 %>">
+			<productivity-center-ui:panel-content portletId="<%= portletId %>" servletContext="<%= application %>" />
+		</aui:col>
+	</aui:row>
+</aui:container>

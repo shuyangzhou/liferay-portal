@@ -53,7 +53,7 @@ public class LangBuilder {
 	public static final String AUTOMATIC_TRANSLATION =
 		" (Automatic Translation)";
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		ToolDependencies.wireBasic();
 
 		Map<String, String> arguments = ArgumentsUtil.parseArguments(args);
@@ -71,7 +71,7 @@ public class LangBuilder {
 			new LangBuilder(langDir, langFile, langPlugin, langTranslate);
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			ArgumentsUtil.processMainException(arguments, e);
 		}
 	}
 
