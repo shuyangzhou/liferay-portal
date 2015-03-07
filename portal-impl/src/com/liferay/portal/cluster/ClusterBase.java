@@ -14,7 +14,7 @@
 
 package com.liferay.portal.cluster;
 
-import com.liferay.portal.kernel.cluster.Address;
+import com.liferay.portal.kernel.cluster.ClusterReceiver;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.CharPool;
@@ -26,13 +26,7 @@ import com.liferay.portal.util.PropsValues;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.jgroups.JChannel;
-import org.jgroups.Receiver;
-import org.jgroups.View;
 import org.jgroups.stack.Protocol;
 import org.jgroups.stack.ProtocolStack;
 
@@ -69,12 +63,13 @@ public abstract class ClusterBase {
 	}
 
 	protected JChannel createJChannel(
-			String properties, Receiver receiver, String clusterName)
+			String properties, ClusterReceiver clusterReceiver,
+			String clusterName)
 		throws Exception {
 
 		JChannel jChannel = new JChannel(properties);
 
-		jChannel.setReceiver(receiver);
+		jChannel.setReceiver(new JGroupsReceiver(clusterReceiver));
 
 		jChannel.connect(clusterName);
 
@@ -85,27 +80,6 @@ public abstract class ClusterBase {
 		}
 
 		return jChannel;
-	}
-
-	protected List<Address> getAddresses(JChannel channel) {
-		JGroupsReceiver jGroupsReceiver =
-			(JGroupsReceiver)channel.getReceiver();
-
-		View view = jGroupsReceiver.getView();
-
-		List<org.jgroups.Address> jGroupsAddresses = view.getMembers();
-
-		if (jGroupsAddresses == null) {
-			return Collections.emptyList();
-		}
-
-		List<Address> addresses = new ArrayList<>(jGroupsAddresses.size());
-
-		for (org.jgroups.Address jgroupsAddress : jGroupsAddresses) {
-			addresses.add(new AddressImpl(jgroupsAddress));
-		}
-
-		return addresses;
 	}
 
 	protected InetAddress getBindInetAddress(JChannel jChannel) {
