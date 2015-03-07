@@ -134,16 +134,16 @@ public class ClassNameLocalServiceImpl
 			try {
 				className = classNameLocalService.addClassName(value);
 
-				if (value.startsWith("com.liferay.bookmarks.") ||
-					value.startsWith("com.liferay.polls.") ||
-					value.startsWith("com.liferay.wiki.")) {
-
-					new Exception(
-						"#######Created class name : " + value + ", " +
-							Thread.currentThread().getName() + "-" +
-								Thread.currentThread().getId()).printStackTrace(
-									System.out);
-				}
+//				if (value.startsWith("com.liferay.bookmarks.") ||
+//					value.startsWith("com.liferay.polls.") ||
+//					value.startsWith("com.liferay.wiki.")) {
+//
+//					new Exception(
+//						"#######Created class name : " + value + ", " +
+//							Thread.currentThread().getName() + "-" +
+//								Thread.currentThread().getId()).printStackTrace(
+//									System.out);
+//				}
 			}
 			catch (Throwable t) {
 				new Exception(
