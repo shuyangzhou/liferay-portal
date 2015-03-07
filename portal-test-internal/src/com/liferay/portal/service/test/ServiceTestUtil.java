@@ -118,10 +118,6 @@ public class ServiceTestUtil {
 			roleName, roleType, resourceName, scope, primKey, actionId);
 	}
 
-	public static void destroyServices() {
-		_deleteDirectories();
-	}
-
 	public static void initPermissions() {
 		try {
 			PortalInstances.addCompanyId(TestPropsValues.getCompanyId());
