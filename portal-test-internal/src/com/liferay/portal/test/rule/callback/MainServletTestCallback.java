@@ -56,11 +56,9 @@ public class MainServletTestCallback extends BaseTestCallback<Object, Object> {
 
 	@Override
 	public Object doBeforeClass(Description description) {
-		ServiceTestUtil.initServices();
-
-		ServiceTestUtil.initPermissions();
-
 		if (_mainServlet == null) {
+			ServiceTestUtil.initStaticServices();
+
 			final MockServletContext mockServletContext =
 				new AutoDeployMockServletContext(
 					new FileSystemResourceLoader());
@@ -95,6 +93,9 @@ public class MainServletTestCallback extends BaseTestCallback<Object, Object> {
 					"The main servlet could not be initialized");
 			}
 		}
+
+		ServiceTestUtil.initServices();
+		ServiceTestUtil.initPermissions();
 
 		return null;
 	}
