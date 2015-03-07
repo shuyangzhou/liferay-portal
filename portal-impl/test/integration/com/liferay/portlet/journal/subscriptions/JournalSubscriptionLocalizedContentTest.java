@@ -61,9 +61,11 @@ public class JournalSubscriptionLocalizedContentTest
 	}
 
 	@Override
-	protected long addBaseModel(long containerModelId) throws Exception {
+	protected long addBaseModel(long userId, long containerModelId)
+		throws Exception {
+
 		JournalArticle article = JournalTestUtil.addArticle(
-			group.getGroupId(), containerModelId);
+			userId, group.getGroupId(), containerModelId);
 
 		return article.getResourcePrimKey();
 	}
@@ -113,11 +115,13 @@ public class JournalSubscriptionLocalizedContentTest
 	}
 
 	@Override
-	protected void updateBaseModel(long baseModelId) throws Exception {
+	protected void updateBaseModel(long userId, long baseModelId)
+		throws Exception {
+
 		JournalArticle article =
 			JournalArticleLocalServiceUtil.getLatestArticle(baseModelId);
 
-		JournalTestUtil.updateArticleWithWorkflow(article, true);
+		JournalTestUtil.updateArticleWithWorkflow(userId, article, true);
 	}
 
 }
