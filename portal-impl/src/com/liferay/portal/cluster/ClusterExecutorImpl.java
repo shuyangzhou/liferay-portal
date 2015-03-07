@@ -69,7 +69,6 @@ import java.util.concurrent.ExecutorService;
  */
 @DoPrivileged
 public class ClusterExecutorImpl
-	extends ClusterBase
 	implements ClusterExecutor, PortalInetSocketAddressEventListener {
 
 	@Override
@@ -225,6 +224,11 @@ public class ClusterExecutorImpl
 		}
 
 		return _clusterNodeAddresses.containsKey(clusterNodeId);
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return PropsValues.CLUSTER_LINK_ENABLED;
 	}
 
 	@Override
