@@ -26,7 +26,6 @@ import com.liferay.portal.kernel.messaging.SynchronousDestination;
 import com.liferay.portal.kernel.messaging.sender.MessageSender;
 import com.liferay.portal.kernel.messaging.sender.SynchronousMessageSender;
 import com.liferay.portal.kernel.scheduler.SchedulerEngineHelperUtil;
-import com.liferay.portal.kernel.search.SearchEngineUtil;
 import com.liferay.portal.kernel.test.util.RoleTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.FileUtil;
@@ -116,10 +115,6 @@ public class ServiceTestUtil {
 
 		return RoleTestUtil.addRole(
 			roleName, roleType, resourceName, scope, primKey, actionId);
-	}
-
-	public static void destroyServices() {
-		_deleteDirectories();
 	}
 
 	public static void initPermissions() {
@@ -236,27 +231,15 @@ public class ServiceTestUtil {
 
 		_setThreadLocals();
 
+		// Directories
+
+		_deleteDirectories();
+
 		// Company
 
 		try {
 			CompanyLocalServiceUtil.checkCompany(
 				TestPropsValues.COMPANY_WEB_ID);
-		}
-		catch (Exception e) {
-			_log.error(e.getMessage(), e);
-		}
-
-		// Directories
-
-		_deleteDirectories();
-
-		// Lucene
-
-		try {
-			FileUtil.mkdirs(
-				PropsValues.LUCENE_DIR + TestPropsValues.getCompanyId());
-
-			SearchEngineUtil.initialize(TestPropsValues.getCompanyId());
 		}
 		catch (Exception e) {
 			_log.error(e.getMessage(), e);
