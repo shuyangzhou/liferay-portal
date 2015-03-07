@@ -6257,6 +6257,10 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 		SubscriptionSender subscriptionSender = new SubscriptionSender();
 
+		if (serviceContext == null) {
+			throw new IllegalArgumentException("ServiceContext is null");
+		}
+
 		subscriptionSender.setCompanyId(companyId);
 		subscriptionSender.setContextAttributes(
 			"[$PASSWORD_RESET_URL$]", passwordResetURL, "[$REMOTE_ADDRESS$]",
