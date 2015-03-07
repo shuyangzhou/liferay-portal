@@ -131,6 +131,10 @@ public class ServiceTestUtil {
 
 	public static void initServices() {
 
+		// Directories
+
+		_deleteDirectories();
+
 		// JCR
 
 		try {
@@ -139,6 +143,21 @@ public class ServiceTestUtil {
 		catch (Exception e) {
 			_log.error(e.getMessage(), e);
 		}
+
+		// Lucene
+
+		try {
+			FileUtil.mkdirs(
+				PropsValues.LUCENE_DIR + TestPropsValues.getCompanyId());
+
+			SearchEngineUtil.initialize(TestPropsValues.getCompanyId());
+		}
+		catch (Exception e) {
+			_log.error(e.getMessage(), e);
+		}
+	}
+
+	public static void initStaticServices() {
 
 		// Indexers
 
@@ -237,22 +256,6 @@ public class ServiceTestUtil {
 		try {
 			CompanyLocalServiceUtil.checkCompany(
 				TestPropsValues.COMPANY_WEB_ID);
-		}
-		catch (Exception e) {
-			_log.error(e.getMessage(), e);
-		}
-
-		// Directories
-
-		_deleteDirectories();
-
-		// Lucene
-
-		try {
-			FileUtil.mkdirs(
-				PropsValues.LUCENE_DIR + TestPropsValues.getCompanyId());
-
-			SearchEngineUtil.initialize(TestPropsValues.getCompanyId());
 		}
 		catch (Exception e) {
 			_log.error(e.getMessage(), e);
