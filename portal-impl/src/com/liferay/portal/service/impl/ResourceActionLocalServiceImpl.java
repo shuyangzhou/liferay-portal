@@ -155,13 +155,13 @@ public class ResourceActionLocalServiceImpl
 				}
 
 				newResourceActions.add(resourceAction);
-
-				_resourceActions.put(key, resourceAction);
-
-				System.out.println(
-					"#####checkResourceActions single key : " + key +
-						", resourceAction : " + resourceAction);
 			}
+
+			_resourceActions.put(key, resourceAction);
+
+			System.out.println(
+				"#####checkResourceActions single key : " + key +
+					", resourceAction : " + resourceAction);
 		}
 
 		if (!addDefaultActions || (newResourceActions == null)) {
