@@ -283,9 +283,7 @@ public class PortletTracker
 
 			List<Company> companies = _companyLocalService.getCompanies();
 
-			deployPortlet(serviceReference, portletModel, companies);
-
-			checkResources(serviceReference, portletModel, companies);
+			processPortlet(serviceReference, portletModel, companies);
 
 			portletModel.setReady(true);
 
@@ -319,39 +317,6 @@ public class PortletTracker
 		portletModel.setStrutsPath(portletId);
 
 		return portletModel;
-	}
-
-	protected void checkResources(
-			ServiceReference<Portlet> serviceReference,
-			com.liferay.portal.model.Portlet portletModel,
-			List<Company> companies)
-		throws PortalException {
-
-		List<String> portletActions =
-			_resourceActions.getPortletResourceActions(
-				portletModel.getPortletId());
-
-		_resourceActionLocalService.checkResourceActions(
-			portletModel.getPortletId(), portletActions);
-
-		List<String> modelNames = _resourceActions.getPortletModelResources(
-			portletModel.getPortletId());
-
-		for (String modelName : modelNames) {
-			List<String> modelActions =
-				_resourceActions.getModelResourceActions(modelName);
-
-			_resourceActionLocalService.checkResourceActions(
-				modelName, modelActions);
-		}
-
-		for (Company company : companies) {
-			com.liferay.portal.model.Portlet companyPortletModel =
-				_portletLocalService.getPortletById(
-					company.getCompanyId(), portletModel.getPortletId());
-
-			_portletLocalService.checkPortlet(companyPortletModel);
-		}
 	}
 
 	protected void checkWebResources(
@@ -1031,26 +996,6 @@ public class PortletTracker
 		}
 	}
 
-	protected void deployPortlet(
-			ServiceReference<Portlet> serviceReference,
-			com.liferay.portal.model.Portlet portletModel,
-			List<Company> companies)
-		throws PortalException {
-
-		String categoryName = GetterUtil.getString(
-			get(serviceReference, "display-category"), "category.undefined");
-
-		for (Company company : companies) {
-			com.liferay.portal.model.Portlet companyPortletModel =
-				(com.liferay.portal.model.Portlet)portletModel.clone();
-
-			companyPortletModel.setCompanyId(company.getCompanyId());
-
-			_portletLocalService.deployRemotePortlet(
-				companyPortletModel, new String[] {categoryName}, false);
-		}
-	}
-
 	protected Object get(
 		ServiceReference<Portlet> serviceReference, String property) {
 
@@ -1087,6 +1032,49 @@ public class PortletTracker
 		}
 
 		return serviceRegistrations;
+	}
+
+	protected void processPortlet(
+			ServiceReference<Portlet> serviceReference,
+			com.liferay.portal.model.Portlet portletModel,
+			List<Company> companies)
+		throws PortalException {
+
+		List<String> portletActions =
+			_resourceActions.getPortletResourceActions(
+				portletModel.getPortletId());
+
+		_resourceActionLocalService.checkResourceActions(
+			portletModel.getPortletId(), portletActions);
+
+		List<String> modelNames = _resourceActions.getPortletModelResources(
+			portletModel.getPortletId());
+
+		for (String modelName : modelNames) {
+			List<String> modelActions =
+				_resourceActions.getModelResourceActions(modelName);
+
+			_resourceActionLocalService.checkResourceActions(
+				modelName, modelActions);
+		}
+
+		String categoryName = GetterUtil.getString(
+			get(serviceReference, "display-category"), "category.undefined");
+
+		for (Company company : companies) {
+			com.liferay.portal.model.Portlet companyPortletModel =
+				(com.liferay.portal.model.Portlet)portletModel.clone();
+
+			companyPortletModel.setCompanyId(company.getCompanyId());
+
+			_portletLocalService.deployRemotePortlet(
+				companyPortletModel, new String[] {categoryName}, false);
+
+			companyPortletModel = _portletLocalService.getPortletById(
+				company.getCompanyId(), portletModel.getPortletId());
+
+			_portletLocalService.checkPortlet(companyPortletModel);
+		}
 	}
 
 	protected void readResourceActions(
