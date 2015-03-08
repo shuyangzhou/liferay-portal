@@ -74,6 +74,10 @@ public class ResourceActionLocalServiceImpl
 				resourceAction.getName(), resourceAction.getActionId());
 
 			_resourceActions.put(key, resourceAction);
+
+			System.out.println(
+				"#####checkResourceActions all key : " + key +
+					", resourceAction : " + resourceAction);
 		}
 	}
 
@@ -153,6 +157,10 @@ public class ResourceActionLocalServiceImpl
 				newResourceActions.add(resourceAction);
 
 				_resourceActions.put(key, resourceAction);
+
+				System.out.println(
+					"#####checkResourceActions single key : " + key +
+						", resourceAction : " + resourceAction);
 			}
 		}
 
