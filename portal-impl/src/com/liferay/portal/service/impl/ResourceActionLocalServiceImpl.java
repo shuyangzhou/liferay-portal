@@ -41,6 +41,29 @@ public class ResourceActionLocalServiceImpl
 	extends ResourceActionLocalServiceBaseImpl {
 
 	@Override
+	public ResourceAction addResourceAction(
+		String name, String actionId, long bitwiseValue) {
+
+		ResourceAction resourceAction = resourceActionPersistence.fetchByN_A(
+			name, actionId);
+
+		if (resourceAction == null) {
+			long resourceActionId = counterLocalService.increment(
+				ResourceAction.class.getName());
+
+			resourceAction = resourceActionPersistence.create(resourceActionId);
+
+			resourceAction.setName(name);
+			resourceAction.setActionId(actionId);
+			resourceAction.setBitwiseValue(bitwiseValue);
+
+			resourceActionPersistence.update(resourceAction);
+		}
+
+		return resourceAction;
+	}
+
+	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public void checkResourceActions() {
 		List<ResourceAction> resourceActions =
@@ -102,17 +125,26 @@ public class ResourceActionLocalServiceImpl
 					bitwiseValue = lastBitwiseValue;
 				}
 
-				long resourceActionId = counterLocalService.increment(
-					ResourceAction.class.getName());
+				try {
+					resourceAction =
+						resourceActionLocalService.addResourceAction(
+							name, actionId, bitwiseValue);
+				}
+				catch (Throwable t) {
+					try {
+						resourceAction =
+							resourceActionLocalService.addResourceAction(
+								name, actionId, bitwiseValue);
+					}
+					catch (Throwable t2) {
+						System.out.println(
+							"###Unable to recover ResourceAction creation " +
+								"for name : " + name + ", actionId : " +
+									actionId + ", " + t.getMessage());
 
-				resourceAction = resourceActionPersistence.create(
-					resourceActionId);
-
-				resourceAction.setName(name);
-				resourceAction.setActionId(actionId);
-				resourceAction.setBitwiseValue(bitwiseValue);
-
-				resourceActionPersistence.update(resourceAction);
+						throw t2;
+					}
+				}
 
 				if (newResourceActions == null) {
 					newResourceActions = new ArrayList<>();
