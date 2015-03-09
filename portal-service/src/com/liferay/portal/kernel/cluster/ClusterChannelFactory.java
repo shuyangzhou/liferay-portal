@@ -14,22 +14,13 @@
 
 package com.liferay.portal.kernel.cluster;
 
-import com.liferay.portal.kernel.messaging.Message;
-
 /**
- * @author Shuyang Zhou
+ * @author Tina Tian
  */
-public interface ClusterLink extends ClusterReceiver {
+public interface ClusterChannelFactory {
 
-	public static final int MAX_CHANNEL_COUNT = Priority.values().length;
-
-	public void initialize();
-
-	public boolean isEnabled();
-
-	public void sendMulticastMessage(Message message, Priority priority);
-
-	public void sendUnicastMessage(
-		Address address, Message message, Priority priority);
+	public ClusterChannel createClusterChannel(
+		String channelProperties, String clusterName,
+		ClusterReceiver clusterReceiver);
 
 }

@@ -14,22 +14,20 @@
 
 package com.liferay.portal.kernel.cluster;
 
-import com.liferay.portal.kernel.messaging.Message;
+import java.util.List;
 
 /**
- * @author Shuyang Zhou
+ * @author Tina Tian
  */
-public interface ClusterLink extends ClusterReceiver {
+public interface ClusterReceiver {
 
-	public static final int MAX_CHANNEL_COUNT = Priority.values().length;
+	public List<Address> getView();
 
-	public void initialize();
+	public void openLatch();
 
-	public boolean isEnabled();
+	public void receive(
+		Object messagePayload, Address srcAddress, Address destAddress);
 
-	public void sendMulticastMessage(Message message, Priority priority);
-
-	public void sendUnicastMessage(
-		Address address, Message message, Priority priority);
+	public void viewAccepted(List<Address> view);
 
 }

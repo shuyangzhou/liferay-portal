@@ -12,24 +12,29 @@
  * details.
  */
 
-package com.liferay.portal.kernel.cluster;
+package com.liferay.portal.cluster;
 
-import com.liferay.portal.kernel.messaging.Message;
+import com.liferay.portal.kernel.cluster.Address;
 
 /**
- * @author Shuyang Zhou
+ * @author Tina Tian
  */
-public interface ClusterLink extends ClusterReceiver {
+public class TestAddress implements Address {
 
-	public static final int MAX_CHANNEL_COUNT = Priority.values().length;
+	public TestAddress(String address) {
+		_address = address;
+	}
 
-	public void initialize();
+	@Override
+	public String getDescription() {
+		return _address;
+	}
 
-	public boolean isEnabled();
+	@Override
+	public Object getRealAddress() {
+		return _address;
+	}
 
-	public void sendMulticastMessage(Message message, Priority priority);
-
-	public void sendUnicastMessage(
-		Address address, Message message, Priority priority);
+	private final String _address;
 
 }
