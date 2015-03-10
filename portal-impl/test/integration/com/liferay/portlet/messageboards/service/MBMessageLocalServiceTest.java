@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.portletfilerepository.PortletFileRepositoryUtil;
@@ -46,6 +47,7 @@ import java.io.InputStream;
 import java.text.DateFormat;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Assert;
@@ -147,15 +149,15 @@ public class MBMessageLocalServiceTest {
 
 	@Test
 	public void testThreadLastPostDate() throws Exception {
-		MBMessage parentMessage = addMessage(null, false);
+		Date date = new Date();
 
-		Thread.sleep(2000);
+		MBMessage parentMessage = addMessage(null, false, date);
 
-		MBMessage firstReplyMessage = addMessage(parentMessage, false);
+		MBMessage firstReplyMessage = addMessage(
+			parentMessage, false, new Date(date.getTime() + Time.SECOND));
 
-		Thread.sleep(2000);
-
-		MBMessage secondReplyMessage = addMessage(parentMessage, false);
+		MBMessage secondReplyMessage = addMessage(
+			parentMessage, false, new Date(date.getTime() + Time.SECOND * 2));
 
 		DateFormat dateFormat = DateFormatFactoryUtil.getSimpleDateFormat(
 			PropsValues.INDEX_DATE_FORMAT_PATTERN);
@@ -178,6 +180,13 @@ public class MBMessageLocalServiceTest {
 
 	protected MBMessage addMessage(
 			MBMessage parentMessage, boolean addAttachments)
+		throws Exception {
+
+		return addMessage(parentMessage, addAttachments, new Date());
+	}
+
+	protected MBMessage addMessage(
+			MBMessage parentMessage, boolean addAttachments, Date date)
 		throws Exception {
 
 		ServiceContext serviceContext =

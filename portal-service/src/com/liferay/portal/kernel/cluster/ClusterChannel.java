@@ -12,24 +12,27 @@
  * details.
  */
 
-package com.liferay.productivity.center.portlet;
+package com.liferay.portal.kernel.cluster;
 
-import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
+import java.io.Serializable;
 
-import javax.portlet.Portlet;
-
-import org.osgi.service.component.annotations.Component;
+import java.net.InetAddress;
 
 /**
- * @author Sergio González
+ * @author Tina Tian
  */
-@Component(
-	immediate = true,
-	property = {
-		"com.liferay.portlet.display-category=category.hidden",
-		"javax.portlet.init-param.template-path=/"
-	},
-	service = Portlet.class
-)
-public class ProductivityCenterPortlet extends MVCPortlet {
+public interface ClusterChannel {
+
+	public void close();
+
+	public InetAddress getBindInetAddress();
+
+	public String getClusterName();
+
+	public Address getLocalAddress();
+
+	public void sendMulticastMessage(Serializable message);
+
+	public void sendUnicastMessage(Serializable message, Address address);
+
 }
