@@ -18,9 +18,11 @@
 public class Test {
 
 	public static void main(String[] args) throws Exception {
-		//com.liferay.portal.util.InitUtil.initWithSpring();
+		com.liferay.portal.util.InitUtil.initWithSpring(true);
 
 		System.out.println("Test");
+
+		com.liferay.portal.util.InitUtil.stopModuleFramework();
 	}
 
 }
