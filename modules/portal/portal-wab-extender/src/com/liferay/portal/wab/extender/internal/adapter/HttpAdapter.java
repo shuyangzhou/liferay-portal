@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.wab.extender.internal.adaptor;
+package com.liferay.portal.wab.extender.internal.adapter;
 
 import com.liferay.portal.kernel.util.HashMapDictionary;
 
