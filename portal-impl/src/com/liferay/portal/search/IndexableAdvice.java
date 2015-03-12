@@ -101,10 +101,6 @@ public class IndexableAdvice
 				indexer.reindex(result);
 			}
 		}
-		else {
-			serviceBeanAopCacheManager.removeMethodInterceptor(
-				methodInvocation, this);
-		}
 	}
 
 	@Override
