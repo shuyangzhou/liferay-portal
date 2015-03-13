@@ -107,7 +107,7 @@ public class ClusterRequestReceiver extends BaseClusterReceiver {
 
 		if (requestPayload instanceof ClusterNode) {
 			boolean newMember = _clusterExecutorImpl.memberJoined(
-				sourceAddress, (ClusterNode)requestPayload);
+				(ClusterNode)requestPayload);
 
 			if (newMember) {
 				responsePayload = ClusterRequest.createMulticastRequest(
