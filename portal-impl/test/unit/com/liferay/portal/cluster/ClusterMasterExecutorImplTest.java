@@ -37,6 +37,7 @@ import com.liferay.portal.service.impl.LockLocalServiceImpl;
 import com.liferay.portal.util.PortalImpl;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PropsImpl;
+import com.liferay.portal.util.PropsValues;
 import com.liferay.portal.uuid.PortalUUIDImpl;
 
 import java.net.InetAddress;
@@ -605,10 +606,14 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 	private static class MockClusterExecutor extends ClusterExecutorImpl {
 
 		public void addClusterNodeId(String clusterNodeId) {
-			memberJoined(
-				new TestAddress(clusterNodeId),
-				new ClusterNode(
-					clusterNodeId, InetAddress.getLoopbackAddress()));
+			ClusterNode newClusterNode = new ClusterNode(
+				clusterNodeId, InetAddress.getLoopbackAddress());
+
+			newClusterNode.addChannelAddress(
+				PropsValues.CLUSTER_LINK_CHANNEL_NAME_PREFIX + "control",
+				new TestAddress(clusterNodeId));
+
+			memberJoined(newClusterNode);
 		}
 
 		@Override
