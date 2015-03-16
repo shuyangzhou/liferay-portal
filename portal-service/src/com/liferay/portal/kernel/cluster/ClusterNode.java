@@ -17,6 +17,7 @@ package com.liferay.portal.kernel.cluster;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.util.HashUtil;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -24,6 +25,9 @@ import java.io.Serializable;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Tina Tian
@@ -44,6 +48,10 @@ public class ClusterNode implements Serializable {
 		_bindInetAddress = bindInetAddress;
 	}
 
+	public void addChannelAddress(String channelName, Address address) {
+		_channelAddresses.put(channelName, address);
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -61,7 +69,8 @@ public class ClusterNode implements Serializable {
 			Validator.equals(
 				_portalInetSocketAddress,
 				clusterNode._portalInetSocketAddress) &&
-			Validator.equals(_portalProtocol, clusterNode._portalProtocol)) {
+			Validator.equals(_portalProtocol, clusterNode._portalProtocol) &&
+			_channelAddresses.equals(_channelAddresses)) {
 
 			return true;
 		}
@@ -71,6 +80,10 @@ public class ClusterNode implements Serializable {
 
 	public InetAddress getBindInetAddress() {
 		return _bindInetAddress;
+	}
+
+	public Address getChannelAddress(String channelName) {
+		return _channelAddresses.get(channelName);
 	}
 
 	public String getClusterNodeId() {
@@ -103,13 +116,18 @@ public class ClusterNode implements Serializable {
 
 	@Override
 	public int hashCode() {
-		int hash = HashUtil.hash(0, _clusterNodeId);
+		int hash = HashUtil.hash(0, _bindInetAddress);
 
-		hash = HashUtil.hash(hash, _bindInetAddress);
+		hash = HashUtil.hash(hash, _channelAddresses);
+		hash = HashUtil.hash(hash, _clusterNodeId);
 		hash = HashUtil.hash(hash, _portalInetSocketAddress);
 		hash = HashUtil.hash(hash, _portalProtocol);
 
 		return hash;
+	}
+
+	public void removeChannelAddress(String clusterName) {
+		_channelAddresses.remove(clusterName);
 	}
 
 	public void setPortalInetSocketAddress(
@@ -124,10 +142,12 @@ public class ClusterNode implements Serializable {
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(9);
+		StringBundler sb = new StringBundler(11);
 
 		sb.append("{bindInetAddress=");
 		sb.append(_bindInetAddress);
+		sb.append(", channelAddresses=");
+		sb.append(MapUtil.toString(_channelAddresses));
 		sb.append(", clusterNodeId=");
 		sb.append(_clusterNodeId);
 		sb.append(", portalInetSocketAddress=");
@@ -140,6 +160,8 @@ public class ClusterNode implements Serializable {
 	}
 
 	private final InetAddress _bindInetAddress;
+	private final Map<String, Address> _channelAddresses =
+		new ConcurrentHashMap<>();
 	private final String _clusterNodeId;
 	private InetSocketAddress _portalInetSocketAddress;
 	private String _portalProtocol;
