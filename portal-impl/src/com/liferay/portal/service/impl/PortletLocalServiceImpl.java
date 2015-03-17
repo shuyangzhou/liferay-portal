@@ -470,7 +470,15 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 	@Override
 	@Skip
 	public PortletApp getPortletApp(String servletContextName) {
-		return _getPortletApp(servletContextName);
+		PortletApp portletApp = _portletAppsPool.get(servletContextName);
+
+		if (portletApp == null) {
+			portletApp = new PortletAppImpl(servletContextName);
+
+			_portletAppsPool.put(servletContextName, portletApp);
+		}
+
+		return portletApp;
 	}
 
 	@Override
@@ -516,7 +524,7 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 
 			portlet = new PortletImpl(CompanyConstants.SYSTEM, portletId);
 
-			PortletApp portletApp = _getPortletApp(StringPool.BLANK);
+			PortletApp portletApp = getPortletApp(StringPool.BLANK);
 
 			portlet.setPortletApp(portletApp);
 
@@ -690,7 +698,7 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 		_portletIdsByStrutsPath.clear();
 
 		try {
-			PortletApp portletApp = _getPortletApp(StringPool.BLANK);
+			PortletApp portletApp = getPortletApp(StringPool.BLANK);
 
 			portletApp.setServletContext(servletContext);
 
@@ -840,7 +848,7 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 
 			// Sprite images
 
-			PortletApp portletApp = _getPortletApp(servletContextName);
+			PortletApp portletApp = getPortletApp(servletContextName);
 
 			_setSpriteImages(servletContext, portletApp, "/icons/");
 
@@ -925,18 +933,6 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 		portletLocalService.removeCompanyPortletsPool(companyId);
 
 		return portlet;
-	}
-
-	private PortletApp _getPortletApp(String servletContextName) {
-		PortletApp portletApp = _portletAppsPool.get(servletContextName);
-
-		if (portletApp == null) {
-			portletApp = new PortletAppImpl(servletContextName);
-
-			_portletAppsPool.put(servletContextName, portletApp);
-		}
-
-		return portletApp;
 	}
 
 	private String _getPortletId(String securityPath) {
@@ -1806,7 +1802,7 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 
 		Element rootElement = document.getRootElement();
 
-		PortletApp portletApp = _getPortletApp(servletContextName);
+		PortletApp portletApp = getPortletApp(servletContextName);
 
 		Map<String, String> roleMappers = new HashMap<>();
 
@@ -2142,7 +2138,7 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 
 		Element rootElement = document.getRootElement();
 
-		PortletApp portletApp = _getPortletApp(servletContextName);
+		PortletApp portletApp = getPortletApp(servletContextName);
 
 		portletApp.addServletURLPatterns(servletURLPatterns);
 		portletApp.setServletContext(servletContext);
