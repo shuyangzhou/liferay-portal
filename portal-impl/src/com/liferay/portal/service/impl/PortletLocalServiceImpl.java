@@ -999,28 +999,13 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 			return Collections.singletonList(portlet);
 		}
 
-		String portletNamePrefix = portletName.substring(0, pos);
-
-		List<Portlet> portlets = _getPortletsByServletContextName(
-			servletContextName, portletMap);
-
-		Iterator<Portlet> itr = portlets.iterator();
-
-		while (itr.hasNext()) {
-			Portlet portlet = itr.next();
-
-			String portletId = portlet.getPortletId();
-
-			if (!portletId.startsWith(portletNamePrefix)) {
-				itr.remove();
-			}
-		}
-
-		return portlets;
+		return _getPortletsByServletContextName(
+			servletContextName, portletName.substring(0, pos), portletMap);
 	}
 
 	private List<Portlet> _getPortletsByServletContextName(
-		String servletContextName, Map<String, Portlet> portletMap) {
+		String servletContextName, String portletNamePrefix,
+		Map<String, Portlet> portletMap) {
 
 		List<Portlet> portlets = new ArrayList<>();
 
@@ -1033,16 +1018,19 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 
 		for (Map.Entry<String, Portlet> entry : portletMap.entrySet()) {
 			String portletId = entry.getKey();
-			Portlet portlet = entry.getValue();
+
+			if (!portletId.startsWith(portletNamePrefix)) {
+				continue;
+			}
 
 			if (Validator.isNotNull(servletContextNameSuffix)) {
 				if (portletId.endsWith(servletContextNameSuffix)) {
-					portlets.add(portlet);
+					portlets.add(entry.getValue());
 				}
 			}
 			else {
 				if (!portletId.contains(PortletConstants.WAR_SEPARATOR)) {
-					portlets.add(portlet);
+					portlets.add(entry.getValue());
 				}
 			}
 		}
