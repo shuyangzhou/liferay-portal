@@ -977,13 +977,9 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 		String portletName, String servletContextName,
 		Map<String, Portlet> portletMap) {
 
-		List<Portlet> portlets = null;
-
 		int pos = portletName.indexOf(CharPool.STAR);
 
 		if (pos == -1) {
-			portlets = new ArrayList<>();
-
 			String portletId = portletName;
 
 			if (Validator.isNotNull(servletContextName)) {
@@ -996,16 +992,16 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 
 			Portlet portlet = portletMap.get(portletId);
 
-			if (portlet != null) {
-				portlets.add(portlet);
+			if (portlet == null) {
+				return Collections.emptyList();
 			}
 
-			return portlets;
+			return Collections.singletonList(portlet);
 		}
 
 		String portletNamePrefix = portletName.substring(0, pos);
 
-		portlets = _getPortletsByServletContextName(
+		List<Portlet> portlets = _getPortletsByServletContextName(
 			servletContextName, portletMap);
 
 		Iterator<Portlet> itr = portlets.iterator();
