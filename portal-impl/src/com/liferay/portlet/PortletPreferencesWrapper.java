@@ -124,7 +124,7 @@ public class PortletPreferencesWrapper
 
 	@Override
 	public void store() throws IOException, ValidatorException {
-		if (PropsValues.TCK_URL) {
+//		if (PropsValues.TCK_URL) {
 
 			// Be strict to pass the TCK
 
@@ -135,13 +135,13 @@ public class PortletPreferencesWrapper
 				throw new IllegalStateException(
 					"Preferences cannot be stored inside a render call");
 			}
-		}
-		else {
-
-			// Relax so that poorly written portlets can still work
-
-			_portletPreferences.store();
-		}
+//		}
+//		else {
+//
+//			// Relax so that poorly written portlets can still work
+//
+//			_portletPreferences.store();
+//		}
 	}
 
 	private final String _lifecycle;
