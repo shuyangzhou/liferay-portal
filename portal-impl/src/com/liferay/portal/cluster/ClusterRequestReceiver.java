@@ -102,8 +102,7 @@ public class ClusterRequestReceiver extends BaseClusterReceiver {
 		ClusterRequest clusterRequest, Address sourceAddress) {
 
 		Serializable responsePayload =
-			_clusterExecutorImpl.handleReceivedClusterRequest(
-				clusterRequest, sourceAddress);
+			_clusterExecutorImpl.handleReceivedClusterRequest(clusterRequest);
 
 		if (responsePayload == null) {
 			return;
