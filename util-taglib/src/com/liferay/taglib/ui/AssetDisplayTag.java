@@ -28,8 +28,8 @@ import com.liferay.portlet.asset.model.Renderer;
 import com.liferay.portlet.asset.service.AssetEntryLocalServiceUtil;
 import com.liferay.taglib.util.IncludeTag;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -190,10 +190,8 @@ public class AssetDisplayTag extends IncludeTag {
 
 		try {
 			_page = renderer.render(
-				(PortletRequest)pageContext.getAttribute(
-					"liferayPortletRequest"),
-				(PortletResponse)pageContext.getAttribute(
-					"liferayPortletResponse"),
+				(RenderRequest)pageContext.getAttribute("renderRequest"),
+				(RenderResponse)pageContext.getAttribute("renderResponse"),
 				_template);
 		}
 		catch (Exception e) {
