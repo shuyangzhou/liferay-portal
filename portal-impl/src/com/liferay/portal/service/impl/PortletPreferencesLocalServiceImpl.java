@@ -33,10 +33,8 @@ import com.liferay.portal.service.base.PortletPreferencesLocalServiceBaseImpl;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portlet.PortletPreferencesImpl;
-import com.liferay.portlet.Preference;
 import com.liferay.portlet.StrictPortletPreferencesImpl;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 
@@ -356,8 +354,7 @@ public class PortletPreferencesLocalServiceImpl
 				 ((portlet != null) && portlet.isUndeployedPortlet()))) {
 
 				return new StrictPortletPreferencesImpl(
-					companyId, ownerId, ownerType, plid, portletId, null,
-					Collections.<String, Preference>emptyMap());
+					companyId, ownerId, ownerType, plid, portletId);
 			}
 
 			portletPreferences =
