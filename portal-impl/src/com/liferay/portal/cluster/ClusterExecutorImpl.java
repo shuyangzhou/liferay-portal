@@ -376,6 +376,30 @@ public class ClusterExecutorImpl
 		return _futureClusterResponses.get(uuid);
 	}
 
+	protected Serializable handleReceivedClusterRequest(
+		ClusterRequest clusterRequest, Address sourceAddress) {
+
+		Serializable requestPayload = clusterRequest.getPayload();
+
+		if (requestPayload instanceof ClusterNode) {
+			if (memberJoined(sourceAddress, (ClusterNode)requestPayload)) {
+				return ClusterRequest.createMulticastRequest(
+					_localClusterNode, true);
+			}
+
+			return null;
+		}
+
+		ClusterNodeResponse clusterNodeResponse = executeClusterRequest(
+			clusterRequest);
+
+		if (clusterRequest.isFireAndForget()) {
+			return null;
+		}
+
+		return clusterNodeResponse;
+	}
+
 	protected boolean memberJoined(
 		Address joinAddress, ClusterNode clusterNode) {
 

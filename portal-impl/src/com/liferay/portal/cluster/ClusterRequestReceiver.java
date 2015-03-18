@@ -101,27 +101,9 @@ public class ClusterRequestReceiver extends BaseClusterReceiver {
 	protected void processClusterRequest(
 		ClusterRequest clusterRequest, Address sourceAddress) {
 
-		Serializable responsePayload = null;
-
-		Serializable requestPayload = clusterRequest.getPayload();
-
-		if (requestPayload instanceof ClusterNode) {
-			boolean newMember = _clusterExecutorImpl.memberJoined(
-				sourceAddress, (ClusterNode)requestPayload);
-
-			if (newMember) {
-				responsePayload = ClusterRequest.createMulticastRequest(
-					_clusterExecutorImpl.getLocalClusterNode(), true);
-			}
-		}
-		else {
-			ClusterNodeResponse clusterNodeResponse =
-				_clusterExecutorImpl.executeClusterRequest(clusterRequest);
-
-			if (!clusterRequest.isFireAndForget()) {
-				responsePayload = clusterNodeResponse;
-			}
-		}
+		Serializable responsePayload =
+			_clusterExecutorImpl.handleReceivedClusterRequest(
+				clusterRequest, sourceAddress);
 
 		if (responsePayload == null) {
 			return;
