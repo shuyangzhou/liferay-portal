@@ -131,16 +131,12 @@ public abstract class BaseAssetRenderer implements AssetRenderer {
 		return TrashUtil.getNewName(oldName, token);
 	}
 
-	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
-	 */
-	@Deprecated
 	@Override
 	public String getPreviewPath(
 			PortletRequest portletRequest, PortletResponse PortletResponse)
 		throws Exception {
 
-		return StringPool.BLANK;
+		return "/display/preview.jsp";
 	}
 
 	@Override

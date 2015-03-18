@@ -38,6 +38,8 @@ import java.util.Locale;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 import javax.portlet.PortletURL;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
 
 /**
  * @author Marcellus Tavares
@@ -168,16 +170,16 @@ public class DDLRecordAssetRenderer extends BaseAssetRenderer {
 
 	@Override
 	public String render(
-			PortletRequest portletRequest, PortletResponse portletResponse,
+			RenderRequest renderRequest, RenderResponse renderResponse,
 			String template)
 		throws Exception {
 
 		if (template.equals(TEMPLATE_ABSTRACT) ||
 			template.equals(TEMPLATE_FULL_CONTENT)) {
 
-			portletRequest.setAttribute(
+			renderRequest.setAttribute(
 				WebKeys.DYNAMIC_DATA_LISTS_RECORD, _record);
-			portletRequest.setAttribute(
+			renderRequest.setAttribute(
 				WebKeys.DYNAMIC_DATA_LISTS_RECORD_VERSION, _recordVersion);
 
 			String path =

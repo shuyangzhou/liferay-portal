@@ -18,10 +18,7 @@ import aQute.bnd.annotation.metatype.Configurable;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.PortalRunMode;
-import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.PropsUtil;
-import com.liferay.portal.kernel.util.SystemProperties;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.search.elasticsearch.configuration.ElasticsearchConfiguration;
 import com.liferay.portal.search.elasticsearch.connection.BaseElasticsearchConnection;
 import com.liferay.portal.search.elasticsearch.connection.ElasticsearchConnection;
@@ -47,7 +44,12 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	configurationPid = "com.liferay.portal.search.elasticsearch.configuration.ElasticsearchConfiguration",
-	immediate = true, service = ElasticsearchConnection.class
+	immediate = true,
+	property = {
+		"configFileName=/META-INF/elasticsearch-embedded.yml",
+		"testConfigFileName=/META-INF/elasticsearch-test.yml"
+	},
+	service = ElasticsearchConnection.class
 )
 public class EmbeddedElasticsearchConnection
 	extends BaseElasticsearchConnection {
@@ -74,15 +76,28 @@ public class EmbeddedElasticsearchConnection
 
 	@Activate
 	protected void activate(Map<String, Object> properties) {
-		elasticsearchConfiguration = Configurable.createConfigurable(
+		_elasticsearchConfiguration = Configurable.createConfigurable(
 			ElasticsearchConfiguration.class, properties);
+
+		setClusterName(_elasticsearchConfiguration.clusterName());
+		setConfigFileName(MapUtil.getString(properties, "configFileName"));
+		setTestConfigFileName(
+			MapUtil.getString(properties, "testConfigFileName"));
 	}
 
 	@Override
 	protected Client createClient(ImmutableSettings.Builder builder) {
 		NodeBuilder nodeBuilder = NodeBuilder.nodeBuilder();
 
+		Class<?> clazz = getClass();
+
+		builder.classLoader(clazz.getClassLoader());
+
+		builder.loadFromClasspath(getConfigFileName());
+
 		nodeBuilder.settings(builder);
+
+		nodeBuilder.clusterName(getClusterName());
 
 		_node = nodeBuilder.node();
 
@@ -92,8 +107,7 @@ public class EmbeddedElasticsearchConnection
 
 		if (_log.isDebugEnabled()) {
 			_log.debug(
-				"Starting embedded Elasticsearch cluster " +
-					elasticsearchConfiguration.clusterName());
+				"Starting embedded Elasticsearch cluster " + getClusterName());
 		}
 
 		_node.start();
@@ -104,9 +118,8 @@ public class EmbeddedElasticsearchConnection
 			stopWatch.stop();
 
 			_log.debug(
-				"Finished starting " +
-					elasticsearchConfiguration.clusterName() + " in " +
-						stopWatch.getTime() + " ms");
+				"Finished starting " + getClusterName() + " in " +
+					stopWatch.getTime() + " ms");
 		}
 
 		return client;
@@ -117,40 +130,10 @@ public class EmbeddedElasticsearchConnection
 		close();
 	}
 
-	@Override
-	protected void loadRequiredDefaultConfigurations(
-		ImmutableSettings.Builder builder) {
-
-		builder.put("cluster.name", elasticsearchConfiguration.clusterName());
-		builder.put("http.enabled", elasticsearchConfiguration.httpEnabled());
-		builder.put("index.number_of_replicas", 0);
-		builder.put("index.number_of_shards", 1);
-		builder.put("node.client", false);
-		builder.put("node.data", true);
-		builder.put(
-			"path.data",
-			PropsUtil.get(PropsKeys.LIFERAY_HOME) + "/data/elasticsearch");
-		builder.put(
-			"path.logs", PropsUtil.get(PropsKeys.LIFERAY_HOME) + "/logs");
-		builder.put(
-			"path.work", SystemProperties.get(SystemProperties.TMP_DIR));
-
-		if (PortalRunMode.isTestMode()) {
-			builder.put("index.refresh_interval", "1ms");
-			builder.put("index.store.type", "memory");
-			builder.put("index.translog.flush_threshold_ops", "1");
-			builder.put("index.translog.interval", "1ms");
-
-			builder.put("node.local", true);
-		}
-		else {
-			builder.put("node.local", false);
-		}
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		EmbeddedElasticsearchConnection.class);
 
+	private volatile ElasticsearchConfiguration _elasticsearchConfiguration;
 	private Node _node;
 
 }

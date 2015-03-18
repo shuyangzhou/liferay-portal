@@ -35,6 +35,8 @@ import java.util.Locale;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
 
 /**
  * @author Raymond Augé
@@ -156,12 +158,12 @@ public class LayoutRevisionAssetRenderer extends BaseAssetRenderer {
 
 	@Override
 	public String render(
-			PortletRequest portletRequest, PortletResponse portletResponse,
+			RenderRequest renderRequest, RenderResponse renderResponse,
 			String template)
 		throws Exception {
 
 		if (template.equals(TEMPLATE_FULL_CONTENT)) {
-			portletRequest.setAttribute(
+			renderRequest.setAttribute(
 				WebKeys.LAYOUT_REVISION, _layoutRevision);
 
 			return "/html/portlet/layouts_admin/asset/" + template + ".jsp";

@@ -31,6 +31,8 @@ import java.util.Locale;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
 
 /**
  * @author Zsolt Berentey
@@ -94,14 +96,14 @@ public class DLFileShortcutTrashRenderer extends BaseTrashRenderer {
 
 	@Override
 	public String render(
-			PortletRequest portletRequest, PortletResponse portletResponse,
+			RenderRequest renderRequest, RenderResponse renderResponse,
 			String template)
 		throws Exception {
 
 		if (template.equals(AssetRenderer.TEMPLATE_ABSTRACT) ||
 			template.equals(AssetRenderer.TEMPLATE_FULL_CONTENT)) {
 
-			portletRequest.setAttribute(
+			renderRequest.setAttribute(
 				WebKeys.DOCUMENT_LIBRARY_FILE_ENTRY, _fileEntry);
 
 			return "/html/portlet/document_library/asset/" + template + ".jsp";

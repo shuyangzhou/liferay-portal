@@ -48,6 +48,8 @@ import java.util.Locale;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 import javax.portlet.PortletURL;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
 import javax.portlet.WindowState;
 
 /**
@@ -335,17 +337,17 @@ public class DLFileEntryAssetRenderer
 
 	@Override
 	public String render(
-			PortletRequest portletRequest, PortletResponse portletResponse,
+			RenderRequest renderRequest, RenderResponse renderResponse,
 			String template)
 		throws Exception {
 
 		if (template.equals(TEMPLATE_ABSTRACT) ||
 			template.equals(TEMPLATE_FULL_CONTENT)) {
 
-			portletRequest.setAttribute(
+			renderRequest.setAttribute(
 				WebKeys.DOCUMENT_LIBRARY_FILE_ENTRY, _fileEntry);
 
-			String version = ParamUtil.getString(portletRequest, "version");
+			String version = ParamUtil.getString(renderRequest, "version");
 
 			if ((getAssetRendererType() == AssetRendererFactory.TYPE_LATEST) ||
 				Validator.isNotNull(version)) {
@@ -354,11 +356,11 @@ public class DLFileEntryAssetRenderer
 					_fileVersion = _fileEntry.getFileVersion(version);
 				}
 
-				portletRequest.setAttribute(
+				renderRequest.setAttribute(
 					WebKeys.DOCUMENT_LIBRARY_FILE_VERSION, _fileVersion);
 			}
 			else {
-				portletRequest.setAttribute(
+				renderRequest.setAttribute(
 					WebKeys.DOCUMENT_LIBRARY_FILE_VERSION,
 					_fileEntry.getFileVersion());
 			}
