@@ -35,6 +35,7 @@ import com.liferay.portal.test.rule.AspectJNewEnvTestRule;
 import com.liferay.portal.util.PortalImpl;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PropsImpl;
+import com.liferay.portal.util.PropsValues;
 import com.liferay.portal.uuid.PortalUUIDImpl;
 
 import java.io.Serializable;
@@ -179,11 +180,10 @@ public class ClusterExecutorImplTest extends BaseClusterTestCase {
 		List<ObjectValuePair<Serializable, Address>> unicastMessages =
 			TestClusterChannel.getUnicastMessages();
 
-		Address newAddress = new TestAddress("test.address");
 		ClusterNode newClusterNode = new ClusterNode(
 			"test.cluster.node", InetAddress.getLoopbackAddress());
 
-		clusterExecutorImpl.memberJoined(newAddress, newClusterNode);
+		clusterExecutorImpl.memberJoined(new ClusterNodeStatus(newClusterNode));
 
 		clusterExecutorImpl.execute(
 			ClusterRequest.createUnicastRequest(
@@ -287,11 +287,18 @@ public class ClusterExecutorImplTest extends BaseClusterTestCase {
 		Assert.assertTrue(multicastMessages.isEmpty());
 		Assert.assertTrue(unicastMessages.isEmpty());
 
-		Address newAddress = new TestAddress("test.address");
 		ClusterNode newClusterNode = new ClusterNode(
 			"test.cluster.node", InetAddress.getLoopbackAddress());
+		ClusterNodeStatus clusterNodeStatus = new ClusterNodeStatus(
+			newClusterNode);
 
-		clusterExecutorImpl.memberJoined(newAddress, newClusterNode);
+		TestAddress newAddress = new TestAddress("test.address");
+
+		clusterNodeStatus.addChannelAddress(
+			PropsValues.CLUSTER_LINK_CHANNEL_NAME_PREFIX + "control",
+			newAddress);
+
+		clusterExecutorImpl.memberJoined(clusterNodeStatus);
 
 		clusterRequest = ClusterRequest.createUnicastRequest(
 			clusterRequest, newClusterNode.getClusterNodeId());
