@@ -30,17 +30,18 @@ public class StrictPortletPreferencesImpl
 
 	public StrictPortletPreferencesImpl(
 		long companyId, long ownerId, int ownerType, long plid,
-		String portletId) {
+		String portletId, String xml) {
 
 		super(
-			companyId, ownerId, ownerType, plid, portletId, null,
+			companyId, ownerId, ownerType, plid, portletId, xml,
 			Collections.<String, Preference>emptyMap());
 	}
 
 	@Override
 	public Object clone() {
 		return new StrictPortletPreferencesImpl(
-			companyId, getOwnerId(), getOwnerType(), getPlid(), getPortletId());
+			companyId, getOwnerId(), getOwnerType(), getPlid(), getPortletId(),
+			getOriginalXML());
 	}
 
 }
