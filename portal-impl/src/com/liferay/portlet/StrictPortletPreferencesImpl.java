@@ -16,7 +16,7 @@ package com.liferay.portlet;
 
 import java.io.Serializable;
 
-import java.util.Map;
+import java.util.Collections;
 
 /**
  * @author Tomas Polesovsky
@@ -31,9 +31,11 @@ public class StrictPortletPreferencesImpl
 
 	public StrictPortletPreferencesImpl(
 		long companyId, long ownerId, int ownerType, long plid,
-		String portletId, String xml, Map<String, Preference> preferences) {
+		String portletId) {
 
-		super(companyId, ownerId, ownerType, plid, portletId, xml, preferences);
+		super(
+			companyId, ownerId, ownerType, plid, portletId, null,
+			Collections.<String, Preference>emptyMap());
 
 		_companyId = companyId;
 	}
@@ -41,8 +43,8 @@ public class StrictPortletPreferencesImpl
 	@Override
 	public Object clone() {
 		return new StrictPortletPreferencesImpl(
-			_companyId, getOwnerId(), getOwnerType(), getPlid(), getPortletId(),
-			getOriginalXML(), getOriginalPreferences());
+			_companyId, getOwnerId(), getOwnerType(), getPlid(),
+			getPortletId());
 	}
 
 	@Override
