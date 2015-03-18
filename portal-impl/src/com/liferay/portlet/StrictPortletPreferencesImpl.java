@@ -16,7 +16,7 @@ package com.liferay.portlet;
 
 import java.io.Serializable;
 
-import java.util.Map;
+import java.util.Collections;
 
 /**
  * @author Tomas Polesovsky
@@ -26,51 +26,22 @@ public class StrictPortletPreferencesImpl
 	implements Cloneable, Serializable {
 
 	public StrictPortletPreferencesImpl() {
-		_companyId = 0;
 	}
 
 	public StrictPortletPreferencesImpl(
 		long companyId, long ownerId, int ownerType, long plid,
-		String portletId, String xml, Map<String, Preference> preferences) {
+		String portletId, String xml) {
 
-		super(companyId, ownerId, ownerType, plid, portletId, xml, preferences);
-
-		_companyId = companyId;
-	}
-
-	public StrictPortletPreferencesImpl(
-		String xml, Map<String, Preference > preferences) {
-
-		super(xml, preferences);
-
-		_companyId = 0;
+		super(
+			companyId, ownerId, ownerType, plid, portletId, xml,
+			Collections.<String, Preference>emptyMap());
 	}
 
 	@Override
 	public Object clone() {
 		return new StrictPortletPreferencesImpl(
-			_companyId, getOwnerId(), getOwnerType(), getPlid(), getPortletId(),
-			getOriginalXML(), getOriginalPreferences());
+			companyId, getOwnerId(), getOwnerType(), getPlid(), getPortletId(),
+			getOriginalXML());
 	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-
-		if (!(obj instanceof StrictPortletPreferencesImpl)) {
-			return false;
-		}
-
-		return super.equals(obj);
-	}
-
-	@Override
-	public int hashCode() {
-		return super.hashCode();
-	}
-
-	private final long _companyId;
 
 }
