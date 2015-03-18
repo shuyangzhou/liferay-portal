@@ -26,7 +26,6 @@ public class StrictPortletPreferencesImpl
 	implements Cloneable, Serializable {
 
 	public StrictPortletPreferencesImpl() {
-		_companyId = 0;
 	}
 
 	public StrictPortletPreferencesImpl(
@@ -36,17 +35,12 @@ public class StrictPortletPreferencesImpl
 		super(
 			companyId, ownerId, ownerType, plid, portletId, null,
 			Collections.<String, Preference>emptyMap());
-
-		_companyId = companyId;
 	}
 
 	@Override
 	public Object clone() {
 		return new StrictPortletPreferencesImpl(
-			_companyId, getOwnerId(), getOwnerType(), getPlid(),
-			getPortletId());
+			companyId, getOwnerId(), getOwnerType(), getPlid(), getPortletId());
 	}
-
-	private final long _companyId;
 
 }
