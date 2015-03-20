@@ -45,6 +45,7 @@ import com.liferay.portal.model.PortletPreferencesIds;
 import com.liferay.portal.model.PublicRenderParameter;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.permission.ActionKeys;
+import com.liferay.portal.service.PortletLocalServiceUtil;
 import com.liferay.portal.service.PortletPreferencesLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextFactory;
@@ -60,6 +61,7 @@ import com.liferay.util.SerializableUtil;
 import java.io.Serializable;
 import java.io.Writer;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,6 +76,7 @@ import javax.portlet.PortletResponse;
 import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
+import javax.portlet.UnavailableException;
 import javax.portlet.WindowState;
 
 import javax.servlet.RequestDispatcher;
@@ -122,6 +125,18 @@ public class PortletContainerImpl implements PortletContainer {
 
 		try {
 			return _doProcessEvent(request, response, portlet, layout, event);
+		}
+		catch (UnavailableException ue) {
+			PortletLocalServiceUtil.deletePortlet(portlet);
+
+			portlet.setUndeployedPortlet(true);
+
+			_log.error(
+				"Undeployed " + portlet + " due to UnavailableException " +
+					"during event processing",
+				ue);
+
+			return Collections.emptyList();
 		}
 		catch (Exception e) {
 			throw new PortletContainerException(e);
@@ -599,7 +614,7 @@ public class PortletContainerImpl implements PortletContainer {
 			}
 		}
 
-		if (portlet == null) {
+		if ((portlet == null) || portlet.isUndeployedPortlet()) {
 			return;
 		}
 
