@@ -81,8 +81,8 @@ public class SPISynchronousQueueUtilTest {
 					SPISynchronousQueueUtil.notifySynchronousQueue(
 						spiUUID, mockSPI);
 				}
-				catch (InterruptedException ie) {
-					Assert.fail(ie.getMessage());
+				catch (InterruptedException e) {
+					throw new RuntimeException(e);
 				}
 			}
 

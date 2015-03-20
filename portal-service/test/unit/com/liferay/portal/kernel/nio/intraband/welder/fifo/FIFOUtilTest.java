@@ -140,7 +140,7 @@ public class FIFOUtilTest {
 								checkFlag.set(false);
 							}
 							catch (IOException ioe) {
-								Assert.fail(ioe.getMessage());
+								throw new RuntimeException(ioe);
 							}
 						}
 					}
