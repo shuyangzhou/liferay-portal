@@ -1108,10 +1108,12 @@
 				</then>
 			</if>
 
+			<tstamp />
+
 			<copy
 				file="${app.server.tomcat.dir}/conf/tomcat-users.xml"
 				overwrite="true"
-				tofile="${app.server.tomcat.dir}/conf/tomcat-users.xml.orig"
+				tofile="${app.server.tomcat.dir}/conf/tomcat-users.xml.${DSTAMP}${TSTAMP}"
 			/>
 
 			<xmltask source="${app.server.tomcat.dir}/conf/tomcat-users.xml" dest="${app.server.tomcat.dir}/conf/tomcat-users.xml">
