@@ -14,10 +14,14 @@
 
 package com.liferay.portal.servlet.filters.etag;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.RestrictedByteBufferCacheServletResponse;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.servlet.filters.BasePortalFilter;
 import com.liferay.portal.util.PropsValues;
+
+import java.io.IOException;
 
 import java.nio.ByteBuffer;
 
@@ -97,11 +101,20 @@ public class ETagFilter extends BasePortalFilter {
 
 				restrictedByteBufferCacheServletResponse.finishResponse();
 
-				restrictedByteBufferCacheServletResponse.flushCache();
+				try {
+					restrictedByteBufferCacheServletResponse.flushCache();
+				}
+				catch (IOException ioe) {
+					if (_log.isWarnEnabled()) {
+						_log.warn(ioe.getMessage(), ioe);
+					}
+				}
 			}
 		}
 	}
 
 	private static final String _ETAG = "etag";
+
+	private static final Log _log = LogFactoryUtil.getLog(ETagFilter.class);
 
 }

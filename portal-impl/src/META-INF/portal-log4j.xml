@@ -732,6 +732,10 @@
 		<priority value="ERROR" />
 	</category>
 
+	<category name="com.liferay.portal.servlet.filters.etag.ETagFilter">
+		<priority value="WARN" />
+	</category>
+
 	<category name="com.liferay.portal.servlet.filters.fragment">
 		<priority value="ERROR" />
 	</category>
