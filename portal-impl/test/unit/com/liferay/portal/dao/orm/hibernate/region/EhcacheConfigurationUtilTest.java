@@ -77,7 +77,7 @@ public class EhcacheConfigurationUtilTest {
 		}
 	)
 	@Test
-	public void testClusterDisabled() {
+	public void testClusterDisabled() throws Exception {
 		Configuration configuration = EhcacheConfigurationUtil.getConfiguration(
 			_configurationURL, false);
 
@@ -98,7 +98,7 @@ public class EhcacheConfigurationUtilTest {
 		}
 	)
 	@Test
-	public void testClusterEnabled1() {
+	public void testClusterEnabled1() throws Exception {
 		Configuration configuration = EhcacheConfigurationUtil.getConfiguration(
 			_configurationURL, false);
 
@@ -119,7 +119,7 @@ public class EhcacheConfigurationUtilTest {
 		}
 	)
 	@Test
-	public void testClusterEnabled2() {
+	public void testClusterEnabled2() throws Exception {
 		Configuration configuration = EhcacheConfigurationUtil.getConfiguration(
 			_configurationURL, false);
 
@@ -330,7 +330,8 @@ public class EhcacheConfigurationUtilTest {
 	}
 
 	private void _assertListenerConfigsEquals(
-		Configuration configuration1, Configuration configuration2) {
+			Configuration configuration1, Configuration configuration2)
+		throws Exception {
 
 		Assert.assertEquals(
 			configuration1.getCacheManagerPeerProviderFactoryConfiguration(),
@@ -355,7 +356,7 @@ public class EhcacheConfigurationUtilTest {
 
 	private void _assertListenerConfigsEquals(
 		Map<String, CacheConfiguration> cacheConfigurations1,
-		Map<String, CacheConfiguration> cacheConfigurations2) {
+		Map<String, CacheConfiguration> cacheConfigurations2) throws Exception {
 
 		if (cacheConfigurations1 == cacheConfigurations2) {
 			return;
@@ -368,34 +369,27 @@ public class EhcacheConfigurationUtilTest {
 			return;
 		}
 
-		try {
-			for (Entry<String, CacheConfiguration> entry :
-					cacheConfigurations1.entrySet()) {
+		for (Entry<String, CacheConfiguration> entry :
+				cacheConfigurations1.entrySet()) {
 
-				String key = entry.getKey();
-				CacheConfiguration cacheConfiguration1 = entry.getValue();
+			String key = entry.getKey();
+			CacheConfiguration cacheConfiguration1 = entry.getValue();
 
-				CacheConfiguration cacheConfiguration2 =
-					cacheConfigurations2.get(key);
+			CacheConfiguration cacheConfiguration2 = cacheConfigurations2.get(
+				key);
 
-				if (cacheConfiguration1 == null) {
-					if ((cacheConfiguration2 != null) ||
-						cacheConfigurations2.containsKey(key)) {
+			if (cacheConfiguration1 == null) {
+				if ((cacheConfiguration2 != null) ||
+					cacheConfigurations2.containsKey(key)) {
 
-						Assert.fail();
-					}
-				}
-				else {
-					Assert.assertEquals(
-						cacheConfiguration1.
-							getCacheEventListenerConfigurations(),
-						cacheConfiguration2.
-							getCacheEventListenerConfigurations());
+					Assert.fail();
 				}
 			}
-		}
-		catch (Exception e) {
-			Assert.fail();
+			else {
+				Assert.assertEquals(
+					cacheConfiguration1.getCacheEventListenerConfigurations(),
+					cacheConfiguration2.getCacheEventListenerConfigurations());
+			}
 		}
 	}
 
