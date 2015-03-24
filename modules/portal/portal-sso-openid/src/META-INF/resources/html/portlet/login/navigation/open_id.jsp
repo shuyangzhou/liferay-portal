@@ -16,10 +16,6 @@
 
 <%@ include file="/html/portlet/login/navigation/init.jsp" %>
 
-<%
-ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
-%>
-
 <portlet:renderURL var="openIdURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 	<portlet:param name="struts_action" value="/login/open_id" />
 </portlet:renderURL>
