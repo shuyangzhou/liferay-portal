@@ -83,7 +83,7 @@
 
 		<action path="/portal/status" forward="portal.status" />
 
-		<action path="/portal/tck" type="com.liferay.portal.action.TCKAction" />
+		<action path="/portal/tck" type="com.liferay.portal.action.TCKStrutsAction" />
 
 		<action path="/portal/terms_of_use" forward="portal.terms_of_use" />
 
