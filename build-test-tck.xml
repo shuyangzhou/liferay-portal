@@ -3,6 +3,54 @@
 <project name="portal-test-tck" basedir="." default="test" xmlns:antelope="antlib:ise.antelope.tasks">
 	<import file="build-test.xml" />
 
+	<taskdef resource="net/sf/antcontrib/antlib.xml" />
+
+	<property name="app-version" value="2.4" />
+
+	<macrodef name="remove-blank">
+		<sequential>
+			<replaceregexp file="${basedir}/temp/WEB-INF/web.xml"
+				match="^(\s*${line.separator}){2,}"
+				replace="${line.separator}"
+				flags="mg"
+			/>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="replace-task">
+		<sequential>
+			<replace file="${basedir}/temp/WEB-INF/web.xml" token="&lt;web-app&gt;" value="&lt;web-app version=&quot;${app-version}&quot;&gt;">
+				<replacefilter>
+					<replacetoken><![CDATA[<!DOCTYPE web-app PUBLIC '-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN' 'http://java.sun.com/dtd/web-app_2_3.dtd'>]]></replacetoken>
+					<replacevalue></replacevalue>
+				</replacefilter>
+			</replace>
+
+			<remove-blank />
+		</sequential>
+	</macrodef>
+
+	<macrodef name="war-task">
+		<attribute name="filename" />
+		<sequential>
+			<mkdir dir="${basedir}/temp" />
+
+			<unwar src="@{filename}" dest="${basedir}/temp">
+				<patternset>
+					<include name="WEB-INF/web.xml" />
+				</patternset>
+			</unwar>
+
+			<replace-task />
+
+			<zip destfile="@{filename}" update="true">
+				<fileset dir="${basedir}/temp" />
+			</zip>
+
+			<delete dir="${basedir}/temp" />
+		</sequential>
+	</macrodef>
+
 	<target name="prepare-tck">
 		<delete dir="tools/tck" />
 
@@ -116,11 +164,23 @@ work.dir=${basedir.unix}/tools/tck/work</echo>
 			replace="/"
 		/>
 
+		<fileset
+			dir="tools/tck/dist/${test.directory}"
+			id="testWars"
+			includes="**/*.war"
+		/>
+
+		<for param="file">
+			<path>
+				<fileset refid="testWars" />
+			</path>
+			<sequential>
+				<war-task filename="@{file}" />
+			</sequential>
+		</for>
+
 		<copy todir="${liferay.home}/deploy" flatten="true">
-			<fileset
-				dir="tools/tck/dist/${test.directory}"
-				includes="**/*.war"
-			/>
+			<fileset refid="testWars" />
 		</copy>
 
 		<parallel>
