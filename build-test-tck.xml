@@ -35,6 +35,46 @@
 		</sequential>
 	</macrodef>
 
+	<target name="deploy-tck-wars">
+		<antcall target="prepare-tck" />
+
+		<if>
+			<not>
+				<isset property="test.package" />
+			</not>
+			<then>
+				<property name="test.package" value="com.sun.ts.tests" />
+			</then>
+		</if>
+
+		<propertyregex
+			global="true"
+			input="${test.package}."
+			property="test.directory"
+			regexp="\."
+			replace="/"
+		/>
+
+		<fileset
+			dir="tools/tck/dist/${test.directory}"
+			id="tck-wars"
+			includes="**/*.war"
+		/>
+
+		<for param="file">
+			<path>
+				<fileset refid="tck-wars" />
+			</path>
+			<sequential>
+				<replace-war-version filename="@{file}" />
+			</sequential>
+		</for>
+
+		<copy todir="${liferay.home}/deploy" flatten="true">
+			<fileset refid="tck-wars" />
+		</copy>
+	</target>
+
 	<target name="prepare-tck">
 		<delete dir="tools/tck" />
 
@@ -129,43 +169,7 @@ work.dir=${basedir.unix}/tools/tck/work</echo>
 
 		<antcall target="rebuild-database" inheritAll="false" />
 
-		<antcall target="prepare-tck" />
-
-		<if>
-			<not>
-				<isset property="test.package" />
-			</not>
-			<then>
-				<property name="test.package" value="com.sun.ts.tests" />
-			</then>
-		</if>
-
-		<propertyregex
-			global="true"
-			input="${test.package}."
-			property="test.directory"
-			regexp="\."
-			replace="/"
-		/>
-
-		<fileset
-			dir="tools/tck/dist/${test.directory}"
-			id="tck-wars"
-			includes="**/*.war"
-		/>
-
-		<for param="file">
-			<path>
-				<fileset refid="tck-wars" />
-			</path>
-			<sequential>
-				<replace-war-version filename="@{file}" />
-			</sequential>
-		</for>
-
-		<copy todir="${liferay.home}/deploy" flatten="true">
-			<fileset refid="tck-wars" />
-		</copy>
+		<antcall target="deploy-tck-wars" />
 
 		<parallel>
 			<exec dir="${app.server.tomcat.bin.dir}" executable="catalina${file.suffix.bat}" resolveexecutable="true">
