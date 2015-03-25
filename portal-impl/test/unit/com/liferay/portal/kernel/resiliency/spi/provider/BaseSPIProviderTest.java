@@ -211,7 +211,7 @@ public class BaseSPIProviderTest {
 								spiUUID, mockSPI);
 						}
 						catch (InterruptedException ie) {
-							Assert.fail(ie.getMessage());
+							throw new RuntimeException(ie);
 						}
 					}
 

@@ -152,9 +152,7 @@ public class BaseIntrabandTest {
 						_mockIntraband.registerDatagramReceiveHandler(
 							_TYPE, datagramReceiveHandler2);
 
-						Assert.fail();
-
-						return null;
+						throw new Error();
 					}
 
 				});
