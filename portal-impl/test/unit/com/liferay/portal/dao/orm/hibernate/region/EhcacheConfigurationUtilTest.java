@@ -323,9 +323,7 @@ public class EhcacheConfigurationUtilTest {
 				}
 			}
 
-			if (!exist) {
-				Assert.fail();
-			}
+			Assert.assertTrue(exist);
 		}
 	}
 
@@ -379,11 +377,9 @@ public class EhcacheConfigurationUtilTest {
 				key);
 
 			if (cacheConfiguration1 == null) {
-				if ((cacheConfiguration2 != null) ||
-					cacheConfigurations2.containsKey(key)) {
-
-					Assert.fail();
-				}
+				Assert.assertFalse(
+					(cacheConfiguration2 != null) ||
+						cacheConfigurations2.containsKey(key));
 			}
 			else {
 				Assert.assertEquals(
@@ -419,13 +415,11 @@ public class EhcacheConfigurationUtilTest {
 				String fullyQualifiedClassPath =
 					factoryConfiguration.getFullyQualifiedClassPath();
 
-				if (fullyQualifiedClassPath.contains(
-						"LiferayCacheEventListenerFactory") ||
-					fullyQualifiedClassPath.contains(
-						"net.sf.ehcache.distribution")) {
-
-					Assert.fail();
-				}
+				Assert.assertTrue(
+					!fullyQualifiedClassPath.contains(
+						"LiferayCacheEventListenerFactory") &&
+						!fullyQualifiedClassPath.contains(
+							"net.sf.ehcache.distribution"));
 			}
 		}
 	}
