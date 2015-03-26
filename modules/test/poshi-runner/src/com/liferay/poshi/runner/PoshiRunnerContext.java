@@ -67,9 +67,7 @@ public class PoshiRunnerContext {
 		return _commandSummaries.get("action#" + classCommandName);
 	}
 
-	public static int getActionLocatorCount(String classCommandName)
-		throws PoshiRunnerException {
-
+	public static int getActionLocatorCount(String classCommandName) {
 		String commandName =
 			PoshiRunnerGetterUtil.getCommandNameFromClassCommandName(
 				classCommandName);
@@ -94,9 +92,7 @@ public class PoshiRunnerContext {
 		return _commandSummaries.get("function#" + classCommandName);
 	}
 
-	public static int getFunctionLocatorCount(String className)
-		throws PoshiRunnerException {
-
+	public static int getFunctionLocatorCount(String className) {
 		return _functionLocatorCounts.get(className);
 	}
 

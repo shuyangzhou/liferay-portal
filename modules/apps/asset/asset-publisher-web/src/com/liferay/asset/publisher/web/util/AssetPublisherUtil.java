@@ -551,10 +551,8 @@ public class AssetPublisherUtil {
 	}
 
 	public static AssetEntryQuery getAssetEntryQuery(
-			PortletPreferences portletPreferences, long[] scopeGroupIds,
-			long[] overrideAllAssetCategoryIds,
-			String[] overrideAllAssetTagNames)
-		throws PortalException {
+		PortletPreferences portletPreferences, long[] scopeGroupIds,
+		long[] overrideAllAssetCategoryIds, String[] overrideAllAssetTagNames) {
 
 		AssetEntryQuery assetEntryQuery = new AssetEntryQuery();
 
@@ -1267,9 +1265,7 @@ public class AssetPublisherUtil {
 			getSubscriptionClassPK(plid, portletId));
 	}
 
-	protected static long[] getSiteGroupIds(long[] groupIds)
-		throws PortalException {
-
+	protected static long[] getSiteGroupIds(long[] groupIds) {
 		Set<Long> siteGroupIds = new HashSet<>();
 
 		for (long groupId : groupIds) {
