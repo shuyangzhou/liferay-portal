@@ -1263,12 +1263,24 @@
 							</then>
 						</elseif>
 						<else>
+							<tstamp>
+								<format property="start.time" pattern="EEEE, d MMMM yyyy, hh:mm aa" />
+							</tstamp>
+
+							<echo>####################Start time : ${start.time}</echo>
+
 							<waitfor maxwait="5" maxwaitunit="minute">
 								<and>
 									<available file="${test.app.server.parent.dir}/logs" />
 									<http url="http://localhost:${test.app.server.leading.port.number}080/web/guest" />
 								</and>
 							</waitfor>
+
+							<tstamp>
+								<format property="end.time" pattern="EEEE, d MMMM yyyy, hh:mm aa" />
+							</tstamp>
+
+							<echo>####################End time : ${end.time}</echo>
 						</else>
 					</if>
 				</then>
