@@ -1263,11 +1263,10 @@
 							</then>
 						</elseif>
 						<else>
+							<echo>################${test.app.server.parent.dir}/logs</echo>
+							<echo>################${test.app.server.dir}/logs</echo>
 							<waitfor maxwait="5" maxwaitunit="minute">
-								<and>
-									<available file="${test.app.server.parent.dir}/logs" />
-									<http url="http://localhost:${test.app.server.leading.port.number}080/web/guest" />
-								</and>
+								<http url="http://localhost:${test.app.server.leading.port.number}080/web/guest" />
 							</waitfor>
 						</else>
 					</if>
