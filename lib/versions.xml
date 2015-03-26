@@ -140,6 +140,9 @@
 				</licenses>
 			</library>
 			<library>
+				<file-name>lib/development/com.liferay.ant.bnd.jar</file-name>
+			</library>
+			<library>
 				<file-name>lib/development/deployment.jar</file-name>
 				<version>1.1</version>
 				<project-name>J2EE Application Deployment Library</project-name>
@@ -570,6 +573,9 @@
 						<license-url>http://www.gnu.org/licenses/gpl-2.0.html</license-url>
 					</license>
 				</licenses>
+			</library>
+			<library>
+				<file-name>lib/development/liferay-doclet.jar</file-name>
 			</library>
 			<library>
 				<file-name>lib/development/mail.jar</file-name>
@@ -1044,7 +1050,7 @@
 				</comments>
 			</library>
 			<library>
-				<file-name>global/portlet.jar</file-name>
+				<file-name>lib/global/portlet.jar</file-name>
 				<version>2.0</version>
 				<project-name>JSR 286 Portlet 2.0 Specification</project-name>
 				<project-url>http://jcp.org/en/jsr/detail?id=286</project-url>
@@ -1467,6 +1473,12 @@
 				<comments>
 					Removed META-INF/beans.xml to prevent CDI autowiring.
 				</comments>
+			</library>
+			<library>
+				<file-name>lib/portal/com.liferay.ruby.gems.jar</file-name>
+			</library>
+			<library>
+				<file-name>lib/portal/com.liferay.sass.compiler.jar</file-name>
 			</library>
 			<library>
 				<file-name>lib/portal/commons-beanutils.jar</file-name>
@@ -2698,7 +2710,7 @@
 				</comments>
 			</library>
 			<library>
-				<file-name>lib/portal/liferay-yuicompressor.jar</file-name>
+				<file-name>lib/portal/liferay-yui-compressor.jar</file-name>
 				<version>2.4.7</version>
 				<project-name>YUI Compressor</project-name>
 				<project-url>http://developer.yahoo.com/yui/compressor</project-url>
@@ -3095,6 +3107,9 @@
 						<copyright-notice>Copyright (c) 2009 The Apache Software Foundation</copyright-notice>
 					</license>
 				</licenses>
+			</library>
+			<library>
+				<file-name>lib/portal/portal-client.jar</file-name>
 			</library>
 			<library>
 				<file-name>lib/portal/portals-bridges.jar</file-name>
