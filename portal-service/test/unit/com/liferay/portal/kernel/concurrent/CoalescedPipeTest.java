@@ -43,7 +43,7 @@ public class CoalescedPipeTest {
 						coalescedPipe.put("test1");
 					}
 					catch (InterruptedException ie) {
-						Assert.fail(ie.getMessage());
+						throw new RuntimeException(ie);
 					}
 				}
 

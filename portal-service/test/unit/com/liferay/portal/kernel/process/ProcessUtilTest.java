@@ -86,7 +86,7 @@ public class ProcessUtilTest {
 					atomicReference.set(executorService);
 				}
 				catch (Exception e) {
-					Assert.fail();
+					throw new RuntimeException(e);
 				}
 			}
 
@@ -421,7 +421,7 @@ public class ProcessUtilTest {
 					executorService.shutdownNow();
 				}
 				catch (Exception e) {
-					Assert.fail();
+					throw new RuntimeException(e);
 				}
 			}
 

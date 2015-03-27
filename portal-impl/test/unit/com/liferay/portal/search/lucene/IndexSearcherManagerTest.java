@@ -110,7 +110,7 @@ public class IndexSearcherManagerTest {
 					_assertHits(fieldValue, 1);
 				}
 				catch (Exception e) {
-					Assert.fail();
+					throw new RuntimeException(e);
 				}
 			}
 

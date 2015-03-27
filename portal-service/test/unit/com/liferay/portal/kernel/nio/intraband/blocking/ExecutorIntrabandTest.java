@@ -156,7 +156,7 @@ public class ExecutorIntrabandTest {
 						sourceChannel.close();
 					}
 					catch (Exception e) {
-						Assert.fail(e.getMessage());
+						throw new RuntimeException(e);
 					}
 				}
 
