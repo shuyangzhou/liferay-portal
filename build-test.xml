@@ -1199,10 +1199,7 @@
 				</elseif>
 				<else>
 					<waitfor maxwait="1" maxwaitunit="second" timeoutproperty="portal.not.started">
-						<and>
-							<available file="${test.app.server.parent.dir}/logs" />
-							<socket server="localhost" port="${test.app.server.leading.port.number}080" />
-						</and>
+						<socket server="localhost" port="${test.app.server.leading.port.number}080" />
 					</waitfor>
 				</else>
 			</if>
@@ -1264,10 +1261,7 @@
 						</elseif>
 						<else>
 							<waitfor maxwait="5" maxwaitunit="minute">
-								<and>
-									<available file="${test.app.server.parent.dir}/logs" />
-									<http url="http://localhost:${test.app.server.leading.port.number}080/web/guest" />
-								</and>
+								<http url="http://localhost:${test.app.server.leading.port.number}080/web/guest" />
 							</waitfor>
 						</else>
 					</if>
@@ -4353,7 +4347,6 @@ if (ppstate.equals("normal")) {
 						new String[] {
 							"modules/apps/bookmarks/bookmarks-test/test/integration/**/*Test.java",
 							"modules/apps/social/social-networking-test/test/integration/**/*Test.java",
-							"modules/apps/wiki/wiki-test/test/integration/**/*Test.java",
 							"modules/portal/portal-json-web-service-extender/test/integration/**/*Test.java",
 							"modules/portal/portal-template-freemarker/test/integration/**/*Test.java",
 							"modules/util/osgi-util/test/integration/**/*Test.java",

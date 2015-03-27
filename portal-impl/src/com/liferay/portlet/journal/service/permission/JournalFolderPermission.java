@@ -15,15 +15,17 @@
 package com.liferay.portlet.journal.service.permission;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.provider.PortletProvider;
+import com.liferay.portal.kernel.provider.PortletProviderUtil;
 import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
 import com.liferay.portal.kernel.staging.permission.StagingPermissionUtil;
 import com.liferay.portal.security.auth.PrincipalException;
 import com.liferay.portal.security.permission.ActionKeys;
 import com.liferay.portal.security.permission.BaseModelPermissionChecker;
 import com.liferay.portal.security.permission.PermissionChecker;
-import com.liferay.portal.util.PortletKeys;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.journal.NoSuchFolderException;
+import com.liferay.portlet.journal.model.JournalArticle;
 import com.liferay.portlet.journal.model.JournalFolder;
 import com.liferay.portlet.journal.model.JournalFolderConstants;
 import com.liferay.portlet.journal.service.JournalFolderLocalServiceUtil;
@@ -64,14 +66,17 @@ public class JournalFolderPermission implements BaseModelPermissionChecker {
 			String actionId)
 		throws PortalException {
 
+		String portletId = PortletProviderUtil.getPortletId(
+			JournalArticle.class.getName(), PortletProvider.Action.EDIT);
+
 		if (actionId.equals(ActionKeys.ADD_FOLDER)) {
 			actionId = ActionKeys.ADD_SUBFOLDER;
 		}
 
 		Boolean hasPermission = StagingPermissionUtil.hasPermission(
 			permissionChecker, folder.getGroupId(),
-			JournalFolder.class.getName(), folder.getFolderId(),
-			PortletKeys.JOURNAL, actionId);
+			JournalFolder.class.getName(), folder.getFolderId(), portletId,
+			actionId);
 
 		if (hasPermission != null) {
 			return hasPermission.booleanValue();
