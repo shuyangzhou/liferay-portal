@@ -32,6 +32,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.notifications.UserNotificationDefinition;
 import com.liferay.portal.kernel.portlet.PortletRequestModel;
+import com.liferay.portal.kernel.provider.PortletProvider;
+import com.liferay.portal.kernel.provider.PortletProviderUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.sanitizer.SanitizerUtil;
 import com.liferay.portal.kernel.search.BaseModelSearchResult;
@@ -5932,15 +5934,20 @@ public class JournalArticleLocalServiceImpl
 
 		sb.append(articleURL);
 		sb.append(StringPool.AMPERSAND);
-		sb.append(PortalUtil.getPortletNamespace(PortletKeys.JOURNAL));
+
+		String portletId = PortletProviderUtil.getPortletId(
+			JournalArticle.class.getName(), PortletProvider.Action.EDIT);
+
+		sb.append(PortalUtil.getPortletNamespace(portletId));
+
 		sb.append("groupId=");
 		sb.append(groupId);
 		sb.append(StringPool.AMPERSAND);
-		sb.append(PortalUtil.getPortletNamespace(PortletKeys.JOURNAL));
+		sb.append(PortalUtil.getPortletNamespace(portletId));
 		sb.append("folderId=");
 		sb.append(folderId);
 		sb.append(StringPool.AMPERSAND);
-		sb.append(PortalUtil.getPortletNamespace(PortletKeys.JOURNAL));
+		sb.append(PortalUtil.getPortletNamespace(portletId));
 		sb.append("articleId=");
 		sb.append(articleId);
 
@@ -6035,6 +6042,9 @@ public class JournalArticleLocalServiceImpl
 	protected void checkArticlesByDisplayDate(Date displayDate)
 		throws PortalException {
 
+		String portletId = PortletProviderUtil.getPortletId(
+			JournalArticle.class.getName(), PortletProvider.Action.EDIT);
+
 		List<JournalArticle> articles = journalArticlePersistence.findByLtD_S(
 			displayDate, WorkflowConstants.STATUS_SCHEDULED);
 
@@ -6044,7 +6054,7 @@ public class JournalArticleLocalServiceImpl
 			serviceContext.setCommand(Constants.UPDATE);
 
 			String layoutFullURL = PortalUtil.getLayoutFullURL(
-				article.getGroupId(), PortletKeys.JOURNAL);
+				article.getGroupId(), portletId);
 
 			serviceContext.setLayoutFullURL(layoutFullURL);
 
@@ -6154,7 +6164,9 @@ public class JournalArticleLocalServiceImpl
 				long ownerId = article.getGroupId();
 				int ownerType = PortletKeys.PREFS_OWNER_TYPE_GROUP;
 				long plid = PortletKeys.PREFS_PLID_SHARED;
-				String portletId = PortletKeys.JOURNAL;
+				String portletId = PortletProviderUtil.getPortletId(
+					JournalArticle.class.getName(),
+					PortletProvider.Action.EDIT);
 
 				PortletPreferences preferences =
 					portletPreferencesLocalService.getPreferences(
@@ -6972,7 +6984,8 @@ public class JournalArticleLocalServiceImpl
 			long ownerId = article.getGroupId();
 			int ownerType = PortletKeys.PREFS_OWNER_TYPE_GROUP;
 			long plid = PortletKeys.PREFS_PLID_SHARED;
-			String portletId = PortletKeys.JOURNAL;
+			String portletId = PortletProviderUtil.getPortletId(
+				JournalArticle.class.getName(), PortletProvider.Action.EDIT);
 			String defaultPreferences = null;
 
 			preferences = portletPreferencesLocalService.getPreferences(
@@ -7099,7 +7112,11 @@ public class JournalArticleLocalServiceImpl
 
 		subscriptionSender.setNotificationType(notificationType);
 
-		subscriptionSender.setPortletId(PortletKeys.JOURNAL);
+		String portletId = PortletProviderUtil.getPortletId(
+			JournalArticle.class.getName(), PortletProvider.Action.EDIT);
+
+		subscriptionSender.setPortletId(portletId);
+
 		subscriptionSender.setReplyToAddress(fromAddress);
 		subscriptionSender.setScopeGroupId(article.getGroupId());
 		subscriptionSender.setServiceContext(serviceContext);
@@ -7267,7 +7284,12 @@ public class JournalArticleLocalServiceImpl
 		subscriptionSender.setLocalizedBodyMap(localizedBodyMap);
 		subscriptionSender.setLocalizedSubjectMap(localizedSubjectMap);
 		subscriptionSender.setMailId("journal_article", article.getId());
-		subscriptionSender.setPortletId(PortletKeys.JOURNAL);
+
+		String portletId = PortletProviderUtil.getPortletId(
+			JournalArticle.class.getName(), PortletProvider.Action.EDIT);
+
+		subscriptionSender.setPortletId(portletId);
+
 		subscriptionSender.setScopeGroupId(article.getGroupId());
 		subscriptionSender.setServiceContext(serviceContext);
 
@@ -7282,10 +7304,13 @@ public class JournalArticleLocalServiceImpl
 
 		Map<String, Serializable> workflowContext = new HashMap<>();
 
+		String portletId = PortletProviderUtil.getPortletId(
+			JournalArticle.class.getName(), PortletProvider.Action.EDIT);
+
 		workflowContext.put(
 			WorkflowConstants.CONTEXT_URL,
 			PortalUtil.getControlPanelFullURL(
-				serviceContext.getScopeGroupId(), PortletKeys.JOURNAL, null));
+				serviceContext.getScopeGroupId(), portletId, null));
 
 		WorkflowHandlerRegistryUtil.startWorkflowInstance(
 			article.getCompanyId(), article.getGroupId(), userId,

@@ -28,8 +28,7 @@ public class StackTraceUtil {
 
 		StackTraceElement[] stackTraceElements = e.getStackTrace();
 
-		StackTraceElement stackTraceElement =
-			stackTraceElements[stackTraceElements.length - 1];
+		StackTraceElement stackTraceElement = stackTraceElements[1];
 
 		return stackTraceElement.getClassName() + "#" +
 			stackTraceElement.getMethodName() + "#" +
