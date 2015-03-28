@@ -100,7 +100,9 @@
 			</sequential>
 		</for>
 
-		<echo file="${liferay.home}/osgi/modules/com.liferay.portlet.tck.bridge.configuration.PortletTCKBridgeConfiguration.cfg">servletContextNames=${servlet.context.names}</echo>
+		<echo>#################################################################servletContextNames=${servlet.context.names}</echo>
+		<echo file="${liferay.home}/osgi/modules/com.liferay.portlet.tck.bridge.configuration.PortletTCKBridgeConfiguration.cfg">servletContextNames=${servlet.context.names}
+handShakeServerPort=8239</echo>
 
 		<ant dir="modules/test/portlet-tck-bridge" target="deploy" />
 	</target>
@@ -256,6 +258,10 @@ work.dir=${basedir.unix}/tools/tck/work</echo>
 		</if>
 
 		<antcall target="start-app-server" />
+
+		<waitfor checkevery="100" checkeveryunit="millisecond" maxwait="5" maxwaitunit="minute">
+			<socket server="localhost" port="8239"/>
+		</waitfor>
 
 		<condition property="tsant.file.suffix.bat" value=".bat" else="">
 			<contains string="${os.name}" substring="Windows" casesensitive="false" />
