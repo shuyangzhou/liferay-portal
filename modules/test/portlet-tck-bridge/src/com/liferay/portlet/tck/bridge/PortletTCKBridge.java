@@ -14,24 +14,41 @@
 
 package com.liferay.portlet.tck.bridge;
 
+import aQute.bnd.annotation.metatype.Configurable;
+
 import com.liferay.portal.struts.StrutsActionRegistryUtil;
+import com.liferay.portlet.tck.bridge.configuration.PortletTCKBridgeConfiguration;
 
 import javax.servlet.ServletContext;
 
+import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Matthew Tambara
  */
-@Component
+@Component(
+	configurationPid ="com.liferay.portlet.tck.bridge.configuration.PortletTCKBridgeConfiguration"
+)
 public class PortletTCKBridge {
 
 	@Activate
-	protected void activate() {
-		StrutsActionRegistryUtil.register(_PATH, new PortletTCKStrutsAction());
+	@Modified
+	protected void activate(ComponentContext componentContext) {
+		PortletTCKBridgeConfiguration portletTCKBridgeConfiguration =
+			Configurable.createConfigurable(
+				PortletTCKBridgeConfiguration.class,
+				componentContext.getProperties());
+
+		StrutsActionRegistryUtil.register(
+			_PATH,
+			new PortletTCKStrutsAction(
+				portletTCKBridgeConfiguration.servletContextNames(),
+				portletTCKBridgeConfiguration.timeout()));
 	}
 
 	@Deactivate
