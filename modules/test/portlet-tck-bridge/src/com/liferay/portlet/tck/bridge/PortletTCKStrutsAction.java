@@ -16,10 +16,12 @@ package com.liferay.portlet.tck.bridge;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.servlet.ServletContextPool;
 import com.liferay.portal.kernel.struts.BaseStrutsAction;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.model.Layout;
 import com.liferay.portal.model.LayoutConstants;
 import com.liferay.portal.model.LayoutTypePortlet;
@@ -48,10 +50,17 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class PortletTCKStrutsAction extends BaseStrutsAction {
 
+	public PortletTCKStrutsAction(String[] servletContextNames, long timeout) {
+		_servletContextNames = servletContextNames;
+		_timeout = timeout * Time.SECOND;
+	}
+
 	@Override
 	public String execute(
 			HttpServletRequest request, HttpServletResponse response)
 		throws Exception {
+
+		_waitForTCKWarDeployment();
 
 		try {
 			User user = _getUser(request);
@@ -192,7 +201,36 @@ public class PortletTCKStrutsAction extends BaseStrutsAction {
 		}
 	}
 
+	private void _waitForTCKWarDeployment() throws InterruptedException {
+		if (_initialized) {
+			return;
+		}
+
+		long startTime = System.currentTimeMillis();
+
+		try {
+			for (String servletContextName : _servletContextNames) {
+				if (!ServletContextPool.containsKey(servletContextName)) {
+					if ((System.currentTimeMillis() - startTime) > _timeout) {
+						_log.error("Timeout on waiting " + servletContextName);
+
+						break;
+					}
+
+					Thread.sleep(100);
+				}
+			}
+		}
+		finally {
+			_initialized = true;
+		}
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortletTCKStrutsAction.class);
+
+	private volatile boolean _initialized;
+	private final String[] _servletContextNames;
+	private final long _timeout;
 
 }
