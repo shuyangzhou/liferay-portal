@@ -39,6 +39,7 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.WebKeys;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -53,6 +54,12 @@ public class PortletTCKStrutsAction extends BaseStrutsAction {
 	public PortletTCKStrutsAction(String[] servletContextNames, long timeout) {
 		_servletContextNames = servletContextNames;
 		_timeout = timeout * Time.SECOND;
+
+		System.out.println(
+			"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^" +
+				Arrays.toString(servletContextNames));
+		System.out.println(
+			"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^" + _timeout);
 	}
 
 	@Override
@@ -214,14 +221,25 @@ public class PortletTCKStrutsAction extends BaseStrutsAction {
 					if ((System.currentTimeMillis() - startTime) > _timeout) {
 						_log.error("Timeout on waiting " + servletContextName);
 
+						System.out.println(
+							"&&&&&&&&&&&&Timeout on : " + servletContextName);
+
 						break;
 					}
 
 					Thread.sleep(100);
+
+					System.out.println(
+						"&&&&&&&&&&&&wait on : " + servletContextName);
+				}
+				else {
+					System.out.println(
+						"&&&&&&&&&&&&Ready : " + servletContextName);
 				}
 			}
 		}
 		finally {
+			System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%Initialized");
 			_initialized = true;
 		}
 	}
