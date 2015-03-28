@@ -59,6 +59,8 @@
 
 		<antcall target="prepare-tck" />
 
+		<var name="servlet.context.names" value="" />
+
 		<for list="${test.directories}" param="test.directory">
 			<sequential>
 				<for param="tck.war.file">
@@ -70,6 +72,20 @@
 					</path>
 
 					<sequential>
+						<local name="servlet.context.name" />
+
+						<basename property="servlet.context.name" file="@{tck.war.file}" suffix=".war" />
+
+						<if>
+							<equals arg1="${servlet.context.names}" arg2="" />
+							<then>
+								<var name="servlet.context.names" value="${servlet.context.name}" />
+							</then>
+							<else>
+								<var name="servlet.context.names" value="${servlet.context.names}|${servlet.context.name}" />
+							</else>
+						</if>
+
 						<update-tck-war-version
 							tck.war.file="@{tck.war.file}"
 						/>
@@ -83,6 +99,8 @@
 				</for>
 			</sequential>
 		</for>
+
+		<echo file="${liferay.home}/osgi/modules/com.liferay.portlet.tck.bridge.configuration.PortletTCKBridgeConfiguration.cfg">servletContextNames=${servlet.context.names}</echo>
 
 		<ant dir="modules/test/portlet-tck-bridge" target="deploy" />
 	</target>
