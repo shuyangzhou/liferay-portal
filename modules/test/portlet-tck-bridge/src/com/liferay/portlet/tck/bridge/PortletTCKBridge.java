@@ -105,6 +105,11 @@ public class PortletTCKBridge {
 		public Void call() throws IOException {
 			long startTime = System.currentTimeMillis();
 
+			System.out.println("%%%%%%%%%%%%%Start time : " + startTime);
+			System.out.println(
+				"%%%%%%%%%%%%%Timeout : " +
+					_portletTCKBridgeConfiguration.timeout() * Time.SECOND);
+
 			for (String servletContextName :
 					_portletTCKBridgeConfiguration.servletContextNames()) {
 
@@ -150,6 +155,11 @@ public class PortletTCKBridge {
 				if ((serviceContext == null) ||
 					(serviceContext.getAttribute(WebKeys.PLUGIN_PORTLETS) ==
 						null)) {
+
+					System.out.println(
+						"%%%%%%%%%Wait on : " + servletContextName +
+							" time left : " +
+								(System.currentTimeMillis() - startTime));
 
 					try {
 						Thread.sleep(100);
