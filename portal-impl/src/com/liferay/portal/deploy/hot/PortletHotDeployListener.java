@@ -214,6 +214,10 @@ public class PortletHotDeployListener extends BaseHotDeployListener {
 
 		String servletContextName = servletContext.getServletContextName();
 
+		System.out.println(
+			"^^^^^^^^^^^^^^PortletHotDeployListener deploying : " +
+				servletContextName);
+
 		if (_log.isDebugEnabled()) {
 			_log.debug("Invoking deploy for " + servletContextName);
 		}
@@ -231,6 +235,10 @@ public class PortletHotDeployListener extends BaseHotDeployListener {
 		};
 
 		if ((xmls[0] == null) && (xmls[1] == null)) {
+			System.out.println(
+				"^^^^^^^^^^^^^^PortletHotDeployListener shortcutted : " +
+					servletContextName);
+
 			return;
 		}
 
@@ -386,6 +394,10 @@ public class PortletHotDeployListener extends BaseHotDeployListener {
 						" are available for use");
 			}
 		}
+
+		System.out.println(
+			"^^^^^^^^^^^^^^PortletHotDeployListener deployed : " +
+				servletContextName);
 	}
 
 	protected void doInvokeUndeploy(HotDeployEvent hotDeployEvent)
