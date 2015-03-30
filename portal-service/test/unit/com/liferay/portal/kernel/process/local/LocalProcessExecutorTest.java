@@ -506,7 +506,7 @@ public class LocalProcessExecutorTest {
 					atomicReference.set(executorService);
 				}
 				catch (Exception e) {
-					Assert.fail();
+					throw new Error(e);
 				}
 			}
 

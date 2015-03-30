@@ -367,7 +367,7 @@ public class BaseIntrabandTest {
 							}
 						}
 						catch (Exception e) {
-							Assert.fail(e.getMessage());
+							throw new Error(e);
 						}
 					}
 

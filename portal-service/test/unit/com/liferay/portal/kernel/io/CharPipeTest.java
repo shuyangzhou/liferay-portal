@@ -164,7 +164,7 @@ public class CharPipeTest {
 					charPipe.close();
 				}
 				catch (Exception e) {
-					Assert.fail(e.getMessage());
+					throw new Error(e);
 				}
 			}
 
