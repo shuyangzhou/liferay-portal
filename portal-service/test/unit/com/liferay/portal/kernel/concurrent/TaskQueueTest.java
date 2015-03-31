@@ -300,7 +300,7 @@ public class TaskQueueTest {
 					}
 				}
 				catch (InterruptedException ie) {
-					Assert.fail();
+					throw new Error(ie);
 				}
 
 				try {

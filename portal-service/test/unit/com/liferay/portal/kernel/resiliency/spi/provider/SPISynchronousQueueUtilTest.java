@@ -82,7 +82,7 @@ public class SPISynchronousQueueUtilTest {
 						spiUUID, mockSPI);
 				}
 				catch (InterruptedException ie) {
-					Assert.fail(ie.getMessage());
+					throw new Error(ie);
 				}
 			}
 

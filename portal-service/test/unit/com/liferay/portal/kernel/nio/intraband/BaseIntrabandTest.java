@@ -152,9 +152,7 @@ public class BaseIntrabandTest {
 						_mockIntraband.registerDatagramReceiveHandler(
 							_TYPE, datagramReceiveHandler2);
 
-						Assert.fail();
-
-						return null;
+						throw new Error();
 					}
 
 				});
@@ -369,7 +367,7 @@ public class BaseIntrabandTest {
 							}
 						}
 						catch (Exception e) {
-							Assert.fail(e.getMessage());
+							throw new Error(e);
 						}
 					}
 

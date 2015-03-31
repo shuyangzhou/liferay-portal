@@ -78,15 +78,12 @@ public class DDLRecordSetImplTest extends BaseDDMTestCase {
 		DDMStructure recordSetDDMStructure = recordSet.getDDMStructure(
 			template.getTemplateId());
 
-		if (fieldNames.equals(recordSetDDMStructure.getFieldNames())) {
-			Assert.fail();
-		}
+		Assert.assertNotEquals(
+			fieldNames, recordSetDDMStructure.getFieldNames());
 
 		recordSetDDMStructure = recordSet.getDDMStructure();
 
-		if (!fieldNames.equals(recordSetDDMStructure.getFieldNames())) {
-			Assert.fail();
-		}
+		Assert.assertEquals(fieldNames, recordSetDDMStructure.getFieldNames());
 	}
 
 	protected DDLRecordSet createRecordSet(long ddmStructureId, String name) {
