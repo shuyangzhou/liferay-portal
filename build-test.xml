@@ -1123,29 +1123,52 @@
 					</unzip>
 
 					<delete file="tomcat.zip" />
-
-					<copy
-						file="${app.server.tomcat.dir}/conf/tomcat-users.xml"
-						overwrite="true"
-						tofile="${app.server.tomcat.dir}/conf/tomcat-users.xml.orig"
-					/>
-
-					<echo file="${app.server.tomcat.dir}/conf/tomcat-users.xml"><![CDATA[<?xml version="1.0"?>
-
-<tomcat-users>
-	<role rolename="tomcat" />
-	<role rolename="manager-gui" />
-	<role rolename="manager-script" />
-	<role rolename="manager-jmx" />
-	<role rolename="manager-status" />
-	<user
-		password="${app.server.tomcat.manager.password}"
-		roles="tomcat,manager-gui,manager-script,manager-jmx,manager-status"
-		username="${app.server.tomcat.manager.user}"
-	/>
-</tomcat-users>]]></echo>
 				</then>
 			</if>
+
+			<tstamp />
+
+			<copy
+				file="${app.server.tomcat.dir}/conf/tomcat-users.xml"
+				overwrite="true"
+				tofile="${app.server.tomcat.dir}/conf/tomcat-users.xml.${DSTAMP}${TSTAMP}"
+			/>
+
+			<xmltask source="${app.server.tomcat.dir}/conf/tomcat-users.xml" dest="${app.server.tomcat.dir}/conf/tomcat-users.xml">
+				<copy path="/tomcat-users/role[@rolename='tomcat']/@rolename" property="role.tomcat.exists" />
+				<insert path="/tomcat-users" unless="role.tomcat.exists"><![CDATA[
+					<role rolename="tomcat" />
+				]]></insert>
+
+				<copy path="/tomcat-users/role[@rolename='manager-gui']/@rolename" property="role.manager-gui.exists" />
+				<insert path="/tomcat-users" unless="role.manager-gui.exists"><![CDATA[
+					<role rolename="manager-gui" />
+				]]></insert>
+
+				<copy path="/tomcat-users/role[@rolename='manager-script']/@rolename" property="role.manager-script.exists" />
+				<insert path="/tomcat-users" unless="role.manager-script.exists"><![CDATA[
+					<role rolename="manager-script" />
+				]]></insert>
+
+				<copy path="/tomcat-users/role[@rolename='manager-jmx']/@rolename" property="role.manager-jmx.exists" />
+				<insert path="/tomcat-users" unless="role.manager-jmx.exists"><![CDATA[
+					<role rolename="manager-jmx" />
+				]]></insert>
+
+				<copy path="/tomcat-users/role[@rolename='manager-status']/@rolename" property="role.manager-status.exists" />
+				<insert path="/tomcat-users" unless="role.manager-status.exists"><![CDATA[
+					<role rolename="manager-status" />
+				]]></insert>
+
+				<copy path="/tomcat-users/user[@username='${app.server.tomcat.manager.user}']/@username" property="user.exists" />
+				<insert path="/tomcat-users" unless="user.exists"><![CDATA[
+					<user
+						password="${app.server.tomcat.manager.password}"
+						roles="tomcat,manager-gui,manager-script,manager-jmx,manager-status"
+						username="${app.server.tomcat.manager.user}"
+					/>
+				]]></insert>
+			</xmltask>
 		</sequential>
 	</macrodef>
 
