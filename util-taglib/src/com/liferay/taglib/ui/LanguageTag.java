@@ -15,16 +15,24 @@
 package com.liferay.taglib.ui;
 
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.servlet.taglib.ui.LanguageEntry;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portal.util.PortalUtil;
+import com.liferay.portlet.portletdisplaytemplate.util.PortletDisplayTemplate;
 import com.liferay.taglib.util.IncludeTag;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -33,44 +41,16 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class LanguageTag extends IncludeTag {
 
-	/**
-	 * @deprecated As of 7.0.0
-	 */
-	@Deprecated
-	public static final int LIST_ICON = 0;
+	public void setDdmTemplateGroupId(long ddmTemplateGroupId) {
+		_ddmTemplateGroupId = ddmTemplateGroupId;
+	}
 
-	/**
-	 * @deprecated As of 7.0.0
-	 */
-	@Deprecated
-	public static final int LIST_LONG_TEXT = 1;
-
-	/**
-	 * @deprecated As of 7.0.0
-	 */
-	@Deprecated
-	public static final int LIST_SHORT_TEXT = 2;
-
-	/**
-	 * @deprecated As of 7.0.0
-	 */
-	@Deprecated
-	public static final int SELECT_BOX = 3;
+	public void setDdmTemplateKey(String ddmTemplateKey) {
+		_ddmTemplateKey = ddmTemplateKey;
+	}
 
 	public void setDisplayCurrentLocale(boolean displayCurrentLocale) {
 		_displayCurrentLocale = displayCurrentLocale;
-	}
-
-	/**
-	 * @deprecated As of 7.0.0, replaced by {@link #setDisplayStyle(String)}.
-	 */
-	@Deprecated
-	public void setDisplayStyle(int displayStyle) {
-		_displayStyle = String.valueOf(displayStyle);
-	}
-
-	public void setDisplayStyle(String displayStyle) {
-		_displayStyle = displayStyle;
 	}
 
 	public void setFormAction(String formAction) {
@@ -95,13 +75,106 @@ public class LanguageTag extends IncludeTag {
 
 	@Override
 	protected void cleanUp() {
+		_ddmTemplateGroupId = 0;
+		_ddmTemplateKey = null;
 		_displayCurrentLocale = true;
-		_displayStyle = _DISPLAY_STYLE;
 		_formAction = null;
 		_formName = "fm";
 		_languageId = null;
 		_languageIds = null;
 		_name = "languageId";
+	}
+
+	protected String getDisplayStyle() {
+		if (Validator.isNotNull(_ddmTemplateKey)) {
+			return PortletDisplayTemplate.DISPLAY_STYLE_PREFIX +
+				_ddmTemplateKey;
+		}
+
+		return null;
+	}
+
+	protected String getFormAction() {
+		String formAction = _formAction;
+
+		if (Validator.isNotNull(formAction)) {
+			return formAction;
+		}
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		formAction =
+			themeDisplay.getPathMain() +
+				"/portal/update_language?p_l_id=" + themeDisplay.getPlid();
+		formAction = HttpUtil.setParameter(
+			formAction, "redirect", PortalUtil.getCurrentURL(request));
+
+		return formAction;
+	}
+
+	protected List<LanguageEntry> getLanguageEntries(
+		Locale[] locales, boolean displayCurrentLocale, String formAction,
+		String parameterName) {
+
+		List<LanguageEntry> languageEntries = new ArrayList<>();
+
+		Map<String, Integer> counts = new HashMap<>();
+
+		for (Locale locale : locales) {
+			Integer count = counts.get(locale.getLanguage());
+
+			if (count == null) {
+				count = new Integer(1);
+			}
+			else {
+				count = new Integer(count.intValue() + 1);
+			}
+
+			counts.put(locale.getLanguage(), count);
+		}
+
+		Set<String> duplicateLanguages = new HashSet<>();
+
+		for (Locale locale : locales) {
+			Integer count = counts.get(locale.getLanguage());
+
+			if (count.intValue() != 1) {
+				duplicateLanguages.add(locale.getLanguage());
+			}
+		}
+
+		for (Locale locale : locales) {
+			String url = null;
+
+			ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
+				WebKeys.THEME_DISPLAY);
+
+			if (!LocaleUtil.equals(locale, themeDisplay.getLocale())) {
+				url = HttpUtil.addParameter(
+					formAction, parameterName, LocaleUtil.toLanguageId(locale));
+			}
+			else if (!displayCurrentLocale) {
+				continue;
+			}
+
+			languageEntries.add(
+				new LanguageEntry(
+					duplicateLanguages, themeDisplay.getLocale(), locale, url));
+		}
+
+		return languageEntries;
+	}
+
+	protected Locale[] getLocales() {
+		if (ArrayUtil.isNotEmpty(_languageIds)) {
+			return LocaleUtil.fromLanguageIds(_languageIds);
+		}
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		return LanguageUtil.getAvailableLocales(themeDisplay.getSiteGroupId());
 	}
 
 	@Override
@@ -114,46 +187,26 @@ public class LanguageTag extends IncludeTag {
 		request.setAttribute(
 			"liferay-ui:language:displayCurrentLocale",
 			String.valueOf(_displayCurrentLocale));
-
-		String displayStyle = _displayStyle;
-
-		if (!ArrayUtil.contains(_DISPLAY_STYLE_OPTIONS, displayStyle)) {
-			displayStyle = _DISPLAY_STYLE_OPTIONS[0];
-		}
-
 		request.setAttribute(
-			"liferay-ui:language:displayStyle", String.valueOf(displayStyle));
-		request.setAttribute("liferay-ui:language:formAction", _formAction);
+			"liferay-ui:language:displayStyle", getDisplayStyle());
+		request.setAttribute(
+			"liferay-ui:language:displayStyleGroupId", _ddmTemplateGroupId);
+		request.setAttribute("liferay-ui:language:formAction", getFormAction());
 		request.setAttribute("liferay-ui:language:formName", _formName);
+		request.setAttribute(
+			"liferay-ui:language:languageEntries",
+			getLanguageEntries(
+				getLocales(), _displayCurrentLocale, getFormAction(), _name));
 		request.setAttribute("liferay-ui:language:languageId", _languageId);
-
-		Locale[] locales = null;
-
-		if (ArrayUtil.isEmpty(_languageIds)) {
-			ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
-				WebKeys.THEME_DISPLAY);
-
-			locales = LanguageUtil.getAvailableLocales(
-				themeDisplay.getSiteGroupId());
-		}
-		else {
-			locales = LocaleUtil.fromLanguageIds(_languageIds);
-		}
-
-		request.setAttribute("liferay-ui:language:locales", locales);
+		request.setAttribute("liferay-ui:language:locales", getLocales());
 		request.setAttribute("liferay-ui:language:name", _name);
 	}
 
-	private static final String _DISPLAY_STYLE = GetterUtil.getString(
-		PropsUtil.get(PropsKeys.LANGUAGE_DISPLAY_STYLE_DEFAULT));
-
-	private static final String[] _DISPLAY_STYLE_OPTIONS = PropsUtil.getArray(
-		PropsKeys.LANGUAGE_DISPLAY_STYLE_OPTIONS);
-
 	private static final String _PAGE = "/html/taglib/ui/language/page.jsp";
 
+	private long _ddmTemplateGroupId;
+	private String _ddmTemplateKey;
 	private boolean _displayCurrentLocale = true;
-	private String _displayStyle = _DISPLAY_STYLE;
 	private String _formAction;
 	private String _formName = "fm";
 	private String _languageId;

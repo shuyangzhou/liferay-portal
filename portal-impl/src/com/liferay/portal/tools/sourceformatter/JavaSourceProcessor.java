@@ -43,17 +43,25 @@ import java.util.regex.Pattern;
  */
 public class JavaSourceProcessor extends BaseSourceProcessor {
 
+	public static String getImports(String content) {
+		Matcher matcher = _importsPattern.matcher(content);
+
+		if (matcher.find()) {
+			return matcher.group();
+		}
+
+		return null;
+	}
+
 	public static String stripJavaImports(
 			String content, String packageDir, String className)
 		throws IOException {
 
-		Matcher matcher = _importsPattern.matcher(content);
+		String imports = getImports(content);
 
-		if (!matcher.find()) {
+		if (Validator.isNull(imports)) {
 			return content;
 		}
-
-		String imports = matcher.group();
 
 		Set<String> classes = ClassUtil.getClasses(
 			new UnsyncStringReader(content), className);
@@ -66,14 +74,15 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 		String line = null;
 
 		while ((line = unsyncBufferedReader.readLine()) != null) {
-			if (!line.contains("import ")) {
+			int x = line.indexOf("import ");
+
+			if (x == -1) {
 				continue;
 			}
 
-			int importX = line.indexOf(" ");
-			int importY = line.lastIndexOf(".");
+			int y = line.lastIndexOf(StringPool.PERIOD);
 
-			String importPackage = line.substring(importX + 1, importY);
+			String importPackage = line.substring(x + 7, y);
 
 			if (importPackage.equals(packageDir) ||
 				importPackage.equals("java.lang")) {
@@ -81,7 +90,7 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 				continue;
 			}
 
-			String importClass = line.substring(importY + 1, line.length() - 1);
+			String importClass = line.substring(y + 1, line.length() - 1);
 
 			if (importClass.equals("*") || classes.contains(importClass)) {
 				sb.append(line);
@@ -91,11 +100,11 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 
 		ImportsFormatter importsFormatter = new JavaImportsFormatter();
 
-		imports = importsFormatter.format(sb.toString());
+		String newImports = importsFormatter.format(sb.toString());
 
-		content =
-			content.substring(0, matcher.start()) + imports +
-				content.substring(matcher.end());
+		if (!imports.equals(newImports)) {
+			content = StringUtil.replaceFirst(content, imports, newImports);
+		}
 
 		// Ensure a blank line exists between the package and the first import
 
@@ -110,6 +119,77 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 			"$1\n\n/**");
 
 		return content;
+	}
+
+	protected static String checkAnnotationParameterProperties(
+		String content, String annotation) {
+
+		int x = annotation.indexOf("property = {");
+
+		if (x == -1) {
+			return null;
+		}
+
+		int y = x;
+
+		while (true) {
+			y = annotation.indexOf(StringPool.CLOSE_CURLY_BRACE, y + 1);
+
+			if (!isInsideQuotes(annotation, y)) {
+				break;
+			}
+		}
+
+		String parameterProperties = annotation.substring(x + 12, y);
+
+		parameterProperties = StringUtil.replace(
+			parameterProperties, StringPool.NEW_LINE, StringPool.SPACE);
+
+		String[] parameterPropertiesArray = StringUtil.split(
+			parameterProperties, StringPool.COMMA_AND_SPACE);
+
+		String previousPropertyName = null;
+		String previousPropertyNameAndValue = null;
+
+		for (String parameterProperty : parameterPropertiesArray) {
+			x = parameterProperty.indexOf(StringPool.QUOTE);
+			y = parameterProperty.indexOf(StringPool.EQUAL, x);
+
+			int z = x;
+
+			while (true) {
+				z = parameterProperty.indexOf(StringPool.QUOTE, z + 1);
+
+				if ((z == -1) || !isInsideQuotes(parameterProperty, z)) {
+					break;
+				}
+			}
+
+			if ((x == -1) || (y == -1) || (z == -1)) {
+				return null;
+			}
+
+			String propertyName = parameterProperty.substring(x + 1, y);
+			String propertyNameAndValue = parameterProperty.substring(x + 1, z);
+
+			if (Validator.isNotNull(previousPropertyName) &&
+				(previousPropertyName.compareTo(propertyName) > 0)) {
+
+				content = StringUtil.replaceFirst(
+					content, previousPropertyNameAndValue,
+					propertyNameAndValue);
+				content = StringUtil.replaceLast(
+					content, propertyNameAndValue,
+					previousPropertyNameAndValue);
+
+				return content;
+			}
+
+			previousPropertyName = propertyName;
+			previousPropertyNameAndValue = propertyNameAndValue;
+		}
+
+		return null;
 	}
 
 	protected static void checkAnnotationParameters(
@@ -226,6 +306,14 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 						}
 					}
 
+					String newContent = checkAnnotationParameterProperties(
+						content, annotation);
+
+					if (newContent != null) {
+						return formatAnnotations(
+							fileName, javaTermName, newContent, indent);
+					}
+
 					checkAnnotationParameters(
 						fileName, javaTermName, annotation);
 				}
@@ -276,6 +364,32 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 		}
 
 		return leadingTabCount;
+	}
+
+	protected static boolean isInsideQuotes(String s, int pos) {
+		boolean insideQuotes = false;
+
+		for (int i = 0; i < s.length(); i++) {
+			char c = s.charAt(i);
+
+			if (insideQuotes) {
+				if ((c == CharPool.QUOTE) &&
+					((c <= 1) || (s.charAt(i - 1) != CharPool.BACK_SLASH) ||
+					 (s.charAt(i - 2) == CharPool.BACK_SLASH))) {
+
+					insideQuotes = false;
+				}
+			}
+			else if (c == CharPool.QUOTE) {
+				insideQuotes = true;
+			}
+
+			if (pos == i) {
+				return insideQuotes;
+			}
+		}
+
+		return false;
 	}
 
 	protected String applyDiamondOperator(String content) {
@@ -2999,32 +3113,6 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 		else {
 			return false;
 		}
-	}
-
-	protected boolean isInsideQuotes(String s, int pos) {
-		boolean insideQuotes = false;
-
-		for (int i = 0; i < s.length(); i++) {
-			char c = s.charAt(i);
-
-			if (insideQuotes) {
-				if ((c == CharPool.QUOTE) &&
-					((c <= 1) || (s.charAt(i - 1) != CharPool.BACK_SLASH) ||
-					 (s.charAt(i - 2) == CharPool.BACK_SLASH))) {
-
-					insideQuotes = false;
-				}
-			}
-			else if (c == CharPool.QUOTE) {
-				insideQuotes = true;
-			}
-
-			if (pos == i) {
-				return insideQuotes;
-			}
-		}
-
-		return false;
 	}
 
 	protected boolean isValidJavaParameter(String javaParameter) {

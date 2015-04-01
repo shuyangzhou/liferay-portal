@@ -79,6 +79,10 @@ ${languageUtil.get(locale, key)}</#macro>
 >
 ${languageUtil.format(locale, key, arguments)}</#macro>
 
+<#macro languages>
+	${theme.runtime("com.liferay.portal.kernel.servlet.taglib.ui.LanguageEntry", portletProviderAction.VIEW)}
+</#macro>
+
 <#macro quick_access
 	content_id
 >
