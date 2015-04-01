@@ -76,14 +76,6 @@ public class InvokerFilterHelper {
 		}
 	}
 
-	public Filter getFilter(String filterName) {
-		return _filters.get(filterName);
-	}
-
-	public FilterConfig getFilterConfig(String filterName) {
-		return _filterConfigs.get(filterName);
-	}
-
 	public void init(FilterConfig filterConfig) throws ServletException {
 		try {
 			ServletContext servletContext = filterConfig.getServletContext();
@@ -284,25 +276,27 @@ public class InvokerFilterHelper {
 		_filters.put(filterName, filter);
 	}
 
-	protected void initFilterMapping(
+	protected FilterMapping initFilterMapping(
 		String filterName, List<String> urlPatterns, List<String> dispatchers) {
 
 		Filter filter = _filters.get(filterName);
 
 		if (filter == null) {
-			return;
+			if (_log.isWarnEnabled()) {
+				_log.warn("No filter exists with filter mapping " + filterName);
+			}
+
+			return null;
 		}
 
 		FilterConfig filterConfig = _filterConfigs.get(filterName);
 
 		if (filterConfig == null) {
-			return;
+			return null;
 		}
 
-		FilterMapping filterMapping = new FilterMapping(
+		return new FilterMapping(
 			filter, filterConfig, urlPatterns, dispatchers);
-
-		_filterMappings.add(filterMapping);
 	}
 
 	protected void readLiferayFilterWebXML(
@@ -368,34 +362,13 @@ public class InvokerFilterHelper {
 				dispatchers.add(dispatcher);
 			}
 
-			initFilterMapping(filterName, urlPatterns, dispatchers);
-		}
-	}
+			FilterMapping filterMapping = initFilterMapping(
+				filterName, urlPatterns, dispatchers);
 
-	protected void registerFilterMapping(
-		String filterName, List<String> urlPatterns, List<String> dispatchers,
-		String positionFilterName, boolean after) {
-
-		Filter filter = getFilter(filterName);
-
-		FilterConfig filterConfig = _filterConfigs.get(filterName);
-
-		if (filterConfig == null) {
-			filterConfig = getFilterConfig(filterName);
-		}
-
-		if (filter == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn("No filter exists with filter mapping " + filterName);
+			if (filterMapping != null) {
+				_filterMappings.add(filterMapping);
 			}
-
-			return;
 		}
-
-		FilterMapping filterMapping = new FilterMapping(
-			filter, filterConfig, urlPatterns, dispatchers);
-
-		registerFilterMapping(filterMapping, positionFilterName, after);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
