@@ -1219,10 +1219,6 @@ public interface PropsKeys {
 
 	public static final String JSP_WRITER_BUFFER_SIZE = "jsp.writer.buffer.size";
 
-	public static final String LANGUAGE_DISPLAY_STYLE_DEFAULT = "language.display.style.default";
-
-	public static final String LANGUAGE_DISPLAY_STYLE_OPTIONS = "language.display.style.options";
-
 	public static final String LAYOUT_AJAX_RENDER_ENABLE = "layout.ajax.render.enable";
 
 	public static final String LAYOUT_CLONE_IMPL = "layout.clone.impl";
@@ -2278,6 +2274,8 @@ public interface PropsKeys {
 	public static final String SETUP_LIFERAY_POOL_PROVIDER_JAR_NAME = "setup.liferay.pool.provider.jar.name";
 
 	public static final String SETUP_LIFERAY_POOL_PROVIDER_JAR_URL = "setup.liferay.pool.provider.jar.url";
+
+	public static final String SETUP_WIZARD_ADD_SAMPLE_DATA = "setup.wizard.add.sample.data";
 
 	public static final String SETUP_WIZARD_ENABLED = "setup.wizard.enabled";
 
