@@ -19,7 +19,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.transaction.TransactionAttribute;
 import com.liferay.portal.kernel.transaction.TransactionLifecycleListener;
 import com.liferay.portal.kernel.transaction.TransactionStatus;
-import com.liferay.portal.kernel.util.AutoResetThreadLocal;
+import com.liferay.portal.kernel.util.InitialThreadLocal;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -120,9 +120,9 @@ public class TransactionCommitCallbackUtil {
 
 	private static final ThreadLocal<List<List<Callable<?>>>>
 		_callbackListListThreadLocal =
-			new AutoResetThreadLocal<List<List<Callable<?>>>>(
+			new InitialThreadLocal<List<List<Callable<?>>>>(
 				TransactionCommitCallbackUtil.class +
-					"._callbackListListThreadLocal") {
+					"._callbackListListThreadLocal", null) {
 
 				@Override
 				protected List<List<Callable<?>>> initialValue() {
