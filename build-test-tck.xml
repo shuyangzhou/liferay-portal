@@ -261,6 +261,8 @@ servletContextNames=${tck.servlet.context.names}</echo>
 
 				<antcall target="prepare-portal-ext-properties" />
 
+				<antcall target="prepare-system-ext-properties" />
+
 				<antcall target="rebuild-database" inheritAll="false" />
 			</then>
 		</if>
