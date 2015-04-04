@@ -104,30 +104,6 @@ public class InvokerFilterHelper {
 		}
 	}
 
-	public Filter registerFilter(String filterName, Filter filter) {
-		Filter previousFilter = _filters.put(filterName, filter);
-
-		if (previousFilter != null) {
-			for (FilterMapping filterMapping : _filterMappings) {
-				if (filterMapping.getFilter() == previousFilter) {
-					if (filter != null) {
-						filterMapping.setFilter(filter);
-					}
-					else {
-						_filterMappings.remove(filterMapping);
-						_filterConfigs.remove(filterName);
-					}
-				}
-			}
-		}
-
-		for (InvokerFilter invokerFilter : _invokerFilters) {
-			invokerFilter.clearFilterChainsCache();
-		}
-
-		return previousFilter;
-	}
-
 	public void registerFilterMapping(
 		FilterMapping filterMapping, String filterName, boolean after) {
 
@@ -356,6 +332,19 @@ public class InvokerFilterHelper {
 		}
 	}
 
+	protected void updateFilterMappings(String filterName, Filter filter) {
+		for (FilterMapping filterMapping : _filterMappings) {
+			if (filterName.equals(filterMapping.getFilterName())) {
+				if (filter != null) {
+					filterMapping.setFilter(filter);
+				}
+				else {
+					_filterMappings.remove(filterMapping);
+				}
+			}
+		}
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		InvokerFilterHelper.class);
 
@@ -433,7 +422,7 @@ public class InvokerFilterHelper {
 
 			_filterConfigs.put(servletFilterName, filterConfig);
 
-			registerFilter(servletFilterName, filter);
+			updateFilterMappings(servletFilterName, filter);
 
 			FilterMapping filterMapping = new FilterMapping(
 				filter, filterConfig, urlPatterns, dispatchers,
