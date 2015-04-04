@@ -136,33 +136,41 @@ public class InvokerFilterHelper {
 		}
 	}
 
-	public void unregisterFilter(String filterName) {
-		Filter filter = _filters.remove(filterName);
+	public void unregisterFilterMapping(
+		FilterMapping filterMapping, boolean clearFilterChainsCache) {
 
-		if (filter == null) {
-			return;
+		_filterMappings.remove(filterMapping);
+
+		if (clearFilterChainsCache) {
+			for (InvokerFilter invokerFilter : _invokerFilters) {
+				invokerFilter.clearFilterChainsCache();
+			}
 		}
+	}
+
+	public void unregisterFilterMappings(String filterName) {
+		Filter filter = null;
 
 		for (FilterMapping filterMapping : _filterMappings) {
-			if (filterMapping.getFilter() == filter) {
-				unregisterFilterMapping(filterMapping);
+			if (filterName.equals(filterMapping.getFilterName())) {
+				if (filter == null) {
+					filter = filterMapping.getFilter();
+				}
+
+				unregisterFilterMapping(filterMapping, false);
 
 				break;
 			}
 		}
 
-		_filterConfigs.remove(filterName);
-
-		try {
-			filter.destroy();
+		if (filter != null) {
+			try {
+				filter.destroy();
+			}
+			catch (Exception e) {
+				_log.error(e, e);
+			}
 		}
-		catch (Exception e) {
-			_log.error(e, e);
-		}
-	}
-
-	public void unregisterFilterMapping(FilterMapping filterMapping) {
-		_filterMappings.remove(filterMapping);
 
 		for (InvokerFilter invokerFilter : _invokerFilters) {
 			invokerFilter.clearFilterChainsCache();
@@ -439,7 +447,7 @@ public class InvokerFilterHelper {
 
 			registry.ungetService(serviceReference);
 
-			unregisterFilter(
+			unregisterFilterMappings(
 				GetterUtil.getString(
 					serviceReference.getProperty("servlet-filter-name")));
 		}
