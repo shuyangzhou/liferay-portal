@@ -148,7 +148,8 @@ work.dir=${basedir.unix}/tools/tck/work</echo>
 		</for>
 
 		<echo file="${liferay.home}/osgi/modules/com.liferay.portlet.tck.bridge.configuration.PortletTCKBridgeConfiguration.cfg">handShakeServerPort=${portlet.tck.bridge.handshake.port}
-servletContextNames=${tck.servlet.context.names}</echo>
+servletContextNames=${tck.servlet.context.names}
+timeout=10</echo>
 
 		<ant dir="modules/test/portlet-tck-bridge" target="deploy" />
 	</target>
@@ -269,20 +270,27 @@ servletContextNames=${tck.servlet.context.names}</echo>
 
 		<antcall target="start-app-server" />
 
-		<waitfor checkevery="100" checkeveryunit="millisecond" maxwait="10" maxwaitunit="minute" timeoutproperty="tck.wars.deployment.timeout">
+		<waitfor checkevery="100" checkeveryunit="millisecond" maxwait="5" maxwaitunit="second" timeoutproperty="tck.wars.deployment.timeout">
 			<socket server="localhost" port="${portlet.tck.bridge.handshake.port}" />
 		</waitfor>
 
 		<if>
 			<isset property="tck.wars.deployment.timeout" />
 			<then>
-				<tstamp>
-					<format property="current.date" pattern="yyyy-MM-dd" />
-				</tstamp>
+				<for param="logfile">
+					<path>
+						<fileset dir="${liferay.home}/logs" includes="*.log" />
+					</path>
+					<sequential>
+						<local name="logfile.content">
 
-				<loadfile property="liferay.log" srcFile="${app.server.parent.dir}/logs/liferay.${current.date}.log" />
+						<loadfile property="logfile.content" srcFile="@{logfile}" />
 
-				<echo message="${liferay.log}" />
+						<echo message="#######################File content of ${liferay.home}/logs/@{logfile}\n\n${logfile.content}" />
+					</sequential>
+				</for>
+
+				<sleep seconds="30" />
 
 				<fail message="Timeout while waiting for TCK wars to deploy." />
 			</then>
