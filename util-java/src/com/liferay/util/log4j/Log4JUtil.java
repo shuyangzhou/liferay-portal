@@ -254,6 +254,10 @@ public class Log4JUtil {
 
 		variables.put("@liferay.home@", _getLiferayHome());
 
+		System.out.println(
+			"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!liferay.home=" +
+				_getLiferayHome());
+
 		String spiId = System.getProperty("spi.id");
 
 		if (spiId == null) {
