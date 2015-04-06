@@ -203,7 +203,7 @@ public class InvokerFilterHelper {
 		ServletContext servletContext, String filterClassName,
 		FilterConfig filterConfig) {
 
-		ClassLoader pluginClassLoader = getPluginClassLoader(servletContext);
+		ClassLoader pluginClassLoader = servletContext.getClassLoader();
 
 		Thread currentThread = Thread.currentThread();
 
@@ -231,10 +231,6 @@ public class InvokerFilterHelper {
 		}
 
 		return null;
-	}
-
-	protected ClassLoader getPluginClassLoader(ServletContext servletContext) {
-		return servletContext.getClassLoader();
 	}
 
 	protected void initFilterMapping(
