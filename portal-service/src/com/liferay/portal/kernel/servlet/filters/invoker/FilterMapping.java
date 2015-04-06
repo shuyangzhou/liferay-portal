@@ -38,10 +38,11 @@ public class FilterMapping {
 
 	public FilterMapping(
 		Filter filter, FilterConfig filterConfig, List<String> urlPatterns,
-		List<String> dispatchers) {
+		List<String> dispatchers, String filterName) {
 
 		_filter = filter;
 		_urlPatterns = urlPatterns;
+		_filterName = filterName;
 
 		String urlRegexPattern = filterConfig.getInitParameter(
 			"url-regex-pattern");
@@ -76,6 +77,10 @@ public class FilterMapping {
 
 	public Filter getFilter() {
 		return _filter;
+	}
+
+	public String getFilterName() {
+		return _filterName;
 	}
 
 	public boolean isMatch(
@@ -160,8 +165,8 @@ public class FilterMapping {
 
 	public FilterMapping replaceFilter(Filter filter) {
 		return new FilterMapping(
-			filter, _urlPatterns, _dispatchers, _urlRegexIgnorePattern,
-			_urlRegexPattern);
+			filter, _urlPatterns, _dispatchers, _filterName,
+			_urlRegexIgnorePattern, _urlRegexPattern);
 	}
 
 	protected boolean isMatchURLPattern(String uri, String urlPattern) {
@@ -206,11 +211,13 @@ public class FilterMapping {
 
 	private FilterMapping(
 		Filter filter, List<String> urlPatterns, Set<Dispatcher> dispatchers,
-		Pattern urlRegexIgnorePattern, Pattern urlRegexPattern) {
+		String filterName, Pattern urlRegexIgnorePattern,
+		Pattern urlRegexPattern) {
 
 		_filter = filter;
 		_urlPatterns = urlPatterns;
 		_dispatchers = dispatchers;
+		_filterName = filterName;
 		_urlRegexIgnorePattern = urlRegexIgnorePattern;
 		_urlRegexPattern = urlRegexPattern;
 	}
@@ -223,6 +230,7 @@ public class FilterMapping {
 
 	private final Set<Dispatcher> _dispatchers;
 	private final Filter _filter;
+	private final String _filterName;
 	private final List<String> _urlPatterns;
 	private final Pattern _urlRegexIgnorePattern;
 	private final Pattern _urlRegexPattern;
