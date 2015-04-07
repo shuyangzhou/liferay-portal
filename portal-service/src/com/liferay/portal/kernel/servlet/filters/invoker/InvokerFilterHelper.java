@@ -36,8 +36,10 @@ import java.io.InputStream;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.servlet.Filter;
@@ -56,9 +58,15 @@ public class InvokerFilterHelper {
 	public void destroy() {
 		_serviceTracker.close();
 
-		for (Map.Entry<String, Filter> entry : _filters.entrySet()) {
-			Filter filter = entry.getValue();
+		Set<Filter> filters = new HashSet<>();
 
+		for (FilterMapping filterMapping : _filterMappings) {
+			Filter filter = filterMapping.getFilter();
+
+			filters.add(filter);
+		}
+
+		for (Filter filter : filters) {
 			try {
 				filter.destroy();
 			}
@@ -67,9 +75,7 @@ public class InvokerFilterHelper {
 			}
 		}
 
-		_filterConfigs.clear();
 		_filterMappings.clear();
-		_filters.clear();
 
 		for (InvokerFilter invokerFilter : _invokerFilters) {
 			invokerFilter.clearFilterChainsCache();
@@ -104,30 +110,6 @@ public class InvokerFilterHelper {
 		}
 	}
 
-	public Filter registerFilter(String filterName, Filter filter) {
-		Filter previousFilter = _filters.put(filterName, filter);
-
-		if (previousFilter != null) {
-			for (FilterMapping filterMapping : _filterMappings) {
-				if (filterMapping.getFilter() == previousFilter) {
-					if (filter != null) {
-						filterMapping.setFilter(filter);
-					}
-					else {
-						_filterMappings.remove(filterMapping);
-						_filterConfigs.remove(filterName);
-					}
-				}
-			}
-		}
-
-		for (InvokerFilter invokerFilter : _invokerFilters) {
-			invokerFilter.clearFilterChainsCache();
-		}
-
-		return previousFilter;
-	}
-
 	public void registerFilterMapping(
 		FilterMapping filterMapping, String filterName, boolean after) {
 
@@ -135,19 +117,15 @@ public class InvokerFilterHelper {
 		int y = 0;
 
 		if (Validator.isNotNull(filterName)) {
-			Filter filter = _filters.get(filterName);
+			for (; x < _filterMappings.size(); x++) {
+				FilterMapping currentFilterMapping = _filterMappings.get(x);
 
-			if (filter != null) {
-				for (; x < _filterMappings.size(); x++) {
-					FilterMapping currentFilterMapping = _filterMappings.get(x);
-
-					if (currentFilterMapping.getFilter() == filter) {
-						if (after) {
-							y = x;
-						}
-						else {
-							break;
-						}
+				if (filterName.equals(currentFilterMapping.getFilterName())) {
+					if (after) {
+						y = x;
+					}
+					else {
+						break;
 					}
 				}
 			}
@@ -164,33 +142,41 @@ public class InvokerFilterHelper {
 		}
 	}
 
-	public void unregisterFilter(String filterName) {
-		Filter filter = _filters.remove(filterName);
+	public void unregisterFilterMapping(
+		FilterMapping filterMapping, boolean clearFilterChainsCache) {
 
-		if (filter == null) {
-			return;
+		_filterMappings.remove(filterMapping);
+
+		if (clearFilterChainsCache) {
+			for (InvokerFilter invokerFilter : _invokerFilters) {
+				invokerFilter.clearFilterChainsCache();
+			}
 		}
+	}
+
+	public void unregisterFilterMappings(String filterName) {
+		Filter filter = null;
 
 		for (FilterMapping filterMapping : _filterMappings) {
-			if (filterMapping.getFilter() == filter) {
-				unregisterFilterMapping(filterMapping);
+			if (filterName.equals(filterMapping.getFilterName())) {
+				if (filter == null) {
+					filter = filterMapping.getFilter();
+				}
+
+				unregisterFilterMapping(filterMapping, false);
 
 				break;
 			}
 		}
 
-		_filterConfigs.remove(filterName);
-
-		try {
-			filter.destroy();
+		if (filter != null) {
+			try {
+				filter.destroy();
+			}
+			catch (Exception e) {
+				_log.error(e, e);
+			}
 		}
-		catch (Exception e) {
-			_log.error(e, e);
-		}
-	}
-
-	public void unregisterFilterMapping(FilterMapping filterMapping) {
-		_filterMappings.remove(filterMapping);
 
 		for (InvokerFilter invokerFilter : _invokerFilters) {
 			invokerFilter.clearFilterChainsCache();
@@ -223,7 +209,7 @@ public class InvokerFilterHelper {
 		ServletContext servletContext, String filterClassName,
 		FilterConfig filterConfig) {
 
-		ClassLoader pluginClassLoader = getPluginClassLoader(servletContext);
+		ClassLoader pluginClassLoader = servletContext.getClassLoader();
 
 		Thread currentThread = Thread.currentThread();
 
@@ -253,57 +239,6 @@ public class InvokerFilterHelper {
 		return null;
 	}
 
-	protected ClassLoader getPluginClassLoader(ServletContext servletContext) {
-		return servletContext.getClassLoader();
-	}
-
-	protected void initFilter(
-			ServletContext servletContext, String filterName,
-			String filterClassName, Map<String, String> initParameterMap)
-		throws Exception {
-
-		FilterConfig filterConfig = new InvokerFilterConfig(
-			servletContext, filterName, initParameterMap);
-
-		Filter filter = getFilter(
-			servletContext, filterClassName, filterConfig);
-
-		if (filter == null) {
-			return;
-		}
-
-		_filterConfigs.put(filterName, filterConfig);
-		_filters.put(filterName, filter);
-	}
-
-	protected void initFilterMapping(
-		String filterName, List<String> urlPatterns, List<String> dispatchers) {
-
-		Filter filter = _filters.get(filterName);
-
-		if (filter == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn("No filter exists with filter name " + filterName);
-			}
-
-			return;
-		}
-
-		FilterConfig filterConfig = _filterConfigs.get(filterName);
-
-		if (filterConfig == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(
-					"No filter config exists with filter name " + filterName);
-			}
-
-			return;
-		}
-
-		_filterMappings.add(
-			new FilterMapping(filter, filterConfig, urlPatterns, dispatchers));
-	}
-
 	protected void readLiferayFilterWebXML(
 			ServletContext servletContext, String path)
 		throws Exception {
@@ -319,6 +254,9 @@ public class InvokerFilterHelper {
 		Element rootElement = document.getRootElement();
 
 		List<Element> filterElements = rootElement.elements("filter");
+
+		Map<String, FilterConfig> filterConfigs = new HashMap<>();
+		Map<String, Filter> filters = new HashMap<>();
 
 		for (Element filterElement : filterElements) {
 			String filterName = filterElement.elementText("filter-name");
@@ -336,8 +274,16 @@ public class InvokerFilterHelper {
 				initParameterMap.put(name, value);
 			}
 
-			initFilter(
-				servletContext, filterName, filterClassName, initParameterMap);
+			FilterConfig filterConfig = new InvokerFilterConfig(
+				servletContext, filterName, initParameterMap);
+
+			Filter filter = getFilter(
+				servletContext, filterClassName, filterConfig);
+
+			if (filter != null) {
+				filterConfigs.put(filterName, filterConfig);
+				filters.put(filterName, filter);
+			}
 		}
 
 		List<Element> filterMappingElements = rootElement.elements(
@@ -367,17 +313,54 @@ public class InvokerFilterHelper {
 				dispatchers.add(dispatcher);
 			}
 
-			initFilterMapping(filterName, urlPatterns, dispatchers);
+			Filter filter = filters.get(filterName);
+
+			if (filter == null) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						"No filter exists with filter name " + filterName);
+				}
+
+				continue;
+			}
+
+			FilterConfig filterConfig = filterConfigs.get(filterName);
+
+			if (filterConfig == null) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						"No filter config exists with filter name " +
+							filterName);
+				}
+
+				continue;
+			}
+
+			_filterMappings.add(
+				new FilterMapping(
+					filter, filterConfig, urlPatterns, dispatchers,
+					filterName));
+		}
+	}
+
+	protected void updateFilterMappings(String filterName, Filter filter) {
+		for (FilterMapping filterMapping : _filterMappings) {
+			if (filterName.equals(filterMapping.getFilterName())) {
+				if (filter != null) {
+					filterMapping.setFilter(filter);
+				}
+				else {
+					_filterMappings.remove(filterMapping);
+				}
+			}
 		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		InvokerFilterHelper.class);
 
-	private final Map<String, FilterConfig> _filterConfigs = new HashMap<>();
 	private final List<FilterMapping> _filterMappings =
 		new CopyOnWriteArrayList<>();
-	private final Map<String, Filter> _filters = new HashMap<>();
 	private final List<InvokerFilter> _invokerFilters = new ArrayList<>();
 	private ServiceTracker<Filter, FilterMapping> _serviceTracker;
 
@@ -446,12 +429,11 @@ public class InvokerFilterHelper {
 				return null;
 			}
 
-			_filterConfigs.put(servletFilterName, filterConfig);
-
-			registerFilter(servletFilterName, filter);
+			updateFilterMappings(servletFilterName, filter);
 
 			FilterMapping filterMapping = new FilterMapping(
-				filter, filterConfig, urlPatterns, dispatchers);
+				filter, filterConfig, urlPatterns, dispatchers,
+				servletFilterName);
 
 			registerFilterMapping(filterMapping, positionFilterName, after);
 
@@ -477,7 +459,7 @@ public class InvokerFilterHelper {
 
 			registry.ungetService(serviceReference);
 
-			unregisterFilter(
+			unregisterFilterMappings(
 				GetterUtil.getString(
 					serviceReference.getProperty("servlet-filter-name")));
 		}

@@ -39,8 +39,16 @@ public class FilterMapping {
 		Filter filter, FilterConfig filterConfig, List<String> urlPatterns,
 		List<String> dispatchers) {
 
+		this(filter, filterConfig, urlPatterns, dispatchers, StringPool.BLANK);
+	}
+
+	public FilterMapping(
+		Filter filter, FilterConfig filterConfig, List<String> urlPatterns,
+		List<String> dispatchers, String filterName) {
+
 		_filter = filter;
 		_urlPatterns = urlPatterns;
+		_filterName = filterName;
 
 		initFilterConfig(filterConfig);
 		initDispatchers(dispatchers);
@@ -48,6 +56,10 @@ public class FilterMapping {
 
 	public Filter getFilter() {
 		return _filter;
+	}
+
+	public String getFilterName() {
+		return _filterName;
 	}
 
 	public boolean isMatch(
@@ -245,6 +257,7 @@ public class FilterMapping {
 	private boolean _dispatcherInclude;
 	private boolean _dispatcherRequest;
 	private Filter _filter;
+	private final String _filterName;
 	private final List<String> _urlPatterns;
 	private Pattern _urlRegexIgnorePattern;
 	private Pattern _urlRegexPattern;
