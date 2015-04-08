@@ -344,14 +344,15 @@ public class InvokerFilterHelper {
 	}
 
 	protected void updateFilterMappings(String filterName, Filter filter) {
-		for (FilterMapping filterMapping : _filterMappings) {
+		for (int i = 0; i < _filterMappings.size(); i++) {
+			FilterMapping filterMapping = _filterMappings.get(i);
+
 			if (filterName.equals(filterMapping.getFilterName())) {
-				if (filter != null) {
-					filterMapping.setFilter(filter);
-				}
-				else {
-					_filterMappings.remove(filterMapping);
-				}
+				_filterMappings.remove(i);
+
+				filterMapping = filterMapping.replaceFilter(filter);
+
+				_filterMappings.add(i, filterMapping);
 			}
 		}
 	}
