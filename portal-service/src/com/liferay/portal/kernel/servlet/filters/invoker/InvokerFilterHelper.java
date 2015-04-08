@@ -40,6 +40,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.servlet.Filter;
@@ -60,19 +61,8 @@ public class InvokerFilterHelper {
 
 		Set<Filter> filters = new HashSet<>();
 
-		for (FilterMapping filterMapping : _filterMappings) {
-			Filter filter = filterMapping.getFilter();
-
-			filters.add(filter);
-		}
-
-		for (Filter filter : filters) {
-			try {
-				filter.destroy();
-			}
-			catch (Exception e) {
-				_log.error(e, e);
-			}
+		for (String filterName : _filterNames) {
+			destroyFilter(filterName);
 		}
 
 		_filterMappings.clear();
@@ -113,29 +103,29 @@ public class InvokerFilterHelper {
 	public void registerFilterMapping(
 		FilterMapping filterMapping, String filterName, boolean after) {
 
-		int x = 0;
-		int y = 0;
+		if (Validator.isNull(filterName)) {
+			return;
+		}
 
-		if (Validator.isNotNull(filterName)) {
-			for (; x < _filterMappings.size(); x++) {
-				FilterMapping currentFilterMapping = _filterMappings.get(x);
+		List<FilterMapping> filterMappings = _filterMappings.get(filterName);
 
-				if (filterName.equals(currentFilterMapping.getFilterName())) {
-					if (after) {
-						y = x;
-					}
-					else {
-						break;
-					}
-				}
-			}
+		if (filterMappings == null) {
+			_filterNames.add(filterName);
+
+			filterMappings = new ArrayList<>();
+			filterMappings.add(filterMapping);
+
+			_filterMappings.put(filterName, filterMappings);
 		}
 
 		if (after) {
-			x = ++y;
+			filterMappings.add(filterMapping);
+		}
+		else {
+			filterMappings.add(0, filterMapping);
 		}
 
-		_filterMappings.add(x, filterMapping);
+		_filterMappings.put(filterName, filterMappings);
 
 		for (InvokerFilter invokerFilter : _invokerFilters) {
 			invokerFilter.clearFilterChainsCache();
@@ -145,7 +135,13 @@ public class InvokerFilterHelper {
 	public void unregisterFilterMapping(
 		FilterMapping filterMapping, boolean clearFilterChainsCache) {
 
-		_filterMappings.remove(filterMapping);
+		String filterName = filterMapping.getFilterName();
+
+		List<FilterMapping> filterMappings = _filterMappings.get(filterName);
+
+		filterMappings.remove(filterMapping);
+
+		_filterMappings.put(filterName, filterMappings);
 
 		if (clearFilterChainsCache) {
 			for (InvokerFilter invokerFilter : _invokerFilters) {
@@ -155,28 +151,10 @@ public class InvokerFilterHelper {
 	}
 
 	public void unregisterFilterMappings(String filterName) {
-		Filter filter = null;
+		destroyFilter(filterName);
 
-		for (FilterMapping filterMapping : _filterMappings) {
-			if (filterName.equals(filterMapping.getFilterName())) {
-				if (filter == null) {
-					filter = filterMapping.getFilter();
-				}
-
-				unregisterFilterMapping(filterMapping, false);
-
-				break;
-			}
-		}
-
-		if (filter != null) {
-			try {
-				filter.destroy();
-			}
-			catch (Exception e) {
-				_log.error(e, e);
-			}
-		}
+		_filterMappings.remove(filterName);
+		_filterNames.remove(filterName);
 
 		for (InvokerFilter invokerFilter : _invokerFilters) {
 			invokerFilter.clearFilterChainsCache();
@@ -194,15 +172,35 @@ public class InvokerFilterHelper {
 		InvokerFilterChain invokerFilterChain = new InvokerFilterChain(
 			filterChain);
 
-		for (FilterMapping filterMapping : _filterMappings) {
-			if (filterMapping.isMatch(request, dispatcher, uri)) {
-				Filter filter = filterMapping.getFilter();
+		for (String filterName : _filterNames) {
+			List<FilterMapping> filterMappings = _filterMappings.get(
+				filterName);
 
-				invokerFilterChain.addFilter(filter);
+			for (FilterMapping filterMapping : filterMappings) {
+				if (filterMapping.isMatch(request, dispatcher, uri)) {
+					Filter filter = filterMapping.getFilter();
+
+					invokerFilterChain.addFilter(filter);
+				}
 			}
 		}
 
 		return invokerFilterChain;
+	}
+
+	protected void destroyFilter(String filterName) {
+		List<FilterMapping> filterMappings =_filterMappings.get(filterName);
+
+		FilterMapping filterMapping = filterMappings.get(0);
+
+		Filter filter = filterMapping.getFilter();
+
+		try {
+			filter.destroy();
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+		}
 	}
 
 	protected Filter getFilter(
@@ -336,23 +334,48 @@ public class InvokerFilterHelper {
 				continue;
 			}
 
-			_filterMappings.add(
+			List<FilterMapping> filterMappings = _filterMappings.get(
+				filterName);
+
+			if (filterMappings == null) {
+				_filterNames.add(filterName);
+
+				filterMappings = new ArrayList<>();
+				filterMappings.add(
+					new FilterMapping(
+						filter, filterConfig, urlPatterns, dispatchers,
+						filterName));
+
+				_filterMappings.put(filterName, filterMappings);
+
+				continue;
+			}
+
+			filterMappings.add(
 				new FilterMapping(
 					filter, filterConfig, urlPatterns, dispatchers,
 					filterName));
+
+			_filterMappings.put(filterName, filterMappings);
 		}
 	}
 
 	protected void updateFilterMappings(String filterName, Filter filter) {
-		for (int i = 0; i < _filterMappings.size(); i++) {
-			FilterMapping filterMapping = _filterMappings.get(i);
+		List<FilterMapping> filterMappings = _filterMappings.get(filterName);
+
+		if (filterMappings == null) {
+			return;
+		}
+
+		for (int i = 0; i < filterMappings.size(); i++) {
+			FilterMapping filterMapping = filterMappings.get(i);
 
 			if (filterName.equals(filterMapping.getFilterName())) {
-				_filterMappings.remove(i);
+				filterMappings.remove(i);
 
 				filterMapping = filterMapping.replaceFilter(filter);
 
-				_filterMappings.add(i, filterMapping);
+				filterMappings.add(i, filterMapping);
 			}
 		}
 	}
@@ -360,8 +383,9 @@ public class InvokerFilterHelper {
 	private static final Log _log = LogFactoryUtil.getLog(
 		InvokerFilterHelper.class);
 
-	private final List<FilterMapping> _filterMappings =
-		new CopyOnWriteArrayList<>();
+	private final Map<String, List<FilterMapping>> _filterMappings =
+		new ConcurrentHashMap<>();
+	private final List<String> _filterNames = new CopyOnWriteArrayList<>();
 	private final List<InvokerFilter> _invokerFilters = new ArrayList<>();
 	private ServiceTracker<Filter, FilterMapping> _serviceTracker;
 
