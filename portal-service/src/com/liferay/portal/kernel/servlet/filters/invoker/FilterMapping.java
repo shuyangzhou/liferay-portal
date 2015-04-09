@@ -16,7 +16,6 @@ package com.liferay.portal.kernel.servlet.filters.invoker;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
@@ -204,30 +203,19 @@ public class FilterMapping {
 		}
 
 		if (urlPattern.endsWith(_SLASH_STAR)) {
-			if (urlPattern.regionMatches(0, uri, 0, urlPattern.length() - 2)) {
-				if (uri.length() == (urlPattern.length() - 2)) {
-					return true;
-				}
-				else if (CharPool.SLASH ==
-							uri.charAt(urlPattern.length() - 2)) {
+			urlPattern = urlPattern.substring(0, urlPattern.length() - 2);
 
-					return true;
-				}
+			if (uri.equals(urlPattern) ||
+				uri.startsWith(urlPattern + StringPool.SLASH)) {
+
+				return true;
 			}
 		}
 		else if (urlPattern.startsWith(_STAR_PERIOD)) {
-			int slashPos = uri.lastIndexOf(CharPool.SLASH);
-			int periodPos = uri.lastIndexOf(CharPool.PERIOD);
+			urlPattern = urlPattern.substring(1);
 
-			if ((slashPos >= 0) && (periodPos > slashPos) &&
-				(periodPos != (uri.length() - 1)) &&
-				((uri.length() - periodPos) == (urlPattern.length() - 1))) {
-
-				if (urlPattern.regionMatches(
-						2, uri, periodPos + 1, urlPattern.length() - 2)) {
-
-					return true;
-				}
+			if (uri.endsWith(urlPattern)) {
+				return true;
 			}
 		}
 
