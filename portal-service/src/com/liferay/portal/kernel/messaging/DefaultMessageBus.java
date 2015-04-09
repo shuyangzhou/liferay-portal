@@ -57,11 +57,6 @@ public class DefaultMessageBus implements MessageBus {
 	}
 
 	@Override
-	public Collection<String> getDestinationNames() {
-		return _destinations.keySet();
-	}
-
-	@Override
 	public Collection<Destination> getDestinations() {
 		return _destinations.values();
 	}

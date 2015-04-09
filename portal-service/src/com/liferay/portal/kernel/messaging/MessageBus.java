@@ -30,8 +30,6 @@ public interface MessageBus {
 
 	public int getDestinationCount();
 
-	public Collection<String> getDestinationNames();
-
 	public Collection<Destination> getDestinations();
 
 	public boolean hasDestination(String destinationName);
