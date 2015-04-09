@@ -40,7 +40,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicLong;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -60,7 +62,8 @@ public class InvokerFilterHelper {
 
 		Set<Filter> filters = new HashSet<>();
 
-		for (FilterMapping filterMapping : _filterMappings) {
+		for (List<FilterMapping> filterMappings : _filterMappings.values()) {
+			FilterMapping filterMapping = filterMappings.get(0);
 			Filter filter = filterMapping.getFilter();
 
 			filters.add(filter);
@@ -116,9 +119,15 @@ public class InvokerFilterHelper {
 		int x = 0;
 		int y = 0;
 
+		FilterMappingKey filterMappingKey = new FilterMappingKey(
+			filterName, _order.incrementAndGet());
+
+		List<FilterMapping> filterMappings = _filterMappings.get(
+			filterMappingKey);
+
 		if (Validator.isNotNull(filterName)) {
-			for (; x < _filterMappings.size(); x++) {
-				FilterMapping currentFilterMapping = _filterMappings.get(x);
+			for (; x < filterMappings.size(); x++) {
+				FilterMapping currentFilterMapping = filterMappings.get(x);
 
 				if (filterName.equals(currentFilterMapping.getFilterName())) {
 					if (after) {
@@ -135,7 +144,13 @@ public class InvokerFilterHelper {
 			x = ++y;
 		}
 
-		_filterMappings.add(x, filterMapping);
+		if (filterMappings == null) {
+			filterMappings = new ArrayList<>();
+		}
+
+		filterMappings.add(x, filterMapping);
+
+		_filterMappings.put(filterMappingKey, filterMappings);
 
 		for (InvokerFilter invokerFilter : _invokerFilters) {
 			invokerFilter.clearFilterChainsCache();
@@ -145,7 +160,15 @@ public class InvokerFilterHelper {
 	public void unregisterFilterMapping(
 		FilterMapping filterMapping, boolean clearFilterChainsCache) {
 
-		_filterMappings.remove(filterMapping);
+		FilterMappingKey filterMappingKey = new FilterMappingKey(
+			filterMapping.getFilterName(), 0L);
+
+		List<FilterMapping> filterMappings = _filterMappings.get(
+			filterMappingKey);
+
+		filterMappings.remove(filterMapping);
+
+		_filterMappings.put(filterMappingKey, filterMappings);
 
 		if (clearFilterChainsCache) {
 			for (InvokerFilter invokerFilter : _invokerFilters) {
@@ -155,19 +178,15 @@ public class InvokerFilterHelper {
 	}
 
 	public void unregisterFilterMappings(String filterName) {
-		Filter filter = null;
+		FilterMappingKey filterMappingKey = new FilterMappingKey(
+			filterName, 0L);
 
-		for (FilterMapping filterMapping : _filterMappings) {
-			if (filterName.equals(filterMapping.getFilterName())) {
-				if (filter == null) {
-					filter = filterMapping.getFilter();
-				}
+		List<FilterMapping> filterMappings = _filterMappings.remove(
+			filterMappingKey);
 
-				unregisterFilterMapping(filterMapping, false);
+		FilterMapping filterMapping = filterMappings.get(0);
 
-				break;
-			}
-		}
+		Filter filter = filterMapping.getFilter();
 
 		if (filter != null) {
 			try {
@@ -184,13 +203,21 @@ public class InvokerFilterHelper {
 	}
 
 	public void updateFilterMappings(String filterName, Filter filter) {
-		for (int i = 0; i < _filterMappings.size(); i++) {
-			FilterMapping filterMapping = _filterMappings.get(i);
+		FilterMappingKey filterMappingKey = new FilterMappingKey(
+			filterName, 0L);
+
+		List<FilterMapping> filterMappings = _filterMappings.get(
+			filterMappingKey);
+
+		for (int i = 0; i < filterMappings.size(); i++) {
+			FilterMapping filterMapping = filterMappings.get(i);
 
 			if (filterName.equals(filterMapping.getFilterName())) {
-				_filterMappings.set(i, filterMapping.replaceFilter(filter));
+				filterMappings.set(i, filterMapping.replaceFilter(filter));
 			}
 		}
+
+		_filterMappings.put(filterMappingKey, filterMappings);
 	}
 
 	protected void addInvokerFilter(InvokerFilter invokerFilter) {
@@ -204,11 +231,13 @@ public class InvokerFilterHelper {
 		InvokerFilterChain invokerFilterChain = new InvokerFilterChain(
 			filterChain);
 
-		for (FilterMapping filterMapping : _filterMappings) {
-			if (filterMapping.isMatch(request, dispatcher, uri)) {
-				Filter filter = filterMapping.getFilter();
+		for (List<FilterMapping> filterMappings : _filterMappings.values()) {
+			for (FilterMapping filterMapping : filterMappings) {
+				if (filterMapping.isMatch(request, dispatcher, uri)) {
+					Filter filter = filterMapping.getFilter();
 
-				invokerFilterChain.addFilter(filter);
+					invokerFilterChain.addFilter(filter);
+				}
 			}
 		}
 
@@ -284,7 +313,6 @@ public class InvokerFilterHelper {
 				initParameterMap.put(name, value);
 			}
 
-
 			FilterConfig filterConfig = new InvokerFilterConfig(
 				servletContext, filterName, initParameterMap);
 
@@ -347,20 +375,78 @@ public class InvokerFilterHelper {
 				continue;
 			}
 
-			_filterMappings.add(
-				new FilterMapping(
-					filter, filterConfig, urlPatterns, dispatchers,
-					filterName));
+			FilterMappingKey filterMappingKey = new FilterMappingKey(
+				filterName, _order.incrementAndGet());
+
+			FilterMapping filterMapping = new FilterMapping(
+				filter, filterConfig, urlPatterns, dispatchers, filterName);
+
+			List<FilterMapping> filterMappings = _filterMappings.get(path);
+
+			if (!(filterMappings == null)) {
+				filterMappings = new ArrayList<>();
+			}
+
+			filterMappings.add(filterMapping);
+
+			_filterMappings.put(filterMappingKey, filterMappings);
 		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		InvokerFilterHelper.class);
 
-	private final List<FilterMapping> _filterMappings =
-		new CopyOnWriteArrayList<>();
+	private AtomicLong _order = new AtomicLong();
+
+	private final ConcurrentSkipListMap<FilterMappingKey, List<FilterMapping>>
+		_filterMappings = new ConcurrentSkipListMap<>();
 	private final List<InvokerFilter> _invokerFilters = new ArrayList<>();
 	private ServiceTracker<Filter, FilterMapping> _serviceTracker;
+
+	private class FilterMappingKey implements Comparable<FilterMappingKey> {
+
+		public FilterMappingKey(String filterName, Long order) {
+			_filterName = filterName;
+			_order = order;
+	}
+
+		@Override
+		public int compareTo(FilterMappingKey fmk) {
+			return _order.compareTo(fmk.getOrder());
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			FilterMappingKey fmk = (FilterMappingKey)obj;
+
+			if (Validator.equals(_filterName, fmk.getFilterName())) {
+				return true;
+			}
+
+			return false;
+		}
+
+		public String getFilterName() {
+			return _filterName;
+		}
+
+		public Long getOrder() {
+			return _order;
+		}
+
+		@Override
+		public int hashCode() {
+			if (_filterName != null) {
+				return _filterName.hashCode();
+			}
+			else {
+				return 0;
+			}
+		}
+
+		private final String _filterName;
+		private final Long _order;
+	}
 
 	private class FilterServiceTrackerCustomizer
 		implements ServiceTrackerCustomizer<Filter, FilterMapping> {
