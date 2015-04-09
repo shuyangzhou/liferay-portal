@@ -17,6 +17,7 @@ package com.liferay.portal.kernel.messaging.sender;
 import com.liferay.portal.kernel.cache.ThreadLocalCacheManager;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
+import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.messaging.MessageBusException;
@@ -58,7 +59,14 @@ public class SynchronousMessageListener implements MessageListener {
 		String destinationName = _message.getDestinationName();
 		String responseDestinationName = _message.getResponseDestinationName();
 
-		_messageBus.registerMessageListener(responseDestinationName, this);
+		Destination destination = _messageBus.getDestination(
+			responseDestinationName);
+
+		if (destination == null) {
+			return _results;
+		}
+
+		destination.register(this);
 
 		try {
 			_messageBus.sendMessage(destinationName, _message);
@@ -77,8 +85,7 @@ public class SynchronousMessageListener implements MessageListener {
 				"Message sending interrupted for: " + _message, ie);
 		}
 		finally {
-			_messageBus.unregisterMessageListener(
-				responseDestinationName, this);
+			destination.unregister(this);
 
 			EntityCacheUtil.clearLocalCache();
 			FinderCacheUtil.clearLocalCache();
