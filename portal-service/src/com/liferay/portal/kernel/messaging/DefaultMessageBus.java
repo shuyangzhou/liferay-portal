@@ -84,20 +84,6 @@ public class DefaultMessageBus implements MessageBus {
 	}
 
 	@Override
-	public synchronized boolean registerMessageListener(
-		String destinationName, MessageListener messageListener) {
-
-		Destination destination = _destinations.get(destinationName);
-
-		if (destination == null) {
-			throw new IllegalStateException(
-				"Destination " + destinationName + " is not configured");
-		}
-
-		return destination.register(messageListener);
-	}
-
-	@Override
 	public synchronized Destination removeDestination(String destinationName) {
 		Destination destination = _destinations.remove(destinationName);
 
@@ -162,19 +148,6 @@ public class DefaultMessageBus implements MessageBus {
 		for (Destination destination : _destinations.values()) {
 			destination.close(force);
 		}
-	}
-
-	@Override
-	public synchronized boolean unregisterMessageListener(
-		String destinationName, MessageListener messageListener) {
-
-		Destination destination = _destinations.get(destinationName);
-
-		if (destination == null) {
-			return false;
-		}
-
-		return destination.unregister(messageListener);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

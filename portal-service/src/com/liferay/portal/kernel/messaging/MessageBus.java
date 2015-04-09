@@ -38,9 +38,6 @@ public interface MessageBus {
 
 	public boolean hasMessageListener(String destinationName);
 
-	public boolean registerMessageListener(
-		String destinationName, MessageListener messageListener);
-
 	public Destination removeDestination(String destinationName);
 
 	public boolean removeMessageBusEventListener(
@@ -53,8 +50,5 @@ public interface MessageBus {
 	public void shutdown();
 
 	public void shutdown(boolean force);
-
-	public boolean unregisterMessageListener(
-		String destinationName, MessageListener messageListener);
 
 }
