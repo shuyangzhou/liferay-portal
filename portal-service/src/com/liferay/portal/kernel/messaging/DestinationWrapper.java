@@ -54,6 +54,11 @@ public class DestinationWrapper implements Destination {
 	}
 
 	@Override
+	public Set<DestinationEventListener> getDestinationEventListeners() {
+		return destination.getDestinationEventListeners();
+	}
+
+	@Override
 	public DestinationStatistics getDestinationStatistics() {
 		return destination.getDestinationStatistics();
 	}
