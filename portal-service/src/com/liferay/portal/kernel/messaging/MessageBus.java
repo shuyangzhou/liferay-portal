@@ -34,8 +34,6 @@ public interface MessageBus {
 
 	public boolean hasDestination(String destinationName);
 
-	public boolean hasMessageListener(String destinationName);
-
 	public Destination removeDestination(String destinationName);
 
 	public boolean removeMessageBusEventListener(

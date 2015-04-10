@@ -67,18 +67,6 @@ public class DefaultMessageBus implements MessageBus {
 	}
 
 	@Override
-	public boolean hasMessageListener(String destinationName) {
-		Destination destination = _destinations.get(destinationName);
-
-		if ((destination != null) && destination.isRegistered()) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
-	@Override
 	public synchronized Destination removeDestination(String destinationName) {
 		Destination destination = _destinations.remove(destinationName);
 

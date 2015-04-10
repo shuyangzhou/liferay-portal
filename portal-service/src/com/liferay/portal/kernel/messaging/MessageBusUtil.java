@@ -164,7 +164,14 @@ public class MessageBusUtil {
 	private boolean _hasMessageListener(String destinationName) {
 		PortalMessageBusPermission.checkListen(destinationName);
 
-		return _messageBus.hasMessageListener(destinationName);
+		Destination destination = _messageBus.getDestination(destinationName);
+
+		if ((destination != null) && destination.isRegistered()) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 	private void _init(
