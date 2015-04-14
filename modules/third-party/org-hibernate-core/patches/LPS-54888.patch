@@ -1,0 +1,70 @@
+diff --git a/org/hibernate/engine/jdbc/BlobProxy.java b/org/hibernate/engine/jdbc/BlobProxy.java
+index f81e4b4..3f4c23b 100644
+--- a/org/hibernate/engine/jdbc/BlobProxy.java
++++ b/org/hibernate/engine/jdbc/BlobProxy.java
+@@ -1,3 +1,4 @@
++/* @generated */
+ /*
+  * Hibernate, Relational Persistence for Idiomatic Java
+  *
+@@ -31,6 +31,7 @@ import java.sql.SQLException;
+ import java.io.InputStream;
+ import java.io.IOException;
+ 
++import org.hibernate.type.descriptor.BinaryStream;
+ import org.hibernate.type.descriptor.java.BinaryStreamImpl;
+ import org.hibernate.type.descriptor.java.DataHelper;
+ 
+@@ -198,4 +199,34 @@ public class BlobProxy implements InvocationHandler {
+ 		}
+ 		return cl;
+ 	}
++
++	public static class StreamBackedBinaryStream implements BinaryStream {
++		private final InputStream stream;
++		private final long length;
++
++		private byte[] bytes;
++
++		public StreamBackedBinaryStream(InputStream stream, long length) {
++			this.stream = stream;
++			this.length = length;
++		}
++
++		@Override
++		public InputStream getInputStream() {
++			return stream;
++		}
++
++		@Override
++		public byte[] getBytes() {
++			if ( bytes == null ) {
++				bytes = DataHelper.extractBytes( stream );
++			}
++			return bytes;
++		}
++
++		@Override
++		public int getLength() {
++			return (int) length;
++		}
++	}
+ }
+diff --git a/org/hibernate/type/descriptor/java/BlobTypeDescriptor.java b/org/hibernate/type/descriptor/java/BlobTypeDescriptor.java
+index 576b520..d3f2b71 100644
+--- a/org/hibernate/type/descriptor/java/BlobTypeDescriptor.java
++++ b/org/hibernate/type/descriptor/java/BlobTypeDescriptor.java
+@@ -1,3 +1,4 @@
++/* @generated */
+ /*
+  * Hibernate, Relational Persistence for Idiomatic Java
+  *
+@@ -120,7 +120,7 @@ public class BlobTypeDescriptor extends AbstractTypeDescriptor<Blob> {
+ 
+ 		if ( BinaryStream.class.isAssignableFrom( type ) ) {
+ 			try {
+-				return (X) new BinaryStreamImpl( DataHelper.extractBytes( value.getBinaryStream() ) );
++				return (X) new BlobProxy.StreamBackedBinaryStream( value.getBinaryStream(), value.length() );
+ 			}
+ 			catch ( SQLException e ) {
+ 				throw new HibernateException( "Unable to access blob stream", e );
