@@ -160,7 +160,7 @@ public class SassToCssBuilder {
 			new String[] {
 				"**\\_diffs\\**", "**\\.sass-cache*\\**",
 				"**\\.sass_cache_*\\**", "**\\_sass_cache_*\\**",
-				"**\\_styled\\**", "**\\_unstyled\\**"
+				"**\\_styled\\**", "**\\_unstyled\\**", "**\\tmp\\**"
 			});
 		directoryScanner.setIncludes(new String[] {"**\\*.css"});
 
@@ -221,12 +221,8 @@ public class SassToCssBuilder {
 	private String _normalizeFileName(String dirName, String fileName) {
 		return StringUtil.replace(
 			dirName + StringPool.SLASH + fileName,
-			new String[] {
-				StringPool.BACK_SLASH, StringPool.DOUBLE_SLASH
-			},
-			new String[] {
-				StringPool.SLASH, StringPool.SLASH
-			}
+			new String[] {StringPool.BACK_SLASH, StringPool.DOUBLE_SLASH},
+			new String[] {StringPool.SLASH, StringPool.SLASH}
 		);
 	}
 

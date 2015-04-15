@@ -1953,10 +1953,19 @@ public class ServiceBuilder {
 				}
 			}
 			else {
-				InputStream inputStream = classLoader.getResourceAsStream(
-					config);
+				Enumeration<URL> urls = classLoader.getResources(config);
 
-				if (inputStream == null) {
+				if (urls.hasMoreElements()) {
+					while (urls.hasMoreElements()) {
+						URL url = urls.nextElement();
+
+						try (InputStream inputStream = url.openStream()) {
+							_readResourceActionModels(
+								implDir, inputStream, resourceActionModels);
+						}
+					}
+				}
+				else {
 					File file = new File(config);
 
 					if (!file.exists()) {
@@ -1967,12 +1976,10 @@ public class ServiceBuilder {
 						continue;
 					}
 
-					inputStream = new FileInputStream(file);
-				}
-
-				try (InputStream curInputStream = inputStream) {
-					_readResourceActionModels(
-						implDir, inputStream, resourceActionModels);
+					try (InputStream inputStream = new FileInputStream(file)) {
+						_readResourceActionModels(
+							implDir, inputStream, resourceActionModels);
+					}
 				}
 			}
 		}
@@ -3906,21 +3913,14 @@ public class ServiceBuilder {
 						new String[] {
 							".service.persistence.", "HBM\" table=\""
 						},
-						new String[] {
-							".model.", "\" table=\""
-						});
+						new String[] {".model.", "\" table=\""});
 
 					if (!line.contains(".model.impl.") &&
 						!line.contains("BlobModel")) {
 
 						line = StringUtil.replace(
-							line,
-							new String[] {
-								".model.", "\" table=\""
-							},
-							new String[] {
-								".model.impl.", "Impl\" table=\""
-							});
+							line, new String[] {".model.", "\" table=\""},
+							new String[] {".model.impl.", "Impl\" table=\""});
 					}
 				}
 
@@ -4403,7 +4403,14 @@ public class ServiceBuilder {
 		fileName = StringUtil.replace(
 			fileName, CharPool.BACK_SLASH, CharPool.SLASH);
 
-		int pos = fileName.lastIndexOf("/src/") + 5;
+		int pos = 0;
+
+		if (fileName.contains(_implDir)) {
+			pos = _implDir.length() + 1;
+		}
+		else {
+			pos = _apiDir.length() + 1;
+		}
 
 		String fullyQualifiedClassName = StringUtil.replace(
 			fileName.substring(pos, fileName.length() - 5), CharPool.SLASH,
