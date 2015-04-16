@@ -30,16 +30,9 @@ public interface MessageBus {
 
 	public int getDestinationCount();
 
-	public Collection<String> getDestinationNames();
-
 	public Collection<Destination> getDestinations();
 
 	public boolean hasDestination(String destinationName);
-
-	public boolean hasMessageListener(String destinationName);
-
-	public boolean registerMessageListener(
-		String destinationName, MessageListener messageListener);
 
 	public Destination removeDestination(String destinationName);
 
@@ -53,8 +46,5 @@ public interface MessageBus {
 	public void shutdown();
 
 	public void shutdown(boolean force);
-
-	public boolean unregisterMessageListener(
-		String destinationName, MessageListener messageListener);
 
 }

@@ -151,11 +151,15 @@ public abstract class AbstractMessagingConfigurator
 					}
 				}
 
-				for (MessageListener messageListener :
-						messageListeners.getValue()) {
+				Destination destination = messageBus.getDestination(
+					destinationName);
 
-					messageBus.registerMessageListener(
-						destinationName, messageListener);
+				if (destination != null) {
+					for (MessageListener messageListener :
+							messageListeners.getValue()) {
+
+						destination.register(messageListener);
+					}
 				}
 			}
 		}
@@ -221,13 +225,13 @@ public abstract class AbstractMessagingConfigurator
 		for (Map.Entry<String, List<MessageListener>> messageListeners :
 				_messageListeners.entrySet()) {
 
-			String destinationName = messageListeners.getKey();
+			Destination destination = messageBus.getDestination(
+				messageListeners.getKey());
 
 			for (MessageListener messageListener :
 					messageListeners.getValue()) {
 
-				messageBus.unregisterMessageListener(
-					destinationName, messageListener);
+				destination.unregister(messageListener);
 			}
 		}
 	}

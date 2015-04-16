@@ -69,10 +69,10 @@ public class MessageBusUtil {
 		getInstance()._init(messageBus, synchronousMessageSender);
 	}
 
-	public static void registerMessageListener(
+	public static boolean registerMessageListener(
 		String destinationName, MessageListener messageListener) {
 
-		getInstance()._registerMessageListener(
+		return getInstance()._registerMessageListener(
 			destinationName, messageListener);
 	}
 
@@ -164,7 +164,14 @@ public class MessageBusUtil {
 	private boolean _hasMessageListener(String destinationName) {
 		PortalMessageBusPermission.checkListen(destinationName);
 
-		return _messageBus.hasMessageListener(destinationName);
+		Destination destination = _messageBus.getDestination(destinationName);
+
+		if ((destination != null) && destination.isRegistered()) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 	private void _init(
@@ -175,12 +182,19 @@ public class MessageBusUtil {
 		_synchronousMessageSender = synchronousMessageSender;
 	}
 
-	private void _registerMessageListener(
+	private boolean _registerMessageListener(
 		String destinationName, MessageListener messageListener) {
 
 		PortalMessageBusPermission.checkListen(destinationName);
 
-		_messageBus.registerMessageListener(destinationName, messageListener);
+		Destination destination = _messageBus.getDestination(destinationName);
+
+		if (destination == null) {
+			throw new IllegalStateException(
+				"Destination " + destinationName + " is not configured");
+		}
+
+		return destination.register(messageListener);
 	}
 
 	private void _removeDestination(String destinationName) {
@@ -265,8 +279,13 @@ public class MessageBusUtil {
 
 		PortalMessageBusPermission.checkListen(destinationName);
 
-		return _messageBus.unregisterMessageListener(
-			destinationName, messageListener);
+		Destination destination = _messageBus.getDestination(destinationName);
+
+		if (destination == null) {
+			return false;
+		}
+
+		return destination.unregister(messageListener);
 	}
 
 	private static final MessageBusUtil _instance = new MessageBusUtil();

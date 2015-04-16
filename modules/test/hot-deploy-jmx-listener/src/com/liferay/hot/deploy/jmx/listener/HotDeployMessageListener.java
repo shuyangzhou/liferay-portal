@@ -18,6 +18,7 @@ import com.liferay.hot.deploy.jmx.listener.statistics.PluginStatisticsManager;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
+import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBus;
@@ -39,13 +40,22 @@ public class HotDeployMessageListener extends BaseMessageListener {
 
 	@Activate
 	protected void activate() {
-		_messageBus.registerMessageListener(DestinationNames.HOT_DEPLOY, this);
+		Destination destination = _messageBus.getDestination(
+			DestinationNames.HOT_DEPLOY);
+
+		if (destination != null) {
+			destination.register(this);
+		}
 	}
 
 	@Deactivate
 	protected void deactivate() {
-		_messageBus.unregisterMessageListener(
-			DestinationNames.HOT_DEPLOY, this);
+		Destination destination = _messageBus.getDestination(
+			DestinationNames.HOT_DEPLOY);
+
+		if (destination != null) {
+			destination.unregister(this);
+		}
 	}
 
 	@Override

@@ -1073,8 +1073,7 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 			if (messageListenerUUID.equals(
 					schedulerMessageListener.getMessageListenerUUID())) {
 
-				messageBus.unregisterMessageListener(
-					destinationName, schedulerMessageListener);
+				destination.unregister(schedulerMessageListener);
 
 				return;
 			}

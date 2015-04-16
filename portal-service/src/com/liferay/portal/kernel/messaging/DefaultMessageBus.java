@@ -19,9 +19,12 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * @author Michael C. Han
@@ -29,14 +32,15 @@ import java.util.Set;
 public class DefaultMessageBus implements MessageBus {
 
 	@Override
-	public synchronized void addDestination(Destination destination) {
-		_destinations.put(destination.getName(), destination);
+	public void addDestination(Destination destination) {
+		Destination previousDestination = _destinations.put(
+			destination.getName(), destination);
 
-		for (MessageBusEventListener messageBusEventListener :
-				_messageBusEventListeners) {
-
-			messageBusEventListener.destinationAdded(destination);
+		if (previousDestination != null) {
+			doRemoveDestination(previousDestination);
 		}
+
+		doAddDestination(destination);
 	}
 
 	@Override
@@ -57,13 +61,8 @@ public class DefaultMessageBus implements MessageBus {
 	}
 
 	@Override
-	public Collection<String> getDestinationNames() {
-		return _destinations.keySet();
-	}
-
-	@Override
 	public Collection<Destination> getDestinations() {
-		return _destinations.values();
+		return Collections.unmodifiableCollection(_destinations.values());
 	}
 
 	@Override
@@ -72,44 +71,11 @@ public class DefaultMessageBus implements MessageBus {
 	}
 
 	@Override
-	public boolean hasMessageListener(String destinationName) {
-		Destination destination = _destinations.get(destinationName);
-
-		if ((destination != null) && destination.isRegistered()) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
-	@Override
-	public synchronized boolean registerMessageListener(
-		String destinationName, MessageListener messageListener) {
-
-		Destination destination = _destinations.get(destinationName);
-
-		if (destination == null) {
-			throw new IllegalStateException(
-				"Destination " + destinationName + " is not configured");
-		}
-
-		return destination.register(messageListener);
-	}
-
-	@Override
-	public synchronized Destination removeDestination(String destinationName) {
+	public Destination removeDestination(String destinationName) {
 		Destination destination = _destinations.remove(destinationName);
 
 		if (destination != null) {
-			destination.removeDestinationEventListeners();
-			destination.unregisterMessageListeners();
-
-			for (MessageBusEventListener messageBusEventListener :
-					_messageBusEventListeners) {
-
-				messageBusEventListener.destinationRemoved(destination);
-			}
+			doRemoveDestination(destination);
 		}
 
 		return destination;
@@ -124,14 +90,53 @@ public class DefaultMessageBus implements MessageBus {
 
 	@Override
 	public void replace(Destination destination) {
-		Destination oldDestination = _destinations.get(destination.getName());
+		while (true) {
+			Destination oldDestination = _destinations.get(
+				destination.getName());
 
-		oldDestination.copyDestinationEventListeners(destination);
-		oldDestination.copyMessageListeners(destination);
+			if (oldDestination == null) {
+				throw new IllegalArgumentException(
+					"No exist destination with name " + destination.getName());
+			}
 
-		removeDestination(oldDestination.getName());
+			// Back up listeners, in case concurrent replace failed, they are
+			// needed to restore destination
 
-		addDestination(destination);
+			Set<DestinationEventListener> destinationEventListeners =
+				new HashSet<>(destination.getDestinationEventListeners());
+
+			Set<MessageListener> messageListeners = new HashSet<>(
+				destination.getMessageListeners());
+
+			oldDestination.copyDestinationEventListeners(destination);
+			oldDestination.copyMessageListeners(destination);
+
+			if (_destinations.replace(
+					destination.getName(), oldDestination, destination)) {
+
+				doRemoveDestination(oldDestination);
+				doAddDestination(destination);
+
+				return;
+			}
+
+			// Concurrent replace failed, clean and restore destination, then
+			// try again.
+
+			destination.removeDestinationEventListeners();
+			destination.unregisterMessageListeners();
+
+			for (DestinationEventListener destinationEventListener :
+					destinationEventListeners) {
+
+				destination.addDestinationEventListener(
+					destinationEventListener);
+			}
+
+			for (MessageListener messageListener : messageListeners) {
+				destination.register(messageListener);
+			}
+		}
 	}
 
 	@Override
@@ -158,29 +163,44 @@ public class DefaultMessageBus implements MessageBus {
 	}
 
 	@Override
-	public synchronized void shutdown(boolean force) {
-		for (Destination destination : _destinations.values()) {
+	public void shutdown(boolean force) {
+		Collection<Destination> destinations = _destinations.values();
+
+		Iterator<Destination> iterator = destinations.iterator();
+
+		while (iterator.hasNext()) {
+			Destination destination = iterator.next();
+
 			destination.close(force);
+
+			iterator.remove();
 		}
 	}
 
-	@Override
-	public synchronized boolean unregisterMessageListener(
-		String destinationName, MessageListener messageListener) {
+	protected void doAddDestination(Destination destination) {
+		for (MessageBusEventListener messageBusEventListener :
+				_messageBusEventListeners) {
 
-		Destination destination = _destinations.get(destinationName);
-
-		if (destination == null) {
-			return false;
+			messageBusEventListener.destinationAdded(destination);
 		}
+	}
 
-		return destination.unregister(messageListener);
+	protected void doRemoveDestination(Destination destination) {
+		destination.removeDestinationEventListeners();
+		destination.unregisterMessageListeners();
+
+		for (MessageBusEventListener messageBusEventListener :
+				_messageBusEventListeners) {
+
+			messageBusEventListener.destinationRemoved(destination);
+		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		DefaultMessageBus.class);
 
-	private final Map<String, Destination> _destinations = new HashMap<>();
+	private final ConcurrentMap<String, Destination> _destinations =
+		new ConcurrentHashMap<>();
 	private final Set<MessageBusEventListener> _messageBusEventListeners =
 		new ConcurrentHashSet<>();
 

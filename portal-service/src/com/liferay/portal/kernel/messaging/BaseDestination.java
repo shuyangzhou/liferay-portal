@@ -73,6 +73,11 @@ public abstract class BaseDestination implements Destination {
 	}
 
 	@Override
+	public Set<DestinationEventListener> getDestinationEventListeners() {
+		return Collections.unmodifiableSet(_destinationEventListeners);
+	}
+
+	@Override
 	public int getMessageListenerCount() {
 		return messageListeners.size();
 	}
