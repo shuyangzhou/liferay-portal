@@ -10,10 +10,10 @@
 		<description homepage="http://code.google.com/p/google-guice/">
 		Guice is a lightweight dependency injection framework for Java 5 and above
 		</description>
-		<m:properties__guice.with.no_aop>true</m:properties__guice.with.no_aop>
-		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
-		<m:properties__guice.api.version>1.3</m:properties__guice.api.version>
 		<m:properties__guice.with.jarjar>true</m:properties__guice.with.jarjar>
+		<m:properties__guice.with.no_aop>true</m:properties__guice.with.no_aop>
+		<m:properties__guice.api.version>1.3</m:properties__guice.api.version>
+		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
 	</info>
 	<configurations>
 		<conf name="default" visibility="public" description="runtime dependencies and master artifact can be used with this conf" extends="runtime,master"/>

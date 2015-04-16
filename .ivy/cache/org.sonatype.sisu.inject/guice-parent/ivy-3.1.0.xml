@@ -10,15 +10,15 @@
 		<description homepage="http://code.google.com/p/google-guice/">
 		Patched build of Guice: a lightweight dependency injection framework for Java 5 and above
 		</description>
-		<m:properties__guice.with.no_aop>true</m:properties__guice.with.no_aop>
-		<m:properties__forgeSnapshotId>forge-snapshots</m:properties__forgeSnapshotId>
-		<m:properties__forgeSnapshotUrl>https://repository.sonatype.org/content/repositories/snapshots</m:properties__forgeSnapshotUrl>
-		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
-		<m:properties__guice.api.version>1.4</m:properties__guice.api.version>
-		<m:properties__forgeReleaseId>forge-releases</m:properties__forgeReleaseId>
-		<m:properties__project.reporting.outputEncoding>UTF-8</m:properties__project.reporting.outputEncoding>
-		<m:properties__forgeReleaseUrl>https://repository.sonatype.org/service/local/staging/deploy/maven2</m:properties__forgeReleaseUrl>
 		<m:properties__guice.with.jarjar>true</m:properties__guice.with.jarjar>
+		<m:properties__guice.with.no_aop>true</m:properties__guice.with.no_aop>
+		<m:properties__guice.api.version>1.4</m:properties__guice.api.version>
+		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
+		<m:properties__forgeReleaseId>forge-releases</m:properties__forgeReleaseId>
+		<m:properties__forgeSnapshotUrl>https://repository.sonatype.org/content/repositories/snapshots</m:properties__forgeSnapshotUrl>
+		<m:properties__project.reporting.outputEncoding>UTF-8</m:properties__project.reporting.outputEncoding>
+		<m:properties__forgeSnapshotId>forge-snapshots</m:properties__forgeSnapshotId>
+		<m:properties__forgeReleaseUrl>https://repository.sonatype.org/service/local/staging/deploy/maven2</m:properties__forgeReleaseUrl>
 	</info>
 	<configurations>
 		<conf name="default" visibility="public" description="runtime dependencies and master artifact can be used with this conf" extends="runtime,master"/>

@@ -10,8 +10,8 @@
 		<description homepage="http://jaxen.codehaus.org/">
 		Jaxen is a universal Java XPath engine.
 		</description>
-		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
 		<m:properties__project.reporting.outputEncoding>UTF-8</m:properties__project.reporting.outputEncoding>
+		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
 		<m:properties__sonatypeOssDistMgmtSnapshotsUrl>https://oss.sonatype.org/content/repositories/snapshots/</m:properties__sonatypeOssDistMgmtSnapshotsUrl>
 		<m:maven.plugins>org.apache.maven.plugins__maven-enforcer-plugin__1.0|org.apache.maven.plugins__maven-enforcer-plugin__1.0|null__maven-compiler-plugin__2.5.1|null__maven-repository-plugin__2.3.1|null__maven-javadoc-plugin__2.8.1|null__maven-surefire-plugin__2.12|org.codehaus.mojo__cobertura-maven-plugin__2.5.1|org.codehaus.mojo__findbugs-maven-plugin__2.4.0</m:maven.plugins>
 	</info>

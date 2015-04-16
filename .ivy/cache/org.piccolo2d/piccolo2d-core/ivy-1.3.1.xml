@@ -7,18 +7,14 @@
 		publication="20110414203922"
 	>
 		<description homepage="" />
-		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
+		<m:properties__httpbase>http://www.piccolo2d.org/java</m:properties__httpbase>
 		<m:properties__jdk.version>1.4</m:properties__jdk.version>
+		<m:properties__scpbase/>
+		<m:properties__httpsitebase>${httpbase}/site</m:properties__httpsitebase>
+		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
+		<m:properties__scpsitebase/>
 		<m:properties__project.build.targetEncoding>UTF-8</m:properties__project.build.targetEncoding>
 		<m:dependency.management__junit__junit__version>3.8.2</m:dependency.management__junit__junit__version>
-		<m:properties__httpsitebase>${httpbase}/site</m:properties__httpsitebase>
-		<m:properties__scpsitebase>
-      
-    </m:properties__scpsitebase>
-		<m:properties__httpbase>http://www.piccolo2d.org/java</m:properties__httpbase>
-		<m:properties__scpbase>
-      
-    </m:properties__scpbase>
 		<m:maven.plugins>org.apache.felix__maven-bundle-plugin__null|org.apache.felix__maven-bundle-plugin__null</m:maven.plugins>
 	</info>
 	<configurations>

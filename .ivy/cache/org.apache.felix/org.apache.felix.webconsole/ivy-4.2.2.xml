@@ -11,19 +11,19 @@
         http://felix.apache.org/site/apache-felix-web-console.html for more
         information on this bundle.
 		</description>
-		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
-		<m:properties__organization.logo>http://www.apache.org/images/asf_logo_wide.gif</m:properties__organization.logo>
+		<m:properties__org.json.version>20070829</m:properties__org.json.version>
 		<m:properties__webconsole.exports>
             org.apache.felix.webconsole;version=3.1.3;provide:=true,
             org.apache.felix.webconsole.bundleinfo;version=1.0.0;provide:=true,
             org.apache.felix.webconsole.i18n;version=1.0.0;provide:=true
         </m:properties__webconsole.exports>
-		<m:properties__distMgmtSnapshotsName>Apache Development Snapshot Repository</m:properties__distMgmtSnapshotsName>
 		<m:properties__org.json.version.osgi>0.0.0.${org.json.version}</m:properties__org.json.version.osgi>
-		<m:properties__distMgmtSnapshotsUrl>https://repository.apache.org/content/repositories/snapshots</m:properties__distMgmtSnapshotsUrl>
-		<m:properties__org.json.version>20070829</m:properties__org.json.version>
-		<m:maven.plugins>org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-compiler-plugin__null|org.apache.rat__apache-rat-plugin__null|org.apache.maven.plugins__maven-release-plugin__null|org.codehaus.mojo__ianal-maven-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-compiler-plugin__null|org.apache.rat__apache-rat-plugin__null|org.apache.maven.plugins__maven-release-plugin__null|org.codehaus.mojo__ianal-maven-plugin__null|org.codehaus.mojo__native2ascii-maven-plugin__1.0-beta-1|org.codehaus.mojo__animal-sniffer-maven-plugin__1.7|org.apache.felix__maven-bundle-plugin__2.3.6|null__maven-javadoc-plugin__null|org.apache.rat__apache-rat-plugin__null</m:maven.plugins>
 		<m:properties__sourceReleaseAssemblyDescriptor>source-release-zip-tar</m:properties__sourceReleaseAssemblyDescriptor>
+		<m:properties__distMgmtSnapshotsUrl>https://repository.apache.org/content/repositories/snapshots</m:properties__distMgmtSnapshotsUrl>
+		<m:properties__distMgmtSnapshotsName>Apache Development Snapshot Repository</m:properties__distMgmtSnapshotsName>
+		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
+		<m:properties__organization.logo>http://www.apache.org/images/asf_logo_wide.gif</m:properties__organization.logo>
+		<m:maven.plugins>org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-compiler-plugin__null|org.apache.rat__apache-rat-plugin__null|org.apache.maven.plugins__maven-release-plugin__null|org.codehaus.mojo__ianal-maven-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-compiler-plugin__null|org.apache.rat__apache-rat-plugin__null|org.apache.maven.plugins__maven-release-plugin__null|org.codehaus.mojo__ianal-maven-plugin__null|org.codehaus.mojo__native2ascii-maven-plugin__1.0-beta-1|org.codehaus.mojo__animal-sniffer-maven-plugin__1.7|org.apache.felix__maven-bundle-plugin__2.3.6|null__maven-javadoc-plugin__null|org.apache.rat__apache-rat-plugin__null</m:maven.plugins>
 	</info>
 	<configurations>
 		<conf name="default" visibility="public" description="runtime dependencies and master artifact can be used with this conf" extends="runtime,master"/>

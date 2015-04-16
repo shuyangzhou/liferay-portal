@@ -7,10 +7,10 @@
 		publication="20071016125230"
 	>
 		<description homepage="" />
-		<m:dependency.management__org.codehaus.plexus__plexus-component-api__version>1.0-alpha-33</m:dependency.management__org.codehaus.plexus__plexus-component-api__version>
-		<m:dependency.management__org.codehaus.plexus__plexus-utils__version>1.4.5</m:dependency.management__org.codehaus.plexus__plexus-utils__version>
-		<m:dependency.management__org.codehaus.plexus__plexus-classworlds__version>1.2-alpha-10</m:dependency.management__org.codehaus.plexus__plexus-classworlds__version>
 		<m:maven.plugins>org.apache.maven.plugins__maven-compiler-plugin__null|org.apache.maven.plugins__maven-compiler-plugin__null</m:maven.plugins>
+		<m:dependency.management__org.codehaus.plexus__plexus-classworlds__version>1.2-alpha-10</m:dependency.management__org.codehaus.plexus__plexus-classworlds__version>
+		<m:dependency.management__org.codehaus.plexus__plexus-utils__version>1.4.5</m:dependency.management__org.codehaus.plexus__plexus-utils__version>
+		<m:dependency.management__org.codehaus.plexus__plexus-component-api__version>1.0-alpha-33</m:dependency.management__org.codehaus.plexus__plexus-component-api__version>
 	</info>
 	<configurations>
 		<conf name="default" visibility="public" description="runtime dependencies and master artifact can be used with this conf" extends="runtime,master"/>

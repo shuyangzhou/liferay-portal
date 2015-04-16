@@ -6,7 +6,7 @@
 	<property name="javac.target" value="1.6" />
 	<property name="original.lib.name" value="ivy" />
 	<property name="original.lib.url" value="http://search.maven.org/remotecontent?filepath=org/apache/ivy" />
-	<property name="original.lib.version" value="2.3.0" />
+	<property name="original.lib.version" value="2.4.0" />
 
 	<import file="../../../tools/sdk/build-common-osgi-plugin.xml" />
 

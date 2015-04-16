@@ -9,8 +9,8 @@
 		<description homepage="http://plexus.codehaus.org/plexus-utils">
 		A collection of various utility classes to ease working with strings, files, command lines, XML and more.
 		</description>
-		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
 		<m:properties__plexusDistMgmtSnapshotsUrl>https://oss.sonatype.org/content/repositories/plexus-snapshots</m:properties__plexusDistMgmtSnapshotsUrl>
+		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
 		<m:maven.plugins>org.apache.maven.plugins__maven-compiler-plugin__null|org.apache.maven.plugins__maven-surefire-plugin__null</m:maven.plugins>
 	</info>
 	<configurations>

@@ -7,42 +7,42 @@
 		publication="20141221030629"
 	>
 		<description homepage="" />
-		<m:dependency.management__com.beust__jcommander__version>1.35</m:dependency.management__com.beust__jcommander__version>
+		<m:properties__config.basedir>${basedir}/../pmd-core</m:properties__config.basedir>
 		<m:properties__checkstyle.suppressionsFile>${config.basedir}/etc/checkstyle-suppressions.xml</m:properties__checkstyle.suppressionsFile>
-		<m:dependency.management__org.mozilla__rhino__version>1.7R4</m:dependency.management__org.mozilla__rhino__version>
-		<m:dependency.management__xerces__xercesImpl__version>2.11.0</m:dependency.management__xerces__xercesImpl__version>
-		<m:dependency.management__net.sourceforge.saxon__saxon__version>9.1.0.8</m:dependency.management__net.sourceforge.saxon__saxon__version>
+		<m:properties__checkstyle.version>2.13</m:properties__checkstyle.version>
+		<m:properties__pmd.plugin.version>3.3</m:properties__pmd.plugin.version>
+		<m:properties__clover.version>2.5.1</m:properties__clover.version>
+		<m:properties__checkstyle.configLocation>${config.basedir}/etc/checkstyle-config.xml</m:properties__checkstyle.configLocation>
+		<m:properties__pmd.dogfood.ruleset>${config.basedir}/src/main/resources/rulesets/internal/dogfood.xml</m:properties__pmd.dogfood.ruleset>
 		<m:properties__ant.version>1.9.4</m:properties__ant.version>
 		<m:properties__java.version>1.6</m:properties__java.version>
-		<m:dependency.management__org.apache.ant__ant-testutil__version>1.9.4</m:dependency.management__org.apache.ant__ant-testutil__version>
-		<m:properties__javadoc.plugin.version>2.10.1</m:properties__javadoc.plugin.version>
-		<m:dependency.management__org.mockito__mockito-all__version>1.10.8</m:dependency.management__org.mockito__mockito-all__version>
-		<m:dependency.management__org.apache.commons__commons-lang3__version>3.3.2</m:dependency.management__org.apache.commons__commons-lang3__version>
 		<m:properties__javacc.version>5.0</m:properties__javacc.version>
-		<m:dependency.management__org.slf4j__slf4j-api__version>1.7.7</m:dependency.management__org.slf4j__slf4j-api__version>
-		<m:dependency.management__junit__junit__version>4.11</m:dependency.management__junit__junit__version>
-		<m:properties__checkstyle.version>2.13</m:properties__checkstyle.version>
+		<m:properties__pmd.website.baseurl>http://pmd.sourceforge.net/snapshot/${project.artifactId}</m:properties__pmd.website.baseurl>
+		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
 		<m:properties__surefire.version>2.17</m:properties__surefire.version>
-		<m:properties__clover.version>2.5.1</m:properties__clover.version>
+		<m:properties__javadoc.plugin.version>2.10.1</m:properties__javadoc.plugin.version>
 		<m:properties__sonatypeOssDistMgmtSnapshotsUrl>https://oss.sonatype.org/content/repositories/snapshots/</m:properties__sonatypeOssDistMgmtSnapshotsUrl>
-		<m:dependency.management__net.java.dev.javacc__javacc__version>5.0</m:dependency.management__net.java.dev.javacc__javacc__version>
-		<m:properties__config.basedir>${basedir}/../pmd-core</m:properties__config.basedir>
 		<m:maven.plugins>org.apache.maven.plugins__maven-enforcer-plugin__1.0|org.apache.maven.plugins__maven-enforcer-plugin__1.0|org.apache.maven.plugins__maven-site-plugin__null|org.apache.maven.plugins__maven-antrun-plugin__null|org.apache.maven.plugins__maven-enforcer-plugin__1.0|org.apache.maven.plugins__maven-enforcer-plugin__1.0|org.apache.maven.plugins__maven-site-plugin__null|org.apache.maven.plugins__maven-antrun-plugin__null|null__maven-resources-plugin__null|org.apache.maven.plugins__maven-antrun-plugin__null|org.codehaus.mojo__build-helper-maven-plugin__null|net.sourceforge.pmd__pmd-build__null</m:maven.plugins>
 		<m:dependency.management__org.apache.ant__ant__version>1.9.4</m:dependency.management__org.apache.ant__ant__version>
+		<m:dependency.management__org.apache.ant__ant-testutil__version>1.9.4</m:dependency.management__org.apache.ant__ant-testutil__version>
+		<m:dependency.management__jaxen__jaxen__version>1.1.4</m:dependency.management__jaxen__jaxen__version>
 		<m:dependency.management__jaxen__jaxen__exclusion_0>xerces__xercesImpl</m:dependency.management__jaxen__jaxen__exclusion_0>
 		<m:dependency.management__jaxen__jaxen__exclusion_1>xalan__xalan</m:dependency.management__jaxen__jaxen__exclusion_1>
-		<m:properties__pmd.website.baseurl>http://pmd.sourceforge.net/snapshot/${project.artifactId}</m:properties__pmd.website.baseurl>
-		<m:properties__pmd.plugin.version>3.3</m:properties__pmd.plugin.version>
 		<m:dependency.management__jaxen__jaxen__exclusion_2>com.ibm.icu__icu4j</m:dependency.management__jaxen__jaxen__exclusion_2>
-		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
-		<m:dependency.management__net.sourceforge.pmd__pmd-core__version>5.2.3</m:dependency.management__net.sourceforge.pmd__pmd-core__version>
-		<m:properties__checkstyle.configLocation>${config.basedir}/etc/checkstyle-config.xml</m:properties__checkstyle.configLocation>
-		<m:dependency.management__com.github.tomakehurst__wiremock__version>1.52</m:dependency.management__com.github.tomakehurst__wiremock__version>
-		<m:dependency.management__net.sourceforge.pmd__pmd-test__version>5.2.3</m:dependency.management__net.sourceforge.pmd__pmd-test__version>
-		<m:dependency.management__commons-io__commons-io__version>2.4</m:dependency.management__commons-io__commons-io__version>
-		<m:dependency.management__jaxen__jaxen__version>1.1.4</m:dependency.management__jaxen__jaxen__version>
-		<m:properties__pmd.dogfood.ruleset>${config.basedir}/src/main/resources/rulesets/internal/dogfood.xml</m:properties__pmd.dogfood.ruleset>
+		<m:dependency.management__com.beust__jcommander__version>1.35</m:dependency.management__com.beust__jcommander__version>
 		<m:dependency.management__org.ow2.asm__asm__version>5.0.3</m:dependency.management__org.ow2.asm__asm__version>
+		<m:dependency.management__net.sourceforge.pmd__pmd-core__version>5.2.3</m:dependency.management__net.sourceforge.pmd__pmd-core__version>
+		<m:dependency.management__net.sourceforge.pmd__pmd-test__version>5.2.3</m:dependency.management__net.sourceforge.pmd__pmd-test__version>
+		<m:dependency.management__net.sourceforge.saxon__saxon__version>9.1.0.8</m:dependency.management__net.sourceforge.saxon__saxon__version>
+		<m:dependency.management__org.mozilla__rhino__version>1.7R4</m:dependency.management__org.mozilla__rhino__version>
+		<m:dependency.management__junit__junit__version>4.11</m:dependency.management__junit__junit__version>
+		<m:dependency.management__xerces__xercesImpl__version>2.11.0</m:dependency.management__xerces__xercesImpl__version>
+		<m:dependency.management__net.java.dev.javacc__javacc__version>5.0</m:dependency.management__net.java.dev.javacc__javacc__version>
+		<m:dependency.management__commons-io__commons-io__version>2.4</m:dependency.management__commons-io__commons-io__version>
+		<m:dependency.management__org.mockito__mockito-all__version>1.10.8</m:dependency.management__org.mockito__mockito-all__version>
+		<m:dependency.management__org.apache.commons__commons-lang3__version>3.3.2</m:dependency.management__org.apache.commons__commons-lang3__version>
+		<m:dependency.management__org.slf4j__slf4j-api__version>1.7.7</m:dependency.management__org.slf4j__slf4j-api__version>
+		<m:dependency.management__com.github.tomakehurst__wiremock__version>1.52</m:dependency.management__com.github.tomakehurst__wiremock__version>
 	</info>
 	<configurations>
 		<conf name="default" visibility="public" description="runtime dependencies and master artifact can be used with this conf" extends="runtime,master"/>

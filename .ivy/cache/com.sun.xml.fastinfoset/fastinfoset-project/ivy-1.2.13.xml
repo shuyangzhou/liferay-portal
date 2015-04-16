@@ -10,15 +10,15 @@
 		<description homepage="http://fi.java.net">
 		Open Source implementation of the Fast Infoset Standard for Binary XML (http://www.itu.int/ITU-T/asn1/).
 		</description>
-		<m:properties__junit-version>4.7</m:properties__junit-version>
-		<m:properties__maven-plugin.version>1.0.0</m:properties__maven-plugin.version>
-		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
-		<m:dependency.management__org.apache.maven__maven-plugin-tools-api__version>2.0</m:dependency.management__org.apache.maven__maven-plugin-tools-api__version>
-		<m:properties__findbugs.skip>false</m:properties__findbugs.skip>
 		<m:properties__findbugs.threshold>Low</m:properties__findbugs.threshold>
-		<m:properties__jvnetDistMgmtSnapshotsUrl>https://maven.java.net/content/repositories/snapshots/</m:properties__jvnetDistMgmtSnapshotsUrl>
+		<m:properties__findbugs.skip>false</m:properties__findbugs.skip>
 		<m:properties__findbugs.exclude>${project.basedir}/exclude.xml</m:properties__findbugs.exclude>
+		<m:properties__maven-plugin.version>1.0.0</m:properties__maven-plugin.version>
+		<m:properties__junit-version>4.7</m:properties__junit-version>
+		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
+		<m:properties__jvnetDistMgmtSnapshotsUrl>https://maven.java.net/content/repositories/snapshots/</m:properties__jvnetDistMgmtSnapshotsUrl>
 		<m:maven.plugins>org.apache.maven.plugins__maven-enforcer-plugin__1.0|org.apache.maven.plugins__maven-enforcer-plugin__1.0|null__maven-release-plugin__null|org.codehaus.mojo__buildnumber-maven-plugin__1.1|org.apache.maven.plugins__maven-deploy-plugin__2.7|org.sonatype.plugins__nexus-staging-maven-plugin__1.1</m:maven.plugins>
+		<m:dependency.management__org.apache.maven__maven-plugin-tools-api__version>2.0</m:dependency.management__org.apache.maven__maven-plugin-tools-api__version>
 	</info>
 	<configurations>
 		<conf name="default" visibility="public" description="runtime dependencies and master artifact can be used with this conf" extends="runtime,master"/>

@@ -7,12 +7,14 @@
 		publication="20140727104421"
 	>
 		<description homepage="" />
-		<m:properties__platform>${os.name}-${os.arch}</m:properties__platform>
-		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
-		<m:properties__process-classes.skip> false</m:properties__process-classes.skip>
-		<m:maven.plugins>null__maven-deploy-plugin__2.4|org.sonatype.plugins__nexus-staging-maven-plugin__1.6|null__maven-deploy-plugin__2.4|org.sonatype.plugins__nexus-staging-maven-plugin__1.6|null__maven-resources-plugin__null|null__maven-compiler-plugin__null|org.bytedeco__javacpp__null|null__maven-jar-plugin__null|null__maven-dependency-plugin__null|null__maven-source-plugin__null|null__maven-javadoc-plugin__null</m:maven.plugins>
 		<m:properties__generate-sources.skip>false</m:properties__generate-sources.skip>
+		<m:properties__platform>${os.name}-${os.arch}</m:properties__platform>
+		<m:properties__process-classes.skip> false</m:properties__process-classes.skip>
+		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
+		<m:properties__platform.compiler/>
+		<m:properties__platform.root/>
 		<m:dependency.management__org.bytedeco__javacpp__version>0.9</m:dependency.management__org.bytedeco__javacpp__version>
+		<m:maven.plugins>null__maven-deploy-plugin__2.4|org.sonatype.plugins__nexus-staging-maven-plugin__1.6|null__maven-deploy-plugin__2.4|org.sonatype.plugins__nexus-staging-maven-plugin__1.6|null__maven-resources-plugin__null|null__maven-compiler-plugin__null|org.bytedeco__javacpp__null|null__maven-jar-plugin__null|null__maven-dependency-plugin__null|null__maven-source-plugin__null|null__maven-javadoc-plugin__null</m:maven.plugins>
 	</info>
 	<configurations>
 		<conf name="default" visibility="public" description="runtime dependencies and master artifact can be used with this conf" extends="runtime,master"/>

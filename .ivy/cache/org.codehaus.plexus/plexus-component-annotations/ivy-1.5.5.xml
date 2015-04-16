@@ -11,24 +11,24 @@
     standard annotations instead of javadoc annotations.
 		</description>
 		<m:properties__xbeanReflectVersion>3.4</m:properties__xbeanReflectVersion>
-		<m:dependency.management__com.google.collections__google-collections__version>1.0</m:dependency.management__com.google.collections__google-collections__version>
-		<m:dependency.management__org.apache.maven__maven-model__version>2.0.9</m:dependency.management__org.apache.maven__maven-model__version>
-		<m:dependency.management__org.codehaus.plexus__plexus-utils__version>1.4.5</m:dependency.management__org.codehaus.plexus__plexus-utils__version>
-		<m:dependency.management__org.codehaus.plexus__plexus-container-default__version>1.5.5</m:dependency.management__org.codehaus.plexus__plexus-container-default__version>
-		<m:dependency.management__com.thoughtworks.qdox__qdox__version>1.9.2</m:dependency.management__com.thoughtworks.qdox__qdox__version>
-		<m:properties__classWorldsVersion>2.2.2</m:properties__classWorldsVersion>
 		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
-		<m:dependency.management__junit__junit__version>3.8.2</m:dependency.management__junit__junit__version>
-		<m:properties__plexusDistMgmtSnapshotsUrl>https://oss.sonatype.org/content/repositories/plexus-snapshots</m:properties__plexusDistMgmtSnapshotsUrl>
-		<m:dependency.management__jdom__jdom__version>1.0</m:dependency.management__jdom__jdom__version>
-		<m:dependency.management__org.apache.xbean__xbean-reflect__version>3.4</m:dependency.management__org.apache.xbean__xbean-reflect__version>
 		<m:properties__plexusUtilsVersion>1.4.5</m:properties__plexusUtilsVersion>
-		<m:dependency.management__org.apache.maven__maven-project__version>2.0.9</m:dependency.management__org.apache.maven__maven-project__version>
-		<m:dependency.management__org.codehaus.plexus__plexus-classworlds__version>2.2.2</m:dependency.management__org.codehaus.plexus__plexus-classworlds__version>
-		<m:dependency.management__org.codehaus.plexus__plexus-component-metadata__version>1.5.5</m:dependency.management__org.codehaus.plexus__plexus-component-metadata__version>
-		<m:dependency.management__org.apache.maven__maven-plugin-api__version>2.0.9</m:dependency.management__org.apache.maven__maven-plugin-api__version>
-		<m:maven.plugins>null__maven-compiler-plugin__null|null__maven-compiler-plugin__null</m:maven.plugins>
+		<m:properties__classWorldsVersion>2.2.2</m:properties__classWorldsVersion>
+		<m:properties__plexusDistMgmtSnapshotsUrl>https://oss.sonatype.org/content/repositories/plexus-snapshots</m:properties__plexusDistMgmtSnapshotsUrl>
+		<m:dependency.management__org.codehaus.plexus__plexus-container-default__version>1.5.5</m:dependency.management__org.codehaus.plexus__plexus-container-default__version>
 		<m:dependency.management__org.codehaus.plexus__plexus-component-annotations__version>1.5.5</m:dependency.management__org.codehaus.plexus__plexus-component-annotations__version>
+		<m:dependency.management__org.codehaus.plexus__plexus-component-metadata__version>1.5.5</m:dependency.management__org.codehaus.plexus__plexus-component-metadata__version>
+		<m:dependency.management__org.codehaus.plexus__plexus-classworlds__version>2.2.2</m:dependency.management__org.codehaus.plexus__plexus-classworlds__version>
+		<m:dependency.management__org.codehaus.plexus__plexus-utils__version>1.4.5</m:dependency.management__org.codehaus.plexus__plexus-utils__version>
+		<m:dependency.management__org.apache.xbean__xbean-reflect__version>3.4</m:dependency.management__org.apache.xbean__xbean-reflect__version>
+		<m:dependency.management__com.thoughtworks.qdox__qdox__version>1.9.2</m:dependency.management__com.thoughtworks.qdox__qdox__version>
+		<m:dependency.management__jdom__jdom__version>1.0</m:dependency.management__jdom__jdom__version>
+		<m:dependency.management__org.apache.maven__maven-plugin-api__version>2.0.9</m:dependency.management__org.apache.maven__maven-plugin-api__version>
+		<m:dependency.management__org.apache.maven__maven-model__version>2.0.9</m:dependency.management__org.apache.maven__maven-model__version>
+		<m:dependency.management__org.apache.maven__maven-project__version>2.0.9</m:dependency.management__org.apache.maven__maven-project__version>
+		<m:dependency.management__com.google.collections__google-collections__version>1.0</m:dependency.management__com.google.collections__google-collections__version>
+		<m:dependency.management__junit__junit__version>3.8.2</m:dependency.management__junit__junit__version>
+		<m:maven.plugins>null__maven-compiler-plugin__null|null__maven-compiler-plugin__null</m:maven.plugins>
 	</info>
 	<configurations>
 		<conf name="default" visibility="public" description="runtime dependencies and master artifact can be used with this conf" extends="runtime,master"/>

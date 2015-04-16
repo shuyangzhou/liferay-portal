@@ -10,10 +10,11 @@
 		<description homepage="http://junit.org">
 		JUnit is a unit testing framework for Java, created by Erich Gamma and Kent Beck.
 		</description>
-		<m:properties__project.build.sourceEncoding>ISO-8859-1</m:properties__project.build.sourceEncoding>
-		<m:properties__gpg.keyname>67893CC4</m:properties__gpg.keyname>
-		<m:maven.plugins>null__maven-enforcer-plugin__1.3.1|com.google.code.maven-replacer-plugin__replacer__1.5.3|null__maven-compiler-plugin__3.1|org.codehaus.mojo__animal-sniffer-maven-plugin__1.11|null__maven-surefire-plugin__2.17|null__maven-source-plugin__2.2.1|null__maven-javadoc-plugin__2.9.1|null__maven-release-plugin__2.5|null__maven-site-plugin__3.3|null__maven-jar-plugin__2.4</m:maven.plugins>
+		<m:properties__arguments/>
 		<m:properties__jdkVersion>1.5</m:properties__jdkVersion>
+		<m:properties__gpg.keyname>67893CC4</m:properties__gpg.keyname>
+		<m:properties__project.build.sourceEncoding>ISO-8859-1</m:properties__project.build.sourceEncoding>
+		<m:maven.plugins>null__maven-enforcer-plugin__1.3.1|com.google.code.maven-replacer-plugin__replacer__1.5.3|null__maven-compiler-plugin__3.1|org.codehaus.mojo__animal-sniffer-maven-plugin__1.11|null__maven-surefire-plugin__2.17|null__maven-source-plugin__2.2.1|null__maven-javadoc-plugin__2.9.1|null__maven-release-plugin__2.5|null__maven-site-plugin__3.3|null__maven-jar-plugin__2.4</m:maven.plugins>
 	</info>
 	<configurations>
 		<conf name="default" visibility="public" description="runtime dependencies and master artifact can be used with this conf" extends="runtime,master"/>

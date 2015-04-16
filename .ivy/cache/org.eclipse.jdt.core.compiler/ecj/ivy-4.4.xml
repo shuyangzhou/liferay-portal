@@ -10,8 +10,8 @@
 		<description homepage="http://www.eclipse.org/jdt/">
 		Eclipse JDT Core Batch Compiler
 		</description>
-		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
 		<m:properties__project.reporting.outputEncoding>UTF-8</m:properties__project.reporting.outputEncoding>
+		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
 		<m:maven.plugins>org.apache.maven.plugins__maven-javadoc-plugin__2.9.1</m:maven.plugins>
 	</info>
 	<configurations>

@@ -11,12 +11,12 @@
 		Centralized dependencyManagement for the ShrinkWrap Project
 		</description>
 		<m:properties__jboss.snapshots.repo.url>https://repository.jboss.org/nexus/content/repositories/snapshots/</m:properties__jboss.snapshots.repo.url>
-		<m:dependency.management__org.jboss.shrinkwrap__shrinkwrap-spi__version>1.1.2</m:dependency.management__org.jboss.shrinkwrap__shrinkwrap-spi__version>
 		<m:properties__jboss.releases.repo.url>https://repository.jboss.org/nexus/service/local/staging/deploy/maven2/</m:properties__jboss.releases.repo.url>
+		<m:dependency.management__org.jboss.shrinkwrap__shrinkwrap-api__version>1.1.2</m:dependency.management__org.jboss.shrinkwrap__shrinkwrap-api__version>
+		<m:dependency.management__org.jboss.shrinkwrap__shrinkwrap-spi__version>1.1.2</m:dependency.management__org.jboss.shrinkwrap__shrinkwrap-spi__version>
+		<m:dependency.management__org.jboss.shrinkwrap__shrinkwrap-impl-base__version>1.1.2</m:dependency.management__org.jboss.shrinkwrap__shrinkwrap-impl-base__version>
 		<m:dependency.management__org.jboss.shrinkwrap__shrinkwrap-api-nio2__version>1.1.2</m:dependency.management__org.jboss.shrinkwrap__shrinkwrap-api-nio2__version>
 		<m:dependency.management__org.jboss.shrinkwrap__shrinkwrap-impl-nio2__version>1.1.2</m:dependency.management__org.jboss.shrinkwrap__shrinkwrap-impl-nio2__version>
-		<m:dependency.management__org.jboss.shrinkwrap__shrinkwrap-api__version>1.1.2</m:dependency.management__org.jboss.shrinkwrap__shrinkwrap-api__version>
-		<m:dependency.management__org.jboss.shrinkwrap__shrinkwrap-impl-base__version>1.1.2</m:dependency.management__org.jboss.shrinkwrap__shrinkwrap-impl-base__version>
 	</info>
 	<configurations>
 		<conf name="default" visibility="public" description="runtime dependencies and master artifact can be used with this conf" extends="runtime,master"/>

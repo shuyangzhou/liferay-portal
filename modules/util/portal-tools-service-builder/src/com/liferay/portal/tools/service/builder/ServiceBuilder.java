@@ -42,6 +42,7 @@ import com.liferay.portal.tools.ArgumentsUtil;
 import com.liferay.portal.tools.sourceformatter.JavaImportsFormatter;
 import com.liferay.portal.xml.SAXReaderFactory;
 import com.liferay.util.xml.XMLFormatter;
+import com.liferay.util.xml.XMLSafeReader;
 
 import com.thoughtworks.qdox.JavaDocBuilder;
 import com.thoughtworks.qdox.model.AbstractBaseJavaEntity;
@@ -746,7 +747,8 @@ public class ServiceBuilder {
 
 			SAXReader saxReader = _getSAXReader();
 
-			Document document = saxReader.read(new File(inputFileName));
+			Document document = saxReader.read(
+				new XMLSafeReader(getContent(inputFileName)));
 
 			Element rootElement = document.getRootElement();
 

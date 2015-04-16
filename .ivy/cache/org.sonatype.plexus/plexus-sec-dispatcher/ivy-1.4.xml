@@ -7,26 +7,26 @@
 		publication="20091216055520"
 	>
 		<description homepage="http://spice.sonatype.org/${project.artifactId}" />
-		<m:properties__forgeSnapshotUrl>http://repository.sonatype.org/content/repositories/snapshots</m:properties__forgeSnapshotUrl>
-		<m:dependency.management__junit__junit__scope>test</m:dependency.management__junit__junit__scope>
-		<m:dependency.management__org.codehaus.plexus__plexus-utils__version>1.5.5</m:dependency.management__org.codehaus.plexus__plexus-utils__version>
-		<m:dependency.management__org.codehaus.plexus__plexus-container-default__exclusion_2>log4j__log4j</m:dependency.management__org.codehaus.plexus__plexus-container-default__exclusion_2>
-		<m:dependency.management__org.codehaus.plexus__plexus-container-default__version>1.0-beta-3.0.5</m:dependency.management__org.codehaus.plexus__plexus-container-default__version>
-		<m:dependency.management__org.codehaus.plexus__plexus-container-default__exclusion_1>commons-logging__commons-logging-api</m:dependency.management__org.codehaus.plexus__plexus-container-default__exclusion_1>
-		<m:dependency.management__org.codehaus.plexus__plexus-container-default__exclusion_0>commons-logging__commons-logging</m:dependency.management__org.codehaus.plexus__plexus-container-default__exclusion_0>
 		<m:properties__jetty.version>6.1.12</m:properties__jetty.version>
-		<m:properties__forgeSnapshotId>forge-snapshots</m:properties__forgeSnapshotId>
-		<m:dependency.management__org.codehaus.plexus__plexus-component-annotations__scope>provided</m:dependency.management__org.codehaus.plexus__plexus-component-annotations__scope>
-		<m:properties__forgeReleaseId>forge-releases</m:properties__forgeReleaseId>
-		<m:dependency.management__org.mortbay.jetty__jetty-client__version>6.1.12</m:dependency.management__org.mortbay.jetty__jetty-client__version>
-		<m:dependency.management__junit__junit__version>4.5</m:dependency.management__junit__junit__version>
-		<m:dependency.management__org.mortbay.jetty__jetty-util__version>6.1.12</m:dependency.management__org.mortbay.jetty__jetty-util__version>
-		<m:dependency.management__org.mortbay.jetty__jetty__version>6.1.12</m:dependency.management__org.mortbay.jetty__jetty__version>
-		<m:dependency.management__org.codehaus.plexus__plexus-container-default__scope>provided</m:dependency.management__org.codehaus.plexus__plexus-container-default__scope>
-		<m:properties__forgeReleaseUrl>http://repository.sonatype.org/content/repositories/releases</m:properties__forgeReleaseUrl>
-		<m:maven.plugins>org.codehaus.plexus__plexus-maven-plugin__1.3.5|null__maven-compiler-plugin__null|org.codehaus.modello__modello-maven-plugin__null</m:maven.plugins>
-		<m:dependency.management__org.codehaus.plexus__plexus-component-annotations__version>1.0-beta-3.0.5</m:dependency.management__org.codehaus.plexus__plexus-component-annotations__version>
 		<m:properties__plexus.version>1.0-beta-3.0.5</m:properties__plexus.version>
+		<m:properties__forgeReleaseId>forge-releases</m:properties__forgeReleaseId>
+		<m:properties__forgeSnapshotUrl>http://repository.sonatype.org/content/repositories/snapshots</m:properties__forgeSnapshotUrl>
+		<m:properties__forgeSnapshotId>forge-snapshots</m:properties__forgeSnapshotId>
+		<m:properties__forgeReleaseUrl>http://repository.sonatype.org/content/repositories/releases</m:properties__forgeReleaseUrl>
+		<m:dependency.management__org.codehaus.plexus__plexus-container-default__version>1.0-beta-3.0.5</m:dependency.management__org.codehaus.plexus__plexus-container-default__version>
+		<m:dependency.management__org.codehaus.plexus__plexus-container-default__scope>provided</m:dependency.management__org.codehaus.plexus__plexus-container-default__scope>
+		<m:dependency.management__org.codehaus.plexus__plexus-container-default__exclusion_0>commons-logging__commons-logging</m:dependency.management__org.codehaus.plexus__plexus-container-default__exclusion_0>
+		<m:dependency.management__org.codehaus.plexus__plexus-container-default__exclusion_1>commons-logging__commons-logging-api</m:dependency.management__org.codehaus.plexus__plexus-container-default__exclusion_1>
+		<m:dependency.management__org.codehaus.plexus__plexus-container-default__exclusion_2>log4j__log4j</m:dependency.management__org.codehaus.plexus__plexus-container-default__exclusion_2>
+		<m:dependency.management__org.codehaus.plexus__plexus-component-annotations__version>1.0-beta-3.0.5</m:dependency.management__org.codehaus.plexus__plexus-component-annotations__version>
+		<m:dependency.management__org.codehaus.plexus__plexus-component-annotations__scope>provided</m:dependency.management__org.codehaus.plexus__plexus-component-annotations__scope>
+		<m:dependency.management__org.codehaus.plexus__plexus-utils__version>1.5.5</m:dependency.management__org.codehaus.plexus__plexus-utils__version>
+		<m:dependency.management__org.mortbay.jetty__jetty__version>6.1.12</m:dependency.management__org.mortbay.jetty__jetty__version>
+		<m:dependency.management__org.mortbay.jetty__jetty-client__version>6.1.12</m:dependency.management__org.mortbay.jetty__jetty-client__version>
+		<m:dependency.management__org.mortbay.jetty__jetty-util__version>6.1.12</m:dependency.management__org.mortbay.jetty__jetty-util__version>
+		<m:dependency.management__junit__junit__version>4.5</m:dependency.management__junit__junit__version>
+		<m:dependency.management__junit__junit__scope>test</m:dependency.management__junit__junit__scope>
+		<m:maven.plugins>org.codehaus.plexus__plexus-maven-plugin__1.3.5|null__maven-compiler-plugin__null|org.codehaus.modello__modello-maven-plugin__null</m:maven.plugins>
 	</info>
 	<configurations>
 		<conf name="default" visibility="public" description="runtime dependencies and master artifact can be used with this conf" extends="runtime,master"/>

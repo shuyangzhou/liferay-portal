@@ -9,6 +9,7 @@
 		<description homepage="http://nexus.sonatype.org/oss-repository-hosting.html">
 		Sonatype helps open source projects to set up Maven repositories on https://oss.sonatype.org/
 		</description>
+		<m:properties__arguments/>
 		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
 		<m:properties__sonatypeOssDistMgmtSnapshotsUrl>https://oss.sonatype.org/content/repositories/snapshots/</m:properties__sonatypeOssDistMgmtSnapshotsUrl>
 		<m:maven.plugins>org.apache.maven.plugins__maven-enforcer-plugin__1.2</m:maven.plugins>

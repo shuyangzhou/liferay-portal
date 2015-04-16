@@ -9,18 +9,19 @@
 		<description homepage="http://maven.apache.org/">
 		Maven is a software project management and comprehension tool. Based on the concept of a project object model (POM), Maven can manage a project&apos;s build, reporting and documentation from a central piece of information.
 		</description>
+		<m:properties__sonar.host.url>https://analysis.apache.org/</m:properties__sonar.host.url>
+		<m:properties__maven.site.cache>${user.home}/maven-sites</m:properties__maven.site.cache>
+		<m:properties__gpg.useagent>true</m:properties__gpg.useagent>
+		<m:properties__distMgmtSnapshotsUrl>https://repository.apache.org/content/repositories/snapshots</m:properties__distMgmtSnapshotsUrl>
+		<m:properties__arguments/>
+		<m:properties__sourceReleaseAssemblyDescriptor>source-release</m:properties__sourceReleaseAssemblyDescriptor>
+		<m:properties__distMgmtSnapshotsName>Apache Development Snapshot Repository</m:properties__distMgmtSnapshotsName>
 		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
+		<m:properties__organization.logo>http://www.apache.org/images/asf_logo_wide.gif</m:properties__organization.logo>
+		<m:maven.plugins>org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null</m:maven.plugins>
+		<m:dependency.management__org.codehaus.plexus__plexus-component-annotations__version>1.5.5</m:dependency.management__org.codehaus.plexus__plexus-component-annotations__version>
 		<m:dependency.management__org.apache.maven.plugin-tools__maven-plugin-annotations__version>3.2</m:dependency.management__org.apache.maven.plugin-tools__maven-plugin-annotations__version>
 		<m:dependency.management__org.apache.maven.plugin-tools__maven-plugin-annotations__scope>provided</m:dependency.management__org.apache.maven.plugin-tools__maven-plugin-annotations__scope>
-		<m:properties__organization.logo>http://www.apache.org/images/asf_logo_wide.gif</m:properties__organization.logo>
-		<m:properties__distMgmtSnapshotsName>Apache Development Snapshot Repository</m:properties__distMgmtSnapshotsName>
-		<m:properties__maven.site.cache>${user.home}/maven-sites</m:properties__maven.site.cache>
-		<m:properties__sonar.host.url>https://analysis.apache.org/</m:properties__sonar.host.url>
-		<m:properties__distMgmtSnapshotsUrl>https://repository.apache.org/content/repositories/snapshots</m:properties__distMgmtSnapshotsUrl>
-		<m:properties__gpg.useagent>true</m:properties__gpg.useagent>
-		<m:maven.plugins>org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null</m:maven.plugins>
-		<m:properties__sourceReleaseAssemblyDescriptor>source-release</m:properties__sourceReleaseAssemblyDescriptor>
-		<m:dependency.management__org.codehaus.plexus__plexus-component-annotations__version>1.5.5</m:dependency.management__org.codehaus.plexus__plexus-component-annotations__version>
 	</info>
 	<configurations>
 		<conf name="default" visibility="public" description="runtime dependencies and master artifact can be used with this conf" extends="runtime,master"/>

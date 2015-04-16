@@ -11,14 +11,14 @@
 		</description>
 		<m:properties__minSeverity>info</m:properties__minSeverity>
 		<m:properties__hc.javadoc.version>2.8</m:properties__hc.javadoc.version>
-		<m:properties__hc.jxr.version>2.3</m:properties__hc.jxr.version>
-		<m:properties__implementation.build>${scmBranch}@r${buildNumber}; ${maven.build.timestamp}</m:properties__implementation.build>
-		<m:properties__clover.version>2.6.3</m:properties__clover.version>
 		<m:properties__hc.clirr.version>2.3</m:properties__hc.clirr.version>
-		<m:properties__hc.project-info.version>2.4</m:properties__hc.project-info.version>
-		<m:properties__maven.build.timestamp.format>yyyy-MM-dd HH:mm:ssZ</m:properties__maven.build.timestamp.format>
-		<m:maven.plugins>null__maven-compiler-plugin__null|null__maven-jar-plugin__null|org.apache.maven.plugins__maven-site-plugin__null</m:maven.plugins>
+		<m:properties__clover.version>2.6.3</m:properties__clover.version>
 		<m:properties__hc.surefire-report.version>2.9</m:properties__hc.surefire-report.version>
+		<m:properties__maven.build.timestamp.format>yyyy-MM-dd HH:mm:ssZ</m:properties__maven.build.timestamp.format>
+		<m:properties__implementation.build>${scmBranch}@r${buildNumber}; ${maven.build.timestamp}</m:properties__implementation.build>
+		<m:properties__hc.project-info.version>2.4</m:properties__hc.project-info.version>
+		<m:properties__hc.jxr.version>2.3</m:properties__hc.jxr.version>
+		<m:maven.plugins>null__maven-compiler-plugin__null|null__maven-jar-plugin__null|org.apache.maven.plugins__maven-site-plugin__null</m:maven.plugins>
 	</info>
 	<configurations>
 		<conf name="default" visibility="public" description="runtime dependencies and master artifact can be used with this conf" extends="runtime,master"/>

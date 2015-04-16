@@ -9,33 +9,11 @@
 		<description homepage="">
 		This bundle contains the OSGi common util for Apache Aries
 		</description>
-		<m:properties__organization.logo>http://www.apache.org/images/asf_logo_wide.gif</m:properties__organization.logo>
-		<m:dependency.management__org.ops4j.pax.logging__pax-logging-service__version>1.5.0</m:dependency.management__org.ops4j.pax.logging__pax-logging-service__version>
-		<m:properties__aries.javadoc.exclude.packages>${aries.osgi.private.pkg}</m:properties__aries.javadoc.exclude.packages>
-		<m:properties__distMgmtSnapshotsUrl>https://repository.apache.org/content/repositories/snapshots</m:properties__distMgmtSnapshotsUrl>
-		<m:dependency.management__org.ops4j.pax.logging__pax-logging-service__exclusion_3>log4j__log4j</m:dependency.management__org.ops4j.pax.logging__pax-logging-service__exclusion_3>
-		<m:properties__sourceReleaseAssemblyDescriptor>source-release</m:properties__sourceReleaseAssemblyDescriptor>
-		<m:properties__aries.osgi.symbolic.name>${project.artifactId}</m:properties__aries.osgi.symbolic.name>
-		<m:dependency.management__org.ops4j.pax.logging__pax-logging-service__exclusion_0>com.sun.jdmk__jmxtools</m:dependency.management__org.ops4j.pax.logging__pax-logging-service__exclusion_0>
-		<m:dependency.management__org.ops4j.pax.logging__pax-logging-service__exclusion_2>javax.mail__mail</m:dependency.management__org.ops4j.pax.logging__pax-logging-service__exclusion_2>
-		<m:dependency.management__org.slf4j__slf4j-api__version>1.5.11</m:dependency.management__org.slf4j__slf4j-api__version>
-		<m:dependency.management__org.ops4j.pax.logging__pax-logging-service__exclusion_1>com.sun.jmx__jmxri</m:dependency.management__org.ops4j.pax.logging__pax-logging-service__exclusion_1>
-		<m:dependency.management__org.ops4j.pax.logging__pax-logging-api__version>1.5.0</m:dependency.management__org.ops4j.pax.logging__pax-logging-api__version>
-		<m:properties__aries.osgi.include.resource>{maven-resources}</m:properties__aries.osgi.include.resource>
-		<m:dependency.management__junit__junit__version>4.8.1</m:dependency.management__junit__junit__version>
-		<m:dependency.management__org.ops4j.pax.swissbox__pax-swissbox-tinybundles__version>1.2.0</m:dependency.management__org.ops4j.pax.swissbox__pax-swissbox-tinybundles__version>
-		<m:dependency.management__org.ops4j.pax.runner__pax-runner-no-jcl__version>1.4.0</m:dependency.management__org.ops4j.pax.runner__pax-runner-no-jcl__version>
 		<m:properties__aries.osgi.private.pkg>
             org.apache.aries.util.internal,
             org.apache.aries.util.filesystem.impl,
             org.apache.aries.util.tracker.hook
         </m:properties__aries.osgi.private.pkg>
-		<m:maven.plugins>org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-compiler-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-enforcer-plugin__null|org.codehaus.mojo__ianal-maven-plugin__1.0-alpha-1|org.codehaus.mojo__findbugs-maven-plugin__2.3.1|org.apache.felix__maven-bundle-plugin__2.3.4|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-compiler-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-enforcer-plugin__null|org.codehaus.mojo__ianal-maven-plugin__1.0-alpha-1|org.codehaus.mojo__findbugs-maven-plugin__2.3.1|org.apache.felix__maven-bundle-plugin__2.3.4|org.apache.maven.plugins__maven-compiler-plugin__null|org.apache.maven.plugins__maven-release-plugin__2.0|org.apache.maven.plugins__maven-enforcer-plugin__null|org.apache.maven.plugins__maven-javadoc-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-compiler-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-enforcer-plugin__null|org.codehaus.mojo__ianal-maven-plugin__1.0-alpha-1|org.codehaus.mojo__findbugs-maven-plugin__2.3.1|org.apache.felix__maven-bundle-plugin__2.3.4|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-compiler-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-enforcer-plugin__null|org.codehaus.mojo__ianal-maven-plugin__1.0-alpha-1|org.codehaus.mojo__findbugs-maven-plugin__2.3.1|org.apache.felix__maven-bundle-plugin__2.3.4|org.apache.maven.plugins__maven-compiler-plugin__null|org.apache.maven.plugins__maven-release-plugin__2.0|org.apache.maven.plugins__maven-enforcer-plugin__null|org.apache.maven.plugins__maven-javadoc-plugin__null|null__maven-javadoc-plugin__2.8.1</m:maven.plugins>
-		<m:dependency.management__org.eclipse__osgi__version>3.5.0.v20090520</m:dependency.management__org.eclipse__osgi__version>
-		<m:properties__aries.osgi.import>${aries.osgi.import.pkg}</m:properties__aries.osgi.import>
-		<m:dependency.management__org.eclipse.osgi__services__version>3.1.200-v20070605</m:dependency.management__org.eclipse.osgi__services__version>
-		<m:properties__aries.osgi.split.pkg>-split-package:=first</m:properties__aries.osgi.split.pkg>
-		<m:dependency.management__org.ops4j.pax.exam__pax-exam__version>1.2.3</m:dependency.management__org.ops4j.pax.exam__pax-exam__version>
 		<m:properties__aries.osgi.export.pkg>
             org.apache.aries.util;
             org.apache.aries.util.log;
@@ -46,23 +24,6 @@
             org.apache.aries.util.manifest;
             org.apache.aries.util.filesystem;
         </m:properties__aries.osgi.export.pkg>
-		<m:properties__distMgmtSnapshotsName>Apache Development Snapshot Repository</m:properties__distMgmtSnapshotsName>
-		<m:dependency.management__org.ops4j.pax.url__pax-url-mvn__version>1.1.2</m:dependency.management__org.ops4j.pax.url__pax-url-mvn__version>
-		<m:properties__aries.osgi.export>${aries.osgi.export.pkg};-noimport:=true</m:properties__aries.osgi.export>
-		<m:dependency.management__org.slf4j__slf4j-simple__version>1.5.11</m:dependency.management__org.slf4j__slf4j-simple__version>
-		<m:properties__aries.osgi.exclude.dependencies>false</m:properties__aries.osgi.exclude.dependencies>
-		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
-		<m:properties__aries.osgi.version>version=${project.version}</m:properties__aries.osgi.version>
-		<m:dependency.management__org.ops4j.pax.exam__pax-exam-junit-extender-impl__version>1.2.3</m:dependency.management__org.ops4j.pax.exam__pax-exam-junit-extender-impl__version>
-		<m:properties__aries.osgi.import.default.version>[$(version;==;$(@)),$(version;+;$(@)))</m:properties__aries.osgi.import.default.version>
-		<m:properties__aries.osgi.failok>false</m:properties__aries.osgi.failok>
-		<m:dependency.management__org.ops4j.pax.exam__pax-exam-junit__version>1.2.3</m:dependency.management__org.ops4j.pax.exam__pax-exam-junit__version>
-		<m:dependency.management__org.ops4j.pax.exam__pax-exam-container-default__version>1.2.3</m:dependency.management__org.ops4j.pax.exam__pax-exam-container-default__version>
-		<m:properties__aries.osgi.remove.headers>Ignore-Package,Include-Resource,Private-Package,Bundle-DocURL</m:properties__aries.osgi.remove.headers>
-		<m:dependency.management__org.osgi__org.osgi.core__version>4.2.0</m:dependency.management__org.osgi__org.osgi.core__version>
-		<m:dependency.management__org.osgi__org.osgi.compendium__version>4.2.0</m:dependency.management__org.osgi__org.osgi.compendium__version>
-		<m:dependency.management__org.ops4j.pax.exam__pax-exam-container-default__exclusion_0>commons-logging__commons-logging</m:dependency.management__org.ops4j.pax.exam__pax-exam-container-default__exclusion_0>
-		<m:dependency.management__org.eclipse.equinox__cm__version>3.2.0-v20070116</m:dependency.management__org.eclipse.equinox__cm__version>
 		<m:properties__aries.osgi.import.pkg>
             !org.apache.aries.util*,
             org.osgi.framework.hooks.bundle;resolution:=optional,
@@ -75,6 +36,50 @@
             org.osgi.service.log;resolution:=optional,
             *
         </m:properties__aries.osgi.import.pkg>
+		<m:properties__aries.osgi.remove.headers>Ignore-Package,Include-Resource,Private-Package,Bundle-DocURL</m:properties__aries.osgi.remove.headers>
+		<m:properties__aries.osgi.symbolic.name>${project.artifactId}</m:properties__aries.osgi.symbolic.name>
+		<m:properties__aries.osgi.dynamic/>
+		<m:properties__aries.osgi.activator/>
+		<m:properties__aries.osgi.import.defaults/>
+		<m:properties__aries.osgi.include.resource>{maven-resources}</m:properties__aries.osgi.include.resource>
+		<m:properties__aries.osgi.failok>false</m:properties__aries.osgi.failok>
+		<m:properties__aries.osgi.split.pkg>-split-package:=first</m:properties__aries.osgi.split.pkg>
+		<m:properties__aries.osgi.export>${aries.osgi.export.pkg};-noimport:=true</m:properties__aries.osgi.export>
+		<m:properties__aries.osgi.version>version=${project.version}</m:properties__aries.osgi.version>
+		<m:properties__aries.osgi.import>${aries.osgi.import.pkg}</m:properties__aries.osgi.import>
+		<m:properties__aries.osgi.import.default.version>[$(version;==;$(@)),$(version;+;$(@)))</m:properties__aries.osgi.import.default.version>
+		<m:properties__aries.javadoc.exclude.packages>${aries.osgi.private.pkg}</m:properties__aries.javadoc.exclude.packages>
+		<m:properties__aries.osgi.import.before.defaults/>
+		<m:properties__aries.osgi.import.additional/>
+		<m:properties__aries.osgi.exclude.dependencies>false</m:properties__aries.osgi.exclude.dependencies>
+		<m:properties__distMgmtSnapshotsUrl>https://repository.apache.org/content/repositories/snapshots</m:properties__distMgmtSnapshotsUrl>
+		<m:properties__sourceReleaseAssemblyDescriptor>source-release</m:properties__sourceReleaseAssemblyDescriptor>
+		<m:properties__distMgmtSnapshotsName>Apache Development Snapshot Repository</m:properties__distMgmtSnapshotsName>
+		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
+		<m:properties__organization.logo>http://www.apache.org/images/asf_logo_wide.gif</m:properties__organization.logo>
+		<m:maven.plugins>org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-compiler-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-enforcer-plugin__null|org.codehaus.mojo__ianal-maven-plugin__1.0-alpha-1|org.codehaus.mojo__findbugs-maven-plugin__2.3.1|org.apache.felix__maven-bundle-plugin__2.3.4|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-compiler-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-enforcer-plugin__null|org.codehaus.mojo__ianal-maven-plugin__1.0-alpha-1|org.codehaus.mojo__findbugs-maven-plugin__2.3.1|org.apache.felix__maven-bundle-plugin__2.3.4|org.apache.maven.plugins__maven-compiler-plugin__null|org.apache.maven.plugins__maven-release-plugin__2.0|org.apache.maven.plugins__maven-enforcer-plugin__null|org.apache.maven.plugins__maven-javadoc-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-compiler-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-enforcer-plugin__null|org.codehaus.mojo__ianal-maven-plugin__1.0-alpha-1|org.codehaus.mojo__findbugs-maven-plugin__2.3.1|org.apache.felix__maven-bundle-plugin__2.3.4|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-compiler-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-enforcer-plugin__null|org.codehaus.mojo__ianal-maven-plugin__1.0-alpha-1|org.codehaus.mojo__findbugs-maven-plugin__2.3.1|org.apache.felix__maven-bundle-plugin__2.3.4|org.apache.maven.plugins__maven-compiler-plugin__null|org.apache.maven.plugins__maven-release-plugin__2.0|org.apache.maven.plugins__maven-enforcer-plugin__null|org.apache.maven.plugins__maven-javadoc-plugin__null|null__maven-javadoc-plugin__2.8.1</m:maven.plugins>
+		<m:dependency.management__junit__junit__version>4.8.1</m:dependency.management__junit__junit__version>
+		<m:dependency.management__org.eclipse__osgi__version>3.5.0.v20090520</m:dependency.management__org.eclipse__osgi__version>
+		<m:dependency.management__org.eclipse.equinox__cm__version>3.2.0-v20070116</m:dependency.management__org.eclipse.equinox__cm__version>
+		<m:dependency.management__org.eclipse.osgi__services__version>3.1.200-v20070605</m:dependency.management__org.eclipse.osgi__services__version>
+		<m:dependency.management__org.ops4j.pax.exam__pax-exam__version>1.2.3</m:dependency.management__org.ops4j.pax.exam__pax-exam__version>
+		<m:dependency.management__org.ops4j.pax.exam__pax-exam-container-default__version>1.2.3</m:dependency.management__org.ops4j.pax.exam__pax-exam-container-default__version>
+		<m:dependency.management__org.ops4j.pax.exam__pax-exam-container-default__exclusion_0>commons-logging__commons-logging</m:dependency.management__org.ops4j.pax.exam__pax-exam-container-default__exclusion_0>
+		<m:dependency.management__org.ops4j.pax.exam__pax-exam-junit__version>1.2.3</m:dependency.management__org.ops4j.pax.exam__pax-exam-junit__version>
+		<m:dependency.management__org.ops4j.pax.exam__pax-exam-junit-extender-impl__version>1.2.3</m:dependency.management__org.ops4j.pax.exam__pax-exam-junit-extender-impl__version>
+		<m:dependency.management__org.ops4j.pax.logging__pax-logging-api__version>1.5.0</m:dependency.management__org.ops4j.pax.logging__pax-logging-api__version>
+		<m:dependency.management__org.ops4j.pax.logging__pax-logging-service__version>1.5.0</m:dependency.management__org.ops4j.pax.logging__pax-logging-service__version>
+		<m:dependency.management__org.ops4j.pax.logging__pax-logging-service__exclusion_0>com.sun.jdmk__jmxtools</m:dependency.management__org.ops4j.pax.logging__pax-logging-service__exclusion_0>
+		<m:dependency.management__org.ops4j.pax.logging__pax-logging-service__exclusion_1>com.sun.jmx__jmxri</m:dependency.management__org.ops4j.pax.logging__pax-logging-service__exclusion_1>
+		<m:dependency.management__org.ops4j.pax.logging__pax-logging-service__exclusion_2>javax.mail__mail</m:dependency.management__org.ops4j.pax.logging__pax-logging-service__exclusion_2>
+		<m:dependency.management__org.ops4j.pax.logging__pax-logging-service__exclusion_3>log4j__log4j</m:dependency.management__org.ops4j.pax.logging__pax-logging-service__exclusion_3>
+		<m:dependency.management__org.ops4j.pax.runner__pax-runner-no-jcl__version>1.4.0</m:dependency.management__org.ops4j.pax.runner__pax-runner-no-jcl__version>
+		<m:dependency.management__org.ops4j.pax.swissbox__pax-swissbox-tinybundles__version>1.2.0</m:dependency.management__org.ops4j.pax.swissbox__pax-swissbox-tinybundles__version>
+		<m:dependency.management__org.ops4j.pax.url__pax-url-mvn__version>1.1.2</m:dependency.management__org.ops4j.pax.url__pax-url-mvn__version>
+		<m:dependency.management__org.osgi__org.osgi.core__version>4.2.0</m:dependency.management__org.osgi__org.osgi.core__version>
+		<m:dependency.management__org.osgi__org.osgi.compendium__version>4.2.0</m:dependency.management__org.osgi__org.osgi.compendium__version>
+		<m:dependency.management__org.slf4j__slf4j-api__version>1.5.11</m:dependency.management__org.slf4j__slf4j-api__version>
+		<m:dependency.management__org.slf4j__slf4j-simple__version>1.5.11</m:dependency.management__org.slf4j__slf4j-simple__version>
 	</info>
 	<configurations>
 		<conf name="default" visibility="public" description="runtime dependencies and master artifact can be used with this conf" extends="runtime,master"/>

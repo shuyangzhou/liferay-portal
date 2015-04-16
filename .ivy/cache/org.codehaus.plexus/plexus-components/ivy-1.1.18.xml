@@ -7,12 +7,12 @@
 		publication="20100829100335"
 	>
 		<description homepage="http://plexus.codehaus.org/plexus-components" />
+		<m:properties__plexusDistMgmtSnapshotsUrl>https://oss.sonatype.org/content/repositories/plexus-snapshots</m:properties__plexusDistMgmtSnapshotsUrl>
 		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
-		<m:dependency.management__junit__junit__scope>test</m:dependency.management__junit__junit__scope>
+		<m:dependency.management__org.codehaus.plexus__plexus-container-default__version>1.0-alpha-9-stable-1</m:dependency.management__org.codehaus.plexus__plexus-container-default__version>
 		<m:dependency.management__org.codehaus.plexus__plexus-utils__version>1.5.5</m:dependency.management__org.codehaus.plexus__plexus-utils__version>
 		<m:dependency.management__junit__junit__version>3.8.2</m:dependency.management__junit__junit__version>
-		<m:dependency.management__org.codehaus.plexus__plexus-container-default__version>1.0-alpha-9-stable-1</m:dependency.management__org.codehaus.plexus__plexus-container-default__version>
-		<m:properties__plexusDistMgmtSnapshotsUrl>https://oss.sonatype.org/content/repositories/plexus-snapshots</m:properties__plexusDistMgmtSnapshotsUrl>
+		<m:dependency.management__junit__junit__scope>test</m:dependency.management__junit__junit__scope>
 		<m:maven.plugins>null__maven-compiler-plugin__null|org.codehaus.plexus__plexus-component-metadata__1.5.4</m:maven.plugins>
 	</info>
 	<configurations>

@@ -7,11 +7,11 @@
 		publication="20110325111947"
 	>
 		<description homepage="" />
-		<m:properties__guice.with.no_aop>true</m:properties__guice.with.no_aop>
-		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
-		<m:properties__guice.api.version>1.3</m:properties__guice.api.version>
 		<m:properties__cglib.version>2.2.1-v20090111</m:properties__cglib.version>
 		<m:properties__guice.with.jarjar>true</m:properties__guice.with.jarjar>
+		<m:properties__guice.with.no_aop>true</m:properties__guice.with.no_aop>
+		<m:properties__guice.api.version>1.3</m:properties__guice.api.version>
+		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
 		<m:maven.plugins>null__maven-remote-resources-plugin__null|org.codehaus.mojo__animal-sniffer-maven-plugin__null|null__maven-surefire-plugin__null|org.apache.felix__maven-bundle-plugin__null|null__maven-jar-plugin__null</m:maven.plugins>
 	</info>
 	<configurations>

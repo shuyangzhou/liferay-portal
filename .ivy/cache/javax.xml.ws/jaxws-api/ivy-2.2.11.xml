@@ -12,15 +12,15 @@
 		<description homepage="http://jsr224.java.net/">
 		JAX-WS (JSR 224) API
 		</description>
-		<m:properties__release.spec.date>Jun 15, 2010</m:properties__release.spec.date>
-		<m:properties__release.spec.feedback>jsr224-spec-comments@sun.com</m:properties__release.spec.feedback>
-		<m:properties__extension.name>javax.xml.ws</m:properties__extension.name>
-		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
 		<m:properties__findbugs.threshold>Low</m:properties__findbugs.threshold>
-		<m:properties__release.spec.title>Maintenance Release</m:properties__release.spec.title>
-		<m:properties__jvnetDistMgmtSnapshotsUrl>https://maven.java.net/content/repositories/snapshots/</m:properties__jvnetDistMgmtSnapshotsUrl>
 		<m:properties__findbugs.exclude>${project.basedir}/exclude.xml</m:properties__findbugs.exclude>
+		<m:properties__release.spec.title>Maintenance Release</m:properties__release.spec.title>
+		<m:properties__extension.name>javax.xml.ws</m:properties__extension.name>
 		<m:properties__spec.version>1.1</m:properties__spec.version>
+		<m:properties__release.spec.feedback>jsr224-spec-comments@sun.com</m:properties__release.spec.feedback>
+		<m:properties__release.spec.date>Jun 15, 2010</m:properties__release.spec.date>
+		<m:properties__jvnetDistMgmtSnapshotsUrl>https://maven.java.net/content/repositories/snapshots/</m:properties__jvnetDistMgmtSnapshotsUrl>
+		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
 		<m:maven.plugins>org.codehaus.mojo__cobertura-maven-plugin__null|org.codehaus.mojo__findbugs-maven-plugin__null|org.glassfish.copyright__glassfish-copyright-maven-plugin__null|null__maven-compiler-plugin__null|org.apache.maven.plugins__maven-jar-plugin__null|org.apache.felix__maven-bundle-plugin__null|org.apache.maven.plugins__maven-release-plugin__null|org.apache.maven.plugins__maven-javadoc-plugin__null|org.apache.maven.plugins__maven-source-plugin__null</m:maven.plugins>
 	</info>
 	<configurations>

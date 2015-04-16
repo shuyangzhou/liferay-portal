@@ -7,17 +7,17 @@
 		publication="20110209104403"
 	>
 		<description homepage="http://mojo.codehaus.org" />
-		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
-		<m:dependency.management__junit__junit__scope>test</m:dependency.management__junit__junit__scope>
-		<m:dependency.management__junit__junit__version>3.8.2</m:dependency.management__junit__junit__version>
-		<m:properties__project.reporting.outputEncoding>UTF-8</m:properties__project.reporting.outputEncoding>
 		<m:properties__netbeans.checkstyle.format>true</m:properties__netbeans.checkstyle.format>
+		<m:properties__project.reporting.outputEncoding>UTF-8</m:properties__project.reporting.outputEncoding>
+		<m:properties__mojo.java.target>1.4</m:properties__mojo.java.target>
+		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
+		<m:properties__mojo.javadoc.mavenVersion>${project.prerequisites.maven}</m:properties__mojo.javadoc.mavenVersion>
 		<m:properties__surefire.redirectTestOutputToFile>true</m:properties__surefire.redirectTestOutputToFile>
 		<m:properties__codehausDistMgmtSnapshotsUrl>https://nexus.codehaus.org/content/repositories/snapshots/</m:properties__codehausDistMgmtSnapshotsUrl>
-		<m:dependency.management__org.apache.maven__maven-plugin-api__version>2.0</m:dependency.management__org.apache.maven__maven-plugin-api__version>
 		<m:maven.plugins>org.apache.maven.plugins__maven-enforcer-plugin__1.0-beta-1|org.apache.maven.plugins__maven-enforcer-plugin__1.0-beta-1|org.apache.maven.plugins__maven-enforcer-plugin__1.0|org.codehaus.mojo__cobertura-maven-plugin__null</m:maven.plugins>
-		<m:properties__mojo.javadoc.mavenVersion>${project.prerequisites.maven}</m:properties__mojo.javadoc.mavenVersion>
-		<m:properties__mojo.java.target>1.4</m:properties__mojo.java.target>
+		<m:dependency.management__org.apache.maven__maven-plugin-api__version>2.0</m:dependency.management__org.apache.maven__maven-plugin-api__version>
+		<m:dependency.management__junit__junit__version>3.8.2</m:dependency.management__junit__junit__version>
+		<m:dependency.management__junit__junit__scope>test</m:dependency.management__junit__junit__scope>
 	</info>
 	<configurations>
 		<conf name="default" visibility="public" description="runtime dependencies and master artifact can be used with this conf" extends="runtime,master"/>

@@ -8,12 +8,12 @@
 	>
 		<license name="The Apache Software License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt" />
 		<description homepage="http://sourceforge.net/projects/cglib/" />
-		<m:properties__forgeSnapshotId>forge-snapshots</m:properties__forgeSnapshotId>
-		<m:properties__forgeSnapshotUrl>http://repository.sonatype.org/content/repositories/snapshots</m:properties__forgeSnapshotUrl>
 		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
-		<m:properties__forgeReleaseId>forge-releases</m:properties__forgeReleaseId>
-		<m:properties__forgeReleaseUrl>https://repository.sonatype.org/service/local/staging/deploy/maven2</m:properties__forgeReleaseUrl>
 		<m:properties__asm.version>3.1</m:properties__asm.version>
+		<m:properties__forgeReleaseUrl>https://repository.sonatype.org/service/local/staging/deploy/maven2</m:properties__forgeReleaseUrl>
+		<m:properties__forgeReleaseId>forge-releases</m:properties__forgeReleaseId>
+		<m:properties__forgeSnapshotUrl>http://repository.sonatype.org/content/repositories/snapshots</m:properties__forgeSnapshotUrl>
+		<m:properties__forgeSnapshotId>forge-snapshots</m:properties__forgeSnapshotId>
 		<m:maven.plugins>null__maven-compiler-plugin__2.3.2|null__maven-surefire-plugin__2.6|null__maven-javadoc-plugin__2.7|null__maven-source-plugin__2.1.2|null__maven-jar-plugin__null|null__maven-site-plugin__3.0-beta-2|null__maven-release-plugin__2.1</m:maven.plugins>
 	</info>
 	<configurations>

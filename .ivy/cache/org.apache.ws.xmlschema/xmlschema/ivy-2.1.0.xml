@@ -10,19 +10,19 @@
 		<description homepage="http://ws.apache.org/commons/xmlschema20/">
 		Apache XMLSchema is a light weight schema object model that can be used to manipulate or generate XML schema.
 		</description>
-		<m:dependency.management__junit__junit__scope>test</m:dependency.management__junit__junit__scope>
 		<m:properties__xmlschema-eclipse-version>2.0</m:properties__xmlschema-eclipse-version>
-		<m:properties__organization.logo>http://www.apache.org/images/asf_logo_wide.gif</m:properties__organization.logo>
-		<m:properties__distMgmtSnapshotsName>Apache Development Snapshot Repository</m:properties__distMgmtSnapshotsName>
 		<m:properties__distMgmtSnapshotsUrl>https://repository.apache.org/content/repositories/snapshots</m:properties__distMgmtSnapshotsUrl>
 		<m:properties__sourceReleaseAssemblyDescriptor>source-release</m:properties__sourceReleaseAssemblyDescriptor>
-		<m:dependency.management__xmlunit__xmlunit__version>1.2</m:dependency.management__xmlunit__xmlunit__version>
+		<m:properties__distMgmtSnapshotsName>Apache Development Snapshot Repository</m:properties__distMgmtSnapshotsName>
 		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
+		<m:properties__organization.logo>http://www.apache.org/images/asf_logo_wide.gif</m:properties__organization.logo>
+		<m:maven.plugins>org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null</m:maven.plugins>
+		<m:dependency.management__junit__junit__version>4.8</m:dependency.management__junit__junit__version>
+		<m:dependency.management__junit__junit__scope>test</m:dependency.management__junit__junit__scope>
+		<m:dependency.management__xmlunit__xmlunit__version>1.2</m:dependency.management__xmlunit__xmlunit__version>
+		<m:dependency.management__xmlunit__xmlunit__scope>test</m:dependency.management__xmlunit__xmlunit__scope>
 		<m:dependency.management__com.google.guava__guava-testlib__version>15.0</m:dependency.management__com.google.guava__guava-testlib__version>
 		<m:dependency.management__com.google.guava__guava-testlib__scope>test</m:dependency.management__com.google.guava__guava-testlib__scope>
-		<m:dependency.management__junit__junit__version>4.8</m:dependency.management__junit__junit__version>
-		<m:dependency.management__xmlunit__xmlunit__scope>test</m:dependency.management__xmlunit__xmlunit__scope>
-		<m:maven.plugins>org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null</m:maven.plugins>
 	</info>
 	<configurations>
 		<conf name="default" visibility="public" description="runtime dependencies and master artifact can be used with this conf" extends="runtime,master"/>

@@ -9,19 +9,19 @@
 		<description homepage="">
 		Implementation of the Declarative Services specification 1.2
 		</description>
-		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
-		<m:properties__organization.logo>http://www.apache.org/images/asf_logo_wide.gif</m:properties__organization.logo>
-		<m:properties__distMgmtSnapshotsName>Apache Development Snapshot Repository</m:properties__distMgmtSnapshotsName>
-		<m:properties__distMgmtSnapshotsUrl>https://repository.apache.org/content/repositories/snapshots</m:properties__distMgmtSnapshotsUrl>
-		<m:properties__felix.ca.version>1.8.0</m:properties__felix.ca.version>
 		<m:properties__bundle.build.name>
             ${basedir}/target
         </m:properties__bundle.build.name>
+		<m:properties__felix.ca.version>1.8.0</m:properties__felix.ca.version>
 		<m:properties__bundle.file.name>
             ${bundle.build.name}/${project.build.finalName}.jar
         </m:properties__bundle.file.name>
-		<m:maven.plugins>org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-compiler-plugin__null|org.apache.rat__apache-rat-plugin__null|org.apache.maven.plugins__maven-release-plugin__null|org.codehaus.mojo__ianal-maven-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-compiler-plugin__null|org.apache.rat__apache-rat-plugin__null|org.apache.maven.plugins__maven-release-plugin__null|org.codehaus.mojo__ianal-maven-plugin__null|org.apache.felix__maven-bundle-plugin__2.3.7|org.codehaus.mojo__animal-sniffer-maven-plugin__1.7|null__maven-compiler-plugin__null|null__maven-surefire-plugin__null|null__maven-failsafe-plugin__2.12|org.apache.maven.plugins__maven-javadoc-plugin__null|org.apache.aries.versioning__org.apache.aries.versioning.plugin__0.1.0</m:maven.plugins>
 		<m:properties__sourceReleaseAssemblyDescriptor>source-release-zip-tar</m:properties__sourceReleaseAssemblyDescriptor>
+		<m:properties__distMgmtSnapshotsUrl>https://repository.apache.org/content/repositories/snapshots</m:properties__distMgmtSnapshotsUrl>
+		<m:properties__distMgmtSnapshotsName>Apache Development Snapshot Repository</m:properties__distMgmtSnapshotsName>
+		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
+		<m:properties__organization.logo>http://www.apache.org/images/asf_logo_wide.gif</m:properties__organization.logo>
+		<m:maven.plugins>org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-compiler-plugin__null|org.apache.rat__apache-rat-plugin__null|org.apache.maven.plugins__maven-release-plugin__null|org.codehaus.mojo__ianal-maven-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-compiler-plugin__null|org.apache.rat__apache-rat-plugin__null|org.apache.maven.plugins__maven-release-plugin__null|org.codehaus.mojo__ianal-maven-plugin__null|org.apache.felix__maven-bundle-plugin__2.3.7|org.codehaus.mojo__animal-sniffer-maven-plugin__1.7|null__maven-compiler-plugin__null|null__maven-surefire-plugin__null|null__maven-failsafe-plugin__2.12|org.apache.maven.plugins__maven-javadoc-plugin__null|org.apache.aries.versioning__org.apache.aries.versioning.plugin__0.1.0</m:maven.plugins>
 	</info>
 	<configurations>
 		<conf name="default" visibility="public" description="runtime dependencies and master artifact can be used with this conf" extends="runtime,master"/>

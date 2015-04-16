@@ -12,10 +12,10 @@
     complete with JavaDoc @tags. It is designed to be used by active code generators or documentation tools.
 		</description>
 		<m:properties__timestamp>${maven.build.timestamp}</m:properties__timestamp>
-		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
-		<m:properties__codehausDistMgmtSnapshotsUrl>https://nexus.codehaus.org/content/repositories/snapshots/</m:properties__codehausDistMgmtSnapshotsUrl>
-		<m:properties__xsite.sourceDirectoryPath>${project.build.directory}/generated-site</m:properties__xsite.sourceDirectoryPath>
 		<m:properties__maven.build.timestamp.format>yyyy-MM-dd</m:properties__maven.build.timestamp.format>
+		<m:properties__xsite.sourceDirectoryPath>${project.build.directory}/generated-site</m:properties__xsite.sourceDirectoryPath>
+		<m:properties__codehausDistMgmtSnapshotsUrl>https://nexus.codehaus.org/content/repositories/snapshots/</m:properties__codehausDistMgmtSnapshotsUrl>
+		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
 		<m:maven.plugins>org.apache.maven.plugins__maven-enforcer-plugin__1.0|org.apache.maven.plugins__maven-enforcer-plugin__1.0|null__maven-clean-plugin__2.5|null__maven-surefire-plugin__2.4.2|null__maven-jar-plugin__2.4|null__maven-install-plugin__2.2|null__maven-deploy-plugin__2.3|de.jflex__maven-jflex-plugin__1.4.3|null__maven-antrun-plugin__1.3|org.apache.maven.plugins__maven-compiler-plugin__2.0.2|org.apache.maven.plugins__maven-javadoc-plugin__2.4|org.apache.maven.plugins__maven-assembly-plugin__2.2-beta-5|null__maven-site-plugin__3.2|org.codehaus.xsite__xsite-maven-plugin__1.0|null__maven-resources-plugin__2.3|org.apache.maven.plugins__maven-release-plugin__2.3.2</m:maven.plugins>
 	</info>
 	<configurations>

@@ -11,6 +11,7 @@
 		Google Gson library
 		</description>
 		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
+		<m:properties__arguments/>
 		<m:properties__sonatypeOssDistMgmtSnapshotsUrl>https://oss.sonatype.org/content/repositories/snapshots/</m:properties__sonatypeOssDistMgmtSnapshotsUrl>
 		<m:maven.plugins>org.apache.maven.plugins__maven-enforcer-plugin__1.2|org.apache.maven.plugins__maven-enforcer-plugin__1.2|org.apache.maven.plugins__maven-compiler-plugin__3.1|org.apache.maven.plugins__maven-jar-plugin__2.4|org.apache.maven.plugins__maven-source-plugin__2.3|org.apache.maven.plugins__maven-javadoc-plugin__2.9.1|org.apache.maven.plugins__maven-eclipse-plugin__2.9|org.apache.maven.plugins__maven-release-plugin__null|null__maven-assembly-plugin__2.4.1</m:maven.plugins>
 	</info>

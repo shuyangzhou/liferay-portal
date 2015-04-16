@@ -7,11 +7,11 @@
 		publication="20110331074733"
 	>
 		<description homepage="http://forge.sonatype.com/" />
-		<m:properties__forgeSnapshotId>forge-snapshots</m:properties__forgeSnapshotId>
-		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
-		<m:properties__forgeSnapshotUrl>https://repository.sonatype.org/content/repositories/snapshots</m:properties__forgeSnapshotUrl>
 		<m:properties__forgeReleaseId>forge-releases</m:properties__forgeReleaseId>
+		<m:properties__forgeSnapshotUrl>https://repository.sonatype.org/content/repositories/snapshots</m:properties__forgeSnapshotUrl>
 		<m:properties__project.reporting.outputEncoding>UTF-8</m:properties__project.reporting.outputEncoding>
+		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
+		<m:properties__forgeSnapshotId>forge-snapshots</m:properties__forgeSnapshotId>
 		<m:properties__forgeReleaseUrl>https://repository.sonatype.org/service/local/staging/deploy/maven2</m:properties__forgeReleaseUrl>
 	</info>
 	<configurations>

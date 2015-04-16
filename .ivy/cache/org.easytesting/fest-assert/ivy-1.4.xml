@@ -10,8 +10,8 @@
 		&apos;Flexible&apos; or &apos;fluent&apos; assertions for testing
 		</description>
 		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
-		<m:dependency.management__junit__junit__scope>test</m:dependency.management__junit__junit__scope>
 		<m:dependency.management__junit__junit__version>4.8.2</m:dependency.management__junit__junit__version>
+		<m:dependency.management__junit__junit__scope>test</m:dependency.management__junit__junit__scope>
 		<m:maven.plugins>org.apache.maven.plugins__maven-resources-plugin__null|org.apache.maven.plugins__maven-compiler-plugin__null|org.apache.maven.plugins__maven-site-plugin__null|org.apache.maven.plugins__maven-surefire-plugin__null|com.atlassian.maven.plugins__maven-clover2-plugin__null|org.apache.maven.plugins__maven-source-plugin__null|org.apache.maven.plugins__maven-javadoc-plugin__null|org.apache.maven.plugins__maven-dependency-plugin__null|null__maven-assembly-plugin__null|org.apache.maven.plugins__maven-resources-plugin__null|org.apache.maven.plugins__maven-compiler-plugin__null|org.apache.maven.plugins__maven-site-plugin__null|org.apache.maven.plugins__maven-surefire-plugin__null|com.atlassian.maven.plugins__maven-clover2-plugin__null|org.apache.maven.plugins__maven-source-plugin__null|org.apache.maven.plugins__maven-javadoc-plugin__null|org.apache.maven.plugins__maven-dependency-plugin__null|null__maven-assembly-plugin__null</m:maven.plugins>
 	</info>
 	<configurations>

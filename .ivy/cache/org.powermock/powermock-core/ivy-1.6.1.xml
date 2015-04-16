@@ -9,17 +9,17 @@
 		<description homepage="http://www.powermock.org">
 		PowerMock core functionality.
 		</description>
-		<m:dependency.management__org.easymock__easymock__scope>provided</m:dependency.management__org.easymock__easymock__scope>
-		<m:dependency.management__org.mockito__mockito-all__version>1.10.8</m:dependency.management__org.mockito__mockito-all__version>
-		<m:dependency.management__cglib__cglib-nodep__version>2.2.2</m:dependency.management__cglib__cglib-nodep__version>
-		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
-		<m:dependency.management__org.easymock__easymock__exclusion_0>cglib__cglib-nodep</m:dependency.management__org.easymock__easymock__exclusion_0>
-		<m:properties__mockito.version>1.10.8</m:properties__mockito.version>
 		<m:properties__easymock.version>3.3</m:properties__easymock.version>
+		<m:properties__mockito.version>1.10.8</m:properties__mockito.version>
+		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
 		<m:properties__sonatypeOssDistMgmtSnapshotsUrl>https://oss.sonatype.org/content/repositories/snapshots/</m:properties__sonatypeOssDistMgmtSnapshotsUrl>
-		<m:dependency.management__org.easymock__easymock__version>3.3</m:dependency.management__org.easymock__easymock__version>
-		<m:dependency.management__org.objenesis__objenesis__version>2.1</m:dependency.management__org.objenesis__objenesis__version>
 		<m:maven.plugins>org.apache.maven.plugins__maven-enforcer-plugin__1.0-beta-1|org.apache.maven.plugins__maven-enforcer-plugin__1.0-beta-1|org.apache.maven.plugins__maven-compiler-plugin__null|org.apache.maven.plugins__maven-source-plugin__null|org.apache.maven.plugins__maven-site-plugin__3.4|org.apache.maven.plugins__maven-javadoc-plugin__2.9.1|org.codehaus.mojo__rat-maven-plugin__null|null__maven-jar-plugin__null|org.apache.felix__maven-bundle-plugin__null|org.apache.maven.plugins__maven-enforcer-plugin__1.0-beta-1|org.apache.maven.plugins__maven-enforcer-plugin__1.0-beta-1|org.apache.maven.plugins__maven-compiler-plugin__null|org.apache.maven.plugins__maven-source-plugin__null|org.apache.maven.plugins__maven-site-plugin__3.4|org.apache.maven.plugins__maven-javadoc-plugin__2.9.1|org.codehaus.mojo__rat-maven-plugin__null|null__maven-jar-plugin__null|org.apache.felix__maven-bundle-plugin__null</m:maven.plugins>
+		<m:dependency.management__org.easymock__easymock__version>3.3</m:dependency.management__org.easymock__easymock__version>
+		<m:dependency.management__org.easymock__easymock__scope>provided</m:dependency.management__org.easymock__easymock__scope>
+		<m:dependency.management__org.easymock__easymock__exclusion_0>cglib__cglib-nodep</m:dependency.management__org.easymock__easymock__exclusion_0>
+		<m:dependency.management__org.mockito__mockito-all__version>1.10.8</m:dependency.management__org.mockito__mockito-all__version>
+		<m:dependency.management__org.objenesis__objenesis__version>2.1</m:dependency.management__org.objenesis__objenesis__version>
+		<m:dependency.management__cglib__cglib-nodep__version>2.2.2</m:dependency.management__cglib__cglib-nodep__version>
 	</info>
 	<configurations>
 		<conf name="default" visibility="public" description="runtime dependencies and master artifact can be used with this conf" extends="runtime,master"/>

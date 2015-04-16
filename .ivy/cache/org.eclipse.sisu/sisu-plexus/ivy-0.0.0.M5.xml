@@ -10,12 +10,12 @@
 		<description homepage="http://www.eclipse.org/sisu/">
 		Plexus-JSR330 adapter; adds Plexus support to the Sisu-Inject container
 		</description>
-		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
-		<m:properties__tycho.scmUrl>scm:git:http://git.eclipse.org/gitroot/sisu/org.eclipse.sisu.plexus.git</m:properties__tycho.scmUrl>
-		<m:properties__maven.compiler.target>1.5</m:properties__maven.compiler.target>
-		<m:properties__sonatypeOssDistMgmtSnapshotsUrl>https://oss.sonatype.org/content/repositories/snapshots/</m:properties__sonatypeOssDistMgmtSnapshotsUrl>
 		<m:properties__maven.compiler.source>1.5</m:properties__maven.compiler.source>
+		<m:properties__maven.compiler.target>1.5</m:properties__maven.compiler.target>
+		<m:properties__tycho.scmUrl>scm:git:http://git.eclipse.org/gitroot/sisu/org.eclipse.sisu.plexus.git</m:properties__tycho.scmUrl>
 		<m:properties__tycho-version>0.18.1</m:properties__tycho-version>
+		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
+		<m:properties__sonatypeOssDistMgmtSnapshotsUrl>https://oss.sonatype.org/content/repositories/snapshots/</m:properties__sonatypeOssDistMgmtSnapshotsUrl>
 		<m:maven.plugins>org.apache.maven.plugins__maven-enforcer-plugin__1.0|org.apache.maven.plugins__maven-enforcer-plugin__1.0</m:maven.plugins>
 	</info>
 	<configurations>

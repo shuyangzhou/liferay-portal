@@ -9,17 +9,17 @@
 		<description homepage="http://www.slf4j.org">
 		The slf4j API
 		</description>
-		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
-		<m:dependency.management__org.slf4j__slf4j-api__version>1.7.6</m:dependency.management__org.slf4j__slf4j-api__version>
 		<m:properties__cal10n.version>0.8.1</m:properties__cal10n.version>
 		<m:properties__slf4j.api.minimum.compatible.version>1.6.0</m:properties__slf4j.api.minimum.compatible.version>
 		<m:properties__logback.version>1.0.13</m:properties__logback.version>
-		<m:properties__junit.version>4.10</m:properties__junit.version>
+		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
 		<m:properties__log4j.version>1.2.17</m:properties__log4j.version>
-		<m:dependency.management__ch.qos.cal10n__cal10n-api__version>0.8.1</m:dependency.management__ch.qos.cal10n__cal10n-api__version>
-		<m:maven.plugins>org.apache.maven.plugins__maven-compiler-plugin__2.3.2|org.apache.maven.plugins__maven-jar-plugin__2.3.1|org.apache.maven.plugins__maven-surefire-plugin__2.10|org.apache.maven.plugins__maven-source-plugin__2.1.2|org.apache.maven.plugins__maven-assembly-plugin__2.2|org.codehaus.mojo__build-helper-maven-plugin__1.7|org.apache.maven.plugins__maven-site-plugin__3.0|org.apache.maven.plugins__maven-compiler-plugin__2.3.2|org.apache.maven.plugins__maven-jar-plugin__2.3.1|org.apache.maven.plugins__maven-surefire-plugin__2.10|org.apache.maven.plugins__maven-source-plugin__2.1.2|org.apache.maven.plugins__maven-assembly-plugin__2.2|org.codehaus.mojo__build-helper-maven-plugin__1.7|org.apache.maven.plugins__maven-site-plugin__3.0|org.apache.maven.plugins__maven-surefire-plugin__null|org.apache.maven.plugins__maven-jar-plugin__null|org.apache.maven.plugins__maven-antrun-plugin__null</m:maven.plugins>
+		<m:properties__junit.version>4.10</m:properties__junit.version>
+		<m:dependency.management__org.slf4j__slf4j-api__version>1.7.6</m:dependency.management__org.slf4j__slf4j-api__version>
 		<m:dependency.management__org.slf4j__slf4j-jdk14__version>1.7.6</m:dependency.management__org.slf4j__slf4j-jdk14__version>
 		<m:dependency.management__log4j__log4j__version>1.2.17</m:dependency.management__log4j__log4j__version>
+		<m:dependency.management__ch.qos.cal10n__cal10n-api__version>0.8.1</m:dependency.management__ch.qos.cal10n__cal10n-api__version>
+		<m:maven.plugins>org.apache.maven.plugins__maven-compiler-plugin__2.3.2|org.apache.maven.plugins__maven-jar-plugin__2.3.1|org.apache.maven.plugins__maven-surefire-plugin__2.10|org.apache.maven.plugins__maven-source-plugin__2.1.2|org.apache.maven.plugins__maven-assembly-plugin__2.2|org.codehaus.mojo__build-helper-maven-plugin__1.7|org.apache.maven.plugins__maven-site-plugin__3.0|org.apache.maven.plugins__maven-compiler-plugin__2.3.2|org.apache.maven.plugins__maven-jar-plugin__2.3.1|org.apache.maven.plugins__maven-surefire-plugin__2.10|org.apache.maven.plugins__maven-source-plugin__2.1.2|org.apache.maven.plugins__maven-assembly-plugin__2.2|org.codehaus.mojo__build-helper-maven-plugin__1.7|org.apache.maven.plugins__maven-site-plugin__3.0|org.apache.maven.plugins__maven-surefire-plugin__null|org.apache.maven.plugins__maven-jar-plugin__null|org.apache.maven.plugins__maven-antrun-plugin__null</m:maven.plugins>
 	</info>
 	<configurations>
 		<conf name="default" visibility="public" description="runtime dependencies and master artifact can be used with this conf" extends="runtime,master"/>

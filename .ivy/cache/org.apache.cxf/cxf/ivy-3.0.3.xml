@@ -12,12 +12,12 @@
     the development of services using front-end programming APIs, like JAX-WS 
     and JAX-RS.
 		</description>
-		<m:properties__cxf.compiler.fork>false</m:properties__cxf.compiler.fork>
-		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
-		<m:properties__cxf.xjc-utils.version>3.0.2</m:properties__cxf.xjc-utils.version>
 		<m:properties__site.deploy.url>scp://people.apache.org/www/cxf.apache.org/maven-site</m:properties__site.deploy.url>
-		<m:properties__cxf.build-utils.version>3.0.0</m:properties__cxf.build-utils.version>
 		<m:properties__cxf.jdk.version>1.6</m:properties__cxf.jdk.version>
+		<m:properties__cxf.build-utils.version>3.0.0</m:properties__cxf.build-utils.version>
+		<m:properties__cxf.xjc-utils.version>3.0.2</m:properties__cxf.xjc-utils.version>
+		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
+		<m:properties__cxf.compiler.fork>false</m:properties__cxf.compiler.fork>
 	</info>
 	<configurations>
 		<conf name="default" visibility="public" description="runtime dependencies and master artifact can be used with this conf" extends="runtime,master"/>

@@ -10,8 +10,8 @@
 		<description homepage="http://bytedeco.org/javacpp/">
 		The missing bridge between Java and native C++
 		</description>
-		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
 		<m:properties__maven.build.timestamp.format>yyyyMMddhhmm</m:properties__maven.build.timestamp.format>
+		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
 		<m:maven.plugins>null__maven-compiler-plugin__2.3|null__maven-jar-plugin__2.4|null__maven-install-plugin__2.3|null__maven-assembly-plugin__2.3|null__maven-source-plugin__2.2|null__maven-javadoc-plugin__2.9|null__maven-deploy-plugin__2.4|org.sonatype.plugins__nexus-staging-maven-plugin__1.6</m:maven.plugins>
 	</info>
 	<configurations>

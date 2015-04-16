@@ -10,16 +10,16 @@
 		The ANTLR 4 Runtime
 		</description>
 		<m:properties__dot.path>dot</m:properties__dot.path>
-		<m:properties__bootclasspath.java5>${java5.home}/lib/rt.jar</m:properties__bootclasspath.java5>
-		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
 		<m:properties__bootclasspath.java6>${java6.home}/lib/rt.jar</m:properties__bootclasspath.java6>
+		<m:properties__java5.home>${env.JAVA5_HOME}</m:properties__java5.home>
+		<m:properties__bootclasspath.java5>${java5.home}/lib/rt.jar</m:properties__bootclasspath.java5>
 		<m:properties__project.reporting.outputEncoding>UTF-8</m:properties__project.reporting.outputEncoding>
+		<m:properties__bootclasspath.testCompile>${bootclasspath.java6}</m:properties__bootclasspath.testCompile>
 		<m:properties__java6.home>${env.JAVA6_HOME}</m:properties__java6.home>
 		<m:properties__bootclasspath.compile>${bootclasspath.java6}</m:properties__bootclasspath.compile>
+		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
 		<m:properties__antlr.testinprocess>true</m:properties__antlr.testinprocess>
 		<m:properties__sonatypeOssDistMgmtSnapshotsUrl>https://oss.sonatype.org/content/repositories/snapshots/</m:properties__sonatypeOssDistMgmtSnapshotsUrl>
-		<m:properties__java5.home>${env.JAVA5_HOME}</m:properties__java5.home>
-		<m:properties__bootclasspath.testCompile>${bootclasspath.java6}</m:properties__bootclasspath.testCompile>
 		<m:maven.plugins>org.apache.maven.plugins__maven-enforcer-plugin__1.0|org.apache.maven.plugins__maven-enforcer-plugin__1.0|org.apache.maven.plugins__maven-compiler-plugin__3.1|org.apache.maven.plugins__maven-jar-plugin__2.4|org.apache.maven.plugins__maven-surefire-plugin__2.16|org.apache.maven.plugins__maven-source-plugin__2.2.1|org.apache.maven.plugins__maven-javadoc-plugin__2.9.1|org.apache.maven.plugins__maven-gpg-plugin__1.4|org.apache.maven.plugins__maven-release-plugin__2.4.2|org.apache.maven.plugins__maven-enforcer-plugin__1.0|org.apache.maven.plugins__maven-enforcer-plugin__1.0|org.apache.maven.plugins__maven-compiler-plugin__3.1|org.apache.maven.plugins__maven-jar-plugin__2.4|org.apache.maven.plugins__maven-surefire-plugin__2.16|org.apache.maven.plugins__maven-source-plugin__2.2.1|org.apache.maven.plugins__maven-javadoc-plugin__2.9.1|org.apache.maven.plugins__maven-gpg-plugin__1.4|org.apache.maven.plugins__maven-release-plugin__2.4.2|org.antlr__antlr4-maven-plugin__4.2.2</m:maven.plugins>
 	</info>
 	<configurations>

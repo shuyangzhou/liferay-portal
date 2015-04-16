@@ -7,12 +7,12 @@
 		publication="20130725162947"
 	>
 		<description homepage="" />
-		<m:properties__tycho.scmUrl>scm:git:http://git.eclipse.org/gitroot/sisu/org.eclipse.sisu.plexus.git</m:properties__tycho.scmUrl>
-		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
-		<m:properties__maven.compiler.target>1.5</m:properties__maven.compiler.target>
-		<m:properties__sonatypeOssDistMgmtSnapshotsUrl>https://oss.sonatype.org/content/repositories/snapshots/</m:properties__sonatypeOssDistMgmtSnapshotsUrl>
 		<m:properties__maven.compiler.source>1.5</m:properties__maven.compiler.source>
+		<m:properties__maven.compiler.target>1.5</m:properties__maven.compiler.target>
+		<m:properties__tycho.scmUrl>scm:git:http://git.eclipse.org/gitroot/sisu/org.eclipse.sisu.plexus.git</m:properties__tycho.scmUrl>
 		<m:properties__tycho-version>0.18.1</m:properties__tycho-version>
+		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
+		<m:properties__sonatypeOssDistMgmtSnapshotsUrl>https://oss.sonatype.org/content/repositories/snapshots/</m:properties__sonatypeOssDistMgmtSnapshotsUrl>
 		<m:maven.plugins>org.apache.maven.plugins__maven-enforcer-plugin__1.0|org.apache.maven.plugins__maven-enforcer-plugin__1.0|org.apache.maven.plugins__maven-enforcer-plugin__1.0|org.apache.maven.plugins__maven-enforcer-plugin__1.0|org.codehaus.mojo__build-helper-maven-plugin__1.8|org.codehaus.mojo__animal-sniffer-maven-plugin__null|org.eclipse.tycho__target-platform-configuration__null|org.eclipse.tycho__tycho-maven-plugin__null|org.eclipse.tycho__tycho-source-plugin__null</m:maven.plugins>
 	</info>
 	<configurations>

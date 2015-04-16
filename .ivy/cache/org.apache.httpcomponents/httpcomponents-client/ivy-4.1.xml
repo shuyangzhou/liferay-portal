@@ -10,17 +10,17 @@
 		<description homepage="http://hc.apache.org/httpcomponents-client">
 		Components to build client side HTTP services
 		</description>
+		<m:properties__comparisonVersion>4.0</m:properties__comparisonVersion>
+		<m:properties__project.reporting.outputEncoding>UTF-8</m:properties__project.reporting.outputEncoding>
+		<m:properties__commons-codec.version>1.4</m:properties__commons-codec.version>
 		<m:properties__ehcache.version>2.2.0</m:properties__ehcache.version>
+		<m:properties__easymock.version>2.5.2</m:properties__easymock.version>
 		<m:properties__commons-logging.version>1.1.1</m:properties__commons-logging.version>
 		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
-		<m:properties__commons-codec.version>1.4</m:properties__commons-codec.version>
-		<m:properties__project.reporting.outputEncoding>UTF-8</m:properties__project.reporting.outputEncoding>
-		<m:properties__junit.version>4.8.2</m:properties__junit.version>
-		<m:properties__easymock.version>2.5.2</m:properties__easymock.version>
-		<m:properties__slf4j.version>1.5.11</m:properties__slf4j.version>
 		<m:properties__httpcore.version>4.1</m:properties__httpcore.version>
+		<m:properties__slf4j.version>1.5.11</m:properties__slf4j.version>
+		<m:properties__junit.version>4.8.2</m:properties__junit.version>
 		<m:maven.plugins>null__maven-compiler-plugin__null|null__maven-jar-plugin__null|org.apache.maven.plugins__maven-site-plugin__null|null__maven-compiler-plugin__null|null__maven-jar-plugin__null|org.apache.maven.plugins__maven-site-plugin__null|org.apache.httpcomponents__maven-notice-plugin__null|null__maven-jar-plugin__null|null__maven-source-plugin__null|null__maven-javadoc-plugin__null|null__maven-site-plugin__null|null__maven-assembly-plugin__null|null__maven-antrun-plugin__null|com.agilejava.docbkx__docbkx-maven-plugin__null|null__maven-resources-plugin__null|org.codehaus.mojo__clirr-maven-plugin__null</m:maven.plugins>
-		<m:properties__comparisonVersion>4.0</m:properties__comparisonVersion>
 	</info>
 	<configurations>
 		<conf name="default" visibility="public" description="runtime dependencies and master artifact can be used with this conf" extends="runtime,master"/>

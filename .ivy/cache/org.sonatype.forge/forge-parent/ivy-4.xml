@@ -7,9 +7,9 @@
 		publication="20090226205022"
 	>
 		<description homepage="http://forge.sonatype.com/" />
-		<m:properties__forgeSnapshotId>forge-snapshots</m:properties__forgeSnapshotId>
-		<m:properties__forgeSnapshotUrl>http://repository.sonatype.org/content/repositories/snapshots</m:properties__forgeSnapshotUrl>
 		<m:properties__forgeReleaseId>forge-releases</m:properties__forgeReleaseId>
+		<m:properties__forgeSnapshotUrl>http://repository.sonatype.org/content/repositories/snapshots</m:properties__forgeSnapshotUrl>
+		<m:properties__forgeSnapshotId>forge-snapshots</m:properties__forgeSnapshotId>
 		<m:properties__forgeReleaseUrl>http://repository.sonatype.org/content/repositories/releases</m:properties__forgeReleaseUrl>
 	</info>
 	<configurations>

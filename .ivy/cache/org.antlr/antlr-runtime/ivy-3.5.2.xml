@@ -9,23 +9,24 @@
 		<description homepage="http://www.antlr.org">
 		A framework for constructing recognizers, compilers, and translators from grammatical descriptions containing Java, C#, C++, or Python actions.
 		</description>
-		<m:properties__bootclasspath.java5>${java5.home}/lib/rt.jar</m:properties__bootclasspath.java5>
 		<m:properties__bootclasspath.java6>${java6.home}/lib/rt.jar</m:properties__bootclasspath.java6>
-		<m:dependency.management__junit__junit__scope>test</m:dependency.management__junit__junit__scope>
-		<m:properties__java6.home>${env.JAVA6_HOME}</m:properties__java6.home>
 		<m:properties__java5.home>${env.JAVA5_HOME}</m:properties__java5.home>
-		<m:dependency.management__org.antlr__stringtemplate__version>3.2.1</m:dependency.management__org.antlr__stringtemplate__version>
-		<m:dependency.management__org.antlr__ST4__scope>compile</m:dependency.management__org.antlr__ST4__scope>
-		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
-		<m:dependency.management__antlr__antlr__version>2.7.7</m:dependency.management__antlr__antlr__version>
-		<m:dependency.management__junit__junit__version>4.10</m:dependency.management__junit__junit__version>
-		<m:properties__bootclasspath.compile>${bootclasspath.java5}</m:properties__bootclasspath.compile>
-		<m:dependency.management__org.antlr__stringtemplate__scope>compile</m:dependency.management__org.antlr__stringtemplate__scope>
-		<m:properties__sonatypeOssDistMgmtSnapshotsUrl>https://oss.sonatype.org/content/repositories/snapshots/</m:properties__sonatypeOssDistMgmtSnapshotsUrl>
-		<m:dependency.management__org.antlr__ST4__version>4.0.8</m:dependency.management__org.antlr__ST4__version>
-		<m:dependency.management__antlr__antlr__scope>compile</m:dependency.management__antlr__antlr__scope>
-		<m:maven.plugins>org.apache.maven.plugins__maven-enforcer-plugin__1.2|org.apache.maven.plugins__maven-enforcer-plugin__1.2|org.apache.maven.plugins__maven-jar-plugin__2.4|org.apache.maven.plugins__maven-compiler-plugin__3.1|org.apache.maven.plugins__maven-release-plugin__2.5|org.apache.maven.plugins__maven-surefire-plugin__2.17|org.codehaus.mojo__findbugs-maven-plugin__2.5.3|org.apache.maven.plugins__maven-source-plugin__2.2.1|org.apache.maven.plugins__maven-javadoc-plugin__2.9.1|org.apache.maven.plugins__maven-gpg-plugin__1.5|org.apache.maven.plugins__maven-enforcer-plugin__1.2|org.apache.maven.plugins__maven-enforcer-plugin__1.2|org.apache.maven.plugins__maven-jar-plugin__2.4|org.apache.maven.plugins__maven-compiler-plugin__3.1|org.apache.maven.plugins__maven-release-plugin__2.5|org.apache.maven.plugins__maven-surefire-plugin__2.17|org.codehaus.mojo__findbugs-maven-plugin__2.5.3|org.apache.maven.plugins__maven-source-plugin__2.2.1|org.apache.maven.plugins__maven-javadoc-plugin__2.9.1|org.apache.maven.plugins__maven-gpg-plugin__1.5</m:maven.plugins>
+		<m:properties__bootclasspath.java5>${java5.home}/lib/rt.jar</m:properties__bootclasspath.java5>
 		<m:properties__bootclasspath.testCompile>${bootclasspath.java6}</m:properties__bootclasspath.testCompile>
+		<m:properties__java6.home>${env.JAVA6_HOME}</m:properties__java6.home>
+		<m:properties__bootclasspath.compile>${bootclasspath.java5}</m:properties__bootclasspath.compile>
+		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
+		<m:properties__arguments/>
+		<m:properties__sonatypeOssDistMgmtSnapshotsUrl>https://oss.sonatype.org/content/repositories/snapshots/</m:properties__sonatypeOssDistMgmtSnapshotsUrl>
+		<m:maven.plugins>org.apache.maven.plugins__maven-enforcer-plugin__1.2|org.apache.maven.plugins__maven-enforcer-plugin__1.2|org.apache.maven.plugins__maven-jar-plugin__2.4|org.apache.maven.plugins__maven-compiler-plugin__3.1|org.apache.maven.plugins__maven-release-plugin__2.5|org.apache.maven.plugins__maven-surefire-plugin__2.17|org.codehaus.mojo__findbugs-maven-plugin__2.5.3|org.apache.maven.plugins__maven-source-plugin__2.2.1|org.apache.maven.plugins__maven-javadoc-plugin__2.9.1|org.apache.maven.plugins__maven-gpg-plugin__1.5|org.apache.maven.plugins__maven-enforcer-plugin__1.2|org.apache.maven.plugins__maven-enforcer-plugin__1.2|org.apache.maven.plugins__maven-jar-plugin__2.4|org.apache.maven.plugins__maven-compiler-plugin__3.1|org.apache.maven.plugins__maven-release-plugin__2.5|org.apache.maven.plugins__maven-surefire-plugin__2.17|org.codehaus.mojo__findbugs-maven-plugin__2.5.3|org.apache.maven.plugins__maven-source-plugin__2.2.1|org.apache.maven.plugins__maven-javadoc-plugin__2.9.1|org.apache.maven.plugins__maven-gpg-plugin__1.5</m:maven.plugins>
+		<m:dependency.management__junit__junit__version>4.10</m:dependency.management__junit__junit__version>
+		<m:dependency.management__junit__junit__scope>test</m:dependency.management__junit__junit__scope>
+		<m:dependency.management__antlr__antlr__version>2.7.7</m:dependency.management__antlr__antlr__version>
+		<m:dependency.management__antlr__antlr__scope>compile</m:dependency.management__antlr__antlr__scope>
+		<m:dependency.management__org.antlr__stringtemplate__version>3.2.1</m:dependency.management__org.antlr__stringtemplate__version>
+		<m:dependency.management__org.antlr__stringtemplate__scope>compile</m:dependency.management__org.antlr__stringtemplate__scope>
+		<m:dependency.management__org.antlr__ST4__version>4.0.8</m:dependency.management__org.antlr__ST4__version>
+		<m:dependency.management__org.antlr__ST4__scope>compile</m:dependency.management__org.antlr__ST4__scope>
 	</info>
 	<configurations>
 		<conf name="default" visibility="public" description="runtime dependencies and master artifact can be used with this conf" extends="runtime,master"/>

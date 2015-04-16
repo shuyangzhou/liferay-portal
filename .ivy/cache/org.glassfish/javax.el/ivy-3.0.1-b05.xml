@@ -8,17 +8,17 @@
 	>
 		<license name="CDDL + GPLv2 with classpath exception" url="https://glassfish.dev.java.net/nonav/public/CDDL+GPL.html" />
 		<description homepage="http://uel.java.net" />
-		<m:properties__findbugs.version>2.5.2</m:properties__findbugs.version>
-		<m:properties__vendorName>Oracle Corporation</m:properties__vendorName>
-		<m:properties__bundle.symbolicName>com.sun.el.javax.el</m:properties__bundle.symbolicName>
-		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
 		<m:properties__bundle.version>3.0.0</m:properties__bundle.version>
 		<m:properties__findbugs.threshold>High</m:properties__findbugs.threshold>
-		<m:properties__extensionName>javax.el</m:properties__extensionName>
 		<m:properties__tlda-license.url>http://hudson-sca.us.oracle.com/job/tlda-license/lastSuccessfulBuild/artifact</m:properties__tlda-license.url>
-		<m:properties__jvnetDistMgmtSnapshotsUrl>https://maven.java.net/content/repositories/snapshots/</m:properties__jvnetDistMgmtSnapshotsUrl>
 		<m:properties__findbugs.exclude>${project.basedir}/exclude.xml</m:properties__findbugs.exclude>
+		<m:properties__vendorName>Oracle Corporation</m:properties__vendorName>
+		<m:properties__extensionName>javax.el</m:properties__extensionName>
+		<m:properties__findbugs.version>2.5.2</m:properties__findbugs.version>
 		<m:properties__spec.version>3.0</m:properties__spec.version>
+		<m:properties__bundle.symbolicName>com.sun.el.javax.el</m:properties__bundle.symbolicName>
+		<m:properties__jvnetDistMgmtSnapshotsUrl>https://maven.java.net/content/repositories/snapshots/</m:properties__jvnetDistMgmtSnapshotsUrl>
+		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
 		<m:maven.plugins>org.apache.maven.plugins__maven-enforcer-plugin__1.0|org.apache.maven.plugins__maven-enforcer-plugin__1.0|org.codehaus.mojo__build-helper-maven-plugin__1.1|org.apache.felix__maven-bundle-plugin__1.4.3|null__maven-jar-plugin__2.4|org.apache.maven.plugins__maven-compiler-plugin__3.0|org.apache.maven.plugins__maven-source-plugin__2.2.1|org.apache.maven.plugins__maven-javadoc-plugin__2.8.1|org.codehaus.mojo__findbugs-maven-plugin__2.5.2|org.apache.maven.plugins__maven-release-plugin__null|null__maven-surefire-plugin__2.7.1|org.glassfish.copyright__glassfish-copyright-maven-plugin__1.32|org.apache.maven.plugins__maven-remote-resources-plugin__1.2.1</m:maven.plugins>
 	</info>
 	<configurations>

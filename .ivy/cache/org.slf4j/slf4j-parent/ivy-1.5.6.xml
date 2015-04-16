@@ -8,8 +8,8 @@
 	>
 		<description homepage="http://www.slf4j.org" />
 		<m:dependency.management__org.slf4j__slf4j-api__version>1.5.6</m:dependency.management__org.slf4j__slf4j-api__version>
-		<m:maven.plugins>org.apache.maven.plugins__maven-compiler-plugin__null|org.apache.maven.plugins__maven-surefire-plugin__null|org.apache.maven.plugins__maven-source-plugin__null|org.apache.maven.plugins__maven-javadoc-plugin__null</m:maven.plugins>
 		<m:dependency.management__log4j__log4j__version>1.2.14</m:dependency.management__log4j__log4j__version>
+		<m:maven.plugins>org.apache.maven.plugins__maven-compiler-plugin__null|org.apache.maven.plugins__maven-surefire-plugin__null|org.apache.maven.plugins__maven-source-plugin__null|org.apache.maven.plugins__maven-javadoc-plugin__null</m:maven.plugins>
 	</info>
 	<configurations>
 		<conf name="default" visibility="public" description="runtime dependencies and master artifact can be used with this conf" extends="runtime,master"/>

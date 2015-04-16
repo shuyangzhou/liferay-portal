@@ -4,7 +4,7 @@
 		module="janino-parent"
 		revision="2.7.4"
 		status="release"
-		publication="20140705123018"
+		publication="20140705083018"
 	>
 		<license name="New BSD License" url="http://dist.codehaus.org/janino/new_bsd_license.txt" />
 		<description homepage="http://docs.codehaus.org/display/JANINO/Home">
@@ -13,14 +13,14 @@
     but an embedded compiler for run-time compilation purposes, e.g. expression evaluators or &quot;server pages&quot; engines
     like JSP.
 		</description>
-		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
-		<m:dependency.management__org.apache.ant__ant-nodeps__version>1.7.1</m:dependency.management__org.apache.ant__ant-nodeps__version>
-		<m:dependency.management__junit__junit__scope>test</m:dependency.management__junit__junit__scope>
-		<m:dependency.management__org.codehaus.janino__commons-compiler__version>2.7.4</m:dependency.management__org.codehaus.janino__commons-compiler__version>
-		<m:dependency.management__junit__junit__version>4.7</m:dependency.management__junit__junit__version>
-		<m:dependency.management__org.codehaus.janino__commons-compiler-jdk__version>2.7.4</m:dependency.management__org.codehaus.janino__commons-compiler-jdk__version>
 		<m:properties__codehausDistMgmtSnapshotsUrl>https://nexus.codehaus.org/content/repositories/snapshots/</m:properties__codehausDistMgmtSnapshotsUrl>
+		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
 		<m:maven.plugins>org.apache.maven.plugins__maven-enforcer-plugin__1.0|org.apache.maven.plugins__maven-enforcer-plugin__1.0|org.apache.maven.plugins__maven-compiler-plugin__2.3|org.apache.maven.plugins__maven-surefire-plugin__2.4.3|org.codehaus.mojo__buildnumber-maven-plugin__1.0-beta-2|org.apache.maven.plugins__maven-clean-plugin__2.4|org.apache.maven.plugins__maven-resources-plugin__2.4.2|org.apache.maven.plugins__maven-install-plugin__2.3|org.apache.maven.plugins__maven-deploy-plugin__2.5|org.apache.maven.plugins__maven-site-plugin__2.0.1|org.apache.maven.plugins__maven-source-plugin__2.1.1|org.apache.maven.plugins__maven-jar-plugin__2.3</m:maven.plugins>
+		<m:dependency.management__org.codehaus.janino__commons-compiler__version>2.7.4</m:dependency.management__org.codehaus.janino__commons-compiler__version>
+		<m:dependency.management__org.codehaus.janino__commons-compiler-jdk__version>2.7.4</m:dependency.management__org.codehaus.janino__commons-compiler-jdk__version>
+		<m:dependency.management__junit__junit__version>4.7</m:dependency.management__junit__junit__version>
+		<m:dependency.management__junit__junit__scope>test</m:dependency.management__junit__junit__scope>
+		<m:dependency.management__org.apache.ant__ant-nodeps__version>1.7.1</m:dependency.management__org.apache.ant__ant-nodeps__version>
 	</info>
 	<configurations>
 		<conf name="default" visibility="public" description="runtime dependencies and master artifact can be used with this conf" extends="runtime,master"/>

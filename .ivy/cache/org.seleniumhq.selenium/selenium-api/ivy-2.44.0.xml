@@ -7,23 +7,23 @@
 		publication="20141023131206"
 	>
 		<description homepage="" />
+		<m:properties__maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</m:properties__maven.build.timestamp.format>
+		<m:dependency.management__cglib__cglib-nodep__version>2.1_3</m:dependency.management__cglib__cglib-nodep__version>
+		<m:dependency.management__com.google.guava__guava__version>18.0</m:dependency.management__com.google.guava__guava__version>
+		<m:dependency.management__commons-io__commons-io__version>2.4</m:dependency.management__commons-io__commons-io__version>
+		<m:dependency.management__commons-codec__commons-codec__version>1.9</m:dependency.management__commons-codec__commons-codec__version>
+		<m:dependency.management__org.apache.commons__commons-exec__version>1.1</m:dependency.management__org.apache.commons__commons-exec__version>
+		<m:dependency.management__net.jcip__jcip-annotations__version>1.0</m:dependency.management__net.jcip__jcip-annotations__version>
+		<m:dependency.management__junit__junit__version>4.11</m:dependency.management__junit__junit__version>
 		<m:dependency.management__net.java.dev.jna__jna__version>3.4.0</m:dependency.management__net.java.dev.jna__jna__version>
+		<m:dependency.management__net.java.dev.jna__platform__version>3.4.0</m:dependency.management__net.java.dev.jna__platform__version>
+		<m:dependency.management__org.apache.httpcomponents__httpclient__version>4.3.4</m:dependency.management__org.apache.httpcomponents__httpclient__version>
 		<m:dependency.management__org.apache.httpcomponents__httpcore__version>4.3.2</m:dependency.management__org.apache.httpcomponents__httpcore__version>
+		<m:dependency.management__org.hamcrest__hamcrest-all__version>1.3</m:dependency.management__org.hamcrest__hamcrest-all__version>
+		<m:dependency.management__com.google.code.gson__gson__version>2.3</m:dependency.management__com.google.code.gson__gson__version>
 		<m:dependency.management__org.testng__testng__version>6.8</m:dependency.management__org.testng__testng__version>
 		<m:dependency.management__org.webbitserver__webbit__version>0.4.14</m:dependency.management__org.webbitserver__webbit__version>
-		<m:dependency.management__net.jcip__jcip-annotations__version>1.0</m:dependency.management__net.jcip__jcip-annotations__version>
-		<m:dependency.management__org.apache.httpcomponents__httpclient__version>4.3.4</m:dependency.management__org.apache.httpcomponents__httpclient__version>
-		<m:dependency.management__org.hamcrest__hamcrest-all__version>1.3</m:dependency.management__org.hamcrest__hamcrest-all__version>
-		<m:dependency.management__cglib__cglib-nodep__version>2.1_3</m:dependency.management__cglib__cglib-nodep__version>
-		<m:dependency.management__com.google.code.gson__gson__version>2.3</m:dependency.management__com.google.code.gson__gson__version>
-		<m:dependency.management__junit__junit__version>4.11</m:dependency.management__junit__junit__version>
-		<m:dependency.management__commons-io__commons-io__version>2.4</m:dependency.management__commons-io__commons-io__version>
-		<m:dependency.management__com.google.guava__guava__version>18.0</m:dependency.management__com.google.guava__guava__version>
-		<m:dependency.management__commons-codec__commons-codec__version>1.9</m:dependency.management__commons-codec__commons-codec__version>
-		<m:properties__maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</m:properties__maven.build.timestamp.format>
 		<m:maven.plugins>null__maven-antrun-plugin__null|null__maven-jar-plugin__null</m:maven.plugins>
-		<m:dependency.management__net.java.dev.jna__platform__version>3.4.0</m:dependency.management__net.java.dev.jna__platform__version>
-		<m:dependency.management__org.apache.commons__commons-exec__version>1.1</m:dependency.management__org.apache.commons__commons-exec__version>
 	</info>
 	<configurations>
 		<conf name="default" visibility="public" description="runtime dependencies and master artifact can be used with this conf" extends="runtime,master"/>

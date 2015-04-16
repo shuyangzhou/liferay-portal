@@ -14,12 +14,12 @@
       i) develop open source code for middleware, generic enterprise applications and cloud computing and
       ii) to foster a vibrant community and business ecosystem.
 		</description>
+		<m:properties__ow2DistMgmtReleasesUrl>http://repository.ow2.org/nexus/service/local/staging/deploy/maven2</m:properties__ow2DistMgmtReleasesUrl>
+		<m:properties__ow2DistMgmtSnapshotsUrl>http://repository.ow2.org/nexus/content/repositories/snapshots</m:properties__ow2DistMgmtSnapshotsUrl>
 		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
 		<m:properties__organization.logo>
       http://www.ow2.org/xwiki/bin/download/NewsEvents/MarketingResources/ow2_logo_small_transp.png
     </m:properties__organization.logo>
-		<m:properties__ow2DistMgmtSnapshotsUrl>http://repository.ow2.org/nexus/content/repositories/snapshots</m:properties__ow2DistMgmtSnapshotsUrl>
-		<m:properties__ow2DistMgmtReleasesUrl>http://repository.ow2.org/nexus/service/local/staging/deploy/maven2</m:properties__ow2DistMgmtReleasesUrl>
 		<m:maven.plugins>org.apache.maven.plugins__maven-enforcer-plugin__1.0-beta-1</m:maven.plugins>
 	</info>
 	<configurations>

@@ -8,17 +8,17 @@
 	>
 		<description homepage="" />
 		<m:properties__log.level>4</m:properties__log.level>
-		<m:properties__obr.version>1.6.6</m:properties__obr.version>
-		<m:properties__gogo.runtime.version>0.10.0</m:properties__gogo.runtime.version>
-		<m:properties__organization.logo>http://www.apache.org/images/asf_logo_wide.gif</m:properties__organization.logo>
-		<m:properties__distMgmtSnapshotsName>Apache Development Snapshot Repository</m:properties__distMgmtSnapshotsName>
-		<m:properties__framework.version>4.4.0</m:properties__framework.version>
-		<m:properties__distMgmtSnapshotsUrl>https://repository.apache.org/content/repositories/snapshots</m:properties__distMgmtSnapshotsUrl>
-		<m:properties__sourceReleaseAssemblyDescriptor>source-release-zip-tar</m:properties__sourceReleaseAssemblyDescriptor>
-		<m:properties__gogo.command.version>0.12.0</m:properties__gogo.command.version>
-		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
 		<m:properties__gogo.shell.version>0.10.0</m:properties__gogo.shell.version>
+		<m:properties__gogo.runtime.version>0.10.0</m:properties__gogo.runtime.version>
+		<m:properties__framework.version>4.4.0</m:properties__framework.version>
+		<m:properties__obr.version>1.6.6</m:properties__obr.version>
 		<m:properties__dollar>$</m:properties__dollar>
+		<m:properties__gogo.command.version>0.12.0</m:properties__gogo.command.version>
+		<m:properties__sourceReleaseAssemblyDescriptor>source-release-zip-tar</m:properties__sourceReleaseAssemblyDescriptor>
+		<m:properties__distMgmtSnapshotsUrl>https://repository.apache.org/content/repositories/snapshots</m:properties__distMgmtSnapshotsUrl>
+		<m:properties__distMgmtSnapshotsName>Apache Development Snapshot Repository</m:properties__distMgmtSnapshotsName>
+		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
+		<m:properties__organization.logo>http://www.apache.org/images/asf_logo_wide.gif</m:properties__organization.logo>
 		<m:maven.plugins>org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-compiler-plugin__null|org.apache.rat__apache-rat-plugin__null|org.apache.maven.plugins__maven-release-plugin__null|org.codehaus.mojo__ianal-maven-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-remote-resources-plugin__null|org.apache.maven.plugins__maven-compiler-plugin__null|org.apache.rat__apache-rat-plugin__null|org.apache.maven.plugins__maven-release-plugin__null|org.codehaus.mojo__ianal-maven-plugin__null|org.apache.maven.plugins__maven-compiler-plugin__null|org.apache.felix__maven-bundle-plugin__2.3.5|org.apache.maven.plugins__maven-dependency-plugin__null|null__maven-antrun-plugin__null</m:maven.plugins>
 	</info>
 	<configurations>

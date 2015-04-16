@@ -7,24 +7,24 @@
 		publication="20111223154026"
 	>
 		<description homepage="" />
-		<m:dependency.management__org.easymock__easymock__scope>test</m:dependency.management__org.easymock__easymock__scope>
-		<m:dependency.management__log4j__log4j__scope>test</m:dependency.management__log4j__log4j__scope>
-		<m:dependency.management__junit__junit__scope>test</m:dependency.management__junit__junit__scope>
+		<m:dependency.management__javax.xml.ws__jaxws-api__version>2.1-1</m:dependency.management__javax.xml.ws__jaxws-api__version>
+		<m:dependency.management__javax.xml.ws__jaxws-api__exclusion_0>javax.jws__jsr181</m:dependency.management__javax.xml.ws__jaxws-api__exclusion_0>
 		<m:dependency.management__javax.inject__com.springsource.javax.inject__version>1.0.0</m:dependency.management__javax.inject__com.springsource.javax.inject__version>
 		<m:dependency.management__javax.inject__com.springsource.javax.inject__scope>provided</m:dependency.management__javax.inject__com.springsource.javax.inject__scope>
-		<m:dependency.management__javax.xml.ws__jaxws-api__exclusion_0>javax.jws__jsr181</m:dependency.management__javax.xml.ws__jaxws-api__exclusion_0>
-		<m:dependency.management__org.slf4j__slf4j-api__version>1.5.10</m:dependency.management__org.slf4j__slf4j-api__version>
-		<m:dependency.management__log4j__log4j__exclusion_2>com.sun.jdmk__jmxtools</m:dependency.management__log4j__log4j__exclusion_2>
-		<m:dependency.management__org.slf4j__slf4j-log4j12__version>1.5.10</m:dependency.management__org.slf4j__slf4j-log4j12__version>
-		<m:dependency.management__log4j__log4j__exclusion_3>com.sun.jmx__jmxri</m:dependency.management__log4j__log4j__exclusion_3>
 		<m:dependency.management__junit__junit__version>4.7</m:dependency.management__junit__junit__version>
+		<m:dependency.management__junit__junit__scope>test</m:dependency.management__junit__junit__scope>
 		<m:dependency.management__org.aspectj__aspectjweaver__version>1.6.8</m:dependency.management__org.aspectj__aspectjweaver__version>
+		<m:dependency.management__org.easymock__easymock__version>2.5.1</m:dependency.management__org.easymock__easymock__version>
+		<m:dependency.management__org.easymock__easymock__scope>test</m:dependency.management__org.easymock__easymock__scope>
+		<m:dependency.management__org.slf4j__slf4j-api__version>1.5.10</m:dependency.management__org.slf4j__slf4j-api__version>
+		<m:dependency.management__org.slf4j__slf4j-log4j12__version>1.5.10</m:dependency.management__org.slf4j__slf4j-log4j12__version>
+		<m:dependency.management__log4j__log4j__version>1.2.15</m:dependency.management__log4j__log4j__version>
+		<m:dependency.management__log4j__log4j__scope>test</m:dependency.management__log4j__log4j__scope>
 		<m:dependency.management__log4j__log4j__exclusion_0>javax.mail__mail</m:dependency.management__log4j__log4j__exclusion_0>
 		<m:dependency.management__log4j__log4j__exclusion_1>javax.jms__jms</m:dependency.management__log4j__log4j__exclusion_1>
-		<m:dependency.management__org.easymock__easymock__version>2.5.1</m:dependency.management__org.easymock__easymock__version>
-		<m:dependency.management__javax.xml.ws__jaxws-api__version>2.1-1</m:dependency.management__javax.xml.ws__jaxws-api__version>
+		<m:dependency.management__log4j__log4j__exclusion_2>com.sun.jdmk__jmxtools</m:dependency.management__log4j__log4j__exclusion_2>
+		<m:dependency.management__log4j__log4j__exclusion_3>com.sun.jmx__jmxri</m:dependency.management__log4j__log4j__exclusion_3>
 		<m:maven.plugins>org.apache.maven.plugins__maven-compiler-plugin__null|org.apache.maven.plugins__maven-surefire-plugin__null|org.apache.maven.plugins__maven-compiler-plugin__null|org.apache.maven.plugins__maven-surefire-plugin__null</m:maven.plugins>
-		<m:dependency.management__log4j__log4j__version>1.2.15</m:dependency.management__log4j__log4j__version>
 	</info>
 	<configurations>
 		<conf name="default" visibility="public" description="runtime dependencies and master artifact can be used with this conf" extends="runtime,master"/>

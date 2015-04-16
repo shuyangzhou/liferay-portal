@@ -8,23 +8,23 @@
 	>
 		<license name="Apache Public License 2.0" url="http://www.apache.org/licenses/LICENSE-2.0" />
 		<description homepage="" />
-		<m:properties__forgeSnapshotUrl>http://repository.sonatype.org/content/repositories/snapshots</m:properties__forgeSnapshotUrl>
-		<m:dependency.management__junit__junit__scope>test</m:dependency.management__junit__junit__scope>
-		<m:dependency.management__org.codehaus.plexus__plexus-container-default__exclusion_2>log4j__log4j</m:dependency.management__org.codehaus.plexus__plexus-container-default__exclusion_2>
-		<m:dependency.management__org.codehaus.plexus__plexus-utils__version>1.5.5</m:dependency.management__org.codehaus.plexus__plexus-utils__version>
-		<m:dependency.management__org.codehaus.plexus__plexus-container-default__version>1.0-beta-3.0.5</m:dependency.management__org.codehaus.plexus__plexus-container-default__version>
-		<m:dependency.management__org.codehaus.plexus__plexus-container-default__exclusion_1>commons-logging__commons-logging-api</m:dependency.management__org.codehaus.plexus__plexus-container-default__exclusion_1>
-		<m:dependency.management__org.codehaus.plexus__plexus-container-default__exclusion_0>commons-logging__commons-logging</m:dependency.management__org.codehaus.plexus__plexus-container-default__exclusion_0>
 		<m:properties__jetty.version>6.1.12</m:properties__jetty.version>
-		<m:properties__forgeSnapshotId>forge-snapshots</m:properties__forgeSnapshotId>
+		<m:properties__plexus.version>1.0-beta-3.0.5</m:properties__plexus.version>
 		<m:properties__forgeReleaseId>forge-releases</m:properties__forgeReleaseId>
-		<m:dependency.management__junit__junit__version>4.5</m:dependency.management__junit__junit__version>
+		<m:properties__forgeSnapshotUrl>http://repository.sonatype.org/content/repositories/snapshots</m:properties__forgeSnapshotUrl>
+		<m:properties__forgeSnapshotId>forge-snapshots</m:properties__forgeSnapshotId>
+		<m:properties__forgeReleaseUrl>http://repository.sonatype.org:8081/service/local/staging/deploy/maven2</m:properties__forgeReleaseUrl>
+		<m:dependency.management__org.codehaus.plexus__plexus-container-default__version>1.0-beta-3.0.5</m:dependency.management__org.codehaus.plexus__plexus-container-default__version>
+		<m:dependency.management__org.codehaus.plexus__plexus-container-default__exclusion_0>commons-logging__commons-logging</m:dependency.management__org.codehaus.plexus__plexus-container-default__exclusion_0>
+		<m:dependency.management__org.codehaus.plexus__plexus-container-default__exclusion_1>commons-logging__commons-logging-api</m:dependency.management__org.codehaus.plexus__plexus-container-default__exclusion_1>
+		<m:dependency.management__org.codehaus.plexus__plexus-container-default__exclusion_2>log4j__log4j</m:dependency.management__org.codehaus.plexus__plexus-container-default__exclusion_2>
+		<m:dependency.management__org.codehaus.plexus__plexus-component-annotations__version>1.0-beta-3.0.5</m:dependency.management__org.codehaus.plexus__plexus-component-annotations__version>
+		<m:dependency.management__org.codehaus.plexus__plexus-utils__version>1.5.5</m:dependency.management__org.codehaus.plexus__plexus-utils__version>
+		<m:dependency.management__org.mortbay.jetty__jetty__version>6.1.12</m:dependency.management__org.mortbay.jetty__jetty__version>
 		<m:dependency.management__org.mortbay.jetty__jetty-client__version>6.1.12</m:dependency.management__org.mortbay.jetty__jetty-client__version>
 		<m:dependency.management__org.mortbay.jetty__jetty-util__version>6.1.12</m:dependency.management__org.mortbay.jetty__jetty-util__version>
-		<m:dependency.management__org.mortbay.jetty__jetty__version>6.1.12</m:dependency.management__org.mortbay.jetty__jetty__version>
-		<m:properties__forgeReleaseUrl>http://repository.sonatype.org:8081/service/local/staging/deploy/maven2</m:properties__forgeReleaseUrl>
-		<m:properties__plexus.version>1.0-beta-3.0.5</m:properties__plexus.version>
-		<m:dependency.management__org.codehaus.plexus__plexus-component-annotations__version>1.0-beta-3.0.5</m:dependency.management__org.codehaus.plexus__plexus-component-annotations__version>
+		<m:dependency.management__junit__junit__version>4.5</m:dependency.management__junit__junit__version>
+		<m:dependency.management__junit__junit__scope>test</m:dependency.management__junit__junit__scope>
 	</info>
 	<configurations>
 		<conf name="default" visibility="public" description="runtime dependencies and master artifact can be used with this conf" extends="runtime,master"/>

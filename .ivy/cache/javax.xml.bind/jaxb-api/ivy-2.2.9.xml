@@ -11,10 +11,10 @@
 		<description homepage="http://jaxb.java.net/">
 		JAXB (JSR 222) API
 		</description>
-		<m:properties__release.spec.feedback>spec-comments@jsr222.java.net</m:properties__release.spec.feedback>
 		<m:properties__release.spec.date>Dec 2009</m:properties__release.spec.date>
-		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
+		<m:properties__release.spec.feedback>spec-comments@jsr222.java.net</m:properties__release.spec.feedback>
 		<m:properties__jvnetDistMgmtSnapshotsUrl>https://maven.java.net/content/repositories/snapshots/</m:properties__jvnetDistMgmtSnapshotsUrl>
+		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
 		<m:maven.plugins>org.apache.maven.plugins__maven-compiler-plugin__2.5.1|org.apache.maven.plugins__maven-jar-plugin__2.4|org.apache.felix__maven-bundle-plugin__2.3.7|org.apache.maven.plugins__maven-javadoc-plugin__2.8.1</m:maven.plugins>
 	</info>
 	<configurations>

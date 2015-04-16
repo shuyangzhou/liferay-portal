@@ -10,10 +10,10 @@
 		<description homepage="https://github.com/maxmind/geoip-api-java">
 		MaxMind GeoIP Java API
 		</description>
-		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
-		<m:properties__mockito.version>1.9.0</m:properties__mockito.version>
 		<m:properties__jdk.version>1.6</m:properties__jdk.version>
+		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
 		<m:properties__junit.version>4.11</m:properties__junit.version>
+		<m:properties__mockito.version>1.9.0</m:properties__mockito.version>
 		<m:properties__sonatypeOssDistMgmtSnapshotsUrl>https://oss.sonatype.org/content/repositories/snapshots/</m:properties__sonatypeOssDistMgmtSnapshotsUrl>
 		<m:maven.plugins>org.apache.maven.plugins__maven-enforcer-plugin__1.0|org.apache.maven.plugins__maven-enforcer-plugin__1.0|org.apache.maven.plugins__maven-compiler-plugin__2.5.1|org.apache.felix__maven-bundle-plugin__2.5.0</m:maven.plugins>
 	</info>

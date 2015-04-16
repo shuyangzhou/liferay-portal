@@ -8,14 +8,15 @@
 	>
 		<license name="CDDL + GPLv2 with classpath exception" url="http://glassfish.dev.java.net/nonav/public/CDDL+GPL.html" />
 		<description homepage="http://jcp.org/en/jsr/detail?id=52" />
-		<m:properties__findbugs.version>2.3.1</m:properties__findbugs.version>
-		<m:properties__vendorName>Oracle Corporation</m:properties__vendorName>
-		<m:properties__bundle.symbolicName>javax.servlet.jsp.jstl-api</m:properties__bundle.symbolicName>
-		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
 		<m:properties__findbugs.threshold>High</m:properties__findbugs.threshold>
+		<m:properties__findbugs.exclude/>
+		<m:properties__vendorName>Oracle Corporation</m:properties__vendorName>
 		<m:properties__extensionName>javax.servlet.jsp.jstl</m:properties__extensionName>
-		<m:properties__jvnetDistMgmtSnapshotsUrl>https://maven.java.net/content/repositories/snapshots/</m:properties__jvnetDistMgmtSnapshotsUrl>
+		<m:properties__findbugs.version>2.3.1</m:properties__findbugs.version>
 		<m:properties__spec.version>1.2</m:properties__spec.version>
+		<m:properties__bundle.symbolicName>javax.servlet.jsp.jstl-api</m:properties__bundle.symbolicName>
+		<m:properties__jvnetDistMgmtSnapshotsUrl>https://maven.java.net/content/repositories/snapshots/</m:properties__jvnetDistMgmtSnapshotsUrl>
+		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
 		<m:maven.plugins>org.apache.maven.plugins__maven-enforcer-plugin__1.0|org.apache.maven.plugins__maven-enforcer-plugin__1.0|org.apache.felix__maven-bundle-plugin__1.4.3|null__maven-jar-plugin__null|null__maven-compiler-plugin__null|org.apache.maven.plugins__maven-source-plugin__2.1|org.apache.maven.plugins__maven-javadoc-plugin__null|org.codehaus.mojo__findbugs-maven-plugin__2.3.1|org.apache.maven.plugins__maven-release-plugin__null</m:maven.plugins>
 	</info>
 	<configurations>

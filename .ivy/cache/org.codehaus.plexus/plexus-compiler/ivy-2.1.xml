@@ -9,43 +9,43 @@
 		<description homepage="">
 		Plexus Compiler is a Plexus component to use different compilers through a uniform API.
 		</description>
+		<m:properties__plexusDistMgmtSnapshotsUrl>https://oss.sonatype.org/content/repositories/plexus-snapshots</m:properties__plexusDistMgmtSnapshotsUrl>
+		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
 		<m:properties__sisu-inject.version>2.1.1</m:properties__sisu-inject.version>
+		<m:properties__slf4j.version>1.6.1</m:properties__slf4j.version>
+		<m:properties__forgeReleaseId>forge-releases</m:properties__forgeReleaseId>
 		<m:properties__forgeSnapshotUrl>https://repository.sonatype.org/content/repositories/snapshots</m:properties__forgeSnapshotUrl>
 		<m:properties__project.reporting.outputEncoding>UTF-8</m:properties__project.reporting.outputEncoding>
-		<m:dependency.management__org.slf4j__jul-to-slf4j__version>1.6.1</m:dependency.management__org.slf4j__jul-to-slf4j__version>
-		<m:dependency.management__javax.inject__javax.inject__scope>compile</m:dependency.management__javax.inject__javax.inject__scope>
-		<m:dependency.management__org.sonatype.sisu__sisu-inject-bean__version>2.1.1</m:dependency.management__org.sonatype.sisu__sisu-inject-bean__version>
-		<m:dependency.management__org.slf4j__slf4j-api__scope>compile</m:dependency.management__org.slf4j__slf4j-api__scope>
-		<m:dependency.management__org.sonatype.sisu__sisu-inject-bean__scope>runtime</m:dependency.management__org.sonatype.sisu__sisu-inject-bean__scope>
-		<m:dependency.management__org.sonatype.sisu__sisu-guice__scope>runtime</m:dependency.management__org.sonatype.sisu__sisu-guice__scope>
-		<m:dependency.management__org.slf4j__jcl-over-slf4j__scope>runtime</m:dependency.management__org.slf4j__jcl-over-slf4j__scope>
 		<m:properties__forgeSnapshotId>forge-snapshots</m:properties__forgeSnapshotId>
-		<m:dependency.management__org.slf4j__jcl-over-slf4j__version>1.6.1</m:dependency.management__org.slf4j__jcl-over-slf4j__version>
-		<m:dependency.management__org.slf4j__slf4j-api__version>1.6.1</m:dependency.management__org.slf4j__slf4j-api__version>
-		<m:dependency.management__org.codehaus.plexus__plexus-compiler-test__version>2.1</m:dependency.management__org.codehaus.plexus__plexus-compiler-test__version>
-		<m:dependency.management__org.sonatype.sisu__sisu-inject-plexus__scope>compile</m:dependency.management__org.sonatype.sisu__sisu-inject-plexus__scope>
-		<m:dependency.management__junit__junit__version>3.8.2</m:dependency.management__junit__junit__version>
-		<m:properties__plexusDistMgmtSnapshotsUrl>https://oss.sonatype.org/content/repositories/plexus-snapshots</m:properties__plexusDistMgmtSnapshotsUrl>
-		<m:dependency.management__org.slf4j__slf4j-simple__scope>test</m:dependency.management__org.slf4j__slf4j-simple__scope>
 		<m:properties__forgeReleaseUrl>https://repository.sonatype.org/service/local/staging/deploy/maven2</m:properties__forgeReleaseUrl>
-		<m:maven.plugins>org.codehaus.plexus__plexus-component-metadata__null|org.codehaus.plexus__plexus-component-metadata__null|org.codehaus.plexus__plexus-component-metadata__null|org.apache.maven.plugins__maven-gpg-plugin__null</m:maven.plugins>
-		<m:dependency.management__org.codehaus.plexus__plexus-component-annotations__version>1.5.5</m:dependency.management__org.codehaus.plexus__plexus-component-annotations__version>
-		<m:dependency.management__junit__junit__scope>test</m:dependency.management__junit__junit__scope>
-		<m:dependency.management__org.sonatype.sisu__sisu-inject-plexus__version>2.1.1</m:dependency.management__org.sonatype.sisu__sisu-inject-plexus__version>
-		<m:dependency.management__org.codehaus.plexus__plexus-utils__version>3.0.8</m:dependency.management__org.codehaus.plexus__plexus-utils__version>
-		<m:dependency.management__org.codehaus.plexus__plexus-container-default__version>1.0-alpha-9-stable-1</m:dependency.management__org.codehaus.plexus__plexus-container-default__version>
-		<m:dependency.management__org.codehaus.plexus__plexus-utils__scope>compile</m:dependency.management__org.codehaus.plexus__plexus-utils__scope>
-		<m:properties__slf4j.version>1.6.1</m:properties__slf4j.version>
-		<m:dependency.management__org.slf4j__slf4j-simple__version>1.6.1</m:dependency.management__org.slf4j__slf4j-simple__version>
-		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
-		<m:dependency.management__org.codehaus.plexus__plexus-compiler-api__version>2.1</m:dependency.management__org.codehaus.plexus__plexus-compiler-api__version>
-		<m:dependency.management__javax.inject__javax.inject__version>1</m:dependency.management__javax.inject__javax.inject__version>
+		<m:dependency.management__org.sonatype.sisu__sisu-inject-bean__version>2.1.1</m:dependency.management__org.sonatype.sisu__sisu-inject-bean__version>
+		<m:dependency.management__org.sonatype.sisu__sisu-inject-bean__scope>runtime</m:dependency.management__org.sonatype.sisu__sisu-inject-bean__scope>
 		<m:dependency.management__org.sonatype.sisu__sisu-guice__version>2.9.4</m:dependency.management__org.sonatype.sisu__sisu-guice__version>
+		<m:dependency.management__org.sonatype.sisu__sisu-guice__scope>runtime</m:dependency.management__org.sonatype.sisu__sisu-guice__scope>
+		<m:dependency.management__javax.inject__javax.inject__version>1</m:dependency.management__javax.inject__javax.inject__version>
+		<m:dependency.management__javax.inject__javax.inject__scope>compile</m:dependency.management__javax.inject__javax.inject__scope>
+		<m:dependency.management__org.sonatype.sisu__sisu-inject-plexus__version>2.1.1</m:dependency.management__org.sonatype.sisu__sisu-inject-plexus__version>
+		<m:dependency.management__org.sonatype.sisu__sisu-inject-plexus__scope>compile</m:dependency.management__org.sonatype.sisu__sisu-inject-plexus__scope>
+		<m:dependency.management__org.codehaus.plexus__plexus-component-annotations__version>1.5.5</m:dependency.management__org.codehaus.plexus__plexus-component-annotations__version>
 		<m:dependency.management__org.codehaus.plexus__plexus-component-annotations__scope>compile</m:dependency.management__org.codehaus.plexus__plexus-component-annotations__scope>
-		<m:properties__forgeReleaseId>forge-releases</m:properties__forgeReleaseId>
-		<m:dependency.management__org.slf4j__jul-to-slf4j__scope>runtime</m:dependency.management__org.slf4j__jul-to-slf4j__scope>
-		<m:dependency.management__org.codehaus.plexus__plexus-classworlds__scope>compile</m:dependency.management__org.codehaus.plexus__plexus-classworlds__scope>
 		<m:dependency.management__org.codehaus.plexus__plexus-classworlds__version>2.4</m:dependency.management__org.codehaus.plexus__plexus-classworlds__version>
+		<m:dependency.management__org.codehaus.plexus__plexus-classworlds__scope>compile</m:dependency.management__org.codehaus.plexus__plexus-classworlds__scope>
+		<m:dependency.management__org.codehaus.plexus__plexus-utils__version>3.0.8</m:dependency.management__org.codehaus.plexus__plexus-utils__version>
+		<m:dependency.management__org.codehaus.plexus__plexus-utils__scope>compile</m:dependency.management__org.codehaus.plexus__plexus-utils__scope>
+		<m:dependency.management__org.slf4j__slf4j-api__version>1.6.1</m:dependency.management__org.slf4j__slf4j-api__version>
+		<m:dependency.management__org.slf4j__slf4j-api__scope>compile</m:dependency.management__org.slf4j__slf4j-api__scope>
+		<m:dependency.management__org.slf4j__jcl-over-slf4j__version>1.6.1</m:dependency.management__org.slf4j__jcl-over-slf4j__version>
+		<m:dependency.management__org.slf4j__jcl-over-slf4j__scope>runtime</m:dependency.management__org.slf4j__jcl-over-slf4j__scope>
+		<m:dependency.management__org.slf4j__jul-to-slf4j__version>1.6.1</m:dependency.management__org.slf4j__jul-to-slf4j__version>
+		<m:dependency.management__org.slf4j__jul-to-slf4j__scope>runtime</m:dependency.management__org.slf4j__jul-to-slf4j__scope>
+		<m:dependency.management__org.slf4j__slf4j-simple__version>1.6.1</m:dependency.management__org.slf4j__slf4j-simple__version>
+		<m:dependency.management__org.slf4j__slf4j-simple__scope>test</m:dependency.management__org.slf4j__slf4j-simple__scope>
+		<m:dependency.management__junit__junit__version>3.8.2</m:dependency.management__junit__junit__version>
+		<m:dependency.management__junit__junit__scope>test</m:dependency.management__junit__junit__scope>
+		<m:dependency.management__org.codehaus.plexus__plexus-container-default__version>1.0-alpha-9-stable-1</m:dependency.management__org.codehaus.plexus__plexus-container-default__version>
+		<m:maven.plugins>org.codehaus.plexus__plexus-component-metadata__null|org.codehaus.plexus__plexus-component-metadata__null|org.codehaus.plexus__plexus-component-metadata__null|org.apache.maven.plugins__maven-gpg-plugin__null</m:maven.plugins>
+		<m:dependency.management__org.codehaus.plexus__plexus-compiler-api__version>2.1</m:dependency.management__org.codehaus.plexus__plexus-compiler-api__version>
+		<m:dependency.management__org.codehaus.plexus__plexus-compiler-test__version>2.1</m:dependency.management__org.codehaus.plexus__plexus-compiler-test__version>
 	</info>
 	<configurations>
 		<conf name="default" visibility="public" description="runtime dependencies and master artifact can be used with this conf" extends="runtime,master"/>

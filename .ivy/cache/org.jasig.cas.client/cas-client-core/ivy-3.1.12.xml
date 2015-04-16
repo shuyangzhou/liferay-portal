@@ -7,9 +7,9 @@
 		publication="20101012205805"
 	>
 		<description homepage="" />
+		<m:properties__spring.version>2.5.6.SEC01</m:properties__spring.version>
 		<m:properties__ehcache.version>1.5.0</m:properties__ehcache.version>
 		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
-		<m:properties__spring.version>2.5.6.SEC01</m:properties__spring.version>
 		<m:properties__sonatypeOssDistMgmtSnapshotsUrl>https://oss.sonatype.org/content/repositories/snapshots/</m:properties__sonatypeOssDistMgmtSnapshotsUrl>
 		<m:maven.plugins>org.apache.maven.plugins__maven-enforcer-plugin__1.0-beta-1|org.apache.maven.plugins__maven-enforcer-plugin__1.0-beta-1|org.apache.maven.plugins__maven-assembly-plugin__2.2-beta-1|org.apache.maven.plugins__maven-compiler-plugin__null|org.apache.maven.plugins__maven-surefire-plugin__null|org.apache.maven.plugins__maven-clover-plugin__null|org.apache.maven.plugins__maven-enforcer-plugin__1.0-beta-1|org.apache.maven.plugins__maven-enforcer-plugin__1.0-beta-1|org.apache.maven.plugins__maven-assembly-plugin__2.2-beta-1|org.apache.maven.plugins__maven-compiler-plugin__null|org.apache.maven.plugins__maven-surefire-plugin__null|org.apache.maven.plugins__maven-clover-plugin__null</m:maven.plugins>
 	</info>
