@@ -14,6 +14,7 @@
 
 package com.liferay.portal.security.membershippolicy;
 
+import com.liferay.portal.kernel.test.randomizerbumpers.NumericStringRandomizerBumper;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
@@ -168,7 +169,8 @@ public class SiteMembershipPolicyRowCheckerTest
 			renderResponse, forbiddenGroup);
 
 		User user = UserTestUtil.addUser(
-			RandomTestUtil.randomString(), forbiddenGroupId);
+			RandomTestUtil.randomString(NumericStringRandomizerBumper.INSTANCE),
+			forbiddenGroupId);
 
 		Assert.assertFalse(siteMembershipChecker.isDisabled(user));
 	}
@@ -208,7 +210,8 @@ public class SiteMembershipPolicyRowCheckerTest
 			renderResponse, requiredGroup);
 
 		User user = UserTestUtil.addUser(
-			RandomTestUtil.randomString(), requiredGroupId);
+			RandomTestUtil.randomString(NumericStringRandomizerBumper.INSTANCE),
+			requiredGroupId);
 
 		Assert.assertTrue(siteMembershipChecker.isDisabled(user));
 	}

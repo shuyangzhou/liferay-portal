@@ -53,7 +53,7 @@ public class ResourceLocalServiceTest {
 		_users = new User[ServiceTestUtil.THREAD_COUNT];
 
 		for (int i = 0; i < ServiceTestUtil.THREAD_COUNT; i++) {
-			User user = UserTestUtil.addUser(
+			User user = UserTestUtil.addUserCustomScreenName(
 				"ResourceLocalServiceTest" + (i + 1), _group.getGroupId());
 
 			_users[i] = user;
