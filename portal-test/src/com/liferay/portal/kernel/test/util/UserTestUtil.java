@@ -72,9 +72,7 @@ public class UserTestUtil {
 	public static User addGroupUser(Group group, String roleName)
 		throws Exception {
 
-		User groupUser = addUser(
-			RandomTestUtil.randomString(NumericStringRandomizerBumper.INSTANCE),
-			group.getGroupId());
+		User groupUser = addUserRandomScreenName(group.getGroupId());
 
 		Role role = RoleLocalServiceUtil.getRole(
 			TestPropsValues.getCompanyId(), roleName);
@@ -112,8 +110,7 @@ public class UserTestUtil {
 			Organization organization, String roleName)
 		throws Exception {
 
-		User organizationUser = addUser(
-			RandomTestUtil.randomString(NumericStringRandomizerBumper.INSTANCE),
+		User organizationUser = addUserRandomScreenName(
 			organization.getGroupId());
 
 		long[] userIds = {organizationUser.getUserId()};
@@ -131,9 +128,7 @@ public class UserTestUtil {
 	}
 
 	public static User addUser() throws Exception {
-		return addUser(
-			RandomTestUtil.randomString(NumericStringRandomizerBumper.INSTANCE),
-			TestPropsValues.getGroupId());
+		return addUserRandomScreenName(TestPropsValues.getGroupId());
 	}
 
 	public static User addUser(boolean secure) throws Exception {

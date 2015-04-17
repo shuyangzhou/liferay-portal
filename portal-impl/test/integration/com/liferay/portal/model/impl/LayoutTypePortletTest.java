@@ -15,7 +15,6 @@
 package com.liferay.portal.model.impl;
 
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
-import com.liferay.portal.kernel.test.randomizerbumpers.NumericStringRandomizerBumper;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
@@ -163,9 +162,7 @@ public class LayoutTypePortletTest {
 	public void testAddPortletIdCheckColumn() throws Exception {
 		Layout layout = _layoutTypePortlet.getLayout();
 
-		_user = UserTestUtil.addUser(
-			RandomTestUtil.randomString(NumericStringRandomizerBumper.INSTANCE),
-			layout.getGroupId());
+		_user = UserTestUtil.addUserRandomScreenName(layout.getGroupId());
 
 		String portletId = PortletKeys.TEST;
 
@@ -191,9 +188,7 @@ public class LayoutTypePortletTest {
 	public void testAddPortletIdColumn2() throws Exception {
 		Layout layout = _layoutTypePortlet.getLayout();
 
-		_user = UserTestUtil.addUser(
-			RandomTestUtil.randomString(NumericStringRandomizerBumper.INSTANCE),
-			layout.getGroupId());
+		_user = UserTestUtil.addUserRandomScreenName(layout.getGroupId());
 
 		String portletId = PortletKeys.TEST;
 
@@ -224,9 +219,7 @@ public class LayoutTypePortletTest {
 	public void testAddPortletIdWithInvalidId() throws Exception {
 		Layout layout = _layoutTypePortlet.getLayout();
 
-		_user = UserTestUtil.addUser(
-			RandomTestUtil.randomString(NumericStringRandomizerBumper.INSTANCE),
-			layout.getGroupId());
+		_user = UserTestUtil.addUserRandomScreenName(layout.getGroupId());
 
 		String portletId = RandomTestUtil.randomString();
 
@@ -240,9 +233,7 @@ public class LayoutTypePortletTest {
 	public void testAddPortletIdWithValidId() throws Exception {
 		Layout layout = _layoutTypePortlet.getLayout();
 
-		_user = UserTestUtil.addUser(
-			RandomTestUtil.randomString(NumericStringRandomizerBumper.INSTANCE),
-			layout.getGroupId());
+		_user = UserTestUtil.addUserRandomScreenName(layout.getGroupId());
 
 		String portletId = PortletKeys.TEST;
 
@@ -256,9 +247,7 @@ public class LayoutTypePortletTest {
 	public void testGetAllPortlets() throws Exception {
 		Layout layout = _layoutTypePortlet.getLayout();
 
-		_user = UserTestUtil.addUser(
-			RandomTestUtil.randomString(NumericStringRandomizerBumper.INSTANCE),
-			layout.getGroupId());
+		_user = UserTestUtil.addUserRandomScreenName(layout.getGroupId());
 
 		final String portletId = _layoutTypePortlet.addPortletId(
 			_user.getUserId(), PortletKeys.TEST);

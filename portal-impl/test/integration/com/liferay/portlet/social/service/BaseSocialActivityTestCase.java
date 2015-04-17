@@ -52,8 +52,10 @@ public class BaseSocialActivityTestCase {
 	public void setUp() throws Exception {
 		_group = GroupTestUtil.addGroup();
 
-		_actorUser = UserTestUtil.addUser("actor", _group.getGroupId());
-		_creatorUser = UserTestUtil.addUser("creator", _group.getGroupId());
+		_actorUser = UserTestUtil.addUserCustomScreenName(
+			"actor", _group.getGroupId());
+		_creatorUser = UserTestUtil.addUserCustomScreenName(
+			"creator", _group.getGroupId());
 
 		_assetEntry = SocialActivityTestUtil.addAssetEntry(
 			_creatorUser, _group, null);

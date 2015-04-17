@@ -84,8 +84,10 @@ public class DLCheckInCheckOutTest {
 			ResourceConstants.SCOPE_GROUP, String.valueOf(_group.getGroupId()),
 			ActionKeys.VIEW);
 
-		_authorUser = UserTestUtil.addUser("author", _group.getGroupId());
-		_overriderUser = UserTestUtil.addUser("overrider", _group.getGroupId());
+		_authorUser = UserTestUtil.addUserCustomScreenName(
+			"author", _group.getGroupId());
+		_overriderUser = UserTestUtil.addUserCustomScreenName(
+			"overrider", _group.getGroupId());
 
 		_serviceContext = ServiceContextTestUtil.getServiceContext(
 			_group.getGroupId(), 0);
