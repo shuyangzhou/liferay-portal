@@ -7,7 +7,7 @@
 	<property name="auto.deploy.dir" value="${liferay.home}/osgi/portal" />
 
 	<property name="alloy.version" value="3.0.1" />
-	<property name="alloyeditor.version" value="0.2.5" />
+	<property name="alloyeditor.version" value="0.2.6" />
 	<property name="ckeditor.file" value="ckeditor_4.4.5_liferay.zip" />
 	<property name="html.js.dir" value="src/META-INF/resources/html/js" />
 	<property name="scayt.file" value="scayt_4.4.5.zip" />
@@ -59,7 +59,7 @@
 					/>
 				</concat>
 
-				<for param="dir">
+				<for param="aui.dir">
 					<path>
 						<dirset
 							dir="${alloy.build.dir}"
@@ -67,24 +67,24 @@
 						/>
 					</path>
 					<sequential>
-						<basename property="dir.name" file="@{dir}" />
+						<basename property="aui.dir.name" file="@{aui.dir}" />
 
 						<if>
 							<and>
-								<available file="${alloy.build.dir}/${dir.name}/assets/skins/sam/${dir.name}.css" />
-								<matches pattern="-deprecated" string="${dir.name}" />
+								<available file="${alloy.build.dir}/${aui.dir.name}/assets/skins/sam/${aui.dir.name}.css" />
+								<matches pattern="-deprecated" string="${aui.dir.name}" />
 							</and>
 							<then>
 								<concat append="true" destfile="${alloy.temp.dir}/aui_deprecated.css">
 									<filelist
-										dir="${alloy.build.dir}/${dir.name}/assets/skins/sam"
-										files="${dir.name}.css"
+										dir="${alloy.build.dir}/${aui.dir.name}/assets/skins/sam"
+										files="${aui.dir.name}.css"
 									/>
 								</concat>
 							</then>
 						</if>
 
-						<var name="dir.name" unset="true" />
+						<var name="aui.dir.name" unset="true" />
 					</sequential>
 				</for>
 
@@ -159,18 +159,31 @@
 					<fileset dir="tmp/META-INF/resources/html/js/editor/_tmp/alloy-editor-${alloyeditor.version}/alloy-editor" />
 				</copy>
 
-				<copy todir="tmp/META-INF/resources/html/js/editor/alloyeditor" overwrite="true" preservelastmodified="true">
-					<fileset dir="${html.js.dir}/editor/alloyeditor_diffs" />
-				</copy>
-
 				<delete dir="tmp/META-INF/resources/html/js/editor/_tmp" />
 			</then>
-			<else>
-				<copy todir="tmp/META-INF/resources/html/js/editor/alloyeditor" preservelastmodified="true">
-					<fileset dir="${html.js.dir}/editor/alloyeditor_diffs" />
-				</copy>
-			</else>
 		</if>
+
+		<copy todir="tmp/META-INF/resources/html/js/editor/alloyeditor" preservelastmodified="true">
+			<fileset dir="${html.js.dir}/editor/alloyeditor_diffs" />
+		</copy>
+
+		<for param="alloy.editor.file">
+			<path>
+				<fileset dir="tmp/META-INF/resources/html/js/editor/alloyeditor" includes="alloy-editor*.js" />
+			</path>
+			<sequential>
+				<basename property="alloy.editor.file.name" file="@{alloy.editor.file}" suffix=".js" />
+
+				<concat destfile="tmp/META-INF/resources/html/js/editor/alloyeditor/liferay-${alloy.editor.file.name}.js">
+					<fileset file="@{alloy.editor.file}" />
+					<fileset dir="${html.js.dir}/editor/alloyeditor_diffs/buttons" >
+						<include name="**/*.js" />
+					</fileset>
+				</concat>
+
+				<var name="alloy.editor.file.name" unset="true" />
+			</sequential>
+		</for>
 	</target>
 
 	<target name="build-ckeditor">
