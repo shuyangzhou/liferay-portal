@@ -322,7 +322,7 @@ public class DLAppServiceTest extends BaseDLAppTestCase {
 			_users = new User[ServiceTestUtil.THREAD_COUNT];
 
 			for (int i = 0; i < ServiceTestUtil.THREAD_COUNT; i++) {
-				User user = UserTestUtil.addUser(
+				User user = UserTestUtil.addUserCustomScreenName(
 					"DLAppServiceTest" + (i + 1), group.getGroupId());
 
 				_users[i] = user;

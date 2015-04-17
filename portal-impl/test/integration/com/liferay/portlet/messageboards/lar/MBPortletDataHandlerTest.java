@@ -127,8 +127,8 @@ public class MBPortletDataHandlerTest extends BasePortletDataHandlerTestCase {
 		MBThreadFlagLocalServiceUtil.addThreadFlag(
 			TestPropsValues.getUserId(), message.getThread(), serviceContext);
 
-		User user = UserTestUtil.addUser(
-			RandomTestUtil.randomString(), TestPropsValues.getGroupId());
+		User user = UserTestUtil.addUserRandomScreenName(
+			TestPropsValues.getGroupId());
 
 		MBBanLocalServiceUtil.addBan(
 			TestPropsValues.getUserId(), user.getUserId(), serviceContext);

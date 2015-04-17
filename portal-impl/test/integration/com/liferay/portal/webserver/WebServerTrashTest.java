@@ -72,7 +72,7 @@ public class WebServerTrashTest extends BaseWebServerTestCase {
 	public void setUp() throws Exception {
 		super.setUp();
 
-		_user = UserTestUtil.addUser(null, group.getGroupId());
+		_user = UserTestUtil.addUserAutoScreenName(group.getGroupId());
 
 		String portletId = PortletProviderUtil.getPortletId(
 			TrashEntry.class.getName(), PortletProvider.Action.VIEW);

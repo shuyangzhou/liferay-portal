@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.search.QueryConfig;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.Sort;
+import com.liferay.portal.kernel.test.randomizerbumpers.NumericStringRandomizerBumper;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.rule.Sync;
@@ -76,8 +77,9 @@ public class SearchPaginationTest {
 
 		for (int i = 0; i < _USERS_COUNT; i ++) {
 			User user = UserTestUtil.addUser(
-				RandomTestUtil.randomString(), false,
-				RandomTestUtil.randomString(), _randomLastName,
+				RandomTestUtil.randomString(
+					NumericStringRandomizerBumper.INSTANCE),
+				false, RandomTestUtil.randomString(), _randomLastName,
 				new long[] {TestPropsValues.getGroupId()});
 
 			_users.add(user);

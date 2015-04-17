@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.test.util;
 
+import com.liferay.portal.kernel.test.randomizerbumpers.NumericStringRandomizerBumper;
 import com.liferay.portal.model.Address;
 import com.liferay.portal.model.EmailAddress;
 import com.liferay.portal.model.ListType;
@@ -83,7 +84,8 @@ public class OrganizationTestUtil {
 		throws Exception {
 
 		User user = UserTestUtil.addUser(
-			RandomTestUtil.randomString(), false, null);
+			RandomTestUtil.randomString(NumericStringRandomizerBumper.INSTANCE),
+			false, null);
 
 		return OrganizationLocalServiceUtil.addOrganization(
 			user.getUserId(), parentOrganizationId, name, site);

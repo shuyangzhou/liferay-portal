@@ -51,7 +51,7 @@ public class UserGroupRoleLocalServiceTest {
 	public void testAddUserGroupRoles() throws Exception {
 		_group = GroupTestUtil.addGroup();
 
-		_user = UserTestUtil.addUser(null, _group.getGroupId());
+		_user = UserTestUtil.addUserAutoScreenName(_group.getGroupId());
 
 		Role role = RoleLocalServiceUtil.getRole(
 			TestPropsValues.getCompanyId(), RoleConstants.SITE_ADMINISTRATOR);

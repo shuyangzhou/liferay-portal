@@ -86,7 +86,7 @@ public class AssetTagFinderTest {
 
 		addBlogsEntry(_scopeGroup.getGroupId(), assetTagName);
 
-		User user = UserTestUtil.addUser(null, 0);
+		User user = UserTestUtil.addUserAutoScreenName(0);
 
 		PermissionChecker originalPermissionChecker =
 			PermissionThreadLocal.getPermissionChecker();
@@ -128,7 +128,7 @@ public class AssetTagFinderTest {
 
 		addBlogsEntry(_scopeGroup.getGroupId(), assetTagName);
 
-		User user = UserTestUtil.addUser(null, 0);
+		User user = UserTestUtil.addUserAutoScreenName(0);
 
 		PermissionChecker originalPermissionChecker =
 			PermissionThreadLocal.getPermissionChecker();
@@ -173,7 +173,7 @@ public class AssetTagFinderTest {
 
 		addBlogsEntry(_scopeGroup.getGroupId(), assetTagName);
 
-		User user = UserTestUtil.addUser(null, 0);
+		User user = UserTestUtil.addUserAutoScreenName(0);
 
 		PermissionChecker originalPermissionChecker =
 			PermissionThreadLocal.getPermissionChecker();

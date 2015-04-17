@@ -15,11 +15,11 @@
 package com.liferay.portal.kernel.test.util;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.test.randomizerbumpers.NumericStringRandomizerBumper;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.Company;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Organization;
@@ -72,8 +72,7 @@ public class UserTestUtil {
 	public static User addGroupUser(Group group, String roleName)
 		throws Exception {
 
-		User groupUser = addUser(
-			RandomTestUtil.randomString(), group.getGroupId());
+		User groupUser = addUserRandomScreenName(group.getGroupId());
 
 		Role role = RoleLocalServiceUtil.getRole(
 			TestPropsValues.getCompanyId(), roleName);
@@ -111,8 +110,8 @@ public class UserTestUtil {
 			Organization organization, String roleName)
 		throws Exception {
 
-		User organizationUser = addUser(
-			RandomTestUtil.randomString(), organization.getGroupId());
+		User organizationUser = addUserRandomScreenName(
+			organization.getGroupId());
 
 		long[] userIds = {organizationUser.getUserId()};
 
@@ -129,8 +128,7 @@ public class UserTestUtil {
 	}
 
 	public static User addUser() throws Exception {
-		return addUser(
-			RandomTestUtil.randomString(), TestPropsValues.getGroupId());
+		return addUserRandomScreenName(TestPropsValues.getGroupId());
 	}
 
 	public static User addUser(boolean secure) throws Exception {
@@ -188,9 +186,9 @@ public class UserTestUtil {
 
 	public static User addUser(long groupId, Locale locale) throws Exception {
 		return addUser(
-			RandomTestUtil.randomString(), false, locale,
-			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
-			new long[] {groupId});
+			RandomTestUtil.randomString(NumericStringRandomizerBumper.INSTANCE),
+			false, locale, RandomTestUtil.randomString(),
+			RandomTestUtil.randomString(), new long[] {groupId});
 	}
 
 	public static User addUser(
@@ -265,15 +263,20 @@ public class UserTestUtil {
 			lastName, groupIds);
 	}
 
-	public static User addUser(String screenName, long groupId)
+	public static User addUserAutoScreenName(long groupId) throws Exception {
+		return addUser(null, true, new long[] {groupId});
+	}
+
+	public static User addUserCustomScreenName(String screenName, long groupId)
 		throws Exception {
 
-		if (Validator.isNull(screenName)) {
-			return addUser(null, true, new long[] {groupId});
-		}
-		else {
-			return addUser(screenName, false, new long[] {groupId});
-		}
+		return addUser(screenName, false, new long[] {groupId});
+	}
+
+	public static User addUserRandomScreenName(long groupId) throws Exception {
+		return addUserCustomScreenName(
+			RandomTestUtil.randomString(NumericStringRandomizerBumper.INSTANCE),
+			groupId);
 	}
 
 	public static User getAdminUser(long companyId) throws PortalException {

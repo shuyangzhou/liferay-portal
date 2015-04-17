@@ -710,13 +710,13 @@ public abstract class BaseSearchTestCase {
 	}
 
 	protected void searchMyEntries() throws Exception {
-		User user1 = UserTestUtil.addUser(null, 0);
+		User user1 = UserTestUtil.addUserAutoScreenName(0);
 
 		long initialUser1SearchGroupEntriesCount = 0;
 
 		assertGroupEntriesCount(initialUser1SearchGroupEntriesCount, user1);
 
-		User user2 = UserTestUtil.addUser(null, 0);
+		User user2 = UserTestUtil.addUserAutoScreenName(0);
 
 		long initialUser2SearchGroupEntriesCount = 0;
 
@@ -801,7 +801,7 @@ public abstract class BaseSearchTestCase {
 		String name = PrincipalThreadLocal.getName();
 
 		try {
-			User user1 = UserTestUtil.addUser(null, 0);
+			User user1 = UserTestUtil.addUserAutoScreenName(0);
 
 			PrincipalThreadLocal.setName(user1.getUserId());
 
@@ -815,7 +815,7 @@ public abstract class BaseSearchTestCase {
 				parentBaseModel2, true, RandomTestUtil.randomString(),
 				serviceContext);
 
-			User user2 = UserTestUtil.addUser(null, 0);
+			User user2 = UserTestUtil.addUserAutoScreenName(0);
 
 			PrincipalThreadLocal.setName(user2.getUserId());
 
@@ -971,7 +971,7 @@ public abstract class BaseSearchTestCase {
 		baseModel = addBaseModel(
 			parentBaseModel, true, getSearchKeywords(), serviceContext);
 
-		User user = UserTestUtil.addUser(null, 0);
+		User user = UserTestUtil.addUserAutoScreenName(0);
 
 		PermissionChecker originalPermissionChecker =
 			PermissionThreadLocal.getPermissionChecker();
