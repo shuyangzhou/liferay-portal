@@ -145,7 +145,7 @@ public class BaseMessageDigestCacheKeyGenerator extends BaseCacheKeyGenerator {
 		BaseMessageDigestCacheKeyGenerator.class);
 
 	private final CharsetEncoder _charsetEncoder;
-	private final char[] _encodeBuffer = new char[32];
+	private final char[] _encodeBuffer = new char[128];
 	private int _maxLength = -1;
 	private final MessageDigest _messageDigest;
 
