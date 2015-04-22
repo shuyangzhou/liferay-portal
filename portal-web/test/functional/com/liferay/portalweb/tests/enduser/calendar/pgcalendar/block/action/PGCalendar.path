@@ -9,11 +9,6 @@
 </thead>
 <tbody>
 <tr>
-	<td></td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
 	<td>COG_ICON</td>
 	<td>//div[@id='main-content']//i[contains(@class,'icon-cog') and contains(@class,'lfr-icon-menu-icon')]</td>
 	<td></td>
@@ -169,7 +164,7 @@
 </tr>
 <tr>
 	<td>MY_CALENDARS_MENULIST_ARROW</td>
-	<td>//div[contains(@class,'toggler-header-expanded') and contains(.,'My Calendars')]/span[@class='calendar-list-item-arrow']</td>
+	<td>//div[contains(@class,'toggler-header-expanded') and contains(.,'My Calendars')]/span[@class='calendar-list-item-arrow']/i[contains(@class,'icon-caret-down')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -211,7 +206,7 @@
 </tr>
 <tr>
 	<td>MY_CALENDARS_CALENDAR_PRIMARY_MENULIST_ARROW</td>
-	<td>//div[contains(@id,'calendarportlet_myCalendarList')]/div/div[contains(.,'${key_user}')]/div[@class='calendar-list-item-arrow']</td>
+	<td>//div[contains(@id,'calendarportlet_myCalendarList')]/div/div[contains(.,'${key_user}')]/div[@class='calendar-list-item-arrow']/i[contains(@class,'icon-caret-down')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -221,7 +216,7 @@
 </tr>
 <tr>
 	<td>MY_CALENDARS_CALENDAR_PRIMARY_GENERIC_MENULIST_ARROW</td>
-	<td>//div[contains(@id,'calendarportlet_myCalendarList')]/div/div/div[@class='calendar-list-item-arrow']</td>
+	<td>//div[contains(@id,'calendarportlet_myCalendarList')]/div/div/div[@class='calendar-list-item-arrow']/i[contains(@class,'icon-caret-down')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -231,7 +226,7 @@
 </tr>
 <tr>
 	<td>MY_CALENDARS_CALENDAR_ADDITIONAL_MENULIST_ARROW</td>
-	<td>//div[contains(@id,'calendarportlet_myCalendarList')]/div/div[contains(., '${key_user} - ${key_calendarName}')]/div[@class='calendar-list-item-arrow']</td>
+	<td>//div[contains(@id,'calendarportlet_myCalendarList')]/div/div[contains(., '${key_user} - ${key_calendarName}')]/div[@class='calendar-list-item-arrow']/i[contains(@class,'icon-caret-down')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -241,7 +236,7 @@
 </tr>
 <tr>
 	<td>MY_CALENDARS_CALENDAR_ADDITIONAL_GENERIC_MENULIST_ARROW</td>
-	<td>//div[contains(@id,'calendarportlet_myCalendarList')]/div/div[2]/div[@class='calendar-list-item-arrow']</td>
+	<td>//div[contains(@id,'calendarportlet_myCalendarList')]/div/div[2]/div[@class='calendar-list-item-arrow']/i[contains(@class,'icon-caret-down')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -298,7 +293,7 @@
 </tr>
 <tr>
 	<td>CURRENT_SITE_CALENDARS_MENULIST_ARROW</td>
-	<td>//div[contains(@class,'toggler-header-expanded') and contains(.,'Current Site Calendars')]/span[@class='calendar-list-item-arrow']</td>
+	<td>//div[contains(@class,'toggler-header-expanded') and contains(.,'Current Site Calendars')]/span[@class='calendar-list-item-arrow']/i[contains(@class,'icon-caret-down')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -340,7 +335,7 @@
 </tr>
 <tr>
 	<td>CURRENT_SITE_CALENDARS_CALENDAR_PRIMARY_MENULIST_ARROW</td>
-	<td>//div[contains(@id,'calendarportlet_siteCalendarList')]/div/div[contains(.,'${key_site}')]/div[@class='calendar-list-item-arrow']/i[@class='icon-caret-down']</td>
+	<td>//div[contains(@id,'calendarportlet_siteCalendarList')]//div[contains(.,'${key_site}')]/div[@class='calendar-list-item-arrow']/i[contains(@class,'icon-caret-down')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -350,7 +345,7 @@
 </tr>
 <tr>
 	<td>CURRENT_SITE_CALENDARS_CALENDAR_PRIMARY_GENERIC_MENULIST_ARROW</td>
-	<td>//div[contains(@id,'calendarportlet_siteCalendarList')]/div/div/div[@class='calendar-list-item-arrow']/i[@class='icon-caret-down']</td>
+	<td>//div[contains(@id,'calendarportlet_siteCalendarList')]//div[@class='calendar-list-item-arrow']|//div[contains(@id,'calendarportlet_siteCalendarList')]//div[@class='calendar-list-item-arrow']/i[@class='icon-caret-down']</td>
 	<td></td>
 </tr>
 <tr>
@@ -365,12 +360,12 @@
 </tr>
 <tr>
 	<td>CURRENT_SITE_CALENDARS_CALENDAR_ADDITIONAL_GENERIC_MENULIST_ARROW</td>
-	<td>//div[contains(@id,'calendarportlet_siteCalendarList')]/div/div[2]/div[@class='calendar-list-item-arrow']/i[@class='icon-caret-down']</td>
+	<td>//div[contains(@id,'calendarportlet_siteCalendarList')]/div/div[2]/div[@class='calendar-list-item-arrow']/i[contains(@class,'icon-caret-down')]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>CURRENT_SITE_CALENDARS_CALENDAR_ADDITIONAL_MENULIST_ARROW</td>
-	<td>//div[contains(@id,'calendarportlet_siteCalendarList')]/div/div[contains(., '${key_site} - ${key_calendarName}')]/div[@class='calendar-list-item-arrow']/i[@class='icon-caret-down']</td>
+	<td>//div[contains(@id,'calendarportlet_siteCalendarList')]//div[contains(., '${key_site} - ${key_calendarName}')]/div[@class='calendar-list-item-arrow']|//div[contains(@id,'calendarportlet_siteCalendarList')]//div[contains(., '${key_site} - ${key_calendarName}')]/div[@class='calendar-list-item-arrow']/i[contains(@class,'icon-caret-down')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -443,7 +438,7 @@
 </tr>
 <tr>
 	<td>OTHER_CALENDARS_CALENDAR_MENULIST_ARROW</td>
-	<td>//div[contains(@id,'calendarportlet_otherCalendarList')]/div/div[contains(.,'${key_calendarName}')]/div[@class='calendar-list-item-arrow']</td>
+	<td>//div[contains(@id,'calendarportlet_otherCalendarList')]/div/div[contains(.,'${key_calendarName}')]/div[@class='calendar-list-item-arrow']/i[contains(@class,'icon-caret-down')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -453,7 +448,7 @@
 </tr>
 <tr>
 	<td>OTHER_CALENDARS_CALENDAR_GENERIC_MENULIST_ARROW</td>
-	<td>//div[contains(@id,'calendarportlet_otherCalendarList')]/div/div/div[@class='calendar-list-item-arrow']</td>
+	<td>//div[contains(@id,'calendarportlet_otherCalendarList')]/div/div/div[@class='calendar-list-item-arrow']/i[contains(@class,'icon-caret-down')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -637,13 +632,18 @@
 	<td></td>
 </tr>
 <tr>
-	<td>SCHEDULER_EVENT_REGULAR_TITLE</td>
-	<td>//div[contains(@class,'calendar-portlet-event') and contains(@data-startdate,'${key_startDate}') and contains(@data-starttime,'${key_startDateTime}') and contains(@data-enddate,'${key_endDate}') and contains(@data-endtime,'${key_endDateTime}')]/div[@class='scheduler-event-content']</td>
+	<td>SCHEDULER_EVENT_REGULAR_TITLE_VIA_MONTH</td>
+	<td>//td[@class='scheduler-view-table-data-col']//div[contains(@class,'calendar-portlet-event') and contains(@data-startdate,'${key_startDate}') and contains(@data-starttime,'${key_startDateTime}') and contains(@data-enddate,'${key_endDate}') and contains(@data-endtime,'${key_endDateTime}')]/div[@class='scheduler-event-content']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>SCHEDULER_EVENT_REPEAT</td>
 	<td>//div[contains(@class,'scheduler-event-repeated calendar-portlet-event') and contains(@data-starttime,'${key_startDateTime}') and contains(@data-enddate,'${key_endDate}') and contains(@data-endtime,'${key_endDateTime}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SCHEDULER_EVENT_SPECIFIC_REPEAT</td>
+	<td>//div[contains(@class,'scheduler-event-repeated calendar-portlet-event')]/div[contains(.,'${key_eventTitle}')]</td>
 	<td></td>
 </tr>
 <tr>

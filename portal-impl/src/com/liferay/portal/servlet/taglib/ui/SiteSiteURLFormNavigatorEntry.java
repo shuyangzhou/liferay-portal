@@ -35,12 +35,12 @@ public class SiteSiteURLFormNavigatorEntry extends BaseSiteFormNavigatorEntry {
 
 	@Override
 	public String getKey() {
-		return "url";
+		return "site-url";
 	}
 
 	@Override
 	public String getLabel(Locale locale) {
-		return LanguageUtil.get(locale, "url");
+		return LanguageUtil.get(locale, "site-url");
 	}
 
 	@Override

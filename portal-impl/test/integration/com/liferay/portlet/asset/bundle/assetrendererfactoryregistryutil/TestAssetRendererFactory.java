@@ -77,6 +77,7 @@ public class TestAssetRendererFactory implements AssetRendererFactory {
 		return 1234567890;
 	}
 
+	@Deprecated
 	@Override
 	public Tuple getClassTypeFieldName(
 		long classTypeId, String fieldName, Locale locale) {
@@ -84,6 +85,7 @@ public class TestAssetRendererFactory implements AssetRendererFactory {
 		return null;
 	}
 
+	@Deprecated
 	@Override
 	public List<Tuple> getClassTypeFieldNames(
 		long classTypeId, Locale locale, int start, int end) {
@@ -91,6 +93,7 @@ public class TestAssetRendererFactory implements AssetRendererFactory {
 		return null;
 	}
 
+	@Deprecated
 	@Override
 	public int getClassTypeFieldNamesCount(long classTypeId, Locale locale) {
 		return 0;
@@ -101,6 +104,7 @@ public class TestAssetRendererFactory implements AssetRendererFactory {
 		return null;
 	}
 
+	@Deprecated
 	@Override
 	public Map<Long, String> getClassTypes(long[] groupIds, Locale locale) {
 		return null;
@@ -131,6 +135,7 @@ public class TestAssetRendererFactory implements AssetRendererFactory {
 		return null;
 	}
 
+	@Deprecated
 	@Override
 	public String getTypeName(Locale locale, boolean hasSubtypes) {
 		return null;
@@ -141,6 +146,7 @@ public class TestAssetRendererFactory implements AssetRendererFactory {
 		return null;
 	}
 
+	@Deprecated
 	@Override
 	public PortletURL getURLAdd(
 		LiferayPortletRequest liferayPortletRequest,
@@ -172,6 +178,7 @@ public class TestAssetRendererFactory implements AssetRendererFactory {
 		return false;
 	}
 
+	@Deprecated
 	@Override
 	public boolean hasClassTypeFieldNames(long classTypeId, Locale locale) {
 		return false;

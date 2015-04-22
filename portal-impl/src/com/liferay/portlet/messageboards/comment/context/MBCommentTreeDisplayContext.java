@@ -63,7 +63,7 @@ public class MBCommentTreeDisplayContext implements CommentTreeDisplayContext {
 	}
 
 	@Override
-	public boolean isDiscussionVisible() throws PortalException {
+	public boolean isDiscussionVisible() {
 		if (!_message.isApproved() && !isCommentAuthor() && !isGroupAdmin()) {
 			return false;
 		}
@@ -103,7 +103,7 @@ public class MBCommentTreeDisplayContext implements CommentTreeDisplayContext {
 	}
 
 	@Override
-	public boolean isReplyActionControlVisible() throws PortalException {
+	public boolean isReplyActionControlVisible() {
 		return MBDiscussionPermission.contains(
 			_discussionRequestHelper.getPermissionChecker(),
 			_discussionRequestHelper.getCompanyId(),
@@ -114,8 +114,12 @@ public class MBCommentTreeDisplayContext implements CommentTreeDisplayContext {
 	}
 
 	@Override
-	public boolean isWorkflowStatusVisible() throws PortalException {
-		return (_message != null) && !_message.isApproved();
+	public boolean isWorkflowStatusVisible() {
+		if ((_message != null) && !_message.isApproved()) {
+			return true;
+		}
+
+		return false;
 	}
 
 	protected User getUser() {

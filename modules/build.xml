@@ -22,6 +22,7 @@
 		<dirset dir="apps/journal" includes="*" />
 		<dirset dir="apps/layout" includes="*" />
 		<dirset dir="apps/loan-calculator" includes="*" />
+		<dirset dir="apps/marketplace" includes="*" />
 		<dirset dir="apps/mentions" excludes="mentions-editor-config" includes="*" />
 		<dirset dir="apps/message-boards" includes="*" />
 		<dirset dir="apps/nested-portlets" includes="*" />
