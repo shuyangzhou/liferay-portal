@@ -14,7 +14,6 @@
 
 package com.liferay.portal.cache.key;
 
-import com.liferay.portal.kernel.cache.key.CacheKeyGenerator;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.nio.charset.CharsetEncoderUtil;
@@ -30,7 +29,8 @@ import java.security.NoSuchAlgorithmException;
 /**
  * @author Vilmos Papp
  */
-public class BaseMessageDigestCacheKeyGenerator extends BaseCacheKeyGenerator {
+public abstract class BaseMessageDigestCacheKeyGenerator
+	extends BaseCacheKeyGenerator {
 
 	public BaseMessageDigestCacheKeyGenerator(String algorithm)
 		throws NoSuchAlgorithmException {
@@ -44,16 +44,6 @@ public class BaseMessageDigestCacheKeyGenerator extends BaseCacheKeyGenerator {
 		_maxLength = maxLength;
 		_messageDigest = MessageDigest.getInstance(algorithm);
 		_charsetEncoder = CharsetEncoderUtil.getCharsetEncoder(StringPool.UTF8);
-	}
-
-	@Override
-	public CacheKeyGenerator clone() {
-		try {
-			return new BaseMessageDigestCacheKeyGenerator(_DEFAULT_ALGORITHM);
-		}
-		catch (NoSuchAlgorithmException nsae) {
-			throw new IllegalStateException(nsae.getMessage(), nsae);
-		}
 	}
 
 	@Override
@@ -133,8 +123,6 @@ public class BaseMessageDigestCacheKeyGenerator extends BaseCacheKeyGenerator {
 	}
 
 	private static final boolean _CALLING_GET_CACHE_KEY_THREAD_SAFE = false;
-
-	private static final String _DEFAULT_ALGORITHM = "SHA-1";
 
 	private static final char[] _HEX_CHARACTERS = {
 		'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd',
