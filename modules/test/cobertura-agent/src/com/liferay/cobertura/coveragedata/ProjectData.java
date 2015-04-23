@@ -35,7 +35,8 @@ import net.sourceforge.cobertura.util.FileLocker;
 /**
  * @author Cristina González
  */
-public class ProjectData extends CoverageDataContainer implements HasBeenInstrumented {
+public class ProjectData extends CoverageDataContainer
+	implements HasBeenInstrumented {
 
 	private static final long serialVersionUID = 6;
 
@@ -53,7 +54,9 @@ public class ProjectData extends CoverageDataContainer implements HasBeenInstrum
 			if (packageData == null) {
 				packageData = new PackageData(packageName);
 				// Each key is a package name, stored as an String object.
-				// Each value is information about the package, stored as a PackageData object.
+				// Each value is information about the package, stored as a
+				// PackageData object.
+
 				getChildren().put(packageName, packageData);
 			}
 			packageData.addClassData(classData);
@@ -156,8 +159,8 @@ public class ProjectData extends CoverageDataContainer implements HasBeenInstrum
 	}
 
 	/**
-	 * Get all subpackages of the given package. Includes also specified package if
-	 * it exists.
+	 * Get all subpackages of the given package. Includes also specified
+	 * package if it exists.
 	 *
 	 * @param packageName The package name to find subpackages for.
 	 *        For example, "com.example"
@@ -176,7 +179,10 @@ public class ProjectData extends CoverageDataContainer implements HasBeenInstrum
 			while (iter.hasNext()) {
 				PackageData packageData = (PackageData)iter.next();
 
-				if (packageData.getName().startsWith(packageName + ".") || packageData.getName().equals(packageName) || packageName.equals("")) {
+				if (packageData.getName().startsWith(packageName + ".") ||
+					packageData.getName().equals(packageName) ||
+					packageName.equals("")) {
+
 					subPackages.add(packageData);
 				}
 			}
@@ -251,20 +257,22 @@ public class ProjectData extends CoverageDataContainer implements HasBeenInstrum
 		File dataFile = CoverageDataFileHandler.getDefaultDataFile();
 
 		/*
-		 * A note about the next synchronized block:  Cobertura uses static fields to
-		 * hold the data.   When there are multiple classloaders, each classloader
-		 * will keep track of the line counts for the _classes that it loads.
+		 * A note about the next synchronized block:  Cobertura uses static
+		 * fields to hold the data.   When there are multiple classloaders,
+		 * each classloader will keep track of the line counts for the _classes
+		 * that it loads.
 		 *
-		 * The static initializers for the Cobertura _classes are also called for
-		 * each classloader.   So, there is one shutdown hook for each classloader.
-		 * So, when the JVM exits, each shutdown hook will try to write the
-		 * data it has kept to the datafile.   They will do this at the same
-		 * time.   Before Java 6, this seemed to work fine, but with Java 6, there
-		 * seems to have been a change with how file locks are implemented.   So,
-		 * care has to be taken to make sure only one thread locks a file at a time.
+		 * The static initializers for the Cobertura _classes are also called
+		 * for each classloader.   So, there is one shutdown hook for each
+		 * classloader. So, when the JVM exits, each shutdown hook will try to
+		 * write the data it has kept to the datafile.   They will do this at
+		 * the same time.   Before Java 6, this seemed to work fine, but with
+		 * Java 6, there seems to have been a change with how file locks are
+		 * implemented.   So, care has to be taken to make sure only one thread
+		 * locks a file at a time.
 		 *
-		 * So, we will synchronize on the string that represents the path to the
-		 * dataFile.  Apparently, there will be only one of these in the JVM
+		 * So, we will synchronize on the string that represents the path to
+		 * the dataFile.  Apparently, there will be only one of these in the JVM
 		 * even if there are multiple classloaders.  I assume that is because
 		 * the String class is loaded by the JVM's root classloader.
 		 */
@@ -275,7 +283,8 @@ public class ProjectData extends CoverageDataContainer implements HasBeenInstrum
 				// Read the old data, merge our current data into it, then
 				// write a new ser file.
 				if (fileLocker.lock()) {
-					ProjectData datafileProjectData = loadCoverageDataFromDatafile(dataFile);
+					ProjectData datafileProjectData =
+						loadCoverageDataFromDatafile(dataFile);
 
 					if (datafileProjectData == null) {
 						datafileProjectData = projectDataToSave;
@@ -283,7 +292,8 @@ public class ProjectData extends CoverageDataContainer implements HasBeenInstrum
 					else {
 						datafileProjectData.merge(projectDataToSave);
 					}
-					CoverageDataFileHandler.saveCoverageData(datafileProjectData, dataFile);
+					CoverageDataFileHandler.saveCoverageData(
+						datafileProjectData, dataFile);
 				}
 			}
 			finally {

@@ -69,7 +69,8 @@ public abstract class CoverageDataContainer
 			return false;
 		}
 
-		CoverageDataContainer coverageDataContainer = (CoverageDataContainer)obj;
+		CoverageDataContainer coverageDataContainer =
+			(CoverageDataContainer)obj;
 
 		lock.lock();
 
@@ -297,17 +298,19 @@ public abstract class CoverageDataContainer
 			while (iter.hasNext()) {
 				Object key = iter.next();
 
-				CoverageData newChild = (CoverageData)container.getChildren().get(key);
+				CoverageData newChild = (CoverageData)container.getChildren().
+					get(key);
 
-				CoverageData existingChild = (CoverageData)getChildren().get(key);
+				CoverageData existingChild = (CoverageData)getChildren().
+					get(key);
 
 				if (existingChild != null) {
 					existingChild.merge(newChild);
 				}
 				else {
-					// TODO: Shouldn't we be cloning newChild here?  I think so that
-					//       would be better... but we would need to override the
-					//       clone() method all over the place?
+					// TODO: Shouldn't we be cloning newChild here?  I think so
+					//       that would be better... but we would need to override
+					//       the clone() method all over the place?
 					getChildren().put(key, newChild);
 				}
 			}
@@ -356,7 +359,9 @@ public abstract class CoverageDataContainer
 		return _children;
 	}
 
-	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+	private void readObject(ObjectInputStream in)
+		throws IOException, ClassNotFoundException {
+
 		in.defaultReadObject();
 
 		_initLock();

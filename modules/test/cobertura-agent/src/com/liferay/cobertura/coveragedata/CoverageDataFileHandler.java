@@ -63,7 +63,9 @@ public abstract class CoverageDataFileHandler implements HasBeenInstrumented {
 			return e;
 		}
 		catch (IOException var13) {
-			System.err.println("Cobertura: Error reading file " + dataFile.getAbsolutePath() + ": " + var13.getLocalizedMessage());
+			System.err.println(
+				"Cobertura: Error reading file " + dataFile.getAbsolutePath() +
+					": " + var13.getLocalizedMessage());
 
 			e1 = null;
 		}
@@ -73,7 +75,10 @@ public abstract class CoverageDataFileHandler implements HasBeenInstrumented {
 					is.close();
 				}
 				catch (IOException var12) {
-					System.err.println("Cobertura: Error closing file " + dataFile.getAbsolutePath() + ": " + var12.getLocalizedMessage());
+					System.err.println(
+						"Cobertura: Error closing file " +
+							dataFile.getAbsolutePath() + ": " +
+							var12.getLocalizedMessage());
 				}
 			}
 
@@ -82,7 +87,9 @@ public abstract class CoverageDataFileHandler implements HasBeenInstrumented {
 		return (ProjectData)e1;
 	}
 
-	private static ProjectData _loadCoverageData(InputStream dataFile) throws IOException {
+	private static ProjectData _loadCoverageData(InputStream dataFile)
+		throws IOException {
+
 		ObjectInputStream objects = null;
 
 		ProjectData var3;
@@ -92,7 +99,9 @@ public abstract class CoverageDataFileHandler implements HasBeenInstrumented {
 
 			ProjectData e = (ProjectData)objects.readObject();
 
-			System.out.println("Cobertura: Loaded information on " + e.getNumberOfClasses() + " classes.");
+			System.out.println(
+				"Cobertura: Loaded information on " + e.getNumberOfClasses() +
+					" classes.");
 
 			var3 = e;
 
@@ -114,7 +123,8 @@ public abstract class CoverageDataFileHandler implements HasBeenInstrumented {
 					objects.close();
 				}
 				catch (IOException var13) {
-					System.err.println("Cobertura: Error closing object stream.");
+					System.err.println(
+						"Cobertura: Error closing object stream.");
 
 					var13.printStackTrace();
 				}
@@ -125,7 +135,9 @@ public abstract class CoverageDataFileHandler implements HasBeenInstrumented {
 		return var3;
 	}
 
-	public static void saveCoverageData(ProjectData projectData, File dataFile) {
+	public static void saveCoverageData(
+		ProjectData projectData, File dataFile) {
+
 		FileOutputStream os = null;
 
 		try {
@@ -140,7 +152,8 @@ public abstract class CoverageDataFileHandler implements HasBeenInstrumented {
 			_saveCoverageData(projectData, (OutputStream) os);
 		}
 		catch (IOException var12) {
-			System.err.println("Cobertura: Error writing file " + dataFile.getAbsolutePath());
+			System.err.println(
+				"Cobertura: Error writing file " + dataFile.getAbsolutePath());
 
 			var12.printStackTrace();
 		}
@@ -150,7 +163,9 @@ public abstract class CoverageDataFileHandler implements HasBeenInstrumented {
 					os.close();
 				}
 				catch (IOException var11) {
-					System.err.println("Cobertura: Error closing file " + dataFile.getAbsolutePath());
+					System.err.println(
+						"Cobertura: Error closing file " +
+							dataFile.getAbsolutePath());
 
 					var11.printStackTrace();
 				}
@@ -160,16 +175,21 @@ public abstract class CoverageDataFileHandler implements HasBeenInstrumented {
 
 	}
 
-	private static void _saveCoverageData(ProjectData projectData, OutputStream dataFile) {
+	private static void _saveCoverageData(
+		ProjectData projectData, OutputStream dataFile) {
+
 		ObjectOutputStream objects = null;
 
 		try {
 			objects = new ObjectOutputStream(dataFile);
 			objects.writeObject(projectData);
-			System.out.println("Cobertura: Saved information on " + projectData.getNumberOfClasses() + " classes.");
+			System.out.println(
+				"Cobertura: Saved information on " +
+					projectData.getNumberOfClasses() + " classes.");
 		}
 		catch (IOException var12) {
-			System.err.println("Cobertura: Error writing to object stream.");
+			System.err.println(
+				"Cobertura: Error writing to object stream.");
 
 			var12.printStackTrace();
 		}
@@ -179,7 +199,8 @@ public abstract class CoverageDataFileHandler implements HasBeenInstrumented {
 					objects.close();
 				}
 				catch (IOException var11) {
-					System.err.println("Cobertura: Error closing object stream.");
+					System.err.println(
+						"Cobertura: Error closing object stream.");
 
 					var11.printStackTrace();
 				}
