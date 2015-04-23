@@ -94,7 +94,7 @@ public class ProjectData extends CoverageDataContainer
 	}
 
 	public void addClassData(ClassData classData) {
-		lock.lock();
+		getLock().lock();
 
 		try {
 			String packageName = classData.getPackageName();
@@ -113,40 +113,40 @@ public class ProjectData extends CoverageDataContainer
 			_classes.put(classData.getName(), classData);
 		}
 		finally {
-			lock.unlock();
+			getLock().unlock();
 		}
 	}
 
 	public ClassData getClassData(String name) {
-		lock.lock();
+		getLock().lock();
 
 		try {
 			return (ClassData)_classes.get(name);
 		}
 		finally {
-			lock.unlock();
+			getLock().unlock();
 		}
 	}
 
 	public Collection getClasses() {
-		lock.lock();
+		getLock().lock();
 
 		try {
 			return _classes.values();
 		}
 		finally {
-			lock.unlock();
+			getLock().unlock();
 		}
 	}
 
 	public int getNumberOfClasses() {
-		lock.lock();
+		getLock().lock();
 
 		try {
 			return _classes.size();
 		}
 		finally {
-			lock.unlock();
+			getLock().unlock();
 		}
 	}
 
@@ -155,7 +155,7 @@ public class ProjectData extends CoverageDataContainer
 	}
 
 	public ClassData getOrCreateClassData(String name) {
-		lock.lock();
+		getLock().lock();
 
 		try {
 			ClassData classData = (ClassData)_classes.get(name);
@@ -169,25 +169,25 @@ public class ProjectData extends CoverageDataContainer
 			return classData;
 		}
 		finally {
-			lock.unlock();
+			getLock().unlock();
 		}
 	}
 
 	public SortedSet getPackages() {
-		lock.lock();
+		getLock().lock();
 
 		try {
 			return new TreeSet(getChildren().values());
 		}
 		finally {
-			lock.unlock();
+			getLock().unlock();
 		}
 	}
 
 	public Collection getSourceFiles() {
 		SortedSet sourceFileDatas = new TreeSet();
 
-		lock.lock();
+		getLock().lock();
 
 		try {
 			for (CoverageData coverageData : getChildren().values()) {
@@ -196,7 +196,7 @@ public class ProjectData extends CoverageDataContainer
 			}
 		}
 		finally {
-			lock.unlock();
+			getLock().unlock();
 		}
 
 		return sourceFileDatas;
@@ -205,7 +205,7 @@ public class ProjectData extends CoverageDataContainer
 	public SortedSet getSubPackages(String packageName) {
 		SortedSet subPackages = new TreeSet();
 
-		lock.lock();
+		getLock().lock();
 
 		try {
 			for (CoverageData coverageData : getChildren().values()) {
@@ -220,7 +220,7 @@ public class ProjectData extends CoverageDataContainer
 			}
 		}
 		finally {
-			lock.unlock();
+			getLock().unlock();
 		}
 
 		return subPackages;
@@ -245,8 +245,8 @@ public class ProjectData extends CoverageDataContainer
 			}
 		}
 		finally {
-			lock.unlock();
-			projectData.lock.unlock();
+			getLock().unlock();
+			projectData.getLock().unlock();
 		}
 	}
 

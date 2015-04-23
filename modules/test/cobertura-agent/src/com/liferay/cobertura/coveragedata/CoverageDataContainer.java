@@ -44,13 +44,13 @@ public abstract class CoverageDataContainer
 		CoverageDataContainer coverageDataContainer =
 			(CoverageDataContainer)obj;
 
-		lock.lock();
+		_lock.lock();
 
 		try {
 			return getChildren().equals(coverageDataContainer.getChildren());
 		}
 		finally {
-			lock.unlock();
+			_lock.unlock();
 		}
 	}
 
@@ -59,7 +59,7 @@ public abstract class CoverageDataContainer
 
 		int numberCovered = 0;
 
-		lock.lock();
+		_lock.lock();
 
 		try {
 			for (CoverageData coverageContainer : getChildren().values()) {
@@ -69,7 +69,7 @@ public abstract class CoverageDataContainer
 			}
 		}
 		finally {
-			lock.unlock();
+			_lock.unlock();
 		}
 
 		if (number == 0) {
@@ -83,13 +83,13 @@ public abstract class CoverageDataContainer
 	}
 
 	public CoverageData getChild(String name) {
-		lock.lock();
+		_lock.lock();
 
 		try {
 			return (CoverageData)getChildren().get(name);
 		}
 		finally {
-			lock.unlock();
+			_lock.unlock();
 		}
 	}
 
@@ -98,7 +98,7 @@ public abstract class CoverageDataContainer
 
 		int numberCovered = 0;
 
-		lock.lock();
+		_lock.lock();
 
 		try {
 			for (CoverageData coverageContainer : getChildren().values()) {
@@ -108,7 +108,7 @@ public abstract class CoverageDataContainer
 			}
 		}
 		finally {
-			lock.unlock();
+			_lock.unlock();
 		}
 
 		if (number == 0) {
@@ -122,20 +122,20 @@ public abstract class CoverageDataContainer
 	}
 
 	public int getNumberOfChildren() {
-		lock.lock();
+		_lock.lock();
 
 		try {
 			return getChildren().size();
 		}
 		finally {
-			lock.unlock();
+			_lock.unlock();
 		}
 	}
 
 	public int getNumberOfCoveredBranches() {
 		int number = 0;
 
-		lock.lock();
+		_lock.lock();
 
 		try {
 			for (CoverageData coverageContainer : getChildren().values()) {
@@ -143,7 +143,7 @@ public abstract class CoverageDataContainer
 			}
 		}
 		finally {
-			lock.unlock();
+			_lock.unlock();
 		}
 
 		return number;
@@ -152,7 +152,7 @@ public abstract class CoverageDataContainer
 	public int getNumberOfCoveredLines() {
 		int number = 0;
 
-		lock.lock();
+		_lock.lock();
 
 		try {
 			for (CoverageData coverageContainer : getChildren().values()) {
@@ -160,7 +160,7 @@ public abstract class CoverageDataContainer
 			}
 		}
 		finally {
-			lock.unlock();
+			_lock.unlock();
 		}
 
 		return number;
@@ -169,7 +169,7 @@ public abstract class CoverageDataContainer
 	public int getNumberOfValidBranches() {
 		int number = 0;
 
-		lock.lock();
+		_lock.lock();
 
 		try {
 			for (CoverageData coverageContainer : getChildren().values()) {
@@ -177,7 +177,7 @@ public abstract class CoverageDataContainer
 			}
 		}
 		finally {
-			lock.unlock();
+			_lock.unlock();
 		}
 
 		return number;
@@ -186,7 +186,7 @@ public abstract class CoverageDataContainer
 	public int getNumberOfValidLines() {
 		int number = 0;
 
-		lock.lock();
+		_lock.lock();
 
 		try {
 			for (CoverageData coverageContainer : getChildren().values()) {
@@ -194,20 +194,20 @@ public abstract class CoverageDataContainer
 			}
 		}
 		finally {
-			lock.unlock();
+			_lock.unlock();
 		}
 
 		return number;
 	}
 
 	public int hashCode() {
-		lock.lock();
+		_lock.lock();
 
 		try {
 			return getChildren().size();
 		}
 		finally {
-			lock.unlock();
+			_lock.unlock();
 		}
 	}
 
@@ -231,9 +231,9 @@ public abstract class CoverageDataContainer
 			}
 		}
 		finally {
-			lock.unlock();
+			_lock.unlock();
 
-			container.lock.unlock();
+			container._lock.unlock();
 		}
 	}
 
@@ -244,17 +244,17 @@ public abstract class CoverageDataContainer
 
 		while (!myLock || !otherLock) {
 			try {
-				myLock = lock.tryLock();
-				otherLock = other.lock.tryLock();
+				myLock = _lock.tryLock();
+				otherLock = other._lock.tryLock();
 			}
 			finally {
 				if (!myLock || !otherLock) {
 					if (myLock) {
-						lock.unlock();
+						_lock.unlock();
 					}
 
 					if (otherLock) {
-						other.lock.unlock();
+						other._lock.unlock();
 					}
 
 					Thread.yield();
@@ -267,10 +267,12 @@ public abstract class CoverageDataContainer
 		return _children;
 	}
 
-	protected transient Lock lock;
+	protected Lock getLock() {
+		return _lock;
+	}
 
 	private void _initLock() {
-		lock = new ReentrantLock();
+		_lock = new ReentrantLock();
 	}
 
 	private void readObject(ObjectInputStream in)
@@ -284,5 +286,6 @@ public abstract class CoverageDataContainer
 	private static final long serialVersionUID = 2;
 
 	private final Map<Object, CoverageData> _children = new HashMap<>();
+	private transient Lock _lock;
 
 }
