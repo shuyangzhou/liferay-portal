@@ -36,14 +36,6 @@ public abstract class CoverageDataContainer
 		_initLock();
 	}
 
-	/**
-	 * Determine if this CoverageDataContainer is equal to
-	 * another one.  Subclasses should override this and
-	 * make sure they implement the hashCode method.
-	 *
-	 * @param obj An object to test for equality.
-	 * @return True if the objects are equal.
-	 */
 	public boolean equals(Object obj) {
 		if (obj == null) {
 			return false;
@@ -62,10 +54,6 @@ public abstract class CoverageDataContainer
 		}
 	}
 
-	/**
-	 * @return The average branch coverage rate for all children
-	 *         in this container.
-	 */
 	public double getBranchCoverageRate() {
 		int number = 0;
 
@@ -94,13 +82,6 @@ public abstract class CoverageDataContainer
 		return (double)numberCovered / number;
 	}
 
-	/**
-	 * Get a child from this container with the specified
-	 * key.
-	 * @param name The key used to lookup the child in the
-	 *        map.
-	 * @return The child object, if found, or null if not found.
-	 */
 	public CoverageData getChild(String name) {
 		lock.lock();
 
@@ -112,11 +93,6 @@ public abstract class CoverageDataContainer
 		}
 	}
 
-	/**
-	 * @return The average line coverage rate for all children
-	 *         in this container.  This number will be a decimal
-	 *         between 0 and 1, inclusive.
-	 */
 	public double getLineCoverageRate() {
 		int number = 0;
 
@@ -145,9 +121,6 @@ public abstract class CoverageDataContainer
 		return (double)numberCovered / number;
 	}
 
-	/**
-	 * @return The number of children in this container.
-	 */
 	public int getNumberOfChildren() {
 		lock.lock();
 
@@ -227,11 +200,6 @@ public abstract class CoverageDataContainer
 		return number;
 	}
 
-	/**
-	 * It is highly recommended that classes extending this
-	 * class override this hashCode method and generate a more
-	 * effective hash code.
-	 */
 	public int hashCode() {
 		lock.lock();
 
@@ -243,11 +211,6 @@ public abstract class CoverageDataContainer
 		}
 	}
 
-	/**
-	 * Merge two <code>CoverageDataContainer</code>s.
-	 *
-	 * @param coverageData The container to merge into this one.
-	 */
 	public void merge(CoverageData coverageData) {
 		CoverageDataContainer container = (CoverageDataContainer)coverageData;
 
@@ -263,11 +226,6 @@ public abstract class CoverageDataContainer
 					existingChild.merge(newChild);
 				}
 				else {
-
-					// TODO: Shouldn't we be cloning newChild here?  I think so
-					// that would be better... but we would need to override
-					// the clone() method all over the place?
-
 					getChildren().put(object, newChild);
 				}
 			}
@@ -280,12 +238,6 @@ public abstract class CoverageDataContainer
 	}
 
 	protected void getBothLocks(CoverageDataContainer other) {
-		/*
-		 * To prevent deadlock, we need to get both locks or none at all.
-		 *
-		 * When this method returns, the thread will have both locks.
-		 * Make sure you unlock them!
-		 */
 		boolean myLock = false;
 
 		boolean otherLock = false;
@@ -297,8 +249,6 @@ public abstract class CoverageDataContainer
 			}
 			finally {
 				if (!myLock || !otherLock) {
-					//could not obtain both locks - so unlock the one we got.
-
 					if (myLock) {
 						lock.unlock();
 					}
@@ -306,7 +256,7 @@ public abstract class CoverageDataContainer
 					if (otherLock) {
 						other.lock.unlock();
 					}
-					//do a yield so the other threads will get to work.
+
 					Thread.yield();
 				}
 			}
@@ -333,11 +283,6 @@ public abstract class CoverageDataContainer
 
 	private static final long serialVersionUID = 2;
 
-	/**
-	 * Each key is the name of a child, usually stored as a String or
-	 * an Integer object.  Each value is information about the child,
-	 * stored as an object that implements the CoverageData interface.
-	 */
 	private final Map<Object, CoverageData> _children = new HashMap<>();
 
 }

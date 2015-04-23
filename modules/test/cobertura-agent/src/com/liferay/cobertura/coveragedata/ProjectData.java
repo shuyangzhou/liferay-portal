@@ -37,20 +37,9 @@ import net.sourceforge.cobertura.util.FileLocker;
 public class ProjectData extends CoverageDataContainer
 	implements HasBeenInstrumented {
 
-	// TODO: Is it possible to do this as a static initializer?
-
 	public static void initialize() {
-
-		// Hack for Tomcat - by saving project data right now we force loading
-		// of _classes involved in this process (like ObjectOutputStream)
-		// so that it won't be necessary to load them on JVM shutdown
-
 		if (System.getProperty("catalina.home") != null) {
 			saveGlobalProjectData();
-
-			// Force the class loader to load some _classes that are
-			// required by our JVM shutdown hook.
-			// TODO: Use ClassLoader.loadClass("whatever"); instead
 
 			ClassData.class.toString();
 			CoverageData.class.toString();
@@ -62,14 +51,7 @@ public class ProjectData extends CoverageDataContainer
 			SourceFileData.class.toString();
 		}
 
-		// Add a hook to save the data when the JVM exits
-
 		Runtime.getRuntime().addShutdownHook(new Thread(new SaveTimer()));
-
-		// Possibly also save the coverage data every x seconds?
-
-		//Timer timer = new Timer(true);
-		//timer.schedule(saveTimer, 100);
 	}
 
 	public static void saveGlobalProjectData() {
@@ -77,30 +59,8 @@ public class ProjectData extends CoverageDataContainer
 
 		TouchCollector.applyTouchesOnProjectData(projectDataToSave);
 
-		// Get a file lock
-
 		File dataFile = CoverageDataFileHandler.getDefaultDataFile();
 
-		/*
-		 * A note about the next synchronized block:  Cobertura uses static
-		 * fields to hold the data.   When there are multiple classloaders,
-		 * each classloader will keep track of the line counts for the _classes
-		 * that it loads.
-		 *
-		 * The static initializers for the Cobertura _classes are also called
-		 * for each classloader.   So, there is one shutdown hook for each
-		 * classloader. So, when the JVM exits, each shutdown hook will try to
-		 * write the data it has kept to the datafile.   They will do this at
-		 * the same time.   Before Java 6, this seemed to work fine, but with
-		 * Java 6, there seems to have been a change with how file locks are
-		 * implemented.   So, care has to be taken to make sure only one thread
-		 * locks a file at a time.
-		 *
-		 * So, we will synchronize on the string that represents the path to
-		 * the dataFile.  Apparently, there will be only one of these in the JVM
-		 * even if there are multiple classloaders.  I assume that is because
-		 * the String class is loaded by the JVM's root classloader.
-		 */
 		synchronized (dataFile.getPath().intern() ) {
 			FileLocker fileLocker = new FileLocker(dataFile);
 
@@ -144,10 +104,6 @@ public class ProjectData extends CoverageDataContainer
 
 			if (packageData == null) {
 				packageData = new PackageData(packageName);
-
-				// Each key is a package name, stored as an String object.
-				// Each value is information about the package, stored as a
-				// PackageData object.
 
 				getChildren().put(packageName, packageData);
 			}
@@ -198,9 +154,6 @@ public class ProjectData extends CoverageDataContainer
 		return getSourceFiles().size();
 	}
 
-	/**
-	 * This is called by instrumented bytecode.
-	 */
 	public ClassData getOrCreateClassData(String name) {
 		lock.lock();
 
@@ -249,16 +202,6 @@ public class ProjectData extends CoverageDataContainer
 		return sourceFileDatas;
 	}
 
-	/**
-	 * Get all subpackages of the given package. Includes also specified
-	 * package if it exists.
-	 *
-	 * @param packageName The package name to find subpackages for.
-	 *        For example, "com.example"
-	 * @return A collection containing PackageData objects.  Each one
-	 *         has a name beginning with the given packageName.  For
-	 *         example: "com.example.io", "com.example.io.internal"
-	 */
 	public SortedSet getSubPackages(String packageName) {
 		SortedSet subPackages = new TreeSet();
 
@@ -331,7 +274,6 @@ public class ProjectData extends CoverageDataContainer
 
 	private static final long serialVersionUID = 6;
 
-	/** This collection is used for quicker access to the list of _classes. */
 	private final Map _classes = new HashMap();
 
 }
