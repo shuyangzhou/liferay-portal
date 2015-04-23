@@ -1,7 +1,16 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by Fernflower decompiler)
-//
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
 
 package com.liferay.cobertura.coveragedata;
 
@@ -18,6 +27,9 @@ import java.io.OutputStream;
 import net.sourceforge.cobertura.coveragedata.HasBeenInstrumented;
 import net.sourceforge.cobertura.util.ConfigurationUtil;
 
+/**
+ * @author Cristina González
+ */
 public abstract class CoverageDataFileHandler implements HasBeenInstrumented {
 	private static File defaultFile = null;
 
@@ -100,7 +112,7 @@ public abstract class CoverageDataFileHandler implements HasBeenInstrumented {
 			}
 
 			os = new FileOutputStream(dataFile);
-			saveCoverageData(projectData, (OutputStream)os);
+			saveCoverageData(projectData, (OutputStream) os);
 		} catch (IOException var12) {
 			System.err.println("Cobertura: Error writing file " + dataFile.getAbsolutePath());
 			var12.printStackTrace();
