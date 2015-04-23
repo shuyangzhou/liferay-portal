@@ -352,7 +352,7 @@ public class TouchMethodVisitor extends MethodVisitor {
 	}
 
 	private static final String _TOUCH_COLLECTOR_CLASS =
-		"net/sourceforge/cobertura/coveragedata/TouchCollector";
+		"com/liferay/cobertura/agent/coveragedata/TouchCollector";
 
 	private int _currentJump;
 	private int _currentLine;

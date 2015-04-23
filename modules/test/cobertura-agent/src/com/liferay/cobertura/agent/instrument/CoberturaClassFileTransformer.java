@@ -130,7 +130,8 @@ public class CoberturaClassFileTransformer implements ClassFileTransformer {
 
 			if ((className != null) &&
 				className.equals(
-					"net/sourceforge/cobertura/coveragedata/TouchCollector")) {
+					"com/liferay/cobertura/agent/coveragedata/TouchCollector")
+						) {
 
 				ClassWriter classWriter = new ContextAwareClassWriter(
 					ClassWriter.COMPUTE_FRAMES);

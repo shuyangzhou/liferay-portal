@@ -15,6 +15,7 @@
 package com.liferay.cobertura.agent.instrument;
 
 import com.liferay.cobertura.agent.InstrumentationAgent;
+import com.liferay.cobertura.agent.coveragedata.TouchCollector;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -39,7 +40,6 @@ import java.util.concurrent.CopyOnWriteArraySet;
 
 import net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler;
 import net.sourceforge.cobertura.coveragedata.ProjectData;
-import net.sourceforge.cobertura.coveragedata.TouchCollector;
 
 /**
  * @author Shuyang Zhou
