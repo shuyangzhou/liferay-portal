@@ -48,13 +48,13 @@ public class ProjectData extends CoverageDataContainer implements HasBeenInstrum
 		try {
 			String packageName = classData.getPackageName();
 
-			PackageData packageData = (PackageData)children.get(packageName);
+			PackageData packageData = (PackageData)getChildren().get(packageName);
 
 			if (packageData == null) {
 				packageData = new PackageData(packageName);
 				// Each key is a package name, stored as an String object.
 				// Each value is information about the package, stored as a PackageData object.
-				this.children.put(packageName, packageData);
+				getChildren().put(packageName, packageData);
 			}
 			packageData.addClassData(classData);
 
@@ -127,7 +127,7 @@ public class ProjectData extends CoverageDataContainer implements HasBeenInstrum
 		lock.lock();
 
 		try {
-			return new TreeSet(this.children.values());
+			return new TreeSet(getChildren().values());
 		}
 		finally {
 			lock.unlock();
@@ -140,7 +140,7 @@ public class ProjectData extends CoverageDataContainer implements HasBeenInstrum
 		lock.lock();
 
 		try {
-			Iterator iter = this.children.values().iterator();
+			Iterator iter = getChildren().values().iterator();
 
 			while (iter.hasNext()) {
 				PackageData packageData = (PackageData)iter.next();
@@ -171,7 +171,7 @@ public class ProjectData extends CoverageDataContainer implements HasBeenInstrum
 		lock.lock();
 
 		try {
-			Iterator iter = this.children.values().iterator();
+			Iterator iter = getChildren().values().iterator();
 
 			while (iter.hasNext()) {
 				PackageData packageData = (PackageData)iter.next();
