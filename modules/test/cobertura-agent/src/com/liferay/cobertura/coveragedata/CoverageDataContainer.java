@@ -45,11 +45,7 @@ public abstract class CoverageDataContainer
 	 * @return True if the objects are equal.
 	 */
 	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-
-		if ((obj == null) || !obj.getClass().equals(getClass())) {
+		if (obj == null) {
 			return false;
 		}
 
