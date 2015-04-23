@@ -17,10 +17,12 @@ package com.liferay.cobertura.coveragedata;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+
 import net.sourceforge.cobertura.coveragedata.CoverageData;
 import net.sourceforge.cobertura.coveragedata.HasBeenInstrumented;
 
@@ -30,24 +32,8 @@ import net.sourceforge.cobertura.coveragedata.HasBeenInstrumented;
 public abstract class CoverageDataContainer
 	implements CoverageData, HasBeenInstrumented, Serializable {
 
-	private static final long serialVersionUID = 2;
-
-	protected transient Lock lock;
-
-	/**
-	 * Each key is the name of a child, usually stored as a String or
-	 * an Integer object.  Each value is information about the child,
-	 * stored as an object that implements the CoverageData interface.
-	 */
-	private Map<Object,CoverageData> _children = 
-		new HashMap<Object,CoverageData>();
-
 	public CoverageDataContainer() {
 		_initLock();
-	}
-
-	private void _initLock() {
-		lock = new ReentrantLock();
 	}
 
 	/**
@@ -62,7 +48,8 @@ public abstract class CoverageDataContainer
 		if (this == obj) {
 			return true;
 		}
-		if ((obj == null) || !(obj.getClass().equals(getClass()))) {
+
+		if ((obj == null) || !obj.getClass().equals(getClass())) {
 			return false;
 		}
 
@@ -89,6 +76,7 @@ public abstract class CoverageDataContainer
 		int numberCovered = 0;
 
 		lock.lock();
+
 		try {
 			for (CoverageData coverageContainer : getChildren().values()) {
 				number += coverageContainer.getNumberOfValidBranches();
@@ -101,7 +89,9 @@ public abstract class CoverageDataContainer
 		}
 
 		if (number == 0) {
+
 			// no branches, therefore 100% branch coverage.
+
 			return 1d;
 		}
 
@@ -150,7 +140,9 @@ public abstract class CoverageDataContainer
 		}
 
 		if (number == 0) {
+
 			// no lines, therefore 100% line coverage.
+
 			return 1d;
 		}
 
@@ -275,9 +267,11 @@ public abstract class CoverageDataContainer
 					existingChild.merge(newChild);
 				}
 				else {
+
 					// TODO: Shouldn't we be cloning newChild here?  I think so
-					//       that would be better... but we would need to override
-					//       the clone() method all over the place?
+					// that would be better... but we would need to override
+					// the clone() method all over the place?
+
 					getChildren().put(object, newChild);
 				}
 			}
@@ -292,7 +286,7 @@ public abstract class CoverageDataContainer
 	protected void getBothLocks(CoverageDataContainer other) {
 		/*
 		 * To prevent deadlock, we need to get both locks or none at all.
-		 * 
+		 *
 		 * When this method returns, the thread will have both locks.
 		 * Make sure you unlock them!
 		 */
@@ -300,18 +294,19 @@ public abstract class CoverageDataContainer
 
 		boolean otherLock = false;
 
-		while ((!myLock) || (!otherLock)) {
+		while (!myLock || !otherLock) {
 			try {
 				myLock = lock.tryLock();
 				otherLock = other.lock.tryLock();
 			}
 			finally {
-				if ((!myLock) || (!otherLock)) {
+				if (!myLock || !otherLock) {
 					//could not obtain both locks - so unlock the one we got.
 
 					if (myLock) {
 						lock.unlock();
 					}
+
 					if (otherLock) {
 						other.lock.unlock();
 					}
@@ -322,15 +317,31 @@ public abstract class CoverageDataContainer
 		}
 	}
 
-	protected Map<Object,CoverageData> getChildren() {
+	protected Map<Object, CoverageData> getChildren() {
 		return _children;
 	}
 
+	protected transient Lock lock;
+
+	private void _initLock() {
+		lock = new ReentrantLock();
+	}
+
 	private void readObject(ObjectInputStream in)
-		throws IOException, ClassNotFoundException {
+		throws ClassNotFoundException, IOException {
 
 		in.defaultReadObject();
 
 		_initLock();
 	}
+
+	private static final long serialVersionUID = 2;
+
+	/**
+	 * Each key is the name of a child, usually stored as a String or
+	 * an Integer object.  Each value is information about the child,
+	 * stored as an object that implements the CoverageData interface.
+	 */
+	private final Map<Object, CoverageData> _children = new HashMap<>();
+
 }

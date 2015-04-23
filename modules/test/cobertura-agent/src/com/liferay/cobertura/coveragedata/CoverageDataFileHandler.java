@@ -32,13 +32,8 @@ import net.sourceforge.cobertura.util.ConfigurationUtil;
  */
 public abstract class CoverageDataFileHandler implements HasBeenInstrumented {
 
-	private static File defaultFile = null;
-
-	public CoverageDataFileHandler() {
-	}
-
 	public static File getDefaultDataFile() {
-		if(defaultFile != null) {
+		if (defaultFile != null) {
 			return defaultFile;
 		}
 		else {
@@ -58,7 +53,7 @@ public abstract class CoverageDataFileHandler implements HasBeenInstrumented {
 		try {
 			is = new BufferedInputStream(new FileInputStream(dataFile), 16384);
 
-			ProjectData e = _loadCoverageData((InputStream) is);
+			ProjectData e = _loadCoverageData((InputStream)is);
 
 			return e;
 		}
@@ -70,7 +65,7 @@ public abstract class CoverageDataFileHandler implements HasBeenInstrumented {
 			e1 = null;
 		}
 		finally {
-			if(is != null) {
+			if (is != null) {
 				try {
 					is.close();
 				}
@@ -81,10 +76,50 @@ public abstract class CoverageDataFileHandler implements HasBeenInstrumented {
 							var12.getLocalizedMessage());
 				}
 			}
-
 		}
 
 		return (ProjectData)e1;
+	}
+
+	public static void saveCoverageData(
+		ProjectData projectData, File dataFile) {
+
+		FileOutputStream os = null;
+
+		try {
+			File e = dataFile.getParentFile();
+
+			if ((e != null) && !e.exists()) {
+				e.mkdirs();
+			}
+
+			os = new FileOutputStream(dataFile);
+
+			_saveCoverageData(projectData, (OutputStream)os);
+		}
+		catch (IOException var12) {
+			System.err.println(
+				"Cobertura: Error writing file " + dataFile.getAbsolutePath());
+
+			var12.printStackTrace();
+		}
+		finally {
+			if (os != null) {
+				try {
+					os.close();
+				}
+				catch (IOException var11) {
+					System.err.println(
+						"Cobertura: Error closing file " +
+							dataFile.getAbsolutePath());
+
+					var11.printStackTrace();
+				}
+			}
+		}
+	}
+
+	public CoverageDataFileHandler() {
 	}
 
 	private static ProjectData _loadCoverageData(InputStream dataFile)
@@ -118,7 +153,7 @@ public abstract class CoverageDataFileHandler implements HasBeenInstrumented {
 			var3 = null;
 		}
 		finally {
-			if(objects != null) {
+			if (objects != null) {
 				try {
 					objects.close();
 				}
@@ -129,50 +164,9 @@ public abstract class CoverageDataFileHandler implements HasBeenInstrumented {
 					var13.printStackTrace();
 				}
 			}
-
 		}
 
 		return var3;
-	}
-
-	public static void saveCoverageData(
-		ProjectData projectData, File dataFile) {
-
-		FileOutputStream os = null;
-
-		try {
-			File e = dataFile.getParentFile();
-
-			if(e != null && !e.exists()) {
-				e.mkdirs();
-			}
-
-			os = new FileOutputStream(dataFile);
-
-			_saveCoverageData(projectData, (OutputStream) os);
-		}
-		catch (IOException var12) {
-			System.err.println(
-				"Cobertura: Error writing file " + dataFile.getAbsolutePath());
-
-			var12.printStackTrace();
-		}
-		finally {
-			if(os != null) {
-				try {
-					os.close();
-				}
-				catch (IOException var11) {
-					System.err.println(
-						"Cobertura: Error closing file " +
-							dataFile.getAbsolutePath());
-
-					var11.printStackTrace();
-				}
-			}
-
-		}
-
 	}
 
 	private static void _saveCoverageData(
@@ -188,13 +182,12 @@ public abstract class CoverageDataFileHandler implements HasBeenInstrumented {
 					projectData.getNumberOfClasses() + " classes.");
 		}
 		catch (IOException var12) {
-			System.err.println(
-				"Cobertura: Error writing to object stream.");
+			System.err.println("Cobertura: Error writing to object stream.");
 
 			var12.printStackTrace();
 		}
 		finally {
-			if(objects != null) {
+			if (objects != null) {
 				try {
 					objects.close();
 				}
@@ -205,8 +198,9 @@ public abstract class CoverageDataFileHandler implements HasBeenInstrumented {
 					var11.printStackTrace();
 				}
 			}
-
 		}
-
 	}
+
+	private static File defaultFile = null;
+
 }

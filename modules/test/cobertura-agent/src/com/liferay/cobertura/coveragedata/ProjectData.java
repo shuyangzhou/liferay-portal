@@ -37,10 +37,101 @@ import net.sourceforge.cobertura.util.FileLocker;
 public class ProjectData extends CoverageDataContainer
 	implements HasBeenInstrumented {
 
-	private static final long serialVersionUID = 6;
+	// TODO: Is it possible to do this as a static initializer?
 
-	/** This collection is used for quicker access to the list of _classes. */
-	private Map _classes = new HashMap();
+	public static void initialize() {
+
+		// Hack for Tomcat - by saving project data right now we force loading
+		// of _classes involved in this process (like ObjectOutputStream)
+		// so that it won't be necessary to load them on JVM shutdown
+
+		if (System.getProperty("catalina.home") != null) {
+			saveGlobalProjectData();
+
+			// Force the class loader to load some _classes that are
+			// required by our JVM shutdown hook.
+			// TODO: Use ClassLoader.loadClass("whatever"); instead
+
+			ClassData.class.toString();
+			CoverageData.class.toString();
+			CoverageDataContainer.class.toString();
+			FileLocker.class.toString();
+			HasBeenInstrumented.class.toString();
+			LineData.class.toString();
+			PackageData.class.toString();
+			SourceFileData.class.toString();
+		}
+
+		// Add a hook to save the data when the JVM exits
+
+		Runtime.getRuntime().addShutdownHook(new Thread(new SaveTimer()));
+
+		// Possibly also save the coverage data every x seconds?
+
+		//Timer timer = new Timer(true);
+		//timer.schedule(saveTimer, 100);
+	}
+
+	public static void saveGlobalProjectData() {
+		ProjectData projectDataToSave = new ProjectData();
+
+		TouchCollector.applyTouchesOnProjectData(projectDataToSave);
+
+		// Get a file lock
+
+		File dataFile = CoverageDataFileHandler.getDefaultDataFile();
+
+		/*
+		 * A note about the next synchronized block:  Cobertura uses static
+		 * fields to hold the data.   When there are multiple classloaders,
+		 * each classloader will keep track of the line counts for the _classes
+		 * that it loads.
+		 *
+		 * The static initializers for the Cobertura _classes are also called
+		 * for each classloader.   So, there is one shutdown hook for each
+		 * classloader. So, when the JVM exits, each shutdown hook will try to
+		 * write the data it has kept to the datafile.   They will do this at
+		 * the same time.   Before Java 6, this seemed to work fine, but with
+		 * Java 6, there seems to have been a change with how file locks are
+		 * implemented.   So, care has to be taken to make sure only one thread
+		 * locks a file at a time.
+		 *
+		 * So, we will synchronize on the string that represents the path to
+		 * the dataFile.  Apparently, there will be only one of these in the JVM
+		 * even if there are multiple classloaders.  I assume that is because
+		 * the String class is loaded by the JVM's root classloader.
+		 */
+		synchronized (dataFile.getPath().intern() ) {
+			FileLocker fileLocker = new FileLocker(dataFile);
+
+			try {
+
+				// Read the old data, merge our current data into it, then
+				// write a new ser file.
+
+				if (fileLocker.lock()) {
+					ProjectData datafileProjectData =
+						loadCoverageDataFromDatafile(dataFile);
+
+					if (datafileProjectData == null) {
+						datafileProjectData = projectDataToSave;
+					}
+					else {
+						datafileProjectData.merge(projectDataToSave);
+					}
+
+					CoverageDataFileHandler.saveCoverageData(
+						datafileProjectData, dataFile);
+				}
+			}
+			finally {
+
+				// Release the file lock
+
+				fileLocker.release();
+			}
+		}
+	}
 
 	public void addClassData(ClassData classData) {
 		lock.lock();
@@ -48,16 +139,19 @@ public class ProjectData extends CoverageDataContainer
 		try {
 			String packageName = classData.getPackageName();
 
-			PackageData packageData = (PackageData)getChildren().get(packageName);
+			PackageData packageData =
+				(PackageData)getChildren().get(packageName);
 
 			if (packageData == null) {
 				packageData = new PackageData(packageName);
+
 				// Each key is a package name, stored as an String object.
 				// Each value is information about the package, stored as a
 				// PackageData object.
 
 				getChildren().put(packageName, packageData);
 			}
+
 			packageData.addClassData(classData);
 
 			_classes.put(classData.getName(), classData);
@@ -72,27 +166,6 @@ public class ProjectData extends CoverageDataContainer
 
 		try {
 			return (ClassData)_classes.get(name);
-		}
-		finally {
-			lock.unlock();
-		}
-	}
-
-	/**
-	 * This is called by instrumented bytecode.
-	 */
-	public ClassData getOrCreateClassData(String name) {
-		lock.lock();
-
-		try {
-			ClassData classData = (ClassData)_classes.get(name);
-
-			if (classData == null) {
-				classData = new ClassData(name);
-
-				addClassData(classData);
-			}
-			return classData;
 		}
 		finally {
 			lock.unlock();
@@ -125,6 +198,28 @@ public class ProjectData extends CoverageDataContainer
 		return getSourceFiles().size();
 	}
 
+	/**
+	 * This is called by instrumented bytecode.
+	 */
+	public ClassData getOrCreateClassData(String name) {
+		lock.lock();
+
+		try {
+			ClassData classData = (ClassData)_classes.get(name);
+
+			if (classData == null) {
+				classData = new ClassData(name);
+
+				addClassData(classData);
+			}
+
+			return classData;
+		}
+		finally {
+			lock.unlock();
+		}
+	}
+
 	public SortedSet getPackages() {
 		lock.lock();
 
@@ -142,7 +237,7 @@ public class ProjectData extends CoverageDataContainer
 		lock.lock();
 
 		try {
-			for(CoverageData coverageData : getChildren().values()) {
+			for (CoverageData coverageData : getChildren().values()) {
 				sourceFileDatas.addAll(
 					((PackageData)coverageData).getSourceFiles());
 			}
@@ -170,7 +265,7 @@ public class ProjectData extends CoverageDataContainer
 		lock.lock();
 
 		try {
-			for(CoverageData coverageData : getChildren().values()) {
+			for (CoverageData coverageData : getChildren().values()) {
 				PackageData packageData = (PackageData)coverageData;
 
 				if (packageData.getName().startsWith(packageName + ".") ||
@@ -212,105 +307,31 @@ public class ProjectData extends CoverageDataContainer
 		}
 	}
 
-	// TODO: Is it possible to do this as a static initializer?
-	public static void initialize() {
-		// Hack for Tomcat - by saving project data right now we force loading
-		// of _classes involved in this process (like ObjectOutputStream)
-		// so that it won't be necessary to load them on JVM shutdown
-		if (System.getProperty("catalina.home") != null) {
-			saveGlobalProjectData();
-
-			// Force the class loader to load some _classes that are
-			// required by our JVM shutdown hook.
-			// TODO: Use ClassLoader.loadClass("whatever"); instead
-			ClassData.class.toString();
-			CoverageData.class.toString();
-			CoverageDataContainer.class.toString();
-			FileLocker.class.toString();
-			HasBeenInstrumented.class.toString();
-			LineData.class.toString();
-			PackageData.class.toString();
-			SourceFileData.class.toString();
-		}
-
-		// Add a hook to save the data when the JVM exits
-		Runtime.getRuntime().addShutdownHook(new Thread(new SaveTimer()));
-
-		// Possibly also save the coverage data every x seconds?
-		//Timer timer = new Timer(true);
-		//timer.schedule(saveTimer, 100);
-	}
-
-	public static void saveGlobalProjectData() {
-		ProjectData projectDataToSave = new ProjectData();
-
-		TouchCollector.applyTouchesOnProjectData(projectDataToSave);
-
-		// Get a file lock
-		File dataFile = CoverageDataFileHandler.getDefaultDataFile();
-
-		/*
-		 * A note about the next synchronized block:  Cobertura uses static
-		 * fields to hold the data.   When there are multiple classloaders,
-		 * each classloader will keep track of the line counts for the _classes
-		 * that it loads.
-		 *
-		 * The static initializers for the Cobertura _classes are also called
-		 * for each classloader.   So, there is one shutdown hook for each
-		 * classloader. So, when the JVM exits, each shutdown hook will try to
-		 * write the data it has kept to the datafile.   They will do this at
-		 * the same time.   Before Java 6, this seemed to work fine, but with
-		 * Java 6, there seems to have been a change with how file locks are
-		 * implemented.   So, care has to be taken to make sure only one thread
-		 * locks a file at a time.
-		 *
-		 * So, we will synchronize on the string that represents the path to
-		 * the dataFile.  Apparently, there will be only one of these in the JVM
-		 * even if there are multiple classloaders.  I assume that is because
-		 * the String class is loaded by the JVM's root classloader.
-		 */
-		synchronized (dataFile.getPath().intern() ) {
-			FileLocker fileLocker = new FileLocker(dataFile);
-
-			try {
-				// Read the old data, merge our current data into it, then
-				// write a new ser file.
-				if (fileLocker.lock()) {
-					ProjectData datafileProjectData =
-						loadCoverageDataFromDatafile(dataFile);
-
-					if (datafileProjectData == null) {
-						datafileProjectData = projectDataToSave;
-					}
-					else {
-						datafileProjectData.merge(projectDataToSave);
-					}
-					CoverageDataFileHandler.saveCoverageData(
-						datafileProjectData, dataFile);
-				}
-			}
-			finally {
-				// Release the file lock
-				fileLocker.release();
-			}
-		}
-	}
-
 	private static ProjectData loadCoverageDataFromDatafile(File dataFile) {
 		ProjectData projectData = null;
 
 		// Read projectData from the serialized file.
+
 		if (dataFile.isFile()) {
 			projectData = CoverageDataFileHandler.loadCoverageData(dataFile);
 		}
 
 		if (projectData == null) {
+
 			// We could not read from the serialized file, so use a new object.
-			System.out.println("Cobertura: Coverage data file " + dataFile.getAbsolutePath()
-				+ " either does not exist or is not readable.  Creating a new data file.");
+
+			System.out.println(
+				"Cobertura: Coverage data file " + dataFile.getAbsolutePath() +
+					" either does not exist or is not readable.  Creating a " +
+					"new data file.");
 		}
 
 		return projectData;
 	}
+
+	private static final long serialVersionUID = 6;
+
+	/** This collection is used for quicker access to the list of _classes. */
+	private final Map _classes = new HashMap();
 
 }
