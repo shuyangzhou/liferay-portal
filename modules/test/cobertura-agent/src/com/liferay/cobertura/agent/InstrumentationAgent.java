@@ -14,6 +14,7 @@
 
 package com.liferay.cobertura.agent;
 
+import com.liferay.cobertura.agent.coveragedata.TouchCollector;
 import com.liferay.cobertura.agent.instrument.CoberturaClassFileTransformer;
 import com.liferay.cobertura.agent.instrument.ProjectDataUtil;
 
@@ -33,7 +34,6 @@ import net.sourceforge.cobertura.coveragedata.CoverageData;
 import net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler;
 import net.sourceforge.cobertura.coveragedata.LineData;
 import net.sourceforge.cobertura.coveragedata.ProjectData;
-import net.sourceforge.cobertura.coveragedata.TouchCollector;
 
 /**
  * @author Shuyang Zhou
