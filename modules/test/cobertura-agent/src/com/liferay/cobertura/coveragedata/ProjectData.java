@@ -18,7 +18,6 @@ import java.io.File;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -143,12 +142,9 @@ public class ProjectData extends CoverageDataContainer
 		lock.lock();
 
 		try {
-			Iterator iter = getChildren().values().iterator();
-
-			while (iter.hasNext()) {
-				PackageData packageData = (PackageData)iter.next();
-
-				sourceFileDatas.addAll(packageData.getSourceFiles());
+			for(CoverageData coverageData : getChildren().values()) {
+				sourceFileDatas.addAll(
+					((PackageData)coverageData).getSourceFiles());
 			}
 		}
 		finally {
@@ -174,10 +170,8 @@ public class ProjectData extends CoverageDataContainer
 		lock.lock();
 
 		try {
-			Iterator iter = getChildren().values().iterator();
-
-			while (iter.hasNext()) {
-				PackageData packageData = (PackageData)iter.next();
+			for(CoverageData coverageData : getChildren().values()) {
+				PackageData packageData = (PackageData)coverageData;
 
 				if (packageData.getName().startsWith(packageName + ".") ||
 					packageData.getName().equals(packageName) ||
@@ -206,8 +200,7 @@ public class ProjectData extends CoverageDataContainer
 		try {
 			super.merge(coverageData);
 
-			for (Iterator iter = projectData._classes.keySet().iterator(); iter.hasNext();) {
-				Object key = iter.next();
+			for (Object key : projectData._classes.keySet()) {
 				if (!_classes.containsKey(key)) {
 					_classes.put(key, projectData._classes.get(key));
 				}

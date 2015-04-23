@@ -17,13 +17,10 @@ package com.liferay.cobertura.coveragedata;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
-
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-
 import net.sourceforge.cobertura.coveragedata.CoverageData;
 import net.sourceforge.cobertura.coveragedata.HasBeenInstrumented;
 
@@ -93,11 +90,7 @@ public abstract class CoverageDataContainer
 
 		lock.lock();
 		try {
-			Iterator<CoverageData> iter = getChildren().values().iterator();
-
-			while (iter.hasNext()) {
-				CoverageData coverageContainer = iter.next();
-
+			for (CoverageData coverageContainer : getChildren().values()) {
 				number += coverageContainer.getNumberOfValidBranches();
 
 				numberCovered += coverageContainer.getNumberOfCoveredBranches();
@@ -146,11 +139,7 @@ public abstract class CoverageDataContainer
 		lock.lock();
 
 		try {
-			Iterator<CoverageData> iter = getChildren().values().iterator();
-
-			while (iter.hasNext()) {
-				CoverageData coverageContainer = iter.next();
-
+			for (CoverageData coverageContainer : getChildren().values()) {
 				number += coverageContainer.getNumberOfValidLines();
 
 				numberCovered += coverageContainer.getNumberOfCoveredLines();
@@ -188,11 +177,7 @@ public abstract class CoverageDataContainer
 		lock.lock();
 
 		try {
-			Iterator<CoverageData> iter = getChildren().values().iterator();
-
-			while (iter.hasNext()) {
-				CoverageData coverageContainer = iter.next();
-
+			for (CoverageData coverageContainer : getChildren().values()) {
 				number += coverageContainer.getNumberOfCoveredBranches();
 			}
 		}
@@ -209,11 +194,7 @@ public abstract class CoverageDataContainer
 		lock.lock();
 
 		try {
-			Iterator<CoverageData> iter = getChildren().values().iterator();
-
-			while (iter.hasNext()) {
-				CoverageData coverageContainer = iter.next();
-
+			for (CoverageData coverageContainer : getChildren().values()) {
 				number += coverageContainer.getNumberOfCoveredLines();
 			}
 		}
@@ -230,11 +211,7 @@ public abstract class CoverageDataContainer
 		lock.lock();
 
 		try {
-			Iterator<CoverageData> iter = getChildren().values().iterator();
-
-			while (iter.hasNext()) {
-				CoverageData coverageContainer = iter.next();
-
+			for (CoverageData coverageContainer : getChildren().values()) {
 				number += coverageContainer.getNumberOfValidBranches();
 			}
 		}
@@ -251,12 +228,8 @@ public abstract class CoverageDataContainer
 		lock.lock();
 
 		try {
-			Iterator<CoverageData> iter = getChildren().values().iterator();
-
-			while (iter.hasNext()) {
-				CoverageData coverageContainer = iter.next();
-
-					number += coverageContainer.getNumberOfValidLines();
+			for (CoverageData coverageContainer : getChildren().values()) {
+				number += coverageContainer.getNumberOfValidLines();
 			}
 		}
 		finally {
@@ -293,16 +266,10 @@ public abstract class CoverageDataContainer
 		getBothLocks(container);
 
 		try {
-			Iterator<Object> iter = container.getChildren().keySet().iterator();
+			for (Object object : getChildren().keySet()) {
+				CoverageData newChild = container.getChildren().get(object);
 
-			while (iter.hasNext()) {
-				Object key = iter.next();
-
-				CoverageData newChild = (CoverageData)container.getChildren().
-					get(key);
-
-				CoverageData existingChild = (CoverageData)getChildren().
-					get(key);
+				CoverageData existingChild = getChildren().get(object);
 
 				if (existingChild != null) {
 					existingChild.merge(newChild);
@@ -311,7 +278,7 @@ public abstract class CoverageDataContainer
 					// TODO: Shouldn't we be cloning newChild here?  I think so
 					//       that would be better... but we would need to override
 					//       the clone() method all over the place?
-					getChildren().put(key, newChild);
+					getChildren().put(object, newChild);
 				}
 			}
 		}
