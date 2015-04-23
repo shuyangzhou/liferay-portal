@@ -42,7 +42,8 @@ public abstract class CoverageDataContainer
 	 * an Integer object.  Each value is information about the child,
 	 * stored as an object that implements the CoverageData interface.
 	 */
-	Map<Object,CoverageData> children = new HashMap<Object,CoverageData>();
+	private Map<Object,CoverageData> _children = 
+		new HashMap<Object,CoverageData>();
 
 	public CoverageDataContainer() {
 		initLock();
@@ -64,7 +65,7 @@ public abstract class CoverageDataContainer
 		if (this == obj) {
 			return true;
 		}
-		if ((obj == null) || !(obj.getClass().equals(this.getClass()))) {
+		if ((obj == null) || !(obj.getClass().equals(getClass()))) {
 			return false;
 		}
 
@@ -73,7 +74,7 @@ public abstract class CoverageDataContainer
 		lock.lock();
 
 		try {
-			return this.children.equals(coverageDataContainer.children);
+			return getChildren().equals(coverageDataContainer.getChildren());
 		}
 		finally {
 			lock.unlock();
@@ -91,7 +92,7 @@ public abstract class CoverageDataContainer
 
 		lock.lock();
 		try {
-			Iterator<CoverageData> iter = this.children.values().iterator();
+			Iterator<CoverageData> iter = getChildren().values().iterator();
 
 			while (iter.hasNext()) {
 				CoverageData coverageContainer = iter.next();
@@ -124,7 +125,7 @@ public abstract class CoverageDataContainer
 		lock.lock();
 
 		try {
-			return (CoverageData)this.children.get(name);
+			return (CoverageData)getChildren().get(name);
 		}
 		finally {
 			lock.unlock();
@@ -144,7 +145,7 @@ public abstract class CoverageDataContainer
 		lock.lock();
 
 		try {
-			Iterator<CoverageData> iter = this.children.values().iterator();
+			Iterator<CoverageData> iter = getChildren().values().iterator();
 
 			while (iter.hasNext()) {
 				CoverageData coverageContainer = iter.next();
@@ -173,7 +174,7 @@ public abstract class CoverageDataContainer
 		lock.lock();
 
 		try {
-			return this.children.size();
+			return getChildren().size();
 		}
 		finally {
 			lock.unlock();
@@ -186,7 +187,7 @@ public abstract class CoverageDataContainer
 		lock.lock();
 
 		try {
-			Iterator<CoverageData> iter = this.children.values().iterator();
+			Iterator<CoverageData> iter = getChildren().values().iterator();
 
 			while (iter.hasNext()) {
 				CoverageData coverageContainer = iter.next();
@@ -207,7 +208,7 @@ public abstract class CoverageDataContainer
 		lock.lock();
 
 		try {
-			Iterator<CoverageData> iter = this.children.values().iterator();
+			Iterator<CoverageData> iter = getChildren().values().iterator();
 
 			while (iter.hasNext()) {
 				CoverageData coverageContainer = iter.next();
@@ -228,7 +229,7 @@ public abstract class CoverageDataContainer
 		lock.lock();
 
 		try {
-			Iterator<CoverageData> iter = this.children.values().iterator();
+			Iterator<CoverageData> iter = getChildren().values().iterator();
 
 			while (iter.hasNext()) {
 				CoverageData coverageContainer = iter.next();
@@ -249,7 +250,7 @@ public abstract class CoverageDataContainer
 		lock.lock();
 
 		try {
-			Iterator<CoverageData> iter = this.children.values().iterator();
+			Iterator<CoverageData> iter = getChildren().values().iterator();
 
 			while (iter.hasNext()) {
 				CoverageData coverageContainer = iter.next();
@@ -273,7 +274,7 @@ public abstract class CoverageDataContainer
 		lock.lock();
 
 		try {
-			return this.children.size();
+			return getChildren().size();
 		}
 		finally {
 			lock.unlock();
@@ -291,14 +292,14 @@ public abstract class CoverageDataContainer
 		getBothLocks(container);
 
 		try {
-			Iterator<Object> iter = container.children.keySet().iterator();
+			Iterator<Object> iter = container.getChildren().keySet().iterator();
 
 			while (iter.hasNext()) {
 				Object key = iter.next();
 
-				CoverageData newChild = (CoverageData)container.children.get(key);
+				CoverageData newChild = (CoverageData)container.getChildren().get(key);
 
-				CoverageData existingChild = (CoverageData)this.children.get(key);
+				CoverageData existingChild = (CoverageData)getChildren().get(key);
 
 				if (existingChild != null) {
 					existingChild.merge(newChild);
@@ -307,7 +308,7 @@ public abstract class CoverageDataContainer
 					// TODO: Shouldn't we be cloning newChild here?  I think so that
 					//       would be better... but we would need to override the
 					//       clone() method all over the place?
-					this.children.put(key, newChild);
+					getChildren().put(key, newChild);
 				}
 			}
 		}
@@ -349,6 +350,10 @@ public abstract class CoverageDataContainer
 				}
 			}
 		}
+	}
+
+	protected Map<Object,CoverageData> getChildren() {
+		return _children;
 	}
 
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
