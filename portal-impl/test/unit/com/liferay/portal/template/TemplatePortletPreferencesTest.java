@@ -15,8 +15,10 @@
 package com.liferay.portal.template;
 
 import com.liferay.portal.cache.SingleVMPoolImpl;
+import com.liferay.portal.cache.key.JavaSHA1CacheKeyGenerator;
 import com.liferay.portal.cache.memory.MemoryPortalCacheManager;
 import com.liferay.portal.kernel.cache.SingleVMPoolUtil;
+import com.liferay.portal.kernel.cache.key.CacheKeyGeneratorUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.security.xml.SecureXMLFactoryProviderImpl;
@@ -25,6 +27,8 @@ import com.liferay.portal.util.HtmlImpl;
 import com.liferay.portlet.PortletPreferencesFactoryImpl;
 import com.liferay.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portlet.PortletPreferencesImpl;
+
+import java.security.NoSuchAlgorithmException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,11 +43,23 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 /**
  * @author László Csontos
+ * @author Vilmos Papp
  */
-public class TemplatePortletPreferencesTest {
+@PrepareForTest(
+	{
+		CacheKeyGeneratorUtil.class
+	}
+)
+@RunWith(PowerMockRunner.class)
+public class TemplatePortletPreferencesTest extends PowerMockito {
 
 	@BeforeClass
 	public static void setUpClass() {
@@ -66,6 +82,20 @@ public class TemplatePortletPreferencesTest {
 		SingleVMPoolUtil singleVMPoolUtil = new SingleVMPoolUtil();
 
 		singleVMPoolUtil.setSingleVMPool(singleVMPoolImpl);
+
+		mockStatic(CacheKeyGeneratorUtil.class);
+
+		try {
+			when(
+				CacheKeyGeneratorUtil.getCacheKeyGenerator(
+					PortletPreferencesFactoryImpl.class.getName())
+			).thenReturn(
+				new JavaSHA1CacheKeyGenerator()
+			);
+		}
+		catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
 
 		PortletPreferencesFactoryUtil portletPreferencesFactoryUtil =
 			new PortletPreferencesFactoryUtil();
