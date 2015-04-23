@@ -47,7 +47,8 @@ public abstract class CoverageDataContainer
 		_lock.lock();
 
 		try {
-			return getChildren().equals(coverageDataContainer.getChildren());
+			return getObjectCoverageDataMap().equals(
+				coverageDataContainer.getObjectCoverageDataMap());
 		}
 		finally {
 			_lock.unlock();
@@ -62,7 +63,9 @@ public abstract class CoverageDataContainer
 		_lock.lock();
 
 		try {
-			for (CoverageData coverageContainer : getChildren().values()) {
+			for (CoverageData coverageContainer :
+					getObjectCoverageDataMap().values()) {
+
 				number += coverageContainer.getNumberOfValidBranches();
 
 				numberCovered += coverageContainer.getNumberOfCoveredBranches();
@@ -86,7 +89,7 @@ public abstract class CoverageDataContainer
 		_lock.lock();
 
 		try {
-			return (CoverageData)getChildren().get(name);
+			return (CoverageData)getObjectCoverageDataMap().get(name);
 		}
 		finally {
 			_lock.unlock();
@@ -101,7 +104,9 @@ public abstract class CoverageDataContainer
 		_lock.lock();
 
 		try {
-			for (CoverageData coverageContainer : getChildren().values()) {
+			for (CoverageData coverageContainer :
+					getObjectCoverageDataMap().values()) {
+
 				number += coverageContainer.getNumberOfValidLines();
 
 				numberCovered += coverageContainer.getNumberOfCoveredLines();
@@ -125,7 +130,7 @@ public abstract class CoverageDataContainer
 		_lock.lock();
 
 		try {
-			return getChildren().size();
+			return getObjectCoverageDataMap().size();
 		}
 		finally {
 			_lock.unlock();
@@ -138,7 +143,9 @@ public abstract class CoverageDataContainer
 		_lock.lock();
 
 		try {
-			for (CoverageData coverageContainer : getChildren().values()) {
+			for (CoverageData coverageContainer :
+					getObjectCoverageDataMap().values()) {
+
 				number += coverageContainer.getNumberOfCoveredBranches();
 			}
 		}
@@ -155,7 +162,9 @@ public abstract class CoverageDataContainer
 		_lock.lock();
 
 		try {
-			for (CoverageData coverageContainer : getChildren().values()) {
+			for (CoverageData coverageContainer :
+					getObjectCoverageDataMap().values()) {
+
 				number += coverageContainer.getNumberOfCoveredLines();
 			}
 		}
@@ -172,7 +181,9 @@ public abstract class CoverageDataContainer
 		_lock.lock();
 
 		try {
-			for (CoverageData coverageContainer : getChildren().values()) {
+			for (CoverageData coverageContainer :
+					getObjectCoverageDataMap().values()) {
+
 				number += coverageContainer.getNumberOfValidBranches();
 			}
 		}
@@ -189,7 +200,9 @@ public abstract class CoverageDataContainer
 		_lock.lock();
 
 		try {
-			for (CoverageData coverageContainer : getChildren().values()) {
+			for (CoverageData coverageContainer :
+					getObjectCoverageDataMap().values()) {
+
 				number += coverageContainer.getNumberOfValidLines();
 			}
 		}
@@ -204,7 +217,7 @@ public abstract class CoverageDataContainer
 		_lock.lock();
 
 		try {
-			return getChildren().size();
+			return getObjectCoverageDataMap().size();
 		}
 		finally {
 			_lock.unlock();
@@ -217,16 +230,18 @@ public abstract class CoverageDataContainer
 		getBothLocks(container);
 
 		try {
-			for (Object object : getChildren().keySet()) {
-				CoverageData newChild = container.getChildren().get(object);
+			for (Object object : getObjectCoverageDataMap().keySet()) {
+				CoverageData newChild =
+					container.getObjectCoverageDataMap().get(object);
 
-				CoverageData existingChild = getChildren().get(object);
+				CoverageData existingChild =
+					getObjectCoverageDataMap().get(object);
 
 				if (existingChild != null) {
 					existingChild.merge(newChild);
 				}
 				else {
-					getChildren().put(object, newChild);
+					getObjectCoverageDataMap().put(object, newChild);
 				}
 			}
 		}
@@ -263,12 +278,12 @@ public abstract class CoverageDataContainer
 		}
 	}
 
-	protected Map<Object, CoverageData> getChildren() {
-		return _children;
-	}
-
 	protected Lock getLock() {
 		return _lock;
+	}
+
+	protected Map<Object, CoverageData> getObjectCoverageDataMap() {
+		return _objectCoverageDataMap;
 	}
 
 	private void _initLock() {
@@ -285,7 +300,8 @@ public abstract class CoverageDataContainer
 
 	private static final long serialVersionUID = 2;
 
-	private final Map<Object, CoverageData> _children = new HashMap<>();
 	private transient Lock _lock;
+	private final Map<Object, CoverageData> _objectCoverageDataMap =
+		new HashMap<>();
 
 }

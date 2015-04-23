@@ -100,12 +100,12 @@ public class ProjectData extends CoverageDataContainer
 			String packageName = classData.getPackageName();
 
 			PackageData packageData =
-				(PackageData)getChildren().get(packageName);
+				(PackageData)getObjectCoverageDataMap().get(packageName);
 
 			if (packageData == null) {
 				packageData = new PackageData(packageName);
 
-				getChildren().put(packageName, packageData);
+				getObjectCoverageDataMap().put(packageName, packageData);
 			}
 
 			packageData.addClassData(classData);
@@ -177,7 +177,7 @@ public class ProjectData extends CoverageDataContainer
 		getLock().lock();
 
 		try {
-			return new TreeSet(getChildren().values());
+			return new TreeSet(getObjectCoverageDataMap().values());
 		}
 		finally {
 			getLock().unlock();
@@ -190,7 +190,9 @@ public class ProjectData extends CoverageDataContainer
 		getLock().lock();
 
 		try {
-			for (CoverageData coverageData : getChildren().values()) {
+			for (CoverageData coverageData :
+					getObjectCoverageDataMap().values()) {
+
 				sourceFileDatas.addAll(
 					((PackageData)coverageData).getSourceFiles());
 			}
@@ -208,7 +210,9 @@ public class ProjectData extends CoverageDataContainer
 		getLock().lock();
 
 		try {
-			for (CoverageData coverageData : getChildren().values()) {
+			for (CoverageData coverageData :
+					getObjectCoverageDataMap().values()) {
+
 				PackageData packageData = (PackageData)coverageData;
 
 				if (packageData.getName().startsWith(packageName + ".") ||
