@@ -37,39 +37,40 @@ public abstract class CoverageDataFileHandler implements HasBeenInstrumented {
 			return defaultFile;
 		}
 		else {
-			ConfigurationUtil config = new ConfigurationUtil();
+			ConfigurationUtil configurationUtil = new ConfigurationUtil();
 
-			defaultFile = new File(config.getDatafile());
+			defaultFile = new File(configurationUtil.getDatafile());
 
 			return defaultFile;
 		}
 	}
 
 	public static ProjectData loadCoverageData(File dataFile) {
-		BufferedInputStream is = null;
+		BufferedInputStream bufferedInputStream = null;
 
 		try {
-			is = new BufferedInputStream(new FileInputStream(dataFile), 16384);
+			bufferedInputStream = new BufferedInputStream(
+				new FileInputStream(dataFile), 16384);
 
-			ProjectData e = _loadCoverageData((InputStream)is);
+			ProjectData e = _loadCoverageData(bufferedInputStream);
 
 			return e;
 		}
-		catch (IOException var13) {
+		catch (IOException ioe) {
 			throw new RuntimeException(
 				"Cobertura: Error reading file " + dataFile.getAbsolutePath() +
-					": " + var13.getLocalizedMessage());
+					": " + ioe.getLocalizedMessage());
 		}
 		finally {
-			if (is != null) {
+			if (bufferedInputStream != null) {
 				try {
-					is.close();
+					bufferedInputStream.close();
 				}
-				catch (IOException var12) {
+				catch (IOException ioe) {
 					throw new RuntimeException(
 						"Cobertura: Error closing file " +
 							dataFile.getAbsolutePath() + ": " +
-							var12.getLocalizedMessage());
+							ioe.getLocalizedMessage());
 				}
 			}
 		}
@@ -78,7 +79,7 @@ public abstract class CoverageDataFileHandler implements HasBeenInstrumented {
 	public static void saveCoverageData(
 		ProjectData projectData, File dataFile) {
 
-		FileOutputStream os = null;
+		FileOutputStream fileOutputStream = null;
 
 		try {
 			File e = dataFile.getParentFile();
@@ -87,23 +88,23 @@ public abstract class CoverageDataFileHandler implements HasBeenInstrumented {
 				e.mkdirs();
 			}
 
-			os = new FileOutputStream(dataFile);
+			fileOutputStream = new FileOutputStream(dataFile);
 
-			_saveCoverageData(projectData, (OutputStream)os);
+			_saveCoverageData(projectData, fileOutputStream);
 		}
-		catch (IOException var12) {
-			var12.printStackTrace();
+		catch (IOException ioe) {
+			ioe.printStackTrace();
 
 			throw new RuntimeException(
 				"Cobertura: Error writing file " + dataFile.getAbsolutePath());
 		}
 		finally {
-			if (os != null) {
+			if (fileOutputStream != null) {
 				try {
-					os.close();
+					fileOutputStream.close();
 				}
-				catch (IOException var11) {
-					var11.printStackTrace();
+				catch (IOException ioe) {
+					ioe.printStackTrace();
 
 					throw new RuntimeException(
 						"Cobertura: Error closing file " +
@@ -119,29 +120,29 @@ public abstract class CoverageDataFileHandler implements HasBeenInstrumented {
 	private static ProjectData _loadCoverageData(InputStream dataFile)
 		throws IOException {
 
-		ObjectInputStream objects = null;
+		ObjectInputStream objectInputStream = null;
 
 		try {
-			objects = new ObjectInputStream(dataFile);
+			objectInputStream = new ObjectInputStream(dataFile);
 
-			return (ProjectData)objects.readObject();
+			return (ProjectData)objectInputStream.readObject();
 		}
-		catch (IOException var14) {
-			throw var14;
+		catch (IOException ioe) {
+			throw ioe;
 		}
-		catch (Exception var15) {
-			var15.printStackTrace();
+		catch (Exception e) {
+			e.printStackTrace();
 
 			throw new RuntimeException(
 				"Cobertura: Error reading from object stream.");
 		}
 		finally {
-			if (objects != null) {
+			if (objectInputStream != null) {
 				try {
-					objects.close();
+					objectInputStream.close();
 				}
-				catch (IOException var13) {
-					var13.printStackTrace();
+				catch (IOException ioe) {
+					ioe.printStackTrace();
 
 					throw new RuntimeException(
 						"Cobertura: Error closing object stream.");
@@ -153,25 +154,25 @@ public abstract class CoverageDataFileHandler implements HasBeenInstrumented {
 	private static void _saveCoverageData(
 		ProjectData projectData, OutputStream dataFile) {
 
-		ObjectOutputStream objects = null;
+		ObjectOutputStream objectOutputStream = null;
 
 		try {
-			objects = new ObjectOutputStream(dataFile);
-			objects.writeObject(projectData);
+			objectOutputStream = new ObjectOutputStream(dataFile);
+			objectOutputStream.writeObject(projectData);
 		}
-		catch (IOException var12) {
-			var12.printStackTrace();
+		catch (IOException ioe) {
+			ioe.printStackTrace();
 
 			throw new RuntimeException(
 				"Cobertura: Error writing to object stream.");
 		}
 		finally {
-			if (objects != null) {
+			if (objectOutputStream != null) {
 				try {
-					objects.close();
+					objectOutputStream.close();
 				}
-				catch (IOException var11) {
-					var11.printStackTrace();
+				catch (IOException ioe) {
+					ioe.printStackTrace();
 
 					throw new RuntimeException(
 						"Cobertura: Error closing object stream.");

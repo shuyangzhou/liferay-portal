@@ -85,11 +85,11 @@ public abstract class CoverageDataContainer
 		return (double)numberCovered / number;
 	}
 
-	public CoverageData getChild(String name) {
+	public CoverageData getCoverageData(String name) {
 		_lock.lock();
 
 		try {
-			return (CoverageData)getObjectCoverageDataMap().get(name);
+			return getObjectCoverageDataMap().get(name);
 		}
 		finally {
 			_lock.unlock();
@@ -124,17 +124,6 @@ public abstract class CoverageDataContainer
 		}
 
 		return (double)numberCovered / number;
-	}
-
-	public int getNumberOfChildren() {
-		_lock.lock();
-
-		try {
-			return getObjectCoverageDataMap().size();
-		}
-		finally {
-			_lock.unlock();
-		}
 	}
 
 	public int getNumberOfCoveredBranches() {
@@ -211,6 +200,17 @@ public abstract class CoverageDataContainer
 		}
 
 		return number;
+	}
+
+	public int getObjectCoverageDataMapSize() {
+		_lock.lock();
+
+		try {
+			return getObjectCoverageDataMap().size();
+		}
+		finally {
+			_lock.unlock();
+		}
 	}
 
 	public int hashCode() {
