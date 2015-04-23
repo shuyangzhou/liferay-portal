@@ -259,16 +259,6 @@ public class ProjectData extends CoverageDataContainer
 			projectData = CoverageDataFileHandler.loadCoverageData(dataFile);
 		}
 
-		if (projectData == null) {
-
-			// We could not read from the serialized file, so use a new object.
-
-			System.out.println(
-				"Cobertura: Coverage data file " + dataFile.getAbsolutePath() +
-					" either does not exist or is not readable.  Creating a " +
-					"new data file.");
-		}
-
 		return projectData;
 	}
 

@@ -134,10 +134,6 @@ public abstract class CoverageDataFileHandler implements HasBeenInstrumented {
 
 			ProjectData e = (ProjectData)objects.readObject();
 
-			System.out.println(
-				"Cobertura: Loaded information on " + e.getNumberOfClasses() +
-					" classes.");
-
 			var3 = e;
 
 			return var3;
@@ -177,9 +173,6 @@ public abstract class CoverageDataFileHandler implements HasBeenInstrumented {
 		try {
 			objects = new ObjectOutputStream(dataFile);
 			objects.writeObject(projectData);
-			System.out.println(
-				"Cobertura: Saved information on " +
-					projectData.getNumberOfClasses() + " classes.");
 		}
 		catch (IOException var12) {
 			System.err.println("Cobertura: Error writing to object stream.");
