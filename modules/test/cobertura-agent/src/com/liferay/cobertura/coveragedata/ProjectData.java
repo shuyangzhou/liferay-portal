@@ -39,8 +39,8 @@ public class ProjectData extends CoverageDataContainer implements HasBeenInstrum
 
 	private static final long serialVersionUID = 6;
 
-	/** This collection is used for quicker access to the list of classes. */
-	private Map classes = new HashMap();
+	/** This collection is used for quicker access to the list of _classes. */
+	private Map _classes = new HashMap();
 
 	public void addClassData(ClassData classData) {
 		lock.lock();
@@ -58,7 +58,7 @@ public class ProjectData extends CoverageDataContainer implements HasBeenInstrum
 			}
 			packageData.addClassData(classData);
 
-			this.classes.put(classData.getName(), classData);
+			_classes.put(classData.getName(), classData);
 		}
 		finally {
 			lock.unlock();
@@ -69,7 +69,7 @@ public class ProjectData extends CoverageDataContainer implements HasBeenInstrum
 		lock.lock();
 
 		try {
-			return (ClassData)this.classes.get(name);
+			return (ClassData)_classes.get(name);
 		}
 		finally {
 			lock.unlock();
@@ -83,7 +83,7 @@ public class ProjectData extends CoverageDataContainer implements HasBeenInstrum
 		lock.lock();
 
 		try {
-			ClassData classData = (ClassData)this.classes.get(name);
+			ClassData classData = (ClassData)_classes.get(name);
 
 			if (classData == null) {
 				classData = new ClassData(name);
@@ -101,7 +101,7 @@ public class ProjectData extends CoverageDataContainer implements HasBeenInstrum
 		lock.lock();
 
 		try {
-			return this.classes.values();
+			return _classes.values();
 		}
 		finally {
 			lock.unlock();
@@ -112,7 +112,7 @@ public class ProjectData extends CoverageDataContainer implements HasBeenInstrum
 		lock.lock();
 
 		try {
-			return this.classes.size();
+			return _classes.size();
 		}
 		finally {
 			lock.unlock();
@@ -200,10 +200,10 @@ public class ProjectData extends CoverageDataContainer implements HasBeenInstrum
 		try {
 			super.merge(coverageData);
 
-			for (Iterator iter = projectData.classes.keySet().iterator(); iter.hasNext();) {
+			for (Iterator iter = projectData._classes.keySet().iterator(); iter.hasNext();) {
 				Object key = iter.next();
-				if (!this.classes.containsKey(key)) {
-					this.classes.put(key, projectData.classes.get(key));
+				if (!_classes.containsKey(key)) {
+					_classes.put(key, projectData._classes.get(key));
 				}
 			}
 		}
@@ -216,12 +216,12 @@ public class ProjectData extends CoverageDataContainer implements HasBeenInstrum
 	// TODO: Is it possible to do this as a static initializer?
 	public static void initialize() {
 		// Hack for Tomcat - by saving project data right now we force loading
-		// of classes involved in this process (like ObjectOutputStream)
+		// of _classes involved in this process (like ObjectOutputStream)
 		// so that it won't be necessary to load them on JVM shutdown
 		if (System.getProperty("catalina.home") != null) {
 			saveGlobalProjectData();
 
-			// Force the class loader to load some classes that are
+			// Force the class loader to load some _classes that are
 			// required by our JVM shutdown hook.
 			// TODO: Use ClassLoader.loadClass("whatever"); instead
 			ClassData.class.toString();
@@ -253,9 +253,9 @@ public class ProjectData extends CoverageDataContainer implements HasBeenInstrum
 		/*
 		 * A note about the next synchronized block:  Cobertura uses static fields to
 		 * hold the data.   When there are multiple classloaders, each classloader
-		 * will keep track of the line counts for the classes that it loads.
+		 * will keep track of the line counts for the _classes that it loads.
 		 *
-		 * The static initializers for the Cobertura classes are also called for
+		 * The static initializers for the Cobertura _classes are also called for
 		 * each classloader.   So, there is one shutdown hook for each classloader.
 		 * So, when the JVM exits, each shutdown hook will try to write the
 		 * data it has kept to the datafile.   They will do this at the same

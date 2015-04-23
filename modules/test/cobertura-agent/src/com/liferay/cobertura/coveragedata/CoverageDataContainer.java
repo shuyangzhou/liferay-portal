@@ -46,10 +46,10 @@ public abstract class CoverageDataContainer
 		new HashMap<Object,CoverageData>();
 
 	public CoverageDataContainer() {
-		initLock();
+		_initLock();
 	}
 
-	private void initLock() {
+	private void _initLock() {
 		lock = new ReentrantLock();
 	}
 
@@ -359,6 +359,6 @@ public abstract class CoverageDataContainer
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
 		in.defaultReadObject();
 
-		initLock();
+		_initLock();
 	}
 }

@@ -58,7 +58,7 @@ public abstract class CoverageDataFileHandler implements HasBeenInstrumented {
 		try {
 			is = new BufferedInputStream(new FileInputStream(dataFile), 16384);
 
-			ProjectData e = loadCoverageData((InputStream)is);
+			ProjectData e = _loadCoverageData((InputStream) is);
 
 			return e;
 		}
@@ -82,7 +82,7 @@ public abstract class CoverageDataFileHandler implements HasBeenInstrumented {
 		return (ProjectData)e1;
 	}
 
-	private static ProjectData loadCoverageData(InputStream dataFile) throws IOException {
+	private static ProjectData _loadCoverageData(InputStream dataFile) throws IOException {
 		ObjectInputStream objects = null;
 
 		ProjectData var3;
@@ -137,7 +137,7 @@ public abstract class CoverageDataFileHandler implements HasBeenInstrumented {
 
 			os = new FileOutputStream(dataFile);
 
-			saveCoverageData(projectData, (OutputStream) os);
+			_saveCoverageData(projectData, (OutputStream) os);
 		}
 		catch (IOException var12) {
 			System.err.println("Cobertura: Error writing file " + dataFile.getAbsolutePath());
@@ -160,7 +160,7 @@ public abstract class CoverageDataFileHandler implements HasBeenInstrumented {
 
 	}
 
-	private static void saveCoverageData(ProjectData projectData, OutputStream dataFile) {
+	private static void _saveCoverageData(ProjectData projectData, OutputStream dataFile) {
 		ObjectOutputStream objects = null;
 
 		try {
