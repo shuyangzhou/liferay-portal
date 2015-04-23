@@ -24,13 +24,12 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import net.sourceforge.cobertura.coveragedata.CoverageData;
-import net.sourceforge.cobertura.coveragedata.HasBeenInstrumented;
 
 /**
  * @author Cristina González
  */
 public abstract class CoverageDataContainer
-	implements CoverageData, HasBeenInstrumented, Serializable {
+	implements CoverageData, Serializable {
 
 	public CoverageDataContainer() {
 		_initLock();

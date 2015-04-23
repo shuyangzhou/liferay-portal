@@ -24,13 +24,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 
-import net.sourceforge.cobertura.coveragedata.HasBeenInstrumented;
 import net.sourceforge.cobertura.util.ConfigurationUtil;
 
 /**
  * @author Cristina González
  */
-public abstract class CoverageDataFileHandler implements HasBeenInstrumented {
+public abstract class CoverageDataFileHandler {
 
 	public static File getDefaultDataFile() {
 		if (defaultFile != null) {

@@ -34,8 +34,7 @@ import net.sourceforge.cobertura.util.FileLocker;
 /**
  * @author Cristina González
  */
-public class ProjectData extends CoverageDataContainer
-	implements HasBeenInstrumented {
+public class ProjectData extends CoverageDataContainer {
 
 	public static void initialize() {
 		if (System.getProperty("catalina.home") != null) {
