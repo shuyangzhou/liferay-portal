@@ -49,7 +49,9 @@ public abstract class BaseMessageDigestCacheKeyGenerator
 
 	@Override
 	public String getCacheKey(String key) {
-		if ((_maxLength > -1) && (key.length() < _maxLength)) {
+		if (((_maxLength > -1) && (key.length() < _maxLength)) ||
+			(key.length() < PropsValues.CACHE_KEY_THRESHOLD_SIZE)) {
+
 			return key;
 		}
 
