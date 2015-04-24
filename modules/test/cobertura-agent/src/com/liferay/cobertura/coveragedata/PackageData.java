@@ -11,9 +11,6 @@ public class PackageData extends CoverageDataContainer
 
 	public PackageData(String name)
 	{
-		if (name == null)
-			throw new IllegalArgumentException(
-					"Package name must be specified.");
 		this.name = name;
 	}
 
