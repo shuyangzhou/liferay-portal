@@ -14,14 +14,16 @@ public class PackageData extends CoverageDataContainer
 		this.name = name;
 	}
 
-	public void addClassData(ClassData classData)
+	public ClassData addClassData(ClassData classData)
 	{
-			if (children.containsKey(classData.getBaseName()))
-				throw new IllegalArgumentException("Package " + this.name
-						+ " already contains a class with the name "
-						+ classData.getBaseName());
+		ClassData previousClassData = (ClassData)children.putIfAbsent(
+			classData.getBaseName(), classData);
 
-			children.put(classData.getBaseName(), classData);
+		if (previousClassData != null) {
+			classData = previousClassData;
+		}
+
+		return classData;
 	}
 
 	@Override

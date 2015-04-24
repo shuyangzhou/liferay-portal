@@ -52,9 +52,9 @@ public class ProjectData extends CoverageDataContainer {
 				}
 			}
 
-			packageData.addClassData(classData);
-
-			_classDataMap.put(classData.getName(), classData);
+			if (packageData.addClassData(classData) == classData) {
+				_classDataMap.put(classData.getName(), classData);
+			}
 		}
 
 		return classData;
