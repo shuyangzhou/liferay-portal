@@ -3,7 +3,6 @@ package com.liferay.cobertura.coveragedata;
 import net.sourceforge.cobertura.coveragedata.ClassData;
 
 public class PackageData extends CoverageDataContainer
-		implements Comparable
 {
 
 	private static final long serialVersionUID = 7;
@@ -26,14 +25,6 @@ public class PackageData extends CoverageDataContainer
 						+ classData.getBaseName());
 
 			children.put(classData.getBaseName(), classData);
-	}
-
-	@Override
-	public int compareTo(Object o)
-	{
-		if (!o.getClass().equals(PackageData.class))
-			return Integer.MAX_VALUE;
-		return this.name.compareTo(((PackageData)o).name);
 	}
 
 	@Override
