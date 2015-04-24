@@ -28,6 +28,7 @@ public class PackageData extends CoverageDataContainer
 			children.put(classData.getBaseName(), classData);
 	}
 
+	@Override
 	public int compareTo(Object o)
 	{
 		if (!o.getClass().equals(PackageData.class))
@@ -35,6 +36,7 @@ public class PackageData extends CoverageDataContainer
 		return this.name.compareTo(((PackageData)o).name);
 	}
 
+	@Override
 	public boolean equals(Object obj)
 	{
 		if (this == obj)
@@ -46,6 +48,7 @@ public class PackageData extends CoverageDataContainer
 			return super.equals(obj) && this.name.equals(packageData.name);
 	}
 
+	@Override
 	public int hashCode()
 	{
 		return this.name.hashCode();
