@@ -20,18 +20,26 @@ public class PackageData extends CoverageDataContainer {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)return true;
+		if (this == obj) {
+			return true;
+		}
 
-		if ((obj == null) || !(obj.getClass().equals(this.getClass())))
+		if (!(obj instanceof PackageData)) {
 			return false;
+		}
 
 		PackageData packageData = (PackageData)obj;
-			return super.equals(obj) && this.name.equals(packageData.name);
+
+		if (name.equals(packageData.name) && super.equals(packageData)) {
+			return true;
+		}
+
+		return false;
 	}
 
 	@Override
 	public int hashCode() {
-		return this.name.hashCode();
+		return name.hashCode();
 	}
 
 	private static final long serialVersionUID = 7;
