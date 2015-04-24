@@ -23,14 +23,7 @@
 
 package com.liferay.cobertura.coveragedata;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.SortedMap;
-import java.util.SortedSet;
-import java.util.TreeMap;
-import java.util.TreeSet;
 import net.sourceforge.cobertura.coveragedata.ClassData;
-import net.sourceforge.cobertura.coveragedata.SourceFileData;
 
 public class PackageData extends CoverageDataContainer
 		implements Comparable
@@ -70,11 +63,6 @@ public class PackageData extends CoverageDataContainer
 		return this.name.compareTo(((PackageData)o).name);
 	}
 
-	public boolean contains(String name)
-	{
-			return this.children.containsKey(name);
-	}
-
 	/**
 	 * Returns true if the given object is an instance of the
 	 * PackageData class, and it contains the same data as this
@@ -89,39 +77,6 @@ public class PackageData extends CoverageDataContainer
 
 		PackageData packageData = (PackageData)obj;
 			return super.equals(obj) && this.name.equals(packageData.name);
-	}
-
-	public SortedSet getClasses()
-	{
-			return new TreeSet(this.children.values());
-	}
-
-	public String getName()
-	{
-		return this.name;
-	}
-
-	public String getSourceFileName()
-	{
-		return this.name.replace('.', '/');
-	}
-
-	public Collection getSourceFiles()
-	{
-		SortedMap sourceFileDatas = new TreeMap();
-			Iterator iter = this.children.values().iterator();
-			while (iter.hasNext()) {
-				ClassData classData = (ClassData)iter.next();
-				String sourceFileName = classData.getSourceFileName();
-				SourceFileData sourceFileData = (SourceFileData)sourceFileDatas.get(sourceFileName);
-				if (sourceFileData == null)
-				{
-					sourceFileData = new SourceFileData(sourceFileName);
-					sourceFileDatas.put(sourceFileName, sourceFileData);
-				}
-				sourceFileData.addClassData(classData);
-			}
-		return sourceFileDatas.values();
 	}
 
 	public int hashCode()
