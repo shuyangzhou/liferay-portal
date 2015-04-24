@@ -29,9 +29,11 @@ import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import net.sourceforge.cobertura.coveragedata.ClassData;
+import net.sourceforge.cobertura.coveragedata.SourceFileData;
 
 public class PackageData extends CoverageDataContainer
-		implements Comparable, HasBeenInstrumented
+		implements Comparable
 {
 
 	private static final long serialVersionUID = 7;
@@ -48,9 +50,6 @@ public class PackageData extends CoverageDataContainer
 
 	public void addClassData(ClassData classData)
 	{
-		lock.lock();
-		try
-		{
 			if (children.containsKey(classData.getBaseName()))
 				throw new IllegalArgumentException("Package " + this.name
 						+ " already contains a class with the name "
@@ -59,11 +58,6 @@ public class PackageData extends CoverageDataContainer
 			// Each key is a class basename, stored as an String object.
 			// Each value is information about the class, stored as a ClassData object.
 			children.put(classData.getBaseName(), classData);
-		}
-		finally
-		{
-			lock.unlock();
-		}
 	}
 
 	/**
@@ -78,15 +72,7 @@ public class PackageData extends CoverageDataContainer
 
 	public boolean contains(String name)
 	{
-		lock.lock();
-		try
-		{
 			return this.children.containsKey(name);
-		}
-		finally
-		{
-			lock.unlock();
-		}
 	}
 
 	/**
@@ -102,29 +88,12 @@ public class PackageData extends CoverageDataContainer
 			return false;
 
 		PackageData packageData = (PackageData)obj;
-		getBothLocks(packageData);
-		try
-		{
 			return super.equals(obj) && this.name.equals(packageData.name);
-		}
-		finally
-		{
-			lock.unlock();
-			packageData.lock.unlock();
-		}
 	}
 
 	public SortedSet getClasses()
 	{
-		lock.lock();
-		try
-		{
 			return new TreeSet(this.children.values());
-		}
-		finally
-		{
-			lock.unlock();
-		}
 	}
 
 	public String getName()
@@ -140,10 +109,6 @@ public class PackageData extends CoverageDataContainer
 	public Collection getSourceFiles()
 	{
 		SortedMap sourceFileDatas = new TreeMap();
-
-		lock.lock();
-		try
-		{
 			Iterator iter = this.children.values().iterator();
 			while (iter.hasNext()) {
 				ClassData classData = (ClassData)iter.next();
@@ -156,11 +121,6 @@ public class PackageData extends CoverageDataContainer
 				}
 				sourceFileData.addClassData(classData);
 			}
-		}
-		finally
-		{
-			lock.unlock();
-		}
 		return sourceFileDatas.values();
 	}
 
