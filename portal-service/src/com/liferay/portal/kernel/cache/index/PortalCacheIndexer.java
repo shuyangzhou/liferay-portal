@@ -25,6 +25,7 @@ import java.util.concurrent.ConcurrentMap;
 
 /**
  * @author Shuyang Zhou
+ * @author Preston Crary
  */
 public class PortalCacheIndexer<I, K extends IndexedCacheKey<I>, V> {
 
@@ -81,11 +82,15 @@ public class PortalCacheIndexer<I, K extends IndexedCacheKey<I>, V> {
 			Set<K> newIndexedCacheKeys = new HashSet<>(indexedCacheKeys);
 
 			if (!newIndexedCacheKeys.add(indexedCacheKey)) {
+				_syncIndexState(indexedCacheKey, true);
+
 				return;
 			}
 
 			if (_indexedCacheKeys.replace(
 					index, indexedCacheKeys, newIndexedCacheKeys)) {
+
+				_syncIndexState(indexedCacheKey, true);
 
 				return;
 			}
@@ -110,13 +115,28 @@ public class PortalCacheIndexer<I, K extends IndexedCacheKey<I>, V> {
 
 			if (newIndexedCacheKeys.isEmpty()) {
 				if (_indexedCacheKeys.remove(index, indexedCacheKeys)) {
+					_syncIndexState(indexedCacheKey, false);
+
 					return;
 				}
 			}
 			else if (_indexedCacheKeys.replace(
 						index, indexedCacheKeys, newIndexedCacheKeys)) {
 
+				_syncIndexState(indexedCacheKey, false);
+
 				return;
+			}
+		}
+	}
+
+	private void _syncIndexState(K indexCacheKey, boolean add) {
+		if ((_portalCache.get(indexCacheKey) == null) == add) {
+			if (add) {
+				_removeIndexedCacheKey(indexCacheKey);
+			}
+			else {
+				_addIndexedCacheKey(indexCacheKey);
 			}
 		}
 	}
@@ -173,6 +193,10 @@ public class PortalCacheIndexer<I, K extends IndexedCacheKey<I>, V> {
 		@Override
 		public void notifyRemoveAll(PortalCache<K, V> portalCache) {
 			_indexedCacheKeys.clear();
+
+			for (K indexedCacheKey : _portalCache.getKeys()) {
+				_addIndexedCacheKey(indexedCacheKey);
+			}
 		}
 
 	}
