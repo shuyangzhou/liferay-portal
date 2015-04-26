@@ -15,9 +15,10 @@
 package com.liferay.portal.kernel.nio.intraband.messaging;
 
 import com.liferay.portal.kernel.messaging.BaseDestination;
-import com.liferay.portal.kernel.messaging.DefaultMessageBus;
+import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBus;
+import com.liferay.portal.kernel.messaging.MessageBusEventListener;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.messaging.SynchronousDestination;
@@ -39,6 +40,9 @@ import com.liferay.portal.kernel.test.rule.NewEnv;
 import com.liferay.portal.kernel.test.rule.NewEnvTestRule;
 import com.liferay.portal.kernel.util.ClassLoaderPool;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.registry.Registry;
+import com.liferay.registry.RegistryUtil;
+import com.liferay.registry.ServiceTracker;
 
 import java.io.IOException;
 
@@ -46,6 +50,9 @@ import java.nio.ByteBuffer;
 
 import java.rmi.RemoteException;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -56,6 +63,8 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
+
+import org.mockito.Mockito;
 
 /**
  * @author Shuyang Zhou
@@ -70,12 +79,19 @@ public class IntrabandBridgeDestinationTest {
 
 	@Before
 	public void setUp() {
-		_messageBus = new DefaultMessageBus();
+		Registry registry = Mockito.mock(Registry.class);
+		RegistryUtil.setRegistry(registry);
 
-		MessageBusUtil messageBusUtil = new MessageBusUtil();
+		Mockito.when(registry.getRegistry()).thenReturn(registry);
+		Mockito.when(registry.setRegistry(registry)).thenReturn(registry);
 
-		messageBusUtil.setMessageBus(_messageBus);
-		messageBusUtil.setSynchronousMessageSender(null);
+		MessageBus messageBus = new MockMessageBus();
+
+		ServiceTracker serviceTracker = Mockito.mock(ServiceTracker.class);
+		Mockito.when(serviceTracker.getService()).thenReturn(messageBus);
+
+		Mockito.when(registry.trackServices(MessageBus.class)).thenReturn(
+			serviceTracker);
 
 		_baseDestination = new SynchronousDestination();
 
@@ -242,7 +258,7 @@ public class IntrabandBridgeDestinationTest {
 
 		Assert.assertSame(
 			_baseDestination,
-			_messageBus.getDestination(_baseDestination.getName()));
+			MessageBusUtil.getDestination(_baseDestination.getName()));
 	}
 
 	@Test
@@ -459,8 +475,97 @@ public class IntrabandBridgeDestinationTest {
 
 	private BaseDestination _baseDestination;
 	private IntrabandBridgeDestination _intrabandBridgeDestination;
-	private MessageBus _messageBus;
 	private MockIntraband _mockIntraband;
 	private MockRegistrationReference _mockRegistrationReference;
+
+	private class MockMessageBus implements MessageBus {
+
+		@Override
+		public void addDestination(Destination destination) {
+			_destinations.put(destination.getName(), destination);
+		}
+
+		@Override
+		public boolean addMessageBusEventListener(
+			MessageBusEventListener messageBusEventListener) {
+
+			return false;
+		}
+
+		@Override
+		public Destination getDestination(String destinationName) {
+			return _destinations.get(destinationName);
+		}
+
+		@Override
+		public int getDestinationCount() {
+			return _destinations.size();
+		}
+
+		@Override
+		public Collection<String> getDestinationNames() {
+			return Collections.unmodifiableCollection(_destinations.keySet());
+		}
+
+		@Override
+		public Collection<Destination> getDestinations() {
+			return Collections.unmodifiableCollection(_destinations.values());
+		}
+
+		@Override
+		public boolean hasDestination(String destinationName) {
+			return _destinations.containsKey(destinationName);
+		}
+
+		@Override
+		public boolean hasMessageListener(String destinationName) {
+			return false;
+		}
+
+		@Override
+		public boolean registerMessageListener(
+			String destinationName, MessageListener messageListener) {
+
+			return false;
+		}
+
+		@Override
+		public Destination removeDestination(String destinationName) {
+			return _destinations.remove(destinationName);
+		}
+
+		@Override
+		public boolean removeMessageBusEventListener(
+			MessageBusEventListener messageBusEventListener) {
+
+			return false;
+		}
+
+		@Override
+		public void replace(Destination destination) {
+		}
+
+		@Override
+		public void sendMessage(String destinationName, Message message) {
+		}
+
+		@Override
+		public void shutdown() {
+		}
+
+		@Override
+		public void shutdown(boolean force) {
+		}
+
+		@Override
+		public boolean unregisterMessageListener(
+			String destinationName, MessageListener messageListener) {
+
+			return false;
+		}
+
+		private final Map<String, Destination> _destinations = new HashMap<>();
+
+	}
 
 }

@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.InvokerMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
-import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.scheduler.IntervalTrigger;
@@ -1040,9 +1039,8 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 
 		String destinationName = jobDataMap.getString(DESTINATION_NAME);
 
-		MessageBus messageBus = MessageBusUtil.getMessageBus();
-
-		Destination destination = messageBus.getDestination(destinationName);
+		Destination destination = MessageBusUtil.getDestination(
+			destinationName);
 
 		if (destination == null) {
 			return;
@@ -1073,7 +1071,7 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 			if (messageListenerUUID.equals(
 					schedulerMessageListener.getMessageListenerUUID())) {
 
-				messageBus.unregisterMessageListener(
+				MessageBusUtil.unregisterMessageListener(
 					destinationName, schedulerMessageListener);
 
 				return;

@@ -17,13 +17,12 @@ package com.liferay.portal.events;
 import com.liferay.portal.cache.bootstrap.ClusterLinkBootstrapLoaderHelperUtil;
 import com.liferay.portal.fabric.server.FabricServerUtil;
 import com.liferay.portal.jericho.CachedLoggerProvider;
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.cluster.ClusterMasterExecutorUtil;
 import com.liferay.portal.kernel.events.ActionException;
 import com.liferay.portal.kernel.events.SimpleAction;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.messaging.MessageBus;
+import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.nio.intraband.Intraband;
 import com.liferay.portal.kernel.nio.intraband.SystemDataType;
 import com.liferay.portal.kernel.nio.intraband.mailbox.MailboxDatagramReceiveHandler;
@@ -95,12 +94,9 @@ public class StartupAction extends SimpleAction {
 			SystemDataType.MAILBOX.getValue(),
 			new MailboxDatagramReceiveHandler());
 
-		MessageBus messageBus = (MessageBus)PortalBeanLocatorUtil.locate(
-			MessageBus.class.getName());
-
 		intraband.registerDatagramReceiveHandler(
 			SystemDataType.MESSAGE.getValue(),
-			new MessageDatagramReceiveHandler(messageBus));
+			new MessageDatagramReceiveHandler(MessageBusUtil.getMessageBus()));
 
 		intraband.registerDatagramReceiveHandler(
 			SystemDataType.PROXY.getValue(),

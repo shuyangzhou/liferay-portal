@@ -16,8 +16,10 @@ package com.liferay.portal.scheduler.quartz;
 
 import com.liferay.portal.json.JSONFactoryImpl;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.messaging.DefaultMessageBus;
+import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.Message;
+import com.liferay.portal.kernel.messaging.MessageBus;
+import com.liferay.portal.kernel.messaging.MessageBusEventListener;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.messaging.SynchronousDestination;
@@ -51,8 +53,12 @@ import com.liferay.portal.test.rule.AdviseWith;
 import com.liferay.portal.test.rule.AspectJNewEnvTestRule;
 import com.liferay.portal.util.PropsImpl;
 import com.liferay.portal.uuid.PortalUUIDImpl;
+import com.liferay.registry.Registry;
+import com.liferay.registry.RegistryUtil;
+import com.liferay.registry.ServiceTracker;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -72,6 +78,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+
+import org.mockito.Mockito;
 
 import org.quartz.Calendar;
 import org.quartz.JobBuilder;
@@ -115,10 +123,19 @@ public class QuartzSchedulerEngineTest {
 
 		PropsUtil.setProps(new PropsImpl());
 
-		MessageBusUtil messageBusUtil = new MessageBusUtil();
+		Registry registry = Mockito.mock(Registry.class);
+		RegistryUtil.setRegistry(registry);
 
-		messageBusUtil.setMessageBus(new DefaultMessageBus());
-		messageBusUtil.setSynchronousMessageSender(null);
+		Mockito.when(registry.getRegistry()).thenReturn(registry);
+		Mockito.when(registry.setRegistry(registry)).thenReturn(registry);
+
+		MessageBus messageBus = new MockMessageBus();
+
+		ServiceTracker serviceTracker = Mockito.mock(ServiceTracker.class);
+		Mockito.when(serviceTracker.getService()).thenReturn(messageBus);
+
+		Mockito.when(registry.trackServices(MessageBus.class)).thenReturn(
+			serviceTracker);
 
 		_testDestination = new SynchronousDestination();
 
@@ -815,6 +832,108 @@ public class QuartzSchedulerEngineTest {
 
 	private QuartzSchedulerEngine _quartzSchedulerEngine;
 	private SynchronousDestination _testDestination;
+
+	private class MockMessageBus implements MessageBus {
+
+		@Override
+		public void addDestination(Destination destination) {
+			_destinations.put(destination.getName(), destination);
+		}
+
+		@Override
+		public boolean addMessageBusEventListener(
+			MessageBusEventListener messageBusEventListener) {
+
+			return false;
+		}
+
+		@Override
+		public Destination getDestination(String destinationName) {
+			return _destinations.get(destinationName);
+		}
+
+		@Override
+		public int getDestinationCount() {
+			return _destinations.size();
+		}
+
+		@Override
+		public Collection<String> getDestinationNames() {
+			return Collections.unmodifiableCollection(_destinations.keySet());
+		}
+
+		@Override
+		public Collection<Destination> getDestinations() {
+			return Collections.unmodifiableCollection(_destinations.values());
+		}
+
+		@Override
+		public boolean hasDestination(String destinationName) {
+			return _destinations.containsKey(destinationName);
+		}
+
+		@Override
+		public boolean hasMessageListener(String destinationName) {
+			return false;
+		}
+
+		@Override
+		public boolean registerMessageListener(
+			String destinationName, MessageListener messageListener) {
+
+			Destination destination = _destinations.get(destinationName);
+
+			if (destination == null) {
+				return false;
+			}
+
+			return destination.register(messageListener);
+		}
+
+		@Override
+		public Destination removeDestination(String destinationName) {
+			return _destinations.remove(destinationName);
+		}
+
+		@Override
+		public boolean removeMessageBusEventListener(
+			MessageBusEventListener messageBusEventListener) {
+
+			return false;
+		}
+
+		@Override
+		public void replace(Destination destination) {
+		}
+
+		@Override
+		public void sendMessage(String destinationName, Message message) {
+		}
+
+		@Override
+		public void shutdown() {
+		}
+
+		@Override
+		public void shutdown(boolean force) {
+		}
+
+		@Override
+		public boolean unregisterMessageListener(
+			String destinationName, MessageListener messageListener) {
+
+			Destination destination = _destinations.get(destinationName);
+
+			if (destination == null) {
+				return false;
+			}
+
+			return destination.unregister(messageListener);
+		}
+
+		private final Map<String, Destination> _destinations = new HashMap<>();
+
+	}
 
 	private class MockScheduler implements Scheduler {
 

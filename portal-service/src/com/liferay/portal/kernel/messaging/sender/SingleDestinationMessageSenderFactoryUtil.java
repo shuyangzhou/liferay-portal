@@ -14,6 +14,10 @@
 
 package com.liferay.portal.kernel.messaging.sender;
 
+import com.liferay.registry.Registry;
+import com.liferay.registry.RegistryUtil;
+import com.liferay.registry.ServiceTracker;
+
 /**
  * @author Michael C. Han
  */
@@ -22,7 +26,7 @@ public class SingleDestinationMessageSenderFactoryUtil {
 	public static SingleDestinationMessageSender
 		createSingleDestinationMessageSender(String destinationName) {
 
-		return getSingleDestinationMessageSenderFactory().
+		return _instance.getSingleDestinationMessageSenderFactory().
 			createSingleDestinationMessageSender(destinationName);
 	}
 
@@ -30,26 +34,31 @@ public class SingleDestinationMessageSenderFactoryUtil {
 		createSingleDestinationSynchronousMessageSender(
 			String destinationName, SynchronousMessageSender.Mode mode) {
 
-		return getSingleDestinationMessageSenderFactory().
+		return _instance.getSingleDestinationMessageSenderFactory().
 			createSingleDestinationSynchronousMessageSender(
 				destinationName, mode);
 	}
 
-	public void setSingleDestinationMessageSenderFactory(
-		SingleDestinationMessageSenderFactory
-			singleDestinationMessageSenderFactory) {
-
-		_singleDestinationMessageSenderFactory =
-			singleDestinationMessageSenderFactory;
-	}
-
-	private static SingleDestinationMessageSenderFactory
+	protected SingleDestinationMessageSenderFactory
 		getSingleDestinationMessageSenderFactory() {
 
-		return _singleDestinationMessageSenderFactory;
+		return _serviceTracker.getService();
 	}
 
-	private static SingleDestinationMessageSenderFactory
-		_singleDestinationMessageSenderFactory;
+	private SingleDestinationMessageSenderFactoryUtil() {
+		Registry registry = RegistryUtil.getRegistry();
+
+		_serviceTracker = registry.trackServices(
+			SingleDestinationMessageSenderFactory.class);
+
+		_serviceTracker.open();
+	}
+
+	private static final SingleDestinationMessageSenderFactoryUtil _instance =
+		new SingleDestinationMessageSenderFactoryUtil();
+
+	private final ServiceTracker
+		<SingleDestinationMessageSenderFactory,
+			SingleDestinationMessageSenderFactory> _serviceTracker;
 
 }

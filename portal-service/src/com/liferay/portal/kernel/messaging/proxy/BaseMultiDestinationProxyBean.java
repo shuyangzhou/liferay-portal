@@ -39,10 +39,21 @@ public abstract class BaseMultiDestinationProxyBean {
 	public void setMessageBus(MessageBus messageBus) {
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link )
+	 */
+	@Deprecated
 	public void setSynchronousMessageSender(
 		SynchronousMessageSender synchronousMessageSender) {
 
 		_synchronousMessageSender = synchronousMessageSender;
+	}
+
+	public void setSynchronousMessageSenderMode(
+		SynchronousMessageSender.Mode mode) {
+
+		_synchronousMessageSender = MessageBusUtil.getSynchronousMessageSender(
+			mode);
 	}
 
 	public Object synchronousSend(ProxyRequest proxyRequest) throws Exception {

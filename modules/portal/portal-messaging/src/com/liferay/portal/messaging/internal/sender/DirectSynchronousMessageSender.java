@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.kernel.messaging.sender;
+package com.liferay.portal.messaging.internal.sender;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -23,13 +23,21 @@ import com.liferay.portal.kernel.messaging.MessageBusException;
 import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.messaging.MessageListenerException;
 import com.liferay.portal.kernel.messaging.SynchronousDestination;
+import com.liferay.portal.kernel.messaging.sender.SynchronousMessageSender;
 import com.liferay.portal.kernel.nio.intraband.messaging.IntrabandBridgeDestination;
 
 import java.util.Set;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Shuyang Zhou
  */
+@Component(
+	immediate = true, property = { "mode=DIRECT" },
+	service = SynchronousMessageSender.class
+)
 public class DirectSynchronousMessageSender
 	implements SynchronousMessageSender {
 
@@ -83,7 +91,8 @@ public class DirectSynchronousMessageSender
 		return send(destinationName, message);
 	}
 
-	public void setMessageBus(MessageBus messageBus) {
+	@Reference(unbind = "-")
+	protected void setMessageBus(MessageBus messageBus) {
 		_messageBus = messageBus;
 	}
 
