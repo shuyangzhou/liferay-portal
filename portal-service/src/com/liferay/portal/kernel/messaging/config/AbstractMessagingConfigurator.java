@@ -334,7 +334,7 @@ public abstract class AbstractMessagingConfigurator
 		new HashMap<>();
 	private boolean _portalMessagingConfigurator;
 	private List<Destination> _replacementDestinations = new ArrayList<>();
-	private ServiceTracker<MessageBus, MessageBus> _serviceTracker;
+	private ServiceTracker _serviceTracker;
 
 	private class MessageBusServiceTrackerCustomizer
 		implements ServiceTrackerCustomizer<MessageBus, MessageBus> {
