@@ -15,6 +15,7 @@
 package com.liferay.portal.search.elasticsearch.internal;
 
 import com.liferay.portal.kernel.messaging.Destination;
+import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.messaging.SynchronousDestination;
 import com.liferay.portal.kernel.search.AbstractSearchEngineConfigurator;
 import com.liferay.portal.kernel.search.IndexSearcher;
@@ -67,6 +68,11 @@ public class ElasticsearchEngineConfigurator
 	@Reference
 	public void setIndexWriter(IndexWriter indexWriter) {
 		_indexWriter = indexWriter;
+	}
+
+	@Reference
+	public void setMessageBus(MessageBus messageBus) {
+		_messageBus = messageBus;
 	}
 
 	@Activate
@@ -124,6 +130,11 @@ public class ElasticsearchEngineConfigurator
 	}
 
 	@Override
+	protected MessageBus getMessageBus() {
+		return _messageBus;
+	}
+
+	@Override
 	protected ClassLoader getOperatingClassloader() {
 		Class<?> clazz = getClass();
 
@@ -156,6 +167,7 @@ public class ElasticsearchEngineConfigurator
 	private ElasticsearchConnectionManager _elasticsearchConnectionManager;
 	private IndexSearcher _indexSearcher;
 	private IndexWriter _indexWriter;
+	private MessageBus _messageBus;
 	private final Map<String, SearchEngine> _searchEngines =
 		new ConcurrentHashMap<>();
 

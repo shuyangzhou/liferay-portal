@@ -51,8 +51,6 @@ import com.liferay.portal.test.rule.AdviseWith;
 import com.liferay.portal.test.rule.AspectJNewEnvTestRule;
 import com.liferay.portal.util.PropsImpl;
 import com.liferay.portal.uuid.PortalUUIDImpl;
-import com.liferay.registry.BasicRegistryImpl;
-import com.liferay.registry.RegistryUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -116,8 +114,6 @@ public class QuartzSchedulerEngineTest {
 		portalUUIDUtil.setPortalUUID(new PortalUUIDImpl());
 
 		PropsUtil.setProps(new PropsImpl());
-
-		RegistryUtil.setRegistry(new BasicRegistryImpl());
 
 		MessageBusUtil messageBusUtil = new MessageBusUtil();
 
