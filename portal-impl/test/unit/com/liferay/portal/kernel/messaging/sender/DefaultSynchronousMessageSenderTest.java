@@ -74,14 +74,6 @@ public class DefaultSynchronousMessageSenderTest {
 		_defaultSynchronousMessageSender.setPortalUUID(new PortalUUIDImpl());
 		_defaultSynchronousMessageSender.setTimeout(10000);
 
-		EntityCacheUtil entityCacheUtil = new EntityCacheUtil();
-
-		entityCacheUtil.setEntityCache(new EntityCacheImpl());
-
-		FinderCacheUtil finderCacheUtil = new FinderCacheUtil();
-
-		finderCacheUtil.setFinderCache(new FinderCacheImpl());
-
 		RegistryUtil.setRegistry(new BasicRegistryImpl());
 
 		Registry registry = RegistryUtil.getRegistry();
@@ -99,6 +91,14 @@ public class DefaultSynchronousMessageSenderTest {
 
 		registry.registerService(
 			PortalExecutorManager.class, portalExecutorManager);
+
+		EntityCacheUtil entityCacheUtil = new EntityCacheUtil();
+
+		entityCacheUtil.setEntityCache(new EntityCacheImpl());
+
+		FinderCacheUtil finderCacheUtil = new FinderCacheUtil();
+
+		finderCacheUtil.setFinderCache(new FinderCacheImpl());
 	}
 
 	@After
