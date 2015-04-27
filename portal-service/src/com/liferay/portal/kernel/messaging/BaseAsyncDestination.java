@@ -383,13 +383,13 @@ public abstract class BaseAsyncDestination extends BaseDestination {
 		@Override
 		public void modifiedService(
 			ServiceReference<PortalExecutorManager> serviceReference,
-			PortalExecutorManager portalExecutorManager) {
+			PortalExecutorManager service) {
 		}
 
 		@Override
 		public void removedService(
 			ServiceReference<PortalExecutorManager> serviceReference,
-			PortalExecutorManager portalExecutorManager) {
+			PortalExecutorManager service) {
 
 			portalExecutorManager = null;
 		}
