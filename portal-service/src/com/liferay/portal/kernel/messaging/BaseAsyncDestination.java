@@ -18,7 +18,7 @@ import com.liferay.portal.kernel.cluster.ClusterInvokeThreadLocal;
 import com.liferay.portal.kernel.concurrent.RejectedExecutionHandler;
 import com.liferay.portal.kernel.concurrent.ThreadPoolExecutor;
 import com.liferay.portal.kernel.concurrent.ThreadPoolHandlerAdapter;
-import com.liferay.portal.kernel.executor.PortalExecutorManager;
+import com.liferay.portal.kernel.executor.PortalExecutorManagerUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GroupThreadLocal;
@@ -33,11 +33,6 @@ import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.security.permission.PermissionThreadLocal;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.registry.Registry;
-import com.liferay.registry.RegistryUtil;
-import com.liferay.registry.ServiceReference;
-import com.liferay.registry.ServiceTracker;
-import com.liferay.registry.ServiceTrackerCustomizer;
 
 import java.util.Locale;
 import java.util.Set;
@@ -49,26 +44,35 @@ import java.util.concurrent.TimeUnit;
  */
 public abstract class BaseAsyncDestination extends BaseDestination {
 
-	public void afterPropertiesSet() {
-		super.afterPropertiesSet();
+	public BaseAsyncDestination() {
+	}
 
-		Registry registry = RegistryUtil.getRegistry();
+	/**
+	 * @deprecated As of 6.1.0
+	 */
+	@Deprecated
+	public BaseAsyncDestination(String name) {
+		this(name, _WORKERS_CORE_SIZE, _WORKERS_MAX_SIZE);
+	}
 
-		serviceTracker = registry.trackServices(
-			PortalExecutorManager.class,
-			new PortalExecutorManagerServiceTrackerCustomizer());
+	/**
+	 * @deprecated As of 6.1.0
+	 */
+	@Deprecated
+	public BaseAsyncDestination(
+		String name, int workersCoreSize, int workersMaxSize) {
 
-		serviceTracker.open();
+		this.name = name;
+		_workersCoreSize = workersCoreSize;
+		_workersMaxSize = workersMaxSize;
+
+		open();
 	}
 
 	@Override
 	public void close(boolean force) {
-		if (portalExecutorManager == null) {
-			return;
-		}
-
 		ThreadPoolExecutor threadPoolExecutor =
-			portalExecutorManager.getPortalExecutor(getName());
+			PortalExecutorManagerUtil.getPortalExecutor(getName());
 
 		if (force) {
 			threadPoolExecutor.shutdownNow();
@@ -76,10 +80,6 @@ public abstract class BaseAsyncDestination extends BaseDestination {
 		else {
 			threadPoolExecutor.shutdown();
 		}
-	}
-
-	public void destroy() {
-		serviceTracker.close();
 	}
 
 	@Override
@@ -139,7 +139,7 @@ public abstract class BaseAsyncDestination extends BaseDestination {
 			new ThreadPoolHandlerAdapter());
 
 		ThreadPoolExecutor oldThreadPoolExecutor =
-			portalExecutorManager.registerPortalExecutor(
+			PortalExecutorManagerUtil.registerPortalExecutor(
 				getName(), threadPoolExecutor);
 
 		if (oldThreadPoolExecutor != null) {
@@ -346,10 +346,6 @@ public abstract class BaseAsyncDestination extends BaseDestination {
 		}
 	}
 
-	protected PortalExecutorManager portalExecutorManager;
-	protected ServiceTracker<PortalExecutorManager, PortalExecutorManager>
-		serviceTracker;
-
 	private static final int _WORKERS_CORE_SIZE = 2;
 
 	private static final int _WORKERS_MAX_SIZE = 5;
@@ -362,38 +358,5 @@ public abstract class BaseAsyncDestination extends BaseDestination {
 	private ThreadPoolExecutor _threadPoolExecutor;
 	private int _workersCoreSize = _WORKERS_CORE_SIZE;
 	private int _workersMaxSize = _WORKERS_MAX_SIZE;
-
-	private class PortalExecutorManagerServiceTrackerCustomizer
-		implements ServiceTrackerCustomizer
-			<PortalExecutorManager, PortalExecutorManager> {
-
-		@Override
-		public PortalExecutorManager addingService(
-			ServiceReference<PortalExecutorManager> serviceReference) {
-
-			Registry registry = RegistryUtil.getRegistry();
-
-			portalExecutorManager = registry.getService(serviceReference);
-
-			open();
-
-			return portalExecutorManager;
-		}
-
-		@Override
-		public void modifiedService(
-			ServiceReference<PortalExecutorManager> serviceReference,
-			PortalExecutorManager service) {
-		}
-
-		@Override
-		public void removedService(
-			ServiceReference<PortalExecutorManager> serviceReference,
-			PortalExecutorManager service) {
-
-			portalExecutorManager = null;
-		}
-
-	}
 
 }

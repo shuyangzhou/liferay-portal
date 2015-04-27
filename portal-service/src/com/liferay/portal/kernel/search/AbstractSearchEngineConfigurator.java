@@ -228,6 +228,8 @@ public abstract class AbstractSearchEngineConfigurator
 			searchReaderDestination = createSearchReaderDestination(
 				searchReaderDestinationName);
 
+			searchReaderDestination.open();
+
 			messageBus.addDestination(searchReaderDestination);
 		}
 
@@ -247,6 +249,8 @@ public abstract class AbstractSearchEngineConfigurator
 		if (searchWriterDestination == null) {
 			searchWriterDestination = createSearchWriterDestination(
 				searchWriterDestinationName);
+
+			searchWriterDestination.open();
 
 			messageBus.addDestination(searchWriterDestination);
 		}
