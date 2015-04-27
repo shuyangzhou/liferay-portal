@@ -14,6 +14,9 @@
 
 package com.liferay.portal.kernel.search;
 
+import com.liferay.portal.kernel.messaging.MessageBus;
+import com.liferay.portal.kernel.messaging.MessageBusUtil;
+
 /**
  * @author Michael C. Han
  */
@@ -45,6 +48,11 @@ public class DefaultSearchEngineConfigurator
 	@Override
 	protected IndexWriter getIndexWriter() {
 		return _indexWriter;
+	}
+
+	@Override
+	protected MessageBus getMessageBus() {
+		return MessageBusUtil.getMessageBus();
 	}
 
 	@Override
