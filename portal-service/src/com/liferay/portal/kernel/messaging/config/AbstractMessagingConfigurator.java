@@ -327,7 +327,7 @@ public abstract class AbstractMessagingConfigurator
 	private Map<String, List<DestinationEventListener>>
 		_destinationEventListeners = new HashMap<>();
 	private final List<Destination> _destinations = new ArrayList<>();
-	private volatile MessageBus _messageBus;
+	private MessageBus _messageBus;
 	private List<MessageBusEventListener> _messageBusEventListeners =
 		new ArrayList<>();
 	private Map<String, List<MessageListener>> _messageListeners =
