@@ -17,8 +17,8 @@
 	</publications>
 
 	<dependencies defaultconf="default">
+		<dependency conf="default->master" name="javax.servlet.jsp.jstl" org="org.glassfish.web" rev="1.2.3" />
 		<dependency name="org.osgi.compendium" org="org.osgi" rev="5.0.0" />
 		<dependency name="org.osgi.core" org="org.osgi" rev="5.0.0" />
-		<dependency conf="default->master" name="javax.servlet.jsp.jstl" org="org.glassfish.web" rev="1.2.3" />
 	</dependencies>
 </ivy-module>
