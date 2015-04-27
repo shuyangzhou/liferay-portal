@@ -197,6 +197,8 @@ public class StartupAction extends SimpleAction {
 			intraband.registerDatagramReceiveHandler(
 				SystemDataType.RPC.getValue(), new RPCDatagramReceiveHandler());
 
+			// Portal fabric
+
 			if (PropsValues.PORTAL_FABRIC_ENABLED) {
 				FabricServerUtil.start();
 			}
@@ -232,13 +234,13 @@ public class StartupAction extends SimpleAction {
 		@Override
 		public void modifiedService(
 			ServiceReference<ClusterMasterExecutor> serviceReference,
-			ClusterMasterExecutor clusterMasterExecutor) {
+			ClusterMasterExecutor service) {
 		}
 
 		@Override
 		public void removedService(
 			ServiceReference<ClusterMasterExecutor> serviceReference,
-			ClusterMasterExecutor clusterMasterExecutor) {
+			ClusterMasterExecutor service) {
 		}
 
 	}
