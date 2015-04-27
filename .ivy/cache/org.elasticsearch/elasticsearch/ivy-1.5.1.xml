@@ -4,27 +4,27 @@
 		module="elasticsearch"
 		revision="1.5.1"
 		status="release"
-		publication="20150409084055"
+		publication="20150409064055"
 	>
 		<license name="The Apache Software License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt" />
 		<description homepage="">
 		Elasticsearch - Open Source, Distributed, RESTful Search Engine
 		</description>
-		<m:properties__lucene.maven.version>4.10.4</m:properties__lucene.maven.version>
+		<m:properties__es.logger.level>INFO</m:properties__es.logger.level>
+		<m:properties__tests.shuffle>true</m:properties__tests.shuffle>
+		<m:properties__lucene.version>4.10.4</m:properties__lucene.version>
+		<m:properties__tests.output>onerror</m:properties__tests.output>
+		<m:properties__tests.jvms>auto</m:properties__tests.jvms>
 		<m:properties__execution.hint.file>.local-${project.version}-execution-hints.log</m:properties__execution.hint.file>
+		<m:properties__tests.locale>random</m:properties__tests.locale>
+		<m:properties__tests.timezone>random</m:properties__tests.timezone>
+		<m:properties__tests.bwc.path>${project.basedir}/backwards</m:properties__tests.bwc.path>
+		<m:properties__tests.heapdump.path>${basedir}/logs/</m:properties__tests.heapdump.path>
 		<m:properties__tests.topn>5</m:properties__tests.topn>
 		<m:properties__tests.heap.size>512m</m:properties__tests.heap.size>
-		<m:properties__tests.timezone>random</m:properties__tests.timezone>
-		<m:properties__tests.heapdump.path>${basedir}/logs/</m:properties__tests.heapdump.path>
-		<m:properties__lucene.version>4.10.4</m:properties__lucene.version>
+		<m:properties__lucene.maven.version>4.10.4</m:properties__lucene.maven.version>
 		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
-		<m:properties__tests.shuffle>true</m:properties__tests.shuffle>
-		<m:properties__tests.output>onerror</m:properties__tests.output>
-		<m:properties__es.logger.level>INFO</m:properties__es.logger.level>
-		<m:properties__tests.locale>random</m:properties__tests.locale>
-		<m:properties__tests.bwc.path>${project.basedir}/backwards</m:properties__tests.bwc.path>
 		<m:properties__sonatypeOssDistMgmtSnapshotsUrl>https://oss.sonatype.org/content/repositories/snapshots/</m:properties__sonatypeOssDistMgmtSnapshotsUrl>
-		<m:properties__tests.jvms>auto</m:properties__tests.jvms>
 		<m:maven.plugins>org.apache.maven.plugins__maven-enforcer-plugin__1.0|org.apache.maven.plugins__maven-enforcer-plugin__1.0|null__maven-enforcer-plugin__1.3.1|null__maven-compiler-plugin__3.1|com.carrotsearch.randomizedtesting__junit4-maven-plugin__2.1.2|null__maven-antrun-plugin__1.7|null__maven-surefire-plugin__2.16|null__maven-source-plugin__2.2.1|null__maven-shade-plugin__2.3|null__maven-resources-plugin__2.6|null__maven-assembly-plugin__2.4|org.codehaus.mojo__buildnumber-maven-plugin__1.2|null__maven-dependency-plugin__2.8|org.vafer__jdeb__1.0.1|org.codehaus.mojo__rpm-maven-plugin__2.1-alpha-3|de.thetaphi__forbiddenapis__1.7|null__maven-jar-plugin__2.4</m:maven.plugins>
 	</info>
 	<configurations>

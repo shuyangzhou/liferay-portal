@@ -4,7 +4,7 @@
 		module="com.liferay.portal.tools.service.builder"
 		revision="1.0.0-SNAPSHOT"
 		status="integration"
-		publication="20150415142648"
+		publication="20150426141243"
 	>
 		<license name="LGPL 2.1" url="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt" />
 		<description homepage="">
@@ -29,11 +29,12 @@
 	</publications>
 	<dependencies>
 		<dependency org="commons-io" name="commons-io" rev="2.1" force="true" conf="compile->compile(*),master(*);runtime->runtime(*)"/>
+		<dependency org="log4j" name="log4j" rev="1.2.17" force="true" conf="compile->compile(*),master(*);runtime->runtime(*)"/>
 		<dependency org="dom4j" name="dom4j" rev="1.6.1" force="true" conf="compile->compile(*),master(*);runtime->runtime(*)"/>
 		<dependency org="jalopy" name="jalopy" rev="1.5rc3" force="true" conf="compile->compile(*),master(*);runtime->runtime(*)"/>
 		<dependency org="jaxen" name="jaxen" rev="1.1.1" force="true" conf="compile->compile(*),master(*);runtime->runtime(*)"/>
-		<dependency org="log4j" name="log4j" rev="1.2.17" force="true" conf="compile->compile(*),master(*);runtime->runtime(*)"/>
 		<dependency org="com.liferay" name="org.freemarker" rev="2.3.17.LIFERAY-PATCHED-1" force="true" conf="compile->compile(*),master(*);runtime->runtime(*)"/>
 		<dependency org="com.thoughtworks.qdox" name="qdox" rev="1.12.1" force="true" conf="compile->compile(*),master(*);runtime->runtime(*)"/>
+		<dependency org="org.apache.ant" name="ant" rev="1.9.3" force="true" conf="provided->compile(*),provided(*),runtime(*),master(*)"/>
 	</dependencies>
 </ivy-module>

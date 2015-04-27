@@ -117,6 +117,5 @@
 		<dependency org="joda-time" name="joda-time" rev="2.5" force="true" conf="compile->compile(*),master(*);runtime->runtime(*)"/>
 		<dependency org="com.headius" name="options" rev="1.2" force="true" conf="compile->compile(*),master(*);runtime->runtime(*)"/>
 		<override org="junit" module="junit" matcher="exact" rev="4.11"/>
-		<override org="junit" module="junit" matcher="exact" rev="4.11"/>
 	</dependencies>
 </ivy-module>
