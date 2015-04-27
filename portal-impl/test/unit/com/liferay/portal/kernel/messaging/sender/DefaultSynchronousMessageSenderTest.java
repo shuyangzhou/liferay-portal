@@ -84,10 +84,8 @@ public class DefaultSynchronousMessageSenderTest {
 			PortalExecutorManager.class);
 
 		Mockito.when(
-			portalExecutorManager.getPortalExecutor(Mockito.anyString())
-		).thenReturn(
-			new ThreadPoolExecutor(1, 1)
-		);
+			portalExecutorManager.getPortalExecutor(Mockito.anyString())).
+			thenReturn(new ThreadPoolExecutor(1, 1));
 
 		registry.registerService(
 			PortalExecutorManager.class, portalExecutorManager);
