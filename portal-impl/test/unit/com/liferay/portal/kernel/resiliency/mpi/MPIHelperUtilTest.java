@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.resiliency.mpi;
 
+import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.messaging.config.AbstractMessagingConfigurator;
 import com.liferay.portal.kernel.messaging.config.MessagingConfigurator;
 import com.liferay.portal.kernel.messaging.config.MessagingConfiguratorRegistry;
@@ -839,6 +840,11 @@ public class MPIHelperUtilTest {
 
 				@Override
 				public void disconnect() {
+				}
+
+				@Override
+				protected MessageBus getMessageBus() {
+					return null;
 				}
 
 				@Override
