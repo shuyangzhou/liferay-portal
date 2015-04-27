@@ -845,7 +845,6 @@ public class MPIHelperUtilTest {
 				protected ClassLoader getOperatingClassloader() {
 					return null;
 				}
-
 			};
 
 			MessagingConfiguratorRegistry.registerMessagingConfigurator(

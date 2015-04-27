@@ -935,8 +935,8 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 				return false;
 			}
 		}
-		catch (org.quartz.SchedulerException se) {
-			throw new SchedulerException(se);
+		catch (org.quartz.SchedulerException e) {
+			throw new SchedulerException(e);
 		}
 
 		return true;

@@ -65,17 +65,15 @@ public class StartupAction extends SimpleAction {
 	public StartupAction() {
 		Registry registry = RegistryUtil.getRegistry();
 
-		ServiceTracker<ClusterMasterExecutor, ClusterMasterExecutor>
-			clusterMasterExecutorServiceTracker =
-				registry.trackServices(
-					ClusterMasterExecutor.class,
-					new ClusterMasterExecutorServiceTrackerCustomizer());
+		ServiceTracker clusterMasterExecutorServiceTracker =
+			registry.trackServices(
+				ClusterMasterExecutor.class,
+				new ClusterMasterExecutorServiceTrackerCustomizer());
 
 		clusterMasterExecutorServiceTracker.open();
 
-		ServiceTracker<MessageBus, MessageBus> messageBusServiceTracker =
-			registry.trackServices(
-				MessageBus.class, new MessageBusServiceTrackerCustomizer());
+		ServiceTracker messageBusServiceTracker = registry.trackServices(
+			MessageBus.class, new MessageBusServiceTrackerCustomizer());
 
 		messageBusServiceTracker.open();
 	}
@@ -197,6 +195,8 @@ public class StartupAction extends SimpleAction {
 			intraband.registerDatagramReceiveHandler(
 				SystemDataType.RPC.getValue(), new RPCDatagramReceiveHandler());
 
+			// Portal fabric
+
 			if (PropsValues.PORTAL_FABRIC_ENABLED) {
 				FabricServerUtil.start();
 			}
@@ -232,13 +232,13 @@ public class StartupAction extends SimpleAction {
 		@Override
 		public void modifiedService(
 			ServiceReference<ClusterMasterExecutor> serviceReference,
-			ClusterMasterExecutor clusterMasterExecutor) {
+			ClusterMasterExecutor service) {
 		}
 
 		@Override
 		public void removedService(
 			ServiceReference<ClusterMasterExecutor> serviceReference,
-			ClusterMasterExecutor clusterMasterExecutor) {
+			ClusterMasterExecutor service) {
 		}
 
 	}
