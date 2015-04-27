@@ -49,6 +49,7 @@ import java.util.concurrent.TimeUnit;
  */
 public abstract class BaseAsyncDestination extends BaseDestination {
 
+	@Override
 	public void afterPropertiesSet() {
 		super.afterPropertiesSet();
 
