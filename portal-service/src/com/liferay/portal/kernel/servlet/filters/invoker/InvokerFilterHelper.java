@@ -36,13 +36,13 @@ import com.liferay.registry.util.StringPlus;
 import java.io.InputStream;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 import javax.servlet.Filter;
@@ -113,34 +113,43 @@ public class InvokerFilterHelper {
 	public void registerFilterMapping(
 		FilterMapping filterMapping, String filterName, boolean after) {
 
-		List<FilterMapping> filterMappings = _filterMappingsMap.get(filterName);
+		if (_filterMappingsMap.containsKey(filterName)) {
+			storeFilterMapping(filterName, filterMapping, after);
+		}
+		else {
+			List<FilterMapping> filterMappings = new ArrayList<>();
 
-		if (filterMappings == null) {
-			filterMappings = new CopyOnWriteArrayList<>();
+			filterMappings.add(filterMapping);
 
 			List<FilterMapping> previousFilterMapping =
-				_filterMappingsMap.putIfAbsent(filterName, filterMappings);
+				_filterMappingsMap.putIfAbsent(
+					filterName, Collections.unmodifiableList(filterMappings));
 
 			if (previousFilterMapping != null) {
-				filterMappings = previousFilterMapping;
+				storeFilterMapping(filterName, filterMapping, after);
 			}
 
 			_filterNames.add(filterName);
-		}
 
-		if (after) {
-			filterMappings.add(filterMapping);
-		}
-		else {
-			filterMappings.add(0, filterMapping);
-		}
-
-		for (InvokerFilter invokerFilter : _invokerFilters) {
-			invokerFilter.clearFilterChainsCache();
+			for (InvokerFilter invokerFilter : _invokerFilters) {
+				invokerFilter.clearFilterChainsCache();
+			}
 		}
 	}
 
-	public void unregisterFilter(String filterName) {
+	public void unregisterFilterMapping(FilterMapping filterMapping) {
+		String filterName = filterMapping.getFilterName();
+
+		List<FilterMapping> filterMappings = _filterMappingsMap.get(filterName);
+
+		filterMappings.remove(filterMapping);
+
+		if (filterMappings.isEmpty()) {
+			_filterMappingsMap.remove(filterName, filterMappings);
+		}
+	}
+
+	public void unregisterFilterMappings(String filterName) {
 		List<FilterMapping> filterMappings = _filterMappingsMap.remove(
 			filterName);
 
@@ -169,16 +178,27 @@ public class InvokerFilterHelper {
 	}
 
 	public void updateFilterMappings(String filterName, Filter filter) {
-		List<FilterMapping> filterMappings = _filterMappingsMap.get(filterName);
+		boolean success = false;
 
-		if (filterMappings == null) {
-			return;
-		}
+		while (!success) {
+			List<FilterMapping> previousfilterMappings = _filterMappingsMap.get(
+				filterName);
 
-		for (int i = 0; i < filterMappings.size(); i++) {
-			FilterMapping filterMapping = filterMappings.get(i);
+			if (previousfilterMappings == null) {
+				return;
+			}
 
-			filterMappings.set(i, filterMapping.replaceFilter(filter));
+			List<FilterMapping> filterMappings = new ArrayList<>(
+				previousfilterMappings);
+
+			for (int i = 0; i < filterMappings.size(); i++) {
+				FilterMapping filterMapping = filterMappings.get(i);
+
+				filterMappings.add(filterMapping.replaceFilter(filter));
+			}
+
+			success = _filterMappingsMap.replace(
+				filterName, previousfilterMappings, filterMappings);
 		}
 	}
 
@@ -335,23 +355,54 @@ public class InvokerFilterHelper {
 					filterObjectValuePair.getValue(), urlPatterns, dispatchers,
 					filterName);
 
-			List<FilterMapping> filterMappings = _filterMappingsMap.get(
-				filterName);
+			if (_filterMappingsMap.containsKey(filterName)) {
+				storeFilterMapping(filterName, filterMapping, true);
+			}
+			else {
+				List<FilterMapping> filterMappings = new ArrayList<>();
 
-			if (filterMappings == null) {
-				filterMappings = new CopyOnWriteArrayList<>();
+				filterMappings.add(filterMapping);
 
 				List<FilterMapping> previousFilterMapping =
-					_filterMappingsMap.putIfAbsent(filterName, filterMappings);
+					_filterMappingsMap.putIfAbsent(
+						filterName,
+						Collections.unmodifiableList(filterMappings));
 
 				if (previousFilterMapping != null) {
-					filterMappings = previousFilterMapping;
+					storeFilterMapping(filterName, filterMapping, true);
 				}
 
 				_filterNames.add(filterName);
 			}
+		}
+	}
 
-			filterMappings.add(filterMapping);
+	private void storeFilterMapping(
+		String filterName, FilterMapping filterMapping, boolean after) {
+
+		boolean success = false;
+
+		while (!success) {
+			List<FilterMapping> previousFilterMapping = _filterMappingsMap.get(
+				filterName);
+
+			List<FilterMapping> mutableFilterMappings = new ArrayList<>(
+				previousFilterMapping);
+
+			if (after) {
+				mutableFilterMappings.add(filterMapping);
+			}
+			else {
+				mutableFilterMappings.add(0, filterMapping);
+			}
+
+			mutableFilterMappings.add(filterMapping);
+
+			List<FilterMapping> immutableFilterMappings =
+				Collections.unmodifiableList(mutableFilterMappings);
+
+			success = _filterMappingsMap.replace(
+				filterName, previousFilterMapping, immutableFilterMappings);
 		}
 	}
 
@@ -459,7 +510,7 @@ public class InvokerFilterHelper {
 
 			registry.ungetService(serviceReference);
 
-			unregisterFilter(
+			unregisterFilterMappings(
 				GetterUtil.getString(
 					serviceReference.getProperty("servlet-filter-name")));
 		}
