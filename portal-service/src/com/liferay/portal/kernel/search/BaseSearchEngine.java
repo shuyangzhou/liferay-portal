@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.search.generic.BooleanQueryFactoryImpl;
 import com.liferay.portal.kernel.search.generic.TermQueryFactoryImpl;
 import com.liferay.portal.kernel.search.generic.TermRangeQueryFactoryImpl;
 import com.liferay.portal.kernel.security.pacl.DoPrivileged;
+import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
 
 /**
  * @author Bruno Farache
@@ -26,6 +27,7 @@ import com.liferay.portal.kernel.security.pacl.DoPrivileged;
  * @author Marcellus Tavares
  */
 @DoPrivileged
+@OSGiBeanProperties(service = BaseSearchEngine.class)
 public class BaseSearchEngine implements SearchEngine {
 
 	/**
