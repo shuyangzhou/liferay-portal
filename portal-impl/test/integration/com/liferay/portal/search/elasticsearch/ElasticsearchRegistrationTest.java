@@ -15,10 +15,13 @@
 package com.liferay.portal.search.elasticsearch;
 
 import com.liferay.portal.kernel.search.SearchEngine;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
 
+import java.util.Collection;
+import java.util.Iterator;
 import org.junit.Assert;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -35,12 +38,17 @@ public class ElasticsearchRegistrationTest {
 		new LiferayIntegrationTestRule();
 
 	@Test
-	public void testGetSearchEngineService() {
+	public void testGetSearchEngineService() throws Exception {
 		Registry registry = RegistryUtil.getRegistry();
 
-		SearchEngine searchEngine = registry.getService(SearchEngine.class);
+		Collection<SearchEngine> searchEngines = registry.getServices(
+			SearchEngine.class, null);
 
-		Assert.assertNotNull(searchEngine);
+		Assert.assertEquals(1, searchEngines.size());
+
+		Iterator<SearchEngine> iterator = searchEngines.iterator();
+
+		SearchEngine searchEngine = iterator.next();
 
 		Class<? extends SearchEngine> searchEngineClass =
 			searchEngine.getClass();
