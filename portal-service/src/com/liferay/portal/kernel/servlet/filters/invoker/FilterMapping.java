@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.util.Validator;
 
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -38,10 +39,11 @@ public class FilterMapping {
 
 	public FilterMapping(
 		Filter filter, FilterConfig filterConfig, List<String> urlPatterns,
-		List<String> dispatchers) {
+		List<String> dispatchers, String filterName) {
 
 		_filter = filter;
 		_urlPatterns = urlPatterns;
+		_filterName = filterName;
 
 		String urlRegexPattern = filterConfig.getInitParameter(
 			"url-regex-pattern");
@@ -74,8 +76,46 @@ public class FilterMapping {
 		}
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+
+		final FilterMapping other = (FilterMapping)obj;
+
+		return (
+			Objects.equals(_dispatchers, other._dispatchers) &&
+			Objects.equals(_filterName, other._filterName) &&
+			Objects.equals(_urlPatterns, other._urlPatterns) &&
+			Objects.equals(_urlRegexPattern, other._urlRegexPattern) &&
+			Objects.equals(
+				_urlRegexIgnorePattern, other._urlRegexIgnorePattern));
+	}
+
 	public Filter getFilter() {
 		return _filter;
+	}
+
+	public String getFilterName() {
+		return _filterName;
+	}
+
+	@Override
+	public int hashCode() {
+		int hash = 7;
+
+		hash = 23 * hash + Objects.hashCode(_dispatchers);
+		hash = 23 * hash + Objects.hashCode(_filterName);
+		hash = 23 * hash + Objects.hashCode(_urlPatterns);
+		hash = 23 * hash + Objects.hashCode(_urlRegexIgnorePattern);
+		hash = 23 * hash + Objects.hashCode(_urlRegexPattern);
+
+		return hash;
 	}
 
 	public boolean isMatch(
@@ -156,8 +196,8 @@ public class FilterMapping {
 
 	public FilterMapping replaceFilter(Filter filter) {
 		return new FilterMapping(
-			filter, _urlPatterns, _dispatchers, _urlRegexIgnorePattern,
-			_urlRegexPattern);
+			filter, _urlPatterns, _dispatchers, _filterName,
+			_urlRegexIgnorePattern, _urlRegexPattern);
 	}
 
 	protected boolean isMatchURLPattern(String uri, String urlPattern) {
@@ -185,11 +225,13 @@ public class FilterMapping {
 
 	private FilterMapping(
 		Filter filter, List<String> urlPatterns, Set<Dispatcher> dispatchers,
-		Pattern urlRegexIgnorePattern, Pattern urlRegexPattern) {
+		String filterName, Pattern urlRegexIgnorePattern,
+		Pattern urlRegexPattern) {
 
 		_filter = filter;
 		_urlPatterns = urlPatterns;
 		_dispatchers = dispatchers;
+		_filterName = filterName;
 		_urlRegexIgnorePattern = urlRegexIgnorePattern;
 		_urlRegexPattern = urlRegexPattern;
 	}
@@ -202,6 +244,7 @@ public class FilterMapping {
 
 	private final Set<Dispatcher> _dispatchers;
 	private final Filter _filter;
+	private final String _filterName;
 	private final List<String> _urlPatterns;
 	private final Pattern _urlRegexIgnorePattern;
 	private final Pattern _urlRegexPattern;
