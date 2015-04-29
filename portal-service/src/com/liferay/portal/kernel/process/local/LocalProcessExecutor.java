@@ -303,8 +303,20 @@ public class LocalProcessExecutor implements ProcessExecutor {
 				}
 
 				while (true) {
+					Object obj = objectInputStream.readObject();
+
+					if (!(obj instanceof ProcessCallable)) {
+						if (_log.isInfoEnabled()) {
+							_log.info(
+								"Received a non-ProcessCallable piping back " +
+									obj);
+						}
+
+						continue;
+					}
+
 					ProcessCallable<?> processCallable =
-						(ProcessCallable<?>)objectInputStream.readObject();
+						(ProcessCallable<?>)obj;
 
 					if ((processCallable instanceof ExceptionProcessCallable) ||
 						(processCallable instanceof ReturnProcessCallable<?>)) {
