@@ -44,6 +44,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.io.StreamCorruptedException;
+import java.io.WriteAbortedException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -303,42 +304,51 @@ public class LocalProcessExecutor implements ProcessExecutor {
 				}
 
 				while (true) {
-					Object obj = objectInputStream.readObject();
-
-					if (!(obj instanceof ProcessCallable)) {
-						if (_log.isInfoEnabled()) {
-							_log.info(
-								"Received a non-ProcessCallable piping back " +
-									obj);
-						}
-
-						continue;
-					}
-
-					ProcessCallable<?> processCallable =
-						(ProcessCallable<?>)obj;
-
-					if ((processCallable instanceof ExceptionProcessCallable) ||
-						(processCallable instanceof ReturnProcessCallable<?>)) {
-
-						resultProcessCallable = processCallable;
-
-						continue;
-					}
-
 					try {
-						Serializable returnValue = processCallable.call();
+						Object obj = objectInputStream.readObject();
 
-						if (_log.isDebugEnabled()) {
-							_log.debug(
-								"Invoked generic process callable " +
-									processCallable + " with return value " +
-										returnValue);
+						if (!(obj instanceof ProcessCallable)) {
+							if (_log.isInfoEnabled()) {
+								_log.info(
+									"Received a non-ProcessCallable piping " +
+										"back " + obj);
+							}
+
+							continue;
+						}
+
+						ProcessCallable<?> processCallable =
+							(ProcessCallable<?>)obj;
+
+						if ((processCallable instanceof
+								ExceptionProcessCallable) ||
+							(processCallable instanceof
+								ReturnProcessCallable<?>)) {
+
+							resultProcessCallable = processCallable;
+
+							continue;
+						}
+
+						try {
+							Serializable returnValue = processCallable.call();
+
+							if (_log.isDebugEnabled()) {
+								_log.debug(
+									"Invoked generic process callable " +
+										processCallable + " with return " +
+											"value " + returnValue);
+							}
+						}
+						catch (Throwable t) {
+							_log.error(
+								"Unable to invoke generic process callable", t);
 						}
 					}
-					catch (Throwable t) {
-						_log.error(
-							"Unable to invoke generic process callable", t);
+					catch (WriteAbortedException wae) {
+						if (_log.isWarnEnabled()) {
+							_log.warn("Caught a write aborted exception", wae);
+						}
 					}
 				}
 			}
