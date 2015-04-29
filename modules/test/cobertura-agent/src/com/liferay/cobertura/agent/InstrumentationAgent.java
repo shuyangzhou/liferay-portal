@@ -322,15 +322,7 @@ public class InstrumentationAgent {
 				classData.getName(), classData.getBranchCoverageRate(),
 				classData.getLineCoverageRate());
 
-			Set<CoverageData> coverageDatas = classData.getLines();
-
-			for (CoverageData coverageData : coverageDatas) {
-				if (!(coverageData instanceof LineData)) {
-					continue;
-				}
-
-				LineData lineData = (LineData)coverageData;
-
+			for (LineData lineData : classData.getLines()) {
 				if (lineData.isCovered()) {
 					continue;
 				}
