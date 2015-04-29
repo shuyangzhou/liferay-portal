@@ -61,6 +61,20 @@ public class RandomTestUtil {
 		return string.getBytes();
 	}
 
+	public static double randomDouble() {
+		double value = _random.nextDouble();
+
+		if (value > 0) {
+			return value;
+		}
+		else if (value == 0) {
+			return randomDouble();
+		}
+		else {
+			return -value;
+		}
+	}
+
 	public static InputStream randomInputStream() {
 		return new ByteArrayInputStream(randomBytes());
 	}
@@ -77,6 +91,31 @@ public class RandomTestUtil {
 		else {
 			return -value;
 		}
+	}
+
+	public static int randomInt(int min, int max)
+		throws IllegalArgumentException {
+
+		if ((min < 0) || (max < 0)) {
+			throw new IllegalArgumentException(
+				"Both min and max values must be positive");
+		}
+
+		if (max < min) {
+			throw new IllegalArgumentException(
+				"Max value must be greater than the min value");
+		}
+
+		int value = _random.nextInt(max - min + 1) + min;
+
+		if (value > 0) {
+			return value;
+		}
+		else if (value == 0) {
+			return randomInt(min, max);
+		}
+
+		return -value;
 	}
 
 	public static Map<Locale, String> randomLocaleStringMap() {

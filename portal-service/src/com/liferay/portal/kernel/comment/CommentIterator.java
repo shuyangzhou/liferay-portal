@@ -12,32 +12,15 @@
  * details.
  */
 
-package com.liferay.poshi.runner;
+package com.liferay.portal.kernel.comment;
+
+import java.util.Iterator;
 
 /**
- * @author Karen Dang
- * @author Michael Hashimoto
+ * @author Adolfo Pérez
  */
-public class PoshiRunnerException extends Exception {
+public interface CommentIterator extends Iterator<Comment> {
 
-	public PoshiRunnerException() {
-		this(null, null);
-	}
-
-	public PoshiRunnerException(String msg) {
-		this(msg, null);
-	}
-
-	public PoshiRunnerException(String msg, Throwable cause) {
-		super(msg, cause);
-
-		PoshiRunnerStackTraceUtil.printStackTrace(msg);
-
-		PoshiRunnerStackTraceUtil.emptyStackTrace();
-	}
-
-	public PoshiRunnerException(Throwable cause) {
-		this(null, cause);
-	}
+	public int getIndexPage();
 
 }

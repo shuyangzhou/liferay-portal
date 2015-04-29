@@ -15,7 +15,7 @@
 package com.liferay.mentions.web.editor.config;
 
 import com.liferay.mentions.web.constants.MentionsPortletKeys;
-import com.liferay.portal.kernel.editor.config.EditorConfigContributor;
+import com.liferay.portal.kernel.editor.config.BaseEditorConfigContributor;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -32,7 +32,7 @@ import java.util.Map;
  * @author Sergio González
  */
 public class BaseMentionsEditorConfigContributor
-	implements EditorConfigContributor {
+	extends BaseEditorConfigContributor {
 
 	@Override
 	public void populateConfigJSONObject(
@@ -92,7 +92,7 @@ public class BaseMentionsEditorConfigContributor
 			extraPlugins += ",autocomplete";
 		}
 		else {
-			extraPlugins = "autocomplete";
+			extraPlugins = "autocomplete,placeholder,selectionregion,uicore";
 		}
 
 		jsonObject.put("extraPlugins", extraPlugins);

@@ -14,7 +14,7 @@
 
 package com.liferay.sass.compiler.ruby;
 
-import java.net.URL;
+import java.io.InputStream;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -22,6 +22,7 @@ import java.nio.file.Paths;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import org.jruby.RubyInstanceConfig;
 import org.jruby.embed.LocalContextScope;
@@ -77,13 +78,19 @@ public class RubySassCompiler implements AutoCloseable {
 
 		rubyInstanceConfig.setJitThreshold(compilerThreshold);
 
+		String rubyScript = null;
+
 		Class<?> clazz = getClass();
 
-		URL url = clazz.getResource("dependencies/main.rb");
+		try (InputStream inputStream =
+				clazz.getResourceAsStream("dependencies/main.rb")) {
 
-		Path path = Paths.get(url.toURI());
+			Scanner scanner = new Scanner(inputStream, "UTF-8");
 
-		String rubyScript = new String(Files.readAllBytes(path));
+			scanner.useDelimiter("\\A");
+
+			rubyScript = scanner.next();
+		}
 
 		_scriptObject = _scriptingContainer.runScriptlet(rubyScript);
 	}

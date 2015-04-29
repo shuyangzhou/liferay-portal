@@ -14,7 +14,7 @@
 
 package com.liferay.blogs.editor.config;
 
-import com.liferay.portal.kernel.editor.config.EditorConfigContributor;
+import com.liferay.portal.kernel.editor.config.BaseEditorConfigContributor;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.theme.ThemeDisplay;
@@ -35,7 +35,7 @@ import org.osgi.service.component.annotations.Component;
 	}
 )
 public class BlogsContentEditorConfigContributor
-	implements EditorConfigContributor {
+	extends BaseEditorConfigContributor {
 
 	@Override
 	public void populateConfigJSONObject(

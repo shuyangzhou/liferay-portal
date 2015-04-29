@@ -14,9 +14,8 @@
 
 package com.liferay.blogs.editor.config;
 
-import com.liferay.portal.kernel.editor.config.EditorConfigContributor;
+import com.liferay.portal.kernel.editor.config.BaseEditorConfigContributor;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
@@ -36,7 +35,7 @@ import org.osgi.service.component.annotations.Component;
 	}
 )
 public class BlogsCoverImageCaptionEditorConfigContributor
-	implements EditorConfigContributor {
+	extends BaseEditorConfigContributor {
 
 	@Override
 	public void populateConfigJSONObject(
@@ -46,20 +45,8 @@ public class BlogsCoverImageCaptionEditorConfigContributor
 
 		jsonObject.put("allowedContent", "a");
 		jsonObject.put("disallowedContent", "br");
-		jsonObject.put("extraPlugins", "placeholder");
-
-		JSONObject toolbarsJSONObject = JSONFactoryUtil.createJSONObject();
-
-		try {
-			JSONArray stylesJSONObject = JSONFactoryUtil.createJSONArray(
-				"['a']");
-
-			toolbarsJSONObject.put("styles", stylesJSONObject);
-		}
-		catch (JSONException jsone) {
-		}
-
-		jsonObject.put("toolbars", toolbarsJSONObject);
+		jsonObject.put("extraPlugins", "placeholder,selectionregion,uicore");
+		jsonObject.put("toolbars", getToolbarsJSONObject());
 	}
 
 	@Override
@@ -67,6 +54,52 @@ public class BlogsCoverImageCaptionEditorConfigContributor
 		JSONObject jsonObject, Map<String, Object> inputEditorTaglibAttributes,
 		ThemeDisplay themeDisplay,
 		LiferayPortletResponse liferayPortletResponse) {
+	}
+
+	protected JSONObject getToolbarsJSONObject() {
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put("styles", getToolbarsStylesJSONObject());
+
+		return jsonObject;
+	}
+
+	protected JSONObject getToolbarsStylesJSONObject() {
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put("selections", getToolbarStylesSelectionsJSONArray());
+		jsonObject.put("tabIndex", 1);
+
+		return jsonObject;
+	}
+
+	protected JSONArray getToolbarStylesSelectionsJSONArray() {
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+
+		jsonArray.put(getToolbarStylesSelectionsLinkJSONObject());
+		jsonArray.put(getToolbarStylesSelectionsTextJSONObject());
+
+		return jsonArray;
+	}
+
+	protected JSONObject getToolbarStylesSelectionsLinkJSONObject() {
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put("buttons", toJSONArray("['linkEdit']"));
+		jsonObject.put("name", "link");
+		jsonObject.put("test", "link");
+
+		return jsonObject;
+	}
+
+	protected JSONObject getToolbarStylesSelectionsTextJSONObject() {
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put("buttons", toJSONArray("['link']"));
+		jsonObject.put("name", "text");
+		jsonObject.put("test", "text");
+
+		return jsonObject;
 	}
 
 }

@@ -14,14 +14,11 @@
 
 package com.liferay.frontend.alloy.editor.config;
 
-import com.liferay.portal.kernel.editor.config.EditorConfigContributor;
+import com.liferay.portal.kernel.editor.config.BaseEditorConfigContributor;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
@@ -42,7 +39,7 @@ import org.osgi.service.component.annotations.Component;
  * @author Sergio González
  */
 @Component(property = {"editor.name=alloyeditor"})
-public class AlloyEditorConfigContributor implements EditorConfigContributor {
+public class AlloyEditorConfigContributor extends BaseEditorConfigContributor {
 
 	@Override
 	public void populateConfigJSONObject(
@@ -64,12 +61,16 @@ public class AlloyEditorConfigContributor implements EditorConfigContributor {
 			"contentsLangDirection", HtmlUtil.escapeJS(contentsLanguageDir));
 		jsonObject.put(
 			"contentsLanguage", contentsLanguageId.replace("iw_", "he_"));
+		jsonObject.put(
+			"extraPlugins",
+			"autolink,dragresize,dropimages,placeholder,selectionregion," +
+				"tableresize,tabletools,uicore");
 
 		String languageId = LocaleUtil.toLanguageId(themeDisplay.getLocale());
 
 		jsonObject.put("language", languageId.replace("iw_", "he_"));
 		jsonObject.put(
-			"removePlugins", "toolbar,elementspath,resize,liststyle,link");
+			"removePlugins", "elementspath,link,liststyle,resize,toolbar");
 
 		if (liferayPortletResponse != null) {
 			LiferayPortletURL itemSelectorURL =
@@ -123,29 +124,7 @@ public class AlloyEditorConfigContributor implements EditorConfigContributor {
 			jsonObject.put("srcNode", name);
 		}
 
-		JSONObject toolbarsJSONObject = JSONFactoryUtil.createJSONObject();
-
-		try {
-			JSONArray toolbarAddJSONArray = JSONFactoryUtil.createJSONArray(
-				"['imageselector']");
-
-			JSONArray toolbarImageJSONArray = JSONFactoryUtil.createJSONArray(
-				"['left', 'right']");
-
-			JSONArray toolbarStylesJSONArray = JSONFactoryUtil.createJSONArray(
-				"['strong', 'em', 'u', 'h1', 'h2', 'a', 'twitter']");
-
-			toolbarsJSONObject.put("add", toolbarAddJSONArray);
-			toolbarsJSONObject.put("image", toolbarImageJSONArray);
-			toolbarsJSONObject.put("styles", toolbarStylesJSONArray);
-		}
-		catch (JSONException jsone) {
-			if (_log.isErrorEnabled()) {
-				_log.error("Unable to create a JSON array from string");
-			}
-		}
-
-		jsonObject.put("toolbarsJSONObject", toolbarsJSONObject);
+		jsonObject.put("toolbars", getToolbarsJSONObject());
 	}
 
 	@Override
@@ -155,7 +134,92 @@ public class AlloyEditorConfigContributor implements EditorConfigContributor {
 		LiferayPortletResponse liferayPortletResponse) {
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		AlloyEditorConfigContributor.class);
+	protected JSONObject getToolbarsAddJSONObject() {
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put(
+			"buttons", toJSONArray("['imageselector', 'table', 'hline']"));
+		jsonObject.put("tabIndex", 2);
+
+		return jsonObject;
+	}
+
+	protected JSONObject getToolbarsJSONObject() {
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put("add", getToolbarsAddJSONObject());
+		jsonObject.put("styles", getToolbarsStylesJSONObject());
+
+		return jsonObject;
+	}
+
+	protected JSONObject getToolbarsStylesJSONObject() {
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put("selections", getToolbarsStylesSelectionsJSONArray());
+		jsonObject.put("tabIndex", 1);
+
+		return jsonObject;
+	}
+
+	protected JSONObject getToolbarsStylesSelectionsImageJSONObject() {
+		JSONObject jsonNObject = JSONFactoryUtil.createJSONObject();
+
+		jsonNObject.put("buttons", toJSONArray("['imageLeft', 'imageRight']"));
+		jsonNObject.put("name", "image");
+		jsonNObject.put("test", "image");
+
+		return jsonNObject;
+	}
+
+	protected JSONArray getToolbarsStylesSelectionsJSONArray() {
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+
+		jsonArray.put(getToolbarsStylesSelectionsLinkJSONObject());
+		jsonArray.put(getToolbarsStylesSelectionsImageJSONObject());
+		jsonArray.put(getToolbarsStylesSelectionsTextJSONObject());
+		jsonArray.put(getToolbarsStylesSelectionsTableJSONObject());
+
+		return jsonArray;
+	}
+
+	protected JSONObject getToolbarsStylesSelectionsLinkJSONObject() {
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put("buttons", toJSONArray("['linkEdit']"));
+		jsonObject.put("name", "link");
+		jsonObject.put("test", "link");
+
+		return jsonObject;
+	}
+
+	protected JSONObject getToolbarsStylesSelectionsTableJSONObject() {
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put(
+			"buttons",
+			toJSONArray(
+				"['tableRow', 'tableColumn', 'tableCell', 'tableRemove']"));
+		jsonObject.put("getArrowBoxClasses", "table");
+		jsonObject.put("name", "table");
+		jsonObject.put("setPosition", "table");
+		jsonObject.put("test", "table");
+
+		return jsonObject;
+	}
+
+	protected JSONObject getToolbarsStylesSelectionsTextJSONObject() {
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put(
+			"buttons",
+			toJSONArray(
+				"['styles', 'bold', 'italic', 'underline', 'link', " +
+					"'twitter']"));
+		jsonObject.put("name", "text");
+		jsonObject.put("test", "text");
+
+		return jsonObject;
+	}
 
 }

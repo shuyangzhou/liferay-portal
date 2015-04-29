@@ -16,17 +16,22 @@ package com.liferay.portlet.journal.service.impl;
 
 import com.liferay.portal.kernel.dao.orm.QueryDefinition;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.security.permission.ActionKeys;
+import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.util.PropsValues;
+import com.liferay.portlet.dynamicdatamapping.model.DDMStructure;
+import com.liferay.portlet.dynamicdatamapping.service.permission.DDMStructurePermission;
 import com.liferay.portlet.journal.model.JournalArticle;
 import com.liferay.portlet.journal.model.JournalFolder;
 import com.liferay.portlet.journal.service.base.JournalFolderServiceBaseImpl;
 import com.liferay.portlet.journal.service.permission.JournalFolderPermission;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -81,6 +86,16 @@ public class JournalFolderServiceImpl extends JournalFolderServiceBaseImpl {
 		}
 
 		return folder;
+	}
+
+	@Override
+	public List<DDMStructure> getDDMStructures(
+			long[] groupIds, long folderId, int restrictionType)
+		throws PortalException {
+
+		return filterStructures(
+			journalFolderLocalService.getDDMStructures(
+				groupIds, folderId, restrictionType));
 	}
 
 	@Override
@@ -365,6 +380,29 @@ public class JournalFolderServiceImpl extends JournalFolderServiceBaseImpl {
 			getUserId(), groupId, folderId, parentFolderId, name, description,
 			ddmStructureIds, restrictionType, mergeWithParentFolder,
 			serviceContext);
+	}
+
+	protected List<DDMStructure> filterStructures(
+			List<DDMStructure> ddmStructures)
+		throws PortalException {
+
+		PermissionChecker permissionChecker = getPermissionChecker();
+
+		ddmStructures = ListUtil.copy(ddmStructures);
+
+		Iterator<DDMStructure> itr = ddmStructures.iterator();
+
+		while (itr.hasNext()) {
+			DDMStructure ddmStructure = itr.next();
+
+			if (!DDMStructurePermission.contains(
+					permissionChecker, ddmStructure, ActionKeys.VIEW)) {
+
+				itr.remove();
+			}
+		}
+
+		return ddmStructures;
 	}
 
 }
