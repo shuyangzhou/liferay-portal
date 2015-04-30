@@ -15,9 +15,11 @@
 package com.liferay.portal.kernel.test.rule;
 
 import com.liferay.portal.kernel.process.ClassPathUtil;
+import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import java.net.URL;
@@ -95,9 +97,14 @@ public class CodeCoverageAssertor implements TestRule {
 
 		_purgeSyntheticClasses(assertClasses);
 
-		_ASSERT_COVERAGE_METHOD.invoke(
-			null, _includeInnerClasses,
-			assertClasses.toArray(new Class<?>[assertClasses.size()]));
+		try {
+			_ASSERT_COVERAGE_METHOD.invoke(
+				null, _includeInnerClasses,
+				assertClasses.toArray(new Class<?>[assertClasses.size()]));
+		}
+		catch (InvocationTargetException ite) {
+			ReflectionUtil.throwException(ite.getTargetException());
+		}
 	}
 
 	protected String beforeClass(Description description) throws Exception {
