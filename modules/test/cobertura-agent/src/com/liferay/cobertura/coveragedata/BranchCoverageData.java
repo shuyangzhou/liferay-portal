@@ -17,26 +17,14 @@ package com.liferay.cobertura.coveragedata;
 /**
  * @author Shuyang Zhou
  */
-public class PackageData
-	extends CoverageDataContainer<String, ClassData, PackageData> {
+public interface BranchCoverageData<T extends BranchCoverageData> {
 
-	public PackageData(String name) {
-		_name = name;
-	}
+	double getBranchCoverageRate();
 
-	public ClassData addClassData(ClassData classData) {
-		ClassData previousClassData = children.putIfAbsent(
-			classData.getBaseName(), classData);
+	int getNumberOfCoveredBranches();
 
-		if (previousClassData != null) {
-			classData = previousClassData;
-		}
+	int getNumberOfValidBranches();
 
-		return classData;
-	}
-
-	private static final long serialVersionUID = 1;
-
-	private final String _name;
+	void merge(T t);
 
 }
