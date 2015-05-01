@@ -30,7 +30,7 @@ public class TouchUtil {
 
 			ClassData classData = projectData.getOrCreateClassData(className);
 
-			classData.touch(lineNumber, 1);
+			classData.touch(lineNumber);
 
 			return;
 		}
@@ -56,7 +56,7 @@ public class TouchUtil {
 
 			ClassData classData = projectData.getOrCreateClassData(className);
 
-			classData.touchJump(lineNumber, branchNumber, branch, 1);
+			classData.touchJump(lineNumber, branchNumber, branch);
 
 			return;
 		}
@@ -83,7 +83,7 @@ public class TouchUtil {
 
 			ClassData classData = projectData.getOrCreateClassData(className);
 
-			classData.touchSwitch(lineNumber, switchNumber, branch, 1);
+			classData.touchSwitch(lineNumber, switchNumber, branch);
 
 			return;
 		}
