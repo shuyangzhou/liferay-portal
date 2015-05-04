@@ -15,6 +15,7 @@
 package com.liferay.portlet.documentlibrary.service;
 
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
+import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.test.AssertUtils;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -32,6 +33,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -89,6 +91,24 @@ public class DLContentLocalServiceTest {
 			_companyId, _repositoryId, path);
 
 		Assert.assertEquals(addDLContent, getDLContent);
+	}
+
+	@Ignore
+	@Test
+	public void testAddLargeContentByByteArray() throws Exception {
+		String path = RandomTestUtil.randomString();
+
+		byte[] megabyteArray = new byte[1024 * 1024];
+
+		UnsyncByteArrayOutputStream os = new UnsyncByteArrayOutputStream();
+
+		for (int i = 0; i < 1025; i++) {
+			os.write(megabyteArray);
+		}
+
+		_dlContentLocalService.addContent(
+			_companyId, _repositoryId, path, Store.VERSION_DEFAULT,
+			os.toByteArray());
 	}
 
 	@Test
