@@ -12,19 +12,22 @@
  * details.
  */
 
-package com.liferay.portal.cache.key;
+package com.liferay.portal.model.bundle.modellistenerregistrationutil;
 
-import com.liferay.portal.kernel.util.Digester;
+import com.liferay.portal.model.BaseModelListener;
+import com.liferay.portal.model.Contact;
+import com.liferay.portal.model.ModelListener;
+
+import org.osgi.service.component.annotations.Component;
 
 /**
- * @author Shuyang Zhou
+ * @author Peter Fellwock
+ * @param <T>
  */
-public class JavaMD5CacheKeyGeneratorTest
-	extends BaseCacheKeyGeneratorTestCase {
-
-	@Override
-	public void setUp() throws Exception {
-		cacheKeyGenerator = new MessageDigestCacheKeyGenerator(Digester.MD5);
-	}
-
+@Component(
+	immediate = true,
+	property = {"service.ranking:Integer=" + Integer.MAX_VALUE},
+	service = ModelListener.class
+)
+public class TestModelListener extends BaseModelListener<Contact> {
 }
