@@ -20,27 +20,25 @@ import com.liferay.portal.kernel.util.Digester;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * @author Michael C. Han
- * @author Shuyang Zhou
  * @author Vilmos Papp
  */
-public class JavaMD5CacheKeyGenerator
+public class JavaSHA1CacheKeyGenerator
 	extends BaseMessageDigestCacheKeyGenerator {
 
-	public JavaMD5CacheKeyGenerator() throws NoSuchAlgorithmException {
+	public JavaSHA1CacheKeyGenerator() throws NoSuchAlgorithmException {
 		this(-1);
 	}
 
-	public JavaMD5CacheKeyGenerator(int maxLength)
+	public JavaSHA1CacheKeyGenerator(int maxLength)
 		throws NoSuchAlgorithmException {
 
-		super(Digester.MD5, maxLength);
+		super(Digester.SHA_1, maxLength);
 	}
 
 	@Override
 	public CacheKeyGenerator clone() {
 		try {
-			return new JavaMD5CacheKeyGenerator(getMaxLength());
+			return new JavaSHA1CacheKeyGenerator(getMaxLength());
 		}
 		catch (NoSuchAlgorithmException nsae) {
 			throw new IllegalStateException(nsae.getMessage(), nsae);
