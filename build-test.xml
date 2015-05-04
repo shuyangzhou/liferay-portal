@@ -1039,11 +1039,31 @@
 
 	<macrodef name="setup-testable-tomcat">
 		<sequential>
+			<setup-testable-tomcat-logging />
+
 			<setup-testable-tomcat-jmx />
 
 			<setup-testable-tomcat-manager />
 
 			<setup-testable-tomcat-osgi-modules />
+		</sequential>
+	</macrodef>
+
+	<macrodef name="setup-testable-tomcat-logging">
+		<sequential>
+			<if>
+				<not>
+					<resourcecontains resource="${app.server.tomcat.dir}/conf/logging.properties" substring="org.apache.catalina.core.ContainerBase.level" />
+				</not>
+				<then>
+				<echo file="${app.server.tomcat.dir}/conf/logging.properties" append="true">
+					<![CDATA[
+org.apache.catalina.core.ContainerBase.level = FINEST
+org.apache.catalina.core.StandardContext.level = FINEST
+org.apache.catalina.util.LifecycleBase.level = FINEST]]>
+				</echo>
+				</then>
+			</if>
 		</sequential>
 	</macrodef>
 
