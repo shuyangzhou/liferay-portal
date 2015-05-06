@@ -310,14 +310,6 @@ public class InstrumentationAgent {
 			return;
 		}
 
-		if (classData == null) {
-			assertionErrors.add(
-				new AssertionError(
-					"Class " + clazz.getName() + " has no coverage data"));
-
-			return;
-		}
-
 		if ((classData.getBranchCoverageRate() != 1.0) ||
 			(classData.getLineCoverageRate() != 1.0)) {
 
