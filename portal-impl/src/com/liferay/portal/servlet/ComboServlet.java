@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.SetUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
@@ -49,7 +50,9 @@ import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.PortletConfigFactoryUtil;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Serializable;
+import java.io.StringWriter;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -191,7 +194,7 @@ public class ComboServlet extends HttpServlet {
 					StringPool.POUND + LanguageUtil.getLanguageId(request);
 			}
 
-			bytesArray = _bytesArrayPortalCache.get(modulePathsString);
+//			bytesArray = _bytesArrayPortalCache.get(modulePathsString);
 		}
 
 		if (bytesArray == null) {
@@ -233,7 +236,7 @@ public class ComboServlet extends HttpServlet {
 			if ((modulePathsString != null) &&
 				!PropsValues.COMBO_CHECK_TIMESTAMP) {
 
-				_bytesArrayPortalCache.put(modulePathsString, bytesArray);
+//				_bytesArrayPortalCache.put(modulePathsString, bytesArray);
 			}
 		}
 
@@ -292,8 +295,28 @@ public class ComboServlet extends HttpServlet {
 			fileContentBag = _EMPTY_FILE_CONTENT_BAG;
 		}
 		else {
-			String stringFileContent = StringUtil.read(
-				resourceURL.openStream());
+			String stringFileContent = null;
+			try {
+				stringFileContent = StringUtil.read(
+					resourceURL.openStream());
+			} catch (IOException ioe) {
+				String info= "########### resourceURL: " + resourceURL +
+					"\n########### getAuthority: " + resourceURL.getAuthority() +
+					"\n########### getFile: " + resourceURL.getFile() +
+					"\n########### getHost: " + resourceURL.getHost() +
+					"\n########### getPath: " + resourceURL.getPath() +
+					"\n########### getProtocol: " + resourceURL.getProtocol() +
+					"\n########### getQuery: " + resourceURL.getQuery() +
+					"\n########### getRef: " + resourceURL.getRef() +
+					"\n########### getUserInfo: " + resourceURL.getUserInfo() +
+					"\n########### toExternalForm: " + resourceURL.toExternalForm() +
+					"\n########### requestURL: " + request.getRequestURL() +
+					"\n########### queryString: " + request.getQueryString();
+
+				System.out.println(info);
+
+				throw ioe;
+			}
 
 			if (!StringUtil.endsWith(resourcePath, _CSS_MINIFIED_SUFFIX) &&
 				!StringUtil.endsWith(

@@ -2132,14 +2132,27 @@ public class StringUtil {
 	public static String read(InputStream is) throws IOException {
 		StringBundler sb = new StringBundler();
 
-		try (UnsyncBufferedReader unsyncBufferedReader =
-				new UnsyncBufferedReader(new InputStreamReader(is))) {
+		UnsyncBufferedReader unsyncBufferedReader = null;
+
+		try {
+			unsyncBufferedReader =
+				new UnsyncBufferedReader(new InputStreamReader(is));
 
 			String line = null;
 
 			while ((line = unsyncBufferedReader.readLine()) != null) {
 				sb.append(line);
 				sb.append(CharPool.NEW_LINE);
+			}
+		}
+		catch (IOException ioe) {
+			System.out.println("############### " + is.getClass());
+
+			throw ioe;
+		}
+		finally {
+			if (unsyncBufferedReader != null) {
+				unsyncBufferedReader.close();
 			}
 		}
 
