@@ -22,7 +22,6 @@ page import="com.liferay.portal.comment.context.util.DiscussionTaglibHelper" %><
 page import="com.liferay.portal.kernel.comment.Comment" %><%@
 page import="com.liferay.portal.kernel.comment.CommentConstants" %><%@
 page import="com.liferay.portal.kernel.comment.CommentIterator" %><%@
-page import="com.liferay.portal.kernel.comment.CommentManager" %><%@
 page import="com.liferay.portal.kernel.comment.CommentManagerUtil" %><%@
 page import="com.liferay.portal.kernel.comment.Discussion" %><%@
 page import="com.liferay.portal.kernel.comment.DiscussionPermission" %><%@

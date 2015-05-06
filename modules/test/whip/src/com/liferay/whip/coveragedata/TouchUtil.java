@@ -14,6 +14,7 @@
 
 package com.liferay.whip.coveragedata;
 
+import com.liferay.whip.util.ReflectionUtil;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -28,7 +29,7 @@ public class TouchUtil {
 
 			ProjectData projectData = ProjectDataUtil.getProjectData();
 
-			ClassData classData = projectData.getOrCreateClassData(className);
+			ClassData classData = projectData.getClassData(className);
 
 			classData.touch(lineNumber);
 
@@ -39,10 +40,10 @@ public class TouchUtil {
 			_touchMethod.invoke(null, className, lineNumber);
 		}
 		catch (InvocationTargetException ite) {
-			_throwException(ite.getCause());
+			ReflectionUtil.throwException(ite.getCause());
 		}
 		catch (ReflectiveOperationException roe) {
-			_throwException(roe);
+			ReflectionUtil.throwException(roe);
 		}
 	}
 
@@ -54,7 +55,7 @@ public class TouchUtil {
 
 			ProjectData projectData = ProjectDataUtil.getProjectData();
 
-			ClassData classData = projectData.getOrCreateClassData(className);
+			ClassData classData = projectData.getClassData(className);
 
 			classData.touchJump(lineNumber, branchNumber, branch);
 
@@ -66,10 +67,10 @@ public class TouchUtil {
 				null, className, lineNumber, branchNumber, branch);
 		}
 		catch (InvocationTargetException ite) {
-			_throwException(ite.getCause());
+			ReflectionUtil.throwException(ite.getCause());
 		}
 		catch (ReflectiveOperationException roe) {
-			_throwException(roe);
+			ReflectionUtil.throwException(roe);
 		}
 	}
 
@@ -81,7 +82,7 @@ public class TouchUtil {
 
 			ProjectData projectData = ProjectDataUtil.getProjectData();
 
-			ClassData classData = projectData.getOrCreateClassData(className);
+			ClassData classData = projectData.getClassData(className);
 
 			classData.touchSwitch(lineNumber, switchNumber, branch);
 
@@ -93,23 +94,11 @@ public class TouchUtil {
 				null, className, lineNumber, switchNumber, branch);
 		}
 		catch (InvocationTargetException ite) {
-			_throwException(ite.getCause());
+			ReflectionUtil.throwException(ite.getCause());
 		}
 		catch (ReflectiveOperationException roe) {
-			_throwException(roe);
+			ReflectionUtil.throwException(roe);
 		}
-	}
-
-	@SuppressWarnings("unchecked")
-	private static <T, E extends Throwable> T _doThrowException(
-			Throwable throwable)
-		throws E {
-
-		throw (E)throwable;
-	}
-
-	private static <T> T _throwException(Throwable throwable) {
-		return TouchUtil.<T, RuntimeException>_doThrowException(throwable);
 	}
 
 	private static final Method _touchJumpMethod;

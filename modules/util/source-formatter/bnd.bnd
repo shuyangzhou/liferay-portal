@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Source Formatter
 Bundle-SymbolicName: com.liferay.source.formatter
-Bundle-Version: 1.0.2
+Bundle-Version: 1.0.3
 Import-Package:\
 	!javax.portlet,\
 	!javax.servlet.http,\
@@ -11,6 +11,7 @@ Include-Resource:\
 	classes,\
 	{META-INF/maven/plugin.xml=src/META-INF/maven/plugin.xml},\
 	@../../../lib/portal/xercesImpl.jar!/org/apache/xerces/xni/XNIException.class,\
+	@../../../portal-impl/portal-impl.jar!/com/liferay/portal/deploy/dependencies/web.xml,\
 	@../../../portal-impl/portal-impl.jar!/com/liferay/portal/tools/ArgumentsMap.class,\
 	@../../../portal-impl/portal-impl.jar!/com/liferay/portal/tools/ArgumentsUtil.class,\
 	@../../../portal-impl/portal-impl.jar!/com/liferay/portal/util/EntityResolver.class,\
