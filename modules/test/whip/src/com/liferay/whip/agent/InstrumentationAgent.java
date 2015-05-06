@@ -103,9 +103,8 @@ public class InstrumentationAgent {
 					List<ClassDefinition> classDefinitions = new ArrayList<>(
 						_originalClassDefinitions.size());
 
-					for (int i = 0; i < _originalClassDefinitions.size(); i++) {
-						OriginalClassDefinition originalClassDefinition =
-							_originalClassDefinitions.get(i);
+					for (OriginalClassDefinition originalClassDefinition :
+							_originalClassDefinitions) {
 
 						ClassDefinition classDefinition =
 							originalClassDefinition.toClassDefinition();
@@ -375,7 +374,7 @@ public class InstrumentationAgent {
 
 	private static class OriginalClassDefinition {
 
-		public OriginalClassDefinition(
+		private OriginalClassDefinition(
 			ClassLoader classLoader, String className, byte[] bytes) {
 
 			_classLoader = classLoader;
@@ -383,9 +382,7 @@ public class InstrumentationAgent {
 			_bytes = bytes;
 		}
 
-		public ClassDefinition toClassDefinition()
-			throws ClassNotFoundException {
-
+		public ClassDefinition toClassDefinition() {
 			try {
 				Class<?> clazz = Class.forName(_className, true, _classLoader);
 
