@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+
+<project name="portal-test-run" basedir="." default="tomcat" xmlns:antelope="antlib:ise.antelope.tasks">
+	<property name="app.server.type" value="tomcat"/>
+	<import file="build-test.xml" />
+
+	<taskdef classname="com.oopsconsultancy.xmltask.ant.XmlTask" classpath="lib/development/xmltask.jar" name="xmltask" />
+
+	<target name="bundle" depends="revert-test-properties">
+		<fail unless="test.class" message="Please set the property ${test.class}." />
+
+		<ant antfile="build-test-${app.server.type}.xml" target="run-selenium-${app.server.type}" />
+	</target>
+
+	<target name="run" depends="revert-test-properties">
+		<fail unless="test.class" message="Please set the property ${test.class}." />
+
+		<ant dir="portal-web" target="build-selenium-test-case" />
+
+		<antcall target="run-cmd" inheritAll="false" />
+	</target>
+
+	<target name="run-cmd" depends="revert-test-properties">
+		<fail unless="test.class" message="Please set the property ${test.class}." />
+
+		<antcall target="prepare-portal-properties" />
+
+		<antcall target="prepare-portal-ext-properties" />
+
+		<antcall target="prepare-selenium" />
+
+		<antcall target="start-selenium" />
+
+		<antcall target="run-selenium-test" />
+
+		<antcall target="stop-selenium" />
+	</target>
+
+	<target name="tomcat">
+		<antcall target="bundle">
+			<param name="app.server.type" value="tomcat" />
+		</antcall>
+	</target>
+
+	<target name="glassfish">
+		<antcall target="bundle">
+			<param name="app.server.type" value="glassfish" />
+		</antcall>
+	</target>
+
+	<target name="jboss">
+		<antcall target="bundle">
+			<param name="app.server.type" value="jboss" />
+		</antcall>
+	</target>
+
+	<target name="jboss-eap-6.0">
+		<antcall target="bundle">
+			<param name="app.server.type" value="jboss-eap-6.0" />
+		</antcall>
+	</target>
+
+	<target name="jboss-eap-6.1">
+		<antcall target="bundle">
+			<param name="app.server.type" value="jboss-eap-6.0" />
+		</antcall>
+	</target>
+
+	<target name="smoke">
+		<delete dir="portal-web\test-classes" />
+
+		<antcall target="compile-test" inheritAll="false" />
+	</target>
+</project>

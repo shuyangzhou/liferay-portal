@@ -48,7 +48,7 @@ String msg = String.valueOf(request.getAttribute(JavaConstants.JAVAX_SERVLET_ERR
 String uri = errorData.getRequestURI();
 
 if (_log.isWarnEnabled()) {
-	_log.warn("{code=\"" + code + "\", msg=\"" + msg + "\", uri=" + uri + "}", exception);
+	_log.warn("{code=\"" + code + "\", throwable=\"" + errorData.getThrowable() + "\", name=\"" + errorData.getServletName() + "\", msg=\"" + msg + "\", uri=" + uri + "}", exception);
 }
 
 String xRequestWith = request.getHeader(HttpHeaders.X_REQUESTED_WITH);

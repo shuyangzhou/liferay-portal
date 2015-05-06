@@ -41,6 +41,9 @@ public class URLUtil {
 					inputStream.close();
 				}
 				catch (IOException ioe) {
+					System.out.println("############### The other one!");
+
+					throw ioe;
 				}
 			}
 		}
