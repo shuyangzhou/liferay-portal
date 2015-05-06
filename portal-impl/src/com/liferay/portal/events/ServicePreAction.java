@@ -125,8 +125,8 @@ import javax.portlet.PortletMode;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
 import javax.portlet.WindowState;
-
 import javax.portlet.WindowStateException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -1320,30 +1320,6 @@ public class ServicePreAction extends Action {
 		return themeDisplay;
 	}
 
-	private PortletURL _getURLMyAccount(
-			long companyId, HttpServletRequest request)
-		throws PortalException {
-
-		try {
-			Group userPersonalPanelGroup = GroupLocalServiceUtil.getGroup(
-				companyId, GroupConstants.USER_PERSONAL_PANEL);
-
-			long plid = LayoutLocalServiceUtil.getDefaultPlid(
-				userPersonalPanelGroup.getGroupId(), true);
-
-			PortletURL portletURL = PortletURLFactoryUtil.create(
-				request, PortletKeys.MY_ACCOUNT, plid,
-				PortletRequest.RENDER_PHASE);
-
-			portletURL.setWindowState(WindowState.MAXIMIZED);
-
-			return portletURL;
-		}
-		catch (WindowStateException wse) {
-			throw new PortalException(wse);
-		}
-	}
-
 	@Override
 	public void run(HttpServletRequest request, HttpServletResponse response)
 		throws ActionException {
@@ -2415,6 +2391,30 @@ public class ServicePreAction extends Action {
 
 	protected File privateLARFile;
 	protected File publicLARFile;
+
+	private PortletURL _getURLMyAccount(
+			long companyId, HttpServletRequest request)
+		throws PortalException {
+
+		try {
+			Group userPersonalPanelGroup = GroupLocalServiceUtil.getGroup(
+				companyId, GroupConstants.USER_PERSONAL_PANEL);
+
+			long plid = LayoutLocalServiceUtil.getDefaultPlid(
+				userPersonalPanelGroup.getGroupId(), true);
+
+			PortletURL portletURL = PortletURLFactoryUtil.create(
+				request, PortletKeys.MY_ACCOUNT, plid,
+				PortletRequest.RENDER_PHASE);
+
+			portletURL.setWindowState(WindowState.MAXIMIZED);
+
+			return portletURL;
+		}
+		catch (WindowStateException wse) {
+			throw new PortalException(wse);
+		}
+	}
 
 	private static final String _PATH_PORTAL_LAYOUT = "/portal/layout";
 

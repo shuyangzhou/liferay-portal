@@ -25,7 +25,6 @@ import java.util.Map;
 import javax.xml.ws.handler.Handler;
 
 import org.apache.cxf.Bus;
-import org.apache.felix.dm.DependencyManager;
 import org.apache.felix.dm.ServiceDependency;
 
 import org.osgi.framework.BundleContext;

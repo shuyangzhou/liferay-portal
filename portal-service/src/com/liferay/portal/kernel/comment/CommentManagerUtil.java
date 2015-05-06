@@ -66,7 +66,7 @@ public class CommentManagerUtil {
 
 	public static CommentManager getCommentManager() {
 		PortalRuntimePermission.checkGetBeanProperty(CommentManagerUtil.class);
-	
+
 		return _commentManager;
 	}
 
@@ -85,7 +85,7 @@ public class CommentManagerUtil {
 
 	public static DiscussionPermission getDiscussionPermission(
 		PermissionChecker permissionChecker) {
-		
+
 		return getCommentManager().getDiscussionPermission(permissionChecker);
 	}
 
