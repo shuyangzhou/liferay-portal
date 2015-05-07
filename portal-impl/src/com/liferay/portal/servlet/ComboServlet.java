@@ -49,6 +49,7 @@ import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.PortletConfigFactoryUtil;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 
 import java.net.HttpURLConnection;
@@ -393,14 +394,24 @@ public class ComboServlet extends HttpServlet {
 
 		HttpURLConnection urlConnection =
 			(HttpURLConnection)url.openConnection();
+		try {
+			if (urlConnection.getResponseCode() == HttpServletResponse.SC_OK) {
+				return url;
+			}
 
-		if (urlConnection.getResponseCode() == HttpServletResponse.SC_OK) {
-			return url;
+			throw new ServletException(
+				"Resource " + resourcePath + " does not exist in " +
+					portlet.getContextPath());
 		}
+		finally {
+			try {
+				InputStream inputStream = urlConnection.getInputStream();
 
-		throw new ServletException(
-			"Resource " + resourcePath + " does not exist in " +
-				portlet.getContextPath());
+				inputStream.close();
+			}
+			catch (IOException ioe) {
+			}
+		}
 	}
 
 	protected String translate(
