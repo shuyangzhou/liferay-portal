@@ -76,21 +76,35 @@ public class DummyCommentManagerImpl implements CommentManager {
 		return _discussionPermission;
 	}
 
+	private static final Discussion _discussion = new Discussion() {
+
+		@Override
+		public boolean isMaxCommentsLimitExceeded() {
+			return true;
+		}
+
+		@Override
+		public Comment getRootComment() {
+			return null;
+		}
+
+	};
+
 	private static final DiscussionPermission _discussionPermission =
 		new DiscussionPermission() {
 
 			@Override
 			public boolean hasAddPermission(
-				long companyId, long groupId, String className,
-				long classPK, long userId) {
+				long companyId, long groupId, String className, long classPK,
+				long userId) {
 
 				return false;
 			}
 
 			@Override
 			public boolean hasDeletePermission(
-				long companyId, long groupId, String className,
-				long classPK, long commentId, long userId) {
+				long companyId, long groupId, String className, long classPK,
+				long commentId, long userId) {
 
 				return false;
 			}
@@ -112,19 +126,5 @@ public class DummyCommentManagerImpl implements CommentManager {
 			}
 
 		};
-
-	private static final Discussion _discussion = new Discussion() {
-
-		@Override
-		public boolean isMaxCommentsLimitExceeded() {
-			return true;
-		}
-
-		@Override
-		public Comment getRootComment() {
-			return null;
-		}
-
-	};
 
 }

@@ -24,9 +24,9 @@ import com.liferay.portal.util.FileImpl;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.tools.ant.DirectoryScanner;
 
@@ -37,17 +37,25 @@ public class UpgradeTableBuilder {
 
 	public static void main(String[] args) {
 		try {
-			new UpgradeTableBuilder(args[0]);
+			Map<String, String> arguments = ArgumentsUtil.parseArguments(args);
+
+			String upgradeBaseDir = arguments.get("upgrade.base.dir");
+			String upgradeTableDir = arguments.get("upgrade.table.dir");
+
+			new UpgradeTableBuilder(upgradeBaseDir, upgradeTableDir);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public UpgradeTableBuilder(String upgradeTableDir) throws Exception {
+	public UpgradeTableBuilder(
+			String upgradeBaseDir, String upgradeTableDir)
+		throws Exception {
+
 		DirectoryScanner ds = new DirectoryScanner();
 
-		ds.setBasedir(".");
+		ds.setBasedir(upgradeBaseDir);
 		ds.setIncludes(new String[] {"**\\upgrade\\v**\\util\\*Table.java"});
 
 		ds.scan();

@@ -36,7 +36,7 @@ public class WhipClassVisitor extends ClassVisitor {
 		int version, int access, String name, String signature,
 		String superName, String[] interfaces) {
 
-		if ((access & Opcodes.ACC_INTERFACE) == 0) {
+		if ((access & (Opcodes.ACC_INTERFACE | Opcodes.ACC_SYNTHETIC)) == 0) {
 			_instrument = true;
 		}
 
@@ -61,7 +61,9 @@ public class WhipClassVisitor extends ClassVisitor {
 		MethodVisitor methodVisitor = cv.visitMethod(
 			access, name, desc, signature, exceptions);
 
-		if (!_instrument || (methodVisitor == null)) {
+		if (!_instrument || (methodVisitor == null) ||
+			((access & Opcodes.ACC_BRIDGE) != 0)) {
+
 			return methodVisitor;
 		}
 

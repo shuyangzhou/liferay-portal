@@ -719,63 +719,9 @@ svn://svn.liferay.com/repos/public/alloy/trunk/sandbox/taglibs.
 		<if>
 			<isset property="upgrade.table.dir" />
 			<then>
-				<for param="zip.file">
-					<path>
-						<fileset
-							dir="${upgrade.table.dir}"
-							includes="*.zip"
-						/>
-					</path>
-					<sequential>
-						<antelope:stringutil string="@{zip.file}" property="zip.version.beginindex">
-							<indexof string="src-" fromindex="0" />
-						</antelope:stringutil>
-
-						<math
-							datatype="int"
-							operand1="${zip.version.beginindex}"
-							operand2="4"
-							operation="+"
-							result="zip.version.beginindex"
-						/>
-
-						<antelope:stringutil string="@{zip.file}" property="zip.version.endindex">
-							<indexof string=".zip" fromindex="0" />
-						</antelope:stringutil>
-
-						<antelope:stringutil string="@{zip.file}" property="zip.version">
-							<substring beginindex="${zip.version.beginindex}" endindex="${zip.version.endindex}" />
-						</antelope:stringutil>
-
-						<if>
-							<or>
-								<not>
-									<uptodate
-										srcfile="@{zip.file}"
-										targetfile="${upgrade.table.dir}/${zip.version}"
-									/>
-								</not>
-								<not>
-									<available file="${upgrade.table.dir}/${zip.version}/indexes.sql" />
-								</not>
-							</or>
-							<then>
-								<mkdir dir="${upgrade.table.dir}/${zip.version}" />
-
-								<unzip
-									dest="${upgrade.table.dir}/${zip.version}"
-									src="@{zip.file}"
-								>
-									<patternset>
-										<include name="**/*ModelImpl.java" />
-										<include name="**/sql/indexes.sql" />
-									</patternset>
-									<mapper type="flatten" />
-								</unzip>
-							</then>
-						</if>
-					</sequential>
-				</for>
+				<ant antfile="build-common.xml" dir="${project.dir}/tools/sdk" inheritAll="false" target="prepare-upgrade-table">
+					<property name="upgrade.table.dir" value="${upgrade.table.dir}" />
+				</ant>
 
 				<java
 					classname="com.liferay.portal.tools.UpgradeTableBuilder"
@@ -783,7 +729,8 @@ svn://svn.liferay.com/repos/public/alloy/trunk/sandbox/taglibs.
 					fork="true"
 					newenvironment="true"
 				>
-					<arg value="${upgrade.table.dir}" />
+					<arg value="upgrade.base.dir=." />
+					<arg value="upgrade.table.dir=${upgrade.table.dir}" />
 				</java>
 			</then>
 		</if>
