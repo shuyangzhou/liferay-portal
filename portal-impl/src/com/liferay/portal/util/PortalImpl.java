@@ -5753,9 +5753,11 @@ public class PortalImpl implements Portal {
 			}
 		}
 
-		HttpSession session = request.getSession();
+		HttpSession session = request.getSession(false);
 
-		userIdObj = (Long)session.getAttribute(WebKeys.USER_ID);
+		if (session != null) {
+			userIdObj = (Long)session.getAttribute(WebKeys.USER_ID);
+		}
 
 		if (userIdObj != null) {
 			request.setAttribute(WebKeys.USER_ID, userIdObj);
@@ -6671,7 +6673,7 @@ public class PortalImpl implements Portal {
 
 	@Override
 	public boolean isSecure(HttpServletRequest request) {
-		HttpSession session = request.getSession();
+		HttpSession session = request.getSession(false);
 
 		if (session == null) {
 			return request.isSecure();
