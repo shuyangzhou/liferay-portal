@@ -17,6 +17,7 @@ package com.liferay.whip.instrument;
 import com.liferay.whip.agent.InstrumentationAgent;
 import com.liferay.whip.coveragedata.ProjectData;
 import com.liferay.whip.coveragedata.ProjectDataUtil;
+import com.liferay.whip.util.ReflectionUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -116,25 +117,23 @@ public class WhipClassFileTransformer implements ClassFileTransformer {
 
 				byte[] data = classWriter.toByteArray();
 
-				dumpIntrumentedClass(classLoader, className, data);
+				dumpInstrumentedClass(classLoader, className, data);
 
 				return data;
 			}
 		}
-		catch (Throwable t) {
-			t.printStackTrace();
-
-			throw new RuntimeException(t);
+		catch (IOException ioe) {
+			ReflectionUtil.throwException(ioe);
 		}
 
 		return null;
 	}
 
-	protected void dumpIntrumentedClass(
+	protected void dumpInstrumentedClass(
 			ClassLoader classLoader, String className, byte[] data)
 		throws IOException {
 
-		if (!Boolean.getBoolean("junit.code.coverage.dump")) {
+		if (!Boolean.getBoolean("whip.instrument.dump")) {
 			return;
 		}
 

@@ -47,11 +47,16 @@ public class InstrumentationAgent {
 		_whipClassFileTransformer = null;
 
 		try {
-			ProjectData projectData = ProjectDataUtil.captureProjectData(false);
+			ProjectData projectData = ProjectDataUtil.captureProjectData(
+				false, false);
 
 			List<AssertionError> assertionErrors = new ArrayList<>();
 
 			for (Class<?> clazz : classes) {
+				if (clazz.isSynthetic()) {
+					continue;
+				}
+
 				ClassData classData = projectData.getClassData(clazz.getName());
 
 				_assertClassDataCoverage(assertionErrors, clazz, classData);
@@ -61,6 +66,10 @@ public class InstrumentationAgent {
 
 					declaredClass:
 					for (Class<?> declaredClass : declaredClasses) {
+						if (declaredClass.isSynthetic()) {
+							continue;
+						}
+
 						for (Class<?> clazz2 : classes) {
 							if (clazz2.equals(declaredClass)) {
 								continue declaredClass;
@@ -87,8 +96,6 @@ public class InstrumentationAgent {
 			}
 		}
 		finally {
-			System.clearProperty("junit.code.coverage");
-
 			_dynamicallyInstrumented = false;
 
 			if (_originalClassDefinitions != null) {
@@ -96,9 +103,8 @@ public class InstrumentationAgent {
 					List<ClassDefinition> classDefinitions = new ArrayList<>(
 						_originalClassDefinitions.size());
 
-					for (int i = 0; i < _originalClassDefinitions.size(); i++) {
-						OriginalClassDefinition originalClassDefinition =
-							_originalClassDefinitions.get(i);
+					for (OriginalClassDefinition originalClassDefinition :
+							_originalClassDefinitions) {
 
 						ClassDefinition classDefinition =
 							originalClassDefinition.toClassDefinition();
@@ -138,7 +144,7 @@ public class InstrumentationAgent {
 			excludes = _excludes;
 		}
 
-		String agentLine = System.getProperty("junit.whip.agent");
+		String agentLine = System.getProperty("whip.agent");
 
 		int index = agentLine.indexOf('=');
 
@@ -167,7 +173,7 @@ public class InstrumentationAgent {
 				sb.setLength(sb.length() - 1);
 			}
 
-			System.setProperty("junit.whip.agent", sb.toString());
+			System.setProperty("whip.agent", sb.toString());
 		}
 
 		if (_whipClassFileTransformer == null) {
@@ -198,8 +204,10 @@ public class InstrumentationAgent {
 
 		_dynamicallyInstrumented = true;
 		_originalClassDefinitions = null;
+	}
 
-		System.setProperty("junit.code.coverage", "true");
+	public static File getDataFile() {
+		return _dataFile;
 	}
 
 	public static File getLockFile() {
@@ -214,7 +222,7 @@ public class InstrumentationAgent {
 		String[] includes = arguments[0].split(",");
 		String[] excludes = arguments[1].split(",");
 
-		if (Boolean.getBoolean("junit.code.coverage")) {
+		if (Boolean.getBoolean("whip.static.instrument")) {
 			final WhipClassFileTransformer whipClassFileTransformer =
 				new WhipClassFileTransformer(includes, excludes);
 
@@ -227,7 +235,10 @@ public class InstrumentationAgent {
 
 					@Override
 					public void run() {
-						ProjectDataUtil.captureProjectData(true);
+						ProjectDataUtil.captureProjectData(
+							true,
+							Boolean.getBoolean(
+								"whip.static.instrument.use.data.file"));
 					}
 
 				});
@@ -242,10 +253,7 @@ public class InstrumentationAgent {
 			// Forcibly clear the data file to make sure that the coverage
 			// assert is based on the current test
 
-			File dataFile = new File(
-				System.getProperty("net.sourceforge.cobertura.datafile"));
-
-			dataFile.delete();
+			_dataFile.delete();
 		}
 		else {
 			StringBuilder sb = new StringBuilder();
@@ -297,15 +305,7 @@ public class InstrumentationAgent {
 		List<AssertionError> assertionErrors, Class<?> clazz,
 		ClassData classData) {
 
-		if (clazz.isInterface() || clazz.isSynthetic()) {
-			return;
-		}
-
-		if (classData == null) {
-			assertionErrors.add(
-				new AssertionError(
-					"Class " + clazz.getName() + " has no coverage data"));
-
+		if (clazz.isInterface()) {
 			return;
 		}
 
@@ -340,6 +340,7 @@ public class InstrumentationAgent {
 		System.out.printf("[Whip] %s is fully covered.%n", classData.getName());
 	}
 
+	private static final File _dataFile;
 	private static boolean _dynamicallyInstrumented;
 	private static String[] _excludes;
 	private static String[] _includes;
@@ -349,10 +350,9 @@ public class InstrumentationAgent {
 	private static WhipClassFileTransformer _whipClassFileTransformer;
 
 	static {
-		File dataFile = new File(
-			System.getProperty("net.sourceforge.cobertura.datafile"));
+		_dataFile = new File(System.getProperty("whip.datafile"));
 
-		File parentFolder = dataFile.getParentFile();
+		File parentFolder = _dataFile.getParentFile();
 
 		if (!parentFolder.exists()) {
 			parentFolder.mkdirs();
@@ -374,17 +374,7 @@ public class InstrumentationAgent {
 
 	private static class OriginalClassDefinition {
 
-		public OriginalClassDefinition(
-			ClassLoader classLoader, String className, byte[] bytes) {
-
-			_classLoader = classLoader;
-			_className = className.replace('/', '.');
-			_bytes = bytes;
-		}
-
-		public ClassDefinition toClassDefinition()
-			throws ClassNotFoundException {
-
+		public ClassDefinition toClassDefinition() {
 			try {
 				Class<?> clazz = Class.forName(_className, true, _classLoader);
 
@@ -393,6 +383,14 @@ public class InstrumentationAgent {
 			catch (Throwable t) {
 				return null;
 			}
+		}
+
+		private OriginalClassDefinition(
+			ClassLoader classLoader, String className, byte[] bytes) {
+
+			_classLoader = classLoader;
+			_className = className.replace('/', '.');
+			_bytes = bytes;
 		}
 
 		private final byte[] _bytes;

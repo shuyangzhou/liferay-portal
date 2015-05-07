@@ -706,8 +706,6 @@ public class LayoutSetPrototypePropagationTest
 	private LayoutSetPrototype _layoutSetPrototype;
 
 	private Group _layoutSetPrototypeGroup;
-
-	@DeleteAfterTestRun
 	private JournalArticle _layoutSetPrototypeJournalArticle;
 
 	@DeleteAfterTestRun

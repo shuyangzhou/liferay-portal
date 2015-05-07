@@ -702,7 +702,7 @@ public interface Portal {
 		throws PortalException;
 
 	/**
-	 * @deprecated Since 7.0.0, with no direct replacement
+	 * @deprecated As of 7.0.0, with no direct replacement
 	 */
 	@Deprecated
 	public Portlet getFirstMyAccountPortlet(ThemeDisplay themeDisplay);

@@ -2177,8 +2177,8 @@ public class DLFileEntryLocalServiceImpl
 
 		if (!ddmFormValuesMap.isEmpty()) {
 			dlFileEntryMetadataLocalService.updateFileEntryMetadata(
-				companyId, ddmStructures, fileEntryId,
-				toFileVersionId, ddmFormValuesMap, serviceContext);
+				companyId, ddmStructures, fileEntryId, toFileVersionId,
+				ddmFormValuesMap, serviceContext);
 		}
 	}
 
