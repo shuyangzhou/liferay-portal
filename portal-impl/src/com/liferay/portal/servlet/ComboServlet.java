@@ -69,6 +69,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * @author Eduardo Lundgren
@@ -97,6 +98,13 @@ public class ComboServlet extends HttpServlet {
 			PortalUtil.sendError(
 				HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e, request,
 				response);
+		}
+		finally {
+			HttpSession session = request.getSession(false);
+
+			if (session != null) {
+				session.invalidate();
+			}
 		}
 	}
 
