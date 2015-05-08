@@ -67,6 +67,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -97,6 +100,7 @@ public class ResourceActionsImpl implements ResourceActions {
 		_portletResourceGuestDefaultActions = new HashMap<>();
 		_portletResourceGuestUnsupportedActions = new HashMap<>();
 		_portletResourceLayoutManagerActions = new HashMap<>();
+		_portletResourceLock = new ReentrantReadWriteLock();
 		_portletRootModelResource = new HashMap<>();
 		_modelPortletResources = new HashMap<>();
 		_modelResourceActions = new HashMap<>();
@@ -346,10 +350,17 @@ public class ResourceActionsImpl implements ResourceActions {
 		Set<String> actions = new LinkedHashSet<>(
 			getPortletResourceActions(portlet.getPortletId()));
 
-		synchronized (this) {
+		Lock writeLock = _portletResourceLock.writeLock();
+
+		writeLock.lock();
+
+		try {
 			checkPortletActions(portlet, actions);
 
 			_portletResourceActions.put(portlet.getPortletId(), actions);
+		}
+		finally {
+			writeLock.unlock();
 		}
 
 		return new ArrayList<>(actions);
@@ -365,7 +376,11 @@ public class ResourceActionsImpl implements ResourceActions {
 			return new ArrayList<>(actions);
 		}
 
-		synchronized (this) {
+		Lock writeLock = _portletResourceLock.writeLock();
+
+		writeLock.lock();
+
+		try {
 			actions = getPortletMimeTypeActions(name);
 
 			if (!name.equals(PortletKeys.PORTAL)) {
@@ -410,6 +425,9 @@ public class ResourceActionsImpl implements ResourceActions {
 
 			_portletResourceActions.put(name, actions);
 		}
+		finally {
+			writeLock.unlock();
+		}
 
 		return new ArrayList<>(actions);
 	}
@@ -426,29 +444,57 @@ public class ResourceActionsImpl implements ResourceActions {
 
 		name = PortletConstants.getRootPortletId(name);
 
-		return new ArrayList<>(
-			getActions(_portletResourceGroupDefaultActions, name));
+		Lock readLock = _portletResourceLock.readLock();
+
+		readLock.lock();
+
+		try {
+			return new ArrayList<>(
+				getActions(_portletResourceGroupDefaultActions, name));
+		}
+		finally {
+			readLock.unlock();
+		}
 	}
 
 	@Override
 	public List<String> getPortletResourceGuestDefaultActions(String name) {
 		name = PortletConstants.getRootPortletId(name);
 
-		return new ArrayList<>(
-			getActions(_portletResourceGuestDefaultActions, name));
+		Lock readLock = _portletResourceLock.readLock();
+
+		readLock.lock();
+
+		try {
+			return new ArrayList<>(
+				getActions(_portletResourceGuestDefaultActions, name));
+		}
+		finally {
+			readLock.unlock();
+		}
 	}
 
 	@Override
 	public List<String> getPortletResourceGuestUnsupportedActions(String name) {
 		name = PortletConstants.getRootPortletId(name);
 
-		Set<String> actions = getActions(
-			_portletResourceGuestUnsupportedActions, name);
+		Lock readLock = _portletResourceLock.readLock();
 
-		if (actions.contains(ActionKeys.CONFIGURATION) &&
-			actions.contains(ActionKeys.PERMISSIONS)) {
+		readLock.lock();
 
-			return new ArrayList<>(actions);
+		Set<String> actions = null;
+
+		try {
+			actions = getActions(_portletResourceGuestUnsupportedActions, name);
+
+			if (actions.contains(ActionKeys.CONFIGURATION) &&
+				actions.contains(ActionKeys.PERMISSIONS)) {
+
+				return new ArrayList<>(actions);
+			}
+		}
+		finally {
+			readLock.unlock();
 		}
 
 		actions = new LinkedHashSet<>(actions);
@@ -456,7 +502,16 @@ public class ResourceActionsImpl implements ResourceActions {
 		actions.add(ActionKeys.CONFIGURATION);
 		actions.add(ActionKeys.PERMISSIONS);
 
-		_portletResourceGuestUnsupportedActions.put(name, actions);
+		Lock writeLock = _portletResourceLock.writeLock();
+
+		writeLock.lock();
+
+		try {
+			_portletResourceGuestUnsupportedActions.put(name, actions);
+		}
+		finally {
+			writeLock.unlock();
+		}
 
 		return new ArrayList<>(actions);
 	}
@@ -465,8 +520,18 @@ public class ResourceActionsImpl implements ResourceActions {
 	public List<String> getPortletResourceLayoutManagerActions(String name) {
 		name = PortletConstants.getRootPortletId(name);
 
-		Set<String> actions = getActions(
-			_portletResourceLayoutManagerActions, name);
+		Lock readLock = _portletResourceLock.readLock();
+
+		readLock.lock();
+
+		Set<String> actions = null;
+
+		try {
+			actions = getActions(_portletResourceLayoutManagerActions, name);
+		}
+		finally {
+			readLock.unlock();
+		}
 
 		// This check can never return an empty list. If the list is empty, it
 		// means that the portlet does not have an explicit resource-actions
@@ -480,7 +545,16 @@ public class ResourceActionsImpl implements ResourceActions {
 			actions.add(ActionKeys.PREFERENCES);
 			actions.add(ActionKeys.VIEW);
 
-			_portletResourceLayoutManagerActions.put(name, actions);
+			Lock writeLock = _portletResourceLock.writeLock();
+
+			writeLock.lock();
+
+			try {
+				_portletResourceLayoutManagerActions.put(name, actions);
+			}
+			finally {
+				writeLock.unlock();
+			}
 		}
 
 		return new ArrayList<>(actions);
@@ -1070,37 +1144,48 @@ public class ResourceActionsImpl implements ResourceActions {
 
 		name = JS.getSafeName(name);
 
-		Set<String> supportsActions = readSupportsActions(
-			portletResourceElement, _portletResourceActions, name);
+		Lock writeLock = _portletResourceLock.writeLock();
 
-		supportsActions.addAll(getPortletMimeTypeActions(name));
+		writeLock.lock();
 
-		if (!name.equals(PortletKeys.PORTAL)) {
-			checkPortletActions(name, supportsActions);
+		try {
+			Set<String> supportsActions = readSupportsActions(
+				portletResourceElement, _portletResourceActions, name);
+
+			supportsActions.addAll(getPortletMimeTypeActions(name));
+
+			if (!name.equals(PortletKeys.PORTAL)) {
+				checkPortletActions(name, supportsActions);
+			}
+
+			if (supportsActions.size() > 64) {
+				throw new ResourceActionsException(
+					"There are more than 64 actions for resource " + name);
+			}
+
+			_portletResourceActions.put(name, supportsActions);
+
+			readGroupDefaultActions(
+				portletResourceElement, _portletResourceGroupDefaultActions,
+				name);
+
+			Set<String> guestDefaultActions = readGuestDefaultActions(
+				portletResourceElement, _portletResourceGuestDefaultActions,
+				name);
+
+			readGuestUnsupportedActions(
+				portletResourceElement, _portletResourceGuestUnsupportedActions,
+				name, guestDefaultActions);
+
+			_portletResourceGuestDefaultActions.put(name, guestDefaultActions);
+
+			readLayoutManagerActions(
+				portletResourceElement, _portletResourceLayoutManagerActions,
+				name, supportsActions);
 		}
-
-		if (supportsActions.size() > 64) {
-			throw new ResourceActionsException(
-				"There are more than 64 actions for resource " + name);
+		finally {
+			writeLock.unlock();
 		}
-
-		_portletResourceActions.put(name, supportsActions);
-
-		readGroupDefaultActions(
-			portletResourceElement, _portletResourceGroupDefaultActions, name);
-
-		Set<String> guestDefaultActions = readGuestDefaultActions(
-			portletResourceElement, _portletResourceGuestDefaultActions, name);
-
-		readGuestUnsupportedActions(
-			portletResourceElement, _portletResourceGuestUnsupportedActions,
-			name, guestDefaultActions);
-
-		_portletResourceGuestDefaultActions.put(name, guestDefaultActions);
-
-		readLayoutManagerActions(
-			portletResourceElement, _portletResourceLayoutManagerActions, name,
-			supportsActions);
 	}
 
 	protected Set<String> readSupportsActions(
@@ -1160,6 +1245,7 @@ public class ResourceActionsImpl implements ResourceActions {
 	private Map<String, Set<String>> _portletResourceGuestDefaultActions;
 	private Map<String, Set<String>> _portletResourceGuestUnsupportedActions;
 	private Map<String, Set<String>> _portletResourceLayoutManagerActions;
+	private ReadWriteLock _portletResourceLock;
 	private Map<String, String> _portletRootModelResource;
 
 }
