@@ -16,6 +16,7 @@ package com.liferay.portal.kernel.messaging;
 
 import com.liferay.portal.kernel.concurrent.RejectedExecutionHandler;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.io.Serializable;
 
@@ -60,19 +61,24 @@ public class DestinationConfiguration implements Serializable {
 
 	@Override
 	public boolean equals(Object object) {
-		if (object == this) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!object.getClass().equals(getClass())) {
+		if (!(object instanceof DestinationConfiguration)) {
 			return false;
 		}
 
 		DestinationConfiguration destinationConfiguration =
 			(DestinationConfiguration)object;
 
-		return destinationConfiguration.getDestinationName().equals(
-			_destinationName);
+		if (Validator.equals(
+				_destinationName, destinationConfiguration._destinationName)) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	public String getDestinationName() {

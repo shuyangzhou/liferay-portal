@@ -47,7 +47,7 @@ public class AbstractMessagingConfiguratorTest {
 		new LiferayIntegrationTestRule();
 
 	@Test
-	public void testCustomClassLoaderDestinationConfig() {
+	public void testCustomClassLoaderDestinationConfiguration() {
 		final TestClassLoader testClassLoader = new TestClassLoader();
 
 		AbstractMessagingConfigurator pluginMessagingConfigurator =
@@ -89,8 +89,8 @@ public class AbstractMessagingConfiguratorTest {
 		Registry registry = RegistryUtil.getRegistry();
 
 		Filter filter = registry.getFilter(
-			"(&(objectClass=com.liferay.portal.kernel.messaging.Destination)" +
-				"(destination.name=*plugintest*))");
+			"(&(destination.name=*plugintest*)(objectClass=com.liferay." +
+				"portal.kernel.messaging.Destination))");
 
 		ServiceTracker<Destination, Destination> serviceTracker =
 			registry.trackServices(filter);
@@ -111,7 +111,7 @@ public class AbstractMessagingConfiguratorTest {
 
 				String destinationName = destination.getName();
 
-				Assert.assertTrue(destinationName.contains("plugintest1"));
+				Assert.assertTrue(destinationName.contains("plugintest"));
 
 				if (destinationName.equals("liferay/plugintest1")) {
 					Assert.assertEquals(
@@ -133,7 +133,7 @@ public class AbstractMessagingConfiguratorTest {
 	}
 
 	@Test
-	public void testPortalClassLoaderDestinationConfig() {
+	public void testPortalClassLoaderDestinationConfiguration() {
 		DefaultMessagingConfigurator defaultMessagingConfigurator =
 			new DefaultMessagingConfigurator();
 
@@ -157,7 +157,7 @@ public class AbstractMessagingConfiguratorTest {
 		messageListeners.put("liferay/portaltest1", messageListenersList1);
 
 		messageListenersList1.add(
-			new TestMessageListener("liferay/portaltest"));
+			new TestMessageListener("liferay/portaltest1"));
 
 		List<MessageListener> messageListenersList2 = new ArrayList<>();
 
@@ -173,8 +173,8 @@ public class AbstractMessagingConfiguratorTest {
 		Registry registry = RegistryUtil.getRegistry();
 
 		Filter filter = registry.getFilter(
-			"(&(objectClass=com.liferay.portal.kernel.messaging.Destination)" +
-				"(destination.name=*portaltest*))");
+			"(&(destination.name=*portaltest*)(objectClass=com.liferay." +
+				"portal.kernel.messaging.Destination))");
 
 		ServiceTracker<Destination, Destination> serviceTracker =
 			registry.trackServices(filter);
@@ -195,7 +195,7 @@ public class AbstractMessagingConfiguratorTest {
 
 				String destinationName = destination.getName();
 
-				Assert.assertTrue(destinationName.contains("portaltest1"));
+				Assert.assertTrue(destinationName.contains("portaltest"));
 
 				if (destinationName.equals("liferay/portaltest1")) {
 					Assert.assertEquals(
