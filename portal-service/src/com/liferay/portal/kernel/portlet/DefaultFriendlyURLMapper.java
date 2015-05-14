@@ -309,17 +309,18 @@ public class DefaultFriendlyURLMapper extends BaseFriendlyURLMapper {
 
 		String instanceId = routeParameters.remove("instanceId");
 
-		if (Validator.isNull(instanceId)) {
-			if (_log.isErrorEnabled()) {
-				_log.error(
-					"Either p_p_id or instanceId must be provided for an " +
-						"instanceable portlet");
-			}
-
-			return null;
+		if (Validator.isNotNull(instanceId)) {
+			return PortletConstants.assemblePortletId(
+				getPortletId(), instanceId);
 		}
 
-		return PortletConstants.assemblePortletId(getPortletId(), instanceId);
+		if (!isAllPublicRenderParameters(routeParameters)) {
+			_log.error(
+				"Either p_p_id or instanceId must be provided for an " +
+					"instanceable portlet");
+		}
+
+		return null;
 	}
 
 	/**

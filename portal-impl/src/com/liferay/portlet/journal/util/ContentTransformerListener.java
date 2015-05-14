@@ -140,11 +140,12 @@ public class ContentTransformerListener extends BaseTransformerListener {
 	}
 
 	protected void replace(Element root, long articleGroupId) throws Exception {
-		for (Element el : root.elements()) {
-			Element dynamicContent = el.element("dynamic-content");
+		for (Element element : root.elements()) {
+			List<Element> dynamicContentElements = element.elements(
+				"dynamic-content");
 
-			if (dynamicContent != null) {
-				String text = dynamicContent.getText();
+			for (Element dynamicContentElement : dynamicContentElements) {
+				String text = dynamicContentElement.getText();
 
 				text = HtmlUtil.stripComments(text);
 				text = HtmlUtil.stripHtml(text);
@@ -167,8 +168,8 @@ public class ContentTransformerListener extends BaseTransformerListener {
 							JournalArticleLocalServiceUtil.getArticle(
 								articleGroupId, articleId);
 
-						dynamicContent.clearContent();
-						dynamicContent.addCDATA(
+						dynamicContentElement.clearContent();
+						dynamicContentElement.addCDATA(
 							getDynamicContent(
 								article.getDocument(), elementName));
 					}
@@ -179,11 +180,12 @@ public class ContentTransformerListener extends BaseTransformerListener {
 				else if ((text != null) &&
 						 text.startsWith("/image/journal/article?img_id")) {
 
-					dynamicContent.setText("@cdn_host@@root_path@" + text);
+					dynamicContentElement.setText(
+						"@cdn_host@@root_path@" + text);
 				}
 			}
 
-			replace(el, articleGroupId);
+			replace(element, articleGroupId);
 		}
 	}
 

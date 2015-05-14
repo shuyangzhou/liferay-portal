@@ -13,6 +13,8 @@
 			<if>
 				<available file="/opt/dev/cache" />
 				<then>
+					<mkdir dir="/opt/dev/cache/mirrors" />
+
 					<propertyregex
 						input="@{src}"
 						property="mirrors.cache.file"
@@ -22,11 +24,11 @@
 
 					<if>
 						<not>
-							<available file="/opt/dev/cache/${mirrors.cache.file}" />
+							<available file="/opt/dev/cache/mirrors/${mirrors.cache.file}" />
 						</not>
 						<then>
 							<mirrors-get-cmd
-								dest="/opt/dev/cache/${mirrors.cache.file}"
+								dest="/opt/dev/cache/mirrors/${mirrors.cache.file}"
 								ignoreerrors="@{ignoreerrors}"
 								skipexisting="@{skipexisting}"
 								src="@{src}"
@@ -46,7 +48,7 @@
 							/>
 
 							<copy
-								file="/opt/dev/cache/${mirrors.cache.file}"
+								file="/opt/dev/cache/mirrors/${mirrors.cache.file}"
 								overwrite="true"
 								tofile="@{dest}/${mirrors.dest.file}"
 							/>
@@ -55,7 +57,7 @@
 						</then>
 						<else>
 							<copy
-								file="/opt/dev/cache/${mirrors.cache.file}"
+								file="/opt/dev/cache/mirrors/${mirrors.cache.file}"
 								overwrite="true"
 								tofile="@{dest}"
 							/>
