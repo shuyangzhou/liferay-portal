@@ -484,9 +484,7 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 			Class.forName(driverClassName);
 		}
 		catch (ClassNotFoundException cnfe) {
-			if (!ServerDetector.isGeronimo() && !ServerDetector.isJetty() &&
-				!ServerDetector.isTomcat()) {
-
+			if (!ServerDetector.isJetty() && !ServerDetector.isTomcat()) {
 				throw cnfe;
 			}
 
@@ -522,9 +520,7 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 			Class.forName(className);
 		}
 		catch (ClassNotFoundException cnfe) {
-			if (!ServerDetector.isGeronimo() && !ServerDetector.isJetty() &&
-				!ServerDetector.isTomcat()) {
-
+			if (!ServerDetector.isJetty() && !ServerDetector.isTomcat()) {
 				throw cnfe;
 			}
 

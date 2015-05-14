@@ -230,8 +230,7 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 				"The system property deployer.app.server.type is not set");
 		}
 
-		if (!appServerType.equals(ServerDetector.GERONIMO_ID) &&
-			!appServerType.equals(ServerDetector.GLASSFISH_ID) &&
+		if (!appServerType.equals(ServerDetector.GLASSFISH_ID) &&
 			!appServerType.equals(ServerDetector.JBOSS_ID) &&
 			!appServerType.equals(ServerDetector.JONAS_ID) &&
 			!appServerType.equals(ServerDetector.JETTY_ID) &&
@@ -578,10 +577,7 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 			File srcFile, String displayName, PluginPackage pluginPackage)
 		throws Exception {
 
-		if (appServerType.equals(ServerDetector.GERONIMO_ID)) {
-			copyDependencyXml("geronimo-web.xml", srcFile + "/WEB-INF");
-		}
-		else if (appServerType.equals(ServerDetector.JBOSS_ID)) {
+		if (appServerType.equals(ServerDetector.JBOSS_ID)) {
 			if (ServerDetector.isJBoss5()) {
 				copyDependencyXml("jboss-web.xml", srcFile + "/WEB-INF");
 			}
@@ -667,8 +663,6 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 		copyTlds(srcFile, pluginPackage);
 		copyXmls(srcFile, displayName, pluginPackage);
 		copyPortalDependencies(srcFile);
-
-		updateGeronimoWebXml(srcFile, displayName, pluginPackage);
 
 		File webXml = new File(srcFile + "/WEB-INF/web.xml");
 
@@ -941,8 +935,7 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 		if (appServerType.equals(ServerDetector.JBOSS_ID)) {
 			deployDir = jbossPrefix + deployDir;
 		}
-		else if (appServerType.equals(ServerDetector.GERONIMO_ID) ||
-				 appServerType.equals(ServerDetector.GLASSFISH_ID) ||
+		else if (appServerType.equals(ServerDetector.GLASSFISH_ID) ||
 				 appServerType.equals(ServerDetector.JETTY_ID) ||
 				 appServerType.equals(ServerDetector.JONAS_ID) ||
 				 appServerType.equals(ServerDetector.OC4J_ID) ||
@@ -2177,41 +2170,6 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 	}
 
 	public void updateDeployDirectory(File srcFile) throws Exception {
-	}
-
-	public void updateGeronimoWebXml(
-			File srcFile, String displayName, PluginPackage pluginPackage)
-		throws Exception {
-
-		if (!appServerType.equals(ServerDetector.GERONIMO_ID)) {
-			return;
-		}
-
-		File geronimoWebXml = new File(srcFile + "/WEB-INF/geronimo-web.xml");
-
-		Document document = SAXReaderUtil.read(geronimoWebXml);
-
-		Element rootElement = document.getRootElement();
-
-		Element environmentElement = rootElement.element("environment");
-
-		Element moduleIdElement = environmentElement.element("moduleId");
-
-		Element artifactIdElement = moduleIdElement.element("artifactId");
-
-		artifactIdElement.setText(displayName);
-
-		Element versionElement = moduleIdElement.element("version");
-
-		versionElement.setText(pluginPackage.getVersion());
-
-		String content = document.formattedString();
-
-		FileUtil.write(geronimoWebXml, content);
-
-		if (_log.isInfoEnabled()) {
-			_log.info("Modifying Geronimo " + geronimoWebXml);
-		}
 	}
 
 	public String updateLiferayWebXml(

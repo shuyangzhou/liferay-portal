@@ -257,11 +257,7 @@ public class PropsUtil {
 	private String _getDefaultLiferayHome() {
 		String defaultLiferayHome = null;
 
-		if (ServerDetector.isGeronimo()) {
-			defaultLiferayHome =
-				SystemProperties.get("org.apache.geronimo.home.dir") + "/..";
-		}
-		else if (ServerDetector.isGlassfish()) {
+		if (ServerDetector.isGlassfish()) {
 			defaultLiferayHome =
 				SystemProperties.get("com.sun.aas.installRoot") + "/..";
 		}

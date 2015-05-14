@@ -14,14 +14,6 @@
 
 liferay {
 	appServers {
-		geronimo {
-			deployDirName = "deploy"
-			libGlobalDirName = "var/shared/lib"
-			name = "geronimo"
-			portalDirName = "deploy/liferay-portal"
-			version = "2.2.1"
-		}
-
 		glassfish {
 			deployDirName = "autodeploy"
 			libGlobalDirName = "domains/domain1/lib"

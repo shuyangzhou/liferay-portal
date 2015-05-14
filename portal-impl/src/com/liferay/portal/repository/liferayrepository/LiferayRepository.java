@@ -30,7 +30,6 @@ import com.liferay.portal.kernel.search.SearchEngineUtil;
 import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.SortedArrayList;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.Lock;
 import com.liferay.portal.repository.liferayrepository.model.LiferayFileEntry;
@@ -1086,10 +1085,23 @@ public class LiferayRepository
 
 	@Override
 	public Folder updateFolder(
-		long folderId, long parentFolderId, String name, String description,
-		ServiceContext serviceContext) {
+			long folderId, long parentFolderId, String name, String description,
+			ServiceContext serviceContext)
+		throws PortalException {
 
-		throw new UnsupportedOperationException();
+		long defaultFileEntryTypeId = ParamUtil.getLong(
+			serviceContext, "defaultFileEntryTypeId");
+		List<Long> fileEntryTypeIds = getLongList(
+			serviceContext, "dlFileEntryTypesSearchContainerPrimaryKeys");
+		int restrictionType = ParamUtil.getInteger(
+			serviceContext, "restrictionType");
+
+		DLFolder dlFolder = dlFolderService.updateFolder(
+			toFolderId(folderId), toFolderId(parentFolderId), name, description,
+			defaultFileEntryTypeId, fileEntryTypeIds, restrictionType,
+			serviceContext);
+
+		return new LiferayFolder(dlFolder);
 	}
 
 	@Override
@@ -1100,7 +1112,7 @@ public class LiferayRepository
 
 		long defaultFileEntryTypeId = ParamUtil.getLong(
 			serviceContext, "defaultFileEntryTypeId");
-		SortedArrayList<Long> fileEntryTypeIds = getLongList(
+		List<Long> fileEntryTypeIds = getLongList(
 			serviceContext, "dlFileEntryTypesSearchContainerPrimaryKeys");
 		int restrictionType = ParamUtil.getInteger(
 			serviceContext, "restrictionType");

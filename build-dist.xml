@@ -62,26 +62,6 @@
 		</sequential>
 	</macrodef>
 
-	<target name="build-dist-geronimo">
-		<antcall target="unzip-geronimo" />
-
-		<app-server-properties-update>
-			app.server.type=geronimo
-		</app-server-properties-update>
-
-		<antcall target="deploy" inheritAll="false" />
-
-		<antcall target="resolve-dynamic-jars" inheritAll="false" />
-
-		<app-server-properties-reset />
-
-		<antcall target="deploy-plugins">
-			<param name="deployer.dest.dir" value="${app.server.geronimo.deploy.dir}" />
-			<param name="deployer.app.server.type" value="geronimo" />
-			<param name="deployer.app.server.lib.portal.dir" value="${app.server.geronimo.lib.portal.dir}" />
-		</antcall>
-	</target>
-
 	<target name="build-dist-glassfish">
 		<antcall target="unzip-glassfish" />
 
@@ -832,7 +812,6 @@
 
 		<antcall target="build-dist-plugins" />
 
-		<antcall target="build-dist-geronimo" />
 		<antcall target="build-dist-glassfish" />
 		<antcall target="build-dist-jboss" />
 		<antcall target="build-dist-jetty" />
@@ -842,7 +821,6 @@
 		<antcall target="build-dist-tomcat" />
 
 		<antcall target="zip-api" />
-		<antcall target="zip-geronimo" />
 		<antcall target="zip-glassfish" />
 		<antcall target="zip-jboss" />
 		<antcall target="zip-jetty" />
@@ -1017,76 +995,6 @@ release was successful.</echo>
 				</else>
 			</if>
 		</sequential>
-	</target>
-
-	<target name="unzip-geronimo">
-		<delete dir="${app.server.geronimo.dir}" />
-
-		<if>
-			<not>
-				<available file="${app.server.parent.dir}/${app.server.geronimo.zip.name}" />
-			</not>
-			<then>
-				<mkdir dir="${app.server.parent.dir}" />
-
-				<mirrors-get
-					dest="${app.server.parent.dir}/${app.server.geronimo.zip.name}"
-					src="${app.server.geronimo.zip.url}"
-					verbose="true"
-				/>
-			</then>
-		</if>
-
-		<unzip
-			dest="${app.server.parent.dir}"
-			src="${app.server.parent.dir}/${app.server.geronimo.zip.name}"
-		>
-			<mapper
-				type="glob"
-				from="geronimo-tomcat6-minimal-${app.server.geronimo.version}/*"
-				to="geronimo-${app.server.geronimo.version}/*"
-			/>
-		</unzip>
-
-		<if>
-			<equals arg1="${java.security.manager.option}" arg2="" />
-			<then>
-				<var name="java.security.config" value="" />
-			</then>
-			<else>
-				<var name="java.security.config" value="${java.security.manager.option} -Djava.security.policy==@app.server.geronimo.dir@/etc/server.policy" />
-			</else>
-		</if>
-
-		<copy
-			file="tools/servers/geronimo/bin/setenv.bat"
-			tofile="${app.server.geronimo.bin.dir}/setenv.bat"
-		>
-			<filterset>
-				<filter token="java.security.config" value="${java.security.config}" />
-			</filterset>
-		</copy>
-
-		<copy
-			file="tools/servers/geronimo/bin/setenv.sh"
-			tofile="${app.server.geronimo.bin.dir}/setenv.sh"
-		>
-			<filterset>
-				<filter token="java.security.config" value="${java.security.config}" />
-			</filterset>
-		</copy>
-
-		<echo file="${app.server.geronimo.dir}/etc/server.policy">
-			grant {
-				permission java.security.AllPermission;
-			};
-		</echo>
-
-		<chmod perm="a+x">
-			<fileset dir="${app.server.geronimo.bin.dir}">
-				<include name="*.sh" />
-			</fileset>
-		</chmod>
 	</target>
 
 	<target name="unzip-glassfish">
@@ -2865,13 +2773,6 @@ plugins.includes=</echo>
 				</zip>
 			</else>
 		</if>
-	</target>
-
-	<target name="zip-geronimo">
-		<antcall target="zip-executable">
-			<param name="zip.executable.file" value="liferay-portal-geronimo" />
-			<param name="zip.executable.dir" value="${app.server.geronimo.dir}" />
-		</antcall>
 	</target>
 
 	<target name="zip-glassfish">

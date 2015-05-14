@@ -9,6 +9,7 @@
 		<dirset dir="bookmarks" includes="*" />
 		<dirset dir="comments" includes="*" />
 		<dirset dir="configuration-admin" includes="*" />
+		<dirset dir="control-panel" includes="*" />
 		<dirset dir="currency-converter" includes="*" />
 		<dirset dir="dictionary" includes="*" />
 		<dirset dir="document-library" includes="*" />
