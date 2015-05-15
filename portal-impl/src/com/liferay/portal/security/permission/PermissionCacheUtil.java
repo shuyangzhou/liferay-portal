@@ -294,7 +294,13 @@ public class PermissionCacheUtil {
 	private static class PermissionKey implements IndexedCacheKey<String> {
 
 		public static String getIndex(String name, String primKey) {
-			return name.concat(StringPool.UNDERLINE).concat(primKey);
+			StringBundler sb = new StringBundler(3);
+
+			sb.append(name);
+			sb.append(StringPool.UNDERLINE);
+			sb.append(primKey);
+
+			return sb.toString();
 		}
 
 		@Override
