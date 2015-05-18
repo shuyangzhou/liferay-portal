@@ -14,6 +14,7 @@
 
 package com.liferay.portal.dao.jdbc.aop;
 
+import com.liferay.portal.kernel.dao.jdbc.aop.DynamicDataSourceTargetSource;
 import com.liferay.portal.kernel.dao.jdbc.aop.MasterDataSource;
 import com.liferay.portal.kernel.dao.jdbc.aop.Operation;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
@@ -57,7 +58,7 @@ public class DynamicDataSourceAdviceTest {
 	public void setUp() {
 		_dynamicDataSourceAdvice = new DynamicDataSourceAdvice();
 
-		_defaultDynamicDataSourceTargetSource =
+		_dynamicDataSourceTargetSource =
 			new DefaultDynamicDataSourceTargetSource();
 
 		ClassLoader classLoader =
@@ -77,17 +78,15 @@ public class DynamicDataSourceAdviceTest {
 		_readDataSource = (DataSource)ProxyUtil.newProxyInstance(
 			classLoader, new Class<?>[] {DataSource.class}, invocationHandler);
 
-		_defaultDynamicDataSourceTargetSource.setReadDataSource(
-			_readDataSource);
+		_dynamicDataSourceTargetSource.setReadDataSource(_readDataSource);
 
 		_writeDataSource = (DataSource)ProxyUtil.newProxyInstance(
 			classLoader, new Class<?>[] {DataSource.class}, invocationHandler);
 
-		_defaultDynamicDataSourceTargetSource.setWriteDataSource(
-			_writeDataSource);
+		_dynamicDataSourceTargetSource.setWriteDataSource(_writeDataSource);
 
 		_dynamicDataSourceAdvice.setDynamicDataSourceTargetSource(
-			_defaultDynamicDataSourceTargetSource);
+			_dynamicDataSourceTargetSource);
 
 		ServiceBeanAopCacheManager serviceBeanAopCacheManager =
 			new ServiceBeanAopCacheManager();
@@ -171,9 +170,8 @@ public class DynamicDataSourceAdviceTest {
 		return serviceBeanMethodInvocation;
 	}
 
-	private DefaultDynamicDataSourceTargetSource
-		_defaultDynamicDataSourceTargetSource;
 	private DynamicDataSourceAdvice _dynamicDataSourceAdvice;
+	private DynamicDataSourceTargetSource _dynamicDataSourceTargetSource;
 	private DataSource _readDataSource;
 	private DataSource _writeDataSource;
 
@@ -190,11 +188,9 @@ public class DynamicDataSourceAdviceTest {
 		@SuppressWarnings("unused")
 		public void method1() throws Exception {
 			Assert.assertEquals(
-				Operation.WRITE,
-				_defaultDynamicDataSourceTargetSource.getOperation());
+				Operation.WRITE, _dynamicDataSourceTargetSource.getOperation());
 			Assert.assertSame(
-				_writeDataSource,
-				_defaultDynamicDataSourceTargetSource.getTarget());
+				_writeDataSource, _dynamicDataSourceTargetSource.getTarget());
 			Assert.assertEquals(
 				TestClass.class.getName() + StringPool.PERIOD + "method1",
 				_getCurrentMethod());
@@ -205,11 +201,9 @@ public class DynamicDataSourceAdviceTest {
 		@Transactional
 		public void method2() throws Exception {
 			Assert.assertEquals(
-				Operation.WRITE,
-				_defaultDynamicDataSourceTargetSource.getOperation());
+				Operation.WRITE, _dynamicDataSourceTargetSource.getOperation());
 			Assert.assertSame(
-				_writeDataSource,
-				_defaultDynamicDataSourceTargetSource.getTarget());
+				_writeDataSource, _dynamicDataSourceTargetSource.getTarget());
 			Assert.assertEquals(
 				TestClass.class.getName() + StringPool.PERIOD + "method2",
 				_getCurrentMethod());
@@ -220,11 +214,9 @@ public class DynamicDataSourceAdviceTest {
 		@Transactional(readOnly = true)
 		public void method3() throws Exception {
 			Assert.assertEquals(
-				Operation.READ,
-				_defaultDynamicDataSourceTargetSource.getOperation());
+				Operation.READ, _dynamicDataSourceTargetSource.getOperation());
 			Assert.assertSame(
-				_readDataSource,
-				_defaultDynamicDataSourceTargetSource.getTarget());
+				_readDataSource, _dynamicDataSourceTargetSource.getTarget());
 			Assert.assertEquals(
 				TestClass.class.getName() + StringPool.PERIOD + "method3",
 				_getCurrentMethod());
@@ -236,11 +228,9 @@ public class DynamicDataSourceAdviceTest {
 		@Transactional
 		public void method4() throws Exception {
 			Assert.assertEquals(
-				Operation.WRITE,
-				_defaultDynamicDataSourceTargetSource.getOperation());
+				Operation.WRITE, _dynamicDataSourceTargetSource.getOperation());
 			Assert.assertSame(
-				_writeDataSource,
-				_defaultDynamicDataSourceTargetSource.getTarget());
+				_writeDataSource, _dynamicDataSourceTargetSource.getTarget());
 			Assert.assertEquals(
 				TestClass.class.getName() + StringPool.PERIOD + "method4",
 				_getCurrentMethod());
@@ -252,11 +242,9 @@ public class DynamicDataSourceAdviceTest {
 		@Transactional(readOnly = true)
 		public void method5() throws Exception {
 			Assert.assertEquals(
-				Operation.WRITE,
-				_defaultDynamicDataSourceTargetSource.getOperation());
+				Operation.WRITE, _dynamicDataSourceTargetSource.getOperation());
 			Assert.assertSame(
-				_writeDataSource,
-				_defaultDynamicDataSourceTargetSource.getTarget());
+				_writeDataSource, _dynamicDataSourceTargetSource.getTarget());
 			Assert.assertEquals(
 				TestClass.class.getName() + StringPool.PERIOD + "method5",
 				_getCurrentMethod());
@@ -266,7 +254,7 @@ public class DynamicDataSourceAdviceTest {
 
 		private String _getCurrentMethod() {
 			Stack<String> stack =
-				_defaultDynamicDataSourceTargetSource.getMethodStack();
+				_dynamicDataSourceTargetSource.getMethodStack();
 
 			return stack.peek();
 		}

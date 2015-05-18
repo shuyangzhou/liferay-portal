@@ -31,6 +31,7 @@ import org.springframework.aop.TargetSource;
 public class DefaultDynamicDataSourceTargetSource
 	implements DynamicDataSourceTargetSource, TargetSource {
 
+	@Override
 	public Stack<String> getMethodStack() {
 		Stack<String> methodStack = _methodStack.get();
 
@@ -43,6 +44,7 @@ public class DefaultDynamicDataSourceTargetSource
 		return methodStack;
 	}
 
+	@Override
 	public Operation getOperation() {
 		Operation operation = _operationType.get();
 
@@ -117,10 +119,12 @@ public class DefaultDynamicDataSourceTargetSource
 		}
 	}
 
+	@Override
 	public void setReadDataSource(DataSource readDataSource) {
 		_readDataSource = readDataSource;
 	}
 
+	@Override
 	public void setWriteDataSource(DataSource writeDataSource) {
 		_writeDataSource = writeDataSource;
 	}

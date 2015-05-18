@@ -14,15 +14,29 @@
 
 package com.liferay.portal.kernel.dao.jdbc.aop;
 
+import java.util.Stack;
+
+import javax.sql.DataSource;
+
 /**
  * @author Brian Wing Shun Chan
  */
 public interface DynamicDataSourceTargetSource {
+
+	public Stack<String> getMethodStack();
+
+	public Operation getOperation();
+
+	public Object getTarget() throws Exception;
 
 	public String popMethod();
 
 	public void pushMethod(String method);
 
 	public void setOperation(Operation operation);
+
+	public void setReadDataSource(DataSource readDataSource);
+
+	public void setWriteDataSource(DataSource writeDataSource);
 
 }
