@@ -79,23 +79,33 @@
 
 	<target name="clean">
 		<parallel failonany="true" threadcount="${parallel.thread.count}">
-			<ant dir="benchmarks" target="clean" inheritAll="false" />
+			<subant target="clean">
+				<fileset dir=".">
+					<include name="*/build.xml" />
+					<exclude name="modules/build.xml" />
+					<exclude name="portal-client/build.xml" />
+					<exclude name="support-*/build.xml" />
+					<exclude name="tools/*" />
+				</fileset>
+			</subant>
 
-			<ant dir="classes" target="clean" inheritAll="false" />
+<!--	<ant dir="benchmarks" target="clean" inheritAll="false" />
 
-			<ant dir="portal-service" target="clean" inheritAll="false" />
+		<ant dir="classes" target="clean" inheritAll="false" />
 
-			<ant dir="util-bridges" target="clean" inheritAll="false" />
-			<ant dir="util-java" target="clean" inheritAll="false" />
-			<ant dir="util-slf4j" target="clean" inheritAll="false" />
-			<ant dir="util-taglib" target="clean" inheritAll="false" />
+		<ant dir="portal-service" target="clean" inheritAll="false" />
 
-			<ant dir="portal-impl" target="clean" inheritAll="false" />
-			<ant dir="portal-pacl" target="clean" inheritAll="false" />
-			<ant dir="portal-test" target="clean" inheritAll="false" />
-			<ant dir="portal-test-internal" target="clean" inheritAll="false" />
+		<ant dir="util-bridges" target="clean" inheritAll="false" />
+		<ant dir="util-java" target="clean" inheritAll="false" />
+		<ant dir="util-slf4j" target="clean" inheritAll="false" />
+		<ant dir="util-taglib" target="clean" inheritAll="false" />
 
-			<ant dir="sql" target="clean" inheritAll="false" />
+		<ant dir="portal-impl" target="clean" inheritAll="false" />
+		<ant dir="portal-pacl" target="clean" inheritAll="false" />
+		<ant dir="portal-test" target="clean" inheritAll="false" />
+		<ant dir="portal-test-internal" target="clean" inheritAll="false" />
+		<ant dir="portal-web" target="clean" inheritAll="false" />
+		<ant dir="sql" target="clean" inheritAll="false" />-->
 
 			<sequential>
 				<delete dir="tools/sdk" />
@@ -135,13 +145,6 @@
 			<delete dir="test-coverage" />
 			<delete dir="test-results" />
 
-			<if>
-				<available file="support-${app.server.type}" />
-				<then>
-					<ant dir="support-${app.server.type}" target="clean" inheritAll="false" />
-				</then>
-			</if>
-
 			<delete failonerror="false">
 				<fileset
 					dir="${app.server.classes.portal.dir}"
@@ -164,9 +167,9 @@
 			</delete>
 
 			<if>
-				<equals arg1="${clean.log.dir}" arg2="true" />
+				<available file="support-${app.server.type}" />
 				<then>
-					<delete dir="${app.server.log.dir}" />
+					<ant dir="support-${app.server.type}" target="clean" inheritAll="false" />
 				</then>
 			</if>
 
@@ -192,6 +195,13 @@
 			</if>
 
 			<if>
+				<equals arg1="${clean.log.dir}" arg2="true" />
+				<then>
+					<delete dir="${app.server.log.dir}" />
+				</then>
+			</if>
+
+			<if>
 				<equals arg1="${clean.temp.dir}" arg2="true" />
 				<then>
 					<delete dir="${app.server.temp.dir}" />
@@ -205,8 +215,6 @@
 				</then>
 			</if>
 		</parallel>
-
-		<ant dir="portal-web" target="clean" inheritAll="false" />
 
 		<print-current-time />
 	</target>
@@ -287,17 +295,20 @@
 			</then>
 		</if>
 
-		<ant dir="portal-service" target="deploy" inheritAll="false" />
+		<parallel>
+			<ant dir="util-bridges" target="deploy" inheritAll="false" />
+			<ant dir="util-java" target="deploy" inheritAll="false" />
+			<ant dir="util-slf4j" target="deploy" inheritAll="false" />
+		</parallel>
 
-		<ant dir="util-bridges" target="deploy" inheritAll="false" />
-		<ant dir="util-java" target="deploy" inheritAll="false" />
-		<ant dir="util-slf4j" target="deploy" inheritAll="false" />
 		<ant dir="util-taglib" target="deploy" inheritAll="false" />
-
 		<ant dir="portal-impl" target="deploy" inheritAll="false" />
-		<ant dir="portal-pacl" target="deploy" inheritAll="false" />
-		<ant dir="portal-test" target="deploy" inheritAll="false" />
-		<ant dir="portal-test-internal" target="deploy" inheritAll="false" />
+
+		<parallel>
+			<ant dir="portal-pacl" target="deploy" inheritAll="false" />
+			<ant dir="portal-test" target="deploy" inheritAll="false" />
+			<ant dir="portal-test-internal" target="deploy" inheritAll="false" />
+		</parallel>
 
 		<ant dir="portal-web" target="deploy" inheritAll="false" />
 
@@ -333,11 +344,6 @@
 				<unzip src="${app.server.glassfish.portal.war.dir}-tmp" dest="${app.server.portal.dir}" />
 			</then>
 		</if>
-
-		<ant-execute
-			ant.dir="${project.dir}/modules/core/registry-api"
-			ant.target="deploy"
-		/>
 
 		<ant-execute
 			ant.dir="${project.dir}/modules"

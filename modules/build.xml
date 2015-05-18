@@ -3,6 +3,7 @@
 
 <project>
 	<path id="plugins.includes.path">
+		<dirset dir="core/registry-api" />
 		<dirset dir="addons/portlet-configuration-icon" includes="*" />
 		<dirset dir="apps/amazon-rankings" includes="*" />
 		<dirset dir="apps/asset" includes="*" />
@@ -49,7 +50,7 @@
 		<dirset dir="apps/wiki" includes="*" />
 		<dirset dir="apps/workflow" includes="*" />
 		<dirset dir="apps/xsl-content" includes="*" />
-		<dirset dir="core" includes="*" />
+		<dirset dir="core" includes="*" excludes="/registry-api" />
 		<dirset dir="frontend" includes="*" />
 		<dirset dir="portal" excludes="portal-search-lucene,portal-taglib-aui-form-extension-sample" includes="*" />
 		<dirset dir="util" includes="pmd,portal-tools-sample-sql-builder,sass-compiler-jni" />
