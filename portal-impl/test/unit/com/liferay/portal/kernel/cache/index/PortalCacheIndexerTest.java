@@ -18,7 +18,7 @@ import com.liferay.portal.cache.MockPortalCacheManager;
 import com.liferay.portal.cache.memory.MemoryPortalCache;
 import com.liferay.portal.kernel.cache.CacheListener;
 import com.liferay.portal.kernel.cache.PortalCache;
-import com.liferay.portal.kernel.concurrent.test.MappedMethodNameCallableInvocationHandler;
+import com.liferay.portal.kernel.concurrent.test.MappedMethodCallableInvocationHandler;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -55,8 +55,8 @@ public class PortalCacheIndexerTest {
 		_cacheListener = ReflectionTestUtil.getFieldValue(
 			_portalCache, "aggregatedCacheListener");
 
-		_mappedMethodNameCallableInvocationHandler =
-			new MappedMethodNameCallableInvocationHandler(
+		_mappedMethodCallableInvocationHandler =
+			new MappedMethodCallableInvocationHandler(
 				ReflectionTestUtil.getFieldValue(
 					_portalCacheIndexer, "_indexedCacheKeys"),
 				true);
@@ -66,14 +66,14 @@ public class PortalCacheIndexerTest {
 			ProxyUtil.newProxyInstance(
 				ClassLoader.getSystemClassLoader(),
 				new Class<?>[] {ConcurrentMap.class},
-				_mappedMethodNameCallableInvocationHandler));
+				_mappedMethodCallableInvocationHandler));
 	}
 
 	@Test
 	public void testAddIndexedCacheKeyConcurrentPutDifferentKeys()
 		throws ReflectiveOperationException {
 
-		_mappedMethodNameCallableInvocationHandler.putBeforeCallable(
+		_mappedMethodCallableInvocationHandler.putBeforeCallable(
 			ConcurrentMap.class.getMethod(
 				"putIfAbsent", Object.class, Object.class),
 			new Callable<Void>() {
@@ -220,7 +220,7 @@ public class PortalCacheIndexerTest {
 
 		_portalCache.put(_INDEX_1_KEY_1, _VALUE);
 
-		_mappedMethodNameCallableInvocationHandler.putBeforeCallable(
+		_mappedMethodCallableInvocationHandler.putBeforeCallable(
 			ConcurrentMap.class.getMethod("remove", Object.class, Object.class),
 			new Callable<Void>() {
 
@@ -244,7 +244,7 @@ public class PortalCacheIndexerTest {
 
 		_portalCache.put(_INDEX_1_KEY_1, _VALUE);
 
-		_mappedMethodNameCallableInvocationHandler.putBeforeCallable(
+		_mappedMethodCallableInvocationHandler.putBeforeCallable(
 			ConcurrentMap.class.getMethod("remove", Object.class, Object.class),
 			new Callable<Void>() {
 
@@ -334,8 +334,8 @@ public class PortalCacheIndexerTest {
 	private static final String _VALUE = "VALUE";
 
 	private CacheListener<TestIndexedCacheKey, String> _cacheListener;
-	private MappedMethodNameCallableInvocationHandler
-		_mappedMethodNameCallableInvocationHandler;
+	private MappedMethodCallableInvocationHandler
+		_mappedMethodCallableInvocationHandler;
 	private PortalCache<TestIndexedCacheKey, String> _portalCache;
 	private PortalCacheIndexer<Long, TestIndexedCacheKey, String>
 		_portalCacheIndexer;
