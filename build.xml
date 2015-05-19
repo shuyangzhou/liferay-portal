@@ -89,24 +89,6 @@
 				</fileset>
 			</subant>
 
-<!--	<ant dir="benchmarks" target="clean" inheritAll="false" />
-
-		<ant dir="classes" target="clean" inheritAll="false" />
-
-		<ant dir="portal-service" target="clean" inheritAll="false" />
-
-		<ant dir="util-bridges" target="clean" inheritAll="false" />
-		<ant dir="util-java" target="clean" inheritAll="false" />
-		<ant dir="util-slf4j" target="clean" inheritAll="false" />
-		<ant dir="util-taglib" target="clean" inheritAll="false" />
-
-		<ant dir="portal-impl" target="clean" inheritAll="false" />
-		<ant dir="portal-pacl" target="clean" inheritAll="false" />
-		<ant dir="portal-test" target="clean" inheritAll="false" />
-		<ant dir="portal-test-internal" target="clean" inheritAll="false" />
-		<ant dir="portal-web" target="clean" inheritAll="false" />
-		<ant dir="sql" target="clean" inheritAll="false" />-->
-
 			<sequential>
 				<delete dir="tools/sdk" />
 
