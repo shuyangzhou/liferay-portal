@@ -1070,7 +1070,7 @@ svn://svn.liferay.com/repos/public/alloy/trunk/sandbox/taglibs.
 		/>
 	</target>
 
-	<target name="deploy" depends="check-deploy-uptodate,jar" unless="${deploy.uptodate}">
+	<target name="deploy" depends="build-common-java.deploy" unless="${deploy.uptodate}">
 		<ant dir="../portal-service" target="deploy" inheritAll="false" />
 
 		<antcall target="deploy-properties" />

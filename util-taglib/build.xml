@@ -92,7 +92,7 @@
 		</clean-common>
 	</target>
 
-	<target name="deploy" depends="check-deploy-uptodate,jar" unless="${deploy.uptodate}">
+	<target name="deploy" depends="build-common-java.deploy" unless="${deploy.uptodate}">
 		<copy file="${jar.file}.jar" todir="${liferay.home}/osgi/portal" preservelastmodified="true" />
 
 		<if>
