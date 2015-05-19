@@ -39,13 +39,18 @@ public class MBBanStagedModelDataHandler
 	public static final String[] CLASS_NAMES = {MBBan.class.getName()};
 
 	@Override
+	public void deleteStagedModel(MBBan ban) {
+		MBBanLocalServiceUtil.deleteBan(ban);
+	}
+
+	@Override
 	public void deleteStagedModel(
 		String uuid, long groupId, String className, String extraData) {
 
 		MBBan ban = fetchStagedModelByUuidAndGroupId(uuid, groupId);
 
 		if (ban != null) {
-			MBBanLocalServiceUtil.deleteBan(ban);
+			deleteStagedModel(ban);
 		}
 	}
 

@@ -71,7 +71,7 @@ public interface DDMStorageLinkLocalService extends BaseLocalService,
 	public com.liferay.portlet.dynamicdatamapping.model.DDMStorageLink createDDMStorageLink(
 		long storageLinkId);
 
-	public void deleteClassStorageLink(long classPK) throws PortalException;
+	public void deleteClassStorageLink(long classPK);
 
 	/**
 	* Deletes the d d m storage link from the database. Also notifies the appropriate model listeners.
@@ -105,7 +105,7 @@ public interface DDMStorageLinkLocalService extends BaseLocalService,
 	public void deleteStorageLink(
 		com.liferay.portlet.dynamicdatamapping.model.DDMStorageLink storageLink);
 
-	public void deleteStorageLink(long storageLinkId) throws PortalException;
+	public void deleteStorageLink(long storageLinkId);
 
 	public void deleteStructureStorageLinks(long structureId);
 

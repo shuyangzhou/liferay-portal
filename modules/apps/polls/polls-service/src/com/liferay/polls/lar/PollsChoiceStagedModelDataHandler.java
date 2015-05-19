@@ -45,6 +45,11 @@ public class PollsChoiceStagedModelDataHandler
 	public static final String[] CLASS_NAMES = {PollsChoice.class.getName()};
 
 	@Override
+	public void deleteStagedModel(PollsChoice choice) {
+		PollsChoiceLocalServiceUtil.deletePollsChoice(choice);
+	}
+
+	@Override
 	public void deleteStagedModel(
 		String uuid, long groupId, String className, String extraData) {
 
@@ -52,7 +57,7 @@ public class PollsChoiceStagedModelDataHandler
 			uuid, groupId);
 
 		if (pollsChoice != null) {
-			PollsChoiceLocalServiceUtil.deletePollsChoice(pollsChoice);
+			deleteStagedModel(pollsChoice);
 		}
 	}
 

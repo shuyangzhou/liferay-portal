@@ -114,14 +114,15 @@ public class JournalArticleServiceTest {
 
 		testAddArticleRequiredFields(
 			"test-ddm-structure-html-required-field.xml",
-			"test-journal-content-html-required-field.xml", requiredFields);
+			"test-journal-content-html-empty-required-field.xml",
+			requiredFields);
 	}
 
 	@Test
 	public void testAddArticleWithNotEmptyRequiredHTMLField() throws Exception {
 		Map<String, String> requiredFields = new HashMap<>();
 
-		requiredFields.put("HTML2030", "<p>Hello World!</p>");
+		requiredFields.put("HTML2030", "<p>Hello.</p>");
 
 		testAddArticleRequiredFields(
 			"test-ddm-structure-html-required-field.xml",

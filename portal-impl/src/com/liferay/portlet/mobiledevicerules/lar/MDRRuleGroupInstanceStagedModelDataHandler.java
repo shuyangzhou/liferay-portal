@@ -49,6 +49,12 @@ public class MDRRuleGroupInstanceStagedModelDataHandler
 		{MDRRuleGroupInstance.class.getName()};
 
 	@Override
+	public void deleteStagedModel(MDRRuleGroupInstance ruleGroupInstance) {
+		MDRRuleGroupInstanceLocalServiceUtil.deleteRuleGroupInstance(
+			ruleGroupInstance);
+	}
+
+	@Override
 	public void deleteStagedModel(
 		String uuid, long groupId, String className, String extraData) {
 
@@ -56,8 +62,7 @@ public class MDRRuleGroupInstanceStagedModelDataHandler
 			fetchStagedModelByUuidAndGroupId(uuid, groupId);
 
 		if (ruleGroupInstance != null) {
-			MDRRuleGroupInstanceLocalServiceUtil.deleteRuleGroupInstance(
-				ruleGroupInstance);
+			deleteStagedModel(ruleGroupInstance);
 		}
 	}
 

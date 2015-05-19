@@ -67,8 +67,7 @@ public class DDMStorageLinkLocalServiceWrapper
 	}
 
 	@Override
-	public void deleteClassStorageLink(long classPK)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public void deleteClassStorageLink(long classPK) {
 		_ddmStorageLinkLocalService.deleteClassStorageLink(classPK);
 	}
 
@@ -115,8 +114,7 @@ public class DDMStorageLinkLocalServiceWrapper
 	}
 
 	@Override
-	public void deleteStorageLink(long storageLinkId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public void deleteStorageLink(long storageLinkId) {
 		_ddmStorageLinkLocalService.deleteStorageLink(storageLinkId);
 	}
 

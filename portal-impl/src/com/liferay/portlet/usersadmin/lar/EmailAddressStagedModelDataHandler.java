@@ -37,6 +37,11 @@ public class EmailAddressStagedModelDataHandler
 	public static final String[] CLASS_NAMES = {EmailAddress.class.getName()};
 
 	@Override
+	public void deleteStagedModel(EmailAddress emailAddress) {
+		EmailAddressLocalServiceUtil.deleteEmailAddress(emailAddress);
+	}
+
+	@Override
 	public void deleteStagedModel(
 			String uuid, long groupId, String className, String extraData)
 		throws PortalException {
@@ -47,7 +52,7 @@ public class EmailAddressStagedModelDataHandler
 			EmailAddressLocalServiceUtil.fetchEmailAddressByUuidAndCompanyId(
 				uuid, group.getCompanyId());
 
-		EmailAddressLocalServiceUtil.deleteEmailAddress(emailAddress);
+		deleteStagedModel(emailAddress);
 	}
 
 	@Override

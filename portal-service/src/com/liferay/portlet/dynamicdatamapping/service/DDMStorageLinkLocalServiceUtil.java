@@ -71,8 +71,7 @@ public class DDMStorageLinkLocalServiceUtil {
 		return getService().createDDMStorageLink(storageLinkId);
 	}
 
-	public static void deleteClassStorageLink(long classPK)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static void deleteClassStorageLink(long classPK) {
 		getService().deleteClassStorageLink(classPK);
 	}
 
@@ -114,8 +113,7 @@ public class DDMStorageLinkLocalServiceUtil {
 		getService().deleteStorageLink(storageLink);
 	}
 
-	public static void deleteStorageLink(long storageLinkId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static void deleteStorageLink(long storageLinkId) {
 		getService().deleteStorageLink(storageLinkId);
 	}
 

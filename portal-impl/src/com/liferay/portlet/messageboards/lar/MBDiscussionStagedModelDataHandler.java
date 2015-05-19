@@ -45,6 +45,11 @@ public class MBDiscussionStagedModelDataHandler
 	public static final String[] CLASS_NAMES = {MBDiscussion.class.getName()};
 
 	@Override
+	public void deleteStagedModel(MBDiscussion discussion) {
+		MBDiscussionLocalServiceUtil.deleteMBDiscussion(discussion);
+	}
+
+	@Override
 	public void deleteStagedModel(
 		String uuid, long groupId, String className, String extraData) {
 
@@ -52,7 +57,7 @@ public class MBDiscussionStagedModelDataHandler
 			uuid, groupId);
 
 		if (discussion != null) {
-			MBDiscussionLocalServiceUtil.deleteMBDiscussion(discussion);
+			deleteStagedModel(discussion);
 		}
 	}
 

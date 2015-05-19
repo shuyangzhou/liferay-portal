@@ -44,6 +44,10 @@ public class TestStagedModelDataHandler
 	}
 
 	@Override
+	public void deleteStagedModel(User user) {
+	}
+
+	@Override
 	public void exportStagedModel(
 		PortletDataContext portletDataContext, User user) {
 	}
