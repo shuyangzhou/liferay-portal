@@ -24,11 +24,10 @@ import com.liferay.portal.monitoring.internal.BaseDataSample;
 public class ServiceRequestDataSample extends BaseDataSample {
 
 	public ServiceRequestDataSample(MethodSignature methodSignature) {
-		setNamespace(MonitorNames.SERVICE);
-
 		_methodSignature = methodSignature;
 
 		setDescription(_methodSignature.toString());
+		setNamespace(MonitorNames.SERVICE);
 	}
 
 	public MethodSignature getMethodSignature() {

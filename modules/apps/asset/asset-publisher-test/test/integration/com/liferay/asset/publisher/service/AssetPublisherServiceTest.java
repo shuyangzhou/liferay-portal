@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.asset.publisher.util;
+package com.liferay.asset.publisher.service;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.asset.publisher.web.util.AssetPublisherUtil;

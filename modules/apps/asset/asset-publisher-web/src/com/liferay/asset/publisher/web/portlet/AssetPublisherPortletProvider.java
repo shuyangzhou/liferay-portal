@@ -83,7 +83,7 @@ public class AssetPublisherPortletProvider extends BasePortletProvider
 	}
 
 	@Override
-	protected long getPlid(ThemeDisplay themeDisplay) throws PortalException {
+	protected long getPlid(ThemeDisplay themeDisplay) {
 		return themeDisplay.getPlid();
 	}
 

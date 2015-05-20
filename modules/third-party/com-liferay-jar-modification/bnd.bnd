@@ -1,0 +1,4 @@
+Bundle-SymbolicName: com.liferay.jar.modification
+Bundle-Version: 1.0.0
+Export-Package: com.liferay.jar.modification.*
+Include-Resource: classes
