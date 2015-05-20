@@ -7,4 +7,19 @@
 	<import file="../../../tools/sdk/build-common-osgi-plugin.xml" />
 
 	<property name="auto.deploy.dir" value="${liferay.home}/osgi/static" />
+
+	<target name="deploy">
+		<deploy
+			module.dir="${basedir}"
+		/>
+
+		<property name="jar.file" value="${liferay.home}/osgi/static/org.apache.felix.configadmin.jar" />
+		<property name="temp.jar.file" value="${liferay.home}/osgi/static/temp.jar" />
+
+		<jar destfile="${temp.jar.file}">
+			<zipfileset src="${jar.file}" excludes="OSGI-INF/permissions.perm" />
+		</jar>
+
+		<move file="${temp.jar.file}" tofile="${jar.file}" />
+	</target>
 </project>
