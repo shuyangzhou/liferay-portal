@@ -14,6 +14,24 @@
 	<property name="manifest.bundle.symbolic.name" value="portal-impl;singleton:=true" />
 	<property name="service.file" value="service.xml" />
 
+	<macrodef name="clean">
+		<sequential>
+			<clean-cmd>
+				<clean-post>
+					<if>
+						<and>
+							<equals arg1="${app.server.type}" arg2="tomcat" />
+							<antelope:endswith string="${app.server.portal.dir}" with="/portal-web/docroot" />
+						</and>
+						<then>
+							<delete dir="${app.server.classes.portal.dir}" />
+						</then>
+					</if>
+				</clean-post>
+			</clean-cmd>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="compile-dependencies">
 		<sequential>
 			<copy todir="${portal-impl.classes.dir}/com/liferay/portal/definitions" preservelastmodified="true">
@@ -843,19 +861,26 @@ svn://svn.liferay.com/repos/public/alloy/trunk/sandbox/taglibs.
 
 	<target name="build-upgrade-table">
 		<if>
-			<isset property="upgrade.table.dir" />
+			<not>
+				<equals arg1="${upgrade.table.dir}" arg2="" />
+			</not>
 			<then>
 				<ant antfile="build-common.xml" dir="${project.dir}/tools/sdk" inheritAll="false" target="prepare-upgrade-table">
 					<property name="upgrade.table.dir" value="${upgrade.table.dir}" />
 				</ant>
 
+				<path id="upgrade.table.builder.classpath">
+					<fileset dir="${project.dir}/tools/sdk/dependencies/com.liferay.portal.tools.upgrade.table.builder/lib" includes="*.jar" />
+				</path>
+
 				<java
-					classname="com.liferay.portal.tools.UpgradeTableBuilder"
-					classpathref="project.classpath"
+					classname="com.liferay.portal.tools.upgrade.table.builder.UpgradeTableBuilder"
+					classpathref="upgrade.table.builder.classpath"
 					fork="true"
 					newenvironment="true"
 				>
 					<arg value="upgrade.base.dir=." />
+					<arg value="upgrade.osgi.module=false" />
 					<arg value="upgrade.table.dir=${upgrade.table.dir}" />
 				</java>
 			</then>
@@ -1030,24 +1055,6 @@ svn://svn.liferay.com/repos/public/alloy/trunk/sandbox/taglibs.
 			<rule pattern="org.mozilla.**" result="com.yahoo.platform.yui.mozilla.@1" />
 			<zipfileset src="${project.dir}/tools/yuicompressor-2.4.7.jar" />
 		</jarjar>
-	</target>
-
-	<target name="clean">
-		<clean-common>
-			<clean-extra>
-				<delete dir="classes" />
-
-				<if>
-					<and>
-						<equals arg1="${app.server.type}" arg2="tomcat" />
-						<antelope:endswith string="${app.server.portal.dir}" with="/portal-web/docroot" />
-					</and>
-					<then>
-						<delete dir="${app.server.classes.portal.dir}" />
-					</then>
-				</if>
-			</clean-extra>
-		</clean-common>
 	</target>
 
 	<target name="compile-test">

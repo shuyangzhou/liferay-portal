@@ -42,10 +42,12 @@ import java.util.Set;
 @OSGiBeanProperties
 public class JournalArticleSitemapURLProvider implements SitemapURLProvider {
 
+	@Override
 	public String getClassName() {
 		return JournalArticle.class.getName();
 	}
 
+	@Override
 	public void visitLayout(
 			Element element, Layout layout, ThemeDisplay themeDisplay)
 		throws PortalException {
