@@ -1036,6 +1036,24 @@
 		</sequential>
 	</macrodef>
 
+	<macrodef name="setup-arquillian">
+		<sequential>
+			<echo file="${arquillian.xml}"><![CDATA[<?xml version="1.0"?>
+<arquillian
+	xmlns="http://jboss.org/schema/arquillian"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.org/schema/arquillian http://jboss.org/schema/arquillian/arquillian_1_0.xsd"
+>
+	<container qualifier="tomcat" default="true">
+		<configuration>
+			<property name="jmxServiceURL">service:jmx:rmi:///jndi/rmi://localhost:${jmx.remote.port}/jmxrmi</property>
+		</configuration>
+	</container>
+</arquillian>]]></echo>
+
+		</sequential>
+	</macrodef>
+
 	<macrodef name="setup-testable-tomcat">
 		<sequential>
 			<setup-testable-tomcat-logging />
@@ -1045,6 +1063,8 @@
 			<setup-testable-tomcat-manager />
 
 			<setup-testable-tomcat-osgi-modules />
+
+			<setup-arquillian />
 		</sequential>
 	</macrodef>
 
