@@ -83,7 +83,11 @@ public class MemoryPortalCacheManager<K extends Serializable, V>
 	}
 
 	@Override
-	protected PortalCache<K, V> createPortalCache(String cacheName) {
+	protected PortalCache<K, V> createPortalCache(
+		PortalCacheConfiguration portalCacheConfiguration) {
+
+		String cacheName = portalCacheConfiguration.getPortalCacheName();
+
 		MemoryPortalCache<K, V> portalCache = _memoryPortalCaches.get(
 			cacheName);
 
@@ -105,6 +109,16 @@ public class MemoryPortalCacheManager<K extends Serializable, V>
 		}
 
 		return portalCache;
+	}
+
+	@Override
+	protected PortalCacheConfiguration createPortalCacheConfiguration(
+		String name, PortalCacheConfiguration defaultPortalCacheConfiguration) {
+
+		return new PortalCacheConfiguration(
+			name,
+			defaultPortalCacheConfiguration.getCacheListenerConfigurations(),
+			defaultPortalCacheConfiguration.getBootstrapLoaderConfiguration());
 	}
 
 	@Override
