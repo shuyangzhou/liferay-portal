@@ -9,8 +9,6 @@ AUI.add(
 
 		var Lang = A.Lang;
 
-		var AJSON = A.JSON;
-
 		var EMPTY_FN = A.Lang.emptyFn;
 
 		var FIELDS_DISPLAY_INSTANCE_SEPARATOR = '_INSTANCE_';
@@ -86,8 +84,7 @@ AUI.add(
 						var columns = instance.get('columns');
 						var data = instance.get('data');
 
-						var keys = AArray.map(
-							columns,
+						var keys = columns.map(
 							function(item, index) {
 								return item.key;
 							}
@@ -99,7 +96,7 @@ AUI.add(
 					updateMinDisplayRows: function(minDisplayRows, callback) {
 						var instance = this;
 
-						callback = (callback && A.bind(callback, instance)) || EMPTY_FN;
+						callback = callback && A.bind(callback, instance) || EMPTY_FN;
 
 						var recordsetId = instance.get('recordsetId');
 
@@ -108,7 +105,7 @@ AUI.add(
 							{
 								minDisplayRows: minDisplayRows,
 								recordSetId: recordsetId,
-								serviceContext: AJSON.stringify(
+								serviceContext: JSON.stringify(
 									{
 										scopeGroupId: themeDisplay.getScopeGroupId(),
 										userId: themeDisplay.getUserId()
@@ -139,7 +136,7 @@ AUI.add(
 
 						var scrollTo = scrollLeft;
 
-						if ((scrollLeft + scrollableWidth) < activeCellOffsetRight) {
+						if (scrollLeft + scrollableWidth < activeCellOffsetRight) {
 							scrollTo = activeCellOffsetRight - scrollableWidth;
 						}
 						else if (activeCellOffsetLeft < scrollLeft) {
@@ -167,14 +164,14 @@ AUI.add(
 
 									delete value.name;
 
-									value = AJSON.stringify(value);
+									value = JSON.stringify(value);
 								}
-								else if ((type === 'radio') || (type === 'select')) {
+								else if (type === 'radio' || type === 'select') {
 									if (!isArray(value)) {
 										value = AArray(value);
 									}
 
-									value = AJSON.stringify(value);
+									value = JSON.stringify(value);
 								}
 
 								normalized[item.name] = instance._normalizeValue(value);
@@ -316,16 +313,16 @@ AUI.add(
 				addRecord: function(recordsetId, displayIndex, fieldsMap, callback) {
 					var instance = this;
 
-					callback = (callback && A.bind(callback, instance)) || EMPTY_FN;
+					callback = callback && A.bind(callback, instance) || EMPTY_FN;
 
 					Liferay.Service(
 						'/ddlrecord/add-record',
 						{
 							displayIndex: displayIndex,
-							fieldsMap: AJSON.stringify(fieldsMap),
+							fieldsMap: JSON.stringify(fieldsMap),
 							groupId: themeDisplay.getScopeGroupId(),
 							recordSetId: recordsetId,
-							serviceContext: AJSON.stringify(
+							serviceContext: JSON.stringify(
 								{
 									scopeGroupId: themeDisplay.getScopeGroupId(),
 									userId: themeDisplay.getUserId(),
@@ -396,8 +393,7 @@ AUI.add(
 							}
 							else if (type === 'ddm-date') {
 								config.inputFormatter = function(val) {
-									return AArray.map(
-										val,
+									return val.map(
 										function(item, index) {
 											return item.getTime();
 										}
@@ -405,8 +401,7 @@ AUI.add(
 								};
 
 								config.outputFormatter = function(val) {
-									return AArray.map(
-										val,
+									return val.map(
 										function(item, index) {
 											var value = Lang.toInt(item) || Date.now();
 
@@ -435,7 +430,7 @@ AUI.add(
 									return value;
 								};
 							}
-							else if ((type === 'ddm-decimal') || (type === 'ddm-integer') || (type === 'ddm-number')) {
+							else if (type === 'ddm-decimal' || type === 'ddm-integer' || type === 'ddm-number') {
 								config.outputFormatter = function(value) {
 									var number = A.DataType.Number.parse(value);
 
@@ -496,7 +491,7 @@ AUI.add(
 									return label;
 								};
 							}
-							else if ((type === 'radio') || (type === 'select')) {
+							else if (type === 'radio' || type === 'select') {
 								structureField = instance.findStructureFieldByAttribute(structure, 'name', name);
 
 								var multiple = A.DataType.Boolean.parse(structureField.multiple);
@@ -561,12 +556,11 @@ AUI.add(
 				findStructureFieldByAttribute: function(structure, attributeName, attributeValue) {
 					var found = null;
 
-					AArray.some(
-						structure,
+					structure.some(
 						function(item, index) {
 							found = item;
 
-							return (found[attributeName] === attributeValue);
+							return found[attributeName] === attributeValue;
 						}
 					);
 
@@ -602,16 +596,16 @@ AUI.add(
 				updateRecord: function(recordId, displayIndex, fieldsMap, merge, callback) {
 					var instance = this;
 
-					callback = (callback && A.bind(callback, instance)) || EMPTY_FN;
+					callback = callback && A.bind(callback, instance) || EMPTY_FN;
 
 					Liferay.Service(
 						'/ddlrecord/update-record',
 						{
 							displayIndex: displayIndex,
-							fieldsMap: AJSON.stringify(fieldsMap),
+							fieldsMap: JSON.stringify(fieldsMap),
 							mergeFields: merge,
 							recordId: recordId,
-							serviceContext: AJSON.stringify(
+							serviceContext: JSON.stringify(
 								{
 									scopeGroupId: themeDisplay.getScopeGroupId(),
 									userId: themeDisplay.getUserId(),
