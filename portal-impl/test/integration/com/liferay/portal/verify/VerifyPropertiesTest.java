@@ -32,8 +32,10 @@ import java.util.Properties;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.spi.LoggingEvent;
+import org.junit.AfterClass;
 
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.Rule;
@@ -49,199 +51,163 @@ public class VerifyPropertiesTest extends BaseVerifyProcessTestCase {
 		= new AggregateTestRule(
 			new LiferayIntegrationTestRule(), MainServletTestRule.INSTANCE);
 
+	@BeforeClass
+	public static void setUpClass() {
+		_captureAppender
+			= Log4JLoggerTestUtil.configureLog4JLogger(
+				VerifyProperties.class.getName(), Level.ERROR);
+	}
+
+	@AfterClass
+	public static void tearDownClass() {
+		_captureAppender.close();
+	}
+
 	@Test
 	public void testMigratedSystemKeys() throws Exception {
+		_property = "com.liferay.filters.compression.CompressionFilter";
 
-		try (
-			CaptureAppender captureAppender
-			= Log4JLoggerTestUtil.configureLog4JLogger(
-				VerifyProperties.class.getName(), Level.ERROR)) {
+		SystemProperties.set(_property, "True");
 
-				_property = "com.liferay.filters.compression.CompressionFilter";
+		doVerify();
 
-				SystemProperties.set(_property, "True");
+		String newProperty
+			= "com.liferay.portal.servlet.filters.gzip.GZipFilter";
 
-				doVerify();
+		List<LoggingEvent> loggingEvents = _captureAppender.getLoggingEvents();
 
-				String newProperty
-					= "com.liferay.portal.servlet.filters.gzip.GZipFilter";
+		LoggingEvent loggingEvent = loggingEvents.get(2);
 
-				List<LoggingEvent> loggingEvents = captureAppender.getLoggingEvents();
+		Assert.assertEquals(
+			loggingEvent.getMessage().toString(),
+			"System property \"" + _property + "\" was migrated to the "
+			+ "portal property \"" + newProperty + "\"");
 
-				LoggingEvent loggingEvent = loggingEvents.get(0);
-
-				Assert.assertEquals(
-					loggingEvent.getMessage().toString(),
-					"System property \"" + _property + "\" was migrated to the "
-					+ "portal property \"" + newProperty + "\"");
-
-				SystemProperties.clear(_property);
-			}
+		SystemProperties.clear(_property);
 	}
 
 	@Test
 	public void testRenamedSystemProperty() throws Exception {
-		try (
-			CaptureAppender captureAppender
-			= Log4JLoggerTestUtil.configureLog4JLogger(
-				VerifyProperties.class.getName(), Level.ERROR)) {
+		_property
+			= "com.liferay.portal.kernel.util."
+			+ "StringBundler.unsafe.create.threshold";
 
-				_property
-					= "com.liferay.portal.kernel.util."
-					+ "StringBundler.unsafe.create.threshold";
+		SystemProperties.set(_property, "True");
 
-				SystemProperties.set(_property, "True");
+		doVerify();
 
-				doVerify();
+		String newProperty = "com.liferay.portal.kernel.util."
+			+ "StringBundler.threadlocal.buffer.limit";
+		List<LoggingEvent> loggingEvents = _captureAppender.getLoggingEvents();
 
-				String newProperty = "com.liferay.portal.kernel.util."
-					+ "StringBundler.threadlocal.buffer.limit";
-				List<LoggingEvent> loggingEvents = captureAppender.getLoggingEvents();
+		LoggingEvent loggingEvent = loggingEvents.get(0);
 
-				LoggingEvent loggingEvent = loggingEvents.get(0);
+		Assert.assertEquals(loggingEvent.getMessage().toString(),
+			"System property \"" + _property + "\" was renamed to \""
+			+ newProperty + "\"");
 
-				Assert.assertEquals(
-					loggingEvent.getMessage().toString(),
-					"System property \"" + _property + "\" was renamed to \""
-					+ newProperty + "\"");
-
-				SystemProperties.clear(_property);
-			}
+		SystemProperties.clear(_property);
 	}
 
 	@Test
 	public void testObsoleteSystemKeys() throws Exception {
-		try (
-			CaptureAppender captureAppender
-			= Log4JLoggerTestUtil.configureLog4JLogger(
-				VerifyProperties.class.getName(), Level.ERROR)) {
+		_property = "com.liferay.util.Http.proxy.host";
 
-				_property = "com.liferay.util.Http.proxy.host";
+		SystemProperties.set(_property, "True");
 
-				SystemProperties.set(_property, "True");
+		doVerify();
 
-				doVerify();
+		List<LoggingEvent> loggingEvents = _captureAppender.getLoggingEvents();
 
-				List<LoggingEvent> loggingEvents = captureAppender.getLoggingEvents();
+		LoggingEvent loggingEvent = loggingEvents.get(5);
 
-				LoggingEvent loggingEvent = loggingEvents.get(0);
+		Assert.assertEquals(loggingEvent.getMessage().toString(),
+			"System property \"" + _property + "\" is obsolete");
 
-				Assert.assertEquals(
-					loggingEvent.getMessage().toString(),
-					"System property \"" + _property + "\" is obsolete");
-
-				SystemProperties.clear(_property);
-			}
+		SystemProperties.clear(_property);
 	}
 
 	@Test
 	public void testmigratedPortalProperty() throws Exception {
-		try (
-			CaptureAppender captureAppender
-			= Log4JLoggerTestUtil.configureLog4JLogger(
-				VerifyProperties.class.getName(), Level.ERROR)) {
+		PropsUtil.set("testMigratedPortalProperty", "true");
 
-				PropsUtil.set("testMigratedPortalProperty", "true");
+		doVerify();
 
-				doVerify();
+		String[] migratedPortalProperty = {
+			"cookie.http.only.names.excludes",
+			"cookie.http.only.names.excludes"};
 
-				String[] migratedPortalProperty = {
-					"cookie.http.only.names.excludes",
-					"cookie.http.only.names.excludes"};
+		List<LoggingEvent> loggingEvents = _captureAppender.getLoggingEvents();
 
-				List<LoggingEvent> loggingEvents = captureAppender.getLoggingEvents();
+		LoggingEvent loggingEvent = loggingEvents.get(3);
 
-				LoggingEvent loggingEvent = loggingEvents.get(0);
+		Assert.assertEquals(loggingEvent.getMessage().toString(),
+			"Portal property \"" + migratedPortalProperty[0]
+			+ "\" was migrated to the system property \""
+			+ migratedPortalProperty[1] + "\"");
 
-				Assert.assertEquals(loggingEvent.getMessage().toString(),
-					"Portal property \"" + migratedPortalProperty[0]
-					+ "\" was migrated to the system property \""
-					+ migratedPortalProperty[1] + "\"");
-
-				PropsUtil.set("testMigratedPortalProperty", "false");
-			}
+		PropsUtil.set("testMigratedPortalProperty", "false");
 	}
 
 	@Test
 	public void testRenamedPortalProperty() throws Exception {
-		try (
-			CaptureAppender captureAppender
-			= Log4JLoggerTestUtil.configureLog4JLogger(
-				VerifyProperties.class.getName(), Level.ERROR)) {
+		PropsUtil.set("testRenamedPortalProperty", "true");
 
-				PropsUtil.set("testRenamedPortalProperty", "true");
+		doVerify();
 
-				doVerify();
+		List<LoggingEvent> loggingEvents = _captureAppender.getLoggingEvents();
 
-				List<LoggingEvent> loggingEvents = captureAppender.getLoggingEvents();
+		String[] renamedPortalProperty = {
+			"amazon.license.0", "amazon.access.key.id"};
 
-				String[] renamedPortalProperty = {
-					"amazon.license.0", "amazon.access.key.id"};
+		LoggingEvent loggingEvent = loggingEvents.get(4);
 
-				LoggingEvent loggingEvent = loggingEvents.get(0);
+		Assert.assertEquals(loggingEvent.getMessage().toString(),
+			"Portal property \"" + renamedPortalProperty[0]
+			+ "\" was renamed to \"" + renamedPortalProperty[1] + "\"");
 
-				Assert.assertEquals(
-					loggingEvent.getMessage().toString(),
-					"Portal property \"" + renamedPortalProperty[0]
-					+ "\" was renamed to \"" + renamedPortalProperty[1] + "\"");
-
-				PropsUtil.set("testRenamedPortalProperty", "false");
-			}
+		PropsUtil.set("testRenamedPortalProperty", "false");
 	}
 
 	@Test
 	public void testObsoletePortalProperty() throws Exception {
-		try (
-			CaptureAppender captureAppender
-			= Log4JLoggerTestUtil.configureLog4JLogger(
-				VerifyProperties.class.getName(), Level.ERROR)) {
+		PropsUtil.set("testObsoletePortalProperty", "true");
 
-				PropsUtil.set("testObsoletePortalProperty", "true");
+		doVerify();
 
-				doVerify();
+		List<LoggingEvent> loggingEvents = _captureAppender.getLoggingEvents();
 
-				List<LoggingEvent> loggingEvents = captureAppender.getLoggingEvents();
+		String obsoletePortalProperty = "amazon.access.key.id";
 
-				String obsoletePortalProperty = "amazon.access.key.id";
+		LoggingEvent loggingEvent = loggingEvents.get(1);
 
-				LoggingEvent loggingEvent = loggingEvents.get(0);
+		Assert.assertEquals(loggingEvent.getMessage().toString(),
+			"Portal property \"" + obsoletePortalProperty
+			+ "\" is obsolete");
 
-				Assert.assertEquals(
-					loggingEvent.getMessage().toString(),
-					"Portal property \"" + obsoletePortalProperty
-					+ "\" is obsolete");
-
-				PropsUtil.set("testObsoletePortalProperty", "false");
-			}
+		PropsUtil.set("testObsoletePortalProperty", "false");
 	}
 
 	@Test
 	public void testModularizedPortalProperty() throws Exception {
-		try (
-			CaptureAppender captureAppender
-			= Log4JLoggerTestUtil.configureLog4JLogger(
-				VerifyProperties.class.getName(), Level.ERROR)) {
+		PropsUtil.set("testModularizedPortalProperty", "true");
 
-				PropsUtil.set("testModularizedPortalProperty", "true");
+		doVerify();
 
-				doVerify();
+		List<LoggingEvent> loggingEvents = _captureAppender.getLoggingEvents();
 
-				List<LoggingEvent> loggingEvents = captureAppender.getLoggingEvents();
+		String[] modularizedPortalProperty = {
+			"asset.browser.search.with.database", "search.with.database",
+			"com.liferay.asset.browser.web"};
 
-				String[] modularizedPortalProperty = {
-					"asset.browser.search.with.database", "search.with.database",
-					"com.liferay.asset.browser.web"};
+		LoggingEvent loggingEvent = loggingEvents.get(6);
 
-				LoggingEvent loggingEvent = loggingEvents.get(0);
+		Assert.assertEquals(loggingEvent.getMessage().toString(),
+			"Portal property \"" + modularizedPortalProperty[0]
+			+ "\" was modularized to " + modularizedPortalProperty[2]
+			+ " as \"" + modularizedPortalProperty[1]);
 
-				Assert.assertEquals(
-					loggingEvent.getMessage().toString(),
-					"Portal property \"" + modularizedPortalProperty[0]
-					+ "\" was modularized to " + modularizedPortalProperty[2]
-					+ " as \"" + modularizedPortalProperty[1]);
-
-				PropsUtil.set("testModularizedPortalProperty", "false");
-			}
+		PropsUtil.set("testModularizedPortalProperty", "false");
 	}
 
 	@Override
@@ -310,6 +276,8 @@ public class VerifyPropertiesTest extends BaseVerifyProcessTestCase {
 		};
 		return verifyProperties;
 	}
+
+	private static CaptureAppender _captureAppender;
 
 	private static String _property;
 
