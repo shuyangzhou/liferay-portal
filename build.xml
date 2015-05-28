@@ -3,6 +3,24 @@
 <project name="portal" basedir="." default="compile" xmlns:antelope="antlib:ise.antelope.tasks">
 	<import file="build-common.xml" />
 
+	<macrodef name="propertiesdoc-macro">
+		<attribute name="properties.file" />
+		<attribute name="properties.title" />
+		<sequential>
+			<java
+				classname="com.liferay.portal.tools.propertiesdoc.PropertiesDocBuilder"
+				classpathref="project.classpath"
+				fork="true"
+				newenvironment="true"
+			>
+				<arg value="properties.dest.dir=${properties.dest.dir}" />
+				<arg value="properties.file=@{properties.file}" />
+				<arg value="properties.title=@{properties.title}" />
+				<arg value="properties.toc=true" />
+			</java>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="setup-jrebel">
 		<sequential>
 			<echo file="${app.server.lib.global.dir}/rebel.xml"><![CDATA[<?xml version="1.0"?>
@@ -59,6 +77,171 @@
 						overwrite="true"
 						tofile="portal-impl/classes/system-ext.properties"
 					/>
+				</then>
+			</if>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="setup-sdk">
+		<sequential>
+			<if>
+				<not>
+					<uptodate>
+						<mapper to="${project.dir}/tools/sdk" type="merge" />
+						<srcfiles dir="${project.dir}/tools" includes="liferay-plugins-sdk-7.0.0.zip*" />
+					</uptodate>
+				</not>
+				<then>
+					<delete dir="${project.dir}/tools/sdk" />
+
+					<unzip
+						dest="${project.dir}/tools"
+						src="${project.dir}/tools/liferay-plugins-sdk-7.0.0.zip"
+					>
+						<mapper
+							type="glob"
+							from="liferay-plugins-sdk-7.0.0/*"
+							to="sdk/*"
+						/>
+					</unzip>
+
+					<propertyselector
+						casesensitive="false"
+						delimiter=","
+						distinct="true"
+						match="app\.(server\.(glassfish|jboss|jetty|jonas|resin|tcat|tcserver|tomcat|weblogic|websphere).+)\.dir"
+						override="true"
+						property="app.server.dir.property.list"
+						select="\1"
+					/>
+
+					<sortlist
+						delimiter=","
+						override="true"
+						property="app.server.dir.property.list"
+						value="${app.server.dir.property.list}"
+					/>
+
+					<for list="${app.server.dir.property.list}" param="app.server.dir.property">
+						<sequential>
+							<propertycopy
+								from="app.@{app.server.dir.property}.dir"
+								name="temp.app.server.dir"
+							/>
+
+							<echo
+								append="true"
+								file="${project.dir}/tools/sdk/build.${env.COMPUTERNAME}.properties"
+							>
+								app.@{app.server.dir.property}.dir=${temp.app.server.dir}
+							</echo>
+
+							<var name="temp.app.server.dir" unset="true" />
+						</sequential>
+					</for>
+
+					<propertyselector
+						casesensitive="false"
+						delimiter="," match="ivy.pom.(.+)"
+						property="ivy.pom.property.list"
+						select="\1"
+					/>
+
+					<sortlist
+						delimiter=","
+						override="true"
+						property="ivy.pom.property.list"
+						value="${ivy.pom.property.list}"
+					/>
+
+					<if>
+						<not>
+							<equals arg1="${ivy.pom.property.list}" arg2="$${ivy.pom.property.list}" />
+						</not>
+						<then>
+							<for list="${ivy.pom.property.list}" param="ivy.pom.property">
+								<sequential>
+									<propertycopy
+										from="ivy.pom.@{ivy.pom.property}"
+										name="temp.ivy.pom"
+									/>
+
+									<echo
+										append="true"
+										file="${project.dir}/tools/sdk/build.${env.COMPUTERNAME}.properties"
+									>
+										ivy.pom.@{ivy.pom.property}=${temp.ivy.pom}
+									</echo>
+
+									<var name="temp.ivy.pom" unset="true" />
+								</sequential>
+							</for>
+						</then>
+					</if>
+
+					<propertyselector
+						casesensitive="false"
+						delimiter="," match="sonatype.(.+)"
+						property="sonatype.property.list"
+						select="\1"
+					/>
+
+					<sortlist
+						delimiter=","
+						override="true"
+						property="sonatype.property.list"
+						value="${sonatype.property.list}"
+					/>
+
+					<if>
+						<not>
+							<equals arg1="${sonatype.property.list}" arg2="$${sonatype.property.list}" />
+						</not>
+						<then>
+							<for list="${sonatype.property.list}" param="sonatype.property">
+								<sequential>
+									<propertycopy
+										from="sonatype.@{sonatype.property}"
+										name="temp.sonatype"
+									/>
+
+									<echo
+										append="true"
+										file="${project.dir}/tools/sdk/build.${env.COMPUTERNAME}.properties"
+									>
+										sonatype.@{sonatype.property}=${temp.sonatype}
+									</echo>
+
+									<var name="temp.sonatype" unset="true" />
+								</sequential>
+							</for>
+						</then>
+					</if>
+
+					<echo
+						append="true"
+						file="${project.dir}/tools/sdk/build.${env.COMPUTERNAME}.properties"
+					>
+						app.server.type=${app.server.type}
+						auto.deploy.dir=${liferay.home}/osgi/apps
+						clean.delete.ivy.md5=true
+						clean.delete.lib=true
+						ivy.home=${ivy.home}
+						junit.test.excludes=${junit.test.excludes}
+						liferay.home=${liferay.home}
+						lp.portal.project.dir=${project.dir}
+						microsoft.translator.client.id=${microsoft.translator.client.id}
+						microsoft.translator.client.secret=${microsoft.translator.client.secret}
+						module.framework.base.dir=${liferay.home}/osgi
+						upgrade.table.dir=${upgrade.table.dir}
+						-baselinerepo=${-baselinerepo}
+						-metatype=${-metatype}
+						-plugin=${-plugin}
+						-releaserepo=${-releaserepo}
+					</echo>
+
+					<copy file="${project.dir}/tools/sdk/build.${env.COMPUTERNAME}.properties" tofile="${project.dir}/tools/sdk/build.${env.HOST}.properties" />
+					<copy file="${project.dir}/tools/sdk/build.${env.COMPUTERNAME}.properties" tofile="${project.dir}/tools/sdk/build.${env.HOSTNAME}.properties" />
 				</then>
 			</if>
 		</sequential>
@@ -705,40 +888,15 @@
 
 		<remake-dir dir="${properties.dest.dir}" />
 
-		<antcall target="propertiesdoc-cmd">
-			<param name="properties.dest.dir" value="${properties.dest.dir}" />
-			<param name="properties.file" value="definitions/liferay-plugin-package_6_1_0.properties" />
-			<param name="properties.title" value="Liferay Plugin Package 6.1 Properties" />
-			<param name="properties.toc" value="true" />
-		</antcall>
+		<propertiesdoc-macro properties.file="definitions/liferay-plugin-package_6_1_0.properties" properties.title="Liferay Plugin Package 6.1 Properties" />
 
-		<antcall target="propertiesdoc-cmd">
-			<param name="properties.dest.dir" value="${properties.dest.dir}" />
-			<param name="properties.file" value="definitions/liferay-plugin-package_6_2_0.properties" />
-			<param name="properties.title" value="Liferay Plugin Package 6.2 Properties" />
-			<param name="properties.toc" value="true" />
-		</antcall>
+		<propertiesdoc-macro properties.file="definitions/liferay-plugin-package_6_2_0.properties" properties.title="Liferay Plugin Package 6.2 Properties" />
 
-		<antcall target="propertiesdoc-cmd">
-			<param name="properties.dest.dir" value="${properties.dest.dir}" />
-			<param name="properties.file" value="definitions/liferay-plugin-package_7_0_0.properties" />
-			<param name="properties.title" value="Liferay Plugin Package 7.0 Properties" />
-			<param name="properties.toc" value="true" />
-		</antcall>
+		<propertiesdoc-macro properties.file="definitions/liferay-plugin-package_7_0_0.properties" properties.title="Liferay Plugin Package 7.0 Properties" />
 
-		<antcall target="propertiesdoc-cmd">
-			<param name="properties.dest.dir" value="${properties.dest.dir}" />
-			<param name="properties.file" value="portal-impl/src/portal.properties" />
-			<param name="properties.title" value="Portal Properties" />
-			<param name="properties.toc" value="true" />
-		</antcall>
+		<propertiesdoc-macro properties.file="portal-impl/src/portal.properties" properties.title="Portal Properties" />
 
-		<antcall target="propertiesdoc-cmd">
-			<param name="properties.dest.dir" value="${properties.dest.dir}" />
-			<param name="properties.file" value="portal-impl/src/system.properties" />
-			<param name="properties.title" value="System Properties" />
-			<param name="properties.toc" value="true" />
-		</antcall>
+		<propertiesdoc-macro properties.file="portal-impl/src/system.properties" properties.title="System Properties" />
 
 		<java
 			classname="com.liferay.portal.tools.propertiesdoc.PropertiesDocIndexBuilder"
@@ -751,17 +909,7 @@
 	</target>
 
 	<target name="propertiesdoc-cmd">
-		<java
-			classname="com.liferay.portal.tools.propertiesdoc.PropertiesDocBuilder"
-			classpathref="project.classpath"
-			fork="true"
-			newenvironment="true"
-		>
-			<arg value="properties.dest.dir=${properties.dest.dir}" />
-			<arg value="properties.file=${properties.file}" />
-			<arg value="properties.title=${properties.title}" />
-			<arg value="properties.toc=${properties.toc}" />
-		</java>
+		<propertiesdoc-macro properties.file="${properties.file}" properties.title="${properties.title}" />
 	</target>
 
 	<target name="record-git-commit-plugins">
@@ -834,171 +982,6 @@
 	<target name="setup-jrebel">
 		<setup-jrebel />
 	</target>
-
-	<macrodef name="setup-sdk">
-		<sequential>
-			<if>
-				<not>
-					<uptodate>
-						<mapper to="${project.dir}/tools/sdk" type="merge" />
-						<srcfiles dir="${project.dir}/tools" includes="liferay-plugins-sdk-7.0.0.zip*" />
-					</uptodate>
-				</not>
-				<then>
-					<delete dir="${project.dir}/tools/sdk" />
-
-					<unzip
-						dest="${project.dir}/tools"
-						src="${project.dir}/tools/liferay-plugins-sdk-7.0.0.zip"
-					>
-						<mapper
-							type="glob"
-							from="liferay-plugins-sdk-7.0.0/*"
-							to="sdk/*"
-						/>
-					</unzip>
-
-					<propertyselector
-						casesensitive="false"
-						delimiter=","
-						distinct="true"
-						match="app\.(server\.(glassfish|jboss|jetty|jonas|resin|tcat|tcserver|tomcat|weblogic|websphere).+)\.dir"
-						override="true"
-						property="app.server.dir.property.list"
-						select="\1"
-					/>
-
-					<sortlist
-						delimiter=","
-						override="true"
-						property="app.server.dir.property.list"
-						value="${app.server.dir.property.list}"
-					/>
-
-					<for list="${app.server.dir.property.list}" param="app.server.dir.property">
-						<sequential>
-							<propertycopy
-								from="app.@{app.server.dir.property}.dir"
-								name="temp.app.server.dir"
-							/>
-
-							<echo
-								append="true"
-								file="${project.dir}/tools/sdk/build.${env.COMPUTERNAME}.properties"
-							>
-								app.@{app.server.dir.property}.dir=${temp.app.server.dir}
-							</echo>
-
-							<var name="temp.app.server.dir" unset="true" />
-						</sequential>
-					</for>
-
-					<propertyselector
-						casesensitive="false"
-						delimiter="," match="ivy.pom.(.+)"
-						property="ivy.pom.property.list"
-						select="\1"
-					/>
-
-					<sortlist
-						delimiter=","
-						override="true"
-						property="ivy.pom.property.list"
-						value="${ivy.pom.property.list}"
-					/>
-
-					<if>
-						<not>
-							<equals arg1="${ivy.pom.property.list}" arg2="$${ivy.pom.property.list}" />
-						</not>
-						<then>
-							<for list="${ivy.pom.property.list}" param="ivy.pom.property">
-								<sequential>
-									<propertycopy
-										from="ivy.pom.@{ivy.pom.property}"
-										name="temp.ivy.pom"
-									/>
-
-									<echo
-										append="true"
-										file="${project.dir}/tools/sdk/build.${env.COMPUTERNAME}.properties"
-									>
-										ivy.pom.@{ivy.pom.property}=${temp.ivy.pom}
-									</echo>
-
-									<var name="temp.ivy.pom" unset="true" />
-								</sequential>
-							</for>
-						</then>
-					</if>
-
-					<propertyselector
-						casesensitive="false"
-						delimiter="," match="sonatype.(.+)"
-						property="sonatype.property.list"
-						select="\1"
-					/>
-
-					<sortlist
-						delimiter=","
-						override="true"
-						property="sonatype.property.list"
-						value="${sonatype.property.list}"
-					/>
-
-					<if>
-						<not>
-							<equals arg1="${sonatype.property.list}" arg2="$${sonatype.property.list}" />
-						</not>
-						<then>
-							<for list="${sonatype.property.list}" param="sonatype.property">
-								<sequential>
-									<propertycopy
-										from="sonatype.@{sonatype.property}"
-										name="temp.sonatype"
-									/>
-
-									<echo
-										append="true"
-										file="${project.dir}/tools/sdk/build.${env.COMPUTERNAME}.properties"
-									>
-										sonatype.@{sonatype.property}=${temp.sonatype}
-									</echo>
-
-									<var name="temp.sonatype" unset="true" />
-								</sequential>
-							</for>
-						</then>
-					</if>
-
-					<echo
-						append="true"
-						file="${project.dir}/tools/sdk/build.${env.COMPUTERNAME}.properties"
-					>
-						app.server.type=${app.server.type}
-						auto.deploy.dir=${liferay.home}/osgi/apps
-						clean.delete.ivy.md5=true
-						clean.delete.lib=true
-						ivy.home=${ivy.home}
-						junit.test.excludes=${junit.test.excludes}
-						liferay.home=${liferay.home}
-						lp.portal.project.dir=${project.dir}
-						microsoft.translator.client.id=${microsoft.translator.client.id}
-						microsoft.translator.client.secret=${microsoft.translator.client.secret}
-						module.framework.base.dir=${liferay.home}/osgi
-						upgrade.table.dir=${upgrade.table.dir}
-						-baselinerepo=${-baselinerepo}
-						-metatype=${-metatype}
-						-plugin=${-plugin}
-						-releaserepo=${-releaserepo}
-					</echo>
-
-					<copy file="${project.dir}/tools/sdk/build.${env.COMPUTERNAME}.properties" tofile="${project.dir}/tools/sdk/build.${env.HOST}.properties" />
-					<copy file="${project.dir}/tools/sdk/build.${env.COMPUTERNAME}.properties" tofile="${project.dir}/tools/sdk/build.${env.HOSTNAME}.properties" />
-				</then>
-			</if>
-		</sequential>
-	</macrodef>
 
 	<target name="setup-sdk">
 		<setup-sdk />
