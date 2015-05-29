@@ -746,15 +746,6 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 				return;
 			}
 
-			if (((bundle.getState() & Bundle.UNINSTALLED) == 0) &&
-				(startLevel > 0)) {
-
-				BundleStartLevel bundleStartLevel = bundle.adapt(
-					BundleStartLevel.class);
-
-				bundleStartLevel.setStartLevel(startLevel);
-			}
-
 			if (start) {
 				bundle.start();
 
@@ -781,6 +772,15 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 				bundleTracker.open();
 
 				countDownLatch.await();
+			}
+
+			if (((bundle.getState() & Bundle.UNINSTALLED) == 0) &&
+				(startLevel > 0)) {
+
+				BundleStartLevel bundleStartLevel = bundle.adapt(
+					BundleStartLevel.class);
+
+				bundleStartLevel.setStartLevel(startLevel);
 			}
 		}
 		catch (Exception e) {
