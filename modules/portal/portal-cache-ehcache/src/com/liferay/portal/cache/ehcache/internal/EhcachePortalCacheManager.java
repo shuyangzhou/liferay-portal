@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.cache.AbstractPortalCacheManager;
 import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cache.PortalCacheManagerTypes;
 import com.liferay.portal.kernel.cache.PortalCacheWrapper;
+import com.liferay.portal.kernel.cache.configuration.PortalCacheConfiguration;
 import com.liferay.portal.kernel.cache.configuration.PortalCacheManagerConfiguration;
 import com.liferay.portal.kernel.cache.configurator.PortalCacheConfiguratorSettings;
 import com.liferay.portal.kernel.log.Log;
@@ -67,12 +68,13 @@ public class EhcachePortalCacheManager<K extends Serializable, V>
 
 	@Override
 	public void reconfigureCaches(URL configurationURL) {
-		_configurationPair = EhcacheConfigurationHelperUtil.getConfiguration(
-			configurationURL, isClusterAware(), _usingDefault, props);
+		ObjectValuePair<Configuration, PortalCacheManagerConfiguration>
+			configurationPair = EhcacheConfigurationHelperUtil.getConfiguration(
+				configurationURL, isClusterAware(), _usingDefault, props);
 
-		reconfigEhcache(_configurationPair.getKey());
+		reconfigEhcache(configurationPair.getKey());
 
-		reconfigPortalCache(_configurationPair.getValue());
+		reconfigPortalCache(configurationPair.getValue());
 	}
 
 	public void setConfigFile(String configFile) {
@@ -124,7 +126,11 @@ public class EhcachePortalCacheManager<K extends Serializable, V>
 	}
 
 	@Override
-	protected PortalCache<K, V> createPortalCache(String cacheName) {
+	protected PortalCache<K, V> createPortalCache(
+		PortalCacheConfiguration portalCacheConfiguration) {
+
+		String cacheName = portalCacheConfiguration.getPortalCacheName();
+
 		synchronized (_cacheManager) {
 			if (!_cacheManager.cacheExists(cacheName)) {
 				_cacheManager.addCache(cacheName);
@@ -133,7 +139,28 @@ public class EhcachePortalCacheManager<K extends Serializable, V>
 
 		Cache cache = _cacheManager.getCache(cacheName);
 
+		EhcachePortalCacheConfiguration ehcachePortalCacheConfiguration =
+			(EhcachePortalCacheConfiguration)portalCacheConfiguration;
+
+		if (ehcachePortalCacheConfiguration.isRequireSerialization()) {
+			return new SerializableEhcachePortalCache<>(this, cache);
+		}
+
 		return new EhcachePortalCache<>(this, cache);
+	}
+
+	@Override
+	protected PortalCacheConfiguration createPortalCacheConfiguration(
+		String name, PortalCacheConfiguration defaultPortalCacheConfiguration) {
+
+		EhcachePortalCacheConfiguration ehcachePortalCacheConfiguration =
+			(EhcachePortalCacheConfiguration)defaultPortalCacheConfiguration;
+
+		return new EhcachePortalCacheConfiguration(
+			name,
+			ehcachePortalCacheConfiguration.getCacheListenerConfigurations(),
+			ehcachePortalCacheConfiguration.getBootstrapLoaderConfiguration(),
+			ehcachePortalCacheConfiguration.isRequireSerialization());
 	}
 
 	@Override
