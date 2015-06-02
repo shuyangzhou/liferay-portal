@@ -14,14 +14,15 @@
 
 package com.liferay.portal.layoutconfiguration.util.velocity;
 
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.servlet.JSPSupportServlet;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.model.CustomizedPages;
 import com.liferay.portal.model.Layout;
-import com.liferay.portlet.layoutsadmin.context.LayoutsAdminDisplayContext;
+import com.liferay.portal.model.LayoutConstants;
+import com.liferay.portal.service.LayoutLocalServiceUtil;
 import com.liferay.portlet.sites.util.SitesUtil;
 import com.liferay.taglib.aui.InputTag;
 
@@ -42,8 +43,7 @@ import javax.servlet.jsp.tagext.Tag;
 public class CustomizationSettingsProcessor implements ColumnProcessor {
 
 	public CustomizationSettingsProcessor(
-			HttpServletRequest request, HttpServletResponse response)
-		throws PortalException {
+		HttpServletRequest request, HttpServletResponse response) {
 
 		JspFactory jspFactory = JspFactory.getDefaultFactory();
 
@@ -53,10 +53,14 @@ public class CustomizationSettingsProcessor implements ColumnProcessor {
 
 		_writer = _pageContext.getOut();
 
-		LayoutsAdminDisplayContext layoutsAdminDisplayContext =
-			new LayoutsAdminDisplayContext(request, null);
+		Layout selLayout = null;
 
-		Layout selLayout = layoutsAdminDisplayContext.getSelLayout();
+		long selPlid = ParamUtil.getLong(
+			request, "selPlid", LayoutConstants.DEFAULT_PLID);
+
+		if (selPlid != LayoutConstants.DEFAULT_PLID) {
+			selLayout = LayoutLocalServiceUtil.fetchLayout(selPlid);
+		}
 
 		_layoutTypeSettings = selLayout.getTypeSettingsProperties();
 
