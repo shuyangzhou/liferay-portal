@@ -80,6 +80,10 @@ public class AssetCategoryIndexer extends BaseIndexer {
 			permissionChecker, category, ActionKeys.VIEW);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0
+	 */
+	@Deprecated
 	@Override
 	public void postProcessContextQuery(
 			BooleanQuery contextQuery, SearchContext searchContext)

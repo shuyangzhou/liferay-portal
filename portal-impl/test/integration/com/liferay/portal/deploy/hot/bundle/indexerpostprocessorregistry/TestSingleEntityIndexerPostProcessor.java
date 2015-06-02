@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.IndexerPostProcessor;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.Summary;
+import com.liferay.portal.kernel.search.filter.BooleanFilter;
 
 import java.util.Locale;
 
@@ -35,6 +36,16 @@ import org.osgi.service.component.annotations.Component;
 public class TestSingleEntityIndexerPostProcessor
 	implements IndexerPostProcessor {
 
+	@Override
+	public void postProcessContextBooleanFilter(
+			BooleanFilter booleanFilter, SearchContext searchContext)
+		throws Exception {
+	}
+
+	/**
+	 * @deprecated As of 7.0.0
+	 */
+	@Deprecated
 	@Override
 	public void postProcessContextQuery(
 			BooleanQuery contextQuery, SearchContext searchContext)
