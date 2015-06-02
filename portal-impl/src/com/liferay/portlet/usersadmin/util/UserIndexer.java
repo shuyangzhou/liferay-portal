@@ -87,6 +87,10 @@ public class UserIndexer extends BaseIndexer {
 		return CLASS_NAME;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0
+	 */
+	@Deprecated
 	@Override
 	public void postProcessContextQuery(
 			BooleanQuery contextQuery, SearchContext searchContext)
