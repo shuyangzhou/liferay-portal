@@ -4259,6 +4259,22 @@ module.framework.properties.osgi.console=11312</echo>
 	</target>
 
 	<target name="prepare-test-build">
+		<echo>
+ANT_OPTS=${env.ANT_OPTS}</echo>
+
+		<if>
+			<available file="/tmp/ant-gc.log" />
+			<then>
+				<parallel>
+					<daemons>
+						<exec executable="tail">
+							<arg line="-f /tmp/ant-gc.log" />
+						</exec>
+					</daemons>
+				</parallel>
+			</then>
+		</if>
+
 		<antcall target="record-git-commit-portal" inheritAll="false" />
 
 		<antcall target="compile" inheritAll="false" />
@@ -5949,22 +5965,6 @@ Please set "ie.driver.zip" in test.properties to point to "IEDriverServer_x64_2.
 	</target>
 
 	<target name="test-class-group">
-		<echo>
-ANT_OPTS=${env.ANT_OPTS}</echo>
-
-		<if>
-			<available file="/tmp/ant-gc.log" />
-			<then>
-				<parallel>
-					<daemons>
-						<exec executable="tail">
-							<arg line="-f /tmp/ant-gc.log" />
-						</exec>
-					</daemons>
-				</parallel>
-			</then>
-		</if>
-
 		<antcall target="clean-up-java-processes" inheritAll="false" />
 
 		<ant dir="portal-service" target="test-class-group" inheritAll="false" />
