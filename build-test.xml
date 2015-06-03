@@ -6079,6 +6079,18 @@ ${ant-gc-log}</echo>
 				<echo>Unable to read /tmp/ant-gc.log</echo>
 			</else>
 		</if>
+
+		<if>
+			<or>
+				<equals arg1="${test.class.group.index}" arg2="0" />
+				<equals arg1="${test.class.group.index}" arg2="1" />
+			</or>
+			<then>
+				<taskdef classname="com.liferay.ant.heap.dump.HeapDumpTask" classpathref="project.classpath" name="heap-dump" />
+
+				<heap-dump />
+			</then>
+		</if>
 	</target>
 
 	<target name="test-integration">
