@@ -141,6 +141,10 @@ public class WikiPageIndexer
 		return isVisible(page.getStatus(), status);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0
+	 */
+	@Deprecated
 	@Override
 	public void postProcessContextQuery(
 			BooleanQuery contextQuery, SearchContext searchContext)

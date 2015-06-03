@@ -4255,14 +4255,26 @@ module.framework.properties.osgi.console=11312</echo>
 
 		<property name="plugins.includes" value="so-portlet,${dependent-apps}" />
 
-		<ant dir="${lp.plugins.dir}" target="clean" />
-
-		<ant dir="${lp.plugins.dir}" target="compile" />
-
 		<ant antfile="build-test-plugins.xml" target="deploy-simple-server-plugins" />
 	</target>
 
 	<target name="prepare-test-build">
+		<echo>
+ANT_OPTS=${env.ANT_OPTS}</echo>
+
+		<if>
+			<available file="/tmp/ant-gc.log" />
+			<then>
+				<parallel>
+					<daemons>
+						<exec executable="tail">
+							<arg line="-f /tmp/ant-gc.log" />
+						</exec>
+					</daemons>
+				</parallel>
+			</then>
+		</if>
+
 		<antcall target="record-git-commit-portal" inheritAll="false" />
 
 		<antcall target="compile" inheritAll="false" />
@@ -5976,6 +5988,18 @@ Please set "ie.driver.zip" in test.properties to point to "IEDriverServer_x64_2.
 
 				<delete file=".testable.portal.started" failonerror="false" />
 			</then>
+		</if>
+
+		<if>
+			<available file="/tmp/ant-gc.log" />
+			<then>
+				<exec executable="cat">
+					<arg value="/tmp/ant-gc.log" />
+				</exec>
+			</then>
+			<else>
+				<echo>Can not find file /tmp/ant-gc.log</echo>
+			</else>
 		</if>
 	</target>
 

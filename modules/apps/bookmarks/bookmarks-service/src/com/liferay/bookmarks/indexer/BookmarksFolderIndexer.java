@@ -77,6 +77,10 @@ public class BookmarksFolderIndexer extends BaseIndexer {
 			permissionChecker, folder, ActionKeys.VIEW);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0
+	 */
+	@Deprecated
 	@Override
 	public void postProcessContextQuery(
 			BooleanQuery contextQuery, SearchContext searchContext)

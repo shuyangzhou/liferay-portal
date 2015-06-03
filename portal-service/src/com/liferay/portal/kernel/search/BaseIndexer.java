@@ -17,7 +17,6 @@ package com.liferay.portal.kernel.search;
 import com.liferay.portal.NoSuchCountryException;
 import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.NoSuchRegionException;
-import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -26,6 +25,9 @@ import com.liferay.portal.kernel.search.facet.AssetEntriesFacet;
 import com.liferay.portal.kernel.search.facet.Facet;
 import com.liferay.portal.kernel.search.facet.MultiValueFacet;
 import com.liferay.portal.kernel.search.facet.ScopeFacet;
+import com.liferay.portal.kernel.search.filter.BooleanFilter;
+import com.liferay.portal.kernel.search.filter.Filter;
+import com.liferay.portal.kernel.search.filter.QueryFilter;
 import com.liferay.portal.kernel.search.hits.HitsProcessor;
 import com.liferay.portal.kernel.search.hits.HitsProcessorRegistryUtil;
 import com.liferay.portal.kernel.trash.TrashHandler;
@@ -83,6 +85,7 @@ import com.liferay.portlet.trash.model.TrashEntry;
 import java.io.Serializable;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -174,6 +177,50 @@ public abstract class BaseIndexer implements Indexer {
 		}
 	}
 
+	@Override
+	public BooleanFilter getFacetBooleanFilter(
+			String className, SearchContext searchContext)
+		throws Exception {
+
+		BooleanFilter facetBooleanFilter = new BooleanFilter();
+
+		facetBooleanFilter.addTerm(Field.ENTRY_CLASS_NAME, className);
+
+		if (searchContext.getUserId() > 0) {
+			SearchPermissionChecker searchPermissionChecker =
+				SearchEngineUtil.getSearchPermissionChecker();
+
+			long[] groupIds = searchContext.getGroupIds();
+
+			long groupId = GetterUtil.getLong(
+				searchContext.getAttribute("groupId"));
+
+			if (groupId > 0) {
+				groupIds = new long[] {groupId};
+			}
+
+			BooleanQuery permissionBooleanQuery =
+				(BooleanQuery)searchPermissionChecker.getPermissionQuery(
+					searchContext.getCompanyId(), groupIds,
+					searchContext.getUserId(), className, null, searchContext);
+
+			if ((permissionBooleanQuery != null) &&
+				permissionBooleanQuery.hasClauses()) {
+
+				QueryFilter queryFilter = new QueryFilter(
+					permissionBooleanQuery);
+
+				facetBooleanFilter.add(queryFilter, BooleanClauseOccur.MUST);
+			}
+		}
+
+		return facetBooleanFilter;
+	}
+
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #getFacetBooleanFilter}
+	 */
+	@Deprecated
 	@Override
 	public BooleanQuery getFacetQuery(
 			String className, SearchContext searchContext)
@@ -283,7 +330,9 @@ public abstract class BaseIndexer implements Indexer {
 
 		String searchEngineId = GetterUtil.getString(
 			PropsUtil.get(
-				PropsKeys.INDEX_SEARCH_ENGINE_ID, new Filter(clazz.getName())));
+				PropsKeys.INDEX_SEARCH_ENGINE_ID,
+				new com.liferay.portal.kernel.configuration.Filter(
+					clazz.getName())));
 
 		if (Validator.isNotNull(searchEngineId)) {
 			SearchEngine searchEngine = SearchEngineUtil.getSearchEngine(
@@ -419,6 +468,17 @@ public abstract class BaseIndexer implements Indexer {
 		return true;
 	}
 
+	@Override
+	public void postProcessContextBooleanFilter(
+			BooleanFilter booleanFilter, SearchContext searchContext)
+		throws Exception {
+	}
+
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #postProcessContextBooleanFilter(
+	 *             BooleanFilter, SearchContext)}
+	 */
+	@Deprecated
 	@Override
 	public void postProcessContextQuery(
 			BooleanQuery contextQuery, SearchContext searchContext)
@@ -702,6 +762,37 @@ public abstract class BaseIndexer implements Indexer {
 				selectedFieldNames.toArray(
 					new String[selectedFieldNames.size()]));
 		}
+	}
+
+	/**
+	 * @deprecated As of 7.0.0
+	 */
+	@Deprecated
+	protected void addFacetClause(
+			SearchContext searchContext, BooleanFilter facetBooleanFilter,
+			Collection<Facet> facets)
+		throws ParseException {
+
+		BooleanQuery facetBooleanQuery = BooleanQueryFactoryUtil.create(
+			searchContext);
+
+		for (Facet facet : facets) {
+			BooleanClause<Query> facetBooleanClause = facet.getFacetClause();
+
+			if (facetBooleanClause != null) {
+				facetBooleanQuery.add(
+					facetBooleanClause.getClause(),
+					facetBooleanClause.getBooleanClauseOccur());
+			}
+		}
+
+		if (!facetBooleanQuery.hasClauses()) {
+			return;
+		}
+
+		QueryFilter queryFilter = new QueryFilter(facetBooleanQuery);
+
+		facetBooleanFilter.add(queryFilter, BooleanClauseOccur.MUST);
 	}
 
 	protected void addFacetSelectedFieldNames(
@@ -1190,22 +1281,43 @@ public abstract class BaseIndexer implements Indexer {
 
 		Map<String, Facet> facets = searchContext.getFacets();
 
-		for (Facet facet : facets.values()) {
-			BooleanClause<Query> facetClause = facet.getFacetClause();
+		BooleanFilter facetBooleanFilter = new BooleanFilter();
 
-			if (facetClause != null) {
-				contextQuery.add(
-					facetClause.getClause(),
-					facetClause.getBooleanClauseOccur());
+		for (Facet facet : facets.values()) {
+			BooleanClause<Filter> filterBooleanClause =
+				facet.getFacetFilterBooleanClause();
+
+			if (filterBooleanClause != null) {
+				facetBooleanFilter.add(
+					filterBooleanClause.getClause(),
+					filterBooleanClause.getBooleanClauseOccur());
 			}
 		}
 
-		BooleanQuery fullQuery = BooleanQueryFactoryUtil.create(searchContext);
+		addFacetClause(searchContext, facetBooleanFilter, facets.values());
 
-		fullQuery.add(contextQuery, BooleanClauseOccur.MUST);
+		BooleanFilter fullQueryBooleanFilter = new BooleanFilter();
+
+		if (facetBooleanFilter.hasClauses()) {
+			fullQueryBooleanFilter.add(
+				facetBooleanFilter, BooleanClauseOccur.MUST);
+		}
+
+		BooleanQuery fullBooleanQuery = BooleanQueryFactoryUtil.create(
+			searchContext);
+
+		if (contextQuery.hasClauses()) {
+			QueryFilter queryFilter = new QueryFilter(contextQuery);
+
+			fullQueryBooleanFilter.add(queryFilter, BooleanClauseOccur.MUST);
+		}
+
+		if (fullQueryBooleanFilter.hasClauses()) {
+			fullBooleanQuery.setPreBooleanFilter(fullQueryBooleanFilter);
+		}
 
 		if (searchQuery.hasClauses()) {
-			fullQuery.add(searchQuery, BooleanClauseOccur.MUST);
+			fullBooleanQuery.add(searchQuery, BooleanClauseOccur.MUST);
 		}
 
 		BooleanClause<Query>[] booleanClauses =
@@ -1213,21 +1325,22 @@ public abstract class BaseIndexer implements Indexer {
 
 		if (booleanClauses != null) {
 			for (BooleanClause<Query> booleanClause : booleanClauses) {
-				fullQuery.add(
+				fullBooleanQuery.add(
 					booleanClause.getClause(),
 					booleanClause.getBooleanClauseOccur());
 			}
 		}
 
-		postProcessFullQuery(fullQuery, searchContext);
+		postProcessFullQuery(fullBooleanQuery, searchContext);
 
 		for (IndexerPostProcessor indexerPostProcessor :
 				_indexerPostProcessors) {
 
-			indexerPostProcessor.postProcessFullQuery(fullQuery, searchContext);
+			indexerPostProcessor.postProcessFullQuery(
+				fullBooleanQuery, searchContext);
 		}
 
-		return fullQuery;
+		return fullBooleanQuery;
 	}
 
 	protected Summary createSummary(Document document) {
