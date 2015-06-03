@@ -5993,12 +5993,9 @@ Please set "ie.driver.zip" in test.properties to point to "IEDriverServer_x64_2.
 		<if>
 			<available file="/tmp/ant-gc.log" />
 			<then>
-				<loadfile property="ant-gc-log" srcFile="/tmp/ant-gc.log" />
-
-				<echo>
-Ant GC log:
-
-${ant-gc-log}</echo>
+				<exec executable="cat">
+					<arg value="/tmp/ant-gc.log" />
+				</exec>
 			</then>
 			<else>
 				<echo>Can not find file /tmp/ant-gc.log</echo>
