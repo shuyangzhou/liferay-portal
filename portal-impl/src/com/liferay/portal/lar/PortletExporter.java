@@ -58,7 +58,6 @@ import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.Node;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.kernel.zip.ZipWriter;
-import com.liferay.portal.kernel.zip.ZipWriterFactoryUtil;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Layout;
 import com.liferay.portal.model.LayoutConstants;
@@ -1141,8 +1140,8 @@ public class PortletExporter {
 		throws PortalException {
 
 		Layout layout = LayoutLocalServiceUtil.getLayout(plid);
-
-		ZipWriter zipWriter = ZipWriterFactoryUtil.getZipWriter();
+		ZipWriter zipWriter = ExportImportHelperUtil.getPortletZipWriter(
+			portletId);
 
 		PortletDataContext portletDataContext =
 			PortletDataContextFactoryUtil.createExportPortletDataContext(
