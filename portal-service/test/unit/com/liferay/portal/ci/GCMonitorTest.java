@@ -99,28 +99,30 @@ public class GCMonitorTest {
 	}
 
 	private boolean _shouldRun() {
-		String hostname = System.getenv("HOSTNAME");
+//		String hostname = System.getenv("HOSTNAME");
+//
+//		if (hostname == null) {
+//			if (_log.isWarnEnabled()) {
+//				_log.warn(
+//					"Unable to detect HOSTNAME env variable, skip running");
+//			}
+//
+//			return false;
+//		}
+//
+//		if (!hostname.endsWith(".lax.liferay.com")) {
+//			if (_log.isWarnEnabled()) {
+//				_log.warn(
+//					"Unknow hostname " + hostname +
+//						", not on CI? Skip running");
+//			}
+//
+//			return false;
+//		}
+//
+//		return true;
 
-		if (hostname == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(
-					"Unable to detect HOSTNAME env variable, skip running");
-			}
-
-			return false;
-		}
-
-		if (!hostname.endsWith(".lax.liferay.com")) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(
-					"Unknow hostname " + hostname +
-						", not on CI? Skip running");
-			}
-
-			return false;
-		}
-
-		return true;
+		return false;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(GCMonitorTest.class);
