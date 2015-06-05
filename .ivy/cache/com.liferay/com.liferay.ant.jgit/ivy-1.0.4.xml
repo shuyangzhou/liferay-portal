@@ -4,7 +4,7 @@
 		module="com.liferay.ant.jgit"
 		revision="1.0.4"
 		status="release"
-		publication="20150604211747"
+		publication="20150604233637"
 	>
 		<license name="LGPL 2.1" url="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt" />
 		<description homepage="">
