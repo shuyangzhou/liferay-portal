@@ -16,6 +16,9 @@ package com.liferay.ant.jgit;
 
 import java.io.IOException;
 
+import java.lang.ref.Reference;
+import java.lang.ref.SoftReference;
+
 import org.eclipse.jgit.dircache.DirCache;
 import org.eclipse.jgit.errors.CorruptObjectException;
 import org.eclipse.jgit.errors.NoWorkTreeException;
@@ -34,17 +37,33 @@ public class DirCacheCachedRepositoryWrapper extends RepositoryWrapper {
 	public DirCache readDirCache()
 		throws CorruptObjectException, IOException, NoWorkTreeException {
 
-		if (_dirCache == null) {
-			synchronized(DirCacheCachedRepositoryWrapper.class) {
-				if (_dirCache == null) {
-					_dirCache = repository.readDirCache();
-				}
+		if (_dirCacheReference != null) {
+			DirCache dirCache = _dirCacheReference.get();
+
+			if (dirCache != null) {
+				return dirCache;
 			}
 		}
 
-		return _dirCache;
+		DirCache dirCache = null;
+
+		synchronized(DirCacheCachedRepositoryWrapper.class) {
+			if (_dirCacheReference != null) {
+				dirCache = _dirCacheReference.get();
+
+				if (dirCache != null) {
+					return dirCache;
+				}
+			}
+
+			dirCache = repository.readDirCache();
+
+			_dirCacheReference = new SoftReference<>(dirCache);
+		}
+
+		return dirCache;
 	}
 
-	private static volatile DirCache _dirCache;
+	private static volatile Reference<DirCache> _dirCacheReference;
 
 }

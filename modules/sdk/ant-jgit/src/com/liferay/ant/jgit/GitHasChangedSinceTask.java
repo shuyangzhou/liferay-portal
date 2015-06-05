@@ -22,15 +22,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
+import org.apache.tools.ant.taskdefs.condition.Condition;
 
 import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.lib.RepositoryCache;
-import org.eclipse.jgit.lib.RepositoryCache.FileKey;
-import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.revwalk.filter.MaxCountRevFilter;
-import org.eclipse.jgit.treewalk.TreeWalk;
 import org.eclipse.jgit.treewalk.filter.AndTreeFilter;
 import org.eclipse.jgit.treewalk.filter.PathFilter;
 import org.eclipse.jgit.treewalk.filter.TreeFilter;
@@ -39,7 +37,72 @@ import org.eclipse.jgit.util.FS;
 /**
  * @author Shuyang Zhou
  */
-public class GitHeadHashTask extends Task {
+public class GitHasChangedSinceTask extends Task implements Condition {
+
+	@Override
+	public boolean eval() throws BuildException {
+		if (_path == null) {
+			throw new BuildException(
+				"Path attribute is required", getLocation());
+		}
+
+		if (_since == null) {
+			throw new BuildException(
+				"Since attribute is required", getLocation());
+		}
+
+		File gitDir = PathUtil.getGitDir(_gitDir, getProject(), getLocation());
+
+		String relativePath = PathUtil.toRelativePath(gitDir, _path);
+
+		String cacheKey = relativePath.concat("#").concat(_since);
+
+		if (_useCache) {
+			Boolean changedSince = _changedSinceFlags.get(cacheKey);
+
+			if (changedSince != null) {
+				return changedSince;
+			}
+		}
+
+		try (Repository repository = RepositoryCache.open(
+				RepositoryCache.FileKey.exact(gitDir, FS.DETECTED))) {
+
+			RevWalk revWalk = new RevWalk(repository);
+
+			revWalk.setRetainBody(false);
+
+			revWalk.markStart(
+				revWalk.parseCommit(repository.resolve(Constants.HEAD)));
+			revWalk.markUninteresting(
+				revWalk.parseCommit(repository.resolve(_since)));
+
+			revWalk.setRevFilter(MaxCountRevFilter.create(2));
+
+			revWalk.setTreeFilter(
+				AndTreeFilter.create(
+					PathFilter.create(relativePath), TreeFilter.ANY_DIFF
+				));
+
+			boolean changedSince = true;
+
+			if ((revWalk.next() != null) && (revWalk.next() == null)) {
+				changedSince = false;
+			}
+
+			revWalk.dispose();
+
+			if (_useCache) {
+				_changedSinceFlags.put(cacheKey, changedSince);
+			}
+
+			return changedSince;
+		}
+		catch (Exception e) {
+			throw new BuildException(
+				"Unable to get head hash for path " + _path, e);
+		}
+	}
 
 	@Override
 	public void execute() throws BuildException {
@@ -48,88 +111,20 @@ public class GitHeadHashTask extends Task {
 				"Property attribute is required", getLocation());
 		}
 
-		if (_path == null) {
-			throw new BuildException(
-				"Path attribute is required", getLocation());
-		}
-
-		File gitDir = PathUtil.getGitDir(_gitDir, getProject(), getLocation());
-
-		String relativePath = PathUtil.toRelativePath(gitDir, _path);
-
-		if (_useCache) {
-			String hash = _hashes.get(relativePath);
-
-			if (hash != null) {
-				Project currentProject = getProject();
-
-				currentProject.setNewProperty(_property, hash);
-
-				return;
-			}
-		}
-
-		try (Repository repository = RepositoryCache.open(
-				FileKey.exact(gitDir, FS.DETECTED))) {
-
-			RevWalk revWalk = new RevWalk(repository);
-
-			revWalk.setRetainBody(false);
-
-			revWalk.markStart(
-				revWalk.parseCommit(repository.resolve(Constants.HEAD)));
-
-			if (_ignoreFileName == null) {
-				revWalk.setRevFilter(MaxCountRevFilter.create(1));
-			}
-			else {
-				revWalk.setRevFilter(MaxCountRevFilter.create(2));
-			}
-
-			revWalk.setTreeFilter(
-				AndTreeFilter.create(
-					PathFilter.create(relativePath), TreeFilter.ANY_DIFF
-				));
-
-			RevCommit revCommit = revWalk.next();
-
-			if (revCommit == null) {
-				throw new IllegalStateException(
-					"Unable to find any commit under " + _path);
-			}
-
-			if (hasIgnoreFile(repository, revCommit, relativePath)) {
-				RevCommit secondRevCommit = revWalk.next();
-
-				if (secondRevCommit != null) {
-					revCommit = secondRevCommit;
-				}
-			}
-
+		if (eval()) {
 			Project currentProject = getProject();
 
-			String hash = revCommit.name();
-
-			currentProject.setNewProperty(_property, hash);
-
-			if (_useCache) {
-				_hashes.put(relativePath, hash);
+			if (_value == null) {
+				currentProject.setNewProperty(_property, "true");
 			}
-
-			revWalk.dispose();
-		}
-		catch (Exception e) {
-			throw new BuildException(
-				"Unable to get head hash for path " + _path, e);
+			else {
+				currentProject.setNewProperty(_property, _value);
+			}
 		}
 	}
 
 	public void setGitDir(File gitDir) {
 		_gitDir = gitDir;
-	}
-
-	public void setIgnoreFileName(String ignoreFileName) {
-		_ignoreFileName = ignoreFileName;
 	}
 
 	public void setPath(String path) {
@@ -140,45 +135,26 @@ public class GitHeadHashTask extends Task {
 		_property = property;
 	}
 
+	public void setSince(String since) {
+		_since = since;
+	}
+
 	public void setUseCache(boolean useCache) {
 		_useCache = useCache;
 	}
 
-	protected boolean hasIgnoreFile(
-			Repository repository, RevCommit revCommit, String relativePath)
-		throws Exception {
-
-		if (_ignoreFileName == null) {
-			return false;
-		}
-
-		try (TreeWalk treeWalk = new TreeWalk(repository)) {
-			treeWalk.addTree(revCommit.getTree());
-
-			if (revCommit.getParentCount() > 0) {
-				RevCommit parentRevCommit = revCommit.getParent(0);
-
-				treeWalk.addTree(parentRevCommit.getTree());
-			}
-
-			treeWalk.setRecursive(true);
-
-			treeWalk.setFilter(
-				AndTreeFilter.create(
-					PathFilter.create(relativePath + "/" + _ignoreFileName),
-					TreeFilter.ANY_DIFF));
-
-			return treeWalk.next();
-		}
+	public void setValue(String value) {
+		_value = value;
 	}
 
-	private static final Map<String, String> _hashes =
+	private static final Map<String, Boolean> _changedSinceFlags =
 		new ConcurrentHashMap<>();
 
 	private File _gitDir;
-	private String _ignoreFileName;
 	private String _path;
 	private String _property;
+	private String _since;
 	private boolean _useCache = true;
+	private String _value;
 
 }

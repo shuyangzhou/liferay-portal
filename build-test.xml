@@ -1122,7 +1122,7 @@
 
 	<macrodef name="setup-testable-tomcat-logging">
 		<sequential>
-			<if>
+<!--			<if>
 				<not>
 					<resourcecontains resource="${app.server.tomcat.dir}/conf/logging.properties" substring="org.apache.catalina.level" />
 				</not>
@@ -1136,7 +1136,7 @@ org.apache.catalina.loader.WebappLoader.level=INFO
 org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 					</echo>
 				</then>
-			</if>
+			</if>-->
 		</sequential>
 	</macrodef>
 
@@ -5995,6 +5995,19 @@ Please set "ie.driver.zip" in test.properties to point to "IEDriverServer_x64_2.
 		<echo>
 ANT_OPTS=${env.ANT_OPTS}</echo>
 
+		<if>
+			<available file="/tmp/ant-gc.log" />
+			<then>
+				<parallel>
+					<daemons>
+						<exec executable="tail">
+							<arg line="tail -f /tmp/ant-gc.log" />
+						</exec>
+					</daemons>
+				</parallel>
+			</then>
+		</if>
+
 		<antcall target="clean-up-java-processes" inheritAll="false" />
 
 		<ant dir="portal-service" target="test-class-group" inheritAll="false" />
@@ -6033,6 +6046,18 @@ ${ant-gc-log}</echo>
 			<else>
 				<echo>Unable to read /tmp/ant-gc.log</echo>
 			</else>
+		</if>
+
+		<if>
+			<or>
+				<equals arg1="${test.class.group.index}" arg2="0" />
+				<equals arg1="${test.class.group.index}" arg2="1" />
+			</or>
+			<then>
+				<taskdef classname="com.liferay.ant.heap.dump.HeapDumpTask" classpathref="project.classpath" name="heap-dump" />
+
+				<heap-dump live="true" />
+			</then>
 		</if>
 	</target>
 
