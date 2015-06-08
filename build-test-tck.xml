@@ -306,6 +306,8 @@ ${logfile.content}</echo>
 			<sequential>
 				<exec dir="tools/tck/src/@{test.directory}" executable="${basedir}/tools/tck/bin/tsant${tsant.file.suffix.bat}" newenvironment="true">
 					<arg line="runclient" />
+					<env key="ANT_HOME" value="${env.ANT_HOME}" />
+					<env key="JAVA_HOME" value="${env.JAVA_HOME}" />
 					<env key="TS_HOME" value="${basedir}/tools/tck" />
 				</exec>
 
