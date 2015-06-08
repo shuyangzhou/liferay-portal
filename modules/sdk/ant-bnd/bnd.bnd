@@ -2,4 +2,6 @@ Bundle-Name: Liferay Ant BND
 Bundle-SymbolicName: com.liferay.ant.bnd
 Bundle-Version: 1.0.10
 Export-Package: com.liferay.ant.bnd
-Include-Resource: classes
+Include-Resource:\
+	classes,\
+	@../../../portal-service/portal-service.jar!/com/liferay/portal/kernel/util/ReleaseInfo.java
