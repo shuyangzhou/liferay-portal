@@ -1123,9 +1123,12 @@
 	<macrodef name="setup-testable-tomcat-logging">
 		<sequential>
 			<if>
-				<not>
-					<resourcecontains resource="${app.server.tomcat.dir}/conf/logging.properties" substring="org.apache.catalina.level" />
-				</not>
+				<or>
+					<istrue value="${enable.testable.tomcat.logging}" />
+					<not>
+						<resourcecontains resource="${app.server.tomcat.dir}/conf/logging.properties" substring="org.apache.catalina.level" />
+					</not>
+				</or>
 				<then>
 					<echo file="${app.server.tomcat.dir}/conf/logging.properties" append="true">
 						<![CDATA[
