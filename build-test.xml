@@ -4429,7 +4429,7 @@ module.framework.properties.osgi.console=11312</echo>
 
 		<replace file="${app.server.tomcat.bin.dir}/setenv${file.suffix.bat}">
 			<replacetoken><![CDATA[-Xmx1024m -XX:MaxPermSize=256m]]></replacetoken>
-			<replacevalue><![CDATA[-Xmx2048m -XX:MaxPermSize=512m -verbose:gc -Xloggc:/tmp/tomcat-gc.log -XX:+PrintGCDetails -XX:+PrintGCCause]]></replacevalue>
+			<replacevalue><![CDATA[-XX:NewSize=128m -XX:MaxNewSize=128m -Xms1024m -Xmx1024m -XX:PermSize=200m -XX:MaxPermSize=512m -XX:SurvivorRatio=65536 -XX:TargetSurvivorRatio=0 -XX:MaxTenuringThreshold=0 -XX:+UseParNewGC -XX:ParallelGCThreads=2 -verbose:gc -Xloggc:/tmp/tomcat-gc.log -XX:+PrintGCDetails -XX:+PrintGCCause]]></replacevalue>
 		</replace>
 
 		<antcall target="prepare-test-build-tomcat-dependents" inheritAll="false" />
