@@ -5987,6 +5987,8 @@ Please set "ie.driver.zip" in test.properties to point to "IEDriverServer_x64_2.
 	</target>
 
 	<target name="test-class-group">
+		<echoproperties prefix="env."/>
+
 		<echo>
 ANT_OPTS=${env.ANT_OPTS}</echo>
 
