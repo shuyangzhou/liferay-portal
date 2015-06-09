@@ -49,7 +49,7 @@ public class CronTextTest {
 			getCronText(startDate, CronText.MINUTELY_FREQUENCY, 12));
 
 		Assert.assertEquals(
-			"5 * */13 * * ? *",
+			"5 4 */13 * * ? *",
 			getCronText(startDate, CronText.HOURLY_FREQUENCY, 13));
 
 		Assert.assertEquals(
