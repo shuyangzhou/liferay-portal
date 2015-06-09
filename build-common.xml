@@ -925,7 +925,15 @@ Please set the environment variable ANT_OPTS to the recommended value of
 					</if>
 				</then>
 				<else>
-					<property name="junit.java.gc" value="${junit.java.integration.gc} -verbose:gc -Xloggc:/tmp/${project.dir}-@{test.type}-gc.log -XX:+PrintGCCause -XX:+PrintGCDetails" />
+					<echo>
+						#######################
+						test.type=@{test.type}
+
+						project.dir=${project.dir}
+
+						basedir=${basedir}
+					</echo>
+					<property name="junit.java.gc" value="${junit.java.integration.gc} -verbose:gc -Xloggc:/tmp/${basedir}-@{test.type}-gc.log -XX:+PrintGCCause -XX:+PrintGCDetails" />
 				</else>
 			</if>
 
