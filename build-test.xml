@@ -1453,6 +1453,10 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 
 					<antcall target="delete-liferay-home" />
 
+					<echo>
+						############About to start app server
+					</echo>
+
 					<if>
 						<equals arg1="${test.ant.launched.by.selenium}" arg2="true" />
 						<then>
@@ -1463,6 +1467,14 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 						<else>
 							<parallel>
 								<daemons>
+									<echo>
+										############
+
+										test.app.server.bin.dir=${test.app.server.bin.dir}
+										app.server.start.executable=${app.server.start.executable}
+										app.server.start.executable.arg.line=${app.server.start.executable.arg.line}
+									</echo>
+
 									<exec dir="${test.app.server.bin.dir}" executable="${app.server.start.executable}" resolveexecutable="true">
 										<arg line="${app.server.start.executable.arg.line}" />
 									</exec>
