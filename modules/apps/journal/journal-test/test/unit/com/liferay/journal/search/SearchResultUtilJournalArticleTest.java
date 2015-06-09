@@ -102,7 +102,7 @@ public class SearchResultUtilJournalArticleTest
 		Assert.assertEquals(_DOCUMENT_VERSION, versions.get(0));
 		Assert.assertEquals(1, versions.size());
 
-		assertEmptyCommentRelatedResults(searchResult);
+		assertEmptyCommentRelatedSearchResults(searchResult);
 		assertEmptyFileEntryRelatedSearchResults(searchResult);
 	}
 
