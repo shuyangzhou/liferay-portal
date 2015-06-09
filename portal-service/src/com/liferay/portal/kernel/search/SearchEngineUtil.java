@@ -556,6 +556,64 @@ public class SearchEngineUtil {
 		return _indexReadOnly;
 	}
 
+	public static void partiallyUpdateDocument(
+			String searchEngineId, long companyId, Document document,
+			boolean commitImmediately)
+		throws SearchException {
+
+		if (isIndexReadOnly()) {
+			return;
+		}
+
+		if (_log.isDebugEnabled()) {
+			_log.debug("Document " + document.toString());
+		}
+
+		SearchEngine searchEngine = getSearchEngine(searchEngineId);
+
+		IndexWriter indexWriter = searchEngine.getIndexWriter();
+
+		_searchPermissionChecker.addPermissionFields(companyId, document);
+
+		SearchContext searchContext = new SearchContext();
+
+		searchContext.setCommitImmediately(commitImmediately);
+		searchContext.setCompanyId(companyId);
+		searchContext.setSearchEngineId(searchEngineId);
+
+		indexWriter.partiallyUpdateDocument(searchContext, document);
+	}
+
+	public static void partiallyUpdateDocuments(
+			String searchEngineId, long companyId,
+			Collection<Document> documents, boolean commitImmediately)
+		throws SearchException {
+
+		if (isIndexReadOnly() || (documents == null) || documents.isEmpty()) {
+			return;
+		}
+
+		SearchEngine searchEngine = getSearchEngine(searchEngineId);
+
+		IndexWriter indexWriter = searchEngine.getIndexWriter();
+
+		for (Document document : documents) {
+			if (_log.isDebugEnabled()) {
+				_log.debug("Document " + document.toString());
+			}
+
+			_searchPermissionChecker.addPermissionFields(companyId, document);
+		}
+
+		SearchContext searchContext = new SearchContext();
+
+		searchContext.setCommitImmediately(commitImmediately);
+		searchContext.setCompanyId(companyId);
+		searchContext.setSearchEngineId(searchEngineId);
+
+		indexWriter.partiallyUpdateDocuments(searchContext, documents);
+	}
+
 	public synchronized static void removeBackup(
 			long companyId, String backupName)
 		throws SearchException {

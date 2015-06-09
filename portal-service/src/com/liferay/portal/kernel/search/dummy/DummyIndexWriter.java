@@ -81,6 +81,16 @@ public class DummyIndexWriter implements IndexWriter {
 	}
 
 	@Override
+	public void partiallyUpdateDocument(
+		SearchContext searchContext, Document document) {
+	}
+
+	@Override
+	public void partiallyUpdateDocuments(
+		SearchContext searchContext, Collection<Document> documents) {
+	}
+
+	@Override
 	public void updateDocument(SearchContext searchContext, Document document) {
 	}
 
