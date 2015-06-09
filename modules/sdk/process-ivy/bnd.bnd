@@ -1,0 +1,4 @@
+Bundle-Name: Process Ivy
+Bundle-SymbolicName: com.liferay.ant.process.ivy
+Bundle-Version: 1.0.0
+Include-Resource: classes
