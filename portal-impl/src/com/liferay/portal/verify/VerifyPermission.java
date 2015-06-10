@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Layout;
 import com.liferay.portal.model.LayoutConstants;
@@ -277,8 +278,15 @@ public class VerifyPermission extends VerifyProcess {
 	protected boolean isPrivateLayout(String name, String primKey)
 		throws Exception {
 
-		if (!name.equals(Layout.class.getName())) {
+		if (!name.equals(Layout.class.getName()) &&
+			!primKey.contains(PortletConstants.LAYOUT_SEPARATOR)) {
+
 			return false;
+		}
+
+		if (primKey.contains(PortletConstants.LAYOUT_SEPARATOR)) {
+			primKey = StringUtil.extractFirst(
+				primKey, PortletConstants.LAYOUT_SEPARATOR);
 		}
 
 		long plid = GetterUtil.getLong(primKey);
