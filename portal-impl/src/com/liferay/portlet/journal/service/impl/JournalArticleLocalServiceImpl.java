@@ -15,6 +15,7 @@
 package com.liferay.portlet.journal.service.impl;
 
 import com.liferay.portal.LocaleException;
+import com.liferay.portal.kernel.comment.CommentManagerUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Property;
@@ -433,6 +434,14 @@ public class JournalArticleLocalServiceImpl
 			serviceContext.getAssetTagNames(),
 			serviceContext.getAssetLinkEntryIds());
 
+		// Comment
+
+		if (PropsValues.JOURNAL_ARTICLE_COMMENTS_ENABLED) {
+			CommentManagerUtil.addDiscussion(
+				userId, groupId, JournalArticle.class.getName(),
+				resourcePrimKey, article.getUserName());
+		}
+
 		// Dynamic data mapping
 
 		if (classNameLocalService.getClassNameId(DDMStructure.class) ==
@@ -443,15 +452,6 @@ public class JournalArticleLocalServiceImpl
 		}
 		else {
 			updateDDMLinks(id, groupId, ddmStructureKey, ddmTemplateKey, true);
-		}
-
-		// Message boards
-
-		if (PropsValues.JOURNAL_ARTICLE_COMMENTS_ENABLED) {
-			mbMessageLocalService.addDiscussionMessage(
-				userId, article.getUserName(), groupId,
-				JournalArticle.class.getName(), resourcePrimKey,
-				WorkflowConstants.ACTION_PUBLISH);
 		}
 
 		// Email
@@ -1008,25 +1008,25 @@ public class JournalArticleLocalServiceImpl
 
 		if (articlesCount == 1) {
 
-			// Ratings
-
-			ratingsStatsLocalService.deleteStats(
-				JournalArticle.class.getName(), article.getResourcePrimKey());
-
-			// Message boards
-
-			mbMessageLocalService.deleteDiscussionMessages(
-				JournalArticle.class.getName(), article.getResourcePrimKey());
-
 			// Asset
 
 			assetEntryLocalService.deleteEntry(
+				JournalArticle.class.getName(), article.getResourcePrimKey());
+
+			// Comment
+
+			CommentManagerUtil.deleteDiscussion(
 				JournalArticle.class.getName(), article.getResourcePrimKey());
 
 			// Content searches
 
 			journalContentSearchLocalService.deleteArticleContentSearches(
 				article.getGroupId(), article.getArticleId());
+
+			// Ratings
+
+			ratingsStatsLocalService.deleteStats(
+				JournalArticle.class.getName(), article.getResourcePrimKey());
 
 			// Small image
 

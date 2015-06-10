@@ -723,10 +723,13 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 			}
 
 			Set<String> liferayPortletIds = _readLiferayPortletXML(
-				StringPool.BLANK, xmls[2], portletsMap);
+				StringPool.BLANK, servletContext.getClassLoader(), xmls[2],
+				portletsMap);
 
 			liferayPortletIds.addAll(
-				_readLiferayPortletXML(StringPool.BLANK, xmls[3], portletsMap));
+				_readLiferayPortletXML(
+					StringPool.BLANK, servletContext.getClassLoader(), xmls[3],
+					portletsMap));
 
 			// Check for missing entries in liferay-portlet.xml
 
@@ -801,7 +804,8 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 					servletURLPatterns, pluginPackage));
 
 			Set<String> liferayPortletIds = _readLiferayPortletXML(
-				servletContextName, xmls[2], portletsMap);
+				servletContextName, servletContext.getClassLoader(), xmls[2],
+				portletsMap);
 
 			// Check for missing entries in liferay-portlet.xml
 
@@ -1193,7 +1197,7 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 	private void _readLiferayPortletXML(
 		String servletContextName, Set<String> liferayPortletIds,
 		Map<String, String> roleMappers, Element portletElement,
-		Map<String, Portlet> portletsMap) {
+		Map<String, Portlet> portletsMap, ClassLoader classLoader) {
 
 		String portletId = portletElement.elementText("portlet-name");
 
@@ -1283,6 +1287,7 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 
 			SchedulerEntry schedulerEntry = new SchedulerEntryImpl();
 
+			schedulerEntry.setClassLoader(classLoader);
 			schedulerEntry.setDescription(
 				GetterUtil.getString(
 					schedulerEntryElement.elementText(
@@ -1781,8 +1786,8 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 	}
 
 	private Set<String> _readLiferayPortletXML(
-			String servletContextName, String xml,
-			Map<String, Portlet> portletsMap)
+			String servletContextName, ClassLoader classLoader,
+			String xml, Map<String, Portlet> portletsMap)
 		throws Exception {
 
 		Set<String> liferayPortletIds = new HashSet<>();
@@ -1827,7 +1832,7 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 		for (Element portletElement : rootElement.elements("portlet")) {
 			_readLiferayPortletXML(
 				servletContextName, liferayPortletIds, roleMappers,
-				portletElement, portletsMap);
+				portletElement, portletsMap, classLoader);
 		}
 
 		return liferayPortletIds;

@@ -21,15 +21,13 @@
 <%@ taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
 <%@ page import="com.liferay.journal.content.asset.addon.entry.comments.CommentsContentMetadataAssetAddonEntry" %>
+<%@ page import="com.liferay.portal.kernel.comment.CommentManagerUtil" %>
 <%@ page import="com.liferay.portal.kernel.util.Constants" %>
 <%@ page import="com.liferay.portal.kernel.util.ParamUtil" %>
 <%@ page import="com.liferay.portal.kernel.util.WebKeys" %>
-<%@ page import="com.liferay.portal.kernel.workflow.WorkflowConstants" %>
-<%@ page import="com.liferay.portal.util.PortalUtil" %>
 <%@ page import="com.liferay.portlet.PortletURLUtil" %>
 <%@ page import="com.liferay.portlet.journal.model.JournalArticle" %>
 <%@ page import="com.liferay.portlet.journal.model.JournalArticleDisplay" %>
-<%@ page import="com.liferay.portlet.messageboards.service.MBMessageLocalServiceUtil" %>
 
 <%@ page import="javax.portlet.PortletURL" %>
 
@@ -43,12 +41,7 @@ String viewMode = ParamUtil.getString(request, "viewMode");
 %>
 
 <div class="content-metadata-entry content-metadata-ratings">
-
-	<%
-	int discussionMessagesCount = MBMessageLocalServiceUtil.getDiscussionMessagesCount(PortalUtil.getClassNameId(JournalArticle.class.getName()), articleDisplay.getResourcePrimKey(), WorkflowConstants.STATUS_APPROVED);
-	%>
-
-	<c:if test="<%= discussionMessagesCount > 0 %>">
+	<c:if test="<%= CommentManagerUtil.getCommentsCount(JournalArticle.class.getName(), articleDisplay.getResourcePrimKey()) > 0 %>">
 		<liferay-ui:header
 			title="comments"
 		/>
@@ -62,8 +55,6 @@ String viewMode = ParamUtil.getString(request, "viewMode");
 
 	<%
 	PortletURL currentURLObj = PortletURLUtil.getCurrent(liferayPortletRequest, liferayPortletResponse);
-
-	String currentURL = currentURLObj.toString();
 	%>
 
 	<liferay-ui:discussion

@@ -273,7 +273,7 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 			serviceContext.getAssetTagNames(),
 			serviceContext.getAssetLinkEntryIds());
 
-		// Comments
+		// Comment
 
 		addDiscussion(entry, userId, groupId);
 

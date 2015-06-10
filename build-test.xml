@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<project name="portal-test" basedir="." default="test" xmlns:antelope="antlib:ise.antelope.tasks">
+<project name="portal-test" basedir="." default="test" xmlns:antelope="antlib:ise.antelope.tasks" xmlns:if="ant:if" xmlns:unless="ant:unless">
 	<import file="build.xml" />
 
 	<property file="${project.dir}/test.generated.properties" />
@@ -262,7 +262,7 @@
 					<available file="git-commit-portal" />
 				</not>
 				<then>
-					<antcall target="record-git-commit-portal" inheritAll="false" />
+					<record-git-commit-portal />
 				</then>
 			</if>
 
@@ -1023,6 +1023,126 @@
 		</sequential>
 	</macrodef>
 
+	<macrodef name="print-gc-logs">
+		<sequential>
+			<if>
+				<available file="/tmp/ant-gc.log" />
+				<then>
+					<loadfile property="ant-gc-log" srcFile="/tmp/ant-gc.log" />
+
+					<echo>
+	Ant GC log:
+
+	${ant-gc-log}</echo>
+				</then>
+				<else>
+					<echo>Unable to read /tmp/ant-gc.log</echo>
+				</else>
+			</if>
+
+			<if>
+				<available file="/tmp/tomcat-gc.log" />
+				<then>
+					<loadfile property="tomcat-gc-log" srcFile="/tmp/tomcat-gc.log" />
+
+					<echo>
+	Tomcat GC log:
+
+	${tomcat-gc-log}</echo>
+				</then>
+				<else>
+					<echo>Unable to read /tmp/tomcat-gc.log</echo>
+				</else>
+			</if>
+
+			<if>
+				<available file="/tmp/tsant-gc.log" />
+				<then>
+					<loadfile property="tsant-gc-log" srcFile="/tmp/tsant-gc.log" />
+
+					<echo>
+	Tsant GC log:
+
+	${tsant-gc-log}</echo>
+				</then>
+				<else>
+					<echo>Unable to read /tmp/tsant-gc.log</echo>
+				</else>
+			</if>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="record-git-commit-plugins">
+		<sequential>
+			<script classpathref="project.classpath" language="beanshell">
+				<![CDATA[
+					File pluginsDir = null;
+
+					String lpPluginsDirName = project.getProperty("lp.plugins.dir");
+
+					if ((lpPluginsDirName == null) || lpPluginsDirName.equals("")) {
+						File projectDir = new File(project.getProperty("project.dir"));
+
+						String projectDirName = projectDir.getName();
+
+						String pluginsDirName = "liferay-plugins" + projectDirName.substring("liferay-portal".length());
+
+						pluginsDir = new File(projectDir.getParent(), pluginsDirName);
+					}
+					else {
+						if (lpPluginsDirName.contains("${basedir.name}")) {
+							lpPluginsDirName = lpPluginsDirName.substring(0, lpPluginsDirName.lastIndexOf("/"));
+						}
+
+						pluginsDir = new File(lpPluginsDirName);
+					}
+
+					project.setProperty("git.plugins.dir", pluginsDir.toString());
+				]]>
+			</script>
+
+			<exec dir="${git.plugins.dir}" executable="git" outputproperty="git.commit.plugins.rev.parse">
+				<arg line="rev-parse HEAD" />
+			</exec>
+
+			<echo>Recording ${git.plugins.dir} with ${git.commit.plugins.rev.parse}.</echo>
+
+			<var name="git.plugins.dir" unset="true" />
+
+			<echo file="git-commit-plugins">${git.commit.plugins.rev.parse}</echo>
+
+			<if>
+				<isset property="env.JENKINS_HOME" />
+				<then>
+					<copy
+						file="git-commit-plugins"
+						todir="${env.JENKINS_HOME}/userContent/jobs/${env.JOB_NAME}/builds/${env.BUILD_NUMBER}"
+					/>
+				</then>
+			</if>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="record-git-commit-portal">
+		<sequential>
+			<exec dir="${project.dir}" executable="git" outputproperty="git.commit.portal.rev.parse">
+				<arg line="rev-parse HEAD" />
+			</exec>
+
+			<echo file="git-commit-portal">${git.commit.portal.rev.parse}</echo>
+
+			<if>
+				<isset property="env.JENKINS_HOME" />
+				<then>
+					<copy
+						file="git-commit-portal"
+						todir="${env.JENKINS_HOME}/userContent/jobs/${env.JOB_NAME}/builds/${env.BUILD_NUMBER}"
+					/>
+				</then>
+			</if>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="set-app-server-properties">
 		<attribute default="${app.server.bin.dir}" name="app.server.bin.dir" />
 		<attribute default="0" name="app.server.bundle.index" />
@@ -1459,37 +1579,20 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 							<exec dir="${test.app.server.bin.dir}" executable="${app.server.start.executable}" resolveexecutable="true">
 								<arg line="${app.server.start.executable.arg.line}" />
 							</exec>
+
+							<wait-for-app-server app.server.bin.dir="@{app.server.bin.dir}" />
 						</then>
 						<else>
 							<parallel>
+								<sequential>
+									<wait-for-app-server app.server.bin.dir="@{app.server.bin.dir}" />
+								</sequential>
 								<daemons>
-									<exec dir="${test.app.server.bin.dir}" executable="${app.server.start.executable}" resolveexecutable="true">
+									<exec dir="${test.app.server.bin.dir}" executable="${app.server.start.executable}" failonerror="true" resolveexecutable="true">
 										<arg line="${app.server.start.executable.arg.line}" />
 									</exec>
 								</daemons>
 							</parallel>
-						</else>
-					</if>
-
-					<if>
-						<equals arg1="@{app.server.bin.dir}" arg2="${app.server.tcat.admin.bin.dir}" />
-						<then>
-							<waitfor maxwait="5" maxwaitunit="minute">
-								<http url="http://localhost:${test.app.server.leading.port.number}180/console" />
-							</waitfor>
-						</then>
-						<elseif>
-							<equals arg1="@{app.server.bin.dir}" arg2="${app.server.tcat.agent.bin.dir}" />
-							<then>
-								<waitfor maxwait="1" maxwaitunit="minute">
-									<http url="http://localhost:${test.app.server.leading.port.number}080" />
-								</waitfor>
-							</then>
-						</elseif>
-						<else>
-							<waitfor maxwait="5" maxwaitunit="minute">
-								<http url="http://localhost:${test.app.server.leading.port.number}080/web/guest" />
-							</waitfor>
 						</else>
 					</if>
 				</then>
@@ -1620,6 +1723,37 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 					<record action="stop" name="log" />
 				</then>
 			</if>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="wait-for-app-server">
+		<attribute name="app.server.bin.dir" />
+		<sequential>
+			<local name="app.server.waiting.url" />
+
+			<if>
+				<equals arg1="@{app.server.bin.dir}" arg2="${app.server.tcat.admin.bin.dir}" />
+				<then>
+					<property name="app.server.waiting.url" value="http://localhost:${test.app.server.leading.port.number}180/console" />
+				</then>
+				<elseif>
+					<equals arg1="@{app.server.bin.dir}" arg2="${app.server.tcat.agent.bin.dir}" />
+					<then>
+						<property name="app.server.waiting.url" value="http://localhost:${test.app.server.leading.port.number}080" />
+					</then>
+				</elseif>
+				<else>
+					<property name="app.server.waiting.url" value="http://localhost:${test.app.server.leading.port.number}080/web/guest" />
+				</else>
+			</if>
+
+			<local name="app.server.waiting.timeout" />
+
+			<waitfor maxwait="5" maxwaitunit="minute" timeoutproperty="app.server.waiting.timeout">
+				<http url="${app.server.waiting.url}" />
+			</waitfor>
+
+			<fail if="app.server.waiting.timeout" message="App server waiting timeout on ${app.server.waiting.url}" />
 		</sequential>
 	</macrodef>
 
@@ -2515,7 +2649,10 @@ go]]></replacevalue>
 		</if>
 	</target>
 
-	<target name="generate-changelog" depends="record-git-commit-plugins,record-git-commit-portal">
+	<target name="generate-changelog">
+		<record-git-commit-plugins />
+		<record-git-commit-portal />
+
 		<tstamp>
 			<format property="build.tstamp.value" pattern="EEEE, d MMMM yyyy, hh:mm aa" />
 		</tstamp>
@@ -4258,7 +4395,7 @@ module.framework.properties.osgi.console=11312</echo>
 	</target>
 
 	<target name="prepare-test-build">
-		<antcall target="record-git-commit-portal" inheritAll="false" />
+		<record-git-commit-portal />
 
 		<antcall target="compile" inheritAll="false" />
 
@@ -4676,52 +4813,6 @@ plugins.includes=marketplace-portlet</echo>
 		</if>
 	</target>
 
-	<target name="prepare-test-properties">
-		<get-database-property property.name="database.driver" />
-		<get-database-property property.name="database.password" />
-		<get-database-property property.name="database.url" />
-		<get-database-property property.name="database.username" />
-
-		<echo file="portal-impl/test/portal-test-ext.properties">
-jdbc.default.driverClassName=${database.driver}
-jdbc.default.url=${database.url}
-jdbc.default.username=${database.username}
-jdbc.default.password=${database.password}
-		</echo>
-
-		<if>
-			<equals arg1="${database.type}" arg2="db2" />
-			<then>
-				<echo file="portal-impl/test/portal-test-ext.properties" append="true">
-
-hibernate.dialect=com.liferay.portal.dao.orm.hibernate.DB2Dialect
-custom.sql.function.isnull=CAST(? AS VARCHAR(32672)) IS NULL
-custom.sql.function.isnotnull=CAST(? AS VARCHAR(32672)) IS NOT NULL</echo>
-			</then>
-			<elseif>
-				<equals arg1="${database.type}" arg2="oracle" />
-				<then>
-					<echo file="portal-impl/test/portal-test-ext.properties" append="true">
-
-jdbc.default.acquireIncrement=1
-jdbc.default.maxPoolSize=5
-jdbc.default.minPoolSize=1
-jdbc.default.numHelperThreads=1</echo>
-				</then>
-			</elseif>
-			<elseif>
-				<equals arg1="${database.type}" arg2="sybase" />
-				<then>
-					<echo file="portal-impl/test/portal-test-ext.properties" append="true">
-
-hibernate.dialect=org.hibernate.dialect.SybaseDialect
-custom.sql.function.isnull=CONVERT(VARCHAR,?) IS NULL
-custom.sql.function.isnotnull=CONVERT(VARCHAR,?) IS NOT NULL</echo>
-				</then>
-			</elseif>
-		</if>
-	</target>
-
 	<target name="prepare-virtual-host-name-properties">
 		<if>
 			<isset property="virtual.host.name" />
@@ -4964,6 +5055,14 @@ if (ppstate.equals("normal")) {
 %>]]></echo>
 
 		<echo>Updated ${app.server.dir}/webapps/ROOT/html/common/themes/bottom-test.jsp.</echo>
+	</target>
+
+	<target name="record-git-commit-plugins">
+		<record-git-commit-plugins />
+	</target>
+
+	<target name="record-git-commit-portal">
+		<record-git-commit-portal />
 	</target>
 
 	<target name="record-test-class-file-names">
@@ -5990,16 +6089,44 @@ Please set "ie.driver.zip" in test.properties to point to "IEDriverServer_x64_2.
 	</target>
 
 	<target name="test-class-group">
-		<echo>
+		<echo if:set="env.JENKINS_HOME">
 ANT_OPTS=${env.ANT_OPTS}</echo>
 
-		<antcall target="clean-up-java-processes" inheritAll="false" />
+		<antcall if:set="env.JENKINS_HOME" target="clean-up-java-processes" inheritAll="false" />
 
-		<ant dir="portal-service" target="test-class-group" inheritAll="false" />
+		<!--<ant dir="portal-service" target="test-class-group" inheritAll="false" />-->
+
+		<antcall target="prepare-portal-ext-properties" inheritall="false" >
+			<param name="database.type" value="postgresql" />
+		</antcall>
+
+				<echo file="portal-impl/test/portal-test-ext.properties">
+liferay.home=/opt/dev/projects/github/liferay-portal
+module.framework.base.dir=/opt/dev/projects/github/liferay-portal/osgi
+jdbc.default.driverClassName=${database.postgresql.driver}
+jdbc.default.url=${database.postgresql.url}
+jdbc.default.username=${database.postgresql.username}
+jdbc.default.password=${database.postgresql.password}</echo>
+
+		<exec dir="sql" executable="service" failonerror="true">
+			<arg line="postgresql-9.2 start" />
+		</exec>
+
+		<antcall target="rebuild-database" inheritall="false" >
+			<param name="database.type" value="postgresql" />
+		</antcall>
+
+<!--		<exec dir="sql" executable="${postgresql.executable}" failonerror="true">
+			<arg line="${postgresql.arg.line}" />
+		</exec>-->
 
 		<ant dir="portal-impl" target="test-class-group" inheritAll="false" />
 
-		<ant dir="util-java" target="test-class-group" inheritAll="false" />
+		<exec dir="sql" executable="service" failonerror="true">
+			<arg line="postgresql-9.2 stop" />
+		</exec>
+
+<!--		<ant dir="util-java" target="test-class-group" inheritAll="false" />
 
 		<antcall target="rebuild-database" inheritAll="false" />
 
@@ -6016,52 +6143,9 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 
 				<delete file=".testable.portal.started" failonerror="false" />
 			</then>
-		</if>
+		</if>-->
 
-		<if>
-			<available file="/tmp/ant-gc.log" />
-			<then>
-				<loadfile property="ant-gc-log" srcFile="/tmp/ant-gc.log" />
-
-				<echo>
-Ant GC log:
-
-${ant-gc-log}</echo>
-			</then>
-			<else>
-				<echo>Unable to read /tmp/ant-gc.log</echo>
-			</else>
-		</if>
-
-		<if>
-			<available file="/tmp/tomcat-gc.log" />
-			<then>
-				<loadfile property="tomcat-gc-log" srcFile="/tmp/tomcat-gc.log" />
-
-				<echo>
-Tomcat GC log:
-
-${tomcat-gc-log}</echo>
-			</then>
-			<else>
-				<echo>Unable to read /tmp/tomcat-gc.log</echo>
-			</else>
-		</if>
-
-		<if>
-			<available file="/tmp/tsant-gc.log" />
-			<then>
-				<loadfile property="tsant-gc-log" srcFile="/tmp/tsant-gc.log" />
-
-				<echo>
-Tsant GC log:
-
-${tsant-gc-log}</echo>
-			</then>
-			<else>
-				<echo>Unable to read /tmp/tsant-gc.log</echo>
-			</else>
-		</if>
+		<print-gc-logs if:set="env.JENKINS_HOME" />
 	</target>
 
 	<target name="test-integration">
