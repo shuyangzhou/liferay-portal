@@ -5997,13 +5997,13 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 
 		<!--<ant dir="portal-service" target="test-class-group" inheritAll="false" />-->
 
-		<antcall target="prepare-portal-ext-properties" inheritall="false" >
+<!--		<antcall target="prepare-portal-ext-properties" inheritall="false" >
 			<param name="database.type" value="postgresql" />
 		</antcall>
 
 		<antcall target="prepare-test-properties" inheritall="false" >
 			<param name="database.type" value="postgresql" />
-		</antcall>
+		</antcall>-->
 
 		<exec dir="sql" executable="service" failonerror="true">
 			<arg line="postgresql-9.2 start" />
