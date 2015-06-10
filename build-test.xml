@@ -5995,11 +5995,35 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 
 		<antcall target="clean-up-java-processes" inheritAll="false" />
 
-		<ant dir="portal-service" target="test-class-group" inheritAll="false" />
+		<!--<ant dir="portal-service" target="test-class-group" inheritAll="false" />-->
+
+<!--		<antcall target="prepare-portal-ext-properties" inheritall="false" >
+			<param name="database.type" value="postgresql" />
+		</antcall>
+
+		<antcall target="prepare-test-properties" inheritall="false" >
+			<param name="database.type" value="postgresql" />
+		</antcall>-->
+
+		<exec dir="sql" executable="service" failonerror="true">
+			<arg line="postgresql-9.2 start" />
+		</exec>
+
+<!--		<antcall target="rebuild-database" inheritall="false" >
+			<param name="database.type" value="postgresql" />
+		</antcall>-->
+
+		<exec dir="sql" executable="${postgresql.executable}" failonerror="true">
+			<arg line="${postgresql.arg.line}" />
+		</exec>
 
 		<ant dir="portal-impl" target="test-class-group" inheritAll="false" />
 
-		<ant dir="util-java" target="test-class-group" inheritAll="false" />
+		<exec dir="sql" executable="service" failonerror="true">
+			<arg line="postgresql-9.2 stop" />
+		</exec>
+
+<!--		<ant dir="util-java" target="test-class-group" inheritAll="false" />
 
 		<antcall target="rebuild-database" inheritAll="false" />
 
@@ -6016,7 +6040,7 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 
 				<delete file=".testable.portal.started" failonerror="false" />
 			</then>
-		</if>
+		</if>-->
 
 		<if>
 			<available file="/tmp/ant-gc.log" />
