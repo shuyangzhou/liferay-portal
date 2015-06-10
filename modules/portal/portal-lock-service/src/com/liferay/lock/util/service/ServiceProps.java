@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.util.service;
+package com.liferay.lock.util.service;
 
 import aQute.bnd.annotation.ProviderType;
 

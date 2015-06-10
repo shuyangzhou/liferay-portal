@@ -15,6 +15,7 @@
 			service.api.dir="../dynamic-data-lists-api/src"
 			service.auto.namespace.tables="false"
 			service.hbm.file.name="module-hbm.xml"
+			service.props.util="com.liferay.dynamic.data.lists.util.service.ServiceProps"
 			service.spring.file.name="module-spring.xml"
 			service.sql.dir="src/META-INF/sql"
 			service.test.dir="../dynamic-data-lists-test/test/integration"
