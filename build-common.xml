@@ -964,25 +964,15 @@ Please set the environment variable ANT_OPTS to the recommended value of
 		<attribute name="analyze" default="false" />
 
 		<sequential>
-			<trycatch>
-				<try>
-					<taskdef
-						classname="com.liferay.util.ant.ManifestHelperTask"
-						classpathref="project.classpath"
-						name="liferay-manifest-helper"
-					/>
-				</try>
-				<catch>
-					<ant dir="../portal-service" target="compile" inheritAll="false" />
-					<ant dir="../util-java" target="compile" inheritAll="false" />
+			<path id="ant.bnd.classpath">
+				<fileset dir="${sdk.dir}/dependencies/com.liferay.ant.bnd/lib/" includes="*.jar" />
+			</path>
 
-					<taskdef
-						classname="com.liferay.util.ant.ManifestHelperTask"
-						classpathref="project.classpath"
-						name="liferay-manifest-helper"
-					/>
-				</catch>
-			</trycatch>
+			<taskdef
+				classname="com.liferay.ant.bnd.ManifestHelperTask"
+				classpathref="ant.bnd.classpath"
+				name="liferay-manifest-helper"
+			/>
 
 			<liferay-manifest-helper
 				analyze="@{analyze}"
