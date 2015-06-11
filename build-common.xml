@@ -933,6 +933,18 @@ Please set the environment variable ANT_OPTS to the recommended value of
 				</else>
 			</if>
 
+			<local name="extension" />
+
+			<if>
+				<isset property="database.type" />
+				<then>
+					<property name="extension" value="-${database.type}.xml" />
+				</then>
+				<else>
+					<property name="extension" value=".xml" />
+				</else>
+			</if>
+
 			<junit dir="${project.dir}" fork="on" forkmode="@{forkmode}" haltonfailure="${junit.halt.on.failure}" jvm="${junit.jvm}" outputtoformatters="false" printsummary="on" showoutput="true">
 				<sysproperty key="junit.aspectj.dump" file="woven-classes" />
 				<sysproperty key="junit.code.coverage" value="${junit.code.coverage}" />
@@ -954,7 +966,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 				<classpath location="test-coverage" />
 				<classpath refid="test.classpath" />
 				<formatter type="brief" usefile="false" />
-				<formatter type="xml" />
+				<formatter type="xml" extension="${extension}" />
 				<test.classes />
 			</junit>
 		</sequential>
@@ -1569,25 +1581,45 @@ rerun your task.
 
 		<propertycopy from="TEST_CLASS_GROUP_${test.class.group.index}" name="test.classes" />
 
-		<test-cmd
-			junit.forkmode="perTest"
-			test.includes="${test.classes}"
-			test.type="unit"
-		/>
+		<if>
+			<or>
+				<not>
+					<isset property="test.type" />
+				</not>
+				<equals arg1="${test.type}" arg2="unit" />
+			</or>
+			<then>
+				<test-cmd
+					junit.forkmode="perTest"
+					test.includes="${test.classes}"
+					test.type="unit"
+				/>
 
-		<report-test-coverage
-			test.type="unit"
-		/>
+				<report-test-coverage
+					test.type="unit"
+				/>
+			</then>
+		</if>
 
-		<test-cmd
-			junit.forkmode="once"
-			test.includes="${test.classes}"
-			test.type="integration"
-		/>
+		<if>
+			<or>
+				<not>
+					<isset property="test.type" />
+				</not>
+				<equals arg1="${test.type}" arg2="integration" />
+			</or>
+			<then>
+				<test-cmd
+					junit.forkmode="once"
+					test.includes="${test.classes}"
+					test.type="integration"
+				/>
 
-		<report-test-coverage
-			test.type="integration"
-		/>
+				<report-test-coverage
+					test.type="integration"
+				/>
+			</then>
+		</if>
 	</target>
 
 	<target name="test-integration" depends="compile">
