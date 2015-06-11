@@ -125,6 +125,66 @@ jdbc.default.password=${database.password}]]></echo>
 		</sequential>
 	</macrodef>
 
+	<macrodef name="database-test-for-each-action">
+		<attribute name="database.test.sequence" />
+		<element name="action" />
+		<sequential>
+			<for list="@{database.test.sequence}" param="database.type">
+				<sequential>
+					<local name="database.type" />
+
+					<property name="database.type" value="@{database.type}" />
+
+					<local name="database.service.name" />
+
+					<get-database-property property.name="database.service.name" />
+
+					<action />
+				</sequential>
+			</for>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="database-test-run-test">
+		<attribute name="database.test.sequence" />
+		<element name="test-action" />
+		<sequential>
+			<database-test-for-each-action database.test.sequence="@{database.test.sequence}">
+				<action>
+					<exec executable="service" failonerror="true">
+						<arg line="${database.service.name} stop" />
+					</exec>
+				</action>
+			</database-test-for-each-action>
+
+			<database-test-for-each-action database.test.sequence="@{database.test.sequence}">
+				<action>
+					<antcall target="set-portal-impl-portal-ext-properties" inheritall="false" >
+						<param name="database.type" value="${database.type}" />
+					</antcall>
+
+					<antcall target="set-portal-impl-portal-test-ext-properties" inheritall="false" >
+						<param name="database.type" value="${database.type}" />
+					</antcall>
+
+					<exec executable="service" failonerror="true">
+						<arg line="${database.service.name} start" />
+					</exec>
+
+					<antcall target="rebuild-database" inheritall="false" >
+						<param name="database.type" value="${database.type}" />
+					</antcall>
+
+					<test-action />
+
+					<exec executable="service" failonerror="true">
+						<arg line="${database.service.name} stop" />
+					</exec>
+				</action>
+			</database-test-for-each-action>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="get-auto-deploy-dir">
 		<sequential>
 			<var name="auto.deploy.dir" unset="true" />
@@ -6142,35 +6202,11 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 
 		<!--<ant dir="portal-service" target="test-class-group" inheritAll="false" />-->
 
-		<antcall target="set-portal-impl-portal-ext-properties" inheritall="false" >
-			<param name="database.type" value="postgresql" />
-		</antcall>
-
-		<antcall target="set-portal-impl-portal-test-ext-properties" inheritall="false" >
-			<param name="database.type" value="postgresql" />
-		</antcall>
-
-<!--				<echo file="portal-impl/test/portal-test-ext.properties">
-liferay.home=/opt/dev/projects/github/liferay-portal
-module.framework.base.dir=/opt/dev/projects/github/liferay-portal/osgi
-jdbc.default.driverClassName=${database.postgresql.driver}
-jdbc.default.url=${database.postgresql.url}
-jdbc.default.username=${database.postgresql.username}
-jdbc.default.password=${database.postgresql.password}</echo>-->
-
-		<exec dir="sql" executable="service" failonerror="true">
-			<arg line="postgresql-9.2 start" />
-		</exec>
-
-		<antcall target="rebuild-database" inheritall="false" >
-			<param name="database.type" value="postgresql" />
-		</antcall>
-
-		<ant dir="portal-impl" target="test-class-group" inheritAll="false" />
-
-		<exec dir="sql" executable="service" failonerror="true">
-			<arg line="postgresql-9.2 stop" />
-		</exec>
+		<database-test-run-test database.test.sequence="${database.test.sequence}">
+			<test-action>
+				<ant dir="portal-impl" target="test-class-group" inheritAll="false" />
+			</test-action>
+		</database-test-run-test>
 
 <!--		<ant dir="util-java" target="test-class-group" inheritAll="false" />
 
