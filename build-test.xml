@@ -159,13 +159,9 @@ jdbc.default.password=${database.password}]]></echo>
 
 			<database-test-for-each-action database.test.sequence="@{database.test.sequence}">
 				<action>
-					<antcall target="set-portal-impl-portal-ext-properties" inheritall="false" >
-						<param name="database.type" value="${database.type}" />
-					</antcall>
+					<set-portal-impl-portal-ext-properties />
 
-					<antcall target="set-portal-impl-portal-test-ext-properties" inheritall="false" >
-						<param name="database.type" value="${database.type}" />
-					</antcall>
+					<set-portal-impl-portal-test-ext-properties />
 
 					<exec executable="service" failonerror="true">
 						<arg line="${database.service.name} start" />
