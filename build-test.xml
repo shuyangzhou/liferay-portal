@@ -6142,17 +6142,21 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 
 		<!--<ant dir="portal-service" target="test-class-group" inheritAll="false" />-->
 
-		<antcall target="prepare-portal-ext-properties" inheritall="false" >
+		<antcall target="set-portal-impl-portal-ext-properties" inheritall="false" >
 			<param name="database.type" value="postgresql" />
 		</antcall>
 
-				<echo file="portal-impl/test/portal-test-ext.properties">
+		<antcall target="set-portal-impl-portal-test-ext-properties" inheritall="false" >
+			<param name="database.type" value="postgresql" />
+		</antcall>
+
+<!--				<echo file="portal-impl/test/portal-test-ext.properties">
 liferay.home=/opt/dev/projects/github/liferay-portal
 module.framework.base.dir=/opt/dev/projects/github/liferay-portal/osgi
 jdbc.default.driverClassName=${database.postgresql.driver}
 jdbc.default.url=${database.postgresql.url}
 jdbc.default.username=${database.postgresql.username}
-jdbc.default.password=${database.postgresql.password}</echo>
+jdbc.default.password=${database.postgresql.password}</echo>-->
 
 		<exec dir="sql" executable="service" failonerror="true">
 			<arg line="postgresql-9.2 start" />
@@ -6161,10 +6165,6 @@ jdbc.default.password=${database.postgresql.password}</echo>
 		<antcall target="rebuild-database" inheritall="false" >
 			<param name="database.type" value="postgresql" />
 		</antcall>
-
-<!--		<exec dir="sql" executable="${postgresql.executable}" failonerror="true">
-			<arg line="${postgresql.arg.line}" />
-		</exec>-->
 
 		<ant dir="portal-impl" target="test-class-group" inheritAll="false" />
 
