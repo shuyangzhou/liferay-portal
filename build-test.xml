@@ -109,6 +109,7 @@
 	<macrodef name="generate-jdbc-properties">
 		<attribute name="properties.file" />
 		<element name="post-action" optional="true" />
+
 		<sequential>
 			<get-database-property property.name="database.driver" />
 			<get-database-property property.name="database.password" />
@@ -122,6 +123,64 @@ jdbc.default.username=${database.username}
 jdbc.default.password=${database.password}]]></echo>
 
 			<post-action />
+		</sequential>
+	</macrodef>
+
+	<macrodef name="database-test-for-each-action">
+		<attribute name="database.test.sequence" />
+		<element name="action" />
+
+		<sequential>
+			<for list="@{database.test.sequence}" param="database.type">
+				<sequential>
+					<local name="database.type" />
+
+					<property name="database.type" value="@{database.type}" />
+
+					<local name="database.service.name" />
+
+					<get-database-property property.name="database.service.name" />
+
+					<action />
+				</sequential>
+			</for>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="database-test-run-test">
+		<attribute name="database.test.sequence" />
+		<element name="test-action" />
+
+		<sequential>
+			<database-test-for-each-action database.test.sequence="@{database.test.sequence}">
+				<action>
+					<exec executable="service" failonerror="true">
+						<arg line="${database.service.name} stop" />
+					</exec>
+				</action>
+			</database-test-for-each-action>
+
+			<database-test-for-each-action database.test.sequence="@{database.test.sequence}">
+				<action>
+					<set-portal-impl-portal-ext-properties />
+
+					<set-portal-impl-portal-test-ext-properties />
+
+					<exec executable="service" failonerror="true">
+						<arg line="${database.service.name} start" />
+					</exec>
+
+					<antcall target="rebuild-database" inheritall="false" >
+						<param name="database.type" value="${database.type}" />
+					</antcall>
+
+					<test-action />
+
+					<exec executable="service" failonerror="true">
+						<arg line="${database.service.name} stop" />
+					</exec>
+				</action>
+			</database-test-for-each-action>
 		</sequential>
 	</macrodef>
 
@@ -6146,9 +6205,18 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 			<property name="test.type" value="unit" />
 		</ant>
 
-		<ant dir="portal-impl" target="test-class-group" inheritAll="false">
-			<property name="test.type" value="integration" />
-		</ant>
+		<database-test-run-test database.test.sequence="${database.test.sequence}">
+			<test-action>
+				<ant dir="portal-impl" target="test-class-group" inheritAll="false">
+					<property name="database.type" value="${database.type}" />
+					<property name="test.type" value="integration" />
+				</ant>
+			</test-action>
+		</database-test-run-test>
+
+		<exec executable="service" failonerror="true">
+			<arg line="${database.mysql.service.name} start" />
+		</exec>
 
 		<ant dir="util-java" target="test-class-group" inheritAll="false" />
 
