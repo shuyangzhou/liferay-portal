@@ -106,6 +106,81 @@
 		</sequential>
 	</macrodef>
 
+	<macrodef name="generate-jdbc-properties">
+		<attribute name="properties.file" />
+		<element name="post-action" optional="true" />
+		<sequential>
+			<get-database-property property.name="database.driver" />
+			<get-database-property property.name="database.password" />
+			<get-database-property property.name="database.url" />
+			<get-database-property property.name="database.username" />
+
+			<echo file="@{properties.file}"><![CDATA[liferay.home=${project.dir}
+jdbc.default.driverClassName=${database.driver}
+jdbc.default.url=${database.url}
+jdbc.default.username=${database.username}
+jdbc.default.password=${database.password}]]></echo>
+
+			<post-action />
+		</sequential>
+	</macrodef>
+
+	<macrodef name="database-test-for-each-action">
+		<attribute name="database.test.sequence" />
+		<element name="action" />
+		<sequential>
+			<for list="@{database.test.sequence}" param="database.type">
+				<sequential>
+					<local name="database.type" />
+
+					<property name="database.type" value="@{database.type}" />
+
+					<local name="database.service.name" />
+
+					<get-database-property property.name="database.service.name" />
+
+					<action />
+				</sequential>
+			</for>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="database-test-run-test">
+		<attribute name="database.test.sequence" />
+		<element name="test-action" />
+		<sequential>
+			<database-test-for-each-action database.test.sequence="@{database.test.sequence}">
+				<action>
+					<exec executable="service" failonerror="true">
+						<arg line="${database.service.name} stop" />
+					</exec>
+				</action>
+			</database-test-for-each-action>
+
+			<database-test-for-each-action database.test.sequence="@{database.test.sequence}">
+				<action>
+					<set-portal-impl-portal-ext-properties />
+
+					<set-portal-impl-portal-test-ext-properties />
+
+					<exec executable="service" failonerror="true">
+						<arg line="${database.service.name} start" />
+					</exec>
+
+					<antcall target="rebuild-database" inheritall="false" >
+						<param name="database.type" value="${database.type}" />
+					</antcall>
+
+					<test-action />
+
+					<exec executable="service" failonerror="true">
+						<arg line="${database.service.name} stop" />
+					</exec>
+				</action>
+			</database-test-for-each-action>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="get-auto-deploy-dir">
 		<sequential>
 			<var name="auto.deploy.dir" unset="true" />
@@ -1196,6 +1271,23 @@ ${tomcat-gc-log}
 					</antelope:stringutil>
 				 </else>
 			</if>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="set-portal-impl-portal-ext-properties">
+		<sequential>
+			<generate-jdbc-properties properties.file="portal-impl/src/portal-ext.properties" />
+		</sequential>
+	</macrodef>
+
+	<macrodef name="set-portal-impl-portal-test-ext-properties">
+		<sequential>
+			<generate-jdbc-properties properties.file="portal-impl/test/portal-test-ext.properties">
+				<post-action>
+					<echo file="@{properties.file}" append="true"><![CDATA[
+module.framework.base.dir=${project.dir}/osgi]]></echo>
+				</post-action>
+			</generate-jdbc-properties>
 		</sequential>
 	</macrodef>
 
@@ -5894,24 +5986,11 @@ jdbc.default.password=${database.mysql.password}</echo>
 	</target>
 
 	<target name="set-portal-impl-portal-ext-properties">
-		<get-database-property property.name="database.driver" />
-		<get-database-property property.name="database.password" />
-		<get-database-property property.name="database.url" />
-		<get-database-property property.name="database.username" />
-
-		<echo file="portal-impl/src/portal-ext.properties"><![CDATA[liferay.home=${project.dir}
-jdbc.default.driverClassName=${database.driver}
-jdbc.default.url=${database.url}
-jdbc.default.username=${database.username}
-jdbc.default.password=${database.password}]]></echo>
+		<set-portal-impl-portal-ext-properties />
 	</target>
 
 	<target name="set-portal-impl-portal-test-ext-properties">
-		<get-database-property property.name="database.username" />
-
-		<echo file="portal-impl/test/portal-test-ext.properties"><![CDATA[liferay.home=${project.dir}
-jdbc.default.username=${database.username}
-module.framework.base.dir=${project.dir}/osgi]]></echo>
+		<set-portal-impl-portal-test-ext-properties />
 	</target>
 
 	<target name="setup-testable-tomcat">
@@ -6117,11 +6196,28 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 
 		<antcall if:set="env.JENKINS_HOME" target="clean-up-java-processes" inheritAll="false" />
 
-		<ant dir="portal-service" target="test-class-group" inheritAll="false" />
+		<!--<ant dir="portal-service" target="test-class-group" inheritAll="false" />-->
 
-		<ant dir="portal-impl" target="test-class-group" inheritAll="false" />
+		<ant dir="portal-impl" target="test-class-group" inheritAll="false">
+			<property name="test.type" value="unit" />
+		</ant>
 
-		<ant dir="util-java" target="test-class-group" inheritAll="false" />
+		<database-test-run-test database.test.sequence="${database.test.sequence}">
+			<test-action>
+				<ant dir="portal-impl" target="test-class-group" inheritAll="false">
+					<property name="database.type" value="${database.type}" />
+					<property name="test.type" value="integration" />
+				</ant>
+			</test-action>
+		</database-test-run-test>
+
+		<echo>#######bring up mysqld in the end for now...</echo>
+
+		<exec executable="service" failonerror="true">
+			<arg line="mysqld start" />
+		</exec>
+
+<!--		<ant dir="util-java" target="test-class-group" inheritAll="false" />
 
 		<antcall target="rebuild-database" inheritAll="false" />
 
@@ -6138,7 +6234,7 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 
 				<delete file=".testable.portal.started" failonerror="false" />
 			</then>
-		</if>
+		</if>-->
 
 		<print-gc-logs if:set="env.JENKINS_HOME" />
 	</target>

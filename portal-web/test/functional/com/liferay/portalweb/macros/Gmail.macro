@@ -6,7 +6,12 @@
 	<command name="gotoHtmlMode">
 		<execute function="Open" locator1="https://mail.google.com/mail/?ui=html&amp;zy=h" />
 
-		<execute function="Click" locator1="Gmail#GMAIL_HTML_MODE_CONFIRMATION" />
+		<if>
+			<condition function="IsElementPresent" locator1="Gmail#GMAIL_HTML_MODE_CONFIRMATION" />
+			<then>
+				<execute function="Click" locator1="Gmail#GMAIL_HTML_MODE_CONFIRMATION" />
+			</then>
+		</if>
 
 		<execute function="Pause" locator1="5000" />
 	</command>
