@@ -12,18 +12,16 @@
  * details.
  */
 
-package com.liferay.util.ant;
+package com.liferay.ant.bnd;
 
 import aQute.bnd.osgi.Analyzer;
 import aQute.bnd.osgi.Constants;
 
-import com.liferay.portal.kernel.util.OSDetector;
 import com.liferay.portal.kernel.util.ReleaseInfo;
-import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -79,7 +77,7 @@ public class ManifestHelperTask extends Task {
 
 		Project project = getProject();
 
-		project.setProperty("build.revision", getBuildRevision());
+		project.setProperty("build.revision", getBuildRevision(project));
 		project.setProperty("build.time", getDateString(new Date()));
 		project.setProperty(
 			"release.info.build.date",
@@ -100,7 +98,7 @@ public class ManifestHelperTask extends Task {
 
 		String releaseInfoVersion = project.getProperty("release.info.version");
 
-		if (Validator.isNull(releaseInfoVersion)) {
+		if (releaseInfoVersion == null) {
 			project.setProperty(
 				"release.info.version", ReleaseInfo.getVersion());
 		}
@@ -109,35 +107,35 @@ public class ManifestHelperTask extends Task {
 			return;
 		}
 
-		try (Analyzer analyzer = new Analyzer()) {
-			analyzer.setBase(project.getBaseDir());
+		Analyzer analyzer = new Analyzer();
 
-			File classesDir = new File(project.getBaseDir(), "classes");
+		analyzer.setBase(project.getBaseDir());
 
-			analyzer.setJar(classesDir);
+		File classesDir = new File(project.getBaseDir(), "classes");
 
-			File file = new File(project.getBaseDir(), "bnd.bnd");
+		analyzer.setJar(classesDir);
 
-			if (file.exists()) {
-				analyzer.setProperties(file);
-			}
-			else {
-				analyzer.setProperty(Constants.EXPORT_PACKAGE, "*");
-				analyzer.setProperty(
-					Constants.IMPORT_PACKAGE, "*;resolution:=optional");
-			}
+		File file = new File(project.getBaseDir(), "bnd.bnd");
 
-			Manifest manifest = analyzer.calcManifest();
-
-			Attributes attributes = manifest.getMainAttributes();
-
-			project.setProperty(
-				"export.packages",
-				attributes.getValue(Constants.EXPORT_PACKAGE));
-			project.setProperty(
-				"import.packages",
-				attributes.getValue(Constants.IMPORT_PACKAGE));
+		if (file.exists()) {
+			analyzer.setProperties(file);
 		}
+		else {
+			analyzer.setProperty(Constants.EXPORT_PACKAGE, "*");
+			analyzer.setProperty(
+				Constants.IMPORT_PACKAGE, "*;resolution:=optional");
+		}
+
+		Manifest manifest = analyzer.calcManifest();
+
+		Attributes attributes = manifest.getMainAttributes();
+
+		project.setProperty(
+			"export.packages", attributes.getValue(Constants.EXPORT_PACKAGE));
+		project.setProperty(
+			"import.packages", attributes.getValue(Constants.IMPORT_PACKAGE));
+
+		analyzer.close();
 	}
 
 	protected String execute(String command) throws Exception {
@@ -145,19 +143,29 @@ public class ManifestHelperTask extends Task {
 
 		Process process = runtime.exec(command);
 
-		return StringUtil.read(process.getInputStream());
+		StringBuilder sb = new StringBuilder();
+
+		BufferedReader reader = new BufferedReader(
+			new InputStreamReader(process.getInputStream()));
+
+		String line = null;
+
+		while ((line = reader.readLine()) != null) {
+			sb.append(line);
+			sb.append("\n");
+		}
+
+		return sb.toString().trim();
 	}
 
-	protected String getBuildRevision() throws Exception {
-		Project project = getProject();
-
+	protected String getBuildRevision(Project project) throws Exception {
 		File projectDir = new File(
 			project.getBaseDir(), project.getProperty(_projectDirPropertyName));
 
 		File gitDir = new File(projectDir, ".git");
 
 		if (gitDir.exists()) {
-			if (OSDetector.isWindows()) {
+			if (File.pathSeparator.equals(",")) {
 				return execute("cmd /c git rev-parse HEAD");
 			}
 			else {
@@ -168,7 +176,7 @@ public class ManifestHelperTask extends Task {
 		File svnDir = new File(projectDir, ".svn");
 
 		if (svnDir.exists()) {
-			if (OSDetector.isWindows()) {
+			if (File.pathSeparator.equals(",")) {
 				return execute("cmd /c svnversion .");
 			}
 			else {
@@ -176,7 +184,7 @@ public class ManifestHelperTask extends Task {
 			}
 		}
 
-		return StringPool.BLANK;
+		return "";
 	}
 
 	protected String getDateString(Date date) {
