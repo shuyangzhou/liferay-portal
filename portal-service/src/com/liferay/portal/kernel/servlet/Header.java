@@ -24,9 +24,8 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
-import java.net.HttpCookie;
-
-import java.util.Map;
+import java.util.Collection;
+import java.util.Iterator;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -78,7 +77,7 @@ public class Header implements Externalizable {
 
 	public void addToResponse(String key, HttpServletResponse response) {
 		if (_type == Type.COOKIE) {
-			response.addCookie(_cookieValue);
+			addCookieToResponse(response);
 		}
 		else if (_type == Type.DATE) {
 			response.addDateHeader(key, _dateValue);
@@ -172,34 +171,7 @@ public class Header implements Externalizable {
 
 	public void setToResponse(String key, HttpServletResponse response) {
 		if (_type == Type.COOKIE) {
-			String cookieString = response.getHeader(HttpHeaders.SET_COOKIE);
-
-			if (Validator.isNull(cookieString)) {
-				response.addCookie(_cookieValue);
-			}
-			else {
-				Map<String, HttpCookie> httpCookies =
-					CookieUtil.parseHttpCookies(cookieString);
-
-				httpCookies.put(
-					_cookieValue.getName(),
-					CookieUtil.toHttpCookie(_cookieValue));
-
-				boolean first = true;
-
-				for (HttpCookie httpCookie : httpCookies.values()) {
-					if (first) {
-						response.setHeader(
-							HttpHeaders.SET_COOKIE, httpCookie.toString());
-
-						first = false;
-					}
-					else {
-						response.addHeader(
-							HttpHeaders.SET_COOKIE, httpCookie.toString());
-					}
-				}
-			}
+			addCookieToResponse(response);
 		}
 		else if (_type == Type.DATE) {
 			response.setDateHeader(key, _dateValue);
@@ -293,6 +265,23 @@ public class Header implements Externalizable {
 		hashCode = HashUtil.hash(hashCode, cookie.getVersion());
 
 		return hashCode;
+	}
+
+	private void addCookieToResponse(HttpServletResponse response) {
+		Collection<String> setCookieHeaders = response.getHeaders(
+			HttpHeaders.SET_COOKIE);
+
+		Iterator<String> iterator = setCookieHeaders.iterator();
+
+		while (iterator.hasNext()) {
+			String cookieValue = iterator.next();
+
+			if (cookieValue.startsWith(_cookieValue.getName())) {
+				return;
+			}
+		}
+
+		response.addCookie(_cookieValue);
 	}
 
 	private Cookie _cookieValue;
