@@ -179,10 +179,6 @@
 			<bean class="com.liferay.portal.language.UnicodeLanguageImpl" />
 		</property>
 	</bean>
-	<bean id="com.liferay.portal.kernel.lar.ExportImportHelper" class="com.liferay.portal.lar.ExportImportHelperImpl" />
-	<bean id="com.liferay.portal.kernel.lar.ExportImportHelperUtil" class="com.liferay.portal.kernel.lar.ExportImportHelperUtil">
-		<property name="exportImportHelper" ref="com.liferay.portal.kernel.lar.ExportImportHelper" />
-	</bean>
 	<bean id="com.liferay.portal.kernel.management.PortalManagerUtil" class="com.liferay.portal.kernel.management.PortalManagerUtil">
 		<property name="portalManager">
 			<bean class="com.liferay.portal.management.BasePortalManager" />
@@ -404,7 +400,7 @@
 					<constructor-arg name="value" value="_serviceContextThreadLocal" />
 				</bean>
 				<bean class="com.liferay.portal.kernel.util.KeyValuePair">
-					<constructor-arg name="key" value="com.liferay.portal.kernel.staging.MergeLayoutPrototypesThreadLocal" />
+					<constructor-arg name="key" value="com.liferay.portlet.exportimport.staging.MergeLayoutPrototypesThreadLocal" />
 					<constructor-arg name="value" value="_inProgress" />
 				</bean>
 			</list>
@@ -475,7 +471,6 @@
 	<bean id="com.liferay.portal.language.LanguageResources" class="com.liferay.portal.language.LanguageResources">
 		<property name="config" value="content.Language,content.Language-ext" />
 	</bean>
-	<bean id="com.liferay.portal.lar.PortletDataContextIndexer" class="com.liferay.portal.lar.PortletDataContextIndexer" />
 	<bean id="com.liferay.portal.layoutconfiguration.util.JettyThreadLocalBinder" class="com.liferay.portal.layoutconfiguration.util.JettyThreadLocalBinder">
 		<property name="threadLocalSources">
 			<map>
@@ -1049,6 +1044,11 @@
 			<bean class="com.liferay.portlet.expando.util.ExpandoBridgeIndexerImpl" />
 		</property>
 	</bean>
+	<bean id="com.liferay.portlet.exportimport.lar.ExportImportHelper" class="com.liferay.portlet.exportimport.lar.ExportImportHelperImpl" />
+	<bean id="com.liferay.portlet.exportimport.lar.ExportImportHelperUtil" class="com.liferay.portlet.exportimport.lar.ExportImportHelperUtil">
+		<property name="exportImportHelper" ref="com.liferay.portlet.exportimport.lar.ExportImportHelper" />
+	</bean>
+	<bean id="com.liferay.portlet.exportimport.lar.PortletDataContextIndexer" class="com.liferay.portlet.exportimport.lar.PortletDataContextIndexer" />
 	<bean id="com.liferay.portlet.exportimport.util.ExportImportConfigurationIndexer" class="com.liferay.portlet.exportimport.util.ExportImportConfigurationIndexer" />
 	<bean id="com.liferay.portlet.imagegallerydisplay.display.context.IGDisplayContextProviderUtil" class="com.liferay.portlet.imagegallerydisplay.display.context.IGDisplayContextProviderUtil">
 		<property name="IGDisplayContextProvider">
@@ -1059,8 +1059,6 @@
 	<bean id="com.liferay.portlet.journal.service.permission.JournalFeedPermission" class="com.liferay.portlet.journal.service.permission.JournalFeedPermission" />
 	<bean id="com.liferay.portlet.journal.service.permission.JournalFolderPermission" class="com.liferay.portlet.journal.service.permission.JournalFolderPermission" />
 	<bean id="com.liferay.portlet.journal.service.permission.JournalPermission" class="com.liferay.portlet.journal.service.permission.JournalPermission" />
-	<bean id="com.liferay.portlet.journal.social.JournalArticleActivityInterpreter" class="com.liferay.portlet.journal.social.JournalArticleActivityInterpreter" />
-	<bean id="com.liferay.portlet.journal.social.JournalFolderActivityInterpreter" class="com.liferay.portlet.journal.social.JournalFolderActivityInterpreter" />
 	<bean id="com.liferay.portlet.journal.util.JournalContent" class="com.liferay.portlet.journal.util.JournalContentImpl" />
 	<bean id="com.liferay.portlet.journal.util.JournalContentUtil" class="com.liferay.portlet.journal.util.JournalContentUtil">
 		<property name="journalContent" ref="com.liferay.portlet.journal.util.JournalContent" />
