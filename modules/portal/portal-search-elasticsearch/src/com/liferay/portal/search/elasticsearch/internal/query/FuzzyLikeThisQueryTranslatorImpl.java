@@ -21,7 +21,6 @@ import com.liferay.portal.search.elasticsearch.query.FuzzyLikeThisQueryTranslato
 import java.util.Set;
 
 import org.elasticsearch.common.unit.Fuzziness;
-import org.elasticsearch.index.query.FuzzyLikeThisQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
@@ -35,11 +34,12 @@ public class FuzzyLikeThisQueryTranslatorImpl
 	implements FuzzyLikeThisQueryTranslator {
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public QueryBuilder translate(FuzzyLikeThisQuery fuzzyLikeThisQuery) {
 		Set<String> fields = fuzzyLikeThisQuery.getFields();
 
-		FuzzyLikeThisQueryBuilder fuzzyLikeThisQueryBuilder =
-			QueryBuilders.fuzzyLikeThisQuery(
+		org.elasticsearch.index.query.FuzzyLikeThisQueryBuilder
+			fuzzyLikeThisQueryBuilder = QueryBuilders.fuzzyLikeThisQuery(
 				fields.toArray(new String[fields.size()]));
 
 		if (Validator.isNotNull(fuzzyLikeThisQuery.getAnalyzer())) {

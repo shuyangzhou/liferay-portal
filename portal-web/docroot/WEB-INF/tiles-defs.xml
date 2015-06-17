@@ -742,42 +742,6 @@
 		<put name="portlet_content" value="/portlet/requests/view.jsp" />
 	</definition>
 
-	<!-- Roles Admin -->
-
-	<definition name="portlet.roles_admin" extends="portlet" />
-
-	<definition name="portlet.roles_admin.edit_role" extends="portlet.roles_admin">
-		<put name="portlet_content" value="/portlet/roles_admin/edit_role.jsp" />
-	</definition>
-
-	<definition name="portlet.roles_admin.edit_role_assignments" extends="portlet.roles_admin">
-		<put name="portlet_content" value="/portlet/roles_admin/edit_role_assignments.jsp" />
-	</definition>
-
-	<definition name="portlet.roles_admin.edit_role_permissions" extends="portlet.roles_admin">
-		<put name="portlet_content" value="/portlet/roles_admin/edit_role_permissions.jsp" />
-	</definition>
-
-	<definition name="portlet.roles_admin.error" extends="portlet.roles_admin">
-		<put name="portlet_content" value="/portlet/roles_admin/error.jsp" />
-	</definition>
-
-	<definition name="portlet.roles_admin.select_organization_role" extends="portlet.roles_admin">
-		<put name="portlet_content" value="/portlet/roles_admin/select_organization_role.jsp" />
-	</definition>
-
-	<definition name="portlet.roles_admin.select_regular_role" extends="portlet.roles_admin">
-		<put name="portlet_content" value="/portlet/roles_admin/select_regular_role.jsp" />
-	</definition>
-
-	<definition name="portlet.roles_admin.select_site_role" extends="portlet.roles_admin">
-		<put name="portlet_content" value="/portlet/roles_admin/select_site_role.jsp" />
-	</definition>
-
-	<definition name="portlet.roles_admin.view" extends="portlet.roles_admin">
-		<put name="portlet_content" value="/portlet/roles_admin/view.jsp" />
-	</definition>
-
 	<!-- Shopping -->
 
 	<definition name="portlet.shopping" extends="portlet" />
@@ -897,26 +861,6 @@
 	<definition name="portlet.software_catalog.view_product_entry" extends="portlet.software_catalog">
 		<put name="portlet_content" value="/portlet/software_catalog/view_product_entry.jsp" />
 	</definition>
-
-	<!-- Staging Bar -->
-
-	<definition name="portlet.staging_bar.edit_layout_branch" path="/portlet/staging_bar/edit_layout_branch.jsp" />
-
-	<definition name="portlet.staging_bar.edit_layout_set_branch" path="/portlet/staging_bar/edit_layout_set_branch.jsp" />
-
-	<definition name="portlet.staging_bar.error" path="/portlet/staging_bar/error.jsp" />
-
-	<definition name="portlet.staging_bar.merge_layout_set_branch" path="/portlet/staging_bar/merge_layout_set_branch.jsp" />
-
-	<definition name="portlet.staging_bar.view" path="/portlet/staging_bar/view.jsp" />
-
-	<definition name="portlet.staging_bar.view_layout_branches" path="/portlet/staging_bar/view_layout_branches.jsp" />
-
-	<definition name="portlet.staging_bar.view_layout_revision_details" path="/portlet/staging_bar/view_layout_revision_details.jsp" />
-
-	<definition name="portlet.staging_bar.view_layout_revisions" path="/portlet/staging_bar/view_layout_revisions.jsp" />
-
-	<definition name="portlet.staging_bar.view_layout_set_branches" path="/portlet/staging_bar/view_layout_set_branches.jsp" />
 
 	<!-- User Statistics -->
 

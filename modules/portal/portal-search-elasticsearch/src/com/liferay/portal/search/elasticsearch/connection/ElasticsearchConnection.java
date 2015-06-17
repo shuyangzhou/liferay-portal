@@ -31,6 +31,4 @@ public interface ElasticsearchConnection {
 
 	public OperationMode getOperationMode();
 
-	public void initialize();
-
 }

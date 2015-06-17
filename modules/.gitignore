@@ -10,6 +10,7 @@ uptodate.properties
 /*/*/javadoc
 /*/*/lib
 /*/*/test-classes
+/*/*/test-coverage
 /*/*/test-results
 /*/*/tmp
 /*/*/*/bin
@@ -22,6 +23,7 @@ uptodate.properties
 /*/*/*/javadoc
 /*/*/*/lib
 /*/*/*/test-classes
+/*/*/*/test-coverage
 /*/*/*/test-results
 /*/*/*/tmp
 /*/*/*/*/bin
@@ -33,6 +35,7 @@ uptodate.properties
 /*/*/*/*/javadoc
 /*/*/*/*/lib
 /*/*/*/*/test-classes
+/*/*/*/*/test-coverage
 /*/*/*/*/test-results
 /*/*/*/*/tmp
 /*/*/*/*/*/favicon.ico
