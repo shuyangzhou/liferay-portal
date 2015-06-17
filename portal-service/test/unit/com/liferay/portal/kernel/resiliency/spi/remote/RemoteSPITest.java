@@ -468,7 +468,23 @@ public class RemoteSPITest {
 
 		MockSPIProvider mockSPIProvider = new MockSPIProvider(spiProviderName);
 
-		MPIHelperUtil.registerSPIProvider(mockSPIProvider);
+		try (CaptureHandler captureHandler =
+				JDKLoggerTestUtil.configureJDKLogger(
+					MPIHelperUtil.class.getName(), Level.WARNING)) {
+
+			MPIHelperUtil.registerSPIProvider(mockSPIProvider);
+
+			List<LogRecord> logRecords = captureHandler.getLogRecords();
+
+			Assert.assertEquals(1, logRecords.size());
+
+			LogRecord logRecord = logRecords.get(0);
+
+			Assert.assertEquals(
+				"Not registering SPI provider " + spiProviderName +
+					" because it duplicates " + spiProviderName,
+				logRecord.getMessage());
+		}
 
 		_mockRemoteSPI.setFailOnStop(false);
 		_mockRemoteSPI.setSpiProviderName(spiProviderName);
@@ -523,14 +539,48 @@ public class RemoteSPITest {
 
 		MockSPIProvider mockSPIProvider = new MockSPIProvider(spiProviderName);
 
-		MPIHelperUtil.registerSPIProvider(mockSPIProvider);
+		try (CaptureHandler captureHandler =
+				JDKLoggerTestUtil.configureJDKLogger(
+					MPIHelperUtil.class.getName(), Level.WARNING)) {
+
+			MPIHelperUtil.registerSPIProvider(mockSPIProvider);
+
+			List<LogRecord> logRecords = captureHandler.getLogRecords();
+
+			Assert.assertEquals(1, logRecords.size());
+
+			LogRecord logRecord = logRecords.get(0);
+
+			Assert.assertEquals(
+				"Not registering SPI provider " + spiProviderName +
+					" because it duplicates " + spiProviderName,
+				logRecord.getMessage());
+		}
 
 		_mockRemoteSPI.setFailOnStop(false);
 		_mockRemoteSPI.setSpiProviderName(spiProviderName);
 
 		UnicastRemoteObject.exportObject(_mockRemoteSPI, 0);
 
-		MPIHelperUtil.registerSPI(_mockRemoteSPI);
+		try (CaptureHandler captureHandler =
+				JDKLoggerTestUtil.configureJDKLogger(
+					MPIHelperUtil.class.getName(), Level.WARNING)) {
+
+			MPIHelperUtil.registerSPI(_mockRemoteSPI);
+
+			List<LogRecord> logRecords = captureHandler.getLogRecords();
+
+			Assert.assertEquals(1, logRecords.size());
+
+			LogRecord logRecord = logRecords.get(0);
+
+			String logMessage = logRecord.getMessage();
+
+			Assert.assertTrue(
+				logMessage.startsWith(
+					"Not registering SPI " + _mockRemoteSPI +
+						" because it duplicates "));
+		}
 
 		SPIShutdownHook spiShutdownHook = _mockRemoteSPI.new SPIShutdownHook();
 
@@ -557,7 +607,23 @@ public class RemoteSPITest {
 
 		MockSPIProvider mockSPIProvider = new MockSPIProvider(spiProviderName);
 
-		MPIHelperUtil.registerSPIProvider(mockSPIProvider);
+		try (CaptureHandler captureHandler =
+				JDKLoggerTestUtil.configureJDKLogger(
+					MPIHelperUtil.class.getName(), Level.WARNING)) {
+
+			MPIHelperUtil.registerSPIProvider(mockSPIProvider);
+
+			List<LogRecord> logRecords = captureHandler.getLogRecords();
+
+			Assert.assertEquals(1, logRecords.size());
+
+			LogRecord logRecord = logRecords.get(0);
+
+			Assert.assertEquals(
+				"Not registering SPI provider " + spiProviderName +
+					" because it duplicates " + spiProviderName,
+				logRecord.getMessage());
+		}
 
 		_mockRemoteSPI = new MockRemoteSPI(
 			new SPIConfiguration(
@@ -571,7 +637,25 @@ public class RemoteSPITest {
 
 		UnicastRemoteObject.exportObject(_mockRemoteSPI, 0);
 
-		MPIHelperUtil.registerSPI(_mockRemoteSPI);
+		try (CaptureHandler captureHandler =
+				JDKLoggerTestUtil.configureJDKLogger(
+					MPIHelperUtil.class.getName(), Level.WARNING)) {
+
+			MPIHelperUtil.registerSPI(_mockRemoteSPI);
+
+			List<LogRecord> logRecords = captureHandler.getLogRecords();
+
+			Assert.assertEquals(1, logRecords.size());
+
+			LogRecord logRecord = logRecords.get(0);
+
+			String logMessage = logRecord.getMessage();
+
+			Assert.assertTrue(
+				logMessage.startsWith(
+					"Not registering SPI " + _mockRemoteSPI +
+						" because it duplicates "));
+		}
 
 		Future<?> future = actionOnMPIWaiting(true);
 
@@ -816,7 +900,27 @@ public class RemoteSPITest {
 
 		MPIHelperUtilTestUtil.directResigterSPI(spiId, mockSPI);
 
-		Assert.assertFalse(processCallable.call());
+		try (CaptureHandler captureHandler =
+				JDKLoggerTestUtil.configureJDKLogger(
+					MPIHelperUtil.class.getName(), Level.WARNING)) {
+
+			Assert.assertFalse(processCallable.call());
+
+			List<LogRecord> logRecords = captureHandler.getLogRecords();
+
+			Assert.assertEquals(1, logRecords.size());
+
+			LogRecord logRecord = logRecords.get(0);
+
+			SPI spi = MPIHelperUtil.getSPI(spiProviderName, spiId);
+
+			String logMessage = logRecord.getMessage();
+
+			Assert.assertTrue(
+				logMessage.startsWith(
+					"Not unregistering SPI " + spi + " with foreign MPI " +
+						spi.getMPI() + " versus"));
+		}
 
 		// Successfully unregister SPI
 
