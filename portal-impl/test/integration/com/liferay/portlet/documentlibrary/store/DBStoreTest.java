@@ -15,6 +15,8 @@
 package com.liferay.portlet.documentlibrary.store;
 
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
+import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.MainServletTestRule;
 import com.liferay.portal.util.PropsValues;
@@ -33,7 +35,8 @@ public class DBStoreTest extends BaseStoreTestCase {
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
 		new AggregateTestRule(
-			new LiferayIntegrationTestRule(), MainServletTestRule.INSTANCE);
+			new LiferayIntegrationTestRule(), MainServletTestRule.INSTANCE,
+			new TransactionalTestRule(Propagation.REQUIRED));
 
 	@Override
 	protected Store getStore() {
