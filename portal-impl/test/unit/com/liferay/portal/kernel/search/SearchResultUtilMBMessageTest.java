@@ -15,6 +15,9 @@
 package com.liferay.portal.kernel.search;
 
 import com.liferay.portal.kernel.comment.Comment;
+import com.liferay.portal.kernel.test.CaptureHandler;
+import com.liferay.portal.kernel.test.JDKLoggerTestUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.search.test.BaseSearchResultUtilTestCase;
 import com.liferay.portal.search.test.SearchTestUtil;
 import com.liferay.portlet.asset.AssetRendererFactoryRegistryUtil;
@@ -22,6 +25,8 @@ import com.liferay.portlet.messageboards.model.MBMessage;
 import com.liferay.registry.collections.ServiceTrackerCollections;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -112,19 +117,46 @@ public class SearchResultUtilMBMessageTest
 		Document document2 = SearchTestUtil.createAttachmentDocument(
 			_MB_MESSAGE_CLASS_NAME, SearchTestUtil.ENTRY_CLASS_PK + 1);
 
-		List<SearchResult> searchResults = SearchTestUtil.getSearchResults(
-			document1, document2);
+		try (CaptureHandler captureHandler =
+				JDKLoggerTestUtil.configureJDKLogger(
+					SearchResultUtil.class.getName(), Level.WARNING)) {
 
-		Assert.assertEquals(1, searchResults.size());
+			List<SearchResult> searchResults = SearchTestUtil.getSearchResults(
+				document1, document2);
 
-		SearchResult searchResult = searchResults.get(0);
+			List<LogRecord> logRecords = captureHandler.getLogRecords();
 
-		Assert.assertEquals(
-			searchResult.getClassName(),
-			SearchTestUtil.ATTACHMENT_OWNER_CLASS_NAME);
-		Assert.assertEquals(
-			searchResult.getClassPK(),
-			SearchTestUtil.ATTACHMENT_OWNER_CLASS_PK);
+			Assert.assertEquals(2, logRecords.size());
+
+			LogRecord logRecord = logRecords.get(0);
+
+			long entryClassPK = GetterUtil.getLong(
+				document1.get(Field.ENTRY_CLASS_PK));
+
+			Assert.assertEquals(
+				"Search index is stale and contains entry {" + entryClassPK +
+					"}", logRecord.getMessage());
+
+			logRecord = logRecords.get(1);
+
+			entryClassPK = GetterUtil.getLong(
+				document2.get(Field.ENTRY_CLASS_PK));
+
+			Assert.assertEquals(
+				"Search index is stale and contains entry {" + entryClassPK +
+					"}", logRecord.getMessage());
+
+			Assert.assertEquals(1, searchResults.size());
+
+			SearchResult searchResult = searchResults.get(0);
+
+			Assert.assertEquals(
+				searchResult.getClassName(),
+				SearchTestUtil.ATTACHMENT_OWNER_CLASS_NAME);
+			Assert.assertEquals(
+				searchResult.getClassPK(),
+				SearchTestUtil.ATTACHMENT_OWNER_CLASS_PK);
+		}
 	}
 
 	private static final String _MB_MESSAGE_CLASS_NAME =

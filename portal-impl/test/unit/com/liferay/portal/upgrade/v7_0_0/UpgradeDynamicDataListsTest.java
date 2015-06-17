@@ -16,6 +16,8 @@ package com.liferay.portal.upgrade.v7_0_0;
 
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.test.CaptureHandler;
+import com.liferay.portal.kernel.test.JDKLoggerTestUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
@@ -36,10 +38,13 @@ import com.liferay.portal.xml.SAXReaderImpl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -85,24 +90,48 @@ public class UpgradeDynamicDataListsTest extends PowerMockito {
 		UpgradeDynamicDataLists upgradeDynamicDataLists =
 			new UpgradeDynamicDataLists();
 
-		String xml = upgradeDynamicDataLists.toXML(expandoValuesMap);
+		try (CaptureHandler captureHandler =
+				JDKLoggerTestUtil.configureJDKLogger(
+					LocaleUtil.class.getName(), Level.WARNING)) {
 
-		Document document = SAXReaderUtil.read(xml);
+			String xml = upgradeDynamicDataLists.toXML(expandoValuesMap);
 
-		Map<String, Map<String, List<String>>> dataMap = toDataMap(document);
+			List<LogRecord> logRecords = captureHandler.getLogRecords();
 
-		Map<String, List<String>> actualTextData = dataMap.get("Text");
+			Set<Locale>locales = LanguageUtil.getAvailableLocales();
 
-		assertEquals(
-			ListUtil.toList(new String[] {"Joe Bloggs"}),
-			actualTextData.get("en_US"));
+			Assert.assertEquals(locales.size() * 2, logRecords.size());
 
-		Map<String, List<String>> actualFieldsDisplayData = dataMap.get(
-			"_fieldsDisplay");
+			Iterator<LogRecord> logIterator = logRecords.iterator();
 
-		assertEquals(
-			ListUtil.toList(new String[] {fieldsDisplay}),
-			actualFieldsDisplayData.get("en_US"));
+			for (Locale locale : locales) {
+				String languageId = LocaleUtil.toLanguageId(locale);
+
+				LogRecord logRecord = logIterator.next();
+
+				Assert.assertEquals(
+					languageId + " is not a valid language id",
+					logRecord.getMessage());
+			}
+
+			Document document = SAXReaderUtil.read(xml);
+
+			Map<String, Map<String, List<String>>> dataMap = toDataMap(
+				document);
+
+			Map<String, List<String>> actualTextData = dataMap.get("Text");
+
+			assertEquals(
+				ListUtil.toList(new String[] {"Joe Bloggs"}),
+				actualTextData.get("en_US"));
+
+			Map<String, List<String>> actualFieldsDisplayData = dataMap.get(
+				"_fieldsDisplay");
+
+			assertEquals(
+				ListUtil.toList(new String[] {fieldsDisplay}),
+				actualFieldsDisplayData.get("en_US"));
+		}
 	}
 
 	@Test
@@ -124,28 +153,52 @@ public class UpgradeDynamicDataListsTest extends PowerMockito {
 		UpgradeDynamicDataLists upgradeDynamicDataLists =
 			new UpgradeDynamicDataLists();
 
-		String xml = upgradeDynamicDataLists.toXML(expandoValuesMap);
+		try (CaptureHandler captureHandler =
+				JDKLoggerTestUtil.configureJDKLogger(
+					LocaleUtil.class.getName(), Level.WARNING)) {
 
-		Document document = SAXReaderUtil.read(xml);
+			String xml = upgradeDynamicDataLists.toXML(expandoValuesMap);
 
-		Map<String, Map<String, List<String>>> dataMap = toDataMap(document);
+			List<LogRecord> logRecords = captureHandler.getLogRecords();
 
-		Map<String, List<String>> actualTextData = dataMap.get("Text");
+			Set<Locale> locales = LanguageUtil.getAvailableLocales();
 
-		assertEquals(
-			ListUtil.toList(new String[] {"A", "B", "C"}),
-			actualTextData.get("en_US"));
+			Assert.assertEquals(locales.size() * 2, logRecords.size());
 
-		assertEquals(
-			ListUtil.toList(new String[] {"D", "E", "F"}),
-			actualTextData.get("pt_BR"));
+			Iterator<LogRecord> logIterator = logRecords.iterator();
 
-		Map<String, List<String>> actualFieldsDisplayData = dataMap.get(
-			"_fieldsDisplay");
+			for (Locale locale : locales) {
+				String languageId = LocaleUtil.toLanguageId(locale);
 
-		assertEquals(
-			ListUtil.toList(new String[] {fieldsDisplay}),
-			actualFieldsDisplayData.get("en_US"));
+				LogRecord logRecord = logIterator.next();
+
+				Assert.assertEquals(
+					languageId + " is not a valid language id",
+					logRecord.getMessage());
+			}
+
+			Document document = SAXReaderUtil.read(xml);
+
+			Map<String, Map<String, List<String>>> dataMap = toDataMap(
+				document);
+
+			Map<String, List<String>> actualTextData = dataMap.get("Text");
+
+			assertEquals(
+				ListUtil.toList(new String[] {"A", "B", "C"}),
+				actualTextData.get("en_US"));
+
+			assertEquals(
+				ListUtil.toList(new String[] {"D", "E", "F"}),
+				actualTextData.get("pt_BR"));
+
+			Map<String, List<String>> actualFieldsDisplayData = dataMap.get(
+				"_fieldsDisplay");
+
+			assertEquals(
+				ListUtil.toList(new String[] {fieldsDisplay}),
+				actualFieldsDisplayData.get("en_US"));
+		}
 	}
 
 	protected void append(
