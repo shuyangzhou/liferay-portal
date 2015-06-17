@@ -33,7 +33,6 @@ public class AlloyEditorEditor extends BaseEditor {
 	}
 
 	@Override
-	@SuppressWarnings("unused")
 	public void setItemSelectorAttribute(HttpServletRequest request) {
 	}
 

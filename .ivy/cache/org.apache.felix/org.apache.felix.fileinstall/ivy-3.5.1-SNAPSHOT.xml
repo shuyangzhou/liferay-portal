@@ -4,7 +4,7 @@
 		module="org.apache.felix.fileinstall"
 		revision="3.5.1-SNAPSHOT"
 		status="integration"
-		publication="20150616171304"
+		publication="20150616141304"
 	>
 		<description homepage="http://felix.apache.org/site/apache-felix-file-install.html">
 		A utility to automatically install bundles from a directory.

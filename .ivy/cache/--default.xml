@@ -7,7 +7,7 @@
 		revision="working@bchan-yosemite-1"
 		conf="default"
 		confs="default"
-		date="20150612220638"/>
+		date="20150617121813"/>
 	<dependencies>
 		<module organisation="com.liferay" name="com.liferay.arquillian.extension">
 			<revision name="1.0.0-SNAPSHOT" status="integration" pubdate="20150130073350" resolver="liferay-public" artresolver="default" homepage="" downloaded="false" searched="false" default="false" conf="system, default, optional, compile, *, provided, runtime, javadoc, sources, master" position="20">
@@ -15,11 +15,11 @@
 				<metadata-artifact status="no" details="" size="3484" time="0" location="/Users/brian/dev/projects/github/liferay-portal/.ivy/cache/com.liferay/com.liferay.arquillian.extension/ivy-1.0.0-SNAPSHOT.xml" searched="false" original-local-location="/Users/brian/dev/projects/github/liferay-portal/.ivy/cache/com.liferay/com.liferay.arquillian.extension/ivy-1.0.0-SNAPSHOT.xml.original" origin-is-local="false" origin-location="http://cdn.repository.liferay.com/nexus/content/groups/public/com/liferay/com.liferay.arquillian.extension/1.0.0-SNAPSHOT/com.liferay.arquillian.extension-1.0.0-SNAPSHOT.pom"/>
 				<caller organisation="" name="" conf="default" rev="1.0.0-SNAPSHOT" rev-constraint-default="1.0.0-SNAPSHOT" rev-constraint-dynamic="1.0.0-SNAPSHOT" callerrev="working@bchan-yosemite-1"/>
 				<artifacts>
-					<artifact name="com.liferay.arquillian.extension" type="jar" ext="jar" status="no" details="" size="12742" time="0" location="/Users/brian/dev/projects/github/liferay-portal/.ivy/cache/com.liferay/com.liferay.arquillian.extension/jars/com.liferay.arquillian.extension-1.0.0-SNAPSHOT.jar">
-						<origin-location is-local="false" location="http://cdn.repository.liferay.com/nexus/content/groups/public/com/liferay/com.liferay.arquillian.extension/1.0.0-SNAPSHOT/com.liferay.arquillian.extension-1.0.0-SNAPSHOT.jar"/>
-					</artifact>
 					<artifact name="com.liferay.arquillian.extension" type="source" ext="jar" extra-classifier="sources" status="no" details="" size="10449" time="0" location="/Users/brian/dev/projects/github/liferay-portal/.ivy/cache/com.liferay/com.liferay.arquillian.extension/sources/com.liferay.arquillian.extension-1.0.0-SNAPSHOT-sources.jar">
 						<origin-location is-local="false" location="http://cdn.repository.liferay.com/nexus/content/groups/public/com/liferay/com.liferay.arquillian.extension/1.0.0-SNAPSHOT/com.liferay.arquillian.extension-1.0.0-SNAPSHOT-sources.jar"/>
+					</artifact>
+					<artifact name="com.liferay.arquillian.extension" type="jar" ext="jar" status="no" details="" size="12742" time="0" location="/Users/brian/dev/projects/github/liferay-portal/.ivy/cache/com.liferay/com.liferay.arquillian.extension/jars/com.liferay.arquillian.extension-1.0.0-SNAPSHOT.jar">
+						<origin-location is-local="false" location="http://cdn.repository.liferay.com/nexus/content/groups/public/com/liferay/com.liferay.arquillian.extension/1.0.0-SNAPSHOT/com.liferay.arquillian.extension-1.0.0-SNAPSHOT.jar"/>
 					</artifact>
 				</artifacts>
 			</revision>
