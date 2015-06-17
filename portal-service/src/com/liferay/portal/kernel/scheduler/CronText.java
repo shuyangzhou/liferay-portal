@@ -118,7 +118,6 @@ public class CronText {
 			year = StringPool.STAR;
 		}
 		else if (_frequency == CronText.HOURLY_FREQUENCY) {
-			minute = StringPool.STAR;
 			hour = StringPool.STAR + StringPool.FORWARD_SLASH + _interval;
 			dayOfMonth = StringPool.STAR;
 			month = StringPool.STAR;
