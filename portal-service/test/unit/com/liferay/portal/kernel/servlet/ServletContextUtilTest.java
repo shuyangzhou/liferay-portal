@@ -16,12 +16,18 @@ package com.liferay.portal.kernel.servlet;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.test.CaptureHandler;
+import com.liferay.portal.kernel.test.JDKLoggerTestUtil;
 import com.liferay.portal.kernel.util.StringPool;
 
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
 
 import javax.servlet.ServletContext;
 
@@ -47,7 +53,31 @@ public class ServletContextUtilTest extends PowerMockito {
 
 	@Test(expected = URISyntaxException.class)
 	public void testGetResourceURIWithInvalidCharacters() throws Exception {
-		getResourceURI(_URI_WITH_INVALID_CHARACTERS);
+		try(CaptureHandler captureHandler =
+				JDKLoggerTestUtil.configureJDKLogger(
+					ServletContextUtilTest.class.getName(), Level.SEVERE)) {
+
+			try {
+				getResourceURI(_URI_WITH_INVALID_CHARACTERS);
+			}
+			finally {
+				List<LogRecord> logRecords = captureHandler.getLogRecords();
+
+				Assert.assertEquals(1, logRecords.size());
+
+				LogRecord logRecord = logRecords.get(0);
+
+				Assert.assertEquals(
+					"java.net.URISyntaxException: Expected scheme-" +
+						"specific part at index 5: file:",
+					logRecord.getMessage());
+
+				Throwable throwable = logRecord.getThrown();
+
+				Assert.assertSame(
+					URISyntaxException.class, throwable.getClass());
+			}
+		}
 	}
 
 	@Test

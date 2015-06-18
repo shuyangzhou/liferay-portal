@@ -471,28 +471,36 @@ public class LocalProcessExecutorTest {
 		ReturnWithoutExitProcessCallable returnWithoutExitProcessCallable =
 			new ReturnWithoutExitProcessCallable("");
 
-		ProcessChannel<String> processChannel = _localProcessExecutor.execute(
-			_createJPDAProcessConfig(_JPDA_OPTIONS1),
-			returnWithoutExitProcessCallable);
+		try (CaptureHandler captureHandler =
+				JDKLoggerTestUtil.configureJDKLogger(
+					LocalProcessExecutor.class.getName(), Level.SEVERE)) {
 
-		Future<String> future = processChannel.getProcessNoticeableFuture();
+			ProcessChannel<String> processChannel =
+				_localProcessExecutor.execute(
+					_createJPDAProcessConfig(_JPDA_OPTIONS1),
+				returnWithoutExitProcessCallable);
 
-		Assert.assertFalse(future.isCancelled());
-		Assert.assertFalse(future.isDone());
+			Future<String> future = processChannel.getProcessNoticeableFuture();
 
-		Assert.assertTrue(future.cancel(true));
+			Assert.assertFalse(future.isCancelled());
+			Assert.assertFalse(future.isDone());
 
-		try {
-			future.get();
+			Assert.assertTrue(future.cancel(true));
 
-			Assert.fail();
+			try {
+				future.get();
+
+				Assert.fail();
+			}
+			catch (CancellationException ce) {
+			}
+
+			Assert.assertTrue(future.isCancelled());
+			Assert.assertTrue(future.isDone());
+			Assert.assertFalse(future.cancel(true));
+
+			_checkCapturedLog(captureHandler);
 		}
-		catch (CancellationException ce) {
-		}
-
-		Assert.assertTrue(future.isCancelled());
-		Assert.assertTrue(future.isDone());
-		Assert.assertFalse(future.cancel(true));
 	}
 
 	@Test
@@ -841,51 +849,59 @@ public class LocalProcessExecutorTest {
 		DummyReturnProcessCallable dummyReturnProcessCallable =
 			new DummyReturnProcessCallable();
 
-		ProcessChannel<String> processChannel = _localProcessExecutor.execute(
-			_createJPDAProcessConfig(_JPDA_OPTIONS1),
-			dummyReturnProcessCallable);
+		try (CaptureHandler captureHandler =
+				JDKLoggerTestUtil.configureJDKLogger(
+					LocalProcessExecutor.class.getName(), Level.SEVERE)) {
 
-		Future<String> future = processChannel.getProcessNoticeableFuture();
+			ProcessChannel<String> processChannel =
+				_localProcessExecutor.execute(
+					_createJPDAProcessConfig(_JPDA_OPTIONS1),
+				dummyReturnProcessCallable);
 
-		String returnValue = future.get(100, TimeUnit.SECONDS);
+			Future<String> future = processChannel.getProcessNoticeableFuture();
 
-		Assert.assertEquals(
-			DummyReturnProcessCallable.class.getName(), returnValue);
-		Assert.assertFalse(future.isCancelled());
-		Assert.assertTrue(future.isDone());
+			String returnValue = future.get(100, TimeUnit.SECONDS);
 
-		// Timeout return
+			Assert.assertEquals(
+				DummyReturnProcessCallable.class.getName(), returnValue);
+			Assert.assertFalse(future.isCancelled());
+			Assert.assertTrue(future.isDone());
 
-		ReturnWithoutExitProcessCallable returnWithoutExitProcessCallable =
-			new ReturnWithoutExitProcessCallable("");
+			// Timeout return
 
-		processChannel = _localProcessExecutor.execute(
-			_createJPDAProcessConfig(_JPDA_OPTIONS1),
-			returnWithoutExitProcessCallable);
+			ReturnWithoutExitProcessCallable returnWithoutExitProcessCallable =
+				new ReturnWithoutExitProcessCallable("");
 
-		future = processChannel.getProcessNoticeableFuture();
+			processChannel = _localProcessExecutor.execute(
+				_createJPDAProcessConfig(_JPDA_OPTIONS1),
+				returnWithoutExitProcessCallable);
 
-		try {
-			future.get(1, TimeUnit.SECONDS);
+			future = processChannel.getProcessNoticeableFuture();
 
-			Assert.fail();
+			try {
+				future.get(1, TimeUnit.SECONDS);
+
+				Assert.fail();
+			}
+			catch (TimeoutException te) {
+			}
+
+			Assert.assertFalse(future.isCancelled());
+			Assert.assertFalse(future.isDone());
+
+			future.cancel(true);
+
+			ExecutorService executorService = _getThreadPoolExecutor();
+
+			executorService.shutdownNow();
+
+			executorService.awaitTermination(10, TimeUnit.SECONDS);
+
+			Assert.assertTrue(future.isCancelled());
+			Assert.assertTrue(future.isDone());
+
+			_checkCapturedLog(captureHandler);
 		}
-		catch (TimeoutException te) {
-		}
-
-		Assert.assertFalse(future.isCancelled());
-		Assert.assertFalse(future.isDone());
-
-		future.cancel(true);
-
-		ExecutorService executorService = _getThreadPoolExecutor();
-
-		executorService.shutdownNow();
-
-		executorService.awaitTermination(10, TimeUnit.SECONDS);
-
-		Assert.assertTrue(future.isCancelled());
-		Assert.assertTrue(future.isDone());
 	}
 
 	@Test
@@ -899,15 +915,23 @@ public class LocalProcessExecutorTest {
 		EchoPayloadProcessCallable echoPayloadProcessCallable =
 			new EchoPayloadProcessCallable(largePayload);
 
-		ProcessChannel<byte[]> processChannel = _localProcessExecutor.execute(
-			_createJPDAProcessConfig(_JPDA_OPTIONS1),
-			echoPayloadProcessCallable);
+		try (CaptureHandler captureHandler =
+				JDKLoggerTestUtil.configureJDKLogger(
+					LocalProcessExecutor.class.getName(), Level.SEVERE)) {
 
-		Future<byte[]> future = processChannel.getProcessNoticeableFuture();
+			ProcessChannel<byte[]> processChannel =
+				_localProcessExecutor.execute(
+					_createJPDAProcessConfig(_JPDA_OPTIONS1),
+				echoPayloadProcessCallable);
 
-		Assert.assertArrayEquals(largePayload, future.get());
-		Assert.assertFalse(future.isCancelled());
-		Assert.assertTrue(future.isDone());
+			Future<byte[]> future = processChannel.getProcessNoticeableFuture();
+
+			Assert.assertArrayEquals(largePayload, future.get());
+			Assert.assertFalse(future.isCancelled());
+			Assert.assertTrue(future.isDone());
+
+			_checkCapturedLog(captureHandler);
+		}
 	}
 
 	@Test
@@ -1185,76 +1209,86 @@ public class LocalProcessExecutorTest {
 		ReturnWithoutExitProcessCallable returnWithoutExitProcessCallable =
 			new ReturnWithoutExitProcessCallable("Premature return value");
 
-		ProcessChannel<String> processChannel = _localProcessExecutor.execute(
-			_createJPDAProcessConfig(_JPDA_OPTIONS1),
-			returnWithoutExitProcessCallable);
+		try (CaptureHandler captureHandler =
+				JDKLoggerTestUtil.configureJDKLogger(
+					LocalProcessExecutor.class.getName(), Level.SEVERE)) {
 
-		Future<String> resultFuture = processChannel.write(
-			new DummyReturnProcessCallable());
+			ProcessChannel<String> processChannel =
+				_localProcessExecutor.execute(
+					_createJPDAProcessConfig(_JPDA_OPTIONS1),
+				returnWithoutExitProcessCallable);
 
-		Assert.assertEquals(
-			DummyReturnProcessCallable.class.getName(), resultFuture.get());
+			Future<String> resultFuture = processChannel.write(
+				new DummyReturnProcessCallable());
 
-		PrintStream oldErrPrintStream = System.err;
+			Assert.assertEquals(
+				DummyReturnProcessCallable.class.getName(), resultFuture.get());
 
-		ByteArrayOutputStream errByteArrayOutputStream =
-			new ByteArrayOutputStream();
+			PrintStream oldErrPrintStream = System.err;
 
-		PrintStream newErrPrintStream = new PrintStream(
-			errByteArrayOutputStream, true);
+			ByteArrayOutputStream errByteArrayOutputStream =
+				new ByteArrayOutputStream();
 
-		System.setErr(newErrPrintStream);
+			PrintStream newErrPrintStream = new PrintStream(
+				errByteArrayOutputStream, true);
 
-		try {
-			Future<Serializable> exceptionFuture = processChannel.write(
-				new DummyExceptionProcessCallable());
+			System.setErr(newErrPrintStream);
 
 			try {
-				exceptionFuture.get();
+				Future<Serializable> exceptionFuture = processChannel.write(
+					new DummyExceptionProcessCallable());
 
-				Assert.fail();
+				try {
+					exceptionFuture.get();
+
+					Assert.fail();
+				}
+				catch (ExecutionException ee) {
+					Throwable throwable = ee.getCause();
+
+					Assert.assertEquals(
+						DummyExceptionProcessCallable.class.getName(),
+						throwable.getMessage());
+				}
+
+				Future<Serializable> interruptFuture = processChannel.write(
+					new InterruptProcessCallable());
+
+				try {
+					Assert.assertNull(interruptFuture.get());
+				}
+				catch (CancellationException ce) {
+				}
+			}
+			finally {
+				System.setErr(oldErrPrintStream);
+
+				String errLog = errByteArrayOutputStream.toString();
+
+				Assert.assertTrue(
+					errLog.startsWith(
+						"[" + returnWithoutExitProcessCallable.toString() +
+							"]" +new ProcessException(
+								DummyExceptionProcessCallable.class.
+									getName())));
+			}
+
+			Future<String> processFuture =
+				processChannel.getProcessNoticeableFuture();
+
+			try {
+				Assert.fail(processFuture.get());
 			}
 			catch (ExecutionException ee) {
 				Throwable throwable = ee.getCause();
 
-				Assert.assertEquals(
-					DummyExceptionProcessCallable.class.getName(),
-					throwable.getMessage());
+				throwable = throwable.getCause();
+
+				Assert.assertSame(
+					InterruptedException.class, throwable.getClass());
 			}
 
-			Future<Serializable> interruptFuture = processChannel.write(
-				new InterruptProcessCallable());
-
-			try {
-				Assert.assertNull(interruptFuture.get());
-			}
-			catch (CancellationException ce) {
-			}
-		}
-		finally {
-			System.setErr(oldErrPrintStream);
-
-			String errLog = errByteArrayOutputStream.toString();
-
-			Assert.assertTrue(
-				errLog.startsWith(
-					"[" + returnWithoutExitProcessCallable.toString() + "]" +
-						new ProcessException(
-							DummyExceptionProcessCallable.class.getName())));
-		}
-
-		Future<String> processFuture =
-			processChannel.getProcessNoticeableFuture();
-
-		try {
-			Assert.fail(processFuture.get());
-		}
-		catch (ExecutionException ee) {
-			Throwable throwable = ee.getCause();
-
-			throwable = throwable.getCause();
-
-			Assert.assertSame(InterruptedException.class, throwable.getClass());
+			_checkCapturedLog(captureHandler);
 		}
 	}
 
@@ -1469,6 +1503,23 @@ public class LocalProcessExecutorTest {
 			Throwable throwable = pe.getCause();
 
 			Assert.assertTrue(throwable instanceof IOException);
+		}
+	}
+
+	private static void _checkCapturedLog(CaptureHandler captureHandler) {
+		List<LogRecord> logRecords = captureHandler.getLogRecords();
+
+		if (logRecords.size() > 0) {
+			Assert.assertEquals(1, logRecords.size());
+
+			LogRecord logRecord = logRecords.get(0);
+
+			Assert.assertEquals(
+				"Abort subprocess piping", logRecord.getMessage());
+
+			Throwable throwable = logRecord.getThrown();
+
+			Assert.assertSame(IOException.class, throwable.getClass());
 		}
 	}
 
