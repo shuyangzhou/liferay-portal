@@ -65,13 +65,7 @@ public class PortalBeanLocatorUtilTest extends PowerMockito {
 				Assert.assertEquals(
 					"BeanLocator is null", logRecord.getMessage());
 
-				Throwable throwable = logRecord.getThrown();
-
-				Assert.assertEquals(
-					"BeanLocator has not been set", throwable.getMessage());
-
-				Assert.assertSame(
-					BeanLocatorException.class, throwable.getClass());
+				Assert.assertSame(ble, logRecord.getThrown());
 			}
 		}
 	}
