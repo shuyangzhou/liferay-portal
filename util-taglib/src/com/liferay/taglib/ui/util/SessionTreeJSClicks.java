@@ -57,7 +57,7 @@ public class SessionTreeJSClicks {
 		}
 	}
 
-	public static void closeNode(
+	public synchronized static void closeNode(
 		HttpServletRequest request, String treeId, String nodeId) {
 
 		try {
@@ -84,7 +84,7 @@ public class SessionTreeJSClicks {
 		}
 	}
 
-	public static void closeNodes(
+	public synchronized static void closeNodes(
 		HttpServletRequest request, String treeId, String[] nodeIds) {
 
 		try {
@@ -137,7 +137,7 @@ public class SessionTreeJSClicks {
 		}
 	}
 
-	public static void openNode(
+	public synchronized static void openNode(
 		HttpServletRequest request, String treeId, String nodeId) {
 
 		try {
@@ -152,7 +152,7 @@ public class SessionTreeJSClicks {
 		}
 	}
 
-	public static void openNodes(
+	public synchronized static void openNodes(
 		HttpServletRequest request, String treeId, String[] nodeIds) {
 
 		try {
