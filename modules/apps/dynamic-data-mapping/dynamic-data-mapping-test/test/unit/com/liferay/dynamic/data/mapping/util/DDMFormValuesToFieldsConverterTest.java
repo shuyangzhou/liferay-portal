@@ -218,7 +218,7 @@ public class DDMFormValuesToFieldsConverterTest extends BaseDDMTestCase {
 			}
 
 			Assert.assertEquals(
-				jsonArraySize+jsonObject.length()+1, logRecords.size());
+				jsonArraySize + jsonObject.length() + 1, logRecords.size());
 
 			Assert.assertNotNull(fields);
 

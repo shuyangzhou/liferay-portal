@@ -68,9 +68,9 @@ public class ServletContextUtilTest extends PowerMockito {
 				LogRecord logRecord = logRecords.get(0);
 
 				Assert.assertEquals(
-						"java.net.URISyntaxException: Expected scheme-" +
-							"specific part at index 5: file:",
-						logRecord.getMessage());
+					"java.net.URISyntaxException: Expected scheme-" +
+						"specific part at index 5: file:",
+					logRecord.getMessage());
 
 				Throwable throwable = logRecord.getThrown();
 
