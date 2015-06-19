@@ -40,6 +40,8 @@ import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.security.permission.PermissionThreadLocal;
 import com.liferay.portal.security.permission.SimplePermissionChecker;
 import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.test.log.CaptureAppender;
+import com.liferay.portal.test.log.Log4JLoggerTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.documentlibrary.NoSuchFolderException;
@@ -52,6 +54,7 @@ import com.liferay.portlet.documentlibrary.model.DLFolderConstants;
 import com.liferay.portlet.documentlibrary.service.DLAppServiceUtil;
 import com.liferay.portlet.documentlibrary.service.DLFileEntryTypeLocalServiceUtil;
 import com.liferay.portlet.documentlibrary.service.DLFileVersionLocalServiceUtil;
+import com.liferay.portlet.documentlibrary.store.BaseStore;
 import com.liferay.portlet.dynamicdatamapping.model.DDMStructure;
 import com.liferay.portlet.dynamicdatamapping.storage.DDMFormValues;
 import com.liferay.portlet.dynamicdatamapping.storage.Field;
@@ -72,6 +75,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.spi.LoggingEvent;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -166,55 +172,98 @@ public class DLFileVersionTest {
 
 	@Test
 	public void testRevertVersion() throws Exception {
-		DLAppServiceUtil.updateFileEntry(
-			_fileVersion.getFileEntryId(), _SOURCE_FILE_NAME,
-			_fileVersion.getMimeType(), _fileVersion.getTitle(),
-			_fileVersion.getDescription(), _fileVersion.getChangeLog(), false,
-			_DATA_VERSION_1, _serviceContext);
+		try (CaptureAppender captureAppender =
+				Log4JLoggerTestUtil.configureLog4JLogger(
+					BaseStore.class.getName(), Level.WARN)) {
 
-		DLAppServiceUtil.updateFileEntry(
-			_fileVersion.getFileEntryId(), _SOURCE_FILE_NAME,
-			_fileVersion.getMimeType(), _UPDATE_VALUE,
-			_fileVersion.getDescription(), _fileVersion.getChangeLog(), false,
-			_DATA_VERSION_1, _serviceContext);
+			DLAppServiceUtil.updateFileEntry(
+				_fileVersion.getFileEntryId(), _SOURCE_FILE_NAME,
+				_fileVersion.getMimeType(), _fileVersion.getTitle(),
+				_fileVersion.getDescription(), _fileVersion.getChangeLog(),
+				false, _DATA_VERSION_1, _serviceContext);
 
-		FileEntry fileEntry = DLAppServiceUtil.updateFileEntry(
-			_fileVersion.getFileEntryId(), _SOURCE_FILE_NAME,
-			_fileVersion.getMimeType(), _fileVersion.getTitle(),
-			_fileVersion.getDescription(), _fileVersion.getChangeLog(), false,
-			_DATA_VERSION_1, _serviceContext);
+			DLAppServiceUtil.updateFileEntry(
+				_fileVersion.getFileEntryId(), _SOURCE_FILE_NAME,
+				_fileVersion.getMimeType(), _UPDATE_VALUE,
+				_fileVersion.getDescription(), _fileVersion.getChangeLog(),
+				false, _DATA_VERSION_1, _serviceContext);
 
-		DLAppServiceUtil.revertFileEntry(
-			fileEntry.getFileEntryId(), DLFileEntryConstants.VERSION_DEFAULT,
-			_serviceContext);
+			FileEntry fileEntry = DLAppServiceUtil.updateFileEntry(
+				_fileVersion.getFileEntryId(), _SOURCE_FILE_NAME,
+				_fileVersion.getMimeType(), _fileVersion.getTitle(),
+				_fileVersion.getDescription(), _fileVersion.getChangeLog(),
+				false, _DATA_VERSION_1, _serviceContext);
 
-		fileEntry = DLAppServiceUtil.getFileEntry(fileEntry.getFileEntryId());
+			DLAppServiceUtil.revertFileEntry(
+				fileEntry.getFileEntryId(),
+				DLFileEntryConstants.VERSION_DEFAULT, _serviceContext);
 
-		Assert.assertEquals("2.0", fileEntry.getVersion());
+			List<LoggingEvent> loggingEvents =
+				captureAppender.getLoggingEvents();
+
+			Assert.assertEquals(4, loggingEvents.size());
+
+			for (LoggingEvent loggingEvent : loggingEvents) {
+				checkLogForFileDeletion(loggingEvent);
+			}
+
+			fileEntry = DLAppServiceUtil.getFileEntry(
+				fileEntry.getFileEntryId());
+
+			Assert.assertEquals("2.0", fileEntry.getVersion());
+		}
 	}
 
 	@Test
 	public void testUpdateChecksum() throws Exception {
-		FileEntry fileEntry = DLAppServiceUtil.updateFileEntry(
-			_fileVersion.getFileEntryId(), _SOURCE_FILE_NAME,
-			_fileVersion.getMimeType(), _fileVersion.getTitle(),
-			_fileVersion.getDescription(), _fileVersion.getChangeLog(), false,
-			_DATA_VERSION_2, _serviceContext);
+		try (CaptureAppender captureAppender =
+				Log4JLoggerTestUtil.configureLog4JLogger(
+					BaseStore.class.getName(), Level.WARN)) {
 
-		Assert.assertNotEquals(
-			DLFileEntryConstants.VERSION_DEFAULT, fileEntry.getVersion());
+			FileEntry fileEntry = DLAppServiceUtil.updateFileEntry(
+				_fileVersion.getFileEntryId(), _SOURCE_FILE_NAME,
+				_fileVersion.getMimeType(), _fileVersion.getTitle(),
+				_fileVersion.getDescription(), _fileVersion.getChangeLog(),
+				false, _DATA_VERSION_2, _serviceContext);
+
+			List<LoggingEvent> loggingEvents =
+				captureAppender.getLoggingEvents();
+
+			Assert.assertEquals(1, loggingEvents.size());
+
+			LoggingEvent loggingEvent = loggingEvents.get(0);
+
+			checkLogForFileDeletion(loggingEvent);
+
+			Assert.assertNotEquals(
+				DLFileEntryConstants.VERSION_DEFAULT, fileEntry.getVersion());
+		}
 	}
 
 	@Test
 	public void testUpdateDescription() throws Exception {
-		FileEntry fileEntry = DLAppServiceUtil.updateFileEntry(
-			_fileVersion.getFileEntryId(), _SOURCE_FILE_NAME,
-			_fileVersion.getMimeType(), _fileVersion.getTitle(), _UPDATE_VALUE,
-			_fileVersion.getChangeLog(), false, _DATA_VERSION_1,
-			_serviceContext);
+		try (CaptureAppender captureAppender =
+				Log4JLoggerTestUtil.configureLog4JLogger(
+					BaseStore.class.getName(), Level.WARN)) {
 
-		Assert.assertNotEquals(
-			DLFileEntryConstants.VERSION_DEFAULT, fileEntry.getVersion());
+			FileEntry fileEntry = DLAppServiceUtil.updateFileEntry(
+				_fileVersion.getFileEntryId(), _SOURCE_FILE_NAME,
+				_fileVersion.getMimeType(), _fileVersion.getTitle(),
+				_UPDATE_VALUE, _fileVersion.getChangeLog(), false,
+				_DATA_VERSION_1, _serviceContext);
+
+			List<LoggingEvent> loggingEvents =
+				captureAppender.getLoggingEvents();
+
+			Assert.assertEquals(1, loggingEvents.size());
+
+			LoggingEvent loggingEvent = loggingEvents.get(0);
+
+			checkLogForFileDeletion(loggingEvent);
+
+			Assert.assertNotEquals(
+				DLFileEntryConstants.VERSION_DEFAULT, fileEntry.getVersion());
+		}
 	}
 
 	@Test
@@ -222,14 +271,28 @@ public class DLFileVersionTest {
 		updateServiceContext(
 			_UPDATE_VALUE, _contractDLFileEntryTypeId, StringPool.BLANK);
 
-		FileEntry fileEntry = DLAppServiceUtil.updateFileEntry(
-			_fileVersion.getFileEntryId(), _SOURCE_FILE_NAME,
-			_fileVersion.getMimeType(), _fileVersion.getTitle(),
-			_fileVersion.getDescription(), _fileVersion.getChangeLog(), false,
-			_DATA_VERSION_1, _serviceContext);
+		try (CaptureAppender captureAppender =
+				Log4JLoggerTestUtil.configureLog4JLogger(
+					BaseStore.class.getName(), Level.WARN)) {
 
-		Assert.assertNotEquals(
-			DLFileEntryConstants.VERSION_DEFAULT, fileEntry.getVersion());
+			FileEntry fileEntry = DLAppServiceUtil.updateFileEntry(
+				_fileVersion.getFileEntryId(), _SOURCE_FILE_NAME,
+				_fileVersion.getMimeType(), _fileVersion.getTitle(),
+				_fileVersion.getDescription(), _fileVersion.getChangeLog(),
+				false, _DATA_VERSION_1, _serviceContext);
+
+			List<LoggingEvent> loggingEvents =
+				captureAppender.getLoggingEvents();
+
+			Assert.assertEquals(1, loggingEvents.size());
+
+			LoggingEvent loggingEvent = loggingEvents.get(0);
+
+			checkLogForFileDeletion(loggingEvent);
+
+			Assert.assertNotEquals(
+				DLFileEntryConstants.VERSION_DEFAULT, fileEntry.getVersion());
+		}
 	}
 
 	@Test
@@ -239,14 +302,28 @@ public class DLFileVersionTest {
 			DLFileEntryTypeConstants.FILE_ENTRY_TYPE_ID_BASIC_DOCUMENT,
 			StringPool.BLANK);
 
-		FileEntry fileEntry = DLAppServiceUtil.updateFileEntry(
-			_fileVersion.getFileEntryId(), _SOURCE_FILE_NAME,
-			_fileVersion.getMimeType(), _fileVersion.getTitle(),
-			_fileVersion.getDescription(), _fileVersion.getChangeLog(), false,
-			_DATA_VERSION_1, _serviceContext);
+		try (CaptureAppender captureAppender =
+				Log4JLoggerTestUtil.configureLog4JLogger(
+					BaseStore.class.getName(), Level.WARN)) {
 
-		Assert.assertNotEquals(
-			DLFileEntryConstants.VERSION_DEFAULT, fileEntry.getVersion());
+			FileEntry fileEntry = DLAppServiceUtil.updateFileEntry(
+				_fileVersion.getFileEntryId(), _SOURCE_FILE_NAME,
+				_fileVersion.getMimeType(), _fileVersion.getTitle(),
+				_fileVersion.getDescription(), _fileVersion.getChangeLog(),
+				false, _DATA_VERSION_1, _serviceContext);
+
+			List<LoggingEvent> loggingEvents =
+				captureAppender.getLoggingEvents();
+
+			Assert.assertEquals(1, loggingEvents.size());
+
+			LoggingEvent loggingEvent = loggingEvents.get(0);
+
+			checkLogForFileDeletion(loggingEvent);
+
+			Assert.assertNotEquals(
+				DLFileEntryConstants.VERSION_DEFAULT, fileEntry.getVersion());
+		}
 	}
 
 	@Test
@@ -254,50 +331,117 @@ public class DLFileVersionTest {
 		updateServiceContext(
 			StringPool.BLANK, _contractDLFileEntryTypeId, _UPDATE_VALUE);
 
-		FileEntry fileEntry = DLAppServiceUtil.updateFileEntry(
-			_fileVersion.getFileEntryId(), _SOURCE_FILE_NAME,
-			_fileVersion.getMimeType(), _fileVersion.getTitle(),
-			_fileVersion.getDescription(), _fileVersion.getChangeLog(), false,
-			_DATA_VERSION_1, _serviceContext);
+		try (CaptureAppender captureAppender =
+				Log4JLoggerTestUtil.configureLog4JLogger(
+					BaseStore.class.getName(), Level.WARN)) {
 
-		Assert.assertNotEquals(
-			DLFileEntryConstants.VERSION_DEFAULT, fileEntry.getVersion());
+			FileEntry fileEntry = DLAppServiceUtil.updateFileEntry(
+				_fileVersion.getFileEntryId(), _SOURCE_FILE_NAME,
+				_fileVersion.getMimeType(), _fileVersion.getTitle(),
+				_fileVersion.getDescription(), _fileVersion.getChangeLog(),
+				false, _DATA_VERSION_1, _serviceContext);
+
+			List<LoggingEvent> loggingEvents =
+				captureAppender.getLoggingEvents();
+
+			Assert.assertEquals(1, loggingEvents.size());
+
+			LoggingEvent loggingEvent = loggingEvents.get(0);
+
+			checkLogForFileDeletion(loggingEvent);
+
+			Assert.assertNotEquals(
+				DLFileEntryConstants.VERSION_DEFAULT, fileEntry.getVersion());
+		}
 	}
 
 	@Test
 	public void testUpdateNothing() throws Exception {
-		FileEntry fileEntry = DLAppServiceUtil.updateFileEntry(
-			_fileVersion.getFileEntryId(), _SOURCE_FILE_NAME,
-			_fileVersion.getMimeType(), _fileVersion.getTitle(),
-			_fileVersion.getDescription(), _fileVersion.getChangeLog(), false,
-			_DATA_VERSION_1, _serviceContext);
+		try (CaptureAppender captureAppender =
+				Log4JLoggerTestUtil.configureLog4JLogger(
+					BaseStore.class.getName(), Level.WARN)) {
 
-		Assert.assertEquals(
-			DLFileEntryConstants.VERSION_DEFAULT, fileEntry.getVersion());
+			FileEntry fileEntry = DLAppServiceUtil.updateFileEntry(
+				_fileVersion.getFileEntryId(), _SOURCE_FILE_NAME,
+				_fileVersion.getMimeType(), _fileVersion.getTitle(),
+				_fileVersion.getDescription(), _fileVersion.getChangeLog(),
+				false, _DATA_VERSION_1, _serviceContext);
+
+			List<LoggingEvent> loggingEvents =
+				captureAppender.getLoggingEvents();
+
+			Assert.assertEquals(1, loggingEvents.size());
+
+			LoggingEvent loggingEvent = loggingEvents.get(0);
+
+			checkLogForFileDeletion(loggingEvent);
+
+			Assert.assertEquals(
+				DLFileEntryConstants.VERSION_DEFAULT, fileEntry.getVersion());
+		}
 	}
 
 	@Test
 	public void testUpdateSize() throws Exception {
-		FileEntry fileEntry = DLAppServiceUtil.updateFileEntry(
-			_fileVersion.getFileEntryId(), _SOURCE_FILE_NAME,
-			_fileVersion.getMimeType(), _fileVersion.getTitle(),
-			_fileVersion.getDescription(), _fileVersion.getChangeLog(), false,
-			_DATA_VERSION_3, _serviceContext);
+		try (CaptureAppender captureAppender =
+				Log4JLoggerTestUtil.configureLog4JLogger(
+					BaseStore.class.getName(), Level.WARN)) {
 
-		Assert.assertNotEquals(
-			DLFileEntryConstants.VERSION_DEFAULT, fileEntry.getVersion());
+			FileEntry fileEntry = DLAppServiceUtil.updateFileEntry(
+				_fileVersion.getFileEntryId(), _SOURCE_FILE_NAME,
+				_fileVersion.getMimeType(), _fileVersion.getTitle(),
+				_fileVersion.getDescription(), _fileVersion.getChangeLog(),
+				false, _DATA_VERSION_3, _serviceContext);
+
+			List<LoggingEvent> loggingEvents =
+				captureAppender.getLoggingEvents();
+
+			Assert.assertEquals(1, loggingEvents.size());
+
+			LoggingEvent loggingEvent = loggingEvents.get(0);
+
+			checkLogForFileDeletion(loggingEvent);
+
+			Assert.assertNotEquals(
+				DLFileEntryConstants.VERSION_DEFAULT, fileEntry.getVersion());
+		}
 	}
 
 	@Test
 	public void testUpdateTitle() throws Exception {
-		FileEntry fileEntry = DLAppServiceUtil.updateFileEntry(
-			_fileVersion.getFileEntryId(), _SOURCE_FILE_NAME,
-			_fileVersion.getMimeType(), _UPDATE_VALUE,
-			_fileVersion.getDescription(), _fileVersion.getChangeLog(), false,
-			_DATA_VERSION_1, _serviceContext);
+		try (CaptureAppender captureAppender =
+				Log4JLoggerTestUtil.configureLog4JLogger(
+					BaseStore.class.getName(), Level.WARN)) {
 
-		Assert.assertNotEquals(
-			DLFileEntryConstants.VERSION_DEFAULT, fileEntry.getVersion());
+			FileEntry fileEntry = DLAppServiceUtil.updateFileEntry(
+				_fileVersion.getFileEntryId(), _SOURCE_FILE_NAME,
+				_fileVersion.getMimeType(), _UPDATE_VALUE,
+				_fileVersion.getDescription(), _fileVersion.getChangeLog(),
+				false, _DATA_VERSION_1, _serviceContext);
+
+			List<LoggingEvent> loggingEvents =
+				captureAppender.getLoggingEvents();
+
+			Assert.assertEquals(1, loggingEvents.size());
+
+			LoggingEvent loggingEvent = loggingEvents.get(0);
+
+			checkLogForFileDeletion(loggingEvent);
+
+			Assert.assertNotEquals(
+				DLFileEntryConstants.VERSION_DEFAULT, fileEntry.getVersion());
+		}
+	}
+
+	protected void checkLogForFileDeletion(LoggingEvent loggingEvent) {
+		String message = (String)loggingEvent.getMessage();
+
+		Assert.assertTrue(
+			message.startsWith(
+				"Unable to delete file {companyId=" +
+					_fileVersion.getCompanyId()));
+		Assert.assertTrue(
+			message.endsWith("versionLabel=PWC} because it does not exist"));
 	}
 
 	protected Field createField(DDMStructure ddmStructure, String name) {
