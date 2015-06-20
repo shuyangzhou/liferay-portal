@@ -20,10 +20,12 @@ import java.io.File;
 
 import java.net.URL;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -40,6 +42,7 @@ import org.gradle.api.artifacts.dsl.DependencyHandler;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.file.FileTree;
 import org.gradle.api.plugins.Convention;
+import org.gradle.api.plugins.ExtensionAware;
 import org.gradle.api.plugins.ExtensionContainer;
 import org.gradle.api.plugins.JavaPluginConvention;
 import org.gradle.api.tasks.SourceSet;
@@ -113,11 +116,11 @@ public class GradleUtil {
 	}
 
 	public static <T> T addExtension(
-		Project project, String name, Class<T> clazz) {
+		ExtensionAware extensionAware, String name, Class<T> clazz) {
 
-		ExtensionContainer extensionContainer = project.getExtensions();
+		ExtensionContainer extensionContainer = extensionAware.getExtensions();
 
-		return extensionContainer.create(name, clazz, project);
+		return extensionContainer.create(name, clazz, extensionAware);
 	}
 
 	public static SourceSet addSourceSet(Project project, String name) {
@@ -147,7 +150,9 @@ public class GradleUtil {
 		project.apply(args);
 	}
 
-	public static void applyScript(Project project, String name, Object obj) {
+	public static void applyScript(
+		Project project, String name, Object object) {
+
 		Map<String, Object> args = new HashMap<>();
 
 		ClassLoader classLoader = GradleUtil.class.getClassLoader();
@@ -160,8 +165,8 @@ public class GradleUtil {
 
 		args.put("from", url);
 
-		if (obj != null) {
-			args.put("to", obj);
+		if (object != null) {
+			args.put("to", object);
 		}
 
 		project.apply(args);
@@ -208,8 +213,10 @@ public class GradleUtil {
 		return convention.getPlugin(clazz);
 	}
 
-	public static <T> T getExtension(Project project, Class<T> clazz) {
-		ExtensionContainer extensionContainer = project.getExtensions();
+	public static <T> T getExtension(
+		ExtensionAware extensionAware, Class<T> clazz) {
+
+		ExtensionContainer extensionContainer = extensionAware.getExtensions();
 
 		return extensionContainer.getByType(clazz);
 	}
@@ -289,6 +296,32 @@ public class GradleUtil {
 				iterator.remove();
 			}
 		}
+	}
+
+	public static File toFile(Project project, Object object) {
+		if (object == null) {
+			return null;
+		}
+
+		return project.file(object);
+	}
+
+	public static String toString(Object object) {
+		if (object == null) {
+			return null;
+		}
+
+		return object.toString();
+	}
+
+	public static List<String> toStringList(Iterable<?> iterable) {
+		List<String> list = new ArrayList<>();
+
+		for (Object object : iterable) {
+			list.add(object.toString());
+		}
+
+		return list;
 	}
 
 	private static Dependency _addDependency(

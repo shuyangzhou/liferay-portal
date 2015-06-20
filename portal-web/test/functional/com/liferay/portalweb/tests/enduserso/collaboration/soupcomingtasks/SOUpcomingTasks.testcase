@@ -90,7 +90,7 @@
 		</execute>
 	</command>
 
-	<command name="ViewTaskAssignedToConnection" priority="5">
+	<command name="ViewTaskAssignedToConnection" priority="4">
 		<var name="pageName" value="Tasks" />
 		<var name="taskDescription" value="Task Description" />
 		<var name="userEmailAddress" value="socialoffice01@liferay.com" />
@@ -147,7 +147,7 @@
 		</execute>
 	</command>
 
-	<command name="ViewTaskAssignedToMe" priority="5">
+	<command name="ViewTaskAssignedToMe" priority="4">
 		<var name="pageName" value="Tasks" />
 		<var name="taskDescription" value="Task Description" />
 
@@ -183,7 +183,7 @@
 			<var name="taskAssignee" value="${adminName}" />
 			<var name="taskDescription" value="${taskDescription}" />
 			<var name="taskPriority" value="${taskPriority}" />
-			<var name="taskReporter" value="${adminName}" />" />
+			<var name="taskReporter" value="${adminName}" />
 		</execute>
 
 		<execute macro="SOUpcomingTasks#viewUpcomingTask">
@@ -208,18 +208,18 @@
 			<var name="taskAssignee" value="${adminName}" />
 			<var name="taskDescription" value="${taskDescription}" />
 			<var name="taskPriority" value="${taskPriority}" />
-			<var name="taskReporter" value="${adminName}" />" />
+			<var name="taskReporter" value="${adminName}" />
 		</execute>
 
 		<execute macro="SOUpcomingTasks#viewUpcomingTask">
 			<var name="taskAssignee" value="${adminName}" />
 			<var name="taskDescription" value="${taskDescription}" />
 			<var name="taskPriority" value="${taskPriority}" />
-			<var name="taskReporter" value="${adminName}" />" />
+			<var name="taskReporter" value="${adminName}" />
 		</execute>
 	</command>
 
-	<command name="ViewTaskReassignedToConnection" priority="5">
+	<command name="ViewTaskReassignedToConnection" priority="4">
 		<var name="pageName" value="Tasks" />
 		<var name="taskDescription" value="Task Description" />
 		<var name="userEmailAddress" value="socialoffice01@liferay.com" />

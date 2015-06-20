@@ -369,7 +369,7 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
-			<description>Deprecated as of 7.0.0, with no replacement.</description>
+			<description>Deprecated as of 7.0.0, with no direct replacement.</description>
 			<name>containerIcon</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
@@ -381,7 +381,7 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
-			<description>Deprecated as of 7.0.0, with no replacement.</description>
+			<description>Deprecated as of 7.0.0, with no direct replacement.</description>
 			<name>containerSrc</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
@@ -1081,6 +1081,11 @@
 		</attribute>
 	</tag>
 	<tag>
+		<name>control-panel-site-selector</name>
+		<tag-class>com.liferay.taglib.ui.ControlPanelSiteSelectorTag</tag-class>
+		<body-content>JSP</body-content>
+	</tag>
+	<tag>
 		<name>custom-attribute</name>
 		<tag-class>com.liferay.taglib.ui.CustomAttributeTag</tag-class>
 		<body-content>JSP</body-content>
@@ -1519,6 +1524,11 @@
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
+	</tag>
+	<tag>
+		<name>error-principal</name>
+		<tag-class>com.liferay.taglib.ui.ErrorPrincipalTag</tag-class>
+		<body-content>JSP</body-content>
 	</tag>
 	<tag>
 		<description>Creates a flag icon that lets users report inappropriate content.</description>
@@ -3273,6 +3283,11 @@
 			<rtexprvalue>true</rtexprvalue>
 			<type>boolean</type>
 		</attribute>
+	</tag>
+	<tag>
+		<name>layout-common</name>
+		<tag-class>com.liferay.taglib.ui.LayoutCommonTag</tag-class>
+		<body-content>JSP</body-content>
 	</tag>
 	<tag>
 		<name>layout-templates-list</name>
@@ -5443,6 +5458,7 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
+			<description>Deprecated as of 7.0.0, with no direct replacement.</description>
 			<name>redirect</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
