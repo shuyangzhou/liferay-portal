@@ -14,7 +14,6 @@
 
 package com.liferay.journal.service.persistence.impl;
 
-import com.liferay.journal.configuration.JournalServiceConfigurationValues;
 import com.liferay.journal.exception.NoSuchArticleException;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.impl.JournalArticleImpl;
@@ -38,6 +37,7 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.ResourceConstants;
 import com.liferay.portal.security.permission.InlineSQLHelperUtil;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.util.PropsValues;
 import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.sql.Timestamp;
@@ -118,9 +118,7 @@ public class JournalArticleFinderImpl
 			titles = CustomSQLUtil.keywords(keywords);
 			descriptions = CustomSQLUtil.keywords(keywords, false);
 
-			if (JournalServiceConfigurationValues.
-					JOURNAL_ARTICLE_DATABASE_KEYWORD_SEARCH_CONTENT) {
-
+			if (PropsValues.JOURNAL_ARTICLE_DATABASE_KEYWORD_SEARCH_CONTENT) {
 				contents = CustomSQLUtil.keywords(keywords, false);
 			}
 		}
@@ -243,9 +241,7 @@ public class JournalArticleFinderImpl
 			titles = CustomSQLUtil.keywords(keywords);
 			descriptions = CustomSQLUtil.keywords(keywords, false);
 
-			if (JournalServiceConfigurationValues.
-					JOURNAL_ARTICLE_DATABASE_KEYWORD_SEARCH_CONTENT) {
-
+			if (PropsValues.JOURNAL_ARTICLE_DATABASE_KEYWORD_SEARCH_CONTENT) {
 				contents = CustomSQLUtil.keywords(keywords, false);
 			}
 		}
@@ -369,9 +365,7 @@ public class JournalArticleFinderImpl
 			titles = CustomSQLUtil.keywords(keywords);
 			descriptions = CustomSQLUtil.keywords(keywords, false);
 
-			if (JournalServiceConfigurationValues.
-					JOURNAL_ARTICLE_DATABASE_KEYWORD_SEARCH_CONTENT) {
-
+			if (PropsValues.JOURNAL_ARTICLE_DATABASE_KEYWORD_SEARCH_CONTENT) {
 				contents = CustomSQLUtil.keywords(keywords, false);
 			}
 		}
@@ -543,9 +537,7 @@ public class JournalArticleFinderImpl
 			titles = CustomSQLUtil.keywords(keywords);
 			descriptions = CustomSQLUtil.keywords(keywords, false);
 
-			if (JournalServiceConfigurationValues.
-					JOURNAL_ARTICLE_DATABASE_KEYWORD_SEARCH_CONTENT) {
-
+			if (PropsValues.JOURNAL_ARTICLE_DATABASE_KEYWORD_SEARCH_CONTENT) {
 				contents = CustomSQLUtil.keywords(keywords, false);
 			}
 		}
