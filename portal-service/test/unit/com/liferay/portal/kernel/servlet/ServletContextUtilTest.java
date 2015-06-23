@@ -88,7 +88,7 @@ public class ServletContextUtilTest {
 
 		Assert.assertEquals("file", uri.getScheme());
 		Assert.assertEquals(url.getPath(), uri.getSchemeSpecificPart());
-		Assert.assertNull(uri.getFragment());
+		Assert.assertEquals(null, uri.getFragment());
 	}
 
 	protected void doTestGetRootURI(String path, URI uri) throws Exception {
