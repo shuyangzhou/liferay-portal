@@ -167,7 +167,7 @@ public abstract class BaseStore implements Store {
 			String fromVersionLabel, String toVersionLabel)
 		throws PortalException {
 
-		InputStream is = store.getFileAsStream(
+		InputStream is = getFileAsStream(
 			companyId, repositoryId, fileName, fromVersionLabel);
 
 		if (is == null) {
@@ -579,7 +579,7 @@ public abstract class BaseStore implements Store {
 			String fromVersionLabel, String toVersionLabel)
 		throws PortalException {
 
-		InputStream is = store.getFileAsStream(
+		InputStream is = getFileAsStream(
 			companyId, repositoryId, fileName, fromVersionLabel);
 
 		if (is == null) {
