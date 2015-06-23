@@ -15,6 +15,9 @@
 package com.liferay.productivity.center.layout;
 
 import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.model.LayoutConstants;
 import com.liferay.portal.model.LayoutTypeController;
 import com.liferay.portal.model.impl.BasePanelLayoutControllerImpl;
@@ -44,9 +47,7 @@ public class UserPersonalPanelLayoutController
 
 	@Override
 	public String getURL() {
-		return
-			"${liferay:mainPath}/portal/layout?p_l_id=${liferay:plid}&" +
-				"p_v_l_s_g_id=${liferay:pvlsgid}";
+		return _URL;
 	}
 
 	@Override
@@ -61,12 +62,12 @@ public class UserPersonalPanelLayoutController
 
 	@Override
 	public boolean isSitemapable() {
-		return true;
+		return _SITEMAPABLE;
 	}
 
 	@Override
 	public boolean isURLFriendliable() {
-		return true;
+		return _URL_FRIENDLIABLE;
 	}
 
 	@Override
@@ -123,6 +124,15 @@ public class UserPersonalPanelLayoutController
 
 	private static final String _EDIT_PAGE =
 		"/layout/edit/user_personal_panel.jsp";
+
+	private static final boolean _SITEMAPABLE = GetterUtil.getBoolean(
+		PropsUtil.get(PropsKeys.LAYOUT_SITEMAPABLE), true);
+
+	private static final String _URL = GetterUtil.getString(
+		PropsUtil.get(PropsKeys.LAYOUT_URL));
+
+	private static final boolean _URL_FRIENDLIABLE = GetterUtil.getBoolean(
+		PropsUtil.get(PropsKeys.LAYOUT_URL_FRIENDLIABLE), true);
 
 	private static final String _VIEW_PAGE =
 		"/layout/view/user_personal_panel.jsp";
