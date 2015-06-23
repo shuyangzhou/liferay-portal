@@ -425,6 +425,17 @@ if (inlineEdit && Validator.isNotNull(inlineEditSaveURL)) {
 			%>
 
 			filebrowserBrowseUrl = '<%= urlItemSelectorURL %>';
+
+			<%
+			ItemSelectorCriterion imageItemSelectorCriterion = new ImageItemSelectorCriterion();
+
+			imageItemSelectorCriterion.setDesiredItemSelectorReturnTypes(desiredItemSelectorReturnTypes);
+
+			PortletURL imageItemSelectorURL = itemSelector.getItemSelectorURL(liferayPortletResponse, name + "selectItem", imageItemSelectorCriterion);
+			%>
+
+			filebrowserImageBrowseLinkUrl = '<%= imageItemSelectorURL %>';
+			filebrowserImageBrowseUrl = '<%= imageItemSelectorURL %>';
 		</c:if>
 
 		var editorConfig = <%= Validator.isNotNull(editorConfigJSONObject) ? editorConfigJSONObject : "{}" %>;

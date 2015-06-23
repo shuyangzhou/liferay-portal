@@ -41,9 +41,9 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"javax.portlet.name=" + WikiPortletKeys.WIKI,
-		"javax.portlet.name=" + WikiPortletKeys.WIKI_ADMIN,
-		"javax.portlet.name=" + WikiPortletKeys.WIKI_DISPLAY
+		"javax.portlet.name=33" + WikiPortletKeys.WIKI,
+		"javax.portlet.name=33" + WikiPortletKeys.WIKI_ADMIN,
+		"javax.portlet.name=33" + WikiPortletKeys.WIKI_DISPLAY
 	},
 	service = EditorConfigContributor.class
 )
@@ -85,13 +85,15 @@ public class WikiAttachmentEditorConfigContributor
 		String name = GetterUtil.getString(
 			inputEditorTaglibAttributes.get("liferay-ui:input-editor:name"));
 
-		PortletURL itemSelectorURL = _itemSelector.getItemSelectorURL(
+		PortletURL attachmentItemSelectorURL = _itemSelector.getItemSelectorURL(
 			liferayPortletResponse, name + "selectItem",
 			attachmentItemSelectorCriterion);
 
 		jsonObject.put(
-			"filebrowserImageBrowseLinkUrl", itemSelectorURL.toString());
-		jsonObject.put("filebrowserImageBrowseUrl", itemSelectorURL.toString());
+			"filebrowserImageBrowseLinkUrl",
+			attachmentItemSelectorURL.toString());
+		jsonObject.put(
+			"filebrowserImageBrowseUrl", attachmentItemSelectorURL.toString());
 	}
 
 	@Reference(unbind = "-")
