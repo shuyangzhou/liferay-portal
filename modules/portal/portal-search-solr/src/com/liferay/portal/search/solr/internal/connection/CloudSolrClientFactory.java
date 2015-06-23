@@ -48,7 +48,10 @@ public class CloudSolrClientFactory implements SolrClientFactory {
 
 		HttpClient httpClient = httpClientFactory.createInstance();
 
-		return new CloudSolrClient(zkHost, httpClient);
+		CloudSolrClient cloudSolrClient = new CloudSolrClient(
+			zkHost, httpClient);
+
+		return cloudSolrClient;
 	}
 
 }
