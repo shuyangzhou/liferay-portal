@@ -218,7 +218,6 @@
 						microsoft.translator.client.id=${microsoft.translator.client.id}
 						microsoft.translator.client.secret=${microsoft.translator.client.secret}
 						module.framework.base.dir=${liferay.home}/osgi
-						sass.compiler.class.name=${sass.compiler.class.name}
 						snapshot.check.enabled=${snapshot.check.enabled}
 						upgrade.table.dir=${upgrade.table.dir}
 						-baselinerepo=${-baselinerepo}
