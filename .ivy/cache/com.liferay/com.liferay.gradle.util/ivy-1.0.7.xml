@@ -2,9 +2,9 @@
 <ivy-module version="2.0" xmlns:m="http://ant.apache.org/ivy/maven">
 	<info organisation="com.liferay"
 		module="com.liferay.gradle.util"
-		revision="1.0.8"
+		revision="1.0.7"
 		status="release"
-		publication="20150620125321"
+		publication="20150618202653"
 	>
 		<license name="LGPL 2.1" url="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt" />
 		<description homepage="">
@@ -28,7 +28,7 @@
 		<artifact name="com.liferay.gradle.util" type="javadoc" ext="jar" conf="javadoc" m:classifier="javadoc"/>
 	</publications>
 	<dependencies>
-		<dependency org="org.codehaus.groovy" name="groovy-all" rev="2.3.10" force="true" conf="provided->compile(*),provided(*),runtime(*),master(*)"/>
+		<dependency org="org.codehaus.groovy" name="groovy-all" rev="2.3.9" force="true" conf="provided->compile(*),provided(*),runtime(*),master(*)"/>
 		<dependency org="com.liferay" name="org.gradle.gradle-base-services" rev="2.4" force="true" conf="provided->compile(*),provided(*),runtime(*),master(*)"/>
 		<dependency org="com.liferay" name="org.gradle.gradle-base-services-groovy" rev="2.4" force="true" conf="provided->compile(*),provided(*),runtime(*),master(*)"/>
 		<dependency org="com.liferay" name="org.gradle.gradle-core" rev="2.4" force="true" conf="provided->compile(*),provided(*),runtime(*),master(*)"/>
