@@ -23,9 +23,9 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.util.PortalUtil;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
 import javax.portlet.PortletException;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 
 /**
  * @author Leonardo Barros
@@ -35,15 +35,15 @@ public abstract class WorkflowTaskBaseMVCActionCommand
 
 	@Override
 	public boolean processAction(
-			ActionRequest actionRequest, ActionResponse actionResponse)
+			PortletRequest portletRequest, PortletResponse portletResponse)
 		throws PortletException {
 
 		try {
-			doProcessAction(actionRequest, actionResponse);
+			doProcessAction(portletRequest, portletResponse);
 
-			setRedirectAttribute(actionRequest);
+			setRedirectAttribute(portletRequest);
 
-			return SessionErrors.isEmpty(actionRequest);
+			return SessionErrors.isEmpty(portletRequest);
 		}
 		catch (PortletException pe) {
 			throw pe;
@@ -54,25 +54,25 @@ public abstract class WorkflowTaskBaseMVCActionCommand
 	}
 
 	protected abstract void doProcessAction(
-			ActionRequest actionRequest, ActionResponse actionResponse)
+			PortletRequest portletRequest, PortletResponse portletResponse)
 		throws Exception;
 
-	protected void setRedirectAttribute(ActionRequest actionRequest) {
-		String redirect = ParamUtil.getString(actionRequest, "redirect");
+	protected void setRedirectAttribute(PortletRequest portletRequest) {
+		String redirect = ParamUtil.getString(portletRequest, "redirect");
 
 		String closeRedirect = ParamUtil.getString(
-			actionRequest, "closeRedirect");
+			portletRequest, "closeRedirect");
 
 		if (Validator.isNotNull(closeRedirect)) {
 			redirect = HttpUtil.setParameter(
 				redirect, "closeRedirect", closeRedirect);
 
 			SessionMessages.add(
-				actionRequest, PortalUtil.getPortletId(actionRequest) +
+				portletRequest, PortalUtil.getPortletId(portletRequest) +
 					SessionMessages.KEY_SUFFIX_CLOSE_REDIRECT, closeRedirect);
 		}
 
-		actionRequest.setAttribute(WebKeys.REDIRECT, redirect);
+		portletRequest.setAttribute(WebKeys.REDIRECT, redirect);
 	}
 
 }

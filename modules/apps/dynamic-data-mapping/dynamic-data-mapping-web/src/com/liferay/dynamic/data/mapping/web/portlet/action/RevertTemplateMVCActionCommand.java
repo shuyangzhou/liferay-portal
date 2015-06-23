@@ -23,8 +23,8 @@ import com.liferay.portal.util.PortletKeys;
 import com.liferay.portlet.dynamicdatamapping.model.DDMTemplate;
 import com.liferay.portlet.dynamicdatamapping.service.DDMTemplateService;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -44,14 +44,14 @@ public class RevertTemplateMVCActionCommand extends BaseMVCActionCommand {
 
 	@Override
 	protected void doProcessAction(
-			ActionRequest actionRequest, ActionResponse actionResponse)
+			PortletRequest portletRequest, PortletResponse portletResponse)
 		throws Exception {
 
-		long templateId = ParamUtil.getLong(actionRequest, "templateId");
-		String version = ParamUtil.getString(actionRequest, "version");
+		long templateId = ParamUtil.getLong(portletRequest, "templateId");
+		String version = ParamUtil.getString(portletRequest, "version");
 
 		ServiceContext serviceContext = ServiceContextFactory.getInstance(
-			DDMTemplate.class.getName(), actionRequest);
+			DDMTemplate.class.getName(), portletRequest);
 
 		_ddmTemplateService.revertTemplate(templateId, version, serviceContext);
 	}

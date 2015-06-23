@@ -30,8 +30,8 @@ import com.liferay.portlet.dynamicdatamapping.util.DDM;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -49,27 +49,27 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class AddStructureMVCActionCommand extends DDMBaseMVCActionCommand {
 
-	protected DDMStructure addStructure(ActionRequest actionRequest)
+	protected DDMStructure addStructure(PortletRequest portletRequest)
 		throws Exception {
 
-		long groupId = ParamUtil.getLong(actionRequest, "groupId");
+		long groupId = ParamUtil.getLong(portletRequest, "groupId");
 		long scopeClassNameId = ParamUtil.getLong(
-			actionRequest, "scopeClassNameId");
+			portletRequest, "scopeClassNameId");
 		String structureKey = ParamUtil.getString(
-			actionRequest, "structureKey");
+			portletRequest, "structureKey");
 		long parentStructureId = ParamUtil.getLong(
-			actionRequest, "parentStructureId",
+			portletRequest, "parentStructureId",
 			DDMStructureConstants.DEFAULT_PARENT_STRUCTURE_ID);
 		Map<Locale, String> nameMap = LocalizationUtil.getLocalizationMap(
-			actionRequest, "name");
+			portletRequest, "name");
 		Map<Locale, String> descriptionMap =
-			LocalizationUtil.getLocalizationMap(actionRequest, "description");
-		DDMForm ddmForm = _ddm.getDDMForm(actionRequest);
+			LocalizationUtil.getLocalizationMap(portletRequest, "description");
+		DDMForm ddmForm = _ddm.getDDMForm(portletRequest);
 		DDMFormLayout ddmFormLayout = _ddm.getDefaultDDMFormLayout(ddmForm);
-		String storageType = ParamUtil.getString(actionRequest, "storageType");
+		String storageType = ParamUtil.getString(portletRequest, "storageType");
 
 		ServiceContext serviceContext = ServiceContextFactory.getInstance(
-			DDMStructure.class.getName(), actionRequest);
+			DDMStructure.class.getName(), portletRequest);
 
 		return _ddmStructureService.addStructure(
 			groupId, parentStructureId, scopeClassNameId, structureKey, nameMap,
@@ -79,12 +79,12 @@ public class AddStructureMVCActionCommand extends DDMBaseMVCActionCommand {
 
 	@Override
 	protected void doProcessAction(
-			ActionRequest actionRequest, ActionResponse actionResponse)
+			PortletRequest portletRequest, PortletResponse portletResponse)
 		throws Exception {
 
-		DDMStructure structure = addStructure(actionRequest);
+		DDMStructure structure = addStructure(portletRequest);
 
-		setRedirectAttribute(actionRequest, structure);
+		setRedirectAttribute(portletRequest, structure);
 	}
 
 	@Reference

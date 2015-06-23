@@ -21,8 +21,8 @@ import com.liferay.portal.kernel.workflow.WorkflowTaskManagerUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortletKeys;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -42,18 +42,18 @@ public class AssignTaskMVCActionCommand
 
 	@Override
 	protected void doProcessAction(
-			ActionRequest actionRequest, ActionResponse actionResponse)
+			PortletRequest portletRequest, PortletResponse portletResponse)
 		throws Exception {
 
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
+		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
 		long workflowTaskId = ParamUtil.getLong(
-			actionRequest, "workflowTaskId");
+			portletRequest, "workflowTaskId");
 
 		long assigneeUserId = ParamUtil.getLong(
-			actionRequest, "assigneeUserId");
-		String comment = ParamUtil.getString(actionRequest, "comment");
+			portletRequest, "assigneeUserId");
+		String comment = ParamUtil.getString(portletRequest, "comment");
 
 		WorkflowTaskManagerUtil.assignWorkflowTaskToUser(
 			themeDisplay.getCompanyId(), themeDisplay.getUserId(),

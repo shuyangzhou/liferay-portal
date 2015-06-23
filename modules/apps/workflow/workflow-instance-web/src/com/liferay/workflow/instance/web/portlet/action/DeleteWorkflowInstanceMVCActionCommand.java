@@ -37,10 +37,10 @@ import java.io.Serializable;
 
 import java.util.Map;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
 import javax.portlet.PortletContext;
+import javax.portlet.PortletRequest;
 import javax.portlet.PortletRequestDispatcher;
+import javax.portlet.PortletResponse;
 import javax.portlet.PortletSession;
 
 import org.osgi.service.component.annotations.Component;
@@ -79,12 +79,12 @@ public class DeleteWorkflowInstanceMVCActionCommand
 
 	@Override
 	protected void doProcessAction(
-			ActionRequest actionRequest, ActionResponse actionResponse)
+			PortletRequest portletRequest, PortletResponse portletResponse)
 		throws Exception {
 
 		try {
 			WorkflowInstance workflowInstance = getWorkflowInstance(
-				actionRequest);
+				portletRequest);
 
 			Map<String, Serializable> workflowContext =
 				workflowInstance.getWorkflowContext();
@@ -99,10 +99,10 @@ public class DeleteWorkflowInstanceMVCActionCommand
 			if (e instanceof PrincipalException ||
 				e instanceof WorkflowException) {
 
-				SessionErrors.add(actionRequest, e.getClass());
+				SessionErrors.add(portletRequest, e.getClass());
 
 				PortletSession portletSession =
-					actionRequest.getPortletSession();
+					portletRequest.getPortletSession();
 
 				PortletContext portletContext =
 					portletSession.getPortletContext();
@@ -110,7 +110,8 @@ public class DeleteWorkflowInstanceMVCActionCommand
 				PortletRequestDispatcher portletRequestDispatcher =
 					portletContext.getRequestDispatcher("/error.jsp");
 
-				portletRequestDispatcher.include(actionRequest, actionResponse);
+				portletRequestDispatcher.include(
+					portletRequest, portletResponse);
 			}
 			else {
 				throw e;
@@ -118,14 +119,15 @@ public class DeleteWorkflowInstanceMVCActionCommand
 		}
 	}
 
-	protected WorkflowInstance getWorkflowInstance(ActionRequest actionRequest)
+	protected WorkflowInstance getWorkflowInstance(
+			PortletRequest portletRequest)
 		throws Exception {
 
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
+		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
 		long workflowInstanceId = ParamUtil.getLong(
-			actionRequest, "workflowInstanceId");
+			portletRequest, "workflowInstanceId");
 
 		return WorkflowInstanceManagerUtil.getWorkflowInstance(
 			themeDisplay.getCompanyId(), workflowInstanceId);
