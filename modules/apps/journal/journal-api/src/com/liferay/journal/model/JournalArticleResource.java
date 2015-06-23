@@ -15,7 +15,6 @@
 package com.liferay.journal.model;
 
 import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.model.PersistedModel;
 
 /**

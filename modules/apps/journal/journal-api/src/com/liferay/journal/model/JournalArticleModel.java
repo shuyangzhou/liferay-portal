@@ -15,7 +15,6 @@
 package com.liferay.journal.model;
 
 import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.LocaleException;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -29,12 +28,10 @@ import com.liferay.portal.model.StagedGroupedModel;
 import com.liferay.portal.model.TrashedModel;
 import com.liferay.portal.model.WorkflowedModel;
 import com.liferay.portal.service.ServiceContext;
-
 import com.liferay.portlet.expando.model.ExpandoBridge;
 import com.liferay.portlet.trash.model.TrashEntry;
 
 import java.io.Serializable;
-
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
@@ -534,7 +531,7 @@ public interface JournalArticleModel extends AttachedModel,
 	 * @param defaultLocale the default locale
 	 */
 	public void setDescription(String description, Locale locale,
-		Locale defaultLocale);
+							   Locale defaultLocale);
 
 	public void setDescriptionCurrentLanguageId(String languageId);
 
@@ -552,7 +549,7 @@ public interface JournalArticleModel extends AttachedModel,
 	 * @param defaultLocale the default locale
 	 */
 	public void setDescriptionMap(Map<Locale, String> descriptionMap,
-		Locale defaultLocale);
+								  Locale defaultLocale);
 
 	/**
 	 * Returns the content of this journal article.
