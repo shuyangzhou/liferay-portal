@@ -972,13 +972,9 @@
 			<var name="siteURL" value="true" />
 		</execute>
 
-		<execute macro="BlogsNavigator#gotoEntryPG">
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-		</execute>
-
-		<execute macro="BlogsEntryComment#viewDefault">
+		<execute macro="BlogsEntryComment#viewDefaultPG">
 			<var name="entryComment" value="${entryComment}" />
+			<var name="entryTitle" value="${entryTitle}" />
 		</execute>
 	</command>
 
