@@ -126,10 +126,7 @@ public class Log4JUtil {
 
 				String priority = priorityElement.attributeValue("value");
 
-				java.util.logging.Logger jdkLogger =
-					java.util.logging.Logger.getLogger(name);
-
-				jdkLogger.setLevel(_getJdkLevel(priority));
+				setLevel(name, priority, false);
 			}
 		}
 		catch (Exception e) {
