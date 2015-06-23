@@ -73,7 +73,7 @@ public class CKEditorCreoleConfigContributor
 		jsonObject.put("format_tags", "p;h1;h2;h3;h4;h5;h6;pre");
 
 		StringBundler sb = new StringBundler();
-
+		
 		sb.append("bidi,colorbutton,colordialog,div,elementspath,flash,font,");
 		sb.append("forms,indentblock,justify,keystrokes,link,maximize,");
 		sb.append("newpage,pagebreak,preview,print,save,showblocks,smiley,");
