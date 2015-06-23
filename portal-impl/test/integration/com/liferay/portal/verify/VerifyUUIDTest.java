@@ -15,7 +15,6 @@
 package com.liferay.portal.verify;
 
 import com.liferay.portal.kernel.concurrent.ThrowableAwareRunnable;
-import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.exception.BulkException;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.test.rule.ExpectedLog;
@@ -51,13 +50,13 @@ public class VerifyUUIDTest extends BaseVerifyProcessTestCase {
 	@ExpectedLogs(
 		expectedLogs = {
 			@ExpectedLog(
-				dbType = DB.TYPE_MYSQL, expectedLog =
+				expectedLog =
 					"Unable to process runnable: Unknown column 'Unknown' " +
 						"in 'field list'",
 				expectedType = ExpectedType.EXACT
 			),
 			@ExpectedLog(
-				dbType = DB.TYPE_POSTGRESQL, expectedLog =
+				expectedLog =
 					"Unable to process runnable: ERROR: column \"unknown\" " +
 						"does not exist_",
 				expectedType = ExpectedType.EXACT
@@ -86,12 +85,11 @@ public class VerifyUUIDTest extends BaseVerifyProcessTestCase {
 	@ExpectedLogs(
 		expectedLogs = {
 			@ExpectedLog(
-				dbType = DB.TYPE_MYSQL,
 				expectedLog = "Unable to process runnable: Table ",
 				expectedType = ExpectedType.PREFIX
 			),
 			@ExpectedLog(
-				dbType = DB.TYPE_POSTGRESQL, expectedLog =
+				expectedLog =
 					"Unable to process runnable: ERROR: relation " +
 						"\"unknown\" does not exist_",
 				expectedType = ExpectedType.PREFIX
@@ -131,12 +129,12 @@ public class VerifyUUIDTest extends BaseVerifyProcessTestCase {
 	@ExpectedLogs(
 		expectedLogs = {
 			@ExpectedLog(
-				dbType = DB.TYPE_MYSQL, expectedLog =
+				expectedLog =
 					"Unable to process runnable: Table ",
 				expectedType = ExpectedType.PREFIX
 			),
 			@ExpectedLog(
-				dbType = DB.TYPE_POSTGRESQL, expectedLog =
+				expectedLog =
 					"Unable to process runnable: ERROR: relation \"unknown\" " +
 						"does not exist_",
 				expectedType = ExpectedType.PREFIX
