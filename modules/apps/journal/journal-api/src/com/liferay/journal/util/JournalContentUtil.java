@@ -14,12 +14,10 @@
 
 package com.liferay.journal.util;
 
-import com.liferay.journal.model.JournalArticleDisplay;
 import com.liferay.portal.kernel.portlet.PortletRequestModel;
+import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;
 import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.registry.Registry;
-import com.liferay.registry.RegistryUtil;
-import com.liferay.registry.ServiceTracker;
+import com.liferay.portlet.journal.model.JournalArticleDisplay;
 
 /**
  * @author Raymond Augé
@@ -27,20 +25,20 @@ import com.liferay.registry.ServiceTracker;
 public class JournalContentUtil {
 
 	public static void clearCache() {
-		getInstance().clearCache();
+		getJournalContent().clearCache();
 	}
 
 	public static void clearCache(
 		long groupId, String articleId, String ddmTemplateKey) {
 
-		getInstance().clearCache(groupId, articleId, ddmTemplateKey);
+		getJournalContent().clearCache(groupId, articleId, ddmTemplateKey);
 	}
 
 	public static String getContent(
 		long groupId, String articleId, String viewMode, String languageId,
 		PortletRequestModel portletRequestModel) {
 
-		return getInstance().getContent(
+		return getJournalContent().getContent(
 			groupId, articleId, viewMode, languageId, portletRequestModel);
 	}
 
@@ -48,7 +46,7 @@ public class JournalContentUtil {
 		long groupId, String articleId, String ddmTemplateKey, String viewMode,
 		String languageId, PortletRequestModel portletRequestModel) {
 
-		return getInstance().getContent(
+		return getJournalContent().getContent(
 			groupId, articleId, ddmTemplateKey, viewMode, languageId,
 			portletRequestModel);
 	}
@@ -58,7 +56,7 @@ public class JournalContentUtil {
 		String languageId, PortletRequestModel portletRequestModel,
 		ThemeDisplay themeDisplay) {
 
-		return getInstance().getContent(
+		return getJournalContent().getContent(
 			groupId, articleId, ddmTemplateKey, viewMode, languageId,
 			portletRequestModel, themeDisplay);
 	}
@@ -67,7 +65,7 @@ public class JournalContentUtil {
 		long groupId, String articleId, String ddmTemplateKey, String viewMode,
 		String languageId, ThemeDisplay themeDisplay) {
 
-		return getInstance().getContent(
+		return getJournalContent().getContent(
 			groupId, articleId, ddmTemplateKey, viewMode, languageId,
 			themeDisplay);
 	}
@@ -76,7 +74,7 @@ public class JournalContentUtil {
 		long groupId, String articleId, String viewMode, String languageId,
 		ThemeDisplay themeDisplay) {
 
-		return getInstance().getContent(
+		return getJournalContent().getContent(
 			groupId, articleId, viewMode, languageId, themeDisplay);
 	}
 
@@ -85,7 +83,7 @@ public class JournalContentUtil {
 		String viewMode, String languageId, int page,
 		PortletRequestModel portletRequestModel, ThemeDisplay themeDisplay) {
 
-		return getInstance().getDisplay(
+		return getJournalContent().getDisplay(
 			groupId, articleId, version, ddmTemplateKey, viewMode, languageId,
 			page, portletRequestModel, themeDisplay);
 	}
@@ -94,7 +92,7 @@ public class JournalContentUtil {
 		long groupId, String articleId, String viewMode, String languageId,
 		int page, ThemeDisplay themeDisplay) {
 
-		return getInstance().getDisplay(
+		return getJournalContent().getDisplay(
 			groupId, articleId, viewMode, languageId, page, themeDisplay);
 	}
 
@@ -102,7 +100,7 @@ public class JournalContentUtil {
 		long groupId, String articleId, String viewMode, String languageId,
 		PortletRequestModel portletRequestModel) {
 
-		return getInstance().getDisplay(
+		return getJournalContent().getDisplay(
 			groupId, articleId, viewMode, languageId, portletRequestModel);
 	}
 
@@ -111,7 +109,7 @@ public class JournalContentUtil {
 		String languageId, int page, PortletRequestModel portletRequestModel,
 		ThemeDisplay themeDisplay) {
 
-		return getInstance().getDisplay(
+		return getJournalContent().getDisplay(
 			groupId, articleId, ddmTemplateKey, viewMode, languageId, page,
 			portletRequestModel, themeDisplay);
 	}
@@ -120,7 +118,7 @@ public class JournalContentUtil {
 		long groupId, String articleId, String ddmTemplateKey, String viewMode,
 		String languageId, PortletRequestModel portletRequestModel) {
 
-		return getInstance().getDisplay(
+		return getJournalContent().getDisplay(
 			groupId, articleId, ddmTemplateKey, viewMode, languageId,
 			portletRequestModel);
 	}
@@ -129,7 +127,7 @@ public class JournalContentUtil {
 		long groupId, String articleId, String ddmTemplateKey, String viewMode,
 		String languageId, ThemeDisplay themeDisplay) {
 
-		return getInstance().getDisplay(
+		return getJournalContent().getDisplay(
 			groupId, articleId, ddmTemplateKey, viewMode, languageId,
 			themeDisplay);
 	}
@@ -138,26 +136,22 @@ public class JournalContentUtil {
 		long groupId, String articleId, String viewMode, String languageId,
 		ThemeDisplay themeDisplay) {
 
-		return getInstance().getDisplay(
+		return getJournalContent().getDisplay(
 			groupId, articleId, viewMode, languageId, themeDisplay);
 	}
 
-	public static JournalContent getInstance() {
-		return _instance._serviceTracker.getService();
+	public static JournalContent getJournalContent() {
+		PortalRuntimePermission.checkGetBeanProperty(JournalContentUtil.class);
+
+		return _journalContent;
 	}
 
-	private JournalContentUtil() {
-		Registry registry = RegistryUtil.getRegistry();
+	public void setJournalContent(JournalContent journalContent) {
+		PortalRuntimePermission.checkSetBeanProperty(getClass());
 
-		_serviceTracker = registry.trackServices(JournalContent.class);
-
-		_serviceTracker.open();
+		_journalContent = journalContent;
 	}
 
-	private static final JournalContentUtil _instance =
-		new JournalContentUtil();
-
-	private final ServiceTracker<JournalContent, JournalContent>
-		_serviceTracker;
+	private static JournalContent _journalContent;
 
 }

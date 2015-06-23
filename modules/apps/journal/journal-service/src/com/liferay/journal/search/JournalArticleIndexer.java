@@ -16,7 +16,7 @@ package com.liferay.journal.search;
 
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalArticleDisplay;
-import com.liferay.journal.service.JournalArticleLocalService;
+import com.liferay.journal.service.JournalArticleLocalServiceUtil;
 import com.liferay.journal.service.permission.JournalArticlePermission;
 import com.liferay.journal.util.JournalContentUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
@@ -57,7 +57,7 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.dynamicdatamapping.model.DDMStructure;
-import com.liferay.portlet.dynamicdatamapping.service.DDMStructureLocalService;
+import com.liferay.portlet.dynamicdatamapping.service.DDMStructureLocalServiceUtil;
 import com.liferay.portlet.dynamicdatamapping.storage.DDMFormValues;
 import com.liferay.portlet.dynamicdatamapping.storage.Fields;
 import com.liferay.portlet.dynamicdatamapping.util.DDMIndexer;
@@ -82,7 +82,6 @@ import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
@@ -129,7 +128,8 @@ public class JournalArticleIndexer
 	@Override
 	public boolean isVisible(long classPK, int status) throws Exception {
 		List<JournalArticle> articles =
-			_journalArticleLocalService.getArticlesByResourcePrimKey(classPK);
+			JournalArticleLocalServiceUtil.getArticlesByResourcePrimKey(
+				classPK);
 
 		for (JournalArticle article : articles) {
 			if (isVisible(article.getStatus(), status)) {
@@ -168,7 +168,7 @@ public class JournalArticleIndexer
 			String[] ddmStructureFieldNameParts = StringUtil.split(
 				ddmStructureFieldName, DDMIndexer.DDM_FIELD_SEPARATOR);
 
-			DDMStructure structure = _ddmStructureLocalService.getStructure(
+			DDMStructure structure = DDMStructureLocalServiceUtil.getStructure(
 				GetterUtil.getLong(ddmStructureFieldNameParts[1]));
 
 			String fieldName = StringUtil.replaceLast(
@@ -267,13 +267,14 @@ public class JournalArticleIndexer
 				long ddmStructureId = ddmStructureIds.get(i);
 
 				DDMStructure ddmStructure =
-					_ddmStructureLocalService.getDDMStructure(ddmStructureId);
+					DDMStructureLocalServiceUtil.getDDMStructure(
+						ddmStructureId);
 
 				ddmStructureKeys[i] = ddmStructure.getStructureKey();
 			}
 
 			List<JournalArticle> articles =
-				_journalArticleLocalService.
+				JournalArticleLocalServiceUtil.
 					getIndexableArticlesByDDMStructureKey(ddmStructureKeys);
 
 			for (JournalArticle article : articles) {
@@ -289,7 +290,7 @@ public class JournalArticleIndexer
 			Document document, JournalArticle article)
 		throws Exception {
 
-		DDMStructure ddmStructure = _ddmStructureLocalService.fetchStructure(
+		DDMStructure ddmStructure = DDMStructureLocalServiceUtil.fetchStructure(
 			article.getGroupId(),
 			PortalUtil.getClassNameId(JournalArticle.class),
 			article.getDDMStructureKey(), true);
@@ -379,7 +380,7 @@ public class JournalArticleIndexer
 		long classPK = article.getId();
 
 		if (!PropsValues.JOURNAL_ARTICLE_INDEX_ALL_VERSIONS) {
-			if (_journalArticleLocalService.getArticlesCount(
+			if (JournalArticleLocalServiceUtil.getArticlesCount(
 					article.getGroupId(), article.getArticleId()) > 0) {
 
 				doReindex(obj);
@@ -398,7 +399,7 @@ public class JournalArticleIndexer
 		}
 
 		JournalArticle latestIndexableArticle =
-			_journalArticleLocalService.fetchLatestIndexableArticle(
+			JournalArticleLocalServiceUtil.fetchLatestIndexableArticle(
 				article.getResourcePrimKey());
 
 		if ((latestIndexableArticle == null) ||
@@ -565,10 +566,11 @@ public class JournalArticleIndexer
 	@Override
 	protected void doReindex(String className, long classPK) throws Exception {
 		JournalArticle article =
-			_journalArticleLocalService.fetchJournalArticle(classPK);
+			JournalArticleLocalServiceUtil.fetchJournalArticle(classPK);
 
 		if (article == null) {
-			article = _journalArticleLocalService.fetchLatestArticle(classPK);
+			article = JournalArticleLocalServiceUtil.fetchLatestArticle(
+				classPK);
 		}
 
 		if (article != null) {
@@ -587,7 +589,7 @@ public class JournalArticleIndexer
 			JournalArticle article, String languageId)
 		throws Exception {
 
-		DDMStructure ddmStructure = _ddmStructureLocalService.fetchStructure(
+		DDMStructure ddmStructure = DDMStructureLocalServiceUtil.fetchStructure(
 			article.getGroupId(),
 			PortalUtil.getClassNameId(JournalArticle.class),
 			article.getDDMStructureKey(), true);
@@ -621,7 +623,7 @@ public class JournalArticleIndexer
 		long resourcePrimKey) {
 
 		JournalArticle latestIndexableArticle =
-			_journalArticleLocalService.fetchLatestArticle(
+			JournalArticleLocalServiceUtil.fetchLatestArticle(
 				resourcePrimKey,
 				new int[] {
 					WorkflowConstants.STATUS_APPROVED,
@@ -630,7 +632,8 @@ public class JournalArticleIndexer
 
 		if (latestIndexableArticle == null) {
 			latestIndexableArticle =
-				_journalArticleLocalService.fetchLatestArticle(resourcePrimKey);
+				JournalArticleLocalServiceUtil.fetchLatestArticle(
+					resourcePrimKey);
 		}
 
 		return latestIndexableArticle;
@@ -645,7 +648,7 @@ public class JournalArticleIndexer
 
 		if (PropsValues.JOURNAL_ARTICLE_INDEX_ALL_VERSIONS) {
 			articles =
-				_journalArticleLocalService.
+				JournalArticleLocalServiceUtil.
 					getIndexableArticlesByResourcePrimKey(
 						article.getResourcePrimKey());
 		}
@@ -714,7 +717,7 @@ public class JournalArticleIndexer
 
 	protected boolean isHead(JournalArticle article) {
 		JournalArticle latestArticle =
-			_journalArticleLocalService.fetchLatestArticle(
+			JournalArticleLocalServiceUtil.fetchLatestArticle(
 				article.getResourcePrimKey(),
 				new int[] {
 					WorkflowConstants.STATUS_APPROVED,
@@ -735,7 +738,7 @@ public class JournalArticleIndexer
 
 	protected void reindexArticles(long companyId) throws PortalException {
 		final ActionableDynamicQuery actionableDynamicQuery =
-			_journalArticleLocalService.getActionableDynamicQuery();
+			JournalArticleLocalServiceUtil.getActionableDynamicQuery();
 
 		actionableDynamicQuery.setCompanyId(companyId);
 		actionableDynamicQuery.setPerformActionMethod(
@@ -786,24 +789,7 @@ public class JournalArticleIndexer
 			getArticleVersions(article), isCommitImmediately());
 	}
 
-	@Reference
-	protected void setDDMStructureLocalService(
-		DDMStructureLocalService ddmStructureLocalService) {
-
-		_ddmStructureLocalService = ddmStructureLocalService;
-	}
-
-	@Reference
-	protected void setJournalArticleLocalService(
-		JournalArticleLocalService journalArticleLocalService) {
-
-		_journalArticleLocalService = journalArticleLocalService;
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		JournalArticleIndexer.class);
-
-	private DDMStructureLocalService _ddmStructureLocalService;
-	private JournalArticleLocalService _journalArticleLocalService;
 
 }
