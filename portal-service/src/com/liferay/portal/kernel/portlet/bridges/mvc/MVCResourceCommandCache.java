@@ -33,27 +33,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 
 /**
- * @author Sergio González
+ * @author Michael C. Han
  */
 public class MVCResourceCommandCache {
 
-	public static final MVCResourceCommand EMPTY = new MVCResourceCommand() {
+	public static final MVCActionCommand EMPTY = new MVCActionCommand() {
 
 		@Override
-		public boolean serveResource(
-			ResourceRequest resourceRequest,
-			ResourceResponse resourceResponse) {
+		public boolean processAction(
+			PortletRequest portletRequest, PortletResponse portletResponse) {
 
 			return false;
 		}
 
 	};
 
-	public MVCResourceCommandCache(String packagePrefix, String portletName) {
+	public MVCActionCommandCache(String packagePrefix, String portletName) {
 		if (Validator.isNotNull(packagePrefix) &&
 			!packagePrefix.endsWith(StringPool.PERIOD)) {
 
@@ -67,10 +66,10 @@ public class MVCResourceCommandCache {
 		Filter filter = registry.getFilter(
 			"(&(javax.portlet.name=" + portletName +
 				")(mvc.command.name=*)(objectClass=" +
-					MVCResourceCommand.class.getName() + "))");
+					MVCActionCommand.class.getName() + "))");
 
 		_serviceTracker = registry.trackServices(
-			filter, new MVCResourceCommandServiceTrackerCustomizer());
+			filter, new MVCActionCommandServiceTrackerCustomizer());
 
 		_serviceTracker.open();
 	}
@@ -79,17 +78,15 @@ public class MVCResourceCommandCache {
 		_serviceTracker.close();
 	}
 
-	public MVCResourceCommand getMVCResourceCommand(
-		String mvcResourceCommandName) {
-
+	public MVCActionCommand getMVCActionCommand(String mvcActionCommandName) {
 		String className = null;
 
 		try {
-			MVCResourceCommand mvcResourceCommand =
-				_mvcResourceCommandCache.get(mvcResourceCommandName);
+			MVCActionCommand mvcActionCommand = _mvcActionCommandCache.get(
+				mvcActionCommandName);
 
-			if (mvcResourceCommand != null) {
-				return mvcResourceCommand;
+			if (mvcActionCommand != null) {
+				return mvcActionCommand;
 			}
 
 			if (Validator.isNull(_packagePrefix)) {
@@ -99,115 +96,114 @@ public class MVCResourceCommandCache {
 			StringBundler sb = new StringBundler(4);
 
 			sb.append(_packagePrefix);
-			sb.append(Character.toUpperCase(mvcResourceCommandName.charAt(0)));
-			sb.append(mvcResourceCommandName.substring(1));
-			sb.append("MVCResourceCommand");
+			sb.append(Character.toUpperCase(mvcActionCommandName.charAt(0)));
+			sb.append(mvcActionCommandName.substring(1));
+			sb.append("MVCActionCommand");
 
 			className = sb.toString();
 
-			mvcResourceCommand =
-				(MVCResourceCommand)InstanceFactory.newInstance(className);
+			mvcActionCommand = (MVCActionCommand)InstanceFactory.newInstance(
+				className);
 
-			_mvcResourceCommandCache.put(
-				mvcResourceCommandName, mvcResourceCommand);
+			_mvcActionCommandCache.put(mvcActionCommandName, mvcActionCommand);
 
-			return mvcResourceCommand;
+			return mvcActionCommand;
 		}
 		catch (Exception e) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
-					"Unable to instantiate MVCResourceCommand " + className);
+					"Unable to instantiate MVCActionCommand " + className);
 			}
 
-			_mvcResourceCommandCache.put(mvcResourceCommandName, EMPTY);
+			_mvcActionCommandCache.put(mvcActionCommandName, EMPTY);
 
 			return EMPTY;
 		}
 	}
 
-	public List<MVCResourceCommand> getMVCResourceCommandChain(
-		String mvcResourceCommandChain) {
+	public List<MVCActionCommand> getMVCActionCommandChain(
+		String mvcActionCommandChain) {
 
-		List<MVCResourceCommand> mvcResourceCommands =
-			_mvcResourceCommandChainCache.get(mvcResourceCommandChain);
+		List<MVCActionCommand> mvcActionCommands =
+			_mvcActionCommandChainCache.get(mvcActionCommandChain);
 
-		if (mvcResourceCommands != null) {
-			return mvcResourceCommands;
+		if (mvcActionCommands != null) {
+			return mvcActionCommands;
 		}
 
-		mvcResourceCommands = new ArrayList<>();
+		mvcActionCommands = new ArrayList<>();
 
-		String[] mvcResourceCommandNames = StringUtil.split(
-			mvcResourceCommandChain);
+		String[] mvcActionCommandNames = StringUtil.split(
+			mvcActionCommandChain);
 
-		for (String mvcResourceCommandName : mvcResourceCommandNames) {
-			MVCResourceCommand mvcResourceCommand = getMVCResourceCommand(
-				mvcResourceCommandName);
+		for (String mvcActionCommandName : mvcActionCommandNames) {
+			MVCActionCommand mvcActionCommand = getMVCActionCommand(
+				mvcActionCommandName);
 
-			if (mvcResourceCommand != EMPTY) {
-				mvcResourceCommands.add(mvcResourceCommand);
+			if (mvcActionCommand != EMPTY) {
+				mvcActionCommands.add(mvcActionCommand);
 			}
 			else {
 				if (_log.isWarnEnabled()) {
 					_log.warn(
-						"Unable to find MVCResourceCommand " +
-							mvcResourceCommandChain);
+						"Unable to find MVCActionCommand " +
+							mvcActionCommandChain);
 				}
 			}
 		}
 
-		_mvcResourceCommandChainCache.put(
-			mvcResourceCommandChain, mvcResourceCommands);
+		_mvcActionCommandChainCache.put(
+			mvcActionCommandChain, mvcActionCommands);
 
-		return mvcResourceCommands;
+		return mvcActionCommands;
 	}
 
 	public boolean isEmpty() {
-		return _mvcResourceCommandCache.isEmpty();
+		return _mvcActionCommandCache.isEmpty();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		MVCResourceCommandCache.class);
+		MVCActionCommandCache.class);
 
-	private final Map<String, MVCResourceCommand> _mvcResourceCommandCache =
+	private final Map<String, MVCActionCommand> _mvcActionCommandCache =
 		new ConcurrentHashMap<>();
-	private final Map<String, List<MVCResourceCommand>>
-		_mvcResourceCommandChainCache = new ConcurrentHashMap<>();
+	private final Map<String, List<MVCActionCommand>>
+		_mvcActionCommandChainCache = new ConcurrentHashMap<>();
 	private final String _packagePrefix;
-	private final ServiceTracker<MVCResourceCommand, MVCResourceCommand>
+	private final ServiceTracker<MVCActionCommand, MVCActionCommand>
 		_serviceTracker;
 
-	private class MVCResourceCommandServiceTrackerCustomizer
+	private class MVCActionCommandServiceTrackerCustomizer
 		implements ServiceTrackerCustomizer
-			<MVCResourceCommand, MVCResourceCommand> {
+			<MVCActionCommand, MVCActionCommand> {
 
 		@Override
-		public MVCResourceCommand addingService(
-			ServiceReference<MVCResourceCommand> serviceReference) {
+		public MVCActionCommand addingService(
+			ServiceReference<MVCActionCommand> serviceReference) {
 
 			Registry registry = RegistryUtil.getRegistry();
 
-			MVCResourceCommand mvcResourceCommand = registry.getService(
+			MVCActionCommand mvcActionCommand = registry.getService(
 				serviceReference);
 
 			String commandName = (String)serviceReference.getProperty(
 				"mvc.command.name");
 
-			_mvcResourceCommandCache.put(commandName, mvcResourceCommand);
+			_mvcActionCommandCache.put(commandName, mvcActionCommand);
 
-			return mvcResourceCommand;
+			return mvcActionCommand;
 		}
 
 		@Override
 		public void modifiedService(
-			ServiceReference<MVCResourceCommand> serviceReference,
-			MVCResourceCommand mvcResourceCommand) {
+			ServiceReference<MVCActionCommand> serviceReference,
+			MVCActionCommand mvcActionCommand) {
 		}
 
 		@Override
 		public void removedService(
-			ServiceReference<MVCResourceCommand> serviceReference,
-			MVCResourceCommand mvcResourceCommand) {
+			ServiceReference<MVCActionCommand> serviceReference,
+			MVCActionCommand mvcActionCommand) {
 
 			Registry registry = RegistryUtil.getRegistry();
 
@@ -216,12 +212,12 @@ public class MVCResourceCommandCache {
 			String commandName = (String)serviceReference.getProperty(
 				"mvc.command.name");
 
-			_mvcResourceCommandCache.remove(commandName);
+			_mvcActionCommandCache.remove(commandName);
 
-			for (List<MVCResourceCommand> mvcResourceCommands :
-					_mvcResourceCommandChainCache.values()) {
+			for (List<MVCActionCommand> mvcActionCommands :
+					_mvcActionCommandChainCache.values()) {
 
-				mvcResourceCommands.remove(mvcResourceCommand);
+				mvcActionCommands.remove(mvcActionCommand);
 			}
 		}
 
