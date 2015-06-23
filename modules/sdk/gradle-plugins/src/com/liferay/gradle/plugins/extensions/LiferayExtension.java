@@ -14,11 +14,19 @@
 
 package com.liferay.gradle.plugins.extensions;
 
+import com.liferay.gradle.util.ClosureBackedScript;
+import com.liferay.gradle.util.Validator;
+
 import groovy.lang.Closure;
+
+import groovy.util.ConfigObject;
+import groovy.util.ConfigSlurper;
 
 import java.io.File;
 
-import org.gradle.api.NamedDomainObjectContainer;
+import java.util.Map;
+
+import org.gradle.api.GradleException;
 import org.gradle.api.Project;
 
 /**
@@ -28,52 +36,87 @@ public class LiferayExtension {
 
 	public LiferayExtension(Project project) {
 		this.project = project;
-
-		_appServers = project.container(
-			AppServer.class, new AppServerFactory(project));
 	}
 
 	public void appServers(Closure<?> closure) {
-		_appServers.configure(closure);
-	}
+		ConfigSlurper configSlurper = new ConfigSlurper();
 
-	public AppServer getAppServer() {
-		return getAppServer(getAppServerType());
-	}
+		ConfigObject newAppServers = configSlurper.parse(
+			new ClosureBackedScript(closure));
 
-	public AppServer getAppServer(String type) {
-		return _appServers.getAt(type);
+		_appServers.merge(newAppServers);
 	}
 
 	public File getAppServerDeployDir() {
-		AppServer appServer = getAppServer();
+		if (_appServerDeployDir != null) {
+			return _appServerDeployDir;
+		}
 
-		return appServer.getDeployDir();
+		return getAppServerDir("deployDirName");
 	}
 
 	public File getAppServerDir() {
-		AppServer appServer = getAppServer();
+		if (_appServerDir != null) {
+			return _appServerDir;
+		}
 
-		return appServer.getDir();
+		File appServerParentDir = getAppServerParentDir();
+		String appServerName = getAppServerProperty("name");
+		String appServerVersion = getAppServerProperty("version");
+
+		if ((appServerParentDir == null) || Validator.isNull(appServerName) ||
+			Validator.isNull(appServerVersion)) {
+
+			return null;
+		}
+
+		return new File(
+			appServerParentDir, appServerName + "-" + appServerVersion);
 	}
 
 	public File getAppServerLibGlobalDir() {
-		AppServer appServer = getAppServer();
+		if (_appServerLibGlobalDir != null) {
+			return _appServerLibGlobalDir;
+		}
 
-		return appServer.getLibGlobalDir();
+		return getAppServerDir("libGlobalDirName");
 	}
 
 	public File getAppServerParentDir() {
-		return project.file(_appServerParentDir);
+		return _appServerParentDir;
 	}
 
 	public File getAppServerPortalDir() {
-		AppServer appServer = getAppServer();
+		if (_appServerPortalDir != null) {
+			return _appServerPortalDir;
+		}
 
-		return appServer.getPortalDir();
+		return getAppServerDir("portalDirName");
 	}
 
-	public NamedDomainObjectContainer<AppServer> getAppServers() {
+	public String getAppServerProperty(String key) {
+		return getAppServerProperty(getAppServerType(), key);
+	}
+
+	public String getAppServerProperty(String appServerType, String key) {
+		if (Validator.isNull(appServerType)) {
+			return null;
+		}
+
+		Map<String, Object> appServerProperties =
+			(Map<String, Object>)_appServers.getProperty(appServerType);
+
+		String value = String.valueOf(appServerProperties.get(key));
+
+		if (Validator.isNull(value)) {
+			throw new GradleException(
+				"Unable to get property " + key + " for " + appServerType);
+		}
+
+		return value;
+	}
+
+	public ConfigObject getAppServers() {
 		return _appServers;
 	}
 
@@ -82,7 +125,17 @@ public class LiferayExtension {
 	}
 
 	public File getDeployDir() {
-		return project.file(_deployDir);
+		if (_deployDir != null) {
+			return _deployDir;
+		}
+
+		File appServerParentDir = getAppServerParentDir();
+
+		if (appServerParentDir == null) {
+			return null;
+		}
+
+		return new File(appServerParentDir, "deploy");
 	}
 
 	public int getJmxRemotePort() {
@@ -90,7 +143,17 @@ public class LiferayExtension {
 	}
 
 	public File getLiferayHome() {
-		return project.file(_liferayHome);
+		if (_liferayHome != null) {
+			return _liferayHome;
+		}
+
+		File appServerParentDir = getAppServerParentDir();
+
+		if (appServerParentDir == null) {
+			return null;
+		}
+
+		return appServerParentDir;
 	}
 
 	public String getPortalVersion() {
@@ -98,7 +161,7 @@ public class LiferayExtension {
 	}
 
 	public File getTmpDir() {
-		return project.file(_tmpDir);
+		return _tmpDir;
 	}
 
 	public String getVersionPrefix() {
@@ -113,15 +176,31 @@ public class LiferayExtension {
 		return version;
 	}
 
-	public void setAppServerParentDir(Object appServerParentDir) {
+	public void setAppServerDeployDir(File appServerDeployDir) {
+		_appServerDeployDir = appServerDeployDir;
+	}
+
+	public void setAppServerDir(File appServerDir) {
+		_appServerDir = appServerDir;
+	}
+
+	public void setAppServerLibGlobalDir(File appServerLibGlobalDir) {
+		_appServerLibGlobalDir = appServerLibGlobalDir;
+	}
+
+	public void setAppServerParentDir(File appServerParentDir) {
 		_appServerParentDir = appServerParentDir;
+	}
+
+	public void setAppServerPortalDir(File appServerPortalDir) {
+		_appServerPortalDir = appServerPortalDir;
 	}
 
 	public void setAppServerType(String appServerType) {
 		_appServerType = appServerType;
 	}
 
-	public void setDeployDir(Object deployDir) {
+	public void setDeployDir(File deployDir) {
 		_deployDir = deployDir;
 	}
 
@@ -129,7 +208,7 @@ public class LiferayExtension {
 		_jmxRemotePort = jmxRemotePort;
 	}
 
-	public void setLiferayHome(Object liferayHome) {
+	public void setLiferayHome(File liferayHome) {
 		_liferayHome = liferayHome;
 	}
 
@@ -137,19 +216,35 @@ public class LiferayExtension {
 		_portalVersion = portalVersion;
 	}
 
-	public void setTmpDir(Object tmpDir) {
+	public void setTmpDir(File tmpDir) {
 		_tmpDir = tmpDir;
+	}
+
+	protected File getAppServerDir(String dirNameKey) {
+		File appServerDir = getAppServerDir();
+
+		if (appServerDir == null) {
+			return null;
+		}
+
+		String dirName = getAppServerProperty(dirNameKey);
+
+		return new File(appServerDir, dirName);
 	}
 
 	protected final Project project;
 
-	private Object _appServerParentDir;
-	private final NamedDomainObjectContainer<AppServer> _appServers;
+	private File _appServerDeployDir;
+	private File _appServerDir;
+	private File _appServerLibGlobalDir;
+	private File _appServerParentDir;
+	private File _appServerPortalDir;
+	private final ConfigObject _appServers = new ConfigObject();
 	private String _appServerType;
-	private Object _deployDir;
+	private File _deployDir;
 	private int _jmxRemotePort;
-	private Object _liferayHome;
+	private File _liferayHome;
 	private String _portalVersion;
-	private Object _tmpDir;
+	private File _tmpDir;
 
 }
