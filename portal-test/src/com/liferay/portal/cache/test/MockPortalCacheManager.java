@@ -14,27 +14,61 @@
 
 package com.liferay.portal.cache.test;
 
-import com.liferay.portal.kernel.cache.AbstractPortalCacheManager;
+import com.liferay.portal.kernel.cache.CacheManagerListener;
 import com.liferay.portal.kernel.cache.PortalCache;
-import com.liferay.portal.kernel.cache.PortalCacheManagerTypes;
-import com.liferay.portal.kernel.cache.configuration.PortalCacheConfiguration;
-import com.liferay.portal.kernel.cache.configuration.PortalCacheManagerConfiguration;
+import com.liferay.portal.kernel.cache.PortalCacheManager;
 
 import java.io.Serializable;
 
 import java.net.URL;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+import java.util.Set;
 
 /**
  * @author Tina Tian
  */
 public class MockPortalCacheManager<K extends Serializable, V>
-	extends AbstractPortalCacheManager<K, V> {
+	implements PortalCacheManager<K, V> {
 
 	public MockPortalCacheManager(String portalCacheManagerName) {
-		setName(portalCacheManagerName);
+		_portalCacheManagerName = portalCacheManagerName;
+	}
+
+	@Override
+	public void clearAll() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void destroy() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public PortalCache<K, V> getCache(String portalCacheName) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public PortalCache<K, V> getCache(
+		String portalCacheName, boolean blocking) {
+
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public Set<CacheManagerListener> getCacheManagerListeners() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public String getName() {
+		return _portalCacheManagerName;
+	}
+
+	@Override
+	public boolean isClusterAware() {
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -43,86 +77,29 @@ public class MockPortalCacheManager<K extends Serializable, V>
 	}
 
 	@Override
-	protected PortalCache<K, V> createPortalCache(
-		PortalCacheConfiguration portalCacheConfiguration) {
+	public boolean registerCacheManagerListener(
+		CacheManagerListener cacheManagerListener) {
 
-		String portalCacheName = portalCacheConfiguration.getPortalCacheName();
-
-		TestPortalCache<K, V> portalCache = _testPortalCaches.get(
-			portalCacheName);
-
-		if (portalCache != null) {
-			return portalCache;
-		}
-
-		portalCache = new TestPortalCache<>(this, portalCacheName);
-
-		TestPortalCache<K, V> previousPortalCache =
-			_testPortalCaches.putIfAbsent(portalCacheName, portalCache);
-
-		if (previousPortalCache == null) {
-			aggregatedCacheManagerListener.notifyCacheAdded(portalCacheName);
-		}
-		else {
-			portalCache = previousPortalCache;
-		}
-
-		return portalCache;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	protected void doClearAll() {
-		for (TestPortalCache<K, V> testPortalCache :
-				_testPortalCaches.values()) {
-
-			testPortalCache.removeAll();
-		}
+	public void removeCache(String portalCacheName) {
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	protected void doDestroy() {
-		for (TestPortalCache<K, V> testPortalCache :
-				_testPortalCaches.values()) {
+	public boolean unregisterCacheManagerListener(
+		CacheManagerListener cacheManagerListener) {
 
-			testPortalCache.removeAll();
-		}
-
-		aggregatedCacheManagerListener.dispose();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	protected void doRemoveCache(String portalCacheName) {
-		TestPortalCache<K, V> testPortalCache = _testPortalCaches.remove(
-			portalCacheName);
-
-		testPortalCache.removeAll();
-
-		aggregatedCacheManagerListener.notifyCacheRemoved(portalCacheName);
+	public void unregisterCacheManagerListeners() {
+		throw new UnsupportedOperationException();
 	}
 
-	@Override
-	protected PortalCacheManagerConfiguration
-		getPortalCacheManagerConfiguration() {
-
-		return new PortalCacheManagerConfiguration(
-			null,
-			new PortalCacheConfiguration(
-				PortalCacheConfiguration.DEFAULT_PORTAL_CACHE_NAME, null, null),
-			null);
-	}
-
-	@Override
-	protected String getType() {
-		return PortalCacheManagerTypes.TOOL;
-	}
-
-	@Override
-	protected void initPortalCacheManager() {
-		_testPortalCaches = new ConcurrentHashMap<>();
-
-		aggregatedCacheManagerListener.init();
-	}
-
-	private ConcurrentMap<String, TestPortalCache<K, V>> _testPortalCaches;
+	private final String _portalCacheManagerName;
 
 }
