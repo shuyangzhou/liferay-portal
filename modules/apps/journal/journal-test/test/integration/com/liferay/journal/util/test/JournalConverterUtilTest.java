@@ -20,8 +20,6 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
-import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
-import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
@@ -35,7 +33,6 @@ import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.kernel.xml.UnsecureSAXReaderUtil;
 import com.liferay.portal.kernel.xml.XPath;
-import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Layout;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
@@ -53,12 +50,12 @@ import com.liferay.portlet.dynamicdatamapping.model.DDMFormFieldOptions;
 import com.liferay.portlet.dynamicdatamapping.model.DDMStructure;
 import com.liferay.portlet.dynamicdatamapping.model.DDMStructureConstants;
 import com.liferay.portlet.dynamicdatamapping.model.LocalizedValue;
+import com.liferay.portlet.dynamicdatamapping.service.test.BaseDDMServiceTestCase;
 import com.liferay.portlet.dynamicdatamapping.storage.Field;
 import com.liferay.portlet.dynamicdatamapping.storage.Fields;
 import com.liferay.portlet.dynamicdatamapping.storage.StorageType;
 import com.liferay.portlet.dynamicdatamapping.util.DDMImpl;
 import com.liferay.portlet.dynamicdatamapping.util.DDMXMLImpl;
-import com.liferay.portlet.dynamicdatamapping.util.test.DDMStructureTestHelper;
 import com.liferay.portlet.journal.model.JournalArticle;
 import com.liferay.portlet.journal.util.JournalConverterUtil;
 
@@ -85,7 +82,7 @@ import org.junit.runner.RunWith;
  * @author Marcellus Tavares
  */
 @RunWith(Arquillian.class)
-public class JournalConverterUtilTest {
+public class JournalConverterUtilTest extends BaseDDMServiceTestCase {
 
 	@ClassRule
 	@Rule
@@ -93,16 +90,15 @@ public class JournalConverterUtilTest {
 		new LiferayIntegrationTestRule();
 
 	@Before
+	@Override
 	public void setUp() throws Exception {
-		_group = GroupTestUtil.addGroup();
-
-		_ddmStructureTestHelper = new DDMStructureTestHelper(_group);
+		super.setUp();
 
 		long classNameId = PortalUtil.getClassNameId(JournalArticle.class);
 
 		String definition = read("test-ddm-structure-all-fields.xml");
 
-		_ddmStructure = _ddmStructureTestHelper.addStructure(
+		_ddmStructure = addStructure(
 			classNameId, null, "Test Structure", definition,
 			StorageType.JSON.getValue(), DDMStructureConstants.TYPE_DEFAULT);
 	}
@@ -335,10 +331,10 @@ public class JournalConverterUtilTest {
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(
-				_group.getGroupId(), TestPropsValues.getUserId());
+				group.getGroupId(), TestPropsValues.getUserId());
 
 		FileEntry fileEntry = DLAppLocalServiceUtil.addFileEntry(
-			TestPropsValues.getUserId(), _group.getGroupId(),
+			TestPropsValues.getUserId(), group.getGroupId(),
 			DLFolderConstants.DEFAULT_PARENT_FOLDER_ID, "Test 1.txt",
 			ContentTypes.TEXT_PLAIN, RandomTestUtil.randomBytes(),
 			serviceContext);
@@ -663,13 +659,13 @@ public class JournalConverterUtilTest {
 
 		layouts.put(
 			_PRIVATE_LAYOUT,
-			LayoutTestUtil.addLayout(_group, true));
+			LayoutTestUtil.addLayout(group, true));
 		layouts.put(
 			_PRIVATE_USER_LAYOUT,
 			LayoutTestUtil.addLayout(user.getGroupId(), true));
 		layouts.put(
 			_PUBLIC_LAYOUT,
-			LayoutTestUtil.addLayout(_group, false));
+			LayoutTestUtil.addLayout(group, false));
 		layouts.put(
 			_PUBLIC_USER_LAYOUT,
 			LayoutTestUtil.addLayout(user.getGroupId(), false));
@@ -872,6 +868,7 @@ public class JournalConverterUtilTest {
 		return values;
 	}
 
+	@Override
 	protected String read(String fileName) throws Exception {
 		Class<?> clazz = getClass();
 
@@ -978,12 +975,7 @@ public class JournalConverterUtilTest {
 	private static final String _PUBLIC_USER_LAYOUT = "publicUserLayout";
 
 	private DDMStructure _ddmStructure;
-	private DDMStructureTestHelper _ddmStructureTestHelper;
 	private final Locale _enLocale = LocaleUtil.fromLanguageId("en_US");
-
-	@DeleteAfterTestRun
-	private Group _group;
-
 	private final Locale _ptLocale = LocaleUtil.fromLanguageId("pt_BR");
 
 }
