@@ -22,18 +22,17 @@ import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 
+import java.util.Locale;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Ambrin Chaudhary
  */
 
 public class BaseCKEditorConfigContributor extends BaseEditorConfigContributor {
-
 	@Override
 	public void populateConfigJSONObject(
 		JSONObject jsonObject, Map<String, Object> inputEditorTaglibAttributes,
@@ -61,14 +60,14 @@ public class BaseCKEditorConfigContributor extends BaseEditorConfigContributor {
 		String contentsLanguageDir = getContentsLanguageDir(
 			inputEditorTaglibAttributes);
 
-		jsonObject.put(
-			"contentsLangDirection", HtmlUtil.escapeJS(contentsLanguageDir));
+		jsonObject.put("contentsLangDirection",
+			HtmlUtil.escapeJS(contentsLanguageDir));
 
 		String contentsLanguageId = getContentsLanguageId(
 			inputEditorTaglibAttributes);
 
-		jsonObject.put(
-			"contentsLanguage", contentsLanguageId.replace("iw_", "he_"));
+		jsonObject.put("contentsLanguage",
+			contentsLanguageId.replace("iw_", "he_"));
 
 		jsonObject.put("height", 265);
 
@@ -77,8 +76,8 @@ public class BaseCKEditorConfigContributor extends BaseEditorConfigContributor {
 		jsonObject.put("language", languageId.replace("iw_", "he_"));
 
 		boolean resizable = GetterUtil.getBoolean(
-			(String)inputEditorTaglibAttributes.get(
-				"liferay-ui:input-editor:resizable"));
+				(String)inputEditorTaglibAttributes.get(
+					"liferay-ui:input-editor:resizable"));
 
 		if (resizable) {
 			jsonObject.put("resize_dir", "vertical");
@@ -86,18 +85,16 @@ public class BaseCKEditorConfigContributor extends BaseEditorConfigContributor {
 
 		jsonObject.put("resize_enabled", resizable);
 
-		HttpServletResponse response =
-			liferayPortletResponse.getHttpServletResponse();
-
-		response.setContentType(ContentTypes.TEXT_JAVASCRIPT);
+		liferayPortletResponse.getHttpServletResponse()
+			.setContentType(ContentTypes.TEXT_JAVASCRIPT);
 	}
 
 	protected boolean isShowSource(
 		Map<String, Object> inputEditorTaglibAttributes) {
 
 		return GetterUtil.getBoolean(
-			inputEditorTaglibAttributes.get(
-				"liferay-ui:input-editor:showSource"));
+				inputEditorTaglibAttributes.get(
+					"liferay-ui:input-editor:showSource"));
 	}
 
 }
