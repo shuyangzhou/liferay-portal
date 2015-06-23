@@ -15,7 +15,6 @@
 package com.liferay.util.log4j;
 
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
-import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 import com.liferay.portal.kernel.log.LogFactory;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -27,6 +26,8 @@ import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
+import java.io.StringReader;
 
 import java.net.URL;
 
@@ -105,15 +106,17 @@ public class Log4JUtil {
 
 		DOMConfigurator domConfigurator = new DOMConfigurator();
 
+		Reader urlReader = new StringReader(urlContent);
+
 		domConfigurator.doConfigure(
-			new UnsyncStringReader(urlContent),
-			LogManager.getLoggerRepository());
+			urlReader, LogManager.getLoggerRepository());
 
 		try {
 			SAXReader saxReader = new SAXReader();
 
-			Document document = saxReader.read(
-				new UnsyncStringReader(urlContent), url.toExternalForm());
+			Reader reader = new StringReader(urlContent);
+
+			Document document = saxReader.read(reader, url.toExternalForm());
 
 			Element rootElement = document.getRootElement();
 
