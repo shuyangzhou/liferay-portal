@@ -29,7 +29,7 @@ class AppServerFactory implements NamedDomainObjectFactory<AppServer> {
 	@Override
 	public AppServer create(String name) {
 		if (name.equals("tomcat")) {
-			return new TomcatAppServer(_project);
+			return new TomcatAppServer(name, _project);
 		}
 		else {
 			return new AppServer(name, _project);
