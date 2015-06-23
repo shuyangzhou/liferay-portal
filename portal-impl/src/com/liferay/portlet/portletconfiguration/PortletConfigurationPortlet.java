@@ -163,8 +163,7 @@ public class PortletConfigurationPortlet extends MVCPortlet {
 
 		Portlet portlet = ActionUtil.getPortlet(actionRequest);
 
-		PortletPreferences portletPreferences =
-			ActionUtil.getLayoutPortletSetup(actionRequest, portlet);
+		PortletPreferences portletPreferences = actionRequest.getPreferences();
 
 		Enumeration<String> enu = portletPreferences.getNames();
 
@@ -527,16 +526,14 @@ public class PortletConfigurationPortlet extends MVCPortlet {
 
 				renderEditConfiguration(renderRequest, portlet);
 			}
-			else {
+			else if (mvcPath.endsWith("edit_public_render_parameters.jsp")) {
 				PortletPreferences portletPreferences =
 					ActionUtil.getLayoutPortletSetup(renderRequest, portlet);
 
 				renderRequest = ActionUtil.getWrappedRenderRequest(
 					renderRequest, portletPreferences);
 
-				if (mvcPath.endsWith("edit_public_render_parameters.jsp")) {
-					renderEditPublicParameters(renderRequest, portlet);
-				}
+				renderEditPublicParameters(renderRequest, portlet);
 			}
 
 			renderResponse.setTitle(
