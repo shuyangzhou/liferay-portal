@@ -114,7 +114,7 @@ request.setAttribute("control_panel.jsp-ppid", ppid);
 									<aui:row>
 										<div id="controlPanelSiteHeading">
 											<h1 class="site-title">
-												<liferay-ui:control-panel-site-selector />
+												<%@ include file="/html/portal/layout/view/control_panel_site_selector.jspf" %>
 											</h1>
 
 											<c:if test="<%= group.hasPrivateLayouts() || group.hasPublicLayouts() %>">
