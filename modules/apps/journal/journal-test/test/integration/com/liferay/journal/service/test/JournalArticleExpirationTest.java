@@ -15,10 +15,6 @@
 package com.liferay.journal.service.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-import com.liferay.journal.model.JournalArticle;
-import com.liferay.journal.model.JournalArticleConstants;
-import com.liferay.journal.model.JournalFolderConstants;
-import com.liferay.journal.service.JournalArticleLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
@@ -41,6 +37,10 @@ import com.liferay.portlet.dynamicdatamapping.model.DDMStructure;
 import com.liferay.portlet.dynamicdatamapping.model.DDMTemplate;
 import com.liferay.portlet.dynamicdatamapping.util.test.DDMStructureTestUtil;
 import com.liferay.portlet.dynamicdatamapping.util.test.DDMTemplateTestUtil;
+import com.liferay.portlet.journal.model.JournalArticle;
+import com.liferay.portlet.journal.model.JournalArticleConstants;
+import com.liferay.portlet.journal.model.JournalFolderConstants;
+import com.liferay.portlet.journal.service.JournalArticleLocalServiceUtil;
 
 import java.util.Calendar;
 import java.util.Date;

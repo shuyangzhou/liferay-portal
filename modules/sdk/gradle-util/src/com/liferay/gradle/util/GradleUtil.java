@@ -28,7 +28,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Callable;
 
 import org.gradle.api.Action;
 import org.gradle.api.GradleException;
@@ -253,26 +252,6 @@ public class GradleUtil {
 		return null;
 	}
 
-	public static boolean getProperty(
-		Project project, String name, boolean defaultValue) {
-
-		if (!project.hasProperty(name)) {
-			return defaultValue;
-		}
-
-		Object value = project.property(name);
-
-		if (value instanceof Boolean) {
-			return (Boolean)value;
-		}
-
-		if (value instanceof String) {
-			return Boolean.parseBoolean((String)value);
-		}
-
-		return defaultValue;
-	}
-
 	public static SourceSet getSourceSet(Project project, String name) {
 		JavaPluginConvention javaPluginConvention = getConvention(
 			project, JavaPluginConvention.class);
@@ -295,18 +274,6 @@ public class GradleUtil {
 		fileName = fileName.replaceAll("\\W", "");
 
 		return prefix + StringUtil.capitalize(fileName);
-	}
-
-	public static String getTaskPrefixedProperty(Task task, String name) {
-		String suffix = "." + name;
-
-		String value = System.getProperty(task.getPath() + suffix);
-
-		if (Validator.isNull(value)) {
-			value = System.getProperty(task.getName() + suffix);
-		}
-
-		return value;
 	}
 
 	public static void removeDependencies(
@@ -355,23 +322,6 @@ public class GradleUtil {
 		}
 
 		return list;
-	}
-
-	public static boolean waitFor(
-			Callable<Boolean> callable, long checkInterval, long timeout)
-		throws Exception {
-
-		long end = System.currentTimeMillis() + timeout;
-
-		while (System.currentTimeMillis() < end) {
-			if (callable.call()) {
-				return true;
-			}
-
-			Thread.sleep(checkInterval);
-		}
-
-		return false;
 	}
 
 	private static Dependency _addDependency(

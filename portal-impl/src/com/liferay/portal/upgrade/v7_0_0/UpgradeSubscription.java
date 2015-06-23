@@ -26,6 +26,8 @@ import com.liferay.portlet.blogs.model.BlogsEntry;
 import com.liferay.portlet.documentlibrary.model.DLFileEntry;
 import com.liferay.portlet.documentlibrary.model.DLFileEntryType;
 import com.liferay.portlet.documentlibrary.model.DLFolder;
+import com.liferay.portlet.journal.model.JournalArticle;
+import com.liferay.portlet.journal.model.JournalFolder;
 import com.liferay.portlet.messageboards.model.MBCategory;
 import com.liferay.portlet.messageboards.model.MBThread;
 import com.liferay.portlet.shopping.model.ShoppingOrder;
@@ -50,8 +52,7 @@ public class UpgradeSubscription extends UpgradeProcess {
 		updateSubscriptionClassNames(
 			Folder.class.getName(), DLFolder.class.getName());
 		updateSubscriptionClassNames(
-			"com.liferay.portlet.journal.model.JournalArticle",
-			"com.liferay.portlet.journal.model.JournalFolder");
+			JournalArticle.class.getName(), JournalFolder.class.getName());
 
 		updateSubscriptionGroupIds();
 	}
@@ -192,6 +193,8 @@ public class UpgradeSubscription extends UpgradeProcess {
 		_getGroupIdSQLPartsMap.put(
 			DLFolder.class.getName(), "DLFolder,groupId,folderId");
 		_getGroupIdSQLPartsMap.put(
+			JournalFolder.class.getName(), "JournalFolder,groupId,folderId");
+		_getGroupIdSQLPartsMap.put(
 			Layout.class.getName(), "Layout,groupId,plid");
 		_getGroupIdSQLPartsMap.put(
 			MBCategory.class.getName(), "MBCategory,groupId,categoryId");
@@ -214,9 +217,6 @@ public class UpgradeSubscription extends UpgradeProcess {
 		_getGroupIdSQLPartsMap.put(
 			"com.liferay.portlet.dynamicdatamapping.model.DDMStructure",
 			"DDMStructure,groupId,structureId");
-		_getGroupIdSQLPartsMap.put(
-			"com.liferay.portlet.journal.model.JournalFolder",
-			"JournalFolder,groupId,folderId");
 		_getGroupIdSQLPartsMap.put(
 			"com.liferay.portlet.wiki.model.WikiNode",
 			"WikiNode,groupId,nodeId");

@@ -66,6 +66,10 @@
 			<var name="password" value="${password}" />
 			<var name="userEmailAddress" value="test@liferay.com" />
 		</execute>
+
+		<execute macro="Page#gotoCP">
+			<var name="portletName" value="Users and Organizations" />
+		</execute>
 	</command>
 
 	<command name="JoinSitePrivateNo" priority="5">
@@ -125,6 +129,10 @@
 		<execute macro="User#loginPG">
 			<var name="password" value="${password}" />
 			<var name="userEmailAddress" value="test@liferay.com" />
+		</execute>
+
+		<execute macro="Page#gotoCP">
+			<var name="portletName" value="Users and Organizations" />
 		</execute>
 	</command>
 
@@ -187,6 +195,10 @@
 			<var name="userEmailAddress" value="test@liferay.com" />
 		</execute>
 
+		<execute macro="Page#gotoCP">
+			<var name="portletName" value="Sites" />
+		</execute>
+
 		<execute macro="Page#gotoUsersCP">
 			<var name="portletName" value="Site Memberships" />
 			<var name="siteScopeName" value="${siteName}" />
@@ -214,6 +226,10 @@
 		<execute macro="User#loginPG">
 			<var name="password" value="${password}" />
 			<var name="userEmailAddress" value="test@liferay.com" />
+		</execute>
+
+		<execute macro="Page#gotoCP">
+			<var name="portletName" value="Users and Organizations" />
 		</execute>
 	</command>
 
@@ -277,6 +293,10 @@
 		<execute macro="User#loginPG">
 			<var name="password" value="${password}" />
 			<var name="userEmailAddress" value="test@liferay.com" />
+		</execute>
+
+		<execute macro="Page#gotoCP">
+			<var name="portletName" value="Users and Organizations" />
 		</execute>
 	</command>
 </definition>

@@ -369,7 +369,7 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
-			<description>Deprecated as of 7.0.0, with no direct replacement.</description>
+			<description>Deprecated as of 7.0.0, with no replacement.</description>
 			<name>containerIcon</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
@@ -381,7 +381,7 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
-			<description>Deprecated as of 7.0.0, with no direct replacement.</description>
+			<description>Deprecated as of 7.0.0, with no replacement.</description>
 			<name>containerSrc</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
@@ -1524,11 +1524,6 @@
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
-	</tag>
-	<tag>
-		<name>error-principal</name>
-		<tag-class>com.liferay.taglib.ui.ErrorPrincipalTag</tag-class>
-		<body-content>JSP</body-content>
 	</tag>
 	<tag>
 		<description>Creates a flag icon that lets users report inappropriate content.</description>
@@ -3162,6 +3157,57 @@
 		<attribute>
 			<description>The ID of a time zone to associate with the component. For example, setting the value to <![CDATA[<code>PST</code>]]> associates the component with the Pacific Standard Time zone.</description>
 			<name>value</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<description>Deprecated as of 7.0.0, replaced by <![CDATA[<code>liferay-ui:asset-display</code>]]>.</description>
+		<name>journal-article</name>
+		<tag-class>com.liferay.taglib.ui.JournalArticleTag</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<name>articleId</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>articlePage</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>articleResourcePrimKey</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>groupId</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>languageId</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>portletRequestModel</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>showAvailableLocales</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>showTitle</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>ddmTemplateKey</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
@@ -5407,7 +5453,6 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
-			<description>Deprecated as of 7.0.0, with no direct replacement.</description>
 			<name>redirect</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>

@@ -14,10 +14,6 @@
 
 package com.liferay.journal.web.portlet.template;
 
-import com.liferay.journal.model.JournalArticle;
-import com.liferay.journal.service.JournalArticleLocalService;
-import com.liferay.journal.service.JournalArticleService;
-import com.liferay.journal.util.JournalContentUtil;
 import com.liferay.journal.web.configuration.JournalWebConfigurationUtil;
 import com.liferay.journal.web.configuration.JournalWebConfigurationValues;
 import com.liferay.journal.web.constants.JournalPortletKeys;
@@ -36,6 +32,10 @@ import com.liferay.portlet.dynamicdatamapping.service.DDMTemplateLocalService;
 import com.liferay.portlet.dynamicdatamapping.service.DDMTemplateService;
 import com.liferay.portlet.dynamicdatamapping.template.BaseDDMTemplateHandler;
 import com.liferay.portlet.dynamicdatamapping.template.DDMTemplateVariableCodeHandler;
+import com.liferay.portlet.journal.model.JournalArticle;
+import com.liferay.portlet.journal.service.JournalArticleLocalService;
+import com.liferay.portlet.journal.service.JournalArticleService;
+import com.liferay.portlet.journal.util.JournalContentUtil;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -88,7 +88,7 @@ public class JournalTemplateHandler extends BaseDDMTemplateHandler {
 
 	@Override
 	public String getResourceName() {
-		return "com.liferay.journal.template";
+		return "com.liferay.portlet.journal.template";
 	}
 
 	@Override

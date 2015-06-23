@@ -27,8 +27,9 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.upgrade.v6_2_0.util.JournalFeedTable;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portal.util.PropsUtil;
+import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.PortletPreferencesFactoryUtil;
+import com.liferay.portlet.journal.model.JournalArticle;
 import com.liferay.portlet.journal.util.JournalConverterUtil;
 
 import java.sql.Connection;
@@ -131,10 +132,9 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 			addDDMStructure(
 				uuid_, ddmStructureId, groupId, companyId, userId, userName,
 				createDate, modifiedDate, parentDDMStructureId,
-				PortalUtil.getClassNameId(
-					"com.liferay.portlet.journal.model.JournalArticle"),
+				PortalUtil.getClassNameId(JournalArticle.class.getName()),
 				ddmStructureKey, name, description, xsd,
-				PropsUtil.get("journal.article.storage.type"),
+				PropsValues.JOURNAL_ARTICLE_STORAGE_TYPE,
 				_DDM_STRUCTURE_TYPE_DEFAULT);
 		}
 	}

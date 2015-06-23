@@ -11,13 +11,12 @@
 	var MAP_FONT_SIZE = {
 		1: 10,
 		2: 12,
-		3: 14,
-		4: 16,
-		5: 18,
-		6: 24,
-		7: 32,
-		8: 48,
-		defaultSize: 14
+		3: 16,
+		4: 18,
+		5: 24,
+		6: 32,
+		7: 48,
+		defaultSize: 12
 	};
 
 	var MAP_HANDLERS = {
@@ -383,7 +382,6 @@
 			var instance = this;
 
 			var tag = 'ul';
-
 			var styleAttr;
 
 			var listAttribute = token.attribute;

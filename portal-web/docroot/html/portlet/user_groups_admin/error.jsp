@@ -19,5 +19,4 @@
 <liferay-ui:error-header />
 
 <liferay-ui:error exception="<%= NoSuchUserGroupException.class %>" message="no-user-groups-were-found" />
-
-<liferay-ui:error-principal />
+<liferay-ui:error exception="<%= PrincipalException.class %>" message="you-do-not-have-the-required-permissions" />
