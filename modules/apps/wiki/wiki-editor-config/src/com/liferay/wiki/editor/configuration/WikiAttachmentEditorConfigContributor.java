@@ -43,8 +43,7 @@ import org.osgi.service.component.annotations.Reference;
 	property = {
 		"javax.portlet.name=" + WikiPortletKeys.WIKI,
 		"javax.portlet.name=" + WikiPortletKeys.WIKI_ADMIN,
-		"javax.portlet.name=" + WikiPortletKeys.WIKI_DISPLAY,
-		"service.ranking:Integer=100"
+		"javax.portlet.name=" + WikiPortletKeys.WIKI_DISPLAY
 	},
 	service = EditorConfigContributor.class
 )
