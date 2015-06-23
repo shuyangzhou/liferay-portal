@@ -25,8 +25,6 @@ taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
 <%@ page import="com.liferay.journal.content.search.web.configuration.JournalContentSearchPortletInstanceConfiguration" %><%@
 page import="com.liferay.journal.content.search.web.util.ContentHits" %><%@
-page import="com.liferay.journal.model.JournalArticle" %><%@
-page import="com.liferay.journal.service.JournalContentSearchLocalServiceUtil" %><%@
 page import="com.liferay.portal.kernel.dao.search.SearchContainer" %><%@
 page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
 page import="com.liferay.portal.kernel.log.Log" %><%@
@@ -55,6 +53,8 @@ page import="com.liferay.portal.util.PortalUtil" %><%@
 page import="com.liferay.portal.util.PropsValues" %><%@
 page import="com.liferay.portlet.PortletURLFactoryUtil" %><%@
 page import="com.liferay.portlet.PortletURLUtil" %><%@
+page import="com.liferay.portlet.journal.model.JournalArticle" %><%@
+page import="com.liferay.portlet.journal.service.JournalContentSearchLocalServiceUtil" %><%@
 page import="com.liferay.taglib.search.ResultRow" %>
 
 <%@ page import="java.util.ArrayList" %><%@

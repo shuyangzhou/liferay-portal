@@ -15,17 +15,17 @@
 package com.liferay.journal.service.permission.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-import com.liferay.journal.configuration.JournalServiceConfigurationValues;
-import com.liferay.journal.model.JournalArticle;
-import com.liferay.journal.model.JournalFolder;
-import com.liferay.journal.service.permission.JournalArticlePermission;
-import com.liferay.journal.service.permission.JournalPermission;
 import com.liferay.journal.test.util.JournalTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.security.permission.ActionKeys;
 import com.liferay.portal.service.permission.test.BasePermissionTestCase;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
+import com.liferay.portal.util.PropsValues;
+import com.liferay.portlet.journal.model.JournalArticle;
+import com.liferay.portlet.journal.model.JournalFolder;
+import com.liferay.portlet.journal.service.permission.JournalArticlePermission;
+import com.liferay.portlet.journal.service.permission.JournalPermission;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
@@ -57,9 +57,7 @@ public class JournalArticlePermissionCheckerTest
 
 		removePortletModelViewPermission();
 
-		if (JournalServiceConfigurationValues.
-				JOURNAL_ARTICLE_VIEW_PERMISSION_CHECK_ENABLED) {
-
+		if (PropsValues.JOURNAL_ARTICLE_VIEW_PERMISSION_CHECK_ENABLED) {
 			Assert.assertFalse(
 				JournalArticlePermission.contains(
 					permissionChecker, _article, ActionKeys.VIEW));
