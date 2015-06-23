@@ -49,19 +49,22 @@ public class CKEditorConfigContributor extends BaseCKEditorConfigContributor {
 			liferayPortletResponse);
 
 		jsonObject.put("autoParagraph", Boolean.FALSE);
+
 		jsonObject.put("autoSaveTimeout", 3000);
 
 		ColorScheme colorScheme = themeDisplay.getColorScheme();
+
+		String colorSchemeCssClass = colorScheme.getCssClass();
 
 		String cssClasses = (String)inputEditorTaglibAttributes.get(
 			"liferay-ui:input-editor:cssClasses");
 
 		jsonObject.put(
-			"bodyClass", "html-editor " +
-				HtmlUtil.escape(colorScheme.getCssClass()) + " " +
-					HtmlUtil.escape(cssClasses));
+			"bodyClass", "html-editor " + HtmlUtil.escape(colorSchemeCssClass) +
+				" " + HtmlUtil.escape(cssClasses));
 
 		jsonObject.put("closeNoticeTimeout", 8000);
+
 		jsonObject.put("entities", Boolean.FALSE);
 
 		String extraPlugins =
@@ -80,9 +83,13 @@ public class CKEditorConfigContributor extends BaseCKEditorConfigContributor {
 		jsonObject.put(
 			"filebrowserWindowFeatures",
 			"title=" + LanguageUtil.get(themeDisplay.getLocale(), "browse"));
+
 		jsonObject.put("pasteFromWordRemoveFontStyles", Boolean.FALSE);
+
 		jsonObject.put("pasteFromWordRemoveStyles", Boolean.FALSE);
+
 		jsonObject.put("stylesSet", getStyleFormatsJSONArray());
+
 		jsonObject.put(
 			"toolbar_editInPlace",
 			getToolbarEditInPlaceJSONArray(inputEditorTaglibAttributes));
@@ -118,9 +125,12 @@ public class CKEditorConfigContributor extends BaseCKEditorConfigContributor {
 			"{name: 'Preformatted Text', element:'pre'}",
 			"{name: 'Cited Work', element:'cite'}",
 			"{name: 'Computer Code', element:'code'}",
-			"{name: 'Info Message', element: 'div', attributes: {'class': 'portlet-msg-info'}}",
-			"{name: 'Alert Message', element: 'div', attributes: {'class': 'portlet-msg-alert'}}",
-			"{name: 'Error Message', element: 'div', attributes: {'class': 'portlet-msg-error'}}"
+			"{name: 'Info Message', element: 'div', attributes: " +
+				"{'class': 'portlet-msg-info'}}",
+			"{name: 'Alert Message', element: 'div', attributes: " +
+				"{'class': 'portlet-msg-alert'}}",
+			"{name: 'Error Message', element: 'div', attributes: " +
+				"{'class': 'portlet-msg-error'}}"
 		};
 
 		for (String styleFormat : styleFormats) {
