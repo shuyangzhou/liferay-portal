@@ -23,18 +23,6 @@ import javax.portlet.ResourceResponse;
  */
 public interface MVCResourceCommand {
 
-	public static final MVCResourceCommand EMPTY = new MVCResourceCommand() {
-
-		@Override
-		public boolean serveResource(
-			ResourceRequest resourceRequest,
-			ResourceResponse resourceResponse) {
-
-			return false;
-		}
-
-	};
-
 	public boolean serveResource(
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
 		throws PortletException;

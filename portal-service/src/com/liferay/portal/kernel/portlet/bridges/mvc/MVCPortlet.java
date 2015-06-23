@@ -193,15 +193,11 @@ public class MVCPortlet extends LiferayPortlet {
 		copyRequestParameters = GetterUtil.getBoolean(
 			getInitParameter("copy-request-parameters"), true);
 
-		_mvcActionCommandCache = new MVCCommandCache(
-			MVCActionCommand.EMPTY, getInitParameter("action.package.prefix"),
-			getPortletName(), MVCActionCommand.class.getName(),
-			"ActionCommand");
+		_mvcActionCommandCache = new MVCActionCommandCache(
+			getInitParameter("action.package.prefix"), getPortletName());
 
-		_mvcResourceCommandCache = new MVCCommandCache(
-			MVCResourceCommand.EMPTY,
-			getInitParameter("resource.package.prefix"), getPortletName(),
-			MVCResourceCommand.class.getName(), "ResourceCommand");
+		_mvcResourceCommandCache = new MVCResourceCommandCache(
+			getInitParameter("resource.package.prefix"), getPortletName());
 	}
 
 	public void invokeTaglibDiscussion(
@@ -277,16 +273,16 @@ public class MVCPortlet extends LiferayPortlet {
 
 		if (!actionName.contains(StringPool.COMMA)) {
 			MVCActionCommand mvcActionCommand =
-				_mvcActionCommandCache.getMVCCommand(actionName);
+				_mvcActionCommandCache.getMVCActionCommand(actionName);
 
-			if (mvcActionCommand != MVCActionCommand.EMPTY) {
+			if (mvcActionCommand != MVCActionCommandCache.EMPTY) {
 				return mvcActionCommand.processAction(
 					actionRequest, actionResponse);
 			}
 		}
 		else {
 			List<MVCActionCommand> mvcActionCommands =
-				_mvcActionCommandCache.getMVCCommandChain(actionName);
+				_mvcActionCommandCache.getMVCActionCommandChain(actionName);
 
 			if (!mvcActionCommands.isEmpty()) {
 				for (MVCActionCommand mvcActionCommand : mvcActionCommands) {
@@ -321,16 +317,17 @@ public class MVCPortlet extends LiferayPortlet {
 
 		if (!resourceName.contains(StringPool.COMMA)) {
 			MVCResourceCommand mvcResourceCommand =
-				_mvcResourceCommandCache.getMVCCommand(resourceName);
+				_mvcResourceCommandCache.getMVCResourceCommand(resourceName);
 
-			if (mvcResourceCommand != MVCResourceCommand.EMPTY) {
+			if (mvcResourceCommand != MVCResourceCommandCache.EMPTY) {
 				return mvcResourceCommand.serveResource(
 					resourceRequest, resourceResponse);
 			}
 		}
 		else {
 			List<MVCResourceCommand> mvcResourceCommands =
-				_mvcResourceCommandCache.getMVCCommandChain(resourceName);
+				_mvcResourceCommandCache.getMVCResourceCommandChain(
+					resourceName);
 
 			if (!mvcResourceCommands.isEmpty()) {
 				for (MVCResourceCommand mvcResourceCommand :
@@ -517,7 +514,7 @@ public class MVCPortlet extends LiferayPortlet {
 
 	private static final Log _log = LogFactoryUtil.getLog(MVCPortlet.class);
 
-	private MVCCommandCache<MVCActionCommand> _mvcActionCommandCache;
-	private MVCCommandCache<MVCResourceCommand> _mvcResourceCommandCache;
+	private MVCActionCommandCache _mvcActionCommandCache;
+	private MVCResourceCommandCache _mvcResourceCommandCache;
 
 }
