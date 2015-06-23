@@ -14,8 +14,6 @@
 
 package com.liferay.journal.util;
 
-import com.liferay.journal.configuration.JournalServiceConfigurationKeys;
-import com.liferay.journal.configuration.JournalServiceConfigurationValues;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalArticleDisplay;
 import com.liferay.journal.model.JournalFolder;
@@ -60,6 +58,7 @@ import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
+import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -87,6 +86,7 @@ import com.liferay.portal.theme.PortletDisplay;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PropsUtil;
+import com.liferay.portal.util.PropsValues;
 import com.liferay.portal.util.WebKeys;
 import com.liferay.portal.webserver.WebServerServletTokenUtil;
 import com.liferay.portlet.asset.service.AssetTagLocalServiceUtil;
@@ -491,9 +491,7 @@ public class JournalUtil {
 
 		return LocalizationUtil.getLocalizationMap(
 			preferences, "emailArticleAddedBody",
-			JournalServiceConfigurationKeys.EMAIL_ARTICLE_ADDED_BODY,
-			JournalServiceConfigurationValues.EMAIL_ARTICLE_ADDED_BODY,
-			JournalUtil.class.getClassLoader());
+			PropsKeys.JOURNAL_EMAIL_ARTICLE_ADDED_BODY);
 	}
 
 	public static boolean getEmailArticleAddedEnabled(
@@ -506,8 +504,8 @@ public class JournalUtil {
 			return GetterUtil.getBoolean(emailArticleAddedEnabled);
 		}
 		else {
-			return
-				JournalServiceConfigurationValues.EMAIL_ARTICLE_ADDED_ENABLED;
+			return GetterUtil.getBoolean(
+				PropsUtil.get(PropsKeys.JOURNAL_EMAIL_ARTICLE_ADDED_ENABLED));
 		}
 	}
 
@@ -516,9 +514,7 @@ public class JournalUtil {
 
 		return LocalizationUtil.getLocalizationMap(
 			preferences, "emailArticleAddedSubject",
-			JournalServiceConfigurationKeys.EMAIL_ARTICLE_ADDED_SUBJECT,
-			JournalServiceConfigurationValues.EMAIL_ARTICLE_ADDED_SUBJECT,
-			JournalUtil.class.getClassLoader());
+			PropsKeys.JOURNAL_EMAIL_ARTICLE_ADDED_SUBJECT);
 	}
 
 	public static boolean getEmailArticleAnyEventEnabled(
@@ -542,10 +538,7 @@ public class JournalUtil {
 
 		return LocalizationUtil.getLocalizationMap(
 			preferences, "emailArticleApprovalDeniedBody",
-			JournalServiceConfigurationKeys.EMAIL_ARTICLE_APPROVAL_DENIED_BODY,
-			JournalServiceConfigurationValues.
-				EMAIL_ARTICLE_APPROVAL_DENIED_BODY,
-			JournalUtil.class.getClassLoader());
+			PropsKeys.JOURNAL_EMAIL_ARTICLE_APPROVAL_DENIED_BODY);
 	}
 
 	public static boolean getEmailArticleApprovalDeniedEnabled(
@@ -558,8 +551,9 @@ public class JournalUtil {
 			return GetterUtil.getBoolean(emailArticleApprovalDeniedEnabled);
 		}
 		else {
-			return JournalServiceConfigurationValues.
-				EMAIL_ARTICLE_APPROVAL_DENIED_ENABLED;
+			return GetterUtil.getBoolean(
+				PropsUtil.get(
+					PropsKeys.JOURNAL_EMAIL_ARTICLE_APPROVAL_DENIED_ENABLED));
 		}
 	}
 
@@ -568,11 +562,7 @@ public class JournalUtil {
 
 		return LocalizationUtil.getLocalizationMap(
 			preferences, "emailArticleApprovalDeniedSubject",
-			JournalServiceConfigurationKeys.
-				EMAIL_ARTICLE_APPROVAL_DENIED_SUBJECT,
-			JournalServiceConfigurationValues.
-				EMAIL_ARTICLE_APPROVAL_DENIED_SUBJECT,
-			JournalUtil.class.getClassLoader());
+			PropsKeys.JOURNAL_EMAIL_ARTICLE_APPROVAL_DENIED_SUBJECT);
 	}
 
 	public static Map<Locale, String> getEmailArticleApprovalGrantedBodyMap(
@@ -580,10 +570,7 @@ public class JournalUtil {
 
 		return LocalizationUtil.getLocalizationMap(
 			preferences, "emailArticleApprovalGrantedBody",
-			JournalServiceConfigurationKeys.EMAIL_ARTICLE_APPROVAL_GRANTED_BODY,
-			JournalServiceConfigurationValues.
-				EMAIL_ARTICLE_APPROVAL_GRANTED_BODY,
-			JournalUtil.class.getClassLoader());
+			PropsKeys.JOURNAL_EMAIL_ARTICLE_APPROVAL_GRANTED_BODY);
 	}
 
 	public static boolean getEmailArticleApprovalGrantedEnabled(
@@ -596,8 +583,9 @@ public class JournalUtil {
 			return GetterUtil.getBoolean(emailArticleApprovalGrantedEnabled);
 		}
 		else {
-			return JournalServiceConfigurationValues.
-				EMAIL_ARTICLE_APPROVAL_GRANTED_ENABLED;
+			return GetterUtil.getBoolean(
+				PropsUtil.get(
+					PropsKeys.JOURNAL_EMAIL_ARTICLE_APPROVAL_GRANTED_ENABLED));
 		}
 	}
 
@@ -606,11 +594,7 @@ public class JournalUtil {
 
 		return LocalizationUtil.getLocalizationMap(
 			preferences, "emailArticleApprovalGrantedSubject",
-			JournalServiceConfigurationKeys.
-				EMAIL_ARTICLE_APPROVAL_GRANTED_SUBJECT,
-			JournalServiceConfigurationValues.
-				EMAIL_ARTICLE_APPROVAL_GRANTED_SUBJECT,
-			JournalUtil.class.getClassLoader());
+			PropsKeys.JOURNAL_EMAIL_ARTICLE_APPROVAL_GRANTED_SUBJECT);
 	}
 
 	public static Map<Locale, String> getEmailArticleApprovalRequestedBodyMap(
@@ -618,11 +602,7 @@ public class JournalUtil {
 
 		return LocalizationUtil.getLocalizationMap(
 			preferences, "emailArticleApprovalRequestedBody",
-			JournalServiceConfigurationKeys.
-				EMAIL_ARTICLE_APPROVAL_REQUESTED_BODY,
-			JournalServiceConfigurationValues.
-				EMAIL_ARTICLE_APPROVAL_REQUESTED_BODY,
-			JournalUtil.class.getClassLoader());
+			PropsKeys.JOURNAL_EMAIL_ARTICLE_APPROVAL_REQUESTED_BODY);
 	}
 
 	public static boolean getEmailArticleApprovalRequestedEnabled(
@@ -635,8 +615,10 @@ public class JournalUtil {
 			return GetterUtil.getBoolean(emailArticleApprovalRequestedEnabled);
 		}
 		else {
-			return JournalServiceConfigurationValues.
-				EMAIL_ARTICLE_APPROVAL_REQUESTED_ENABLED;
+			return GetterUtil.getBoolean(
+				PropsUtil.get(
+					PropsKeys.
+						JOURNAL_EMAIL_ARTICLE_APPROVAL_REQUESTED_ENABLED));
 		}
 	}
 
@@ -646,11 +628,7 @@ public class JournalUtil {
 
 		return LocalizationUtil.getLocalizationMap(
 			preferences, "emailArticleApprovalRequestedSubject",
-			JournalServiceConfigurationKeys.
-				EMAIL_ARTICLE_APPROVAL_REQUESTED_SUBJECT,
-			JournalServiceConfigurationValues.
-				EMAIL_ARTICLE_APPROVAL_REQUESTED_SUBJECT,
-			JournalUtil.class.getClassLoader());
+			PropsKeys.JOURNAL_EMAIL_ARTICLE_APPROVAL_REQUESTED_SUBJECT);
 	}
 
 	public static Map<Locale, String> getEmailArticleMovedFromFolderBodyMap(
@@ -658,11 +636,7 @@ public class JournalUtil {
 
 		return LocalizationUtil.getLocalizationMap(
 			preferences, "emailArticleMovedFromFolderBody",
-			JournalServiceConfigurationKeys.
-				EMAIL_ARTICLE_MOVED_FROM_FOLDER_BODY,
-			JournalServiceConfigurationValues.
-				EMAIL_ARTICLE_MOVED_FROM_FOLDER_BODY,
-			JournalUtil.class.getClassLoader());
+			PropsKeys.JOURNAL_EMAIL_ARTICLE_MOVED_FROM_FOLDER_BODY);
 	}
 
 	public static boolean getEmailArticleMovedFromFolderEnabled(
@@ -675,8 +649,9 @@ public class JournalUtil {
 			return GetterUtil.getBoolean(emailArticleMovedFromFolderEnabled);
 		}
 		else {
-			return JournalServiceConfigurationValues.
-				EMAIL_ARTICLE_MOVED_FROM_FOLDER_ENABLED;
+			return GetterUtil.getBoolean(
+				PropsUtil.get(
+					PropsKeys.JOURNAL_EMAIL_ARTICLE_MOVED_FROM_FOLDER_ENABLED));
 		}
 	}
 
@@ -684,12 +659,8 @@ public class JournalUtil {
 		PortletPreferences preferences) {
 
 		return LocalizationUtil.getLocalizationMap(
-			preferences, "emailArticleMovedFromFolderSubject",
-			JournalServiceConfigurationKeys.
-				EMAIL_ARTICLE_MOVED_FROM_FOLDER_SUBJECT,
-			JournalServiceConfigurationValues.
-				EMAIL_ARTICLE_MOVED_FROM_FOLDER_SUBJECT,
-			JournalUtil.class.getClassLoader());
+			preferences, "emailArticleMovedFromFolderBody",
+			PropsKeys.JOURNAL_EMAIL_ARTICLE_MOVED_FROM_FOLDER_SUBJECT);
 	}
 
 	public static Map<Locale, String> getEmailArticleMovedToFolderBodyMap(
@@ -697,11 +668,7 @@ public class JournalUtil {
 
 		return LocalizationUtil.getLocalizationMap(
 			preferences, "emailArticleMovedToFolderBody",
-			JournalServiceConfigurationKeys.
-				EMAIL_ARTICLE_MOVED_TO_FOLDER_BODY,
-			JournalServiceConfigurationValues.
-				EMAIL_ARTICLE_MOVED_TO_FOLDER_BODY,
-			JournalUtil.class.getClassLoader());
+			PropsKeys.JOURNAL_EMAIL_ARTICLE_MOVED_TO_FOLDER_BODY);
 	}
 
 	public static boolean getEmailArticleMovedToFolderEnabled(
@@ -714,8 +681,9 @@ public class JournalUtil {
 			return GetterUtil.getBoolean(emailArticleMovedToFolderEnabled);
 		}
 		else {
-			return JournalServiceConfigurationValues.
-				EMAIL_ARTICLE_MOVED_TO_FOLDER_ENABLED;
+			return GetterUtil.getBoolean(
+				PropsUtil.get(
+					PropsKeys.JOURNAL_EMAIL_ARTICLE_MOVED_TO_FOLDER_ENABLED));
 		}
 	}
 
@@ -723,12 +691,8 @@ public class JournalUtil {
 		PortletPreferences preferences) {
 
 		return LocalizationUtil.getLocalizationMap(
-			preferences, "emailArticleMovedToFolderSubject",
-			JournalServiceConfigurationKeys.
-				EMAIL_ARTICLE_MOVED_TO_FOLDER_SUBJECT,
-			JournalServiceConfigurationValues.
-				EMAIL_ARTICLE_MOVED_TO_FOLDER_SUBJECT,
-			JournalUtil.class.getClassLoader());
+			preferences, "emailArticleMovedToFolderBody",
+			PropsKeys.JOURNAL_EMAIL_ARTICLE_MOVED_TO_FOLDER_SUBJECT);
 	}
 
 	public static Map<Locale, String> getEmailArticleReviewBodyMap(
@@ -736,9 +700,7 @@ public class JournalUtil {
 
 		return LocalizationUtil.getLocalizationMap(
 			preferences, "emailArticleReviewBody",
-			JournalServiceConfigurationKeys.EMAIL_ARTICLE_REVIEW_BODY,
-			JournalServiceConfigurationValues.EMAIL_ARTICLE_REVIEW_BODY,
-			JournalUtil.class.getClassLoader());
+			PropsKeys.JOURNAL_EMAIL_ARTICLE_REVIEW_BODY);
 	}
 
 	public static boolean getEmailArticleReviewEnabled(
@@ -751,8 +713,8 @@ public class JournalUtil {
 			return GetterUtil.getBoolean(emailArticleReviewEnabled);
 		}
 		else {
-			return JournalServiceConfigurationValues.
-				EMAIL_ARTICLE_REVIEW_ENABLED;
+			return GetterUtil.getBoolean(
+				PropsUtil.get(PropsKeys.JOURNAL_EMAIL_ARTICLE_REVIEW_ENABLED));
 		}
 	}
 
@@ -761,9 +723,7 @@ public class JournalUtil {
 
 		return LocalizationUtil.getLocalizationMap(
 			preferences, "emailArticleReviewSubject",
-			JournalServiceConfigurationKeys.EMAIL_ARTICLE_REVIEW_SUBJECT,
-			JournalServiceConfigurationValues.EMAIL_ARTICLE_REVIEW_SUBJECT,
-			JournalUtil.class.getClassLoader());
+			PropsKeys.JOURNAL_EMAIL_ARTICLE_REVIEW_SUBJECT);
 	}
 
 	public static Map<Locale, String> getEmailArticleUpdatedBodyMap(
@@ -771,9 +731,7 @@ public class JournalUtil {
 
 		return LocalizationUtil.getLocalizationMap(
 			preferences, "emailArticleUpdatedBody",
-			JournalServiceConfigurationKeys.EMAIL_ARTICLE_UPDATED_BODY,
-			JournalServiceConfigurationValues.EMAIL_ARTICLE_UPDATED_BODY,
-			JournalUtil.class.getClassLoader());
+			PropsKeys.JOURNAL_EMAIL_ARTICLE_UPDATED_BODY);
 	}
 
 	public static boolean getEmailArticleUpdatedEnabled(
@@ -786,8 +744,8 @@ public class JournalUtil {
 			return GetterUtil.getBoolean(emailArticleUpdatedEnabled);
 		}
 		else {
-			return JournalServiceConfigurationValues.
-				EMAIL_ARTICLE_UPDATED_ENABLED;
+			return GetterUtil.getBoolean(
+				PropsUtil.get(PropsKeys.JOURNAL_EMAIL_ARTICLE_UPDATED_ENABLED));
 		}
 	}
 
@@ -796,9 +754,7 @@ public class JournalUtil {
 
 		return LocalizationUtil.getLocalizationMap(
 			preferences, "emailArticleUpdatedSubject",
-			JournalServiceConfigurationKeys.EMAIL_ARTICLE_UPDATED_SUBJECT,
-			JournalServiceConfigurationValues.EMAIL_ARTICLE_UPDATED_SUBJECT,
-			JournalUtil.class.getClassLoader());
+			PropsKeys.JOURNAL_EMAIL_ARTICLE_UPDATED_SUBJECT);
 	}
 
 	public static Map<String, String> getEmailDefinitionTerms(
@@ -863,16 +819,14 @@ public class JournalUtil {
 		PortletPreferences preferences, long companyId) {
 
 		return PortalUtil.getEmailFromAddress(
-			preferences, companyId,
-			JournalServiceConfigurationValues.EMAIL_FROM_ADDRESS);
+			preferences, companyId, PropsValues.JOURNAL_EMAIL_FROM_ADDRESS);
 	}
 
 	public static String getEmailFromName(
 		PortletPreferences preferences, long companyId) {
 
 		return PortalUtil.getEmailFromName(
-			preferences, companyId,
-			JournalServiceConfigurationValues.EMAIL_FROM_NAME);
+			preferences, companyId, PropsValues.JOURNAL_EMAIL_FROM_NAME);
 	}
 
 	public static String getJournalControlPanelLink(
@@ -1000,7 +954,7 @@ public class JournalUtil {
 		}
 
 		String[] transformerListenerClassNames = PropsUtil.getArray(
-			JournalServiceConfigurationKeys.TRANSFORMER_LISTENER);
+			PropsKeys.JOURNAL_TRANSFORMER_LISTENER);
 
 		for (String transformerListenerClassName :
 				transformerListenerClassNames) {
@@ -1659,12 +1613,11 @@ public class JournalUtil {
 			synchronized (JournalUtil.class) {
 				_customTokens = new HashMap<>();
 
-				for (String customToken : JournalServiceConfigurationValues.
-						JOURNAL_ARTICLE_CUSTOM_TOKENS) {
+				for (String customToken :
+						PropsValues.JOURNAL_ARTICLE_CUSTOM_TOKENS) {
 
 					String value = PropsUtil.get(
-						JournalServiceConfigurationKeys.
-							JOURNAL_ARTICLE_CUSTOM_TOKEN_VALUE,
+						PropsKeys.JOURNAL_ARTICLE_CUSTOM_TOKEN_VALUE,
 						new Filter(customToken));
 
 					_customTokens.put(customToken, value);
@@ -1886,7 +1839,7 @@ public class JournalUtil {
 		"[^a-z0-9_-]");
 	private static final JournalTransformer _journalTransformer =
 		new JournalTransformer(
-			JournalServiceConfigurationKeys.TRANSFORMER_LISTENER,
-			JournalServiceConfigurationKeys.ERROR_TEMPLATE, true);
+			PropsKeys.JOURNAL_TRANSFORMER_LISTENER,
+			PropsKeys.JOURNAL_ERROR_TEMPLATE, true);
 
 }

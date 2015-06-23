@@ -14,7 +14,6 @@
 
 package com.liferay.journal.service.impl;
 
-import com.liferay.journal.configuration.JournalServiceConfigurationValues;
 import com.liferay.journal.exception.ArticleContentException;
 import com.liferay.journal.exception.ArticleDisplayDateException;
 import com.liferay.journal.exception.ArticleExpirationDateException;
@@ -121,6 +120,7 @@ import com.liferay.portal.util.GroupSubscriptionCheckSubscriptionSender;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PortletKeys;
 import com.liferay.portal.util.PrefsPropsUtil;
+import com.liferay.portal.util.PropsValues;
 import com.liferay.portal.util.SubscriptionSender;
 import com.liferay.portal.webserver.WebServerServletTokenUtil;
 import com.liferay.portlet.asset.model.AssetEntry;
@@ -437,9 +437,7 @@ public class JournalArticleLocalServiceImpl
 
 		// Comment
 
-		if (JournalServiceConfigurationValues.
-				JOURNAL_ARTICLE_COMMENTS_ENABLED) {
-
+		if (PropsValues.JOURNAL_ARTICLE_COMMENTS_ENABLED) {
 			CommentManagerUtil.addDiscussion(
 				userId, groupId, JournalArticle.class.getName(),
 				resourcePrimKey, article.getUserName());
@@ -1350,9 +1348,7 @@ public class JournalArticleLocalServiceImpl
 			ServiceContext serviceContext)
 		throws PortalException {
 
-		if (JournalServiceConfigurationValues.
-				JOURNAL_ARTICLE_EXPIRE_ALL_VERSIONS) {
-
+		if (PropsValues.JOURNAL_ARTICLE_EXPIRE_ALL_VERSIONS) {
 			List<JournalArticle> articles = journalArticlePersistence.findByG_A(
 				groupId, articleId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
 				new ArticleVersionComparator(true));
@@ -2711,9 +2707,7 @@ public class JournalArticleLocalServiceImpl
 	public List<JournalArticle> getIndexableArticlesByDDMStructureKey(
 		String[] ddmStructureKeys) {
 
-		if (JournalServiceConfigurationValues.
-				JOURNAL_ARTICLE_INDEX_ALL_VERSIONS) {
-
+		if (PropsValues.JOURNAL_ARTICLE_INDEX_ALL_VERSIONS) {
 			return getStructureArticles(ddmStructureKeys);
 		}
 
@@ -6131,9 +6125,7 @@ public class JournalArticleLocalServiceImpl
 		Set<Long> companyIds = new HashSet<>();
 
 		for (JournalArticle article : articles) {
-			if (JournalServiceConfigurationValues.
-					JOURNAL_ARTICLE_EXPIRE_ALL_VERSIONS) {
-
+			if (PropsValues.JOURNAL_ARTICLE_EXPIRE_ALL_VERSIONS) {
 				List<JournalArticle> currentArticles =
 					journalArticlePersistence.findByG_A(
 						article.getGroupId(), article.getArticleId(),
@@ -6897,9 +6889,7 @@ public class JournalArticleLocalServiceImpl
 
 			if (!pageFlow) {
 				String[] pieces = StringUtil.split(
-					content,
-					JournalServiceConfigurationValues.
-						JOURNAL_ARTICLE_TOKEN_PAGE_BREAK);
+					content, PropsValues.JOURNAL_ARTICLE_TOKEN_PAGE_BREAK);
 
 				if (pieces.length > 1) {
 					if (page > pieces.length) {
@@ -7754,8 +7744,7 @@ public class JournalArticleLocalServiceImpl
 	}
 
 	private static final long _JOURNAL_ARTICLE_CHECK_INTERVAL =
-		JournalServiceConfigurationValues.JOURNAL_ARTICLE_CHECK_INTERVAL
-			* Time.MINUTE;
+		PropsValues.JOURNAL_ARTICLE_CHECK_INTERVAL * Time.MINUTE;
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		JournalArticleLocalServiceImpl.class);
