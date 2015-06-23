@@ -118,12 +118,9 @@ public class CKEditorConfigContributor extends BaseCKEditorConfigContributor {
 			"{element: 'pre', name: 'Preformatted Text'}",
 			"{element: 'cite', name: 'Cited Work'}",
 			"{element: 'code', name: 'Computer Code'}",
-			"{attributes: {'class': 'portlet-msg-info'}, element: 'div', " +
-				"name: 'Info Message'}",
-			"{attributes: {'class': 'portlet-msg-alert'}, element: 'div', " +
-				"name: 'Alert Message'}",
-			"{attributes: {'class': 'portlet-msg-error'}, element: 'div', " +
-				"name: 'Error Message'}"
+			"{attributes: {'class': 'portlet-msg-info'}, element: 'div', name: 'Info Message'}",
+			"{attributes: {'class': 'portlet-msg-alert'}, element: 'div', name: 'Alert Message'}",
+			"{attributes: {'class': 'portlet-msg-error'}, element: 'div', name: 'Error Message'}"
 		};
 
 		for (String styleFormat : styleFormats) {
