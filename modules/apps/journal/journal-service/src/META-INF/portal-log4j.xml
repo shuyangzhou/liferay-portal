@@ -14,19 +14,19 @@
 		<priority value="INFO" />
 	</category>
 
-	<category name="com.liferay.journal.transformer.PropertiesTransformerListener">
-		<priority value="WARN" />
-	</category>
-
-	<category name="com.liferay.journal.transformer.RegexTransformerUtil">
-		<priority value="INFO" />
-	</category>
-
 	<category name="com.liferay.journal.util.JournalContentUtil">
 		<priority value="ERROR" />
 	</category>
 
 	<category name="com.liferay.journal.util.impl.JournalUtil">
 		<priority value="ERROR" />
+	</category>
+
+	<category name="com.liferay.journal.transformer.PropertiesTransformerListener">
+		<priority value="WARN" />
+	</category>
+
+	<category name="com.liferay.journal.transformer.RegexTransformerUtil">
+		<priority value="INFO" />
 	</category>
 </log4j:configuration>
