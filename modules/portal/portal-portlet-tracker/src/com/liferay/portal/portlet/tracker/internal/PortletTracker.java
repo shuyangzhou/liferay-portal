@@ -360,6 +360,14 @@ public class PortletTracker
 			List<String> modelActions =
 				_resourceActions.getModelResourceActions(modelName);
 
+			if (portletId.equals(
+				"com_liferay_journal_web_portlet_JournalPortlet")) {
+
+				System.out.println(
+					"^^^^^^Checking modelName = " + modelName +
+						", modelActions = " + modelActions);
+			}
+
 			_resourceActionLocalService.checkResourceActions(
 				modelName, modelActions);
 		}
