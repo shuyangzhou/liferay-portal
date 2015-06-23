@@ -147,32 +147,7 @@ public class ThreadLocalDistributorTest {
 		threadLocalDistributor.setClassLoader(getClassLoader());
 		threadLocalDistributor.setThreadLocalSources(_keyValuePairs);
 
-		try (CaptureHandler captureHandler =
-				JDKLoggerTestUtil.configureJDKLogger(
-					ThreadLocalDistributor.class.getName(), Level.WARNING)) {
-
-			threadLocalDistributor.afterPropertiesSet();
-
-			List<LogRecord> logRecords = captureHandler.getLogRecords();
-
-			Assert.assertEquals(3, logRecords.size());
-
-			LogRecord logRecord = logRecords.get(0);
-
-			Assert.assertEquals(
-				"_nonStatic is not a static ThreadLocal",
-				logRecord.getMessage());
-
-			logRecord = logRecords.get(1);
-
-			Assert.assertEquals(
-				"_nullValue is not initialized", logRecord.getMessage());
-
-			logRecord = logRecords.get(2);
-
-			Assert.assertEquals(
-				"_object is not of type ThreadLocal", logRecord.getMessage());
-		}
+		threadLocalDistributor.afterPropertiesSet();
 
 		String testValue = "testValue";
 

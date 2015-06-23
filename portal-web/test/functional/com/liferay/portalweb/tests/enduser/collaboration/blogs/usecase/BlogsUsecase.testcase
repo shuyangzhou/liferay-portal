@@ -381,13 +381,9 @@
 			<var name="pageName" value="${pageName}" />
 		</execute>
 
-		<execute macro="BlogsNavigator#gotoEntryPG">
-			<var name="entryContent" value="Blogs Entry Content" />
-			<var name="entryTitle" value="Blogs Entry Title" />
-		</execute>
-
-		<execute macro="BlogsEntryComment#add">
+		<execute macro="BlogsEntryComment#addPG">
 			<var name="entryComment" value="Blogs Entry Comment" />
+			<var name="entryTitle" value="Blogs Entry Title" />
 		</execute>
 
 		<execute macro="Page#gotoPG">
@@ -759,7 +755,7 @@
 		</execute>
 	</command>
 
-	<command name="ViewBlogsEntryOnMultiplePagesWithDefaultAndPageScope" priority="4">
+	<command known-issues="LPS-56162" name="ViewBlogsEntryOnMultiplePagesWithDefaultAndPageScope" priority="4">
 		<var name="entryAuthor" value="Test Test" />
 		<var name="entryContent" value="Blogs Entry Content" />
 		<var name="entryTitle" value="Blogs Entry Title" />
@@ -871,7 +867,7 @@
 		</execute>
 	</command>
 
-	<command known-issues="LPS-56528" name="ViewBlogsEntryWithFutureDisplayDateViaBlogsAggregator" priority="3">
+	<command name="ViewBlogsEntryWithFutureDisplayDateViaBlogsAggregator" priority="3">
 		<var name="entryAbstractDescription" value="Blogs Entry Abstract Description" />
 		<var name="entryContent" value="Blogs Entry Content" />
 		<var name="entryTitle" value="Blogs Entry Title" />
@@ -961,7 +957,7 @@
 		</execute>
 	</command>
 
-	<command known-issues="LPS-56543" name="ViewParentOrganizationViaSelectOrganizationInBlogsConfiguration" priority="4">
+	<command name="ViewParentOrganizationViaSelectOrganizationInBlogsConfiguration" priority="4">
 		<var name="orgName1" value="Organization1 Name" />
 		<var name="orgName2" value="Organization2 Name" />
 		<var name="orgName3" value="Organization3 Name" />

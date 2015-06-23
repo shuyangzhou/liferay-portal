@@ -28,6 +28,7 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.security.permission.ActionKeys;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.blogs.model.BlogsEntry;
+import com.liferay.portlet.journal.model.JournalArticle;
 import com.liferay.portlet.messageboards.model.MBCategory;
 import com.liferay.portlet.messageboards.model.MBMessage;
 import com.liferay.portlet.messageboards.model.MBThread;
@@ -68,6 +69,17 @@ public class UpgradeSocial extends UpgradeProcess {
 			SocialActivityConstants.TYPE_VIEW);
 
 		putEquityToActivityMap(
+			JournalArticle.class.getName(), ActionKeys.ADD_ARTICLE, 1);
+		putEquityToActivityMap(
+			JournalArticle.class.getName(), ActionKeys.ADD_DISCUSSION,
+			SocialActivityConstants.TYPE_ADD_COMMENT);
+		putEquityToActivityMap(
+			JournalArticle.class.getName(), ActionKeys.UPDATE, 2);
+		putEquityToActivityMap(
+			JournalArticle.class.getName(), ActionKeys.VIEW,
+			SocialActivityConstants.TYPE_VIEW);
+
+		putEquityToActivityMap(
 			MBCategory.class.getName(), ActionKeys.SUBSCRIBE,
 			SocialActivityConstants.TYPE_SUBSCRIBE);
 		putEquityToActivityMap(
@@ -83,20 +95,6 @@ public class UpgradeSocial extends UpgradeProcess {
 		putEquityToActivityMap(
 			MBThread.class.getName(), ActionKeys.SUBSCRIBE,
 			MBMessage.class.getName(), SocialActivityConstants.TYPE_SUBSCRIBE);
-
-		putEquityToActivityMap(
-			"com.liferay.portlet.journal.model.JournalArticle",
-			ActionKeys.ADD_ARTICLE, 1);
-		putEquityToActivityMap(
-			"com.liferay.portlet.journal.model.JournalArticle",
-			ActionKeys.ADD_DISCUSSION,
-			SocialActivityConstants.TYPE_ADD_COMMENT);
-		putEquityToActivityMap(
-			"com.liferay.portlet.journal.model.JournalArticle",
-			ActionKeys.UPDATE, 2);
-		putEquityToActivityMap(
-			"com.liferay.portlet.journal.model.JournalArticle", ActionKeys.VIEW,
-			SocialActivityConstants.TYPE_VIEW);
 
 		putEquityToActivityMap(
 			"com.liferay.wiki.model.WikiNode", ActionKeys.SUBSCRIBE,

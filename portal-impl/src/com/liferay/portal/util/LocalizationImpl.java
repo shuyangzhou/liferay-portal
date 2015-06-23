@@ -368,23 +368,6 @@ public class LocalizationImpl implements Localization {
 		PortletPreferences preferences, String preferenceName,
 		String propertyName) {
 
-		String defaultPropertyValue = null;
-
-		if (propertyName != null) {
-			defaultPropertyValue = PropsUtil.get(propertyName);
-		}
-
-		return getLocalizationMap(
-			preferences, preferenceName, propertyName, defaultPropertyValue,
-			getClass().getClassLoader());
-	}
-
-	@Override
-	public Map<Locale, String> getLocalizationMap(
-		PortletPreferences preferences, String preferenceName,
-		String propertyName, String defaultPropertyValue,
-		ClassLoader classLoader) {
-
 		Map<Locale, String> map = new HashMap<>();
 
 		for (Locale locale : LanguageUtil.getAvailableLocales()) {
@@ -408,8 +391,7 @@ public class LocalizationImpl implements Localization {
 			return map;
 		}
 
-		map.put(
-			defaultLocale, ContentUtil.get(classLoader, defaultPropertyValue));
+		map.put(defaultLocale, ContentUtil.get(PropsUtil.get(propertyName)));
 
 		return map;
 	}

@@ -14,7 +14,6 @@
 
 package com.liferay.journal.search;
 
-import com.liferay.journal.model.JournalArticle;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Indexer;
@@ -24,6 +23,7 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.search.test.BaseSearchResultUtilTestCase;
 import com.liferay.portal.search.test.SearchTestUtil;
+import com.liferay.portlet.journal.model.JournalArticle;
 import com.liferay.registry.collections.ServiceTrackerCollections;
 
 import java.util.List;

@@ -72,7 +72,7 @@
 		</execute>
 	</command>
 
-	<command name="EditExportTemplate" priority="4">
+	<command known-issues="LPS-51696" name="EditExportTemplate" priority="4">
 		<execute macro="Page#gotoContentCP">
 			<var name="portletName" value="Blogs" />
 		</execute>
@@ -422,7 +422,7 @@
 
 	<command known-issues="LPS-46906" name="ExportImportPortletWithADT" priority="4">
 		<execute macro="Page#gotoConfigurationCP">
-			<var name="portletName" value="Application Display Template" />
+			<var name="portletName" value="Application Display Templates" />
 		</execute>
 
 		<execute macro="ApplicationDisplayTemplates#addCP">
@@ -657,7 +657,7 @@
 		</execute>
 	</command>
 
-	<command name="ExportImportValidation" priority="4">
+	<command known-issues="LPS-51696" name="ExportImportValidation" priority="4">
 		<execute macro="Page#gotoContentCP">
 			<var name="portletName" value="Documents and Media" />
 		</execute>

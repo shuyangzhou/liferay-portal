@@ -48,7 +48,7 @@ portletURL.setParameter("mvcPath", "/view_feeds.jsp");
 
 				<c:if test="<%= JournalPermission.contains(permissionChecker, scopeGroupId, ActionKeys.PERMISSIONS) %>">
 					<liferay-security:permissionsURL
-						modelResource="com.liferay.journal"
+						modelResource="com.liferay.portlet.journal"
 						modelResourceDescription="<%= HtmlUtil.escape(themeDisplay.getScopeGroupName()) %>"
 						resourcePrimKey="<%= String.valueOf(scopeGroupId) %>"
 						var="permissionsURL"
@@ -79,7 +79,7 @@ portletURL.setParameter("mvcPath", "/view_feeds.jsp");
 		</c:if>
 
 		<liferay-ui:search-container-row
-			className="com.liferay.journal.model.JournalFeed"
+			className="com.liferay.portlet.journal.model.JournalFeed"
 			keyProperty="feedId"
 			modelVar="feed"
 		>
