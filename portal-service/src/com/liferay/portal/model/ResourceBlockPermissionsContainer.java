@@ -20,7 +20,6 @@ import com.liferay.portal.kernel.util.DigesterUtil;
 import java.nio.ByteBuffer;
 
 import java.util.Map;
-import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -74,14 +73,6 @@ public class ResourceBlockPermissionsContainer {
 		byteBuffer.flip();
 
 		return DigesterUtil.digestHex(Digester.SHA_1, byteBuffer);
-	}
-
-	public Set<Long> getRoleIds() {
-		return _permissions.keySet();
-	}
-
-	public boolean hasPermission(long roleId, long actionIdsLong) {
-		return (getActionIds(roleId) & actionIdsLong) == actionIdsLong;
 	}
 
 	public void removePermission(long roleId, long actionIdsLong) {
