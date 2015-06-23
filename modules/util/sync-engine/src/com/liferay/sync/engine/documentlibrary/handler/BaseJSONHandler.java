@@ -192,8 +192,8 @@ public class BaseJSONHandler extends BaseHandler {
 		else if (exception.equals("Authenticated access required") ||
 				 exception.equals("java.lang.SecurityException")) {
 
-			retryServerConnection(
-				SyncAccount.UI_EVENT_AUTHENTICATION_EXCEPTION);
+			throw new HttpResponseException(
+				HttpStatus.SC_UNAUTHORIZED, "Authenticated access required");
 		}
 		else {
 			SyncFile syncFile = getLocalSyncFile();
