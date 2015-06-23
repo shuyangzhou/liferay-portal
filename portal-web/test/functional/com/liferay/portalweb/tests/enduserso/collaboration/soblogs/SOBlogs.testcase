@@ -299,13 +299,9 @@
 		<execute function="AssertTextEquals" locator1="PGBlogs#ENTRY_COMMENT_1" value1="0 Comments" />
 		<execute function="AssertTextEquals" locator1="PGBlogs#ENTRY_AVERAGE_RATING" value1="Average (0 Votes)" />
 
-		<execute macro="BlogsNavigator#gotoEntryPG">
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-		</execute>
-
-		<execute macro="BlogsEntryComment#add">
+		<execute macro="BlogsEntryComment#addPG">
 			<var name="entryComment" value="${entryComment}" />
+			<var name="entryTitle" value="${entryTitle}" />
 		</execute>
 
 		<execute macro="Page#gotoPG">
@@ -375,13 +371,9 @@
 			<var name="siteURL" value="true" />
 		</execute>
 
-		<execute macro="BlogsNavigator#gotoEntryPG">
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-		</execute>
-
-		<execute macro="BlogsEntryComment#add">
+		<execute macro="BlogsEntryComment#addPG">
 			<var name="entryComment" value="${entryComment}" />
+			<var name="entryTitle" value="${entryTitle}" />
 		</execute>
 
 		<execute macro="Page#gotoPG">
@@ -942,13 +934,9 @@
 			<var name="siteURL" value="true" />
 		</execute>
 
-		<execute macro="BlogsNavigator#gotoEntryPG">
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-		</execute>
-
-		<execute macro="BlogsEntryComment#add">
+		<execute macro="BlogsEntryComment#addPG">
 			<var name="entryComment" value="${entryComment}" />
+			<var name="entryTitle" value="${entryTitle}" />
 		</execute>
 
 		<execute macro="Page#gotoPG">
@@ -1071,13 +1059,9 @@
 			<var name="siteURL" value="true" />
 		</execute>
 
-		<execute macro="BlogsNavigator#gotoEntryPG">
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-		</execute>
-
-		<execute macro="BlogsEntryComment#add">
+		<execute macro="BlogsEntryComment#addPG">
 			<var name="entryComment" value="${entryComment}" />
+			<var name="entryTitle" value="${entryTitle}" />
 		</execute>
 
 		<execute macro="Page#gotoPG">
@@ -1395,13 +1379,9 @@
 			<var name="siteURL" value="true" />
 		</execute>
 
-		<execute macro="BlogsNavigator#gotoEntryPG">
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-		</execute>
-
-		<execute macro="BlogsEntryComment#add">
+		<execute macro="BlogsEntryComment#addPG">
 			<var name="entryComment" value="${entryComment}" />
+			<var name="entryTitle" value="${entryTitle1}" />
 		</execute>
 
 		<execute macro="Page#gotoPG">
@@ -1919,13 +1899,9 @@
 			<var name="entryTitle" value="${entryTitle}" />
 		</execute>
 
-		<execute macro="BlogsNavigator#gotoEntryPG">
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-		</execute>
-
-		<execute macro="BlogsEntryComment#add">
+		<execute macro="BlogsEntryComment#addPG">
 			<var name="entryComment" value="${entryComment}" />
+			<var name="entryTitle" value="${entryTitle}" />
 		</execute>
 
 		<execute macro="Page#gotoPG">
