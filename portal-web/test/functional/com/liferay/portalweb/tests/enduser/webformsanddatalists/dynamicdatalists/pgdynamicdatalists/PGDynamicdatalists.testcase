@@ -1,8 +1,8 @@
 <definition component-name="portal-web-forms-and-data-lists">
 	<property name="testray.main.component.name" value="Dynamic Data Lists" />
 
-	<var name="pageName" value="Dynamic Data Lists Display Page" />
-	<var name="portletName" value="Dynamic Data Lists Display" />
+	<var name="pageName" value="Dynamic Data List Display Page" />
+	<var name="portletName" value="Dynamic Data List Display" />
 
 	<set-up>
 		<execute macro="User#firstLoginPG" />

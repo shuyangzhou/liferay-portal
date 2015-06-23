@@ -76,7 +76,7 @@
 		<var name="field" value="Text" />
 		<var name="fieldFieldLabel" value="Text Label" />
 		<var name="fieldName" value="Text_Name" />
-		<var name="pageName" value="Dynamic Data Lists Display Page" />
+		<var name="pageName" value="Dynamic Data List Display Page" />
 
 		<execute macro="Page#gotoContentCP">
 			<var name="portletName" value="Dynamic Data Lists" />
@@ -136,7 +136,7 @@
 		</execute>
 
 		<execute macro="Portlet#addPG">
-			<var name="portletName" value="Dynamic Data Lists Display" />
+			<var name="portletName" value="Dynamic Data List Display" />
 		</execute>
 
 		<execute macro="Page#gotoPG">
@@ -396,8 +396,8 @@
 	<command known-issues="LPS-54988" name="AssertConfigurationMenulist" priority="3">
 		<var name="ddlDataDefinitionName" value="To Do" />
 		<var name="ddlListName" value="List Name" />
-		<var name="pageName" value="Dynamic Data Lists Display Page" />
-		<var name="portletName" value="Dynamic Data Lists Display" />
+		<var name="pageName" value="Dynamic Data List Display Page" />
+		<var name="portletName" value="Dynamic Data List Display" />
 
 		<execute macro="Page#addPG">
 			<var name="pageName" value="${pageName}" />
@@ -458,8 +458,8 @@
 		<var name="field" value="Decimal" />
 		<var name="fieldFieldLabel" value="Decimal" />
 		<var name="fieldName" value="Decimal" />
-		<var name="pageName" value="Dynamic Data Lists Display Page" />
-		<var name="portletName" value="Dynamic Data Lists Display" />
+		<var name="pageName" value="Dynamic Data List Display Page" />
+		<var name="portletName" value="Dynamic Data List Display" />
 
 		<execute macro="Page#addPG">
 			<var name="pageName" value="${pageName}" />
@@ -580,8 +580,8 @@
 		<var name="fieldName1" value="Text" />
 		<var name="fieldName2" value="Document" />
 		<var name="localizedLanguage" value="Catalan (Spain)" />
-		<var name="pageName" value="Dynamic Data Lists Display Page" />
-		<var name="portletName" value="Dynamic Data Lists Display" />
+		<var name="pageName" value="Dynamic Data List Display Page" />
+		<var name="portletName" value="Dynamic Data List Display" />
 
 		<execute macro="Page#gotoContentCP">
 			<var name="portletName" value="Dynamic Data Lists" />
@@ -757,8 +757,8 @@
 		<var name="field" value="Integer" />
 		<var name="fieldFieldLabel" value="Integer" />
 		<var name="fieldName" value="Integer" />
-		<var name="pageName" value="Dynamic Data Lists Display Page" />
-		<var name="portletName" value="Dynamic Data Lists Display" />
+		<var name="pageName" value="Dynamic Data List Display Page" />
+		<var name="portletName" value="Dynamic Data List Display" />
 
 		<execute macro="Page#addPG">
 			<var name="pageName" value="${pageName}" />
@@ -826,8 +826,8 @@
 		<var name="field" value="Number" />
 		<var name="fieldFieldLabel" value="Number" />
 		<var name="fieldName" value="Number" />
-		<var name="pageName" value="Dynamic Data Lists Display Page" />
-		<var name="portletName" value="Dynamic Data Lists Display" />
+		<var name="pageName" value="Dynamic Data List Display Page" />
+		<var name="portletName" value="Dynamic Data List Display" />
 
 		<execute macro="Page#addPG">
 			<var name="pageName" value="${pageName}" />
@@ -930,7 +930,7 @@
 		</execute>
 
 		<execute macro="Portlet#addPG">
-			<var name="portletName" value="Dynamic Data Lists Display" />
+			<var name="portletName" value="Dynamic Data List Display" />
 		</execute>
 
 		<execute macro="DDLList#addViaDDLDisplayPG">
@@ -1025,15 +1025,15 @@
 		<var name="workflowAssetTitle" value="DDL List" />
 
 		<execute macro="Page#addPG">
-			<var name="pageName" value="Dynamic Data Lists Display Page" />
+			<var name="pageName" value="Dynamic Data List Display Page" />
 		</execute>
 
 		<execute macro="Page#gotoPG">
-			<var name="pageName" value="Dynamic Data Lists Display Page" />
+			<var name="pageName" value="Dynamic Data List Display Page" />
 		</execute>
 
 		<execute macro="Portlet#addPG">
-			<var name="portletName" value="Dynamic Data Lists Display" />
+			<var name="portletName" value="Dynamic Data List Display" />
 		</execute>
 
 		<execute macro="DDLList#addViaDDLDisplayPG">
@@ -1108,7 +1108,7 @@
 		</execute>
 
 		<execute macro="Page#gotoPG">
-			<var name="pageName" value="Dynamic Data Lists Display Page" />
+			<var name="pageName" value="Dynamic Data List Display Page" />
 		</execute>
 
 		<execute macro="DDLRecord#addViaDDLDisplayPG">
@@ -1195,7 +1195,7 @@
 		<var name="field" value="Text" />
 		<var name="fieldFieldLabel" value="Text Label" />
 		<var name="fieldName" value="Text_Name" />
-		<var name="pageName" value="Dynamic Data Lists Display Page" />
+		<var name="pageName" value="Dynamic Data List Display Page" />
 
 		<execute macro="Page#gotoContentCP">
 			<var name="portletName" value="Dynamic Data Lists" />
@@ -1278,7 +1278,7 @@
 		<var name="ddlListDescription" value="Liferay Employee Profiles" />
 		<var name="ddlListName" value="Employees" />
 		<var name="pageName" value="Dynamic Data Lists Page" />
-		<var name="portletName" value="Dynamic Data Lists Display" />
+		<var name="portletName" value="Dynamic Data List Display" />
 
 		<execute macro="Page#addPG">
 			<var name="pageName" value="${pageName}" />

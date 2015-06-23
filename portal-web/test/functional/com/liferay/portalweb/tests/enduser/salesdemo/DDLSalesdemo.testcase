@@ -29,7 +29,7 @@
 		</execute>
 
 		<execute macro="Portlet#addPG">
-			<var name="portletName" value="Dynamic Data Lists Display" />
+			<var name="portletName" value="Dynamic Data List Display" />
 		</execute>
 
 		<execute macro="Page#gotoPG">
