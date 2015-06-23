@@ -20,7 +20,7 @@ feature or API will be dropped in an upcoming version.
 replaces an old API, in spite of the old API being kept in Liferay Portal for
 backwards compatibility.
 
-*This document has been reviewed through commit `e32f122`.*
+*This document has been reviewed through commit `6d3a2a4`.*
 
 ## Breaking Changes Contribution Guidelines
 
@@ -2002,33 +2002,32 @@ FreeMarker or any other framework.
 
 ---------------------------------------
 
-### Removed ckconfig Files Used for CKEditor Configuration
+### Removed ckconfig files for CKEditor configuration
 - **Date:** 2015-Jun-16
 - **JIRA Ticket:** LPS-55518
 
 #### What changed?
 
 The files `ckconfig.jsp`, `ckconfig-ext.jsp`, `ckconfig_bbcode.jsp`,
-`ckconfig_bbcode-ext.jsp`, `ckconfig_creole.jsp`, and `ckconfig_creole-ext.jsp`
+`ckconfig_bbcode-ext.jsp`, `ckconfig_creole.jsp` and `ckconfig_creole-ext.jsp`
 have been removed and are no longer used to configure the CKEditor instances
-created using the `liferay-ui:input-editor` tag.
+created using the `liferay-ui:input-editor` taglib.
 
 #### Who is affected?
 
-This affects any hook or plugin-ext overriding these files to modify the editor
+Any hook or plugin-ext overriding these files to modify the editor
 configuration.
 
 #### How should I update my code?
 
 Depending on the changes, different extension methods are available:
-
 - For CKEditor configuration options, an implementation of
 `EditorConfigContributor` can be created to pass or modify the expected
 parameters.
-- For CKEditor instance manipulation (setting attributes, adding listeners,
-etc.), the `DynamicInclude` extension point
+- For CKEditor instance manipulation (setting attributes, adding listeners...),
+a `DynamicInclude` extension point
 `js#ckeditor[_creole|_bbcode]#onEditorCreated` has been added to provide the
-possibility of injecting JavaScript, when needed.
+possibility of injecting javascript when needed.
 
 #### Why was this change made?
 
