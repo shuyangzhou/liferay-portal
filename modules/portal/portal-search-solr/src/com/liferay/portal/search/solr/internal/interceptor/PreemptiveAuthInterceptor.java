@@ -21,8 +21,9 @@ import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.AuthState;
 import org.apache.http.auth.Credentials;
 import org.apache.http.client.CredentialsProvider;
-import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.impl.auth.BasicScheme;
+import org.apache.http.protocol.ExecutionContext;
 import org.apache.http.protocol.HttpContext;
 
 import org.osgi.service.component.annotations.Component;
@@ -36,7 +37,7 @@ public class PreemptiveAuthInterceptor implements HttpRequestInterceptor {
 	@Override
 	public void process(HttpRequest request, HttpContext httpContext) {
 		AuthState authState = (AuthState)httpContext.getAttribute(
-			HttpClientContext.TARGET_AUTH_STATE);
+			ClientContext.TARGET_AUTH_STATE);
 
 		if (authState.getAuthScheme() != null) {
 			return;
@@ -44,10 +45,10 @@ public class PreemptiveAuthInterceptor implements HttpRequestInterceptor {
 
 		CredentialsProvider credentialsProvider =
 			(CredentialsProvider)httpContext.getAttribute(
-				HttpClientContext.CREDS_PROVIDER);
+				ClientContext.CREDS_PROVIDER);
 
 		HttpHost targetHttpHost = (HttpHost)httpContext.getAttribute(
-			HttpClientContext.HTTP_TARGET_HOST);
+			ExecutionContext.HTTP_TARGET_HOST);
 
 		AuthScope authScope = new AuthScope(
 			targetHttpHost.getHostName(), targetHttpHost.getPort());
