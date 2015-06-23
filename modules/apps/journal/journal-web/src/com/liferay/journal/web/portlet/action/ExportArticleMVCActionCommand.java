@@ -16,14 +16,14 @@ package com.liferay.journal.web.portlet.action;
 
 import com.liferay.journal.web.constants.JournalPortletKeys;
 import com.liferay.journal.web.util.ExportArticleUtil;
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
-import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
+import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
+import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.util.PortalUtil;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -37,22 +37,22 @@ import org.osgi.service.component.annotations.Component;
 		"javax.portlet.name=" + JournalPortletKeys.JOURNAL,
 		"mvc.command.name=exportArticle"
 	},
-	service = MVCResourceCommand.class
+	service = MVCActionCommand.class
 )
-public class ExportArticleMVCResourceCommand extends BaseMVCResourceCommand {
+public class ExportArticleMVCActionCommand extends BaseMVCActionCommand {
 
 	@Override
-	protected void doServeResource(
-			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
+	protected void doProcessAction(
+			PortletRequest portletRequest, PortletResponse portletResponse)
 		throws Exception {
 
 		try {
-			ExportArticleUtil.sendFile(resourceRequest, resourceResponse);
+			ExportArticleUtil.sendFile(portletRequest, portletResponse);
 		}
 		catch (Exception e) {
 			PortalUtil.sendError(
-				e, (ActionRequest)resourceRequest,
-				(ActionResponse)resourceResponse);
+				e, (ActionRequest)portletRequest,
+				(ActionResponse)portletResponse);
 		}
 	}
 

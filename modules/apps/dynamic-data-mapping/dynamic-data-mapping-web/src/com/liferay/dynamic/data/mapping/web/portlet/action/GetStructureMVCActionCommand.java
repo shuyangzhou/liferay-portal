@@ -14,8 +14,8 @@
 
 package com.liferay.dynamic.data.mapping.web.portlet.action;
 
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
-import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
+import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
+import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.servlet.ServletResponseUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -24,8 +24,8 @@ import com.liferay.portal.util.PortletKeys;
 import com.liferay.portlet.dynamicdatamapping.model.DDMStructure;
 import com.liferay.portlet.dynamicdatamapping.service.DDMStructureService;
 
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,26 +42,26 @@ import org.osgi.service.component.annotations.Reference;
 		"javax.portlet.name=" + PortletKeys.DYNAMIC_DATA_MAPPING,
 		"mvc.command.name=getStructure"
 	},
-	service = MVCResourceCommand.class
+	service = MVCActionCommand.class
 )
-public class GetStructureMVCResourceCommand extends BaseMVCResourceCommand {
+public class GetStructureMVCActionCommand extends BaseMVCActionCommand {
 
 	@Override
-	protected void doServeResource(
-			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
+	protected void doProcessAction(
+			PortletRequest portletRequest, PortletResponse portletResponse)
 		throws Exception {
 
-		long structureId = ParamUtil.getLong(resourceRequest, "structureId");
+		long structureId = ParamUtil.getLong(portletRequest, "structureId");
 
 		DDMStructure structure = _ddmStructureService.getStructure(structureId);
 
 		String definition = structure.getDefinition();
 
 		HttpServletRequest httpServletRequest =
-			PortalUtil.getHttpServletRequest(resourceRequest);
+			PortalUtil.getHttpServletRequest(portletRequest);
 
 		HttpServletResponse httpServletResponse =
-			PortalUtil.getHttpServletResponse(resourceResponse);
+			PortalUtil.getHttpServletResponse(portletResponse);
 
 		ServletResponseUtil.sendFile(
 			httpServletRequest, httpServletResponse, null,
