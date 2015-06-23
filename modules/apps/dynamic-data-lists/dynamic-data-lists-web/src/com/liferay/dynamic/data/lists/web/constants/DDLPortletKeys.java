@@ -22,7 +22,4 @@ public class DDLPortletKeys {
 	public static final String DYNAMIC_DATA_LISTS =
 		"com_liferay_dynamic_data_lists_web_portlet_DDLPortlet";
 
-	public static final String DYNAMIC_DATA_LISTS_DISPLAY =
-		"com_liferay_dynamic_data_lists_web_portlet_DDLDisplayPortlet";
-
 }
