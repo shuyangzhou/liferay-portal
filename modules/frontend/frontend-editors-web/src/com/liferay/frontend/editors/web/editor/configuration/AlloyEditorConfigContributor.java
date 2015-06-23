@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.editor.configuration.EditorConfigContributor;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
@@ -32,6 +33,7 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -56,15 +58,18 @@ public class AlloyEditorConfigContributor extends BaseEditorConfigContributor {
 		ThemeDisplay themeDisplay,
 		LiferayPortletResponse liferayPortletResponse) {
 
-		String contentsLanguageDir = getContentsLanguageDir(
-			inputEditorTaglibAttributes);
+		String contentsLanguageId = (String)inputEditorTaglibAttributes.get(
+			"liferay-ui:input-editor:contentsLanguageId");
+
+		Locale contentsLocale = LocaleUtil.fromLanguageId(contentsLanguageId);
+
+		String contentsLanguageDir = LanguageUtil.get(
+			contentsLocale, "lang.dir");
+
+		contentsLanguageId = LocaleUtil.toLanguageId(contentsLocale);
 
 		jsonObject.put(
 			"contentsLangDirection", HtmlUtil.escapeJS(contentsLanguageDir));
-
-		String contentsLanguageId = getContentsLanguageId(
-			inputEditorTaglibAttributes);
-
 		jsonObject.put(
 			"contentsLanguage", contentsLanguageId.replace("iw_", "he_"));
 		jsonObject.put(
