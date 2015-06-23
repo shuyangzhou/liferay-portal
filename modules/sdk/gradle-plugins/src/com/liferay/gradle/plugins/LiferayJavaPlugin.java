@@ -1257,25 +1257,6 @@ public class LiferayJavaPlugin implements Plugin<Project> {
 		formatXMLTask.include("**/*.xsd");
 	}
 
-	protected void configureTaskInitGradle(Project project) {
-		InitGradleTask initGradleTask = (InitGradleTask)GradleUtil.getTask(
-			project, INIT_GRADLE_TASK_NAME);
-
-		configureTaskInitGradleIgnoreMissingDependencies(initGradleTask);
-	}
-
-	protected void configureTaskInitGradleIgnoreMissingDependencies(
-		InitGradleTask initGradleTask) {
-
-		String value = GradleUtil.getTaskPrefixedProperty(
-			initGradleTask, "ignoreMissingDependencies");
-
-		if (Validator.isNotNull(value)) {
-			initGradleTask.setIgnoreMissingDependencies(
-				Boolean.parseBoolean(value));
-		}
-	}
-
 	protected void configureTaskJar(Project project) {
 		Jar jar = (Jar)GradleUtil.getTask(project, JavaPlugin.JAR_TASK_NAME);
 
@@ -1310,7 +1291,6 @@ public class LiferayJavaPlugin implements Plugin<Project> {
 		configureTaskDeploy(project, liferayExtension);
 		configureTaskFormatWSDL(project);
 		configureTaskFormatXSD(project);
-		configureTaskInitGradle(project);
 		configureTaskJar(project);
 		configureTaskSetupTestableTomcat(project, liferayExtension);
 		configureTaskStartTestableTomcat(project, liferayExtension);
