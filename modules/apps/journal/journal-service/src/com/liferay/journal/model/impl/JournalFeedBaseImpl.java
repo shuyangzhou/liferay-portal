@@ -15,7 +15,6 @@
 package com.liferay.journal.model.impl;
 
 import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.journal.model.JournalFeed;
 import com.liferay.journal.service.JournalFeedLocalServiceUtil;
 

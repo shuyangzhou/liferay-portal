@@ -15,17 +15,13 @@
 package com.liferay.journal.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
-
-import com.liferay.journal.model.JournalArticle;
-
+import com.liferay.journal.exception.NoSuchArticleException;
+import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ReferenceRegistry;
 import com.liferay.portal.service.ServiceContext;
-
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.journal.model.JournalArticle;
 
 import java.util.List;
 
@@ -118,7 +114,7 @@ public class JournalArticleUtil {
 	* @param uuid the uuid
 	* @return the matching journal articles
 	*/
-	public static List<JournalArticle> findByUuid(java.lang.String uuid) {
+	public static List<JournalArticle> findByUuid(String uuid) {
 		return getPersistence().findByUuid(uuid);
 	}
 
@@ -134,7 +130,7 @@ public class JournalArticleUtil {
 	* @param end the upper bound of the range of journal articles (not inclusive)
 	* @return the range of matching journal articles
 	*/
-	public static List<JournalArticle> findByUuid(java.lang.String uuid,
+	public static List<JournalArticle> findByUuid(String uuid,
 		int start, int end) {
 		return getPersistence().findByUuid(uuid, start, end);
 	}
@@ -152,7 +148,7 @@ public class JournalArticleUtil {
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of matching journal articles
 	*/
-	public static List<JournalArticle> findByUuid(java.lang.String uuid,
+	public static List<JournalArticle> findByUuid(String uuid,
 		int start, int end, OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence().findByUuid(uuid, start, end, orderByComparator);
 	}
@@ -163,11 +159,11 @@ public class JournalArticleUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
-	public static JournalArticle findByUuid_First(java.lang.String uuid,
+	public static JournalArticle findByUuid_First(String uuid,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence().findByUuid_First(uuid, orderByComparator);
 	}
 
@@ -178,7 +174,7 @@ public class JournalArticleUtil {
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
 	*/
-	public static JournalArticle fetchByUuid_First(java.lang.String uuid,
+	public static JournalArticle fetchByUuid_First(String uuid,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence().fetchByUuid_First(uuid, orderByComparator);
 	}
@@ -189,11 +185,11 @@ public class JournalArticleUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
-	public static JournalArticle findByUuid_Last(java.lang.String uuid,
+	public static JournalArticle findByUuid_Last(String uuid,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence().findByUuid_Last(uuid, orderByComparator);
 	}
 
@@ -204,7 +200,7 @@ public class JournalArticleUtil {
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
 	*/
-	public static JournalArticle fetchByUuid_Last(java.lang.String uuid,
+	public static JournalArticle fetchByUuid_Last(String uuid,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence().fetchByUuid_Last(uuid, orderByComparator);
 	}
@@ -216,12 +212,12 @@ public class JournalArticleUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] findByUuid_PrevAndNext(long id,
-		java.lang.String uuid,
+		String uuid,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByUuid_PrevAndNext(id, uuid, orderByComparator);
 	}
@@ -231,7 +227,7 @@ public class JournalArticleUtil {
 	*
 	* @param uuid the uuid
 	*/
-	public static void removeByUuid(java.lang.String uuid) {
+	public static void removeByUuid(String uuid) {
 		getPersistence().removeByUuid(uuid);
 	}
 
@@ -241,21 +237,20 @@ public class JournalArticleUtil {
 	* @param uuid the uuid
 	* @return the number of matching journal articles
 	*/
-	public static int countByUuid(java.lang.String uuid) {
+	public static int countByUuid(String uuid) {
 		return getPersistence().countByUuid(uuid);
 	}
 
 	/**
-	* Returns the journal article where uuid = &#63; and groupId = &#63; or throws a {@link com.liferay.journal.NoSuchArticleException} if it could not be found.
+	* Returns the journal article where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchArticleException} if it could not be found.
 	*
 	* @param uuid the uuid
 	* @param groupId the group ID
 	* @return the matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
-	public static JournalArticle findByUUID_G(java.lang.String uuid,
-		long groupId)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+	public static JournalArticle findByUUID_G(String uuid,
+		long groupId) throws NoSuchArticleException {
 		return getPersistence().findByUUID_G(uuid, groupId);
 	}
 
@@ -266,7 +261,7 @@ public class JournalArticleUtil {
 	* @param groupId the group ID
 	* @return the matching journal article, or <code>null</code> if a matching journal article could not be found
 	*/
-	public static JournalArticle fetchByUUID_G(java.lang.String uuid,
+	public static JournalArticle fetchByUUID_G(String uuid,
 		long groupId) {
 		return getPersistence().fetchByUUID_G(uuid, groupId);
 	}
@@ -279,7 +274,7 @@ public class JournalArticleUtil {
 	* @param retrieveFromCache whether to use the finder cache
 	* @return the matching journal article, or <code>null</code> if a matching journal article could not be found
 	*/
-	public static JournalArticle fetchByUUID_G(java.lang.String uuid,
+	public static JournalArticle fetchByUUID_G(String uuid,
 		long groupId, boolean retrieveFromCache) {
 		return getPersistence().fetchByUUID_G(uuid, groupId, retrieveFromCache);
 	}
@@ -291,9 +286,8 @@ public class JournalArticleUtil {
 	* @param groupId the group ID
 	* @return the journal article that was removed
 	*/
-	public static JournalArticle removeByUUID_G(java.lang.String uuid,
-		long groupId)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+	public static JournalArticle removeByUUID_G(String uuid,
+		long groupId) throws NoSuchArticleException {
 		return getPersistence().removeByUUID_G(uuid, groupId);
 	}
 
@@ -304,7 +298,7 @@ public class JournalArticleUtil {
 	* @param groupId the group ID
 	* @return the number of matching journal articles
 	*/
-	public static int countByUUID_G(java.lang.String uuid, long groupId) {
+	public static int countByUUID_G(String uuid, long groupId) {
 		return getPersistence().countByUUID_G(uuid, groupId);
 	}
 
@@ -315,7 +309,7 @@ public class JournalArticleUtil {
 	* @param companyId the company ID
 	* @return the matching journal articles
 	*/
-	public static List<JournalArticle> findByUuid_C(java.lang.String uuid,
+	public static List<JournalArticle> findByUuid_C(String uuid,
 		long companyId) {
 		return getPersistence().findByUuid_C(uuid, companyId);
 	}
@@ -333,7 +327,7 @@ public class JournalArticleUtil {
 	* @param end the upper bound of the range of journal articles (not inclusive)
 	* @return the range of matching journal articles
 	*/
-	public static List<JournalArticle> findByUuid_C(java.lang.String uuid,
+	public static List<JournalArticle> findByUuid_C(String uuid,
 		long companyId, int start, int end) {
 		return getPersistence().findByUuid_C(uuid, companyId, start, end);
 	}
@@ -352,7 +346,7 @@ public class JournalArticleUtil {
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of matching journal articles
 	*/
-	public static List<JournalArticle> findByUuid_C(java.lang.String uuid,
+	public static List<JournalArticle> findByUuid_C(String uuid,
 		long companyId, int start, int end,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
@@ -366,11 +360,11 @@ public class JournalArticleUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
-	public static JournalArticle findByUuid_C_First(java.lang.String uuid,
+	public static JournalArticle findByUuid_C_First(String uuid,
 		long companyId, OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByUuid_C_First(uuid, companyId, orderByComparator);
 	}
@@ -383,7 +377,7 @@ public class JournalArticleUtil {
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
 	*/
-	public static JournalArticle fetchByUuid_C_First(java.lang.String uuid,
+	public static JournalArticle fetchByUuid_C_First(String uuid,
 		long companyId, OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .fetchByUuid_C_First(uuid, companyId, orderByComparator);
@@ -396,11 +390,11 @@ public class JournalArticleUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
-	public static JournalArticle findByUuid_C_Last(java.lang.String uuid,
+	public static JournalArticle findByUuid_C_Last(String uuid,
 		long companyId, OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByUuid_C_Last(uuid, companyId, orderByComparator);
 	}
@@ -413,7 +407,7 @@ public class JournalArticleUtil {
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
 	*/
-	public static JournalArticle fetchByUuid_C_Last(java.lang.String uuid,
+	public static JournalArticle fetchByUuid_C_Last(String uuid,
 		long companyId, OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .fetchByUuid_C_Last(uuid, companyId, orderByComparator);
@@ -427,12 +421,12 @@ public class JournalArticleUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] findByUuid_C_PrevAndNext(long id,
-		java.lang.String uuid, long companyId,
+		String uuid, long companyId,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByUuid_C_PrevAndNext(id, uuid, companyId,
 			orderByComparator);
@@ -444,7 +438,7 @@ public class JournalArticleUtil {
 	* @param uuid the uuid
 	* @param companyId the company ID
 	*/
-	public static void removeByUuid_C(java.lang.String uuid, long companyId) {
+	public static void removeByUuid_C(String uuid, long companyId) {
 		getPersistence().removeByUuid_C(uuid, companyId);
 	}
 
@@ -455,7 +449,7 @@ public class JournalArticleUtil {
 	* @param companyId the company ID
 	* @return the number of matching journal articles
 	*/
-	public static int countByUuid_C(java.lang.String uuid, long companyId) {
+	public static int countByUuid_C(String uuid, long companyId) {
 		return getPersistence().countByUuid_C(uuid, companyId);
 	}
 
@@ -515,12 +509,12 @@ public class JournalArticleUtil {
 	* @param resourcePrimKey the resource prim key
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByResourcePrimKey_First(
 		long resourcePrimKey,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByResourcePrimKey_First(resourcePrimKey,
 			orderByComparator);
@@ -547,12 +541,12 @@ public class JournalArticleUtil {
 	* @param resourcePrimKey the resource prim key
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByResourcePrimKey_Last(
 		long resourcePrimKey,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByResourcePrimKey_Last(resourcePrimKey,
 			orderByComparator);
@@ -580,12 +574,12 @@ public class JournalArticleUtil {
 	* @param resourcePrimKey the resource prim key
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] findByResourcePrimKey_PrevAndNext(long id,
 		long resourcePrimKey,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByResourcePrimKey_PrevAndNext(id, resourcePrimKey,
 			orderByComparator);
@@ -662,11 +656,11 @@ public class JournalArticleUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByGroupId_First(long groupId,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence().findByGroupId_First(groupId, orderByComparator);
 	}
 
@@ -688,11 +682,11 @@ public class JournalArticleUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByGroupId_Last(long groupId,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence().findByGroupId_Last(groupId, orderByComparator);
 	}
 
@@ -715,11 +709,11 @@ public class JournalArticleUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] findByGroupId_PrevAndNext(long id,
 		long groupId, OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByGroupId_PrevAndNext(id, groupId, orderByComparator);
 	}
@@ -777,11 +771,11 @@ public class JournalArticleUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] filterFindByGroupId_PrevAndNext(long id,
 		long groupId, OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .filterFindByGroupId_PrevAndNext(id, groupId,
 			orderByComparator);
@@ -868,11 +862,11 @@ public class JournalArticleUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByCompanyId_First(long companyId,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByCompanyId_First(companyId, orderByComparator);
 	}
@@ -896,11 +890,11 @@ public class JournalArticleUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByCompanyId_Last(long companyId,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByCompanyId_Last(companyId, orderByComparator);
 	}
@@ -925,11 +919,11 @@ public class JournalArticleUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] findByCompanyId_PrevAndNext(long id,
 		long companyId, OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByCompanyId_PrevAndNext(id, companyId, orderByComparator);
 	}
@@ -960,7 +954,7 @@ public class JournalArticleUtil {
 	* @return the matching journal articles
 	*/
 	public static List<JournalArticle> findByDDMStructureKey(
-		java.lang.String DDMStructureKey) {
+		String DDMStructureKey) {
 		return getPersistence().findByDDMStructureKey(DDMStructureKey);
 	}
 
@@ -977,7 +971,7 @@ public class JournalArticleUtil {
 	* @return the range of matching journal articles
 	*/
 	public static List<JournalArticle> findByDDMStructureKey(
-		java.lang.String DDMStructureKey, int start, int end) {
+		String DDMStructureKey, int start, int end) {
 		return getPersistence()
 				   .findByDDMStructureKey(DDMStructureKey, start, end);
 	}
@@ -996,7 +990,7 @@ public class JournalArticleUtil {
 	* @return the ordered range of matching journal articles
 	*/
 	public static List<JournalArticle> findByDDMStructureKey(
-		java.lang.String DDMStructureKey, int start, int end,
+		String DDMStructureKey, int start, int end,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .findByDDMStructureKey(DDMStructureKey, start, end,
@@ -1009,12 +1003,12 @@ public class JournalArticleUtil {
 	* @param DDMStructureKey the d d m structure key
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByDDMStructureKey_First(
-		java.lang.String DDMStructureKey,
+		String DDMStructureKey,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByDDMStructureKey_First(DDMStructureKey,
 			orderByComparator);
@@ -1028,7 +1022,7 @@ public class JournalArticleUtil {
 	* @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
 	*/
 	public static JournalArticle fetchByDDMStructureKey_First(
-		java.lang.String DDMStructureKey,
+		String DDMStructureKey,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .fetchByDDMStructureKey_First(DDMStructureKey,
@@ -1041,12 +1035,12 @@ public class JournalArticleUtil {
 	* @param DDMStructureKey the d d m structure key
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByDDMStructureKey_Last(
-		java.lang.String DDMStructureKey,
+		String DDMStructureKey,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByDDMStructureKey_Last(DDMStructureKey,
 			orderByComparator);
@@ -1060,7 +1054,7 @@ public class JournalArticleUtil {
 	* @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
 	*/
 	public static JournalArticle fetchByDDMStructureKey_Last(
-		java.lang.String DDMStructureKey,
+		String DDMStructureKey,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .fetchByDDMStructureKey_Last(DDMStructureKey,
@@ -1074,12 +1068,12 @@ public class JournalArticleUtil {
 	* @param DDMStructureKey the d d m structure key
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] findByDDMStructureKey_PrevAndNext(long id,
-		java.lang.String DDMStructureKey,
+		String DDMStructureKey,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByDDMStructureKey_PrevAndNext(id, DDMStructureKey,
 			orderByComparator);
@@ -1096,7 +1090,7 @@ public class JournalArticleUtil {
 	* @return the matching journal articles
 	*/
 	public static List<JournalArticle> findByDDMStructureKey(
-		java.lang.String[] DDMStructureKeies) {
+		String[] DDMStructureKeies) {
 		return getPersistence().findByDDMStructureKey(DDMStructureKeies);
 	}
 
@@ -1113,7 +1107,7 @@ public class JournalArticleUtil {
 	* @return the range of matching journal articles
 	*/
 	public static List<JournalArticle> findByDDMStructureKey(
-		java.lang.String[] DDMStructureKeies, int start, int end) {
+		String[] DDMStructureKeies, int start, int end) {
 		return getPersistence()
 				   .findByDDMStructureKey(DDMStructureKeies, start, end);
 	}
@@ -1132,7 +1126,7 @@ public class JournalArticleUtil {
 	* @return the ordered range of matching journal articles
 	*/
 	public static List<JournalArticle> findByDDMStructureKey(
-		java.lang.String[] DDMStructureKeies, int start, int end,
+		String[] DDMStructureKeies, int start, int end,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .findByDDMStructureKey(DDMStructureKeies, start, end,
@@ -1144,7 +1138,7 @@ public class JournalArticleUtil {
 	*
 	* @param DDMStructureKey the d d m structure key
 	*/
-	public static void removeByDDMStructureKey(java.lang.String DDMStructureKey) {
+	public static void removeByDDMStructureKey(String DDMStructureKey) {
 		getPersistence().removeByDDMStructureKey(DDMStructureKey);
 	}
 
@@ -1154,7 +1148,7 @@ public class JournalArticleUtil {
 	* @param DDMStructureKey the d d m structure key
 	* @return the number of matching journal articles
 	*/
-	public static int countByDDMStructureKey(java.lang.String DDMStructureKey) {
+	public static int countByDDMStructureKey(String DDMStructureKey) {
 		return getPersistence().countByDDMStructureKey(DDMStructureKey);
 	}
 
@@ -1165,7 +1159,7 @@ public class JournalArticleUtil {
 	* @return the number of matching journal articles
 	*/
 	public static int countByDDMStructureKey(
-		java.lang.String[] DDMStructureKeies) {
+		String[] DDMStructureKeies) {
 		return getPersistence().countByDDMStructureKey(DDMStructureKeies);
 	}
 
@@ -1176,7 +1170,7 @@ public class JournalArticleUtil {
 	* @return the matching journal articles
 	*/
 	public static List<JournalArticle> findByDDMTemplateKey(
-		java.lang.String DDMTemplateKey) {
+		String DDMTemplateKey) {
 		return getPersistence().findByDDMTemplateKey(DDMTemplateKey);
 	}
 
@@ -1193,7 +1187,7 @@ public class JournalArticleUtil {
 	* @return the range of matching journal articles
 	*/
 	public static List<JournalArticle> findByDDMTemplateKey(
-		java.lang.String DDMTemplateKey, int start, int end) {
+		String DDMTemplateKey, int start, int end) {
 		return getPersistence().findByDDMTemplateKey(DDMTemplateKey, start, end);
 	}
 
@@ -1211,7 +1205,7 @@ public class JournalArticleUtil {
 	* @return the ordered range of matching journal articles
 	*/
 	public static List<JournalArticle> findByDDMTemplateKey(
-		java.lang.String DDMTemplateKey, int start, int end,
+		String DDMTemplateKey, int start, int end,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .findByDDMTemplateKey(DDMTemplateKey, start, end,
@@ -1224,12 +1218,12 @@ public class JournalArticleUtil {
 	* @param DDMTemplateKey the d d m template key
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByDDMTemplateKey_First(
-		java.lang.String DDMTemplateKey,
+		String DDMTemplateKey,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByDDMTemplateKey_First(DDMTemplateKey, orderByComparator);
 	}
@@ -1242,7 +1236,7 @@ public class JournalArticleUtil {
 	* @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
 	*/
 	public static JournalArticle fetchByDDMTemplateKey_First(
-		java.lang.String DDMTemplateKey,
+		String DDMTemplateKey,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .fetchByDDMTemplateKey_First(DDMTemplateKey,
@@ -1255,12 +1249,12 @@ public class JournalArticleUtil {
 	* @param DDMTemplateKey the d d m template key
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByDDMTemplateKey_Last(
-		java.lang.String DDMTemplateKey,
+		String DDMTemplateKey,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByDDMTemplateKey_Last(DDMTemplateKey, orderByComparator);
 	}
@@ -1273,7 +1267,7 @@ public class JournalArticleUtil {
 	* @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
 	*/
 	public static JournalArticle fetchByDDMTemplateKey_Last(
-		java.lang.String DDMTemplateKey,
+		String DDMTemplateKey,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .fetchByDDMTemplateKey_Last(DDMTemplateKey, orderByComparator);
@@ -1286,12 +1280,12 @@ public class JournalArticleUtil {
 	* @param DDMTemplateKey the d d m template key
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] findByDDMTemplateKey_PrevAndNext(long id,
-		java.lang.String DDMTemplateKey,
+		String DDMTemplateKey,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByDDMTemplateKey_PrevAndNext(id, DDMTemplateKey,
 			orderByComparator);
@@ -1302,7 +1296,7 @@ public class JournalArticleUtil {
 	*
 	* @param DDMTemplateKey the d d m template key
 	*/
-	public static void removeByDDMTemplateKey(java.lang.String DDMTemplateKey) {
+	public static void removeByDDMTemplateKey(String DDMTemplateKey) {
 		getPersistence().removeByDDMTemplateKey(DDMTemplateKey);
 	}
 
@@ -1312,7 +1306,7 @@ public class JournalArticleUtil {
 	* @param DDMTemplateKey the d d m template key
 	* @return the number of matching journal articles
 	*/
-	public static int countByDDMTemplateKey(java.lang.String DDMTemplateKey) {
+	public static int countByDDMTemplateKey(String DDMTemplateKey) {
 		return getPersistence().countByDDMTemplateKey(DDMTemplateKey);
 	}
 
@@ -1323,7 +1317,7 @@ public class JournalArticleUtil {
 	* @return the matching journal articles
 	*/
 	public static List<JournalArticle> findByLayoutUuid(
-		java.lang.String layoutUuid) {
+		String layoutUuid) {
 		return getPersistence().findByLayoutUuid(layoutUuid);
 	}
 
@@ -1340,7 +1334,7 @@ public class JournalArticleUtil {
 	* @return the range of matching journal articles
 	*/
 	public static List<JournalArticle> findByLayoutUuid(
-		java.lang.String layoutUuid, int start, int end) {
+		String layoutUuid, int start, int end) {
 		return getPersistence().findByLayoutUuid(layoutUuid, start, end);
 	}
 
@@ -1358,7 +1352,7 @@ public class JournalArticleUtil {
 	* @return the ordered range of matching journal articles
 	*/
 	public static List<JournalArticle> findByLayoutUuid(
-		java.lang.String layoutUuid, int start, int end,
+		String layoutUuid, int start, int end,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .findByLayoutUuid(layoutUuid, start, end, orderByComparator);
@@ -1370,12 +1364,12 @@ public class JournalArticleUtil {
 	* @param layoutUuid the layout uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByLayoutUuid_First(
-		java.lang.String layoutUuid,
+		String layoutUuid,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByLayoutUuid_First(layoutUuid, orderByComparator);
 	}
@@ -1388,7 +1382,7 @@ public class JournalArticleUtil {
 	* @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
 	*/
 	public static JournalArticle fetchByLayoutUuid_First(
-		java.lang.String layoutUuid,
+		String layoutUuid,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .fetchByLayoutUuid_First(layoutUuid, orderByComparator);
@@ -1400,12 +1394,12 @@ public class JournalArticleUtil {
 	* @param layoutUuid the layout uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByLayoutUuid_Last(
-		java.lang.String layoutUuid,
+		String layoutUuid,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByLayoutUuid_Last(layoutUuid, orderByComparator);
 	}
@@ -1418,7 +1412,7 @@ public class JournalArticleUtil {
 	* @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
 	*/
 	public static JournalArticle fetchByLayoutUuid_Last(
-		java.lang.String layoutUuid,
+		String layoutUuid,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .fetchByLayoutUuid_Last(layoutUuid, orderByComparator);
@@ -1431,12 +1425,12 @@ public class JournalArticleUtil {
 	* @param layoutUuid the layout uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] findByLayoutUuid_PrevAndNext(long id,
-		java.lang.String layoutUuid,
+		String layoutUuid,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByLayoutUuid_PrevAndNext(id, layoutUuid,
 			orderByComparator);
@@ -1447,7 +1441,7 @@ public class JournalArticleUtil {
 	*
 	* @param layoutUuid the layout uuid
 	*/
-	public static void removeByLayoutUuid(java.lang.String layoutUuid) {
+	public static void removeByLayoutUuid(String layoutUuid) {
 		getPersistence().removeByLayoutUuid(layoutUuid);
 	}
 
@@ -1457,7 +1451,7 @@ public class JournalArticleUtil {
 	* @param layoutUuid the layout uuid
 	* @return the number of matching journal articles
 	*/
-	public static int countByLayoutUuid(java.lang.String layoutUuid) {
+	public static int countByLayoutUuid(String layoutUuid) {
 		return getPersistence().countByLayoutUuid(layoutUuid);
 	}
 
@@ -1514,11 +1508,11 @@ public class JournalArticleUtil {
 	* @param smallImageId the small image ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findBySmallImageId_First(long smallImageId,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findBySmallImageId_First(smallImageId, orderByComparator);
 	}
@@ -1542,11 +1536,11 @@ public class JournalArticleUtil {
 	* @param smallImageId the small image ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findBySmallImageId_Last(long smallImageId,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findBySmallImageId_Last(smallImageId, orderByComparator);
 	}
@@ -1571,11 +1565,11 @@ public class JournalArticleUtil {
 	* @param smallImageId the small image ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] findBySmallImageId_PrevAndNext(long id,
 		long smallImageId, OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findBySmallImageId_PrevAndNext(id, smallImageId,
 			orderByComparator);
@@ -1659,11 +1653,11 @@ public class JournalArticleUtil {
 	* @param indexable the indexable
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByR_I_First(long resourcePrimKey,
 		boolean indexable, OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByR_I_First(resourcePrimKey, indexable,
 			orderByComparator);
@@ -1691,11 +1685,11 @@ public class JournalArticleUtil {
 	* @param indexable the indexable
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByR_I_Last(long resourcePrimKey,
 		boolean indexable, OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByR_I_Last(resourcePrimKey, indexable, orderByComparator);
 	}
@@ -1723,12 +1717,12 @@ public class JournalArticleUtil {
 	* @param indexable the indexable
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] findByR_I_PrevAndNext(long id,
 		long resourcePrimKey, boolean indexable,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByR_I_PrevAndNext(id, resourcePrimKey, indexable,
 			orderByComparator);
@@ -1814,11 +1808,11 @@ public class JournalArticleUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByR_ST_First(long resourcePrimKey,
 		int status, OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByR_ST_First(resourcePrimKey, status, orderByComparator);
 	}
@@ -1844,11 +1838,11 @@ public class JournalArticleUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByR_ST_Last(long resourcePrimKey,
 		int status, OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByR_ST_Last(resourcePrimKey, status, orderByComparator);
 	}
@@ -1875,12 +1869,12 @@ public class JournalArticleUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] findByR_ST_PrevAndNext(long id,
 		long resourcePrimKey, int status,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByR_ST_PrevAndNext(id, resourcePrimKey, status,
 			orderByComparator);
@@ -2030,11 +2024,11 @@ public class JournalArticleUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByG_U_First(long groupId, long userId,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_U_First(groupId, userId, orderByComparator);
 	}
@@ -2060,11 +2054,11 @@ public class JournalArticleUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByG_U_Last(long groupId, long userId,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_U_Last(groupId, userId, orderByComparator);
 	}
@@ -2091,11 +2085,11 @@ public class JournalArticleUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] findByG_U_PrevAndNext(long id, long groupId,
 		long userId, OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_U_PrevAndNext(id, groupId, userId, orderByComparator);
 	}
@@ -2159,12 +2153,12 @@ public class JournalArticleUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] filterFindByG_U_PrevAndNext(long id,
 		long groupId, long userId,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .filterFindByG_U_PrevAndNext(id, groupId, userId,
 			orderByComparator);
@@ -2258,11 +2252,11 @@ public class JournalArticleUtil {
 	* @param folderId the folder ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByG_F_First(long groupId, long folderId,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_F_First(groupId, folderId, orderByComparator);
 	}
@@ -2288,11 +2282,11 @@ public class JournalArticleUtil {
 	* @param folderId the folder ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByG_F_Last(long groupId, long folderId,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_F_Last(groupId, folderId, orderByComparator);
 	}
@@ -2319,11 +2313,11 @@ public class JournalArticleUtil {
 	* @param folderId the folder ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] findByG_F_PrevAndNext(long id, long groupId,
 		long folderId, OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_F_PrevAndNext(id, groupId, folderId,
 			orderByComparator);
@@ -2389,12 +2383,12 @@ public class JournalArticleUtil {
 	* @param folderId the folder ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] filterFindByG_F_PrevAndNext(long id,
 		long groupId, long folderId,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .filterFindByG_F_PrevAndNext(id, groupId, folderId,
 			orderByComparator);
@@ -2568,7 +2562,7 @@ public class JournalArticleUtil {
 	* @return the matching journal articles
 	*/
 	public static List<JournalArticle> findByG_A(long groupId,
-		java.lang.String articleId) {
+		String articleId) {
 		return getPersistence().findByG_A(groupId, articleId);
 	}
 
@@ -2586,7 +2580,7 @@ public class JournalArticleUtil {
 	* @return the range of matching journal articles
 	*/
 	public static List<JournalArticle> findByG_A(long groupId,
-		java.lang.String articleId, int start, int end) {
+		String articleId, int start, int end) {
 		return getPersistence().findByG_A(groupId, articleId, start, end);
 	}
 
@@ -2605,7 +2599,7 @@ public class JournalArticleUtil {
 	* @return the ordered range of matching journal articles
 	*/
 	public static List<JournalArticle> findByG_A(long groupId,
-		java.lang.String articleId, int start, int end,
+		String articleId, int start, int end,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .findByG_A(groupId, articleId, start, end, orderByComparator);
@@ -2618,12 +2612,12 @@ public class JournalArticleUtil {
 	* @param articleId the article ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByG_A_First(long groupId,
-		java.lang.String articleId,
+		String articleId,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_A_First(groupId, articleId, orderByComparator);
 	}
@@ -2637,7 +2631,7 @@ public class JournalArticleUtil {
 	* @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
 	*/
 	public static JournalArticle fetchByG_A_First(long groupId,
-		java.lang.String articleId,
+		String articleId,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .fetchByG_A_First(groupId, articleId, orderByComparator);
@@ -2650,12 +2644,12 @@ public class JournalArticleUtil {
 	* @param articleId the article ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByG_A_Last(long groupId,
-		java.lang.String articleId,
+		String articleId,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_A_Last(groupId, articleId, orderByComparator);
 	}
@@ -2669,7 +2663,7 @@ public class JournalArticleUtil {
 	* @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
 	*/
 	public static JournalArticle fetchByG_A_Last(long groupId,
-		java.lang.String articleId,
+		String articleId,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .fetchByG_A_Last(groupId, articleId, orderByComparator);
@@ -2683,12 +2677,12 @@ public class JournalArticleUtil {
 	* @param articleId the article ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] findByG_A_PrevAndNext(long id, long groupId,
-		java.lang.String articleId,
+		String articleId,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_A_PrevAndNext(id, groupId, articleId,
 			orderByComparator);
@@ -2702,7 +2696,7 @@ public class JournalArticleUtil {
 	* @return the matching journal articles that the user has permission to view
 	*/
 	public static List<JournalArticle> filterFindByG_A(long groupId,
-		java.lang.String articleId) {
+		String articleId) {
 		return getPersistence().filterFindByG_A(groupId, articleId);
 	}
 
@@ -2720,7 +2714,7 @@ public class JournalArticleUtil {
 	* @return the range of matching journal articles that the user has permission to view
 	*/
 	public static List<JournalArticle> filterFindByG_A(long groupId,
-		java.lang.String articleId, int start, int end) {
+		String articleId, int start, int end) {
 		return getPersistence().filterFindByG_A(groupId, articleId, start, end);
 	}
 
@@ -2739,7 +2733,7 @@ public class JournalArticleUtil {
 	* @return the ordered range of matching journal articles that the user has permission to view
 	*/
 	public static List<JournalArticle> filterFindByG_A(long groupId,
-		java.lang.String articleId, int start, int end,
+		String articleId, int start, int end,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .filterFindByG_A(groupId, articleId, start, end,
@@ -2754,12 +2748,12 @@ public class JournalArticleUtil {
 	* @param articleId the article ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] filterFindByG_A_PrevAndNext(long id,
-		long groupId, java.lang.String articleId,
+		long groupId, String articleId,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .filterFindByG_A_PrevAndNext(id, groupId, articleId,
 			orderByComparator);
@@ -2771,7 +2765,7 @@ public class JournalArticleUtil {
 	* @param groupId the group ID
 	* @param articleId the article ID
 	*/
-	public static void removeByG_A(long groupId, java.lang.String articleId) {
+	public static void removeByG_A(long groupId, String articleId) {
 		getPersistence().removeByG_A(groupId, articleId);
 	}
 
@@ -2782,7 +2776,7 @@ public class JournalArticleUtil {
 	* @param articleId the article ID
 	* @return the number of matching journal articles
 	*/
-	public static int countByG_A(long groupId, java.lang.String articleId) {
+	public static int countByG_A(long groupId, String articleId) {
 		return getPersistence().countByG_A(groupId, articleId);
 	}
 
@@ -2793,7 +2787,7 @@ public class JournalArticleUtil {
 	* @param articleId the article ID
 	* @return the number of matching journal articles that the user has permission to view
 	*/
-	public static int filterCountByG_A(long groupId, java.lang.String articleId) {
+	public static int filterCountByG_A(long groupId, String articleId) {
 		return getPersistence().filterCountByG_A(groupId, articleId);
 	}
 
@@ -2805,7 +2799,7 @@ public class JournalArticleUtil {
 	* @return the matching journal articles
 	*/
 	public static List<JournalArticle> findByG_UT(long groupId,
-		java.lang.String urlTitle) {
+		String urlTitle) {
 		return getPersistence().findByG_UT(groupId, urlTitle);
 	}
 
@@ -2823,7 +2817,7 @@ public class JournalArticleUtil {
 	* @return the range of matching journal articles
 	*/
 	public static List<JournalArticle> findByG_UT(long groupId,
-		java.lang.String urlTitle, int start, int end) {
+		String urlTitle, int start, int end) {
 		return getPersistence().findByG_UT(groupId, urlTitle, start, end);
 	}
 
@@ -2842,7 +2836,7 @@ public class JournalArticleUtil {
 	* @return the ordered range of matching journal articles
 	*/
 	public static List<JournalArticle> findByG_UT(long groupId,
-		java.lang.String urlTitle, int start, int end,
+		String urlTitle, int start, int end,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .findByG_UT(groupId, urlTitle, start, end, orderByComparator);
@@ -2855,12 +2849,12 @@ public class JournalArticleUtil {
 	* @param urlTitle the url title
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByG_UT_First(long groupId,
-		java.lang.String urlTitle,
+		String urlTitle,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_UT_First(groupId, urlTitle, orderByComparator);
 	}
@@ -2874,7 +2868,7 @@ public class JournalArticleUtil {
 	* @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
 	*/
 	public static JournalArticle fetchByG_UT_First(long groupId,
-		java.lang.String urlTitle,
+		String urlTitle,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .fetchByG_UT_First(groupId, urlTitle, orderByComparator);
@@ -2887,12 +2881,12 @@ public class JournalArticleUtil {
 	* @param urlTitle the url title
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByG_UT_Last(long groupId,
-		java.lang.String urlTitle,
+		String urlTitle,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_UT_Last(groupId, urlTitle, orderByComparator);
 	}
@@ -2906,7 +2900,7 @@ public class JournalArticleUtil {
 	* @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
 	*/
 	public static JournalArticle fetchByG_UT_Last(long groupId,
-		java.lang.String urlTitle,
+		String urlTitle,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .fetchByG_UT_Last(groupId, urlTitle, orderByComparator);
@@ -2920,12 +2914,12 @@ public class JournalArticleUtil {
 	* @param urlTitle the url title
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] findByG_UT_PrevAndNext(long id,
-		long groupId, java.lang.String urlTitle,
+		long groupId, String urlTitle,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_UT_PrevAndNext(id, groupId, urlTitle,
 			orderByComparator);
@@ -2939,7 +2933,7 @@ public class JournalArticleUtil {
 	* @return the matching journal articles that the user has permission to view
 	*/
 	public static List<JournalArticle> filterFindByG_UT(long groupId,
-		java.lang.String urlTitle) {
+		String urlTitle) {
 		return getPersistence().filterFindByG_UT(groupId, urlTitle);
 	}
 
@@ -2957,7 +2951,7 @@ public class JournalArticleUtil {
 	* @return the range of matching journal articles that the user has permission to view
 	*/
 	public static List<JournalArticle> filterFindByG_UT(long groupId,
-		java.lang.String urlTitle, int start, int end) {
+		String urlTitle, int start, int end) {
 		return getPersistence().filterFindByG_UT(groupId, urlTitle, start, end);
 	}
 
@@ -2976,7 +2970,7 @@ public class JournalArticleUtil {
 	* @return the ordered range of matching journal articles that the user has permission to view
 	*/
 	public static List<JournalArticle> filterFindByG_UT(long groupId,
-		java.lang.String urlTitle, int start, int end,
+		String urlTitle, int start, int end,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .filterFindByG_UT(groupId, urlTitle, start, end,
@@ -2991,12 +2985,12 @@ public class JournalArticleUtil {
 	* @param urlTitle the url title
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] filterFindByG_UT_PrevAndNext(long id,
-		long groupId, java.lang.String urlTitle,
+		long groupId, String urlTitle,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .filterFindByG_UT_PrevAndNext(id, groupId, urlTitle,
 			orderByComparator);
@@ -3008,7 +3002,7 @@ public class JournalArticleUtil {
 	* @param groupId the group ID
 	* @param urlTitle the url title
 	*/
-	public static void removeByG_UT(long groupId, java.lang.String urlTitle) {
+	public static void removeByG_UT(long groupId, String urlTitle) {
 		getPersistence().removeByG_UT(groupId, urlTitle);
 	}
 
@@ -3019,7 +3013,7 @@ public class JournalArticleUtil {
 	* @param urlTitle the url title
 	* @return the number of matching journal articles
 	*/
-	public static int countByG_UT(long groupId, java.lang.String urlTitle) {
+	public static int countByG_UT(long groupId, String urlTitle) {
 		return getPersistence().countByG_UT(groupId, urlTitle);
 	}
 
@@ -3030,7 +3024,7 @@ public class JournalArticleUtil {
 	* @param urlTitle the url title
 	* @return the number of matching journal articles that the user has permission to view
 	*/
-	public static int filterCountByG_UT(long groupId, java.lang.String urlTitle) {
+	public static int filterCountByG_UT(long groupId, String urlTitle) {
 		return getPersistence().filterCountByG_UT(groupId, urlTitle);
 	}
 
@@ -3042,7 +3036,7 @@ public class JournalArticleUtil {
 	* @return the matching journal articles
 	*/
 	public static List<JournalArticle> findByG_DDMSK(long groupId,
-		java.lang.String DDMStructureKey) {
+		String DDMStructureKey) {
 		return getPersistence().findByG_DDMSK(groupId, DDMStructureKey);
 	}
 
@@ -3060,7 +3054,7 @@ public class JournalArticleUtil {
 	* @return the range of matching journal articles
 	*/
 	public static List<JournalArticle> findByG_DDMSK(long groupId,
-		java.lang.String DDMStructureKey, int start, int end) {
+		String DDMStructureKey, int start, int end) {
 		return getPersistence()
 				   .findByG_DDMSK(groupId, DDMStructureKey, start, end);
 	}
@@ -3080,7 +3074,7 @@ public class JournalArticleUtil {
 	* @return the ordered range of matching journal articles
 	*/
 	public static List<JournalArticle> findByG_DDMSK(long groupId,
-		java.lang.String DDMStructureKey, int start, int end,
+		String DDMStructureKey, int start, int end,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .findByG_DDMSK(groupId, DDMStructureKey, start, end,
@@ -3094,12 +3088,12 @@ public class JournalArticleUtil {
 	* @param DDMStructureKey the d d m structure key
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByG_DDMSK_First(long groupId,
-		java.lang.String DDMStructureKey,
+		String DDMStructureKey,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_DDMSK_First(groupId, DDMStructureKey,
 			orderByComparator);
@@ -3114,7 +3108,7 @@ public class JournalArticleUtil {
 	* @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
 	*/
 	public static JournalArticle fetchByG_DDMSK_First(long groupId,
-		java.lang.String DDMStructureKey,
+		String DDMStructureKey,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .fetchByG_DDMSK_First(groupId, DDMStructureKey,
@@ -3128,12 +3122,12 @@ public class JournalArticleUtil {
 	* @param DDMStructureKey the d d m structure key
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByG_DDMSK_Last(long groupId,
-		java.lang.String DDMStructureKey,
+		String DDMStructureKey,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_DDMSK_Last(groupId, DDMStructureKey,
 			orderByComparator);
@@ -3148,7 +3142,7 @@ public class JournalArticleUtil {
 	* @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
 	*/
 	public static JournalArticle fetchByG_DDMSK_Last(long groupId,
-		java.lang.String DDMStructureKey,
+		String DDMStructureKey,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .fetchByG_DDMSK_Last(groupId, DDMStructureKey,
@@ -3163,12 +3157,12 @@ public class JournalArticleUtil {
 	* @param DDMStructureKey the d d m structure key
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] findByG_DDMSK_PrevAndNext(long id,
-		long groupId, java.lang.String DDMStructureKey,
+		long groupId, String DDMStructureKey,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_DDMSK_PrevAndNext(id, groupId, DDMStructureKey,
 			orderByComparator);
@@ -3182,7 +3176,7 @@ public class JournalArticleUtil {
 	* @return the matching journal articles that the user has permission to view
 	*/
 	public static List<JournalArticle> filterFindByG_DDMSK(long groupId,
-		java.lang.String DDMStructureKey) {
+		String DDMStructureKey) {
 		return getPersistence().filterFindByG_DDMSK(groupId, DDMStructureKey);
 	}
 
@@ -3200,7 +3194,7 @@ public class JournalArticleUtil {
 	* @return the range of matching journal articles that the user has permission to view
 	*/
 	public static List<JournalArticle> filterFindByG_DDMSK(long groupId,
-		java.lang.String DDMStructureKey, int start, int end) {
+		String DDMStructureKey, int start, int end) {
 		return getPersistence()
 				   .filterFindByG_DDMSK(groupId, DDMStructureKey, start, end);
 	}
@@ -3220,7 +3214,7 @@ public class JournalArticleUtil {
 	* @return the ordered range of matching journal articles that the user has permission to view
 	*/
 	public static List<JournalArticle> filterFindByG_DDMSK(long groupId,
-		java.lang.String DDMStructureKey, int start, int end,
+		String DDMStructureKey, int start, int end,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .filterFindByG_DDMSK(groupId, DDMStructureKey, start, end,
@@ -3235,12 +3229,12 @@ public class JournalArticleUtil {
 	* @param DDMStructureKey the d d m structure key
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] filterFindByG_DDMSK_PrevAndNext(long id,
-		long groupId, java.lang.String DDMStructureKey,
+		long groupId, String DDMStructureKey,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .filterFindByG_DDMSK_PrevAndNext(id, groupId,
 			DDMStructureKey, orderByComparator);
@@ -3253,7 +3247,7 @@ public class JournalArticleUtil {
 	* @param DDMStructureKey the d d m structure key
 	*/
 	public static void removeByG_DDMSK(long groupId,
-		java.lang.String DDMStructureKey) {
+		String DDMStructureKey) {
 		getPersistence().removeByG_DDMSK(groupId, DDMStructureKey);
 	}
 
@@ -3265,7 +3259,7 @@ public class JournalArticleUtil {
 	* @return the number of matching journal articles
 	*/
 	public static int countByG_DDMSK(long groupId,
-		java.lang.String DDMStructureKey) {
+		String DDMStructureKey) {
 		return getPersistence().countByG_DDMSK(groupId, DDMStructureKey);
 	}
 
@@ -3277,7 +3271,7 @@ public class JournalArticleUtil {
 	* @return the number of matching journal articles that the user has permission to view
 	*/
 	public static int filterCountByG_DDMSK(long groupId,
-		java.lang.String DDMStructureKey) {
+		String DDMStructureKey) {
 		return getPersistence().filterCountByG_DDMSK(groupId, DDMStructureKey);
 	}
 
@@ -3289,7 +3283,7 @@ public class JournalArticleUtil {
 	* @return the matching journal articles
 	*/
 	public static List<JournalArticle> findByG_DDMTK(long groupId,
-		java.lang.String DDMTemplateKey) {
+		String DDMTemplateKey) {
 		return getPersistence().findByG_DDMTK(groupId, DDMTemplateKey);
 	}
 
@@ -3307,7 +3301,7 @@ public class JournalArticleUtil {
 	* @return the range of matching journal articles
 	*/
 	public static List<JournalArticle> findByG_DDMTK(long groupId,
-		java.lang.String DDMTemplateKey, int start, int end) {
+		String DDMTemplateKey, int start, int end) {
 		return getPersistence()
 				   .findByG_DDMTK(groupId, DDMTemplateKey, start, end);
 	}
@@ -3327,7 +3321,7 @@ public class JournalArticleUtil {
 	* @return the ordered range of matching journal articles
 	*/
 	public static List<JournalArticle> findByG_DDMTK(long groupId,
-		java.lang.String DDMTemplateKey, int start, int end,
+		String DDMTemplateKey, int start, int end,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .findByG_DDMTK(groupId, DDMTemplateKey, start, end,
@@ -3341,12 +3335,12 @@ public class JournalArticleUtil {
 	* @param DDMTemplateKey the d d m template key
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByG_DDMTK_First(long groupId,
-		java.lang.String DDMTemplateKey,
+		String DDMTemplateKey,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_DDMTK_First(groupId, DDMTemplateKey,
 			orderByComparator);
@@ -3361,7 +3355,7 @@ public class JournalArticleUtil {
 	* @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
 	*/
 	public static JournalArticle fetchByG_DDMTK_First(long groupId,
-		java.lang.String DDMTemplateKey,
+		String DDMTemplateKey,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .fetchByG_DDMTK_First(groupId, DDMTemplateKey,
@@ -3375,12 +3369,12 @@ public class JournalArticleUtil {
 	* @param DDMTemplateKey the d d m template key
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByG_DDMTK_Last(long groupId,
-		java.lang.String DDMTemplateKey,
+		String DDMTemplateKey,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_DDMTK_Last(groupId, DDMTemplateKey,
 			orderByComparator);
@@ -3395,7 +3389,7 @@ public class JournalArticleUtil {
 	* @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
 	*/
 	public static JournalArticle fetchByG_DDMTK_Last(long groupId,
-		java.lang.String DDMTemplateKey,
+		String DDMTemplateKey,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .fetchByG_DDMTK_Last(groupId, DDMTemplateKey,
@@ -3410,12 +3404,12 @@ public class JournalArticleUtil {
 	* @param DDMTemplateKey the d d m template key
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] findByG_DDMTK_PrevAndNext(long id,
-		long groupId, java.lang.String DDMTemplateKey,
+		long groupId, String DDMTemplateKey,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_DDMTK_PrevAndNext(id, groupId, DDMTemplateKey,
 			orderByComparator);
@@ -3429,7 +3423,7 @@ public class JournalArticleUtil {
 	* @return the matching journal articles that the user has permission to view
 	*/
 	public static List<JournalArticle> filterFindByG_DDMTK(long groupId,
-		java.lang.String DDMTemplateKey) {
+		String DDMTemplateKey) {
 		return getPersistence().filterFindByG_DDMTK(groupId, DDMTemplateKey);
 	}
 
@@ -3447,7 +3441,7 @@ public class JournalArticleUtil {
 	* @return the range of matching journal articles that the user has permission to view
 	*/
 	public static List<JournalArticle> filterFindByG_DDMTK(long groupId,
-		java.lang.String DDMTemplateKey, int start, int end) {
+		String DDMTemplateKey, int start, int end) {
 		return getPersistence()
 				   .filterFindByG_DDMTK(groupId, DDMTemplateKey, start, end);
 	}
@@ -3467,7 +3461,7 @@ public class JournalArticleUtil {
 	* @return the ordered range of matching journal articles that the user has permission to view
 	*/
 	public static List<JournalArticle> filterFindByG_DDMTK(long groupId,
-		java.lang.String DDMTemplateKey, int start, int end,
+		String DDMTemplateKey, int start, int end,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .filterFindByG_DDMTK(groupId, DDMTemplateKey, start, end,
@@ -3482,12 +3476,12 @@ public class JournalArticleUtil {
 	* @param DDMTemplateKey the d d m template key
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] filterFindByG_DDMTK_PrevAndNext(long id,
-		long groupId, java.lang.String DDMTemplateKey,
+		long groupId, String DDMTemplateKey,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .filterFindByG_DDMTK_PrevAndNext(id, groupId,
 			DDMTemplateKey, orderByComparator);
@@ -3500,7 +3494,7 @@ public class JournalArticleUtil {
 	* @param DDMTemplateKey the d d m template key
 	*/
 	public static void removeByG_DDMTK(long groupId,
-		java.lang.String DDMTemplateKey) {
+		String DDMTemplateKey) {
 		getPersistence().removeByG_DDMTK(groupId, DDMTemplateKey);
 	}
 
@@ -3512,7 +3506,7 @@ public class JournalArticleUtil {
 	* @return the number of matching journal articles
 	*/
 	public static int countByG_DDMTK(long groupId,
-		java.lang.String DDMTemplateKey) {
+		String DDMTemplateKey) {
 		return getPersistence().countByG_DDMTK(groupId, DDMTemplateKey);
 	}
 
@@ -3524,7 +3518,7 @@ public class JournalArticleUtil {
 	* @return the number of matching journal articles that the user has permission to view
 	*/
 	public static int filterCountByG_DDMTK(long groupId,
-		java.lang.String DDMTemplateKey) {
+		String DDMTemplateKey) {
 		return getPersistence().filterCountByG_DDMTK(groupId, DDMTemplateKey);
 	}
 
@@ -3536,7 +3530,7 @@ public class JournalArticleUtil {
 	* @return the matching journal articles
 	*/
 	public static List<JournalArticle> findByG_L(long groupId,
-		java.lang.String layoutUuid) {
+		String layoutUuid) {
 		return getPersistence().findByG_L(groupId, layoutUuid);
 	}
 
@@ -3554,7 +3548,7 @@ public class JournalArticleUtil {
 	* @return the range of matching journal articles
 	*/
 	public static List<JournalArticle> findByG_L(long groupId,
-		java.lang.String layoutUuid, int start, int end) {
+		String layoutUuid, int start, int end) {
 		return getPersistence().findByG_L(groupId, layoutUuid, start, end);
 	}
 
@@ -3573,7 +3567,7 @@ public class JournalArticleUtil {
 	* @return the ordered range of matching journal articles
 	*/
 	public static List<JournalArticle> findByG_L(long groupId,
-		java.lang.String layoutUuid, int start, int end,
+		String layoutUuid, int start, int end,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .findByG_L(groupId, layoutUuid, start, end, orderByComparator);
@@ -3586,12 +3580,12 @@ public class JournalArticleUtil {
 	* @param layoutUuid the layout uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByG_L_First(long groupId,
-		java.lang.String layoutUuid,
+		String layoutUuid,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_L_First(groupId, layoutUuid, orderByComparator);
 	}
@@ -3605,7 +3599,7 @@ public class JournalArticleUtil {
 	* @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
 	*/
 	public static JournalArticle fetchByG_L_First(long groupId,
-		java.lang.String layoutUuid,
+		String layoutUuid,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .fetchByG_L_First(groupId, layoutUuid, orderByComparator);
@@ -3618,12 +3612,12 @@ public class JournalArticleUtil {
 	* @param layoutUuid the layout uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByG_L_Last(long groupId,
-		java.lang.String layoutUuid,
+		String layoutUuid,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_L_Last(groupId, layoutUuid, orderByComparator);
 	}
@@ -3637,7 +3631,7 @@ public class JournalArticleUtil {
 	* @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
 	*/
 	public static JournalArticle fetchByG_L_Last(long groupId,
-		java.lang.String layoutUuid,
+		String layoutUuid,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .fetchByG_L_Last(groupId, layoutUuid, orderByComparator);
@@ -3651,12 +3645,12 @@ public class JournalArticleUtil {
 	* @param layoutUuid the layout uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] findByG_L_PrevAndNext(long id, long groupId,
-		java.lang.String layoutUuid,
+		String layoutUuid,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_L_PrevAndNext(id, groupId, layoutUuid,
 			orderByComparator);
@@ -3670,7 +3664,7 @@ public class JournalArticleUtil {
 	* @return the matching journal articles that the user has permission to view
 	*/
 	public static List<JournalArticle> filterFindByG_L(long groupId,
-		java.lang.String layoutUuid) {
+		String layoutUuid) {
 		return getPersistence().filterFindByG_L(groupId, layoutUuid);
 	}
 
@@ -3688,7 +3682,7 @@ public class JournalArticleUtil {
 	* @return the range of matching journal articles that the user has permission to view
 	*/
 	public static List<JournalArticle> filterFindByG_L(long groupId,
-		java.lang.String layoutUuid, int start, int end) {
+		String layoutUuid, int start, int end) {
 		return getPersistence().filterFindByG_L(groupId, layoutUuid, start, end);
 	}
 
@@ -3707,7 +3701,7 @@ public class JournalArticleUtil {
 	* @return the ordered range of matching journal articles that the user has permission to view
 	*/
 	public static List<JournalArticle> filterFindByG_L(long groupId,
-		java.lang.String layoutUuid, int start, int end,
+		String layoutUuid, int start, int end,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .filterFindByG_L(groupId, layoutUuid, start, end,
@@ -3722,12 +3716,12 @@ public class JournalArticleUtil {
 	* @param layoutUuid the layout uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] filterFindByG_L_PrevAndNext(long id,
-		long groupId, java.lang.String layoutUuid,
+		long groupId, String layoutUuid,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .filterFindByG_L_PrevAndNext(id, groupId, layoutUuid,
 			orderByComparator);
@@ -3739,7 +3733,7 @@ public class JournalArticleUtil {
 	* @param groupId the group ID
 	* @param layoutUuid the layout uuid
 	*/
-	public static void removeByG_L(long groupId, java.lang.String layoutUuid) {
+	public static void removeByG_L(long groupId, String layoutUuid) {
 		getPersistence().removeByG_L(groupId, layoutUuid);
 	}
 
@@ -3750,7 +3744,7 @@ public class JournalArticleUtil {
 	* @param layoutUuid the layout uuid
 	* @return the number of matching journal articles
 	*/
-	public static int countByG_L(long groupId, java.lang.String layoutUuid) {
+	public static int countByG_L(long groupId, String layoutUuid) {
 		return getPersistence().countByG_L(groupId, layoutUuid);
 	}
 
@@ -3761,7 +3755,7 @@ public class JournalArticleUtil {
 	* @param layoutUuid the layout uuid
 	* @return the number of matching journal articles that the user has permission to view
 	*/
-	public static int filterCountByG_L(long groupId, java.lang.String layoutUuid) {
+	public static int filterCountByG_L(long groupId, String layoutUuid) {
 		return getPersistence().filterCountByG_L(groupId, layoutUuid);
 	}
 
@@ -3821,11 +3815,11 @@ public class JournalArticleUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByG_ST_First(long groupId, int status,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_ST_First(groupId, status, orderByComparator);
 	}
@@ -3851,11 +3845,11 @@ public class JournalArticleUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByG_ST_Last(long groupId, int status,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_ST_Last(groupId, status, orderByComparator);
 	}
@@ -3882,12 +3876,12 @@ public class JournalArticleUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] findByG_ST_PrevAndNext(long id,
 		long groupId, int status,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_ST_PrevAndNext(id, groupId, status,
 			orderByComparator);
@@ -3952,12 +3946,12 @@ public class JournalArticleUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] filterFindByG_ST_PrevAndNext(long id,
 		long groupId, int status,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .filterFindByG_ST_PrevAndNext(id, groupId, status,
 			orderByComparator);
@@ -4052,11 +4046,11 @@ public class JournalArticleUtil {
 	* @param version the version
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByC_V_First(long companyId,
 		double version, OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByC_V_First(companyId, version, orderByComparator);
 	}
@@ -4082,11 +4076,11 @@ public class JournalArticleUtil {
 	* @param version the version
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByC_V_Last(long companyId, double version,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByC_V_Last(companyId, version, orderByComparator);
 	}
@@ -4113,12 +4107,12 @@ public class JournalArticleUtil {
 	* @param version the version
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] findByC_V_PrevAndNext(long id,
 		long companyId, double version,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByC_V_PrevAndNext(id, companyId, version,
 			orderByComparator);
@@ -4201,11 +4195,11 @@ public class JournalArticleUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByC_ST_First(long companyId, int status,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByC_ST_First(companyId, status, orderByComparator);
 	}
@@ -4231,11 +4225,11 @@ public class JournalArticleUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByC_ST_Last(long companyId, int status,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByC_ST_Last(companyId, status, orderByComparator);
 	}
@@ -4262,12 +4256,12 @@ public class JournalArticleUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] findByC_ST_PrevAndNext(long id,
 		long companyId, int status,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByC_ST_PrevAndNext(id, companyId, status,
 			orderByComparator);
@@ -4352,11 +4346,11 @@ public class JournalArticleUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByC_NotST_First(long companyId,
 		int status, OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByC_NotST_First(companyId, status, orderByComparator);
 	}
@@ -4382,11 +4376,11 @@ public class JournalArticleUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByC_NotST_Last(long companyId, int status,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByC_NotST_Last(companyId, status, orderByComparator);
 	}
@@ -4413,12 +4407,12 @@ public class JournalArticleUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] findByC_NotST_PrevAndNext(long id,
 		long companyId, int status,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByC_NotST_PrevAndNext(id, companyId, status,
 			orderByComparator);
@@ -4453,7 +4447,7 @@ public class JournalArticleUtil {
 	* @return the matching journal articles
 	*/
 	public static List<JournalArticle> findByC_DDMTK(long classNameId,
-		java.lang.String DDMTemplateKey) {
+		String DDMTemplateKey) {
 		return getPersistence().findByC_DDMTK(classNameId, DDMTemplateKey);
 	}
 
@@ -4471,7 +4465,7 @@ public class JournalArticleUtil {
 	* @return the range of matching journal articles
 	*/
 	public static List<JournalArticle> findByC_DDMTK(long classNameId,
-		java.lang.String DDMTemplateKey, int start, int end) {
+		String DDMTemplateKey, int start, int end) {
 		return getPersistence()
 				   .findByC_DDMTK(classNameId, DDMTemplateKey, start, end);
 	}
@@ -4491,7 +4485,7 @@ public class JournalArticleUtil {
 	* @return the ordered range of matching journal articles
 	*/
 	public static List<JournalArticle> findByC_DDMTK(long classNameId,
-		java.lang.String DDMTemplateKey, int start, int end,
+		String DDMTemplateKey, int start, int end,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .findByC_DDMTK(classNameId, DDMTemplateKey, start, end,
@@ -4505,12 +4499,12 @@ public class JournalArticleUtil {
 	* @param DDMTemplateKey the d d m template key
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByC_DDMTK_First(long classNameId,
-		java.lang.String DDMTemplateKey,
+		String DDMTemplateKey,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByC_DDMTK_First(classNameId, DDMTemplateKey,
 			orderByComparator);
@@ -4525,7 +4519,7 @@ public class JournalArticleUtil {
 	* @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
 	*/
 	public static JournalArticle fetchByC_DDMTK_First(long classNameId,
-		java.lang.String DDMTemplateKey,
+		String DDMTemplateKey,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .fetchByC_DDMTK_First(classNameId, DDMTemplateKey,
@@ -4539,12 +4533,12 @@ public class JournalArticleUtil {
 	* @param DDMTemplateKey the d d m template key
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByC_DDMTK_Last(long classNameId,
-		java.lang.String DDMTemplateKey,
+		String DDMTemplateKey,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByC_DDMTK_Last(classNameId, DDMTemplateKey,
 			orderByComparator);
@@ -4559,7 +4553,7 @@ public class JournalArticleUtil {
 	* @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
 	*/
 	public static JournalArticle fetchByC_DDMTK_Last(long classNameId,
-		java.lang.String DDMTemplateKey,
+		String DDMTemplateKey,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .fetchByC_DDMTK_Last(classNameId, DDMTemplateKey,
@@ -4574,12 +4568,12 @@ public class JournalArticleUtil {
 	* @param DDMTemplateKey the d d m template key
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] findByC_DDMTK_PrevAndNext(long id,
-		long classNameId, java.lang.String DDMTemplateKey,
+		long classNameId, String DDMTemplateKey,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByC_DDMTK_PrevAndNext(id, classNameId, DDMTemplateKey,
 			orderByComparator);
@@ -4592,7 +4586,7 @@ public class JournalArticleUtil {
 	* @param DDMTemplateKey the d d m template key
 	*/
 	public static void removeByC_DDMTK(long classNameId,
-		java.lang.String DDMTemplateKey) {
+		String DDMTemplateKey) {
 		getPersistence().removeByC_DDMTK(classNameId, DDMTemplateKey);
 	}
 
@@ -4604,7 +4598,7 @@ public class JournalArticleUtil {
 	* @return the number of matching journal articles
 	*/
 	public static int countByC_DDMTK(long classNameId,
-		java.lang.String DDMTemplateKey) {
+		String DDMTemplateKey) {
 		return getPersistence().countByC_DDMTK(classNameId, DDMTemplateKey);
 	}
 
@@ -4667,11 +4661,11 @@ public class JournalArticleUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByLtD_S_First(java.util.Date displayDate,
 		int status, OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByLtD_S_First(displayDate, status, orderByComparator);
 	}
@@ -4698,11 +4692,11 @@ public class JournalArticleUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByLtD_S_Last(java.util.Date displayDate,
 		int status, OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByLtD_S_Last(displayDate, status, orderByComparator);
 	}
@@ -4729,12 +4723,12 @@ public class JournalArticleUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] findByLtD_S_PrevAndNext(long id,
 		java.util.Date displayDate, int status,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByLtD_S_PrevAndNext(id, displayDate, status,
 			orderByComparator);
@@ -4825,12 +4819,12 @@ public class JournalArticleUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByR_I_S_First(long resourcePrimKey,
 		boolean indexable, int status,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByR_I_S_First(resourcePrimKey, indexable, status,
 			orderByComparator);
@@ -4861,12 +4855,12 @@ public class JournalArticleUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByR_I_S_Last(long resourcePrimKey,
 		boolean indexable, int status,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByR_I_S_Last(resourcePrimKey, indexable, status,
 			orderByComparator);
@@ -4898,12 +4892,12 @@ public class JournalArticleUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] findByR_I_S_PrevAndNext(long id,
 		long resourcePrimKey, boolean indexable, int status,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByR_I_S_PrevAndNext(id, resourcePrimKey, indexable,
 			status, orderByComparator);
@@ -5072,11 +5066,11 @@ public class JournalArticleUtil {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByG_U_C_First(long groupId, long userId,
 		long classNameId, OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_U_C_First(groupId, userId, classNameId,
 			orderByComparator);
@@ -5106,11 +5100,11 @@ public class JournalArticleUtil {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByG_U_C_Last(long groupId, long userId,
 		long classNameId, OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_U_C_Last(groupId, userId, classNameId,
 			orderByComparator);
@@ -5141,12 +5135,12 @@ public class JournalArticleUtil {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] findByG_U_C_PrevAndNext(long id,
 		long groupId, long userId, long classNameId,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_U_C_PrevAndNext(id, groupId, userId, classNameId,
 			orderByComparator);
@@ -5217,12 +5211,12 @@ public class JournalArticleUtil {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] filterFindByG_U_C_PrevAndNext(long id,
 		long groupId, long userId, long classNameId,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .filterFindByG_U_C_PrevAndNext(id, groupId, userId,
 			classNameId, orderByComparator);
@@ -5328,12 +5322,12 @@ public class JournalArticleUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByG_F_ST_First(long groupId,
 		long folderId, int status,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_F_ST_First(groupId, folderId, status,
 			orderByComparator);
@@ -5364,11 +5358,11 @@ public class JournalArticleUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByG_F_ST_Last(long groupId, long folderId,
 		int status, OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_F_ST_Last(groupId, folderId, status,
 			orderByComparator);
@@ -5400,12 +5394,12 @@ public class JournalArticleUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] findByG_F_ST_PrevAndNext(long id,
 		long groupId, long folderId, int status,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_F_ST_PrevAndNext(id, groupId, folderId, status,
 			orderByComparator);
@@ -5476,12 +5470,12 @@ public class JournalArticleUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] filterFindByG_F_ST_PrevAndNext(long id,
 		long groupId, long folderId, int status,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .filterFindByG_F_ST_PrevAndNext(id, groupId, folderId,
 			status, orderByComparator);
@@ -5728,12 +5722,12 @@ public class JournalArticleUtil {
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByG_C_C_First(long groupId,
 		long classNameId, long classPK,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_C_C_First(groupId, classNameId, classPK,
 			orderByComparator);
@@ -5764,12 +5758,12 @@ public class JournalArticleUtil {
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByG_C_C_Last(long groupId,
 		long classNameId, long classPK,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_C_C_Last(groupId, classNameId, classPK,
 			orderByComparator);
@@ -5801,12 +5795,12 @@ public class JournalArticleUtil {
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] findByG_C_C_PrevAndNext(long id,
 		long groupId, long classNameId, long classPK,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_C_C_PrevAndNext(id, groupId, classNameId, classPK,
 			orderByComparator);
@@ -5877,12 +5871,12 @@ public class JournalArticleUtil {
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] filterFindByG_C_C_PrevAndNext(long id,
 		long groupId, long classNameId, long classPK,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .filterFindByG_C_C_PrevAndNext(id, groupId, classNameId,
 			classPK, orderByComparator);
@@ -5926,17 +5920,17 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns the journal article where groupId = &#63; and classNameId = &#63; and DDMStructureKey = &#63; or throws a {@link com.liferay.journal.NoSuchArticleException} if it could not be found.
+	* Returns the journal article where groupId = &#63; and classNameId = &#63; and DDMStructureKey = &#63; or throws a {@link NoSuchArticleException} if it could not be found.
 	*
 	* @param groupId the group ID
 	* @param classNameId the class name ID
 	* @param DDMStructureKey the d d m structure key
 	* @return the matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByG_C_DDMSK(long groupId,
-		long classNameId, java.lang.String DDMStructureKey)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		long classNameId, String DDMStructureKey)
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_C_DDMSK(groupId, classNameId, DDMStructureKey);
 	}
@@ -5950,7 +5944,7 @@ public class JournalArticleUtil {
 	* @return the matching journal article, or <code>null</code> if a matching journal article could not be found
 	*/
 	public static JournalArticle fetchByG_C_DDMSK(long groupId,
-		long classNameId, java.lang.String DDMStructureKey) {
+		long classNameId, String DDMStructureKey) {
 		return getPersistence()
 				   .fetchByG_C_DDMSK(groupId, classNameId, DDMStructureKey);
 	}
@@ -5965,7 +5959,7 @@ public class JournalArticleUtil {
 	* @return the matching journal article, or <code>null</code> if a matching journal article could not be found
 	*/
 	public static JournalArticle fetchByG_C_DDMSK(long groupId,
-		long classNameId, java.lang.String DDMStructureKey,
+		long classNameId, String DDMStructureKey,
 		boolean retrieveFromCache) {
 		return getPersistence()
 				   .fetchByG_C_DDMSK(groupId, classNameId, DDMStructureKey,
@@ -5981,8 +5975,8 @@ public class JournalArticleUtil {
 	* @return the journal article that was removed
 	*/
 	public static JournalArticle removeByG_C_DDMSK(long groupId,
-		long classNameId, java.lang.String DDMStructureKey)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		long classNameId, String DDMStructureKey)
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .removeByG_C_DDMSK(groupId, classNameId, DDMStructureKey);
 	}
@@ -5996,7 +5990,7 @@ public class JournalArticleUtil {
 	* @return the number of matching journal articles
 	*/
 	public static int countByG_C_DDMSK(long groupId, long classNameId,
-		java.lang.String DDMStructureKey) {
+		String DDMStructureKey) {
 		return getPersistence()
 				   .countByG_C_DDMSK(groupId, classNameId, DDMStructureKey);
 	}
@@ -6010,7 +6004,7 @@ public class JournalArticleUtil {
 	* @return the matching journal articles
 	*/
 	public static List<JournalArticle> findByG_C_DDMTK(long groupId,
-		long classNameId, java.lang.String DDMTemplateKey) {
+		long classNameId, String DDMTemplateKey) {
 		return getPersistence()
 				   .findByG_C_DDMTK(groupId, classNameId, DDMTemplateKey);
 	}
@@ -6030,7 +6024,7 @@ public class JournalArticleUtil {
 	* @return the range of matching journal articles
 	*/
 	public static List<JournalArticle> findByG_C_DDMTK(long groupId,
-		long classNameId, java.lang.String DDMTemplateKey, int start, int end) {
+		long classNameId, String DDMTemplateKey, int start, int end) {
 		return getPersistence()
 				   .findByG_C_DDMTK(groupId, classNameId, DDMTemplateKey,
 			start, end);
@@ -6052,7 +6046,7 @@ public class JournalArticleUtil {
 	* @return the ordered range of matching journal articles
 	*/
 	public static List<JournalArticle> findByG_C_DDMTK(long groupId,
-		long classNameId, java.lang.String DDMTemplateKey, int start, int end,
+		long classNameId, String DDMTemplateKey, int start, int end,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .findByG_C_DDMTK(groupId, classNameId, DDMTemplateKey,
@@ -6067,12 +6061,12 @@ public class JournalArticleUtil {
 	* @param DDMTemplateKey the d d m template key
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByG_C_DDMTK_First(long groupId,
-		long classNameId, java.lang.String DDMTemplateKey,
+		long classNameId, String DDMTemplateKey,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_C_DDMTK_First(groupId, classNameId, DDMTemplateKey,
 			orderByComparator);
@@ -6088,7 +6082,7 @@ public class JournalArticleUtil {
 	* @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
 	*/
 	public static JournalArticle fetchByG_C_DDMTK_First(long groupId,
-		long classNameId, java.lang.String DDMTemplateKey,
+		long classNameId, String DDMTemplateKey,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .fetchByG_C_DDMTK_First(groupId, classNameId,
@@ -6103,12 +6097,12 @@ public class JournalArticleUtil {
 	* @param DDMTemplateKey the d d m template key
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByG_C_DDMTK_Last(long groupId,
-		long classNameId, java.lang.String DDMTemplateKey,
+		long classNameId, String DDMTemplateKey,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_C_DDMTK_Last(groupId, classNameId, DDMTemplateKey,
 			orderByComparator);
@@ -6124,7 +6118,7 @@ public class JournalArticleUtil {
 	* @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
 	*/
 	public static JournalArticle fetchByG_C_DDMTK_Last(long groupId,
-		long classNameId, java.lang.String DDMTemplateKey,
+		long classNameId, String DDMTemplateKey,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .fetchByG_C_DDMTK_Last(groupId, classNameId, DDMTemplateKey,
@@ -6140,12 +6134,12 @@ public class JournalArticleUtil {
 	* @param DDMTemplateKey the d d m template key
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] findByG_C_DDMTK_PrevAndNext(long id,
-		long groupId, long classNameId, java.lang.String DDMTemplateKey,
+		long groupId, long classNameId, String DDMTemplateKey,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_C_DDMTK_PrevAndNext(id, groupId, classNameId,
 			DDMTemplateKey, orderByComparator);
@@ -6160,7 +6154,7 @@ public class JournalArticleUtil {
 	* @return the matching journal articles that the user has permission to view
 	*/
 	public static List<JournalArticle> filterFindByG_C_DDMTK(long groupId,
-		long classNameId, java.lang.String DDMTemplateKey) {
+		long classNameId, String DDMTemplateKey) {
 		return getPersistence()
 				   .filterFindByG_C_DDMTK(groupId, classNameId, DDMTemplateKey);
 	}
@@ -6180,7 +6174,7 @@ public class JournalArticleUtil {
 	* @return the range of matching journal articles that the user has permission to view
 	*/
 	public static List<JournalArticle> filterFindByG_C_DDMTK(long groupId,
-		long classNameId, java.lang.String DDMTemplateKey, int start, int end) {
+		long classNameId, String DDMTemplateKey, int start, int end) {
 		return getPersistence()
 				   .filterFindByG_C_DDMTK(groupId, classNameId, DDMTemplateKey,
 			start, end);
@@ -6202,7 +6196,7 @@ public class JournalArticleUtil {
 	* @return the ordered range of matching journal articles that the user has permission to view
 	*/
 	public static List<JournalArticle> filterFindByG_C_DDMTK(long groupId,
-		long classNameId, java.lang.String DDMTemplateKey, int start, int end,
+		long classNameId, String DDMTemplateKey, int start, int end,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .filterFindByG_C_DDMTK(groupId, classNameId, DDMTemplateKey,
@@ -6218,12 +6212,12 @@ public class JournalArticleUtil {
 	* @param DDMTemplateKey the d d m template key
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] filterFindByG_C_DDMTK_PrevAndNext(long id,
-		long groupId, long classNameId, java.lang.String DDMTemplateKey,
+		long groupId, long classNameId, String DDMTemplateKey,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .filterFindByG_C_DDMTK_PrevAndNext(id, groupId, classNameId,
 			DDMTemplateKey, orderByComparator);
@@ -6237,7 +6231,7 @@ public class JournalArticleUtil {
 	* @param DDMTemplateKey the d d m template key
 	*/
 	public static void removeByG_C_DDMTK(long groupId, long classNameId,
-		java.lang.String DDMTemplateKey) {
+		String DDMTemplateKey) {
 		getPersistence().removeByG_C_DDMTK(groupId, classNameId, DDMTemplateKey);
 	}
 
@@ -6250,7 +6244,7 @@ public class JournalArticleUtil {
 	* @return the number of matching journal articles
 	*/
 	public static int countByG_C_DDMTK(long groupId, long classNameId,
-		java.lang.String DDMTemplateKey) {
+		String DDMTemplateKey) {
 		return getPersistence()
 				   .countByG_C_DDMTK(groupId, classNameId, DDMTemplateKey);
 	}
@@ -6264,7 +6258,7 @@ public class JournalArticleUtil {
 	* @return the number of matching journal articles that the user has permission to view
 	*/
 	public static int filterCountByG_C_DDMTK(long groupId, long classNameId,
-		java.lang.String DDMTemplateKey) {
+		String DDMTemplateKey) {
 		return getPersistence()
 				   .filterCountByG_C_DDMTK(groupId, classNameId, DDMTemplateKey);
 	}
@@ -6278,7 +6272,7 @@ public class JournalArticleUtil {
 	* @return the matching journal articles
 	*/
 	public static List<JournalArticle> findByG_C_L(long groupId,
-		long classNameId, java.lang.String layoutUuid) {
+		long classNameId, String layoutUuid) {
 		return getPersistence().findByG_C_L(groupId, classNameId, layoutUuid);
 	}
 
@@ -6297,7 +6291,7 @@ public class JournalArticleUtil {
 	* @return the range of matching journal articles
 	*/
 	public static List<JournalArticle> findByG_C_L(long groupId,
-		long classNameId, java.lang.String layoutUuid, int start, int end) {
+		long classNameId, String layoutUuid, int start, int end) {
 		return getPersistence()
 				   .findByG_C_L(groupId, classNameId, layoutUuid, start, end);
 	}
@@ -6318,7 +6312,7 @@ public class JournalArticleUtil {
 	* @return the ordered range of matching journal articles
 	*/
 	public static List<JournalArticle> findByG_C_L(long groupId,
-		long classNameId, java.lang.String layoutUuid, int start, int end,
+		long classNameId, String layoutUuid, int start, int end,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .findByG_C_L(groupId, classNameId, layoutUuid, start, end,
@@ -6333,12 +6327,12 @@ public class JournalArticleUtil {
 	* @param layoutUuid the layout uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByG_C_L_First(long groupId,
-		long classNameId, java.lang.String layoutUuid,
+		long classNameId, String layoutUuid,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_C_L_First(groupId, classNameId, layoutUuid,
 			orderByComparator);
@@ -6354,7 +6348,7 @@ public class JournalArticleUtil {
 	* @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
 	*/
 	public static JournalArticle fetchByG_C_L_First(long groupId,
-		long classNameId, java.lang.String layoutUuid,
+		long classNameId, String layoutUuid,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .fetchByG_C_L_First(groupId, classNameId, layoutUuid,
@@ -6369,12 +6363,12 @@ public class JournalArticleUtil {
 	* @param layoutUuid the layout uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByG_C_L_Last(long groupId,
-		long classNameId, java.lang.String layoutUuid,
+		long classNameId, String layoutUuid,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_C_L_Last(groupId, classNameId, layoutUuid,
 			orderByComparator);
@@ -6390,7 +6384,7 @@ public class JournalArticleUtil {
 	* @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
 	*/
 	public static JournalArticle fetchByG_C_L_Last(long groupId,
-		long classNameId, java.lang.String layoutUuid,
+		long classNameId, String layoutUuid,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .fetchByG_C_L_Last(groupId, classNameId, layoutUuid,
@@ -6406,12 +6400,12 @@ public class JournalArticleUtil {
 	* @param layoutUuid the layout uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] findByG_C_L_PrevAndNext(long id,
-		long groupId, long classNameId, java.lang.String layoutUuid,
+		long groupId, long classNameId, String layoutUuid,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_C_L_PrevAndNext(id, groupId, classNameId,
 			layoutUuid, orderByComparator);
@@ -6426,7 +6420,7 @@ public class JournalArticleUtil {
 	* @return the matching journal articles that the user has permission to view
 	*/
 	public static List<JournalArticle> filterFindByG_C_L(long groupId,
-		long classNameId, java.lang.String layoutUuid) {
+		long classNameId, String layoutUuid) {
 		return getPersistence()
 				   .filterFindByG_C_L(groupId, classNameId, layoutUuid);
 	}
@@ -6446,7 +6440,7 @@ public class JournalArticleUtil {
 	* @return the range of matching journal articles that the user has permission to view
 	*/
 	public static List<JournalArticle> filterFindByG_C_L(long groupId,
-		long classNameId, java.lang.String layoutUuid, int start, int end) {
+		long classNameId, String layoutUuid, int start, int end) {
 		return getPersistence()
 				   .filterFindByG_C_L(groupId, classNameId, layoutUuid, start,
 			end);
@@ -6468,7 +6462,7 @@ public class JournalArticleUtil {
 	* @return the ordered range of matching journal articles that the user has permission to view
 	*/
 	public static List<JournalArticle> filterFindByG_C_L(long groupId,
-		long classNameId, java.lang.String layoutUuid, int start, int end,
+		long classNameId, String layoutUuid, int start, int end,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .filterFindByG_C_L(groupId, classNameId, layoutUuid, start,
@@ -6484,12 +6478,12 @@ public class JournalArticleUtil {
 	* @param layoutUuid the layout uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] filterFindByG_C_L_PrevAndNext(long id,
-		long groupId, long classNameId, java.lang.String layoutUuid,
+		long groupId, long classNameId, String layoutUuid,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .filterFindByG_C_L_PrevAndNext(id, groupId, classNameId,
 			layoutUuid, orderByComparator);
@@ -6503,7 +6497,7 @@ public class JournalArticleUtil {
 	* @param layoutUuid the layout uuid
 	*/
 	public static void removeByG_C_L(long groupId, long classNameId,
-		java.lang.String layoutUuid) {
+		String layoutUuid) {
 		getPersistence().removeByG_C_L(groupId, classNameId, layoutUuid);
 	}
 
@@ -6516,7 +6510,7 @@ public class JournalArticleUtil {
 	* @return the number of matching journal articles
 	*/
 	public static int countByG_C_L(long groupId, long classNameId,
-		java.lang.String layoutUuid) {
+		String layoutUuid) {
 		return getPersistence().countByG_C_L(groupId, classNameId, layoutUuid);
 	}
 
@@ -6529,23 +6523,23 @@ public class JournalArticleUtil {
 	* @return the number of matching journal articles that the user has permission to view
 	*/
 	public static int filterCountByG_C_L(long groupId, long classNameId,
-		java.lang.String layoutUuid) {
+		String layoutUuid) {
 		return getPersistence()
 				   .filterCountByG_C_L(groupId, classNameId, layoutUuid);
 	}
 
 	/**
-	* Returns the journal article where groupId = &#63; and articleId = &#63; and version = &#63; or throws a {@link com.liferay.journal.NoSuchArticleException} if it could not be found.
+	* Returns the journal article where groupId = &#63; and articleId = &#63; and version = &#63; or throws a {@link NoSuchArticleException} if it could not be found.
 	*
 	* @param groupId the group ID
 	* @param articleId the article ID
 	* @param version the version
 	* @return the matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByG_A_V(long groupId,
-		java.lang.String articleId, double version)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		String articleId, double version)
+		throws NoSuchArticleException {
 		return getPersistence().findByG_A_V(groupId, articleId, version);
 	}
 
@@ -6558,7 +6552,7 @@ public class JournalArticleUtil {
 	* @return the matching journal article, or <code>null</code> if a matching journal article could not be found
 	*/
 	public static JournalArticle fetchByG_A_V(long groupId,
-		java.lang.String articleId, double version) {
+		String articleId, double version) {
 		return getPersistence().fetchByG_A_V(groupId, articleId, version);
 	}
 
@@ -6572,7 +6566,7 @@ public class JournalArticleUtil {
 	* @return the matching journal article, or <code>null</code> if a matching journal article could not be found
 	*/
 	public static JournalArticle fetchByG_A_V(long groupId,
-		java.lang.String articleId, double version, boolean retrieveFromCache) {
+		String articleId, double version, boolean retrieveFromCache) {
 		return getPersistence()
 				   .fetchByG_A_V(groupId, articleId, version, retrieveFromCache);
 	}
@@ -6586,8 +6580,8 @@ public class JournalArticleUtil {
 	* @return the journal article that was removed
 	*/
 	public static JournalArticle removeByG_A_V(long groupId,
-		java.lang.String articleId, double version)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		String articleId, double version)
+		throws NoSuchArticleException {
 		return getPersistence().removeByG_A_V(groupId, articleId, version);
 	}
 
@@ -6599,7 +6593,7 @@ public class JournalArticleUtil {
 	* @param version the version
 	* @return the number of matching journal articles
 	*/
-	public static int countByG_A_V(long groupId, java.lang.String articleId,
+	public static int countByG_A_V(long groupId, String articleId,
 		double version) {
 		return getPersistence().countByG_A_V(groupId, articleId, version);
 	}
@@ -6613,7 +6607,7 @@ public class JournalArticleUtil {
 	* @return the matching journal articles
 	*/
 	public static List<JournalArticle> findByG_A_ST(long groupId,
-		java.lang.String articleId, int status) {
+		String articleId, int status) {
 		return getPersistence().findByG_A_ST(groupId, articleId, status);
 	}
 
@@ -6632,7 +6626,7 @@ public class JournalArticleUtil {
 	* @return the range of matching journal articles
 	*/
 	public static List<JournalArticle> findByG_A_ST(long groupId,
-		java.lang.String articleId, int status, int start, int end) {
+		String articleId, int status, int start, int end) {
 		return getPersistence()
 				   .findByG_A_ST(groupId, articleId, status, start, end);
 	}
@@ -6653,7 +6647,7 @@ public class JournalArticleUtil {
 	* @return the ordered range of matching journal articles
 	*/
 	public static List<JournalArticle> findByG_A_ST(long groupId,
-		java.lang.String articleId, int status, int start, int end,
+		String articleId, int status, int start, int end,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .findByG_A_ST(groupId, articleId, status, start, end,
@@ -6668,12 +6662,12 @@ public class JournalArticleUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByG_A_ST_First(long groupId,
-		java.lang.String articleId, int status,
+		String articleId, int status,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_A_ST_First(groupId, articleId, status,
 			orderByComparator);
@@ -6689,7 +6683,7 @@ public class JournalArticleUtil {
 	* @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
 	*/
 	public static JournalArticle fetchByG_A_ST_First(long groupId,
-		java.lang.String articleId, int status,
+		String articleId, int status,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .fetchByG_A_ST_First(groupId, articleId, status,
@@ -6704,12 +6698,12 @@ public class JournalArticleUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByG_A_ST_Last(long groupId,
-		java.lang.String articleId, int status,
+		String articleId, int status,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_A_ST_Last(groupId, articleId, status,
 			orderByComparator);
@@ -6725,7 +6719,7 @@ public class JournalArticleUtil {
 	* @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
 	*/
 	public static JournalArticle fetchByG_A_ST_Last(long groupId,
-		java.lang.String articleId, int status,
+		String articleId, int status,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .fetchByG_A_ST_Last(groupId, articleId, status,
@@ -6741,12 +6735,12 @@ public class JournalArticleUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] findByG_A_ST_PrevAndNext(long id,
-		long groupId, java.lang.String articleId, int status,
+		long groupId, String articleId, int status,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_A_ST_PrevAndNext(id, groupId, articleId, status,
 			orderByComparator);
@@ -6761,7 +6755,7 @@ public class JournalArticleUtil {
 	* @return the matching journal articles that the user has permission to view
 	*/
 	public static List<JournalArticle> filterFindByG_A_ST(long groupId,
-		java.lang.String articleId, int status) {
+		String articleId, int status) {
 		return getPersistence().filterFindByG_A_ST(groupId, articleId, status);
 	}
 
@@ -6780,7 +6774,7 @@ public class JournalArticleUtil {
 	* @return the range of matching journal articles that the user has permission to view
 	*/
 	public static List<JournalArticle> filterFindByG_A_ST(long groupId,
-		java.lang.String articleId, int status, int start, int end) {
+		String articleId, int status, int start, int end) {
 		return getPersistence()
 				   .filterFindByG_A_ST(groupId, articleId, status, start, end);
 	}
@@ -6801,7 +6795,7 @@ public class JournalArticleUtil {
 	* @return the ordered range of matching journal articles that the user has permission to view
 	*/
 	public static List<JournalArticle> filterFindByG_A_ST(long groupId,
-		java.lang.String articleId, int status, int start, int end,
+		String articleId, int status, int start, int end,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .filterFindByG_A_ST(groupId, articleId, status, start, end,
@@ -6817,12 +6811,12 @@ public class JournalArticleUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] filterFindByG_A_ST_PrevAndNext(long id,
-		long groupId, java.lang.String articleId, int status,
+		long groupId, String articleId, int status,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .filterFindByG_A_ST_PrevAndNext(id, groupId, articleId,
 			status, orderByComparator);
@@ -6837,7 +6831,7 @@ public class JournalArticleUtil {
 	* @return the matching journal articles that the user has permission to view
 	*/
 	public static List<JournalArticle> filterFindByG_A_ST(long groupId,
-		java.lang.String articleId, int[] statuses) {
+		String articleId, int[] statuses) {
 		return getPersistence().filterFindByG_A_ST(groupId, articleId, statuses);
 	}
 
@@ -6856,7 +6850,7 @@ public class JournalArticleUtil {
 	* @return the range of matching journal articles that the user has permission to view
 	*/
 	public static List<JournalArticle> filterFindByG_A_ST(long groupId,
-		java.lang.String articleId, int[] statuses, int start, int end) {
+		String articleId, int[] statuses, int start, int end) {
 		return getPersistence()
 				   .filterFindByG_A_ST(groupId, articleId, statuses, start, end);
 	}
@@ -6877,7 +6871,7 @@ public class JournalArticleUtil {
 	* @return the ordered range of matching journal articles that the user has permission to view
 	*/
 	public static List<JournalArticle> filterFindByG_A_ST(long groupId,
-		java.lang.String articleId, int[] statuses, int start, int end,
+		String articleId, int[] statuses, int start, int end,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .filterFindByG_A_ST(groupId, articleId, statuses, start,
@@ -6897,7 +6891,7 @@ public class JournalArticleUtil {
 	* @return the matching journal articles
 	*/
 	public static List<JournalArticle> findByG_A_ST(long groupId,
-		java.lang.String articleId, int[] statuses) {
+		String articleId, int[] statuses) {
 		return getPersistence().findByG_A_ST(groupId, articleId, statuses);
 	}
 
@@ -6916,7 +6910,7 @@ public class JournalArticleUtil {
 	* @return the range of matching journal articles
 	*/
 	public static List<JournalArticle> findByG_A_ST(long groupId,
-		java.lang.String articleId, int[] statuses, int start, int end) {
+		String articleId, int[] statuses, int start, int end) {
 		return getPersistence()
 				   .findByG_A_ST(groupId, articleId, statuses, start, end);
 	}
@@ -6937,7 +6931,7 @@ public class JournalArticleUtil {
 	* @return the ordered range of matching journal articles
 	*/
 	public static List<JournalArticle> findByG_A_ST(long groupId,
-		java.lang.String articleId, int[] statuses, int start, int end,
+		String articleId, int[] statuses, int start, int end,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .findByG_A_ST(groupId, articleId, statuses, start, end,
@@ -6951,7 +6945,7 @@ public class JournalArticleUtil {
 	* @param articleId the article ID
 	* @param status the status
 	*/
-	public static void removeByG_A_ST(long groupId, java.lang.String articleId,
+	public static void removeByG_A_ST(long groupId, String articleId,
 		int status) {
 		getPersistence().removeByG_A_ST(groupId, articleId, status);
 	}
@@ -6964,7 +6958,7 @@ public class JournalArticleUtil {
 	* @param status the status
 	* @return the number of matching journal articles
 	*/
-	public static int countByG_A_ST(long groupId, java.lang.String articleId,
+	public static int countByG_A_ST(long groupId, String articleId,
 		int status) {
 		return getPersistence().countByG_A_ST(groupId, articleId, status);
 	}
@@ -6977,7 +6971,7 @@ public class JournalArticleUtil {
 	* @param statuses the statuses
 	* @return the number of matching journal articles
 	*/
-	public static int countByG_A_ST(long groupId, java.lang.String articleId,
+	public static int countByG_A_ST(long groupId, String articleId,
 		int[] statuses) {
 		return getPersistence().countByG_A_ST(groupId, articleId, statuses);
 	}
@@ -6991,7 +6985,7 @@ public class JournalArticleUtil {
 	* @return the number of matching journal articles that the user has permission to view
 	*/
 	public static int filterCountByG_A_ST(long groupId,
-		java.lang.String articleId, int status) {
+		String articleId, int status) {
 		return getPersistence().filterCountByG_A_ST(groupId, articleId, status);
 	}
 
@@ -7004,7 +6998,7 @@ public class JournalArticleUtil {
 	* @return the number of matching journal articles that the user has permission to view
 	*/
 	public static int filterCountByG_A_ST(long groupId,
-		java.lang.String articleId, int[] statuses) {
+		String articleId, int[] statuses) {
 		return getPersistence().filterCountByG_A_ST(groupId, articleId, statuses);
 	}
 
@@ -7017,7 +7011,7 @@ public class JournalArticleUtil {
 	* @return the matching journal articles
 	*/
 	public static List<JournalArticle> findByG_A_NotST(long groupId,
-		java.lang.String articleId, int status) {
+		String articleId, int status) {
 		return getPersistence().findByG_A_NotST(groupId, articleId, status);
 	}
 
@@ -7036,7 +7030,7 @@ public class JournalArticleUtil {
 	* @return the range of matching journal articles
 	*/
 	public static List<JournalArticle> findByG_A_NotST(long groupId,
-		java.lang.String articleId, int status, int start, int end) {
+		String articleId, int status, int start, int end) {
 		return getPersistence()
 				   .findByG_A_NotST(groupId, articleId, status, start, end);
 	}
@@ -7057,7 +7051,7 @@ public class JournalArticleUtil {
 	* @return the ordered range of matching journal articles
 	*/
 	public static List<JournalArticle> findByG_A_NotST(long groupId,
-		java.lang.String articleId, int status, int start, int end,
+		String articleId, int status, int start, int end,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .findByG_A_NotST(groupId, articleId, status, start, end,
@@ -7072,12 +7066,12 @@ public class JournalArticleUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByG_A_NotST_First(long groupId,
-		java.lang.String articleId, int status,
+		String articleId, int status,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_A_NotST_First(groupId, articleId, status,
 			orderByComparator);
@@ -7093,7 +7087,7 @@ public class JournalArticleUtil {
 	* @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
 	*/
 	public static JournalArticle fetchByG_A_NotST_First(long groupId,
-		java.lang.String articleId, int status,
+		String articleId, int status,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .fetchByG_A_NotST_First(groupId, articleId, status,
@@ -7108,12 +7102,12 @@ public class JournalArticleUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByG_A_NotST_Last(long groupId,
-		java.lang.String articleId, int status,
+		String articleId, int status,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_A_NotST_Last(groupId, articleId, status,
 			orderByComparator);
@@ -7129,7 +7123,7 @@ public class JournalArticleUtil {
 	* @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
 	*/
 	public static JournalArticle fetchByG_A_NotST_Last(long groupId,
-		java.lang.String articleId, int status,
+		String articleId, int status,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .fetchByG_A_NotST_Last(groupId, articleId, status,
@@ -7145,12 +7139,12 @@ public class JournalArticleUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] findByG_A_NotST_PrevAndNext(long id,
-		long groupId, java.lang.String articleId, int status,
+		long groupId, String articleId, int status,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_A_NotST_PrevAndNext(id, groupId, articleId, status,
 			orderByComparator);
@@ -7165,7 +7159,7 @@ public class JournalArticleUtil {
 	* @return the matching journal articles that the user has permission to view
 	*/
 	public static List<JournalArticle> filterFindByG_A_NotST(long groupId,
-		java.lang.String articleId, int status) {
+		String articleId, int status) {
 		return getPersistence().filterFindByG_A_NotST(groupId, articleId, status);
 	}
 
@@ -7184,7 +7178,7 @@ public class JournalArticleUtil {
 	* @return the range of matching journal articles that the user has permission to view
 	*/
 	public static List<JournalArticle> filterFindByG_A_NotST(long groupId,
-		java.lang.String articleId, int status, int start, int end) {
+		String articleId, int status, int start, int end) {
 		return getPersistence()
 				   .filterFindByG_A_NotST(groupId, articleId, status, start, end);
 	}
@@ -7205,7 +7199,7 @@ public class JournalArticleUtil {
 	* @return the ordered range of matching journal articles that the user has permission to view
 	*/
 	public static List<JournalArticle> filterFindByG_A_NotST(long groupId,
-		java.lang.String articleId, int status, int start, int end,
+		String articleId, int status, int start, int end,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .filterFindByG_A_NotST(groupId, articleId, status, start,
@@ -7221,12 +7215,12 @@ public class JournalArticleUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] filterFindByG_A_NotST_PrevAndNext(long id,
-		long groupId, java.lang.String articleId, int status,
+		long groupId, String articleId, int status,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .filterFindByG_A_NotST_PrevAndNext(id, groupId, articleId,
 			status, orderByComparator);
@@ -7240,7 +7234,7 @@ public class JournalArticleUtil {
 	* @param status the status
 	*/
 	public static void removeByG_A_NotST(long groupId,
-		java.lang.String articleId, int status) {
+		String articleId, int status) {
 		getPersistence().removeByG_A_NotST(groupId, articleId, status);
 	}
 
@@ -7253,7 +7247,7 @@ public class JournalArticleUtil {
 	* @return the number of matching journal articles
 	*/
 	public static int countByG_A_NotST(long groupId,
-		java.lang.String articleId, int status) {
+		String articleId, int status) {
 		return getPersistence().countByG_A_NotST(groupId, articleId, status);
 	}
 
@@ -7266,7 +7260,7 @@ public class JournalArticleUtil {
 	* @return the number of matching journal articles that the user has permission to view
 	*/
 	public static int filterCountByG_A_NotST(long groupId,
-		java.lang.String articleId, int status) {
+		String articleId, int status) {
 		return getPersistence()
 				   .filterCountByG_A_NotST(groupId, articleId, status);
 	}
@@ -7280,7 +7274,7 @@ public class JournalArticleUtil {
 	* @return the matching journal articles
 	*/
 	public static List<JournalArticle> findByG_UT_ST(long groupId,
-		java.lang.String urlTitle, int status) {
+		String urlTitle, int status) {
 		return getPersistence().findByG_UT_ST(groupId, urlTitle, status);
 	}
 
@@ -7299,7 +7293,7 @@ public class JournalArticleUtil {
 	* @return the range of matching journal articles
 	*/
 	public static List<JournalArticle> findByG_UT_ST(long groupId,
-		java.lang.String urlTitle, int status, int start, int end) {
+		String urlTitle, int status, int start, int end) {
 		return getPersistence()
 				   .findByG_UT_ST(groupId, urlTitle, status, start, end);
 	}
@@ -7320,7 +7314,7 @@ public class JournalArticleUtil {
 	* @return the ordered range of matching journal articles
 	*/
 	public static List<JournalArticle> findByG_UT_ST(long groupId,
-		java.lang.String urlTitle, int status, int start, int end,
+		String urlTitle, int status, int start, int end,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .findByG_UT_ST(groupId, urlTitle, status, start, end,
@@ -7335,12 +7329,12 @@ public class JournalArticleUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByG_UT_ST_First(long groupId,
-		java.lang.String urlTitle, int status,
+		String urlTitle, int status,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_UT_ST_First(groupId, urlTitle, status,
 			orderByComparator);
@@ -7356,7 +7350,7 @@ public class JournalArticleUtil {
 	* @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
 	*/
 	public static JournalArticle fetchByG_UT_ST_First(long groupId,
-		java.lang.String urlTitle, int status,
+		String urlTitle, int status,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .fetchByG_UT_ST_First(groupId, urlTitle, status,
@@ -7371,12 +7365,12 @@ public class JournalArticleUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByG_UT_ST_Last(long groupId,
-		java.lang.String urlTitle, int status,
+		String urlTitle, int status,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_UT_ST_Last(groupId, urlTitle, status,
 			orderByComparator);
@@ -7392,7 +7386,7 @@ public class JournalArticleUtil {
 	* @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
 	*/
 	public static JournalArticle fetchByG_UT_ST_Last(long groupId,
-		java.lang.String urlTitle, int status,
+		String urlTitle, int status,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .fetchByG_UT_ST_Last(groupId, urlTitle, status,
@@ -7408,12 +7402,12 @@ public class JournalArticleUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] findByG_UT_ST_PrevAndNext(long id,
-		long groupId, java.lang.String urlTitle, int status,
+		long groupId, String urlTitle, int status,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByG_UT_ST_PrevAndNext(id, groupId, urlTitle, status,
 			orderByComparator);
@@ -7428,7 +7422,7 @@ public class JournalArticleUtil {
 	* @return the matching journal articles that the user has permission to view
 	*/
 	public static List<JournalArticle> filterFindByG_UT_ST(long groupId,
-		java.lang.String urlTitle, int status) {
+		String urlTitle, int status) {
 		return getPersistence().filterFindByG_UT_ST(groupId, urlTitle, status);
 	}
 
@@ -7447,7 +7441,7 @@ public class JournalArticleUtil {
 	* @return the range of matching journal articles that the user has permission to view
 	*/
 	public static List<JournalArticle> filterFindByG_UT_ST(long groupId,
-		java.lang.String urlTitle, int status, int start, int end) {
+		String urlTitle, int status, int start, int end) {
 		return getPersistence()
 				   .filterFindByG_UT_ST(groupId, urlTitle, status, start, end);
 	}
@@ -7468,7 +7462,7 @@ public class JournalArticleUtil {
 	* @return the ordered range of matching journal articles that the user has permission to view
 	*/
 	public static List<JournalArticle> filterFindByG_UT_ST(long groupId,
-		java.lang.String urlTitle, int status, int start, int end,
+		String urlTitle, int status, int start, int end,
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .filterFindByG_UT_ST(groupId, urlTitle, status, start, end,
@@ -7484,12 +7478,12 @@ public class JournalArticleUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] filterFindByG_UT_ST_PrevAndNext(long id,
-		long groupId, java.lang.String urlTitle, int status,
+		long groupId, String urlTitle, int status,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .filterFindByG_UT_ST_PrevAndNext(id, groupId, urlTitle,
 			status, orderByComparator);
@@ -7502,7 +7496,7 @@ public class JournalArticleUtil {
 	* @param urlTitle the url title
 	* @param status the status
 	*/
-	public static void removeByG_UT_ST(long groupId, java.lang.String urlTitle,
+	public static void removeByG_UT_ST(long groupId, String urlTitle,
 		int status) {
 		getPersistence().removeByG_UT_ST(groupId, urlTitle, status);
 	}
@@ -7515,7 +7509,7 @@ public class JournalArticleUtil {
 	* @param status the status
 	* @return the number of matching journal articles
 	*/
-	public static int countByG_UT_ST(long groupId, java.lang.String urlTitle,
+	public static int countByG_UT_ST(long groupId, String urlTitle,
 		int status) {
 		return getPersistence().countByG_UT_ST(groupId, urlTitle, status);
 	}
@@ -7529,7 +7523,7 @@ public class JournalArticleUtil {
 	* @return the number of matching journal articles that the user has permission to view
 	*/
 	public static int filterCountByG_UT_ST(long groupId,
-		java.lang.String urlTitle, int status) {
+		String urlTitle, int status) {
 		return getPersistence().filterCountByG_UT_ST(groupId, urlTitle, status);
 	}
 
@@ -7597,12 +7591,12 @@ public class JournalArticleUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByC_V_ST_First(long companyId,
 		double version, int status,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByC_V_ST_First(companyId, version, status,
 			orderByComparator);
@@ -7633,12 +7627,12 @@ public class JournalArticleUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a matching journal article could not be found
+	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public static JournalArticle findByC_V_ST_Last(long companyId,
 		double version, int status,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByC_V_ST_Last(companyId, version, status,
 			orderByComparator);
@@ -7670,12 +7664,12 @@ public class JournalArticleUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle[] findByC_V_ST_PrevAndNext(long id,
 		long companyId, double version, int status,
 		OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence()
 				   .findByC_V_ST_PrevAndNext(id, companyId, version, status,
 			orderByComparator);
@@ -7737,10 +7731,10 @@ public class JournalArticleUtil {
 	*
 	* @param id the primary key of the journal article
 	* @return the journal article that was removed
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle remove(long id)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence().remove(id);
 	}
 
@@ -7749,14 +7743,14 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns the journal article with the primary key or throws a {@link com.liferay.journal.NoSuchArticleException} if it could not be found.
+	* Returns the journal article with the primary key or throws a {@link NoSuchArticleException} if it could not be found.
 	*
 	* @param id the primary key of the journal article
 	* @return the journal article
-	* @throws com.liferay.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public static JournalArticle findByPrimaryKey(long id)
-		throws com.liferay.journal.exception.NoSuchArticleException {
+		throws NoSuchArticleException {
 		return getPersistence().findByPrimaryKey(id);
 	}
 
@@ -7833,7 +7827,14 @@ public class JournalArticleUtil {
 	}
 
 	public static JournalArticlePersistence getPersistence() {
-		return _serviceTracker.getService();
+		if (_persistence == null) {
+			_persistence = (JournalArticlePersistence)PortalBeanLocatorUtil.locate(JournalArticlePersistence.class.getName());
+
+			ReferenceRegistry.registerReference(JournalArticleUtil.class,
+				"_persistence");
+		}
+
+		return _persistence;
 	}
 
 	/**
@@ -7843,14 +7844,5 @@ public class JournalArticleUtil {
 	public void setPersistence(JournalArticlePersistence persistence) {
 	}
 
-	private static ServiceTracker<JournalArticlePersistence, JournalArticlePersistence> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(JournalArticleUtil.class);
-
-		_serviceTracker = new ServiceTracker<JournalArticlePersistence, JournalArticlePersistence>(bundle.getBundleContext(),
-				JournalArticlePersistence.class, null);
-
-		_serviceTracker.open();
-	}
+	private static JournalArticlePersistence _persistence;
 }

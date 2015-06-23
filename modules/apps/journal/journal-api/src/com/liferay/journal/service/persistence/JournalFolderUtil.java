@@ -15,17 +15,13 @@
 package com.liferay.journal.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
-
-import com.liferay.journal.model.JournalFolder;
-
+import com.liferay.journal.exception.NoSuchFolderException;
+import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ReferenceRegistry;
 import com.liferay.portal.service.ServiceContext;
-
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.journal.model.JournalFolder;
 
 import java.util.List;
 
@@ -118,7 +114,7 @@ public class JournalFolderUtil {
 	* @param uuid the uuid
 	* @return the matching journal folders
 	*/
-	public static List<JournalFolder> findByUuid(java.lang.String uuid) {
+	public static List<JournalFolder> findByUuid(String uuid) {
 		return getPersistence().findByUuid(uuid);
 	}
 
@@ -134,7 +130,7 @@ public class JournalFolderUtil {
 	* @param end the upper bound of the range of journal folders (not inclusive)
 	* @return the range of matching journal folders
 	*/
-	public static List<JournalFolder> findByUuid(java.lang.String uuid,
+	public static List<JournalFolder> findByUuid(String uuid,
 		int start, int end) {
 		return getPersistence().findByUuid(uuid, start, end);
 	}
@@ -152,7 +148,7 @@ public class JournalFolderUtil {
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of matching journal folders
 	*/
-	public static List<JournalFolder> findByUuid(java.lang.String uuid,
+	public static List<JournalFolder> findByUuid(String uuid,
 		int start, int end, OrderByComparator<JournalFolder> orderByComparator) {
 		return getPersistence().findByUuid(uuid, start, end, orderByComparator);
 	}
@@ -163,11 +159,11 @@ public class JournalFolderUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal folder
-	* @throws com.liferay.journal.NoSuchFolderException if a matching journal folder could not be found
+	* @throws NoSuchFolderException if a matching journal folder could not be found
 	*/
-	public static JournalFolder findByUuid_First(java.lang.String uuid,
+	public static JournalFolder findByUuid_First(String uuid,
 		OrderByComparator<JournalFolder> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchFolderException {
+		throws NoSuchFolderException {
 		return getPersistence().findByUuid_First(uuid, orderByComparator);
 	}
 
@@ -178,7 +174,7 @@ public class JournalFolderUtil {
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal folder, or <code>null</code> if a matching journal folder could not be found
 	*/
-	public static JournalFolder fetchByUuid_First(java.lang.String uuid,
+	public static JournalFolder fetchByUuid_First(String uuid,
 		OrderByComparator<JournalFolder> orderByComparator) {
 		return getPersistence().fetchByUuid_First(uuid, orderByComparator);
 	}
@@ -189,11 +185,11 @@ public class JournalFolderUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal folder
-	* @throws com.liferay.journal.NoSuchFolderException if a matching journal folder could not be found
+	* @throws NoSuchFolderException if a matching journal folder could not be found
 	*/
-	public static JournalFolder findByUuid_Last(java.lang.String uuid,
+	public static JournalFolder findByUuid_Last(String uuid,
 		OrderByComparator<JournalFolder> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchFolderException {
+		throws NoSuchFolderException {
 		return getPersistence().findByUuid_Last(uuid, orderByComparator);
 	}
 
@@ -204,7 +200,7 @@ public class JournalFolderUtil {
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal folder, or <code>null</code> if a matching journal folder could not be found
 	*/
-	public static JournalFolder fetchByUuid_Last(java.lang.String uuid,
+	public static JournalFolder fetchByUuid_Last(String uuid,
 		OrderByComparator<JournalFolder> orderByComparator) {
 		return getPersistence().fetchByUuid_Last(uuid, orderByComparator);
 	}
@@ -216,12 +212,12 @@ public class JournalFolderUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal folder
-	* @throws com.liferay.journal.NoSuchFolderException if a journal folder with the primary key could not be found
+	* @throws NoSuchFolderException if a journal folder with the primary key could not be found
 	*/
 	public static JournalFolder[] findByUuid_PrevAndNext(long folderId,
-		java.lang.String uuid,
+		String uuid,
 		OrderByComparator<JournalFolder> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchFolderException {
+		throws NoSuchFolderException {
 		return getPersistence()
 				   .findByUuid_PrevAndNext(folderId, uuid, orderByComparator);
 	}
@@ -231,7 +227,7 @@ public class JournalFolderUtil {
 	*
 	* @param uuid the uuid
 	*/
-	public static void removeByUuid(java.lang.String uuid) {
+	public static void removeByUuid(String uuid) {
 		getPersistence().removeByUuid(uuid);
 	}
 
@@ -241,20 +237,20 @@ public class JournalFolderUtil {
 	* @param uuid the uuid
 	* @return the number of matching journal folders
 	*/
-	public static int countByUuid(java.lang.String uuid) {
+	public static int countByUuid(String uuid) {
 		return getPersistence().countByUuid(uuid);
 	}
 
 	/**
-	* Returns the journal folder where uuid = &#63; and groupId = &#63; or throws a {@link com.liferay.journal.NoSuchFolderException} if it could not be found.
+	* Returns the journal folder where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchFolderException} if it could not be found.
 	*
 	* @param uuid the uuid
 	* @param groupId the group ID
 	* @return the matching journal folder
-	* @throws com.liferay.journal.NoSuchFolderException if a matching journal folder could not be found
+	* @throws NoSuchFolderException if a matching journal folder could not be found
 	*/
-	public static JournalFolder findByUUID_G(java.lang.String uuid, long groupId)
-		throws com.liferay.journal.exception.NoSuchFolderException {
+	public static JournalFolder findByUUID_G(String uuid, long groupId)
+		throws NoSuchFolderException {
 		return getPersistence().findByUUID_G(uuid, groupId);
 	}
 
@@ -265,7 +261,7 @@ public class JournalFolderUtil {
 	* @param groupId the group ID
 	* @return the matching journal folder, or <code>null</code> if a matching journal folder could not be found
 	*/
-	public static JournalFolder fetchByUUID_G(java.lang.String uuid,
+	public static JournalFolder fetchByUUID_G(String uuid,
 		long groupId) {
 		return getPersistence().fetchByUUID_G(uuid, groupId);
 	}
@@ -278,7 +274,7 @@ public class JournalFolderUtil {
 	* @param retrieveFromCache whether to use the finder cache
 	* @return the matching journal folder, or <code>null</code> if a matching journal folder could not be found
 	*/
-	public static JournalFolder fetchByUUID_G(java.lang.String uuid,
+	public static JournalFolder fetchByUUID_G(String uuid,
 		long groupId, boolean retrieveFromCache) {
 		return getPersistence().fetchByUUID_G(uuid, groupId, retrieveFromCache);
 	}
@@ -290,9 +286,8 @@ public class JournalFolderUtil {
 	* @param groupId the group ID
 	* @return the journal folder that was removed
 	*/
-	public static JournalFolder removeByUUID_G(java.lang.String uuid,
-		long groupId)
-		throws com.liferay.journal.exception.NoSuchFolderException {
+	public static JournalFolder removeByUUID_G(String uuid,
+		long groupId) throws NoSuchFolderException {
 		return getPersistence().removeByUUID_G(uuid, groupId);
 	}
 
@@ -303,7 +298,7 @@ public class JournalFolderUtil {
 	* @param groupId the group ID
 	* @return the number of matching journal folders
 	*/
-	public static int countByUUID_G(java.lang.String uuid, long groupId) {
+	public static int countByUUID_G(String uuid, long groupId) {
 		return getPersistence().countByUUID_G(uuid, groupId);
 	}
 
@@ -314,7 +309,7 @@ public class JournalFolderUtil {
 	* @param companyId the company ID
 	* @return the matching journal folders
 	*/
-	public static List<JournalFolder> findByUuid_C(java.lang.String uuid,
+	public static List<JournalFolder> findByUuid_C(String uuid,
 		long companyId) {
 		return getPersistence().findByUuid_C(uuid, companyId);
 	}
@@ -332,7 +327,7 @@ public class JournalFolderUtil {
 	* @param end the upper bound of the range of journal folders (not inclusive)
 	* @return the range of matching journal folders
 	*/
-	public static List<JournalFolder> findByUuid_C(java.lang.String uuid,
+	public static List<JournalFolder> findByUuid_C(String uuid,
 		long companyId, int start, int end) {
 		return getPersistence().findByUuid_C(uuid, companyId, start, end);
 	}
@@ -351,7 +346,7 @@ public class JournalFolderUtil {
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of matching journal folders
 	*/
-	public static List<JournalFolder> findByUuid_C(java.lang.String uuid,
+	public static List<JournalFolder> findByUuid_C(String uuid,
 		long companyId, int start, int end,
 		OrderByComparator<JournalFolder> orderByComparator) {
 		return getPersistence()
@@ -365,11 +360,11 @@ public class JournalFolderUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal folder
-	* @throws com.liferay.journal.NoSuchFolderException if a matching journal folder could not be found
+	* @throws NoSuchFolderException if a matching journal folder could not be found
 	*/
-	public static JournalFolder findByUuid_C_First(java.lang.String uuid,
+	public static JournalFolder findByUuid_C_First(String uuid,
 		long companyId, OrderByComparator<JournalFolder> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchFolderException {
+		throws NoSuchFolderException {
 		return getPersistence()
 				   .findByUuid_C_First(uuid, companyId, orderByComparator);
 	}
@@ -382,7 +377,7 @@ public class JournalFolderUtil {
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal folder, or <code>null</code> if a matching journal folder could not be found
 	*/
-	public static JournalFolder fetchByUuid_C_First(java.lang.String uuid,
+	public static JournalFolder fetchByUuid_C_First(String uuid,
 		long companyId, OrderByComparator<JournalFolder> orderByComparator) {
 		return getPersistence()
 				   .fetchByUuid_C_First(uuid, companyId, orderByComparator);
@@ -395,11 +390,11 @@ public class JournalFolderUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal folder
-	* @throws com.liferay.journal.NoSuchFolderException if a matching journal folder could not be found
+	* @throws NoSuchFolderException if a matching journal folder could not be found
 	*/
-	public static JournalFolder findByUuid_C_Last(java.lang.String uuid,
+	public static JournalFolder findByUuid_C_Last(String uuid,
 		long companyId, OrderByComparator<JournalFolder> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchFolderException {
+		throws NoSuchFolderException {
 		return getPersistence()
 				   .findByUuid_C_Last(uuid, companyId, orderByComparator);
 	}
@@ -412,7 +407,7 @@ public class JournalFolderUtil {
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal folder, or <code>null</code> if a matching journal folder could not be found
 	*/
-	public static JournalFolder fetchByUuid_C_Last(java.lang.String uuid,
+	public static JournalFolder fetchByUuid_C_Last(String uuid,
 		long companyId, OrderByComparator<JournalFolder> orderByComparator) {
 		return getPersistence()
 				   .fetchByUuid_C_Last(uuid, companyId, orderByComparator);
@@ -426,12 +421,12 @@ public class JournalFolderUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal folder
-	* @throws com.liferay.journal.NoSuchFolderException if a journal folder with the primary key could not be found
+	* @throws NoSuchFolderException if a journal folder with the primary key could not be found
 	*/
 	public static JournalFolder[] findByUuid_C_PrevAndNext(long folderId,
-		java.lang.String uuid, long companyId,
+		String uuid, long companyId,
 		OrderByComparator<JournalFolder> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchFolderException {
+		throws NoSuchFolderException {
 		return getPersistence()
 				   .findByUuid_C_PrevAndNext(folderId, uuid, companyId,
 			orderByComparator);
@@ -443,7 +438,7 @@ public class JournalFolderUtil {
 	* @param uuid the uuid
 	* @param companyId the company ID
 	*/
-	public static void removeByUuid_C(java.lang.String uuid, long companyId) {
+	public static void removeByUuid_C(String uuid, long companyId) {
 		getPersistence().removeByUuid_C(uuid, companyId);
 	}
 
@@ -454,7 +449,7 @@ public class JournalFolderUtil {
 	* @param companyId the company ID
 	* @return the number of matching journal folders
 	*/
-	public static int countByUuid_C(java.lang.String uuid, long companyId) {
+	public static int countByUuid_C(String uuid, long companyId) {
 		return getPersistence().countByUuid_C(uuid, companyId);
 	}
 
@@ -510,11 +505,11 @@ public class JournalFolderUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal folder
-	* @throws com.liferay.journal.NoSuchFolderException if a matching journal folder could not be found
+	* @throws NoSuchFolderException if a matching journal folder could not be found
 	*/
 	public static JournalFolder findByGroupId_First(long groupId,
 		OrderByComparator<JournalFolder> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchFolderException {
+		throws NoSuchFolderException {
 		return getPersistence().findByGroupId_First(groupId, orderByComparator);
 	}
 
@@ -536,11 +531,11 @@ public class JournalFolderUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal folder
-	* @throws com.liferay.journal.NoSuchFolderException if a matching journal folder could not be found
+	* @throws NoSuchFolderException if a matching journal folder could not be found
 	*/
 	public static JournalFolder findByGroupId_Last(long groupId,
 		OrderByComparator<JournalFolder> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchFolderException {
+		throws NoSuchFolderException {
 		return getPersistence().findByGroupId_Last(groupId, orderByComparator);
 	}
 
@@ -563,11 +558,11 @@ public class JournalFolderUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal folder
-	* @throws com.liferay.journal.NoSuchFolderException if a journal folder with the primary key could not be found
+	* @throws NoSuchFolderException if a journal folder with the primary key could not be found
 	*/
 	public static JournalFolder[] findByGroupId_PrevAndNext(long folderId,
 		long groupId, OrderByComparator<JournalFolder> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchFolderException {
+		throws NoSuchFolderException {
 		return getPersistence()
 				   .findByGroupId_PrevAndNext(folderId, groupId,
 			orderByComparator);
@@ -626,12 +621,12 @@ public class JournalFolderUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal folder
-	* @throws com.liferay.journal.NoSuchFolderException if a journal folder with the primary key could not be found
+	* @throws NoSuchFolderException if a journal folder with the primary key could not be found
 	*/
 	public static JournalFolder[] filterFindByGroupId_PrevAndNext(
 		long folderId, long groupId,
 		OrderByComparator<JournalFolder> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchFolderException {
+		throws NoSuchFolderException {
 		return getPersistence()
 				   .filterFindByGroupId_PrevAndNext(folderId, groupId,
 			orderByComparator);
@@ -718,11 +713,11 @@ public class JournalFolderUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal folder
-	* @throws com.liferay.journal.NoSuchFolderException if a matching journal folder could not be found
+	* @throws NoSuchFolderException if a matching journal folder could not be found
 	*/
 	public static JournalFolder findByCompanyId_First(long companyId,
 		OrderByComparator<JournalFolder> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchFolderException {
+		throws NoSuchFolderException {
 		return getPersistence()
 				   .findByCompanyId_First(companyId, orderByComparator);
 	}
@@ -746,11 +741,11 @@ public class JournalFolderUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal folder
-	* @throws com.liferay.journal.NoSuchFolderException if a matching journal folder could not be found
+	* @throws NoSuchFolderException if a matching journal folder could not be found
 	*/
 	public static JournalFolder findByCompanyId_Last(long companyId,
 		OrderByComparator<JournalFolder> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchFolderException {
+		throws NoSuchFolderException {
 		return getPersistence()
 				   .findByCompanyId_Last(companyId, orderByComparator);
 	}
@@ -775,11 +770,11 @@ public class JournalFolderUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal folder
-	* @throws com.liferay.journal.NoSuchFolderException if a journal folder with the primary key could not be found
+	* @throws NoSuchFolderException if a journal folder with the primary key could not be found
 	*/
 	public static JournalFolder[] findByCompanyId_PrevAndNext(long folderId,
 		long companyId, OrderByComparator<JournalFolder> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchFolderException {
+		throws NoSuchFolderException {
 		return getPersistence()
 				   .findByCompanyId_PrevAndNext(folderId, companyId,
 			orderByComparator);
@@ -863,11 +858,11 @@ public class JournalFolderUtil {
 	* @param parentFolderId the parent folder ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal folder
-	* @throws com.liferay.journal.NoSuchFolderException if a matching journal folder could not be found
+	* @throws NoSuchFolderException if a matching journal folder could not be found
 	*/
 	public static JournalFolder findByG_P_First(long groupId,
 		long parentFolderId, OrderByComparator<JournalFolder> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchFolderException {
+		throws NoSuchFolderException {
 		return getPersistence()
 				   .findByG_P_First(groupId, parentFolderId, orderByComparator);
 	}
@@ -893,11 +888,11 @@ public class JournalFolderUtil {
 	* @param parentFolderId the parent folder ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal folder
-	* @throws com.liferay.journal.NoSuchFolderException if a matching journal folder could not be found
+	* @throws NoSuchFolderException if a matching journal folder could not be found
 	*/
 	public static JournalFolder findByG_P_Last(long groupId,
 		long parentFolderId, OrderByComparator<JournalFolder> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchFolderException {
+		throws NoSuchFolderException {
 		return getPersistence()
 				   .findByG_P_Last(groupId, parentFolderId, orderByComparator);
 	}
@@ -924,12 +919,12 @@ public class JournalFolderUtil {
 	* @param parentFolderId the parent folder ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal folder
-	* @throws com.liferay.journal.NoSuchFolderException if a journal folder with the primary key could not be found
+	* @throws NoSuchFolderException if a journal folder with the primary key could not be found
 	*/
 	public static JournalFolder[] findByG_P_PrevAndNext(long folderId,
 		long groupId, long parentFolderId,
 		OrderByComparator<JournalFolder> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchFolderException {
+		throws NoSuchFolderException {
 		return getPersistence()
 				   .findByG_P_PrevAndNext(folderId, groupId, parentFolderId,
 			orderByComparator);
@@ -996,12 +991,12 @@ public class JournalFolderUtil {
 	* @param parentFolderId the parent folder ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal folder
-	* @throws com.liferay.journal.NoSuchFolderException if a journal folder with the primary key could not be found
+	* @throws NoSuchFolderException if a journal folder with the primary key could not be found
 	*/
 	public static JournalFolder[] filterFindByG_P_PrevAndNext(long folderId,
 		long groupId, long parentFolderId,
 		OrderByComparator<JournalFolder> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchFolderException {
+		throws NoSuchFolderException {
 		return getPersistence()
 				   .filterFindByG_P_PrevAndNext(folderId, groupId,
 			parentFolderId, orderByComparator);
@@ -1040,15 +1035,15 @@ public class JournalFolderUtil {
 	}
 
 	/**
-	* Returns the journal folder where groupId = &#63; and name = &#63; or throws a {@link com.liferay.journal.NoSuchFolderException} if it could not be found.
+	* Returns the journal folder where groupId = &#63; and name = &#63; or throws a {@link NoSuchFolderException} if it could not be found.
 	*
 	* @param groupId the group ID
 	* @param name the name
 	* @return the matching journal folder
-	* @throws com.liferay.journal.NoSuchFolderException if a matching journal folder could not be found
+	* @throws NoSuchFolderException if a matching journal folder could not be found
 	*/
-	public static JournalFolder findByG_N(long groupId, java.lang.String name)
-		throws com.liferay.journal.exception.NoSuchFolderException {
+	public static JournalFolder findByG_N(long groupId, String name)
+		throws NoSuchFolderException {
 		return getPersistence().findByG_N(groupId, name);
 	}
 
@@ -1059,7 +1054,7 @@ public class JournalFolderUtil {
 	* @param name the name
 	* @return the matching journal folder, or <code>null</code> if a matching journal folder could not be found
 	*/
-	public static JournalFolder fetchByG_N(long groupId, java.lang.String name) {
+	public static JournalFolder fetchByG_N(long groupId, String name) {
 		return getPersistence().fetchByG_N(groupId, name);
 	}
 
@@ -1071,7 +1066,7 @@ public class JournalFolderUtil {
 	* @param retrieveFromCache whether to use the finder cache
 	* @return the matching journal folder, or <code>null</code> if a matching journal folder could not be found
 	*/
-	public static JournalFolder fetchByG_N(long groupId, java.lang.String name,
+	public static JournalFolder fetchByG_N(long groupId, String name,
 		boolean retrieveFromCache) {
 		return getPersistence().fetchByG_N(groupId, name, retrieveFromCache);
 	}
@@ -1083,8 +1078,8 @@ public class JournalFolderUtil {
 	* @param name the name
 	* @return the journal folder that was removed
 	*/
-	public static JournalFolder removeByG_N(long groupId, java.lang.String name)
-		throws com.liferay.journal.exception.NoSuchFolderException {
+	public static JournalFolder removeByG_N(long groupId, String name)
+		throws NoSuchFolderException {
 		return getPersistence().removeByG_N(groupId, name);
 	}
 
@@ -1095,7 +1090,7 @@ public class JournalFolderUtil {
 	* @param name the name
 	* @return the number of matching journal folders
 	*/
-	public static int countByG_N(long groupId, java.lang.String name) {
+	public static int countByG_N(long groupId, String name) {
 		return getPersistence().countByG_N(groupId, name);
 	}
 
@@ -1156,11 +1151,11 @@ public class JournalFolderUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal folder
-	* @throws com.liferay.journal.NoSuchFolderException if a matching journal folder could not be found
+	* @throws NoSuchFolderException if a matching journal folder could not be found
 	*/
 	public static JournalFolder findByC_NotS_First(long companyId, int status,
 		OrderByComparator<JournalFolder> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchFolderException {
+		throws NoSuchFolderException {
 		return getPersistence()
 				   .findByC_NotS_First(companyId, status, orderByComparator);
 	}
@@ -1186,11 +1181,11 @@ public class JournalFolderUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal folder
-	* @throws com.liferay.journal.NoSuchFolderException if a matching journal folder could not be found
+	* @throws NoSuchFolderException if a matching journal folder could not be found
 	*/
 	public static JournalFolder findByC_NotS_Last(long companyId, int status,
 		OrderByComparator<JournalFolder> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchFolderException {
+		throws NoSuchFolderException {
 		return getPersistence()
 				   .findByC_NotS_Last(companyId, status, orderByComparator);
 	}
@@ -1217,12 +1212,12 @@ public class JournalFolderUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal folder
-	* @throws com.liferay.journal.NoSuchFolderException if a journal folder with the primary key could not be found
+	* @throws NoSuchFolderException if a journal folder with the primary key could not be found
 	*/
 	public static JournalFolder[] findByC_NotS_PrevAndNext(long folderId,
 		long companyId, int status,
 		OrderByComparator<JournalFolder> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchFolderException {
+		throws NoSuchFolderException {
 		return getPersistence()
 				   .findByC_NotS_PrevAndNext(folderId, companyId, status,
 			orderByComparator);
@@ -1250,17 +1245,17 @@ public class JournalFolderUtil {
 	}
 
 	/**
-	* Returns the journal folder where groupId = &#63; and parentFolderId = &#63; and name = &#63; or throws a {@link com.liferay.journal.NoSuchFolderException} if it could not be found.
+	* Returns the journal folder where groupId = &#63; and parentFolderId = &#63; and name = &#63; or throws a {@link NoSuchFolderException} if it could not be found.
 	*
 	* @param groupId the group ID
 	* @param parentFolderId the parent folder ID
 	* @param name the name
 	* @return the matching journal folder
-	* @throws com.liferay.journal.NoSuchFolderException if a matching journal folder could not be found
+	* @throws NoSuchFolderException if a matching journal folder could not be found
 	*/
 	public static JournalFolder findByG_P_N(long groupId, long parentFolderId,
-		java.lang.String name)
-		throws com.liferay.journal.exception.NoSuchFolderException {
+		String name)
+		throws NoSuchFolderException {
 		return getPersistence().findByG_P_N(groupId, parentFolderId, name);
 	}
 
@@ -1273,7 +1268,7 @@ public class JournalFolderUtil {
 	* @return the matching journal folder, or <code>null</code> if a matching journal folder could not be found
 	*/
 	public static JournalFolder fetchByG_P_N(long groupId, long parentFolderId,
-		java.lang.String name) {
+		String name) {
 		return getPersistence().fetchByG_P_N(groupId, parentFolderId, name);
 	}
 
@@ -1287,7 +1282,7 @@ public class JournalFolderUtil {
 	* @return the matching journal folder, or <code>null</code> if a matching journal folder could not be found
 	*/
 	public static JournalFolder fetchByG_P_N(long groupId, long parentFolderId,
-		java.lang.String name, boolean retrieveFromCache) {
+		String name, boolean retrieveFromCache) {
 		return getPersistence()
 				   .fetchByG_P_N(groupId, parentFolderId, name,
 			retrieveFromCache);
@@ -1302,8 +1297,8 @@ public class JournalFolderUtil {
 	* @return the journal folder that was removed
 	*/
 	public static JournalFolder removeByG_P_N(long groupId,
-		long parentFolderId, java.lang.String name)
-		throws com.liferay.journal.exception.NoSuchFolderException {
+		long parentFolderId, String name)
+		throws NoSuchFolderException {
 		return getPersistence().removeByG_P_N(groupId, parentFolderId, name);
 	}
 
@@ -1316,7 +1311,7 @@ public class JournalFolderUtil {
 	* @return the number of matching journal folders
 	*/
 	public static int countByG_P_N(long groupId, long parentFolderId,
-		java.lang.String name) {
+		String name) {
 		return getPersistence().countByG_P_N(groupId, parentFolderId, name);
 	}
 
@@ -1384,12 +1379,12 @@ public class JournalFolderUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal folder
-	* @throws com.liferay.journal.NoSuchFolderException if a matching journal folder could not be found
+	* @throws NoSuchFolderException if a matching journal folder could not be found
 	*/
 	public static JournalFolder findByG_P_S_First(long groupId,
 		long parentFolderId, int status,
 		OrderByComparator<JournalFolder> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchFolderException {
+		throws NoSuchFolderException {
 		return getPersistence()
 				   .findByG_P_S_First(groupId, parentFolderId, status,
 			orderByComparator);
@@ -1420,12 +1415,12 @@ public class JournalFolderUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal folder
-	* @throws com.liferay.journal.NoSuchFolderException if a matching journal folder could not be found
+	* @throws NoSuchFolderException if a matching journal folder could not be found
 	*/
 	public static JournalFolder findByG_P_S_Last(long groupId,
 		long parentFolderId, int status,
 		OrderByComparator<JournalFolder> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchFolderException {
+		throws NoSuchFolderException {
 		return getPersistence()
 				   .findByG_P_S_Last(groupId, parentFolderId, status,
 			orderByComparator);
@@ -1457,12 +1452,12 @@ public class JournalFolderUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal folder
-	* @throws com.liferay.journal.NoSuchFolderException if a journal folder with the primary key could not be found
+	* @throws NoSuchFolderException if a journal folder with the primary key could not be found
 	*/
 	public static JournalFolder[] findByG_P_S_PrevAndNext(long folderId,
 		long groupId, long parentFolderId, int status,
 		OrderByComparator<JournalFolder> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchFolderException {
+		throws NoSuchFolderException {
 		return getPersistence()
 				   .findByG_P_S_PrevAndNext(folderId, groupId, parentFolderId,
 			status, orderByComparator);
@@ -1535,12 +1530,12 @@ public class JournalFolderUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal folder
-	* @throws com.liferay.journal.NoSuchFolderException if a journal folder with the primary key could not be found
+	* @throws NoSuchFolderException if a journal folder with the primary key could not be found
 	*/
 	public static JournalFolder[] filterFindByG_P_S_PrevAndNext(long folderId,
 		long groupId, long parentFolderId, int status,
 		OrderByComparator<JournalFolder> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchFolderException {
+		throws NoSuchFolderException {
 		return getPersistence()
 				   .filterFindByG_P_S_PrevAndNext(folderId, groupId,
 			parentFolderId, status, orderByComparator);
@@ -1648,12 +1643,12 @@ public class JournalFolderUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal folder
-	* @throws com.liferay.journal.NoSuchFolderException if a matching journal folder could not be found
+	* @throws NoSuchFolderException if a matching journal folder could not be found
 	*/
 	public static JournalFolder findByG_P_NotS_First(long groupId,
 		long parentFolderId, int status,
 		OrderByComparator<JournalFolder> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchFolderException {
+		throws NoSuchFolderException {
 		return getPersistence()
 				   .findByG_P_NotS_First(groupId, parentFolderId, status,
 			orderByComparator);
@@ -1684,12 +1679,12 @@ public class JournalFolderUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal folder
-	* @throws com.liferay.journal.NoSuchFolderException if a matching journal folder could not be found
+	* @throws NoSuchFolderException if a matching journal folder could not be found
 	*/
 	public static JournalFolder findByG_P_NotS_Last(long groupId,
 		long parentFolderId, int status,
 		OrderByComparator<JournalFolder> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchFolderException {
+		throws NoSuchFolderException {
 		return getPersistence()
 				   .findByG_P_NotS_Last(groupId, parentFolderId, status,
 			orderByComparator);
@@ -1721,12 +1716,12 @@ public class JournalFolderUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal folder
-	* @throws com.liferay.journal.NoSuchFolderException if a journal folder with the primary key could not be found
+	* @throws NoSuchFolderException if a journal folder with the primary key could not be found
 	*/
 	public static JournalFolder[] findByG_P_NotS_PrevAndNext(long folderId,
 		long groupId, long parentFolderId, int status,
 		OrderByComparator<JournalFolder> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchFolderException {
+		throws NoSuchFolderException {
 		return getPersistence()
 				   .findByG_P_NotS_PrevAndNext(folderId, groupId,
 			parentFolderId, status, orderByComparator);
@@ -1799,12 +1794,12 @@ public class JournalFolderUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next journal folder
-	* @throws com.liferay.journal.NoSuchFolderException if a journal folder with the primary key could not be found
+	* @throws NoSuchFolderException if a journal folder with the primary key could not be found
 	*/
 	public static JournalFolder[] filterFindByG_P_NotS_PrevAndNext(
 		long folderId, long groupId, long parentFolderId, int status,
 		OrderByComparator<JournalFolder> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchFolderException {
+		throws NoSuchFolderException {
 		return getPersistence()
 				   .filterFindByG_P_NotS_PrevAndNext(folderId, groupId,
 			parentFolderId, status, orderByComparator);
@@ -1919,12 +1914,12 @@ public class JournalFolderUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal folder
-	* @throws com.liferay.journal.NoSuchFolderException if a matching journal folder could not be found
+	* @throws NoSuchFolderException if a matching journal folder could not be found
 	*/
 	public static JournalFolder findByF_C_P_NotS_First(long folderId,
 		long companyId, long parentFolderId, int status,
 		OrderByComparator<JournalFolder> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchFolderException {
+		throws NoSuchFolderException {
 		return getPersistence()
 				   .findByF_C_P_NotS_First(folderId, companyId, parentFolderId,
 			status, orderByComparator);
@@ -1957,12 +1952,12 @@ public class JournalFolderUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal folder
-	* @throws com.liferay.journal.NoSuchFolderException if a matching journal folder could not be found
+	* @throws NoSuchFolderException if a matching journal folder could not be found
 	*/
 	public static JournalFolder findByF_C_P_NotS_Last(long folderId,
 		long companyId, long parentFolderId, int status,
 		OrderByComparator<JournalFolder> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchFolderException {
+		throws NoSuchFolderException {
 		return getPersistence()
 				   .findByF_C_P_NotS_Last(folderId, companyId, parentFolderId,
 			status, orderByComparator);
@@ -2049,10 +2044,10 @@ public class JournalFolderUtil {
 	*
 	* @param folderId the primary key of the journal folder
 	* @return the journal folder that was removed
-	* @throws com.liferay.journal.NoSuchFolderException if a journal folder with the primary key could not be found
+	* @throws NoSuchFolderException if a journal folder with the primary key could not be found
 	*/
 	public static JournalFolder remove(long folderId)
-		throws com.liferay.journal.exception.NoSuchFolderException {
+		throws NoSuchFolderException {
 		return getPersistence().remove(folderId);
 	}
 
@@ -2061,14 +2056,14 @@ public class JournalFolderUtil {
 	}
 
 	/**
-	* Returns the journal folder with the primary key or throws a {@link com.liferay.journal.NoSuchFolderException} if it could not be found.
+	* Returns the journal folder with the primary key or throws a {@link NoSuchFolderException} if it could not be found.
 	*
 	* @param folderId the primary key of the journal folder
 	* @return the journal folder
-	* @throws com.liferay.journal.NoSuchFolderException if a journal folder with the primary key could not be found
+	* @throws NoSuchFolderException if a journal folder with the primary key could not be found
 	*/
 	public static JournalFolder findByPrimaryKey(long folderId)
-		throws com.liferay.journal.exception.NoSuchFolderException {
+		throws NoSuchFolderException {
 		return getPersistence().findByPrimaryKey(folderId);
 	}
 
@@ -2145,7 +2140,14 @@ public class JournalFolderUtil {
 	}
 
 	public static JournalFolderPersistence getPersistence() {
-		return _serviceTracker.getService();
+		if (_persistence == null) {
+			_persistence = (JournalFolderPersistence)PortalBeanLocatorUtil.locate(JournalFolderPersistence.class.getName());
+
+			ReferenceRegistry.registerReference(JournalFolderUtil.class,
+				"_persistence");
+		}
+
+		return _persistence;
 	}
 
 	/**
@@ -2155,14 +2157,5 @@ public class JournalFolderUtil {
 	public void setPersistence(JournalFolderPersistence persistence) {
 	}
 
-	private static ServiceTracker<JournalFolderPersistence, JournalFolderPersistence> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(JournalFolderUtil.class);
-
-		_serviceTracker = new ServiceTracker<JournalFolderPersistence, JournalFolderPersistence>(bundle.getBundleContext(),
-				JournalFolderPersistence.class, null);
-
-		_serviceTracker.open();
-	}
+	private static JournalFolderPersistence _persistence;
 }

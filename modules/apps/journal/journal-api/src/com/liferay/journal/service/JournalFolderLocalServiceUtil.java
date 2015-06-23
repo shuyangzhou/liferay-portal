@@ -15,11 +15,9 @@
 package com.liferay.journal.service;
 
 import aQute.bnd.annotation.ProviderType;
-
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.journal.exception.NoSuchFolderException;
+import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
+import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
  * Provides the local service utility for JournalFolder. This utility wraps
@@ -43,8 +41,8 @@ public class JournalFolderLocalServiceUtil {
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.journal.service.impl.JournalFolderLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.journal.model.JournalFolder addFolder(
-		long userId, long groupId, long parentFolderId, java.lang.String name,
-		java.lang.String description,
+		long userId, long groupId, long parentFolderId, String name,
+		String description,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
@@ -221,12 +219,12 @@ public class JournalFolderLocalServiceUtil {
 	}
 
 	public static com.liferay.journal.model.JournalFolder fetchFolder(
-		long groupId, java.lang.String name) {
+		long groupId, String name) {
 		return getService().fetchFolder(groupId, name);
 	}
 
 	public static com.liferay.journal.model.JournalFolder fetchFolder(
-		long groupId, long parentFolderId, java.lang.String name) {
+		long groupId, long parentFolderId, String name) {
 		return getService().fetchFolder(groupId, parentFolderId, name);
 	}
 
@@ -243,7 +241,7 @@ public class JournalFolderLocalServiceUtil {
 	* @return the matching journal folder, or <code>null</code> if a matching journal folder could not be found
 	*/
 	public static com.liferay.journal.model.JournalFolder fetchJournalFolderByUuidAndGroupId(
-		java.lang.String uuid, long groupId) {
+		String uuid, long groupId) {
 		return getService().fetchJournalFolderByUuidAndGroupId(uuid, groupId);
 	}
 
@@ -256,7 +254,7 @@ public class JournalFolderLocalServiceUtil {
 	*
 	* @return the Spring bean ID for this bean
 	*/
-	public static java.lang.String getBeanIdentifier() {
+	public static String getBeanIdentifier() {
 		return getService().getBeanIdentifier();
 	}
 
@@ -312,19 +310,19 @@ public class JournalFolderLocalServiceUtil {
 				   .getFolders(groupId, parentFolderId, status, start, end);
 	}
 
-	public static java.util.List<java.lang.Object> getFoldersAndArticles(
+	public static java.util.List<Object> getFoldersAndArticles(
 		long groupId, long folderId) {
 		return getService().getFoldersAndArticles(groupId, folderId);
 	}
 
-	public static java.util.List<java.lang.Object> getFoldersAndArticles(
+	public static java.util.List<Object> getFoldersAndArticles(
 		long groupId, long folderId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<?> obc) {
 		return getService()
 				   .getFoldersAndArticles(groupId, folderId, start, end, obc);
 	}
 
-	public static java.util.List<java.lang.Object> getFoldersAndArticles(
+	public static java.util.List<Object> getFoldersAndArticles(
 		long groupId, long folderId, int status) {
 		return getService().getFoldersAndArticles(groupId, folderId, status);
 	}
@@ -339,7 +337,7 @@ public class JournalFolderLocalServiceUtil {
 	}
 
 	public static int getFoldersAndArticlesCount(long groupId,
-		java.util.List<java.lang.Long> folderIds, int status) {
+		java.util.List<Long> folderIds, int status) {
 		return getService()
 				   .getFoldersAndArticlesCount(groupId, folderIds, status);
 	}
@@ -354,7 +352,7 @@ public class JournalFolderLocalServiceUtil {
 	}
 
 	public static long getInheritedWorkflowFolderId(long folderId)
-		throws com.liferay.journal.exception.NoSuchFolderException {
+		throws NoSuchFolderException {
 		return getService().getInheritedWorkflowFolderId(folderId);
 	}
 
@@ -380,7 +378,7 @@ public class JournalFolderLocalServiceUtil {
 	* @throws PortalException if a matching journal folder could not be found
 	*/
 	public static com.liferay.journal.model.JournalFolder getJournalFolderByUuidAndGroupId(
-		java.lang.String uuid, long groupId)
+		String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getJournalFolderByUuidAndGroupId(uuid, groupId);
 	}
@@ -409,7 +407,7 @@ public class JournalFolderLocalServiceUtil {
 	* @return the matching journal folders, or an empty list if no matches were found
 	*/
 	public static java.util.List<com.liferay.journal.model.JournalFolder> getJournalFoldersByUuidAndCompanyId(
-		java.lang.String uuid, long companyId) {
+		String uuid, long companyId) {
 		return getService().getJournalFoldersByUuidAndCompanyId(uuid, companyId);
 	}
 
@@ -424,7 +422,7 @@ public class JournalFolderLocalServiceUtil {
 	* @return the range of matching journal folders, or an empty list if no matches were found
 	*/
 	public static java.util.List<com.liferay.journal.model.JournalFolder> getJournalFoldersByUuidAndCompanyId(
-		java.lang.String uuid, long companyId, int start, int end,
+		String uuid, long companyId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.journal.model.JournalFolder> orderByComparator) {
 		return getService()
 				   .getJournalFoldersByUuidAndCompanyId(uuid, companyId, start,
@@ -445,7 +443,7 @@ public class JournalFolderLocalServiceUtil {
 	}
 
 	public static long getOverridedDDMStructuresFolderId(long folderId)
-		throws com.liferay.journal.exception.NoSuchFolderException {
+		throws NoSuchFolderException {
 		return getService().getOverridedDDMStructuresFolderId(folderId);
 	}
 
@@ -456,7 +454,7 @@ public class JournalFolderLocalServiceUtil {
 	}
 
 	public static void getSubfolderIds(
-		java.util.List<java.lang.Long> folderIds, long groupId, long folderId) {
+		java.util.List<Long> folderIds, long groupId, long folderId) {
 		getService().getSubfolderIds(folderIds, groupId, folderId);
 	}
 
@@ -488,7 +486,7 @@ public class JournalFolderLocalServiceUtil {
 	}
 
 	public static void rebuildTree(long companyId, long parentFolderId,
-		java.lang.String parentTreePath, boolean reindex)
+		String parentTreePath, boolean reindex)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService()
 			.rebuildTree(companyId, parentFolderId, parentTreePath, reindex);
@@ -504,7 +502,7 @@ public class JournalFolderLocalServiceUtil {
 	*
 	* @param beanIdentifier the Spring bean ID for this bean
 	*/
-	public static void setBeanIdentifier(java.lang.String beanIdentifier) {
+	public static void setBeanIdentifier(String beanIdentifier) {
 		getService().setBeanIdentifier(beanIdentifier);
 	}
 
@@ -520,7 +518,7 @@ public class JournalFolderLocalServiceUtil {
 
 	public static void updateAsset(long userId,
 		com.liferay.journal.model.JournalFolder folder,
-		long[] assetCategoryIds, java.lang.String[] assetTagNames,
+		long[] assetCategoryIds, String[] assetTagNames,
 		long[] assetLinkEntryIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService()
@@ -530,7 +528,7 @@ public class JournalFolderLocalServiceUtil {
 
 	public static com.liferay.journal.model.JournalFolder updateFolder(
 		long userId, long groupId, long folderId, long parentFolderId,
-		java.lang.String name, java.lang.String description,
+		String name, String description,
 		long[] ddmStructureIds, int restrictionType,
 		boolean mergeWithParentFolder,
 		com.liferay.portal.service.ServiceContext serviceContext)
@@ -543,7 +541,7 @@ public class JournalFolderLocalServiceUtil {
 
 	public static com.liferay.journal.model.JournalFolder updateFolder(
 		long userId, long groupId, long folderId, long parentFolderId,
-		java.lang.String name, java.lang.String description,
+		String name, String description,
 		boolean mergeWithParentFolder,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -571,8 +569,8 @@ public class JournalFolderLocalServiceUtil {
 	}
 
 	public static com.liferay.journal.model.JournalFolder updateStatus(
-		long userId, com.liferay.journal.model.JournalFolder folder, int status)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		long userId, com.liferay.journal.model.JournalFolder folder,
+		int status) throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().updateStatus(userId, folder, status);
 	}
 
@@ -583,7 +581,14 @@ public class JournalFolderLocalServiceUtil {
 	}
 
 	public static JournalFolderLocalService getService() {
-		return _serviceTracker.getService();
+		if (_service == null) {
+			_service = (JournalFolderLocalService)PortalBeanLocatorUtil.locate(JournalFolderLocalService.class.getName());
+
+			ReferenceRegistry.registerReference(JournalFolderLocalServiceUtil.class,
+				"_service");
+		}
+
+		return _service;
 	}
 
 	/**
@@ -593,14 +598,5 @@ public class JournalFolderLocalServiceUtil {
 	public void setService(JournalFolderLocalService service) {
 	}
 
-	private static ServiceTracker<JournalFolderLocalService, JournalFolderLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(JournalFolderLocalServiceUtil.class);
-
-		_serviceTracker = new ServiceTracker<JournalFolderLocalService, JournalFolderLocalService>(bundle.getBundleContext(),
-				JournalFolderLocalService.class, null);
-
-		_serviceTracker.open();
-	}
+	private static JournalFolderLocalService _service;
 }

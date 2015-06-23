@@ -15,7 +15,6 @@
 package com.liferay.journal.service;
 
 import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.search.IndexableType;
@@ -70,13 +69,13 @@ public interface JournalContentSearchLocalService extends BaseLocalService,
 		long contentSearchId);
 
 	public void deleteArticleContentSearch(long groupId, boolean privateLayout,
-		long layoutId, java.lang.String portletId);
+										   long layoutId, String portletId);
 
 	public void deleteArticleContentSearch(long groupId, boolean privateLayout,
-		long layoutId, java.lang.String portletId, java.lang.String articleId);
+										   long layoutId, String portletId, String articleId);
 
 	public void deleteArticleContentSearches(long groupId,
-		java.lang.String articleId);
+											 String articleId);
 
 	/**
 	* Deletes the journal content search with the primary key from the database. Also notifies the appropriate model listeners.
@@ -100,7 +99,7 @@ public interface JournalContentSearchLocalService extends BaseLocalService,
 		com.liferay.journal.model.JournalContentSearch journalContentSearch);
 
 	public void deleteLayoutContentSearches(long groupId,
-		boolean privateLayout, long layoutId);
+											boolean privateLayout, long layoutId);
 
 	public void deleteOwnerContentSearches(long groupId, boolean privateLayout);
 
@@ -189,18 +188,18 @@ public interface JournalContentSearchLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public java.util.List<com.liferay.journal.model.JournalContentSearch> getArticleContentSearches(
-		java.lang.String articleId);
+		String articleId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public java.util.List<com.liferay.journal.model.JournalContentSearch> getArticleContentSearches(
-		long groupId, java.lang.String articleId);
+		long groupId, String articleId);
 
 	/**
 	* Returns the Spring bean ID for this bean.
 	*
 	* @return the Spring bean ID for this bean
 	*/
-	public java.lang.String getBeanIdentifier();
+	public String getBeanIdentifier();
 
 	/**
 	* Returns the journal content search with the primary key.
@@ -237,15 +236,15 @@ public interface JournalContentSearchLocalService extends BaseLocalService,
 	public int getJournalContentSearchsCount();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.util.List<java.lang.Long> getLayoutIds(long groupId,
-		boolean privateLayout, java.lang.String articleId);
+	public java.util.List<Long> getLayoutIds(long groupId,
+											 boolean privateLayout, String articleId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getLayoutIdsCount(java.lang.String articleId);
+	public int getLayoutIdsCount(String articleId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getLayoutIdsCount(long groupId, boolean privateLayout,
-		java.lang.String articleId);
+								 String articleId);
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -254,28 +253,28 @@ public interface JournalContentSearchLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public java.util.List<com.liferay.journal.model.JournalContentSearch> getPortletContentSearches(
-		java.lang.String portletId);
+		String portletId);
 
 	/**
 	* Sets the Spring bean ID for this bean.
 	*
 	* @param beanIdentifier the Spring bean ID for this bean
 	*/
-	public void setBeanIdentifier(java.lang.String beanIdentifier);
+	public void setBeanIdentifier(String beanIdentifier);
 
 	public com.liferay.journal.model.JournalContentSearch updateContentSearch(
 		long groupId, boolean privateLayout, long layoutId,
-		java.lang.String portletId, java.lang.String articleId)
+		String portletId, String articleId)
 		throws PortalException;
 
 	public com.liferay.journal.model.JournalContentSearch updateContentSearch(
 		long groupId, boolean privateLayout, long layoutId,
-		java.lang.String portletId, java.lang.String articleId, boolean purge)
+		String portletId, String articleId, boolean purge)
 		throws PortalException;
 
 	public java.util.List<com.liferay.journal.model.JournalContentSearch> updateContentSearch(
 		long groupId, boolean privateLayout, long layoutId,
-		java.lang.String portletId, java.lang.String[] articleIds)
+		String portletId, String[] articleIds)
 		throws PortalException;
 
 	/**

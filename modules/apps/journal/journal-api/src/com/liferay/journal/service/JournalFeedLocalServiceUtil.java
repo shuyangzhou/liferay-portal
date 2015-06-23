@@ -15,11 +15,8 @@
 package com.liferay.journal.service;
 
 import aQute.bnd.annotation.ProviderType;
-
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
+import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
  * Provides the local service utility for JournalFeed. This utility wraps
@@ -42,15 +39,15 @@ public class JournalFeedLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.journal.service.impl.JournalFeedLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.journal.model.JournalFeed addFeed(long userId,
-		long groupId, java.lang.String feedId, boolean autoFeedId,
-		java.lang.String name, java.lang.String description,
-		java.lang.String ddmStructureKey, java.lang.String ddmTemplateKey,
-		java.lang.String ddmRendererTemplateKey, int delta,
-		java.lang.String orderByCol, java.lang.String orderByType,
-		java.lang.String targetLayoutFriendlyUrl,
-		java.lang.String targetPortletId, java.lang.String contentField,
-		java.lang.String feedFormat, double feedVersion,
+	public static com.liferay.journal.model.JournalFeed addFeed(
+		long userId, long groupId, String feedId, boolean autoFeedId,
+		String name, String description,
+		String ddmStructureKey, String ddmTemplateKey,
+		String ddmRendererTemplateKey, int delta,
+		String orderByCol, String orderByType,
+		String targetLayoutFriendlyUrl,
+		String targetPortletId, String contentField,
+		String feedFormat, double feedVersion,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
@@ -71,7 +68,7 @@ public class JournalFeedLocalServiceUtil {
 
 	public static void addFeedResources(
 		com.liferay.journal.model.JournalFeed feed,
-		java.lang.String[] groupPermissions, java.lang.String[] guestPermissions)
+		String[] groupPermissions, String[] guestPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().addFeedResources(feed, groupPermissions, guestPermissions);
 	}
@@ -84,7 +81,7 @@ public class JournalFeedLocalServiceUtil {
 	}
 
 	public static void addFeedResources(long feedId,
-		java.lang.String[] groupPermissions, java.lang.String[] guestPermissions)
+		String[] groupPermissions, String[] guestPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().addFeedResources(feedId, groupPermissions, guestPermissions);
 	}
@@ -111,7 +108,8 @@ public class JournalFeedLocalServiceUtil {
 		return getService().createJournalFeed(id);
 	}
 
-	public static void deleteFeed(com.liferay.journal.model.JournalFeed feed)
+	public static void deleteFeed(
+		com.liferay.journal.model.JournalFeed feed)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().deleteFeed(feed);
 	}
@@ -121,7 +119,7 @@ public class JournalFeedLocalServiceUtil {
 		getService().deleteFeed(feedId);
 	}
 
-	public static void deleteFeed(long groupId, java.lang.String feedId)
+	public static void deleteFeed(long groupId, String feedId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().deleteFeed(groupId, feedId);
 	}
@@ -237,7 +235,7 @@ public class JournalFeedLocalServiceUtil {
 	}
 
 	public static com.liferay.journal.model.JournalFeed fetchFeed(
-		long groupId, java.lang.String feedId) {
+		long groupId, String feedId) {
 		return getService().fetchFeed(groupId, feedId);
 	}
 
@@ -254,7 +252,7 @@ public class JournalFeedLocalServiceUtil {
 	* @return the matching journal feed, or <code>null</code> if a matching journal feed could not be found
 	*/
 	public static com.liferay.journal.model.JournalFeed fetchJournalFeedByUuidAndGroupId(
-		java.lang.String uuid, long groupId) {
+		String uuid, long groupId) {
 		return getService().fetchJournalFeedByUuidAndGroupId(uuid, groupId);
 	}
 
@@ -267,7 +265,7 @@ public class JournalFeedLocalServiceUtil {
 	*
 	* @return the Spring bean ID for this bean
 	*/
-	public static java.lang.String getBeanIdentifier() {
+	public static String getBeanIdentifier() {
 		return getService().getBeanIdentifier();
 	}
 
@@ -276,13 +274,13 @@ public class JournalFeedLocalServiceUtil {
 		return getService().getExportActionableDynamicQuery(portletDataContext);
 	}
 
-	public static com.liferay.journal.model.JournalFeed getFeed(long feedId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static com.liferay.journal.model.JournalFeed getFeed(
+		long feedId) throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getFeed(feedId);
 	}
 
-	public static com.liferay.journal.model.JournalFeed getFeed(long groupId,
-		java.lang.String feedId)
+	public static com.liferay.journal.model.JournalFeed getFeed(
+		long groupId, String feedId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getFeed(groupId, feedId);
 	}
@@ -312,8 +310,8 @@ public class JournalFeedLocalServiceUtil {
 	* @return the journal feed
 	* @throws PortalException if a journal feed with the primary key could not be found
 	*/
-	public static com.liferay.journal.model.JournalFeed getJournalFeed(long id)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static com.liferay.journal.model.JournalFeed getJournalFeed(
+		long id) throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getJournalFeed(id);
 	}
 
@@ -326,7 +324,7 @@ public class JournalFeedLocalServiceUtil {
 	* @throws PortalException if a matching journal feed could not be found
 	*/
 	public static com.liferay.journal.model.JournalFeed getJournalFeedByUuidAndGroupId(
-		java.lang.String uuid, long groupId)
+		String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getJournalFeedByUuidAndGroupId(uuid, groupId);
 	}
@@ -355,7 +353,7 @@ public class JournalFeedLocalServiceUtil {
 	* @return the matching journal feeds, or an empty list if no matches were found
 	*/
 	public static java.util.List<com.liferay.journal.model.JournalFeed> getJournalFeedsByUuidAndCompanyId(
-		java.lang.String uuid, long companyId) {
+		String uuid, long companyId) {
 		return getService().getJournalFeedsByUuidAndCompanyId(uuid, companyId);
 	}
 
@@ -370,7 +368,7 @@ public class JournalFeedLocalServiceUtil {
 	* @return the range of matching journal feeds, or an empty list if no matches were found
 	*/
 	public static java.util.List<com.liferay.journal.model.JournalFeed> getJournalFeedsByUuidAndCompanyId(
-		java.lang.String uuid, long companyId, int start, int end,
+		String uuid, long companyId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.journal.model.JournalFeed> orderByComparator) {
 		return getService()
 				   .getJournalFeedsByUuidAndCompanyId(uuid, companyId, start,
@@ -393,8 +391,8 @@ public class JournalFeedLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.journal.model.JournalFeed> search(
-		long companyId, long groupId, java.lang.String feedId,
-		java.lang.String name, java.lang.String description,
+		long companyId, long groupId, String feedId,
+		String name, String description,
 		boolean andOperator, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.journal.model.JournalFeed> obc) {
 		return getService()
@@ -403,22 +401,22 @@ public class JournalFeedLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.journal.model.JournalFeed> search(
-		long companyId, long groupId, java.lang.String keywords, int start,
+		long companyId, long groupId, String keywords, int start,
 		int end,
 		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.journal.model.JournalFeed> obc) {
 		return getService().search(companyId, groupId, keywords, start, end, obc);
 	}
 
 	public static int searchCount(long companyId, long groupId,
-		java.lang.String feedId, java.lang.String name,
-		java.lang.String description, boolean andOperator) {
+		String feedId, String name,
+		String description, boolean andOperator) {
 		return getService()
 				   .searchCount(companyId, groupId, feedId, name, description,
 			andOperator);
 	}
 
 	public static int searchCount(long companyId, long groupId,
-		java.lang.String keywords) {
+		String keywords) {
 		return getService().searchCount(companyId, groupId, keywords);
 	}
 
@@ -427,19 +425,19 @@ public class JournalFeedLocalServiceUtil {
 	*
 	* @param beanIdentifier the Spring bean ID for this bean
 	*/
-	public static void setBeanIdentifier(java.lang.String beanIdentifier) {
+	public static void setBeanIdentifier(String beanIdentifier) {
 		getService().setBeanIdentifier(beanIdentifier);
 	}
 
 	public static com.liferay.journal.model.JournalFeed updateFeed(
-		long groupId, java.lang.String feedId, java.lang.String name,
-		java.lang.String description, java.lang.String ddmStructureKey,
-		java.lang.String ddmTemplateKey,
-		java.lang.String ddmRendererTemplateKey, int delta,
-		java.lang.String orderByCol, java.lang.String orderByType,
-		java.lang.String targetLayoutFriendlyUrl,
-		java.lang.String targetPortletId, java.lang.String contentField,
-		java.lang.String feedFormat, double feedVersion,
+		long groupId, String feedId, String name,
+		String description, String ddmStructureKey,
+		String ddmTemplateKey,
+		String ddmRendererTemplateKey, int delta,
+		String orderByCol, String orderByType,
+		String targetLayoutFriendlyUrl,
+		String targetPortletId, String contentField,
+		String feedFormat, double feedVersion,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
@@ -461,7 +459,14 @@ public class JournalFeedLocalServiceUtil {
 	}
 
 	public static JournalFeedLocalService getService() {
-		return _serviceTracker.getService();
+		if (_service == null) {
+			_service = (JournalFeedLocalService)PortalBeanLocatorUtil.locate(JournalFeedLocalService.class.getName());
+
+			ReferenceRegistry.registerReference(JournalFeedLocalServiceUtil.class,
+				"_service");
+		}
+
+		return _service;
 	}
 
 	/**
@@ -471,14 +476,5 @@ public class JournalFeedLocalServiceUtil {
 	public void setService(JournalFeedLocalService service) {
 	}
 
-	private static ServiceTracker<JournalFeedLocalService, JournalFeedLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(JournalFeedLocalServiceUtil.class);
-
-		_serviceTracker = new ServiceTracker<JournalFeedLocalService, JournalFeedLocalService>(bundle.getBundleContext(),
-				JournalFeedLocalService.class, null);
-
-		_serviceTracker.open();
-	}
+	private static JournalFeedLocalService _service;
 }

@@ -15,7 +15,6 @@
 package com.liferay.journal.service;
 
 import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
@@ -49,15 +48,15 @@ public interface JournalFeedService extends BaseService {
 	 * Never modify or reference this interface directly. Always use {@link JournalFeedServiceUtil} to access the journal feed remote service. Add custom service methods to {@link com.liferay.journal.service.impl.JournalFeedServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public com.liferay.journal.model.JournalFeed addFeed(long groupId,
-		java.lang.String feedId, boolean autoFeedId, java.lang.String name,
-		java.lang.String description, java.lang.String ddmStructureKey,
-		java.lang.String ddmTemplateKey,
-		java.lang.String ddmRendererTemplateKey, int delta,
-		java.lang.String orderByCol, java.lang.String orderByType,
-		java.lang.String targetLayoutFriendlyUrl,
-		java.lang.String targetPortletId, java.lang.String contentField,
-		java.lang.String feedType, double feedVersion,
-		com.liferay.portal.service.ServiceContext serviceContext)
+																 String feedId, boolean autoFeedId, String name,
+																 String description, String ddmStructureKey,
+																 String ddmTemplateKey,
+																 String ddmRendererTemplateKey, int delta,
+																 String orderByCol, String orderByType,
+																 String targetLayoutFriendlyUrl,
+																 String targetPortletId, String contentField,
+																 String feedType, double feedVersion,
+																 com.liferay.portal.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	public void deleteFeed(long feedId) throws PortalException;
@@ -65,11 +64,11 @@ public interface JournalFeedService extends BaseService {
 	/**
 	* @deprecated As of 6.2.0, replaced by {@link #deleteFeed(long, String)}
 	*/
-	@java.lang.Deprecated
+	@Deprecated
 	@JSONWebService(mode = JSONWebServiceMode.IGNORE)
 	public void deleteFeed(long groupId, long feedId) throws PortalException;
 
-	public void deleteFeed(long groupId, java.lang.String feedId)
+	public void deleteFeed(long groupId, String feedId)
 		throws PortalException;
 
 	/**
@@ -77,41 +76,41 @@ public interface JournalFeedService extends BaseService {
 	*
 	* @return the Spring bean ID for this bean
 	*/
-	public java.lang.String getBeanIdentifier();
+	public String getBeanIdentifier();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public com.liferay.journal.model.JournalFeed getFeed(long feedId)
 		throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public com.liferay.journal.model.JournalFeed getFeed(long groupId,
-		java.lang.String feedId) throws PortalException;
-
 	/**
 	* @deprecated As of 6.2.0, replaced by {@link #getFeed(long, String)}
 	*/
-	@java.lang.Deprecated
+	@Deprecated
 	@JSONWebService(mode = JSONWebServiceMode.IGNORE)
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public com.liferay.journal.model.JournalFeed getFeed(long groupId,
-		long feedId) throws PortalException;
+																 long feedId) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public com.liferay.journal.model.JournalFeed getFeed(long groupId,
+																 String feedId) throws PortalException;
 
 	/**
 	* Sets the Spring bean ID for this bean.
 	*
 	* @param beanIdentifier the Spring bean ID for this bean
 	*/
-	public void setBeanIdentifier(java.lang.String beanIdentifier);
+	public void setBeanIdentifier(String beanIdentifier);
 
-	public com.liferay.journal.model.JournalFeed updateFeed(long groupId,
-		java.lang.String feedId, java.lang.String name,
-		java.lang.String description, java.lang.String ddmStructureKey,
-		java.lang.String ddmTemplateKey,
-		java.lang.String ddmRendererTemplateKey, int delta,
-		java.lang.String orderByCol, java.lang.String orderByType,
-		java.lang.String targetLayoutFriendlyUrl,
-		java.lang.String targetPortletId, java.lang.String contentField,
-		java.lang.String feedType, double feedVersion,
+	public com.liferay.journal.model.JournalFeed updateFeed(
+		long groupId, String feedId, String name,
+		String description, String ddmStructureKey,
+		String ddmTemplateKey,
+		String ddmRendererTemplateKey, int delta,
+		String orderByCol, String orderByType,
+		String targetLayoutFriendlyUrl,
+		String targetPortletId, String contentField,
+		String feedType, double feedVersion,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws PortalException;
 }
