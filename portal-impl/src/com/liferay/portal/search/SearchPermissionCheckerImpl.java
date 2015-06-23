@@ -95,7 +95,7 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 				return;
 			}
 
-			Indexer indexer = IndexerRegistryUtil.nullSafeGetIndexer(className);
+			Indexer indexer = IndexerRegistryUtil.getIndexer(className);
 
 			if (!indexer.isPermissionAware()) {
 				return;
