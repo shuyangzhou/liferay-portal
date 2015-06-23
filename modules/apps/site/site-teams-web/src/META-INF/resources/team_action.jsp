@@ -26,6 +26,7 @@ Team team = (Team)row.getObject();
 	<c:if test="<%= TeamPermissionUtil.contains(permissionChecker, team, ActionKeys.UPDATE) %>">
 		<portlet:renderURL var="editURL">
 			<portlet:param name="mvcPath" value="/edit_team.jsp" />
+			<portlet:param name="redirect" value="<%= currentURL %>" />
 			<portlet:param name="teamId" value="<%= String.valueOf(team.getTeamId()) %>" />
 		</portlet:renderURL>
 
@@ -71,6 +72,7 @@ Team team = (Team)row.getObject();
 	<c:if test="<%= TeamPermissionUtil.contains(permissionChecker, team, ActionKeys.ASSIGN_MEMBERS) %>">
 		<portlet:renderURL var="assignMembersURL">
 			<portlet:param name="mvcPath" value="/edit_team_assignments.jsp" />
+			<portlet:param name="redirect" value="<%= currentURL %>" />
 			<portlet:param name="teamId" value="<%= String.valueOf(team.getTeamId()) %>" />
 		</portlet:renderURL>
 

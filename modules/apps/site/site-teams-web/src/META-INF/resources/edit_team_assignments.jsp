@@ -24,12 +24,6 @@ int cur = ParamUtil.getInteger(request, SearchContainer.DEFAULT_CUR_PARAM);
 
 String redirect = ParamUtil.getString(request, "redirect");
 
-if (Validator.isNull(redirect)) {
-	PortletURL portletURL = renderResponse.createRenderURL();
-
-	redirect = portletURL.toString();
-}
-
 long teamId = ParamUtil.getLong(request, "teamId");
 
 Team team = TeamLocalServiceUtil.fetchTeam(teamId);
@@ -51,6 +45,7 @@ PortletURL portletURL = renderResponse.createRenderURL();
 portletURL.setParameter("mvcPath", "/edit_team_assignments.jsp");
 portletURL.setParameter("tabs1", tabs1);
 portletURL.setParameter("tabs2", tabs2);
+portletURL.setParameter("redirect", redirect);
 portletURL.setParameter("teamId", String.valueOf(team.getTeamId()));
 
 request.setAttribute("edit_team_assignments.jsp-tabs1", tabs1);
@@ -78,7 +73,7 @@ request.setAttribute("edit_team_assignments.jsp-portletURL", portletURL);
 <liferay-ui:tabs
 	names="users,user-groups"
 	param="tabs1"
-	portletURL="<%= portletURL %>"
+	url="<%= portletURL.toString() %>"
 />
 
 <c:choose>

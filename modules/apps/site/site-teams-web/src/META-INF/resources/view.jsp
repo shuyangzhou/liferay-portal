@@ -69,6 +69,7 @@ pageContext.setAttribute("portletURL", portletURL);
 				<c:if test="<%= GroupPermissionUtil.contains(permissionChecker, group, ActionKeys.MANAGE_TEAMS) %>">
 					<portlet:renderURL var="addTeamURL">
 						<portlet:param name="mvcPath" value="/edit_team.jsp" />
+						<portlet:param name="redirect" value="<%= currentURL %>" />
 						<portlet:param name="groupId" value="<%= String.valueOf(groupId) %>" />
 					</portlet:renderURL>
 
@@ -100,6 +101,7 @@ pageContext.setAttribute("portletURL", portletURL);
 				rowURL = renderResponse.createRenderURL();
 
 				rowURL.setParameter("mvcPath", "/edit_team.jsp");
+				rowURL.setParameter("redirect", currentURL);
 				rowURL.setParameter("teamId", String.valueOf(team.getTeamId()));
 			}
 			%>
