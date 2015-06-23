@@ -197,10 +197,7 @@ public class VerifyLayout extends VerifyProcess {
 
 	protected void verifyUuid() throws Exception {
 		verifyUuid("AssetEntry");
-
-		// Temporarily disabled due to LPS-56383
-
-		// verifyUuid("JournalArticle");
+		verifyUuid("JournalArticle");
 
 		runSQL(
 			"update Layout set uuid_ = sourcePrototypeLayoutUuid where " +
