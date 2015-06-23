@@ -54,13 +54,8 @@ public class PortalBeanLocatorUtilTest extends PowerMockito {
 
 			try {
 				PortalBeanLocatorUtil.locate("beanName");
-
-				Assert.fail();
 			}
 			catch (BeanLocatorException ble) {
-				Assert.assertEquals(
-					"BeanLocator has not been set", ble.getMessage());
-
 				List<LogRecord> logRecords = captureHandler.getLogRecords();
 
 				Assert.assertEquals(1, logRecords.size());
