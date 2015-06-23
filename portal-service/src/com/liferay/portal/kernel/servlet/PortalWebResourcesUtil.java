@@ -124,7 +124,7 @@ public class PortalWebResourcesUtil {
 		return false;
 	}
 
-	public static boolean hasContextPath(String requestURI) {
+	public static boolean isResourceContextPath(String requestURI) {
 		for (PortalWebResources portalWebResources :
 				_instance._getPortalWebResourcesList()) {
 
