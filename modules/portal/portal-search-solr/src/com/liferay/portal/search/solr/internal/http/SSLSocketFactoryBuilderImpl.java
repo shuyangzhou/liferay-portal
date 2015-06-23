@@ -18,7 +18,7 @@ import aQute.bnd.annotation.metatype.Configurable;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.search.solr.configuration.SolrSSLSocketFactoryConfiguration;
+import com.liferay.portal.search.solr.configuration.SolrConfiguration;
 import com.liferay.portal.search.solr.http.KeyStoreLoader;
 import com.liferay.portal.search.solr.http.SSLSocketFactoryBuilder;
 
@@ -41,7 +41,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author André de Oliveira
  */
 @Component(
-	configurationPid = "com.liferay.portal.search.solr.configuration.SolrSSLSocketFactoryConfiguration",
+	configurationPid = "com.liferay.portal.search.solr.configuration.SolrConfiguration",
 	immediate = true, service = SSLSocketFactoryBuilder.class
 )
 public class SSLSocketFactoryBuilderImpl implements SSLSocketFactoryBuilder {
@@ -110,28 +110,24 @@ public class SSLSocketFactoryBuilderImpl implements SSLSocketFactoryBuilder {
 	@Activate
 	@Modified
 	protected void activate(Map<String, Object> properties) {
-		_solrSslSocketFactoryConfiguration = Configurable.createConfigurable(
-			SolrSSLSocketFactoryConfiguration.class, properties);
+		_solrConfiguration = Configurable.createConfigurable(
+			SolrConfiguration.class, properties);
 
-		String keyStorePassword =
-			_solrSslSocketFactoryConfiguration.keyStorePassword();
+		String keyStorePassword = _solrConfiguration.keyStorePassword();
 
 		_keyStorePassword = keyStorePassword.toCharArray();
 
-		_keyStorePath = _solrSslSocketFactoryConfiguration.keyStorePath();
-		_keyStoreType = _solrSslSocketFactoryConfiguration.keyStoreType();
+		_keyStorePath = _solrConfiguration.keyStorePath();
+		_keyStoreType = _solrConfiguration.keyStoreType();
 
-		String trustStorePassword =
-			_solrSslSocketFactoryConfiguration.trustStorePassword();
+		String trustStorePassword = _solrConfiguration.trustStorePassword();
 
 		_trustStorePassword = trustStorePassword.toCharArray();
 
-		_trustStorePath = _solrSslSocketFactoryConfiguration.trustStorePath();
-		_trustStoreType = _solrSslSocketFactoryConfiguration.trustStoreType();
-		_verifyServerCertificate =
-			_solrSslSocketFactoryConfiguration.verifyServerCertificate();
-		_verifyServerHostname =
-			_solrSslSocketFactoryConfiguration.verifyServerName();
+		_trustStorePath = _solrConfiguration.trustStorePath();
+		_trustStoreType = _solrConfiguration.trustStoreType();
+		_verifyServerCertificate = _solrConfiguration.verifyServerCertificate();
+		_verifyServerHostname = _solrConfiguration.verifyServerName();
 	}
 
 	@Reference(unbind = "-")
@@ -146,8 +142,7 @@ public class SSLSocketFactoryBuilderImpl implements SSLSocketFactoryBuilder {
 	private char[] _keyStorePassword;
 	private String _keyStorePath;
 	private String _keyStoreType = KeyStore.getDefaultType();
-	private volatile SolrSSLSocketFactoryConfiguration
-		_solrSslSocketFactoryConfiguration;
+	private volatile SolrConfiguration _solrConfiguration;
 	private char[] _trustStorePassword;
 	private String _trustStorePath;
 	private String _trustStoreType = KeyStore.getDefaultType();
