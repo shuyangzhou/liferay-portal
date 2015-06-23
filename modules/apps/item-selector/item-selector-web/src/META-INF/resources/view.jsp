@@ -18,56 +18,27 @@
 
 <%
 LocalizedItemSelectorRendering localizedItemSelectorRendering = LocalizedItemSelectorRendering.get(liferayPortletRequest);
-
-ResourceBundle resourceBundle = ResourceBundle.getBundle("content/Language", locale);
-
-List<String> titles = localizedItemSelectorRendering.getTitles();
 %>
 
-<c:choose>
-	<c:when test="<%= titles.isEmpty() %>">
+<liferay-ui:tabs names="<%= StringUtil.merge(localizedItemSelectorRendering.getTitles()) %>" refresh="<%= false %>" type="pills" value="<%= localizedItemSelectorRendering.getSelectedTab() %>">
 
-		<%
-		if (_log.isWarnEnabled()) {
+	<%
+	for (String title : localizedItemSelectorRendering.getTitles()) {
+		ItemSelectorViewRenderer itemSelectorViewRenderer = localizedItemSelectorRendering.getItemSelectorViewRenderer(title);
+	%>
 
-			String[] criteria = ParamUtil.getParameterValues(renderRequest, "criteria");
+		<liferay-ui:section>
+			<div>
 
-			String criteriaNames = StringUtil.merge(criteria, StringPool.COMMA + StringPool.SPACE);
+				<%
+				itemSelectorViewRenderer.renderHTML(pageContext);
+				%>
 
-			_log.warn("No item selector views found for " + criteriaNames);
-		}
-		%>
+			</div>
+		</liferay-ui:section>
 
-		<div class="portlet-msg-alert">
-			<%= LanguageUtil.get(resourceBundle, "selection-is-not-available") %>
-		</div>
-	</c:when>
-	<c:otherwise>
-		<liferay-ui:tabs names="<%= StringUtil.merge(titles) %>" refresh="<%= false %>" type="pills" value="<%= localizedItemSelectorRendering.getSelectedTab() %>">
+	<%
+	}
+	%>
 
-			<%
-			for (String title : titles) {
-				ItemSelectorViewRenderer itemSelectorViewRenderer = localizedItemSelectorRendering.getItemSelectorViewRenderer(title);
-			%>
-
-				<liferay-ui:section>
-					<div>
-
-						<%
-						itemSelectorViewRenderer.renderHTML(pageContext);
-						%>
-
-					</div>
-				</liferay-ui:section>
-
-			<%
-			}
-			%>
-
-		</liferay-ui:tabs>
-	</c:otherwise>
-</c:choose>
-
-<%!
-private static Log _log = LogFactoryUtil.getLog("com_liferay_item_selector_web.view.jsp");
-%>
+</liferay-ui:tabs>
