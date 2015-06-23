@@ -163,9 +163,14 @@ public class DLFileVersionTest {
 
 		ExpandoTableLocalServiceUtil.deleteTable(expandoTable);
 
-		tearDownResourcePermission();
-		tearDownPrincipalThreadLocal();
-		tearDownPermissionThreadLocal();
+		RoleTestUtil.removeResourcePermission(
+			RoleConstants.GUEST, "com.liferay.portlet.documentlibrary",
+			ResourceConstants.SCOPE_GROUP, String.valueOf(_group.getGroupId()),
+			ActionKeys.VIEW);
+
+		PrincipalThreadLocal.setName(_originalName);
+
+		PermissionThreadLocal.setPermissionChecker(_originalPermissionChecker);
 
 		List<LoggingEvent> loggingEvents = _captureAppender.getLoggingEvents();
 
@@ -488,13 +493,6 @@ public class DLFileVersionTest {
 
 	protected void tearDownPrincipalThreadLocal() {
 		PrincipalThreadLocal.setName(_originalName);
-	}
-
-	protected void tearDownResourcePermission() throws Exception {
-		RoleTestUtil.removeResourcePermission(
-			RoleConstants.GUEST, "com.liferay.portlet.documentlibrary",
-			ResourceConstants.SCOPE_GROUP, String.valueOf(_group.getGroupId()),
-			ActionKeys.VIEW);
 	}
 
 	protected void updateServiceContext(
