@@ -133,23 +133,23 @@ public class JournalArticleExpirationTest {
 		Calendar expirationDateCalendar = getExpirationCalendar(Time.HOUR, 1);
 
 		return JournalArticleLocalServiceUtil.addArticle(
-			TestPropsValues.getUserId(), groupId,
-			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
-			JournalArticleConstants.CLASSNAME_ID_DEFAULT, 0,
-			StringPool.BLANK, true, JournalArticleConstants.VERSION_DEFAULT,
-			titleMap, descriptionMap, content,
-			ddmStructure.getStructureKey(), ddmTemplate.getTemplateKey(),
-			null, displayDateCalendar.get(Calendar.MONTH),
-			displayDateCalendar.get(Calendar.DAY_OF_MONTH),
-			displayDateCalendar.get(Calendar.YEAR),
-			displayDateCalendar.get(Calendar.HOUR_OF_DAY),
-			displayDateCalendar.get(Calendar.MINUTE),
-			expirationDateCalendar.get(Calendar.MONTH),
-			expirationDateCalendar.get(Calendar.DAY_OF_MONTH),
-			expirationDateCalendar.get(Calendar.YEAR),
-			expirationDateCalendar.get(Calendar.HOUR_OF_DAY),
-			expirationDateCalendar.get(Calendar.MINUTE), false, 0, 0, 0, 0,
-			0, true, true, false, null, null, null, null, serviceContext);
+				TestPropsValues.getUserId(), groupId,
+				JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
+				JournalArticleConstants.CLASSNAME_ID_DEFAULT, 0,
+				StringPool.BLANK, true, JournalArticleConstants.VERSION_DEFAULT,
+				titleMap, descriptionMap, content,
+				ddmStructure.getStructureKey(), ddmTemplate.getTemplateKey(),
+				null, displayDateCalendar.get(Calendar.MONTH),
+				displayDateCalendar.get(Calendar.DAY_OF_MONTH),
+				displayDateCalendar.get(Calendar.YEAR),
+				displayDateCalendar.get(Calendar.HOUR_OF_DAY),
+				displayDateCalendar.get(Calendar.MINUTE),
+				expirationDateCalendar.get(Calendar.MONTH),
+				expirationDateCalendar.get(Calendar.DAY_OF_MONTH),
+				expirationDateCalendar.get(Calendar.YEAR),
+				expirationDateCalendar.get(Calendar.HOUR_OF_DAY),
+				expirationDateCalendar.get(Calendar.MINUTE), false, 0, 0, 0, 0,
+				0, true, true, false, null, null, null, null, serviceContext);
 	}
 
 	protected Calendar getExpirationCalendar(long timeUnit, int timeValue)
