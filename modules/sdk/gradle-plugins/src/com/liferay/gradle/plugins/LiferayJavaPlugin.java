@@ -1433,15 +1433,9 @@ public class LiferayJavaPlugin implements Plugin<Project> {
 		Test test = (Test)GradleUtil.getTask(
 			project, JavaPlugin.TEST_TASK_NAME);
 
-		configureTaskTest(test);
-	}
-
-	protected void configureTaskTest(Test test) {
 		configureTaskTestDefaultCharacterEncoding(test);
 		configureTaskTestForkEvery(test);
-		configureTaskTestJvmArgs(test);
 		configureTaskTestLogging(test);
-		configureTaskTestSystemProperties(test);
 	}
 
 	protected void configureTaskTestDefaultCharacterEncoding(Test test) {
@@ -1449,21 +1443,11 @@ public class LiferayJavaPlugin implements Plugin<Project> {
 	}
 
 	protected void configureTaskTestForkEvery(Test test) {
-		String name = test.getName();
-
-		if (name.equals(JavaPlugin.TEST_TASK_NAME)) {
-			test.setForkEvery(1L);
-		}
-		else if (name.equals(TEST_INTEGRATION_TASK_NAME)) {
-			test.setForkEvery(null);
-		}
+		test.setForkEvery(1L);
 	}
 
 	protected void configureTaskTestIntegration(
 		Project project, LiferayExtension liferayExtension) {
-
-		Test test = (Test)GradleUtil.getTask(
-			project, TEST_INTEGRATION_TASK_NAME);
 
 		SourceSet sourceSet = GradleUtil.getSourceSet(
 			project, TEST_INTEGRATION_SOURCE_SET_NAME);
@@ -1474,48 +1458,20 @@ public class LiferayJavaPlugin implements Plugin<Project> {
 			srcDir, _SKIP_MANAGED_APP_SERVER_FILE_NAME);
 
 		if (!skipManagedAppServerFile.exists()) {
-			configureTaskEnabledWithAppServer(test, "tomcat");
+			Test test = (Test)GradleUtil.getTask(
+				project, TEST_INTEGRATION_TASK_NAME);
 
-			test.dependsOn(START_TESTABLE_TOMCAT_TASK_NAME);
-			test.finalizedBy(STOP_TESTABLE_TOMCAT_TASK_NAME);
+			if (configureTaskEnabledWithAppServer(test, "tomcat")) {
+				test.dependsOn(START_TESTABLE_TOMCAT_TASK_NAME);
+				test.finalizedBy(STOP_TESTABLE_TOMCAT_TASK_NAME);
+			}
 		}
-
-		configureTaskTest(test);
-	}
-
-	protected void configureTaskTestJvmArgs(Test test) {
-		List<String> jvmArgs = new ArrayList<>();
-
-		jvmArgs.add("-Djava.net.preferIPv4Stack=true");
-		jvmArgs.add("-Dliferay.mode=test");
-		jvmArgs.add("-Duser.timezone=GMT");
-
-		test.jvmArgs(jvmArgs);
 	}
 
 	protected void configureTaskTestLogging(Test test) {
 		TestLoggingContainer testLoggingContainer = test.getTestLogging();
 
 		testLoggingContainer.setShowStandardStreams(true);
-	}
-
-	protected void configureTaskTestSystemProperties(final Test test) {
-		test.systemProperty(
-			"app.server.tomcat.dir",
-			new Callable<String>() {
-
-				@Override
-				public String call() throws Exception {
-					LiferayExtension liferayExtension = GradleUtil.getExtension(
-						test.getProject(), LiferayExtension.class);
-
-					AppServer appServer = liferayExtension.getAppServer(
-						"tomcat");
-
-					return FileUtil.getAbsolutePath(appServer.getDir());
-				}
-
-			});
 	}
 
 	protected void configureTestResultsDir(Project project) {
