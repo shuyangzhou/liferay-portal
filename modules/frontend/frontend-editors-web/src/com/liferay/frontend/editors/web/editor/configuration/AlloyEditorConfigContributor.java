@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.editor.configuration.EditorConfigContributor;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
@@ -33,7 +32,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.theme.ThemeDisplay;
 
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -96,8 +94,7 @@ public class AlloyEditorConfigContributor extends BaseEditorConfigContributor {
 			jsonObject.put("srcNode", name);
 		}
 
-		jsonObject.put(
-			"toolbars", getToolbarsJSONObject(themeDisplay.getLocale()));
+		jsonObject.put("toolbars", getToolbarsJSONObject());
 	}
 
 	@Reference(unbind = "-")
@@ -116,53 +113,45 @@ public class AlloyEditorConfigContributor extends BaseEditorConfigContributor {
 		return jsonObject;
 	}
 
-	protected JSONObject getStyleFormatsJSONObject(Locale locale) {
+	protected JSONObject getStyleFormatsJSONObject() {
 		JSONArray stylesJsonArray = JSONFactoryUtil.createJSONArray();
 
 		stylesJsonArray.put(
 			getStyleFormatJSONObject(
-				LanguageUtil.get(locale, "normal"), "p", null,
+				"Normal", "p", null, _CKEDITOR_STYLE_BLOCK));
+		stylesJsonArray.put(
+			getStyleFormatJSONObject(
+				"Heading 1", "h1", null, _CKEDITOR_STYLE_BLOCK));
+		stylesJsonArray.put(
+			getStyleFormatJSONObject(
+				"Heading 2", "h2", null, _CKEDITOR_STYLE_BLOCK));
+		stylesJsonArray.put(
+			getStyleFormatJSONObject(
+				"Heading 3", "h3", null, _CKEDITOR_STYLE_BLOCK));
+		stylesJsonArray.put(
+			getStyleFormatJSONObject(
+				"Heading 4", "h4", null, _CKEDITOR_STYLE_BLOCK));
+		stylesJsonArray.put(
+			getStyleFormatJSONObject(
+				"Preformatted Text", "pre", null, _CKEDITOR_STYLE_BLOCK));
+		stylesJsonArray.put(
+			getStyleFormatJSONObject(
+				"Cited Work", "cite", null, _CKEDITOR_STYLE_INLINE));
+		stylesJsonArray.put(
+			getStyleFormatJSONObject(
+				"Computer Code", "code", null, _CKEDITOR_STYLE_INLINE));
+		stylesJsonArray.put(
+			getStyleFormatJSONObject(
+				"Info Message", "div", "portlet-msg-info",
 				_CKEDITOR_STYLE_BLOCK));
 		stylesJsonArray.put(
 			getStyleFormatJSONObject(
-				LanguageUtil.format(locale, "heading-x", "1"), "h1", null,
+				"Alert Message", "div", "portlet-msg-alert",
 				_CKEDITOR_STYLE_BLOCK));
 		stylesJsonArray.put(
 			getStyleFormatJSONObject(
-				LanguageUtil.format(locale, "heading-x", "2"), "h2", null,
+				"Error Message", "div", "portlet-msg-error",
 				_CKEDITOR_STYLE_BLOCK));
-		stylesJsonArray.put(
-			getStyleFormatJSONObject(
-				LanguageUtil.format(locale, "heading-x", "3"), "h3", null,
-				_CKEDITOR_STYLE_BLOCK));
-		stylesJsonArray.put(
-			getStyleFormatJSONObject(
-				LanguageUtil.format(locale, "heading-x", "4"), "h4", null,
-				_CKEDITOR_STYLE_BLOCK));
-		stylesJsonArray.put(
-			getStyleFormatJSONObject(
-				LanguageUtil.get(locale, "preformatted-text"), "pre", null,
-				_CKEDITOR_STYLE_BLOCK));
-		stylesJsonArray.put(
-			getStyleFormatJSONObject(
-				LanguageUtil.get(locale, "cited-work"), "cite", null,
-				_CKEDITOR_STYLE_INLINE));
-		stylesJsonArray.put(
-			getStyleFormatJSONObject(
-				LanguageUtil.get(locale, "computer-code"), "code", null,
-				_CKEDITOR_STYLE_INLINE));
-		stylesJsonArray.put(
-			getStyleFormatJSONObject(
-				LanguageUtil.get(locale, "info-message"), "div",
-				"portlet-msg-info", _CKEDITOR_STYLE_BLOCK));
-		stylesJsonArray.put(
-			getStyleFormatJSONObject(
-				LanguageUtil.get(locale, "alert-message"), "div",
-				"portlet-msg-alert", _CKEDITOR_STYLE_BLOCK));
-		stylesJsonArray.put(
-			getStyleFormatJSONObject(
-				LanguageUtil.get(locale, "error-message"), "div",
-				"portlet-msg-error", _CKEDITOR_STYLE_BLOCK));
 
 		JSONObject stylesJSONObject = JSONFactoryUtil.createJSONObject();
 
@@ -204,20 +193,19 @@ public class AlloyEditorConfigContributor extends BaseEditorConfigContributor {
 		return jsonObject;
 	}
 
-	protected JSONObject getToolbarsJSONObject(Locale locale) {
+	protected JSONObject getToolbarsJSONObject() {
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 		jsonObject.put("add", getToolbarsAddJSONObject());
-		jsonObject.put("styles", getToolbarsStylesJSONObject(locale));
+		jsonObject.put("styles", getToolbarsStylesJSONObject());
 
 		return jsonObject;
 	}
 
-	protected JSONObject getToolbarsStylesJSONObject(Locale locale) {
+	protected JSONObject getToolbarsStylesJSONObject() {
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-		jsonObject.put(
-			"selections", getToolbarsStylesSelectionsJSONArray(locale));
+		jsonObject.put("selections", getToolbarsStylesSelectionsJSONArray());
 		jsonObject.put("tabIndex", 1);
 
 		return jsonObject;
@@ -233,12 +221,12 @@ public class AlloyEditorConfigContributor extends BaseEditorConfigContributor {
 		return jsonNObject;
 	}
 
-	protected JSONArray getToolbarsStylesSelectionsJSONArray(Locale locale) {
+	protected JSONArray getToolbarsStylesSelectionsJSONArray() {
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
 		jsonArray.put(getToolbarsStylesSelectionsLinkJSONObject());
 		jsonArray.put(getToolbarsStylesSelectionsImageJSONObject());
-		jsonArray.put(getToolbarsStylesSelectionsTextJSONObject(locale));
+		jsonArray.put(getToolbarsStylesSelectionsTextJSONObject());
 		jsonArray.put(getToolbarsStylesSelectionsTableJSONObject());
 
 		return jsonArray;
@@ -271,14 +259,12 @@ public class AlloyEditorConfigContributor extends BaseEditorConfigContributor {
 		return jsonObject;
 	}
 
-	protected JSONObject getToolbarsStylesSelectionsTextJSONObject(
-		Locale locale) {
-
+	protected JSONObject getToolbarsStylesSelectionsTextJSONObject() {
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
-		jsonArray.put(getStyleFormatsJSONObject(locale));
+		jsonArray.put(getStyleFormatsJSONObject());
 		jsonArray.put("bold");
 		jsonArray.put("italic");
 		jsonArray.put("underline");
