@@ -15,7 +15,6 @@
 package com.liferay.portal.cache.ehcache.internal.event;
 
 import com.liferay.portal.cache.ehcache.internal.EhcacheUnwrapUtil;
-import com.liferay.portal.cache.ehcache.internal.SerializableObjectWrapper;
 import com.liferay.portal.kernel.cache.CacheListener;
 import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cache.PortalCacheException;
@@ -45,7 +44,7 @@ public class EhcacheCacheListenerAdapter<K extends Serializable, V>
 			PortalCache<K, V> portalCache, K key, V value, int timeToLive)
 		throws PortalCacheException {
 
-		Element element = createElement(key, value);
+		Element element = new Element(key, value);
 
 		if (timeToLive != PortalCache.DEFAULT_TIME_TO_LIVE) {
 			element.setTimeToLive(timeToLive);
@@ -60,7 +59,7 @@ public class EhcacheCacheListenerAdapter<K extends Serializable, V>
 			PortalCache<K, V> portalCache, K key, V value, int timeToLive)
 		throws PortalCacheException {
 
-		Element element = createElement(key, value);
+		Element element = new Element(key, value);
 
 		if (timeToLive != PortalCache.DEFAULT_TIME_TO_LIVE) {
 			element.setTimeToLive(timeToLive);
@@ -75,7 +74,7 @@ public class EhcacheCacheListenerAdapter<K extends Serializable, V>
 			PortalCache<K, V> portalCache, K key, V value, int timeToLive)
 		throws PortalCacheException {
 
-		Element element = createElement(key, value);
+		Element element = new Element(key, value);
 
 		if (timeToLive != PortalCache.DEFAULT_TIME_TO_LIVE) {
 			element.setTimeToLive(timeToLive);
@@ -90,7 +89,7 @@ public class EhcacheCacheListenerAdapter<K extends Serializable, V>
 			PortalCache<K, V> portalCache, K key, V value, int timeToLive)
 		throws PortalCacheException {
 
-		Element element = createElement(key, value);
+		Element element = new Element(key, value);
 
 		if (timeToLive != PortalCache.DEFAULT_TIME_TO_LIVE) {
 			element.setTimeToLive(timeToLive);
@@ -105,7 +104,7 @@ public class EhcacheCacheListenerAdapter<K extends Serializable, V>
 			PortalCache<K, V> portalCache, K key, V value, int timeToLive)
 		throws PortalCacheException {
 
-		Element element = createElement(key, value);
+		Element element = new Element(key, value);
 
 		if (timeToLive != PortalCache.DEFAULT_TIME_TO_LIVE) {
 			element.setTimeToLive(timeToLive);
@@ -121,16 +120,6 @@ public class EhcacheCacheListenerAdapter<K extends Serializable, V>
 
 		cacheEventListener.notifyRemoveAll(
 			EhcacheUnwrapUtil.getEhcache(portalCache));
-	}
-
-	protected Element createElement(K key, V value) {
-		Object objectValue = value;
-
-		if (value instanceof Serializable) {
-			objectValue = new SerializableObjectWrapper((Serializable)value);
-		}
-
-		return new Element(new SerializableObjectWrapper(key), objectValue);
 	}
 
 	protected final CacheEventListener cacheEventListener;
