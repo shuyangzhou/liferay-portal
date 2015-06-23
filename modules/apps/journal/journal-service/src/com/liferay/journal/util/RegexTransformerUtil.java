@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.journal.transformer;
+package com.liferay.journal.util;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
