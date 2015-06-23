@@ -27,6 +27,7 @@ import com.liferay.portal.upgrade.v7_0_0.util.AssetEntryTable;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.asset.model.AssetCategoryConstants;
 import com.liferay.portlet.asset.util.AssetVocabularySettingsHelper;
+import com.liferay.portlet.journal.model.JournalArticle;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -84,8 +85,7 @@ public class UpgradeAsset extends UpgradeProcess {
 	}
 
 	protected void updateAssetEntries() throws Exception {
-		long classNameId = PortalUtil.getClassNameId(
-			"com.liferay.portlet.journal.model.JournalArticle");
+		long classNameId = PortalUtil.getClassNameId(JournalArticle.class);
 
 		Connection con = null;
 		PreparedStatement ps = null;
