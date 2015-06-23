@@ -40,7 +40,7 @@ public class PortalBeanLocatorUtil {
 		if (beanLocator == null) {
 			_log.error("BeanLocator is null");
 
-			throw new BeanLocatorException("BeanLocator is not set");
+			throw new BeanLocatorException("BeanLocator has not been set");
 		}
 
 		Thread currentThread = Thread.currentThread();
@@ -71,7 +71,7 @@ public class PortalBeanLocatorUtil {
 		if (beanLocator == null) {
 			_log.error("BeanLocator is null");
 
-			throw new BeanLocatorException("BeanLocator is not set");
+			throw new BeanLocatorException("BeanLocator has not been set");
 		}
 
 		Thread currentThread = Thread.currentThread();
