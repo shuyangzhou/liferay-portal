@@ -93,8 +93,6 @@ public interface WebKeys {
 	@Distributed
 	public static final String LAYOUT_ASSET_ENTRY = "LIFERAY_SHARED_LAYOUT_ASSET_ENTRY";
 
-	public static final String LAYOUT_CONTENT = "LAYOUT_CONTENT";
-
 	public static final String LAYOUTS = "LAYOUTS";
 
 	/**
