@@ -1266,10 +1266,29 @@ public class LiferayJavaPlugin implements Plugin<Project> {
 			return;
 		}
 
+		configureTaskSetupTestableTomcatDir(
+			setupTestableTomcatTask, liferayExtension);
 		configureTaskSetupTestableTomcatJmx(
+			setupTestableTomcatTask, liferayExtension);
+		configureTaskSetupTestableTomcatManagerUser(
 			setupTestableTomcatTask, liferayExtension);
 		configureTaskSetupTestableTomcatModuleFrameworkBaseDir(
 			setupTestableTomcatTask, liferayExtension);
+		configureTaskSetupTestableTomcatZipUrl(
+			setupTestableTomcatTask, liferayExtension);
+	}
+
+	protected void configureTaskSetupTestableTomcatDir(
+		SetupTestableTomcatTask setupTestableTomcatTask,
+		LiferayExtension liferayExtension) {
+
+		if (setupTestableTomcatTask.getTomcatDir() != null) {
+			return;
+		}
+
+		AppServer appServer = liferayExtension.getAppServer("tomcat");
+
+		setupTestableTomcatTask.setTomcatDir(appServer.getDir());
 	}
 
 	protected void configureTaskSetupTestableTomcatJmx(
@@ -1282,6 +1301,28 @@ public class LiferayJavaPlugin implements Plugin<Project> {
 
 		setupTestableTomcatTask.setJmxRemotePort(
 			liferayExtension.getJmxRemotePort());
+	}
+
+	protected void configureTaskSetupTestableTomcatManagerUser(
+		SetupTestableTomcatTask setupTestableTomcatTask,
+		LiferayExtension liferayExtension) {
+
+		TomcatAppServer tomcatAppServer =
+			(TomcatAppServer)liferayExtension.getAppServer("tomcat");
+
+		if (Validator.isNull(
+				setupTestableTomcatTask.getTomcatManagerPassword())) {
+
+			setupTestableTomcatTask.setTomcatManagerPassword(
+				tomcatAppServer.getManagerPassword());
+		}
+
+		if (Validator.isNull(
+				setupTestableTomcatTask.getTomcatManagerUserName())) {
+
+			setupTestableTomcatTask.setTomcatManagerUserName(
+				tomcatAppServer.getManagerUserName());
+		}
 	}
 
 	protected void configureTaskSetupTestableTomcatModuleFrameworkBaseDir(
@@ -1297,6 +1338,19 @@ public class LiferayJavaPlugin implements Plugin<Project> {
 
 		setupTestableTomcatTask.setModuleFrameworkBaseDir(
 			moduleFrameworkBaseDir);
+	}
+
+	protected void configureTaskSetupTestableTomcatZipUrl(
+		SetupTestableTomcatTask setupTestableTomcatTask,
+		LiferayExtension liferayExtension) {
+
+		if (Validator.isNotNull(setupTestableTomcatTask.getTomcatZipUrl())) {
+			return;
+		}
+
+		AppServer appServer = liferayExtension.getAppServer("tomcat");
+
+		setupTestableTomcatTask.setTomcatZipUrl(appServer.getZipUrl());
 	}
 
 	protected void configureTaskStartTestableTomcat(
