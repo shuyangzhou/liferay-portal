@@ -101,7 +101,7 @@ AUI.add(
 						var recordsetId = instance.get('recordsetId');
 
 						Liferay.Service(
-							'/ddl.ddlrecordset/update-min-display-rows',
+							'/ddlrecordset/update-min-display-rows',
 							{
 								minDisplayRows: minDisplayRows,
 								recordSetId: recordsetId,
@@ -316,7 +316,7 @@ AUI.add(
 					callback = callback && A.bind(callback, instance) || EMPTY_FN;
 
 					Liferay.Service(
-						'/ddl.ddlrecord/add-record',
+						'/ddlrecord/add-record',
 						{
 							displayIndex: displayIndex,
 							fieldsMap: JSON.stringify(fieldsMap),
@@ -599,7 +599,7 @@ AUI.add(
 					callback = callback && A.bind(callback, instance) || EMPTY_FN;
 
 					Liferay.Service(
-						'/ddl.ddlrecord/update-record',
+						'/ddlrecord/update-record',
 						{
 							displayIndex: displayIndex,
 							fieldsMap: JSON.stringify(fieldsMap),
