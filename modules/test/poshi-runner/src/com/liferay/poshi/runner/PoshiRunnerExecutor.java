@@ -830,9 +830,8 @@ public class PoshiRunnerExecutor {
 		}
 	}
 
-	private static final Pattern _locatorKeyPattern = Pattern.compile(
-		"\\w#\\w");
 	private static Object _returnObject;
+	private static final Pattern _locatorKeyPattern = Pattern.compile("\\w#\\w");
 	private static final Pattern _variableMethodPattern = Pattern.compile(
 		"\\$\\{([\\S]*)\\?([\\S]*)\\}");
 	private static final Pattern _variablePattern = Pattern.compile(
