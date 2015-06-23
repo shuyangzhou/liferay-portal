@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.BufferCacheServletResponse;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
+import com.liferay.portal.kernel.servlet.PortalWebResourceConstants;
 import com.liferay.portal.kernel.servlet.PortalWebResourcesUtil;
 import com.liferay.portal.kernel.servlet.ServletResponseUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
@@ -104,20 +105,16 @@ public class DynamicCSSFilter extends IgnoreModuleRequestFilter {
 		URL resourceURL = _servletContext.getResource(requestPath);
 
 		if (resourceURL == null) {
-			ServletContext portalWebContext =
-				PortalWebResourcesUtil.getServletContextByResource(requestPath);
-
-			if (portalWebContext != null) {
-				resourceURL = PortalWebResourcesUtil.getResource(
-					portalWebContext, requestPath);
-			}
+			resourceURL = PortalWebResourcesUtil.getServletContextResource(
+				requestPath);
 
 			if (resourceURL == null) {
 				return null;
 			}
 
 			bundleResource = true;
-			servletContext = portalWebContext;
+			servletContext = PortalWebResourcesUtil.getServletContext(
+				PortalWebResourceConstants.RESOURCE_TYPE_CSS);
 		}
 
 		String cacheCommonFileName = getCacheFileName(request);

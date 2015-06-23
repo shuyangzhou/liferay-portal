@@ -56,55 +56,28 @@ public class PortalWebResourcesUtil {
 		return null;
 	}
 
-	public static URL getResource(
-		ServletContext servletContext, String resourcePath) {
-
-		resourcePath = stripContextPath(servletContext, resourcePath);
-
-		try {
-			URL url = servletContext.getResource(resourcePath);
-
-			if (url != null) {
-				return url;
-			}
-		}
-		catch (MalformedURLException murle) {
-		}
-
-		return null;
-	}
-
-	public static URL getResource(String resourcePath) {
-		ServletContext servletContext = getServletContextByResource(
-			resourcePath);
-
-		if (servletContext != null) {
-			return getResource(servletContext, resourcePath);
-		}
-
-		return null;
-	}
-
 	public static ServletContext getServletContext(String resourceType) {
 		return getPortalWebResources(resourceType).getServletContext();
 	}
 
-	public static ServletContext getServletContextByResource(
-		String resourcePath) {
-
+	public static URL getServletContextResource(String resourceName) {
 		for (PortalWebResources portalWebResources :
 				_instance._getPortalWebResourcesList()) {
+
+			String contextPath = portalWebResources.getContextPath();
+
+			if (resourceName.startsWith(contextPath)) {
+				resourceName = resourceName.substring(contextPath.length());
+			}
 
 			ServletContext servletContext =
 				portalWebResources.getServletContext();
 
-			resourcePath = stripContextPath(servletContext, resourcePath);
-
 			try {
-				URL url = servletContext.getResource(resourcePath);
+				URL url = servletContext.getResource(resourceName);
 
 				if (url != null) {
-					return servletContext;
+					return url;
 				}
 			}
 			catch (MalformedURLException murle) {
@@ -115,7 +88,7 @@ public class PortalWebResourcesUtil {
 	}
 
 	public static boolean isResourceAvailable(String path) {
-		URL url = getResource(path);
+		URL url = getServletContextResource(path);
 
 		if (url != null) {
 			return true;
@@ -134,18 +107,6 @@ public class PortalWebResourcesUtil {
 		}
 
 		return false;
-	}
-
-	public static String stripContextPath(
-		ServletContext servletContext, String resourcePath) {
-
-		String contextPath = servletContext.getContextPath();
-
-		if (resourcePath.startsWith(contextPath)) {
-			resourcePath = resourcePath.substring(contextPath.length());
-		}
-
-		return resourcePath;
 	}
 
 	private PortalWebResourcesUtil() {
