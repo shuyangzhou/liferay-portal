@@ -50,7 +50,6 @@ import com.liferay.portlet.dynamicdatamapping.model.DDMTemplateConstants;
 import com.liferay.portlet.dynamicdatamapping.model.DDMTemplateVersion;
 import com.liferay.portlet.dynamicdatamapping.service.base.DDMTemplateLocalServiceBaseImpl;
 import com.liferay.portlet.dynamicdatamapping.util.DDMXMLUtil;
-import com.liferay.util.xml.XMLUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -1455,7 +1454,7 @@ public class DDMTemplateLocalServiceImpl
 				throw new TemplateScriptException(pe);
 			}
 
-			script = XMLUtil.formatXML(script);
+			script = DDMXMLUtil.formatXML(script);
 		}
 
 		return script;

@@ -146,7 +146,6 @@ import com.liferay.portlet.social.model.SocialActivityConstants;
 import com.liferay.portlet.trash.model.TrashEntry;
 import com.liferay.portlet.trash.model.TrashVersion;
 import com.liferay.portlet.trash.util.TrashUtil;
-import com.liferay.util.xml.XMLUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -6469,7 +6468,7 @@ public class JournalArticleLocalServiceImpl
 				user, groupId, articleId, version, incrementVersion,
 				rootElement, images);
 
-			content = XMLUtil.formatXML(document);
+			content = DDMXMLUtil.formatXML(document);
 		}
 		catch (DocumentException de) {
 			_log.error(de, de);

@@ -21,7 +21,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
-import com.liferay.util.xml.XMLUtil;
+import com.liferay.portlet.dynamicdatamapping.util.DDMXMLUtil;
 
 import java.io.InputStream;
 
@@ -57,7 +57,7 @@ public class BaseJournalServiceTestCase {
 	protected String getDefultXsd() throws Exception {
 		String xsd = readText("test-journal-structure-all-fields.xml");
 
-		return XMLUtil.formatXML(xsd);
+		return DDMXMLUtil.formatXML(xsd);
 	}
 
 	protected ServiceContext getServiceContext() {
