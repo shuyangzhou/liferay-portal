@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.cache.configuration.PortalCacheConfiguration;
 import com.liferay.portal.kernel.cache.configuration.PortalCacheManagerConfiguration;
 
 import java.io.Serializable;
-
 import java.net.URL;
 
 /**
