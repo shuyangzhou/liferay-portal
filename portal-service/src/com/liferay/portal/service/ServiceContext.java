@@ -711,11 +711,9 @@ public class ServiceContext implements Cloneable, Serializable {
 
 	/**
 	 * Returns the UUID of this service context's current entity.
-	 *
-	 * <p>
-	 * To ensure the same UUID is never used by two entities, the UUID is reset
-	 * to <code>null</code> upon invoking this method.
-	 * </p>
+	 *<p>
+	 * Note: to ensure it is never accidentally used by two entities, the UUID
+	 * is always reset to <code>null</code> upon invoking this method.
 	 *
 	 * @return the UUID of this service context's current entity
 	 */
@@ -871,12 +869,11 @@ public class ServiceContext implements Cloneable, Serializable {
 	}
 
 	/**
-	 * Merges all attributes and fields (except for the request) of the
-	 * specified service context with this service context object. Attributes
-	 * and fields that are <code>null</code> or less than <code>1</code> are not
-	 * merged.
+	 * Merges all not <code>null</code> or zero attributes and fields
+	 * (except for the request) of the parameter service context with this
+	 * service context object.
 	 *
-	 * @param serviceContext the service context object to be merged
+	 * @param serviceContext the servic context object to be merged
 	 */
 	public void merge(ServiceContext serviceContext) {
 		setAddGroupPermissions(serviceContext.isAddGroupPermissions());
