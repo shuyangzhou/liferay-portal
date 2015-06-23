@@ -14,10 +14,6 @@
 
 package com.liferay.journal.lar;
 
-import com.liferay.journal.exception.FeedTargetLayoutFriendlyUrlException;
-import com.liferay.journal.model.JournalArticle;
-import com.liferay.journal.model.JournalFeed;
-import com.liferay.journal.service.JournalFeedLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -46,6 +42,12 @@ import com.liferay.portlet.exportimport.lar.PortletDataContext;
 import com.liferay.portlet.exportimport.lar.StagedModelDataHandler;
 import com.liferay.portlet.exportimport.lar.StagedModelDataHandlerUtil;
 import com.liferay.portlet.exportimport.lar.StagedModelModifiedDateComparator;
+import com.liferay.portlet.journal.FeedTargetLayoutFriendlyUrlException;
+import com.liferay.portlet.journal.lar.JournalCreationStrategy;
+import com.liferay.portlet.journal.lar.JournalCreationStrategyFactory;
+import com.liferay.portlet.journal.model.JournalArticle;
+import com.liferay.portlet.journal.model.JournalFeed;
+import com.liferay.portlet.journal.service.JournalFeedLocalServiceUtil;
 
 import java.util.List;
 import java.util.Map;

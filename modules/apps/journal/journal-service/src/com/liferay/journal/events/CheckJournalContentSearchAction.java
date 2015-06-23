@@ -14,7 +14,6 @@
 
 package com.liferay.journal.events;
 
-import com.liferay.journal.service.JournalContentSearchLocalService;
 import com.liferay.portal.kernel.events.ActionException;
 import com.liferay.portal.kernel.events.SimpleAction;
 import com.liferay.portal.kernel.log.Log;
@@ -25,6 +24,7 @@ import com.liferay.portal.model.Company;
 import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.service.CompanyLocalService;
 import com.liferay.portal.util.PropsUtil;
+import com.liferay.portlet.journal.service.JournalContentSearchLocalService;
 
 import java.util.List;
 

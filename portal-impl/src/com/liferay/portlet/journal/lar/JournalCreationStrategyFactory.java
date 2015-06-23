@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.journal.lar;
+package com.liferay.portlet.journal.lar;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
