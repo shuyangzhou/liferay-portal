@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.cache.memory.internal;
+package com.liferay.portal.cache.memory;
 
 import com.liferay.portal.kernel.cache.AbstractPortalCache;
 import com.liferay.portal.kernel.cache.PortalCacheManager;
