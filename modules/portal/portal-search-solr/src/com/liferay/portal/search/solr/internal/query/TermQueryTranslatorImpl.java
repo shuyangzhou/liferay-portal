@@ -28,6 +28,7 @@ import org.apache.lucene.index.Term;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.BooleanClause;
+import org.apache.lucene.util.Version;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -120,7 +121,8 @@ public class TermQueryTranslatorImpl implements TermQueryTranslator {
 	private org.apache.lucene.search.Query _parseLuceneQuery(
 		String field, String value) {
 
-		QueryParser queryParser = new QueryParser(field, new KeywordAnalyzer());
+		QueryParser queryParser = new QueryParser(
+			Version.LUCENE_43, field, new KeywordAnalyzer());
 
 		try {
 			return queryParser.parse(value);

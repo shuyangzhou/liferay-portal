@@ -63,13 +63,13 @@ public class SolrServerWrapper {
 		}
 	}
 
-	public NamedList<Object> request(SolrRequest solrRequest, String collection)
+	public NamedList<Object> request(SolrRequest solrRequest)
 		throws IOException, SolrServerException {
 
 		try {
 			incrementInvocationCount();
 
-			return _solrServer.request(solrRequest, collection);
+			return _solrServer.request(solrRequest);
 		}
 		catch (SolrServerException sse) {
 			if (sse.getRootCause() instanceof IOException) {
