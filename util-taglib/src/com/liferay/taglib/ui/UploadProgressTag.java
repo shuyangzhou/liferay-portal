@@ -37,10 +37,8 @@ public class UploadProgressTag extends IncludeTag {
 		_message = message;
 	}
 
-	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
-	 */
 	public void setRedirect(String redirect) {
+		_redirect = redirect;
 	}
 
 	public void setUpdatePeriod(Integer updatePeriod) {
@@ -52,6 +50,7 @@ public class UploadProgressTag extends IncludeTag {
 		_height = 25;
 		_id = null;
 		_message = null;
+		_redirect = null;
 		_updatePeriod = 1000;
 	}
 
@@ -65,6 +64,7 @@ public class UploadProgressTag extends IncludeTag {
 		request.setAttribute("liferay-ui:progress:id", _id);
 		request.setAttribute("liferay-ui:progress:height", _height);
 		request.setAttribute("liferay-ui:progress:message", _message);
+		request.setAttribute("liferay-ui:progress:redirect", _redirect);
 		request.setAttribute("liferay-ui:progress:updatePeriod", _updatePeriod);
 	}
 
@@ -73,6 +73,7 @@ public class UploadProgressTag extends IncludeTag {
 	private Integer _height;
 	private String _id;
 	private String _message;
+	private String _redirect;
 	private Integer _updatePeriod;
 
 }
