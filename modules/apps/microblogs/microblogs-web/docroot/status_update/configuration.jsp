@@ -17,7 +17,7 @@
  */
 --%>
 
-<%@ include file="/html/portlet/init.jsp" %>
+<%@ include file="/init.jsp" %>
 
 <div class="microblogs-status-update">
 	<liferay-portlet:actionURL portletConfiguration="true" var="configurationActionURL" />
