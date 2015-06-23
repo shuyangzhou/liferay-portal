@@ -33,8 +33,10 @@ import java.net.URL;
 
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.log4j.Appender;
@@ -110,6 +112,16 @@ public class Log4JUtil {
 
 		domConfigurator.doConfigure(
 			urlReader, LogManager.getLoggerRepository());
+
+		Set<String> currentLoggerNames = new HashSet<>();
+
+		Enumeration<Logger> enu = LogManager.getCurrentLoggers();
+
+		while (enu.hasMoreElements()) {
+			Logger logger = enu.nextElement();
+
+			currentLoggerNames.add(logger.getName());
+		}
 
 		try {
 			SAXReader saxReader = new SAXReader();
