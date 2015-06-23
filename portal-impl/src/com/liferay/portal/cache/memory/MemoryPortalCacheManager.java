@@ -22,9 +22,7 @@ import com.liferay.portal.kernel.cache.cluster.ClusterLinkCallbackFactory;
 import com.liferay.portal.kernel.cache.configuration.CallbackConfiguration;
 import com.liferay.portal.kernel.cache.configuration.PortalCacheConfiguration;
 import com.liferay.portal.kernel.cache.configuration.PortalCacheManagerConfiguration;
-import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.Props;
-import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.util.PropsValues;
 
 import java.io.Serializable;
 
@@ -125,9 +123,7 @@ public class MemoryPortalCacheManager<K extends Serializable, V>
 			cacheListenerConfigurations = null;
 		CallbackConfiguration bootstrapLoaderConfiguration = null;
 
-		if (isClusterAware() &&
-			GetterUtil.getBoolean(props.get(PropsKeys.CLUSTER_LINK_ENABLED))) {
-
+		if (isClusterAware() && PropsValues.CLUSTER_LINK_ENABLED) {
 			CallbackConfiguration cacheListenerConfiguration =
 				new CallbackConfiguration(
 					ClusterLinkCallbackFactory.INSTANCE, new Properties());
@@ -161,8 +157,6 @@ public class MemoryPortalCacheManager<K extends Serializable, V>
 
 		aggregatedCacheManagerListener.init();
 	}
-
-	protected volatile Props props;
 
 	private int _cacheInitialCapacity = 10000;
 	private int _cacheManagerInitialCapacity = 10000;
