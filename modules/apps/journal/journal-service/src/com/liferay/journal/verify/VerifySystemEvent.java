@@ -16,8 +16,8 @@ package com.liferay.journal.verify;
 
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalArticleResource;
-import com.liferay.journal.service.JournalArticleLocalService;
-import com.liferay.journal.service.JournalArticleResourceLocalService;
+import com.liferay.journal.service.JournalArticleLocalServiceUtil;
+import com.liferay.journal.service.JournalArticleResourceLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Property;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
@@ -33,33 +33,14 @@ import com.liferay.portal.verify.VerifyProcess;
 
 import java.util.List;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Daniel Kocsis
  */
-@Component(service = JournalServiceSystemEventVerifyProcess.class)
-public class JournalServiceSystemEventVerifyProcess extends VerifyProcess {
+public class VerifySystemEvent extends VerifyProcess {
 
 	@Override
 	protected void doVerify() throws Exception {
 		verifyJournalArticleDeleteSystemEvents();
-	}
-
-	@Reference(unbind = "-")
-	protected void setJournalArticleLocalService(
-		JournalArticleLocalService journalArticleLocalService) {
-
-		_journalArticleLocalService = journalArticleLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setJournalArticleResourceLocalService(
-		JournalArticleResourceLocalService journalArticleResourceLocalService) {
-
-		_journalArticleResourceLocalService =
-			journalArticleResourceLocalService;
 	}
 
 	protected void verifyJournalArticleDeleteSystemEvents() throws Exception {
@@ -96,7 +77,7 @@ public class JournalServiceSystemEventVerifyProcess extends VerifyProcess {
 			}
 
 			JournalArticleResource journalArticleResource =
-				_journalArticleResourceLocalService.
+				JournalArticleResourceLocalServiceUtil.
 					fetchJournalArticleResourceByUuidAndGroupId(
 						systemEvent.getClassUuid(), systemEvent.getGroupId());
 
@@ -105,7 +86,7 @@ public class JournalServiceSystemEventVerifyProcess extends VerifyProcess {
 			}
 
 			JournalArticle journalArticle =
-				_journalArticleLocalService.fetchArticle(
+				JournalArticleLocalServiceUtil.fetchArticle(
 					systemEvent.getGroupId(),
 					journalArticleResource.getArticleId(),
 					extraDataJSONObject.getDouble("version"));
@@ -123,10 +104,6 @@ public class JournalServiceSystemEventVerifyProcess extends VerifyProcess {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		JournalServiceSystemEventVerifyProcess.class);
-
-	private JournalArticleLocalService _journalArticleLocalService;
-	private JournalArticleResourceLocalService
-		_journalArticleResourceLocalService;
+		VerifySystemEvent.class);
 
 }
