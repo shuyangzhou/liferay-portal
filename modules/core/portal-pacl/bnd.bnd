@@ -1,9 +1,6 @@
-Bundle-Name: Liferay Portal PACL
-Bundle-SymbolicName: portal-pacl
 Bundle-Version: 7.0.0
-Include-Resource:\
-	classes,\
-	@lib/jsqlparser.jar
+Import-Package: *
+Include-Resource: classes
 Private-Package: com.liferay.portal.security.pacl.*
 
 -baseline: *;version="6.2.0"
