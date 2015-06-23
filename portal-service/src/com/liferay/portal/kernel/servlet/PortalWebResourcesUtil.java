@@ -81,7 +81,7 @@ public class PortalWebResourcesUtil {
 	}
 
 	public static URL getResource(String path) {
-		ServletContext servletContext = getPathServletContext(
+		ServletContext servletContext = getServletContextByResource(
 			path);
 
 		if (servletContext != null) {
@@ -98,7 +98,7 @@ public class PortalWebResourcesUtil {
 		return portalWebResources.getServletContext();
 	}
 
-	public static ServletContext getPathServletContext(
+	public static ServletContext getServletContextByResource(
 		String path) {
 
 		for (PortalWebResources portalWebResources :
