@@ -45,6 +45,7 @@ import com.liferay.journal.service.JournalArticleService;
 import com.liferay.journal.service.JournalContentSearchLocalService;
 import com.liferay.journal.service.JournalFeedService;
 import com.liferay.journal.service.JournalFolderService;
+import com.liferay.journal.upgrade.JournalServiceUpgrade;
 import com.liferay.journal.util.impl.JournalUtil;
 import com.liferay.journal.web.asset.JournalArticleAssetRenderer;
 import com.liferay.journal.web.constants.JournalPortletKeys;
@@ -1288,6 +1289,11 @@ public class JournalPortlet extends MVCPortlet {
 
 	@Reference(unbind = "-")
 	protected void setJournalWebUpgrade(JournalWebUpgrade journalWebUpgrade) {
+	}
+
+	@Reference(unbind = "-")
+	protected void setJournalServiceUpgrade(
+		JournalServiceUpgrade journalServiceUpgrade) {
 	}
 
 	@Reference
