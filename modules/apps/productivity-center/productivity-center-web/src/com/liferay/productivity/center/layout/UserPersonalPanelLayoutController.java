@@ -44,7 +44,9 @@ public class UserPersonalPanelLayoutController
 
 	@Override
 	public String getURL() {
-		return _URL;
+		return
+			"${liferay:mainPath}/portal/layout?p_l_id=${liferay:plid}&" +
+				"p_v_l_s_g_id=${liferay:pvlsgid}";
 	}
 
 	@Override
@@ -124,10 +126,6 @@ public class UserPersonalPanelLayoutController
 
 	private static final String _VIEW_PAGE =
 		"/layout/view/user_personal_panel.jsp";
-
-	private static final String _URL =
-		"${liferay:mainPath}/portal/layout?p_l_id=${liferay:plid}" +
-			"&p_v_l_s_g_id=${liferay:pvlsgid}";
 
 	private PanelAppRegistry _panelAppRegistry;
 	private PanelCategoryRegistry _panelCategoryRegistry;
