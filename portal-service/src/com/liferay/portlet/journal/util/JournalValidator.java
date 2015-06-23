@@ -12,23 +12,18 @@
  * details.
  */
 
-package com.liferay.journal.util.comparator;
+package com.liferay.portlet.journal.util;
 
-import com.liferay.journal.model.JournalArticle;
-import com.liferay.portlet.exportimport.lar.StagedModelModifiedDateComparator;
+import com.liferay.portlet.journal.FolderNameException;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author David Zhang
  */
-public class ArticleModifiedDateComparator
-	extends StagedModelModifiedDateComparator<JournalArticle> {
+public interface JournalValidator {
 
-	public ArticleModifiedDateComparator() {
-		this(false);
-	}
+	public boolean isValidName(String name);
 
-	public ArticleModifiedDateComparator(boolean ascending) {
-		super(ascending);
-	}
+	public void validateFolderName(String folderName)
+		throws FolderNameException;
 
 }

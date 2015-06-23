@@ -12,45 +12,37 @@
  * details.
  */
 
-package com.liferay.journal.util.comparator;
+package com.liferay.portlet.journal.util.comparator;
 
-import com.liferay.journal.model.JournalArticle;
-import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portlet.journal.model.JournalArticle;
 
 /**
  * @author Brian Wing Shun Chan
  */
-public class ArticleDisplayDateComparator
-	extends OrderByComparator<JournalArticle> {
+public class ArticleTitleComparator extends OrderByComparator<JournalArticle> {
 
-	public static final String ORDER_BY_ASC = "displayDate ASC, version ASC";
+	public static final String ORDER_BY_ASC = "title ASC";
 
-	public static final String ORDER_BY_DESC = "displayDate DESC, version DESC";
+	public static final String ORDER_BY_DESC = "title DESC";
 
-	public static final String[] ORDER_BY_FIELDS = {"displayDate", "version"};
+	public static final String[] ORDER_BY_FIELDS = {"title"};
 
-	public ArticleDisplayDateComparator() {
+	public ArticleTitleComparator() {
 		this(false);
 	}
 
-	public ArticleDisplayDateComparator(boolean ascending) {
+	public ArticleTitleComparator(boolean ascending) {
 		_ascending = ascending;
 	}
 
 	@Override
 	public int compare(JournalArticle article1, JournalArticle article2) {
-		int value = DateUtil.compareTo(
-			article1.getDisplayDate(), article2.getDisplayDate());
+		String title1 = StringUtil.toLowerCase(article1.getTitle());
+		String title2 = StringUtil.toLowerCase(article2.getTitle());
 
-		if (value == 0) {
-			if (article1.getVersion() < article2.getVersion()) {
-				value = -1;
-			}
-			else if (article1.getVersion() > article2.getVersion()) {
-				value = 1;
-			}
-		}
+		int value = title1.compareTo(title2);
 
 		if (_ascending) {
 			return value;
