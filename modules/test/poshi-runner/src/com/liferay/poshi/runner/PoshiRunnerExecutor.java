@@ -691,11 +691,11 @@ public class PoshiRunnerExecutor {
 			if (element.attributeValue("attribute") != null) {
 				LiferaySelenium liferaySelenium = SeleniumUtil.getSelenium();
 
-				String attribute = element.attributeValue("attribute");
+				String attributeName = element.attributeValue("attribute");
 				String locator = element.attributeValue("locator");
 
 				varValue = liferaySelenium.getAttribute(
-					locator + "@" + attribute);
+					locator + "@" + attributeName);
 			}
 			else if ((element.attributeValue("group") != null) &&
 					 (element.attributeValue("input") != null) &&
