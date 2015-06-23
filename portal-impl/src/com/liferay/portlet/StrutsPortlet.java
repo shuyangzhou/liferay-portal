@@ -248,9 +248,9 @@ public class StrutsPortlet extends LiferayPortlet {
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
 		throws IOException, PortletException {
 
-		String resourceID = resourceRequest.getResourceID();
+		String resourceId = resourceRequest.getResourceID();
 
-		checkPath(resourceID);
+		checkPath(resourceId);
 
 		resourceRequest.setAttribute(WebKeys.PORTLET_STRUTS_ACTION, viewAction);
 

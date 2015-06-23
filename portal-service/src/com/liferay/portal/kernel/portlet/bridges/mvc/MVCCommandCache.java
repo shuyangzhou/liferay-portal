@@ -110,8 +110,8 @@ public class MVCCommandCache<T> {
 		}
 	}
 
-	public List<T> getMVCCommands(String key) {
-		List<T> mvcCommands = _mvcCommands.get(key);
+	public List<T> getMVCCommandChain(String mvcCommandChain) {
+		List<T> mvcCommands = _mvcCommandChainCache.get(mvcCommandChain);
 
 		if (mvcCommands != null) {
 			return mvcCommands;
@@ -119,7 +119,7 @@ public class MVCCommandCache<T> {
 
 		mvcCommands = new ArrayList<>();
 
-		String[] mvcCommandNames = StringUtil.split(key);
+		String[] mvcCommandNames = StringUtil.split(mvcCommandChain);
 
 		for (String mvcCommandName : mvcCommandNames) {
 			T mvcCommand = getMVCCommand(mvcCommandName);
@@ -129,12 +129,12 @@ public class MVCCommandCache<T> {
 			}
 			else {
 				if (_log.isWarnEnabled()) {
-					_log.warn("Unable to find MVCCommand " + key);
+					_log.warn("Unable to find MVCCommand " + mvcCommandChain);
 				}
 			}
 		}
 
-		_mvcCommands.put(key, mvcCommands);
+		_mvcCommandChainCache.put(mvcCommandChain, mvcCommands);
 
 		return mvcCommands;
 	}
@@ -149,7 +149,7 @@ public class MVCCommandCache<T> {
 	private final T _emptyMVCCommand;
 	private final String _mvcComandPostFix;
 	private final Map<String, T> _mvcCommandCache = new ConcurrentHashMap<>();
-	private final Map<String, List<T>> _mvcCommands =
+	private final Map<String, List<T>> _mvcCommandChainCache =
 		new ConcurrentHashMap<>();
 	private final String _packagePrefix;
 	private final ServiceTracker<T, T> _serviceTracker;
@@ -191,7 +191,7 @@ public class MVCCommandCache<T> {
 
 			_mvcCommandCache.remove(mvcCommandName);
 
-			for (List<T> mvcCommands : _mvcCommands.values()) {
+			for (List<T> mvcCommands : _mvcCommandChainCache.values()) {
 				mvcCommands.remove(mvcCommand);
 			}
 		}
