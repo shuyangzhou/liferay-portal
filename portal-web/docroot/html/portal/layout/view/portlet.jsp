@@ -62,4 +62,4 @@ else {
 }
 %>
 
-<liferay-ui:layout-common />
+<%@ include file="/html/portal/layout/view/common.jspf" %>

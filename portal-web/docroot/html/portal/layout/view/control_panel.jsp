@@ -178,4 +178,4 @@ request.setAttribute("control_panel.jsp-ppid", ppid);
 	</c:otherwise>
 </c:choose>
 
-<liferay-ui:layout-common />
+<%@ include file="/html/portal/layout/view/common.jspf" %>
