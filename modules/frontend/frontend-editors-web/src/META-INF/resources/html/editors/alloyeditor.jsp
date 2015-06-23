@@ -205,8 +205,6 @@ if (showSource) {
 				textMode: <%= (editorOptions != null) ? editorOptions.isTextMode() : Boolean.FALSE.toString() %>
 			}
 		).render();
-
-		<liferay-util:dynamic-include key='<%= "js#" + editorName + "#onEditorCreate" %>' />
 	};
 
 	window['<%= name %>'] = {
