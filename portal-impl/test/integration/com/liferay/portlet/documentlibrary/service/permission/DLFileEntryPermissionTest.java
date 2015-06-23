@@ -43,7 +43,7 @@ import org.junit.Test;
  * @author Eric Chin
  * @author Shinn Lok
  */
-public class DLFileEntryPermissionCheckerTest extends BasePermissionTestCase {
+public class DLFileEntryPermissionTest extends BasePermissionTestCase {
 
 	@ClassRule
 	@Rule

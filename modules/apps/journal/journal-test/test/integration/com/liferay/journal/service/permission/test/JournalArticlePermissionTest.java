@@ -38,8 +38,7 @@ import org.junit.runner.RunWith;
  * @author Shinn Lok
  */
 @RunWith(Arquillian.class)
-public class JournalArticlePermissionCheckerTest
-	extends BasePermissionTestCase {
+public class JournalArticlePermissionTest extends BasePermissionTestCase {
 
 	@ClassRule
 	@Rule
