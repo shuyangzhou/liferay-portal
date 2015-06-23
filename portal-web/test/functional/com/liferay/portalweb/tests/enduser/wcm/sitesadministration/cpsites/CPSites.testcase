@@ -335,7 +335,6 @@
 		</execute>
 
 		<execute macro="Site#viewSiteFriendlyURLPG">
-			<var name="siteName" value="Site Name" />
 			<var name="sitePageName" value="Public Page" />
 			<var name="sitePageURL" value="http://localhost:8080/web/alpha" />
 		</execute>
@@ -346,7 +345,6 @@
 		</execute>
 
 		<execute macro="Site#viewSiteFriendlyURLPG">
-			<var name="siteName" value="Site Name" />
 			<var name="sitePageName" value="Private Page" />
 			<var name="sitePageURL" value="http://localhost:8080/group/alpha" />
 		</execute>
