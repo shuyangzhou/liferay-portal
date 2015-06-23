@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.gradle.util;
+package com.liferay.gradle.plugins.poshi.runner.util;
 
 import java.io.File;
 
