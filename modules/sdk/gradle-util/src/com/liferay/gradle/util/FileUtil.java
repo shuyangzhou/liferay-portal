@@ -23,7 +23,6 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 
 import java.util.Collections;
@@ -47,63 +46,18 @@ public class FileUtil {
 	}
 
 	public static void get(
-			Project project, final String url, final File destinationFile)
-		throws Exception {
+		Project project, final String url, final File destinationFile) {
 
-		get(project, url, destinationFile, false, true, false);
-	}
+		Closure<Void> closure = new Closure<Void>(null) {
 
-	public static void get(
-			Project project, String url, File destinationFile,
-			boolean ignoreErrors, boolean tryLocalNetwork, boolean verbose)
-		throws Exception {
-
-		String mirrorsCacheArtifactSubdir = url.replaceFirst(
-			"https?:\\/\\/(.+\\/).+", "$1");
-
-		File mirrorsCacheArtifactDir = new File(
-			_getMirrorsCacheDir(), mirrorsCacheArtifactSubdir);
-
-		String fileName = url.replaceFirst(".+\\/(.+)", "$1");
-
-		File mirrorsCacheArtifactFile = new File(
-			mirrorsCacheArtifactDir, fileName);
-
-		if (!mirrorsCacheArtifactFile.exists()) {
-			mirrorsCacheArtifactDir.mkdirs();
-
-			String mirrorsUrl = url.replaceFirst(
-				"http:\\/\\/", "http://mirrors/");
-
-			if (tryLocalNetwork) {
-				try {
-					_get(
-						project, mirrorsUrl, mirrorsCacheArtifactFile,
-						ignoreErrors, verbose);
-				}
-				catch (Exception e) {
-					_get(
-						project, url, mirrorsCacheArtifactFile, ignoreErrors,
-						verbose);
-				}
+			@SuppressWarnings("unused")
+			public void doCall(AntBuilder antBuilder) {
+				_invokeAntMethodGet(antBuilder, url, destinationFile);
 			}
-			else {
-				_get(
-					project, url, mirrorsCacheArtifactFile, ignoreErrors,
-					verbose);
-			}
-		}
 
-		Path destinationPath = destinationFile.toPath();
+		};
 
-		if (destinationFile.isDirectory()) {
-			Files.copy(
-				mirrorsCacheArtifactFile.toPath(),
-				destinationPath.resolve(fileName));
-		}
-		else {
-			Files.copy(mirrorsCacheArtifactFile.toPath(), destinationPath);
-		}
+		project.ant(closure);
 	}
 
 	public static String getAbsolutePath(File file) {
@@ -236,35 +190,6 @@ public class FileUtil {
 		}
 	}
 
-	private static void _get(
-		Project project, final String url, final File destinationFile,
-		final boolean ignoreErrors, final boolean verbose) {
-
-		Closure<Void> closure = new Closure<Void>(null) {
-
-			@SuppressWarnings("unused")
-			public void doCall(AntBuilder antBuilder) {
-				Map<String, Object> args = new HashMap<>();
-
-				args.put("dest", destinationFile);
-				args.put("ignoreerrors", ignoreErrors);
-				args.put("src", url);
-				args.put("verbose", verbose);
-
-				antBuilder.invokeMethod("get", args);
-			}
-
-		};
-
-		project.ant(closure);
-	}
-
-	private static File _getMirrorsCacheDir() {
-		String userHome = System.getProperty("user.home");
-
-		return new File(userHome, ".liferay/mirrors");
-	}
-
 	private static void _invokeAntMethod(
 		AntBuilder antBuilder, String method, String paramName,
 		Object paramValue) {
@@ -284,6 +209,17 @@ public class FileUtil {
 		args.put("includes", fileset[1]);
 
 		antBuilder.invokeMethod("fileset", args);
+	}
+
+	private static void _invokeAntMethodGet(
+		AntBuilder antBuilder, String url, File destinationFile) {
+
+		Map<String, Object> args = new HashMap<>();
+
+		args.put("dest", destinationFile);
+		args.put("src", url);
+
+		antBuilder.invokeMethod("get", args);
 	}
 
 	private static void _invokeAntMethodJar(
