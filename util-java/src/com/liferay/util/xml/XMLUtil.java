@@ -60,7 +60,7 @@ public class XMLUtil {
 
 		try {
 			xml = StringUtil.replace(xml, "&#", "[$SPECIAL_CHARACTER$]");
-			xml = Dom4jUtil.toString(xml, _XML_INDENT);
+			xml = XMLFormatter.toString(xml, _XML_INDENT);
 			xml = StringUtil.replace(xml, "[$SPECIAL_CHARACTER$]", "&#");
 
 			return xml;

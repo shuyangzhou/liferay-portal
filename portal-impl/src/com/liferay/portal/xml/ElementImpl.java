@@ -24,7 +24,7 @@ import com.liferay.portal.kernel.xml.Node;
 import com.liferay.portal.kernel.xml.QName;
 import com.liferay.portal.kernel.xml.Text;
 import com.liferay.portal.kernel.xml.Visitor;
-import com.liferay.util.xml.Dom4jUtil;
+import com.liferay.util.xml.XMLFormatter;
 
 import java.io.IOException;
 
@@ -362,19 +362,19 @@ public class ElementImpl extends BranchImpl implements Element {
 
 	@Override
 	public String formattedString() throws IOException {
-		return Dom4jUtil.toString(_element);
+		return XMLFormatter.toString(_element);
 	}
 
 	@Override
 	public String formattedString(String indent) throws IOException {
-		return Dom4jUtil.toString(_element, indent);
+		return XMLFormatter.toString(_element, indent);
 	}
 
 	@Override
 	public String formattedString(String indent, boolean expandEmptyElements)
 		throws IOException {
 
-		return Dom4jUtil.toString(_element, indent, expandEmptyElements);
+		return XMLFormatter.toString(_element, indent, expandEmptyElements);
 	}
 
 	@Override
