@@ -35,7 +35,7 @@ import org.osgi.service.component.annotations.Component;
 	service = EditorConfigContributor.class
 )
 public class CKEditorCreoleConfigContributor
-	extends BaseCKEditorConfigContributor {
+		extends BaseCKEditorConfigContributor {
 
 	@Override
 	public void populateConfigJSONObject(

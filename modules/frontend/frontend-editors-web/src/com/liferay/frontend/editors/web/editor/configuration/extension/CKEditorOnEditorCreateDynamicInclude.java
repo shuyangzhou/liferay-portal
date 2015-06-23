@@ -52,8 +52,7 @@ public class CKEditorOnEditorCreateDynamicInclude implements DynamicInclude {
 	public void register(
 		DynamicInclude.DynamicIncludeRegistry dynamicIncludeRegistry) {
 
-		dynamicIncludeRegistry.register(
-			"com.liferay.frontend.editors.web#ckeditor#onEditorCreate");
+		dynamicIncludeRegistry.register("js#ckeditor#onEditorCreate");
 	}
 
 	@Activate
