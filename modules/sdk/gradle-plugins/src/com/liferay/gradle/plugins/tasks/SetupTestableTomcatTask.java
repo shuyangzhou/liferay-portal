@@ -369,14 +369,14 @@ public class SetupTestableTomcatTask extends DefaultTask {
 
 	private boolean _debugLogging;
 	private boolean _jmxRemoteAuthenticate;
-	private int _jmxRemotePort;
+	private int _jmxRemotePort = 8099;
 	private boolean _jmxRemoteSsl;
 	private File _moduleFrameworkBaseDir;
 	private final DateFormat _timestampDateFormat = new SimpleDateFormat(
 		"yyyyMMddkkmmssSSS");
 	private File _tomcatDir;
-	private String _tomcatManagerPassword;
-	private String _tomcatManagerUserName;
+	private String _tomcatManagerPassword = "tomcat";
+	private String _tomcatManagerUserName = "tomcat";
 	private String _tomcatZipUrl;
 
 }
