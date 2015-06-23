@@ -22,5 +22,4 @@
 <liferay-ui:error exception="<%= NoSuchCouponException.class %>" message="the-coupon-could-not-be-found" />
 <liferay-ui:error exception="<%= NoSuchItemException.class %>" message="the-item-could-not-be-found" />
 <liferay-ui:error exception="<%= NoSuchOrderException.class %>" message="the-order-could-not-be-found" />
-
-<liferay-ui:error-principal />
+<liferay-ui:error exception="<%= PrincipalException.class %>" message="you-do-not-have-the-required-permissions" />
