@@ -27,6 +27,7 @@ import com.liferay.portal.upgrade.util.UpgradePortletId;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portlet.PortletPreferencesImpl;
+import com.liferay.portlet.journal.model.JournalArticle;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -173,9 +174,7 @@ public class UpgradeJournalArticles extends UpgradePortletId {
 
 		newPortletPreferences.setValue(
 			"anyAssetType",
-			String.valueOf(
-				PortalUtil.getClassNameId(
-					"com.liferay.portlet.journal.model.JournalArticle")));
+			String.valueOf(PortalUtil.getClassNameId(JournalArticle.class)));
 
 		long companyId = getCompanyId(plid);
 
