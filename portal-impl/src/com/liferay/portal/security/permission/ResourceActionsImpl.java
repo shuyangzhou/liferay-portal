@@ -342,14 +342,7 @@ public class ResourceActionsImpl implements ResourceActions {
 		PortletResourceActionsBag portletResourceActionsBag =
 			getPortletResourceActionsBag(portletName);
 
-		Set<String> resources = portletResourceActionsBag.getResources();
-
-		if (resources == null) {
-			return new ArrayList<>();
-		}
-		else {
-			return new ArrayList<>(resources);
-		}
+		return new ArrayList<>(portletResourceActionsBag.getResources());
 	}
 
 	@Override
