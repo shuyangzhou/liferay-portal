@@ -20,7 +20,6 @@ import com.liferay.gradle.util.GradleUtil;
 import java.io.File;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,16 +34,6 @@ public class WhipTaskExtension {
 
 	public WhipTaskExtension(Task task) {
 		_task = task;
-	}
-
-	public WhipTaskExtension excludes(Iterable<Object> excludes) {
-		GUtil.addToCollection(_excludes, excludes);
-
-		return this;
-	}
-
-	public WhipTaskExtension excludes(Object ... excludes) {
-		return excludes(Arrays.asList(excludes));
 	}
 
 	public File getDataFile() {
@@ -63,16 +52,6 @@ public class WhipTaskExtension {
 		return GradleUtil.toFile(_task.getProject(), _whipJarFile);
 	}
 
-	public WhipTaskExtension includes(Iterable<Object> includes) {
-		GUtil.addToCollection(_includes, includes);
-
-		return this;
-	}
-
-	public WhipTaskExtension includes(Object ... includes) {
-		return includes(Arrays.asList(includes));
-	}
-
 	public boolean isEnabled() {
 		return _enabled;
 	}
@@ -89,16 +68,16 @@ public class WhipTaskExtension {
 		_enabled = enabled;
 	}
 
-	public void setExcludes(Iterable<Object> excludes) {
+	public void setExcludes(List<String> excludes) {
 		_excludes.clear();
 
-		excludes(excludes);
+		GUtil.addToCollection(_excludes, excludes);
 	}
 
 	public void setIncludes(Iterable<Object> includes) {
 		_includes.clear();
 
-		includes(includes);
+		GUtil.addToCollection(_includes, includes);
 	}
 
 	public void setInstrumentDump(boolean instrumentDump) {
