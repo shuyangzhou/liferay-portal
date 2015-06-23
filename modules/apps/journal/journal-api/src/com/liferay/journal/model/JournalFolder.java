@@ -15,7 +15,6 @@
 package com.liferay.journal.model;
 
 import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.util.Accessor;
 import com.liferay.portal.model.PersistedModel;
 import com.liferay.portal.model.TreeModel;
@@ -54,7 +53,7 @@ public interface JournalFolder extends JournalFolderModel, PersistedModel,
 			}
 		};
 
-	public java.util.List<java.lang.Long> getAncestorFolderIds()
+	public java.util.List<Long> getAncestorFolderIds()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public java.util.List<com.liferay.journal.model.JournalFolder> getAncestors()
