@@ -104,30 +104,30 @@ public class AlloyEditorConfigContributor extends BaseEditorConfigContributor {
 	protected JSONObject getStyleFormatsJSONObject() {
 		String[] styleFormats = {
 			"{name: 'Normal', style: { element: 'p', type: " +
-				_CKEDITOR_STYLE_BLOCK + "}}",
+				CKEDITOR_STYLE_BLOCK + "}}",
 			"{name: 'Heading 1', style: { element: 'h1', type: " +
-				_CKEDITOR_STYLE_BLOCK + "}}",
+				CKEDITOR_STYLE_BLOCK + "}}",
 			"{name: 'Heading 2', style: { element: 'h2', type: " +
-				_CKEDITOR_STYLE_BLOCK + "}}",
+				CKEDITOR_STYLE_BLOCK + "}}",
 			"{name: 'Heading 3', style: { element: 'h3', type: " +
-				_CKEDITOR_STYLE_BLOCK + "}}",
+				CKEDITOR_STYLE_BLOCK + "}}",
 			"{name: 'Heading 4', style: { element: 'h4', type: " +
-				_CKEDITOR_STYLE_BLOCK + "}}",
+				CKEDITOR_STYLE_BLOCK + "}}",
 			"{name: 'Preformatted Text', style: { element:'pre', type: " +
-				_CKEDITOR_STYLE_BLOCK + "}}",
+				CKEDITOR_STYLE_BLOCK + "}}",
 			"{name: 'Cited Work', style: { element:'cite', type: " +
-				_CKEDITOR_STYLE_INLINE + "}}",
+				CKEDITOR_STYLE_INLINE + "}}",
 			"{name: 'Computer Code', style: { element:'code', type: " +
-				_CKEDITOR_STYLE_INLINE + "}}",
+				CKEDITOR_STYLE_INLINE + "}}",
 			"{name: 'Info Message', style: { element: 'div', attributes: " +
 				"{'class':'portlet-msg-info'}, type: " +
-					_CKEDITOR_STYLE_BLOCK + "}}",
+				CKEDITOR_STYLE_BLOCK + "}}",
 			"{name: 'Alert Message', style: { element: 'div', attributes: " +
 				"{'class': 'portlet-msg-alert'}, type: " +
-				_CKEDITOR_STYLE_BLOCK + "}}",
+				CKEDITOR_STYLE_BLOCK + "}}",
 			"{name: 'Error Message', style: { element: 'div', attributes: " +
 				"{'class': 'portlet-msg-error'}, type: " +
-					_CKEDITOR_STYLE_BLOCK + "}}"
+				CKEDITOR_STYLE_BLOCK + "}}"
 		};
 
 		JSONArray stylesJsonArray = JSONFactoryUtil.createJSONArray();
@@ -284,10 +284,8 @@ public class AlloyEditorConfigContributor extends BaseEditorConfigContributor {
 			"filebrowserImageBrowseUrl", dlItemSelectorURL.toString());
 	}
 
-	private static final int _CKEDITOR_STYLE_BLOCK = 1;
-
-	private static final int _CKEDITOR_STYLE_INLINE = 2;
-
 	private ItemSelector _itemSelector;
 
+	private static final int CKEDITOR_STYLE_BLOCK = 1;
+	private static final int CKEDITOR_STYLE_INLINE = 2;
 }
