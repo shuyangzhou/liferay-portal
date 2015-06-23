@@ -21,7 +21,7 @@ import javax.portlet.ResourceResponse;
 /**
  * @author Sergio González
  */
-public interface MVCResourceCommand extends MVCCommand {
+public interface MVCResourceCommand {
 
 	public static final MVCResourceCommand EMPTY = new MVCResourceCommand() {
 
