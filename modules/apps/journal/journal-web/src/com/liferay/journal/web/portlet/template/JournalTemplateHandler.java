@@ -65,7 +65,7 @@ public class JournalTemplateHandler extends BaseDDMTemplateHandler {
 
 		try {
 			contextObjects.put(
-				"journalContentUtil", JournalContentUtil.getInstance());
+				"journalContentUtil", JournalContentUtil.getJournalContent());
 		}
 		catch (SecurityException se) {
 			_log.error(se, se);
