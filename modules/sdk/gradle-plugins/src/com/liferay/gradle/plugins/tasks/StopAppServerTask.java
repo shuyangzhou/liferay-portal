@@ -29,9 +29,6 @@ import org.gradle.api.tasks.InputDirectory;
 import org.gradle.api.tasks.InputFile;
 import org.gradle.api.tasks.TaskAction;
 
-import org.zeroturnaround.exec.ProcessExecutor;
-import org.zeroturnaround.exec.stream.slf4j.Slf4jStream;
-
 /**
  * @author Andrea Di Giorgi
  */
@@ -128,16 +125,14 @@ public class StopAppServerTask extends DefaultTask implements AppServerTask {
 		commands.add(appServerStopExecutableFile.getAbsolutePath());
 		commands.addAll(getAppServerStopExecutableArgs());
 
-		ProcessExecutor processExecutor = new ProcessExecutor(commands);
+		ProcessBuilder processBuilder = new ProcessBuilder(commands);
 
-		processExecutor.directory(getAppServerBinDir());
+		processBuilder.directory(getAppServerBinDir());
+		processBuilder.redirectErrorStream(false);
 
-		Slf4jStream slf4jStream = Slf4jStream.ofCaller();
+		Process process = processBuilder.start();
 
-		processExecutor.redirectError(slf4jStream.asWarn());
-		processExecutor.redirectOutput(slf4jStream.asWarn());
-
-		processExecutor.executeNoTimeout();
+		process.waitFor();
 	}
 
 	private final AppServer _appServer = new AppServer(null, getProject());
