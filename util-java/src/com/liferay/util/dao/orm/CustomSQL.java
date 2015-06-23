@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
-import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -759,33 +758,28 @@ public class CustomSQL {
 			return;
 		}
 
-		try {
-			if (_log.isDebugEnabled()) {
-				_log.debug("Loading " + source);
-			}
-
-			Document document = UnsecureSAXReaderUtil.read(is);
-
-			Element rootElement = document.getRootElement();
-
-			for (Element sqlElement : rootElement.elements("sql")) {
-				String file = sqlElement.attributeValue("file");
-
-				if (Validator.isNotNull(file)) {
-					read(classLoader, file);
-				}
-				else {
-					String id = sqlElement.attributeValue("id");
-					String content = transform(sqlElement.getText());
-
-					content = replaceIsNull(content);
-
-					_sqlPool.put(id, content);
-				}
-			}
+		if (_log.isDebugEnabled()) {
+			_log.debug("Loading " + source);
 		}
-		finally {
-			StreamUtil.cleanUp(is);
+
+		Document document = UnsecureSAXReaderUtil.read(is);
+
+		Element rootElement = document.getRootElement();
+
+		for (Element sqlElement : rootElement.elements("sql")) {
+			String file = sqlElement.attributeValue("file");
+
+			if (Validator.isNotNull(file)) {
+				read(classLoader, file);
+			}
+			else {
+				String id = sqlElement.attributeValue("id");
+				String content = transform(sqlElement.getText());
+
+				content = replaceIsNull(content);
+
+				_sqlPool.put(id, content);
+			}
 		}
 	}
 
