@@ -14,7 +14,6 @@
 
 package com.liferay.journal.events;
 
-import com.liferay.journal.model.JournalArticle;
 import com.liferay.portal.kernel.events.ActionException;
 import com.liferay.portal.kernel.events.SimpleAction;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -27,6 +26,7 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalService;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.dynamicdatamapping.util.DefaultDDMStructureUtil;
+import com.liferay.portlet.journal.model.JournalArticle;
 
 import java.util.List;
 
