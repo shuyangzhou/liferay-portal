@@ -836,6 +836,14 @@ public class ResourceActionsImpl implements ResourceActions {
 				return portletResourceActionsBag;
 			}
 
+			if (portletName.equals(
+				"com_liferay_journal_web_portlet_JournalPortlet")) {
+
+				System.out.println(
+					"#######Step 1 creating empty " +
+						"PortletResourceActionsBagImpl for " + portletName);
+			}
+
 			portletResourceActionsBag = new PortletResourceActionsBagImpl();
 
 			_portletResourceActionsBags.put(
@@ -886,6 +894,8 @@ public class ResourceActionsImpl implements ResourceActions {
 
 	protected void read(String servletContextName, Document document)
 		throws Exception {
+
+		System.out.println("^^^^^^Reading XML : " + document.asXML());
 
 		Element rootElement = document.getRootElement();
 
@@ -1007,6 +1017,14 @@ public class ResourceActionsImpl implements ResourceActions {
 
 			Set<String> modelResources =
 				portletResourceActionsBag.getResources();
+
+			if (portletName.equals(
+				"com_liferay_journal_web_portlet_JournalPortlet")) {
+
+				System.out.println(
+					"#######Step 2 adding " + name + " to getResources() for " +
+						portletName);
+			}
 
 			modelResources.add(name);
 
