@@ -14,14 +14,6 @@
 
 package com.liferay.journal.service.persistence.test;
 
-import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-
-import com.liferay.journal.exception.NoSuchFolderException;
-import com.liferay.journal.model.JournalFolder;
-import com.liferay.journal.service.JournalFolderLocalServiceUtil;
-import com.liferay.journal.service.persistence.JournalFolderPersistence;
-import com.liferay.journal.service.persistence.JournalFolderUtil;
-
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -41,17 +33,18 @@ import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
-
+import com.liferay.journal.NoSuchFolderException;
+import com.liferay.journal.model.JournalFolder;
+import com.liferay.journal.service.JournalFolderLocalServiceUtil;
+import com.liferay.journal.service.persistence.JournalFolderPersistence;
+import com.liferay.journal.service.persistence.JournalFolderUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import org.junit.runner.RunWith;
-
 import java.io.Serializable;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -62,7 +55,6 @@ import java.util.Set;
 /**
  * @generated
  */
-@RunWith(Arquillian.class)
 public class JournalFolderPersistenceTest {
 	@Rule
 	public final AggregateTestRule aggregateTestRule = new AggregateTestRule(new LiferayIntegrationTestRule(),

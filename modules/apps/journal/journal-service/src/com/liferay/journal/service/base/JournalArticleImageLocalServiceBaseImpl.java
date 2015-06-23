@@ -15,11 +15,6 @@
 package com.liferay.journal.service.base;
 
 import aQute.bnd.annotation.ProviderType;
-
-import com.liferay.journal.model.JournalArticleImage;
-import com.liferay.journal.service.JournalArticleImageLocalService;
-import com.liferay.journal.service.persistence.JournalArticleImagePersistence;
-
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.bean.IdentifiableBean;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -41,9 +36,11 @@ import com.liferay.portal.service.BaseLocalServiceImpl;
 import com.liferay.portal.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.service.persistence.ImagePersistence;
 import com.liferay.portal.util.PortalUtil;
+import com.liferay.journal.model.JournalArticleImage;
+import com.liferay.journal.service.JournalArticleImageLocalService;
+import com.liferay.journal.service.persistence.JournalArticleImagePersistence;
 
 import java.io.Serializable;
-
 import java.util.List;
 
 import javax.sql.DataSource;
