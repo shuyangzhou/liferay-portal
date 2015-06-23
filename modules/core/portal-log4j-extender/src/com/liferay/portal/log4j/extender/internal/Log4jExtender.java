@@ -48,7 +48,7 @@ public class Log4jExtender implements BundleActivator {
 				}
 				catch (IOException ioe) {
 					_logger.error(
-						"Unable to configure Log4j for bundle " +
+						"Unable to configure log4j for bundle " +
 							bundle.getSymbolicName(),
 						ioe);
 				}
