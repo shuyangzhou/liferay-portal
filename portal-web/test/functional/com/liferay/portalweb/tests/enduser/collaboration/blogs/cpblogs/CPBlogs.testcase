@@ -336,6 +336,7 @@
 
 		<execute macro="BlogsEntryComment#delete">
 			<var name="entryComment" value="${entryComment}" />
+			<var name="entryTitle" value="${entryTitle}" />
 		</execute>
 
 		<execute macro="Page#gotoContentCP">
@@ -400,7 +401,6 @@
 		</execute>
 
 		<execute macro="BlogsEntryComment#viewCP">
-			<var name="commentCount" value="1" />
 			<var name="entryComment" value="${entryCommentEdit}" />
 			<var name="entryTitle" value="${entryTitle}" />
 		</execute>
