@@ -341,7 +341,7 @@
 		<execute function="AssertClick" locator1="CPUsersandorganizationsAssignuserrolesUser#AVAILABLE" value1="Available" />
 		<execute function="Type" locator1="CPUsersandorganizationsAssignuserrolesUser#BASIC_SEARCH_FIELD" value1="${userScreenName}" />
 		<execute function="AssertClick" locator1="CPUsersandorganizationsAssignuserrolesUser#BASIC_SEARCH_BUTTON" value1="Search" />
-
+		
 		<var name="key_userScreenName" value="${userScreenName}" />
 
 		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsAssignuserrolesUser#USER_TABLE_SCREEN_NAME" value1="${userScreenName}" />
