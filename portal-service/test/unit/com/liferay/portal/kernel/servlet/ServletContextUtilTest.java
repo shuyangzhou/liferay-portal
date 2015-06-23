@@ -20,20 +20,25 @@ import com.liferay.portal.kernel.util.StringPool;
 
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import javax.servlet.ServletContext;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import org.springframework.mock.web.MockServletContext;
 
 /**
  * @author Laszlo Csontos
  */
-
-public class ServletContextUtilTest {
+@RunWith(PowerMockRunner.class)
+public class ServletContextUtilTest extends PowerMockito {
 
 	@Test
 	public void testGetResourceURIWithEmptyPath() throws Exception {
