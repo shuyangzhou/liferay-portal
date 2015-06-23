@@ -28,7 +28,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Michael Bradford
  */
-@Component(immediate = true)
+@Component(immediate = true, service = PortalWebResources.class)
 public class ThemesPortalWebResources implements PortalWebResources {
 
 	@Override
