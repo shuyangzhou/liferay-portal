@@ -14,6 +14,8 @@
 
 package com.liferay.frontend.editors.web.editor.configuration.extension;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.taglib.DynamicInclude;
 import com.liferay.portal.kernel.util.StreamUtil;
 
@@ -62,7 +64,10 @@ public class CKEditorOnEditorCreateDynamicInclude implements DynamicInclude {
 
 	private static final String _JS_DIALOG_DEFINITION_INCLUDE_PATH =
 		"/META-INF/resources/html/editors/ckeditor/extension/" +
-			"dialog_definition.js";
+		"dialog_definition.js";
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		CKEditorOnEditorCreateDynamicInclude.class);
 
 	private BundleContext _bundleContext;
 
