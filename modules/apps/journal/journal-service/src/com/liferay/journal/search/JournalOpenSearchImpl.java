@@ -17,8 +17,8 @@ package com.liferay.journal.search;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalArticleConstants;
 import com.liferay.journal.model.JournalContentSearch;
-import com.liferay.journal.service.JournalArticleService;
-import com.liferay.journal.service.JournalContentSearchLocalService;
+import com.liferay.journal.service.JournalArticleServiceUtil;
+import com.liferay.journal.service.JournalContentSearchLocalServiceUtil;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.HitsOpenSearchImpl;
 import com.liferay.portal.kernel.search.Indexer;
@@ -29,9 +29,9 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.Layout;
 import com.liferay.portal.security.permission.ActionKeys;
 import com.liferay.portal.security.permission.PermissionChecker;
-import com.liferay.portal.service.GroupLocalService;
-import com.liferay.portal.service.LayoutLocalService;
-import com.liferay.portal.service.LayoutSetLocalService;
+import com.liferay.portal.service.GroupLocalServiceUtil;
+import com.liferay.portal.service.LayoutLocalServiceUtil;
+import com.liferay.portal.service.LayoutSetLocalServiceUtil;
 import com.liferay.portal.service.permission.LayoutPermissionUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
@@ -41,7 +41,6 @@ import java.util.List;
 import javax.portlet.PortletURL;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
@@ -79,7 +78,7 @@ public class JournalOpenSearchImpl extends HitsOpenSearchImpl {
 			themeDisplay.getPermissionChecker();
 
 		List<JournalContentSearch> contentSearches =
-			_journalContentSearchLocalService.getArticleContentSearches(
+			JournalContentSearchLocalServiceUtil.getArticleContentSearches(
 				articleId);
 
 		for (JournalContentSearch contentSearch : contentSearches) {
@@ -89,7 +88,7 @@ public class JournalOpenSearchImpl extends HitsOpenSearchImpl {
 					contentSearch.getLayoutId(), ActionKeys.VIEW)) {
 
 				if (contentSearch.isPrivateLayout()) {
-					if (!_groupLocalService.hasUserGroup(
+					if (!GroupLocalServiceUtil.hasUserGroup(
 							themeDisplay.getUserId(),
 							contentSearch.getGroupId())) {
 
@@ -97,7 +96,7 @@ public class JournalOpenSearchImpl extends HitsOpenSearchImpl {
 					}
 				}
 
-				Layout hitLayout = _layoutLocalService.getLayout(
+				Layout hitLayout = LayoutLocalServiceUtil.getLayout(
 					contentSearch.getGroupId(), contentSearch.isPrivateLayout(),
 					contentSearch.getLayoutId());
 
@@ -116,12 +115,12 @@ public class JournalOpenSearchImpl extends HitsOpenSearchImpl {
 
 		String articleId = result.get("articleId");
 
-		JournalArticle article = _journalArticleService.getArticle(
+		JournalArticle article = JournalArticleServiceUtil.getArticle(
 			groupId, articleId);
 
 		if (Validator.isNotNull(article.getLayoutUuid())) {
 			String groupFriendlyURL = PortalUtil.getGroupFriendlyURL(
-				_layoutSetLocalService.getLayoutSet(
+				LayoutSetLocalServiceUtil.getLayoutSet(
 					article.getGroupId(), false),
 				themeDisplay);
 
@@ -133,7 +132,7 @@ public class JournalOpenSearchImpl extends HitsOpenSearchImpl {
 		Layout layout = themeDisplay.getLayout();
 
 		List<Long> hitLayoutIds =
-			_journalContentSearchLocalService.getLayoutIds(
+			JournalContentSearchLocalServiceUtil.getLayoutIds(
 				layout.getGroupId(), layout.isPrivateLayout(), articleId);
 
 		for (Long hitLayoutId : hitLayoutIds) {
@@ -144,7 +143,7 @@ public class JournalOpenSearchImpl extends HitsOpenSearchImpl {
 					permissionChecker, layout.getGroupId(),
 					layout.isPrivateLayout(), hitLayoutId, ActionKeys.VIEW)) {
 
-				Layout hitLayout = _layoutLocalService.getLayout(
+				Layout hitLayout = LayoutLocalServiceUtil.getLayout(
 					layout.getGroupId(), layout.isPrivateLayout(),
 					hitLayoutId.longValue());
 
@@ -169,44 +168,5 @@ public class JournalOpenSearchImpl extends HitsOpenSearchImpl {
 
 		return portletURL.toString();
 	}
-
-	@Reference
-	protected void setGroupLocalService(GroupLocalService groupLocalService) {
-		_groupLocalService = groupLocalService;
-	}
-
-	@Reference
-	protected void setJournalArticleService(
-		JournalArticleService journalArticleService) {
-
-		_journalArticleService = journalArticleService;
-	}
-
-	@Reference
-	protected void setJournalContentSearchLocalService(
-		JournalContentSearchLocalService journalContentSearchLocalService) {
-
-		_journalContentSearchLocalService = journalContentSearchLocalService;
-	}
-
-	@Reference
-	protected void setLayoutLocalService(
-		LayoutLocalService layoutLocalService) {
-
-		_layoutLocalService = layoutLocalService;
-	}
-
-	@Reference
-	protected void setLayoutSetLocalService(
-		LayoutSetLocalService layoutSetLocalService) {
-
-		_layoutSetLocalService = layoutSetLocalService;
-	}
-
-	private GroupLocalService _groupLocalService;
-	private JournalArticleService _journalArticleService;
-	private JournalContentSearchLocalService _journalContentSearchLocalService;
-	private LayoutLocalService _layoutLocalService;
-	private LayoutSetLocalService _layoutSetLocalService;
 
 }

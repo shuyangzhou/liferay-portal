@@ -16,7 +16,7 @@ package com.liferay.journal.util;
 
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalArticleConstants;
-import com.liferay.journal.service.JournalArticleService;
+import com.liferay.journal.service.JournalArticleServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -36,7 +36,6 @@ import java.util.Locale;
 import java.util.Set;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Eduardo Garcia
@@ -55,7 +54,7 @@ public class JournalArticleSitemapURLProvider implements SitemapURLProvider {
 		throws PortalException {
 
 		List<JournalArticle> journalArticles =
-			_journalArticleService.getArticlesByLayoutUuid(
+			JournalArticleServiceUtil.getArticlesByLayoutUuid(
 				layout.getGroupId(), layout.getUuid());
 
 		if (journalArticles.isEmpty()) {
@@ -121,14 +120,5 @@ public class JournalArticleSitemapURLProvider implements SitemapURLProvider {
 			processedArticleIds.add(journalArticle.getArticleId());
 		}
 	}
-
-	@Reference
-	protected void setJournalArticleService(
-		JournalArticleService journalArticleService) {
-
-		_journalArticleService = journalArticleService;
-	}
-
-	private JournalArticleService _journalArticleService;
 
 }

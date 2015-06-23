@@ -18,19 +18,15 @@ import com.liferay.journal.model.JournalArticle;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.PortletProvider;
 import com.liferay.portal.kernel.portlet.PortletProviderUtil;
+import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
 import com.liferay.portal.security.auth.PrincipalException;
 import com.liferay.portal.security.permission.BaseResourcePermissionChecker;
 import com.liferay.portal.security.permission.PermissionChecker;
 
-import org.osgi.service.component.annotations.Component;
-
 /**
  * @author Jorge Ferrer
  */
-@Component(
-	property = {"resource.name=com.liferay.journal"},
-	service = BaseResourcePermissionChecker.class
-)
+@OSGiBeanProperties(property = {"resource.name=com.liferay.journal"})
 public class JournalPermission extends BaseResourcePermissionChecker {
 
 	public static final String RESOURCE_NAME = "com.liferay.journal";
