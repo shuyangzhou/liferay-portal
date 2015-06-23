@@ -134,8 +134,7 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 				createDate, modifiedDate, parentDDMStructureId,
 				PortalUtil.getClassNameId(JournalArticle.class.getName()),
 				ddmStructureKey, name, description, xsd,
-				PropsValues.JOURNAL_ARTICLE_STORAGE_TYPE,
-				_DDM_STRUCTURE_TYPE_DEFAULT);
+				PropsValues.JOURNAL_ARTICLE_STORAGE_TYPE, _TYPE_DEFAULT);
 		}
 	}
 
@@ -223,11 +222,6 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 		updateAssetEntryClassTypeId();
 
 		super.doUpgrade();
-	}
-
-	protected long getDDMStructureClassNameId() {
-		return PortalUtil.getClassNameId(
-			"com.liferay.portlet.dynamicdatamapping.model.DDMStructure");
 	}
 
 	protected long getDDMStructureId(long groupId, String structureId) {
@@ -493,16 +487,16 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 
 				long ddmTemplateId = increment();
 
-				long classNameId = getDDMStructureClassNameId();
+				long classNameId = PortalUtil.getClassNameId(
+			"com.liferay.portlet.dynamicdatamapping.model.DDMStructure");
 
 				long classPK = getDDMStructureId(groupId, structureId);
 
 				addDDMTemplate(
 					uuid_, ddmTemplateId, groupId, companyId, userId, userName,
 					createDate, modifiedDate, classNameId, classPK, templateId,
-					name, description, _DDM_TEMPLATE_TYPE_DISPLAY,
-					_DDM_TEMPLATE_MODE_CREATE, language, script, cacheable,
-					smallImage, smallImageId, smallImageURL);
+					name, description, "display", "create", language, script,
+					cacheable, smallImage, smallImageId, smallImageURL);
 
 				updateResourcePermission(
 					companyId,
@@ -558,17 +552,13 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 		return PortletPreferencesFactoryUtil.toXML(preferences);
 	}
 
-	private static final int _DDM_STRUCTURE_TYPE_DEFAULT = 0;
-
-	private static final String _DDM_TEMPLATE_MODE_CREATE = "create";
-
-	private static final String _DDM_TEMPLATE_TYPE_DISPLAY = "display";
-
 	private static final String _PORTLET_ID_ASSET_PUBLISHER = "101";
 
 	private static final String _PORTLET_ID_JOURNAL_CONTENT = "56";
 
 	private static final String _PORTLET_ID_JOURNAL_CONTENT_LIST = "62";
+
+	private static final int _TYPE_DEFAULT = 0;
 
 	private static final Log _log = LogFactoryUtil.getLog(UpgradeJournal.class);
 
