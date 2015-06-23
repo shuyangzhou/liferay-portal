@@ -87,7 +87,7 @@ public class LayoutCommonTag extends IncludeTag {
 	private static final boolean _WEB_SERVER_DISPLAY_NODE =
 		GetterUtil.getBoolean(PropsUtil.get(PropsKeys.WEB_SERVER_DISPLAY_NODE));
 
-	private boolean _includeStaticPortlets;
-	private boolean _includeWebServerDisplayNode;
+	private boolean _includeStaticPortlets = false;
+	private boolean _includeWebServerDisplayNode = false;
 
 }
