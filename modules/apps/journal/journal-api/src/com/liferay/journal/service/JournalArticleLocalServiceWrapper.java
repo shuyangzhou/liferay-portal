@@ -171,10 +171,10 @@ public class JournalArticleLocalServiceWrapper
 	descriptions
 	* @param content the HTML content wrapped in XML. For more information,
 	see the content example in the {@link #addArticle(long, long,
-	long, long, long, String, boolean, double, Map, Map, String,
+	long, long, long, String, boolean, double, java.util.Map, java.util.Map, String,
 	String, String, String, int, int, int, int, int, int, int, int,
 	int, int, boolean, int, int, int, int, int, boolean, boolean,
-	boolean, String, File, Map, String, ServiceContext)} description.
+	boolean, String, java.io.File, java.util.Map, String, ServiceContext)} description.
 	* @param ddmStructureKey the primary key of the web content article's DDM
 	structure, if the article is related to a DDM structure, or
 	<code>null</code> otherwise
@@ -3586,10 +3586,10 @@ public class JournalArticleLocalServiceWrapper
 	* @param version the web content article's version
 	* @param content the HTML content wrapped in XML. For more information,
 	see the content example in the {@link #addArticle(long, long,
-	long, long, long, String, boolean, double, Map, Map, String,
+	long, long, long, String, boolean, double, java.util.Map, java.util.Map, String,
 	String, String, String, int, int, int, int, int, int, int, int,
 	int, int, boolean, int, int, int, int, int, boolean, boolean,
-	boolean, String, File, Map, String, ServiceContext)} description.
+	boolean, String, java.io.File, java.util.Map, String, ServiceContext)} description.
 	* @param serviceContext the service context to be applied. Can set the
 	modification date, expando bridge attributes, asset category IDs,
 	asset tag names, asset link entry IDs, workflow actions, URL
@@ -3628,10 +3628,10 @@ public class JournalArticleLocalServiceWrapper
 	descriptions
 	* @param content the HTML content wrapped in XML. For more information,
 	see the content example in the {@link #addArticle(long, long,
-	long, long, long, String, boolean, double, Map, Map, String,
+	long, long, long, String, boolean, double, java.util.Map, java.util.Map, String,
 	String, String, String, int, int, int, int, int, int, int, int,
 	int, int, boolean, int, int, int, int, int, boolean, boolean,
-	boolean, String, File, Map, String, ServiceContext)} description.
+	boolean, String, java.io.File, java.util.Map, String, ServiceContext)} description.
 	* @param ddmStructureKey the primary key of the web content article's DDM
 	structure, if the article is related to a DDM structure, or
 	<code>null</code> otherwise
@@ -3744,10 +3744,10 @@ public class JournalArticleLocalServiceWrapper
 	descriptions
 	* @param content the HTML content wrapped in XML. For more information,
 	see the content example in the {@link #addArticle(long, long,
-	long, long, long, String, boolean, double, Map, Map, String,
+	long, long, long, String, boolean, double, java.util.Map, java.util.Map, String,
 	String, String, String, int, int, int, int, int, int, int, int,
 	int, int, boolean, int, int, int, int, int, boolean, boolean,
-	boolean, String, File, Map, String, ServiceContext)} description.
+	boolean, String, java.io.File, java.util.Map, String, ServiceContext)} description.
 	* @param layoutUuid the unique string identifying the web content
 	article's display page
 	* @param serviceContext the service context to be applied. Can set the
@@ -3781,7 +3781,7 @@ public class JournalArticleLocalServiceWrapper
 	/**
 	* @deprecated As of 6.2.0, replaced by {@link
 	#updateArticleTranslation(long, String, double, java.util.Locale,
-	String, String, String, Map, ServiceContext)}
+	String, String, String, java.util.Map, ServiceContext)}
 	*/
 	@Deprecated
 	@Override
@@ -3806,10 +3806,10 @@ public class JournalArticleLocalServiceWrapper
 	* @param description the translated web content article description
 	* @param content the HTML content wrapped in XML. For more information,
 	see the content example in the {@link #addArticle(long, long,
-	long, long, long, String, boolean, double, Map, Map, String,
+	long, long, long, String, boolean, double, java.util.Map, java.util.Map, String,
 	String, String, String, int, int, int, int, int, int, int, int,
 	int, int, boolean, int, int, int, int, int, boolean, boolean,
-	boolean, String, File, Map, String, ServiceContext)} description.
+	boolean, String, java.io.File, java.util.Map, String, ServiceContext)} description.
 	* @param images the web content's images
 	* @param serviceContext the service context to be applied. Can set the
 	modification date and URL title for the web content article.
@@ -3862,10 +3862,10 @@ public class JournalArticleLocalServiceWrapper
 	* @param version the web content article's version
 	* @param content the HTML content wrapped in XML. For more information,
 	see the content example in the {@link #addArticle(long, long,
-	long, long, long, String, boolean, double, Map, Map, String,
+	long, long, long, String, boolean, double, java.util.Map, java.util.Map, String,
 	String, String, String, int, int, int, int, int, int, int, int,
 	int, int, boolean, int, int, int, int, int, boolean, boolean,
-	boolean, String, File, Map, String, ServiceContext)} description.
+	boolean, String, java.io.File, java.util.Map, String, ServiceContext)} description.
 	* @return the updated web content article
 	* @throws PortalException if a matching web content article could not be
 	found
