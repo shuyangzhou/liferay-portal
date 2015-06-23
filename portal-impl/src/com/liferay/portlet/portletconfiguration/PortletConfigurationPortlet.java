@@ -166,9 +166,6 @@ public class PortletConfigurationPortlet extends MVCPortlet {
 		PortletPreferences portletPreferences =
 			ActionUtil.getLayoutPortletSetup(actionRequest, portlet);
 
-		actionRequest = ActionUtil.getWrappedActionRequest(
-			actionRequest, portletPreferences);
-
 		Enumeration<String> enu = portletPreferences.getNames();
 
 		while (enu.hasMoreElements()) {
@@ -294,9 +291,6 @@ public class PortletConfigurationPortlet extends MVCPortlet {
 		Portlet portlet = ActionUtil.getPortlet(actionRequest);
 
 		PortletPreferences portletPreferences = actionRequest.getPreferences();
-
-		actionRequest = ActionUtil.getWrappedActionRequest(
-			actionRequest, portletPreferences);
 
 		Set<String> allPortletModes = portlet.getAllPortletModes();
 
