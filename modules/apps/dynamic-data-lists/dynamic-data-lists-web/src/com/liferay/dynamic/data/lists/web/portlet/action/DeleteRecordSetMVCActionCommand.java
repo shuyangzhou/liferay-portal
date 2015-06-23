@@ -39,6 +39,13 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class DeleteRecordSetMVCActionCommand extends BaseMVCActionCommand {
 
+	@Reference
+	public void setDDLRecordSetService(
+		DDLRecordSetService ddlRecordSetService) {
+
+		_ddlRecordSetService = ddlRecordSetService;
+	}
+
 	@Override
 	protected void doProcessAction(
 			PortletRequest portletRequest, PortletResponse portletResponse)
@@ -47,13 +54,6 @@ public class DeleteRecordSetMVCActionCommand extends BaseMVCActionCommand {
 		long recordSetId = ParamUtil.getLong(portletRequest, "recordSetId");
 
 		_ddlRecordSetService.deleteRecordSet(recordSetId);
-	}
-
-	@Reference
-	protected void setDDLRecordSetService(
-		DDLRecordSetService ddlRecordSetService) {
-
-		_ddlRecordSetService = ddlRecordSetService;
 	}
 
 	private DDLRecordSetService _ddlRecordSetService;
