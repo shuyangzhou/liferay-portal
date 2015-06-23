@@ -14,14 +14,8 @@
 
 package com.liferay.portal.kernel.util;
 
-import com.liferay.portal.kernel.test.CaptureHandler;
-import com.liferay.portal.kernel.test.JDKLoggerTestUtil;
-
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.LogRecord;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -59,30 +53,10 @@ public class MapUtilTest {
 
 		@Test
 		public void shouldReturnEmptyMapWithParamsTypeObject() {
-			try (CaptureHandler captureHandler =
-					JDKLoggerTestUtil.configureJDKLogger(
-						MapUtil.class.getName(), Level.SEVERE)) {
+			Map<String, Object> map = MapUtil.toLinkedHashMap(
+				new String[] {"one:1:" + Object.class.getName()});
 
-				Map<String, Object> map = MapUtil.toLinkedHashMap(
-					new String[] {"one:1:" + Object.class.getName()});
-
-				List<LogRecord> logRecords = captureHandler.getLogRecords();
-
-				Assert.assertEquals(1, logRecords.size());
-
-				LogRecord logRecord = logRecords.get(0);
-
-				Assert.assertEquals(
-					"java.lang.Object.<init>(java.lang.String)",
-					logRecord.getMessage());
-
-				Throwable throwable = logRecord.getThrown();
-
-				Assert.assertSame(
-					NoSuchMethodException.class, throwable.getClass());
-
-				Assert.assertEquals(0, map.size());
-			}
+			Assert.assertEquals(0, map.size());
 		}
 
 		@Test
