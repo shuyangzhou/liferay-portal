@@ -40,6 +40,10 @@ public class CKEditorOptionsContributor implements EditorOptionsContributor {
 		Map<String, Object> dynamicAttributes =
 			editorOptions.getDynamicAttributes();
 
+		dynamicAttributes.put("customDialogDefinition", Boolean.TRUE);
+
+		dynamicAttributes.put("customOnShowFn", Boolean.TRUE);
+
 		dynamicAttributes.put("useCustomDataProcessor", Boolean.FALSE);
 	}
 
