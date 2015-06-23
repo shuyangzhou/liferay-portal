@@ -2777,7 +2777,7 @@ public class PortalImpl implements Portal {
 
 		FriendlyURLResolver friendlyURLResolver =
 			FriendlyURLResolverRegistryUtil.getFriendlyURLResolver(
-				_JOURNAL_ARTICLE_CANONICAL_URL_SEPARATOR);
+				_JOURNAL_CANONICAL_URL_SEPARATOR);
 
 		if (friendlyURLResolver == null) {
 			return null;
@@ -2804,7 +2804,7 @@ public class PortalImpl implements Portal {
 
 		FriendlyURLResolver friendlyURLResolver =
 			FriendlyURLResolverRegistryUtil.getFriendlyURLResolver(
-				_JOURNAL_ARTICLE_CANONICAL_URL_SEPARATOR);
+				_JOURNAL_CANONICAL_URL_SEPARATOR);
 
 		if (friendlyURLResolver == null) {
 			return null;
@@ -8372,8 +8372,7 @@ public class PortalImpl implements Portal {
 
 	private static final String _J_SECURITY_CHECK = "j_security_check";
 
-	private static final String _JOURNAL_ARTICLE_CANONICAL_URL_SEPARATOR =
-		"/-/";
+	private static final String _JOURNAL_CANONICAL_URL_SEPARATOR = "/-/";
 
 	private static final String _LOCALHOST = "localhost";
 
