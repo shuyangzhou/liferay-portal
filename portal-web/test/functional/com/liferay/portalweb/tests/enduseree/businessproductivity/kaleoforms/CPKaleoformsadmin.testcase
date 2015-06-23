@@ -2895,6 +2895,7 @@
 		</execute>
 
 		<execute macro="KaleoFormsPortlet#approveProcess">
+			v
 			<var name="workflowTask" value="review" />
 		</execute>
 
