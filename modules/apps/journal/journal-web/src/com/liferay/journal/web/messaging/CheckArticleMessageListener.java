@@ -15,6 +15,7 @@
 package com.liferay.journal.web.messaging;
 
 import com.liferay.journal.service.JournalArticleLocalServiceUtil;
+import com.liferay.journal.upgrade.JournalServiceUpgrade;
 import com.liferay.journal.web.configuration.JournalWebConfigurationValues;
 import com.liferay.journal.web.constants.JournalPortletKeys;
 import com.liferay.portal.kernel.messaging.BaseSchedulerEntryMessageListener;
@@ -53,6 +54,11 @@ public class CheckArticleMessageListener
 	@Override
 	protected void doReceive(Message message) throws Exception {
 		JournalArticleLocalServiceUtil.checkArticles();
+	}
+
+	@Reference
+	protected void setJournalServiceUpgrade(
+		JournalServiceUpgrade journalServiceUpgrade) {
 	}
 
 	@Reference(
