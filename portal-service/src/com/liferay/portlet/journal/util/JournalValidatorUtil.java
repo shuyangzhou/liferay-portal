@@ -12,10 +12,10 @@
  * details.
  */
 
-package com.liferay.journal.util;
+package com.liferay.portlet.journal.util;
 
-import com.liferay.journal.exception.FolderNameException;
 import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;
+import com.liferay.portlet.journal.FolderNameException;
 
 /**
  * @author David Zhang
