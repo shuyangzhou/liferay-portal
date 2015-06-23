@@ -104,12 +104,12 @@ public class DynamicCSSFilter extends IgnoreModuleRequestFilter {
 		URL resourceURL = _servletContext.getResource(requestPath);
 
 		if (resourceURL == null) {
-			ServletContext resourceServletContext =
+			ServletContext portalWebContext =
 				PortalWebResourcesUtil.getServletContextByResource(requestPath);
 
-			if (resourceServletContext != null) {
+			if (portalWebContext != null) {
 				resourceURL = PortalWebResourcesUtil.getResource(
-					resourceServletContext, requestPath);
+					portalWebContext, requestPath);
 			}
 
 			if (resourceURL == null) {
@@ -117,7 +117,7 @@ public class DynamicCSSFilter extends IgnoreModuleRequestFilter {
 			}
 
 			bundleResource = true;
-			servletContext = resourceServletContext;
+			servletContext = portalWebContext;
 		}
 
 		String cacheCommonFileName = getCacheFileName(request);
