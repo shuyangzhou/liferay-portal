@@ -29,9 +29,12 @@ List<String> titles = localizedItemSelectorRendering.getTitles();
 
 		<%
 		if (_log.isWarnEnabled()) {
+
 			String[] criteria = ParamUtil.getParameterValues(renderRequest, "criteria");
 
-			_log.warn("No item selector views found for " + StringUtil.merge(criteria, StringPool.COMMA_AND_SPACE));
+			String criteriaNames = StringUtil.merge(criteria, StringPool.COMMA + StringPool.SPACE);
+
+			_log.warn("No item selector views found for " + criteriaNames);
 		}
 		%>
 
