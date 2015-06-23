@@ -14,6 +14,8 @@
 
 package com.liferay.microblogs.upgrade;
 
+import com.liferay.microblogs.upgrade.v1_0_1.UpgradeUserNotificationEvent;
+import com.liferay.microblogs.upgrade.v1_0_2.UpgradeSocial;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.service.ReleaseLocalService;
@@ -52,14 +54,17 @@ public class MicroblogsServiceUpgrade {
 
 	@Activate
 	protected void upgrade() throws PortalException {
-		List<UpgradeProcess> upgradeProcesses = new ArrayList<>(1);
+		List<UpgradeProcess> upgradeProcesses = new ArrayList<>();
 
-		upgradeProcesses.add(new MicroblogsServiceUpgrade_1_0_0());
-		upgradeProcesses.add(new MicroblogsServiceUpgrade_1_0_1());
-		upgradeProcesses.add(new MicroblogsServiceUpgrade_1_0_2());
+		upgradeProcesses.add(
+			new com.liferay.microblogs.upgrade.v1_0_0.UpgradeMicroblogsEntry());
+		upgradeProcesses.add(new UpgradeUserNotificationEvent());
+		upgradeProcesses.add(
+			new com.liferay.microblogs.upgrade.v1_0_2.UpgradeMicroblogsEntry());
+		upgradeProcesses.add(new UpgradeSocial());
 
 		_releaseLocalService.updateRelease(
-			"com.liferay.microblogs.service", upgradeProcesses, 102, 1, false);
+			"com.liferay.microblogs.service", upgradeProcesses, 1, 1, false);
 	}
 
 	private ReleaseLocalService _releaseLocalService;
