@@ -204,8 +204,6 @@ public class DownloadFileHandler extends BaseHandler {
 
 			String message = fse.getMessage();
 
-			_logger.error(message, fse);
-
 			if (message.contains("File name too long")) {
 				syncFile.setState(SyncFile.STATE_ERROR);
 				syncFile.setUiEvent(SyncFile.UI_EVENT_FILE_NAME_TOO_LONG);
@@ -267,24 +265,8 @@ public class DownloadFileHandler extends BaseHandler {
 	protected boolean isUnsynced(SyncFile syncFile) {
 		syncFile = SyncFileService.fetchSyncFile(syncFile.getSyncFileId());
 
-		if (syncFile.getState() == SyncFile.STATE_UNSYNCED) {
-			_logger.debug(
-				"Skipping file {}. File is unsynced.", syncFile.getName());
-
-			return true;
-		}
-
-		Path filePath = Paths.get(syncFile.getFilePathName());
-
-		if (Files.notExists(filePath.getParent())) {
-			_logger.debug(
-				"Skipping file {}. Missing parent file path {}.",
-				syncFile.getName(), filePath.getParent());
-
-			syncFile.setState(SyncFile.STATE_ERROR);
-			syncFile.setUiEvent(SyncFile.UI_EVENT_PARENT_MISSING);
-
-			SyncFileService.update(syncFile);
+		if ((syncFile == null) ||
+			(syncFile.getState() == SyncFile.STATE_UNSYNCED)) {
 
 			return true;
 		}
