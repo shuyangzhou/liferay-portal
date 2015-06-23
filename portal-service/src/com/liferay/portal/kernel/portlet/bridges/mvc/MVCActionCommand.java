@@ -17,6 +17,8 @@ package com.liferay.portal.kernel.portlet.bridges.mvc;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletException;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 
 /**
  * @author Michael C. Han
