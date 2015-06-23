@@ -26,6 +26,7 @@ import com.liferay.portlet.blogs.model.BlogsEntry;
 import com.liferay.portlet.documentlibrary.model.DLFileEntry;
 import com.liferay.portlet.documentlibrary.model.DLFileEntryType;
 import com.liferay.portlet.documentlibrary.model.DLFolder;
+import com.liferay.portlet.dynamicdatamapping.model.DDMStructure;
 import com.liferay.portlet.journal.model.JournalArticle;
 import com.liferay.portlet.journal.model.JournalFolder;
 import com.liferay.portlet.messageboards.model.MBCategory;
@@ -186,8 +187,7 @@ public class UpgradeSubscription extends UpgradeProcess {
 		_getGroupIdSQLPartsMap.put(
 			BlogsEntry.class.getName(), "BlogsEntry,groupId,entryId");
 		_getGroupIdSQLPartsMap.put(
-			"com.liferay.portlet.dynamicdatamapping.model.DDMStructure",
-			"DDMStructure,groupId,structureId");
+			DDMStructure.class.getName(), "DDMStructure,groupId,structureId");
 		_getGroupIdSQLPartsMap.put(
 			DLFileEntry.class.getName(), "DLFileEntry,groupId,fileEntryId");
 		_getGroupIdSQLPartsMap.put(
