@@ -241,11 +241,6 @@ public class LoginUtil {
 		SessionMessages.add(actionRequest, "requestProcessed", toAddress);
 	}
 
-	/**
-	 * @deprecated As of 7.0.0, replaced by {@link
-	 * AuthenticatedSessionManagerUtil#signOutSimultaneousLogins(long)}
-	 */
-	@Deprecated
 	public static void signOutSimultaneousLogins(long userId) throws Exception {
 		AuthenticatedSessionManagerUtil.signOutSimultaneousLogins(userId);
 	}
