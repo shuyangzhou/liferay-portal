@@ -38,7 +38,7 @@ public class ServletContextUtilTest {
 
 	@Test
 	public void testGetResourceURIWithEmptyPath() throws Exception {
-		doTestGetResourceURI(StringPool.BLANK);
+		getResourceURI(StringPool.BLANK);
 	}
 
 	@Test(expected = URISyntaxException.class)
@@ -49,12 +49,12 @@ public class ServletContextUtilTest {
 
 	@Test
 	public void testGetResourceURIWithReservedCharacters() throws Exception {
-		doTestGetResourceURI(_URI_WITH_RESERVED_CHARACTERS);
+		getResourceURI(_URI_WITH_RESERVED_CHARACTERS);
 	}
 
 	@Test
 	public void testGetResourceURIWithUnreservedCharacters() throws Exception {
-		doTestGetResourceURI(_URI_WITH_UNRESERVED_CHARACTERS);
+		getResourceURI(_URI_WITH_UNRESERVED_CHARACTERS);
 	}
 
 	@Test
@@ -81,14 +81,11 @@ public class ServletContextUtilTest {
 		getRootURI(path, getURI(path));
 	}
 
-	protected void doTestGetResourceURI(String resourceURL) throws Exception {
+	protected void getResourceURI(String resourceURL) throws Exception {
 		URL url = new URL("file://" + resourceURL + "/dummy");
 
-		URI uri = ServletContextUtil.getResourceURI(url);
-
-		Assert.assertEquals("file", uri.getScheme());
-		Assert.assertEquals(url.getPath(), uri.getSchemeSpecificPart());
-		Assert.assertEquals(null, uri.getFragment());
+		Assert.assertEquals(
+			getURI(url.getPath()), ServletContextUtil.getResourceURI(url));
 	}
 
 	protected void getRootURI(String path, URI uri) throws Exception {
