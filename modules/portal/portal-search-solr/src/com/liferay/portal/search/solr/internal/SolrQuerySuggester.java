@@ -98,8 +98,6 @@ public class SolrQuerySuggester extends BaseQuerySuggester {
 	public String[] suggestKeywordQueries(SearchContext searchContext, int max)
 		throws SearchException {
 
-		SolrClient solrClient = _solrClientManager.getSolrClient();
-
 		SolrQuery solrQuery = new SolrQuery();
 
 		solrQuery.setFilterQueries(
@@ -122,6 +120,8 @@ public class SolrQuerySuggester extends BaseQuerySuggester {
 		solrQuery.setQuery(sb.toString());
 
 		solrQuery.setRows(max);
+
+		SolrClient solrClient = _solrClientManager.getSolrClient();
 
 		try {
 			QueryResponse queryResponse = solrClient.query(solrQuery);
