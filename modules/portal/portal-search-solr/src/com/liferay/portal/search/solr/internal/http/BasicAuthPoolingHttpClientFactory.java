@@ -45,8 +45,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	configurationPid = "com.liferay.portal.search.solr.configuration.SolrConfiguration",
-	immediate = true, property = {"type=BASIC"},
-	service = HttpClientFactory.class
+	immediate = true, service = HttpClientFactory.class
 )
 public class BasicAuthPoolingHttpClientFactory
 	extends BasePoolingHttpClientFactory {
