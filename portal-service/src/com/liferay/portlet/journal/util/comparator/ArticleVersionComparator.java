@@ -12,41 +12,39 @@
  * details.
  */
 
-package com.liferay.journal.util.comparator;
+package com.liferay.portlet.journal.util.comparator;
 
-import com.liferay.journal.model.JournalFolder;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portlet.journal.model.JournalArticle;
 
 /**
- * @author Shinn Lok
+ * @author Brian Wing Shun Chan
  */
-public class FolderIdComparator extends OrderByComparator<JournalFolder> {
+public class ArticleVersionComparator
+	extends OrderByComparator<JournalArticle> {
 
-	public static final String ORDER_BY_ASC = "JournalFolder.folderId ASC";
+	public static final String ORDER_BY_ASC = "JournalArticle.version ASC";
 
-	public static final String ORDER_BY_DESC = "JournalFolder.folderId DESC";
+	public static final String ORDER_BY_DESC = "JournalArticle.version DESC";
 
-	public static final String[] ORDER_BY_FIELDS = {"folderId"};
+	public static final String[] ORDER_BY_FIELDS = {"version"};
 
-	public FolderIdComparator() {
+	public ArticleVersionComparator() {
 		this(false);
 	}
 
-	public FolderIdComparator(boolean ascending) {
+	public ArticleVersionComparator(boolean ascending) {
 		_ascending = ascending;
 	}
 
 	@Override
-	public int compare(JournalFolder folder1, JournalFolder folder2) {
-		long folderId1 = folder1.getFolderId();
-		long folderId2 = folder2.getFolderId();
-
+	public int compare(JournalArticle article1, JournalArticle article2) {
 		int value = 0;
 
-		if (folderId1 < folderId2) {
+		if (article1.getVersion() < article2.getVersion()) {
 			value = -1;
 		}
-		else if (folderId1 > folderId2) {
+		else if (article1.getVersion() > article2.getVersion()) {
 			value = 1;
 		}
 
