@@ -70,10 +70,12 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 			long groupId = GetterUtil.getLong(document.get(Field.GROUP_ID));
 
 			String className = document.get(Field.ENTRY_CLASS_NAME);
+
 			String classPK = document.get(Field.ENTRY_CLASS_PK);
 
 			if (Validator.isNull(className) && Validator.isNull(classPK)) {
 				className = document.get(Field.ROOT_ENTRY_CLASS_NAME);
+
 				classPK = document.get(Field.ROOT_ENTRY_CLASS_PK);
 			}
 

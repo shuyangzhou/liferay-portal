@@ -366,8 +366,6 @@ public class ResourceBlockLocalServiceImpl
 	public List<Role> getRoles(String name, long primKey, String actionId)
 		throws PortalException {
 
-		long actionIdLong = getActionId(name, actionId);
-
 		ResourceBlock resourceBlock = getResourceBlock(name, primKey);
 
 		ResourceBlockPermissionsContainer resourceBlockPermissionsContainer =
@@ -376,6 +374,8 @@ public class ResourceBlockLocalServiceImpl
 					resourceBlock.getResourceBlockId());
 
 		Set<Long> roleIds = resourceBlockPermissionsContainer.getRoleIds();
+
+		long actionIdLong = getActionId(name, actionId);
 
 		List<Role> roles = new ArrayList<>(roleIds.size());
 

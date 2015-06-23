@@ -81,11 +81,7 @@ public class ResourceBlockPermissionsContainer {
 	}
 
 	public boolean hasPermission(long roleId, long actionIdsLong) {
-		if ((getActionIds(roleId) & actionIdsLong) == actionIdsLong) {
-			return true;
-		}
-
-		return false;
+		return (getActionIds(roleId) & actionIdsLong) == actionIdsLong;
 	}
 
 	public void removePermission(long roleId, long actionIdsLong) {
