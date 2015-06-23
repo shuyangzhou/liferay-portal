@@ -498,6 +498,7 @@ else {
 <liferay-ui:upload-progress
 	id="<%= uploadProgressId %>"
 	message="uploading"
+	redirect="<%= redirect %>"
 />
 
 <aui:script>
