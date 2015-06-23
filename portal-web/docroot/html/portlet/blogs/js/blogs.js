@@ -109,9 +109,8 @@ AUI.add(
 						instance._captionNode = AUI.$('.entry-cover-image-caption');
 
 						var eventHandles = [
-							Liferay.on('coverImageDeleted', instance._removeCaption, instance),
-							Liferay.on('coverImageSelected', instance._showCaption, instance),
-							Liferay.on('coverImageUploaded', instance._showCaption, instance)
+							Liferay.on('imageDeleted', instance._removeCaption, instance),
+							Liferay.on('imageUploaded', instance._showCaption, instance)
 						];
 
 						var publishButton = instance.one('#publishButton');
