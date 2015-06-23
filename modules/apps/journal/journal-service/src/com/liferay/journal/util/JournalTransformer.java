@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.journal.transformer;
+package com.liferay.journal.util;
 
 import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
+import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -102,7 +103,7 @@ public class JournalTransformer {
 
 		this(errorTemplatePropertyKey, restricted);
 
-		ClassLoader classLoader = getClass().getClassLoader();
+		ClassLoader classLoader = PortalClassLoaderUtil.getClassLoader();
 
 		Set<String> transformerListenerClassNames = SetUtil.fromArray(
 			PropsUtil.getArray(transformerListenerPropertyKey));
