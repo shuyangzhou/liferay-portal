@@ -29,6 +29,7 @@ CKEDITOR.on(
 				dialogDefinition.minWidth = 210;
 			}
 			else if (dialogName === 'table' || dialogName === 'tableProperties') {
+				debugger;
 				infoTab = dialogDefinition.getContents('info');
 
 				infoTab.remove('cmbAlign');
