@@ -14,7 +14,6 @@
 
 package com.liferay.journal.service.permission;
 
-import com.liferay.journal.configuration.JournalServiceConfigurationValues;
 import com.liferay.journal.exception.NoSuchFolderException;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalFolder;
@@ -134,8 +133,7 @@ public class JournalArticlePermission implements BaseModelPermissionChecker {
 		}
 
 		if (actionId.equals(ActionKeys.VIEW) &&
-			!JournalServiceConfigurationValues.
-				JOURNAL_ARTICLE_VIEW_PERMISSION_CHECK_ENABLED) {
+			!PropsValues.JOURNAL_ARTICLE_VIEW_PERMISSION_CHECK_ENABLED) {
 
 			return true;
 		}
