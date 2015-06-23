@@ -84,7 +84,7 @@ public class MicroblogsEntryModelImpl extends BaseModelImpl<MicroblogsEntry>
 			{ "parentMicroblogsEntryId", Types.BIGINT },
 			{ "socialRelationType", Types.INTEGER }
 		};
-	public static final String TABLE_SQL_CREATE = "create table MicroblogsEntry (microblogsEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,creatorClassNameId LONG,creatorClassPK LONG,content STRING null,type_ INTEGER,parentMicroblogsEntryId LONG,socialRelationType INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table MicroblogsEntry (microblogsEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,creatorClassNameId LONG,creatorClassPK LONG,content VARCHAR(75) null,type_ INTEGER,parentMicroblogsEntryId LONG,socialRelationType INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table MicroblogsEntry";
 	public static final String ORDER_BY_JPQL = " ORDER BY microblogsEntry.createDate DESC";
 	public static final String ORDER_BY_SQL = " ORDER BY MicroblogsEntry.createDate DESC";

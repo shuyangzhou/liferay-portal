@@ -7,7 +7,7 @@ create table MicroblogsEntry (
 	modifiedDate DATE null,
 	creatorClassNameId LONG,
 	creatorClassPK LONG,
-	content STRING null,
+	content VARCHAR(75) null,
 	type_ INTEGER,
 	parentMicroblogsEntryId LONG,
 	socialRelationType INTEGER
