@@ -79,6 +79,11 @@ public class ResourceBlockLocalServiceTest {
 	@ExpectedLogs(
 		expectedLogs = {
 			@ExpectedLog(
+				dbType = DB.TYPE_POSTGRESQL,
+				expectedLog = "Batch entry 0 insert into ResourceBlock ",
+				expectedType = ExpectedType.PREFIX
+			),
+			@ExpectedLog(
 				dbType = DB.TYPE_MYSQL,
 				expectedLog =
 					"Deadlock found when trying to get lock; try restarting " +
@@ -88,11 +93,6 @@ public class ResourceBlockLocalServiceTest {
 			@ExpectedLog(
 				dbType = DB.TYPE_MYSQL,
 				expectedLog = "Duplicate entry ",
-				expectedType = ExpectedType.PREFIX
-			),
-			@ExpectedLog(
-				dbType = DB.TYPE_POSTGRESQL,
-				expectedLog = "Batch entry 0 insert into ResourceBlock ",
 				expectedType = ExpectedType.PREFIX
 			),
 			@ExpectedLog(
@@ -182,6 +182,11 @@ public class ResourceBlockLocalServiceTest {
 	@ExpectedLogs(
 		expectedLogs = {
 			@ExpectedLog(
+				dbType = DB.TYPE_POSTGRESQL,
+				expectedLog = "Batch entry 0 insert into ResourceBlock ",
+				expectedType = ExpectedType.PREFIX
+			),
+			@ExpectedLog(
 				dbType = DB.TYPE_MYSQL,
 				expectedLog =
 					"Deadlock found when trying to get lock; try restarting " +
@@ -190,11 +195,6 @@ public class ResourceBlockLocalServiceTest {
 			),
 			@ExpectedLog(
 				dbType = DB.TYPE_MYSQL, expectedLog = "Duplicate entry ",
-				expectedType = ExpectedType.PREFIX
-			),
-			@ExpectedLog(
-				dbType = DB.TYPE_POSTGRESQL,
-				expectedLog = "Batch entry 0 insert into ResourceBlock ",
 				expectedType = ExpectedType.PREFIX
 			),
 			@ExpectedLog(
