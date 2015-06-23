@@ -163,9 +163,9 @@ public class DLFileVersionTest {
 
 		ExpandoTableLocalServiceUtil.deleteTable(expandoTable);
 
-		tearDownPermissionThreadLocal();
-		tearDownPrincipalThreadLocal();
 		tearDownResourcePermission();
+		tearDownPrincipalThreadLocal();
+		tearDownPermissionThreadLocal();
 
 		List<LoggingEvent> loggingEvents = _captureAppender.getLoggingEvents();
 
