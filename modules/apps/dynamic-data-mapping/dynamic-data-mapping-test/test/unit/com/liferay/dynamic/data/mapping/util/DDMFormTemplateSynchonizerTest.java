@@ -37,7 +37,6 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
 import org.powermock.core.classloader.annotations.PrepareForTest;
 
 /**
