@@ -115,9 +115,9 @@ public class CKEditorConfigContributor extends BaseCKEditorConfigContributor {
 			"{element: 'h2', name: 'Heading 2'}",
 			"{element: 'h3', name: 'Heading 3'}",
 			"{element: 'h4', name: 'Heading 4'}",
-			"{element: 'pre', name: 'Preformatted Text'}",
-			"{element: 'cite', name: 'Cited Work'}",
-			"{element: 'code', name: 'Computer Code'}",
+			"{element:'pre', name: 'Preformatted Text'}",
+			"{element:'cite', name: 'Cited Work'}",
+			"{element:'code', name: 'Computer Code'}",
 			"{attributes: {'class': 'portlet-msg-info'}, element: 'div', name: 'Info Message'}",
 			"{attributes: {'class': 'portlet-msg-alert'}, element: 'div', name: 'Alert Message'}",
 			"{attributes: {'class': 'portlet-msg-error'}, element: 'div', name: 'Error Message'}"
