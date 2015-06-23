@@ -20,7 +20,6 @@ import com.liferay.portal.kernel.util.StringPool;
 
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 
 import javax.servlet.ServletContext;
@@ -43,8 +42,7 @@ public class ServletContextUtilTest {
 
 	@Test(expected = URISyntaxException.class)
 	public void testGetResourceURIWithInvalidCharacters() throws Exception {
-		ServletContextUtil.getResourceURI(
-			new URL("file://" + _URI_WITH_INVALID_CHARACTERS + "/dummy"));
+		getResourceURI(_URI_WITH_INVALID_CHARACTERS);
 	}
 
 	@Test
