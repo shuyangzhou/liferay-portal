@@ -219,37 +219,39 @@ public class LiferayJavaPlugin implements Plugin<Project> {
 				project,
 				testIntegrationSourceSet.getCompileConfigurationName());
 
+		Configuration compileConfiguration = GradleUtil.getConfiguration(
+			project, JavaPlugin.COMPILE_CONFIGURATION_NAME);
 		Configuration testCompileConfiguration = GradleUtil.getConfiguration(
 			project, JavaPlugin.TEST_COMPILE_CONFIGURATION_NAME);
 
 		testIntegrationCompileConfiguration.extendsFrom(
-			testCompileConfiguration);
+			compileConfiguration, testCompileConfiguration);
 
 		Configuration testIntegrationRuntimeConfiguration =
 			GradleUtil.getConfiguration(
 				project,
 				testIntegrationSourceSet.getRuntimeConfigurationName());
 
+		Configuration runtimeConfiguration = GradleUtil.getConfiguration(
+			project, JavaPlugin.RUNTIME_CONFIGURATION_NAME);
 		Configuration testRuntimeConfiguration = GradleUtil.getConfiguration(
 			project, JavaPlugin.TEST_RUNTIME_CONFIGURATION_NAME);
 
 		testIntegrationRuntimeConfiguration.extendsFrom(
-			testRuntimeConfiguration, testIntegrationCompileConfiguration);
+			runtimeConfiguration, testRuntimeConfiguration,
+			testIntegrationCompileConfiguration);
 
 		SourceSet mainSourceSet = GradleUtil.getSourceSet(
 			project, SourceSet.MAIN_SOURCE_SET_NAME);
 
-		FileCollection compileClasspath =
-			testIntegrationSourceSet.getCompileClasspath();
-
 		testIntegrationSourceSet.setCompileClasspath(
-			compileClasspath.plus(mainSourceSet.getOutput()));
-
-		FileCollection runtimeClasspath =
-			testIntegrationSourceSet.getRuntimeClasspath();
-
+			project.files(
+				mainSourceSet.getOutput(),
+				testIntegrationCompileConfiguration));
 		testIntegrationSourceSet.setRuntimeClasspath(
-			runtimeClasspath.plus(mainSourceSet.getOutput()));
+			project.files(
+				testIntegrationSourceSet.getOutput(), mainSourceSet.getOutput(),
+				testIntegrationRuntimeConfiguration));
 
 		return testIntegrationSourceSet;
 	}
