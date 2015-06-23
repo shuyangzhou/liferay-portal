@@ -14,9 +14,9 @@
 
 package com.liferay.portal.cache.ehcache.internal;
 
+import com.liferay.portal.cache.test.MockPortalCacheManager;
 import com.liferay.portal.cache.test.TestCacheListener;
 import com.liferay.portal.cache.test.TestCacheReplicator;
-import com.liferay.portal.cache.test.TestPortalCacheManager;
 import com.liferay.portal.kernel.cache.CacheListenerScope;
 import com.liferay.portal.kernel.cache.PortalCacheHelperUtil;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
@@ -72,7 +72,7 @@ public class EhcachePortalCacheTest {
 		Cache cache = _cacheManager.getCache(_PORTAL_CACHE_NAME);
 
 		_ehcachePortalCache = new EhcachePortalCache<String, String>(
-			new TestPortalCacheManager<String, String>(
+			new MockPortalCacheManager<String, String>(
 				_PORTAL_CACHE_MANAGER_NAME),
 			cache);
 

@@ -14,9 +14,9 @@
 
 package com.liferay.portal.cache.memory;
 
+import com.liferay.portal.cache.test.MockPortalCacheManager;
 import com.liferay.portal.cache.test.TestCacheListener;
 import com.liferay.portal.cache.test.TestCacheReplicator;
-import com.liferay.portal.cache.test.TestPortalCacheManager;
 import com.liferay.portal.kernel.cache.AbstractPortalCache;
 import com.liferay.portal.kernel.cache.CacheListenerScope;
 import com.liferay.portal.kernel.cache.PortalCacheHelperUtil;
@@ -49,7 +49,7 @@ public class MemoryPortalCacheTest {
 	@Before
 	public void setUp() {
 		_memoryPortalCache = new MemoryPortalCache<String, String>(
-			new TestPortalCacheManager<String, String>(_CACHE_MANAGER_NAME),
+			new MockPortalCacheManager<String, String>(_CACHE_MANAGER_NAME),
 			_CACHE_NAME, 16);
 
 		_memoryPortalCache.put(_KEY_1, _VALUE_1);
