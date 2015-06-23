@@ -161,8 +161,8 @@ public class JournalFolderServiceUtil {
 	}
 
 	/**
-	* @deprecated As of 7.0.0, replaced by {@link
-	#getSubfolderIds(java.util.List, long, long, boolean)}
+	* @deprecated As of 7.0.0, replaced by {@link #getSubfolderIds(java.util.List, long,
+	long, boolean)}
 	*/
 	@Deprecated
 	public static void getSubfolderIds(
