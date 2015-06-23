@@ -14,9 +14,6 @@
 
 package com.liferay.journal.lar;
 
-import com.liferay.journal.model.JournalFolder;
-import com.liferay.journal.model.JournalFolderConstants;
-import com.liferay.journal.service.JournalFolderLocalService;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.trash.TrashHandler;
@@ -29,12 +26,14 @@ import com.liferay.portlet.exportimport.lar.PortletDataContext;
 import com.liferay.portlet.exportimport.lar.StagedModelDataHandler;
 import com.liferay.portlet.exportimport.lar.StagedModelDataHandlerUtil;
 import com.liferay.portlet.exportimport.lar.StagedModelModifiedDateComparator;
+import com.liferay.portlet.journal.model.JournalFolder;
+import com.liferay.portlet.journal.model.JournalFolderConstants;
+import com.liferay.portlet.journal.service.JournalFolderLocalServiceUtil;
 
 import java.util.List;
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Daniel Kocsis
@@ -47,7 +46,7 @@ public class JournalFolderStagedModelDataHandler
 
 	@Override
 	public void deleteStagedModel(JournalFolder folder) throws PortalException {
-		_journalFolderLocalService.deleteFolder(folder);
+		JournalFolderLocalServiceUtil.deleteFolder(folder);
 	}
 
 	@Override
@@ -66,7 +65,7 @@ public class JournalFolderStagedModelDataHandler
 	public JournalFolder fetchStagedModelByUuidAndGroupId(
 		String uuid, long groupId) {
 
-		return _journalFolderLocalService.fetchJournalFolderByUuidAndGroupId(
+		return JournalFolderLocalServiceUtil.fetchJournalFolderByUuidAndGroupId(
 			uuid, groupId);
 	}
 
@@ -74,9 +73,10 @@ public class JournalFolderStagedModelDataHandler
 	public List<JournalFolder> fetchStagedModelsByUuidAndCompanyId(
 		String uuid, long companyId) {
 
-		return _journalFolderLocalService.getJournalFoldersByUuidAndCompanyId(
-			uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			new StagedModelModifiedDateComparator<JournalFolder>());
+		return JournalFolderLocalServiceUtil.
+			getJournalFoldersByUuidAndCompanyId(
+				uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+				new StagedModelModifiedDateComparator<JournalFolder>());
 	}
 
 	@Override
@@ -136,12 +136,12 @@ public class JournalFolderStagedModelDataHandler
 			if (existingFolder == null) {
 				serviceContext.setUuid(folder.getUuid());
 
-				importedFolder = _journalFolderLocalService.addFolder(
+				importedFolder = JournalFolderLocalServiceUtil.addFolder(
 					userId, groupId, parentFolderId, folder.getName(),
 					folder.getDescription(), serviceContext);
 			}
 			else {
-				importedFolder = _journalFolderLocalService.updateFolder(
+				importedFolder = JournalFolderLocalServiceUtil.updateFolder(
 					userId, serviceContext.getScopeGroupId(),
 					existingFolder.getFolderId(), parentFolderId,
 					folder.getName(), folder.getDescription(), false,
@@ -149,7 +149,7 @@ public class JournalFolderStagedModelDataHandler
 			}
 		}
 		else {
-			importedFolder = _journalFolderLocalService.addFolder(
+			importedFolder = JournalFolderLocalServiceUtil.addFolder(
 				userId, groupId, parentFolderId, folder.getName(),
 				folder.getDescription(), serviceContext);
 		}
@@ -178,14 +178,5 @@ public class JournalFolderStagedModelDataHandler
 				userId, existingFolder.getFolderId());
 		}
 	}
-
-	@Reference
-	protected void setJournalFolderLocalService(
-		JournalFolderLocalService journalFolderLocalService) {
-
-		_journalFolderLocalService = journalFolderLocalService;
-	}
-
-	private JournalFolderLocalService _journalFolderLocalService;
 
 }

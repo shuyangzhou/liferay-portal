@@ -189,9 +189,7 @@ public class DBUpgrader {
 			_log.debug("Delete temporary images");
 		}
 
-		// Temporarily disabled due to LPS-56383
-
-		// _deleteTempImages();
+		_deleteTempImages();
 
 		// Clear the caches only if the upgrade process was run
 
