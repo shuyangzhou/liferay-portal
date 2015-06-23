@@ -114,7 +114,7 @@ public class PortalWebResourcesUtil {
 		return null;
 	}
 
-	public static boolean isAvailable(String path) {
+	public static boolean isResourceAvailable(String path) {
 		URL url = getResource(path);
 
 		if (url != null) {
