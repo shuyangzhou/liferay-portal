@@ -81,12 +81,6 @@ public class BaseHandler implements Handler<Void> {
 				if (syncAccount.getUiEvent() ==
 						SyncAccount.UI_EVENT_AUTHENTICATION_EXCEPTION) {
 
-					if (_logger.isDebugEnabled()) {
-						_logger.debug(
-							"Aborting reauthentication attempts. Retry limit " +
-								"reached.");
-					}
-
 					syncAccount.setState(SyncAccount.STATE_DISCONNECTED);
 
 					SyncAccountService.update(syncAccount);
