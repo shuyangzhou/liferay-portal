@@ -44,7 +44,7 @@ public class DDLDisplayConfigurationAction extends DefaultConfigurationAction {
 
 	@Override
 	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.dynamic.data.lists.web)",
+		target = "(osgi.web.symbolicname=com.liferay.dynamic.data.lists.display.web)",
 		unbind = "-"
 	)
 	public void setServletContext(ServletContext servletContext) {
