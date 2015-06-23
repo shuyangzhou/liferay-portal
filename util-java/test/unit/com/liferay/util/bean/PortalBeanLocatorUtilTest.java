@@ -48,7 +48,7 @@ public class PortalBeanLocatorUtilTest extends PowerMockito {
 
 	@Test
 	public void testBeanLocatorHasNotBeenSet() {
-		try (CaptureHandler captureHandler =
+		try(CaptureHandler captureHandler =
 				JDKLoggerTestUtil.configureJDKLogger(
 					PortalBeanLocatorUtil.class.getName(), Level.SEVERE)) {
 
