@@ -345,6 +345,17 @@ public class PortletTracker
 		List<String> modelNames = _resourceActions.getPortletModelResources(
 			portletModel.getPortletId());
 
+		String portletId = portletModel.getPortletId();
+
+		if (portletId.equals(
+				"com_liferay_journal_web_portlet_JournalPortlet") &&
+			modelNames.isEmpty()) {
+
+			System.out.println(
+				"#############Empty modelNames for " +
+					portletModel.getPortletId());
+		}
+
 		for (String modelName : modelNames) {
 			List<String> modelActions =
 				_resourceActions.getModelResourceActions(modelName);
