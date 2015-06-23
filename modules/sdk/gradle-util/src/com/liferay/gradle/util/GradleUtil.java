@@ -150,9 +150,7 @@ public class GradleUtil {
 		project.apply(args);
 	}
 
-	public static void applyScript(
-		Project project, String name, Object object) {
-
+	public static void applyScript(Project project, String name, Object obj) {
 		Map<String, Object> args = new HashMap<>();
 
 		ClassLoader classLoader = GradleUtil.class.getClassLoader();
@@ -165,8 +163,8 @@ public class GradleUtil {
 
 		args.put("from", url);
 
-		if (object != null) {
-			args.put("to", object);
+		if (obj != null) {
+			args.put("to", obj);
 		}
 
 		project.apply(args);
@@ -298,27 +296,27 @@ public class GradleUtil {
 		}
 	}
 
-	public static File toFile(Project project, Object object) {
-		if (object == null) {
+	public static File toFile(Project project, Object obj) {
+		if (obj == null) {
 			return null;
 		}
 
-		return project.file(object);
+		return project.file(obj);
 	}
 
-	public static String toString(Object object) {
-		if (object == null) {
+	public static String toString(Object obj) {
+		if (obj == null) {
 			return null;
 		}
 
-		return object.toString();
+		return obj.toString();
 	}
 
 	public static List<String> toStringList(Iterable<?> iterable) {
 		List<String> list = new ArrayList<>();
 
-		for (Object object : iterable) {
-			list.add(object.toString());
+		for (Object obj : iterable) {
+			list.add(obj.toString());
 		}
 
 		return list;
