@@ -122,7 +122,7 @@ public class TestPortalCacheManager<K extends Serializable, V>
 
 	@Override
 	protected String getType() {
-		return PortalCacheManagerTypes.TEST;
+		return PortalCacheManagerTypes.TOOL;
 	}
 
 	@Override
