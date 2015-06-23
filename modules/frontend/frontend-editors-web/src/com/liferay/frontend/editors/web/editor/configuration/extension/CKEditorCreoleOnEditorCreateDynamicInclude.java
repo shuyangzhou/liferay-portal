@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.frontend.editors.web.servlet.taglib;
+package com.liferay.frontend.editors.web.editor.configuration.extension;
 
 import com.liferay.portal.kernel.servlet.taglib.DynamicInclude;
 import com.liferay.portal.kernel.util.StreamUtil;
@@ -33,7 +33,8 @@ import org.osgi.service.component.annotations.Component;
  * @author Chema Balsas
  */
 @Component(immediate = true, service = DynamicInclude.class)
-public class CKEditorOnEditorCreateDynamicInclude implements DynamicInclude {
+public class CKEditorCreoleOnEditorCreateDynamicInclude
+	implements DynamicInclude {
 
 	@Override
 	public void include(
@@ -46,6 +47,16 @@ public class CKEditorOnEditorCreateDynamicInclude implements DynamicInclude {
 		URL entryURL = bundle.getEntry(_JS_DIALOG_DEFINITION_INCLUDE_PATH);
 
 		StreamUtil.transfer(entryURL.openStream(), response.getOutputStream());
+
+		String toolbarSet = (String)request.getAttribute(
+			"liferay-ui:input-editor:toolbarSet");
+
+		if (toolbarSet.equals("creole")) {
+			entryURL = bundle.getEntry(_JS_DIALOG_SHOW_INCLUDE_PATH);
+
+			StreamUtil.transfer(
+				entryURL.openStream(), response.getOutputStream());
+		}
 	}
 
 	@Override
@@ -53,7 +64,7 @@ public class CKEditorOnEditorCreateDynamicInclude implements DynamicInclude {
 		DynamicInclude.DynamicIncludeRegistry dynamicIncludeRegistry) {
 
 		dynamicIncludeRegistry.register(
-			"com.liferay.frontend.editors.web#ckeditor#onEditorCreate");
+			"com.liferay.frontend.editors.web#ckeditor_creole#onEditorCreate");
 	}
 
 	@Activate
@@ -63,7 +74,11 @@ public class CKEditorOnEditorCreateDynamicInclude implements DynamicInclude {
 
 	private static final String _JS_DIALOG_DEFINITION_INCLUDE_PATH =
 		"/META-INF/resources/html/editors/ckeditor/extension/" +
-			"dialog_definition.js";
+			"creole_dialog_definition.js";
+
+	private static final String _JS_DIALOG_SHOW_INCLUDE_PATH =
+		"/META-INF/resources/html/editors/ckeditor/extension/" +
+			"creole_dialog_show.js";
 
 	private BundleContext _bundleContext;
 

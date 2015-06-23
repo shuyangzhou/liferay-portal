@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.frontend.editors.web.servlet.taglib;
+package com.liferay.frontend.editors.web.editor.configuration.extension;
 
 import com.liferay.portal.kernel.servlet.taglib.DynamicInclude;
 import com.liferay.portal.kernel.util.StreamUtil;
@@ -33,8 +33,7 @@ import org.osgi.service.component.annotations.Component;
  * @author Chema Balsas
  */
 @Component(immediate = true, service = DynamicInclude.class)
-public class CKEditorCreoleOnEditorCreateDynamicInclude
-	implements DynamicInclude {
+public class CKEditorOnEditorCreateDynamicInclude implements DynamicInclude {
 
 	@Override
 	public void include(
@@ -47,16 +46,6 @@ public class CKEditorCreoleOnEditorCreateDynamicInclude
 		URL entryURL = bundle.getEntry(_JS_DIALOG_DEFINITION_INCLUDE_PATH);
 
 		StreamUtil.transfer(entryURL.openStream(), response.getOutputStream());
-
-		String toolbarSet = (String)request.getAttribute(
-			"liferay-ui:input-editor:toolbarSet");
-
-		if (toolbarSet.equals("creole")) {
-			entryURL = bundle.getEntry(_JS_DIALOG_SHOW_INCLUDE_PATH);
-
-			StreamUtil.transfer(
-				entryURL.openStream(), response.getOutputStream());
-		}
 	}
 
 	@Override
@@ -64,7 +53,7 @@ public class CKEditorCreoleOnEditorCreateDynamicInclude
 		DynamicInclude.DynamicIncludeRegistry dynamicIncludeRegistry) {
 
 		dynamicIncludeRegistry.register(
-			"com.liferay.frontend.editors.web#ckeditor_creole#onEditorCreate");
+			"com.liferay.frontend.editors.web#ckeditor#onEditorCreate");
 	}
 
 	@Activate
@@ -74,11 +63,7 @@ public class CKEditorCreoleOnEditorCreateDynamicInclude
 
 	private static final String _JS_DIALOG_DEFINITION_INCLUDE_PATH =
 		"/META-INF/resources/html/editors/ckeditor/extension/" +
-			"creole_dialog_definition.js";
-
-	private static final String _JS_DIALOG_SHOW_INCLUDE_PATH =
-		"/META-INF/resources/html/editors/ckeditor/extension/" +
-			"creole_dialog_show.js";
+			"dialog_definition.js";
 
 	private BundleContext _bundleContext;
 
