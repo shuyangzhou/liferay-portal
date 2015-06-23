@@ -50,4 +50,4 @@ page import="javax.portlet.WindowState" %>
 
 <liferay-theme:defineObjects />
 
-<%@ include file="/portlet/init-ext.jsp" %>
+<%@ include file="/init-ext.jsp" %>
