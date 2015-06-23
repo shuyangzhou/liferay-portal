@@ -28,8 +28,8 @@ import com.liferay.portal.service.ServiceContextFactory;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -48,39 +48,39 @@ import org.osgi.service.component.annotations.Reference;
 public class UpdateRecordSetMVCActionCommand
 	extends AddRecordSetMVCActionCommand {
 
-	@Override
-	protected void doProcessAction(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		DDLRecordSet recordSet = updateRecordSet(actionRequest);
-
-		updateWorkflowDefinitionLink(actionRequest, recordSet);
-
-		updatePortletPreferences(actionRequest, recordSet);
-	}
-
 	@Reference
-	protected void setDDLRecordSetService(
+	public void setDDLRecordSetService(
 		DDLRecordSetService ddlRecordSetService) {
 
 		_ddlRecordSetService = ddlRecordSetService;
 	}
 
-	protected DDLRecordSet updateRecordSet(ActionRequest actionRequest)
+	@Override
+	protected void doProcessAction(
+			PortletRequest portletRequest, PortletResponse portletResponse)
+		throws Exception {
+
+		DDLRecordSet recordSet = updateRecordSet(portletRequest);
+
+		updateWorkflowDefinitionLink(portletRequest, recordSet);
+
+		updatePortletPreferences(portletRequest, recordSet);
+	}
+
+	protected DDLRecordSet updateRecordSet(PortletRequest portletRequest)
 		throws PortalException {
 
-		long recordSetId = ParamUtil.getLong(actionRequest, "recordSetId");
+		long recordSetId = ParamUtil.getLong(portletRequest, "recordSetId");
 
 		long ddmStructureId = ParamUtil.getLong(
-			actionRequest, "ddmStructureId");
+			portletRequest, "ddmStructureId");
 		Map<Locale, String> nameMap = LocalizationUtil.getLocalizationMap(
-			actionRequest, "name");
+			portletRequest, "name");
 		Map<Locale, String> descriptionMap =
-			LocalizationUtil.getLocalizationMap(actionRequest, "description");
+			LocalizationUtil.getLocalizationMap(portletRequest, "description");
 
 		ServiceContext serviceContext = ServiceContextFactory.getInstance(
-			DDLRecordSet.class.getName(), actionRequest);
+			DDLRecordSet.class.getName(), portletRequest);
 
 		return _ddlRecordSetService.updateRecordSet(
 			recordSetId, ddmStructureId, nameMap, descriptionMap,

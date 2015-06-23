@@ -36,8 +36,8 @@ import java.io.File;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -56,11 +56,11 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class AddTemplateMVCActionCommand extends DDMBaseMVCActionCommand {
 
-	protected DDMTemplate addTemplate(ActionRequest actionRequest)
+	protected DDMTemplate addTemplate(PortletRequest portletRequest)
 		throws Exception {
 
 		UploadPortletRequest uploadPortletRequest =
-			PortalUtil.getUploadPortletRequest(actionRequest);
+			PortalUtil.getUploadPortletRequest(portletRequest);
 
 		long groupId = ParamUtil.getLong(uploadPortletRequest, "groupId");
 		long classNameId = ParamUtil.getLong(
@@ -101,14 +101,14 @@ public class AddTemplateMVCActionCommand extends DDMBaseMVCActionCommand {
 
 	@Override
 	protected void doProcessAction(
-			ActionRequest actionRequest, ActionResponse actionResponse)
+			PortletRequest portletRequest, PortletResponse portletResponse)
 		throws Exception {
 
-		DDMTemplate template = addTemplate(actionRequest);
+		DDMTemplate template = addTemplate(portletRequest);
 
-		updatePortletPreferences(actionRequest, template);
+		updatePortletPreferences(portletRequest, template);
 
-		setRedirectAttribute(actionRequest, template);
+		setRedirectAttribute(portletRequest, template);
 	}
 
 	protected String getFileScriptContent(

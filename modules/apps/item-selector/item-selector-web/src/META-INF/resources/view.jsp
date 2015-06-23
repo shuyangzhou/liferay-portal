@@ -18,56 +18,27 @@
 
 <%
 LocalizedItemSelectorRendering localizedItemSelectorRendering = LocalizedItemSelectorRendering.get(liferayPortletRequest);
-
-List<String> titles = localizedItemSelectorRendering.getTitles();
 %>
 
-<c:choose>
-	<c:when test="<%= titles.isEmpty() %>">
+<liferay-ui:tabs names="<%= StringUtil.merge(localizedItemSelectorRendering.getTitles()) %>" refresh="<%= false %>" type="pills" value="<%= localizedItemSelectorRendering.getSelectedTab() %>">
 
-		<%
-		if (_log.isWarnEnabled()) {
-			String[] criteria = ParamUtil.getParameterValues(renderRequest, "criteria");
+	<%
+	for (String title : localizedItemSelectorRendering.getTitles()) {
+		ItemSelectorViewRenderer itemSelectorViewRenderer = localizedItemSelectorRendering.getItemSelectorViewRenderer(title);
+	%>
 
-			_log.warn("No item selector views found for " + StringUtil.merge(criteria, StringPool.COMMA_AND_SPACE));
-		}
-		%>
+		<liferay-ui:section>
+			<div>
 
-		<div class="alert alert-info">
+				<%
+				itemSelectorViewRenderer.renderHTML(pageContext);
+				%>
 
-			<%
-			ResourceBundle resourceBundle = ResourceBundle.getBundle("content/Language", locale);
-			%>
+			</div>
+		</liferay-ui:section>
 
-			<%= LanguageUtil.get(resourceBundle, "selection-is-not-available") %>
-		</div>
-	</c:when>
-	<c:otherwise>
-		<liferay-ui:tabs names="<%= StringUtil.merge(titles) %>" refresh="<%= false %>" type="pills" value="<%= localizedItemSelectorRendering.getSelectedTab() %>">
+	<%
+	}
+	%>
 
-			<%
-			for (String title : titles) {
-				ItemSelectorViewRenderer itemSelectorViewRenderer = localizedItemSelectorRendering.getItemSelectorViewRenderer(title);
-			%>
-
-				<liferay-ui:section>
-					<div>
-
-						<%
-						itemSelectorViewRenderer.renderHTML(pageContext);
-						%>
-
-					</div>
-				</liferay-ui:section>
-
-			<%
-			}
-			%>
-
-		</liferay-ui:tabs>
-	</c:otherwise>
-</c:choose>
-
-<%!
-private static Log _log = LogFactoryUtil.getLog("com_liferay_item_selector_web.view_jsp");
-%>
+</liferay-ui:tabs>

@@ -23,9 +23,9 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
+import com.liferay.portlet.dynamicdatamapping.util.DDMXMLUtil;
 import com.liferay.portlet.exportimport.staging.Staging;
 import com.liferay.portlet.exportimport.staging.StagingConstants;
-import com.liferay.util.xml.XMLUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -109,7 +109,7 @@ public class UpgradePortalPreferences extends UpgradeProcess {
 			newRootElement.add(preferenceElement);
 		}
 
-		return XMLUtil.formatXML(newDocument);
+		return DDMXMLUtil.formatXML(newDocument);
 	}
 
 	@Override

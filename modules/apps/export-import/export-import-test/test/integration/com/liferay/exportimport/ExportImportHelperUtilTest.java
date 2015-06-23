@@ -15,7 +15,6 @@
 package com.liferay.exportimport;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.test.util.JournalTestUtil;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -74,6 +73,7 @@ import com.liferay.portlet.exportimport.lar.PortletDataContextFactoryUtil;
 import com.liferay.portlet.exportimport.model.ExportImportConfiguration;
 import com.liferay.portlet.exportimport.service.ExportImportConfigurationLocalServiceUtil;
 import com.liferay.portlet.exportimport.service.ExportImportLocalServiceUtil;
+import com.liferay.portlet.journal.model.JournalArticle;
 
 import java.io.File;
 import java.io.InputStream;
@@ -927,14 +927,7 @@ public class ExportImportHelperUtilTest extends PowerMockito {
 
 		@Override
 		public InputStream getEntryAsInputStream(String name) {
-			return new InputStream() {
-
-				@Override
-				public int read() {
-					return -1;
-				}
-
-			};
+			return null;
 		}
 
 		@Override

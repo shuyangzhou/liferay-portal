@@ -97,7 +97,7 @@
 
 				<execute function="SelectFrame" locator1="CPSitesAddSelectSite#SELECT_SITE_IFRAME" />
 				<execute function="Type" locator1="CPSitesAddSelectSite#BASIC_SEARCH_FIELD" value1="${parentSiteName}" />
-				<execute function="KeyPress" locator1="CPSitesAddSelectSite#BASIC_SEARCH_FIELD" value1="\RETURN" />
+				<execute function="AssertClick" locator1="CPSitesAddSelectSite#BASIC_SEARCH_BUTTON" value1="Search" />
 				<execute function="AssertTextEquals" locator1="CPSitesAddSelectSite#SITES_TABLE_NAME" value1="${parentSiteName}" />
 				<execute function="Click" locator1="CPSitesAddSelectSite#SITES_TABLE_CHOOSE_BUTTON" value1="Choose" />
 
@@ -198,22 +198,22 @@
 		<if>
 			<isset var="publicVirtualHosts" />
 			<then>
-				<execute function="AssertTextEquals" locator1="SiteSettingsSiteURL#SITE_URL_VIRTUAL_HOSTS_PUBLIC_PAGES_LABEL" value1="Public Pages" />
-				<execute function="Type" locator1="SiteSettingsSiteURL#SITE_URL_VIRTUAL_HOSTS_PUBLIC_PAGES_FIELD" value1="${publicPageVirtualHostURL}" />
+				<execute function="AssertTextEquals" locator1="CPSitesettingsSiteURL#SITE_URL_VIRTUAL_HOSTS_PUBLIC_PAGES_LABEL" value1="Public Pages" />
+				<execute function="Type" locator1="CPSitesettingsSiteURL#SITE_URL_VIRTUAL_HOSTS_PUBLIC_PAGES_FIELD" value1="${publicPageVirtualHostURL}" />
 			</then>
 		</if>
 
 		<if>
 			<isset var="privateVirtualHosts" />
 			<then>
-				<execute function="AssertTextEquals" locator1="SiteSettingsSiteURL#SITE_URL_VIRTUAL_HOSTS_PRIVATE_PAGES_LABEL" value1="Private Pages" />
-				<execute function="Type" locator1="SiteSettingsSiteURL#SITE_URL_VIRTUAL_HOSTS_PRIVATE_PAGES_FIELD" value1="${privatePageVirtualHostURL}" />
+				<execute function="AssertTextEquals" locator1="CPSitesettingsSiteURL#SITE_URL_VIRTUAL_HOSTS_PRIVATE_PAGES_LABEL" value1="Private Pages" />
+				<execute function="Type" locator1="CPSitesettingsSiteURL#SITE_URL_VIRTUAL_HOSTS_PRIVATE_PAGES_FIELD" value1="${privatePageVirtualHostURL}" />
 			</then>
 		</if>
 
-		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
+		<execute function="AssertClick" locator1="CPSitesettingsSiteURL#SAVE_BUTTON" value1="Save" />
 
-		<execute function="AssertTextEquals" locator1="Message#SUCCESS" value1="Your request completed successfully." />
+		<execute function="AssertTextEquals" locator1="CPSitesettingsSiteURL#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 	</command>
 
 	<command name="approveJoinSiteRestrictedViaMySitesPG">
@@ -231,7 +231,8 @@
 		<execute function="Type" locator1="CPSitemembershipsViewmembershiprequestsPendingReply#REPLY_COMMENTS" value1="You may join the Restricted Site." />
 		<execute function="AssertClick" locator1="CPSitemembershipsViewmembershiprequestsPendingReply#SAVE_BUTTON" value1="Save" />
 
-		<execute function="AssertTextEquals" locator1="Message#SUCCESS" value1="Your reply will be sent to the user by email." />
+		<execute function="AssertTextEquals" locator1="CPSitemembershipsViewmembershiprequestsPending#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		<execute function="AssertTextEquals" locator1="CPSitemembershipsViewmembershiprequestsPending#SUCCESS_MESSAGE_2" value1="Your reply will be sent to the user by email." />
 		<execute function="AssertClick" locator1="CPSitemembershipsViewmembershiprequestsPending#VIEW_MEMBERSHIP_NAVIGATION_APPROVED" value1="Approved" />
 
 		<execute function="AssertTextEquals" locator1="CPSitemembershipsViewmembershiprequestsApproved#APPROVED_TABLE_USER_NAME" value1="${userFirstName} ${userLastName} (${userEmailAddress})" />
@@ -582,7 +583,8 @@
 					<execute function="AssertClick" locator1="PGMysitesAvailablesites#SITE_TABLE_REQUEST_MEMBERSHIP" value1="Request Membership" />
 					<execute function="Type" locator1="PGMysitesAvailablesitesRequestmembership#COMMENTS_FIELD" value1="Please allow me to join the Restricted Site." />
 					<execute function="AssertClick" locator1="PGMysitesAvailablesitesRequestmembership#SAVE_BUTTON" value1="Save" />
-					<execute function="AssertTextEquals" locator1="Message#SUCCESS" value1="Your request was sent. You will receive a reply by email." />
+					<execute function="AssertTextEquals" locator1="PGMysitesAvailablesites#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+					<execute function="AssertTextEquals" locator1="PGMysitesAvailablesites#SUCCESS_MESSAGE_2" value1="Your request was sent. You will receive a reply by email." />
 					<execute function="AssertTextEquals" locator1="PGMysitesAvailablesites#SITE_TABLE_MEMBERSHIP_REQUESTED" value1="Membership Requested" />
 				</then>
 			</elseif>
@@ -1011,7 +1013,7 @@
 				<execute function="AssertTextEquals" locator1="PGMysites#NAVIGATION_MY_SITES" value1="My Sites" />
 				<execute function="AssertTextEquals" locator1="PGMysites#SITE_TABLE_SITE_NAME" value1="${siteName}" />
 				<execute function="AssertTextEquals" locator1="PGMysites#SITE_TABLE_SITE_NAME_MEMBERS" value1="2" />
-				<execute function="AssertElementPresent" locator1="MySites#SITE_TABLE_SITE_ACTIONS" />
+				<execute function="AssertElementPresent" locator1="PGMysites#SITE_TABLE_SITE_ACTIONS" />
 			</else>
 		</if>
 	</command>

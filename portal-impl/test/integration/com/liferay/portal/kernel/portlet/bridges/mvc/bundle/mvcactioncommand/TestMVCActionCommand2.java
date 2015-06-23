@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.portlet.bridges.mvc.bundle.mvcactioncommand;
 
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -42,9 +42,9 @@ public class TestMVCActionCommand2 implements MVCActionCommand {
 
 	@Override
 	public boolean processAction(
-		ActionRequest actionRequest, ActionResponse actionResponse) {
+		PortletRequest portletRequest, PortletResponse portletResponse) {
 
-		actionRequest.setAttribute(
+		portletRequest.setAttribute(
 			TEST_MVC_ACTION_COMMAND_ATTRIBUTE,
 			TEST_MVC_ACTION_COMMAND_ATTRIBUTE);
 

@@ -283,13 +283,12 @@
 	var MAP_FONT_SIZE = {
 		1: 10,
 		2: 12,
-		3: 14,
-		4: 16,
-		5: 18,
-		6: 24,
-		7: 32,
-		8: 48,
-		defaultSize: 14
+		3: 16,
+		4: 18,
+		5: 24,
+		6: 32,
+		7: 48,
+		defaultSize: 12
 	};
 
 	var MAP_HANDLERS = {
@@ -336,12 +335,6 @@
 		'width': 1
 	};
 
-	var MAP_LIST_BULLETED_STYLES = {
-		circle: 'list-style-type: circle;',
-		disc: 'list-style-type: disc;',
-		square: 'list-style-type: square;'
-	};
-
 	var MAP_LIST_STYLES = {
 		1: 'list-style-type: decimal;',
 		a: 'list-style-type: lower-alpha;',
@@ -365,7 +358,7 @@
 
 	var REGEX_ESCAPE_REGEX = /[-[\]{}()*+?.,\\^$|#\s]/g;
 
-	var REGEX_IMAGE_SRC = /^(?:https?:\/\/|\/)[-;\/\?:@&=\+\$,_\.!~\*'\(\)%0-9a-z]{1,2048}$/i;
+	var REGEX_IMAGE_SRC = /^(?:https?:\/\/|\/)[-;\/\?:@&=\+\$,_\.!~\*'\(\)%0-9a-z]{1,512}$/i;
 
 	var REGEX_LASTCHAR_NEWLINE = /\r?\n$/;
 
@@ -377,7 +370,7 @@
 
 	var REGEX_TAG_NAME = /^\/?(?:b|center|code|colou?r|email|i|img|justify|left|pre|q|quote|right|\*|s|size|table|tr|th|td|li|list|font|u|url)$/i;
 
-	var REGEX_URI = /^[-;\/\?:@&=\+\$,_\.!~\*'\(\)%0-9a-z#]{1,2048}$|\${\S+}/i;
+	var REGEX_URI = /^[-;\/\?:@&=\+\$,_\.!~\*'\(\)%0-9a-z#]{1,512}$|\${\S+}/i;
 
 	var STR_BLANK = '';
 
@@ -659,10 +652,7 @@
 
 			var listAttribute = token.attribute;
 
-			if (MAP_LIST_BULLETED_STYLES[listAttribute]) {
-				styleAttr = MAP_LIST_BULLETED_STYLES[listAttribute];
-			}
-			else {
+			if (listAttribute) {
 				tag = 'ol';
 
 				styleAttr = MAP_LIST_STYLES[listAttribute];

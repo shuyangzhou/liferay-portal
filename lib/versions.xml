@@ -224,6 +224,18 @@
 				</licenses>
 			</library>
 			<library>
+				<file-name>lib/development/ecj.jar</file-name>
+				<version>4.4</version>
+				<project-name>Eclipse JDT Core Batch Compiler</project-name>
+				<project-url>http://www.eclipse.org/jdt/core/index.php</project-url>
+				<licenses>
+					<license>
+						<license-name>Eclipse Public License 1.0</license-name>
+						<license-url>http://www.eclipse.org/legal/epl-v10.html</license-url>
+					</license>
+				</licenses>
+			</library>
+			<library>
 				<file-name>lib/development/error-prone-ant.jar</file-name>
 				<version>1.0.8</version>
 				<project-name>Error-Prone</project-name>
@@ -2435,6 +2447,21 @@
 						<license-url>http://www.apache.org/licenses/LICENSE-2.0</license-url>
 					</license>
 				</licenses>
+			</library>
+			<library>
+				<file-name>lib/portal/jsqlparser.jar</file-name>
+				<version>0.8.2-SNAPSHOT</version>
+				<project-name>JSqlParser</project-name>
+				<project-url>https://github.com/wumpz/JSqlParser</project-url>
+				<licenses>
+					<license>
+						<license-name>LGPL 2.1</license-name>
+						<license-url>http://www.gnu.org/licenses/lgpl-2.1.html</license-url>
+					</license>
+				</licenses>
+				<comments>
+					See LPS-34240.
+				</comments>
 			</library>
 			<library>
 				<file-name>lib/portal/jsr107cache.jar</file-name>

@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.search.TermQuery;
 import com.liferay.portal.kernel.search.TermRangeQuery;
 import com.liferay.portal.kernel.search.WildcardQuery;
 import com.liferay.portal.kernel.search.generic.DisMaxQuery;
+import com.liferay.portal.kernel.search.generic.FuzzyLikeThisQuery;
 import com.liferay.portal.kernel.search.generic.FuzzyQuery;
 import com.liferay.portal.kernel.search.generic.MatchAllQuery;
 import com.liferay.portal.kernel.search.generic.MatchQuery;
@@ -36,6 +37,8 @@ public interface QueryVisitor<T> {
 	public T visitQuery(BooleanQuery booleanQuery);
 
 	public T visitQuery(DisMaxQuery disMaxQuery);
+
+	public T visitQuery(FuzzyLikeThisQuery fuzzyLikeThisQuery);
 
 	public T visitQuery(FuzzyQuery fuzzyQuery);
 

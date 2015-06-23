@@ -21,9 +21,9 @@ import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 
 import java.util.concurrent.Callable;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
 import javax.portlet.PortletException;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 
 /**
  * @author Bruno Basto
@@ -33,8 +33,8 @@ public abstract class BaseTransactionalMVCActionCommand
 
 	@Override
 	public boolean processAction(
-			final ActionRequest actionRequest,
-			final ActionResponse actionResponse)
+			final PortletRequest portletRequest,
+			final PortletResponse portletResponse)
 		throws PortletException {
 
 		try {
@@ -42,9 +42,9 @@ public abstract class BaseTransactionalMVCActionCommand
 
 				@Override
 				public Boolean call() throws Exception {
-					doTransactionalCommand(actionRequest, actionResponse);
+					doTransactionalCommand(portletRequest, portletResponse);
 
-					return SessionErrors.isEmpty(actionRequest);
+					return SessionErrors.isEmpty(portletRequest);
 				}
 
 			};
@@ -62,7 +62,7 @@ public abstract class BaseTransactionalMVCActionCommand
 	}
 
 	protected abstract void doTransactionalCommand(
-			ActionRequest actionRequest, ActionResponse actionResponse)
+			PortletRequest portletRequest, PortletResponse portletResponse)
 		throws Exception;
 
 	private static final TransactionAttribute _transactionAttribute;

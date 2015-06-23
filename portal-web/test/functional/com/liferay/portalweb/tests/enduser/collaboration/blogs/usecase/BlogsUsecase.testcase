@@ -90,7 +90,7 @@
 		</execute>
 	</command>
 
-	<command name="AllowMultiplePortletConfigurationsPerSite" priority="4">
+	<command name="AllowMultiplePortletConfigurationsPerSite" priority="5">
 		<execute macro="Page#gotoCP">
 			<var name="portletName" value="Sites" />
 		</execute>
@@ -177,7 +177,7 @@
 		<execute macro="BlogsConfiguration#viewDefaultConfigurationRSS" />
 	</command>
 
-	<command name="DemoTrackbackURL" priority="4">
+	<command name="DemoTrackbackURL" priority="5">
 		<var name="ipAddress" value="${getIPAddress()}" />
 
 		<execute macro="Page#gotoPG">
@@ -223,7 +223,7 @@
 		</execute>
 
 		<execute macro="User#firstLoginPG">
-			<var name="password" value="test" />
++			<var name="password" value="test" />
 			<var name="userEmailAddress" value="test@www.able.com" />
 			<var name="virtualHostsURL" value="http://www.able.com:8080" />
 		</execute>
@@ -353,7 +353,7 @@
 		</execute>
 	</command>
 
-	<command name="ImportBlogsCommentLAR" priority="4">
+	<command name="ImportBlogsCommentLAR" priority="5">
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="${pageName}" />
 		</execute>
@@ -381,13 +381,9 @@
 			<var name="pageName" value="${pageName}" />
 		</execute>
 
-		<execute macro="BlogsNavigator#gotoEntryPG">
-			<var name="entryContent" value="Blogs Entry Content" />
-			<var name="entryTitle" value="Blogs Entry Title" />
-		</execute>
-
-		<execute macro="BlogsEntryComment#add">
+		<execute macro="BlogsEntryComment#addPG">
 			<var name="entryComment" value="Blogs Entry Comment" />
+			<var name="entryTitle" value="Blogs Entry Title" />
 		</execute>
 
 		<execute macro="Page#gotoPG">
@@ -759,7 +755,7 @@
 		</execute>
 	</command>
 
-	<command name="ViewBlogsEntryOnMultiplePagesWithDefaultAndPageScope" priority="4">
+	<command known-issues="LPS-56162" name="ViewBlogsEntryOnMultiplePagesWithDefaultAndPageScope" priority="4">
 		<var name="entryAuthor" value="Test Test" />
 		<var name="entryContent" value="Blogs Entry Content" />
 		<var name="entryTitle" value="Blogs Entry Title" />
@@ -871,7 +867,7 @@
 		</execute>
 	</command>
 
-	<command known-issues="LPS-56528" name="ViewBlogsEntryWithFutureDisplayDateViaBlogsAggregator" priority="3">
+	<command name="ViewBlogsEntryWithFutureDisplayDateViaBlogsAggregator" priority="3">
 		<var name="entryAbstractDescription" value="Blogs Entry Abstract Description" />
 		<var name="entryContent" value="Blogs Entry Content" />
 		<var name="entryTitle" value="Blogs Entry Title" />
@@ -961,7 +957,7 @@
 		</execute>
 	</command>
 
-	<command known-issues="LPS-56543" name="ViewParentOrganizationViaSelectOrganizationInBlogsConfiguration" priority="4">
+	<command name="ViewParentOrganizationViaSelectOrganizationInBlogsConfiguration" priority="4">
 		<var name="orgName1" value="Organization1 Name" />
 		<var name="orgName2" value="Organization2 Name" />
 		<var name="orgName3" value="Organization3 Name" />

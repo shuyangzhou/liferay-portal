@@ -51,7 +51,6 @@ import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletBag;
 import com.liferay.portal.kernel.portlet.PortletBagPool;
 import com.liferay.portal.kernel.security.auth.AlwaysAllowDoAsUser;
-import com.liferay.portal.kernel.security.auth.session.AuthenticatedSessionManagerUtil;
 import com.liferay.portal.kernel.security.pacl.DoPrivileged;
 import com.liferay.portal.kernel.servlet.BrowserSnifferUtil;
 import com.liferay.portal.kernel.servlet.DynamicServletRequest;
@@ -204,6 +203,9 @@ import com.liferay.portlet.documentlibrary.model.DLFolder;
 import com.liferay.portlet.expando.ValueDataException;
 import com.liferay.portlet.expando.model.ExpandoBridge;
 import com.liferay.portlet.expando.model.ExpandoColumnConstants;
+import com.liferay.portlet.journal.model.JournalArticleConstants;
+import com.liferay.portlet.journal.model.JournalFolder;
+import com.liferay.portlet.login.util.LoginUtil;
 import com.liferay.portlet.messageboards.action.EditDiscussionAction;
 import com.liferay.portlet.messageboards.model.MBMessage;
 import com.liferay.portlet.messageboards.model.MBThread;
@@ -1304,7 +1306,7 @@ public class PortalImpl implements Portal {
 		}
 
 		try {
-			userId = AuthenticatedSessionManagerUtil.getAuthenticatedUserId(
+			userId = LoginUtil.getAuthenticatedUserId(
 				request, login, password, null);
 		}
 		catch (AuthException ae) {
@@ -2777,7 +2779,7 @@ public class PortalImpl implements Portal {
 
 		FriendlyURLResolver friendlyURLResolver =
 			FriendlyURLResolverRegistryUtil.getFriendlyURLResolver(
-				_JOURNAL_ARTICLE_CANONICAL_URL_SEPARATOR);
+				JournalArticleConstants.CANONICAL_URL_SEPARATOR);
 
 		if (friendlyURLResolver == null) {
 			return null;
@@ -2804,7 +2806,7 @@ public class PortalImpl implements Portal {
 
 		FriendlyURLResolver friendlyURLResolver =
 			FriendlyURLResolverRegistryUtil.getFriendlyURLResolver(
-				_JOURNAL_ARTICLE_CANONICAL_URL_SEPARATOR);
+				JournalArticleConstants.CANONICAL_URL_SEPARATOR);
 
 		if (friendlyURLResolver == null) {
 			return null;
@@ -5987,6 +5989,8 @@ public class PortalImpl implements Portal {
 				"DLFILEENTRY$]",
 			"[$CLASS_NAME_ID_COM.LIFERAY.PORTLET.DOCUMENTLIBRARY.MODEL." +
 				"DLFOLDER$]",
+			"[$CLASS_NAME_ID_COM.LIFERAY.PORTLET.JOURNAL.MODEL." +
+				"JOURNALFOLDER$]",
 			"[$CLASS_NAME_ID_COM.LIFERAY.PORTLET.MESSAGEBOARDS.MODEL." +
 				"MBMESSAGE$]",
 			"[$CLASS_NAME_ID_COM.LIFERAY.PORTLET.MESSAGEBOARDS.MODEL." +
@@ -6015,6 +6019,7 @@ public class PortalImpl implements Portal {
 			getClassNameId(User.class), getClassNameId(UserGroup.class),
 			getClassNameId(BlogsEntry.class), getClassNameId(CalEvent.class),
 			getClassNameId(DLFileEntry.class), getClassNameId(DLFolder.class),
+			getClassNameId(JournalFolder.class),
 			getClassNameId(MBMessage.class), getClassNameId(MBThread.class),
 			ResourceConstants.SCOPE_COMPANY, ResourceConstants.SCOPE_GROUP,
 			ResourceConstants.SCOPE_GROUP_TEMPLATE,
@@ -8372,9 +8377,6 @@ public class PortalImpl implements Portal {
 
 	private static final String _J_SECURITY_CHECK = "j_security_check";
 
-	private static final String _JOURNAL_ARTICLE_CANONICAL_URL_SEPARATOR =
-		"/-/";
-
 	private static final String _LOCALHOST = "localhost";
 
 	private static final String _PRIVATE_GROUP_SERVLET_MAPPING =
@@ -8389,6 +8391,8 @@ public class PortalImpl implements Portal {
 	private static final Log _log = LogFactoryUtil.getLog(PortalImpl.class);
 
 	private static final Map<Long, String> _cdnHostHttpMap =
+		new ConcurrentHashMap<>();
+	private static final Map<Long, String> _cdnHostHttpsMap =
 		new ConcurrentHashMap<>();
 	private static final MethodHandler _resetCDNHostsMethodHandler =
 		new MethodHandler(new MethodKey(PortalUtil.class, "resetCDNHosts"));
@@ -8570,6 +8574,4 @@ public class PortalImpl implements Portal {
 
 	}
 
-	private static final Map<Long, String> _cdnHostHttpsMap =
-		new ConcurrentHashMap<>();
 }

@@ -16,7 +16,7 @@ package com.liferay.portlet;
 
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.xml.simple.Element;
-import com.liferay.util.xml.XMLUtil;
+import com.liferay.util.xml.XMLFormatter;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -219,7 +219,7 @@ public abstract class BasePreferencesImpl implements Serializable {
 			return null;
 		}
 		else {
-			return XMLUtil.fromCompactSafe(value);
+			return XMLFormatter.fromCompactSafe(value);
 		}
 	}
 
@@ -278,7 +278,7 @@ public abstract class BasePreferencesImpl implements Serializable {
 			return _NULL_VALUE;
 		}
 		else {
-			return XMLUtil.toCompactSafe(value);
+			return XMLFormatter.toCompactSafe(value);
 		}
 	}
 

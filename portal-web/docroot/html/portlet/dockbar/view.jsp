@@ -98,7 +98,7 @@ String toggleControlsState = GetterUtil.getString(SessionClicks.get(request, "li
 				<h1>
 					<c:choose>
 						<c:when test="<%= !group.isUserPersonalPanel() && controlPanelCategory.startsWith(PortletCategoryKeys.CURRENT_SITE) %>">
-							<liferay-ui:control-panel-site-selector />
+							<%@ include file="/html/portal/layout/view/control_panel_site_selector.jspf" %>
 
 							<span class="site-administration-title">
 								<liferay-ui:message key="site-administration" />
@@ -216,23 +216,13 @@ String toggleControlsState = GetterUtil.getString(SessionClicks.get(request, "li
 			</c:if>
 
 			<c:if test="<%= !group.isControlPanel() && !group.isUserPersonalPanel() && userSetupComplete && (themeDisplay.isShowLayoutTemplatesIcon() || themeDisplay.isShowPageSettingsIcon()) %>">
+				<portlet:renderURL var="editLayoutURL" windowState="<%= LiferayWindowState.EXCLUSIVE.toString() %>">
+					<portlet:param name="struts_action" value="/dockbar/edit_layout_panel" />
+					<portlet:param name="closeRedirect" value="<%= PortalUtil.getLayoutURL(layout, themeDisplay) %>" />
+					<portlet:param name="selPlid" value="<%= String.valueOf(plid) %>" />
+				</portlet:renderURL>
 
-				<%
-				PortletURL editPageURL = PortletProviderUtil.getPortletURL(request, Layout.class.getName(), PortletProvider.Action.EDIT);
-
-				editPageURL.setParameter("tabs1", layout.isPrivateLayout() ? "private-pages" : "public-pages");
-				editPageURL.setParameter("groupId", String.valueOf(groupDisplayContextHelper.getLiveGroupId()));
-				editPageURL.setParameter("selPlid", String.valueOf(layout.getPlid()));
-				editPageURL.setParameter("treeId", "layoutsTree");
-				editPageURL.setParameter("viewLayout", Boolean.TRUE.toString());
-
-				String editPageURLString = HttpUtil.setParameter(editPageURL.toString(), "controlPanelCategory", "current_site");
-
-				editPageURLString = HttpUtil.setParameter(editPageURLString, "doAsGroupId", String.valueOf(groupDisplayContextHelper.getLiveGroupId()));
-				editPageURLString = HttpUtil.setParameter(editPageURLString, "refererPlid", String.valueOf(layout.getPlid()));
-				%>
-
-				<aui:nav-item cssClass="page-edit-controls" href="<%= editPageURLString %>" iconCssClass="icon-edit" label="edit" />
+				<aui:nav-item anchorId="editLayoutPanel" cssClass="page-edit-controls" data-panelURL="<%= HtmlUtil.escapeAttribute(editLayoutURL) %>" href="javascript:;" iconCssClass="icon-edit" label="edit" />
 			</c:if>
 
 			<c:if test="<%= !group.isControlPanel() && !group.isUserPersonalPanel() && userSetupComplete && (!group.hasStagingGroup() || group.isStagingGroup()) && (hasLayoutUpdatePermission || (layoutTypePortlet.isCustomizable() && layoutTypePortlet.isCustomizedView() && hasLayoutCustomizePermission) || PortletPermissionUtil.hasConfigurationPermission(permissionChecker, themeDisplay.getSiteGroupId(), layout, ActionKeys.CONFIGURATION)) %>">

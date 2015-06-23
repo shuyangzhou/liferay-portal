@@ -37,9 +37,9 @@ import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
 import javax.portlet.PortletException;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
@@ -66,15 +66,15 @@ public class BindConfigurationMVCActionCommand implements MVCActionCommand {
 
 	@Override
 	public boolean processAction(
-			ActionRequest actionRequest, ActionResponse actionResponse)
+			PortletRequest portletRequest, PortletResponse portletResponse)
 		throws PortletException {
 
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
+		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		String factoryPid = ParamUtil.getString(actionRequest, "factoryPid");
+		String factoryPid = ParamUtil.getString(portletRequest, "factoryPid");
 
-		String pid = ParamUtil.getString(actionRequest, "pid", factoryPid);
+		String pid = ParamUtil.getString(portletRequest, "pid", factoryPid);
 
 		if (_log.isDebugEnabled()) {
 			_log.debug("Binding attributes for service " + pid);
@@ -96,7 +96,7 @@ public class BindConfigurationMVCActionCommand implements MVCActionCommand {
 
 		DDMForm ddmForm = configurationModelToDDMFormConverter.getDDMForm();
 
-		DDMFormValues ddmFormValues = getDDMFormValues(actionRequest, ddmForm);
+		DDMFormValues ddmFormValues = getDDMFormValues(portletRequest, ddmForm);
 
 		DDMFormValuesToPropertiesConverter ddmFormValuesToPropertiesConverter =
 			new DDMFormValuesToPropertiesConverter(
@@ -184,9 +184,9 @@ public class BindConfigurationMVCActionCommand implements MVCActionCommand {
 	}
 
 	protected DDMFormValues getDDMFormValues(
-		ActionRequest actionRequest, DDMForm ddmForm) {
+		PortletRequest portletRequest, DDMForm ddmForm) {
 
-		return _ddmFormValuesFactory.create(actionRequest, ddmForm);
+		return _ddmFormValuesFactory.create(portletRequest, ddmForm);
 	}
 
 	@Reference(unbind = "-")

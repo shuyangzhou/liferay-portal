@@ -20,15 +20,12 @@ import java.io.File;
 
 import java.net.URL;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Callable;
 
 import org.gradle.api.Action;
 import org.gradle.api.GradleException;
@@ -43,7 +40,6 @@ import org.gradle.api.artifacts.dsl.DependencyHandler;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.file.FileTree;
 import org.gradle.api.plugins.Convention;
-import org.gradle.api.plugins.ExtensionAware;
 import org.gradle.api.plugins.ExtensionContainer;
 import org.gradle.api.plugins.JavaPluginConvention;
 import org.gradle.api.tasks.SourceSet;
@@ -117,11 +113,11 @@ public class GradleUtil {
 	}
 
 	public static <T> T addExtension(
-		ExtensionAware extensionAware, String name, Class<T> clazz) {
+		Project project, String name, Class<T> clazz) {
 
-		ExtensionContainer extensionContainer = extensionAware.getExtensions();
+		ExtensionContainer extensionContainer = project.getExtensions();
 
-		return extensionContainer.create(name, clazz, extensionAware);
+		return extensionContainer.create(name, clazz, project);
 	}
 
 	public static SourceSet addSourceSet(Project project, String name) {
@@ -151,9 +147,7 @@ public class GradleUtil {
 		project.apply(args);
 	}
 
-	public static void applyScript(
-		Project project, String name, Object object) {
-
+	public static void applyScript(Project project, String name, Object obj) {
 		Map<String, Object> args = new HashMap<>();
 
 		ClassLoader classLoader = GradleUtil.class.getClassLoader();
@@ -166,8 +160,8 @@ public class GradleUtil {
 
 		args.put("from", url);
 
-		if (object != null) {
-			args.put("to", object);
+		if (obj != null) {
+			args.put("to", obj);
 		}
 
 		project.apply(args);
@@ -214,10 +208,8 @@ public class GradleUtil {
 		return convention.getPlugin(clazz);
 	}
 
-	public static <T> T getExtension(
-		ExtensionAware extensionAware, Class<T> clazz) {
-
-		ExtensionContainer extensionContainer = extensionAware.getExtensions();
+	public static <T> T getExtension(Project project, Class<T> clazz) {
+		ExtensionContainer extensionContainer = project.getExtensions();
 
 		return extensionContainer.getByType(clazz);
 	}
@@ -253,26 +245,6 @@ public class GradleUtil {
 		return null;
 	}
 
-	public static boolean getProperty(
-		Project project, String name, boolean defaultValue) {
-
-		if (!project.hasProperty(name)) {
-			return defaultValue;
-		}
-
-		Object value = project.property(name);
-
-		if (value instanceof Boolean) {
-			return (Boolean)value;
-		}
-
-		if (value instanceof String) {
-			return Boolean.parseBoolean((String)value);
-		}
-
-		return defaultValue;
-	}
-
 	public static SourceSet getSourceSet(Project project, String name) {
 		JavaPluginConvention javaPluginConvention = getConvention(
 			project, JavaPluginConvention.class);
@@ -297,18 +269,6 @@ public class GradleUtil {
 		return prefix + StringUtil.capitalize(fileName);
 	}
 
-	public static String getTaskPrefixedProperty(Task task, String name) {
-		String suffix = "." + name;
-
-		String value = System.getProperty(task.getPath() + suffix);
-
-		if (Validator.isNull(value)) {
-			value = System.getProperty(task.getName() + suffix);
-		}
-
-		return value;
-	}
-
 	public static void removeDependencies(
 		Project project, String configurationName,
 		String[] dependencyNotations) {
@@ -329,49 +289,6 @@ public class GradleUtil {
 				iterator.remove();
 			}
 		}
-	}
-
-	public static File toFile(Project project, Object object) {
-		if (object == null) {
-			return null;
-		}
-
-		return project.file(object);
-	}
-
-	public static String toString(Object object) {
-		if (object == null) {
-			return null;
-		}
-
-		return object.toString();
-	}
-
-	public static List<String> toStringList(Iterable<?> iterable) {
-		List<String> list = new ArrayList<>();
-
-		for (Object object : iterable) {
-			list.add(object.toString());
-		}
-
-		return list;
-	}
-
-	public static boolean waitFor(
-			Callable<Boolean> callable, long checkInterval, long timeout)
-		throws Exception {
-
-		long end = System.currentTimeMillis() + timeout;
-
-		while (System.currentTimeMillis() < end) {
-			if (callable.call()) {
-				return true;
-			}
-
-			Thread.sleep(checkInterval);
-		}
-
-		return false;
 	}
 
 	private static Dependency _addDependency(

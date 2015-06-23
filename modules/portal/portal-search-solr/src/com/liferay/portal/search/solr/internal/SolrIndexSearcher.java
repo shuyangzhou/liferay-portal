@@ -49,7 +49,6 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.solr.configuration.SolrConfiguration;
-import com.liferay.portal.search.solr.connection.SolrClientManager;
 import com.liferay.portal.search.solr.facet.FacetProcessor;
 import com.liferay.portal.search.solr.internal.facet.CompositeFacetProcessor;
 import com.liferay.portal.search.solr.internal.facet.SolrFacetFieldCollector;
@@ -64,11 +63,11 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.time.StopWatch;
-import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrQuery.ORDER;
 import org.apache.solr.client.solrj.SolrQuery.SortClause;
 import org.apache.solr.client.solrj.SolrRequest.METHOD;
+import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
@@ -187,6 +186,10 @@ public class SolrIndexSearcher extends BaseIndexSearcher {
 	@Reference(target = "(search.engine.impl=Solr)", unbind = "-")
 	public void setQuerySuggester(QuerySuggester querySuggester) {
 		super.setQuerySuggester(querySuggester);
+	}
+
+	public void setSolrServer(SolrServer solrServer) {
+		_solrServer = solrServer;
 	}
 
 	@Activate
@@ -435,9 +438,7 @@ public class SolrIndexSearcher extends BaseIndexSearcher {
 	protected QueryResponse executeSearchRequest(SolrQuery solrQuery)
 		throws Exception {
 
-		SolrClient solrClient = _solrClientManager.getSolrClient();
-
-		return solrClient.query(solrQuery, METHOD.POST);
+		return _solrServer.query(solrQuery, METHOD.POST);
 	}
 
 	protected Hits processResponse(
@@ -525,11 +526,6 @@ public class SolrIndexSearcher extends BaseIndexSearcher {
 		_queryTranslator = queryTranslator;
 	}
 
-	@Reference(unbind = "-")
-	protected void setSolrClientManager(SolrClientManager solrClientManager) {
-		_solrClientManager = solrClientManager;
-	}
-
 	protected String translateQuery(Query query, SearchContext searchContext) {
 		return _queryTranslator.translate(query, searchContext);
 	}
@@ -570,7 +566,7 @@ public class SolrIndexSearcher extends BaseIndexSearcher {
 	private FilterTranslator<String> _filterTranslator;
 	private boolean _logExceptionsOnly;
 	private QueryTranslator<String> _queryTranslator;
-	private SolrClientManager _solrClientManager;
 	private volatile SolrConfiguration _solrConfiguration;
+	private SolrServer _solrServer;
 
 }

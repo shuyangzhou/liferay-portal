@@ -126,7 +126,7 @@ public class ServletContextUtil {
 	}
 
 	public static URI getResourceURI(URL url) throws URISyntaxException {
-		return new URI(url.getProtocol(), url.getPath(), null);
+		return _getResourceURI(url, url.getPath());
 	}
 
 	public static String getRootPath(ServletContext servletContext)
@@ -164,7 +164,7 @@ public class ServletContextUtil {
 				path = path.substring(0, index);
 			}
 
-			rootURI = new URI(rootURL.getProtocol(), path, null);
+			rootURI = _getResourceURI(rootURL, path);
 
 			servletContext.setAttribute(URI_ATTRIBUTE, rootURI);
 		}
@@ -173,6 +173,10 @@ public class ServletContextUtil {
 		}
 
 		return rootURI;
+	}
+
+	private static String _getClassName(String path) {
+		return _getClassName(null, path);
 	}
 
 	private static String _getClassName(String rootPath, String path) {
@@ -228,8 +232,7 @@ public class ServletContextUtil {
 						String jarEntryName = jarEntry.getName();
 
 						if (jarEntryName.endsWith(_EXT_CLASS)) {
-							String className = _getClassName(
-								null, jarEntryName);
+							String className = _getClassName(jarEntryName);
 
 							classNames.add(className);
 						}
@@ -242,6 +245,12 @@ public class ServletContextUtil {
 					servletContext.getResourcePaths(path), classNames);
 			}
 		}
+	}
+
+	private static URI _getResourceURI(URL url, String path)
+		throws URISyntaxException {
+
+		return new URI(url.getProtocol(), path, null);
 	}
 
 	private static final String _EXT_CLASS = ".class";

@@ -86,8 +86,6 @@ public class SyncFile extends StateAwareModel {
 
 	public static final int UI_EVENT_MOVED_REMOTE = 14;
 
-	public static final int UI_EVENT_PARENT_MISSING = 24;
-
 	public static final int UI_EVENT_RENAMED_LOCAL = 21;
 
 	public static final int UI_EVENT_RENAMED_REMOTE = 22;
@@ -368,7 +366,7 @@ public class SyncFile extends StateAwareModel {
 	@DatabaseField(defaultValue = "", useGetSet = true)
 	protected String changeLog;
 
-	@DatabaseField(index = true, useGetSet = true)
+	@DatabaseField(useGetSet = true)
 	protected String checksum;
 
 	@DatabaseField(useGetSet = true)

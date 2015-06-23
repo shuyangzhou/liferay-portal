@@ -84,7 +84,8 @@ portletURL.setParameter("recordSetId", String.valueOf(recordSet.getRecordSetId()
 					<aui:nav-item href="<%= addRecordURL %>" iconCssClass="icon-plus" label='<%= LanguageUtil.format(request, "add-x", HtmlUtil.escape(ddmStructure.getName(locale)), false) %>' />
 				</c:if>
 
-				<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="exportRecordSet" var="exportRecordSetURL">
+				<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" var="exportRecordSetURL">
+					<portlet:param name="<%= ActionRequest.ACTION_NAME %>" value="exportRecordSet" />
 					<portlet:param name="recordSetId" value="<%= String.valueOf(recordSet.getRecordSetId()) %>" />
 				</liferay-portlet:resourceURL>
 
@@ -134,7 +135,6 @@ portletURL.setParameter("recordSetId", String.valueOf(recordSet.getRecordSetId()
 
 			ResultRow row = new ResultRow(record, record.getRecordId(), i);
 
-			row.setParameter("editable", String.valueOf(editable));
 			row.setParameter("formDDMTemplateId", String.valueOf(formDDMTemplateId));
 			row.setParameter("hasDeletePermission", String.valueOf(hasDeletePermission));
 			row.setParameter("hasUpdatePermission", String.valueOf(hasUpdatePermission));
@@ -145,7 +145,6 @@ portletURL.setParameter("recordSetId", String.valueOf(recordSet.getRecordSetId()
 			rowURL.setParameter("redirect", currentURL);
 			rowURL.setParameter("recordId", String.valueOf(record.getRecordId()));
 			rowURL.setParameter("version", recordVersion.getVersion());
-			rowURL.setParameter("editable", String.valueOf(editable));
 			rowURL.setParameter("formDDMTemplateId", String.valueOf(formDDMTemplateId));
 
 			// Columns

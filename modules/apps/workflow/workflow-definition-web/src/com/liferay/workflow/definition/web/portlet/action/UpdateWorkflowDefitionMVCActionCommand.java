@@ -37,8 +37,8 @@ import java.io.File;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -58,19 +58,19 @@ public class UpdateWorkflowDefitionMVCActionCommand
 
 	@Override
 	protected void doProcessAction(
-			ActionRequest actionRequest, ActionResponse actionResponse)
+			PortletRequest portletRequest, PortletResponse portletResponse)
 		throws Exception {
 
 		UploadPortletRequest uploadPortletRequest =
-			PortalUtil.getUploadPortletRequest(actionRequest);
+			PortalUtil.getUploadPortletRequest(portletRequest);
 
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
+		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		String name = ParamUtil.getString(actionRequest, "name");
+		String name = ParamUtil.getString(portletRequest, "name");
 		Map<Locale, String> titleMap = LocalizationUtil.getLocalizationMap(
-			actionRequest, "title");
-		int version = ParamUtil.getInteger(actionRequest, "version");
+			portletRequest, "title");
+		int version = ParamUtil.getInteger(portletRequest, "version");
 
 		File file = uploadPortletRequest.getFile("file");
 
@@ -88,7 +88,7 @@ public class UpdateWorkflowDefitionMVCActionCommand
 					getTitle(titleMap), getFileBytes(file));
 		}
 
-		actionRequest.setAttribute(
+		portletRequest.setAttribute(
 			WebKeys.WORKFLOW_DEFINITION, workflowDefinition);
 	}
 

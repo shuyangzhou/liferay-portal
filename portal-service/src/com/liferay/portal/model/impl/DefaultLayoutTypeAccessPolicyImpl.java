@@ -57,6 +57,12 @@ public class DefaultLayoutTypeAccessPolicyImpl
 			HttpServletRequest request, Layout layout, Portlet portlet)
 		throws PortalException {
 
+		if (layout.isTypeControlPanel()) {
+			isAccessAllowedToControlPanelPortlet(request, layout, portlet);
+
+			return;
+		}
+
 		if (isAccessAllowedToLayoutPortlet(request, layout, portlet)) {
 			PortalUtil.addPortletDefaultResource(request, portlet);
 
@@ -75,6 +81,10 @@ public class DefaultLayoutTypeAccessPolicyImpl
 			PermissionChecker permissionChecker, Layout layout)
 		throws PortalException {
 
+		if (layout.isTypeControlPanel()) {
+			return false;
+		}
+
 		return LayoutPermissionUtil.contains(
 			permissionChecker, layout, ActionKeys.ADD_LAYOUT);
 	}
@@ -83,6 +93,10 @@ public class DefaultLayoutTypeAccessPolicyImpl
 	public boolean isCustomizeLayoutAllowed(
 			PermissionChecker permissionChecker, Layout layout)
 		throws PortalException {
+
+		if (layout.isTypeControlPanel()) {
+			return false;
+		}
 
 		return LayoutPermissionUtil.contains(
 			permissionChecker, layout, ActionKeys.CUSTOMIZE);
@@ -93,6 +107,10 @@ public class DefaultLayoutTypeAccessPolicyImpl
 			PermissionChecker permissionChecker, Layout layout)
 		throws PortalException {
 
+		if (layout.isTypeControlPanel()) {
+			return false;
+		}
+
 		return LayoutPermissionUtil.contains(
 			permissionChecker, layout, ActionKeys.DELETE);
 	}
@@ -102,6 +120,10 @@ public class DefaultLayoutTypeAccessPolicyImpl
 			PermissionChecker permissionChecker, Layout layout)
 		throws PortalException {
 
+		if (layout.isTypeControlPanel()) {
+			return false;
+		}
+
 		return LayoutPermissionUtil.contains(
 			permissionChecker, layout, ActionKeys.UPDATE);
 	}
@@ -110,6 +132,10 @@ public class DefaultLayoutTypeAccessPolicyImpl
 	public boolean isViewLayoutAllowed(
 			PermissionChecker permissionChecker, Layout layout)
 		throws PortalException {
+
+		if (layout.isTypeControlPanel()) {
+			return false;
+		}
 
 		return LayoutPermissionUtil.contains(
 			permissionChecker, layout, ActionKeys.VIEW);
@@ -138,6 +164,37 @@ public class DefaultLayoutTypeAccessPolicyImpl
 		return PortletPermissionUtil.hasAccessPermission(
 			permissionChecker, themeDisplay.getScopeGroupId(), layout, portlet,
 			portletMode);
+	}
+
+	protected void isAccessAllowedToControlPanelPortlet(
+			HttpServletRequest request, Layout layout, Portlet portlet)
+		throws PortalException {
+
+		PermissionChecker permissionChecker =
+			PermissionThreadLocal.getPermissionChecker();
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		if (PortletPermissionUtil.hasControlPanelAccessPermission(
+				permissionChecker, themeDisplay.getScopeGroupId(), portlet)) {
+
+			return;
+		}
+
+		if (isAccessGrantedByRuntimePortlet(request)) {
+			return;
+		}
+
+		if (isAccessGrantedByPortletAuthenticationToken(
+				request, layout, portlet)) {
+
+			return;
+		}
+
+		throw new PrincipalException(
+			"User does not have permission to access Control Panel portlet " +
+				portlet.getPortletId());
 	}
 
 	protected boolean isAccessAllowedToLayoutPortlet(

@@ -26,7 +26,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.xml.SAXReaderFactory;
 import com.liferay.source.formatter.util.FileUtil;
 import com.liferay.util.ContentUtil;
-import com.liferay.util.xml.Dom4jUtil;
+import com.liferay.util.xml.XMLFormatter;
 
 import java.io.File;
 
@@ -114,7 +114,7 @@ public class XMLSourceProcessor extends BaseSourceProcessor {
 
 		sortAttributes(document.getRootElement(), true);
 
-		return Dom4jUtil.toString(document);
+		return XMLFormatter.toString(document);
 	}
 
 	public static void sortElementsByAttribute(
@@ -725,7 +725,7 @@ public class XMLSourceProcessor extends BaseSourceProcessor {
 			}
 		}
 
-		return Dom4jUtil.toString(document);
+		return XMLFormatter.toString(document);
 	}
 
 	protected String formatFriendlyURLRoutesXML(String content) {
@@ -800,7 +800,7 @@ public class XMLSourceProcessor extends BaseSourceProcessor {
 			}
 		}
 
-		return Dom4jUtil.toString(document);
+		return XMLFormatter.toString(document);
 	}
 
 	protected String formatPoshiXML(String fileName, String content)

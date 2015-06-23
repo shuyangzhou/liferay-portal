@@ -221,9 +221,9 @@ if (Validator.isNotNull(requestUpdateStructureURL)) {
 				</aui:field-wrapper>
 
 				<c:if test="<%= structure != null %>">
-					<portlet:resourceURL id="getStructure" var="getStructureURL">
+					<portlet:actionURL name="ddmGetStructure" var="getStructureURL">
 						<portlet:param name="structureId" value="<%= String.valueOf(classPK) %>" />
-					</portlet:resourceURL>
+					</portlet:actionURL>
 
 					<aui:input name="url" type="resource" value="<%= getStructureURL.toString() %>" />
 

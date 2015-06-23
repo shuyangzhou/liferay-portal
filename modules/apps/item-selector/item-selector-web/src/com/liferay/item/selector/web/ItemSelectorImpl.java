@@ -231,11 +231,8 @@ public class ItemSelectorImpl implements ItemSelector {
 				_itemSelectionCriterionHandlers.get(
 					itemSelectorCriterionClassName);
 
-			if (itemSelectorCriterionHandler != null) {
-				itemSelectorCriterionClasses.add(
-					itemSelectorCriterionHandler.
-						getItemSelectorCriterionClass());
-			}
+			itemSelectorCriterionClasses.add(
+				itemSelectorCriterionHandler.getItemSelectorCriterionClass());
 		}
 
 		return itemSelectorCriterionClasses;

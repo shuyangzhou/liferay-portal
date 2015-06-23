@@ -5,7 +5,7 @@
 		<execute macro="User#firstLoginPG" />
 	</set-up>
 
-	<command name="GetAlert" priority="4">
+	<command name="GetAlert" priority="5">
 		<var name="entryComment" value="Blogs Entry Comment Body" />
 		<var name="entryContent" value="Blogs Entry Content" />
 		<var name="entryTitle" value="Blogs Entry Title" />
@@ -23,13 +23,9 @@
 			<var name="portletName" value="Blogs" />
 		</execute>
 
-		<execute macro="BlogsNavigator#gotoEntryCP">
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-		</execute>
-
-		<execute macro="BlogsEntryComment#add">
+		<execute macro="BlogsEntryComment#addCP">
 			<var name="entryComment" value="${entryComment}" />
+			<var name="entryTitle" value="${entryTitle}" />
 		</execute>
 
 		<execute macro="Page#gotoContentCP">
@@ -54,7 +50,7 @@
 		</execute>
 	</command>
 
-	<!--<command name="GetAttribute" priority="4">
+	<!--<command name="GetAttribute" priority="5">
 		<var name="entryContent" value="Blogs Entry Content" />
 		<var name="entryTitle" value="Blogs Entry Title" />
 
@@ -75,7 +71,7 @@
 		</execute>
 	</command>-->
 
-	<command name="GetBodyText" priority="4">
+	<command name="GetBodyText" priority="5">
 		<var name="entryContent" value="Blogs Entry Content" />
 		<var name="entryTitle" value="Blogs Entry Title" />
 
@@ -98,7 +94,7 @@
 		</execute>
 	</command>
 
-	<command name="GetCurrentDay" priority="4">
+	<command name="GetCurrentDay" priority="5">
 		<execute macro="Page#gotoContentCP">
 			<var name="portletName" value="Blogs" />
 		</execute>
@@ -113,7 +109,7 @@
 		</execute>
 	</command>
 
-	<command name="GetCurrentMonth" priority="4">
+	<command name="GetCurrentMonth" priority="5">
 		<execute macro="Page#gotoContentCP">
 			<var name="portletName" value="Blogs" />
 		</execute>
@@ -131,7 +127,7 @@
 		</execute>
 	</command>
 
-	<command name="GetCurrentYear" priority="4">
+	<command name="GetCurrentYear" priority="5">
 		<execute macro="Page#gotoContentCP">
 			<var name="portletName" value="Blogs" />
 		</execute>
@@ -146,7 +142,7 @@
 		</execute>
 	</command>
 
-	<!--<command name="GetFirstNumber" priority="4">
+	<!--<command name="GetFirstNumber" priority="5">
 		<execute macro="Page#gotoContentCP">
 			<var name="portletName" value="Blogs" />
 		</execute>
@@ -161,7 +157,7 @@
 		</execute>
 	</command>
 
-	<command name="GetFirstNumberIncrement" priority="4">
+	<command name="GetFirstNumberIncrement" priority="5">
 		<execute macro="Page#gotoContentCP">
 			<var name="portletName" value="Blogs" />
 		</execute>
@@ -175,7 +171,7 @@
 		</execute>
 	</command>-->
 
-	<command name="GetLocation" priority="4">
+	<command name="GetLocation" priority="5">
 		<var method="selenium#getLocation()" name="url" />
 
 		<execute macro="TestUtils#assertEquals">
@@ -184,7 +180,7 @@
 		</execute>
 	</command>
 
-	<command name="GetNumberDecrement" priority="4">
+	<command name="GetNumberDecrement" priority="5">
 		<var method="selenium#getNumberDecrement('3')" name="int" />
 
 		<execute macro="TestUtils#assertEquals">
@@ -193,7 +189,7 @@
 		</execute>
 	</command>
 
-	<command name="GetNumberIncrement" priority="4">
+	<command name="GetNumberIncrement" priority="5">
 		<var method="selenium#getNumberIncrement('3')" name="int" />
 
 		<execute macro="TestUtils#assertEquals">
@@ -202,7 +198,7 @@
 		</execute>
 	</command>
 
-	<command name="GetText" priority="4">
+	<command name="GetText" priority="5">
 		<var method="selenium#getText('//li[@id=\'_145_adminLinks\']')" name="string" />
 
 		<execute macro="TestUtils#assertEquals">
@@ -211,7 +207,7 @@
 		</execute>
 	</command>
 
-	<command name="GetValue" priority="4">
+	<command name="GetValue" priority="5">
 		<var name="entryContent" value="Blogs Entry Content" />
 		<var name="entryTitle" value="Blogs Entry Title" />
 
@@ -241,7 +237,7 @@
 		</execute>
 	</command>
 
-	<command name="IsAlertPresent" priority="4">
+	<command name="IsAlertPresent" priority="5">
 		<var name="entryComment" value="Blogs Entry Comment Body" />
 		<var name="entryContent" value="Blogs Entry Content" />
 		<var name="entryTitle" value="Blogs Entry Title" />
@@ -259,13 +255,9 @@
 			<var name="portletName" value="Blogs" />
 		</execute>
 
-		<execute macro="BlogsNavigator#gotoEntryCP">
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-		</execute>
-
-		<execute macro="BlogsEntryComment#add">
+		<execute macro="BlogsEntryComment#addCP">
 			<var name="entryComment" value="${entryComment}" />
+			<var name="entryTitle" value="${entryTitle}" />
 		</execute>
 
 		<execute macro="Page#gotoContentCP">
@@ -290,7 +282,7 @@
 		</execute>
 	</command>
 
-	<command name="IsChecked" priority="4">
+	<command name="IsChecked" priority="5">
 		<var name="entryComment" value="Blogs Entry Comment Body" />
 		<var name="entryContent" value="Blogs Entry Content" />
 		<var name="entryTitle" value="Blogs Entry Title" />
@@ -312,7 +304,7 @@
 		</execute>
 	</command>
 
-	<command name="IsElementNotPresent" priority="4">
+	<command name="IsElementNotPresent" priority="5">
 		<var method="selenium#isElementNotPresent('//li[@id=\'_145_adminLinks\']')" name="element" />
 
 		<execute macro="TestUtils#assertEquals">
@@ -321,7 +313,7 @@
 		</execute>
 	</command>
 
-	<command name="IsElementPresent" priority="4">
+	<command name="IsElementPresent" priority="5">
 		<var method="selenium#isElementPresent('//li[@id=\'_145_adminLinks\']')" name="element" />
 
 		<execute macro="TestUtils#assertEquals">
@@ -330,7 +322,7 @@
 		</execute>
 	</command>
 
-	<command name="IsElementPresentAfterWait" priority="4">
+	<command name="IsElementPresentAfterWait" priority="5">
 		<var method="selenium#isElementPresentAfterWait('//li[@id=\'_145_adminLinks\']')" name="element" />
 
 		<execute macro="TestUtils#assertEquals">
@@ -339,7 +331,7 @@
 		</execute>
 	</command>
 
-	<command name="IsNotChecked" priority="4">
+	<command name="IsNotChecked" priority="5">
 		<var name="entryComment" value="Blogs Entry Comment Body" />
 		<var name="entryContent" value="Blogs Entry Content" />
 		<var name="entryTitle" value="Blogs Entry Title" />
@@ -361,7 +353,7 @@
 		</execute>
 	</command>
 
-	<command name="IsNotPartialText" priority="4">
+	<command name="IsNotPartialText" priority="5">
 		<var name="entryContent" value="Blogs Entry Content" />
 		<var name="entryTitle" value="Blogs Entry Title" />
 
@@ -391,7 +383,7 @@
 		</execute>
 	</command>
 
-	<command name="IsNotText" priority="4">
+	<command name="IsNotText" priority="5">
 		<var method="selenium#isNotText('//li[@id=\'_145_adminLinks\'], Admin')" name="string" />
 
 		<execute macro="TestUtils#assertEquals">
@@ -400,7 +392,7 @@
 		</execute>
 	</command>
 
-	<command name="IsNotValue" priority="4">
+	<command name="IsNotValue" priority="5">
 		<var name="entryContent" value="Blogs Entry Content" />
 		<var name="entryTitle" value="Blogs Entry Title" />
 
@@ -430,7 +422,7 @@
 		</execute>
 	</command>
 
-	<command name="IsNotVisible" priority="4">
+	<command name="IsNotVisible" priority="5">
 		<var method="selenium#isNotVisible('//li[@id=\'_145_adminLinks\']')" name="string" />
 
 		<execute macro="TestUtils#assertEquals">
@@ -439,7 +431,7 @@
 		</execute>
 	</command>
 
-	<!--<command name="IsPartialText" priority="4">
+	<!--<command name="IsPartialText" priority="5">
 		<var name="entryContent" value="Blogs Entry Content" />
 		<var name="entryTitle" value="Blogs Entry Title" />
 
@@ -469,7 +461,7 @@
 		</execute>
 	</command>
 
-	<command name="IsText" priority="4">
+	<command name="IsText" priority="5">
 		<var method="selenium#isText('//li[@id=\'_145_adminLinks\'], Admin')" name="string" />
 
 		<execute macro="TestUtils#assertEquals">
@@ -478,7 +470,7 @@
 		</execute>
 	</command>-->
 
-	<command name="IsTextNotPresent" priority="4">
+	<command name="IsTextNotPresent" priority="5">
 		<var method="selenium#isTextNotPresent('Site Administrator')" name="string" />
 
 		<execute macro="TestUtils#assertEquals">
@@ -487,7 +479,7 @@
 		</execute>
 	</command>
 
-	<command name="IsTextPresent" priority="4">
+	<command name="IsTextPresent" priority="5">
 		<execute function="AssertClick#assertTextClickAtClickDockbar" locator1="Dockbar#ADMIN" value1="Admin" />
 
 		<var method="selenium#isTextPresent('Site Administrator')" name="string" />
@@ -498,7 +490,7 @@
 		</execute>
 	</command>
 
-	<!--<command name="IsValue" priority="4">
+	<!--<command name="IsValue" priority="5">
 		<var name="entryContent" value="Blogs Entry Content" />
 		<var name="entryTitle" value="Blogs Entry Title" />
 
@@ -528,7 +520,7 @@
 		</execute>
 	</command>-->
 
-	<command name="IsVisible" priority="4">
+	<command name="IsVisible" priority="5">
 		<var method="selenium#isVisible('//li[@id=\'_145_adminLinks\']')" name="string" />
 
 		<execute macro="TestUtils#assertEquals">

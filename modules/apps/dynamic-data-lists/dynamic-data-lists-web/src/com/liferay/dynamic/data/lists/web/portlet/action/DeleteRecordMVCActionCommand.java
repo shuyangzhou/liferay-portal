@@ -20,8 +20,8 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.util.ParamUtil;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -33,26 +33,25 @@ import org.osgi.service.component.annotations.Reference;
 	immediate = true,
 	property = {
 		"javax.portlet.name=" + DDLPortletKeys.DYNAMIC_DATA_LISTS,
-		"javax.portlet.name=" + DDLPortletKeys.DYNAMIC_DATA_LISTS_DISPLAY,
 		"mvc.command.name=deleteRecord"
 	},
 	service = MVCActionCommand.class
 )
 public class DeleteRecordMVCActionCommand extends BaseMVCActionCommand {
 
-	@Override
-	protected void doProcessAction(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long recordId = ParamUtil.getLong(actionRequest, "recordId");
-
-		_ddlRecordService.deleteRecord(recordId);
+	@Reference
+	public void setDDLRecordService(DDLRecordService ddlRecordService) {
+		_ddlRecordService = ddlRecordService;
 	}
 
-	@Reference
-	protected void setDDLRecordService(DDLRecordService ddlRecordService) {
-		_ddlRecordService = ddlRecordService;
+	@Override
+	protected void doProcessAction(
+			PortletRequest portletRequest, PortletResponse portletResponse)
+		throws Exception {
+
+		long recordId = ParamUtil.getLong(portletRequest, "recordId");
+
+		_ddlRecordService.deleteRecord(recordId);
 	}
 
 	private DDLRecordService _ddlRecordService;

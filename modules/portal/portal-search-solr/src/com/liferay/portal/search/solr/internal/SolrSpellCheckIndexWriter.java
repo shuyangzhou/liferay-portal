@@ -27,14 +27,13 @@ import com.liferay.portal.kernel.search.suggest.SuggestionConstants;
 import com.liferay.portal.kernel.util.PortalRunMode;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.search.solr.connection.SolrClientManager;
 import com.liferay.portal.search.solr.document.SolrUpdateDocumentCommand;
 import com.liferay.portal.search.solr.internal.util.LogUtil;
 
 import java.util.Collection;
 import java.util.Map;
 
-import org.apache.solr.client.solrj.SolrClient;
+import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.UpdateResponse;
 
 import org.osgi.service.component.annotations.Activate;
@@ -136,16 +135,14 @@ public class SolrSpellCheckIndexWriter
 			SearchContext searchContext, String deleteQuery)
 		throws SearchException {
 
-		SolrClient solrClient = _solrClientManager.getSolrClient();
-
 		try {
-			UpdateResponse updateResponse = solrClient.deleteByQuery(
+			UpdateResponse updateResponse = _solrServer.deleteByQuery(
 				deleteQuery);
 
 			if (PortalRunMode.isTestMode() ||
 				searchContext.isCommitImmediately()) {
 
-				solrClient.commit();
+				_solrServer.commit();
 			}
 
 			LogUtil.logSolrResponseBase(_log, updateResponse);
@@ -160,8 +157,8 @@ public class SolrSpellCheckIndexWriter
 	}
 
 	@Reference(unbind = "-")
-	protected void setSolrClientManager(SolrClientManager solrClientManager) {
-		_solrClientManager = solrClientManager;
+	protected void setSolrServer(SolrServer solrServer) {
+		_solrServer = solrServer;
 	}
 
 	@Reference(unbind = "-")
@@ -174,7 +171,7 @@ public class SolrSpellCheckIndexWriter
 	private static final Log _log = LogFactoryUtil.getLog(
 		SolrSpellCheckIndexWriter.class);
 
-	private SolrClientManager _solrClientManager;
+	private SolrServer _solrServer;
 	private SolrUpdateDocumentCommand _solrUpdateDocumentCommand;
 
 }

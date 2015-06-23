@@ -304,11 +304,6 @@ public interface ResourceBlockLocalService extends BaseLocalService,
 	public int getResourceBlocksCount();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.util.List<com.liferay.portal.model.Role> getRoles(
-		java.lang.String name, long primKey, java.lang.String actionId)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public boolean hasPermission(java.lang.String name,
 		com.liferay.portal.model.PermissionedModel permissionedModel,
 		java.lang.String actionId,

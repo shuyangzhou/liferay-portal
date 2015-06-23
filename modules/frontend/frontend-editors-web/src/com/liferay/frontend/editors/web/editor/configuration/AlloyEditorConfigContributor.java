@@ -29,13 +29,12 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
-import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
-import java.util.ResourceBundle;
 import java.util.Set;
 
 import javax.portlet.PortletURL;
@@ -59,27 +58,28 @@ public class AlloyEditorConfigContributor extends BaseEditorConfigContributor {
 		ThemeDisplay themeDisplay,
 		LiferayPortletResponse liferayPortletResponse) {
 
-		String contentsLanguageDir = getContentsLanguageDir(
-			inputEditorTaglibAttributes);
+		String contentsLanguageId = (String)inputEditorTaglibAttributes.get(
+			"liferay-ui:input-editor:contentsLanguageId");
+
+		Locale contentsLocale = LocaleUtil.fromLanguageId(contentsLanguageId);
+
+		String contentsLanguageDir = LanguageUtil.get(
+			contentsLocale, "lang.dir");
+
+		contentsLanguageId = LocaleUtil.toLanguageId(contentsLocale);
 
 		jsonObject.put(
 			"contentsLangDirection", HtmlUtil.escapeJS(contentsLanguageDir));
-
-		String contentsLanguageId = getContentsLanguageId(
-			inputEditorTaglibAttributes);
-
 		jsonObject.put(
 			"contentsLanguage", contentsLanguageId.replace("iw_", "he_"));
-
 		jsonObject.put(
 			"extraPlugins",
 			"autolink,dragresize,dropimages,placeholder,selectionregion," +
 				"tableresize,tabletools,uicore");
 
-		String languageId = getLanguageId(themeDisplay);
+		String languageId = LocaleUtil.toLanguageId(themeDisplay.getLocale());
 
 		jsonObject.put("language", languageId.replace("iw_", "he_"));
-
 		jsonObject.put(
 			"removePlugins",
 			"elementspath,image,link,liststyle,resize,toolbar");
@@ -97,110 +97,12 @@ public class AlloyEditorConfigContributor extends BaseEditorConfigContributor {
 			jsonObject.put("srcNode", name);
 		}
 
-		jsonObject.put(
-			"toolbars", getToolbarsJSONObject(themeDisplay.getLocale()));
+		jsonObject.put("toolbars", getToolbarsJSONObject());
 	}
 
 	@Reference(unbind = "-")
 	public void setItemSelector(ItemSelector itemSelector) {
 		_itemSelector = itemSelector;
-	}
-
-	protected JSONObject getStyleFormatJSONObject(
-		String styleFormatName, String element, String cssClass, int type) {
-
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
-		jsonObject.put("name", styleFormatName);
-		jsonObject.put("style", getStyleJSONObject(element, cssClass, type));
-
-		return jsonObject;
-	}
-
-	protected JSONArray getStyleFormatsJSONArray(Locale locale) {
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
-
-		ResourceBundle resourceBundle = ResourceBundle.getBundle(
-			"content.Language", locale);
-
-		jsonArray.put(
-			getStyleFormatJSONObject(
-				LanguageUtil.get(resourceBundle, "normal"), "p", null,
-				_CKEDITOR_STYLE_BLOCK));
-		jsonArray.put(
-			getStyleFormatJSONObject(
-				LanguageUtil.format(resourceBundle, "heading-x", "1"), "h1",
-				null, _CKEDITOR_STYLE_BLOCK));
-		jsonArray.put(
-			getStyleFormatJSONObject(
-				LanguageUtil.format(resourceBundle, "heading-x", "2"), "h2",
-				null, _CKEDITOR_STYLE_BLOCK));
-		jsonArray.put(
-			getStyleFormatJSONObject(
-				LanguageUtil.format(resourceBundle, "heading-x", "3"), "h3",
-				null, _CKEDITOR_STYLE_BLOCK));
-		jsonArray.put(
-			getStyleFormatJSONObject(
-				LanguageUtil.format(resourceBundle, "heading-x", "4"), "h4",
-				null, _CKEDITOR_STYLE_BLOCK));
-		jsonArray.put(
-			getStyleFormatJSONObject(
-				LanguageUtil.get(resourceBundle, "preformatted-text"), "pre",
-				null, _CKEDITOR_STYLE_BLOCK));
-		jsonArray.put(
-			getStyleFormatJSONObject(
-				LanguageUtil.get(resourceBundle, "cited-work"), "cite", null,
-				_CKEDITOR_STYLE_INLINE));
-		jsonArray.put(
-			getStyleFormatJSONObject(
-				LanguageUtil.get(resourceBundle, "computer-code"), "code", null,
-				_CKEDITOR_STYLE_INLINE));
-		jsonArray.put(
-			getStyleFormatJSONObject(
-				LanguageUtil.get(resourceBundle, "info-message"), "div",
-				"portlet-msg-info", _CKEDITOR_STYLE_BLOCK));
-		jsonArray.put(
-			getStyleFormatJSONObject(
-				LanguageUtil.get(resourceBundle, "alert-message"), "div",
-				"portlet-msg-alert", _CKEDITOR_STYLE_BLOCK));
-		jsonArray.put(
-			getStyleFormatJSONObject(
-				LanguageUtil.get(resourceBundle, "error-message"), "div",
-				"portlet-msg-error", _CKEDITOR_STYLE_BLOCK));
-
-		return jsonArray;
-	}
-
-	protected JSONObject getStyleFormatsJSONObject(Locale locale) {
-		JSONObject stylesJSONObject = JSONFactoryUtil.createJSONObject();
-
-		stylesJSONObject.put("styles", getStyleFormatsJSONArray(locale));
-
-		JSONObject styleFormatsJSONObject = JSONFactoryUtil.createJSONObject();
-		styleFormatsJSONObject.put("name", "styles");
-		styleFormatsJSONObject.put("cfg", stylesJSONObject);
-
-		return styleFormatsJSONObject;
-	}
-
-	protected JSONObject getStyleJSONObject(
-		String element, String cssClass, int type) {
-
-		JSONObject styleJSONObject = JSONFactoryUtil.createJSONObject();
-
-		if (Validator.isNotNull(cssClass)) {
-			JSONObject attributesJSONObject =
-				JSONFactoryUtil.createJSONObject();
-
-			attributesJSONObject.put("class", cssClass);
-
-			styleJSONObject.put("attributes", attributesJSONObject);
-		}
-
-		styleJSONObject.put("element", element);
-		styleJSONObject.put("type", type);
-
-		return styleJSONObject;
 	}
 
 	protected JSONObject getToolbarsAddJSONObject() {
@@ -212,20 +114,19 @@ public class AlloyEditorConfigContributor extends BaseEditorConfigContributor {
 		return jsonObject;
 	}
 
-	protected JSONObject getToolbarsJSONObject(Locale locale) {
+	protected JSONObject getToolbarsJSONObject() {
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 		jsonObject.put("add", getToolbarsAddJSONObject());
-		jsonObject.put("styles", getToolbarsStylesJSONObject(locale));
+		jsonObject.put("styles", getToolbarsStylesJSONObject());
 
 		return jsonObject;
 	}
 
-	protected JSONObject getToolbarsStylesJSONObject(Locale locale) {
+	protected JSONObject getToolbarsStylesJSONObject() {
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-		jsonObject.put(
-			"selections", getToolbarsStylesSelectionsJSONArray(locale));
+		jsonObject.put("selections", getToolbarsStylesSelectionsJSONArray());
 		jsonObject.put("tabIndex", 1);
 
 		return jsonObject;
@@ -241,12 +142,12 @@ public class AlloyEditorConfigContributor extends BaseEditorConfigContributor {
 		return jsonNObject;
 	}
 
-	protected JSONArray getToolbarsStylesSelectionsJSONArray(Locale locale) {
+	protected JSONArray getToolbarsStylesSelectionsJSONArray() {
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
 		jsonArray.put(getToolbarsStylesSelectionsLinkJSONObject());
 		jsonArray.put(getToolbarsStylesSelectionsImageJSONObject());
-		jsonArray.put(getToolbarsStylesSelectionsTextJSONObject(locale));
+		jsonArray.put(getToolbarsStylesSelectionsTextJSONObject());
 		jsonArray.put(getToolbarsStylesSelectionsTableJSONObject());
 
 		return jsonArray;
@@ -274,27 +175,19 @@ public class AlloyEditorConfigContributor extends BaseEditorConfigContributor {
 			"AlloyEditor.SelectionGetArrowBoxClasses.table");
 		jsonObject.put("name", "table");
 		jsonObject.put("setPosition", "AlloyEditor.SelectionSetPosition.table");
-		jsonObject.put("test", "AlloyEeditor.SelectionTest.table");
+		jsonObject.put("test", "AlloyEditor.SelectionTest.table");
 
 		return jsonObject;
 	}
 
-	protected JSONObject getToolbarsStylesSelectionsTextJSONObject(
-		Locale locale) {
-
+	protected JSONObject getToolbarsStylesSelectionsTextJSONObject() {
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
-
-		jsonArray.put(getStyleFormatsJSONObject(locale));
-		jsonArray.put("bold");
-		jsonArray.put("italic");
-		jsonArray.put("underline");
-		jsonArray.put("link");
-		jsonArray.put("twitter");
-
-		jsonObject.put("buttons", jsonArray);
-
+		jsonObject.put(
+			"buttons",
+			toJSONArray(
+				"['styles', 'bold', 'italic', 'underline', 'link', " +
+					"'twitter']"));
 		jsonObject.put("name", "text");
 		jsonObject.put("test", "AlloyEditor.SelectionTest.text");
 
@@ -343,10 +236,6 @@ public class AlloyEditorConfigContributor extends BaseEditorConfigContributor {
 		jsonObject.put(
 			"filebrowserImageBrowseUrl", dlItemSelectorURL.toString());
 	}
-
-	private static final int _CKEDITOR_STYLE_BLOCK = 1;
-
-	private static final int _CKEDITOR_STYLE_INLINE = 2;
 
 	private ItemSelector _itemSelector;
 

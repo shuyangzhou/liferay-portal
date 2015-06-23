@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermissio
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.test.rule.PACLTestRule;
 import com.liferay.portal.util.PortalUtil;
+import com.liferay.portlet.journal.util.JournalContentUtil;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
@@ -53,17 +54,28 @@ public class BeanPropertyTest {
 
 	@Test
 	public void testGet2() throws Exception {
-		LanguageUtil.getLanguage();
+		try {
+			JournalContentUtil.getJournalContent();
+
+			Assert.fail();
+		}
+		catch (SecurityException se) {
+		}
 	}
 
 	@Test
 	public void testGet3() throws Exception {
-		LanguageUtil.getLocale("en_US");
+		LanguageUtil.getLanguage();
 	}
 
 	@Test
 	public void testGet4() throws Exception {
 		PortalRuntimePermission.checkGetBeanProperty(PortalUtil.class);
+	}
+
+	@Test
+	public void testGet5() throws Exception {
+		LanguageUtil.getLocale("en_US");
 	}
 
 	@Test

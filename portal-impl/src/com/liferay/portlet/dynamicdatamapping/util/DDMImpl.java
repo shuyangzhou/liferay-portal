@@ -905,7 +905,7 @@ public class DDMImpl implements DDM {
 	protected int getFieldValueIndex(
 		String[] fieldsDisplayValues, String fieldName, String instanceId) {
 
-		if (Validator.isNull(instanceId)) {
+		if (instanceId == null) {
 			return -1;
 		}
 
@@ -950,7 +950,7 @@ public class DDMImpl implements DDM {
 			Serializable fieldValue = serviceContext.getAttribute(
 				fieldNameValue);
 
-			if (Validator.isNull(fieldValue)) {
+			if (fieldValue == null) {
 				fieldValue = predefinedValue.getString(
 					serviceContext.getLocale());
 			}
@@ -963,7 +963,7 @@ public class DDMImpl implements DDM {
 			else if (fieldDataType.equals(FieldConstants.DATE)) {
 				Date fieldValueDate = null;
 
-				if (Validator.isNull(fieldValue)) {
+				if (fieldValue == null) {
 					int fieldValueMonth = GetterUtil.getInteger(
 						serviceContext.getAttribute(fieldNameValue + "Month"));
 					int fieldValueDay = GetterUtil.getInteger(
@@ -1006,7 +1006,7 @@ public class DDMImpl implements DDM {
 				}
 			}
 
-			if (Validator.isNull(fieldValue)) {
+			if (fieldValue == null) {
 				return null;
 			}
 

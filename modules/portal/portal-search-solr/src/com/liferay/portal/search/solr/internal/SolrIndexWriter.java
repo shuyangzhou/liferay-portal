@@ -26,7 +26,6 @@ import com.liferay.portal.kernel.search.suggest.SpellCheckIndexWriter;
 import com.liferay.portal.kernel.util.PortalRunMode;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.search.solr.connection.SolrClientManager;
 import com.liferay.portal.search.solr.document.SolrUpdateDocumentCommand;
 import com.liferay.portal.search.solr.internal.util.LogUtil;
 
@@ -35,7 +34,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.solr.client.solrj.SolrClient;
+import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.UpdateResponse;
 
 import org.osgi.service.component.annotations.Component;
@@ -80,17 +79,15 @@ public class SolrIndexWriter extends BaseIndexWriter {
 			SearchContext searchContext, Collection<String> uids)
 		throws SearchException {
 
-		SolrClient solrClient = _solrClientManager.getSolrClient();
-
 		List<String> uidsList = new ArrayList<>(uids);
 
 		try {
-			UpdateResponse updateResponse = solrClient.deleteById(uidsList);
+			UpdateResponse updateResponse = _solrServer.deleteById(uidsList);
 
 			if (PortalRunMode.isTestMode() ||
 				searchContext.isCommitImmediately()) {
 
-				solrClient.commit();
+				_solrServer.commit();
 			}
 
 			LogUtil.logSolrResponseBase(_log, updateResponse);
@@ -106,8 +103,6 @@ public class SolrIndexWriter extends BaseIndexWriter {
 	public void deleteEntityDocuments(
 			SearchContext searchContext, String className)
 		throws SearchException {
-
-		SolrClient solrClient = _solrClientManager.getSolrClient();
 
 		try {
 			long companyId = searchContext.getCompanyId();
@@ -133,13 +128,13 @@ public class SolrIndexWriter extends BaseIndexWriter {
 			sb.append(StringPool.COLON);
 			sb.append(className);
 
-			UpdateResponse updateResponse = solrClient.deleteByQuery(
+			UpdateResponse updateResponse = _solrServer.deleteByQuery(
 				sb.toString());
 
 			if (PortalRunMode.isTestMode() ||
 				searchContext.isCommitImmediately()) {
 
-				solrClient.commit();
+				_solrServer.commit();
 			}
 
 			LogUtil.logSolrResponseBase(_log, updateResponse);
@@ -195,8 +190,8 @@ public class SolrIndexWriter extends BaseIndexWriter {
 	}
 
 	@Reference(unbind = "-")
-	protected void setSolrClientManager(SolrClientManager solrClientManager) {
-		_solrClientManager = solrClientManager;
+	protected void setSolrServer(SolrServer solrServer) {
+		_solrServer = solrServer;
 	}
 
 	@Reference(unbind = "-")
@@ -209,7 +204,7 @@ public class SolrIndexWriter extends BaseIndexWriter {
 	private static final Log _log = LogFactoryUtil.getLog(
 		SolrIndexWriter.class);
 
-	private SolrClientManager _solrClientManager;
+	private SolrServer _solrServer;
 	private SolrUpdateDocumentCommand _solrUpdateDocumentCommand;
 
 }

@@ -32,7 +32,6 @@ import com.liferay.portlet.dynamicdatamapping.model.DDMStructure;
 import com.liferay.portlet.dynamicdatamapping.model.DDMTemplate;
 import com.liferay.portlet.dynamicdatamapping.model.DDMTemplateConstants;
 
-import javax.portlet.ActionRequest;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
@@ -41,11 +40,11 @@ import javax.portlet.PortletRequest;
  */
 public abstract class DDMBaseMVCActionCommand extends BaseMVCActionCommand {
 
-	protected String getRedirect(ActionRequest actionRequest) {
-		String redirect = ParamUtil.getString(actionRequest, "redirect");
+	protected String getRedirect(PortletRequest portletRequest) {
+		String redirect = ParamUtil.getString(portletRequest, "redirect");
 
 		String closeRedirect = ParamUtil.getString(
-			actionRequest, "closeRedirect");
+			portletRequest, "closeRedirect");
 
 		if (Validator.isNull(closeRedirect)) {
 			return redirect;
@@ -55,8 +54,8 @@ public abstract class DDMBaseMVCActionCommand extends BaseMVCActionCommand {
 			redirect, "closeRedirect", closeRedirect);
 
 		SessionMessages.add(
-			actionRequest,
-			PortalUtil.getPortletId(actionRequest) +
+			portletRequest,
+			PortalUtil.getPortletId(portletRequest) +
 				SessionMessages.KEY_SUFFIX_CLOSE_REDIRECT,
 			closeRedirect);
 
@@ -64,19 +63,19 @@ public abstract class DDMBaseMVCActionCommand extends BaseMVCActionCommand {
 	}
 
 	protected String getSaveAndContinueRedirect(
-			ActionRequest actionRequest, DDMStructure structure,
+			PortletRequest portletRequest, DDMStructure structure,
 			String redirect)
 		throws Exception {
 
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
+		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
 		String availableFields = ParamUtil.getString(
-			actionRequest, "availableFields");
-		String eventName = ParamUtil.getString(actionRequest, "eventName");
+			portletRequest, "availableFields");
+		String eventName = ParamUtil.getString(portletRequest, "eventName");
 
 		PortletURLImpl portletURL = new PortletURLImpl(
-			actionRequest, themeDisplay.getPpid(), themeDisplay.getPlid(),
+			portletRequest, themeDisplay.getPpid(), themeDisplay.getPlid(),
 			PortletRequest.RENDER_PHASE);
 
 		portletURL.setParameter("mvcPath", "/edit_structure.jsp");
@@ -93,27 +92,28 @@ public abstract class DDMBaseMVCActionCommand extends BaseMVCActionCommand {
 			"classPK", String.valueOf(structure.getStructureId()), false);
 		portletURL.setParameter("availableFields", availableFields, false);
 		portletURL.setParameter("eventName", eventName, false);
-		portletURL.setWindowState(actionRequest.getWindowState());
+		portletURL.setWindowState(portletRequest.getWindowState());
 
 		return portletURL.toString();
 	}
 
 	protected String getSaveAndContinueRedirect(
-			ActionRequest actionRequest, DDMTemplate template, String redirect)
+			PortletRequest portletRequest, DDMTemplate template,
+			String redirect)
 		throws Exception {
 
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
+		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
 		String portletResourceNamespace = ParamUtil.getString(
-			actionRequest, "portletResourceNamespace");
-		long classNameId = ParamUtil.getLong(actionRequest, "classNameId");
-		long classPK = ParamUtil.getLong(actionRequest, "classPK");
+			portletRequest, "portletResourceNamespace");
+		long classNameId = ParamUtil.getLong(portletRequest, "classNameId");
+		long classPK = ParamUtil.getLong(portletRequest, "classPK");
 		String structureAvailableFields = ParamUtil.getString(
-			actionRequest, "structureAvailableFields");
+			portletRequest, "structureAvailableFields");
 
 		PortletURLImpl portletURL = new PortletURLImpl(
-			actionRequest, themeDisplay.getPpid(), themeDisplay.getPlid(),
+			portletRequest, themeDisplay.getPpid(), themeDisplay.getPlid(),
 			PortletRequest.RENDER_PHASE);
 
 		portletURL.setParameter("mvcPath", "/edit_template.jsp");
@@ -130,22 +130,9 @@ public abstract class DDMBaseMVCActionCommand extends BaseMVCActionCommand {
 		portletURL.setParameter("type", template.getType(), false);
 		portletURL.setParameter(
 			"structureAvailableFields", structureAvailableFields, false);
-		portletURL.setWindowState(actionRequest.getWindowState());
+		portletURL.setWindowState(portletRequest.getWindowState());
 
 		return portletURL.toString();
-	}
-
-	protected PortletPreferences getStrictPortletSetup(
-			ActionRequest actionRequest)
-		throws PortalException {
-
-		String portletResource = ParamUtil.getString(
-			actionRequest, "portletResource");
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		return getStrictPortletSetup(themeDisplay.getLayout(), portletResource);
 	}
 
 	protected PortletPreferences getStrictPortletSetup(
@@ -167,52 +154,65 @@ public abstract class DDMBaseMVCActionCommand extends BaseMVCActionCommand {
 		return portletPreferences;
 	}
 
-	protected void setRedirectAttribute(ActionRequest actionRequest) {
-		String redirect = getRedirect(actionRequest);
+	protected PortletPreferences getStrictPortletSetup(
+			PortletRequest portletRequest)
+		throws PortalException {
 
-		actionRequest.setAttribute(WebKeys.REDIRECT, redirect);
+		String portletResource = ParamUtil.getString(
+			portletRequest, "portletResource");
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		return getStrictPortletSetup(themeDisplay.getLayout(), portletResource);
+	}
+
+	protected void setRedirectAttribute(PortletRequest portletRequest) {
+		String redirect = getRedirect(portletRequest);
+
+		portletRequest.setAttribute(WebKeys.REDIRECT, redirect);
 	}
 
 	protected void setRedirectAttribute(
-			ActionRequest actionRequest, DDMStructure structure)
+			PortletRequest portletRequest, DDMStructure structure)
 		throws Exception {
 
-		String redirect = getRedirect(actionRequest);
+		String redirect = getRedirect(portletRequest);
 
 		boolean saveAndContinue = ParamUtil.getBoolean(
-			actionRequest, "saveAndContinue");
+			portletRequest, "saveAndContinue");
 
 		if (saveAndContinue) {
 			redirect = getSaveAndContinueRedirect(
-				actionRequest, structure, redirect);
+				portletRequest, structure, redirect);
 		}
 
-		actionRequest.setAttribute(WebKeys.REDIRECT, redirect);
+		portletRequest.setAttribute(WebKeys.REDIRECT, redirect);
 	}
 
 	protected void setRedirectAttribute(
-			ActionRequest actionRequest, DDMTemplate template)
+			PortletRequest portletRequest, DDMTemplate template)
 		throws Exception {
 
-		String redirect = getRedirect(actionRequest);
+		String redirect = getRedirect(portletRequest);
 
 		boolean saveAndContinue = ParamUtil.getBoolean(
-			actionRequest, "saveAndContinue");
+			portletRequest, "saveAndContinue");
 
 		if (saveAndContinue) {
 			redirect = getSaveAndContinueRedirect(
-				actionRequest, template, redirect);
+				portletRequest, template, redirect);
 		}
 
-		actionRequest.setAttribute(WebKeys.REDIRECT, redirect);
+		portletRequest.setAttribute(WebKeys.REDIRECT, redirect);
 	}
 
 	protected void updatePortletPreferences(
-			ActionRequest actionRequest, DDMTemplate template)
+			PortletRequest portletRequest, DDMTemplate template)
 		throws Exception {
 
 		PortletPreferences portletPreferences = getStrictPortletSetup(
-			actionRequest);
+			portletRequest);
 
 		if (portletPreferences == null) {
 			return;

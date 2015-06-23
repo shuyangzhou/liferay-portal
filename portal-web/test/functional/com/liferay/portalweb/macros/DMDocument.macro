@@ -1760,6 +1760,7 @@
 	</command>
 
 	<command name="viewDocumentNoCommentsCmdPG">
+		<execute function="AssertTextEquals" locator1="PGDocumentsandmediaDocument#COMMENTS_BE_THE_FIRST" value1="Be the first." />
 		<execute function="AssertTextEquals" locator1="PGDocumentsandmediaDocument#COMMENTS_SUBSCRIBE_TO_COMMENTS" value1="Subscribe to Comments" />
 	</command>
 
@@ -1926,6 +1927,7 @@
 			</then>
 		</if>
 
+		<execute function="AssertTextEquals" locator1="PGDocumentsandmediaDocument#COMMENTS_BE_THE_FIRST" value1="Be the first." />
 		<execute function="AssertTextEquals" locator1="PGDocumentsandmediaDocument#COMMENTS_SUBSCRIBE_TO_COMMENTS" value1="Subscribe to Comments" />
 		<execute function="AssertTextEquals" locator1="PGDocumentsandmediaDocument#DOCUMENT_DETAILS_VERSION" value1="Version ${dmDocumentVersionNumberEdit}" />
 		<execute function="AssertTextEquals" locator1="PGDocumentsandmediaDocument#DOCUMENT_DETAILS_UPLOADER" value1="Last Updated by ${dmDocumentUploader}" />
@@ -2075,6 +2077,7 @@
 			</then>
 		</if>
 
+		<execute function="AssertTextEquals" locator1="PGDocumentsandmediaDocument#COMMENTS_BE_THE_FIRST" value1="Be the first." />
 		<execute function="AssertTextEquals" locator1="PGDocumentsandmediaDocument#COMMENTS_SUBSCRIBE_TO_COMMENTS" value1="Subscribe to Comments" />
 		<execute function="AssertTextEquals" locator1="PGDocumentsandmediaDocument#DOCUMENT_DETAILS_VERSION" value1="Version ${dmDocumentVersionNumber}" />
 		<execute function="AssertTextEquals" locator1="PGDocumentsandmediaDocument#DOCUMENT_DETAILS_UPLOADER" value1="Last Updated by ${dmDocumentUploader}" />

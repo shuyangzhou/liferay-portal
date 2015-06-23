@@ -22,7 +22,7 @@ import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 public class XMLSafeReader extends UnsyncStringReader {
 
 	public XMLSafeReader(String xml) {
-		super(XMLUtil.fixProlog(xml));
+		super(XMLFormatter.fixProlog(xml));
 	}
 
 }

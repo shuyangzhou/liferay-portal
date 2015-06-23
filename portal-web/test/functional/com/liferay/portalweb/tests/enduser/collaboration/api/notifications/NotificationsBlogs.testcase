@@ -29,7 +29,7 @@
 		<execute macro="Page#tearDownPG" />
 	</tear-down>
 
-	<command name="MarkAllNotificationsAsRead" priority="4">
+	<command name="MarkAllNotificationsAsRead" priority="5">
 		<var name="blogsEntryCounterList" value="1,2,3" />
 
 		<execute macro="Page#gotoPG">
@@ -66,7 +66,7 @@
 		<execute macro="Notifications#viewDefaultContent" />
 	</command>
 
-	<command name="ViewNoWebsiteNotificationForNewBlogsEntry" priority="4">
+	<command name="ViewNoWebsiteNotificationForNewBlogsEntry" priority="5">
 		<execute macro="NotificationsPortlet#gotoNotificationDelivery" />
 
 		<execute macro="NotificationsPortlet#setUserDeliveries">
@@ -96,7 +96,7 @@
 		</execute>
 	</command>
 
-	<command known-issues="LPS-55992" name="ViewNoWebsiteNotificationForUpdatedBlogsEntry" priority="4">
+	<command known-issues="LPS-55992" name="ViewNoWebsiteNotificationForUpdatedBlogsEntry" priority="5">
 		<execute macro="NotificationsPortlet#gotoNotificationDelivery" />
 
 		<execute macro="NotificationsPortlet#setUserDeliveries">
@@ -137,7 +137,7 @@
 		</execute>
 	</command>
 
-	<command name="ViewWebsiteNotificationForNewBlogsEntry" priority="4">
+	<command name="ViewWebsiteNotificationForNewBlogsEntry" priority="5">
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="${pageName}" />
 		</execute>
@@ -179,7 +179,7 @@
 		</execute>
 	</command>
 
-	<command name="ViewWebsiteNotificationForNewCommentViaBlogs" priority="4">
+	<command name="ViewWebsiteNotificationForNewCommentViaBlogs" priority="5">
 		<execute macro="Page#addPG">
 			<var name="pageName" value="${pageName}" />
 		</execute>
@@ -215,13 +215,9 @@
 			<var name="pageName" value="${pageName}" />
 		</execute>
 
-		<execute macro="BlogsNavigator#gotoEntryPG">
-			<var name="entryContent" value="Blogs Entry Content" />
-			<var name="entryTitle" value="Blogs Entry Title" />
-		</execute>
-
-		<execute macro="BlogsEntryComment#add">
+		<execute macro="BlogsEntryComment#addPG">
 			<var name="entryComment" value="Blogs Entry Comment" />
+			<var name="entryTitle" value="Blogs Entry Title" />
 		</execute>
 
 		<execute macro="Page#gotoPG">
@@ -256,7 +252,7 @@
 		</execute>
 	</command>
 
-	<command known-issues="LPS-55992" name="ViewWebsiteNotificationForUpdatedBlogsEntry" priority="4">
+	<command known-issues="LPS-55992" name="ViewWebsiteNotificationForUpdatedBlogsEntry" priority="5">
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="${pageName}" />
 		</execute>
@@ -309,7 +305,7 @@
 		</execute>
 	</command>
 
-	<command name="ViewWebsiteNotificationForUpdatedCommentViaBlogs" priority="4">
+	<command name="ViewWebsiteNotificationForUpdatedCommentViaBlogs" priority="5">
 		<execute macro="Page#addPG">
 			<var name="pageName" value="${pageName}" />
 		</execute>
@@ -331,25 +327,16 @@
 			<var name="pageName" value="${pageName}" />
 		</execute>
 
-		<execute macro="BlogsNavigator#gotoEntryPG">
-			<var name="entryContent" value="Blogs Entry Content" />
-			<var name="entryTitle" value="Blogs Entry Title" />
-		</execute>
-
-		<execute macro="BlogsEntryComment#add">
+		<execute macro="BlogsEntryComment#addPG">
 			<var name="entryComment" value="Blogs Entry Comment" />
+			<var name="entryTitle" value="Blogs Entry Title" />
 		</execute>
 
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="${pageName}" />
 		</execute>
 
-		<execute macro="BlogsNavigator#gotoEntryPG">
-			<var name="entryContent" value="Blogs Entry Content" />
-			<var name="entryTitle" value="Blogs Entry Title" />
-		</execute>
-
-		<execute macro="BlogsEntryComment#edit">
+		<execute macro="BlogsEntryComment#editPG">
 			<var name="entryComment" value="Blogs Entry Comment" />
 			<var name="entryCommentEdit" value="Blogs Entry Comment Edit" />
 			<var name="entryTitle" value="Blogs Entry Title" />

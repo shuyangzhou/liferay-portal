@@ -25,7 +25,6 @@ ResultRow row = (ResultRow)request.getAttribute(WebKeys.SEARCH_CONTAINER_RESULT_
 
 DDLRecord record = (DDLRecord)row.getObject();
 
-boolean editable = GetterUtil.getBoolean((String)row.getParameter("editable"));
 long formDDMTemplateId = GetterUtil.getLong((String)row.getParameter("formDDMTemplateId"));
 
 boolean hasDeletePermission = GetterUtil.getBoolean((String)row.getParameter("hasDeletePermission"));
@@ -45,7 +44,6 @@ if (hasUpdatePermission) {
 			<portlet:param name="redirect" value="<%= currentURL %>" />
 			<portlet:param name="recordId" value="<%= String.valueOf(record.getRecordId()) %>" />
 			<portlet:param name="version" value="<%= recordVersion.getVersion() %>" />
-			<portlet:param name="editable" value="<%= String.valueOf(editable) %>" />
 			<portlet:param name="formDDMTemplateId" value="<%= String.valueOf(formDDMTemplateId) %>" />
 		</portlet:renderURL>
 

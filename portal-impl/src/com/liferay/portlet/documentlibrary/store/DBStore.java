@@ -305,10 +305,6 @@ public class DBStore extends BaseStore {
 			companyId, repositoryId, fileName, versionLabel);
 	}
 
-	public void setStoreProxy(Store store) {
-		this.store = store;
-	}
-
 	@Override
 	public void updateFile(
 			long companyId, long repositoryId, long newRepositoryId,

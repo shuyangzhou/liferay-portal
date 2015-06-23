@@ -28,6 +28,7 @@ import com.liferay.portlet.asset.model.AssetCategory;
 import com.liferay.portlet.asset.model.AssetCategoryConstants;
 import com.liferay.portlet.asset.model.AssetVocabulary;
 import com.liferay.portlet.asset.util.AssetVocabularySettingsHelper;
+import com.liferay.portlet.journal.model.JournalArticle;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -258,10 +259,7 @@ public class UpgradeJournalArticleType extends UpgradeBaseJournal {
 				"select entryId from AssetEntry where classNameId = ? and " +
 					"classPK = ?");
 
-			ps.setLong(
-				1,
-				PortalUtil.getClassNameId(
-					"com.liferay.portlet.journal.model.JournalArticle"));
+			ps.setLong(1, PortalUtil.getClassNameId(JournalArticle.class));
 			ps.setLong(2, classPK);
 
 			rs = ps.executeQuery();
@@ -394,8 +392,7 @@ public class UpgradeJournalArticleType extends UpgradeBaseJournal {
 
 				assetVocabularySettingsHelper.setClassNameIdsAndClassTypePKs(
 					new long[] {
-						PortalUtil.getClassNameId(
-							"com.liferay.portlet.journal.model.JournalArticle")
+						PortalUtil.getClassNameId(JournalArticle.class)
 					},
 					new long[] {-1}, new boolean[] {false});
 

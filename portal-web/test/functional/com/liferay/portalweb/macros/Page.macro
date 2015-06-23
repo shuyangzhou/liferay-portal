@@ -644,7 +644,9 @@
 	</command>
 
 	<command name="viewFriendlyURLLanguageOptionsPG">
-		<execute function="Click" locator1="Dockbar#EDIT_SPANISH" />
+		<execute function="Click" locator1="DockbarEditpanel#EDIT" />
+
+		<execute function="Click" locator1="DockbarEditPanel#EDIT_PAGE_SPANISH" />
 
 		<if>
 			<condition function="IsElementPresent" locator1="DockbarEditpanel#DETAILS_FRIENDLY_URL_TITLE" />
@@ -693,6 +695,8 @@
 		</if>
 
 		<execute function="Click#clickAtSidebarClickAt" locator1="Dockbar#EDIT" />
+
+		<execute function="Click" locator1="DockbarEditPanel#EDIT_PAGE" value1="Edit Page" />
 
 		<var name="key_defaultSiteLanguageKey" value="${defaultSiteLanguageKey}" />
 

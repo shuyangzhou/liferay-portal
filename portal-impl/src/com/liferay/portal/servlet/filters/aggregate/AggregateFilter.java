@@ -360,7 +360,8 @@ public class AggregateFilter extends IgnoreModuleRequestFilter {
 		URL resourceURL = _servletContext.getResource(resourcePath);
 
 		if (resourceURL == null) {
-			resourceURL = PortalWebResourcesUtil.getResource(resourcePath);
+			resourceURL = PortalWebResourcesUtil.getServletContextResource(
+				resourcePath);
 
 			if (resourceURL == null) {
 				return null;
@@ -458,9 +459,9 @@ public class AggregateFilter extends IgnoreModuleRequestFilter {
 
 			String requestURI = request.getRequestURI();
 
-			if (PortalWebResourcesUtil.hasContextPath(requestURI)) {
-				cssServletContext =
-					PortalWebResourcesUtil.getPathServletContext(requestURI);
+			if (PortalWebResourcesUtil.isResourceContextPath(requestURI)) {
+				cssServletContext = PortalWebResourcesUtil.getServletContext(
+					PortalWebResourceConstants.RESOURCE_TYPE_CSS);
 			}
 			else {
 				cssServletContext = _servletContext;
@@ -521,7 +522,7 @@ public class AggregateFilter extends IgnoreModuleRequestFilter {
 	protected boolean isModuleRequest(HttpServletRequest request) {
 		String requestURI = request.getRequestURI();
 
-		if (PortalWebResourcesUtil.hasContextPath(requestURI)) {
+		if (PortalWebResourcesUtil.isResourceContextPath(requestURI)) {
 			return false;
 		}
 

@@ -18,27 +18,25 @@ import aQute.bnd.annotation.metatype.Configurable;
 
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.search.solr.configuration.SolrHttpClientFactoryConfiguration;
+import com.liferay.portal.search.solr.configuration.SolrConfiguration;
 import com.liferay.portal.search.solr.http.HttpClientFactory;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
-import org.apache.http.impl.client.BasicCredentialsProvider;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.PoolingClientConnectionManager;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author László Csontos
@@ -46,9 +44,8 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
  * @author André de Oliveira
  */
 @Component(
-	configurationPid = "com.liferay.portal.search.solr.configuration.SolrHttpClientFactoryConfiguration",
-	immediate = true, property = {"type=BASIC"},
-	service = HttpClientFactory.class
+	configurationPid = "com.liferay.portal.search.solr.configuration.SolrConfiguration",
+	immediate = true, service = HttpClientFactory.class
 )
 public class BasicAuthPoolingHttpClientFactory
 	extends BasePoolingHttpClientFactory {
@@ -68,32 +65,29 @@ public class BasicAuthPoolingHttpClientFactory
 	@Activate
 	@Modified
 	protected void activate(Map<String, Object> properties) {
-		_solrHttpClientFactoryConfiguration = Configurable.createConfigurable(
-			SolrHttpClientFactoryConfiguration.class, properties);
+		_solrConfiguration = Configurable.createConfigurable(
+			SolrConfiguration.class, properties);
 
 		int defaultMaxConnectionsPerRoute =
-			_solrHttpClientFactoryConfiguration.defaultMaxConnectionsPerRoute();
+			_solrConfiguration.defaultMaxConnectionsPerRoute();
 
 		setDefaultMaxConnectionsPerRoute(defaultMaxConnectionsPerRoute);
 
-		int maxTotalConnections =
-			_solrHttpClientFactoryConfiguration.maxTotalConnections();
+		int maxTotalConnections = _solrConfiguration.maxTotalConnections();
 
 		setMaxTotalConnections(maxTotalConnections);
 
-		String basicAuthPassword =
-			_solrHttpClientFactoryConfiguration.basicAuthPassword();
+		String basicAuthPassword = _solrConfiguration.basicAuthPassword();
 
 		setPassword(basicAuthPassword);
 
-		String basicAuthUserName =
-			_solrHttpClientFactoryConfiguration.basicAuthUserName();
+		String basicAuthUserName = _solrConfiguration.basicAuthUserName();
 
 		setUsername(basicAuthUserName);
 	}
 
 	@Override
-	protected void configure(HttpClientBuilder httpClientBuilder) {
+	protected void configure(DefaultHttpClient defaultHttpClient) {
 		if (Validator.isBlank(_username)) {
 			return;
 		}
@@ -107,20 +101,18 @@ public class BasicAuthPoolingHttpClientFactory
 		}
 
 		CredentialsProvider credentialsProvider =
-			new BasicCredentialsProvider();
+			defaultHttpClient.getCredentialsProvider();
 
 		credentialsProvider.setCredentials(
 			_authScope,
 			new UsernamePasswordCredentials(_username, _password));
-
-		httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
 	}
 
 	@Override
-	protected PoolingHttpClientConnectionManager
-		createPoolingHttpClientConnectionManager() {
+	protected PoolingClientConnectionManager
+		createPoolingClientConnectionManager() {
 
-		return new PoolingHttpClientConnectionManager();
+		return new PoolingClientConnectionManager();
 	}
 
 	@Deactivate
@@ -128,27 +120,21 @@ public class BasicAuthPoolingHttpClientFactory
 		shutdown();
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.AT_LEAST_ONE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
+	@Reference(unbind = "-")
 	protected void setHttpRequestInterceptor(
 		HttpRequestInterceptor httpRequestInterceptor) {
 
-		addHttpRequestInterceptor(httpRequestInterceptor);
-	}
+		List<HttpRequestInterceptor> httpRequestInterceptors =
+			new ArrayList<>();
 
-	protected void unsetHttpRequestInterceptor(
-		HttpRequestInterceptor httpRequestInterceptor) {
+		httpRequestInterceptors.add(httpRequestInterceptor);
 
-		removeHttpRequestInterceptor(httpRequestInterceptor);
+		setHttpRequestInterceptors(httpRequestInterceptors);
 	}
 
 	private AuthScope _authScope;
 	private String _password;
-	private volatile SolrHttpClientFactoryConfiguration
-		_solrHttpClientFactoryConfiguration;
+	private volatile SolrConfiguration _solrConfiguration;
 	private String _username;
 
 }

@@ -31,8 +31,8 @@ import com.liferay.portlet.dynamicdatamapping.model.DDMForm;
 import com.liferay.portlet.dynamicdatamapping.model.DDMStructure;
 import com.liferay.portlet.dynamicdatamapping.storage.DDMFormValues;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -44,36 +44,54 @@ import org.osgi.service.component.annotations.Reference;
 	immediate = true,
 	property = {
 		"javax.portlet.name=" + DDLPortletKeys.DYNAMIC_DATA_LISTS,
-		"javax.portlet.name=" + DDLPortletKeys.DYNAMIC_DATA_LISTS_DISPLAY,
 		"mvc.command.name=updateRecord"
 	},
 	service = MVCActionCommand.class
 )
 public class UpdateRecordMVCActionCommand extends BaseMVCActionCommand {
 
+	@Reference
+	public void setDDLRecordService(DDLRecordService ddlRecordService) {
+		_ddlRecordService = ddlRecordService;
+	}
+
+	@Reference
+	public void setDDLRecordSetService(
+		DDLRecordSetService ddlRecordSetService) {
+
+		_ddlRecordSetService = ddlRecordSetService;
+	}
+
+	@Reference
+	public void setDDMFormValuesJSONDeserializer(
+		DDMFormValuesJSONDeserializer ddmFormValuesJSONDeserializer) {
+
+		_ddmFormValuesJSONDeserializer = ddmFormValuesJSONDeserializer;
+	}
+
 	@Override
 	protected void doProcessAction(
-			ActionRequest actionRequest, ActionResponse actionResponse)
+			PortletRequest portletRequest, PortletResponse portletResponse)
 		throws Exception {
 
-		long recordId = ParamUtil.getLong(actionRequest, "recordId");
+		long recordId = ParamUtil.getLong(portletRequest, "recordId");
 
-		DDMFormValues ddmFormValues = getDDMFormValues(actionRequest);
+		DDMFormValues ddmFormValues = getDDMFormValues(portletRequest);
 		boolean majorVersion = ParamUtil.getBoolean(
-			actionRequest, "majorVersion");
+			portletRequest, "majorVersion");
 
 		ServiceContext serviceContext = ServiceContextFactory.getInstance(
-			DDLRecord.class.getName(), actionRequest);
+			DDLRecord.class.getName(), portletRequest);
 
 		_ddlRecordService.updateRecord(
 			recordId, majorVersion, DDLRecordConstants.DISPLAY_INDEX_DEFAULT,
 			ddmFormValues, serviceContext);
 	}
 
-	protected DDMForm getDDMForm(ActionRequest actionRequest)
+	protected DDMForm getDDMForm(PortletRequest portletRequest)
 		throws PortalException {
 
-		long recordSetId = ParamUtil.getLong(actionRequest, "recordSetId");
+		long recordSetId = ParamUtil.getLong(portletRequest, "recordSetId");
 
 		DDLRecordSet recordSet = _ddlRecordSetService.getRecordSet(recordSetId);
 
@@ -82,35 +100,16 @@ public class UpdateRecordMVCActionCommand extends BaseMVCActionCommand {
 		return ddmStructure.getFullHierarchyDDMForm();
 	}
 
-	protected DDMFormValues getDDMFormValues(ActionRequest actionRequest)
+	protected DDMFormValues getDDMFormValues(PortletRequest portletRequest)
 		throws PortalException {
 
-		DDMForm ddmForm = getDDMForm(actionRequest);
+		DDMForm ddmForm = getDDMForm(portletRequest);
 
 		String serializedDDMFormValues = ParamUtil.getString(
-			actionRequest, "ddmFormValues");
+			portletRequest, "ddmFormValues");
 
 		return _ddmFormValuesJSONDeserializer.deserialize(
 			ddmForm, serializedDDMFormValues);
-	}
-
-	@Reference
-	protected void setDDLRecordService(DDLRecordService ddlRecordService) {
-		_ddlRecordService = ddlRecordService;
-	}
-
-	@Reference
-	protected void setDDLRecordSetService(
-		DDLRecordSetService ddlRecordSetService) {
-
-		_ddlRecordSetService = ddlRecordSetService;
-	}
-
-	@Reference
-	protected void setDDMFormValuesJSONDeserializer(
-		DDMFormValuesJSONDeserializer ddmFormValuesJSONDeserializer) {
-
-		_ddmFormValuesJSONDeserializer = ddmFormValuesJSONDeserializer;
 	}
 
 	private DDLRecordService _ddlRecordService;

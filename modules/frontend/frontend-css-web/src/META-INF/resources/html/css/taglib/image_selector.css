@@ -3,11 +3,10 @@
 .taglib-image-selector {
 	height: 100%;
 	min-height: 100px;
-	padding: 0;
 	position: relative;
 	text-align: center;
 
-	&.drop-enabled .drop-here-info {
+	&.drop-zone .drop-here-info {
 		.drop-here-indicator {
 			height: 90px;
 		}
@@ -85,8 +84,10 @@
 			max-width: 100%;
 		}
 
-		&.drop-enabled .image-wrapper {
-			height : 100px;
+		&.drop-zone {
+			.image-wrapper {
+				height : 100px;
+			}
 		}
 
 		.image-wrapper {

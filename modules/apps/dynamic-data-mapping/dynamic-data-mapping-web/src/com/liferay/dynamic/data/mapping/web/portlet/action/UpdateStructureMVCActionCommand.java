@@ -31,7 +31,8 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -51,12 +52,12 @@ public class UpdateStructureMVCActionCommand extends DDMBaseMVCActionCommand {
 
 	@Override
 	protected void doProcessAction(
-			ActionRequest actionRequest, ActionResponse actionResponse)
+			PortletRequest portletRequest, PortletResponse portletResponse)
 		throws Exception {
 
-		DDMStructure structure = updateStructure(actionRequest);
+		DDMStructure structure = updateStructure(portletRequest);
 
-		setRedirectAttribute(actionRequest, structure);
+		setRedirectAttribute(portletRequest, structure);
 	}
 
 	@Reference
@@ -71,23 +72,23 @@ public class UpdateStructureMVCActionCommand extends DDMBaseMVCActionCommand {
 		_ddmStructureService = ddmStructureService;
 	}
 
-	protected DDMStructure updateStructure(ActionRequest actionRequest)
+	protected DDMStructure updateStructure(PortletRequest portletRequest)
 		throws Exception {
 
-		long classPK = ParamUtil.getLong(actionRequest, "classPK");
+		long classPK = ParamUtil.getLong(portletRequest, "classPK");
 
 		long parentStructureId = ParamUtil.getLong(
-			actionRequest, "parentStructureId",
+			portletRequest, "parentStructureId",
 			DDMStructureConstants.DEFAULT_PARENT_STRUCTURE_ID);
 		Map<Locale, String> nameMap = LocalizationUtil.getLocalizationMap(
-			actionRequest, "name");
+			portletRequest, "name");
 		Map<Locale, String> descriptionMap =
-			LocalizationUtil.getLocalizationMap(actionRequest, "description");
-		DDMForm ddmForm = _ddm.getDDMForm(actionRequest);
+			LocalizationUtil.getLocalizationMap(portletRequest, "description");
+		DDMForm ddmForm = _ddm.getDDMForm((ActionRequest)portletRequest);
 		DDMFormLayout ddmFormLayout = _ddm.getDefaultDDMFormLayout(ddmForm);
 
 		ServiceContext serviceContext = ServiceContextFactory.getInstance(
-			DDMStructure.class.getName(), actionRequest);
+			DDMStructure.class.getName(), portletRequest);
 
 		return _ddmStructureService.updateStructure(
 			classPK, parentStructureId, nameMap, descriptionMap, ddmForm,

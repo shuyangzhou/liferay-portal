@@ -43,7 +43,6 @@ import com.liferay.portal.kernel.captcha.CaptchaConfigurationException;
 import com.liferay.portal.kernel.captcha.CaptchaMaxChallengesException;
 import com.liferay.portal.kernel.captcha.CaptchaTextException;
 import com.liferay.portal.kernel.captcha.CaptchaUtil;
-import com.liferay.portal.kernel.security.auth.session.AuthenticatedSessionManagerUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.Constants;
@@ -380,8 +379,7 @@ public class CreateAccountAction extends PortletAction {
 			HttpServletResponse response = PortalUtil.getHttpServletResponse(
 				actionResponse);
 
-			AuthenticatedSessionManagerUtil.login(
-				request, response, login, password, false, null);
+			LoginUtil.login(request, response, login, password, false, null);
 		}
 		else {
 			PortletURL loginURL = LoginUtil.getLoginURL(

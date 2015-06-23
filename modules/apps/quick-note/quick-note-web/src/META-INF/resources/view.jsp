@@ -59,7 +59,7 @@
 
 					quickNotePad.setStyle('backgroundColor', bgColor);
 
-					<portlet:actionURL name="save" var="saveURL" />
+					<portlet:resourceURL var="saveURL"><portlet:param name="<%= ActionRequest.ACTION_NAME %>" value="save" /></portlet:resourceURL>
 
 					A.io.request(
 						'<%= saveURL %>',

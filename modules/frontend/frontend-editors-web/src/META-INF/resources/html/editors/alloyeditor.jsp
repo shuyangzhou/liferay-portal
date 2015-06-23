@@ -26,13 +26,17 @@ if (Validator.isNull(doAsUserId)) {
 }
 
 boolean autoCreate = GetterUtil.getBoolean((String)request.getAttribute("liferay-ui:input-editor:autoCreate"));
+
 String contents = (String)request.getAttribute("liferay-ui:input-editor:contents");
 String contentsLanguageId = (String)request.getAttribute("liferay-ui:input-editor:contentsLanguageId");
 String cssClass = GetterUtil.getString((String)request.getAttribute("liferay-ui:input-editor:cssClass"));
 Map<String, Object> data = (Map<String, Object>)request.getAttribute("liferay-ui:input-editor:data");
+JSONObject editorConfigJSONObject = (data != null) ? (JSONObject)data.get("editorConfig") : null;
+EditorOptions editorOptions = (data != null) ? (EditorOptions)data.get("editorOptions") : null;
+
 String editorName = (String)request.getAttribute("liferay-ui:input-editor:editorName");
-String initMethod = (String)request.getAttribute("liferay-ui:input-editor:initMethod");
 String name = namespace + GetterUtil.getString((String)request.getAttribute("liferay-ui:input-editor:name"));
+String initMethod = (String)request.getAttribute("liferay-ui:input-editor:initMethod");
 
 String onBlurMethod = (String)request.getAttribute("liferay-ui:input-editor:onBlurMethod");
 
@@ -59,20 +63,10 @@ if (Validator.isNotNull(onInitMethod)) {
 }
 
 String placeholder = GetterUtil.getString((String)request.getAttribute("liferay-ui:input-editor:placeholder"));
+
 boolean showSource = GetterUtil.getBoolean((String)request.getAttribute("liferay-ui:input-editor:showSource"));
+
 boolean skipEditorLoading = GetterUtil.getBoolean((String)request.getAttribute("liferay-ui:input-editor:skipEditorLoading"));
-
-JSONObject editorConfigJSONObject = null;
-
-if (data != null) {
-	editorConfigJSONObject = (JSONObject)data.get("editorConfig");
-}
-
-EditorOptions editorOptions = null;
-
-if (data != null) {
-	editorOptions = (EditorOptions)data.get("editorOptions");
-}
 %>
 
 <c:if test="<%= !skipEditorLoading %>">
@@ -211,8 +205,6 @@ if (showSource) {
 				textMode: <%= (editorOptions != null) ? editorOptions.isTextMode() : Boolean.FALSE.toString() %>
 			}
 		).render();
-
-		<liferay-util:dynamic-include key='<%= "com.liferay.frontend.editors.web#" + editorName + "#js#onEditorCreate" %>' />
 	};
 
 	window['<%= name %>'] = {

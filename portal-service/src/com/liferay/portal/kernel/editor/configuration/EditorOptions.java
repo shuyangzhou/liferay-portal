@@ -14,17 +14,10 @@
 
 package com.liferay.portal.kernel.editor.configuration;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * @author Sergio González
  */
 public class EditorOptions {
-
-	public Map<String, Object> getDynamicAttributes() {
-		return _dynamicAttributes;
-	}
 
 	public String getUploadURL() {
 		return _uploadURL;
@@ -42,7 +35,6 @@ public class EditorOptions {
 		_uploadURL = uploadURL;
 	}
 
-	private final Map<String, Object> _dynamicAttributes = new HashMap<>();
 	private boolean _textMode;
 	private String _uploadURL;
 

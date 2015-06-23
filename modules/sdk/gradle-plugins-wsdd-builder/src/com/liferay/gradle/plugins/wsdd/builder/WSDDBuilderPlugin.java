@@ -22,10 +22,9 @@ import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
 import org.gradle.api.artifacts.Configuration;
+import org.gradle.api.artifacts.ConfigurationContainer;
 import org.gradle.api.file.FileCollection;
-import org.gradle.api.plugins.BasePlugin;
 import org.gradle.api.plugins.JavaPlugin;
-import org.gradle.api.tasks.SourceSet;
 import org.gradle.api.tasks.TaskContainer;
 import org.gradle.api.tasks.TaskOutputs;
 
@@ -50,7 +49,7 @@ public class WSDDBuilderPlugin implements Plugin<Project> {
 			project, BUILD_WSDD_TASK_NAME, BuildWSDDTask.class);
 
 		buildWSDDTask.setDescription("Runs Liferay WSDD Builder.");
-		buildWSDDTask.setGroup(BasePlugin.BUILD_GROUP);
+		buildWSDDTask.setGroup("build");
 
 		buildWSDDTask.dependsOn(JavaPlugin.COMPILE_JAVA_TASK_NAME);
 
@@ -113,11 +112,15 @@ public class WSDDBuilderPlugin implements Plugin<Project> {
 
 		FileCollection fileCollection = taskOutputs.getFiles();
 
-		SourceSet sourceSet = GradleUtil.getSourceSet(
-			project, SourceSet.MAIN_SOURCE_SET_NAME);
+		ConfigurationContainer configurationContainer =
+			project.getConfigurations();
 
-		fileCollection = fileCollection.plus(sourceSet.getCompileClasspath());
-		fileCollection = fileCollection.plus(sourceSet.getRuntimeClasspath());
+		Configuration configuration = configurationContainer.findByName(
+			JavaPlugin.RUNTIME_CONFIGURATION_NAME);
+
+		if (configuration != null) {
+			fileCollection = fileCollection.plus(configuration);
+		}
 
 		buildWSDDTask.setBuilderClasspath(fileCollection.getAsPath());
 	}

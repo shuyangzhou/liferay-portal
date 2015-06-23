@@ -155,7 +155,6 @@ AUI.add(
 							{
 								container: node,
 								definition: fieldDefinition,
-								fieldType: fieldDefinition.type,
 								form: instance,
 								instanceId: instanceId,
 								parent: instance,

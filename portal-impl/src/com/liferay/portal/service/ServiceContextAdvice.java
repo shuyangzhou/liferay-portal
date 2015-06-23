@@ -14,9 +14,10 @@
 
 package com.liferay.portal.service;
 
+import com.liferay.portal.kernel.util.AutoResetThreadLocal;
 import com.liferay.portal.spring.aop.ChainableMethodAdvice;
 
-import java.lang.reflect.Method;
+import java.util.LinkedList;
 
 import org.aopalliance.intercept.MethodInvocation;
 
@@ -26,54 +27,52 @@ import org.aopalliance.intercept.MethodInvocation;
 public class ServiceContextAdvice extends ChainableMethodAdvice {
 
 	@Override
-	public Object invoke(MethodInvocation methodInvocation) throws Throwable {
-		if (!hasServiceContextParameter(methodInvocation.getMethod())) {
-			serviceBeanAopCacheManager.removeMethodInterceptor(
-				methodInvocation, this);
-		}
-
-		boolean pushedServiceContext = pushServiceContext(methodInvocation);
-
-		try {
-			return methodInvocation.proceed();
-		}
-		finally {
-			if (pushedServiceContext) {
-				ServiceContextThreadLocal.popServiceContext();
-			}
-		}
-	}
-
-	protected boolean hasServiceContextParameter(Method method) {
-		Class<?>[] parameterTypes = method.getParameterTypes();
-
-		for (int i = parameterTypes.length - 1; i >= 0; i--) {
-			if (ServiceContext.class.isAssignableFrom(parameterTypes[i])) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	protected boolean pushServiceContext(MethodInvocation methodInvocation) {
+	public Object before(MethodInvocation methodInvocation) {
 		Object[] arguments = methodInvocation.getArguments();
 
-		if (arguments == null) {
-			return false;
-		}
+		LinkedList<Boolean> linkedList = _popServiceContext.get();
 
-		for (int i = arguments.length - 1; i >= 0; i--) {
-			if (arguments[i] instanceof ServiceContext) {
-				ServiceContext serviceContext = (ServiceContext)arguments[i];
+		if (arguments != null) {
+			for (int i = arguments.length - 1; i >= 0; i--) {
+				if (arguments[i] instanceof ServiceContext) {
+					ServiceContext serviceContext =
+						(ServiceContext)arguments[i];
 
-				ServiceContextThreadLocal.pushServiceContext(serviceContext);
+					if (serviceContext == null) {
+						linkedList.push(false);
+					}
+					else {
+						ServiceContextThreadLocal.pushServiceContext(
+							serviceContext);
 
-				return true;
+						linkedList.push(true);
+					}
+
+					return null;
+				}
 			}
 		}
 
-		return false;
+		linkedList.push(false);
+
+		serviceBeanAopCacheManager.removeMethodInterceptor(
+			methodInvocation, this);
+
+		return null;
 	}
+
+	@Override
+	public void duringFinally(MethodInvocation methodInvocation) {
+		LinkedList<Boolean> linkedList = _popServiceContext.get();
+
+		if (linkedList.pop()) {
+			ServiceContextThreadLocal.popServiceContext();
+		}
+	}
+
+	private static final ThreadLocal<LinkedList<Boolean>> _popServiceContext =
+		new AutoResetThreadLocal<>(
+			ServiceContextAdvice.class.getName() + "._popServiceContext",
+			new LinkedList<Boolean>());
 
 }

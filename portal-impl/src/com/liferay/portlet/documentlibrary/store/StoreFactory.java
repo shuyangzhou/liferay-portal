@@ -136,8 +136,6 @@ public class StoreFactory {
 			return store;
 		}
 
-		DBStore dbStore = (DBStore)store;
-
 		DB db = DBFactoryUtil.getDB();
 
 		String dbType = db.getType();
@@ -157,8 +155,6 @@ public class StoreFactory {
 				classLoader, new Class<?>[] {Store.class},
 				new MethodInterceptorInvocationHandler(
 					store, methodInterceptors));
-
-			dbStore.setStoreProxy(store);
 		}
 
 		return store;

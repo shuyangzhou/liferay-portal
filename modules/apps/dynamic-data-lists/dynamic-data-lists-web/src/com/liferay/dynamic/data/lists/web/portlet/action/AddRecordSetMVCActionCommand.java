@@ -37,9 +37,9 @@ import com.liferay.portlet.StrictPortletPreferencesImpl;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
 import javax.portlet.PortletPreferences;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -57,20 +57,35 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class AddRecordSetMVCActionCommand extends BaseMVCActionCommand {
 
-	protected DDLRecordSet addRecordSet(ActionRequest actionRequest)
+	@Reference
+	public void setDDLRecordSetService(
+		DDLRecordSetService ddlRecordSetService) {
+
+		_ddlRecordSetService = ddlRecordSetService;
+	}
+
+	@Reference
+	public void setWorkflowDefinitionLinkLocalService(
+		WorkflowDefinitionLinkLocalService workflowDefinitionLinkLocalService) {
+
+		_workflowDefinitionLinkLocalService =
+			workflowDefinitionLinkLocalService;
+	}
+
+	protected DDLRecordSet addRecordSet(PortletRequest portletRequest)
 		throws PortalException {
 
-		long groupId = ParamUtil.getLong(actionRequest, "groupId");
+		long groupId = ParamUtil.getLong(portletRequest, "groupId");
 		long ddmStructureId = ParamUtil.getLong(
-			actionRequest, "ddmStructureId");
+			portletRequest, "ddmStructureId");
 		Map<Locale, String> nameMap = LocalizationUtil.getLocalizationMap(
-			actionRequest, "name");
+			portletRequest, "name");
 		Map<Locale, String> descriptionMap =
-			LocalizationUtil.getLocalizationMap(actionRequest, "description");
-		int scope = ParamUtil.getInteger(actionRequest, "scope");
+			LocalizationUtil.getLocalizationMap(portletRequest, "description");
+		int scope = ParamUtil.getInteger(portletRequest, "scope");
 
 		ServiceContext serviceContext = ServiceContextFactory.getInstance(
-			DDLRecordSet.class.getName(), actionRequest);
+			DDLRecordSet.class.getName(), portletRequest);
 
 		return _ddlRecordSetService.addRecordSet(
 			groupId, ddmStructureId, null, nameMap, descriptionMap,
@@ -80,27 +95,14 @@ public class AddRecordSetMVCActionCommand extends BaseMVCActionCommand {
 
 	@Override
 	protected void doProcessAction(
-			ActionRequest actionRequest, ActionResponse actionResponse)
+			PortletRequest portletRequest, PortletResponse portletResponse)
 		throws Exception {
 
-		DDLRecordSet recordSet = addRecordSet(actionRequest);
+		DDLRecordSet recordSet = addRecordSet(portletRequest);
 
-		updateWorkflowDefinitionLink(actionRequest, recordSet);
+		updateWorkflowDefinitionLink(portletRequest, recordSet);
 
-		updatePortletPreferences(actionRequest, recordSet);
-	}
-
-	protected PortletPreferences getStrictPortletSetup(
-			ActionRequest actionRequest)
-		throws PortalException {
-
-		String portletResource = ParamUtil.getString(
-			actionRequest, "portletResource");
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		return getStrictPortletSetup(themeDisplay.getLayout(), portletResource);
+		updatePortletPreferences(portletRequest, recordSet);
 	}
 
 	protected PortletPreferences getStrictPortletSetup(
@@ -122,27 +124,25 @@ public class AddRecordSetMVCActionCommand extends BaseMVCActionCommand {
 		return portletPreferences;
 	}
 
-	@Reference
-	protected void setDDLRecordSetService(
-		DDLRecordSetService ddlRecordSetService) {
+	protected PortletPreferences getStrictPortletSetup(
+			PortletRequest portletRequest)
+		throws PortalException {
 
-		_ddlRecordSetService = ddlRecordSetService;
-	}
+		String portletResource = ParamUtil.getString(
+			portletRequest, "portletResource");
 
-	@Reference
-	protected void setWorkflowDefinitionLinkLocalService(
-		WorkflowDefinitionLinkLocalService workflowDefinitionLinkLocalService) {
+		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
 
-		_workflowDefinitionLinkLocalService =
-			workflowDefinitionLinkLocalService;
+		return getStrictPortletSetup(themeDisplay.getLayout(), portletResource);
 	}
 
 	protected void updatePortletPreferences(
-			ActionRequest actionRequest, DDLRecordSet recordSet)
+			PortletRequest portletRequest, DDLRecordSet recordSet)
 		throws Exception {
 
 		PortletPreferences portletPreferences = getStrictPortletSetup(
-			actionRequest);
+			portletRequest);
 
 		if (portletPreferences == null) {
 			return;
@@ -160,15 +160,15 @@ public class AddRecordSetMVCActionCommand extends BaseMVCActionCommand {
 	}
 
 	protected void updateWorkflowDefinitionLink(
-			ActionRequest actionRequest, DDLRecordSet recordSet)
+			PortletRequest portletRequest, DDLRecordSet recordSet)
 		throws PortalException {
 
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
+		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		long groupId = ParamUtil.getLong(actionRequest, "groupId");
+		long groupId = ParamUtil.getLong(portletRequest, "groupId");
 		String workflowDefinition = ParamUtil.getString(
-			actionRequest, "workflowDefinition");
+			portletRequest, "workflowDefinition");
 
 		_workflowDefinitionLinkLocalService.updateWorkflowDefinitionLink(
 			themeDisplay.getUserId(), themeDisplay.getCompanyId(), groupId,
