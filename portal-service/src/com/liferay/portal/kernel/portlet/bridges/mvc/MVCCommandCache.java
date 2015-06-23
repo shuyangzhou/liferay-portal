@@ -74,7 +74,7 @@ public class MVCCommandCache<T> {
 		String className = null;
 
 		try {
-			T mvcCommand = _mvcCommandCache.get(mvcCommandName);
+			T mvcCommand = (T)_mvcCommandCache.get(mvcCommandName);
 
 			if (mvcCommand != null) {
 				return mvcCommand;
