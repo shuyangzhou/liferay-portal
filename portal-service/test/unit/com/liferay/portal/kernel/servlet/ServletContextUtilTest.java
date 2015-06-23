@@ -37,7 +37,7 @@ public class ServletContextUtilTest {
 
 	@Test
 	public void testGetResourceURIWithEmptyPath() throws Exception {
-		testGetResourceURI(StringPool.BLANK);
+		doTestGetResourceURI(StringPool.BLANK);
 	}
 
 	@Test(expected = URISyntaxException.class)
@@ -48,39 +48,39 @@ public class ServletContextUtilTest {
 
 	@Test
 	public void testGetResourceURIWithReservedCharacters() throws Exception {
-		testGetResourceURI(_URI_WITH_RESERVED_CHARACTERS);
+		doTestGetResourceURI(_URI_WITH_RESERVED_CHARACTERS);
 	}
 
 	@Test
 	public void testGetResourceURIWithUnreservedCharacters() throws Exception {
-		testGetResourceURI(_URI_WITH_UNRESERVED_CHARACTERS);
+		doTestGetResourceURI(_URI_WITH_UNRESERVED_CHARACTERS);
 	}
 
 	@Test
 	public void testGetRootURIWithEmptyPath() throws Exception {
-		testGetRootURI(StringPool.BLANK, getURI(StringPool.SLASH));
+		doTestGetRootURI(StringPool.BLANK, getURI(StringPool.SLASH));
 	}
 
 	@Test(expected = MalformedURLException.class)
 	public void testGetRootURIWithInvalidCharacters() throws Exception {
-		testGetRootURI(_URI_WITH_INVALID_CHARACTERS, null);
+		doTestGetRootURI(_URI_WITH_INVALID_CHARACTERS, null);
 	}
 
 	@Test
 	public void testGetRootURIWithReservedCharacters() throws Exception {
 		String path = _URI_WITH_RESERVED_CHARACTERS;
 
-		testGetRootURI(path, getURI(path));
+		doTestGetRootURI(path, getURI(path));
 	}
 
 	@Test
 	public void testGetRootURIWithUnreservedCharacters() throws Exception {
 		String path = _URI_WITH_UNRESERVED_CHARACTERS;
 
-		testGetRootURI(path, getURI(path));
+		doTestGetRootURI(path, getURI(path));
 	}
 
-	protected void testGetResourceURI(String resourceURL) throws Exception {
+	protected void doTestGetResourceURI(String resourceURL) throws Exception {
 		URL url = new URL("file://" + resourceURL + "/dummy");
 
 		URI uri = ServletContextUtil.getResourceURI(url);
@@ -90,7 +90,7 @@ public class ServletContextUtilTest {
 		Assert.assertNull(uri.getFragment());
 	}
 
-	protected void testGetRootURI(String path, URI uri) throws Exception {
+	protected void doTestGetRootURI(String path, URI uri) throws Exception {
 		ServletContext servletContext = getServletContext(path);
 
 		URI rootURI = ServletContextUtil.getRootURI(servletContext);
