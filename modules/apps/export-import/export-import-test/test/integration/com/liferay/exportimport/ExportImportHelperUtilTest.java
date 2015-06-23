@@ -76,6 +76,7 @@ import com.liferay.portlet.exportimport.service.ExportImportConfigurationLocalSe
 import com.liferay.portlet.exportimport.service.ExportImportLocalServiceUtil;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 
@@ -930,7 +931,7 @@ public class ExportImportHelperUtilTest extends PowerMockito {
 			return new InputStream() {
 
 				@Override
-				public int read() {
+				public int read() throws IOException {
 					return -1;
 				}
 
