@@ -108,30 +108,20 @@ public class DownloadFileHandler extends BaseHandler {
 		}
 
 		if (exception.equals(
-				"com.liferay.portal.security.auth.PrincipalException")) {
-
-			syncFile.setState(SyncFile.STATE_ERROR);
-			syncFile.setUiEvent(SyncFile.UI_EVENT_INVALID_PERMISSIONS);
-
-			SyncFileService.update(syncFile);
-
-			return true;
-		}
-		else if (exception.equals(
-					"com.liferay.portlet.documentlibrary." +
-						"NoSuchFileVersionException") &&
-				 (Boolean)getParameterValue("patch")) {
+				"com.liferay.portlet.documentlibrary." +
+					"NoSuchFileVersionException") &&
+			(Boolean)getParameterValue("patch")) {
 
 			FileEventUtil.downloadFile(getSyncAccountId(), syncFile, false);
 
 			return true;
 		}
-		else if (exception.equals(
-					"com.liferay.portlet.documentlibrary." +
-						"NoSuchFileEntryException") ||
-				 exception.equals(
-					 "com.liferay.portlet.documentlibrary." +
-						 "NoSuchFileException")) {
+
+		if (exception.equals(
+				"com.liferay.portlet.documentlibrary." +
+					"NoSuchFileEntryException") ||
+			exception.equals(
+				"com.liferay.portlet.documentlibrary.NoSuchFileException")) {
 
 			SyncFileService.deleteSyncFile(syncFile, false);
 
