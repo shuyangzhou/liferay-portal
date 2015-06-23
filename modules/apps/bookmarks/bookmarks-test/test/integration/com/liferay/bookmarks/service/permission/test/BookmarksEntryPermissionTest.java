@@ -44,7 +44,7 @@ import org.junit.runner.RunWith;
  * @author Preston Crary
  */
 @RunWith(Arquillian.class)
-public class BookmarksEntryResourceBlockLocalServiceTest {
+public class BookmarksEntryPermissionTest {
 
 	@ClassRule
 	@Rule
