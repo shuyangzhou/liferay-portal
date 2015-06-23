@@ -14,7 +14,6 @@
 
 package com.liferay.portal.tools;
 
-import com.liferay.portal.cache.DummyPortalCacheManager;
 import com.liferay.portal.cache.MultiVMPoolImpl;
 import com.liferay.portal.cache.SingleVMPoolImpl;
 import com.liferay.portal.cache.key.SimpleCacheKeyGenerator;
@@ -45,6 +44,7 @@ import com.liferay.portal.security.xml.SecureXMLFactoryProviderImpl;
 import com.liferay.portal.security.xml.SecureXMLFactoryProviderUtil;
 import com.liferay.portal.service.permission.PortletPermissionImpl;
 import com.liferay.portal.service.permission.PortletPermissionUtil;
+import com.liferay.portal.tools.cache.DummyPortalCacheManager;
 import com.liferay.portal.util.DigesterImpl;
 import com.liferay.portal.util.FastDateFormatFactoryImpl;
 import com.liferay.portal.util.FileImpl;
