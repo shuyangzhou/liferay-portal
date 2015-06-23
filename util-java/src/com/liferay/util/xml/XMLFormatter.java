@@ -35,7 +35,7 @@ import org.xml.sax.XMLReader;
  * @author Brian Wing Shun Chan
  * @author Alan Zimmerman
  */
-public class Dom4jUtil {
+public class XMLFormatter {
 
 	public static String toString(Node node) throws IOException {
 		return toString(node, StringPool.TAB);
