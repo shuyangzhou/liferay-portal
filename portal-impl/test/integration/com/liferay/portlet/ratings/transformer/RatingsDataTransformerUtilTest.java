@@ -64,10 +64,11 @@ public class RatingsDataTransformerUtilTest {
 		oldPortletPreferences.setValue(
 			"com.liferay.bookmarks.model.BookmarksEntry_RatingsType", "like");
 		oldPortletPreferences.setValue(
-			"com.liferay.journal.model.JournalArticle_RatingsType", "like");
-		oldPortletPreferences.setValue(
 			"com.liferay.portlet.documentlibrary.model.DLFileEntry" +
 				"_RatingsType",
+			"like");
+		oldPortletPreferences.setValue(
+			"com.liferay.portlet.journal.model.JournalArticle_RatingsType",
 			"like");
 		oldPortletPreferences.setValue(
 			"com.liferay.portlet.messageboards.model.MBDiscussion" +
@@ -86,10 +87,11 @@ public class RatingsDataTransformerUtilTest {
 		unicodeProperties.setProperty(
 			"com.liferay.bookmarks.model.BookmarksEntry_RatingsType", "stars");
 		unicodeProperties.setProperty(
-			"com.liferay.journal.model.JournalArticle_RatingsType", "stars");
-		unicodeProperties.setProperty(
 			"com.liferay.portlet.documentlibrary.model.DLFileEntry" +
 				"_RatingsType",
+			"stars");
+		unicodeProperties.setProperty(
+			"com.liferay.portlet.journal.model.JournalArticle_RatingsType",
 			"stars");
 		unicodeProperties.setProperty(
 			"com.liferay.portlet.messageboards.model.MBDiscussion" +
@@ -118,10 +120,11 @@ public class RatingsDataTransformerUtilTest {
 		oldUnicodeProperties.setProperty(
 			"com.liferay.bookmarks.model.BookmarksEntry_RatingsType", "like");
 		oldUnicodeProperties.setProperty(
-			"com.liferay.journal.model.JournalArticle_RatingsType", "like");
-		oldUnicodeProperties.setProperty(
 			"com.liferay.portlet.documentlibrary.model.DLFileEntry" +
 				"_RatingsType",
+			"like");
+		oldUnicodeProperties.setProperty(
+			"com.liferay.portlet.journal.model.JournalArticle_RatingsType",
 			"like");
 		oldUnicodeProperties.setProperty(
 			"com.liferay.portlet.messageboards.model.MBDiscussion" +
@@ -140,10 +143,11 @@ public class RatingsDataTransformerUtilTest {
 		unicodeProperties.setProperty(
 			"com.liferay.bookmarks.model.BookmarksEntry_RatingsType", "stars");
 		unicodeProperties.setProperty(
-			"com.liferay.journal.model.JournalArticle_RatingsType", "stars");
-		unicodeProperties.setProperty(
 			"com.liferay.portlet.documentlibrary.model.DLFileEntry" +
 				"_RatingsType",
+			"stars");
+		unicodeProperties.setProperty(
+			"com.liferay.portlet.journal.model.JournalArticle_RatingsType",
 			"stars");
 		unicodeProperties.setProperty(
 			"com.liferay.portlet.messageboards.model.MBDiscussion" +
