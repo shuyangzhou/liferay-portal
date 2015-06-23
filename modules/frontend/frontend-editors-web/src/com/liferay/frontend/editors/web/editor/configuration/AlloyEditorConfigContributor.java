@@ -116,61 +116,57 @@ public class AlloyEditorConfigContributor extends BaseEditorConfigContributor {
 		return jsonObject;
 	}
 
-	protected JSONArray getStyleFormatsJSONArray(Locale locale) {
-		JSONArray styleFormatsJSONArray = JSONFactoryUtil.createJSONArray();
+	protected JSONObject getStyleFormatsJSONObject(Locale locale) {
+		JSONArray stylesJsonArray = JSONFactoryUtil.createJSONArray();
 
-		styleFormatsJSONArray.put(
+		stylesJsonArray.put(
 			getStyleFormatJSONObject(
 				LanguageUtil.get(locale, "normal"), "p", null,
 				_CKEDITOR_STYLE_BLOCK));
-		styleFormatsJSONArray.put(
+		stylesJsonArray.put(
 			getStyleFormatJSONObject(
 				LanguageUtil.format(locale, "heading-x", "1"), "h1", null,
 				_CKEDITOR_STYLE_BLOCK));
-		styleFormatsJSONArray.put(
+		stylesJsonArray.put(
 			getStyleFormatJSONObject(
 				LanguageUtil.format(locale, "heading-x", "2"), "h2", null,
 				_CKEDITOR_STYLE_BLOCK));
-		styleFormatsJSONArray.put(
+		stylesJsonArray.put(
 			getStyleFormatJSONObject(
 				LanguageUtil.format(locale, "heading-x", "3"), "h3", null,
 				_CKEDITOR_STYLE_BLOCK));
-		styleFormatsJSONArray.put(
+		stylesJsonArray.put(
 			getStyleFormatJSONObject(
 				LanguageUtil.format(locale, "heading-x", "4"), "h4", null,
 				_CKEDITOR_STYLE_BLOCK));
-		styleFormatsJSONArray.put(
+		stylesJsonArray.put(
 			getStyleFormatJSONObject(
 				LanguageUtil.get(locale, "preformatted-text"), "pre", null,
 				_CKEDITOR_STYLE_BLOCK));
-		styleFormatsJSONArray.put(
+		stylesJsonArray.put(
 			getStyleFormatJSONObject(
 				LanguageUtil.get(locale, "cited-work"), "cite", null,
 				_CKEDITOR_STYLE_INLINE));
-		styleFormatsJSONArray.put(
+		stylesJsonArray.put(
 			getStyleFormatJSONObject(
 				LanguageUtil.get(locale, "computer-code"), "code", null,
 				_CKEDITOR_STYLE_INLINE));
-		styleFormatsJSONArray.put(
+		stylesJsonArray.put(
 			getStyleFormatJSONObject(
 				LanguageUtil.get(locale, "info-message"), "div",
 				"portlet-msg-info", _CKEDITOR_STYLE_BLOCK));
-		styleFormatsJSONArray.put(
+		stylesJsonArray.put(
 			getStyleFormatJSONObject(
 				LanguageUtil.get(locale, "alert-message"), "div",
 				"portlet-msg-alert", _CKEDITOR_STYLE_BLOCK));
-		styleFormatsJSONArray.put(
+		stylesJsonArray.put(
 			getStyleFormatJSONObject(
 				LanguageUtil.get(locale, "error-message"), "div",
 				"portlet-msg-error", _CKEDITOR_STYLE_BLOCK));
 
-		return styleFormatsJSONArray;
-	}
-
-	protected JSONObject getStyleFormatsJSONObject(Locale locale) {
 		JSONObject stylesJSONObject = JSONFactoryUtil.createJSONObject();
 
-		stylesJSONObject.put("styles", getStyleFormatsJSONArray(locale));
+		stylesJSONObject.put("styles", stylesJsonArray);
 
 		JSONObject styleFormatsJSONObject = JSONFactoryUtil.createJSONObject();
 		styleFormatsJSONObject.put("name", "styles");

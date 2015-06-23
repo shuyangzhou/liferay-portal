@@ -130,46 +130,46 @@ public class CKEditorConfigContributor extends BaseCKEditorConfigContributor {
 	}
 
 	protected JSONArray getStyleFormatsJSONArray(Locale locale) {
-		JSONArray styleFormatsJSONArray = JSONFactoryUtil.createJSONArray();
+		JSONArray stylesJsonArray = JSONFactoryUtil.createJSONArray();
 
-		styleFormatsJSONArray.put(
+		stylesJsonArray.put(
 			getStyleFormatJSONObject(
 				LanguageUtil.get(locale, "normal"), "p", null));
-		styleFormatsJSONArray.put(
+		stylesJsonArray.put(
 			getStyleFormatJSONObject(
 				LanguageUtil.format(locale, "heading-x", "1"), "h1", null));
-		styleFormatsJSONArray.put(
+		stylesJsonArray.put(
 			getStyleFormatJSONObject(
 				LanguageUtil.format(locale, "heading-x", "2"), "h2", null));
-		styleFormatsJSONArray.put(
+		stylesJsonArray.put(
 			getStyleFormatJSONObject(
 				LanguageUtil.format(locale, "heading-x", "3"), "h3", null));
-		styleFormatsJSONArray.put(
+		stylesJsonArray.put(
 			getStyleFormatJSONObject(
 				LanguageUtil.format(locale, "heading-x", "4"), "h4", null));
-		styleFormatsJSONArray.put(
+		stylesJsonArray.put(
 			getStyleFormatJSONObject(
 				LanguageUtil.get(locale, "preformatted-text"), "pre", null));
-		styleFormatsJSONArray.put(
+		stylesJsonArray.put(
 			getStyleFormatJSONObject(
 				LanguageUtil.get(locale, "cited-work"), "cite", null));
-		styleFormatsJSONArray.put(
+		stylesJsonArray.put(
 			getStyleFormatJSONObject(
 				LanguageUtil.get(locale, "computer-code"), "code", null));
-		styleFormatsJSONArray.put(
+		stylesJsonArray.put(
 			getStyleFormatJSONObject(
 				LanguageUtil.get(locale, "info-message"), "div",
 				"portlet-msg-info"));
-		styleFormatsJSONArray.put(
+		stylesJsonArray.put(
 			getStyleFormatJSONObject(
 				LanguageUtil.get(locale, "alert-message"), "div",
 				"portlet-msg-alert"));
-		styleFormatsJSONArray.put(
+		stylesJsonArray.put(
 			getStyleFormatJSONObject(
 				LanguageUtil.get(locale, "error-message"), "div",
 				"portlet-msg-error"));
 
-		return styleFormatsJSONArray;
+		return stylesJsonArray;
 	}
 
 	protected JSONArray getToolbarEditInPlaceJSONArray(
