@@ -35,17 +35,11 @@ import javax.servlet.ServletContext;
 public class PortalWebResourcesUtil {
 
 	public static String getContextPath(String resourceType) {
-		PortalWebResources portalWebResources = getPortalWebResources(
-			resourceType);
-		
-		return portalWebResources.getContextPath();
+		return getPortalWebResources(resourceType).getContextPath();
 	}
 
 	public static long getLastModified(String resourceType) {
-		PortalWebResources portalWebResources = getPortalWebResources(
-			resourceType);
-		
-		return portalWebResources.getLastModified();
+		return getPortalWebResources(resourceType).getLastModified();
 	}
 
 	public static PortalWebResources getPortalWebResources(
@@ -92,10 +86,7 @@ public class PortalWebResourcesUtil {
 	}
 
 	public static ServletContext getServletContext(String resourceType) {
-		PortalWebResources portalWebResources = getPortalWebResources(
-			resourceType);
-		
-		return portalWebResources.getServletContext();
+		return getPortalWebResources(resourceType).getServletContext();
 	}
 
 	public static ServletContext getServletContextByResource(
