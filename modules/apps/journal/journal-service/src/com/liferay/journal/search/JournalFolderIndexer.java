@@ -15,7 +15,7 @@
 package com.liferay.journal.search;
 
 import com.liferay.journal.model.JournalFolder;
-import com.liferay.journal.service.JournalFolderLocalService;
+import com.liferay.journal.service.JournalFolderLocalServiceUtil;
 import com.liferay.journal.service.permission.JournalFolderPermission;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -43,7 +43,6 @@ import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Eduardo Garcia
@@ -77,7 +76,7 @@ public class JournalFolderIndexer extends BaseIndexer implements FolderIndexer {
 			long entryClassPK, String actionId)
 		throws Exception {
 
-		JournalFolder folder = _journalFolderLocalService.getFolder(
+		JournalFolder folder = JournalFolderLocalServiceUtil.getFolder(
 			entryClassPK);
 
 		return JournalFolderPermission.contains(
@@ -155,7 +154,7 @@ public class JournalFolderIndexer extends BaseIndexer implements FolderIndexer {
 
 	@Override
 	protected void doReindex(String className, long classPK) throws Exception {
-		JournalFolder folder = _journalFolderLocalService.getFolder(classPK);
+		JournalFolder folder = JournalFolderLocalServiceUtil.getFolder(classPK);
 
 		doReindex(folder);
 	}
@@ -169,7 +168,7 @@ public class JournalFolderIndexer extends BaseIndexer implements FolderIndexer {
 
 	protected void reindexFolders(long companyId) throws PortalException {
 		final ActionableDynamicQuery actionableDynamicQuery =
-			_journalFolderLocalService.getActionableDynamicQuery();
+			JournalFolderLocalServiceUtil.getActionableDynamicQuery();
 
 		actionableDynamicQuery.setCompanyId(companyId);
 		actionableDynamicQuery.setPerformActionMethod(
@@ -202,16 +201,7 @@ public class JournalFolderIndexer extends BaseIndexer implements FolderIndexer {
 		actionableDynamicQuery.performActions();
 	}
 
-	@Reference
-	protected void setJournalFolderLocalService(
-		JournalFolderLocalService journalFolderLocalService) {
-
-		_journalFolderLocalService = journalFolderLocalService;
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		JournalFolderIndexer.class);
-
-	private JournalFolderLocalService _journalFolderLocalService;
 
 }
