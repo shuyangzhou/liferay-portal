@@ -4,7 +4,7 @@
 		module="zookeeper"
 		revision="3.4.6"
 		status="release"
-		publication="20140223091855"
+		publication="20140223111855"
 	>
 		<description homepage="" />
 	</info>
