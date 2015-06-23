@@ -23,7 +23,6 @@ import com.liferay.portal.kernel.deploy.hot.HotDeployUtil;
 import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
 import com.liferay.portal.kernel.servlet.ServletContextPool;
 import com.liferay.portal.kernel.servlet.filters.invoker.InvokerFilterHelper;
-import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.kernel.util.ClassLoaderPool;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PortalLifecycleUtil;
@@ -244,15 +243,6 @@ public class PACLTestRule implements TestRule {
 
 		new IndexerPostProcessorRegistry();
 		new ServiceWrapperRegistry();
-
-		try {
-			Class.forName(
-				TemplateManagerUtil.class.getName(), true,
-				PACLTestRule.class.getClassLoader());
-		}
-		catch (ClassNotFoundException cnfe) {
-			throw new ExceptionInInitializerError(cnfe);
-		}
 	}
 
 	private Object _instance;
