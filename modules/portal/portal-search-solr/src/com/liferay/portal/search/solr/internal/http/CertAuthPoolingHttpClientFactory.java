@@ -20,6 +20,8 @@ import com.liferay.portal.search.solr.configuration.SolrHttpClientFactoryConfigu
 import com.liferay.portal.search.solr.http.HttpClientFactory;
 import com.liferay.portal.search.solr.http.SSLSocketFactoryBuilder;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.http.HttpRequestInterceptor;
@@ -35,9 +37,6 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author László Csontos
@@ -103,15 +102,16 @@ public class CertAuthPoolingHttpClientFactory
 		shutdown();
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.AT_LEAST_ONE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
+	@Reference(unbind = "-")
 	protected void setHttpRequestInterceptor(
 		HttpRequestInterceptor httpRequestInterceptor) {
 
-		addHttpRequestInterceptor(httpRequestInterceptor);
+		List<HttpRequestInterceptor> httpRequestInterceptors =
+			new ArrayList<>();
+
+		httpRequestInterceptors.add(httpRequestInterceptor);
+
+		setHttpRequestInterceptors(httpRequestInterceptors);
 	}
 
 	@Reference(unbind = "-")
@@ -119,12 +119,6 @@ public class CertAuthPoolingHttpClientFactory
 		SSLSocketFactoryBuilder sslSocketFactoryBuilder) {
 
 		_sslSocketFactoryBuilder = sslSocketFactoryBuilder;
-	}
-
-	protected void unsetHttpRequestInterceptor(
-		HttpRequestInterceptor httpRequestInterceptor) {
-
-		removeHttpRequestInterceptor(httpRequestInterceptor);
 	}
 
 	private volatile SolrHttpClientFactoryConfiguration
