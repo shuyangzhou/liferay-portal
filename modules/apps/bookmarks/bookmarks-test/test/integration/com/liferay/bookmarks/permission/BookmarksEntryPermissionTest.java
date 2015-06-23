@@ -85,20 +85,20 @@ public class BookmarksEntryPermissionTest {
 	}
 
 	@Test
-	public void testGetRoles() throws Exception {
-		List<Role> roles = ResourceBlockLocalServiceUtil.getRoles(
+	public void testGetRolesWithPermission() throws Exception {
+		List<Role> rolesWithPermission = ResourceBlockLocalServiceUtil.getRoles(
 			BookmarksEntry.class.getName(), _bookmarksEntry1.getEntryId(),
 			ActionKeys.VIEW);
 
-		Assert.assertTrue(roles.contains(_role1));
-		Assert.assertTrue(roles.contains(_role2));
+		Assert.assertTrue(rolesWithPermission.contains(_role1));
+		Assert.assertTrue(rolesWithPermission.contains(_role2));
 
-		roles = ResourceBlockLocalServiceUtil.getRoles(
+		rolesWithPermission = ResourceBlockLocalServiceUtil.getRoles(
 			BookmarksEntry.class.getName(), _bookmarksEntry2.getEntryId(),
 			ActionKeys.VIEW);
 
-		Assert.assertTrue(roles.contains(_role1));
-		Assert.assertFalse(roles.contains(_role2));
+		Assert.assertTrue(rolesWithPermission.contains(_role1));
+		Assert.assertFalse(rolesWithPermission.contains(_role2));
 	}
 
 	private BookmarksEntry _bookmarksEntry1;
