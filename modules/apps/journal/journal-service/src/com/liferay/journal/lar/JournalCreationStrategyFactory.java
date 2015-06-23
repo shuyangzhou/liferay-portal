@@ -14,9 +14,10 @@
 
 package com.liferay.journal.lar;
 
-import com.liferay.journal.configuration.JournalServiceConfigurationValues;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.ClassLoaderUtil;
+import com.liferay.portal.util.PropsValues;
 
 /**
  * @author Joel Kozikowski
@@ -27,19 +28,16 @@ public class JournalCreationStrategyFactory {
 		if (_journalCreationStrategy == null) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
-					"Instantiate " +
-						JournalServiceConfigurationValues.
-							LAR_CREATION_STRATEGY);
+					"Instantiate " + PropsValues.JOURNAL_LAR_CREATION_STRATEGY);
 			}
 
-			ClassLoader classLoader =
-				JournalCreationStrategy.class.getClassLoader();
+			ClassLoader classLoader = ClassLoaderUtil.getPortalClassLoader();
 
 			try {
 				_journalCreationStrategy =
 					(JournalCreationStrategy)classLoader.loadClass(
-						JournalServiceConfigurationValues.
-							LAR_CREATION_STRATEGY).newInstance();
+						PropsValues.JOURNAL_LAR_CREATION_STRATEGY).
+							newInstance();
 			}
 			catch (Exception e) {
 				_log.error(e, e);

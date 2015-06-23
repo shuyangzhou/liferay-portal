@@ -14,7 +14,6 @@
 
 package com.liferay.journal.search;
 
-import com.liferay.journal.configuration.JournalServiceConfigurationValues;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalArticleDisplay;
 import com.liferay.journal.service.JournalArticleLocalService;
@@ -56,6 +55,7 @@ import com.liferay.portal.security.permission.ActionKeys;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
+import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.dynamicdatamapping.model.DDMStructure;
 import com.liferay.portlet.dynamicdatamapping.service.DDMStructureLocalService;
 import com.liferay.portlet.dynamicdatamapping.storage.DDMFormValues;
@@ -378,9 +378,7 @@ public class JournalArticleIndexer
 
 		long classPK = article.getId();
 
-		if (!JournalServiceConfigurationValues.
-				JOURNAL_ARTICLE_INDEX_ALL_VERSIONS) {
-
+		if (!PropsValues.JOURNAL_ARTICLE_INDEX_ALL_VERSIONS) {
 			if (_journalArticleLocalService.getArticlesCount(
 					article.getGroupId(), article.getArticleId()) > 0) {
 
@@ -422,9 +420,7 @@ public class JournalArticleIndexer
 
 		long classPK = article.getId();
 
-		if (!JournalServiceConfigurationValues.
-				JOURNAL_ARTICLE_INDEX_ALL_VERSIONS) {
-
+		if (!PropsValues.JOURNAL_ARTICLE_INDEX_ALL_VERSIONS) {
 			classPK = article.getResourcePrimKey();
 		}
 
@@ -647,9 +643,7 @@ public class JournalArticleIndexer
 
 		List<JournalArticle> articles = null;
 
-		if (JournalServiceConfigurationValues.
-				JOURNAL_ARTICLE_INDEX_ALL_VERSIONS) {
-
+		if (PropsValues.JOURNAL_ARTICLE_INDEX_ALL_VERSIONS) {
 			articles =
 				_journalArticleLocalService.
 					getIndexableArticlesByResourcePrimKey(
@@ -751,9 +745,7 @@ public class JournalArticleIndexer
 				public void performAction(Object object) {
 					JournalArticle article = (JournalArticle)object;
 
-					if (!JournalServiceConfigurationValues.
-							JOURNAL_ARTICLE_INDEX_ALL_VERSIONS) {
-
+					if (!PropsValues.JOURNAL_ARTICLE_INDEX_ALL_VERSIONS) {
 						JournalArticle latestIndexableArticle =
 							fetchLatestIndexableArticleVersion(
 								article.getResourcePrimKey());
