@@ -44,9 +44,7 @@ public class CKEditorCreoleOnEditorCreateDynamicInclude
 
 		Bundle bundle = _bundleContext.getBundle();
 
-		URL entryURL = bundle.getEntry(
-			"/META-INF/resources/html/editors/ckeditor/extension" +
-				"/creole_dialog_definition.js");
+		URL entryURL = bundle.getEntry(_JS_DIALOG_DEFINITION_INCLUDE_PATH);
 
 		StreamUtil.transfer(entryURL.openStream(), response.getOutputStream());
 
@@ -54,9 +52,7 @@ public class CKEditorCreoleOnEditorCreateDynamicInclude
 			"liferay-ui:input-editor:toolbarSet");
 
 		if (toolbarSet.equals("creole")) {
-			entryURL = bundle.getEntry(
-				"/META-INF/resources/html/editors/ckeditor/extension" +
-					"/creole_dialog_show.js");
+			entryURL = bundle.getEntry(_JS_DIALOG_SHOW_INCLUDE_PATH);
 
 			StreamUtil.transfer(
 				entryURL.openStream(), response.getOutputStream());
@@ -75,6 +71,14 @@ public class CKEditorCreoleOnEditorCreateDynamicInclude
 	protected void activate(BundleContext bundleContext) {
 		_bundleContext = bundleContext;
 	}
+
+	private static final String _JS_DIALOG_DEFINITION_INCLUDE_PATH =
+		"/META-INF/resources/html/editors/ckeditor/extension/" +
+			"creole_dialog_definition.js";
+
+	private static final String _JS_DIALOG_SHOW_INCLUDE_PATH =
+		"/META-INF/resources/html/editors/ckeditor/extension/" +
+			"creole_dialog_show.js";
 
 	private BundleContext _bundleContext;
 
