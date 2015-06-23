@@ -22,9 +22,11 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.xuggler.XugglerUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 
+import java.util.Locale;
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
@@ -81,8 +83,13 @@ public class CKEditorConfigContributor extends BaseCKEditorConfigContributor {
 
 				jsonObject.put("extraPlugins", extraPlugins);
 
+				String languageId = LocaleUtil.toLanguageId(
+					themeDisplay.getLocale());
+
+				Locale locale = LocaleUtil.fromLanguageId(languageId);
+
 				jsonObject.put("filebrowserWindowFeatures", "title=" +
-					LanguageUtil.get(themeDisplay.getLocale(), "browse"));
+					LanguageUtil.get(locale, "browse"));
 
 				jsonObject.put("pasteFromWordRemoveFontStyles", Boolean.FALSE);
 

@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 
 import java.util.HashSet;
@@ -71,7 +72,7 @@ public class AlloyEditorConfigContributor extends BaseEditorConfigContributor {
 			"autolink,dragresize,dropimages,placeholder,selectionregion," +
 				"tableresize,tabletools,uicore");
 
-		String languageId = getLanguageId(themeDisplay);
+		String languageId = LocaleUtil.toLanguageId(themeDisplay.getLocale());
 
 		jsonObject.put("language", languageId.replace("iw_", "he_"));
 		jsonObject.put(

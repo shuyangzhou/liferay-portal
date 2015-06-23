@@ -71,7 +71,11 @@ public class BaseCKEditorConfigContributor extends BaseEditorConfigContributor {
 
 		jsonObject.put("height", 265);
 
-		String languageId = getLanguageId(themeDisplay);
+		String languageId = LocaleUtil.toLanguageId(themeDisplay.getLocale());
+
+		Locale locale = LocaleUtil.fromLanguageId(languageId);
+
+		languageId = LocaleUtil.toLanguageId(locale);
 
 		jsonObject.put("language", languageId.replace("iw_", "he_"));
 
