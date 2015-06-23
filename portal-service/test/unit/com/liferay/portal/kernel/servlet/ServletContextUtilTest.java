@@ -80,6 +80,26 @@ public class ServletContextUtilTest {
 		testGetRootURI(path, getURI(path));
 	}
 
+	protected void testGetResourceURI(String resourceURL) throws Exception {
+		URL url = new URL("file://" + resourceURL + "/dummy");
+
+		URI uri = ServletContextUtil.getResourceURI(url);
+
+		Assert.assertEquals("file", uri.getScheme());
+		Assert.assertEquals(url.getPath(), uri.getSchemeSpecificPart());
+		Assert.assertNull(uri.getFragment());
+	}
+
+	protected void testGetRootURI(String path, URI uri) throws Exception {
+		ServletContext servletContext = getServletContext(path);
+
+		URI rootURI = ServletContextUtil.getRootURI(servletContext);
+
+		Assert.assertEquals(uri, rootURI);
+		Assert.assertEquals(
+			uri, servletContext.getAttribute(ServletContextUtil.URI_ATTRIBUTE));
+	}
+
 	protected ServletContext getServletContext(final String path) {
 		return new MockServletContext() {
 
@@ -102,26 +122,6 @@ public class ServletContextUtilTest {
 		}
 
 		return null;
-	}
-
-	protected void testGetResourceURI(String resourceURL) throws Exception {
-		URL url = new URL("file://" + resourceURL + "/dummy");
-
-		URI uri = ServletContextUtil.getResourceURI(url);
-
-		Assert.assertEquals("file", uri.getScheme());
-		Assert.assertEquals(url.getPath(), uri.getSchemeSpecificPart());
-		Assert.assertNull(uri.getFragment());
-	}
-
-	protected void testGetRootURI(String path, URI uri) throws Exception {
-		ServletContext servletContext = getServletContext(path);
-
-		URI rootURI = ServletContextUtil.getRootURI(servletContext);
-
-		Assert.assertEquals(uri, rootURI);
-		Assert.assertEquals(
-			uri, servletContext.getAttribute(ServletContextUtil.URI_ATTRIBUTE));
 	}
 
 	private static final String _URI_WITH_INVALID_CHARACTERS = ":?#[]/@";
