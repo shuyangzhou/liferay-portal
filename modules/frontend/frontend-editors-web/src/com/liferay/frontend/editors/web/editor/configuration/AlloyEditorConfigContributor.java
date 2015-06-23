@@ -118,57 +118,57 @@ public class AlloyEditorConfigContributor extends BaseEditorConfigContributor {
 	}
 
 	protected JSONArray getStyleFormatsJSONArray(Locale locale) {
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
-
 		ResourceBundle resourceBundle = ResourceBundle.getBundle(
 			"content.Language", locale);
 
-		jsonArray.put(
+		JSONArray styleFormatsJSONArray = JSONFactoryUtil.createJSONArray();
+
+		styleFormatsJSONArray.put(
 			getStyleFormatJSONObject(
 				LanguageUtil.get(resourceBundle, "normal"), "p", null,
 				_CKEDITOR_STYLE_BLOCK));
-		jsonArray.put(
+		styleFormatsJSONArray.put(
 			getStyleFormatJSONObject(
 				LanguageUtil.format(resourceBundle, "heading-x", "1"), "h1",
 				null, _CKEDITOR_STYLE_BLOCK));
-		jsonArray.put(
+		styleFormatsJSONArray.put(
 			getStyleFormatJSONObject(
 				LanguageUtil.format(resourceBundle, "heading-x", "2"), "h2",
 				null, _CKEDITOR_STYLE_BLOCK));
-		jsonArray.put(
+		styleFormatsJSONArray.put(
 			getStyleFormatJSONObject(
 				LanguageUtil.format(resourceBundle, "heading-x", "3"), "h3",
 				null, _CKEDITOR_STYLE_BLOCK));
-		jsonArray.put(
+		styleFormatsJSONArray.put(
 			getStyleFormatJSONObject(
 				LanguageUtil.format(resourceBundle, "heading-x", "4"), "h4",
 				null, _CKEDITOR_STYLE_BLOCK));
-		jsonArray.put(
+		styleFormatsJSONArray.put(
 			getStyleFormatJSONObject(
 				LanguageUtil.get(resourceBundle, "preformatted-text"), "pre",
 				null, _CKEDITOR_STYLE_BLOCK));
-		jsonArray.put(
+		styleFormatsJSONArray.put(
 			getStyleFormatJSONObject(
 				LanguageUtil.get(resourceBundle, "cited-work"), "cite", null,
 				_CKEDITOR_STYLE_INLINE));
-		jsonArray.put(
+		styleFormatsJSONArray.put(
 			getStyleFormatJSONObject(
 				LanguageUtil.get(resourceBundle, "computer-code"), "code", null,
 				_CKEDITOR_STYLE_INLINE));
-		jsonArray.put(
+		styleFormatsJSONArray.put(
 			getStyleFormatJSONObject(
 				LanguageUtil.get(resourceBundle, "info-message"), "div",
 				"portlet-msg-info", _CKEDITOR_STYLE_BLOCK));
-		jsonArray.put(
+		styleFormatsJSONArray.put(
 			getStyleFormatJSONObject(
 				LanguageUtil.get(resourceBundle, "alert-message"), "div",
 				"portlet-msg-alert", _CKEDITOR_STYLE_BLOCK));
-		jsonArray.put(
+		styleFormatsJSONArray.put(
 			getStyleFormatJSONObject(
 				LanguageUtil.get(resourceBundle, "error-message"), "div",
 				"portlet-msg-error", _CKEDITOR_STYLE_BLOCK));
 
-		return jsonArray;
+		return styleFormatsJSONArray;
 	}
 
 	protected JSONObject getStyleFormatsJSONObject(Locale locale) {
@@ -188,6 +188,9 @@ public class AlloyEditorConfigContributor extends BaseEditorConfigContributor {
 
 		JSONObject styleJSONObject = JSONFactoryUtil.createJSONObject();
 
+		styleJSONObject.put("element", element);
+		styleJSONObject.put("type", type);
+
 		if (Validator.isNotNull(cssClass)) {
 			JSONObject attributesJSONObject =
 				JSONFactoryUtil.createJSONObject();
@@ -196,9 +199,6 @@ public class AlloyEditorConfigContributor extends BaseEditorConfigContributor {
 
 			styleJSONObject.put("attributes", attributesJSONObject);
 		}
-
-		styleJSONObject.put("element", element);
-		styleJSONObject.put("type", type);
 
 		return styleJSONObject;
 	}
