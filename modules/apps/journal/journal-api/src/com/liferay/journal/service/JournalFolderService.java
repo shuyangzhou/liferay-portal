@@ -130,8 +130,8 @@ public interface JournalFolderService extends BaseService {
 	public int getFoldersCount(long groupId, long parentFolderId, int status);
 
 	/**
-	* @deprecated As of 7.0.0, replaced by {@link
-	#getSubfolderIds(java.util.List, long, long, boolean)}
+	* @deprecated As of 7.0.0, replaced by {@link #getSubfolderIds(java.util.List, long,
+	long, boolean)}
 	*/
 	@java.lang.Deprecated
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
