@@ -501,7 +501,7 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		properties.put(Constants.BUNDLE_VENDOR, ReleaseInfo.getVendor());
 		properties.put(Constants.BUNDLE_VERSION, ReleaseInfo.getVersion());
 
-		// Fileinstall. See LPS-56385.
+		// Fileinstall. See LPS-56385
 
 		properties.put(
 			FrameworkPropsKeys.FELIX_FILEINSTALL_DIR,
