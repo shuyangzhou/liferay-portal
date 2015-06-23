@@ -79,7 +79,8 @@ public class ResourceBlockLocalServiceTest {
 	@ExpectedLogs(
 		expectedLogs = {
 			@ExpectedLog(
-				dbType = DB.TYPE_MYSQL, expectedLog =
+				dbType = DB.TYPE_MYSQL,
+				expectedLog =
 					"Deadlock found when trying to get lock; try restarting " +
 						"transaction",
 				expectedType = ExpectedType.EXACT
@@ -94,7 +95,8 @@ public class ResourceBlockLocalServiceTest {
 				expectedType = ExpectedType.PREFIX
 			),
 			@ExpectedLog(
-				dbType = DB.TYPE_POSTGRESQL, expectedLog =
+				dbType = DB.TYPE_POSTGRESQL,
+				expectedLog =
 					"ERROR: duplicate key value violates unique constraint ",
 				expectedType = ExpectedType.PREFIX
 			)

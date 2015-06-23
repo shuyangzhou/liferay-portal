@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
-import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.portlet.PortletRequestModel;
 import com.liferay.portal.kernel.trash.TrashRenderer;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -51,6 +50,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import javax.portlet.ActionRequest;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
@@ -221,17 +221,16 @@ public class JournalArticleAssetRenderer
 			LiferayPortletResponse liferayPortletResponse)
 		throws Exception {
 
-		LiferayPortletURL liferayPortletURL =
-			liferayPortletResponse.createLiferayPortletURL(
-				getControlPanelPlid(liferayPortletRequest),
-				JournalPortletKeys.JOURNAL, PortletRequest.RESOURCE_PHASE);
+		PortletURL portletURL = liferayPortletResponse.createLiferayPortletURL(
+			getControlPanelPlid(liferayPortletRequest),
+			JournalPortletKeys.JOURNAL, PortletRequest.RESOURCE_PHASE);
 
-		liferayPortletURL.setParameter(
+		portletURL.setParameter(ActionRequest.ACTION_NAME, "exportArticle");
+		portletURL.setParameter(
 			"groupId", String.valueOf(_article.getGroupId()));
-		liferayPortletURL.setParameter("articleId", _article.getArticleId());
-		liferayPortletURL.setResourceID("exportArticle");
+		portletURL.setParameter("articleId", _article.getArticleId());
 
-		return liferayPortletURL;
+		return portletURL;
 	}
 
 	@Override

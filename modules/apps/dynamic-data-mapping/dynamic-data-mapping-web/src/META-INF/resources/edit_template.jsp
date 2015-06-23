@@ -235,7 +235,8 @@ boolean showCacheableInput = ParamUtil.getBoolean(request, "showCacheableInput")
 				<c:if test="<%= template != null %>">
 					<aui:input helpMessage="template-key-help" name="templateKey" type="resource" value="<%= template.getTemplateKey() %>" />
 
-					<portlet:resourceURL id="ddmGetTemplate" var="getTemplateURL">
+					<portlet:resourceURL var="getTemplateURL">
+						<portlet:param name="<%= ActionRequest.ACTION_NAME %>" value="ddmGetTemplate" />
 						<portlet:param name="templateId" value="<%= String.valueOf(templateId) %>" />
 					</portlet:resourceURL>
 
