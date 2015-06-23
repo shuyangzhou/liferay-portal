@@ -192,6 +192,9 @@ public class UpgradeSubscription extends UpgradeProcess {
 		_getGroupIdSQLPartsMap.put(
 			DLFolder.class.getName(), "DLFolder,groupId,folderId");
 		_getGroupIdSQLPartsMap.put(
+			"com.liferay.portlet.journal.model.JournalFolder",
+			"JournalFolder,groupId,folderId");
+		_getGroupIdSQLPartsMap.put(
 			Layout.class.getName(), "Layout,groupId,plid");
 		_getGroupIdSQLPartsMap.put(
 			MBCategory.class.getName(), "MBCategory,groupId,categoryId");
@@ -214,9 +217,6 @@ public class UpgradeSubscription extends UpgradeProcess {
 		_getGroupIdSQLPartsMap.put(
 			"com.liferay.portlet.dynamicdatamapping.model.DDMStructure",
 			"DDMStructure,groupId,structureId");
-		_getGroupIdSQLPartsMap.put(
-			"com.liferay.portlet.journal.model.JournalFolder",
-			"JournalFolder,groupId,folderId");
 		_getGroupIdSQLPartsMap.put(
 			"com.liferay.portlet.wiki.model.WikiNode",
 			"WikiNode,groupId,nodeId");
