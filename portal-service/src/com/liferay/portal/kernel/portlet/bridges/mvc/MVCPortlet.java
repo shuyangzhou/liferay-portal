@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.util.PortalUtil;
 
 import java.io.IOException;
+
 import java.util.List;
 
 import javax.portlet.ActionRequest;
@@ -255,7 +256,7 @@ public class MVCPortlet extends LiferayPortlet {
 				renderRequest, renderResponse);
 
 			if (Validator.isNotNull(mvcPath)) {
-				renderRequest.setAttribute(_MVC_PATH, mvcPath);
+				renderRequest.setAttribute("mvcPath", mvcPath);
 			}
 		}
 
@@ -427,7 +428,7 @@ public class MVCPortlet extends LiferayPortlet {
 		String mvcPath = portletRequest.getParameter("mvcPath");
 
 		if (mvcPath == null) {
-			mvcPath = (String)portletRequest.getAttribute(_MVC_PATH);
+			mvcPath = (String)portletRequest.getAttribute("mvcPath");
 		}
 
 		// Check deprecated parameter
@@ -548,9 +549,6 @@ public class MVCPortlet extends LiferayPortlet {
 
 		return null;
 	}
-
-	public static final String _MVC_PATH =
-		MVCPortlet.class.getName() + "#MVC_PATH";
 
 	private static final Log _log = LogFactoryUtil.getLog(MVCPortlet.class);
 
