@@ -21,8 +21,8 @@ import com.liferay.journal.model.JournalArticleResource;
 import com.liferay.journal.model.JournalContentSearch;
 import com.liferay.journal.model.JournalFolder;
 import com.liferay.journal.service.JournalArticleImageLocalServiceUtil;
-import com.liferay.journal.service.JournalArticleLocalService;
-import com.liferay.journal.service.JournalArticleResourceLocalService;
+import com.liferay.journal.service.JournalArticleLocalServiceUtil;
+import com.liferay.journal.service.JournalArticleResourceLocalServiceUtil;
 import com.liferay.journal.service.JournalContentSearchLocalServiceUtil;
 import com.liferay.journal.service.JournalFolderLocalServiceUtil;
 import com.liferay.journal.util.comparator.ArticleVersionComparator;
@@ -70,15 +70,11 @@ import java.util.regex.Pattern;
 
 import javax.portlet.PortletPreferences;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Alexander Chow
  * @author Shinn Lok
  */
-@Component(service = JournalServiceVerifyProcess.class)
-public class JournalServiceVerifyProcess extends VerifyProcess {
+public class VerifyJournal extends VerifyProcess {
 
 	public static final long DEFAULT_GROUP_ID = 14;
 
@@ -95,21 +91,6 @@ public class JournalServiceVerifyProcess extends VerifyProcess {
 		verifyPermissions();
 		verifyTree();
 		verifyURLTitle();
-	}
-
-	@Reference(unbind = "-")
-	protected void setJournalArticleLocalService(
-		JournalArticleLocalService journalArticleLocalService) {
-
-		_journalArticleLocalService = journalArticleLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setJournalArticleResourceLocalService(
-		JournalArticleResourceLocalService journalArticleResourceLocalService) {
-
-		_journalArticleResourceLocalService =
-			journalArticleResourceLocalService;
 	}
 
 	protected void updateContentSearch(long groupId, String portletId)
@@ -164,7 +145,7 @@ public class JournalServiceVerifyProcess extends VerifyProcess {
 
 	protected void updateCreateAndModifiedDates() throws Exception {
 		ActionableDynamicQuery actionableDynamicQuery =
-			_journalArticleResourceLocalService.getActionableDynamicQuery();
+			JournalArticleResourceLocalServiceUtil.getActionableDynamicQuery();
 
 		if (_log.isDebugEnabled()) {
 			long count = actionableDynamicQuery.performCount();
@@ -196,10 +177,11 @@ public class JournalServiceVerifyProcess extends VerifyProcess {
 	}
 
 	protected void updateCreateDate(JournalArticleResource articleResource) {
-		List<JournalArticle> articles = _journalArticleLocalService.getArticles(
-			articleResource.getGroupId(), articleResource.getArticleId(),
-			QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			new ArticleVersionComparator(true));
+		List<JournalArticle> articles =
+			JournalArticleLocalServiceUtil.getArticles(
+				articleResource.getGroupId(), articleResource.getArticleId(),
+				QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+				new ArticleVersionComparator(true));
 
 		if (articles.size() <= 1) {
 			return;
@@ -213,7 +195,7 @@ public class JournalServiceVerifyProcess extends VerifyProcess {
 			if (!createDate.equals(article.getCreateDate())) {
 				article.setCreateDate(createDate);
 
-				_journalArticleLocalService.updateJournalArticle(article);
+				JournalArticleLocalServiceUtil.updateJournalArticle(article);
 			}
 		}
 	}
@@ -256,7 +238,7 @@ public class JournalServiceVerifyProcess extends VerifyProcess {
 
 		article.setContent(document.asXML());
 
-		_journalArticleLocalService.updateJournalArticle(article);
+		JournalArticleLocalServiceUtil.updateJournalArticle(article);
 	}
 
 	protected void updateDynamicElements(List<Element> dynamicElements)
@@ -336,9 +318,10 @@ public class JournalServiceVerifyProcess extends VerifyProcess {
 	}
 
 	protected void updateModifiedDate(JournalArticleResource articleResource) {
-		JournalArticle article = _journalArticleLocalService.fetchLatestArticle(
-			articleResource.getResourcePrimKey(),
-			WorkflowConstants.STATUS_APPROVED, true);
+		JournalArticle article =
+			JournalArticleLocalServiceUtil.fetchLatestArticle(
+				articleResource.getResourcePrimKey(),
+				WorkflowConstants.STATUS_APPROVED, true);
 
 		if (article == null) {
 			return;
@@ -359,12 +342,12 @@ public class JournalServiceVerifyProcess extends VerifyProcess {
 
 		article.setModifiedDate(assetEntry.getModifiedDate());
 
-		_journalArticleLocalService.updateJournalArticle(article);
+		JournalArticleLocalServiceUtil.updateJournalArticle(article);
 	}
 
 	protected void updateResourcePrimKey() throws PortalException {
 		ActionableDynamicQuery actionableDynamicQuery =
-			_journalArticleLocalService.getActionableDynamicQuery();
+			JournalArticleLocalServiceUtil.getActionableDynamicQuery();
 
 		actionableDynamicQuery.setAddCriteriaMethod(
 			new ActionableDynamicQuery.AddCriteriaMethod() {
@@ -401,7 +384,7 @@ public class JournalServiceVerifyProcess extends VerifyProcess {
 					String articleId = article.getArticleId();
 					double version = article.getVersion();
 
-					_journalArticleLocalService.checkArticleResourcePrimKey(
+					JournalArticleLocalServiceUtil.checkArticleResourcePrimKey(
 						groupId, articleId, version);
 				}
 
@@ -421,7 +404,7 @@ public class JournalServiceVerifyProcess extends VerifyProcess {
 			return;
 		}
 
-		normalizedURLTitle = _journalArticleLocalService.getUniqueUrlTitle(
+		normalizedURLTitle = JournalArticleLocalServiceUtil.getUniqueUrlTitle(
 			groupId, articleId, normalizedURLTitle);
 
 		Connection con = null;
@@ -445,7 +428,7 @@ public class JournalServiceVerifyProcess extends VerifyProcess {
 
 	protected void verifyArticleAssets() throws Exception {
 		List<JournalArticle> journalArticles =
-			_journalArticleLocalService.getNoAssetArticles();
+			JournalArticleLocalServiceUtil.getNoAssetArticles();
 
 		if (_log.isDebugEnabled()) {
 			_log.debug(
@@ -455,7 +438,7 @@ public class JournalServiceVerifyProcess extends VerifyProcess {
 
 		for (JournalArticle journalArticle : journalArticles) {
 			try {
-				_journalArticleLocalService.updateAsset(
+				JournalArticleLocalServiceUtil.updateAsset(
 					journalArticle.getUserId(), journalArticle, null, null,
 					null);
 			}
@@ -469,7 +452,7 @@ public class JournalServiceVerifyProcess extends VerifyProcess {
 		}
 
 		ActionableDynamicQuery actionableDynamicQuery =
-			_journalArticleLocalService.getActionableDynamicQuery();
+			JournalArticleLocalServiceUtil.getActionableDynamicQuery();
 
 		actionableDynamicQuery.setAddCriteriaMethod(
 			new ActionableDynamicQuery.AddCriteriaMethod() {
@@ -549,8 +532,8 @@ public class JournalServiceVerifyProcess extends VerifyProcess {
 			while (rs.next()) {
 				long id = rs.getLong("id_");
 
-				JournalArticle article = _journalArticleLocalService.getArticle(
-					id);
+				JournalArticle article =
+					JournalArticleLocalServiceUtil.getArticle(id);
 
 				try {
 					Document document = SAXReaderUtil.read(
@@ -564,7 +547,8 @@ public class JournalServiceVerifyProcess extends VerifyProcess {
 
 					article.setContent(document.asXML());
 
-					_journalArticleLocalService.updateJournalArticle(article);
+					JournalArticleLocalServiceUtil.updateJournalArticle(
+						article);
 				}
 				catch (Exception e) {
 					_log.error(
@@ -581,7 +565,7 @@ public class JournalServiceVerifyProcess extends VerifyProcess {
 
 	protected void verifyArticleStructures() throws PortalException {
 		ActionableDynamicQuery actionableDynamicQuery =
-			_journalArticleLocalService.getActionableDynamicQuery();
+			JournalArticleLocalServiceUtil.getActionableDynamicQuery();
 
 		if (_log.isDebugEnabled()) {
 			long count = actionableDynamicQuery.performCount();
@@ -599,7 +583,7 @@ public class JournalServiceVerifyProcess extends VerifyProcess {
 					JournalArticle article = (JournalArticle)object;
 
 					try {
-						_journalArticleLocalService.checkStructure(
+						JournalArticleLocalServiceUtil.checkStructure(
 							article.getGroupId(), article.getArticleId(),
 							article.getVersion());
 					}
@@ -613,7 +597,7 @@ public class JournalServiceVerifyProcess extends VerifyProcess {
 						article.setDDMStructureKey(StringPool.BLANK);
 						article.setDDMTemplateKey(StringPool.BLANK);
 
-						_journalArticleLocalService.updateJournalArticle(
+						JournalArticleLocalServiceUtil.updateJournalArticle(
 							article);
 					}
 					catch (Exception e) {
@@ -711,20 +695,21 @@ public class JournalServiceVerifyProcess extends VerifyProcess {
 
 		boolean checkNewLine = false;
 
-		List<JournalArticle> articles = _journalArticleLocalService.getArticles(
-			DEFAULT_GROUP_ID, 0, NUM_OF_ARTICLES);
+		List<JournalArticle> articles =
+			JournalArticleLocalServiceUtil.getArticles(
+				DEFAULT_GROUP_ID, 0, NUM_OF_ARTICLES);
 
 		for (JournalArticle article : articles) {
 			String content = article.getContent();
 
 			if ((content != null) && content.contains("\\n")) {
-				articles = _journalArticleLocalService.getArticles(
+				articles = JournalArticleLocalServiceUtil.getArticles(
 					DEFAULT_GROUP_ID);
 
 				for (int j = 0; j < articles.size(); j++) {
 					article = articles.get(j);
 
-					_journalArticleLocalService.checkNewLine(
+					JournalArticleLocalServiceUtil.checkNewLine(
 						article.getGroupId(), article.getArticleId(),
 						article.getVersion());
 				}
@@ -753,7 +738,7 @@ public class JournalServiceVerifyProcess extends VerifyProcess {
 
 	protected void verifyPermissions() throws PortalException {
 		List<JournalArticle> articles =
-			_journalArticleLocalService.getNoPermissionArticles();
+			JournalArticleLocalServiceUtil.getNoPermissionArticles();
 
 		for (JournalArticle article : articles) {
 			ResourceLocalServiceUtil.addResources(
@@ -798,14 +783,9 @@ public class JournalServiceVerifyProcess extends VerifyProcess {
 		}
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		JournalServiceVerifyProcess.class);
+	private static final Log _log = LogFactoryUtil.getLog(VerifyJournal.class);
 
 	private static final Pattern _friendlyURLPattern = Pattern.compile(
 		"[^a-z0-9_-]");
-
-	private JournalArticleLocalService _journalArticleLocalService;
-	private JournalArticleResourceLocalService
-		_journalArticleResourceLocalService;
 
 }
