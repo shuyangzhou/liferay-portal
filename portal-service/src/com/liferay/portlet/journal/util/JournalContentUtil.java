@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.journal.util;
+package com.liferay.portlet.journal.util;
 
 import com.liferay.portal.kernel.portlet.PortletRequestModel;
 import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;

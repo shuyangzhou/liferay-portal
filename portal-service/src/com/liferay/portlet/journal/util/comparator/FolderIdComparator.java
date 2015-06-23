@@ -12,37 +12,43 @@
  * details.
  */
 
-package com.liferay.journal.util.comparator;
+package com.liferay.portlet.journal.util.comparator;
 
-import com.liferay.journal.model.JournalArticle;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portlet.journal.model.JournalFolder;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author Shinn Lok
  */
-public class ArticleTitleComparator extends OrderByComparator<JournalArticle> {
+public class FolderIdComparator extends OrderByComparator<JournalFolder> {
 
-	public static final String ORDER_BY_ASC = "title ASC";
+	public static final String ORDER_BY_ASC = "JournalFolder.folderId ASC";
 
-	public static final String ORDER_BY_DESC = "title DESC";
+	public static final String ORDER_BY_DESC = "JournalFolder.folderId DESC";
 
-	public static final String[] ORDER_BY_FIELDS = {"title"};
+	public static final String[] ORDER_BY_FIELDS = {"folderId"};
 
-	public ArticleTitleComparator() {
+	public FolderIdComparator() {
 		this(false);
 	}
 
-	public ArticleTitleComparator(boolean ascending) {
+	public FolderIdComparator(boolean ascending) {
 		_ascending = ascending;
 	}
 
 	@Override
-	public int compare(JournalArticle article1, JournalArticle article2) {
-		String title1 = StringUtil.toLowerCase(article1.getTitle());
-		String title2 = StringUtil.toLowerCase(article2.getTitle());
+	public int compare(JournalFolder folder1, JournalFolder folder2) {
+		long folderId1 = folder1.getFolderId();
+		long folderId2 = folder2.getFolderId();
 
-		int value = title1.compareTo(title2);
+		int value = 0;
+
+		if (folderId1 < folderId2) {
+			value = -1;
+		}
+		else if (folderId1 > folderId2) {
+			value = 1;
+		}
 
 		if (_ascending) {
 			return value;

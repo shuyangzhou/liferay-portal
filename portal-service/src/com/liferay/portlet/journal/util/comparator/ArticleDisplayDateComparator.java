@@ -12,36 +12,45 @@
  * details.
  */
 
-package com.liferay.journal.util.comparator;
+package com.liferay.portlet.journal.util.comparator;
 
-import com.liferay.journal.model.JournalArticle;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portlet.journal.model.JournalArticle;
 
 /**
  * @author Brian Wing Shun Chan
  */
-public class ArticleCreateDateComparator
+public class ArticleDisplayDateComparator
 	extends OrderByComparator<JournalArticle> {
 
-	public static final String ORDER_BY_ASC = "createDate ASC";
+	public static final String ORDER_BY_ASC = "displayDate ASC, version ASC";
 
-	public static final String ORDER_BY_DESC = "createDate DESC";
+	public static final String ORDER_BY_DESC = "displayDate DESC, version DESC";
 
-	public static final String[] ORDER_BY_FIELDS = {"createDate"};
+	public static final String[] ORDER_BY_FIELDS = {"displayDate", "version"};
 
-	public ArticleCreateDateComparator() {
+	public ArticleDisplayDateComparator() {
 		this(false);
 	}
 
-	public ArticleCreateDateComparator(boolean ascending) {
+	public ArticleDisplayDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}
 
 	@Override
 	public int compare(JournalArticle article1, JournalArticle article2) {
 		int value = DateUtil.compareTo(
-			article1.getCreateDate(), article2.getCreateDate());
+			article1.getDisplayDate(), article2.getDisplayDate());
+
+		if (value == 0) {
+			if (article1.getVersion() < article2.getVersion()) {
+				value = -1;
+			}
+			else if (article1.getVersion() > article2.getVersion()) {
+				value = 1;
+			}
+		}
 
 		if (_ascending) {
 			return value;
