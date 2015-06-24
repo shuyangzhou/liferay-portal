@@ -14,6 +14,7 @@ Export-Package:\
 	com.liferay.journal.social,\
 	com.liferay.journal.transformer,\
 	com.liferay.journal.trash,\
+	com.liferay.journal.upgrade,\
 	com.liferay.journal.util.impl,\
 	com.liferay.journal.verify,\
 	com.liferay.journal.workflow
