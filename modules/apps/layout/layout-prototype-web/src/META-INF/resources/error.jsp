@@ -19,5 +19,4 @@
 <liferay-ui:error-header />
 
 <liferay-ui:error exception="<%= NoSuchLayoutPrototypeException.class %>" message="the-page-template-could-not-be-found" />
-
-<liferay-ui:error-principal />
+<liferay-ui:error exception="<%= PrincipalException.class %>" message="you-do-not-have-the-required-permissions" />
