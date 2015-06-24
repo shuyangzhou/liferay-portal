@@ -145,7 +145,8 @@ public class SubscriptionSender implements Serializable {
 					}
 					catch (Exception e) {
 						_log.error(
-							"Unable to process subscription: " + subscription);
+							"Unable to process subscription: " + subscription,
+							e);
 					}
 				}
 			}
