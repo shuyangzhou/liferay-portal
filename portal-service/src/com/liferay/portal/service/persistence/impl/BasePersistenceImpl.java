@@ -423,8 +423,8 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 		String[] orderByFields = orderByComparator.getOrderByFields();
 
 		for (int i = 0; i < orderByFields.length; i++) {
-			query.append(entityAlias);
-			query.append(getColumnName(orderByFields[i], sqlQuery));
+			query.append(
+				getColumnName(entityAlias, orderByFields[i], sqlQuery));
 
 			if ((i + 1) < orderByFields.length) {
 				if (orderByComparator.isAscending(orderByFields[i])) {
@@ -451,7 +451,9 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 		return clazz.getClassLoader();
 	}
 
-	protected String getColumnName(String fieldName, boolean sqlQuery) {
+	protected String getColumnName(
+		String entityAlias, String fieldName, boolean sqlQuery) {
+
 		return fieldName;
 	}
 
@@ -490,6 +492,8 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 	protected T updateImpl(T model, boolean merge) {
 		return updateImpl(model);
 	}
+
+	protected static final String CAST_TEXT_OPEN = "CAST_TEXT(";
 
 	protected static final Object[] FINDER_ARGS_EMPTY = new Object[0];
 

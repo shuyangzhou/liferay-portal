@@ -83,6 +83,7 @@ import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.sql.Types;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -1419,16 +1420,34 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 		</#if>
 	</#list>
 
-	<#if entity.badNamedColumnsList?size != 0>
-		@Override
-		protected String getColumnName(String fieldName, boolean sqlQuery) {
-			if (sqlQuery && _badColumnNames.contains(fieldName)) {
-				fieldName = fieldName.concat(StringPool.UNDERLINE);
-			}
+	@Override
+	protected String getColumnName(String entityAlias, String fieldName, boolean sqlQuery) {
+		String columnName = fieldName;
 
-			return fieldName;
+		<#if entity.badNamedColumnsList?size != 0>
+			if (_badColumnNames.contains(fieldName)) {
+				columnName = fieldName.concat(StringPool.UNDERLINE);
+			}
+		</#if>
+
+		if (sqlQuery) {
+			fieldName = columnName;
 		}
-	</#if>
+
+		fieldName = entityAlias.concat(fieldName);
+
+		Integer columnType = ${entity.name}ModelImpl.TABLE_COLUMNS_MAP.get(columnName);
+
+		if (columnType == null) {
+			throw new IllegalArgumentException("Unknown column name " + columnName + " for table " + ${entity.name}ModelImpl.TABLE_NAME);
+		}
+
+		if (columnType == Types.CLOB) {
+			fieldName = CAST_TEXT_OPEN.concat(fieldName).concat(StringPool.CLOSE_PARENTHESIS);
+		}
+
+		return fieldName;
+	}
 
 	<#if entity.isHierarchicalTree()>
 		@Override
