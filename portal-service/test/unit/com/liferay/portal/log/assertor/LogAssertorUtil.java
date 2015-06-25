@@ -41,6 +41,67 @@ import org.xml.sax.InputSource;
  */
 public class LogAssertorUtil {
 
+	protected static void scanJdkXMLLogFile(Path path) throws IOException {
+		String content = StringUtil.replace(
+			new String(Files.readAllBytes(path), StringPool.UTF8),
+			"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"" +
+				"?>\n<!DOCTYPE log SYSTEM \"logger.dtd\">\n<log>\n", "");
+
+		content = StringUtil.replace(content, "</log>\n", "");
+
+		content = "<jdk>" + content + "</jdk>";
+
+		try {
+			Document document = _documentBuilder.parse(
+				new InputSource(new UnsyncStringReader(content)));
+
+			NodeList nodeList = document.getElementsByTagName("record");
+
+			for (int i = 0; i < nodeList.getLength(); i++) {
+				Node node = nodeList.item(i);
+
+				NodeList childNodelist = node.getChildNodes();
+
+				String level = StringPool.BLANK;
+				String message = StringPool.BLANK;
+
+				for (int j = 0; j < childNodelist.getLength(); j++) {
+					Node childNode = childNodelist.item(j);
+
+					String childNodeName = childNode.getNodeName();
+
+					if (childNodeName.equals("level")) {
+						level = childNode.getTextContent();
+					}
+					else if (childNodeName.equals("message")) {
+						message = childNode.getTextContent();
+					}
+				}
+
+				if (level.equals("SEVERE") || level.equals("WARNING")) {
+					StringBundler sb = new StringBundler(4);
+
+					sb.append(
+						"\nPortal log assert failure, see above log for " +
+							"more information: \n");
+					sb.append(level);
+					sb.append(" - ");
+					sb.append(message);
+
+					System.out.println(
+						"Detected error, for more details refer to file: " +
+							StringUtil.replace(
+								path.toString(), ".xml", ".log"));
+
+					Assert.fail(sb.toString());
+				}
+			}
+		}
+		catch (Exception e) {
+			throw new IOException(e);
+		}
+	}
+
 	protected static void scanLog4jXmlLogFile(Path path) throws IOException {
 		String content = StringUtil.replace(
 			new String(Files.readAllBytes(path), StringPool.UTF8), "log4j:",
