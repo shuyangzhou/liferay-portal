@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.model.ResourceConstants;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.exportimport.lar.ExportImportThreadLocal;
@@ -101,7 +102,7 @@ public class PermissionCacheUtil {
 	}
 
 	public static void clearResourcePermissionCache(
-		String name, String primKey) {
+		int scope, String name, String primKey) {
 
 		if (ExportImportThreadLocal.isImportInProcess() ||
 			!PermissionThreadLocal.isFlushResourcePermissionEnabled(
@@ -110,8 +111,13 @@ public class PermissionCacheUtil {
 			return;
 		}
 
-		_permissionPortalCacheIndexer.removeIndexedCacheKeys(
-			PermissionKey.getIndex(name, primKey));
+		if (scope == ResourceConstants.SCOPE_INDIVIDUAL) {
+			_permissionPortalCacheIndexer.removeIndexedCacheKeys(
+				PermissionKey.getIndex(name, primKey));
+		}
+		else {
+			_permissionPortalCache.removeAll();
+		}
 	}
 
 	public static PermissionCheckerBag getBag(long userId, long groupId) {
