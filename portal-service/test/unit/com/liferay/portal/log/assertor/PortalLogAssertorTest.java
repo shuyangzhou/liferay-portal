@@ -14,8 +14,6 @@
 
 package com.liferay.portal.log.assertor;
 
-import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.IOException;
@@ -27,18 +25,7 @@ import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.junit.Assert;
 import org.junit.Test;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
-import org.xml.sax.InputSource;
 
 /**
  * @author Shuyang Zhou
@@ -65,81 +52,13 @@ public class PortalLogAssertorTest {
 					String pathString = StringUtil.toLowerCase(path.toString());
 
 					if (pathString.endsWith(".xml")) {
-						scanXmlLogFile(path);
+						LogAssertorUtil.scanLog4jXmlLogFile(path);
 					}
 
 					return FileVisitResult.CONTINUE;
 				}
 
 			});
-	}
-
-	protected void scanXmlLogFile(Path path) throws IOException {
-		String content = StringUtil.replace(
-			new String(Files.readAllBytes(path), StringPool.UTF8), "log4j:",
-			"");
-
-		content = "<log4j>" + content + "</log4j>";
-
-		DocumentBuilderFactory documentBuilderFactory =
-			DocumentBuilderFactory.newInstance();
-
-		try {
-			DocumentBuilder documentBuilder =
-				documentBuilderFactory.newDocumentBuilder();
-
-			Document document = documentBuilder.parse(
-				new InputSource(new UnsyncStringReader(content)));
-
-			NodeList nodelist = document.getElementsByTagName("event");
-
-			for (int i = 0; i < nodelist.getLength(); i++) {
-				Node node = nodelist.item(i);
-
-				NamedNodeMap namedNodeMap = node.getAttributes();
-
-				Node levelNode = namedNodeMap.getNamedItem("level");
-
-				String levelString = levelNode.getNodeValue();
-
-				if (levelString.equals("ERROR") ||
-					levelString.equals("FATAL") || levelString.equals("WARN")) {
-
-					NodeList childNodelist = node.getChildNodes();
-
-					String message =
-						"\nPortal log assert failure, see above log for more " +
-							"information: \n";
-
-					for (int j = 0; j < childNodelist.getLength(); j++) {
-						Node childNode = childNodelist.item(j);
-
-						String nodeName = childNode.getNodeName();
-
-						if (nodeName.equals("message")) {
-							message += childNode.getTextContent();
-						}
-						else if (nodeName.equals("throwable")) {
-							message += "\n" + childNode.getTextContent();
-						}
-					}
-
-					System.out.println(
-						"Detected error, dumpping full log for reference:");
-
-					Files.copy(
-						Paths.get(
-							StringUtil.replace(
-								path.toString(), ".xml", ".log")),
-						System.out);
-
-					Assert.fail(message);
-				}
-			}
-		}
-		catch (Exception e) {
-			throw new IOException(e);
-		}
 	}
 
 }
