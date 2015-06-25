@@ -1421,8 +1421,12 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 
 	<#if entity.badNamedColumnsList?size != 0>
 		@Override
-	    protected Set<String> getBadColumnNames() {
-			return _badColumnNames;
+		protected String getColumnName(String fieldName, boolean sqlQuery) {
+			if (sqlQuery && _badColumnNames.contains(fieldName)) {
+				fieldName = fieldName.concat(StringPool.UNDERLINE);
+			}
+
+			return fieldName;
 		}
 	</#if>
 

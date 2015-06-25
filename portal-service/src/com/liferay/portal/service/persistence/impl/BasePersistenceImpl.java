@@ -31,7 +31,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.NullSafeStringComparator;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.ModelListener;
 import com.liferay.portal.model.ModelListenerRegistrationUtil;
@@ -44,7 +43,6 @@ import java.io.Serializable;
 
 import java.sql.Connection;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -426,15 +424,7 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 
 		for (int i = 0; i < orderByFields.length; i++) {
 			query.append(entityAlias);
-			query.append(orderByFields[i]);
-
-			if (sqlQuery) {
-				Set<String> badColumnNames = getBadColumnNames();
-
-				if (badColumnNames.contains(orderByFields[i])) {
-					query.append(StringPool.UNDERLINE);
-				}
-			}
+			query.append(getColumnName(orderByFields[i], sqlQuery));
 
 			if ((i + 1) < orderByFields.length) {
 				if (orderByComparator.isAscending(orderByFields[i])) {
@@ -455,14 +445,14 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 		}
 	}
 
-	protected Set<String> getBadColumnNames() {
-		return Collections.emptySet();
-	}
-
 	protected ClassLoader getClassLoader() {
 		Class<?> clazz = getClass();
 
 		return clazz.getClassLoader();
+	}
+
+	protected String getColumnName(String fieldName, boolean sqlQuery) {
+		return fieldName;
 	}
 
 	/**
