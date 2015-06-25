@@ -28,8 +28,10 @@ import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * @author Hugo Huijser
@@ -89,8 +91,13 @@ public class SourceFormatter {
 
 			sourceFormatter.format();
 		}
-		catch (Exception e) {
-			ArgumentsUtil.processMainException(arguments, e);
+		catch (Throwable t) {
+			if (t instanceof Exception) {
+				ArgumentsUtil.processMainException(arguments, (Exception)t);
+			}
+			else {
+				t.printStackTrace();
+			}
 		}
 	}
 
@@ -98,7 +105,7 @@ public class SourceFormatter {
 		_sourceFormatterArgs = sourceFormatterArgs;
 	}
 
-	public void format() throws Exception {
+	public void format() throws Throwable {
 		List<SourceProcessor> sourceProcessors = new ArrayList<>();
 
 		sourceProcessors.add(new CSSSourceProcessor());
@@ -115,30 +122,51 @@ public class SourceFormatter {
 		ExecutorService executorService = Executors.newFixedThreadPool(
 			sourceProcessors.size());
 
+		List<Future<Void>> futures = new ArrayList<>(sourceProcessors.size());
+
 		for (final SourceProcessor sourceProcessor : sourceProcessors) {
-			executorService.submit(
+			Future<Void> future = executorService.submit(
 				new Callable<Void>() {
 
 					@Override
 					public Void call() throws Exception {
-						try {
-							_runSourceProcessor(sourceProcessor);
-						}
-						catch (Throwable t) {
-							t.printStackTrace();
-						}
+						_runSourceProcessor(sourceProcessor);
 
 						return null;
 					}
 
 				}
 			);
+
+			futures.add(future);
+		}
+
+		Throwable t1 = null;
+
+		for (Future<Void> future : futures) {
+			try {
+				future.get();
+			}
+			catch (ExecutionException ee) {
+				Throwable t2 = ee.getCause();
+
+				if (t1 == null) {
+					t1 = t2;
+				}
+				else {
+					t1.addSuppressed(t2);
+				}
+			}
 		}
 
 		executorService.shutdown();
 
 		while (!executorService.isTerminated()) {
 			Thread.sleep(20);
+		}
+
+		if (t1 != null) {
+			throw t1;
 		}
 
 		if (_sourceFormatterArgs.isThrowException()) {

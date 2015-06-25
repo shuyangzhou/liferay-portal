@@ -62,8 +62,8 @@ public class SourceFormatterTask extends Task {
 				SourceFormatterArgs.OUTPUT_KEY_MODIFIED_FILES,
 				modifiedFileNames);
 		}
-		catch (Exception e) {
-			throw new BuildException(e);
+		catch (Throwable t) {
+			throw new BuildException(t);
 		}
 	}
 
