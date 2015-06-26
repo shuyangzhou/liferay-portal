@@ -14,10 +14,16 @@
 
 package com.liferay.portal.kernel.log;
 
+import com.liferay.portal.kernel.util.StringPool;
+
+import java.io.IOException;
 import java.io.InputStream;
 
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 /**
  * @author Brian Wing Shun Chan
@@ -43,6 +49,27 @@ public class Jdk14LogFactoryImpl implements LogFactory {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+		}
+
+		Logger logger = Logger.getLogger(StringPool.BLANK);
+
+		try {
+			FileHandler xmlFileHandler = new FileHandler(
+				System.getProperty("user.dir") + "/unit-test-jdk-logs.xml",
+				true);
+
+			logger.addHandler(xmlFileHandler);
+
+			FileHandler simpleFileHandler = new FileHandler(
+				System.getProperty("user.dir") + "/unit-test-jdk-logs.log",
+				true);
+
+			simpleFileHandler.setFormatter(new SimpleFormatter());
+
+			logger.addHandler(simpleFileHandler);
+		}
+		catch (IOException ioe) {
+			logger.log(Level.SEVERE, "FileHandler addition failed", ioe);
 		}
 	}
 

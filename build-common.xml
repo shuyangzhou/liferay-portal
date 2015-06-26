@@ -895,7 +895,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 				</else>
 			</if>
 
-			<junit dir="${project.dir}" fork="on" forkmode="@{forkmode}" haltonfailure="${junit.halt.on.failure}" jvm="${junit.jvm}" outputtoformatters="false" printsummary="on" showoutput="true">
+			<junit dir="${project.dir}" fork="on" forkmode="@{forkmode}" haltonfailure="${junit.halt.on.failure}" jvm="${junit.jvm}" outputtoformatters="false" printsummary="off" showoutput="true">
 				<sysproperty key="junit.aspectj.dump" file="woven-classes" />
 				<sysproperty key="junit.code.coverage" value="${junit.code.coverage}" />
 				<sysproperty key="junit.debug" value="${junit.debug}" />

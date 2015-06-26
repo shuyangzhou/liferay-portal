@@ -14,23 +14,18 @@
 
 package com.liferay.portal.log.assertor;
 
-import com.liferay.portal.kernel.util.StringUtil;
-
 import java.io.IOException;
 
-import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
 
 import org.junit.Test;
 
 /**
- * @author Shuyang Zhou
+ * @author William Newbury
  */
-public class PortalLogAssertorTest {
+public class UnitTestLogAssertorTest {
 
 	@Test
 	public void testScanXmlLog() throws IOException {
@@ -40,25 +35,19 @@ public class PortalLogAssertorTest {
 			return;
 		}
 
-		Files.walkFileTree(
-			Paths.get(System.getProperty("liferay.log.dir")),
-			new SimpleFileVisitor<Path>() {
+		Path log4jLogsPath = Paths.get(
+			System.getProperty("user.dir") + "/unit-test-log4j-logs.xml");
 
-				@Override
-				public FileVisitResult visitFile(
-						Path path, BasicFileAttributes basicFileAttributes)
-					throws IOException {
+		if (Files.exists(log4jLogsPath)) {
+			LogAssertorUtil.scanLog4jXmlLogFile(log4jLogsPath);
+		}
 
-					String pathString = StringUtil.toLowerCase(path.toString());
+		Path jdkLogsPath = Paths.get(
+			System.getProperty("user.dir") + "/unit-test-jdk-logs.xml");
 
-					if (pathString.endsWith(".xml")) {
-						LogAssertorUtil.scanLog4jXmlLogFile(path);
-					}
-
-					return FileVisitResult.CONTINUE;
-				}
-
-			});
+		if (Files.exists(jdkLogsPath)) {
+			LogAssertorUtil.scanJdkXMLLogFile(jdkLogsPath);
+		}
 	}
 
 }

@@ -37,11 +37,14 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.log4j.Appender;
+import org.apache.log4j.FileAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.apache.log4j.SimpleLayout;
 import org.apache.log4j.WriterAppender;
 import org.apache.log4j.xml.DOMConfigurator;
+import org.apache.log4j.xml.XMLLayout;
 
 import org.dom4j.Document;
 import org.dom4j.Element;
@@ -134,6 +137,28 @@ public class Log4JUtil {
 		}
 		catch (Exception e) {
 			_logger.error(e, e);
+		}
+
+		org.apache.log4j.Logger logger =
+			org.apache.log4j.Logger.getRootLogger();
+
+		try {
+			FileAppender xmlFileAppender = new FileAppender(
+				new XMLLayout(),
+				System.getProperty("user.dir") + "/unit-test-log4j-logs.xml",
+				true);
+
+			logger.addAppender(xmlFileAppender);
+
+			FileAppender simpleFileAppender = new FileAppender(
+				new SimpleLayout(),
+				System.getProperty("user.dir") + "/unit-test-log4j-logs.log",
+				true);
+
+			logger.addAppender(simpleFileAppender);
+		}
+		catch (IOException ioe) {
+			logger.log(Level.ERROR, "FileAppender addition failed", ioe);
 		}
 	}
 
