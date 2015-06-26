@@ -100,7 +100,7 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("servletContextNames", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("taskExecutorClassName", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("taskContextMap", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("taskContextMap", Types.CLOB);
 		TABLE_COLUMNS_MAP.put("completed", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("completionDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
