@@ -72,9 +72,8 @@ public class PermissionCacheUtil {
 		for (long userId : userIds) {
 			_userPermissionCheckerBagPortalCache.remove(userId);
 
-			_userRolePortalCacheIndexer.removeIndexedCacheKeys(userId);
-			_permissionCheckerBagPortalCacheIndexer.removeIndexedCacheKeys(
-				userId);
+			_userRolePortalCacheIndexer.removeKeys(userId);
+			_permissionCheckerBagPortalCacheIndexer.removeKeys(userId);
 		}
 
 		_permissionPortalCache.removeAll();
@@ -91,7 +90,7 @@ public class PermissionCacheUtil {
 			return;
 		}
 
-		_resourceBlockIdsBagCacheIndexer.removeIndexedCacheKeys(
+		_resourceBlockIdsBagCacheIndexer.removeKeys(
 			ResourceBlockIdsBagKeyIndexAccessor.getIndex(
 				companyId, groupId, name));
 	}
@@ -113,7 +112,7 @@ public class PermissionCacheUtil {
 			return;
 		}
 
-		_permissionPortalCacheIndexer.removeIndexedCacheKeys(
+		_permissionPortalCacheIndexer.removeKeys(
 			PermissionKeyIndexAccessor.getIndex(name, primKey));
 	}
 

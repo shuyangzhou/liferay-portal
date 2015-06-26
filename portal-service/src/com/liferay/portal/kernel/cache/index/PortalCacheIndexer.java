@@ -45,64 +45,61 @@ public class PortalCacheIndexer<I, K extends Serializable, V> {
 		}
 	}
 
-	public Set<K> getIndexedCacheKeys(I index) {
-		Set<K> indexedCacheKeys = _indexedCacheKeys.get(index);
+	public Set<K> getKeys(I index) {
+		Set<K> keys = _indexedCacheKeys.get(index);
 
-		if (indexedCacheKeys == null) {
+		if (keys == null) {
 			return Collections.emptySet();
 		}
 
-		return new HashSet<>(indexedCacheKeys);
+		return new HashSet<>(keys);
 	}
 
-	public void removeIndexedCacheKeys(I index) {
-		Set<K> indexedCacheKeys = _indexedCacheKeys.remove(index);
+	public void removeKeys(I index) {
+		Set<K> keys = _indexedCacheKeys.remove(index);
 
-		if (indexedCacheKeys == null) {
+		if (keys == null) {
 			return;
 		}
 
-		for (K indexedCacheKey : indexedCacheKeys) {
-			_portalCache.remove(indexedCacheKey);
+		for (K key : keys) {
+			_portalCache.remove(key);
 		}
 	}
 
-	private void _addIndexedCacheKey(K indexedCacheKey) {
-		I index = _indexAccessor.getIndex(indexedCacheKey);
+	private void _addIndexedCacheKey(K key) {
+		I index = _indexAccessor.getIndex(key);
 
-		Set<K> indexedCacheKeys = _indexedCacheKeys.get(index);
+		Set<K> keys = _indexedCacheKeys.get(index);
 
-		if (indexedCacheKeys == null) {
-			Set<K> newIndexedCacheKeys = new ConcurrentHashSet<>();
+		if (keys == null) {
+			Set<K> newKeys = new ConcurrentHashSet<>();
 
-			newIndexedCacheKeys.add(indexedCacheKey);
+			newKeys.add(key);
 
-			indexedCacheKeys = _indexedCacheKeys.putIfAbsent(
-				index, newIndexedCacheKeys);
+			keys = _indexedCacheKeys.putIfAbsent(index, newKeys);
 
-			if (indexedCacheKeys == null) {
+			if (keys == null) {
 				return;
 			}
 		}
 
-		indexedCacheKeys.add(indexedCacheKey);
+		keys.add(key);
 	}
 
-	private void _removeIndexedCacheKey(K indexedCacheKey) {
-		I index = _indexAccessor.getIndex(indexedCacheKey);
+	private void _removeIndexedCacheKey(K key) {
+		I index = _indexAccessor.getIndex(key);
 
-		Set<K> indexedCacheKeys = _indexedCacheKeys.get(index);
+		Set<K> keys = _indexedCacheKeys.get(index);
 
-		if (indexedCacheKeys == null) {
+		if (keys == null) {
 			return;
 		}
 
-		indexedCacheKeys.remove(indexedCacheKey);
+		keys.remove(key);
 
-		if (indexedCacheKeys.isEmpty() &&
-			_indexedCacheKeys.remove(index, indexedCacheKeys)) {
-
-			for (K victimIndexedCacheKey : indexedCacheKeys) {
+		if (keys.isEmpty() && _indexedCacheKeys.remove(index, keys)) {
+			for (K victimIndexedCacheKey : keys) {
 				_addIndexedCacheKey(victimIndexedCacheKey);
 			}
 		}
@@ -122,40 +119,35 @@ public class PortalCacheIndexer<I, K extends Serializable, V> {
 
 		@Override
 		public void notifyEntryEvicted(
-			PortalCache<K, V> portalCache, K indexedCacheKey, V value,
-			int timeToLive) {
+			PortalCache<K, V> portalCache, K key, V value, int timeToLive) {
 
-			_removeIndexedCacheKey(indexedCacheKey);
+			_removeIndexedCacheKey(key);
 		}
 
 		@Override
 		public void notifyEntryExpired(
-			PortalCache<K, V> portalCache, K indexedCacheKey, V value,
-			int timeToLive) {
+			PortalCache<K, V> portalCache, K key, V value, int timeToLive) {
 
-			_removeIndexedCacheKey(indexedCacheKey);
+			_removeIndexedCacheKey(key);
 		}
 
 		@Override
 		public void notifyEntryPut(
-			PortalCache<K, V> portalCache, K indexedCacheKey, V value,
-			int timeToLive) {
+			PortalCache<K, V> portalCache, K key, V value, int timeToLive) {
 
-			_addIndexedCacheKey(indexedCacheKey);
+			_addIndexedCacheKey(key);
 		}
 
 		@Override
 		public void notifyEntryRemoved(
-			PortalCache<K, V> portalCache, K indexedCacheKey, V value,
-			int timeToLive) {
+			PortalCache<K, V> portalCache, K key, V value, int timeToLive) {
 
-			_removeIndexedCacheKey(indexedCacheKey);
+			_removeIndexedCacheKey(key);
 		}
 
 		@Override
 		public void notifyEntryUpdated(
-			PortalCache<K, V> portalCache, K indexedCacheKey, V value,
-			int timeToLive) {
+			PortalCache<K, V> portalCache, K key, V value, int timeToLive) {
 		}
 
 		@Override

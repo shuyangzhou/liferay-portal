@@ -68,7 +68,7 @@ public class JournalContentImpl implements JournalContent {
 	public void clearCache(
 		long groupId, String articleId, String ddmTemplateKey) {
 
-		_getPortalCacheIndexer().removeIndexedCacheKeys(
+		_getPortalCacheIndexer().removeKeys(
 			JournalContentKeyIndexAccessor.getIndex(
 				groupId, articleId, ddmTemplateKey));
 	}
