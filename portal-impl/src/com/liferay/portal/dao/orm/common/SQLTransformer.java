@@ -211,7 +211,7 @@ public class SQLTransformer {
 			return matcher.replaceAll("CONVERT($1, SQL_VARCHAR)");
 		}
 		else if (_vendorOracle) {
-			return matcher.replaceAll("CAST($1 AS VARCHAR(4000))");
+			return matcher.replaceAll("DBMS_LOB.SUBSTR($1, 1, 4000)");
 		}
 		else if (_vendorPostgreSQL) {
 			return matcher.replaceAll("CAST($1 AS TEXT)");
