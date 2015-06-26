@@ -49,6 +49,8 @@ import com.liferay.portlet.asset.service.persistence.AssetVocabularyPersistence;
 
 import java.io.Serializable;
 
+import java.sql.Types;
+
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -5230,8 +5232,34 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 	}
 
 	@Override
-	protected Set<String> getBadColumnNames() {
-		return _badColumnNames;
+	protected String getColumnName(String entityAlias, String fieldName,
+		boolean sqlQuery) {
+		String columnName = fieldName;
+
+		if (_badColumnNames.contains(fieldName)) {
+			columnName = fieldName.concat(StringPool.UNDERLINE);
+		}
+
+		if (sqlQuery) {
+			fieldName = columnName;
+		}
+
+		fieldName = entityAlias.concat(fieldName);
+
+		Integer columnType = AssetVocabularyModelImpl.TABLE_COLUMNS_MAP.get(columnName);
+
+		if (columnType == null) {
+			throw new IllegalArgumentException("Unknown column name " +
+				columnName + " for table " +
+				AssetVocabularyModelImpl.TABLE_NAME);
+		}
+
+		if (columnType == Types.CLOB) {
+			fieldName = CAST_TEXT_OPEN.concat(fieldName)
+									  .concat(StringPool.CLOSE_PARENTHESIS);
+		}
+
+		return fieldName;
 	}
 
 	/**

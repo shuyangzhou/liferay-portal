@@ -58,6 +58,8 @@ import com.liferay.portlet.asset.service.persistence.AssetEntryPersistence;
 
 import java.io.Serializable;
 
+import java.sql.Types;
+
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -11518,8 +11520,33 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	}
 
 	@Override
-	protected Set<String> getBadColumnNames() {
-		return _badColumnNames;
+	protected String getColumnName(String entityAlias, String fieldName,
+		boolean sqlQuery) {
+		String columnName = fieldName;
+
+		if (_badColumnNames.contains(fieldName)) {
+			columnName = fieldName.concat(StringPool.UNDERLINE);
+		}
+
+		if (sqlQuery) {
+			fieldName = columnName;
+		}
+
+		fieldName = entityAlias.concat(fieldName);
+
+		Integer columnType = AssetCategoryModelImpl.TABLE_COLUMNS_MAP.get(columnName);
+
+		if (columnType == null) {
+			throw new IllegalArgumentException("Unknown column name " +
+				columnName + " for table " + AssetCategoryModelImpl.TABLE_NAME);
+		}
+
+		if (columnType == Types.CLOB) {
+			fieldName = CAST_TEXT_OPEN.concat(fieldName)
+									  .concat(StringPool.CLOSE_PARENTHESIS);
+		}
+
+		return fieldName;
 	}
 
 	@Override
@@ -11801,10 +11828,7 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 		protected UpdateTree() {
 			_sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(getDataSource(),
 					"UPDATE AssetCategory SET leftCategoryId = ?, rightCategoryId = ? WHERE categoryId = ?",
-					new int[] {
-						java.sql.Types.BIGINT, java.sql.Types.BIGINT,
-						java.sql.Types.BIGINT
-					});
+					new int[] { Types.BIGINT, Types.BIGINT, Types.BIGINT });
 		}
 
 		protected void update(long categoryId, long leftCategoryId,

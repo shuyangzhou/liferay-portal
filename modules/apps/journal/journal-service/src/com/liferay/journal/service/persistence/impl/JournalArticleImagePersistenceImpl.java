@@ -40,6 +40,8 @@ import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
 
+import java.sql.Types;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -2872,6 +2874,33 @@ public class JournalArticleImagePersistenceImpl extends BasePersistenceImpl<Jour
 		}
 
 		return count.intValue();
+	}
+
+	@Override
+	protected String getColumnName(String entityAlias, String fieldName,
+		boolean sqlQuery) {
+		String columnName = fieldName;
+
+		if (sqlQuery) {
+			fieldName = columnName;
+		}
+
+		fieldName = entityAlias.concat(fieldName);
+
+		Integer columnType = JournalArticleImageModelImpl.TABLE_COLUMNS_MAP.get(columnName);
+
+		if (columnType == null) {
+			throw new IllegalArgumentException("Unknown column name " +
+				columnName + " for table " +
+				JournalArticleImageModelImpl.TABLE_NAME);
+		}
+
+		if (columnType == Types.CLOB) {
+			fieldName = CAST_TEXT_OPEN.concat(fieldName)
+									  .concat(StringPool.CLOSE_PARENTHESIS);
+		}
+
+		return fieldName;
 	}
 
 	/**

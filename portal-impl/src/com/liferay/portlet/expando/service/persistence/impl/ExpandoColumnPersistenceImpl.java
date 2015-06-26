@@ -45,6 +45,8 @@ import com.liferay.portlet.expando.service.persistence.ExpandoColumnPersistence;
 
 import java.io.Serializable;
 
+import java.sql.Types;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -2354,8 +2356,33 @@ public class ExpandoColumnPersistenceImpl extends BasePersistenceImpl<ExpandoCol
 	}
 
 	@Override
-	protected Set<String> getBadColumnNames() {
-		return _badColumnNames;
+	protected String getColumnName(String entityAlias, String fieldName,
+		boolean sqlQuery) {
+		String columnName = fieldName;
+
+		if (_badColumnNames.contains(fieldName)) {
+			columnName = fieldName.concat(StringPool.UNDERLINE);
+		}
+
+		if (sqlQuery) {
+			fieldName = columnName;
+		}
+
+		fieldName = entityAlias.concat(fieldName);
+
+		Integer columnType = ExpandoColumnModelImpl.TABLE_COLUMNS_MAP.get(columnName);
+
+		if (columnType == null) {
+			throw new IllegalArgumentException("Unknown column name " +
+				columnName + " for table " + ExpandoColumnModelImpl.TABLE_NAME);
+		}
+
+		if (columnType == Types.CLOB) {
+			fieldName = CAST_TEXT_OPEN.concat(fieldName)
+									  .concat(StringPool.CLOSE_PARENTHESIS);
+		}
+
+		return fieldName;
 	}
 
 	/**

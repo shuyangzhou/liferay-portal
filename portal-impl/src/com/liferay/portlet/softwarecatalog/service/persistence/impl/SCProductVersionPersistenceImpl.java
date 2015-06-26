@@ -48,6 +48,8 @@ import com.liferay.portlet.softwarecatalog.service.persistence.SCProductVersionP
 
 import java.io.Serializable;
 
+import java.sql.Types;
+
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -1827,6 +1829,33 @@ public class SCProductVersionPersistenceImpl extends BasePersistenceImpl<SCProdu
 		catch (Exception e) {
 			throw processException(e);
 		}
+	}
+
+	@Override
+	protected String getColumnName(String entityAlias, String fieldName,
+		boolean sqlQuery) {
+		String columnName = fieldName;
+
+		if (sqlQuery) {
+			fieldName = columnName;
+		}
+
+		fieldName = entityAlias.concat(fieldName);
+
+		Integer columnType = SCProductVersionModelImpl.TABLE_COLUMNS_MAP.get(columnName);
+
+		if (columnType == null) {
+			throw new IllegalArgumentException("Unknown column name " +
+				columnName + " for table " +
+				SCProductVersionModelImpl.TABLE_NAME);
+		}
+
+		if (columnType == Types.CLOB) {
+			fieldName = CAST_TEXT_OPEN.concat(fieldName)
+									  .concat(StringPool.CLOSE_PARENTHESIS);
+		}
+
+		return fieldName;
 	}
 
 	/**
