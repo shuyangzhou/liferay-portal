@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.model.ResourceConstants;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.exportimport.lar.ExportImportThreadLocal;
@@ -103,7 +104,7 @@ public class PermissionCacheUtil {
 	}
 
 	public static void clearResourcePermissionCache(
-		String name, String primKey) {
+		int scope, String name, String primKey) {
 
 		if (ExportImportThreadLocal.isImportInProcess() ||
 			!PermissionThreadLocal.isFlushResourcePermissionEnabled(
@@ -112,8 +113,17 @@ public class PermissionCacheUtil {
 			return;
 		}
 
-		_permissionPortalCacheIndexer.removeKeys(
-			PermissionKeyIndexAccessor.getIndex(name, primKey));
+		if (scope == ResourceConstants.SCOPE_INDIVIDUAL) {
+			_permissionPortalCacheNamePrimKeyIndexer.removeKeys(
+				PermissionKeyNamePrimKeyIndexAccessor.getIndex(name, primKey));
+		}
+		else if (scope == ResourceConstants.SCOPE_GROUP) {
+			_permissionPortalCacheGroupIdIndexer.removeKeys(
+				Long.valueOf(primKey));
+		}
+		else {
+			_permissionPortalCache.removeAll();
+		}
 	}
 
 	public static PermissionCheckerBag getBag(long userId, long groupId) {
@@ -232,9 +242,13 @@ public class PermissionCacheUtil {
 		_permissionPortalCache = MultiVMPoolUtil.getCache(
 			PERMISSION_CACHE_NAME,
 			PropsValues.PERMISSIONS_OBJECT_BLOCKING_CACHE);
+	private static final PortalCacheIndexer<Long, PermissionKey, Boolean>
+		_permissionPortalCacheGroupIdIndexer = new PortalCacheIndexer<>(
+			new PermissionKeyGroupIdIndexAccessor(), _permissionPortalCache);
 	private static final PortalCacheIndexer<String, PermissionKey, Boolean>
-		_permissionPortalCacheIndexer = new PortalCacheIndexer<>(
-			new PermissionKeyIndexAccessor(), _permissionPortalCache);
+		_permissionPortalCacheNamePrimKeyIndexer = new PortalCacheIndexer<>(
+			new PermissionKeyNamePrimKeyIndexAccessor(),
+			_permissionPortalCache);
 	private static final
 		PortalCache<ResourceBlockIdsBagKey, ResourceBlockIdsBag>
 			_resourceBlockIdsBagCache = MultiVMPoolUtil.getCache(
@@ -354,7 +368,17 @@ public class PermissionCacheUtil {
 
 	}
 
-	private static class PermissionKeyIndexAccessor
+	private static class PermissionKeyGroupIdIndexAccessor
+		implements IndexAccessor<Long, PermissionKey> {
+
+		@Override
+		public Long getIndex(PermissionKey key) {
+			return key._groupId;
+		}
+
+	}
+
+	private static class PermissionKeyNamePrimKeyIndexAccessor
 		implements IndexAccessor<String, PermissionKey> {
 
 		public static String getIndex(String name, String primKey) {
