@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.ContentTypes;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -98,7 +99,7 @@ public class DLFileShortcutLocalServiceTreeTest {
 				DLFileShortcutLocalServiceUtil.getDLFileShortcut(
 					fileShortcut.getFileShortcutId());
 
-			dlFileShortcut.setTreePath(null);
+			dlFileShortcut.setTreePath(StringPool.NULL);
 
 			DLFileShortcutLocalServiceUtil.updateDLFileShortcut(dlFileShortcut);
 		}
