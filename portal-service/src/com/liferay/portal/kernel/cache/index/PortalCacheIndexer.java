@@ -18,6 +18,8 @@ import com.liferay.portal.kernel.cache.CacheListener;
 import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.concurrent.ConcurrentHashSet;
 
+import java.io.Serializable;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,9 +29,13 @@ import java.util.concurrent.ConcurrentMap;
 /**
  * @author Shuyang Zhou
  */
-public class PortalCacheIndexer<I, K extends IndexedCacheKey<I>, V> {
+public class PortalCacheIndexer<I, K extends Serializable, V> {
 
-	public PortalCacheIndexer(PortalCache<K, V> portalCache) {
+	public PortalCacheIndexer(
+		IndexAccessor<I, K> indexAccessor, PortalCache<K, V> portalCache) {
+
+		_indexAccessor = indexAccessor;
+
 		_portalCache = portalCache;
 
 		_portalCache.registerCacheListener(new IndexerCacheListener());
@@ -62,7 +68,7 @@ public class PortalCacheIndexer<I, K extends IndexedCacheKey<I>, V> {
 	}
 
 	private void _addIndexedCacheKey(K indexedCacheKey) {
-		I index = indexedCacheKey.getIndex();
+		I index = _indexAccessor.getIndex(indexedCacheKey);
 
 		Set<K> indexedCacheKeys = _indexedCacheKeys.get(index);
 
@@ -83,7 +89,7 @@ public class PortalCacheIndexer<I, K extends IndexedCacheKey<I>, V> {
 	}
 
 	private void _removeIndexedCacheKey(K indexedCacheKey) {
-		I index = indexedCacheKey.getIndex();
+		I index = _indexAccessor.getIndex(indexedCacheKey);
 
 		Set<K> indexedCacheKeys = _indexedCacheKeys.get(index);
 
@@ -102,6 +108,7 @@ public class PortalCacheIndexer<I, K extends IndexedCacheKey<I>, V> {
 		}
 	}
 
+	private final IndexAccessor<I, K> _indexAccessor;
 	private final ConcurrentMap<I, Set<K>> _indexedCacheKeys =
 		new ConcurrentHashMap<>();
 	private final PortalCache<K, V> _portalCache;

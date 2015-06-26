@@ -17,10 +17,10 @@ package com.liferay.portal.kernel.cache.index;
 import java.io.Serializable;
 
 /**
- * @author Shuyang Zhou
+ * @author Preston Crary
  */
-public interface IndexedCacheKey<I> extends Serializable {
+public interface IndexAccessor<I, K extends Serializable> {
 
-	public I getIndex();
+	public I getIndex(K key);
 
 }
