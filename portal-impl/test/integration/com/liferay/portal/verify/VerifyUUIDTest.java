@@ -59,7 +59,13 @@ public class VerifyUUIDTest extends BaseVerifyProcessTestCase {
 			@ExpectedLog(
 				dbType = DB.TYPE_POSTGRESQL, expectedLog =
 					"Unable to process runnable: ERROR: column \"unknown\" " +
-						"does not exist_",
+						"does not exist",
+				expectedType = ExpectedType.PREFIX
+			),
+			@ExpectedLog(
+				dbType = DB.TYPE_ORACLE, expectedLog =
+					"Unable to process runnable: ORA-00904: \"UNKNOWN\":" +
+						" invalid identifier",
 				expectedType = ExpectedType.PREFIX
 			)
 		},
@@ -93,7 +99,13 @@ public class VerifyUUIDTest extends BaseVerifyProcessTestCase {
 			@ExpectedLog(
 				dbType = DB.TYPE_POSTGRESQL, expectedLog =
 					"Unable to process runnable: ERROR: relation " +
-						"\"unknown\" does not exist_",
+						"\"unknown\" does not exist",
+				expectedType = ExpectedType.PREFIX
+			),
+			@ExpectedLog(
+				dbType = DB.TYPE_ORACLE, expectedLog =
+					"Unable to process runnable: ORA-00942: table or view" +
+						" does not exist",
 				expectedType = ExpectedType.PREFIX
 			)
 		},
@@ -138,7 +150,13 @@ public class VerifyUUIDTest extends BaseVerifyProcessTestCase {
 			@ExpectedLog(
 				dbType = DB.TYPE_POSTGRESQL, expectedLog =
 					"Unable to process runnable: ERROR: relation \"unknown\" " +
-						"does not exist_",
+						"does not exist",
+				expectedType = ExpectedType.PREFIX
+			),
+			@ExpectedLog(
+				dbType = DB.TYPE_ORACLE, expectedLog =
+					"Unable to process runnable: ORA-00942: table or view" +
+						" does not exist",
 				expectedType = ExpectedType.PREFIX
 			)
 		},
