@@ -15,9 +15,11 @@
 package com.liferay.portlet.documentlibrary.service.impl;
 
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.dao.orm.Criterion;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Property;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -151,7 +153,16 @@ public class DLFileVersionLocalServiceImpl
 					Property treePathProperty = PropertyFactoryUtil.forName(
 						"treePath");
 
-					dynamicQuery.add(treePathProperty.ne(treePath));
+					if (treePath == null) {
+						dynamicQuery.add(treePathProperty.isNotNull());
+					}
+					else {
+						Criterion criterion = RestrictionsFactoryUtil.or(
+							treePathProperty.isNull(),
+							treePathProperty.ne(treePath));
+
+						dynamicQuery.add(criterion);
+					}
 				}
 
 			});
