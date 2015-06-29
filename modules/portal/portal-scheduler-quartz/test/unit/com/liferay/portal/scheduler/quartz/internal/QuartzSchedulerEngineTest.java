@@ -260,7 +260,7 @@ public class QuartzSchedulerEngineTest {
 	public void testGetQuartzTrigger3() throws SchedulerException {
 		try (CaptureHandler captureHandler =
 				JDKLoggerTestUtil.configureJDKLogger(
-					QuartzSchedulerEngine.class.getName(), Level.FINE)) {
+					QuartzSchedulerEngine.class.getName(), Level.WARNING)) {
 
 			List<LogRecord> logRecords = captureHandler.getLogRecords();
 
