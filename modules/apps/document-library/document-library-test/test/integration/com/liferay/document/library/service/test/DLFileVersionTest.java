@@ -100,6 +100,9 @@ public class DLFileVersionTest {
 
 	@Before
 	public void setUp() throws Exception {
+		_captureAppender = Log4JLoggerTestUtil.configureLog4JLogger(
+			BaseStore.class.getName(), Level.WARN);
+
 		setUpPermissionThreadLocal();
 		setUpPrincipalThreadLocal();
 
@@ -151,8 +154,9 @@ public class DLFileVersionTest {
 		_fileVersion = DLFileVersionLocalServiceUtil.getFileVersion(
 			fileEntry.getFileEntryId(), DLFileEntryConstants.VERSION_DEFAULT);
 
-		_captureAppender = Log4JLoggerTestUtil.configureLog4JLogger(
-			BaseStore.class.getName(), Level.WARN);
+		List<LoggingEvent> loggingEvents = _captureAppender.getLoggingEvents();
+
+		loggingEvents.clear();
 	}
 
 	@After
