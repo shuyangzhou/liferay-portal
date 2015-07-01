@@ -982,12 +982,12 @@ public class JournalConverterUtilTest {
 	private static final String _PUBLIC_USER_LAYOUT = "publicUserLayout";
 
 	private DDMStructure _ddmStructure;
+
 	private DDMStructureTestHelper _ddmStructureTestHelper;
-	private Locale _enLocale;
 
 	@DeleteAfterTestRun
 	private Group _group;
 
+	private Locale _enLocale;
 	private Locale _ptLocale;
-
 }
