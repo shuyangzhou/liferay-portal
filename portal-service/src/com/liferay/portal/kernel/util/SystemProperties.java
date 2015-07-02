@@ -58,10 +58,6 @@ public class SystemProperties {
 		return value;
 	}
 
-	public static Properties getProperties() {
-		return PropertiesUtil.fromMap(_properties);
-	}
-
 	public static void set(String key, String value) {
 		System.setProperty(key, value);
 

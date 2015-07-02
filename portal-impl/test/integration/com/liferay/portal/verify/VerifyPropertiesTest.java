@@ -25,6 +25,7 @@ import com.liferay.portal.verify.test.BaseVerifyProcessTestCase;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
@@ -345,9 +346,10 @@ public class VerifyPropertiesTest extends BaseVerifyProcessTestCase {
 	}
 
 	protected String getFirstSystemPropertyKey() {
-		Properties systemProperties = SystemProperties.getProperties();
+		Map<String, String> properties = ReflectionTestUtil.getFieldValue(
+			SystemProperties.class, "_properties");
 
-		Set<String> propertyNames = systemProperties.stringPropertyNames();
+		Set<String> propertyNames = properties.keySet();
 
 		Assert.assertFalse(propertyNames.isEmpty());
 
