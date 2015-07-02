@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.test.JDKLoggerTestUtil;
+import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.kernel.util.SocketUtil;
@@ -68,14 +69,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.Term;
+import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.store.Directory;
 
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -573,21 +573,6 @@ public class LuceneHelperImplTest {
 
 	}
 
-	private class MockBlockingQueue<E> extends LinkedBlockingQueue<E> {
-
-		public MockBlockingQueue(BlockingQueue<E> blockingQueue) {
-			_blockingQueue = blockingQueue;
-		}
-
-		@Override
-		public E poll(long timeout, TimeUnit unit) throws InterruptedException {
-			return _blockingQueue.poll(1000, TimeUnit.MILLISECONDS);
-		}
-
-		private BlockingQueue<E> _blockingQueue;
-
-	}
-
 	private class MockClusterExecutor implements ClusterExecutor {
 
 		@Override
@@ -634,6 +619,7 @@ public class LuceneHelperImplTest {
 					_localhostInetAddress);
 
 				clusterNode.setPort(_port);
+				clusterNode.setPortalProtocol(Http.HTTP);
 
 				clusterNodeResponse.setClusterNode(clusterNode);
 
@@ -654,45 +640,15 @@ public class LuceneHelperImplTest {
 
 		@Override
 		public void execute(
-				ClusterRequest clusterRequest,
-				ClusterResponseCallback clusterResponseCallback)
-			throws SystemException {
-
-			FutureClusterResponses futureClusterResponses = execute(
-				clusterRequest);
-
-			try {
-				BlockingQueue<ClusterNodeResponse> blockingQueue =
-					futureClusterResponses.get().getClusterResponses();
-
-				MockBlockingQueue<ClusterNodeResponse> mockBlockingQueue =
-					new MockBlockingQueue<ClusterNodeResponse>(blockingQueue);
-
-				clusterResponseCallback.callback(mockBlockingQueue);
-			}
-			catch (InterruptedException ie) {
-				throw new RuntimeException(ie);
-			}
+			ClusterRequest clusterRequest,
+			ClusterResponseCallback clusterResponseCallback) {
 		}
 
 		@Override
 		public void execute(
-				ClusterRequest clusterRequest,
-				ClusterResponseCallback clusterResponseCallback, long timeout,
-				TimeUnit timeUnit)
-			throws SystemException {
-
-			FutureClusterResponses futureClusterResponses = execute(
-				clusterRequest);
-
-			try {
-				clusterResponseCallback.callback(
-					futureClusterResponses.get(
-						timeout, timeUnit).getClusterResponses());
-			}
-			catch (Exception e) {
-				throw new RuntimeException(e);
-			}
+			ClusterRequest clusterRequest,
+			ClusterResponseCallback clusterResponseCallback, long timeout,
+			TimeUnit timeUnit) {
 		}
 
 		@Override
@@ -806,6 +762,11 @@ public class LuceneHelperImplTest {
 	private class MockIndexAccessor implements IndexAccessor {
 
 		@Override
+		public IndexSearcher acquireIndexSearcher() {
+			return null;
+		}
+
+		@Override
 		public void addDocument(Document document) {
 		}
 
@@ -845,6 +806,10 @@ public class LuceneHelperImplTest {
 		}
 
 		@Override
+		public void invalidate() {
+		}
+
+		@Override
 		public void loadIndex(InputStream inputStream) throws IOException {
 			UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
 				new UnsyncByteArrayOutputStream();
@@ -856,6 +821,10 @@ public class LuceneHelperImplTest {
 
 		@Override
 		public void updateDocument(Term term, Document document) {
+		}
+
+		@Override
+		public void releaseIndexSearcher(IndexSearcher indexSearcher) {
 		}
 
 		public byte[] getResponseMessage() {

@@ -15,7 +15,6 @@
 package com.liferay.portal.search.lucene;
 
 import com.liferay.portal.kernel.cluster.Address;
-import com.liferay.portal.kernel.cluster.BaseClusterResponseCallback;
 import com.liferay.portal.kernel.cluster.ClusterEvent;
 import com.liferay.portal.kernel.cluster.ClusterEventListener;
 import com.liferay.portal.kernel.cluster.ClusterEventType;
@@ -75,7 +74,6 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import org.apache.commons.lang.time.StopWatch;
 import org.apache.lucene.analysis.Analyzer;
@@ -883,6 +881,117 @@ public class LuceneHelperImpl implements LuceneHelper {
 		}
 	}
 
+	private void _handleFutureClusterResponses(
+		FutureClusterResponses futureClusterResponses,
+		IndexAccessor indexAccessor, int clusterNodeAddressCount,
+		long localLastGeneration) {
+
+		BlockingQueue<ClusterNodeResponse> blockingQueue =
+			futureClusterResponses.getPartialResults();
+
+		long companyId = indexAccessor.getCompanyId();
+
+		Address bootupAddress = null;
+
+		do {
+			clusterNodeAddressCount--;
+
+			ClusterNodeResponse clusterNodeResponse = null;
+
+			try {
+				clusterNodeResponse = blockingQueue.poll(
+					_CLUSTER_LINK_NODE_BOOTUP_RESPONSE_TIMEOUT,
+					TimeUnit.MILLISECONDS);
+			}
+			catch (Exception e) {
+				_log.error("Unable to get cluster node response", e);
+			}
+
+			if (clusterNodeResponse == null) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(
+						"Unable to get cluster node response in " +
+							_CLUSTER_LINK_NODE_BOOTUP_RESPONSE_TIMEOUT +
+								TimeUnit.MILLISECONDS);
+				}
+
+				continue;
+			}
+
+			ClusterNode clusterNode = clusterNodeResponse.getClusterNode();
+
+			if (clusterNode.getPort() > 0) {
+				try {
+					long remoteLastGeneration =
+						(Long)clusterNodeResponse.getResult();
+
+					if (remoteLastGeneration > localLastGeneration) {
+						bootupAddress = clusterNodeResponse.getAddress();
+
+						break;
+					}
+				}
+				catch (Exception e) {
+					if (_log.isDebugEnabled()) {
+						_log.debug(
+							"Suppress exception caused by remote method " +
+								"invocation",
+							e);
+					}
+
+					continue;
+				}
+			}
+			else {
+				if (_log.isDebugEnabled()) {
+					_log.debug(
+						"Cluster node " + clusterNode +
+							" has invalid port");
+				}
+			}
+		}
+		while ((bootupAddress == null) && (clusterNodeAddressCount > 1));
+
+		if (bootupAddress == null) {
+			return;
+		}
+
+		if (_log.isInfoEnabled()) {
+			_log.info(
+				"Start loading lucene index files from cluster node " +
+					bootupAddress);
+		}
+
+		InputStream inputStream = null;
+
+		try {
+			inputStream = getLoadIndexesInputStreamFromCluster(
+				companyId, bootupAddress);
+
+			indexAccessor.loadIndex(inputStream);
+
+			if (_log.isInfoEnabled()) {
+				_log.info("Lucene index files loaded successfully");
+			}
+		}
+		catch (Exception e) {
+			_log.error("Unable to load index for company " + companyId, e);
+		}
+		finally {
+			if (inputStream != null) {
+				try {
+					inputStream.close();
+				}
+				catch (IOException ioe) {
+					_log.error(
+						"Unable to close input stream for company " +
+							companyId,
+						ioe);
+				}
+			}
+		}
+	}
+
 	private void _includeIfUnique(
 		BooleanQuery booleanQuery, boolean like, QueryParser queryParser,
 		Query query, BooleanClause.Occur occur) {
@@ -981,10 +1090,12 @@ public class LuceneHelperImpl implements LuceneHelper {
 				_getLastGenerationMethodKey, indexAccessor.getCompanyId()),
 			true);
 
-		ClusterExecutorUtil.execute(
-			clusterRequest,
-			new LoadIndexClusterResponseCallback(
-				indexAccessor, clusterNodeAddressesCount, localLastGeneration));
+		FutureClusterResponses futureClusterResponses =
+			ClusterExecutorUtil.execute(clusterRequest);
+
+		_handleFutureClusterResponses(
+			futureClusterResponses, indexAccessor, clusterNodeAddressesCount,
+			localLastGeneration);
 	}
 
 	private static final long _CLUSTER_LINK_NODE_BOOTUP_RESPONSE_TIMEOUT =
@@ -1082,137 +1193,6 @@ public class LuceneHelperImpl implements LuceneHelper {
 					"Unable to load indexes for company " + companyId, e);
 			}
 		}
-
-	}
-
-	private class LoadIndexClusterResponseCallback
-		extends BaseClusterResponseCallback {
-
-		public LoadIndexClusterResponseCallback(
-			IndexAccessor indexAccessor, int clusterNodeAddressesCount,
-			long localLastGeneration) {
-
-			_indexAccessor = indexAccessor;
-			_clusterNodeAddressesCount = clusterNodeAddressesCount;
-			_localLastGeneration = localLastGeneration;
-
-			_companyId = _indexAccessor.getCompanyId();
-		}
-
-		@Override
-		public void callback(BlockingQueue<ClusterNodeResponse> blockingQueue) {
-			Address bootupAddress = null;
-
-			do {
-				_clusterNodeAddressesCount--;
-
-				ClusterNodeResponse clusterNodeResponse = null;
-
-				try {
-					clusterNodeResponse = blockingQueue.poll(
-						_CLUSTER_LINK_NODE_BOOTUP_RESPONSE_TIMEOUT,
-						TimeUnit.MILLISECONDS);
-				}
-				catch (Exception e) {
-					_log.error("Unable to get cluster node response", e);
-				}
-
-				if (clusterNodeResponse == null) {
-					if (_log.isDebugEnabled()) {
-						_log.debug(
-							"Unable to get cluster node response in " +
-								_CLUSTER_LINK_NODE_BOOTUP_RESPONSE_TIMEOUT +
-									TimeUnit.MILLISECONDS);
-					}
-
-					continue;
-				}
-
-				ClusterNode clusterNode = clusterNodeResponse.getClusterNode();
-
-				if (clusterNode.getPort() > 0) {
-					try {
-						long remoteLastGeneration =
-							(Long)clusterNodeResponse.getResult();
-
-						if (remoteLastGeneration > _localLastGeneration) {
-							bootupAddress = clusterNodeResponse.getAddress();
-
-							break;
-						}
-					}
-					catch (Exception e) {
-						if (_log.isDebugEnabled()) {
-							_log.debug(
-								"Suppress exception caused by remote method " +
-									"invocation",
-								e);
-						}
-
-						continue;
-					}
-				}
-				else {
-					if (_log.isDebugEnabled()) {
-						_log.debug(
-							"Cluster node " + clusterNode +
-								" has invalid port");
-					}
-				}
-			}
-			while ((bootupAddress == null) && (_clusterNodeAddressesCount > 1));
-
-			if (bootupAddress == null) {
-				return;
-			}
-
-			if (_log.isInfoEnabled()) {
-				_log.info(
-					"Start loading lucene index files from cluster node " +
-						bootupAddress);
-			}
-
-			InputStream inputStream = null;
-
-			try {
-				inputStream = getLoadIndexesInputStreamFromCluster(
-					_companyId, bootupAddress);
-
-				_indexAccessor.loadIndex(inputStream);
-
-				if (_log.isInfoEnabled()) {
-					_log.info("Lucene index files loaded successfully");
-				}
-			}
-			catch (Exception e) {
-				_log.error("Unable to load index for company " + _companyId, e);
-			}
-			finally {
-				if (inputStream != null) {
-					try {
-						inputStream.close();
-					}
-					catch (IOException ioe) {
-						_log.error(
-							"Unable to close input stream for company " +
-								_companyId,
-							ioe);
-					}
-				}
-			}
-		}
-
-		@Override
-		public void processTimeoutException(TimeoutException timeoutException) {
-			_log.error(
-				"Unable to load index for company " + _companyId,
-				timeoutException);
-		}
-
-		private int _clusterNodeAddressesCount;
-		private long _companyId;
-		private IndexAccessor _indexAccessor;
-		private long _localLastGeneration;
 
 	}
 
