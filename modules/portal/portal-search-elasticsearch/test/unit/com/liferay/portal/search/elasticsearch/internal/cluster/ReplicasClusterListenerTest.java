@@ -15,8 +15,15 @@
 package com.liferay.portal.search.elasticsearch.internal.cluster;
 
 import com.liferay.portal.kernel.cluster.ClusterEvent;
+import com.liferay.portal.kernel.test.CaptureHandler;
+import com.liferay.portal.kernel.test.JDKLoggerTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -122,7 +129,27 @@ public class ReplicasClusterListenerTest {
 				Mockito.anyInt(), (String[])Mockito.anyVararg()
 		);
 
-		masterTokenAcquired();
+		try (CaptureHandler captureHandler =
+				JDKLoggerTestUtil.configureJDKLogger(
+					ReplicasClusterListener.class.getName(), Level.WARNING)) {
+
+			masterTokenAcquired();
+
+			List<LogRecord> logRecords = captureHandler.getLogRecords();
+
+			Assert.assertEquals(1, logRecords.size());
+
+			LogRecord logRecord = logRecords.get(0);
+
+			Assert.assertEquals(
+				"Unable to update number of replicas", logRecord.getMessage());
+
+			Throwable throwable = logRecord.getThrown();
+
+			Assert.assertEquals(
+				ReplicasClusterListenerTestException.class,
+				throwable.getClass());
+		}
 	}
 
 	public static class ReplicasClusterListenerTestException extends Exception {
