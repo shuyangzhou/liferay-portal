@@ -12,13 +12,30 @@
  * details.
  */
 
-package com.liferay.journal.web.constants;
+package com.liferay.portal.dao.orm.hibernate;
+
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author Shuyang Zhou
  */
-public class JournalWebKeys {
+@SuppressWarnings("deprecation")
+public class StringClobType extends org.hibernate.type.StringClobType {
 
-	public static final String ITEM_SELECTOR = "ITEM_SELECTOR";
+	@Override
+	public boolean equals(Object x, Object y) {
+		if (Validator.equals(x, y)) {
+			return true;
+		}
+		else if (((x == null) || x.equals(StringPool.BLANK)) &&
+				 ((y == null) || y.equals(StringPool.BLANK))) {
+
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 
 }

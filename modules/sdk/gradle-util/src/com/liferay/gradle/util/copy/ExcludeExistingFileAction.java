@@ -12,22 +12,31 @@
  * details.
  */
 
-package com.liferay.portlet.asset.model.adapter.builder;
+package com.liferay.gradle.util.copy;
 
-import com.liferay.portal.model.adapter.builder.ModelAdapterBuilder;
-import com.liferay.portlet.asset.model.AssetTag;
-import com.liferay.portlet.asset.model.adapter.StagedAssetTag;
-import com.liferay.portlet.asset.model.adapter.impl.StagedAssetTagImpl;
+import java.io.File;
+
+import org.gradle.api.Action;
+import org.gradle.api.file.FileCopyDetails;
 
 /**
- * @author Daniel Kocsis
+ * @author Andrea Di Giorgi
  */
-public class StagedAssetTagModelAdapterBuilder
-	implements ModelAdapterBuilder<AssetTag, StagedAssetTag> {
+public class ExcludeExistingFileAction implements Action<FileCopyDetails> {
+
+	public ExcludeExistingFileAction(File destinationDir) {
+		_destinationDir = destinationDir;
+	}
 
 	@Override
-	public StagedAssetTag build(AssetTag assetTag) {
-		return new StagedAssetTagImpl(assetTag);
+	public void execute(FileCopyDetails fileCopyDetails) {
+		File file = new File(_destinationDir, fileCopyDetails.getPath());
+
+		if (file.exists()) {
+			fileCopyDetails.exclude();
+		}
 	}
+
+	private final File _destinationDir;
 
 }

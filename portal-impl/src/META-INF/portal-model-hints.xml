@@ -1294,6 +1294,7 @@
 		<field name="weight" type="int" />
 	</model>
 	<model name="com.liferay.portlet.asset.model.AssetTag">
+		<field name="uuid" type="String" />
 		<field name="tagId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
@@ -1668,7 +1669,7 @@
 			<validator name="required" />
 		</field>
 		<field name="description" type="String" localized="true">
-			<hint-collection name="TEXTAREA" />
+			<hint-collection name="CLOB" />
 		</field>
 		<field name="definition" type="String">
 			<hint-collection name="CLOB" />
@@ -1710,7 +1711,7 @@
 			<validator name="required" />
 		</field>
 		<field name="description" type="String" localized="true">
-			<hint-collection name="TEXTAREA" />
+			<hint-collection name="CLOB" />
 		</field>
 		<field name="definition" type="String">
 			<hint-collection name="CLOB" />
@@ -1745,7 +1746,7 @@
 			<validator name="required" />
 		</field>
 		<field name="description" type="String" localized="true">
-			<hint-collection name="TEXTAREA" />
+			<hint-collection name="CLOB" />
 			<hint name="autoSize">true</hint>
 		</field>
 		<field name="type" type="String" />
@@ -1780,7 +1781,7 @@
 			<validator name="required" />
 		</field>
 		<field name="description" type="String" localized="true">
-			<hint-collection name="TEXTAREA" />
+			<hint-collection name="CLOB" />
 			<hint name="autoSize">true</hint>
 		</field>
 		<field name="language" type="String" />

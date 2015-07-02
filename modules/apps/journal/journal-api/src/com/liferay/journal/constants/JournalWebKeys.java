@@ -12,13 +12,13 @@
  * details.
  */
 
-package com.liferay.portlet.asset.model.adapter;
-
-import com.liferay.portal.model.StagedGroupedModel;
-import com.liferay.portlet.asset.model.AssetTag;
+package com.liferay.journal.constants;
 
 /**
- * @author Daniel Kocsis
+ * @author Brian Wing Shun Chan
  */
-public interface StagedAssetTag extends AssetTag, StagedGroupedModel {
+public class JournalWebKeys {
+
+	public static final String ITEM_SELECTOR = "ITEM_SELECTOR";
+
 }

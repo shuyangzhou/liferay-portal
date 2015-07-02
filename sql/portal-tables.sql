@@ -164,6 +164,7 @@ create table AssetLink (
 );
 
 create table AssetTag (
+	uuid_ VARCHAR(75) null,
 	tagId LONG not null primary key,
 	groupId LONG,
 	companyId LONG,
@@ -422,7 +423,7 @@ create table DDMStructure (
 	structureKey VARCHAR(75) null,
 	version VARCHAR(75) null,
 	name STRING null,
-	description STRING null,
+	description TEXT null,
 	definition TEXT null,
 	storageType VARCHAR(75) null,
 	type_ INTEGER
@@ -459,7 +460,7 @@ create table DDMStructureVersion (
 	version VARCHAR(75) null,
 	parentStructureId LONG,
 	name STRING null,
-	description STRING null,
+	description TEXT null,
 	definition TEXT null,
 	storageType VARCHAR(75) null,
 	type_ INTEGER,
@@ -486,7 +487,7 @@ create table DDMTemplate (
 	templateKey VARCHAR(75) null,
 	version VARCHAR(75) null,
 	name STRING null,
-	description STRING null,
+	description TEXT null,
 	type_ VARCHAR(75) null,
 	mode_ VARCHAR(75) null,
 	language VARCHAR(75) null,
@@ -516,7 +517,7 @@ create table DDMTemplateVersion (
 	templateId LONG,
 	version VARCHAR(75) null,
 	name STRING null,
-	description STRING null,
+	description TEXT null,
 	language VARCHAR(75) null,
 	script TEXT null,
 	status INTEGER,
@@ -589,12 +590,6 @@ create table DLFileEntryType (
 	fileEntryTypeKey VARCHAR(75) null,
 	name STRING null,
 	description STRING null
-);
-
-create table DLFileEntryTypes_DDMStructures (
-	structureId LONG not null,
-	fileEntryTypeId LONG not null,
-	primary key (structureId, fileEntryTypeId)
 );
 
 create table DLFileEntryTypes_DLFolders (
