@@ -1,3 +1,15 @@
+<#if entity.hasCompoundPK() && finderCol.isPrimary()>
+	<#assign finderFieldName = entity.alias + ".id." + finderColName>
+<#else>
+	<#assign finderFieldName = entity.alias + "." + finderColName>
+</#if>
+
+<#if serviceBuilder.getSqlType(packagePath + ".model." + entity.getName(), finderCol.getName(), finderCol.getType()) == "CLOB">
+	<#assign textFinderFieldName = "CAST_CLOB_TEXT(" + finderFieldName + ")">
+<#else>
+	<#assign textFinderFieldName = finderFieldName>
+</#if>
+
 <#assign finderColConjunction = "">
 
 <#if finderCol_has_next>
