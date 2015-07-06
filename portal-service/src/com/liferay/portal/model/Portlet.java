@@ -438,7 +438,7 @@ public interface Portlet extends PortletModel, PersistedModel {
 	*
 	* @return the indexer instances of the portlet
 	*/
-	public java.util.List<com.liferay.portal.kernel.search.Indexer> getIndexerInstances();
+	public java.util.List<com.liferay.portal.kernel.search.Indexer<?>> getIndexerInstances();
 
 	/**
 	* Returns the init parameters of the portlet.

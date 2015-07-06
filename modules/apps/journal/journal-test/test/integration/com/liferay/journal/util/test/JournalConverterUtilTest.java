@@ -94,6 +94,10 @@ public class JournalConverterUtilTest {
 
 	@Before
 	public void setUp() throws Exception {
+		_enLocale = LocaleUtil.fromLanguageId("en_US");
+
+		_ptLocale = LocaleUtil.fromLanguageId("pt_BR");
+
 		_group = GroupTestUtil.addGroup();
 
 		_ddmStructureTestHelper = new DDMStructureTestHelper(_group);
@@ -978,12 +982,12 @@ public class JournalConverterUtilTest {
 	private static final String _PUBLIC_USER_LAYOUT = "publicUserLayout";
 
 	private DDMStructure _ddmStructure;
+
 	private DDMStructureTestHelper _ddmStructureTestHelper;
-	private final Locale _enLocale = LocaleUtil.fromLanguageId("en_US");
 
 	@DeleteAfterTestRun
 	private Group _group;
 
-	private final Locale _ptLocale = LocaleUtil.fromLanguageId("pt_BR");
-
+	private Locale _enLocale;
+	private Locale _ptLocale;
 }

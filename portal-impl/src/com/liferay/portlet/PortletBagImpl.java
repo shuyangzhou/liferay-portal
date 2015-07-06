@@ -64,7 +64,7 @@ public class PortletBagImpl implements PortletBag {
 		String portletName, ServletContext servletContext,
 		Portlet portletInstance, ResourceBundleTracker resourceBundleTracker,
 		List<ConfigurationAction> configurationActionInstances,
-		List<Indexer> indexerInstances, List<OpenSearch> openSearchInstances,
+		List<Indexer<?>> indexerInstances, List<OpenSearch> openSearchInstances,
 		List<SchedulerEntry> schedulerEntryInstances,
 		FriendlyURLMapperTracker friendlyURLMapperTracker,
 		List<URLEncoder> urlEncoderInstances,
@@ -208,7 +208,7 @@ public class PortletBagImpl implements PortletBag {
 	}
 
 	@Override
-	public List<Indexer> getIndexerInstances() {
+	public List<Indexer<?>> getIndexerInstances() {
 		return _indexerInstances;
 	}
 
@@ -386,7 +386,7 @@ public class PortletBagImpl implements PortletBag {
 	private final List<CustomAttributesDisplay>
 		_customAttributesDisplayInstances;
 	private final FriendlyURLMapperTracker _friendlyURLMapperTracker;
-	private final List<Indexer> _indexerInstances;
+	private final List<Indexer<?>> _indexerInstances;
 	private final List<OpenSearch> _openSearchInstances;
 	private final List<PermissionPropagator> _permissionPropagatorInstances;
 	private final List<PollerProcessor> _pollerProcessorInstances;

@@ -70,7 +70,7 @@ public interface PortletBag extends Cloneable {
 
 	public FriendlyURLMapperTracker getFriendlyURLMapperTracker();
 
-	public List<Indexer> getIndexerInstances();
+	public List<Indexer<?>> getIndexerInstances();
 
 	public List<OpenSearch> getOpenSearchInstances();
 

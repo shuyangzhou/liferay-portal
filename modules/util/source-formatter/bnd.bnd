@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Source Formatter
 Bundle-SymbolicName: com.liferay.source.formatter
-Bundle-Version: 1.0.27
+Bundle-Version: 1.0.29
 Import-Package:\
 	!javax.portlet,\
 	!javax.servlet.http,\
@@ -55,7 +55,9 @@ Include-Resource:\
 	@../../../portal-service/portal-service.jar!/com/liferay/portal/kernel/util/ListUtil.class,\
 	@../../../portal-service/portal-service.jar!/com/liferay/portal/kernel/util/LocaleThreadLocal.class,\
 	@../../../portal-service/portal-service.jar!/com/liferay/portal/kernel/util/LocaleUtil.class,\
+	@../../../portal-service/portal-service.jar!/com/liferay/portal/kernel/util/MapUtil.class,\
 	@../../../portal-service/portal-service.jar!/com/liferay/portal/kernel/util/NaturalOrderStringComparator.class,\
+	@../../../portal-service/portal-service.jar!/com/liferay/portal/kernel/util/PredicateFilter.class,\
 	@../../../portal-service/portal-service.jar!/com/liferay/portal/kernel/util/PropertiesUtil.class,\
 	@../../../portal-service/portal-service.jar!/com/liferay/portal/kernel/util/PropsKeys.class,\
 	@../../../portal-service/portal-service.jar!/com/liferay/portal/kernel/util/ReflectionUtil.class,\

@@ -46,7 +46,7 @@ import org.osgi.service.component.annotations.Component;
  * @author Adam Brandizzi
  */
 @Component(immediate = true, service = Indexer.class)
-public class CalendarIndexer extends BaseIndexer {
+public class CalendarIndexer extends BaseIndexer<Calendar> {
 
 	public static final String CLASS_NAME = Calendar.class.getName();
 
@@ -90,16 +90,12 @@ public class CalendarIndexer extends BaseIndexer {
 	}
 
 	@Override
-	protected void doDelete(Object object) throws Exception {
-		Calendar calendar = (Calendar)object;
-
+	protected void doDelete(Calendar calendar) throws Exception {
 		deleteDocument(calendar.getCompanyId(), calendar.getCalendarId());
 	}
 
 	@Override
-	protected Document doGetDocument(Object object) throws Exception {
-		Calendar calendar = (Calendar)object;
-
+	protected Document doGetDocument(Calendar calendar) throws Exception {
 		Document document = getBaseModelDocument(CLASS_NAME, calendar);
 
 		document.addLocalizedText(
@@ -135,9 +131,7 @@ public class CalendarIndexer extends BaseIndexer {
 	}
 
 	@Override
-	protected void doReindex(Object obj) throws Exception {
-		Calendar calendar = (Calendar)obj;
-
+	protected void doReindex(Calendar calendar) throws Exception {
 		Document document = getDocument(calendar);
 
 		SearchEngineUtil.updateDocument(

@@ -58,11 +58,11 @@ import org.osgi.service.component.annotations.Component;
  * @author Marcellus Tavares
  */
 @Component(immediate = true, service = Indexer.class)
-public class DDLIndexer extends BaseIndexer {
+public class DDLRecordIndexer extends BaseIndexer<DDLRecord> {
 
 	public static final String CLASS_NAME = DDLRecord.class.getName();
 
-	public DDLIndexer() {
+	public DDLRecordIndexer() {
 		setDefaultSelectedFieldNames(
 			Field.COMPANY_ID, Field.ENTRY_CLASS_NAME, Field.ENTRY_CLASS_PK,
 			Field.UID);
@@ -110,19 +110,15 @@ public class DDLIndexer extends BaseIndexer {
 	}
 
 	@Override
-	protected void doDelete(Object obj) throws Exception {
-		DDLRecord record = (DDLRecord)obj;
-
-		deleteDocument(record.getCompanyId(), record.getRecordId());
+	protected void doDelete(DDLRecord ddlRecord) throws Exception {
+		deleteDocument(ddlRecord.getCompanyId(), ddlRecord.getRecordId());
 	}
 
 	@Override
-	protected Document doGetDocument(Object obj) throws Exception {
-		DDLRecord record = (DDLRecord)obj;
+	protected Document doGetDocument(DDLRecord ddlRecord) throws Exception {
+		Document document = getBaseModelDocument(CLASS_NAME, ddlRecord);
 
-		Document document = getBaseModelDocument(CLASS_NAME, record);
-
-		DDLRecordVersion recordVersion = record.getRecordVersion();
+		DDLRecordVersion recordVersion = ddlRecord.getRecordVersion();
 
 		document.addKeyword(
 			Field.CLASS_TYPE_ID, recordVersion.getRecordSetId());
@@ -165,12 +161,10 @@ public class DDLIndexer extends BaseIndexer {
 	}
 
 	@Override
-	protected void doReindex(Object obj) throws Exception {
-		DDLRecord record = (DDLRecord)obj;
+	protected void doReindex(DDLRecord ddlRecord) throws Exception {
+		DDLRecordVersion recordVersion = ddlRecord.getRecordVersion();
 
-		DDLRecordVersion recordVersion = record.getRecordVersion();
-
-		Document document = getDocument(record);
+		Document document = getDocument(ddlRecord);
 
 		if (!recordVersion.isApproved()) {
 			if (Validator.equals(
@@ -178,7 +172,7 @@ public class DDLIndexer extends BaseIndexer {
 					DDLRecordConstants.VERSION_DEFAULT)) {
 
 				SearchEngineUtil.deleteDocument(
-					getSearchEngineId(), record.getCompanyId(),
+					getSearchEngineId(), ddlRecord.getCompanyId(),
 					document.get(Field.UID), isCommitImmediately());
 			}
 
@@ -187,7 +181,7 @@ public class DDLIndexer extends BaseIndexer {
 
 		if (document != null) {
 			SearchEngineUtil.updateDocument(
-				getSearchEngineId(), record.getCompanyId(), document,
+				getSearchEngineId(), ddlRecord.getCompanyId(), document,
 				isCommitImmediately());
 		}
 	}
@@ -303,6 +297,7 @@ public class DDLIndexer extends BaseIndexer {
 			getSearchEngineId(), companyId, documents, isCommitImmediately());
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(DDLIndexer.class);
+	private static final Log _log = LogFactoryUtil.getLog(
+		DDLRecordIndexer.class);
 
 }

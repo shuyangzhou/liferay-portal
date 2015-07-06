@@ -50,7 +50,7 @@ import org.osgi.service.component.annotations.Component;
  * @author Eduardo Lundgren
  */
 @Component(immediate = true, service = Indexer.class)
-public class CalendarBookingIndexer extends BaseIndexer {
+public class CalendarBookingIndexer extends BaseIndexer<CalendarBooking> {
 
 	public static final String CLASS_NAME = CalendarBooking.class.getName();
 
@@ -67,17 +67,15 @@ public class CalendarBookingIndexer extends BaseIndexer {
 	}
 
 	@Override
-	protected void doDelete(Object obj) throws Exception {
-		CalendarBooking calendarBooking = (CalendarBooking)obj;
-
+	protected void doDelete(CalendarBooking calendarBooking) throws Exception {
 		deleteDocument(
 			calendarBooking.getCompanyId(),
 			calendarBooking.getCalendarBookingId());
 	}
 
 	@Override
-	protected Document doGetDocument(Object obj) throws Exception {
-		CalendarBooking calendarBooking = (CalendarBooking)obj;
+	protected Document doGetDocument(CalendarBooking calendarBooking)
+		throws Exception {
 
 		Document document = getBaseModelDocument(CLASS_NAME, calendarBooking);
 
@@ -156,9 +154,7 @@ public class CalendarBookingIndexer extends BaseIndexer {
 	}
 
 	@Override
-	protected void doReindex(Object obj) throws Exception {
-		CalendarBooking calendarBooking = (CalendarBooking)obj;
-
+	protected void doReindex(CalendarBooking calendarBooking) throws Exception {
 		int status = calendarBooking.getStatus();
 
 		if ((status == CalendarBookingWorkflowConstants.STATUS_APPROVED) ||

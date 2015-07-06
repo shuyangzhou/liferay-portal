@@ -442,7 +442,7 @@ public abstract class BaseSearchTestCase {
 			Class<?> clazz, long groupId, SearchContext searchContext)
 		throws Exception {
 
-		Indexer indexer = IndexerRegistryUtil.getIndexer(clazz);
+		Indexer<?> indexer = IndexerRegistryUtil.getIndexer(clazz);
 
 		searchContext.setGroupIds(new long[] {groupId});
 

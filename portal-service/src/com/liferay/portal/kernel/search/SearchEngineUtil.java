@@ -303,7 +303,7 @@ public class SearchEngineUtil {
 	public static String[] getEntryClassNames() {
 		Set<String> assetEntryClassNames = new HashSet<>();
 
-		for (Indexer indexer : IndexerRegistryUtil.getIndexers()) {
+		for (Indexer<?> indexer : IndexerRegistryUtil.getIndexers()) {
 			for (String className : indexer.getSearchClassNames()) {
 				if (!_excludedEntryClassNames.contains(className)) {
 					assetEntryClassNames.add(className);
@@ -375,7 +375,7 @@ public class SearchEngineUtil {
 	public static String getSearchEngineId(Document document) {
 		String entryClassName = document.get("entryClassName");
 
-		Indexer indexer = IndexerRegistryUtil.getIndexer(entryClassName);
+		Indexer<?> indexer = IndexerRegistryUtil.getIndexer(entryClassName);
 
 		String searchEngineId = indexer.getSearchEngineId();
 

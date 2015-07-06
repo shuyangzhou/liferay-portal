@@ -93,7 +93,8 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 				return;
 			}
 
-			Indexer indexer = IndexerRegistryUtil.nullSafeGetIndexer(className);
+			Indexer<?> indexer = IndexerRegistryUtil.nullSafeGetIndexer(
+				className);
 
 			if (!indexer.isPermissionAware()) {
 				return;
@@ -211,7 +212,7 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 			BooleanFilter booleanFilter, SearchContext searchContext)
 		throws Exception {
 
-		Indexer indexer = IndexerRegistryUtil.getIndexer(className);
+		Indexer<?> indexer = IndexerRegistryUtil.getIndexer(className);
 
 		if (!indexer.isPermissionAware()) {
 			return booleanFilter;
@@ -392,7 +393,7 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 			String resourceName, String resourceClassPK)
 		throws Exception {
 
-		Indexer indexer = IndexerRegistryUtil.getIndexer(resourceName);
+		Indexer<?> indexer = IndexerRegistryUtil.getIndexer(resourceName);
 
 		if (indexer != null) {
 			indexer.reindex(resourceName, GetterUtil.getLong(resourceClassPK));

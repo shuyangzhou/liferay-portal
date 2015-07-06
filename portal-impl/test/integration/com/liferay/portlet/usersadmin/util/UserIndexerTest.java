@@ -425,7 +425,7 @@ public class UserIndexerTest {
 		Assert.assertEquals(middleName, user.getMiddleName());
 	}
 
-	private Indexer _indexer;
+	private Indexer<User> _indexer;
 	private ServiceContext _serviceContext;
 
 	@DeleteAfterTestRun

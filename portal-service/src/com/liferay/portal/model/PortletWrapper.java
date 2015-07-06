@@ -664,7 +664,7 @@ public class PortletWrapper implements Portlet, ModelWrapper<Portlet> {
 	* @return the indexer instances of the portlet
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.kernel.search.Indexer> getIndexerInstances() {
+	public java.util.List<com.liferay.portal.kernel.search.Indexer<?>> getIndexerInstances() {
 		return _portlet.getIndexerInstances();
 	}
 

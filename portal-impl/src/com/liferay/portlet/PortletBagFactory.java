@@ -93,7 +93,7 @@ public class PortletBagFactory {
 		List<ConfigurationAction> configurationActionInstances =
 			newConfigurationActions(portlet);
 
-		List<Indexer> indexerInstances = newIndexers(portlet);
+		List<Indexer<?>> indexerInstances = newIndexers(portlet);
 
 		List<OpenSearch> openSearchInstances = newOpenSearches(portlet);
 
@@ -435,14 +435,14 @@ public class PortletBagFactory {
 		return friendlyURLMapperTracker;
 	}
 
-	protected List<Indexer> newIndexers(Portlet portlet) throws Exception {
-		ServiceTrackerList<Indexer> indexerInstances = getServiceTrackerList(
-			Indexer.class, portlet);
+	protected List<Indexer<?>> newIndexers(Portlet portlet) throws Exception {
+		ServiceTrackerList<Indexer<?>> indexerInstances = getServiceTrackerList(
+			(Class<Indexer<?>>)(Class<?>)Indexer.class, portlet);
 
 		List<String> indexerClasses = portlet.getIndexerClasses();
 
 		for (String indexerClass : indexerClasses) {
-			Indexer indexerInstance = (Indexer)newInstance(
+			Indexer<?> indexerInstance = (Indexer<?>)newInstance(
 				Indexer.class, indexerClass);
 
 			indexerInstances.add(indexerInstance);

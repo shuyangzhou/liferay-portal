@@ -27,7 +27,7 @@ import javax.portlet.PortletResponse;
  * @author Eudaldo Alonso
  * @author László Csontos
  */
-public abstract class BaseSearcher extends BaseIndexer {
+public abstract class BaseSearcher extends BaseIndexer<Object> {
 
 	@Override
 	public String getClassName() {
@@ -52,7 +52,7 @@ public abstract class BaseSearcher extends BaseIndexer {
 		}
 
 		for (String className : classNames) {
-			Indexer indexer = IndexerRegistryUtil.getIndexer(className);
+			Indexer<?> indexer = IndexerRegistryUtil.getIndexer(className);
 
 			if (indexer == null) {
 				continue;
@@ -97,7 +97,7 @@ public abstract class BaseSearcher extends BaseIndexer {
 	@Deprecated
 	@Override
 	protected void doPostProcessSearchQuery(
-			Indexer indexer, BooleanQuery searchQuery,
+			Indexer<?> indexer, BooleanQuery searchQuery,
 			SearchContext searchContext)
 		throws Exception {
 	}
