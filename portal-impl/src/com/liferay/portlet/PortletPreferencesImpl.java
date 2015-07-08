@@ -18,13 +18,17 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.HashUtil;
+import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.model.Portlet;
 import com.liferay.portal.service.PortletLocalServiceUtil;
 import com.liferay.portal.service.PortletPreferencesLocalServiceUtil;
+import com.liferay.portal.service.persistence.PortletPreferencesUtil;
 import com.liferay.portal.util.PortalUtil;
 
 import java.io.IOException;
 import java.io.Serializable;
+
+import java.lang.reflect.Field;
 
 import java.util.Collections;
 import java.util.Map;
@@ -33,6 +37,8 @@ import javax.portlet.PortletPreferences;
 import javax.portlet.PreferencesValidator;
 import javax.portlet.ReadOnlyException;
 import javax.portlet.ValidatorException;
+
+import org.hibernate.StaleObjectStateException;
 
 /**
  * @author Brian Wing Shun Chan
@@ -160,27 +166,69 @@ public class PortletPreferencesImpl
 			throw new UnsupportedOperationException();
 		}
 
-		try {
-			Portlet portlet = PortletLocalServiceUtil.getPortletById(
-				companyId, _portletId);
+		while (true) {
+			try {
+				Portlet portlet = PortletLocalServiceUtil.getPortletById(
+					companyId, _portletId);
 
-			PreferencesValidator preferencesValidator =
-				PortalUtil.getPreferencesValidator(portlet);
+				PreferencesValidator preferencesValidator =
+					PortalUtil.getPreferencesValidator(portlet);
 
-			if (preferencesValidator != null) {
-				preferencesValidator.validate(this);
+				if (preferencesValidator != null) {
+					preferencesValidator.validate(this);
+				}
+
+				PortletPreferencesLocalServiceUtil.updatePreferences(
+					getOwnerId(), getOwnerType(), _plid, _portletId, this);
+
+				break;
 			}
+			catch (SystemException se) {
+				Throwable t = se;
 
-			PortletPreferencesLocalServiceUtil.updatePreferences(
-				getOwnerId(), getOwnerType(), _plid, _portletId, this);
-		}
-		catch (SystemException se) {
-			throw new IOException(se);
+				Throwable cause = t.getCause();
+
+				while ((cause != null) && ! t.equals(cause)) {
+					t = cause;
+
+					cause = t.getCause();
+				}
+
+				if (t instanceof StaleObjectStateException) {
+					reload();
+				}
+				else {
+					throw new IOException(se);
+				}
+			}
 		}
 	}
 
 	protected String getPortletId() {
 		return _portletId;
+	}
+
+	protected void reload() {
+		PortletPreferencesImpl portletPreferencesImpl =
+			(PortletPreferencesImpl)
+				PortletPreferencesUtil.fetchByO_O_P_P(
+					getOwnerId(), getOwnerType(), _plid, _portletId);
+
+		Map<String, Preference> preferences = getOriginalPreferences();
+
+		preferences.clear();
+		preferences.putAll(portletPreferencesImpl.getOriginalPreferences());
+
+		reset();
+
+		try {
+			Field field = ReflectionUtil.getDeclaredField(
+				BasePreferencesImpl.class, "_originalXML");
+
+			field.set(this, portletPreferencesImpl.getOriginalXML());
+		}
+		catch (Exception e) {
+		}
 	}
 
 	protected long companyId;
