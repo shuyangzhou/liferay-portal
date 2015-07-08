@@ -249,7 +249,7 @@ public abstract class BasePreferencesImpl implements Serializable {
 	}
 
 	protected Map<String, Preference> getModifiedPreferences() {
-		if (_modifiedPreferences == null) {
+		if ((_modifiedPreferences == null) || _modifiedPreferences.isEmpty()) {
 			_modifiedPreferences = new ConcurrentHashMap<>(
 				_originalPreferences);
 		}
@@ -307,7 +307,10 @@ public abstract class BasePreferencesImpl implements Serializable {
 	}
 
 	protected String toXML() {
-		if ((_modifiedPreferences == null) && (_originalXML != null)) {
+		if (((_modifiedPreferences == null) ||
+			 _modifiedPreferences.isEmpty()) &&
+			(_originalXML != null)) {
+
 			return _originalXML;
 		}
 
