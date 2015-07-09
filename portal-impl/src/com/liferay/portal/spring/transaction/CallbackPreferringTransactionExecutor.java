@@ -20,6 +20,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.interceptor.TransactionAttribute;
 import org.springframework.transaction.support.CallbackPreferringPlatformTransactionManager;
+import org.springframework.transaction.support.DefaultTransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 
 /**
@@ -96,12 +97,11 @@ public class CallbackPreferringTransactionExecutor
 
 		@Override
 		public Object doInTransaction(TransactionStatus transactionStatus) {
-			boolean newTransaction = transactionStatus.isNewTransaction();
+			DefaultTransactionStatus defaultTransactionStatus =
+				(DefaultTransactionStatus)transactionStatus;
 
-			if (newTransaction) {
-				fireTransactionCreatedEvent(
-					_transactionAttribute, transactionStatus);
-			}
+			fireTransactionCreatedEvent(
+				_transactionAttribute, defaultTransactionStatus);
 
 			boolean rollback = false;
 
@@ -110,11 +110,11 @@ public class CallbackPreferringTransactionExecutor
 			}
 			catch (Throwable throwable) {
 				if (_transactionAttribute.rollbackOn(throwable)) {
-					if (newTransaction) {
-						fireTransactionRollbackedEvent(
-							_transactionAttribute, transactionStatus,
-							throwable);
+					fireTransactionRollbackedEvent(
+						_transactionAttribute, defaultTransactionStatus,
+						throwable);
 
+					if (defaultTransactionStatus.isNewTransaction()) {
 						rollback = true;
 					}
 
@@ -130,9 +130,9 @@ public class CallbackPreferringTransactionExecutor
 				}
 			}
 			finally {
-				if (newTransaction && !rollback) {
+				if (!rollback) {
 					fireTransactionCommittedEvent(
-						_transactionAttribute, transactionStatus);
+						_transactionAttribute, defaultTransactionStatus);
 				}
 			}
 		}

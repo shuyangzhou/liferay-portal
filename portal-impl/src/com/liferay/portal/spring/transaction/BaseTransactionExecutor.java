@@ -21,6 +21,8 @@ import com.liferay.portal.kernel.transaction.TransactionAttribute.Builder;
 import com.liferay.portal.kernel.transaction.TransactionLifecycleManager;
 import com.liferay.portal.kernel.transaction.TransactionStatus;
 
+import org.springframework.transaction.support.DefaultTransactionStatus;
+
 /**
  * @author Michael C. Han
  * @author Shuyang Zhou
@@ -44,43 +46,44 @@ public abstract class BaseTransactionExecutor implements TransactionExecutor {
 	}
 
 	protected TransactionStatus createTransactionStatus(
-		org.springframework.transaction.TransactionStatus transactionStatus) {
+		DefaultTransactionStatus defaultTransactionStatus) {
 
 		return new TransactionStatus(
-			transactionStatus.isNewTransaction(),
-			transactionStatus.isRollbackOnly(),
-			transactionStatus.isCompleted());
+			defaultTransactionStatus.hasTransaction(),
+			defaultTransactionStatus.isNewTransaction(),
+			defaultTransactionStatus.isRollbackOnly(),
+			defaultTransactionStatus.isCompleted());
 	}
 
 	protected void fireTransactionCommittedEvent(
 		org.springframework.transaction.interceptor.TransactionAttribute
 			transactionAttribute,
-		org.springframework.transaction.TransactionStatus transactionStatus) {
+		DefaultTransactionStatus defaultTransactionStatus) {
 
 		TransactionLifecycleManager.fireTransactionCommittedEvent(
 			createTransactionAttribute(transactionAttribute),
-			createTransactionStatus(transactionStatus));
+			createTransactionStatus(defaultTransactionStatus));
 	}
 
 	protected void fireTransactionCreatedEvent(
 		org.springframework.transaction.interceptor.TransactionAttribute
 			transactionAttribute,
-		org.springframework.transaction.TransactionStatus transactionStatus) {
+		DefaultTransactionStatus defaultTransactionStatus) {
 
 		TransactionLifecycleManager.fireTransactionCreatedEvent(
 			createTransactionAttribute(transactionAttribute),
-			createTransactionStatus(transactionStatus));
+			createTransactionStatus(defaultTransactionStatus));
 	}
 
 	protected void fireTransactionRollbackedEvent(
 		org.springframework.transaction.interceptor.TransactionAttribute
 			transactionAttribute,
-		org.springframework.transaction.TransactionStatus transactionStatus,
+		DefaultTransactionStatus defaultTransactionStatus,
 		Throwable throwable) {
 
 		TransactionLifecycleManager.fireTransactionRollbackedEvent(
 			createTransactionAttribute(transactionAttribute),
-			createTransactionStatus(transactionStatus), throwable);
+			createTransactionStatus(defaultTransactionStatus), throwable);
 	}
 
 }

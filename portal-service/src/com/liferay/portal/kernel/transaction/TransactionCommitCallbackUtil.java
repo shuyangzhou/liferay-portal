@@ -36,7 +36,9 @@ public class TransactionCommitCallbackUtil {
 				TransactionAttribute transactionAttribute,
 				TransactionStatus transactionStatus) {
 
-				pushCallbackList();
+				if (transactionStatus.isNewTransaction()) {
+					pushCallbackList();
+				}
 			}
 
 			@Override
@@ -44,15 +46,18 @@ public class TransactionCommitCallbackUtil {
 				TransactionAttribute transactionAttribute,
 				TransactionStatus transactionStatus) {
 
-				List<Callable<?>> callables = popCallbackList();
+				if (transactionStatus.isNewTransaction()) {
+					List<Callable<?>> callables = popCallbackList();
 
-				for (Callable<?> callable : callables) {
-					try {
-						callable.call();
-					}
-					catch (Exception e) {
-						_log.error(
-							"Unable to execute transaction commit callback", e);
+					for (Callable<?> callable : callables) {
+						try {
+							callable.call();
+						}
+						catch (Exception e) {
+							_log.error(
+								"Unable to execute transaction commit callback",
+								e);
+						}
 					}
 				}
 			}
@@ -62,7 +67,9 @@ public class TransactionCommitCallbackUtil {
 				TransactionAttribute transactionAttribute,
 				TransactionStatus transactionStatus, Throwable throwable) {
 
-				popCallbackList();
+				if (transactionStatus.isNewTransaction()) {
+					popCallbackList();
+				}
 			}
 
 		};
