@@ -19,8 +19,8 @@ import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cache.PortalCacheHelperUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
+import com.liferay.portal.kernel.transaction.CurrentTransactionLifecycleListener;
 import com.liferay.portal.kernel.transaction.TransactionAttribute;
-import com.liferay.portal.kernel.transaction.TransactionLifecycleListener;
 import com.liferay.portal.kernel.transaction.TransactionStatus;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.InitialThreadLocal;
@@ -39,11 +39,12 @@ import java.util.Map;
  */
 public class TransactionalPortalCacheHelper {
 
-	public static final TransactionLifecycleListener
-		TRANSACTION_LIFECYCLE_LISTENER = new TransactionLifecycleListener() {
+	public static final CurrentTransactionLifecycleListener
+		TRANSACTION_LIFECYCLE_LISTENER =
+			new CurrentTransactionLifecycleListener() {
 
 			@Override
-			public void created(
+			protected void doCreated(
 				TransactionAttribute transactionAttribute,
 				TransactionStatus transactionStatus) {
 
@@ -53,7 +54,7 @@ public class TransactionalPortalCacheHelper {
 			}
 
 			@Override
-			public void committed(
+			protected void doCommitted(
 				TransactionAttribute transactionAttribute,
 				TransactionStatus transactionStatus) {
 
@@ -63,7 +64,7 @@ public class TransactionalPortalCacheHelper {
 			}
 
 			@Override
-			public void rollbacked(
+			protected void doRollbacked(
 				TransactionAttribute transactionAttribute,
 				TransactionStatus transactionStatus, Throwable throwable) {
 
@@ -190,7 +191,14 @@ public class TransactionalPortalCacheHelper {
 				PropsUtil.get(PropsKeys.TRANSACTIONAL_CACHE_ENABLED));
 		}
 
-		return _transactionalCacheEnabled;
+		TransactionStatus transactionStatus =
+			TRANSACTION_LIFECYCLE_LISTENER.getCurrentTransactionStatus();
+
+		if (transactionStatus.hasTransaction() && _transactionalCacheEnabled) {
+			return true;
+		}
+
+		return false;
 	}
 
 	private static PortalCacheMap _peekPortalCacheMap() {
