@@ -20,11 +20,17 @@ package com.liferay.portal.kernel.transaction;
 public class TransactionStatus {
 
 	public TransactionStatus(
-		boolean newTransaction, boolean rollbackOnly, boolean completed) {
+		boolean hasTransaction, boolean newTransaction, boolean rollbackOnly,
+		boolean completed) {
 
+		_hasTransaction = hasTransaction;
 		_newTransaction = newTransaction;
 		_rollbackOnly = rollbackOnly;
 		_completed = completed;
+	}
+
+	public boolean hasTransaction() {
+		return _hasTransaction;
 	}
 
 	public boolean isCompleted() {
@@ -40,6 +46,7 @@ public class TransactionStatus {
 	}
 
 	private final boolean _completed;
+	private final boolean _hasTransaction;
 	private final boolean _newTransaction;
 	private final boolean _rollbackOnly;
 

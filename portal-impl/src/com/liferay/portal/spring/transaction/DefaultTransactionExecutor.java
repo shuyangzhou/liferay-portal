@@ -23,6 +23,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.transaction.interceptor.TransactionAttribute;
+import org.springframework.transaction.support.DefaultTransactionStatus;
 
 /**
  * @author Michael C. Han
@@ -69,11 +70,13 @@ public class DefaultTransactionExecutor
 			if (transactionStatus.isNewTransaction()) {
 				if (throwable != null) {
 					fireTransactionRollbackedEvent(
-						transactionAttribute, transactionStatus, throwable);
+						transactionAttribute,
+						(DefaultTransactionStatus)transactionStatus, throwable);
 				}
 				else {
 					fireTransactionCommittedEvent(
-						transactionAttribute, transactionStatus);
+						transactionAttribute,
+						(DefaultTransactionStatus)transactionStatus);
 				}
 			}
 		}
@@ -141,7 +144,8 @@ public class DefaultTransactionExecutor
 			finally {
 				if (transactionStatus.isNewTransaction()) {
 					fireTransactionRollbackedEvent(
-						transactionAttribute, transactionStatus, throwable);
+						transactionAttribute,
+						(DefaultTransactionStatus)transactionStatus, throwable);
 				}
 			}
 		}
@@ -164,7 +168,8 @@ public class DefaultTransactionExecutor
 
 		if (transactionStatus.isNewTransaction()) {
 			fireTransactionCreatedEvent(
-				transactionAttribute, transactionStatus);
+				transactionAttribute,
+				(DefaultTransactionStatus)transactionStatus);
 		}
 
 		return transactionStatus;
