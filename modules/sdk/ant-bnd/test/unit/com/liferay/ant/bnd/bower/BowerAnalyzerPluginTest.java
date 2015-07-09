@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.ant.bnd.plugin;
+package com.liferay.ant.bnd.bower;
 
 import aQute.bnd.osgi.Analyzer;
 import aQute.bnd.osgi.Constants;
@@ -21,7 +21,7 @@ import aQute.bnd.osgi.URLResource;
 
 import aQute.lib.filter.Filter;
 
-import com.liferay.ant.bnd.plugin.BowerAnalyzerPlugin.BowerModule;
+import com.liferay.ant.bnd.bower.BowerAnalyzerPlugin.BowerModule;
 
 import java.net.URL;
 
