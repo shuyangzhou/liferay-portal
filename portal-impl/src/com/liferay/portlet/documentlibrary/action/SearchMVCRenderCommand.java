@@ -39,8 +39,7 @@ public class SearchMVCRenderCommand implements MVCRenderCommand {
 
 	@Override
 	public String render(
-			RenderRequest renderRequest, RenderResponse renderResponse)
-		throws PortletException {
+		RenderRequest renderRequest, RenderResponse renderResponse) {
 
 		return "/html/portlet/document_library/view.jsp";
 	}
