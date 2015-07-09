@@ -116,6 +116,26 @@
 	</target>
 
 	<target name="unit">
-		<echo>${jenkins.axis.variable}</echo>
+		<if>
+			<not>
+				<equals arg1="${jenkins.axis.variable}" arg2="default" />
+			</not>
+			<then>
+				<prepare-test-build />
+
+				<ant dir="portal-service" target="test-class-group" inheritAll="false">
+					<property name="test.class.group.index" value="${jenkins.axis.variable}" />
+				</ant>
+
+				<ant dir="portal-impl" target="test-class-group" inheritAll="false">
+					<property name="test.class.group.index" value="${jenkins.axis.variable}" />
+					<property name="test.type" value="unit" />
+				</ant>
+
+				<merge-test-results />
+
+				<check-deprecated-method />
+			</then>
+		</if>
 	</target>
 </project>
