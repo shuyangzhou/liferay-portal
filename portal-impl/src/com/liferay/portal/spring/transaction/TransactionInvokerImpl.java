@@ -85,8 +85,8 @@ public class TransactionInvokerImpl implements TransactionInvoker {
 
 	@Override
 	public TransactionStatus start(TransactionAttribute transactionAttribute) {
-		org.springframework.transaction.TransactionStatus transactionStatus =
-			TransactionHandlerUtil.start(
+		DefaultTransactionStatus defaultTransactionStatus =
+			(DefaultTransactionStatus)TransactionHandlerUtil.start(
 				TransactionAttributeBuilder.build(
 					true, transactionAttribute.getIsolation(),
 					transactionAttribute.getPropagation(),
@@ -98,9 +98,10 @@ public class TransactionInvokerImpl implements TransactionInvoker {
 					transactionAttribute.getNoRollbackForClassNames()));
 
 		return new TransactionStatus(
-			transactionStatus.isNewTransaction(),
-			transactionStatus.isRollbackOnly(),
-			transactionStatus.isCompleted());
+			defaultTransactionStatus.hasTransaction(),
+			defaultTransactionStatus.isNewTransaction(),
+			defaultTransactionStatus.isRollbackOnly(),
+			defaultTransactionStatus.isCompleted());
 	}
 
 	protected static org.springframework.transaction.TransactionStatus
