@@ -36,8 +36,10 @@ public class TransactionLifecycleNotifier {
 				TransactionAttribute transactionAttribute,
 				TransactionStatus transactionStatus) {
 
-				fireTransactionCreatedEvent(
-					transactionAttribute, transactionStatus);
+				if (transactionStatus.isNewTransaction()) {
+					fireTransactionCreatedEvent(
+						transactionAttribute, transactionStatus);
+				}
 			}
 
 			@Override
@@ -45,8 +47,10 @@ public class TransactionLifecycleNotifier {
 				TransactionAttribute transactionAttribute,
 				TransactionStatus transactionStatus) {
 
-				fireTransactionCommittedEvent(
-					transactionAttribute, transactionStatus);
+				if (transactionStatus.isNewTransaction()) {
+					fireTransactionCommittedEvent(
+						transactionAttribute, transactionStatus);
+				}
 			}
 
 			@Override
@@ -54,8 +58,10 @@ public class TransactionLifecycleNotifier {
 				TransactionAttribute transactionAttribute,
 				TransactionStatus transactionStatus, Throwable throwable) {
 
-				fireTransactionRollbackedEvent(
-					transactionAttribute, transactionStatus, throwable);
+				if (transactionStatus.isNewTransaction()) {
+					fireTransactionRollbackedEvent(
+						transactionAttribute, transactionStatus, throwable);
+				}
 			}
 
 		};

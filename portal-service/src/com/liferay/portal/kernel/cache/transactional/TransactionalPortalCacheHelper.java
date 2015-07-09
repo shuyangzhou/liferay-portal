@@ -47,7 +47,9 @@ public class TransactionalPortalCacheHelper {
 				TransactionAttribute transactionAttribute,
 				TransactionStatus transactionStatus) {
 
-				begin();
+				if (transactionStatus.isNewTransaction()) {
+					begin();
+				}
 			}
 
 			@Override
@@ -55,7 +57,9 @@ public class TransactionalPortalCacheHelper {
 				TransactionAttribute transactionAttribute,
 				TransactionStatus transactionStatus) {
 
-				commit();
+				if (transactionStatus.isNewTransaction()) {
+					commit();
+				}
 			}
 
 			@Override
@@ -63,10 +67,12 @@ public class TransactionalPortalCacheHelper {
 				TransactionAttribute transactionAttribute,
 				TransactionStatus transactionStatus, Throwable throwable) {
 
-				rollback();
+				if (transactionStatus.isNewTransaction()) {
+					rollback();
 
-				EntityCacheUtil.clearLocalCache();
-				FinderCacheUtil.clearLocalCache();
+					EntityCacheUtil.clearLocalCache();
+					FinderCacheUtil.clearLocalCache();
+				}
 			}
 
 		};

@@ -38,7 +38,9 @@ public class ThreadLocalCacheManager {
 			TransactionAttribute transactionAttribute,
 			TransactionStatus transactionStatus) {
 
-			if (!transactionAttribute.isReadOnly()) {
+			if (transactionStatus.isNewTransaction() &&
+				!transactionAttribute.isReadOnly()) {
+
 				enable(Lifecycle.REQUEST);
 			}
 		}
@@ -48,7 +50,9 @@ public class ThreadLocalCacheManager {
 			TransactionAttribute transactionAttribute,
 			TransactionStatus transactionStatus) {
 
-			if (!transactionAttribute.isReadOnly()) {
+			if (transactionStatus.isNewTransaction() &&
+				!transactionAttribute.isReadOnly()) {
+
 				disable(Lifecycle.REQUEST);
 			}
 		}
@@ -58,7 +62,9 @@ public class ThreadLocalCacheManager {
 			TransactionAttribute transactionAttribute,
 			TransactionStatus transactionStatus, Throwable throwable) {
 
-			if (!transactionAttribute.isReadOnly()) {
+			if (transactionStatus.isNewTransaction() &&
+				!transactionAttribute.isReadOnly()) {
+
 				enable(Lifecycle.REQUEST);
 			}
 		}

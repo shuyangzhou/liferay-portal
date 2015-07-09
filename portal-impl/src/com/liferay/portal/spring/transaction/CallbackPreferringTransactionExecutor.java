@@ -100,13 +100,8 @@ public class CallbackPreferringTransactionExecutor
 			DefaultTransactionStatus defaultTransactionStatus =
 				(DefaultTransactionStatus)transactionStatus;
 
-			boolean newTransaction =
-				defaultTransactionStatus.isNewTransaction();
-
-			if (newTransaction) {
-				fireTransactionCreatedEvent(
-					_transactionAttribute, defaultTransactionStatus);
-			}
+			fireTransactionCreatedEvent(
+				_transactionAttribute, defaultTransactionStatus);
 
 			boolean rollback = false;
 
@@ -115,11 +110,11 @@ public class CallbackPreferringTransactionExecutor
 			}
 			catch (Throwable throwable) {
 				if (_transactionAttribute.rollbackOn(throwable)) {
-					if (newTransaction) {
-						fireTransactionRollbackedEvent(
-							_transactionAttribute, defaultTransactionStatus,
-							throwable);
+					fireTransactionRollbackedEvent(
+						_transactionAttribute, defaultTransactionStatus,
+						throwable);
 
+					if (defaultTransactionStatus.isNewTransaction()) {
 						rollback = true;
 					}
 
@@ -135,7 +130,7 @@ public class CallbackPreferringTransactionExecutor
 				}
 			}
 			finally {
-				if (newTransaction && !rollback) {
+				if (!rollback) {
 					fireTransactionCommittedEvent(
 						_transactionAttribute, defaultTransactionStatus);
 				}

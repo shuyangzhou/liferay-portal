@@ -41,7 +41,9 @@ public class LastSessionRecorderUtil {
 			TransactionAttribute transactionAttribute,
 			TransactionStatus transactionStatus) {
 
-			syncLastSessionState();
+			if (transactionStatus.isNewTransaction()) {
+				syncLastSessionState();
+			}
 		}
 
 		@Override
