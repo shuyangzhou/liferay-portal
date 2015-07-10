@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.ant.bnd.plugin;
+package com.liferay.ant.bnd.jsp;
 
 import aQute.bnd.header.Attrs;
 import aQute.bnd.header.OSGiHeader;
