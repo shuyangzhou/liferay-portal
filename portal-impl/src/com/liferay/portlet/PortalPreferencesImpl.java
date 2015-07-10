@@ -27,6 +27,7 @@ import java.io.Serializable;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 import javax.portlet.ReadOnlyException;
 
@@ -140,18 +141,31 @@ public class PortalPreferencesImpl
 
 	@Override
 	public void resetValues(String namespace) {
+		final String namespacef = namespace;
+
 		try {
-			Map<String, Preference> preferences = getPreferences();
+			Callable callable = new Callable<Void>() {
 
-			for (Map.Entry<String, Preference> entry : preferences.entrySet()) {
-				String key = entry.getKey();
+				@Override
+				public Void call() throws Exception {
+					Map<String, Preference> preferences = getPreferences();
 
-				if (key.startsWith(namespace) && !isReadOnly(key)) {
-					reset(key);
+					for (Map.Entry<String, Preference> entry :
+							preferences.entrySet()) {
+
+						String key = entry.getKey();
+
+						if (key.startsWith(namespacef) && !isReadOnly(key)) {
+							reset(key);
+						}
+					}
+
+					return null;
 				}
-			}
 
-			store();
+			};
+
+			reloadableStore(callable);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -174,18 +188,29 @@ public class PortalPreferencesImpl
 			return;
 		}
 
-		key = _encodeKey(namespace, key);
+		final String keyf = _encodeKey(namespace, key);
+
+		final String valuef = value;
 
 		try {
-			if (value != null) {
-				super.setValue(key, value);
-			}
-			else {
-				reset(key);
-			}
+			Callable callable = new Callable<Void>() {
+
+				@Override
+				public Void call() throws Exception {
+					if (valuef != null) {
+						PortalPreferencesImpl.super.setValue(keyf, valuef);
+					}
+					else {
+						reset(keyf);
+					}
+
+					return null;
+				}
+
+			};
 
 			if (_signedIn) {
-				store();
+				reloadableStore(callable);
 			}
 		}
 		catch (Exception e) {
@@ -199,18 +224,29 @@ public class PortalPreferencesImpl
 			return;
 		}
 
-		key = _encodeKey(namespace, key);
+		final String keyf = _encodeKey(namespace, key);
+
+		final String[] valuesf = values;
 
 		try {
-			if (values != null) {
-				super.setValues(key, values);
-			}
-			else {
-				reset(key);
-			}
+			Callable callable = new Callable<Void>() {
+
+				@Override
+				public Void call() throws Exception {
+					if (valuesf != null) {
+						PortalPreferencesImpl.super.setValues(keyf, valuesf);
+					}
+					else {
+						reset(keyf);
+					}
+
+					return null;
+				}
+
+			};
 
 			if (_signedIn) {
-				store();
+				reloadableStore(callable);
 			}
 		}
 		catch (Exception e) {
@@ -227,6 +263,23 @@ public class PortalPreferencesImpl
 		catch (SystemException se) {
 			throw new IOException(se);
 		}
+	}
+
+	@Override
+	protected void reload() {
+		PortalPreferencesImpl portalPreferencesImpl =
+			(PortalPreferencesImpl)
+				PortletPreferencesFactoryUtil.getPortalPreferences(
+					getOwnerId(), isSignedIn());
+
+		Map<String, Preference> preferences = getOriginalPreferences();
+
+		preferences.clear();
+		preferences.putAll(portalPreferencesImpl.getOriginalPreferences());
+
+		reset();
+
+		setOriginalXML(portalPreferencesImpl.getOriginalXML());
 	}
 
 	private String _encodeKey(String namespace, String key) {
