@@ -30,6 +30,10 @@ import java.util.Map;
 
 import javax.portlet.ReadOnlyException;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
+
+import org.hibernate.StaleObjectStateException;
+
 /**
  * @author Brian Wing Shun Chan
  * @author Alexander Chow
@@ -154,7 +158,18 @@ public class PortalPreferencesImpl
 			store();
 		}
 		catch (Exception e) {
-			_log.error(e, e);
+			Throwable t = ExceptionUtils.getRootCause(e);
+
+			if (t instanceof StaleObjectStateException) {
+				PortalPreferences preferences =
+					PortletPreferencesFactoryUtil.getPortalPreferences(
+						getUserId(), isSignedIn());
+
+				preferences.resetValues(namespace);
+			}
+			else {
+				_log.error(e, e);
+			}
 		}
 	}
 
@@ -174,14 +189,14 @@ public class PortalPreferencesImpl
 			return;
 		}
 
-		key = _encodeKey(namespace, key);
+		String encodedKey = _encodeKey(namespace, key);
 
 		try {
 			if (value != null) {
-				super.setValue(key, value);
+				super.setValue(encodedKey, value);
 			}
 			else {
-				reset(key);
+				reset(encodedKey);
 			}
 
 			if (_signedIn) {
@@ -189,7 +204,18 @@ public class PortalPreferencesImpl
 			}
 		}
 		catch (Exception e) {
-			_log.error(e, e);
+			Throwable t = ExceptionUtils.getRootCause(e);
+
+			if (t instanceof StaleObjectStateException) {
+				PortalPreferences preferences =
+					PortletPreferencesFactoryUtil.getPortalPreferences(
+						getUserId(), isSignedIn());
+
+				preferences.setValue(namespace, key, value);
+			}
+			else {
+				_log.error(e, e);
+			}
 		}
 	}
 
@@ -199,14 +225,14 @@ public class PortalPreferencesImpl
 			return;
 		}
 
-		key = _encodeKey(namespace, key);
+		String encodedKey = _encodeKey(namespace, key);
 
 		try {
 			if (values != null) {
-				super.setValues(key, values);
+				super.setValues(encodedKey, values);
 			}
 			else {
-				reset(key);
+				reset(encodedKey);
 			}
 
 			if (_signedIn) {
@@ -214,7 +240,18 @@ public class PortalPreferencesImpl
 			}
 		}
 		catch (Exception e) {
-			_log.error(e, e);
+			Throwable t = ExceptionUtils.getRootCause(e);
+
+			if (t instanceof StaleObjectStateException) {
+				PortalPreferences preferences =
+					PortletPreferencesFactoryUtil.getPortalPreferences(
+						getUserId(), isSignedIn());
+
+				preferences.setValues(namespace, key, values);
+			}
+			else {
+				_log.error(e, e);
+			}
 		}
 	}
 
