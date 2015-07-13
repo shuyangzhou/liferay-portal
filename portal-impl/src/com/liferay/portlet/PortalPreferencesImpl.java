@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.HashUtil;
+import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.service.PortalPreferencesLocalServiceUtil;
@@ -25,10 +26,14 @@ import com.liferay.portal.service.PortalPreferencesLocalServiceUtil;
 import java.io.IOException;
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.Collections;
 import java.util.Map;
 
 import javax.portlet.ReadOnlyException;
+
+import org.hibernate.StaleObjectStateException;
 
 /**
  * @author Brian Wing Shun Chan
@@ -140,21 +145,42 @@ public class PortalPreferencesImpl
 
 	@Override
 	public void resetValues(String namespace) {
-		try {
-			Map<String, Preference> preferences = getPreferences();
+		while (true) {
+			try {
+				Map<String, Preference> preferences = getPreferences();
 
-			for (Map.Entry<String, Preference> entry : preferences.entrySet()) {
-				String key = entry.getKey();
+				for (Map.Entry<String, Preference> entry :
+						preferences.entrySet()) {
 
-				if (key.startsWith(namespace) && !isReadOnly(key)) {
-					reset(key);
+					String key = entry.getKey();
+
+					if (key.startsWith(namespace) && !isReadOnly(key)) {
+						reset(key);
+					}
+				}
+
+				store();
+			}
+			catch (Exception e) {
+				Throwable t = e;
+
+				Throwable cause = t.getCause();
+
+				while ((cause != null) && ! t.equals(cause)) {
+					t = cause;
+
+					cause = t.getCause();
+				}
+
+				if (t instanceof StaleObjectStateException) {
+					reload();
+				}
+				else {
+					_log.error(e, e);
+
+					break;
 				}
 			}
-
-			store();
-		}
-		catch (Exception e) {
-			_log.error(e, e);
 		}
 	}
 
@@ -174,22 +200,43 @@ public class PortalPreferencesImpl
 			return;
 		}
 
-		key = _encodeKey(namespace, key);
+		String encodedKey = _encodeKey(namespace, key);
 
-		try {
-			if (value != null) {
-				super.setValue(key, value);
-			}
-			else {
-				reset(key);
-			}
+		while (true) {
+			try {
+				if (value != null) {
+					super.setValue(encodedKey, value);
+				}
+				else {
+					reset(encodedKey);
+				}
 
-			if (_signedIn) {
-				store();
+				if (_signedIn) {
+					store();
+				}
+
+				break;
 			}
-		}
-		catch (Exception e) {
-			_log.error(e, e);
+			catch (Exception e) {
+				Throwable t = e;
+
+				Throwable cause = t.getCause();
+
+				while ((cause != null) && ! t.equals(cause)) {
+					t = cause;
+
+					cause = t.getCause();
+				}
+
+				if (t instanceof StaleObjectStateException) {
+					reload();
+				}
+				else {
+					_log.error(e, e);
+
+					break;
+				}
+			}
 		}
 	}
 
@@ -199,22 +246,41 @@ public class PortalPreferencesImpl
 			return;
 		}
 
-		key = _encodeKey(namespace, key);
+		String encodedKey = _encodeKey(namespace, key);
 
-		try {
-			if (values != null) {
-				super.setValues(key, values);
-			}
-			else {
-				reset(key);
-			}
+		while (true) {
+			try {
+				if (values != null) {
+					super.setValues(encodedKey, values);
+				}
+				else {
+					reset(encodedKey);
+				}
 
-			if (_signedIn) {
-				store();
+				if (_signedIn) {
+					store();
+				}
 			}
-		}
-		catch (Exception e) {
-			_log.error(e, e);
+			catch (Exception e) {
+				Throwable t = e;
+
+				Throwable cause = t.getCause();
+
+				while ((cause != null) && ! t.equals(cause)) {
+					t = cause;
+
+					cause = t.getCause();
+				}
+
+				if (t instanceof StaleObjectStateException) {
+					reload();
+				}
+				else {
+					_log.error(e, e);
+
+					break;
+				}
+			}
 		}
 	}
 
@@ -226,6 +292,29 @@ public class PortalPreferencesImpl
 		}
 		catch (SystemException se) {
 			throw new IOException(se);
+		}
+	}
+
+	protected void reload() {
+		PortalPreferencesImpl portalPreferencesImpl =
+			(PortalPreferencesImpl)
+				PortletPreferencesFactoryUtil.getPortalPreferences(
+					getOwnerId(), isSignedIn());
+
+		Map<String, Preference> preferences = getOriginalPreferences();
+
+		preferences.clear();
+		preferences.putAll(portalPreferencesImpl.getOriginalPreferences());
+
+		reset();
+
+		try {
+			Field field = ReflectionUtil.getDeclaredField(
+				BasePreferencesImpl.class, "_originalXML");
+
+			field.set(this, portalPreferencesImpl.getOriginalXML());
+		}
+		catch (Exception e) {
 		}
 	}
 
