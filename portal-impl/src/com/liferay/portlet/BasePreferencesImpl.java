@@ -25,10 +25,13 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.portlet.ReadOnlyException;
 import javax.portlet.ValidatorException;
+
+import org.hibernate.StaleObjectStateException;
 
 /**
  * @author Alexander Chow
@@ -141,7 +144,7 @@ public abstract class BasePreferencesImpl implements Serializable {
 	}
 
 	public void reset() {
-		_modifiedPreferences = new ConcurrentHashMap<>();
+		_modifiedPreferences = null;
 	}
 
 	public abstract void reset(String key) throws ReadOnlyException;
@@ -213,6 +216,22 @@ public abstract class BasePreferencesImpl implements Serializable {
 	}
 
 	public abstract void store() throws IOException, ValidatorException;
+
+	protected boolean causedByStaleObjectException(Throwable t) {
+		Throwable cause = t.getCause();
+
+		while ((t != null) && !t.equals(cause)) {
+			if (t instanceof StaleObjectStateException) {
+				return true;
+			}
+
+			t = cause;
+
+			cause = t.getCause();
+		}
+
+		return false;
+	}
 
 	protected String getActualValue(String value) {
 		if ((value == null) || value.equals(_NULL_VALUE)) {
@@ -306,6 +325,34 @@ public abstract class BasePreferencesImpl implements Serializable {
 		return false;
 	}
 
+	protected void reload() throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	};
+
+	protected Object reloadableStore(Callable callable) throws Exception {
+		while (true) {
+			try {
+				callable.call();
+
+				store();
+
+				return null;
+			}
+			catch (Exception e) {
+				if (causedByStaleObjectException(e)) {
+					reload();
+				}
+				else {
+					throw e;
+				}
+			}
+		}
+	}
+
+	protected void setOriginalXML(String xml) {
+		_originalXML = xml;
+	}
+
 	protected String toXML() {
 		if ((_modifiedPreferences == null) && (_originalXML != null)) {
 			return _originalXML;
@@ -340,7 +387,7 @@ public abstract class BasePreferencesImpl implements Serializable {
 
 	private Map<String, Preference> _modifiedPreferences;
 	private final Map<String, Preference> _originalPreferences;
-	private final String _originalXML;
+	private String _originalXML;
 	private final long _ownerId;
 	private final int _ownerType;
 
