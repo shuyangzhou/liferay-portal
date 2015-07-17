@@ -25,8 +25,11 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ResourceConstants;
+import com.liferay.portal.model.Role;
+import com.liferay.portal.model.RoleConstants;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.auth.CompanyThreadLocal;
+import com.liferay.portal.security.permission.ActionKeys;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.service.access.control.profile.configuration.SACPConfiguration;
 import com.liferay.service.access.control.profile.constants.SACPConstants;
@@ -99,26 +102,59 @@ public class SACPEntryLocalServiceImpl extends SACPEntryLocalServiceBaseImpl {
 			new CompanyServiceSettingsLocator(
 				companyId, SACPConstants.SERVICE_NAME));
 
-		SACPEntry sacpEntry = sacpEntryPersistence.fetchByC_N(
-			companyId, sacpConfiguration.defaultSACPEntryName());
+		SACPEntry applicationSACPEntry = sacpEntryPersistence.fetchByC_N(
+			companyId, sacpConfiguration.defaultApplicationSACPEntryName());
+		SACPEntry userSACPEntry = sacpEntryPersistence.fetchByC_N(
+			companyId, sacpConfiguration.defaultUserSACPEntryName());
 
-		if (sacpEntry != null) {
+		if ((applicationSACPEntry != null) && (userSACPEntry != null)) {
 			return;
 		}
 
 		long defaultUserId = userLocalService.getDefaultUserId(companyId);
+		Role guestRole = roleLocalService.getRole(
+			companyId, RoleConstants.GUEST);
 
-		Map<Locale, String> titleMap = new HashMap<>();
+		if (applicationSACPEntry == null) {
+			Map<Locale, String> titleMap = new HashMap<>();
 
-		titleMap.put(
-			LocaleUtil.getDefault(),
-			sacpConfiguration.defaultSACPEntryDescription());
+			titleMap.put(
+				LocaleUtil.getDefault(),
+				sacpConfiguration.defaultApplicationSACPEntryDescription());
 
-		addSACPEntry(
-			defaultUserId,
-			sacpConfiguration.defaultSACPEntryServiceSignatures(), true,
-			sacpConfiguration.defaultSACPEntryName(), titleMap,
-			new ServiceContext());
+			applicationSACPEntry = addSACPEntry(
+				defaultUserId,
+				sacpConfiguration.
+					defaultApplicationSACPEntryServiceSignatures(),
+				true, sacpConfiguration.defaultApplicationSACPEntryName(),
+				titleMap, new ServiceContext());
+
+			resourcePermissionLocalService.setResourcePermissions(
+				applicationSACPEntry.getCompanyId(), SACPEntry.class.getName(),
+				ResourceConstants.SCOPE_INDIVIDUAL,
+				String.valueOf(applicationSACPEntry.getSacpEntryId()),
+				guestRole.getRoleId(), new String[] {ActionKeys.VIEW});
+		}
+
+		if (userSACPEntry == null) {
+			Map<Locale, String> titleMap = new HashMap<>();
+
+			titleMap.put(
+				LocaleUtil.getDefault(),
+				sacpConfiguration.defaultUserSACPEntryDescription());
+
+			userSACPEntry = addSACPEntry(
+				defaultUserId,
+				sacpConfiguration.defaultUserSACPEntryServiceSignatures(), true,
+				sacpConfiguration.defaultUserSACPEntryName(), titleMap,
+				new ServiceContext());
+
+			resourcePermissionLocalService.setResourcePermissions(
+				userSACPEntry.getCompanyId(), SACPEntry.class.getName(),
+				ResourceConstants.SCOPE_INDIVIDUAL,
+				String.valueOf(userSACPEntry.getSacpEntryId()),
+				guestRole.getRoleId(), new String[] {ActionKeys.VIEW});
+		}
 	}
 
 	@Override

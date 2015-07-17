@@ -34,6 +34,7 @@ import com.liferay.portal.model.PortletPreferencesIds;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.model.RoleConstants;
 import com.liferay.portal.security.permission.ResourceActionsUtil;
+import com.liferay.portal.service.permission.ModelPermissions;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 
@@ -489,6 +490,10 @@ public class ServiceContext implements Cloneable, Serializable {
 
 	public Locale getLocale() {
 		return LocaleUtil.fromLanguageId(_languageId);
+	}
+
+	public ModelPermissions getModelPermissions() {
+		return _modelPermissions;
 	}
 
 	/**
@@ -1332,6 +1337,10 @@ public class ServiceContext implements Cloneable, Serializable {
 		_layoutURL = layoutURL;
 	}
 
+	public void setModelPermissions(ModelPermissions modelPermissions) {
+		_modelPermissions = modelPermissions;
+	}
+
 	/**
 	 * Sets the date when an entity was modified in this service context.
 	 *
@@ -1555,6 +1564,7 @@ public class ServiceContext implements Cloneable, Serializable {
 	private String _languageId;
 	private String _layoutFullURL;
 	private String _layoutURL;
+	private ModelPermissions _modelPermissions;
 	private Date _modifiedDate;
 	private String _pathFriendlyURLPrivateGroup;
 	private String _pathFriendlyURLPrivateUser;

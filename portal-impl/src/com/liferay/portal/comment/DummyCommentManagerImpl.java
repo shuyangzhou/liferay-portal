@@ -163,6 +163,7 @@ public class DummyCommentManagerImpl implements CommentManager {
 				return false;
 			}
 
+			@Override
 			public boolean hasSubscribePermission(
 				long companyId, long groupId, String className, long classPK) {
 
