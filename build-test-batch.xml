@@ -59,17 +59,24 @@
 
 					<set-portal-impl-system-ext-properties />
 
+					<ant dir="portal-impl" target="deploy-properties" inheritall="false" />
+
 					<exec executable="service" failonerror="true">
 						<arg line="${database.service.name} start" />
 					</exec>
 
 					<antcall target="copy-optional-jars" inheritall="false" >
-						<param name="database.type" value="${database.type}" />
+						<param name="database.type" value="@{database.type}" />
 						<param name="todir" value="lib/development" />
 					</antcall>
 
+					<antcall target="copy-optional-jars" inheritall="false" >
+						<param name="database.type" value="@{database.type}" />
+						<param name="todir" value="${app.server.lib.global.dir}" />
+					</antcall>
+
 					<antcall target="rebuild-database" inheritall="false" >
-						<param name="database.type" value="${database.type}" />
+						<param name="database.type" value="@{database.type}" />
 					</antcall>
 
 					<test-action />
@@ -213,8 +220,6 @@
 				</exec>
 
 				<antcall target="rebuild-database" inheritAll="false" />
-
-				<antcall target="delete-liferay-home" />
 
 				<ant dir="modules" target="test-class-group" inheritAll="false">
 					<property name="test.class.group.index" value="@{test.class.group.index}" />
