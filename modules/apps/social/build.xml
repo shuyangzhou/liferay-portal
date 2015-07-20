@@ -3,4 +3,12 @@
 
 <project>
 	<import file="../../../tools/sdk/build-common-plugins.xml" />
+
+	<target name="test-integration">
+		<ant target="clean" />
+		<ant target="compile" />
+		<ant target="deploy" />
+
+		<ant antfile="../../../tools/sdk/build-common-plugins.xml" target="test-integration" />
+	</target>
 </project>

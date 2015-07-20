@@ -5,4 +5,18 @@
 	<property name="import.shared" value="social-networking-service" />
 
 	<import file="../../../../tools/sdk/build-common-osgi-plugin.xml" />
+
+	<target name="test-class">
+		<subant target="clean">
+			<fileset dir="../" includes="build.xml" />
+		</subant>
+		<subant target="compile">
+			<fileset dir="../" includes="build.xml" />
+		</subant>
+		<subant target="deploy">
+			<fileset dir="../" includes="build.xml" />
+		</subant>
+
+		<ant antfile="../../../../tools/sdk/build-common-osgi-plugin.xml" target="test-class" />
+	</target>
 </project>
