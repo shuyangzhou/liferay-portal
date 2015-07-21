@@ -4926,9 +4926,18 @@ module.framework.properties.osgi.console=11312</echo>
 				</antcall>
 			</then>
 			<else>
-				<ant antfile="build-dist.xml" target="build-dist-tomcat" inheritAll="false" />
+				<ant antfile="build-dist.xml" target="build-dist-tomcat" inheritAll="false" >
+					<property name="test.build.unit" value="${test.build.unit}" />
+				</ant>
 
-				<setup-testable-tomcat />
+				<if>
+					<not>
+						<equals arg1="${test.batch.name}" arg2="unit" />
+					</not>
+					<then>
+						<setup-testable-tomcat />
+					</then>
+				</if>
 
 				<antcall target="prepare-portal-ext-properties" />
 
