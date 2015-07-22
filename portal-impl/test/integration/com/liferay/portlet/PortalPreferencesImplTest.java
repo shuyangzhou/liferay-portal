@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.FutureTask;
+import java.util.concurrent.Semaphore;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.spi.LoggingEvent;
@@ -423,6 +424,8 @@ public class PortalPreferencesImplTest {
 			try {
 				_cyclicBarrier.await();
 
+				_semaphore.acquire();
+
 				_originalTransactionExecutor.commit(
 					platformTransactionManager, transactionAttribute,
 					transactionStatus);
@@ -431,6 +434,8 @@ public class PortalPreferencesImplTest {
 				ReflectionUtil.throwException(t);
 			}
 			finally {
+				_semaphore.release();
+
 				PortalPreferencesWrapperCacheUtil.remove(
 					PortletKeys.PREFS_OWNER_ID_DEFAULT,
 					PortletKeys.PREFS_OWNER_TYPE_USER);
@@ -447,6 +452,8 @@ public class PortalPreferencesImplTest {
 				}
 
 			});
+
+		private final Semaphore _semaphore = new Semaphore(1);
 
 	}
 
