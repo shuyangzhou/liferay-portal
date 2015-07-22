@@ -260,6 +260,28 @@
 		</sequential>
 	</macrodef>
 
+	<target name="db2-test">
+		<exec dir="/opt/ibm/db2/V10.5/bin" executable="${database.db2.service.executable}">
+			<arg line="${database.db2.service.cmd.stop}" />
+		</exec>
+
+		<exec dir="/opt/ibm/db2/V10.5/bin" executable="${database.db2.service.executable}" failonerror="true">
+			<arg line="${database.db2.service.cmd.start}" />
+		</exec>
+
+		<exec dir="/opt/ibm/db2/V10.5/bin" executable="${db2.executable}">
+			<arg line="drop db lportal" />
+		</exec>
+		<exec dir="/opt/ibm/db2/V10.5/bin" executable="${db2.executable}" failonerror="true">
+			<arg value="-f${project.dir}/create.sql" />
+			<arg value="-t" />
+		</exec>
+
+		<exec dir="/opt/ibm/db2/V10.5/bin" executable="${database.db2.service.executable}">
+			<arg line="${database.db2.service.cmd.stop}" />
+		</exec>
+	</target>
+
 	<target name="functional-tomcat-mysql">
 		<run-functional-test database.type="mysql" />
 	</target>
