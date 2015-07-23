@@ -680,6 +680,7 @@ public class DataFactory {
 			for (int j = 0; j < _maxAssetTagCount; j++) {
 				AssetTagModel assetTagModel = new AssetTagModelImpl();
 
+				assetTagModel.setUuid(SequentialUUID.generate());
 				assetTagModel.setTagId(_counter.get());
 				assetTagModel.setGroupId(i);
 				assetTagModel.setCompanyId(_companyId);
@@ -2963,6 +2964,7 @@ public class DataFactory {
 		wikiNodeModel.setModifiedDate(new Date());
 		wikiNodeModel.setName("Test Node " + index);
 		wikiNodeModel.setLastPostDate(new Date());
+		wikiNodeModel.setLastPublishDate(new Date());
 		wikiNodeModel.setStatusDate(new Date());
 
 		return wikiNodeModel;
@@ -2988,6 +2990,7 @@ public class DataFactory {
 		wikiPageModel.setContent("This is test page " + index + ".");
 		wikiPageModel.setFormat("creole");
 		wikiPageModel.setHead(true);
+		wikiPageModel.setLastPublishDate(new Date());
 
 		return wikiPageModel;
 	}

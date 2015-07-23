@@ -122,7 +122,7 @@ public interface BlogsEntryLocalService extends BaseLocalService,
 
 	public void addEntryResources(
 		com.liferay.portlet.blogs.model.BlogsEntry entry,
-		java.lang.String[] groupPermissions, java.lang.String[] guestPermissions)
+		com.liferay.portal.service.permission.ModelPermissions modelPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public void addEntryResources(long entryId, boolean addGroupPermissions,
@@ -130,7 +130,7 @@ public interface BlogsEntryLocalService extends BaseLocalService,
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public void addEntryResources(long entryId,
-		java.lang.String[] groupPermissions, java.lang.String[] guestPermissions)
+		com.liferay.portal.service.permission.ModelPermissions modelPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public void checkEntries()

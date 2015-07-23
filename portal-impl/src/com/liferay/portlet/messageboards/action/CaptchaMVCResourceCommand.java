@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
 import com.liferay.portal.util.PortletKeys;
 
-import javax.portlet.PortletException;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 
@@ -40,8 +39,7 @@ public class CaptchaMVCResourceCommand implements MVCResourceCommand {
 
 	@Override
 	public boolean serveResource(
-			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
-		throws PortletException {
+		ResourceRequest resourceRequest, ResourceResponse resourceResponse) {
 
 		try {
 			CaptchaUtil.serveImage(resourceRequest, resourceResponse);
