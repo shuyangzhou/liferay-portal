@@ -18,7 +18,6 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
 import com.liferay.portal.util.PortletKeys;
 
-import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
@@ -37,8 +36,7 @@ public class SelectCategoryMVCRenderCommand implements MVCRenderCommand {
 
 	@Override
 	public String render(
-			RenderRequest renderRequest, RenderResponse renderResponse)
-		throws PortletException {
+		RenderRequest renderRequest, RenderResponse renderResponse) {
 
 		return "/portlet/message_boards/select_category.jsp";
 	}

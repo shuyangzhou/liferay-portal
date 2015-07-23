@@ -15,7 +15,7 @@
 package com.liferay.portlet.dynamicdatamapping;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.model.StagedModel;
+import com.liferay.portal.model.StagedGroupedModel;
 import com.liferay.portlet.dynamicdatamapping.model.DDMForm;
 import com.liferay.portlet.dynamicdatamapping.model.DDMFormField;
 import com.liferay.portlet.dynamicdatamapping.model.DDMFormLayout;
@@ -28,7 +28,7 @@ import java.util.Set;
 /**
  * @author Leonardo Barros
  */
-public interface DDMStructure extends StagedModel {
+public interface DDMStructure extends StagedGroupedModel {
 
 	public List<String> getChildrenFieldNames(String fieldName)
 		throws PortalException;
@@ -63,6 +63,7 @@ public interface DDMStructure extends StagedModel {
 
 	public DDMForm getFullHierarchyDDMForm();
 
+	@Override
 	public long getGroupId();
 
 	public String getName();
@@ -85,6 +86,7 @@ public interface DDMStructure extends StagedModel {
 
 	public int getType();
 
+	@Override
 	public long getUserId();
 
 	public boolean hasField(String fieldName);

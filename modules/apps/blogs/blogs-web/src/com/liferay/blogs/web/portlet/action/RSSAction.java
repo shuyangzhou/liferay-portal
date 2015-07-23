@@ -14,10 +14,12 @@
 
 package com.liferay.blogs.web.portlet.action;
 
-import com.liferay.blogs.web.settings.internal.BlogsPortletInstanceSettings;
+import com.liferay.blogs.settings.BlogsGroupServiceSettings;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
+import com.liferay.portal.kernel.settings.GroupServiceSettingsLocator;
+import com.liferay.portal.kernel.settings.SettingsFactory;
+import com.liferay.portal.kernel.settings.SettingsFactoryUtil;
 import com.liferay.portal.kernel.struts.StrutsAction;
-import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.RSSUtil;
 import com.liferay.portal.kernel.util.StringPool;
@@ -27,10 +29,9 @@ import com.liferay.portal.struts.BaseRSSStrutsAction;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.WebKeys;
 import com.liferay.portlet.blogs.service.BlogsEntryServiceUtil;
+import com.liferay.portlet.blogs.util.BlogsConstants;
 
 import java.util.Date;
-
-import javax.portlet.PortletConfig;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -115,19 +116,20 @@ public class RSSAction extends BaseRSSStrutsAction {
 	protected boolean isRSSFeedsEnabled(HttpServletRequest request)
 		throws Exception {
 
+		SettingsFactory settingsFactory =
+			SettingsFactoryUtil.getSettingsFactory();
+
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		Layout layout = themeDisplay.getLayout();
+		BlogsGroupServiceSettings rssBlogsGroupServiceSettings =
+			settingsFactory.getSettings(
+				BlogsGroupServiceSettings.class,
+				new GroupServiceSettingsLocator(
+					themeDisplay.getSiteGroupId(),
+					BlogsConstants.SERVICE_NAME));
 
-		PortletConfig portletConfig = (PortletConfig)request.getAttribute(
-			JavaConstants.JAVAX_PORTLET_CONFIG);
-
-		BlogsPortletInstanceSettings blogsPortletInstanceSettings =
-			BlogsPortletInstanceSettings.getInstance(
-				layout, portletConfig.getPortletName());
-
-		return blogsPortletInstanceSettings.isEnableRSS();
+		return rssBlogsGroupServiceSettings.enableRss();
 	}
 
 }

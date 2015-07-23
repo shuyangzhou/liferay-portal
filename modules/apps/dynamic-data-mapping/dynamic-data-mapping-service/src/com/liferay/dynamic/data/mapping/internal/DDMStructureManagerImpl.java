@@ -327,8 +327,10 @@ public class DDMStructureManagerImpl implements DDMStructureManager {
 		_ddmStructureLocalService.updateDDMStructure(ddmStructure);
 	}
 
-	protected OrderByComparator getStructureOrderByComparator(
-		int structureComparator) {
+	protected OrderByComparator
+		<com.liferay.portlet.dynamicdatamapping.model.DDMStructure>
+		getStructureOrderByComparator(
+			int structureComparator) {
 
 		if (structureComparator ==
 				DDMStructureManager.STRUCTURE_COMPARATOR_STRUCTURE_KEY) {
