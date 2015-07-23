@@ -84,7 +84,6 @@ public class LiferayOSGiPlugin extends LiferayJavaPlugin {
 	public void apply(Project project) {
 		super.apply(project);
 
-		configureBundleExtension(project);
 		configureJspCExtension(project);
 
 		configureArchivesBaseName(project);
@@ -411,7 +410,7 @@ public class LiferayOSGiPlugin extends LiferayJavaPlugin {
 	protected void applyPlugins(Project project) {
 		GradleUtil.applyPlugin(project, BundlePlugin.class);
 
-		replaceJarBuilderFactory(project);
+		configureBundleExtension(project);
 
 		super.applyPlugins(project);
 	}
@@ -427,6 +426,8 @@ public class LiferayOSGiPlugin extends LiferayJavaPlugin {
 	}
 
 	protected void configureBundleExtension(Project project) {
+		replaceJarBuilderFactory(project);
+
 		Map<String, String> bundleInstructions = getBundleInstructions(project);
 
 		Properties bundleProperties = null;
@@ -570,6 +571,18 @@ public class LiferayOSGiPlugin extends LiferayJavaPlugin {
 	}
 
 	@Override
+	protected void configureTaskBuildServiceHbmFileName(
+		BuildServiceTask buildServiceTask) {
+
+		Project project = buildServiceTask.getProject();
+
+		File hbmFile = new File(
+			getResourcesDir(project), "META-INF/module-hbm.xml");
+
+		buildServiceTask.setHbmFileName(project.relativePath(hbmFile));
+	}
+
+	@Override
 	protected void configureTaskBuildServiceOsgiModule(
 		BuildServiceTask buildServiceTask) {
 
@@ -584,10 +597,44 @@ public class LiferayOSGiPlugin extends LiferayJavaPlugin {
 	}
 
 	@Override
+	protected void configureTaskBuildServicePropsUtil(
+		BuildServiceTask buildServiceTask) {
+
+		String bundleSymbolicName = getBundleInstruction(
+			buildServiceTask.getProject(), Constants.BUNDLE_SYMBOLICNAME);
+
+		buildServiceTask.setPropsUtil(
+			bundleSymbolicName + ".util.ServiceProps");
+	}
+
+	@Override
+	protected void configureTaskBuildServiceSpringFileName(
+		BuildServiceTask buildServiceTask) {
+
+		Project project = buildServiceTask.getProject();
+
+		File springFile = new File(
+			getResourcesDir(project), "META-INF/spring/module-spring.xml");
+
+		buildServiceTask.setSpringFileName(project.relativePath(springFile));
+	}
+
+	@Override
 	protected void configureTaskBuildServiceSpringNamespaces(
 		BuildServiceTask buildServiceTask) {
 
 		buildServiceTask.setSpringNamespaces(new String[] {"beans", "osgi"});
+	}
+
+	@Override
+	protected void configureTaskBuildServiceSqlDirName(
+		BuildServiceTask buildServiceTask) {
+
+		Project project = buildServiceTask.getProject();
+
+		File sqlDir = new File(getResourcesDir(project), "META-INF/sql");
+
+		buildServiceTask.setSqlDirName(project.relativePath(sqlDir));
 	}
 
 	@Override
@@ -621,15 +668,19 @@ public class LiferayOSGiPlugin extends LiferayJavaPlugin {
 
 		Copy copy = (Copy)GradleUtil.getTask(project, DEPLOY_TASK_NAME);
 
-		configureTaskDeployFrom(copy);
 		configureTaskDeployRename(copy);
 	}
 
+	@Override
 	protected void configureTaskDeployFrom(Copy copy) {
+		super.configureTaskDeployFrom(copy);
+
 		File wsddJarFile = getWSDDJarFile(copy.getProject());
 
 		if (wsddJarFile.exists()) {
 			copy.from(wsddJarFile);
+
+			addCleanDeployedFile(copy.getProject(), wsddJarFile);
 		}
 	}
 
@@ -640,9 +691,7 @@ public class LiferayOSGiPlugin extends LiferayJavaPlugin {
 
 			@SuppressWarnings("unused")
 			public String doCall(String fileName) {
-				return fileName.replace(
-					"-" + project.getVersion() + "." + Jar.DEFAULT_EXTENSION,
-					"." + Jar.DEFAULT_EXTENSION);
+				return getDeployedFileName(project, fileName);
 			}
 
 		};
@@ -692,6 +741,19 @@ public class LiferayOSGiPlugin extends LiferayJavaPlugin {
 			project, BundleExtension.class);
 
 		return (Map<String, String>)bundleExtension.getInstructions();
+	}
+
+	@Override
+	protected String getDeployedFileName(Project project, File sourceFile) {
+		return getDeployedFileName(project, sourceFile.getName());
+	}
+
+	protected String getDeployedFileName(
+		Project project, String sourceFileName) {
+
+		return sourceFileName.replace(
+			"-" + project.getVersion() + "." + Jar.DEFAULT_EXTENSION,
+			"." + Jar.DEFAULT_EXTENSION);
 	}
 
 	protected FileTree getJarsFileTree(Project project, File dir) {

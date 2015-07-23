@@ -29,13 +29,14 @@ public class SimpleKeywordTokenizerTest {
 		SimpleKeywordTokenizer simpleKeywordTokenizer =
 			new SimpleKeywordTokenizer();
 
-		Assert.assertFalse(
+		Assert.assertTrue(
 			simpleKeywordTokenizer.requiresTokenization(
 				"This is a simple test"));
-
-		Assert.assertFalse(
+		Assert.assertTrue(
 			simpleKeywordTokenizer.requiresTokenization(
-				"This is a simple test"));
+				"This \"is a simple\" test"));
+		Assert.assertFalse(
+			simpleKeywordTokenizer.requiresTokenization("\"is a simple\""));
 	}
 
 	@Test
@@ -47,7 +48,6 @@ public class SimpleKeywordTokenizerTest {
 			"This is a simple token test");
 
 		Assert.assertEquals(6, tokens.size());
-
 		Assert.assertEquals("This", tokens.get(0));
 		Assert.assertEquals("is", tokens.get(1));
 		Assert.assertEquals("a", tokens.get(2));
@@ -65,7 +65,6 @@ public class SimpleKeywordTokenizerTest {
 			"This is a \"simple token\" test");
 
 		Assert.assertEquals(5, tokens.size());
-
 		Assert.assertEquals("This", tokens.get(0));
 		Assert.assertEquals("is", tokens.get(1));
 		Assert.assertEquals("a", tokens.get(2));
@@ -76,7 +75,6 @@ public class SimpleKeywordTokenizerTest {
 			"This \"is a\" simple token test");
 
 		Assert.assertEquals(5, tokens.size());
-
 		Assert.assertEquals("This", tokens2.get(0));
 		Assert.assertEquals("\"is a\"", tokens2.get(1));
 		Assert.assertEquals("simple", tokens2.get(2));
@@ -93,7 +91,6 @@ public class SimpleKeywordTokenizerTest {
 			"This   is  a \"simple token\"   test");
 
 		Assert.assertEquals(5, tokens.size());
-
 		Assert.assertEquals("This", tokens.get(0));
 		Assert.assertEquals("is", tokens.get(1));
 		Assert.assertEquals("a", tokens.get(2));
@@ -104,7 +101,6 @@ public class SimpleKeywordTokenizerTest {
 			"This  is a \"simple   token\"  test");
 
 		Assert.assertEquals(5, tokens2.size());
-
 		Assert.assertEquals("This", tokens2.get(0));
 		Assert.assertEquals("is", tokens2.get(1));
 		Assert.assertEquals("a", tokens2.get(2));

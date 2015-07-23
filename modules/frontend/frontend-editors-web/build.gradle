@@ -11,7 +11,7 @@ dependencies {
 
 ext {
 	alloyEditorVersion = "0.2.7"
-	ckEditorVersion = "4.4.5"
+	ckEditorVersion = "4.4.6"
 	tinyMCEVersion = "4.1.7"
 
 	ckEditorScaytUrl = "http://download.ckeditor.com/scayt/releases/scayt_${ckEditorVersion}.zip"
@@ -74,8 +74,6 @@ buildAlloyEditor {
 buildCKEditor {
 	File ckEditorDestinationDir = new File(editorsDestinationDir, "ckeditor")
 	File ckEditorZipFile = new File(thirdPartyDir, "ckeditor_${ckEditorVersion}_liferay.zip")
-
-	dependsOn buildCKEditorBBCode
 
 	doFirst {
 		delete ckEditorDestinationDir

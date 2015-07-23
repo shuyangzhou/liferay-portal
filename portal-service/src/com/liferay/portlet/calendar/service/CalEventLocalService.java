@@ -99,7 +99,7 @@ public interface CalEventLocalService extends BaseLocalService,
 
 	public void addEventResources(
 		com.liferay.portlet.calendar.model.CalEvent event,
-		java.lang.String[] groupPermissions, java.lang.String[] guestPermissions)
+		com.liferay.portal.service.permission.ModelPermissions modelPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public void addEventResources(long eventId, boolean addGroupPermissions,
@@ -107,7 +107,7 @@ public interface CalEventLocalService extends BaseLocalService,
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public void addEventResources(long eventId,
-		java.lang.String[] groupPermissions, java.lang.String[] guestPermissions)
+		com.liferay.portal.service.permission.ModelPermissions modelPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public void checkEvents();

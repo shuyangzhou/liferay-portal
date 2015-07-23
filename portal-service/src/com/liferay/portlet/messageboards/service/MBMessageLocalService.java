@@ -125,7 +125,7 @@ public interface MBMessageLocalService extends BaseLocalService,
 
 	public void addMessageResources(
 		com.liferay.portlet.messageboards.model.MBMessage message,
-		java.lang.String[] groupPermissions, java.lang.String[] guestPermissions)
+		com.liferay.portal.service.permission.ModelPermissions modelPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public void addMessageResources(long messageId,
@@ -133,7 +133,7 @@ public interface MBMessageLocalService extends BaseLocalService,
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public void addMessageResources(long messageId,
-		java.lang.String[] groupPermissions, java.lang.String[] guestPermissions)
+		com.liferay.portal.service.permission.ModelPermissions modelPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	/**

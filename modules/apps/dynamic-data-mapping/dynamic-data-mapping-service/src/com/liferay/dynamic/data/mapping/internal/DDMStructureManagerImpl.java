@@ -218,7 +218,7 @@ public class DDMStructureManagerImpl implements DDMStructureManager {
 		throws PortalException {
 
 		com.liferay.portlet.dynamicdatamapping.model.DDMStructure ddmStructure =
-			_ddmStructureLocalService.getStructure(structureId);
+			_ddmStructureLocalService.fetchDDMStructure(structureId);
 
 		return DDMUtil.getDDMFormFieldsJSONArray(ddmStructure, script);
 	}
@@ -327,8 +327,10 @@ public class DDMStructureManagerImpl implements DDMStructureManager {
 		_ddmStructureLocalService.updateDDMStructure(ddmStructure);
 	}
 
-	protected OrderByComparator getStructureOrderByComparator(
-		int structureComparator) {
+	protected OrderByComparator
+		<com.liferay.portlet.dynamicdatamapping.model.DDMStructure>
+		getStructureOrderByComparator(
+			int structureComparator) {
 
 		if (structureComparator ==
 				DDMStructureManager.STRUCTURE_COMPARATOR_STRUCTURE_KEY) {
