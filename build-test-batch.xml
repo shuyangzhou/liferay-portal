@@ -56,7 +56,7 @@
 					<if>
 						<equals arg1="@{database.type}" arg2="db2" />
 						<then>
-							<exec dir="/opt/ibm/db2/V10.5/bin" executable="${database.service.executable}" failonerror="true">
+							<exec dir="/opt/ibm/db2/V10.5/bin" executable="${database.service.executable}">
 								<arg line="${database.service.cmd.stop}" />
 							</exec>
 						</then>
