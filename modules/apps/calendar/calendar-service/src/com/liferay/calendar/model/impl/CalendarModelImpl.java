@@ -95,7 +95,8 @@ public class CalendarModelImpl extends BaseModelImpl<Calendar>
 			{ "color", Types.INTEGER },
 			{ "defaultCalendar", Types.BOOLEAN },
 			{ "enableComments", Types.BOOLEAN },
-			{ "enableRatings", Types.BOOLEAN }
+			{ "enableRatings", Types.BOOLEAN },
+			{ "lastPublishDate", Types.TIMESTAMP }
 		};
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
 
@@ -117,9 +118,10 @@ public class CalendarModelImpl extends BaseModelImpl<Calendar>
 		TABLE_COLUMNS_MAP.put("defaultCalendar", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("enableComments", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("enableRatings", Types.BOOLEAN);
+		TABLE_COLUMNS_MAP.put("lastPublishDate", Types.TIMESTAMP);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table Calendar (uuid_ VARCHAR(75) null,calendarId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,resourceBlockId LONG,calendarResourceId LONG,name STRING null,description STRING null,timeZoneId VARCHAR(75) null,color INTEGER,defaultCalendar BOOLEAN,enableComments BOOLEAN,enableRatings BOOLEAN)";
+	public static final String TABLE_SQL_CREATE = "create table Calendar (uuid_ VARCHAR(75) null,calendarId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,resourceBlockId LONG,calendarResourceId LONG,name STRING null,description STRING null,timeZoneId VARCHAR(75) null,color INTEGER,defaultCalendar BOOLEAN,enableComments BOOLEAN,enableRatings BOOLEAN,lastPublishDate DATE null)";
 	public static final String TABLE_SQL_DROP = "drop table Calendar";
 	public static final String ORDER_BY_JPQL = " ORDER BY calendar.name ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY Calendar.name ASC";
@@ -170,6 +172,7 @@ public class CalendarModelImpl extends BaseModelImpl<Calendar>
 		model.setDefaultCalendar(soapModel.getDefaultCalendar());
 		model.setEnableComments(soapModel.getEnableComments());
 		model.setEnableRatings(soapModel.getEnableRatings());
+		model.setLastPublishDate(soapModel.getLastPublishDate());
 
 		return model;
 	}
@@ -251,6 +254,7 @@ public class CalendarModelImpl extends BaseModelImpl<Calendar>
 		attributes.put("defaultCalendar", getDefaultCalendar());
 		attributes.put("enableComments", getEnableComments());
 		attributes.put("enableRatings", getEnableRatings());
+		attributes.put("lastPublishDate", getLastPublishDate());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -360,6 +364,12 @@ public class CalendarModelImpl extends BaseModelImpl<Calendar>
 
 		if (enableRatings != null) {
 			setEnableRatings(enableRatings);
+		}
+
+		Date lastPublishDate = (Date)attributes.get("lastPublishDate");
+
+		if (lastPublishDate != null) {
+			setLastPublishDate(lastPublishDate);
 		}
 	}
 
@@ -852,6 +862,17 @@ public class CalendarModelImpl extends BaseModelImpl<Calendar>
 		_enableRatings = enableRatings;
 	}
 
+	@JSON
+	@Override
+	public Date getLastPublishDate() {
+		return _lastPublishDate;
+	}
+
+	@Override
+	public void setLastPublishDate(Date lastPublishDate) {
+		_lastPublishDate = lastPublishDate;
+	}
+
 	@Override
 	public StagedModelType getStagedModelType() {
 		return new StagedModelType(PortalUtil.getClassNameId(
@@ -988,6 +1009,7 @@ public class CalendarModelImpl extends BaseModelImpl<Calendar>
 		calendarImpl.setDefaultCalendar(getDefaultCalendar());
 		calendarImpl.setEnableComments(getEnableComments());
 		calendarImpl.setEnableRatings(getEnableRatings());
+		calendarImpl.setLastPublishDate(getLastPublishDate());
 
 		calendarImpl.resetOriginalValues();
 
@@ -1157,12 +1179,21 @@ public class CalendarModelImpl extends BaseModelImpl<Calendar>
 
 		calendarCacheModel.enableRatings = getEnableRatings();
 
+		Date lastPublishDate = getLastPublishDate();
+
+		if (lastPublishDate != null) {
+			calendarCacheModel.lastPublishDate = lastPublishDate.getTime();
+		}
+		else {
+			calendarCacheModel.lastPublishDate = Long.MIN_VALUE;
+		}
+
 		return calendarCacheModel;
 	}
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(35);
+		StringBundler sb = new StringBundler(37);
 
 		sb.append("{uuid=");
 		sb.append(getUuid());
@@ -1198,6 +1229,8 @@ public class CalendarModelImpl extends BaseModelImpl<Calendar>
 		sb.append(getEnableComments());
 		sb.append(", enableRatings=");
 		sb.append(getEnableRatings());
+		sb.append(", lastPublishDate=");
+		sb.append(getLastPublishDate());
 		sb.append("}");
 
 		return sb.toString();
@@ -1205,7 +1238,7 @@ public class CalendarModelImpl extends BaseModelImpl<Calendar>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(55);
+		StringBundler sb = new StringBundler(58);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.calendar.model.Calendar");
@@ -1279,6 +1312,10 @@ public class CalendarModelImpl extends BaseModelImpl<Calendar>
 			"<column><column-name>enableRatings</column-name><column-value><![CDATA[");
 		sb.append(getEnableRatings());
 		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>lastPublishDate</column-name><column-value><![CDATA[");
+		sb.append(getLastPublishDate());
+		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -1320,6 +1357,7 @@ public class CalendarModelImpl extends BaseModelImpl<Calendar>
 	private boolean _setOriginalDefaultCalendar;
 	private boolean _enableComments;
 	private boolean _enableRatings;
+	private Date _lastPublishDate;
 	private long _columnBitmask;
 	private Calendar _escapedModel;
 }

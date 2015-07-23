@@ -14,6 +14,8 @@
 
 package com.liferay.portal.log.assertor;
 
+import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
+import com.liferay.portal.kernel.io.unsync.UnsyncPrintWriter;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -107,9 +109,27 @@ public class PortalLogAssertorTest {
 
 					NodeList childNodelist = node.getChildNodes();
 
-					String message =
-						"\nPortal log assert failure, see above log for more " +
-							"information: \n";
+					UnsyncByteArrayOutputStream messageOutputStream =
+						new UnsyncByteArrayOutputStream();
+
+					UnsyncPrintWriter messageWriter = new UnsyncPrintWriter(
+						messageOutputStream);
+
+					messageWriter.println(
+						"Detected error in " + path.toString() + ", dumping " +
+							"full log for reference:");
+
+					Files.copy(
+						Paths.get(
+							StringUtil.replace(
+								path.toString(), ".xml", ".log")),
+						messageOutputStream);
+
+					messageWriter.println();
+
+					messageWriter.println(
+						"Portal log assert failure, see above log for more " +
+							"information:");
 
 					for (int j = 0; j < childNodelist.getLength(); j++) {
 						Node childNode = childNodelist.item(j);
@@ -117,23 +137,15 @@ public class PortalLogAssertorTest {
 						String nodeName = childNode.getNodeName();
 
 						if (nodeName.equals("message")) {
-							message += childNode.getTextContent();
+							messageWriter.println(childNode.getTextContent());
 						}
 						else if (nodeName.equals("throwable")) {
-							message += "\n" + childNode.getTextContent();
+							messageWriter.println(childNode.getTextContent());
 						}
 					}
 
-					System.out.println(
-						"Detected error, dumpping full log for reference:");
 
-					Files.copy(
-						Paths.get(
-							StringUtil.replace(
-								path.toString(), ".xml", ".log")),
-						System.out);
-
-					Assert.fail(message);
+					Assert.fail(messageOutputStream.toString(StringPool.UTF8));
 				}
 			}
 		}

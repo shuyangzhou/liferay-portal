@@ -100,6 +100,7 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 			{ "head", Types.BOOLEAN },
 			{ "parentTitle", Types.VARCHAR },
 			{ "redirectTitle", Types.VARCHAR },
+			{ "lastPublishDate", Types.TIMESTAMP },
 			{ "status", Types.INTEGER },
 			{ "statusByUserId", Types.BIGINT },
 			{ "statusByUserName", Types.VARCHAR },
@@ -127,13 +128,14 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 		TABLE_COLUMNS_MAP.put("head", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("parentTitle", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("redirectTitle", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("lastPublishDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("statusByUserId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("statusByUserName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("statusDate", Types.TIMESTAMP);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WikiPage (uuid_ VARCHAR(75) null,pageId LONG not null primary key,resourcePrimKey LONG,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,nodeId LONG,title VARCHAR(255) null,version DOUBLE,minorEdit BOOLEAN,content TEXT null,summary STRING null,format VARCHAR(75) null,head BOOLEAN,parentTitle VARCHAR(255) null,redirectTitle VARCHAR(255) null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null)";
+	public static final String TABLE_SQL_CREATE = "create table WikiPage (uuid_ VARCHAR(75) null,pageId LONG not null primary key,resourcePrimKey LONG,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,nodeId LONG,title VARCHAR(255) null,version DOUBLE,minorEdit BOOLEAN,content TEXT null,summary STRING null,format VARCHAR(75) null,head BOOLEAN,parentTitle VARCHAR(255) null,redirectTitle VARCHAR(255) null,lastPublishDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null)";
 	public static final String TABLE_SQL_DROP = "drop table WikiPage";
 	public static final String ORDER_BY_JPQL = " ORDER BY wikiPage.nodeId ASC, wikiPage.title ASC, wikiPage.version DESC";
 	public static final String ORDER_BY_SQL = " ORDER BY WikiPage.nodeId ASC, WikiPage.title ASC, WikiPage.version DESC";
@@ -192,6 +194,7 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 		model.setHead(soapModel.getHead());
 		model.setParentTitle(soapModel.getParentTitle());
 		model.setRedirectTitle(soapModel.getRedirectTitle());
+		model.setLastPublishDate(soapModel.getLastPublishDate());
 		model.setStatus(soapModel.getStatus());
 		model.setStatusByUserId(soapModel.getStatusByUserId());
 		model.setStatusByUserName(soapModel.getStatusByUserName());
@@ -279,6 +282,7 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 		attributes.put("head", getHead());
 		attributes.put("parentTitle", getParentTitle());
 		attributes.put("redirectTitle", getRedirectTitle());
+		attributes.put("lastPublishDate", getLastPublishDate());
 		attributes.put("status", getStatus());
 		attributes.put("statusByUserId", getStatusByUserId());
 		attributes.put("statusByUserName", getStatusByUserName());
@@ -404,6 +408,12 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 
 		if (redirectTitle != null) {
 			setRedirectTitle(redirectTitle);
+		}
+
+		Date lastPublishDate = (Date)attributes.get("lastPublishDate");
+
+		if (lastPublishDate != null) {
+			setLastPublishDate(lastPublishDate);
 		}
 
 		Integer status = (Integer)attributes.get("status");
@@ -851,6 +861,17 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 
 	@JSON
 	@Override
+	public Date getLastPublishDate() {
+		return _lastPublishDate;
+	}
+
+	@Override
+	public void setLastPublishDate(Date lastPublishDate) {
+		_lastPublishDate = lastPublishDate;
+	}
+
+	@JSON
+	@Override
 	public int getStatus() {
 		return _status;
 	}
@@ -1221,6 +1242,7 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 		wikiPageImpl.setHead(getHead());
 		wikiPageImpl.setParentTitle(getParentTitle());
 		wikiPageImpl.setRedirectTitle(getRedirectTitle());
+		wikiPageImpl.setLastPublishDate(getLastPublishDate());
 		wikiPageImpl.setStatus(getStatus());
 		wikiPageImpl.setStatusByUserId(getStatusByUserId());
 		wikiPageImpl.setStatusByUserName(getStatusByUserName());
@@ -1466,6 +1488,15 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 			wikiPageCacheModel.redirectTitle = null;
 		}
 
+		Date lastPublishDate = getLastPublishDate();
+
+		if (lastPublishDate != null) {
+			wikiPageCacheModel.lastPublishDate = lastPublishDate.getTime();
+		}
+		else {
+			wikiPageCacheModel.lastPublishDate = Long.MIN_VALUE;
+		}
+
 		wikiPageCacheModel.status = getStatus();
 
 		wikiPageCacheModel.statusByUserId = getStatusByUserId();
@@ -1492,7 +1523,7 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(47);
+		StringBundler sb = new StringBundler(49);
 
 		sb.append("{uuid=");
 		sb.append(getUuid());
@@ -1532,6 +1563,8 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 		sb.append(getParentTitle());
 		sb.append(", redirectTitle=");
 		sb.append(getRedirectTitle());
+		sb.append(", lastPublishDate=");
+		sb.append(getLastPublishDate());
 		sb.append(", status=");
 		sb.append(getStatus());
 		sb.append(", statusByUserId=");
@@ -1547,7 +1580,7 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(73);
+		StringBundler sb = new StringBundler(76);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.wiki.model.WikiPage");
@@ -1630,6 +1663,10 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 		sb.append(getRedirectTitle());
 		sb.append("]]></column-value></column>");
 		sb.append(
+			"<column><column-name>lastPublishDate</column-name><column-value><![CDATA[");
+		sb.append(getLastPublishDate());
+		sb.append("]]></column-value></column>");
+		sb.append(
 			"<column><column-name>status</column-name><column-value><![CDATA[");
 		sb.append(getStatus());
 		sb.append("]]></column-value></column>");
@@ -1694,6 +1731,7 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 	private String _originalParentTitle;
 	private String _redirectTitle;
 	private String _originalRedirectTitle;
+	private Date _lastPublishDate;
 	private int _status;
 	private int _originalStatus;
 	private boolean _setOriginalStatus;
