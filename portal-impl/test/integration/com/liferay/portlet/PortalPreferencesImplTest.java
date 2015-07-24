@@ -37,7 +37,6 @@ import com.liferay.portal.util.PortletKeys;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -254,13 +253,12 @@ public class PortalPreferencesImplTest {
 
 			updateSynchronously(futureTask1, futureTask2, captureAppender);
 
-			PortalPreferences portalPreferences =
-				PortletPreferencesFactoryUtil.getPortalPreferences(
-					PortletKeys.PREFS_OWNER_ID_DEFAULT, true);
+			Assert.fail();
+		}
+		catch (Exception e) {
+			Throwable cause = e.getCause();
 
-			String value = portalPreferences.getValue(_NAMESPACE, _KEY_1);
-
-			Assert.assertTrue(value.equals(_VALUE_1) || value.equals(_VALUE_2));
+			Assert.assertEquals(IllegalStateException.class, cause.getClass());
 		}
 	}
 
@@ -355,15 +353,12 @@ public class PortalPreferencesImplTest {
 
 			updateSynchronously(futureTask1, futureTask2, captureAppender);
 
-			PortalPreferences portalPreferences =
-				PortletPreferencesFactoryUtil.getPortalPreferences(
-					PortletKeys.PREFS_OWNER_ID_DEFAULT, true);
+			Assert.fail();
+		}
+		catch (Exception e) {
+			Throwable cause = e.getCause();
 
-			String[] values = portalPreferences.getValues(_NAMESPACE, _KEY_1);
-
-			Assert.assertTrue(
-				Arrays.equals(values, _VALUES_1) ||
-					Arrays.equals(values, _VALUES_2));
+			Assert.assertEquals(IllegalStateException.class, cause.getClass());
 		}
 	}
 
