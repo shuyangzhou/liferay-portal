@@ -183,9 +183,13 @@ public class PortalPreferencesImpl
 					return null;
 				}
 
-			});
+			}, namespace, null, null);
 		}
 		catch (Throwable t) {
+			if (t instanceof IllegalStateException) {
+				throw (IllegalStateException)t;
+			}
+
 			_log.error(t, t);
 		}
 	}
@@ -228,13 +232,17 @@ public class PortalPreferencesImpl
 			};
 
 			if (_signedIn) {
-				retryableStore(callable);
+				retryableStore(callable, namespace, key, false);
 			}
 			else {
 				callable.call();
 			}
 		}
 		catch (Throwable t) {
+			if (t instanceof IllegalStateException) {
+				throw (IllegalStateException)t;
+			}
+
 			_log.error(t, t);
 		}
 	}
@@ -268,13 +276,17 @@ public class PortalPreferencesImpl
 			};
 
 			if (_signedIn) {
-				retryableStore(callable);
+				retryableStore(callable, namespace, key, true);
 			}
 			else {
 				callable.call();
 			}
 		}
 		catch (Throwable t) {
+			if (t instanceof IllegalStateException) {
+				throw (IllegalStateException)t;
+			}
+
 			_log.error(t, t);
 		}
 	}
@@ -310,7 +322,21 @@ public class PortalPreferencesImpl
 		return false;
 	}
 
-	protected void retryableStore(Callable<?> callable) throws Throwable {
+	protected void retryableStore(
+			Callable<?> callable, String namespace, String key, Boolean flag)
+		throws Throwable {
+
+		Object originalValue = null;
+
+		if (flag != null) {
+			if (flag) {
+				originalValue = getValues(namespace, key);
+			}
+			else {
+				originalValue = getValue(namespace, key);
+			}
+		}
+
 		while (true) {
 			try {
 				callable.call();
@@ -337,6 +363,23 @@ public class PortalPreferencesImpl
 						(PortalPreferencesImpl)
 							PortletPreferencesFactoryUtil.fromXML(
 								ownerId, ownerType, preferencesXML);
+
+					if (flag != null) {
+						Object newValue = null;
+
+						if (flag) {
+							newValue = portalPreferencesImpl.getValues(
+								namespace, key);
+						}
+						else {
+							newValue = portalPreferencesImpl.getValue(
+								namespace, key);
+						}
+
+						if (!Validator.equals(originalValue, newValue)) {
+							throw new IllegalStateException();
+						}
+					}
 
 					reset();
 
