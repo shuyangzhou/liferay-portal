@@ -212,7 +212,7 @@ public class SQLTransformer {
 	}
 
 	private String _replaceCastText(Matcher matcher) {
-		if (_vendorDB2 || _vendorDerby) {
+		if (_vendorDerby) {
 			return matcher.replaceAll("CAST($1 AS CHAR(254))");
 		}
 		else if (_vendorHypersonic) {
