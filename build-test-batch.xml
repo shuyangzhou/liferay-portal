@@ -195,6 +195,12 @@
 				<test-action>
 					<database-test-run-test database.type="@{database.type}">
 						<test-action>
+							<property file="${project.dir}/test.class.file.names.properties" />
+
+							<propertycopy from="TEST_CLASS_GROUP_@{test.class.group.index}" name="test.classes" />
+
+							<echo>TEST_CLASS_GROUP_@{test.class.group.index}=${test.classes}</echo>
+
 							<antcall target="prepare-portal-ext-properties" inheritAll="false">
 								<param name="database.type" value="@{database.type}" />
 							</antcall>
