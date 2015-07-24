@@ -30,6 +30,7 @@ import com.liferay.portal.service.persistence.PortalPreferencesUtil;
 import java.io.IOException;
 import java.io.Serializable;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -151,42 +152,72 @@ public class PortalPreferencesImpl
 	}
 
 	@Override
-	public void reset(String key) throws ReadOnlyException {
+	public void reset(final String key) throws ReadOnlyException {
 		if (isReadOnly(key)) {
 			throw new ReadOnlyException(key);
 		}
 
-		Map<String, Preference> modifiedPreferences = getModifiedPreferences();
+		Callable<Void> callable = new Callable<Void>() {
 
-		modifiedPreferences.remove(key);
+			@Override
+			public Void call() {
+				Map<String, Preference> modifiedPreferences =
+					getModifiedPreferences();
+
+				modifiedPreferences.remove(key);
+
+				return null;
+			}
+		};
+
+		int index = key.indexOf(StringPool.POUND);
+
+		try {
+			if (index < 0) {
+				retryableStore(callable, StringPool.BLANK, key);
+			}
+			else {
+				retryableStore(
+					callable, key.substring(0, index),
+					key.substring(index + 1));
+			}
+		}
+		catch (Throwable t) {
+			if (t instanceof IllegalStateException) {
+				throw (IllegalStateException)t;
+				}
+
+			_log.error(t, t);
+		}
 	}
 
 	@Override
 	public void resetValues(final String namespace) {
-		try {
-			retryableStore(new Callable<Void>() {
+		while (true) {
+			Map<String, Preference> preferences = getPreferences();
 
-				@Override
-				public Void call() throws ReadOnlyException {
-					Map<String, Preference> preferences = getPreferences();
+			try {
+				for (Map.Entry<String, Preference> entry :
+						preferences.entrySet()) {
 
-					for (Map.Entry<String, Preference> entry :
-							preferences.entrySet()) {
+					String key = entry.getKey();
 
-						String key = entry.getKey();
-
-						if (key.startsWith(namespace) && !isReadOnly(key)) {
-							reset(key);
-						}
+					if (key.startsWith(namespace) && !isReadOnly(key)) {
+						reset(key);
 					}
-
-					return null;
 				}
 
-			});
-		}
-		catch (Throwable t) {
-			_log.error(t, t);
+				return;
+			}
+			catch (Throwable t) {
+				if (t instanceof IllegalStateException) {
+					continue;
+				}
+
+				_log.error(t, t);
+
+				return;
+			}
 		}
 	}
 
@@ -228,13 +259,17 @@ public class PortalPreferencesImpl
 			};
 
 			if (_signedIn) {
-				retryableStore(callable);
+				retryableStore(callable, namespace, key);
 			}
 			else {
 				callable.call();
 			}
 		}
 		catch (Throwable t) {
+			if (t instanceof IllegalStateException) {
+				throw (IllegalStateException)t;
+			}
+
 			_log.error(t, t);
 		}
 	}
@@ -268,13 +303,17 @@ public class PortalPreferencesImpl
 			};
 
 			if (_signedIn) {
-				retryableStore(callable);
+				retryableStore(callable, namespace, key);
 			}
 			else {
 				callable.call();
 			}
 		}
 		catch (Throwable t) {
+			if (t instanceof IllegalStateException) {
+				throw (IllegalStateException)t;
+			}
+
 			_log.error(t, t);
 		}
 	}
@@ -310,7 +349,12 @@ public class PortalPreferencesImpl
 		return false;
 	}
 
-	protected void retryableStore(Callable<?> callable) throws Throwable {
+	protected void retryableStore(
+			Callable<?> callable, String namespace, String key)
+		throws Throwable {
+
+		String[] originalValues = getValues(namespace, key);
+
 		while (true) {
 			try {
 				callable.call();
@@ -337,6 +381,14 @@ public class PortalPreferencesImpl
 						(PortalPreferencesImpl)
 							PortletPreferencesFactoryUtil.fromXML(
 								ownerId, ownerType, preferencesXML);
+
+					if (!Arrays.equals(
+							originalValues,
+							portalPreferencesImpl.getValues(
+								namespace, key))) {
+
+						throw new IllegalStateException();
+					}
 
 					reset();
 
