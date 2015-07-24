@@ -35,6 +35,7 @@ import com.liferay.portal.model.Role;
 import com.liferay.portal.model.RoleConstants;
 import com.liferay.portal.security.permission.ResourceActionsUtil;
 import com.liferay.portal.service.permission.ModelPermissions;
+import com.liferay.portal.service.permission.ModelPermissionsFactory;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 
@@ -148,8 +149,8 @@ public class ServiceContext implements Cloneable, Serializable {
 		Role defaultGroupRole = RoleLocalServiceUtil.getDefaultGroupRole(
 			siteGroupId);
 
-		List<String> groupPermissions = new ArrayList<>();
-		List<String> guestPermissions = new ArrayList<>();
+		List<String> groupPermissionsList = new ArrayList<>();
+		List<String> guestPermissionsList = new ArrayList<>();
 
 		String[] roleNames = {RoleConstants.GUEST, defaultGroupRole.getName()};
 
@@ -170,20 +171,31 @@ public class ServiceContext implements Cloneable, Serializable {
 					guestDefaultActions.contains(action) &&
 					siteGroup.hasPublicLayouts()) {
 
-					guestPermissions.add(action);
+					guestPermissionsList.add(action);
 				}
 				else if (roleName.equals(defaultGroupRole.getName()) &&
 						 groupDefaultActions.contains(action)) {
 
-					groupPermissions.add(action);
+					groupPermissionsList.add(action);
 				}
 			}
 		}
 
-		setGroupPermissions(
-			groupPermissions.toArray(new String[groupPermissions.size()]));
-		setGuestPermissions(
-			guestPermissions.toArray(new String[guestPermissions.size()]));
+		String[] groupPermissions = groupPermissionsList.toArray(
+			new String[groupPermissionsList.size()]);
+
+		setGroupPermissions(groupPermissions);
+
+		String[] guestPermissions = guestPermissionsList.toArray(
+			new String[guestPermissionsList.size()]);
+
+		setGuestPermissions(guestPermissions);
+
+		ModelPermissions modelPermissions = ModelPermissionsFactory.create(
+			siteGroup.getCompanyId(), siteGroupId, groupPermissions,
+			guestPermissions);
+
+		setModelPermissions(modelPermissions);
 	}
 
 	/**

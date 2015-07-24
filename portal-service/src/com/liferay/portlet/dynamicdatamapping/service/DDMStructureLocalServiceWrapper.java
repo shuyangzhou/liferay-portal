@@ -243,7 +243,7 @@ public class DDMStructureLocalServiceWrapper implements DDMStructureLocalService
 	* Adds the model resources with the permissions to the structure.
 	*
 	* @param structure the structure to add resources to
-	* @param modelPermissions the permissions to be added
+	* @param modelPermissions the model permissions to be added
 	* @throws PortalException if a portal exception occurred
 	*/
 	@Override

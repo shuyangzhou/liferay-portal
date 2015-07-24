@@ -284,7 +284,7 @@ public class DDMTemplateLocalServiceImpl
 	 * Adds the model resources with the permissions to the template.
 	 *
 	 * @param  template the template to add resources to
-	 * @param  modelPermissions the permissions to be added
+	 * @param  modelPermissions the model permissions to be added
 	 * @throws PortalException if a portal exception occurred
 	 */
 	@Override

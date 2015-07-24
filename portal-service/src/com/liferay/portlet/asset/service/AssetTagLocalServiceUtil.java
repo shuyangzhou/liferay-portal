@@ -109,7 +109,7 @@ public class AssetTagLocalServiceUtil {
 	* Adds resources for the asset tag using the group and guest permissions.
 	*
 	* @param tag the asset tag for which to add resources
-	* @param modelPermissions the permissions to be applied
+	* @param modelPermissions the model permissions to be applied
 	* @throws PortalException if resources could not be added for the asset tag
 	or if a portal exception occurred
 	*/
