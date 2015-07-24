@@ -78,7 +78,7 @@ public abstract class SAPEntryServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the s a p entry remote service
 	 */
-	public com.liferay.service.access.policy.service.SAPEntryService getSAPEntryService() {
+	public SAPEntryService getSAPEntryService() {
 		return sapEntryService;
 	}
 
@@ -87,8 +87,7 @@ public abstract class SAPEntryServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @param sapEntryService the s a p entry remote service
 	 */
-	public void setSAPEntryService(
-		com.liferay.service.access.policy.service.SAPEntryService sapEntryService) {
+	public void setSAPEntryService(SAPEntryService sapEntryService) {
 		this.sapEntryService = sapEntryService;
 	}
 
@@ -435,7 +434,7 @@ public abstract class SAPEntryServiceBaseImpl extends BaseServiceImpl
 	@BeanReference(type = com.liferay.service.access.policy.service.SAPEntryLocalService.class)
 	protected com.liferay.service.access.policy.service.SAPEntryLocalService sapEntryLocalService;
 	@BeanReference(type = com.liferay.service.access.policy.service.SAPEntryService.class)
-	protected com.liferay.service.access.policy.service.SAPEntryService sapEntryService;
+	protected SAPEntryService sapEntryService;
 	@BeanReference(type = SAPEntryPersistence.class)
 	protected SAPEntryPersistence sapEntryPersistence;
 	@BeanReference(type = com.liferay.counter.service.CounterLocalService.class)

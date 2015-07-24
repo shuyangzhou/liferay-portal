@@ -388,7 +388,7 @@ public abstract class SAPEntryLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 *
 	 * @return the s a p entry local service
 	 */
-	public com.liferay.service.access.policy.service.SAPEntryLocalService getSAPEntryLocalService() {
+	public SAPEntryLocalService getSAPEntryLocalService() {
 		return sapEntryLocalService;
 	}
 
@@ -398,7 +398,7 @@ public abstract class SAPEntryLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 * @param sapEntryLocalService the s a p entry local service
 	 */
 	public void setSAPEntryLocalService(
-		com.liferay.service.access.policy.service.SAPEntryLocalService sapEntryLocalService) {
+		SAPEntryLocalService sapEntryLocalService) {
 		this.sapEntryLocalService = sapEntryLocalService;
 	}
 
@@ -766,7 +766,7 @@ public abstract class SAPEntryLocalServiceBaseImpl extends BaseLocalServiceImpl
 	}
 
 	@BeanReference(type = com.liferay.service.access.policy.service.SAPEntryLocalService.class)
-	protected com.liferay.service.access.policy.service.SAPEntryLocalService sapEntryLocalService;
+	protected SAPEntryLocalService sapEntryLocalService;
 	@BeanReference(type = com.liferay.service.access.policy.service.SAPEntryService.class)
 	protected com.liferay.service.access.policy.service.SAPEntryService sapEntryService;
 	@BeanReference(type = SAPEntryPersistence.class)

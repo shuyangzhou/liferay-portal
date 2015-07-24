@@ -23,7 +23,7 @@
 		/>
 
 		<antcall target="patch">
-			<param name="patch.destination" value="org/hibernate/cache/UpdateTimestampsCache.java,org/hibernate/intercept/FieldInterceptionHelper.java" />
+			<param name="patch.destination" value="org/hibernate/cache/UpdateTimestampsCache.java,org/hibernate/intercept/FieldInterceptionHelper.java,org/hibernate/cfg/Environment.java,org/hibernate/engine/StatefulPersistenceContext.java,org/hibernate/engine/query/HQLQueryPlan.java,org/hibernate/engine/query/QueryPlanCache.java,org/hibernate/hql/QueryTranslatorFactory.java,org/hibernate/hql/ast/QueryTranslatorImpl.java,org/hibernate/hql/classic/QueryTranslatorImpl.java,org/hibernate/impl/AbstractSessionImpl.java,org/hibernate/impl/SessionFactoryImpl.java,org/hibernate/internal/util/collections/BoundedConcurrentHashMap.java,org/hibernate/internal/util/collections/ConcurrentReferenceHashMap.java" />
 			<param name="patch.original.lib.name" value="${original.lib.name}" />
 			<param name="patch.original.lib.source.dir" value="." />
 			<param name="patch.original.lib.url" value="${original.lib.url}" />

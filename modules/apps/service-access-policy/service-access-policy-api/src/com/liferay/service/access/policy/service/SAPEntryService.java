@@ -54,15 +54,14 @@ public interface SAPEntryService extends BaseService {
 		java.lang.String allowedServiceSignatures, java.lang.String name,
 		java.util.Map<java.util.Locale, java.lang.String> titleMap,
 		com.liferay.portal.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException;
+		throws PortalException;
 
 	public com.liferay.service.access.policy.model.SAPEntry deleteSAPEntry(
 		com.liferay.service.access.policy.model.SAPEntry sapEntry)
-		throws com.liferay.portal.kernel.exception.PortalException;
+		throws PortalException;
 
 	public com.liferay.service.access.policy.model.SAPEntry deleteSAPEntry(
-		long sapEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException;
+		long sapEntryId) throws PortalException;
 
 	/**
 	* Returns the Spring bean ID for this bean.
@@ -85,13 +84,11 @@ public interface SAPEntryService extends BaseService {
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public com.liferay.service.access.policy.model.SAPEntry getSAPEntry(
-		long companyId, java.lang.String name)
-		throws com.liferay.portal.kernel.exception.PortalException;
+		long companyId, java.lang.String name) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public com.liferay.service.access.policy.model.SAPEntry getSAPEntry(
-		long sapEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException;
+		long sapEntryId) throws PortalException;
 
 	/**
 	* Sets the Spring bean ID for this bean.
@@ -105,5 +102,5 @@ public interface SAPEntryService extends BaseService {
 		java.lang.String name,
 		java.util.Map<java.util.Locale, java.lang.String> titleMap,
 		com.liferay.portal.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException;
+		throws PortalException;
 }

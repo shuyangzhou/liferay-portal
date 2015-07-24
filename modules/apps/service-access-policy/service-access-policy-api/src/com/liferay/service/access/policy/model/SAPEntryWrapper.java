@@ -186,7 +186,7 @@ public class SAPEntryWrapper implements SAPEntry, ModelWrapper<SAPEntry> {
 	* @return the create date of this s a p entry
 	*/
 	@Override
-	public java.util.Date getCreateDate() {
+	public Date getCreateDate() {
 		return _sapEntry.getCreateDate();
 	}
 
@@ -216,7 +216,7 @@ public class SAPEntryWrapper implements SAPEntry, ModelWrapper<SAPEntry> {
 	* @return the modified date of this s a p entry
 	*/
 	@Override
-	public java.util.Date getModifiedDate() {
+	public Date getModifiedDate() {
 		return _sapEntry.getModifiedDate();
 	}
 
@@ -328,7 +328,7 @@ public class SAPEntryWrapper implements SAPEntry, ModelWrapper<SAPEntry> {
 	* @return the locales and localized titles of this s a p entry
 	*/
 	@Override
-	public java.util.Map<java.util.Locale, java.lang.String> getTitleMap() {
+	public Map<java.util.Locale, java.lang.String> getTitleMap() {
 		return _sapEntry.getTitleMap();
 	}
 
@@ -452,7 +452,7 @@ public class SAPEntryWrapper implements SAPEntry, ModelWrapper<SAPEntry> {
 	* @param createDate the create date of this s a p entry
 	*/
 	@Override
-	public void setCreateDate(java.util.Date createDate) {
+	public void setCreateDate(Date createDate) {
 		_sapEntry.setCreateDate(createDate);
 	}
 
@@ -490,7 +490,7 @@ public class SAPEntryWrapper implements SAPEntry, ModelWrapper<SAPEntry> {
 	* @param modifiedDate the modified date of this s a p entry
 	*/
 	@Override
-	public void setModifiedDate(java.util.Date modifiedDate) {
+	public void setModifiedDate(Date modifiedDate) {
 		_sapEntry.setModifiedDate(modifiedDate);
 	}
 
@@ -579,8 +579,7 @@ public class SAPEntryWrapper implements SAPEntry, ModelWrapper<SAPEntry> {
 	* @param titleMap the locales and localized titles of this s a p entry
 	*/
 	@Override
-	public void setTitleMap(
-		java.util.Map<java.util.Locale, java.lang.String> titleMap) {
+	public void setTitleMap(Map<java.util.Locale, java.lang.String> titleMap) {
 		_sapEntry.setTitleMap(titleMap);
 	}
 
@@ -591,8 +590,7 @@ public class SAPEntryWrapper implements SAPEntry, ModelWrapper<SAPEntry> {
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setTitleMap(
-		java.util.Map<java.util.Locale, java.lang.String> titleMap,
+	public void setTitleMap(Map<java.util.Locale, java.lang.String> titleMap,
 		java.util.Locale defaultLocale) {
 		_sapEntry.setTitleMap(titleMap, defaultLocale);
 	}

@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.tools.JavaImportsFormatter;
 import com.liferay.portal.tools.ToolsUtil;
 import com.liferay.source.formatter.util.FileUtil;
 
@@ -537,34 +538,7 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 
 		className = className.substring(0, pos);
 
-		String packagePath = fileName;
-
-		int packagePathX = packagePath.indexOf("/src/");
-
-		if (packagePathX == -1) {
-			packagePathX = packagePath.indexOf("/integration/");
-		}
-
-		if (packagePathX == -1) {
-			packagePathX = packagePath.indexOf("/unit/");
-		}
-
-		if (packagePathX != -1) {
-			packagePathX = packagePath.indexOf(
-				CharPool.SLASH, packagePathX + 1);
-		}
-
-		int packagePathY = packagePath.lastIndexOf(CharPool.SLASH);
-
-		if (packagePathX >= packagePathY) {
-			packagePath = StringPool.BLANK;
-		}
-		else {
-			packagePath = packagePath.substring(packagePathX + 1, packagePathY);
-		}
-
-		packagePath = StringUtil.replace(
-			packagePath, StringPool.SLASH, StringPool.PERIOD);
+		String packagePath = ToolsUtil.getPackagePath(file);
 
 		if (packagePath.endsWith(".model")) {
 			if (content.contains("extends " + className + "Model")) {

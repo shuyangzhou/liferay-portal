@@ -2,7 +2,7 @@
 <!DOCTYPE project>
 
 <project>
-	<property name="osgi.ide.dependencies" value="hibernate-core.jar" />
+	<property name="osgi.ide.dependencies" value="hibernate-core.jar,hibernate-envers.jar" />
 
 	<import file="../../../tools/sdk/build-common-osgi-plugin.xml" />
 

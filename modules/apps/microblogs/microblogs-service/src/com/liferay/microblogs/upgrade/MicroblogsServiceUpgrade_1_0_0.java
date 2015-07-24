@@ -20,9 +20,6 @@ import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 /**
  * @author Ryan Park
  */
-/**
- * @author Ryan Park
- */
 public class MicroblogsServiceUpgrade_1_0_0 extends UpgradeProcess {
 
 	@Override

@@ -40,6 +40,18 @@ patch {
 
 	fileNames "org/hibernate/cache/UpdateTimestampsCache.java"
 	fileNames "org/hibernate/intercept/FieldInterceptionHelper.java"
+	fileNames "org/hibernate/cfg/Environment.java"
+	fileNames "org/hibernate/engine/StatefulPersistenceContext.java"
+	fileNames "org/hibernate/engine/query/HQLQueryPlan.java"
+	fileNames "org/hibernate/engine/query/QueryPlanCache.java"
+	fileNames "org/hibernate/hql/QueryTranslatorFactory.java"
+	fileNames "org/hibernate/hql/ast/QueryTranslatorImpl.java"
+	fileNames "org/hibernate/hql/classic/QueryTranslatorImpl.java"
+	fileNames "org/hibernate/impl/AbstractSessionImpl.java"
+	fileNames "org/hibernate/impl/SessionFactoryImpl.java"
+	fileNames "org/hibernate/internal/util/collections/BoundedConcurrentHashMap.java"   
+	fileNames "org/hibernate/internal/util/collections/ConcurrentReferenceHashMap.java"
+
 
 	originalLibModuleName = "hibernate-core"
 }

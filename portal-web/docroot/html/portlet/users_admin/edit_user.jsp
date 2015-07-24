@@ -52,10 +52,19 @@ List<Organization> organizations = Collections.emptyList();
 
 if (selUser != null) {
 	organizations = selUser.getOrganizations();
-}
 
-if (filterManageableOrganizations) {
-	organizations = UsersAdminUtil.filterOrganizations(permissionChecker, organizations);
+	if (filterManageableOrganizations) {
+		organizations = UsersAdminUtil.filterOrganizations(permissionChecker, organizations);
+	}
+}
+else {
+	String organizationIdsString = ParamUtil.getString(request, "organizationsSearchContainerPrimaryKeys");
+
+	if (Validator.isNotNull(organizationIdsString)) {
+		long[] organizationIds = StringUtil.split(organizationIdsString, 0L);
+
+		organizations = OrganizationLocalServiceUtil.getOrganizations(organizationIds);
+	}
 }
 
 List<Role> roles = Collections.emptyList();

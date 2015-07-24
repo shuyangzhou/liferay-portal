@@ -364,7 +364,7 @@ public class CalendarBookingWrapper implements CalendarBooking,
 	* @return the create date of this calendar booking
 	*/
 	@Override
-	public java.util.Date getCreateDate() {
+	public Date getCreateDate() {
 		return _calendarBooking.getCreateDate();
 	}
 
@@ -447,7 +447,7 @@ public class CalendarBookingWrapper implements CalendarBooking,
 	* @return the locales and localized descriptions of this calendar booking
 	*/
 	@Override
-	public java.util.Map<java.util.Locale, java.lang.String> getDescriptionMap() {
+	public Map<java.util.Locale, java.lang.String> getDescriptionMap() {
 		return _calendarBooking.getDescriptionMap();
 	}
 
@@ -517,7 +517,7 @@ public class CalendarBookingWrapper implements CalendarBooking,
 	* @return the last publish date of this calendar booking
 	*/
 	@Override
-	public java.util.Date getLastPublishDate() {
+	public Date getLastPublishDate() {
 		return _calendarBooking.getLastPublishDate();
 	}
 
@@ -537,7 +537,7 @@ public class CalendarBookingWrapper implements CalendarBooking,
 	* @return the modified date of this calendar booking
 	*/
 	@Override
-	public java.util.Date getModifiedDate() {
+	public Date getModifiedDate() {
 		return _calendarBooking.getModifiedDate();
 	}
 
@@ -678,7 +678,7 @@ public class CalendarBookingWrapper implements CalendarBooking,
 	* @return the status date of this calendar booking
 	*/
 	@Override
-	public java.util.Date getStatusDate() {
+	public Date getStatusDate() {
 		return _calendarBooking.getStatusDate();
 	}
 
@@ -761,7 +761,7 @@ public class CalendarBookingWrapper implements CalendarBooking,
 	* @return the locales and localized titles of this calendar booking
 	*/
 	@Override
-	public java.util.Map<java.util.Locale, java.lang.String> getTitleMap() {
+	public Map<java.util.Locale, java.lang.String> getTitleMap() {
 		return _calendarBooking.getTitleMap();
 	}
 
@@ -1075,7 +1075,7 @@ public class CalendarBookingWrapper implements CalendarBooking,
 	* @param createDate the create date of this calendar booking
 	*/
 	@Override
-	public void setCreateDate(java.util.Date createDate) {
+	public void setCreateDate(Date createDate) {
 		_calendarBooking.setCreateDate(createDate);
 	}
 
@@ -1126,7 +1126,7 @@ public class CalendarBookingWrapper implements CalendarBooking,
 	*/
 	@Override
 	public void setDescriptionMap(
-		java.util.Map<java.util.Locale, java.lang.String> descriptionMap) {
+		Map<java.util.Locale, java.lang.String> descriptionMap) {
 		_calendarBooking.setDescriptionMap(descriptionMap);
 	}
 
@@ -1138,7 +1138,7 @@ public class CalendarBookingWrapper implements CalendarBooking,
 	*/
 	@Override
 	public void setDescriptionMap(
-		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+		Map<java.util.Locale, java.lang.String> descriptionMap,
 		java.util.Locale defaultLocale) {
 		_calendarBooking.setDescriptionMap(descriptionMap, defaultLocale);
 	}
@@ -1212,7 +1212,7 @@ public class CalendarBookingWrapper implements CalendarBooking,
 	* @param lastPublishDate the last publish date of this calendar booking
 	*/
 	@Override
-	public void setLastPublishDate(java.util.Date lastPublishDate) {
+	public void setLastPublishDate(Date lastPublishDate) {
 		_calendarBooking.setLastPublishDate(lastPublishDate);
 	}
 
@@ -1232,7 +1232,7 @@ public class CalendarBookingWrapper implements CalendarBooking,
 	* @param modifiedDate the modified date of this calendar booking
 	*/
 	@Override
-	public void setModifiedDate(java.util.Date modifiedDate) {
+	public void setModifiedDate(Date modifiedDate) {
 		_calendarBooking.setModifiedDate(modifiedDate);
 	}
 
@@ -1362,7 +1362,7 @@ public class CalendarBookingWrapper implements CalendarBooking,
 	* @param statusDate the status date of this calendar booking
 	*/
 	@Override
-	public void setStatusDate(java.util.Date statusDate) {
+	public void setStatusDate(Date statusDate) {
 		_calendarBooking.setStatusDate(statusDate);
 	}
 
@@ -1411,8 +1411,7 @@ public class CalendarBookingWrapper implements CalendarBooking,
 	* @param titleMap the locales and localized titles of this calendar booking
 	*/
 	@Override
-	public void setTitleMap(
-		java.util.Map<java.util.Locale, java.lang.String> titleMap) {
+	public void setTitleMap(Map<java.util.Locale, java.lang.String> titleMap) {
 		_calendarBooking.setTitleMap(titleMap);
 	}
 
@@ -1423,8 +1422,7 @@ public class CalendarBookingWrapper implements CalendarBooking,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setTitleMap(
-		java.util.Map<java.util.Locale, java.lang.String> titleMap,
+	public void setTitleMap(Map<java.util.Locale, java.lang.String> titleMap,
 		java.util.Locale defaultLocale) {
 		_calendarBooking.setTitleMap(titleMap, defaultLocale);
 	}

@@ -28,7 +28,7 @@ import com.liferay.service.access.policy.service.SAPEntryLocalServiceUtil;
  *
  * @author Brian Wing Shun Chan
  * @see SAPEntryImpl
- * @see com.liferay.service.access.policy.model.SAPEntry
+ * @see SAPEntry
  * @generated
  */
 @ProviderType

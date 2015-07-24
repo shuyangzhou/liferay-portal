@@ -597,15 +597,16 @@ public class UsersAdminImpl implements UsersAdmin {
 	public long[] getGroupIds(PortletRequest portletRequest)
 		throws PortalException {
 
+		long[] groupIds = new long[0];
+
 		User user = PortalUtil.getSelectedUser(portletRequest);
 
-		if (user == null) {
-			return null;
+		if (user != null) {
+			groupIds = user.getGroupIds();
 		}
 
 		return getRequestPrimaryKeys(
-			portletRequest, user.getGroupIds(), "addGroupIds",
-			"deleteGroupIds");
+			portletRequest, groupIds, "addGroupIds", "deleteGroupIds");
 	}
 
 	@Override
@@ -654,14 +655,16 @@ public class UsersAdminImpl implements UsersAdmin {
 	public long[] getOrganizationIds(PortletRequest portletRequest)
 		throws PortalException {
 
+		long[] organizationIds = new long[0];
+
 		User user = PortalUtil.getSelectedUser(portletRequest);
 
-		if (user == null) {
-			return null;
+		if (user != null) {
+			organizationIds = user.getOrganizationIds();
 		}
 
 		return getRequestPrimaryKeys(
-			portletRequest, user.getOrganizationIds(), "addOrganizationIds",
+			portletRequest, organizationIds, "addOrganizationIds",
 			"deleteOrganizationIds");
 	}
 
@@ -857,14 +860,16 @@ public class UsersAdminImpl implements UsersAdmin {
 	public long[] getRoleIds(PortletRequest portletRequest)
 		throws PortalException {
 
+		long[] roleIds = new long[0];
+
 		User user = PortalUtil.getSelectedUser(portletRequest);
 
-		if (user == null) {
-			return null;
+		if (user != null) {
+			roleIds = user.getRoleIds();
 		}
 
 		return getRequestPrimaryKeys(
-			portletRequest, user.getRoleIds(), "addRoleIds", "deleteRoleIds");
+			portletRequest, roleIds, "addRoleIds", "deleteRoleIds");
 	}
 
 	@Override
@@ -916,14 +921,16 @@ public class UsersAdminImpl implements UsersAdmin {
 	public long[] getUserGroupIds(PortletRequest portletRequest)
 		throws PortalException {
 
+		long[] userGroupIds = new long[0];
+
 		User user = PortalUtil.getSelectedUser(portletRequest);
 
-		if (user == null) {
-			return null;
+		if (user != null) {
+			userGroupIds = user.getUserGroupIds();
 		}
 
 		return getRequestPrimaryKeys(
-			portletRequest, user.getUserGroupIds(), "addUserGroupIds",
+			portletRequest, userGroupIds, "addUserGroupIds",
 			"deleteUserGroupIds");
 	}
 
