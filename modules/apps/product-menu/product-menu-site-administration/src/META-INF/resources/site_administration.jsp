@@ -20,4 +20,4 @@
 PanelCategory panelCategory = (PanelCategory)request.getAttribute(ApplicationListWebKeys.PANEL_CATEGORY);
 %>
 
-<application-list-ui:panel panelCategory="<%= panelCategory %>" />
+<liferay-application-list:panel panelCategory="<%= panelCategory %>" />

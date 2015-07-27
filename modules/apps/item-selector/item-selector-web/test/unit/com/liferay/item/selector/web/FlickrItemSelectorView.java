@@ -54,6 +54,11 @@ public class FlickrItemSelectorView
 	}
 
 	@Override
+	public boolean isShowSearch() {
+		return false;
+	}
+
+	@Override
 	public void renderHTML(
 			ServletRequest request, ServletResponse response,
 			FlickrItemSelectorCriterion flickrItemSelectorCriterion,
