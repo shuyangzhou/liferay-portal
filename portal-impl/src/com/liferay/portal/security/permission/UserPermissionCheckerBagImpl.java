@@ -52,11 +52,12 @@ public class UserPermissionCheckerBagImpl implements UserPermissionCheckerBag {
 		Set<Role> userRoles) {
 
 		_userId = userId;
-		_userGroups = userGroups;
-		_userOrgs = userOrgs;
-		_userOrgGroups = userOrgGroups;
-		_userUserGroupGroups = userUserGroupGroups;
-		_userRoles = userRoles;
+		_userGroups = Collections.unmodifiableSet(userGroups);
+		_userOrgs = Collections.unmodifiableList(userOrgs);
+		_userOrgGroups = Collections.unmodifiableSet(userOrgGroups);
+		_userUserGroupGroups = Collections.unmodifiableList(
+			userUserGroupGroups);
+		_userRoles = Collections.unmodifiableSet(userRoles);
 	}
 
 	public UserPermissionCheckerBagImpl(
