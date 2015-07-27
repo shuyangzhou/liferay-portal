@@ -75,6 +75,11 @@ public class WikiAttachmentItemSelectorView
 	}
 
 	@Override
+	public boolean isShowSearch() {
+		return true;
+	}
+
+	@Override
 	public void renderHTML(
 			ServletRequest request, ServletResponse response,
 			WikiAttachmentItemSelectorCriterion
