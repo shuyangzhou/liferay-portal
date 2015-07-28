@@ -122,6 +122,19 @@ public class DynamicQueryTest {
 	}
 
 	@Test
+	public void testNegativeLowerBoundWithLimitedUpperBound() throws Exception {
+		DynamicQuery dynamicQuery = ClassNameLocalServiceUtil.dynamicQuery();
+
+		dynamicQuery.setLimit(-50, 5);
+
+		List<ClassName> dynamicQueryClassNames =
+			ClassNameLocalServiceUtil.dynamicQuery(dynamicQuery);
+
+		Assert.assertNotNull(dynamicQueryClassNames);
+		Assert.assertEquals(5, dynamicQueryClassNames.size());
+	}
+
+	@Test
 	public void testNegativeUpperBound() throws Exception {
 		DynamicQuery dynamicQuery = ClassNameLocalServiceUtil.dynamicQuery();
 
