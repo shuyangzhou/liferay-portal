@@ -22,4 +22,5 @@ Export-Package:\
 Import-Package: *;resolution:=optional
 Include-Resource:\
 	classes,\
-	@${project.dir}/../lib/development/dumbster.jar
+	@${project.dir}/../lib/development/dumbster.jar,\
+	@${project.dir}/../lib/portal/tika-core.jar
