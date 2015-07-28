@@ -27,7 +27,6 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -695,11 +694,14 @@ public class AssetPublisherExportImportTest
 
 		User user = TestPropsValues.getUser();
 
-		Map<String, Serializable> exportSettingsMap =
-			ExportImportConfigurationSettingsMapFactory.buildSettingsMap(
-				user.getUserId(), layout.getGroupId(), layout.isPrivateLayout(),
-				ExportImportHelperUtil.getLayoutIds(layouts),
-				getExportParameterMap(), user.getLocale(), user.getTimeZone());
+		Map<String, Serializable> exportLayoutSettingsMap =
+			ExportImportConfigurationSettingsMapFactory.
+				buildExportLayoutSettingsMap(
+					user.getUserId(), layout.getGroupId(),
+					layout.isPrivateLayout(),
+					ExportImportHelperUtil.getLayoutIds(layouts),
+					getExportParameterMap(), user.getLocale(),
+					user.getTimeZone());
 
 		ExportImportConfiguration exportConfiguration =
 			ExportImportConfigurationLocalServiceUtil.
@@ -707,7 +709,7 @@ public class AssetPublisherExportImportTest
 					user.getUserId(), layout.getGroupId(), StringPool.BLANK,
 					StringPool.BLANK,
 					ExportImportConfigurationConstants.TYPE_EXPORT_LAYOUT,
-					exportSettingsMap, WorkflowConstants.STATUS_DRAFT,
+					exportLayoutSettingsMap, WorkflowConstants.STATUS_DRAFT,
 					new ServiceContext());
 
 		larFile = ExportImportLocalServiceUtil.exportLayoutsAsFile(
@@ -715,12 +717,12 @@ public class AssetPublisherExportImportTest
 
 		// Import site LAR
 
-		Map<String, Serializable> importSettingsMap =
-			ExportImportConfigurationSettingsMapFactory.buildImportSettingsMap(
-				user.getUserId(), importedGroup.getGroupId(),
-				layout.isPrivateLayout(), null, getImportParameterMap(),
-				Constants.IMPORT, user.getLocale(), user.getTimeZone(),
-				larFile.getName());
+		Map<String, Serializable> importLayoutSettingsMap =
+			ExportImportConfigurationSettingsMapFactory.
+				buildImportLayoutSettingsMap(
+					user.getUserId(), importedGroup.getGroupId(),
+					layout.isPrivateLayout(), null, getImportParameterMap(),
+					user.getLocale(), user.getTimeZone());
 
 		ExportImportConfiguration importConfiguration =
 			ExportImportConfigurationLocalServiceUtil.
@@ -728,7 +730,7 @@ public class AssetPublisherExportImportTest
 					user.getUserId(), importedGroup.getGroupId(),
 					StringPool.BLANK, StringPool.BLANK,
 					ExportImportConfigurationConstants.TYPE_IMPORT_LAYOUT,
-					importSettingsMap, WorkflowConstants.STATUS_DRAFT,
+					importLayoutSettingsMap, WorkflowConstants.STATUS_DRAFT,
 					new ServiceContext());
 
 		ExportImportLocalServiceUtil.importLayouts(

@@ -54,6 +54,11 @@ public class MediaItemSelectorView
 	}
 
 	@Override
+	public boolean isShowSearch() {
+		return false;
+	}
+
+	@Override
 	public void renderHTML(
 			ServletRequest request, ServletResponse response,
 			MediaItemSelectorCriterion mediaItemSelectorCriterion,

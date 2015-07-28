@@ -34,6 +34,8 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.servlet.MultiSessionMessages;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.transaction.TransactionAttribute;
+import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
@@ -77,8 +79,6 @@ import com.liferay.portal.service.ServiceContextThreadLocal;
 import com.liferay.portal.service.TeamLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.service.UserServiceUtil;
-import com.liferay.portal.spring.transaction.TransactionAttributeBuilder;
-import com.liferay.portal.spring.transaction.TransactionHandlerUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.asset.AssetCategoryException;
@@ -111,8 +111,6 @@ import javax.portlet.RenderResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-
-import org.springframework.transaction.interceptor.TransactionAttribute;
 
 /**
  * @author Eudaldo Alonso
@@ -203,7 +201,7 @@ public class SiteAdminPortlet extends MVCPortlet {
 
 		Callable<Group> groupCallable = new GroupCallable(actionRequest);
 
-		Group group = TransactionHandlerUtil.invoke(
+		Group group = TransactionInvokerUtil.invoke(
 			_transactionAttribute, groupCallable);
 
 		String redirect = ParamUtil.getString(actionRequest, "redirect");
@@ -859,8 +857,8 @@ public class SiteAdminPortlet extends MVCPortlet {
 
 	private static final int _LAYOUT_SET_VISIBILITY_PRIVATE = 1;
 
-	private final TransactionAttribute _transactionAttribute =
-		TransactionAttributeBuilder.build(
+	private static final TransactionAttribute _transactionAttribute =
+		TransactionAttribute.Factory.create(
 			Propagation.REQUIRED, new Class<?>[] {Exception.class});
 
 	private class GroupCallable implements Callable<Group> {

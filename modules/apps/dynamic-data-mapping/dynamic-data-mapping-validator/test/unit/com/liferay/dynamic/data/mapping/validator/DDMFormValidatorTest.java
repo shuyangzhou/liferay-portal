@@ -54,11 +54,41 @@ public class DDMFormValidatorTest {
 	}
 
 	@Test(expected = DDMFormValidationException.class)
+	public void testDashInFieldName() throws Exception {
+		DDMForm ddmForm = DDMFormTestUtil.createDDMForm(
+			createAvailableLocales(LocaleUtil.US), LocaleUtil.US);
+
+		ddmForm.addDDMFormField(
+			new DDMFormField("text-dash", DDMFormFieldType.TEXT));
+
+		_ddmFormValidator.validate(ddmForm);
+	}
+
+	@Test(expected = DDMFormValidationException.class)
 	public void testDefaultLocaleMissingAsAvailableLocale() throws Exception {
 		DDMForm ddmForm = new DDMForm();
 
 		ddmForm.setAvailableLocales(createAvailableLocales(LocaleUtil.BRAZIL));
 		ddmForm.setDefaultLocale(LocaleUtil.US);
+
+		_ddmFormValidator.validate(ddmForm);
+	}
+
+	@Test(expected = DDMFormValidationException.class)
+	public void testDuplicateCaseInsensitiveFieldName() throws Exception {
+		DDMForm ddmForm = DDMFormTestUtil.createDDMForm(
+			createAvailableLocales(LocaleUtil.US), LocaleUtil.US);
+
+		ddmForm.addDDMFormField(
+			new DDMFormField("Name1", DDMFormFieldType.TEXT));
+
+		DDMFormField name2DDMFormField = new DDMFormField(
+			"Name2", DDMFormFieldType.TEXT);
+
+		name2DDMFormField.addNestedDDMFormField(
+			new DDMFormField("name1", DDMFormFieldType.TEXT));
+
+		ddmForm.addDDMFormField(name2DDMFormField);
 
 		_ddmFormValidator.validate(ddmForm);
 	}

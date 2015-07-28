@@ -14,7 +14,7 @@
  */
 --%>
 
-<%@ taglib uri="http://liferay.com/tld/application-list/ui" prefix="application-list-ui" %>
+<%@ taglib uri="http://liferay.com/tld/application-list" prefix="liferay-application-list" %>
 
 <%@ page import="com.liferay.application.list.PanelCategory" %><%@
 page import="com.liferay.application.list.PanelCategoryRegistry" %><%@

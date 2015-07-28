@@ -16,7 +16,7 @@
 
 <%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
 
-<%@ taglib uri="http://liferay.com/tld/application-list/ui" prefix="application-list-ui" %><%@
+<%@ taglib uri="http://liferay.com/tld/application-list" prefix="liferay-application-list" %><%@
 taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %>
 
 <%@ page import="com.liferay.application.list.PanelCategory" %><%@

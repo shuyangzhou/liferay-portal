@@ -62,8 +62,6 @@ EntriesChecker entriesChecker = new EntriesChecker(liferayPortletRequest, lifera
 
 entriesChecker.setCssClass("entry-selector");
 
-dlSearchContainer.setRowChecker(entriesChecker);
-
 String orderByCol = GetterUtil.getString((String)request.getAttribute("view.jsp-orderByCol"));
 String orderByType = GetterUtil.getString((String)request.getAttribute("view.jsp-orderByType"));
 
@@ -403,7 +401,18 @@ dlSearchContainer.setResults(results);
 
 							Map<String, Object> data = new HashMap<String, Object>();
 
-							data.put("draggable", DLFileEntryPermission.contains(permissionChecker, fileEntry, ActionKeys.DELETE) || DLFileEntryPermission.contains(permissionChecker, fileEntry, ActionKeys.UPDATE));
+							boolean draggable = false;
+
+							if (DLFileEntryPermission.contains(permissionChecker, fileEntry, ActionKeys.DELETE) || DLFileEntryPermission.contains(permissionChecker, fileEntry, ActionKeys.UPDATE)) {
+								draggable = true;
+
+								if (Validator.isNull(dlSearchContainer.getRowChecker())) {
+									dlSearchContainer.setRowChecker(entriesChecker);
+								}
+							}
+
+							data.put("draggable", draggable);
+
 							data.put("title", fileEntry.getTitle());
 
 							row.setData(data);
@@ -488,7 +497,18 @@ dlSearchContainer.setResults(results);
 
 							Map<String, Object> data = new HashMap<String, Object>();
 
-							data.put("draggable", DLFolderPermission.contains(permissionChecker, curFolder, ActionKeys.DELETE) || DLFolderPermission.contains(permissionChecker, curFolder, ActionKeys.UPDATE));
+							boolean draggable = false;
+
+							if (DLFolderPermission.contains(permissionChecker, curFolder, ActionKeys.DELETE) || DLFolderPermission.contains(permissionChecker, curFolder, ActionKeys.UPDATE)) {
+								draggable = true;
+
+								if (Validator.isNull(dlSearchContainer.getRowChecker())) {
+									dlSearchContainer.setRowChecker(entriesChecker);
+								}
+							}
+
+							data.put("draggable", draggable);
+
 							data.put("folder", true);
 							data.put("folder-id", curFolder.getFolderId());
 							data.put("title", curFolder.getName());

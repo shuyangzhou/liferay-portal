@@ -1398,6 +1398,10 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		return matcher.matches();
 	}
 
+	protected boolean isModulesFile(String absolutePath) {
+		return absolutePath.contains("/modules/");
+	}
+
 	protected void processErrorMessage(String fileName, String message) {
 		List<String> errorMessages = _errorMessagesMap.get(fileName);
 
@@ -1494,7 +1498,7 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 			}
 
 			if (Validator.isNotNull(previousAttribute) &&
-				(previousAttribute.compareTo(attribute) > 0)) {
+				(previousAttribute.compareToIgnoreCase(attribute) > 0)) {
 
 				wrongOrder = true;
 			}
