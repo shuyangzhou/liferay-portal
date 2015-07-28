@@ -15,6 +15,7 @@
 package com.liferay.portlet.documentlibrary.util.test;
 
 import com.liferay.portal.kernel.repository.model.FileEntry;
+import com.liferay.portal.kernel.test.randomizerbumpers.TikaSafeRandomizerBumper;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.ContentTypes;
@@ -53,10 +54,13 @@ public abstract class DLAppTestUtil {
 			serviceContext.setWorkflowAction(
 				WorkflowConstants.ACTION_SAVE_DRAFT);
 
+			String bytes = RandomTestUtil.randomString(
+				TikaSafeRandomizerBumper.INSTANCE);
+
 			FileEntry fileEntry = DLAppLocalServiceUtil.addFileEntry(
 				userId, groupId, folderId, sourceFileName,
 				ContentTypes.TEXT_PLAIN, title, StringPool.BLANK,
-				StringPool.BLANK, RandomTestUtil.randomBytes(), serviceContext);
+				StringPool.BLANK, bytes.getBytes(), serviceContext);
 
 			if (approved) {
 				return updateStatus(fileEntry, serviceContext);
