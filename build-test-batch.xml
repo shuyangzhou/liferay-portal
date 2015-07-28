@@ -356,6 +356,7 @@
 	</target>
 
 	<target name="unit">
+		<property name="test.batch.name" value="unit" />
 		<run-batch-test test.class.group.index="${jenkins.axis.variable}">
 			<test-action>
 				<ant dir="portal-service" target="test-class-group" inheritAll="false">

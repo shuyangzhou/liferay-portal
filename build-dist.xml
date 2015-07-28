@@ -579,24 +579,40 @@
 
 		<delete dir="${project.dir}/portal-web/classes" />
 
-		<ant target="deploy" inheritAll="false" />
-
 		<if>
-			<not>
-				<equals arg1="${tomcat.keep.app.server.properties}" arg2="true" />
-			</not>
+			<equals arg1="${test.batch.name}" arg2="unit" />
 			<then>
-				<app-server-properties-reset />
+				<antcall target="deploy-additional-jars" />
+
+				<ant dir="portal-service" target="deploy" inheritAll="false" />
+
+				<ant dir="util-java" target="deploy" inheritAll="false" />
+
+				<ant dir="portal-impl" target="deploy" inheritAll="false" />
+
+				<ant dir="${project.dir}/modules/core" target="deploy" inheritAll="false" />
 			</then>
+			<else>
+				<ant target="deploy" inheritAll="false" />
+
+				<if>
+					<not>
+						<equals arg1="${tomcat.keep.app.server.properties}" arg2="true" />
+					</not>
+					<then>
+						<app-server-properties-reset />
+					</then>
+				</if>
+
+				<antcall target="resolve-dynamic-jars" inheritAll="false" />
+
+				<antcall target="deploy-plugins">
+					<param name="deployer.dest.dir" value="${app.server.parent.dir}/tomcat-${app.server.tomcat.version}/webapps" />
+					<param name="deployer.app.server.type" value="tomcat" />
+					<param name="deployer.app.server.lib.portal.dir" value="${app.server.parent.dir}/tomcat-${app.server.tomcat.version}/webapps/ROOT/WEB-INF/lib" />
+				</antcall>
+			</else>
 		</if>
-
-		<antcall target="resolve-dynamic-jars" inheritAll="false" />
-
-		<antcall target="deploy-plugins">
-			<param name="deployer.dest.dir" value="${app.server.parent.dir}/tomcat-${app.server.tomcat.version}/webapps" />
-			<param name="deployer.app.server.type" value="tomcat" />
-			<param name="deployer.app.server.lib.portal.dir" value="${app.server.parent.dir}/tomcat-${app.server.tomcat.version}/webapps/ROOT/WEB-INF/lib" />
-		</antcall>
 	</target>
 
 	<target name="deploy-plugins">
