@@ -39,6 +39,7 @@ import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.security.permission.PermissionThreadLocal;
 import com.liferay.portal.security.permission.SimplePermissionChecker;
 import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.test.randomizerbumpers.TikaSafeRandomizerBumper;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.verify.VerifyDocumentLibrary;
 import com.liferay.portal.verify.VerifyProcess;
@@ -382,8 +383,11 @@ public class VerifyDocumentLibraryTest extends BaseVerifyProcessTestCase {
 		Map<String, DDMFormValues> ddmFormValuesMap = getDDMFormValuesMap(
 			ddmStructure.getStructureKey(), user.getLocale());
 
+		String content = RandomTestUtil.randomString(
+			TikaSafeRandomizerBumper.INSTANCE);
+
 		ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(
-			RandomTestUtil.randomBytes());
+			content.getBytes());
 
 		return DLFileEntryLocalServiceUtil.addFileEntry(
 			TestPropsValues.getUserId(), _group.getGroupId(),
@@ -399,10 +403,13 @@ public class VerifyDocumentLibraryTest extends BaseVerifyProcessTestCase {
 			ServiceContextTestUtil.getServiceContext(
 				_group.getGroupId(), TestPropsValues.getUserId());
 
+		String content = RandomTestUtil.randomString(
+			TikaSafeRandomizerBumper.INSTANCE);
+
 		return DLAppLocalServiceUtil.addFileEntry(
 			TestPropsValues.getUserId(), _group.getGroupId(), folderId,
 			RandomTestUtil.randomString() + ".txt", ContentTypes.TEXT_PLAIN,
-			RandomTestUtil.randomBytes(), serviceContext);
+			content.getBytes(), serviceContext);
 	}
 
 	protected Map<String, DDMFormValues> getDDMFormValuesMap(
