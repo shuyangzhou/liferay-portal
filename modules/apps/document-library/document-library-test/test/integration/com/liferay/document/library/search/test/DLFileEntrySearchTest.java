@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.metadata.TikaRawMetadataProcessor;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.search.test.BaseSearchTestCase;
@@ -336,11 +337,17 @@ public class DLFileEntrySearchTest extends BaseSearchTestCase {
 			folderId = dlFolder.getFolderId();
 		}
 
-		FileEntry fileEntry = DLAppTestUtil.addFileEntryWithWorkflow(
-			serviceContext.getUserId(), serviceContext.getScopeGroupId(),
-			folderId, keywords + ".txt", keywords, approved, serviceContext);
+		try (CaptureAppender captureAppender =
+				Log4JLoggerTestUtil.configureLog4JLogger(
+					TikaRawMetadataProcessor.class.getName(), Level.WARN)) {
 
-		return (DLFileEntry)fileEntry.getModel();
+			FileEntry fileEntry = DLAppTestUtil.addFileEntryWithWorkflow(
+				serviceContext.getUserId(), serviceContext.getScopeGroupId(),
+				folderId, keywords + ".txt", keywords, approved,
+				serviceContext);
+
+			return (DLFileEntry)fileEntry.getModel();
+		}
 	}
 
 	@Override
