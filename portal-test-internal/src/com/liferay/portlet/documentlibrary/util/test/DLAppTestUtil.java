@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowThreadLocal;
 import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.test.randomizerbumpers.TikaSafeRandomizerBumper;
 import com.liferay.portlet.documentlibrary.model.DLFileEntryTypeConstants;
 import com.liferay.portlet.documentlibrary.model.DLSyncConstants;
 import com.liferay.portlet.documentlibrary.service.DLAppLocalServiceUtil;
@@ -53,10 +54,13 @@ public abstract class DLAppTestUtil {
 			serviceContext.setWorkflowAction(
 				WorkflowConstants.ACTION_SAVE_DRAFT);
 
+			String bytes = RandomTestUtil.randomString(
+				TikaSafeRandomizerBumper.INSTANCE);
+
 			FileEntry fileEntry = DLAppLocalServiceUtil.addFileEntry(
 				userId, groupId, folderId, sourceFileName,
 				ContentTypes.TEXT_PLAIN, title, StringPool.BLANK,
-				StringPool.BLANK, RandomTestUtil.randomBytes(), serviceContext);
+				StringPool.BLANK, bytes.getBytes(), serviceContext);
 
 			if (approved) {
 				return updateStatus(fileEntry, serviceContext);
