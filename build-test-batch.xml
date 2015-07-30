@@ -118,6 +118,14 @@
 		</sequential>
 	</macrodef>
 
+	<macrodef name="prepare-test-build-unit">
+		<sequential>
+			<antcall target="prepare-test-build-unit">
+				<param name="test.class.groups.size" value="${test.batch.size}" />
+			</antcall>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="print-test-class-group">
 		<attribute name="test.class.group.index" />
 		<sequential>
@@ -154,6 +162,29 @@
 							<delete file=".testable.portal.started" failonerror="false" />
 						</then>
 					</if>
+
+					<print-gc-logs />
+				</then>
+			</if>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="run-batch-unit-test">
+		<attribute name="test.class.group.index" />
+		<element name="test-action" />
+		<sequential>
+			<if>
+				<not>
+					<equals arg1="@{test.class.group.index}" arg2="default" />
+				</not>
+				<then>
+					<prepare-test-build-unit />
+
+					<test-action />
+
+					<merge-test-results />
+
+					<check-deprecated-method />
 
 					<print-gc-logs />
 				</then>
@@ -356,7 +387,7 @@
 	</target>
 
 	<target name="unit">
-		<run-batch-test test.class.group.index="${jenkins.axis.variable}">
+		<run-batch-unit-test test.class.group.index="${jenkins.axis.variable}">
 			<test-action>
 				<ant dir="portal-service" target="test-class-group" inheritAll="false">
 					<property name="test.class.group.index" value="@{test.class.group.index}" />
@@ -371,6 +402,6 @@
 					<property name="test.class.group.index" value="@{test.class.group.index}" />
 				</ant>
 			</test-action>
-		</run-batch-test>
+		</run-batch-unit-test>
 	</target>
 </project>
