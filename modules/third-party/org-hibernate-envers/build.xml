@@ -4,7 +4,7 @@
 <project>
 	<property name="javac.source" value="1.6" />
 	<property name="javac.target" value="1.6" />
-	<property name="original.lib.name" value="hibernate-core" />
+	<property name="original.lib.name" value="hibernate-envers" />
 	<property name="original.lib.url" value="http://search.maven.org/remotecontent?filepath=org/hibernate" />
 	<property name="original.lib.version" value="3.6.10.Final" />
 
@@ -23,7 +23,7 @@
 		/>
 
 		<antcall target="patch">
-			<param name="patch.destination" value="org/hibernate/cache/UpdateTimestampsCache.java,org/hibernate/intercept/FieldInterceptionHelper.java,org/hibernate/cfg/Environment.java,org/hibernate/engine/StatefulPersistenceContext.java,org/hibernate/engine/query/HQLQueryPlan.java,org/hibernate/engine/query/QueryPlanCache.java,org/hibernate/hql/QueryTranslatorFactory.java,org/hibernate/hql/ast/QueryTranslatorImpl.java,org/hibernate/hql/classic/QueryTranslatorImpl.java,org/hibernate/impl/AbstractSessionImpl.java,org/hibernate/impl/SessionFactoryImpl.java,org/hibernate/internal/util/collections/BoundedConcurrentHashMap.java,org/hibernate/internal/util/collections/ConcurrentReferenceHashMap.java" />
+			<param name="patch.destination" value="org/hibernate/envers/tools/reflection/ReflectionTool.java" />
 			<param name="patch.original.lib.name" value="${original.lib.name}" />
 			<param name="patch.original.lib.source.dir" value="." />
 			<param name="patch.original.lib.url" value="${original.lib.url}" />
@@ -41,6 +41,6 @@
 			module.dir="${basedir}"
 		/>
 
-		<copy file="${plugin.file}" tofile="../../../lib/portal/hibernate-core.jar" />
+		<copy file="${plugin.file}" tofile="../../../lib/portal/hibernate-envers.jar" />
 	</target>
 </project>

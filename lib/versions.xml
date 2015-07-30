@@ -1904,7 +1904,22 @@
 					</license>
 				</licenses>
 				<comments>
-					This includes a public patch from HHH-6286.
+					This includes a public patch from HHH-6286 and HHH-5927.
+				</comments>
+			</library>
+			<library>
+				<file-name>lib/portal/hibernate-envers.jar</file-name>
+				<version>3.6.10</version>
+				<project-name>Hibernate</project-name>
+				<project-url>http://www.hibernate.org</project-url>
+				<licenses>
+					<license>
+						<license-name>LGPL 2.1</license-name>
+						<license-url>http://www.gnu.org/licenses/lgpl-2.1.html</license-url>
+					</license>
+				</licenses>
+				<comments>
+					This includes a public patch from HHH-5927.
 				</comments>
 			</library>
 			<library>

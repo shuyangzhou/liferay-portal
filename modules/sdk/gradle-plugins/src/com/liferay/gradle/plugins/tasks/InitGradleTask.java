@@ -112,6 +112,9 @@ public class InitGradleTask extends DefaultTask {
 			"hibernate-core.jar", "org.hibernate", "hibernate-core",
 			"3.6.10.Final");
 		portalDependencyNotation(
+			"hibernate-envers.jar", "org.hibernate", "hibernate-envers",
+			"3.6.10.Final");
+		portalDependencyNotation(
 			"ical4j.jar", "org.mnode.ical4j", "ical4j", "1.0.2");
 		portalDependencyNotation(
 			"jabsorb.jar", "org.jabsorb", "jabsorb", "1.3.1");

@@ -24,6 +24,7 @@
 	<classpathentry kind="lib" path="/portal-master/lib/portal/commons-lang.jar" />
 	<classpathentry kind="lib" path="/portal-master/lib/portal/commons-logging.jar" />
 	<classpathentry kind="lib" path="/portal-master/lib/portal/hibernate-core.jar" />
+	<classpathentry kind="lib" path="/portal-master/lib/portal/hibernate-envers.jar" />
 	<classpathentry kind="lib" path="/portal-master/lib/portal/log4j.jar" />
 	<classpathentry kind="lib" path="/portal-master/lib/portal/spring-aop.jar" />
 	<classpathentry kind="lib" path="/portal-master/lib/portal/spring-beans.jar" />
