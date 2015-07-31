@@ -23,6 +23,7 @@ import com.liferay.portal.search.elasticsearch.configuration.ElasticsearchConfig
 import com.liferay.portal.search.elasticsearch.index.IndexFactory;
 import com.liferay.portal.search.elasticsearch.settings.SettingsContributor;
 
+import java.util.Arrays;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.Future;
@@ -60,6 +61,10 @@ public abstract class BaseElasticsearchConnection
 
 		String[] additionalConfigurations =
 			elasticsearchConfiguration.additionalConfigurations();
+
+		System.out.println(
+			"#######################################################" +
+				Arrays.toString(additionalConfigurations));
 
 		if (ArrayUtil.isNotEmpty(additionalConfigurations)) {
 			StringBundler sb = new StringBundler(
