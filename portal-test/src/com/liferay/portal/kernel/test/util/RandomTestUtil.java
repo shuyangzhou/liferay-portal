@@ -56,9 +56,36 @@ public class RandomTestUtil {
 	}
 
 	public static byte[] randomBytes() {
-		String string = randomString();
+		byte[] bytes = new byte[8];
 
-		return string.getBytes();
+		_random.nextBytes(bytes);
+
+		return bytes;
+	}
+
+	@SafeVarargs
+	public static byte[] randomBytes(
+		RandomizerBumper<byte[]>... randomizerBumpers) {
+
+		generation:
+		for (int i = 0; i < _RANDOMIZER_BUMPER_TRIES_MAX; i++) {
+			byte[] randomBytes = randomBytes();
+
+			for (RandomizerBumper<byte[]> randomizerBumper :
+					randomizerBumpers) {
+
+				if (!randomizerBumper.accept(randomBytes)) {
+					continue generation;
+				}
+			}
+
+			return randomBytes;
+		}
+
+		throw new IllegalStateException(
+			"Unable to generate a random byte array that is acceptable by " +
+				"all randomizer bumpers " + Arrays.toString(randomizerBumpers) +
+					" after " + _RANDOMIZER_BUMPER_TRIES_MAX + " tries");
 	}
 
 	public static double randomDouble() {
