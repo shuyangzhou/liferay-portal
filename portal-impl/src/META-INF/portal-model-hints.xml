@@ -929,6 +929,7 @@
 		<field name="description" type="String">
 			<hint-collection name="TEXTAREA" />
 		</field>
+		<field name="lastPublishDate" type="Date" />
 	</model>
 	<model name="com.liferay.portal.model.Ticket">
 		<field name="mvccVersion" type="long" />
@@ -1594,6 +1595,7 @@
 		<field name="version" type="String" />
 		<field name="size" type="long" />
 		<field name="checksum" type="String" />
+		<field name="lastPublishDate" type="Date" />
 		<field name="status" type="int" />
 		<field name="statusByUserId" type="long" />
 		<field name="statusByUserName" type="String" />

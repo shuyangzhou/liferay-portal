@@ -1013,6 +1013,19 @@ jdbc.default.password=${database.password}]]></echo>
 		</sequential>
 	</macrodef>
 
+	<macrodef name="prepare-elasticsearch-configuration" >
+		<sequential>
+			<echo file="${liferay.home}/osgi/portal/com.liferay.portal.search.elasticsearch.configuration.ElasticsearchConfiguration.cfg">
+				additionalConfigurations=\
+					index.indexing.slowlog.threshold.index.warn: 600s,\
+					index.search.slowlog.threshold.fetch.warn: 600s,\
+					index.search.slowlog.threshold.query.warn: 600s,\
+					monitor.jvm.gc.old.warn: 600s,\
+					monitor.jvm.gc.young.warn: 600s
+			</echo>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="prepare-fix-pack-bundle" >
 		<sequential>
 			<if>
@@ -1155,6 +1168,8 @@ jdbc.default.password=${database.password}]]></echo>
 	</macrodef>
 
 	<macrodef name="print-gc-logs">
+		<attribute name="tomcat.gc.log" />
+		<attribute name="tsant.gc.log" />
 		<sequential>
 			<if>
 				<available file="/tmp/ant-gc.log" />
@@ -1172,7 +1187,7 @@ ${ant-gc-log}
 				</else>
 			</if>
 
-			<if>
+			<if if:true="@{tomcat.gc.log}">
 				<available file="/tmp/tomcat-gc.log" />
 				<then>
 					<loadfile property="tomcat-gc-log" srcFile="/tmp/tomcat-gc.log" />
@@ -1188,7 +1203,7 @@ ${tomcat-gc-log}
 				</else>
 			</if>
 
-			<if>
+			<if if:true="@{tsant.gc.log}">
 				<available file="/tmp/tsant-gc.log" />
 				<then>
 					<loadfile property="tsant-gc-log" srcFile="/tmp/tsant-gc.log" />
@@ -5001,6 +5016,8 @@ module.framework.properties.osgi.console=11312</echo>
 				<antcall target="prepare-portal-ext-properties" />
 
 				<antcall target="prepare-system-ext-properties" />
+
+				<prepare-elasticsearch-configuration />
 			</else>
 		</if>
 
