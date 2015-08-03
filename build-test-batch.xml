@@ -226,7 +226,7 @@
 				<test-action>
 					<database-test-run-test database.type="@{database.type}" stop.app.server="true">
 						<test-action>
-							<print-test-class-group test.class.group.index="@{test.class.group.index}" />
+<!--							<print-test-class-group test.class.group.index="@{test.class.group.index}" />
 
 							<antcall target="prepare-portal-ext-properties" inheritAll="false">
 								<param name="database.type" value="@{database.type}" />
@@ -241,7 +241,8 @@
 
 							<ant dir="portal-service" target="test-class" inheritAll="false">
 								<property name="test.class" value="PortalLogAssertorTest" />
-							</ant>
+							</ant>-->
+							<echo>###########Inside database-test-run-test:test-action</echo>
 						</test-action>
 					</database-test-run-test>
 				</test-action>

@@ -324,7 +324,7 @@
 			</then>
 		</if>
 
-		<stopwatch name="modules.stopwatch" />
+<!--		<stopwatch name="modules.stopwatch" />
 
 		<ant dir="${project.dir}/modules/core/registry-api" target="deploy" inheritAll="false" />
 
@@ -343,7 +343,7 @@
 
 				<move file="${app.server.glassfish.portal.war.dir}-tmp" tofile="${app.server.glassfish.portal.war.dir}" />
 			</then>
-		</if>
+		</if>-->
 
 		<print-current-time />
 	</target>
