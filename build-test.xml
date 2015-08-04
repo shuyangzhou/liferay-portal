@@ -2920,25 +2920,14 @@ go]]></replacevalue>
 						db2 force applications all
 						db2 db2stop force
 
-						for i in `ipcs -m | grep db2 | cut -c12-21`
+						for i in "m q s"
 						do
-							echo "ipcrm -m $i"
+							for j in `ipcs -$i | grep db2 | cut -c12-21`
+							do
+								echo "ipcrm -$i $j"
 
-							ipcrm -m $i
-						done
-
-						for i in `ipcs -q | grep db2 | cut -c12-21`
-						do
-							echo "ipcrm -q $i"
-
-							ipcrm -q $i
-						done
-
-						for i in `ipcs -s | grep db2 | cut -c12-21`
-						do
-							echo "ipcrm -s $i"
-
-							ipcrm -s $i
+								ipcrm -$i $j
+							done
 						done
 					]]>
 				</echo>
