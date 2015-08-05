@@ -43,6 +43,10 @@ public interface PortletPreferencesFactory {
 
 	public PortletPreferences fromDefaultXML(String xml);
 
+	public PortalPreferences fromPreferences(
+		long ownerId, int ownerType,
+		com.liferay.portal.model.PortalPreferences portalPreferences);
+
 	public PortalPreferences fromXML(long ownerId, int ownerType, String xml);
 
 	public PortletPreferences fromXML(

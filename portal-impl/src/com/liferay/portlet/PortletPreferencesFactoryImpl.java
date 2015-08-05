@@ -138,6 +138,19 @@ public class PortletPreferencesFactoryImpl
 	}
 
 	@Override
+	public PortalPreferencesImpl fromPreferences(
+		long ownerId, int ownerType,
+		com.liferay.portal.model.PortalPreferences portalPreferences) {
+
+		String xml = portalPreferences.getPreferences();
+
+		Map<String, Preference> preferencesMap = toPreferencesMap(xml);
+
+		return new PortalPreferencesImpl(
+			ownerId, ownerType, xml, preferencesMap, portalPreferences, false);
+	}
+
+	@Override
 	public PortalPreferencesImpl fromXML(
 		long ownerId, int ownerType, String xml) {
 
