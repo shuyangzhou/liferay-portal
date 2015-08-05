@@ -299,6 +299,54 @@
 		<run-modules-integration-test database.type="postgresql" />
 	</target>
 
+	<target name="modules-integration-db2-2">
+		<run-modules-integration-test database.type="db2" />
+	</target>
+
+	<target name="modules-integration-mysql-2">
+		<run-modules-integration-test database.type="mysql" />
+	</target>
+
+	<target name="modules-integration-oracle-2">
+		<run-modules-integration-test database.type="oracle" />
+	</target>
+
+	<target name="modules-integration-postgresql-2">
+		<run-modules-integration-test database.type="postgresql" />
+	</target>
+
+	<target name="modules-integration-db2-3">
+		<run-modules-integration-test database.type="db2" />
+	</target>
+
+	<target name="modules-integration-mysql-3">
+		<run-modules-integration-test database.type="mysql" />
+	</target>
+
+	<target name="modules-integration-oracle-3">
+		<run-modules-integration-test database.type="oracle" />
+	</target>
+
+	<target name="modules-integration-postgresql-3">
+		<run-modules-integration-test database.type="postgresql" />
+	</target>
+
+	<target name="modules-integration-db2-4">
+		<run-modules-integration-test database.type="db2" />
+	</target>
+
+	<target name="modules-integration-mysql-4">
+		<run-modules-integration-test database.type="mysql" />
+	</target>
+
+	<target name="modules-integration-oracle-4">
+		<run-modules-integration-test database.type="oracle" />
+	</target>
+
+	<target name="modules-integration-postgresql-4">
+		<run-modules-integration-test database.type="postgresql" />
+	</target>
+
 	<target name="modules-unit">
 		<run-batch-test test.class.group.index="${jenkins.axis.variable}">
 			<test-action>
