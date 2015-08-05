@@ -4,11 +4,18 @@
 	<import file="../build-common.xml" />
 
 	<target name="build-sample-sql">
+		<if>
+			<not>
+				<available file="${project.dir}/modules/util/portal-tools-sample-sql-builder/lib" type="dir" />
+			</not>
+			<then>
+				<ant antfile="${project.dir}/modules/util/portal-tools-sample-sql-builder/build.xml" target="deploy" useNativeBasedir="true" />
+			</then>
+		</if>
+
 		<path id="sample.sql.builder.classpath">
-			<fileset dir="${sdk.dir}/dist" includes="com.liferay.dynamic.data.*.jar" />
-			<fileset dir="${sdk.dir}/dist" includes="com.liferay.journal.*.jar" />
+			<fileset dir="${project.dir}/modules/util/portal-tools-sample-sql-builder/lib" includes="*.jar" />
 			<fileset dir="${sdk.dir}/dist" includes="com.liferay.portal.tools.sample.sql.builder*.jar" />
-			<fileset dir="${sdk.dir}/dist" includes="com.liferay.wiki.*.jar" />
 			<path refid="project.classpath" />
 		</path>
 
