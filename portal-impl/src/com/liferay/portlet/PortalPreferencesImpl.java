@@ -331,6 +331,24 @@ public class PortalPreferencesImpl
 
 	@Override
 	public void store() throws IOException {
+		Callable<Void> callable = new Callable<Void>() {
+
+			@Override
+			public Void call() throws Exception {
+				return null;
+			}
+
+		};
+
+		try {
+			retryableStore(callable, StringPool.BLANK);
+		}
+		catch (Throwable t) {
+			throw new IOException(t);
+		}
+	}
+
+	protected void doStore() throws IOException {
 		try {
 			if (_portalPreferences != null) {
 				PortalPreferencesWrapperCacheUtil.remove(
@@ -382,7 +400,7 @@ public class PortalPreferencesImpl
 			try {
 				callable.call();
 
-				store();
+				doStore();
 
 				return;
 			}
