@@ -59,31 +59,31 @@ public class UpgradeLastPublishDate extends BaseUpgradeLastPublishDate {
 	protected void upgradeDocumentLibrary() throws Exception {
 		runSQL("alter table DLFileEntry add lastPublishDate DATE null");
 
-		updateLastPublishDates(PortletKeys.DOCUMENT_LIBRARY, "DLFileEntry");
+		updateLastPublishDates("20", "DLFileEntry");
 
 		runSQL("alter table DLFileEntryType add lastPublishDate DATE null");
 
-		updateLastPublishDates(PortletKeys.DOCUMENT_LIBRARY, "DLFileEntryType");
+		updateLastPublishDates("20", "DLFileEntryType");
 
 		runSQL("alter table DLFileShortcut add lastPublishDate DATE null");
 
-		updateLastPublishDates(PortletKeys.DOCUMENT_LIBRARY, "DLFileShortcut");
+		updateLastPublishDates("20", "DLFileShortcut");
 
 		runSQL("alter table DLFileVersion add lastPublishDate DATE null");
 
-		updateLastPublishDates(PortletKeys.DOCUMENT_LIBRARY, "DLFileVersion");
+		updateLastPublishDates("20", "DLFileVersion");
 
 		runSQL("alter table DLFolder add lastPublishDate DATE null");
 
-		updateLastPublishDates(PortletKeys.DOCUMENT_LIBRARY, "DLFolder");
+		updateLastPublishDates("20", "DLFolder");
 
 		runSQL("alter table Repository add lastPublishDate DATE null");
 
-		updateLastPublishDates(PortletKeys.DOCUMENT_LIBRARY, "Repository");
+		updateLastPublishDates("20", "Repository");
 
 		runSQL("alter table RepositoryEntry add lastPublishDate DATE null");
 
-		updateLastPublishDates(PortletKeys.DOCUMENT_LIBRARY, "RepositoryEntry");
+		updateLastPublishDates("20", "RepositoryEntry");
 	}
 
 	protected void upgradeLayoutsAdmin() throws Exception {
@@ -99,23 +99,23 @@ public class UpgradeLastPublishDate extends BaseUpgradeLastPublishDate {
 	protected void upgradeMessageBoards() throws Exception {
 		runSQL("alter table MBBan add lastPublishDate DATE null");
 
-		updateLastPublishDates(PortletKeys.MESSAGE_BOARDS, "MBBan");
+		updateLastPublishDates("19", "MBBan");
 
 		runSQL("alter table MBCategory add lastPublishDate DATE null");
 
-		updateLastPublishDates(PortletKeys.MESSAGE_BOARDS, "MBCategory");
+		updateLastPublishDates("19", "MBCategory");
 
 		runSQL("alter table MBDiscussion add lastPublishDate DATE null");
 
-		updateLastPublishDates(PortletKeys.MESSAGE_BOARDS, "MBDiscussion");
+		updateLastPublishDates("19", "MBDiscussion");
 
 		runSQL("alter table MBMessage add lastPublishDate DATE null");
 
-		updateLastPublishDates(PortletKeys.MESSAGE_BOARDS, "MBMessage");
+		updateLastPublishDates("19", "MBMessage");
 
 		runSQL("alter table MBThreadFlag add lastPublishDate DATE null");
 
-		updateLastPublishDates(PortletKeys.MESSAGE_BOARDS, "MBThreadFlag");
+		updateLastPublishDates("19", "MBThreadFlag");
 	}
 
 	protected void upgradeMobileDeviceRules() throws Exception {

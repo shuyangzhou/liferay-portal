@@ -662,6 +662,10 @@ public class VerifyProperties extends VerifyProcess {
 		// Document Library
 
 		new String[] {
+			"dl.display.templates.config", "display.templates.config",
+			"com.liferay.document.library.web"
+		},
+		new String[] {
 			"dl.repository.cmis.delete.depth", "delete.depth",
 			"com.liferay.document.library.repository.cmis"
 		},
@@ -736,6 +740,11 @@ public class VerifyProperties extends VerifyProcess {
 		new String[] {
 			"dl.store.s3.temp.dir.clean.up.frequency",
 			"temp.dir.clean.up.frequency", "com.liferay.portal.store.s3"
+		},
+		new String[] {
+			"dl.temporary.file.entries.check.interval",
+			"temporary.file.entries.check.interval",
+			"com.liferay.document.library.web"
 		},
 
 		// Dynamic Data Lists
@@ -1316,6 +1325,13 @@ public class VerifyProperties extends VerifyProcess {
 		new String[] {
 			"lucene.store.type.file.force.mmap", "store.type.file.force.mmp",
 			"com.liferay.portal.search.lucene"
+		},
+
+		// Message Boards
+
+		new String[] {
+			"message.boards.expire.ban.job.interval", "expire.ban.job.interval",
+			"com.liferay.message.boards.web"
 		},
 
 		// Monitoring
