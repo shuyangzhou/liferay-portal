@@ -12,10 +12,10 @@
  * details.
  */
 
-package com.liferay.dynamic.data.mapping.upgrade.v1_0_0;
+package com.liferay.journal.upgrade.v1_0_0;
 
-import com.liferay.dynamic.data.mapping.upgrade.v1_0_0.util.DDMContentTable;
-import com.liferay.dynamic.data.mapping.upgrade.v1_0_0.util.DDMStructureTable;
+import com.liferay.journal.upgrade.v1_0_0.util.JournalArticleTable;
+import com.liferay.journal.upgrade.v1_0_0.util.JournalFeedTable;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.upgrade.UpgradeMVCC;
@@ -23,7 +23,7 @@ import com.liferay.portal.upgrade.UpgradeMVCC;
 import java.sql.SQLException;
 
 /**
- * @author Marcellus Tavares
+ * @author Eduardo Garcia
  */
 public class UpgradeSchema extends UpgradeProcess {
 
@@ -37,25 +37,40 @@ public class UpgradeSchema extends UpgradeProcess {
 		upgrade(UpgradeMVCC.class);
 
 		try {
-			runSQL("alter_column_name DDMContent xml data_ TEXT null");
+			runSQL(
+				"alter_column_name JournalArticle structureId " +
+					"DDMStructureKey VARCHAR(75) null");
+			runSQL(
+				"alter_column_name JournalArticle templateId DDMTemplateKey " +
+					"VARCHAR(75) null");
+			runSQL("alter_column_type JournalArticle description TEXT null");
 
-			runSQL("alter_column_name DDMStructure xsd definition TEXT null");
+			runSQL(
+				"alter_column_name JournalFeed structureId DDMStructureKey " +
+					"TEXT null");
+			runSQL(
+				"alter_column_name JournalFeed templateId DDMTemplateKey " +
+					"TEXT null");
+			runSQL(
+				"alter_column_name JournalFeed rendererTemplateId " +
+					"DDMRendererTemplateKey TEXT null");
 		}
 		catch (SQLException sqle) {
 
-			// DDMContent
+			// JournalArticle
 
 			upgradeTable(
-				DDMContentTable.TABLE_NAME, DDMContentTable.TABLE_COLUMNS,
-				DDMContentTable.TABLE_SQL_CREATE,
-				DDMContentTable.TABLE_SQL_ADD_INDEXES);
+				JournalArticleTable.TABLE_NAME,
+				JournalArticleTable.TABLE_COLUMNS,
+				JournalArticleTable.TABLE_SQL_CREATE,
+				JournalArticleTable.TABLE_SQL_ADD_INDEXES);
 
-			// DDMStructure
+			// JournalFeed
 
 			upgradeTable(
-				DDMStructureTable.TABLE_NAME, DDMStructureTable.TABLE_COLUMNS,
-				DDMStructureTable.TABLE_SQL_CREATE,
-				DDMStructureTable.TABLE_SQL_ADD_INDEXES);
+				JournalFeedTable.TABLE_NAME, JournalFeedTable.TABLE_COLUMNS,
+				JournalFeedTable.TABLE_SQL_CREATE,
+				JournalFeedTable.TABLE_SQL_ADD_INDEXES);
 		}
 	}
 
