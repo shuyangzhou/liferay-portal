@@ -164,7 +164,8 @@ public abstract class BaseSearchResultUtilTestCase extends PowerMockito {
 	}
 
 	@Mock
-	protected AssetRenderer<?> assetRenderer;
+	@SuppressWarnings("rawtypes")
+	protected AssetRenderer assetRenderer;
 
 	@Mock
 	protected AssetRendererFactory<?> assetRendererFactory;
