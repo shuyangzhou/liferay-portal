@@ -51,20 +51,26 @@ public class PortalPreferencesImpl
 
 	public static final TransactionAttribute SUPPORTS_TRANSACTION_ATTRIBUTE;
 
-	static {
-		TransactionAttribute.Builder builder =
-			new TransactionAttribute.Builder();
-
-		builder.setPropagation(Propagation.SUPPORTS);
-		builder.setReadOnly(true);
-		builder.setRollbackForClasses(
-			PortalException.class, SystemException.class);
-
-		SUPPORTS_TRANSACTION_ATTRIBUTE = builder.build();
-	}
-
 	public PortalPreferencesImpl() {
 		this(0, 0, null, Collections.<String, Preference>emptyMap(), false);
+	}
+
+	public PortalPreferencesImpl(
+		com.liferay.portal.model.PortalPreferences portalPreferences,
+		boolean signedIn) {
+
+		super(
+			portalPreferences.getOwnerId(), portalPreferences.getOwnerType(),
+			portalPreferences.getPreferences(), null);
+
+		setOriginalPreferences(
+			_portletPreferencesFactoryImpl.toPreferencesMap(
+				portalPreferences.getPreferences()));
+
+		_portalPreferences = (com.liferay.portal.model.PortalPreferences)
+			portalPreferences.clone();
+
+		_signedIn = signedIn;
 	}
 
 	public PortalPreferencesImpl(
@@ -78,9 +84,14 @@ public class PortalPreferencesImpl
 
 	@Override
 	public PortalPreferencesImpl clone() {
-		return new PortalPreferencesImpl(
-			getOwnerId(), getOwnerType(), getOriginalXML(),
-			new HashMap<>(getOriginalPreferences()), isSignedIn());
+		if (_portalPreferences == null) {
+			return new PortalPreferencesImpl(
+				getOwnerId(), getOwnerType(), getOriginalXML(),
+				new HashMap<>(getOriginalPreferences()), isSignedIn());
+		}
+		else {
+			return new PortalPreferencesImpl(_portalPreferences, isSignedIn());
+		}
 	}
 
 	@Override
@@ -301,8 +312,21 @@ public class PortalPreferencesImpl
 	@Override
 	public void store() throws IOException {
 		try {
-			PortalPreferencesLocalServiceUtil.updatePreferences(
-				getOwnerId(), getOwnerType(), this);
+			if (_portalPreferences == null) {
+				_portalPreferences =
+					PortalPreferencesLocalServiceUtil.updatePreferences(
+						getOwnerId(), getOwnerType(), this);
+			}
+			else {
+				PortalPreferencesWrapperCacheUtil.remove(
+					getOwnerId(), getOwnerType());
+
+				_portalPreferences.setPreferences(toXML());
+
+				_portalPreferences =
+					PortalPreferencesLocalServiceUtil.updatePortalPreferences(
+						_portalPreferences);
+			}
 		}
 		catch (SystemException se) {
 			throw new IOException(se);
@@ -354,12 +378,9 @@ public class PortalPreferencesImpl
 						continue;
 					}
 
-					String preferencesXML = portalPreferences.getPreferences();
-
 					PortalPreferencesImpl portalPreferencesImpl =
-						(PortalPreferencesImpl)
-							PortletPreferencesFactoryUtil.fromXML(
-								ownerId, ownerType, preferencesXML);
+						new PortalPreferencesImpl(
+							portalPreferences, isSignedIn());
 
 					if (!Arrays.equals(
 							originalValues,
@@ -374,13 +395,21 @@ public class PortalPreferencesImpl
 					setOriginalPreferences(
 						portalPreferencesImpl.getOriginalPreferences());
 
-					setOriginalXML(preferencesXML);
+					setOriginalXML(portalPreferences.getPreferences());
+
+					setPortalPreferences(portalPreferences);
 				}
 				else {
 					throw e;
 				}
 			}
 		}
+	}
+
+	protected void setPortalPreferences(
+		com.liferay.portal.model.PortalPreferences portalPreferences) {
+
+		_portalPreferences = portalPreferences;
 	}
 
 	private String _encodeKey(String namespace, String key) {
@@ -414,6 +443,24 @@ public class PortalPreferencesImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortalPreferencesImpl.class);
 
+	private static final PortletPreferencesFactoryImpl
+		_portletPreferencesFactoryImpl;
+
+	static {
+		TransactionAttribute.Builder builder =
+			new TransactionAttribute.Builder();
+
+		builder.setPropagation(Propagation.SUPPORTS);
+		builder.setReadOnly(true);
+		builder.setRollbackForClasses(
+			PortalException.class, SystemException.class);
+
+		SUPPORTS_TRANSACTION_ATTRIBUTE = builder.build();
+
+		_portletPreferencesFactoryImpl = new PortletPreferencesFactoryImpl();
+	}
+
+	private com.liferay.portal.model.PortalPreferences _portalPreferences;
 	private boolean _signedIn;
 	private long _userId;
 
