@@ -17,6 +17,7 @@ package com.liferay.counter.service;
 import com.liferay.counter.model.Counter;
 import com.liferay.portal.cache.key.SimpleCacheKeyGenerator;
 import com.liferay.portal.kernel.cache.key.CacheKeyGeneratorUtil;
+import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.process.ClassPathUtil;
 import com.liferay.portal.kernel.process.ProcessCallable;
@@ -28,12 +29,19 @@ import com.liferay.portal.kernel.process.ProcessExecutorUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.MainServletTestRule;
 import com.liferay.portal.util.InitUtil;
+import com.liferay.portal.util.PropsValues;
 import com.liferay.registry.BasicRegistryImpl;
 import com.liferay.registry.RegistryUtil;
+
+import java.io.File;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -78,6 +86,19 @@ public class CounterLocalServiceTest {
 	@Test
 	public void testConcurrentIncrement() throws Exception {
 		String classPath = ClassPathUtil.getJVMClassPath(true);
+
+		if (PropsValues.JDBC_DEFAULT_LIFERAY_POOL_PROVIDER.equals("hikaricp")) {
+			String jarName = PropsUtil.get(
+				PropsKeys.SETUP_LIFERAY_POOL_PROVIDER_JAR_NAME,
+				new Filter("hikaricp"));
+
+			Path path = Paths.get(PropsValues.LIFERAY_LIB_PORTAL_DIR, jarName);
+
+			path = path.toAbsolutePath();
+
+			classPath = classPath.concat(File.pathSeparator).concat(
+				path.toString());
+		}
 
 		Builder builder = new Builder();
 
@@ -152,6 +173,8 @@ public class CounterLocalServiceTest {
 			System.setProperty("external-properties", "portal-test.properties");
 			System.setProperty("portal:jdbc.default.maxPoolSize", "3");
 			System.setProperty("portal:jdbc.default.minPoolSize", "1");
+			System.setProperty("portal:jdbc.default.maximumPoolSize", "3");
+			System.setProperty("portal:jdbc.default.minimumIdle", "1");
 
 			CacheKeyGeneratorUtil cacheKeyGeneratorUtil =
 				new CacheKeyGeneratorUtil();
