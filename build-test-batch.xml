@@ -415,6 +415,39 @@
 		</run-batch-test>
 	</target>
 
+	<target name="test-sybase">
+		<echo>^^^^^^^^^^^^^^^^^^^sybase stop starting</echo>
+		<exec executable="service" spawn="true">
+			<arg line="sybase stop" />
+		</exec>
+		<echo>^^^^^^^^^^^^^^^^^^^sybase stop done</echo>
+
+		<sleep seconds="2" />
+
+		<echo>@@@@@@@@@@@@@@@@@@ sybase start starting</echo>
+		<exec executable="service" failonerror="false">
+			<arg line="sybase start" />
+		</exec>
+		<echo>@@@@@@@@@@@@@@@@@@ sybase start done</echo>
+<!--		<exec executable="sh" spawn="true">
+			<arg line="/opt/sybase/ASE-15_0/install/RUN_lportal" />
+		</exec>-->
+
+		<sleep seconds="2" />
+
+		<echo>!!!!!!!!!!!!!!!!!! sybase insert starting</echo>
+		<exec executable="isql" failonerror="true">
+			<arg line="-i create.sql -P liferay123 -S lportal -U sa" />
+		</exec>
+		<echo>!!!!!!!!!!!!!!!!!! sybase insert done</echo>
+
+		<echo>******************* sybase stop starting</echo>
+		<exec executable="service" failonerror="true">
+			<arg line="sybase stop" />
+		</exec>
+		<echo>******************* sybase stop done</echo>
+	</target>
+
 	<target name="tck">
 		<run-batch-test tomcat.gc.log="true" tsant.gc.log="true">
 			<test-action>
