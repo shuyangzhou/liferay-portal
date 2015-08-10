@@ -50,6 +50,14 @@ public class PortletPreferencesFactoryUtil {
 		return getPortletPreferencesFactory().fromDefaultXML(xml);
 	}
 
+	public static PortalPreferences fromPreferences(
+		long ownerId, int ownerType,
+		com.liferay.portal.model.PortalPreferences portalPreferences) {
+
+		return getPortletPreferencesFactory().fromPreferences(
+			ownerId, ownerType, portalPreferences);
+	}
+
 	public static PortalPreferences fromXML(
 		long ownerId, int ownerType, String xml) {
 

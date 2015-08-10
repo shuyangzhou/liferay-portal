@@ -71,7 +71,24 @@ public class PortalPreferencesImpl
 		long ownerId, int ownerType, String xml,
 		Map<String, Preference> preferences, boolean signedIn) {
 
+		this(ownerId, ownerType, xml, preferences, null, signedIn);
+	}
+
+	public PortalPreferencesImpl(
+		long ownerId, int ownerType, String xml,
+		Map<String, Preference> preferences,
+		com.liferay.portal.model.PortalPreferences portalPreferences,
+		boolean signedIn) {
+
 		super(ownerId, ownerType, xml, preferences);
+
+		if (portalPreferences != null) {
+			_portalPreferences = (com.liferay.portal.model.PortalPreferences)
+				portalPreferences.clone();
+		}
+		else {
+			_portalPreferences = portalPreferences;
+		}
 
 		_signedIn = signedIn;
 	}
@@ -80,7 +97,8 @@ public class PortalPreferencesImpl
 	public PortalPreferencesImpl clone() {
 		return new PortalPreferencesImpl(
 			getOwnerId(), getOwnerType(), getOriginalXML(),
-			new HashMap<>(getOriginalPreferences()), isSignedIn());
+			new HashMap<>(getOriginalPreferences()), getPortalPreferences(),
+			isSignedIn());
 	}
 
 	@Override
@@ -97,13 +115,19 @@ public class PortalPreferencesImpl
 
 		if ((getOwnerId() == portalPreferences.getOwnerId()) &&
 			(getOwnerType() == portalPreferences.getOwnerType()) &&
-			getPreferences().equals(portalPreferences.getPreferences())) {
+			getPreferences().equals(portalPreferences.getPreferences()) &&
+			getPortalPreferences(
+				).equals(portalPreferences.getPortalPreferences())) {
 
 			return true;
 		}
 		else {
 			return false;
 		}
+	}
+
+	public com.liferay.portal.model.PortalPreferences getPortalPreferences() {
+		return _portalPreferences;
 	}
 
 	@Override
@@ -143,6 +167,7 @@ public class PortalPreferencesImpl
 
 		hashCode = HashUtil.hash(hashCode, getOwnerType());
 		hashCode = HashUtil.hash(hashCode, getPreferences());
+		hashCode = HashUtil.hash(hashCode, getPortalPreferences());
 
 		return hashCode;
 	}
@@ -201,6 +226,12 @@ public class PortalPreferencesImpl
 		catch (Throwable t) {
 			_log.error(t, t);
 		}
+	}
+
+	public void setPortalPreferences(
+		com.liferay.portal.model.PortalPreferences portalPreferences) {
+
+		_portalPreferences = portalPreferences;
 	}
 
 	@Override
@@ -300,9 +331,40 @@ public class PortalPreferencesImpl
 
 	@Override
 	public void store() throws IOException {
+		Callable<Void> callable = new Callable<Void>() {
+
+			@Override
+			public Void call() throws Exception {
+				return null;
+			}
+
+		};
+
 		try {
-			PortalPreferencesLocalServiceUtil.updatePreferences(
-				getOwnerId(), getOwnerType(), this);
+			retryableStore(callable, StringPool.BLANK);
+		}
+		catch (Throwable t) {
+			throw new IOException(t);
+		}
+	}
+
+	protected void doStore() throws IOException {
+		try {
+			if (_portalPreferences != null) {
+				PortalPreferencesWrapperCacheUtil.remove(
+					getOwnerId(), getOwnerType());
+
+				_portalPreferences.setPreferences(toXML());
+
+				_portalPreferences =
+					PortalPreferencesLocalServiceUtil.updatePortalPreferences(
+						_portalPreferences);
+			}
+			else {
+				_portalPreferences =
+					PortalPreferencesLocalServiceUtil.updatePreferences(
+						getOwnerId(), getOwnerType(), this);
+			}
 		}
 		catch (SystemException se) {
 			throw new IOException(se);
@@ -338,7 +400,7 @@ public class PortalPreferencesImpl
 			try {
 				callable.call();
 
-				store();
+				doStore();
 
 				return;
 			}
@@ -354,12 +416,10 @@ public class PortalPreferencesImpl
 						continue;
 					}
 
-					String preferencesXML = portalPreferences.getPreferences();
-
 					PortalPreferencesImpl portalPreferencesImpl =
 						(PortalPreferencesImpl)
-							PortletPreferencesFactoryUtil.fromXML(
-								ownerId, ownerType, preferencesXML);
+							PortletPreferencesFactoryUtil.fromPreferences(
+								ownerId, ownerType, portalPreferences);
 
 					if (!Arrays.equals(
 							originalValues,
@@ -374,7 +434,9 @@ public class PortalPreferencesImpl
 					setOriginalPreferences(
 						portalPreferencesImpl.getOriginalPreferences());
 
-					setOriginalXML(preferencesXML);
+					setOriginalXML(portalPreferences.getPreferences());
+
+					setPortalPreferences(portalPreferences);
 				}
 				else {
 					throw e;
@@ -414,6 +476,7 @@ public class PortalPreferencesImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortalPreferencesImpl.class);
 
+	private com.liferay.portal.model.PortalPreferences _portalPreferences;
 	private boolean _signedIn;
 	private long _userId;
 

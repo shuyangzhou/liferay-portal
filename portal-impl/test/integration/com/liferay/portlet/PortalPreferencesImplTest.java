@@ -38,7 +38,6 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
 import java.util.ConcurrentModificationException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CyclicBarrier;
@@ -90,10 +89,9 @@ public class PortalPreferencesImplTest {
 
 	@Before
 	public void setUp() {
-		PortalPreferences portalPreferences = new PortalPreferencesImpl(
-			PortletKeys.PREFS_OWNER_ID_DEFAULT,
-			PortletKeys.PREFS_OWNER_TYPE_USER, null,
-			new HashMap<String, Preference>(), true);
+		PortalPreferences portalPreferences =
+			PortletPreferencesFactoryUtil.getPortalPreferences(
+				PortletKeys.PREFS_OWNER_ID_DEFAULT, true);
 
 		portalPreferences.setValue(_NAMESPACE, "testKey", "testValue");
 
@@ -120,6 +118,10 @@ public class PortalPreferencesImplTest {
 				}
 
 			});
+
+		PortalPreferencesWrapperCacheUtil.remove(
+			PortletKeys.PREFS_OWNER_ID_DEFAULT,
+			PortletKeys.PREFS_OWNER_TYPE_USER);
 	}
 
 	@Test
