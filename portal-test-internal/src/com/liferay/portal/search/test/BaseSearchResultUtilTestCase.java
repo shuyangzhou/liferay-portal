@@ -42,11 +42,9 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
-
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-
 import org.powermock.api.mockito.PowerMockito;
 
 /**
@@ -164,7 +162,8 @@ public abstract class BaseSearchResultUtilTestCase extends PowerMockito {
 	}
 
 	@Mock
-	protected AssetRenderer<?> assetRenderer;
+	@SuppressWarnings("rawtypes")
+	protected AssetRenderer assetRenderer;
 
 	@Mock
 	protected AssetRendererFactory<?> assetRendererFactory;
