@@ -26,7 +26,7 @@ import com.liferay.registry.ServiceTracker;
  */
 public class PermissionCheckerFactoryUtil {
 
-	public static PermissionChecker create(User user) throws Exception {
+	public static PermissionChecker create(User user) {
 		return getPermissionCheckerFactory().create(user);
 	}
 

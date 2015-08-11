@@ -332,6 +332,34 @@ public class ListUtil {
 		return list;
 	}
 
+	public static <E> List<E> subList(Collection<E> c, int start, int end) {
+		if (start < 0) {
+			start = 0;
+		}
+
+		if ((end < 0) || (end > c.size())) {
+			end = c.size();
+		}
+
+		if (start < end) {
+			List<E> list = new ArrayList<>(end - start);
+
+			Iterator<E> itr = c.iterator();
+
+			for (int i = 0; i < start; i++) {
+				itr.next();
+			}
+
+			for (int i = start; i < end; i++) {
+				list.add(itr.next());
+			}
+
+			return list;
+		}
+
+		return Collections.emptyList();
+	}
+
 	public static <E> List<E> subList(List<E> list, int start, int end) {
 		if (start < 0) {
 			start = 0;
