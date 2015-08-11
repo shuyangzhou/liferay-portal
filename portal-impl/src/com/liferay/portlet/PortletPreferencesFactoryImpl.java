@@ -701,6 +701,74 @@ public class PortletPreferencesFactoryImpl
 			preferencesMap);
 	}
 
+	public Map<String, Preference> toPreferencesMap(String xml) {
+		if (Validator.isNull(xml)) {
+			return Collections.emptyMap();
+		}
+
+		String cacheKey = _encodeCacheKey(xml);
+
+		Map<String, Preference> preferencesMap = _preferencesMapPortalCache.get(
+			cacheKey);
+
+		if (preferencesMap != null) {
+			return preferencesMap;
+		}
+
+		XMLEventReader xmlEventReader = null;
+
+		try {
+			XMLInputFactory xmlInputFactory =
+				StAXReaderUtil.getXMLInputFactory();
+
+			xmlEventReader = xmlInputFactory.createXMLEventReader(
+				new UnsyncStringReader(xml));
+
+			while (xmlEventReader.hasNext()) {
+				XMLEvent xmlEvent = xmlEventReader.nextEvent();
+
+				if (xmlEvent.isStartElement()) {
+					StartElement startElement = xmlEvent.asStartElement();
+
+					String elementName = startElement.getName().getLocalPart();
+
+					if (elementName.equals("preference")) {
+						Preference preference = readPreference(xmlEventReader);
+
+						if (preferencesMap == null) {
+							preferencesMap = new HashMap<>();
+						}
+
+						preferencesMap.put(preference.getName(), preference);
+					}
+				}
+			}
+		}
+		catch (XMLStreamException xse) {
+			throw new SystemException(xse);
+		}
+		finally {
+			if (xmlEventReader != null) {
+				try {
+					xmlEventReader.close();
+				}
+				catch (XMLStreamException xse) {
+					if (_log.isDebugEnabled()) {
+						_log.debug(xse, xse);
+					}
+				}
+			}
+		}
+
+		if (preferencesMap == null) {
+			preferencesMap = Collections.emptyMap();
+		}
+
+		_preferencesMapPortalCache.put(cacheKey, preferencesMap);
+
+		return preferencesMap;
+	}
+
 	@Override
 	public String toXML(PortalPreferences portalPreferences) {
 		PortalPreferencesImpl portalPreferencesImpl = null;
@@ -853,74 +921,6 @@ public class PortletPreferencesFactoryImpl
 
 		return new Preference(
 			name, values.toArray(new String[values.size()]), readOnly);
-	}
-
-	protected Map<String, Preference> toPreferencesMap(String xml) {
-		if (Validator.isNull(xml)) {
-			return Collections.emptyMap();
-		}
-
-		String cacheKey = _encodeCacheKey(xml);
-
-		Map<String, Preference> preferencesMap = _preferencesMapPortalCache.get(
-			cacheKey);
-
-		if (preferencesMap != null) {
-			return preferencesMap;
-		}
-
-		XMLEventReader xmlEventReader = null;
-
-		try {
-			XMLInputFactory xmlInputFactory =
-				StAXReaderUtil.getXMLInputFactory();
-
-			xmlEventReader = xmlInputFactory.createXMLEventReader(
-				new UnsyncStringReader(xml));
-
-			while (xmlEventReader.hasNext()) {
-				XMLEvent xmlEvent = xmlEventReader.nextEvent();
-
-				if (xmlEvent.isStartElement()) {
-					StartElement startElement = xmlEvent.asStartElement();
-
-					String elementName = startElement.getName().getLocalPart();
-
-					if (elementName.equals("preference")) {
-						Preference preference = readPreference(xmlEventReader);
-
-						if (preferencesMap == null) {
-							preferencesMap = new HashMap<>();
-						}
-
-						preferencesMap.put(preference.getName(), preference);
-					}
-				}
-			}
-		}
-		catch (XMLStreamException xse) {
-			throw new SystemException(xse);
-		}
-		finally {
-			if (xmlEventReader != null) {
-				try {
-					xmlEventReader.close();
-				}
-				catch (XMLStreamException xse) {
-					if (_log.isDebugEnabled()) {
-						_log.debug(xse, xse);
-					}
-				}
-			}
-		}
-
-		if (preferencesMap == null) {
-			preferencesMap = Collections.emptyMap();
-		}
-
-		_preferencesMapPortalCache.put(cacheKey, preferencesMap);
-
-		return preferencesMap;
 	}
 
 	private String _encodeCacheKey(String xml) {
