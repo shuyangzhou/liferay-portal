@@ -425,11 +425,13 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 
 		String[] orderByFields = orderByComparator.getOrderByFields();
 
-		for (int i = 0; i < orderByFields.length; i++) {
+		int length = Math.min(31, orderByFields.length);
+
+		for (int i = 0; i < length; i++) {
 			query.append(
 				getColumnName(entityAlias, orderByFields[i], sqlQuery));
 
-			if ((i + 1) < orderByFields.length) {
+			if ((i + 1) < length) {
 				if (orderByComparator.isAscending(orderByFields[i])) {
 					query.append(ORDER_BY_ASC_HAS_NEXT);
 				}
