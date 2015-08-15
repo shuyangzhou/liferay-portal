@@ -5,8 +5,8 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
 >
-	<artifactId>com.liferay.source.formatter</artifactId>
-	<description>com.liferay.source.formatter</description>
+	<artifactId>com.liferay.portal.tools.service.builder</artifactId>
+	<description>com.liferay.portal.tools.service.builder</description>
 	<developers>
 		<developer>
 			<name>Brian Wing Shun Chan</name>
@@ -22,25 +22,19 @@
 		</license>
 	</licenses>
 	<modelVersion>4.0.0</modelVersion>
-	<name>com.liferay.source.formatter</name>
+	<name>com.liferay.portal.tools.service.builder</name>
 	<packaging>jar</packaging>
 	<scm>
 		<connection>scm:git:git@github.com:liferay/liferay-portal.git</connection>
 		<developerConnection>scm:git:git@github.com:liferay/liferay-portal.git</developerConnection>
 		<url>http://github.com/liferay/liferay-portal</url>
 	</scm>
-	<version>1.0.46</version>
+	<version>1.0.30</version>
  <dependencies>
   <dependency>
-   <groupId>org.apache.ant</groupId>
-   <artifactId>ant</artifactId>
-   <version>1.9.4</version>
-   <scope>compile</scope>
-  </dependency>
-  <dependency>
-   <groupId>commons-io</groupId>
-   <artifactId>commons-io</artifactId>
-   <version>2.1</version>
+   <groupId>log4j</groupId>
+   <artifactId>log4j</artifactId>
+   <version>1.2.17</version>
    <scope>compile</scope>
   </dependency>
   <dependency>
@@ -50,9 +44,21 @@
    <scope>compile</scope>
   </dependency>
   <dependency>
+   <groupId>jalopy</groupId>
+   <artifactId>jalopy</artifactId>
+   <version>1.5rc3</version>
+   <scope>compile</scope>
+  </dependency>
+  <dependency>
    <groupId>jaxen</groupId>
    <artifactId>jaxen</artifactId>
    <version>1.1.1</version>
+   <scope>compile</scope>
+  </dependency>
+  <dependency>
+   <groupId>com.liferay</groupId>
+   <artifactId>org.freemarker</artifactId>
+   <version>2.3.17.LIFERAY-PATCHED-1</version>
    <scope>compile</scope>
   </dependency>
   <dependency>
@@ -60,6 +66,12 @@
    <artifactId>qdox</artifactId>
    <version>1.12.1</version>
    <scope>compile</scope>
+  </dependency>
+  <dependency>
+   <groupId>org.apache.ant</groupId>
+   <artifactId>ant</artifactId>
+   <version>1.9.4</version>
+   <scope>provided</scope>
   </dependency>
   <dependency>
    <groupId>org.apache.maven</groupId>

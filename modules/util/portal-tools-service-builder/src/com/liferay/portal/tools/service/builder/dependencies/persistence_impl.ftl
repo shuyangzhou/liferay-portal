@@ -496,8 +496,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 			</#if>
 
 			if (!session.contains(${entity.varName})) {
-				${entity.varName} = (${entity.name})session.get(
-					${entity.name}Impl.class, ${entity.varName}.getPrimaryKeyObj());
+				${entity.varName} = (${entity.name})session.get(${entity.name}Impl.class, ${entity.varName}.getPrimaryKeyObj());
 			}
 
 			if (${entity.varName} != null) {
@@ -676,7 +675,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 					session.evict(${entity.varName});
 					session.saveOrUpdate(${entity.varName});
 				<#else>
-					session.merge(${entity.varName});
+					${entity.varName} = (${entity.name})session.merge(${entity.varName});
 				</#if>
 			}
 
