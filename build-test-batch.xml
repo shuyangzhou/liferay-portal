@@ -310,6 +310,18 @@
 								<param name="database.type" value="@{database.type}" />
 							</antcall>
 
+							<echo file="${basedir}/test.class.file.names.properties">TEST_CLASS_GROUP_0=</echo>
+
+							<for list="0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18," param="iteration">
+								<sequential>
+									<echo file="${basedir}/test.class.file.names.properties" append="true">com/liferay/portal/soap/extender/test/JaxRsComponentRegistrationTest.class,</echo>
+								</sequential>
+							</for>
+
+							<echo file="${basedir}/test.class.file.names.properties" append="true">com/liferay/portal/soap/extender/test/JaxRsComponentRegistrationTest.class
+
+TEST_CLASS_GROUPS=0</echo>
+
 							<antcall target="prepare-system-ext-properties" inheritAll="false" />
 
 							<ant dir="modules" target="test-class-group" inheritAll="false">
@@ -317,6 +329,25 @@
 								<property name="test.type" value="integration" />
 							</ant>
 
+							<ant dir="modules" target="test-class-group" inheritAll="false">
+								<property name="test.class.group.index" value="@{test.class.group.index}" />
+								<property name="test.type" value="integration" />
+							</ant>
+
+							<ant dir="modules" target="test-class-group" inheritAll="false">
+								<property name="test.class.group.index" value="@{test.class.group.index}" />
+								<property name="test.type" value="integration" />
+							</ant>
+
+							<ant dir="modules" target="test-class-group" inheritAll="false">
+								<property name="test.class.group.index" value="@{test.class.group.index}" />
+								<property name="test.type" value="integration" />
+							</ant>
+
+							<ant dir="modules" target="test-class-group" inheritAll="false">
+								<property name="test.class.group.index" value="@{test.class.group.index}" />
+								<property name="test.type" value="integration" />
+							</ant>
 							<ant dir="portal-service" target="test-class" inheritAll="false">
 								<property name="test.class" value="PortalLogAssertorTest" />
 							</ant>
@@ -360,6 +391,82 @@
 	</target>
 
 	<target name="modules-integration-mysql">
+		<run-modules-integration-test database.type="mysql" />
+	</target>
+
+	<target name="modules-integration-mysql-1">
+		<run-modules-integration-test database.type="mysql" />
+	</target>
+
+	<target name="modules-integration-mysql-2">
+		<run-modules-integration-test database.type="mysql" />
+	</target>
+
+	<target name="modules-integration-mysql-3">
+		<run-modules-integration-test database.type="mysql" />
+	</target>
+
+	<target name="modules-integration-mysql-4">
+		<run-modules-integration-test database.type="mysql" />
+	</target>
+
+	<target name="modules-integration-mysql-5">
+		<run-modules-integration-test database.type="mysql" />
+	</target>
+
+	<target name="modules-integration-mysql-6">
+		<run-modules-integration-test database.type="mysql" />
+	</target>
+
+	<target name="modules-integration-mysql-7">
+		<run-modules-integration-test database.type="mysql" />
+	</target>
+
+	<target name="modules-integration-mysql-8">
+		<run-modules-integration-test database.type="mysql" />
+	</target>
+
+	<target name="modules-integration-mysql-9">
+		<run-modules-integration-test database.type="mysql" />
+	</target>
+
+	<target name="modules-integration-mysql-10">
+		<run-modules-integration-test database.type="mysql" />
+	</target>
+
+	<target name="modules-integration-mysql-11">
+		<run-modules-integration-test database.type="mysql" />
+	</target>
+
+	<target name="modules-integration-mysql-12">
+		<run-modules-integration-test database.type="mysql" />
+	</target>
+
+	<target name="modules-integration-mysql-13">
+		<run-modules-integration-test database.type="mysql" />
+	</target>
+
+	<target name="modules-integration-mysql-14">
+		<run-modules-integration-test database.type="mysql" />
+	</target>
+
+	<target name="modules-integration-mysql-15">
+		<run-modules-integration-test database.type="mysql" />
+	</target>
+
+	<target name="modules-integration-mysql-16">
+		<run-modules-integration-test database.type="mysql" />
+	</target>
+
+	<target name="modules-integration-mysql-17">
+		<run-modules-integration-test database.type="mysql" />
+	</target>
+
+	<target name="modules-integration-mysql-18">
+		<run-modules-integration-test database.type="mysql" />
+	</target>
+
+	<target name="modules-integration-mysql-19">
 		<run-modules-integration-test database.type="mysql" />
 	</target>
 
