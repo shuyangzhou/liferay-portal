@@ -36,6 +36,8 @@ import com.liferay.portlet.PortletPreferencesImpl;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 
+import org.springframework.dao.DataIntegrityViolationException;
+
 /**
  * @author Brian Wing Shun Chan
  * @author Shuyang Zhou
@@ -375,42 +377,57 @@ public class PortletPreferencesLocalServiceImpl
 		long companyId, long ownerId, int ownerType, long plid,
 		String portletId, String defaultPreferences, boolean strict) {
 
-		PortletPreferences portletPreferences =
-			portletPreferencesPersistence.fetchByO_O_P_P(
-				ownerId, ownerType, plid, portletId);
+		while (true) {
+			try {
+				PortletPreferences portletPreferences =
+					portletPreferencesPersistence.fetchByO_O_P_P(
+						ownerId, ownerType, plid, portletId);
 
-		if (portletPreferences == null) {
-			Portlet portlet = portletLocalService.getPortletById(
-				companyId, portletId);
+				if (portletPreferences == null) {
+					Portlet portlet = portletLocalService.getPortletById(
+						companyId, portletId);
 
-			if (strict &&
-				(Validator.isNull(defaultPreferences) ||
-				 ((portlet != null) && portlet.isUndeployedPortlet()))) {
+					if (strict &&
+						(Validator.isNull(defaultPreferences) ||
+						 ((portlet != null) &&
+						  portlet.isUndeployedPortlet()))) {
 
-				if (portlet == null) {
-					defaultPreferences = PortletConstants.DEFAULT_PREFERENCES;
+						if (portlet == null) {
+							defaultPreferences =
+								PortletConstants.DEFAULT_PREFERENCES;
+						}
+						else {
+							defaultPreferences =
+								portlet.getDefaultPreferences();
+						}
+
+						return PortletPreferencesFactoryUtil.strictFromXML(
+							companyId, ownerId, ownerType, plid, portletId,
+							defaultPreferences);
+					}
+
+					portletPreferences =
+						portletPreferencesLocalService.addPortletPreferences(
+							companyId, ownerId, ownerType, plid, portletId,
+							portlet, defaultPreferences);
 				}
-				else {
-					defaultPreferences = portlet.getDefaultPreferences();
-				}
 
-				return PortletPreferencesFactoryUtil.strictFromXML(
-					companyId, ownerId, ownerType, plid, portletId,
-					defaultPreferences);
+				PortletPreferencesImpl portletPreferencesImpl =
+					(PortletPreferencesImpl)
+						PortletPreferencesFactoryUtil.fromXML(
+							companyId, ownerId, ownerType, plid, portletId,
+						portletPreferences.getPreferences());
+
+				return portletPreferencesImpl;
 			}
+			catch (Exception e) {
+				if (isCausedByDuplicateEntry(e)) {
+					continue;
+				}
 
-			portletPreferences =
-				portletPreferencesLocalService.addPortletPreferences(
-					companyId, ownerId, ownerType, plid, portletId, portlet,
-					defaultPreferences);
+				throw e;
+			}
 		}
-
-		PortletPreferencesImpl portletPreferencesImpl =
-			(PortletPreferencesImpl)PortletPreferencesFactoryUtil.fromXML(
-				companyId, ownerId, ownerType, plid, portletId,
-				portletPreferences.getPreferences());
-
-		return portletPreferencesImpl;
 	}
 
 	protected javax.portlet.PortletPreferences getPreferences(
@@ -454,6 +471,30 @@ public class PortletPreferencesLocalServiceImpl
 
 			LockRegistry.freeLock(groupName, key);
 		}
+	}
+
+	protected boolean isCausedByDuplicateEntry(Throwable t) {
+		Throwable cause = t.getCause();
+
+		while (t != cause) {
+			String message = t.getMessage();
+
+			if ((t instanceof DataIntegrityViolationException) &&
+				message.contains("insert into PortletPreferences")) {
+
+				return true;
+			}
+
+			if (cause == null) {
+				return false;
+			}
+
+			t = cause;
+
+			cause = t.getCause();
+		}
+
+		return false;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
