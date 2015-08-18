@@ -16,6 +16,8 @@ package com.liferay.portal.test.randomizerbumpers;
 
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 
+import java.util.Set;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -35,6 +37,10 @@ public class TikaSafeRandomizerBumperTest {
 
 		Assert.assertFalse(
 			tikaSafeRandomizerBumper.accept(randomString.getBytes()));
+
+		for (byte[] header : _ZIP_HEADERS) {
+			Assert.assertFalse(tikaSafeRandomizerBumper.accept(header));
+		}
 	}
 
 	@Test
@@ -50,6 +56,11 @@ public class TikaSafeRandomizerBumperTest {
 		Assert.assertFalse(
 			TikaSafeRandomizerBumper.TEXT_PLAIN_INSTANCE.accept(
 				randomString.getBytes()));
+
+		for (byte[] header : _ZIP_HEADERS) {
+			Assert.assertFalse(
+				TikaSafeRandomizerBumper.TEXT_PLAIN_INSTANCE.accept(header));
+		}
 	}
 
 	protected static String getRegularRandomString() {
@@ -73,5 +84,8 @@ public class TikaSafeRandomizerBumperTest {
 	};
 
 	private static final String _EXE_MAGIC_HEADER = "MZ";
+
+	private static final Set<byte[]> _ZIP_HEADERS =
+		TikaSafeRandomizerBumper.getZipHeaders();
 
 }

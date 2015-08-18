@@ -19,6 +19,9 @@ import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.test.randomizerbumpers.RandomizerBumper;
 import com.liferay.portal.kernel.util.ContentTypes;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.apache.tika.config.TikaConfig;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;
@@ -34,12 +37,26 @@ public class TikaSafeRandomizerBumper implements RandomizerBumper<byte[]> {
 	public static final TikaSafeRandomizerBumper TEXT_PLAIN_INSTANCE =
 		new TikaSafeRandomizerBumper(ContentTypes.TEXT_PLAIN);
 
+	public static Set<byte[]> getZipHeaders() {
+		return _ZIP_HEADERS;
+	}
+
 	public TikaSafeRandomizerBumper(String contentType) {
 		_contentType = contentType;
 	}
 
 	@Override
 	public boolean accept(byte[] randomValue) {
+		if (!_contentType.contains("application")) {
+			for (byte[] header : _ZIP_HEADERS) {
+				if ((header.length >= randomValue.length) &&
+					matches(randomValue, header)) {
+
+					return false;
+				}
+			}
+		}
+
 		try {
 			ParseContext parserContext = new ParseContext();
 
@@ -61,6 +78,32 @@ public class TikaSafeRandomizerBumper implements RandomizerBumper<byte[]> {
 		catch (Exception e) {
 			return false;
 		}
+	}
+
+	protected boolean matches(byte[] randomValue, byte[] header) {
+		for (int i = 0; i < header.length; i++) {
+			if (randomValue[i] != header[i]) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	private static final Set<byte[]> _ZIP_HEADERS;
+
+	static {
+		_ZIP_HEADERS = new HashSet<>();
+
+		_ZIP_HEADERS.add(new byte[] {'B', 'Z', 'h'});
+		_ZIP_HEADERS.add(new byte[] {31, -117});
+		_ZIP_HEADERS.add(new byte[] {-3, 55, 122, 88, 90, 0});
+		_ZIP_HEADERS.add(new byte[] {-3, 55, 122, 88, 90, 0});
+		_ZIP_HEADERS.add(
+			new byte[] {(byte)0xCA, (byte)0xFE, (byte)0xD0, (byte)0x0D});
+		_ZIP_HEADERS.add(
+			new byte[] {(byte)0xFF, 6, 0, 0, 's', 'N', 'a', 'P', 'p', 'Y'});
+		_ZIP_HEADERS.add(new byte[] {(byte)0x1F, (byte)0x9D});
 	}
 
 	private final String _contentType;
