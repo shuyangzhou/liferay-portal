@@ -378,55 +378,54 @@ public class PortletPreferencesLocalServiceImpl
 		String portletId, String defaultPreferences, boolean strict) {
 
 		while (true) {
-			try {
-				PortletPreferences portletPreferences =
-					portletPreferencesPersistence.fetchByO_O_P_P(
-						ownerId, ownerType, plid, portletId);
+			PortletPreferences portletPreferences =
+				portletPreferencesPersistence.fetchByO_O_P_P(
+					ownerId, ownerType, plid, portletId);
 
-				if (portletPreferences == null) {
-					Portlet portlet = portletLocalService.getPortletById(
-						companyId, portletId);
+			if (portletPreferences == null) {
+				Portlet portlet = portletLocalService.getPortletById(
+					companyId, portletId);
 
-					if (strict &&
-						(Validator.isNull(defaultPreferences) ||
-						 ((portlet != null) &&
-						  portlet.isUndeployedPortlet()))) {
+				if (strict &&
+					(Validator.isNull(defaultPreferences) ||
+					 ((portlet != null) &&
+					  portlet.isUndeployedPortlet()))) {
 
-						if (portlet == null) {
-							defaultPreferences =
-								PortletConstants.DEFAULT_PREFERENCES;
-						}
-						else {
-							defaultPreferences =
-								portlet.getDefaultPreferences();
-						}
-
-						return PortletPreferencesFactoryUtil.strictFromXML(
-							companyId, ownerId, ownerType, plid, portletId,
-							defaultPreferences);
+					if (portlet == null) {
+						defaultPreferences =
+							PortletConstants.DEFAULT_PREFERENCES;
+					}
+					else {
+						defaultPreferences = portlet.getDefaultPreferences();
 					}
 
+					return PortletPreferencesFactoryUtil.strictFromXML(
+						companyId, ownerId, ownerType, plid, portletId,
+						defaultPreferences);
+				}
+
+				try {
 					portletPreferences =
 						portletPreferencesLocalService.addPortletPreferences(
 							companyId, ownerId, ownerType, plid, portletId,
 							portlet, defaultPreferences);
 				}
+				catch (SystemException se) {
+					if (isCausedByDuplicateEntry(se)) {
+						continue;
+					}
 
-				PortletPreferencesImpl portletPreferencesImpl =
-					(PortletPreferencesImpl)
-						PortletPreferencesFactoryUtil.fromXML(
-							companyId, ownerId, ownerType, plid, portletId,
-						portletPreferences.getPreferences());
-
-				return portletPreferencesImpl;
-			}
-			catch (Exception e) {
-				if (isCausedByDuplicateEntry(e)) {
-					continue;
+					throw se;
 				}
-
-				throw e;
 			}
+
+			PortletPreferencesImpl portletPreferencesImpl =
+				(PortletPreferencesImpl)
+					PortletPreferencesFactoryUtil.fromXML(
+						companyId, ownerId, ownerType, plid, portletId,
+					portletPreferences.getPreferences());
+
+			return portletPreferencesImpl;
 		}
 	}
 
