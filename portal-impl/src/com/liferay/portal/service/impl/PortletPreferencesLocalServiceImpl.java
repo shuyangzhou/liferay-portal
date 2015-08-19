@@ -33,6 +33,8 @@ import com.liferay.portal.service.base.PortletPreferencesLocalServiceBaseImpl;
 import com.liferay.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portlet.PortletPreferencesImpl;
 
+import java.sql.BatchUpdateException;
+
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 
@@ -375,42 +377,57 @@ public class PortletPreferencesLocalServiceImpl
 		long companyId, long ownerId, int ownerType, long plid,
 		String portletId, String defaultPreferences, boolean strict) {
 
-		PortletPreferences portletPreferences =
-			portletPreferencesPersistence.fetchByO_O_P_P(
-				ownerId, ownerType, plid, portletId);
+		while (true) {
+			try {
+				PortletPreferences portletPreferences =
+					portletPreferencesPersistence.fetchByO_O_P_P(
+						ownerId, ownerType, plid, portletId);
 
-		if (portletPreferences == null) {
-			Portlet portlet = portletLocalService.getPortletById(
-				companyId, portletId);
+				if (portletPreferences == null) {
+					Portlet portlet = portletLocalService.getPortletById(
+						companyId, portletId);
 
-			if (strict &&
-				(Validator.isNull(defaultPreferences) ||
-				 ((portlet != null) && portlet.isUndeployedPortlet()))) {
+					if (strict &&
+						(Validator.isNull(defaultPreferences) ||
+						 ((portlet != null) &&
+						  portlet.isUndeployedPortlet()))) {
 
-				if (portlet == null) {
-					defaultPreferences = PortletConstants.DEFAULT_PREFERENCES;
+						if (portlet == null) {
+							defaultPreferences =
+								PortletConstants.DEFAULT_PREFERENCES;
+						}
+						else {
+							defaultPreferences =
+								portlet.getDefaultPreferences();
+						}
+
+						return PortletPreferencesFactoryUtil.strictFromXML(
+							companyId, ownerId, ownerType, plid, portletId,
+							defaultPreferences);
+					}
+
+					portletPreferences =
+						portletPreferencesLocalService.addPortletPreferences(
+							companyId, ownerId, ownerType, plid, portletId,
+							portlet, defaultPreferences);
 				}
-				else {
-					defaultPreferences = portlet.getDefaultPreferences();
-				}
 
-				return PortletPreferencesFactoryUtil.strictFromXML(
-					companyId, ownerId, ownerType, plid, portletId,
-					defaultPreferences);
+				PortletPreferencesImpl portletPreferencesImpl =
+					(PortletPreferencesImpl)
+						PortletPreferencesFactoryUtil.fromXML(
+							companyId, ownerId, ownerType, plid, portletId,
+						portletPreferences.getPreferences());
+
+				return portletPreferencesImpl;
 			}
+			catch (Exception e) {
+				if (isCausedByDuplicateEntry(e)) {
+					continue;
+				}
 
-			portletPreferences =
-				portletPreferencesLocalService.addPortletPreferences(
-					companyId, ownerId, ownerType, plid, portletId, portlet,
-					defaultPreferences);
+				throw e;
+			}
 		}
-
-		PortletPreferencesImpl portletPreferencesImpl =
-			(PortletPreferencesImpl)PortletPreferencesFactoryUtil.fromXML(
-				companyId, ownerId, ownerType, plid, portletId,
-				portletPreferences.getPreferences());
-
-		return portletPreferencesImpl;
 	}
 
 	protected javax.portlet.PortletPreferences getPreferences(
@@ -453,6 +470,26 @@ public class PortletPreferencesLocalServiceImpl
 			lock.unlock();
 
 			LockRegistry.freeLock(groupName, key);
+		}
+	}
+
+	protected boolean isCausedByDuplicateEntry(Throwable t) {
+		while (true) {
+			String message = t.getMessage();
+
+			if ((t instanceof BatchUpdateException) &&
+				message.contains("Duplicate entry")) {
+
+				return true;
+			}
+
+			Throwable cause = t.getCause();
+
+			if ((cause == null) || (cause == t)) {
+				return false;
+			}
+
+			t = cause;
 		}
 	}
 
