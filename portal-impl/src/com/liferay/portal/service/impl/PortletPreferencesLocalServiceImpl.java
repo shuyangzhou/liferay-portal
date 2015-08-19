@@ -18,7 +18,6 @@ import com.liferay.portal.kernel.concurrent.LockRegistry;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.spring.aop.Skip;
@@ -33,10 +32,10 @@ import com.liferay.portal.service.base.PortletPreferencesLocalServiceBaseImpl;
 import com.liferay.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portlet.PortletPreferencesImpl;
 
-import java.sql.BatchUpdateException;
-
 import java.util.List;
 import java.util.concurrent.locks.Lock;
+
+import org.springframework.dao.DataIntegrityViolationException;
 
 /**
  * @author Brian Wing Shun Chan
@@ -392,12 +391,12 @@ public class PortletPreferencesLocalServiceImpl
 							companyId, ownerId, ownerType, plid, portletId,
 							portlet, defaultPreferences);
 				}
-				catch (SystemException se) {
-					if (isCausedByDuplicateEntry(se)) {
-						continue;
+				catch (DataIntegrityViolationException dive) {
+					if (_log.isDebugEnabled()) {
+						_log.debug("Retry get due to add confliction", dive);
 					}
 
-					throw se;
+					continue;
 				}
 			}
 
@@ -451,26 +450,6 @@ public class PortletPreferencesLocalServiceImpl
 			lock.unlock();
 
 			LockRegistry.freeLock(groupName, key);
-		}
-	}
-
-	protected boolean isCausedByDuplicateEntry(Throwable t) {
-		while (true) {
-			String message = t.getMessage();
-
-			if ((t instanceof BatchUpdateException) &&
-				message.contains("Duplicate entry")) {
-
-				return true;
-			}
-
-			Throwable cause = t.getCause();
-
-			if ((cause == null) || (cause == t)) {
-				return false;
-			}
-
-			t = cause;
 		}
 	}
 
