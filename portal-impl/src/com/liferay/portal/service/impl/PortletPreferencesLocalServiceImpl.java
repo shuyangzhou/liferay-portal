@@ -91,24 +91,7 @@ public class PortletPreferencesLocalServiceImpl
 			_log.debug(sb.toString());
 		}
 
-		try {
-			portletPreferencesPersistence.update(portletPreferences);
-		}
-		catch (SystemException se) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(
-					"Add failed, fetch {ownerId=" + ownerId + ", ownerType=" +
-						ownerType + ", plid=" + plid + ", portletId=" +
-							portletId + "}");
-			}
-
-			portletPreferences = portletPreferencesPersistence.fetchByO_O_P_P(
-				ownerId, ownerType, plid, portletId, false);
-
-			if (portletPreferences == null) {
-				throw se;
-			}
-		}
+		portletPreferencesPersistence.update(portletPreferences);
 
 		return portletPreferences;
 	}
@@ -388,8 +371,7 @@ public class PortletPreferencesLocalServiceImpl
 
 				if (strict &&
 					(Validator.isNull(defaultPreferences) ||
-					 ((portlet != null) &&
-					  portlet.isUndeployedPortlet()))) {
+					 ((portlet != null) && portlet.isUndeployedPortlet()))) {
 
 					if (portlet == null) {
 						defaultPreferences =
