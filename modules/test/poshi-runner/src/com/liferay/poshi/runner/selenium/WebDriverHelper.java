@@ -14,12 +14,14 @@
 
 package com.liferay.poshi.runner.selenium;
 
+import com.liferay.poshi.runner.exception.PoshiRunnerWarningException;
 import com.liferay.poshi.runner.util.CharPool;
 import com.liferay.poshi.runner.util.GetterUtil;
 import com.liferay.poshi.runner.util.HtmlUtil;
 import com.liferay.poshi.runner.util.PropsValues;
 import com.liferay.poshi.runner.util.Validator;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -113,11 +115,11 @@ public class WebDriverHelper {
 		List<JavaScriptError> javaScriptErrors = JavaScriptError.readErrors(
 			wrappedWebDriver);
 
+		List<Exception> exceptions = new ArrayList<>();
+
 		if (!javaScriptErrors.isEmpty()) {
 			for (JavaScriptError javaScriptError : javaScriptErrors) {
 				String javaScriptErrorValue = javaScriptError.toString();
-
-				System.out.println("JS_ERROR: " + javaScriptErrorValue);
 
 				if (Validator.isNotNull(ignoreJavaScriptError) &&
 					javaScriptErrorValue.contains(ignoreJavaScriptError)) {
@@ -131,12 +133,19 @@ public class WebDriverHelper {
 					continue;
 				}
 
-				Exception exception = new Exception(javaScriptErrorValue);
+				String errorMessage =
+					"JAVA_SCRIPT_ERROR: " + javaScriptErrorValue;
 
-				LiferaySeleniumHelper.addToJavaScriptExceptions(exception);
+				System.out.println(errorMessage);
 
-				throw exception;
+				exceptions.add(new PoshiRunnerWarningException(errorMessage));
 			}
+		}
+
+		if (!exceptions.isEmpty()) {
+			LiferaySeleniumHelper.addToJavaScriptExceptions(exceptions);
+
+			throw exceptions.get(0);
 		}
 	}
 
