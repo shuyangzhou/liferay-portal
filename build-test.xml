@@ -3061,6 +3061,32 @@ go</echo>
 		</if>
 	</target>
 
+	<target name="clean-up-sybase-processes">
+		<if>
+			<os family="unix" />
+			<then>
+				<echo file="clean_up_sybase_processes.sh">
+					<![CDATA[
+						#!/bin/bash
+
+						for i in `ps -o pid,args -e | grep /opt/sybase | grep -v grep | cut -c1-5`
+						do
+							echo "Killing $i"
+
+							kill -9 $i
+						done
+					]]>
+				</echo>
+
+				<chmod file="clean_up_sybase_processes.sh" perm="a+x" />
+
+				<exec executable="${basedir}/clean_up_sybase_processes.sh" />
+
+				<delete file="clean_up_sybase_processes.sh" />
+			</then>
+		</if>
+	</target>
+
 	<target name="clean-up-logs">
 		<delete failonerror="false" file="log" />
 
@@ -5395,6 +5421,7 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 
 		<antcall if:set="env.JENKINS_HOME" target="clean-up-db2-processes" inheritAll="false" />
 		<antcall if:set="env.JENKINS_HOME" target="clean-up-java-processes" inheritAll="false" />
+		<antcall if:set="env.JENKINS_HOME" target="clean-up-sybase-processes" inheritAll="false" />
 	</target>
 
 	<target name="prepare-test-build-tomcat-dependents">
@@ -5445,6 +5472,7 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 
 		<antcall if:set="env.JENKINS_HOME" target="clean-up-db2-processes" inheritAll="false" />
 		<antcall if:set="env.JENKINS_HOME" target="clean-up-java-processes" inheritAll="false" />
+		<antcall if:set="env.JENKINS_HOME" target="clean-up-sybase-processes" inheritAll="false" />
 	</target>
 
 	<target name="prepare-test-bundle">
@@ -6410,6 +6438,7 @@ jdbc.default.password=${database.mysql.password}</echo>
 
 		<antcall target="clean-up-db2-processes" inheritAll="false" />
 		<antcall target="clean-up-java-processes" inheritAll="false" />
+		<antcall target="clean-up-sybase-processes" inheritAll="false" />
 
 		<get-testcase-property property.name="portal.version" />
 
