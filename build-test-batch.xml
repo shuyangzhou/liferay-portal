@@ -421,6 +421,13 @@
 			<exec executable="service">
 				<arg line="sybase stop" />
 			</exec>
+
+<!--			<waitfor maxwait="60" maxwaitunit="second">
+				<not>
+					<socket server="localhost" port="5000"/>
+				</not>
+			</waitfor>-->
+
 			<echo>^^^^^^^^^^^^^^^^^^^sybase stop done</echo>
 
 			<antcall target="clean-up-sybase-processes" />
@@ -463,6 +470,18 @@
 					<then>
 						<echo>#########output.content is not clean
 ${output.content}</echo>
+
+						<exec executable="isql">
+							<arg value="-i" />
+							<arg value="sp_helpdb.sql" />
+							<arg value="-P" />
+							<arg value="liferay123" />
+							<arg value="-S" />
+							<arg value="lportal" />
+							<arg value="-U" />
+							<arg value="sa" />
+						</exec>
+
 						<clean-restart-sybase />
 
 						<fail message="${output.content}" />
