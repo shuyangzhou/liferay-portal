@@ -415,35 +415,99 @@
 		</run-batch-test>
 	</target>
 
+	<macrodef name="clean-restart-sybase">
+		<sequential>
+			<echo>^^^^^^^^^^^^^^^^^^^sybase stop starting</echo>
+			<exec executable="service">
+				<arg line="sybase stop" />
+			</exec>
+			<echo>^^^^^^^^^^^^^^^^^^^sybase stop done</echo>
+
+			<antcall target="clean-up-sybase-processes" />
+
+			<sleep seconds="10" />
+
+			<echo>@@@@@@@@@@@@@@@@@@ sybase start starting</echo>
+			<exec executable="service" failonerror="true">
+				<arg line="sybase start" />
+			</exec>
+
+			<waitfor maxwait="60" maxwaitunit="second">
+				<socket server="localhost" port="5000"/>
+			</waitfor>
+
+			<sleep seconds="10" />
+
+			<echo>@@@@@@@@@@@@@@@@@@ sybase start done</echo>
+		</sequential>
+	</macrodef>
+
 	<target name="test-sybase">
-		<antcall target="clean-up-sybase-processes" />
+		<clean-restart-sybase />
 
-		<echo>^^^^^^^^^^^^^^^^^^^sybase stop starting</echo>
-		<exec executable="service">
-			<arg line="sybase stop" />
-		</exec>
-		<echo>^^^^^^^^^^^^^^^^^^^sybase stop done</echo>
+		<retry retrycount="20">
+			<sequential>
+				<echo>################# Attempting sybase create sql header </echo>
 
-		<sleep seconds="10" />
+				<exec executable="isql" outputproperty="output.content" resultproperty="return.code">
+					<arg value="-i" />
+					<arg value="create-header.sql" />
+					<arg value="-P" />
+					<arg value="liferay123" />
+					<arg value="-S" />
+					<arg value="lportal" />
+					<arg value="-U" />
+					<arg value="sa" />
+				</exec>
 
-		<echo>@@@@@@@@@@@@@@@@@@ sybase start starting</echo>
-		<exec executable="service" failonerror="true">
-			<arg line="sybase start" />
-		</exec>
-		<echo>@@@@@@@@@@@@@@@@@@ sybase start done</echo>
-<!--		<exec executable="sh" spawn="true">
-			<arg line="/opt/sybase/ASE-15_0/install/RUN_lportal" />
-		</exec>-->
+				<echo>###############Header insert returned</echo>
 
-		<sleep seconds="20" />
+				<if>
+					<contains string="${output.content}" substring="The model database is unavailable. It is being used to create a new database." />
+					<then>
+						<echo>#########output.content is not clean
+${output.content}</echo>
+						<clean-restart-sybase />
+
+						<fail message="${output.content}" />
+					</then>
+					<else>
+						<echo>#########output.content is clean
+${output.content}</echo>
+					</else>
+				</if>
+
+				<echo>#########return.code is ${return.code}</echo>
+
+				<if>
+					<not>
+						<equals arg1="${return.code}" arg2="0" />
+					</not>
+					<then>
+						<clean-restart-sybase />
+
+						<fail message="Error return code : ${return.code}"  />
+					</then>
+				</if>
+			</sequential>
+		</retry>
+
+		<echo>################# Success executing sybase create sql header </echo>
 
 		<echo>!!!!!!!!!!!!!!!!!! sybase insert starting</echo>
-		<exec executable="isql" failonerror="true">
-			<arg line="-i create.sql -P liferay123 -S lportal -U sa" />
-		</exec>
-		<echo>!!!!!!!!!!!!!!!!!! sybase insert done</echo>
 
-		<sleep seconds="10" />
+		<exec executable="isql" failonerror="true">
+			<arg value="-i" />
+			<arg value="create.sql" />
+			<arg value="-P" />
+			<arg value="liferay123" />
+			<arg value="-S" />
+			<arg value="lportal" />
+			<arg value="-U" />
+			<arg value="sa" />
+		</exec>
+
+		<echo>!!!!!!!!!!!!!!!!!! sybase insert done</echo>
 
 		<echo>******************* sybase stop starting</echo>
 		<exec executable="service" failonerror="true">
