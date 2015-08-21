@@ -445,7 +445,9 @@
 			<arg line="/opt/sybase/ASE-15_0/install/RUN_lportal" />
 		</exec>-->
 
-		<sleep seconds="20" />
+		<waitfor maxwait="60" maxwaitunit="second">
+			<socket server="localhost" port="5000"/>
+		</waitfor>
 
 		<echo>!!!!!!!!!!!!!!!!!! sybase insert starting</echo>
 		<exec executable="isql" failonerror="true">
