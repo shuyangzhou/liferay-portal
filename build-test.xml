@@ -2639,14 +2639,6 @@ create database lportal${database.index} character set utf8;</echo>
 								<replacefilter>
 									<replacetoken>use master</replacetoken>
 									<replacevalue expandProperties="true"><![CDATA[use master
-dump transaction master with no_log
-go
-if exists (select * from master.dbo.sysdatabases where name = "lportal")
-begin
-drop database lportal
-end
-go
-create database lportal on ${database.device.name} = "250m"
 go]]></replacevalue>
 								</replacefilter>
 								<replacefilter>
@@ -2655,6 +2647,17 @@ go]]></replacevalue>
 go]]></replacevalue>
 								</replacefilter>
 							</replace>
+
+							<echo file="create-header.sql">use master
+dump transaction master with no_log
+go
+if exists (select * from master.dbo.sysdatabases where name = "lportal")
+begin
+drop database lportal
+end
+go
+create database lportal on ${database.device.name} = "250m"
+go</echo>
 						</then>
 					</elseif>
 				</if>
@@ -5734,6 +5737,33 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 							<get-database-property property.name="database.password" />
 							<get-database-property property.name="database.schema" />
 							<get-database-property property.name="database.username" />
+
+							<retry retrycount="20">
+								<sequential>
+									<echo>################# Attempting sybase create sql header </echo>
+
+									<exec executable="${sybase.executable}">
+										<arg line="${database.service.cmd.stop}" />
+									</exec>
+
+									<exec executable="${sybase.executable}">
+										<arg line="${database.service.cmd.start}" />
+									</exec>
+
+									<exec executable="${sybase.executable}" failonerror="true">
+										<arg value="-i" />
+										<arg value="create-header.sql" />
+										<arg value="-P" />
+										<arg value="${database.password}" />
+										<arg value="-S" />
+										<arg value="${database.schema}" />
+										<arg value="-U" />
+										<arg value="${database.username}" />
+									</exec>
+								</sequential>
+							</retry>
+
+							<echo>################# Success executing sybase create sql header </echo>
 
 							<exec executable="${sybase.executable}" failonerror="true">
 								<arg value="-i" />
