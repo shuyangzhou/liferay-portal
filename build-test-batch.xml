@@ -416,16 +416,18 @@
 	</target>
 
 	<target name="test-sybase">
+		<antcall target="clean-up-sybase-processes" />
+
 		<echo>^^^^^^^^^^^^^^^^^^^sybase stop starting</echo>
-		<exec executable="service" spawn="true">
+		<exec executable="service">
 			<arg line="sybase stop" />
 		</exec>
 		<echo>^^^^^^^^^^^^^^^^^^^sybase stop done</echo>
 
-		<sleep seconds="2" />
+		<sleep seconds="10" />
 
 		<echo>@@@@@@@@@@@@@@@@@@ sybase start starting</echo>
-		<exec executable="service" failonerror="false">
+		<exec executable="service" failonerror="true">
 			<arg line="sybase start" />
 		</exec>
 		<echo>@@@@@@@@@@@@@@@@@@ sybase start done</echo>
@@ -433,13 +435,15 @@
 			<arg line="/opt/sybase/ASE-15_0/install/RUN_lportal" />
 		</exec>-->
 
-		<sleep seconds="2" />
+		<sleep seconds="20" />
 
 		<echo>!!!!!!!!!!!!!!!!!! sybase insert starting</echo>
 		<exec executable="isql" failonerror="true">
 			<arg line="-i create.sql -P liferay123 -S lportal -U sa" />
 		</exec>
 		<echo>!!!!!!!!!!!!!!!!!! sybase insert done</echo>
+
+		<sleep seconds="10" />
 
 		<echo>******************* sybase stop starting</echo>
 		<exec executable="service" failonerror="true">
