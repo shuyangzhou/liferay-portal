@@ -441,7 +441,19 @@
 				<socket server="localhost" port="5000"/>
 			</waitfor>
 
-			<sleep seconds="10" />
+			<echo>***********************sp_helpdb.sql after start</echo>
+
+			<exec executable="isql">
+				<arg value="-i" />
+				<arg value="sp_helpdb.sql" />
+				<arg value="-P" />
+				<arg value="liferay123" />
+				<arg value="-S" />
+				<arg value="lportal" />
+				<arg value="-U" />
+				<arg value="sa" />
+			</exec>
+			<!--<sleep seconds="10" />-->
 
 			<echo>@@@@@@@@@@@@@@@@@@ sybase start done</echo>
 		</sequential>
@@ -472,17 +484,6 @@
 					<then>
 						<echo>#########output.content is not clean
 ${output.content}</echo>
-
-						<exec executable="isql">
-							<arg value="-i" />
-							<arg value="sp_helpdb.sql" />
-							<arg value="-P" />
-							<arg value="liferay123" />
-							<arg value="-S" />
-							<arg value="lportal" />
-							<arg value="-U" />
-							<arg value="sa" />
-						</exec>
 
 						<clean-restart-sybase />
 
