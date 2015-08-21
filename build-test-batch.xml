@@ -441,6 +441,8 @@
 				<socket server="localhost" port="5000"/>
 			</waitfor>
 
+			<sleep seconds="10" />
+
 			<echo>@@@@@@@@@@@@@@@@@@ sybase start done</echo>
 		</sequential>
 	</macrodef>
