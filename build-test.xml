@@ -5750,7 +5750,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 										<arg line="${database.service.cmd.start}" />
 									</exec>
 
-									<exec executable="${sybase.executable}" failonerror="true">
+									<exec executable="${sybase.executable}" outputproperty="output.content" resultproperty="return.code">
 										<arg value="-i" />
 										<arg value="create-header.sql" />
 										<arg value="-P" />
@@ -5760,6 +5760,24 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 										<arg value="-U" />
 										<arg value="${database.username}" />
 									</exec>
+
+									<if>
+										<not>
+											<equals arg1="${return.code}" arg2="0" />
+										</not>
+										<then>
+											<fail message="Error return code : ${return.code}"  />
+										</then>
+									</if>
+
+									<if>
+										<not>
+											<contains string="${output.content}" substring="Database 'lportal' is now online." />
+										</not>
+										<then>
+											<fail message="${output.content}" />
+										</then>
+									</if>
 								</sequential>
 							</retry>
 
