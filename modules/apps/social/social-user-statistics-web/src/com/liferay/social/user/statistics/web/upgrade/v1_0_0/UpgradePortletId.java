@@ -26,8 +26,7 @@ public class UpgradePortletId
 	protected String[][] getRenamePortletIdsArray() {
 		return new String[][] {
 			new String[] {
-				"180",
-				SocialUserStatisticsPortletKeys.SOCIAL_USER_STATISTICS
+				"180", SocialUserStatisticsPortletKeys.SOCIAL_USER_STATISTICS
 			}
 		};
 	}
