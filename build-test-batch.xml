@@ -425,8 +425,6 @@
 
 			<antcall target="clean-up-sybase-processes" />
 
-			<sleep seconds="10" />
-
 			<echo>@@@@@@@@@@@@@@@@@@ sybase start starting</echo>
 			<exec executable="service" failonerror="true">
 				<arg line="sybase start" />
@@ -435,8 +433,6 @@
 			<waitfor maxwait="60" maxwaitunit="second">
 				<socket server="localhost" port="5000"/>
 			</waitfor>
-
-			<sleep seconds="10" />
 
 			<echo>@@@@@@@@@@@@@@@@@@ sybase start done</echo>
 		</sequential>
