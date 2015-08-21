@@ -3,6 +3,8 @@ dump transaction master with no_log
 go
 drop database lportal
 go
+sp_helpdb
+go
 create database lportal on master = "250m"
 go
 exec sp_dboption 'lportal', 'allow nulls by default' , true
