@@ -429,6 +429,9 @@
 			<exec executable="service" failonerror="true">
 				<arg line="sybase start" />
 			</exec>
+			<waitfor maxwait="60" maxwaitunit="second">
+				<socket server="localhost" port="5000"/>
+			</waitfor>
 			<echo>@@@@@@@@@@@@@@@@@@ sybase start done</echo>
 		</sequential>
 	</macrodef>
