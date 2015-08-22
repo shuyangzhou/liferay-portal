@@ -441,6 +441,12 @@
 			<arg line="sybase stop" />
 		</exec>
 
+		<waitfor maxwait="60" maxwaitunit="second">
+			<not>
+				<socket server="localhost" port="5000"/>
+			</not>
+		</waitfor>
+
 		<antcall target="clean-up-sybase-processes" />
 	</target>
 
