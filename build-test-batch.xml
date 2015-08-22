@@ -415,6 +415,35 @@
 		</run-batch-test>
 	</target>
 
+	<target name="sybase-service-start">
+		<exec executable="service" failonerror="true">
+			<arg line="sybase start" />
+		</exec>
+
+		<waitfor maxwait="60" maxwaitunit="second">
+			<socket server="localhost" port="5000"/>
+		</waitfor>
+
+		<exec executable="isql" failonerror="true">
+			<arg value="-i" />
+			<arg value="create-header.sql" />
+			<arg value="-P" />
+			<arg value="liferay123" />
+			<arg value="-S" />
+			<arg value="lportal" />
+			<arg value="-U" />
+			<arg value="sa" />
+		</exec>
+	</target>
+
+	<target name="sybase-service-stop">
+		<exec executable="service">
+			<arg line="sybase stop" />
+		</exec>
+
+		<antcall target="clean-up-sybase-processes" />
+	</target>
+
 	<macrodef name="clean-restart-sybase">
 		<sequential>
 			<echo>^^^^^^^^^^^^^^^^^^^sybase stop starting</echo>

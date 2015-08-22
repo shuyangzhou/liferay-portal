@@ -5769,7 +5769,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 							<get-database-property property.name="database.service.cmd.stop" />
 							<get-database-property property.name="database.username" />
 
-							<retry retrycount="20">
+<!--							<retry retrycount="20">
 								<sequential>
 									<echo>################# Attempting sybase create sql header </echo>
 
@@ -5818,7 +5818,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 								</sequential>
 							</retry>
 
-							<echo>################# Success executing sybase create sql header </echo>
+							<echo>################# Success executing sybase create sql header </echo>-->
 
 							<exec executable="${sybase.executable}" failonerror="true">
 								<arg value="-i" />
