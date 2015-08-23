@@ -415,41 +415,6 @@
 		</run-batch-test>
 	</target>
 
-	<target name="sybase-service-start">
-		<exec executable="service" failonerror="true">
-			<arg line="sybase start" />
-		</exec>
-
-		<waitfor maxwait="60" maxwaitunit="second">
-			<socket server="localhost" port="5000"/>
-		</waitfor>
-
-		<exec executable="isql" failonerror="true">
-			<arg value="-i" />
-			<arg value="create-header.sql" />
-			<arg value="-P" />
-			<arg value="liferay123" />
-			<arg value="-S" />
-			<arg value="lportal" />
-			<arg value="-U" />
-			<arg value="sa" />
-		</exec>
-	</target>
-
-	<target name="sybase-service-stop">
-		<exec executable="service">
-			<arg line="sybase stop" />
-		</exec>
-
-		<waitfor maxwait="60" maxwaitunit="second">
-			<not>
-				<socket server="localhost" port="5000"/>
-			</not>
-		</waitfor>
-
-		<antcall target="clean-up-sybase-processes" />
-	</target>
-
 	<macrodef name="clean-restart-sybase">
 		<sequential>
 			<echo>^^^^^^^^^^^^^^^^^^^sybase stop starting</echo>
@@ -471,8 +436,31 @@
 		</sequential>
 	</macrodef>
 
-	<target name="test-sybase">
+	<target name="sybase-service-start">
+		<local name="database.type" />
+
+		<property name="database.type" value="sybase" />
+
+		<get-database-property property.name="database.password" />
+		<get-database-property property.name="database.schema" />
+		<get-database-property property.name="database.username" />
+
 		<clean-restart-sybase />
+
+		<echo file="create-header.sql">use master
+dump transaction master with no_log
+go
+drop database lportal
+go
+sp_helpdb model
+go
+create database lportal on master = "250m"
+go
+exec sp_dboption 'lportal', 'allow nulls by default' , true
+go
+
+exec sp_dboption 'lportal', 'select into/bulkcopy/pllsort' , true
+go</echo>
 
 		<retry retrycount="20">
 			<sequential>
@@ -482,17 +470,20 @@
 					<arg value="-i" />
 					<arg value="create-header.sql" />
 					<arg value="-P" />
-					<arg value="liferay123" />
+					<arg value="${database.password}" />
 					<arg value="-S" />
-					<arg value="lportal" />
+					<arg value="${database.schema}" />
 					<arg value="-U" />
-					<arg value="sa" />
+					<arg value="${database.username}" />
 				</exec>
 
 				<echo>###############Header insert returned</echo>
 
 				<if>
-					<contains string="${output.content}" substring="The model database is unavailable. It is being used to create a new database." />
+					<or>
+						<contains string="${output.content}" substring="Database 'lportal' already exists" />
+						<contains string="${output.content}" substring="The model database is unavailable. It is being used to create a new database." />
+					</or>
 					<then>
 						<echo>#########output.content is not clean
 ${output.content}</echo>
@@ -522,28 +513,21 @@ ${output.content}</echo>
 			</sequential>
 		</retry>
 
-		<echo>################# Success executing sybase create sql header </echo>
+		<delete file="create-header.sql" />
+	</target>
 
-		<echo>!!!!!!!!!!!!!!!!!! sybase insert starting</echo>
-
-		<exec executable="isql" failonerror="true">
-			<arg value="-i" />
-			<arg value="create.sql" />
-			<arg value="-P" />
-			<arg value="liferay123" />
-			<arg value="-S" />
-			<arg value="lportal" />
-			<arg value="-U" />
-			<arg value="sa" />
-		</exec>
-
-		<echo>!!!!!!!!!!!!!!!!!! sybase insert done</echo>
-
-		<echo>******************* sybase stop starting</echo>
-		<exec executable="service" failonerror="true">
+	<target name="sybase-service-stop">
+		<exec executable="service">
 			<arg line="sybase stop" />
 		</exec>
-		<echo>******************* sybase stop done</echo>
+
+		<waitfor maxwait="60" maxwaitunit="second">
+			<not>
+				<socket server="localhost" port="5000"/>
+			</not>
+		</waitfor>
+
+		<antcall target="clean-up-sybase-processes" />
 	</target>
 
 	<target name="tck">
