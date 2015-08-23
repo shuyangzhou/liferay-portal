@@ -475,6 +475,10 @@ drop database lportal
 go
 sp_helpdb model
 go
+sp_who
+go
+dbcc checkcatalog
+go
 create database lportal on master = "250m"
 go
 exec sp_dboption 'lportal', 'allow nulls by default' , true
