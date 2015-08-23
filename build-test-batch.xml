@@ -422,6 +422,19 @@
 			<exec executable="service">
 				<arg line="sybase stop" />
 			</exec>
+
+			<waitfor maxwait="60" maxwaitunit="second">
+				<not>
+					<socket server="localhost" port="5000"/>
+				</not>
+			</waitfor>
+
+			<if>
+				<istrue value="@{sleep}" />
+				<then>
+					<sleep seconds="10" />
+				</then>
+			</if>
 			<echo>^^^^^^^^^^^^^^^^^^^sybase stop done</echo>
 
 			<antcall target="clean-up-sybase-processes" />
