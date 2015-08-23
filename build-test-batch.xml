@@ -164,9 +164,9 @@
 
 			<test-action />
 
-			<merge-test-results />
+<!--			<merge-test-results />
 
-			<check-deprecated-method />
+			<check-deprecated-method />-->
 
 			<test-tear-down />
 
@@ -244,11 +244,11 @@
 						<test-action>
 							<print-test-class-group test.class.group.index="${axis.variable}" />
 
-							<ant dir="portal-impl" target="test-class-group" inheritAll="false">
+<!--							<ant dir="portal-impl" target="test-class-group" inheritAll="false">
 								<property name="database.type" value="@{database.type}" />
 								<property name="test.class.group.index" value="${axis.variable}" />
 								<property name="test.type" value="integration" />
-							</ant>
+							</ant>-->
 						</test-action>
 					</database-test-run-test>
 				</test-action>
@@ -276,14 +276,14 @@
 
 							<antcall target="prepare-system-ext-properties" inheritAll="false" />
 
-							<ant dir="modules" target="test-class-group" inheritAll="false">
+<!--							<ant dir="modules" target="test-class-group" inheritAll="false">
 								<property name="test.class.group.index" value="${axis.variable}" />
 								<property name="test.type" value="integration" />
 							</ant>
 
 							<ant dir="portal-service" target="test-class" inheritAll="false">
 								<property name="test.class" value="PortalLogAssertorTest" />
-							</ant>
+							</ant>-->
 						</test-action>
 					</database-test-run-test>
 				</test-action>
