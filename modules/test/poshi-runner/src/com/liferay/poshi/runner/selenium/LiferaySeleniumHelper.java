@@ -285,13 +285,6 @@ public class LiferaySeleniumHelper {
 				sb.append("LIFERAY_ERROR: ");
 				sb.append(messageText);
 
-				Element throwableElement = eventElement.element("throwable");
-
-				if (throwableElement != null) {
-					sb.append("\n");
-					sb.append(throwableElement.getText());
-				}
-
 				System.out.println(sb.toString());
 
 				exceptions.add(new PoshiRunnerWarningException(sb.toString()));
@@ -1384,7 +1377,9 @@ public class LiferaySeleniumHelper {
 	}
 
 	public static void typeScreen(String value) {
-		throw new UnsupportedOperationException();
+		Keyboard keyboard = new DesktopKeyboard();
+
+		keyboard.type(value);
 	}
 
 	public static void waitForConfirmation(
