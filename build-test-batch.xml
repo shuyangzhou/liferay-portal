@@ -416,6 +416,7 @@
 	</target>
 
 	<macrodef name="clean-restart-sybase">
+		<attribute name="sleep" default="false" />
 		<sequential>
 			<echo>^^^^^^^^^^^^^^^^^^^sybase stop starting</echo>
 			<exec executable="service">
@@ -432,6 +433,13 @@
 			<waitfor maxwait="60" maxwaitunit="second">
 				<socket server="localhost" port="5000"/>
 			</waitfor>
+
+			<if>
+				<istrue value="@{sleep}" />
+				<then>
+					<sleep seconds="10" />
+				</then>
+			</if>
 			<echo>@@@@@@@@@@@@@@@@@@ sybase start done</echo>
 		</sequential>
 	</macrodef>
@@ -488,7 +496,7 @@ go</echo>
 						<echo>#########output.content is not clean
 ${output.content}</echo>
 
-						<clean-restart-sybase />
+						<clean-restart-sybase sleep="true" />
 
 						<fail message="${output.content}" />
 					</then>
@@ -505,7 +513,7 @@ ${output.content}</echo>
 						<equals arg1="${return.code}" arg2="0" />
 					</not>
 					<then>
-						<clean-restart-sybase />
+						<clean-restart-sybase sleep="true" />
 
 						<fail message="Error return code : ${return.code}"  />
 					</then>
