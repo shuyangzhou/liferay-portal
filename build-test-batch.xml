@@ -471,6 +471,8 @@
 		<echo file="create-header.sql">use master
 dump transaction master with no_log
 go
+disk resize name="master", size="1024M"
+go
 drop database lportal
 go
 sp_helpdb model
