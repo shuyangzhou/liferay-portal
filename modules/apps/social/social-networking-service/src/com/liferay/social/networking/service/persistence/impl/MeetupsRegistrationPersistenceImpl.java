@@ -1413,7 +1413,7 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
-		clearUniqueFindersCache(meetupsRegistration);
+		clearUniqueFindersCache((MeetupsRegistrationModelImpl)meetupsRegistration);
 	}
 
 	@Override
@@ -1426,48 +1426,44 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 				MeetupsRegistrationImpl.class,
 				meetupsRegistration.getPrimaryKey());
 
-			clearUniqueFindersCache(meetupsRegistration);
+			clearUniqueFindersCache((MeetupsRegistrationModelImpl)meetupsRegistration);
 		}
 	}
 
 	protected void cacheUniqueFindersCache(
-		MeetupsRegistration meetupsRegistration, boolean isNew) {
+		MeetupsRegistrationModelImpl meetupsRegistrationModelImpl, boolean isNew) {
 		if (isNew) {
 			Object[] args = new Object[] {
-					meetupsRegistration.getUserId(),
-					meetupsRegistration.getMeetupsEntryId()
+					meetupsRegistrationModelImpl.getUserId(),
+					meetupsRegistrationModelImpl.getMeetupsEntryId()
 				};
 
 			FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_U_ME, args,
 				Long.valueOf(1));
 			FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_U_ME, args,
-				meetupsRegistration);
+				meetupsRegistrationModelImpl);
 		}
 		else {
-			MeetupsRegistrationModelImpl meetupsRegistrationModelImpl = (MeetupsRegistrationModelImpl)meetupsRegistration;
-
 			if ((meetupsRegistrationModelImpl.getColumnBitmask() &
 					FINDER_PATH_FETCH_BY_U_ME.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						meetupsRegistration.getUserId(),
-						meetupsRegistration.getMeetupsEntryId()
+						meetupsRegistrationModelImpl.getUserId(),
+						meetupsRegistrationModelImpl.getMeetupsEntryId()
 					};
 
 				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_U_ME, args,
 					Long.valueOf(1));
 				FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_U_ME, args,
-					meetupsRegistration);
+					meetupsRegistrationModelImpl);
 			}
 		}
 	}
 
 	protected void clearUniqueFindersCache(
-		MeetupsRegistration meetupsRegistration) {
-		MeetupsRegistrationModelImpl meetupsRegistrationModelImpl = (MeetupsRegistrationModelImpl)meetupsRegistration;
-
+		MeetupsRegistrationModelImpl meetupsRegistrationModelImpl) {
 		Object[] args = new Object[] {
-				meetupsRegistration.getUserId(),
-				meetupsRegistration.getMeetupsEntryId()
+				meetupsRegistrationModelImpl.getUserId(),
+				meetupsRegistrationModelImpl.getMeetupsEntryId()
 			};
 
 		FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_U_ME, args);
@@ -1695,9 +1691,8 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 			MeetupsRegistrationImpl.class, meetupsRegistration.getPrimaryKey(),
 			meetupsRegistration, false);
 
-		clearUniqueFindersCache((MeetupsRegistration)meetupsRegistrationModelImpl);
-		cacheUniqueFindersCache((MeetupsRegistration)meetupsRegistrationModelImpl,
-			isNew);
+		clearUniqueFindersCache(meetupsRegistrationModelImpl);
+		cacheUniqueFindersCache(meetupsRegistrationModelImpl, isNew);
 
 		meetupsRegistration.resetOriginalValues();
 
