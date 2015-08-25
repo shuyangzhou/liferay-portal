@@ -5674,6 +5674,8 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 			socialRelation.setUuid(uuid);
 		}
 
+		SocialRelation updatedSocialRelation = null;
+
 		Session session = null;
 
 		try {
@@ -5685,7 +5687,7 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 				socialRelation.setNew(false);
 			}
 			else {
-				socialRelation = (SocialRelation)session.merge(socialRelation);
+				updatedSocialRelation = (SocialRelation)session.merge(socialRelation);
 			}
 		}
 		catch (Exception e) {
@@ -5895,12 +5897,25 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 			}
 		}
 
-		EntityCacheUtil.putResult(SocialRelationModelImpl.ENTITY_CACHE_ENABLED,
-			SocialRelationImpl.class, socialRelation.getPrimaryKey(),
-			socialRelation, false);
+		if (updatedSocialRelation == null) {
+			EntityCacheUtil.putResult(SocialRelationModelImpl.ENTITY_CACHE_ENABLED,
+				SocialRelationImpl.class, socialRelation.getPrimaryKey(),
+				socialRelation, false);
+		}
+		else {
+			EntityCacheUtil.putResult(SocialRelationModelImpl.ENTITY_CACHE_ENABLED,
+				SocialRelationImpl.class, socialRelation.getPrimaryKey(),
+				updatedSocialRelation, false);
+		}
 
 		clearUniqueFindersCache(socialRelation);
-		cacheUniqueFindersCache(socialRelation, isNew);
+
+		if (updatedSocialRelation == null) {
+			cacheUniqueFindersCache(socialRelation, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedSocialRelation, isNew);
+		}
 
 		socialRelation.resetOriginalValues();
 

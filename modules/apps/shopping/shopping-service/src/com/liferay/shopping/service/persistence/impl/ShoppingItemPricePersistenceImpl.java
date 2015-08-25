@@ -754,6 +754,8 @@ public class ShoppingItemPricePersistenceImpl extends BasePersistenceImpl<Shoppi
 
 		ShoppingItemPriceModelImpl shoppingItemPriceModelImpl = (ShoppingItemPriceModelImpl)shoppingItemPrice;
 
+		ShoppingItemPrice updatedShoppingItemPrice = null;
+
 		Session session = null;
 
 		try {
@@ -765,7 +767,7 @@ public class ShoppingItemPricePersistenceImpl extends BasePersistenceImpl<Shoppi
 				shoppingItemPrice.setNew(false);
 			}
 			else {
-				shoppingItemPrice = (ShoppingItemPrice)session.merge(shoppingItemPrice);
+				updatedShoppingItemPrice = (ShoppingItemPrice)session.merge(shoppingItemPrice);
 			}
 		}
 		catch (Exception e) {
@@ -800,9 +802,16 @@ public class ShoppingItemPricePersistenceImpl extends BasePersistenceImpl<Shoppi
 			}
 		}
 
-		EntityCacheUtil.putResult(ShoppingItemPriceModelImpl.ENTITY_CACHE_ENABLED,
-			ShoppingItemPriceImpl.class, shoppingItemPrice.getPrimaryKey(),
-			shoppingItemPrice, false);
+		if (updatedShoppingItemPrice == null) {
+			EntityCacheUtil.putResult(ShoppingItemPriceModelImpl.ENTITY_CACHE_ENABLED,
+				ShoppingItemPriceImpl.class, shoppingItemPrice.getPrimaryKey(),
+				shoppingItemPrice, false);
+		}
+		else {
+			EntityCacheUtil.putResult(ShoppingItemPriceModelImpl.ENTITY_CACHE_ENABLED,
+				ShoppingItemPriceImpl.class, shoppingItemPrice.getPrimaryKey(),
+				updatedShoppingItemPrice, false);
+		}
 
 		shoppingItemPrice.resetOriginalValues();
 

@@ -6928,6 +6928,8 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 			userNotificationEvent.setUuid(uuid);
 		}
 
+		UserNotificationEvent updatedUserNotificationEvent = null;
+
 		Session session = null;
 
 		try {
@@ -6939,7 +6941,7 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 				userNotificationEvent.setNew(false);
 			}
 			else {
-				userNotificationEvent = (UserNotificationEvent)session.merge(userNotificationEvent);
+				updatedUserNotificationEvent = (UserNotificationEvent)session.merge(userNotificationEvent);
 			}
 		}
 		catch (Exception e) {
@@ -7217,9 +7219,18 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 			}
 		}
 
-		EntityCacheUtil.putResult(UserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
-			UserNotificationEventImpl.class,
-			userNotificationEvent.getPrimaryKey(), userNotificationEvent, false);
+		if (updatedUserNotificationEvent == null) {
+			EntityCacheUtil.putResult(UserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
+				UserNotificationEventImpl.class,
+				userNotificationEvent.getPrimaryKey(), userNotificationEvent,
+				false);
+		}
+		else {
+			EntityCacheUtil.putResult(UserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
+				UserNotificationEventImpl.class,
+				userNotificationEvent.getPrimaryKey(),
+				updatedUserNotificationEvent, false);
+		}
 
 		userNotificationEvent.resetOriginalValues();
 

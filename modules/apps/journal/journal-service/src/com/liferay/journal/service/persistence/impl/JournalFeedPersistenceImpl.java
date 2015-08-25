@@ -2833,6 +2833,8 @@ public class JournalFeedPersistenceImpl extends BasePersistenceImpl<JournalFeed>
 			}
 		}
 
+		JournalFeed updatedJournalFeed = null;
+
 		Session session = null;
 
 		try {
@@ -2844,7 +2846,7 @@ public class JournalFeedPersistenceImpl extends BasePersistenceImpl<JournalFeed>
 				journalFeed.setNew(false);
 			}
 			else {
-				journalFeed = (JournalFeed)session.merge(journalFeed);
+				updatedJournalFeed = (JournalFeed)session.merge(journalFeed);
 			}
 		}
 		catch (Exception e) {
@@ -2917,12 +2919,25 @@ public class JournalFeedPersistenceImpl extends BasePersistenceImpl<JournalFeed>
 			}
 		}
 
-		EntityCacheUtil.putResult(JournalFeedModelImpl.ENTITY_CACHE_ENABLED,
-			JournalFeedImpl.class, journalFeed.getPrimaryKey(), journalFeed,
-			false);
+		if (updatedJournalFeed == null) {
+			EntityCacheUtil.putResult(JournalFeedModelImpl.ENTITY_CACHE_ENABLED,
+				JournalFeedImpl.class, journalFeed.getPrimaryKey(),
+				journalFeed, false);
+		}
+		else {
+			EntityCacheUtil.putResult(JournalFeedModelImpl.ENTITY_CACHE_ENABLED,
+				JournalFeedImpl.class, journalFeed.getPrimaryKey(),
+				updatedJournalFeed, false);
+		}
 
 		clearUniqueFindersCache(journalFeed);
-		cacheUniqueFindersCache(journalFeed, isNew);
+
+		if (updatedJournalFeed == null) {
+			cacheUniqueFindersCache(journalFeed, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedJournalFeed, isNew);
+		}
 
 		journalFeed.resetOriginalValues();
 

@@ -1554,6 +1554,8 @@ public class ResourceBlockPermissionPersistenceImpl extends BasePersistenceImpl<
 
 		ResourceBlockPermissionModelImpl resourceBlockPermissionModelImpl = (ResourceBlockPermissionModelImpl)resourceBlockPermission;
 
+		ResourceBlockPermission updatedResourceBlockPermission = null;
+
 		Session session = null;
 
 		try {
@@ -1565,7 +1567,7 @@ public class ResourceBlockPermissionPersistenceImpl extends BasePersistenceImpl<
 				resourceBlockPermission.setNew(false);
 			}
 			else {
-				resourceBlockPermission = (ResourceBlockPermission)session.merge(resourceBlockPermission);
+				updatedResourceBlockPermission = (ResourceBlockPermission)session.merge(resourceBlockPermission);
 			}
 		}
 		catch (Exception e) {
@@ -1621,13 +1623,27 @@ public class ResourceBlockPermissionPersistenceImpl extends BasePersistenceImpl<
 			}
 		}
 
-		EntityCacheUtil.putResult(ResourceBlockPermissionModelImpl.ENTITY_CACHE_ENABLED,
-			ResourceBlockPermissionImpl.class,
-			resourceBlockPermission.getPrimaryKey(), resourceBlockPermission,
-			false);
+		if (updatedResourceBlockPermission == null) {
+			EntityCacheUtil.putResult(ResourceBlockPermissionModelImpl.ENTITY_CACHE_ENABLED,
+				ResourceBlockPermissionImpl.class,
+				resourceBlockPermission.getPrimaryKey(),
+				resourceBlockPermission, false);
+		}
+		else {
+			EntityCacheUtil.putResult(ResourceBlockPermissionModelImpl.ENTITY_CACHE_ENABLED,
+				ResourceBlockPermissionImpl.class,
+				resourceBlockPermission.getPrimaryKey(),
+				updatedResourceBlockPermission, false);
+		}
 
 		clearUniqueFindersCache(resourceBlockPermission);
-		cacheUniqueFindersCache(resourceBlockPermission, isNew);
+
+		if (updatedResourceBlockPermission == null) {
+			cacheUniqueFindersCache(resourceBlockPermission, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedResourceBlockPermission, isNew);
+		}
 
 		resourceBlockPermission.resetOriginalValues();
 

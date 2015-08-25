@@ -2664,6 +2664,8 @@ public class KaleoTaskInstanceTokenPersistenceImpl extends BasePersistenceImpl<K
 			}
 		}
 
+		KaleoTaskInstanceToken updatedKaleoTaskInstanceToken = null;
+
 		Session session = null;
 
 		try {
@@ -2675,7 +2677,7 @@ public class KaleoTaskInstanceTokenPersistenceImpl extends BasePersistenceImpl<K
 				kaleoTaskInstanceToken.setNew(false);
 			}
 			else {
-				kaleoTaskInstanceToken = (KaleoTaskInstanceToken)session.merge(kaleoTaskInstanceToken);
+				updatedKaleoTaskInstanceToken = (KaleoTaskInstanceToken)session.merge(kaleoTaskInstanceToken);
 			}
 		}
 		catch (Exception e) {
@@ -2777,13 +2779,27 @@ public class KaleoTaskInstanceTokenPersistenceImpl extends BasePersistenceImpl<K
 			}
 		}
 
-		EntityCacheUtil.putResult(KaleoTaskInstanceTokenModelImpl.ENTITY_CACHE_ENABLED,
-			KaleoTaskInstanceTokenImpl.class,
-			kaleoTaskInstanceToken.getPrimaryKey(), kaleoTaskInstanceToken,
-			false);
+		if (updatedKaleoTaskInstanceToken == null) {
+			EntityCacheUtil.putResult(KaleoTaskInstanceTokenModelImpl.ENTITY_CACHE_ENABLED,
+				KaleoTaskInstanceTokenImpl.class,
+				kaleoTaskInstanceToken.getPrimaryKey(), kaleoTaskInstanceToken,
+				false);
+		}
+		else {
+			EntityCacheUtil.putResult(KaleoTaskInstanceTokenModelImpl.ENTITY_CACHE_ENABLED,
+				KaleoTaskInstanceTokenImpl.class,
+				kaleoTaskInstanceToken.getPrimaryKey(),
+				updatedKaleoTaskInstanceToken, false);
+		}
 
 		clearUniqueFindersCache(kaleoTaskInstanceToken);
-		cacheUniqueFindersCache(kaleoTaskInstanceToken, isNew);
+
+		if (updatedKaleoTaskInstanceToken == null) {
+			cacheUniqueFindersCache(kaleoTaskInstanceToken, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedKaleoTaskInstanceToken, isNew);
+		}
 
 		kaleoTaskInstanceToken.resetOriginalValues();
 

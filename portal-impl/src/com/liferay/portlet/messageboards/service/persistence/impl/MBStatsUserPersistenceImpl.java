@@ -2045,6 +2045,8 @@ public class MBStatsUserPersistenceImpl extends BasePersistenceImpl<MBStatsUser>
 
 		MBStatsUserModelImpl mbStatsUserModelImpl = (MBStatsUserModelImpl)mbStatsUser;
 
+		MBStatsUser updatedMBStatsUser = null;
+
 		Session session = null;
 
 		try {
@@ -2056,7 +2058,7 @@ public class MBStatsUserPersistenceImpl extends BasePersistenceImpl<MBStatsUser>
 				mbStatsUser.setNew(false);
 			}
 			else {
-				mbStatsUser = (MBStatsUser)session.merge(mbStatsUser);
+				updatedMBStatsUser = (MBStatsUser)session.merge(mbStatsUser);
 			}
 		}
 		catch (Exception e) {
@@ -2108,12 +2110,25 @@ public class MBStatsUserPersistenceImpl extends BasePersistenceImpl<MBStatsUser>
 			}
 		}
 
-		EntityCacheUtil.putResult(MBStatsUserModelImpl.ENTITY_CACHE_ENABLED,
-			MBStatsUserImpl.class, mbStatsUser.getPrimaryKey(), mbStatsUser,
-			false);
+		if (updatedMBStatsUser == null) {
+			EntityCacheUtil.putResult(MBStatsUserModelImpl.ENTITY_CACHE_ENABLED,
+				MBStatsUserImpl.class, mbStatsUser.getPrimaryKey(),
+				mbStatsUser, false);
+		}
+		else {
+			EntityCacheUtil.putResult(MBStatsUserModelImpl.ENTITY_CACHE_ENABLED,
+				MBStatsUserImpl.class, mbStatsUser.getPrimaryKey(),
+				updatedMBStatsUser, false);
+		}
 
 		clearUniqueFindersCache(mbStatsUser);
-		cacheUniqueFindersCache(mbStatsUser, isNew);
+
+		if (updatedMBStatsUser == null) {
+			cacheUniqueFindersCache(mbStatsUser, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedMBStatsUser, isNew);
+		}
 
 		mbStatsUser.resetOriginalValues();
 

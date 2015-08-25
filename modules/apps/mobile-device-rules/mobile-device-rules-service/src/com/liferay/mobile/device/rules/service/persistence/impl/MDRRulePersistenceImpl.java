@@ -2167,6 +2167,8 @@ public class MDRRulePersistenceImpl extends BasePersistenceImpl<MDRRule>
 			}
 		}
 
+		MDRRule updatedMDRRule = null;
+
 		Session session = null;
 
 		try {
@@ -2178,7 +2180,7 @@ public class MDRRulePersistenceImpl extends BasePersistenceImpl<MDRRule>
 				mdrRule.setNew(false);
 			}
 			else {
-				mdrRule = (MDRRule)session.merge(mdrRule);
+				updatedMDRRule = (MDRRule)session.merge(mdrRule);
 			}
 		}
 		catch (Exception e) {
@@ -2251,11 +2253,24 @@ public class MDRRulePersistenceImpl extends BasePersistenceImpl<MDRRule>
 			}
 		}
 
-		EntityCacheUtil.putResult(MDRRuleModelImpl.ENTITY_CACHE_ENABLED,
-			MDRRuleImpl.class, mdrRule.getPrimaryKey(), mdrRule, false);
+		if (updatedMDRRule == null) {
+			EntityCacheUtil.putResult(MDRRuleModelImpl.ENTITY_CACHE_ENABLED,
+				MDRRuleImpl.class, mdrRule.getPrimaryKey(), mdrRule, false);
+		}
+		else {
+			EntityCacheUtil.putResult(MDRRuleModelImpl.ENTITY_CACHE_ENABLED,
+				MDRRuleImpl.class, mdrRule.getPrimaryKey(), updatedMDRRule,
+				false);
+		}
 
 		clearUniqueFindersCache(mdrRule);
-		cacheUniqueFindersCache(mdrRule, isNew);
+
+		if (updatedMDRRule == null) {
+			cacheUniqueFindersCache(mdrRule, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedMDRRule, isNew);
+		}
 
 		mdrRule.resetOriginalValues();
 

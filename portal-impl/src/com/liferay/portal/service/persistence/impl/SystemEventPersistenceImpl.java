@@ -2408,6 +2408,8 @@ public class SystemEventPersistenceImpl extends BasePersistenceImpl<SystemEvent>
 
 		SystemEventModelImpl systemEventModelImpl = (SystemEventModelImpl)systemEvent;
 
+		SystemEvent updatedSystemEvent = null;
+
 		Session session = null;
 
 		try {
@@ -2419,7 +2421,7 @@ public class SystemEventPersistenceImpl extends BasePersistenceImpl<SystemEvent>
 				systemEvent.setNew(false);
 			}
 			else {
-				systemEvent = (SystemEvent)session.merge(systemEvent);
+				updatedSystemEvent = (SystemEvent)session.merge(systemEvent);
 			}
 		}
 		catch (Exception e) {
@@ -2523,9 +2525,16 @@ public class SystemEventPersistenceImpl extends BasePersistenceImpl<SystemEvent>
 			}
 		}
 
-		EntityCacheUtil.putResult(SystemEventModelImpl.ENTITY_CACHE_ENABLED,
-			SystemEventImpl.class, systemEvent.getPrimaryKey(), systemEvent,
-			false);
+		if (updatedSystemEvent == null) {
+			EntityCacheUtil.putResult(SystemEventModelImpl.ENTITY_CACHE_ENABLED,
+				SystemEventImpl.class, systemEvent.getPrimaryKey(),
+				systemEvent, false);
+		}
+		else {
+			EntityCacheUtil.putResult(SystemEventModelImpl.ENTITY_CACHE_ENABLED,
+				SystemEventImpl.class, systemEvent.getPrimaryKey(),
+				updatedSystemEvent, false);
+		}
 
 		systemEvent.resetOriginalValues();
 

@@ -18412,6 +18412,8 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 			}
 		}
 
+		MBMessage updatedMBMessage = null;
+
 		Session session = null;
 
 		try {
@@ -18423,7 +18425,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 				mbMessage.setNew(false);
 			}
 			else {
-				mbMessage = (MBMessage)session.merge(mbMessage);
+				updatedMBMessage = (MBMessage)session.merge(mbMessage);
 			}
 		}
 		catch (Exception e) {
@@ -18991,11 +18993,24 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 			}
 		}
 
-		EntityCacheUtil.putResult(MBMessageModelImpl.ENTITY_CACHE_ENABLED,
-			MBMessageImpl.class, mbMessage.getPrimaryKey(), mbMessage, false);
+		if (updatedMBMessage == null) {
+			EntityCacheUtil.putResult(MBMessageModelImpl.ENTITY_CACHE_ENABLED,
+				MBMessageImpl.class, mbMessage.getPrimaryKey(), mbMessage, false);
+		}
+		else {
+			EntityCacheUtil.putResult(MBMessageModelImpl.ENTITY_CACHE_ENABLED,
+				MBMessageImpl.class, mbMessage.getPrimaryKey(),
+				updatedMBMessage, false);
+		}
 
 		clearUniqueFindersCache(mbMessage);
-		cacheUniqueFindersCache(mbMessage, isNew);
+
+		if (updatedMBMessage == null) {
+			cacheUniqueFindersCache(mbMessage, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedMBMessage, isNew);
+		}
 
 		mbMessage.resetOriginalValues();
 

@@ -567,6 +567,8 @@ public class PortalPreferencesPersistenceImpl extends BasePersistenceImpl<Portal
 
 		boolean isNew = portalPreferences.isNew();
 
+		PortalPreferences updatedPortalPreferences = null;
+
 		Session session = null;
 
 		try {
@@ -578,7 +580,7 @@ public class PortalPreferencesPersistenceImpl extends BasePersistenceImpl<Portal
 				portalPreferences.setNew(false);
 			}
 			else {
-				portalPreferences = (PortalPreferences)session.merge(portalPreferences);
+				updatedPortalPreferences = (PortalPreferences)session.merge(portalPreferences);
 			}
 		}
 		catch (Exception e) {
@@ -594,12 +596,25 @@ public class PortalPreferencesPersistenceImpl extends BasePersistenceImpl<Portal
 			FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
 
-		EntityCacheUtil.putResult(PortalPreferencesModelImpl.ENTITY_CACHE_ENABLED,
-			PortalPreferencesImpl.class, portalPreferences.getPrimaryKey(),
-			portalPreferences, false);
+		if (updatedPortalPreferences == null) {
+			EntityCacheUtil.putResult(PortalPreferencesModelImpl.ENTITY_CACHE_ENABLED,
+				PortalPreferencesImpl.class, portalPreferences.getPrimaryKey(),
+				portalPreferences, false);
+		}
+		else {
+			EntityCacheUtil.putResult(PortalPreferencesModelImpl.ENTITY_CACHE_ENABLED,
+				PortalPreferencesImpl.class, portalPreferences.getPrimaryKey(),
+				updatedPortalPreferences, false);
+		}
 
 		clearUniqueFindersCache(portalPreferences);
-		cacheUniqueFindersCache(portalPreferences, isNew);
+
+		if (updatedPortalPreferences == null) {
+			cacheUniqueFindersCache(portalPreferences, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedPortalPreferences, isNew);
+		}
 
 		portalPreferences.resetOriginalValues();
 

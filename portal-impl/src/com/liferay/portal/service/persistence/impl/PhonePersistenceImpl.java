@@ -3978,6 +3978,8 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 			}
 		}
 
+		Phone updatedPhone = null;
+
 		Session session = null;
 
 		try {
@@ -3989,7 +3991,7 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 				phone.setNew(false);
 			}
 			else {
-				phone = (Phone)session.merge(phone);
+				updatedPhone = (Phone)session.merge(phone);
 			}
 		}
 		catch (Exception e) {
@@ -4144,8 +4146,14 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 			}
 		}
 
-		EntityCacheUtil.putResult(PhoneModelImpl.ENTITY_CACHE_ENABLED,
-			PhoneImpl.class, phone.getPrimaryKey(), phone, false);
+		if (updatedPhone == null) {
+			EntityCacheUtil.putResult(PhoneModelImpl.ENTITY_CACHE_ENABLED,
+				PhoneImpl.class, phone.getPrimaryKey(), phone, false);
+		}
+		else {
+			EntityCacheUtil.putResult(PhoneModelImpl.ENTITY_CACHE_ENABLED,
+				PhoneImpl.class, phone.getPrimaryKey(), updatedPhone, false);
+		}
 
 		phone.resetOriginalValues();
 

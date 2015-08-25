@@ -4015,6 +4015,8 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 			}
 		}
 
+		EmailAddress updatedEmailAddress = null;
+
 		Session session = null;
 
 		try {
@@ -4026,7 +4028,7 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 				emailAddress.setNew(false);
 			}
 			else {
-				emailAddress = (EmailAddress)session.merge(emailAddress);
+				updatedEmailAddress = (EmailAddress)session.merge(emailAddress);
 			}
 		}
 		catch (Exception e) {
@@ -4187,9 +4189,16 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 			}
 		}
 
-		EntityCacheUtil.putResult(EmailAddressModelImpl.ENTITY_CACHE_ENABLED,
-			EmailAddressImpl.class, emailAddress.getPrimaryKey(), emailAddress,
-			false);
+		if (updatedEmailAddress == null) {
+			EntityCacheUtil.putResult(EmailAddressModelImpl.ENTITY_CACHE_ENABLED,
+				EmailAddressImpl.class, emailAddress.getPrimaryKey(),
+				emailAddress, false);
+		}
+		else {
+			EntityCacheUtil.putResult(EmailAddressModelImpl.ENTITY_CACHE_ENABLED,
+				EmailAddressImpl.class, emailAddress.getPrimaryKey(),
+				updatedEmailAddress, false);
+		}
 
 		emailAddress.resetOriginalValues();
 

@@ -1059,6 +1059,8 @@ public class PasswordPolicyRelPersistenceImpl extends BasePersistenceImpl<Passwo
 
 		PasswordPolicyRelModelImpl passwordPolicyRelModelImpl = (PasswordPolicyRelModelImpl)passwordPolicyRel;
 
+		PasswordPolicyRel updatedPasswordPolicyRel = null;
+
 		Session session = null;
 
 		try {
@@ -1070,7 +1072,7 @@ public class PasswordPolicyRelPersistenceImpl extends BasePersistenceImpl<Passwo
 				passwordPolicyRel.setNew(false);
 			}
 			else {
-				passwordPolicyRel = (PasswordPolicyRel)session.merge(passwordPolicyRel);
+				updatedPasswordPolicyRel = (PasswordPolicyRel)session.merge(passwordPolicyRel);
 			}
 		}
 		catch (Exception e) {
@@ -1109,12 +1111,25 @@ public class PasswordPolicyRelPersistenceImpl extends BasePersistenceImpl<Passwo
 			}
 		}
 
-		EntityCacheUtil.putResult(PasswordPolicyRelModelImpl.ENTITY_CACHE_ENABLED,
-			PasswordPolicyRelImpl.class, passwordPolicyRel.getPrimaryKey(),
-			passwordPolicyRel, false);
+		if (updatedPasswordPolicyRel == null) {
+			EntityCacheUtil.putResult(PasswordPolicyRelModelImpl.ENTITY_CACHE_ENABLED,
+				PasswordPolicyRelImpl.class, passwordPolicyRel.getPrimaryKey(),
+				passwordPolicyRel, false);
+		}
+		else {
+			EntityCacheUtil.putResult(PasswordPolicyRelModelImpl.ENTITY_CACHE_ENABLED,
+				PasswordPolicyRelImpl.class, passwordPolicyRel.getPrimaryKey(),
+				updatedPasswordPolicyRel, false);
+		}
 
 		clearUniqueFindersCache(passwordPolicyRel);
-		cacheUniqueFindersCache(passwordPolicyRel, isNew);
+
+		if (updatedPasswordPolicyRel == null) {
+			cacheUniqueFindersCache(passwordPolicyRel, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedPasswordPolicyRel, isNew);
+		}
 
 		passwordPolicyRel.resetOriginalValues();
 

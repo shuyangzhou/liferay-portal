@@ -1223,6 +1223,8 @@ public class OrgGroupRolePersistenceImpl extends BasePersistenceImpl<OrgGroupRol
 
 		OrgGroupRoleModelImpl orgGroupRoleModelImpl = (OrgGroupRoleModelImpl)orgGroupRole;
 
+		OrgGroupRole updatedOrgGroupRole = null;
+
 		Session session = null;
 
 		try {
@@ -1234,7 +1236,7 @@ public class OrgGroupRolePersistenceImpl extends BasePersistenceImpl<OrgGroupRol
 				orgGroupRole.setNew(false);
 			}
 			else {
-				orgGroupRole = (OrgGroupRole)session.merge(orgGroupRole);
+				updatedOrgGroupRole = (OrgGroupRole)session.merge(orgGroupRole);
 			}
 		}
 		catch (Exception e) {
@@ -1286,9 +1288,16 @@ public class OrgGroupRolePersistenceImpl extends BasePersistenceImpl<OrgGroupRol
 			}
 		}
 
-		EntityCacheUtil.putResult(OrgGroupRoleModelImpl.ENTITY_CACHE_ENABLED,
-			OrgGroupRoleImpl.class, orgGroupRole.getPrimaryKey(), orgGroupRole,
-			false);
+		if (updatedOrgGroupRole == null) {
+			EntityCacheUtil.putResult(OrgGroupRoleModelImpl.ENTITY_CACHE_ENABLED,
+				OrgGroupRoleImpl.class, orgGroupRole.getPrimaryKey(),
+				orgGroupRole, false);
+		}
+		else {
+			EntityCacheUtil.putResult(OrgGroupRoleModelImpl.ENTITY_CACHE_ENABLED,
+				OrgGroupRoleImpl.class, orgGroupRole.getPrimaryKey(),
+				updatedOrgGroupRole, false);
+		}
 
 		orgGroupRole.resetOriginalValues();
 

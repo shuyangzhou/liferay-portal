@@ -265,6 +265,8 @@ public class CounterPersistenceImpl extends BasePersistenceImpl<Counter>
 
 		boolean isNew = counter.isNew();
 
+		Counter updatedCounter = null;
+
 		Session session = null;
 
 		try {
@@ -276,7 +278,7 @@ public class CounterPersistenceImpl extends BasePersistenceImpl<Counter>
 				counter.setNew(false);
 			}
 			else {
-				counter = (Counter)session.merge(counter);
+				updatedCounter = (Counter)session.merge(counter);
 			}
 		}
 		catch (Exception e) {
@@ -292,8 +294,15 @@ public class CounterPersistenceImpl extends BasePersistenceImpl<Counter>
 			FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
 
-		EntityCacheUtil.putResult(CounterModelImpl.ENTITY_CACHE_ENABLED,
-			CounterImpl.class, counter.getPrimaryKey(), counter, false);
+		if (updatedCounter == null) {
+			EntityCacheUtil.putResult(CounterModelImpl.ENTITY_CACHE_ENABLED,
+				CounterImpl.class, counter.getPrimaryKey(), counter, false);
+		}
+		else {
+			EntityCacheUtil.putResult(CounterModelImpl.ENTITY_CACHE_ENABLED,
+				CounterImpl.class, counter.getPrimaryKey(), updatedCounter,
+				false);
+		}
 
 		counter.resetOriginalValues();
 

@@ -4968,6 +4968,8 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 			}
 		}
 
+		AnnouncementsEntry updatedAnnouncementsEntry = null;
+
 		Session session = null;
 
 		try {
@@ -4979,7 +4981,7 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 				announcementsEntry.setNew(false);
 			}
 			else {
-				announcementsEntry = (AnnouncementsEntry)session.merge(announcementsEntry);
+				updatedAnnouncementsEntry = (AnnouncementsEntry)session.merge(announcementsEntry);
 			}
 		}
 		catch (Exception e) {
@@ -5096,9 +5098,17 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 			}
 		}
 
-		EntityCacheUtil.putResult(AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
-			AnnouncementsEntryImpl.class, announcementsEntry.getPrimaryKey(),
-			announcementsEntry, false);
+		if (updatedAnnouncementsEntry == null) {
+			EntityCacheUtil.putResult(AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
+				AnnouncementsEntryImpl.class,
+				announcementsEntry.getPrimaryKey(), announcementsEntry, false);
+		}
+		else {
+			EntityCacheUtil.putResult(AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
+				AnnouncementsEntryImpl.class,
+				announcementsEntry.getPrimaryKey(), updatedAnnouncementsEntry,
+				false);
+		}
 
 		announcementsEntry.resetOriginalValues();
 

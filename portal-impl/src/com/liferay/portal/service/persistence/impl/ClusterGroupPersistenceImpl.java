@@ -266,6 +266,8 @@ public class ClusterGroupPersistenceImpl extends BasePersistenceImpl<ClusterGrou
 
 		boolean isNew = clusterGroup.isNew();
 
+		ClusterGroup updatedClusterGroup = null;
+
 		Session session = null;
 
 		try {
@@ -277,7 +279,7 @@ public class ClusterGroupPersistenceImpl extends BasePersistenceImpl<ClusterGrou
 				clusterGroup.setNew(false);
 			}
 			else {
-				clusterGroup = (ClusterGroup)session.merge(clusterGroup);
+				updatedClusterGroup = (ClusterGroup)session.merge(clusterGroup);
 			}
 		}
 		catch (Exception e) {
@@ -293,9 +295,16 @@ public class ClusterGroupPersistenceImpl extends BasePersistenceImpl<ClusterGrou
 			FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
 
-		EntityCacheUtil.putResult(ClusterGroupModelImpl.ENTITY_CACHE_ENABLED,
-			ClusterGroupImpl.class, clusterGroup.getPrimaryKey(), clusterGroup,
-			false);
+		if (updatedClusterGroup == null) {
+			EntityCacheUtil.putResult(ClusterGroupModelImpl.ENTITY_CACHE_ENABLED,
+				ClusterGroupImpl.class, clusterGroup.getPrimaryKey(),
+				clusterGroup, false);
+		}
+		else {
+			EntityCacheUtil.putResult(ClusterGroupModelImpl.ENTITY_CACHE_ENABLED,
+				ClusterGroupImpl.class, clusterGroup.getPrimaryKey(),
+				updatedClusterGroup, false);
+		}
 
 		clusterGroup.resetOriginalValues();
 

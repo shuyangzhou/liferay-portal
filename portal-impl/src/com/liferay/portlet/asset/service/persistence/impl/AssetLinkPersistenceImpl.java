@@ -3077,6 +3077,8 @@ public class AssetLinkPersistenceImpl extends BasePersistenceImpl<AssetLink>
 
 		AssetLinkModelImpl assetLinkModelImpl = (AssetLinkModelImpl)assetLink;
 
+		AssetLink updatedAssetLink = null;
+
 		Session session = null;
 
 		try {
@@ -3088,7 +3090,7 @@ public class AssetLinkPersistenceImpl extends BasePersistenceImpl<AssetLink>
 				assetLink.setNew(false);
 			}
 			else {
-				assetLink = (AssetLink)session.merge(assetLink);
+				updatedAssetLink = (AssetLink)session.merge(assetLink);
 			}
 		}
 		catch (Exception e) {
@@ -3203,11 +3205,24 @@ public class AssetLinkPersistenceImpl extends BasePersistenceImpl<AssetLink>
 			}
 		}
 
-		EntityCacheUtil.putResult(AssetLinkModelImpl.ENTITY_CACHE_ENABLED,
-			AssetLinkImpl.class, assetLink.getPrimaryKey(), assetLink, false);
+		if (updatedAssetLink == null) {
+			EntityCacheUtil.putResult(AssetLinkModelImpl.ENTITY_CACHE_ENABLED,
+				AssetLinkImpl.class, assetLink.getPrimaryKey(), assetLink, false);
+		}
+		else {
+			EntityCacheUtil.putResult(AssetLinkModelImpl.ENTITY_CACHE_ENABLED,
+				AssetLinkImpl.class, assetLink.getPrimaryKey(),
+				updatedAssetLink, false);
+		}
 
 		clearUniqueFindersCache(assetLink);
-		cacheUniqueFindersCache(assetLink, isNew);
+
+		if (updatedAssetLink == null) {
+			cacheUniqueFindersCache(assetLink, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedAssetLink, isNew);
+		}
 
 		assetLink.resetOriginalValues();
 

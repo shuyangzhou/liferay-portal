@@ -2688,6 +2688,8 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 			}
 		}
 
+		MBDiscussion updatedMBDiscussion = null;
+
 		Session session = null;
 
 		try {
@@ -2699,7 +2701,7 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 				mbDiscussion.setNew(false);
 			}
 			else {
-				mbDiscussion = (MBDiscussion)session.merge(mbDiscussion);
+				updatedMBDiscussion = (MBDiscussion)session.merge(mbDiscussion);
 			}
 		}
 		catch (Exception e) {
@@ -2774,12 +2776,25 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 			}
 		}
 
-		EntityCacheUtil.putResult(MBDiscussionModelImpl.ENTITY_CACHE_ENABLED,
-			MBDiscussionImpl.class, mbDiscussion.getPrimaryKey(), mbDiscussion,
-			false);
+		if (updatedMBDiscussion == null) {
+			EntityCacheUtil.putResult(MBDiscussionModelImpl.ENTITY_CACHE_ENABLED,
+				MBDiscussionImpl.class, mbDiscussion.getPrimaryKey(),
+				mbDiscussion, false);
+		}
+		else {
+			EntityCacheUtil.putResult(MBDiscussionModelImpl.ENTITY_CACHE_ENABLED,
+				MBDiscussionImpl.class, mbDiscussion.getPrimaryKey(),
+				updatedMBDiscussion, false);
+		}
 
 		clearUniqueFindersCache(mbDiscussion);
-		cacheUniqueFindersCache(mbDiscussion, isNew);
+
+		if (updatedMBDiscussion == null) {
+			cacheUniqueFindersCache(mbDiscussion, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedMBDiscussion, isNew);
+		}
 
 		mbDiscussion.resetOriginalValues();
 

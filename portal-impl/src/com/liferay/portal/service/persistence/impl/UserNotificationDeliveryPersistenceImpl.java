@@ -1184,6 +1184,8 @@ public class UserNotificationDeliveryPersistenceImpl extends BasePersistenceImpl
 
 		UserNotificationDeliveryModelImpl userNotificationDeliveryModelImpl = (UserNotificationDeliveryModelImpl)userNotificationDelivery;
 
+		UserNotificationDelivery updatedUserNotificationDelivery = null;
+
 		Session session = null;
 
 		try {
@@ -1195,7 +1197,7 @@ public class UserNotificationDeliveryPersistenceImpl extends BasePersistenceImpl
 				userNotificationDelivery.setNew(false);
 			}
 			else {
-				userNotificationDelivery = (UserNotificationDelivery)session.merge(userNotificationDelivery);
+				updatedUserNotificationDelivery = (UserNotificationDelivery)session.merge(userNotificationDelivery);
 			}
 		}
 		catch (Exception e) {
@@ -1232,13 +1234,27 @@ public class UserNotificationDeliveryPersistenceImpl extends BasePersistenceImpl
 			}
 		}
 
-		EntityCacheUtil.putResult(UserNotificationDeliveryModelImpl.ENTITY_CACHE_ENABLED,
-			UserNotificationDeliveryImpl.class,
-			userNotificationDelivery.getPrimaryKey(), userNotificationDelivery,
-			false);
+		if (updatedUserNotificationDelivery == null) {
+			EntityCacheUtil.putResult(UserNotificationDeliveryModelImpl.ENTITY_CACHE_ENABLED,
+				UserNotificationDeliveryImpl.class,
+				userNotificationDelivery.getPrimaryKey(),
+				userNotificationDelivery, false);
+		}
+		else {
+			EntityCacheUtil.putResult(UserNotificationDeliveryModelImpl.ENTITY_CACHE_ENABLED,
+				UserNotificationDeliveryImpl.class,
+				userNotificationDelivery.getPrimaryKey(),
+				updatedUserNotificationDelivery, false);
+		}
 
 		clearUniqueFindersCache(userNotificationDelivery);
-		cacheUniqueFindersCache(userNotificationDelivery, isNew);
+
+		if (updatedUserNotificationDelivery == null) {
+			cacheUniqueFindersCache(userNotificationDelivery, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedUserNotificationDelivery, isNew);
+		}
 
 		userNotificationDelivery.resetOriginalValues();
 

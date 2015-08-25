@@ -755,6 +755,8 @@ public class PasswordTrackerPersistenceImpl extends BasePersistenceImpl<Password
 
 		PasswordTrackerModelImpl passwordTrackerModelImpl = (PasswordTrackerModelImpl)passwordTracker;
 
+		PasswordTracker updatedPasswordTracker = null;
+
 		Session session = null;
 
 		try {
@@ -766,7 +768,7 @@ public class PasswordTrackerPersistenceImpl extends BasePersistenceImpl<Password
 				passwordTracker.setNew(false);
 			}
 			else {
-				passwordTracker = (PasswordTracker)session.merge(passwordTracker);
+				updatedPasswordTracker = (PasswordTracker)session.merge(passwordTracker);
 			}
 		}
 		catch (Exception e) {
@@ -801,9 +803,16 @@ public class PasswordTrackerPersistenceImpl extends BasePersistenceImpl<Password
 			}
 		}
 
-		EntityCacheUtil.putResult(PasswordTrackerModelImpl.ENTITY_CACHE_ENABLED,
-			PasswordTrackerImpl.class, passwordTracker.getPrimaryKey(),
-			passwordTracker, false);
+		if (updatedPasswordTracker == null) {
+			EntityCacheUtil.putResult(PasswordTrackerModelImpl.ENTITY_CACHE_ENABLED,
+				PasswordTrackerImpl.class, passwordTracker.getPrimaryKey(),
+				passwordTracker, false);
+		}
+		else {
+			EntityCacheUtil.putResult(PasswordTrackerModelImpl.ENTITY_CACHE_ENABLED,
+				PasswordTrackerImpl.class, passwordTracker.getPrimaryKey(),
+				updatedPasswordTracker, false);
+		}
 
 		passwordTracker.resetOriginalValues();
 

@@ -756,6 +756,8 @@ public class ShoppingItemFieldPersistenceImpl extends BasePersistenceImpl<Shoppi
 
 		ShoppingItemFieldModelImpl shoppingItemFieldModelImpl = (ShoppingItemFieldModelImpl)shoppingItemField;
 
+		ShoppingItemField updatedShoppingItemField = null;
+
 		Session session = null;
 
 		try {
@@ -767,7 +769,7 @@ public class ShoppingItemFieldPersistenceImpl extends BasePersistenceImpl<Shoppi
 				shoppingItemField.setNew(false);
 			}
 			else {
-				shoppingItemField = (ShoppingItemField)session.merge(shoppingItemField);
+				updatedShoppingItemField = (ShoppingItemField)session.merge(shoppingItemField);
 			}
 		}
 		catch (Exception e) {
@@ -802,9 +804,16 @@ public class ShoppingItemFieldPersistenceImpl extends BasePersistenceImpl<Shoppi
 			}
 		}
 
-		EntityCacheUtil.putResult(ShoppingItemFieldModelImpl.ENTITY_CACHE_ENABLED,
-			ShoppingItemFieldImpl.class, shoppingItemField.getPrimaryKey(),
-			shoppingItemField, false);
+		if (updatedShoppingItemField == null) {
+			EntityCacheUtil.putResult(ShoppingItemFieldModelImpl.ENTITY_CACHE_ENABLED,
+				ShoppingItemFieldImpl.class, shoppingItemField.getPrimaryKey(),
+				shoppingItemField, false);
+		}
+		else {
+			EntityCacheUtil.putResult(ShoppingItemFieldModelImpl.ENTITY_CACHE_ENABLED,
+				ShoppingItemFieldImpl.class, shoppingItemField.getPrimaryKey(),
+				updatedShoppingItemField, false);
+		}
 
 		shoppingItemField.resetOriginalValues();
 

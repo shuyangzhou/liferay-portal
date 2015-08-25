@@ -6672,6 +6672,8 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 			}
 		}
 
+		Organization updatedOrganization = null;
+
 		Session session = null;
 
 		try {
@@ -6683,7 +6685,7 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 				organization.setNew(false);
 			}
 			else {
-				organization = (Organization)session.merge(organization);
+				updatedOrganization = (Organization)session.merge(organization);
 			}
 		}
 		catch (Exception e) {
@@ -6798,12 +6800,25 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 			}
 		}
 
-		EntityCacheUtil.putResult(OrganizationModelImpl.ENTITY_CACHE_ENABLED,
-			OrganizationImpl.class, organization.getPrimaryKey(), organization,
-			false);
+		if (updatedOrganization == null) {
+			EntityCacheUtil.putResult(OrganizationModelImpl.ENTITY_CACHE_ENABLED,
+				OrganizationImpl.class, organization.getPrimaryKey(),
+				organization, false);
+		}
+		else {
+			EntityCacheUtil.putResult(OrganizationModelImpl.ENTITY_CACHE_ENABLED,
+				OrganizationImpl.class, organization.getPrimaryKey(),
+				updatedOrganization, false);
+		}
 
 		clearUniqueFindersCache(organization);
-		cacheUniqueFindersCache(organization, isNew);
+
+		if (updatedOrganization == null) {
+			cacheUniqueFindersCache(organization, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedOrganization, isNew);
+		}
 
 		organization.resetOriginalValues();
 

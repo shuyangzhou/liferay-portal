@@ -1137,6 +1137,8 @@ public class ServiceComponentPersistenceImpl extends BasePersistenceImpl<Service
 
 		ServiceComponentModelImpl serviceComponentModelImpl = (ServiceComponentModelImpl)serviceComponent;
 
+		ServiceComponent updatedServiceComponent = null;
+
 		Session session = null;
 
 		try {
@@ -1148,7 +1150,7 @@ public class ServiceComponentPersistenceImpl extends BasePersistenceImpl<Service
 				serviceComponent.setNew(false);
 			}
 			else {
-				serviceComponent = (ServiceComponent)session.merge(serviceComponent);
+				updatedServiceComponent = (ServiceComponent)session.merge(serviceComponent);
 			}
 		}
 		catch (Exception e) {
@@ -1187,12 +1189,25 @@ public class ServiceComponentPersistenceImpl extends BasePersistenceImpl<Service
 			}
 		}
 
-		EntityCacheUtil.putResult(ServiceComponentModelImpl.ENTITY_CACHE_ENABLED,
-			ServiceComponentImpl.class, serviceComponent.getPrimaryKey(),
-			serviceComponent, false);
+		if (updatedServiceComponent == null) {
+			EntityCacheUtil.putResult(ServiceComponentModelImpl.ENTITY_CACHE_ENABLED,
+				ServiceComponentImpl.class, serviceComponent.getPrimaryKey(),
+				serviceComponent, false);
+		}
+		else {
+			EntityCacheUtil.putResult(ServiceComponentModelImpl.ENTITY_CACHE_ENABLED,
+				ServiceComponentImpl.class, serviceComponent.getPrimaryKey(),
+				updatedServiceComponent, false);
+		}
 
 		clearUniqueFindersCache(serviceComponent);
-		cacheUniqueFindersCache(serviceComponent, isNew);
+
+		if (updatedServiceComponent == null) {
+			cacheUniqueFindersCache(serviceComponent, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedServiceComponent, isNew);
+		}
 
 		serviceComponent.resetOriginalValues();
 

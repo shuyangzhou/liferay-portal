@@ -1141,6 +1141,8 @@ public class ResourceActionPersistenceImpl extends BasePersistenceImpl<ResourceA
 
 		ResourceActionModelImpl resourceActionModelImpl = (ResourceActionModelImpl)resourceAction;
 
+		ResourceAction updatedResourceAction = null;
+
 		Session session = null;
 
 		try {
@@ -1152,7 +1154,7 @@ public class ResourceActionPersistenceImpl extends BasePersistenceImpl<ResourceA
 				resourceAction.setNew(false);
 			}
 			else {
-				resourceAction = (ResourceAction)session.merge(resourceAction);
+				updatedResourceAction = (ResourceAction)session.merge(resourceAction);
 			}
 		}
 		catch (Exception e) {
@@ -1187,12 +1189,25 @@ public class ResourceActionPersistenceImpl extends BasePersistenceImpl<ResourceA
 			}
 		}
 
-		EntityCacheUtil.putResult(ResourceActionModelImpl.ENTITY_CACHE_ENABLED,
-			ResourceActionImpl.class, resourceAction.getPrimaryKey(),
-			resourceAction, false);
+		if (updatedResourceAction == null) {
+			EntityCacheUtil.putResult(ResourceActionModelImpl.ENTITY_CACHE_ENABLED,
+				ResourceActionImpl.class, resourceAction.getPrimaryKey(),
+				resourceAction, false);
+		}
+		else {
+			EntityCacheUtil.putResult(ResourceActionModelImpl.ENTITY_CACHE_ENABLED,
+				ResourceActionImpl.class, resourceAction.getPrimaryKey(),
+				updatedResourceAction, false);
+		}
 
 		clearUniqueFindersCache(resourceAction);
-		cacheUniqueFindersCache(resourceAction, isNew);
+
+		if (updatedResourceAction == null) {
+			cacheUniqueFindersCache(resourceAction, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedResourceAction, isNew);
+		}
 
 		resourceAction.resetOriginalValues();
 

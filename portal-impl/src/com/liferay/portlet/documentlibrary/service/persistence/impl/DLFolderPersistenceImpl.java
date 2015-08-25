@@ -11060,6 +11060,8 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 			}
 		}
 
+		DLFolder updatedDLFolder = null;
+
 		Session session = null;
 
 		try {
@@ -11071,7 +11073,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 				dlFolder.setNew(false);
 			}
 			else {
-				dlFolder = (DLFolder)session.merge(dlFolder);
+				updatedDLFolder = (DLFolder)session.merge(dlFolder);
 			}
 		}
 		catch (Exception e) {
@@ -11345,11 +11347,24 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 			}
 		}
 
-		EntityCacheUtil.putResult(DLFolderModelImpl.ENTITY_CACHE_ENABLED,
-			DLFolderImpl.class, dlFolder.getPrimaryKey(), dlFolder, false);
+		if (updatedDLFolder == null) {
+			EntityCacheUtil.putResult(DLFolderModelImpl.ENTITY_CACHE_ENABLED,
+				DLFolderImpl.class, dlFolder.getPrimaryKey(), dlFolder, false);
+		}
+		else {
+			EntityCacheUtil.putResult(DLFolderModelImpl.ENTITY_CACHE_ENABLED,
+				DLFolderImpl.class, dlFolder.getPrimaryKey(), updatedDLFolder,
+				false);
+		}
 
 		clearUniqueFindersCache(dlFolder);
-		cacheUniqueFindersCache(dlFolder, isNew);
+
+		if (updatedDLFolder == null) {
+			cacheUniqueFindersCache(dlFolder, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedDLFolder, isNew);
+		}
 
 		dlFolder.resetOriginalValues();
 

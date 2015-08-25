@@ -578,6 +578,8 @@ public class WebDAVPropsPersistenceImpl extends BasePersistenceImpl<WebDAVProps>
 			}
 		}
 
+		WebDAVProps updatedWebDAVProps = null;
+
 		Session session = null;
 
 		try {
@@ -589,7 +591,7 @@ public class WebDAVPropsPersistenceImpl extends BasePersistenceImpl<WebDAVProps>
 				webDAVProps.setNew(false);
 			}
 			else {
-				webDAVProps = (WebDAVProps)session.merge(webDAVProps);
+				updatedWebDAVProps = (WebDAVProps)session.merge(webDAVProps);
 			}
 		}
 		catch (Exception e) {
@@ -605,12 +607,25 @@ public class WebDAVPropsPersistenceImpl extends BasePersistenceImpl<WebDAVProps>
 			FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
 
-		EntityCacheUtil.putResult(WebDAVPropsModelImpl.ENTITY_CACHE_ENABLED,
-			WebDAVPropsImpl.class, webDAVProps.getPrimaryKey(), webDAVProps,
-			false);
+		if (updatedWebDAVProps == null) {
+			EntityCacheUtil.putResult(WebDAVPropsModelImpl.ENTITY_CACHE_ENABLED,
+				WebDAVPropsImpl.class, webDAVProps.getPrimaryKey(),
+				webDAVProps, false);
+		}
+		else {
+			EntityCacheUtil.putResult(WebDAVPropsModelImpl.ENTITY_CACHE_ENABLED,
+				WebDAVPropsImpl.class, webDAVProps.getPrimaryKey(),
+				updatedWebDAVProps, false);
+		}
 
 		clearUniqueFindersCache(webDAVProps);
-		cacheUniqueFindersCache(webDAVProps, isNew);
+
+		if (updatedWebDAVProps == null) {
+			cacheUniqueFindersCache(webDAVProps, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedWebDAVProps, isNew);
+		}
 
 		webDAVProps.resetOriginalValues();
 

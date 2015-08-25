@@ -3022,6 +3022,8 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 			}
 		}
 
+		Subscription updatedSubscription = null;
+
 		Session session = null;
 
 		try {
@@ -3033,7 +3035,7 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 				subscription.setNew(false);
 			}
 			else {
-				subscription = (Subscription)session.merge(subscription);
+				updatedSubscription = (Subscription)session.merge(subscription);
 			}
 		}
 		catch (Exception e) {
@@ -3158,12 +3160,25 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 			}
 		}
 
-		EntityCacheUtil.putResult(SubscriptionModelImpl.ENTITY_CACHE_ENABLED,
-			SubscriptionImpl.class, subscription.getPrimaryKey(), subscription,
-			false);
+		if (updatedSubscription == null) {
+			EntityCacheUtil.putResult(SubscriptionModelImpl.ENTITY_CACHE_ENABLED,
+				SubscriptionImpl.class, subscription.getPrimaryKey(),
+				subscription, false);
+		}
+		else {
+			EntityCacheUtil.putResult(SubscriptionModelImpl.ENTITY_CACHE_ENABLED,
+				SubscriptionImpl.class, subscription.getPrimaryKey(),
+				updatedSubscription, false);
+		}
 
 		clearUniqueFindersCache(subscription);
-		cacheUniqueFindersCache(subscription, isNew);
+
+		if (updatedSubscription == null) {
+			cacheUniqueFindersCache(subscription, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedSubscription, isNew);
+		}
 
 		subscription.resetOriginalValues();
 

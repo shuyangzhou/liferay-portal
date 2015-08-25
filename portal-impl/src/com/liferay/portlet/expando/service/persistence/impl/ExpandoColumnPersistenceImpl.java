@@ -1901,6 +1901,8 @@ public class ExpandoColumnPersistenceImpl extends BasePersistenceImpl<ExpandoCol
 
 		ExpandoColumnModelImpl expandoColumnModelImpl = (ExpandoColumnModelImpl)expandoColumn;
 
+		ExpandoColumn updatedExpandoColumn = null;
+
 		Session session = null;
 
 		try {
@@ -1912,7 +1914,7 @@ public class ExpandoColumnPersistenceImpl extends BasePersistenceImpl<ExpandoCol
 				expandoColumn.setNew(false);
 			}
 			else {
-				expandoColumn = (ExpandoColumn)session.merge(expandoColumn);
+				updatedExpandoColumn = (ExpandoColumn)session.merge(expandoColumn);
 			}
 		}
 		catch (Exception e) {
@@ -1968,12 +1970,25 @@ public class ExpandoColumnPersistenceImpl extends BasePersistenceImpl<ExpandoCol
 			}
 		}
 
-		EntityCacheUtil.putResult(ExpandoColumnModelImpl.ENTITY_CACHE_ENABLED,
-			ExpandoColumnImpl.class, expandoColumn.getPrimaryKey(),
-			expandoColumn, false);
+		if (updatedExpandoColumn == null) {
+			EntityCacheUtil.putResult(ExpandoColumnModelImpl.ENTITY_CACHE_ENABLED,
+				ExpandoColumnImpl.class, expandoColumn.getPrimaryKey(),
+				expandoColumn, false);
+		}
+		else {
+			EntityCacheUtil.putResult(ExpandoColumnModelImpl.ENTITY_CACHE_ENABLED,
+				ExpandoColumnImpl.class, expandoColumn.getPrimaryKey(),
+				updatedExpandoColumn, false);
+		}
 
 		clearUniqueFindersCache(expandoColumn);
-		cacheUniqueFindersCache(expandoColumn, isNew);
+
+		if (updatedExpandoColumn == null) {
+			cacheUniqueFindersCache(expandoColumn, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedExpandoColumn, isNew);
+		}
 
 		expandoColumn.resetOriginalValues();
 

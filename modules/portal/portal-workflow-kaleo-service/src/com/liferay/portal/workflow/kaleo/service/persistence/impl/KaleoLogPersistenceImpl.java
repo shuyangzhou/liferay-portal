@@ -3501,6 +3501,8 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 			}
 		}
 
+		KaleoLog updatedKaleoLog = null;
+
 		Session session = null;
 
 		try {
@@ -3512,7 +3514,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 				kaleoLog.setNew(false);
 			}
 			else {
-				kaleoLog = (KaleoLog)session.merge(kaleoLog);
+				updatedKaleoLog = (KaleoLog)session.merge(kaleoLog);
 			}
 		}
 		catch (Exception e) {
@@ -3656,8 +3658,15 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 			}
 		}
 
-		EntityCacheUtil.putResult(KaleoLogModelImpl.ENTITY_CACHE_ENABLED,
-			KaleoLogImpl.class, kaleoLog.getPrimaryKey(), kaleoLog, false);
+		if (updatedKaleoLog == null) {
+			EntityCacheUtil.putResult(KaleoLogModelImpl.ENTITY_CACHE_ENABLED,
+				KaleoLogImpl.class, kaleoLog.getPrimaryKey(), kaleoLog, false);
+		}
+		else {
+			EntityCacheUtil.putResult(KaleoLogModelImpl.ENTITY_CACHE_ENABLED,
+				KaleoLogImpl.class, kaleoLog.getPrimaryKey(), updatedKaleoLog,
+				false);
+		}
 
 		kaleoLog.resetOriginalValues();
 

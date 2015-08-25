@@ -3357,6 +3357,8 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 			}
 		}
 
+		MBBan updatedMBBan = null;
+
 		Session session = null;
 
 		try {
@@ -3368,7 +3370,7 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 				mbBan.setNew(false);
 			}
 			else {
-				mbBan = (MBBan)session.merge(mbBan);
+				updatedMBBan = (MBBan)session.merge(mbBan);
 			}
 		}
 		catch (Exception e) {
@@ -3470,11 +3472,23 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 			}
 		}
 
-		EntityCacheUtil.putResult(MBBanModelImpl.ENTITY_CACHE_ENABLED,
-			MBBanImpl.class, mbBan.getPrimaryKey(), mbBan, false);
+		if (updatedMBBan == null) {
+			EntityCacheUtil.putResult(MBBanModelImpl.ENTITY_CACHE_ENABLED,
+				MBBanImpl.class, mbBan.getPrimaryKey(), mbBan, false);
+		}
+		else {
+			EntityCacheUtil.putResult(MBBanModelImpl.ENTITY_CACHE_ENABLED,
+				MBBanImpl.class, mbBan.getPrimaryKey(), updatedMBBan, false);
+		}
 
 		clearUniqueFindersCache(mbBan);
-		cacheUniqueFindersCache(mbBan, isNew);
+
+		if (updatedMBBan == null) {
+			cacheUniqueFindersCache(mbBan, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedMBBan, isNew);
+		}
 
 		mbBan.resetOriginalValues();
 

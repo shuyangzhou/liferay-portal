@@ -1253,6 +1253,8 @@ public class MeetupsEntryPersistenceImpl extends BasePersistenceImpl<MeetupsEntr
 			}
 		}
 
+		MeetupsEntry updatedMeetupsEntry = null;
+
 		Session session = null;
 
 		try {
@@ -1264,7 +1266,7 @@ public class MeetupsEntryPersistenceImpl extends BasePersistenceImpl<MeetupsEntr
 				meetupsEntry.setNew(false);
 			}
 			else {
-				meetupsEntry = (MeetupsEntry)session.merge(meetupsEntry);
+				updatedMeetupsEntry = (MeetupsEntry)session.merge(meetupsEntry);
 			}
 		}
 		catch (Exception e) {
@@ -1318,9 +1320,16 @@ public class MeetupsEntryPersistenceImpl extends BasePersistenceImpl<MeetupsEntr
 			}
 		}
 
-		EntityCacheUtil.putResult(MeetupsEntryModelImpl.ENTITY_CACHE_ENABLED,
-			MeetupsEntryImpl.class, meetupsEntry.getPrimaryKey(), meetupsEntry,
-			false);
+		if (updatedMeetupsEntry == null) {
+			EntityCacheUtil.putResult(MeetupsEntryModelImpl.ENTITY_CACHE_ENABLED,
+				MeetupsEntryImpl.class, meetupsEntry.getPrimaryKey(),
+				meetupsEntry, false);
+		}
+		else {
+			EntityCacheUtil.putResult(MeetupsEntryModelImpl.ENTITY_CACHE_ENABLED,
+				MeetupsEntryImpl.class, meetupsEntry.getPrimaryKey(),
+				updatedMeetupsEntry, false);
+		}
 
 		meetupsEntry.resetOriginalValues();
 

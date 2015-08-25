@@ -4735,6 +4735,8 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 			}
 		}
 
+		AssetVocabulary updatedAssetVocabulary = null;
+
 		Session session = null;
 
 		try {
@@ -4746,7 +4748,7 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 				assetVocabulary.setNew(false);
 			}
 			else {
-				assetVocabulary = (AssetVocabulary)session.merge(assetVocabulary);
+				updatedAssetVocabulary = (AssetVocabulary)session.merge(assetVocabulary);
 			}
 		}
 		catch (Exception e) {
@@ -4838,12 +4840,25 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 			}
 		}
 
-		EntityCacheUtil.putResult(AssetVocabularyModelImpl.ENTITY_CACHE_ENABLED,
-			AssetVocabularyImpl.class, assetVocabulary.getPrimaryKey(),
-			assetVocabulary, false);
+		if (updatedAssetVocabulary == null) {
+			EntityCacheUtil.putResult(AssetVocabularyModelImpl.ENTITY_CACHE_ENABLED,
+				AssetVocabularyImpl.class, assetVocabulary.getPrimaryKey(),
+				assetVocabulary, false);
+		}
+		else {
+			EntityCacheUtil.putResult(AssetVocabularyModelImpl.ENTITY_CACHE_ENABLED,
+				AssetVocabularyImpl.class, assetVocabulary.getPrimaryKey(),
+				updatedAssetVocabulary, false);
+		}
 
 		clearUniqueFindersCache(assetVocabulary);
-		cacheUniqueFindersCache(assetVocabulary, isNew);
+
+		if (updatedAssetVocabulary == null) {
+			cacheUniqueFindersCache(assetVocabulary, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedAssetVocabulary, isNew);
+		}
 
 		assetVocabulary.resetOriginalValues();
 

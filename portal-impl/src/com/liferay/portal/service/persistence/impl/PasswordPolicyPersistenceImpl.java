@@ -3655,6 +3655,8 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 			}
 		}
 
+		PasswordPolicy updatedPasswordPolicy = null;
+
 		Session session = null;
 
 		try {
@@ -3666,7 +3668,7 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 				passwordPolicy.setNew(false);
 			}
 			else {
-				passwordPolicy = (PasswordPolicy)session.merge(passwordPolicy);
+				updatedPasswordPolicy = (PasswordPolicy)session.merge(passwordPolicy);
 			}
 		}
 		catch (Exception e) {
@@ -3741,12 +3743,25 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 			}
 		}
 
-		EntityCacheUtil.putResult(PasswordPolicyModelImpl.ENTITY_CACHE_ENABLED,
-			PasswordPolicyImpl.class, passwordPolicy.getPrimaryKey(),
-			passwordPolicy, false);
+		if (updatedPasswordPolicy == null) {
+			EntityCacheUtil.putResult(PasswordPolicyModelImpl.ENTITY_CACHE_ENABLED,
+				PasswordPolicyImpl.class, passwordPolicy.getPrimaryKey(),
+				passwordPolicy, false);
+		}
+		else {
+			EntityCacheUtil.putResult(PasswordPolicyModelImpl.ENTITY_CACHE_ENABLED,
+				PasswordPolicyImpl.class, passwordPolicy.getPrimaryKey(),
+				updatedPasswordPolicy, false);
+		}
 
 		clearUniqueFindersCache(passwordPolicy);
-		cacheUniqueFindersCache(passwordPolicy, isNew);
+
+		if (updatedPasswordPolicy == null) {
+			cacheUniqueFindersCache(passwordPolicy, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedPasswordPolicy, isNew);
+		}
 
 		passwordPolicy.resetOriginalValues();
 

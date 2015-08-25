@@ -7236,6 +7236,8 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 			}
 		}
 
+		BackgroundTask updatedBackgroundTask = null;
+
 		Session session = null;
 
 		try {
@@ -7247,7 +7249,7 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 				backgroundTask.setNew(false);
 			}
 			else {
-				backgroundTask = (BackgroundTask)session.merge(backgroundTask);
+				updatedBackgroundTask = (BackgroundTask)session.merge(backgroundTask);
 			}
 		}
 		catch (Exception e) {
@@ -7475,9 +7477,16 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 			}
 		}
 
-		EntityCacheUtil.putResult(BackgroundTaskModelImpl.ENTITY_CACHE_ENABLED,
-			BackgroundTaskImpl.class, backgroundTask.getPrimaryKey(),
-			backgroundTask, false);
+		if (updatedBackgroundTask == null) {
+			EntityCacheUtil.putResult(BackgroundTaskModelImpl.ENTITY_CACHE_ENABLED,
+				BackgroundTaskImpl.class, backgroundTask.getPrimaryKey(),
+				backgroundTask, false);
+		}
+		else {
+			EntityCacheUtil.putResult(BackgroundTaskModelImpl.ENTITY_CACHE_ENABLED,
+				BackgroundTaskImpl.class, backgroundTask.getPrimaryKey(),
+				updatedBackgroundTask, false);
+		}
 
 		backgroundTask.resetOriginalValues();
 

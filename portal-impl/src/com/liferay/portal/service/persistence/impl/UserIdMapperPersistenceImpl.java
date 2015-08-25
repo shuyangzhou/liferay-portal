@@ -1395,6 +1395,8 @@ public class UserIdMapperPersistenceImpl extends BasePersistenceImpl<UserIdMappe
 
 		UserIdMapperModelImpl userIdMapperModelImpl = (UserIdMapperModelImpl)userIdMapper;
 
+		UserIdMapper updatedUserIdMapper = null;
+
 		Session session = null;
 
 		try {
@@ -1406,7 +1408,7 @@ public class UserIdMapperPersistenceImpl extends BasePersistenceImpl<UserIdMappe
 				userIdMapper.setNew(false);
 			}
 			else {
-				userIdMapper = (UserIdMapper)session.merge(userIdMapper);
+				updatedUserIdMapper = (UserIdMapper)session.merge(userIdMapper);
 			}
 		}
 		catch (Exception e) {
@@ -1441,12 +1443,25 @@ public class UserIdMapperPersistenceImpl extends BasePersistenceImpl<UserIdMappe
 			}
 		}
 
-		EntityCacheUtil.putResult(UserIdMapperModelImpl.ENTITY_CACHE_ENABLED,
-			UserIdMapperImpl.class, userIdMapper.getPrimaryKey(), userIdMapper,
-			false);
+		if (updatedUserIdMapper == null) {
+			EntityCacheUtil.putResult(UserIdMapperModelImpl.ENTITY_CACHE_ENABLED,
+				UserIdMapperImpl.class, userIdMapper.getPrimaryKey(),
+				userIdMapper, false);
+		}
+		else {
+			EntityCacheUtil.putResult(UserIdMapperModelImpl.ENTITY_CACHE_ENABLED,
+				UserIdMapperImpl.class, userIdMapper.getPrimaryKey(),
+				updatedUserIdMapper, false);
+		}
 
 		clearUniqueFindersCache(userIdMapper);
-		cacheUniqueFindersCache(userIdMapper, isNew);
+
+		if (updatedUserIdMapper == null) {
+			cacheUniqueFindersCache(userIdMapper, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedUserIdMapper, isNew);
+		}
 
 		userIdMapper.resetOriginalValues();
 

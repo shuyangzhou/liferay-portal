@@ -1064,6 +1064,8 @@ public class ShoppingCouponPersistenceImpl extends BasePersistenceImpl<ShoppingC
 			}
 		}
 
+		ShoppingCoupon updatedShoppingCoupon = null;
+
 		Session session = null;
 
 		try {
@@ -1075,7 +1077,7 @@ public class ShoppingCouponPersistenceImpl extends BasePersistenceImpl<ShoppingC
 				shoppingCoupon.setNew(false);
 			}
 			else {
-				shoppingCoupon = (ShoppingCoupon)session.merge(shoppingCoupon);
+				updatedShoppingCoupon = (ShoppingCoupon)session.merge(shoppingCoupon);
 			}
 		}
 		catch (Exception e) {
@@ -1110,12 +1112,25 @@ public class ShoppingCouponPersistenceImpl extends BasePersistenceImpl<ShoppingC
 			}
 		}
 
-		EntityCacheUtil.putResult(ShoppingCouponModelImpl.ENTITY_CACHE_ENABLED,
-			ShoppingCouponImpl.class, shoppingCoupon.getPrimaryKey(),
-			shoppingCoupon, false);
+		if (updatedShoppingCoupon == null) {
+			EntityCacheUtil.putResult(ShoppingCouponModelImpl.ENTITY_CACHE_ENABLED,
+				ShoppingCouponImpl.class, shoppingCoupon.getPrimaryKey(),
+				shoppingCoupon, false);
+		}
+		else {
+			EntityCacheUtil.putResult(ShoppingCouponModelImpl.ENTITY_CACHE_ENABLED,
+				ShoppingCouponImpl.class, shoppingCoupon.getPrimaryKey(),
+				updatedShoppingCoupon, false);
+		}
 
 		clearUniqueFindersCache(shoppingCoupon);
-		cacheUniqueFindersCache(shoppingCoupon, isNew);
+
+		if (updatedShoppingCoupon == null) {
+			cacheUniqueFindersCache(shoppingCoupon, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedShoppingCoupon, isNew);
+		}
 
 		shoppingCoupon.resetOriginalValues();
 

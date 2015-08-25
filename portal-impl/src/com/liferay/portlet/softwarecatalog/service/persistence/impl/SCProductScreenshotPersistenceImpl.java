@@ -1572,6 +1572,8 @@ public class SCProductScreenshotPersistenceImpl extends BasePersistenceImpl<SCPr
 
 		SCProductScreenshotModelImpl scProductScreenshotModelImpl = (SCProductScreenshotModelImpl)scProductScreenshot;
 
+		SCProductScreenshot updatedSCProductScreenshot = null;
+
 		Session session = null;
 
 		try {
@@ -1583,7 +1585,7 @@ public class SCProductScreenshotPersistenceImpl extends BasePersistenceImpl<SCPr
 				scProductScreenshot.setNew(false);
 			}
 			else {
-				scProductScreenshot = (SCProductScreenshot)session.merge(scProductScreenshot);
+				updatedSCProductScreenshot = (SCProductScreenshot)session.merge(scProductScreenshot);
 			}
 		}
 		catch (Exception e) {
@@ -1622,12 +1624,26 @@ public class SCProductScreenshotPersistenceImpl extends BasePersistenceImpl<SCPr
 			}
 		}
 
-		EntityCacheUtil.putResult(SCProductScreenshotModelImpl.ENTITY_CACHE_ENABLED,
-			SCProductScreenshotImpl.class, scProductScreenshot.getPrimaryKey(),
-			scProductScreenshot, false);
+		if (updatedSCProductScreenshot == null) {
+			EntityCacheUtil.putResult(SCProductScreenshotModelImpl.ENTITY_CACHE_ENABLED,
+				SCProductScreenshotImpl.class,
+				scProductScreenshot.getPrimaryKey(), scProductScreenshot, false);
+		}
+		else {
+			EntityCacheUtil.putResult(SCProductScreenshotModelImpl.ENTITY_CACHE_ENABLED,
+				SCProductScreenshotImpl.class,
+				scProductScreenshot.getPrimaryKey(),
+				updatedSCProductScreenshot, false);
+		}
 
 		clearUniqueFindersCache(scProductScreenshot);
-		cacheUniqueFindersCache(scProductScreenshot, isNew);
+
+		if (updatedSCProductScreenshot == null) {
+			cacheUniqueFindersCache(scProductScreenshot, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedSCProductScreenshot, isNew);
+		}
 
 		scProductScreenshot.resetOriginalValues();
 

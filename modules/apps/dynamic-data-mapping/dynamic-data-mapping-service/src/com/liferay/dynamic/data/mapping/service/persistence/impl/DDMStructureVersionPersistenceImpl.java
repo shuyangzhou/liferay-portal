@@ -1608,6 +1608,8 @@ public class DDMStructureVersionPersistenceImpl extends BasePersistenceImpl<DDMS
 
 		DDMStructureVersionModelImpl ddmStructureVersionModelImpl = (DDMStructureVersionModelImpl)ddmStructureVersion;
 
+		DDMStructureVersion updatedDDMStructureVersion = null;
+
 		Session session = null;
 
 		try {
@@ -1619,7 +1621,7 @@ public class DDMStructureVersionPersistenceImpl extends BasePersistenceImpl<DDMS
 				ddmStructureVersion.setNew(false);
 			}
 			else {
-				ddmStructureVersion = (DDMStructureVersion)session.merge(ddmStructureVersion);
+				updatedDDMStructureVersion = (DDMStructureVersion)session.merge(ddmStructureVersion);
 			}
 		}
 		catch (Exception e) {
@@ -1679,12 +1681,26 @@ public class DDMStructureVersionPersistenceImpl extends BasePersistenceImpl<DDMS
 			}
 		}
 
-		EntityCacheUtil.putResult(DDMStructureVersionModelImpl.ENTITY_CACHE_ENABLED,
-			DDMStructureVersionImpl.class, ddmStructureVersion.getPrimaryKey(),
-			ddmStructureVersion, false);
+		if (updatedDDMStructureVersion == null) {
+			EntityCacheUtil.putResult(DDMStructureVersionModelImpl.ENTITY_CACHE_ENABLED,
+				DDMStructureVersionImpl.class,
+				ddmStructureVersion.getPrimaryKey(), ddmStructureVersion, false);
+		}
+		else {
+			EntityCacheUtil.putResult(DDMStructureVersionModelImpl.ENTITY_CACHE_ENABLED,
+				DDMStructureVersionImpl.class,
+				ddmStructureVersion.getPrimaryKey(),
+				updatedDDMStructureVersion, false);
+		}
 
 		clearUniqueFindersCache(ddmStructureVersion);
-		cacheUniqueFindersCache(ddmStructureVersion, isNew);
+
+		if (updatedDDMStructureVersion == null) {
+			cacheUniqueFindersCache(ddmStructureVersion, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedDDMStructureVersion, isNew);
+		}
 
 		ddmStructureVersion.resetOriginalValues();
 

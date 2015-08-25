@@ -2768,6 +2768,8 @@ public class RatingsEntryPersistenceImpl extends BasePersistenceImpl<RatingsEntr
 			}
 		}
 
+		RatingsEntry updatedRatingsEntry = null;
+
 		Session session = null;
 
 		try {
@@ -2779,7 +2781,7 @@ public class RatingsEntryPersistenceImpl extends BasePersistenceImpl<RatingsEntr
 				ratingsEntry.setNew(false);
 			}
 			else {
-				ratingsEntry = (RatingsEntry)session.merge(ratingsEntry);
+				updatedRatingsEntry = (RatingsEntry)session.merge(ratingsEntry);
 			}
 		}
 		catch (Exception e) {
@@ -2879,12 +2881,25 @@ public class RatingsEntryPersistenceImpl extends BasePersistenceImpl<RatingsEntr
 			}
 		}
 
-		EntityCacheUtil.putResult(RatingsEntryModelImpl.ENTITY_CACHE_ENABLED,
-			RatingsEntryImpl.class, ratingsEntry.getPrimaryKey(), ratingsEntry,
-			false);
+		if (updatedRatingsEntry == null) {
+			EntityCacheUtil.putResult(RatingsEntryModelImpl.ENTITY_CACHE_ENABLED,
+				RatingsEntryImpl.class, ratingsEntry.getPrimaryKey(),
+				ratingsEntry, false);
+		}
+		else {
+			EntityCacheUtil.putResult(RatingsEntryModelImpl.ENTITY_CACHE_ENABLED,
+				RatingsEntryImpl.class, ratingsEntry.getPrimaryKey(),
+				updatedRatingsEntry, false);
+		}
 
 		clearUniqueFindersCache(ratingsEntry);
-		cacheUniqueFindersCache(ratingsEntry, isNew);
+
+		if (updatedRatingsEntry == null) {
+			cacheUniqueFindersCache(ratingsEntry, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedRatingsEntry, isNew);
+		}
 
 		ratingsEntry.resetOriginalValues();
 

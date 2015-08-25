@@ -1821,6 +1821,8 @@ public class PortletItemPersistenceImpl extends BasePersistenceImpl<PortletItem>
 			}
 		}
 
+		PortletItem updatedPortletItem = null;
+
 		Session session = null;
 
 		try {
@@ -1832,7 +1834,7 @@ public class PortletItemPersistenceImpl extends BasePersistenceImpl<PortletItem>
 				portletItem.setNew(false);
 			}
 			else {
-				portletItem = (PortletItem)session.merge(portletItem);
+				updatedPortletItem = (PortletItem)session.merge(portletItem);
 			}
 		}
 		catch (Exception e) {
@@ -1894,12 +1896,25 @@ public class PortletItemPersistenceImpl extends BasePersistenceImpl<PortletItem>
 			}
 		}
 
-		EntityCacheUtil.putResult(PortletItemModelImpl.ENTITY_CACHE_ENABLED,
-			PortletItemImpl.class, portletItem.getPrimaryKey(), portletItem,
-			false);
+		if (updatedPortletItem == null) {
+			EntityCacheUtil.putResult(PortletItemModelImpl.ENTITY_CACHE_ENABLED,
+				PortletItemImpl.class, portletItem.getPrimaryKey(),
+				portletItem, false);
+		}
+		else {
+			EntityCacheUtil.putResult(PortletItemModelImpl.ENTITY_CACHE_ENABLED,
+				PortletItemImpl.class, portletItem.getPrimaryKey(),
+				updatedPortletItem, false);
+		}
 
 		clearUniqueFindersCache(portletItem);
-		cacheUniqueFindersCache(portletItem, isNew);
+
+		if (updatedPortletItem == null) {
+			cacheUniqueFindersCache(portletItem, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedPortletItem, isNew);
+		}
 
 		portletItem.resetOriginalValues();
 

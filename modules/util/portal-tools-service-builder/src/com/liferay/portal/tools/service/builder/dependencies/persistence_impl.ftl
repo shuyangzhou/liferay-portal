@@ -638,6 +638,8 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 			}
 		</#if>
 
+		${packagePath}.model.${entity.name} updated${entity.name} = null;
+
 		Session session = null;
 
 		try {
@@ -675,7 +677,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 					session.evict(${entity.varName});
 					session.saveOrUpdate(${entity.varName});
 				<#else>
-					${entity.varName} = (${entity.name})session.merge(${entity.varName});
+					updated${entity.name} = (${entity.name})session.merge(${entity.varName});
 				</#if>
 			}
 
@@ -767,13 +769,24 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 			</#if>
 		</#if>
 
-		EntityCacheUtil.putResult(${entity.name}ModelImpl.ENTITY_CACHE_ENABLED, ${entity.name}Impl.class, ${entity.varName}.getPrimaryKey(), ${entity.varName}, false);
+		if (updated${entity.name} == null) {
+			EntityCacheUtil.putResult(${entity.name}ModelImpl.ENTITY_CACHE_ENABLED, ${entity.name}Impl.class, ${entity.varName}.getPrimaryKey(), ${entity.varName}, false);
+		}
+		else {
+			EntityCacheUtil.putResult(${entity.name}ModelImpl.ENTITY_CACHE_ENABLED, ${entity.name}Impl.class, ${entity.varName}.getPrimaryKey(), updated${entity.name}, false);
+		}
 
 		<#assign uniqueFinderList = entity.getUniqueFinderList()>
 
 		<#if uniqueFinderList?size &gt; 0>
 			clearUniqueFindersCache(${entity.varName});
-			cacheUniqueFindersCache(${entity.varName}, isNew);
+
+			if (updated${entity.name} == null) {
+				cacheUniqueFindersCache(${entity.varName}, isNew);
+			}
+			else {
+				cacheUniqueFindersCache(updated${entity.name}, isNew);
+			}
 		</#if>
 
 		${entity.varName}.resetOriginalValues();

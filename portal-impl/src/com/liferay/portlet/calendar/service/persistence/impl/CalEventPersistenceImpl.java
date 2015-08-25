@@ -5438,6 +5438,8 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 			}
 		}
 
+		CalEvent updatedCalEvent = null;
+
 		Session session = null;
 
 		try {
@@ -5449,7 +5451,7 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 				calEvent.setNew(false);
 			}
 			else {
-				calEvent = (CalEvent)session.merge(calEvent);
+				updatedCalEvent = (CalEvent)session.merge(calEvent);
 			}
 		}
 		catch (Exception e) {
@@ -5604,11 +5606,24 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 			}
 		}
 
-		EntityCacheUtil.putResult(CalEventModelImpl.ENTITY_CACHE_ENABLED,
-			CalEventImpl.class, calEvent.getPrimaryKey(), calEvent, false);
+		if (updatedCalEvent == null) {
+			EntityCacheUtil.putResult(CalEventModelImpl.ENTITY_CACHE_ENABLED,
+				CalEventImpl.class, calEvent.getPrimaryKey(), calEvent, false);
+		}
+		else {
+			EntityCacheUtil.putResult(CalEventModelImpl.ENTITY_CACHE_ENABLED,
+				CalEventImpl.class, calEvent.getPrimaryKey(), updatedCalEvent,
+				false);
+		}
 
 		clearUniqueFindersCache(calEvent);
-		cacheUniqueFindersCache(calEvent, isNew);
+
+		if (updatedCalEvent == null) {
+			cacheUniqueFindersCache(calEvent, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedCalEvent, isNew);
+		}
 
 		calEvent.resetOriginalValues();
 

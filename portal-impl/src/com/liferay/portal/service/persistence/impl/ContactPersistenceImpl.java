@@ -1760,6 +1760,8 @@ public class ContactPersistenceImpl extends BasePersistenceImpl<Contact>
 			}
 		}
 
+		Contact updatedContact = null;
+
 		Session session = null;
 
 		try {
@@ -1771,7 +1773,7 @@ public class ContactPersistenceImpl extends BasePersistenceImpl<Contact>
 				contact.setNew(false);
 			}
 			else {
-				contact = (Contact)session.merge(contact);
+				updatedContact = (Contact)session.merge(contact);
 			}
 		}
 		catch (Exception e) {
@@ -1848,8 +1850,15 @@ public class ContactPersistenceImpl extends BasePersistenceImpl<Contact>
 			}
 		}
 
-		EntityCacheUtil.putResult(ContactModelImpl.ENTITY_CACHE_ENABLED,
-			ContactImpl.class, contact.getPrimaryKey(), contact, false);
+		if (updatedContact == null) {
+			EntityCacheUtil.putResult(ContactModelImpl.ENTITY_CACHE_ENABLED,
+				ContactImpl.class, contact.getPrimaryKey(), contact, false);
+		}
+		else {
+			EntityCacheUtil.putResult(ContactModelImpl.ENTITY_CACHE_ENABLED,
+				ContactImpl.class, contact.getPrimaryKey(), updatedContact,
+				false);
+		}
 
 		contact.resetOriginalValues();
 

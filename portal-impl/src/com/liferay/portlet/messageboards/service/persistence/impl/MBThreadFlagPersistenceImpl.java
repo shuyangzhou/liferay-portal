@@ -2922,6 +2922,8 @@ public class MBThreadFlagPersistenceImpl extends BasePersistenceImpl<MBThreadFla
 			}
 		}
 
+		MBThreadFlag updatedMBThreadFlag = null;
+
 		Session session = null;
 
 		try {
@@ -2933,7 +2935,7 @@ public class MBThreadFlagPersistenceImpl extends BasePersistenceImpl<MBThreadFla
 				mbThreadFlag.setNew(false);
 			}
 			else {
-				mbThreadFlag = (MBThreadFlag)session.merge(mbThreadFlag);
+				updatedMBThreadFlag = (MBThreadFlag)session.merge(mbThreadFlag);
 			}
 		}
 		catch (Exception e) {
@@ -3023,12 +3025,25 @@ public class MBThreadFlagPersistenceImpl extends BasePersistenceImpl<MBThreadFla
 			}
 		}
 
-		EntityCacheUtil.putResult(MBThreadFlagModelImpl.ENTITY_CACHE_ENABLED,
-			MBThreadFlagImpl.class, mbThreadFlag.getPrimaryKey(), mbThreadFlag,
-			false);
+		if (updatedMBThreadFlag == null) {
+			EntityCacheUtil.putResult(MBThreadFlagModelImpl.ENTITY_CACHE_ENABLED,
+				MBThreadFlagImpl.class, mbThreadFlag.getPrimaryKey(),
+				mbThreadFlag, false);
+		}
+		else {
+			EntityCacheUtil.putResult(MBThreadFlagModelImpl.ENTITY_CACHE_ENABLED,
+				MBThreadFlagImpl.class, mbThreadFlag.getPrimaryKey(),
+				updatedMBThreadFlag, false);
+		}
 
 		clearUniqueFindersCache(mbThreadFlag);
-		cacheUniqueFindersCache(mbThreadFlag, isNew);
+
+		if (updatedMBThreadFlag == null) {
+			cacheUniqueFindersCache(mbThreadFlag, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedMBThreadFlag, isNew);
+		}
 
 		mbThreadFlag.resetOriginalValues();
 

@@ -1528,6 +1528,8 @@ public class DDMTemplateLinkPersistenceImpl extends BasePersistenceImpl<DDMTempl
 
 		DDMTemplateLinkModelImpl ddmTemplateLinkModelImpl = (DDMTemplateLinkModelImpl)ddmTemplateLink;
 
+		DDMTemplateLink updatedDDMTemplateLink = null;
+
 		Session session = null;
 
 		try {
@@ -1539,7 +1541,7 @@ public class DDMTemplateLinkPersistenceImpl extends BasePersistenceImpl<DDMTempl
 				ddmTemplateLink.setNew(false);
 			}
 			else {
-				ddmTemplateLink = (DDMTemplateLink)session.merge(ddmTemplateLink);
+				updatedDDMTemplateLink = (DDMTemplateLink)session.merge(ddmTemplateLink);
 			}
 		}
 		catch (Exception e) {
@@ -1595,12 +1597,25 @@ public class DDMTemplateLinkPersistenceImpl extends BasePersistenceImpl<DDMTempl
 			}
 		}
 
-		EntityCacheUtil.putResult(DDMTemplateLinkModelImpl.ENTITY_CACHE_ENABLED,
-			DDMTemplateLinkImpl.class, ddmTemplateLink.getPrimaryKey(),
-			ddmTemplateLink, false);
+		if (updatedDDMTemplateLink == null) {
+			EntityCacheUtil.putResult(DDMTemplateLinkModelImpl.ENTITY_CACHE_ENABLED,
+				DDMTemplateLinkImpl.class, ddmTemplateLink.getPrimaryKey(),
+				ddmTemplateLink, false);
+		}
+		else {
+			EntityCacheUtil.putResult(DDMTemplateLinkModelImpl.ENTITY_CACHE_ENABLED,
+				DDMTemplateLinkImpl.class, ddmTemplateLink.getPrimaryKey(),
+				updatedDDMTemplateLink, false);
+		}
 
 		clearUniqueFindersCache(ddmTemplateLink);
-		cacheUniqueFindersCache(ddmTemplateLink, isNew);
+
+		if (updatedDDMTemplateLink == null) {
+			cacheUniqueFindersCache(ddmTemplateLink, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedDDMTemplateLink, isNew);
+		}
 
 		ddmTemplateLink.resetOriginalValues();
 

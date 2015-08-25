@@ -2561,6 +2561,8 @@ public class TrashEntryPersistenceImpl extends BasePersistenceImpl<TrashEntry>
 
 		TrashEntryModelImpl trashEntryModelImpl = (TrashEntryModelImpl)trashEntry;
 
+		TrashEntry updatedTrashEntry = null;
+
 		Session session = null;
 
 		try {
@@ -2572,7 +2574,7 @@ public class TrashEntryPersistenceImpl extends BasePersistenceImpl<TrashEntry>
 				trashEntry.setNew(false);
 			}
 			else {
-				trashEntry = (TrashEntry)session.merge(trashEntry);
+				updatedTrashEntry = (TrashEntry)session.merge(trashEntry);
 			}
 		}
 		catch (Exception e) {
@@ -2647,11 +2649,25 @@ public class TrashEntryPersistenceImpl extends BasePersistenceImpl<TrashEntry>
 			}
 		}
 
-		EntityCacheUtil.putResult(TrashEntryModelImpl.ENTITY_CACHE_ENABLED,
-			TrashEntryImpl.class, trashEntry.getPrimaryKey(), trashEntry, false);
+		if (updatedTrashEntry == null) {
+			EntityCacheUtil.putResult(TrashEntryModelImpl.ENTITY_CACHE_ENABLED,
+				TrashEntryImpl.class, trashEntry.getPrimaryKey(), trashEntry,
+				false);
+		}
+		else {
+			EntityCacheUtil.putResult(TrashEntryModelImpl.ENTITY_CACHE_ENABLED,
+				TrashEntryImpl.class, trashEntry.getPrimaryKey(),
+				updatedTrashEntry, false);
+		}
 
 		clearUniqueFindersCache(trashEntry);
-		cacheUniqueFindersCache(trashEntry, isNew);
+
+		if (updatedTrashEntry == null) {
+			cacheUniqueFindersCache(trashEntry, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedTrashEntry, isNew);
+		}
 
 		trashEntry.resetOriginalValues();
 

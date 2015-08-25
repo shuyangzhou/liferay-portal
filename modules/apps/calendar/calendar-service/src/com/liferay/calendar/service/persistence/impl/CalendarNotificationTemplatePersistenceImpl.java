@@ -2647,6 +2647,8 @@ public class CalendarNotificationTemplatePersistenceImpl
 			}
 		}
 
+		CalendarNotificationTemplate updatedCalendarNotificationTemplate = null;
+
 		Session session = null;
 
 		try {
@@ -2658,7 +2660,7 @@ public class CalendarNotificationTemplatePersistenceImpl
 				calendarNotificationTemplate.setNew(false);
 			}
 			else {
-				calendarNotificationTemplate = (CalendarNotificationTemplate)session.merge(calendarNotificationTemplate);
+				updatedCalendarNotificationTemplate = (CalendarNotificationTemplate)session.merge(calendarNotificationTemplate);
 			}
 		}
 		catch (Exception e) {
@@ -2738,13 +2740,27 @@ public class CalendarNotificationTemplatePersistenceImpl
 			}
 		}
 
-		EntityCacheUtil.putResult(CalendarNotificationTemplateModelImpl.ENTITY_CACHE_ENABLED,
-			CalendarNotificationTemplateImpl.class,
-			calendarNotificationTemplate.getPrimaryKey(),
-			calendarNotificationTemplate, false);
+		if (updatedCalendarNotificationTemplate == null) {
+			EntityCacheUtil.putResult(CalendarNotificationTemplateModelImpl.ENTITY_CACHE_ENABLED,
+				CalendarNotificationTemplateImpl.class,
+				calendarNotificationTemplate.getPrimaryKey(),
+				calendarNotificationTemplate, false);
+		}
+		else {
+			EntityCacheUtil.putResult(CalendarNotificationTemplateModelImpl.ENTITY_CACHE_ENABLED,
+				CalendarNotificationTemplateImpl.class,
+				calendarNotificationTemplate.getPrimaryKey(),
+				updatedCalendarNotificationTemplate, false);
+		}
 
 		clearUniqueFindersCache(calendarNotificationTemplate);
-		cacheUniqueFindersCache(calendarNotificationTemplate, isNew);
+
+		if (updatedCalendarNotificationTemplate == null) {
+			cacheUniqueFindersCache(calendarNotificationTemplate, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedCalendarNotificationTemplate, isNew);
+		}
 
 		calendarNotificationTemplate.resetOriginalValues();
 

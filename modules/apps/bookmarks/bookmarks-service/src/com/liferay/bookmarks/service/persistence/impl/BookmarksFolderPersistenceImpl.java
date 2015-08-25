@@ -7017,6 +7017,8 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 			}
 		}
 
+		BookmarksFolder updatedBookmarksFolder = null;
+
 		Session session = null;
 
 		try {
@@ -7028,7 +7030,7 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 				bookmarksFolder.setNew(false);
 			}
 			else {
-				bookmarksFolder = (BookmarksFolder)session.merge(bookmarksFolder);
+				updatedBookmarksFolder = (BookmarksFolder)session.merge(bookmarksFolder);
 			}
 		}
 		catch (Exception e) {
@@ -7185,12 +7187,25 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 			}
 		}
 
-		EntityCacheUtil.putResult(BookmarksFolderModelImpl.ENTITY_CACHE_ENABLED,
-			BookmarksFolderImpl.class, bookmarksFolder.getPrimaryKey(),
-			bookmarksFolder, false);
+		if (updatedBookmarksFolder == null) {
+			EntityCacheUtil.putResult(BookmarksFolderModelImpl.ENTITY_CACHE_ENABLED,
+				BookmarksFolderImpl.class, bookmarksFolder.getPrimaryKey(),
+				bookmarksFolder, false);
+		}
+		else {
+			EntityCacheUtil.putResult(BookmarksFolderModelImpl.ENTITY_CACHE_ENABLED,
+				BookmarksFolderImpl.class, bookmarksFolder.getPrimaryKey(),
+				updatedBookmarksFolder, false);
+		}
 
 		clearUniqueFindersCache(bookmarksFolder);
-		cacheUniqueFindersCache(bookmarksFolder, isNew);
+
+		if (updatedBookmarksFolder == null) {
+			cacheUniqueFindersCache(bookmarksFolder, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedBookmarksFolder, isNew);
+		}
 
 		bookmarksFolder.resetOriginalValues();
 

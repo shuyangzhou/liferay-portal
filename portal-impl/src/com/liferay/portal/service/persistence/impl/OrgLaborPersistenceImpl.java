@@ -754,6 +754,8 @@ public class OrgLaborPersistenceImpl extends BasePersistenceImpl<OrgLabor>
 
 		OrgLaborModelImpl orgLaborModelImpl = (OrgLaborModelImpl)orgLabor;
 
+		OrgLabor updatedOrgLabor = null;
+
 		Session session = null;
 
 		try {
@@ -765,7 +767,7 @@ public class OrgLaborPersistenceImpl extends BasePersistenceImpl<OrgLabor>
 				orgLabor.setNew(false);
 			}
 			else {
-				orgLabor = (OrgLabor)session.merge(orgLabor);
+				updatedOrgLabor = (OrgLabor)session.merge(orgLabor);
 			}
 		}
 		catch (Exception e) {
@@ -802,8 +804,15 @@ public class OrgLaborPersistenceImpl extends BasePersistenceImpl<OrgLabor>
 			}
 		}
 
-		EntityCacheUtil.putResult(OrgLaborModelImpl.ENTITY_CACHE_ENABLED,
-			OrgLaborImpl.class, orgLabor.getPrimaryKey(), orgLabor, false);
+		if (updatedOrgLabor == null) {
+			EntityCacheUtil.putResult(OrgLaborModelImpl.ENTITY_CACHE_ENABLED,
+				OrgLaborImpl.class, orgLabor.getPrimaryKey(), orgLabor, false);
+		}
+		else {
+			EntityCacheUtil.putResult(OrgLaborModelImpl.ENTITY_CACHE_ENABLED,
+				OrgLaborImpl.class, orgLabor.getPrimaryKey(), updatedOrgLabor,
+				false);
+		}
 
 		orgLabor.resetOriginalValues();
 

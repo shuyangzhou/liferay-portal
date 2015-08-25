@@ -2756,6 +2756,8 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 
 		SocialActivityCounterModelImpl socialActivityCounterModelImpl = (SocialActivityCounterModelImpl)socialActivityCounter;
 
+		SocialActivityCounter updatedSocialActivityCounter = null;
+
 		Session session = null;
 
 		try {
@@ -2767,7 +2769,7 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 				socialActivityCounter.setNew(false);
 			}
 			else {
-				socialActivityCounter = (SocialActivityCounter)session.merge(socialActivityCounter);
+				updatedSocialActivityCounter = (SocialActivityCounter)session.merge(socialActivityCounter);
 			}
 		}
 		catch (Exception e) {
@@ -2848,12 +2850,27 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 			}
 		}
 
-		EntityCacheUtil.putResult(SocialActivityCounterModelImpl.ENTITY_CACHE_ENABLED,
-			SocialActivityCounterImpl.class,
-			socialActivityCounter.getPrimaryKey(), socialActivityCounter, false);
+		if (updatedSocialActivityCounter == null) {
+			EntityCacheUtil.putResult(SocialActivityCounterModelImpl.ENTITY_CACHE_ENABLED,
+				SocialActivityCounterImpl.class,
+				socialActivityCounter.getPrimaryKey(), socialActivityCounter,
+				false);
+		}
+		else {
+			EntityCacheUtil.putResult(SocialActivityCounterModelImpl.ENTITY_CACHE_ENABLED,
+				SocialActivityCounterImpl.class,
+				socialActivityCounter.getPrimaryKey(),
+				updatedSocialActivityCounter, false);
+		}
 
 		clearUniqueFindersCache(socialActivityCounter);
-		cacheUniqueFindersCache(socialActivityCounter, isNew);
+
+		if (updatedSocialActivityCounter == null) {
+			cacheUniqueFindersCache(socialActivityCounter, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedSocialActivityCounter, isNew);
+		}
 
 		socialActivityCounter.resetOriginalValues();
 

@@ -2541,6 +2541,8 @@ public class SCFrameworkVersionPersistenceImpl extends BasePersistenceImpl<SCFra
 			}
 		}
 
+		SCFrameworkVersion updatedSCFrameworkVersion = null;
+
 		Session session = null;
 
 		try {
@@ -2552,7 +2554,7 @@ public class SCFrameworkVersionPersistenceImpl extends BasePersistenceImpl<SCFra
 				scFrameworkVersion.setNew(false);
 			}
 			else {
-				scFrameworkVersion = (SCFrameworkVersion)session.merge(scFrameworkVersion);
+				updatedSCFrameworkVersion = (SCFrameworkVersion)session.merge(scFrameworkVersion);
 			}
 		}
 		catch (Exception e) {
@@ -2627,9 +2629,17 @@ public class SCFrameworkVersionPersistenceImpl extends BasePersistenceImpl<SCFra
 			}
 		}
 
-		EntityCacheUtil.putResult(SCFrameworkVersionModelImpl.ENTITY_CACHE_ENABLED,
-			SCFrameworkVersionImpl.class, scFrameworkVersion.getPrimaryKey(),
-			scFrameworkVersion, false);
+		if (updatedSCFrameworkVersion == null) {
+			EntityCacheUtil.putResult(SCFrameworkVersionModelImpl.ENTITY_CACHE_ENABLED,
+				SCFrameworkVersionImpl.class,
+				scFrameworkVersion.getPrimaryKey(), scFrameworkVersion, false);
+		}
+		else {
+			EntityCacheUtil.putResult(SCFrameworkVersionModelImpl.ENTITY_CACHE_ENABLED,
+				SCFrameworkVersionImpl.class,
+				scFrameworkVersion.getPrimaryKey(), updatedSCFrameworkVersion,
+				false);
+		}
 
 		scFrameworkVersion.resetOriginalValues();
 

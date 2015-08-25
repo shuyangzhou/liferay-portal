@@ -1107,6 +1107,8 @@ public class TicketPersistenceImpl extends BasePersistenceImpl<Ticket>
 
 		TicketModelImpl ticketModelImpl = (TicketModelImpl)ticket;
 
+		Ticket updatedTicket = null;
+
 		Session session = null;
 
 		try {
@@ -1118,7 +1120,7 @@ public class TicketPersistenceImpl extends BasePersistenceImpl<Ticket>
 				ticket.setNew(false);
 			}
 			else {
-				ticket = (Ticket)session.merge(ticket);
+				updatedTicket = (Ticket)session.merge(ticket);
 			}
 		}
 		catch (Exception e) {
@@ -1158,11 +1160,23 @@ public class TicketPersistenceImpl extends BasePersistenceImpl<Ticket>
 			}
 		}
 
-		EntityCacheUtil.putResult(TicketModelImpl.ENTITY_CACHE_ENABLED,
-			TicketImpl.class, ticket.getPrimaryKey(), ticket, false);
+		if (updatedTicket == null) {
+			EntityCacheUtil.putResult(TicketModelImpl.ENTITY_CACHE_ENABLED,
+				TicketImpl.class, ticket.getPrimaryKey(), ticket, false);
+		}
+		else {
+			EntityCacheUtil.putResult(TicketModelImpl.ENTITY_CACHE_ENABLED,
+				TicketImpl.class, ticket.getPrimaryKey(), updatedTicket, false);
+		}
 
 		clearUniqueFindersCache(ticket);
-		cacheUniqueFindersCache(ticket, isNew);
+
+		if (updatedTicket == null) {
+			cacheUniqueFindersCache(ticket, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedTicket, isNew);
+		}
 
 		ticket.resetOriginalValues();
 

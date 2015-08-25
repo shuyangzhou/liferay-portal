@@ -1545,6 +1545,8 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 
 		TrashVersionModelImpl trashVersionModelImpl = (TrashVersionModelImpl)trashVersion;
 
+		TrashVersion updatedTrashVersion = null;
+
 		Session session = null;
 
 		try {
@@ -1556,7 +1558,7 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 				trashVersion.setNew(false);
 			}
 			else {
-				trashVersion = (TrashVersion)session.merge(trashVersion);
+				updatedTrashVersion = (TrashVersion)session.merge(trashVersion);
 			}
 		}
 		catch (Exception e) {
@@ -1612,12 +1614,25 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 			}
 		}
 
-		EntityCacheUtil.putResult(TrashVersionModelImpl.ENTITY_CACHE_ENABLED,
-			TrashVersionImpl.class, trashVersion.getPrimaryKey(), trashVersion,
-			false);
+		if (updatedTrashVersion == null) {
+			EntityCacheUtil.putResult(TrashVersionModelImpl.ENTITY_CACHE_ENABLED,
+				TrashVersionImpl.class, trashVersion.getPrimaryKey(),
+				trashVersion, false);
+		}
+		else {
+			EntityCacheUtil.putResult(TrashVersionModelImpl.ENTITY_CACHE_ENABLED,
+				TrashVersionImpl.class, trashVersion.getPrimaryKey(),
+				updatedTrashVersion, false);
+		}
 
 		clearUniqueFindersCache(trashVersion);
-		cacheUniqueFindersCache(trashVersion, isNew);
+
+		if (updatedTrashVersion == null) {
+			cacheUniqueFindersCache(trashVersion, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedTrashVersion, isNew);
+		}
 
 		trashVersion.resetOriginalValues();
 

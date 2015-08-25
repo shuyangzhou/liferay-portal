@@ -5573,6 +5573,8 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 			}
 		}
 
+		CalendarBooking updatedCalendarBooking = null;
+
 		Session session = null;
 
 		try {
@@ -5584,7 +5586,7 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 				calendarBooking.setNew(false);
 			}
 			else {
-				calendarBooking = (CalendarBooking)session.merge(calendarBooking);
+				updatedCalendarBooking = (CalendarBooking)session.merge(calendarBooking);
 			}
 		}
 		catch (Exception e) {
@@ -5764,12 +5766,25 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 			}
 		}
 
-		EntityCacheUtil.putResult(CalendarBookingModelImpl.ENTITY_CACHE_ENABLED,
-			CalendarBookingImpl.class, calendarBooking.getPrimaryKey(),
-			calendarBooking, false);
+		if (updatedCalendarBooking == null) {
+			EntityCacheUtil.putResult(CalendarBookingModelImpl.ENTITY_CACHE_ENABLED,
+				CalendarBookingImpl.class, calendarBooking.getPrimaryKey(),
+				calendarBooking, false);
+		}
+		else {
+			EntityCacheUtil.putResult(CalendarBookingModelImpl.ENTITY_CACHE_ENABLED,
+				CalendarBookingImpl.class, calendarBooking.getPrimaryKey(),
+				updatedCalendarBooking, false);
+		}
 
 		clearUniqueFindersCache(calendarBooking);
-		cacheUniqueFindersCache(calendarBooking, isNew);
+
+		if (updatedCalendarBooking == null) {
+			cacheUniqueFindersCache(calendarBooking, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedCalendarBooking, isNew);
+		}
 
 		calendarBooking.resetOriginalValues();
 

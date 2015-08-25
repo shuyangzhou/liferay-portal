@@ -2395,6 +2395,8 @@ public class JournalArticleImagePersistenceImpl extends BasePersistenceImpl<Jour
 
 		JournalArticleImageModelImpl journalArticleImageModelImpl = (JournalArticleImageModelImpl)journalArticleImage;
 
+		JournalArticleImage updatedJournalArticleImage = null;
+
 		Session session = null;
 
 		try {
@@ -2406,7 +2408,7 @@ public class JournalArticleImagePersistenceImpl extends BasePersistenceImpl<Jour
 				journalArticleImage.setNew(false);
 			}
 			else {
-				journalArticleImage = (JournalArticleImage)session.merge(journalArticleImage);
+				updatedJournalArticleImage = (JournalArticleImage)session.merge(journalArticleImage);
 			}
 		}
 		catch (Exception e) {
@@ -2483,12 +2485,26 @@ public class JournalArticleImagePersistenceImpl extends BasePersistenceImpl<Jour
 			}
 		}
 
-		EntityCacheUtil.putResult(JournalArticleImageModelImpl.ENTITY_CACHE_ENABLED,
-			JournalArticleImageImpl.class, journalArticleImage.getPrimaryKey(),
-			journalArticleImage, false);
+		if (updatedJournalArticleImage == null) {
+			EntityCacheUtil.putResult(JournalArticleImageModelImpl.ENTITY_CACHE_ENABLED,
+				JournalArticleImageImpl.class,
+				journalArticleImage.getPrimaryKey(), journalArticleImage, false);
+		}
+		else {
+			EntityCacheUtil.putResult(JournalArticleImageModelImpl.ENTITY_CACHE_ENABLED,
+				JournalArticleImageImpl.class,
+				journalArticleImage.getPrimaryKey(),
+				updatedJournalArticleImage, false);
+		}
 
 		clearUniqueFindersCache(journalArticleImage);
-		cacheUniqueFindersCache(journalArticleImage, isNew);
+
+		if (updatedJournalArticleImage == null) {
+			cacheUniqueFindersCache(journalArticleImage, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedJournalArticleImage, isNew);
+		}
 
 		journalArticleImage.resetOriginalValues();
 

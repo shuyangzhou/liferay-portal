@@ -2377,6 +2377,8 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 			}
 		}
 
+		WorkflowDefinitionLink updatedWorkflowDefinitionLink = null;
+
 		Session session = null;
 
 		try {
@@ -2388,7 +2390,7 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 				workflowDefinitionLink.setNew(false);
 			}
 			else {
-				workflowDefinitionLink = (WorkflowDefinitionLink)session.merge(workflowDefinitionLink);
+				updatedWorkflowDefinitionLink = (WorkflowDefinitionLink)session.merge(workflowDefinitionLink);
 			}
 		}
 		catch (Exception e) {
@@ -2473,13 +2475,27 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 			}
 		}
 
-		EntityCacheUtil.putResult(WorkflowDefinitionLinkModelImpl.ENTITY_CACHE_ENABLED,
-			WorkflowDefinitionLinkImpl.class,
-			workflowDefinitionLink.getPrimaryKey(), workflowDefinitionLink,
-			false);
+		if (updatedWorkflowDefinitionLink == null) {
+			EntityCacheUtil.putResult(WorkflowDefinitionLinkModelImpl.ENTITY_CACHE_ENABLED,
+				WorkflowDefinitionLinkImpl.class,
+				workflowDefinitionLink.getPrimaryKey(), workflowDefinitionLink,
+				false);
+		}
+		else {
+			EntityCacheUtil.putResult(WorkflowDefinitionLinkModelImpl.ENTITY_CACHE_ENABLED,
+				WorkflowDefinitionLinkImpl.class,
+				workflowDefinitionLink.getPrimaryKey(),
+				updatedWorkflowDefinitionLink, false);
+		}
 
 		clearUniqueFindersCache(workflowDefinitionLink);
-		cacheUniqueFindersCache(workflowDefinitionLink, isNew);
+
+		if (updatedWorkflowDefinitionLink == null) {
+			cacheUniqueFindersCache(workflowDefinitionLink, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedWorkflowDefinitionLink, isNew);
+		}
 
 		workflowDefinitionLink.resetOriginalValues();
 

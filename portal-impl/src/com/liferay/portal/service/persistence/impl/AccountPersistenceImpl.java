@@ -292,6 +292,8 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 			}
 		}
 
+		Account updatedAccount = null;
+
 		Session session = null;
 
 		try {
@@ -303,7 +305,7 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 				account.setNew(false);
 			}
 			else {
-				account = (Account)session.merge(account);
+				updatedAccount = (Account)session.merge(account);
 			}
 		}
 		catch (Exception e) {
@@ -319,8 +321,15 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 			FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
 
-		EntityCacheUtil.putResult(AccountModelImpl.ENTITY_CACHE_ENABLED,
-			AccountImpl.class, account.getPrimaryKey(), account, false);
+		if (updatedAccount == null) {
+			EntityCacheUtil.putResult(AccountModelImpl.ENTITY_CACHE_ENABLED,
+				AccountImpl.class, account.getPrimaryKey(), account, false);
+		}
+		else {
+			EntityCacheUtil.putResult(AccountModelImpl.ENTITY_CACHE_ENABLED,
+				AccountImpl.class, account.getPrimaryKey(), updatedAccount,
+				false);
+		}
 
 		account.resetOriginalValues();
 

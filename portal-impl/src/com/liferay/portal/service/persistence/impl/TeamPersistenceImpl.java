@@ -2801,6 +2801,8 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 			}
 		}
 
+		Team updatedTeam = null;
+
 		Session session = null;
 
 		try {
@@ -2812,7 +2814,7 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 				team.setNew(false);
 			}
 			else {
-				team = (Team)session.merge(team);
+				updatedTeam = (Team)session.merge(team);
 			}
 		}
 		catch (Exception e) {
@@ -2880,11 +2882,23 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 			}
 		}
 
-		EntityCacheUtil.putResult(TeamModelImpl.ENTITY_CACHE_ENABLED,
-			TeamImpl.class, team.getPrimaryKey(), team, false);
+		if (updatedTeam == null) {
+			EntityCacheUtil.putResult(TeamModelImpl.ENTITY_CACHE_ENABLED,
+				TeamImpl.class, team.getPrimaryKey(), team, false);
+		}
+		else {
+			EntityCacheUtil.putResult(TeamModelImpl.ENTITY_CACHE_ENABLED,
+				TeamImpl.class, team.getPrimaryKey(), updatedTeam, false);
+		}
 
 		clearUniqueFindersCache(team);
-		cacheUniqueFindersCache(team, isNew);
+
+		if (updatedTeam == null) {
+			cacheUniqueFindersCache(team, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedTeam, isNew);
+		}
 
 		team.resetOriginalValues();
 
