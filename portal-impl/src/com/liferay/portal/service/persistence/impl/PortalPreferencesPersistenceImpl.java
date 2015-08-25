@@ -598,8 +598,9 @@ public class PortalPreferencesPersistenceImpl extends BasePersistenceImpl<Portal
 			PortalPreferencesImpl.class, portalPreferences.getPrimaryKey(),
 			portalPreferences, false);
 
-		clearUniqueFindersCache(portalPreferences);
-		cacheUniqueFindersCache(portalPreferences, isNew);
+		clearUniqueFindersCache((PortalPreferences)portalPreferencesModelImpl);
+		cacheUniqueFindersCache((PortalPreferences)portalPreferencesModelImpl,
+			isNew);
 
 		portalPreferences.resetOriginalValues();
 

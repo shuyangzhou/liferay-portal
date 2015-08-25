@@ -583,8 +583,8 @@ public class RatingsStatsPersistenceImpl extends BasePersistenceImpl<RatingsStat
 			RatingsStatsImpl.class, ratingsStats.getPrimaryKey(), ratingsStats,
 			false);
 
-		clearUniqueFindersCache(ratingsStats);
-		cacheUniqueFindersCache(ratingsStats, isNew);
+		clearUniqueFindersCache((RatingsStats)ratingsStatsModelImpl);
+		cacheUniqueFindersCache((RatingsStats)ratingsStatsModelImpl, isNew);
 
 		ratingsStats.resetOriginalValues();
 

@@ -772,8 +772,8 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 		<#assign uniqueFinderList = entity.getUniqueFinderList()>
 
 		<#if uniqueFinderList?size &gt; 0>
-			clearUniqueFindersCache(${entity.varName});
-			cacheUniqueFindersCache(${entity.varName}, isNew);
+			clearUniqueFindersCache((${entity.name})${entity.varName}ModelImpl);
+			cacheUniqueFindersCache((${entity.name})${entity.varName}ModelImpl, isNew);
 		</#if>
 
 		${entity.varName}.resetOriginalValues();
