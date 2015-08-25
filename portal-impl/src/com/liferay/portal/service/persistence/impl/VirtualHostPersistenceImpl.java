@@ -853,8 +853,8 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 			VirtualHostImpl.class, virtualHost.getPrimaryKey(), virtualHost,
 			false);
 
-		clearUniqueFindersCache(virtualHost);
-		cacheUniqueFindersCache(virtualHost, isNew);
+		clearUniqueFindersCache((VirtualHost)virtualHostModelImpl);
+		cacheUniqueFindersCache((VirtualHost)virtualHostModelImpl, isNew);
 
 		virtualHost.resetOriginalValues();
 
