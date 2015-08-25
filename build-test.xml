@@ -5660,7 +5660,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 		<echo />
 	</target>
 
-	<target name="rebuild-database" depends="build-sql-file">
+	<target name="rebuild-database">
 		<if>
 			<not>
 				<isset property="skip.rebuild-database" />

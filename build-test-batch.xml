@@ -280,6 +280,7 @@
 			<waitfor maxwait="60" maxwaitunit="second">
 				<socket server="localhost" port="5000"/>
 			</waitfor>
+			<print-current-time />
 
 			<sleep if:true="@{retry}" seconds="10" />
 		</sequential>
@@ -365,7 +366,7 @@
 						<arg line="${database.service.cmd.start}" />
 					</exec>
 
-					<antcall target="copy-optional-jars" inheritall="false" >
+<!--					<antcall target="copy-optional-jars" inheritall="false" >
 						<param name="database.type" value="@{database.type}" />
 						<param name="todir" value="lib/development" />
 					</antcall>
@@ -373,7 +374,7 @@
 					<antcall target="copy-optional-jars" inheritall="false" >
 						<param name="database.type" value="@{database.type}" />
 						<param name="todir" value="${app.server.lib.global.dir}" />
-					</antcall>
+					</antcall>-->
 
 					<antcall target="rebuild-database" inheritall="false" >
 						<param name="database.type" value="@{database.type}" />
@@ -704,11 +705,11 @@
 						</then>
 					</if>
 
-					<merge-test-results />
+<!--					<merge-test-results />
 
 					<check-deprecated-method />
 
-					<test-tear-down />
+					<test-tear-down />-->
 
 					<print-gc-logs
 						tomcat.gc.log="@{tomcat.gc.log}"
@@ -788,19 +789,19 @@
 				<test-action>
 					<database-test-run-test database.type="@{database.type}">
 						<test-action>
-							<print-test-class-group test.class.group.index="${axis.variable}" />
+<!--							<print-test-class-group test.class.group.index="${axis.variable}" />
 
 							<ant dir="portal-impl" target="test-class-group" inheritAll="false">
 								<property name="database.type" value="@{database.type}" />
 								<property name="test.class.group.index" value="${axis.variable}" />
 								<property name="test.type" value="integration" />
-							</ant>
+							</ant>-->
 						</test-action>
 					</database-test-run-test>
 				</test-action>
 
 				<test-set-up>
-					<prepare-test-build />
+					<!--<prepare-test-build />-->
 				</test-set-up>
 			</run-batch-test>
 		</sequential>
@@ -817,7 +818,7 @@
 				<test-action>
 					<database-test-run-test database.type="@{database.type}" stop.app.server="true">
 						<test-action>
-							<print-test-class-group test.class.group.index="${axis.variable}" />
+<!--							<print-test-class-group test.class.group.index="${axis.variable}" />
 
 							<antcall target="prepare-portal-ext-properties" inheritAll="false">
 								<param name="database.type" value="@{database.type}" />
@@ -832,13 +833,13 @@
 
 							<ant dir="portal-service" target="test-class" inheritAll="false">
 								<property name="test.class" value="PortalLogAssertorTest" />
-							</ant>
+							</ant>-->
 						</test-action>
 					</database-test-run-test>
 				</test-action>
 
 				<test-set-up>
-					<prepare-test-build />
+					<!--<prepare-test-build />-->
 				</test-set-up>
 			</run-batch-test>
 		</sequential>
@@ -1059,7 +1060,10 @@ go</echo>
 
 		<retry retrycount="10">
 			<sequential>
-				<exec executable="isql" outputproperty="output.content" resultproperty="return.code">
+				<local name="output.content" />
+				<local name="return.code" />
+
+				<exec executable="${sybase.executable}" outputproperty="output.content" resultproperty="return.code">
 					<arg value="-i" />
 					<arg value="create-header.sql" />
 					<arg value="-P" />
