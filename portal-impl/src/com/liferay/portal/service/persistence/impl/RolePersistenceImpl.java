@@ -8559,6 +8559,8 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 			}
 		}
 
+		Role updatedRole = null;
+
 		Session session = null;
 
 		try {
@@ -8570,7 +8572,7 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 				role.setNew(false);
 			}
 			else {
-				role = (Role)session.merge(role);
+				updatedRole = (Role)session.merge(role);
 			}
 		}
 		catch (Exception e) {
@@ -8727,11 +8729,23 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 			}
 		}
 
-		EntityCacheUtil.putResult(RoleModelImpl.ENTITY_CACHE_ENABLED,
-			RoleImpl.class, role.getPrimaryKey(), role, false);
+		if (updatedRole == null) {
+			EntityCacheUtil.putResult(RoleModelImpl.ENTITY_CACHE_ENABLED,
+				RoleImpl.class, role.getPrimaryKey(), role, false);
+		}
+		else {
+			EntityCacheUtil.putResult(RoleModelImpl.ENTITY_CACHE_ENABLED,
+				RoleImpl.class, role.getPrimaryKey(), updatedRole, false);
+		}
 
 		clearUniqueFindersCache(role);
-		cacheUniqueFindersCache(role, isNew);
+
+		if (updatedRole == null) {
+			cacheUniqueFindersCache(role, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedRole, isNew);
+		}
 
 		role.resetOriginalValues();
 

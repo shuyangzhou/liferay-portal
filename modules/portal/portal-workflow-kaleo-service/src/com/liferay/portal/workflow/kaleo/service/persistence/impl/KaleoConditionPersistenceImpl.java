@@ -1536,6 +1536,8 @@ public class KaleoConditionPersistenceImpl extends BasePersistenceImpl<KaleoCond
 			}
 		}
 
+		KaleoCondition updatedKaleoCondition = null;
+
 		Session session = null;
 
 		try {
@@ -1547,7 +1549,7 @@ public class KaleoConditionPersistenceImpl extends BasePersistenceImpl<KaleoCond
 				kaleoCondition.setNew(false);
 			}
 			else {
-				kaleoCondition = (KaleoCondition)session.merge(kaleoCondition);
+				updatedKaleoCondition = (KaleoCondition)session.merge(kaleoCondition);
 			}
 		}
 		catch (Exception e) {
@@ -1605,12 +1607,25 @@ public class KaleoConditionPersistenceImpl extends BasePersistenceImpl<KaleoCond
 			}
 		}
 
-		EntityCacheUtil.putResult(KaleoConditionModelImpl.ENTITY_CACHE_ENABLED,
-			KaleoConditionImpl.class, kaleoCondition.getPrimaryKey(),
-			kaleoCondition, false);
+		if (updatedKaleoCondition == null) {
+			EntityCacheUtil.putResult(KaleoConditionModelImpl.ENTITY_CACHE_ENABLED,
+				KaleoConditionImpl.class, kaleoCondition.getPrimaryKey(),
+				kaleoCondition, false);
+		}
+		else {
+			EntityCacheUtil.putResult(KaleoConditionModelImpl.ENTITY_CACHE_ENABLED,
+				KaleoConditionImpl.class, kaleoCondition.getPrimaryKey(),
+				updatedKaleoCondition, false);
+		}
 
 		clearUniqueFindersCache(kaleoCondition);
-		cacheUniqueFindersCache(kaleoCondition, isNew);
+
+		if (updatedKaleoCondition == null) {
+			cacheUniqueFindersCache(kaleoCondition, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedKaleoCondition, isNew);
+		}
 
 		kaleoCondition.resetOriginalValues();
 

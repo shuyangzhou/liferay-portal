@@ -1848,6 +1848,8 @@ public class ResourceBlockPersistenceImpl extends BasePersistenceImpl<ResourceBl
 
 		ResourceBlockModelImpl resourceBlockModelImpl = (ResourceBlockModelImpl)resourceBlock;
 
+		ResourceBlock updatedResourceBlock = null;
+
 		Session session = null;
 
 		try {
@@ -1859,7 +1861,7 @@ public class ResourceBlockPersistenceImpl extends BasePersistenceImpl<ResourceBl
 				resourceBlock.setNew(false);
 			}
 			else {
-				resourceBlock = (ResourceBlock)session.merge(resourceBlock);
+				updatedResourceBlock = (ResourceBlock)session.merge(resourceBlock);
 			}
 		}
 		catch (Exception e) {
@@ -1921,12 +1923,25 @@ public class ResourceBlockPersistenceImpl extends BasePersistenceImpl<ResourceBl
 			}
 		}
 
-		EntityCacheUtil.putResult(ResourceBlockModelImpl.ENTITY_CACHE_ENABLED,
-			ResourceBlockImpl.class, resourceBlock.getPrimaryKey(),
-			resourceBlock, false);
+		if (updatedResourceBlock == null) {
+			EntityCacheUtil.putResult(ResourceBlockModelImpl.ENTITY_CACHE_ENABLED,
+				ResourceBlockImpl.class, resourceBlock.getPrimaryKey(),
+				resourceBlock, false);
+		}
+		else {
+			EntityCacheUtil.putResult(ResourceBlockModelImpl.ENTITY_CACHE_ENABLED,
+				ResourceBlockImpl.class, resourceBlock.getPrimaryKey(),
+				updatedResourceBlock, false);
+		}
 
 		clearUniqueFindersCache(resourceBlock);
-		cacheUniqueFindersCache(resourceBlock, isNew);
+
+		if (updatedResourceBlock == null) {
+			cacheUniqueFindersCache(resourceBlock, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedResourceBlock, isNew);
+		}
 
 		resourceBlock.resetOriginalValues();
 

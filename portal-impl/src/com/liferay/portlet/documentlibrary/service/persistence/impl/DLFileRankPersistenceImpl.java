@@ -2620,6 +2620,8 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 
 		DLFileRankModelImpl dlFileRankModelImpl = (DLFileRankModelImpl)dlFileRank;
 
+		DLFileRank updatedDLFileRank = null;
+
 		Session session = null;
 
 		try {
@@ -2631,7 +2633,7 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 				dlFileRank.setNew(false);
 			}
 			else {
-				dlFileRank = (DLFileRank)session.merge(dlFileRank);
+				updatedDLFileRank = (DLFileRank)session.merge(dlFileRank);
 			}
 		}
 		catch (Exception e) {
@@ -2729,11 +2731,25 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 			}
 		}
 
-		EntityCacheUtil.putResult(DLFileRankModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileRankImpl.class, dlFileRank.getPrimaryKey(), dlFileRank, false);
+		if (updatedDLFileRank == null) {
+			EntityCacheUtil.putResult(DLFileRankModelImpl.ENTITY_CACHE_ENABLED,
+				DLFileRankImpl.class, dlFileRank.getPrimaryKey(), dlFileRank,
+				false);
+		}
+		else {
+			EntityCacheUtil.putResult(DLFileRankModelImpl.ENTITY_CACHE_ENABLED,
+				DLFileRankImpl.class, dlFileRank.getPrimaryKey(),
+				updatedDLFileRank, false);
+		}
 
 		clearUniqueFindersCache(dlFileRank);
-		cacheUniqueFindersCache(dlFileRank, isNew);
+
+		if (updatedDLFileRank == null) {
+			cacheUniqueFindersCache(dlFileRank, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedDLFileRank, isNew);
+		}
 
 		dlFileRank.resetOriginalValues();
 

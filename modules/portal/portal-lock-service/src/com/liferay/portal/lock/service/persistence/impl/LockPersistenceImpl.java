@@ -2187,6 +2187,8 @@ public class LockPersistenceImpl extends BasePersistenceImpl<Lock>
 			lock.setUuid(uuid);
 		}
 
+		Lock updatedLock = null;
+
 		Session session = null;
 
 		try {
@@ -2198,7 +2200,7 @@ public class LockPersistenceImpl extends BasePersistenceImpl<Lock>
 				lock.setNew(false);
 			}
 			else {
-				lock = (Lock)session.merge(lock);
+				updatedLock = (Lock)session.merge(lock);
 			}
 		}
 		catch (Exception e) {
@@ -2251,11 +2253,23 @@ public class LockPersistenceImpl extends BasePersistenceImpl<Lock>
 			}
 		}
 
-		EntityCacheUtil.putResult(LockModelImpl.ENTITY_CACHE_ENABLED,
-			LockImpl.class, lock.getPrimaryKey(), lock, false);
+		if (updatedLock == null) {
+			EntityCacheUtil.putResult(LockModelImpl.ENTITY_CACHE_ENABLED,
+				LockImpl.class, lock.getPrimaryKey(), lock, false);
+		}
+		else {
+			EntityCacheUtil.putResult(LockModelImpl.ENTITY_CACHE_ENABLED,
+				LockImpl.class, lock.getPrimaryKey(), updatedLock, false);
+		}
 
 		clearUniqueFindersCache(lock);
-		cacheUniqueFindersCache(lock, isNew);
+
+		if (updatedLock == null) {
+			cacheUniqueFindersCache(lock, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedLock, isNew);
+		}
 
 		lock.resetOriginalValues();
 

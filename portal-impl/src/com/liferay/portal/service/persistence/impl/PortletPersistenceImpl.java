@@ -1059,6 +1059,8 @@ public class PortletPersistenceImpl extends BasePersistenceImpl<Portlet>
 
 		PortletModelImpl portletModelImpl = (PortletModelImpl)portlet;
 
+		Portlet updatedPortlet = null;
+
 		Session session = null;
 
 		try {
@@ -1070,7 +1072,7 @@ public class PortletPersistenceImpl extends BasePersistenceImpl<Portlet>
 				portlet.setNew(false);
 			}
 			else {
-				portlet = (Portlet)session.merge(portlet);
+				updatedPortlet = (Portlet)session.merge(portlet);
 			}
 		}
 		catch (Exception e) {
@@ -1107,11 +1109,24 @@ public class PortletPersistenceImpl extends BasePersistenceImpl<Portlet>
 			}
 		}
 
-		EntityCacheUtil.putResult(PortletModelImpl.ENTITY_CACHE_ENABLED,
-			PortletImpl.class, portlet.getPrimaryKey(), portlet, false);
+		if (updatedPortlet == null) {
+			EntityCacheUtil.putResult(PortletModelImpl.ENTITY_CACHE_ENABLED,
+				PortletImpl.class, portlet.getPrimaryKey(), portlet, false);
+		}
+		else {
+			EntityCacheUtil.putResult(PortletModelImpl.ENTITY_CACHE_ENABLED,
+				PortletImpl.class, portlet.getPrimaryKey(), updatedPortlet,
+				false);
+		}
 
 		clearUniqueFindersCache(portlet);
-		cacheUniqueFindersCache(portlet, isNew);
+
+		if (updatedPortlet == null) {
+			cacheUniqueFindersCache(portlet, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedPortlet, isNew);
+		}
 
 		portlet.resetOriginalValues();
 

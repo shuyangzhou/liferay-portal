@@ -1138,6 +1138,8 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 
 		PluginSettingModelImpl pluginSettingModelImpl = (PluginSettingModelImpl)pluginSetting;
 
+		PluginSetting updatedPluginSetting = null;
+
 		Session session = null;
 
 		try {
@@ -1149,7 +1151,7 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 				pluginSetting.setNew(false);
 			}
 			else {
-				pluginSetting = (PluginSetting)session.merge(pluginSetting);
+				updatedPluginSetting = (PluginSetting)session.merge(pluginSetting);
 			}
 		}
 		catch (Exception e) {
@@ -1186,12 +1188,25 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 			}
 		}
 
-		EntityCacheUtil.putResult(PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
-			PluginSettingImpl.class, pluginSetting.getPrimaryKey(),
-			pluginSetting, false);
+		if (updatedPluginSetting == null) {
+			EntityCacheUtil.putResult(PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
+				PluginSettingImpl.class, pluginSetting.getPrimaryKey(),
+				pluginSetting, false);
+		}
+		else {
+			EntityCacheUtil.putResult(PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
+				PluginSettingImpl.class, pluginSetting.getPrimaryKey(),
+				updatedPluginSetting, false);
+		}
 
 		clearUniqueFindersCache(pluginSetting);
-		cacheUniqueFindersCache(pluginSetting, isNew);
+
+		if (updatedPluginSetting == null) {
+			cacheUniqueFindersCache(pluginSetting, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedPluginSetting, isNew);
+		}
 
 		pluginSetting.resetOriginalValues();
 

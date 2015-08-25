@@ -3979,6 +3979,8 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 			}
 		}
 
+		LayoutSetPrototype updatedLayoutSetPrototype = null;
+
 		Session session = null;
 
 		try {
@@ -3990,7 +3992,7 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 				layoutSetPrototype.setNew(false);
 			}
 			else {
-				layoutSetPrototype = (LayoutSetPrototype)session.merge(layoutSetPrototype);
+				updatedLayoutSetPrototype = (LayoutSetPrototype)session.merge(layoutSetPrototype);
 			}
 		}
 		catch (Exception e) {
@@ -4086,9 +4088,17 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 			}
 		}
 
-		EntityCacheUtil.putResult(LayoutSetPrototypeModelImpl.ENTITY_CACHE_ENABLED,
-			LayoutSetPrototypeImpl.class, layoutSetPrototype.getPrimaryKey(),
-			layoutSetPrototype, false);
+		if (updatedLayoutSetPrototype == null) {
+			EntityCacheUtil.putResult(LayoutSetPrototypeModelImpl.ENTITY_CACHE_ENABLED,
+				LayoutSetPrototypeImpl.class,
+				layoutSetPrototype.getPrimaryKey(), layoutSetPrototype, false);
+		}
+		else {
+			EntityCacheUtil.putResult(LayoutSetPrototypeModelImpl.ENTITY_CACHE_ENABLED,
+				LayoutSetPrototypeImpl.class,
+				layoutSetPrototype.getPrimaryKey(), updatedLayoutSetPrototype,
+				false);
+		}
 
 		layoutSetPrototype.resetOriginalValues();
 

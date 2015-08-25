@@ -5859,6 +5859,8 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 			}
 		}
 
+		LayoutRevision updatedLayoutRevision = null;
+
 		Session session = null;
 
 		try {
@@ -5870,7 +5872,7 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 				layoutRevision.setNew(false);
 			}
 			else {
-				layoutRevision = (LayoutRevision)session.merge(layoutRevision);
+				updatedLayoutRevision = (LayoutRevision)session.merge(layoutRevision);
 			}
 		}
 		catch (Exception e) {
@@ -6079,12 +6081,25 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 			}
 		}
 
-		EntityCacheUtil.putResult(LayoutRevisionModelImpl.ENTITY_CACHE_ENABLED,
-			LayoutRevisionImpl.class, layoutRevision.getPrimaryKey(),
-			layoutRevision, false);
+		if (updatedLayoutRevision == null) {
+			EntityCacheUtil.putResult(LayoutRevisionModelImpl.ENTITY_CACHE_ENABLED,
+				LayoutRevisionImpl.class, layoutRevision.getPrimaryKey(),
+				layoutRevision, false);
+		}
+		else {
+			EntityCacheUtil.putResult(LayoutRevisionModelImpl.ENTITY_CACHE_ENABLED,
+				LayoutRevisionImpl.class, layoutRevision.getPrimaryKey(),
+				updatedLayoutRevision, false);
+		}
 
 		clearUniqueFindersCache(layoutRevision);
-		cacheUniqueFindersCache(layoutRevision, isNew);
+
+		if (updatedLayoutRevision == null) {
+			cacheUniqueFindersCache(layoutRevision, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedLayoutRevision, isNew);
+		}
 
 		layoutRevision.resetOriginalValues();
 

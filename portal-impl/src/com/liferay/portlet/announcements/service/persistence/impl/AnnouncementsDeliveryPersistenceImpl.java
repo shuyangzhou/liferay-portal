@@ -1084,6 +1084,8 @@ public class AnnouncementsDeliveryPersistenceImpl extends BasePersistenceImpl<An
 
 		AnnouncementsDeliveryModelImpl announcementsDeliveryModelImpl = (AnnouncementsDeliveryModelImpl)announcementsDelivery;
 
+		AnnouncementsDelivery updatedAnnouncementsDelivery = null;
+
 		Session session = null;
 
 		try {
@@ -1095,7 +1097,7 @@ public class AnnouncementsDeliveryPersistenceImpl extends BasePersistenceImpl<An
 				announcementsDelivery.setNew(false);
 			}
 			else {
-				announcementsDelivery = (AnnouncementsDelivery)session.merge(announcementsDelivery);
+				updatedAnnouncementsDelivery = (AnnouncementsDelivery)session.merge(announcementsDelivery);
 			}
 		}
 		catch (Exception e) {
@@ -1130,12 +1132,27 @@ public class AnnouncementsDeliveryPersistenceImpl extends BasePersistenceImpl<An
 			}
 		}
 
-		EntityCacheUtil.putResult(AnnouncementsDeliveryModelImpl.ENTITY_CACHE_ENABLED,
-			AnnouncementsDeliveryImpl.class,
-			announcementsDelivery.getPrimaryKey(), announcementsDelivery, false);
+		if (updatedAnnouncementsDelivery == null) {
+			EntityCacheUtil.putResult(AnnouncementsDeliveryModelImpl.ENTITY_CACHE_ENABLED,
+				AnnouncementsDeliveryImpl.class,
+				announcementsDelivery.getPrimaryKey(), announcementsDelivery,
+				false);
+		}
+		else {
+			EntityCacheUtil.putResult(AnnouncementsDeliveryModelImpl.ENTITY_CACHE_ENABLED,
+				AnnouncementsDeliveryImpl.class,
+				announcementsDelivery.getPrimaryKey(),
+				updatedAnnouncementsDelivery, false);
+		}
 
 		clearUniqueFindersCache(announcementsDelivery);
-		cacheUniqueFindersCache(announcementsDelivery, isNew);
+
+		if (updatedAnnouncementsDelivery == null) {
+			cacheUniqueFindersCache(announcementsDelivery, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedAnnouncementsDelivery, isNew);
+		}
 
 		announcementsDelivery.resetOriginalValues();
 

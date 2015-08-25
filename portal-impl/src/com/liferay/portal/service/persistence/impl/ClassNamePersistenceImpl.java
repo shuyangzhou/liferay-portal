@@ -549,6 +549,8 @@ public class ClassNamePersistenceImpl extends BasePersistenceImpl<ClassName>
 
 		boolean isNew = className.isNew();
 
+		ClassName updatedClassName = null;
+
 		Session session = null;
 
 		try {
@@ -560,7 +562,7 @@ public class ClassNamePersistenceImpl extends BasePersistenceImpl<ClassName>
 				className.setNew(false);
 			}
 			else {
-				className = (ClassName)session.merge(className);
+				updatedClassName = (ClassName)session.merge(className);
 			}
 		}
 		catch (Exception e) {
@@ -576,11 +578,24 @@ public class ClassNamePersistenceImpl extends BasePersistenceImpl<ClassName>
 			FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
 
-		EntityCacheUtil.putResult(ClassNameModelImpl.ENTITY_CACHE_ENABLED,
-			ClassNameImpl.class, className.getPrimaryKey(), className, false);
+		if (updatedClassName == null) {
+			EntityCacheUtil.putResult(ClassNameModelImpl.ENTITY_CACHE_ENABLED,
+				ClassNameImpl.class, className.getPrimaryKey(), className, false);
+		}
+		else {
+			EntityCacheUtil.putResult(ClassNameModelImpl.ENTITY_CACHE_ENABLED,
+				ClassNameImpl.class, className.getPrimaryKey(),
+				updatedClassName, false);
+		}
 
 		clearUniqueFindersCache(className);
-		cacheUniqueFindersCache(className, isNew);
+
+		if (updatedClassName == null) {
+			cacheUniqueFindersCache(className, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedClassName, isNew);
+		}
 
 		className.resetOriginalValues();
 

@@ -7330,6 +7330,8 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 			}
 		}
 
+		User updatedUser = null;
+
 		Session session = null;
 
 		try {
@@ -7341,7 +7343,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 				user.setNew(false);
 			}
 			else {
-				user = (User)session.merge(user);
+				updatedUser = (User)session.merge(user);
 			}
 		}
 		catch (Exception e) {
@@ -7540,11 +7542,23 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 			}
 		}
 
-		EntityCacheUtil.putResult(UserModelImpl.ENTITY_CACHE_ENABLED,
-			UserImpl.class, user.getPrimaryKey(), user, false);
+		if (updatedUser == null) {
+			EntityCacheUtil.putResult(UserModelImpl.ENTITY_CACHE_ENABLED,
+				UserImpl.class, user.getPrimaryKey(), user, false);
+		}
+		else {
+			EntityCacheUtil.putResult(UserModelImpl.ENTITY_CACHE_ENABLED,
+				UserImpl.class, user.getPrimaryKey(), updatedUser, false);
+		}
 
 		clearUniqueFindersCache(user);
-		cacheUniqueFindersCache(user, isNew);
+
+		if (updatedUser == null) {
+			cacheUniqueFindersCache(user, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedUser, isNew);
+		}
 
 		user.resetOriginalValues();
 

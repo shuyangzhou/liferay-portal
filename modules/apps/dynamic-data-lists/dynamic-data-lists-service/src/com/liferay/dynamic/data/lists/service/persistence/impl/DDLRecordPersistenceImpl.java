@@ -3170,6 +3170,8 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 			}
 		}
 
+		DDLRecord updatedDDLRecord = null;
+
 		Session session = null;
 
 		try {
@@ -3181,7 +3183,7 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 				ddlRecord.setNew(false);
 			}
 			else {
-				ddlRecord = (DDLRecord)session.merge(ddlRecord);
+				updatedDDLRecord = (DDLRecord)session.merge(ddlRecord);
 			}
 		}
 		catch (Exception e) {
@@ -3296,11 +3298,24 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 			}
 		}
 
-		EntityCacheUtil.putResult(DDLRecordModelImpl.ENTITY_CACHE_ENABLED,
-			DDLRecordImpl.class, ddlRecord.getPrimaryKey(), ddlRecord, false);
+		if (updatedDDLRecord == null) {
+			EntityCacheUtil.putResult(DDLRecordModelImpl.ENTITY_CACHE_ENABLED,
+				DDLRecordImpl.class, ddlRecord.getPrimaryKey(), ddlRecord, false);
+		}
+		else {
+			EntityCacheUtil.putResult(DDLRecordModelImpl.ENTITY_CACHE_ENABLED,
+				DDLRecordImpl.class, ddlRecord.getPrimaryKey(),
+				updatedDDLRecord, false);
+		}
 
 		clearUniqueFindersCache(ddlRecord);
-		cacheUniqueFindersCache(ddlRecord, isNew);
+
+		if (updatedDDLRecord == null) {
+			cacheUniqueFindersCache(ddlRecord, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedDDLRecord, isNew);
+		}
 
 		ddlRecord.resetOriginalValues();
 

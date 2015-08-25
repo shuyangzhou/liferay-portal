@@ -2536,6 +2536,8 @@ public class RepositoryPersistenceImpl extends BasePersistenceImpl<Repository>
 			}
 		}
 
+		Repository updatedRepository = null;
+
 		Session session = null;
 
 		try {
@@ -2547,7 +2549,7 @@ public class RepositoryPersistenceImpl extends BasePersistenceImpl<Repository>
 				repository.setNew(false);
 			}
 			else {
-				repository = (Repository)session.merge(repository);
+				updatedRepository = (Repository)session.merge(repository);
 			}
 		}
 		catch (Exception e) {
@@ -2620,11 +2622,25 @@ public class RepositoryPersistenceImpl extends BasePersistenceImpl<Repository>
 			}
 		}
 
-		EntityCacheUtil.putResult(RepositoryModelImpl.ENTITY_CACHE_ENABLED,
-			RepositoryImpl.class, repository.getPrimaryKey(), repository, false);
+		if (updatedRepository == null) {
+			EntityCacheUtil.putResult(RepositoryModelImpl.ENTITY_CACHE_ENABLED,
+				RepositoryImpl.class, repository.getPrimaryKey(), repository,
+				false);
+		}
+		else {
+			EntityCacheUtil.putResult(RepositoryModelImpl.ENTITY_CACHE_ENABLED,
+				RepositoryImpl.class, repository.getPrimaryKey(),
+				updatedRepository, false);
+		}
 
 		clearUniqueFindersCache(repository);
-		cacheUniqueFindersCache(repository, isNew);
+
+		if (updatedRepository == null) {
+			cacheUniqueFindersCache(repository, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedRepository, isNew);
+		}
 
 		repository.resetOriginalValues();
 

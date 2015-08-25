@@ -762,6 +762,8 @@ public class UserTrackerPathPersistenceImpl extends BasePersistenceImpl<UserTrac
 
 		UserTrackerPathModelImpl userTrackerPathModelImpl = (UserTrackerPathModelImpl)userTrackerPath;
 
+		UserTrackerPath updatedUserTrackerPath = null;
+
 		Session session = null;
 
 		try {
@@ -773,7 +775,7 @@ public class UserTrackerPathPersistenceImpl extends BasePersistenceImpl<UserTrac
 				userTrackerPath.setNew(false);
 			}
 			else {
-				userTrackerPath = (UserTrackerPath)session.merge(userTrackerPath);
+				updatedUserTrackerPath = (UserTrackerPath)session.merge(userTrackerPath);
 			}
 		}
 		catch (Exception e) {
@@ -810,9 +812,16 @@ public class UserTrackerPathPersistenceImpl extends BasePersistenceImpl<UserTrac
 			}
 		}
 
-		EntityCacheUtil.putResult(UserTrackerPathModelImpl.ENTITY_CACHE_ENABLED,
-			UserTrackerPathImpl.class, userTrackerPath.getPrimaryKey(),
-			userTrackerPath, false);
+		if (updatedUserTrackerPath == null) {
+			EntityCacheUtil.putResult(UserTrackerPathModelImpl.ENTITY_CACHE_ENABLED,
+				UserTrackerPathImpl.class, userTrackerPath.getPrimaryKey(),
+				userTrackerPath, false);
+		}
+		else {
+			EntityCacheUtil.putResult(UserTrackerPathModelImpl.ENTITY_CACHE_ENABLED,
+				UserTrackerPathImpl.class, userTrackerPath.getPrimaryKey(),
+				updatedUserTrackerPath, false);
+		}
 
 		userTrackerPath.resetOriginalValues();
 

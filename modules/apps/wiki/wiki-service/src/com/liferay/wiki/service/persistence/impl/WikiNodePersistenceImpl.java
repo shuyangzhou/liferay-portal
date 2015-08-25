@@ -4699,6 +4699,8 @@ public class WikiNodePersistenceImpl extends BasePersistenceImpl<WikiNode>
 			}
 		}
 
+		WikiNode updatedWikiNode = null;
+
 		Session session = null;
 
 		try {
@@ -4710,7 +4712,7 @@ public class WikiNodePersistenceImpl extends BasePersistenceImpl<WikiNode>
 				wikiNode.setNew(false);
 			}
 			else {
-				wikiNode = (WikiNode)session.merge(wikiNode);
+				updatedWikiNode = (WikiNode)session.merge(wikiNode);
 			}
 		}
 		catch (Exception e) {
@@ -4842,11 +4844,24 @@ public class WikiNodePersistenceImpl extends BasePersistenceImpl<WikiNode>
 			}
 		}
 
-		EntityCacheUtil.putResult(WikiNodeModelImpl.ENTITY_CACHE_ENABLED,
-			WikiNodeImpl.class, wikiNode.getPrimaryKey(), wikiNode, false);
+		if (updatedWikiNode == null) {
+			EntityCacheUtil.putResult(WikiNodeModelImpl.ENTITY_CACHE_ENABLED,
+				WikiNodeImpl.class, wikiNode.getPrimaryKey(), wikiNode, false);
+		}
+		else {
+			EntityCacheUtil.putResult(WikiNodeModelImpl.ENTITY_CACHE_ENABLED,
+				WikiNodeImpl.class, wikiNode.getPrimaryKey(), updatedWikiNode,
+				false);
+		}
 
 		clearUniqueFindersCache(wikiNode);
-		cacheUniqueFindersCache(wikiNode, isNew);
+
+		if (updatedWikiNode == null) {
+			cacheUniqueFindersCache(wikiNode, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedWikiNode, isNew);
+		}
 
 		wikiNode.resetOriginalValues();
 

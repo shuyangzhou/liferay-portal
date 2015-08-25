@@ -2751,6 +2751,8 @@ public class ShoppingOrderPersistenceImpl extends BasePersistenceImpl<ShoppingOr
 			}
 		}
 
+		ShoppingOrder updatedShoppingOrder = null;
+
 		Session session = null;
 
 		try {
@@ -2762,7 +2764,7 @@ public class ShoppingOrderPersistenceImpl extends BasePersistenceImpl<ShoppingOr
 				shoppingOrder.setNew(false);
 			}
 			else {
-				shoppingOrder = (ShoppingOrder)session.merge(shoppingOrder);
+				updatedShoppingOrder = (ShoppingOrder)session.merge(shoppingOrder);
 			}
 		}
 		catch (Exception e) {
@@ -2820,12 +2822,25 @@ public class ShoppingOrderPersistenceImpl extends BasePersistenceImpl<ShoppingOr
 			}
 		}
 
-		EntityCacheUtil.putResult(ShoppingOrderModelImpl.ENTITY_CACHE_ENABLED,
-			ShoppingOrderImpl.class, shoppingOrder.getPrimaryKey(),
-			shoppingOrder, false);
+		if (updatedShoppingOrder == null) {
+			EntityCacheUtil.putResult(ShoppingOrderModelImpl.ENTITY_CACHE_ENABLED,
+				ShoppingOrderImpl.class, shoppingOrder.getPrimaryKey(),
+				shoppingOrder, false);
+		}
+		else {
+			EntityCacheUtil.putResult(ShoppingOrderModelImpl.ENTITY_CACHE_ENABLED,
+				ShoppingOrderImpl.class, shoppingOrder.getPrimaryKey(),
+				updatedShoppingOrder, false);
+		}
 
 		clearUniqueFindersCache(shoppingOrder);
-		cacheUniqueFindersCache(shoppingOrder, isNew);
+
+		if (updatedShoppingOrder == null) {
+			cacheUniqueFindersCache(shoppingOrder, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedShoppingOrder, isNew);
+		}
 
 		shoppingOrder.resetOriginalValues();
 

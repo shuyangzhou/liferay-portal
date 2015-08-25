@@ -5048,6 +5048,8 @@ public class LayoutFriendlyURLPersistenceImpl extends BasePersistenceImpl<Layout
 			}
 		}
 
+		LayoutFriendlyURL updatedLayoutFriendlyURL = null;
+
 		Session session = null;
 
 		try {
@@ -5059,7 +5061,7 @@ public class LayoutFriendlyURLPersistenceImpl extends BasePersistenceImpl<Layout
 				layoutFriendlyURL.setNew(false);
 			}
 			else {
-				layoutFriendlyURL = (LayoutFriendlyURL)session.merge(layoutFriendlyURL);
+				updatedLayoutFriendlyURL = (LayoutFriendlyURL)session.merge(layoutFriendlyURL);
 			}
 		}
 		catch (Exception e) {
@@ -5212,12 +5214,25 @@ public class LayoutFriendlyURLPersistenceImpl extends BasePersistenceImpl<Layout
 			}
 		}
 
-		EntityCacheUtil.putResult(LayoutFriendlyURLModelImpl.ENTITY_CACHE_ENABLED,
-			LayoutFriendlyURLImpl.class, layoutFriendlyURL.getPrimaryKey(),
-			layoutFriendlyURL, false);
+		if (updatedLayoutFriendlyURL == null) {
+			EntityCacheUtil.putResult(LayoutFriendlyURLModelImpl.ENTITY_CACHE_ENABLED,
+				LayoutFriendlyURLImpl.class, layoutFriendlyURL.getPrimaryKey(),
+				layoutFriendlyURL, false);
+		}
+		else {
+			EntityCacheUtil.putResult(LayoutFriendlyURLModelImpl.ENTITY_CACHE_ENABLED,
+				LayoutFriendlyURLImpl.class, layoutFriendlyURL.getPrimaryKey(),
+				updatedLayoutFriendlyURL, false);
+		}
 
 		clearUniqueFindersCache(layoutFriendlyURL);
-		cacheUniqueFindersCache(layoutFriendlyURL, isNew);
+
+		if (updatedLayoutFriendlyURL == null) {
+			cacheUniqueFindersCache(layoutFriendlyURL, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedLayoutFriendlyURL, isNew);
+		}
 
 		layoutFriendlyURL.resetOriginalValues();
 

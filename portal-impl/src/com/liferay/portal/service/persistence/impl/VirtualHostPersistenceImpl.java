@@ -822,6 +822,8 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 
 		boolean isNew = virtualHost.isNew();
 
+		VirtualHost updatedVirtualHost = null;
+
 		Session session = null;
 
 		try {
@@ -833,7 +835,7 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 				virtualHost.setNew(false);
 			}
 			else {
-				virtualHost = (VirtualHost)session.merge(virtualHost);
+				updatedVirtualHost = (VirtualHost)session.merge(virtualHost);
 			}
 		}
 		catch (Exception e) {
@@ -849,12 +851,25 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 			FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
 
-		EntityCacheUtil.putResult(VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
-			VirtualHostImpl.class, virtualHost.getPrimaryKey(), virtualHost,
-			false);
+		if (updatedVirtualHost == null) {
+			EntityCacheUtil.putResult(VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
+				VirtualHostImpl.class, virtualHost.getPrimaryKey(),
+				virtualHost, false);
+		}
+		else {
+			EntityCacheUtil.putResult(VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
+				VirtualHostImpl.class, virtualHost.getPrimaryKey(),
+				updatedVirtualHost, false);
+		}
 
 		clearUniqueFindersCache(virtualHost);
-		cacheUniqueFindersCache(virtualHost, isNew);
+
+		if (updatedVirtualHost == null) {
+			cacheUniqueFindersCache(virtualHost, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedVirtualHost, isNew);
+		}
 
 		virtualHost.resetOriginalValues();
 

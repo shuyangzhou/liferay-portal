@@ -523,6 +523,8 @@ public class BrowserTrackerPersistenceImpl extends BasePersistenceImpl<BrowserTr
 
 		boolean isNew = browserTracker.isNew();
 
+		BrowserTracker updatedBrowserTracker = null;
+
 		Session session = null;
 
 		try {
@@ -534,7 +536,7 @@ public class BrowserTrackerPersistenceImpl extends BasePersistenceImpl<BrowserTr
 				browserTracker.setNew(false);
 			}
 			else {
-				browserTracker = (BrowserTracker)session.merge(browserTracker);
+				updatedBrowserTracker = (BrowserTracker)session.merge(browserTracker);
 			}
 		}
 		catch (Exception e) {
@@ -550,12 +552,25 @@ public class BrowserTrackerPersistenceImpl extends BasePersistenceImpl<BrowserTr
 			FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
 
-		EntityCacheUtil.putResult(BrowserTrackerModelImpl.ENTITY_CACHE_ENABLED,
-			BrowserTrackerImpl.class, browserTracker.getPrimaryKey(),
-			browserTracker, false);
+		if (updatedBrowserTracker == null) {
+			EntityCacheUtil.putResult(BrowserTrackerModelImpl.ENTITY_CACHE_ENABLED,
+				BrowserTrackerImpl.class, browserTracker.getPrimaryKey(),
+				browserTracker, false);
+		}
+		else {
+			EntityCacheUtil.putResult(BrowserTrackerModelImpl.ENTITY_CACHE_ENABLED,
+				BrowserTrackerImpl.class, browserTracker.getPrimaryKey(),
+				updatedBrowserTracker, false);
+		}
 
 		clearUniqueFindersCache(browserTracker);
-		cacheUniqueFindersCache(browserTracker, isNew);
+
+		if (updatedBrowserTracker == null) {
+			cacheUniqueFindersCache(browserTracker, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedBrowserTracker, isNew);
+		}
 
 		browserTracker.resetOriginalValues();
 

@@ -3310,6 +3310,8 @@ public class SocialActivityAchievementPersistenceImpl
 
 		SocialActivityAchievementModelImpl socialActivityAchievementModelImpl = (SocialActivityAchievementModelImpl)socialActivityAchievement;
 
+		SocialActivityAchievement updatedSocialActivityAchievement = null;
+
 		Session session = null;
 
 		try {
@@ -3321,7 +3323,7 @@ public class SocialActivityAchievementPersistenceImpl
 				socialActivityAchievement.setNew(false);
 			}
 			else {
-				socialActivityAchievement = (SocialActivityAchievement)session.merge(socialActivityAchievement);
+				updatedSocialActivityAchievement = (SocialActivityAchievement)session.merge(socialActivityAchievement);
 			}
 		}
 		catch (Exception e) {
@@ -3445,13 +3447,27 @@ public class SocialActivityAchievementPersistenceImpl
 			}
 		}
 
-		EntityCacheUtil.putResult(SocialActivityAchievementModelImpl.ENTITY_CACHE_ENABLED,
-			SocialActivityAchievementImpl.class,
-			socialActivityAchievement.getPrimaryKey(),
-			socialActivityAchievement, false);
+		if (updatedSocialActivityAchievement == null) {
+			EntityCacheUtil.putResult(SocialActivityAchievementModelImpl.ENTITY_CACHE_ENABLED,
+				SocialActivityAchievementImpl.class,
+				socialActivityAchievement.getPrimaryKey(),
+				socialActivityAchievement, false);
+		}
+		else {
+			EntityCacheUtil.putResult(SocialActivityAchievementModelImpl.ENTITY_CACHE_ENABLED,
+				SocialActivityAchievementImpl.class,
+				socialActivityAchievement.getPrimaryKey(),
+				updatedSocialActivityAchievement, false);
+		}
 
 		clearUniqueFindersCache(socialActivityAchievement);
-		cacheUniqueFindersCache(socialActivityAchievement, isNew);
+
+		if (updatedSocialActivityAchievement == null) {
+			cacheUniqueFindersCache(socialActivityAchievement, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedSocialActivityAchievement, isNew);
+		}
 
 		socialActivityAchievement.resetOriginalValues();
 

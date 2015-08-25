@@ -2379,6 +2379,8 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 
 		DLContentModelImpl dlContentModelImpl = (DLContentModelImpl)dlContent;
 
+		DLContent updatedDLContent = null;
+
 		Session session = null;
 
 		try {
@@ -2456,11 +2458,24 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 			}
 		}
 
-		EntityCacheUtil.putResult(DLContentModelImpl.ENTITY_CACHE_ENABLED,
-			DLContentImpl.class, dlContent.getPrimaryKey(), dlContent, false);
+		if (updatedDLContent == null) {
+			EntityCacheUtil.putResult(DLContentModelImpl.ENTITY_CACHE_ENABLED,
+				DLContentImpl.class, dlContent.getPrimaryKey(), dlContent, false);
+		}
+		else {
+			EntityCacheUtil.putResult(DLContentModelImpl.ENTITY_CACHE_ENABLED,
+				DLContentImpl.class, dlContent.getPrimaryKey(),
+				updatedDLContent, false);
+		}
 
 		clearUniqueFindersCache(dlContent);
-		cacheUniqueFindersCache(dlContent, isNew);
+
+		if (updatedDLContent == null) {
+			cacheUniqueFindersCache(dlContent, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedDLContent, isNew);
+		}
 
 		dlContent.resetOriginalValues();
 

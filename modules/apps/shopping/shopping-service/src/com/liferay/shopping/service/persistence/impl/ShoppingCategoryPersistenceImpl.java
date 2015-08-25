@@ -2369,6 +2369,8 @@ public class ShoppingCategoryPersistenceImpl extends BasePersistenceImpl<Shoppin
 			}
 		}
 
+		ShoppingCategory updatedShoppingCategory = null;
+
 		Session session = null;
 
 		try {
@@ -2380,7 +2382,7 @@ public class ShoppingCategoryPersistenceImpl extends BasePersistenceImpl<Shoppin
 				shoppingCategory.setNew(false);
 			}
 			else {
-				shoppingCategory = (ShoppingCategory)session.merge(shoppingCategory);
+				updatedShoppingCategory = (ShoppingCategory)session.merge(shoppingCategory);
 			}
 		}
 		catch (Exception e) {
@@ -2436,12 +2438,25 @@ public class ShoppingCategoryPersistenceImpl extends BasePersistenceImpl<Shoppin
 			}
 		}
 
-		EntityCacheUtil.putResult(ShoppingCategoryModelImpl.ENTITY_CACHE_ENABLED,
-			ShoppingCategoryImpl.class, shoppingCategory.getPrimaryKey(),
-			shoppingCategory, false);
+		if (updatedShoppingCategory == null) {
+			EntityCacheUtil.putResult(ShoppingCategoryModelImpl.ENTITY_CACHE_ENABLED,
+				ShoppingCategoryImpl.class, shoppingCategory.getPrimaryKey(),
+				shoppingCategory, false);
+		}
+		else {
+			EntityCacheUtil.putResult(ShoppingCategoryModelImpl.ENTITY_CACHE_ENABLED,
+				ShoppingCategoryImpl.class, shoppingCategory.getPrimaryKey(),
+				updatedShoppingCategory, false);
+		}
 
 		clearUniqueFindersCache(shoppingCategory);
-		cacheUniqueFindersCache(shoppingCategory, isNew);
+
+		if (updatedShoppingCategory == null) {
+			cacheUniqueFindersCache(shoppingCategory, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedShoppingCategory, isNew);
+		}
 
 		shoppingCategory.resetOriginalValues();
 

@@ -12072,6 +12072,8 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 			}
 		}
 
+		BookmarksEntry updatedBookmarksEntry = null;
+
 		Session session = null;
 
 		try {
@@ -12083,7 +12085,7 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 				bookmarksEntry.setNew(false);
 			}
 			else {
-				bookmarksEntry = (BookmarksEntry)session.merge(bookmarksEntry);
+				updatedBookmarksEntry = (BookmarksEntry)session.merge(bookmarksEntry);
 			}
 		}
 		catch (Exception e) {
@@ -12290,12 +12292,25 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 			}
 		}
 
-		EntityCacheUtil.putResult(BookmarksEntryModelImpl.ENTITY_CACHE_ENABLED,
-			BookmarksEntryImpl.class, bookmarksEntry.getPrimaryKey(),
-			bookmarksEntry, false);
+		if (updatedBookmarksEntry == null) {
+			EntityCacheUtil.putResult(BookmarksEntryModelImpl.ENTITY_CACHE_ENABLED,
+				BookmarksEntryImpl.class, bookmarksEntry.getPrimaryKey(),
+				bookmarksEntry, false);
+		}
+		else {
+			EntityCacheUtil.putResult(BookmarksEntryModelImpl.ENTITY_CACHE_ENABLED,
+				BookmarksEntryImpl.class, bookmarksEntry.getPrimaryKey(),
+				updatedBookmarksEntry, false);
+		}
 
 		clearUniqueFindersCache(bookmarksEntry);
-		cacheUniqueFindersCache(bookmarksEntry, isNew);
+
+		if (updatedBookmarksEntry == null) {
+			cacheUniqueFindersCache(bookmarksEntry, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedBookmarksEntry, isNew);
+		}
 
 		bookmarksEntry.resetOriginalValues();
 

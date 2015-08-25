@@ -4600,6 +4600,8 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 			}
 		}
 
+		Address updatedAddress = null;
+
 		Session session = null;
 
 		try {
@@ -4611,7 +4613,7 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 				address.setNew(false);
 			}
 			else {
-				address = (Address)session.merge(address);
+				updatedAddress = (Address)session.merge(address);
 			}
 		}
 		catch (Exception e) {
@@ -4795,8 +4797,15 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 			}
 		}
 
-		EntityCacheUtil.putResult(AddressModelImpl.ENTITY_CACHE_ENABLED,
-			AddressImpl.class, address.getPrimaryKey(), address, false);
+		if (updatedAddress == null) {
+			EntityCacheUtil.putResult(AddressModelImpl.ENTITY_CACHE_ENABLED,
+				AddressImpl.class, address.getPrimaryKey(), address, false);
+		}
+		else {
+			EntityCacheUtil.putResult(AddressModelImpl.ENTITY_CACHE_ENABLED,
+				AddressImpl.class, address.getPrimaryKey(), updatedAddress,
+				false);
+		}
 
 		address.resetOriginalValues();
 

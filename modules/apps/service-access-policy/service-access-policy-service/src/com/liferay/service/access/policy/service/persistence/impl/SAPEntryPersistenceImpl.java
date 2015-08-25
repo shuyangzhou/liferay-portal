@@ -3348,6 +3348,8 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 			}
 		}
 
+		SAPEntry updatedSAPEntry = null;
+
 		Session session = null;
 
 		try {
@@ -3359,7 +3361,7 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 				sapEntry.setNew(false);
 			}
 			else {
-				sapEntry = (SAPEntry)session.merge(sapEntry);
+				updatedSAPEntry = (SAPEntry)session.merge(sapEntry);
 			}
 		}
 		catch (Exception e) {
@@ -3432,11 +3434,24 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 			}
 		}
 
-		EntityCacheUtil.putResult(SAPEntryModelImpl.ENTITY_CACHE_ENABLED,
-			SAPEntryImpl.class, sapEntry.getPrimaryKey(), sapEntry, false);
+		if (updatedSAPEntry == null) {
+			EntityCacheUtil.putResult(SAPEntryModelImpl.ENTITY_CACHE_ENABLED,
+				SAPEntryImpl.class, sapEntry.getPrimaryKey(), sapEntry, false);
+		}
+		else {
+			EntityCacheUtil.putResult(SAPEntryModelImpl.ENTITY_CACHE_ENABLED,
+				SAPEntryImpl.class, sapEntry.getPrimaryKey(), updatedSAPEntry,
+				false);
+		}
 
 		clearUniqueFindersCache(sapEntry);
-		cacheUniqueFindersCache(sapEntry, isNew);
+
+		if (updatedSAPEntry == null) {
+			cacheUniqueFindersCache(sapEntry, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedSAPEntry, isNew);
+		}
 
 		sapEntry.resetOriginalValues();
 

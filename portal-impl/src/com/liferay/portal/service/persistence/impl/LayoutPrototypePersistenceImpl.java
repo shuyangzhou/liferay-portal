@@ -3961,6 +3961,8 @@ public class LayoutPrototypePersistenceImpl extends BasePersistenceImpl<LayoutPr
 			}
 		}
 
+		LayoutPrototype updatedLayoutPrototype = null;
+
 		Session session = null;
 
 		try {
@@ -3972,7 +3974,7 @@ public class LayoutPrototypePersistenceImpl extends BasePersistenceImpl<LayoutPr
 				layoutPrototype.setNew(false);
 			}
 			else {
-				layoutPrototype = (LayoutPrototype)session.merge(layoutPrototype);
+				updatedLayoutPrototype = (LayoutPrototype)session.merge(layoutPrototype);
 			}
 		}
 		catch (Exception e) {
@@ -4068,9 +4070,16 @@ public class LayoutPrototypePersistenceImpl extends BasePersistenceImpl<LayoutPr
 			}
 		}
 
-		EntityCacheUtil.putResult(LayoutPrototypeModelImpl.ENTITY_CACHE_ENABLED,
-			LayoutPrototypeImpl.class, layoutPrototype.getPrimaryKey(),
-			layoutPrototype, false);
+		if (updatedLayoutPrototype == null) {
+			EntityCacheUtil.putResult(LayoutPrototypeModelImpl.ENTITY_CACHE_ENABLED,
+				LayoutPrototypeImpl.class, layoutPrototype.getPrimaryKey(),
+				layoutPrototype, false);
+		}
+		else {
+			EntityCacheUtil.putResult(LayoutPrototypeModelImpl.ENTITY_CACHE_ENABLED,
+				LayoutPrototypeImpl.class, layoutPrototype.getPrimaryKey(),
+				updatedLayoutPrototype, false);
+		}
 
 		layoutPrototype.resetOriginalValues();
 

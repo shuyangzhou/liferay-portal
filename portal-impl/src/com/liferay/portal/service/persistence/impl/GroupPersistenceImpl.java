@@ -8085,6 +8085,8 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 			group.setUuid(uuid);
 		}
 
+		Group updatedGroup = null;
+
 		Session session = null;
 
 		try {
@@ -8096,7 +8098,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 				group.setNew(false);
 			}
 			else {
-				group = (Group)session.merge(group);
+				updatedGroup = (Group)session.merge(group);
 			}
 		}
 		catch (Exception e) {
@@ -8321,11 +8323,23 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 			}
 		}
 
-		EntityCacheUtil.putResult(GroupModelImpl.ENTITY_CACHE_ENABLED,
-			GroupImpl.class, group.getPrimaryKey(), group, false);
+		if (updatedGroup == null) {
+			EntityCacheUtil.putResult(GroupModelImpl.ENTITY_CACHE_ENABLED,
+				GroupImpl.class, group.getPrimaryKey(), group, false);
+		}
+		else {
+			EntityCacheUtil.putResult(GroupModelImpl.ENTITY_CACHE_ENABLED,
+				GroupImpl.class, group.getPrimaryKey(), updatedGroup, false);
+		}
 
 		clearUniqueFindersCache(group);
-		cacheUniqueFindersCache(group, isNew);
+
+		if (updatedGroup == null) {
+			cacheUniqueFindersCache(group, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedGroup, isNew);
+		}
 
 		group.resetOriginalValues();
 

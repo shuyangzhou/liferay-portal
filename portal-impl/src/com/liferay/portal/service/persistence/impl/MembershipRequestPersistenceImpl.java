@@ -2313,6 +2313,8 @@ public class MembershipRequestPersistenceImpl extends BasePersistenceImpl<Member
 
 		MembershipRequestModelImpl membershipRequestModelImpl = (MembershipRequestModelImpl)membershipRequest;
 
+		MembershipRequest updatedMembershipRequest = null;
+
 		Session session = null;
 
 		try {
@@ -2324,7 +2326,7 @@ public class MembershipRequestPersistenceImpl extends BasePersistenceImpl<Member
 				membershipRequest.setNew(false);
 			}
 			else {
-				membershipRequest = (MembershipRequest)session.merge(membershipRequest);
+				updatedMembershipRequest = (MembershipRequest)session.merge(membershipRequest);
 			}
 		}
 		catch (Exception e) {
@@ -2420,9 +2422,16 @@ public class MembershipRequestPersistenceImpl extends BasePersistenceImpl<Member
 			}
 		}
 
-		EntityCacheUtil.putResult(MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-			MembershipRequestImpl.class, membershipRequest.getPrimaryKey(),
-			membershipRequest, false);
+		if (updatedMembershipRequest == null) {
+			EntityCacheUtil.putResult(MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
+				MembershipRequestImpl.class, membershipRequest.getPrimaryKey(),
+				membershipRequest, false);
+		}
+		else {
+			EntityCacheUtil.putResult(MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
+				MembershipRequestImpl.class, membershipRequest.getPrimaryKey(),
+				updatedMembershipRequest, false);
+		}
 
 		membershipRequest.resetOriginalValues();
 

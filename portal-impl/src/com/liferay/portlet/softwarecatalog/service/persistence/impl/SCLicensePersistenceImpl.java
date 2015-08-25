@@ -1995,6 +1995,8 @@ public class SCLicensePersistenceImpl extends BasePersistenceImpl<SCLicense>
 
 		SCLicenseModelImpl scLicenseModelImpl = (SCLicenseModelImpl)scLicense;
 
+		SCLicense updatedSCLicense = null;
+
 		Session session = null;
 
 		try {
@@ -2006,7 +2008,7 @@ public class SCLicensePersistenceImpl extends BasePersistenceImpl<SCLicense>
 				scLicense.setNew(false);
 			}
 			else {
-				scLicense = (SCLicense)session.merge(scLicense);
+				updatedSCLicense = (SCLicense)session.merge(scLicense);
 			}
 		}
 		catch (Exception e) {
@@ -2062,8 +2064,15 @@ public class SCLicensePersistenceImpl extends BasePersistenceImpl<SCLicense>
 			}
 		}
 
-		EntityCacheUtil.putResult(SCLicenseModelImpl.ENTITY_CACHE_ENABLED,
-			SCLicenseImpl.class, scLicense.getPrimaryKey(), scLicense, false);
+		if (updatedSCLicense == null) {
+			EntityCacheUtil.putResult(SCLicenseModelImpl.ENTITY_CACHE_ENABLED,
+				SCLicenseImpl.class, scLicense.getPrimaryKey(), scLicense, false);
+		}
+		else {
+			EntityCacheUtil.putResult(SCLicenseModelImpl.ENTITY_CACHE_ENABLED,
+				SCLicenseImpl.class, scLicense.getPrimaryKey(),
+				updatedSCLicense, false);
+		}
 
 		scLicense.resetOriginalValues();
 

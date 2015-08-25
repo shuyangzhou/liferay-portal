@@ -989,6 +989,8 @@ public class DLSyncEventPersistenceImpl extends BasePersistenceImpl<DLSyncEvent>
 
 		boolean isNew = dlSyncEvent.isNew();
 
+		DLSyncEvent updatedDLSyncEvent = null;
+
 		Session session = null;
 
 		try {
@@ -1000,7 +1002,7 @@ public class DLSyncEventPersistenceImpl extends BasePersistenceImpl<DLSyncEvent>
 				dlSyncEvent.setNew(false);
 			}
 			else {
-				dlSyncEvent = (DLSyncEvent)session.merge(dlSyncEvent);
+				updatedDLSyncEvent = (DLSyncEvent)session.merge(dlSyncEvent);
 			}
 		}
 		catch (Exception e) {
@@ -1016,12 +1018,25 @@ public class DLSyncEventPersistenceImpl extends BasePersistenceImpl<DLSyncEvent>
 			FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
 
-		EntityCacheUtil.putResult(DLSyncEventModelImpl.ENTITY_CACHE_ENABLED,
-			DLSyncEventImpl.class, dlSyncEvent.getPrimaryKey(), dlSyncEvent,
-			false);
+		if (updatedDLSyncEvent == null) {
+			EntityCacheUtil.putResult(DLSyncEventModelImpl.ENTITY_CACHE_ENABLED,
+				DLSyncEventImpl.class, dlSyncEvent.getPrimaryKey(),
+				dlSyncEvent, false);
+		}
+		else {
+			EntityCacheUtil.putResult(DLSyncEventModelImpl.ENTITY_CACHE_ENABLED,
+				DLSyncEventImpl.class, dlSyncEvent.getPrimaryKey(),
+				updatedDLSyncEvent, false);
+		}
 
 		clearUniqueFindersCache(dlSyncEvent);
-		cacheUniqueFindersCache(dlSyncEvent, isNew);
+
+		if (updatedDLSyncEvent == null) {
+			cacheUniqueFindersCache(dlSyncEvent, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedDLSyncEvent, isNew);
+		}
 
 		dlSyncEvent.resetOriginalValues();
 

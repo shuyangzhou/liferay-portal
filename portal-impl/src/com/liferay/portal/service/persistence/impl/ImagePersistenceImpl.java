@@ -721,6 +721,8 @@ public class ImagePersistenceImpl extends BasePersistenceImpl<Image>
 
 		boolean isNew = image.isNew();
 
+		Image updatedImage = null;
+
 		Session session = null;
 
 		try {
@@ -732,7 +734,7 @@ public class ImagePersistenceImpl extends BasePersistenceImpl<Image>
 				image.setNew(false);
 			}
 			else {
-				image = (Image)session.merge(image);
+				updatedImage = (Image)session.merge(image);
 			}
 		}
 		catch (Exception e) {
@@ -748,8 +750,14 @@ public class ImagePersistenceImpl extends BasePersistenceImpl<Image>
 			FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
 
-		EntityCacheUtil.putResult(ImageModelImpl.ENTITY_CACHE_ENABLED,
-			ImageImpl.class, image.getPrimaryKey(), image, false);
+		if (updatedImage == null) {
+			EntityCacheUtil.putResult(ImageModelImpl.ENTITY_CACHE_ENABLED,
+				ImageImpl.class, image.getPrimaryKey(), image, false);
+		}
+		else {
+			EntityCacheUtil.putResult(ImageModelImpl.ENTITY_CACHE_ENABLED,
+				ImageImpl.class, image.getPrimaryKey(), updatedImage, false);
+		}
 
 		image.resetOriginalValues();
 

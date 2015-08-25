@@ -1501,6 +1501,8 @@ public class ExpandoRowPersistenceImpl extends BasePersistenceImpl<ExpandoRow>
 
 		ExpandoRowModelImpl expandoRowModelImpl = (ExpandoRowModelImpl)expandoRow;
 
+		ExpandoRow updatedExpandoRow = null;
+
 		Session session = null;
 
 		try {
@@ -1512,7 +1514,7 @@ public class ExpandoRowPersistenceImpl extends BasePersistenceImpl<ExpandoRow>
 				expandoRow.setNew(false);
 			}
 			else {
-				expandoRow = (ExpandoRow)session.merge(expandoRow);
+				updatedExpandoRow = (ExpandoRow)session.merge(expandoRow);
 			}
 		}
 		catch (Exception e) {
@@ -1564,11 +1566,25 @@ public class ExpandoRowPersistenceImpl extends BasePersistenceImpl<ExpandoRow>
 			}
 		}
 
-		EntityCacheUtil.putResult(ExpandoRowModelImpl.ENTITY_CACHE_ENABLED,
-			ExpandoRowImpl.class, expandoRow.getPrimaryKey(), expandoRow, false);
+		if (updatedExpandoRow == null) {
+			EntityCacheUtil.putResult(ExpandoRowModelImpl.ENTITY_CACHE_ENABLED,
+				ExpandoRowImpl.class, expandoRow.getPrimaryKey(), expandoRow,
+				false);
+		}
+		else {
+			EntityCacheUtil.putResult(ExpandoRowModelImpl.ENTITY_CACHE_ENABLED,
+				ExpandoRowImpl.class, expandoRow.getPrimaryKey(),
+				updatedExpandoRow, false);
+		}
 
 		clearUniqueFindersCache(expandoRow);
-		cacheUniqueFindersCache(expandoRow, isNew);
+
+		if (updatedExpandoRow == null) {
+			cacheUniqueFindersCache(expandoRow, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedExpandoRow, isNew);
+		}
 
 		expandoRow.resetOriginalValues();
 

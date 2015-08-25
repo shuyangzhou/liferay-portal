@@ -1760,6 +1760,8 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 			}
 		}
 
+		WallEntry updatedWallEntry = null;
+
 		Session session = null;
 
 		try {
@@ -1771,7 +1773,7 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 				wallEntry.setNew(false);
 			}
 			else {
-				wallEntry = (WallEntry)session.merge(wallEntry);
+				updatedWallEntry = (WallEntry)session.merge(wallEntry);
 			}
 		}
 		catch (Exception e) {
@@ -1844,8 +1846,15 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 			}
 		}
 
-		EntityCacheUtil.putResult(WallEntryModelImpl.ENTITY_CACHE_ENABLED,
-			WallEntryImpl.class, wallEntry.getPrimaryKey(), wallEntry, false);
+		if (updatedWallEntry == null) {
+			EntityCacheUtil.putResult(WallEntryModelImpl.ENTITY_CACHE_ENABLED,
+				WallEntryImpl.class, wallEntry.getPrimaryKey(), wallEntry, false);
+		}
+		else {
+			EntityCacheUtil.putResult(WallEntryModelImpl.ENTITY_CACHE_ENABLED,
+				WallEntryImpl.class, wallEntry.getPrimaryKey(),
+				updatedWallEntry, false);
+		}
 
 		wallEntry.resetOriginalValues();
 

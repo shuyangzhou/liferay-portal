@@ -1620,6 +1620,8 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 			}
 		}
 
+		MeetupsRegistration updatedMeetupsRegistration = null;
+
 		Session session = null;
 
 		try {
@@ -1631,7 +1633,7 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 				meetupsRegistration.setNew(false);
 			}
 			else {
-				meetupsRegistration = (MeetupsRegistration)session.merge(meetupsRegistration);
+				updatedMeetupsRegistration = (MeetupsRegistration)session.merge(meetupsRegistration);
 			}
 		}
 		catch (Exception e) {
@@ -1691,12 +1693,26 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 			}
 		}
 
-		EntityCacheUtil.putResult(MeetupsRegistrationModelImpl.ENTITY_CACHE_ENABLED,
-			MeetupsRegistrationImpl.class, meetupsRegistration.getPrimaryKey(),
-			meetupsRegistration, false);
+		if (updatedMeetupsRegistration == null) {
+			EntityCacheUtil.putResult(MeetupsRegistrationModelImpl.ENTITY_CACHE_ENABLED,
+				MeetupsRegistrationImpl.class,
+				meetupsRegistration.getPrimaryKey(), meetupsRegistration, false);
+		}
+		else {
+			EntityCacheUtil.putResult(MeetupsRegistrationModelImpl.ENTITY_CACHE_ENABLED,
+				MeetupsRegistrationImpl.class,
+				meetupsRegistration.getPrimaryKey(),
+				updatedMeetupsRegistration, false);
+		}
 
 		clearUniqueFindersCache(meetupsRegistration);
-		cacheUniqueFindersCache(meetupsRegistration, isNew);
+
+		if (updatedMeetupsRegistration == null) {
+			cacheUniqueFindersCache(meetupsRegistration, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedMeetupsRegistration, isNew);
+		}
 
 		meetupsRegistration.resetOriginalValues();
 

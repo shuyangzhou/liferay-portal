@@ -2046,6 +2046,8 @@ public class RegionPersistenceImpl extends BasePersistenceImpl<Region>
 
 		RegionModelImpl regionModelImpl = (RegionModelImpl)region;
 
+		Region updatedRegion = null;
+
 		Session session = null;
 
 		try {
@@ -2057,7 +2059,7 @@ public class RegionPersistenceImpl extends BasePersistenceImpl<Region>
 				region.setNew(false);
 			}
 			else {
-				region = (Region)session.merge(region);
+				updatedRegion = (Region)session.merge(region);
 			}
 		}
 		catch (Exception e) {
@@ -2130,11 +2132,23 @@ public class RegionPersistenceImpl extends BasePersistenceImpl<Region>
 			}
 		}
 
-		EntityCacheUtil.putResult(RegionModelImpl.ENTITY_CACHE_ENABLED,
-			RegionImpl.class, region.getPrimaryKey(), region, false);
+		if (updatedRegion == null) {
+			EntityCacheUtil.putResult(RegionModelImpl.ENTITY_CACHE_ENABLED,
+				RegionImpl.class, region.getPrimaryKey(), region, false);
+		}
+		else {
+			EntityCacheUtil.putResult(RegionModelImpl.ENTITY_CACHE_ENABLED,
+				RegionImpl.class, region.getPrimaryKey(), updatedRegion, false);
+		}
 
 		clearUniqueFindersCache(region);
-		cacheUniqueFindersCache(region, isNew);
+
+		if (updatedRegion == null) {
+			cacheUniqueFindersCache(region, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedRegion, isNew);
+		}
 
 		region.resetOriginalValues();
 

@@ -11745,6 +11745,8 @@ public class DLFileEntryPersistenceImpl extends BasePersistenceImpl<DLFileEntry>
 			}
 		}
 
+		DLFileEntry updatedDLFileEntry = null;
+
 		Session session = null;
 
 		try {
@@ -11756,7 +11758,7 @@ public class DLFileEntryPersistenceImpl extends BasePersistenceImpl<DLFileEntry>
 				dlFileEntry.setNew(false);
 			}
 			else {
-				dlFileEntry = (DLFileEntry)session.merge(dlFileEntry);
+				updatedDLFileEntry = (DLFileEntry)session.merge(dlFileEntry);
 			}
 		}
 		catch (Exception e) {
@@ -12033,12 +12035,25 @@ public class DLFileEntryPersistenceImpl extends BasePersistenceImpl<DLFileEntry>
 			}
 		}
 
-		EntityCacheUtil.putResult(DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryImpl.class, dlFileEntry.getPrimaryKey(), dlFileEntry,
-			false);
+		if (updatedDLFileEntry == null) {
+			EntityCacheUtil.putResult(DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
+				DLFileEntryImpl.class, dlFileEntry.getPrimaryKey(),
+				dlFileEntry, false);
+		}
+		else {
+			EntityCacheUtil.putResult(DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
+				DLFileEntryImpl.class, dlFileEntry.getPrimaryKey(),
+				updatedDLFileEntry, false);
+		}
 
 		clearUniqueFindersCache(dlFileEntry);
-		cacheUniqueFindersCache(dlFileEntry, isNew);
+
+		if (updatedDLFileEntry == null) {
+			cacheUniqueFindersCache(dlFileEntry, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedDLFileEntry, isNew);
+		}
 
 		dlFileEntry.resetOriginalValues();
 

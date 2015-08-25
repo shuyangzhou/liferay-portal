@@ -2549,6 +2549,8 @@ public class PollsQuestionPersistenceImpl extends BasePersistenceImpl<PollsQuest
 			}
 		}
 
+		PollsQuestion updatedPollsQuestion = null;
+
 		Session session = null;
 
 		try {
@@ -2560,7 +2562,7 @@ public class PollsQuestionPersistenceImpl extends BasePersistenceImpl<PollsQuest
 				pollsQuestion.setNew(false);
 			}
 			else {
-				pollsQuestion = (PollsQuestion)session.merge(pollsQuestion);
+				updatedPollsQuestion = (PollsQuestion)session.merge(pollsQuestion);
 			}
 		}
 		catch (Exception e) {
@@ -2633,12 +2635,25 @@ public class PollsQuestionPersistenceImpl extends BasePersistenceImpl<PollsQuest
 			}
 		}
 
-		EntityCacheUtil.putResult(PollsQuestionModelImpl.ENTITY_CACHE_ENABLED,
-			PollsQuestionImpl.class, pollsQuestion.getPrimaryKey(),
-			pollsQuestion, false);
+		if (updatedPollsQuestion == null) {
+			EntityCacheUtil.putResult(PollsQuestionModelImpl.ENTITY_CACHE_ENABLED,
+				PollsQuestionImpl.class, pollsQuestion.getPrimaryKey(),
+				pollsQuestion, false);
+		}
+		else {
+			EntityCacheUtil.putResult(PollsQuestionModelImpl.ENTITY_CACHE_ENABLED,
+				PollsQuestionImpl.class, pollsQuestion.getPrimaryKey(),
+				updatedPollsQuestion, false);
+		}
 
 		clearUniqueFindersCache(pollsQuestion);
-		cacheUniqueFindersCache(pollsQuestion, isNew);
+
+		if (updatedPollsQuestion == null) {
+			cacheUniqueFindersCache(pollsQuestion, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedPollsQuestion, isNew);
+		}
 
 		pollsQuestion.resetOriginalValues();
 

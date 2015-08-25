@@ -2928,6 +2928,8 @@ public class KaleoInstanceTokenPersistenceImpl extends BasePersistenceImpl<Kaleo
 			}
 		}
 
+		KaleoInstanceToken updatedKaleoInstanceToken = null;
+
 		Session session = null;
 
 		try {
@@ -2939,7 +2941,7 @@ public class KaleoInstanceTokenPersistenceImpl extends BasePersistenceImpl<Kaleo
 				kaleoInstanceToken.setNew(false);
 			}
 			else {
-				kaleoInstanceToken = (KaleoInstanceToken)session.merge(kaleoInstanceToken);
+				updatedKaleoInstanceToken = (KaleoInstanceToken)session.merge(kaleoInstanceToken);
 			}
 		}
 		catch (Exception e) {
@@ -3064,9 +3066,17 @@ public class KaleoInstanceTokenPersistenceImpl extends BasePersistenceImpl<Kaleo
 			}
 		}
 
-		EntityCacheUtil.putResult(KaleoInstanceTokenModelImpl.ENTITY_CACHE_ENABLED,
-			KaleoInstanceTokenImpl.class, kaleoInstanceToken.getPrimaryKey(),
-			kaleoInstanceToken, false);
+		if (updatedKaleoInstanceToken == null) {
+			EntityCacheUtil.putResult(KaleoInstanceTokenModelImpl.ENTITY_CACHE_ENABLED,
+				KaleoInstanceTokenImpl.class,
+				kaleoInstanceToken.getPrimaryKey(), kaleoInstanceToken, false);
+		}
+		else {
+			EntityCacheUtil.putResult(KaleoInstanceTokenModelImpl.ENTITY_CACHE_ENABLED,
+				KaleoInstanceTokenImpl.class,
+				kaleoInstanceToken.getPrimaryKey(), updatedKaleoInstanceToken,
+				false);
+		}
 
 		kaleoInstanceToken.resetOriginalValues();
 

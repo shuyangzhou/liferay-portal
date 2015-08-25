@@ -5234,6 +5234,8 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 
 		ResourcePermissionModelImpl resourcePermissionModelImpl = (ResourcePermissionModelImpl)resourcePermission;
 
+		ResourcePermission updatedResourcePermission = null;
+
 		Session session = null;
 
 		try {
@@ -5245,7 +5247,7 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 				resourcePermission.setNew(false);
 			}
 			else {
-				resourcePermission = (ResourcePermission)session.merge(resourcePermission);
+				updatedResourcePermission = (ResourcePermission)session.merge(resourcePermission);
 			}
 		}
 		catch (Exception e) {
@@ -5405,12 +5407,26 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 			}
 		}
 
-		EntityCacheUtil.putResult(ResourcePermissionModelImpl.ENTITY_CACHE_ENABLED,
-			ResourcePermissionImpl.class, resourcePermission.getPrimaryKey(),
-			resourcePermission, false);
+		if (updatedResourcePermission == null) {
+			EntityCacheUtil.putResult(ResourcePermissionModelImpl.ENTITY_CACHE_ENABLED,
+				ResourcePermissionImpl.class,
+				resourcePermission.getPrimaryKey(), resourcePermission, false);
+		}
+		else {
+			EntityCacheUtil.putResult(ResourcePermissionModelImpl.ENTITY_CACHE_ENABLED,
+				ResourcePermissionImpl.class,
+				resourcePermission.getPrimaryKey(), updatedResourcePermission,
+				false);
+		}
 
 		clearUniqueFindersCache(resourcePermission);
-		cacheUniqueFindersCache(resourcePermission, isNew);
+
+		if (updatedResourcePermission == null) {
+			cacheUniqueFindersCache(resourcePermission, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedResourcePermission, isNew);
+		}
 
 		resourcePermission.resetOriginalValues();
 

@@ -588,6 +588,8 @@ public class ReleasePersistenceImpl extends BasePersistenceImpl<Release>
 			}
 		}
 
+		Release updatedRelease = null;
+
 		Session session = null;
 
 		try {
@@ -599,7 +601,7 @@ public class ReleasePersistenceImpl extends BasePersistenceImpl<Release>
 				release.setNew(false);
 			}
 			else {
-				release = (Release)session.merge(release);
+				updatedRelease = (Release)session.merge(release);
 			}
 		}
 		catch (Exception e) {
@@ -615,11 +617,24 @@ public class ReleasePersistenceImpl extends BasePersistenceImpl<Release>
 			FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
 
-		EntityCacheUtil.putResult(ReleaseModelImpl.ENTITY_CACHE_ENABLED,
-			ReleaseImpl.class, release.getPrimaryKey(), release, false);
+		if (updatedRelease == null) {
+			EntityCacheUtil.putResult(ReleaseModelImpl.ENTITY_CACHE_ENABLED,
+				ReleaseImpl.class, release.getPrimaryKey(), release, false);
+		}
+		else {
+			EntityCacheUtil.putResult(ReleaseModelImpl.ENTITY_CACHE_ENABLED,
+				ReleaseImpl.class, release.getPrimaryKey(), updatedRelease,
+				false);
+		}
 
 		clearUniqueFindersCache(release);
-		cacheUniqueFindersCache(release, isNew);
+
+		if (updatedRelease == null) {
+			cacheUniqueFindersCache(release, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedRelease, isNew);
+		}
 
 		release.resetOriginalValues();
 

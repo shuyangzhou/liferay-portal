@@ -1751,6 +1751,8 @@ public class ResourceTypePermissionPersistenceImpl extends BasePersistenceImpl<R
 
 		ResourceTypePermissionModelImpl resourceTypePermissionModelImpl = (ResourceTypePermissionModelImpl)resourceTypePermission;
 
+		ResourceTypePermission updatedResourceTypePermission = null;
+
 		Session session = null;
 
 		try {
@@ -1762,7 +1764,7 @@ public class ResourceTypePermissionPersistenceImpl extends BasePersistenceImpl<R
 				resourceTypePermission.setNew(false);
 			}
 			else {
-				resourceTypePermission = (ResourceTypePermission)session.merge(resourceTypePermission);
+				updatedResourceTypePermission = (ResourceTypePermission)session.merge(resourceTypePermission);
 			}
 		}
 		catch (Exception e) {
@@ -1820,13 +1822,27 @@ public class ResourceTypePermissionPersistenceImpl extends BasePersistenceImpl<R
 			}
 		}
 
-		EntityCacheUtil.putResult(ResourceTypePermissionModelImpl.ENTITY_CACHE_ENABLED,
-			ResourceTypePermissionImpl.class,
-			resourceTypePermission.getPrimaryKey(), resourceTypePermission,
-			false);
+		if (updatedResourceTypePermission == null) {
+			EntityCacheUtil.putResult(ResourceTypePermissionModelImpl.ENTITY_CACHE_ENABLED,
+				ResourceTypePermissionImpl.class,
+				resourceTypePermission.getPrimaryKey(), resourceTypePermission,
+				false);
+		}
+		else {
+			EntityCacheUtil.putResult(ResourceTypePermissionModelImpl.ENTITY_CACHE_ENABLED,
+				ResourceTypePermissionImpl.class,
+				resourceTypePermission.getPrimaryKey(),
+				updatedResourceTypePermission, false);
+		}
 
 		clearUniqueFindersCache(resourceTypePermission);
-		cacheUniqueFindersCache(resourceTypePermission, isNew);
+
+		if (updatedResourceTypePermission == null) {
+			cacheUniqueFindersCache(resourceTypePermission, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedResourceTypePermission, isNew);
+		}
 
 		resourceTypePermission.resetOriginalValues();
 

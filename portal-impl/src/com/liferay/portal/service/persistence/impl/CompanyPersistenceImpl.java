@@ -1536,6 +1536,8 @@ public class CompanyPersistenceImpl extends BasePersistenceImpl<Company>
 
 		CompanyModelImpl companyModelImpl = (CompanyModelImpl)company;
 
+		Company updatedCompany = null;
+
 		Session session = null;
 
 		try {
@@ -1547,7 +1549,7 @@ public class CompanyPersistenceImpl extends BasePersistenceImpl<Company>
 				company.setNew(false);
 			}
 			else {
-				company = (Company)session.merge(company);
+				updatedCompany = (Company)session.merge(company);
 			}
 		}
 		catch (Exception e) {
@@ -1582,11 +1584,24 @@ public class CompanyPersistenceImpl extends BasePersistenceImpl<Company>
 			}
 		}
 
-		EntityCacheUtil.putResult(CompanyModelImpl.ENTITY_CACHE_ENABLED,
-			CompanyImpl.class, company.getPrimaryKey(), company, false);
+		if (updatedCompany == null) {
+			EntityCacheUtil.putResult(CompanyModelImpl.ENTITY_CACHE_ENABLED,
+				CompanyImpl.class, company.getPrimaryKey(), company, false);
+		}
+		else {
+			EntityCacheUtil.putResult(CompanyModelImpl.ENTITY_CACHE_ENABLED,
+				CompanyImpl.class, company.getPrimaryKey(), updatedCompany,
+				false);
+		}
 
 		clearUniqueFindersCache(company);
-		cacheUniqueFindersCache(company, isNew);
+
+		if (updatedCompany == null) {
+			cacheUniqueFindersCache(company, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedCompany, isNew);
+		}
 
 		company.resetOriginalValues();
 

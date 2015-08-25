@@ -908,6 +908,8 @@ public class WorkflowInstanceLinkPersistenceImpl extends BasePersistenceImpl<Wor
 			}
 		}
 
+		WorkflowInstanceLink updatedWorkflowInstanceLink = null;
+
 		Session session = null;
 
 		try {
@@ -919,7 +921,7 @@ public class WorkflowInstanceLinkPersistenceImpl extends BasePersistenceImpl<Wor
 				workflowInstanceLink.setNew(false);
 			}
 			else {
-				workflowInstanceLink = (WorkflowInstanceLink)session.merge(workflowInstanceLink);
+				updatedWorkflowInstanceLink = (WorkflowInstanceLink)session.merge(workflowInstanceLink);
 			}
 		}
 		catch (Exception e) {
@@ -962,9 +964,18 @@ public class WorkflowInstanceLinkPersistenceImpl extends BasePersistenceImpl<Wor
 			}
 		}
 
-		EntityCacheUtil.putResult(WorkflowInstanceLinkModelImpl.ENTITY_CACHE_ENABLED,
-			WorkflowInstanceLinkImpl.class,
-			workflowInstanceLink.getPrimaryKey(), workflowInstanceLink, false);
+		if (updatedWorkflowInstanceLink == null) {
+			EntityCacheUtil.putResult(WorkflowInstanceLinkModelImpl.ENTITY_CACHE_ENABLED,
+				WorkflowInstanceLinkImpl.class,
+				workflowInstanceLink.getPrimaryKey(), workflowInstanceLink,
+				false);
+		}
+		else {
+			EntityCacheUtil.putResult(WorkflowInstanceLinkModelImpl.ENTITY_CACHE_ENABLED,
+				WorkflowInstanceLinkImpl.class,
+				workflowInstanceLink.getPrimaryKey(),
+				updatedWorkflowInstanceLink, false);
+		}
 
 		workflowInstanceLink.resetOriginalValues();
 

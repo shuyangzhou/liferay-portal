@@ -2456,6 +2456,8 @@ public class MBMailingListPersistenceImpl extends BasePersistenceImpl<MBMailingL
 			}
 		}
 
+		MBMailingList updatedMBMailingList = null;
+
 		Session session = null;
 
 		try {
@@ -2467,7 +2469,7 @@ public class MBMailingListPersistenceImpl extends BasePersistenceImpl<MBMailingL
 				mbMailingList.setNew(false);
 			}
 			else {
-				mbMailingList = (MBMailingList)session.merge(mbMailingList);
+				updatedMBMailingList = (MBMailingList)session.merge(mbMailingList);
 			}
 		}
 		catch (Exception e) {
@@ -2540,12 +2542,25 @@ public class MBMailingListPersistenceImpl extends BasePersistenceImpl<MBMailingL
 			}
 		}
 
-		EntityCacheUtil.putResult(MBMailingListModelImpl.ENTITY_CACHE_ENABLED,
-			MBMailingListImpl.class, mbMailingList.getPrimaryKey(),
-			mbMailingList, false);
+		if (updatedMBMailingList == null) {
+			EntityCacheUtil.putResult(MBMailingListModelImpl.ENTITY_CACHE_ENABLED,
+				MBMailingListImpl.class, mbMailingList.getPrimaryKey(),
+				mbMailingList, false);
+		}
+		else {
+			EntityCacheUtil.putResult(MBMailingListModelImpl.ENTITY_CACHE_ENABLED,
+				MBMailingListImpl.class, mbMailingList.getPrimaryKey(),
+				updatedMBMailingList, false);
+		}
 
 		clearUniqueFindersCache(mbMailingList);
-		cacheUniqueFindersCache(mbMailingList, isNew);
+
+		if (updatedMBMailingList == null) {
+			cacheUniqueFindersCache(mbMailingList, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedMBMailingList, isNew);
+		}
 
 		mbMailingList.resetOriginalValues();
 

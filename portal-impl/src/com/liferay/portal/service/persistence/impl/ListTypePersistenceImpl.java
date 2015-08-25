@@ -1136,6 +1136,8 @@ public class ListTypePersistenceImpl extends BasePersistenceImpl<ListType>
 
 		ListTypeModelImpl listTypeModelImpl = (ListTypeModelImpl)listType;
 
+		ListType updatedListType = null;
+
 		Session session = null;
 
 		try {
@@ -1147,7 +1149,7 @@ public class ListTypePersistenceImpl extends BasePersistenceImpl<ListType>
 				listType.setNew(false);
 			}
 			else {
-				listType = (ListType)session.merge(listType);
+				updatedListType = (ListType)session.merge(listType);
 			}
 		}
 		catch (Exception e) {
@@ -1180,11 +1182,24 @@ public class ListTypePersistenceImpl extends BasePersistenceImpl<ListType>
 			}
 		}
 
-		EntityCacheUtil.putResult(ListTypeModelImpl.ENTITY_CACHE_ENABLED,
-			ListTypeImpl.class, listType.getPrimaryKey(), listType, false);
+		if (updatedListType == null) {
+			EntityCacheUtil.putResult(ListTypeModelImpl.ENTITY_CACHE_ENABLED,
+				ListTypeImpl.class, listType.getPrimaryKey(), listType, false);
+		}
+		else {
+			EntityCacheUtil.putResult(ListTypeModelImpl.ENTITY_CACHE_ENABLED,
+				ListTypeImpl.class, listType.getPrimaryKey(), updatedListType,
+				false);
+		}
 
 		clearUniqueFindersCache(listType);
-		cacheUniqueFindersCache(listType, isNew);
+
+		if (updatedListType == null) {
+			cacheUniqueFindersCache(listType, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedListType, isNew);
+		}
 
 		listType.resetOriginalValues();
 

@@ -2899,6 +2899,8 @@ public class ExportImportConfigurationPersistenceImpl
 			}
 		}
 
+		ExportImportConfiguration updatedExportImportConfiguration = null;
+
 		Session session = null;
 
 		try {
@@ -2910,7 +2912,7 @@ public class ExportImportConfigurationPersistenceImpl
 				exportImportConfiguration.setNew(false);
 			}
 			else {
-				exportImportConfiguration = (ExportImportConfiguration)session.merge(exportImportConfiguration);
+				updatedExportImportConfiguration = (ExportImportConfiguration)session.merge(exportImportConfiguration);
 			}
 		}
 		catch (Exception e) {
@@ -3034,10 +3036,18 @@ public class ExportImportConfigurationPersistenceImpl
 			}
 		}
 
-		EntityCacheUtil.putResult(ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
-			ExportImportConfigurationImpl.class,
-			exportImportConfiguration.getPrimaryKey(),
-			exportImportConfiguration, false);
+		if (updatedExportImportConfiguration == null) {
+			EntityCacheUtil.putResult(ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
+				ExportImportConfigurationImpl.class,
+				exportImportConfiguration.getPrimaryKey(),
+				exportImportConfiguration, false);
+		}
+		else {
+			EntityCacheUtil.putResult(ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
+				ExportImportConfigurationImpl.class,
+				exportImportConfiguration.getPrimaryKey(),
+				updatedExportImportConfiguration, false);
+		}
 
 		exportImportConfiguration.resetOriginalValues();
 

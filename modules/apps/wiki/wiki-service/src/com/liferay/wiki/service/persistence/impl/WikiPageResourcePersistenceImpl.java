@@ -1428,6 +1428,8 @@ public class WikiPageResourcePersistenceImpl extends BasePersistenceImpl<WikiPag
 			wikiPageResource.setUuid(uuid);
 		}
 
+		WikiPageResource updatedWikiPageResource = null;
+
 		Session session = null;
 
 		try {
@@ -1439,7 +1441,7 @@ public class WikiPageResourcePersistenceImpl extends BasePersistenceImpl<WikiPag
 				wikiPageResource.setNew(false);
 			}
 			else {
-				wikiPageResource = (WikiPageResource)session.merge(wikiPageResource);
+				updatedWikiPageResource = (WikiPageResource)session.merge(wikiPageResource);
 			}
 		}
 		catch (Exception e) {
@@ -1474,12 +1476,25 @@ public class WikiPageResourcePersistenceImpl extends BasePersistenceImpl<WikiPag
 			}
 		}
 
-		EntityCacheUtil.putResult(WikiPageResourceModelImpl.ENTITY_CACHE_ENABLED,
-			WikiPageResourceImpl.class, wikiPageResource.getPrimaryKey(),
-			wikiPageResource, false);
+		if (updatedWikiPageResource == null) {
+			EntityCacheUtil.putResult(WikiPageResourceModelImpl.ENTITY_CACHE_ENABLED,
+				WikiPageResourceImpl.class, wikiPageResource.getPrimaryKey(),
+				wikiPageResource, false);
+		}
+		else {
+			EntityCacheUtil.putResult(WikiPageResourceModelImpl.ENTITY_CACHE_ENABLED,
+				WikiPageResourceImpl.class, wikiPageResource.getPrimaryKey(),
+				updatedWikiPageResource, false);
+		}
 
 		clearUniqueFindersCache(wikiPageResource);
-		cacheUniqueFindersCache(wikiPageResource, isNew);
+
+		if (updatedWikiPageResource == null) {
+			cacheUniqueFindersCache(wikiPageResource, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedWikiPageResource, isNew);
+		}
 
 		wikiPageResource.resetOriginalValues();
 

@@ -1478,6 +1478,8 @@ public class KaleoTimerPersistenceImpl extends BasePersistenceImpl<KaleoTimer>
 			}
 		}
 
+		KaleoTimer updatedKaleoTimer = null;
+
 		Session session = null;
 
 		try {
@@ -1489,7 +1491,7 @@ public class KaleoTimerPersistenceImpl extends BasePersistenceImpl<KaleoTimer>
 				kaleoTimer.setNew(false);
 			}
 			else {
-				kaleoTimer = (KaleoTimer)session.merge(kaleoTimer);
+				updatedKaleoTimer = (KaleoTimer)session.merge(kaleoTimer);
 			}
 		}
 		catch (Exception e) {
@@ -1553,8 +1555,16 @@ public class KaleoTimerPersistenceImpl extends BasePersistenceImpl<KaleoTimer>
 			}
 		}
 
-		EntityCacheUtil.putResult(KaleoTimerModelImpl.ENTITY_CACHE_ENABLED,
-			KaleoTimerImpl.class, kaleoTimer.getPrimaryKey(), kaleoTimer, false);
+		if (updatedKaleoTimer == null) {
+			EntityCacheUtil.putResult(KaleoTimerModelImpl.ENTITY_CACHE_ENABLED,
+				KaleoTimerImpl.class, kaleoTimer.getPrimaryKey(), kaleoTimer,
+				false);
+		}
+		else {
+			EntityCacheUtil.putResult(KaleoTimerModelImpl.ENTITY_CACHE_ENABLED,
+				KaleoTimerImpl.class, kaleoTimer.getPrimaryKey(),
+				updatedKaleoTimer, false);
+		}
 
 		kaleoTimer.resetOriginalValues();
 

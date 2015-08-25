@@ -3079,6 +3079,8 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 
 		BlogsStatsUserModelImpl blogsStatsUserModelImpl = (BlogsStatsUserModelImpl)blogsStatsUser;
 
+		BlogsStatsUser updatedBlogsStatsUser = null;
+
 		Session session = null;
 
 		try {
@@ -3090,7 +3092,7 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 				blogsStatsUser.setNew(false);
 			}
 			else {
-				blogsStatsUser = (BlogsStatsUser)session.merge(blogsStatsUser);
+				updatedBlogsStatsUser = (BlogsStatsUser)session.merge(blogsStatsUser);
 			}
 		}
 		catch (Exception e) {
@@ -3163,12 +3165,25 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 			}
 		}
 
-		EntityCacheUtil.putResult(BlogsStatsUserModelImpl.ENTITY_CACHE_ENABLED,
-			BlogsStatsUserImpl.class, blogsStatsUser.getPrimaryKey(),
-			blogsStatsUser, false);
+		if (updatedBlogsStatsUser == null) {
+			EntityCacheUtil.putResult(BlogsStatsUserModelImpl.ENTITY_CACHE_ENABLED,
+				BlogsStatsUserImpl.class, blogsStatsUser.getPrimaryKey(),
+				blogsStatsUser, false);
+		}
+		else {
+			EntityCacheUtil.putResult(BlogsStatsUserModelImpl.ENTITY_CACHE_ENABLED,
+				BlogsStatsUserImpl.class, blogsStatsUser.getPrimaryKey(),
+				updatedBlogsStatsUser, false);
+		}
 
 		clearUniqueFindersCache(blogsStatsUser);
-		cacheUniqueFindersCache(blogsStatsUser, isNew);
+
+		if (updatedBlogsStatsUser == null) {
+			cacheUniqueFindersCache(blogsStatsUser, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedBlogsStatsUser, isNew);
+		}
 
 		blogsStatsUser.resetOriginalValues();
 

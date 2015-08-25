@@ -3554,6 +3554,8 @@ public class SocialActivitySetPersistenceImpl extends BasePersistenceImpl<Social
 
 		SocialActivitySetModelImpl socialActivitySetModelImpl = (SocialActivitySetModelImpl)socialActivitySet;
 
+		SocialActivitySet updatedSocialActivitySet = null;
+
 		Session session = null;
 
 		try {
@@ -3565,7 +3567,7 @@ public class SocialActivitySetPersistenceImpl extends BasePersistenceImpl<Social
 				socialActivitySet.setNew(false);
 			}
 			else {
-				socialActivitySet = (SocialActivitySet)session.merge(socialActivitySet);
+				updatedSocialActivitySet = (SocialActivitySet)session.merge(socialActivitySet);
 			}
 		}
 		catch (Exception e) {
@@ -3713,9 +3715,16 @@ public class SocialActivitySetPersistenceImpl extends BasePersistenceImpl<Social
 			}
 		}
 
-		EntityCacheUtil.putResult(SocialActivitySetModelImpl.ENTITY_CACHE_ENABLED,
-			SocialActivitySetImpl.class, socialActivitySet.getPrimaryKey(),
-			socialActivitySet, false);
+		if (updatedSocialActivitySet == null) {
+			EntityCacheUtil.putResult(SocialActivitySetModelImpl.ENTITY_CACHE_ENABLED,
+				SocialActivitySetImpl.class, socialActivitySet.getPrimaryKey(),
+				socialActivitySet, false);
+		}
+		else {
+			EntityCacheUtil.putResult(SocialActivitySetModelImpl.ENTITY_CACHE_ENABLED,
+				SocialActivitySetImpl.class, socialActivitySet.getPrimaryKey(),
+				updatedSocialActivitySet, false);
+		}
 
 		socialActivitySet.resetOriginalValues();
 

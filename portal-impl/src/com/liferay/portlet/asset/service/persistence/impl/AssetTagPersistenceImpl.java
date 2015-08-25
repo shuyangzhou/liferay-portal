@@ -4739,6 +4739,8 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 			}
 		}
 
+		AssetTag updatedAssetTag = null;
+
 		Session session = null;
 
 		try {
@@ -4750,7 +4752,7 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 				assetTag.setNew(false);
 			}
 			else {
-				assetTag = (AssetTag)session.merge(assetTag);
+				updatedAssetTag = (AssetTag)session.merge(assetTag);
 			}
 		}
 		catch (Exception e) {
@@ -4821,11 +4823,24 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 			}
 		}
 
-		EntityCacheUtil.putResult(AssetTagModelImpl.ENTITY_CACHE_ENABLED,
-			AssetTagImpl.class, assetTag.getPrimaryKey(), assetTag, false);
+		if (updatedAssetTag == null) {
+			EntityCacheUtil.putResult(AssetTagModelImpl.ENTITY_CACHE_ENABLED,
+				AssetTagImpl.class, assetTag.getPrimaryKey(), assetTag, false);
+		}
+		else {
+			EntityCacheUtil.putResult(AssetTagModelImpl.ENTITY_CACHE_ENABLED,
+				AssetTagImpl.class, assetTag.getPrimaryKey(), updatedAssetTag,
+				false);
+		}
 
 		clearUniqueFindersCache(assetTag);
-		cacheUniqueFindersCache(assetTag, isNew);
+
+		if (updatedAssetTag == null) {
+			cacheUniqueFindersCache(assetTag, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedAssetTag, isNew);
+		}
 
 		assetTag.resetOriginalValues();
 

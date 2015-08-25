@@ -1551,6 +1551,8 @@ public class CountryPersistenceImpl extends BasePersistenceImpl<Country>
 
 		CountryModelImpl countryModelImpl = (CountryModelImpl)country;
 
+		Country updatedCountry = null;
+
 		Session session = null;
 
 		try {
@@ -1562,7 +1564,7 @@ public class CountryPersistenceImpl extends BasePersistenceImpl<Country>
 				country.setNew(false);
 			}
 			else {
-				country = (Country)session.merge(country);
+				updatedCountry = (Country)session.merge(country);
 			}
 		}
 		catch (Exception e) {
@@ -1597,11 +1599,24 @@ public class CountryPersistenceImpl extends BasePersistenceImpl<Country>
 			}
 		}
 
-		EntityCacheUtil.putResult(CountryModelImpl.ENTITY_CACHE_ENABLED,
-			CountryImpl.class, country.getPrimaryKey(), country, false);
+		if (updatedCountry == null) {
+			EntityCacheUtil.putResult(CountryModelImpl.ENTITY_CACHE_ENABLED,
+				CountryImpl.class, country.getPrimaryKey(), country, false);
+		}
+		else {
+			EntityCacheUtil.putResult(CountryModelImpl.ENTITY_CACHE_ENABLED,
+				CountryImpl.class, country.getPrimaryKey(), updatedCountry,
+				false);
+		}
 
 		clearUniqueFindersCache(country);
-		cacheUniqueFindersCache(country, isNew);
+
+		if (updatedCountry == null) {
+			cacheUniqueFindersCache(country, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedCountry, isNew);
+		}
 
 		country.resetOriginalValues();
 

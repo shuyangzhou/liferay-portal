@@ -1543,6 +1543,8 @@ public class DDMStorageLinkPersistenceImpl extends BasePersistenceImpl<DDMStorag
 			ddmStorageLink.setUuid(uuid);
 		}
 
+		DDMStorageLink updatedDDMStorageLink = null;
+
 		Session session = null;
 
 		try {
@@ -1554,7 +1556,7 @@ public class DDMStorageLinkPersistenceImpl extends BasePersistenceImpl<DDMStorag
 				ddmStorageLink.setNew(false);
 			}
 			else {
-				ddmStorageLink = (DDMStorageLink)session.merge(ddmStorageLink);
+				updatedDDMStorageLink = (DDMStorageLink)session.merge(ddmStorageLink);
 			}
 		}
 		catch (Exception e) {
@@ -1608,12 +1610,25 @@ public class DDMStorageLinkPersistenceImpl extends BasePersistenceImpl<DDMStorag
 			}
 		}
 
-		EntityCacheUtil.putResult(DDMStorageLinkModelImpl.ENTITY_CACHE_ENABLED,
-			DDMStorageLinkImpl.class, ddmStorageLink.getPrimaryKey(),
-			ddmStorageLink, false);
+		if (updatedDDMStorageLink == null) {
+			EntityCacheUtil.putResult(DDMStorageLinkModelImpl.ENTITY_CACHE_ENABLED,
+				DDMStorageLinkImpl.class, ddmStorageLink.getPrimaryKey(),
+				ddmStorageLink, false);
+		}
+		else {
+			EntityCacheUtil.putResult(DDMStorageLinkModelImpl.ENTITY_CACHE_ENABLED,
+				DDMStorageLinkImpl.class, ddmStorageLink.getPrimaryKey(),
+				updatedDDMStorageLink, false);
+		}
 
 		clearUniqueFindersCache(ddmStorageLink);
-		cacheUniqueFindersCache(ddmStorageLink, isNew);
+
+		if (updatedDDMStorageLink == null) {
+			cacheUniqueFindersCache(ddmStorageLink, isNew);
+		}
+		else {
+			cacheUniqueFindersCache(updatedDDMStorageLink, isNew);
+		}
 
 		ddmStorageLink.resetOriginalValues();
 
