@@ -18,7 +18,6 @@ import com.liferay.portal.kernel.concurrent.LockRegistry;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.spring.aop.Skip;
@@ -35,6 +34,8 @@ import com.liferay.portlet.PortletPreferencesImpl;
 
 import java.util.List;
 import java.util.concurrent.locks.Lock;
+
+import org.springframework.dao.DataIntegrityViolationException;
 
 /**
  * @author Brian Wing Shun Chan
@@ -89,24 +90,7 @@ public class PortletPreferencesLocalServiceImpl
 			_log.debug(sb.toString());
 		}
 
-		try {
-			portletPreferencesPersistence.update(portletPreferences);
-		}
-		catch (SystemException se) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(
-					"Add failed, fetch {ownerId=" + ownerId + ", ownerType=" +
-						ownerType + ", plid=" + plid + ", portletId=" +
-							portletId + "}");
-			}
-
-			portletPreferences = portletPreferencesPersistence.fetchByO_O_P_P(
-				ownerId, ownerType, plid, portletId, false);
-
-			if (portletPreferences == null) {
-				throw se;
-			}
-		}
+		portletPreferencesPersistence.update(portletPreferences);
 
 		return portletPreferences;
 	}
@@ -375,42 +359,55 @@ public class PortletPreferencesLocalServiceImpl
 		long companyId, long ownerId, int ownerType, long plid,
 		String portletId, String defaultPreferences, boolean strict) {
 
-		PortletPreferences portletPreferences =
-			portletPreferencesPersistence.fetchByO_O_P_P(
-				ownerId, ownerType, plid, portletId);
+		while (true) {
+			PortletPreferences portletPreferences =
+				portletPreferencesPersistence.fetchByO_O_P_P(
+					ownerId, ownerType, plid, portletId);
 
-		if (portletPreferences == null) {
-			Portlet portlet = portletLocalService.getPortletById(
-				companyId, portletId);
+			if (portletPreferences == null) {
+				Portlet portlet = portletLocalService.getPortletById(
+					companyId, portletId);
 
-			if (strict &&
-				(Validator.isNull(defaultPreferences) ||
-				 ((portlet != null) && portlet.isUndeployedPortlet()))) {
+				if (strict &&
+					(Validator.isNull(defaultPreferences) ||
+					 ((portlet != null) && portlet.isUndeployedPortlet()))) {
 
-				if (portlet == null) {
-					defaultPreferences = PortletConstants.DEFAULT_PREFERENCES;
+					if (portlet == null) {
+						defaultPreferences =
+							PortletConstants.DEFAULT_PREFERENCES;
+					}
+					else {
+						defaultPreferences = portlet.getDefaultPreferences();
+					}
+
+					return PortletPreferencesFactoryUtil.strictFromXML(
+						companyId, ownerId, ownerType, plid, portletId,
+						defaultPreferences);
 				}
-				else {
-					defaultPreferences = portlet.getDefaultPreferences();
-				}
 
-				return PortletPreferencesFactoryUtil.strictFromXML(
-					companyId, ownerId, ownerType, plid, portletId,
-					defaultPreferences);
+				try {
+					portletPreferences =
+						portletPreferencesLocalService.addPortletPreferences(
+							companyId, ownerId, ownerType, plid, portletId,
+							portlet, defaultPreferences);
+				}
+				catch (DataIntegrityViolationException dive) {
+					if (_log.isDebugEnabled()) {
+						_log.debug("Retry get due to add confliction", dive);
+					}
+
+					continue;
+				}
 			}
 
-			portletPreferences =
-				portletPreferencesLocalService.addPortletPreferences(
-					companyId, ownerId, ownerType, plid, portletId, portlet,
-					defaultPreferences);
+			PortletPreferencesImpl portletPreferencesImpl =
+				(PortletPreferencesImpl)
+					PortletPreferencesFactoryUtil.fromXML(
+						companyId, ownerId, ownerType, plid, portletId,
+					portletPreferences.getPreferences());
+
+			return portletPreferencesImpl;
 		}
-
-		PortletPreferencesImpl portletPreferencesImpl =
-			(PortletPreferencesImpl)PortletPreferencesFactoryUtil.fromXML(
-				companyId, ownerId, ownerType, plid, portletId,
-				portletPreferences.getPreferences());
-
-		return portletPreferencesImpl;
 	}
 
 	protected javax.portlet.PortletPreferences getPreferences(
