@@ -14,8 +14,11 @@
 
 package com.liferay.portlet.messageboards.service;
 
+import com.liferay.portal.kernel.messaging.SynchronousDestination;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
+import com.liferay.portal.kernel.test.rule.Sync;
+import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
@@ -26,6 +29,9 @@ import com.liferay.portal.security.permission.DoAsUserThread;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.service.test.ServiceTestUtil;
+import com.liferay.portal.spring.transaction.DefaultTransactionExecutor;
+import com.liferay.portal.test.log.CaptureAppender;
+import com.liferay.portal.test.log.Log4JLoggerTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.MainServletTestRule;
 import com.liferay.portlet.messageboards.model.MBCategory;
@@ -38,6 +44,11 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.spi.LoggingEvent;
+
+import org.hibernate.util.JDBCExceptionReporter;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -47,13 +58,16 @@ import org.junit.Test;
 /**
  * @author Alexander Chow
  */
+@Sync
 public class MBMessageServiceTest {
 
 	@ClassRule
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
 		new AggregateTestRule(
-			new LiferayIntegrationTestRule(), MainServletTestRule.INSTANCE);
+			new LiferayIntegrationTestRule(),
+			SynchronousDestinationTestRule.INSTANCE,
+			MainServletTestRule.INSTANCE);
 
 	@Before
 	public void setUp() throws Exception {
@@ -112,12 +126,72 @@ public class MBMessageServiceTest {
 			doAsUserThreads[i] = new AddMessageThread(_userIds[i], subject);
 		}
 
-		for (DoAsUserThread doAsUserThread : doAsUserThreads) {
-			doAsUserThread.start();
-		}
+		try (CaptureAppender captureAppender1 =
+				Log4JLoggerTestUtil.configureLog4JLogger(
+					DefaultTransactionExecutor.class.getName(), Level.ERROR);
+				CaptureAppender captureAppender2 =
+					Log4JLoggerTestUtil.configureLog4JLogger(
+						SynchronousDestination.class.getName(), Level.ERROR);
+				CaptureAppender captureAppender3 =
+					Log4JLoggerTestUtil.configureLog4JLogger(
+						DoAsUserThread.class.getName(), Level.ERROR);
+				CaptureAppender captureAppender4 =
+					Log4JLoggerTestUtil.configureLog4JLogger(
+						JDBCExceptionReporter.class.getName(), Level.ERROR)) {
 
-		for (DoAsUserThread doAsUserThread : doAsUserThreads) {
-			doAsUserThread.join();
+			for (DoAsUserThread doAsUserThread : doAsUserThreads) {
+				doAsUserThread.start();
+			}
+
+			for (DoAsUserThread doAsUserThread : doAsUserThreads) {
+				doAsUserThread.join();
+			}
+
+			List<LoggingEvent> loggingEvents =
+				captureAppender1.getLoggingEvents();
+
+			for (LoggingEvent loggingEvent : loggingEvents) {
+				Assert.assertEquals(
+					"Application exception overridden by commit exception",
+					loggingEvent.getMessage());
+			}
+
+			loggingEvents = captureAppender2.getLoggingEvents();
+
+			for (LoggingEvent loggingEvent : loggingEvents) {
+				String message = loggingEvent.getRenderedMessage();
+
+				Assert.assertTrue(
+					message.startsWith(
+						"Unable to process message {destinationName=" +
+							"liferay/async_service")
+					);
+			}
+
+			loggingEvents = captureAppender3.getLoggingEvents();
+
+			for (LoggingEvent loggingEvent : loggingEvents) {
+				String message = loggingEvent.getRenderedMessage();
+
+				Assert.assertTrue(
+					message.startsWith(
+						"com.liferay.portal.kernel.exception.SystemException:" +
+							" com.liferay.portal.kernel.dao.orm.ORMException:" +
+								" org.hibernate.exception." +
+									"GenericJDBCException: Could not execute"));
+			}
+
+			loggingEvents = captureAppender4.getLoggingEvents();
+
+			for (LoggingEvent loggingEvent : loggingEvents) {
+				String message = loggingEvent.getRenderedMessage();
+
+				Assert.assertTrue(message.contains("Your server command"));
+				Assert.assertTrue(
+					message.contains(
+						"encountered a deadlock situation. " +
+							"Please re-run your command."));
+			}
 		}
 
 		int successCount = 0;
@@ -144,14 +218,9 @@ public class MBMessageServiceTest {
 	private class AddMessageThread extends DoAsUserThread {
 
 		public AddMessageThread(long userId, String subject) {
-			super(userId);
+			super(userId, 5);
 
 			_subject = subject;
-		}
-
-		@Override
-		public boolean isSuccess() {
-			return true;
 		}
 
 		@Override
