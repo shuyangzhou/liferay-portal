@@ -252,7 +252,7 @@
 
 			<waitfor maxwait="60" maxwaitunit="second">
 				<not>
-					<socket server="localhost" port="5000"/>
+					<socket server="localhost" port="5000" />
 				</not>
 			</waitfor>
 
@@ -275,6 +275,8 @@
 		master tcp ether ${hostname} 5000
 		query tcp ether ${hostname} 5000
 					</echo>
+
+					<echo>#############################${hostname}</echo>
 				</then>
 				<else>
 					<fail message="Unable to reset sybase installation due to missing /opt/sybase.tar.gz" />
@@ -286,7 +288,7 @@
 			</exec>
 
 			<waitfor maxwait="60" maxwaitunit="second">
-				<socket server="localhost" port="5000"/>
+				<socket server="localhost" port="5000" />
 			</waitfor>
 
 			<sleep if:true="@{retry}" seconds="10" />
@@ -1082,7 +1084,7 @@ go</echo>
 
 		<waitfor maxwait="60" maxwaitunit="second">
 			<not>
-				<socket server="localhost" port="5000"/>
+				<socket server="localhost" port="5000" />
 			</not>
 		</waitfor>
 
