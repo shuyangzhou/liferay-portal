@@ -283,13 +283,22 @@
 				</else>
 			</if>
 
-			<exec executable="service" failonerror="true">
+			<echo>^^^^^^^^^ before service start</echo>
+			<exec executable="service" outputproperty="service.start.output">
 				<arg line="sybase start" />
 			</exec>
 
+			<echo>^^^^^^^^^ After service start:
+
+${service.start.output}</echo>
+
+			<echo>###########Before socket wait</echo>
+			<print-current-time />
 			<waitfor maxwait="60" maxwaitunit="second">
 				<socket server="localhost" port="5000" />
 			</waitfor>
+			<print-current-time />
+			<echo>###########After socket wait</echo>
 
 			<sleep if:true="@{retry}" seconds="10" />
 		</sequential>
