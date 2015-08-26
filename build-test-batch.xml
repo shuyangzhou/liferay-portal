@@ -275,8 +275,6 @@
 		master tcp ether ${hostname} 5000
 		query tcp ether ${hostname} 5000
 					</echo>
-
-					<echo>#############################${hostname}</echo>
 				</then>
 				<else>
 					<fail message="Unable to reset sybase installation due to missing /opt/sybase.tar.gz" />
@@ -1021,6 +1019,8 @@
 
 		<clean-restart-sybase />
 
+		<echo>########Returned from initial clean-restart-sybase</echo>
+
 		<echo file="create-header.sql">use master
 dump transaction master with no_log
 go
@@ -1049,6 +1049,10 @@ go</echo>
 					<arg value="${database.username}" />
 				</exec>
 
+				<echo>Header injection return code : ${return.code}
+Output content :
+${output.content}</echo>
+
 				<if>
 					<or>
 						<contains string="${output.content}" substring="Database 'lportal' already exists" />
@@ -1057,7 +1061,7 @@ go</echo>
 					<then>
 						<clean-restart-sybase retry="true" />
 
-						<fail message="${output.content}" />
+						<fail message="Error output content : ${output.content}" />
 					</then>
 				</if>
 
