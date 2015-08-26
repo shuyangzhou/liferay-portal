@@ -243,6 +243,58 @@
 		</sequential>
 	</macrodef>
 
+	<macrodef name="clean-restart-sybase">
+		<attribute name="retry" default="false" />
+		<sequential>
+			<exec executable="service">
+				<arg line="sybase stop" />
+			</exec>
+
+			<waitfor maxwait="60" maxwaitunit="second">
+				<not>
+					<socket server="localhost" port="5000" />
+				</not>
+			</waitfor>
+
+			<sleep if:true="@{retry}" seconds="10" />
+
+			<antcall target="clean-up-sybase-processes" />
+
+			<if if:true="@{retry}">
+				<available file="/opt/sybase.tar.gz" />
+				<then>
+					<delete dir="/opt/sybase" />
+
+					<exec executable="tar" failonerror="true">
+						<arg line="xf /opt/sybase.tar.gz -C /" />
+					</exec>
+
+					<exec executable="hostname" failonerror="true" outputproperty="hostname" />
+
+					<echo file="/opt/sybase/interfaces">lportal
+		master tcp ether ${hostname} 5000
+		query tcp ether ${hostname} 5000
+					</echo>
+				</then>
+				<else>
+					<fail message="Unable to reset sybase installation due to missing /opt/sybase.tar.gz" />
+				</else>
+			</if>
+
+			<exec executable="service" failonerror="true">
+				<arg line="sybase start" />
+			</exec>
+
+			<print-current-time />
+			<waitfor maxwait="60" maxwaitunit="second">
+				<socket server="localhost" port="5000" />
+			</waitfor>
+			<print-current-time />
+
+			<sleep if:true="@{retry}" seconds="10" />
+		</sequential>
+	</macrodef>
+
 	<macrodef name="copy-testray-results">
 		<attribute default="${default.test.results.dir}" name="test.results.dest.dir" />
 		<attribute default="**/TEST-*.xml" name="test.results.fileset" />
@@ -323,7 +375,7 @@
 						<arg line="${database.service.cmd.start}" />
 					</exec>
 
-					<antcall target="copy-optional-jars" inheritall="false" >
+<!--					<antcall target="copy-optional-jars" inheritall="false" >
 						<param name="database.type" value="@{database.type}" />
 						<param name="todir" value="lib/development" />
 					</antcall>
@@ -331,7 +383,7 @@
 					<antcall target="copy-optional-jars" inheritall="false" >
 						<param name="database.type" value="@{database.type}" />
 						<param name="todir" value="${app.server.lib.global.dir}" />
-					</antcall>
+					</antcall>-->
 
 					<antcall target="rebuild-database" inheritall="false" >
 						<param name="database.type" value="@{database.type}" />
@@ -633,11 +685,11 @@
 						</then>
 					</if>
 
-					<merge-test-results />
+<!--					<merge-test-results />
 
 					<check-deprecated-method />
 
-					<test-tear-down />
+					<test-tear-down />-->
 
 					<print-gc-logs
 						tomcat.gc.log="@{tomcat.gc.log}"
@@ -717,19 +769,19 @@
 				<test-action>
 					<database-test-run-test database.type="@{database.type}">
 						<test-action>
-							<print-test-class-group test.class.group.index="${axis.variable}" />
+<!--							<print-test-class-group test.class.group.index="${axis.variable}" />
 
 							<ant dir="portal-impl" target="test-class-group" inheritAll="false">
 								<property name="database.type" value="@{database.type}" />
 								<property name="test.class.group.index" value="${axis.variable}" />
 								<property name="test.type" value="integration" />
-							</ant>
+							</ant>-->
 						</test-action>
 					</database-test-run-test>
 				</test-action>
 
 				<test-set-up>
-					<prepare-test-build />
+					<!--<prepare-test-build />-->
 				</test-set-up>
 			</run-batch-test>
 		</sequential>
@@ -746,7 +798,7 @@
 				<test-action>
 					<database-test-run-test database.type="@{database.type}" stop.app.server="true">
 						<test-action>
-							<print-test-class-group test.class.group.index="${axis.variable}" />
+<!--							<print-test-class-group test.class.group.index="${axis.variable}" />
 
 							<antcall target="prepare-portal-ext-properties" inheritAll="false">
 								<param name="database.type" value="@{database.type}" />
@@ -761,13 +813,13 @@
 
 							<ant dir="portal-service" target="test-class" inheritAll="false">
 								<property name="test.class" value="PortalLogAssertorTest" />
-							</ant>
+							</ant>-->
 						</test-action>
 					</database-test-run-test>
 				</test-action>
 
 				<test-set-up>
-					<prepare-test-build />
+					<!--<prepare-test-build />-->
 				</test-set-up>
 			</run-batch-test>
 		</sequential>
@@ -854,6 +906,10 @@
 		<run-integration-test database.type="postgresql" />
 	</target>
 
+	<target name="integration-sybase">
+		<run-integration-test database.type="sybase" />
+	</target>
+
 	<target name="modules-integration-db2">
 		<run-modules-integration-test database.type="db2" />
 	</target>
@@ -868,6 +924,10 @@
 
 	<target name="modules-integration-postgresql">
 		<run-modules-integration-test database.type="postgresql" />
+	</target>
+
+	<target name="modules-integration-sybase">
+		<run-modules-integration-test database.type="sybase" />
 	</target>
 
 	<target name="modules-unit">
@@ -948,6 +1008,94 @@
 				<prepare-test-build />
 			</test-set-up>
 		</run-batch-test>
+	</target>
+
+	<target name="sybase-service-start">
+		<local name="database.type" />
+
+		<property name="database.type" value="sybase" />
+
+		<get-database-property property.name="database.password" />
+		<get-database-property property.name="database.schema" />
+		<get-database-property property.name="database.username" />
+
+		<clean-restart-sybase />
+
+		<echo>########Returned from initial clean-restart-sybase</echo>
+
+		<echo file="create-header.sql">use master
+dump transaction master with no_log
+go
+drop database lportal
+go
+create database lportal on master = "250m"
+go
+exec sp_dboption 'lportal', 'allow nulls by default' , true
+go
+
+exec sp_dboption 'lportal', 'select into/bulkcopy/pllsort' , true
+go</echo>
+
+		<retry retrycount="10">
+			<sequential>
+				<local name="output.content" />
+				<local name="return.code" />
+
+				<exec executable="${sybase.executable}" outputproperty="output.content" resultproperty="return.code">
+					<arg value="-i" />
+					<arg value="create-header.sql" />
+					<arg value="-P" />
+					<arg value="${database.password}" />
+					<arg value="-S" />
+					<arg value="${database.schema}" />
+					<arg value="-U" />
+					<arg value="${database.username}" />
+				</exec>
+
+				<echo>Header injection return code : ${return.code}
+Output content :
+${output.content}</echo>
+
+				<if>
+					<or>
+						<contains string="${output.content}" substring="Database 'lportal' already exists" />
+						<contains string="${output.content}" substring="The model database is unavailable. It is being used to create a new database." />
+					</or>
+					<then>
+						<clean-restart-sybase retry="true" />
+
+						<fail message="Error output content : ${output.content}" />
+					</then>
+				</if>
+
+				<if>
+					<not>
+						<equals arg1="${return.code}" arg2="0" />
+					</not>
+					<then>
+						<clean-restart-sybase retry="true" />
+
+						<fail message="Error return code : ${return.code}"  />
+					</then>
+				</if>
+			</sequential>
+		</retry>
+
+		<delete file="create-header.sql" />
+	</target>
+
+	<target name="sybase-service-stop">
+		<exec executable="service">
+			<arg line="sybase stop" />
+		</exec>
+
+		<waitfor maxwait="60" maxwaitunit="second">
+			<not>
+				<socket server="localhost" port="5000" />
+			</not>
+		</waitfor>
+
+		<antcall target="clean-up-sybase-processes" />
 	</target>
 
 	<target name="tck">
