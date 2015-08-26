@@ -281,16 +281,15 @@
 				</else>
 			</if>
 
-			<exec executable="service" outputproperty="output.content" resultproperty="return.code">
+			<exec executable="service" failonerror="true">
 				<arg line="sybase start" />
 			</exec>
 
-			<echo>Sybase service start return code : ${return.code}
-Output content : ${output.content}</echo>
-
+			<print-current-time />
 			<waitfor maxwait="60" maxwaitunit="second">
 				<socket server="localhost" port="5000" />
 			</waitfor>
+			<print-current-time />
 
 			<sleep if:true="@{retry}" seconds="10" />
 		</sequential>
@@ -376,7 +375,7 @@ Output content : ${output.content}</echo>
 						<arg line="${database.service.cmd.start}" />
 					</exec>
 
-					<antcall target="copy-optional-jars" inheritall="false" >
+<!--					<antcall target="copy-optional-jars" inheritall="false" >
 						<param name="database.type" value="@{database.type}" />
 						<param name="todir" value="lib/development" />
 					</antcall>
@@ -384,7 +383,7 @@ Output content : ${output.content}</echo>
 					<antcall target="copy-optional-jars" inheritall="false" >
 						<param name="database.type" value="@{database.type}" />
 						<param name="todir" value="${app.server.lib.global.dir}" />
-					</antcall>
+					</antcall>-->
 
 					<antcall target="rebuild-database" inheritall="false" >
 						<param name="database.type" value="@{database.type}" />
@@ -770,9 +769,9 @@ Output content : ${output.content}</echo>
 				<test-action>
 					<database-test-run-test database.type="@{database.type}">
 						<test-action>
-							<print-test-class-group test.class.group.index="${axis.variable}" />
+<!--							<print-test-class-group test.class.group.index="${axis.variable}" />
 
-<!--							<ant dir="portal-impl" target="test-class-group" inheritAll="false">
+							<ant dir="portal-impl" target="test-class-group" inheritAll="false">
 								<property name="database.type" value="@{database.type}" />
 								<property name="test.class.group.index" value="${axis.variable}" />
 								<property name="test.type" value="integration" />
@@ -782,7 +781,7 @@ Output content : ${output.content}</echo>
 				</test-action>
 
 				<test-set-up>
-					<prepare-test-build />
+					<!--<prepare-test-build />-->
 				</test-set-up>
 			</run-batch-test>
 		</sequential>
@@ -799,7 +798,7 @@ Output content : ${output.content}</echo>
 				<test-action>
 					<database-test-run-test database.type="@{database.type}" stop.app.server="true">
 						<test-action>
-							<print-test-class-group test.class.group.index="${axis.variable}" />
+<!--							<print-test-class-group test.class.group.index="${axis.variable}" />
 
 							<antcall target="prepare-portal-ext-properties" inheritAll="false">
 								<param name="database.type" value="@{database.type}" />
@@ -807,7 +806,7 @@ Output content : ${output.content}</echo>
 
 							<antcall target="prepare-system-ext-properties" inheritAll="false" />
 
-<!--							<ant dir="modules" target="test-class-group" inheritAll="false">
+							<ant dir="modules" target="test-class-group" inheritAll="false">
 								<property name="test.class.group.index" value="${axis.variable}" />
 								<property name="test.type" value="integration" />
 							</ant>
@@ -820,7 +819,7 @@ Output content : ${output.content}</echo>
 				</test-action>
 
 				<test-set-up>
-					<prepare-test-build />
+					<!--<prepare-test-build />-->
 				</test-set-up>
 			</run-batch-test>
 		</sequential>
@@ -1041,7 +1040,10 @@ go</echo>
 
 		<retry retrycount="10">
 			<sequential>
-				<exec executable="isql" outputproperty="output.content" resultproperty="return.code">
+				<local name="output.content" />
+				<local name="return.code" />
+
+				<exec executable="${sybase.executable}" outputproperty="output.content" resultproperty="return.code">
 					<arg value="-i" />
 					<arg value="create-header.sql" />
 					<arg value="-P" />
