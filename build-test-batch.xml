@@ -376,7 +376,7 @@ Output content : ${output.content}</echo>
 						<arg line="${database.service.cmd.start}" />
 					</exec>
 
-					<antcall target="copy-optional-jars" inheritall="false" >
+<!--					<antcall target="copy-optional-jars" inheritall="false" >
 						<param name="database.type" value="@{database.type}" />
 						<param name="todir" value="lib/development" />
 					</antcall>
@@ -384,7 +384,7 @@ Output content : ${output.content}</echo>
 					<antcall target="copy-optional-jars" inheritall="false" >
 						<param name="database.type" value="@{database.type}" />
 						<param name="todir" value="${app.server.lib.global.dir}" />
-					</antcall>
+					</antcall>-->
 
 					<antcall target="rebuild-database" inheritall="false" >
 						<param name="database.type" value="@{database.type}" />
@@ -782,7 +782,7 @@ Output content : ${output.content}</echo>
 				</test-action>
 
 				<test-set-up>
-					<prepare-test-build />
+					<!--<prepare-test-build />-->
 				</test-set-up>
 			</run-batch-test>
 		</sequential>
@@ -820,7 +820,7 @@ Output content : ${output.content}</echo>
 				</test-action>
 
 				<test-set-up>
-					<prepare-test-build />
+					<!--<prepare-test-build />-->
 				</test-set-up>
 			</run-batch-test>
 		</sequential>
@@ -1058,6 +1058,7 @@ ${output.content}</echo>
 
 				<if>
 					<or>
+						<contains string="${output.content}" substring="Attempt to locate entry in sysdatabases for database 'lportal' by name failed" />
 						<contains string="${output.content}" substring="Database 'lportal' already exists" />
 						<contains string="${output.content}" substring="The model database is unavailable. It is being used to create a new database." />
 					</or>
