@@ -782,7 +782,7 @@ Output content : ${output.content}</echo>
 				</test-action>
 
 				<test-set-up>
-					<prepare-test-build />
+					<!--<prepare-test-build />-->
 				</test-set-up>
 			</run-batch-test>
 		</sequential>
@@ -820,7 +820,7 @@ Output content : ${output.content}</echo>
 				</test-action>
 
 				<test-set-up>
-					<prepare-test-build />
+					<!--<prepare-test-build />-->
 				</test-set-up>
 			</run-batch-test>
 		</sequential>
