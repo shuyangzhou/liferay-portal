@@ -83,6 +83,40 @@ public class ReleaseLocalServiceImpl extends ReleaseLocalServiceBaseImpl {
 	}
 
 	@Override
+	public Release addRelease(String servletContextName, String version) {
+		Release release = null;
+
+		if (servletContextName.equals(
+				ReleaseConstants.DEFAULT_SERVLET_CONTEXT_NAME)) {
+
+			release = releasePersistence.create(ReleaseConstants.DEFAULT_ID);
+		}
+
+		else {
+			long releaseId = counterLocalService.increment();
+
+			release = releasePersistence.create(releaseId);
+		}
+
+		Date now = new Date();
+
+		release.setCreateDate(now);
+		release.setModifiedDate(now);
+		release.setServletContextName(servletContextName);
+		release.setVersion(version);
+
+		if (servletContextName.equals(
+				ReleaseConstants.DEFAULT_SERVLET_CONTEXT_NAME)) {
+
+			release.setTestString(ReleaseConstants.TEST_STRING);
+		}
+
+		releasePersistence.update(release);
+
+		return release;
+	}
+
+	@Override
 	public void createTablesAndPopulate() {
 		try {
 			if (_log.isInfoEnabled()) {
@@ -293,6 +327,35 @@ public class ReleaseLocalServiceImpl extends ReleaseLocalServiceBaseImpl {
 		updateRelease(
 			servletContextName, upgradeProcesses, buildNumber,
 			previousBuildNumber, indexOnUpgrade);
+	}
+
+	@Override
+	public void updateRelease(
+		String servletContextName, String version, String previousVersion) {
+
+		Release release = releaseLocalService.fetchRelease(servletContextName);
+
+		if (release == null) {
+			if (previousVersion.equals("0.0.0")) {
+				release = releaseLocalService.addRelease(
+					servletContextName, previousVersion);
+			}
+			else {
+				throw new IllegalStateException(
+					"Unable to update release because it does not exist");
+			}
+		}
+
+		if (!previousVersion.equals(release.getVersion())) {
+			throw new IllegalStateException(
+				"Unable to update release because the previous version " +
+					previousVersion + " does not match the expected version " +
+						release.getVersion());
+		}
+
+		release.setVersion(version);
+
+		releasePersistence.update(release);
 	}
 
 	protected void populateVersion() {

@@ -73,7 +73,7 @@
 		</execute>
 	</command>
 
-	<command name="AddPortletWCDSite" priority="4">
+	<command known-issues="LPS-56754" name="AddPortletWCDSite" priority="4">
 		<execute macro="Page#gotoCP">
 			<var name="portletName" value="Sites" />
 		</execute>
@@ -324,7 +324,9 @@
 
 		<execute macro="WebContentNavigator#gotoEditPGViaWCD" />
 
-		<execute macro="WebContent#expirePGViaWCD" />
+		<execute macro="WebContent#expirePGViaWCD">
+			<var name="webContentTitle" value="WC WebContent Title" />
+		</execute>
 
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="Web Content Display Page" />

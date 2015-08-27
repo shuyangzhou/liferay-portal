@@ -21,8 +21,8 @@ import com.liferay.nested.portlets.web.display.context.NestedPortletsDisplayCont
 import com.liferay.nested.portlets.web.upgrade.NestedPortletWebUpgrade;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
-import com.liferay.portal.kernel.settings.SettingsException;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -107,9 +107,9 @@ public class NestedPortletsPortlet extends MVCPortlet {
 			layoutTemplateId =
 				nestedPortletsDisplayContext.getLayoutTemplateId();
 		}
-		catch (SettingsException e) {
+		catch (ConfigurationException ce) {
 			if (_log.isWarnEnabled()) {
-				_log.warn(e, e);
+				_log.warn(ce, ce);
 			}
 		}
 

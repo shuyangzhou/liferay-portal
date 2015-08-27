@@ -129,10 +129,12 @@ public final class CommandLoggerHandler {
 		List<LoggerElement> runLineLoggerElements =
 			childContainerLoggerElement.loggerElements("li");
 
-		LoggerElement runLineLoggerElement = runLineLoggerElements.get(
-			runLineLoggerElements.size() - 1);
+		if (!runLineLoggerElements.isEmpty()) {
+			LoggerElement runLineLoggerElement = runLineLoggerElements.get(
+				runLineLoggerElements.size() - 1);
 
-		runLineLoggerElement.addClassName("error-line");
+			runLineLoggerElement.addClassName("error-line");
+		}
 	}
 
 	private static LoggerElement _getButtonLoggerElement(int btnLinkId) {
@@ -164,7 +166,7 @@ public final class CommandLoggerHandler {
 		loggerElement.setClassName("console errorPanel toggle");
 
 		loggerElement.addChildLoggerElement(
-			SummaryLoggerHandler.getSummaryLogLoggerElement());
+			SummaryLoggerHandler.getSummarySnapshotLoggerElement());
 
 		return loggerElement;
 	}

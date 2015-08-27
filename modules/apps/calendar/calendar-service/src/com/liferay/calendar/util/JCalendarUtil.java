@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.TimeZone;
 
 /**
@@ -107,15 +106,7 @@ public class JCalendarUtil {
 	}
 
 	public static int getTimeZoneOffset(TimeZone timeZone) {
-		int offset = timeZone.getRawOffset();
-
-		boolean inDaylightTime = timeZone.inDaylightTime(new Date());
-
-		if (inDaylightTime) {
-			offset += timeZone.getDSTSavings();
-		}
-
-		return offset;
+		return timeZone.getOffset(System.currentTimeMillis());
 	}
 
 	public static int getWeekdayPosition(Calendar jCalendar) {

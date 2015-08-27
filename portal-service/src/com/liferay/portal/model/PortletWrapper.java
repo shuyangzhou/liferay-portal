@@ -1647,7 +1647,9 @@ public class PortletWrapper implements Portlet, ModelWrapper<Portlet> {
 	* Returns the name of the WebDAV storage class of the portlet.
 	*
 	* @return the name of the WebDAV storage class of the portlet
+	* @deprecated As of 7.0.0, replaced by {@link #getWebDAVStorageInstance}
 	*/
+	@Deprecated
 	@Override
 	public java.lang.String getWebDAVStorageClass() {
 		return _portlet.getWebDAVStorageClass();
@@ -1664,10 +1666,16 @@ public class PortletWrapper implements Portlet, ModelWrapper<Portlet> {
 	}
 
 	/**
-	* Returns the name of the WebDAV storage token of the portlet.
+	* Returns the name of the WebDAV storage token of the portlet as defined in
+	* the 'liferay-portlet.xml' file.
+	*
+	* Please note that the token may be different from the one defined in the
+	* WebDAVStorage when it is implemented as an OSGi service.
 	*
 	* @return the name of the WebDAV storage token of the portlet
+	* @deprecated As of 7.0.0 replaced by 'WebDAVUtil.getStorageToken(Portlet)'
 	*/
+	@Deprecated
 	@Override
 	public java.lang.String getWebDAVStorageToken() {
 		return _portlet.getWebDAVStorageToken();
