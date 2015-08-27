@@ -157,6 +157,7 @@ public class MBMessageServiceTest {
 					String message = loggingEvent.getRenderedMessage();
 
 					Assert.assertTrue(
+						message,
 						message.startsWith("Caught unexpected exception"));
 				}
 
@@ -170,7 +171,8 @@ public class MBMessageServiceTest {
 					sb.append("com.liferay.portal.kernel.exception.");
 					sb.append("SystemException:");
 
-					Assert.assertTrue(message.startsWith(sb.toString()));
+					Assert.assertTrue(
+						message, message.startsWith(sb.toString()));
 				}
 
 				for (LoggingEvent loggingEvent :
@@ -178,8 +180,10 @@ public class MBMessageServiceTest {
 
 					String message = loggingEvent.getRenderedMessage();
 
-					Assert.assertTrue(message.contains("Your server command"));
 					Assert.assertTrue(
+						message,message.contains("Your server command"));
+					Assert.assertTrue(
+						message,
 						message.contains(
 							"encountered a deadlock situation. Please re-run " +
 								"your command."));
