@@ -1050,6 +1050,8 @@ disk resize name="master", size="1024M"
 go
 drop database lportal
 go
+exec sp_configure 'lock scheme', 0, datarows
+go
 create database lportal on master = "250m"
 go
 exec sp_dboption 'lportal', 'allow nulls by default' , true
