@@ -1046,7 +1046,7 @@
 		<echo file="create-header.sql">use master
 dump transaction master with no_log
 go
-disk resize name="master", size="1024M"
+alter database master on master=232
 go
 drop database lportal
 go
