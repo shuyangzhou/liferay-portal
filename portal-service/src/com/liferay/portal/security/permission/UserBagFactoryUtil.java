@@ -14,51 +14,46 @@
 
 package com.liferay.portal.security.permission;
 
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;
-import com.liferay.portal.model.User;
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
 import com.liferay.registry.ServiceTracker;
 
 /**
- * @author Charles May
- * @author Brian Wing Shun Chan
+ * @author Preston Crary
  */
-public class PermissionCheckerFactoryUtil {
+public class UserBagFactoryUtil {
 
-	public static PermissionChecker create(User user) {
-		return getPermissionCheckerFactory().create(user);
+	public static UserPermissionCheckerBag create(long userId)
+		throws PortalException {
+
+		return getUserBagFactory().create(userId);
 	}
 
-	/**
-	 * @deprecated As of 6.2.0, replaced by {@link #create(User)}
-	 */
-	@Deprecated
-	public static PermissionChecker create(User user, boolean checkGuest)
-		throws Exception {
+	public static PermissionCheckerBag create(long userId, long groupId)
+		throws PortalException {
 
-		return getPermissionCheckerFactory().create(user);
+		return getUserBagFactory().create(userId, groupId);
 	}
 
-	public static PermissionCheckerFactory getPermissionCheckerFactory() {
-		PortalRuntimePermission.checkGetBeanProperty(
-			PermissionCheckerFactoryUtil.class);
+	public static UserBagFactory getUserBagFactory() {
+		PortalRuntimePermission.checkGetBeanProperty(UserBagFactoryUtil.class);
 
 		return _instance._serviceTracker.getService();
 	}
 
-	private PermissionCheckerFactoryUtil() {
+	private UserBagFactoryUtil() {
 		Registry registry = RegistryUtil.getRegistry();
 
-		_serviceTracker = registry.trackServices(
-			PermissionCheckerFactory.class);
+		_serviceTracker = registry.trackServices(UserBagFactory.class);
 
 		_serviceTracker.open();
 	}
 
-	private static final PermissionCheckerFactoryUtil _instance =
-		new PermissionCheckerFactoryUtil();
+	private static final UserBagFactoryUtil _instance =
+		new UserBagFactoryUtil();
 
-	private final ServiceTracker<?, PermissionCheckerFactory> _serviceTracker;
+	private final ServiceTracker<?, UserBagFactory> _serviceTracker;
 
 }

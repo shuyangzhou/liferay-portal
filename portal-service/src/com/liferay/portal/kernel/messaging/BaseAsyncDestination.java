@@ -316,15 +316,10 @@ public abstract class BaseAsyncDestination extends BaseDestination {
 		}
 
 		if ((permissionChecker == null) && Validator.isNotNull(principalName)) {
-			try {
-				User user = UserLocalServiceUtil.fetchUser(
-					PrincipalThreadLocal.getUserId());
+			User user = UserLocalServiceUtil.fetchUser(
+				PrincipalThreadLocal.getUserId());
 
-				permissionChecker = PermissionCheckerFactoryUtil.create(user);
-			}
-			catch (Exception e) {
-				throw new RuntimeException(e);
-			}
+			permissionChecker = PermissionCheckerFactoryUtil.create(user);
 		}
 
 		if (permissionChecker != null) {

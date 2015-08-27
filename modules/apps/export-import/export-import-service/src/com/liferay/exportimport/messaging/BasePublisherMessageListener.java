@@ -15,7 +15,6 @@
 package com.liferay.exportimport.messaging;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.messaging.BaseMessageStatusMessageListener;
 import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.messaging.sender.SingleDestinationMessageSender;
@@ -89,14 +88,8 @@ public abstract class BasePublisherMessageListener
 
 		PrincipalThreadLocal.setName(userId);
 
-		PermissionChecker permissionChecker = null;
-
-		try {
-			permissionChecker = PermissionCheckerFactoryUtil.create(user);
-		}
-		catch (Exception e) {
-			throw new SystemException(e);
-		}
+		PermissionChecker permissionChecker =
+			PermissionCheckerFactoryUtil.create(user);
 
 		PermissionThreadLocal.setPermissionChecker(permissionChecker);
 

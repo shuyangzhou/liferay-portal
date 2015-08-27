@@ -555,152 +555,45 @@ public class ArrayUtil {
 	}
 
 	public static boolean contains(boolean[] array, boolean value) {
-		if (isEmpty(array)) {
-			return false;
-		}
-
-		for (int i = 0; i < array.length; i++) {
-			if (value == array[i]) {
-				return true;
-			}
-		}
-
-		return false;
+		return _emptyOrContains(array, value, false);
 	}
 
 	public static boolean contains(byte[] array, byte value) {
-		if (isEmpty(array)) {
-			return false;
-		}
-
-		for (int i = 0; i < array.length; i++) {
-			if (value == array[i]) {
-				return true;
-			}
-		}
-
-		return false;
+		return _emptyOrContains(array, value, false);
 	}
 
 	public static boolean contains(char[] array, char value) {
-		if (isEmpty(array)) {
-			return false;
-		}
-
-		for (int i = 0; i < array.length; i++) {
-			if (value == array[i]) {
-				return true;
-			}
-		}
-
-		return false;
+		return _emptyOrContains(array, value, false);
 	}
 
 	public static boolean contains(double[] array, double value) {
-		if (isEmpty(array)) {
-			return false;
-		}
-
-		for (int i = 0; i < array.length; i++) {
-			if (value == array[i]) {
-				return true;
-			}
-		}
-
-		return false;
+		return _emptyOrContains(array, value, false);
 	}
 
 	public static boolean contains(float[] array, float value) {
-		if (isEmpty(array)) {
-			return false;
-		}
-
-		for (int i = 0; i < array.length; i++) {
-			if (value == array[i]) {
-				return true;
-			}
-		}
-
-		return false;
+		return _emptyOrContains(array, value, false);
 	}
 
 	public static boolean contains(int[] array, int value) {
-		if (isEmpty(array)) {
-			return false;
-		}
-
-		for (int i = 0; i < array.length; i++) {
-			if (value == array[i]) {
-				return true;
-			}
-		}
-
-		return false;
+		return _emptyOrContains(array, value, false);
 	}
 
 	public static boolean contains(long[] array, long value) {
-		if (isEmpty(array)) {
-			return false;
-		}
-
-		for (int i = 0; i < array.length; i++) {
-			if (value == array[i]) {
-				return true;
-			}
-		}
-
-		return false;
+		return _emptyOrContains(array, value, false);
 	}
 
 	public static boolean contains(Object[] array, Object value) {
-		if (isEmpty(array) || (value == null)) {
-			return false;
-		}
-
-		for (int i = 0; i < array.length; i++) {
-			if (value.equals(array[i])) {
-				return true;
-			}
-		}
-
-		return false;
+		return _emptyOrContains(array, value, false);
 	}
 
 	public static boolean contains(short[] array, short value) {
-		if (isEmpty(array)) {
-			return false;
-		}
-
-		for (int i = 0; i < array.length; i++) {
-			if (value == array[i]) {
-				return true;
-			}
-		}
-
-		return false;
+		return _emptyOrContains(array, value, false);
 	}
 
 	public static boolean contains(
 		String[] array, String value, boolean ignoreCase) {
 
-		if (isEmpty(array)) {
-			return false;
-		}
-
-		for (int i = 0; i < array.length; i++) {
-			if (ignoreCase) {
-				if (StringUtil.equalsIgnoreCase(array[i], value )) {
-					return true;
-				}
-			}
-			else {
-				if (array[i].equals(value)) {
-					return true;
-				}
-			}
-		}
-
-		return false;
+		return _emptyOrContains(array, value, ignoreCase, false);
 	}
 
 	public static boolean containsAll(boolean[] array1, boolean[] array2) {
@@ -870,6 +763,48 @@ public class ArrayUtil {
 		}
 
 		return set.toArray(new String[set.size()]);
+	}
+
+	public static boolean emptyOrContains(boolean[] array, boolean value) {
+		return _emptyOrContains(array, value, true);
+	}
+
+	public static boolean emptyOrContains(byte[] array, byte value) {
+		return _emptyOrContains(array, value, true);
+	}
+
+	public static boolean emptyOrContains(char[] array, char value) {
+		return _emptyOrContains(array, value, true);
+	}
+
+	public static boolean emptyOrContains(double[] array, double value) {
+		return _emptyOrContains(array, value, true);
+	}
+
+	public static boolean emptyOrContains(float[] array, float value) {
+		return _emptyOrContains(array, value, true);
+	}
+
+	public static boolean emptyOrContains(int[] array, int value) {
+		return _emptyOrContains(array, value, true);
+	}
+
+	public static boolean emptyOrContains(long[] array, long value) {
+		return _emptyOrContains(array, value, true);
+	}
+
+	public static boolean emptyOrContains(Object[] array, Object value) {
+		return _emptyOrContains(array, value, true);
+	}
+
+	public static boolean emptyOrContains(short[] array, short value) {
+		return _emptyOrContains(array, value, true);
+	}
+
+	public static boolean emptyOrContains(
+		String[] array, String value, boolean ignoreCase) {
+
+		return _emptyOrContains(array, value, ignoreCase, true);
 	}
 
 	public static <T> boolean exists(
@@ -2183,6 +2118,173 @@ public class ArrayUtil {
 		}
 
 		return toArray(set.toArray(new String[set.size()]));
+	}
+
+	private static boolean _emptyOrContains(
+		boolean[] array, boolean value, boolean trueIfEmpty) {
+
+		if (isEmpty(array)) {
+			return trueIfEmpty;
+		}
+
+		for (int i = 0; i < array.length; i++) {
+			if (value == array[i]) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private static boolean _emptyOrContains(
+		byte[] array, byte value, boolean trueIfEmpty) {
+
+		if (isEmpty(array)) {
+			return trueIfEmpty;
+		}
+
+		for (int i = 0; i < array.length; i++) {
+			if (value == array[i]) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private static boolean _emptyOrContains(
+		char[] array, char value, boolean trueIfEmpty) {
+
+		if (isEmpty(array)) {
+			return trueIfEmpty;
+		}
+
+		for (int i = 0; i < array.length; i++) {
+			if (value == array[i]) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private static boolean _emptyOrContains(
+		double[] array, double value, boolean trueIfEmpty) {
+
+		if (isEmpty(array)) {
+			return trueIfEmpty;
+		}
+
+		for (int i = 0; i < array.length; i++) {
+			if (value == array[i]) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private static boolean _emptyOrContains(
+		float[] array, float value, boolean trueIfEmpty) {
+
+		if (isEmpty(array)) {
+			return trueIfEmpty;
+		}
+
+		for (int i = 0; i < array.length; i++) {
+			if (value == array[i]) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private static boolean _emptyOrContains(
+		int[] array, int value, boolean trueIfEmpty) {
+
+		if (isEmpty(array)) {
+			return trueIfEmpty;
+		}
+
+		for (int i = 0; i < array.length; i++) {
+			if (value == array[i]) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private static boolean _emptyOrContains(
+		long[] array, long value, boolean trueIfEmpty) {
+
+		if (isEmpty(array)) {
+			return trueIfEmpty;
+		}
+
+		for (int i = 0; i < array.length; i++) {
+			if (value == array[i]) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private static boolean _emptyOrContains(
+		Object[] array, Object value, boolean trueIfEmpty) {
+
+		if (isEmpty(array)) {
+			return trueIfEmpty;
+		}
+
+		for (int i = 0; i < array.length; i++) {
+			if (Validator.equals(array[i], value)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private static boolean _emptyOrContains(
+		short[] array, short value, boolean trueIfEmpty) {
+
+		if (isEmpty(array)) {
+			return trueIfEmpty;
+		}
+
+		for (int i = 0; i < array.length; i++) {
+			if (value == array[i]) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private static boolean _emptyOrContains(
+		String[] array, String value, boolean ignoreCase, boolean trueIfEmpty) {
+
+		if (isEmpty(array)) {
+			return trueIfEmpty;
+		}
+
+		for (int i = 0; i < array.length; i++) {
+			if (ignoreCase) {
+				if (StringUtil.equalsIgnoreCase(array[i], value)) {
+					return true;
+				}
+			}
+			else {
+				if (Validator.equals(array[i], value)) {
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 
 }

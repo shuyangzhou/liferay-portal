@@ -14,14 +14,16 @@
 
 package com.liferay.portal.security.permission;
 
-import com.liferay.portal.model.User;
+import com.liferay.portal.kernel.exception.PortalException;
 
 /**
- * @author Charles May
- * @author Brian Wing Shun Chan
+ * @author Preston Crary
  */
-public interface PermissionCheckerFactory {
+public interface UserBagFactory {
 
-	public PermissionChecker create(User user);
+	public UserPermissionCheckerBag create(long userId) throws PortalException;
+
+	public PermissionCheckerBag create(long userId, long groupId)
+		throws PortalException;
 
 }

@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
 import com.liferay.portal.kernel.test.util.CompanyTestUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
-import com.liferay.portal.kernel.test.util.OrganizationTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.RoleTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
@@ -340,39 +339,6 @@ public class GroupServiceTest {
 			0,
 			GroupLocalServiceUtil.searchCount(
 				TestPropsValues.getCompanyId(), null, "cabina14", groupParams));
-	}
-
-	@Test
-	public void testGetUserSitesGroups() throws Exception {
-		Organization parentOrganization = OrganizationTestUtil.addOrganization(
-			true);
-
-		Group parentOrganizationGroup = parentOrganization.getGroup();
-
-		LayoutTestUtil.addLayout(parentOrganizationGroup);
-
-		Organization organization = OrganizationTestUtil.addOrganization(
-			parentOrganization.getOrganizationId(),
-			RandomTestUtil.randomString(), false);
-
-		_organizations.add(organization);
-		_organizations.add(parentOrganization);
-
-		UserLocalServiceUtil.addOrganizationUsers(
-			organization.getOrganizationId(),
-			new long[] {TestPropsValues.getUserId()});
-
-		try {
-			List<Group> groups = GroupServiceUtil.getUserSitesGroups(
-				TestPropsValues.getUserId(), null, false, QueryUtil.ALL_POS);
-
-			Assert.assertTrue(groups.contains(parentOrganizationGroup));
-		}
-		finally {
-			UserLocalServiceUtil.unsetOrganizationUsers(
-				organization.getOrganizationId(),
-				new long[] {TestPropsValues.getUserId()});
-		}
 	}
 
 	@Test

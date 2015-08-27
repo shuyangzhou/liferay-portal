@@ -6273,7 +6273,7 @@ public class PortalImpl implements Portal {
 	}
 
 	@Override
-	public boolean isCompanyAdmin(User user) throws Exception {
+	public boolean isCompanyAdmin(User user) {
 		PermissionChecker permissionChecker =
 			PermissionCheckerFactoryUtil.create(user);
 
@@ -6394,7 +6394,7 @@ public class PortalImpl implements Portal {
 	}
 
 	@Override
-	public boolean isGroupAdmin(User user, long groupId) throws Exception {
+	public boolean isGroupAdmin(User user, long groupId) {
 		PermissionChecker permissionChecker =
 			PermissionCheckerFactoryUtil.create(user);
 
@@ -6415,7 +6415,7 @@ public class PortalImpl implements Portal {
 	}
 
 	@Override
-	public boolean isGroupOwner(User user, long groupId) throws Exception {
+	public boolean isGroupOwner(User user, long groupId) {
 		PermissionChecker permissionChecker =
 			PermissionCheckerFactoryUtil.create(user);
 

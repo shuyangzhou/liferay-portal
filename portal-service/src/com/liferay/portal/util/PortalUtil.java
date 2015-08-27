@@ -2183,7 +2183,7 @@ public class PortalUtil {
 		return getPortal().isCommunityOwner(user, groupId);
 	}
 
-	public static boolean isCompanyAdmin(User user) throws Exception {
+	public static boolean isCompanyAdmin(User user) {
 		return getPortal().isCompanyAdmin(user);
 	}
 
@@ -2223,9 +2223,7 @@ public class PortalUtil {
 		return getPortal().isControlPanelPortlet(portletId, themeDisplay);
 	}
 
-	public static boolean isGroupAdmin(User user, long groupId)
-		throws Exception {
-
+	public static boolean isGroupAdmin(User user, long groupId) {
 		return getPortal().isGroupAdmin(user, groupId);
 	}
 
@@ -2236,9 +2234,7 @@ public class PortalUtil {
 			fullURL, groupFriendlyURL, layoutFriendlyURL);
 	}
 
-	public static boolean isGroupOwner(User user, long groupId)
-		throws Exception {
-
+	public static boolean isGroupOwner(User user, long groupId) {
 		return getPortal().isGroupOwner(user, groupId);
 	}
 

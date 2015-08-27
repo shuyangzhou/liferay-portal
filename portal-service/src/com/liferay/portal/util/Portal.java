@@ -1338,7 +1338,7 @@ public interface Portal {
 	@Deprecated
 	public boolean isCommunityOwner(User user, long groupId) throws Exception;
 
-	public boolean isCompanyAdmin(User user) throws Exception;
+	public boolean isCompanyAdmin(User user);
 
 	public boolean isCompanyControlPanelPortlet(
 			String portletId, String category, ThemeDisplay themeDisplay)
@@ -1357,12 +1357,12 @@ public interface Portal {
 	public boolean isControlPanelPortlet(
 		String portletId, ThemeDisplay themeDisplay);
 
-	public boolean isGroupAdmin(User user, long groupId) throws Exception;
+	public boolean isGroupAdmin(User user, long groupId);
 
 	public boolean isGroupFriendlyURL(
 		String fullURL, String groupFriendlyURL, String layoutFriendlyURL);
 
-	public boolean isGroupOwner(User user, long groupId) throws Exception;
+	public boolean isGroupOwner(User user, long groupId);
 
 	public boolean isLayoutDescendant(Layout layout, long layoutId)
 		throws PortalException;
