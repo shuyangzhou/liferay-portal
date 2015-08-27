@@ -789,7 +789,7 @@
 			<echo>Sending testray results to @{testray.results.dir}.</echo>
 
 			<copy failonerror="false" todir="@{testray.results.dir}">
-				<fileset dir="@{test.results.suite.dir}" erroronmissing="false" includes="TESTS-*.xml" />
+				<fileset dir="@{test.results.suite.dir}" erroronmissingdir="false" includes="TESTS-*.xml" />
 			</copy>
 		</sequential>
 	</macrodef>
@@ -916,7 +916,7 @@
 						<run-build-selenium />
 
 						<if>
-							<equals arg1="${TEST_PORTAL_WEB}" arg2="true" />
+							<equals arg1="${env.TEST_PORTAL_WEB}" arg2="true" />
 							<then>
 								<run-source-formatter />
 							</then>
@@ -941,7 +941,9 @@
 
 				<ant dir="modules/util/portal-tools-service-builder" target="deploy" />
 
-				<ant dir="portal-impl" target="build-services" />
+				<exec dir="portal-impl" executable="ant" failonerror="true">
+					<arg value="build-services" />
+				</exec>
 			</test-action>
 
 			<test-set-up>

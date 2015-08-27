@@ -106,7 +106,14 @@ public class DDMFormRendererImpl implements DDMFormRenderer {
 		Template template = TemplateManagerUtil.getTemplate(
 			TemplateConstants.LANG_TYPE_SOY, _templateResource, false);
 
-		template.put(TemplateConstants.NAMESPACE, "ddm.multiple_page_form");
+		String paginationMode = ddmFormLayout.getPaginationMode();
+
+		if (paginationMode.equals("tabs")) {
+			template.put(TemplateConstants.NAMESPACE, "ddm.tabbed_form");
+		}
+		else {
+			template.put(TemplateConstants.NAMESPACE, "ddm.paginated_form");
+		}
 
 		populateCommonContext(template, ddmForm, ddmFormRenderingContext);
 
@@ -125,7 +132,7 @@ public class DDMFormRendererImpl implements DDMFormRenderer {
 		Template template = TemplateManagerUtil.getTemplate(
 			TemplateConstants.LANG_TYPE_SOY, _templateResource, false);
 
-		template.put(TemplateConstants.NAMESPACE, "ddm.single_page_form");
+		template.put(TemplateConstants.NAMESPACE, "ddm.simple_form");
 
 		populateCommonContext(template, ddmForm, ddmFormRenderingContext);
 

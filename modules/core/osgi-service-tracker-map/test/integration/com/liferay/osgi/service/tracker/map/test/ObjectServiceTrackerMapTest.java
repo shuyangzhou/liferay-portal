@@ -16,6 +16,8 @@ package com.liferay.osgi.service.tracker.map.test;
 
 import com.liferay.osgi.service.tracker.map.PropertyServiceReferenceMapper;
 import com.liferay.osgi.service.tracker.map.ServiceReferenceMapper;
+import com.liferay.osgi.service.tracker.map.ServiceTrackerCustomizerFactory;
+import com.liferay.osgi.service.tracker.map.ServiceTrackerCustomizerFactory.ServiceWrapper;
 import com.liferay.osgi.service.tracker.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.map.ServiceTrackerMapFactory;
 import com.liferay.osgi.service.tracker.map.internal.BundleContextWrapper;
@@ -587,6 +589,52 @@ public class ObjectServiceTrackerMapTest {
 		}
 
 		serviceTrackerMap.close();
+	}
+
+	@Test
+	public void testServiceWrapperServiceTrackerCustomizer()
+		throws InvalidSyntaxException {
+
+		ServiceTrackerMap<String, ServiceWrapper<TrackedOne>>
+			serviceTrackerMap = ServiceTrackerMapFactory.singleValueMap(
+				_bundleContext, TrackedOne.class, "target",
+				ServiceTrackerCustomizerFactory.<TrackedOne>serviceWrapper(
+					_bundleContext));
+
+		serviceTrackerMap.open();
+
+		try {
+			Dictionary<String, Object> properties = new Hashtable<>();
+
+			properties.put("property", "aProperty");
+			properties.put("target", "aTarget");
+
+			TrackedOne trackedOne = new TrackedOne();
+
+			ServiceRegistration<TrackedOne> serviceRegistration =
+				_bundleContext.registerService(
+					TrackedOne.class, trackedOne, properties);
+
+			ServiceWrapper<TrackedOne> serviceWrapper =
+				serviceTrackerMap.getService("aTarget");
+
+			Assert.assertEquals(trackedOne, serviceWrapper.getService());
+
+			Map<String, Object> serviceWrapperProperties =
+				serviceWrapper.getProperties();
+
+			Assert.assertTrue(serviceWrapperProperties.containsKey("property"));
+			Assert.assertTrue(serviceWrapperProperties.containsKey("target"));
+			Assert.assertEquals(
+				"aProperty", serviceWrapperProperties.get("property"));
+			Assert.assertEquals(
+				"aTarget", serviceWrapperProperties.get("target"));
+
+			serviceRegistration.unregister();
+		}
+		finally {
+			serviceTrackerMap.close();
+		}
 	}
 
 	@Test

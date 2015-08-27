@@ -145,7 +145,13 @@ public class PoshiRunnerContext {
 		return _rootElements.get("macro#" + className);
 	}
 
-	public static String getPathLocator(String pathLocatorKey) {
+	public static String getPathLocator(String pathLocatorKey)
+		throws Exception {
+
+		if (!_pathLocators.containsKey(pathLocatorKey)) {
+			throw new Exception("No such locator key " + pathLocatorKey);
+		}
+
 		return _pathLocators.get(pathLocatorKey);
 	}
 
@@ -171,6 +177,10 @@ public class PoshiRunnerContext {
 
 	public static String getTestCaseCommandName() {
 		return _testClassCommandName;
+	}
+
+	public static String getTestCaseDescription(String classCommandName) {
+		return _testCaseDescriptions.get(classCommandName);
 	}
 
 	public static String getTestCaseName() {
@@ -524,6 +534,15 @@ public class PoshiRunnerContext {
 						classType + "#" + classCommandName,
 						_getCommandSummary(
 							classCommandName, classType, commandElement));
+
+					if (Validator.equals(classType, "test-case") &&
+						Validator.isNotNull(
+							commandElement.attributeValue("description"))) {
+
+						_testCaseDescriptions.put(
+							classCommandName,
+							commandElement.attributeValue("description"));
+					}
 				}
 
 				if (classType.equals("function")) {
@@ -715,6 +734,8 @@ public class PoshiRunnerContext {
 	private static final Map<String, Set<String>> _testCaseClassCommandNames =
 		new TreeMap<>();
 	private static final List<String> _testCaseClassNames = new ArrayList<>();
+	private static final Map<String, String> _testCaseDescriptions =
+		new HashMap<>();
 	private static final List<String> _testCaseRequiredPropertyNames =
 		new ArrayList<>();
 	private static String _testClassCommandName;

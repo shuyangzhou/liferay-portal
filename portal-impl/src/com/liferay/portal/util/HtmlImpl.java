@@ -59,6 +59,25 @@ public class HtmlImpl implements Html {
 
 	public static final int ESCAPE_MODE_URL = 5;
 
+	@Override
+	public String buildData(Map<String, Object> data) {
+		if ((data == null) || data.isEmpty()) {
+			return StringPool.BLANK;
+		}
+
+		StringBundler sb = new StringBundler(data.size() * 5);
+
+		for (Map.Entry<String, Object> entry : data.entrySet()) {
+			sb.append("data-");
+			sb.append(entry.getKey());
+			sb.append("=\"");
+			sb.append(escapeAttribute(String.valueOf(entry.getValue())));
+			sb.append("\" ");
+		}
+
+		return sb.toString();
+	}
+
 	/**
 	 * Escapes the text so that it is safe to use in an HTML context.
 	 *
