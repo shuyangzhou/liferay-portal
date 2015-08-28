@@ -311,9 +311,19 @@
 
 					<set-portal-impl-system-ext-properties />
 
-					<exec executable="${database.service.executable}" failonerror="true">
-						<arg line="${database.service.cmd.start}" />
-					</exec>
+					<if>
+						<equals arg1="@{database.type}" arg2="sybase" />
+						<then>
+							<exec executable="sh" spawn="true">
+								<arg value="/opt/sybase/ASE-15_0/install/RUN_lportal" />
+							</exec>
+						</then>
+						<else>
+							<exec executable="${database.service.executable}" failonerror="true">
+								<arg line="${database.service.cmd.start}" />
+							</exec>
+						</else>
+					</if>
 
 					<antcall target="copy-optional-jars" inheritall="false" >
 						<param name="database.type" value="@{database.type}" />
@@ -873,6 +883,10 @@
 		<run-integration-test database.type="postgresql" />
 	</target>
 
+	<target name="integration-sybase">
+		<run-integration-test database.type="sybase" />
+	</target>
+
 	<target name="modules-integration-db2">
 		<run-modules-integration-test database.type="db2" />
 	</target>
@@ -887,6 +901,10 @@
 
 	<target name="modules-integration-postgresql">
 		<run-modules-integration-test database.type="postgresql" />
+	</target>
+
+	<target name="modules-integration-sybase">
+		<run-modules-integration-test database.type="sybase" />
 	</target>
 
 	<target name="modules-unit">
@@ -969,6 +987,45 @@
 				<prepare-test-build />
 			</test-set-up>
 		</run-batch-test>
+	</target>
+
+	<target name="test-sybase">
+		<antcall target="clean-up-sybase-processes" />
+
+		<echo>^^^^^^^^^^^^^^^^^^^sybase stop starting</echo>
+		<exec executable="service">
+			<arg line="sybase stop" />
+		</exec>
+		<echo>^^^^^^^^^^^^^^^^^^^sybase stop done</echo>
+
+		<sleep seconds="10" />
+
+		<echo>@@@@@@@@@@@@@@@@@@ sybase start starting</echo>
+		<exec executable="service" failonerror="true">
+			<arg line="sybase start" />
+		</exec>
+		<echo>@@@@@@@@@@@@@@@@@@ sybase start done</echo>
+<!--		<exec executable="sh" spawn="true">
+			<arg line="/opt/sybase/ASE-15_0/install/RUN_lportal" />
+		</exec>-->
+
+		<waitfor maxwait="60" maxwaitunit="second">
+			<socket server="localhost" port="5000"/>
+		</waitfor>
+
+		<echo>!!!!!!!!!!!!!!!!!! sybase insert starting</echo>
+		<exec executable="isql" failonerror="true">
+			<arg line="-i create.sql -P liferay123 -S lportal -U sa" />
+		</exec>
+		<echo>!!!!!!!!!!!!!!!!!! sybase insert done</echo>
+
+		<sleep seconds="10" />
+
+		<echo>******************* sybase stop starting</echo>
+		<exec executable="service" failonerror="true">
+			<arg line="sybase stop" />
+		</exec>
+		<echo>******************* sybase stop done</echo>
 	</target>
 
 	<target name="tck">
