@@ -15,15 +15,21 @@
 package com.liferay.portal.security.pacl.test;
 
 import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.GroupWrapper;
 import com.liferay.portal.model.User;
 import com.liferay.portal.model.UserWrapper;
 import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.test.rule.HypersonicServerTestRule;
 import com.liferay.portal.test.rule.PACLTestRule;
 
+import java.util.List;
+
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -35,7 +41,29 @@ public class ExpandoBridgeTest {
 
 	@ClassRule
 	@Rule
+	public static final HypersonicServerTestRule hypersonicServerTestRule =
+		new HypersonicServerTestRule("lportal");
+
+	@ClassRule
+	@Rule
 	public static final PACLTestRule paclTestRule = new PACLTestRule();
+
+	@BeforeClass
+	public static void setUpClass() throws Exception {
+		List<String> hypersonicJdbcProps =
+			hypersonicServerTestRule.getJdbcProperties();
+
+		for (String property : hypersonicJdbcProps) {
+			String[] propsArray = StringUtil.split(property, StringPool.EQUAL);
+
+			if (propsArray.length == 2) {
+				System.setProperty(propsArray[0], propsArray[1]);
+			}
+			else {
+				System.setProperty(propsArray[0], "");
+			}
+		}
+	}
 
 	@Test
 	public void test1() throws Exception {
