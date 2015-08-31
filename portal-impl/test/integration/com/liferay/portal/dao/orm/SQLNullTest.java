@@ -224,7 +224,7 @@ import org.junit.Test;
  * 			<code>TRUE</code><sup>*</sup>
  * 		</td>
  * 		<td>
- * 			<code>NULL</code>
+ * 			<code>NULL</code><sup>*</sup>
  * 		</td>
  * 	</tr>
  *
@@ -245,7 +245,7 @@ import org.junit.Test;
  * 			<code>FALSE</code><sup>*</sup>
  * 		</td>
  * 		<td>
- * 			<code>NULL</code>
+ * 			<code>NULL</code><sup>*</sup>
  * 		</td>
  * 	</tr>
  *
@@ -308,7 +308,7 @@ import org.junit.Test;
  *			<code>FALSE</code>
  * 		</td>
  * 		<td>
- * 			<code>NULL</code>
+ * 			<code>NULL</code><sup>*</sup>
  * 		</td>
  * 	</tr>
  *
@@ -329,7 +329,7 @@ import org.junit.Test;
  * 			<code>TRUE</code>
  * 		</td>
  * 		<td>
- * 			<code>NULL</code>
+ * 			<code>NULL</code><sup>*</sup>
  * 		</td>
  * 	</tr>
  *
