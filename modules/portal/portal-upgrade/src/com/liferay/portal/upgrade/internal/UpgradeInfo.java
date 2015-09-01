@@ -14,9 +14,8 @@
 
 package com.liferay.portal.upgrade.internal;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeStep;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 /**
  * @author Miguel Pastor
@@ -26,31 +25,23 @@ public class UpgradeInfo {
 
 	public UpgradeInfo(
 		String fromVersionString, String toVersionString,
-		UpgradeProcess upgradeProcess) {
+		UpgradeStep upgradeStep) {
 
 		_fromVersionString = fromVersionString;
 		_toVersionString = toVersionString;
-		_upgradeProcess = upgradeProcess;
-	}
-
-	public int getFromVersionInt() {
-		return toInt(_fromVersionString);
+		_upgradeStep = upgradeStep;
 	}
 
 	public String getFromVersionString() {
 		return _fromVersionString;
 	}
 
-	public int getToVersionInt() {
-		return toInt(_toVersionString);
-	}
-
 	public String getToVersionString() {
 		return _toVersionString;
 	}
 
-	public UpgradeProcess getUpgradeProcess() {
-		return _upgradeProcess;
+	public UpgradeStep getUpgradeStep() {
+		return _upgradeStep;
 	}
 
 	@Override
@@ -61,19 +52,15 @@ public class UpgradeInfo {
 		sb.append(_fromVersionString);
 		sb.append(", toVersionString=");
 		sb.append(_toVersionString);
-		sb.append(", upgradeProcess=");
-		sb.append(_upgradeProcess);
+		sb.append(", upgradeStep=");
+		sb.append(_upgradeStep);
 		sb.append("}");
 
 		return sb.toString();
 	}
 
-	protected int toInt(String s) {
-		return Integer.parseInt(s.replace(StringPool.PERIOD, StringPool.BLANK));
-	}
-
 	private final String _fromVersionString;
 	private final String _toVersionString;
-	private final UpgradeProcess _upgradeProcess;
+	private final UpgradeStep _upgradeStep;
 
 }
