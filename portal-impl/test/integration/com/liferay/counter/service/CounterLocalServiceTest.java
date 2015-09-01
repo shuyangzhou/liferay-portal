@@ -18,6 +18,8 @@ import com.liferay.counter.model.Counter;
 import com.liferay.portal.cache.key.SimpleCacheKeyGenerator;
 import com.liferay.portal.kernel.cache.key.CacheKeyGeneratorUtil;
 import com.liferay.portal.kernel.configuration.Filter;
+import com.liferay.portal.kernel.dao.db.DB;
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.process.ClassPathUtil;
 import com.liferay.portal.kernel.process.ProcessCallable;
@@ -32,6 +34,7 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.test.rule.HypersonicServerTestRule;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.MainServletTestRule;
 import com.liferay.portal.util.InitUtil;
@@ -59,11 +62,15 @@ import org.junit.Test;
  */
 public class CounterLocalServiceTest {
 
+	public static final HypersonicServerTestRule _hypersonicTestRule =
+		new HypersonicServerTestRule("lportal");
+
 	@ClassRule
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
 		new AggregateTestRule(
-			new LiferayIntegrationTestRule(), MainServletTestRule.INSTANCE);
+			new LiferayIntegrationTestRule(), MainServletTestRule.INSTANCE,
+			_hypersonicTestRule);
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
@@ -85,10 +92,24 @@ public class CounterLocalServiceTest {
 	public void testConcurrentIncrement() throws Exception {
 		String classPath = getClassPath();
 
+		List<String> builderArguments = new ArrayList<>();
+
+		builderArguments.add("-Xmx1024m");
+		builderArguments.add("-XX:MaxPermSize=200m");
+
+		DB db = DBFactoryUtil.getDB();
+
+		String dbType = db.getType();
+
+		if (dbType.equals(DB.TYPE_HYPERSONIC)) {
+			for (String property : _hypersonicTestRule.getJdbcProperties()) {
+				builderArguments.add("-D" + property);
+			}
+		}
+
 		Builder builder = new Builder();
 
-		builder.setArguments(
-			Arrays.asList("-Xmx1024m", "-XX:MaxPermSize=200m"));
+		builder.setArguments(builderArguments);
 		builder.setBootstrapClassPath(classPath);
 		builder.setReactClassLoader(PortalClassLoaderUtil.getClassLoader());
 		builder.setRuntimeClassPath(classPath);

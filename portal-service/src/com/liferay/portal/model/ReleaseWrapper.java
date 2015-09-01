@@ -165,6 +165,11 @@ public class ReleaseWrapper implements Release, ModelWrapper<Release> {
 		return _release.getBuildNumber();
 	}
 
+	@Override
+	public java.lang.String getBundleSymbolicName() {
+		return _release.getBundleSymbolicName();
+	}
+
 	/**
 	* Returns the create date of this release.
 	*

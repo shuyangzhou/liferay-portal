@@ -17,6 +17,9 @@ package com.liferay.portal.security.pacl.test;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.test.rule.HypersonicServerTestRule;
 import com.liferay.portal.test.rule.PACLTestRule;
 
 import java.sql.Connection;
@@ -24,7 +27,10 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import java.util.List;
+
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -36,7 +42,36 @@ public class SQLTest {
 
 	@ClassRule
 	@Rule
+	public static final HypersonicServerTestRule hypersonicServerTestRule =
+		new HypersonicServerTestRule("lportal");
+
+	@ClassRule
+	@Rule
 	public static final PACLTestRule paclTestRule = new PACLTestRule();
+
+	@BeforeClass
+	public static void setUpClass() throws Exception {
+		DB db = DBFactoryUtil.getDB();
+
+		String dbType = db.getType();
+
+		if (dbType.equals(DB.TYPE_HYPERSONIC)) {
+			List<String> hypersonicJdbcProps =
+				hypersonicServerTestRule.getJdbcProperties();
+
+			for (String property : hypersonicJdbcProps) {
+				String[] propsArray = StringUtil.split(
+					property, StringPool.EQUAL);
+
+				if (propsArray.length == 2) {
+					System.setProperty(propsArray[0], propsArray[1]);
+				}
+				else {
+					System.setProperty(propsArray[0], "");
+				}
+			}
+		}
+	}
 
 	@Test
 	public void testCreate1() throws Exception {
