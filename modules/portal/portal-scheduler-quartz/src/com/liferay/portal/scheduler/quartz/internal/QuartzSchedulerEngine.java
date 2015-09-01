@@ -739,11 +739,11 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 			long interval = triggerContent.getKey();
 			TimeUnit timeUnit = triggerContent.getValue();
 
-			if (interval <= 0) {
+			if (interval < 0) {
 				if (_log.isWarnEnabled()) {
 					_log.warn(
 						"Not scheduling " + trigger.getJobName() +
-							" because interval is less than or equal to 0");
+							" because interval is less than 0");
 				}
 
 				return null;
@@ -757,54 +757,58 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 			triggerBuilder.startAt(startDate);
 			triggerBuilder.withIdentity(jobName, groupName);
 
-			CalendarIntervalScheduleBuilder calendarIntervalScheduleBuilder =
-				CalendarIntervalScheduleBuilder.calendarIntervalSchedule();
+			if (interval > 0) {
+				CalendarIntervalScheduleBuilder
+					calendarIntervalScheduleBuilder =
+						CalendarIntervalScheduleBuilder.
+							calendarIntervalSchedule();
 
-			switch (timeUnit) {
-				case SECOND:
-					calendarIntervalScheduleBuilder.withIntervalInSeconds(
-						(int)interval);
+				switch (timeUnit) {
+					case SECOND:
+						calendarIntervalScheduleBuilder.withIntervalInSeconds(
+							(int)interval);
 
-					break;
+						break;
 
-				case MINUTE:
-					calendarIntervalScheduleBuilder.withIntervalInMinutes(
-						(int)interval);
+					case MINUTE:
+						calendarIntervalScheduleBuilder.withIntervalInMinutes(
+							(int)interval);
 
-					break;
+						break;
 
-				case HOUR:
-					calendarIntervalScheduleBuilder.withIntervalInHours(
-						(int)interval);
+					case HOUR:
+						calendarIntervalScheduleBuilder.withIntervalInHours(
+							(int)interval);
 
-					break;
+						break;
 
-				case DAY:
-					calendarIntervalScheduleBuilder.withIntervalInDays(
-						(int)interval);
+					case DAY:
+						calendarIntervalScheduleBuilder.withIntervalInDays(
+							(int)interval);
 
-					break;
+						break;
 
-				case WEEK:
-					calendarIntervalScheduleBuilder.withIntervalInWeeks(
-						(int)interval);
+					case WEEK:
+						calendarIntervalScheduleBuilder.withIntervalInWeeks(
+							(int)interval);
 
-					break;
+						break;
 
-				case MONTH:
-					calendarIntervalScheduleBuilder.withIntervalInMonths(
-						(int)interval);
+					case MONTH:
+						calendarIntervalScheduleBuilder.withIntervalInMonths(
+							(int)interval);
 
-					break;
+						break;
 
-				case YEAR:
-					calendarIntervalScheduleBuilder.withIntervalInYears(
-						(int)interval);
+					case YEAR:
+						calendarIntervalScheduleBuilder.withIntervalInYears(
+							(int)interval);
 
-					break;
+						break;
+				}
+
+				triggerBuilder.withSchedule(calendarIntervalScheduleBuilder);
 			}
-
-			triggerBuilder.withSchedule(calendarIntervalScheduleBuilder);
 
 			quartzTrigger = triggerBuilder.build();
 		}
