@@ -31,12 +31,14 @@ import com.liferay.portal.kernel.scheduler.SchedulerEngine;
 import com.liferay.portal.kernel.scheduler.SchedulerEngineHelper;
 import com.liferay.portal.kernel.scheduler.SchedulerException;
 import com.liferay.portal.kernel.scheduler.StorageType;
+import com.liferay.portal.kernel.scheduler.TimeUnit;
 import com.liferay.portal.kernel.scheduler.TriggerState;
 import com.liferay.portal.kernel.scheduler.TriggerType;
 import com.liferay.portal.kernel.scheduler.messaging.SchedulerEventMessageListenerWrapper;
 import com.liferay.portal.kernel.scheduler.messaging.SchedulerResponse;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.PortalRunMode;
 import com.liferay.portal.kernel.util.Props;
@@ -68,16 +70,17 @@ import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.component.annotations.ReferencePolicyOption;
 
+import org.quartz.CalendarIntervalScheduleBuilder;
+import org.quartz.CalendarIntervalTrigger;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.CronTrigger;
+import org.quartz.DateBuilder;
 import org.quartz.JobBuilder;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.quartz.JobKey;
 import org.quartz.ObjectAlreadyExistsException;
 import org.quartz.Scheduler;
-import org.quartz.SimpleScheduleBuilder;
-import org.quartz.SimpleTrigger;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
@@ -730,7 +733,11 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 			quartzTrigger = triggerBuilder.build();
 		}
 		else if (triggerType.equals(TriggerType.SIMPLE)) {
-			long interval = (Long)trigger.getTriggerContent();
+			ObjectValuePair<Long, TimeUnit> triggerContent =
+				(ObjectValuePair<Long, TimeUnit>)trigger.getTriggerContent();
+
+			long interval = triggerContent.getKey();
+			TimeUnit timeUnit = triggerContent.getValue();
 
 			if (interval <= 0) {
 				if (_log.isWarnEnabled()) {
@@ -742,21 +749,62 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 				return null;
 			}
 
-			TriggerBuilder<Trigger>triggerBuilder = TriggerBuilder.newTrigger();
+			TriggerBuilder<Trigger> triggerBuilder =
+				TriggerBuilder.newTrigger();
 
 			triggerBuilder.endAt(endDate);
 			triggerBuilder.forJob(jobName, groupName);
 			triggerBuilder.startAt(startDate);
 			triggerBuilder.withIdentity(jobName, groupName);
 
-			SimpleScheduleBuilder simpleScheduleBuilder =
-				SimpleScheduleBuilder.simpleSchedule();
+			CalendarIntervalScheduleBuilder calendarIntervalScheduleBuilder =
+				CalendarIntervalScheduleBuilder.calendarIntervalSchedule();
 
-			simpleScheduleBuilder.withIntervalInMilliseconds(interval);
-			simpleScheduleBuilder.withRepeatCount(
-				SimpleTrigger.REPEAT_INDEFINITELY);
+			switch (timeUnit) {
+				case SECOND:
+					calendarIntervalScheduleBuilder.withIntervalInSeconds(
+						(int)interval);
 
-			triggerBuilder.withSchedule(simpleScheduleBuilder);
+					break;
+
+				case MINUTE:
+					calendarIntervalScheduleBuilder.withIntervalInMinutes(
+						(int)interval);
+
+					break;
+
+				case HOUR:
+					calendarIntervalScheduleBuilder.withIntervalInHours(
+						(int)interval);
+
+					break;
+
+				case DAY:
+					calendarIntervalScheduleBuilder.withIntervalInDays(
+						(int)interval);
+
+					break;
+
+				case WEEK:
+					calendarIntervalScheduleBuilder.withIntervalInWeeks(
+						(int)interval);
+
+					break;
+
+				case MONTH:
+					calendarIntervalScheduleBuilder.withIntervalInMonths(
+						(int)interval);
+
+					break;
+
+				case YEAR:
+					calendarIntervalScheduleBuilder.withIntervalInYears(
+						(int)interval);
+
+					break;
+			}
+
+			triggerBuilder.withSchedule(calendarIntervalScheduleBuilder);
 
 			quartzTrigger = triggerBuilder.build();
 		}
@@ -836,8 +884,9 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 						cronTrigger.getEndTime(),
 						cronTrigger.getCronExpression()));
 			}
-			else if (trigger instanceof SimpleTrigger) {
-				SimpleTrigger simpleTrigger = SimpleTrigger.class.cast(trigger);
+			else if (trigger instanceof CalendarIntervalTrigger) {
+				CalendarIntervalTrigger calendarIntervalTrigger =
+					CalendarIntervalTrigger.class.cast(trigger);
 
 				schedulerResponse = new SchedulerResponse();
 
@@ -845,11 +894,17 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 				schedulerResponse.setDestinationName(destinationName);
 				schedulerResponse.setMessage(message);
 				schedulerResponse.setStorageType(storageType);
+
+				DateBuilder.IntervalUnit intervalUnit =
+					calendarIntervalTrigger.getRepeatIntervalUnit();
+
 				schedulerResponse.setTrigger(
 					new IntervalTrigger(
-						jobName, groupName, simpleTrigger.getStartTime(),
-						simpleTrigger.getEndTime(),
-						simpleTrigger.getRepeatInterval()));
+						jobName, groupName,
+						calendarIntervalTrigger.getStartTime(),
+						calendarIntervalTrigger.getEndTime(),
+						calendarIntervalTrigger.getRepeatInterval(),
+						TimeUnit.valueOf(intervalUnit.toString())));
 			}
 		}
 
