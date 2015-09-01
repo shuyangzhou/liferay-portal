@@ -446,9 +446,9 @@ public class LayoutSetPersistenceTest {
 
 		LayoutSet existingLayoutSet = _persistence.findByPrimaryKey(newLayoutSet.getPrimaryKey());
 
-		Assert.assertEquals(existingLayoutSet.getGroupId(),
-			ReflectionTestUtil.invoke(existingLayoutSet, "getOriginalGroupId",
-				new Class<?>[0]));
+		Assert.assertEquals(Long.valueOf(existingLayoutSet.getGroupId()),
+			ReflectionTestUtil.<Long>invoke(existingLayoutSet,
+				"getOriginalGroupId", new Class<?>[0]));
 		Assert.assertEquals(existingLayoutSet.getPrivateLayout(),
 			ReflectionTestUtil.invoke(existingLayoutSet,
 				"getOriginalPrivateLayout", new Class<?>[0]));

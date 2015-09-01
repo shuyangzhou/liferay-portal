@@ -52,7 +52,7 @@ public class PermissionServiceUtil {
 	the permission information was invalid
 	*/
 	public static void checkPermission(long groupId, java.lang.String name,
-		long primKey)
+		java.lang.String primKey)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().checkPermission(groupId, name, primKey);
 	}
@@ -68,7 +68,7 @@ public class PermissionServiceUtil {
 	the permission information was invalid
 	*/
 	public static void checkPermission(long groupId, java.lang.String name,
-		java.lang.String primKey)
+		long primKey)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().checkPermission(groupId, name, primKey);
 	}
