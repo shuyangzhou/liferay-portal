@@ -15,7 +15,6 @@
 package com.liferay.portal.upgrade.internal.release;
 
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
-import com.liferay.portal.kernel.upgrade.UpgradeException;
 import com.liferay.portal.model.Release;
 import com.liferay.portal.service.ReleaseLocalService;
 
@@ -24,8 +23,6 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.felix.utils.log.Logger;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -52,7 +49,8 @@ public final class ReleasePublisher {
 
 		Dictionary<String, Object> properties = new Hashtable<>();
 
-		properties.put("component.name", release.getServletContextName());
+		properties.put(
+			"release.bundle.symbolic.name", release.getBundleSymbolicName());
 		properties.put("release.version", release.getVersion());
 
 		ServiceRegistration<Release> newServiceRegistration =
@@ -63,12 +61,12 @@ public final class ReleasePublisher {
 	}
 
 	@Activate
-	protected void activate(BundleContext bundleContext)
-		throws UpgradeException {
-
+	protected void activate(BundleContext bundleContext) {
 		_bundleContext = bundleContext;
 
-		_logger = new Logger(bundleContext);
+		if (true) {
+			return;
+		}
 
 		List<Release> releases = _releaseLocalService.getReleases(
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS);
@@ -95,7 +93,6 @@ public final class ReleasePublisher {
 	}
 
 	private BundleContext _bundleContext;
-	private Logger _logger;
 	private ReleaseLocalService _releaseLocalService;
 	private final Map<String, ServiceRegistration<Release>>
 		_serviceConfiguratorRegistrations = new HashMap<>();
