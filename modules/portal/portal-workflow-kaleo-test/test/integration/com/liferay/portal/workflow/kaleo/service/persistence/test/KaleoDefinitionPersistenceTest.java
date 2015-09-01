@@ -463,14 +463,14 @@ public class KaleoDefinitionPersistenceTest {
 
 		KaleoDefinition existingKaleoDefinition = _persistence.findByPrimaryKey(newKaleoDefinition.getPrimaryKey());
 
-		Assert.assertEquals(existingKaleoDefinition.getCompanyId(),
-			ReflectionTestUtil.invoke(existingKaleoDefinition,
+		Assert.assertEquals(Long.valueOf(existingKaleoDefinition.getCompanyId()),
+			ReflectionTestUtil.<Long>invoke(existingKaleoDefinition,
 				"getOriginalCompanyId", new Class<?>[0]));
 		Assert.assertTrue(Validator.equals(existingKaleoDefinition.getName(),
 				ReflectionTestUtil.invoke(existingKaleoDefinition,
 					"getOriginalName", new Class<?>[0])));
-		Assert.assertEquals(existingKaleoDefinition.getVersion(),
-			ReflectionTestUtil.invoke(existingKaleoDefinition,
+		Assert.assertEquals(Long.valueOf(existingKaleoDefinition.getVersion()),
+			ReflectionTestUtil.<Long>invoke(existingKaleoDefinition,
 				"getOriginalVersion", new Class<?>[0]));
 	}
 
