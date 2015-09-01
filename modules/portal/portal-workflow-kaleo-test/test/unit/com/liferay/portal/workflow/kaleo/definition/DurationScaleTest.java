@@ -14,8 +14,6 @@
 
 package com.liferay.portal.workflow.kaleo.definition;
 
-import com.liferay.portal.kernel.scheduler.CronText;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -26,13 +24,6 @@ public class DurationScaleTest {
 
 	public static final String[] SCALES = {
 		"second", "minute", "hour", "day", "week", "month", "year"
-	};
-
-	public static final int[] VALUES = {
-		CronText.SECONDLY_FREQUENCY, CronText.MINUTELY_FREQUENCY,
-		CronText.HOURLY_FREQUENCY, CronText.DAILY_FREQUENCY,
-		CronText.WEEKLY_FREQUENCY, CronText.MONTHLY_FREQUENCY,
-		CronText.YEARLY_FREQUENCY
 	};
 
 	@Test(expected = IllegalArgumentException.class)
@@ -52,15 +43,6 @@ public class DurationScaleTest {
 	@Test
 	public void testScaleNum() throws Exception {
 		Assert.assertEquals(7, DurationScale.values().length);
-	}
-
-	@Test
-	public void testValues() throws Exception {
-		for (int i = 0; i < SCALES.length; i++) {
-			DurationScale durationScale = DurationScale.parse(SCALES[i]);
-
-			Assert.assertEquals(VALUES[i], durationScale.getIntegerValue());
-		}
 	}
 
 }
