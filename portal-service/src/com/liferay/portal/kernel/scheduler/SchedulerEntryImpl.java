@@ -49,7 +49,7 @@ public class SchedulerEntryImpl implements SchedulerEntry {
 				_eventListenerClass, _eventListenerClass, _triggerValue);
 		}
 		else if (_triggerType.equals(TriggerType.SIMPLE)) {
-			long intervalTime = GetterUtil.getLong(_triggerValue);
+			int intervalTime = GetterUtil.getInteger(_triggerValue);
 
 			_trigger = new IntervalTrigger(
 				_eventListenerClass, _eventListenerClass, intervalTime,
@@ -95,11 +95,6 @@ public class SchedulerEntryImpl implements SchedulerEntry {
 
 	@Override
 	public void setTriggerValue(int triggerValue) {
-		_triggerValue = String.valueOf(triggerValue);
-	}
-
-	@Override
-	public void setTriggerValue(long triggerValue) {
 		_triggerValue = String.valueOf(triggerValue);
 	}
 

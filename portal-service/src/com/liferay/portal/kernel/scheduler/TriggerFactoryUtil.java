@@ -34,8 +34,8 @@ public class TriggerFactoryUtil {
 		}
 
 		if (triggerType == TriggerType.SIMPLE) {
-			ObjectValuePair<Long, TimeUnit> objectValuePair =
-				(ObjectValuePair<Long, TimeUnit>)triggerContent;
+			ObjectValuePair<Integer, TimeUnit> objectValuePair =
+				(ObjectValuePair<Integer, TimeUnit>)triggerContent;
 
 			return new IntervalTrigger(
 				jobName, groupName, startDate, endDate,

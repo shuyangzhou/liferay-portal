@@ -733,10 +733,10 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 			quartzTrigger = triggerBuilder.build();
 		}
 		else if (triggerType.equals(TriggerType.SIMPLE)) {
-			ObjectValuePair<Long, TimeUnit> triggerContent =
-				(ObjectValuePair<Long, TimeUnit>)trigger.getTriggerContent();
+			ObjectValuePair<Integer, TimeUnit> triggerContent =
+				(ObjectValuePair<Integer, TimeUnit>)trigger.getTriggerContent();
 
-			long interval = triggerContent.getKey();
+			int interval = triggerContent.getKey();
 			TimeUnit timeUnit = triggerContent.getValue();
 
 			if (interval < 0) {
@@ -766,43 +766,43 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 				switch (timeUnit) {
 					case SECOND:
 						calendarIntervalScheduleBuilder.withIntervalInSeconds(
-							(int)interval);
+							interval);
 
 						break;
 
 					case MINUTE:
 						calendarIntervalScheduleBuilder.withIntervalInMinutes(
-							(int)interval);
+							interval);
 
 						break;
 
 					case HOUR:
 						calendarIntervalScheduleBuilder.withIntervalInHours(
-							(int)interval);
+							interval);
 
 						break;
 
 					case DAY:
 						calendarIntervalScheduleBuilder.withIntervalInDays(
-							(int)interval);
+							interval);
 
 						break;
 
 					case WEEK:
 						calendarIntervalScheduleBuilder.withIntervalInWeeks(
-							(int)interval);
+							interval);
 
 						break;
 
 					case MONTH:
 						calendarIntervalScheduleBuilder.withIntervalInMonths(
-							(int)interval);
+							interval);
 
 						break;
 
 					case YEAR:
 						calendarIntervalScheduleBuilder.withIntervalInYears(
-							(int)interval);
+							interval);
 
 						break;
 				}

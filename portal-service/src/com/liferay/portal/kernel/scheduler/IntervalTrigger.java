@@ -26,7 +26,7 @@ public class IntervalTrigger extends BaseTrigger {
 
 	public IntervalTrigger(
 		String jobName, String groupName, Date startDate, Date endDate,
-		long interval, TimeUnit timeUnit) {
+		int interval, TimeUnit timeUnit) {
 
 		super(jobName, groupName, TriggerType.SIMPLE, startDate, endDate);
 
@@ -35,20 +35,20 @@ public class IntervalTrigger extends BaseTrigger {
 	}
 
 	public IntervalTrigger(
-		String jobName, String groupName, Date startDate, long interval,
+		String jobName, String groupName, Date startDate, int interval,
 		TimeUnit timeUnit) {
 
 		this(jobName, groupName, startDate, null, interval, timeUnit);
 	}
 
 	public IntervalTrigger(
-		String jobName, String groupName, long interval, TimeUnit timeUnit) {
+		String jobName, String groupName, int interval, TimeUnit timeUnit) {
 
 		this(jobName, groupName, null, null, interval, timeUnit);
 	}
 
 	@Override
-	public ObjectValuePair<Long, TimeUnit> getTriggerContent() {
+	public ObjectValuePair<Integer, TimeUnit> getTriggerContent() {
 		return new ObjectValuePair<>(_interval, _timeUnit);
 	}
 
@@ -68,7 +68,7 @@ public class IntervalTrigger extends BaseTrigger {
 		return sb.toString();
 	}
 
-	private final Long _interval;
+	private final int _interval;
 	private final TimeUnit _timeUnit;
 
 }
