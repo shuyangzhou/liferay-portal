@@ -2464,8 +2464,6 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 			<if>
 				<equals arg1="@{app.server.bundle.index}" arg2="0" />
 				<then>
-					<antcall target="clean-up-logs" />
-
 					<record action="start" name="${project.dir}/log" />
 				</then>
 			</if>
@@ -3055,9 +3053,7 @@ go]]></replacevalue>
 	</target>
 
 	<target name="clean-up-logs">
-		<delete failonerror="false" file="log" />
-
-		<delete failonerror="false" file="portal-web/test-ant-scripts/log" />
+		<delete failonerror="false" file="${project.dir}/console-shut-down" />
 	</target>
 
 	<target name="clean-up-sikuli-temp-files">
@@ -3375,81 +3371,6 @@ go]]></replacevalue>
 				</ant>
 			</then>
 		</if>
-	</target>
-
-	<target name="evaluate-logs">
-		<if>
-			<isset property="print.logs" />
-			<then>
-				<loadfile property="log.content" srcfile="log">
-					<filterchain>
-						<expandproperties />
-					</filterchain>
-				</loadfile>
-
-				<echo>Displaying Logs:</echo>
-				<echo></echo>
-				<echo>${log.content}</echo>
-			</then>
-		</if>
-
-		<get-test-method-name />
-
-		<get-test-simple-class-name />
-
-		<if>
-			<equals arg1="${test.poshi.runner.enabled}" arg2="true" />
-			<then>
-				<antcall target="run-poshi-evaluate-console" />
-			</then>
-			<elseif>
-				<isset property="test.evaluate.logs" />
-				<then>
-					<copy file="${project.dir}/console-shut-down" tofile="${project.dir}/log" />
-
-					<var name="test.class" unset="true" />
-
-					<ant dir="portal-web" target="test-class">
-						<property name="test.class" value="EvaluateLogTestSuite" />
-					</ant>
-				</then>
-			</elseif>
-		</if>
-
-		<if>
-			<isset property="test.method.name" />
-			<then>
-				<property name="test.class" value="${test.simple.class.name}#${test.method.name}" />
-			</then>
-			<else>
-				<property name="test.class" value="${test.simple.class.name}" />
-			</else>
-		</if>
-
-		<if>
-			<isset property="env.JENKINS_HOME" />
-			<then>
-				<antcall target="build-test-results-xml" />
-
-				<if>
-					<isset property="jenkins.shared.user.content.dir" />
-					<then>
-						<var name="jenkins.shared.results.dir" value="${jenkins.shared.user.content.dir}/jobs" />
-					</then>
-					<else>
-						<var name="jenkins.shared.results.dir" value="." />
-					</else>
-				</if>
-
-				<copy
-					failonerror="false"
-					file="portal-web/test-results/functional/TEST-com.liferay.portalweb.portal.evaluatelog.EvaluateLogTestSuite.xml"
-					tofile="${jenkins.shared.results.dir}/${env.BUILD_FLOW_JOB_NAME}/builds/${env.BUILD_FLOW_BUILD_NUMBER}/test-results/TEST-${env.BUILD_FLOW_JOB_NAME}_${env.BUILD_FLOW_BUILD_NUMBER}_${test.class}_EvaluateLog.xml"
-				/>
-			</then>
-		</if>
-
-		<antcall target="clean-up-logs" />
 	</target>
 
 	<target name="generate-backup-results-xml">
@@ -4610,11 +4531,6 @@ module.framework.properties.osgi.console=11312</echo>
 	<target name="prepare-selenium">
 		<delete file="${test.ext.properties.file}" />
 
-		<antcall target="prepare-selenium-app-server-properties" />
-		<antcall target="prepare-selenium-browser-properties" />
-		<antcall target="prepare-selenium-database-properties" />
-		<antcall target="prepare-selenium-email-properties" />
-
 		<if>
 			<equals arg1="${test.poshi.runner.enabled}" arg2="true" />
 			<then>
@@ -4622,6 +4538,10 @@ module.framework.properties.osgi.console=11312</echo>
 			</then>
 		</if>
 
+		<antcall target="prepare-selenium-app-server-properties" />
+		<antcall target="prepare-selenium-browser-properties" />
+		<antcall target="prepare-selenium-database-properties" />
+		<antcall target="prepare-selenium-email-properties" />
 		<antcall target="prepare-selenium-required-properties" />
 		<antcall target="prepare-selenium-testcase-properties" />
 
@@ -6162,7 +6082,7 @@ if (ppstate.equals("normal")) {
 		</execute>
 	</target>
 
-	<target name="run-poshi-evaluate-console">
+	<target name="run-poshi-evaluate-console" depends="prepare-selenium">
 		<antcall target="prepare-poshi-runner-properties" inheritall="false" />
 
 		<gradle-execute failonerror="false" task="evaluatePoshiConsole">
@@ -6172,7 +6092,7 @@ if (ppstate.equals("normal")) {
 		</gradle-execute>
 	</target>
 
-	<target name="run-poshi-runner">
+	<target name="run-poshi-runner" depends="prepare-selenium">
 		<property name="test.console.log.file.name" value="${liferay.home}/logs/liferay.${current.date}.xml" />
 
 		<gradle-execute failonerror="false" task="runPoshi">
@@ -6358,6 +6278,8 @@ jdbc.default.password=${database.mysql.password}</echo>
 						</copy>
 					</then>
 				</if>
+
+				<antcall target="run-poshi-evaluate-console" />
 
 				<antcall target="build-test-results-xml" />
 
