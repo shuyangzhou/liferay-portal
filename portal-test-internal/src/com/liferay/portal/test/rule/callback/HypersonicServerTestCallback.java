@@ -102,14 +102,15 @@ public class HypersonicServerTestCallback
 
 		};
 
-		server.setDatabaseName(0, _databaseName);
-		server.setDatabasePath(0, _HSQL_HOME.concat(_databaseName));
-		server.setLogWriter(
-			new UnsyncPrintWriter(
-				new File(_HSQL_HOME, _databaseName.concat(".std.log"))));
 		server.setErrWriter(
 			new UnsyncPrintWriter(
 				new File(_HSQL_HOME, _databaseName.concat(".err.log"))));
+		server.setLogWriter(
+			new UnsyncPrintWriter(
+				new File(_HSQL_HOME, _databaseName.concat(".std.log"))));
+
+		server.setDatabaseName(0, _databaseName);
+		server.setDatabasePath(0, _HSQL_HOME.concat(_databaseName));
 
 		server.start();
 
