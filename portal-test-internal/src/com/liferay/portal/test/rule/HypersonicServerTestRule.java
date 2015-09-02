@@ -33,6 +33,9 @@ import org.hsqldb.server.Server;
  */
 public class HypersonicServerTestRule extends BaseTestRule<Server, Object> {
 
+	public static final HypersonicServerTestRule INSTANCE =
+		new HypersonicServerTestRule("lportal");
+
 	public HypersonicServerTestRule(String databaseName) {
 		super(_getTestCallback(databaseName));
 
