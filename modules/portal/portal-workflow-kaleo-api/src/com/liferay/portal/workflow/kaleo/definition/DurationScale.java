@@ -14,21 +14,14 @@
 
 package com.liferay.portal.workflow.kaleo.definition;
 
-import com.liferay.portal.kernel.scheduler.CronText;
-
 /**
  * @author Michael C. Han
  * @author Peter Borkuti
  */
 public enum DurationScale {
 
-	DAY("day", CronText.DAILY_FREQUENCY),
-	HOUR("hour", CronText.HOURLY_FREQUENCY),
-	MINUTE("minute", CronText.MINUTELY_FREQUENCY),
-	MONTH("month", CronText.MONTHLY_FREQUENCY),
-	SECOND("second", CronText.SECONDLY_FREQUENCY),
-	WEEK("week", CronText.WEEKLY_FREQUENCY),
-	YEAR("year", CronText.YEARLY_FREQUENCY);
+	DAY("day"), HOUR("hour"), MINUTE("minute"), MONTH("month"),
+	SECOND("second"), WEEK("week"), YEAR("year");
 
 	public static DurationScale parse(String value) {
 		for (DurationScale durationScale : DurationScale.values()) {
@@ -40,10 +33,6 @@ public enum DurationScale {
 		throw new IllegalArgumentException("Invalid value " + value);
 	}
 
-	public int getIntegerValue() {
-		return _frequency;
-	}
-
 	public String getValue() {
 		return _value;
 	}
@@ -53,12 +42,10 @@ public enum DurationScale {
 		return _value;
 	}
 
-	private DurationScale(String value, int frequency) {
+	private DurationScale(String value) {
 		_value = value;
-		_frequency = frequency;
 	}
 
-	private final int _frequency;
 	private final String _value;
 
 }
