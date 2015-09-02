@@ -712,112 +712,85 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 			startDate = new Date(System.currentTimeMillis());
 		}
 
-		Trigger quartzTrigger = null;
+		TriggerBuilder<Trigger> triggerBuilder = TriggerBuilder.newTrigger();
+
+		triggerBuilder.endAt(endDate);
+		triggerBuilder.forJob(jobName, groupName);
+		triggerBuilder.startAt(startDate);
+		triggerBuilder.withIdentity(jobName, groupName);
 
 		TriggerType triggerType = trigger.getTriggerType();
 
-		if (triggerType.equals(TriggerType.CRON)) {
-			TriggerBuilder<Trigger>triggerBuilder = TriggerBuilder.newTrigger();
-
-			triggerBuilder.endAt(endDate);
-			triggerBuilder.forJob(jobName, groupName);
-			triggerBuilder.startAt(startDate);
-			triggerBuilder.withIdentity(jobName, groupName);
-
-			CronScheduleBuilder cronScheduleBuilder =
+		if (triggerType == TriggerType.CRON) {
+			triggerBuilder.withSchedule(
 				CronScheduleBuilder.cronSchedule(
-					(String)trigger.getTriggerContent());
+					(String)trigger.getTriggerContent()));
 
-			triggerBuilder.withSchedule(cronScheduleBuilder);
-
-			quartzTrigger = triggerBuilder.build();
+			return triggerBuilder.build();
 		}
-		else if (triggerType.equals(TriggerType.SIMPLE)) {
-			ObjectValuePair<Integer, TimeUnit> triggerContent =
-				(ObjectValuePair<Integer, TimeUnit>)trigger.getTriggerContent();
 
-			int interval = triggerContent.getKey();
-			TimeUnit timeUnit = triggerContent.getValue();
+		ObjectValuePair<Integer, TimeUnit> triggerContent =
+			(ObjectValuePair<Integer, TimeUnit>)trigger.getTriggerContent();
 
-			if (interval < 0) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(
-						"Not scheduling " + trigger.getJobName() +
-							" because interval is less than 0");
-				}
+		int interval = triggerContent.getKey();
+		TimeUnit timeUnit = triggerContent.getValue();
 
-				return null;
+		if (interval < 0) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					"Not scheduling " + trigger.getJobName() +
+						" because interval is less than 0");
 			}
 
-			TriggerBuilder<Trigger> triggerBuilder =
-				TriggerBuilder.newTrigger();
-
-			triggerBuilder.endAt(endDate);
-			triggerBuilder.forJob(jobName, groupName);
-			triggerBuilder.startAt(startDate);
-			triggerBuilder.withIdentity(jobName, groupName);
-
-			if (interval > 0) {
-				CalendarIntervalScheduleBuilder
-					calendarIntervalScheduleBuilder =
-						CalendarIntervalScheduleBuilder.
-							calendarIntervalSchedule();
-
-				switch (timeUnit) {
-					case SECOND:
-						calendarIntervalScheduleBuilder.withIntervalInSeconds(
-							interval);
-
-						break;
-
-					case MINUTE:
-						calendarIntervalScheduleBuilder.withIntervalInMinutes(
-							interval);
-
-						break;
-
-					case HOUR:
-						calendarIntervalScheduleBuilder.withIntervalInHours(
-							interval);
-
-						break;
-
-					case DAY:
-						calendarIntervalScheduleBuilder.withIntervalInDays(
-							interval);
-
-						break;
-
-					case WEEK:
-						calendarIntervalScheduleBuilder.withIntervalInWeeks(
-							interval);
-
-						break;
-
-					case MONTH:
-						calendarIntervalScheduleBuilder.withIntervalInMonths(
-							interval);
-
-						break;
-
-					case YEAR:
-						calendarIntervalScheduleBuilder.withIntervalInYears(
-							interval);
-
-						break;
-				}
-
-				triggerBuilder.withSchedule(calendarIntervalScheduleBuilder);
-			}
-
-			quartzTrigger = triggerBuilder.build();
+			return null;
 		}
-		else {
-			throw new SchedulerException(
-				"Unknown trigger type " + trigger.getTriggerType());
+		else if (interval == 0) {
+			return triggerBuilder.build();
 		}
 
-		return quartzTrigger;
+		CalendarIntervalScheduleBuilder calendarIntervalScheduleBuilder =
+			CalendarIntervalScheduleBuilder.calendarIntervalSchedule();
+
+		switch (timeUnit) {
+			case SECOND:
+				calendarIntervalScheduleBuilder.withIntervalInSeconds(interval);
+
+				break;
+
+			case MINUTE:
+				calendarIntervalScheduleBuilder.withIntervalInMinutes(interval);
+
+				break;
+
+			case HOUR:
+				calendarIntervalScheduleBuilder.withIntervalInHours(interval);
+
+				break;
+
+			case DAY:
+				calendarIntervalScheduleBuilder.withIntervalInDays(interval);
+
+				break;
+
+			case WEEK:
+				calendarIntervalScheduleBuilder.withIntervalInWeeks(interval);
+
+				break;
+
+			case MONTH:
+				calendarIntervalScheduleBuilder.withIntervalInMonths(interval);
+
+				break;
+
+			case YEAR:
+				calendarIntervalScheduleBuilder.withIntervalInYears(interval);
+
+				break;
+		}
+
+		triggerBuilder.withSchedule(calendarIntervalScheduleBuilder);
+
+		return triggerBuilder.build();
 	}
 
 	protected SchedulerResponse getScheduledJob(
