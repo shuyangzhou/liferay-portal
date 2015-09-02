@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.test.rule.HypersonicServerTestRule;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.MainServletTestRule;
 import com.liferay.portal.util.InitUtil;
@@ -61,9 +62,7 @@ public class CounterLocalServiceTest {
 
 	@ClassRule
 	@Rule
-	public static final AggregateTestRule aggregateTestRule =
-		new AggregateTestRule(
-			new LiferayIntegrationTestRule(), MainServletTestRule.INSTANCE);
+	public static final AggregateTestRule aggregateTestRule;
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
@@ -85,10 +84,18 @@ public class CounterLocalServiceTest {
 	public void testConcurrentIncrement() throws Exception {
 		String classPath = getClassPath();
 
+		List<String> builderArguments = new ArrayList<>();
+
+		builderArguments.add("-Xmx1024m");
+		builderArguments.add("-XX:MaxPermSize=200m");
+
+		for (String property : _hypersonicTestRule.getJdbcProperties()) {
+			builderArguments.add("-D" + property);
+		}
+
 		Builder builder = new Builder();
 
-		builder.setArguments(
-			Arrays.asList("-Xmx1024m", "-XX:MaxPermSize=200m"));
+		builder.setArguments(builderArguments);
 		builder.setBootstrapClassPath(classPath);
 		builder.setReactClassLoader(PortalClassLoaderUtil.getClassLoader());
 		builder.setRuntimeClassPath(classPath);
@@ -156,6 +163,16 @@ public class CounterLocalServiceTest {
 	private static final int _INCREMENT_COUNT = 10000;
 
 	private static final int _PROCESS_COUNT = 4;
+
+	private static final HypersonicServerTestRule _hypersonicTestRule;
+
+	static {
+		_hypersonicTestRule = new HypersonicServerTestRule("lportal");
+
+		aggregateTestRule = new AggregateTestRule(
+			new LiferayIntegrationTestRule(), MainServletTestRule.INSTANCE,
+			_hypersonicTestRule);
+	}
 
 	private static class IncrementProcessCallable
 		implements ProcessCallable<Long[]> {
