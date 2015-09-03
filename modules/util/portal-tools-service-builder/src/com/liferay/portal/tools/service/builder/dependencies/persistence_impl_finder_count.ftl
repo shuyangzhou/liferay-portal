@@ -40,6 +40,8 @@ public int countBy${finder.name}(
 	Long count = (Long)FinderCacheUtil.getResult(finderPath, finderArgs, this);
 
 	if (count == null) {
+		<#assign returnType = "int">
+
 		<#include "persistence_impl_count_by_query.ftl">
 
 		String sql = query.toString();
@@ -207,6 +209,8 @@ public int countBy${finder.name}(
 		}
 
 		<#if entity.isPermissionedModel()>
+			<#assign returnType = "int">
+
 			<#include "persistence_impl_count_by_query.ftl">
 
 			String sql = InlineSQLHelperUtil.replacePermissionCheck(query.toString(), ${entity.name}.class.getName(), _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN, _FILTER_ENTITY_TABLE_FILTER_USERID_COLUMN<#if finder.hasColumn("groupId")>, groupId</#if>);
@@ -238,6 +242,8 @@ public int countBy${finder.name}(
 			query.append(_FILTER_SQL_COUNT_${entity.alias?upper_case}_WHERE);
 
 			<#assign sqlQuery = true>
+
+			<#assign returnType = "int">
 
 			<#include "persistence_impl_finder_cols.ftl">
 

@@ -262,6 +262,8 @@ that may or may not be enforced with a unique index at the database level. Case
 		if (list == null) {
 			<#assign checkPagination = true>
 
+			<#assign returnType = "list">
+
 			<#include "persistence_impl_find_by_query.ftl">
 
 			<#assign checkPagination = false>
@@ -549,6 +551,8 @@ that may or may not be enforced with a unique index at the database level. Case
 
 			OrderByComparator<${entity.name}> orderByComparator, boolean previous) {
 
+			<#assign returnType = "entity">
+
 			<#include "persistence_impl_get_by_prev_and_next_query.ftl">
 
 			String sql = query.toString();
@@ -676,6 +680,8 @@ that may or may not be enforced with a unique index at the database level. Case
 			}
 
 			<#if entity.isPermissionedModel()>
+				<#assign returnType = "list">
+
 				<#include "persistence_impl_find_by_query.ftl">
 
 				String sql = InlineSQLHelperUtil.replacePermissionCheck(query.toString(), ${entity.name}.class.getName(), _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN, _FILTER_ENTITY_TABLE_FILTER_USERID_COLUMN<#if finder.hasColumn("groupId")>, groupId</#if>);
@@ -717,6 +723,8 @@ that may or may not be enforced with a unique index at the database level. Case
 				}
 
 				<#assign sqlQuery = true>
+
+				<#assign returnType = "list">
 
 				<#include "persistence_impl_finder_cols.ftl">
 
@@ -855,6 +863,8 @@ that may or may not be enforced with a unique index at the database level. Case
 				OrderByComparator<${entity.name}> orderByComparator, boolean previous) {
 
 				<#if entity.isPermissionedModel()>
+					<#assign returnType = "entity">
+
 					<#include "persistence_impl_get_by_prev_and_next_query.ftl">
 
 					String sql = InlineSQLHelperUtil.replacePermissionCheck(query.toString(), ${entity.name}.class.getName(), _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN, _FILTER_ENTITY_TABLE_FILTER_USERID_COLUMN<#if finder.hasColumn("groupId")>, groupId</#if>);
@@ -902,6 +912,8 @@ that may or may not be enforced with a unique index at the database level. Case
 					}
 
 					<#assign sqlQuery = true>
+
+					<#assign returnType = "entity">
 
 					<#include "persistence_impl_finder_cols.ftl">
 
@@ -1226,6 +1238,8 @@ that may or may not be enforced with a unique index at the database level. Case
 					}
 
 					<#assign sqlQuery = true>
+
+					<#assign returnType = "list">
 
 					<#include "persistence_impl_finder_arrayable_cols.ftl">
 
@@ -1568,6 +1582,8 @@ that may or may not be enforced with a unique index at the database level. Case
 			if (list == null) {
 				<#assign checkPagination = true>
 
+				<#assign returnType = "list">
+
 				<#include "persistence_impl_find_by_arrayable_query.ftl">
 
 				<#assign checkPagination = false>
@@ -1772,6 +1788,8 @@ that may or may not be enforced with a unique index at the database level. Case
 			StringBundler query = new StringBundler(${finderColsList?size + 2});
 
 			query.append(_SQL_SELECT_${entity.alias?upper_case}_WHERE);
+
+			<#assign returnType = "entity">
 
 			<#include "persistence_impl_finder_cols.ftl">
 
