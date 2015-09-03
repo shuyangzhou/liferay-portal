@@ -5796,7 +5796,7 @@ public class CalendarResourcePersistenceImpl extends BasePersistenceImpl<Calenda
 			boolean bindCode = false;
 
 			if (code == null) {
-				query.append(_FINDER_COLUMN_C_C_A_CODE_1);
+				return Collections.emptyList();
 			}
 			else if (code.equals(StringPool.BLANK)) {
 				query.append(_FINDER_COLUMN_C_C_A_CODE_3);
@@ -6059,7 +6059,7 @@ public class CalendarResourcePersistenceImpl extends BasePersistenceImpl<Calenda
 		boolean bindCode = false;
 
 		if (code == null) {
-			query.append(_FINDER_COLUMN_C_C_A_CODE_1);
+			return null;
 		}
 		else if (code.equals(StringPool.BLANK)) {
 			query.append(_FINDER_COLUMN_C_C_A_CODE_3);
@@ -6208,7 +6208,7 @@ public class CalendarResourcePersistenceImpl extends BasePersistenceImpl<Calenda
 			boolean bindCode = false;
 
 			if (code == null) {
-				query.append(_FINDER_COLUMN_C_C_A_CODE_1);
+				return 0;
 			}
 			else if (code.equals(StringPool.BLANK)) {
 				query.append(_FINDER_COLUMN_C_C_A_CODE_3);

@@ -4685,7 +4685,7 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 			boolean bindTreePath = false;
 
 			if (treePath == null) {
-				query.append(_FINDER_COLUMN_C_T_TREEPATH_1);
+				return Collections.emptyList();
 			}
 			else if (treePath.equals(StringPool.BLANK)) {
 				query.append(_FINDER_COLUMN_C_T_TREEPATH_3);
@@ -4932,7 +4932,7 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 		boolean bindTreePath = false;
 
 		if (treePath == null) {
-			query.append(_FINDER_COLUMN_C_T_TREEPATH_1);
+			return null;
 		}
 		else if (treePath.equals(StringPool.BLANK)) {
 			query.append(_FINDER_COLUMN_C_T_TREEPATH_3);
@@ -5110,7 +5110,7 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 		boolean bindTreePath = false;
 
 		if (treePath == null) {
-			query.append(_FINDER_COLUMN_C_T_TREEPATH_1);
+			return Collections.emptyList();
 		}
 		else if (treePath.equals(StringPool.BLANK)) {
 			query.append(_FINDER_COLUMN_C_T_TREEPATH_3);
@@ -5253,7 +5253,7 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 		boolean bindTreePath = false;
 
 		if (treePath == null) {
-			query.append(_FINDER_COLUMN_C_T_TREEPATH_1);
+			return null;
 		}
 		else if (treePath.equals(StringPool.BLANK)) {
 			query.append(_FINDER_COLUMN_C_T_TREEPATH_3);
@@ -5426,7 +5426,7 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 			boolean bindTreePath = false;
 
 			if (treePath == null) {
-				query.append(_FINDER_COLUMN_C_T_TREEPATH_1);
+				return 0;
 			}
 			else if (treePath.equals(StringPool.BLANK)) {
 				query.append(_FINDER_COLUMN_C_T_TREEPATH_3);
@@ -5493,7 +5493,7 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 		boolean bindTreePath = false;
 
 		if (treePath == null) {
-			query.append(_FINDER_COLUMN_C_T_TREEPATH_1);
+			return 0;
 		}
 		else if (treePath.equals(StringPool.BLANK)) {
 			query.append(_FINDER_COLUMN_C_T_TREEPATH_3);

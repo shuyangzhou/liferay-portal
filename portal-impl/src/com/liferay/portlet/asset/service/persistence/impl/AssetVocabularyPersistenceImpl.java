@@ -3552,7 +3552,7 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 			boolean bindName = false;
 
 			if (name == null) {
-				query.append(_FINDER_COLUMN_G_LIKEN_NAME_1);
+				return Collections.emptyList();
 			}
 			else if (name.equals(StringPool.BLANK)) {
 				query.append(_FINDER_COLUMN_G_LIKEN_NAME_3);
@@ -3799,7 +3799,7 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 		boolean bindName = false;
 
 		if (name == null) {
-			query.append(_FINDER_COLUMN_G_LIKEN_NAME_1);
+			return null;
 		}
 		else if (name.equals(StringPool.BLANK)) {
 			query.append(_FINDER_COLUMN_G_LIKEN_NAME_3);
@@ -3977,7 +3977,7 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 		boolean bindName = false;
 
 		if (name == null) {
-			query.append(_FINDER_COLUMN_G_LIKEN_NAME_1);
+			return Collections.emptyList();
 		}
 		else if (name.equals(StringPool.BLANK)) {
 			query.append(_FINDER_COLUMN_G_LIKEN_NAME_3);
@@ -4120,7 +4120,7 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 		boolean bindName = false;
 
 		if (name == null) {
-			query.append(_FINDER_COLUMN_G_LIKEN_NAME_1);
+			return null;
 		}
 		else if (name.equals(StringPool.BLANK)) {
 			query.append(_FINDER_COLUMN_G_LIKEN_NAME_3);
@@ -4293,7 +4293,7 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 			boolean bindName = false;
 
 			if (name == null) {
-				query.append(_FINDER_COLUMN_G_LIKEN_NAME_1);
+				return 0;
 			}
 			else if (name.equals(StringPool.BLANK)) {
 				query.append(_FINDER_COLUMN_G_LIKEN_NAME_3);
@@ -4360,7 +4360,7 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 		boolean bindName = false;
 
 		if (name == null) {
-			query.append(_FINDER_COLUMN_G_LIKEN_NAME_1);
+			return 0;
 		}
 		else if (name.equals(StringPool.BLANK)) {
 			query.append(_FINDER_COLUMN_G_LIKEN_NAME_3);

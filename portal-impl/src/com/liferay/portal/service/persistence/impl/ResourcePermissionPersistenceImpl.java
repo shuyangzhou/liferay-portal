@@ -1392,7 +1392,7 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 			boolean bindPrimKey = false;
 
 			if (primKey == null) {
-				query.append(_FINDER_COLUMN_C_LIKEP_PRIMKEY_1);
+				return Collections.emptyList();
 			}
 			else if (primKey.equals(StringPool.BLANK)) {
 				query.append(_FINDER_COLUMN_C_LIKEP_PRIMKEY_3);
@@ -1640,7 +1640,7 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 		boolean bindPrimKey = false;
 
 		if (primKey == null) {
-			query.append(_FINDER_COLUMN_C_LIKEP_PRIMKEY_1);
+			return null;
 		}
 		else if (primKey.equals(StringPool.BLANK)) {
 			query.append(_FINDER_COLUMN_C_LIKEP_PRIMKEY_3);
@@ -1783,7 +1783,7 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 			boolean bindPrimKey = false;
 
 			if (primKey == null) {
-				query.append(_FINDER_COLUMN_C_LIKEP_PRIMKEY_1);
+				return 0;
 			}
 			else if (primKey.equals(StringPool.BLANK)) {
 				query.append(_FINDER_COLUMN_C_LIKEP_PRIMKEY_3);
