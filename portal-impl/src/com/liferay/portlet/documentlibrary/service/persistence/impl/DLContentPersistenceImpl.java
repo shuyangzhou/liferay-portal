@@ -1322,7 +1322,7 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 			boolean bindPath = false;
 
 			if (path == null) {
-				query.append(_FINDER_COLUMN_C_R_LIKEP_PATH_1);
+				return Collections.emptyList();
 			}
 			else if (path.equals(StringPool.BLANK)) {
 				query.append(_FINDER_COLUMN_C_R_LIKEP_PATH_3);
@@ -1584,7 +1584,7 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 		boolean bindPath = false;
 
 		if (path == null) {
-			query.append(_FINDER_COLUMN_C_R_LIKEP_PATH_1);
+			return null;
 		}
 		else if (path.equals(StringPool.BLANK)) {
 			query.append(_FINDER_COLUMN_C_R_LIKEP_PATH_3);
@@ -1733,7 +1733,7 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 			boolean bindPath = false;
 
 			if (path == null) {
-				query.append(_FINDER_COLUMN_C_R_LIKEP_PATH_1);
+				return 0;
 			}
 			else if (path.equals(StringPool.BLANK)) {
 				query.append(_FINDER_COLUMN_C_R_LIKEP_PATH_3);
