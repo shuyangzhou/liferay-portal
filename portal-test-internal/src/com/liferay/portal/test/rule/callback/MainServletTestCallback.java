@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.util.PortalLifecycle;
 import com.liferay.portal.kernel.util.PortalLifecycleUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.module.framework.ModuleFrameworkUtilAdapter;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.service.test.ServiceTestUtil;
 import com.liferay.portal.servlet.MainServlet;
 import com.liferay.portal.test.mock.AutoDeployMockServletContext;
@@ -49,7 +50,7 @@ public class MainServletTestCallback extends BaseTestCallback<Object, Object> {
 	}
 
 	@Override
-	public void afterClass(Description description, Object object)
+	public void afterClass(Description description, Long previousCompanyId)
 		throws PortalException {
 
 		if (ArquillianUtil.isArquillianTest(description)) {
@@ -57,10 +58,12 @@ public class MainServletTestCallback extends BaseTestCallback<Object, Object> {
 		}
 
 		SearchEngineUtil.removeCompany(TestPropsValues.getCompanyId());
+
+		CompanyThreadLocal.setCompanyId(previousCompanyId);
 	}
 
 	@Override
-	public Object beforeClass(Description description) {
+	public Long beforeClass(Description description) {
 		if (ArquillianUtil.isArquillianTest(description)) {
 			return null;
 		}
@@ -107,7 +110,17 @@ public class MainServletTestCallback extends BaseTestCallback<Object, Object> {
 
 		ServiceTestUtil.initPermissions();
 
-		return null;
+		try {
+			long previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+			CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+
+			return previousCompanyId;
+		}
+		catch (PortalException pe) {
+			throw new RuntimeException(
+				"The company could not be initialized", pe);
+		}
 	}
 
 	protected MainServletTestCallback() {
