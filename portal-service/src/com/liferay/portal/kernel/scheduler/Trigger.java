@@ -14,23 +14,145 @@
 
 package com.liferay.portal.kernel.scheduler;
 
+import com.liferay.portal.kernel.util.StringBundler;
+
+import java.io.Serializable;
+
 import java.util.Date;
 
 /**
  * @author Shuyang Zhou
  */
-public interface Trigger {
+public class Trigger {
 
-	public Date getEndDate();
+	public static Trigger createTrigger(
+		String jobName, String groupName, Date startDate, Date endDate,
+		int interval, TimeUnit timeUnit) {
 
-	public String getGroupName();
+		return new Trigger(
+			jobName, groupName, startDate, endDate,
+			new IntervalTriggerContent(interval, timeUnit));
+	}
 
-	public String getJobName();
+	public static Trigger createTrigger(
+		String jobName, String groupName, Date startDate, Date endDate,
+		String cronExpression) {
 
-	public Date getStartDate();
+		return new Trigger(
+			jobName, groupName, startDate, endDate,
+			new CronTriggerContent(cronExpression));
+	}
 
-	public Object getTriggerContent();
+	public static Trigger createTrigger(
+		String jobName, String groupName, Date startDate, Date endDate,
+		TriggerContent<? extends Serializable> triggerContent) {
 
-	public TriggerType getTriggerType();
+		return new Trigger(
+			jobName, groupName, startDate, endDate, triggerContent);
+	}
+
+	public static Trigger createTrigger(
+		String jobName, String groupName, Date startDate, int interval,
+		TimeUnit timeUnit) {
+
+		return new Trigger(
+			jobName, groupName, startDate, null,
+			new IntervalTriggerContent(interval, timeUnit));
+	}
+
+	public static Trigger createTrigger(
+		String jobName, String groupName, Date startDate,
+		String cronExpression) {
+
+		return new Trigger(
+			jobName, groupName, startDate, null,
+			new CronTriggerContent(cronExpression));
+	}
+
+	public static Trigger createTrigger(
+		String jobName, String groupName, Date startDate,
+		TriggerContent<? extends Serializable> triggerContent) {
+
+		return new Trigger(jobName, groupName, startDate, null, triggerContent);
+	}
+
+	public static Trigger createTrigger(
+		String jobName, String groupName, int interval, TimeUnit timeUnit) {
+
+		return new Trigger(
+			jobName, groupName, null, null,
+			new IntervalTriggerContent(interval, timeUnit));
+	}
+
+	public static Trigger createTrigger(
+		String jobName, String groupName, String cronExpression) {
+
+		return new Trigger(
+			jobName, groupName, null, null,
+			new CronTriggerContent(cronExpression));
+	}
+
+	public static Trigger createTrigger(
+		String jobName, String groupName,
+		TriggerContent<? extends Serializable> triggerContent) {
+
+		return new Trigger(jobName, groupName, null, null, triggerContent);
+	}
+
+	public Date getEndDate() {
+		return _endDate;
+	}
+
+	public String getGroupName() {
+		return _groupName;
+	}
+
+	public String getJobName() {
+		return _jobName;
+	}
+
+	public Date getStartDate() {
+		return _startDate;
+	}
+
+	public TriggerContent<? extends Serializable> getTriggerContent() {
+		return _triggerContent;
+	}
+
+	@Override
+	public String toString() {
+		StringBundler sb = new StringBundler(11);
+
+		sb.append("{endDate=");
+		sb.append(_endDate);
+		sb.append(", groupName=");
+		sb.append(_groupName);
+		sb.append(", jobName=");
+		sb.append(_jobName);
+		sb.append(", startDate=");
+		sb.append(_startDate);
+		sb.append(", triggerContent=");
+		sb.append(_triggerContent);
+		sb.append("}");
+
+		return sb.toString();
+	}
+
+	private Trigger(
+		String jobName, String groupsName, Date startDate, Date endDate,
+		TriggerContent<? extends Serializable> triggerContent) {
+
+		_jobName = jobName;
+		_groupName = groupsName;
+		_startDate = startDate;
+		_endDate = endDate;
+		_triggerContent = triggerContent;
+	}
+
+	private final Date _endDate;
+	private final String _groupName;
+	private final String _jobName;
+	private final Date _startDate;
+	private final TriggerContent<? extends Serializable> _triggerContent;
 
 }
