@@ -25,7 +25,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.Message;
-import com.liferay.portal.kernel.scheduler.IntervalTrigger;
+import com.liferay.portal.kernel.scheduler.IntervalTriggerContent;
 import com.liferay.portal.kernel.scheduler.JobState;
 import com.liferay.portal.kernel.scheduler.SchedulerEngine;
 import com.liferay.portal.kernel.scheduler.SchedulerEngineHelperUtil;
@@ -1757,7 +1757,7 @@ public class ClusterSchedulerEngineTest {
 	protected static Trigger getTrigger(
 		String jobName, String groupName, int interval) {
 
-		return new IntervalTrigger(
+		return Trigger.createTrigger(
 			jobName, groupName, interval, TimeUnit.SECOND);
 	}
 
@@ -1774,8 +1774,11 @@ public class ClusterSchedulerEngineTest {
 
 		Trigger trigger = schedulerResponse.getTrigger();
 
+		IntervalTriggerContent intervalTriggerContent =
+			(IntervalTriggerContent)trigger.getTriggerContent();
+
 		ObjectValuePair<Integer, TimeUnit> objectValuePair =
-			(ObjectValuePair<Integer, TimeUnit>)trigger.getTriggerContent();
+			intervalTriggerContent.getTriggerContent();
 
 		Assert.assertEquals(expectedInterval, (int)objectValuePair.getKey());
 	}
