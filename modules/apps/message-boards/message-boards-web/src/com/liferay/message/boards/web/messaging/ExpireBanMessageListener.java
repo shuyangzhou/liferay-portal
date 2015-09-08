@@ -23,7 +23,7 @@ import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.scheduler.SchedulerEntry;
 import com.liferay.portal.kernel.scheduler.TimeUnit;
-import com.liferay.portal.kernel.scheduler.TriggerType;
+import com.liferay.portal.kernel.scheduler.Trigger;
 import com.liferay.portal.model.Portlet;
 import com.liferay.portlet.messageboards.service.MBBanLocalServiceUtil;
 
@@ -49,13 +49,13 @@ public class ExpireBanMessageListener
 	@Activate
 	@Modified
 	protected void activate(Map<String, Object> properties) {
-		schedulerEntry.setTimeUnit(TimeUnit.MINUTE);
-		schedulerEntry.setTriggerType(TriggerType.SIMPLE);
-
 		_mbConfiguration = Configurable.createConfigurable(
 			MBConfiguration.class, properties);
 
-		schedulerEntry.setTriggerValue(_mbConfiguration.expireBanJobInterval());
+		schedulerEntry.setTrigger(
+			Trigger.createTrigger(
+				getEventListenerClass(), getEventListenerClass(),
+				_mbConfiguration.expireBanJobInterval(), TimeUnit.MINUTE));
 	}
 
 	@Override
