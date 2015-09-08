@@ -15,6 +15,7 @@
 package com.liferay.portal.kernel.scheduler;
 
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.Validator;
 
 /**
  * @author Tina Tian
@@ -22,6 +23,11 @@ import com.liferay.portal.kernel.util.StringBundler;
 public class CronTriggerContent implements TriggerContent<String> {
 
 	public CronTriggerContent(String cronExpression) {
+		if (Validator.isNull(cronExpression)) {
+			throw new IllegalArgumentException(
+				"Cron expression is null or blank");
+		}
+
 		_cronExpression = cronExpression;
 	}
 

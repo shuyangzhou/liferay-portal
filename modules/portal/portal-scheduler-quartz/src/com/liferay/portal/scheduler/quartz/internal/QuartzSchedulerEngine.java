@@ -747,16 +747,7 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 
 		int interval = objectValuePair.getKey();
 
-		if (interval < 0) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(
-					"Not scheduling " + trigger.getJobName() +
-						" because interval is less than 0");
-			}
-
-			return null;
-		}
-		else if (interval == 0) {
+		if (interval == 0) {
 			return triggerBuilder.build();
 		}
 

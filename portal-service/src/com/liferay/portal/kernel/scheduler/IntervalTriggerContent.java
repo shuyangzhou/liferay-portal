@@ -24,6 +24,14 @@ public class IntervalTriggerContent
 	implements TriggerContent<ObjectValuePair<Integer, TimeUnit>> {
 
 	public IntervalTriggerContent(int interval, TimeUnit timeUnit) {
+		if (interval < 0) {
+			throw new IllegalArgumentException("Interval is less than 0");
+		}
+
+		if (timeUnit == null) {
+			throw new NullPointerException("Time unit is null");
+		}
+
 		_objectValuePair = new ObjectValuePair<>(interval, timeUnit);
 	}
 
