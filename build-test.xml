@@ -4036,6 +4036,8 @@ osb.lcs.portlet.oauth.consumer.secret=${osb.lcs.portlet.oauth.consumer.secret}</
 	</target>
 
 	<target name="prepare-log4j-ext-xml">
+		<echo>########################${database.type}</echo>
+		<echo>########################${app.server.classes.portal.dir}/META-INF/portal-log4j-ext.xml</echo>
 		<if>
 			<equals arg1="${database.type}" arg2="hsql" />
 			<then>
