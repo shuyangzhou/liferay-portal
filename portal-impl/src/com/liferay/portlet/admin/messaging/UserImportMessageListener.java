@@ -22,7 +22,7 @@ import com.liferay.portal.util.PropsValues;
 /**
  * @author Shuyang Zhou
  */
-public class LDAPImportMessageListener extends BaseMessageListener {
+public class UserImportMessageListener extends BaseMessageListener {
 
 	@Override
 	protected void doReceive(Message message) throws Exception {
