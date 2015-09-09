@@ -14,11 +14,13 @@
 
 package com.liferay.portal.kernel.scheduler;
 
-/**
- * @author Brian Wing Shun Chan
- */
-public enum TriggerType {
+import java.io.Serializable;
 
-	CRON, SIMPLE
+/**
+ * @author Tina Tian
+ */
+public interface TriggerContent<T extends Serializable> extends Serializable {
+
+	public T getTriggerContent();
 
 }

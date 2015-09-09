@@ -28,7 +28,7 @@ import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.scheduler.SchedulerEntry;
 import com.liferay.portal.kernel.scheduler.TimeUnit;
-import com.liferay.portal.kernel.scheduler.TriggerType;
+import com.liferay.portal.kernel.scheduler.Trigger;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.Portlet;
 import com.liferay.portlet.exportimport.model.ExportImportConfiguration;
@@ -53,11 +53,12 @@ public class DraftExportImportConfigurationMessageListener
 
 	@Activate
 	protected void activate() {
-		schedulerEntry.setTimeUnit(TimeUnit.HOUR);
-		schedulerEntry.setTriggerType(TriggerType.SIMPLE);
-		schedulerEntry.setTriggerValue(
-			ExportImportWebConfigurationValues.
-				DRAFT_EXPORT_IMPORT_CONFIGURATION_CHECK_INTERVAL);
+		schedulerEntry.setTrigger(
+			Trigger.createTrigger(
+				getEventListenerClass(), getEventListenerClass(),
+				ExportImportWebConfigurationValues.
+					DRAFT_EXPORT_IMPORT_CONFIGURATION_CHECK_INTERVAL,
+				TimeUnit.HOUR));
 	}
 
 	@Override

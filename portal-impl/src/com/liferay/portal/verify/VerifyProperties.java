@@ -1248,9 +1248,6 @@ public class VerifyProperties extends VerifyProcess {
 			"import.group.search.filter.enabled", "com.liferay.portal.ldap"
 		},
 		new String[] {
-			"ldap.import.interval", "import.interval", "com.liferay.portal.ldap"
-		},
-		new String[] {
 			"ldap.import.lock.expiration.time", "import.lock.expiration.time",
 			"com.liferay.portal.ldap"
 		},

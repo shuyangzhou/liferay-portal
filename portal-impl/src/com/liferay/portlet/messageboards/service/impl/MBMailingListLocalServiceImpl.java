@@ -16,7 +16,6 @@ package com.liferay.portlet.messageboards.service.impl;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.messaging.DestinationNames;
-import com.liferay.portal.kernel.scheduler.IntervalTrigger;
 import com.liferay.portal.kernel.scheduler.SchedulerEngineHelperUtil;
 import com.liferay.portal.kernel.scheduler.StorageType;
 import com.liferay.portal.kernel.scheduler.TimeUnit;
@@ -206,8 +205,8 @@ public class MBMailingListLocalServiceImpl
 
 		Calendar startDate = CalendarFactoryUtil.getCalendar();
 
-		Trigger trigger = new IntervalTrigger(
-			groupName, groupName, startDate.getTime(), null,
+		Trigger trigger = Trigger.createTrigger(
+			groupName, groupName, startDate.getTime(),
 			mailingList.getInReadInterval(), TimeUnit.MINUTE);
 
 		MailingListRequest mailingListRequest = new MailingListRequest();

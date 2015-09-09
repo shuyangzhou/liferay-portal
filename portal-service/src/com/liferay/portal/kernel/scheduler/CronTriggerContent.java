@@ -15,51 +15,38 @@
 package com.liferay.portal.kernel.scheduler;
 
 import com.liferay.portal.kernel.util.StringBundler;
-
-import java.util.Date;
+import com.liferay.portal.kernel.util.Validator;
 
 /**
- * @author Shuyang Zhou
+ * @author Tina Tian
  */
-public class CronTrigger extends BaseTrigger {
+public class CronTriggerContent implements TriggerContent<String> {
 
-	public CronTrigger(
-		String jobName, String groupName, Date startDate, Date endDate,
-		String cronText) {
+	public CronTriggerContent(String cronExpression) {
+		if (Validator.isNull(cronExpression)) {
+			throw new IllegalArgumentException(
+				"Cron expression is null or blank");
+		}
 
-		super(jobName, groupName, TriggerType.CRON, startDate, endDate);
-
-		_cronText = cronText;
-	}
-
-	public CronTrigger(
-		String jobName, String groupName, Date startDate, String cronText) {
-
-		this(jobName, groupName, startDate, null, cronText);
-	}
-
-	public CronTrigger(String jobName, String groupName, String cronText) {
-		this(jobName, groupName, null, null, cronText);
+		_cronExpression = cronExpression;
 	}
 
 	@Override
 	public String getTriggerContent() {
-		return _cronText;
+		return _cronExpression;
 	}
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(5);
+		StringBundler sb = new StringBundler(3);
 
-		sb.append("{cronText=");
-		sb.append(_cronText);
-		sb.append(", ");
-		sb.append(super.toString());
+		sb.append("{cronExpression=");
+		sb.append(_cronExpression);
 		sb.append("}");
 
 		return sb.toString();
 	}
 
-	private final String _cronText;
+	private final String _cronExpression;
 
 }

@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.repository.RepositoryProviderUtil;
 import com.liferay.portal.kernel.repository.capabilities.TemporaryFileEntriesCapability;
 import com.liferay.portal.kernel.scheduler.SchedulerEntry;
 import com.liferay.portal.kernel.scheduler.TimeUnit;
-import com.liferay.portal.kernel.scheduler.TriggerType;
+import com.liferay.portal.kernel.scheduler.Trigger;
 import com.liferay.portal.model.Portlet;
 import com.liferay.portal.model.Repository;
 import com.liferay.portal.service.RepositoryLocalServiceUtil;
@@ -59,10 +59,11 @@ public class TempFileEntriesMessageListener
 		_dlConfiguration = Configurable.createConfigurable(
 			DLConfiguration.class, properties);
 
-		schedulerEntry.setTimeUnit(TimeUnit.HOUR);
-		schedulerEntry.setTriggerType(TriggerType.SIMPLE);
-		schedulerEntry.setTriggerValue(
-			_dlConfiguration.temporaryFileEntriesCheckInterval());
+		schedulerEntry.setTrigger(
+			Trigger.createTrigger(
+				getEventListenerClass(), getEventListenerClass(),
+				_dlConfiguration.temporaryFileEntriesCheckInterval(),
+				TimeUnit.HOUR));
 	}
 
 	protected void deleteExpiredTemporaryFileEntries(Repository repository) {

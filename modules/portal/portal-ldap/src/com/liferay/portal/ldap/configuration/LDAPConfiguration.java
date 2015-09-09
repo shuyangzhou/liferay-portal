@@ -46,9 +46,6 @@ public interface LDAPConfiguration {
 	@Meta.AD(deflt = "true", required = false)
 	public boolean importGroupSearchFilterEnabled();
 
-	@Meta.AD(deflt = "10", required = false)
-	public int importInterval();
-
 	@Meta.AD(deflt = "86400000", required = false)
 	public long importLockExpirationTime();
 
