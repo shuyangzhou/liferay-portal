@@ -3242,7 +3242,7 @@ go]]></replacevalue>
 					</then>
 				</if>
 
-				<delete includeemptydirs="true">
+				<delete failonerror="false" includeemptydirs="true">
 					<fileset dir="${test.app.server.liferay.home}/data">
 						<exclude name="hsql/lportal.properties" if:true="${keep.hsqldb}" />
 						<exclude name="hsql/lportal.script" if:true="${keep.hsqldb}" />
@@ -4033,6 +4033,24 @@ osb.lcs.portlet.oauth.consumer.secret=${osb.lcs.portlet.oauth.consumer.secret}</
 		<copy todir="${app.server.parent.dir}/processor/tomcat-${app.server.tomcat.version}/webapps">
 			<fileset dir="${lp.plugins.dir}/dist" />
 		</copy>
+	</target>
+
+	<target name="prepare-log4j-ext-xml">
+		<if>
+			<equals arg1="${database.type}" arg2="hsql" />
+			<then>
+				<echo file="${app.server.classes.portal.dir}/META-INF/portal-log4j-ext.xml">
+					<![CDATA[<?xml version="1.0"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+	<category name="com.liferay.portal.spring.hibernate.DialectDetector">
+		<priority value="ERROR" />
+	</category>
+</log4j:configuration>]]>
+				</echo>
+			</then>
+		</if>
 	</target>
 
 	<target name="prepare-portal-ext-properties">
