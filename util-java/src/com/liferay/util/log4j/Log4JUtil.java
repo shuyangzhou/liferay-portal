@@ -86,6 +86,8 @@ public class Log4JUtil {
 			return;
 		}
 
+		System.out.println("###########Loading " + url);
+
 		// See LPS-6029, LPS-8865, and LPS-24280
 
 		DOMConfigurator domConfigurator = new DOMConfigurator();
@@ -138,6 +140,12 @@ public class Log4JUtil {
 		catch (Exception e) {
 			_logger.error(e, e);
 		}
+
+		Logger logger = Logger.getLogger(
+			"com.liferay.portal.spring.hibernate.DialectDetector");
+
+		System.out.println(
+			"########DialectDetector logger level : " + logger.getLevel());
 	}
 
 	public static Map<String, String> getCustomLogSettings() {
