@@ -45,6 +45,9 @@ import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
+
 /**
  * @author Brian Wing Shun Chan
  * @author Tomas Polesovsky
@@ -83,6 +86,8 @@ public class Log4JUtil {
 			return;
 		}
 
+		System.out.println("###########Loading " + url);
+
 		// See LPS-6029, LPS-8865, and LPS-24280
 
 		DOMConfigurator domConfigurator = new DOMConfigurator();
@@ -93,6 +98,24 @@ public class Log4JUtil {
 
 		try {
 			SAXReader saxReader = new SAXReader();
+
+			saxReader.setEntityResolver(
+				new EntityResolver() {
+
+					@Override
+					public InputSource resolveEntity(
+						String publicId, String systemId) {
+
+						if (systemId.endsWith("log4j.dtd")) {
+							return new InputSource(
+								DOMConfigurator.class.getResourceAsStream(
+									"log4j.dtd"));
+						}
+
+						return null;
+					}
+
+				});
 
 			Document document = saxReader.read(
 				new UnsyncStringReader(urlContent), url.toExternalForm());
@@ -117,6 +140,12 @@ public class Log4JUtil {
 		catch (Exception e) {
 			_logger.error(e, e);
 		}
+
+		Logger logger = Logger.getLogger(
+			"com.liferay.portal.spring.hibernate.DialectDetector");
+
+		System.out.println(
+			"########DialectDetector logger level : " + logger.getLevel());
 	}
 
 	public static Map<String, String> getCustomLogSettings() {
