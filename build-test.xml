@@ -4035,6 +4035,24 @@ osb.lcs.portlet.oauth.consumer.secret=${osb.lcs.portlet.oauth.consumer.secret}</
 		</copy>
 	</target>
 
+	<target name="prepare-log4j-ext-xml">
+		<echo>########################${database.type}</echo>
+		<echo>########################${app.server.classes.portal.dir}/META-INF/portal-log4j-ext.xml</echo>
+		<if>
+			<equals arg1="${database.type}" arg2="hsql" />
+			<then>
+				<echo file="${app.server.classes.portal.dir}/META-INF/portal-log4j-ext.xml"><![CDATA[<?xml version="1.0"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+	<category name="com.liferay.portal.spring.hibernate.DialectDetector">
+		<priority value="ERROR" />
+	</category>
+</log4j:configuration>]]></echo>
+			</then>
+		</if>
+	</target>
+
 	<target name="prepare-portal-ext-properties">
 		<prepare-fix-pack-bundle />
 
@@ -5643,6 +5661,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 	</target>
 
 	<target name="rebuild-database" depends="build-sql-file">
+		<echo>#####################################${database.type}</echo>
 		<if>
 			<not>
 				<isset property="skip.rebuild-database" />
@@ -5669,6 +5688,22 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 
 							<copy file="sql/${database.name}.properties" tofile="${liferay.home}/data/hsql/${database.name}.properties" />
 							<copy file="sql/${database.name}.script" tofile="${liferay.home}/data/hsql/${database.name}.script" />
+
+							<echo>^^^^^^^^^^^^^^^^^^^^^^^^^^^^Source sql/${database.name}.properties</echo>
+							<loadfile property="source.lportal.properties" srcFile="sql/${database.name}.properties" />
+							<echo>${source.lportal.properties}</echo>
+
+							<echo>############################Copied ${liferay.home}/data/hsql/${database.name}.properties</echo>
+							<loadfile property="lportal.properties" srcFile="${liferay.home}/data/hsql/${database.name}.properties" />
+							<echo>${lportal.properties}</echo>
+
+							<echo>^^^^^^^^^^^^^^^^^^^^^^^^^^^^Source sql/${database.name}.script</echo>
+							<loadfile property="source.lportal.script" srcFile="sql/${database.name}.script" />
+							<echo>${source.lportal.script}</echo>
+
+							<echo>############################Copied ${liferay.home}/data/hsql/${database.name}.script</echo>
+							<loadfile property="lportal.script" srcFile="${liferay.home}/data/hsql/${database.name}.script" />
+							<echo>${lportal.script}</echo>
 						</then>
 					</elseif>
 					<elseif>
