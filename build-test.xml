@@ -2227,9 +2227,9 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 						</then>
 					</if>
 
-					<antcall target="delete-liferay-home">
+<!--					<antcall target="delete-liferay-home">
 						<param name="keep.hsqldb" value="true" />
-					</antcall>
+					</antcall>-->
 
 					<if>
 						<equals arg1="${test.ant.launched.by.selenium}" arg2="true" />
@@ -3242,6 +3242,8 @@ go]]></replacevalue>
 					</then>
 				</if>
 
+				<echo>*********************delete-liferay-home ${keep.hsqldb}</echo>
+
 				<delete failonerror="false" includeemptydirs="true">
 					<fileset dir="${test.app.server.liferay.home}/data">
 						<exclude name="hsql/lportal.properties" if:true="${keep.hsqldb}" />
@@ -4036,6 +4038,8 @@ osb.lcs.portlet.oauth.consumer.secret=${osb.lcs.portlet.oauth.consumer.secret}</
 	</target>
 
 	<target name="prepare-log4j-ext-xml">
+		<echo>########################${database.type}</echo>
+		<echo>########################${app.server.classes.portal.dir}/META-INF/portal-log4j-ext.xml</echo>
 		<if>
 			<equals arg1="${database.type}" arg2="hsql" />
 			<then>
@@ -5659,6 +5663,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 	</target>
 
 	<target name="rebuild-database" depends="build-sql-file">
+		<echo>#####################################${database.type}</echo>
 		<if>
 			<not>
 				<isset property="skip.rebuild-database" />
@@ -5685,6 +5690,22 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 
 							<copy file="sql/${database.name}.properties" tofile="${liferay.home}/data/hsql/${database.name}.properties" />
 							<copy file="sql/${database.name}.script" tofile="${liferay.home}/data/hsql/${database.name}.script" />
+
+							<echo>^^^^^^^^^^^^^^^^^^^^^^^^^^^^Source sql/${database.name}.properties</echo>
+							<loadfile property="source.lportal.properties" srcFile="sql/${database.name}.properties" />
+							<echo>${source.lportal.properties}</echo>
+
+							<echo>############################Copied ${liferay.home}/data/hsql/${database.name}.properties</echo>
+							<loadfile property="lportal.properties" srcFile="${liferay.home}/data/hsql/${database.name}.properties" />
+							<echo>${lportal.properties}</echo>
+
+							<echo>^^^^^^^^^^^^^^^^^^^^^^^^^^^^Source sql/${database.name}.script</echo>
+							<loadfile property="source.lportal.script" srcFile="sql/${database.name}.script" />
+							<echo>${source.lportal.script}</echo>
+
+							<echo>############################Copied ${liferay.home}/data/hsql/${database.name}.script</echo>
+							<loadfile property="lportal.script" srcFile="${liferay.home}/data/hsql/${database.name}.script" />
+							<echo>${lportal.script}</echo>
 						</then>
 					</elseif>
 					<elseif>
