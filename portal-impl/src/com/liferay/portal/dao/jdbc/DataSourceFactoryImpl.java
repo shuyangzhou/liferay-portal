@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.jndi.JNDIUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.pacl.DoPrivileged;
+import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.ClassLoaderUtil;
 import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -43,6 +44,9 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 import java.net.URL;
 import java.net.URLClassLoader;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Enumeration;
 import java.util.Map;
 import java.util.Properties;
@@ -97,6 +101,42 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 
 	@Override
 	public DataSource initDataSource(Properties properties) throws Exception {
+		String url = PropsUtil.get("jdbc.default.url");
+
+		System.out.println("############" + url);
+
+		if (url.equals(
+				"jdbc:hsqldb:/opt/dev/projects/github/liferay-portal/" +
+					"data/hsql/lportal")) {
+
+			int index = url.lastIndexOf(CharPool.COLON);
+
+			String path = url.substring(index + 1, url.length());
+
+			Path lportalScriptPath = Paths.get(path + ".script");
+
+			System.out.println(
+				"#######lportal.script:" + Files.exists(lportalScriptPath));
+
+			if (Files.exists(lportalScriptPath)) {
+				System.out.write(Files.readAllBytes(lportalScriptPath));
+				System.out.println("");
+			}
+
+			Path lportalPropertiesPath = Paths.get(path + ".properties");
+
+			System.out.println(
+				"#######lportal.properties:" +
+					Files.exists(lportalPropertiesPath));
+
+			if (Files.exists(lportalPropertiesPath)) {
+				System.out.write(
+					Files.readAllBytes(Paths.get(path + ".properties")));
+				System.out.println("");
+			}
+		}
+		
+
 		Properties defaultProperties = PropsUtil.getProperties(
 			"jdbc.default.", true);
 
