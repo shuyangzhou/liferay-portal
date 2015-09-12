@@ -32,6 +32,7 @@ import java.sql.SQLException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
 
 /**
  * @author Alexander Chow
@@ -92,6 +93,11 @@ public class MySQLDB extends BaseDB {
 	}
 
 	@Override
+	public int getMaxStringIndexLength() {
+		return 255;
+	}
+
+	@Override
 	public boolean isSupportsDateMilliseconds() {
 		return _SUPPORTS_DATE_MILLISECONDS;
 	}
@@ -103,6 +109,26 @@ public class MySQLDB extends BaseDB {
 
 	protected MySQLDB() {
 		super(TYPE_MYSQL);
+	}
+
+	@Override
+	protected String applyMaxStringIndexLengthLimitation(Matcher matcher) {
+		StringBuffer sb = new StringBuffer();
+
+		while (matcher.find()) {
+			int length = Integer.valueOf(matcher.group(1));
+
+			if (length > 255) {
+				matcher.appendReplacement(sb, "\\(255\\)");
+			}
+			else {
+				matcher.appendReplacement(sb, "");
+			}
+		}
+
+		matcher.appendTail(sb);
+
+		return sb.toString();
 	}
 
 	@Override

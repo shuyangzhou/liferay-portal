@@ -166,6 +166,11 @@ public abstract class BaseDB implements DB {
 	}
 
 	@Override
+	public int getMaxStringIndexLength() {
+		return -1;
+	}
+
+	@Override
 	public String getTemplateFalse() {
 		return getTemplate()[2];
 	}
@@ -336,6 +341,9 @@ public abstract class BaseDB implements DB {
 			Connection connection, String template, boolean evaluate,
 			boolean failOnError)
 		throws IOException, NamingException, SQLException {
+
+		template = applyMaxStringIndexLengthLimitation(
+			_columnLengthPattern.matcher(template));
 
 		if (evaluate) {
 			try {
@@ -513,6 +521,10 @@ public abstract class BaseDB implements DB {
 		}
 	}
 
+	protected String applyMaxStringIndexLengthLimitation(Matcher matcher) {
+		return matcher.replaceAll("");
+	}
+
 	protected String[] buildColumnNameTokens(String line) {
 		String[] words = StringUtil.split(line, ' ');
 
@@ -617,8 +629,13 @@ public abstract class BaseDB implements DB {
 			template = sb.toString();
 		}
 
-		if (fileName.equals("indexes") && (this instanceof SybaseDB)) {
-			template = removeBooleanIndexes(sqlDir, template);
+		if (fileName.equals("indexes")) {
+			template = applyMaxStringIndexLengthLimitation(
+				_columnLengthPattern.matcher(template));
+
+			if (this instanceof SybaseDB) {
+				template = removeBooleanIndexes(sqlDir, template);
+			}
 		}
 
 		return template;
@@ -1071,6 +1088,8 @@ public abstract class BaseDB implements DB {
 
 	private static final Log _log = LogFactoryUtil.getLog(BaseDB.class);
 
+	private static final Pattern _columnLengthPattern = Pattern.compile(
+		"\\[\\$COLUMN_LENGTH:(\\d+)\\$\\]");
 	private static final Pattern _templatePattern;
 	private static final Pattern _timestampPattern = Pattern.compile(
 		"SPECIFIC_TIMESTAMP_\\d+");
