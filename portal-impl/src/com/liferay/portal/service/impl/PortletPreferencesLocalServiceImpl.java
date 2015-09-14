@@ -380,7 +380,7 @@ public class PortletPreferencesLocalServiceImpl
 		return portletPreferences;
 	}
 
-	protected javax.portlet.PortletPreferences doGetPreferences(
+	protected javax.portlet.PortletPreferences getPreferences(
 		long companyId, long ownerId, int ownerType, long plid,
 		String portletId, String defaultPreferences, boolean strict) {
 
@@ -420,15 +420,6 @@ public class PortletPreferencesLocalServiceImpl
 				portletPreferences.getPreferences());
 
 		return portletPreferencesImpl;
-	}
-
-	protected javax.portlet.PortletPreferences getPreferences(
-		long companyId, long ownerId, int ownerType, long plid,
-		String portletId, String defaultPreferences, boolean strict) {
-
-		return doGetPreferences(
-			companyId, ownerId, ownerType, plid, portletId, defaultPreferences,
-			strict);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
