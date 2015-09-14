@@ -49,11 +49,18 @@
 		<cacheEventListenerFactory class="portalPropertyKey=ehcache.cache.event.listener.factory" />
 	</cache>
 	<cache
-		eternal="false"
-		maxElementsInMemory="100000"
+		eternal="true"
+		maxElementsInMemory="1000000"
 		name="com.liferay.portal.kernel.dao.orm.EntityCache.com.liferay.portal.model.impl.GroupImpl"
 		overflowToDisk="false"
-		timeToIdleSeconds="600"
+	>
+		<cacheEventListenerFactory class="portalPropertyKey=ehcache.cache.event.listener.factory" />
+	</cache>
+	<cache
+		eternal="true"
+		maxElementsInMemory="10000"
+		name="com.liferay.portal.kernel.dao.orm.EntityCache.com.liferay.portal.model.impl.OrganizationImpl"
+		overflowToDisk="false"
 	>
 		<cacheEventListenerFactory class="portalPropertyKey=ehcache.cache.event.listener.factory" />
 	</cache>
@@ -85,11 +92,26 @@
 		<cacheEventListenerFactory class="portalPropertyKey=ehcache.cache.event.listener.factory" />
 	</cache>
 	<cache
-		eternal="false"
-		maxElementsInMemory="100000"
+		eternal="true"
+		maxElementsInMemory="10000"
+		name="com.liferay.portal.kernel.dao.orm.EntityCache.com.liferay.portal.model.impl.RoleImpl"
+		overflowToDisk="false"
+	>
+		<cacheEventListenerFactory class="portalPropertyKey=ehcache.cache.event.listener.factory" />
+	</cache>
+	<cache
+		eternal="true"
+		maxElementsInMemory="10000"
+		name="com.liferay.portal.kernel.dao.orm.EntityCache.com.liferay.portal.model.impl.UserGroupImpl"
+		overflowToDisk="false"
+	>
+		<cacheEventListenerFactory class="portalPropertyKey=ehcache.cache.event.listener.factory" />
+	</cache>
+	<cache
+		eternal="true"
+		maxElementsInMemory="1000000"
 		name="com.liferay.portal.kernel.dao.orm.EntityCache.com.liferay.portal.model.impl.UserImpl"
 		overflowToDisk="false"
-		timeToIdleSeconds="600"
 	>
 		<cacheEventListenerFactory class="portalPropertyKey=ehcache.cache.event.listener.factory" />
 	</cache>
