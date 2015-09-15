@@ -15,6 +15,7 @@
 package com.liferay.portal.service.persistence.test;
 
 import com.liferay.portal.NoSuchAddressException;
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -25,11 +26,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.model.Address;
 import com.liferay.portal.service.AddressLocalServiceUtil;
 import com.liferay.portal.service.persistence.AddressPersistence;
@@ -168,12 +169,10 @@ public class AddressPersistenceTest {
 		Assert.assertEquals(existingAddress.getUserId(), newAddress.getUserId());
 		Assert.assertEquals(existingAddress.getUserName(),
 			newAddress.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingAddress.getCreateDate()),
-			Time.getShortTimestamp(newAddress.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingAddress.getModifiedDate()),
-			Time.getShortTimestamp(newAddress.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(existingAddress.getCreateDate(),
+				newAddress.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(existingAddress.getModifiedDate(),
+				newAddress.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingAddress.getClassNameId(),
 			newAddress.getClassNameId());
 		Assert.assertEquals(existingAddress.getClassPK(),
@@ -195,9 +194,9 @@ public class AddressPersistenceTest {
 			newAddress.getMailing());
 		Assert.assertEquals(existingAddress.getPrimary(),
 			newAddress.getPrimary());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingAddress.getLastPublishDate()),
-			Time.getShortTimestamp(newAddress.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingAddress.getLastPublishDate(),
+				newAddress.getLastPublishDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

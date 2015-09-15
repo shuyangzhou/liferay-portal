@@ -2412,7 +2412,7 @@ public class PortalImpl implements Portal {
 	@Override
 	public Portlet getFirstMyAccountPortlet(ThemeDisplay themeDisplay) {
 		List<Portlet> portlets = getControlPanelPortlets(
-			PortletCategoryKeys.MY, themeDisplay);
+			PortletCategoryKeys.USER_MY_ACCOUNT, themeDisplay);
 
 		if (portlets.isEmpty()) {
 			return null;
@@ -3784,8 +3784,7 @@ public class PortalImpl implements Portal {
 
 	@Override
 	public long getPlidFromPortletId(
-			long groupId, boolean privateLayout, String portletId)
-		throws PortalException {
+		long groupId, boolean privateLayout, String portletId) {
 
 		long plid = LayoutConstants.DEFAULT_PLID;
 
@@ -3844,9 +3843,7 @@ public class PortalImpl implements Portal {
 	}
 
 	@Override
-	public long getPlidFromPortletId(long groupId, String portletId)
-		throws PortalException {
-
+	public long getPlidFromPortletId(long groupId, String portletId) {
 		long plid = getPlidFromPortletId(groupId, false, portletId);
 
 		if (plid == LayoutConstants.DEFAULT_PLID) {
@@ -7559,8 +7556,7 @@ public class PortalImpl implements Portal {
 	}
 
 	protected long doGetPlidFromPortletId(
-			long groupId, boolean privateLayout, String portletId)
-		throws PortalException {
+		long groupId, boolean privateLayout, String portletId) {
 
 		long scopeGroupId = groupId;
 
@@ -7767,13 +7763,18 @@ public class PortalImpl implements Portal {
 
 			String portletCategory = portlet.getControlPanelEntryCategory();
 
-			if (portletCategory.equals(PortletCategoryKeys.APPS) ||
-				portletCategory.equals(PortletCategoryKeys.CONFIGURATION) ||
-				portletCategory.equals(PortletCategoryKeys.USERS)) {
+			if (portletCategory.equals(
+					PortletCategoryKeys.CONTROL_PANEL_APPS) ||
+				portletCategory.equals(
+					PortletCategoryKeys.CONTROL_PANEL_CONFIGURATION) ||
+				portletCategory.equals(
+					PortletCategoryKeys.CONTROL_PANEL_USERS)) {
 
 				return layout;
 			}
-			else if (portletCategory.equals(PortletCategoryKeys.MY)) {
+			else if (portletCategory.equals(
+						PortletCategoryKeys.USER_MY_ACCOUNT)) {
+
 				User user = null;
 
 				try {
