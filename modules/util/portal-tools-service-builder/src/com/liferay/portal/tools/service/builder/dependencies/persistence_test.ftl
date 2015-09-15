@@ -32,6 +32,7 @@ import ${beanLocatorUtil};
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.jdbc.OutputBlob;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -46,6 +47,7 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
@@ -289,7 +291,7 @@ public class ${entity.name}PersistenceTest {
 
 				Assert.assertTrue(Arrays.equals(existing${column.methodName}.getBytes(1, (int)existing${column.methodName}.length()), new${column.methodName}Bytes));
 			<#elseif column.type == "Date">
-				Assert.assertEquals(Time.getShortTimestamp(existing${entity.name}.get${column.methodName}()), Time.getShortTimestamp(new${entity.name}.get${column.methodName}()));
+				Assert.assertTrue(DateUtil.equals(existing${entity.name}.get${column.methodName}(), new${entity.name}.get${column.methodName}(), DBFactoryUtil.getDB()));
 			<#elseif column.type == "double">
 				AssertUtils.assertEquals(existing${entity.name}.get${column.methodName}(), new${entity.name}.get${column.methodName}());
 			<#else>
