@@ -29,6 +29,7 @@ import com.liferay.journal.model.JournalFolderConstants;
 import com.liferay.journal.service.JournalArticleLocalServiceUtil;
 import com.liferay.journal.test.util.JournalTestUtil;
 import com.liferay.journal.web.lar.JournalPortletDataHandler;
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.Sync;
@@ -420,19 +421,19 @@ public class JournalExportImportTest extends BasePortletExportImportTestCase {
 				importedArticle.getDisplayDate(),
 			DateUtil.equals(
 				article.getDisplayDate(), importedArticle.getDisplayDate(),
-				true));
+				DBFactoryUtil.getDB()));
 		Assert.assertTrue(
 			String.valueOf(article.getExpirationDate()) + StringPool.SPACE +
 				importedArticle.getExpirationDate(),
 			DateUtil.equals(
 				article.getExpirationDate(),
-				importedArticle.getExpirationDate(), true));
+				importedArticle.getExpirationDate(), DBFactoryUtil.getDB()));
 		Assert.assertTrue(
 			String.valueOf(article.getReviewDate()) + StringPool.SPACE +
 				importedArticle.getReviewDate(),
 			DateUtil.equals(
 				article.getReviewDate(), importedArticle.getReviewDate(),
-				true));
+				DBFactoryUtil.getDB()));
 		Assert.assertEquals(
 			article.getSmallImage(), importedArticle.getSmallImage());
 		Assert.assertEquals(
@@ -443,7 +444,7 @@ public class JournalExportImportTest extends BasePortletExportImportTestCase {
 				importedArticle.getStatusDate(),
 			DateUtil.equals(
 				article.getStatusDate(), importedArticle.getStatusDate(),
-				true));
+				DBFactoryUtil.getDB()));
 
 		JournalArticleResource articleResource = article.getArticleResource();
 		JournalArticleResource importedArticleArticleResource =
