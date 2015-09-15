@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.exportimport.service.persistence.test;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -24,10 +25,10 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 
@@ -161,13 +162,14 @@ public class ExportImportConfigurationPersistenceTest {
 			newExportImportConfiguration.getUserId());
 		Assert.assertEquals(existingExportImportConfiguration.getUserName(),
 			newExportImportConfiguration.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingExportImportConfiguration.getCreateDate()),
-			Time.getShortTimestamp(newExportImportConfiguration.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingExportImportConfiguration.getModifiedDate()),
-			Time.getShortTimestamp(
-				newExportImportConfiguration.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingExportImportConfiguration.getCreateDate(),
+				newExportImportConfiguration.getCreateDate(),
+				DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingExportImportConfiguration.getModifiedDate(),
+				newExportImportConfiguration.getModifiedDate(),
+				DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingExportImportConfiguration.getName(),
 			newExportImportConfiguration.getName());
 		Assert.assertEquals(existingExportImportConfiguration.getDescription(),
@@ -182,9 +184,10 @@ public class ExportImportConfigurationPersistenceTest {
 			newExportImportConfiguration.getStatusByUserId());
 		Assert.assertEquals(existingExportImportConfiguration.getStatusByUserName(),
 			newExportImportConfiguration.getStatusByUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingExportImportConfiguration.getStatusDate()),
-			Time.getShortTimestamp(newExportImportConfiguration.getStatusDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingExportImportConfiguration.getStatusDate(),
+				newExportImportConfiguration.getStatusDate(),
+				DBFactoryUtil.getDB()));
 	}
 
 	@Test

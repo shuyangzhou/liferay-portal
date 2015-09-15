@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.calendar.service.persistence.test;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -25,11 +26,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -178,23 +179,19 @@ public class CalEventPersistenceTest {
 			newCalEvent.getUserId());
 		Assert.assertEquals(existingCalEvent.getUserName(),
 			newCalEvent.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingCalEvent.getCreateDate()),
-			Time.getShortTimestamp(newCalEvent.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingCalEvent.getModifiedDate()),
-			Time.getShortTimestamp(newCalEvent.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(existingCalEvent.getCreateDate(),
+				newCalEvent.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(existingCalEvent.getModifiedDate(),
+				newCalEvent.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingCalEvent.getTitle(), newCalEvent.getTitle());
 		Assert.assertEquals(existingCalEvent.getDescription(),
 			newCalEvent.getDescription());
 		Assert.assertEquals(existingCalEvent.getLocation(),
 			newCalEvent.getLocation());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingCalEvent.getStartDate()),
-			Time.getShortTimestamp(newCalEvent.getStartDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingCalEvent.getEndDate()),
-			Time.getShortTimestamp(newCalEvent.getEndDate()));
+		Assert.assertTrue(DateUtil.equals(existingCalEvent.getStartDate(),
+				newCalEvent.getStartDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(existingCalEvent.getEndDate(),
+				newCalEvent.getEndDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingCalEvent.getDurationHour(),
 			newCalEvent.getDurationHour());
 		Assert.assertEquals(existingCalEvent.getDurationMinute(),

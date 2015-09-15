@@ -15,6 +15,7 @@
 package com.liferay.portal.service.persistence.test;
 
 import com.liferay.portal.NoSuchOrganizationException;
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -26,11 +27,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.Organization;
 import com.liferay.portal.service.OrganizationLocalServiceUtil;
@@ -168,12 +169,12 @@ public class OrganizationPersistenceTest {
 			newOrganization.getUserId());
 		Assert.assertEquals(existingOrganization.getUserName(),
 			newOrganization.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingOrganization.getCreateDate()),
-			Time.getShortTimestamp(newOrganization.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingOrganization.getModifiedDate()),
-			Time.getShortTimestamp(newOrganization.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingOrganization.getCreateDate(),
+				newOrganization.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingOrganization.getModifiedDate(),
+				newOrganization.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingOrganization.getParentOrganizationId(),
 			newOrganization.getParentOrganizationId());
 		Assert.assertEquals(existingOrganization.getTreePath(),
@@ -194,9 +195,9 @@ public class OrganizationPersistenceTest {
 			newOrganization.getComments());
 		Assert.assertEquals(existingOrganization.getLogoId(),
 			newOrganization.getLogoId());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingOrganization.getLastPublishDate()),
-			Time.getShortTimestamp(newOrganization.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingOrganization.getLastPublishDate(),
+				newOrganization.getLastPublishDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

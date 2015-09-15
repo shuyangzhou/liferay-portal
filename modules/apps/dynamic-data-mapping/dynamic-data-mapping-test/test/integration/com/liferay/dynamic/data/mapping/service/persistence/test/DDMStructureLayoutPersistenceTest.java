@@ -22,6 +22,7 @@ import com.liferay.dynamic.data.mapping.service.DDMStructureLayoutLocalServiceUt
 import com.liferay.dynamic.data.mapping.service.persistence.DDMStructureLayoutPersistence;
 import com.liferay.dynamic.data.mapping.service.persistence.DDMStructureLayoutUtil;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -33,11 +34,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -156,12 +157,12 @@ public class DDMStructureLayoutPersistenceTest {
 			newDDMStructureLayout.getUserId());
 		Assert.assertEquals(existingDDMStructureLayout.getUserName(),
 			newDDMStructureLayout.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingDDMStructureLayout.getCreateDate()),
-			Time.getShortTimestamp(newDDMStructureLayout.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingDDMStructureLayout.getModifiedDate()),
-			Time.getShortTimestamp(newDDMStructureLayout.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingDDMStructureLayout.getCreateDate(),
+				newDDMStructureLayout.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingDDMStructureLayout.getModifiedDate(),
+				newDDMStructureLayout.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingDDMStructureLayout.getStructureVersionId(),
 			newDDMStructureLayout.getStructureVersionId());
 		Assert.assertEquals(existingDDMStructureLayout.getDefinition(),

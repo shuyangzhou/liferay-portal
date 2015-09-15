@@ -22,6 +22,7 @@ import com.liferay.polls.service.PollsQuestionLocalServiceUtil;
 import com.liferay.polls.service.persistence.PollsQuestionPersistence;
 import com.liferay.polls.service.persistence.PollsQuestionUtil;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -33,11 +34,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -162,25 +163,25 @@ public class PollsQuestionPersistenceTest {
 			newPollsQuestion.getUserId());
 		Assert.assertEquals(existingPollsQuestion.getUserName(),
 			newPollsQuestion.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingPollsQuestion.getCreateDate()),
-			Time.getShortTimestamp(newPollsQuestion.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingPollsQuestion.getModifiedDate()),
-			Time.getShortTimestamp(newPollsQuestion.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingPollsQuestion.getCreateDate(),
+				newPollsQuestion.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingPollsQuestion.getModifiedDate(),
+				newPollsQuestion.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingPollsQuestion.getTitle(),
 			newPollsQuestion.getTitle());
 		Assert.assertEquals(existingPollsQuestion.getDescription(),
 			newPollsQuestion.getDescription());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingPollsQuestion.getExpirationDate()),
-			Time.getShortTimestamp(newPollsQuestion.getExpirationDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingPollsQuestion.getLastPublishDate()),
-			Time.getShortTimestamp(newPollsQuestion.getLastPublishDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingPollsQuestion.getLastVoteDate()),
-			Time.getShortTimestamp(newPollsQuestion.getLastVoteDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingPollsQuestion.getExpirationDate(),
+				newPollsQuestion.getExpirationDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingPollsQuestion.getLastPublishDate(),
+				newPollsQuestion.getLastPublishDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingPollsQuestion.getLastVoteDate(),
+				newPollsQuestion.getLastVoteDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

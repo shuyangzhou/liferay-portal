@@ -16,6 +16,7 @@ package com.liferay.portal.workflow.kaleo.service.persistence.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -26,10 +27,10 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 import com.liferay.portal.workflow.kaleo.exception.NoSuchNodeException;
@@ -158,12 +159,10 @@ public class KaleoNodePersistenceTest {
 			newKaleoNode.getUserId());
 		Assert.assertEquals(existingKaleoNode.getUserName(),
 			newKaleoNode.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingKaleoNode.getCreateDate()),
-			Time.getShortTimestamp(newKaleoNode.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingKaleoNode.getModifiedDate()),
-			Time.getShortTimestamp(newKaleoNode.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(existingKaleoNode.getCreateDate(),
+				newKaleoNode.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(existingKaleoNode.getModifiedDate(),
+				newKaleoNode.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingKaleoNode.getKaleoDefinitionId(),
 			newKaleoNode.getKaleoDefinitionId());
 		Assert.assertEquals(existingKaleoNode.getName(), newKaleoNode.getName());

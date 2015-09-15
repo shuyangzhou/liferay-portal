@@ -15,6 +15,7 @@
 package com.liferay.portal.service.persistence.test;
 
 import com.liferay.portal.NoSuchUserTrackerPathException;
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -25,10 +26,10 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.model.UserTrackerPath;
 import com.liferay.portal.service.UserTrackerPathLocalServiceUtil;
 import com.liferay.portal.service.persistence.UserTrackerPathPersistence;
@@ -133,9 +134,9 @@ public class UserTrackerPathPersistenceTest {
 			newUserTrackerPath.getUserTrackerId());
 		Assert.assertEquals(existingUserTrackerPath.getPath(),
 			newUserTrackerPath.getPath());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingUserTrackerPath.getPathDate()),
-			Time.getShortTimestamp(newUserTrackerPath.getPathDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingUserTrackerPath.getPathDate(),
+				newUserTrackerPath.getPathDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

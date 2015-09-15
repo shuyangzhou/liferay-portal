@@ -16,6 +16,7 @@ package com.liferay.portal.workflow.kaleo.service.persistence.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -26,11 +27,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 import com.liferay.portal.workflow.kaleo.exception.NoSuchTaskAssignmentInstanceException;
@@ -166,14 +167,14 @@ public class KaleoTaskAssignmentInstancePersistenceTest {
 			newKaleoTaskAssignmentInstance.getUserId());
 		Assert.assertEquals(existingKaleoTaskAssignmentInstance.getUserName(),
 			newKaleoTaskAssignmentInstance.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingKaleoTaskAssignmentInstance.getCreateDate()),
-			Time.getShortTimestamp(
-				newKaleoTaskAssignmentInstance.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingKaleoTaskAssignmentInstance.getModifiedDate()),
-			Time.getShortTimestamp(
-				newKaleoTaskAssignmentInstance.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingKaleoTaskAssignmentInstance.getCreateDate(),
+				newKaleoTaskAssignmentInstance.getCreateDate(),
+				DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingKaleoTaskAssignmentInstance.getModifiedDate(),
+				newKaleoTaskAssignmentInstance.getModifiedDate(),
+				DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingKaleoTaskAssignmentInstance.getKaleoDefinitionId(),
 			newKaleoTaskAssignmentInstance.getKaleoDefinitionId());
 		Assert.assertEquals(existingKaleoTaskAssignmentInstance.getKaleoInstanceId(),
@@ -192,10 +193,10 @@ public class KaleoTaskAssignmentInstancePersistenceTest {
 			newKaleoTaskAssignmentInstance.getAssigneeClassPK());
 		Assert.assertEquals(existingKaleoTaskAssignmentInstance.getCompleted(),
 			newKaleoTaskAssignmentInstance.getCompleted());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingKaleoTaskAssignmentInstance.getCompletionDate()),
-			Time.getShortTimestamp(
-				newKaleoTaskAssignmentInstance.getCompletionDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingKaleoTaskAssignmentInstance.getCompletionDate(),
+				newKaleoTaskAssignmentInstance.getCompletionDate(),
+				DBFactoryUtil.getDB()));
 	}
 
 	@Test
