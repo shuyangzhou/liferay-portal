@@ -22,6 +22,7 @@ import com.liferay.dynamic.data.lists.service.DDLRecordVersionLocalServiceUtil;
 import com.liferay.dynamic.data.lists.service.persistence.DDLRecordVersionPersistence;
 import com.liferay.dynamic.data.lists.service.persistence.DDLRecordVersionUtil;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -33,11 +34,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -164,9 +165,9 @@ public class DDLRecordVersionPersistenceTest {
 			newDDLRecordVersion.getUserId());
 		Assert.assertEquals(existingDDLRecordVersion.getUserName(),
 			newDDLRecordVersion.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingDDLRecordVersion.getCreateDate()),
-			Time.getShortTimestamp(newDDLRecordVersion.getCreateDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingDDLRecordVersion.getCreateDate(),
+				newDDLRecordVersion.getCreateDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingDDLRecordVersion.getDDMStorageId(),
 			newDDLRecordVersion.getDDMStorageId());
 		Assert.assertEquals(existingDDLRecordVersion.getRecordSetId(),
@@ -183,9 +184,9 @@ public class DDLRecordVersionPersistenceTest {
 			newDDLRecordVersion.getStatusByUserId());
 		Assert.assertEquals(existingDDLRecordVersion.getStatusByUserName(),
 			newDDLRecordVersion.getStatusByUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingDDLRecordVersion.getStatusDate()),
-			Time.getShortTimestamp(newDDLRecordVersion.getStatusDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingDDLRecordVersion.getStatusDate(),
+				newDDLRecordVersion.getStatusDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test
