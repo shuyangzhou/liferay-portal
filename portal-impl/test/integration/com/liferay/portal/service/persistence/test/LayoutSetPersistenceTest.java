@@ -15,6 +15,7 @@
 package com.liferay.portal.service.persistence.test;
 
 import com.liferay.portal.NoSuchLayoutSetException;
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -26,11 +27,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.model.LayoutSet;
 import com.liferay.portal.service.LayoutSetLocalServiceUtil;
 import com.liferay.portal.service.persistence.LayoutSetPersistence;
@@ -159,12 +160,10 @@ public class LayoutSetPersistenceTest {
 			newLayoutSet.getGroupId());
 		Assert.assertEquals(existingLayoutSet.getCompanyId(),
 			newLayoutSet.getCompanyId());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingLayoutSet.getCreateDate()),
-			Time.getShortTimestamp(newLayoutSet.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingLayoutSet.getModifiedDate()),
-			Time.getShortTimestamp(newLayoutSet.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(existingLayoutSet.getCreateDate(),
+				newLayoutSet.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(existingLayoutSet.getModifiedDate(),
+				newLayoutSet.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingLayoutSet.getPrivateLayout(),
 			newLayoutSet.getPrivateLayout());
 		Assert.assertEquals(existingLayoutSet.getLogoId(),

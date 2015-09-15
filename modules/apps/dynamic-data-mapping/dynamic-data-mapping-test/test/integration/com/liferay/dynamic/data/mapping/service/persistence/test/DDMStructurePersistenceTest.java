@@ -22,6 +22,7 @@ import com.liferay.dynamic.data.mapping.service.DDMStructureLocalServiceUtil;
 import com.liferay.dynamic.data.mapping.service.persistence.DDMStructurePersistence;
 import com.liferay.dynamic.data.mapping.service.persistence.DDMStructureUtil;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -33,11 +34,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -180,12 +181,12 @@ public class DDMStructurePersistenceTest {
 			newDDMStructure.getVersionUserId());
 		Assert.assertEquals(existingDDMStructure.getVersionUserName(),
 			newDDMStructure.getVersionUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingDDMStructure.getCreateDate()),
-			Time.getShortTimestamp(newDDMStructure.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingDDMStructure.getModifiedDate()),
-			Time.getShortTimestamp(newDDMStructure.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingDDMStructure.getCreateDate(),
+				newDDMStructure.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingDDMStructure.getModifiedDate(),
+				newDDMStructure.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingDDMStructure.getParentStructureId(),
 			newDDMStructure.getParentStructureId());
 		Assert.assertEquals(existingDDMStructure.getClassNameId(),
@@ -204,9 +205,9 @@ public class DDMStructurePersistenceTest {
 			newDDMStructure.getStorageType());
 		Assert.assertEquals(existingDDMStructure.getType(),
 			newDDMStructure.getType());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingDDMStructure.getLastPublishDate()),
-			Time.getShortTimestamp(newDDMStructure.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingDDMStructure.getLastPublishDate(),
+				newDDMStructure.getLastPublishDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

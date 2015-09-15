@@ -15,6 +15,7 @@
 package com.liferay.portal.service.persistence.test;
 
 import com.liferay.portal.NoSuchWorkflowDefinitionLinkException;
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -26,11 +27,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.model.WorkflowDefinitionLink;
 import com.liferay.portal.service.WorkflowDefinitionLinkLocalServiceUtil;
 import com.liferay.portal.service.persistence.WorkflowDefinitionLinkPersistence;
@@ -156,12 +157,13 @@ public class WorkflowDefinitionLinkPersistenceTest {
 			newWorkflowDefinitionLink.getUserId());
 		Assert.assertEquals(existingWorkflowDefinitionLink.getUserName(),
 			newWorkflowDefinitionLink.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingWorkflowDefinitionLink.getCreateDate()),
-			Time.getShortTimestamp(newWorkflowDefinitionLink.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingWorkflowDefinitionLink.getModifiedDate()),
-			Time.getShortTimestamp(newWorkflowDefinitionLink.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingWorkflowDefinitionLink.getCreateDate(),
+				newWorkflowDefinitionLink.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingWorkflowDefinitionLink.getModifiedDate(),
+				newWorkflowDefinitionLink.getModifiedDate(),
+				DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingWorkflowDefinitionLink.getClassNameId(),
 			newWorkflowDefinitionLink.getClassNameId());
 		Assert.assertEquals(existingWorkflowDefinitionLink.getClassPK(),

@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.messageboards.service.persistence.test;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -26,11 +27,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -175,12 +176,10 @@ public class MBThreadPersistenceTest {
 			newMBThread.getUserId());
 		Assert.assertEquals(existingMBThread.getUserName(),
 			newMBThread.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingMBThread.getCreateDate()),
-			Time.getShortTimestamp(newMBThread.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingMBThread.getModifiedDate()),
-			Time.getShortTimestamp(newMBThread.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(existingMBThread.getCreateDate(),
+				newMBThread.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(existingMBThread.getModifiedDate(),
+				newMBThread.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingMBThread.getCategoryId(),
 			newMBThread.getCategoryId());
 		Assert.assertEquals(existingMBThread.getRootMessageId(),
@@ -193,25 +192,23 @@ public class MBThreadPersistenceTest {
 			newMBThread.getViewCount());
 		Assert.assertEquals(existingMBThread.getLastPostByUserId(),
 			newMBThread.getLastPostByUserId());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingMBThread.getLastPostDate()),
-			Time.getShortTimestamp(newMBThread.getLastPostDate()));
+		Assert.assertTrue(DateUtil.equals(existingMBThread.getLastPostDate(),
+				newMBThread.getLastPostDate(), DBFactoryUtil.getDB()));
 		AssertUtils.assertEquals(existingMBThread.getPriority(),
 			newMBThread.getPriority());
 		Assert.assertEquals(existingMBThread.getQuestion(),
 			newMBThread.getQuestion());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingMBThread.getLastPublishDate()),
-			Time.getShortTimestamp(newMBThread.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingMBThread.getLastPublishDate(),
+				newMBThread.getLastPublishDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingMBThread.getStatus(),
 			newMBThread.getStatus());
 		Assert.assertEquals(existingMBThread.getStatusByUserId(),
 			newMBThread.getStatusByUserId());
 		Assert.assertEquals(existingMBThread.getStatusByUserName(),
 			newMBThread.getStatusByUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingMBThread.getStatusDate()),
-			Time.getShortTimestamp(newMBThread.getStatusDate()));
+		Assert.assertTrue(DateUtil.equals(existingMBThread.getStatusDate(),
+				newMBThread.getStatusDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

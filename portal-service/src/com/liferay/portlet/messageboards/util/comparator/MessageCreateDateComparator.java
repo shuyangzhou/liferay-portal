@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.messageboards.util.comparator;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portlet.messageboards.model.MBMessage;
@@ -23,11 +24,13 @@ import com.liferay.portlet.messageboards.model.MBMessage;
  */
 public class MessageCreateDateComparator extends OrderByComparator<MBMessage> {
 
-	public static final String ORDER_BY_ASC = "MBMessage.createDate ASC";
+	public static final String ORDER_BY_ASC =
+		"MBMessage.createDate ASC, MBMessage.messageId ASC";
 
-	public static final String ORDER_BY_DESC = "MBMessage.createDate DESC";
+	public static final String ORDER_BY_DESC =
+		"MBMessage.createDate DESC, MBMessage.messageId DESC";
 
-	public static final String[] ORDER_BY_FIELDS = {"createDate"};
+	public static final String[] ORDER_BY_FIELDS = {"createDate, messageId"};
 
 	public MessageCreateDateComparator(boolean ascending) {
 		_ascending = ascending;
@@ -36,7 +39,13 @@ public class MessageCreateDateComparator extends OrderByComparator<MBMessage> {
 	@Override
 	public int compare(MBMessage message1, MBMessage message2) {
 		int value = DateUtil.compareTo(
-			message1.getCreateDate(), message2.getCreateDate());
+			message1.getCreateDate(), message2.getCreateDate(),
+			DBFactoryUtil.getDB());
+
+		if (value == 0) {
+			value = Long.compare(
+				message1.getMessageId(), message2.getMessageId());
+		}
 
 		if (_ascending) {
 			return value;

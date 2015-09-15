@@ -27,8 +27,8 @@ public class DateUtil_IW {
 	}
 
 	public int compareTo(java.util.Date date1, java.util.Date date2,
-		boolean ignoreMilliseconds) {
-		return DateUtil.compareTo(date1, date2, ignoreMilliseconds);
+		com.liferay.portal.kernel.dao.db.DB db) {
+		return DateUtil.compareTo(date1, date2, db);
 	}
 
 	public boolean equals(java.util.Date date1, java.util.Date date2) {
@@ -36,8 +36,8 @@ public class DateUtil_IW {
 	}
 
 	public boolean equals(java.util.Date date1, java.util.Date date2,
-		boolean ignoreMilliseconds) {
-		return DateUtil.equals(date1, date2, ignoreMilliseconds);
+		com.liferay.portal.kernel.dao.db.DB db) {
+		return DateUtil.equals(date1, date2, db);
 	}
 
 	public java.lang.String getCurrentDate(java.lang.String pattern,
@@ -109,6 +109,10 @@ public class DateUtil_IW {
 	public java.util.Date parseDate(java.lang.String dateString,
 		java.util.Locale locale) throws java.text.ParseException {
 		return DateUtil.parseDate(dateString, locale);
+	}
+
+	public long roundSecond(long milliseconds) {
+		return DateUtil.roundSecond(milliseconds);
 	}
 
 	private DateUtil_IW() {
