@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.documentlibrary.service.persistence.test;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -25,11 +26,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -187,12 +188,12 @@ public class DLFileVersionPersistenceTest {
 			newDLFileVersion.getUserId());
 		Assert.assertEquals(existingDLFileVersion.getUserName(),
 			newDLFileVersion.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingDLFileVersion.getCreateDate()),
-			Time.getShortTimestamp(newDLFileVersion.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingDLFileVersion.getModifiedDate()),
-			Time.getShortTimestamp(newDLFileVersion.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingDLFileVersion.getCreateDate(),
+				newDLFileVersion.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingDLFileVersion.getModifiedDate(),
+				newDLFileVersion.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingDLFileVersion.getRepositoryId(),
 			newDLFileVersion.getRepositoryId());
 		Assert.assertEquals(existingDLFileVersion.getFolderId(),
@@ -223,18 +224,18 @@ public class DLFileVersionPersistenceTest {
 			newDLFileVersion.getSize());
 		Assert.assertEquals(existingDLFileVersion.getChecksum(),
 			newDLFileVersion.getChecksum());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingDLFileVersion.getLastPublishDate()),
-			Time.getShortTimestamp(newDLFileVersion.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingDLFileVersion.getLastPublishDate(),
+				newDLFileVersion.getLastPublishDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingDLFileVersion.getStatus(),
 			newDLFileVersion.getStatus());
 		Assert.assertEquals(existingDLFileVersion.getStatusByUserId(),
 			newDLFileVersion.getStatusByUserId());
 		Assert.assertEquals(existingDLFileVersion.getStatusByUserName(),
 			newDLFileVersion.getStatusByUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingDLFileVersion.getStatusDate()),
-			Time.getShortTimestamp(newDLFileVersion.getStatusDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingDLFileVersion.getStatusDate(),
+				newDLFileVersion.getStatusDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

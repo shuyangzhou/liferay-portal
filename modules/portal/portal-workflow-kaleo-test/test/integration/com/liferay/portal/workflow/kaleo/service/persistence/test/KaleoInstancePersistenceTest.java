@@ -16,6 +16,7 @@ package com.liferay.portal.workflow.kaleo.service.persistence.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -26,11 +27,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 import com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException;
@@ -163,12 +164,12 @@ public class KaleoInstancePersistenceTest {
 			newKaleoInstance.getUserId());
 		Assert.assertEquals(existingKaleoInstance.getUserName(),
 			newKaleoInstance.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingKaleoInstance.getCreateDate()),
-			Time.getShortTimestamp(newKaleoInstance.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingKaleoInstance.getModifiedDate()),
-			Time.getShortTimestamp(newKaleoInstance.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingKaleoInstance.getCreateDate(),
+				newKaleoInstance.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingKaleoInstance.getModifiedDate(),
+				newKaleoInstance.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingKaleoInstance.getKaleoDefinitionId(),
 			newKaleoInstance.getKaleoDefinitionId());
 		Assert.assertEquals(existingKaleoInstance.getKaleoDefinitionName(),
@@ -183,9 +184,9 @@ public class KaleoInstancePersistenceTest {
 			newKaleoInstance.getClassPK());
 		Assert.assertEquals(existingKaleoInstance.getCompleted(),
 			newKaleoInstance.getCompleted());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingKaleoInstance.getCompletionDate()),
-			Time.getShortTimestamp(newKaleoInstance.getCompletionDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingKaleoInstance.getCompletionDate(),
+				newKaleoInstance.getCompletionDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingKaleoInstance.getWorkflowContext(),
 			newKaleoInstance.getWorkflowContext());
 	}

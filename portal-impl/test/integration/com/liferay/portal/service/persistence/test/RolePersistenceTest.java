@@ -15,6 +15,7 @@
 package com.liferay.portal.service.persistence.test;
 
 import com.liferay.portal.NoSuchRoleException;
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -26,11 +27,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.service.RoleLocalServiceUtil;
@@ -157,11 +158,10 @@ public class RolePersistenceTest {
 		Assert.assertEquals(existingRole.getCompanyId(), newRole.getCompanyId());
 		Assert.assertEquals(existingRole.getUserId(), newRole.getUserId());
 		Assert.assertEquals(existingRole.getUserName(), newRole.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(existingRole.getCreateDate()),
-			Time.getShortTimestamp(newRole.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingRole.getModifiedDate()),
-			Time.getShortTimestamp(newRole.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(existingRole.getCreateDate(),
+				newRole.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(existingRole.getModifiedDate(),
+				newRole.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingRole.getClassNameId(),
 			newRole.getClassNameId());
 		Assert.assertEquals(existingRole.getClassPK(), newRole.getClassPK());
@@ -171,9 +171,8 @@ public class RolePersistenceTest {
 			newRole.getDescription());
 		Assert.assertEquals(existingRole.getType(), newRole.getType());
 		Assert.assertEquals(existingRole.getSubtype(), newRole.getSubtype());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingRole.getLastPublishDate()),
-			Time.getShortTimestamp(newRole.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(existingRole.getLastPublishDate(),
+				newRole.getLastPublishDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

@@ -22,6 +22,7 @@ import com.liferay.calendar.service.CalendarNotificationTemplateLocalServiceUtil
 import com.liferay.calendar.service.persistence.CalendarNotificationTemplatePersistence;
 import com.liferay.calendar.service.persistence.CalendarNotificationTemplateUtil;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -33,11 +34,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -167,14 +168,14 @@ public class CalendarNotificationTemplatePersistenceTest {
 			newCalendarNotificationTemplate.getUserId());
 		Assert.assertEquals(existingCalendarNotificationTemplate.getUserName(),
 			newCalendarNotificationTemplate.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingCalendarNotificationTemplate.getCreateDate()),
-			Time.getShortTimestamp(
-				newCalendarNotificationTemplate.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingCalendarNotificationTemplate.getModifiedDate()),
-			Time.getShortTimestamp(
-				newCalendarNotificationTemplate.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingCalendarNotificationTemplate.getCreateDate(),
+				newCalendarNotificationTemplate.getCreateDate(),
+				DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingCalendarNotificationTemplate.getModifiedDate(),
+				newCalendarNotificationTemplate.getModifiedDate(),
+				DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingCalendarNotificationTemplate.getCalendarId(),
 			newCalendarNotificationTemplate.getCalendarId());
 		Assert.assertEquals(existingCalendarNotificationTemplate.getNotificationType(),
@@ -187,10 +188,10 @@ public class CalendarNotificationTemplatePersistenceTest {
 			newCalendarNotificationTemplate.getSubject());
 		Assert.assertEquals(existingCalendarNotificationTemplate.getBody(),
 			newCalendarNotificationTemplate.getBody());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingCalendarNotificationTemplate.getLastPublishDate()),
-			Time.getShortTimestamp(
-				newCalendarNotificationTemplate.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingCalendarNotificationTemplate.getLastPublishDate(),
+				newCalendarNotificationTemplate.getLastPublishDate(),
+				DBFactoryUtil.getDB()));
 	}
 
 	@Test
