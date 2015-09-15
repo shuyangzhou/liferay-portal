@@ -15,6 +15,7 @@
 package com.liferay.portal.service.persistence.test;
 
 import com.liferay.portal.NoSuchTicketException;
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -26,11 +27,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.Ticket;
 import com.liferay.portal.service.TicketLocalServiceUtil;
@@ -144,9 +145,8 @@ public class TicketPersistenceTest {
 			newTicket.getTicketId());
 		Assert.assertEquals(existingTicket.getCompanyId(),
 			newTicket.getCompanyId());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingTicket.getCreateDate()),
-			Time.getShortTimestamp(newTicket.getCreateDate()));
+		Assert.assertTrue(DateUtil.equals(existingTicket.getCreateDate(),
+				newTicket.getCreateDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingTicket.getClassNameId(),
 			newTicket.getClassNameId());
 		Assert.assertEquals(existingTicket.getClassPK(), newTicket.getClassPK());
@@ -154,9 +154,8 @@ public class TicketPersistenceTest {
 		Assert.assertEquals(existingTicket.getType(), newTicket.getType());
 		Assert.assertEquals(existingTicket.getExtraInfo(),
 			newTicket.getExtraInfo());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingTicket.getExpirationDate()),
-			Time.getShortTimestamp(newTicket.getExpirationDate()));
+		Assert.assertTrue(DateUtil.equals(existingTicket.getExpirationDate(),
+				newTicket.getExpirationDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

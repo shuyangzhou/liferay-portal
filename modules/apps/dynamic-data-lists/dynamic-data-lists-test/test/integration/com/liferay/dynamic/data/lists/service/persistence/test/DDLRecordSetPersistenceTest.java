@@ -22,6 +22,7 @@ import com.liferay.dynamic.data.lists.service.DDLRecordSetLocalServiceUtil;
 import com.liferay.dynamic.data.lists.service.persistence.DDLRecordSetPersistence;
 import com.liferay.dynamic.data.lists.service.persistence.DDLRecordSetUtil;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -33,11 +34,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -166,12 +167,12 @@ public class DDLRecordSetPersistenceTest {
 			newDDLRecordSet.getUserId());
 		Assert.assertEquals(existingDDLRecordSet.getUserName(),
 			newDDLRecordSet.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingDDLRecordSet.getCreateDate()),
-			Time.getShortTimestamp(newDDLRecordSet.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingDDLRecordSet.getModifiedDate()),
-			Time.getShortTimestamp(newDDLRecordSet.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingDDLRecordSet.getCreateDate(),
+				newDDLRecordSet.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingDDLRecordSet.getModifiedDate(),
+				newDDLRecordSet.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingDDLRecordSet.getDDMStructureId(),
 			newDDLRecordSet.getDDMStructureId());
 		Assert.assertEquals(existingDDLRecordSet.getRecordSetKey(),
@@ -184,9 +185,9 @@ public class DDLRecordSetPersistenceTest {
 			newDDLRecordSet.getMinDisplayRows());
 		Assert.assertEquals(existingDDLRecordSet.getScope(),
 			newDDLRecordSet.getScope());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingDDLRecordSet.getLastPublishDate()),
-			Time.getShortTimestamp(newDDLRecordSet.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingDDLRecordSet.getLastPublishDate(),
+				newDDLRecordSet.getLastPublishDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test
