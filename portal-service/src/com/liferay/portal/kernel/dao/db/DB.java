@@ -104,6 +104,8 @@ public interface DB {
 
 	public boolean isSupportsDateMilliseconds();
 
+	public boolean isSupportsDateSecondRounding();
+
 	public boolean isSupportsInlineDistinct();
 
 	public boolean isSupportsQueryingAfterException();
@@ -138,6 +140,11 @@ public interface DB {
 	public void runSQLTemplateString(
 			String template, boolean evaluate, boolean failOnError)
 		throws IOException, NamingException, SQLException;
+
+	public void setSupportsDateMilliseconds(boolean supportsDateMilliseconds);
+
+	public void setSupportsDateSecondRounding(
+		boolean supportsDateSecondRounding);
 
 	public void setSupportsStringCaseSensitiveQuery(
 		boolean supportsStringCaseSensitiveQuery);
