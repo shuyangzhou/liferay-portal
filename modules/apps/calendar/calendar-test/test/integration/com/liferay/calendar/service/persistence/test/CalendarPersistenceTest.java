@@ -22,6 +22,7 @@ import com.liferay.calendar.service.CalendarLocalServiceUtil;
 import com.liferay.calendar.service.persistence.CalendarPersistence;
 import com.liferay.calendar.service.persistence.CalendarUtil;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -33,11 +34,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -171,12 +172,10 @@ public class CalendarPersistenceTest {
 			newCalendar.getUserId());
 		Assert.assertEquals(existingCalendar.getUserName(),
 			newCalendar.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingCalendar.getCreateDate()),
-			Time.getShortTimestamp(newCalendar.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingCalendar.getModifiedDate()),
-			Time.getShortTimestamp(newCalendar.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(existingCalendar.getCreateDate(),
+				newCalendar.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(existingCalendar.getModifiedDate(),
+				newCalendar.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingCalendar.getResourceBlockId(),
 			newCalendar.getResourceBlockId());
 		Assert.assertEquals(existingCalendar.getCalendarResourceId(),
@@ -193,9 +192,9 @@ public class CalendarPersistenceTest {
 			newCalendar.getEnableComments());
 		Assert.assertEquals(existingCalendar.getEnableRatings(),
 			newCalendar.getEnableRatings());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingCalendar.getLastPublishDate()),
-			Time.getShortTimestamp(newCalendar.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingCalendar.getLastPublishDate(),
+				newCalendar.getLastPublishDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

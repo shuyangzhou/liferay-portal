@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.announcements.service.persistence.test;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -24,11 +25,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 
@@ -161,12 +162,12 @@ public class AnnouncementsEntryPersistenceTest {
 			newAnnouncementsEntry.getUserId());
 		Assert.assertEquals(existingAnnouncementsEntry.getUserName(),
 			newAnnouncementsEntry.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingAnnouncementsEntry.getCreateDate()),
-			Time.getShortTimestamp(newAnnouncementsEntry.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingAnnouncementsEntry.getModifiedDate()),
-			Time.getShortTimestamp(newAnnouncementsEntry.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingAnnouncementsEntry.getCreateDate(),
+				newAnnouncementsEntry.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingAnnouncementsEntry.getModifiedDate(),
+				newAnnouncementsEntry.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingAnnouncementsEntry.getClassNameId(),
 			newAnnouncementsEntry.getClassNameId());
 		Assert.assertEquals(existingAnnouncementsEntry.getClassPK(),
@@ -179,12 +180,12 @@ public class AnnouncementsEntryPersistenceTest {
 			newAnnouncementsEntry.getUrl());
 		Assert.assertEquals(existingAnnouncementsEntry.getType(),
 			newAnnouncementsEntry.getType());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingAnnouncementsEntry.getDisplayDate()),
-			Time.getShortTimestamp(newAnnouncementsEntry.getDisplayDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingAnnouncementsEntry.getExpirationDate()),
-			Time.getShortTimestamp(newAnnouncementsEntry.getExpirationDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingAnnouncementsEntry.getDisplayDate(),
+				newAnnouncementsEntry.getDisplayDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingAnnouncementsEntry.getExpirationDate(),
+				newAnnouncementsEntry.getExpirationDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingAnnouncementsEntry.getPriority(),
 			newAnnouncementsEntry.getPriority());
 		Assert.assertEquals(existingAnnouncementsEntry.getAlert(),
