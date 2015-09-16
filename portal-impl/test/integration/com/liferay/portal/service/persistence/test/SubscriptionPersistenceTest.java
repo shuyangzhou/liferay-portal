@@ -15,6 +15,7 @@
 package com.liferay.portal.service.persistence.test;
 
 import com.liferay.portal.NoSuchSubscriptionException;
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -26,10 +27,10 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.model.Subscription;
 import com.liferay.portal.service.SubscriptionLocalServiceUtil;
 import com.liferay.portal.service.persistence.SubscriptionPersistence;
@@ -150,12 +151,12 @@ public class SubscriptionPersistenceTest {
 			newSubscription.getUserId());
 		Assert.assertEquals(existingSubscription.getUserName(),
 			newSubscription.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingSubscription.getCreateDate()),
-			Time.getShortTimestamp(newSubscription.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingSubscription.getModifiedDate()),
-			Time.getShortTimestamp(newSubscription.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingSubscription.getCreateDate(),
+				newSubscription.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingSubscription.getModifiedDate(),
+				newSubscription.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingSubscription.getClassNameId(),
 			newSubscription.getClassNameId());
 		Assert.assertEquals(existingSubscription.getClassPK(),

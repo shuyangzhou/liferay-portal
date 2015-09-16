@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.documentlibrary.service.persistence.test;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -25,11 +26,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -167,12 +168,12 @@ public class DLFileShortcutPersistenceTest {
 			newDLFileShortcut.getUserId());
 		Assert.assertEquals(existingDLFileShortcut.getUserName(),
 			newDLFileShortcut.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingDLFileShortcut.getCreateDate()),
-			Time.getShortTimestamp(newDLFileShortcut.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingDLFileShortcut.getModifiedDate()),
-			Time.getShortTimestamp(newDLFileShortcut.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingDLFileShortcut.getCreateDate(),
+				newDLFileShortcut.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingDLFileShortcut.getModifiedDate(),
+				newDLFileShortcut.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingDLFileShortcut.getRepositoryId(),
 			newDLFileShortcut.getRepositoryId());
 		Assert.assertEquals(existingDLFileShortcut.getFolderId(),
@@ -183,18 +184,18 @@ public class DLFileShortcutPersistenceTest {
 			newDLFileShortcut.getTreePath());
 		Assert.assertEquals(existingDLFileShortcut.getActive(),
 			newDLFileShortcut.getActive());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingDLFileShortcut.getLastPublishDate()),
-			Time.getShortTimestamp(newDLFileShortcut.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingDLFileShortcut.getLastPublishDate(),
+				newDLFileShortcut.getLastPublishDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingDLFileShortcut.getStatus(),
 			newDLFileShortcut.getStatus());
 		Assert.assertEquals(existingDLFileShortcut.getStatusByUserId(),
 			newDLFileShortcut.getStatusByUserId());
 		Assert.assertEquals(existingDLFileShortcut.getStatusByUserName(),
 			newDLFileShortcut.getStatusByUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingDLFileShortcut.getStatusDate()),
-			Time.getShortTimestamp(newDLFileShortcut.getStatusDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingDLFileShortcut.getStatusDate(),
+				newDLFileShortcut.getStatusDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

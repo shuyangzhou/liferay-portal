@@ -16,6 +16,7 @@ package com.liferay.wiki.service.persistence.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -28,11 +29,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -186,12 +187,10 @@ public class WikiPagePersistenceTest {
 			newWikiPage.getUserId());
 		Assert.assertEquals(existingWikiPage.getUserName(),
 			newWikiPage.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingWikiPage.getCreateDate()),
-			Time.getShortTimestamp(newWikiPage.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingWikiPage.getModifiedDate()),
-			Time.getShortTimestamp(newWikiPage.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(existingWikiPage.getCreateDate(),
+				newWikiPage.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(existingWikiPage.getModifiedDate(),
+				newWikiPage.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingWikiPage.getNodeId(),
 			newWikiPage.getNodeId());
 		Assert.assertEquals(existingWikiPage.getTitle(), newWikiPage.getTitle());
@@ -210,18 +209,17 @@ public class WikiPagePersistenceTest {
 			newWikiPage.getParentTitle());
 		Assert.assertEquals(existingWikiPage.getRedirectTitle(),
 			newWikiPage.getRedirectTitle());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingWikiPage.getLastPublishDate()),
-			Time.getShortTimestamp(newWikiPage.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingWikiPage.getLastPublishDate(),
+				newWikiPage.getLastPublishDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingWikiPage.getStatus(),
 			newWikiPage.getStatus());
 		Assert.assertEquals(existingWikiPage.getStatusByUserId(),
 			newWikiPage.getStatusByUserId());
 		Assert.assertEquals(existingWikiPage.getStatusByUserName(),
 			newWikiPage.getStatusByUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingWikiPage.getStatusDate()),
-			Time.getShortTimestamp(newWikiPage.getStatusDate()));
+		Assert.assertTrue(DateUtil.equals(existingWikiPage.getStatusDate(),
+				newWikiPage.getStatusDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

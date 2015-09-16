@@ -22,6 +22,7 @@ import com.liferay.mobile.device.rules.service.MDRRuleLocalServiceUtil;
 import com.liferay.mobile.device.rules.service.persistence.MDRRulePersistence;
 import com.liferay.mobile.device.rules.service.persistence.MDRRuleUtil;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -33,11 +34,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -161,12 +162,10 @@ public class MDRRulePersistenceTest {
 		Assert.assertEquals(existingMDRRule.getUserId(), newMDRRule.getUserId());
 		Assert.assertEquals(existingMDRRule.getUserName(),
 			newMDRRule.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingMDRRule.getCreateDate()),
-			Time.getShortTimestamp(newMDRRule.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingMDRRule.getModifiedDate()),
-			Time.getShortTimestamp(newMDRRule.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(existingMDRRule.getCreateDate(),
+				newMDRRule.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(existingMDRRule.getModifiedDate(),
+				newMDRRule.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingMDRRule.getRuleGroupId(),
 			newMDRRule.getRuleGroupId());
 		Assert.assertEquals(existingMDRRule.getName(), newMDRRule.getName());
@@ -175,9 +174,9 @@ public class MDRRulePersistenceTest {
 		Assert.assertEquals(existingMDRRule.getType(), newMDRRule.getType());
 		Assert.assertEquals(existingMDRRule.getTypeSettings(),
 			newMDRRule.getTypeSettings());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingMDRRule.getLastPublishDate()),
-			Time.getShortTimestamp(newMDRRule.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingMDRRule.getLastPublishDate(),
+				newMDRRule.getLastPublishDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test
