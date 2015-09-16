@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.blogs.service.persistence.test;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -25,11 +26,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -189,12 +190,11 @@ public class BlogsEntryPersistenceTest {
 			newBlogsEntry.getUserId());
 		Assert.assertEquals(existingBlogsEntry.getUserName(),
 			newBlogsEntry.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingBlogsEntry.getCreateDate()),
-			Time.getShortTimestamp(newBlogsEntry.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingBlogsEntry.getModifiedDate()),
-			Time.getShortTimestamp(newBlogsEntry.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(existingBlogsEntry.getCreateDate(),
+				newBlogsEntry.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingBlogsEntry.getModifiedDate(),
+				newBlogsEntry.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingBlogsEntry.getTitle(),
 			newBlogsEntry.getTitle());
 		Assert.assertEquals(existingBlogsEntry.getSubtitle(),
@@ -205,9 +205,8 @@ public class BlogsEntryPersistenceTest {
 			newBlogsEntry.getDescription());
 		Assert.assertEquals(existingBlogsEntry.getContent(),
 			newBlogsEntry.getContent());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingBlogsEntry.getDisplayDate()),
-			Time.getShortTimestamp(newBlogsEntry.getDisplayDate()));
+		Assert.assertTrue(DateUtil.equals(existingBlogsEntry.getDisplayDate(),
+				newBlogsEntry.getDisplayDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingBlogsEntry.getAllowPingbacks(),
 			newBlogsEntry.getAllowPingbacks());
 		Assert.assertEquals(existingBlogsEntry.getAllowTrackbacks(),
@@ -228,18 +227,17 @@ public class BlogsEntryPersistenceTest {
 			newBlogsEntry.getSmallImageId());
 		Assert.assertEquals(existingBlogsEntry.getSmallImageURL(),
 			newBlogsEntry.getSmallImageURL());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingBlogsEntry.getLastPublishDate()),
-			Time.getShortTimestamp(newBlogsEntry.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingBlogsEntry.getLastPublishDate(),
+				newBlogsEntry.getLastPublishDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingBlogsEntry.getStatus(),
 			newBlogsEntry.getStatus());
 		Assert.assertEquals(existingBlogsEntry.getStatusByUserId(),
 			newBlogsEntry.getStatusByUserId());
 		Assert.assertEquals(existingBlogsEntry.getStatusByUserName(),
 			newBlogsEntry.getStatusByUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingBlogsEntry.getStatusDate()),
-			Time.getShortTimestamp(newBlogsEntry.getStatusDate()));
+		Assert.assertTrue(DateUtil.equals(existingBlogsEntry.getStatusDate(),
+				newBlogsEntry.getStatusDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

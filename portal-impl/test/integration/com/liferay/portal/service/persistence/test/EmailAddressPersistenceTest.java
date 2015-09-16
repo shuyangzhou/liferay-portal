@@ -15,6 +15,7 @@
 package com.liferay.portal.service.persistence.test;
 
 import com.liferay.portal.NoSuchEmailAddressException;
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -25,11 +26,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.model.EmailAddress;
 import com.liferay.portal.service.EmailAddressLocalServiceUtil;
 import com.liferay.portal.service.persistence.EmailAddressPersistence;
@@ -156,12 +157,12 @@ public class EmailAddressPersistenceTest {
 			newEmailAddress.getUserId());
 		Assert.assertEquals(existingEmailAddress.getUserName(),
 			newEmailAddress.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingEmailAddress.getCreateDate()),
-			Time.getShortTimestamp(newEmailAddress.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingEmailAddress.getModifiedDate()),
-			Time.getShortTimestamp(newEmailAddress.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingEmailAddress.getCreateDate(),
+				newEmailAddress.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingEmailAddress.getModifiedDate(),
+				newEmailAddress.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingEmailAddress.getClassNameId(),
 			newEmailAddress.getClassNameId());
 		Assert.assertEquals(existingEmailAddress.getClassPK(),
@@ -172,9 +173,9 @@ public class EmailAddressPersistenceTest {
 			newEmailAddress.getTypeId());
 		Assert.assertEquals(existingEmailAddress.getPrimary(),
 			newEmailAddress.getPrimary());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingEmailAddress.getLastPublishDate()),
-			Time.getShortTimestamp(newEmailAddress.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingEmailAddress.getLastPublishDate(),
+				newEmailAddress.getLastPublishDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

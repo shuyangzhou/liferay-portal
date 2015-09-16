@@ -21,6 +21,7 @@ import com.liferay.portal.background.task.model.BackgroundTask;
 import com.liferay.portal.background.task.service.BackgroundTaskLocalServiceUtil;
 import com.liferay.portal.background.task.service.persistence.BackgroundTaskPersistence;
 import com.liferay.portal.background.task.service.persistence.BackgroundTaskUtil;
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -31,11 +32,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 
@@ -166,12 +167,12 @@ public class BackgroundTaskPersistenceTest {
 			newBackgroundTask.getUserId());
 		Assert.assertEquals(existingBackgroundTask.getUserName(),
 			newBackgroundTask.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingBackgroundTask.getCreateDate()),
-			Time.getShortTimestamp(newBackgroundTask.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingBackgroundTask.getModifiedDate()),
-			Time.getShortTimestamp(newBackgroundTask.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingBackgroundTask.getCreateDate(),
+				newBackgroundTask.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingBackgroundTask.getModifiedDate(),
+				newBackgroundTask.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingBackgroundTask.getName(),
 			newBackgroundTask.getName());
 		Assert.assertEquals(existingBackgroundTask.getServletContextNames(),
@@ -182,9 +183,9 @@ public class BackgroundTaskPersistenceTest {
 			newBackgroundTask.getTaskContextMap());
 		Assert.assertEquals(existingBackgroundTask.getCompleted(),
 			newBackgroundTask.getCompleted());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingBackgroundTask.getCompletionDate()),
-			Time.getShortTimestamp(newBackgroundTask.getCompletionDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingBackgroundTask.getCompletionDate(),
+				newBackgroundTask.getCompletionDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingBackgroundTask.getStatus(),
 			newBackgroundTask.getStatus());
 		Assert.assertEquals(existingBackgroundTask.getStatusMessage(),

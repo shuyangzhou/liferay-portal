@@ -15,6 +15,7 @@
 package com.liferay.portal.service.persistence.test;
 
 import com.liferay.portal.NoSuchUserTrackerException;
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -25,11 +26,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.model.UserTracker;
 import com.liferay.portal.service.UserTrackerLocalServiceUtil;
 import com.liferay.portal.service.persistence.UserTrackerPersistence;
@@ -142,9 +143,9 @@ public class UserTrackerPersistenceTest {
 			newUserTracker.getCompanyId());
 		Assert.assertEquals(existingUserTracker.getUserId(),
 			newUserTracker.getUserId());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingUserTracker.getModifiedDate()),
-			Time.getShortTimestamp(newUserTracker.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingUserTracker.getModifiedDate(),
+				newUserTracker.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingUserTracker.getSessionId(),
 			newUserTracker.getSessionId());
 		Assert.assertEquals(existingUserTracker.getRemoteAddr(),

@@ -16,6 +16,7 @@ package com.liferay.portal.workflow.kaleo.service.persistence.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -26,11 +27,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 import com.liferay.portal.workflow.kaleo.exception.NoSuchLogException;
@@ -191,12 +192,10 @@ public class KaleoLogPersistenceTest {
 			newKaleoLog.getUserId());
 		Assert.assertEquals(existingKaleoLog.getUserName(),
 			newKaleoLog.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingKaleoLog.getCreateDate()),
-			Time.getShortTimestamp(newKaleoLog.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingKaleoLog.getModifiedDate()),
-			Time.getShortTimestamp(newKaleoLog.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(existingKaleoLog.getCreateDate(),
+				newKaleoLog.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(existingKaleoLog.getModifiedDate(),
+				newKaleoLog.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingKaleoLog.getKaleoClassName(),
 			newKaleoLog.getKaleoClassName());
 		Assert.assertEquals(existingKaleoLog.getKaleoClassPK(),
@@ -234,12 +233,10 @@ public class KaleoLogPersistenceTest {
 		Assert.assertEquals(existingKaleoLog.getType(), newKaleoLog.getType());
 		Assert.assertEquals(existingKaleoLog.getComment(),
 			newKaleoLog.getComment());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingKaleoLog.getStartDate()),
-			Time.getShortTimestamp(newKaleoLog.getStartDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingKaleoLog.getEndDate()),
-			Time.getShortTimestamp(newKaleoLog.getEndDate()));
+		Assert.assertTrue(DateUtil.equals(existingKaleoLog.getStartDate(),
+				newKaleoLog.getStartDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(existingKaleoLog.getEndDate(),
+				newKaleoLog.getEndDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingKaleoLog.getDuration(),
 			newKaleoLog.getDuration());
 		Assert.assertEquals(existingKaleoLog.getWorkflowContext(),
