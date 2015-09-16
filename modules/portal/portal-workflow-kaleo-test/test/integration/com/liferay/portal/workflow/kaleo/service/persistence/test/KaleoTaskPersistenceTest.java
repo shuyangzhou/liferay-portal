@@ -16,6 +16,7 @@ package com.liferay.portal.workflow.kaleo.service.persistence.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -27,10 +28,10 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 import com.liferay.portal.workflow.kaleo.exception.NoSuchTaskException;
@@ -153,12 +154,10 @@ public class KaleoTaskPersistenceTest {
 			newKaleoTask.getUserId());
 		Assert.assertEquals(existingKaleoTask.getUserName(),
 			newKaleoTask.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingKaleoTask.getCreateDate()),
-			Time.getShortTimestamp(newKaleoTask.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingKaleoTask.getModifiedDate()),
-			Time.getShortTimestamp(newKaleoTask.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(existingKaleoTask.getCreateDate(),
+				newKaleoTask.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(existingKaleoTask.getModifiedDate(),
+				newKaleoTask.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingKaleoTask.getKaleoDefinitionId(),
 			newKaleoTask.getKaleoDefinitionId());
 		Assert.assertEquals(existingKaleoTask.getKaleoNodeId(),

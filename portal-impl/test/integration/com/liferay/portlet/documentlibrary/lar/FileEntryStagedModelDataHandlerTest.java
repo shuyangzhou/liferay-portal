@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.documentlibrary.lar;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileVersion;
 import com.liferay.portal.kernel.repository.model.Folder;
@@ -369,7 +370,7 @@ public class FileEntryStagedModelDataHandlerTest
 				importedStagedModel.getCreateDate(),
 			DateUtil.equals(
 				stagedModel.getCreateDate(),
-				importedStagedModel.getCreateDate(), true));
+				importedStagedModel.getCreateDate(), DBFactoryUtil.getDB()));
 
 		Assert.assertEquals(
 			stagedModel.getUuid(), importedStagedModel.getUuid());
