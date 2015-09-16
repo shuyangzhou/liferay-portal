@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.dao.orm.Type;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.search.SearchEngineUtil;
+import com.liferay.portal.kernel.spring.aop.Retry;
 import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -45,6 +46,7 @@ import com.liferay.portal.security.permission.PermissionThreadLocal;
 import com.liferay.portal.security.permission.PermissionUpdateHandler;
 import com.liferay.portal.security.permission.PermissionUpdateHandlerRegistryUtil;
 import com.liferay.portal.security.permission.ResourceActionsUtil;
+import com.liferay.portal.service.DIVERetryAdviceAcceptor;
 import com.liferay.portal.service.base.ResourcePermissionLocalServiceBaseImpl;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portal.util.ResourcePermissionsThreadLocal;
@@ -122,6 +124,7 @@ public class ResourcePermissionLocalServiceImpl
 	 *         action ID could not be found
 	 */
 	@Override
+	@Retry(acceptor = DIVERetryAdviceAcceptor.class, retries = -1)
 	public void addResourcePermission(
 			long companyId, String name, int scope, String primKey, long roleId,
 			String actionId)
@@ -1110,6 +1113,7 @@ public class ResourcePermissionLocalServiceImpl
 	 *         action with the name and action ID could not be found
 	 */
 	@Override
+	@Retry(acceptor = DIVERetryAdviceAcceptor.class, retries = -1)
 	public void setOwnerResourcePermissions(
 			long companyId, String name, int scope, String primKey, long roleId,
 			long ownerId, String[] actionIds)
@@ -1147,6 +1151,7 @@ public class ResourcePermissionLocalServiceImpl
 	 *         action with the name and action ID could not be found
 	 */
 	@Override
+	@Retry(acceptor = DIVERetryAdviceAcceptor.class, retries = -1)
 	public void setResourcePermissions(
 			long companyId, String name, int scope, String primKey, long roleId,
 			String[] actionIds)
@@ -1183,6 +1188,7 @@ public class ResourcePermissionLocalServiceImpl
 	 *         action with the name and action ID could not be found
 	 */
 	@Override
+	@Retry(acceptor = DIVERetryAdviceAcceptor.class, retries = -1)
 	public void setResourcePermissions(
 			long companyId, String name, int scope, String primKey,
 			Map<Long, String[]> roleIdsToActionIds)
