@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.messageboards.service;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.repository.capabilities.WorkflowCapability;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
@@ -22,7 +23,7 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
-import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
@@ -32,7 +33,6 @@ import com.liferay.portal.portletfilerepository.PortletFileRepositoryUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.MainServletTestRule;
-import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.asset.model.AssetEntry;
 import com.liferay.portlet.asset.service.AssetEntryLocalServiceUtil;
 import com.liferay.portlet.messageboards.model.MBCategoryConstants;
@@ -44,8 +44,6 @@ import com.liferay.portlet.trash.util.TrashUtil;
 
 import java.io.File;
 import java.io.InputStream;
-
-import java.text.DateFormat;
 
 import java.util.Collections;
 import java.util.Date;
@@ -189,23 +187,22 @@ public class MBMessageLocalServiceTest {
 		MBMessage secondReplyMessage = addMessage(
 			parentMessage, false, new Date(date.getTime() + Time.SECOND * 2));
 
-		DateFormat dateFormat = DateFormatFactoryUtil.getSimpleDateFormat(
-			PropsValues.INDEX_DATE_FORMAT_PATTERN);
-
 		MBThread mbThread = parentMessage.getThread();
 
-		Assert.assertEquals(
-			dateFormat.format(mbThread.getLastPostDate()),
-			dateFormat.format(secondReplyMessage.getModifiedDate()));
+		Assert.assertTrue(
+			DateUtil.equals(
+				mbThread.getLastPostDate(),
+				secondReplyMessage.getModifiedDate(), DBFactoryUtil.getDB()));
 
 		MBMessageLocalServiceUtil.deleteMessage(
 			secondReplyMessage.getMessageId());
 
 		mbThread = parentMessage.getThread();
 
-		Assert.assertEquals(
-			dateFormat.format(mbThread.getLastPostDate()),
-			dateFormat.format(firstReplyMessage.getModifiedDate()));
+		Assert.assertTrue(
+			DateUtil.equals(
+				mbThread.getLastPostDate(), firstReplyMessage.getModifiedDate(),
+				DBFactoryUtil.getDB()));
 	}
 
 	protected MBMessage addMessage(

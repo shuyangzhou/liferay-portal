@@ -15,6 +15,7 @@
 package com.liferay.portal.service.persistence.test;
 
 import com.liferay.portal.NoSuchReleaseException;
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -26,11 +27,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.Release;
 import com.liferay.portal.service.ReleaseLocalServiceUtil;
@@ -144,21 +145,18 @@ public class ReleasePersistenceTest {
 			newRelease.getMvccVersion());
 		Assert.assertEquals(existingRelease.getReleaseId(),
 			newRelease.getReleaseId());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingRelease.getCreateDate()),
-			Time.getShortTimestamp(newRelease.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingRelease.getModifiedDate()),
-			Time.getShortTimestamp(newRelease.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(existingRelease.getCreateDate(),
+				newRelease.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(existingRelease.getModifiedDate(),
+				newRelease.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingRelease.getServletContextName(),
 			newRelease.getServletContextName());
 		Assert.assertEquals(existingRelease.getSchemaVersion(),
 			newRelease.getSchemaVersion());
 		Assert.assertEquals(existingRelease.getBuildNumber(),
 			newRelease.getBuildNumber());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingRelease.getBuildDate()),
-			Time.getShortTimestamp(newRelease.getBuildDate()));
+		Assert.assertTrue(DateUtil.equals(existingRelease.getBuildDate(),
+				newRelease.getBuildDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingRelease.getVerified(),
 			newRelease.getVerified());
 		Assert.assertEquals(existingRelease.getState(), newRelease.getState());

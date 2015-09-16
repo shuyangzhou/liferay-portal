@@ -22,6 +22,7 @@ import com.liferay.dynamic.data.lists.service.DDLRecordLocalServiceUtil;
 import com.liferay.dynamic.data.lists.service.persistence.DDLRecordPersistence;
 import com.liferay.dynamic.data.lists.service.persistence.DDLRecordUtil;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -33,11 +34,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -169,12 +170,10 @@ public class DDLRecordPersistenceTest {
 			newDDLRecord.getVersionUserId());
 		Assert.assertEquals(existingDDLRecord.getVersionUserName(),
 			newDDLRecord.getVersionUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingDDLRecord.getCreateDate()),
-			Time.getShortTimestamp(newDDLRecord.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingDDLRecord.getModifiedDate()),
-			Time.getShortTimestamp(newDDLRecord.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(existingDDLRecord.getCreateDate(),
+				newDDLRecord.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(existingDDLRecord.getModifiedDate(),
+				newDDLRecord.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingDDLRecord.getDDMStorageId(),
 			newDDLRecord.getDDMStorageId());
 		Assert.assertEquals(existingDDLRecord.getRecordSetId(),
@@ -183,9 +182,9 @@ public class DDLRecordPersistenceTest {
 			newDDLRecord.getVersion());
 		Assert.assertEquals(existingDDLRecord.getDisplayIndex(),
 			newDDLRecord.getDisplayIndex());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingDDLRecord.getLastPublishDate()),
-			Time.getShortTimestamp(newDDLRecord.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingDDLRecord.getLastPublishDate(),
+				newDDLRecord.getLastPublishDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

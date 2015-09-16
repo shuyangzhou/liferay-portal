@@ -14,6 +14,10 @@
 
 package com.liferay.portal.kernel.util;
 
+import com.liferay.portal.kernel.dao.db.DB;
+
+import java.sql.Timestamp;
+
 import java.text.DateFormat;
 import java.text.Format;
 import java.text.ParseException;
@@ -35,53 +39,38 @@ public class DateUtil {
 	public static final String ISO_8601_PATTERN = "yyyy-MM-dd'T'HH:mm:ssZ";
 
 	public static int compareTo(Date date1, Date date2) {
-		return compareTo(date1, date2, false);
+		return compareTo(date1, date2, null);
 	}
 
-	public static int compareTo(
-		Date date1, Date date2, boolean ignoreMilliseconds) {
-
-		// Workaround for bug in JDK 1.5.x. This bug is fixed in JDK 1.5.07. See
-		// http://bugs.sun.com/bugdatabase/view_bug.do;:YfiG?bug_id=6207898 for
-		// more information.
-
-		if ((date1 != null) && (date2 == null)) {
-			return -1;
-		}
-		else if ((date1 == null) && (date2 != null)) {
-			return 1;
-		}
-		else if ((date1 == null) && (date2 == null)) {
+	public static int compareTo(Date date1, Date date2, DB db) {
+		if (date1 == date2) {
 			return 0;
 		}
 
-		long time1 = date1.getTime();
-		long time2 = date2.getTime();
-
-		if (ignoreMilliseconds) {
-			time1 = time1 / Time.SECOND;
-			time2 = time2 / Time.SECOND;
-		}
-
-		if (time1 == time2) {
-			return 0;
-		}
-		else if (time1 < time2) {
+		if (date2 == null) {
 			return -1;
 		}
-		else {
+
+		if (date1 == null) {
 			return 1;
 		}
+
+		Timestamp timestamp1 = getDBTimestamp(date1, db);
+		Timestamp timestamp2 = getDBTimestamp(date2, db);
+
+		return timestamp1.compareTo(timestamp2);
 	}
 
 	public static boolean equals(Date date1, Date date2) {
-		return equals(date1, date2, false);
+		if (compareTo(date1, date2, null) == 0) {
+			return true;
+		}
+
+		return false;
 	}
 
-	public static boolean equals(
-		Date date1, Date date2, boolean ignoreMilliseconds) {
-
-		if (compareTo(date1, date2, ignoreMilliseconds) == 0) {
+	public static boolean equals(Date date1, Date date2, DB db) {
+		if (compareTo(date1, date2, db) == 0) {
 			return true;
 		}
 
@@ -163,6 +152,29 @@ public class DateUtil {
 		}
 
 		return daysBetween;
+	}
+
+	public static Timestamp getDBTimestamp(Date date, DB db) {
+		if (date == null) {
+			return null;
+		}
+
+		if ((db == null) || db.isSupportsDateMilliseconds()) {
+			return new Timestamp(date.getTime());
+		}
+
+		long time = date.getTime();
+
+		if (db.isSupportsDateSecondRounding() &&
+			((time % Time.SECOND) > (Time.SECOND / 2))) {
+
+			time = time / Time.SECOND * Time.SECOND + Time.SECOND;
+		}
+		else {
+			time = time / Time.SECOND * Time.SECOND;
+		}
+
+		return new Timestamp(time);
 	}
 
 	public static DateFormat getISO8601Format() {

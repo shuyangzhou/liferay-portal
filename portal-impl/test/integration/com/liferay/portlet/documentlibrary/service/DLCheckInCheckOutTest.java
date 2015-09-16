@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.documentlibrary.service;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileVersion;
@@ -131,7 +132,8 @@ public class DLCheckInCheckOutTest {
 		folder = DLAppServiceUtil.getFolder(_folder.getFolderId());
 
 		Assert.assertTrue(
-			DateUtil.equals(lastPostDate, folder.getLastPostDate()));
+			DateUtil.equals(
+				lastPostDate, folder.getLastPostDate(), DBFactoryUtil.getDB()));
 
 		fileEntry = DLAppServiceUtil.getFileEntry(_fileEntry.getFileEntryId());
 
@@ -170,7 +172,9 @@ public class DLCheckInCheckOutTest {
 			}
 			else {
 				Assert.assertTrue(
-					DateUtil.equals(lastPostDate, folder.getLastPostDate()));
+					DateUtil.equals(
+						lastPostDate, folder.getLastPostDate(),
+						DBFactoryUtil.getDB()));
 			}
 
 			FileEntry fileEntry = DLAppServiceUtil.getFileEntry(
@@ -196,7 +200,8 @@ public class DLCheckInCheckOutTest {
 		folder = DLAppServiceUtil.getFolder(_folder.getFolderId());
 
 		Assert.assertTrue(
-			DateUtil.equals(lastPostDate, folder.getLastPostDate()));
+			DateUtil.equals(
+				lastPostDate, folder.getLastPostDate(), DBFactoryUtil.getDB()));
 
 		FileVersion fileVersion = _fileEntry.getLatestFileVersion();
 

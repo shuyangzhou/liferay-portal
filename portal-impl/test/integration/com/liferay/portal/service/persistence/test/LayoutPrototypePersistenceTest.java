@@ -15,6 +15,7 @@
 package com.liferay.portal.service.persistence.test;
 
 import com.liferay.portal.NoSuchLayoutPrototypeException;
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -25,11 +26,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.model.LayoutPrototype;
 import com.liferay.portal.service.LayoutPrototypeLocalServiceUtil;
 import com.liferay.portal.service.persistence.LayoutPrototypePersistence;
@@ -154,12 +155,12 @@ public class LayoutPrototypePersistenceTest {
 			newLayoutPrototype.getUserId());
 		Assert.assertEquals(existingLayoutPrototype.getUserName(),
 			newLayoutPrototype.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingLayoutPrototype.getCreateDate()),
-			Time.getShortTimestamp(newLayoutPrototype.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingLayoutPrototype.getModifiedDate()),
-			Time.getShortTimestamp(newLayoutPrototype.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingLayoutPrototype.getCreateDate(),
+				newLayoutPrototype.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingLayoutPrototype.getModifiedDate(),
+				newLayoutPrototype.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingLayoutPrototype.getName(),
 			newLayoutPrototype.getName());
 		Assert.assertEquals(existingLayoutPrototype.getDescription(),
@@ -168,9 +169,9 @@ public class LayoutPrototypePersistenceTest {
 			newLayoutPrototype.getSettings());
 		Assert.assertEquals(existingLayoutPrototype.getActive(),
 			newLayoutPrototype.getActive());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingLayoutPrototype.getLastPublishDate()),
-			Time.getShortTimestamp(newLayoutPrototype.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingLayoutPrototype.getLastPublishDate(),
+				newLayoutPrototype.getLastPublishDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test
