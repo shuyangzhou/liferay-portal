@@ -19,6 +19,7 @@ import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.DDMTemplate;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalFolder;
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.LongWrapper;
@@ -132,7 +133,8 @@ public class ManifestSummaryTest
 			1, manifestSummary.getModelAdditionCount(JournalFolder.class));
 		Assert.assertTrue(
 			DateUtil.equals(
-				_exportDate, manifestSummary.getExportDate(), true));
+				_exportDate, manifestSummary.getExportDate(),
+				DBFactoryUtil.getDB()));
 	}
 
 	private Date _exportDate;

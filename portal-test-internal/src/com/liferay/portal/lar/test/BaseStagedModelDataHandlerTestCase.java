@@ -15,6 +15,7 @@
 package com.liferay.portal.lar.test;
 
 import com.liferay.portal.kernel.comment.CommentManagerUtil;
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -760,13 +761,13 @@ public abstract class BaseStagedModelDataHandlerTestCase {
 				importedStagedModel.getCreateDate(),
 			DateUtil.equals(
 				stagedModel.getCreateDate(),
-				importedStagedModel.getCreateDate(), true));
+				importedStagedModel.getCreateDate(), DBFactoryUtil.getDB()));
 		Assert.assertTrue(
 			stagedModel.getModifiedDate() + " " +
 				importedStagedModel.getModifiedDate(),
 			DateUtil.equals(
 				stagedModel.getModifiedDate(),
-				importedStagedModel.getModifiedDate(), true));
+				importedStagedModel.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(
 			stagedModel.getUuid(), importedStagedModel.getUuid());
 	}
