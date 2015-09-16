@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.asset.service.persistence.test;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -26,11 +27,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -184,12 +185,11 @@ public class AssetEntryPersistenceTest {
 			newAssetEntry.getUserId());
 		Assert.assertEquals(existingAssetEntry.getUserName(),
 			newAssetEntry.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingAssetEntry.getCreateDate()),
-			Time.getShortTimestamp(newAssetEntry.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingAssetEntry.getModifiedDate()),
-			Time.getShortTimestamp(newAssetEntry.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(existingAssetEntry.getCreateDate(),
+				newAssetEntry.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingAssetEntry.getModifiedDate(),
+				newAssetEntry.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingAssetEntry.getClassNameId(),
 			newAssetEntry.getClassNameId());
 		Assert.assertEquals(existingAssetEntry.getClassPK(),
@@ -202,18 +202,15 @@ public class AssetEntryPersistenceTest {
 			newAssetEntry.getListable());
 		Assert.assertEquals(existingAssetEntry.getVisible(),
 			newAssetEntry.getVisible());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingAssetEntry.getStartDate()),
-			Time.getShortTimestamp(newAssetEntry.getStartDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingAssetEntry.getEndDate()),
-			Time.getShortTimestamp(newAssetEntry.getEndDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingAssetEntry.getPublishDate()),
-			Time.getShortTimestamp(newAssetEntry.getPublishDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingAssetEntry.getExpirationDate()),
-			Time.getShortTimestamp(newAssetEntry.getExpirationDate()));
+		Assert.assertTrue(DateUtil.equals(existingAssetEntry.getStartDate(),
+				newAssetEntry.getStartDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(existingAssetEntry.getEndDate(),
+				newAssetEntry.getEndDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(existingAssetEntry.getPublishDate(),
+				newAssetEntry.getPublishDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingAssetEntry.getExpirationDate(),
+				newAssetEntry.getExpirationDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingAssetEntry.getMimeType(),
 			newAssetEntry.getMimeType());
 		Assert.assertEquals(existingAssetEntry.getTitle(),

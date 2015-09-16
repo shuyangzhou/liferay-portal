@@ -22,6 +22,7 @@ import com.liferay.dynamic.data.mapping.service.DDMTemplateLocalServiceUtil;
 import com.liferay.dynamic.data.mapping.service.persistence.DDMTemplatePersistence;
 import com.liferay.dynamic.data.mapping.service.persistence.DDMTemplateUtil;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -33,11 +34,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -192,12 +193,11 @@ public class DDMTemplatePersistenceTest {
 			newDDMTemplate.getVersionUserId());
 		Assert.assertEquals(existingDDMTemplate.getVersionUserName(),
 			newDDMTemplate.getVersionUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingDDMTemplate.getCreateDate()),
-			Time.getShortTimestamp(newDDMTemplate.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingDDMTemplate.getModifiedDate()),
-			Time.getShortTimestamp(newDDMTemplate.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(existingDDMTemplate.getCreateDate(),
+				newDDMTemplate.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingDDMTemplate.getModifiedDate(),
+				newDDMTemplate.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingDDMTemplate.getClassNameId(),
 			newDDMTemplate.getClassNameId());
 		Assert.assertEquals(existingDDMTemplate.getClassPK(),
@@ -228,9 +228,9 @@ public class DDMTemplatePersistenceTest {
 			newDDMTemplate.getSmallImageId());
 		Assert.assertEquals(existingDDMTemplate.getSmallImageURL(),
 			newDDMTemplate.getSmallImageURL());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingDDMTemplate.getLastPublishDate()),
-			Time.getShortTimestamp(newDDMTemplate.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingDDMTemplate.getLastPublishDate(),
+				newDDMTemplate.getLastPublishDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

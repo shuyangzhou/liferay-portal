@@ -15,6 +15,7 @@
 package com.liferay.portal.service.persistence.test;
 
 import com.liferay.portal.NoSuchContactException;
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -25,10 +26,10 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.model.Contact;
 import com.liferay.portal.service.ContactLocalServiceUtil;
 import com.liferay.portal.service.persistence.ContactPersistence;
@@ -192,12 +193,10 @@ public class ContactPersistenceTest {
 		Assert.assertEquals(existingContact.getUserId(), newContact.getUserId());
 		Assert.assertEquals(existingContact.getUserName(),
 			newContact.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingContact.getCreateDate()),
-			Time.getShortTimestamp(newContact.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingContact.getModifiedDate()),
-			Time.getShortTimestamp(newContact.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(existingContact.getCreateDate(),
+				newContact.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(existingContact.getModifiedDate(),
+				newContact.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingContact.getClassNameId(),
 			newContact.getClassNameId());
 		Assert.assertEquals(existingContact.getClassPK(),
@@ -219,9 +218,8 @@ public class ContactPersistenceTest {
 		Assert.assertEquals(existingContact.getSuffixId(),
 			newContact.getSuffixId());
 		Assert.assertEquals(existingContact.getMale(), newContact.getMale());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingContact.getBirthday()),
-			Time.getShortTimestamp(newContact.getBirthday()));
+		Assert.assertTrue(DateUtil.equals(existingContact.getBirthday(),
+				newContact.getBirthday(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingContact.getSmsSn(), newContact.getSmsSn());
 		Assert.assertEquals(existingContact.getAimSn(), newContact.getAimSn());
 		Assert.assertEquals(existingContact.getFacebookSn(),
