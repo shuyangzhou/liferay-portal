@@ -4473,7 +4473,7 @@ hot.deploy.dependency.management.enabled=false</echo>
 			<elseif>
 				<equals arg1="${app.server.type}" arg2="glassfish" />
 				<then>
-					<property name="test.build.liferay.portal.zip.file.name" value="${app.server.glassfish.portal.war.dir}" />
+					<property name="test.build.liferay.portal.zip.file.name" value="${app.server.glassfish.portal.war.name}" />
 				</then>
 			</elseif>
 			<elseif>
@@ -4556,14 +4556,14 @@ module.framework.properties.osgi.console=11312</echo>
 
 		<echo append="true" file="${test.ext.properties.file}">
 			component.names=${component.names}
-			ignore.errors.file.name=${project.dir}/portal-web/test-ignorable-error-lines.xml
+			ignore.errors.file.name=${project.dir.unix}/portal-web/test-ignorable-error-lines.xml
 			product.names=${product.names}
-			project.dir=${project.dir}
+			project.dir=${project.dir.unix}
 			test.case.available.property.names=${test.case.available.property.names}
 			test.console.log.file.name=${liferay.home}/logs/liferay.${current.date}.xml
-			test.console.shut.down.file.name=${project.dir}/console-shut-down
+			test.console.shut.down.file.name=${project.dir.unix}/console-shut-down
 			test.dependencies.dir.name=dependencies
-			test.poshi.warnings.file.name=${project.dir}/poshi-warnings.xml
+			test.poshi.warnings.file.name=${project.dir.unix}/poshi-warnings.xml
 		</echo>
 
 		<if>
@@ -6324,6 +6324,16 @@ jdbc.default.password=${database.mysql.password}</echo>
 						<copy todir="${jenkins.shared.results.dir}/${job.name}/builds/${env.BUILD_NUMBER}/screenshots">
 							<fileset dir="portal-web/test-results/functional/screenshots" erroronmissingdir="false" />
 						</copy>
+					</then>
+				</if>
+
+				<if>
+					<available file="${liferay.home}/logs/liferay.${current.date}.log" />
+					<then>
+						<copy
+							file="${liferay.home}/logs/liferay.${current.date}.log"
+							tofile="${jenkins.shared.results.dir}/${job.name}/builds/${env.BUILD_NUMBER}/liferay.log"
+						/>
 					</then>
 				</if>
 

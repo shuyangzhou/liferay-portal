@@ -32,7 +32,7 @@ RowChecker rowChecker = searchContainer.getRowChecker();
 
 if (rowChecker != null) {
 	if (headerNames != null) {
-		headerNames.add(0, rowChecker.getAllRowsCheckBox(request));
+		headerNames.add(0, StringPool.BLANK);
 
 		normalizedHeaderNames.add(0, "rowChecker");
 	}
@@ -51,7 +51,7 @@ JSONArray primaryKeysJSONArray = JSONFactoryUtil.createJSONArray();
 	</div>
 </c:if>
 
-<ul class="list-unstyled <%= searchContainer.getCssClass() %> <%= resultRows.isEmpty() ? "hide" : StringPool.BLANK %>" id="<%= namespace + id %>SearchContainer">
+<ul class="<%= searchContainer.getCssClass() %> <%= resultRows.isEmpty() ? "hide" : StringPool.BLANK %> list-unstyled" id="<%= namespace + id %>SearchContainer">
 
 	<%
 	request.setAttribute(WebKeys.SEARCH_CONTAINER_RESULT_ROW_CHECKER, rowChecker);
@@ -115,7 +115,7 @@ JSONArray primaryKeysJSONArray = JSONFactoryUtil.createJSONArray();
 </ul>
 
 <c:if test="<%= PropsValues.SEARCH_CONTAINER_SHOW_PAGINATION_BOTTOM && paginate %>">
-	<div class="taglib-search-iterator-page-iterator-bottom">
+	<div class="<%= resultRows.isEmpty() ? "hide" : StringPool.BLANK %> taglib-search-iterator-page-iterator-bottom">
 		<liferay-ui:search-paginator id='<%= id + "PageIteratorBottom" %>' searchContainer="<%= searchContainer %>" type="<%= type %>" />
 	</div>
 </c:if>

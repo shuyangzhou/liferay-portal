@@ -22,6 +22,7 @@ import com.liferay.calendar.service.CalendarBookingLocalServiceUtil;
 import com.liferay.calendar.service.persistence.CalendarBookingPersistence;
 import com.liferay.calendar.service.persistence.CalendarBookingUtil;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -33,11 +34,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -194,12 +195,12 @@ public class CalendarBookingPersistenceTest {
 			newCalendarBooking.getUserId());
 		Assert.assertEquals(existingCalendarBooking.getUserName(),
 			newCalendarBooking.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingCalendarBooking.getCreateDate()),
-			Time.getShortTimestamp(newCalendarBooking.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingCalendarBooking.getModifiedDate()),
-			Time.getShortTimestamp(newCalendarBooking.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingCalendarBooking.getCreateDate(),
+				newCalendarBooking.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingCalendarBooking.getModifiedDate(),
+				newCalendarBooking.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingCalendarBooking.getResourceBlockId(),
 			newCalendarBooking.getResourceBlockId());
 		Assert.assertEquals(existingCalendarBooking.getCalendarId(),
@@ -232,18 +233,18 @@ public class CalendarBookingPersistenceTest {
 			newCalendarBooking.getSecondReminder());
 		Assert.assertEquals(existingCalendarBooking.getSecondReminderType(),
 			newCalendarBooking.getSecondReminderType());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingCalendarBooking.getLastPublishDate()),
-			Time.getShortTimestamp(newCalendarBooking.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingCalendarBooking.getLastPublishDate(),
+				newCalendarBooking.getLastPublishDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingCalendarBooking.getStatus(),
 			newCalendarBooking.getStatus());
 		Assert.assertEquals(existingCalendarBooking.getStatusByUserId(),
 			newCalendarBooking.getStatusByUserId());
 		Assert.assertEquals(existingCalendarBooking.getStatusByUserName(),
 			newCalendarBooking.getStatusByUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingCalendarBooking.getStatusDate()),
-			Time.getShortTimestamp(newCalendarBooking.getStatusDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingCalendarBooking.getStatusDate(),
+				newCalendarBooking.getStatusDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

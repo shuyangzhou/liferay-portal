@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.messageboards.service.persistence.test;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -26,11 +27,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -183,12 +184,10 @@ public class MBMessagePersistenceTest {
 			newMBMessage.getUserId());
 		Assert.assertEquals(existingMBMessage.getUserName(),
 			newMBMessage.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingMBMessage.getCreateDate()),
-			Time.getShortTimestamp(newMBMessage.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingMBMessage.getModifiedDate()),
-			Time.getShortTimestamp(newMBMessage.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(existingMBMessage.getCreateDate(),
+				newMBMessage.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(existingMBMessage.getModifiedDate(),
+				newMBMessage.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingMBMessage.getClassNameId(),
 			newMBMessage.getClassNameId());
 		Assert.assertEquals(existingMBMessage.getClassPK(),
@@ -214,18 +213,17 @@ public class MBMessagePersistenceTest {
 			newMBMessage.getAllowPingbacks());
 		Assert.assertEquals(existingMBMessage.getAnswer(),
 			newMBMessage.getAnswer());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingMBMessage.getLastPublishDate()),
-			Time.getShortTimestamp(newMBMessage.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingMBMessage.getLastPublishDate(),
+				newMBMessage.getLastPublishDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingMBMessage.getStatus(),
 			newMBMessage.getStatus());
 		Assert.assertEquals(existingMBMessage.getStatusByUserId(),
 			newMBMessage.getStatusByUserId());
 		Assert.assertEquals(existingMBMessage.getStatusByUserName(),
 			newMBMessage.getStatusByUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingMBMessage.getStatusDate()),
-			Time.getShortTimestamp(newMBMessage.getStatusDate()));
+		Assert.assertTrue(DateUtil.equals(existingMBMessage.getStatusDate(),
+				newMBMessage.getStatusDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

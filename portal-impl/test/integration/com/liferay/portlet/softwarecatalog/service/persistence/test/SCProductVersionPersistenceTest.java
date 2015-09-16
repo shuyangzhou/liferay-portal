@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.softwarecatalog.service.persistence.test;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -25,11 +26,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -151,12 +152,12 @@ public class SCProductVersionPersistenceTest {
 			newSCProductVersion.getUserId());
 		Assert.assertEquals(existingSCProductVersion.getUserName(),
 			newSCProductVersion.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingSCProductVersion.getCreateDate()),
-			Time.getShortTimestamp(newSCProductVersion.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingSCProductVersion.getModifiedDate()),
-			Time.getShortTimestamp(newSCProductVersion.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingSCProductVersion.getCreateDate(),
+				newSCProductVersion.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingSCProductVersion.getModifiedDate(),
+				newSCProductVersion.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingSCProductVersion.getProductEntryId(),
 			newSCProductVersion.getProductEntryId());
 		Assert.assertEquals(existingSCProductVersion.getVersion(),

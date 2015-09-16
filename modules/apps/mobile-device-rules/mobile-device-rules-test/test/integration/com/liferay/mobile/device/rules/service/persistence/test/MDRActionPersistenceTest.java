@@ -22,6 +22,7 @@ import com.liferay.mobile.device.rules.service.MDRActionLocalServiceUtil;
 import com.liferay.mobile.device.rules.service.persistence.MDRActionPersistence;
 import com.liferay.mobile.device.rules.service.persistence.MDRActionUtil;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -33,11 +34,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -167,12 +168,10 @@ public class MDRActionPersistenceTest {
 			newMDRAction.getUserId());
 		Assert.assertEquals(existingMDRAction.getUserName(),
 			newMDRAction.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingMDRAction.getCreateDate()),
-			Time.getShortTimestamp(newMDRAction.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingMDRAction.getModifiedDate()),
-			Time.getShortTimestamp(newMDRAction.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(existingMDRAction.getCreateDate(),
+				newMDRAction.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(existingMDRAction.getModifiedDate(),
+				newMDRAction.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingMDRAction.getClassNameId(),
 			newMDRAction.getClassNameId());
 		Assert.assertEquals(existingMDRAction.getClassPK(),
@@ -185,9 +184,9 @@ public class MDRActionPersistenceTest {
 		Assert.assertEquals(existingMDRAction.getType(), newMDRAction.getType());
 		Assert.assertEquals(existingMDRAction.getTypeSettings(),
 			newMDRAction.getTypeSettings());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingMDRAction.getLastPublishDate()),
-			Time.getShortTimestamp(newMDRAction.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingMDRAction.getLastPublishDate(),
+				newMDRAction.getLastPublishDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test
