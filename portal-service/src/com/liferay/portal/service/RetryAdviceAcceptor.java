@@ -12,13 +12,13 @@
  * details.
  */
 
-package com.liferay.portal.test.rule;
+package com.liferay.portal.service;
 
 /**
- * @author Shuyang Zhou
+ * @author Matthew Tambara
  */
-public enum ExpectedType {
+public interface RetryAdviceAcceptor {
 
-	CONTAINS, EXACT, POSTFIX, PREFIX
+	public Boolean accept(Object returnValue, Throwable t);
 
 }

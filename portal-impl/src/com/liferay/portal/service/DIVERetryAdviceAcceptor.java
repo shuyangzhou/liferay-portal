@@ -12,13 +12,38 @@
  * details.
  */
 
-package com.liferay.portal.test.rule;
+package com.liferay.portal.service;
+
+import org.springframework.dao.DataIntegrityViolationException;
 
 /**
- * @author Shuyang Zhou
+ * @author Matthew Tambara
  */
-public enum ExpectedType {
+public class DIVERetryAdviceAcceptor implements RetryAdviceAcceptor {
 
-	CONTAINS, EXACT, POSTFIX, PREFIX
+	@Override
+	public Boolean accept(Object returnValue, Throwable t) {
+		if (t == null) {
+			return false;
+		}
+
+		Throwable cause = t.getCause();
+
+		while (t != cause) {
+			if (t instanceof DataIntegrityViolationException) {
+				return true;
+			}
+
+			if (cause == null) {
+				return false;
+			}
+
+			t = cause;
+
+			cause = t.getCause();
+		}
+
+		return false;
+	}
 
 }
