@@ -14,27 +14,24 @@
 
 package com.liferay.portal.service.impl;
 
-import com.liferay.portal.kernel.concurrent.LockRegistry;
-import com.liferay.portal.kernel.dao.db.DB;
-import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.spring.aop.Retry;
 import com.liferay.portal.kernel.spring.aop.Skip;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.Portlet;
 import com.liferay.portal.model.PortletConstants;
 import com.liferay.portal.model.PortletPreferences;
 import com.liferay.portal.model.PortletPreferencesIds;
+import com.liferay.portal.service.DIVERetryAdviceAcceptor;
 import com.liferay.portal.service.base.PortletPreferencesLocalServiceBaseImpl;
 import com.liferay.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portlet.PortletPreferencesImpl;
 
 import java.util.List;
-import java.util.concurrent.locks.Lock;
 
 /**
  * @author Brian Wing Shun Chan
@@ -285,6 +282,7 @@ public class PortletPreferencesLocalServiceImpl
 	}
 
 	@Override
+	@Retry(acceptor = DIVERetryAdviceAcceptor.class, retries = -1)
 	public javax.portlet.PortletPreferences getPreferences(
 		long companyId, long ownerId, int ownerType, long plid,
 		String portletId, String defaultPreferences) {
@@ -371,7 +369,7 @@ public class PortletPreferencesLocalServiceImpl
 		return portletPreferences;
 	}
 
-	protected javax.portlet.PortletPreferences doGetPreferences(
+	protected javax.portlet.PortletPreferences getPreferences(
 		long companyId, long ownerId, int ownerType, long plid,
 		String portletId, String defaultPreferences, boolean strict) {
 
@@ -411,49 +409,6 @@ public class PortletPreferencesLocalServiceImpl
 				portletPreferences.getPreferences());
 
 		return portletPreferencesImpl;
-	}
-
-	protected javax.portlet.PortletPreferences getPreferences(
-		long companyId, long ownerId, int ownerType, long plid,
-		String portletId, String defaultPreferences, boolean strict) {
-
-		DB db = DBFactoryUtil.getDB();
-
-		String dbType = db.getType();
-
-		if (!dbType.equals(DB.TYPE_HYPERSONIC)) {
-			return doGetPreferences(
-				companyId, ownerId, ownerType, plid, portletId,
-				defaultPreferences, strict);
-		}
-
-		StringBundler sb = new StringBundler(7);
-
-		sb.append(ownerId);
-		sb.append(StringPool.POUND);
-		sb.append(ownerType);
-		sb.append(StringPool.POUND);
-		sb.append(plid);
-		sb.append(StringPool.POUND);
-		sb.append(portletId);
-
-		String groupName = getClass().getName();
-		String key = sb.toString();
-
-		Lock lock = LockRegistry.allocateLock(groupName, key);
-
-		lock.lock();
-
-		try {
-			return doGetPreferences(
-				companyId, ownerId, ownerType, plid, portletId,
-				defaultPreferences, strict);
-		}
-		finally {
-			lock.unlock();
-
-			LockRegistry.freeLock(groupName, key);
-		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

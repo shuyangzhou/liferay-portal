@@ -286,6 +286,7 @@ public interface PortletPreferencesLocalService extends BaseLocalService,
 	public javax.portlet.PortletPreferences getPreferences(long companyId,
 		long ownerId, int ownerType, long plid, java.lang.String portletId);
 
+	@com.liferay.portal.kernel.spring.aop.Retry(acceptor = com.liferay.portal.service.DIVERetryAdviceAcceptor.class, retries = -1)
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public javax.portlet.PortletPreferences getPreferences(long companyId,
 		long ownerId, int ownerType, long plid, java.lang.String portletId,
