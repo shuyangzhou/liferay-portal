@@ -12,13 +12,16 @@
  * details.
  */
 
-package com.liferay.portal.test.rule;
+package com.liferay.portal.service;
+
+import java.util.Map;
 
 /**
- * @author Shuyang Zhou
+ * @author Matthew Tambara
  */
-public enum ExpectedType {
+public interface RetryAdviceAcceptor {
 
-	CONTAINS, EXACT, POSTFIX, PREFIX
+	public boolean accept(
+		Object returnValue, Throwable t, Map<String, String> propertyMap);
 
 }
