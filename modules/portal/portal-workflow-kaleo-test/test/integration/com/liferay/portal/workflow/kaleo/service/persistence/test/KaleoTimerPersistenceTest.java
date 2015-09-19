@@ -16,6 +16,7 @@ package com.liferay.portal.workflow.kaleo.service.persistence.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -27,11 +28,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 import com.liferay.portal.workflow.kaleo.exception.NoSuchTimerException;
@@ -166,12 +167,11 @@ public class KaleoTimerPersistenceTest {
 			newKaleoTimer.getUserId());
 		Assert.assertEquals(existingKaleoTimer.getUserName(),
 			newKaleoTimer.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingKaleoTimer.getCreateDate()),
-			Time.getShortTimestamp(newKaleoTimer.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingKaleoTimer.getModifiedDate()),
-			Time.getShortTimestamp(newKaleoTimer.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(existingKaleoTimer.getCreateDate(),
+				newKaleoTimer.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingKaleoTimer.getModifiedDate(),
+				newKaleoTimer.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingKaleoTimer.getKaleoClassName(),
 			newKaleoTimer.getKaleoClassName());
 		Assert.assertEquals(existingKaleoTimer.getKaleoClassPK(),

@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.messageboards.service.impl;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -86,7 +87,7 @@ public class MBThreadFlagLocalServiceImpl
 		}
 		else if (!DateUtil.equals(
 					threadFlag.getModifiedDate(), thread.getLastPostDate(),
-					true)) {
+					DBFactoryUtil.getDB())) {
 
 			threadFlag.setModifiedDate(thread.getLastPostDate());
 
@@ -158,7 +159,8 @@ public class MBThreadFlagLocalServiceImpl
 
 		if ((threadFlag != null) &&
 			DateUtil.equals(
-				threadFlag.getModifiedDate(), thread.getLastPostDate(), true)) {
+				threadFlag.getModifiedDate(), thread.getLastPostDate(),
+				DBFactoryUtil.getDB())) {
 
 			return true;
 		}

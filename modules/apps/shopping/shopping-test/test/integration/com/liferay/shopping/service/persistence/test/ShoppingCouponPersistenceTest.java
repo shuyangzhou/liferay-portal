@@ -16,6 +16,7 @@ package com.liferay.shopping.service.persistence.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -28,11 +29,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -171,24 +172,23 @@ public class ShoppingCouponPersistenceTest {
 			newShoppingCoupon.getUserId());
 		Assert.assertEquals(existingShoppingCoupon.getUserName(),
 			newShoppingCoupon.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingShoppingCoupon.getCreateDate()),
-			Time.getShortTimestamp(newShoppingCoupon.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingShoppingCoupon.getModifiedDate()),
-			Time.getShortTimestamp(newShoppingCoupon.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingShoppingCoupon.getCreateDate(),
+				newShoppingCoupon.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingShoppingCoupon.getModifiedDate(),
+				newShoppingCoupon.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingShoppingCoupon.getCode(),
 			newShoppingCoupon.getCode());
 		Assert.assertEquals(existingShoppingCoupon.getName(),
 			newShoppingCoupon.getName());
 		Assert.assertEquals(existingShoppingCoupon.getDescription(),
 			newShoppingCoupon.getDescription());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingShoppingCoupon.getStartDate()),
-			Time.getShortTimestamp(newShoppingCoupon.getStartDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingShoppingCoupon.getEndDate()),
-			Time.getShortTimestamp(newShoppingCoupon.getEndDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingShoppingCoupon.getStartDate(),
+				newShoppingCoupon.getStartDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(existingShoppingCoupon.getEndDate(),
+				newShoppingCoupon.getEndDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingShoppingCoupon.getActive(),
 			newShoppingCoupon.getActive());
 		Assert.assertEquals(existingShoppingCoupon.getLimitCategories(),

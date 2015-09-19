@@ -15,6 +15,7 @@
 package com.liferay.portal.service.persistence.test;
 
 import com.liferay.portal.NoSuchAccountException;
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -25,10 +26,10 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.model.Account;
 import com.liferay.portal.service.AccountLocalServiceUtil;
 import com.liferay.portal.service.persistence.AccountPersistence;
@@ -158,12 +159,10 @@ public class AccountPersistenceTest {
 		Assert.assertEquals(existingAccount.getUserId(), newAccount.getUserId());
 		Assert.assertEquals(existingAccount.getUserName(),
 			newAccount.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingAccount.getCreateDate()),
-			Time.getShortTimestamp(newAccount.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingAccount.getModifiedDate()),
-			Time.getShortTimestamp(newAccount.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(existingAccount.getCreateDate(),
+				newAccount.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(existingAccount.getModifiedDate(),
+				newAccount.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingAccount.getParentAccountId(),
 			newAccount.getParentAccountId());
 		Assert.assertEquals(existingAccount.getName(), newAccount.getName());

@@ -15,6 +15,7 @@
 package com.liferay.layout.admin.lar.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
@@ -234,7 +235,7 @@ public class LayoutStagedModelDataHandlerTest
 				importedStagedModel.getCreateDate(),
 			DateUtil.equals(
 				stagedModel.getCreateDate(),
-				importedStagedModel.getCreateDate(), true));
+				importedStagedModel.getCreateDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(
 			stagedModel.getUuid(), importedStagedModel.getUuid());
 

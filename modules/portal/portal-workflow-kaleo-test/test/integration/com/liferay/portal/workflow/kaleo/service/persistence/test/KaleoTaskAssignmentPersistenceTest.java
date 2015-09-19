@@ -16,6 +16,7 @@ package com.liferay.portal.workflow.kaleo.service.persistence.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -26,11 +27,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 import com.liferay.portal.workflow.kaleo.exception.NoSuchTaskAssignmentException;
@@ -165,12 +166,12 @@ public class KaleoTaskAssignmentPersistenceTest {
 			newKaleoTaskAssignment.getUserId());
 		Assert.assertEquals(existingKaleoTaskAssignment.getUserName(),
 			newKaleoTaskAssignment.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingKaleoTaskAssignment.getCreateDate()),
-			Time.getShortTimestamp(newKaleoTaskAssignment.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingKaleoTaskAssignment.getModifiedDate()),
-			Time.getShortTimestamp(newKaleoTaskAssignment.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingKaleoTaskAssignment.getCreateDate(),
+				newKaleoTaskAssignment.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingKaleoTaskAssignment.getModifiedDate(),
+				newKaleoTaskAssignment.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingKaleoTaskAssignment.getKaleoClassName(),
 			newKaleoTaskAssignment.getKaleoClassName());
 		Assert.assertEquals(existingKaleoTaskAssignment.getKaleoClassPK(),

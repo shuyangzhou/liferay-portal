@@ -15,6 +15,7 @@
 package com.liferay.portal.service.persistence.test;
 
 import com.liferay.portal.NoSuchTeamException;
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -26,11 +27,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.Team;
 import com.liferay.portal.service.TeamLocalServiceUtil;
@@ -149,18 +150,16 @@ public class TeamPersistenceTest {
 		Assert.assertEquals(existingTeam.getCompanyId(), newTeam.getCompanyId());
 		Assert.assertEquals(existingTeam.getUserId(), newTeam.getUserId());
 		Assert.assertEquals(existingTeam.getUserName(), newTeam.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(existingTeam.getCreateDate()),
-			Time.getShortTimestamp(newTeam.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingTeam.getModifiedDate()),
-			Time.getShortTimestamp(newTeam.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(existingTeam.getCreateDate(),
+				newTeam.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(existingTeam.getModifiedDate(),
+				newTeam.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingTeam.getGroupId(), newTeam.getGroupId());
 		Assert.assertEquals(existingTeam.getName(), newTeam.getName());
 		Assert.assertEquals(existingTeam.getDescription(),
 			newTeam.getDescription());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingTeam.getLastPublishDate()),
-			Time.getShortTimestamp(newTeam.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(existingTeam.getLastPublishDate(),
+				newTeam.getLastPublishDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

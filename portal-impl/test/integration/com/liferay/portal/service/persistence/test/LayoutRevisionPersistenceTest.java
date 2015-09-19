@@ -15,6 +15,7 @@
 package com.liferay.portal.service.persistence.test;
 
 import com.liferay.portal.NoSuchLayoutRevisionException;
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -26,10 +27,10 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.model.LayoutRevision;
 import com.liferay.portal.service.LayoutRevisionLocalServiceUtil;
 import com.liferay.portal.service.persistence.LayoutRevisionPersistence;
@@ -190,12 +191,12 @@ public class LayoutRevisionPersistenceTest {
 			newLayoutRevision.getUserId());
 		Assert.assertEquals(existingLayoutRevision.getUserName(),
 			newLayoutRevision.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingLayoutRevision.getCreateDate()),
-			Time.getShortTimestamp(newLayoutRevision.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingLayoutRevision.getModifiedDate()),
-			Time.getShortTimestamp(newLayoutRevision.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingLayoutRevision.getCreateDate(),
+				newLayoutRevision.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingLayoutRevision.getModifiedDate(),
+				newLayoutRevision.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingLayoutRevision.getLayoutSetBranchId(),
 			newLayoutRevision.getLayoutSetBranchId());
 		Assert.assertEquals(existingLayoutRevision.getLayoutBranchId(),
@@ -240,9 +241,9 @@ public class LayoutRevisionPersistenceTest {
 			newLayoutRevision.getStatusByUserId());
 		Assert.assertEquals(existingLayoutRevision.getStatusByUserName(),
 			newLayoutRevision.getStatusByUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingLayoutRevision.getStatusDate()),
-			Time.getShortTimestamp(newLayoutRevision.getStatusDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingLayoutRevision.getStatusDate(),
+				newLayoutRevision.getStatusDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

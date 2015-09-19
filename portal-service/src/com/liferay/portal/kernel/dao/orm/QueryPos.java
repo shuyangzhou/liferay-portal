@@ -14,7 +14,9 @@
 
 package com.liferay.portal.kernel.dao.orm;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.util.CalendarUtil;
+import com.liferay.portal.kernel.util.DateUtil;
 
 import java.sql.Timestamp;
 
@@ -326,7 +328,8 @@ public class QueryPos {
 	}
 
 	public void add(Timestamp value) {
-		_query.setTimestamp(_pos++, value);
+		_query.setTimestamp(
+			_pos++, DateUtil.getDBTimestamp(value, DBFactoryUtil.getDB()));
 	}
 
 	public void add(Timestamp[] values) {

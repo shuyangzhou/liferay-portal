@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.messageboards.service.persistence.test;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -25,11 +26,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -146,17 +147,14 @@ public class MBBanPersistenceTest {
 			newMBBan.getCompanyId());
 		Assert.assertEquals(existingMBBan.getUserId(), newMBBan.getUserId());
 		Assert.assertEquals(existingMBBan.getUserName(), newMBBan.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingMBBan.getCreateDate()),
-			Time.getShortTimestamp(newMBBan.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingMBBan.getModifiedDate()),
-			Time.getShortTimestamp(newMBBan.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(existingMBBan.getCreateDate(),
+				newMBBan.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(existingMBBan.getModifiedDate(),
+				newMBBan.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingMBBan.getBanUserId(),
 			newMBBan.getBanUserId());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingMBBan.getLastPublishDate()),
-			Time.getShortTimestamp(newMBBan.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(existingMBBan.getLastPublishDate(),
+				newMBBan.getLastPublishDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

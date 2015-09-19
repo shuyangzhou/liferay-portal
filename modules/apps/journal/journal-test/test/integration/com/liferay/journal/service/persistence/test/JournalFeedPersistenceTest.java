@@ -22,6 +22,7 @@ import com.liferay.journal.service.JournalFeedLocalServiceUtil;
 import com.liferay.journal.service.persistence.JournalFeedPersistence;
 import com.liferay.journal.service.persistence.JournalFeedUtil;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -34,11 +35,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -182,12 +183,11 @@ public class JournalFeedPersistenceTest {
 			newJournalFeed.getUserId());
 		Assert.assertEquals(existingJournalFeed.getUserName(),
 			newJournalFeed.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingJournalFeed.getCreateDate()),
-			Time.getShortTimestamp(newJournalFeed.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingJournalFeed.getModifiedDate()),
-			Time.getShortTimestamp(newJournalFeed.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(existingJournalFeed.getCreateDate(),
+				newJournalFeed.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingJournalFeed.getModifiedDate(),
+				newJournalFeed.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingJournalFeed.getFeedId(),
 			newJournalFeed.getFeedId());
 		Assert.assertEquals(existingJournalFeed.getName(),
@@ -216,9 +216,9 @@ public class JournalFeedPersistenceTest {
 			newJournalFeed.getFeedFormat());
 		AssertUtils.assertEquals(existingJournalFeed.getFeedVersion(),
 			newJournalFeed.getFeedVersion());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingJournalFeed.getLastPublishDate()),
-			Time.getShortTimestamp(newJournalFeed.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingJournalFeed.getLastPublishDate(),
+				newJournalFeed.getLastPublishDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

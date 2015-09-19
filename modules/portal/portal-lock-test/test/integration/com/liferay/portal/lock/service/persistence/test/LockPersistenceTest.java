@@ -16,6 +16,7 @@ package com.liferay.portal.lock.service.persistence.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -27,11 +28,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.lock.exception.NoSuchLockException;
 import com.liferay.portal.lock.model.Lock;
@@ -154,16 +155,15 @@ public class LockPersistenceTest {
 		Assert.assertEquals(existingLock.getCompanyId(), newLock.getCompanyId());
 		Assert.assertEquals(existingLock.getUserId(), newLock.getUserId());
 		Assert.assertEquals(existingLock.getUserName(), newLock.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(existingLock.getCreateDate()),
-			Time.getShortTimestamp(newLock.getCreateDate()));
+		Assert.assertTrue(DateUtil.equals(existingLock.getCreateDate(),
+				newLock.getCreateDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingLock.getClassName(), newLock.getClassName());
 		Assert.assertEquals(existingLock.getKey(), newLock.getKey());
 		Assert.assertEquals(existingLock.getOwner(), newLock.getOwner());
 		Assert.assertEquals(existingLock.getInheritable(),
 			newLock.getInheritable());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingLock.getExpirationDate()),
-			Time.getShortTimestamp(newLock.getExpirationDate()));
+		Assert.assertTrue(DateUtil.equals(existingLock.getExpirationDate(),
+				newLock.getExpirationDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

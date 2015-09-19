@@ -15,6 +15,7 @@
 package com.liferay.portal.service.persistence.test;
 
 import com.liferay.portal.NoSuchPhoneException;
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -25,11 +26,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.model.Phone;
 import com.liferay.portal.service.PhoneLocalServiceUtil;
 import com.liferay.portal.service.persistence.PhonePersistence;
@@ -154,12 +155,10 @@ public class PhonePersistenceTest {
 			newPhone.getCompanyId());
 		Assert.assertEquals(existingPhone.getUserId(), newPhone.getUserId());
 		Assert.assertEquals(existingPhone.getUserName(), newPhone.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingPhone.getCreateDate()),
-			Time.getShortTimestamp(newPhone.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingPhone.getModifiedDate()),
-			Time.getShortTimestamp(newPhone.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(existingPhone.getCreateDate(),
+				newPhone.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(existingPhone.getModifiedDate(),
+				newPhone.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingPhone.getClassNameId(),
 			newPhone.getClassNameId());
 		Assert.assertEquals(existingPhone.getClassPK(), newPhone.getClassPK());
@@ -168,9 +167,8 @@ public class PhonePersistenceTest {
 			newPhone.getExtension());
 		Assert.assertEquals(existingPhone.getTypeId(), newPhone.getTypeId());
 		Assert.assertEquals(existingPhone.getPrimary(), newPhone.getPrimary());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingPhone.getLastPublishDate()),
-			Time.getShortTimestamp(newPhone.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(existingPhone.getLastPublishDate(),
+				newPhone.getLastPublishDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

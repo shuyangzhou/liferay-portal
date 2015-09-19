@@ -15,6 +15,7 @@
 package com.liferay.portal.service.persistence.test;
 
 import com.liferay.portal.NoSuchRepositoryException;
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -26,11 +27,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.Repository;
 import com.liferay.portal.service.RepositoryLocalServiceUtil;
@@ -164,12 +165,11 @@ public class RepositoryPersistenceTest {
 			newRepository.getUserId());
 		Assert.assertEquals(existingRepository.getUserName(),
 			newRepository.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingRepository.getCreateDate()),
-			Time.getShortTimestamp(newRepository.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingRepository.getModifiedDate()),
-			Time.getShortTimestamp(newRepository.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(existingRepository.getCreateDate(),
+				newRepository.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingRepository.getModifiedDate(),
+				newRepository.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingRepository.getClassNameId(),
 			newRepository.getClassNameId());
 		Assert.assertEquals(existingRepository.getName(),
@@ -182,9 +182,9 @@ public class RepositoryPersistenceTest {
 			newRepository.getTypeSettings());
 		Assert.assertEquals(existingRepository.getDlFolderId(),
 			newRepository.getDlFolderId());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingRepository.getLastPublishDate()),
-			Time.getShortTimestamp(newRepository.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingRepository.getLastPublishDate(),
+				newRepository.getLastPublishDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

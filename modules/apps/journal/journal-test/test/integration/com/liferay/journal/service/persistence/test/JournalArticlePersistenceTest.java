@@ -22,6 +22,7 @@ import com.liferay.journal.service.JournalArticleLocalServiceUtil;
 import com.liferay.journal.service.persistence.JournalArticlePersistence;
 import com.liferay.journal.service.persistence.JournalArticleUtil;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -34,11 +35,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -207,12 +208,12 @@ public class JournalArticlePersistenceTest {
 			newJournalArticle.getUserId());
 		Assert.assertEquals(existingJournalArticle.getUserName(),
 			newJournalArticle.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingJournalArticle.getCreateDate()),
-			Time.getShortTimestamp(newJournalArticle.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingJournalArticle.getModifiedDate()),
-			Time.getShortTimestamp(newJournalArticle.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingJournalArticle.getCreateDate(),
+				newJournalArticle.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingJournalArticle.getModifiedDate(),
+				newJournalArticle.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingJournalArticle.getFolderId(),
 			newJournalArticle.getFolderId());
 		Assert.assertEquals(existingJournalArticle.getClassNameId(),
@@ -239,15 +240,15 @@ public class JournalArticlePersistenceTest {
 			newJournalArticle.getDDMTemplateKey());
 		Assert.assertEquals(existingJournalArticle.getLayoutUuid(),
 			newJournalArticle.getLayoutUuid());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingJournalArticle.getDisplayDate()),
-			Time.getShortTimestamp(newJournalArticle.getDisplayDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingJournalArticle.getExpirationDate()),
-			Time.getShortTimestamp(newJournalArticle.getExpirationDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingJournalArticle.getReviewDate()),
-			Time.getShortTimestamp(newJournalArticle.getReviewDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingJournalArticle.getDisplayDate(),
+				newJournalArticle.getDisplayDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingJournalArticle.getExpirationDate(),
+				newJournalArticle.getExpirationDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingJournalArticle.getReviewDate(),
+				newJournalArticle.getReviewDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingJournalArticle.getIndexable(),
 			newJournalArticle.getIndexable());
 		Assert.assertEquals(existingJournalArticle.getSmallImage(),
@@ -256,18 +257,18 @@ public class JournalArticlePersistenceTest {
 			newJournalArticle.getSmallImageId());
 		Assert.assertEquals(existingJournalArticle.getSmallImageURL(),
 			newJournalArticle.getSmallImageURL());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingJournalArticle.getLastPublishDate()),
-			Time.getShortTimestamp(newJournalArticle.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingJournalArticle.getLastPublishDate(),
+				newJournalArticle.getLastPublishDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingJournalArticle.getStatus(),
 			newJournalArticle.getStatus());
 		Assert.assertEquals(existingJournalArticle.getStatusByUserId(),
 			newJournalArticle.getStatusByUserId());
 		Assert.assertEquals(existingJournalArticle.getStatusByUserName(),
 			newJournalArticle.getStatusByUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingJournalArticle.getStatusDate()),
-			Time.getShortTimestamp(newJournalArticle.getStatusDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingJournalArticle.getStatusDate(),
+				newJournalArticle.getStatusDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

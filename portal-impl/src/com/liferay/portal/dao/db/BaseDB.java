@@ -205,7 +205,12 @@ public abstract class BaseDB implements DB {
 
 	@Override
 	public boolean isSupportsDateMilliseconds() {
-		return _SUPPORTS_DATE_MILLISECONDS;
+		return _supportsDateMilliseconds;
+	}
+
+	@Override
+	public boolean isSupportsDateSecondRounding() {
+		return _supportsDateSecondRounding;
 	}
 
 	@Override
@@ -465,6 +470,36 @@ public abstract class BaseDB implements DB {
 		try (Connection connection = DataAccess.getConnection()) {
 			runSQLTemplateString(connection, template, evaluate, failOnError);
 		}
+	}
+
+	@Override
+	public void setSupportsDateMilliseconds(boolean supportsDateMilliseconds) {
+		if (_log.isInfoEnabled()) {
+			if (supportsDateMilliseconds) {
+				_log.info("Database supports date milliseconds");
+			}
+			else {
+				_log.info("Database does not support date milliseconds");
+			}
+		}
+
+		_supportsDateMilliseconds = supportsDateMilliseconds;
+	}
+
+	@Override
+	public void setSupportsDateSecondRounding(
+		boolean supportsDateSecondRounding) {
+
+		if (_log.isInfoEnabled()) {
+			if (supportsDateSecondRounding) {
+				_log.info("Database supports date second rounding");
+			}
+			else {
+				_log.info("Database does not support date second rounding");
+			}
+		}
+
+		_supportsDateSecondRounding = supportsDateSecondRounding;
 	}
 
 	@Override
@@ -1101,8 +1136,6 @@ public abstract class BaseDB implements DB {
 
 	private static final boolean _SUPPORTS_ALTER_COLUMN_TYPE = true;
 
-	private static final boolean _SUPPORTS_DATE_MILLISECONDS = true;
-
 	private static final boolean _SUPPORTS_INLINE_DISTINCT = true;
 
 	private static final boolean _SUPPORTS_QUERYING_AFTER_EXCEPTION = true;
@@ -1144,6 +1177,8 @@ public abstract class BaseDB implements DB {
 		_templatePattern = Pattern.compile(sb.toString());
 	}
 
+	private boolean _supportsDateMilliseconds;
+	private boolean _supportsDateSecondRounding;
 	private boolean _supportsStringCaseSensitiveQuery;
 	private final Map<String, String> _templateMap = new HashMap<>();
 	private final String _type;

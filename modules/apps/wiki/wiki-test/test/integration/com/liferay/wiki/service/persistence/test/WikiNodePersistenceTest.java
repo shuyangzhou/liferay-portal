@@ -16,6 +16,7 @@ package com.liferay.wiki.service.persistence.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -27,11 +28,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -167,30 +168,26 @@ public class WikiNodePersistenceTest {
 			newWikiNode.getUserId());
 		Assert.assertEquals(existingWikiNode.getUserName(),
 			newWikiNode.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingWikiNode.getCreateDate()),
-			Time.getShortTimestamp(newWikiNode.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingWikiNode.getModifiedDate()),
-			Time.getShortTimestamp(newWikiNode.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(existingWikiNode.getCreateDate(),
+				newWikiNode.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(existingWikiNode.getModifiedDate(),
+				newWikiNode.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingWikiNode.getName(), newWikiNode.getName());
 		Assert.assertEquals(existingWikiNode.getDescription(),
 			newWikiNode.getDescription());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingWikiNode.getLastPostDate()),
-			Time.getShortTimestamp(newWikiNode.getLastPostDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingWikiNode.getLastPublishDate()),
-			Time.getShortTimestamp(newWikiNode.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(existingWikiNode.getLastPostDate(),
+				newWikiNode.getLastPostDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingWikiNode.getLastPublishDate(),
+				newWikiNode.getLastPublishDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingWikiNode.getStatus(),
 			newWikiNode.getStatus());
 		Assert.assertEquals(existingWikiNode.getStatusByUserId(),
 			newWikiNode.getStatusByUserId());
 		Assert.assertEquals(existingWikiNode.getStatusByUserName(),
 			newWikiNode.getStatusByUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingWikiNode.getStatusDate()),
-			Time.getShortTimestamp(newWikiNode.getStatusDate()));
+		Assert.assertTrue(DateUtil.equals(existingWikiNode.getStatusDate(),
+				newWikiNode.getStatusDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

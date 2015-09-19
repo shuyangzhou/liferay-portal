@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.softwarecatalog.service.persistence.test;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -24,10 +25,10 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 
@@ -148,12 +149,12 @@ public class SCFrameworkVersionPersistenceTest {
 			newSCFrameworkVersion.getUserId());
 		Assert.assertEquals(existingSCFrameworkVersion.getUserName(),
 			newSCFrameworkVersion.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingSCFrameworkVersion.getCreateDate()),
-			Time.getShortTimestamp(newSCFrameworkVersion.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingSCFrameworkVersion.getModifiedDate()),
-			Time.getShortTimestamp(newSCFrameworkVersion.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingSCFrameworkVersion.getCreateDate(),
+				newSCFrameworkVersion.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingSCFrameworkVersion.getModifiedDate(),
+				newSCFrameworkVersion.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingSCFrameworkVersion.getName(),
 			newSCFrameworkVersion.getName());
 		Assert.assertEquals(existingSCFrameworkVersion.getUrl(),

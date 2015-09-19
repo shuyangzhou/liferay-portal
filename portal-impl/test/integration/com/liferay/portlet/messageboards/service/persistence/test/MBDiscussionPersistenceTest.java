@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.messageboards.service.persistence.test;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -25,11 +26,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -155,21 +156,21 @@ public class MBDiscussionPersistenceTest {
 			newMBDiscussion.getUserId());
 		Assert.assertEquals(existingMBDiscussion.getUserName(),
 			newMBDiscussion.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingMBDiscussion.getCreateDate()),
-			Time.getShortTimestamp(newMBDiscussion.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingMBDiscussion.getModifiedDate()),
-			Time.getShortTimestamp(newMBDiscussion.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingMBDiscussion.getCreateDate(),
+				newMBDiscussion.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingMBDiscussion.getModifiedDate(),
+				newMBDiscussion.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingMBDiscussion.getClassNameId(),
 			newMBDiscussion.getClassNameId());
 		Assert.assertEquals(existingMBDiscussion.getClassPK(),
 			newMBDiscussion.getClassPK());
 		Assert.assertEquals(existingMBDiscussion.getThreadId(),
 			newMBDiscussion.getThreadId());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingMBDiscussion.getLastPublishDate()),
-			Time.getShortTimestamp(newMBDiscussion.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingMBDiscussion.getLastPublishDate(),
+				newMBDiscussion.getLastPublishDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

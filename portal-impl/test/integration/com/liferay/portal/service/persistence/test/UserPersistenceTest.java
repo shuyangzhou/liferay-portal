@@ -15,6 +15,7 @@
 package com.liferay.portal.service.persistence.test;
 
 import com.liferay.portal.NoSuchUserException;
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -26,11 +27,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
@@ -207,11 +208,10 @@ public class UserPersistenceTest {
 		Assert.assertEquals(existingUser.getUuid(), newUser.getUuid());
 		Assert.assertEquals(existingUser.getUserId(), newUser.getUserId());
 		Assert.assertEquals(existingUser.getCompanyId(), newUser.getCompanyId());
-		Assert.assertEquals(Time.getShortTimestamp(existingUser.getCreateDate()),
-			Time.getShortTimestamp(newUser.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingUser.getModifiedDate()),
-			Time.getShortTimestamp(newUser.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(existingUser.getCreateDate(),
+				newUser.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(existingUser.getModifiedDate(),
+				newUser.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingUser.getDefaultUser(),
 			newUser.getDefaultUser());
 		Assert.assertEquals(existingUser.getContactId(), newUser.getContactId());
@@ -220,9 +220,9 @@ public class UserPersistenceTest {
 			newUser.getPasswordEncrypted());
 		Assert.assertEquals(existingUser.getPasswordReset(),
 			newUser.getPasswordReset());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingUser.getPasswordModifiedDate()),
-			Time.getShortTimestamp(newUser.getPasswordModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingUser.getPasswordModifiedDate(),
+				newUser.getPasswordModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingUser.getDigest(), newUser.getDigest());
 		Assert.assertEquals(existingUser.getReminderQueryQuestion(),
 			newUser.getReminderQueryQuestion());
@@ -252,30 +252,27 @@ public class UserPersistenceTest {
 			newUser.getMiddleName());
 		Assert.assertEquals(existingUser.getLastName(), newUser.getLastName());
 		Assert.assertEquals(existingUser.getJobTitle(), newUser.getJobTitle());
-		Assert.assertEquals(Time.getShortTimestamp(existingUser.getLoginDate()),
-			Time.getShortTimestamp(newUser.getLoginDate()));
+		Assert.assertTrue(DateUtil.equals(existingUser.getLoginDate(),
+				newUser.getLoginDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingUser.getLoginIP(), newUser.getLoginIP());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingUser.getLastLoginDate()),
-			Time.getShortTimestamp(newUser.getLastLoginDate()));
+		Assert.assertTrue(DateUtil.equals(existingUser.getLastLoginDate(),
+				newUser.getLastLoginDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingUser.getLastLoginIP(),
 			newUser.getLastLoginIP());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingUser.getLastFailedLoginDate()),
-			Time.getShortTimestamp(newUser.getLastFailedLoginDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingUser.getLastFailedLoginDate(),
+				newUser.getLastFailedLoginDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingUser.getFailedLoginAttempts(),
 			newUser.getFailedLoginAttempts());
 		Assert.assertEquals(existingUser.getLockout(), newUser.getLockout());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingUser.getLockoutDate()),
-			Time.getShortTimestamp(newUser.getLockoutDate()));
+		Assert.assertTrue(DateUtil.equals(existingUser.getLockoutDate(),
+				newUser.getLockoutDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingUser.getAgreedToTermsOfUse(),
 			newUser.getAgreedToTermsOfUse());
 		Assert.assertEquals(existingUser.getEmailAddressVerified(),
 			newUser.getEmailAddressVerified());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingUser.getLastPublishDate()),
-			Time.getShortTimestamp(newUser.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(existingUser.getLastPublishDate(),
+				newUser.getLastPublishDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingUser.getStatus(), newUser.getStatus());
 	}
 

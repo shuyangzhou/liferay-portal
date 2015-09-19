@@ -15,6 +15,7 @@
 package com.liferay.portal.service.persistence.test;
 
 import com.liferay.portal.NoSuchRepositoryEntryException;
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -26,11 +27,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.RepositoryEntry;
 import com.liferay.portal.service.RepositoryEntryLocalServiceUtil;
@@ -158,21 +159,21 @@ public class RepositoryEntryPersistenceTest {
 			newRepositoryEntry.getUserId());
 		Assert.assertEquals(existingRepositoryEntry.getUserName(),
 			newRepositoryEntry.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingRepositoryEntry.getCreateDate()),
-			Time.getShortTimestamp(newRepositoryEntry.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingRepositoryEntry.getModifiedDate()),
-			Time.getShortTimestamp(newRepositoryEntry.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingRepositoryEntry.getCreateDate(),
+				newRepositoryEntry.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingRepositoryEntry.getModifiedDate(),
+				newRepositoryEntry.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingRepositoryEntry.getRepositoryId(),
 			newRepositoryEntry.getRepositoryId());
 		Assert.assertEquals(existingRepositoryEntry.getMappedId(),
 			newRepositoryEntry.getMappedId());
 		Assert.assertEquals(existingRepositoryEntry.getManualCheckInRequired(),
 			newRepositoryEntry.getManualCheckInRequired());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingRepositoryEntry.getLastPublishDate()),
-			Time.getShortTimestamp(newRepositoryEntry.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingRepositoryEntry.getLastPublishDate(),
+				newRepositoryEntry.getLastPublishDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

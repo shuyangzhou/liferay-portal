@@ -15,6 +15,7 @@
 package com.liferay.portal.service.persistence.test;
 
 import com.liferay.portal.NoSuchPasswordPolicyException;
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -26,11 +27,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.PasswordPolicy;
 import com.liferay.portal.service.PasswordPolicyLocalServiceUtil;
@@ -202,12 +203,12 @@ public class PasswordPolicyPersistenceTest {
 			newPasswordPolicy.getUserId());
 		Assert.assertEquals(existingPasswordPolicy.getUserName(),
 			newPasswordPolicy.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingPasswordPolicy.getCreateDate()),
-			Time.getShortTimestamp(newPasswordPolicy.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingPasswordPolicy.getModifiedDate()),
-			Time.getShortTimestamp(newPasswordPolicy.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingPasswordPolicy.getCreateDate(),
+				newPasswordPolicy.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingPasswordPolicy.getModifiedDate(),
+				newPasswordPolicy.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingPasswordPolicy.getDefaultPolicy(),
 			newPasswordPolicy.getDefaultPolicy());
 		Assert.assertEquals(existingPasswordPolicy.getName(),
@@ -262,9 +263,9 @@ public class PasswordPolicyPersistenceTest {
 			newPasswordPolicy.getResetFailureCount());
 		Assert.assertEquals(existingPasswordPolicy.getResetTicketMaxAge(),
 			newPasswordPolicy.getResetTicketMaxAge());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingPasswordPolicy.getLastPublishDate()),
-			Time.getShortTimestamp(newPasswordPolicy.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingPasswordPolicy.getLastPublishDate(),
+				newPasswordPolicy.getLastPublishDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

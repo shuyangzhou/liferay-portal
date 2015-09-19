@@ -15,6 +15,7 @@
 package com.liferay.portal.service.persistence.test;
 
 import com.liferay.portal.NoSuchPasswordTrackerException;
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -25,10 +26,10 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.model.PasswordTracker;
 import com.liferay.portal.service.PasswordTrackerLocalServiceUtil;
 import com.liferay.portal.service.persistence.PasswordTrackerPersistence;
@@ -131,9 +132,9 @@ public class PasswordTrackerPersistenceTest {
 			newPasswordTracker.getPasswordTrackerId());
 		Assert.assertEquals(existingPasswordTracker.getUserId(),
 			newPasswordTracker.getUserId());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingPasswordTracker.getCreateDate()),
-			Time.getShortTimestamp(newPasswordTracker.getCreateDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingPasswordTracker.getCreateDate(),
+				newPasswordTracker.getCreateDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingPasswordTracker.getPassword(),
 			newPasswordTracker.getPassword());
 	}

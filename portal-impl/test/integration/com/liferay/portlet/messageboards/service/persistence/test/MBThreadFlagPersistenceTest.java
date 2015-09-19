@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.messageboards.service.persistence.test;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -25,11 +26,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -151,17 +152,17 @@ public class MBThreadFlagPersistenceTest {
 			newMBThreadFlag.getUserId());
 		Assert.assertEquals(existingMBThreadFlag.getUserName(),
 			newMBThreadFlag.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingMBThreadFlag.getCreateDate()),
-			Time.getShortTimestamp(newMBThreadFlag.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingMBThreadFlag.getModifiedDate()),
-			Time.getShortTimestamp(newMBThreadFlag.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingMBThreadFlag.getCreateDate(),
+				newMBThreadFlag.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingMBThreadFlag.getModifiedDate(),
+				newMBThreadFlag.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingMBThreadFlag.getThreadId(),
 			newMBThreadFlag.getThreadId());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingMBThreadFlag.getLastPublishDate()),
-			Time.getShortTimestamp(newMBThreadFlag.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingMBThreadFlag.getLastPublishDate(),
+				newMBThreadFlag.getLastPublishDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

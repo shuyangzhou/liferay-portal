@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.asset.service.persistence.test;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -25,11 +26,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -161,12 +162,12 @@ public class AssetCategoryPersistenceTest {
 			newAssetCategory.getUserId());
 		Assert.assertEquals(existingAssetCategory.getUserName(),
 			newAssetCategory.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingAssetCategory.getCreateDate()),
-			Time.getShortTimestamp(newAssetCategory.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingAssetCategory.getModifiedDate()),
-			Time.getShortTimestamp(newAssetCategory.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingAssetCategory.getCreateDate(),
+				newAssetCategory.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingAssetCategory.getModifiedDate(),
+				newAssetCategory.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingAssetCategory.getParentCategoryId(),
 			newAssetCategory.getParentCategoryId());
 		Assert.assertEquals(existingAssetCategory.getLeftCategoryId(),
@@ -181,9 +182,9 @@ public class AssetCategoryPersistenceTest {
 			newAssetCategory.getDescription());
 		Assert.assertEquals(existingAssetCategory.getVocabularyId(),
 			newAssetCategory.getVocabularyId());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingAssetCategory.getLastPublishDate()),
-			Time.getShortTimestamp(newAssetCategory.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingAssetCategory.getLastPublishDate(),
+				newAssetCategory.getLastPublishDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

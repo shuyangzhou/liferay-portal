@@ -15,6 +15,7 @@
 package com.liferay.portal.service.persistence.test;
 
 import com.liferay.portal.NoSuchWebsiteException;
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -25,11 +26,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.model.Website;
 import com.liferay.portal.service.WebsiteLocalServiceUtil;
 import com.liferay.portal.service.persistence.WebsitePersistence;
@@ -154,12 +155,10 @@ public class WebsitePersistenceTest {
 		Assert.assertEquals(existingWebsite.getUserId(), newWebsite.getUserId());
 		Assert.assertEquals(existingWebsite.getUserName(),
 			newWebsite.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingWebsite.getCreateDate()),
-			Time.getShortTimestamp(newWebsite.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingWebsite.getModifiedDate()),
-			Time.getShortTimestamp(newWebsite.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(existingWebsite.getCreateDate(),
+				newWebsite.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(existingWebsite.getModifiedDate(),
+				newWebsite.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingWebsite.getClassNameId(),
 			newWebsite.getClassNameId());
 		Assert.assertEquals(existingWebsite.getClassPK(),
@@ -168,9 +167,9 @@ public class WebsitePersistenceTest {
 		Assert.assertEquals(existingWebsite.getTypeId(), newWebsite.getTypeId());
 		Assert.assertEquals(existingWebsite.getPrimary(),
 			newWebsite.getPrimary());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingWebsite.getLastPublishDate()),
-			Time.getShortTimestamp(newWebsite.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingWebsite.getLastPublishDate(),
+				newWebsite.getLastPublishDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

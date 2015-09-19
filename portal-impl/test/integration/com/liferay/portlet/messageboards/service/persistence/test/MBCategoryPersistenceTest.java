@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.messageboards.service.persistence.test;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -25,11 +26,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -171,12 +172,11 @@ public class MBCategoryPersistenceTest {
 			newMBCategory.getUserId());
 		Assert.assertEquals(existingMBCategory.getUserName(),
 			newMBCategory.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingMBCategory.getCreateDate()),
-			Time.getShortTimestamp(newMBCategory.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingMBCategory.getModifiedDate()),
-			Time.getShortTimestamp(newMBCategory.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(existingMBCategory.getCreateDate(),
+				newMBCategory.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingMBCategory.getModifiedDate(),
+				newMBCategory.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingMBCategory.getParentCategoryId(),
 			newMBCategory.getParentCategoryId());
 		Assert.assertEquals(existingMBCategory.getName(),
@@ -189,21 +189,20 @@ public class MBCategoryPersistenceTest {
 			newMBCategory.getThreadCount());
 		Assert.assertEquals(existingMBCategory.getMessageCount(),
 			newMBCategory.getMessageCount());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingMBCategory.getLastPostDate()),
-			Time.getShortTimestamp(newMBCategory.getLastPostDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingMBCategory.getLastPublishDate()),
-			Time.getShortTimestamp(newMBCategory.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingMBCategory.getLastPostDate(),
+				newMBCategory.getLastPostDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingMBCategory.getLastPublishDate(),
+				newMBCategory.getLastPublishDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingMBCategory.getStatus(),
 			newMBCategory.getStatus());
 		Assert.assertEquals(existingMBCategory.getStatusByUserId(),
 			newMBCategory.getStatusByUserId());
 		Assert.assertEquals(existingMBCategory.getStatusByUserName(),
 			newMBCategory.getStatusByUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingMBCategory.getStatusDate()),
-			Time.getShortTimestamp(newMBCategory.getStatusDate()));
+		Assert.assertTrue(DateUtil.equals(existingMBCategory.getStatusDate(),
+				newMBCategory.getStatusDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

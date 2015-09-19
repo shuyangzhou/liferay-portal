@@ -22,6 +22,7 @@ import com.liferay.dynamic.data.mapping.service.DDMTemplateVersionLocalServiceUt
 import com.liferay.dynamic.data.mapping.service.persistence.DDMTemplateVersionPersistence;
 import com.liferay.dynamic.data.mapping.service.persistence.DDMTemplateVersionUtil;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -33,11 +34,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -170,9 +171,9 @@ public class DDMTemplateVersionPersistenceTest {
 			newDDMTemplateVersion.getUserId());
 		Assert.assertEquals(existingDDMTemplateVersion.getUserName(),
 			newDDMTemplateVersion.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingDDMTemplateVersion.getCreateDate()),
-			Time.getShortTimestamp(newDDMTemplateVersion.getCreateDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingDDMTemplateVersion.getCreateDate(),
+				newDDMTemplateVersion.getCreateDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingDDMTemplateVersion.getClassNameId(),
 			newDDMTemplateVersion.getClassNameId());
 		Assert.assertEquals(existingDDMTemplateVersion.getClassPK(),
@@ -195,9 +196,9 @@ public class DDMTemplateVersionPersistenceTest {
 			newDDMTemplateVersion.getStatusByUserId());
 		Assert.assertEquals(existingDDMTemplateVersion.getStatusByUserName(),
 			newDDMTemplateVersion.getStatusByUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingDDMTemplateVersion.getStatusDate()),
-			Time.getShortTimestamp(newDDMTemplateVersion.getStatusDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingDDMTemplateVersion.getStatusDate(),
+				newDDMTemplateVersion.getStatusDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

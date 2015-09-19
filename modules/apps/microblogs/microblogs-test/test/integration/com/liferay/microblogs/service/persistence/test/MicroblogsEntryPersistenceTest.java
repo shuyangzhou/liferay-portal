@@ -22,6 +22,7 @@ import com.liferay.microblogs.service.MicroblogsEntryLocalServiceUtil;
 import com.liferay.microblogs.service.persistence.MicroblogsEntryPersistence;
 import com.liferay.microblogs.service.persistence.MicroblogsEntryUtil;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -32,10 +33,10 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 
@@ -153,12 +154,12 @@ public class MicroblogsEntryPersistenceTest {
 			newMicroblogsEntry.getUserId());
 		Assert.assertEquals(existingMicroblogsEntry.getUserName(),
 			newMicroblogsEntry.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingMicroblogsEntry.getCreateDate()),
-			Time.getShortTimestamp(newMicroblogsEntry.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingMicroblogsEntry.getModifiedDate()),
-			Time.getShortTimestamp(newMicroblogsEntry.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingMicroblogsEntry.getCreateDate(),
+				newMicroblogsEntry.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingMicroblogsEntry.getModifiedDate(),
+				newMicroblogsEntry.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingMicroblogsEntry.getCreatorClassNameId(),
 			newMicroblogsEntry.getCreatorClassNameId());
 		Assert.assertEquals(existingMicroblogsEntry.getCreatorClassPK(),

@@ -16,6 +16,7 @@ package com.liferay.portal.workflow.kaleo.service.persistence.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -27,11 +28,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -165,12 +166,12 @@ public class KaleoTransitionPersistenceTest {
 			newKaleoTransition.getUserId());
 		Assert.assertEquals(existingKaleoTransition.getUserName(),
 			newKaleoTransition.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingKaleoTransition.getCreateDate()),
-			Time.getShortTimestamp(newKaleoTransition.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingKaleoTransition.getModifiedDate()),
-			Time.getShortTimestamp(newKaleoTransition.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingKaleoTransition.getCreateDate(),
+				newKaleoTransition.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingKaleoTransition.getModifiedDate(),
+				newKaleoTransition.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingKaleoTransition.getKaleoDefinitionId(),
 			newKaleoTransition.getKaleoDefinitionId());
 		Assert.assertEquals(existingKaleoTransition.getKaleoNodeId(),

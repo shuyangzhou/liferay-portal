@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.asset.service.persistence.test;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -25,11 +26,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -157,12 +158,12 @@ public class AssetVocabularyPersistenceTest {
 			newAssetVocabulary.getUserId());
 		Assert.assertEquals(existingAssetVocabulary.getUserName(),
 			newAssetVocabulary.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingAssetVocabulary.getCreateDate()),
-			Time.getShortTimestamp(newAssetVocabulary.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingAssetVocabulary.getModifiedDate()),
-			Time.getShortTimestamp(newAssetVocabulary.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingAssetVocabulary.getCreateDate(),
+				newAssetVocabulary.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingAssetVocabulary.getModifiedDate(),
+				newAssetVocabulary.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingAssetVocabulary.getName(),
 			newAssetVocabulary.getName());
 		Assert.assertEquals(existingAssetVocabulary.getTitle(),
@@ -171,9 +172,9 @@ public class AssetVocabularyPersistenceTest {
 			newAssetVocabulary.getDescription());
 		Assert.assertEquals(existingAssetVocabulary.getSettings(),
 			newAssetVocabulary.getSettings());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingAssetVocabulary.getLastPublishDate()),
-			Time.getShortTimestamp(newAssetVocabulary.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingAssetVocabulary.getLastPublishDate(),
+				newAssetVocabulary.getLastPublishDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

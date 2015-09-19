@@ -16,6 +16,7 @@ package com.liferay.shopping.service.persistence.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -28,11 +29,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -237,12 +238,12 @@ public class ShoppingOrderPersistenceTest {
 			newShoppingOrder.getUserId());
 		Assert.assertEquals(existingShoppingOrder.getUserName(),
 			newShoppingOrder.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingShoppingOrder.getCreateDate()),
-			Time.getShortTimestamp(newShoppingOrder.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingShoppingOrder.getModifiedDate()),
-			Time.getShortTimestamp(newShoppingOrder.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingShoppingOrder.getCreateDate(),
+				newShoppingOrder.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingShoppingOrder.getModifiedDate(),
+				newShoppingOrder.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingShoppingOrder.getNumber(),
 			newShoppingOrder.getNumber());
 		AssertUtils.assertEquals(existingShoppingOrder.getTax(),

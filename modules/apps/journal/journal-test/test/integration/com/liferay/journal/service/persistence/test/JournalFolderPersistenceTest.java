@@ -22,6 +22,7 @@ import com.liferay.journal.service.JournalFolderLocalServiceUtil;
 import com.liferay.journal.service.persistence.JournalFolderPersistence;
 import com.liferay.journal.service.persistence.JournalFolderUtil;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -33,11 +34,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -172,12 +173,12 @@ public class JournalFolderPersistenceTest {
 			newJournalFolder.getUserId());
 		Assert.assertEquals(existingJournalFolder.getUserName(),
 			newJournalFolder.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingJournalFolder.getCreateDate()),
-			Time.getShortTimestamp(newJournalFolder.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingJournalFolder.getModifiedDate()),
-			Time.getShortTimestamp(newJournalFolder.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingJournalFolder.getCreateDate(),
+				newJournalFolder.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingJournalFolder.getModifiedDate(),
+				newJournalFolder.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingJournalFolder.getParentFolderId(),
 			newJournalFolder.getParentFolderId());
 		Assert.assertEquals(existingJournalFolder.getTreePath(),
@@ -188,18 +189,18 @@ public class JournalFolderPersistenceTest {
 			newJournalFolder.getDescription());
 		Assert.assertEquals(existingJournalFolder.getRestrictionType(),
 			newJournalFolder.getRestrictionType());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingJournalFolder.getLastPublishDate()),
-			Time.getShortTimestamp(newJournalFolder.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingJournalFolder.getLastPublishDate(),
+				newJournalFolder.getLastPublishDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingJournalFolder.getStatus(),
 			newJournalFolder.getStatus());
 		Assert.assertEquals(existingJournalFolder.getStatusByUserId(),
 			newJournalFolder.getStatusByUserId());
 		Assert.assertEquals(existingJournalFolder.getStatusByUserName(),
 			newJournalFolder.getStatusByUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingJournalFolder.getStatusDate()),
-			Time.getShortTimestamp(newJournalFolder.getStatusDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingJournalFolder.getStatusDate(),
+				newJournalFolder.getStatusDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

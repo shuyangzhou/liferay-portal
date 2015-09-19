@@ -16,6 +16,7 @@ package com.liferay.service.access.policy.service.persistence.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -27,11 +28,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -155,12 +156,10 @@ public class SAPEntryPersistenceTest {
 			newSAPEntry.getUserId());
 		Assert.assertEquals(existingSAPEntry.getUserName(),
 			newSAPEntry.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingSAPEntry.getCreateDate()),
-			Time.getShortTimestamp(newSAPEntry.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingSAPEntry.getModifiedDate()),
-			Time.getShortTimestamp(newSAPEntry.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(existingSAPEntry.getCreateDate(),
+				newSAPEntry.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(existingSAPEntry.getModifiedDate(),
+				newSAPEntry.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingSAPEntry.getAllowedServiceSignatures(),
 			newSAPEntry.getAllowedServiceSignatures());
 		Assert.assertEquals(existingSAPEntry.getDefaultSAPEntry(),

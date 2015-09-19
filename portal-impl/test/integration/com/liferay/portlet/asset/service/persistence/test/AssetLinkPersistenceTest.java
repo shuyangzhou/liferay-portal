@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.asset.service.persistence.test;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -25,10 +26,10 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 
@@ -143,9 +144,8 @@ public class AssetLinkPersistenceTest {
 			newAssetLink.getUserId());
 		Assert.assertEquals(existingAssetLink.getUserName(),
 			newAssetLink.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingAssetLink.getCreateDate()),
-			Time.getShortTimestamp(newAssetLink.getCreateDate()));
+		Assert.assertTrue(DateUtil.equals(existingAssetLink.getCreateDate(),
+				newAssetLink.getCreateDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingAssetLink.getEntryId1(),
 			newAssetLink.getEntryId1());
 		Assert.assertEquals(existingAssetLink.getEntryId2(),

@@ -15,6 +15,7 @@
 package com.liferay.portal.service.persistence.test;
 
 import com.liferay.portal.NoSuchLayoutFriendlyURLException;
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -26,11 +27,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.LayoutFriendlyURL;
 import com.liferay.portal.service.LayoutFriendlyURLLocalServiceUtil;
@@ -160,12 +161,12 @@ public class LayoutFriendlyURLPersistenceTest {
 			newLayoutFriendlyURL.getUserId());
 		Assert.assertEquals(existingLayoutFriendlyURL.getUserName(),
 			newLayoutFriendlyURL.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingLayoutFriendlyURL.getCreateDate()),
-			Time.getShortTimestamp(newLayoutFriendlyURL.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingLayoutFriendlyURL.getModifiedDate()),
-			Time.getShortTimestamp(newLayoutFriendlyURL.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingLayoutFriendlyURL.getCreateDate(),
+				newLayoutFriendlyURL.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingLayoutFriendlyURL.getModifiedDate(),
+				newLayoutFriendlyURL.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingLayoutFriendlyURL.getPlid(),
 			newLayoutFriendlyURL.getPlid());
 		Assert.assertEquals(existingLayoutFriendlyURL.getPrivateLayout(),
@@ -174,9 +175,9 @@ public class LayoutFriendlyURLPersistenceTest {
 			newLayoutFriendlyURL.getFriendlyURL());
 		Assert.assertEquals(existingLayoutFriendlyURL.getLanguageId(),
 			newLayoutFriendlyURL.getLanguageId());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingLayoutFriendlyURL.getLastPublishDate()),
-			Time.getShortTimestamp(newLayoutFriendlyURL.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingLayoutFriendlyURL.getLastPublishDate(),
+				newLayoutFriendlyURL.getLastPublishDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.Release;
 import com.liferay.portal.model.ReleaseConstants;
@@ -40,6 +41,8 @@ import com.liferay.portal.util.PropsValues;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 
 import java.util.Date;
 import java.util.List;
@@ -217,6 +220,7 @@ public class ReleaseLocalServiceImpl extends ReleaseLocalServiceBaseImpl {
 				}
 
 				testSupportsStringCaseSensitiveQuery();
+				testSupportsDateMillisecondsAndSecondRounding();
 
 				return buildNumber;
 			}
@@ -238,6 +242,7 @@ public class ReleaseLocalServiceImpl extends ReleaseLocalServiceBaseImpl {
 			releaseLocalService.createTablesAndPopulate();
 
 			testSupportsStringCaseSensitiveQuery();
+			testSupportsDateMillisecondsAndSecondRounding();
 
 			Release release = fetchRelease(
 				ReleaseConstants.DEFAULT_SERVLET_CONTEXT_NAME);
@@ -373,6 +378,88 @@ public class ReleaseLocalServiceImpl extends ReleaseLocalServiceBaseImpl {
 
 	}
 
+	protected void testSupportsDateMillisecondsAndSecondRounding() {
+		try (Connection connection = DataAccess.getConnection();
+			PreparedStatement getModifiedDatePreparedStatement =
+				connection.prepareStatement(_GET_MODIFIED_DATE);
+			PreparedStatement updateModifedDatePreparedStatement =
+				connection.prepareStatement(_UPDATE_MODIFIED_DATE)) {
+
+			getModifiedDatePreparedStatement.setLong(
+				1, ReleaseConstants.DEFAULT_ID);
+
+			Timestamp modifiedTimestamp = null;
+
+			try (ResultSet resultSet =
+				getModifiedDatePreparedStatement.executeQuery()) {
+
+				if (resultSet.next()) {
+					modifiedTimestamp = resultSet.getTimestamp(1);
+				}
+				else {
+					if (_log.isWarnEnabled()) {
+						_log.warn(
+							"Unable to get default Release_ row's modified " +
+								"date for testing.");
+					}
+
+					return;
+				}
+			}
+
+			modifiedTimestamp = new Timestamp(
+				modifiedTimestamp.getTime() / Time.SECOND * Time.SECOND +
+					Time.SECOND / 2);
+
+			updateModifedDatePreparedStatement.setTimestamp(
+				1, new Timestamp(modifiedTimestamp.getTime()));
+			updateModifedDatePreparedStatement.setLong(
+				2, ReleaseConstants.DEFAULT_ID);
+
+			int result = updateModifedDatePreparedStatement.executeUpdate();
+
+			if (result != 1) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						"Unable to update default Release_ row's modified " +
+							"date for testing.");
+				}
+
+				return;
+			}
+
+			try (ResultSet resultSet =
+				getModifiedDatePreparedStatement.executeQuery()) {
+
+				if (resultSet.next()) {
+					Timestamp fetchedModifiedTimestamp = resultSet.getTimestamp(
+						1);
+
+					long time = fetchedModifiedTimestamp.getTime();
+
+					DB db = DBFactoryUtil.getDB();
+
+					if ((time % Time.SECOND) > 0) {
+						db.setSupportsDateMilliseconds(true);
+					}
+					else if (time > modifiedTimestamp.getTime()) {
+						db.setSupportsDateSecondRounding(true);
+					}
+				}
+				else if (_log.isWarnEnabled()) {
+					_log.warn(
+						"Unable to get default Release_ row's modified " +
+							"date for testing.");
+				}
+			}
+		}
+		catch (SQLException sqle) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(sqle.getMessage());
+			}
+		}
+	}
+
 	protected void testSupportsStringCaseSensitiveQuery() {
 		DB db = DBFactoryUtil.getDB();
 
@@ -457,8 +544,14 @@ public class ReleaseLocalServiceImpl extends ReleaseLocalServiceBaseImpl {
 	private static final String _GET_BUILD_NUMBER =
 		"select buildNumber from Release_ where releaseId = ?";
 
+	private static final String _GET_MODIFIED_DATE =
+		"select modifiedDate from Release_ where releaseId = ?";
+
 	private static final String _TEST_DATABASE_STRING_CASE_SENSITIVITY =
 		"select count(*) from Release_ where releaseId = ? and testString = ?";
+
+	private static final String _UPDATE_MODIFIED_DATE =
+		"update Release_ set modifiedDate = ? where releaseId = ?";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ReleaseLocalServiceImpl.class);

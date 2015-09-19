@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.expando.service.persistence.test;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -25,10 +26,10 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 
@@ -131,9 +132,9 @@ public class ExpandoRowPersistenceTest {
 			newExpandoRow.getRowId());
 		Assert.assertEquals(existingExpandoRow.getCompanyId(),
 			newExpandoRow.getCompanyId());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingExpandoRow.getModifiedDate()),
-			Time.getShortTimestamp(newExpandoRow.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingExpandoRow.getModifiedDate(),
+				newExpandoRow.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingExpandoRow.getTableId(),
 			newExpandoRow.getTableId());
 		Assert.assertEquals(existingExpandoRow.getClassPK(),

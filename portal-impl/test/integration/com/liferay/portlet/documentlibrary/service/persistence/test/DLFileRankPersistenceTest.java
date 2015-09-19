@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.documentlibrary.service.persistence.test;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -25,10 +26,10 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 
@@ -139,9 +140,8 @@ public class DLFileRankPersistenceTest {
 			newDLFileRank.getCompanyId());
 		Assert.assertEquals(existingDLFileRank.getUserId(),
 			newDLFileRank.getUserId());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingDLFileRank.getCreateDate()),
-			Time.getShortTimestamp(newDLFileRank.getCreateDate()));
+		Assert.assertTrue(DateUtil.equals(existingDLFileRank.getCreateDate(),
+				newDLFileRank.getCreateDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingDLFileRank.getFileEntryId(),
 			newDLFileRank.getFileEntryId());
 		Assert.assertEquals(existingDLFileRank.getActive(),

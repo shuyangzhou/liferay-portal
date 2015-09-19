@@ -15,6 +15,7 @@
 package com.liferay.portal.service.persistence.test;
 
 import com.liferay.portal.NoSuchMembershipRequestException;
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -25,10 +26,10 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.model.MembershipRequest;
 import com.liferay.portal.service.MembershipRequestLocalServiceUtil;
 import com.liferay.portal.service.persistence.MembershipRequestPersistence;
@@ -147,16 +148,16 @@ public class MembershipRequestPersistenceTest {
 			newMembershipRequest.getCompanyId());
 		Assert.assertEquals(existingMembershipRequest.getUserId(),
 			newMembershipRequest.getUserId());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingMembershipRequest.getCreateDate()),
-			Time.getShortTimestamp(newMembershipRequest.getCreateDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingMembershipRequest.getCreateDate(),
+				newMembershipRequest.getCreateDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingMembershipRequest.getComments(),
 			newMembershipRequest.getComments());
 		Assert.assertEquals(existingMembershipRequest.getReplyComments(),
 			newMembershipRequest.getReplyComments());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingMembershipRequest.getReplyDate()),
-			Time.getShortTimestamp(newMembershipRequest.getReplyDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingMembershipRequest.getReplyDate(),
+				newMembershipRequest.getReplyDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingMembershipRequest.getReplierUserId(),
 			newMembershipRequest.getReplierUserId());
 		Assert.assertEquals(existingMembershipRequest.getStatusId(),

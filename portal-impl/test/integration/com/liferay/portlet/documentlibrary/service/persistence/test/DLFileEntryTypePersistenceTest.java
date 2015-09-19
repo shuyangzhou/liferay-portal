@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.documentlibrary.service.persistence.test;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -25,11 +26,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -155,21 +156,21 @@ public class DLFileEntryTypePersistenceTest {
 			newDLFileEntryType.getUserId());
 		Assert.assertEquals(existingDLFileEntryType.getUserName(),
 			newDLFileEntryType.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingDLFileEntryType.getCreateDate()),
-			Time.getShortTimestamp(newDLFileEntryType.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingDLFileEntryType.getModifiedDate()),
-			Time.getShortTimestamp(newDLFileEntryType.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingDLFileEntryType.getCreateDate(),
+				newDLFileEntryType.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingDLFileEntryType.getModifiedDate(),
+				newDLFileEntryType.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingDLFileEntryType.getFileEntryTypeKey(),
 			newDLFileEntryType.getFileEntryTypeKey());
 		Assert.assertEquals(existingDLFileEntryType.getName(),
 			newDLFileEntryType.getName());
 		Assert.assertEquals(existingDLFileEntryType.getDescription(),
 			newDLFileEntryType.getDescription());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingDLFileEntryType.getLastPublishDate()),
-			Time.getShortTimestamp(newDLFileEntryType.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingDLFileEntryType.getLastPublishDate(),
+				newDLFileEntryType.getLastPublishDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

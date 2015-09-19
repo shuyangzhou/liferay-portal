@@ -22,6 +22,7 @@ import com.liferay.bookmarks.service.BookmarksEntryLocalServiceUtil;
 import com.liferay.bookmarks.service.persistence.BookmarksEntryPersistence;
 import com.liferay.bookmarks.service.persistence.BookmarksEntryUtil;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -33,11 +34,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -178,12 +179,12 @@ public class BookmarksEntryPersistenceTest {
 			newBookmarksEntry.getUserId());
 		Assert.assertEquals(existingBookmarksEntry.getUserName(),
 			newBookmarksEntry.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingBookmarksEntry.getCreateDate()),
-			Time.getShortTimestamp(newBookmarksEntry.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingBookmarksEntry.getModifiedDate()),
-			Time.getShortTimestamp(newBookmarksEntry.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingBookmarksEntry.getCreateDate(),
+				newBookmarksEntry.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(
+				existingBookmarksEntry.getModifiedDate(),
+				newBookmarksEntry.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingBookmarksEntry.getResourceBlockId(),
 			newBookmarksEntry.getResourceBlockId());
 		Assert.assertEquals(existingBookmarksEntry.getFolderId(),
@@ -200,18 +201,18 @@ public class BookmarksEntryPersistenceTest {
 			newBookmarksEntry.getVisits());
 		Assert.assertEquals(existingBookmarksEntry.getPriority(),
 			newBookmarksEntry.getPriority());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingBookmarksEntry.getLastPublishDate()),
-			Time.getShortTimestamp(newBookmarksEntry.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingBookmarksEntry.getLastPublishDate(),
+				newBookmarksEntry.getLastPublishDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingBookmarksEntry.getStatus(),
 			newBookmarksEntry.getStatus());
 		Assert.assertEquals(existingBookmarksEntry.getStatusByUserId(),
 			newBookmarksEntry.getStatusByUserId());
 		Assert.assertEquals(existingBookmarksEntry.getStatusByUserName(),
 			newBookmarksEntry.getStatusByUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingBookmarksEntry.getStatusDate()),
-			Time.getShortTimestamp(newBookmarksEntry.getStatusDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingBookmarksEntry.getStatusDate(),
+				newBookmarksEntry.getStatusDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

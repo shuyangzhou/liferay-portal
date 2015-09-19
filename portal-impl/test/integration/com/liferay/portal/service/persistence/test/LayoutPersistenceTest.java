@@ -15,6 +15,7 @@
 package com.liferay.portal.service.persistence.test;
 
 import com.liferay.portal.NoSuchLayoutException;
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -26,11 +27,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.Layout;
 import com.liferay.portal.service.LayoutLocalServiceUtil;
@@ -192,12 +193,10 @@ public class LayoutPersistenceTest {
 		Assert.assertEquals(existingLayout.getUserId(), newLayout.getUserId());
 		Assert.assertEquals(existingLayout.getUserName(),
 			newLayout.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingLayout.getCreateDate()),
-			Time.getShortTimestamp(newLayout.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingLayout.getModifiedDate()),
-			Time.getShortTimestamp(newLayout.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(existingLayout.getCreateDate(),
+				newLayout.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(existingLayout.getModifiedDate(),
+				newLayout.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingLayout.getPrivateLayout(),
 			newLayout.getPrivateLayout());
 		Assert.assertEquals(existingLayout.getLayoutId(),
@@ -235,9 +234,8 @@ public class LayoutPersistenceTest {
 			newLayout.getLayoutPrototypeLinkEnabled());
 		Assert.assertEquals(existingLayout.getSourcePrototypeLayoutUuid(),
 			newLayout.getSourcePrototypeLayoutUuid());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingLayout.getLastPublishDate()),
-			Time.getShortTimestamp(newLayout.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(existingLayout.getLastPublishDate(),
+				newLayout.getLastPublishDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test

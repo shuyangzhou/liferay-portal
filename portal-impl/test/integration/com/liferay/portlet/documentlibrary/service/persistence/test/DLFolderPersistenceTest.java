@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.documentlibrary.service.persistence.test;
 
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -25,11 +26,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -176,12 +177,10 @@ public class DLFolderPersistenceTest {
 			newDLFolder.getUserId());
 		Assert.assertEquals(existingDLFolder.getUserName(),
 			newDLFolder.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingDLFolder.getCreateDate()),
-			Time.getShortTimestamp(newDLFolder.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingDLFolder.getModifiedDate()),
-			Time.getShortTimestamp(newDLFolder.getModifiedDate()));
+		Assert.assertTrue(DateUtil.equals(existingDLFolder.getCreateDate(),
+				newDLFolder.getCreateDate(), DBFactoryUtil.getDB()));
+		Assert.assertTrue(DateUtil.equals(existingDLFolder.getModifiedDate(),
+				newDLFolder.getModifiedDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingDLFolder.getRepositoryId(),
 			newDLFolder.getRepositoryId());
 		Assert.assertEquals(existingDLFolder.getMountPoint(),
@@ -193,27 +192,25 @@ public class DLFolderPersistenceTest {
 		Assert.assertEquals(existingDLFolder.getName(), newDLFolder.getName());
 		Assert.assertEquals(existingDLFolder.getDescription(),
 			newDLFolder.getDescription());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingDLFolder.getLastPostDate()),
-			Time.getShortTimestamp(newDLFolder.getLastPostDate()));
+		Assert.assertTrue(DateUtil.equals(existingDLFolder.getLastPostDate(),
+				newDLFolder.getLastPostDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingDLFolder.getDefaultFileEntryTypeId(),
 			newDLFolder.getDefaultFileEntryTypeId());
 		Assert.assertEquals(existingDLFolder.getHidden(),
 			newDLFolder.getHidden());
 		Assert.assertEquals(existingDLFolder.getRestrictionType(),
 			newDLFolder.getRestrictionType());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingDLFolder.getLastPublishDate()),
-			Time.getShortTimestamp(newDLFolder.getLastPublishDate()));
+		Assert.assertTrue(DateUtil.equals(
+				existingDLFolder.getLastPublishDate(),
+				newDLFolder.getLastPublishDate(), DBFactoryUtil.getDB()));
 		Assert.assertEquals(existingDLFolder.getStatus(),
 			newDLFolder.getStatus());
 		Assert.assertEquals(existingDLFolder.getStatusByUserId(),
 			newDLFolder.getStatusByUserId());
 		Assert.assertEquals(existingDLFolder.getStatusByUserName(),
 			newDLFolder.getStatusByUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingDLFolder.getStatusDate()),
-			Time.getShortTimestamp(newDLFolder.getStatusDate()));
+		Assert.assertTrue(DateUtil.equals(existingDLFolder.getStatusDate(),
+				newDLFolder.getStatusDate(), DBFactoryUtil.getDB()));
 	}
 
 	@Test
