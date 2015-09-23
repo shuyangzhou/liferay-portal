@@ -541,7 +541,7 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 					<var name="test.url" value="${test.url}" />
 				</then>
 				<elseif>
-					<isset property="${mobile.device.type}" />
+					<isset property="mobile.device.type" />
 					<then>
 						<get-ip-address />
 
@@ -1180,7 +1180,12 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 					<unzip src="tools/selenium/${selenium.ie.driver.zip}" dest="tools/selenium" />
 				</then>
 				<else>
-					<fail message="Operating system is not supported." />
+					<if>
+						<equals arg1="${selenium.remote.driver.enabled}" arg2="false" />
+						<then>
+							<fail message="Operating system is not supported." />
+						</then>
+					</if>
 				</else>
 			</if>
 		</sequential>
@@ -3086,7 +3091,7 @@ go]]></replacevalue>
 		</if>
 
 		<if>
-			<isset property="${mobile.device.type}" />
+			<isset property="mobile.device.type" />
 			<then>
 				<stop-appium />
 			</then>
@@ -4255,7 +4260,7 @@ javascript.fast.load=false</echo>
 		<get-testcase-property property.name="mobile.device.type" />
 
 		<if>
-			<isset property="${mobile.device.type}" />
+			<isset property="mobile.device.type" />
 			<then>
 				<get-ip-address />
 
@@ -4807,6 +4812,8 @@ module.framework.properties.osgi.console=11312</echo>
 			browser.type=${browser.type}
 			selenium.chrome.driver.executable=${selenium.chrome.driver.executable}
 			selenium.chrome.driver.version=${selenium.chrome.driver.version}
+			selenium.desired.capabilities.platform=${selenium.desired.capabilities.platform}
+			selenium.desired.capabilities.version=${selenium.desired.capabilities.version}
 			selenium.executable.dir.name=${selenium.executable.dir.name}
 			selenium.ie.driver.executable=${selenium.ie.driver.executable}
 			selenium.ie.driver.version=${selenium.ie.driver.version}
@@ -5065,7 +5072,7 @@ module.framework.properties.osgi.console=11312</echo>
 		</if>
 
 		<if>
-			<isset property="${mobile.device.type}" />
+			<isset property="mobile.device.type" />
 			<then>
 				<start-appium />
 			</then>
@@ -5384,7 +5391,7 @@ module.framework.properties.osgi.console=11312</echo>
 		<get-testcase-property property.name="mobile.device.type" />
 
 		<if>
-			<isset property="${mobile.device.type}" />
+			<isset property="mobile.device.type" />
 			<then>
 				<echo append="true" file="${test.ext.properties.file}">
 					mobile.device.type=${mobile.device.type}

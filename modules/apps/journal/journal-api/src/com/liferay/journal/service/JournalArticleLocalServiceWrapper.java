@@ -486,6 +486,13 @@ public class JournalArticleLocalServiceWrapper
 		_journalArticleLocalService.deleteArticles(groupId);
 	}
 
+	@Override
+	public void deleteArticles(long groupId, java.lang.String className,
+		long classPK)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_journalArticleLocalService.deleteArticles(groupId, className, classPK);
+	}
+
 	/**
 	* Deletes all the group's web content articles and resources in the folder,
 	* including recycled articles.

@@ -879,6 +879,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 
 			<exec dir="@{dir}" executable="${project.dir}/gradlew${gradlew.suffix}" failonerror="@{failonerror}">
 				<args />
+				<arg value="--init-script=${project.dir}/modules/init.gradle" />
 				<arg value="--no-daemon" />
 				<arg value="--project-cache-dir=${project.dir}/.gradle" />
 				<arg value="--stacktrace" />
@@ -1617,8 +1618,6 @@ rerun your task.
 				auto.deploy.dir=${liferay.home}/osgi/apps
 				clean.delete.ivy.md5=true
 				clean.delete.lib=true
-				ivy.home=${ivy.home}
-				ivy.log.level=${ivy.log.level}
 				junit.java.integration.gc=${junit.java.integration.gc}
 				junit.java.unit.gc=${junit.java.unit.gc}
 				junit.java.unit.gc.logging=${junit.java.unit.gc.logging}

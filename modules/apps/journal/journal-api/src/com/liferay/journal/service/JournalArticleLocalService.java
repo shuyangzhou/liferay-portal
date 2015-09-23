@@ -429,6 +429,9 @@ public interface JournalArticleLocalService extends BaseLocalService,
 	*/
 	public void deleteArticles(long groupId) throws PortalException;
 
+	public void deleteArticles(long groupId, java.lang.String className,
+		long classPK) throws PortalException;
+
 	/**
 	* Deletes all the group's web content articles and resources in the folder,
 	* including recycled articles.

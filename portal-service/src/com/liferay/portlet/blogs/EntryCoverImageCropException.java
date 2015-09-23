@@ -1,4 +1,3 @@
-<%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
@@ -12,10 +11,32 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
---%>
 
-<aui:nav collapsible="<%= false %>" cssClass='<%= portalMessageUseAnimation ? "nav-account-controls navbar-nav" : "nav-account-controls nav-account-controls-notice navbar-nav" %>' icon="user" id="navAccountControls">
-	<%@ include file="/html/portlet/dockbar/view_admin_links.jspf" %>
+package com.liferay.portlet.blogs;
 
-	<%@ include file="/html/portlet/dockbar/view_my_sites.jspf" %>
-</aui:nav>
+import aQute.bnd.annotation.ProviderType;
+
+import com.liferay.portal.kernel.exception.PortalException;
+
+/**
+ * @author Brian Wing Shun Chan
+ */
+@ProviderType
+public class EntryCoverImageCropException extends PortalException {
+
+	public EntryCoverImageCropException() {
+	}
+
+	public EntryCoverImageCropException(String msg) {
+		super(msg);
+	}
+
+	public EntryCoverImageCropException(String msg, Throwable cause) {
+		super(msg, cause);
+	}
+
+	public EntryCoverImageCropException(Throwable cause) {
+		super(cause);
+	}
+
+}

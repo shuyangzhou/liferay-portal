@@ -1275,6 +1275,20 @@ public class JournalArticleLocalServiceImpl
 		}
 	}
 
+	@Override
+	public void deleteArticles(long groupId, String className, long classPK)
+		throws PortalException {
+
+		long classNameId = classNameLocalService.getClassNameId(className);
+
+		List<JournalArticle> articles = journalArticlePersistence.findByG_C_C(
+			groupId, classNameId, classPK);
+
+		for (JournalArticle article : articles) {
+			journalArticleLocalService.deleteArticle(article, null, null);
+		}
+	}
+
 	/**
 	 * Deletes the layout's association with the web content articles for the
 	 * group.

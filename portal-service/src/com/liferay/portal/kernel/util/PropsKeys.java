@@ -245,8 +245,6 @@ public interface PropsKeys {
 
 	public static final String BLOGS_IMAGE_MAX_SIZE = "blogs.image.max.size";
 
-	public static final String BLOGS_IMAGE_SMALL_MAX_SIZE = "blogs.image.small.max.size";
-
 	public static final String BLOGS_LINKBACK_EXCERPT_LENGTH = "blogs.linkback.excerpt.length";
 
 	public static final String BLOGS_PAGE_ABSTRACT_LENGTH = "blogs.page.abstract.length";
@@ -752,8 +750,6 @@ public interface PropsKeys {
 	public static final String DL_WEBDAV_SUBSTITUTION_CHAR = "dl.webdav.substitution.char";
 
 	public static final String DOCKBAR_ADD_PORTLETS = "dockbar.add.portlets";
-
-	public static final String DOCKBAR_ADMINISTRATIVE_LINKS_SHOW_IN_POP_UP = "dockbar.administrative.links.show.in.pop.up";
 
 	public static final String DYNAMIC_RESOURCE_SERVLET_ALLOWED_PATHS = "dynamic.resource.servlet.allowed.paths";
 

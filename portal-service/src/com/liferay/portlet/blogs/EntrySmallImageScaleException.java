@@ -14,25 +14,28 @@
 
 package com.liferay.portlet.blogs;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * @author Brian Wing Shun Chan
  */
-public class CategoryNameException extends PortalException {
+@ProviderType
+public class EntrySmallImageScaleException extends PortalException {
 
-	public CategoryNameException() {
+	public EntrySmallImageScaleException() {
 	}
 
-	public CategoryNameException(String msg) {
+	public EntrySmallImageScaleException(String msg) {
 		super(msg);
 	}
 
-	public CategoryNameException(String msg, Throwable cause) {
+	public EntrySmallImageScaleException(String msg, Throwable cause) {
 		super(msg, cause);
 	}
 
-	public CategoryNameException(Throwable cause) {
+	public EntrySmallImageScaleException(Throwable cause) {
 		super(cause);
 	}
 
