@@ -598,6 +598,13 @@ public class SocialActivityCounterLocalServiceImpl
 		clearFinderCache();
 	}
 
+	@Override
+	public void disableActivityCounters(AssetEntry assetEntry)
+		throws PortalException {
+
+		setActivityCountersActive(assetEntry, false);
+	}
+
 	/**
 	 * Disables all the counters of an asset identified by the class name ID and
 	 * class primary key.
@@ -642,25 +649,14 @@ public class SocialActivityCounterLocalServiceImpl
 		AssetEntry assetEntry = assetEntryLocalService.fetchEntry(
 			className, classPK);
 
-		if (assetEntry == null) {
-			return;
-		}
+		disableActivityCounters(assetEntry);
+	}
 
-		List<SocialActivityCounter> activityCounters =
-			socialActivityCounterPersistence.findByC_C(
-				assetEntry.getClassNameId(), classPK);
+	@Override
+	public void enableActivityCounters(AssetEntry assetEntry)
+		throws PortalException {
 
-		adjustUserContribution(assetEntry, false);
-
-		for (SocialActivityCounter activityCounter : activityCounters) {
-			if (activityCounter.isActive()) {
-				activityCounter.setActive(false);
-
-				socialActivityCounterPersistence.update(activityCounter);
-			}
-		}
-
-		clearFinderCache();
+		setActivityCountersActive(assetEntry, true);
 	}
 
 	/**
@@ -707,25 +703,7 @@ public class SocialActivityCounterLocalServiceImpl
 		AssetEntry assetEntry = assetEntryLocalService.fetchEntry(
 			className, classPK);
 
-		if (assetEntry == null) {
-			return;
-		}
-
-		List<SocialActivityCounter> activityCounters =
-			socialActivityCounterPersistence.findByC_C(
-				assetEntry.getClassNameId(), classPK);
-
-		adjustUserContribution(assetEntry, true);
-
-		for (SocialActivityCounter activityCounter : activityCounters) {
-			if (!activityCounter.isActive()) {
-				activityCounter.setActive(true);
-
-				socialActivityCounterPersistence.update(activityCounter);
-			}
-		}
-
-		clearFinderCache();
+		enableActivityCounters(assetEntry);
 	}
 
 	/**
@@ -1016,6 +994,31 @@ public class SocialActivityCounterLocalServiceImpl
 
 		incrementActivityCounter(
 			activityCounter, _userAchievementsActivityCounterDefinition);
+	}
+
+	@Override
+	public void setActivityCountersActive(AssetEntry assetEntry, boolean active)
+		throws PortalException {
+
+		if (assetEntry == null) {
+			return;
+		}
+
+		List<SocialActivityCounter> activityCounters =
+			socialActivityCounterPersistence.findByC_C(
+				assetEntry.getClassNameId(), assetEntry.getClassPK());
+
+		adjustUserContribution(assetEntry, active);
+
+		for (SocialActivityCounter activityCounter : activityCounters) {
+			if (activityCounter.isActive() != active) {
+				activityCounter.setActive(active);
+
+				socialActivityCounterPersistence.update(activityCounter);
+			}
+		}
+
+		clearFinderCache();
 	}
 
 	protected SocialActivityCounter addActivityCounter(
