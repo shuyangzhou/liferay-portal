@@ -47,6 +47,14 @@ public class VerifyMySQL extends VerifyProcess {
 			return;
 		}
 
+		if (GetterUtil.getFloat(db.getVersionString()) < 5.6F) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					"Please upgrade to MySQL 5.6.4+. Portal will drop off " +
+						"support to all MySQL releases before 5.6.4 soon!");
+			}
+		}
+
 		try (Connection connection = DataAccess.getUpgradeOptimizedConnection();
 			Statement statement = connection.createStatement()) {
 
