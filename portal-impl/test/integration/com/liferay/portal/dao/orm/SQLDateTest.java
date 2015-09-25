@@ -63,28 +63,28 @@ public class SQLDateTest {
 
 		long time = _readTimeHibernate() / 1000 * 1000;
 
-		if (dbType.equals(DB.TYPE_SYBASE)) {
-			for (int i = 0; i < 1000; i++) {
-				_writeTimeHibernate(time);
-
-				long readTime = _readTimeHibernate();
-
-				if (time != readTime) {
-					System.out.println(
-						"#####For sybase Hiberanate write out : " + time +
-							", read in : " + readTime);
-				}
-
-				time++;
-			}
-		}
-		else {
+//		if (dbType.equals(DB.TYPE_SYBASE)) {
+//			for (int i = 0; i < 1000; i++) {
+//				_writeTimeHibernate(time);
+//
+//				long readTime = _readTimeHibernate();
+//
+//				if (time != readTime) {
+//					System.out.println(
+//						"#####For sybase Hiberanate write out : " + time +
+//							", read in : " + readTime);
+//				}
+//
+//				time++;
+//			}
+//		}
+//		else {
 			for (int i = 0; i < 1000; i++) {
 				_writeTimeHibernate(time);
 
 				Assert.assertEquals(time++, _readTimeHibernate());
 			}
-		}
+//		}
 	}
 
 	@Test
@@ -97,28 +97,28 @@ public class SQLDateTest {
 
 		long time = _readTimeJDBC() / 1000 * 1000;
 
-		if (dbType.equals(DB.TYPE_SYBASE)) {
-			for (int i = 0; i < 1000; i++) {
-				_writeTimeJDBC(time);
-
-				long readTime = _readTimeJDBC();
-
-				if (time != readTime) {
-					System.out.println(
-						"#####For sybase JDBC write out : " + time +
-							", read in : " + readTime);
-				}
-
-				time++;
-			}
-		}
-		else {
+//		if (dbType.equals(DB.TYPE_SYBASE)) {
+//			for (int i = 0; i < 1000; i++) {
+//				_writeTimeJDBC(time);
+//
+//				long readTime = _readTimeJDBC();
+//
+//				if (time != readTime) {
+//					System.out.println(
+//						"#####For sybase JDBC write out : " + time +
+//							", read in : " + readTime);
+//				}
+//
+//				time++;
+//			}
+//		}
+//		else {
 			for (int i = 0; i < 1000; i++) {
 				_writeTimeJDBC(time);
 
 				Assert.assertEquals(time++, _readTimeJDBC());
 			}
-		}
+//		}
 	}
 
 	private long _readTimeHibernate() {
