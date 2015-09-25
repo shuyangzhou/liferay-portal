@@ -21,6 +21,7 @@ import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalFolder;
 import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.util.DateUtil;
+import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.LongWrapper;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.xml.Document;
@@ -34,6 +35,7 @@ import com.liferay.portlet.exportimport.lar.ManifestSummary;
 import com.liferay.portlet.exportimport.lar.PortletDataContext;
 import com.liferay.portlet.exportimport.lar.StagedModelType;
 
+import java.text.Format;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -192,9 +194,14 @@ public class ManifestSummaryTest
 
 		Element headerElement = rootElement.addElement("header");
 
-		_exportDate = new Date();
+		Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
+			Time.RFC822_FORMAT);
 
-		headerElement.addAttribute("export-date", Time.getRFC822(_exportDate));
+		String rfc822DateString = Time.getRFC822();
+
+		_exportDate = (Date)dateFormat.parseObject(rfc822DateString);
+
+		headerElement.addAttribute("export-date", rfc822DateString);
 
 		ExportImportHelperUtil.writeManifestSummary(document, manifestSummary);
 
@@ -231,6 +238,7 @@ public class ManifestSummaryTest
 			1,
 			manifestSummary.getModelAdditionCount(
 				new StagedModelType(JournalFolder.class)));
+		System.out.println("############" + _exportDate.getTime() + ", " + manifestSummary.getExportDate().getTime());
 		Assert.assertTrue(
 			DateUtil.equals(_exportDate, manifestSummary.getExportDate()));
 	}
