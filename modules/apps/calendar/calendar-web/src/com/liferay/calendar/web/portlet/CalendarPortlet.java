@@ -746,6 +746,23 @@ public class CalendarPortlet extends MVCPortlet {
 					actionRequest, weekday.getValue());
 
 				if (checked) {
+					java.util.Calendar startTimeJCalendar = getJCalendar(
+						actionRequest, "startTime");
+
+					java.util.Calendar weekdayJCalendar =
+						JCalendarUtil.getJCalendar(
+							startTimeJCalendar.getTimeInMillis(),
+							getTimeZone(actionRequest));
+
+					weekdayJCalendar.set(
+						java.util.Calendar.DAY_OF_WEEK,
+						weekday.getCalendarWeekday());
+
+					weekdayJCalendar = JCalendarUtil.getJCalendar(
+						weekdayJCalendar, calendarTimeZone);
+
+					weekday = Weekday.getWeekday(weekdayJCalendar);
+
 					positionalWeekdays.add(new PositionalWeekday(weekday, 0));
 				}
 			}

@@ -1067,4 +1067,7 @@ public interface AssetVocabularyPersistence extends BasePersistence<AssetVocabul
 	* @return the number of asset vocabularies
 	*/
 	public int countAll();
+
+	@Override
+	public java.util.Set<java.lang.String> getBadColumnNames();
 }

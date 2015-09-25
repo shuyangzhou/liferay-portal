@@ -778,4 +778,7 @@ public interface DDLRecordPersistence extends BasePersistence<DDLRecord> {
 	* @return the number of d d l records
 	*/
 	public int countAll();
+
+	@Override
+	public java.util.Set<java.lang.String> getBadColumnNames();
 }

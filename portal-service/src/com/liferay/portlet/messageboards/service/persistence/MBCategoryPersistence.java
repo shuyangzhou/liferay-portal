@@ -2291,4 +2291,7 @@ public interface MBCategoryPersistence extends BasePersistence<MBCategory> {
 	* @return the number of message boards categories
 	*/
 	public int countAll();
+
+	@Override
+	public java.util.Set<java.lang.String> getBadColumnNames();
 }

@@ -537,4 +537,7 @@ public interface DLFileEntryMetadataPersistence extends BasePersistence<DLFileEn
 	* @return the number of document library file entry metadatas
 	*/
 	public int countAll();
+
+	@Override
+	public java.util.Set<java.lang.String> getBadColumnNames();
 }

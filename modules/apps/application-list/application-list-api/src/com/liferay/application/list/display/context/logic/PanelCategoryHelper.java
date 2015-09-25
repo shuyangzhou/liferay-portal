@@ -21,6 +21,8 @@ import com.liferay.application.list.PanelCategoryRegistry;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.security.permission.PermissionChecker;
 
+import java.util.List;
+
 /**
  * @author Adolfo Pérez
  */
@@ -37,10 +39,15 @@ public class PanelCategoryHelper {
 	public boolean containsPortlet(
 		String portletId, PanelCategory panelCategory) {
 
-		for (PanelCategory curPanelCategory :
-				_panelCategoryRegistry.getChildPanelCategories(panelCategory)) {
+		return containsPortlet(portletId, panelCategory.getKey());
+	}
 
-			if (hasPortlet(portletId, curPanelCategory)) {
+	public boolean containsPortlet(String portletId, String panelCategoryKey) {
+		for (PanelCategory curPanelCategory :
+				_panelCategoryRegistry.getChildPanelCategories(
+					panelCategoryKey)) {
+
+			if (hasPortlet(portletId, curPanelCategory.getKey())) {
 				return true;
 			}
 
@@ -49,34 +56,36 @@ public class PanelCategoryHelper {
 			}
 		}
 
-		return hasPortlet(portletId, panelCategory);
+		return hasPortlet(portletId, panelCategoryKey);
 	}
 
 	public String getFirstPortletId(
 		String panelCategoryKey, PermissionChecker permissionChecker,
 		Group group) {
 
-		PanelCategory panelCategory =
-			_panelCategoryRegistry.getFirstChildPanelCategory(
+		List<PanelCategory> panelCategories =
+			_panelCategoryRegistry.getChildPanelCategories(
 				panelCategoryKey, permissionChecker, group);
 
-		if (panelCategory == null) {
+		if (panelCategories.isEmpty()) {
 			return null;
 		}
 
-		PanelApp panelApp = _panelAppRegistry.getFirstPanelApp(
-			panelCategory, permissionChecker, group);
+		for (PanelCategory panelCategory : panelCategories) {
+			PanelApp panelApp = _panelAppRegistry.getFirstPanelApp(
+				panelCategory, permissionChecker, group);
 
-		if (panelApp == null) {
-			return null;
+			if (panelApp != null) {
+				return panelApp.getPortletId();
+			}
 		}
 
-		return panelApp.getPortletId();
+		return null;
 	}
 
-	private boolean hasPortlet(String portletId, PanelCategory panelCategory) {
+	private boolean hasPortlet(String portletId, String panelCategoryKey) {
 		Iterable<PanelApp> panelApps = _panelAppRegistry.getPanelApps(
-			panelCategory);
+			panelCategoryKey);
 
 		for (PanelApp panelApp : panelApps) {
 			if (portletId.equals(panelApp.getPortletId())) {

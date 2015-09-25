@@ -1701,4 +1701,7 @@ public interface JournalFolderPersistence extends BasePersistence<JournalFolder>
 	* @return the number of journal folders
 	*/
 	public int countAll();
+
+	@Override
+	public java.util.Set<java.lang.String> getBadColumnNames();
 }

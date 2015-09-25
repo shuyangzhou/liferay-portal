@@ -40,7 +40,17 @@ if (recurrence != null) {
 	}
 
 	for (PositionalWeekday curPositionalWeekday : recurrence.getPositionalWeekdays()) {
-		weekdays.add(curPositionalWeekday.getWeekday());
+		Weekday weekday = curPositionalWeekday.getWeekday();
+
+		java.util.Calendar weekdayJCalendar = CalendarFactoryUtil.getCalendar(startTimeJCalendar.getTimeInMillis(), calendar.getTimeZone());
+
+		weekdayJCalendar.set(java.util.Calendar.DAY_OF_WEEK, weekday.getCalendarWeekday());
+
+		weekdayJCalendar = JCalendarUtil.getJCalendar(weekdayJCalendar, calendarBookingTimeZone);
+
+		weekday = Weekday.getWeekday(weekdayJCalendar.get(java.util.Calendar.DAY_OF_WEEK));
+
+		weekdays.add(weekday);
 
 		positionalWeekday = curPositionalWeekday;
 	}

@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portlet.blogs.model.BlogsStatsUser;
 import com.liferay.portlet.blogs.model.impl.BlogsStatsUserImpl;
 import com.liferay.portlet.blogs.service.persistence.BlogsStatsUserFinder;
@@ -40,8 +39,7 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  */
 public class BlogsStatsUserFinderImpl
-	extends BasePersistenceImpl<BlogsStatsUser>
-	implements BlogsStatsUserFinder {
+	extends BlogsStatsUserFinderBaseImpl implements BlogsStatsUserFinder {
 
 	public static final String COUNT_BY_ORGANIZATION_IDS =
 		BlogsStatsUserFinder.class.getName() + ".countByOrganizationIds";

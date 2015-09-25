@@ -608,4 +608,7 @@ public interface PollsQuestionPersistence extends BasePersistence<PollsQuestion>
 	* @return the number of polls questions
 	*/
 	public int countAll();
+
+	@Override
+	public java.util.Set<java.lang.String> getBadColumnNames();
 }

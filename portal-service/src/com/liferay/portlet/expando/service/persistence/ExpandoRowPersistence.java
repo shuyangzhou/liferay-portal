@@ -416,4 +416,7 @@ public interface ExpandoRowPersistence extends BasePersistence<ExpandoRow> {
 	* @return the number of expando rows
 	*/
 	public int countAll();
+
+	@Override
+	public java.util.Set<java.lang.String> getBadColumnNames();
 }

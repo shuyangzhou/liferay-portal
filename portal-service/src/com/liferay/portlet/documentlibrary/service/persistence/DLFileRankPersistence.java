@@ -684,4 +684,7 @@ public interface DLFileRankPersistence extends BasePersistence<DLFileRank> {
 	* @return the number of document library file ranks
 	*/
 	public int countAll();
+
+	@Override
+	public java.util.Set<java.lang.String> getBadColumnNames();
 }

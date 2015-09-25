@@ -205,6 +205,11 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 	}
 
 	@Override
+	public Set<String> getBadColumnNames() {
+		return Collections.emptySet();
+	}
+
+	@Override
 	public Session getCurrentSession() throws ORMException {
 		return _sessionFactory.getCurrentSession();
 	}
@@ -298,7 +303,7 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		_sessionFactory = sessionFactory;
 		_dialect = _sessionFactory.getDialect();
-		_db = DBFactoryUtil.getDB(_dialect);
+		_db = DBFactoryUtil.getDB(_dialect, getDataSource());
 
 		_databaseOrderByMaxColumns = GetterUtil.getInteger(
 			PropsUtil.get(
@@ -463,10 +468,6 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 				}
 			}
 		}
-	}
-
-	protected Set<String> getBadColumnNames() {
-		return Collections.emptySet();
 	}
 
 	protected ClassLoader getClassLoader() {

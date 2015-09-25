@@ -1360,4 +1360,7 @@ public interface DLFileVersionPersistence extends BasePersistence<DLFileVersion>
 	* @return the number of document library file versions
 	*/
 	public int countAll();
+
+	@Override
+	public java.util.Set<java.lang.String> getBadColumnNames();
 }

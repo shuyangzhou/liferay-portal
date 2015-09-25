@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.security.permission.InlineSQLHelperUtil;
-import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.util.ArrayList;
@@ -44,8 +43,8 @@ import java.util.List;
  * @author Juan Fernández
  * @author Zsolt Berentey
  */
-public class JournalFolderFinderImpl extends BasePersistenceImpl<JournalFolder>
-	implements JournalFolderFinder {
+public class JournalFolderFinderImpl
+	extends JournalFolderFinderBaseImpl implements JournalFolderFinder {
 
 	public static final String COUNT_A_BY_G_U_F =
 		JournalFolderFinder.class.getName() + ".countA_ByG_U_F";

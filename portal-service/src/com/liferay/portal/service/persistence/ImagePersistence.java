@@ -250,4 +250,7 @@ public interface ImagePersistence extends BasePersistence<Image> {
 	* @return the number of images
 	*/
 	public int countAll();
+
+	@Override
+	public java.util.Set<java.lang.String> getBadColumnNames();
 }

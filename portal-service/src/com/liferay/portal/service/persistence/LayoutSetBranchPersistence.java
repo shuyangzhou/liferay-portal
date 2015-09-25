@@ -781,4 +781,7 @@ public interface LayoutSetBranchPersistence extends BasePersistence<LayoutSetBra
 	* @return the number of layout set branchs
 	*/
 	public int countAll();
+
+	@Override
+	public java.util.Set<java.lang.String> getBadColumnNames();
 }

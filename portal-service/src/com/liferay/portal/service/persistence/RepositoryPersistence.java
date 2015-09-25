@@ -600,4 +600,7 @@ public interface RepositoryPersistence extends BasePersistence<Repository> {
 	* @return the number of repositories
 	*/
 	public int countAll();
+
+	@Override
+	public java.util.Set<java.lang.String> getBadColumnNames();
 }

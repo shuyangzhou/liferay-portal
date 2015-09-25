@@ -1537,4 +1537,7 @@ public interface SocialRequestPersistence extends BasePersistence<SocialRequest>
 	* @return the number of social requests
 	*/
 	public int countAll();
+
+	@Override
+	public java.util.Set<java.lang.String> getBadColumnNames();
 }

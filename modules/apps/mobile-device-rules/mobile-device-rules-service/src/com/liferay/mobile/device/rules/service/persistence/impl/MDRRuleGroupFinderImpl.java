@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.service.GroupLocalServiceUtil;
-import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.util.Iterator;
@@ -42,8 +41,8 @@ import java.util.Map;
  * @author Eduardo Lundgren
  * @author Manuel de la Peña
  */
-public class MDRRuleGroupFinderImpl extends BasePersistenceImpl<MDRRuleGroup>
-	implements MDRRuleGroupFinder {
+public class MDRRuleGroupFinderImpl
+	extends MDRRuleGroupFinderBaseImpl implements MDRRuleGroupFinder {
 
 	public static final String COUNT_BY_G_N =
 		MDRRuleGroupFinder.class.getName() + ".countByG_N";
