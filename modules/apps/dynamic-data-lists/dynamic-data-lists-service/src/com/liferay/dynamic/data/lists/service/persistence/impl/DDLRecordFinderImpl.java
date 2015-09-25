@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.util.Iterator;
@@ -37,8 +36,8 @@ import java.util.List;
 /**
  * @author Marcellus Tavares
  */
-public class DDLRecordFinderImpl extends BasePersistenceImpl<DDLRecord>
-	implements DDLRecordFinder {
+public class DDLRecordFinderImpl
+	extends DDLRecordFinderBaseImpl implements DDLRecordFinder {
 
 	public static final String COUNT_BY_R_S =
 		DDLRecordFinder.class.getName() + ".countByR_S";

@@ -23,7 +23,6 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.security.permission.InlineSQLHelperUtil;
-import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portlet.asset.model.AssetVocabulary;
 import com.liferay.portlet.asset.model.impl.AssetVocabularyImpl;
 import com.liferay.portlet.asset.service.persistence.AssetVocabularyFinder;
@@ -36,8 +35,7 @@ import java.util.List;
  * @author Juan Fernández
  */
 public class AssetVocabularyFinderImpl
-	extends BasePersistenceImpl<AssetVocabulary>
-	implements AssetVocabularyFinder {
+	extends AssetVocabularyFinderBaseImpl implements AssetVocabularyFinder {
 
 	public static final String COUNT_BY_G_N =
 		AssetVocabularyFinder.class.getName() + ".countByG_N";

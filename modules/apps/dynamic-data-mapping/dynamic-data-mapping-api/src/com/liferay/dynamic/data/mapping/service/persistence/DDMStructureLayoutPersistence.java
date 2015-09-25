@@ -480,4 +480,7 @@ public interface DDMStructureLayoutPersistence extends BasePersistence<DDMStruct
 	* @return the number of d d m structure layouts
 	*/
 	public int countAll();
+
+	@Override
+	public java.util.Set<java.lang.String> getBadColumnNames();
 }

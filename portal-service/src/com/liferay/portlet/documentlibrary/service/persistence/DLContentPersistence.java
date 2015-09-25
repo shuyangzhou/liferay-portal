@@ -610,4 +610,7 @@ public interface DLContentPersistence extends BasePersistence<DLContent> {
 	* @return the number of document library contents
 	*/
 	public int countAll();
+
+	@Override
+	public java.util.Set<java.lang.String> getBadColumnNames();
 }

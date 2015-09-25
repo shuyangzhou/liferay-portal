@@ -1944,4 +1944,7 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 	* @return the number of d d m structures
 	*/
 	public int countAll();
+
+	@Override
+	public java.util.Set<java.lang.String> getBadColumnNames();
 }

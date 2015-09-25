@@ -14,6 +14,11 @@
 
 package com.liferay.roles.admin.web.portlet;
 
+import com.liferay.application.list.PanelAppRegistry;
+import com.liferay.application.list.PanelCategoryRegistry;
+import com.liferay.application.list.constants.ApplicationListWebKeys;
+import com.liferay.application.list.constants.PanelCategoryKeys;
+import com.liferay.application.list.display.context.logic.PanelCategoryHelper;
 import com.liferay.portal.DuplicateRoleException;
 import com.liferay.portal.NoSuchRoleException;
 import com.liferay.portal.RequiredRoleException;
@@ -33,7 +38,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.GroupConstants;
-import com.liferay.portal.model.Portlet;
 import com.liferay.portal.model.ResourceConstants;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.model.RoleConstants;
@@ -42,7 +46,6 @@ import com.liferay.portal.security.permission.ActionKeys;
 import com.liferay.portal.security.permission.ResourceActionsUtil;
 import com.liferay.portal.security.permission.comparator.ActionComparator;
 import com.liferay.portal.service.GroupServiceUtil;
-import com.liferay.portal.service.PortletLocalServiceUtil;
 import com.liferay.portal.service.ResourceBlockLocalServiceUtil;
 import com.liferay.portal.service.ResourceBlockServiceUtil;
 import com.liferay.portal.service.ResourcePermissionServiceUtil;
@@ -53,7 +56,6 @@ import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.service.UserServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portal.util.PortletCategoryKeys;
 import com.liferay.portal.util.PortletKeys;
 import com.liferay.roles.admin.web.constants.RolesAdminPortletKeys;
 import com.liferay.roles.admin.web.upgrade.RolesAdminWebUpgrade;
@@ -68,8 +70,11 @@ import java.util.Map;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletException;
+import javax.portlet.PortletRequest;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -244,6 +249,16 @@ public class RolesAdminPortlet extends MVCPortlet {
 		}
 	}
 
+	@Override
+	public void serveResource(
+			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
+		throws IOException, PortletException {
+
+		setAttributes(resourceRequest);
+
+		super.serveResource(resourceRequest, resourceResponse);
+	}
+
 	public void updateActions(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
@@ -391,6 +406,8 @@ public class RolesAdminPortlet extends MVCPortlet {
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws IOException, PortletException {
 
+		setAttributes(renderRequest);
+
 		long roleId = ParamUtil.getLong(renderRequest, "roleId");
 
 		if (SessionErrors.contains(
@@ -438,6 +455,33 @@ public class RolesAdminPortlet extends MVCPortlet {
 		}
 
 		return false;
+	}
+
+	protected void setAttributes(PortletRequest portletRequest) {
+		portletRequest.setAttribute(
+			ApplicationListWebKeys.PANEL_APP_REGISTRY, _panelAppRegistry);
+
+		PanelCategoryHelper panelCategoryHelper = new PanelCategoryHelper(
+			_panelAppRegistry, _panelCategoryRegistry);
+
+		portletRequest.setAttribute(
+			ApplicationListWebKeys.PANEL_CATEGORY_HELPER, panelCategoryHelper);
+
+		portletRequest.setAttribute(
+			ApplicationListWebKeys.PANEL_CATEGORY_REGISTRY,
+			_panelCategoryRegistry);
+	}
+
+	@Reference(unbind = "-")
+	protected void setPanelAppRegistry(PanelAppRegistry panelAppRegistry) {
+		_panelAppRegistry = panelAppRegistry;
+	}
+
+	@Reference(unbind = "-")
+	protected void setPanelCategoryRegistry(
+		PanelCategoryRegistry panelCategoryRegistry) {
+
+		_panelCategoryRegistry = panelCategoryRegistry;
 	}
 
 	@Reference(unbind = "-")
@@ -538,27 +582,21 @@ public class RolesAdminPortlet extends MVCPortlet {
 			String[] groupIds)
 		throws Exception {
 
-		Portlet portlet = PortletLocalServiceUtil.getPortletById(
-			role.getCompanyId(), portletId);
-
-		String controlPanelCategory = portlet.getControlPanelEntryCategory();
-
-		if (Validator.isNull(controlPanelCategory)) {
-			return;
-		}
+		PanelCategoryHelper panelCategoryHelper = new PanelCategoryHelper(
+			_panelAppRegistry, _panelCategoryRegistry);
 
 		String selResource = null;
 		String actionId = null;
 
-		if (ArrayUtil.contains(PortletCategoryKeys.ALL, controlPanelCategory) &&
+		if (panelCategoryHelper.containsPortlet(
+				portletId, PanelCategoryKeys.CONTROL_PANEL) &&
 			(role.getType() == RoleConstants.TYPE_REGULAR)) {
 
 			selResource = PortletKeys.PORTAL;
 			actionId = ActionKeys.VIEW_CONTROL_PANEL;
 		}
-		else if (ArrayUtil.contains(
-					PortletCategoryKeys.SITE_ADMINISTRATION_ALL,
-					controlPanelCategory)) {
+		else if (panelCategoryHelper.containsPortlet(
+					portletId, PanelCategoryKeys.SITE_ADMINISTRATION)) {
 
 			selResource = Group.class.getName();
 			actionId = ActionKeys.VIEW_SITE_ADMINISTRATION;
@@ -590,5 +628,8 @@ public class RolesAdminPortlet extends MVCPortlet {
 			}
 		}
 	}
+
+	private PanelAppRegistry _panelAppRegistry;
+	private PanelCategoryRegistry _panelCategoryRegistry;
 
 }

@@ -789,4 +789,7 @@ public interface SCFrameworkVersionPersistence extends BasePersistence<SCFramewo
 	*/
 	public void setSCProductVersions(long pk,
 		java.util.List<com.liferay.portlet.softwarecatalog.model.SCProductVersion> scProductVersions);
+
+	@Override
+	public java.util.Set<java.lang.String> getBadColumnNames();
 }

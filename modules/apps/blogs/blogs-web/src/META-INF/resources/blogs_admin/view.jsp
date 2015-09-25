@@ -19,6 +19,7 @@
 <%
 long assetCategoryId = ParamUtil.getLong(request, "categoryId");
 String assetTagName = ParamUtil.getString(request, "tag");
+
 String displayStyle = ParamUtil.getString(request, "displayStyle", "icon");
 
 String orderByCol = ParamUtil.getString(request, "orderByCol", "title");

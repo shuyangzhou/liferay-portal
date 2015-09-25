@@ -1413,4 +1413,7 @@ public interface UserGroupPersistence extends BasePersistence<UserGroup> {
 	*/
 	public void setUsers(long pk,
 		java.util.List<com.liferay.portal.model.User> users);
+
+	@Override
+	public java.util.Set<java.lang.String> getBadColumnNames();
 }

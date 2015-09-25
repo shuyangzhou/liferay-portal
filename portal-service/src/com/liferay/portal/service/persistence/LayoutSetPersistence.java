@@ -423,4 +423,7 @@ public interface LayoutSetPersistence extends BasePersistence<LayoutSet> {
 	* @return the number of layout sets
 	*/
 	public int countAll();
+
+	@Override
+	public java.util.Set<java.lang.String> getBadColumnNames();
 }

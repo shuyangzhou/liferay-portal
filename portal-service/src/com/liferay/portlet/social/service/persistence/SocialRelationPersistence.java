@@ -1381,4 +1381,7 @@ public interface SocialRelationPersistence extends BasePersistence<SocialRelatio
 	* @return the number of social relations
 	*/
 	public int countAll();
+
+	@Override
+	public java.util.Set<java.lang.String> getBadColumnNames();
 }

@@ -303,4 +303,7 @@ public interface ListTypePersistence extends BasePersistence<ListType> {
 	* @return the number of list types
 	*/
 	public int countAll();
+
+	@Override
+	public java.util.Set<java.lang.String> getBadColumnNames();
 }

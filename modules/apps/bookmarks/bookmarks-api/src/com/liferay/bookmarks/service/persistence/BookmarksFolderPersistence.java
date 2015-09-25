@@ -1707,4 +1707,7 @@ public interface BookmarksFolderPersistence extends BasePersistence<BookmarksFol
 	* @return the number of bookmarks folders
 	*/
 	public int countAll();
+
+	@Override
+	public java.util.Set<java.lang.String> getBadColumnNames();
 }

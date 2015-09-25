@@ -647,4 +647,7 @@ public interface AppPersistence extends BasePersistence<App> {
 	* @return the number of apps
 	*/
 	public int countAll();
+
+	@Override
+	public java.util.Set<java.lang.String> getBadColumnNames();
 }

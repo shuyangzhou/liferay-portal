@@ -2290,34 +2290,128 @@ AUI URI declaration.
 
 ---------------------------------------
 
-### <runtime-portlet> tag can't be used anymore in the body of Web Content Articles
+### Removed Support for runtime-portlet Tag in Body of Web Content Articles
 - **Date:** 2015-Sep-17
 - **JIRA Ticket:** LPS-58736
 
 #### What changed?
 
-The tag <runtime-portlet> won't be replaced by a portlet if it is found in the 
-body of a web content anymore.
+The tag `runtime-portlet` is no longer replaced by a portlet if it is found in
+the body of a web content article.
 
 #### Who is affected?
 
-Any Web Content in the database (JournalArticle table) which uses this taglib.
+This affects any web content in the database (`JournalArticle` table) that uses
+this tag.
 
 #### How should I update my code?
 
-Embeding another portlet is only supported from a template. You should embed
-the portlet using the call to theme.runtime.
+Embedding another portlet is only supported from a template. You should embed
+the portlet by passing its name in a call to `theme.runtime`.
+
+**Example**
 
 In Velocity:
-`$theme.runtime("145")`
 
-In Freemarker:
-`${theme.runtime("145")}``
+    $theme.runtime("145")
 
+In FreeMarker:
+
+    ${theme.runtime("145")
 
 #### Why was this change made?
 
-To improve the performance of web content articles while enforcing a single
-way to embed portlets into the page in order to test it better.
+This change improves the performance of web content articles while enforcing a
+single way to embed portlets into the page for better testing.
+
+---------------------------------------
+
+### Taglib liferay-ui:control-panel-site-selector has been removed
+- **Date:** 2015-Sep-23
+- **JIRA Ticket:** LPS-58210
+
+#### What changed?
+
+The taglib liferay-ui:control-panel-site-selector has been deleted.
+
+#### Who is affected?
+
+This affects developers who use this taglib in their code.
+
+#### How should I update my code?
+
+Consider using the taglib liferay-ui:my-sites or creating your own markup using
+the GroupService API.
+
+#### Why was this change made?
+
+This taglib is not used anymore and it won't be maintained properly.
+
+---------------------------------------
+
+### Methods related to Control Panel in PortalUtil have been removed
+- **Date:** 2015-Sep-23
+- **JIRA Ticket:** LPS-58210
+
+#### What changed?
+
+The following methods been deleted:
+
+- getControlPanelCategoriesMap
+- getControlPanelCategory
+- getControlPanelPortlets
+- getFirstMyAccountPortlet
+- getFirstSiteAdministrationPortlet
+- getSiteAdministrationCategoriesMap
+- getSiteAdministrationURL
+- isCompanyControlPanelVisible
+
+
+#### Who is affected?
+
+This affects developers who use any of these methods.
+
+#### How should I update my code?
+
+In order to work with the apps displayed in the product menu, developers should
+use the application-list-api calling the PanelCategoryRegistry and the
+PanelAppRegistry.
+
+#### Why was this change made?
+
+These methods are not used anymore and they won't work properly since they can't
+call the application-list-api from the context of the portal.
+
+---------------------------------------
+
+### Methods related to Control Panel or Site Administration in ThemeDisplay have been removed
+- **Date:** 2015-Sep-23
+- **JIRA Ticket:** LPS-58210
+
+#### What changed?
+
+The following methods been deleted:
+
+- getControlPanelCategory
+- getURLSiteAdministration
+
+
+#### Who is affected?
+
+This affects developers who use any of these methods.
+
+#### How should I update my code?
+
+Site Administration isn't a site per se anymore. Some apps are displayed in that
+context. In order to create a link to an app that is displayed in the site 
+administration, developers should use the method PortalUtil.getControlPanelURL.
+In order to obtain the first app displayed in a section of the product menu,
+developers should use the application-list-api calling the 
+PanelCategoryRegistry and the PanelAppRegistry.
+
+#### Why was this change made?
+
+These methods are not used anymore and they won't work properly since they can't
+call the application-list-api from the context of the portal.
 
 ---------------------------------------
