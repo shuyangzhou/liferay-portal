@@ -14,11 +14,16 @@
 
 package com.liferay.portal.dao.orm;
 
+import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
+import com.liferay.portal.kernel.dao.orm.Session;
+import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
+import com.liferay.portal.model.Release;
+import com.liferay.portal.model.impl.ReleaseImpl;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.MainServletTestRule;
 
@@ -28,6 +33,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+
+import java.util.Date;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
@@ -47,38 +54,89 @@ public class SQLDateTest {
 			TransactionalTestRule.INSTANCE);
 
 	@Test
-	public void testMillisecondsProcessing() throws SQLException {
+	public void testMillisecondsProcessingHibernate() {
 		DB db = DBFactoryUtil.getDB();
 
 		String dbType = db.getType();
 
 		System.out.println("Running on " + dbType);
 
-		long time = _readTime() / 1000 * 1000;
+		long time = _readTimeHibernate() / 1000 * 1000;
 
 		if (dbType.equals(DB.TYPE_SYBASE)) {
 			for (int i = 0; i < 1000; i++) {
-				_writeTime(time);
+				_writeTimeHibernate(time);
 
-				long readTime = _readTime();
+				long readTime = _readTimeHibernate();
 
-				if (time++ != readTime) {
+				if (time != readTime) {
 					System.out.println(
-						"#####For sybase write out : " + time + ", read in : " +
-							readTime);
+						"#####For sybase Hiberanate write out : " + time +
+							", read in : " + readTime);
 				}
+
+				time++;
 			}
 		}
 		else {
 			for (int i = 0; i < 1000; i++) {
-				_writeTime(time);
+				_writeTimeHibernate(time);
 
-				Assert.assertEquals(time++, _readTime());
+				Assert.assertEquals(time++, _readTimeHibernate());
 			}
 		}
 	}
 
-	private long _readTime() throws SQLException {
+	@Test
+	public void testMillisecondsProcessingJDBC() throws SQLException {
+		DB db = DBFactoryUtil.getDB();
+
+		String dbType = db.getType();
+
+		System.out.println("Running on " + dbType);
+
+		long time = _readTimeJDBC() / 1000 * 1000;
+
+		if (dbType.equals(DB.TYPE_SYBASE)) {
+			for (int i = 0; i < 1000; i++) {
+				_writeTimeJDBC(time);
+
+				long readTime = _readTimeJDBC();
+
+				if (time != readTime) {
+					System.out.println(
+						"#####For sybase JDBC write out : " + time +
+							", read in : " + readTime);
+				}
+
+				time++;
+			}
+		}
+		else {
+			for (int i = 0; i < 1000; i++) {
+				_writeTimeJDBC(time);
+
+				Assert.assertEquals(time++, _readTimeJDBC());
+			}
+		}
+	}
+
+	private long _readTimeHibernate() {
+		Session session = _sessionFactory.openSession();
+
+		try {
+			Release release = (Release)session.get(ReleaseImpl.class, 1L);
+
+			Date date = release.getModifiedDate();
+
+			return date.getTime();
+		}
+		finally {
+			_sessionFactory.closeSession(session);
+		}
+	}
+
+	private long _readTimeJDBC() throws SQLException {
 		try (Connection con = DataAccess.getConnection();
 			Statement statement = con.createStatement();
 			ResultSet rs = statement.executeQuery(
@@ -94,7 +152,25 @@ public class SQLDateTest {
 		}
 	}
 
-	private void _writeTime(long time) throws SQLException {
+	private void _writeTimeHibernate(long time) {
+		Session session = _sessionFactory.openSession();
+
+		try {
+			Release release = (Release)session.get(ReleaseImpl.class, 1L);
+
+			release.setModifiedDate(new Timestamp(time));
+
+			session.saveOrUpdate(release);
+
+			session.flush();
+			session.clear();
+		}
+		finally {
+			_sessionFactory.closeSession(session);
+		}
+	}
+
+	private void _writeTimeJDBC(long time) throws SQLException {
 		try (Connection con = DataAccess.getConnection();
 			PreparedStatement ps = con.prepareStatement(
 				_WRITE_RELEASE_MODIFIED_DATE)) {
@@ -110,5 +186,8 @@ public class SQLDateTest {
 
 	private static final String _WRITE_RELEASE_MODIFIED_DATE =
 		"update Release_ set modifiedDate=? where releaseId = 1";
+
+	private final SessionFactory _sessionFactory =
+		(SessionFactory)PortalBeanLocatorUtil.locate("liferaySessionFactory");
 
 }
