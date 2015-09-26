@@ -3266,6 +3266,22 @@ go]]></replacevalue>
 					</copy>
 				</then>
 			</elseif>
+			<elseif>
+				<and>
+					<equals arg1="${database.type}" arg2="sybase" />
+					<not>
+						<available file="${app.server.lib.global.dir}/${jdbc.jconn.driver}" />
+					</not>
+				</and>
+				<then>
+					<copy todir="${todir}">
+						<fileset
+							dir="lib/development"
+							includes="${jdbc.jconn.driver}"
+						/>
+					</copy>
+				</then>
+			</elseif>
 		</if>
 	</target>
 
