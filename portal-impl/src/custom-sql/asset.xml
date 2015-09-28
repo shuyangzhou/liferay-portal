@@ -194,6 +194,29 @@
 				AssetTag.tagId, AssetTag.name
 		]]>
 	</sql>
+	<sql id="com.liferay.portlet.asset.service.persistence.AssetTagFinder.updateAssetCount">
+		<![CDATA[
+			UPDATE
+				AssetTag
+			SET
+				assetCount =
+				(
+					SELECT
+						COUNT(*) AS COUNT_VALUE
+					FROM
+						AssetEntries_AssetTags
+					INNER JOIN
+						AssetEntry ON
+							(AssetEntry.entryId = AssetEntries_AssetTags.entryId)
+					[$JOIN$]
+					WHERE
+						[$WHERE$]
+						(AssetTag.tagId = AssetEntries_AssetTags.tagId) AND
+						(AssetEntry.classNameId = ?) AND
+						(AssetEntry.visible = ?)
+				)
+		]]>
+	</sql>
 	<sql id="com.liferay.portlet.asset.service.persistence.AssetVocabularyFinder.countByG_N">
 		<![CDATA[
 			SELECT
