@@ -47,7 +47,8 @@ import org.osgi.service.component.annotations.Reference;
 	immediate = true,
 	property = {
 		"osgi.command.function=execute", "osgi.command.function=executeAll",
-		"osgi.command.scope=verify"
+		"osgi.command.function=list", "osgi.command.function=show",
+		"osgi.command.function=showReports", "osgi.command.scope=verify"
 	},
 	service = {VerifyProcessTracker.class}
 )
@@ -82,6 +83,38 @@ public class VerifyProcessTracker {
 			executeVerifyProcess(
 				verifyProcessName, outputStreamContainerFactoryName,
 				"verify-" + verifyProcessName);
+		}
+	}
+
+	public void list() {
+		for (String verifyProcessName : _verifyProcesses.keySet()) {
+			show(verifyProcessName);
+		}
+	}
+
+	public void show(String verifyProcessName) {
+		try {
+			getVerifyProcess(verifyProcessName);
+		}
+		catch (IllegalArgumentException iae) {
+			System.out.println(
+				"No verify process with name " + verifyProcessName);
+
+			return;
+		}
+
+		System.out.println("Registered verify process " + verifyProcessName);
+	}
+
+	public void showReports() {
+		Set<String> outputStreamContainerFactoryNames =
+			_outputStreamContainerFactoryTracker.
+				getOutputStreamContainerFactoryNames();
+
+		for (String outputStreamContainerFactoryName :
+				outputStreamContainerFactoryNames) {
+
+			System.out.println(outputStreamContainerFactoryName);
 		}
 	}
 
@@ -136,9 +169,10 @@ public class VerifyProcessTracker {
 		OutputStreamContainerFactory outputStreamContainerFactory = null;
 
 		if (outputStreamContainerFactoryName != null) {
-			_outputStreamContainerFactoryTracker.
-				getOutputStreamContainerFactory(
-					outputStreamContainerFactoryName);
+			outputStreamContainerFactory =
+				_outputStreamContainerFactoryTracker.
+					getOutputStreamContainerFactory(
+						outputStreamContainerFactoryName);
 		}
 		else {
 			outputStreamContainerFactory =
