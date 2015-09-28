@@ -1723,63 +1723,6 @@ public class DLAppHelperLocalServiceImpl
 		}
 	}
 
-	protected void updateFolderAssetsVisibility(
-			DLFolder dlFolder, boolean visible)
-		throws PortalException{
-
-		long dlFileEntryClassNameId = classNameLocalService.getClassNameId(
-			DLFileEntry.class);
-
-		List<AssetEntry> dlFileEntryAssetEntries =
-			assetEntryFinder.findByDLFileEntryC_T(
-				dlFileEntryClassNameId, dlFolder.getTreePath(), !visible);
-
-		for (AssetEntry dlFileEntryAssetEntry : dlFileEntryAssetEntries) {
-			dlFileEntryAssetEntry.setVisible(visible);
-
-			assetEntryPersistence.update(dlFileEntryAssetEntry);
-
-			socialActivityCounterLocalService.setActivityCountersActive(
-				dlFileEntryAssetEntry, visible);
-		}
-
-		int updatedTagCount = assetTagFinder.updateAssetCountByDLFileEntryC_T_V(
-			dlFileEntryClassNameId, dlFolder.getTreePath(), visible);
-		int updatedTagStatsCount =
-			assetTagStatsFinder.updateAssetCountByDLFileEntryC_T_V(
-				dlFileEntryClassNameId, dlFolder.getTreePath(), visible);
-
-		long dlFolderClassNameId = classNameLocalService.getClassNameId(
-			DLFolder.class);
-
-		List<AssetEntry> dlFolderAssetEntries =
-			assetEntryFinder.findByDLFolderC_T(
-				dlFolderClassNameId, dlFolder.getTreePath(), !visible);
-
-		for (AssetEntry dlFolderAssetEntry : dlFolderAssetEntries) {
-			dlFolderAssetEntry.setVisible(visible);
-
-			assetEntryPersistence.update(dlFolderAssetEntry);
-
-			socialActivityCounterLocalService.setActivityCountersActive(
-				dlFolderAssetEntry, visible);
-		}
-
-		updatedTagCount += assetTagFinder.updateAssetCountByDLFolderC_T_V(
-			dlFolderClassNameId, dlFolder.getTreePath(), visible);
-		updatedTagStatsCount +=
-			assetTagStatsFinder.updateAssetCountByDLFolderC_T_V(
-				dlFolderClassNameId, dlFolder.getTreePath(), visible);
-
-		if (updatedTagCount > 0) {
-			EntityCacheUtil.clearCache(AssetTagImpl.class);
-		}
-
-		if (updatedTagStatsCount > 0) {
-			EntityCacheUtil.clearCache(AssetTagStatsImpl.class);
-		}
-	}
-
 	protected void trashOrRestoreFolder(
 			DLFolder dlFolder, DLFolder childDLFolder, boolean moveToTrash,
 			TrashEntry trashEntry)
@@ -2013,6 +1956,63 @@ public class DLAppHelperLocalServiceImpl
 
 			repositoryEventTriggerCapability.trigger(
 				repositoryEventType, modelClass, target);
+		}
+	}
+
+	protected void updateFolderAssetsVisibility(
+			DLFolder dlFolder, boolean visible)
+		throws PortalException {
+
+		long dlFileEntryClassNameId = classNameLocalService.getClassNameId(
+			DLFileEntry.class);
+
+		List<AssetEntry> dlFileEntryAssetEntries =
+			assetEntryFinder.findByDLFileEntryC_T(
+				dlFileEntryClassNameId, dlFolder.getTreePath(), !visible);
+
+		for (AssetEntry dlFileEntryAssetEntry : dlFileEntryAssetEntries) {
+			dlFileEntryAssetEntry.setVisible(visible);
+
+			assetEntryPersistence.update(dlFileEntryAssetEntry);
+
+			socialActivityCounterLocalService.setActivityCountersActive(
+				dlFileEntryAssetEntry, visible);
+		}
+
+		int updatedTagCount = assetTagFinder.updateAssetCountByDLFileEntryC_T_V(
+			dlFileEntryClassNameId, dlFolder.getTreePath(), visible);
+		int updatedTagStatsCount =
+			assetTagStatsFinder.updateAssetCountByDLFileEntryC_T_V(
+				dlFileEntryClassNameId, dlFolder.getTreePath(), visible);
+
+		long dlFolderClassNameId = classNameLocalService.getClassNameId(
+			DLFolder.class);
+
+		List<AssetEntry> dlFolderAssetEntries =
+			assetEntryFinder.findByDLFolderC_T(
+				dlFolderClassNameId, dlFolder.getTreePath(), !visible);
+
+		for (AssetEntry dlFolderAssetEntry : dlFolderAssetEntries) {
+			dlFolderAssetEntry.setVisible(visible);
+
+			assetEntryPersistence.update(dlFolderAssetEntry);
+
+			socialActivityCounterLocalService.setActivityCountersActive(
+				dlFolderAssetEntry, visible);
+		}
+
+		updatedTagCount += assetTagFinder.updateAssetCountByDLFolderC_T_V(
+			dlFolderClassNameId, dlFolder.getTreePath(), visible);
+		updatedTagStatsCount +=
+			assetTagStatsFinder.updateAssetCountByDLFolderC_T_V(
+				dlFolderClassNameId, dlFolder.getTreePath(), visible);
+
+		if (updatedTagCount > 0) {
+			EntityCacheUtil.clearCache(AssetTagImpl.class);
+		}
+
+		if (updatedTagStatsCount > 0) {
+			EntityCacheUtil.clearCache(AssetTagStatsImpl.class);
 		}
 	}
 
