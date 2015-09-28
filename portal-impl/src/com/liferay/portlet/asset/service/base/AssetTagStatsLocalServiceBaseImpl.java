@@ -41,6 +41,7 @@ import com.liferay.portlet.asset.model.AssetTagStats;
 import com.liferay.portlet.asset.service.AssetTagStatsLocalService;
 import com.liferay.portlet.asset.service.persistence.AssetTagFinder;
 import com.liferay.portlet.asset.service.persistence.AssetTagPersistence;
+import com.liferay.portlet.asset.service.persistence.AssetTagStatsFinder;
 import com.liferay.portlet.asset.service.persistence.AssetTagStatsPersistence;
 
 import java.io.Serializable;
@@ -337,6 +338,24 @@ public abstract class AssetTagStatsLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the asset tag stats finder.
+	 *
+	 * @return the asset tag stats finder
+	 */
+	public AssetTagStatsFinder getAssetTagStatsFinder() {
+		return assetTagStatsFinder;
+	}
+
+	/**
+	 * Sets the asset tag stats finder.
+	 *
+	 * @param assetTagStatsFinder the asset tag stats finder
+	 */
+	public void setAssetTagStatsFinder(AssetTagStatsFinder assetTagStatsFinder) {
+		this.assetTagStatsFinder = assetTagStatsFinder;
+	}
+
+	/**
 	 * Returns the counter local service.
 	 *
 	 * @return the counter local service
@@ -495,6 +514,8 @@ public abstract class AssetTagStatsLocalServiceBaseImpl
 	protected AssetTagStatsLocalService assetTagStatsLocalService;
 	@BeanReference(type = AssetTagStatsPersistence.class)
 	protected AssetTagStatsPersistence assetTagStatsPersistence;
+	@BeanReference(type = AssetTagStatsFinder.class)
+	protected AssetTagStatsFinder assetTagStatsFinder;
 	@BeanReference(type = com.liferay.counter.service.CounterLocalService.class)
 	protected com.liferay.counter.service.CounterLocalService counterLocalService;
 	@BeanReference(type = com.liferay.portlet.asset.service.AssetTagLocalService.class)

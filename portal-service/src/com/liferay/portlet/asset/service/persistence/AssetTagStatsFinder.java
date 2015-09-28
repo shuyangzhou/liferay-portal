@@ -21,29 +21,7 @@ import aQute.bnd.annotation.ProviderType;
  * @generated
  */
 @ProviderType
-public interface AssetTagFinder {
-	public int countByG_C_N(long groupId, long classNameId,
-		java.lang.String name);
-
-	public int filterCountByG_N(long groupId, java.lang.String name);
-
-	public int filterCountByG_C_N(long groupId, long classNameId,
-		java.lang.String name);
-
-	public java.util.List<com.liferay.portlet.asset.model.AssetTag> filterFindByG_C_N(
-		long groupId, long classNameId, java.lang.String name, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portlet.asset.model.AssetTag> obc);
-
-	public java.util.List<com.liferay.portlet.asset.model.AssetTag> findByG_C_N(
-		long groupId, long classNameId, java.lang.String name, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portlet.asset.model.AssetTag> obc);
-
-	public java.util.List<com.liferay.portlet.asset.model.AssetTag> findByG_N_S_E(
-		long groupId, java.lang.String name, int startPeriod, int endPeriod,
-		int periodLength);
-
+public interface AssetTagStatsFinder {
 	public int updateAssetCountByDLFileEntryC_T_V(long classNameId,
 		java.lang.String treePath, boolean visible);
 

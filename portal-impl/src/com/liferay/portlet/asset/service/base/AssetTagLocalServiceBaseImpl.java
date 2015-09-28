@@ -49,6 +49,7 @@ import com.liferay.portlet.asset.service.persistence.AssetEntryFinder;
 import com.liferay.portlet.asset.service.persistence.AssetEntryPersistence;
 import com.liferay.portlet.asset.service.persistence.AssetTagFinder;
 import com.liferay.portlet.asset.service.persistence.AssetTagPersistence;
+import com.liferay.portlet.asset.service.persistence.AssetTagStatsFinder;
 import com.liferay.portlet.asset.service.persistence.AssetTagStatsPersistence;
 import com.liferay.portlet.exportimport.lar.ExportImportHelperUtil;
 import com.liferay.portlet.exportimport.lar.ManifestSummary;
@@ -975,6 +976,24 @@ public abstract class AssetTagLocalServiceBaseImpl extends BaseLocalServiceImpl
 		this.assetTagStatsPersistence = assetTagStatsPersistence;
 	}
 
+	/**
+	 * Returns the asset tag stats finder.
+	 *
+	 * @return the asset tag stats finder
+	 */
+	public AssetTagStatsFinder getAssetTagStatsFinder() {
+		return assetTagStatsFinder;
+	}
+
+	/**
+	 * Sets the asset tag stats finder.
+	 *
+	 * @param assetTagStatsFinder the asset tag stats finder
+	 */
+	public void setAssetTagStatsFinder(AssetTagStatsFinder assetTagStatsFinder) {
+		this.assetTagStatsFinder = assetTagStatsFinder;
+	}
+
 	public void afterPropertiesSet() {
 		persistedModelLocalServiceRegistry.register("com.liferay.portlet.asset.model.AssetTag",
 			assetTagLocalService);
@@ -1083,6 +1102,8 @@ public abstract class AssetTagLocalServiceBaseImpl extends BaseLocalServiceImpl
 	protected com.liferay.portlet.asset.service.AssetTagStatsLocalService assetTagStatsLocalService;
 	@BeanReference(type = AssetTagStatsPersistence.class)
 	protected AssetTagStatsPersistence assetTagStatsPersistence;
+	@BeanReference(type = AssetTagStatsFinder.class)
+	protected AssetTagStatsFinder assetTagStatsFinder;
 	@BeanReference(type = PersistedModelLocalServiceRegistry.class)
 	protected PersistedModelLocalServiceRegistry persistedModelLocalServiceRegistry;
 	private String _beanIdentifier;
