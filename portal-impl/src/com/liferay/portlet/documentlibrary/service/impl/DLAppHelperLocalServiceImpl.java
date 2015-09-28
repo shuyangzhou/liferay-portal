@@ -1706,6 +1706,24 @@ public class DLAppHelperLocalServiceImpl
 				DLFolderConstants.getClassName(), dlFolder.getFolderId());
 		}
 
+		updateFolderAssetsVisibility(dlFolder, !moveToTrash);
+
+		List<DLFolder> dlFolders = dlFolderPersistence.findByG_M_T_H(
+			dlFolder.getGroupId(), false,
+			CustomSQLUtil.keywords(
+				dlFolder.getTreePath(), WildcardMode.TRAILING)[0],
+			false);
+
+		for (DLFolder childDLFolder : dlFolders) {
+			trashOrRestoreFolder(
+				dlFolder, childDLFolder, moveToTrash, trashEntry);
+		}
+	}
+
+	protected void updateFolderAssetsVisibility(
+			DLFolder dlFolder, boolean visible)
+		throws PortalException{
+
 		long dlFileEntryClassNameId = classNameLocalService.getClassNameId(
 			DLFileEntry.class);
 
@@ -1715,7 +1733,7 @@ public class DLAppHelperLocalServiceImpl
 
 		for (AssetEntry dlFileEntryAssetEntry : dlFileEntryAssetEntries) {
 			assetEntryLocalService.updateVisible(
-				dlFileEntryAssetEntry, !moveToTrash);
+				dlFileEntryAssetEntry, visible);
 		}
 
 		long dlFolderClassNameId = classNameLocalService.getClassNameId(
@@ -1727,18 +1745,7 @@ public class DLAppHelperLocalServiceImpl
 
 		for (AssetEntry dlFolderAssetEntry : dlFolderAssetEntries) {
 			assetEntryLocalService.updateVisible(
-				dlFolderAssetEntry, !moveToTrash);
-		}
-
-		List<DLFolder> dlFolders = dlFolderPersistence.findByG_M_T_H(
-			dlFolder.getGroupId(), false,
-			CustomSQLUtil.keywords(
-				dlFolder.getTreePath(), WildcardMode.TRAILING)[0],
-			false);
-
-		for (DLFolder childDLFolder : dlFolders) {
-			trashOrRestoreFolder(
-				dlFolder, childDLFolder, moveToTrash, trashEntry);
+				dlFolderAssetEntry, visible);
 		}
 	}
 
