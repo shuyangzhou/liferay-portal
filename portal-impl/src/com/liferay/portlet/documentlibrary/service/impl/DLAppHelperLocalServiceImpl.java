@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.documentlibrary.service.impl;
 
+import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.WildcardMode;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -58,6 +59,8 @@ import com.liferay.portal.util.SubscriptionSender;
 import com.liferay.portlet.asset.model.AssetEntry;
 import com.liferay.portlet.asset.model.AssetLink;
 import com.liferay.portlet.asset.model.AssetLinkConstants;
+import com.liferay.portlet.asset.model.impl.AssetTagImpl;
+import com.liferay.portlet.asset.model.impl.AssetTagStatsImpl;
 import com.liferay.portlet.documentlibrary.DLGroupServiceSettings;
 import com.liferay.portlet.documentlibrary.model.DLFileEntry;
 import com.liferay.portlet.documentlibrary.model.DLFileEntryConstants;
@@ -1732,9 +1735,19 @@ public class DLAppHelperLocalServiceImpl
 				dlFileEntryClassNameId, dlFolder.getTreePath(), !visible);
 
 		for (AssetEntry dlFileEntryAssetEntry : dlFileEntryAssetEntries) {
-			assetEntryLocalService.updateVisible(
+			dlFileEntryAssetEntry.setVisible(visible);
+
+			assetEntryPersistence.update(dlFileEntryAssetEntry);
+
+			socialActivityCounterLocalService.setActivityCountersActive(
 				dlFileEntryAssetEntry, visible);
 		}
+
+		int updatedTagCount = assetTagFinder.updateAssetCountByDLFileEntryC_T_V(
+			dlFileEntryClassNameId, dlFolder.getTreePath(), visible);
+		int updatedTagStatsCount =
+			assetTagStatsFinder.updateAssetCountByDLFileEntryC_T_V(
+				dlFileEntryClassNameId, dlFolder.getTreePath(), visible);
 
 		long dlFolderClassNameId = classNameLocalService.getClassNameId(
 			DLFolder.class);
@@ -1744,8 +1757,26 @@ public class DLAppHelperLocalServiceImpl
 				dlFolderClassNameId, dlFolder.getTreePath(), !visible);
 
 		for (AssetEntry dlFolderAssetEntry : dlFolderAssetEntries) {
-			assetEntryLocalService.updateVisible(
+			dlFolderAssetEntry.setVisible(visible);
+
+			assetEntryPersistence.update(dlFolderAssetEntry);
+
+			socialActivityCounterLocalService.setActivityCountersActive(
 				dlFolderAssetEntry, visible);
+		}
+
+		updatedTagCount += assetTagFinder.updateAssetCountByDLFolderC_T_V(
+			dlFolderClassNameId, dlFolder.getTreePath(), visible);
+		updatedTagStatsCount +=
+			assetTagStatsFinder.updateAssetCountByDLFolderC_T_V(
+				dlFolderClassNameId, dlFolder.getTreePath(), visible);
+
+		if (updatedTagCount > 0) {
+			EntityCacheUtil.clearCache(AssetTagImpl.class);
+		}
+
+		if (updatedTagStatsCount > 0) {
+			EntityCacheUtil.clearCache(AssetTagStatsImpl.class);
 		}
 	}
 
