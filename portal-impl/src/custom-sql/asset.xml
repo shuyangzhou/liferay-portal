@@ -94,7 +94,8 @@
 			[$JOIN$]
 			WHERE
 				[$WHERE$]
-				(AssetEntry.classNameId = ?)
+				(AssetEntry.classNameId = ?) AND
+				(AssetEntry.visible = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.portlet.asset.service.persistence.AssetTagFinder.countByG_N">
