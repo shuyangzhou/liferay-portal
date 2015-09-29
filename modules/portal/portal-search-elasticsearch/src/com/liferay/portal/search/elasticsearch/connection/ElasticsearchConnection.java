@@ -30,6 +30,9 @@ public interface ElasticsearchConnection {
 
 	public ClusterHealthResponse getClusterHealthResponse(long timeout);
 
+	public ClusterHealthResponse getClusterHealthResponse(
+		long timeout, String index);
+
 	public OperationMode getOperationMode();
 
 }

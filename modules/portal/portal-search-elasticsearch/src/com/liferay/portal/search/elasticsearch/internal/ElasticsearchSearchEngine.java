@@ -108,18 +108,14 @@ public class ElasticsearchSearchEngine extends BaseSearchEngine {
 	public void initialize(long companyId) {
 		super.initialize(companyId);
 
-		ClusterHealthResponse clusterHealthResponse = null;
+		long timeout = 30 * Time.SECOND;
 
 		if (PortalRunMode.isTestMode()) {
-			clusterHealthResponse =
-				_elasticsearchConnectionManager.getClusterHealthResponse(
-					Time.HOUR);
+			timeout = Time.HOUR;
 		}
-		else {
-			clusterHealthResponse =
-				_elasticsearchConnectionManager.getClusterHealthResponse(
-					30 * Time.SECOND);
-		}
+
+		ClusterHealthResponse clusterHealthResponse =
+			_elasticsearchConnectionManager.getClusterHealthResponse(timeout);
 
 		if (clusterHealthResponse.getStatus() == ClusterHealthStatus.RED) {
 			throw new IllegalStateException(
@@ -133,6 +129,16 @@ public class ElasticsearchSearchEngine extends BaseSearchEngine {
 		}
 		catch (Exception e) {
 			throw new IllegalStateException(e);
+		}
+
+		clusterHealthResponse =
+			_elasticsearchConnectionManager.getClusterHealthResponse(
+				timeout, companyId);
+
+		if (clusterHealthResponse.getStatus() == ClusterHealthStatus.RED) {
+			throw new IllegalStateException(
+				"Unable to initialize Elasticsearch index: " +
+					clusterHealthResponse);
 		}
 	}
 
