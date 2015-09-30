@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.elasticsearch.configuration.ElasticsearchConfiguration;
 import com.liferay.portal.search.elasticsearch.index.IndexFactory;
 import com.liferay.portal.search.elasticsearch.settings.SettingsContributor;
@@ -87,6 +88,13 @@ public abstract class BaseElasticsearchConnection
 
 	@Override
 	public ClusterHealthResponse getClusterHealthResponse(long timeout) {
+		return getClusterHealthResponse(timeout, null);
+	}
+
+	@Override
+	public ClusterHealthResponse getClusterHealthResponse(
+		long timeout, String index) {
+
 		Client client = getClient();
 
 		AdminClient adminClient = client.admin();
@@ -100,6 +108,10 @@ public abstract class BaseElasticsearchConnection
 			TimeValue.timeValueMillis(timeout));
 
 		clusterHealthRequestBuilder.setWaitForYellowStatus();
+
+		if (Validator.isNotNull(index)) {
+			clusterHealthRequestBuilder.setIndices(index);
+		}
 
 		Future<ClusterHealthResponse> future =
 			clusterHealthRequestBuilder.execute();

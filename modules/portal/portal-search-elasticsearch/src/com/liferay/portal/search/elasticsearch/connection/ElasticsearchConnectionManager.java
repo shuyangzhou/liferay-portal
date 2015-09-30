@@ -81,6 +81,16 @@ public class ElasticsearchConnectionManager {
 		return elasticsearchConnection.getClusterHealthResponse(timeout);
 	}
 
+	public ClusterHealthResponse getClusterHealthResponse(
+		long timeout, long index) {
+
+		ElasticsearchConnection elasticsearchConnection =
+			getElasticsearchConnection();
+
+		return elasticsearchConnection.getClusterHealthResponse(
+			timeout, String.valueOf(index));
+	}
+
 	public ElasticsearchConnection getElasticsearchConnection() {
 		return _elasticsearchConnections.get(_operationMode);
 	}
