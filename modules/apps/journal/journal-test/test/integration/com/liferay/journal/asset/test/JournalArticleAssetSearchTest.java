@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.service.ServiceContext;
@@ -65,6 +66,8 @@ public class JournalArticleAssetSearchTest extends BaseAssetSearchTestCase {
 		ServiceTestUtil.setUser(TestPropsValues.getUser());
 
 		super.setUp();
+
+		Thread.sleep(Time.MINUTE);
 	}
 
 	@Override

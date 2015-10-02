@@ -17,6 +17,7 @@ package com.liferay.portal.service;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
+import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.model.User;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.MainServletTestRule;
@@ -59,6 +60,8 @@ public class UserLocalServiceTest {
 
 		Assert.assertFalse(users.contains(user1));
 		Assert.assertTrue(users.contains(user2));
+
+		Thread.sleep(20 * Time.MINUTE);
 	}
 
 	@Test
