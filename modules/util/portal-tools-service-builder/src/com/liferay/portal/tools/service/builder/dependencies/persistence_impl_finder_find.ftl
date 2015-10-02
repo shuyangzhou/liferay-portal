@@ -80,7 +80,7 @@ that may or may not be enforced with a unique index at the database level. Case
 
 <#if finder.isCollection() && !finder.isUnique()>
 	/**
-	 * Returns all the ${entity.humanNames} where ${finder.getHumanConditions(false)}.
+	 * Returns all the ${entity.humanNames} where ${finder.getHumanConditions(false)}. Uses the finder cache.
 	 *
 	<#list finderColsList as finderCol>
 	 * @param ${finderCol.name} the ${finderCol.humanName}
@@ -109,7 +109,35 @@ that may or may not be enforced with a unique index at the database level. Case
 	}
 
 	/**
-	 * Returns a range of all the ${entity.humanNames} where ${finder.getHumanConditions(false)}.
+	 * Returns all the ${entity.humanNames} where ${finder.getHumanConditions(false)}, optionally using the finder cache.
+	 *
+	<#list finderColsList as finderCol>
+	 * @param ${finderCol.name} the ${finderCol.humanName}
+	</#list>
+	 * @param retrieveFromCache whether to use the finder cache
+	 * @return the matching ${entity.humanNames}
+	 */
+	@Override
+	public List<${entity.name}> findBy${finder.name}(
+
+	<#list finderColsList as finderCol>
+		${finderCol.type} ${finderCol.name}
+
+		,
+	</#list>
+
+	boolean retrieveFromCache) {
+		return findBy${finder.name}(
+
+		<#list finderColsList as finderCol>
+			${finderCol.name},
+		</#list>
+
+		QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, retrieveFromCache);
+	}
+
+	/**
+	 * Returns a range of all the ${entity.humanNames} where ${finder.getHumanConditions(false)}. Uses the finder cache.
 	 *
 	 * <p>
 	 * <#include "range_comment.ftl">
@@ -140,7 +168,39 @@ that may or may not be enforced with a unique index at the database level. Case
 	}
 
 	/**
-	 * Returns an ordered range of all the ${entity.humanNames} where ${finder.getHumanConditions(false)}.
+	 * Returns a range of all the ${entity.humanNames} where ${finder.getHumanConditions(false)}, optionally using the finder cache.
+	 *
+	 * <p>
+	 * <#include "range_comment.ftl">
+	 * </p>
+	 *
+	<#list finderColsList as finderCol>
+	 * @param ${finderCol.name} the ${finderCol.humanName}
+	</#list>
+	 * @param start the lower bound of the range of ${entity.humanNames}
+	 * @param end the upper bound of the range of ${entity.humanNames} (not inclusive)
+	 * @param retrieveFromCache whether to use the finder cache
+	 * @return the range of matching ${entity.humanNames}
+	 */
+	@Override
+	public List<${entity.name}> findBy${finder.name}(
+
+	<#list finderColsList as finderCol>
+		${finderCol.type} ${finderCol.name},
+	</#list>
+
+	int start, int end, boolean retrieveFromCache) {
+		return findBy${finder.name}(
+
+		<#list finderColsList as finderCol>
+			${finderCol.name},
+		</#list>
+
+		start, end, null, retrieveFromCache);
+	}
+
+	/**
+	 * Returns an ordered range of all the ${entity.humanNames} where ${finder.getHumanConditions(false)}. Uses the finder cache.
 	 *
 	 * <p>
 	 * <#include "range_comment.ftl">
@@ -162,6 +222,39 @@ that may or may not be enforced with a unique index at the database level. Case
 	</#list>
 
 	int start, int end, OrderByComparator<${entity.name}> orderByComparator) {
+		return findBy${finder.name}(
+
+		<#list finderColsList as finderCol>
+			${finderCol.name},
+		</#list>
+
+		start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the ${entity.humanNames} where ${finder.getHumanConditions(false)}, optionally using the finder cache.
+	 *
+	 * <p>
+	 * <#include "range_comment.ftl">
+	 * </p>
+	 *
+	<#list finderColsList as finderCol>
+	 * @param ${finderCol.name} the ${finderCol.humanName}
+	</#list>
+	 * @param start the lower bound of the range of ${entity.humanNames}
+	 * @param end the upper bound of the range of ${entity.humanNames} (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to use the finder cache
+	 * @return the ordered range of matching ${entity.humanNames}
+	 */
+	@Override
+	public List<${entity.name}> findBy${finder.name}(
+
+	<#list finderColsList as finderCol>
+		${finderCol.type} ${finderCol.name},
+	</#list>
+
+	int start, int end, OrderByComparator<${entity.name}> orderByComparator, boolean retrieveFromCache) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -196,7 +289,11 @@ that may or may not be enforced with a unique index at the database level. Case
 			}
 		</#if>
 
-		List<${entity.name}> list = (List<${entity.name}>)FinderCacheUtil.getResult(finderPath, finderArgs, this);
+		List<${entity.name}> list = null;
+
+		if (retrieveFromCache) {
+			list = (List<${entity.name}>)FinderCacheUtil.getResult(finderPath, finderArgs, this);
+		}
 
 		if ((list != null) && !list.isEmpty()) {
 			for (${entity.name} ${entity.varName} : list) {
@@ -1275,7 +1372,7 @@ that may or may not be enforced with a unique index at the database level. Case
 <#if finder.isCollection()>
 	<#if finder.hasArrayableOperator()>
 		/**
-		 * Returns all the ${entity.humanNames} where ${finder.getHumanConditions(true)}.
+		 * Returns all the ${entity.humanNames} where ${finder.getHumanConditions(true)}. Uses the finder cache.
 		 *
 		 * <p>
 		 * <#include "range_comment.ftl">
@@ -1320,7 +1417,51 @@ that may or may not be enforced with a unique index at the database level. Case
 		}
 
 		/**
-		 * Returns a range of all the ${entity.humanNames} where ${finder.getHumanConditions(true)}.
+		 * Returns all the ${entity.humanNames} where ${finder.getHumanConditions(true)}, optionally using the finder cache.
+		 *
+		 * <p>
+		 * <#include "range_comment.ftl">
+		 * </p>
+		 *
+		<#list finderColsList as finderCol>
+			<#if finderCol.hasArrayableOperator()>
+		 * @param ${finderCol.names} the ${finderCol.humanNames}
+			<#else>
+		 * @param ${finderCol.name} the ${finderCol.humanName}
+			</#if>
+		</#list>
+		 * @param retrieveFromCache whether to use the finder cache
+		 * @return the matching ${entity.humanNames}
+		 */
+		@Override
+		public List<${entity.name}> findBy${finder.name}(
+
+		<#list finderColsList as finderCol>
+			<#if finderCol.hasArrayableOperator()>
+				${finderCol.type}[] ${finderCol.names}
+			<#else>
+				${finderCol.type} ${finderCol.name}
+			</#if>
+
+			,
+		</#list>
+
+		boolean retrieveFromCache) {
+			return findBy${finder.name}(
+
+			<#list finderColsList as finderCol>
+				<#if finderCol.hasArrayableOperator()>
+					${finderCol.names},
+				<#else>
+					${finderCol.name},
+				</#if>
+			</#list>
+
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, retrieveFromCache);
+		}
+
+		/**
+		 * Returns a range of all the ${entity.humanNames} where ${finder.getHumanConditions(true)}. Uses the finder cache.
 		 *
 		 * <p>
 		 * <#include "range_comment.ftl">
@@ -1363,7 +1504,7 @@ that may or may not be enforced with a unique index at the database level. Case
 		}
 
 		/**
-		 * Returns an ordered range of all the ${entity.humanNames} where ${finder.getHumanConditions(true)}.
+		 * Returns an ordered range of all the ${entity.humanNames} where ${finder.getHumanConditions(true)}, optionally using the finder cache.
 		 *
 		 * <p>
 		 * <#include "range_comment.ftl">
@@ -1375,6 +1516,46 @@ that may or may not be enforced with a unique index at the database level. Case
 			<#else>
 		 * @param ${finderCol.name} the ${finderCol.humanName}
 			</#if>
+		</#list>
+		 * @param start the lower bound of the range of ${entity.humanNames}
+		 * @param end the upper bound of the range of ${entity.humanNames} (not inclusive)
+		 * @param retrieveFromCache whether to use the finder cache
+		 * @return the range of matching ${entity.humanNames}
+		 */
+		@Override
+		public List<${entity.name}> findBy${finder.name}(
+
+		<#list finderColsList as finderCol>
+			<#if finderCol.hasArrayableOperator()>
+				${finderCol.type}[] ${finderCol.names},
+			<#else>
+				${finderCol.type} ${finderCol.name},
+			</#if>
+		</#list>
+
+		int start, int end, boolean retrieveFromCache) {
+			return findBy${finder.name}(
+
+			<#list finderColsList as finderCol>
+				<#if finderCol.hasArrayableOperator()>
+					${finderCol.names},
+				<#else>
+					${finderCol.name},
+				</#if>
+			</#list>
+
+			start, end, null, retrieveFromCache);
+		}
+
+		/**
+		 * Returns an ordered range of all the ${entity.humanNames} where ${finder.getHumanConditions(false)}. Uses the finder cache.
+		 *
+		 * <p>
+		 * <#include "range_comment.ftl">
+		 * </p>
+		 *
+		<#list finderColsList as finderCol>
+		 * @param ${finderCol.name} the ${finderCol.humanName}
 		</#list>
 		 * @param start the lower bound of the range of ${entity.humanNames}
 		 * @param end the upper bound of the range of ${entity.humanNames} (not inclusive)
@@ -1393,6 +1574,47 @@ that may or may not be enforced with a unique index at the database level. Case
 		</#list>
 
 		int start, int end, OrderByComparator<${entity.name}> orderByComparator) {
+			return findBy${finder.name}(
+
+			<#list finderColsList as finderCol>
+				<#if finderCol.hasArrayableOperator()>
+					${finderCol.names},
+				<#else>
+					${finderCol.name},
+				</#if>
+			</#list>
+
+			start, end, orderByComparator, true);
+		}
+
+		/**
+		 * Returns an ordered range of all the ${entity.humanNames} where ${finder.getHumanConditions(false)}, optionally using the finder cache.
+		 *
+		 * <p>
+		 * <#include "range_comment.ftl">
+		 * </p>
+		 *
+		<#list finderColsList as finderCol>
+		 * @param ${finderCol.name} the ${finderCol.humanName}
+		</#list>
+		 * @param start the lower bound of the range of ${entity.humanNames}
+		 * @param end the upper bound of the range of ${entity.humanNames} (not inclusive)
+		 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+		 * @param retrieveFromCache whether to use the finder cache
+		 * @return the ordered range of matching ${entity.humanNames}
+		 */
+		@Override
+		public List<${entity.name}> findBy${finder.name}(
+
+		<#list finderColsList as finderCol>
+			<#if finderCol.hasArrayableOperator()>
+				${finderCol.type}[] ${finderCol.names},
+			<#else>
+				${finderCol.type} ${finderCol.name},
+			</#if>
+		</#list>
+
+		int start, int end, OrderByComparator<${entity.name}> orderByComparator, boolean retrieveFromCache) {
 			<#list finderColsList as finderCol>
 				<#if finderCol.hasArrayableOperator()>
 					if (${finderCol.names} == null) {
@@ -1494,7 +1716,11 @@ that may or may not be enforced with a unique index at the database level. Case
 				};
 			}
 
-			List<${entity.name}> list = (List<${entity.name}>)FinderCacheUtil.getResult(FINDER_PATH_WITH_PAGINATION_FIND_BY_${finder.name?upper_case}, finderArgs, this);
+			List<${entity.name}> list = null;
+
+			if (retrieveFromCache) {
+				list = (List<${entity.name}>)FinderCacheUtil.getResult(FINDER_PATH_WITH_PAGINATION_FIND_BY_${finder.name?upper_case}, finderArgs, this);
+			}
 
 			if ((list != null) && !list.isEmpty()) {
 				for (${entity.name} ${entity.varName} : list) {
