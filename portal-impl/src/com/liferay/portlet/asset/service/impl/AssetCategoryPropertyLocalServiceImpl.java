@@ -163,9 +163,7 @@ public class AssetCategoryPropertyLocalServiceImpl
 		return updateCategoryProperty(0, categoryPropertyId, key, value);
 	}
 
-	protected boolean hasCategoryProperty(long categoryId, String key)
-		throws PortalException {
-
+	protected boolean hasCategoryProperty(long categoryId, String key) {
 		AssetCategoryProperty categoryProperty =
 			assetCategoryPropertyPersistence.fetchByCA_K(categoryId, key);
 

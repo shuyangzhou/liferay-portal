@@ -45,6 +45,7 @@ import com.liferay.service.access.policy.service.persistence.SAPEntryUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -64,8 +65,9 @@ import java.util.Set;
  */
 @RunWith(Arquillian.class)
 public class SAPEntryPersistenceTest {
+	@ClassRule
 	@Rule
-	public final AggregateTestRule aggregateTestRule = new AggregateTestRule(new LiferayIntegrationTestRule(),
+	public static final AggregateTestRule aggregateTestRule = new AggregateTestRule(new LiferayIntegrationTestRule(),
 			PersistenceTestRule.INSTANCE,
 			new TransactionalTestRule(Propagation.REQUIRED));
 
@@ -138,6 +140,8 @@ public class SAPEntryPersistenceTest {
 
 		newSAPEntry.setDefaultSAPEntry(RandomTestUtil.randomBoolean());
 
+		newSAPEntry.setEnabled(RandomTestUtil.randomBoolean());
+
 		newSAPEntry.setName(RandomTestUtil.randomString());
 
 		newSAPEntry.setTitle(RandomTestUtil.randomString());
@@ -165,6 +169,8 @@ public class SAPEntryPersistenceTest {
 			newSAPEntry.getAllowedServiceSignatures());
 		Assert.assertEquals(existingSAPEntry.getDefaultSAPEntry(),
 			newSAPEntry.getDefaultSAPEntry());
+		Assert.assertEquals(existingSAPEntry.getEnabled(),
+			newSAPEntry.getEnabled());
 		Assert.assertEquals(existingSAPEntry.getName(), newSAPEntry.getName());
 		Assert.assertEquals(existingSAPEntry.getTitle(), newSAPEntry.getTitle());
 	}
@@ -229,8 +235,8 @@ public class SAPEntryPersistenceTest {
 		return OrderByComparatorFactoryUtil.create("SAPEntry", "uuid", true,
 			"sapEntryId", true, "companyId", true, "userId", true, "userName",
 			true, "createDate", true, "modifiedDate", true,
-			"allowedServiceSignatures", true, "defaultSAPEntry", true, "name",
-			true, "title", true);
+			"allowedServiceSignatures", true, "defaultSAPEntry", true,
+			"enabled", true, "name", true, "title", true);
 	}
 
 	@Test
@@ -463,6 +469,8 @@ public class SAPEntryPersistenceTest {
 		sapEntry.setAllowedServiceSignatures(RandomTestUtil.randomString());
 
 		sapEntry.setDefaultSAPEntry(RandomTestUtil.randomBoolean());
+
+		sapEntry.setEnabled(RandomTestUtil.randomBoolean());
 
 		sapEntry.setName(RandomTestUtil.randomString());
 
