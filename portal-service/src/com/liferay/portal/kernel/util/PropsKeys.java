@@ -1623,8 +1623,6 @@ public interface PropsKeys {
 
 	public static final String ORGANIZATIONS_FORM_UPDATE_MISCELLANEOUS = "organizations.form.update.miscellaneous";
 
-	public static final String ORGANIZATIONS_INDEXER_ENABLED = "organizations.indexer.enabled";
-
 	public static final String ORGANIZATIONS_MEMBERSHIP_STRICT = "organizations.membership.strict";
 
 	public static final String ORGANIZATIONS_ROOTABLE = "organizations.rootable";
@@ -2353,8 +2351,6 @@ public interface PropsKeys {
 
 	public static final String USER_GROUPS_COPY_LAYOUTS_TO_USER_PERSONAL_SITE = "user.groups.copy.layouts.to.user.personal.site";
 
-	public static final String USER_GROUPS_INDEXER_ENABLED = "user.groups.indexer.enabled";
-
 	public static final String USER_GROUPS_NAME_ALLOW_NUMERIC = "user.groups.name.allow.numeric";
 
 	public static final String USER_GROUPS_SEARCH_WITH_INDEX = "user.groups.search.with.index";
@@ -2408,8 +2404,6 @@ public interface PropsKeys {
 	public static final String USERS_IMAGE_MAX_SIZE = "users.image.max.size";
 
 	public static final String USERS_IMAGE_MAX_WIDTH = "users.image.max.width";
-
-	public static final String USERS_INDEXER_ENABLED = "users.indexer.enabled";
 
 	public static final String USERS_LIST_VIEWS = "users.list.views";
 
