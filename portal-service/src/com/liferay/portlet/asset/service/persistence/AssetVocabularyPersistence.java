@@ -41,7 +41,7 @@ public interface AssetVocabularyPersistence extends BasePersistence<AssetVocabul
 	 */
 
 	/**
-	* Returns all the asset vocabularies where uuid = &#63;.
+	* Returns all the asset vocabularies where uuid = &#63;. Uses the finder cache.
 	*
 	* @param uuid the uuid
 	* @return the matching asset vocabularies
@@ -49,7 +49,17 @@ public interface AssetVocabularyPersistence extends BasePersistence<AssetVocabul
 	public java.util.List<AssetVocabulary> findByUuid(java.lang.String uuid);
 
 	/**
-	* Returns a range of all the asset vocabularies where uuid = &#63;.
+	* Returns all the asset vocabularies where uuid = &#63;, optionally using the finder cache.
+	*
+	* @param uuid the uuid
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching asset vocabularies
+	*/
+	public java.util.List<AssetVocabulary> findByUuid(java.lang.String uuid,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the asset vocabularies where uuid = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AssetVocabularyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -64,7 +74,23 @@ public interface AssetVocabularyPersistence extends BasePersistence<AssetVocabul
 		int start, int end);
 
 	/**
-	* Returns an ordered range of all the asset vocabularies where uuid = &#63;.
+	* Returns a range of all the asset vocabularies where uuid = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AssetVocabularyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param start the lower bound of the range of asset vocabularies
+	* @param end the upper bound of the range of asset vocabularies (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching asset vocabularies
+	*/
+	public java.util.List<AssetVocabulary> findByUuid(java.lang.String uuid,
+		int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the asset vocabularies where uuid = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AssetVocabularyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -79,6 +105,25 @@ public interface AssetVocabularyPersistence extends BasePersistence<AssetVocabul
 	public java.util.List<AssetVocabulary> findByUuid(java.lang.String uuid,
 		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<AssetVocabulary> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the asset vocabularies where uuid = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AssetVocabularyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param start the lower bound of the range of asset vocabularies
+	* @param end the upper bound of the range of asset vocabularies (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching asset vocabularies
+	*/
+	public java.util.List<AssetVocabulary> findByUuid(java.lang.String uuid,
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<AssetVocabulary> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first asset vocabulary in the ordered set where uuid = &#63;.
@@ -204,7 +249,7 @@ public interface AssetVocabularyPersistence extends BasePersistence<AssetVocabul
 	public int countByUUID_G(java.lang.String uuid, long groupId);
 
 	/**
-	* Returns all the asset vocabularies where uuid = &#63; and companyId = &#63;.
+	* Returns all the asset vocabularies where uuid = &#63; and companyId = &#63;. Uses the finder cache.
 	*
 	* @param uuid the uuid
 	* @param companyId the company ID
@@ -214,7 +259,18 @@ public interface AssetVocabularyPersistence extends BasePersistence<AssetVocabul
 		long companyId);
 
 	/**
-	* Returns a range of all the asset vocabularies where uuid = &#63; and companyId = &#63;.
+	* Returns all the asset vocabularies where uuid = &#63; and companyId = &#63;, optionally using the finder cache.
+	*
+	* @param uuid the uuid
+	* @param companyId the company ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching asset vocabularies
+	*/
+	public java.util.List<AssetVocabulary> findByUuid_C(java.lang.String uuid,
+		long companyId, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the asset vocabularies where uuid = &#63; and companyId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AssetVocabularyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -230,7 +286,24 @@ public interface AssetVocabularyPersistence extends BasePersistence<AssetVocabul
 		long companyId, int start, int end);
 
 	/**
-	* Returns an ordered range of all the asset vocabularies where uuid = &#63; and companyId = &#63;.
+	* Returns a range of all the asset vocabularies where uuid = &#63; and companyId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AssetVocabularyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param companyId the company ID
+	* @param start the lower bound of the range of asset vocabularies
+	* @param end the upper bound of the range of asset vocabularies (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching asset vocabularies
+	*/
+	public java.util.List<AssetVocabulary> findByUuid_C(java.lang.String uuid,
+		long companyId, int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the asset vocabularies where uuid = &#63; and companyId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AssetVocabularyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -246,6 +319,26 @@ public interface AssetVocabularyPersistence extends BasePersistence<AssetVocabul
 	public java.util.List<AssetVocabulary> findByUuid_C(java.lang.String uuid,
 		long companyId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<AssetVocabulary> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the asset vocabularies where uuid = &#63; and companyId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AssetVocabularyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param companyId the company ID
+	* @param start the lower bound of the range of asset vocabularies
+	* @param end the upper bound of the range of asset vocabularies (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching asset vocabularies
+	*/
+	public java.util.List<AssetVocabulary> findByUuid_C(java.lang.String uuid,
+		long companyId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<AssetVocabulary> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first asset vocabulary in the ordered set where uuid = &#63; and companyId = &#63;.
@@ -332,7 +425,7 @@ public interface AssetVocabularyPersistence extends BasePersistence<AssetVocabul
 	public int countByUuid_C(java.lang.String uuid, long companyId);
 
 	/**
-	* Returns all the asset vocabularies where groupId = &#63;.
+	* Returns all the asset vocabularies where groupId = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @return the matching asset vocabularies
@@ -340,7 +433,17 @@ public interface AssetVocabularyPersistence extends BasePersistence<AssetVocabul
 	public java.util.List<AssetVocabulary> findByGroupId(long groupId);
 
 	/**
-	* Returns a range of all the asset vocabularies where groupId = &#63;.
+	* Returns all the asset vocabularies where groupId = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching asset vocabularies
+	*/
+	public java.util.List<AssetVocabulary> findByGroupId(long groupId,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the asset vocabularies where groupId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AssetVocabularyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -355,7 +458,23 @@ public interface AssetVocabularyPersistence extends BasePersistence<AssetVocabul
 		int start, int end);
 
 	/**
-	* Returns an ordered range of all the asset vocabularies where groupId = &#63;.
+	* Returns a range of all the asset vocabularies where groupId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AssetVocabularyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param start the lower bound of the range of asset vocabularies
+	* @param end the upper bound of the range of asset vocabularies (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching asset vocabularies
+	*/
+	public java.util.List<AssetVocabulary> findByGroupId(long groupId,
+		int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the asset vocabularies where groupId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AssetVocabularyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -370,6 +489,25 @@ public interface AssetVocabularyPersistence extends BasePersistence<AssetVocabul
 	public java.util.List<AssetVocabulary> findByGroupId(long groupId,
 		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<AssetVocabulary> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the asset vocabularies where groupId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AssetVocabularyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param start the lower bound of the range of asset vocabularies
+	* @param end the upper bound of the range of asset vocabularies (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching asset vocabularies
+	*/
+	public java.util.List<AssetVocabulary> findByGroupId(long groupId,
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<AssetVocabulary> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first asset vocabulary in the ordered set where groupId = &#63;.
@@ -524,7 +662,7 @@ public interface AssetVocabularyPersistence extends BasePersistence<AssetVocabul
 		com.liferay.portal.kernel.util.OrderByComparator<AssetVocabulary> orderByComparator);
 
 	/**
-	* Returns all the asset vocabularies where groupId = any &#63;.
+	* Returns all the asset vocabularies where groupId = any &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AssetVocabularyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -536,7 +674,21 @@ public interface AssetVocabularyPersistence extends BasePersistence<AssetVocabul
 	public java.util.List<AssetVocabulary> findByGroupId(long[] groupIds);
 
 	/**
-	* Returns a range of all the asset vocabularies where groupId = any &#63;.
+	* Returns all the asset vocabularies where groupId = any &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AssetVocabularyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupIds the group IDs
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching asset vocabularies
+	*/
+	public java.util.List<AssetVocabulary> findByGroupId(long[] groupIds,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the asset vocabularies where groupId = any &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AssetVocabularyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -551,7 +703,7 @@ public interface AssetVocabularyPersistence extends BasePersistence<AssetVocabul
 		int start, int end);
 
 	/**
-	* Returns an ordered range of all the asset vocabularies where groupId = any &#63;.
+	* Returns an ordered range of all the asset vocabularies where groupId = any &#63;, optionally using the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AssetVocabularyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -560,12 +712,47 @@ public interface AssetVocabularyPersistence extends BasePersistence<AssetVocabul
 	* @param groupIds the group IDs
 	* @param start the lower bound of the range of asset vocabularies
 	* @param end the upper bound of the range of asset vocabularies (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching asset vocabularies
+	*/
+	public java.util.List<AssetVocabulary> findByGroupId(long[] groupIds,
+		int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the asset vocabularies where groupId = &#63;. Uses the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AssetVocabularyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param start the lower bound of the range of asset vocabularies
+	* @param end the upper bound of the range of asset vocabularies (not inclusive)
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of matching asset vocabularies
 	*/
 	public java.util.List<AssetVocabulary> findByGroupId(long[] groupIds,
 		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<AssetVocabulary> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the asset vocabularies where groupId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AssetVocabularyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param start the lower bound of the range of asset vocabularies
+	* @param end the upper bound of the range of asset vocabularies (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching asset vocabularies
+	*/
+	public java.util.List<AssetVocabulary> findByGroupId(long[] groupIds,
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<AssetVocabulary> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Removes all the asset vocabularies where groupId = &#63; from the database.
@@ -607,7 +794,7 @@ public interface AssetVocabularyPersistence extends BasePersistence<AssetVocabul
 	public int filterCountByGroupId(long[] groupIds);
 
 	/**
-	* Returns all the asset vocabularies where companyId = &#63;.
+	* Returns all the asset vocabularies where companyId = &#63;. Uses the finder cache.
 	*
 	* @param companyId the company ID
 	* @return the matching asset vocabularies
@@ -615,7 +802,17 @@ public interface AssetVocabularyPersistence extends BasePersistence<AssetVocabul
 	public java.util.List<AssetVocabulary> findByCompanyId(long companyId);
 
 	/**
-	* Returns a range of all the asset vocabularies where companyId = &#63;.
+	* Returns all the asset vocabularies where companyId = &#63;, optionally using the finder cache.
+	*
+	* @param companyId the company ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching asset vocabularies
+	*/
+	public java.util.List<AssetVocabulary> findByCompanyId(long companyId,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the asset vocabularies where companyId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AssetVocabularyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -630,7 +827,23 @@ public interface AssetVocabularyPersistence extends BasePersistence<AssetVocabul
 		int start, int end);
 
 	/**
-	* Returns an ordered range of all the asset vocabularies where companyId = &#63;.
+	* Returns a range of all the asset vocabularies where companyId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AssetVocabularyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param companyId the company ID
+	* @param start the lower bound of the range of asset vocabularies
+	* @param end the upper bound of the range of asset vocabularies (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching asset vocabularies
+	*/
+	public java.util.List<AssetVocabulary> findByCompanyId(long companyId,
+		int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the asset vocabularies where companyId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AssetVocabularyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -645,6 +858,25 @@ public interface AssetVocabularyPersistence extends BasePersistence<AssetVocabul
 	public java.util.List<AssetVocabulary> findByCompanyId(long companyId,
 		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<AssetVocabulary> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the asset vocabularies where companyId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AssetVocabularyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param companyId the company ID
+	* @param start the lower bound of the range of asset vocabularies
+	* @param end the upper bound of the range of asset vocabularies (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching asset vocabularies
+	*/
+	public java.util.List<AssetVocabulary> findByCompanyId(long companyId,
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<AssetVocabulary> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first asset vocabulary in the ordered set where companyId = &#63;.
@@ -770,7 +1002,7 @@ public interface AssetVocabularyPersistence extends BasePersistence<AssetVocabul
 	public int countByG_N(long groupId, java.lang.String name);
 
 	/**
-	* Returns all the asset vocabularies where groupId = &#63; and name LIKE &#63;.
+	* Returns all the asset vocabularies where groupId = &#63; and name LIKE &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param name the name
@@ -780,7 +1012,18 @@ public interface AssetVocabularyPersistence extends BasePersistence<AssetVocabul
 		java.lang.String name);
 
 	/**
-	* Returns a range of all the asset vocabularies where groupId = &#63; and name LIKE &#63;.
+	* Returns all the asset vocabularies where groupId = &#63; and name LIKE &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param name the name
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching asset vocabularies
+	*/
+	public java.util.List<AssetVocabulary> findByG_LikeN(long groupId,
+		java.lang.String name, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the asset vocabularies where groupId = &#63; and name LIKE &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AssetVocabularyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -796,7 +1039,24 @@ public interface AssetVocabularyPersistence extends BasePersistence<AssetVocabul
 		java.lang.String name, int start, int end);
 
 	/**
-	* Returns an ordered range of all the asset vocabularies where groupId = &#63; and name LIKE &#63;.
+	* Returns a range of all the asset vocabularies where groupId = &#63; and name LIKE &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AssetVocabularyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param name the name
+	* @param start the lower bound of the range of asset vocabularies
+	* @param end the upper bound of the range of asset vocabularies (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching asset vocabularies
+	*/
+	public java.util.List<AssetVocabulary> findByG_LikeN(long groupId,
+		java.lang.String name, int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the asset vocabularies where groupId = &#63; and name LIKE &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AssetVocabularyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -812,6 +1072,26 @@ public interface AssetVocabularyPersistence extends BasePersistence<AssetVocabul
 	public java.util.List<AssetVocabulary> findByG_LikeN(long groupId,
 		java.lang.String name, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<AssetVocabulary> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the asset vocabularies where groupId = &#63; and name LIKE &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AssetVocabularyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param name the name
+	* @param start the lower bound of the range of asset vocabularies
+	* @param end the upper bound of the range of asset vocabularies (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching asset vocabularies
+	*/
+	public java.util.List<AssetVocabulary> findByG_LikeN(long groupId,
+		java.lang.String name, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<AssetVocabulary> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first asset vocabulary in the ordered set where groupId = &#63; and name LIKE &#63;.

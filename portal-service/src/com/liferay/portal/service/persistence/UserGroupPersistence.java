@@ -39,7 +39,7 @@ public interface UserGroupPersistence extends BasePersistence<UserGroup> {
 	 */
 
 	/**
-	* Returns all the user groups where uuid = &#63;.
+	* Returns all the user groups where uuid = &#63;. Uses the finder cache.
 	*
 	* @param uuid the uuid
 	* @return the matching user groups
@@ -47,7 +47,17 @@ public interface UserGroupPersistence extends BasePersistence<UserGroup> {
 	public java.util.List<UserGroup> findByUuid(java.lang.String uuid);
 
 	/**
-	* Returns a range of all the user groups where uuid = &#63;.
+	* Returns all the user groups where uuid = &#63;, optionally using the finder cache.
+	*
+	* @param uuid the uuid
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching user groups
+	*/
+	public java.util.List<UserGroup> findByUuid(java.lang.String uuid,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the user groups where uuid = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -62,7 +72,23 @@ public interface UserGroupPersistence extends BasePersistence<UserGroup> {
 		int start, int end);
 
 	/**
-	* Returns an ordered range of all the user groups where uuid = &#63;.
+	* Returns a range of all the user groups where uuid = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param start the lower bound of the range of user groups
+	* @param end the upper bound of the range of user groups (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching user groups
+	*/
+	public java.util.List<UserGroup> findByUuid(java.lang.String uuid,
+		int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the user groups where uuid = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -77,6 +103,25 @@ public interface UserGroupPersistence extends BasePersistence<UserGroup> {
 	public java.util.List<UserGroup> findByUuid(java.lang.String uuid,
 		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<UserGroup> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the user groups where uuid = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param start the lower bound of the range of user groups
+	* @param end the upper bound of the range of user groups (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching user groups
+	*/
+	public java.util.List<UserGroup> findByUuid(java.lang.String uuid,
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<UserGroup> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first user group in the ordered set where uuid = &#63;.
@@ -214,7 +259,7 @@ public interface UserGroupPersistence extends BasePersistence<UserGroup> {
 	public int filterCountByUuid(java.lang.String uuid);
 
 	/**
-	* Returns all the user groups where uuid = &#63; and companyId = &#63;.
+	* Returns all the user groups where uuid = &#63; and companyId = &#63;. Uses the finder cache.
 	*
 	* @param uuid the uuid
 	* @param companyId the company ID
@@ -224,7 +269,18 @@ public interface UserGroupPersistence extends BasePersistence<UserGroup> {
 		long companyId);
 
 	/**
-	* Returns a range of all the user groups where uuid = &#63; and companyId = &#63;.
+	* Returns all the user groups where uuid = &#63; and companyId = &#63;, optionally using the finder cache.
+	*
+	* @param uuid the uuid
+	* @param companyId the company ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching user groups
+	*/
+	public java.util.List<UserGroup> findByUuid_C(java.lang.String uuid,
+		long companyId, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the user groups where uuid = &#63; and companyId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -240,7 +296,24 @@ public interface UserGroupPersistence extends BasePersistence<UserGroup> {
 		long companyId, int start, int end);
 
 	/**
-	* Returns an ordered range of all the user groups where uuid = &#63; and companyId = &#63;.
+	* Returns a range of all the user groups where uuid = &#63; and companyId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param companyId the company ID
+	* @param start the lower bound of the range of user groups
+	* @param end the upper bound of the range of user groups (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching user groups
+	*/
+	public java.util.List<UserGroup> findByUuid_C(java.lang.String uuid,
+		long companyId, int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the user groups where uuid = &#63; and companyId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -256,6 +329,26 @@ public interface UserGroupPersistence extends BasePersistence<UserGroup> {
 	public java.util.List<UserGroup> findByUuid_C(java.lang.String uuid,
 		long companyId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<UserGroup> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the user groups where uuid = &#63; and companyId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param companyId the company ID
+	* @param start the lower bound of the range of user groups
+	* @param end the upper bound of the range of user groups (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching user groups
+	*/
+	public java.util.List<UserGroup> findByUuid_C(java.lang.String uuid,
+		long companyId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<UserGroup> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first user group in the ordered set where uuid = &#63; and companyId = &#63;.
@@ -406,7 +499,7 @@ public interface UserGroupPersistence extends BasePersistence<UserGroup> {
 	public int filterCountByUuid_C(java.lang.String uuid, long companyId);
 
 	/**
-	* Returns all the user groups where companyId = &#63;.
+	* Returns all the user groups where companyId = &#63;. Uses the finder cache.
 	*
 	* @param companyId the company ID
 	* @return the matching user groups
@@ -414,7 +507,17 @@ public interface UserGroupPersistence extends BasePersistence<UserGroup> {
 	public java.util.List<UserGroup> findByCompanyId(long companyId);
 
 	/**
-	* Returns a range of all the user groups where companyId = &#63;.
+	* Returns all the user groups where companyId = &#63;, optionally using the finder cache.
+	*
+	* @param companyId the company ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching user groups
+	*/
+	public java.util.List<UserGroup> findByCompanyId(long companyId,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the user groups where companyId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -429,7 +532,23 @@ public interface UserGroupPersistence extends BasePersistence<UserGroup> {
 		int end);
 
 	/**
-	* Returns an ordered range of all the user groups where companyId = &#63;.
+	* Returns a range of all the user groups where companyId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param companyId the company ID
+	* @param start the lower bound of the range of user groups
+	* @param end the upper bound of the range of user groups (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching user groups
+	*/
+	public java.util.List<UserGroup> findByCompanyId(long companyId, int start,
+		int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the user groups where companyId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -444,6 +563,25 @@ public interface UserGroupPersistence extends BasePersistence<UserGroup> {
 	public java.util.List<UserGroup> findByCompanyId(long companyId, int start,
 		int end,
 		com.liferay.portal.kernel.util.OrderByComparator<UserGroup> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the user groups where companyId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param companyId the company ID
+	* @param start the lower bound of the range of user groups
+	* @param end the upper bound of the range of user groups (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching user groups
+	*/
+	public java.util.List<UserGroup> findByCompanyId(long companyId, int start,
+		int end,
+		com.liferay.portal.kernel.util.OrderByComparator<UserGroup> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first user group in the ordered set where companyId = &#63;.
@@ -581,7 +719,7 @@ public interface UserGroupPersistence extends BasePersistence<UserGroup> {
 	public int filterCountByCompanyId(long companyId);
 
 	/**
-	* Returns all the user groups where companyId = &#63; and parentUserGroupId = &#63;.
+	* Returns all the user groups where companyId = &#63; and parentUserGroupId = &#63;. Uses the finder cache.
 	*
 	* @param companyId the company ID
 	* @param parentUserGroupId the parent user group ID
@@ -591,7 +729,18 @@ public interface UserGroupPersistence extends BasePersistence<UserGroup> {
 		long parentUserGroupId);
 
 	/**
-	* Returns a range of all the user groups where companyId = &#63; and parentUserGroupId = &#63;.
+	* Returns all the user groups where companyId = &#63; and parentUserGroupId = &#63;, optionally using the finder cache.
+	*
+	* @param companyId the company ID
+	* @param parentUserGroupId the parent user group ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching user groups
+	*/
+	public java.util.List<UserGroup> findByC_P(long companyId,
+		long parentUserGroupId, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the user groups where companyId = &#63; and parentUserGroupId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -607,7 +756,24 @@ public interface UserGroupPersistence extends BasePersistence<UserGroup> {
 		long parentUserGroupId, int start, int end);
 
 	/**
-	* Returns an ordered range of all the user groups where companyId = &#63; and parentUserGroupId = &#63;.
+	* Returns a range of all the user groups where companyId = &#63; and parentUserGroupId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param companyId the company ID
+	* @param parentUserGroupId the parent user group ID
+	* @param start the lower bound of the range of user groups
+	* @param end the upper bound of the range of user groups (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching user groups
+	*/
+	public java.util.List<UserGroup> findByC_P(long companyId,
+		long parentUserGroupId, int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the user groups where companyId = &#63; and parentUserGroupId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -623,6 +789,26 @@ public interface UserGroupPersistence extends BasePersistence<UserGroup> {
 	public java.util.List<UserGroup> findByC_P(long companyId,
 		long parentUserGroupId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<UserGroup> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the user groups where companyId = &#63; and parentUserGroupId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param companyId the company ID
+	* @param parentUserGroupId the parent user group ID
+	* @param start the lower bound of the range of user groups
+	* @param end the upper bound of the range of user groups (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching user groups
+	*/
+	public java.util.List<UserGroup> findByC_P(long companyId,
+		long parentUserGroupId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<UserGroup> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first user group in the ordered set where companyId = &#63; and parentUserGroupId = &#63;.

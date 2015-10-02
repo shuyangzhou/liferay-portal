@@ -39,7 +39,7 @@ public interface SubscriptionPersistence extends BasePersistence<Subscription> {
 	 */
 
 	/**
-	* Returns all the subscriptions where userId = &#63;.
+	* Returns all the subscriptions where userId = &#63;. Uses the finder cache.
 	*
 	* @param userId the user ID
 	* @return the matching subscriptions
@@ -47,7 +47,17 @@ public interface SubscriptionPersistence extends BasePersistence<Subscription> {
 	public java.util.List<Subscription> findByUserId(long userId);
 
 	/**
-	* Returns a range of all the subscriptions where userId = &#63;.
+	* Returns all the subscriptions where userId = &#63;, optionally using the finder cache.
+	*
+	* @param userId the user ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching subscriptions
+	*/
+	public java.util.List<Subscription> findByUserId(long userId,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the subscriptions where userId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SubscriptionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -62,7 +72,23 @@ public interface SubscriptionPersistence extends BasePersistence<Subscription> {
 		int end);
 
 	/**
-	* Returns an ordered range of all the subscriptions where userId = &#63;.
+	* Returns a range of all the subscriptions where userId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SubscriptionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param userId the user ID
+	* @param start the lower bound of the range of subscriptions
+	* @param end the upper bound of the range of subscriptions (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching subscriptions
+	*/
+	public java.util.List<Subscription> findByUserId(long userId, int start,
+		int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the subscriptions where userId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SubscriptionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -77,6 +103,25 @@ public interface SubscriptionPersistence extends BasePersistence<Subscription> {
 	public java.util.List<Subscription> findByUserId(long userId, int start,
 		int end,
 		com.liferay.portal.kernel.util.OrderByComparator<Subscription> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the subscriptions where userId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SubscriptionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param userId the user ID
+	* @param start the lower bound of the range of subscriptions
+	* @param end the upper bound of the range of subscriptions (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching subscriptions
+	*/
+	public java.util.List<Subscription> findByUserId(long userId, int start,
+		int end,
+		com.liferay.portal.kernel.util.OrderByComparator<Subscription> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first subscription in the ordered set where userId = &#63;.
@@ -152,7 +197,7 @@ public interface SubscriptionPersistence extends BasePersistence<Subscription> {
 	public int countByUserId(long userId);
 
 	/**
-	* Returns all the subscriptions where groupId = &#63; and userId = &#63;.
+	* Returns all the subscriptions where groupId = &#63; and userId = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param userId the user ID
@@ -161,7 +206,18 @@ public interface SubscriptionPersistence extends BasePersistence<Subscription> {
 	public java.util.List<Subscription> findByG_U(long groupId, long userId);
 
 	/**
-	* Returns a range of all the subscriptions where groupId = &#63; and userId = &#63;.
+	* Returns all the subscriptions where groupId = &#63; and userId = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param userId the user ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching subscriptions
+	*/
+	public java.util.List<Subscription> findByG_U(long groupId, long userId,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the subscriptions where groupId = &#63; and userId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SubscriptionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -177,7 +233,24 @@ public interface SubscriptionPersistence extends BasePersistence<Subscription> {
 		int start, int end);
 
 	/**
-	* Returns an ordered range of all the subscriptions where groupId = &#63; and userId = &#63;.
+	* Returns a range of all the subscriptions where groupId = &#63; and userId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SubscriptionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param userId the user ID
+	* @param start the lower bound of the range of subscriptions
+	* @param end the upper bound of the range of subscriptions (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching subscriptions
+	*/
+	public java.util.List<Subscription> findByG_U(long groupId, long userId,
+		int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the subscriptions where groupId = &#63; and userId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SubscriptionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -193,6 +266,26 @@ public interface SubscriptionPersistence extends BasePersistence<Subscription> {
 	public java.util.List<Subscription> findByG_U(long groupId, long userId,
 		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<Subscription> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the subscriptions where groupId = &#63; and userId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SubscriptionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param userId the user ID
+	* @param start the lower bound of the range of subscriptions
+	* @param end the upper bound of the range of subscriptions (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching subscriptions
+	*/
+	public java.util.List<Subscription> findByG_U(long groupId, long userId,
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<Subscription> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first subscription in the ordered set where groupId = &#63; and userId = &#63;.
@@ -275,7 +368,7 @@ public interface SubscriptionPersistence extends BasePersistence<Subscription> {
 	public int countByG_U(long groupId, long userId);
 
 	/**
-	* Returns all the subscriptions where userId = &#63; and classNameId = &#63;.
+	* Returns all the subscriptions where userId = &#63; and classNameId = &#63;. Uses the finder cache.
 	*
 	* @param userId the user ID
 	* @param classNameId the class name ID
@@ -284,7 +377,18 @@ public interface SubscriptionPersistence extends BasePersistence<Subscription> {
 	public java.util.List<Subscription> findByU_C(long userId, long classNameId);
 
 	/**
-	* Returns a range of all the subscriptions where userId = &#63; and classNameId = &#63;.
+	* Returns all the subscriptions where userId = &#63; and classNameId = &#63;, optionally using the finder cache.
+	*
+	* @param userId the user ID
+	* @param classNameId the class name ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching subscriptions
+	*/
+	public java.util.List<Subscription> findByU_C(long userId,
+		long classNameId, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the subscriptions where userId = &#63; and classNameId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SubscriptionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -300,7 +404,24 @@ public interface SubscriptionPersistence extends BasePersistence<Subscription> {
 		long classNameId, int start, int end);
 
 	/**
-	* Returns an ordered range of all the subscriptions where userId = &#63; and classNameId = &#63;.
+	* Returns a range of all the subscriptions where userId = &#63; and classNameId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SubscriptionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param userId the user ID
+	* @param classNameId the class name ID
+	* @param start the lower bound of the range of subscriptions
+	* @param end the upper bound of the range of subscriptions (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching subscriptions
+	*/
+	public java.util.List<Subscription> findByU_C(long userId,
+		long classNameId, int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the subscriptions where userId = &#63; and classNameId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SubscriptionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -316,6 +437,26 @@ public interface SubscriptionPersistence extends BasePersistence<Subscription> {
 	public java.util.List<Subscription> findByU_C(long userId,
 		long classNameId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<Subscription> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the subscriptions where userId = &#63; and classNameId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SubscriptionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param userId the user ID
+	* @param classNameId the class name ID
+	* @param start the lower bound of the range of subscriptions
+	* @param end the upper bound of the range of subscriptions (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching subscriptions
+	*/
+	public java.util.List<Subscription> findByU_C(long userId,
+		long classNameId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<Subscription> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first subscription in the ordered set where userId = &#63; and classNameId = &#63;.
@@ -398,7 +539,7 @@ public interface SubscriptionPersistence extends BasePersistence<Subscription> {
 	public int countByU_C(long userId, long classNameId);
 
 	/**
-	* Returns all the subscriptions where companyId = &#63; and classNameId = &#63; and classPK = &#63;.
+	* Returns all the subscriptions where companyId = &#63; and classNameId = &#63; and classPK = &#63;. Uses the finder cache.
 	*
 	* @param companyId the company ID
 	* @param classNameId the class name ID
@@ -409,7 +550,19 @@ public interface SubscriptionPersistence extends BasePersistence<Subscription> {
 		long classNameId, long classPK);
 
 	/**
-	* Returns a range of all the subscriptions where companyId = &#63; and classNameId = &#63; and classPK = &#63;.
+	* Returns all the subscriptions where companyId = &#63; and classNameId = &#63; and classPK = &#63;, optionally using the finder cache.
+	*
+	* @param companyId the company ID
+	* @param classNameId the class name ID
+	* @param classPK the class p k
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching subscriptions
+	*/
+	public java.util.List<Subscription> findByC_C_C(long companyId,
+		long classNameId, long classPK, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the subscriptions where companyId = &#63; and classNameId = &#63; and classPK = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SubscriptionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -426,7 +579,26 @@ public interface SubscriptionPersistence extends BasePersistence<Subscription> {
 		long classNameId, long classPK, int start, int end);
 
 	/**
-	* Returns an ordered range of all the subscriptions where companyId = &#63; and classNameId = &#63; and classPK = &#63;.
+	* Returns a range of all the subscriptions where companyId = &#63; and classNameId = &#63; and classPK = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SubscriptionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param companyId the company ID
+	* @param classNameId the class name ID
+	* @param classPK the class p k
+	* @param start the lower bound of the range of subscriptions
+	* @param end the upper bound of the range of subscriptions (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching subscriptions
+	*/
+	public java.util.List<Subscription> findByC_C_C(long companyId,
+		long classNameId, long classPK, int start, int end,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the subscriptions where companyId = &#63; and classNameId = &#63; and classPK = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SubscriptionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -443,6 +615,27 @@ public interface SubscriptionPersistence extends BasePersistence<Subscription> {
 	public java.util.List<Subscription> findByC_C_C(long companyId,
 		long classNameId, long classPK, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<Subscription> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the subscriptions where companyId = &#63; and classNameId = &#63; and classPK = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SubscriptionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param companyId the company ID
+	* @param classNameId the class name ID
+	* @param classPK the class p k
+	* @param start the lower bound of the range of subscriptions
+	* @param end the upper bound of the range of subscriptions (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching subscriptions
+	*/
+	public java.util.List<Subscription> findByC_C_C(long companyId,
+		long classNameId, long classPK, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<Subscription> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first subscription in the ordered set where companyId = &#63; and classNameId = &#63; and classPK = &#63;.
@@ -536,7 +729,7 @@ public interface SubscriptionPersistence extends BasePersistence<Subscription> {
 	public int countByC_C_C(long companyId, long classNameId, long classPK);
 
 	/**
-	* Returns all the subscriptions where companyId = &#63; and userId = &#63; and classNameId = &#63; and classPK = any &#63;.
+	* Returns all the subscriptions where companyId = &#63; and userId = &#63; and classNameId = &#63; and classPK = any &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SubscriptionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -552,7 +745,25 @@ public interface SubscriptionPersistence extends BasePersistence<Subscription> {
 		long userId, long classNameId, long[] classPKs);
 
 	/**
-	* Returns a range of all the subscriptions where companyId = &#63; and userId = &#63; and classNameId = &#63; and classPK = any &#63;.
+	* Returns all the subscriptions where companyId = &#63; and userId = &#63; and classNameId = &#63; and classPK = any &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SubscriptionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param companyId the company ID
+	* @param userId the user ID
+	* @param classNameId the class name ID
+	* @param classPKs the class p ks
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching subscriptions
+	*/
+	public java.util.List<Subscription> findByC_U_C_C(long companyId,
+		long userId, long classNameId, long[] classPKs,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the subscriptions where companyId = &#63; and userId = &#63; and classNameId = &#63; and classPK = any &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SubscriptionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -570,7 +781,7 @@ public interface SubscriptionPersistence extends BasePersistence<Subscription> {
 		long userId, long classNameId, long[] classPKs, int start, int end);
 
 	/**
-	* Returns an ordered range of all the subscriptions where companyId = &#63; and userId = &#63; and classNameId = &#63; and classPK = any &#63;.
+	* Returns an ordered range of all the subscriptions where companyId = &#63; and userId = &#63; and classNameId = &#63; and classPK = any &#63;, optionally using the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SubscriptionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -582,12 +793,54 @@ public interface SubscriptionPersistence extends BasePersistence<Subscription> {
 	* @param classPKs the class p ks
 	* @param start the lower bound of the range of subscriptions
 	* @param end the upper bound of the range of subscriptions (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching subscriptions
+	*/
+	public java.util.List<Subscription> findByC_U_C_C(long companyId,
+		long userId, long classNameId, long[] classPKs, int start, int end,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the subscriptions where companyId = &#63; and userId = &#63; and classNameId = &#63; and classPK = &#63;. Uses the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SubscriptionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param companyId the company ID
+	* @param userId the user ID
+	* @param classNameId the class name ID
+	* @param classPK the class p k
+	* @param start the lower bound of the range of subscriptions
+	* @param end the upper bound of the range of subscriptions (not inclusive)
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of matching subscriptions
 	*/
 	public java.util.List<Subscription> findByC_U_C_C(long companyId,
 		long userId, long classNameId, long[] classPKs, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<Subscription> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the subscriptions where companyId = &#63; and userId = &#63; and classNameId = &#63; and classPK = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SubscriptionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param companyId the company ID
+	* @param userId the user ID
+	* @param classNameId the class name ID
+	* @param classPK the class p k
+	* @param start the lower bound of the range of subscriptions
+	* @param end the upper bound of the range of subscriptions (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching subscriptions
+	*/
+	public java.util.List<Subscription> findByC_U_C_C(long companyId,
+		long userId, long classNameId, long[] classPKs, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<Subscription> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the subscription where companyId = &#63; and userId = &#63; and classNameId = &#63; and classPK = &#63; or throws a {@link NoSuchSubscriptionException} if it could not be found.

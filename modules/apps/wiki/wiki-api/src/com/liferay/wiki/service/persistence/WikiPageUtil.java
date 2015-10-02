@@ -112,7 +112,7 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns all the wiki pages where uuid = &#63;.
+	* Returns all the wiki pages where uuid = &#63;. Uses the finder cache.
 	*
 	* @param uuid the uuid
 	* @return the matching wiki pages
@@ -122,7 +122,19 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns a range of all the wiki pages where uuid = &#63;.
+	* Returns all the wiki pages where uuid = &#63;, optionally using the finder cache.
+	*
+	* @param uuid the uuid
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching wiki pages
+	*/
+	public static List<WikiPage> findByUuid(java.lang.String uuid,
+		boolean retrieveFromCache) {
+		return getPersistence().findByUuid(uuid, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the wiki pages where uuid = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -139,7 +151,25 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the wiki pages where uuid = &#63;.
+	* Returns a range of all the wiki pages where uuid = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching wiki pages
+	*/
+	public static List<WikiPage> findByUuid(java.lang.String uuid, int start,
+		int end, boolean retrieveFromCache) {
+		return getPersistence().findByUuid(uuid, start, end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where uuid = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -154,6 +184,28 @@ public class WikiPageUtil {
 	public static List<WikiPage> findByUuid(java.lang.String uuid, int start,
 		int end, OrderByComparator<WikiPage> orderByComparator) {
 		return getPersistence().findByUuid(uuid, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where uuid = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching wiki pages
+	*/
+	public static List<WikiPage> findByUuid(java.lang.String uuid, int start,
+		int end, OrderByComparator<WikiPage> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByUuid(uuid, start, end, orderByComparator,
+			retrieveFromCache);
 	}
 
 	/**
@@ -304,7 +356,7 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns all the wiki pages where uuid = &#63; and companyId = &#63;.
+	* Returns all the wiki pages where uuid = &#63; and companyId = &#63;. Uses the finder cache.
 	*
 	* @param uuid the uuid
 	* @param companyId the company ID
@@ -316,7 +368,20 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns a range of all the wiki pages where uuid = &#63; and companyId = &#63;.
+	* Returns all the wiki pages where uuid = &#63; and companyId = &#63;, optionally using the finder cache.
+	*
+	* @param uuid the uuid
+	* @param companyId the company ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching wiki pages
+	*/
+	public static List<WikiPage> findByUuid_C(java.lang.String uuid,
+		long companyId, boolean retrieveFromCache) {
+		return getPersistence().findByUuid_C(uuid, companyId, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the wiki pages where uuid = &#63; and companyId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -334,7 +399,27 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the wiki pages where uuid = &#63; and companyId = &#63;.
+	* Returns a range of all the wiki pages where uuid = &#63; and companyId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param companyId the company ID
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching wiki pages
+	*/
+	public static List<WikiPage> findByUuid_C(java.lang.String uuid,
+		long companyId, int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByUuid_C(uuid, companyId, start, end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where uuid = &#63; and companyId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -352,6 +437,29 @@ public class WikiPageUtil {
 		OrderByComparator<WikiPage> orderByComparator) {
 		return getPersistence()
 				   .findByUuid_C(uuid, companyId, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where uuid = &#63; and companyId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param companyId the company ID
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching wiki pages
+	*/
+	public static List<WikiPage> findByUuid_C(java.lang.String uuid,
+		long companyId, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByUuid_C(uuid, companyId, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -455,7 +563,7 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns all the wiki pages where resourcePrimKey = &#63;.
+	* Returns all the wiki pages where resourcePrimKey = &#63;. Uses the finder cache.
 	*
 	* @param resourcePrimKey the resource prim key
 	* @return the matching wiki pages
@@ -465,7 +573,20 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns a range of all the wiki pages where resourcePrimKey = &#63;.
+	* Returns all the wiki pages where resourcePrimKey = &#63;, optionally using the finder cache.
+	*
+	* @param resourcePrimKey the resource prim key
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching wiki pages
+	*/
+	public static List<WikiPage> findByResourcePrimKey(long resourcePrimKey,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByResourcePrimKey(resourcePrimKey, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the wiki pages where resourcePrimKey = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -483,7 +604,27 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the wiki pages where resourcePrimKey = &#63;.
+	* Returns a range of all the wiki pages where resourcePrimKey = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param resourcePrimKey the resource prim key
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching wiki pages
+	*/
+	public static List<WikiPage> findByResourcePrimKey(long resourcePrimKey,
+		int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByResourcePrimKey(resourcePrimKey, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where resourcePrimKey = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -500,6 +641,28 @@ public class WikiPageUtil {
 		return getPersistence()
 				   .findByResourcePrimKey(resourcePrimKey, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where resourcePrimKey = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param resourcePrimKey the resource prim key
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching wiki pages
+	*/
+	public static List<WikiPage> findByResourcePrimKey(long resourcePrimKey,
+		int start, int end, OrderByComparator<WikiPage> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByResourcePrimKey(resourcePrimKey, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -599,7 +762,7 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns all the wiki pages where nodeId = &#63;.
+	* Returns all the wiki pages where nodeId = &#63;. Uses the finder cache.
 	*
 	* @param nodeId the node ID
 	* @return the matching wiki pages
@@ -609,7 +772,19 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns a range of all the wiki pages where nodeId = &#63;.
+	* Returns all the wiki pages where nodeId = &#63;, optionally using the finder cache.
+	*
+	* @param nodeId the node ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching wiki pages
+	*/
+	public static List<WikiPage> findByNodeId(long nodeId,
+		boolean retrieveFromCache) {
+		return getPersistence().findByNodeId(nodeId, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the wiki pages where nodeId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -625,7 +800,26 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the wiki pages where nodeId = &#63;.
+	* Returns a range of all the wiki pages where nodeId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param nodeId the node ID
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching wiki pages
+	*/
+	public static List<WikiPage> findByNodeId(long nodeId, int start, int end,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByNodeId(nodeId, start, end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where nodeId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -641,6 +835,27 @@ public class WikiPageUtil {
 		OrderByComparator<WikiPage> orderByComparator) {
 		return getPersistence()
 				   .findByNodeId(nodeId, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where nodeId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param nodeId the node ID
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching wiki pages
+	*/
+	public static List<WikiPage> findByNodeId(long nodeId, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByNodeId(nodeId, start, end, orderByComparator,
+			retrieveFromCache);
 	}
 
 	/**
@@ -731,7 +946,7 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns all the wiki pages where format = &#63;.
+	* Returns all the wiki pages where format = &#63;. Uses the finder cache.
 	*
 	* @param format the format
 	* @return the matching wiki pages
@@ -741,7 +956,19 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns a range of all the wiki pages where format = &#63;.
+	* Returns all the wiki pages where format = &#63;, optionally using the finder cache.
+	*
+	* @param format the format
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching wiki pages
+	*/
+	public static List<WikiPage> findByFormat(java.lang.String format,
+		boolean retrieveFromCache) {
+		return getPersistence().findByFormat(format, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the wiki pages where format = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -758,7 +985,26 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the wiki pages where format = &#63;.
+	* Returns a range of all the wiki pages where format = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param format the format
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching wiki pages
+	*/
+	public static List<WikiPage> findByFormat(java.lang.String format,
+		int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByFormat(format, start, end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where format = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -774,6 +1020,28 @@ public class WikiPageUtil {
 		int start, int end, OrderByComparator<WikiPage> orderByComparator) {
 		return getPersistence()
 				   .findByFormat(format, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where format = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param format the format
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching wiki pages
+	*/
+	public static List<WikiPage> findByFormat(java.lang.String format,
+		int start, int end, OrderByComparator<WikiPage> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByFormat(format, start, end, orderByComparator,
+			retrieveFromCache);
 	}
 
 	/**
@@ -864,7 +1132,7 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns all the wiki pages where resourcePrimKey = &#63; and nodeId = &#63;.
+	* Returns all the wiki pages where resourcePrimKey = &#63; and nodeId = &#63;. Uses the finder cache.
 	*
 	* @param resourcePrimKey the resource prim key
 	* @param nodeId the node ID
@@ -875,7 +1143,21 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns a range of all the wiki pages where resourcePrimKey = &#63; and nodeId = &#63;.
+	* Returns all the wiki pages where resourcePrimKey = &#63; and nodeId = &#63;, optionally using the finder cache.
+	*
+	* @param resourcePrimKey the resource prim key
+	* @param nodeId the node ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching wiki pages
+	*/
+	public static List<WikiPage> findByR_N(long resourcePrimKey, long nodeId,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByR_N(resourcePrimKey, nodeId, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the wiki pages where resourcePrimKey = &#63; and nodeId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -893,7 +1175,28 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the wiki pages where resourcePrimKey = &#63; and nodeId = &#63;.
+	* Returns a range of all the wiki pages where resourcePrimKey = &#63; and nodeId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param resourcePrimKey the resource prim key
+	* @param nodeId the node ID
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching wiki pages
+	*/
+	public static List<WikiPage> findByR_N(long resourcePrimKey, long nodeId,
+		int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByR_N(resourcePrimKey, nodeId, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where resourcePrimKey = &#63; and nodeId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -911,6 +1214,29 @@ public class WikiPageUtil {
 		return getPersistence()
 				   .findByR_N(resourcePrimKey, nodeId, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where resourcePrimKey = &#63; and nodeId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param resourcePrimKey the resource prim key
+	* @param nodeId the node ID
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching wiki pages
+	*/
+	public static List<WikiPage> findByR_N(long resourcePrimKey, long nodeId,
+		int start, int end, OrderByComparator<WikiPage> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByR_N(resourcePrimKey, nodeId, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -1014,7 +1340,7 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns all the wiki pages where resourcePrimKey = &#63; and status = &#63;.
+	* Returns all the wiki pages where resourcePrimKey = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* @param resourcePrimKey the resource prim key
 	* @param status the status
@@ -1025,7 +1351,21 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns a range of all the wiki pages where resourcePrimKey = &#63; and status = &#63;.
+	* Returns all the wiki pages where resourcePrimKey = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* @param resourcePrimKey the resource prim key
+	* @param status the status
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching wiki pages
+	*/
+	public static List<WikiPage> findByR_S(long resourcePrimKey, int status,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByR_S(resourcePrimKey, status, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the wiki pages where resourcePrimKey = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1043,7 +1383,28 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the wiki pages where resourcePrimKey = &#63; and status = &#63;.
+	* Returns a range of all the wiki pages where resourcePrimKey = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param resourcePrimKey the resource prim key
+	* @param status the status
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching wiki pages
+	*/
+	public static List<WikiPage> findByR_S(long resourcePrimKey, int status,
+		int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByR_S(resourcePrimKey, status, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where resourcePrimKey = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1061,6 +1422,29 @@ public class WikiPageUtil {
 		return getPersistence()
 				   .findByR_S(resourcePrimKey, status, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where resourcePrimKey = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param resourcePrimKey the resource prim key
+	* @param status the status
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching wiki pages
+	*/
+	public static List<WikiPage> findByR_S(long resourcePrimKey, int status,
+		int start, int end, OrderByComparator<WikiPage> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByR_S(resourcePrimKey, status, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -1164,7 +1548,7 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns all the wiki pages where nodeId = &#63; and title = &#63;.
+	* Returns all the wiki pages where nodeId = &#63; and title = &#63;. Uses the finder cache.
 	*
 	* @param nodeId the node ID
 	* @param title the title
@@ -1175,7 +1559,20 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns a range of all the wiki pages where nodeId = &#63; and title = &#63;.
+	* Returns all the wiki pages where nodeId = &#63; and title = &#63;, optionally using the finder cache.
+	*
+	* @param nodeId the node ID
+	* @param title the title
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching wiki pages
+	*/
+	public static List<WikiPage> findByN_T(long nodeId, java.lang.String title,
+		boolean retrieveFromCache) {
+		return getPersistence().findByN_T(nodeId, title, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the wiki pages where nodeId = &#63; and title = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1193,7 +1590,27 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the wiki pages where nodeId = &#63; and title = &#63;.
+	* Returns a range of all the wiki pages where nodeId = &#63; and title = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param nodeId the node ID
+	* @param title the title
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching wiki pages
+	*/
+	public static List<WikiPage> findByN_T(long nodeId, java.lang.String title,
+		int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_T(nodeId, title, start, end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where nodeId = &#63; and title = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1210,6 +1627,29 @@ public class WikiPageUtil {
 		int start, int end, OrderByComparator<WikiPage> orderByComparator) {
 		return getPersistence()
 				   .findByN_T(nodeId, title, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where nodeId = &#63; and title = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param nodeId the node ID
+	* @param title the title
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching wiki pages
+	*/
+	public static List<WikiPage> findByN_T(long nodeId, java.lang.String title,
+		int start, int end, OrderByComparator<WikiPage> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_T(nodeId, title, start, end, orderByComparator,
+			retrieveFromCache);
 	}
 
 	/**
@@ -1309,7 +1749,7 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns all the wiki pages where nodeId = &#63; and head = &#63;.
+	* Returns all the wiki pages where nodeId = &#63; and head = &#63;. Uses the finder cache.
 	*
 	* @param nodeId the node ID
 	* @param head the head
@@ -1320,7 +1760,20 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns a range of all the wiki pages where nodeId = &#63; and head = &#63;.
+	* Returns all the wiki pages where nodeId = &#63; and head = &#63;, optionally using the finder cache.
+	*
+	* @param nodeId the node ID
+	* @param head the head
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching wiki pages
+	*/
+	public static List<WikiPage> findByN_H(long nodeId, boolean head,
+		boolean retrieveFromCache) {
+		return getPersistence().findByN_H(nodeId, head, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the wiki pages where nodeId = &#63; and head = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1338,7 +1791,27 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the wiki pages where nodeId = &#63; and head = &#63;.
+	* Returns a range of all the wiki pages where nodeId = &#63; and head = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param nodeId the node ID
+	* @param head the head
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching wiki pages
+	*/
+	public static List<WikiPage> findByN_H(long nodeId, boolean head,
+		int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_H(nodeId, head, start, end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where nodeId = &#63; and head = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1355,6 +1828,29 @@ public class WikiPageUtil {
 		int start, int end, OrderByComparator<WikiPage> orderByComparator) {
 		return getPersistence()
 				   .findByN_H(nodeId, head, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where nodeId = &#63; and head = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param nodeId the node ID
+	* @param head the head
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching wiki pages
+	*/
+	public static List<WikiPage> findByN_H(long nodeId, boolean head,
+		int start, int end, OrderByComparator<WikiPage> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_H(nodeId, head, start, end, orderByComparator,
+			retrieveFromCache);
 	}
 
 	/**
@@ -1453,7 +1949,7 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns all the wiki pages where nodeId = &#63; and parentTitle = &#63;.
+	* Returns all the wiki pages where nodeId = &#63; and parentTitle = &#63;. Uses the finder cache.
 	*
 	* @param nodeId the node ID
 	* @param parentTitle the parent title
@@ -1465,7 +1961,20 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns a range of all the wiki pages where nodeId = &#63; and parentTitle = &#63;.
+	* Returns all the wiki pages where nodeId = &#63; and parentTitle = &#63;, optionally using the finder cache.
+	*
+	* @param nodeId the node ID
+	* @param parentTitle the parent title
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching wiki pages
+	*/
+	public static List<WikiPage> findByN_P(long nodeId,
+		java.lang.String parentTitle, boolean retrieveFromCache) {
+		return getPersistence().findByN_P(nodeId, parentTitle, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the wiki pages where nodeId = &#63; and parentTitle = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1483,7 +1992,28 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the wiki pages where nodeId = &#63; and parentTitle = &#63;.
+	* Returns a range of all the wiki pages where nodeId = &#63; and parentTitle = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param nodeId the node ID
+	* @param parentTitle the parent title
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching wiki pages
+	*/
+	public static List<WikiPage> findByN_P(long nodeId,
+		java.lang.String parentTitle, int start, int end,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_P(nodeId, parentTitle, start, end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where nodeId = &#63; and parentTitle = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1501,6 +2031,29 @@ public class WikiPageUtil {
 		OrderByComparator<WikiPage> orderByComparator) {
 		return getPersistence()
 				   .findByN_P(nodeId, parentTitle, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where nodeId = &#63; and parentTitle = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param nodeId the node ID
+	* @param parentTitle the parent title
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching wiki pages
+	*/
+	public static List<WikiPage> findByN_P(long nodeId,
+		java.lang.String parentTitle, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_P(nodeId, parentTitle, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -1608,7 +2161,7 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns all the wiki pages where nodeId = &#63; and redirectTitle = &#63;.
+	* Returns all the wiki pages where nodeId = &#63; and redirectTitle = &#63;. Uses the finder cache.
 	*
 	* @param nodeId the node ID
 	* @param redirectTitle the redirect title
@@ -1620,7 +2173,21 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns a range of all the wiki pages where nodeId = &#63; and redirectTitle = &#63;.
+	* Returns all the wiki pages where nodeId = &#63; and redirectTitle = &#63;, optionally using the finder cache.
+	*
+	* @param nodeId the node ID
+	* @param redirectTitle the redirect title
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching wiki pages
+	*/
+	public static List<WikiPage> findByN_R(long nodeId,
+		java.lang.String redirectTitle, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_R(nodeId, redirectTitle, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the wiki pages where nodeId = &#63; and redirectTitle = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1638,7 +2205,29 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the wiki pages where nodeId = &#63; and redirectTitle = &#63;.
+	* Returns a range of all the wiki pages where nodeId = &#63; and redirectTitle = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param nodeId the node ID
+	* @param redirectTitle the redirect title
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching wiki pages
+	*/
+	public static List<WikiPage> findByN_R(long nodeId,
+		java.lang.String redirectTitle, int start, int end,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_R(nodeId, redirectTitle, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where nodeId = &#63; and redirectTitle = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1657,6 +2246,29 @@ public class WikiPageUtil {
 		return getPersistence()
 				   .findByN_R(nodeId, redirectTitle, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where nodeId = &#63; and redirectTitle = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param nodeId the node ID
+	* @param redirectTitle the redirect title
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching wiki pages
+	*/
+	public static List<WikiPage> findByN_R(long nodeId,
+		java.lang.String redirectTitle, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_R(nodeId, redirectTitle, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -1764,7 +2376,7 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns all the wiki pages where nodeId = &#63; and status = &#63;.
+	* Returns all the wiki pages where nodeId = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* @param nodeId the node ID
 	* @param status the status
@@ -1775,7 +2387,20 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns a range of all the wiki pages where nodeId = &#63; and status = &#63;.
+	* Returns all the wiki pages where nodeId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* @param nodeId the node ID
+	* @param status the status
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching wiki pages
+	*/
+	public static List<WikiPage> findByN_S(long nodeId, int status,
+		boolean retrieveFromCache) {
+		return getPersistence().findByN_S(nodeId, status, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the wiki pages where nodeId = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1793,7 +2418,27 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the wiki pages where nodeId = &#63; and status = &#63;.
+	* Returns a range of all the wiki pages where nodeId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param nodeId the node ID
+	* @param status the status
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching wiki pages
+	*/
+	public static List<WikiPage> findByN_S(long nodeId, int status, int start,
+		int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_S(nodeId, status, start, end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where nodeId = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1810,6 +2455,29 @@ public class WikiPageUtil {
 		int end, OrderByComparator<WikiPage> orderByComparator) {
 		return getPersistence()
 				   .findByN_S(nodeId, status, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where nodeId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param nodeId the node ID
+	* @param status the status
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching wiki pages
+	*/
+	public static List<WikiPage> findByN_S(long nodeId, int status, int start,
+		int end, OrderByComparator<WikiPage> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_S(nodeId, status, start, end, orderByComparator,
+			retrieveFromCache);
 	}
 
 	/**
@@ -1980,7 +2648,7 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns all the wiki pages where resourcePrimKey = &#63; and nodeId = &#63; and head = &#63;.
+	* Returns all the wiki pages where resourcePrimKey = &#63; and nodeId = &#63; and head = &#63;. Uses the finder cache.
 	*
 	* @param resourcePrimKey the resource prim key
 	* @param nodeId the node ID
@@ -1993,7 +2661,22 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns a range of all the wiki pages where resourcePrimKey = &#63; and nodeId = &#63; and head = &#63;.
+	* Returns all the wiki pages where resourcePrimKey = &#63; and nodeId = &#63; and head = &#63;, optionally using the finder cache.
+	*
+	* @param resourcePrimKey the resource prim key
+	* @param nodeId the node ID
+	* @param head the head
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching wiki pages
+	*/
+	public static List<WikiPage> findByR_N_H(long resourcePrimKey, long nodeId,
+		boolean head, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByR_N_H(resourcePrimKey, nodeId, head, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the wiki pages where resourcePrimKey = &#63; and nodeId = &#63; and head = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -2013,7 +2696,29 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the wiki pages where resourcePrimKey = &#63; and nodeId = &#63; and head = &#63;.
+	* Returns a range of all the wiki pages where resourcePrimKey = &#63; and nodeId = &#63; and head = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param resourcePrimKey the resource prim key
+	* @param nodeId the node ID
+	* @param head the head
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching wiki pages
+	*/
+	public static List<WikiPage> findByR_N_H(long resourcePrimKey, long nodeId,
+		boolean head, int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByR_N_H(resourcePrimKey, nodeId, head, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where resourcePrimKey = &#63; and nodeId = &#63; and head = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -2033,6 +2738,30 @@ public class WikiPageUtil {
 		return getPersistence()
 				   .findByR_N_H(resourcePrimKey, nodeId, head, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where resourcePrimKey = &#63; and nodeId = &#63; and head = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param resourcePrimKey the resource prim key
+	* @param nodeId the node ID
+	* @param head the head
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching wiki pages
+	*/
+	public static List<WikiPage> findByR_N_H(long resourcePrimKey, long nodeId,
+		boolean head, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByR_N_H(resourcePrimKey, nodeId, head, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -2149,7 +2878,7 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns all the wiki pages where resourcePrimKey = &#63; and nodeId = &#63; and status = &#63;.
+	* Returns all the wiki pages where resourcePrimKey = &#63; and nodeId = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* @param resourcePrimKey the resource prim key
 	* @param nodeId the node ID
@@ -2162,7 +2891,23 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns a range of all the wiki pages where resourcePrimKey = &#63; and nodeId = &#63; and status = &#63;.
+	* Returns all the wiki pages where resourcePrimKey = &#63; and nodeId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* @param resourcePrimKey the resource prim key
+	* @param nodeId the node ID
+	* @param status the status
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching wiki pages
+	*/
+	public static List<WikiPage> findByR_N_S(long resourcePrimKey, long nodeId,
+		int status, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByR_N_S(resourcePrimKey, nodeId, status,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the wiki pages where resourcePrimKey = &#63; and nodeId = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -2182,7 +2927,29 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the wiki pages where resourcePrimKey = &#63; and nodeId = &#63; and status = &#63;.
+	* Returns a range of all the wiki pages where resourcePrimKey = &#63; and nodeId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param resourcePrimKey the resource prim key
+	* @param nodeId the node ID
+	* @param status the status
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching wiki pages
+	*/
+	public static List<WikiPage> findByR_N_S(long resourcePrimKey, long nodeId,
+		int status, int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByR_N_S(resourcePrimKey, nodeId, status, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where resourcePrimKey = &#63; and nodeId = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -2202,6 +2969,30 @@ public class WikiPageUtil {
 		return getPersistence()
 				   .findByR_N_S(resourcePrimKey, nodeId, status, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where resourcePrimKey = &#63; and nodeId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param resourcePrimKey the resource prim key
+	* @param nodeId the node ID
+	* @param status the status
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching wiki pages
+	*/
+	public static List<WikiPage> findByR_N_S(long resourcePrimKey, long nodeId,
+		int status, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByR_N_S(resourcePrimKey, nodeId, status, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -2317,7 +3108,7 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns all the wiki pages where groupId = &#63; and nodeId = &#63; and head = &#63;.
+	* Returns all the wiki pages where groupId = &#63; and nodeId = &#63; and head = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param nodeId the node ID
@@ -2330,7 +3121,22 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns a range of all the wiki pages where groupId = &#63; and nodeId = &#63; and head = &#63;.
+	* Returns all the wiki pages where groupId = &#63; and nodeId = &#63; and head = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param nodeId the node ID
+	* @param head the head
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching wiki pages
+	*/
+	public static List<WikiPage> findByG_N_H(long groupId, long nodeId,
+		boolean head, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_N_H(groupId, nodeId, head, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the wiki pages where groupId = &#63; and nodeId = &#63; and head = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -2349,7 +3155,29 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the wiki pages where groupId = &#63; and nodeId = &#63; and head = &#63;.
+	* Returns a range of all the wiki pages where groupId = &#63; and nodeId = &#63; and head = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param nodeId the node ID
+	* @param head the head
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching wiki pages
+	*/
+	public static List<WikiPage> findByG_N_H(long groupId, long nodeId,
+		boolean head, int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_N_H(groupId, nodeId, head, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where groupId = &#63; and nodeId = &#63; and head = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -2369,6 +3197,30 @@ public class WikiPageUtil {
 		return getPersistence()
 				   .findByG_N_H(groupId, nodeId, head, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where groupId = &#63; and nodeId = &#63; and head = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param nodeId the node ID
+	* @param head the head
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching wiki pages
+	*/
+	public static List<WikiPage> findByG_N_H(long groupId, long nodeId,
+		boolean head, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_N_H(groupId, nodeId, head, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -2566,7 +3418,7 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns all the wiki pages where groupId = &#63; and nodeId = &#63; and status = &#63;.
+	* Returns all the wiki pages where groupId = &#63; and nodeId = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param nodeId the node ID
@@ -2579,7 +3431,22 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns a range of all the wiki pages where groupId = &#63; and nodeId = &#63; and status = &#63;.
+	* Returns all the wiki pages where groupId = &#63; and nodeId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param nodeId the node ID
+	* @param status the status
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching wiki pages
+	*/
+	public static List<WikiPage> findByG_N_S(long groupId, long nodeId,
+		int status, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_N_S(groupId, nodeId, status, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the wiki pages where groupId = &#63; and nodeId = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -2598,7 +3465,29 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the wiki pages where groupId = &#63; and nodeId = &#63; and status = &#63;.
+	* Returns a range of all the wiki pages where groupId = &#63; and nodeId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param nodeId the node ID
+	* @param status the status
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching wiki pages
+	*/
+	public static List<WikiPage> findByG_N_S(long groupId, long nodeId,
+		int status, int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_N_S(groupId, nodeId, status, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where groupId = &#63; and nodeId = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -2618,6 +3507,30 @@ public class WikiPageUtil {
 		return getPersistence()
 				   .findByG_N_S(groupId, nodeId, status, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where groupId = &#63; and nodeId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param nodeId the node ID
+	* @param status the status
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching wiki pages
+	*/
+	public static List<WikiPage> findByG_N_S(long groupId, long nodeId,
+		int status, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_N_S(groupId, nodeId, status, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -2816,7 +3729,7 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns all the wiki pages where userId = &#63; and nodeId = &#63; and status = &#63;.
+	* Returns all the wiki pages where userId = &#63; and nodeId = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* @param userId the user ID
 	* @param nodeId the node ID
@@ -2829,7 +3742,22 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns a range of all the wiki pages where userId = &#63; and nodeId = &#63; and status = &#63;.
+	* Returns all the wiki pages where userId = &#63; and nodeId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* @param userId the user ID
+	* @param nodeId the node ID
+	* @param status the status
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching wiki pages
+	*/
+	public static List<WikiPage> findByU_N_S(long userId, long nodeId,
+		int status, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByU_N_S(userId, nodeId, status, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the wiki pages where userId = &#63; and nodeId = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -2848,7 +3776,29 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the wiki pages where userId = &#63; and nodeId = &#63; and status = &#63;.
+	* Returns a range of all the wiki pages where userId = &#63; and nodeId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param userId the user ID
+	* @param nodeId the node ID
+	* @param status the status
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching wiki pages
+	*/
+	public static List<WikiPage> findByU_N_S(long userId, long nodeId,
+		int status, int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByU_N_S(userId, nodeId, status, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where userId = &#63; and nodeId = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -2868,6 +3818,30 @@ public class WikiPageUtil {
 		return getPersistence()
 				   .findByU_N_S(userId, nodeId, status, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where userId = &#63; and nodeId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param userId the user ID
+	* @param nodeId the node ID
+	* @param status the status
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching wiki pages
+	*/
+	public static List<WikiPage> findByU_N_S(long userId, long nodeId,
+		int status, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByU_N_S(userId, nodeId, status, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -3045,7 +4019,7 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns all the wiki pages where nodeId = &#63; and title = &#63; and head = &#63;.
+	* Returns all the wiki pages where nodeId = &#63; and title = &#63; and head = &#63;. Uses the finder cache.
 	*
 	* @param nodeId the node ID
 	* @param title the title
@@ -3058,7 +4032,22 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns a range of all the wiki pages where nodeId = &#63; and title = &#63; and head = &#63;.
+	* Returns all the wiki pages where nodeId = &#63; and title = &#63; and head = &#63;, optionally using the finder cache.
+	*
+	* @param nodeId the node ID
+	* @param title the title
+	* @param head the head
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching wiki pages
+	*/
+	public static List<WikiPage> findByN_T_H(long nodeId,
+		java.lang.String title, boolean head, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_T_H(nodeId, title, head, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the wiki pages where nodeId = &#63; and title = &#63; and head = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -3077,7 +4066,30 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the wiki pages where nodeId = &#63; and title = &#63; and head = &#63;.
+	* Returns a range of all the wiki pages where nodeId = &#63; and title = &#63; and head = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param nodeId the node ID
+	* @param title the title
+	* @param head the head
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching wiki pages
+	*/
+	public static List<WikiPage> findByN_T_H(long nodeId,
+		java.lang.String title, boolean head, int start, int end,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_T_H(nodeId, title, head, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where nodeId = &#63; and title = &#63; and head = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -3097,6 +4109,30 @@ public class WikiPageUtil {
 		return getPersistence()
 				   .findByN_T_H(nodeId, title, head, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where nodeId = &#63; and title = &#63; and head = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param nodeId the node ID
+	* @param title the title
+	* @param head the head
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching wiki pages
+	*/
+	public static List<WikiPage> findByN_T_H(long nodeId,
+		java.lang.String title, boolean head, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_T_H(nodeId, title, head, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -3213,7 +4249,7 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns all the wiki pages where nodeId = &#63; and title = &#63; and status = &#63;.
+	* Returns all the wiki pages where nodeId = &#63; and title = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* @param nodeId the node ID
 	* @param title the title
@@ -3226,7 +4262,22 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns a range of all the wiki pages where nodeId = &#63; and title = &#63; and status = &#63;.
+	* Returns all the wiki pages where nodeId = &#63; and title = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* @param nodeId the node ID
+	* @param title the title
+	* @param status the status
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching wiki pages
+	*/
+	public static List<WikiPage> findByN_T_S(long nodeId,
+		java.lang.String title, int status, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_T_S(nodeId, title, status, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the wiki pages where nodeId = &#63; and title = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -3245,7 +4296,30 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the wiki pages where nodeId = &#63; and title = &#63; and status = &#63;.
+	* Returns a range of all the wiki pages where nodeId = &#63; and title = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param nodeId the node ID
+	* @param title the title
+	* @param status the status
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching wiki pages
+	*/
+	public static List<WikiPage> findByN_T_S(long nodeId,
+		java.lang.String title, int status, int start, int end,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_T_S(nodeId, title, status, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where nodeId = &#63; and title = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -3265,6 +4339,30 @@ public class WikiPageUtil {
 		return getPersistence()
 				   .findByN_T_S(nodeId, title, status, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where nodeId = &#63; and title = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param nodeId the node ID
+	* @param title the title
+	* @param status the status
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching wiki pages
+	*/
+	public static List<WikiPage> findByN_T_S(long nodeId,
+		java.lang.String title, int status, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_T_S(nodeId, title, status, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -3381,7 +4479,7 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns all the wiki pages where nodeId = &#63; and head = &#63; and parentTitle = &#63;.
+	* Returns all the wiki pages where nodeId = &#63; and head = &#63; and parentTitle = &#63;. Uses the finder cache.
 	*
 	* @param nodeId the node ID
 	* @param head the head
@@ -3394,7 +4492,22 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns a range of all the wiki pages where nodeId = &#63; and head = &#63; and parentTitle = &#63;.
+	* Returns all the wiki pages where nodeId = &#63; and head = &#63; and parentTitle = &#63;, optionally using the finder cache.
+	*
+	* @param nodeId the node ID
+	* @param head the head
+	* @param parentTitle the parent title
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching wiki pages
+	*/
+	public static List<WikiPage> findByN_H_P(long nodeId, boolean head,
+		java.lang.String parentTitle, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_H_P(nodeId, head, parentTitle, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the wiki pages where nodeId = &#63; and head = &#63; and parentTitle = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -3414,7 +4527,30 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the wiki pages where nodeId = &#63; and head = &#63; and parentTitle = &#63;.
+	* Returns a range of all the wiki pages where nodeId = &#63; and head = &#63; and parentTitle = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param nodeId the node ID
+	* @param head the head
+	* @param parentTitle the parent title
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching wiki pages
+	*/
+	public static List<WikiPage> findByN_H_P(long nodeId, boolean head,
+		java.lang.String parentTitle, int start, int end,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_H_P(nodeId, head, parentTitle, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where nodeId = &#63; and head = &#63; and parentTitle = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -3434,6 +4570,30 @@ public class WikiPageUtil {
 		return getPersistence()
 				   .findByN_H_P(nodeId, head, parentTitle, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where nodeId = &#63; and head = &#63; and parentTitle = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param nodeId the node ID
+	* @param head the head
+	* @param parentTitle the parent title
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching wiki pages
+	*/
+	public static List<WikiPage> findByN_H_P(long nodeId, boolean head,
+		java.lang.String parentTitle, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_H_P(nodeId, head, parentTitle, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -3554,7 +4714,7 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns all the wiki pages where nodeId = &#63; and head = &#63; and redirectTitle = &#63;.
+	* Returns all the wiki pages where nodeId = &#63; and head = &#63; and redirectTitle = &#63;. Uses the finder cache.
 	*
 	* @param nodeId the node ID
 	* @param head the head
@@ -3567,7 +4727,22 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns a range of all the wiki pages where nodeId = &#63; and head = &#63; and redirectTitle = &#63;.
+	* Returns all the wiki pages where nodeId = &#63; and head = &#63; and redirectTitle = &#63;, optionally using the finder cache.
+	*
+	* @param nodeId the node ID
+	* @param head the head
+	* @param redirectTitle the redirect title
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching wiki pages
+	*/
+	public static List<WikiPage> findByN_H_R(long nodeId, boolean head,
+		java.lang.String redirectTitle, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_H_R(nodeId, head, redirectTitle, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the wiki pages where nodeId = &#63; and head = &#63; and redirectTitle = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -3587,7 +4762,30 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the wiki pages where nodeId = &#63; and head = &#63; and redirectTitle = &#63;.
+	* Returns a range of all the wiki pages where nodeId = &#63; and head = &#63; and redirectTitle = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param nodeId the node ID
+	* @param head the head
+	* @param redirectTitle the redirect title
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching wiki pages
+	*/
+	public static List<WikiPage> findByN_H_R(long nodeId, boolean head,
+		java.lang.String redirectTitle, int start, int end,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_H_R(nodeId, head, redirectTitle, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where nodeId = &#63; and head = &#63; and redirectTitle = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -3607,6 +4805,30 @@ public class WikiPageUtil {
 		return getPersistence()
 				   .findByN_H_R(nodeId, head, redirectTitle, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where nodeId = &#63; and head = &#63; and redirectTitle = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param nodeId the node ID
+	* @param head the head
+	* @param redirectTitle the redirect title
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching wiki pages
+	*/
+	public static List<WikiPage> findByN_H_R(long nodeId, boolean head,
+		java.lang.String redirectTitle, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_H_R(nodeId, head, redirectTitle, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -3727,7 +4949,7 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns all the wiki pages where nodeId = &#63; and head = &#63; and status = &#63;.
+	* Returns all the wiki pages where nodeId = &#63; and head = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* @param nodeId the node ID
 	* @param head the head
@@ -3740,7 +4962,22 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns a range of all the wiki pages where nodeId = &#63; and head = &#63; and status = &#63;.
+	* Returns all the wiki pages where nodeId = &#63; and head = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* @param nodeId the node ID
+	* @param head the head
+	* @param status the status
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching wiki pages
+	*/
+	public static List<WikiPage> findByN_H_S(long nodeId, boolean head,
+		int status, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_H_S(nodeId, head, status, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the wiki pages where nodeId = &#63; and head = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -3759,7 +4996,29 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the wiki pages where nodeId = &#63; and head = &#63; and status = &#63;.
+	* Returns a range of all the wiki pages where nodeId = &#63; and head = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param nodeId the node ID
+	* @param head the head
+	* @param status the status
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching wiki pages
+	*/
+	public static List<WikiPage> findByN_H_S(long nodeId, boolean head,
+		int status, int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_H_S(nodeId, head, status, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where nodeId = &#63; and head = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -3779,6 +5038,30 @@ public class WikiPageUtil {
 		return getPersistence()
 				   .findByN_H_S(nodeId, head, status, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where nodeId = &#63; and head = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param nodeId the node ID
+	* @param head the head
+	* @param status the status
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching wiki pages
+	*/
+	public static List<WikiPage> findByN_H_S(long nodeId, boolean head,
+		int status, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_H_S(nodeId, head, status, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -3888,7 +5171,7 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns all the wiki pages where nodeId = &#63; and head = &#63; and status &ne; &#63;.
+	* Returns all the wiki pages where nodeId = &#63; and head = &#63; and status &ne; &#63;. Uses the finder cache.
 	*
 	* @param nodeId the node ID
 	* @param head the head
@@ -3901,7 +5184,22 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns a range of all the wiki pages where nodeId = &#63; and head = &#63; and status &ne; &#63;.
+	* Returns all the wiki pages where nodeId = &#63; and head = &#63; and status &ne; &#63;, optionally using the finder cache.
+	*
+	* @param nodeId the node ID
+	* @param head the head
+	* @param status the status
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching wiki pages
+	*/
+	public static List<WikiPage> findByN_H_NotS(long nodeId, boolean head,
+		int status, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_H_NotS(nodeId, head, status, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the wiki pages where nodeId = &#63; and head = &#63; and status &ne; &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -3920,7 +5218,29 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the wiki pages where nodeId = &#63; and head = &#63; and status &ne; &#63;.
+	* Returns a range of all the wiki pages where nodeId = &#63; and head = &#63; and status &ne; &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param nodeId the node ID
+	* @param head the head
+	* @param status the status
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching wiki pages
+	*/
+	public static List<WikiPage> findByN_H_NotS(long nodeId, boolean head,
+		int status, int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_H_NotS(nodeId, head, status, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where nodeId = &#63; and head = &#63; and status &ne; &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -3940,6 +5260,30 @@ public class WikiPageUtil {
 		return getPersistence()
 				   .findByN_H_NotS(nodeId, head, status, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where nodeId = &#63; and head = &#63; and status &ne; &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param nodeId the node ID
+	* @param head the head
+	* @param status the status
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching wiki pages
+	*/
+	public static List<WikiPage> findByN_H_NotS(long nodeId, boolean head,
+		int status, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_H_NotS(nodeId, head, status, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -4051,7 +5395,7 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns all the wiki pages where groupId = &#63; and userId = &#63; and nodeId = &#63; and status = &#63;.
+	* Returns all the wiki pages where groupId = &#63; and userId = &#63; and nodeId = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param userId the user ID
@@ -4065,7 +5409,24 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns a range of all the wiki pages where groupId = &#63; and userId = &#63; and nodeId = &#63; and status = &#63;.
+	* Returns all the wiki pages where groupId = &#63; and userId = &#63; and nodeId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param userId the user ID
+	* @param nodeId the node ID
+	* @param status the status
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching wiki pages
+	*/
+	public static List<WikiPage> findByG_U_N_S(long groupId, long userId,
+		long nodeId, int status, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_U_N_S(groupId, userId, nodeId, status,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the wiki pages where groupId = &#63; and userId = &#63; and nodeId = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -4086,7 +5447,30 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the wiki pages where groupId = &#63; and userId = &#63; and nodeId = &#63; and status = &#63;.
+	* Returns a range of all the wiki pages where groupId = &#63; and userId = &#63; and nodeId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param userId the user ID
+	* @param nodeId the node ID
+	* @param status the status
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching wiki pages
+	*/
+	public static List<WikiPage> findByG_U_N_S(long groupId, long userId,
+		long nodeId, int status, int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_U_N_S(groupId, userId, nodeId, status, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where groupId = &#63; and userId = &#63; and nodeId = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -4107,6 +5491,31 @@ public class WikiPageUtil {
 		return getPersistence()
 				   .findByG_U_N_S(groupId, userId, nodeId, status, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where groupId = &#63; and userId = &#63; and nodeId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param userId the user ID
+	* @param nodeId the node ID
+	* @param status the status
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching wiki pages
+	*/
+	public static List<WikiPage> findByG_U_N_S(long groupId, long userId,
+		long nodeId, int status, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_U_N_S(groupId, userId, nodeId, status, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -4327,7 +5736,7 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns all the wiki pages where groupId = &#63; and nodeId = &#63; and title = &#63; and head = &#63;.
+	* Returns all the wiki pages where groupId = &#63; and nodeId = &#63; and title = &#63; and head = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param nodeId the node ID
@@ -4341,7 +5750,24 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns a range of all the wiki pages where groupId = &#63; and nodeId = &#63; and title = &#63; and head = &#63;.
+	* Returns all the wiki pages where groupId = &#63; and nodeId = &#63; and title = &#63; and head = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param nodeId the node ID
+	* @param title the title
+	* @param head the head
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching wiki pages
+	*/
+	public static List<WikiPage> findByG_N_T_H(long groupId, long nodeId,
+		java.lang.String title, boolean head, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_N_T_H(groupId, nodeId, title, head,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the wiki pages where groupId = &#63; and nodeId = &#63; and title = &#63; and head = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -4362,7 +5788,31 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the wiki pages where groupId = &#63; and nodeId = &#63; and title = &#63; and head = &#63;.
+	* Returns a range of all the wiki pages where groupId = &#63; and nodeId = &#63; and title = &#63; and head = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param nodeId the node ID
+	* @param title the title
+	* @param head the head
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching wiki pages
+	*/
+	public static List<WikiPage> findByG_N_T_H(long groupId, long nodeId,
+		java.lang.String title, boolean head, int start, int end,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_N_T_H(groupId, nodeId, title, head, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where groupId = &#63; and nodeId = &#63; and title = &#63; and head = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -4383,6 +5833,31 @@ public class WikiPageUtil {
 		return getPersistence()
 				   .findByG_N_T_H(groupId, nodeId, title, head, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where groupId = &#63; and nodeId = &#63; and title = &#63; and head = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param nodeId the node ID
+	* @param title the title
+	* @param head the head
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching wiki pages
+	*/
+	public static List<WikiPage> findByG_N_T_H(long groupId, long nodeId,
+		java.lang.String title, boolean head, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_N_T_H(groupId, nodeId, title, head, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -4605,7 +6080,7 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns all the wiki pages where groupId = &#63; and nodeId = &#63; and head = &#63; and status = &#63;.
+	* Returns all the wiki pages where groupId = &#63; and nodeId = &#63; and head = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param nodeId the node ID
@@ -4619,7 +6094,24 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns a range of all the wiki pages where groupId = &#63; and nodeId = &#63; and head = &#63; and status = &#63;.
+	* Returns all the wiki pages where groupId = &#63; and nodeId = &#63; and head = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param nodeId the node ID
+	* @param head the head
+	* @param status the status
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching wiki pages
+	*/
+	public static List<WikiPage> findByG_N_H_S(long groupId, long nodeId,
+		boolean head, int status, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_N_H_S(groupId, nodeId, head, status,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the wiki pages where groupId = &#63; and nodeId = &#63; and head = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -4640,7 +6132,30 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the wiki pages where groupId = &#63; and nodeId = &#63; and head = &#63; and status = &#63;.
+	* Returns a range of all the wiki pages where groupId = &#63; and nodeId = &#63; and head = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param nodeId the node ID
+	* @param head the head
+	* @param status the status
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching wiki pages
+	*/
+	public static List<WikiPage> findByG_N_H_S(long groupId, long nodeId,
+		boolean head, int status, int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_N_H_S(groupId, nodeId, head, status, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where groupId = &#63; and nodeId = &#63; and head = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -4661,6 +6176,31 @@ public class WikiPageUtil {
 		return getPersistence()
 				   .findByG_N_H_S(groupId, nodeId, head, status, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where groupId = &#63; and nodeId = &#63; and head = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param nodeId the node ID
+	* @param head the head
+	* @param status the status
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching wiki pages
+	*/
+	public static List<WikiPage> findByG_N_H_S(long groupId, long nodeId,
+		boolean head, int status, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_N_H_S(groupId, nodeId, head, status, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -4881,7 +6421,7 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns all the wiki pages where nodeId = &#63; and head = &#63; and parentTitle = &#63; and status = &#63;.
+	* Returns all the wiki pages where nodeId = &#63; and head = &#63; and parentTitle = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* @param nodeId the node ID
 	* @param head the head
@@ -4895,7 +6435,24 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns a range of all the wiki pages where nodeId = &#63; and head = &#63; and parentTitle = &#63; and status = &#63;.
+	* Returns all the wiki pages where nodeId = &#63; and head = &#63; and parentTitle = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* @param nodeId the node ID
+	* @param head the head
+	* @param parentTitle the parent title
+	* @param status the status
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching wiki pages
+	*/
+	public static List<WikiPage> findByN_H_P_S(long nodeId, boolean head,
+		java.lang.String parentTitle, int status, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_H_P_S(nodeId, head, parentTitle, status,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the wiki pages where nodeId = &#63; and head = &#63; and parentTitle = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -4916,7 +6473,31 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the wiki pages where nodeId = &#63; and head = &#63; and parentTitle = &#63; and status = &#63;.
+	* Returns a range of all the wiki pages where nodeId = &#63; and head = &#63; and parentTitle = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param nodeId the node ID
+	* @param head the head
+	* @param parentTitle the parent title
+	* @param status the status
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching wiki pages
+	*/
+	public static List<WikiPage> findByN_H_P_S(long nodeId, boolean head,
+		java.lang.String parentTitle, int status, int start, int end,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_H_P_S(nodeId, head, parentTitle, status, start,
+			end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where nodeId = &#63; and head = &#63; and parentTitle = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -4937,6 +6518,31 @@ public class WikiPageUtil {
 		return getPersistence()
 				   .findByN_H_P_S(nodeId, head, parentTitle, status, start,
 			end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where nodeId = &#63; and head = &#63; and parentTitle = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param nodeId the node ID
+	* @param head the head
+	* @param parentTitle the parent title
+	* @param status the status
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching wiki pages
+	*/
+	public static List<WikiPage> findByN_H_P_S(long nodeId, boolean head,
+		java.lang.String parentTitle, int status, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_H_P_S(nodeId, head, parentTitle, status, start,
+			end, orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -5064,7 +6670,7 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns all the wiki pages where nodeId = &#63; and head = &#63; and parentTitle = &#63; and status &ne; &#63;.
+	* Returns all the wiki pages where nodeId = &#63; and head = &#63; and parentTitle = &#63; and status &ne; &#63;. Uses the finder cache.
 	*
 	* @param nodeId the node ID
 	* @param head the head
@@ -5079,7 +6685,24 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns a range of all the wiki pages where nodeId = &#63; and head = &#63; and parentTitle = &#63; and status &ne; &#63;.
+	* Returns all the wiki pages where nodeId = &#63; and head = &#63; and parentTitle = &#63; and status &ne; &#63;, optionally using the finder cache.
+	*
+	* @param nodeId the node ID
+	* @param head the head
+	* @param parentTitle the parent title
+	* @param status the status
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching wiki pages
+	*/
+	public static List<WikiPage> findByN_H_P_NotS(long nodeId, boolean head,
+		java.lang.String parentTitle, int status, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_H_P_NotS(nodeId, head, parentTitle, status,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the wiki pages where nodeId = &#63; and head = &#63; and parentTitle = &#63; and status &ne; &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -5101,7 +6724,31 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the wiki pages where nodeId = &#63; and head = &#63; and parentTitle = &#63; and status &ne; &#63;.
+	* Returns a range of all the wiki pages where nodeId = &#63; and head = &#63; and parentTitle = &#63; and status &ne; &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param nodeId the node ID
+	* @param head the head
+	* @param parentTitle the parent title
+	* @param status the status
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching wiki pages
+	*/
+	public static List<WikiPage> findByN_H_P_NotS(long nodeId, boolean head,
+		java.lang.String parentTitle, int status, int start, int end,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_H_P_NotS(nodeId, head, parentTitle, status, start,
+			end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where nodeId = &#63; and head = &#63; and parentTitle = &#63; and status &ne; &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -5122,6 +6769,31 @@ public class WikiPageUtil {
 		return getPersistence()
 				   .findByN_H_P_NotS(nodeId, head, parentTitle, status, start,
 			end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where nodeId = &#63; and head = &#63; and parentTitle = &#63; and status &ne; &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param nodeId the node ID
+	* @param head the head
+	* @param parentTitle the parent title
+	* @param status the status
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching wiki pages
+	*/
+	public static List<WikiPage> findByN_H_P_NotS(long nodeId, boolean head,
+		java.lang.String parentTitle, int status, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_H_P_NotS(nodeId, head, parentTitle, status, start,
+			end, orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -5250,7 +6922,7 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns all the wiki pages where nodeId = &#63; and head = &#63; and redirectTitle = &#63; and status = &#63;.
+	* Returns all the wiki pages where nodeId = &#63; and head = &#63; and redirectTitle = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* @param nodeId the node ID
 	* @param head the head
@@ -5265,7 +6937,24 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns a range of all the wiki pages where nodeId = &#63; and head = &#63; and redirectTitle = &#63; and status = &#63;.
+	* Returns all the wiki pages where nodeId = &#63; and head = &#63; and redirectTitle = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* @param nodeId the node ID
+	* @param head the head
+	* @param redirectTitle the redirect title
+	* @param status the status
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching wiki pages
+	*/
+	public static List<WikiPage> findByN_H_R_S(long nodeId, boolean head,
+		java.lang.String redirectTitle, int status, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_H_R_S(nodeId, head, redirectTitle, status,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the wiki pages where nodeId = &#63; and head = &#63; and redirectTitle = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -5287,7 +6976,31 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the wiki pages where nodeId = &#63; and head = &#63; and redirectTitle = &#63; and status = &#63;.
+	* Returns a range of all the wiki pages where nodeId = &#63; and head = &#63; and redirectTitle = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param nodeId the node ID
+	* @param head the head
+	* @param redirectTitle the redirect title
+	* @param status the status
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching wiki pages
+	*/
+	public static List<WikiPage> findByN_H_R_S(long nodeId, boolean head,
+		java.lang.String redirectTitle, int status, int start, int end,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_H_R_S(nodeId, head, redirectTitle, status, start,
+			end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where nodeId = &#63; and head = &#63; and redirectTitle = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -5308,6 +7021,31 @@ public class WikiPageUtil {
 		return getPersistence()
 				   .findByN_H_R_S(nodeId, head, redirectTitle, status, start,
 			end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where nodeId = &#63; and head = &#63; and redirectTitle = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param nodeId the node ID
+	* @param head the head
+	* @param redirectTitle the redirect title
+	* @param status the status
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching wiki pages
+	*/
+	public static List<WikiPage> findByN_H_R_S(long nodeId, boolean head,
+		java.lang.String redirectTitle, int status, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_H_R_S(nodeId, head, redirectTitle, status, start,
+			end, orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -5436,7 +7174,7 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns all the wiki pages where nodeId = &#63; and head = &#63; and redirectTitle = &#63; and status &ne; &#63;.
+	* Returns all the wiki pages where nodeId = &#63; and head = &#63; and redirectTitle = &#63; and status &ne; &#63;. Uses the finder cache.
 	*
 	* @param nodeId the node ID
 	* @param head the head
@@ -5451,7 +7189,24 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns a range of all the wiki pages where nodeId = &#63; and head = &#63; and redirectTitle = &#63; and status &ne; &#63;.
+	* Returns all the wiki pages where nodeId = &#63; and head = &#63; and redirectTitle = &#63; and status &ne; &#63;, optionally using the finder cache.
+	*
+	* @param nodeId the node ID
+	* @param head the head
+	* @param redirectTitle the redirect title
+	* @param status the status
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching wiki pages
+	*/
+	public static List<WikiPage> findByN_H_R_NotS(long nodeId, boolean head,
+		java.lang.String redirectTitle, int status, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_H_R_NotS(nodeId, head, redirectTitle, status,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the wiki pages where nodeId = &#63; and head = &#63; and redirectTitle = &#63; and status &ne; &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -5473,7 +7228,31 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the wiki pages where nodeId = &#63; and head = &#63; and redirectTitle = &#63; and status &ne; &#63;.
+	* Returns a range of all the wiki pages where nodeId = &#63; and head = &#63; and redirectTitle = &#63; and status &ne; &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param nodeId the node ID
+	* @param head the head
+	* @param redirectTitle the redirect title
+	* @param status the status
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching wiki pages
+	*/
+	public static List<WikiPage> findByN_H_R_NotS(long nodeId, boolean head,
+		java.lang.String redirectTitle, int status, int start, int end,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_H_R_NotS(nodeId, head, redirectTitle, status,
+			start, end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where nodeId = &#63; and head = &#63; and redirectTitle = &#63; and status &ne; &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -5494,6 +7273,31 @@ public class WikiPageUtil {
 		return getPersistence()
 				   .findByN_H_R_NotS(nodeId, head, redirectTitle, status,
 			start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where nodeId = &#63; and head = &#63; and redirectTitle = &#63; and status &ne; &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param nodeId the node ID
+	* @param head the head
+	* @param redirectTitle the redirect title
+	* @param status the status
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching wiki pages
+	*/
+	public static List<WikiPage> findByN_H_R_NotS(long nodeId, boolean head,
+		java.lang.String redirectTitle, int status, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByN_H_R_NotS(nodeId, head, redirectTitle, status,
+			start, end, orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -5622,7 +7426,7 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns all the wiki pages where groupId = &#63; and nodeId = &#63; and head = &#63; and parentTitle = &#63; and status = &#63;.
+	* Returns all the wiki pages where groupId = &#63; and nodeId = &#63; and head = &#63; and parentTitle = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param nodeId the node ID
@@ -5638,7 +7442,26 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns a range of all the wiki pages where groupId = &#63; and nodeId = &#63; and head = &#63; and parentTitle = &#63; and status = &#63;.
+	* Returns all the wiki pages where groupId = &#63; and nodeId = &#63; and head = &#63; and parentTitle = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param nodeId the node ID
+	* @param head the head
+	* @param parentTitle the parent title
+	* @param status the status
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching wiki pages
+	*/
+	public static List<WikiPage> findByG_N_H_P_S(long groupId, long nodeId,
+		boolean head, java.lang.String parentTitle, int status,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_N_H_P_S(groupId, nodeId, head, parentTitle, status,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the wiki pages where groupId = &#63; and nodeId = &#63; and head = &#63; and parentTitle = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -5662,7 +7485,32 @@ public class WikiPageUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the wiki pages where groupId = &#63; and nodeId = &#63; and head = &#63; and parentTitle = &#63; and status = &#63;.
+	* Returns a range of all the wiki pages where groupId = &#63; and nodeId = &#63; and head = &#63; and parentTitle = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param nodeId the node ID
+	* @param head the head
+	* @param parentTitle the parent title
+	* @param status the status
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching wiki pages
+	*/
+	public static List<WikiPage> findByG_N_H_P_S(long groupId, long nodeId,
+		boolean head, java.lang.String parentTitle, int status, int start,
+		int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_N_H_P_S(groupId, nodeId, head, parentTitle, status,
+			start, end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where groupId = &#63; and nodeId = &#63; and head = &#63; and parentTitle = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -5684,6 +7532,33 @@ public class WikiPageUtil {
 		return getPersistence()
 				   .findByG_N_H_P_S(groupId, nodeId, head, parentTitle, status,
 			start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the wiki pages where groupId = &#63; and nodeId = &#63; and head = &#63; and parentTitle = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WikiPageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param nodeId the node ID
+	* @param head the head
+	* @param parentTitle the parent title
+	* @param status the status
+	* @param start the lower bound of the range of wiki pages
+	* @param end the upper bound of the range of wiki pages (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching wiki pages
+	*/
+	public static List<WikiPage> findByG_N_H_P_S(long groupId, long nodeId,
+		boolean head, java.lang.String parentTitle, int status, int start,
+		int end, OrderByComparator<WikiPage> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_N_H_P_S(groupId, nodeId, head, parentTitle, status,
+			start, end, orderByComparator, retrieveFromCache);
 	}
 
 	/**

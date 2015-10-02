@@ -41,7 +41,7 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 	 */
 
 	/**
-	* Returns all the d d m structures where uuid = &#63;.
+	* Returns all the d d m structures where uuid = &#63;. Uses the finder cache.
 	*
 	* @param uuid the uuid
 	* @return the matching d d m structures
@@ -49,7 +49,17 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 	public java.util.List<DDMStructure> findByUuid(java.lang.String uuid);
 
 	/**
-	* Returns a range of all the d d m structures where uuid = &#63;.
+	* Returns all the d d m structures where uuid = &#63;, optionally using the finder cache.
+	*
+	* @param uuid the uuid
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching d d m structures
+	*/
+	public java.util.List<DDMStructure> findByUuid(java.lang.String uuid,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the d d m structures where uuid = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -64,7 +74,23 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 		int start, int end);
 
 	/**
-	* Returns an ordered range of all the d d m structures where uuid = &#63;.
+	* Returns a range of all the d d m structures where uuid = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param start the lower bound of the range of d d m structures
+	* @param end the upper bound of the range of d d m structures (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching d d m structures
+	*/
+	public java.util.List<DDMStructure> findByUuid(java.lang.String uuid,
+		int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the d d m structures where uuid = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -79,6 +105,25 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 	public java.util.List<DDMStructure> findByUuid(java.lang.String uuid,
 		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<DDMStructure> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the d d m structures where uuid = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param start the lower bound of the range of d d m structures
+	* @param end the upper bound of the range of d d m structures (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching d d m structures
+	*/
+	public java.util.List<DDMStructure> findByUuid(java.lang.String uuid,
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<DDMStructure> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first d d m structure in the ordered set where uuid = &#63;.
@@ -204,7 +249,7 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 	public int countByUUID_G(java.lang.String uuid, long groupId);
 
 	/**
-	* Returns all the d d m structures where uuid = &#63; and companyId = &#63;.
+	* Returns all the d d m structures where uuid = &#63; and companyId = &#63;. Uses the finder cache.
 	*
 	* @param uuid the uuid
 	* @param companyId the company ID
@@ -214,7 +259,18 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 		long companyId);
 
 	/**
-	* Returns a range of all the d d m structures where uuid = &#63; and companyId = &#63;.
+	* Returns all the d d m structures where uuid = &#63; and companyId = &#63;, optionally using the finder cache.
+	*
+	* @param uuid the uuid
+	* @param companyId the company ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching d d m structures
+	*/
+	public java.util.List<DDMStructure> findByUuid_C(java.lang.String uuid,
+		long companyId, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the d d m structures where uuid = &#63; and companyId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -230,7 +286,24 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 		long companyId, int start, int end);
 
 	/**
-	* Returns an ordered range of all the d d m structures where uuid = &#63; and companyId = &#63;.
+	* Returns a range of all the d d m structures where uuid = &#63; and companyId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param companyId the company ID
+	* @param start the lower bound of the range of d d m structures
+	* @param end the upper bound of the range of d d m structures (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching d d m structures
+	*/
+	public java.util.List<DDMStructure> findByUuid_C(java.lang.String uuid,
+		long companyId, int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the d d m structures where uuid = &#63; and companyId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -246,6 +319,26 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 	public java.util.List<DDMStructure> findByUuid_C(java.lang.String uuid,
 		long companyId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<DDMStructure> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the d d m structures where uuid = &#63; and companyId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param companyId the company ID
+	* @param start the lower bound of the range of d d m structures
+	* @param end the upper bound of the range of d d m structures (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching d d m structures
+	*/
+	public java.util.List<DDMStructure> findByUuid_C(java.lang.String uuid,
+		long companyId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<DDMStructure> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first d d m structure in the ordered set where uuid = &#63; and companyId = &#63;.
@@ -332,7 +425,7 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 	public int countByUuid_C(java.lang.String uuid, long companyId);
 
 	/**
-	* Returns all the d d m structures where groupId = &#63;.
+	* Returns all the d d m structures where groupId = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @return the matching d d m structures
@@ -340,7 +433,17 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 	public java.util.List<DDMStructure> findByGroupId(long groupId);
 
 	/**
-	* Returns a range of all the d d m structures where groupId = &#63;.
+	* Returns all the d d m structures where groupId = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching d d m structures
+	*/
+	public java.util.List<DDMStructure> findByGroupId(long groupId,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the d d m structures where groupId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -355,7 +458,23 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 		int end);
 
 	/**
-	* Returns an ordered range of all the d d m structures where groupId = &#63;.
+	* Returns a range of all the d d m structures where groupId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param start the lower bound of the range of d d m structures
+	* @param end the upper bound of the range of d d m structures (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching d d m structures
+	*/
+	public java.util.List<DDMStructure> findByGroupId(long groupId, int start,
+		int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the d d m structures where groupId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -370,6 +489,25 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 	public java.util.List<DDMStructure> findByGroupId(long groupId, int start,
 		int end,
 		com.liferay.portal.kernel.util.OrderByComparator<DDMStructure> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the d d m structures where groupId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param start the lower bound of the range of d d m structures
+	* @param end the upper bound of the range of d d m structures (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching d d m structures
+	*/
+	public java.util.List<DDMStructure> findByGroupId(long groupId, int start,
+		int end,
+		com.liferay.portal.kernel.util.OrderByComparator<DDMStructure> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first d d m structure in the ordered set where groupId = &#63;.
@@ -524,7 +662,7 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 		com.liferay.portal.kernel.util.OrderByComparator<DDMStructure> orderByComparator);
 
 	/**
-	* Returns all the d d m structures where groupId = any &#63;.
+	* Returns all the d d m structures where groupId = any &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -536,7 +674,21 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 	public java.util.List<DDMStructure> findByGroupId(long[] groupIds);
 
 	/**
-	* Returns a range of all the d d m structures where groupId = any &#63;.
+	* Returns all the d d m structures where groupId = any &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupIds the group IDs
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching d d m structures
+	*/
+	public java.util.List<DDMStructure> findByGroupId(long[] groupIds,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the d d m structures where groupId = any &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -551,7 +703,7 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 		int start, int end);
 
 	/**
-	* Returns an ordered range of all the d d m structures where groupId = any &#63;.
+	* Returns an ordered range of all the d d m structures where groupId = any &#63;, optionally using the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -560,12 +712,47 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 	* @param groupIds the group IDs
 	* @param start the lower bound of the range of d d m structures
 	* @param end the upper bound of the range of d d m structures (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching d d m structures
+	*/
+	public java.util.List<DDMStructure> findByGroupId(long[] groupIds,
+		int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the d d m structures where groupId = &#63;. Uses the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param start the lower bound of the range of d d m structures
+	* @param end the upper bound of the range of d d m structures (not inclusive)
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of matching d d m structures
 	*/
 	public java.util.List<DDMStructure> findByGroupId(long[] groupIds,
 		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<DDMStructure> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the d d m structures where groupId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param start the lower bound of the range of d d m structures
+	* @param end the upper bound of the range of d d m structures (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching d d m structures
+	*/
+	public java.util.List<DDMStructure> findByGroupId(long[] groupIds,
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<DDMStructure> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Removes all the d d m structures where groupId = &#63; from the database.
@@ -607,7 +794,7 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 	public int filterCountByGroupId(long[] groupIds);
 
 	/**
-	* Returns all the d d m structures where parentStructureId = &#63;.
+	* Returns all the d d m structures where parentStructureId = &#63;. Uses the finder cache.
 	*
 	* @param parentStructureId the parent structure ID
 	* @return the matching d d m structures
@@ -616,7 +803,17 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 		long parentStructureId);
 
 	/**
-	* Returns a range of all the d d m structures where parentStructureId = &#63;.
+	* Returns all the d d m structures where parentStructureId = &#63;, optionally using the finder cache.
+	*
+	* @param parentStructureId the parent structure ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching d d m structures
+	*/
+	public java.util.List<DDMStructure> findByParentStructureId(
+		long parentStructureId, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the d d m structures where parentStructureId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -631,7 +828,23 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 		long parentStructureId, int start, int end);
 
 	/**
-	* Returns an ordered range of all the d d m structures where parentStructureId = &#63;.
+	* Returns a range of all the d d m structures where parentStructureId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param parentStructureId the parent structure ID
+	* @param start the lower bound of the range of d d m structures
+	* @param end the upper bound of the range of d d m structures (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching d d m structures
+	*/
+	public java.util.List<DDMStructure> findByParentStructureId(
+		long parentStructureId, int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the d d m structures where parentStructureId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -646,6 +859,25 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 	public java.util.List<DDMStructure> findByParentStructureId(
 		long parentStructureId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<DDMStructure> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the d d m structures where parentStructureId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param parentStructureId the parent structure ID
+	* @param start the lower bound of the range of d d m structures
+	* @param end the upper bound of the range of d d m structures (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching d d m structures
+	*/
+	public java.util.List<DDMStructure> findByParentStructureId(
+		long parentStructureId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<DDMStructure> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first d d m structure in the ordered set where parentStructureId = &#63;.
@@ -721,7 +953,7 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 	public int countByParentStructureId(long parentStructureId);
 
 	/**
-	* Returns all the d d m structures where classNameId = &#63;.
+	* Returns all the d d m structures where classNameId = &#63;. Uses the finder cache.
 	*
 	* @param classNameId the class name ID
 	* @return the matching d d m structures
@@ -729,7 +961,17 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 	public java.util.List<DDMStructure> findByClassNameId(long classNameId);
 
 	/**
-	* Returns a range of all the d d m structures where classNameId = &#63;.
+	* Returns all the d d m structures where classNameId = &#63;, optionally using the finder cache.
+	*
+	* @param classNameId the class name ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching d d m structures
+	*/
+	public java.util.List<DDMStructure> findByClassNameId(long classNameId,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the d d m structures where classNameId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -744,7 +986,23 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 		int start, int end);
 
 	/**
-	* Returns an ordered range of all the d d m structures where classNameId = &#63;.
+	* Returns a range of all the d d m structures where classNameId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param classNameId the class name ID
+	* @param start the lower bound of the range of d d m structures
+	* @param end the upper bound of the range of d d m structures (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching d d m structures
+	*/
+	public java.util.List<DDMStructure> findByClassNameId(long classNameId,
+		int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the d d m structures where classNameId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -759,6 +1017,25 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 	public java.util.List<DDMStructure> findByClassNameId(long classNameId,
 		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<DDMStructure> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the d d m structures where classNameId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param classNameId the class name ID
+	* @param start the lower bound of the range of d d m structures
+	* @param end the upper bound of the range of d d m structures (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching d d m structures
+	*/
+	public java.util.List<DDMStructure> findByClassNameId(long classNameId,
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<DDMStructure> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first d d m structure in the ordered set where classNameId = &#63;.
@@ -834,7 +1111,7 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 	public int countByClassNameId(long classNameId);
 
 	/**
-	* Returns all the d d m structures where structureKey = &#63;.
+	* Returns all the d d m structures where structureKey = &#63;. Uses the finder cache.
 	*
 	* @param structureKey the structure key
 	* @return the matching d d m structures
@@ -843,7 +1120,17 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 		java.lang.String structureKey);
 
 	/**
-	* Returns a range of all the d d m structures where structureKey = &#63;.
+	* Returns all the d d m structures where structureKey = &#63;, optionally using the finder cache.
+	*
+	* @param structureKey the structure key
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching d d m structures
+	*/
+	public java.util.List<DDMStructure> findByStructureKey(
+		java.lang.String structureKey, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the d d m structures where structureKey = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -858,7 +1145,24 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 		java.lang.String structureKey, int start, int end);
 
 	/**
-	* Returns an ordered range of all the d d m structures where structureKey = &#63;.
+	* Returns a range of all the d d m structures where structureKey = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param structureKey the structure key
+	* @param start the lower bound of the range of d d m structures
+	* @param end the upper bound of the range of d d m structures (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching d d m structures
+	*/
+	public java.util.List<DDMStructure> findByStructureKey(
+		java.lang.String structureKey, int start, int end,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the d d m structures where structureKey = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -873,6 +1177,25 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 	public java.util.List<DDMStructure> findByStructureKey(
 		java.lang.String structureKey, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<DDMStructure> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the d d m structures where structureKey = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param structureKey the structure key
+	* @param start the lower bound of the range of d d m structures
+	* @param end the upper bound of the range of d d m structures (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching d d m structures
+	*/
+	public java.util.List<DDMStructure> findByStructureKey(
+		java.lang.String structureKey, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<DDMStructure> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first d d m structure in the ordered set where structureKey = &#63;.
@@ -951,7 +1274,7 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 	public int countByStructureKey(java.lang.String structureKey);
 
 	/**
-	* Returns all the d d m structures where groupId = &#63; and parentStructureId = &#63;.
+	* Returns all the d d m structures where groupId = &#63; and parentStructureId = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param parentStructureId the parent structure ID
@@ -961,7 +1284,18 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 		long parentStructureId);
 
 	/**
-	* Returns a range of all the d d m structures where groupId = &#63; and parentStructureId = &#63;.
+	* Returns all the d d m structures where groupId = &#63; and parentStructureId = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param parentStructureId the parent structure ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching d d m structures
+	*/
+	public java.util.List<DDMStructure> findByG_P(long groupId,
+		long parentStructureId, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the d d m structures where groupId = &#63; and parentStructureId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -977,7 +1311,24 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 		long parentStructureId, int start, int end);
 
 	/**
-	* Returns an ordered range of all the d d m structures where groupId = &#63; and parentStructureId = &#63;.
+	* Returns a range of all the d d m structures where groupId = &#63; and parentStructureId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param parentStructureId the parent structure ID
+	* @param start the lower bound of the range of d d m structures
+	* @param end the upper bound of the range of d d m structures (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching d d m structures
+	*/
+	public java.util.List<DDMStructure> findByG_P(long groupId,
+		long parentStructureId, int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the d d m structures where groupId = &#63; and parentStructureId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -993,6 +1344,26 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 	public java.util.List<DDMStructure> findByG_P(long groupId,
 		long parentStructureId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<DDMStructure> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the d d m structures where groupId = &#63; and parentStructureId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param parentStructureId the parent structure ID
+	* @param start the lower bound of the range of d d m structures
+	* @param end the upper bound of the range of d d m structures (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching d d m structures
+	*/
+	public java.util.List<DDMStructure> findByG_P(long groupId,
+		long parentStructureId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<DDMStructure> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first d d m structure in the ordered set where groupId = &#63; and parentStructureId = &#63;.
@@ -1143,7 +1514,7 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 	public int filterCountByG_P(long groupId, long parentStructureId);
 
 	/**
-	* Returns all the d d m structures where groupId = &#63; and classNameId = &#63;.
+	* Returns all the d d m structures where groupId = &#63; and classNameId = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param classNameId the class name ID
@@ -1152,7 +1523,18 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 	public java.util.List<DDMStructure> findByG_C(long groupId, long classNameId);
 
 	/**
-	* Returns a range of all the d d m structures where groupId = &#63; and classNameId = &#63;.
+	* Returns all the d d m structures where groupId = &#63; and classNameId = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param classNameId the class name ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching d d m structures
+	*/
+	public java.util.List<DDMStructure> findByG_C(long groupId,
+		long classNameId, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the d d m structures where groupId = &#63; and classNameId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1168,7 +1550,24 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 		long classNameId, int start, int end);
 
 	/**
-	* Returns an ordered range of all the d d m structures where groupId = &#63; and classNameId = &#63;.
+	* Returns a range of all the d d m structures where groupId = &#63; and classNameId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param classNameId the class name ID
+	* @param start the lower bound of the range of d d m structures
+	* @param end the upper bound of the range of d d m structures (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching d d m structures
+	*/
+	public java.util.List<DDMStructure> findByG_C(long groupId,
+		long classNameId, int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the d d m structures where groupId = &#63; and classNameId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1184,6 +1583,26 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 	public java.util.List<DDMStructure> findByG_C(long groupId,
 		long classNameId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<DDMStructure> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the d d m structures where groupId = &#63; and classNameId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param classNameId the class name ID
+	* @param start the lower bound of the range of d d m structures
+	* @param end the upper bound of the range of d d m structures (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching d d m structures
+	*/
+	public java.util.List<DDMStructure> findByG_C(long groupId,
+		long classNameId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<DDMStructure> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first d d m structure in the ordered set where groupId = &#63; and classNameId = &#63;.
@@ -1352,7 +1771,7 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 		com.liferay.portal.kernel.util.OrderByComparator<DDMStructure> orderByComparator);
 
 	/**
-	* Returns all the d d m structures where groupId = any &#63; and classNameId = &#63;.
+	* Returns all the d d m structures where groupId = any &#63; and classNameId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1366,7 +1785,22 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 		long classNameId);
 
 	/**
-	* Returns a range of all the d d m structures where groupId = any &#63; and classNameId = &#63;.
+	* Returns all the d d m structures where groupId = any &#63; and classNameId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupIds the group IDs
+	* @param classNameId the class name ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching d d m structures
+	*/
+	public java.util.List<DDMStructure> findByG_C(long[] groupIds,
+		long classNameId, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the d d m structures where groupId = any &#63; and classNameId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1382,7 +1816,7 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 		long classNameId, int start, int end);
 
 	/**
-	* Returns an ordered range of all the d d m structures where groupId = any &#63; and classNameId = &#63;.
+	* Returns an ordered range of all the d d m structures where groupId = any &#63; and classNameId = &#63;, optionally using the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1392,12 +1826,49 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 	* @param classNameId the class name ID
 	* @param start the lower bound of the range of d d m structures
 	* @param end the upper bound of the range of d d m structures (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching d d m structures
+	*/
+	public java.util.List<DDMStructure> findByG_C(long[] groupIds,
+		long classNameId, int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the d d m structures where groupId = &#63; and classNameId = &#63;. Uses the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param classNameId the class name ID
+	* @param start the lower bound of the range of d d m structures
+	* @param end the upper bound of the range of d d m structures (not inclusive)
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of matching d d m structures
 	*/
 	public java.util.List<DDMStructure> findByG_C(long[] groupIds,
 		long classNameId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<DDMStructure> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the d d m structures where groupId = &#63; and classNameId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param classNameId the class name ID
+	* @param start the lower bound of the range of d d m structures
+	* @param end the upper bound of the range of d d m structures (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching d d m structures
+	*/
+	public java.util.List<DDMStructure> findByG_C(long[] groupIds,
+		long classNameId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<DDMStructure> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Removes all the d d m structures where groupId = &#63; and classNameId = &#63; from the database.
@@ -1444,7 +1915,7 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 	public int filterCountByG_C(long[] groupIds, long classNameId);
 
 	/**
-	* Returns all the d d m structures where companyId = &#63; and classNameId = &#63;.
+	* Returns all the d d m structures where companyId = &#63; and classNameId = &#63;. Uses the finder cache.
 	*
 	* @param companyId the company ID
 	* @param classNameId the class name ID
@@ -1454,7 +1925,18 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 		long classNameId);
 
 	/**
-	* Returns a range of all the d d m structures where companyId = &#63; and classNameId = &#63;.
+	* Returns all the d d m structures where companyId = &#63; and classNameId = &#63;, optionally using the finder cache.
+	*
+	* @param companyId the company ID
+	* @param classNameId the class name ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching d d m structures
+	*/
+	public java.util.List<DDMStructure> findByC_C(long companyId,
+		long classNameId, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the d d m structures where companyId = &#63; and classNameId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1470,7 +1952,24 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 		long classNameId, int start, int end);
 
 	/**
-	* Returns an ordered range of all the d d m structures where companyId = &#63; and classNameId = &#63;.
+	* Returns a range of all the d d m structures where companyId = &#63; and classNameId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param companyId the company ID
+	* @param classNameId the class name ID
+	* @param start the lower bound of the range of d d m structures
+	* @param end the upper bound of the range of d d m structures (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching d d m structures
+	*/
+	public java.util.List<DDMStructure> findByC_C(long companyId,
+		long classNameId, int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the d d m structures where companyId = &#63; and classNameId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1486,6 +1985,26 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 	public java.util.List<DDMStructure> findByC_C(long companyId,
 		long classNameId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<DDMStructure> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the d d m structures where companyId = &#63; and classNameId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param companyId the company ID
+	* @param classNameId the class name ID
+	* @param start the lower bound of the range of d d m structures
+	* @param end the upper bound of the range of d d m structures (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching d d m structures
+	*/
+	public java.util.List<DDMStructure> findByC_C(long companyId,
+		long classNameId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<DDMStructure> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first d d m structure in the ordered set where companyId = &#63; and classNameId = &#63;.
@@ -1627,7 +2146,7 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 		java.lang.String structureKey);
 
 	/**
-	* Returns all the d d m structures where groupId = &#63; and name = &#63; and description = &#63;.
+	* Returns all the d d m structures where groupId = &#63; and name = &#63; and description = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param name the name
@@ -1638,7 +2157,20 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 		java.lang.String name, java.lang.String description);
 
 	/**
-	* Returns a range of all the d d m structures where groupId = &#63; and name = &#63; and description = &#63;.
+	* Returns all the d d m structures where groupId = &#63; and name = &#63; and description = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param name the name
+	* @param description the description
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching d d m structures
+	*/
+	public java.util.List<DDMStructure> findByG_N_D(long groupId,
+		java.lang.String name, java.lang.String description,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the d d m structures where groupId = &#63; and name = &#63; and description = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1655,7 +2187,26 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 		java.lang.String name, java.lang.String description, int start, int end);
 
 	/**
-	* Returns an ordered range of all the d d m structures where groupId = &#63; and name = &#63; and description = &#63;.
+	* Returns a range of all the d d m structures where groupId = &#63; and name = &#63; and description = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param name the name
+	* @param description the description
+	* @param start the lower bound of the range of d d m structures
+	* @param end the upper bound of the range of d d m structures (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching d d m structures
+	*/
+	public java.util.List<DDMStructure> findByG_N_D(long groupId,
+		java.lang.String name, java.lang.String description, int start,
+		int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the d d m structures where groupId = &#63; and name = &#63; and description = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1673,6 +2224,28 @@ public interface DDMStructurePersistence extends BasePersistence<DDMStructure> {
 		java.lang.String name, java.lang.String description, int start,
 		int end,
 		com.liferay.portal.kernel.util.OrderByComparator<DDMStructure> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the d d m structures where groupId = &#63; and name = &#63; and description = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param name the name
+	* @param description the description
+	* @param start the lower bound of the range of d d m structures
+	* @param end the upper bound of the range of d d m structures (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching d d m structures
+	*/
+	public java.util.List<DDMStructure> findByG_N_D(long groupId,
+		java.lang.String name, java.lang.String description, int start,
+		int end,
+		com.liferay.portal.kernel.util.OrderByComparator<DDMStructure> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first d d m structure in the ordered set where groupId = &#63; and name = &#63; and description = &#63;.

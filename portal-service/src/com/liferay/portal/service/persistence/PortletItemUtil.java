@@ -109,7 +109,7 @@ public class PortletItemUtil {
 	}
 
 	/**
-	* Returns all the portlet items where groupId = &#63; and classNameId = &#63;.
+	* Returns all the portlet items where groupId = &#63; and classNameId = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param classNameId the class name ID
@@ -120,7 +120,21 @@ public class PortletItemUtil {
 	}
 
 	/**
-	* Returns a range of all the portlet items where groupId = &#63; and classNameId = &#63;.
+	* Returns all the portlet items where groupId = &#63; and classNameId = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param classNameId the class name ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching portlet items
+	*/
+	public static List<PortletItem> findByG_C(long groupId, long classNameId,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_C(groupId, classNameId, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the portlet items where groupId = &#63; and classNameId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link PortletItemModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -138,7 +152,28 @@ public class PortletItemUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the portlet items where groupId = &#63; and classNameId = &#63;.
+	* Returns a range of all the portlet items where groupId = &#63; and classNameId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link PortletItemModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param classNameId the class name ID
+	* @param start the lower bound of the range of portlet items
+	* @param end the upper bound of the range of portlet items (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching portlet items
+	*/
+	public static List<PortletItem> findByG_C(long groupId, long classNameId,
+		int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_C(groupId, classNameId, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the portlet items where groupId = &#63; and classNameId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link PortletItemModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -156,6 +191,29 @@ public class PortletItemUtil {
 		return getPersistence()
 				   .findByG_C(groupId, classNameId, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the portlet items where groupId = &#63; and classNameId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link PortletItemModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param classNameId the class name ID
+	* @param start the lower bound of the range of portlet items
+	* @param end the upper bound of the range of portlet items (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching portlet items
+	*/
+	public static List<PortletItem> findByG_C(long groupId, long classNameId,
+		int start, int end, OrderByComparator<PortletItem> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_C(groupId, classNameId, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -259,7 +317,7 @@ public class PortletItemUtil {
 	}
 
 	/**
-	* Returns all the portlet items where groupId = &#63; and portletId = &#63; and classNameId = &#63;.
+	* Returns all the portlet items where groupId = &#63; and portletId = &#63; and classNameId = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param portletId the portlet ID
@@ -272,7 +330,23 @@ public class PortletItemUtil {
 	}
 
 	/**
-	* Returns a range of all the portlet items where groupId = &#63; and portletId = &#63; and classNameId = &#63;.
+	* Returns all the portlet items where groupId = &#63; and portletId = &#63; and classNameId = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param portletId the portlet ID
+	* @param classNameId the class name ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching portlet items
+	*/
+	public static List<PortletItem> findByG_P_C(long groupId,
+		java.lang.String portletId, long classNameId, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_P_C(groupId, portletId, classNameId,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the portlet items where groupId = &#63; and portletId = &#63; and classNameId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link PortletItemModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -292,7 +366,30 @@ public class PortletItemUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the portlet items where groupId = &#63; and portletId = &#63; and classNameId = &#63;.
+	* Returns a range of all the portlet items where groupId = &#63; and portletId = &#63; and classNameId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link PortletItemModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param portletId the portlet ID
+	* @param classNameId the class name ID
+	* @param start the lower bound of the range of portlet items
+	* @param end the upper bound of the range of portlet items (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching portlet items
+	*/
+	public static List<PortletItem> findByG_P_C(long groupId,
+		java.lang.String portletId, long classNameId, int start, int end,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_P_C(groupId, portletId, classNameId, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the portlet items where groupId = &#63; and portletId = &#63; and classNameId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link PortletItemModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -312,6 +409,31 @@ public class PortletItemUtil {
 		return getPersistence()
 				   .findByG_P_C(groupId, portletId, classNameId, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the portlet items where groupId = &#63; and portletId = &#63; and classNameId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link PortletItemModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param portletId the portlet ID
+	* @param classNameId the class name ID
+	* @param start the lower bound of the range of portlet items
+	* @param end the upper bound of the range of portlet items (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching portlet items
+	*/
+	public static List<PortletItem> findByG_P_C(long groupId,
+		java.lang.String portletId, long classNameId, int start, int end,
+		OrderByComparator<PortletItem> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_P_C(groupId, portletId, classNameId, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**

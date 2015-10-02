@@ -39,7 +39,7 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 	 */
 
 	/**
-	* Returns all the user notification events where uuid = &#63;.
+	* Returns all the user notification events where uuid = &#63;. Uses the finder cache.
 	*
 	* @param uuid the uuid
 	* @return the matching user notification events
@@ -48,7 +48,17 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 		java.lang.String uuid);
 
 	/**
-	* Returns a range of all the user notification events where uuid = &#63;.
+	* Returns all the user notification events where uuid = &#63;, optionally using the finder cache.
+	*
+	* @param uuid the uuid
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching user notification events
+	*/
+	public java.util.List<UserNotificationEvent> findByUuid(
+		java.lang.String uuid, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the user notification events where uuid = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -63,7 +73,23 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 		java.lang.String uuid, int start, int end);
 
 	/**
-	* Returns an ordered range of all the user notification events where uuid = &#63;.
+	* Returns a range of all the user notification events where uuid = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param start the lower bound of the range of user notification events
+	* @param end the upper bound of the range of user notification events (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching user notification events
+	*/
+	public java.util.List<UserNotificationEvent> findByUuid(
+		java.lang.String uuid, int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the user notification events where uuid = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -78,6 +104,25 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 	public java.util.List<UserNotificationEvent> findByUuid(
 		java.lang.String uuid, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<UserNotificationEvent> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the user notification events where uuid = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param start the lower bound of the range of user notification events
+	* @param end the upper bound of the range of user notification events (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching user notification events
+	*/
+	public java.util.List<UserNotificationEvent> findByUuid(
+		java.lang.String uuid, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<UserNotificationEvent> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first user notification event in the ordered set where uuid = &#63;.
@@ -153,7 +198,7 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 	public int countByUuid(java.lang.String uuid);
 
 	/**
-	* Returns all the user notification events where uuid = &#63; and companyId = &#63;.
+	* Returns all the user notification events where uuid = &#63; and companyId = &#63;. Uses the finder cache.
 	*
 	* @param uuid the uuid
 	* @param companyId the company ID
@@ -163,7 +208,18 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 		java.lang.String uuid, long companyId);
 
 	/**
-	* Returns a range of all the user notification events where uuid = &#63; and companyId = &#63;.
+	* Returns all the user notification events where uuid = &#63; and companyId = &#63;, optionally using the finder cache.
+	*
+	* @param uuid the uuid
+	* @param companyId the company ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching user notification events
+	*/
+	public java.util.List<UserNotificationEvent> findByUuid_C(
+		java.lang.String uuid, long companyId, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the user notification events where uuid = &#63; and companyId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -179,7 +235,25 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 		java.lang.String uuid, long companyId, int start, int end);
 
 	/**
-	* Returns an ordered range of all the user notification events where uuid = &#63; and companyId = &#63;.
+	* Returns a range of all the user notification events where uuid = &#63; and companyId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param companyId the company ID
+	* @param start the lower bound of the range of user notification events
+	* @param end the upper bound of the range of user notification events (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching user notification events
+	*/
+	public java.util.List<UserNotificationEvent> findByUuid_C(
+		java.lang.String uuid, long companyId, int start, int end,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the user notification events where uuid = &#63; and companyId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -195,6 +269,26 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 	public java.util.List<UserNotificationEvent> findByUuid_C(
 		java.lang.String uuid, long companyId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<UserNotificationEvent> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the user notification events where uuid = &#63; and companyId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param companyId the company ID
+	* @param start the lower bound of the range of user notification events
+	* @param end the upper bound of the range of user notification events (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching user notification events
+	*/
+	public java.util.List<UserNotificationEvent> findByUuid_C(
+		java.lang.String uuid, long companyId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<UserNotificationEvent> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first user notification event in the ordered set where uuid = &#63; and companyId = &#63;.
@@ -281,7 +375,7 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 	public int countByUuid_C(java.lang.String uuid, long companyId);
 
 	/**
-	* Returns all the user notification events where userId = &#63;.
+	* Returns all the user notification events where userId = &#63;. Uses the finder cache.
 	*
 	* @param userId the user ID
 	* @return the matching user notification events
@@ -289,7 +383,17 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 	public java.util.List<UserNotificationEvent> findByUserId(long userId);
 
 	/**
-	* Returns a range of all the user notification events where userId = &#63;.
+	* Returns all the user notification events where userId = &#63;, optionally using the finder cache.
+	*
+	* @param userId the user ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching user notification events
+	*/
+	public java.util.List<UserNotificationEvent> findByUserId(long userId,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the user notification events where userId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -304,7 +408,23 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 		int start, int end);
 
 	/**
-	* Returns an ordered range of all the user notification events where userId = &#63;.
+	* Returns a range of all the user notification events where userId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param userId the user ID
+	* @param start the lower bound of the range of user notification events
+	* @param end the upper bound of the range of user notification events (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching user notification events
+	*/
+	public java.util.List<UserNotificationEvent> findByUserId(long userId,
+		int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the user notification events where userId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -319,6 +439,25 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 	public java.util.List<UserNotificationEvent> findByUserId(long userId,
 		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<UserNotificationEvent> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the user notification events where userId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param userId the user ID
+	* @param start the lower bound of the range of user notification events
+	* @param end the upper bound of the range of user notification events (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching user notification events
+	*/
+	public java.util.List<UserNotificationEvent> findByUserId(long userId,
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<UserNotificationEvent> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first user notification event in the ordered set where userId = &#63;.
@@ -394,7 +533,7 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 	public int countByUserId(long userId);
 
 	/**
-	* Returns all the user notification events where userId = &#63; and deliveryType = &#63;.
+	* Returns all the user notification events where userId = &#63; and deliveryType = &#63;. Uses the finder cache.
 	*
 	* @param userId the user ID
 	* @param deliveryType the delivery type
@@ -404,7 +543,18 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 		int deliveryType);
 
 	/**
-	* Returns a range of all the user notification events where userId = &#63; and deliveryType = &#63;.
+	* Returns all the user notification events where userId = &#63; and deliveryType = &#63;, optionally using the finder cache.
+	*
+	* @param userId the user ID
+	* @param deliveryType the delivery type
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching user notification events
+	*/
+	public java.util.List<UserNotificationEvent> findByU_DT(long userId,
+		int deliveryType, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the user notification events where userId = &#63; and deliveryType = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -420,7 +570,24 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 		int deliveryType, int start, int end);
 
 	/**
-	* Returns an ordered range of all the user notification events where userId = &#63; and deliveryType = &#63;.
+	* Returns a range of all the user notification events where userId = &#63; and deliveryType = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param userId the user ID
+	* @param deliveryType the delivery type
+	* @param start the lower bound of the range of user notification events
+	* @param end the upper bound of the range of user notification events (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching user notification events
+	*/
+	public java.util.List<UserNotificationEvent> findByU_DT(long userId,
+		int deliveryType, int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the user notification events where userId = &#63; and deliveryType = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -436,6 +603,26 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 	public java.util.List<UserNotificationEvent> findByU_DT(long userId,
 		int deliveryType, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<UserNotificationEvent> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the user notification events where userId = &#63; and deliveryType = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param userId the user ID
+	* @param deliveryType the delivery type
+	* @param start the lower bound of the range of user notification events
+	* @param end the upper bound of the range of user notification events (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching user notification events
+	*/
+	public java.util.List<UserNotificationEvent> findByU_DT(long userId,
+		int deliveryType, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<UserNotificationEvent> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first user notification event in the ordered set where userId = &#63; and deliveryType = &#63;.
@@ -521,7 +708,7 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 	public int countByU_DT(long userId, int deliveryType);
 
 	/**
-	* Returns all the user notification events where userId = &#63; and delivered = &#63;.
+	* Returns all the user notification events where userId = &#63; and delivered = &#63;. Uses the finder cache.
 	*
 	* @param userId the user ID
 	* @param delivered the delivered
@@ -531,7 +718,18 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 		boolean delivered);
 
 	/**
-	* Returns a range of all the user notification events where userId = &#63; and delivered = &#63;.
+	* Returns all the user notification events where userId = &#63; and delivered = &#63;, optionally using the finder cache.
+	*
+	* @param userId the user ID
+	* @param delivered the delivered
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching user notification events
+	*/
+	public java.util.List<UserNotificationEvent> findByU_D(long userId,
+		boolean delivered, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the user notification events where userId = &#63; and delivered = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -547,7 +745,24 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 		boolean delivered, int start, int end);
 
 	/**
-	* Returns an ordered range of all the user notification events where userId = &#63; and delivered = &#63;.
+	* Returns a range of all the user notification events where userId = &#63; and delivered = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param userId the user ID
+	* @param delivered the delivered
+	* @param start the lower bound of the range of user notification events
+	* @param end the upper bound of the range of user notification events (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching user notification events
+	*/
+	public java.util.List<UserNotificationEvent> findByU_D(long userId,
+		boolean delivered, int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the user notification events where userId = &#63; and delivered = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -563,6 +778,26 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 	public java.util.List<UserNotificationEvent> findByU_D(long userId,
 		boolean delivered, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<UserNotificationEvent> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the user notification events where userId = &#63; and delivered = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param userId the user ID
+	* @param delivered the delivered
+	* @param start the lower bound of the range of user notification events
+	* @param end the upper bound of the range of user notification events (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching user notification events
+	*/
+	public java.util.List<UserNotificationEvent> findByU_D(long userId,
+		boolean delivered, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<UserNotificationEvent> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first user notification event in the ordered set where userId = &#63; and delivered = &#63;.
@@ -648,7 +883,7 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 	public int countByU_D(long userId, boolean delivered);
 
 	/**
-	* Returns all the user notification events where userId = &#63; and archived = &#63;.
+	* Returns all the user notification events where userId = &#63; and archived = &#63;. Uses the finder cache.
 	*
 	* @param userId the user ID
 	* @param archived the archived
@@ -658,7 +893,18 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 		boolean archived);
 
 	/**
-	* Returns a range of all the user notification events where userId = &#63; and archived = &#63;.
+	* Returns all the user notification events where userId = &#63; and archived = &#63;, optionally using the finder cache.
+	*
+	* @param userId the user ID
+	* @param archived the archived
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching user notification events
+	*/
+	public java.util.List<UserNotificationEvent> findByU_A(long userId,
+		boolean archived, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the user notification events where userId = &#63; and archived = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -674,7 +920,24 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 		boolean archived, int start, int end);
 
 	/**
-	* Returns an ordered range of all the user notification events where userId = &#63; and archived = &#63;.
+	* Returns a range of all the user notification events where userId = &#63; and archived = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param userId the user ID
+	* @param archived the archived
+	* @param start the lower bound of the range of user notification events
+	* @param end the upper bound of the range of user notification events (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching user notification events
+	*/
+	public java.util.List<UserNotificationEvent> findByU_A(long userId,
+		boolean archived, int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the user notification events where userId = &#63; and archived = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -690,6 +953,26 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 	public java.util.List<UserNotificationEvent> findByU_A(long userId,
 		boolean archived, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<UserNotificationEvent> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the user notification events where userId = &#63; and archived = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param userId the user ID
+	* @param archived the archived
+	* @param start the lower bound of the range of user notification events
+	* @param end the upper bound of the range of user notification events (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching user notification events
+	*/
+	public java.util.List<UserNotificationEvent> findByU_A(long userId,
+		boolean archived, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<UserNotificationEvent> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first user notification event in the ordered set where userId = &#63; and archived = &#63;.
@@ -773,7 +1056,7 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 	public int countByU_A(long userId, boolean archived);
 
 	/**
-	* Returns all the user notification events where userId = &#63; and deliveryType = &#63; and delivered = &#63;.
+	* Returns all the user notification events where userId = &#63; and deliveryType = &#63; and delivered = &#63;. Uses the finder cache.
 	*
 	* @param userId the user ID
 	* @param deliveryType the delivery type
@@ -784,7 +1067,19 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 		int deliveryType, boolean delivered);
 
 	/**
-	* Returns a range of all the user notification events where userId = &#63; and deliveryType = &#63; and delivered = &#63;.
+	* Returns all the user notification events where userId = &#63; and deliveryType = &#63; and delivered = &#63;, optionally using the finder cache.
+	*
+	* @param userId the user ID
+	* @param deliveryType the delivery type
+	* @param delivered the delivered
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching user notification events
+	*/
+	public java.util.List<UserNotificationEvent> findByU_DT_D(long userId,
+		int deliveryType, boolean delivered, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the user notification events where userId = &#63; and deliveryType = &#63; and delivered = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -801,7 +1096,26 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 		int deliveryType, boolean delivered, int start, int end);
 
 	/**
-	* Returns an ordered range of all the user notification events where userId = &#63; and deliveryType = &#63; and delivered = &#63;.
+	* Returns a range of all the user notification events where userId = &#63; and deliveryType = &#63; and delivered = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param userId the user ID
+	* @param deliveryType the delivery type
+	* @param delivered the delivered
+	* @param start the lower bound of the range of user notification events
+	* @param end the upper bound of the range of user notification events (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching user notification events
+	*/
+	public java.util.List<UserNotificationEvent> findByU_DT_D(long userId,
+		int deliveryType, boolean delivered, int start, int end,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the user notification events where userId = &#63; and deliveryType = &#63; and delivered = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -818,6 +1132,27 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 	public java.util.List<UserNotificationEvent> findByU_DT_D(long userId,
 		int deliveryType, boolean delivered, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<UserNotificationEvent> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the user notification events where userId = &#63; and deliveryType = &#63; and delivered = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param userId the user ID
+	* @param deliveryType the delivery type
+	* @param delivered the delivered
+	* @param start the lower bound of the range of user notification events
+	* @param end the upper bound of the range of user notification events (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching user notification events
+	*/
+	public java.util.List<UserNotificationEvent> findByU_DT_D(long userId,
+		int deliveryType, boolean delivered, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<UserNotificationEvent> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first user notification event in the ordered set where userId = &#63; and deliveryType = &#63; and delivered = &#63;.
@@ -912,7 +1247,7 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 	public int countByU_DT_D(long userId, int deliveryType, boolean delivered);
 
 	/**
-	* Returns all the user notification events where userId = &#63; and deliveryType = &#63; and archived = &#63;.
+	* Returns all the user notification events where userId = &#63; and deliveryType = &#63; and archived = &#63;. Uses the finder cache.
 	*
 	* @param userId the user ID
 	* @param deliveryType the delivery type
@@ -923,7 +1258,19 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 		int deliveryType, boolean archived);
 
 	/**
-	* Returns a range of all the user notification events where userId = &#63; and deliveryType = &#63; and archived = &#63;.
+	* Returns all the user notification events where userId = &#63; and deliveryType = &#63; and archived = &#63;, optionally using the finder cache.
+	*
+	* @param userId the user ID
+	* @param deliveryType the delivery type
+	* @param archived the archived
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching user notification events
+	*/
+	public java.util.List<UserNotificationEvent> findByU_DT_A(long userId,
+		int deliveryType, boolean archived, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the user notification events where userId = &#63; and deliveryType = &#63; and archived = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -940,7 +1287,26 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 		int deliveryType, boolean archived, int start, int end);
 
 	/**
-	* Returns an ordered range of all the user notification events where userId = &#63; and deliveryType = &#63; and archived = &#63;.
+	* Returns a range of all the user notification events where userId = &#63; and deliveryType = &#63; and archived = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param userId the user ID
+	* @param deliveryType the delivery type
+	* @param archived the archived
+	* @param start the lower bound of the range of user notification events
+	* @param end the upper bound of the range of user notification events (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching user notification events
+	*/
+	public java.util.List<UserNotificationEvent> findByU_DT_A(long userId,
+		int deliveryType, boolean archived, int start, int end,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the user notification events where userId = &#63; and deliveryType = &#63; and archived = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -957,6 +1323,27 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 	public java.util.List<UserNotificationEvent> findByU_DT_A(long userId,
 		int deliveryType, boolean archived, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<UserNotificationEvent> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the user notification events where userId = &#63; and deliveryType = &#63; and archived = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param userId the user ID
+	* @param deliveryType the delivery type
+	* @param archived the archived
+	* @param start the lower bound of the range of user notification events
+	* @param end the upper bound of the range of user notification events (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching user notification events
+	*/
+	public java.util.List<UserNotificationEvent> findByU_DT_A(long userId,
+		int deliveryType, boolean archived, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<UserNotificationEvent> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first user notification event in the ordered set where userId = &#63; and deliveryType = &#63; and archived = &#63;.
@@ -1051,7 +1438,7 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 	public int countByU_DT_A(long userId, int deliveryType, boolean archived);
 
 	/**
-	* Returns all the user notification events where userId = &#63; and delivered = &#63; and actionRequired = &#63;.
+	* Returns all the user notification events where userId = &#63; and delivered = &#63; and actionRequired = &#63;. Uses the finder cache.
 	*
 	* @param userId the user ID
 	* @param delivered the delivered
@@ -1062,7 +1449,19 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 		boolean delivered, boolean actionRequired);
 
 	/**
-	* Returns a range of all the user notification events where userId = &#63; and delivered = &#63; and actionRequired = &#63;.
+	* Returns all the user notification events where userId = &#63; and delivered = &#63; and actionRequired = &#63;, optionally using the finder cache.
+	*
+	* @param userId the user ID
+	* @param delivered the delivered
+	* @param actionRequired the action required
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching user notification events
+	*/
+	public java.util.List<UserNotificationEvent> findByU_D_A(long userId,
+		boolean delivered, boolean actionRequired, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the user notification events where userId = &#63; and delivered = &#63; and actionRequired = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1079,7 +1478,26 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 		boolean delivered, boolean actionRequired, int start, int end);
 
 	/**
-	* Returns an ordered range of all the user notification events where userId = &#63; and delivered = &#63; and actionRequired = &#63;.
+	* Returns a range of all the user notification events where userId = &#63; and delivered = &#63; and actionRequired = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param userId the user ID
+	* @param delivered the delivered
+	* @param actionRequired the action required
+	* @param start the lower bound of the range of user notification events
+	* @param end the upper bound of the range of user notification events (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching user notification events
+	*/
+	public java.util.List<UserNotificationEvent> findByU_D_A(long userId,
+		boolean delivered, boolean actionRequired, int start, int end,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the user notification events where userId = &#63; and delivered = &#63; and actionRequired = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1096,6 +1514,27 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 	public java.util.List<UserNotificationEvent> findByU_D_A(long userId,
 		boolean delivered, boolean actionRequired, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<UserNotificationEvent> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the user notification events where userId = &#63; and delivered = &#63; and actionRequired = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param userId the user ID
+	* @param delivered the delivered
+	* @param actionRequired the action required
+	* @param start the lower bound of the range of user notification events
+	* @param end the upper bound of the range of user notification events (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching user notification events
+	*/
+	public java.util.List<UserNotificationEvent> findByU_D_A(long userId,
+		boolean delivered, boolean actionRequired, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<UserNotificationEvent> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first user notification event in the ordered set where userId = &#63; and delivered = &#63; and actionRequired = &#63;.
@@ -1192,7 +1631,7 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 		boolean actionRequired);
 
 	/**
-	* Returns all the user notification events where userId = &#63; and actionRequired = &#63; and archived = &#63;.
+	* Returns all the user notification events where userId = &#63; and actionRequired = &#63; and archived = &#63;. Uses the finder cache.
 	*
 	* @param userId the user ID
 	* @param actionRequired the action required
@@ -1203,7 +1642,19 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 		boolean actionRequired, boolean archived);
 
 	/**
-	* Returns a range of all the user notification events where userId = &#63; and actionRequired = &#63; and archived = &#63;.
+	* Returns all the user notification events where userId = &#63; and actionRequired = &#63; and archived = &#63;, optionally using the finder cache.
+	*
+	* @param userId the user ID
+	* @param actionRequired the action required
+	* @param archived the archived
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching user notification events
+	*/
+	public java.util.List<UserNotificationEvent> findByU_A_A(long userId,
+		boolean actionRequired, boolean archived, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the user notification events where userId = &#63; and actionRequired = &#63; and archived = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1220,7 +1671,26 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 		boolean actionRequired, boolean archived, int start, int end);
 
 	/**
-	* Returns an ordered range of all the user notification events where userId = &#63; and actionRequired = &#63; and archived = &#63;.
+	* Returns a range of all the user notification events where userId = &#63; and actionRequired = &#63; and archived = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param userId the user ID
+	* @param actionRequired the action required
+	* @param archived the archived
+	* @param start the lower bound of the range of user notification events
+	* @param end the upper bound of the range of user notification events (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching user notification events
+	*/
+	public java.util.List<UserNotificationEvent> findByU_A_A(long userId,
+		boolean actionRequired, boolean archived, int start, int end,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the user notification events where userId = &#63; and actionRequired = &#63; and archived = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1237,6 +1707,27 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 	public java.util.List<UserNotificationEvent> findByU_A_A(long userId,
 		boolean actionRequired, boolean archived, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<UserNotificationEvent> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the user notification events where userId = &#63; and actionRequired = &#63; and archived = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param userId the user ID
+	* @param actionRequired the action required
+	* @param archived the archived
+	* @param start the lower bound of the range of user notification events
+	* @param end the upper bound of the range of user notification events (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching user notification events
+	*/
+	public java.util.List<UserNotificationEvent> findByU_A_A(long userId,
+		boolean actionRequired, boolean archived, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<UserNotificationEvent> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first user notification event in the ordered set where userId = &#63; and actionRequired = &#63; and archived = &#63;.
@@ -1333,7 +1824,7 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 		boolean archived);
 
 	/**
-	* Returns all the user notification events where userId = &#63; and deliveryType = &#63; and delivered = &#63; and actionRequired = &#63;.
+	* Returns all the user notification events where userId = &#63; and deliveryType = &#63; and delivered = &#63; and actionRequired = &#63;. Uses the finder cache.
 	*
 	* @param userId the user ID
 	* @param deliveryType the delivery type
@@ -1345,7 +1836,21 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 		int deliveryType, boolean delivered, boolean actionRequired);
 
 	/**
-	* Returns a range of all the user notification events where userId = &#63; and deliveryType = &#63; and delivered = &#63; and actionRequired = &#63;.
+	* Returns all the user notification events where userId = &#63; and deliveryType = &#63; and delivered = &#63; and actionRequired = &#63;, optionally using the finder cache.
+	*
+	* @param userId the user ID
+	* @param deliveryType the delivery type
+	* @param delivered the delivered
+	* @param actionRequired the action required
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching user notification events
+	*/
+	public java.util.List<UserNotificationEvent> findByU_DT_D_A(long userId,
+		int deliveryType, boolean delivered, boolean actionRequired,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the user notification events where userId = &#63; and deliveryType = &#63; and delivered = &#63; and actionRequired = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1364,7 +1869,27 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 		int end);
 
 	/**
-	* Returns an ordered range of all the user notification events where userId = &#63; and deliveryType = &#63; and delivered = &#63; and actionRequired = &#63;.
+	* Returns a range of all the user notification events where userId = &#63; and deliveryType = &#63; and delivered = &#63; and actionRequired = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param userId the user ID
+	* @param deliveryType the delivery type
+	* @param delivered the delivered
+	* @param actionRequired the action required
+	* @param start the lower bound of the range of user notification events
+	* @param end the upper bound of the range of user notification events (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching user notification events
+	*/
+	public java.util.List<UserNotificationEvent> findByU_DT_D_A(long userId,
+		int deliveryType, boolean delivered, boolean actionRequired, int start,
+		int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the user notification events where userId = &#63; and deliveryType = &#63; and delivered = &#63; and actionRequired = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1383,6 +1908,29 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 		int deliveryType, boolean delivered, boolean actionRequired, int start,
 		int end,
 		com.liferay.portal.kernel.util.OrderByComparator<UserNotificationEvent> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the user notification events where userId = &#63; and deliveryType = &#63; and delivered = &#63; and actionRequired = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param userId the user ID
+	* @param deliveryType the delivery type
+	* @param delivered the delivered
+	* @param actionRequired the action required
+	* @param start the lower bound of the range of user notification events
+	* @param end the upper bound of the range of user notification events (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching user notification events
+	*/
+	public java.util.List<UserNotificationEvent> findByU_DT_D_A(long userId,
+		int deliveryType, boolean delivered, boolean actionRequired, int start,
+		int end,
+		com.liferay.portal.kernel.util.OrderByComparator<UserNotificationEvent> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first user notification event in the ordered set where userId = &#63; and deliveryType = &#63; and delivered = &#63; and actionRequired = &#63;.
@@ -1486,7 +2034,7 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 		boolean delivered, boolean actionRequired);
 
 	/**
-	* Returns all the user notification events where userId = &#63; and deliveryType = &#63; and actionRequired = &#63; and archived = &#63;.
+	* Returns all the user notification events where userId = &#63; and deliveryType = &#63; and actionRequired = &#63; and archived = &#63;. Uses the finder cache.
 	*
 	* @param userId the user ID
 	* @param deliveryType the delivery type
@@ -1498,7 +2046,21 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 		int deliveryType, boolean actionRequired, boolean archived);
 
 	/**
-	* Returns a range of all the user notification events where userId = &#63; and deliveryType = &#63; and actionRequired = &#63; and archived = &#63;.
+	* Returns all the user notification events where userId = &#63; and deliveryType = &#63; and actionRequired = &#63; and archived = &#63;, optionally using the finder cache.
+	*
+	* @param userId the user ID
+	* @param deliveryType the delivery type
+	* @param actionRequired the action required
+	* @param archived the archived
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching user notification events
+	*/
+	public java.util.List<UserNotificationEvent> findByU_DT_A_A(long userId,
+		int deliveryType, boolean actionRequired, boolean archived,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the user notification events where userId = &#63; and deliveryType = &#63; and actionRequired = &#63; and archived = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1517,7 +2079,27 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 		int end);
 
 	/**
-	* Returns an ordered range of all the user notification events where userId = &#63; and deliveryType = &#63; and actionRequired = &#63; and archived = &#63;.
+	* Returns a range of all the user notification events where userId = &#63; and deliveryType = &#63; and actionRequired = &#63; and archived = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param userId the user ID
+	* @param deliveryType the delivery type
+	* @param actionRequired the action required
+	* @param archived the archived
+	* @param start the lower bound of the range of user notification events
+	* @param end the upper bound of the range of user notification events (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching user notification events
+	*/
+	public java.util.List<UserNotificationEvent> findByU_DT_A_A(long userId,
+		int deliveryType, boolean actionRequired, boolean archived, int start,
+		int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the user notification events where userId = &#63; and deliveryType = &#63; and actionRequired = &#63; and archived = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1536,6 +2118,29 @@ public interface UserNotificationEventPersistence extends BasePersistence<UserNo
 		int deliveryType, boolean actionRequired, boolean archived, int start,
 		int end,
 		com.liferay.portal.kernel.util.OrderByComparator<UserNotificationEvent> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the user notification events where userId = &#63; and deliveryType = &#63; and actionRequired = &#63; and archived = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param userId the user ID
+	* @param deliveryType the delivery type
+	* @param actionRequired the action required
+	* @param archived the archived
+	* @param start the lower bound of the range of user notification events
+	* @param end the upper bound of the range of user notification events (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching user notification events
+	*/
+	public java.util.List<UserNotificationEvent> findByU_DT_A_A(long userId,
+		int deliveryType, boolean actionRequired, boolean archived, int start,
+		int end,
+		com.liferay.portal.kernel.util.OrderByComparator<UserNotificationEvent> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first user notification event in the ordered set where userId = &#63; and deliveryType = &#63; and actionRequired = &#63; and archived = &#63;.

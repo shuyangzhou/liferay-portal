@@ -110,7 +110,7 @@ public class SCLicenseUtil {
 	}
 
 	/**
-	* Returns all the s c licenses where active = &#63;.
+	* Returns all the s c licenses where active = &#63;. Uses the finder cache.
 	*
 	* @param active the active
 	* @return the matching s c licenses
@@ -120,7 +120,19 @@ public class SCLicenseUtil {
 	}
 
 	/**
-	* Returns a range of all the s c licenses where active = &#63;.
+	* Returns all the s c licenses where active = &#63;, optionally using the finder cache.
+	*
+	* @param active the active
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching s c licenses
+	*/
+	public static List<SCLicense> findByActive(boolean active,
+		boolean retrieveFromCache) {
+		return getPersistence().findByActive(active, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the s c licenses where active = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SCLicenseModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -137,7 +149,26 @@ public class SCLicenseUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the s c licenses where active = &#63;.
+	* Returns a range of all the s c licenses where active = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SCLicenseModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param active the active
+	* @param start the lower bound of the range of s c licenses
+	* @param end the upper bound of the range of s c licenses (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching s c licenses
+	*/
+	public static List<SCLicense> findByActive(boolean active, int start,
+		int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByActive(active, start, end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the s c licenses where active = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SCLicenseModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -153,6 +184,28 @@ public class SCLicenseUtil {
 		int end, OrderByComparator<SCLicense> orderByComparator) {
 		return getPersistence()
 				   .findByActive(active, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the s c licenses where active = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SCLicenseModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param active the active
+	* @param start the lower bound of the range of s c licenses
+	* @param end the upper bound of the range of s c licenses (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching s c licenses
+	*/
+	public static List<SCLicense> findByActive(boolean active, int start,
+		int end, OrderByComparator<SCLicense> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByActive(active, start, end, orderByComparator,
+			retrieveFromCache);
 	}
 
 	/**
@@ -317,7 +370,7 @@ public class SCLicenseUtil {
 	}
 
 	/**
-	* Returns all the s c licenses where active = &#63; and recommended = &#63;.
+	* Returns all the s c licenses where active = &#63; and recommended = &#63;. Uses the finder cache.
 	*
 	* @param active the active
 	* @param recommended the recommended
@@ -328,7 +381,20 @@ public class SCLicenseUtil {
 	}
 
 	/**
-	* Returns a range of all the s c licenses where active = &#63; and recommended = &#63;.
+	* Returns all the s c licenses where active = &#63; and recommended = &#63;, optionally using the finder cache.
+	*
+	* @param active the active
+	* @param recommended the recommended
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching s c licenses
+	*/
+	public static List<SCLicense> findByA_R(boolean active,
+		boolean recommended, boolean retrieveFromCache) {
+		return getPersistence().findByA_R(active, recommended, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the s c licenses where active = &#63; and recommended = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SCLicenseModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -346,7 +412,27 @@ public class SCLicenseUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the s c licenses where active = &#63; and recommended = &#63;.
+	* Returns a range of all the s c licenses where active = &#63; and recommended = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SCLicenseModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param active the active
+	* @param recommended the recommended
+	* @param start the lower bound of the range of s c licenses
+	* @param end the upper bound of the range of s c licenses (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching s c licenses
+	*/
+	public static List<SCLicense> findByA_R(boolean active,
+		boolean recommended, int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByA_R(active, recommended, start, end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the s c licenses where active = &#63; and recommended = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SCLicenseModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -364,6 +450,30 @@ public class SCLicenseUtil {
 		OrderByComparator<SCLicense> orderByComparator) {
 		return getPersistence()
 				   .findByA_R(active, recommended, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the s c licenses where active = &#63; and recommended = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SCLicenseModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param active the active
+	* @param recommended the recommended
+	* @param start the lower bound of the range of s c licenses
+	* @param end the upper bound of the range of s c licenses (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching s c licenses
+	*/
+	public static List<SCLicense> findByA_R(boolean active,
+		boolean recommended, int start, int end,
+		OrderByComparator<SCLicense> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByA_R(active, recommended, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**

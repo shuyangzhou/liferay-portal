@@ -208,13 +208,13 @@ public class LockLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.lock.model.Lock getLock(
-		java.lang.String className, java.lang.String key)
+		java.lang.String className, long key)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getLock(className, key);
 	}
 
 	public static com.liferay.portal.lock.model.Lock getLock(
-		java.lang.String className, long key)
+		java.lang.String className, java.lang.String key)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getLock(className, key);
 	}
@@ -286,12 +286,12 @@ public class LockLocalServiceUtil {
 		return getService().hasLock(userId, className, key);
 	}
 
-	public static boolean isLocked(java.lang.String className,
-		java.lang.String key) {
+	public static boolean isLocked(java.lang.String className, long key) {
 		return getService().isLocked(className, key);
 	}
 
-	public static boolean isLocked(java.lang.String className, long key) {
+	public static boolean isLocked(java.lang.String className,
+		java.lang.String key) {
 		return getService().isLocked(className, key);
 	}
 
@@ -339,11 +339,11 @@ public class LockLocalServiceUtil {
 		getService().setBeanIdentifier(beanIdentifier);
 	}
 
-	public static void unlock(java.lang.String className, long key) {
+	public static void unlock(java.lang.String className, java.lang.String key) {
 		getService().unlock(className, key);
 	}
 
-	public static void unlock(java.lang.String className, java.lang.String key) {
+	public static void unlock(java.lang.String className, long key) {
 		getService().unlock(className, key);
 	}
 

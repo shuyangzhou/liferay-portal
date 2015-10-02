@@ -41,7 +41,7 @@ public interface DLFileRankPersistence extends BasePersistence<DLFileRank> {
 	 */
 
 	/**
-	* Returns all the document library file ranks where userId = &#63;.
+	* Returns all the document library file ranks where userId = &#63;. Uses the finder cache.
 	*
 	* @param userId the user ID
 	* @return the matching document library file ranks
@@ -49,7 +49,17 @@ public interface DLFileRankPersistence extends BasePersistence<DLFileRank> {
 	public java.util.List<DLFileRank> findByUserId(long userId);
 
 	/**
-	* Returns a range of all the document library file ranks where userId = &#63;.
+	* Returns all the document library file ranks where userId = &#63;, optionally using the finder cache.
+	*
+	* @param userId the user ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching document library file ranks
+	*/
+	public java.util.List<DLFileRank> findByUserId(long userId,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the document library file ranks where userId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileRankModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -64,7 +74,23 @@ public interface DLFileRankPersistence extends BasePersistence<DLFileRank> {
 		int end);
 
 	/**
-	* Returns an ordered range of all the document library file ranks where userId = &#63;.
+	* Returns a range of all the document library file ranks where userId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileRankModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param userId the user ID
+	* @param start the lower bound of the range of document library file ranks
+	* @param end the upper bound of the range of document library file ranks (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching document library file ranks
+	*/
+	public java.util.List<DLFileRank> findByUserId(long userId, int start,
+		int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the document library file ranks where userId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileRankModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -79,6 +105,25 @@ public interface DLFileRankPersistence extends BasePersistence<DLFileRank> {
 	public java.util.List<DLFileRank> findByUserId(long userId, int start,
 		int end,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFileRank> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the document library file ranks where userId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileRankModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param userId the user ID
+	* @param start the lower bound of the range of document library file ranks
+	* @param end the upper bound of the range of document library file ranks (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching document library file ranks
+	*/
+	public java.util.List<DLFileRank> findByUserId(long userId, int start,
+		int end,
+		com.liferay.portal.kernel.util.OrderByComparator<DLFileRank> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first document library file rank in the ordered set where userId = &#63;.
@@ -153,7 +198,7 @@ public interface DLFileRankPersistence extends BasePersistence<DLFileRank> {
 	public int countByUserId(long userId);
 
 	/**
-	* Returns all the document library file ranks where fileEntryId = &#63;.
+	* Returns all the document library file ranks where fileEntryId = &#63;. Uses the finder cache.
 	*
 	* @param fileEntryId the file entry ID
 	* @return the matching document library file ranks
@@ -161,7 +206,17 @@ public interface DLFileRankPersistence extends BasePersistence<DLFileRank> {
 	public java.util.List<DLFileRank> findByFileEntryId(long fileEntryId);
 
 	/**
-	* Returns a range of all the document library file ranks where fileEntryId = &#63;.
+	* Returns all the document library file ranks where fileEntryId = &#63;, optionally using the finder cache.
+	*
+	* @param fileEntryId the file entry ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching document library file ranks
+	*/
+	public java.util.List<DLFileRank> findByFileEntryId(long fileEntryId,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the document library file ranks where fileEntryId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileRankModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -176,7 +231,23 @@ public interface DLFileRankPersistence extends BasePersistence<DLFileRank> {
 		int start, int end);
 
 	/**
-	* Returns an ordered range of all the document library file ranks where fileEntryId = &#63;.
+	* Returns a range of all the document library file ranks where fileEntryId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileRankModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param fileEntryId the file entry ID
+	* @param start the lower bound of the range of document library file ranks
+	* @param end the upper bound of the range of document library file ranks (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching document library file ranks
+	*/
+	public java.util.List<DLFileRank> findByFileEntryId(long fileEntryId,
+		int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the document library file ranks where fileEntryId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileRankModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -191,6 +262,25 @@ public interface DLFileRankPersistence extends BasePersistence<DLFileRank> {
 	public java.util.List<DLFileRank> findByFileEntryId(long fileEntryId,
 		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFileRank> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the document library file ranks where fileEntryId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileRankModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param fileEntryId the file entry ID
+	* @param start the lower bound of the range of document library file ranks
+	* @param end the upper bound of the range of document library file ranks (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching document library file ranks
+	*/
+	public java.util.List<DLFileRank> findByFileEntryId(long fileEntryId,
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<DLFileRank> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first document library file rank in the ordered set where fileEntryId = &#63;.
@@ -266,7 +356,7 @@ public interface DLFileRankPersistence extends BasePersistence<DLFileRank> {
 	public int countByFileEntryId(long fileEntryId);
 
 	/**
-	* Returns all the document library file ranks where groupId = &#63; and userId = &#63;.
+	* Returns all the document library file ranks where groupId = &#63; and userId = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param userId the user ID
@@ -275,7 +365,18 @@ public interface DLFileRankPersistence extends BasePersistence<DLFileRank> {
 	public java.util.List<DLFileRank> findByG_U(long groupId, long userId);
 
 	/**
-	* Returns a range of all the document library file ranks where groupId = &#63; and userId = &#63;.
+	* Returns all the document library file ranks where groupId = &#63; and userId = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param userId the user ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching document library file ranks
+	*/
+	public java.util.List<DLFileRank> findByG_U(long groupId, long userId,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the document library file ranks where groupId = &#63; and userId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileRankModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -291,7 +392,24 @@ public interface DLFileRankPersistence extends BasePersistence<DLFileRank> {
 		int start, int end);
 
 	/**
-	* Returns an ordered range of all the document library file ranks where groupId = &#63; and userId = &#63;.
+	* Returns a range of all the document library file ranks where groupId = &#63; and userId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileRankModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param userId the user ID
+	* @param start the lower bound of the range of document library file ranks
+	* @param end the upper bound of the range of document library file ranks (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching document library file ranks
+	*/
+	public java.util.List<DLFileRank> findByG_U(long groupId, long userId,
+		int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the document library file ranks where groupId = &#63; and userId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileRankModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -307,6 +425,26 @@ public interface DLFileRankPersistence extends BasePersistence<DLFileRank> {
 	public java.util.List<DLFileRank> findByG_U(long groupId, long userId,
 		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFileRank> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the document library file ranks where groupId = &#63; and userId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileRankModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param userId the user ID
+	* @param start the lower bound of the range of document library file ranks
+	* @param end the upper bound of the range of document library file ranks (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching document library file ranks
+	*/
+	public java.util.List<DLFileRank> findByG_U(long groupId, long userId,
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<DLFileRank> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first document library file rank in the ordered set where groupId = &#63; and userId = &#63;.
@@ -389,7 +527,7 @@ public interface DLFileRankPersistence extends BasePersistence<DLFileRank> {
 	public int countByG_U(long groupId, long userId);
 
 	/**
-	* Returns all the document library file ranks where groupId = &#63; and userId = &#63; and active = &#63;.
+	* Returns all the document library file ranks where groupId = &#63; and userId = &#63; and active = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param userId the user ID
@@ -400,7 +538,19 @@ public interface DLFileRankPersistence extends BasePersistence<DLFileRank> {
 		boolean active);
 
 	/**
-	* Returns a range of all the document library file ranks where groupId = &#63; and userId = &#63; and active = &#63;.
+	* Returns all the document library file ranks where groupId = &#63; and userId = &#63; and active = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param userId the user ID
+	* @param active the active
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching document library file ranks
+	*/
+	public java.util.List<DLFileRank> findByG_U_A(long groupId, long userId,
+		boolean active, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the document library file ranks where groupId = &#63; and userId = &#63; and active = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileRankModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -417,7 +567,25 @@ public interface DLFileRankPersistence extends BasePersistence<DLFileRank> {
 		boolean active, int start, int end);
 
 	/**
-	* Returns an ordered range of all the document library file ranks where groupId = &#63; and userId = &#63; and active = &#63;.
+	* Returns a range of all the document library file ranks where groupId = &#63; and userId = &#63; and active = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileRankModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param userId the user ID
+	* @param active the active
+	* @param start the lower bound of the range of document library file ranks
+	* @param end the upper bound of the range of document library file ranks (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching document library file ranks
+	*/
+	public java.util.List<DLFileRank> findByG_U_A(long groupId, long userId,
+		boolean active, int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the document library file ranks where groupId = &#63; and userId = &#63; and active = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileRankModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -434,6 +602,27 @@ public interface DLFileRankPersistence extends BasePersistence<DLFileRank> {
 	public java.util.List<DLFileRank> findByG_U_A(long groupId, long userId,
 		boolean active, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFileRank> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the document library file ranks where groupId = &#63; and userId = &#63; and active = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileRankModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param userId the user ID
+	* @param active the active
+	* @param start the lower bound of the range of document library file ranks
+	* @param end the upper bound of the range of document library file ranks (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching document library file ranks
+	*/
+	public java.util.List<DLFileRank> findByG_U_A(long groupId, long userId,
+		boolean active, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<DLFileRank> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first document library file rank in the ordered set where groupId = &#63; and userId = &#63; and active = &#63;.

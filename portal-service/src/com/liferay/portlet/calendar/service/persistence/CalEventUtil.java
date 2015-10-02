@@ -111,7 +111,7 @@ public class CalEventUtil {
 	}
 
 	/**
-	* Returns all the cal events where uuid = &#63;.
+	* Returns all the cal events where uuid = &#63;. Uses the finder cache.
 	*
 	* @param uuid the uuid
 	* @return the matching cal events
@@ -121,7 +121,19 @@ public class CalEventUtil {
 	}
 
 	/**
-	* Returns a range of all the cal events where uuid = &#63;.
+	* Returns all the cal events where uuid = &#63;, optionally using the finder cache.
+	*
+	* @param uuid the uuid
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching cal events
+	*/
+	public static List<CalEvent> findByUuid(java.lang.String uuid,
+		boolean retrieveFromCache) {
+		return getPersistence().findByUuid(uuid, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the cal events where uuid = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -138,7 +150,25 @@ public class CalEventUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the cal events where uuid = &#63;.
+	* Returns a range of all the cal events where uuid = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param start the lower bound of the range of cal events
+	* @param end the upper bound of the range of cal events (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching cal events
+	*/
+	public static List<CalEvent> findByUuid(java.lang.String uuid, int start,
+		int end, boolean retrieveFromCache) {
+		return getPersistence().findByUuid(uuid, start, end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the cal events where uuid = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -153,6 +183,28 @@ public class CalEventUtil {
 	public static List<CalEvent> findByUuid(java.lang.String uuid, int start,
 		int end, OrderByComparator<CalEvent> orderByComparator) {
 		return getPersistence().findByUuid(uuid, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the cal events where uuid = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param start the lower bound of the range of cal events
+	* @param end the upper bound of the range of cal events (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching cal events
+	*/
+	public static List<CalEvent> findByUuid(java.lang.String uuid, int start,
+		int end, OrderByComparator<CalEvent> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByUuid(uuid, start, end, orderByComparator,
+			retrieveFromCache);
 	}
 
 	/**
@@ -303,7 +355,7 @@ public class CalEventUtil {
 	}
 
 	/**
-	* Returns all the cal events where uuid = &#63; and companyId = &#63;.
+	* Returns all the cal events where uuid = &#63; and companyId = &#63;. Uses the finder cache.
 	*
 	* @param uuid the uuid
 	* @param companyId the company ID
@@ -315,7 +367,20 @@ public class CalEventUtil {
 	}
 
 	/**
-	* Returns a range of all the cal events where uuid = &#63; and companyId = &#63;.
+	* Returns all the cal events where uuid = &#63; and companyId = &#63;, optionally using the finder cache.
+	*
+	* @param uuid the uuid
+	* @param companyId the company ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching cal events
+	*/
+	public static List<CalEvent> findByUuid_C(java.lang.String uuid,
+		long companyId, boolean retrieveFromCache) {
+		return getPersistence().findByUuid_C(uuid, companyId, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the cal events where uuid = &#63; and companyId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -333,7 +398,27 @@ public class CalEventUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the cal events where uuid = &#63; and companyId = &#63;.
+	* Returns a range of all the cal events where uuid = &#63; and companyId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param companyId the company ID
+	* @param start the lower bound of the range of cal events
+	* @param end the upper bound of the range of cal events (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching cal events
+	*/
+	public static List<CalEvent> findByUuid_C(java.lang.String uuid,
+		long companyId, int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByUuid_C(uuid, companyId, start, end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the cal events where uuid = &#63; and companyId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -351,6 +436,29 @@ public class CalEventUtil {
 		OrderByComparator<CalEvent> orderByComparator) {
 		return getPersistence()
 				   .findByUuid_C(uuid, companyId, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the cal events where uuid = &#63; and companyId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param companyId the company ID
+	* @param start the lower bound of the range of cal events
+	* @param end the upper bound of the range of cal events (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching cal events
+	*/
+	public static List<CalEvent> findByUuid_C(java.lang.String uuid,
+		long companyId, int start, int end,
+		OrderByComparator<CalEvent> orderByComparator, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByUuid_C(uuid, companyId, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -454,7 +562,7 @@ public class CalEventUtil {
 	}
 
 	/**
-	* Returns all the cal events where groupId = &#63;.
+	* Returns all the cal events where groupId = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @return the matching cal events
@@ -464,7 +572,19 @@ public class CalEventUtil {
 	}
 
 	/**
-	* Returns a range of all the cal events where groupId = &#63;.
+	* Returns all the cal events where groupId = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching cal events
+	*/
+	public static List<CalEvent> findByGroupId(long groupId,
+		boolean retrieveFromCache) {
+		return getPersistence().findByGroupId(groupId, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the cal events where groupId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -480,7 +600,26 @@ public class CalEventUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the cal events where groupId = &#63;.
+	* Returns a range of all the cal events where groupId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param start the lower bound of the range of cal events
+	* @param end the upper bound of the range of cal events (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching cal events
+	*/
+	public static List<CalEvent> findByGroupId(long groupId, int start,
+		int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByGroupId(groupId, start, end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the cal events where groupId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -496,6 +635,28 @@ public class CalEventUtil {
 		int end, OrderByComparator<CalEvent> orderByComparator) {
 		return getPersistence()
 				   .findByGroupId(groupId, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the cal events where groupId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param start the lower bound of the range of cal events
+	* @param end the upper bound of the range of cal events (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching cal events
+	*/
+	public static List<CalEvent> findByGroupId(long groupId, int start,
+		int end, OrderByComparator<CalEvent> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByGroupId(groupId, start, end, orderByComparator,
+			retrieveFromCache);
 	}
 
 	/**
@@ -587,7 +748,7 @@ public class CalEventUtil {
 	}
 
 	/**
-	* Returns all the cal events where companyId = &#63;.
+	* Returns all the cal events where companyId = &#63;. Uses the finder cache.
 	*
 	* @param companyId the company ID
 	* @return the matching cal events
@@ -597,7 +758,19 @@ public class CalEventUtil {
 	}
 
 	/**
-	* Returns a range of all the cal events where companyId = &#63;.
+	* Returns all the cal events where companyId = &#63;, optionally using the finder cache.
+	*
+	* @param companyId the company ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching cal events
+	*/
+	public static List<CalEvent> findByCompanyId(long companyId,
+		boolean retrieveFromCache) {
+		return getPersistence().findByCompanyId(companyId, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the cal events where companyId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -614,7 +787,26 @@ public class CalEventUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the cal events where companyId = &#63;.
+	* Returns a range of all the cal events where companyId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param companyId the company ID
+	* @param start the lower bound of the range of cal events
+	* @param end the upper bound of the range of cal events (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching cal events
+	*/
+	public static List<CalEvent> findByCompanyId(long companyId, int start,
+		int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByCompanyId(companyId, start, end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the cal events where companyId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -630,6 +822,28 @@ public class CalEventUtil {
 		int end, OrderByComparator<CalEvent> orderByComparator) {
 		return getPersistence()
 				   .findByCompanyId(companyId, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the cal events where companyId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param companyId the company ID
+	* @param start the lower bound of the range of cal events
+	* @param end the upper bound of the range of cal events (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching cal events
+	*/
+	public static List<CalEvent> findByCompanyId(long companyId, int start,
+		int end, OrderByComparator<CalEvent> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByCompanyId(companyId, start, end, orderByComparator,
+			retrieveFromCache);
 	}
 
 	/**
@@ -725,7 +939,7 @@ public class CalEventUtil {
 	}
 
 	/**
-	* Returns all the cal events where remindBy &ne; &#63;.
+	* Returns all the cal events where remindBy &ne; &#63;. Uses the finder cache.
 	*
 	* @param remindBy the remind by
 	* @return the matching cal events
@@ -735,7 +949,19 @@ public class CalEventUtil {
 	}
 
 	/**
-	* Returns a range of all the cal events where remindBy &ne; &#63;.
+	* Returns all the cal events where remindBy &ne; &#63;, optionally using the finder cache.
+	*
+	* @param remindBy the remind by
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching cal events
+	*/
+	public static List<CalEvent> findByNotRemindBy(int remindBy,
+		boolean retrieveFromCache) {
+		return getPersistence().findByNotRemindBy(remindBy, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the cal events where remindBy &ne; &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -752,7 +978,26 @@ public class CalEventUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the cal events where remindBy &ne; &#63;.
+	* Returns a range of all the cal events where remindBy &ne; &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param remindBy the remind by
+	* @param start the lower bound of the range of cal events
+	* @param end the upper bound of the range of cal events (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching cal events
+	*/
+	public static List<CalEvent> findByNotRemindBy(int remindBy, int start,
+		int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByNotRemindBy(remindBy, start, end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the cal events where remindBy &ne; &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -768,6 +1013,28 @@ public class CalEventUtil {
 		int end, OrderByComparator<CalEvent> orderByComparator) {
 		return getPersistence()
 				   .findByNotRemindBy(remindBy, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the cal events where remindBy &ne; &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param remindBy the remind by
+	* @param start the lower bound of the range of cal events
+	* @param end the upper bound of the range of cal events (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching cal events
+	*/
+	public static List<CalEvent> findByNotRemindBy(int remindBy, int start,
+		int end, OrderByComparator<CalEvent> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByNotRemindBy(remindBy, start, end, orderByComparator,
+			retrieveFromCache);
 	}
 
 	/**
@@ -863,7 +1130,7 @@ public class CalEventUtil {
 	}
 
 	/**
-	* Returns all the cal events where groupId = &#63; and type = &#63;.
+	* Returns all the cal events where groupId = &#63; and type = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param type the type
@@ -874,7 +1141,20 @@ public class CalEventUtil {
 	}
 
 	/**
-	* Returns a range of all the cal events where groupId = &#63; and type = &#63;.
+	* Returns all the cal events where groupId = &#63; and type = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param type the type
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching cal events
+	*/
+	public static List<CalEvent> findByG_T(long groupId, java.lang.String type,
+		boolean retrieveFromCache) {
+		return getPersistence().findByG_T(groupId, type, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the cal events where groupId = &#63; and type = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -892,7 +1172,27 @@ public class CalEventUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the cal events where groupId = &#63; and type = &#63;.
+	* Returns a range of all the cal events where groupId = &#63; and type = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param type the type
+	* @param start the lower bound of the range of cal events
+	* @param end the upper bound of the range of cal events (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching cal events
+	*/
+	public static List<CalEvent> findByG_T(long groupId, java.lang.String type,
+		int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_T(groupId, type, start, end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the cal events where groupId = &#63; and type = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -909,6 +1209,29 @@ public class CalEventUtil {
 		int start, int end, OrderByComparator<CalEvent> orderByComparator) {
 		return getPersistence()
 				   .findByG_T(groupId, type, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the cal events where groupId = &#63; and type = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param type the type
+	* @param start the lower bound of the range of cal events
+	* @param end the upper bound of the range of cal events (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching cal events
+	*/
+	public static List<CalEvent> findByG_T(long groupId, java.lang.String type,
+		int start, int end, OrderByComparator<CalEvent> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_T(groupId, type, start, end, orderByComparator,
+			retrieveFromCache);
 	}
 
 	/**
@@ -987,7 +1310,7 @@ public class CalEventUtil {
 	}
 
 	/**
-	* Returns all the cal events where groupId = &#63; and type = any &#63;.
+	* Returns all the cal events where groupId = &#63; and type = any &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1003,7 +1326,24 @@ public class CalEventUtil {
 	}
 
 	/**
-	* Returns a range of all the cal events where groupId = &#63; and type = any &#63;.
+	* Returns all the cal events where groupId = &#63; and type = any &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param types the types
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching cal events
+	*/
+	public static List<CalEvent> findByG_T(long groupId,
+		java.lang.String[] types, boolean retrieveFromCache) {
+		return getPersistence().findByG_T(groupId, types, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the cal events where groupId = &#63; and type = any &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1021,7 +1361,7 @@ public class CalEventUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the cal events where groupId = &#63; and type = any &#63;.
+	* Returns an ordered range of all the cal events where groupId = &#63; and type = any &#63;, optionally using the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1029,6 +1369,26 @@ public class CalEventUtil {
 	*
 	* @param groupId the group ID
 	* @param types the types
+	* @param start the lower bound of the range of cal events
+	* @param end the upper bound of the range of cal events (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching cal events
+	*/
+	public static List<CalEvent> findByG_T(long groupId,
+		java.lang.String[] types, int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_T(groupId, types, start, end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the cal events where groupId = &#63; and type = &#63;. Uses the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param type the type
 	* @param start the lower bound of the range of cal events
 	* @param end the upper bound of the range of cal events (not inclusive)
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
@@ -1039,6 +1399,29 @@ public class CalEventUtil {
 		OrderByComparator<CalEvent> orderByComparator) {
 		return getPersistence()
 				   .findByG_T(groupId, types, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the cal events where groupId = &#63; and type = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param type the type
+	* @param start the lower bound of the range of cal events
+	* @param end the upper bound of the range of cal events (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching cal events
+	*/
+	public static List<CalEvent> findByG_T(long groupId,
+		java.lang.String[] types, int start, int end,
+		OrderByComparator<CalEvent> orderByComparator, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_T(groupId, types, start, end, orderByComparator,
+			retrieveFromCache);
 	}
 
 	/**
@@ -1074,7 +1457,7 @@ public class CalEventUtil {
 	}
 
 	/**
-	* Returns all the cal events where groupId = &#63; and repeating = &#63;.
+	* Returns all the cal events where groupId = &#63; and repeating = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param repeating the repeating
@@ -1085,7 +1468,20 @@ public class CalEventUtil {
 	}
 
 	/**
-	* Returns a range of all the cal events where groupId = &#63; and repeating = &#63;.
+	* Returns all the cal events where groupId = &#63; and repeating = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param repeating the repeating
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching cal events
+	*/
+	public static List<CalEvent> findByG_R(long groupId, boolean repeating,
+		boolean retrieveFromCache) {
+		return getPersistence().findByG_R(groupId, repeating, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the cal events where groupId = &#63; and repeating = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1103,7 +1499,27 @@ public class CalEventUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the cal events where groupId = &#63; and repeating = &#63;.
+	* Returns a range of all the cal events where groupId = &#63; and repeating = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param repeating the repeating
+	* @param start the lower bound of the range of cal events
+	* @param end the upper bound of the range of cal events (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching cal events
+	*/
+	public static List<CalEvent> findByG_R(long groupId, boolean repeating,
+		int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_R(groupId, repeating, start, end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the cal events where groupId = &#63; and repeating = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1120,6 +1536,29 @@ public class CalEventUtil {
 		int start, int end, OrderByComparator<CalEvent> orderByComparator) {
 		return getPersistence()
 				   .findByG_R(groupId, repeating, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the cal events where groupId = &#63; and repeating = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param repeating the repeating
+	* @param start the lower bound of the range of cal events
+	* @param end the upper bound of the range of cal events (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching cal events
+	*/
+	public static List<CalEvent> findByG_R(long groupId, boolean repeating,
+		int start, int end, OrderByComparator<CalEvent> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_R(groupId, repeating, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -1222,7 +1661,7 @@ public class CalEventUtil {
 	}
 
 	/**
-	* Returns all the cal events where groupId = &#63; and type = &#63; and repeating = &#63;.
+	* Returns all the cal events where groupId = &#63; and type = &#63; and repeating = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param type the type
@@ -1235,7 +1674,22 @@ public class CalEventUtil {
 	}
 
 	/**
-	* Returns a range of all the cal events where groupId = &#63; and type = &#63; and repeating = &#63;.
+	* Returns all the cal events where groupId = &#63; and type = &#63; and repeating = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param type the type
+	* @param repeating the repeating
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching cal events
+	*/
+	public static List<CalEvent> findByG_T_R(long groupId,
+		java.lang.String type, boolean repeating, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_T_R(groupId, type, repeating, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the cal events where groupId = &#63; and type = &#63; and repeating = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1254,7 +1708,30 @@ public class CalEventUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the cal events where groupId = &#63; and type = &#63; and repeating = &#63;.
+	* Returns a range of all the cal events where groupId = &#63; and type = &#63; and repeating = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param type the type
+	* @param repeating the repeating
+	* @param start the lower bound of the range of cal events
+	* @param end the upper bound of the range of cal events (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching cal events
+	*/
+	public static List<CalEvent> findByG_T_R(long groupId,
+		java.lang.String type, boolean repeating, int start, int end,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_T_R(groupId, type, repeating, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the cal events where groupId = &#63; and type = &#63; and repeating = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1274,6 +1751,30 @@ public class CalEventUtil {
 		return getPersistence()
 				   .findByG_T_R(groupId, type, repeating, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the cal events where groupId = &#63; and type = &#63; and repeating = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param type the type
+	* @param repeating the repeating
+	* @param start the lower bound of the range of cal events
+	* @param end the upper bound of the range of cal events (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching cal events
+	*/
+	public static List<CalEvent> findByG_T_R(long groupId,
+		java.lang.String type, boolean repeating, int start, int end,
+		OrderByComparator<CalEvent> orderByComparator, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_T_R(groupId, type, repeating, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -1368,7 +1869,7 @@ public class CalEventUtil {
 	}
 
 	/**
-	* Returns all the cal events where groupId = &#63; and type = any &#63; and repeating = &#63;.
+	* Returns all the cal events where groupId = &#63; and type = any &#63; and repeating = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1385,7 +1886,26 @@ public class CalEventUtil {
 	}
 
 	/**
-	* Returns a range of all the cal events where groupId = &#63; and type = any &#63; and repeating = &#63;.
+	* Returns all the cal events where groupId = &#63; and type = any &#63; and repeating = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param types the types
+	* @param repeating the repeating
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching cal events
+	*/
+	public static List<CalEvent> findByG_T_R(long groupId,
+		java.lang.String[] types, boolean repeating, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_T_R(groupId, types, repeating, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the cal events where groupId = &#63; and type = any &#63; and repeating = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1405,7 +1925,7 @@ public class CalEventUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the cal events where groupId = &#63; and type = any &#63; and repeating = &#63;.
+	* Returns an ordered range of all the cal events where groupId = &#63; and type = any &#63; and repeating = &#63;, optionally using the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1413,6 +1933,29 @@ public class CalEventUtil {
 	*
 	* @param groupId the group ID
 	* @param types the types
+	* @param repeating the repeating
+	* @param start the lower bound of the range of cal events
+	* @param end the upper bound of the range of cal events (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching cal events
+	*/
+	public static List<CalEvent> findByG_T_R(long groupId,
+		java.lang.String[] types, boolean repeating, int start, int end,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_T_R(groupId, types, repeating, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the cal events where groupId = &#63; and type = &#63; and repeating = &#63;. Uses the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param type the type
 	* @param repeating the repeating
 	* @param start the lower bound of the range of cal events
 	* @param end the upper bound of the range of cal events (not inclusive)
@@ -1425,6 +1968,30 @@ public class CalEventUtil {
 		return getPersistence()
 				   .findByG_T_R(groupId, types, repeating, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the cal events where groupId = &#63; and type = &#63; and repeating = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param type the type
+	* @param repeating the repeating
+	* @param start the lower bound of the range of cal events
+	* @param end the upper bound of the range of cal events (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching cal events
+	*/
+	public static List<CalEvent> findByG_T_R(long groupId,
+		java.lang.String[] types, boolean repeating, int start, int end,
+		OrderByComparator<CalEvent> orderByComparator, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_T_R(groupId, types, repeating, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**

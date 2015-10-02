@@ -113,7 +113,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns all the journal articles where uuid = &#63;.
+	* Returns all the journal articles where uuid = &#63;. Uses the finder cache.
 	*
 	* @param uuid the uuid
 	* @return the matching journal articles
@@ -123,7 +123,19 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns a range of all the journal articles where uuid = &#63;.
+	* Returns all the journal articles where uuid = &#63;, optionally using the finder cache.
+	*
+	* @param uuid the uuid
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching journal articles
+	*/
+	public static List<JournalArticle> findByUuid(java.lang.String uuid,
+		boolean retrieveFromCache) {
+		return getPersistence().findByUuid(uuid, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the journal articles where uuid = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -140,7 +152,25 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the journal articles where uuid = &#63;.
+	* Returns a range of all the journal articles where uuid = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching journal articles
+	*/
+	public static List<JournalArticle> findByUuid(java.lang.String uuid,
+		int start, int end, boolean retrieveFromCache) {
+		return getPersistence().findByUuid(uuid, start, end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where uuid = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -155,6 +185,29 @@ public class JournalArticleUtil {
 	public static List<JournalArticle> findByUuid(java.lang.String uuid,
 		int start, int end, OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence().findByUuid(uuid, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where uuid = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching journal articles
+	*/
+	public static List<JournalArticle> findByUuid(java.lang.String uuid,
+		int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByUuid(uuid, start, end, orderByComparator,
+			retrieveFromCache);
 	}
 
 	/**
@@ -309,7 +362,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns all the journal articles where uuid = &#63; and companyId = &#63;.
+	* Returns all the journal articles where uuid = &#63; and companyId = &#63;. Uses the finder cache.
 	*
 	* @param uuid the uuid
 	* @param companyId the company ID
@@ -321,7 +374,20 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns a range of all the journal articles where uuid = &#63; and companyId = &#63;.
+	* Returns all the journal articles where uuid = &#63; and companyId = &#63;, optionally using the finder cache.
+	*
+	* @param uuid the uuid
+	* @param companyId the company ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching journal articles
+	*/
+	public static List<JournalArticle> findByUuid_C(java.lang.String uuid,
+		long companyId, boolean retrieveFromCache) {
+		return getPersistence().findByUuid_C(uuid, companyId, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the journal articles where uuid = &#63; and companyId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -339,7 +405,27 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the journal articles where uuid = &#63; and companyId = &#63;.
+	* Returns a range of all the journal articles where uuid = &#63; and companyId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param companyId the company ID
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching journal articles
+	*/
+	public static List<JournalArticle> findByUuid_C(java.lang.String uuid,
+		long companyId, int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByUuid_C(uuid, companyId, start, end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where uuid = &#63; and companyId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -357,6 +443,30 @@ public class JournalArticleUtil {
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .findByUuid_C(uuid, companyId, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where uuid = &#63; and companyId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param companyId the company ID
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching journal articles
+	*/
+	public static List<JournalArticle> findByUuid_C(java.lang.String uuid,
+		long companyId, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByUuid_C(uuid, companyId, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -460,7 +570,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns all the journal articles where resourcePrimKey = &#63;.
+	* Returns all the journal articles where resourcePrimKey = &#63;. Uses the finder cache.
 	*
 	* @param resourcePrimKey the resource prim key
 	* @return the matching journal articles
@@ -471,7 +581,20 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns a range of all the journal articles where resourcePrimKey = &#63;.
+	* Returns all the journal articles where resourcePrimKey = &#63;, optionally using the finder cache.
+	*
+	* @param resourcePrimKey the resource prim key
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching journal articles
+	*/
+	public static List<JournalArticle> findByResourcePrimKey(
+		long resourcePrimKey, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByResourcePrimKey(resourcePrimKey, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the journal articles where resourcePrimKey = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -489,7 +612,27 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the journal articles where resourcePrimKey = &#63;.
+	* Returns a range of all the journal articles where resourcePrimKey = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param resourcePrimKey the resource prim key
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching journal articles
+	*/
+	public static List<JournalArticle> findByResourcePrimKey(
+		long resourcePrimKey, int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByResourcePrimKey(resourcePrimKey, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where resourcePrimKey = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -507,6 +650,29 @@ public class JournalArticleUtil {
 		return getPersistence()
 				   .findByResourcePrimKey(resourcePrimKey, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where resourcePrimKey = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param resourcePrimKey the resource prim key
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching journal articles
+	*/
+	public static List<JournalArticle> findByResourcePrimKey(
+		long resourcePrimKey, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByResourcePrimKey(resourcePrimKey, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -611,7 +777,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns all the journal articles where groupId = &#63;.
+	* Returns all the journal articles where groupId = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @return the matching journal articles
@@ -621,7 +787,19 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns a range of all the journal articles where groupId = &#63;.
+	* Returns all the journal articles where groupId = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching journal articles
+	*/
+	public static List<JournalArticle> findByGroupId(long groupId,
+		boolean retrieveFromCache) {
+		return getPersistence().findByGroupId(groupId, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the journal articles where groupId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -638,7 +816,26 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the journal articles where groupId = &#63;.
+	* Returns a range of all the journal articles where groupId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching journal articles
+	*/
+	public static List<JournalArticle> findByGroupId(long groupId, int start,
+		int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByGroupId(groupId, start, end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where groupId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -654,6 +851,28 @@ public class JournalArticleUtil {
 		int end, OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .findByGroupId(groupId, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where groupId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching journal articles
+	*/
+	public static List<JournalArticle> findByGroupId(long groupId, int start,
+		int end, OrderByComparator<JournalArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByGroupId(groupId, start, end, orderByComparator,
+			retrieveFromCache);
 	}
 
 	/**
@@ -817,7 +1036,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns all the journal articles where companyId = &#63;.
+	* Returns all the journal articles where companyId = &#63;. Uses the finder cache.
 	*
 	* @param companyId the company ID
 	* @return the matching journal articles
@@ -827,7 +1046,19 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns a range of all the journal articles where companyId = &#63;.
+	* Returns all the journal articles where companyId = &#63;, optionally using the finder cache.
+	*
+	* @param companyId the company ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching journal articles
+	*/
+	public static List<JournalArticle> findByCompanyId(long companyId,
+		boolean retrieveFromCache) {
+		return getPersistence().findByCompanyId(companyId, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the journal articles where companyId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -844,7 +1075,26 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the journal articles where companyId = &#63;.
+	* Returns a range of all the journal articles where companyId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param companyId the company ID
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching journal articles
+	*/
+	public static List<JournalArticle> findByCompanyId(long companyId,
+		int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByCompanyId(companyId, start, end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where companyId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -860,6 +1110,29 @@ public class JournalArticleUtil {
 		int start, int end, OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .findByCompanyId(companyId, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where companyId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param companyId the company ID
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching journal articles
+	*/
+	public static List<JournalArticle> findByCompanyId(long companyId,
+		int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByCompanyId(companyId, start, end, orderByComparator,
+			retrieveFromCache);
 	}
 
 	/**
@@ -954,7 +1227,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns all the journal articles where DDMStructureKey = &#63;.
+	* Returns all the journal articles where DDMStructureKey = &#63;. Uses the finder cache.
 	*
 	* @param DDMStructureKey the d d m structure key
 	* @return the matching journal articles
@@ -965,7 +1238,20 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns a range of all the journal articles where DDMStructureKey = &#63;.
+	* Returns all the journal articles where DDMStructureKey = &#63;, optionally using the finder cache.
+	*
+	* @param DDMStructureKey the d d m structure key
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching journal articles
+	*/
+	public static List<JournalArticle> findByDDMStructureKey(
+		java.lang.String DDMStructureKey, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByDDMStructureKey(DDMStructureKey, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the journal articles where DDMStructureKey = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -983,7 +1269,28 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the journal articles where DDMStructureKey = &#63;.
+	* Returns a range of all the journal articles where DDMStructureKey = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param DDMStructureKey the d d m structure key
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching journal articles
+	*/
+	public static List<JournalArticle> findByDDMStructureKey(
+		java.lang.String DDMStructureKey, int start, int end,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByDDMStructureKey(DDMStructureKey, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where DDMStructureKey = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1001,6 +1308,29 @@ public class JournalArticleUtil {
 		return getPersistence()
 				   .findByDDMStructureKey(DDMStructureKey, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where DDMStructureKey = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param DDMStructureKey the d d m structure key
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching journal articles
+	*/
+	public static List<JournalArticle> findByDDMStructureKey(
+		java.lang.String DDMStructureKey, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByDDMStructureKey(DDMStructureKey, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -1086,7 +1416,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns all the journal articles where DDMStructureKey = any &#63;.
+	* Returns all the journal articles where DDMStructureKey = any &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1101,7 +1431,24 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns a range of all the journal articles where DDMStructureKey = any &#63;.
+	* Returns all the journal articles where DDMStructureKey = any &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param DDMStructureKeies the d d m structure keies
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching journal articles
+	*/
+	public static List<JournalArticle> findByDDMStructureKey(
+		java.lang.String[] DDMStructureKeies, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByDDMStructureKey(DDMStructureKeies, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the journal articles where DDMStructureKey = any &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1119,13 +1466,34 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the journal articles where DDMStructureKey = any &#63;.
+	* Returns an ordered range of all the journal articles where DDMStructureKey = any &#63;, optionally using the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param DDMStructureKeies the d d m structure keies
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching journal articles
+	*/
+	public static List<JournalArticle> findByDDMStructureKey(
+		java.lang.String[] DDMStructureKeies, int start, int end,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByDDMStructureKey(DDMStructureKeies, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where DDMStructureKey = &#63;. Uses the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param DDMStructureKey the d d m structure key
 	* @param start the lower bound of the range of journal articles
 	* @param end the upper bound of the range of journal articles (not inclusive)
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
@@ -1137,6 +1505,29 @@ public class JournalArticleUtil {
 		return getPersistence()
 				   .findByDDMStructureKey(DDMStructureKeies, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where DDMStructureKey = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param DDMStructureKey the d d m structure key
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching journal articles
+	*/
+	public static List<JournalArticle> findByDDMStructureKey(
+		java.lang.String[] DDMStructureKeies, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByDDMStructureKey(DDMStructureKeies, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -1170,7 +1561,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns all the journal articles where DDMTemplateKey = &#63;.
+	* Returns all the journal articles where DDMTemplateKey = &#63;. Uses the finder cache.
 	*
 	* @param DDMTemplateKey the d d m template key
 	* @return the matching journal articles
@@ -1181,7 +1572,20 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns a range of all the journal articles where DDMTemplateKey = &#63;.
+	* Returns all the journal articles where DDMTemplateKey = &#63;, optionally using the finder cache.
+	*
+	* @param DDMTemplateKey the d d m template key
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching journal articles
+	*/
+	public static List<JournalArticle> findByDDMTemplateKey(
+		java.lang.String DDMTemplateKey, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByDDMTemplateKey(DDMTemplateKey, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the journal articles where DDMTemplateKey = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1198,7 +1602,28 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the journal articles where DDMTemplateKey = &#63;.
+	* Returns a range of all the journal articles where DDMTemplateKey = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param DDMTemplateKey the d d m template key
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching journal articles
+	*/
+	public static List<JournalArticle> findByDDMTemplateKey(
+		java.lang.String DDMTemplateKey, int start, int end,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByDDMTemplateKey(DDMTemplateKey, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where DDMTemplateKey = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1216,6 +1641,29 @@ public class JournalArticleUtil {
 		return getPersistence()
 				   .findByDDMTemplateKey(DDMTemplateKey, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where DDMTemplateKey = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param DDMTemplateKey the d d m template key
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching journal articles
+	*/
+	public static List<JournalArticle> findByDDMTemplateKey(
+		java.lang.String DDMTemplateKey, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByDDMTemplateKey(DDMTemplateKey, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -1317,7 +1765,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns all the journal articles where layoutUuid = &#63;.
+	* Returns all the journal articles where layoutUuid = &#63;. Uses the finder cache.
 	*
 	* @param layoutUuid the layout uuid
 	* @return the matching journal articles
@@ -1328,7 +1776,19 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns a range of all the journal articles where layoutUuid = &#63;.
+	* Returns all the journal articles where layoutUuid = &#63;, optionally using the finder cache.
+	*
+	* @param layoutUuid the layout uuid
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching journal articles
+	*/
+	public static List<JournalArticle> findByLayoutUuid(
+		java.lang.String layoutUuid, boolean retrieveFromCache) {
+		return getPersistence().findByLayoutUuid(layoutUuid, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the journal articles where layoutUuid = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1345,7 +1805,27 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the journal articles where layoutUuid = &#63;.
+	* Returns a range of all the journal articles where layoutUuid = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param layoutUuid the layout uuid
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching journal articles
+	*/
+	public static List<JournalArticle> findByLayoutUuid(
+		java.lang.String layoutUuid, int start, int end,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByLayoutUuid(layoutUuid, start, end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where layoutUuid = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1362,6 +1842,29 @@ public class JournalArticleUtil {
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .findByLayoutUuid(layoutUuid, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where layoutUuid = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param layoutUuid the layout uuid
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching journal articles
+	*/
+	public static List<JournalArticle> findByLayoutUuid(
+		java.lang.String layoutUuid, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByLayoutUuid(layoutUuid, start, end, orderByComparator,
+			retrieveFromCache);
 	}
 
 	/**
@@ -1462,7 +1965,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns all the journal articles where smallImageId = &#63;.
+	* Returns all the journal articles where smallImageId = &#63;. Uses the finder cache.
 	*
 	* @param smallImageId the small image ID
 	* @return the matching journal articles
@@ -1472,7 +1975,20 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns a range of all the journal articles where smallImageId = &#63;.
+	* Returns all the journal articles where smallImageId = &#63;, optionally using the finder cache.
+	*
+	* @param smallImageId the small image ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching journal articles
+	*/
+	public static List<JournalArticle> findBySmallImageId(long smallImageId,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findBySmallImageId(smallImageId, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the journal articles where smallImageId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1489,7 +2005,27 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the journal articles where smallImageId = &#63;.
+	* Returns a range of all the journal articles where smallImageId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param smallImageId the small image ID
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching journal articles
+	*/
+	public static List<JournalArticle> findBySmallImageId(long smallImageId,
+		int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findBySmallImageId(smallImageId, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where smallImageId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1506,6 +2042,29 @@ public class JournalArticleUtil {
 		return getPersistence()
 				   .findBySmallImageId(smallImageId, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where smallImageId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param smallImageId the small image ID
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching journal articles
+	*/
+	public static List<JournalArticle> findBySmallImageId(long smallImageId,
+		int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findBySmallImageId(smallImageId, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -1601,7 +2160,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns all the journal articles where resourcePrimKey = &#63; and indexable = &#63;.
+	* Returns all the journal articles where resourcePrimKey = &#63; and indexable = &#63;. Uses the finder cache.
 	*
 	* @param resourcePrimKey the resource prim key
 	* @param indexable the indexable
@@ -1613,7 +2172,21 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns a range of all the journal articles where resourcePrimKey = &#63; and indexable = &#63;.
+	* Returns all the journal articles where resourcePrimKey = &#63; and indexable = &#63;, optionally using the finder cache.
+	*
+	* @param resourcePrimKey the resource prim key
+	* @param indexable the indexable
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching journal articles
+	*/
+	public static List<JournalArticle> findByR_I(long resourcePrimKey,
+		boolean indexable, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByR_I(resourcePrimKey, indexable, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the journal articles where resourcePrimKey = &#63; and indexable = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1631,7 +2204,28 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the journal articles where resourcePrimKey = &#63; and indexable = &#63;.
+	* Returns a range of all the journal articles where resourcePrimKey = &#63; and indexable = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param resourcePrimKey the resource prim key
+	* @param indexable the indexable
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching journal articles
+	*/
+	public static List<JournalArticle> findByR_I(long resourcePrimKey,
+		boolean indexable, int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByR_I(resourcePrimKey, indexable, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where resourcePrimKey = &#63; and indexable = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1650,6 +2244,30 @@ public class JournalArticleUtil {
 		return getPersistence()
 				   .findByR_I(resourcePrimKey, indexable, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where resourcePrimKey = &#63; and indexable = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param resourcePrimKey the resource prim key
+	* @param indexable the indexable
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching journal articles
+	*/
+	public static List<JournalArticle> findByR_I(long resourcePrimKey,
+		boolean indexable, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByR_I(resourcePrimKey, indexable, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -1756,7 +2374,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns all the journal articles where resourcePrimKey = &#63; and status = &#63;.
+	* Returns all the journal articles where resourcePrimKey = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* @param resourcePrimKey the resource prim key
 	* @param status the status
@@ -1768,7 +2386,21 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns a range of all the journal articles where resourcePrimKey = &#63; and status = &#63;.
+	* Returns all the journal articles where resourcePrimKey = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* @param resourcePrimKey the resource prim key
+	* @param status the status
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching journal articles
+	*/
+	public static List<JournalArticle> findByR_ST(long resourcePrimKey,
+		int status, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByR_ST(resourcePrimKey, status, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the journal articles where resourcePrimKey = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1786,7 +2418,28 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the journal articles where resourcePrimKey = &#63; and status = &#63;.
+	* Returns a range of all the journal articles where resourcePrimKey = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param resourcePrimKey the resource prim key
+	* @param status the status
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching journal articles
+	*/
+	public static List<JournalArticle> findByR_ST(long resourcePrimKey,
+		int status, int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByR_ST(resourcePrimKey, status, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where resourcePrimKey = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1805,6 +2458,30 @@ public class JournalArticleUtil {
 		return getPersistence()
 				   .findByR_ST(resourcePrimKey, status, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where resourcePrimKey = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param resourcePrimKey the resource prim key
+	* @param status the status
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching journal articles
+	*/
+	public static List<JournalArticle> findByR_ST(long resourcePrimKey,
+		int status, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByR_ST(resourcePrimKey, status, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -1887,7 +2564,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns all the journal articles where resourcePrimKey = &#63; and status = any &#63;.
+	* Returns all the journal articles where resourcePrimKey = &#63; and status = any &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1903,7 +2580,25 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns a range of all the journal articles where resourcePrimKey = &#63; and status = any &#63;.
+	* Returns all the journal articles where resourcePrimKey = &#63; and status = any &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param resourcePrimKey the resource prim key
+	* @param statuses the statuses
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching journal articles
+	*/
+	public static List<JournalArticle> findByR_ST(long resourcePrimKey,
+		int[] statuses, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByR_ST(resourcePrimKey, statuses, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the journal articles where resourcePrimKey = &#63; and status = any &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1921,7 +2616,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the journal articles where resourcePrimKey = &#63; and status = any &#63;.
+	* Returns an ordered range of all the journal articles where resourcePrimKey = &#63; and status = any &#63;, optionally using the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1929,6 +2624,27 @@ public class JournalArticleUtil {
 	*
 	* @param resourcePrimKey the resource prim key
 	* @param statuses the statuses
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching journal articles
+	*/
+	public static List<JournalArticle> findByR_ST(long resourcePrimKey,
+		int[] statuses, int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByR_ST(resourcePrimKey, statuses, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where resourcePrimKey = &#63; and status = &#63;. Uses the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param resourcePrimKey the resource prim key
+	* @param status the status
 	* @param start the lower bound of the range of journal articles
 	* @param end the upper bound of the range of journal articles (not inclusive)
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
@@ -1940,6 +2656,30 @@ public class JournalArticleUtil {
 		return getPersistence()
 				   .findByR_ST(resourcePrimKey, statuses, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where resourcePrimKey = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param resourcePrimKey the resource prim key
+	* @param status the status
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching journal articles
+	*/
+	public static List<JournalArticle> findByR_ST(long resourcePrimKey,
+		int[] statuses, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByR_ST(resourcePrimKey, statuses, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -1975,7 +2715,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns all the journal articles where groupId = &#63; and userId = &#63;.
+	* Returns all the journal articles where groupId = &#63; and userId = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param userId the user ID
@@ -1986,7 +2726,20 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns a range of all the journal articles where groupId = &#63; and userId = &#63;.
+	* Returns all the journal articles where groupId = &#63; and userId = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param userId the user ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching journal articles
+	*/
+	public static List<JournalArticle> findByG_U(long groupId, long userId,
+		boolean retrieveFromCache) {
+		return getPersistence().findByG_U(groupId, userId, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the journal articles where groupId = &#63; and userId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -2004,7 +2757,27 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the journal articles where groupId = &#63; and userId = &#63;.
+	* Returns a range of all the journal articles where groupId = &#63; and userId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param userId the user ID
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching journal articles
+	*/
+	public static List<JournalArticle> findByG_U(long groupId, long userId,
+		int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_U(groupId, userId, start, end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where groupId = &#63; and userId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -2021,6 +2794,30 @@ public class JournalArticleUtil {
 		int start, int end, OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .findByG_U(groupId, userId, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where groupId = &#63; and userId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param userId the user ID
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching journal articles
+	*/
+	public static List<JournalArticle> findByG_U(long groupId, long userId,
+		int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_U(groupId, userId, start, end, orderByComparator,
+			retrieveFromCache);
 	}
 
 	/**
@@ -2203,7 +3000,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns all the journal articles where groupId = &#63; and folderId = &#63;.
+	* Returns all the journal articles where groupId = &#63; and folderId = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param folderId the folder ID
@@ -2214,7 +3011,20 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns a range of all the journal articles where groupId = &#63; and folderId = &#63;.
+	* Returns all the journal articles where groupId = &#63; and folderId = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param folderId the folder ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching journal articles
+	*/
+	public static List<JournalArticle> findByG_F(long groupId, long folderId,
+		boolean retrieveFromCache) {
+		return getPersistence().findByG_F(groupId, folderId, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the journal articles where groupId = &#63; and folderId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -2232,7 +3042,27 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the journal articles where groupId = &#63; and folderId = &#63;.
+	* Returns a range of all the journal articles where groupId = &#63; and folderId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param folderId the folder ID
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching journal articles
+	*/
+	public static List<JournalArticle> findByG_F(long groupId, long folderId,
+		int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_F(groupId, folderId, start, end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where groupId = &#63; and folderId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -2249,6 +3079,30 @@ public class JournalArticleUtil {
 		int start, int end, OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .findByG_F(groupId, folderId, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where groupId = &#63; and folderId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param folderId the folder ID
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching journal articles
+	*/
+	public static List<JournalArticle> findByG_F(long groupId, long folderId,
+		int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_F(groupId, folderId, start, end, orderByComparator,
+			retrieveFromCache);
 	}
 
 	/**
@@ -2453,7 +3307,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns all the journal articles where groupId = &#63; and folderId = any &#63;.
+	* Returns all the journal articles where groupId = &#63; and folderId = any &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -2468,7 +3322,24 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns a range of all the journal articles where groupId = &#63; and folderId = any &#63;.
+	* Returns all the journal articles where groupId = &#63; and folderId = any &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param folderIds the folder IDs
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching journal articles
+	*/
+	public static List<JournalArticle> findByG_F(long groupId,
+		long[] folderIds, boolean retrieveFromCache) {
+		return getPersistence().findByG_F(groupId, folderIds, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the journal articles where groupId = &#63; and folderId = any &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -2486,7 +3357,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the journal articles where groupId = &#63; and folderId = any &#63;.
+	* Returns an ordered range of all the journal articles where groupId = &#63; and folderId = any &#63;, optionally using the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -2494,6 +3365,26 @@ public class JournalArticleUtil {
 	*
 	* @param groupId the group ID
 	* @param folderIds the folder IDs
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching journal articles
+	*/
+	public static List<JournalArticle> findByG_F(long groupId,
+		long[] folderIds, int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_F(groupId, folderIds, start, end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where groupId = &#63; and folderId = &#63;. Uses the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param folderId the folder ID
 	* @param start the lower bound of the range of journal articles
 	* @param end the upper bound of the range of journal articles (not inclusive)
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
@@ -2504,6 +3395,30 @@ public class JournalArticleUtil {
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .findByG_F(groupId, folderIds, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where groupId = &#63; and folderId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param folderId the folder ID
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching journal articles
+	*/
+	public static List<JournalArticle> findByG_F(long groupId,
+		long[] folderIds, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_F(groupId, folderIds, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -2561,7 +3476,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns all the journal articles where groupId = &#63; and articleId = &#63;.
+	* Returns all the journal articles where groupId = &#63; and articleId = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param articleId the article ID
@@ -2573,7 +3488,20 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns a range of all the journal articles where groupId = &#63; and articleId = &#63;.
+	* Returns all the journal articles where groupId = &#63; and articleId = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param articleId the article ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching journal articles
+	*/
+	public static List<JournalArticle> findByG_A(long groupId,
+		java.lang.String articleId, boolean retrieveFromCache) {
+		return getPersistence().findByG_A(groupId, articleId, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the journal articles where groupId = &#63; and articleId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -2591,7 +3519,28 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the journal articles where groupId = &#63; and articleId = &#63;.
+	* Returns a range of all the journal articles where groupId = &#63; and articleId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param articleId the article ID
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching journal articles
+	*/
+	public static List<JournalArticle> findByG_A(long groupId,
+		java.lang.String articleId, int start, int end,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_A(groupId, articleId, start, end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where groupId = &#63; and articleId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -2609,6 +3558,30 @@ public class JournalArticleUtil {
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .findByG_A(groupId, articleId, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where groupId = &#63; and articleId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param articleId the article ID
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching journal articles
+	*/
+	public static List<JournalArticle> findByG_A(long groupId,
+		java.lang.String articleId, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_A(groupId, articleId, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -2798,7 +3771,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns all the journal articles where groupId = &#63; and urlTitle = &#63;.
+	* Returns all the journal articles where groupId = &#63; and urlTitle = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param urlTitle the url title
@@ -2810,7 +3783,20 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns a range of all the journal articles where groupId = &#63; and urlTitle = &#63;.
+	* Returns all the journal articles where groupId = &#63; and urlTitle = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param urlTitle the url title
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching journal articles
+	*/
+	public static List<JournalArticle> findByG_UT(long groupId,
+		java.lang.String urlTitle, boolean retrieveFromCache) {
+		return getPersistence().findByG_UT(groupId, urlTitle, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the journal articles where groupId = &#63; and urlTitle = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -2828,7 +3814,27 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the journal articles where groupId = &#63; and urlTitle = &#63;.
+	* Returns a range of all the journal articles where groupId = &#63; and urlTitle = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param urlTitle the url title
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching journal articles
+	*/
+	public static List<JournalArticle> findByG_UT(long groupId,
+		java.lang.String urlTitle, int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_UT(groupId, urlTitle, start, end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where groupId = &#63; and urlTitle = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -2846,6 +3852,30 @@ public class JournalArticleUtil {
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .findByG_UT(groupId, urlTitle, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where groupId = &#63; and urlTitle = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param urlTitle the url title
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching journal articles
+	*/
+	public static List<JournalArticle> findByG_UT(long groupId,
+		java.lang.String urlTitle, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_UT(groupId, urlTitle, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -3035,7 +4065,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns all the journal articles where groupId = &#63; and DDMStructureKey = &#63;.
+	* Returns all the journal articles where groupId = &#63; and DDMStructureKey = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param DDMStructureKey the d d m structure key
@@ -3047,7 +4077,21 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns a range of all the journal articles where groupId = &#63; and DDMStructureKey = &#63;.
+	* Returns all the journal articles where groupId = &#63; and DDMStructureKey = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param DDMStructureKey the d d m structure key
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching journal articles
+	*/
+	public static List<JournalArticle> findByG_DDMSK(long groupId,
+		java.lang.String DDMStructureKey, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_DDMSK(groupId, DDMStructureKey, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the journal articles where groupId = &#63; and DDMStructureKey = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -3066,7 +4110,29 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the journal articles where groupId = &#63; and DDMStructureKey = &#63;.
+	* Returns a range of all the journal articles where groupId = &#63; and DDMStructureKey = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param DDMStructureKey the d d m structure key
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching journal articles
+	*/
+	public static List<JournalArticle> findByG_DDMSK(long groupId,
+		java.lang.String DDMStructureKey, int start, int end,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_DDMSK(groupId, DDMStructureKey, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where groupId = &#63; and DDMStructureKey = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -3085,6 +4151,30 @@ public class JournalArticleUtil {
 		return getPersistence()
 				   .findByG_DDMSK(groupId, DDMStructureKey, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where groupId = &#63; and DDMStructureKey = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param DDMStructureKey the d d m structure key
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching journal articles
+	*/
+	public static List<JournalArticle> findByG_DDMSK(long groupId,
+		java.lang.String DDMStructureKey, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_DDMSK(groupId, DDMStructureKey, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -3282,7 +4372,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns all the journal articles where groupId = &#63; and DDMTemplateKey = &#63;.
+	* Returns all the journal articles where groupId = &#63; and DDMTemplateKey = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param DDMTemplateKey the d d m template key
@@ -3294,7 +4384,21 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns a range of all the journal articles where groupId = &#63; and DDMTemplateKey = &#63;.
+	* Returns all the journal articles where groupId = &#63; and DDMTemplateKey = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param DDMTemplateKey the d d m template key
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching journal articles
+	*/
+	public static List<JournalArticle> findByG_DDMTK(long groupId,
+		java.lang.String DDMTemplateKey, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_DDMTK(groupId, DDMTemplateKey, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the journal articles where groupId = &#63; and DDMTemplateKey = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -3313,7 +4417,29 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the journal articles where groupId = &#63; and DDMTemplateKey = &#63;.
+	* Returns a range of all the journal articles where groupId = &#63; and DDMTemplateKey = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param DDMTemplateKey the d d m template key
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching journal articles
+	*/
+	public static List<JournalArticle> findByG_DDMTK(long groupId,
+		java.lang.String DDMTemplateKey, int start, int end,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_DDMTK(groupId, DDMTemplateKey, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where groupId = &#63; and DDMTemplateKey = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -3332,6 +4458,30 @@ public class JournalArticleUtil {
 		return getPersistence()
 				   .findByG_DDMTK(groupId, DDMTemplateKey, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where groupId = &#63; and DDMTemplateKey = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param DDMTemplateKey the d d m template key
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching journal articles
+	*/
+	public static List<JournalArticle> findByG_DDMTK(long groupId,
+		java.lang.String DDMTemplateKey, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_DDMTK(groupId, DDMTemplateKey, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -3529,7 +4679,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns all the journal articles where groupId = &#63; and layoutUuid = &#63;.
+	* Returns all the journal articles where groupId = &#63; and layoutUuid = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param layoutUuid the layout uuid
@@ -3541,7 +4691,20 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns a range of all the journal articles where groupId = &#63; and layoutUuid = &#63;.
+	* Returns all the journal articles where groupId = &#63; and layoutUuid = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param layoutUuid the layout uuid
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching journal articles
+	*/
+	public static List<JournalArticle> findByG_L(long groupId,
+		java.lang.String layoutUuid, boolean retrieveFromCache) {
+		return getPersistence().findByG_L(groupId, layoutUuid, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the journal articles where groupId = &#63; and layoutUuid = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -3559,7 +4722,28 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the journal articles where groupId = &#63; and layoutUuid = &#63;.
+	* Returns a range of all the journal articles where groupId = &#63; and layoutUuid = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param layoutUuid the layout uuid
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching journal articles
+	*/
+	public static List<JournalArticle> findByG_L(long groupId,
+		java.lang.String layoutUuid, int start, int end,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_L(groupId, layoutUuid, start, end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where groupId = &#63; and layoutUuid = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -3577,6 +4761,30 @@ public class JournalArticleUtil {
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .findByG_L(groupId, layoutUuid, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where groupId = &#63; and layoutUuid = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param layoutUuid the layout uuid
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching journal articles
+	*/
+	public static List<JournalArticle> findByG_L(long groupId,
+		java.lang.String layoutUuid, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_L(groupId, layoutUuid, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -3766,7 +4974,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns all the journal articles where groupId = &#63; and status = &#63;.
+	* Returns all the journal articles where groupId = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param status the status
@@ -3777,7 +4985,20 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns a range of all the journal articles where groupId = &#63; and status = &#63;.
+	* Returns all the journal articles where groupId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param status the status
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching journal articles
+	*/
+	public static List<JournalArticle> findByG_ST(long groupId, int status,
+		boolean retrieveFromCache) {
+		return getPersistence().findByG_ST(groupId, status, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the journal articles where groupId = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -3795,7 +5016,27 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the journal articles where groupId = &#63; and status = &#63;.
+	* Returns a range of all the journal articles where groupId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param status the status
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching journal articles
+	*/
+	public static List<JournalArticle> findByG_ST(long groupId, int status,
+		int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_ST(groupId, status, start, end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where groupId = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -3812,6 +5053,30 @@ public class JournalArticleUtil {
 		int start, int end, OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .findByG_ST(groupId, status, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where groupId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param status the status
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching journal articles
+	*/
+	public static List<JournalArticle> findByG_ST(long groupId, int status,
+		int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_ST(groupId, status, start, end, orderByComparator,
+			retrieveFromCache);
 	}
 
 	/**
@@ -3996,7 +5261,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns all the journal articles where companyId = &#63; and version = &#63;.
+	* Returns all the journal articles where companyId = &#63; and version = &#63;. Uses the finder cache.
 	*
 	* @param companyId the company ID
 	* @param version the version
@@ -4007,7 +5272,20 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns a range of all the journal articles where companyId = &#63; and version = &#63;.
+	* Returns all the journal articles where companyId = &#63; and version = &#63;, optionally using the finder cache.
+	*
+	* @param companyId the company ID
+	* @param version the version
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching journal articles
+	*/
+	public static List<JournalArticle> findByC_V(long companyId,
+		double version, boolean retrieveFromCache) {
+		return getPersistence().findByC_V(companyId, version, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the journal articles where companyId = &#63; and version = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -4025,7 +5303,27 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the journal articles where companyId = &#63; and version = &#63;.
+	* Returns a range of all the journal articles where companyId = &#63; and version = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param companyId the company ID
+	* @param version the version
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching journal articles
+	*/
+	public static List<JournalArticle> findByC_V(long companyId,
+		double version, int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByC_V(companyId, version, start, end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where companyId = &#63; and version = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -4043,6 +5341,30 @@ public class JournalArticleUtil {
 		OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .findByC_V(companyId, version, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where companyId = &#63; and version = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param companyId the company ID
+	* @param version the version
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching journal articles
+	*/
+	public static List<JournalArticle> findByC_V(long companyId,
+		double version, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByC_V(companyId, version, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -4146,7 +5468,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns all the journal articles where companyId = &#63; and status = &#63;.
+	* Returns all the journal articles where companyId = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* @param companyId the company ID
 	* @param status the status
@@ -4157,7 +5479,20 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns a range of all the journal articles where companyId = &#63; and status = &#63;.
+	* Returns all the journal articles where companyId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* @param companyId the company ID
+	* @param status the status
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching journal articles
+	*/
+	public static List<JournalArticle> findByC_ST(long companyId, int status,
+		boolean retrieveFromCache) {
+		return getPersistence().findByC_ST(companyId, status, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the journal articles where companyId = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -4175,7 +5510,27 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the journal articles where companyId = &#63; and status = &#63;.
+	* Returns a range of all the journal articles where companyId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param companyId the company ID
+	* @param status the status
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching journal articles
+	*/
+	public static List<JournalArticle> findByC_ST(long companyId, int status,
+		int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByC_ST(companyId, status, start, end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where companyId = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -4192,6 +5547,30 @@ public class JournalArticleUtil {
 		int start, int end, OrderByComparator<JournalArticle> orderByComparator) {
 		return getPersistence()
 				   .findByC_ST(companyId, status, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where companyId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param companyId the company ID
+	* @param status the status
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching journal articles
+	*/
+	public static List<JournalArticle> findByC_ST(long companyId, int status,
+		int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByC_ST(companyId, status, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -4295,7 +5674,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns all the journal articles where companyId = &#63; and status &ne; &#63;.
+	* Returns all the journal articles where companyId = &#63; and status &ne; &#63;. Uses the finder cache.
 	*
 	* @param companyId the company ID
 	* @param status the status
@@ -4306,7 +5685,21 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns a range of all the journal articles where companyId = &#63; and status &ne; &#63;.
+	* Returns all the journal articles where companyId = &#63; and status &ne; &#63;, optionally using the finder cache.
+	*
+	* @param companyId the company ID
+	* @param status the status
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching journal articles
+	*/
+	public static List<JournalArticle> findByC_NotST(long companyId,
+		int status, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByC_NotST(companyId, status, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the journal articles where companyId = &#63; and status &ne; &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -4324,7 +5717,28 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the journal articles where companyId = &#63; and status &ne; &#63;.
+	* Returns a range of all the journal articles where companyId = &#63; and status &ne; &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param companyId the company ID
+	* @param status the status
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching journal articles
+	*/
+	public static List<JournalArticle> findByC_NotST(long companyId,
+		int status, int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByC_NotST(companyId, status, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where companyId = &#63; and status &ne; &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -4343,6 +5757,30 @@ public class JournalArticleUtil {
 		return getPersistence()
 				   .findByC_NotST(companyId, status, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where companyId = &#63; and status &ne; &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param companyId the company ID
+	* @param status the status
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching journal articles
+	*/
+	public static List<JournalArticle> findByC_NotST(long companyId,
+		int status, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByC_NotST(companyId, status, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -4446,7 +5884,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns all the journal articles where classNameId = &#63; and DDMTemplateKey = &#63;.
+	* Returns all the journal articles where classNameId = &#63; and DDMTemplateKey = &#63;. Uses the finder cache.
 	*
 	* @param classNameId the class name ID
 	* @param DDMTemplateKey the d d m template key
@@ -4458,7 +5896,21 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns a range of all the journal articles where classNameId = &#63; and DDMTemplateKey = &#63;.
+	* Returns all the journal articles where classNameId = &#63; and DDMTemplateKey = &#63;, optionally using the finder cache.
+	*
+	* @param classNameId the class name ID
+	* @param DDMTemplateKey the d d m template key
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching journal articles
+	*/
+	public static List<JournalArticle> findByC_DDMTK(long classNameId,
+		java.lang.String DDMTemplateKey, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByC_DDMTK(classNameId, DDMTemplateKey, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the journal articles where classNameId = &#63; and DDMTemplateKey = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -4477,7 +5929,29 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the journal articles where classNameId = &#63; and DDMTemplateKey = &#63;.
+	* Returns a range of all the journal articles where classNameId = &#63; and DDMTemplateKey = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param classNameId the class name ID
+	* @param DDMTemplateKey the d d m template key
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching journal articles
+	*/
+	public static List<JournalArticle> findByC_DDMTK(long classNameId,
+		java.lang.String DDMTemplateKey, int start, int end,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByC_DDMTK(classNameId, DDMTemplateKey, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where classNameId = &#63; and DDMTemplateKey = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -4496,6 +5970,30 @@ public class JournalArticleUtil {
 		return getPersistence()
 				   .findByC_DDMTK(classNameId, DDMTemplateKey, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where classNameId = &#63; and DDMTemplateKey = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param classNameId the class name ID
+	* @param DDMTemplateKey the d d m template key
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching journal articles
+	*/
+	public static List<JournalArticle> findByC_DDMTK(long classNameId,
+		java.lang.String DDMTemplateKey, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByC_DDMTK(classNameId, DDMTemplateKey, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -4609,7 +6107,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns all the journal articles where displayDate &lt; &#63; and status = &#63;.
+	* Returns all the journal articles where displayDate &lt; &#63; and status = &#63;. Uses the finder cache.
 	*
 	* @param displayDate the display date
 	* @param status the status
@@ -4621,7 +6119,21 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns a range of all the journal articles where displayDate &lt; &#63; and status = &#63;.
+	* Returns all the journal articles where displayDate &lt; &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* @param displayDate the display date
+	* @param status the status
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching journal articles
+	*/
+	public static List<JournalArticle> findByLtD_S(java.util.Date displayDate,
+		int status, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByLtD_S(displayDate, status, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the journal articles where displayDate &lt; &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -4639,7 +6151,28 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the journal articles where displayDate &lt; &#63; and status = &#63;.
+	* Returns a range of all the journal articles where displayDate &lt; &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param displayDate the display date
+	* @param status the status
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching journal articles
+	*/
+	public static List<JournalArticle> findByLtD_S(java.util.Date displayDate,
+		int status, int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByLtD_S(displayDate, status, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where displayDate &lt; &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -4658,6 +6191,30 @@ public class JournalArticleUtil {
 		return getPersistence()
 				   .findByLtD_S(displayDate, status, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where displayDate &lt; &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param displayDate the display date
+	* @param status the status
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching journal articles
+	*/
+	public static List<JournalArticle> findByLtD_S(java.util.Date displayDate,
+		int status, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByLtD_S(displayDate, status, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -4762,7 +6319,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns all the journal articles where resourcePrimKey = &#63; and indexable = &#63; and status = &#63;.
+	* Returns all the journal articles where resourcePrimKey = &#63; and indexable = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* @param resourcePrimKey the resource prim key
 	* @param indexable the indexable
@@ -4775,7 +6332,23 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns a range of all the journal articles where resourcePrimKey = &#63; and indexable = &#63; and status = &#63;.
+	* Returns all the journal articles where resourcePrimKey = &#63; and indexable = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* @param resourcePrimKey the resource prim key
+	* @param indexable the indexable
+	* @param status the status
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching journal articles
+	*/
+	public static List<JournalArticle> findByR_I_S(long resourcePrimKey,
+		boolean indexable, int status, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByR_I_S(resourcePrimKey, indexable, status,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the journal articles where resourcePrimKey = &#63; and indexable = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -4795,7 +6368,30 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the journal articles where resourcePrimKey = &#63; and indexable = &#63; and status = &#63;.
+	* Returns a range of all the journal articles where resourcePrimKey = &#63; and indexable = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param resourcePrimKey the resource prim key
+	* @param indexable the indexable
+	* @param status the status
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching journal articles
+	*/
+	public static List<JournalArticle> findByR_I_S(long resourcePrimKey,
+		boolean indexable, int status, int start, int end,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByR_I_S(resourcePrimKey, indexable, status, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where resourcePrimKey = &#63; and indexable = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -4815,6 +6411,31 @@ public class JournalArticleUtil {
 		return getPersistence()
 				   .findByR_I_S(resourcePrimKey, indexable, status, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where resourcePrimKey = &#63; and indexable = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param resourcePrimKey the resource prim key
+	* @param indexable the indexable
+	* @param status the status
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching journal articles
+	*/
+	public static List<JournalArticle> findByR_I_S(long resourcePrimKey,
+		boolean indexable, int status, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByR_I_S(resourcePrimKey, indexable, status, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -4910,7 +6531,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns all the journal articles where resourcePrimKey = &#63; and indexable = &#63; and status = any &#63;.
+	* Returns all the journal articles where resourcePrimKey = &#63; and indexable = &#63; and status = any &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -4927,7 +6548,27 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns a range of all the journal articles where resourcePrimKey = &#63; and indexable = &#63; and status = any &#63;.
+	* Returns all the journal articles where resourcePrimKey = &#63; and indexable = &#63; and status = any &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param resourcePrimKey the resource prim key
+	* @param indexable the indexable
+	* @param statuses the statuses
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching journal articles
+	*/
+	public static List<JournalArticle> findByR_I_S(long resourcePrimKey,
+		boolean indexable, int[] statuses, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByR_I_S(resourcePrimKey, indexable, statuses,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the journal articles where resourcePrimKey = &#63; and indexable = &#63; and status = any &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -4947,7 +6588,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the journal articles where resourcePrimKey = &#63; and indexable = &#63; and status = any &#63;.
+	* Returns an ordered range of all the journal articles where resourcePrimKey = &#63; and indexable = &#63; and status = any &#63;, optionally using the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -4956,6 +6597,29 @@ public class JournalArticleUtil {
 	* @param resourcePrimKey the resource prim key
 	* @param indexable the indexable
 	* @param statuses the statuses
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching journal articles
+	*/
+	public static List<JournalArticle> findByR_I_S(long resourcePrimKey,
+		boolean indexable, int[] statuses, int start, int end,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByR_I_S(resourcePrimKey, indexable, statuses, start,
+			end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where resourcePrimKey = &#63; and indexable = &#63; and status = &#63;. Uses the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param resourcePrimKey the resource prim key
+	* @param indexable the indexable
+	* @param status the status
 	* @param start the lower bound of the range of journal articles
 	* @param end the upper bound of the range of journal articles (not inclusive)
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
@@ -4967,6 +6631,31 @@ public class JournalArticleUtil {
 		return getPersistence()
 				   .findByR_I_S(resourcePrimKey, indexable, statuses, start,
 			end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where resourcePrimKey = &#63; and indexable = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param resourcePrimKey the resource prim key
+	* @param indexable the indexable
+	* @param status the status
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching journal articles
+	*/
+	public static List<JournalArticle> findByR_I_S(long resourcePrimKey,
+		boolean indexable, int[] statuses, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByR_I_S(resourcePrimKey, indexable, statuses, start,
+			end, orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -5009,7 +6698,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns all the journal articles where groupId = &#63; and userId = &#63; and classNameId = &#63;.
+	* Returns all the journal articles where groupId = &#63; and userId = &#63; and classNameId = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param userId the user ID
@@ -5022,7 +6711,22 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns a range of all the journal articles where groupId = &#63; and userId = &#63; and classNameId = &#63;.
+	* Returns all the journal articles where groupId = &#63; and userId = &#63; and classNameId = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param userId the user ID
+	* @param classNameId the class name ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching journal articles
+	*/
+	public static List<JournalArticle> findByG_U_C(long groupId, long userId,
+		long classNameId, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_U_C(groupId, userId, classNameId, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the journal articles where groupId = &#63; and userId = &#63; and classNameId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -5042,7 +6746,29 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the journal articles where groupId = &#63; and userId = &#63; and classNameId = &#63;.
+	* Returns a range of all the journal articles where groupId = &#63; and userId = &#63; and classNameId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param userId the user ID
+	* @param classNameId the class name ID
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching journal articles
+	*/
+	public static List<JournalArticle> findByG_U_C(long groupId, long userId,
+		long classNameId, int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_U_C(groupId, userId, classNameId, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where groupId = &#63; and userId = &#63; and classNameId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -5062,6 +6788,31 @@ public class JournalArticleUtil {
 		return getPersistence()
 				   .findByG_U_C(groupId, userId, classNameId, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where groupId = &#63; and userId = &#63; and classNameId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param userId the user ID
+	* @param classNameId the class name ID
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching journal articles
+	*/
+	public static List<JournalArticle> findByG_U_C(long groupId, long userId,
+		long classNameId, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_U_C(groupId, userId, classNameId, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -5265,7 +7016,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns all the journal articles where groupId = &#63; and folderId = &#63; and status = &#63;.
+	* Returns all the journal articles where groupId = &#63; and folderId = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param folderId the folder ID
@@ -5278,7 +7029,22 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns a range of all the journal articles where groupId = &#63; and folderId = &#63; and status = &#63;.
+	* Returns all the journal articles where groupId = &#63; and folderId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param folderId the folder ID
+	* @param status the status
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching journal articles
+	*/
+	public static List<JournalArticle> findByG_F_ST(long groupId,
+		long folderId, int status, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_F_ST(groupId, folderId, status, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the journal articles where groupId = &#63; and folderId = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -5298,7 +7064,29 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the journal articles where groupId = &#63; and folderId = &#63; and status = &#63;.
+	* Returns a range of all the journal articles where groupId = &#63; and folderId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param folderId the folder ID
+	* @param status the status
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching journal articles
+	*/
+	public static List<JournalArticle> findByG_F_ST(long groupId,
+		long folderId, int status, int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_F_ST(groupId, folderId, status, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where groupId = &#63; and folderId = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -5318,6 +7106,31 @@ public class JournalArticleUtil {
 		return getPersistence()
 				   .findByG_F_ST(groupId, folderId, status, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where groupId = &#63; and folderId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param folderId the folder ID
+	* @param status the status
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching journal articles
+	*/
+	public static List<JournalArticle> findByG_F_ST(long groupId,
+		long folderId, int status, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_F_ST(groupId, folderId, status, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -5544,7 +7357,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns all the journal articles where groupId = &#63; and folderId = &#63; and status = any &#63;.
+	* Returns all the journal articles where groupId = &#63; and folderId = &#63; and status = any &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -5561,7 +7374,26 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns a range of all the journal articles where groupId = &#63; and folderId = &#63; and status = any &#63;.
+	* Returns all the journal articles where groupId = &#63; and folderId = &#63; and status = any &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param folderId the folder ID
+	* @param statuses the statuses
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching journal articles
+	*/
+	public static List<JournalArticle> findByG_F_ST(long groupId,
+		long folderId, int[] statuses, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_F_ST(groupId, folderId, statuses, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the journal articles where groupId = &#63; and folderId = &#63; and status = any &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -5581,7 +7413,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the journal articles where groupId = &#63; and folderId = &#63; and status = any &#63;.
+	* Returns an ordered range of all the journal articles where groupId = &#63; and folderId = &#63; and status = any &#63;, optionally using the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -5590,6 +7422,29 @@ public class JournalArticleUtil {
 	* @param groupId the group ID
 	* @param folderId the folder ID
 	* @param statuses the statuses
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching journal articles
+	*/
+	public static List<JournalArticle> findByG_F_ST(long groupId,
+		long folderId, int[] statuses, int start, int end,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_F_ST(groupId, folderId, statuses, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where groupId = &#63; and folderId = &#63; and status = &#63;. Uses the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param folderId the folder ID
+	* @param status the status
 	* @param start the lower bound of the range of journal articles
 	* @param end the upper bound of the range of journal articles (not inclusive)
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
@@ -5601,6 +7456,31 @@ public class JournalArticleUtil {
 		return getPersistence()
 				   .findByG_F_ST(groupId, folderId, statuses, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where groupId = &#63; and folderId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param folderId the folder ID
+	* @param status the status
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching journal articles
+	*/
+	public static List<JournalArticle> findByG_F_ST(long groupId,
+		long folderId, int[] statuses, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_F_ST(groupId, folderId, statuses, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -5665,7 +7545,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns all the journal articles where groupId = &#63; and classNameId = &#63; and classPK = &#63;.
+	* Returns all the journal articles where groupId = &#63; and classNameId = &#63; and classPK = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param classNameId the class name ID
@@ -5678,7 +7558,22 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns a range of all the journal articles where groupId = &#63; and classNameId = &#63; and classPK = &#63;.
+	* Returns all the journal articles where groupId = &#63; and classNameId = &#63; and classPK = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param classNameId the class name ID
+	* @param classPK the class p k
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching journal articles
+	*/
+	public static List<JournalArticle> findByG_C_C(long groupId,
+		long classNameId, long classPK, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_C_C(groupId, classNameId, classPK, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the journal articles where groupId = &#63; and classNameId = &#63; and classPK = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -5698,7 +7593,30 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the journal articles where groupId = &#63; and classNameId = &#63; and classPK = &#63;.
+	* Returns a range of all the journal articles where groupId = &#63; and classNameId = &#63; and classPK = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param classNameId the class name ID
+	* @param classPK the class p k
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching journal articles
+	*/
+	public static List<JournalArticle> findByG_C_C(long groupId,
+		long classNameId, long classPK, int start, int end,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_C_C(groupId, classNameId, classPK, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where groupId = &#63; and classNameId = &#63; and classPK = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -5718,6 +7636,31 @@ public class JournalArticleUtil {
 		return getPersistence()
 				   .findByG_C_C(groupId, classNameId, classPK, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where groupId = &#63; and classNameId = &#63; and classPK = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param classNameId the class name ID
+	* @param classPK the class p k
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching journal articles
+	*/
+	public static List<JournalArticle> findByG_C_C(long groupId,
+		long classNameId, long classPK, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_C_C(groupId, classNameId, classPK, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -6002,7 +7945,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns all the journal articles where groupId = &#63; and classNameId = &#63; and DDMTemplateKey = &#63;.
+	* Returns all the journal articles where groupId = &#63; and classNameId = &#63; and DDMTemplateKey = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param classNameId the class name ID
@@ -6016,7 +7959,24 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns a range of all the journal articles where groupId = &#63; and classNameId = &#63; and DDMTemplateKey = &#63;.
+	* Returns all the journal articles where groupId = &#63; and classNameId = &#63; and DDMTemplateKey = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param classNameId the class name ID
+	* @param DDMTemplateKey the d d m template key
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching journal articles
+	*/
+	public static List<JournalArticle> findByG_C_DDMTK(long groupId,
+		long classNameId, java.lang.String DDMTemplateKey,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_C_DDMTK(groupId, classNameId, DDMTemplateKey,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the journal articles where groupId = &#63; and classNameId = &#63; and DDMTemplateKey = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -6037,7 +7997,30 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the journal articles where groupId = &#63; and classNameId = &#63; and DDMTemplateKey = &#63;.
+	* Returns a range of all the journal articles where groupId = &#63; and classNameId = &#63; and DDMTemplateKey = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param classNameId the class name ID
+	* @param DDMTemplateKey the d d m template key
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching journal articles
+	*/
+	public static List<JournalArticle> findByG_C_DDMTK(long groupId,
+		long classNameId, java.lang.String DDMTemplateKey, int start, int end,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_C_DDMTK(groupId, classNameId, DDMTemplateKey,
+			start, end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where groupId = &#63; and classNameId = &#63; and DDMTemplateKey = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -6057,6 +8040,31 @@ public class JournalArticleUtil {
 		return getPersistence()
 				   .findByG_C_DDMTK(groupId, classNameId, DDMTemplateKey,
 			start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where groupId = &#63; and classNameId = &#63; and DDMTemplateKey = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param classNameId the class name ID
+	* @param DDMTemplateKey the d d m template key
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching journal articles
+	*/
+	public static List<JournalArticle> findByG_C_DDMTK(long groupId,
+		long classNameId, java.lang.String DDMTemplateKey, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_C_DDMTK(groupId, classNameId, DDMTemplateKey,
+			start, end, orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -6270,7 +8278,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns all the journal articles where groupId = &#63; and classNameId = &#63; and layoutUuid = &#63;.
+	* Returns all the journal articles where groupId = &#63; and classNameId = &#63; and layoutUuid = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param classNameId the class name ID
@@ -6283,7 +8291,23 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns a range of all the journal articles where groupId = &#63; and classNameId = &#63; and layoutUuid = &#63;.
+	* Returns all the journal articles where groupId = &#63; and classNameId = &#63; and layoutUuid = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param classNameId the class name ID
+	* @param layoutUuid the layout uuid
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching journal articles
+	*/
+	public static List<JournalArticle> findByG_C_L(long groupId,
+		long classNameId, java.lang.String layoutUuid, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_C_L(groupId, classNameId, layoutUuid,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the journal articles where groupId = &#63; and classNameId = &#63; and layoutUuid = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -6303,7 +8327,30 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the journal articles where groupId = &#63; and classNameId = &#63; and layoutUuid = &#63;.
+	* Returns a range of all the journal articles where groupId = &#63; and classNameId = &#63; and layoutUuid = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param classNameId the class name ID
+	* @param layoutUuid the layout uuid
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching journal articles
+	*/
+	public static List<JournalArticle> findByG_C_L(long groupId,
+		long classNameId, java.lang.String layoutUuid, int start, int end,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_C_L(groupId, classNameId, layoutUuid, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where groupId = &#63; and classNameId = &#63; and layoutUuid = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -6323,6 +8370,31 @@ public class JournalArticleUtil {
 		return getPersistence()
 				   .findByG_C_L(groupId, classNameId, layoutUuid, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where groupId = &#63; and classNameId = &#63; and layoutUuid = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param classNameId the class name ID
+	* @param layoutUuid the layout uuid
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching journal articles
+	*/
+	public static List<JournalArticle> findByG_C_L(long groupId,
+		long classNameId, java.lang.String layoutUuid, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_C_L(groupId, classNameId, layoutUuid, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -6605,7 +8677,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns all the journal articles where groupId = &#63; and articleId = &#63; and status = &#63;.
+	* Returns all the journal articles where groupId = &#63; and articleId = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param articleId the article ID
@@ -6618,7 +8690,22 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns a range of all the journal articles where groupId = &#63; and articleId = &#63; and status = &#63;.
+	* Returns all the journal articles where groupId = &#63; and articleId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param articleId the article ID
+	* @param status the status
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching journal articles
+	*/
+	public static List<JournalArticle> findByG_A_ST(long groupId,
+		java.lang.String articleId, int status, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_A_ST(groupId, articleId, status, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the journal articles where groupId = &#63; and articleId = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -6638,7 +8725,30 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the journal articles where groupId = &#63; and articleId = &#63; and status = &#63;.
+	* Returns a range of all the journal articles where groupId = &#63; and articleId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param articleId the article ID
+	* @param status the status
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching journal articles
+	*/
+	public static List<JournalArticle> findByG_A_ST(long groupId,
+		java.lang.String articleId, int status, int start, int end,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_A_ST(groupId, articleId, status, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where groupId = &#63; and articleId = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -6658,6 +8768,31 @@ public class JournalArticleUtil {
 		return getPersistence()
 				   .findByG_A_ST(groupId, articleId, status, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where groupId = &#63; and articleId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param articleId the article ID
+	* @param status the status
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching journal articles
+	*/
+	public static List<JournalArticle> findByG_A_ST(long groupId,
+		java.lang.String articleId, int status, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_A_ST(groupId, articleId, status, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -6885,7 +9020,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns all the journal articles where groupId = &#63; and articleId = &#63; and status = any &#63;.
+	* Returns all the journal articles where groupId = &#63; and articleId = &#63; and status = any &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -6902,7 +9037,26 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns a range of all the journal articles where groupId = &#63; and articleId = &#63; and status = any &#63;.
+	* Returns all the journal articles where groupId = &#63; and articleId = &#63; and status = any &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param articleId the article ID
+	* @param statuses the statuses
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching journal articles
+	*/
+	public static List<JournalArticle> findByG_A_ST(long groupId,
+		java.lang.String articleId, int[] statuses, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_A_ST(groupId, articleId, statuses, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the journal articles where groupId = &#63; and articleId = &#63; and status = any &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -6922,7 +9076,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the journal articles where groupId = &#63; and articleId = &#63; and status = any &#63;.
+	* Returns an ordered range of all the journal articles where groupId = &#63; and articleId = &#63; and status = any &#63;, optionally using the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -6931,6 +9085,29 @@ public class JournalArticleUtil {
 	* @param groupId the group ID
 	* @param articleId the article ID
 	* @param statuses the statuses
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching journal articles
+	*/
+	public static List<JournalArticle> findByG_A_ST(long groupId,
+		java.lang.String articleId, int[] statuses, int start, int end,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_A_ST(groupId, articleId, statuses, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where groupId = &#63; and articleId = &#63; and status = &#63;. Uses the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param articleId the article ID
+	* @param status the status
 	* @param start the lower bound of the range of journal articles
 	* @param end the upper bound of the range of journal articles (not inclusive)
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
@@ -6942,6 +9119,31 @@ public class JournalArticleUtil {
 		return getPersistence()
 				   .findByG_A_ST(groupId, articleId, statuses, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where groupId = &#63; and articleId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param articleId the article ID
+	* @param status the status
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching journal articles
+	*/
+	public static List<JournalArticle> findByG_A_ST(long groupId,
+		java.lang.String articleId, int[] statuses, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_A_ST(groupId, articleId, statuses, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -7009,7 +9211,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns all the journal articles where groupId = &#63; and articleId = &#63; and status &ne; &#63;.
+	* Returns all the journal articles where groupId = &#63; and articleId = &#63; and status &ne; &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param articleId the article ID
@@ -7022,7 +9224,23 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns a range of all the journal articles where groupId = &#63; and articleId = &#63; and status &ne; &#63;.
+	* Returns all the journal articles where groupId = &#63; and articleId = &#63; and status &ne; &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param articleId the article ID
+	* @param status the status
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching journal articles
+	*/
+	public static List<JournalArticle> findByG_A_NotST(long groupId,
+		java.lang.String articleId, int status, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_A_NotST(groupId, articleId, status,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the journal articles where groupId = &#63; and articleId = &#63; and status &ne; &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -7042,7 +9260,30 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the journal articles where groupId = &#63; and articleId = &#63; and status &ne; &#63;.
+	* Returns a range of all the journal articles where groupId = &#63; and articleId = &#63; and status &ne; &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param articleId the article ID
+	* @param status the status
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching journal articles
+	*/
+	public static List<JournalArticle> findByG_A_NotST(long groupId,
+		java.lang.String articleId, int status, int start, int end,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_A_NotST(groupId, articleId, status, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where groupId = &#63; and articleId = &#63; and status &ne; &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -7062,6 +9303,31 @@ public class JournalArticleUtil {
 		return getPersistence()
 				   .findByG_A_NotST(groupId, articleId, status, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where groupId = &#63; and articleId = &#63; and status &ne; &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param articleId the article ID
+	* @param status the status
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching journal articles
+	*/
+	public static List<JournalArticle> findByG_A_NotST(long groupId,
+		java.lang.String articleId, int status, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_A_NotST(groupId, articleId, status, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -7272,7 +9538,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns all the journal articles where groupId = &#63; and urlTitle = &#63; and status = &#63;.
+	* Returns all the journal articles where groupId = &#63; and urlTitle = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param urlTitle the url title
@@ -7285,7 +9551,22 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns a range of all the journal articles where groupId = &#63; and urlTitle = &#63; and status = &#63;.
+	* Returns all the journal articles where groupId = &#63; and urlTitle = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param urlTitle the url title
+	* @param status the status
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching journal articles
+	*/
+	public static List<JournalArticle> findByG_UT_ST(long groupId,
+		java.lang.String urlTitle, int status, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_UT_ST(groupId, urlTitle, status, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the journal articles where groupId = &#63; and urlTitle = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -7305,7 +9586,30 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the journal articles where groupId = &#63; and urlTitle = &#63; and status = &#63;.
+	* Returns a range of all the journal articles where groupId = &#63; and urlTitle = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param urlTitle the url title
+	* @param status the status
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching journal articles
+	*/
+	public static List<JournalArticle> findByG_UT_ST(long groupId,
+		java.lang.String urlTitle, int status, int start, int end,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_UT_ST(groupId, urlTitle, status, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where groupId = &#63; and urlTitle = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -7325,6 +9629,31 @@ public class JournalArticleUtil {
 		return getPersistence()
 				   .findByG_UT_ST(groupId, urlTitle, status, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where groupId = &#63; and urlTitle = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param urlTitle the url title
+	* @param status the status
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching journal articles
+	*/
+	public static List<JournalArticle> findByG_UT_ST(long groupId,
+		java.lang.String urlTitle, int status, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_UT_ST(groupId, urlTitle, status, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -7534,7 +9863,7 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns all the journal articles where companyId = &#63; and version = &#63; and status = &#63;.
+	* Returns all the journal articles where companyId = &#63; and version = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* @param companyId the company ID
 	* @param version the version
@@ -7547,7 +9876,22 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns a range of all the journal articles where companyId = &#63; and version = &#63; and status = &#63;.
+	* Returns all the journal articles where companyId = &#63; and version = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* @param companyId the company ID
+	* @param version the version
+	* @param status the status
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching journal articles
+	*/
+	public static List<JournalArticle> findByC_V_ST(long companyId,
+		double version, int status, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByC_V_ST(companyId, version, status, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the journal articles where companyId = &#63; and version = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -7567,7 +9911,30 @@ public class JournalArticleUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the journal articles where companyId = &#63; and version = &#63; and status = &#63;.
+	* Returns a range of all the journal articles where companyId = &#63; and version = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param companyId the company ID
+	* @param version the version
+	* @param status the status
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching journal articles
+	*/
+	public static List<JournalArticle> findByC_V_ST(long companyId,
+		double version, int status, int start, int end,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByC_V_ST(companyId, version, status, start, end,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where companyId = &#63; and version = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -7587,6 +9954,31 @@ public class JournalArticleUtil {
 		return getPersistence()
 				   .findByC_V_ST(companyId, version, status, start, end,
 			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the journal articles where companyId = &#63; and version = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param companyId the company ID
+	* @param version the version
+	* @param status the status
+	* @param start the lower bound of the range of journal articles
+	* @param end the upper bound of the range of journal articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching journal articles
+	*/
+	public static List<JournalArticle> findByC_V_ST(long companyId,
+		double version, int status, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByC_V_ST(companyId, version, status, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**

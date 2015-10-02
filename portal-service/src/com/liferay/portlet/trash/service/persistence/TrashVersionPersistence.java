@@ -41,7 +41,7 @@ public interface TrashVersionPersistence extends BasePersistence<TrashVersion> {
 	 */
 
 	/**
-	* Returns all the trash versions where entryId = &#63;.
+	* Returns all the trash versions where entryId = &#63;. Uses the finder cache.
 	*
 	* @param entryId the entry ID
 	* @return the matching trash versions
@@ -49,7 +49,17 @@ public interface TrashVersionPersistence extends BasePersistence<TrashVersion> {
 	public java.util.List<TrashVersion> findByEntryId(long entryId);
 
 	/**
-	* Returns a range of all the trash versions where entryId = &#63;.
+	* Returns all the trash versions where entryId = &#63;, optionally using the finder cache.
+	*
+	* @param entryId the entry ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching trash versions
+	*/
+	public java.util.List<TrashVersion> findByEntryId(long entryId,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the trash versions where entryId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TrashVersionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -64,7 +74,23 @@ public interface TrashVersionPersistence extends BasePersistence<TrashVersion> {
 		int end);
 
 	/**
-	* Returns an ordered range of all the trash versions where entryId = &#63;.
+	* Returns a range of all the trash versions where entryId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TrashVersionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param entryId the entry ID
+	* @param start the lower bound of the range of trash versions
+	* @param end the upper bound of the range of trash versions (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching trash versions
+	*/
+	public java.util.List<TrashVersion> findByEntryId(long entryId, int start,
+		int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the trash versions where entryId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TrashVersionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -79,6 +105,25 @@ public interface TrashVersionPersistence extends BasePersistence<TrashVersion> {
 	public java.util.List<TrashVersion> findByEntryId(long entryId, int start,
 		int end,
 		com.liferay.portal.kernel.util.OrderByComparator<TrashVersion> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the trash versions where entryId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TrashVersionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param entryId the entry ID
+	* @param start the lower bound of the range of trash versions
+	* @param end the upper bound of the range of trash versions (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching trash versions
+	*/
+	public java.util.List<TrashVersion> findByEntryId(long entryId, int start,
+		int end,
+		com.liferay.portal.kernel.util.OrderByComparator<TrashVersion> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first trash version in the ordered set where entryId = &#63;.
@@ -154,7 +199,7 @@ public interface TrashVersionPersistence extends BasePersistence<TrashVersion> {
 	public int countByEntryId(long entryId);
 
 	/**
-	* Returns all the trash versions where entryId = &#63; and classNameId = &#63;.
+	* Returns all the trash versions where entryId = &#63; and classNameId = &#63;. Uses the finder cache.
 	*
 	* @param entryId the entry ID
 	* @param classNameId the class name ID
@@ -163,7 +208,18 @@ public interface TrashVersionPersistence extends BasePersistence<TrashVersion> {
 	public java.util.List<TrashVersion> findByE_C(long entryId, long classNameId);
 
 	/**
-	* Returns a range of all the trash versions where entryId = &#63; and classNameId = &#63;.
+	* Returns all the trash versions where entryId = &#63; and classNameId = &#63;, optionally using the finder cache.
+	*
+	* @param entryId the entry ID
+	* @param classNameId the class name ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching trash versions
+	*/
+	public java.util.List<TrashVersion> findByE_C(long entryId,
+		long classNameId, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the trash versions where entryId = &#63; and classNameId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TrashVersionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -179,7 +235,24 @@ public interface TrashVersionPersistence extends BasePersistence<TrashVersion> {
 		long classNameId, int start, int end);
 
 	/**
-	* Returns an ordered range of all the trash versions where entryId = &#63; and classNameId = &#63;.
+	* Returns a range of all the trash versions where entryId = &#63; and classNameId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TrashVersionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param entryId the entry ID
+	* @param classNameId the class name ID
+	* @param start the lower bound of the range of trash versions
+	* @param end the upper bound of the range of trash versions (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching trash versions
+	*/
+	public java.util.List<TrashVersion> findByE_C(long entryId,
+		long classNameId, int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the trash versions where entryId = &#63; and classNameId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TrashVersionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -195,6 +268,26 @@ public interface TrashVersionPersistence extends BasePersistence<TrashVersion> {
 	public java.util.List<TrashVersion> findByE_C(long entryId,
 		long classNameId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<TrashVersion> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the trash versions where entryId = &#63; and classNameId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TrashVersionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param entryId the entry ID
+	* @param classNameId the class name ID
+	* @param start the lower bound of the range of trash versions
+	* @param end the upper bound of the range of trash versions (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching trash versions
+	*/
+	public java.util.List<TrashVersion> findByE_C(long entryId,
+		long classNameId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<TrashVersion> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first trash version in the ordered set where entryId = &#63; and classNameId = &#63;.

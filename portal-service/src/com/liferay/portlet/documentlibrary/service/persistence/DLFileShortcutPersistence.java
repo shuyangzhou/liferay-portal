@@ -41,7 +41,7 @@ public interface DLFileShortcutPersistence extends BasePersistence<DLFileShortcu
 	 */
 
 	/**
-	* Returns all the document library file shortcuts where uuid = &#63;.
+	* Returns all the document library file shortcuts where uuid = &#63;. Uses the finder cache.
 	*
 	* @param uuid the uuid
 	* @return the matching document library file shortcuts
@@ -49,7 +49,17 @@ public interface DLFileShortcutPersistence extends BasePersistence<DLFileShortcu
 	public java.util.List<DLFileShortcut> findByUuid(java.lang.String uuid);
 
 	/**
-	* Returns a range of all the document library file shortcuts where uuid = &#63;.
+	* Returns all the document library file shortcuts where uuid = &#63;, optionally using the finder cache.
+	*
+	* @param uuid the uuid
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching document library file shortcuts
+	*/
+	public java.util.List<DLFileShortcut> findByUuid(java.lang.String uuid,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the document library file shortcuts where uuid = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileShortcutModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -64,7 +74,23 @@ public interface DLFileShortcutPersistence extends BasePersistence<DLFileShortcu
 		int start, int end);
 
 	/**
-	* Returns an ordered range of all the document library file shortcuts where uuid = &#63;.
+	* Returns a range of all the document library file shortcuts where uuid = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileShortcutModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param start the lower bound of the range of document library file shortcuts
+	* @param end the upper bound of the range of document library file shortcuts (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching document library file shortcuts
+	*/
+	public java.util.List<DLFileShortcut> findByUuid(java.lang.String uuid,
+		int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the document library file shortcuts where uuid = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileShortcutModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -79,6 +105,25 @@ public interface DLFileShortcutPersistence extends BasePersistence<DLFileShortcu
 	public java.util.List<DLFileShortcut> findByUuid(java.lang.String uuid,
 		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFileShortcut> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the document library file shortcuts where uuid = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileShortcutModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param start the lower bound of the range of document library file shortcuts
+	* @param end the upper bound of the range of document library file shortcuts (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching document library file shortcuts
+	*/
+	public java.util.List<DLFileShortcut> findByUuid(java.lang.String uuid,
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<DLFileShortcut> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first document library file shortcut in the ordered set where uuid = &#63;.
@@ -204,7 +249,7 @@ public interface DLFileShortcutPersistence extends BasePersistence<DLFileShortcu
 	public int countByUUID_G(java.lang.String uuid, long groupId);
 
 	/**
-	* Returns all the document library file shortcuts where uuid = &#63; and companyId = &#63;.
+	* Returns all the document library file shortcuts where uuid = &#63; and companyId = &#63;. Uses the finder cache.
 	*
 	* @param uuid the uuid
 	* @param companyId the company ID
@@ -214,7 +259,18 @@ public interface DLFileShortcutPersistence extends BasePersistence<DLFileShortcu
 		long companyId);
 
 	/**
-	* Returns a range of all the document library file shortcuts where uuid = &#63; and companyId = &#63;.
+	* Returns all the document library file shortcuts where uuid = &#63; and companyId = &#63;, optionally using the finder cache.
+	*
+	* @param uuid the uuid
+	* @param companyId the company ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching document library file shortcuts
+	*/
+	public java.util.List<DLFileShortcut> findByUuid_C(java.lang.String uuid,
+		long companyId, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the document library file shortcuts where uuid = &#63; and companyId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileShortcutModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -230,7 +286,24 @@ public interface DLFileShortcutPersistence extends BasePersistence<DLFileShortcu
 		long companyId, int start, int end);
 
 	/**
-	* Returns an ordered range of all the document library file shortcuts where uuid = &#63; and companyId = &#63;.
+	* Returns a range of all the document library file shortcuts where uuid = &#63; and companyId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileShortcutModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param companyId the company ID
+	* @param start the lower bound of the range of document library file shortcuts
+	* @param end the upper bound of the range of document library file shortcuts (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching document library file shortcuts
+	*/
+	public java.util.List<DLFileShortcut> findByUuid_C(java.lang.String uuid,
+		long companyId, int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the document library file shortcuts where uuid = &#63; and companyId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileShortcutModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -246,6 +319,26 @@ public interface DLFileShortcutPersistence extends BasePersistence<DLFileShortcu
 	public java.util.List<DLFileShortcut> findByUuid_C(java.lang.String uuid,
 		long companyId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFileShortcut> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the document library file shortcuts where uuid = &#63; and companyId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileShortcutModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param companyId the company ID
+	* @param start the lower bound of the range of document library file shortcuts
+	* @param end the upper bound of the range of document library file shortcuts (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching document library file shortcuts
+	*/
+	public java.util.List<DLFileShortcut> findByUuid_C(java.lang.String uuid,
+		long companyId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<DLFileShortcut> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first document library file shortcut in the ordered set where uuid = &#63; and companyId = &#63;.
@@ -332,7 +425,7 @@ public interface DLFileShortcutPersistence extends BasePersistence<DLFileShortcu
 	public int countByUuid_C(java.lang.String uuid, long companyId);
 
 	/**
-	* Returns all the document library file shortcuts where companyId = &#63;.
+	* Returns all the document library file shortcuts where companyId = &#63;. Uses the finder cache.
 	*
 	* @param companyId the company ID
 	* @return the matching document library file shortcuts
@@ -340,7 +433,17 @@ public interface DLFileShortcutPersistence extends BasePersistence<DLFileShortcu
 	public java.util.List<DLFileShortcut> findByCompanyId(long companyId);
 
 	/**
-	* Returns a range of all the document library file shortcuts where companyId = &#63;.
+	* Returns all the document library file shortcuts where companyId = &#63;, optionally using the finder cache.
+	*
+	* @param companyId the company ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching document library file shortcuts
+	*/
+	public java.util.List<DLFileShortcut> findByCompanyId(long companyId,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the document library file shortcuts where companyId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileShortcutModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -355,7 +458,23 @@ public interface DLFileShortcutPersistence extends BasePersistence<DLFileShortcu
 		int start, int end);
 
 	/**
-	* Returns an ordered range of all the document library file shortcuts where companyId = &#63;.
+	* Returns a range of all the document library file shortcuts where companyId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileShortcutModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param companyId the company ID
+	* @param start the lower bound of the range of document library file shortcuts
+	* @param end the upper bound of the range of document library file shortcuts (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching document library file shortcuts
+	*/
+	public java.util.List<DLFileShortcut> findByCompanyId(long companyId,
+		int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the document library file shortcuts where companyId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileShortcutModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -370,6 +489,25 @@ public interface DLFileShortcutPersistence extends BasePersistence<DLFileShortcu
 	public java.util.List<DLFileShortcut> findByCompanyId(long companyId,
 		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFileShortcut> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the document library file shortcuts where companyId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileShortcutModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param companyId the company ID
+	* @param start the lower bound of the range of document library file shortcuts
+	* @param end the upper bound of the range of document library file shortcuts (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching document library file shortcuts
+	*/
+	public java.util.List<DLFileShortcut> findByCompanyId(long companyId,
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<DLFileShortcut> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first document library file shortcut in the ordered set where companyId = &#63;.
@@ -445,7 +583,7 @@ public interface DLFileShortcutPersistence extends BasePersistence<DLFileShortcu
 	public int countByCompanyId(long companyId);
 
 	/**
-	* Returns all the document library file shortcuts where toFileEntryId = &#63;.
+	* Returns all the document library file shortcuts where toFileEntryId = &#63;. Uses the finder cache.
 	*
 	* @param toFileEntryId the to file entry ID
 	* @return the matching document library file shortcuts
@@ -454,7 +592,17 @@ public interface DLFileShortcutPersistence extends BasePersistence<DLFileShortcu
 		long toFileEntryId);
 
 	/**
-	* Returns a range of all the document library file shortcuts where toFileEntryId = &#63;.
+	* Returns all the document library file shortcuts where toFileEntryId = &#63;, optionally using the finder cache.
+	*
+	* @param toFileEntryId the to file entry ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching document library file shortcuts
+	*/
+	public java.util.List<DLFileShortcut> findByToFileEntryId(
+		long toFileEntryId, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the document library file shortcuts where toFileEntryId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileShortcutModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -469,7 +617,23 @@ public interface DLFileShortcutPersistence extends BasePersistence<DLFileShortcu
 		long toFileEntryId, int start, int end);
 
 	/**
-	* Returns an ordered range of all the document library file shortcuts where toFileEntryId = &#63;.
+	* Returns a range of all the document library file shortcuts where toFileEntryId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileShortcutModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param toFileEntryId the to file entry ID
+	* @param start the lower bound of the range of document library file shortcuts
+	* @param end the upper bound of the range of document library file shortcuts (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching document library file shortcuts
+	*/
+	public java.util.List<DLFileShortcut> findByToFileEntryId(
+		long toFileEntryId, int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the document library file shortcuts where toFileEntryId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileShortcutModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -484,6 +648,25 @@ public interface DLFileShortcutPersistence extends BasePersistence<DLFileShortcu
 	public java.util.List<DLFileShortcut> findByToFileEntryId(
 		long toFileEntryId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFileShortcut> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the document library file shortcuts where toFileEntryId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileShortcutModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param toFileEntryId the to file entry ID
+	* @param start the lower bound of the range of document library file shortcuts
+	* @param end the upper bound of the range of document library file shortcuts (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching document library file shortcuts
+	*/
+	public java.util.List<DLFileShortcut> findByToFileEntryId(
+		long toFileEntryId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<DLFileShortcut> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first document library file shortcut in the ordered set where toFileEntryId = &#63;.
@@ -559,7 +742,7 @@ public interface DLFileShortcutPersistence extends BasePersistence<DLFileShortcu
 	public int countByToFileEntryId(long toFileEntryId);
 
 	/**
-	* Returns all the document library file shortcuts where groupId = &#63; and folderId = &#63;.
+	* Returns all the document library file shortcuts where groupId = &#63; and folderId = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param folderId the folder ID
@@ -568,7 +751,18 @@ public interface DLFileShortcutPersistence extends BasePersistence<DLFileShortcu
 	public java.util.List<DLFileShortcut> findByG_F(long groupId, long folderId);
 
 	/**
-	* Returns a range of all the document library file shortcuts where groupId = &#63; and folderId = &#63;.
+	* Returns all the document library file shortcuts where groupId = &#63; and folderId = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param folderId the folder ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching document library file shortcuts
+	*/
+	public java.util.List<DLFileShortcut> findByG_F(long groupId,
+		long folderId, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the document library file shortcuts where groupId = &#63; and folderId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileShortcutModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -584,7 +778,24 @@ public interface DLFileShortcutPersistence extends BasePersistence<DLFileShortcu
 		long folderId, int start, int end);
 
 	/**
-	* Returns an ordered range of all the document library file shortcuts where groupId = &#63; and folderId = &#63;.
+	* Returns a range of all the document library file shortcuts where groupId = &#63; and folderId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileShortcutModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param folderId the folder ID
+	* @param start the lower bound of the range of document library file shortcuts
+	* @param end the upper bound of the range of document library file shortcuts (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching document library file shortcuts
+	*/
+	public java.util.List<DLFileShortcut> findByG_F(long groupId,
+		long folderId, int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the document library file shortcuts where groupId = &#63; and folderId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileShortcutModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -600,6 +811,26 @@ public interface DLFileShortcutPersistence extends BasePersistence<DLFileShortcu
 	public java.util.List<DLFileShortcut> findByG_F(long groupId,
 		long folderId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFileShortcut> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the document library file shortcuts where groupId = &#63; and folderId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileShortcutModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param folderId the folder ID
+	* @param start the lower bound of the range of document library file shortcuts
+	* @param end the upper bound of the range of document library file shortcuts (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching document library file shortcuts
+	*/
+	public java.util.List<DLFileShortcut> findByG_F(long groupId,
+		long folderId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<DLFileShortcut> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first document library file shortcut in the ordered set where groupId = &#63; and folderId = &#63;.
@@ -750,7 +981,7 @@ public interface DLFileShortcutPersistence extends BasePersistence<DLFileShortcu
 	public int filterCountByG_F(long groupId, long folderId);
 
 	/**
-	* Returns all the document library file shortcuts where companyId = &#63; and status &ne; &#63;.
+	* Returns all the document library file shortcuts where companyId = &#63; and status &ne; &#63;. Uses the finder cache.
 	*
 	* @param companyId the company ID
 	* @param status the status
@@ -760,7 +991,18 @@ public interface DLFileShortcutPersistence extends BasePersistence<DLFileShortcu
 		int status);
 
 	/**
-	* Returns a range of all the document library file shortcuts where companyId = &#63; and status &ne; &#63;.
+	* Returns all the document library file shortcuts where companyId = &#63; and status &ne; &#63;, optionally using the finder cache.
+	*
+	* @param companyId the company ID
+	* @param status the status
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching document library file shortcuts
+	*/
+	public java.util.List<DLFileShortcut> findByC_NotS(long companyId,
+		int status, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the document library file shortcuts where companyId = &#63; and status &ne; &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileShortcutModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -776,7 +1018,24 @@ public interface DLFileShortcutPersistence extends BasePersistence<DLFileShortcu
 		int status, int start, int end);
 
 	/**
-	* Returns an ordered range of all the document library file shortcuts where companyId = &#63; and status &ne; &#63;.
+	* Returns a range of all the document library file shortcuts where companyId = &#63; and status &ne; &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileShortcutModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param companyId the company ID
+	* @param status the status
+	* @param start the lower bound of the range of document library file shortcuts
+	* @param end the upper bound of the range of document library file shortcuts (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching document library file shortcuts
+	*/
+	public java.util.List<DLFileShortcut> findByC_NotS(long companyId,
+		int status, int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the document library file shortcuts where companyId = &#63; and status &ne; &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileShortcutModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -792,6 +1051,26 @@ public interface DLFileShortcutPersistence extends BasePersistence<DLFileShortcu
 	public java.util.List<DLFileShortcut> findByC_NotS(long companyId,
 		int status, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFileShortcut> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the document library file shortcuts where companyId = &#63; and status &ne; &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileShortcutModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param companyId the company ID
+	* @param status the status
+	* @param start the lower bound of the range of document library file shortcuts
+	* @param end the upper bound of the range of document library file shortcuts (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching document library file shortcuts
+	*/
+	public java.util.List<DLFileShortcut> findByC_NotS(long companyId,
+		int status, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<DLFileShortcut> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first document library file shortcut in the ordered set where companyId = &#63; and status &ne; &#63;.
@@ -874,7 +1153,7 @@ public interface DLFileShortcutPersistence extends BasePersistence<DLFileShortcu
 	public int countByC_NotS(long companyId, int status);
 
 	/**
-	* Returns all the document library file shortcuts where groupId = &#63; and folderId = &#63; and active = &#63;.
+	* Returns all the document library file shortcuts where groupId = &#63; and folderId = &#63; and active = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param folderId the folder ID
@@ -885,7 +1164,19 @@ public interface DLFileShortcutPersistence extends BasePersistence<DLFileShortcu
 		long folderId, boolean active);
 
 	/**
-	* Returns a range of all the document library file shortcuts where groupId = &#63; and folderId = &#63; and active = &#63;.
+	* Returns all the document library file shortcuts where groupId = &#63; and folderId = &#63; and active = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param folderId the folder ID
+	* @param active the active
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching document library file shortcuts
+	*/
+	public java.util.List<DLFileShortcut> findByG_F_A(long groupId,
+		long folderId, boolean active, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the document library file shortcuts where groupId = &#63; and folderId = &#63; and active = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileShortcutModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -902,7 +1193,26 @@ public interface DLFileShortcutPersistence extends BasePersistence<DLFileShortcu
 		long folderId, boolean active, int start, int end);
 
 	/**
-	* Returns an ordered range of all the document library file shortcuts where groupId = &#63; and folderId = &#63; and active = &#63;.
+	* Returns a range of all the document library file shortcuts where groupId = &#63; and folderId = &#63; and active = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileShortcutModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param folderId the folder ID
+	* @param active the active
+	* @param start the lower bound of the range of document library file shortcuts
+	* @param end the upper bound of the range of document library file shortcuts (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching document library file shortcuts
+	*/
+	public java.util.List<DLFileShortcut> findByG_F_A(long groupId,
+		long folderId, boolean active, int start, int end,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the document library file shortcuts where groupId = &#63; and folderId = &#63; and active = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileShortcutModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -919,6 +1229,27 @@ public interface DLFileShortcutPersistence extends BasePersistence<DLFileShortcu
 	public java.util.List<DLFileShortcut> findByG_F_A(long groupId,
 		long folderId, boolean active, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFileShortcut> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the document library file shortcuts where groupId = &#63; and folderId = &#63; and active = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileShortcutModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param folderId the folder ID
+	* @param active the active
+	* @param start the lower bound of the range of document library file shortcuts
+	* @param end the upper bound of the range of document library file shortcuts (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching document library file shortcuts
+	*/
+	public java.util.List<DLFileShortcut> findByG_F_A(long groupId,
+		long folderId, boolean active, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<DLFileShortcut> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first document library file shortcut in the ordered set where groupId = &#63; and folderId = &#63; and active = &#63;.
@@ -1085,7 +1416,7 @@ public interface DLFileShortcutPersistence extends BasePersistence<DLFileShortcu
 	public int filterCountByG_F_A(long groupId, long folderId, boolean active);
 
 	/**
-	* Returns all the document library file shortcuts where groupId = &#63; and folderId = &#63; and active = &#63; and status = &#63;.
+	* Returns all the document library file shortcuts where groupId = &#63; and folderId = &#63; and active = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param folderId the folder ID
@@ -1097,7 +1428,20 @@ public interface DLFileShortcutPersistence extends BasePersistence<DLFileShortcu
 		long folderId, boolean active, int status);
 
 	/**
-	* Returns a range of all the document library file shortcuts where groupId = &#63; and folderId = &#63; and active = &#63; and status = &#63;.
+	* Returns all the document library file shortcuts where groupId = &#63; and folderId = &#63; and active = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param folderId the folder ID
+	* @param active the active
+	* @param status the status
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching document library file shortcuts
+	*/
+	public java.util.List<DLFileShortcut> findByG_F_A_S(long groupId,
+		long folderId, boolean active, int status, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the document library file shortcuts where groupId = &#63; and folderId = &#63; and active = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileShortcutModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1115,7 +1459,27 @@ public interface DLFileShortcutPersistence extends BasePersistence<DLFileShortcu
 		long folderId, boolean active, int status, int start, int end);
 
 	/**
-	* Returns an ordered range of all the document library file shortcuts where groupId = &#63; and folderId = &#63; and active = &#63; and status = &#63;.
+	* Returns a range of all the document library file shortcuts where groupId = &#63; and folderId = &#63; and active = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileShortcutModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param folderId the folder ID
+	* @param active the active
+	* @param status the status
+	* @param start the lower bound of the range of document library file shortcuts
+	* @param end the upper bound of the range of document library file shortcuts (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching document library file shortcuts
+	*/
+	public java.util.List<DLFileShortcut> findByG_F_A_S(long groupId,
+		long folderId, boolean active, int status, int start, int end,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the document library file shortcuts where groupId = &#63; and folderId = &#63; and active = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileShortcutModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1133,6 +1497,28 @@ public interface DLFileShortcutPersistence extends BasePersistence<DLFileShortcu
 	public java.util.List<DLFileShortcut> findByG_F_A_S(long groupId,
 		long folderId, boolean active, int status, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFileShortcut> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the document library file shortcuts where groupId = &#63; and folderId = &#63; and active = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DLFileShortcutModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param folderId the folder ID
+	* @param active the active
+	* @param status the status
+	* @param start the lower bound of the range of document library file shortcuts
+	* @param end the upper bound of the range of document library file shortcuts (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching document library file shortcuts
+	*/
+	public java.util.List<DLFileShortcut> findByG_F_A_S(long groupId,
+		long folderId, boolean active, int status, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<DLFileShortcut> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first document library file shortcut in the ordered set where groupId = &#63; and folderId = &#63; and active = &#63; and status = &#63;.
