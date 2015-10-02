@@ -39,7 +39,7 @@ public interface ImagePersistence extends BasePersistence<Image> {
 	 */
 
 	/**
-	* Returns all the images where size &lt; &#63;.
+	* Returns all the images where size &lt; &#63;. Uses the finder cache.
 	*
 	* @param size the size
 	* @return the matching images
@@ -47,7 +47,17 @@ public interface ImagePersistence extends BasePersistence<Image> {
 	public java.util.List<Image> findByLtSize(int size);
 
 	/**
-	* Returns a range of all the images where size &lt; &#63;.
+	* Returns all the images where size &lt; &#63;, optionally using the finder cache.
+	*
+	* @param size the size
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching images
+	*/
+	public java.util.List<Image> findByLtSize(int size,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the images where size &lt; &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ImageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -61,7 +71,23 @@ public interface ImagePersistence extends BasePersistence<Image> {
 	public java.util.List<Image> findByLtSize(int size, int start, int end);
 
 	/**
-	* Returns an ordered range of all the images where size &lt; &#63;.
+	* Returns a range of all the images where size &lt; &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ImageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param size the size
+	* @param start the lower bound of the range of images
+	* @param end the upper bound of the range of images (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching images
+	*/
+	public java.util.List<Image> findByLtSize(int size, int start, int end,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the images where size &lt; &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ImageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -75,6 +101,24 @@ public interface ImagePersistence extends BasePersistence<Image> {
 	*/
 	public java.util.List<Image> findByLtSize(int size, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<Image> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the images where size &lt; &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ImageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param size the size
+	* @param start the lower bound of the range of images
+	* @param end the upper bound of the range of images (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching images
+	*/
+	public java.util.List<Image> findByLtSize(int size, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<Image> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first image in the ordered set where size &lt; &#63;.

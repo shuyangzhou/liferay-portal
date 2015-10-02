@@ -57,9 +57,8 @@ public interface PermissionService extends BaseService {
 	service, if a group with the primary key could not be found or if
 	the permission information was invalid
 	*/
-	@JSONWebService(mode = JSONWebServiceMode.IGNORE)
 	public void checkPermission(long groupId, java.lang.String name,
-		long primKey) throws PortalException;
+		java.lang.String primKey) throws PortalException;
 
 	/**
 	* Checks to see if the group has permission to the service.
@@ -71,8 +70,9 @@ public interface PermissionService extends BaseService {
 	service, if a group with the primary key could not be found or if
 	the permission information was invalid
 	*/
+	@JSONWebService(mode = JSONWebServiceMode.IGNORE)
 	public void checkPermission(long groupId, java.lang.String name,
-		java.lang.String primKey) throws PortalException;
+		long primKey) throws PortalException;
 
 	/**
 	* Returns the Spring bean ID for this bean.

@@ -41,7 +41,7 @@ public interface MDRRulePersistence extends BasePersistence<MDRRule> {
 	 */
 
 	/**
-	* Returns all the m d r rules where uuid = &#63;.
+	* Returns all the m d r rules where uuid = &#63;. Uses the finder cache.
 	*
 	* @param uuid the uuid
 	* @return the matching m d r rules
@@ -49,7 +49,17 @@ public interface MDRRulePersistence extends BasePersistence<MDRRule> {
 	public java.util.List<MDRRule> findByUuid(java.lang.String uuid);
 
 	/**
-	* Returns a range of all the m d r rules where uuid = &#63;.
+	* Returns all the m d r rules where uuid = &#63;, optionally using the finder cache.
+	*
+	* @param uuid the uuid
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching m d r rules
+	*/
+	public java.util.List<MDRRule> findByUuid(java.lang.String uuid,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the m d r rules where uuid = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MDRRuleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -64,7 +74,23 @@ public interface MDRRulePersistence extends BasePersistence<MDRRule> {
 		int end);
 
 	/**
-	* Returns an ordered range of all the m d r rules where uuid = &#63;.
+	* Returns a range of all the m d r rules where uuid = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MDRRuleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param start the lower bound of the range of m d r rules
+	* @param end the upper bound of the range of m d r rules (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching m d r rules
+	*/
+	public java.util.List<MDRRule> findByUuid(java.lang.String uuid, int start,
+		int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the m d r rules where uuid = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MDRRuleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -79,6 +105,25 @@ public interface MDRRulePersistence extends BasePersistence<MDRRule> {
 	public java.util.List<MDRRule> findByUuid(java.lang.String uuid, int start,
 		int end,
 		com.liferay.portal.kernel.util.OrderByComparator<MDRRule> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the m d r rules where uuid = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MDRRuleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param start the lower bound of the range of m d r rules
+	* @param end the upper bound of the range of m d r rules (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching m d r rules
+	*/
+	public java.util.List<MDRRule> findByUuid(java.lang.String uuid, int start,
+		int end,
+		com.liferay.portal.kernel.util.OrderByComparator<MDRRule> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first m d r rule in the ordered set where uuid = &#63;.
@@ -203,7 +248,7 @@ public interface MDRRulePersistence extends BasePersistence<MDRRule> {
 	public int countByUUID_G(java.lang.String uuid, long groupId);
 
 	/**
-	* Returns all the m d r rules where uuid = &#63; and companyId = &#63;.
+	* Returns all the m d r rules where uuid = &#63; and companyId = &#63;. Uses the finder cache.
 	*
 	* @param uuid the uuid
 	* @param companyId the company ID
@@ -213,7 +258,18 @@ public interface MDRRulePersistence extends BasePersistence<MDRRule> {
 		long companyId);
 
 	/**
-	* Returns a range of all the m d r rules where uuid = &#63; and companyId = &#63;.
+	* Returns all the m d r rules where uuid = &#63; and companyId = &#63;, optionally using the finder cache.
+	*
+	* @param uuid the uuid
+	* @param companyId the company ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching m d r rules
+	*/
+	public java.util.List<MDRRule> findByUuid_C(java.lang.String uuid,
+		long companyId, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the m d r rules where uuid = &#63; and companyId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MDRRuleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -229,7 +285,24 @@ public interface MDRRulePersistence extends BasePersistence<MDRRule> {
 		long companyId, int start, int end);
 
 	/**
-	* Returns an ordered range of all the m d r rules where uuid = &#63; and companyId = &#63;.
+	* Returns a range of all the m d r rules where uuid = &#63; and companyId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MDRRuleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param companyId the company ID
+	* @param start the lower bound of the range of m d r rules
+	* @param end the upper bound of the range of m d r rules (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching m d r rules
+	*/
+	public java.util.List<MDRRule> findByUuid_C(java.lang.String uuid,
+		long companyId, int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the m d r rules where uuid = &#63; and companyId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MDRRuleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -245,6 +318,26 @@ public interface MDRRulePersistence extends BasePersistence<MDRRule> {
 	public java.util.List<MDRRule> findByUuid_C(java.lang.String uuid,
 		long companyId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<MDRRule> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the m d r rules where uuid = &#63; and companyId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MDRRuleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param companyId the company ID
+	* @param start the lower bound of the range of m d r rules
+	* @param end the upper bound of the range of m d r rules (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching m d r rules
+	*/
+	public java.util.List<MDRRule> findByUuid_C(java.lang.String uuid,
+		long companyId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<MDRRule> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first m d r rule in the ordered set where uuid = &#63; and companyId = &#63;.
@@ -327,7 +420,7 @@ public interface MDRRulePersistence extends BasePersistence<MDRRule> {
 	public int countByUuid_C(java.lang.String uuid, long companyId);
 
 	/**
-	* Returns all the m d r rules where ruleGroupId = &#63;.
+	* Returns all the m d r rules where ruleGroupId = &#63;. Uses the finder cache.
 	*
 	* @param ruleGroupId the rule group ID
 	* @return the matching m d r rules
@@ -335,7 +428,17 @@ public interface MDRRulePersistence extends BasePersistence<MDRRule> {
 	public java.util.List<MDRRule> findByRuleGroupId(long ruleGroupId);
 
 	/**
-	* Returns a range of all the m d r rules where ruleGroupId = &#63;.
+	* Returns all the m d r rules where ruleGroupId = &#63;, optionally using the finder cache.
+	*
+	* @param ruleGroupId the rule group ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching m d r rules
+	*/
+	public java.util.List<MDRRule> findByRuleGroupId(long ruleGroupId,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the m d r rules where ruleGroupId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MDRRuleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -350,7 +453,23 @@ public interface MDRRulePersistence extends BasePersistence<MDRRule> {
 		int start, int end);
 
 	/**
-	* Returns an ordered range of all the m d r rules where ruleGroupId = &#63;.
+	* Returns a range of all the m d r rules where ruleGroupId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MDRRuleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param ruleGroupId the rule group ID
+	* @param start the lower bound of the range of m d r rules
+	* @param end the upper bound of the range of m d r rules (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching m d r rules
+	*/
+	public java.util.List<MDRRule> findByRuleGroupId(long ruleGroupId,
+		int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the m d r rules where ruleGroupId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MDRRuleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -365,6 +484,25 @@ public interface MDRRulePersistence extends BasePersistence<MDRRule> {
 	public java.util.List<MDRRule> findByRuleGroupId(long ruleGroupId,
 		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<MDRRule> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the m d r rules where ruleGroupId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MDRRuleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param ruleGroupId the rule group ID
+	* @param start the lower bound of the range of m d r rules
+	* @param end the upper bound of the range of m d r rules (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching m d r rules
+	*/
+	public java.util.List<MDRRule> findByRuleGroupId(long ruleGroupId,
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<MDRRule> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first m d r rule in the ordered set where ruleGroupId = &#63;.

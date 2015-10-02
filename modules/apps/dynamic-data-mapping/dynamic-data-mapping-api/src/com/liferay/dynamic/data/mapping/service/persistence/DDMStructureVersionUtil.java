@@ -114,7 +114,7 @@ public class DDMStructureVersionUtil {
 	}
 
 	/**
-	* Returns all the d d m structure versions where structureId = &#63;.
+	* Returns all the d d m structure versions where structureId = &#63;. Uses the finder cache.
 	*
 	* @param structureId the structure ID
 	* @return the matching d d m structure versions
@@ -124,7 +124,19 @@ public class DDMStructureVersionUtil {
 	}
 
 	/**
-	* Returns a range of all the d d m structure versions where structureId = &#63;.
+	* Returns all the d d m structure versions where structureId = &#63;, optionally using the finder cache.
+	*
+	* @param structureId the structure ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching d d m structure versions
+	*/
+	public static List<DDMStructureVersion> findByStructureId(
+		long structureId, boolean retrieveFromCache) {
+		return getPersistence().findByStructureId(structureId, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the d d m structure versions where structureId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureVersionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -141,7 +153,26 @@ public class DDMStructureVersionUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the d d m structure versions where structureId = &#63;.
+	* Returns a range of all the d d m structure versions where structureId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureVersionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param structureId the structure ID
+	* @param start the lower bound of the range of d d m structure versions
+	* @param end the upper bound of the range of d d m structure versions (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching d d m structure versions
+	*/
+	public static List<DDMStructureVersion> findByStructureId(
+		long structureId, int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByStructureId(structureId, start, end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the d d m structure versions where structureId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureVersionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -158,6 +189,29 @@ public class DDMStructureVersionUtil {
 		OrderByComparator<DDMStructureVersion> orderByComparator) {
 		return getPersistence()
 				   .findByStructureId(structureId, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the d d m structure versions where structureId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureVersionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param structureId the structure ID
+	* @param start the lower bound of the range of d d m structure versions
+	* @param end the upper bound of the range of d d m structure versions (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching d d m structure versions
+	*/
+	public static List<DDMStructureVersion> findByStructureId(
+		long structureId, int start, int end,
+		OrderByComparator<DDMStructureVersion> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByStructureId(structureId, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
@@ -321,7 +375,7 @@ public class DDMStructureVersionUtil {
 	}
 
 	/**
-	* Returns all the d d m structure versions where structureId = &#63; and status = &#63;.
+	* Returns all the d d m structure versions where structureId = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* @param structureId the structure ID
 	* @param status the status
@@ -333,7 +387,20 @@ public class DDMStructureVersionUtil {
 	}
 
 	/**
-	* Returns a range of all the d d m structure versions where structureId = &#63; and status = &#63;.
+	* Returns all the d d m structure versions where structureId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* @param structureId the structure ID
+	* @param status the status
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching d d m structure versions
+	*/
+	public static List<DDMStructureVersion> findByS_S(long structureId,
+		int status, boolean retrieveFromCache) {
+		return getPersistence().findByS_S(structureId, status, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the d d m structure versions where structureId = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureVersionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -351,7 +418,27 @@ public class DDMStructureVersionUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the d d m structure versions where structureId = &#63; and status = &#63;.
+	* Returns a range of all the d d m structure versions where structureId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureVersionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param structureId the structure ID
+	* @param status the status
+	* @param start the lower bound of the range of d d m structure versions
+	* @param end the upper bound of the range of d d m structure versions (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching d d m structure versions
+	*/
+	public static List<DDMStructureVersion> findByS_S(long structureId,
+		int status, int start, int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByS_S(structureId, status, start, end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the d d m structure versions where structureId = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureVersionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -369,6 +456,30 @@ public class DDMStructureVersionUtil {
 		OrderByComparator<DDMStructureVersion> orderByComparator) {
 		return getPersistence()
 				   .findByS_S(structureId, status, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the d d m structure versions where structureId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStructureVersionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param structureId the structure ID
+	* @param status the status
+	* @param start the lower bound of the range of d d m structure versions
+	* @param end the upper bound of the range of d d m structure versions (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching d d m structure versions
+	*/
+	public static List<DDMStructureVersion> findByS_S(long structureId,
+		int status, int start, int end,
+		OrderByComparator<DDMStructureVersion> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByS_S(structureId, status, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**

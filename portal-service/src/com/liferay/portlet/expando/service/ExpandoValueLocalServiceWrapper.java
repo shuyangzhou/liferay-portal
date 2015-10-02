@@ -47,62 +47,6 @@ public class ExpandoValueLocalServiceWrapper implements ExpandoValueLocalService
 
 	/**
 	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
-	String, String, long, float[])}
-	*/
-	@Deprecated
-	@Override
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, float data)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _expandoValueLocalService.addValue(className, tableName,
-			columnName, classPK, data);
-	}
-
-	/**
-	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
-	String, String, long, float[])}
-	*/
-	@Deprecated
-	@Override
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, float[] data)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _expandoValueLocalService.addValue(className, tableName,
-			columnName, classPK, data);
-	}
-
-	/**
-	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
-	String, String, long, boolean[])}
-	*/
-	@Deprecated
-	@Override
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, boolean[] data)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _expandoValueLocalService.addValue(className, tableName,
-			columnName, classPK, data);
-	}
-
-	/**
-	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
-	String, String, long, double[])}
-	*/
-	@Deprecated
-	@Override
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, double[] data)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _expandoValueLocalService.addValue(className, tableName,
-			columnName, classPK, data);
-	}
-
-	/**
-	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
 	String, String, long, int[])}
 	*/
 	@Deprecated
@@ -110,146 +54,6 @@ public class ExpandoValueLocalServiceWrapper implements ExpandoValueLocalService
 	public com.liferay.portlet.expando.model.ExpandoValue addValue(
 		java.lang.String className, java.lang.String tableName,
 		java.lang.String columnName, long classPK, int data)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _expandoValueLocalService.addValue(className, tableName,
-			columnName, classPK, data);
-	}
-
-	/**
-	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
-	String, String, long, short[])}
-	*/
-	@Deprecated
-	@Override
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, short data)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _expandoValueLocalService.addValue(className, tableName,
-			columnName, classPK, data);
-	}
-
-	/**
-	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
-	String, String, long, long[])}
-	*/
-	@Deprecated
-	@Override
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, long data)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _expandoValueLocalService.addValue(className, tableName,
-			columnName, classPK, data);
-	}
-
-	/**
-	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
-	String, String, long, Date[])}
-	*/
-	@Deprecated
-	@Override
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, java.util.Date[] data)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _expandoValueLocalService.addValue(className, tableName,
-			columnName, classPK, data);
-	}
-
-	/**
-	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
-	String, String, long, boolean[])}
-	*/
-	@Deprecated
-	@Override
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, boolean data)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _expandoValueLocalService.addValue(className, tableName,
-			columnName, classPK, data);
-	}
-
-	/**
-	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
-	String, String, long, long[])}
-	*/
-	@Deprecated
-	@Override
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, long[] data)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _expandoValueLocalService.addValue(className, tableName,
-			columnName, classPK, data);
-	}
-
-	/**
-	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
-	String, String, long, int[])}
-	*/
-	@Deprecated
-	@Override
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, int[] data)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _expandoValueLocalService.addValue(className, tableName,
-			columnName, classPK, data);
-	}
-
-	/**
-	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
-	String, String, long, String[])}
-	*/
-	@Deprecated
-	@Override
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, java.lang.String data)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _expandoValueLocalService.addValue(className, tableName,
-			columnName, classPK, data);
-	}
-
-	/**
-	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
-	String, String, long, short[])}
-	*/
-	@Deprecated
-	@Override
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, short[] data)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _expandoValueLocalService.addValue(className, tableName,
-			columnName, classPK, data);
-	}
-
-	/**
-	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
-	String, String, long, double[])}
-	*/
-	@Deprecated
-	@Override
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, double data)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _expandoValueLocalService.addValue(className, tableName,
-			columnName, classPK, data);
-	}
-
-	/**
-	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
-	String, String, long, String[])}
-	*/
-	@Deprecated
-	@Override
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, java.lang.String[] data)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _expandoValueLocalService.addValue(className, tableName,
 			columnName, classPK, data);
@@ -271,6 +75,146 @@ public class ExpandoValueLocalServiceWrapper implements ExpandoValueLocalService
 
 	/**
 	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
+	String, String, long, float[])}
+	*/
+	@Deprecated
+	@Override
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, float data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _expandoValueLocalService.addValue(className, tableName,
+			columnName, classPK, data);
+	}
+
+	/**
+	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
+	String, String, long, short[])}
+	*/
+	@Deprecated
+	@Override
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, short data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _expandoValueLocalService.addValue(className, tableName,
+			columnName, classPK, data);
+	}
+
+	/**
+	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
+	String, String, long, double[])}
+	*/
+	@Deprecated
+	@Override
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, double data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _expandoValueLocalService.addValue(className, tableName,
+			columnName, classPK, data);
+	}
+
+	/**
+	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
+	String, String, long, boolean[])}
+	*/
+	@Deprecated
+	@Override
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, boolean[] data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _expandoValueLocalService.addValue(className, tableName,
+			columnName, classPK, data);
+	}
+
+	/**
+	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
+	String, String, long, String[])}
+	*/
+	@Deprecated
+	@Override
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, java.lang.String[] data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _expandoValueLocalService.addValue(className, tableName,
+			columnName, classPK, data);
+	}
+
+	/**
+	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
+	String, String, long, long[])}
+	*/
+	@Deprecated
+	@Override
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, long[] data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _expandoValueLocalService.addValue(className, tableName,
+			columnName, classPK, data);
+	}
+
+	/**
+	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
+	String, String, long, String[])}
+	*/
+	@Deprecated
+	@Override
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, java.lang.String data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _expandoValueLocalService.addValue(className, tableName,
+			columnName, classPK, data);
+	}
+
+	/**
+	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
+	String, String, long, float[])}
+	*/
+	@Deprecated
+	@Override
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, float[] data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _expandoValueLocalService.addValue(className, tableName,
+			columnName, classPK, data);
+	}
+
+	/**
+	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
+	String, String, long, long[])}
+	*/
+	@Deprecated
+	@Override
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, long data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _expandoValueLocalService.addValue(className, tableName,
+			columnName, classPK, data);
+	}
+
+	/**
+	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
+	String, String, long, double[])}
+	*/
+	@Deprecated
+	@Override
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, double[] data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _expandoValueLocalService.addValue(className, tableName,
+			columnName, classPK, data);
+	}
+
+	/**
+	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
 	String, String, long, Date[])}
 	*/
 	@Deprecated
@@ -278,6 +222,62 @@ public class ExpandoValueLocalServiceWrapper implements ExpandoValueLocalService
 	public com.liferay.portlet.expando.model.ExpandoValue addValue(
 		java.lang.String className, java.lang.String tableName,
 		java.lang.String columnName, long classPK, java.util.Date data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _expandoValueLocalService.addValue(className, tableName,
+			columnName, classPK, data);
+	}
+
+	/**
+	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
+	String, String, long, short[])}
+	*/
+	@Deprecated
+	@Override
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, short[] data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _expandoValueLocalService.addValue(className, tableName,
+			columnName, classPK, data);
+	}
+
+	/**
+	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
+	String, String, long, Date[])}
+	*/
+	@Deprecated
+	@Override
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, java.util.Date[] data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _expandoValueLocalService.addValue(className, tableName,
+			columnName, classPK, data);
+	}
+
+	/**
+	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
+	String, String, long, int[])}
+	*/
+	@Deprecated
+	@Override
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, int[] data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _expandoValueLocalService.addValue(className, tableName,
+			columnName, classPK, data);
+	}
+
+	/**
+	* @deprecated As of 6.1.0, replaced by {@link #addValue(long, String,
+	String, String, long, boolean[])}
+	*/
+	@Deprecated
+	@Override
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, boolean data)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _expandoValueLocalService.addValue(className, tableName,
 			columnName, classPK, data);
@@ -295,6 +295,42 @@ public class ExpandoValueLocalServiceWrapper implements ExpandoValueLocalService
 	@Override
 	public com.liferay.portlet.expando.model.ExpandoValue addValue(
 		long companyId, java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, boolean[] data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _expandoValueLocalService.addValue(companyId, className,
+			tableName, columnName, classPK, data);
+	}
+
+	@Override
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		long companyId, java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, java.lang.String[] data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _expandoValueLocalService.addValue(companyId, className,
+			tableName, columnName, classPK, data);
+	}
+
+	@Override
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		long companyId, java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, long[] data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _expandoValueLocalService.addValue(companyId, className,
+			tableName, columnName, classPK, data);
+	}
+
+	@Override
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		long companyId, java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, java.util.Date data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _expandoValueLocalService.addValue(companyId, className,
+			tableName, columnName, classPK, data);
+	}
+
+	@Override
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		long companyId, java.lang.String className, java.lang.String tableName,
 		java.lang.String columnName, long classPK, short data)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _expandoValueLocalService.addValue(companyId, className,
@@ -304,16 +340,7 @@ public class ExpandoValueLocalServiceWrapper implements ExpandoValueLocalService
 	@Override
 	public com.liferay.portlet.expando.model.ExpandoValue addValue(
 		long companyId, java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, int data)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _expandoValueLocalService.addValue(companyId, className,
-			tableName, columnName, classPK, data);
-	}
-
-	@Override
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		long companyId, java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, java.util.Date[] data)
+		java.lang.String columnName, long classPK, boolean data)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _expandoValueLocalService.addValue(companyId, className,
 			tableName, columnName, classPK, data);
@@ -340,87 +367,6 @@ public class ExpandoValueLocalServiceWrapper implements ExpandoValueLocalService
 	@Override
 	public com.liferay.portlet.expando.model.ExpandoValue addValue(
 		long companyId, java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, double[] data)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _expandoValueLocalService.addValue(companyId, className,
-			tableName, columnName, classPK, data);
-	}
-
-	@Override
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		long companyId, java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, long[] data)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _expandoValueLocalService.addValue(companyId, className,
-			tableName, columnName, classPK, data);
-	}
-
-	@Override
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		long companyId, java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, float[] data)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _expandoValueLocalService.addValue(companyId, className,
-			tableName, columnName, classPK, data);
-	}
-
-	@Override
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		long companyId, java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, boolean data)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _expandoValueLocalService.addValue(companyId, className,
-			tableName, columnName, classPK, data);
-	}
-
-	@Override
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		long companyId, java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, boolean[] data)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _expandoValueLocalService.addValue(companyId, className,
-			tableName, columnName, classPK, data);
-	}
-
-	@Override
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		long companyId, java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, java.util.Date data)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _expandoValueLocalService.addValue(companyId, className,
-			tableName, columnName, classPK, data);
-	}
-
-	@Override
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		long companyId, java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, java.lang.String data)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _expandoValueLocalService.addValue(companyId, className,
-			tableName, columnName, classPK, data);
-	}
-
-	@Override
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		long companyId, java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, long data)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _expandoValueLocalService.addValue(companyId, className,
-			tableName, columnName, classPK, data);
-	}
-
-	@Override
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		long companyId, java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, java.lang.Object data)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _expandoValueLocalService.addValue(companyId, className,
-			tableName, columnName, classPK, data);
-	}
-
-	@Override
-	public com.liferay.portlet.expando.model.ExpandoValue addValue(
-		long companyId, java.lang.String className, java.lang.String tableName,
 		java.lang.String columnName, long classPK, int[] data)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _expandoValueLocalService.addValue(companyId, className,
@@ -439,7 +385,7 @@ public class ExpandoValueLocalServiceWrapper implements ExpandoValueLocalService
 	@Override
 	public com.liferay.portlet.expando.model.ExpandoValue addValue(
 		long companyId, java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, float data)
+		java.lang.String columnName, long classPK, int data)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _expandoValueLocalService.addValue(companyId, className,
 			tableName, columnName, classPK, data);
@@ -448,7 +394,43 @@ public class ExpandoValueLocalServiceWrapper implements ExpandoValueLocalService
 	@Override
 	public com.liferay.portlet.expando.model.ExpandoValue addValue(
 		long companyId, java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, java.lang.String[] data)
+		java.lang.String columnName, long classPK, java.lang.String data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _expandoValueLocalService.addValue(companyId, className,
+			tableName, columnName, classPK, data);
+	}
+
+	@Override
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		long companyId, java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, double[] data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _expandoValueLocalService.addValue(companyId, className,
+			tableName, columnName, classPK, data);
+	}
+
+	@Override
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		long companyId, java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, java.util.Date[] data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _expandoValueLocalService.addValue(companyId, className,
+			tableName, columnName, classPK, data);
+	}
+
+	@Override
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		long companyId, java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, long data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _expandoValueLocalService.addValue(companyId, className,
+			tableName, columnName, classPK, data);
+	}
+
+	@Override
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		long companyId, java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, float[] data)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _expandoValueLocalService.addValue(companyId, className,
 			tableName, columnName, classPK, data);
@@ -458,6 +440,24 @@ public class ExpandoValueLocalServiceWrapper implements ExpandoValueLocalService
 	public com.liferay.portlet.expando.model.ExpandoValue addValue(
 		long companyId, java.lang.String className, java.lang.String tableName,
 		java.lang.String columnName, long classPK, short[] data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _expandoValueLocalService.addValue(companyId, className,
+			tableName, columnName, classPK, data);
+	}
+
+	@Override
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		long companyId, java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, float data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _expandoValueLocalService.addValue(companyId, className,
+			tableName, columnName, classPK, data);
+	}
+
+	@Override
+	public com.liferay.portlet.expando.model.ExpandoValue addValue(
+		long companyId, java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, java.lang.Object data)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _expandoValueLocalService.addValue(companyId, className,
 			tableName, columnName, classPK, data);
@@ -828,13 +828,27 @@ public class ExpandoValueLocalServiceWrapper implements ExpandoValueLocalService
 
 	/**
 	* @deprecated As of 6.1.0, replaced by {@link #getData(long, String,
-	String, String, long, float[])}
+	String, String, long, Date[])}
 	*/
 	@Deprecated
 	@Override
-	public float[] getData(java.lang.String className,
+	public java.util.Date[] getData(java.lang.String className,
 		java.lang.String tableName, java.lang.String columnName, long classPK,
-		float[] defaultData)
+		java.util.Date[] defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _expandoValueLocalService.getData(className, tableName,
+			columnName, classPK, defaultData);
+	}
+
+	/**
+	* @deprecated As of 6.1.0, replaced by {@link #getData(long, String,
+	String, String, long, short[])}
+	*/
+	@Deprecated
+	@Override
+	public short[] getData(java.lang.String className,
+		java.lang.String tableName, java.lang.String columnName, long classPK,
+		short[] defaultData)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _expandoValueLocalService.getData(className, tableName,
 			columnName, classPK, defaultData);
@@ -869,13 +883,13 @@ public class ExpandoValueLocalServiceWrapper implements ExpandoValueLocalService
 
 	/**
 	* @deprecated As of 6.1.0, replaced by {@link #getData(long, String,
-	String, String, long, short[])}
+	String, String, long, String[])}
 	*/
 	@Deprecated
 	@Override
-	public short[] getData(java.lang.String className,
+	public java.lang.String[] getData(java.lang.String className,
 		java.lang.String tableName, java.lang.String columnName, long classPK,
-		short[] defaultData)
+		java.lang.String[] defaultData)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _expandoValueLocalService.getData(className, tableName,
 			columnName, classPK, defaultData);
@@ -883,13 +897,12 @@ public class ExpandoValueLocalServiceWrapper implements ExpandoValueLocalService
 
 	/**
 	* @deprecated As of 6.1.0, replaced by {@link #getData(long, String,
-	String, String, long, double[])}
+	String, String, long, long[])}
 	*/
 	@Deprecated
 	@Override
-	public double[] getData(java.lang.String className,
-		java.lang.String tableName, java.lang.String columnName, long classPK,
-		double[] defaultData)
+	public long getData(java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK, long defaultData)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _expandoValueLocalService.getData(className, tableName,
 			columnName, classPK, defaultData);
@@ -911,26 +924,13 @@ public class ExpandoValueLocalServiceWrapper implements ExpandoValueLocalService
 
 	/**
 	* @deprecated As of 6.1.0, replaced by {@link #getData(long, String,
-	String, String, long, float[])}
-	*/
-	@Deprecated
-	@Override
-	public float getData(java.lang.String className,
-		java.lang.String tableName, java.lang.String columnName, long classPK,
-		float defaultData)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _expandoValueLocalService.getData(className, tableName,
-			columnName, classPK, defaultData);
-	}
-
-	/**
-	* @deprecated As of 6.1.0, replaced by {@link #getData(long, String,
 	String, String, long, long[])}
 	*/
 	@Deprecated
 	@Override
-	public long getData(java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, long defaultData)
+	public long[] getData(java.lang.String className,
+		java.lang.String tableName, java.lang.String columnName, long classPK,
+		long[] defaultData)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _expandoValueLocalService.getData(className, tableName,
 			columnName, classPK, defaultData);
@@ -938,13 +938,13 @@ public class ExpandoValueLocalServiceWrapper implements ExpandoValueLocalService
 
 	/**
 	* @deprecated As of 6.1.0, replaced by {@link #getData(long, String,
-	String, String, long, String[])}
+	String, String, long, float[])}
 	*/
 	@Deprecated
 	@Override
-	public java.lang.String[] getData(java.lang.String className,
+	public float[] getData(java.lang.String className,
 		java.lang.String tableName, java.lang.String columnName, long classPK,
-		java.lang.String[] defaultData)
+		float[] defaultData)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _expandoValueLocalService.getData(className, tableName,
 			columnName, classPK, defaultData);
@@ -966,41 +966,13 @@ public class ExpandoValueLocalServiceWrapper implements ExpandoValueLocalService
 
 	/**
 	* @deprecated As of 6.1.0, replaced by {@link #getData(long, String,
-	String, String, long, long[])}
-	*/
-	@Deprecated
-	@Override
-	public long[] getData(java.lang.String className,
-		java.lang.String tableName, java.lang.String columnName, long classPK,
-		long[] defaultData)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _expandoValueLocalService.getData(className, tableName,
-			columnName, classPK, defaultData);
-	}
-
-	/**
-	* @deprecated As of 6.1.0, replaced by {@link #getData(long, String,
-	String, String, long, short[])}
-	*/
-	@Deprecated
-	@Override
-	public short getData(java.lang.String className,
-		java.lang.String tableName, java.lang.String columnName, long classPK,
-		short defaultData)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _expandoValueLocalService.getData(className, tableName,
-			columnName, classPK, defaultData);
-	}
-
-	/**
-	* @deprecated As of 6.1.0, replaced by {@link #getData(long, String,
 	String, String, long, Date[])}
 	*/
 	@Deprecated
 	@Override
-	public java.util.Date[] getData(java.lang.String className,
+	public java.util.Date getData(java.lang.String className,
 		java.lang.String tableName, java.lang.String columnName, long classPK,
-		java.util.Date[] defaultData)
+		java.util.Date defaultData)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _expandoValueLocalService.getData(className, tableName,
 			columnName, classPK, defaultData);
@@ -1022,13 +994,41 @@ public class ExpandoValueLocalServiceWrapper implements ExpandoValueLocalService
 
 	/**
 	* @deprecated As of 6.1.0, replaced by {@link #getData(long, String,
-	String, String, long, Date[])}
+	String, String, long, short[])}
 	*/
 	@Deprecated
 	@Override
-	public java.util.Date getData(java.lang.String className,
+	public short getData(java.lang.String className,
 		java.lang.String tableName, java.lang.String columnName, long classPK,
-		java.util.Date defaultData)
+		short defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _expandoValueLocalService.getData(className, tableName,
+			columnName, classPK, defaultData);
+	}
+
+	/**
+	* @deprecated As of 6.1.0, replaced by {@link #getData(long, String,
+	String, String, long, double[])}
+	*/
+	@Deprecated
+	@Override
+	public double[] getData(java.lang.String className,
+		java.lang.String tableName, java.lang.String columnName, long classPK,
+		double[] defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _expandoValueLocalService.getData(className, tableName,
+			columnName, classPK, defaultData);
+	}
+
+	/**
+	* @deprecated As of 6.1.0, replaced by {@link #getData(long, String,
+	String, String, long, float[])}
+	*/
+	@Deprecated
+	@Override
+	public float getData(java.lang.String className,
+		java.lang.String tableName, java.lang.String columnName, long classPK,
+		float defaultData)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _expandoValueLocalService.getData(className, tableName,
 			columnName, classPK, defaultData);
@@ -1058,46 +1058,27 @@ public class ExpandoValueLocalServiceWrapper implements ExpandoValueLocalService
 	}
 
 	@Override
-	public java.lang.String getData(long companyId, java.lang.String className,
+	public boolean[] getData(long companyId, java.lang.String className,
 		java.lang.String tableName, java.lang.String columnName, long classPK,
-		java.lang.String defaultData)
+		boolean[] defaultData)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _expandoValueLocalService.getData(companyId, className,
 			tableName, columnName, classPK, defaultData);
 	}
 
 	@Override
-	public boolean getData(long companyId, java.lang.String className,
+	public short[] getData(long companyId, java.lang.String className,
 		java.lang.String tableName, java.lang.String columnName, long classPK,
-		boolean defaultData)
+		short[] defaultData)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _expandoValueLocalService.getData(companyId, className,
 			tableName, columnName, classPK, defaultData);
 	}
 
 	@Override
-	public java.util.Date[] getData(long companyId, java.lang.String className,
+	public long getData(long companyId, java.lang.String className,
 		java.lang.String tableName, java.lang.String columnName, long classPK,
-		java.util.Date[] defaultData)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _expandoValueLocalService.getData(companyId, className,
-			tableName, columnName, classPK, defaultData);
-	}
-
-	@Override
-	public double[] getData(long companyId, java.lang.String className,
-		java.lang.String tableName, java.lang.String columnName, long classPK,
-		double[] defaultData)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _expandoValueLocalService.getData(companyId, className,
-			tableName, columnName, classPK, defaultData);
-	}
-
-	@Override
-	public java.lang.Number[] getData(long companyId,
-		java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK,
-		java.lang.Number[] defaultData)
+		long defaultData)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _expandoValueLocalService.getData(companyId, className,
 			tableName, columnName, classPK, defaultData);
@@ -1113,9 +1094,82 @@ public class ExpandoValueLocalServiceWrapper implements ExpandoValueLocalService
 	}
 
 	@Override
+	public java.lang.Number getData(long companyId, java.lang.String className,
+		java.lang.String tableName, java.lang.String columnName, long classPK,
+		java.lang.Number defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _expandoValueLocalService.getData(companyId, className,
+			tableName, columnName, classPK, defaultData);
+	}
+
+	@Override
+	public boolean getData(long companyId, java.lang.String className,
+		java.lang.String tableName, java.lang.String columnName, long classPK,
+		boolean defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _expandoValueLocalService.getData(companyId, className,
+			tableName, columnName, classPK, defaultData);
+	}
+
+	@Override
+	public java.lang.String[] getData(long companyId,
+		java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK,
+		java.lang.String[] defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _expandoValueLocalService.getData(companyId, className,
+			tableName, columnName, classPK, defaultData);
+	}
+
+	@Override
+	public long[] getData(long companyId, java.lang.String className,
+		java.lang.String tableName, java.lang.String columnName, long classPK,
+		long[] defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _expandoValueLocalService.getData(companyId, className,
+			tableName, columnName, classPK, defaultData);
+	}
+
+	@Override
+	public java.util.Date getData(long companyId, java.lang.String className,
+		java.lang.String tableName, java.lang.String columnName, long classPK,
+		java.util.Date defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _expandoValueLocalService.getData(companyId, className,
+			tableName, columnName, classPK, defaultData);
+	}
+
+	@Override
+	public double getData(long companyId, java.lang.String className,
+		java.lang.String tableName, java.lang.String columnName, long classPK,
+		double defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _expandoValueLocalService.getData(companyId, className,
+			tableName, columnName, classPK, defaultData);
+	}
+
+	@Override
+	public double[] getData(long companyId, java.lang.String className,
+		java.lang.String tableName, java.lang.String columnName, long classPK,
+		double[] defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _expandoValueLocalService.getData(companyId, className,
+			tableName, columnName, classPK, defaultData);
+	}
+
+	@Override
 	public float getData(long companyId, java.lang.String className,
 		java.lang.String tableName, java.lang.String columnName, long classPK,
 		float defaultData)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _expandoValueLocalService.getData(companyId, className,
+			tableName, columnName, classPK, defaultData);
+	}
+
+	@Override
+	public int getData(long companyId, java.lang.String className,
+		java.lang.String tableName, java.lang.String columnName, long classPK,
+		int defaultData)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _expandoValueLocalService.getData(companyId, className,
 			tableName, columnName, classPK, defaultData);
@@ -1141,55 +1195,9 @@ public class ExpandoValueLocalServiceWrapper implements ExpandoValueLocalService
 	}
 
 	@Override
-	public java.lang.String[] getData(long companyId,
-		java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK,
-		java.lang.String[] defaultData)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _expandoValueLocalService.getData(companyId, className,
-			tableName, columnName, classPK, defaultData);
-	}
-
-	@Override
-	public short[] getData(long companyId, java.lang.String className,
+	public java.lang.String getData(long companyId, java.lang.String className,
 		java.lang.String tableName, java.lang.String columnName, long classPK,
-		short[] defaultData)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _expandoValueLocalService.getData(companyId, className,
-			tableName, columnName, classPK, defaultData);
-	}
-
-	@Override
-	public long[] getData(long companyId, java.lang.String className,
-		java.lang.String tableName, java.lang.String columnName, long classPK,
-		long[] defaultData)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _expandoValueLocalService.getData(companyId, className,
-			tableName, columnName, classPK, defaultData);
-	}
-
-	@Override
-	public boolean[] getData(long companyId, java.lang.String className,
-		java.lang.String tableName, java.lang.String columnName, long classPK,
-		boolean[] defaultData)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _expandoValueLocalService.getData(companyId, className,
-			tableName, columnName, classPK, defaultData);
-	}
-
-	@Override
-	public double getData(long companyId, java.lang.String className,
-		java.lang.String tableName, java.lang.String columnName, long classPK,
-		double defaultData)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _expandoValueLocalService.getData(companyId, className,
-			tableName, columnName, classPK, defaultData);
-	}
-
-	@Override
-	public long getData(long companyId, java.lang.String className,
-		java.lang.String tableName, java.lang.String columnName, long classPK,
-		long defaultData)
+		java.lang.String defaultData)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _expandoValueLocalService.getData(companyId, className,
 			tableName, columnName, classPK, defaultData);
@@ -1205,27 +1213,19 @@ public class ExpandoValueLocalServiceWrapper implements ExpandoValueLocalService
 	}
 
 	@Override
-	public java.util.Date getData(long companyId, java.lang.String className,
+	public java.util.Date[] getData(long companyId, java.lang.String className,
 		java.lang.String tableName, java.lang.String columnName, long classPK,
-		java.util.Date defaultData)
+		java.util.Date[] defaultData)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _expandoValueLocalService.getData(companyId, className,
 			tableName, columnName, classPK, defaultData);
 	}
 
 	@Override
-	public int getData(long companyId, java.lang.String className,
-		java.lang.String tableName, java.lang.String columnName, long classPK,
-		int defaultData)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _expandoValueLocalService.getData(companyId, className,
-			tableName, columnName, classPK, defaultData);
-	}
-
-	@Override
-	public java.lang.Number getData(long companyId, java.lang.String className,
-		java.lang.String tableName, java.lang.String columnName, long classPK,
-		java.lang.Number defaultData)
+	public java.lang.Number[] getData(long companyId,
+		java.lang.String className, java.lang.String tableName,
+		java.lang.String columnName, long classPK,
+		java.lang.Number[] defaultData)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _expandoValueLocalService.getData(companyId, className,
 			tableName, columnName, classPK, defaultData);

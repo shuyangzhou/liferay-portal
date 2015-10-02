@@ -108,7 +108,7 @@ public class ShoppingItemFieldPersistenceImpl extends BasePersistenceImpl<Shoppi
 			new String[] { Long.class.getName() });
 
 	/**
-	 * Returns all the shopping item fields where itemId = &#63;.
+	 * Returns all the shopping item fields where itemId = &#63;. Uses the finder cache.
 	 *
 	 * @param itemId the item ID
 	 * @return the matching shopping item fields
@@ -119,7 +119,21 @@ public class ShoppingItemFieldPersistenceImpl extends BasePersistenceImpl<Shoppi
 	}
 
 	/**
-	 * Returns a range of all the shopping item fields where itemId = &#63;.
+	 * Returns all the shopping item fields where itemId = &#63;, optionally using the finder cache.
+	 *
+	 * @param itemId the item ID
+	 * @param retrieveFromCache whether to use the finder cache
+	 * @return the matching shopping item fields
+	 */
+	@Override
+	public List<ShoppingItemField> findByItemId(long itemId,
+		boolean retrieveFromCache) {
+		return findByItemId(itemId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+			retrieveFromCache);
+	}
+
+	/**
+	 * Returns a range of all the shopping item fields where itemId = &#63;. Uses the finder cache.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ShoppingItemFieldModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -136,7 +150,26 @@ public class ShoppingItemFieldPersistenceImpl extends BasePersistenceImpl<Shoppi
 	}
 
 	/**
-	 * Returns an ordered range of all the shopping item fields where itemId = &#63;.
+	 * Returns a range of all the shopping item fields where itemId = &#63;, optionally using the finder cache.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ShoppingItemFieldModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param itemId the item ID
+	 * @param start the lower bound of the range of shopping item fields
+	 * @param end the upper bound of the range of shopping item fields (not inclusive)
+	 * @param retrieveFromCache whether to use the finder cache
+	 * @return the range of matching shopping item fields
+	 */
+	@Override
+	public List<ShoppingItemField> findByItemId(long itemId, int start,
+		int end, boolean retrieveFromCache) {
+		return findByItemId(itemId, start, end, null, retrieveFromCache);
+	}
+
+	/**
+	 * Returns an ordered range of all the shopping item fields where itemId = &#63;. Uses the finder cache.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ShoppingItemFieldModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -151,6 +184,27 @@ public class ShoppingItemFieldPersistenceImpl extends BasePersistenceImpl<Shoppi
 	@Override
 	public List<ShoppingItemField> findByItemId(long itemId, int start,
 		int end, OrderByComparator<ShoppingItemField> orderByComparator) {
+		return findByItemId(itemId, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the shopping item fields where itemId = &#63;, optionally using the finder cache.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ShoppingItemFieldModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param itemId the item ID
+	 * @param start the lower bound of the range of shopping item fields
+	 * @param end the upper bound of the range of shopping item fields (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to use the finder cache
+	 * @return the ordered range of matching shopping item fields
+	 */
+	@Override
+	public List<ShoppingItemField> findByItemId(long itemId, int start,
+		int end, OrderByComparator<ShoppingItemField> orderByComparator,
+		boolean retrieveFromCache) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -166,8 +220,12 @@ public class ShoppingItemFieldPersistenceImpl extends BasePersistenceImpl<Shoppi
 			finderArgs = new Object[] { itemId, start, end, orderByComparator };
 		}
 
-		List<ShoppingItemField> list = (List<ShoppingItemField>)FinderCacheUtil.getResult(finderPath,
-				finderArgs, this);
+		List<ShoppingItemField> list = null;
+
+		if (retrieveFromCache) {
+			list = (List<ShoppingItemField>)FinderCacheUtil.getResult(finderPath,
+					finderArgs, this);
+		}
 
 		if ((list != null) && !list.isEmpty()) {
 			for (ShoppingItemField shoppingItemField : list) {

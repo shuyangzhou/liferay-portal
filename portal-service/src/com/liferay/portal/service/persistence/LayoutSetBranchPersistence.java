@@ -39,7 +39,7 @@ public interface LayoutSetBranchPersistence extends BasePersistence<LayoutSetBra
 	 */
 
 	/**
-	* Returns all the layout set branchs where groupId = &#63;.
+	* Returns all the layout set branchs where groupId = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @return the matching layout set branchs
@@ -47,7 +47,17 @@ public interface LayoutSetBranchPersistence extends BasePersistence<LayoutSetBra
 	public java.util.List<LayoutSetBranch> findByGroupId(long groupId);
 
 	/**
-	* Returns a range of all the layout set branchs where groupId = &#63;.
+	* Returns all the layout set branchs where groupId = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching layout set branchs
+	*/
+	public java.util.List<LayoutSetBranch> findByGroupId(long groupId,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the layout set branchs where groupId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LayoutSetBranchModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -62,7 +72,23 @@ public interface LayoutSetBranchPersistence extends BasePersistence<LayoutSetBra
 		int start, int end);
 
 	/**
-	* Returns an ordered range of all the layout set branchs where groupId = &#63;.
+	* Returns a range of all the layout set branchs where groupId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LayoutSetBranchModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param start the lower bound of the range of layout set branchs
+	* @param end the upper bound of the range of layout set branchs (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching layout set branchs
+	*/
+	public java.util.List<LayoutSetBranch> findByGroupId(long groupId,
+		int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the layout set branchs where groupId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LayoutSetBranchModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -77,6 +103,25 @@ public interface LayoutSetBranchPersistence extends BasePersistence<LayoutSetBra
 	public java.util.List<LayoutSetBranch> findByGroupId(long groupId,
 		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<LayoutSetBranch> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the layout set branchs where groupId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LayoutSetBranchModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param start the lower bound of the range of layout set branchs
+	* @param end the upper bound of the range of layout set branchs (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching layout set branchs
+	*/
+	public java.util.List<LayoutSetBranch> findByGroupId(long groupId,
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<LayoutSetBranch> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first layout set branch in the ordered set where groupId = &#63;.
@@ -214,7 +259,7 @@ public interface LayoutSetBranchPersistence extends BasePersistence<LayoutSetBra
 	public int filterCountByGroupId(long groupId);
 
 	/**
-	* Returns all the layout set branchs where groupId = &#63; and privateLayout = &#63;.
+	* Returns all the layout set branchs where groupId = &#63; and privateLayout = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param privateLayout the private layout
@@ -224,7 +269,18 @@ public interface LayoutSetBranchPersistence extends BasePersistence<LayoutSetBra
 		boolean privateLayout);
 
 	/**
-	* Returns a range of all the layout set branchs where groupId = &#63; and privateLayout = &#63;.
+	* Returns all the layout set branchs where groupId = &#63; and privateLayout = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param privateLayout the private layout
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching layout set branchs
+	*/
+	public java.util.List<LayoutSetBranch> findByG_P(long groupId,
+		boolean privateLayout, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the layout set branchs where groupId = &#63; and privateLayout = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LayoutSetBranchModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -240,7 +296,24 @@ public interface LayoutSetBranchPersistence extends BasePersistence<LayoutSetBra
 		boolean privateLayout, int start, int end);
 
 	/**
-	* Returns an ordered range of all the layout set branchs where groupId = &#63; and privateLayout = &#63;.
+	* Returns a range of all the layout set branchs where groupId = &#63; and privateLayout = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LayoutSetBranchModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param privateLayout the private layout
+	* @param start the lower bound of the range of layout set branchs
+	* @param end the upper bound of the range of layout set branchs (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching layout set branchs
+	*/
+	public java.util.List<LayoutSetBranch> findByG_P(long groupId,
+		boolean privateLayout, int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the layout set branchs where groupId = &#63; and privateLayout = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LayoutSetBranchModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -256,6 +329,26 @@ public interface LayoutSetBranchPersistence extends BasePersistence<LayoutSetBra
 	public java.util.List<LayoutSetBranch> findByG_P(long groupId,
 		boolean privateLayout, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<LayoutSetBranch> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the layout set branchs where groupId = &#63; and privateLayout = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LayoutSetBranchModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param privateLayout the private layout
+	* @param start the lower bound of the range of layout set branchs
+	* @param end the upper bound of the range of layout set branchs (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching layout set branchs
+	*/
+	public java.util.List<LayoutSetBranch> findByG_P(long groupId,
+		boolean privateLayout, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<LayoutSetBranch> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first layout set branch in the ordered set where groupId = &#63; and privateLayout = &#63;.
@@ -466,7 +559,7 @@ public interface LayoutSetBranchPersistence extends BasePersistence<LayoutSetBra
 		java.lang.String name);
 
 	/**
-	* Returns all the layout set branchs where groupId = &#63; and privateLayout = &#63; and master = &#63;.
+	* Returns all the layout set branchs where groupId = &#63; and privateLayout = &#63; and master = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param privateLayout the private layout
@@ -477,7 +570,19 @@ public interface LayoutSetBranchPersistence extends BasePersistence<LayoutSetBra
 		boolean privateLayout, boolean master);
 
 	/**
-	* Returns a range of all the layout set branchs where groupId = &#63; and privateLayout = &#63; and master = &#63;.
+	* Returns all the layout set branchs where groupId = &#63; and privateLayout = &#63; and master = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param privateLayout the private layout
+	* @param master the master
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching layout set branchs
+	*/
+	public java.util.List<LayoutSetBranch> findByG_P_M(long groupId,
+		boolean privateLayout, boolean master, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the layout set branchs where groupId = &#63; and privateLayout = &#63; and master = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LayoutSetBranchModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -494,7 +599,26 @@ public interface LayoutSetBranchPersistence extends BasePersistence<LayoutSetBra
 		boolean privateLayout, boolean master, int start, int end);
 
 	/**
-	* Returns an ordered range of all the layout set branchs where groupId = &#63; and privateLayout = &#63; and master = &#63;.
+	* Returns a range of all the layout set branchs where groupId = &#63; and privateLayout = &#63; and master = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LayoutSetBranchModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param privateLayout the private layout
+	* @param master the master
+	* @param start the lower bound of the range of layout set branchs
+	* @param end the upper bound of the range of layout set branchs (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching layout set branchs
+	*/
+	public java.util.List<LayoutSetBranch> findByG_P_M(long groupId,
+		boolean privateLayout, boolean master, int start, int end,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the layout set branchs where groupId = &#63; and privateLayout = &#63; and master = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LayoutSetBranchModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -511,6 +635,27 @@ public interface LayoutSetBranchPersistence extends BasePersistence<LayoutSetBra
 	public java.util.List<LayoutSetBranch> findByG_P_M(long groupId,
 		boolean privateLayout, boolean master, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<LayoutSetBranch> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the layout set branchs where groupId = &#63; and privateLayout = &#63; and master = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LayoutSetBranchModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param privateLayout the private layout
+	* @param master the master
+	* @param start the lower bound of the range of layout set branchs
+	* @param end the upper bound of the range of layout set branchs (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching layout set branchs
+	*/
+	public java.util.List<LayoutSetBranch> findByG_P_M(long groupId,
+		boolean privateLayout, boolean master, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<LayoutSetBranch> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first layout set branch in the ordered set where groupId = &#63; and privateLayout = &#63; and master = &#63;.

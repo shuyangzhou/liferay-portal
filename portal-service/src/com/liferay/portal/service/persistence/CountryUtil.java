@@ -272,7 +272,7 @@ public class CountryUtil {
 	}
 
 	/**
-	* Returns all the countries where active = &#63;.
+	* Returns all the countries where active = &#63;. Uses the finder cache.
 	*
 	* @param active the active
 	* @return the matching countries
@@ -282,7 +282,19 @@ public class CountryUtil {
 	}
 
 	/**
-	* Returns a range of all the countries where active = &#63;.
+	* Returns all the countries where active = &#63;, optionally using the finder cache.
+	*
+	* @param active the active
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching countries
+	*/
+	public static List<Country> findByActive(boolean active,
+		boolean retrieveFromCache) {
+		return getPersistence().findByActive(active, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the countries where active = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CountryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -298,7 +310,26 @@ public class CountryUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the countries where active = &#63;.
+	* Returns a range of all the countries where active = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CountryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param active the active
+	* @param start the lower bound of the range of countries
+	* @param end the upper bound of the range of countries (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching countries
+	*/
+	public static List<Country> findByActive(boolean active, int start,
+		int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByActive(active, start, end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the countries where active = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CountryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -314,6 +345,28 @@ public class CountryUtil {
 		int end, OrderByComparator<Country> orderByComparator) {
 		return getPersistence()
 				   .findByActive(active, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the countries where active = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CountryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param active the active
+	* @param start the lower bound of the range of countries
+	* @param end the upper bound of the range of countries (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching countries
+	*/
+	public static List<Country> findByActive(boolean active, int start,
+		int end, OrderByComparator<Country> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByActive(active, start, end, orderByComparator,
+			retrieveFromCache);
 	}
 
 	/**

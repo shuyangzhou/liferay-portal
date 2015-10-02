@@ -41,7 +41,7 @@ public interface SocialActivityAchievementPersistence extends BasePersistence<So
 	 */
 
 	/**
-	* Returns all the social activity achievements where groupId = &#63;.
+	* Returns all the social activity achievements where groupId = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @return the matching social activity achievements
@@ -49,7 +49,17 @@ public interface SocialActivityAchievementPersistence extends BasePersistence<So
 	public java.util.List<SocialActivityAchievement> findByGroupId(long groupId);
 
 	/**
-	* Returns a range of all the social activity achievements where groupId = &#63;.
+	* Returns all the social activity achievements where groupId = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching social activity achievements
+	*/
+	public java.util.List<SocialActivityAchievement> findByGroupId(
+		long groupId, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the social activity achievements where groupId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SocialActivityAchievementModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -64,7 +74,23 @@ public interface SocialActivityAchievementPersistence extends BasePersistence<So
 		long groupId, int start, int end);
 
 	/**
-	* Returns an ordered range of all the social activity achievements where groupId = &#63;.
+	* Returns a range of all the social activity achievements where groupId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SocialActivityAchievementModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param start the lower bound of the range of social activity achievements
+	* @param end the upper bound of the range of social activity achievements (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching social activity achievements
+	*/
+	public java.util.List<SocialActivityAchievement> findByGroupId(
+		long groupId, int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the social activity achievements where groupId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SocialActivityAchievementModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -79,6 +105,25 @@ public interface SocialActivityAchievementPersistence extends BasePersistence<So
 	public java.util.List<SocialActivityAchievement> findByGroupId(
 		long groupId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<SocialActivityAchievement> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the social activity achievements where groupId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SocialActivityAchievementModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param start the lower bound of the range of social activity achievements
+	* @param end the upper bound of the range of social activity achievements (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching social activity achievements
+	*/
+	public java.util.List<SocialActivityAchievement> findByGroupId(
+		long groupId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<SocialActivityAchievement> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first social activity achievement in the ordered set where groupId = &#63;.
@@ -154,7 +199,7 @@ public interface SocialActivityAchievementPersistence extends BasePersistence<So
 	public int countByGroupId(long groupId);
 
 	/**
-	* Returns all the social activity achievements where groupId = &#63; and userId = &#63;.
+	* Returns all the social activity achievements where groupId = &#63; and userId = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param userId the user ID
@@ -164,7 +209,18 @@ public interface SocialActivityAchievementPersistence extends BasePersistence<So
 		long userId);
 
 	/**
-	* Returns a range of all the social activity achievements where groupId = &#63; and userId = &#63;.
+	* Returns all the social activity achievements where groupId = &#63; and userId = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param userId the user ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching social activity achievements
+	*/
+	public java.util.List<SocialActivityAchievement> findByG_U(long groupId,
+		long userId, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the social activity achievements where groupId = &#63; and userId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SocialActivityAchievementModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -180,7 +236,24 @@ public interface SocialActivityAchievementPersistence extends BasePersistence<So
 		long userId, int start, int end);
 
 	/**
-	* Returns an ordered range of all the social activity achievements where groupId = &#63; and userId = &#63;.
+	* Returns a range of all the social activity achievements where groupId = &#63; and userId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SocialActivityAchievementModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param userId the user ID
+	* @param start the lower bound of the range of social activity achievements
+	* @param end the upper bound of the range of social activity achievements (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching social activity achievements
+	*/
+	public java.util.List<SocialActivityAchievement> findByG_U(long groupId,
+		long userId, int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the social activity achievements where groupId = &#63; and userId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SocialActivityAchievementModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -196,6 +269,26 @@ public interface SocialActivityAchievementPersistence extends BasePersistence<So
 	public java.util.List<SocialActivityAchievement> findByG_U(long groupId,
 		long userId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<SocialActivityAchievement> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the social activity achievements where groupId = &#63; and userId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SocialActivityAchievementModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param userId the user ID
+	* @param start the lower bound of the range of social activity achievements
+	* @param end the upper bound of the range of social activity achievements (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching social activity achievements
+	*/
+	public java.util.List<SocialActivityAchievement> findByG_U(long groupId,
+		long userId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<SocialActivityAchievement> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first social activity achievement in the ordered set where groupId = &#63; and userId = &#63;.
@@ -279,7 +372,7 @@ public interface SocialActivityAchievementPersistence extends BasePersistence<So
 	public int countByG_U(long groupId, long userId);
 
 	/**
-	* Returns all the social activity achievements where groupId = &#63; and name = &#63;.
+	* Returns all the social activity achievements where groupId = &#63; and name = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param name the name
@@ -289,7 +382,18 @@ public interface SocialActivityAchievementPersistence extends BasePersistence<So
 		java.lang.String name);
 
 	/**
-	* Returns a range of all the social activity achievements where groupId = &#63; and name = &#63;.
+	* Returns all the social activity achievements where groupId = &#63; and name = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param name the name
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching social activity achievements
+	*/
+	public java.util.List<SocialActivityAchievement> findByG_N(long groupId,
+		java.lang.String name, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the social activity achievements where groupId = &#63; and name = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SocialActivityAchievementModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -305,7 +409,24 @@ public interface SocialActivityAchievementPersistence extends BasePersistence<So
 		java.lang.String name, int start, int end);
 
 	/**
-	* Returns an ordered range of all the social activity achievements where groupId = &#63; and name = &#63;.
+	* Returns a range of all the social activity achievements where groupId = &#63; and name = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SocialActivityAchievementModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param name the name
+	* @param start the lower bound of the range of social activity achievements
+	* @param end the upper bound of the range of social activity achievements (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching social activity achievements
+	*/
+	public java.util.List<SocialActivityAchievement> findByG_N(long groupId,
+		java.lang.String name, int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the social activity achievements where groupId = &#63; and name = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SocialActivityAchievementModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -321,6 +442,26 @@ public interface SocialActivityAchievementPersistence extends BasePersistence<So
 	public java.util.List<SocialActivityAchievement> findByG_N(long groupId,
 		java.lang.String name, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<SocialActivityAchievement> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the social activity achievements where groupId = &#63; and name = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SocialActivityAchievementModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param name the name
+	* @param start the lower bound of the range of social activity achievements
+	* @param end the upper bound of the range of social activity achievements (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching social activity achievements
+	*/
+	public java.util.List<SocialActivityAchievement> findByG_N(long groupId,
+		java.lang.String name, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<SocialActivityAchievement> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first social activity achievement in the ordered set where groupId = &#63; and name = &#63;.
@@ -407,7 +548,7 @@ public interface SocialActivityAchievementPersistence extends BasePersistence<So
 	public int countByG_N(long groupId, java.lang.String name);
 
 	/**
-	* Returns all the social activity achievements where groupId = &#63; and firstInGroup = &#63;.
+	* Returns all the social activity achievements where groupId = &#63; and firstInGroup = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param firstInGroup the first in group
@@ -417,7 +558,18 @@ public interface SocialActivityAchievementPersistence extends BasePersistence<So
 		boolean firstInGroup);
 
 	/**
-	* Returns a range of all the social activity achievements where groupId = &#63; and firstInGroup = &#63;.
+	* Returns all the social activity achievements where groupId = &#63; and firstInGroup = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param firstInGroup the first in group
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching social activity achievements
+	*/
+	public java.util.List<SocialActivityAchievement> findByG_F(long groupId,
+		boolean firstInGroup, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the social activity achievements where groupId = &#63; and firstInGroup = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SocialActivityAchievementModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -433,7 +585,24 @@ public interface SocialActivityAchievementPersistence extends BasePersistence<So
 		boolean firstInGroup, int start, int end);
 
 	/**
-	* Returns an ordered range of all the social activity achievements where groupId = &#63; and firstInGroup = &#63;.
+	* Returns a range of all the social activity achievements where groupId = &#63; and firstInGroup = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SocialActivityAchievementModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param firstInGroup the first in group
+	* @param start the lower bound of the range of social activity achievements
+	* @param end the upper bound of the range of social activity achievements (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching social activity achievements
+	*/
+	public java.util.List<SocialActivityAchievement> findByG_F(long groupId,
+		boolean firstInGroup, int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the social activity achievements where groupId = &#63; and firstInGroup = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SocialActivityAchievementModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -449,6 +618,26 @@ public interface SocialActivityAchievementPersistence extends BasePersistence<So
 	public java.util.List<SocialActivityAchievement> findByG_F(long groupId,
 		boolean firstInGroup, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<SocialActivityAchievement> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the social activity achievements where groupId = &#63; and firstInGroup = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SocialActivityAchievementModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param firstInGroup the first in group
+	* @param start the lower bound of the range of social activity achievements
+	* @param end the upper bound of the range of social activity achievements (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching social activity achievements
+	*/
+	public java.util.List<SocialActivityAchievement> findByG_F(long groupId,
+		boolean firstInGroup, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<SocialActivityAchievement> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first social activity achievement in the ordered set where groupId = &#63; and firstInGroup = &#63;.
@@ -593,7 +782,7 @@ public interface SocialActivityAchievementPersistence extends BasePersistence<So
 	public int countByG_U_N(long groupId, long userId, java.lang.String name);
 
 	/**
-	* Returns all the social activity achievements where groupId = &#63; and userId = &#63; and firstInGroup = &#63;.
+	* Returns all the social activity achievements where groupId = &#63; and userId = &#63; and firstInGroup = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param userId the user ID
@@ -604,7 +793,19 @@ public interface SocialActivityAchievementPersistence extends BasePersistence<So
 		long userId, boolean firstInGroup);
 
 	/**
-	* Returns a range of all the social activity achievements where groupId = &#63; and userId = &#63; and firstInGroup = &#63;.
+	* Returns all the social activity achievements where groupId = &#63; and userId = &#63; and firstInGroup = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param userId the user ID
+	* @param firstInGroup the first in group
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching social activity achievements
+	*/
+	public java.util.List<SocialActivityAchievement> findByG_U_F(long groupId,
+		long userId, boolean firstInGroup, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the social activity achievements where groupId = &#63; and userId = &#63; and firstInGroup = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SocialActivityAchievementModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -621,7 +822,26 @@ public interface SocialActivityAchievementPersistence extends BasePersistence<So
 		long userId, boolean firstInGroup, int start, int end);
 
 	/**
-	* Returns an ordered range of all the social activity achievements where groupId = &#63; and userId = &#63; and firstInGroup = &#63;.
+	* Returns a range of all the social activity achievements where groupId = &#63; and userId = &#63; and firstInGroup = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SocialActivityAchievementModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param userId the user ID
+	* @param firstInGroup the first in group
+	* @param start the lower bound of the range of social activity achievements
+	* @param end the upper bound of the range of social activity achievements (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching social activity achievements
+	*/
+	public java.util.List<SocialActivityAchievement> findByG_U_F(long groupId,
+		long userId, boolean firstInGroup, int start, int end,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the social activity achievements where groupId = &#63; and userId = &#63; and firstInGroup = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SocialActivityAchievementModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -638,6 +858,27 @@ public interface SocialActivityAchievementPersistence extends BasePersistence<So
 	public java.util.List<SocialActivityAchievement> findByG_U_F(long groupId,
 		long userId, boolean firstInGroup, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<SocialActivityAchievement> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the social activity achievements where groupId = &#63; and userId = &#63; and firstInGroup = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SocialActivityAchievementModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param userId the user ID
+	* @param firstInGroup the first in group
+	* @param start the lower bound of the range of social activity achievements
+	* @param end the upper bound of the range of social activity achievements (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching social activity achievements
+	*/
+	public java.util.List<SocialActivityAchievement> findByG_U_F(long groupId,
+		long userId, boolean firstInGroup, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<SocialActivityAchievement> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first social activity achievement in the ordered set where groupId = &#63; and userId = &#63; and firstInGroup = &#63;.

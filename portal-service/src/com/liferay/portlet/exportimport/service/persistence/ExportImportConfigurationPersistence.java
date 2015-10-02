@@ -41,7 +41,7 @@ public interface ExportImportConfigurationPersistence extends BasePersistence<Ex
 	 */
 
 	/**
-	* Returns all the export import configurations where groupId = &#63;.
+	* Returns all the export import configurations where groupId = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @return the matching export import configurations
@@ -49,7 +49,17 @@ public interface ExportImportConfigurationPersistence extends BasePersistence<Ex
 	public java.util.List<ExportImportConfiguration> findByGroupId(long groupId);
 
 	/**
-	* Returns a range of all the export import configurations where groupId = &#63;.
+	* Returns all the export import configurations where groupId = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching export import configurations
+	*/
+	public java.util.List<ExportImportConfiguration> findByGroupId(
+		long groupId, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the export import configurations where groupId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExportImportConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -64,7 +74,23 @@ public interface ExportImportConfigurationPersistence extends BasePersistence<Ex
 		long groupId, int start, int end);
 
 	/**
-	* Returns an ordered range of all the export import configurations where groupId = &#63;.
+	* Returns a range of all the export import configurations where groupId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExportImportConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param start the lower bound of the range of export import configurations
+	* @param end the upper bound of the range of export import configurations (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching export import configurations
+	*/
+	public java.util.List<ExportImportConfiguration> findByGroupId(
+		long groupId, int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the export import configurations where groupId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExportImportConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -79,6 +105,25 @@ public interface ExportImportConfigurationPersistence extends BasePersistence<Ex
 	public java.util.List<ExportImportConfiguration> findByGroupId(
 		long groupId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<ExportImportConfiguration> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the export import configurations where groupId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExportImportConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param start the lower bound of the range of export import configurations
+	* @param end the upper bound of the range of export import configurations (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching export import configurations
+	*/
+	public java.util.List<ExportImportConfiguration> findByGroupId(
+		long groupId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<ExportImportConfiguration> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first export import configuration in the ordered set where groupId = &#63;.
@@ -154,7 +199,7 @@ public interface ExportImportConfigurationPersistence extends BasePersistence<Ex
 	public int countByGroupId(long groupId);
 
 	/**
-	* Returns all the export import configurations where companyId = &#63;.
+	* Returns all the export import configurations where companyId = &#63;. Uses the finder cache.
 	*
 	* @param companyId the company ID
 	* @return the matching export import configurations
@@ -163,7 +208,17 @@ public interface ExportImportConfigurationPersistence extends BasePersistence<Ex
 		long companyId);
 
 	/**
-	* Returns a range of all the export import configurations where companyId = &#63;.
+	* Returns all the export import configurations where companyId = &#63;, optionally using the finder cache.
+	*
+	* @param companyId the company ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching export import configurations
+	*/
+	public java.util.List<ExportImportConfiguration> findByCompanyId(
+		long companyId, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the export import configurations where companyId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExportImportConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -178,7 +233,23 @@ public interface ExportImportConfigurationPersistence extends BasePersistence<Ex
 		long companyId, int start, int end);
 
 	/**
-	* Returns an ordered range of all the export import configurations where companyId = &#63;.
+	* Returns a range of all the export import configurations where companyId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExportImportConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param companyId the company ID
+	* @param start the lower bound of the range of export import configurations
+	* @param end the upper bound of the range of export import configurations (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching export import configurations
+	*/
+	public java.util.List<ExportImportConfiguration> findByCompanyId(
+		long companyId, int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the export import configurations where companyId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExportImportConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -193,6 +264,25 @@ public interface ExportImportConfigurationPersistence extends BasePersistence<Ex
 	public java.util.List<ExportImportConfiguration> findByCompanyId(
 		long companyId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<ExportImportConfiguration> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the export import configurations where companyId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExportImportConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param companyId the company ID
+	* @param start the lower bound of the range of export import configurations
+	* @param end the upper bound of the range of export import configurations (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching export import configurations
+	*/
+	public java.util.List<ExportImportConfiguration> findByCompanyId(
+		long companyId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<ExportImportConfiguration> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first export import configuration in the ordered set where companyId = &#63;.
@@ -268,7 +358,7 @@ public interface ExportImportConfigurationPersistence extends BasePersistence<Ex
 	public int countByCompanyId(long companyId);
 
 	/**
-	* Returns all the export import configurations where groupId = &#63; and type = &#63;.
+	* Returns all the export import configurations where groupId = &#63; and type = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param type the type
@@ -278,7 +368,18 @@ public interface ExportImportConfigurationPersistence extends BasePersistence<Ex
 		int type);
 
 	/**
-	* Returns a range of all the export import configurations where groupId = &#63; and type = &#63;.
+	* Returns all the export import configurations where groupId = &#63; and type = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param type the type
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching export import configurations
+	*/
+	public java.util.List<ExportImportConfiguration> findByG_T(long groupId,
+		int type, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the export import configurations where groupId = &#63; and type = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExportImportConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -294,7 +395,24 @@ public interface ExportImportConfigurationPersistence extends BasePersistence<Ex
 		int type, int start, int end);
 
 	/**
-	* Returns an ordered range of all the export import configurations where groupId = &#63; and type = &#63;.
+	* Returns a range of all the export import configurations where groupId = &#63; and type = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExportImportConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param type the type
+	* @param start the lower bound of the range of export import configurations
+	* @param end the upper bound of the range of export import configurations (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching export import configurations
+	*/
+	public java.util.List<ExportImportConfiguration> findByG_T(long groupId,
+		int type, int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the export import configurations where groupId = &#63; and type = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExportImportConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -310,6 +428,26 @@ public interface ExportImportConfigurationPersistence extends BasePersistence<Ex
 	public java.util.List<ExportImportConfiguration> findByG_T(long groupId,
 		int type, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<ExportImportConfiguration> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the export import configurations where groupId = &#63; and type = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExportImportConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param type the type
+	* @param start the lower bound of the range of export import configurations
+	* @param end the upper bound of the range of export import configurations (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching export import configurations
+	*/
+	public java.util.List<ExportImportConfiguration> findByG_T(long groupId,
+		int type, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<ExportImportConfiguration> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first export import configuration in the ordered set where groupId = &#63; and type = &#63;.
@@ -392,7 +530,7 @@ public interface ExportImportConfigurationPersistence extends BasePersistence<Ex
 	public int countByG_T(long groupId, int type);
 
 	/**
-	* Returns all the export import configurations where groupId = &#63; and status = &#63;.
+	* Returns all the export import configurations where groupId = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param status the status
@@ -402,7 +540,18 @@ public interface ExportImportConfigurationPersistence extends BasePersistence<Ex
 		int status);
 
 	/**
-	* Returns a range of all the export import configurations where groupId = &#63; and status = &#63;.
+	* Returns all the export import configurations where groupId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param status the status
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching export import configurations
+	*/
+	public java.util.List<ExportImportConfiguration> findByG_S(long groupId,
+		int status, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the export import configurations where groupId = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExportImportConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -418,7 +567,24 @@ public interface ExportImportConfigurationPersistence extends BasePersistence<Ex
 		int status, int start, int end);
 
 	/**
-	* Returns an ordered range of all the export import configurations where groupId = &#63; and status = &#63;.
+	* Returns a range of all the export import configurations where groupId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExportImportConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param status the status
+	* @param start the lower bound of the range of export import configurations
+	* @param end the upper bound of the range of export import configurations (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching export import configurations
+	*/
+	public java.util.List<ExportImportConfiguration> findByG_S(long groupId,
+		int status, int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the export import configurations where groupId = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExportImportConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -434,6 +600,26 @@ public interface ExportImportConfigurationPersistence extends BasePersistence<Ex
 	public java.util.List<ExportImportConfiguration> findByG_S(long groupId,
 		int status, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<ExportImportConfiguration> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the export import configurations where groupId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExportImportConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param status the status
+	* @param start the lower bound of the range of export import configurations
+	* @param end the upper bound of the range of export import configurations (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching export import configurations
+	*/
+	public java.util.List<ExportImportConfiguration> findByG_S(long groupId,
+		int status, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<ExportImportConfiguration> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first export import configuration in the ordered set where groupId = &#63; and status = &#63;.
@@ -516,7 +702,7 @@ public interface ExportImportConfigurationPersistence extends BasePersistence<Ex
 	public int countByG_S(long groupId, int status);
 
 	/**
-	* Returns all the export import configurations where groupId = &#63; and type = &#63; and status = &#63;.
+	* Returns all the export import configurations where groupId = &#63; and type = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* @param groupId the group ID
 	* @param type the type
@@ -527,7 +713,19 @@ public interface ExportImportConfigurationPersistence extends BasePersistence<Ex
 		int type, int status);
 
 	/**
-	* Returns a range of all the export import configurations where groupId = &#63; and type = &#63; and status = &#63;.
+	* Returns all the export import configurations where groupId = &#63; and type = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* @param groupId the group ID
+	* @param type the type
+	* @param status the status
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching export import configurations
+	*/
+	public java.util.List<ExportImportConfiguration> findByG_T_S(long groupId,
+		int type, int status, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the export import configurations where groupId = &#63; and type = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExportImportConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -544,7 +742,25 @@ public interface ExportImportConfigurationPersistence extends BasePersistence<Ex
 		int type, int status, int start, int end);
 
 	/**
-	* Returns an ordered range of all the export import configurations where groupId = &#63; and type = &#63; and status = &#63;.
+	* Returns a range of all the export import configurations where groupId = &#63; and type = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExportImportConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param type the type
+	* @param status the status
+	* @param start the lower bound of the range of export import configurations
+	* @param end the upper bound of the range of export import configurations (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching export import configurations
+	*/
+	public java.util.List<ExportImportConfiguration> findByG_T_S(long groupId,
+		int type, int status, int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the export import configurations where groupId = &#63; and type = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExportImportConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -561,6 +777,27 @@ public interface ExportImportConfigurationPersistence extends BasePersistence<Ex
 	public java.util.List<ExportImportConfiguration> findByG_T_S(long groupId,
 		int type, int status, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<ExportImportConfiguration> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the export import configurations where groupId = &#63; and type = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExportImportConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param type the type
+	* @param status the status
+	* @param start the lower bound of the range of export import configurations
+	* @param end the upper bound of the range of export import configurations (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching export import configurations
+	*/
+	public java.util.List<ExportImportConfiguration> findByG_T_S(long groupId,
+		int type, int status, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<ExportImportConfiguration> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first export import configuration in the ordered set where groupId = &#63; and type = &#63; and status = &#63;.

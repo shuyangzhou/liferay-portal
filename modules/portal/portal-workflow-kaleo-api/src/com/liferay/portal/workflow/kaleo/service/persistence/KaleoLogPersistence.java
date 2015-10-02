@@ -40,7 +40,7 @@ public interface KaleoLogPersistence extends BasePersistence<KaleoLog> {
 	 */
 
 	/**
-	* Returns all the kaleo logs where companyId = &#63;.
+	* Returns all the kaleo logs where companyId = &#63;. Uses the finder cache.
 	*
 	* @param companyId the company ID
 	* @return the matching kaleo logs
@@ -48,7 +48,17 @@ public interface KaleoLogPersistence extends BasePersistence<KaleoLog> {
 	public java.util.List<KaleoLog> findByCompanyId(long companyId);
 
 	/**
-	* Returns a range of all the kaleo logs where companyId = &#63;.
+	* Returns all the kaleo logs where companyId = &#63;, optionally using the finder cache.
+	*
+	* @param companyId the company ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching kaleo logs
+	*/
+	public java.util.List<KaleoLog> findByCompanyId(long companyId,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the kaleo logs where companyId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link KaleoLogModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -63,7 +73,23 @@ public interface KaleoLogPersistence extends BasePersistence<KaleoLog> {
 		int end);
 
 	/**
-	* Returns an ordered range of all the kaleo logs where companyId = &#63;.
+	* Returns a range of all the kaleo logs where companyId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link KaleoLogModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param companyId the company ID
+	* @param start the lower bound of the range of kaleo logs
+	* @param end the upper bound of the range of kaleo logs (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching kaleo logs
+	*/
+	public java.util.List<KaleoLog> findByCompanyId(long companyId, int start,
+		int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the kaleo logs where companyId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link KaleoLogModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -78,6 +104,25 @@ public interface KaleoLogPersistence extends BasePersistence<KaleoLog> {
 	public java.util.List<KaleoLog> findByCompanyId(long companyId, int start,
 		int end,
 		com.liferay.portal.kernel.util.OrderByComparator<KaleoLog> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the kaleo logs where companyId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link KaleoLogModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param companyId the company ID
+	* @param start the lower bound of the range of kaleo logs
+	* @param end the upper bound of the range of kaleo logs (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching kaleo logs
+	*/
+	public java.util.List<KaleoLog> findByCompanyId(long companyId, int start,
+		int end,
+		com.liferay.portal.kernel.util.OrderByComparator<KaleoLog> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first kaleo log in the ordered set where companyId = &#63;.
@@ -153,7 +198,7 @@ public interface KaleoLogPersistence extends BasePersistence<KaleoLog> {
 	public int countByCompanyId(long companyId);
 
 	/**
-	* Returns all the kaleo logs where kaleoDefinitionId = &#63;.
+	* Returns all the kaleo logs where kaleoDefinitionId = &#63;. Uses the finder cache.
 	*
 	* @param kaleoDefinitionId the kaleo definition ID
 	* @return the matching kaleo logs
@@ -162,7 +207,17 @@ public interface KaleoLogPersistence extends BasePersistence<KaleoLog> {
 		long kaleoDefinitionId);
 
 	/**
-	* Returns a range of all the kaleo logs where kaleoDefinitionId = &#63;.
+	* Returns all the kaleo logs where kaleoDefinitionId = &#63;, optionally using the finder cache.
+	*
+	* @param kaleoDefinitionId the kaleo definition ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching kaleo logs
+	*/
+	public java.util.List<KaleoLog> findByKaleoDefinitionId(
+		long kaleoDefinitionId, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the kaleo logs where kaleoDefinitionId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link KaleoLogModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -177,7 +232,23 @@ public interface KaleoLogPersistence extends BasePersistence<KaleoLog> {
 		long kaleoDefinitionId, int start, int end);
 
 	/**
-	* Returns an ordered range of all the kaleo logs where kaleoDefinitionId = &#63;.
+	* Returns a range of all the kaleo logs where kaleoDefinitionId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link KaleoLogModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param kaleoDefinitionId the kaleo definition ID
+	* @param start the lower bound of the range of kaleo logs
+	* @param end the upper bound of the range of kaleo logs (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching kaleo logs
+	*/
+	public java.util.List<KaleoLog> findByKaleoDefinitionId(
+		long kaleoDefinitionId, int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the kaleo logs where kaleoDefinitionId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link KaleoLogModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -192,6 +263,25 @@ public interface KaleoLogPersistence extends BasePersistence<KaleoLog> {
 	public java.util.List<KaleoLog> findByKaleoDefinitionId(
 		long kaleoDefinitionId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<KaleoLog> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the kaleo logs where kaleoDefinitionId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link KaleoLogModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param kaleoDefinitionId the kaleo definition ID
+	* @param start the lower bound of the range of kaleo logs
+	* @param end the upper bound of the range of kaleo logs (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching kaleo logs
+	*/
+	public java.util.List<KaleoLog> findByKaleoDefinitionId(
+		long kaleoDefinitionId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<KaleoLog> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first kaleo log in the ordered set where kaleoDefinitionId = &#63;.
@@ -267,7 +357,7 @@ public interface KaleoLogPersistence extends BasePersistence<KaleoLog> {
 	public int countByKaleoDefinitionId(long kaleoDefinitionId);
 
 	/**
-	* Returns all the kaleo logs where kaleoInstanceId = &#63;.
+	* Returns all the kaleo logs where kaleoInstanceId = &#63;. Uses the finder cache.
 	*
 	* @param kaleoInstanceId the kaleo instance ID
 	* @return the matching kaleo logs
@@ -275,7 +365,17 @@ public interface KaleoLogPersistence extends BasePersistence<KaleoLog> {
 	public java.util.List<KaleoLog> findByKaleoInstanceId(long kaleoInstanceId);
 
 	/**
-	* Returns a range of all the kaleo logs where kaleoInstanceId = &#63;.
+	* Returns all the kaleo logs where kaleoInstanceId = &#63;, optionally using the finder cache.
+	*
+	* @param kaleoInstanceId the kaleo instance ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching kaleo logs
+	*/
+	public java.util.List<KaleoLog> findByKaleoInstanceId(
+		long kaleoInstanceId, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the kaleo logs where kaleoInstanceId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link KaleoLogModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -290,7 +390,23 @@ public interface KaleoLogPersistence extends BasePersistence<KaleoLog> {
 		long kaleoInstanceId, int start, int end);
 
 	/**
-	* Returns an ordered range of all the kaleo logs where kaleoInstanceId = &#63;.
+	* Returns a range of all the kaleo logs where kaleoInstanceId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link KaleoLogModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param kaleoInstanceId the kaleo instance ID
+	* @param start the lower bound of the range of kaleo logs
+	* @param end the upper bound of the range of kaleo logs (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching kaleo logs
+	*/
+	public java.util.List<KaleoLog> findByKaleoInstanceId(
+		long kaleoInstanceId, int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the kaleo logs where kaleoInstanceId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link KaleoLogModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -305,6 +421,25 @@ public interface KaleoLogPersistence extends BasePersistence<KaleoLog> {
 	public java.util.List<KaleoLog> findByKaleoInstanceId(
 		long kaleoInstanceId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<KaleoLog> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the kaleo logs where kaleoInstanceId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link KaleoLogModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param kaleoInstanceId the kaleo instance ID
+	* @param start the lower bound of the range of kaleo logs
+	* @param end the upper bound of the range of kaleo logs (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching kaleo logs
+	*/
+	public java.util.List<KaleoLog> findByKaleoInstanceId(
+		long kaleoInstanceId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<KaleoLog> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first kaleo log in the ordered set where kaleoInstanceId = &#63;.
@@ -380,7 +515,7 @@ public interface KaleoLogPersistence extends BasePersistence<KaleoLog> {
 	public int countByKaleoInstanceId(long kaleoInstanceId);
 
 	/**
-	* Returns all the kaleo logs where kaleoTaskInstanceTokenId = &#63;.
+	* Returns all the kaleo logs where kaleoTaskInstanceTokenId = &#63;. Uses the finder cache.
 	*
 	* @param kaleoTaskInstanceTokenId the kaleo task instance token ID
 	* @return the matching kaleo logs
@@ -389,7 +524,17 @@ public interface KaleoLogPersistence extends BasePersistence<KaleoLog> {
 		long kaleoTaskInstanceTokenId);
 
 	/**
-	* Returns a range of all the kaleo logs where kaleoTaskInstanceTokenId = &#63;.
+	* Returns all the kaleo logs where kaleoTaskInstanceTokenId = &#63;, optionally using the finder cache.
+	*
+	* @param kaleoTaskInstanceTokenId the kaleo task instance token ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching kaleo logs
+	*/
+	public java.util.List<KaleoLog> findByKaleoTaskInstanceTokenId(
+		long kaleoTaskInstanceTokenId, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the kaleo logs where kaleoTaskInstanceTokenId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link KaleoLogModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -404,7 +549,24 @@ public interface KaleoLogPersistence extends BasePersistence<KaleoLog> {
 		long kaleoTaskInstanceTokenId, int start, int end);
 
 	/**
-	* Returns an ordered range of all the kaleo logs where kaleoTaskInstanceTokenId = &#63;.
+	* Returns a range of all the kaleo logs where kaleoTaskInstanceTokenId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link KaleoLogModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param kaleoTaskInstanceTokenId the kaleo task instance token ID
+	* @param start the lower bound of the range of kaleo logs
+	* @param end the upper bound of the range of kaleo logs (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching kaleo logs
+	*/
+	public java.util.List<KaleoLog> findByKaleoTaskInstanceTokenId(
+		long kaleoTaskInstanceTokenId, int start, int end,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the kaleo logs where kaleoTaskInstanceTokenId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link KaleoLogModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -419,6 +581,25 @@ public interface KaleoLogPersistence extends BasePersistence<KaleoLog> {
 	public java.util.List<KaleoLog> findByKaleoTaskInstanceTokenId(
 		long kaleoTaskInstanceTokenId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<KaleoLog> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the kaleo logs where kaleoTaskInstanceTokenId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link KaleoLogModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param kaleoTaskInstanceTokenId the kaleo task instance token ID
+	* @param start the lower bound of the range of kaleo logs
+	* @param end the upper bound of the range of kaleo logs (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching kaleo logs
+	*/
+	public java.util.List<KaleoLog> findByKaleoTaskInstanceTokenId(
+		long kaleoTaskInstanceTokenId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<KaleoLog> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first kaleo log in the ordered set where kaleoTaskInstanceTokenId = &#63;.
@@ -498,7 +679,7 @@ public interface KaleoLogPersistence extends BasePersistence<KaleoLog> {
 	public int countByKaleoTaskInstanceTokenId(long kaleoTaskInstanceTokenId);
 
 	/**
-	* Returns all the kaleo logs where kaleoInstanceTokenId = &#63; and type = &#63;.
+	* Returns all the kaleo logs where kaleoInstanceTokenId = &#63; and type = &#63;. Uses the finder cache.
 	*
 	* @param kaleoInstanceTokenId the kaleo instance token ID
 	* @param type the type
@@ -508,7 +689,18 @@ public interface KaleoLogPersistence extends BasePersistence<KaleoLog> {
 		java.lang.String type);
 
 	/**
-	* Returns a range of all the kaleo logs where kaleoInstanceTokenId = &#63; and type = &#63;.
+	* Returns all the kaleo logs where kaleoInstanceTokenId = &#63; and type = &#63;, optionally using the finder cache.
+	*
+	* @param kaleoInstanceTokenId the kaleo instance token ID
+	* @param type the type
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching kaleo logs
+	*/
+	public java.util.List<KaleoLog> findByKITI_T(long kaleoInstanceTokenId,
+		java.lang.String type, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the kaleo logs where kaleoInstanceTokenId = &#63; and type = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link KaleoLogModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -524,7 +716,24 @@ public interface KaleoLogPersistence extends BasePersistence<KaleoLog> {
 		java.lang.String type, int start, int end);
 
 	/**
-	* Returns an ordered range of all the kaleo logs where kaleoInstanceTokenId = &#63; and type = &#63;.
+	* Returns a range of all the kaleo logs where kaleoInstanceTokenId = &#63; and type = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link KaleoLogModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param kaleoInstanceTokenId the kaleo instance token ID
+	* @param type the type
+	* @param start the lower bound of the range of kaleo logs
+	* @param end the upper bound of the range of kaleo logs (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching kaleo logs
+	*/
+	public java.util.List<KaleoLog> findByKITI_T(long kaleoInstanceTokenId,
+		java.lang.String type, int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the kaleo logs where kaleoInstanceTokenId = &#63; and type = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link KaleoLogModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -540,6 +749,26 @@ public interface KaleoLogPersistence extends BasePersistence<KaleoLog> {
 	public java.util.List<KaleoLog> findByKITI_T(long kaleoInstanceTokenId,
 		java.lang.String type, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<KaleoLog> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the kaleo logs where kaleoInstanceTokenId = &#63; and type = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link KaleoLogModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param kaleoInstanceTokenId the kaleo instance token ID
+	* @param type the type
+	* @param start the lower bound of the range of kaleo logs
+	* @param end the upper bound of the range of kaleo logs (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching kaleo logs
+	*/
+	public java.util.List<KaleoLog> findByKITI_T(long kaleoInstanceTokenId,
+		java.lang.String type, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<KaleoLog> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first kaleo log in the ordered set where kaleoInstanceTokenId = &#63; and type = &#63;.
@@ -626,7 +855,7 @@ public interface KaleoLogPersistence extends BasePersistence<KaleoLog> {
 	public int countByKITI_T(long kaleoInstanceTokenId, java.lang.String type);
 
 	/**
-	* Returns all the kaleo logs where kaleoClassName = &#63; and kaleoClassPK = &#63; and kaleoInstanceTokenId = &#63; and type = &#63;.
+	* Returns all the kaleo logs where kaleoClassName = &#63; and kaleoClassPK = &#63; and kaleoInstanceTokenId = &#63; and type = &#63;. Uses the finder cache.
 	*
 	* @param kaleoClassName the kaleo class name
 	* @param kaleoClassPK the kaleo class p k
@@ -639,7 +868,22 @@ public interface KaleoLogPersistence extends BasePersistence<KaleoLog> {
 		long kaleoInstanceTokenId, java.lang.String type);
 
 	/**
-	* Returns a range of all the kaleo logs where kaleoClassName = &#63; and kaleoClassPK = &#63; and kaleoInstanceTokenId = &#63; and type = &#63;.
+	* Returns all the kaleo logs where kaleoClassName = &#63; and kaleoClassPK = &#63; and kaleoInstanceTokenId = &#63; and type = &#63;, optionally using the finder cache.
+	*
+	* @param kaleoClassName the kaleo class name
+	* @param kaleoClassPK the kaleo class p k
+	* @param kaleoInstanceTokenId the kaleo instance token ID
+	* @param type the type
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching kaleo logs
+	*/
+	public java.util.List<KaleoLog> findByKCN_KCPK_KITI_T(
+		java.lang.String kaleoClassName, long kaleoClassPK,
+		long kaleoInstanceTokenId, java.lang.String type,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the kaleo logs where kaleoClassName = &#63; and kaleoClassPK = &#63; and kaleoInstanceTokenId = &#63; and type = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link KaleoLogModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -658,7 +902,28 @@ public interface KaleoLogPersistence extends BasePersistence<KaleoLog> {
 		long kaleoInstanceTokenId, java.lang.String type, int start, int end);
 
 	/**
-	* Returns an ordered range of all the kaleo logs where kaleoClassName = &#63; and kaleoClassPK = &#63; and kaleoInstanceTokenId = &#63; and type = &#63;.
+	* Returns a range of all the kaleo logs where kaleoClassName = &#63; and kaleoClassPK = &#63; and kaleoInstanceTokenId = &#63; and type = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link KaleoLogModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param kaleoClassName the kaleo class name
+	* @param kaleoClassPK the kaleo class p k
+	* @param kaleoInstanceTokenId the kaleo instance token ID
+	* @param type the type
+	* @param start the lower bound of the range of kaleo logs
+	* @param end the upper bound of the range of kaleo logs (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching kaleo logs
+	*/
+	public java.util.List<KaleoLog> findByKCN_KCPK_KITI_T(
+		java.lang.String kaleoClassName, long kaleoClassPK,
+		long kaleoInstanceTokenId, java.lang.String type, int start, int end,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the kaleo logs where kaleoClassName = &#63; and kaleoClassPK = &#63; and kaleoInstanceTokenId = &#63; and type = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link KaleoLogModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -677,6 +942,29 @@ public interface KaleoLogPersistence extends BasePersistence<KaleoLog> {
 		java.lang.String kaleoClassName, long kaleoClassPK,
 		long kaleoInstanceTokenId, java.lang.String type, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<KaleoLog> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the kaleo logs where kaleoClassName = &#63; and kaleoClassPK = &#63; and kaleoInstanceTokenId = &#63; and type = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link KaleoLogModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param kaleoClassName the kaleo class name
+	* @param kaleoClassPK the kaleo class p k
+	* @param kaleoInstanceTokenId the kaleo instance token ID
+	* @param type the type
+	* @param start the lower bound of the range of kaleo logs
+	* @param end the upper bound of the range of kaleo logs (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching kaleo logs
+	*/
+	public java.util.List<KaleoLog> findByKCN_KCPK_KITI_T(
+		java.lang.String kaleoClassName, long kaleoClassPK,
+		long kaleoInstanceTokenId, java.lang.String type, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<KaleoLog> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first kaleo log in the ordered set where kaleoClassName = &#63; and kaleoClassPK = &#63; and kaleoInstanceTokenId = &#63; and type = &#63;.

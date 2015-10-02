@@ -110,7 +110,7 @@ public class ExpandoRowUtil {
 	}
 
 	/**
-	* Returns all the expando rows where tableId = &#63;.
+	* Returns all the expando rows where tableId = &#63;. Uses the finder cache.
 	*
 	* @param tableId the table ID
 	* @return the matching expando rows
@@ -120,7 +120,19 @@ public class ExpandoRowUtil {
 	}
 
 	/**
-	* Returns a range of all the expando rows where tableId = &#63;.
+	* Returns all the expando rows where tableId = &#63;, optionally using the finder cache.
+	*
+	* @param tableId the table ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching expando rows
+	*/
+	public static List<ExpandoRow> findByTableId(long tableId,
+		boolean retrieveFromCache) {
+		return getPersistence().findByTableId(tableId, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the expando rows where tableId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExpandoRowModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -137,7 +149,26 @@ public class ExpandoRowUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the expando rows where tableId = &#63;.
+	* Returns a range of all the expando rows where tableId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExpandoRowModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param tableId the table ID
+	* @param start the lower bound of the range of expando rows
+	* @param end the upper bound of the range of expando rows (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching expando rows
+	*/
+	public static List<ExpandoRow> findByTableId(long tableId, int start,
+		int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByTableId(tableId, start, end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the expando rows where tableId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExpandoRowModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -153,6 +184,28 @@ public class ExpandoRowUtil {
 		int end, OrderByComparator<ExpandoRow> orderByComparator) {
 		return getPersistence()
 				   .findByTableId(tableId, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the expando rows where tableId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExpandoRowModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param tableId the table ID
+	* @param start the lower bound of the range of expando rows
+	* @param end the upper bound of the range of expando rows (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching expando rows
+	*/
+	public static List<ExpandoRow> findByTableId(long tableId, int start,
+		int end, OrderByComparator<ExpandoRow> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByTableId(tableId, start, end, orderByComparator,
+			retrieveFromCache);
 	}
 
 	/**
@@ -243,7 +296,7 @@ public class ExpandoRowUtil {
 	}
 
 	/**
-	* Returns all the expando rows where classPK = &#63;.
+	* Returns all the expando rows where classPK = &#63;. Uses the finder cache.
 	*
 	* @param classPK the class p k
 	* @return the matching expando rows
@@ -253,7 +306,19 @@ public class ExpandoRowUtil {
 	}
 
 	/**
-	* Returns a range of all the expando rows where classPK = &#63;.
+	* Returns all the expando rows where classPK = &#63;, optionally using the finder cache.
+	*
+	* @param classPK the class p k
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching expando rows
+	*/
+	public static List<ExpandoRow> findByClassPK(long classPK,
+		boolean retrieveFromCache) {
+		return getPersistence().findByClassPK(classPK, retrieveFromCache);
+	}
+
+	/**
+	* Returns a range of all the expando rows where classPK = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExpandoRowModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -270,7 +335,26 @@ public class ExpandoRowUtil {
 	}
 
 	/**
-	* Returns an ordered range of all the expando rows where classPK = &#63;.
+	* Returns a range of all the expando rows where classPK = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExpandoRowModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param classPK the class p k
+	* @param start the lower bound of the range of expando rows
+	* @param end the upper bound of the range of expando rows (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching expando rows
+	*/
+	public static List<ExpandoRow> findByClassPK(long classPK, int start,
+		int end, boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByClassPK(classPK, start, end, retrieveFromCache);
+	}
+
+	/**
+	* Returns an ordered range of all the expando rows where classPK = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExpandoRowModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -286,6 +370,28 @@ public class ExpandoRowUtil {
 		int end, OrderByComparator<ExpandoRow> orderByComparator) {
 		return getPersistence()
 				   .findByClassPK(classPK, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the expando rows where classPK = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExpandoRowModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param classPK the class p k
+	* @param start the lower bound of the range of expando rows
+	* @param end the upper bound of the range of expando rows (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching expando rows
+	*/
+	public static List<ExpandoRow> findByClassPK(long classPK, int start,
+		int end, OrderByComparator<ExpandoRow> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByClassPK(classPK, start, end, orderByComparator,
+			retrieveFromCache);
 	}
 
 	/**

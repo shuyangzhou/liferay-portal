@@ -41,7 +41,7 @@ public interface CalendarBookingPersistence extends BasePersistence<CalendarBook
 	 */
 
 	/**
-	* Returns all the calendar bookings where resourceBlockId = &#63;.
+	* Returns all the calendar bookings where resourceBlockId = &#63;. Uses the finder cache.
 	*
 	* @param resourceBlockId the resource block ID
 	* @return the matching calendar bookings
@@ -50,7 +50,17 @@ public interface CalendarBookingPersistence extends BasePersistence<CalendarBook
 		long resourceBlockId);
 
 	/**
-	* Returns a range of all the calendar bookings where resourceBlockId = &#63;.
+	* Returns all the calendar bookings where resourceBlockId = &#63;, optionally using the finder cache.
+	*
+	* @param resourceBlockId the resource block ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching calendar bookings
+	*/
+	public java.util.List<CalendarBooking> findByResourceBlockId(
+		long resourceBlockId, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the calendar bookings where resourceBlockId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalendarBookingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -65,7 +75,23 @@ public interface CalendarBookingPersistence extends BasePersistence<CalendarBook
 		long resourceBlockId, int start, int end);
 
 	/**
-	* Returns an ordered range of all the calendar bookings where resourceBlockId = &#63;.
+	* Returns a range of all the calendar bookings where resourceBlockId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalendarBookingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param resourceBlockId the resource block ID
+	* @param start the lower bound of the range of calendar bookings
+	* @param end the upper bound of the range of calendar bookings (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching calendar bookings
+	*/
+	public java.util.List<CalendarBooking> findByResourceBlockId(
+		long resourceBlockId, int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the calendar bookings where resourceBlockId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalendarBookingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -80,6 +106,25 @@ public interface CalendarBookingPersistence extends BasePersistence<CalendarBook
 	public java.util.List<CalendarBooking> findByResourceBlockId(
 		long resourceBlockId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<CalendarBooking> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the calendar bookings where resourceBlockId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalendarBookingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param resourceBlockId the resource block ID
+	* @param start the lower bound of the range of calendar bookings
+	* @param end the upper bound of the range of calendar bookings (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching calendar bookings
+	*/
+	public java.util.List<CalendarBooking> findByResourceBlockId(
+		long resourceBlockId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<CalendarBooking> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first calendar booking in the ordered set where resourceBlockId = &#63;.
@@ -155,7 +200,7 @@ public interface CalendarBookingPersistence extends BasePersistence<CalendarBook
 	public int countByResourceBlockId(long resourceBlockId);
 
 	/**
-	* Returns all the calendar bookings where uuid = &#63;.
+	* Returns all the calendar bookings where uuid = &#63;. Uses the finder cache.
 	*
 	* @param uuid the uuid
 	* @return the matching calendar bookings
@@ -163,7 +208,17 @@ public interface CalendarBookingPersistence extends BasePersistence<CalendarBook
 	public java.util.List<CalendarBooking> findByUuid(java.lang.String uuid);
 
 	/**
-	* Returns a range of all the calendar bookings where uuid = &#63;.
+	* Returns all the calendar bookings where uuid = &#63;, optionally using the finder cache.
+	*
+	* @param uuid the uuid
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching calendar bookings
+	*/
+	public java.util.List<CalendarBooking> findByUuid(java.lang.String uuid,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the calendar bookings where uuid = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalendarBookingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -178,7 +233,23 @@ public interface CalendarBookingPersistence extends BasePersistence<CalendarBook
 		int start, int end);
 
 	/**
-	* Returns an ordered range of all the calendar bookings where uuid = &#63;.
+	* Returns a range of all the calendar bookings where uuid = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalendarBookingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param start the lower bound of the range of calendar bookings
+	* @param end the upper bound of the range of calendar bookings (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching calendar bookings
+	*/
+	public java.util.List<CalendarBooking> findByUuid(java.lang.String uuid,
+		int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the calendar bookings where uuid = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalendarBookingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -193,6 +264,25 @@ public interface CalendarBookingPersistence extends BasePersistence<CalendarBook
 	public java.util.List<CalendarBooking> findByUuid(java.lang.String uuid,
 		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<CalendarBooking> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the calendar bookings where uuid = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalendarBookingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param start the lower bound of the range of calendar bookings
+	* @param end the upper bound of the range of calendar bookings (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching calendar bookings
+	*/
+	public java.util.List<CalendarBooking> findByUuid(java.lang.String uuid,
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<CalendarBooking> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first calendar booking in the ordered set where uuid = &#63;.
@@ -318,7 +408,7 @@ public interface CalendarBookingPersistence extends BasePersistence<CalendarBook
 	public int countByUUID_G(java.lang.String uuid, long groupId);
 
 	/**
-	* Returns all the calendar bookings where uuid = &#63; and companyId = &#63;.
+	* Returns all the calendar bookings where uuid = &#63; and companyId = &#63;. Uses the finder cache.
 	*
 	* @param uuid the uuid
 	* @param companyId the company ID
@@ -328,7 +418,18 @@ public interface CalendarBookingPersistence extends BasePersistence<CalendarBook
 		long companyId);
 
 	/**
-	* Returns a range of all the calendar bookings where uuid = &#63; and companyId = &#63;.
+	* Returns all the calendar bookings where uuid = &#63; and companyId = &#63;, optionally using the finder cache.
+	*
+	* @param uuid the uuid
+	* @param companyId the company ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching calendar bookings
+	*/
+	public java.util.List<CalendarBooking> findByUuid_C(java.lang.String uuid,
+		long companyId, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the calendar bookings where uuid = &#63; and companyId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalendarBookingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -344,7 +445,24 @@ public interface CalendarBookingPersistence extends BasePersistence<CalendarBook
 		long companyId, int start, int end);
 
 	/**
-	* Returns an ordered range of all the calendar bookings where uuid = &#63; and companyId = &#63;.
+	* Returns a range of all the calendar bookings where uuid = &#63; and companyId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalendarBookingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param companyId the company ID
+	* @param start the lower bound of the range of calendar bookings
+	* @param end the upper bound of the range of calendar bookings (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching calendar bookings
+	*/
+	public java.util.List<CalendarBooking> findByUuid_C(java.lang.String uuid,
+		long companyId, int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the calendar bookings where uuid = &#63; and companyId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalendarBookingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -360,6 +478,26 @@ public interface CalendarBookingPersistence extends BasePersistence<CalendarBook
 	public java.util.List<CalendarBooking> findByUuid_C(java.lang.String uuid,
 		long companyId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<CalendarBooking> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the calendar bookings where uuid = &#63; and companyId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalendarBookingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param companyId the company ID
+	* @param start the lower bound of the range of calendar bookings
+	* @param end the upper bound of the range of calendar bookings (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching calendar bookings
+	*/
+	public java.util.List<CalendarBooking> findByUuid_C(java.lang.String uuid,
+		long companyId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<CalendarBooking> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first calendar booking in the ordered set where uuid = &#63; and companyId = &#63;.
@@ -446,7 +584,7 @@ public interface CalendarBookingPersistence extends BasePersistence<CalendarBook
 	public int countByUuid_C(java.lang.String uuid, long companyId);
 
 	/**
-	* Returns all the calendar bookings where calendarId = &#63;.
+	* Returns all the calendar bookings where calendarId = &#63;. Uses the finder cache.
 	*
 	* @param calendarId the calendar ID
 	* @return the matching calendar bookings
@@ -454,7 +592,17 @@ public interface CalendarBookingPersistence extends BasePersistence<CalendarBook
 	public java.util.List<CalendarBooking> findByCalendarId(long calendarId);
 
 	/**
-	* Returns a range of all the calendar bookings where calendarId = &#63;.
+	* Returns all the calendar bookings where calendarId = &#63;, optionally using the finder cache.
+	*
+	* @param calendarId the calendar ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching calendar bookings
+	*/
+	public java.util.List<CalendarBooking> findByCalendarId(long calendarId,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the calendar bookings where calendarId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalendarBookingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -469,7 +617,23 @@ public interface CalendarBookingPersistence extends BasePersistence<CalendarBook
 		int start, int end);
 
 	/**
-	* Returns an ordered range of all the calendar bookings where calendarId = &#63;.
+	* Returns a range of all the calendar bookings where calendarId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalendarBookingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param calendarId the calendar ID
+	* @param start the lower bound of the range of calendar bookings
+	* @param end the upper bound of the range of calendar bookings (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching calendar bookings
+	*/
+	public java.util.List<CalendarBooking> findByCalendarId(long calendarId,
+		int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the calendar bookings where calendarId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalendarBookingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -484,6 +648,25 @@ public interface CalendarBookingPersistence extends BasePersistence<CalendarBook
 	public java.util.List<CalendarBooking> findByCalendarId(long calendarId,
 		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<CalendarBooking> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the calendar bookings where calendarId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalendarBookingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param calendarId the calendar ID
+	* @param start the lower bound of the range of calendar bookings
+	* @param end the upper bound of the range of calendar bookings (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching calendar bookings
+	*/
+	public java.util.List<CalendarBooking> findByCalendarId(long calendarId,
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<CalendarBooking> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first calendar booking in the ordered set where calendarId = &#63;.
@@ -559,7 +742,7 @@ public interface CalendarBookingPersistence extends BasePersistence<CalendarBook
 	public int countByCalendarId(long calendarId);
 
 	/**
-	* Returns all the calendar bookings where calendarResourceId = &#63;.
+	* Returns all the calendar bookings where calendarResourceId = &#63;. Uses the finder cache.
 	*
 	* @param calendarResourceId the calendar resource ID
 	* @return the matching calendar bookings
@@ -568,7 +751,17 @@ public interface CalendarBookingPersistence extends BasePersistence<CalendarBook
 		long calendarResourceId);
 
 	/**
-	* Returns a range of all the calendar bookings where calendarResourceId = &#63;.
+	* Returns all the calendar bookings where calendarResourceId = &#63;, optionally using the finder cache.
+	*
+	* @param calendarResourceId the calendar resource ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching calendar bookings
+	*/
+	public java.util.List<CalendarBooking> findByCalendarResourceId(
+		long calendarResourceId, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the calendar bookings where calendarResourceId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalendarBookingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -583,7 +776,23 @@ public interface CalendarBookingPersistence extends BasePersistence<CalendarBook
 		long calendarResourceId, int start, int end);
 
 	/**
-	* Returns an ordered range of all the calendar bookings where calendarResourceId = &#63;.
+	* Returns a range of all the calendar bookings where calendarResourceId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalendarBookingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param calendarResourceId the calendar resource ID
+	* @param start the lower bound of the range of calendar bookings
+	* @param end the upper bound of the range of calendar bookings (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching calendar bookings
+	*/
+	public java.util.List<CalendarBooking> findByCalendarResourceId(
+		long calendarResourceId, int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the calendar bookings where calendarResourceId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalendarBookingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -598,6 +807,25 @@ public interface CalendarBookingPersistence extends BasePersistence<CalendarBook
 	public java.util.List<CalendarBooking> findByCalendarResourceId(
 		long calendarResourceId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<CalendarBooking> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the calendar bookings where calendarResourceId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalendarBookingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param calendarResourceId the calendar resource ID
+	* @param start the lower bound of the range of calendar bookings
+	* @param end the upper bound of the range of calendar bookings (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching calendar bookings
+	*/
+	public java.util.List<CalendarBooking> findByCalendarResourceId(
+		long calendarResourceId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<CalendarBooking> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first calendar booking in the ordered set where calendarResourceId = &#63;.
@@ -677,7 +905,7 @@ public interface CalendarBookingPersistence extends BasePersistence<CalendarBook
 	public int countByCalendarResourceId(long calendarResourceId);
 
 	/**
-	* Returns all the calendar bookings where parentCalendarBookingId = &#63;.
+	* Returns all the calendar bookings where parentCalendarBookingId = &#63;. Uses the finder cache.
 	*
 	* @param parentCalendarBookingId the parent calendar booking ID
 	* @return the matching calendar bookings
@@ -686,7 +914,17 @@ public interface CalendarBookingPersistence extends BasePersistence<CalendarBook
 		long parentCalendarBookingId);
 
 	/**
-	* Returns a range of all the calendar bookings where parentCalendarBookingId = &#63;.
+	* Returns all the calendar bookings where parentCalendarBookingId = &#63;, optionally using the finder cache.
+	*
+	* @param parentCalendarBookingId the parent calendar booking ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching calendar bookings
+	*/
+	public java.util.List<CalendarBooking> findByParentCalendarBookingId(
+		long parentCalendarBookingId, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the calendar bookings where parentCalendarBookingId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalendarBookingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -701,7 +939,24 @@ public interface CalendarBookingPersistence extends BasePersistence<CalendarBook
 		long parentCalendarBookingId, int start, int end);
 
 	/**
-	* Returns an ordered range of all the calendar bookings where parentCalendarBookingId = &#63;.
+	* Returns a range of all the calendar bookings where parentCalendarBookingId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalendarBookingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param parentCalendarBookingId the parent calendar booking ID
+	* @param start the lower bound of the range of calendar bookings
+	* @param end the upper bound of the range of calendar bookings (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching calendar bookings
+	*/
+	public java.util.List<CalendarBooking> findByParentCalendarBookingId(
+		long parentCalendarBookingId, int start, int end,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the calendar bookings where parentCalendarBookingId = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalendarBookingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -716,6 +971,25 @@ public interface CalendarBookingPersistence extends BasePersistence<CalendarBook
 	public java.util.List<CalendarBooking> findByParentCalendarBookingId(
 		long parentCalendarBookingId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<CalendarBooking> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the calendar bookings where parentCalendarBookingId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalendarBookingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param parentCalendarBookingId the parent calendar booking ID
+	* @param start the lower bound of the range of calendar bookings
+	* @param end the upper bound of the range of calendar bookings (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching calendar bookings
+	*/
+	public java.util.List<CalendarBooking> findByParentCalendarBookingId(
+		long parentCalendarBookingId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<CalendarBooking> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first calendar booking in the ordered set where parentCalendarBookingId = &#63;.
@@ -900,7 +1174,7 @@ public interface CalendarBookingPersistence extends BasePersistence<CalendarBook
 	public int countByC_V(long calendarId, java.lang.String vEventUid);
 
 	/**
-	* Returns all the calendar bookings where calendarId = &#63; and status = &#63;.
+	* Returns all the calendar bookings where calendarId = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* @param calendarId the calendar ID
 	* @param status the status
@@ -909,7 +1183,18 @@ public interface CalendarBookingPersistence extends BasePersistence<CalendarBook
 	public java.util.List<CalendarBooking> findByC_S(long calendarId, int status);
 
 	/**
-	* Returns a range of all the calendar bookings where calendarId = &#63; and status = &#63;.
+	* Returns all the calendar bookings where calendarId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* @param calendarId the calendar ID
+	* @param status the status
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching calendar bookings
+	*/
+	public java.util.List<CalendarBooking> findByC_S(long calendarId,
+		int status, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the calendar bookings where calendarId = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalendarBookingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -925,7 +1210,24 @@ public interface CalendarBookingPersistence extends BasePersistence<CalendarBook
 		int status, int start, int end);
 
 	/**
-	* Returns an ordered range of all the calendar bookings where calendarId = &#63; and status = &#63;.
+	* Returns a range of all the calendar bookings where calendarId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalendarBookingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param calendarId the calendar ID
+	* @param status the status
+	* @param start the lower bound of the range of calendar bookings
+	* @param end the upper bound of the range of calendar bookings (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching calendar bookings
+	*/
+	public java.util.List<CalendarBooking> findByC_S(long calendarId,
+		int status, int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the calendar bookings where calendarId = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalendarBookingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -941,6 +1243,26 @@ public interface CalendarBookingPersistence extends BasePersistence<CalendarBook
 	public java.util.List<CalendarBooking> findByC_S(long calendarId,
 		int status, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<CalendarBooking> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the calendar bookings where calendarId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalendarBookingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param calendarId the calendar ID
+	* @param status the status
+	* @param start the lower bound of the range of calendar bookings
+	* @param end the upper bound of the range of calendar bookings (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching calendar bookings
+	*/
+	public java.util.List<CalendarBooking> findByC_S(long calendarId,
+		int status, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<CalendarBooking> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first calendar booking in the ordered set where calendarId = &#63; and status = &#63;.
@@ -1006,7 +1328,7 @@ public interface CalendarBookingPersistence extends BasePersistence<CalendarBook
 		throws com.liferay.calendar.exception.NoSuchBookingException;
 
 	/**
-	* Returns all the calendar bookings where calendarId = &#63; and status = any &#63;.
+	* Returns all the calendar bookings where calendarId = &#63; and status = any &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalendarBookingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1020,7 +1342,22 @@ public interface CalendarBookingPersistence extends BasePersistence<CalendarBook
 		int[] statuses);
 
 	/**
-	* Returns a range of all the calendar bookings where calendarId = &#63; and status = any &#63;.
+	* Returns all the calendar bookings where calendarId = &#63; and status = any &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalendarBookingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param calendarId the calendar ID
+	* @param statuses the statuses
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching calendar bookings
+	*/
+	public java.util.List<CalendarBooking> findByC_S(long calendarId,
+		int[] statuses, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the calendar bookings where calendarId = &#63; and status = any &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalendarBookingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1036,7 +1373,7 @@ public interface CalendarBookingPersistence extends BasePersistence<CalendarBook
 		int[] statuses, int start, int end);
 
 	/**
-	* Returns an ordered range of all the calendar bookings where calendarId = &#63; and status = any &#63;.
+	* Returns an ordered range of all the calendar bookings where calendarId = &#63; and status = any &#63;, optionally using the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalendarBookingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1046,12 +1383,49 @@ public interface CalendarBookingPersistence extends BasePersistence<CalendarBook
 	* @param statuses the statuses
 	* @param start the lower bound of the range of calendar bookings
 	* @param end the upper bound of the range of calendar bookings (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching calendar bookings
+	*/
+	public java.util.List<CalendarBooking> findByC_S(long calendarId,
+		int[] statuses, int start, int end, boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the calendar bookings where calendarId = &#63; and status = &#63;. Uses the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalendarBookingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param calendarId the calendar ID
+	* @param status the status
+	* @param start the lower bound of the range of calendar bookings
+	* @param end the upper bound of the range of calendar bookings (not inclusive)
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of matching calendar bookings
 	*/
 	public java.util.List<CalendarBooking> findByC_S(long calendarId,
 		int[] statuses, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<CalendarBooking> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the calendar bookings where calendarId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalendarBookingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param calendarId the calendar ID
+	* @param status the status
+	* @param start the lower bound of the range of calendar bookings
+	* @param end the upper bound of the range of calendar bookings (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching calendar bookings
+	*/
+	public java.util.List<CalendarBooking> findByC_S(long calendarId,
+		int[] statuses, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<CalendarBooking> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Removes all the calendar bookings where calendarId = &#63; and status = &#63; from the database.
@@ -1080,7 +1454,7 @@ public interface CalendarBookingPersistence extends BasePersistence<CalendarBook
 	public int countByC_S(long calendarId, int[] statuses);
 
 	/**
-	* Returns all the calendar bookings where parentCalendarBookingId = &#63; and status = &#63;.
+	* Returns all the calendar bookings where parentCalendarBookingId = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* @param parentCalendarBookingId the parent calendar booking ID
 	* @param status the status
@@ -1090,7 +1464,18 @@ public interface CalendarBookingPersistence extends BasePersistence<CalendarBook
 		long parentCalendarBookingId, int status);
 
 	/**
-	* Returns a range of all the calendar bookings where parentCalendarBookingId = &#63; and status = &#63;.
+	* Returns all the calendar bookings where parentCalendarBookingId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* @param parentCalendarBookingId the parent calendar booking ID
+	* @param status the status
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching calendar bookings
+	*/
+	public java.util.List<CalendarBooking> findByP_S(
+		long parentCalendarBookingId, int status, boolean retrieveFromCache);
+
+	/**
+	* Returns a range of all the calendar bookings where parentCalendarBookingId = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalendarBookingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1106,7 +1491,25 @@ public interface CalendarBookingPersistence extends BasePersistence<CalendarBook
 		long parentCalendarBookingId, int status, int start, int end);
 
 	/**
-	* Returns an ordered range of all the calendar bookings where parentCalendarBookingId = &#63; and status = &#63;.
+	* Returns a range of all the calendar bookings where parentCalendarBookingId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalendarBookingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param parentCalendarBookingId the parent calendar booking ID
+	* @param status the status
+	* @param start the lower bound of the range of calendar bookings
+	* @param end the upper bound of the range of calendar bookings (not inclusive)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the range of matching calendar bookings
+	*/
+	public java.util.List<CalendarBooking> findByP_S(
+		long parentCalendarBookingId, int status, int start, int end,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns an ordered range of all the calendar bookings where parentCalendarBookingId = &#63; and status = &#63;. Uses the finder cache.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalendarBookingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -1122,6 +1525,26 @@ public interface CalendarBookingPersistence extends BasePersistence<CalendarBook
 	public java.util.List<CalendarBooking> findByP_S(
 		long parentCalendarBookingId, int status, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<CalendarBooking> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the calendar bookings where parentCalendarBookingId = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link CalendarBookingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param parentCalendarBookingId the parent calendar booking ID
+	* @param status the status
+	* @param start the lower bound of the range of calendar bookings
+	* @param end the upper bound of the range of calendar bookings (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the ordered range of matching calendar bookings
+	*/
+	public java.util.List<CalendarBooking> findByP_S(
+		long parentCalendarBookingId, int status, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<CalendarBooking> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Returns the first calendar booking in the ordered set where parentCalendarBookingId = &#63; and status = &#63;.
