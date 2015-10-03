@@ -496,12 +496,18 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 		}
 	}
 
-	protected void toggleIndexerEnabled(ActionRequest actionRequest) {
+	protected void toggleIndexerEnabled(ActionRequest actionRequest)
+		throws Exception {
+
 		String className = ParamUtil.getString(actionRequest, "className");
 
 		Indexer<?> indexer = IndexerRegistryUtil.nullSafeGetIndexer(className);
 
 		indexer.setIndexerEnabled(!indexer.isIndexerEnabled());
+
+		if (indexer.isIndexerEnabled()) {
+			reindex(actionRequest);
+		}
 	}
 
 	protected void updateCaptcha(
