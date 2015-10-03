@@ -92,11 +92,11 @@ public class ComboServletTest extends PowerMockito {
 
 					Object[] args = invocation.getArguments();
 
-					if (PortletKeys.ADMIN.equals(args[0])) {
-						return _adminPortlet;
-					}
-					else if (PortletKeys.PORTAL.equals(args[0])) {
+					if (PortletKeys.PORTAL.equals(args[0])) {
 						return _portalPortlet;
+					}
+					else if (PortletKeys.SERVER_ADMIN.equals(args[0])) {
+						return _serverAdminPortlet;
 					}
 
 					return _portletUndeployed;
@@ -145,19 +145,19 @@ public class ComboServletTest extends PowerMockito {
 		_pluginServletContext = spy(new MockServletContext());
 
 		when(
-			_adminPortletApp.getServletContext()
+			_serverAdminPortletApp.getServletContext()
 		).thenReturn(
 			_pluginServletContext
 		);
 
 		when(
-			_adminPortlet.getPortletApp()
+			_serverAdminPortlet.getPortletApp()
 		).thenReturn(
-			_adminPortletApp
+			_serverAdminPortletApp
 		);
 
 		when(
-			_adminPortlet.getRootPortletId()
+			_serverAdminPortlet.getRootPortletId()
 		).thenReturn(
 			"75"
 		);
@@ -208,7 +208,7 @@ public class ComboServletTest extends PowerMockito {
 	public void testGetResourceWithPortletId() throws Exception {
 		_comboServlet.getResourceRequestDispatcher(
 			_mockHttpServletRequest, _mockHttpServletResponse,
-			PortletKeys.ADMIN + ":/js/javascript.js");
+			PortletKeys.SERVER_ADMIN + ":/js/javascript.js");
 
 		verify(_pluginServletContext);
 
@@ -217,12 +217,6 @@ public class ComboServletTest extends PowerMockito {
 
 	private static Portal _portal;
 	private static final PortalUtil _portalUtil = new PortalUtil();
-
-	@Mock
-	private Portlet _adminPortlet;
-
-	@Mock
-	private PortletApp _adminPortletApp;
 
 	private ComboServlet _comboServlet;
 	private MockHttpServletRequest _mockHttpServletRequest;
@@ -242,5 +236,11 @@ public class ComboServletTest extends PowerMockito {
 
 	@Mock
 	private Portlet _portletUndeployed;
+
+	@Mock
+	private Portlet _serverAdminPortlet;
+
+	@Mock
+	private PortletApp _serverAdminPortletApp;
 
 }
