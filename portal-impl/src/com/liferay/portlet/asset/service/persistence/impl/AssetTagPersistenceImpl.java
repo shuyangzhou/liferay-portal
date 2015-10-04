@@ -160,6 +160,26 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	@Override
 	public List<AssetTag> findByUuid(String uuid, int start, int end,
 		OrderByComparator<AssetTag> orderByComparator) {
+		return findByUuid(uuid, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the asset tags where uuid = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AssetTagModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param uuid the uuid
+	 * @param start the lower bound of the range of asset tags
+	 * @param end the upper bound of the range of asset tags (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to use the finder cache
+	 * @return the ordered range of matching asset tags
+	 */
+	@Override
+	public List<AssetTag> findByUuid(String uuid, int start, int end,
+		OrderByComparator<AssetTag> orderByComparator, boolean retrieveFromCache) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -175,15 +195,19 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 			finderArgs = new Object[] { uuid, start, end, orderByComparator };
 		}
 
-		List<AssetTag> list = (List<AssetTag>)FinderCacheUtil.getResult(finderPath,
-				finderArgs, this);
+		List<AssetTag> list = null;
 
-		if ((list != null) && !list.isEmpty()) {
-			for (AssetTag assetTag : list) {
-				if (!Validator.equals(uuid, assetTag.getUuid())) {
-					list = null;
+		if (retrieveFromCache) {
+			list = (List<AssetTag>)FinderCacheUtil.getResult(finderPath,
+					finderArgs, this);
 
-					break;
+			if ((list != null) && !list.isEmpty()) {
+				for (AssetTag assetTag : list) {
+					if (!Validator.equals(uuid, assetTag.getUuid())) {
+						list = null;
+
+						break;
+					}
 				}
 			}
 		}
@@ -942,6 +966,28 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	@Override
 	public List<AssetTag> findByUuid_C(String uuid, long companyId, int start,
 		int end, OrderByComparator<AssetTag> orderByComparator) {
+		return findByUuid_C(uuid, companyId, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the asset tags where uuid = &#63; and companyId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AssetTagModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param uuid the uuid
+	 * @param companyId the company ID
+	 * @param start the lower bound of the range of asset tags
+	 * @param end the upper bound of the range of asset tags (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to use the finder cache
+	 * @return the ordered range of matching asset tags
+	 */
+	@Override
+	public List<AssetTag> findByUuid_C(String uuid, long companyId, int start,
+		int end, OrderByComparator<AssetTag> orderByComparator,
+		boolean retrieveFromCache) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -961,16 +1007,20 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 				};
 		}
 
-		List<AssetTag> list = (List<AssetTag>)FinderCacheUtil.getResult(finderPath,
-				finderArgs, this);
+		List<AssetTag> list = null;
 
-		if ((list != null) && !list.isEmpty()) {
-			for (AssetTag assetTag : list) {
-				if (!Validator.equals(uuid, assetTag.getUuid()) ||
-						(companyId != assetTag.getCompanyId())) {
-					list = null;
+		if (retrieveFromCache) {
+			list = (List<AssetTag>)FinderCacheUtil.getResult(finderPath,
+					finderArgs, this);
 
-					break;
+			if ((list != null) && !list.isEmpty()) {
+				for (AssetTag assetTag : list) {
+					if (!Validator.equals(uuid, assetTag.getUuid()) ||
+							(companyId != assetTag.getCompanyId())) {
+						list = null;
+
+						break;
+					}
 				}
 			}
 		}
@@ -1500,6 +1550,26 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	@Override
 	public List<AssetTag> findByGroupId(long groupId, int start, int end,
 		OrderByComparator<AssetTag> orderByComparator) {
+		return findByGroupId(groupId, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the asset tags where groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AssetTagModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of asset tags
+	 * @param end the upper bound of the range of asset tags (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to use the finder cache
+	 * @return the ordered range of matching asset tags
+	 */
+	@Override
+	public List<AssetTag> findByGroupId(long groupId, int start, int end,
+		OrderByComparator<AssetTag> orderByComparator, boolean retrieveFromCache) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -1515,15 +1585,19 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 			finderArgs = new Object[] { groupId, start, end, orderByComparator };
 		}
 
-		List<AssetTag> list = (List<AssetTag>)FinderCacheUtil.getResult(finderPath,
-				finderArgs, this);
+		List<AssetTag> list = null;
 
-		if ((list != null) && !list.isEmpty()) {
-			for (AssetTag assetTag : list) {
-				if ((groupId != assetTag.getGroupId())) {
-					list = null;
+		if (retrieveFromCache) {
+			list = (List<AssetTag>)FinderCacheUtil.getResult(finderPath,
+					finderArgs, this);
 
-					break;
+			if ((list != null) && !list.isEmpty()) {
+				for (AssetTag assetTag : list) {
+					if ((groupId != assetTag.getGroupId())) {
+						list = null;
+
+						break;
+					}
 				}
 			}
 		}
@@ -2333,6 +2407,26 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	@Override
 	public List<AssetTag> findByGroupId(long[] groupIds, int start, int end,
 		OrderByComparator<AssetTag> orderByComparator) {
+		return findByGroupId(groupIds, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the asset tags where groupId = &#63;, optionally using the finder cache.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AssetTagModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of asset tags
+	 * @param end the upper bound of the range of asset tags (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to use the finder cache
+	 * @return the ordered range of matching asset tags
+	 */
+	@Override
+	public List<AssetTag> findByGroupId(long[] groupIds, int start, int end,
+		OrderByComparator<AssetTag> orderByComparator, boolean retrieveFromCache) {
 		if (groupIds == null) {
 			groupIds = new long[0];
 		}
@@ -2360,15 +2454,19 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 				};
 		}
 
-		List<AssetTag> list = (List<AssetTag>)FinderCacheUtil.getResult(FINDER_PATH_WITH_PAGINATION_FIND_BY_GROUPID,
-				finderArgs, this);
+		List<AssetTag> list = null;
 
-		if ((list != null) && !list.isEmpty()) {
-			for (AssetTag assetTag : list) {
-				if (!ArrayUtil.contains(groupIds, assetTag.getGroupId())) {
-					list = null;
+		if (retrieveFromCache) {
+			list = (List<AssetTag>)FinderCacheUtil.getResult(FINDER_PATH_WITH_PAGINATION_FIND_BY_GROUPID,
+					finderArgs, this);
 
-					break;
+			if ((list != null) && !list.isEmpty()) {
+				for (AssetTag assetTag : list) {
+					if (!ArrayUtil.contains(groupIds, assetTag.getGroupId())) {
+						list = null;
+
+						break;
+					}
 				}
 			}
 		}
@@ -3009,6 +3107,28 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	@Override
 	public List<AssetTag> findByG_LikeN(long groupId, String name, int start,
 		int end, OrderByComparator<AssetTag> orderByComparator) {
+		return findByG_LikeN(groupId, name, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the asset tags where groupId = &#63; and name LIKE &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AssetTagModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param name the name
+	 * @param start the lower bound of the range of asset tags
+	 * @param end the upper bound of the range of asset tags (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to use the finder cache
+	 * @return the ordered range of matching asset tags
+	 */
+	@Override
+	public List<AssetTag> findByG_LikeN(long groupId, String name, int start,
+		int end, OrderByComparator<AssetTag> orderByComparator,
+		boolean retrieveFromCache) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -3016,18 +3136,22 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 		finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_G_LIKEN;
 		finderArgs = new Object[] { groupId, name, start, end, orderByComparator };
 
-		List<AssetTag> list = (List<AssetTag>)FinderCacheUtil.getResult(finderPath,
-				finderArgs, this);
+		List<AssetTag> list = null;
 
-		if ((list != null) && !list.isEmpty()) {
-			for (AssetTag assetTag : list) {
-				if ((groupId != assetTag.getGroupId()) ||
-						!StringUtil.wildcardMatches(assetTag.getName(), name,
-							CharPool.UNDERLINE, CharPool.PERCENT,
-							CharPool.BACK_SLASH, true)) {
-					list = null;
+		if (retrieveFromCache) {
+			list = (List<AssetTag>)FinderCacheUtil.getResult(finderPath,
+					finderArgs, this);
 
-					break;
+			if ((list != null) && !list.isEmpty()) {
+				for (AssetTag assetTag : list) {
+					if ((groupId != assetTag.getGroupId()) ||
+							!StringUtil.wildcardMatches(assetTag.getName(),
+								name, CharPool.UNDERLINE, CharPool.PERCENT,
+								CharPool.BACK_SLASH, true)) {
+						list = null;
+
+						break;
+					}
 				}
 			}
 		}
@@ -3957,6 +4081,28 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	@Override
 	public List<AssetTag> findByG_LikeN(long[] groupIds, String name,
 		int start, int end, OrderByComparator<AssetTag> orderByComparator) {
+		return findByG_LikeN(groupIds, name, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the asset tags where groupId = &#63; and name LIKE &#63;, optionally using the finder cache.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AssetTagModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param name the name
+	 * @param start the lower bound of the range of asset tags
+	 * @param end the upper bound of the range of asset tags (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to use the finder cache
+	 * @return the ordered range of matching asset tags
+	 */
+	@Override
+	public List<AssetTag> findByG_LikeN(long[] groupIds, String name,
+		int start, int end, OrderByComparator<AssetTag> orderByComparator,
+		boolean retrieveFromCache) {
 		if (groupIds == null) {
 			groupIds = new long[0];
 		}
@@ -3985,18 +4131,22 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 				};
 		}
 
-		List<AssetTag> list = (List<AssetTag>)FinderCacheUtil.getResult(FINDER_PATH_WITH_PAGINATION_FIND_BY_G_LIKEN,
-				finderArgs, this);
+		List<AssetTag> list = null;
 
-		if ((list != null) && !list.isEmpty()) {
-			for (AssetTag assetTag : list) {
-				if (!ArrayUtil.contains(groupIds, assetTag.getGroupId()) ||
-						!StringUtil.wildcardMatches(assetTag.getName(), name,
-							CharPool.UNDERLINE, CharPool.PERCENT,
-							CharPool.BACK_SLASH, true)) {
-					list = null;
+		if (retrieveFromCache) {
+			list = (List<AssetTag>)FinderCacheUtil.getResult(FINDER_PATH_WITH_PAGINATION_FIND_BY_G_LIKEN,
+					finderArgs, this);
 
-					break;
+			if ((list != null) && !list.isEmpty()) {
+				for (AssetTag assetTag : list) {
+					if (!ArrayUtil.contains(groupIds, assetTag.getGroupId()) ||
+							!StringUtil.wildcardMatches(assetTag.getName(),
+								name, CharPool.UNDERLINE, CharPool.PERCENT,
+								CharPool.BACK_SLASH, true)) {
+						list = null;
+
+						break;
+					}
 				}
 			}
 		}
@@ -4681,7 +4831,8 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	protected AssetTag removeImpl(AssetTag assetTag) {
 		assetTag = toUnwrappedModel(assetTag);
 
-		assetTagToAssetEntryTableMapper.deleteLeftPrimaryKeyTableMappings(assetTag.getPrimaryKey());
+		assetTagToAssetEntryTableMapper.deleteLeftPrimaryKeyTableMappings(0,
+			assetTag.getPrimaryKey());
 
 		Session session = null;
 
@@ -5090,6 +5241,25 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	@Override
 	public List<AssetTag> findAll(int start, int end,
 		OrderByComparator<AssetTag> orderByComparator) {
+		return findAll(start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the asset tags.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AssetTagModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of asset tags
+	 * @param end the upper bound of the range of asset tags (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to use the finder cache
+	 * @return the ordered range of asset tags
+	 */
+	@Override
+	public List<AssetTag> findAll(int start, int end,
+		OrderByComparator<AssetTag> orderByComparator, boolean retrieveFromCache) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -5105,8 +5275,12 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 			finderArgs = new Object[] { start, end, orderByComparator };
 		}
 
-		List<AssetTag> list = (List<AssetTag>)FinderCacheUtil.getResult(finderPath,
-				finderArgs, this);
+		List<AssetTag> list = null;
+
+		if (retrieveFromCache) {
+			list = (List<AssetTag>)FinderCacheUtil.getResult(finderPath,
+					finderArgs, this);
+		}
 
 		if (list == null) {
 			StringBundler query = null;
@@ -5224,7 +5398,7 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	 */
 	@Override
 	public long[] getAssetEntryPrimaryKeys(long pk) {
-		long[] pks = assetTagToAssetEntryTableMapper.getRightPrimaryKeys(pk);
+		long[] pks = assetTagToAssetEntryTableMapper.getRightPrimaryKeys(0, pk);
 
 		return pks.clone();
 	}
@@ -5276,7 +5450,7 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	public List<com.liferay.portlet.asset.model.AssetEntry> getAssetEntries(
 		long pk, int start, int end,
 		OrderByComparator<com.liferay.portlet.asset.model.AssetEntry> orderByComparator) {
-		return assetTagToAssetEntryTableMapper.getRightBaseModels(pk, start,
+		return assetTagToAssetEntryTableMapper.getRightBaseModels(0, pk, start,
 			end, orderByComparator);
 	}
 
@@ -5288,7 +5462,7 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	 */
 	@Override
 	public int getAssetEntriesSize(long pk) {
-		long[] pks = assetTagToAssetEntryTableMapper.getRightPrimaryKeys(pk);
+		long[] pks = assetTagToAssetEntryTableMapper.getRightPrimaryKeys(0, pk);
 
 		return pks.length;
 	}
@@ -5302,7 +5476,7 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	 */
 	@Override
 	public boolean containsAssetEntry(long pk, long assetEntryPK) {
-		return assetTagToAssetEntryTableMapper.containsTableMapping(pk,
+		return assetTagToAssetEntryTableMapper.containsTableMapping(0, pk,
 			assetEntryPK);
 	}
 
@@ -5330,7 +5504,7 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	 */
 	@Override
 	public void addAssetEntry(long pk, long assetEntryPK) {
-		assetTagToAssetEntryTableMapper.addTableMapping(pk, assetEntryPK);
+		assetTagToAssetEntryTableMapper.addTableMapping(0, pk, assetEntryPK);
 	}
 
 	/**
@@ -5342,7 +5516,7 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	@Override
 	public void addAssetEntry(long pk,
 		com.liferay.portlet.asset.model.AssetEntry assetEntry) {
-		assetTagToAssetEntryTableMapper.addTableMapping(pk,
+		assetTagToAssetEntryTableMapper.addTableMapping(0, pk,
 			assetEntry.getPrimaryKey());
 	}
 
@@ -5355,7 +5529,7 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	@Override
 	public void addAssetEntries(long pk, long[] assetEntryPKs) {
 		for (long assetEntryPK : assetEntryPKs) {
-			assetTagToAssetEntryTableMapper.addTableMapping(pk, assetEntryPK);
+			assetTagToAssetEntryTableMapper.addTableMapping(0, pk, assetEntryPK);
 		}
 	}
 
@@ -5369,7 +5543,7 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	public void addAssetEntries(long pk,
 		List<com.liferay.portlet.asset.model.AssetEntry> assetEntries) {
 		for (com.liferay.portlet.asset.model.AssetEntry assetEntry : assetEntries) {
-			assetTagToAssetEntryTableMapper.addTableMapping(pk,
+			assetTagToAssetEntryTableMapper.addTableMapping(0, pk,
 				assetEntry.getPrimaryKey());
 		}
 	}
@@ -5381,7 +5555,7 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	 */
 	@Override
 	public void clearAssetEntries(long pk) {
-		assetTagToAssetEntryTableMapper.deleteLeftPrimaryKeyTableMappings(pk);
+		assetTagToAssetEntryTableMapper.deleteLeftPrimaryKeyTableMappings(0, pk);
 	}
 
 	/**
@@ -5392,7 +5566,7 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	 */
 	@Override
 	public void removeAssetEntry(long pk, long assetEntryPK) {
-		assetTagToAssetEntryTableMapper.deleteTableMapping(pk, assetEntryPK);
+		assetTagToAssetEntryTableMapper.deleteTableMapping(0, pk, assetEntryPK);
 	}
 
 	/**
@@ -5404,7 +5578,7 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	@Override
 	public void removeAssetEntry(long pk,
 		com.liferay.portlet.asset.model.AssetEntry assetEntry) {
-		assetTagToAssetEntryTableMapper.deleteTableMapping(pk,
+		assetTagToAssetEntryTableMapper.deleteTableMapping(0, pk,
 			assetEntry.getPrimaryKey());
 	}
 
@@ -5417,7 +5591,8 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	@Override
 	public void removeAssetEntries(long pk, long[] assetEntryPKs) {
 		for (long assetEntryPK : assetEntryPKs) {
-			assetTagToAssetEntryTableMapper.deleteTableMapping(pk, assetEntryPK);
+			assetTagToAssetEntryTableMapper.deleteTableMapping(0, pk,
+				assetEntryPK);
 		}
 	}
 
@@ -5431,7 +5606,7 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	public void removeAssetEntries(long pk,
 		List<com.liferay.portlet.asset.model.AssetEntry> assetEntries) {
 		for (com.liferay.portlet.asset.model.AssetEntry assetEntry : assetEntries) {
-			assetTagToAssetEntryTableMapper.deleteTableMapping(pk,
+			assetTagToAssetEntryTableMapper.deleteTableMapping(0, pk,
 				assetEntry.getPrimaryKey());
 		}
 	}
@@ -5446,21 +5621,22 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	public void setAssetEntries(long pk, long[] assetEntryPKs) {
 		Set<Long> newAssetEntryPKsSet = SetUtil.fromArray(assetEntryPKs);
 		Set<Long> oldAssetEntryPKsSet = SetUtil.fromArray(assetTagToAssetEntryTableMapper.getRightPrimaryKeys(
-					pk));
+					0, pk));
 
 		Set<Long> removeAssetEntryPKsSet = new HashSet<Long>(oldAssetEntryPKsSet);
 
 		removeAssetEntryPKsSet.removeAll(newAssetEntryPKsSet);
 
 		for (long removeAssetEntryPK : removeAssetEntryPKsSet) {
-			assetTagToAssetEntryTableMapper.deleteTableMapping(pk,
+			assetTagToAssetEntryTableMapper.deleteTableMapping(0, pk,
 				removeAssetEntryPK);
 		}
 
 		newAssetEntryPKsSet.removeAll(oldAssetEntryPKsSet);
 
 		for (long newAssetEntryPK : newAssetEntryPKsSet) {
-			assetTagToAssetEntryTableMapper.addTableMapping(pk, newAssetEntryPK);
+			assetTagToAssetEntryTableMapper.addTableMapping(0, pk,
+				newAssetEntryPK);
 		}
 	}
 
@@ -5504,7 +5680,7 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	 */
 	public void afterPropertiesSet() {
 		assetTagToAssetEntryTableMapper = TableMapperFactory.getTableMapper("AssetEntries_AssetTags",
-				"tagId", "entryId", this, assetEntryPersistence);
+				"companyId", "tagId", "entryId", this, assetEntryPersistence);
 	}
 
 	public void destroy() {

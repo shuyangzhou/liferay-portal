@@ -943,28 +943,6 @@ print AdminControl.invoke(appManager, 'startApplication', 'liferay-portal')
 		<ant dir="portal-web" target="update-gradle-cache" inheritAll="false" />
 	</target>
 
-	<target name="update-plugins-to-svn-revision">
-		<loadfile property="svn.info.revision.valid" srcfile="svn-revision" />
-
-		<script classpathref="project.classpath" language="beanshell">
-			String svnInfoOutput = project.getProperty("svn.info.revision.valid");
-
-			int x = svnInfoOutput.indexOf("Revision: ");
-
-			x = svnInfoOutput.indexOf(" ", x);
-
-			int y = svnInfoOutput.indexOf("Username:", x);
-
-			String revision = svnInfoOutput.substring(x, y).trim();
-
-			project.setProperty("svn.info.revision", revision);
-		</script>
-
-		<exec dir="${lp.plugins.dir}" executable="cmd.exe" os="${os.windows}">
-			<arg line="/c svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.revision}" />
-		</exec>
-	</target>
-
 	<target name="validate-xml">
 		<xmlvalidate failonerror="no">
 			<fileset dir="${project.dir}"

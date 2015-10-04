@@ -153,6 +153,26 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	@Override
 	public List<Group> findByUuid(String uuid, int start, int end,
 		OrderByComparator<Group> orderByComparator) {
+		return findByUuid(uuid, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the groups where uuid = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link GroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param uuid the uuid
+	 * @param start the lower bound of the range of groups
+	 * @param end the upper bound of the range of groups (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to use the finder cache
+	 * @return the ordered range of matching groups
+	 */
+	@Override
+	public List<Group> findByUuid(String uuid, int start, int end,
+		OrderByComparator<Group> orderByComparator, boolean retrieveFromCache) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -168,15 +188,19 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 			finderArgs = new Object[] { uuid, start, end, orderByComparator };
 		}
 
-		List<Group> list = (List<Group>)FinderCacheUtil.getResult(finderPath,
-				finderArgs, this);
+		List<Group> list = null;
 
-		if ((list != null) && !list.isEmpty()) {
-			for (Group group : list) {
-				if (!Validator.equals(uuid, group.getUuid())) {
-					list = null;
+		if (retrieveFromCache) {
+			list = (List<Group>)FinderCacheUtil.getResult(finderPath,
+					finderArgs, this);
 
-					break;
+			if ((list != null) && !list.isEmpty()) {
+				for (Group group : list) {
+					if (!Validator.equals(uuid, group.getUuid())) {
+						list = null;
+
+						break;
+					}
 				}
 			}
 		}
@@ -931,6 +955,28 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	@Override
 	public List<Group> findByUuid_C(String uuid, long companyId, int start,
 		int end, OrderByComparator<Group> orderByComparator) {
+		return findByUuid_C(uuid, companyId, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the groups where uuid = &#63; and companyId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link GroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param uuid the uuid
+	 * @param companyId the company ID
+	 * @param start the lower bound of the range of groups
+	 * @param end the upper bound of the range of groups (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to use the finder cache
+	 * @return the ordered range of matching groups
+	 */
+	@Override
+	public List<Group> findByUuid_C(String uuid, long companyId, int start,
+		int end, OrderByComparator<Group> orderByComparator,
+		boolean retrieveFromCache) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -950,16 +996,20 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 				};
 		}
 
-		List<Group> list = (List<Group>)FinderCacheUtil.getResult(finderPath,
-				finderArgs, this);
+		List<Group> list = null;
 
-		if ((list != null) && !list.isEmpty()) {
-			for (Group group : list) {
-				if (!Validator.equals(uuid, group.getUuid()) ||
-						(companyId != group.getCompanyId())) {
-					list = null;
+		if (retrieveFromCache) {
+			list = (List<Group>)FinderCacheUtil.getResult(finderPath,
+					finderArgs, this);
 
-					break;
+			if ((list != null) && !list.isEmpty()) {
+				for (Group group : list) {
+					if (!Validator.equals(uuid, group.getUuid()) ||
+							(companyId != group.getCompanyId())) {
+						list = null;
+
+						break;
+					}
 				}
 			}
 		}
@@ -1482,6 +1532,26 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	@Override
 	public List<Group> findByCompanyId(long companyId, int start, int end,
 		OrderByComparator<Group> orderByComparator) {
+		return findByCompanyId(companyId, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the groups where companyId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link GroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param companyId the company ID
+	 * @param start the lower bound of the range of groups
+	 * @param end the upper bound of the range of groups (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to use the finder cache
+	 * @return the ordered range of matching groups
+	 */
+	@Override
+	public List<Group> findByCompanyId(long companyId, int start, int end,
+		OrderByComparator<Group> orderByComparator, boolean retrieveFromCache) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -1497,15 +1567,19 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 			finderArgs = new Object[] { companyId, start, end, orderByComparator };
 		}
 
-		List<Group> list = (List<Group>)FinderCacheUtil.getResult(finderPath,
-				finderArgs, this);
+		List<Group> list = null;
 
-		if ((list != null) && !list.isEmpty()) {
-			for (Group group : list) {
-				if ((companyId != group.getCompanyId())) {
-					list = null;
+		if (retrieveFromCache) {
+			list = (List<Group>)FinderCacheUtil.getResult(finderPath,
+					finderArgs, this);
 
-					break;
+			if ((list != null) && !list.isEmpty()) {
+				for (Group group : list) {
+					if ((companyId != group.getCompanyId())) {
+						list = null;
+
+						break;
+					}
 				}
 			}
 		}
@@ -2171,6 +2245,29 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	@Override
 	public List<Group> findByC_C(long companyId, long classNameId, int start,
 		int end, OrderByComparator<Group> orderByComparator) {
+		return findByC_C(companyId, classNameId, start, end, orderByComparator,
+			true);
+	}
+
+	/**
+	 * Returns an ordered range of all the groups where companyId = &#63; and classNameId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link GroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param companyId the company ID
+	 * @param classNameId the class name ID
+	 * @param start the lower bound of the range of groups
+	 * @param end the upper bound of the range of groups (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to use the finder cache
+	 * @return the ordered range of matching groups
+	 */
+	@Override
+	public List<Group> findByC_C(long companyId, long classNameId, int start,
+		int end, OrderByComparator<Group> orderByComparator,
+		boolean retrieveFromCache) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -2190,16 +2287,20 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 				};
 		}
 
-		List<Group> list = (List<Group>)FinderCacheUtil.getResult(finderPath,
-				finderArgs, this);
+		List<Group> list = null;
 
-		if ((list != null) && !list.isEmpty()) {
-			for (Group group : list) {
-				if ((companyId != group.getCompanyId()) ||
-						(classNameId != group.getClassNameId())) {
-					list = null;
+		if (retrieveFromCache) {
+			list = (List<Group>)FinderCacheUtil.getResult(finderPath,
+					finderArgs, this);
 
-					break;
+			if ((list != null) && !list.isEmpty()) {
+				for (Group group : list) {
+					if ((companyId != group.getCompanyId()) ||
+							(classNameId != group.getClassNameId())) {
+						list = null;
+
+						break;
+					}
 				}
 			}
 		}
@@ -2682,6 +2783,29 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	@Override
 	public List<Group> findByC_P(long companyId, long parentGroupId, int start,
 		int end, OrderByComparator<Group> orderByComparator) {
+		return findByC_P(companyId, parentGroupId, start, end,
+			orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the groups where companyId = &#63; and parentGroupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link GroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param companyId the company ID
+	 * @param parentGroupId the parent group ID
+	 * @param start the lower bound of the range of groups
+	 * @param end the upper bound of the range of groups (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to use the finder cache
+	 * @return the ordered range of matching groups
+	 */
+	@Override
+	public List<Group> findByC_P(long companyId, long parentGroupId, int start,
+		int end, OrderByComparator<Group> orderByComparator,
+		boolean retrieveFromCache) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -2701,16 +2825,20 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 				};
 		}
 
-		List<Group> list = (List<Group>)FinderCacheUtil.getResult(finderPath,
-				finderArgs, this);
+		List<Group> list = null;
 
-		if ((list != null) && !list.isEmpty()) {
-			for (Group group : list) {
-				if ((companyId != group.getCompanyId()) ||
-						(parentGroupId != group.getParentGroupId())) {
-					list = null;
+		if (retrieveFromCache) {
+			list = (List<Group>)FinderCacheUtil.getResult(finderPath,
+					finderArgs, this);
 
-					break;
+			if ((list != null) && !list.isEmpty()) {
+				for (Group group : list) {
+					if ((companyId != group.getCompanyId()) ||
+							(parentGroupId != group.getParentGroupId())) {
+						list = null;
+
+						break;
+					}
 				}
 			}
 		}
@@ -3707,6 +3835,28 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	@Override
 	public List<Group> findByC_S(long companyId, boolean site, int start,
 		int end, OrderByComparator<Group> orderByComparator) {
+		return findByC_S(companyId, site, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the groups where companyId = &#63; and site = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link GroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param companyId the company ID
+	 * @param site the site
+	 * @param start the lower bound of the range of groups
+	 * @param end the upper bound of the range of groups (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to use the finder cache
+	 * @return the ordered range of matching groups
+	 */
+	@Override
+	public List<Group> findByC_S(long companyId, boolean site, int start,
+		int end, OrderByComparator<Group> orderByComparator,
+		boolean retrieveFromCache) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -3726,16 +3876,20 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 				};
 		}
 
-		List<Group> list = (List<Group>)FinderCacheUtil.getResult(finderPath,
-				finderArgs, this);
+		List<Group> list = null;
 
-		if ((list != null) && !list.isEmpty()) {
-			for (Group group : list) {
-				if ((companyId != group.getCompanyId()) ||
-						(site != group.getSite())) {
-					list = null;
+		if (retrieveFromCache) {
+			list = (List<Group>)FinderCacheUtil.getResult(finderPath,
+					finderArgs, this);
 
-					break;
+			if ((list != null) && !list.isEmpty()) {
+				for (Group group : list) {
+					if ((companyId != group.getCompanyId()) ||
+							(site != group.getSite())) {
+						list = null;
+
+						break;
+					}
 				}
 			}
 		}
@@ -4216,6 +4370,27 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	@Override
 	public List<Group> findByT_A(int type, boolean active, int start, int end,
 		OrderByComparator<Group> orderByComparator) {
+		return findByT_A(type, active, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the groups where type = &#63; and active = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link GroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param type the type
+	 * @param active the active
+	 * @param start the lower bound of the range of groups
+	 * @param end the upper bound of the range of groups (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to use the finder cache
+	 * @return the ordered range of matching groups
+	 */
+	@Override
+	public List<Group> findByT_A(int type, boolean active, int start, int end,
+		OrderByComparator<Group> orderByComparator, boolean retrieveFromCache) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -4235,15 +4410,20 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 				};
 		}
 
-		List<Group> list = (List<Group>)FinderCacheUtil.getResult(finderPath,
-				finderArgs, this);
+		List<Group> list = null;
 
-		if ((list != null) && !list.isEmpty()) {
-			for (Group group : list) {
-				if ((type != group.getType()) || (active != group.getActive())) {
-					list = null;
+		if (retrieveFromCache) {
+			list = (List<Group>)FinderCacheUtil.getResult(finderPath,
+					finderArgs, this);
 
-					break;
+			if ((list != null) && !list.isEmpty()) {
+				for (Group group : list) {
+					if ((type != group.getType()) ||
+							(active != group.getActive())) {
+						list = null;
+
+						break;
+					}
 				}
 			}
 		}
@@ -4725,6 +4905,30 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	public List<Group> findByG_C_P(long groupId, long companyId,
 		long parentGroupId, int start, int end,
 		OrderByComparator<Group> orderByComparator) {
+		return findByG_C_P(groupId, companyId, parentGroupId, start, end,
+			orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the groups where groupId &gt; &#63; and companyId = &#63; and parentGroupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link GroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param companyId the company ID
+	 * @param parentGroupId the parent group ID
+	 * @param start the lower bound of the range of groups
+	 * @param end the upper bound of the range of groups (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to use the finder cache
+	 * @return the ordered range of matching groups
+	 */
+	@Override
+	public List<Group> findByG_C_P(long groupId, long companyId,
+		long parentGroupId, int start, int end,
+		OrderByComparator<Group> orderByComparator, boolean retrieveFromCache) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -4736,17 +4940,21 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 				start, end, orderByComparator
 			};
 
-		List<Group> list = (List<Group>)FinderCacheUtil.getResult(finderPath,
-				finderArgs, this);
+		List<Group> list = null;
 
-		if ((list != null) && !list.isEmpty()) {
-			for (Group group : list) {
-				if ((groupId >= group.getGroupId()) ||
-						(companyId != group.getCompanyId()) ||
-						(parentGroupId != group.getParentGroupId())) {
-					list = null;
+		if (retrieveFromCache) {
+			list = (List<Group>)FinderCacheUtil.getResult(finderPath,
+					finderArgs, this);
 
-					break;
+			if ((list != null) && !list.isEmpty()) {
+				for (Group group : list) {
+					if ((groupId >= group.getGroupId()) ||
+							(companyId != group.getCompanyId()) ||
+							(parentGroupId != group.getParentGroupId())) {
+						list = null;
+
+						break;
+					}
 				}
 			}
 		}
@@ -5364,6 +5572,30 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	public List<Group> findByC_C_P(long companyId, long classNameId,
 		long parentGroupId, int start, int end,
 		OrderByComparator<Group> orderByComparator) {
+		return findByC_C_P(companyId, classNameId, parentGroupId, start, end,
+			orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the groups where companyId = &#63; and classNameId = &#63; and parentGroupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link GroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param companyId the company ID
+	 * @param classNameId the class name ID
+	 * @param parentGroupId the parent group ID
+	 * @param start the lower bound of the range of groups
+	 * @param end the upper bound of the range of groups (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to use the finder cache
+	 * @return the ordered range of matching groups
+	 */
+	@Override
+	public List<Group> findByC_C_P(long companyId, long classNameId,
+		long parentGroupId, int start, int end,
+		OrderByComparator<Group> orderByComparator, boolean retrieveFromCache) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -5383,17 +5615,21 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 				};
 		}
 
-		List<Group> list = (List<Group>)FinderCacheUtil.getResult(finderPath,
-				finderArgs, this);
+		List<Group> list = null;
 
-		if ((list != null) && !list.isEmpty()) {
-			for (Group group : list) {
-				if ((companyId != group.getCompanyId()) ||
-						(classNameId != group.getClassNameId()) ||
-						(parentGroupId != group.getParentGroupId())) {
-					list = null;
+		if (retrieveFromCache) {
+			list = (List<Group>)FinderCacheUtil.getResult(finderPath,
+					finderArgs, this);
 
-					break;
+			if ((list != null) && !list.isEmpty()) {
+				for (Group group : list) {
+					if ((companyId != group.getCompanyId()) ||
+							(classNameId != group.getClassNameId()) ||
+							(parentGroupId != group.getParentGroupId())) {
+						list = null;
+
+						break;
+					}
 				}
 			}
 		}
@@ -5920,6 +6156,30 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	public List<Group> findByC_P_S(long companyId, long parentGroupId,
 		boolean site, int start, int end,
 		OrderByComparator<Group> orderByComparator) {
+		return findByC_P_S(companyId, parentGroupId, site, start, end,
+			orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the groups where companyId = &#63; and parentGroupId = &#63; and site = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link GroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param companyId the company ID
+	 * @param parentGroupId the parent group ID
+	 * @param site the site
+	 * @param start the lower bound of the range of groups
+	 * @param end the upper bound of the range of groups (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to use the finder cache
+	 * @return the ordered range of matching groups
+	 */
+	@Override
+	public List<Group> findByC_P_S(long companyId, long parentGroupId,
+		boolean site, int start, int end,
+		OrderByComparator<Group> orderByComparator, boolean retrieveFromCache) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -5939,17 +6199,21 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 				};
 		}
 
-		List<Group> list = (List<Group>)FinderCacheUtil.getResult(finderPath,
-				finderArgs, this);
+		List<Group> list = null;
 
-		if ((list != null) && !list.isEmpty()) {
-			for (Group group : list) {
-				if ((companyId != group.getCompanyId()) ||
-						(parentGroupId != group.getParentGroupId()) ||
-						(site != group.getSite())) {
-					list = null;
+		if (retrieveFromCache) {
+			list = (List<Group>)FinderCacheUtil.getResult(finderPath,
+					finderArgs, this);
 
-					break;
+			if ((list != null) && !list.isEmpty()) {
+				for (Group group : list) {
+					if ((companyId != group.getCompanyId()) ||
+							(parentGroupId != group.getParentGroupId()) ||
+							(site != group.getSite())) {
+						list = null;
+
+						break;
+					}
 				}
 			}
 		}
@@ -7074,6 +7338,31 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	public List<Group> findByC_P_S_I(long companyId, long parentGroupId,
 		boolean site, boolean inheritContent, int start, int end,
 		OrderByComparator<Group> orderByComparator) {
+		return findByC_P_S_I(companyId, parentGroupId, site, inheritContent,
+			start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the groups where companyId = &#63; and parentGroupId = &#63; and site = &#63; and inheritContent = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link GroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param companyId the company ID
+	 * @param parentGroupId the parent group ID
+	 * @param site the site
+	 * @param inheritContent the inherit content
+	 * @param start the lower bound of the range of groups
+	 * @param end the upper bound of the range of groups (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to use the finder cache
+	 * @return the ordered range of matching groups
+	 */
+	@Override
+	public List<Group> findByC_P_S_I(long companyId, long parentGroupId,
+		boolean site, boolean inheritContent, int start, int end,
+		OrderByComparator<Group> orderByComparator, boolean retrieveFromCache) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -7095,18 +7384,22 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 				};
 		}
 
-		List<Group> list = (List<Group>)FinderCacheUtil.getResult(finderPath,
-				finderArgs, this);
+		List<Group> list = null;
 
-		if ((list != null) && !list.isEmpty()) {
-			for (Group group : list) {
-				if ((companyId != group.getCompanyId()) ||
-						(parentGroupId != group.getParentGroupId()) ||
-						(site != group.getSite()) ||
-						(inheritContent != group.getInheritContent())) {
-					list = null;
+		if (retrieveFromCache) {
+			list = (List<Group>)FinderCacheUtil.getResult(finderPath,
+					finderArgs, this);
 
-					break;
+			if ((list != null) && !list.isEmpty()) {
+				for (Group group : list) {
+					if ((companyId != group.getCompanyId()) ||
+							(parentGroupId != group.getParentGroupId()) ||
+							(site != group.getSite()) ||
+							(inheritContent != group.getInheritContent())) {
+						list = null;
+
+						break;
+					}
 				}
 			}
 		}
@@ -8065,13 +8358,17 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	protected Group removeImpl(Group group) {
 		group = toUnwrappedModel(group);
 
-		groupToOrganizationTableMapper.deleteLeftPrimaryKeyTableMappings(group.getPrimaryKey());
+		groupToOrganizationTableMapper.deleteLeftPrimaryKeyTableMappings(0,
+			group.getPrimaryKey());
 
-		groupToRoleTableMapper.deleteLeftPrimaryKeyTableMappings(group.getPrimaryKey());
+		groupToRoleTableMapper.deleteLeftPrimaryKeyTableMappings(0,
+			group.getPrimaryKey());
 
-		groupToUserGroupTableMapper.deleteLeftPrimaryKeyTableMappings(group.getPrimaryKey());
+		groupToUserGroupTableMapper.deleteLeftPrimaryKeyTableMappings(0,
+			group.getPrimaryKey());
 
-		groupToUserTableMapper.deleteLeftPrimaryKeyTableMappings(group.getPrimaryKey());
+		groupToUserTableMapper.deleteLeftPrimaryKeyTableMappings(0,
+			group.getPrimaryKey());
 
 		Session session = null;
 
@@ -8623,6 +8920,25 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	@Override
 	public List<Group> findAll(int start, int end,
 		OrderByComparator<Group> orderByComparator) {
+		return findAll(start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the groups.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link GroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of groups
+	 * @param end the upper bound of the range of groups (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to use the finder cache
+	 * @return the ordered range of groups
+	 */
+	@Override
+	public List<Group> findAll(int start, int end,
+		OrderByComparator<Group> orderByComparator, boolean retrieveFromCache) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -8638,8 +8954,12 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 			finderArgs = new Object[] { start, end, orderByComparator };
 		}
 
-		List<Group> list = (List<Group>)FinderCacheUtil.getResult(finderPath,
-				finderArgs, this);
+		List<Group> list = null;
+
+		if (retrieveFromCache) {
+			list = (List<Group>)FinderCacheUtil.getResult(finderPath,
+					finderArgs, this);
+		}
 
 		if (list == null) {
 			StringBundler query = null;
@@ -8757,7 +9077,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public long[] getOrganizationPrimaryKeys(long pk) {
-		long[] pks = groupToOrganizationTableMapper.getRightPrimaryKeys(pk);
+		long[] pks = groupToOrganizationTableMapper.getRightPrimaryKeys(0, pk);
 
 		return pks.clone();
 	}
@@ -8808,7 +9128,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	public List<com.liferay.portal.model.Organization> getOrganizations(
 		long pk, int start, int end,
 		OrderByComparator<com.liferay.portal.model.Organization> orderByComparator) {
-		return groupToOrganizationTableMapper.getRightBaseModels(pk, start,
+		return groupToOrganizationTableMapper.getRightBaseModels(0, pk, start,
 			end, orderByComparator);
 	}
 
@@ -8820,7 +9140,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public int getOrganizationsSize(long pk) {
-		long[] pks = groupToOrganizationTableMapper.getRightPrimaryKeys(pk);
+		long[] pks = groupToOrganizationTableMapper.getRightPrimaryKeys(0, pk);
 
 		return pks.length;
 	}
@@ -8834,7 +9154,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public boolean containsOrganization(long pk, long organizationPK) {
-		return groupToOrganizationTableMapper.containsTableMapping(pk,
+		return groupToOrganizationTableMapper.containsTableMapping(0, pk,
 			organizationPK);
 	}
 
@@ -8862,7 +9182,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public void addOrganization(long pk, long organizationPK) {
-		groupToOrganizationTableMapper.addTableMapping(pk, organizationPK);
+		groupToOrganizationTableMapper.addTableMapping(0, pk, organizationPK);
 	}
 
 	/**
@@ -8874,7 +9194,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	@Override
 	public void addOrganization(long pk,
 		com.liferay.portal.model.Organization organization) {
-		groupToOrganizationTableMapper.addTableMapping(pk,
+		groupToOrganizationTableMapper.addTableMapping(0, pk,
 			organization.getPrimaryKey());
 	}
 
@@ -8887,7 +9207,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	@Override
 	public void addOrganizations(long pk, long[] organizationPKs) {
 		for (long organizationPK : organizationPKs) {
-			groupToOrganizationTableMapper.addTableMapping(pk, organizationPK);
+			groupToOrganizationTableMapper.addTableMapping(0, pk, organizationPK);
 		}
 	}
 
@@ -8901,7 +9221,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	public void addOrganizations(long pk,
 		List<com.liferay.portal.model.Organization> organizations) {
 		for (com.liferay.portal.model.Organization organization : organizations) {
-			groupToOrganizationTableMapper.addTableMapping(pk,
+			groupToOrganizationTableMapper.addTableMapping(0, pk,
 				organization.getPrimaryKey());
 		}
 	}
@@ -8913,7 +9233,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public void clearOrganizations(long pk) {
-		groupToOrganizationTableMapper.deleteLeftPrimaryKeyTableMappings(pk);
+		groupToOrganizationTableMapper.deleteLeftPrimaryKeyTableMappings(0, pk);
 	}
 
 	/**
@@ -8924,7 +9244,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public void removeOrganization(long pk, long organizationPK) {
-		groupToOrganizationTableMapper.deleteTableMapping(pk, organizationPK);
+		groupToOrganizationTableMapper.deleteTableMapping(0, pk, organizationPK);
 	}
 
 	/**
@@ -8936,7 +9256,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	@Override
 	public void removeOrganization(long pk,
 		com.liferay.portal.model.Organization organization) {
-		groupToOrganizationTableMapper.deleteTableMapping(pk,
+		groupToOrganizationTableMapper.deleteTableMapping(0, pk,
 			organization.getPrimaryKey());
 	}
 
@@ -8949,7 +9269,8 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	@Override
 	public void removeOrganizations(long pk, long[] organizationPKs) {
 		for (long organizationPK : organizationPKs) {
-			groupToOrganizationTableMapper.deleteTableMapping(pk, organizationPK);
+			groupToOrganizationTableMapper.deleteTableMapping(0, pk,
+				organizationPK);
 		}
 	}
 
@@ -8963,7 +9284,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	public void removeOrganizations(long pk,
 		List<com.liferay.portal.model.Organization> organizations) {
 		for (com.liferay.portal.model.Organization organization : organizations) {
-			groupToOrganizationTableMapper.deleteTableMapping(pk,
+			groupToOrganizationTableMapper.deleteTableMapping(0, pk,
 				organization.getPrimaryKey());
 		}
 	}
@@ -8978,21 +9299,22 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	public void setOrganizations(long pk, long[] organizationPKs) {
 		Set<Long> newOrganizationPKsSet = SetUtil.fromArray(organizationPKs);
 		Set<Long> oldOrganizationPKsSet = SetUtil.fromArray(groupToOrganizationTableMapper.getRightPrimaryKeys(
-					pk));
+					0, pk));
 
 		Set<Long> removeOrganizationPKsSet = new HashSet<Long>(oldOrganizationPKsSet);
 
 		removeOrganizationPKsSet.removeAll(newOrganizationPKsSet);
 
 		for (long removeOrganizationPK : removeOrganizationPKsSet) {
-			groupToOrganizationTableMapper.deleteTableMapping(pk,
+			groupToOrganizationTableMapper.deleteTableMapping(0, pk,
 				removeOrganizationPK);
 		}
 
 		newOrganizationPKsSet.removeAll(oldOrganizationPKsSet);
 
 		for (long newOrganizationPK : newOrganizationPKsSet) {
-			groupToOrganizationTableMapper.addTableMapping(pk, newOrganizationPK);
+			groupToOrganizationTableMapper.addTableMapping(0, pk,
+				newOrganizationPK);
 		}
 	}
 
@@ -9029,7 +9351,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public long[] getRolePrimaryKeys(long pk) {
-		long[] pks = groupToRoleTableMapper.getRightPrimaryKeys(pk);
+		long[] pks = groupToRoleTableMapper.getRightPrimaryKeys(0, pk);
 
 		return pks.clone();
 	}
@@ -9080,7 +9402,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	public List<com.liferay.portal.model.Role> getRoles(long pk, int start,
 		int end,
 		OrderByComparator<com.liferay.portal.model.Role> orderByComparator) {
-		return groupToRoleTableMapper.getRightBaseModels(pk, start, end,
+		return groupToRoleTableMapper.getRightBaseModels(0, pk, start, end,
 			orderByComparator);
 	}
 
@@ -9092,7 +9414,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public int getRolesSize(long pk) {
-		long[] pks = groupToRoleTableMapper.getRightPrimaryKeys(pk);
+		long[] pks = groupToRoleTableMapper.getRightPrimaryKeys(0, pk);
 
 		return pks.length;
 	}
@@ -9106,7 +9428,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public boolean containsRole(long pk, long rolePK) {
-		return groupToRoleTableMapper.containsTableMapping(pk, rolePK);
+		return groupToRoleTableMapper.containsTableMapping(0, pk, rolePK);
 	}
 
 	/**
@@ -9133,7 +9455,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public void addRole(long pk, long rolePK) {
-		groupToRoleTableMapper.addTableMapping(pk, rolePK);
+		groupToRoleTableMapper.addTableMapping(0, pk, rolePK);
 	}
 
 	/**
@@ -9144,7 +9466,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public void addRole(long pk, com.liferay.portal.model.Role role) {
-		groupToRoleTableMapper.addTableMapping(pk, role.getPrimaryKey());
+		groupToRoleTableMapper.addTableMapping(0, pk, role.getPrimaryKey());
 	}
 
 	/**
@@ -9156,7 +9478,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	@Override
 	public void addRoles(long pk, long[] rolePKs) {
 		for (long rolePK : rolePKs) {
-			groupToRoleTableMapper.addTableMapping(pk, rolePK);
+			groupToRoleTableMapper.addTableMapping(0, pk, rolePK);
 		}
 	}
 
@@ -9169,7 +9491,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	@Override
 	public void addRoles(long pk, List<com.liferay.portal.model.Role> roles) {
 		for (com.liferay.portal.model.Role role : roles) {
-			groupToRoleTableMapper.addTableMapping(pk, role.getPrimaryKey());
+			groupToRoleTableMapper.addTableMapping(0, pk, role.getPrimaryKey());
 		}
 	}
 
@@ -9180,7 +9502,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public void clearRoles(long pk) {
-		groupToRoleTableMapper.deleteLeftPrimaryKeyTableMappings(pk);
+		groupToRoleTableMapper.deleteLeftPrimaryKeyTableMappings(0, pk);
 	}
 
 	/**
@@ -9191,7 +9513,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public void removeRole(long pk, long rolePK) {
-		groupToRoleTableMapper.deleteTableMapping(pk, rolePK);
+		groupToRoleTableMapper.deleteTableMapping(0, pk, rolePK);
 	}
 
 	/**
@@ -9202,7 +9524,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public void removeRole(long pk, com.liferay.portal.model.Role role) {
-		groupToRoleTableMapper.deleteTableMapping(pk, role.getPrimaryKey());
+		groupToRoleTableMapper.deleteTableMapping(0, pk, role.getPrimaryKey());
 	}
 
 	/**
@@ -9214,7 +9536,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	@Override
 	public void removeRoles(long pk, long[] rolePKs) {
 		for (long rolePK : rolePKs) {
-			groupToRoleTableMapper.deleteTableMapping(pk, rolePK);
+			groupToRoleTableMapper.deleteTableMapping(0, pk, rolePK);
 		}
 	}
 
@@ -9227,7 +9549,8 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	@Override
 	public void removeRoles(long pk, List<com.liferay.portal.model.Role> roles) {
 		for (com.liferay.portal.model.Role role : roles) {
-			groupToRoleTableMapper.deleteTableMapping(pk, role.getPrimaryKey());
+			groupToRoleTableMapper.deleteTableMapping(0, pk,
+				role.getPrimaryKey());
 		}
 	}
 
@@ -9241,20 +9564,20 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	public void setRoles(long pk, long[] rolePKs) {
 		Set<Long> newRolePKsSet = SetUtil.fromArray(rolePKs);
 		Set<Long> oldRolePKsSet = SetUtil.fromArray(groupToRoleTableMapper.getRightPrimaryKeys(
-					pk));
+					0, pk));
 
 		Set<Long> removeRolePKsSet = new HashSet<Long>(oldRolePKsSet);
 
 		removeRolePKsSet.removeAll(newRolePKsSet);
 
 		for (long removeRolePK : removeRolePKsSet) {
-			groupToRoleTableMapper.deleteTableMapping(pk, removeRolePK);
+			groupToRoleTableMapper.deleteTableMapping(0, pk, removeRolePK);
 		}
 
 		newRolePKsSet.removeAll(oldRolePKsSet);
 
 		for (long newRolePK : newRolePKsSet) {
-			groupToRoleTableMapper.addTableMapping(pk, newRolePK);
+			groupToRoleTableMapper.addTableMapping(0, pk, newRolePK);
 		}
 	}
 
@@ -9290,7 +9613,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public long[] getUserGroupPrimaryKeys(long pk) {
-		long[] pks = groupToUserGroupTableMapper.getRightPrimaryKeys(pk);
+		long[] pks = groupToUserGroupTableMapper.getRightPrimaryKeys(0, pk);
 
 		return pks.clone();
 	}
@@ -9341,8 +9664,8 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	public List<com.liferay.portal.model.UserGroup> getUserGroups(long pk,
 		int start, int end,
 		OrderByComparator<com.liferay.portal.model.UserGroup> orderByComparator) {
-		return groupToUserGroupTableMapper.getRightBaseModels(pk, start, end,
-			orderByComparator);
+		return groupToUserGroupTableMapper.getRightBaseModels(0, pk, start,
+			end, orderByComparator);
 	}
 
 	/**
@@ -9353,7 +9676,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public int getUserGroupsSize(long pk) {
-		long[] pks = groupToUserGroupTableMapper.getRightPrimaryKeys(pk);
+		long[] pks = groupToUserGroupTableMapper.getRightPrimaryKeys(0, pk);
 
 		return pks.length;
 	}
@@ -9367,7 +9690,8 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public boolean containsUserGroup(long pk, long userGroupPK) {
-		return groupToUserGroupTableMapper.containsTableMapping(pk, userGroupPK);
+		return groupToUserGroupTableMapper.containsTableMapping(0, pk,
+			userGroupPK);
 	}
 
 	/**
@@ -9394,7 +9718,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public void addUserGroup(long pk, long userGroupPK) {
-		groupToUserGroupTableMapper.addTableMapping(pk, userGroupPK);
+		groupToUserGroupTableMapper.addTableMapping(0, pk, userGroupPK);
 	}
 
 	/**
@@ -9406,7 +9730,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	@Override
 	public void addUserGroup(long pk,
 		com.liferay.portal.model.UserGroup userGroup) {
-		groupToUserGroupTableMapper.addTableMapping(pk,
+		groupToUserGroupTableMapper.addTableMapping(0, pk,
 			userGroup.getPrimaryKey());
 	}
 
@@ -9419,7 +9743,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	@Override
 	public void addUserGroups(long pk, long[] userGroupPKs) {
 		for (long userGroupPK : userGroupPKs) {
-			groupToUserGroupTableMapper.addTableMapping(pk, userGroupPK);
+			groupToUserGroupTableMapper.addTableMapping(0, pk, userGroupPK);
 		}
 	}
 
@@ -9433,7 +9757,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	public void addUserGroups(long pk,
 		List<com.liferay.portal.model.UserGroup> userGroups) {
 		for (com.liferay.portal.model.UserGroup userGroup : userGroups) {
-			groupToUserGroupTableMapper.addTableMapping(pk,
+			groupToUserGroupTableMapper.addTableMapping(0, pk,
 				userGroup.getPrimaryKey());
 		}
 	}
@@ -9445,7 +9769,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public void clearUserGroups(long pk) {
-		groupToUserGroupTableMapper.deleteLeftPrimaryKeyTableMappings(pk);
+		groupToUserGroupTableMapper.deleteLeftPrimaryKeyTableMappings(0, pk);
 	}
 
 	/**
@@ -9456,7 +9780,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public void removeUserGroup(long pk, long userGroupPK) {
-		groupToUserGroupTableMapper.deleteTableMapping(pk, userGroupPK);
+		groupToUserGroupTableMapper.deleteTableMapping(0, pk, userGroupPK);
 	}
 
 	/**
@@ -9468,7 +9792,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	@Override
 	public void removeUserGroup(long pk,
 		com.liferay.portal.model.UserGroup userGroup) {
-		groupToUserGroupTableMapper.deleteTableMapping(pk,
+		groupToUserGroupTableMapper.deleteTableMapping(0, pk,
 			userGroup.getPrimaryKey());
 	}
 
@@ -9481,7 +9805,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	@Override
 	public void removeUserGroups(long pk, long[] userGroupPKs) {
 		for (long userGroupPK : userGroupPKs) {
-			groupToUserGroupTableMapper.deleteTableMapping(pk, userGroupPK);
+			groupToUserGroupTableMapper.deleteTableMapping(0, pk, userGroupPK);
 		}
 	}
 
@@ -9495,7 +9819,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	public void removeUserGroups(long pk,
 		List<com.liferay.portal.model.UserGroup> userGroups) {
 		for (com.liferay.portal.model.UserGroup userGroup : userGroups) {
-			groupToUserGroupTableMapper.deleteTableMapping(pk,
+			groupToUserGroupTableMapper.deleteTableMapping(0, pk,
 				userGroup.getPrimaryKey());
 		}
 	}
@@ -9510,20 +9834,21 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	public void setUserGroups(long pk, long[] userGroupPKs) {
 		Set<Long> newUserGroupPKsSet = SetUtil.fromArray(userGroupPKs);
 		Set<Long> oldUserGroupPKsSet = SetUtil.fromArray(groupToUserGroupTableMapper.getRightPrimaryKeys(
-					pk));
+					0, pk));
 
 		Set<Long> removeUserGroupPKsSet = new HashSet<Long>(oldUserGroupPKsSet);
 
 		removeUserGroupPKsSet.removeAll(newUserGroupPKsSet);
 
 		for (long removeUserGroupPK : removeUserGroupPKsSet) {
-			groupToUserGroupTableMapper.deleteTableMapping(pk, removeUserGroupPK);
+			groupToUserGroupTableMapper.deleteTableMapping(0, pk,
+				removeUserGroupPK);
 		}
 
 		newUserGroupPKsSet.removeAll(oldUserGroupPKsSet);
 
 		for (long newUserGroupPK : newUserGroupPKsSet) {
-			groupToUserGroupTableMapper.addTableMapping(pk, newUserGroupPK);
+			groupToUserGroupTableMapper.addTableMapping(0, pk, newUserGroupPK);
 		}
 	}
 
@@ -9560,7 +9885,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public long[] getUserPrimaryKeys(long pk) {
-		long[] pks = groupToUserTableMapper.getRightPrimaryKeys(pk);
+		long[] pks = groupToUserTableMapper.getRightPrimaryKeys(0, pk);
 
 		return pks.clone();
 	}
@@ -9611,7 +9936,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	public List<com.liferay.portal.model.User> getUsers(long pk, int start,
 		int end,
 		OrderByComparator<com.liferay.portal.model.User> orderByComparator) {
-		return groupToUserTableMapper.getRightBaseModels(pk, start, end,
+		return groupToUserTableMapper.getRightBaseModels(0, pk, start, end,
 			orderByComparator);
 	}
 
@@ -9623,7 +9948,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public int getUsersSize(long pk) {
-		long[] pks = groupToUserTableMapper.getRightPrimaryKeys(pk);
+		long[] pks = groupToUserTableMapper.getRightPrimaryKeys(0, pk);
 
 		return pks.length;
 	}
@@ -9637,7 +9962,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public boolean containsUser(long pk, long userPK) {
-		return groupToUserTableMapper.containsTableMapping(pk, userPK);
+		return groupToUserTableMapper.containsTableMapping(0, pk, userPK);
 	}
 
 	/**
@@ -9664,7 +9989,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public void addUser(long pk, long userPK) {
-		groupToUserTableMapper.addTableMapping(pk, userPK);
+		groupToUserTableMapper.addTableMapping(0, pk, userPK);
 	}
 
 	/**
@@ -9675,7 +10000,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public void addUser(long pk, com.liferay.portal.model.User user) {
-		groupToUserTableMapper.addTableMapping(pk, user.getPrimaryKey());
+		groupToUserTableMapper.addTableMapping(0, pk, user.getPrimaryKey());
 	}
 
 	/**
@@ -9687,7 +10012,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	@Override
 	public void addUsers(long pk, long[] userPKs) {
 		for (long userPK : userPKs) {
-			groupToUserTableMapper.addTableMapping(pk, userPK);
+			groupToUserTableMapper.addTableMapping(0, pk, userPK);
 		}
 	}
 
@@ -9700,7 +10025,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	@Override
 	public void addUsers(long pk, List<com.liferay.portal.model.User> users) {
 		for (com.liferay.portal.model.User user : users) {
-			groupToUserTableMapper.addTableMapping(pk, user.getPrimaryKey());
+			groupToUserTableMapper.addTableMapping(0, pk, user.getPrimaryKey());
 		}
 	}
 
@@ -9711,7 +10036,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public void clearUsers(long pk) {
-		groupToUserTableMapper.deleteLeftPrimaryKeyTableMappings(pk);
+		groupToUserTableMapper.deleteLeftPrimaryKeyTableMappings(0, pk);
 	}
 
 	/**
@@ -9722,7 +10047,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public void removeUser(long pk, long userPK) {
-		groupToUserTableMapper.deleteTableMapping(pk, userPK);
+		groupToUserTableMapper.deleteTableMapping(0, pk, userPK);
 	}
 
 	/**
@@ -9733,7 +10058,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public void removeUser(long pk, com.liferay.portal.model.User user) {
-		groupToUserTableMapper.deleteTableMapping(pk, user.getPrimaryKey());
+		groupToUserTableMapper.deleteTableMapping(0, pk, user.getPrimaryKey());
 	}
 
 	/**
@@ -9745,7 +10070,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	@Override
 	public void removeUsers(long pk, long[] userPKs) {
 		for (long userPK : userPKs) {
-			groupToUserTableMapper.deleteTableMapping(pk, userPK);
+			groupToUserTableMapper.deleteTableMapping(0, pk, userPK);
 		}
 	}
 
@@ -9758,7 +10083,8 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	@Override
 	public void removeUsers(long pk, List<com.liferay.portal.model.User> users) {
 		for (com.liferay.portal.model.User user : users) {
-			groupToUserTableMapper.deleteTableMapping(pk, user.getPrimaryKey());
+			groupToUserTableMapper.deleteTableMapping(0, pk,
+				user.getPrimaryKey());
 		}
 	}
 
@@ -9772,20 +10098,20 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	public void setUsers(long pk, long[] userPKs) {
 		Set<Long> newUserPKsSet = SetUtil.fromArray(userPKs);
 		Set<Long> oldUserPKsSet = SetUtil.fromArray(groupToUserTableMapper.getRightPrimaryKeys(
-					pk));
+					0, pk));
 
 		Set<Long> removeUserPKsSet = new HashSet<Long>(oldUserPKsSet);
 
 		removeUserPKsSet.removeAll(newUserPKsSet);
 
 		for (long removeUserPK : removeUserPKsSet) {
-			groupToUserTableMapper.deleteTableMapping(pk, removeUserPK);
+			groupToUserTableMapper.deleteTableMapping(0, pk, removeUserPK);
 		}
 
 		newUserPKsSet.removeAll(oldUserPKsSet);
 
 		for (long newUserPK : newUserPKsSet) {
-			groupToUserTableMapper.addTableMapping(pk, newUserPK);
+			groupToUserTableMapper.addTableMapping(0, pk, newUserPK);
 		}
 	}
 
@@ -9828,16 +10154,18 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	public void afterPropertiesSet() {
 		groupToOrganizationTableMapper = TableMapperFactory.getTableMapper("Groups_Orgs",
-				"groupId", "organizationId", this, organizationPersistence);
+				"companyId", "groupId", "organizationId", this,
+				organizationPersistence);
 
 		groupToRoleTableMapper = TableMapperFactory.getTableMapper("Groups_Roles",
-				"groupId", "roleId", this, rolePersistence);
+				"companyId", "groupId", "roleId", this, rolePersistence);
 
 		groupToUserGroupTableMapper = TableMapperFactory.getTableMapper("Groups_UserGroups",
-				"groupId", "userGroupId", this, userGroupPersistence);
+				"companyId", "groupId", "userGroupId", this,
+				userGroupPersistence);
 
 		groupToUserTableMapper = TableMapperFactory.getTableMapper("Users_Groups",
-				"groupId", "userId", this, userPersistence);
+				"companyId", "groupId", "userId", this, userPersistence);
 	}
 
 	public void destroy() {

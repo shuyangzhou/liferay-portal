@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.upgrade.internal.UpgradeInfo;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -47,23 +48,6 @@ public class ReleaseGraphManager {
 		}
 	}
 
-	public List<UpgradeInfo> getUpgradeInfos(String fromVersionString) {
-		List<String> endVertices = getEndVertices();
-
-		endVertices.remove(fromVersionString);
-
-		if (endVertices.size() == 1) {
-			return getUpgradeInfos(fromVersionString, endVertices.get(0));
-		}
-
-		if (endVertices.size() > 1) {
-			throw new IllegalStateException(
-				"There is more than one possible end node " + endVertices);
-		}
-
-		throw new IllegalStateException("There are no end nodes");
-	}
-
 	public List<UpgradeInfo> getUpgradeInfos(
 		String fromVersionString, String toVersionString) {
 
@@ -85,9 +69,7 @@ public class ReleaseGraphManager {
 			dijkstraShortestPath.getPathEdgeList();
 
 		if (upgradeProcessEdges == null) {
-			throw new IllegalArgumentException(
-				"There is no path between " + fromVersionString + " and " +
-					toVersionString);
+			return Collections.emptyList();
 		}
 
 		return ListUtil.toList(
@@ -102,6 +84,29 @@ public class ReleaseGraphManager {
 				}
 
 			});
+	}
+
+	public List<List<UpgradeInfo>> getUpgradeInfosList(
+		String fromVersionString) {
+
+		List<String> endVertices = getEndVertices();
+
+		endVertices.remove(fromVersionString);
+
+		List<List<UpgradeInfo>> upgradeInfosList = new ArrayList<>();
+
+		for (String endVertex : endVertices) {
+			List<UpgradeInfo> upgradeInfos = getUpgradeInfos(
+				fromVersionString, endVertex);
+
+			if (upgradeInfos.isEmpty()) {
+				continue;
+			}
+
+			upgradeInfosList.add(upgradeInfos);
+		}
+
+		return upgradeInfosList;
 	}
 
 	protected List<String> getEndVertices() {

@@ -164,6 +164,29 @@ public class SCProductVersionPersistenceImpl extends BasePersistenceImpl<SCProdu
 	public List<SCProductVersion> findByProductEntryId(long productEntryId,
 		int start, int end,
 		OrderByComparator<SCProductVersion> orderByComparator) {
+		return findByProductEntryId(productEntryId, start, end,
+			orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the s c product versions where productEntryId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SCProductVersionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param productEntryId the product entry ID
+	 * @param start the lower bound of the range of s c product versions
+	 * @param end the upper bound of the range of s c product versions (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to use the finder cache
+	 * @return the ordered range of matching s c product versions
+	 */
+	@Override
+	public List<SCProductVersion> findByProductEntryId(long productEntryId,
+		int start, int end,
+		OrderByComparator<SCProductVersion> orderByComparator,
+		boolean retrieveFromCache) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -183,15 +206,19 @@ public class SCProductVersionPersistenceImpl extends BasePersistenceImpl<SCProdu
 				};
 		}
 
-		List<SCProductVersion> list = (List<SCProductVersion>)FinderCacheUtil.getResult(finderPath,
-				finderArgs, this);
+		List<SCProductVersion> list = null;
 
-		if ((list != null) && !list.isEmpty()) {
-			for (SCProductVersion scProductVersion : list) {
-				if ((productEntryId != scProductVersion.getProductEntryId())) {
-					list = null;
+		if (retrieveFromCache) {
+			list = (List<SCProductVersion>)FinderCacheUtil.getResult(finderPath,
+					finderArgs, this);
 
-					break;
+			if ((list != null) && !list.isEmpty()) {
+				for (SCProductVersion scProductVersion : list) {
+					if ((productEntryId != scProductVersion.getProductEntryId())) {
+						list = null;
+
+						break;
+					}
 				}
 			}
 		}
@@ -1047,7 +1074,8 @@ public class SCProductVersionPersistenceImpl extends BasePersistenceImpl<SCProdu
 	protected SCProductVersion removeImpl(SCProductVersion scProductVersion) {
 		scProductVersion = toUnwrappedModel(scProductVersion);
 
-		scProductVersionToSCFrameworkVersionTableMapper.deleteLeftPrimaryKeyTableMappings(scProductVersion.getPrimaryKey());
+		scProductVersionToSCFrameworkVersionTableMapper.deleteLeftPrimaryKeyTableMappings(0,
+			scProductVersion.getPrimaryKey());
 
 		Session session = null;
 
@@ -1426,6 +1454,26 @@ public class SCProductVersionPersistenceImpl extends BasePersistenceImpl<SCProdu
 	@Override
 	public List<SCProductVersion> findAll(int start, int end,
 		OrderByComparator<SCProductVersion> orderByComparator) {
+		return findAll(start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the s c product versions.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SCProductVersionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of s c product versions
+	 * @param end the upper bound of the range of s c product versions (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to use the finder cache
+	 * @return the ordered range of s c product versions
+	 */
+	@Override
+	public List<SCProductVersion> findAll(int start, int end,
+		OrderByComparator<SCProductVersion> orderByComparator,
+		boolean retrieveFromCache) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -1441,8 +1489,12 @@ public class SCProductVersionPersistenceImpl extends BasePersistenceImpl<SCProdu
 			finderArgs = new Object[] { start, end, orderByComparator };
 		}
 
-		List<SCProductVersion> list = (List<SCProductVersion>)FinderCacheUtil.getResult(finderPath,
-				finderArgs, this);
+		List<SCProductVersion> list = null;
+
+		if (retrieveFromCache) {
+			list = (List<SCProductVersion>)FinderCacheUtil.getResult(finderPath,
+					finderArgs, this);
+		}
 
 		if (list == null) {
 			StringBundler query = null;
@@ -1560,7 +1612,8 @@ public class SCProductVersionPersistenceImpl extends BasePersistenceImpl<SCProdu
 	 */
 	@Override
 	public long[] getSCFrameworkVersionPrimaryKeys(long pk) {
-		long[] pks = scProductVersionToSCFrameworkVersionTableMapper.getRightPrimaryKeys(pk);
+		long[] pks = scProductVersionToSCFrameworkVersionTableMapper.getRightPrimaryKeys(0,
+				pk);
 
 		return pks.clone();
 	}
@@ -1612,8 +1665,8 @@ public class SCProductVersionPersistenceImpl extends BasePersistenceImpl<SCProdu
 	public List<com.liferay.portlet.softwarecatalog.model.SCFrameworkVersion> getSCFrameworkVersions(
 		long pk, int start, int end,
 		OrderByComparator<com.liferay.portlet.softwarecatalog.model.SCFrameworkVersion> orderByComparator) {
-		return scProductVersionToSCFrameworkVersionTableMapper.getRightBaseModels(pk,
-			start, end, orderByComparator);
+		return scProductVersionToSCFrameworkVersionTableMapper.getRightBaseModels(0,
+			pk, start, end, orderByComparator);
 	}
 
 	/**
@@ -1624,7 +1677,8 @@ public class SCProductVersionPersistenceImpl extends BasePersistenceImpl<SCProdu
 	 */
 	@Override
 	public int getSCFrameworkVersionsSize(long pk) {
-		long[] pks = scProductVersionToSCFrameworkVersionTableMapper.getRightPrimaryKeys(pk);
+		long[] pks = scProductVersionToSCFrameworkVersionTableMapper.getRightPrimaryKeys(0,
+				pk);
 
 		return pks.length;
 	}
@@ -1638,8 +1692,8 @@ public class SCProductVersionPersistenceImpl extends BasePersistenceImpl<SCProdu
 	 */
 	@Override
 	public boolean containsSCFrameworkVersion(long pk, long scFrameworkVersionPK) {
-		return scProductVersionToSCFrameworkVersionTableMapper.containsTableMapping(pk,
-			scFrameworkVersionPK);
+		return scProductVersionToSCFrameworkVersionTableMapper.containsTableMapping(0,
+			pk, scFrameworkVersionPK);
 	}
 
 	/**
@@ -1666,7 +1720,7 @@ public class SCProductVersionPersistenceImpl extends BasePersistenceImpl<SCProdu
 	 */
 	@Override
 	public void addSCFrameworkVersion(long pk, long scFrameworkVersionPK) {
-		scProductVersionToSCFrameworkVersionTableMapper.addTableMapping(pk,
+		scProductVersionToSCFrameworkVersionTableMapper.addTableMapping(0, pk,
 			scFrameworkVersionPK);
 	}
 
@@ -1679,7 +1733,7 @@ public class SCProductVersionPersistenceImpl extends BasePersistenceImpl<SCProdu
 	@Override
 	public void addSCFrameworkVersion(long pk,
 		com.liferay.portlet.softwarecatalog.model.SCFrameworkVersion scFrameworkVersion) {
-		scProductVersionToSCFrameworkVersionTableMapper.addTableMapping(pk,
+		scProductVersionToSCFrameworkVersionTableMapper.addTableMapping(0, pk,
 			scFrameworkVersion.getPrimaryKey());
 	}
 
@@ -1692,8 +1746,8 @@ public class SCProductVersionPersistenceImpl extends BasePersistenceImpl<SCProdu
 	@Override
 	public void addSCFrameworkVersions(long pk, long[] scFrameworkVersionPKs) {
 		for (long scFrameworkVersionPK : scFrameworkVersionPKs) {
-			scProductVersionToSCFrameworkVersionTableMapper.addTableMapping(pk,
-				scFrameworkVersionPK);
+			scProductVersionToSCFrameworkVersionTableMapper.addTableMapping(0,
+				pk, scFrameworkVersionPK);
 		}
 	}
 
@@ -1707,8 +1761,8 @@ public class SCProductVersionPersistenceImpl extends BasePersistenceImpl<SCProdu
 	public void addSCFrameworkVersions(long pk,
 		List<com.liferay.portlet.softwarecatalog.model.SCFrameworkVersion> scFrameworkVersions) {
 		for (com.liferay.portlet.softwarecatalog.model.SCFrameworkVersion scFrameworkVersion : scFrameworkVersions) {
-			scProductVersionToSCFrameworkVersionTableMapper.addTableMapping(pk,
-				scFrameworkVersion.getPrimaryKey());
+			scProductVersionToSCFrameworkVersionTableMapper.addTableMapping(0,
+				pk, scFrameworkVersion.getPrimaryKey());
 		}
 	}
 
@@ -1719,7 +1773,8 @@ public class SCProductVersionPersistenceImpl extends BasePersistenceImpl<SCProdu
 	 */
 	@Override
 	public void clearSCFrameworkVersions(long pk) {
-		scProductVersionToSCFrameworkVersionTableMapper.deleteLeftPrimaryKeyTableMappings(pk);
+		scProductVersionToSCFrameworkVersionTableMapper.deleteLeftPrimaryKeyTableMappings(0,
+			pk);
 	}
 
 	/**
@@ -1730,8 +1785,8 @@ public class SCProductVersionPersistenceImpl extends BasePersistenceImpl<SCProdu
 	 */
 	@Override
 	public void removeSCFrameworkVersion(long pk, long scFrameworkVersionPK) {
-		scProductVersionToSCFrameworkVersionTableMapper.deleteTableMapping(pk,
-			scFrameworkVersionPK);
+		scProductVersionToSCFrameworkVersionTableMapper.deleteTableMapping(0,
+			pk, scFrameworkVersionPK);
 	}
 
 	/**
@@ -1743,8 +1798,8 @@ public class SCProductVersionPersistenceImpl extends BasePersistenceImpl<SCProdu
 	@Override
 	public void removeSCFrameworkVersion(long pk,
 		com.liferay.portlet.softwarecatalog.model.SCFrameworkVersion scFrameworkVersion) {
-		scProductVersionToSCFrameworkVersionTableMapper.deleteTableMapping(pk,
-			scFrameworkVersion.getPrimaryKey());
+		scProductVersionToSCFrameworkVersionTableMapper.deleteTableMapping(0,
+			pk, scFrameworkVersion.getPrimaryKey());
 	}
 
 	/**
@@ -1756,8 +1811,8 @@ public class SCProductVersionPersistenceImpl extends BasePersistenceImpl<SCProdu
 	@Override
 	public void removeSCFrameworkVersions(long pk, long[] scFrameworkVersionPKs) {
 		for (long scFrameworkVersionPK : scFrameworkVersionPKs) {
-			scProductVersionToSCFrameworkVersionTableMapper.deleteTableMapping(pk,
-				scFrameworkVersionPK);
+			scProductVersionToSCFrameworkVersionTableMapper.deleteTableMapping(0,
+				pk, scFrameworkVersionPK);
 		}
 	}
 
@@ -1771,8 +1826,8 @@ public class SCProductVersionPersistenceImpl extends BasePersistenceImpl<SCProdu
 	public void removeSCFrameworkVersions(long pk,
 		List<com.liferay.portlet.softwarecatalog.model.SCFrameworkVersion> scFrameworkVersions) {
 		for (com.liferay.portlet.softwarecatalog.model.SCFrameworkVersion scFrameworkVersion : scFrameworkVersions) {
-			scProductVersionToSCFrameworkVersionTableMapper.deleteTableMapping(pk,
-				scFrameworkVersion.getPrimaryKey());
+			scProductVersionToSCFrameworkVersionTableMapper.deleteTableMapping(0,
+				pk, scFrameworkVersion.getPrimaryKey());
 		}
 	}
 
@@ -1786,22 +1841,22 @@ public class SCProductVersionPersistenceImpl extends BasePersistenceImpl<SCProdu
 	public void setSCFrameworkVersions(long pk, long[] scFrameworkVersionPKs) {
 		Set<Long> newSCFrameworkVersionPKsSet = SetUtil.fromArray(scFrameworkVersionPKs);
 		Set<Long> oldSCFrameworkVersionPKsSet = SetUtil.fromArray(scProductVersionToSCFrameworkVersionTableMapper.getRightPrimaryKeys(
-					pk));
+					0, pk));
 
 		Set<Long> removeSCFrameworkVersionPKsSet = new HashSet<Long>(oldSCFrameworkVersionPKsSet);
 
 		removeSCFrameworkVersionPKsSet.removeAll(newSCFrameworkVersionPKsSet);
 
 		for (long removeSCFrameworkVersionPK : removeSCFrameworkVersionPKsSet) {
-			scProductVersionToSCFrameworkVersionTableMapper.deleteTableMapping(pk,
-				removeSCFrameworkVersionPK);
+			scProductVersionToSCFrameworkVersionTableMapper.deleteTableMapping(0,
+				pk, removeSCFrameworkVersionPK);
 		}
 
 		newSCFrameworkVersionPKsSet.removeAll(oldSCFrameworkVersionPKsSet);
 
 		for (long newSCFrameworkVersionPK : newSCFrameworkVersionPKsSet) {
-			scProductVersionToSCFrameworkVersionTableMapper.addTableMapping(pk,
-				newSCFrameworkVersionPK);
+			scProductVersionToSCFrameworkVersionTableMapper.addTableMapping(0,
+				pk, newSCFrameworkVersionPK);
 		}
 	}
 
@@ -1841,7 +1896,7 @@ public class SCProductVersionPersistenceImpl extends BasePersistenceImpl<SCProdu
 	 */
 	public void afterPropertiesSet() {
 		scProductVersionToSCFrameworkVersionTableMapper = TableMapperFactory.getTableMapper("SCFrameworkVersi_SCProductVers",
-				"productVersionId", "frameworkVersionId", this,
+				"companyId", "productVersionId", "frameworkVersionId", this,
 				scFrameworkVersionPersistence);
 	}
 

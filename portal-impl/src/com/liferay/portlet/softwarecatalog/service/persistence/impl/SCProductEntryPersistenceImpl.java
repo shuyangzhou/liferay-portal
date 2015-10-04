@@ -163,6 +163,27 @@ public class SCProductEntryPersistenceImpl extends BasePersistenceImpl<SCProduct
 	@Override
 	public List<SCProductEntry> findByGroupId(long groupId, int start, int end,
 		OrderByComparator<SCProductEntry> orderByComparator) {
+		return findByGroupId(groupId, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the s c product entries where groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SCProductEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of s c product entries
+	 * @param end the upper bound of the range of s c product entries (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to use the finder cache
+	 * @return the ordered range of matching s c product entries
+	 */
+	@Override
+	public List<SCProductEntry> findByGroupId(long groupId, int start, int end,
+		OrderByComparator<SCProductEntry> orderByComparator,
+		boolean retrieveFromCache) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -178,15 +199,19 @@ public class SCProductEntryPersistenceImpl extends BasePersistenceImpl<SCProduct
 			finderArgs = new Object[] { groupId, start, end, orderByComparator };
 		}
 
-		List<SCProductEntry> list = (List<SCProductEntry>)FinderCacheUtil.getResult(finderPath,
-				finderArgs, this);
+		List<SCProductEntry> list = null;
 
-		if ((list != null) && !list.isEmpty()) {
-			for (SCProductEntry scProductEntry : list) {
-				if ((groupId != scProductEntry.getGroupId())) {
-					list = null;
+		if (retrieveFromCache) {
+			list = (List<SCProductEntry>)FinderCacheUtil.getResult(finderPath,
+					finderArgs, this);
 
-					break;
+			if ((list != null) && !list.isEmpty()) {
+				for (SCProductEntry scProductEntry : list) {
+					if ((groupId != scProductEntry.getGroupId())) {
+						list = null;
+
+						break;
+					}
 				}
 			}
 		}
@@ -1007,6 +1032,27 @@ public class SCProductEntryPersistenceImpl extends BasePersistenceImpl<SCProduct
 	@Override
 	public List<SCProductEntry> findByCompanyId(long companyId, int start,
 		int end, OrderByComparator<SCProductEntry> orderByComparator) {
+		return findByCompanyId(companyId, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the s c product entries where companyId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SCProductEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param companyId the company ID
+	 * @param start the lower bound of the range of s c product entries
+	 * @param end the upper bound of the range of s c product entries (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to use the finder cache
+	 * @return the ordered range of matching s c product entries
+	 */
+	@Override
+	public List<SCProductEntry> findByCompanyId(long companyId, int start,
+		int end, OrderByComparator<SCProductEntry> orderByComparator,
+		boolean retrieveFromCache) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -1022,15 +1068,19 @@ public class SCProductEntryPersistenceImpl extends BasePersistenceImpl<SCProduct
 			finderArgs = new Object[] { companyId, start, end, orderByComparator };
 		}
 
-		List<SCProductEntry> list = (List<SCProductEntry>)FinderCacheUtil.getResult(finderPath,
-				finderArgs, this);
+		List<SCProductEntry> list = null;
 
-		if ((list != null) && !list.isEmpty()) {
-			for (SCProductEntry scProductEntry : list) {
-				if ((companyId != scProductEntry.getCompanyId())) {
-					list = null;
+		if (retrieveFromCache) {
+			list = (List<SCProductEntry>)FinderCacheUtil.getResult(finderPath,
+					finderArgs, this);
 
-					break;
+			if ((list != null) && !list.isEmpty()) {
+				for (SCProductEntry scProductEntry : list) {
+					if ((companyId != scProductEntry.getCompanyId())) {
+						list = null;
+
+						break;
+					}
 				}
 			}
 		}
@@ -1494,6 +1544,28 @@ public class SCProductEntryPersistenceImpl extends BasePersistenceImpl<SCProduct
 	@Override
 	public List<SCProductEntry> findByG_U(long groupId, long userId, int start,
 		int end, OrderByComparator<SCProductEntry> orderByComparator) {
+		return findByG_U(groupId, userId, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the s c product entries where groupId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SCProductEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of s c product entries
+	 * @param end the upper bound of the range of s c product entries (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to use the finder cache
+	 * @return the ordered range of matching s c product entries
+	 */
+	@Override
+	public List<SCProductEntry> findByG_U(long groupId, long userId, int start,
+		int end, OrderByComparator<SCProductEntry> orderByComparator,
+		boolean retrieveFromCache) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -1513,16 +1585,20 @@ public class SCProductEntryPersistenceImpl extends BasePersistenceImpl<SCProduct
 				};
 		}
 
-		List<SCProductEntry> list = (List<SCProductEntry>)FinderCacheUtil.getResult(finderPath,
-				finderArgs, this);
+		List<SCProductEntry> list = null;
 
-		if ((list != null) && !list.isEmpty()) {
-			for (SCProductEntry scProductEntry : list) {
-				if ((groupId != scProductEntry.getGroupId()) ||
-						(userId != scProductEntry.getUserId())) {
-					list = null;
+		if (retrieveFromCache) {
+			list = (List<SCProductEntry>)FinderCacheUtil.getResult(finderPath,
+					finderArgs, this);
 
-					break;
+			if ((list != null) && !list.isEmpty()) {
+				for (SCProductEntry scProductEntry : list) {
+					if ((groupId != scProductEntry.getGroupId()) ||
+							(userId != scProductEntry.getUserId())) {
+						list = null;
+
+						break;
+					}
 				}
 			}
 		}
@@ -2827,7 +2903,8 @@ public class SCProductEntryPersistenceImpl extends BasePersistenceImpl<SCProduct
 	protected SCProductEntry removeImpl(SCProductEntry scProductEntry) {
 		scProductEntry = toUnwrappedModel(scProductEntry);
 
-		scProductEntryToSCLicenseTableMapper.deleteLeftPrimaryKeyTableMappings(scProductEntry.getPrimaryKey());
+		scProductEntryToSCLicenseTableMapper.deleteLeftPrimaryKeyTableMappings(0,
+			scProductEntry.getPrimaryKey());
 
 		Session session = null;
 
@@ -3244,6 +3321,26 @@ public class SCProductEntryPersistenceImpl extends BasePersistenceImpl<SCProduct
 	@Override
 	public List<SCProductEntry> findAll(int start, int end,
 		OrderByComparator<SCProductEntry> orderByComparator) {
+		return findAll(start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the s c product entries.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SCProductEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of s c product entries
+	 * @param end the upper bound of the range of s c product entries (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to use the finder cache
+	 * @return the ordered range of s c product entries
+	 */
+	@Override
+	public List<SCProductEntry> findAll(int start, int end,
+		OrderByComparator<SCProductEntry> orderByComparator,
+		boolean retrieveFromCache) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -3259,8 +3356,12 @@ public class SCProductEntryPersistenceImpl extends BasePersistenceImpl<SCProduct
 			finderArgs = new Object[] { start, end, orderByComparator };
 		}
 
-		List<SCProductEntry> list = (List<SCProductEntry>)FinderCacheUtil.getResult(finderPath,
-				finderArgs, this);
+		List<SCProductEntry> list = null;
+
+		if (retrieveFromCache) {
+			list = (List<SCProductEntry>)FinderCacheUtil.getResult(finderPath,
+					finderArgs, this);
+		}
 
 		if (list == null) {
 			StringBundler query = null;
@@ -3378,7 +3479,8 @@ public class SCProductEntryPersistenceImpl extends BasePersistenceImpl<SCProduct
 	 */
 	@Override
 	public long[] getSCLicensePrimaryKeys(long pk) {
-		long[] pks = scProductEntryToSCLicenseTableMapper.getRightPrimaryKeys(pk);
+		long[] pks = scProductEntryToSCLicenseTableMapper.getRightPrimaryKeys(0,
+				pk);
 
 		return pks.clone();
 	}
@@ -3430,7 +3532,7 @@ public class SCProductEntryPersistenceImpl extends BasePersistenceImpl<SCProduct
 	public List<com.liferay.portlet.softwarecatalog.model.SCLicense> getSCLicenses(
 		long pk, int start, int end,
 		OrderByComparator<com.liferay.portlet.softwarecatalog.model.SCLicense> orderByComparator) {
-		return scProductEntryToSCLicenseTableMapper.getRightBaseModels(pk,
+		return scProductEntryToSCLicenseTableMapper.getRightBaseModels(0, pk,
 			start, end, orderByComparator);
 	}
 
@@ -3442,7 +3544,8 @@ public class SCProductEntryPersistenceImpl extends BasePersistenceImpl<SCProduct
 	 */
 	@Override
 	public int getSCLicensesSize(long pk) {
-		long[] pks = scProductEntryToSCLicenseTableMapper.getRightPrimaryKeys(pk);
+		long[] pks = scProductEntryToSCLicenseTableMapper.getRightPrimaryKeys(0,
+				pk);
 
 		return pks.length;
 	}
@@ -3456,7 +3559,7 @@ public class SCProductEntryPersistenceImpl extends BasePersistenceImpl<SCProduct
 	 */
 	@Override
 	public boolean containsSCLicense(long pk, long scLicensePK) {
-		return scProductEntryToSCLicenseTableMapper.containsTableMapping(pk,
+		return scProductEntryToSCLicenseTableMapper.containsTableMapping(0, pk,
 			scLicensePK);
 	}
 
@@ -3484,7 +3587,7 @@ public class SCProductEntryPersistenceImpl extends BasePersistenceImpl<SCProduct
 	 */
 	@Override
 	public void addSCLicense(long pk, long scLicensePK) {
-		scProductEntryToSCLicenseTableMapper.addTableMapping(pk, scLicensePK);
+		scProductEntryToSCLicenseTableMapper.addTableMapping(0, pk, scLicensePK);
 	}
 
 	/**
@@ -3496,7 +3599,7 @@ public class SCProductEntryPersistenceImpl extends BasePersistenceImpl<SCProduct
 	@Override
 	public void addSCLicense(long pk,
 		com.liferay.portlet.softwarecatalog.model.SCLicense scLicense) {
-		scProductEntryToSCLicenseTableMapper.addTableMapping(pk,
+		scProductEntryToSCLicenseTableMapper.addTableMapping(0, pk,
 			scLicense.getPrimaryKey());
 	}
 
@@ -3509,7 +3612,8 @@ public class SCProductEntryPersistenceImpl extends BasePersistenceImpl<SCProduct
 	@Override
 	public void addSCLicenses(long pk, long[] scLicensePKs) {
 		for (long scLicensePK : scLicensePKs) {
-			scProductEntryToSCLicenseTableMapper.addTableMapping(pk, scLicensePK);
+			scProductEntryToSCLicenseTableMapper.addTableMapping(0, pk,
+				scLicensePK);
 		}
 	}
 
@@ -3523,7 +3627,7 @@ public class SCProductEntryPersistenceImpl extends BasePersistenceImpl<SCProduct
 	public void addSCLicenses(long pk,
 		List<com.liferay.portlet.softwarecatalog.model.SCLicense> scLicenses) {
 		for (com.liferay.portlet.softwarecatalog.model.SCLicense scLicense : scLicenses) {
-			scProductEntryToSCLicenseTableMapper.addTableMapping(pk,
+			scProductEntryToSCLicenseTableMapper.addTableMapping(0, pk,
 				scLicense.getPrimaryKey());
 		}
 	}
@@ -3535,7 +3639,8 @@ public class SCProductEntryPersistenceImpl extends BasePersistenceImpl<SCProduct
 	 */
 	@Override
 	public void clearSCLicenses(long pk) {
-		scProductEntryToSCLicenseTableMapper.deleteLeftPrimaryKeyTableMappings(pk);
+		scProductEntryToSCLicenseTableMapper.deleteLeftPrimaryKeyTableMappings(0,
+			pk);
 	}
 
 	/**
@@ -3546,7 +3651,8 @@ public class SCProductEntryPersistenceImpl extends BasePersistenceImpl<SCProduct
 	 */
 	@Override
 	public void removeSCLicense(long pk, long scLicensePK) {
-		scProductEntryToSCLicenseTableMapper.deleteTableMapping(pk, scLicensePK);
+		scProductEntryToSCLicenseTableMapper.deleteTableMapping(0, pk,
+			scLicensePK);
 	}
 
 	/**
@@ -3558,7 +3664,7 @@ public class SCProductEntryPersistenceImpl extends BasePersistenceImpl<SCProduct
 	@Override
 	public void removeSCLicense(long pk,
 		com.liferay.portlet.softwarecatalog.model.SCLicense scLicense) {
-		scProductEntryToSCLicenseTableMapper.deleteTableMapping(pk,
+		scProductEntryToSCLicenseTableMapper.deleteTableMapping(0, pk,
 			scLicense.getPrimaryKey());
 	}
 
@@ -3571,7 +3677,7 @@ public class SCProductEntryPersistenceImpl extends BasePersistenceImpl<SCProduct
 	@Override
 	public void removeSCLicenses(long pk, long[] scLicensePKs) {
 		for (long scLicensePK : scLicensePKs) {
-			scProductEntryToSCLicenseTableMapper.deleteTableMapping(pk,
+			scProductEntryToSCLicenseTableMapper.deleteTableMapping(0, pk,
 				scLicensePK);
 		}
 	}
@@ -3586,7 +3692,7 @@ public class SCProductEntryPersistenceImpl extends BasePersistenceImpl<SCProduct
 	public void removeSCLicenses(long pk,
 		List<com.liferay.portlet.softwarecatalog.model.SCLicense> scLicenses) {
 		for (com.liferay.portlet.softwarecatalog.model.SCLicense scLicense : scLicenses) {
-			scProductEntryToSCLicenseTableMapper.deleteTableMapping(pk,
+			scProductEntryToSCLicenseTableMapper.deleteTableMapping(0, pk,
 				scLicense.getPrimaryKey());
 		}
 	}
@@ -3601,21 +3707,21 @@ public class SCProductEntryPersistenceImpl extends BasePersistenceImpl<SCProduct
 	public void setSCLicenses(long pk, long[] scLicensePKs) {
 		Set<Long> newSCLicensePKsSet = SetUtil.fromArray(scLicensePKs);
 		Set<Long> oldSCLicensePKsSet = SetUtil.fromArray(scProductEntryToSCLicenseTableMapper.getRightPrimaryKeys(
-					pk));
+					0, pk));
 
 		Set<Long> removeSCLicensePKsSet = new HashSet<Long>(oldSCLicensePKsSet);
 
 		removeSCLicensePKsSet.removeAll(newSCLicensePKsSet);
 
 		for (long removeSCLicensePK : removeSCLicensePKsSet) {
-			scProductEntryToSCLicenseTableMapper.deleteTableMapping(pk,
+			scProductEntryToSCLicenseTableMapper.deleteTableMapping(0, pk,
 				removeSCLicensePK);
 		}
 
 		newSCLicensePKsSet.removeAll(oldSCLicensePKsSet);
 
 		for (long newSCLicensePK : newSCLicensePKsSet) {
-			scProductEntryToSCLicenseTableMapper.addTableMapping(pk,
+			scProductEntryToSCLicenseTableMapper.addTableMapping(0, pk,
 				newSCLicensePK);
 		}
 	}
@@ -3660,7 +3766,8 @@ public class SCProductEntryPersistenceImpl extends BasePersistenceImpl<SCProduct
 	 */
 	public void afterPropertiesSet() {
 		scProductEntryToSCLicenseTableMapper = TableMapperFactory.getTableMapper("SCLicenses_SCProductEntries",
-				"productEntryId", "licenseId", this, scLicensePersistence);
+				"companyId", "productEntryId", "licenseId", this,
+				scLicensePersistence);
 	}
 
 	public void destroy() {

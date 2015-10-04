@@ -56,6 +56,7 @@ import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -67,6 +68,9 @@ import org.springframework.aop.framework.AdvisedSupport;
  * @author William Newbury
  * @author Shuyang Zhou
  */
+@Ignore(
+	"Ignored due to random hanging, Matthew Tambara will fix and reenable it"
+)
 public class ResourcePermissionLocalServiceConcurrentTest {
 
 	@ClassRule
