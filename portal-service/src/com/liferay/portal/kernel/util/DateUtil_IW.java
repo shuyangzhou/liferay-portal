@@ -84,18 +84,6 @@ public class DateUtil_IW {
 		return DateUtil.isFormatAmPm(locale);
 	}
 
-	public java.util.Date newDate() {
-		return DateUtil.newDate();
-	}
-
-	public java.util.Date newDate(long date) {
-		return DateUtil.newDate(date);
-	}
-
-	public long newTime() {
-		return DateUtil.newTime();
-	}
-
 	public java.util.Date parseDate(java.lang.String dateString,
 		java.util.Locale locale) throws java.text.ParseException {
 		return DateUtil.parseDate(dateString, locale);
