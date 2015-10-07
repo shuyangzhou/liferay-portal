@@ -35,6 +35,7 @@ import com.liferay.portlet.asset.service.persistence.AssetEntryFinder;
 import com.liferay.portlet.asset.service.persistence.AssetEntryPersistence;
 import com.liferay.portlet.asset.service.persistence.AssetTagFinder;
 import com.liferay.portlet.asset.service.persistence.AssetTagPersistence;
+import com.liferay.portlet.asset.service.persistence.AssetTagStatsFinder;
 import com.liferay.portlet.asset.service.persistence.AssetTagStatsPersistence;
 
 import javax.sql.DataSource;
@@ -488,6 +489,24 @@ public abstract class AssetTagServiceBaseImpl extends BaseServiceImpl
 		this.assetTagStatsPersistence = assetTagStatsPersistence;
 	}
 
+	/**
+	 * Returns the asset tag stats finder.
+	 *
+	 * @return the asset tag stats finder
+	 */
+	public AssetTagStatsFinder getAssetTagStatsFinder() {
+		return assetTagStatsFinder;
+	}
+
+	/**
+	 * Sets the asset tag stats finder.
+	 *
+	 * @param assetTagStatsFinder the asset tag stats finder
+	 */
+	public void setAssetTagStatsFinder(AssetTagStatsFinder assetTagStatsFinder) {
+		this.assetTagStatsFinder = assetTagStatsFinder;
+	}
+
 	public void afterPropertiesSet() {
 	}
 
@@ -592,5 +611,7 @@ public abstract class AssetTagServiceBaseImpl extends BaseServiceImpl
 	protected com.liferay.portlet.asset.service.AssetTagStatsLocalService assetTagStatsLocalService;
 	@BeanReference(type = AssetTagStatsPersistence.class)
 	protected AssetTagStatsPersistence assetTagStatsPersistence;
+	@BeanReference(type = AssetTagStatsFinder.class)
+	protected AssetTagStatsFinder assetTagStatsFinder;
 	private String _beanIdentifier;
 }

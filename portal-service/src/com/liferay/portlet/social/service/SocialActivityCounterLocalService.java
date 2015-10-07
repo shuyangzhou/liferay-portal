@@ -361,6 +361,10 @@ public interface SocialActivityCounterLocalService extends BaseLocalService,
 	public com.liferay.portlet.social.model.SocialActivityCounter deleteSocialActivityCounter(
 		com.liferay.portlet.social.model.SocialActivityCounter socialActivityCounter);
 
+	public void disableActivityCounters(
+		com.liferay.portlet.asset.model.AssetEntry assetEntry)
+		throws PortalException;
+
 	/**
 	* Disables all the counters of an asset identified by the class name and
 	* class primary key.
@@ -459,6 +463,10 @@ public interface SocialActivityCounterLocalService extends BaseLocalService,
 	public long dynamicQueryCount(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection);
+
+	public void enableActivityCounters(
+		com.liferay.portlet.asset.model.AssetEntry assetEntry)
+		throws PortalException;
 
 	/**
 	* Enables all the counters of an asset identified by the class name and
@@ -733,6 +741,10 @@ public interface SocialActivityCounterLocalService extends BaseLocalService,
 	counter could not be found
 	*/
 	public void incrementUserAchievementCounter(long userId, long groupId)
+		throws PortalException;
+
+	public void setActivityCountersActive(
+		com.liferay.portlet.asset.model.AssetEntry assetEntry, boolean active)
 		throws PortalException;
 
 	/**

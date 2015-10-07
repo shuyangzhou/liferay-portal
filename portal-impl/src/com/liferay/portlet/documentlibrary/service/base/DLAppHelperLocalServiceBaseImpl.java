@@ -46,6 +46,8 @@ import com.liferay.portlet.asset.service.persistence.AssetEntryPersistence;
 import com.liferay.portlet.asset.service.persistence.AssetLinkPersistence;
 import com.liferay.portlet.asset.service.persistence.AssetTagFinder;
 import com.liferay.portlet.asset.service.persistence.AssetTagPersistence;
+import com.liferay.portlet.asset.service.persistence.AssetTagStatsFinder;
+import com.liferay.portlet.asset.service.persistence.AssetTagStatsPersistence;
 import com.liferay.portlet.documentlibrary.service.DLAppHelperLocalService;
 import com.liferay.portlet.documentlibrary.service.persistence.DLFileEntryFinder;
 import com.liferay.portlet.documentlibrary.service.persistence.DLFileEntryPersistence;
@@ -63,6 +65,8 @@ import com.liferay.portlet.ratings.service.persistence.RatingsEntryFinder;
 import com.liferay.portlet.ratings.service.persistence.RatingsEntryPersistence;
 import com.liferay.portlet.ratings.service.persistence.RatingsStatsFinder;
 import com.liferay.portlet.ratings.service.persistence.RatingsStatsPersistence;
+import com.liferay.portlet.social.service.persistence.SocialActivityCounterFinder;
+import com.liferay.portlet.social.service.persistence.SocialActivityCounterPersistence;
 import com.liferay.portlet.trash.service.persistence.TrashEntryPersistence;
 import com.liferay.portlet.trash.service.persistence.TrashVersionPersistence;
 
@@ -899,6 +903,62 @@ public abstract class DLAppHelperLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the asset tag stats local service.
+	 *
+	 * @return the asset tag stats local service
+	 */
+	public com.liferay.portlet.asset.service.AssetTagStatsLocalService getAssetTagStatsLocalService() {
+		return assetTagStatsLocalService;
+	}
+
+	/**
+	 * Sets the asset tag stats local service.
+	 *
+	 * @param assetTagStatsLocalService the asset tag stats local service
+	 */
+	public void setAssetTagStatsLocalService(
+		com.liferay.portlet.asset.service.AssetTagStatsLocalService assetTagStatsLocalService) {
+		this.assetTagStatsLocalService = assetTagStatsLocalService;
+	}
+
+	/**
+	 * Returns the asset tag stats persistence.
+	 *
+	 * @return the asset tag stats persistence
+	 */
+	public AssetTagStatsPersistence getAssetTagStatsPersistence() {
+		return assetTagStatsPersistence;
+	}
+
+	/**
+	 * Sets the asset tag stats persistence.
+	 *
+	 * @param assetTagStatsPersistence the asset tag stats persistence
+	 */
+	public void setAssetTagStatsPersistence(
+		AssetTagStatsPersistence assetTagStatsPersistence) {
+		this.assetTagStatsPersistence = assetTagStatsPersistence;
+	}
+
+	/**
+	 * Returns the asset tag stats finder.
+	 *
+	 * @return the asset tag stats finder
+	 */
+	public AssetTagStatsFinder getAssetTagStatsFinder() {
+		return assetTagStatsFinder;
+	}
+
+	/**
+	 * Sets the asset tag stats finder.
+	 *
+	 * @param assetTagStatsFinder the asset tag stats finder
+	 */
+	public void setAssetTagStatsFinder(AssetTagStatsFinder assetTagStatsFinder) {
+		this.assetTagStatsFinder = assetTagStatsFinder;
+	}
+
+	/**
 	 * Returns the d l app local service.
 	 *
 	 * @return the d l app local service
@@ -1122,6 +1182,63 @@ public abstract class DLAppHelperLocalServiceBaseImpl
 	 */
 	public void setRatingsStatsFinder(RatingsStatsFinder ratingsStatsFinder) {
 		this.ratingsStatsFinder = ratingsStatsFinder;
+	}
+
+	/**
+	 * Returns the social activity counter local service.
+	 *
+	 * @return the social activity counter local service
+	 */
+	public com.liferay.portlet.social.service.SocialActivityCounterLocalService getSocialActivityCounterLocalService() {
+		return socialActivityCounterLocalService;
+	}
+
+	/**
+	 * Sets the social activity counter local service.
+	 *
+	 * @param socialActivityCounterLocalService the social activity counter local service
+	 */
+	public void setSocialActivityCounterLocalService(
+		com.liferay.portlet.social.service.SocialActivityCounterLocalService socialActivityCounterLocalService) {
+		this.socialActivityCounterLocalService = socialActivityCounterLocalService;
+	}
+
+	/**
+	 * Returns the social activity counter persistence.
+	 *
+	 * @return the social activity counter persistence
+	 */
+	public SocialActivityCounterPersistence getSocialActivityCounterPersistence() {
+		return socialActivityCounterPersistence;
+	}
+
+	/**
+	 * Sets the social activity counter persistence.
+	 *
+	 * @param socialActivityCounterPersistence the social activity counter persistence
+	 */
+	public void setSocialActivityCounterPersistence(
+		SocialActivityCounterPersistence socialActivityCounterPersistence) {
+		this.socialActivityCounterPersistence = socialActivityCounterPersistence;
+	}
+
+	/**
+	 * Returns the social activity counter finder.
+	 *
+	 * @return the social activity counter finder
+	 */
+	public SocialActivityCounterFinder getSocialActivityCounterFinder() {
+		return socialActivityCounterFinder;
+	}
+
+	/**
+	 * Sets the social activity counter finder.
+	 *
+	 * @param socialActivityCounterFinder the social activity counter finder
+	 */
+	public void setSocialActivityCounterFinder(
+		SocialActivityCounterFinder socialActivityCounterFinder) {
+		this.socialActivityCounterFinder = socialActivityCounterFinder;
 	}
 
 	/**
@@ -1788,6 +1905,12 @@ public abstract class DLAppHelperLocalServiceBaseImpl
 	protected AssetTagPersistence assetTagPersistence;
 	@BeanReference(type = AssetTagFinder.class)
 	protected AssetTagFinder assetTagFinder;
+	@BeanReference(type = com.liferay.portlet.asset.service.AssetTagStatsLocalService.class)
+	protected com.liferay.portlet.asset.service.AssetTagStatsLocalService assetTagStatsLocalService;
+	@BeanReference(type = AssetTagStatsPersistence.class)
+	protected AssetTagStatsPersistence assetTagStatsPersistence;
+	@BeanReference(type = AssetTagStatsFinder.class)
+	protected AssetTagStatsFinder assetTagStatsFinder;
 	@BeanReference(type = com.liferay.portlet.documentlibrary.service.DLAppLocalService.class)
 	protected com.liferay.portlet.documentlibrary.service.DLAppLocalService dlAppLocalService;
 	@BeanReference(type = com.liferay.portlet.documentlibrary.service.DLAppService.class)
@@ -1812,6 +1935,12 @@ public abstract class DLAppHelperLocalServiceBaseImpl
 	protected RatingsStatsPersistence ratingsStatsPersistence;
 	@BeanReference(type = RatingsStatsFinder.class)
 	protected RatingsStatsFinder ratingsStatsFinder;
+	@BeanReference(type = com.liferay.portlet.social.service.SocialActivityCounterLocalService.class)
+	protected com.liferay.portlet.social.service.SocialActivityCounterLocalService socialActivityCounterLocalService;
+	@BeanReference(type = SocialActivityCounterPersistence.class)
+	protected SocialActivityCounterPersistence socialActivityCounterPersistence;
+	@BeanReference(type = SocialActivityCounterFinder.class)
+	protected SocialActivityCounterFinder socialActivityCounterFinder;
 	@BeanReference(type = com.liferay.portlet.trash.service.TrashEntryLocalService.class)
 	protected com.liferay.portlet.trash.service.TrashEntryLocalService trashEntryLocalService;
 	@BeanReference(type = com.liferay.portlet.trash.service.TrashEntryService.class)

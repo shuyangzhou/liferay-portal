@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.Type;
+import com.liferay.portal.kernel.dao.orm.WildcardMode;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -30,6 +31,8 @@ import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.asset.model.AssetTag;
 import com.liferay.portlet.asset.model.impl.AssetTagImpl;
 import com.liferay.portlet.asset.service.persistence.AssetTagFinder;
+import com.liferay.portlet.documentlibrary.service.persistence.impl.DLFileEntryFinderImpl;
+import com.liferay.portlet.documentlibrary.service.persistence.impl.DLFolderFinderImpl;
 import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.util.ArrayList;
@@ -54,6 +57,9 @@ public class AssetTagFinderImpl
 
 	public static final String FIND_BY_G_N_S_E =
 		AssetTagFinder.class.getName() + ".findByG_N_S_E";
+
+	public static final String UPDATE_ASSET_COUNT =
+		AssetTagFinder.class.getName() + ".updateAssetCount";
 
 	@Override
 	public int countByG_C_N(long groupId, long classNameId, String name) {
@@ -126,6 +132,80 @@ public class AssetTagFinderImpl
 			}
 
 			return assetTags;
+		}
+		catch (Exception e) {
+			throw new SystemException(e);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	@Override
+	public int updateAssetCountByDLFileEntryC_T_V(
+		long classNameId, String treePath, boolean visible) {
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			String sql = CustomSQLUtil.get(UPDATE_ASSET_COUNT);
+
+			sql = StringUtil.replace(
+				sql, "[$JOIN$]", CustomSQLUtil.get(
+					DLFileEntryFinderImpl.JOIN_AE_BY_DL_FILE_ENTRY));
+
+			sql = StringUtil.replace(
+				sql, "[$WHERE$]", "DLFileEntry.treePath LIKE ? AND");
+
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
+
+			QueryPos qPos = QueryPos.getInstance(q);
+
+			qPos.add(
+				CustomSQLUtil.keywords(treePath, WildcardMode.TRAILING)[0]);
+			qPos.add(classNameId);
+			qPos.add(visible);
+
+			return q.executeUpdate();
+		}
+		catch (Exception e) {
+			throw new SystemException(e);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	@Override
+	public int updateAssetCountByDLFolderC_T_V(
+		long classNameId, String treePath, boolean visible) {
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			String sql = CustomSQLUtil.get(UPDATE_ASSET_COUNT);
+
+			sql = StringUtil.replace(
+				sql, "[$JOIN$]", CustomSQLUtil.get(
+					DLFolderFinderImpl.JOIN_AE_BY_DL_FOLDER));
+
+			sql = StringUtil.replace(
+				sql, "[$WHERE$]", "DLFolder.treePath LIKE ? AND");
+
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
+
+			QueryPos qPos = QueryPos.getInstance(q);
+
+			qPos.add(
+				CustomSQLUtil.keywords(treePath, WildcardMode.TRAILING)[0]);
+			qPos.add(classNameId);
+			qPos.add(visible);
+
+			return q.executeUpdate();
 		}
 		catch (Exception e) {
 			throw new SystemException(e);

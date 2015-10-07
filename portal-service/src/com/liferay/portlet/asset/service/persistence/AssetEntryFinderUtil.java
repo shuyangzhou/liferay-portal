@@ -31,13 +31,13 @@ public class AssetEntryFinderUtil {
 	}
 
 	public static java.util.List<com.liferay.portlet.asset.model.AssetEntry> findByDLFileEntryC_T(
-		long classNameId, java.lang.String treePath) {
-		return getFinder().findByDLFileEntryC_T(classNameId, treePath);
+		long classNameId, java.lang.String treePath, boolean visible) {
+		return getFinder().findByDLFileEntryC_T(classNameId, treePath, visible);
 	}
 
 	public static java.util.List<com.liferay.portlet.asset.model.AssetEntry> findByDLFolderC_T(
-		long classNameId, java.lang.String treePath) {
-		return getFinder().findByDLFolderC_T(classNameId, treePath);
+		long classNameId, java.lang.String treePath, boolean visible) {
+		return getFinder().findByDLFolderC_T(classNameId, treePath, visible);
 	}
 
 	public static java.util.List<com.liferay.portlet.asset.model.AssetEntry> findEntries(

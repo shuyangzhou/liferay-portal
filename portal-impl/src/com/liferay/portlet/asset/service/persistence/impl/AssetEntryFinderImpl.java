@@ -95,7 +95,7 @@ public class AssetEntryFinderImpl
 
 	@Override
 	public List<AssetEntry> findByDLFileEntryC_T(
-		long classNameId, String treePath) {
+		long classNameId, String treePath, boolean visible) {
 
 		Session session = null;
 
@@ -117,6 +117,7 @@ public class AssetEntryFinderImpl
 			qPos.add(
 				CustomSQLUtil.keywords(treePath, WildcardMode.TRAILING)[0]);
 			qPos.add(classNameId);
+			qPos.add(visible);
 
 			q.addEntity(AssetEntryImpl.TABLE_NAME, AssetEntryImpl.class);
 
@@ -132,7 +133,7 @@ public class AssetEntryFinderImpl
 
 	@Override
 	public List<AssetEntry> findByDLFolderC_T(
-		long classNameId, String treePath) {
+		long classNameId, String treePath, boolean visible) {
 
 		Session session = null;
 
@@ -154,6 +155,7 @@ public class AssetEntryFinderImpl
 			qPos.add(
 				CustomSQLUtil.keywords(treePath, WildcardMode.TRAILING)[0]);
 			qPos.add(classNameId);
+			qPos.add(visible);
 
 			q.addEntity(AssetEntryImpl.TABLE_NAME, AssetEntryImpl.class);
 

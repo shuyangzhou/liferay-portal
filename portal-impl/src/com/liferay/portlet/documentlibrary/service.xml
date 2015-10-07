@@ -37,6 +37,7 @@
 		<reference package-path="com.liferay.portlet.asset" entity="AssetEntry" />
 		<reference package-path="com.liferay.portlet.asset" entity="AssetLink" />
 		<reference package-path="com.liferay.portlet.asset" entity="AssetTag" />
+		<reference package-path="com.liferay.portlet.asset" entity="AssetTagStats" />
 		<reference package-path="com.liferay.portlet.documentlibrary" entity="DLApp" />
 		<reference package-path="com.liferay.portlet.documentlibrary" entity="DLFileEntry" />
 		<reference package-path="com.liferay.portlet.documentlibrary" entity="DLFileEntryType" />
@@ -48,6 +49,7 @@
 		<reference package-path="com.liferay.portlet.expando" entity="ExpandoValue" />
 		<reference package-path="com.liferay.portlet.ratings" entity="RatingsEntry" />
 		<reference package-path="com.liferay.portlet.ratings" entity="RatingsStats" />
+		<reference package-path="com.liferay.portlet.social" entity="SocialActivityCounter" />
 		<reference package-path="com.liferay.portlet.trash" entity="TrashEntry" />
 		<reference package-path="com.liferay.portlet.trash" entity="TrashVersion" />
 	</entity>

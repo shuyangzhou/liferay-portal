@@ -64,6 +64,20 @@ public class AssetTagFinderUtil {
 			periodLength);
 	}
 
+	public static int updateAssetCountByDLFileEntryC_T_V(long classNameId,
+		java.lang.String treePath, boolean visible) {
+		return getFinder()
+				   .updateAssetCountByDLFileEntryC_T_V(classNameId, treePath,
+			visible);
+	}
+
+	public static int updateAssetCountByDLFolderC_T_V(long classNameId,
+		java.lang.String treePath, boolean visible) {
+		return getFinder()
+				   .updateAssetCountByDLFolderC_T_V(classNameId, treePath,
+			visible);
+	}
+
 	public static AssetTagFinder getFinder() {
 		if (_finder == null) {
 			_finder = (AssetTagFinder)PortalBeanLocatorUtil.locate(AssetTagFinder.class.getName());

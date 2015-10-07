@@ -392,6 +392,12 @@ public class SocialActivityCounterLocalServiceUtil {
 		return getService().deleteSocialActivityCounter(socialActivityCounter);
 	}
 
+	public static void disableActivityCounters(
+		com.liferay.portlet.asset.model.AssetEntry assetEntry)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().disableActivityCounters(assetEntry);
+	}
+
 	/**
 	* Disables all the counters of an asset identified by the class name and
 	* class primary key.
@@ -507,6 +513,12 @@ public class SocialActivityCounterLocalServiceUtil {
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
+	}
+
+	public static void enableActivityCounters(
+		com.liferay.portlet.asset.model.AssetEntry assetEntry)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().enableActivityCounters(assetEntry);
 	}
 
 	/**
@@ -823,6 +835,12 @@ public class SocialActivityCounterLocalServiceUtil {
 	public static void incrementUserAchievementCounter(long userId, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().incrementUserAchievementCounter(userId, groupId);
+	}
+
+	public static void setActivityCountersActive(
+		com.liferay.portlet.asset.model.AssetEntry assetEntry, boolean active)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().setActivityCountersActive(assetEntry, active);
 	}
 
 	/**
