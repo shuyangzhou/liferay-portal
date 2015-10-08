@@ -244,7 +244,7 @@
 		</execute>
 	</command>
 
-	<command known-issues="LPS-54125" name="AddKBArticleWithInvalidAttachmentSize" priority="4">
+	<command name="AddKBArticleWithInvalidAttachmentSize" priority="4">
 		<property name="custom.properties" value="com.liferay.portal.upload.UploadServletRequestImpl.max.size=1024" />
 
 		<execute macro="Page#gotoContentCP">
@@ -304,12 +304,6 @@
 			<var name="kbArticleAddViaSource" value="true" />
 			<var name="kbArticleContentSource" value="${kbArticleContentSource}" />
 			<var name="kbArticleTitle" value="Knowledge Base Article Title" />
-		</execute>
-
-		<execute macro="KBArticle#gotoCP">
-			<var name="kbArticleTitle" value="Knowledge Base Article Title" />
-			<var name="kbAuthor" value="Test Test" />
-			<var name="kbPriority" value="1.0" />
 		</execute>
 
 		<execute function="Pause" value1="5000" />

@@ -186,6 +186,38 @@ public class GroupServiceTest {
 	}
 
 	@Test
+	public void testDeleteOrganizationSiteOnlyRemovesSiteRoles()
+		throws Exception {
+
+		Organization organization = OrganizationTestUtil.addOrganization(true);
+
+		Group organizationSite = GroupLocalServiceUtil.getOrganizationGroup(
+			TestPropsValues.getCompanyId(), organization.getOrganizationId());
+
+		organizationSite.setManualMembership(true);
+
+		User user = UserTestUtil.addOrganizationOwnerUser(organization);
+
+		UserLocalServiceUtil.addGroupUser(
+			organizationSite.getGroupId(), user.getUserId());
+		UserLocalServiceUtil.addOrganizationUsers(
+			organization.getOrganizationId(), new long[] {user.getUserId()});
+
+		Role siteRole = RoleTestUtil.addRole(RoleConstants.TYPE_SITE);
+
+		UserGroupRoleLocalServiceUtil.addUserGroupRoles(
+			user.getUserId(), organizationSite.getGroupId(),
+			new long[] {siteRole.getRoleId()});
+
+		GroupLocalServiceUtil.deleteGroup(organizationSite);
+
+		Assert.assertEquals(
+			1,
+			UserGroupRoleLocalServiceUtil.getUserGroupRolesCount(
+				user.getUserId(), organizationSite.getGroupId()));
+	}
+
+	@Test
 	public void testDeleteSite() throws Exception {
 		Group group = GroupTestUtil.addGroup();
 
