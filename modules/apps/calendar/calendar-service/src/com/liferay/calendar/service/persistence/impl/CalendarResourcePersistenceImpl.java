@@ -48,6 +48,7 @@ import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -4179,6 +4180,10 @@ public class CalendarResourcePersistenceImpl extends BasePersistenceImpl<Calenda
 		}
 		else {
 			groupIds = ArrayUtil.unique(groupIds);
+
+			if (groupIds.length > 1) {
+				Arrays.sort(groupIds);
+			}
 		}
 
 		StringBundler query = new StringBundler();
@@ -4335,6 +4340,10 @@ public class CalendarResourcePersistenceImpl extends BasePersistenceImpl<Calenda
 		}
 		else {
 			groupIds = ArrayUtil.unique(groupIds);
+
+			if (groupIds.length > 1) {
+				Arrays.sort(groupIds);
+			}
 		}
 
 		if (groupIds.length == 1) {
@@ -4567,6 +4576,10 @@ public class CalendarResourcePersistenceImpl extends BasePersistenceImpl<Calenda
 		}
 		else {
 			groupIds = ArrayUtil.unique(groupIds);
+
+			if (groupIds.length > 1) {
+				Arrays.sort(groupIds);
+			}
 		}
 
 		Object[] finderArgs = new Object[] { StringUtil.merge(groupIds), code };
@@ -4727,6 +4740,10 @@ public class CalendarResourcePersistenceImpl extends BasePersistenceImpl<Calenda
 		}
 		else {
 			groupIds = ArrayUtil.unique(groupIds);
+
+			if (groupIds.length > 1) {
+				Arrays.sort(groupIds);
+			}
 		}
 
 		StringBundler query = new StringBundler();

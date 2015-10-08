@@ -43,6 +43,7 @@ import com.liferay.portal.service.persistence.SubscriptionPersistence;
 import java.io.Serializable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -2393,6 +2394,10 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 		}
 		else {
 			classPKs = ArrayUtil.unique(classPKs);
+
+			if (classPKs.length > 1) {
+				Arrays.sort(classPKs);
+			}
 		}
 
 		if (classPKs.length == 1) {
@@ -2807,6 +2812,10 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 		}
 		else {
 			classPKs = ArrayUtil.unique(classPKs);
+
+			if (classPKs.length > 1) {
+				Arrays.sort(classPKs);
+			}
 		}
 
 		Object[] finderArgs = new Object[] {

@@ -47,6 +47,7 @@ import java.io.Serializable;
 
 import java.sql.Timestamp;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -2225,6 +2226,10 @@ public class MicroblogsEntryPersistenceImpl extends BasePersistenceImpl<Microblo
 		}
 		else {
 			creatorClassPKs = ArrayUtil.unique(creatorClassPKs);
+
+			if (creatorClassPKs.length > 1) {
+				Arrays.sort(creatorClassPKs);
+			}
 		}
 
 		if (creatorClassPKs.length == 1) {
@@ -2431,6 +2436,10 @@ public class MicroblogsEntryPersistenceImpl extends BasePersistenceImpl<Microblo
 		}
 		else {
 			creatorClassPKs = ArrayUtil.unique(creatorClassPKs);
+
+			if (creatorClassPKs.length > 1) {
+				Arrays.sort(creatorClassPKs);
+			}
 		}
 
 		Object[] finderArgs = new Object[] {
@@ -4214,6 +4223,10 @@ public class MicroblogsEntryPersistenceImpl extends BasePersistenceImpl<Microblo
 		}
 		else {
 			creatorClassPKs = ArrayUtil.unique(creatorClassPKs);
+
+			if (creatorClassPKs.length > 1) {
+				Arrays.sort(creatorClassPKs);
+			}
 		}
 
 		if (creatorClassPKs.length == 1) {
@@ -4439,6 +4452,10 @@ public class MicroblogsEntryPersistenceImpl extends BasePersistenceImpl<Microblo
 		}
 		else {
 			creatorClassPKs = ArrayUtil.unique(creatorClassPKs);
+
+			if (creatorClassPKs.length > 1) {
+				Arrays.sort(creatorClassPKs);
+			}
 		}
 
 		Object[] finderArgs = new Object[] {

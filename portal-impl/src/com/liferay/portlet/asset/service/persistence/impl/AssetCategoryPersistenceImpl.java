@@ -58,6 +58,7 @@ import com.liferay.portlet.asset.service.persistence.AssetEntryPersistence;
 
 import java.io.Serializable;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -4271,6 +4272,10 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 		}
 		else {
 			vocabularyIds = ArrayUtil.unique(vocabularyIds);
+
+			if (vocabularyIds.length > 1) {
+				Arrays.sort(vocabularyIds);
+			}
 		}
 
 		StringBundler query = new StringBundler();
@@ -4436,6 +4441,10 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 		}
 		else {
 			vocabularyIds = ArrayUtil.unique(vocabularyIds);
+
+			if (vocabularyIds.length > 1) {
+				Arrays.sort(vocabularyIds);
+			}
 		}
 
 		if (vocabularyIds.length == 1) {
@@ -4639,6 +4648,10 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 		}
 		else {
 			vocabularyIds = ArrayUtil.unique(vocabularyIds);
+
+			if (vocabularyIds.length > 1) {
+				Arrays.sort(vocabularyIds);
+			}
 		}
 
 		Object[] finderArgs = new Object[] {
@@ -4773,6 +4786,10 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 		}
 		else {
 			vocabularyIds = ArrayUtil.unique(vocabularyIds);
+
+			if (vocabularyIds.length > 1) {
+				Arrays.sort(vocabularyIds);
+			}
 		}
 
 		StringBundler query = new StringBundler();
@@ -8498,6 +8515,10 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 		}
 		else {
 			vocabularyIds = ArrayUtil.unique(vocabularyIds);
+
+			if (vocabularyIds.length > 1) {
+				Arrays.sort(vocabularyIds);
+			}
 		}
 
 		StringBundler query = new StringBundler();
@@ -8688,6 +8709,10 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 		}
 		else {
 			vocabularyIds = ArrayUtil.unique(vocabularyIds);
+
+			if (vocabularyIds.length > 1) {
+				Arrays.sort(vocabularyIds);
+			}
 		}
 
 		if (vocabularyIds.length == 1) {
@@ -8936,6 +8961,10 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 		}
 		else {
 			vocabularyIds = ArrayUtil.unique(vocabularyIds);
+
+			if (vocabularyIds.length > 1) {
+				Arrays.sort(vocabularyIds);
+			}
 		}
 
 		Object[] finderArgs = new Object[] {
@@ -9110,6 +9139,10 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 		}
 		else {
 			vocabularyIds = ArrayUtil.unique(vocabularyIds);
+
+			if (vocabularyIds.length > 1) {
+				Arrays.sort(vocabularyIds);
+			}
 		}
 
 		StringBundler query = new StringBundler();

@@ -55,6 +55,7 @@ import com.liferay.portlet.messageboards.service.persistence.MBMessagePersistenc
 
 import java.io.Serializable;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -8196,6 +8197,10 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 		}
 		else {
 			classNameIds = ArrayUtil.unique(classNameIds);
+
+			if (classNameIds.length > 1) {
+				Arrays.sort(classNameIds);
+			}
 		}
 
 		if (classNameIds.length == 1) {
@@ -8399,6 +8404,10 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 		}
 		else {
 			classNameIds = ArrayUtil.unique(classNameIds);
+
+			if (classNameIds.length > 1) {
+				Arrays.sort(classNameIds);
+			}
 		}
 
 		Object[] finderArgs = new Object[] {
@@ -15285,6 +15294,10 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 		}
 		else {
 			classNameIds = ArrayUtil.unique(classNameIds);
+
+			if (classNameIds.length > 1) {
+				Arrays.sort(classNameIds);
+			}
 		}
 
 		if (classNameIds.length == 1) {
@@ -15504,6 +15517,10 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 		}
 		else {
 			classNameIds = ArrayUtil.unique(classNameIds);
+
+			if (classNameIds.length > 1) {
+				Arrays.sort(classNameIds);
+			}
 		}
 
 		Object[] finderArgs = new Object[] {

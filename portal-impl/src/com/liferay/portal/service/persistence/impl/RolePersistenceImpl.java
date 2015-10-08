@@ -50,6 +50,7 @@ import com.liferay.portal.service.persistence.UserPersistence;
 
 import java.io.Serializable;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -6677,6 +6678,10 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 		}
 		else {
 			types = ArrayUtil.unique(types);
+
+			if (types.length > 1) {
+				Arrays.sort(types);
+			}
 		}
 
 		StringBundler query = new StringBundler();
@@ -6838,6 +6843,10 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 		}
 		else {
 			types = ArrayUtil.unique(types);
+
+			if (types.length > 1) {
+				Arrays.sort(types);
+			}
 		}
 
 		if (types.length == 1) {
@@ -7039,6 +7048,10 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 		}
 		else {
 			types = ArrayUtil.unique(types);
+
+			if (types.length > 1) {
+				Arrays.sort(types);
+			}
 		}
 
 		Object[] finderArgs = new Object[] { companyId, StringUtil.merge(types) };
@@ -7170,6 +7183,10 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 		}
 		else {
 			types = ArrayUtil.unique(types);
+
+			if (types.length > 1) {
+				Arrays.sort(types);
+			}
 		}
 
 		StringBundler query = new StringBundler();

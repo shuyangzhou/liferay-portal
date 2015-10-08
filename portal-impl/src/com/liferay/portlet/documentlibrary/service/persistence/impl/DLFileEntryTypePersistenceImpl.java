@@ -52,6 +52,7 @@ import com.liferay.portlet.documentlibrary.service.persistence.DLFolderPersisten
 
 import java.io.Serializable;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -2299,6 +2300,10 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 		}
 		else {
 			groupIds = ArrayUtil.unique(groupIds);
+
+			if (groupIds.length > 1) {
+				Arrays.sort(groupIds);
+			}
 		}
 
 		StringBundler query = new StringBundler();
@@ -2453,6 +2458,10 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 		}
 		else {
 			groupIds = ArrayUtil.unique(groupIds);
+
+			if (groupIds.length > 1) {
+				Arrays.sort(groupIds);
+			}
 		}
 
 		if (groupIds.length == 1) {
@@ -2641,6 +2650,10 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 		}
 		else {
 			groupIds = ArrayUtil.unique(groupIds);
+
+			if (groupIds.length > 1) {
+				Arrays.sort(groupIds);
+			}
 		}
 
 		Object[] finderArgs = new Object[] { StringUtil.merge(groupIds) };
@@ -2761,6 +2774,10 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 		}
 		else {
 			groupIds = ArrayUtil.unique(groupIds);
+
+			if (groupIds.length > 1) {
+				Arrays.sort(groupIds);
+			}
 		}
 
 		StringBundler query = new StringBundler();

@@ -50,6 +50,7 @@ import java.io.Serializable;
 
 import java.sql.Timestamp;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -3402,6 +3403,10 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 		}
 		else {
 			categoryIds = ArrayUtil.unique(categoryIds);
+
+			if (categoryIds.length > 1) {
+				Arrays.sort(categoryIds);
+			}
 		}
 
 		StringBundler query = new StringBundler();
@@ -3566,6 +3571,10 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 		}
 		else {
 			categoryIds = ArrayUtil.unique(categoryIds);
+
+			if (categoryIds.length > 1) {
+				Arrays.sort(categoryIds);
+			}
 		}
 
 		if (categoryIds.length == 1) {
@@ -3769,6 +3778,10 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 		}
 		else {
 			categoryIds = ArrayUtil.unique(categoryIds);
+
+			if (categoryIds.length > 1) {
+				Arrays.sort(categoryIds);
+			}
 		}
 
 		Object[] finderArgs = new Object[] {
@@ -3903,6 +3916,10 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 		}
 		else {
 			categoryIds = ArrayUtil.unique(categoryIds);
+
+			if (categoryIds.length > 1) {
+				Arrays.sort(categoryIds);
+			}
 		}
 
 		StringBundler query = new StringBundler();
@@ -8850,6 +8867,10 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 		}
 		else {
 			categoryIds = ArrayUtil.unique(categoryIds);
+
+			if (categoryIds.length > 1) {
+				Arrays.sort(categoryIds);
+			}
 		}
 
 		StringBundler query = new StringBundler();
@@ -9026,6 +9047,10 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 		}
 		else {
 			categoryIds = ArrayUtil.unique(categoryIds);
+
+			if (categoryIds.length > 1) {
+				Arrays.sort(categoryIds);
+			}
 		}
 
 		if (categoryIds.length == 1) {
@@ -9245,6 +9270,10 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 		}
 		else {
 			categoryIds = ArrayUtil.unique(categoryIds);
+
+			if (categoryIds.length > 1) {
+				Arrays.sort(categoryIds);
+			}
 		}
 
 		Object[] finderArgs = new Object[] {
@@ -9391,6 +9420,10 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 		}
 		else {
 			categoryIds = ArrayUtil.unique(categoryIds);
+
+			if (categoryIds.length > 1) {
+				Arrays.sort(categoryIds);
+			}
 		}
 
 		StringBundler query = new StringBundler();
@@ -10343,6 +10376,10 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 		}
 		else {
 			categoryIds = ArrayUtil.unique(categoryIds);
+
+			if (categoryIds.length > 1) {
+				Arrays.sort(categoryIds);
+			}
 		}
 
 		StringBundler query = new StringBundler();
@@ -10519,6 +10556,10 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 		}
 		else {
 			categoryIds = ArrayUtil.unique(categoryIds);
+
+			if (categoryIds.length > 1) {
+				Arrays.sort(categoryIds);
+			}
 		}
 
 		if (categoryIds.length == 1) {
@@ -10738,6 +10779,10 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 		}
 		else {
 			categoryIds = ArrayUtil.unique(categoryIds);
+
+			if (categoryIds.length > 1) {
+				Arrays.sort(categoryIds);
+			}
 		}
 
 		Object[] finderArgs = new Object[] {
@@ -10885,6 +10930,10 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 		}
 		else {
 			categoryIds = ArrayUtil.unique(categoryIds);
+
+			if (categoryIds.length > 1) {
+				Arrays.sort(categoryIds);
+			}
 		}
 
 		StringBundler query = new StringBundler();
