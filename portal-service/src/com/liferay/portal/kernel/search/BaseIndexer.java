@@ -434,7 +434,8 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 
 		return GetterUtil.getBoolean(
 			portletPreferences.getValue(
-				getClassName() + "_indexerEnabled", Boolean.TRUE.toString()));
+				getClassName() + "_indexerEnabled", null),
+			true);
 	}
 
 	@Override
@@ -704,7 +705,7 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 		try {
 			portletPreferences.setValue(
 				getClassName() + "_indexerEnabled",
-				Boolean.toString(indexerEnabled));
+				String.valueOf(indexerEnabled));
 
 			portletPreferences.store();
 		}
