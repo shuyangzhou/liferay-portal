@@ -503,9 +503,14 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 
 		Indexer<?> indexer = IndexerRegistryUtil.nullSafeGetIndexer(className);
 
-		indexer.setIndexerEnabled(!indexer.isIndexerEnabled());
+		boolean indexerEnabled = indexer.isIndexerEnabled();
 
-		if (indexer.isIndexerEnabled()) {
+		if (indexerEnabled) {
+			indexer.setIndexerEnabled(false);
+		}
+		else {
+			indexer.setIndexerEnabled(true);
+
 			reindex(actionRequest);
 		}
 	}
