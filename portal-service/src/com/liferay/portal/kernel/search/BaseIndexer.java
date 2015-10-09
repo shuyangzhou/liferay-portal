@@ -432,10 +432,23 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 				PortletKeys.PREFS_OWNER_ID_DEFAULT,
 				PortletKeys.PREFS_OWNER_TYPE_COMPANY);
 
-		return GetterUtil.getBoolean(
-			portletPreferences.getValue(
-				getClassName() + "_indexerEnabled", null),
-			true);
+		String indexerEnabled = portletPreferences.getValue(
+			getClassName() + "_indexerEnabled", null);
+
+		if (indexerEnabled == null) {
+			if (_indexerEnabled == null) {
+				indexerEnabled = PropsUtil.get(
+					PropsKeys.INDEXER_ENABLED,
+					new com.liferay.portal.kernel.configuration.Filter(
+						getClassName()));
+
+				_indexerEnabled = GetterUtil.getBoolean(indexerEnabled, true);
+			}
+
+			return _indexerEnabled;
+		}
+
+		return GetterUtil.getBoolean(indexerEnabled, true);
 	}
 
 	@Override
@@ -1925,6 +1938,7 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 	private String[] _defaultSelectedLocalizedFieldNames;
 	private final Document _document = new DocumentImpl();
 	private boolean _filterSearch;
+	private Boolean _indexerEnabled;
 	private IndexerPostProcessor[] _indexerPostProcessors =
 		new IndexerPostProcessor[0];
 	private boolean _permissionAware;
