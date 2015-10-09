@@ -48,6 +48,7 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -3308,6 +3309,10 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 		}
 		else {
 			folderIds = ArrayUtil.unique(folderIds);
+
+			if (folderIds.length > 1) {
+				Arrays.sort(folderIds);
+			}
 		}
 
 		StringBundler query = new StringBundler();
@@ -3447,6 +3452,10 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 		}
 		else {
 			folderIds = ArrayUtil.unique(folderIds);
+
+			if (folderIds.length > 1) {
+				Arrays.sort(folderIds);
+			}
 		}
 
 		if (folderIds.length == 1) {
@@ -3649,6 +3658,10 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 		}
 		else {
 			folderIds = ArrayUtil.unique(folderIds);
+
+			if (folderIds.length > 1) {
+				Arrays.sort(folderIds);
+			}
 		}
 
 		Object[] finderArgs = new Object[] { groupId, StringUtil.merge(folderIds) };
@@ -3779,6 +3792,10 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 		}
 		else {
 			folderIds = ArrayUtil.unique(folderIds);
+
+			if (folderIds.length > 1) {
+				Arrays.sort(folderIds);
+			}
 		}
 
 		StringBundler query = new StringBundler();
@@ -8745,6 +8762,10 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 		}
 		else {
 			folderIds = ArrayUtil.unique(folderIds);
+
+			if (folderIds.length > 1) {
+				Arrays.sort(folderIds);
+			}
 		}
 
 		StringBundler query = new StringBundler();
@@ -8897,6 +8918,10 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 		}
 		else {
 			folderIds = ArrayUtil.unique(folderIds);
+
+			if (folderIds.length > 1) {
+				Arrays.sort(folderIds);
+			}
 		}
 
 		if (folderIds.length == 1) {
@@ -9115,6 +9140,10 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 		}
 		else {
 			folderIds = ArrayUtil.unique(folderIds);
+
+			if (folderIds.length > 1) {
+				Arrays.sort(folderIds);
+			}
 		}
 
 		Object[] finderArgs = new Object[] {
@@ -9259,6 +9288,10 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 		}
 		else {
 			folderIds = ArrayUtil.unique(folderIds);
+
+			if (folderIds.length > 1) {
+				Arrays.sort(folderIds);
+			}
 		}
 
 		StringBundler query = new StringBundler();
@@ -10152,6 +10185,10 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 		}
 		else {
 			folderIds = ArrayUtil.unique(folderIds);
+
+			if (folderIds.length > 1) {
+				Arrays.sort(folderIds);
+			}
 		}
 
 		StringBundler query = new StringBundler();
@@ -10304,6 +10341,10 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 		}
 		else {
 			folderIds = ArrayUtil.unique(folderIds);
+
+			if (folderIds.length > 1) {
+				Arrays.sort(folderIds);
+			}
 		}
 
 		if (folderIds.length == 1) {
@@ -10522,6 +10563,10 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 		}
 		else {
 			folderIds = ArrayUtil.unique(folderIds);
+
+			if (folderIds.length > 1) {
+				Arrays.sort(folderIds);
+			}
 		}
 
 		Object[] finderArgs = new Object[] {
@@ -10666,6 +10711,10 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 		}
 		else {
 			folderIds = ArrayUtil.unique(folderIds);
+
+			if (folderIds.length > 1) {
+				Arrays.sort(folderIds);
+			}
 		}
 
 		StringBundler query = new StringBundler();
@@ -11634,6 +11683,10 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 		}
 		else {
 			folderIds = ArrayUtil.unique(folderIds);
+
+			if (folderIds.length > 1) {
+				Arrays.sort(folderIds);
+			}
 		}
 
 		StringBundler query = new StringBundler();
@@ -11795,6 +11848,10 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 		}
 		else {
 			folderIds = ArrayUtil.unique(folderIds);
+
+			if (folderIds.length > 1) {
+				Arrays.sort(folderIds);
+			}
 		}
 
 		if (folderIds.length == 1) {
@@ -12028,6 +12085,10 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 		}
 		else {
 			folderIds = ArrayUtil.unique(folderIds);
+
+			if (folderIds.length > 1) {
+				Arrays.sort(folderIds);
+			}
 		}
 
 		Object[] finderArgs = new Object[] {
@@ -12184,6 +12245,10 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 		}
 		else {
 			folderIds = ArrayUtil.unique(folderIds);
+
+			if (folderIds.length > 1) {
+				Arrays.sort(folderIds);
+			}
 		}
 
 		StringBundler query = new StringBundler();

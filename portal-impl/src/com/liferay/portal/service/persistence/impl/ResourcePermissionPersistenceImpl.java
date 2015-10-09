@@ -45,6 +45,7 @@ import com.liferay.portal.service.persistence.ResourcePermissionPersistence;
 import java.io.Serializable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -607,6 +608,10 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 		}
 		else {
 			scopes = ArrayUtil.unique(scopes);
+
+			if (scopes.length > 1) {
+				Arrays.sort(scopes);
+			}
 		}
 
 		if (scopes.length == 1) {
@@ -794,6 +799,10 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 		}
 		else {
 			scopes = ArrayUtil.unique(scopes);
+
+			if (scopes.length > 1) {
+				Arrays.sort(scopes);
+			}
 		}
 
 		Object[] finderArgs = new Object[] { StringUtil.merge(scopes) };
@@ -3438,6 +3447,10 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 		}
 		else {
 			roleIds = ArrayUtil.unique(roleIds);
+
+			if (roleIds.length > 1) {
+				Arrays.sort(roleIds);
+			}
 		}
 
 		if (roleIds.length == 1) {
@@ -3964,6 +3977,10 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 		}
 		else {
 			roleIds = ArrayUtil.unique(roleIds);
+
+			if (roleIds.length > 1) {
+				Arrays.sort(roleIds);
+			}
 		}
 
 		Object[] finderArgs = new Object[] {
@@ -4827,6 +4844,10 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 		}
 		else {
 			roleIds = ArrayUtil.unique(roleIds);
+
+			if (roleIds.length > 1) {
+				Arrays.sort(roleIds);
+			}
 		}
 
 		if (roleIds.length == 1) {
@@ -5117,6 +5138,10 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 		}
 		else {
 			roleIds = ArrayUtil.unique(roleIds);
+
+			if (roleIds.length > 1) {
+				Arrays.sort(roleIds);
+			}
 		}
 
 		Object[] finderArgs = new Object[] {

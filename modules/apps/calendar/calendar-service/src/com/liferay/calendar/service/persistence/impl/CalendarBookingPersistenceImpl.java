@@ -47,6 +47,7 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -4606,6 +4607,10 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 		}
 		else {
 			statuses = ArrayUtil.unique(statuses);
+
+			if (statuses.length > 1) {
+				Arrays.sort(statuses);
+			}
 		}
 
 		if (statuses.length == 1) {
@@ -4808,6 +4813,10 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 		}
 		else {
 			statuses = ArrayUtil.unique(statuses);
+
+			if (statuses.length > 1) {
+				Arrays.sort(statuses);
+			}
 		}
 
 		Object[] finderArgs = new Object[] {

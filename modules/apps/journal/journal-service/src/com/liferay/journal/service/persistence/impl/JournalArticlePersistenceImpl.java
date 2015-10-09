@@ -51,6 +51,7 @@ import java.io.Serializable;
 
 import java.sql.Timestamp;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -3942,6 +3943,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		else {
 			DDMStructureKeies = ArrayUtil.distinct(DDMStructureKeies,
 					NULL_SAFE_STRING_COMPARATOR);
+
+			if (DDMStructureKeies.length > 1) {
+				Arrays.sort(DDMStructureKeies, NULL_SAFE_STRING_COMPARATOR);
+			}
 		}
 
 		if (DDMStructureKeies.length == 1) {
@@ -4166,6 +4171,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		else {
 			DDMStructureKeies = ArrayUtil.distinct(DDMStructureKeies,
 					NULL_SAFE_STRING_COMPARATOR);
+
+			if (DDMStructureKeies.length > 1) {
+				Arrays.sort(DDMStructureKeies, NULL_SAFE_STRING_COMPARATOR);
+			}
 		}
 
 		Object[] finderArgs = new Object[] { StringUtil.merge(DDMStructureKeies) };
@@ -6987,6 +6996,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		}
 		else {
 			statuses = ArrayUtil.unique(statuses);
+
+			if (statuses.length > 1) {
+				Arrays.sort(statuses);
+			}
 		}
 
 		if (statuses.length == 1) {
@@ -7191,6 +7204,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		}
 		else {
 			statuses = ArrayUtil.unique(statuses);
+
+			if (statuses.length > 1) {
+				Arrays.sort(statuses);
+			}
 		}
 
 		Object[] finderArgs = new Object[] {
@@ -9030,6 +9047,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		}
 		else {
 			folderIds = ArrayUtil.unique(folderIds);
+
+			if (folderIds.length > 1) {
+				Arrays.sort(folderIds);
+			}
 		}
 
 		StringBundler query = new StringBundler();
@@ -9195,6 +9216,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		}
 		else {
 			folderIds = ArrayUtil.unique(folderIds);
+
+			if (folderIds.length > 1) {
+				Arrays.sort(folderIds);
+			}
 		}
 
 		if (folderIds.length == 1) {
@@ -9397,6 +9422,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		}
 		else {
 			folderIds = ArrayUtil.unique(folderIds);
+
+			if (folderIds.length > 1) {
+				Arrays.sort(folderIds);
+			}
 		}
 
 		Object[] finderArgs = new Object[] { groupId, StringUtil.merge(folderIds) };
@@ -9529,6 +9558,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		}
 		else {
 			folderIds = ArrayUtil.unique(folderIds);
+
+			if (folderIds.length > 1) {
+				Arrays.sort(folderIds);
+			}
 		}
 
 		StringBundler query = new StringBundler();
@@ -18944,6 +18977,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		}
 		else {
 			statuses = ArrayUtil.unique(statuses);
+
+			if (statuses.length > 1) {
+				Arrays.sort(statuses);
+			}
 		}
 
 		if (statuses.length == 1) {
@@ -19162,6 +19199,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		}
 		else {
 			statuses = ArrayUtil.unique(statuses);
+
+			if (statuses.length > 1) {
+				Arrays.sort(statuses);
+			}
 		}
 
 		Object[] finderArgs = new Object[] {
@@ -21133,6 +21174,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		}
 		else {
 			statuses = ArrayUtil.unique(statuses);
+
+			if (statuses.length > 1) {
+				Arrays.sort(statuses);
+			}
 		}
 
 		StringBundler query = new StringBundler();
@@ -21309,6 +21354,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		}
 		else {
 			statuses = ArrayUtil.unique(statuses);
+
+			if (statuses.length > 1) {
+				Arrays.sort(statuses);
+			}
 		}
 
 		if (statuses.length == 1) {
@@ -21525,6 +21574,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		}
 		else {
 			statuses = ArrayUtil.unique(statuses);
+
+			if (statuses.length > 1) {
+				Arrays.sort(statuses);
+			}
 		}
 
 		Object[] finderArgs = new Object[] {
@@ -21669,6 +21722,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		}
 		else {
 			statuses = ArrayUtil.unique(statuses);
+
+			if (statuses.length > 1) {
+				Arrays.sort(statuses);
+			}
 		}
 
 		StringBundler query = new StringBundler();
@@ -26426,6 +26483,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		}
 		else {
 			statuses = ArrayUtil.unique(statuses);
+
+			if (statuses.length > 1) {
+				Arrays.sort(statuses);
+			}
 		}
 
 		StringBundler query = new StringBundler();
@@ -26616,6 +26677,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		}
 		else {
 			statuses = ArrayUtil.unique(statuses);
+
+			if (statuses.length > 1) {
+				Arrays.sort(statuses);
+			}
 		}
 
 		if (statuses.length == 1) {
@@ -26861,6 +26926,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		}
 		else {
 			statuses = ArrayUtil.unique(statuses);
+
+			if (statuses.length > 1) {
+				Arrays.sort(statuses);
+			}
 		}
 
 		Object[] finderArgs = new Object[] {
@@ -27034,6 +27103,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		}
 		else {
 			statuses = ArrayUtil.unique(statuses);
+
+			if (statuses.length > 1) {
+				Arrays.sort(statuses);
+			}
 		}
 
 		StringBundler query = new StringBundler();

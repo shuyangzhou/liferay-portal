@@ -49,6 +49,7 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -2278,6 +2279,10 @@ public class DDLRecordSetPersistenceImpl extends BasePersistenceImpl<DDLRecordSe
 		}
 		else {
 			groupIds = ArrayUtil.unique(groupIds);
+
+			if (groupIds.length > 1) {
+				Arrays.sort(groupIds);
+			}
 		}
 
 		StringBundler query = new StringBundler();
@@ -2431,6 +2436,10 @@ public class DDLRecordSetPersistenceImpl extends BasePersistenceImpl<DDLRecordSe
 		}
 		else {
 			groupIds = ArrayUtil.unique(groupIds);
+
+			if (groupIds.length > 1) {
+				Arrays.sort(groupIds);
+			}
 		}
 
 		if (groupIds.length == 1) {
@@ -2617,6 +2626,10 @@ public class DDLRecordSetPersistenceImpl extends BasePersistenceImpl<DDLRecordSe
 		}
 		else {
 			groupIds = ArrayUtil.unique(groupIds);
+
+			if (groupIds.length > 1) {
+				Arrays.sort(groupIds);
+			}
 		}
 
 		Object[] finderArgs = new Object[] { StringUtil.merge(groupIds) };
@@ -2737,6 +2750,10 @@ public class DDLRecordSetPersistenceImpl extends BasePersistenceImpl<DDLRecordSe
 		}
 		else {
 			groupIds = ArrayUtil.unique(groupIds);
+
+			if (groupIds.length > 1) {
+				Arrays.sort(groupIds);
+			}
 		}
 
 		StringBundler query = new StringBundler();

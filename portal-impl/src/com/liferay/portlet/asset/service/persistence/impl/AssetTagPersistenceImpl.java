@@ -55,6 +55,7 @@ import com.liferay.portlet.asset.service.persistence.AssetTagPersistence;
 
 import java.io.Serializable;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -2279,6 +2280,10 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 		}
 		else {
 			groupIds = ArrayUtil.unique(groupIds);
+
+			if (groupIds.length > 1) {
+				Arrays.sort(groupIds);
+			}
 		}
 
 		StringBundler query = new StringBundler();
@@ -2430,6 +2435,10 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 		}
 		else {
 			groupIds = ArrayUtil.unique(groupIds);
+
+			if (groupIds.length > 1) {
+				Arrays.sort(groupIds);
+			}
 		}
 
 		if (groupIds.length == 1) {
@@ -2616,6 +2625,10 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 		}
 		else {
 			groupIds = ArrayUtil.unique(groupIds);
+
+			if (groupIds.length > 1) {
+				Arrays.sort(groupIds);
+			}
 		}
 
 		Object[] finderArgs = new Object[] { StringUtil.merge(groupIds) };
@@ -2736,6 +2749,10 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 		}
 		else {
 			groupIds = ArrayUtil.unique(groupIds);
+
+			if (groupIds.length > 1) {
+				Arrays.sort(groupIds);
+			}
 		}
 
 		StringBundler query = new StringBundler();
@@ -3924,6 +3941,10 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 		}
 		else {
 			groupIds = ArrayUtil.unique(groupIds);
+
+			if (groupIds.length > 1) {
+				Arrays.sort(groupIds);
+			}
 		}
 
 		StringBundler query = new StringBundler();
@@ -4103,6 +4124,10 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 		}
 		else {
 			groupIds = ArrayUtil.unique(groupIds);
+
+			if (groupIds.length > 1) {
+				Arrays.sort(groupIds);
+			}
 		}
 
 		if (groupIds.length == 1) {
@@ -4336,6 +4361,10 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 		}
 		else {
 			groupIds = ArrayUtil.unique(groupIds);
+
+			if (groupIds.length > 1) {
+				Arrays.sort(groupIds);
+			}
 		}
 
 		Object[] finderArgs = new Object[] { StringUtil.merge(groupIds), name };
@@ -4498,6 +4527,10 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 		}
 		else {
 			groupIds = ArrayUtil.unique(groupIds);
+
+			if (groupIds.length > 1) {
+				Arrays.sort(groupIds);
+			}
 		}
 
 		StringBundler query = new StringBundler();
