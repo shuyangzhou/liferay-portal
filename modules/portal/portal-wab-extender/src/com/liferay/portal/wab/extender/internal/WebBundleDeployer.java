@@ -55,11 +55,19 @@ public class WebBundleDeployer {
 	public void doStart(Bundle bundle) {
 		_eventUtil.sendEvent(bundle, EventUtil.DEPLOYING, null, false);
 
+		System.out.println(
+			"###################WebBundleDeployer.doStart is processing " +
+				bundle);
+
 		String contextPath = WabUtil.getWebContextPath(bundle);
 
 		if (contextPath == null) {
 			return;
 		}
+
+		System.out.println(
+			"###################WebBundleDeployer.doStart is processing " +
+				contextPath + ", " + bundle);
 
 		BundleContext bundleContext = bundle.getBundleContext();
 
@@ -78,6 +86,11 @@ public class WebBundleDeployer {
 
 			if (oldWabBundleProcessor != null) {
 				_eventUtil.sendEvent(bundle, EventUtil.FAILED, null, false);
+
+				System.out.println(
+					"###################WebBundleDeployer.doStart got a " +
+						"duplicated WabBundleProcessor " + bundle + ", " +
+							oldWabBundleProcessor);
 
 				return;
 			}

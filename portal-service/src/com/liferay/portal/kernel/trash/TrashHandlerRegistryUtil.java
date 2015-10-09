@@ -71,7 +71,15 @@ public class TrashHandlerRegistryUtil {
 	}
 
 	private TrashHandler _getTrashHandler(String className) {
-		return _trashHandlers.get(className);
+		TrashHandler trashHandler = _trashHandlers.get(className);
+
+		if (trashHandler == null) {
+			System.out.println(
+				"^^^^^^^^^^^^Don't have a handler under name " + className +
+					", check previous add/remove log");
+		}
+
+		return trashHandler;
 	}
 
 	private List<TrashHandler> _getTrashHandlers() {
@@ -118,6 +126,10 @@ public class TrashHandlerRegistryUtil {
 
 			_trashHandlers.put(trashHandler.getClassName(), trashHandler);
 
+			System.out.println(
+				"##########Added " + trashHandler + "\nCurrent map " +
+					_trashHandlers);
+
 			return trashHandler;
 		}
 
@@ -137,6 +149,12 @@ public class TrashHandlerRegistryUtil {
 			registry.ungetService(serviceReference);
 
 			_trashHandlers.remove(trashHandler.getClassName());
+
+			System.out.println(
+				"##########Removed " + trashHandler + "\nCurrent map " +
+					_trashHandlers);
+
+			new Exception().printStackTrace(System.out);
 		}
 
 	}
