@@ -53,10 +53,13 @@ import org.apache.felix.utils.log.Logger;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
+import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.framework.wiring.BundleWiring;
 import org.osgi.service.http.context.ServletContextHelper;
 import org.osgi.service.http.whiteboard.HttpWhiteboardConstants;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Raymond Augé
@@ -93,11 +96,23 @@ public class WabBundleProcessor implements ServletContextListener {
 
 	@Override
 	public void contextDestroyed(ServletContextEvent servletContextEvent) {
+		if (_contextPath.equals("/wiki-web")) {
+			System.out.println(
+				"!!!!!!!!!!!!!WabBundleProcessor contextDestroyed for " +
+					_contextPath);
+		}
+
 		_servletContextRegistration.unregister();
 	}
 
 	@Override
 	public void contextInitialized(ServletContextEvent servletContextEvent) {
+		if (_contextPath.equals("/wiki-web")) {
+			System.out.println(
+				"!!!!!!!!!!!!!WabBundleProcessor contextInitialized for " +
+					_contextPath);
+		}
+
 		ServletContext servletContext = servletContextEvent.getServletContext();
 
 		servletContext.setAttribute(
@@ -116,6 +131,13 @@ public class WabBundleProcessor implements ServletContextListener {
 	}
 
 	public void destroy() throws Exception {
+		if (_contextPath.equals("/wiki-web")) {
+			System.out.println(
+				"!!!!!!!!!!!!!WabBundleProcessor destroy for " + _contextPath);
+
+			new Exception().printStackTrace(System.out);
+		}
+
 		Thread currentThread = Thread.currentThread();
 
 		ClassLoader contextClassLoader = currentThread.getContextClassLoader();
@@ -145,6 +167,11 @@ public class WabBundleProcessor implements ServletContextListener {
 	}
 
 	public void init() throws Exception {
+		if (_contextPath.equals("/wiki-web")) {
+			System.out.println(
+				"!!!!!!!!!!!!!WabBundleProcessor init for " + _contextPath);
+		}
+
 		Thread currentThread = Thread.currentThread();
 
 		ClassLoader contextClassLoader = currentThread.getContextClassLoader();
@@ -438,7 +465,7 @@ public class WabBundleProcessor implements ServletContextListener {
 		List<ListenerDefinition> listenerDefinitions =
 			_webXMLDefinition.getListenerDefinitions();
 
-		for (ListenerDefinition listenerDefinition : listenerDefinitions) {
+		for (final ListenerDefinition listenerDefinition : listenerDefinitions) {
 			Dictionary<String, Object> properties = new Hashtable<>();
 
 			properties.put(
@@ -464,20 +491,82 @@ public class WabBundleProcessor implements ServletContextListener {
 				continue;
 			}
 
-			ServletContextListenerExceptionAdapter
+			final ServletContextListenerExceptionAdapter
 				servletContextListenerExceptionAdaptor =
 					new ServletContextListenerExceptionAdapter(
 						(ServletContextListener)
 							listenerDefinition.getEventListener());
 
+			ServiceTracker<ServletContextListener, ServletContextListener> serviceTracker =
+				new ServiceTracker<> (
+					_bundleContext, ServletContextListener.class,
+					new ServiceTrackerCustomizer<ServletContextListener, ServletContextListener>() {
+
+					@Override
+					public ServletContextListener addingService(ServiceReference<ServletContextListener> sr) {
+						ServletContextListener servletContextListener = _bundleContext.getService(sr);
+
+						if (servletContextListener == servletContextListenerExceptionAdaptor) {
+							System.out.println(
+								"@@@@@@@@@@WabBundleProcessor ServiceTracker adding " +
+									listenerDefinition.getEventListener() + ", for " + _bundleContext.getBundle());
+						}
+
+						return servletContextListener;
+					}
+
+					@Override
+					public void modifiedService(ServiceReference<ServletContextListener> sr, ServletContextListener t) {
+						ServletContextListener servletContextListener = _bundleContext.getService(sr);
+
+						if (servletContextListener == servletContextListenerExceptionAdaptor) {
+							System.out.println(
+								"@@@@@@@@@@WabBundleProcessor ServiceTracker modified " +
+									listenerDefinition.getEventListener() + ", for " + _bundleContext.getBundle());
+
+							new Exception().printStackTrace(System.out);
+						}
+					}
+
+					@Override
+					public void removedService(ServiceReference<ServletContextListener> sr, ServletContextListener t) {
+						ServletContextListener servletContextListener = _bundleContext.getService(sr);
+
+						if (servletContextListener == servletContextListenerExceptionAdaptor) {
+							System.out.println(
+								"@@@@@@@@@@WabBundleProcessor ServiceTracker removed " +
+									listenerDefinition.getEventListener() + ", for " + _bundleContext.getBundle());
+
+							new Exception().printStackTrace(System.out);
+						}
+					}
+
+			
+				});
+
+			serviceTracker.open();
+
 			serviceRegistration = _bundleContext.registerService(
 				ServletContextListener.class,
 				servletContextListenerExceptionAdaptor, properties);
+
+			Object service = _bundleContext.getService(serviceRegistration.getReference());
+
+			if (service != servletContextListenerExceptionAdaptor) {
+				System.out.println("##########WabBundleProcessor this is not possible, added as " + servletContextListenerExceptionAdaptor + ", got as " + service + ", " + listenerDefinition.getEventListener() + ", for " + _bundleContext.getBundle());
+			}
+			else {
+				System.out.println("##########WabBundleProcessor get after add " + listenerDefinition.getEventListener() + ", for " + _bundleContext.getBundle());
+			}
 
 			Exception exception =
 				servletContextListenerExceptionAdaptor.getException();
 
 			if (exception != null) {
+				System.out.println(
+					"%%%%%%%%%%%%%%%%unregistering " + serviceRegistration +
+						", due to " + exception);
+
 				serviceRegistration.unregister();
 
 				throw exception;
