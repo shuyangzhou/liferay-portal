@@ -153,6 +153,8 @@ public class TrashHandlerRegistryUtil {
 			System.out.println(
 				"##########Removed " + trashHandler + "\nCurrent map " +
 					_trashHandlers);
+
+			new Exception().printStackTrace(System.out);
 		}
 
 	}
