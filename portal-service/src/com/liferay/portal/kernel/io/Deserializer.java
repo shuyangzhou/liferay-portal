@@ -15,6 +15,7 @@
 package com.liferay.portal.kernel.io;
 
 import com.liferay.portal.kernel.util.ClassLoaderPool;
+import com.liferay.portal.kernel.util.ClassLoaderUtil;
 import com.liferay.portal.kernel.util.ClassResolverUtil;
 
 import java.io.IOException;
@@ -35,9 +36,15 @@ import java.nio.CharBuffer;
 public class Deserializer {
 
 	public Deserializer(ByteBuffer byteBuffer) {
+		this(byteBuffer, null);
+	}
+
+	public Deserializer(ByteBuffer byteBuffer, ClassLoader classLoader) {
 		buffer = byteBuffer.array();
 		index = byteBuffer.arrayOffset();
 		limit = index + byteBuffer.remaining();
+
+		this.classLoader = classLoader;
 	}
 
 	public boolean readBoolean() {
@@ -121,10 +128,8 @@ public class Deserializer {
 				String contextName = readString();
 				String className = readString();
 
-				ClassLoader classLoader = ClassLoaderPool.getClassLoader(
-					contextName);
-
-				return (T)ClassResolverUtil.resolve(className, classLoader);
+				return (T)ClassResolverUtil.resolve(
+					className, ClassLoaderPool.getClassLoader(contextName));
 
 			case SerializationConstants.TC_DOUBLE:
 				return (T)Double.valueOf(readDouble());
@@ -148,6 +153,15 @@ public class Deserializer {
 				return (T)readString();
 
 			case SerializationConstants.TC_OBJECT:
+				ClassLoader contextClassLoader = null;
+
+				if (classLoader != null) {
+					contextClassLoader =
+						ClassLoaderUtil.getContextClassLoader();
+
+					ClassLoaderUtil.setContextClassLoader(classLoader);
+				}
+
 				try {
 					ObjectInputStream objectInpputStream =
 						new AnnotatedObjectInputStream(new BufferInputStream());
@@ -156,6 +170,12 @@ public class Deserializer {
 				}
 				catch (IOException ioe) {
 					throw new RuntimeException(ioe);
+				}
+				finally {
+					if (contextClassLoader != null) {
+						ClassLoaderUtil.setContextClassLoader(
+							contextClassLoader);
+					}
 				}
 
 			default :
@@ -220,6 +240,7 @@ public class Deserializer {
 	}
 
 	protected byte[] buffer;
+	protected ClassLoader classLoader;
 	protected int index;
 	protected int limit;
 
