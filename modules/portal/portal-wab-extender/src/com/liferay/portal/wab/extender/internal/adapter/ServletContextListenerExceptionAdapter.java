@@ -41,6 +41,11 @@ public class ServletContextListenerExceptionAdapter
 
 	@Override
 	public void contextInitialized(ServletContextEvent servletContextEvent) {
+		System.out.println(
+			"*****************Wab-extender is initializing " +
+				servletContextEvent.getServletContext().
+					getServletContextName());
+
 		try {
 			_servletContextListener.contextInitialized(servletContextEvent);
 		}
