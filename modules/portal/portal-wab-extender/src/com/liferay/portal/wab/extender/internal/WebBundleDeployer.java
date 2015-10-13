@@ -55,10 +55,22 @@ public class WebBundleDeployer {
 	public void doStart(Bundle bundle) {
 		_eventUtil.sendEvent(bundle, EventUtil.DEPLOYING, null, false);
 
+		if (bundle.getSymbolicName().equals("com.liferay.wiki.web")) {
+			System.out.println(
+				"###################WebBundleDeployer.doStart is processing " +
+					bundle);
+		}
+
 		String contextPath = WabUtil.getWebContextPath(bundle);
 
 		if (contextPath == null) {
 			return;
+		}
+
+		if (bundle.getSymbolicName().equals("com.liferay.wiki.web")) {
+			System.out.println(
+				"###################WebBundleDeployer.doStart is processing " +
+					contextPath);
 		}
 
 		BundleContext bundleContext = bundle.getBundleContext();
