@@ -69,52 +69,30 @@ public class SerializableObjectWrapper implements Serializable {
 	private void readObject(ObjectInputStream objectInputStream)
 		throws ClassNotFoundException, IOException {
 
-		Thread currentThread = Thread.currentThread();
+		int size = objectInputStream.readInt();
 
-		ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+		byte[] data = new byte[size];
 
-		currentThread.setContextClassLoader(_classLoader);
+		objectInputStream.readFully(data);
 
-		try {
-			int size = objectInputStream.readInt();
+		Deserializer deserializer = new Deserializer(
+			ByteBuffer.wrap(data), _classLoader);
 
-			byte[] data = new byte[size];
-
-			objectInputStream.readFully(data);
-
-			Deserializer deserializer = new Deserializer(ByteBuffer.wrap(data));
-
-			_serializable = deserializer.readObject();
-		}
-		finally {
-			currentThread.setContextClassLoader(contextClassLoader);
-		}
+		_serializable = deserializer.readObject();
 	}
 
 	private void writeObject(ObjectOutputStream objectOutputStream)
 		throws IOException {
 
-		Thread currentThread = Thread.currentThread();
+		Serializer serializer = new Serializer();
 
-		ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+		serializer.writeObject(_serializable);
 
-		currentThread.setContextClassLoader(_classLoader);
+		ByteBuffer byteBuffer = serializer.toByteBuffer();
 
-		try {
-			Serializer serializer = new Serializer();
-
-			serializer.writeObject(_serializable);
-
-			ByteBuffer byteBuffer = serializer.toByteBuffer();
-
-			objectOutputStream.writeInt(byteBuffer.remaining());
-			objectOutputStream.write(
-				byteBuffer.array(), byteBuffer.position(),
-				byteBuffer.remaining());
-		}
-		finally {
-			currentThread.setContextClassLoader(contextClassLoader);
-		}
+		objectOutputStream.writeInt(byteBuffer.remaining());
+		objectOutputStream.write(
+			byteBuffer.array(), byteBuffer.position(), byteBuffer.remaining());
 	}
 
 	private static final ClassLoader _classLoader;
