@@ -91,6 +91,13 @@ public class WebBundleDeployer {
 			if (oldWabBundleProcessor != null) {
 				_eventUtil.sendEvent(bundle, EventUtil.FAILED, null, false);
 
+				if (bundle.getSymbolicName().equals("com.liferay.wiki.web")) {
+					System.out.println(
+						"###################WebBundleDeployer.doStart got a " +
+							"duplicated WabBundleProcessor " + bundle + ", " +
+								oldWabBundleProcessor);
+				}
+
 				return;
 			}
 
