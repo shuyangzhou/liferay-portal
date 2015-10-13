@@ -497,10 +497,6 @@ public class WabBundleProcessor implements ServletContextListener {
 						(ServletContextListener)
 							listenerDefinition.getEventListener());
 
-			serviceRegistration = _bundleContext.registerService(
-				ServletContextListener.class,
-				servletContextListenerExceptionAdaptor, properties);
-
 			ServiceTracker<ServletContextListener, ServletContextListener> serviceTracker =
 				new ServiceTracker<> (
 					_bundleContext, ServletContextListener.class,
@@ -549,6 +545,10 @@ public class WabBundleProcessor implements ServletContextListener {
 				});
 
 			serviceTracker.open();
+
+			serviceRegistration = _bundleContext.registerService(
+				ServletContextListener.class,
+				servletContextListenerExceptionAdaptor, properties);
 
 			Exception exception =
 				servletContextListenerExceptionAdaptor.getException();
