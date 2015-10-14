@@ -14,10 +14,13 @@
 
 package com.liferay.portal.wab.extender.internal.definition;
 
+import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.util.GetterUtil;
 
+import java.io.IOException;
 import java.io.InputStream;
 
+import java.io.OutputStream;
 import java.net.URL;
 
 import java.util.ArrayList;
@@ -261,10 +264,59 @@ public class WebXMLDefinitionLoader extends DefaultHandler {
 		_logger.log(Logger.LOG_ERROR, e.getMessage(), e);
 	}
 
+	protected static void transferByteArray(
+			InputStream inputStream, OutputStream outputStream, int bufferSize,
+			long length)
+		throws IOException {
+
+		byte[] bytes = new byte[bufferSize];
+
+		if (length > 0) {
+			long remainingLength = length;
+
+			while (remainingLength > 0) {
+				int readBytes = inputStream.read(
+					bytes, 0, (int)Math.min(remainingLength, bufferSize));
+
+				if (readBytes == -1) {
+					break;
+				}
+
+				outputStream.write(bytes, 0, readBytes);
+
+				remainingLength -= readBytes;
+			}
+		}
+		else {
+			int value = -1;
+
+			while ((value = inputStream.read(bytes)) != -1) {
+				outputStream.write(bytes, 0, value);
+			}
+		}
+	}
+
 	public WebXMLDefinition loadWebXML() throws Exception {
 		URL url = _bundle.getEntry("WEB-INF/web.xml");
 
 		if (url != null) {
+			try (InputStream inputStream = url.openStream();
+				UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
+				new UnsyncByteArrayOutputStream()) {
+
+				byte[] bytes = new byte[8192];
+
+				int value = -1;
+
+				while ((value = inputStream.read(bytes)) != -1) {
+					unsyncByteArrayOutputStream.write(bytes, 0, value);
+				}
+
+				System.out.println(
+					"##########WEB-INF/web.xml dump for " + _bundle + "\n" +
+						unsyncByteArrayOutputStream.toString());
+			}
+
 			try (InputStream inputStream = url.openStream()) {
 				SAXParser saxParser = _saxParserFactory.newSAXParser();
 
