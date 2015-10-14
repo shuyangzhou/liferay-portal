@@ -744,9 +744,14 @@ public class GroupServiceImpl extends GroupServiceBaseImpl {
 			end = max;
 		}
 
-		if ((classNames == null) ||
-			ArrayUtil.contains(classNames, User.class.getName())) {
+		if (classNames == null) {
+			classNames = new String[] {
+				Company.class.getName(), Group.class.getName(),
+				Organization.class.getName(), User.class.getName()
+			};
+		}
 
+		if (ArrayUtil.contains(classNames, User.class.getName())) {
 			if (PropsValues.LAYOUT_USER_PRIVATE_LAYOUTS_ENABLED ||
 				PropsValues.LAYOUT_USER_PUBLIC_LAYOUTS_ENABLED) {
 
@@ -756,9 +761,7 @@ public class GroupServiceImpl extends GroupServiceBaseImpl {
 			}
 		}
 
-		if ((classNames == null) ||
-			ArrayUtil.contains(classNames, Company.class.getName())) {
-
+		if (ArrayUtil.contains(classNames, Company.class.getName())) {
 			userSiteGroups.addAll(
 				groupLocalService.search(
 					user.getCompanyId(),
@@ -768,9 +771,7 @@ public class GroupServiceImpl extends GroupServiceBaseImpl {
 					null, new LinkedHashMap<String, Object>(), start, end));
 		}
 
-		if ((classNames == null) ||
-			ArrayUtil.contains(classNames, Group.class.getName())) {
-
+		if (ArrayUtil.contains(classNames, Group.class.getName())) {
 			LinkedHashMap<String, Object> groupParams = new LinkedHashMap<>();
 
 			groupParams.put("active", true);
@@ -787,9 +788,7 @@ public class GroupServiceImpl extends GroupServiceBaseImpl {
 			}
 		}
 
-		if ((classNames == null) ||
-			ArrayUtil.contains(classNames, Organization.class.getName())) {
-
+		if (ArrayUtil.contains(classNames, Organization.class.getName())) {
 			List<Organization> userOrgs =
 				organizationLocalService.getOrganizations(
 					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
