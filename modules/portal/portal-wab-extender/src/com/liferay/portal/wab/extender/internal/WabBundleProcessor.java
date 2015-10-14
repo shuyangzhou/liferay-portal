@@ -550,14 +550,14 @@ public class WabBundleProcessor implements ServletContextListener {
 				ServletContextListener.class,
 				servletContextListenerExceptionAdaptor, properties);
 
-			Object service = _bundleContext.getService(serviceRegistration.getReference());
-
-			if (service != servletContextListenerExceptionAdaptor) {
-				System.out.println("##########WabBundleProcessor this is not possible, added as " + servletContextListenerExceptionAdaptor + ", got as " + service + ", " + listenerDefinition.getEventListener() + ", for " + _bundleContext.getBundle());
-			}
-			else {
-				System.out.println("##########WabBundleProcessor get after add " + listenerDefinition.getEventListener() + ", for " + _bundleContext.getBundle());
-			}
+//			Object service = _bundleContext.getService(serviceRegistration.getReference());
+//
+//			if (service != servletContextListenerExceptionAdaptor) {
+//				System.out.println("##########WabBundleProcessor this is not possible, added as " + servletContextListenerExceptionAdaptor + ", got as " + service + ", " + listenerDefinition.getEventListener() + ", for " + _bundleContext.getBundle());
+//			}
+//			else {
+//				System.out.println("##########WabBundleProcessor get after add " + listenerDefinition.getEventListener() + ", for " + _bundleContext.getBundle());
+//			}
 
 			Exception exception =
 				servletContextListenerExceptionAdaptor.getException();
