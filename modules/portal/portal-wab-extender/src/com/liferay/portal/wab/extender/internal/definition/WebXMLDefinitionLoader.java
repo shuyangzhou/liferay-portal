@@ -14,8 +14,10 @@
 
 package com.liferay.portal.wab.extender.internal.definition;
 
+import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.util.GetterUtil;
 
+import com.liferay.portal.kernel.util.StreamUtil;
 import java.io.InputStream;
 
 import java.net.URL;
@@ -263,6 +265,15 @@ public class WebXMLDefinitionLoader extends DefaultHandler {
 
 	public WebXMLDefinition loadWebXML() throws Exception {
 		URL url = _bundle.getEntry("WEB-INF/web.xml");
+
+		UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
+			new UnsyncByteArrayOutputStream();
+
+		StreamUtil.transfer(url.openStream(), unsyncByteArrayOutputStream);
+
+		System.out.println(
+			"##########WEB-INF/web.xml dump for " + _bundle + "\n" +
+				unsyncByteArrayOutputStream.toString());
 
 		if (url != null) {
 			try (InputStream inputStream = url.openStream()) {
