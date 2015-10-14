@@ -127,7 +127,7 @@ public class FileEntryStagedModelDataHandlerTest
 			DLAppLocalServiceUtil.getFileEntryByUuidAndGroupId(
 				fileEntry.getUuid(), liveGroup.getGroupId());
 
-		Assert.assertEquals(importedFileEntry.getExtension(), "pdf");
+		Assert.assertEquals("pdf", importedFileEntry.getExtension());
 
 		String title = RandomTestUtil.randomString() + ".awesome";
 
@@ -141,7 +141,7 @@ public class FileEntryStagedModelDataHandlerTest
 		importedFileEntry = DLAppLocalServiceUtil.getFileEntryByUuidAndGroupId(
 			fileEntry.getUuid(), liveGroup.getGroupId());
 
-		Assert.assertEquals(importedFileEntry.getExtension(), "pdf");
+		Assert.assertEquals("pdf", importedFileEntry.getExtension());
 	}
 
 	protected Map<String, List<StagedModel>> addCompanyDependencies()
