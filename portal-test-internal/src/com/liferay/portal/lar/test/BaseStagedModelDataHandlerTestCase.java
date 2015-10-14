@@ -22,6 +22,8 @@ import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.xml.Document;
@@ -41,6 +43,9 @@ import com.liferay.portal.service.IdentityServiceContextFunction;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextThreadLocal;
 import com.liferay.portal.service.test.ServiceTestUtil;
+import com.liferay.portal.test.log.CaptureAppender;
+import com.liferay.portal.test.log.Log4JLoggerTestUtil;
+import com.liferay.portal.test.rule.LogAssertionAppender;
 import com.liferay.portlet.asset.model.AssetCategory;
 import com.liferay.portlet.asset.model.AssetEntry;
 import com.liferay.portlet.asset.model.AssetTag;
@@ -50,6 +55,7 @@ import com.liferay.portlet.asset.service.AssetEntryLocalServiceUtil;
 import com.liferay.portlet.asset.service.AssetTagLocalServiceUtil;
 import com.liferay.portlet.asset.service.AssetVocabularyLocalServiceUtil;
 import com.liferay.portlet.asset.util.test.AssetTestUtil;
+import com.liferay.portlet.documentlibrary.store.BaseStore;
 import com.liferay.portlet.exportimport.lar.ExportImportClassedModelUtil;
 import com.liferay.portlet.exportimport.lar.ExportImportPathUtil;
 import com.liferay.portlet.exportimport.lar.PortletDataContext;
@@ -74,6 +80,9 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import org.apache.log4j.Level;
+import org.apache.log4j.spi.LoggingEvent;
+
 
 import org.junit.After;
 import org.junit.Assert;
@@ -389,8 +398,41 @@ public abstract class BaseStagedModelDataHandlerTestCase {
 
 		Assert.assertNotNull(exportedStagedModel);
 
-		StagedModelDataHandlerUtil.importStagedModel(
-			portletDataContext, exportedStagedModel);
+		Level level = Level.WARN;
+
+		if (portletDataContext.getBooleanParameter(
+				"document_library", "previews-and-thumbnails")) {
+			level = Level.OFF;
+		}
+
+		try (CaptureAppender captureAppender =
+				Log4JLoggerTestUtil.configureLog4JLogger(
+					BaseStore.class.getName(), level)) {
+
+			StagedModelDataHandlerUtil.importStagedModel(
+				portletDataContext, exportedStagedModel);
+
+			List<LoggingEvent> loggingEvents =
+				captureAppender.getLoggingEvents();
+
+			StringBundler sb = new StringBundler(
+				loggingEvents.size() * 2 + 2);
+
+			sb.append(StringPool.OPEN_CURLY_BRACE);
+
+			for (LoggingEvent loggingEvent : loggingEvents) {
+				sb.append(LogAssertionAppender.toString(loggingEvent));
+				sb.append(StringPool.COMMA_AND_SPACE);
+			}
+
+			if (!loggingEvents.isEmpty()) {
+				sb.setIndex(sb.index() -1);
+			}
+
+			sb.append(StringPool.CLOSE_CURLY_BRACE);
+
+			Assert.assertTrue(sb.toString(), loggingEvents.isEmpty());
+		}
 	}
 
 	protected AssetEntry fetchAssetEntry(StagedModel stagedModel, Group group)
