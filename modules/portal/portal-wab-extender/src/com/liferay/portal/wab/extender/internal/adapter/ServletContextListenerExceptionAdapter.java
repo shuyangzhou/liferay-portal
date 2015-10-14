@@ -31,20 +31,36 @@ public class ServletContextListenerExceptionAdapter
 
 	@Override
 	public void contextDestroyed(ServletContextEvent servletContextEvent) {
+		System.out.println(
+			"*****************Wab-extender contextDestroyed " +
+				servletContextEvent.getServletContext().
+					getServletContextName());
+
+		new Exception().printStackTrace(System.out);
+
 		try {
 			_servletContextListener.contextDestroyed(servletContextEvent);
 		}
 		catch (Exception e) {
+			e.printStackTrace(System.out);
+
 			_exception = e;
 		}
 	}
 
 	@Override
 	public void contextInitialized(ServletContextEvent servletContextEvent) {
+		System.out.println(
+			"*****************Wab-extender contextInitialized " +
+				servletContextEvent.getServletContext().
+					getServletContextName());
+
 		try {
 			_servletContextListener.contextInitialized(servletContextEvent);
 		}
 		catch (Exception e) {
+			e.printStackTrace(System.out);
+
 			_exception = e;
 		}
 	}
