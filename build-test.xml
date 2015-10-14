@@ -3168,6 +3168,8 @@ go]]></replacevalue>
 	<target name="copy-optional-jars">
 		<get-database-property property.name="database.version" />
 
+		<var name="test.jdbc.drivers.url" value="http://mirrors.lax.liferay.com/files.liferay.com/private/jdbc" />
+
 		<if>
 			<equals arg1="${database.type}" arg2="db2" />
 			<then>
