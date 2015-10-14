@@ -52,6 +52,7 @@ import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -60,6 +61,7 @@ import org.junit.runner.RunWith;
  * @author Mate Thurzo
  */
 @RunWith(Arquillian.class)
+@Ignore
 public class FolderStagedModelDataHandlerTest
 	extends BaseStagedModelDataHandlerTestCase {
 

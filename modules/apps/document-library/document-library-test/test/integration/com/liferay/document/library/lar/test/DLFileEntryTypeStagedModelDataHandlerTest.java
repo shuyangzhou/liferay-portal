@@ -39,6 +39,7 @@ import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
 
@@ -46,6 +47,7 @@ import org.junit.runner.RunWith;
  * @author Mate Thurzo
  */
 @RunWith(Arquillian.class)
+@Ignore
 public class DLFileEntryTypeStagedModelDataHandlerTest
 	extends BaseStagedModelDataHandlerTestCase {
 
