@@ -791,11 +791,8 @@ public class GroupServiceImpl extends GroupServiceBaseImpl {
 			groupParams.put("usersGroups", userId);
 
 			List<Group> groups = groupLocalService.search(
-				user.getCompanyId(),
-				new long[] {
-					classNameLocalService.getClassNameId(Group.class)
-				},
-				null, groupParams, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+				user.getCompanyId(), null, null, groupParams,
+				QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
 			for (Group group : groups) {
 				if (group.hasPrivateLayouts() || group.hasPublicLayouts()) {
