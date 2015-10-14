@@ -497,6 +497,47 @@ public class DeserializerTest {
 	}
 
 	@Test
+	public void testReadObjectOrdinaryCNFE() throws Exception {
+		UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
+			new UnsyncByteArrayOutputStream();
+
+		unsyncByteArrayOutputStream.write(SerializationConstants.TC_OBJECT);
+
+		ObjectOutputStream objectOutputStream = new AnnotatedObjectOutputStream(
+			unsyncByteArrayOutputStream);
+
+		objectOutputStream.writeObject(new Date(123456));
+
+		ByteBuffer byteBuffer =
+			unsyncByteArrayOutputStream.unsafeGetByteBuffer();
+
+		ClassLoader classLoader = new ClassLoader() {
+
+			@Override
+			public Class<?> loadClass(String name)
+				throws ClassNotFoundException {
+
+				if (name.equals("java.util.Date")) {
+					throw new ClassNotFoundException("java.util.Date");
+				}
+
+				return super.loadClass(name);
+			}
+		};
+
+		Deserializer deserializer = new Deserializer(byteBuffer, classLoader);
+
+		try {
+			deserializer.readObject();
+
+			Assert.fail();
+		}
+		catch (ClassNotFoundException cnfe) {
+			Assert.assertEquals(Date.class.getName(), cnfe.getMessage());
+		}
+	}
+
+	@Test
 	public void testReadObjectOrdinaryNPE() throws Exception {
 		UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
 			new UnsyncByteArrayOutputStream();
