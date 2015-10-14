@@ -21,12 +21,15 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileVersion;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.rule.Sync;
+import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.DateUtil;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.lar.test.BaseStagedModelDataHandlerTestCase;
 import com.liferay.portal.model.Company;
@@ -36,6 +39,9 @@ import com.liferay.portal.service.CompanyLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextThreadLocal;
 import com.liferay.portal.test.randomizerbumpers.TikaSafeRandomizerBumper;
+import com.liferay.portal.test.rule.ExpectedLog;
+import com.liferay.portal.test.rule.ExpectedLogs;
+import com.liferay.portal.test.rule.ExpectedType;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portlet.documentlibrary.model.DLFileEntry;
 import com.liferay.portlet.documentlibrary.model.DLFileEntryMetadata;
@@ -46,6 +52,7 @@ import com.liferay.portlet.documentlibrary.service.DLAppLocalServiceUtil;
 import com.liferay.portlet.documentlibrary.service.DLAppServiceUtil;
 import com.liferay.portlet.documentlibrary.service.DLFileEntryTypeLocalServiceUtil;
 import com.liferay.portlet.documentlibrary.service.DLFolderLocalServiceUtil;
+import com.liferay.portlet.documentlibrary.store.BaseStore;
 import com.liferay.portlet.documentlibrary.util.DLUtil;
 import com.liferay.portlet.documentlibrary.util.test.DLAppTestUtil;
 import com.liferay.portlet.dynamicdatamapping.DDMStructureManagerUtil;
@@ -65,6 +72,7 @@ import org.junit.runner.RunWith;
  * @author Mate Thurzo
  */
 @RunWith(Arquillian.class)
+@Sync
 public class FileEntryStagedModelDataHandlerTest
 	extends BaseStagedModelDataHandlerTestCase {
 
@@ -72,7 +80,9 @@ public class FileEntryStagedModelDataHandlerTest
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
 		new AggregateTestRule(
-			new LiferayIntegrationTestRule(), TransactionalTestRule.INSTANCE);
+			new LiferayIntegrationTestRule(),
+			SynchronousDestinationTestRule.INSTANCE,
+			TransactionalTestRule.INSTANCE);
 
 	@Test
 	public void testCompanyScopeDependencies() throws Exception {
@@ -87,19 +97,28 @@ public class FileEntryStagedModelDataHandlerTest
 		validateCompanyDependenciesImport(dependentStagedModelsMap, liveGroup);
 	}
 
+	@ExpectedLogs(
+		expectedLogs = {
+			@ExpectedLog(
+				expectedLog = "Unable to delete file",
+				expectedType = ExpectedType.PREFIX
+			)
+		},
+		level = "WARN", loggerClass = BaseStore.class
+	)
 	@Test
 	public void testExportImportFileExtension() throws Exception {
-		String sourceFileName = RandomTestUtil.randomString() + ".pdf";
-
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(
 				stagingGroup.getGroupId(), TestPropsValues.getUserId());
 
+		String fileName = "PDF_Test.pdf";
+
 		FileEntry fileEntry = DLAppLocalServiceUtil.addFileEntry(
 			TestPropsValues.getUserId(), stagingGroup.getGroupId(),
-			DLFolderConstants.DEFAULT_PARENT_FOLDER_ID, sourceFileName,
+			DLFolderConstants.DEFAULT_PARENT_FOLDER_ID, fileName,
 			ContentTypes.APPLICATION_PDF,
-			RandomTestUtil.randomBytes(TikaSafeRandomizerBumper.INSTANCE),
+			FileUtil.getBytes(getClass(), "dependencies/" + fileName),
 			serviceContext);
 
 		exportImportStagedModel(fileEntry);
@@ -108,7 +127,7 @@ public class FileEntryStagedModelDataHandlerTest
 			DLAppLocalServiceUtil.getFileEntryByUuidAndGroupId(
 				fileEntry.getUuid(), liveGroup.getGroupId());
 
-		Assert.assertEquals(importedFileEntry.getExtension(), "pdf");
+		Assert.assertEquals("pdf", importedFileEntry.getExtension());
 
 		String title = RandomTestUtil.randomString() + ".awesome";
 
@@ -122,7 +141,7 @@ public class FileEntryStagedModelDataHandlerTest
 		importedFileEntry = DLAppLocalServiceUtil.getFileEntryByUuidAndGroupId(
 			fileEntry.getUuid(), liveGroup.getGroupId());
 
-		Assert.assertEquals(importedFileEntry.getExtension(), "pdf");
+		Assert.assertEquals("pdf", importedFileEntry.getExtension());
 	}
 
 	protected Map<String, List<StagedModel>> addCompanyDependencies()
