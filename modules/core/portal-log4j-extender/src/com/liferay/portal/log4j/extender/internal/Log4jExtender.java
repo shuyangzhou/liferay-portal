@@ -18,8 +18,10 @@ import java.io.IOException;
 
 import java.net.URL;
 
+import java.util.Arrays;
 import java.util.Enumeration;
 
+import java.util.logging.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
@@ -28,7 +30,12 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
+import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.util.tracker.BundleTracker;
+import org.osgi.service.cm.ConfigurationEvent;
+import org.osgi.service.cm.SynchronousConfigurationListener;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.service.cm.ConfigurationAdmin;
 
 /**
  * @author Shuyang Zhou
@@ -37,6 +44,48 @@ public class Log4jExtender implements BundleActivator {
 
 	@Override
 	public void start(BundleContext bundleContext) throws Exception {
+		ServiceTracker<ConfigurationAdmin, ConfigurationAdmin>
+			configurationAdminServiceTracker = new ServiceTracker<>(
+				bundleContext, ConfigurationAdmin.class, null);
+
+		configurationAdminServiceTracker.open();
+
+		final ConfigurationAdmin configurationAdmin =
+			configurationAdminServiceTracker.waitForService(5000);
+
+		bundleContext.registerService(
+			SynchronousConfigurationListener.class,
+			new SynchronousConfigurationListener() {
+
+			@Override
+			public void configurationEvent(
+				ConfigurationEvent configurationEvent) {
+
+				System.out.println(
+					"########## pid : " + configurationEvent.getPid() +
+						", factoryPid :" + configurationEvent.getFactoryPid() +
+							", type : " + configurationEvent.getType());
+
+				if (configurationEvent.getType() ==
+					ConfigurationEvent.CM_DELETED || configurationEvent.getPid().contains("com.liferay.portal.store.file.system.configuration.FileSystemStoreConfiguration")) {
+
+					new Exception().printStackTrace(System.out);
+				}
+
+				try {
+					System.out.println(
+						"%%%%%%%%%%%%%" + Arrays.toString(configurationAdmin.listConfigurations(null)));
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
+		}, null);
+
+		System.out.println(
+			"##############" + Arrays.toString(configurationAdmin.listConfigurations(null)));
+
 		_tracker = new BundleTracker<Void>(
 			bundleContext, Bundle.STARTING, null) {
 
