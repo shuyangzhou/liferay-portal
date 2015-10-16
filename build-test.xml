@@ -1830,22 +1830,7 @@ ${tomcat-gc-log}
 						sb.append("TEST_CLASS_GROUP_");
 						sb.append(i);
 						sb.append("=");
-
-						for (String testClass : testClassGroup) {
-							sb.append(testClass);
-							sb.append(",");
-						}
-
-						for (String testClass : autoBalanceTestClassNames) {
-							if (!testClassGroup.contains(testClass)) {
-								sb.append(testClass);
-								sb.append(",");
-							}
-						}
-
-						if (!testClassGroup.isEmpty() || autoBalanceTestClassNames.length > 0) {
-							sb.setLength(sb.length() - 1);
-						}
+						sb.append("com/liferay/application/list/deploy/hot/test/LegacyPortletPanelAppHotDeployListenerTest.class,com/liferay/bookmarks/lar/test/BookmarksFolderStagedModelDataHandlerTest.class,com/liferay/bookmarks/service/test/BookmarksFolderLocalServiceTest.class,com/liferay/calendar/service/persistence/test/CalendarNotificationTemplatePersistenceTest.class,com/liferay/css/builder/CSSBuilderTest.class,com/liferay/document/library/service/test/DLFileVersionTest.class,com/liferay/dynamic/data/lists/service/persistence/test/DDLRecordPersistenceTest.class,com/liferay/dynamic/data/mapping/io/DDMFormLayoutJSONDeserializerTest.class,com/liferay/dynamic/data/mapping/service/persistence/test/DDMStructurePersistenceTest.class,com/liferay/dynamic/data/mapping/type/checkbox/CheckboxDDMFormFieldValueAccessorTest.class,com/liferay/dynamic/data/mapping/util/FieldsToDDMFormValuesConverterTest.class,com/liferay/item/selector/taglib/ItemSelectorBrowserReturnTypeUtilTest.class,com/liferay/journal/search/test/JournalArticleSearchTest.class,com/liferay/journal/service/test/JournalArticleLocalServiceTest.class,com/liferay/journal/trash/test/JournalArticleTrashHandlerTest.class,com/liferay/message/boards/lar/test/MBExportImportTest.class,com/liferay/mobile/device/rules/service/persistence/test/MDRRuleGroupInstancePersistenceTest.class,com/liferay/polls/service/persistence/test/PollsVotePersistenceTest.class,com/liferay/portal/configuration/ConfigurationImplTest.class,com/liferay/portal/dao/orm/common/SQLTransformerOracleCastClobTextTest.class,com/liferay/portal/expression/VariableDependenciesTest.class,com/liferay/portal/fabric/netty/codec/serialization/ObjectDecodeChannelInboundHandlerTest.class,com/liferay/portal/fabric/netty/rpc/RPCResponseTest.class,com/liferay/portal/image/ImageToolImplTest.class,com/liferay/portal/jsonwebservice/JSONWebServiceTest.class,com/liferay/portal/kernel/concurrent/ConcurrentLFUCacheTest.class,com/liferay/portal/kernel/dao/orm/QueryUtilTest.class,com/liferay/portal/kernel/io/LimitedInputStreamTest.class,com/liferay/portal/kernel/io/unsync/UnsyncPrintWriterTest.class,com/liferay/portal/kernel/nio/intraband/mailbox/MailboxDatagramReceiveHandlerTest.class,com/liferay/portal/kernel/notification/UserNotificationManagerUtilTest.class,com/liferay/portal/kernel/resiliency/spi/SPIUtilTest.class,com/liferay/portal/kernel/search/util/HighlightUtilTest.class,com/liferay/portal/kernel/settings/LocalizedValuesMapTest.class,com/liferay/portal/kernel/trash/TrashHandlerRegistryUtilTest.class,com/liferay/portal/kernel/util/OrderByComparatorFactoryUtilTest.class,com/liferay/portal/kernel/util/StringBundlerTest.class,com/liferay/portal/license/util/LicenseUtilAixTest.class,com/liferay/portal/modules/ModulesBuildScriptsTest.class,com/liferay/portal/repository/RepositoryFactoryTest.class,com/liferay/portal/scripting/javascript/internal/JavaScriptExecutorTest.class,com/liferay/portal/search/internal/analysis/SimpleKeywordTokenizerTest.class,com/liferay/portal/security/auth/ScreenNameValidatorFactoryTest.class,com/liferay/portal/security/membershippolicy/RoleMembershipPolicyRolesTest.class,com/liferay/portal/security/pacl/test/BeanPropertyTest.class,com/liferay/portal/security/pacl/test/SQLTest.class,com/liferay/portal/service/CompanyLocalServiceTest.class,com/liferay/portal/service/ServiceComponentLocalServiceTest.class,com/liferay/portal/service/persistence/impl/TableMapperTest.class,com/liferay/portal/service/persistence/test/LayoutPrototypePersistenceTest.class,com/liferay/portal/service/persistence/test/PortalPreferencesPersistenceTest.class,com/liferay/portal/service/persistence/test/SubscriptionPersistenceTest.class,com/liferay/portal/service/persistence/test/WebsitePersistenceTest.class,com/liferay/portal/servlet/jsp/compiler/internal/JspCompilerTest.class,com/liferay/portal/store/file/system/test/FileSystemStoreTest.class");
 
 						sb.append("\n\n");
 					}
