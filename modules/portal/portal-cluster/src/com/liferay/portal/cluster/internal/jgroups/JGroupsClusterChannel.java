@@ -18,6 +18,7 @@ import com.liferay.portal.cluster.ClusterChannel;
 import com.liferay.portal.cluster.ClusterReceiver;
 import com.liferay.portal.kernel.cluster.Address;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.io.Serializer;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -25,6 +26,8 @@ import com.liferay.portal.kernel.util.Validator;
 import java.io.Serializable;
 
 import java.net.InetAddress;
+
+import java.nio.ByteBuffer;
 
 import org.jgroups.JChannel;
 import org.jgroups.protocols.TP;
@@ -119,8 +122,16 @@ public class JGroupsClusterChannel implements ClusterChannel {
 			return;
 		}
 
+		Serializer serializer = new Serializer();
+
+		serializer.writeObject(message);
+
+		ByteBuffer byteBuffer = serializer.toByteBuffer();
+
 		try {
-			_jChannel.send(null, message);
+			_jChannel.send(
+				null, byteBuffer.array(), byteBuffer.position(),
+				byteBuffer.remaining());
 
 			if (_log.isDebugEnabled()) {
 				_log.debug("Send mullticast message " + message);
@@ -146,9 +157,17 @@ public class JGroupsClusterChannel implements ClusterChannel {
 			throw new SystemException("Target address is null");
 		}
 
+		Serializer serializer = new Serializer();
+
+		serializer.writeObject(message);
+
+		ByteBuffer byteBuffer = serializer.toByteBuffer();
+
 		try {
 			_jChannel.send(
-				(org.jgroups.Address)address.getRealAddress(), message);
+				(org.jgroups.Address)address.getRealAddress(),
+				byteBuffer.array(), byteBuffer.position(),
+				byteBuffer.remaining());
 
 			if (_log.isDebugEnabled()) {
 				_log.debug("Send unicast message " + message);
