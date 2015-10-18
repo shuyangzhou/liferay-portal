@@ -563,6 +563,11 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 		ClusterNodeStatus oldClusterNodeStatus = _clusterNodeStatuses.put(
 			clusterNodeStatus.getClusterNodeId(), clusterNodeStatus);
 
+		ClusterEvent clusterEvent = ClusterEvent.join(
+			clusterNodeStatus.getClusterNode());
+
+		fireClusterEvent(clusterEvent);
+
 		if (oldClusterNodeStatus != null) {
 			if (!oldClusterNodeStatus.equals(clusterNodeStatus)) {
 				if (_log.isInfoEnabled()) {
@@ -574,11 +579,6 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 
 			return false;
 		}
-
-		ClusterEvent clusterEvent = ClusterEvent.join(
-			clusterNodeStatus.getClusterNode());
-
-		fireClusterEvent(clusterEvent);
 
 		return true;
 	}
