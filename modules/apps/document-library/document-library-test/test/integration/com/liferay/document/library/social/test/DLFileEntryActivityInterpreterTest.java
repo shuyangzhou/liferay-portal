@@ -54,7 +54,7 @@ import org.junit.runner.RunWith;
 @RunWith(Arquillian.class)
 @Sync
 public class DLFileEntryActivityInterpreterTest
-		extends BaseSocialActivityInterpreterTestCase {
+	extends BaseSocialActivityInterpreterTestCase {
 
 	@ClassRule
 	@Rule
