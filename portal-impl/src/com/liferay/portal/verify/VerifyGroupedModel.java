@@ -181,7 +181,7 @@ public class VerifyGroupedModel extends VerifyProcess {
 				sb.append(" = ");
 				sb.append(primKey);
 
-				runSQL(sb.toString());
+				runSQL(con, sb.toString());
 			}
 		}
 		finally {
