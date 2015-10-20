@@ -20,12 +20,15 @@ import com.liferay.portal.captcha.recaptcha.ReCaptchaImpl;
 import com.liferay.portal.captcha.simplecaptcha.SimpleCaptchaImpl;
 import com.liferay.portal.convert.ConvertException;
 import com.liferay.portal.convert.ConvertProcess;
+import com.liferay.portal.kernel.backgroundtask.BackgroundTask;
+import com.liferay.portal.kernel.backgroundtask.BackgroundTaskConstants;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskManagerUtil;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.cache.MultiVMPoolUtil;
 import com.liferay.portal.kernel.cache.SingleVMPoolUtil;
 import com.liferay.portal.kernel.captcha.Captcha;
 import com.liferay.portal.kernel.captcha.CaptchaUtil;
+import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.image.GhostscriptUtil;
 import com.liferay.portal.kernel.image.ImageMagickUtil;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
@@ -400,9 +403,45 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 				_CLASS_NAME_REINDEX_SINGLE_INDEXER_BACKGROUND_TASK_EXECUTOR;
 		}
 
-		BackgroundTaskManagerUtil.addBackgroundTask(
-			themeDisplay.getUserId(), CompanyConstants.SYSTEM, "reindex",
-			taskExecutorClassName, taskContextMap, new ServiceContext());
+		BackgroundTask backgroundTask =
+			BackgroundTaskManagerUtil.addBackgroundTask(
+				themeDisplay.getUserId(), CompanyConstants.SYSTEM, "reindex",
+				taskExecutorClassName, taskContextMap, new ServiceContext());
+
+		boolean blocking = ParamUtil.getBoolean(
+			actionRequest, "blocking", false);
+
+		if (blocking) {
+			backgroundTask = BackgroundTaskManagerUtil.getBackgroundTask(
+				backgroundTask.getBackgroundTaskId());
+
+			int status = backgroundTask.getStatus();
+
+			long count = 0;
+
+			long timeout = ParamUtil.getLong(
+				actionRequest, "timeout", Time.HOUR);
+
+			while ((status == BackgroundTaskConstants.STATUS_NEW) ||
+				   (status == BackgroundTaskConstants.STATUS_IN_PROGRESS) ||
+				   (status == BackgroundTaskConstants.STATUS_QUEUED)) {
+
+				EntityCacheUtil.clearLocalCache();
+
+				backgroundTask = BackgroundTaskManagerUtil.getBackgroundTask(
+					backgroundTask.getBackgroundTaskId());
+
+				status = backgroundTask.getStatus();
+
+				if (count++ >= timeout) {
+					if (_log.isDebugEnabled()) {
+						_log.debug("Blocking Timeout exceeded");
+					}
+
+					break;
+				}
+			}
+		}
 	}
 
 	protected void reindexDictionaries(ActionRequest actionRequest)
