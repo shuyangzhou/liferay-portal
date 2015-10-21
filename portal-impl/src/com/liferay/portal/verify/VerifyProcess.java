@@ -157,23 +157,13 @@ public abstract class VerifyProcess extends BaseDBProcess {
 		sb.append(" = ");
 		sb.append(ReleaseConstants.DEFAULT_SERVLET_CONTEXT_NAME);
 
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(sb.toString());
-
-			rs = ps.executeQuery();
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection();
+			PreparedStatement ps = con.prepareStatement(sb.toString());
+			ResultSet rs = ps.executeQuery()) {
 
 			rs.next();
 
 			return rs.getInt(1);
-		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
 		}
 	}
 
