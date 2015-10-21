@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ClassLoaderUtil;
 import com.liferay.portal.kernel.util.ClassUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.model.ReleaseConstants;
 import com.liferay.portal.util.PropsValues;
@@ -150,6 +151,9 @@ public abstract class VerifyProcess extends BaseDBProcess {
 	 *         com.liferay.portal.kernel.util.ReleaseInfo#getBuildNumber}
 	 */
 	protected int getBuildNumber() throws Exception {
+		String sql =
+			"select buildNumber from Release_ where servletContextName = ?";
+
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -157,9 +161,7 @@ public abstract class VerifyProcess extends BaseDBProcess {
 		try {
 			con = DataAccess.getUpgradeOptimizedConnection();
 
-			ps = con.prepareStatement(
-				"select buildNumber from Release_ where servletContextName " +
-					"= ?");
+			ps = con.prepareStatement(sql);
 
 			ps.setString(1, ReleaseConstants.DEFAULT_SERVLET_CONTEXT_NAME);
 
