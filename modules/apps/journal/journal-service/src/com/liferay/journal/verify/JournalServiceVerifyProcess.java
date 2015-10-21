@@ -166,21 +166,20 @@ public class JournalServiceVerifyProcess extends VerifyLayout {
 			Connection con, long groupId, String portletId)
 		throws Exception {
 
-		StringBundler sb = new StringBundler(4);
+		StringBundler sb = new StringBundler(6);
 
 		sb.append("select preferences from PortletPreferences inner join ");
 		sb.append("Layout on PortletPreferences.plid = Layout.plid where ");
-		sb.append("groupId = ?");
-		sb.append(" and portletId = ?");
+		sb.append("groupId = ");
+		sb.append(groupId);
+		sb.append(" and portletId = ");
+		sb.append(portletId);
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
 			ps = con.prepareStatement(sb.toString());
-
-			ps.setLong(1, groupId);
-			ps.setString(2, portletId);
 
 			rs = ps.executeQuery();
 
@@ -360,17 +359,19 @@ public class JournalServiceVerifyProcess extends VerifyLayout {
 
 		PreparedStatement ps = null;
 
-		String sql =
-			"update JournalArticle set expirationDate = ? where groupId = ? " +
-				"and articleId = ? and status = ?";
+		StringBundler sb = new StringBundler(6);
+
+		sb.append("update JournalArticle set expirationDate = ");
+		sb.append(expirationDate);
+		sb.append(" where groupId = ");
+		sb.append(groupId);
+		sb.append(" and articleId = ");
+		sb.append(articleId);
+		sb.append(" and status = ");
+		sb.append(status);
 
 		try {
-			ps = con.prepareStatement(sql);
-
-			ps.setTimestamp(1, expirationDate);
-			ps.setLong(2, groupId);
-			ps.setLong(3, articleId);
-			ps.setInt(4, status);
+			ps = con.prepareStatement(sb.toString());
 
 			ps.executeUpdate();
 		}

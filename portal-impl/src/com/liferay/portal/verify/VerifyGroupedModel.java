@@ -101,21 +101,20 @@ public class VerifyGroupedModel extends VerifyProcess {
 			long primKey)
 		throws Exception {
 
-		StringBundler sb = new StringBundler(5);
+		StringBundler sb = new StringBundler(6);
 
 		sb.append("select groupId from ");
 		sb.append(tableName);
 		sb.append(" where ");
 		sb.append(primaryKeColumnName);
-		sb.append(" = ?");
+		sb.append(" = ");
+		sb.append(primKey);
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
 			ps = con.prepareStatement(sb.toString());
-
-			ps.setLong(1, primKey);
 
 			rs = ps.executeQuery();
 
