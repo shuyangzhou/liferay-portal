@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ClassLoaderUtil;
 import com.liferay.portal.kernel.util.ClassUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.model.ReleaseConstants;
 import com.liferay.portal.util.PropsValues;
@@ -150,27 +151,19 @@ public abstract class VerifyProcess extends BaseDBProcess {
 	 *         com.liferay.portal.kernel.util.ReleaseInfo#getBuildNumber}
 	 */
 	protected int getBuildNumber() throws Exception {
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+		StringBundler sb = new StringBundler(3);
 
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
+		sb.append("select buildNumber from Release_ where servletContextName");
+		sb.append(" = ");
+		sb.append(ReleaseConstants.DEFAULT_SERVLET_CONTEXT_NAME);
 
-			ps = con.prepareStatement(
-				"select buildNumber from Release_ where servletContextName " +
-					"= ?");
-
-			ps.setString(1, ReleaseConstants.DEFAULT_SERVLET_CONTEXT_NAME);
-
-			rs = ps.executeQuery();
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection();
+			PreparedStatement ps = con.prepareStatement(sb.toString());
+			ResultSet rs = ps.executeQuery()) {
 
 			rs.next();
 
 			return rs.getInt(1);
-		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
 		}
 	}
 

@@ -97,23 +97,21 @@ public class VerifyGroupedModel extends VerifyProcess {
 	}
 
 	protected long getGroupId(
-			String tableName, String primaryKeColumnName, long primKey)
+			Connection con, String tableName, String primaryKeColumnName,
+			long primKey)
 		throws Exception {
 
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+		StringBundler sb = new StringBundler(6);
 
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
+		sb.append("select groupId from ");
+		sb.append(tableName);
+		sb.append(" where ");
+		sb.append(primaryKeColumnName);
+		sb.append(" = ");
+		sb.append(primKey);
 
-			ps = con.prepareStatement(
-				"select groupId from " + tableName + " where " +
-					primaryKeColumnName + " = ?");
-
-			ps.setLong(1, primKey);
-
-			rs = ps.executeQuery();
+		try (PreparedStatement ps = con.prepareStatement(sb.toString());
+			ResultSet rs = ps.executeQuery()) {
 
 			if (rs.next()) {
 				return rs.getLong("groupId");
@@ -125,35 +123,25 @@ public class VerifyGroupedModel extends VerifyProcess {
 
 			return 0;
 		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
-		}
 	}
 
 	protected void verifyGroupedModel(
 			VerifiableGroupedModel verifiableGroupedModel)
 		throws Exception {
 
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+		StringBundler sb = new StringBundler(7);
 
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
+		sb.append("select ");
+		sb.append(verifiableGroupedModel.getPrimaryKeyColumnName());
+		sb.append(StringPool.COMMA_AND_SPACE);
+		sb.append(verifiableGroupedModel.getRelatedPrimaryKeyColumnName());
+		sb.append(" from ");
+		sb.append(verifiableGroupedModel.getTableName());
+		sb.append(" where groupId is null");
 
-			StringBundler sb = new StringBundler(7);
-
-			sb.append("select ");
-			sb.append(verifiableGroupedModel.getPrimaryKeyColumnName());
-			sb.append(StringPool.COMMA_AND_SPACE);
-			sb.append(verifiableGroupedModel.getRelatedPrimaryKeyColumnName());
-			sb.append(" from ");
-			sb.append(verifiableGroupedModel.getTableName());
-			sb.append(" where groupId is null");
-
-			ps = con.prepareStatement(sb.toString());
-
-			rs = ps.executeQuery();
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection();
+			PreparedStatement ps = con.prepareStatement(sb.toString());
+			ResultSet rs = ps.executeQuery()) {
 
 			while (rs.next()) {
 				long primKey = rs.getLong(
@@ -162,7 +150,7 @@ public class VerifyGroupedModel extends VerifyProcess {
 					verifiableGroupedModel.getRelatedPrimaryKeyColumnName());
 
 				long groupId = getGroupId(
-					verifiableGroupedModel.getRelatedTableName(),
+					con, verifiableGroupedModel.getRelatedTableName(),
 					verifiableGroupedModel.getRelatedPrimaryKeyColumnName(),
 					relatedPrimKey);
 
@@ -181,11 +169,8 @@ public class VerifyGroupedModel extends VerifyProcess {
 				sb.append(" = ");
 				sb.append(primKey);
 
-				runSQL(sb.toString());
+				runSQL(con, sb.toString());
 			}
-		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
 		}
 	}
 
