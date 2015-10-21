@@ -104,21 +104,20 @@ public class VerifyAuditedModel extends VerifyProcess {
 			Connection con, String tableName, String pkColumnName, long primKey)
 		throws Exception {
 
-		StringBundler sb = new StringBundler(5);
+		StringBundler sb = new StringBundler(6);
 
 		sb.append("select companyId, userId, createDate, modifiedDate from ");
 		sb.append(tableName);
 		sb.append(" where ");
 		sb.append(pkColumnName);
-		sb.append(" = ?");
+		sb.append(" = ");
+		sb.append(primKey);
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
 			ps = con.prepareStatement(sb.toString());
-
-			ps.setLong(1, primKey);
 
 			rs = ps.executeQuery();
 
@@ -148,18 +147,19 @@ public class VerifyAuditedModel extends VerifyProcess {
 	protected Object[] getDefaultUserArray(Connection con, long companyId)
 		throws Exception {
 
-		String sql =
-			"select userId, firstName, middleName, lastName from User_ where " +
-				"companyId = ? and defaultUser = ?";
+		StringBundler sb = new StringBundler(5);
+
+		sb.append("select userId, firstName, middleName, lastName from User_");
+		sb.append(" where companyId = ");
+		sb.append(companyId);
+		sb.append(" and defaultUser = ");
+		sb.append("[$TRUE$]");
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			ps = con.prepareStatement(sql);
-
-			ps.setLong(1, companyId);
-			ps.setBoolean(2, true);
+			ps = con.prepareStatement(sb.toString());
 
 			rs = ps.executeQuery();
 
@@ -191,17 +191,17 @@ public class VerifyAuditedModel extends VerifyProcess {
 	}
 
 	protected String getUserName(Connection con, long userId) throws Exception {
-		String sql =
-			"select firstName, middleName, lastName from User_ where " +
-				"userId = ?";
+		StringBundler sb = new StringBundler(3);
+
+		sb.append("select firstName, middleName, lastName from User_ where ");
+		sb.append("userId = ");
+		sb.append(userId);
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			ps = con.prepareStatement(sql);
-
-			ps.setLong(1, userId);
+			ps = con.prepareStatement(sb.toString());
 
 			rs = ps.executeQuery();
 
