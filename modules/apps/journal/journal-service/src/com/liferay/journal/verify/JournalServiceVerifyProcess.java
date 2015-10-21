@@ -175,13 +175,8 @@ public class JournalServiceVerifyProcess extends VerifyLayout {
 		sb.append(" and portletId = ");
 		sb.append(portletId);
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-			ps = con.prepareStatement(sb.toString());
-
-			rs = ps.executeQuery();
+		try (PreparedStatement ps = con.prepareStatement(sb.toString());
+			ResultSet rs = ps.executeQuery()) {
 
 			while (rs.next()) {
 				String xml = rs.getString("preferences");
@@ -207,9 +202,6 @@ public class JournalServiceVerifyProcess extends VerifyLayout {
 					contentSearch.getLayoutId(), contentSearch.getPortletId(),
 					articleId, true);
 			}
-		}
-		finally {
-			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
@@ -357,8 +349,6 @@ public class JournalServiceVerifyProcess extends VerifyLayout {
 			Timestamp expirationDate, int status)
 		throws Exception {
 
-		PreparedStatement ps = null;
-
 		StringBundler sb = new StringBundler(6);
 
 		sb.append("update JournalArticle set expirationDate = ");
@@ -370,13 +360,8 @@ public class JournalServiceVerifyProcess extends VerifyLayout {
 		sb.append(" and status = ");
 		sb.append(status);
 
-		try {
-			ps = con.prepareStatement(sb.toString());
-
+		try (PreparedStatement ps = con.prepareStatement(sb.toString())) {
 			ps.executeUpdate();
-		}
-		finally {
-			DataAccess.cleanUp(ps);
 		}
 	}
 
@@ -504,18 +489,11 @@ public class JournalServiceVerifyProcess extends VerifyLayout {
 		String sql =
 			"update JournalArticle set urlTitle = ? where urlTitle = ?";
 
-		PreparedStatement ps = null;
-
-		try {
-			ps = con.prepareStatement(sql);
-
+		try (PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setString(1, normalizedURLTitle);
 			ps.setString(2, urlTitle);
 
 			ps.executeUpdate();
-		}
-		finally {
-			DataAccess.cleanUp(ps);
 		}
 	}
 
@@ -611,13 +589,8 @@ public class JournalServiceVerifyProcess extends VerifyLayout {
 		sb.append("'%document_library%' or content like '%link_to_layout%')");
 		sb.append(" and DDMStructureKey != ''");
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-			ps = con.prepareStatement(sb.toString());
-
-			rs = ps.executeQuery();
+		try (PreparedStatement ps = con.prepareStatement(sb.toString());
+			ResultSet rs = ps.executeQuery()) {
 
 			while (rs.next()) {
 				long id = rs.getLong("id_");
@@ -646,9 +619,6 @@ public class JournalServiceVerifyProcess extends VerifyLayout {
 						e);
 				}
 			}
-		}
-		finally {
-			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
@@ -679,13 +649,8 @@ public class JournalServiceVerifyProcess extends VerifyLayout {
 		sb.append(WorkflowConstants.STATUS_APPROVED);
 		sb.append(")");
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-			ps = con.prepareStatement(sb.toString());
-
-			rs = ps.executeQuery();
+		try (PreparedStatement ps = con.prepareStatement(sb.toString());
+			ResultSet rs = ps.executeQuery()) {
 
 			while (rs.next()) {
 				long groupId = rs.getLong("groupId");
@@ -696,9 +661,6 @@ public class JournalServiceVerifyProcess extends VerifyLayout {
 				updateExpirationDate(
 					con, groupId, articleId, expirationDate, status);
 			}
-		}
-		finally {
-			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
@@ -773,13 +735,8 @@ public class JournalServiceVerifyProcess extends VerifyLayout {
 		sb.append("by groupId, portletId having count(groupId) > 1 and ");
 		sb.append("count(portletId) > 1");
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-			ps = con.prepareStatement(sb.toString());
-
-			rs = ps.executeQuery();
+		try (PreparedStatement ps = con.prepareStatement(sb.toString());
+			ResultSet rs = ps.executeQuery()) {
 
 			while (rs.next()) {
 				long groupId = rs.getLong("groupId");
@@ -787,9 +744,6 @@ public class JournalServiceVerifyProcess extends VerifyLayout {
 
 				updateContentSearch(con, groupId, portletId);
 			}
-		}
-		finally {
-			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
@@ -901,13 +855,8 @@ public class JournalServiceVerifyProcess extends VerifyLayout {
 		String sql =
 			"select distinct groupId, articleId, urlTitle from JournalArticle";
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-			ps = con.prepareStatement(sql);
-
-			rs = ps.executeQuery();
+		try (PreparedStatement ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery()) {
 
 			while (rs.next()) {
 				long groupId = rs.getLong("groupId");
@@ -917,9 +866,6 @@ public class JournalServiceVerifyProcess extends VerifyLayout {
 
 				updateURLTitle(con, groupId, articleId, urlTitle);
 			}
-		}
-		finally {
-			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 

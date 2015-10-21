@@ -110,13 +110,8 @@ public class VerifyGroupedModel extends VerifyProcess {
 		sb.append(" = ");
 		sb.append(primKey);
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-			ps = con.prepareStatement(sb.toString());
-
-			rs = ps.executeQuery();
+		try (PreparedStatement ps = con.prepareStatement(sb.toString());
+			ResultSet rs = ps.executeQuery()) {
 
 			if (rs.next()) {
 				return rs.getLong("groupId");
@@ -127,9 +122,6 @@ public class VerifyGroupedModel extends VerifyProcess {
 			}
 
 			return 0;
-		}
-		finally {
-			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
@@ -147,16 +139,9 @@ public class VerifyGroupedModel extends VerifyProcess {
 		sb.append(verifiableGroupedModel.getTableName());
 		sb.append(" where groupId is null");
 
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(sb.toString());
-
-			rs = ps.executeQuery();
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection();
+			PreparedStatement ps = con.prepareStatement(sb.toString());
+			ResultSet rs = ps.executeQuery()) {
 
 			while (rs.next()) {
 				long primKey = rs.getLong(
@@ -186,9 +171,6 @@ public class VerifyGroupedModel extends VerifyProcess {
 
 				runSQL(con, sb.toString());
 			}
-		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
 		}
 	}
 

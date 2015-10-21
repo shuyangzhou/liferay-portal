@@ -113,13 +113,8 @@ public class VerifyAuditedModel extends VerifyProcess {
 		sb.append(" = ");
 		sb.append(primKey);
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-			ps = con.prepareStatement(sb.toString());
-
-			rs = ps.executeQuery();
+		try (PreparedStatement ps = con.prepareStatement(sb.toString());
+			ResultSet rs = ps.executeQuery()) {
 
 			if (rs.next()) {
 				long companyId = rs.getLong("companyId");
@@ -139,9 +134,6 @@ public class VerifyAuditedModel extends VerifyProcess {
 
 			return null;
 		}
-		finally {
-			DataAccess.cleanUp(null, ps, rs);
-		}
 	}
 
 	protected Object[] getDefaultUserArray(Connection con, long companyId)
@@ -155,13 +147,8 @@ public class VerifyAuditedModel extends VerifyProcess {
 		sb.append(" and defaultUser = ");
 		sb.append("[$TRUE$]");
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-			ps = con.prepareStatement(sb.toString());
-
-			rs = ps.executeQuery();
+		try (PreparedStatement ps = con.prepareStatement(sb.toString());
+			ResultSet rs = ps.executeQuery()) {
 
 			if (rs.next()) {
 				long userId = rs.getLong("userId");
@@ -185,9 +172,6 @@ public class VerifyAuditedModel extends VerifyProcess {
 
 			return null;
 		}
-		finally {
-			DataAccess.cleanUp(null, ps, rs);
-		}
 	}
 
 	protected String getUserName(Connection con, long userId) throws Exception {
@@ -197,13 +181,8 @@ public class VerifyAuditedModel extends VerifyProcess {
 		sb.append("userId = ");
 		sb.append(userId);
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-			ps = con.prepareStatement(sb.toString());
-
-			rs = ps.executeQuery();
+		try (PreparedStatement ps = con.prepareStatement(sb.toString());
+			ResultSet rs = ps.executeQuery()) {
 
 			if (rs.next()) {
 				String firstName = rs.getString("firstName");
@@ -218,9 +197,6 @@ public class VerifyAuditedModel extends VerifyProcess {
 			}
 
 			return StringPool.BLANK;
-		}
-		finally {
-			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
@@ -265,11 +241,7 @@ public class VerifyAuditedModel extends VerifyProcess {
 		sb.append(primaryKeyColumnName);
 		sb.append(" = ?");
 
-		PreparedStatement ps = null;
-
-		try {
-			ps = con.prepareStatement(sb.toString());
-
+		try (PreparedStatement ps = con.prepareStatement(sb.toString())) {
 			ps.setLong(1, companyId);
 			ps.setLong(2, userId);
 			ps.setString(3, userName);
@@ -289,9 +261,6 @@ public class VerifyAuditedModel extends VerifyProcess {
 			if (_log.isWarnEnabled()) {
 				_log.warn("Unable to verify model " + tableName, e);
 			}
-		}
-		finally {
-			DataAccess.cleanUp(ps);
 		}
 	}
 
@@ -314,16 +283,9 @@ public class VerifyAuditedModel extends VerifyProcess {
 		sb.append(verifiableAuditedModel.getTableName());
 		sb.append(" where userName is null order by companyId");
 
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(sb.toString());
-
-			rs = ps.executeQuery();
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection();
+			PreparedStatement ps = con.prepareStatement(sb.toString());
+			ResultSet rs = ps.executeQuery()) {
 
 			Object[] auditedModelArray = null;
 
@@ -358,9 +320,6 @@ public class VerifyAuditedModel extends VerifyProcess {
 					verifiableAuditedModel.getPrimaryKeyColumnName(), primKey,
 					auditedModelArray, verifiableAuditedModel.isUpdateDates());
 			}
-		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
 		}
 	}
 
