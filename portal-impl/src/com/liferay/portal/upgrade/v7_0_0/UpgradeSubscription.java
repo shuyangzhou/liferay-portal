@@ -49,23 +49,24 @@ public class UpgradeSubscription extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		updateSubscriptionClassNames(
-			Folder.class.getName(), DLFolder.class.getName());
-		updateSubscriptionClassNames(
-			"com.liferay.portlet.journal.model.JournalArticle",
-			"com.liferay.portlet.journal.model.JournalFolder");
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection()) {
+			updateSubscriptionClassNames(
+				con, Folder.class.getName(), DLFolder.class.getName());
+			updateSubscriptionClassNames(
+				con, "com.liferay.portlet.journal.model.JournalArticle",
+				"com.liferay.portlet.journal.model.JournalFolder");
 
-		updateSubscriptionGroupIds();
+			updateSubscriptionGroupIds(con);
+		}
 	}
 
-	protected long getGroupId(long classNameId, long classPK) throws Exception {
-		Connection con = null;
+	protected long getGroupId(Connection con, long classNameId, long classPK)
+		throws Exception {
+
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			String className = PortalUtil.getClassName(classNameId);
 
 			String[] groupIdSQLParts = StringUtil.split(
@@ -96,20 +97,17 @@ public class UpgradeSubscription extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 
 		return 0;
 	}
 
-	protected boolean hasGroup(long groupId) throws Exception {
-		Connection con = null;
+	protected boolean hasGroup(Connection con, long groupId) throws Exception {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			ps = con.prepareStatement(
 				"select count(*) from Group_ where groupId = ?");
 
@@ -128,12 +126,12 @@ public class UpgradeSubscription extends UpgradeProcess {
 			return false;
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
 	protected void updateSubscriptionClassNames(
-			String oldClassName, String newClassName)
+			Connection con, String oldClassName, String newClassName)
 		throws Exception {
 
 		StringBundler sb = new StringBundler(4);
@@ -143,34 +141,32 @@ public class UpgradeSubscription extends UpgradeProcess {
 		sb.append(" where classNameId = ");
 		sb.append(PortalUtil.getClassNameId(oldClassName));
 
-		runSQL(sb.toString());
+		runSQL(con, sb.toString());
 	}
 
 	protected void updateSubscriptionGroupId(
-			long subscriptionId, long classNameId, long classPK)
+			Connection con, long subscriptionId, long classNameId, long classPK)
 		throws Exception {
 
-		long groupId = getGroupId(classNameId, classPK);
+		long groupId = getGroupId(con, classNameId, classPK);
 
-		if ((groupId == 0) && hasGroup(classPK)) {
+		if ((groupId == 0) && hasGroup(con, classPK)) {
 			groupId = classPK;
 		}
 
 		if (groupId != 0) {
 			runSQL(
+				con,
 				"update Subscription set groupId = " + groupId + " where " +
 					"subscriptionId = " + subscriptionId);
 		}
 	}
 
-	protected void updateSubscriptionGroupIds() throws Exception {
-		Connection con = null;
+	protected void updateSubscriptionGroupIds(Connection con) throws Exception {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			ps = con.prepareStatement(
 				"select subscriptionId, classNameId, classPK from " +
 					"Subscription");
@@ -182,11 +178,12 @@ public class UpgradeSubscription extends UpgradeProcess {
 				long classNameId = rs.getLong("classNameId");
 				long classPK = rs.getLong("classPK");
 
-				updateSubscriptionGroupId(subscriptionId, classNameId, classPK);
+				updateSubscriptionGroupId(
+					con, subscriptionId, classNameId, classPK);
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 

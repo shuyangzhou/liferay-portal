@@ -42,29 +42,31 @@ public class UpgradeAsset extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		try {
-			runSQL("alter_column_type AssetEntry description TEXT null");
-			runSQL("alter_column_type AssetEntry summary TEXT null");
-		}
-		catch (SQLException sqle) {
-			upgradeTable(
-				AssetEntryTable.TABLE_NAME, AssetEntryTable.TABLE_COLUMNS,
-				AssetEntryTable.TABLE_SQL_CREATE,
-				AssetEntryTable.TABLE_SQL_ADD_INDEXES);
-		}
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection()) {
+			try {
+				runSQL(
+					con, "alter_column_type AssetEntry description TEXT null");
+				runSQL(con, "alter_column_type AssetEntry summary TEXT null");
+			}
+			catch (SQLException sqle) {
+				upgradeTable(
+					AssetEntryTable.TABLE_NAME, AssetEntryTable.TABLE_COLUMNS,
+					AssetEntryTable.TABLE_SQL_CREATE,
+					AssetEntryTable.TABLE_SQL_ADD_INDEXES);
+			}
 
-		updateAssetEntries();
-		updateAssetVocabularies();
+			updateAssetEntries(con);
+			updateAssetVocabularies(con);
+		}
 	}
 
-	protected long getDDMStructureId(String structureKey) throws Exception {
-		Connection con = null;
+	protected long getDDMStructureId(Connection con, String structureKey)
+		throws Exception {
+
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			ps = con.prepareStatement(
 				"select structureId from DDMStructure where structureKey = ?");
 
@@ -79,21 +81,18 @@ public class UpgradeAsset extends UpgradeProcess {
 			return 0;
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
-	protected void updateAssetEntries() throws Exception {
+	protected void updateAssetEntries(Connection con) throws Exception {
 		long classNameId = PortalUtil.getClassNameId(
 			"com.liferay.portlet.journal.model.JournalArticle");
 
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			ps = con.prepareStatement(
 				"select resourcePrimKey, structureId from JournalArticle " +
 					"where structureId != ''");
@@ -104,21 +103,20 @@ public class UpgradeAsset extends UpgradeProcess {
 				long resourcePrimKey = rs.getLong("resourcePrimKey");
 				String structureId = rs.getString("structureId");
 
-				long ddmStructureId = getDDMStructureId(structureId);
+				long ddmStructureId = getDDMStructureId(con, structureId);
 
 				runSQL(
+					con,
 					"update AssetEntry set classTypeId = " + ddmStructureId +
 						" where classNameId = " + classNameId +
 							" and classPK = " + resourcePrimKey);
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			StringBundler sb = new StringBundler(9);
 
 			sb.append("select JournalArticle.resourcePrimKey from (select ");
@@ -139,25 +137,23 @@ public class UpgradeAsset extends UpgradeProcess {
 				long classPK = rs.getLong("resourcePrimKey");
 
 				runSQL(
+					con,
 					"update AssetEntry set listable = [$FALSE$] where " +
 						"classNameId = " + classNameId + " and classPK = " +
 							classPK);
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
-	protected void updateAssetVocabularies() throws Exception {
-		Connection connection = null;
+	protected void updateAssetVocabularies(Connection con) throws Exception {
 		PreparedStatement statement = null;
 		ResultSet result = null;
 
 		try {
-			connection = DataAccess.getUpgradeOptimizedConnection();
-
-			statement = connection.prepareStatement(
+			statement = con.prepareStatement(
 				"select vocabularyId, settings_ from AssetVocabulary");
 
 			result = statement.executeQuery();
@@ -167,24 +163,21 @@ public class UpgradeAsset extends UpgradeProcess {
 				String settings = result.getString("settings_");
 
 				updateAssetVocabulary(
-					vocabularyId, upgradeVocabularySettings(settings));
+					con, vocabularyId, upgradeVocabularySettings(settings));
 			}
 		}
 		finally {
-			DataAccess.cleanUp(connection, statement, result);
+			DataAccess.cleanUp(null, statement, result);
 		}
 	}
 
-	protected void updateAssetVocabulary(long vocabularyId, String settings)
+	protected void updateAssetVocabulary(
+			Connection con, long vocabularyId, String settings)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
-		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			ps = con.prepareStatement(
 				"update AssetVocabulary set settings_ = ? where vocabularyId " +
 					"= ?");
@@ -200,7 +193,7 @@ public class UpgradeAsset extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps);
 		}
 	}
 

@@ -35,18 +35,15 @@ public class UpgradePortletDisplayTemplatePreferences
 	extends BaseUpgradePortletPreferences {
 
 	protected String getTemplateKey(
-			long displayStyleGroupId, String displayStyle)
+			Connection con, long displayStyleGroupId, String displayStyle)
 		throws Exception {
 
 		String uuid = displayStyle.substring(DISPLAY_STYLE_PREFIX_6_2.length());
 
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			ps = con.prepareStatement(
 				"select templateKey from DDMTemplate where groupId = ?" +
 					" and uuid_ = ?");
@@ -63,7 +60,7 @@ public class UpgradePortletDisplayTemplatePreferences
 			return null;
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
@@ -78,7 +75,8 @@ public class UpgradePortletDisplayTemplatePreferences
 		return sb.toString();
 	}
 
-	protected void upgradeDisplayStyle(PortletPreferences portletPreferences)
+	protected void upgradeDisplayStyle(
+			Connection con, PortletPreferences portletPreferences)
 		throws Exception {
 
 		String displayStyle = GetterUtil.getString(
@@ -93,7 +91,8 @@ public class UpgradePortletDisplayTemplatePreferences
 		long displayStyleGroupId = GetterUtil.getLong(
 			portletPreferences.getValue("displayStyleGroupId", null));
 
-		String templateKey = getTemplateKey(displayStyleGroupId, displayStyle);
+		String templateKey = getTemplateKey(
+			con, displayStyleGroupId, displayStyle);
 
 		if (templateKey != null) {
 			portletPreferences.setValue(
@@ -105,17 +104,25 @@ public class UpgradePortletDisplayTemplatePreferences
 
 	@Override
 	protected String upgradePreferences(
-			long companyId, long ownerId, int ownerType, long plid,
-			String portletId, String xml)
+			Connection con, long companyId, long ownerId, int ownerType,
+			long plid, String portletId, String xml)
 		throws Exception {
 
 		PortletPreferences portletPreferences =
 			PortletPreferencesFactoryUtil.fromXML(
 				companyId, ownerId, ownerType, plid, portletId, xml);
 
-		upgradeDisplayStyle(portletPreferences);
+		upgradeDisplayStyle(con, portletPreferences);
 
 		return PortletPreferencesFactoryUtil.toXML(portletPreferences);
+	}
+
+	@Override
+	protected String upgradePreferences(
+		long companyId, long ownerId, int ownerType, long plid,
+		String portletId, String xml) {
+
+		return null;
 	}
 
 	protected static final String DISPLAY_STYLE_PREFIX_6_2 = "ddmTemplate_";

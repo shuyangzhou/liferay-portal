@@ -15,9 +15,12 @@
 package com.liferay.blogs.web.upgrade.v1_0_0;
 
 import com.liferay.blogs.web.constants.BlogsPortletKeys;
+import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.settings.SettingsFactory;
 import com.liferay.portal.util.PortletKeys;
 import com.liferay.portlet.blogs.constants.BlogsConstants;
+
+import java.sql.Connection;
 
 /**
  * @author Sergio González
@@ -31,9 +34,11 @@ public class UpgradePortletSettings
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		upgradeMainPortlet(
-			BlogsPortletKeys.BLOGS, BlogsConstants.SERVICE_NAME,
-			PortletKeys.PREFS_OWNER_TYPE_GROUP, true);
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection()) {
+			upgradeMainPortlet(
+				con, BlogsPortletKeys.BLOGS, BlogsConstants.SERVICE_NAME,
+				PortletKeys.PREFS_OWNER_TYPE_GROUP, true);
+		}
 	}
 
 }

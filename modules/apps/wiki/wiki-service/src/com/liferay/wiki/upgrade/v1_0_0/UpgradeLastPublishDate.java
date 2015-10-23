@@ -14,7 +14,10 @@
 
 package com.liferay.wiki.upgrade.v1_0_0;
 
+import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.wiki.constants.WikiPortletKeys;
+
+import java.sql.Connection;
 
 /**
  * @author Levente Hudak
@@ -24,13 +27,15 @@ public class UpgradeLastPublishDate
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		runSQL("alter table WikiNode add lastPublishDate DATE null");
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection()) {
+			runSQL(con, "alter table WikiNode add lastPublishDate DATE null");
 
-		updateLastPublishDates(WikiPortletKeys.WIKI, "WikiNode");
+			updateLastPublishDates(con, WikiPortletKeys.WIKI, "WikiNode");
 
-		runSQL("alter table WikiPage add lastPublishDate DATE null");
+			runSQL(con, "alter table WikiPage add lastPublishDate DATE null");
 
-		updateLastPublishDates(WikiPortletKeys.WIKI, "WikiPage");
+			updateLastPublishDates(con, WikiPortletKeys.WIKI, "WikiPage");
+		}
 	}
 
 }

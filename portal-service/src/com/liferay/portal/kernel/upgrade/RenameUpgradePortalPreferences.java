@@ -33,21 +33,22 @@ public abstract class RenameUpgradePortalPreferences extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 		Map<String, String> preferenceNamesMap = getPreferenceNamesMap();
 
-		for (String oldName : preferenceNamesMap.keySet()) {
-			updatePreferences(
-				"PortalPreferences", "portalPreferencesId", oldName,
-				preferenceNamesMap.get(oldName));
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection()) {
+			for (String oldName : preferenceNamesMap.keySet()) {
+				updatePreferences(
+					con, "PortalPreferences", "portalPreferencesId", oldName,
+					preferenceNamesMap.get(oldName));
+			}
 		}
 	}
 
 	protected abstract Map<String, String> getPreferenceNamesMap();
 
 	protected void updatePreferences(
-			String tableName, String primaryKeyColumnName, String oldValue,
-			String newValue)
+			Connection con, String tableName, String primaryKeyColumnName,
+			String oldValue, String newValue)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -64,11 +65,9 @@ public abstract class RenameUpgradePortalPreferences extends UpgradeProcess {
 		sb.append("%'");
 
 		try {
-			runSQL(sb.toString());
+			runSQL(con, sb.toString());
 		}
 		catch (Exception e) {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			sb = new StringBundler(7);
 
 			sb.append("select ");
@@ -88,25 +87,24 @@ public abstract class RenameUpgradePortalPreferences extends UpgradeProcess {
 				String preferences = rs.getString("preferences");
 
 				updatePreferences(
-					tableName, primaryKeyColumnName, oldValue, newValue,
+					con, tableName, primaryKeyColumnName, oldValue, newValue,
 					primaryKey, preferences);
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
 	protected void updatePreferences(
-			String tableName, String primaryKeyColumnName, String oldValue,
-			String newValue, long primaryKey, String preferences)
+			Connection con, String tableName, String primaryKeyColumnName,
+			String oldValue, String newValue, long primaryKey,
+			String preferences)
 		throws Exception {
 
 		preferences = StringUtil.replace(preferences, oldValue, newValue);
 
-		Connection con = null;
 		PreparedStatement ps = null;
-		ResultSet rs = null;
 
 		StringBundler sb = new StringBundler(5);
 
@@ -117,8 +115,6 @@ public abstract class RenameUpgradePortalPreferences extends UpgradeProcess {
 		sb.append(" = ?");
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			ps = con.prepareStatement(sb.toString());
 
 			ps.setString(1, preferences);
@@ -127,7 +123,7 @@ public abstract class RenameUpgradePortalPreferences extends UpgradeProcess {
 			ps.executeUpdate();
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps);
 		}
 	}
 

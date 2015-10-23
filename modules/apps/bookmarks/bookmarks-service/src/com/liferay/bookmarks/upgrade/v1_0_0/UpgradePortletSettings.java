@@ -16,8 +16,11 @@ package com.liferay.bookmarks.upgrade.v1_0_0;
 
 import com.liferay.bookmarks.constants.BookmarksConstants;
 import com.liferay.bookmarks.constants.BookmarksPortletKeys;
+import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.settings.SettingsFactory;
 import com.liferay.portal.util.PortletKeys;
+
+import java.sql.Connection;
 
 /**
  * @author Miguel Pastor
@@ -31,9 +34,12 @@ public class UpgradePortletSettings
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		upgradeMainPortlet(
-			BookmarksPortletKeys.BOOKMARKS, BookmarksConstants.SERVICE_NAME,
-			PortletKeys.PREFS_OWNER_TYPE_LAYOUT, false);
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection()) {
+			upgradeMainPortlet(
+				con, BookmarksPortletKeys.BOOKMARKS,
+				BookmarksConstants.SERVICE_NAME,
+				PortletKeys.PREFS_OWNER_TYPE_LAYOUT, false);
+		}
 	}
 
 }
