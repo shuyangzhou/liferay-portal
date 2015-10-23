@@ -16,6 +16,7 @@ package com.liferay.portal.kernel.upgrade;
 
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.LayoutConstants;
@@ -37,35 +38,29 @@ public class BaseUpgradeLastPublishDate extends UpgradeProcess {
 	protected Date getLayoutSetLastPublishDate(Connection con, long groupId)
 		throws Exception {
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+		String sql = "select settings_ from LayoutSet where groupId = ?";
 
-		try {
-			ps = con.prepareStatement(
-				"select settings_ from LayoutSet where groupId = ?");
-
+		try (PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setLong(1, groupId);
 
-			rs = ps.executeQuery();
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					UnicodeProperties settingsProperties =
+						new UnicodeProperties(true);
 
-			while (rs.next()) {
-				UnicodeProperties settingsProperties = new UnicodeProperties(
-					true);
+					settingsProperties.load(rs.getString("settings_"));
 
-				settingsProperties.load(rs.getString("settings_"));
+					String lastPublishDateString =
+						settingsProperties.getProperty("last-publish-date");
 
-				String lastPublishDateString = settingsProperties.getProperty(
-					"last-publish-date");
-
-				if (Validator.isNotNull(lastPublishDateString)) {
-					return new Date(GetterUtil.getLong(lastPublishDateString));
+					if (Validator.isNotNull(lastPublishDateString)) {
+						return new Date(
+							GetterUtil.getLong(lastPublishDateString));
+					}
 				}
 			}
 
 			return null;
-		}
-		finally {
-			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
@@ -84,42 +79,37 @@ public class BaseUpgradeLastPublishDate extends UpgradeProcess {
 			Connection con, long groupId, String portletId)
 		throws Exception {
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+		String sql =
+			"select preferences from PortletPreferences where plid = ? and " +
+				"ownerType = ? and ownerId = ? and portletId = ?";
 
-		try {
-			ps = con.prepareStatement(
-				"select preferences from PortletPreferences where plid = ? " +
-					"and ownerType = ? and ownerId = ? and portletId = ?");
-
+		try (PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setLong(1, LayoutConstants.DEFAULT_PLID);
 			ps.setInt(2, PortletKeys.PREFS_OWNER_TYPE_GROUP);
 			ps.setString(3, portletId);
 			ps.setLong(4, groupId);
 
-			rs = ps.executeQuery();
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					String preferences = rs.getString("preferences");
 
-			while (rs.next()) {
-				String preferences = rs.getString("preferences");
+					if (Validator.isNotNull(preferences)) {
+						int x = preferences.lastIndexOf(
+							"last-publish-date</name><value>");
+						int y = preferences.indexOf("</value>", x);
 
-				if (Validator.isNotNull(preferences)) {
-					int x = preferences.lastIndexOf(
-						"last-publish-date</name><value>");
-					int y = preferences.indexOf("</value>", x);
+						String lastPublishDateString = preferences.substring(
+							x, y);
 
-					String lastPublishDateString = preferences.substring(x, y);
-
-					if (Validator.isNotNull(lastPublishDateString)) {
-						return new Date(
-							GetterUtil.getLong(lastPublishDateString));
+						if (Validator.isNotNull(lastPublishDateString)) {
+							return new Date(
+								GetterUtil.getLong(lastPublishDateString));
+						}
 					}
 				}
 			}
 
 			return null;
-		}
-		finally {
-			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
@@ -149,15 +139,12 @@ public class BaseUpgradeLastPublishDate extends UpgradeProcess {
 	}
 
 	protected List<Long> getStagedGroupIds(Connection con) throws Exception {
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+		String sql =
+			"select groupId from Group_ where typeSettings like " +
+				"'%staged=true%'";
 
-		try {
-			ps = con.prepareStatement(
-				"select groupId from Group_ where typeSettings like " +
-					"'%staged=true%'");
-
-			rs = ps.executeQuery();
+		try (PreparedStatement ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery()) {
 
 			List<Long> stagedGroupIds = new ArrayList<>();
 
@@ -168,9 +155,6 @@ public class BaseUpgradeLastPublishDate extends UpgradeProcess {
 			}
 
 			return stagedGroupIds;
-		}
-		finally {
-			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
@@ -216,20 +200,17 @@ public class BaseUpgradeLastPublishDate extends UpgradeProcess {
 			Date lastPublishDate)
 		throws Exception {
 
-		PreparedStatement ps = null;
+		StringBundler sb = new StringBundler(3);
 
-		try {
-			ps = con.prepareStatement(
-				"update " + tableName + " set lastPublishDate = ? where " +
-					"groupId = ?");
+		sb.append("update ");
+		sb.append(tableName);
+		sb.append(" set lastPublishDate = ? where groupId = ?");
 
+		try (PreparedStatement ps = con.prepareStatement(sb.toString())) {
 			ps.setDate(1, new java.sql.Date(lastPublishDate.getTime()));
 			ps.setLong(2, groupId);
 
 			ps.executeUpdate();
-		}
-		finally {
-			DataAccess.cleanUp(ps);
 		}
 	}
 

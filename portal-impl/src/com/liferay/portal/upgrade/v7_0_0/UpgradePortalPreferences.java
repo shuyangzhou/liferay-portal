@@ -118,15 +118,12 @@ public class UpgradePortalPreferences extends UpgradeProcess {
 	}
 
 	protected void upgradePortalPreferences() throws Exception {
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+		String sql =
+			"select portalPreferencesId, preferences from PortalPreferences";
 
-		try (Connection con = DataAccess.getUpgradeOptimizedConnection()) {
-			ps = con.prepareStatement(
-				"select portalPreferencesId, preferences from " +
-					"PortalPreferences");
-
-			rs = ps.executeQuery();
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection();
+			PreparedStatement ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery()) {
 
 			while (rs.next()) {
 				long portalPreferencesId = rs.getLong("portalPreferencesId");
@@ -137,28 +134,21 @@ public class UpgradePortalPreferences extends UpgradeProcess {
 					con, portalPreferencesId, preferences);
 			}
 		}
-		finally {
-			DataAccess.cleanUp(null, ps, rs);
-		}
 	}
 
 	protected void upgradeUserStagingPreferences(
 			Connection con, long portalPreferencesId, String preferences)
 		throws Exception {
 
-		PreparedStatement ps = null;
+		String sql =
+			"update PortalPreferences set preferences = ? where " +
+				"portalPreferencesId = ?";
 
-		try {
-			ps = con.prepareStatement(
-				"update PortalPreferences set preferences = ? where " +
-					"portalPreferencesId = ?");
-
+		try (PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setString(1, convertStagingPreferencesToJSON(preferences));
 			ps.setLong(2, portalPreferencesId);
+
 			ps.executeUpdate();
-		}
-		finally {
-			DataAccess.cleanUp(ps);
 		}
 	}
 
