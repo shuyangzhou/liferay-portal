@@ -90,21 +90,23 @@ public class BaseKaleoUpgradeTableListener extends BaseUpgradeTableListener {
 			String tableName, String keyColumnName)
 		throws Exception {
 
-		for (Map.Entry<Long, Long> entry : keyValueMap.entrySet()) {
-			StringBundler sb = new StringBundler(10);
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection()) {
+			for (Map.Entry<Long, Long> entry : keyValueMap.entrySet()) {
+				StringBundler sb = new StringBundler(10);
 
-			sb.append("update ");
-			sb.append(tableName);
-			sb.append(" set kaleoClassName = '");
-			sb.append(kaleoClassName);
-			sb.append("', kaleoClassPK = ");
-			sb.append(entry.getValue());
-			sb.append(" where ");
-			sb.append(keyColumnName);
-			sb.append(" = ");
-			sb.append(entry.getKey());
+				sb.append("update ");
+				sb.append(tableName);
+				sb.append(" set kaleoClassName = '");
+				sb.append(kaleoClassName);
+				sb.append("', kaleoClassPK = ");
+				sb.append(entry.getValue());
+				sb.append(" where ");
+				sb.append(keyColumnName);
+				sb.append(" = ");
+				sb.append(entry.getKey());
 
-			runSQL(sb.toString());
+				runSQL(con, sb.toString());
+			}
 		}
 	}
 
