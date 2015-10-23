@@ -133,30 +133,32 @@ public class UpgradeRatings extends UpgradeProcess {
 	}
 
 	protected void upgradeRatingsStats(Connection con) throws Exception {
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+		StringBundler sb = new StringBundler(4);
 
-		try {
-			DatabaseMetaData databaseMetaData = con.getMetaData();
+		sb.append("select classNameId, classPK, count(1) as ");
+		sb.append("totalEntries, sum(RatingsEntry.score) as totalScore, ");
+		sb.append("sum(RatingsEntry.score) / count(1) as averageScore ");
+		sb.append("from RatingsEntry group by classNameId, classPK");
 
-			boolean supportsBatchUpdates =
-				databaseMetaData.supportsBatchUpdates();
+		try (PreparedStatement ps = con.prepareStatement(sb.toString());
+			ResultSet rs = ps.executeQuery()) {
 
-			StringBundler sb = new StringBundler(4);
+			upgradeRatingsStats(con, rs);
+		}
+	}
 
-			sb.append("select classNameId, classPK, count(1) as ");
-			sb.append("totalEntries, sum(RatingsEntry.score) as totalScore, ");
-			sb.append("sum(RatingsEntry.score) / count(1) as averageScore ");
-			sb.append("from RatingsEntry group by classNameId, classPK");
+	protected void upgradeRatingsStats(Connection con, ResultSet rs)
+		throws Exception {
 
-			ps = con.prepareStatement(sb.toString());
+		DatabaseMetaData databaseMetaData = con.getMetaData();
 
-			rs = ps.executeQuery();
+		boolean supportsBatchUpdates = databaseMetaData.supportsBatchUpdates();
 
-			ps = con.prepareStatement(
-				"update RatingsStats set totalEntries = ?, totalScore = ?, " +
-					"averageScore = ? where classNameId = ? and classPK = ?");
+		String sql =
+			"update RatingsStats set totalEntries = ?, totalScore = ?, " +
+				"averageScore = ? where classNameId = ? and classPK = ?";
 
+		try (PreparedStatement ps = con.prepareStatement(sql)) {
 			int count = 0;
 
 			while (rs.next()) {
@@ -186,9 +188,6 @@ public class UpgradeRatings extends UpgradeProcess {
 			if (supportsBatchUpdates && (count > 0)) {
 				ps.executeBatch();
 			}
-		}
-		finally {
-			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
