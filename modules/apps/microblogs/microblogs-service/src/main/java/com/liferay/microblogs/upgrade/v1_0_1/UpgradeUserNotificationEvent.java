@@ -36,69 +36,55 @@ public class UpgradeUserNotificationEvent extends UpgradeProcess {
 	}
 
 	protected void updateNotification(
-			long userNotificationEventId, JSONObject jsonObject)
+			Connection con, long userNotificationEventId, JSONObject jsonObject)
 		throws Exception {
 
-		Connection con = null;
-		PreparedStatement ps = null;
+		String sql =
+			"update UserNotificationEvent set payload = ? where " +
+				"userNotificationEventId = ?";
 
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
-				"update UserNotificationEvent set payload = ? " +
-					"where userNotificationEventId = ?");
-
+		try (PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setString(1, jsonObject.toString());
 			ps.setLong(2, userNotificationEventId);
 
 			ps.executeUpdate();
 		}
-		finally {
-			DataAccess.cleanUp(con, ps);
-		}
 	}
 
 	protected void upgradeNotifications() throws Exception {
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+		String sql =
+			"select userNotificationEventId, payload from " +
+				"UserNotificationEvent where type_ = ?";
 
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
-				"select userNotificationEventId, payload from " +
-					"UserNotificationEvent where type_ = ?");
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection();
+			PreparedStatement ps = con.prepareStatement(sql)) {
 
 			ps.setString(1, MicroblogsPortletKeys.MICROBLOGS);
 
-			rs = ps.executeQuery();
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					long userNotificationEventId = rs.getLong(
+						"userNotificationEventId");
+					String payload = rs.getString("payload");
 
-			while (rs.next()) {
-				long userNotificationEventId = rs.getLong(
-					"userNotificationEventId");
-				String payload = rs.getString("payload");
+					JSONObject payloadJSONObject =
+						JSONFactoryUtil.createJSONObject(payload);
 
-				JSONObject payloadJSONObject = JSONFactoryUtil.createJSONObject(
-					payload);
+					int notificationType = payloadJSONObject.getInt(
+						"notificationType");
 
-				int notificationType = payloadJSONObject.getInt(
-					"notificationType");
+					if (notificationType != 0) {
+						return;
+					}
 
-				if (notificationType != 0) {
-					return;
+					payloadJSONObject.put(
+						"notificationType",
+						MicroblogsEntryConstants.NOTIFICATION_TYPE_REPLY);
+
+					updateNotification(
+						con, userNotificationEventId, payloadJSONObject);
 				}
-
-				payloadJSONObject.put(
-					"notificationType",
-					MicroblogsEntryConstants.NOTIFICATION_TYPE_REPLY);
-
-				updateNotification(userNotificationEventId, payloadJSONObject);
 			}
-		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
 		}
 	}
 

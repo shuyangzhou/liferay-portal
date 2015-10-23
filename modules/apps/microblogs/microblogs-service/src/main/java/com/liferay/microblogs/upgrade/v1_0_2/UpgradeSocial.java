@@ -35,64 +35,50 @@ public class UpgradeSocial extends UpgradeProcess {
 		upgradeMicroblogActivities();
 	}
 
-	protected void updateSocialActivity(long activityId, JSONObject jsonObject)
+	protected void updateSocialActivity(
+			Connection con, long activityId, JSONObject jsonObject)
 		throws Exception {
 
-		Connection con = null;
-		PreparedStatement ps = null;
+		String sql =
+			"update SocialActivity set extraData = ? where activityId = ?";
 
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
-				"update SocialActivity set extraData = ? where activityId = ?");
-
+		try (PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setString(1, jsonObject.toString());
 			ps.setLong(2, activityId);
 
 			ps.executeUpdate();
 		}
-		finally {
-			DataAccess.cleanUp(con, ps);
-		}
 	}
 
 	protected void upgradeMicroblogActivities() throws Exception {
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+		String sql =
+			"select activityId, extraData from SocialActivity where " +
+				"classNameId = ?";
 
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
-				"select activityId, extraData from SocialActivity where " +
-					"classNameId = ?");
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection();
+			PreparedStatement ps = con.prepareStatement(sql)) {
 
 			ps.setLong(1, PortalUtil.getClassNameId(MicroblogsEntry.class));
 
-			rs = ps.executeQuery();
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					long activityId = rs.getLong("activityId");
+					String extraData = rs.getString("extraData");
 
-			while (rs.next()) {
-				long activityId = rs.getLong("activityId");
-				String extraData = rs.getString("extraData");
+					JSONObject extraDataJSONObject =
+						JSONFactoryUtil.createJSONObject(extraData);
 
-				JSONObject extraDataJSONObject =
-					JSONFactoryUtil.createJSONObject(extraData);
+					long parentMicroblogsEntryId = extraDataJSONObject.getLong(
+						"receiverMicroblogsEntryId");
 
-				long parentMicroblogsEntryId = extraDataJSONObject.getLong(
-					"receiverMicroblogsEntryId");
+					extraDataJSONObject.put(
+						"parentMicroblogsEntryId", parentMicroblogsEntryId);
 
-				extraDataJSONObject.put(
-					"parentMicroblogsEntryId", parentMicroblogsEntryId);
+					extraDataJSONObject.remove("receiverMicroblogsEntryId");
 
-				extraDataJSONObject.remove("receiverMicroblogsEntryId");
-
-				updateSocialActivity(activityId, extraDataJSONObject);
+					updateSocialActivity(con, activityId, extraDataJSONObject);
+				}
 			}
-		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
 		}
 	}
 

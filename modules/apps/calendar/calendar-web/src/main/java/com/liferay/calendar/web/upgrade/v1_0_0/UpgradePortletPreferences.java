@@ -23,6 +23,8 @@ import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portlet.calendar.model.CalEvent;
 
+import java.sql.Connection;
+
 import javax.portlet.PortletPreferences;
 
 /**
@@ -45,8 +47,8 @@ public class UpgradePortletPreferences extends BaseUpgradePortletPreferences {
 
 	@Override
 	protected String upgradePreferences(
-			long companyId, long ownerId, int ownerType, long plid,
-			String portletId, String xml)
+			Connection con, long companyId, long ownerId, int ownerType,
+			long plid, String portletId, String xml)
 		throws Exception {
 
 		PortletPreferences portletPreferences =

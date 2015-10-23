@@ -18,6 +18,8 @@ import com.liferay.portal.kernel.upgrade.BaseUpgradePortletPreferences;
 import com.liferay.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.shopping.constants.ShoppingPortletKeys;
 
+import java.sql.Connection;
+
 import javax.portlet.PortletPreferences;
 
 /**
@@ -32,8 +34,8 @@ public class UpgradeShoppingPreferences extends BaseUpgradePortletPreferences {
 
 	@Override
 	protected String upgradePreferences(
-			long companyId, long ownerId, int ownerType, long plid,
-			String portletId, String xml)
+			Connection con, long companyId, long ownerId, int ownerType,
+			long plid, String portletId, String xml)
 		throws Exception {
 
 		PortletPreferences portletPreferences =

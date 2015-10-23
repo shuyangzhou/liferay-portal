@@ -38,17 +38,11 @@ public class UpgradeModule extends UpgradeProcess {
 	}
 
 	protected void updateModules() {
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+		String sql = "select moduleId, contextName from Marketplace_Module";
 
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
-				"select moduleId, contextName from Marketplace_Module");
-
-			rs = ps.executeQuery();
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection();
+			PreparedStatement ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery()) {
 
 			while (rs.next()) {
 				long moduleId = rs.getLong("moduleId");
@@ -60,6 +54,7 @@ public class UpgradeModule extends UpgradeProcess {
 					newContextName = ContextUtil.getContextName(contextName);
 
 					runSQL(
+						con,
 						"update Marketplace_Module set contextName = '" +
 							newContextName + "' where moduleId = " + moduleId);
 				}
@@ -73,9 +68,6 @@ public class UpgradeModule extends UpgradeProcess {
 		}
 		catch (SQLException sqle) {
 			_log.error("Unable to update modules", sqle);
-		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
 		}
 	}
 

@@ -45,32 +45,23 @@ import java.util.Map;
 public class UpgradeJournalArticleType extends UpgradeBaseJournal {
 
 	protected void addAssetCategory(
-			long assetCategoryId, long groupId, long companyId, long userId,
-			long rightAssetCategoryId, long leftAssetCategoryId, String name,
-			String title, long assetVocabularyId)
+			Connection con, long assetCategoryId, long groupId, long companyId,
+			long userId, long rightAssetCategoryId, long leftAssetCategoryId,
+			String name, String title, long assetVocabularyId)
 		throws Exception {
 
 		Timestamp now = new Timestamp(System.currentTimeMillis());
 
-		Connection con = null;
-		PreparedStatement ps = null;
+		StringBundler sb = new StringBundler(6);
 
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
+		sb.append("insert into AssetCategory (uuid_, categoryId, ");
+		sb.append("groupId, companyId, userId, userName, createDate, ");
+		sb.append("modifiedDate, parentCategoryId, leftCategoryId, ");
+		sb.append("rightCategoryId, name, title, description, ");
+		sb.append("vocabularyId) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ");
+		sb.append("?, ?, ?, ?, ?)");
 
-			StringBundler sb = new StringBundler(6);
-
-			sb.append("insert into AssetCategory (uuid_, categoryId, ");
-			sb.append("groupId, companyId, userId, userName, createDate, ");
-			sb.append("modifiedDate, parentCategoryId, leftCategoryId, ");
-			sb.append("rightCategoryId, name, title, description, ");
-			sb.append("vocabularyId) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ");
-			sb.append("?, ?, ?, ?, ?)");
-
-			String sql = sb.toString();
-
-			ps = con.prepareStatement(sql);
-
+		try (PreparedStatement ps = con.prepareStatement(sb.toString())) {
 			ps.setString(1, PortalUUIDUtil.generate());
 			ps.setLong(2, assetCategoryId);
 			ps.setLong(3, groupId);
@@ -90,7 +81,7 @@ public class UpgradeJournalArticleType extends UpgradeBaseJournal {
 			ps.executeUpdate();
 
 			Map<String, Long> bitwiseValues = getBitwiseValues(
-				AssetCategory.class.getName());
+				con, AssetCategory.class.getName());
 
 			List<String> actionIds = new ArrayList<>();
 
@@ -99,36 +90,29 @@ public class UpgradeJournalArticleType extends UpgradeBaseJournal {
 			long bitwiseValue = getBitwiseValue(bitwiseValues, actionIds);
 
 			addResourcePermission(
-				companyId, AssetCategory.class.getName(), assetCategoryId,
-				getRoleId(companyId, RoleConstants.GUEST), bitwiseValue);
+				con, companyId, AssetCategory.class.getName(), assetCategoryId,
+				getRoleId(con, companyId, RoleConstants.GUEST), bitwiseValue);
 			addResourcePermission(
-				companyId, AssetCategory.class.getName(), assetCategoryId,
-				getRoleId(companyId, RoleConstants.SITE_MEMBER), bitwiseValue);
+				con, companyId, AssetCategory.class.getName(), assetCategoryId,
+				getRoleId(con, companyId, RoleConstants.SITE_MEMBER),
+				bitwiseValue);
 		}
 		catch (Exception e) {
 			_log.error("Unable to add asset category");
 
 			throw e;
 		}
-		finally {
-			DataAccess.cleanUp(con, ps);
-		}
 	}
 
 	protected void addAssetEntryToAssetCategory(
-			long assetEntryId, long assetCategoryId)
+			Connection con, long assetEntryId, long assetCategoryId)
 		throws Exception {
 
-		Connection con = null;
-		PreparedStatement ps = null;
+		String sql =
+			"insert into AssetEntries_AssetCategories (categoryId, entryId) " +
+				"values (?, ?)";
 
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
-				"insert into AssetEntries_AssetCategories (categoryId, " +
-					"entryId) values (?, ?)");
-
+		try (PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setLong(1, assetCategoryId);
 			ps.setLong(2, assetEntryId);
 
@@ -139,35 +123,23 @@ public class UpgradeJournalArticleType extends UpgradeBaseJournal {
 
 			throw e;
 		}
-		finally {
-			DataAccess.cleanUp(con, ps);
-		}
 	}
 
 	protected void addAssetVocabulary(
-			long vocabularyId, long groupId, long companyId, long userId,
-			String name, String title, String settings)
+			Connection con, long vocabularyId, long groupId, long companyId,
+			long userId, String name, String title, String settings)
 		throws Exception {
 
 		Timestamp now = new Timestamp(System.currentTimeMillis());
 
-		Connection con = null;
-		PreparedStatement ps = null;
+		StringBundler sb = new StringBundler(4);
 
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
+		sb.append("insert into AssetVocabulary (uuid_, vocabularyId, ");
+		sb.append("groupId, companyId, userId, userName, createDate, ");
+		sb.append("modifiedDate, name, title, description, settings_) ");
+		sb.append("values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-			StringBundler sb = new StringBundler(4);
-
-			sb.append("insert into AssetVocabulary (uuid_, vocabularyId, ");
-			sb.append("groupId, companyId, userId, userName, createDate, ");
-			sb.append("modifiedDate, name, title, description, settings_) ");
-			sb.append("values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-
-			String sql = sb.toString();
-
-			ps = con.prepareStatement(sql);
-
+		try (PreparedStatement ps = con.prepareStatement(sb.toString())) {
 			ps.setString(1, PortalUUIDUtil.generate());
 			ps.setLong(2, vocabularyId);
 			ps.setLong(3, groupId);
@@ -184,7 +156,7 @@ public class UpgradeJournalArticleType extends UpgradeBaseJournal {
 			ps.executeUpdate();
 
 			Map<String, Long> bitwiseValues = getBitwiseValues(
-				AssetVocabulary.class.getName());
+				con, AssetVocabulary.class.getName());
 
 			List<String> actionIds = new ArrayList<>();
 
@@ -193,25 +165,25 @@ public class UpgradeJournalArticleType extends UpgradeBaseJournal {
 			long bitwiseValue = getBitwiseValue(bitwiseValues, actionIds);
 
 			addResourcePermission(
-				companyId, AssetVocabulary.class.getName(), vocabularyId,
-				getRoleId(companyId, RoleConstants.GUEST), bitwiseValue);
+				con, companyId, AssetVocabulary.class.getName(), vocabularyId,
+				getRoleId(con, companyId, RoleConstants.GUEST), bitwiseValue);
 			addResourcePermission(
-				companyId, AssetVocabulary.class.getName(), vocabularyId,
-				getRoleId(companyId, RoleConstants.SITE_MEMBER), bitwiseValue);
+				con, companyId, AssetVocabulary.class.getName(), vocabularyId,
+				getRoleId(con, companyId, RoleConstants.SITE_MEMBER),
+				bitwiseValue);
 		}
 		catch (Exception e) {
 			_log.error("Unable to add asset vocabulary");
 
 			throw e;
 		}
-		finally {
-			DataAccess.cleanUp(con, ps);
-		}
 	}
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		updateArticleType();
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection()) {
+			updateArticleType(con);
+		}
 
 		// UpgradeJournalArticles must be executed after calling
 		// updateArticleType because journal article types must already be
@@ -220,18 +192,11 @@ public class UpgradeJournalArticleType extends UpgradeBaseJournal {
 		upgrade(UpgradeJournalArticles.class);
 	}
 
-	protected List<String> getArticleTypes() throws Exception {
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+	protected List<String> getArticleTypes(Connection con) throws Exception {
+		String sql = "select distinct type_ from JournalArticle";
 
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
-				"select distinct type_ from JournalArticle");
-
-			rs = ps.executeQuery();
+		try (PreparedStatement ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery()) {
 
 			List<String> types = new ArrayList<>();
 
@@ -241,54 +206,38 @@ public class UpgradeJournalArticleType extends UpgradeBaseJournal {
 
 			return types;
 		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
-		}
 	}
 
-	protected long getAssetEntryId(long classPK) throws Exception {
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+	protected long getAssetEntryId(Connection con, long classPK)
+		throws Exception {
 
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
+		String sql =
+			"select entryId from AssetEntry where classNameId = ? and " +
+				"classPK = ?";
 
-			ps = con.prepareStatement(
-				"select entryId from AssetEntry where classNameId = ? and " +
-					"classPK = ?");
-
+		try (PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setLong(
 				1,
 				PortalUtil.getClassNameId(
 					"com.liferay.portlet.journal.model.JournalArticle"));
 			ps.setLong(2, classPK);
 
-			rs = ps.executeQuery();
-
-			while (rs.next()) {
-				return rs.getLong("entryId");
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					return rs.getLong("entryId");
+				}
 			}
 
 			return 0;
 		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
-		}
 	}
 
-	protected boolean hasSelectedArticleTypes() throws Exception {
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+	protected boolean hasSelectedArticleTypes(Connection con) throws Exception {
+		String sql =
+			"select count(*) from JournalArticle where type_ != 'general'";
 
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
-				"select count(*) from JournalArticle where type_ != 'general'");
-
-			rs = ps.executeQuery();
+		try (PreparedStatement ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery()) {
 
 			while (rs.next()) {
 				int count = rs.getInt(1);
@@ -300,89 +249,70 @@ public class UpgradeJournalArticleType extends UpgradeBaseJournal {
 
 			return false;
 		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
-		}
 	}
 
 	protected void updateArticles(
-			long companyId,
+			Connection con, long companyId,
 			Map<String, Long> journalArticleTypesToAssetCategoryIds)
 		throws Exception {
 
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+		StringBundler sb = new StringBundler(10);
 
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
+		sb.append("select JournalArticle.resourcePrimKey, ");
+		sb.append("JournalArticle.type_ from JournalArticle ");
+		sb.append("left join JournalArticle tempJournalArticle on ");
+		sb.append("(JournalArticle.groupId = tempJournalArticle.groupId) ");
+		sb.append("and (JournalArticle.articleId = ");
+		sb.append("tempJournalArticle.articleId) and ");
+		sb.append(" (JournalArticle.version < ");
+		sb.append("tempJournalArticle.version) where ");
+		sb.append("JournalArticle.companyId = ? and ");
+		sb.append("tempJournalArticle.id_ is null");
 
-			StringBundler sb = new StringBundler(10);
-
-			sb.append("select JournalArticle.resourcePrimKey, ");
-			sb.append("JournalArticle.type_ from JournalArticle ");
-			sb.append("left join JournalArticle tempJournalArticle on ");
-			sb.append("(JournalArticle.groupId = tempJournalArticle.groupId) ");
-			sb.append("and (JournalArticle.articleId = ");
-			sb.append("tempJournalArticle.articleId) and ");
-			sb.append(" (JournalArticle.version < ");
-			sb.append("tempJournalArticle.version) where ");
-			sb.append("JournalArticle.companyId = ? and ");
-			sb.append("tempJournalArticle.id_ is null");
-
-			ps = con.prepareStatement(sb.toString());
-
+		try (PreparedStatement ps = con.prepareStatement(sb.toString())) {
 			ps.setLong(1, companyId);
 
-			rs = ps.executeQuery();
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					long resourcePrimKey = rs.getLong("resourcePrimKey");
+					String type = rs.getString("type_");
 
-			while (rs.next()) {
-				long resourcePrimKey = rs.getLong("resourcePrimKey");
-				String type = rs.getString("type_");
+					long assetEntryId = getAssetEntryId(con, resourcePrimKey);
+					long assetCategoryId =
+						journalArticleTypesToAssetCategoryIds.get(type);
 
-				long assetEntryId = getAssetEntryId(resourcePrimKey);
-				long assetCategoryId =
-					journalArticleTypesToAssetCategoryIds.get(type);
-
-				if (assetEntryId > 0) {
-					addAssetEntryToAssetCategory(assetEntryId, assetCategoryId);
+					if (assetEntryId > 0) {
+						addAssetEntryToAssetCategory(
+							con, assetEntryId, assetCategoryId);
+					}
 				}
 			}
 		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
-		}
 	}
 
-	protected void updateArticleType() throws Exception {
-		if (!hasSelectedArticleTypes()) {
+	protected void updateArticleType(Connection con) throws Exception {
+		if (!hasSelectedArticleTypes(con)) {
 			return;
 		}
 
-		List<String> types = getArticleTypes();
+		List<String> types = getArticleTypes(con);
 
 		if (types.size() <= 0) {
 			return;
 		}
 
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+		String sql = "select companyId from Company";
 
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement("select companyId from Company");
-
-			rs = ps.executeQuery();
+		try (PreparedStatement ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery()) {
 
 			while (rs.next()) {
 				long vocabularyId = increment();
 
 				long companyId = rs.getLong("companyId");
 
-				long groupId = getCompanyGroupId(companyId);
-				long userId = getDefaultUserId(companyId);
+				long groupId = getCompanyGroupId(con, companyId);
+				long userId = getDefaultUserId(con, companyId);
 
 				String defaultLanguageId =
 					UpgradeProcessUtil.getDefaultLanguageId(companyId);
@@ -400,7 +330,7 @@ public class UpgradeJournalArticleType extends UpgradeBaseJournal {
 					new long[] {-1}, new boolean[] {false});
 
 				addAssetVocabulary(
-					vocabularyId, groupId, companyId, userId, "type",
+					con, vocabularyId, groupId, companyId, userId, "type",
 					localize(groupId, "type", defaultLanguageId),
 					assetVocabularySettingsHelper.toString());
 
@@ -413,8 +343,8 @@ public class UpgradeJournalArticleType extends UpgradeBaseJournal {
 					long assetCategoryId = increment();
 
 					addAssetCategory(
-						assetCategoryId, groupId, companyId, userId, i++, i++,
-						type, localize(groupId, type, defaultLanguageId),
+						con, assetCategoryId, groupId, companyId, userId, i++,
+						i++, type, localize(groupId, type, defaultLanguageId),
 						vocabularyId);
 
 					journalArticleTypesToAssetCategoryIds.put(
@@ -422,11 +352,8 @@ public class UpgradeJournalArticleType extends UpgradeBaseJournal {
 				}
 
 				updateArticles(
-					companyId, journalArticleTypesToAssetCategoryIds);
+					con, companyId, journalArticleTypesToAssetCategoryIds);
 			}
-		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
 		}
 	}
 

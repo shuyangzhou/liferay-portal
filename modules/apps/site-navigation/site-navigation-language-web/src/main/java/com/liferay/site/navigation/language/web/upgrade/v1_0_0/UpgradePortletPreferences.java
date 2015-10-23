@@ -23,6 +23,8 @@ import com.liferay.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portlet.display.template.PortletDisplayTemplateConstants;
 import com.liferay.site.navigation.language.web.constants.SiteNavigationLanguagePortletKeys;
 
+import java.sql.Connection;
+
 import javax.portlet.PortletPreferences;
 import javax.portlet.ReadOnlyException;
 
@@ -88,8 +90,8 @@ public class UpgradePortletPreferences extends BaseUpgradePortletPreferences {
 
 	@Override
 	protected String upgradePreferences(
-			long companyId, long ownerId, int ownerType, long plid,
-			String portletId, String xml)
+			Connection con, long companyId, long ownerId, int ownerType,
+			long plid, String portletId, String xml)
 		throws Exception {
 
 		PortletPreferences portletPreferences =

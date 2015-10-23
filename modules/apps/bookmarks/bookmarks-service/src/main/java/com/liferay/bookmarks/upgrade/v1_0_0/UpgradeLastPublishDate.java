@@ -15,6 +15,9 @@
 package com.liferay.bookmarks.upgrade.v1_0_0;
 
 import com.liferay.bookmarks.constants.BookmarksPortletKeys;
+import com.liferay.portal.kernel.dao.jdbc.DataAccess;
+
+import java.sql.Connection;
 
 /**
  * @author Mate Thurzo
@@ -24,15 +27,21 @@ public class UpgradeLastPublishDate
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		runSQL("alter table BookmarksEntry add lastPublishDate DATE null");
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection()) {
+			runSQL(
+				con,
+				"alter table BookmarksEntry add lastPublishDate DATE null");
 
-		updateLastPublishDates(
-			BookmarksPortletKeys.BOOKMARKS, "BookmarksEntry");
+			updateLastPublishDates(
+				con, BookmarksPortletKeys.BOOKMARKS, "BookmarksEntry");
 
-		runSQL("alter table BookmarksFolder add lastPublishDate DATE null");
+			runSQL(
+				con,
+				"alter table BookmarksFolder add lastPublishDate DATE null");
 
-		updateLastPublishDates(
-			BookmarksPortletKeys.BOOKMARKS, "BookmarksFolder");
+			updateLastPublishDates(
+				con, BookmarksPortletKeys.BOOKMARKS, "BookmarksFolder");
+		}
 	}
 
 }

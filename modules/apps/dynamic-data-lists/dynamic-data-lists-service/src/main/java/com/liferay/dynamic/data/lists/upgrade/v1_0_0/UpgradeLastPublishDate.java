@@ -15,6 +15,9 @@
 package com.liferay.dynamic.data.lists.upgrade.v1_0_0;
 
 import com.liferay.dynamic.data.lists.constants.DDLPortletKeys;
+import com.liferay.portal.kernel.dao.jdbc.DataAccess;
+
+import java.sql.Connection;
 
 /**
  * @author Levente Hudak
@@ -24,14 +27,18 @@ public class UpgradeLastPublishDate
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		runSQL("alter table DDLRecord add lastPublishDate DATE null");
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection()) {
+			runSQL(con, "alter table DDLRecord add lastPublishDate DATE null");
 
-		updateLastPublishDates(DDLPortletKeys.DYNAMIC_DATA_LISTS, "DDLRecord");
+			updateLastPublishDates(
+				con, DDLPortletKeys.DYNAMIC_DATA_LISTS, "DDLRecord");
 
-		runSQL("alter table DDLRecordSet add lastPublishDate DATE null");
+			runSQL(
+				con, "alter table DDLRecordSet add lastPublishDate DATE null");
 
-		updateLastPublishDates(
-			DDLPortletKeys.DYNAMIC_DATA_LISTS, "DDLRecordSet");
+			updateLastPublishDates(
+				con, DDLPortletKeys.DYNAMIC_DATA_LISTS, "DDLRecordSet");
+		}
 	}
 
 }

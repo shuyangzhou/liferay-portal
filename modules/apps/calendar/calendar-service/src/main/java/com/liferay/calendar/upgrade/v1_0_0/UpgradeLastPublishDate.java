@@ -15,6 +15,9 @@
 package com.liferay.calendar.upgrade.v1_0_0;
 
 import com.liferay.calendar.constants.CalendarPortletKeys;
+import com.liferay.portal.kernel.dao.jdbc.DataAccess;
+
+import java.sql.Connection;
 
 /**
  * @author Mate Thurzo
@@ -24,25 +27,35 @@ public class UpgradeLastPublishDate
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		runSQL("alter table Calendar add lastPublishDate DATE null");
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection()) {
+			runSQL(con, "alter table Calendar add lastPublishDate DATE null");
 
-		updateLastPublishDates(CalendarPortletKeys.CALENDAR, "Calendar");
+			updateLastPublishDates(
+				con, CalendarPortletKeys.CALENDAR, "Calendar");
 
-		runSQL("alter table CalendarBooking add lastPublishDate DATE null");
+			runSQL(
+				con,
+				"alter table CalendarBooking add lastPublishDate DATE null");
 
-		updateLastPublishDates(CalendarPortletKeys.CALENDAR, "CalendarBooking");
+			updateLastPublishDates(
+				con, CalendarPortletKeys.CALENDAR, "CalendarBooking");
 
-		runSQL(
-			"alter table CalendarNotificationTemplate add lastPublishDate " +
-				"DATE null");
+			runSQL(
+				con,
+				"alter table CalendarNotificationTemplate add " +
+					"lastPublishDate DATE null");
 
-		updateLastPublishDates(
-			CalendarPortletKeys.CALENDAR, "CalendarNotificationTemplate");
+			updateLastPublishDates(
+				con, CalendarPortletKeys.CALENDAR,
+				"CalendarNotificationTemplate");
 
-		runSQL("alter table CalendarResource add lastPublishDate DATE null");
+			runSQL(
+				con,
+				"alter table CalendarResource add lastPublishDate DATE null");
 
-		updateLastPublishDates(
-			CalendarPortletKeys.CALENDAR, "CalendarResource");
+			updateLastPublishDates(
+				con, CalendarPortletKeys.CALENDAR, "CalendarResource");
+		}
 	}
 
 }

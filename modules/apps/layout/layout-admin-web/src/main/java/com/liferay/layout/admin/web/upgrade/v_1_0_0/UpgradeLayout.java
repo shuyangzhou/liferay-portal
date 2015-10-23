@@ -30,33 +30,23 @@ public class UpgradeLayout extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+		String sql =
+			"select plid, typeSettings from Layout where type_ = embedded";
 
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
-				"select plid, typeSettings from Layout where type_ = ?");
-
-			ps.setString(1, "embedded");
-
-			rs = ps.executeQuery();
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection();
+			PreparedStatement ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery()) {
 
 			while (rs.next()) {
 				long plid = rs.getLong("plid");
 				String typeSettings = rs.getString("typeSettings");
 
-				updateLayout(plid, typeSettings);
+				updateLayout(con, plid, typeSettings);
 			}
-		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
 		}
 	}
 
-	protected void updateLayout(long plid, String typeSettings)
+	protected void updateLayout(Connection con, long plid, String typeSettings)
 		throws Exception {
 
 		if (Validator.isNull(typeSettings)) {
@@ -72,28 +62,20 @@ public class UpgradeLayout extends UpgradeProcess {
 
 		typeSettingsProperties.remove("url");
 
-		updateTypeSettings(plid, typeSettingsProperties.toString());
+		updateTypeSettings(con, plid, typeSettingsProperties.toString());
 	}
 
-	protected void updateTypeSettings(long plid, String typeSettings)
+	protected void updateTypeSettings(
+			Connection con, long plid, String typeSettings)
 		throws Exception {
 
-		Connection con = null;
-		PreparedStatement ps = null;
+		String sql = "update Layout set typeSettings = ? where plid = ?";
 
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
-				"update Layout set typeSettings = ? where plid = ?");
-
+		try (PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setString(1, typeSettings);
 			ps.setLong(2, plid);
 
 			ps.executeUpdate();
-		}
-		finally {
-			DataAccess.cleanUp(con, ps);
 		}
 	}
 

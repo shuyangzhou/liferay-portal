@@ -17,6 +17,8 @@ package com.liferay.portal.upgrade.v7_0_0;
 import com.liferay.portal.kernel.upgrade.BaseUpgradePortletPreferences;
 import com.liferay.portlet.PortletPreferencesFactoryUtil;
 
+import java.sql.Connection;
+
 import javax.portlet.PortletPreferences;
 
 /**
@@ -31,8 +33,8 @@ public class UpgradeDLPreferences extends BaseUpgradePortletPreferences {
 
 	@Override
 	protected String upgradePreferences(
-			long companyId, long ownerId, int ownerType, long plid,
-			String portletId, String xml)
+			Connection con, long companyId, long ownerId, int ownerType,
+			long plid, String portletId, String xml)
 		throws Exception {
 
 		PortletPreferences portletPreferences =
