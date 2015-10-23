@@ -15,6 +15,9 @@
 package com.liferay.dynamic.data.mapping.upgrade.v1_0_0;
 
 import com.liferay.dynamic.data.mapping.constants.DDMPortletKeys;
+import com.liferay.portal.kernel.dao.jdbc.DataAccess;
+
+import java.sql.Connection;
 
 /**
  * @author Rafael Praxedes
@@ -24,15 +27,19 @@ public class UpgradeLastPublishDate
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		runSQL("alter table DDMStructure add lastPublishDate DATE null");
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection()) {
+			runSQL(
+				con, "alter table DDMStructure add lastPublishDate DATE null");
 
-		updateLastPublishDates(
-			DDMPortletKeys.DYNAMIC_DATA_MAPPING, "DDMStructure");
+			updateLastPublishDates(
+				con, DDMPortletKeys.DYNAMIC_DATA_MAPPING, "DDMStructure");
 
-		runSQL("alter table DDMTemplate add lastPublishDate DATE null");
+			runSQL(
+				con, "alter table DDMTemplate add lastPublishDate DATE null");
 
-		updateLastPublishDates(
-			DDMPortletKeys.DYNAMIC_DATA_MAPPING, "DDMTemplate");
+			updateLastPublishDates(
+				con, DDMPortletKeys.DYNAMIC_DATA_MAPPING, "DDMTemplate");
+		}
 	}
 
 }

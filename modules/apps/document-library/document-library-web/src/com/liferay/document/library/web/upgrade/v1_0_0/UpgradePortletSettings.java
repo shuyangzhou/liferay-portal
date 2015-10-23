@@ -15,9 +15,12 @@
 package com.liferay.document.library.web.upgrade.v1_0_0;
 
 import com.liferay.document.library.web.constants.DLPortletKeys;
+import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.settings.SettingsFactory;
 import com.liferay.portal.util.PortletKeys;
 import com.liferay.portlet.documentlibrary.constants.DLConstants;
+
+import java.sql.Connection;
 
 /**
  * @author Sergio González
@@ -31,16 +34,18 @@ public class UpgradePortletSettings
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		upgradeMainPortlet(
-			DLPortletKeys.DOCUMENT_LIBRARY, DLConstants.SERVICE_NAME,
-			PortletKeys.PREFS_OWNER_TYPE_GROUP, true);
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection()) {
+			upgradeMainPortlet(
+				con, DLPortletKeys.DOCUMENT_LIBRARY, DLConstants.SERVICE_NAME,
+				PortletKeys.PREFS_OWNER_TYPE_GROUP, true);
 
-		upgradeDisplayPortlet(
-			DLPortletKeys.DOCUMENT_LIBRARY_DISPLAY, DLConstants.SERVICE_NAME,
-			PortletKeys.PREFS_OWNER_TYPE_LAYOUT);
-		upgradeDisplayPortlet(
-			DLPortletKeys.MEDIA_GALLERY_DISPLAY, DLConstants.SERVICE_NAME,
-			PortletKeys.PREFS_OWNER_TYPE_LAYOUT);
+			upgradeDisplayPortlet(
+				con, DLPortletKeys.DOCUMENT_LIBRARY_DISPLAY,
+				DLConstants.SERVICE_NAME, PortletKeys.PREFS_OWNER_TYPE_LAYOUT);
+			upgradeDisplayPortlet(
+				con, DLPortletKeys.MEDIA_GALLERY_DISPLAY,
+				DLConstants.SERVICE_NAME, PortletKeys.PREFS_OWNER_TYPE_LAYOUT);
+		}
 	}
 
 }
