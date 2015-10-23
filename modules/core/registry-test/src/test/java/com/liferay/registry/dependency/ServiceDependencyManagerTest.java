@@ -333,11 +333,11 @@ public class ServiceDependencyManagerTest {
 		try {
 			Thread.sleep(250);
 
-			if (!dependencyWaiter.isAlive()) {
-				Assert.assertFalse(dependenciesSatisfied.get());
+			if (dependencyWaiter.isAlive()) {
+				Assert.fail("Dependencies should have timed out");
 			}
 
-			Assert.fail("Dependencies should have timed out");
+			Assert.assertFalse(dependenciesSatisfied.get());
 		}
 		catch (InterruptedException ie) {
 		}
