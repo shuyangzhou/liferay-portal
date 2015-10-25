@@ -20,6 +20,7 @@ import com.liferay.portal.captcha.recaptcha.ReCaptchaImpl;
 import com.liferay.portal.captcha.simplecaptcha.SimpleCaptchaImpl;
 import com.liferay.portal.convert.ConvertException;
 import com.liferay.portal.convert.ConvertProcess;
+import com.liferay.portal.kernel.backgroundtask.BackgroundTaskConstants;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskManagerUtil;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.cache.MultiVMPoolUtil;
@@ -37,7 +38,10 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.log.SanitizerLogWrapper;
 import com.liferay.portal.kernel.mail.Account;
 import com.liferay.portal.kernel.messaging.DestinationNames;
+import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
+import com.liferay.portal.kernel.messaging.MessageListener;
+import com.liferay.portal.kernel.messaging.MessageListenerException;
 import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
@@ -99,6 +103,8 @@ import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -385,7 +391,8 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 
 		Map<String, Serializable> taskContextMap = new HashMap<>();
 
-		String className = ParamUtil.getString(actionRequest, "className");
+		final String className = ParamUtil.getString(
+			actionRequest, "className");
 
 		taskContextMap.put("className", className);
 
@@ -393,17 +400,74 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 
 		taskContextMap.put("companyIds", companyIds);
 
-		String taskExecutorClassName =
-			_CLASS_NAME_REINDEX_PORTAL_BACKGROUND_TASK_EXECUTOR;
+		String taskExecutorClassName = _REINDEX_PORTAL_BACKGROUND_TASK_EXECUTOR;
 
 		if (Validator.isNotNull(className)) {
 			taskExecutorClassName =
-				_CLASS_NAME_REINDEX_SINGLE_INDEXER_BACKGROUND_TASK_EXECUTOR;
+				_REINDEX_SINGLE_INDEXER_BACKGROUND_TASK_EXECUTOR;
 		}
 
-		BackgroundTaskManagerUtil.addBackgroundTask(
-			themeDisplay.getUserId(), CompanyConstants.SYSTEM, "reindex",
-			taskExecutorClassName, taskContextMap, new ServiceContext());
+		boolean blocking = ParamUtil.getBoolean(
+			actionRequest, "blocking", false);
+
+		if (blocking) {
+			final CountDownLatch countDownLatch = new CountDownLatch(1);
+
+			MessageListener messageListener = new MessageListener() {
+
+				@Override
+				public void receive(Message message)
+					throws MessageListenerException {
+
+					String taskExecutorClassName = message.getString(
+						"taskExecutorClassName");
+
+					String expectedExecutorName =
+						_REINDEX_PORTAL_BACKGROUND_TASK_EXECUTOR;
+
+					if (Validator.isNotNull(className)) {
+						expectedExecutorName =
+							_REINDEX_SINGLE_INDEXER_BACKGROUND_TASK_EXECUTOR;
+					}
+
+					if (taskExecutorClassName.equals(expectedExecutorName)) {
+						int status = message.getInteger("status");
+
+						if ((status ==
+							BackgroundTaskConstants.STATUS_CANCELLED) ||
+							(status == BackgroundTaskConstants.STATUS_FAILED) ||
+							(status ==
+								BackgroundTaskConstants.STATUS_SUCCESSFUL))
+
+							countDownLatch.countDown();
+					}
+				}
+			};
+
+			MessageBusUtil.registerMessageListener(
+				DestinationNames.BACKGROUND_TASK_STATUS, messageListener);
+
+			long timeout = ParamUtil.getLong(
+				actionRequest, "timeout", Time.HOUR);
+
+			try {
+				BackgroundTaskManagerUtil.addBackgroundTask(
+					themeDisplay.getUserId(), CompanyConstants.SYSTEM,
+					"reindex", taskExecutorClassName, taskContextMap,
+					new ServiceContext());
+
+				countDownLatch.await(timeout, TimeUnit.MILLISECONDS);
+			}
+			finally {
+				MessageBusUtil.unregisterMessageListener(
+					DestinationNames.BACKGROUND_TASK_STATUS, messageListener);
+			}
+		}
+		else {
+			BackgroundTaskManagerUtil.addBackgroundTask(
+				themeDisplay.getUserId(), CompanyConstants.SYSTEM, "reindex",
+				taskExecutorClassName, taskContextMap, new ServiceContext());
+		}
 	}
 
 	protected void reindexDictionaries(ActionRequest actionRequest)
@@ -861,12 +925,12 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 	}
 
 	private static final String
-		_CLASS_NAME_REINDEX_PORTAL_BACKGROUND_TASK_EXECUTOR =
+		_REINDEX_PORTAL_BACKGROUND_TASK_EXECUTOR =
 			"com.liferay.portal.search.internal.background.task." +
 				"ReindexPortalBackgroundTaskExecutor";
 
 	private static final String
-		_CLASS_NAME_REINDEX_SINGLE_INDEXER_BACKGROUND_TASK_EXECUTOR =
+		_REINDEX_SINGLE_INDEXER_BACKGROUND_TASK_EXECUTOR =
 			"com.liferay.portal.search.internal.background.task." +
 				"ReindexSingleIndexerBackgroundTaskExecutor";
 
