@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.cal.Recurrence;
 import com.liferay.portal.kernel.cal.RecurrenceSerializer;
 import com.liferay.portal.kernel.cluster.ClusterLink;
 import com.liferay.portal.kernel.cluster.ClusterMasterExecutor;
+import com.liferay.portal.kernel.cluster.ClusterableProxyFactory;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -39,6 +40,7 @@ import com.liferay.portal.kernel.scheduler.TriggerState;
 import com.liferay.portal.kernel.scheduler.messaging.SchedulerResponse;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.InetAddressUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -46,6 +48,7 @@ import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CompanyConstants;
+import com.liferay.portal.util.IdentifiableOSGIService;
 import com.liferay.portal.util.PortalUtil;
 
 import java.util.ArrayList;
@@ -59,6 +62,7 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Filter;
 import org.osgi.framework.ServiceReference;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -748,6 +752,8 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 		_auditMessageSchedulerJob = GetterUtil.getBoolean(
 			_props.get(PropsKeys.AUDIT_MESSAGE_SCHEDULER_JOB));
 
+		_bundleContext = componentContext.getBundleContext();
+
 		if (_clusterLink.isEnabled() &&
 			GetterUtil.getBoolean(_props.get(PropsKeys.SCHEDULER_ENABLED))) {
 
@@ -759,12 +765,15 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 			clusterSchedulerEngine.setProps(_props);
 			clusterSchedulerEngine.setSchedulerEngineHelper(this);
 
-			_schedulerEngine = clusterSchedulerEngine;
+			_serviceRegistration = _bundleContext.registerService(
+				IdentifiableOSGIService.class, clusterSchedulerEngine,
+				new HashMapDictionary<String, Object>());
+
+			_schedulerEngine = ClusterableProxyFactory.createClusterableProxy(
+				clusterSchedulerEngine);
 		}
 
 		if (GetterUtil.getBoolean(_props.get(PropsKeys.SCHEDULER_ENABLED))) {
-			_bundleContext = componentContext.getBundleContext();
-
 			Filter filter = _bundleContext.createFilter(
 				"(&(javax.portlet.name=*)(objectClass=" +
 					SchedulerEntry.class.getName() + "))");
@@ -791,6 +800,10 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 			_serviceTracker.close();
 
 			_serviceTracker = null;
+		}
+
+		if (_serviceRegistration != null) {
+			_serviceRegistration.unregister();
 		}
 
 		try {
@@ -860,6 +873,7 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 	private JSONFactory _jsonFactory;
 	private Props _props;
 	private SchedulerEngine _schedulerEngine;
+	private ServiceRegistration<IdentifiableOSGIService> _serviceRegistration;
 	private volatile ServiceTracker<SchedulerEntry, SchedulerEntry>
 		_serviceTracker;
 
