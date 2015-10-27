@@ -1,0 +1,3 @@
+Bundle-SymbolicName: eclipse-osgi
+Bundle-Version: 1.0.LIFERAY-PATCHED-1
+Include-Resource: classes

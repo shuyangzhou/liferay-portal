@@ -1,0 +1,36 @@
+import com.liferay.gradle.plugins.patcher.PatchTask
+import com.liferay.gradle.util.FileUtil
+
+apply plugin: "com.liferay.patcher"
+
+String eclipseOsgiVersion = "3.10.200-20150904.172142-1"
+
+dependencies {
+	compile group: "org.eclipse.osgi", name: "org.eclipse.osgi", version: eclipseOsgiVersion
+}
+
+liferay {
+	deployDir = file("${liferayHome}/osgi/core")
+}
+
+sourceCompatibility = "1.6"
+targetCompatibility = "1.6"
+
+task patch(type: PatchTask)
+
+patch {
+	ext {
+		autoClean = false
+	}
+
+	fileNames "org/eclipse/osgi/framework/eventmgr/EventManager.java"
+	fileNames "org/eclipse/osgi/framework/eventmgr/ListenerQueue.java"
+	fileNames "org/eclipse/osgi/internal/serviceregistry/FilteredServiceListener.java"
+	fileNames "org/osgi/util/tracker/AbstractTracked.java"
+
+	originalLibModuleName = "org.eclipse.osgi"
+
+	originalLibSrcFile = {
+		FileUtil.get(project, "http://cdn.repository.liferay.com/nexus/content/groups/public/org/eclipse/osgi/org.eclipse.osgi/3.10.200-SNAPSHOT/org.eclipse.osgi-${eclipseOsgiVersion}-sources.jar")
+	}
+}
