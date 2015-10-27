@@ -2045,6 +2045,8 @@ module.framework.base.dir=${liferay.home}/osgi]]></echo>
 			<setup-testable-tomcat-manager />
 
 			<setup-testable-tomcat-osgi-modules />
+
+			<gradle-execute dir="${project.dir}/modules/third-party/org-apache-felix" task="deploy" />
 		</sequential>
 	</macrodef>
 
@@ -5730,7 +5732,8 @@ module.framework.properties.osgi.console=11312</echo>
 	</target>
 
 	<target name="prepare-system-ext-properties">
-		<echo file="${app.server.classes.portal.dir}/system-ext.properties">log.sanitizer.enabled=false</echo>
+		<echo file="${app.server.classes.portal.dir}/system-ext.properties">log.sanitizer.enabled=false
+</echo>
 	</target>
 
 	<target name="prepare-test-build">
