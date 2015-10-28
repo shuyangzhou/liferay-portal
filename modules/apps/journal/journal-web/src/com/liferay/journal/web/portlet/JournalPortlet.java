@@ -1358,7 +1358,8 @@ public class JournalPortlet extends MVCPortlet {
 	private volatile DDMStructureLocalService _ddmStructureLocalService;
 	private ItemSelector _itemSelector;
 	private volatile JournalArticleService _journalArticleService;
-	private volatile JournalContentSearchLocalService _journalContentSearchLocalService;
+	private volatile JournalContentSearchLocalService
+		_journalContentSearchLocalService;
 	private volatile JournalFeedService _journalFeedService;
 	private volatile JournalFolderService _journalFolderService;
 	private volatile LayoutLocalService _layoutLocalService;
