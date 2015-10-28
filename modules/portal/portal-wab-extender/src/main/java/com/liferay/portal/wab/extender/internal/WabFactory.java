@@ -154,7 +154,7 @@ public class WabFactory extends AbstractExtender {
 	private BundleContext _bundleContext;
 	private EventUtil _eventUtil;
 	private Logger _logger;
-	private SAXParserFactory _saxParserFactory;
+	private volatile SAXParserFactory _saxParserFactory;
 	private WabExtenderConfiguration _wabExtenderConfiguration;
 	private WebBundleDeployer _webBundleDeployer;
 

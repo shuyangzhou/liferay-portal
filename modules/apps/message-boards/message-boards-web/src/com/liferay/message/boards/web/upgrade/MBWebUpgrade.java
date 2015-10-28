@@ -64,7 +64,7 @@ public class MBWebUpgrade {
 			"com.liferay.message.boards.web", upgradeProcesses, 1, 1, false);
 	}
 
-	private ReleaseLocalService _releaseLocalService;
-	private SettingsFactory _settingsFactory;
+	private volatile ReleaseLocalService _releaseLocalService;
+	private volatile SettingsFactory _settingsFactory;
 
 }

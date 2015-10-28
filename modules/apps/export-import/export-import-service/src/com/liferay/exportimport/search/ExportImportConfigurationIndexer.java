@@ -337,7 +337,7 @@ public class ExportImportConfigurationIndexer
 	private static final Log _log = LogFactoryUtil.getLog(
 		ExportImportConfigurationIndexer.class);
 
-	private ExportImportConfigurationLocalService
+	private volatile ExportImportConfigurationLocalService
 		_exportImportConfigurationLocalService;
 
 }

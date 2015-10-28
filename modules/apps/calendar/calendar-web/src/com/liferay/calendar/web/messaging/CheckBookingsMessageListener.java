@@ -90,7 +90,7 @@ public class CheckBookingsMessageListener
 	protected void setTriggerFactory(TriggerFactory triggerFactory) {
 	}
 
-	private CalendarBookingLocalService _calendarBookingLocalService;
-	private SchedulerEngineHelper _schedulerEngineHelper;
+	private volatile CalendarBookingLocalService _calendarBookingLocalService;
+	private volatile SchedulerEngineHelper _schedulerEngineHelper;
 
 }

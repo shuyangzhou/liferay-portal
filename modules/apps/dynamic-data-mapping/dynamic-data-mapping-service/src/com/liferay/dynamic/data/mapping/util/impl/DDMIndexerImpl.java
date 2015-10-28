@@ -399,6 +399,6 @@ public class DDMIndexerImpl implements DDMIndexer {
 
 	private static final Log _log = LogFactoryUtil.getLog(DDMIndexerImpl.class);
 
-	private DDMStructureLocalService _ddmStructureLocalService;
+	private volatile DDMStructureLocalService _ddmStructureLocalService;
 
 }

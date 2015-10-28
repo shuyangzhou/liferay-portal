@@ -219,10 +219,10 @@ public class MonitoringFilter extends BaseFilter
 	private static final Log _log = LogFactoryUtil.getLog(
 		MonitoringFilter.class);
 
-	private DataSampleFactory _dataSampleFactory;
+	private volatile DataSampleFactory _dataSampleFactory;
 	private volatile LayoutLocalService _layoutLocalService;
 	private boolean _monitorPortalRequest;
 	private PortletMonitoringControl _portletMonitoringControl;
-	private ServiceMonitoringControl _serviceMonitoringControl;
+	private volatile ServiceMonitoringControl _serviceMonitoringControl;
 
 }

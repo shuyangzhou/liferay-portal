@@ -286,7 +286,7 @@ public class EditLDAPServerMVCActionCommand extends BaseMVCActionCommand {
 		PropsKeys.LDAP_USER_MAPPINGS, PropsKeys.LDAP_USERS_DN
 	};
 
-	private CompanyService _companyService;
-	private CounterLocalService _counterLocalService;
+	private volatile CompanyService _companyService;
+	private volatile CounterLocalService _counterLocalService;
 
 }

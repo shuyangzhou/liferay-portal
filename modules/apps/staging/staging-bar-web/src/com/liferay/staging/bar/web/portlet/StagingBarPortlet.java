@@ -529,10 +529,10 @@ public class StagingBarPortlet extends MVCPortlet {
 		_layoutSetLocalService = null;
 	}
 
-	private LayoutBranchService _layoutBranchService;
-	private LayoutRevisionLocalService _layoutRevisionLocalService;
-	private LayoutSetBranchLocalService _layoutSetBranchLocalService;
-	private LayoutSetBranchService _layoutSetBranchService;
-	private LayoutSetLocalService _layoutSetLocalService;
+	private volatile LayoutBranchService _layoutBranchService;
+	private volatile LayoutRevisionLocalService _layoutRevisionLocalService;
+	private volatile LayoutSetBranchLocalService _layoutSetBranchLocalService;
+	private volatile LayoutSetBranchService _layoutSetBranchService;
+	private volatile LayoutSetLocalService _layoutSetLocalService;
 
 }

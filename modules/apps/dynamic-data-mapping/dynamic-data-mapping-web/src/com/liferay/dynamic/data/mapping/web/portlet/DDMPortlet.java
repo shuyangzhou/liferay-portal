@@ -234,7 +234,7 @@ public class DDMPortlet extends MVCPortlet {
 
 	private static final Log _log = LogFactoryUtil.getLog(DDMPortlet.class);
 
-	private DDMStructureLocalService _ddmStructureLocalService;
-	private DDMTemplateLocalService _ddmTemplateLocalService;
+	private volatile DDMStructureLocalService _ddmStructureLocalService;
+	private volatile DDMTemplateLocalService _ddmTemplateLocalService;
 
 }

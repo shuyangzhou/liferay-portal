@@ -1355,13 +1355,14 @@ public class JournalPortlet extends MVCPortlet {
 
 	private static final Log _log = LogFactoryUtil.getLog(JournalPortlet.class);
 
-	private DDMStructureLocalService _ddmStructureLocalService;
+	private volatile DDMStructureLocalService _ddmStructureLocalService;
 	private ItemSelector _itemSelector;
-	private JournalArticleService _journalArticleService;
-	private JournalContentSearchLocalService _journalContentSearchLocalService;
-	private JournalFeedService _journalFeedService;
-	private JournalFolderService _journalFolderService;
-	private LayoutLocalService _layoutLocalService;
-	private TrashEntryService _trashEntryService;
+	private volatile JournalArticleService _journalArticleService;
+	private volatile JournalContentSearchLocalService
+		_journalContentSearchLocalService;
+	private volatile JournalFeedService _journalFeedService;
+	private volatile JournalFolderService _journalFolderService;
+	private volatile LayoutLocalService _layoutLocalService;
+	private volatile TrashEntryService _trashEntryService;
 
 }

@@ -290,11 +290,11 @@ public class JournalArticleAssetRendererFactory
 		_journalArticleService = journalArticleService;
 	}
 
-	private DDMStructureLocalService _ddmStructureLocalService;
-	private JournalArticleLocalService _journalArticleLocalService;
-	private JournalArticleResourceLocalService
+	private volatile DDMStructureLocalService _ddmStructureLocalService;
+	private volatile JournalArticleLocalService _journalArticleLocalService;
+	private volatile JournalArticleResourceLocalService
 		_journalArticleResourceLocalService;
-	private JournalArticleService _journalArticleService;
+	private volatile JournalArticleService _journalArticleService;
 	private ServletContext _servletContext;
 
 }

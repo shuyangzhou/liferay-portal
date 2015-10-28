@@ -336,6 +336,39 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 		}
 	}
 
+	protected String checkReferenceFields(String content) {
+		Matcher setReferenceMethodMatcher = _setReferenceMethodPattern.matcher(
+			content);
+
+		while (setReferenceMethodMatcher.find()) {
+			String typeName = setReferenceMethodMatcher.group(3);
+			String variableName = setReferenceMethodMatcher.group(4);
+
+			StringBundler sb = new StringBundler(5);
+
+			sb.append("private ");
+			sb.append(typeName);
+			sb.append("\\s+");
+			sb.append(variableName);
+			sb.append(StringPool.SEMICOLON);
+
+			Pattern pattern = Pattern.compile(sb.toString());
+
+			Matcher matcher = pattern.matcher(content);
+
+			if (matcher.find()) {
+				String match = matcher.group();
+
+				String replacement = StringUtil.replace(
+					match, "private ", "private volatile ");
+
+				return StringUtil.replace(content, match, replacement);
+			}
+		}
+
+		return content;
+	}
+
 	protected void checkRegexPattern(
 		String regexPattern, String fileName, int lineCount) {
 
@@ -940,6 +973,10 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 		// LPS-48156
 
 		newContent = checkPrincipalException(newContent);
+
+		// LPS-59841
+
+		newContent = checkReferenceFields(newContent);
 
 		newContent = getCombinedLinesContent(
 			newContent, _combinedLinesPattern1);
@@ -3100,6 +3137,21 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 						"\n" + firstLine + "\n" + secondLine + "\n");
 				}
 			}
+			else {
+				x = line.lastIndexOf(StringPool.SPACE);
+
+				if (x != -1) {
+					String firstLine = line.substring(0, x);
+					String secondLine =
+						indent + StringPool.TAB + line.substring(x + 1);
+
+					if (getLineLength(secondLine) <= _MAX_LINE_LENGTH) {
+						return StringUtil.replace(
+							content, "\n" + line + "\n",
+							"\n" + firstLine + "\n" + secondLine + "\n");
+					}
+				}
+			}
 		}
 
 		if (line.contains(StringPool.TAB + "for (") && line.endsWith(" {")) {
@@ -3296,6 +3348,9 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 	private Pattern _redundantCommaPattern = Pattern.compile(",\n\t+\\}");
 	private List<String> _secureRandomExclusionFiles;
 	private List<String> _secureXmlExclusionFiles;
+	private Pattern _setReferenceMethodPattern = Pattern.compile(
+		"@Reference(.*|\\(\n(.*\n)*?\t*\\))\\s+protected void set\\w+?\\(\\s*" +
+			"([ ,<>\\w]+)\\s+\\w+\\) \\{\\s+(\\w+) =\\s+\\w+;\\s+\\}");
 	private Pattern _stagedModelTypesPattern = Pattern.compile(
 		"StagedModelType\\(([a-zA-Z.]*(class|getClassName[\\(\\)]*))\\)");
 	private List<String> _staticLogVariableExclusionFiles;

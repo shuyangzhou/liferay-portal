@@ -155,6 +155,6 @@ public class FullPageApplicationLayoutTypeController
 	private static final String _VIEW_PAGE =
 		"/layout/view/full_page_application.jsp";
 
-	private PortletLocalService _portletLocalService;
+	private volatile PortletLocalService _portletLocalService;
 
 }

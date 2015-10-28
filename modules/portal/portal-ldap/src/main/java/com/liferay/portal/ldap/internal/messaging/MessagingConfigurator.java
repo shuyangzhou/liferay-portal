@@ -137,9 +137,9 @@ public class MessagingConfigurator {
 	private static final Log _log = LogFactoryUtil.getLog(
 		MessagingConfigurator.class);
 
-	private ConfigurationProvider<LDAPImportConfiguration>
+	private volatile ConfigurationProvider<LDAPImportConfiguration>
 		_ldapImportConfigurationProvider;
-	private SchedulerEngineHelper _schedulerEngineHelper;
+	private volatile SchedulerEngineHelper _schedulerEngineHelper;
 	private ServiceRegistration<DestinationConfiguration> _serviceRegistration;
 
 }

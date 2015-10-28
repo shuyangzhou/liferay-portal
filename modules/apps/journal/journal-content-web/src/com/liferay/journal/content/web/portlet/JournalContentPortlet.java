@@ -177,6 +177,6 @@ public class JournalContentPortlet extends MVCPortlet {
 		_journalArticleLocalService = null;
 	}
 
-	private JournalArticleLocalService _journalArticleLocalService;
+	private volatile JournalArticleLocalService _journalArticleLocalService;
 
 }

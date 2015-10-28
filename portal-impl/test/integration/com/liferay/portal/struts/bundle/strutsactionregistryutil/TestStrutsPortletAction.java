@@ -105,6 +105,6 @@ public class TestStrutsPortletAction implements StrutsPortletAction {
 		_atomicReference = atomicReference;
 	}
 
-	private AtomicReference<String> _atomicReference;
+	private volatile AtomicReference<String> _atomicReference;
 
 }
