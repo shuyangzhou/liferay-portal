@@ -64,9 +64,9 @@ public class QuartzSchedulerEngineConfigurator {
 		destination.unregister(_proxyMessageListener);
 	}
 
-	private MessageBus _messageBus;
+	private volatile MessageBus _messageBus;
 	private final ProxyMessageListener _proxyMessageListener =
 		new ProxyMessageListener();
-	private SchedulerEngine _schedulerEngine;
+	private volatile SchedulerEngine _schedulerEngine;
 
 }

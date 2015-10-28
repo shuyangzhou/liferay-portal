@@ -169,6 +169,6 @@ public class TestSiteMembershipPolicy implements SiteMembershipPolicy {
 		_atomicReference = atomicReference;
 	}
 
-	private AtomicReference<String> _atomicReference;
+	private volatile AtomicReference<String> _atomicReference;
 
 }

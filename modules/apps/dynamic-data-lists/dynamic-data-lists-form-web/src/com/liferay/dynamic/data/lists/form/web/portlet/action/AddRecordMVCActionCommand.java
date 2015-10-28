@@ -98,8 +98,8 @@ public class AddRecordMVCActionCommand extends BaseMVCActionCommand {
 		_ddmFormValuesFactory = ddmFormValuesFactory;
 	}
 
-	private DDLRecordService _ddlRecordService;
-	private DDLRecordSetService _ddlRecordSetService;
-	private DDMFormValuesFactory _ddmFormValuesFactory;
+	private volatile DDLRecordService _ddlRecordService;
+	private volatile DDLRecordSetService _ddlRecordSetService;
+	private volatile DDMFormValuesFactory _ddmFormValuesFactory;
 
 }

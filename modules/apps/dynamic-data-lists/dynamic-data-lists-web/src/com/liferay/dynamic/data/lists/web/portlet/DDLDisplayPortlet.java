@@ -189,6 +189,6 @@ public class DDLDisplayPortlet extends MVCPortlet {
 		DDLDisplayPortlet.class);
 
 	private DDLRecordService _ddlRecordService;
-	private DDLRecordSetService _ddlRecordSetService;
+	private volatile DDLRecordSetService _ddlRecordSetService;
 
 }

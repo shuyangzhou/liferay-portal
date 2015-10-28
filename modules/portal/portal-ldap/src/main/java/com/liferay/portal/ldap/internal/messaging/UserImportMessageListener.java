@@ -92,9 +92,9 @@ public class UserImportMessageListener extends BaseMessageListener {
 		_ldapUserImporter = ldapUserImporter;
 	}
 
-	private CompanyLocalService _companyLocalService;
-	private ConfigurationProvider<LDAPImportConfiguration>
+	private volatile CompanyLocalService _companyLocalService;
+	private volatile ConfigurationProvider<LDAPImportConfiguration>
 		_ldapImportConfigurationProvider;
-	private LDAPUserImporter _ldapUserImporter;
+	private volatile LDAPUserImporter _ldapUserImporter;
 
 }

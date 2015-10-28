@@ -56,6 +56,6 @@ public class SocialGroupStatisticsWebUpgrade {
 			false);
 	}
 
-	private ReleaseLocalService _releaseLocalService;
+	private volatile ReleaseLocalService _releaseLocalService;
 
 }

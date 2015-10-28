@@ -358,7 +358,7 @@ public class MBCommentManagerImpl implements CommentManager {
 
 	private MBDiscussionLocalService _mbDiscussionLocalService;
 	private MBMessageLocalService _mbMessageLocalService;
-	private MBThreadLocalService _mbThreadLocalService;
+	private volatile MBThreadLocalService _mbThreadLocalService;
 	private RatingsEntryLocalService _ratingsEntryLocalService;
 	private RatingsStatsLocalService _ratingsStatsLocalService;
 

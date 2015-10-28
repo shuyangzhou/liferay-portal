@@ -65,6 +65,6 @@ public class TestAuthFailure implements AuthFailure {
 		_atomicReference = atomicReference;
 	}
 
-	private AtomicReference<String> _atomicReference;
+	private volatile AtomicReference<String> _atomicReference;
 
 }

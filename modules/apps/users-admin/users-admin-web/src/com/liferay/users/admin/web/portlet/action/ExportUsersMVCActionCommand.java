@@ -276,6 +276,6 @@ public class ExportUsersMVCActionCommand extends BaseMVCActionCommand {
 		_userLocalService = userLocalService;
 	}
 
-	private UserLocalService _userLocalService;
+	private volatile UserLocalService _userLocalService;
 
 }

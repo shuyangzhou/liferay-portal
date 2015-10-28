@@ -176,7 +176,7 @@ public class StagingConfigurationPortlet extends MVCPortlet {
 		_stagingLocalService = null;
 	}
 
-	private GroupLocalService _groupLocalService;
-	private StagingLocalService _stagingLocalService;
+	private volatile GroupLocalService _groupLocalService;
+	private volatile StagingLocalService _stagingLocalService;
 
 }

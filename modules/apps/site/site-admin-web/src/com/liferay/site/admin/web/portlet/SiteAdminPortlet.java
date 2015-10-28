@@ -894,8 +894,8 @@ public class SiteAdminPortlet extends MVCPortlet {
 		TransactionAttribute.Factory.create(
 			Propagation.REQUIRED, new Class<?>[] {Exception.class});
 
-	private PanelAppRegistry _panelAppRegistry;
-	private PanelCategoryRegistry _panelCategoryRegistry;
+	private volatile PanelAppRegistry _panelAppRegistry;
+	private volatile PanelCategoryRegistry _panelCategoryRegistry;
 
 	private class GroupCallable implements Callable<Group> {
 

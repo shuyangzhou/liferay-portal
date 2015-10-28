@@ -172,8 +172,8 @@ public class TempFileEntriesMessageListener
 		TempFileEntriesMessageListener.class);
 
 	private volatile DLConfiguration _dlConfiguration;
-	private RepositoryLocalService _repositoryLocalService;
-	private RepositoryProvider _repositoryProvider;
-	private SchedulerEngineHelper _schedulerEngineHelper;
+	private volatile RepositoryLocalService _repositoryLocalService;
+	private volatile RepositoryProvider _repositoryProvider;
+	private volatile SchedulerEngineHelper _schedulerEngineHelper;
 
 }

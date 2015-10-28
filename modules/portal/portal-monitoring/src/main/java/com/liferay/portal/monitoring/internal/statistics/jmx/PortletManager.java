@@ -372,6 +372,6 @@ public class PortletManager
 	}
 
 	private PortletSummaryStatistics _portletSummaryStatistics;
-	private ServerStatistics _serverStatistics;
+	private volatile ServerStatistics _serverStatistics;
 
 }

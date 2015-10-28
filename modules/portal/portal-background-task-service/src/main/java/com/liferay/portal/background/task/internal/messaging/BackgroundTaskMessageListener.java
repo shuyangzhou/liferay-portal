@@ -298,9 +298,9 @@ public class BackgroundTaskMessageListener extends BaseMessageListener {
 		BackgroundTaskMessageListener.class);
 
 	private BackgroundTaskExecutorRegistry _backgroundTaskExecutorRegistry;
-	private BackgroundTaskManager _backgroundTaskManager;
-	private BackgroundTaskStatusRegistry _backgroundTaskStatusRegistry;
-	private BackgroundTaskThreadLocalManager _backgroundTaskThreadLocalManager;
-	private MessageBus _messageBus;
+	private volatile BackgroundTaskManager _backgroundTaskManager;
+	private volatile BackgroundTaskStatusRegistry _backgroundTaskStatusRegistry;
+	private volatile BackgroundTaskThreadLocalManager _backgroundTaskThreadLocalManager;
+	private volatile MessageBus _messageBus;
 
 }

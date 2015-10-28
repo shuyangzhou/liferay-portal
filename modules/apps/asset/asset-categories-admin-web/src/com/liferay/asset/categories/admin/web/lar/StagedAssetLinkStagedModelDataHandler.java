@@ -302,7 +302,7 @@ public class StagedAssetLinkStagedModelDataHandler
 		_assetLinkLocalService = assetLinkLocalService;
 	}
 
-	private AssetEntryLocalService _assetEntryLocalService;
-	private AssetLinkLocalService _assetLinkLocalService;
+	private volatile AssetEntryLocalService _assetEntryLocalService;
+	private volatile AssetLinkLocalService _assetLinkLocalService;
 
 }

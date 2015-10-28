@@ -245,8 +245,8 @@ public class AssetCategoryPortletDataHandler extends BasePortletDataHandler {
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
 
-	private AssetCategoryLocalService _assetCategoryLocalService;
-	private AssetLinkLocalService _assetLinkLocalService;
-	private AssetVocabularyLocalService _assetVocabularyLocalService;
+	private volatile AssetCategoryLocalService _assetCategoryLocalService;
+	private volatile AssetLinkLocalService _assetLinkLocalService;
+	private volatile AssetVocabularyLocalService _assetVocabularyLocalService;
 
 }

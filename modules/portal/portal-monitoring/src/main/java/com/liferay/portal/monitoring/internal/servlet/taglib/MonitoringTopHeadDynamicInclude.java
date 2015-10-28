@@ -89,7 +89,7 @@ public class MonitoringTopHeadDynamicInclude extends BaseDynamicInclude {
 		_dataSampleFactory = dataSampleFactory;
 	}
 
-	private DataSampleFactory _dataSampleFactory;
+	private volatile DataSampleFactory _dataSampleFactory;
 	private volatile MonitoringConfiguration _monitoringConfiguration;
 
 }

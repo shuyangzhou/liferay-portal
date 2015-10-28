@@ -111,9 +111,9 @@ public class ExportImportLifecycleManagerImpl
 		_messageBus = messageBus;
 	}
 
-	private ExportImportLifecycleEventFactory
+	private volatile ExportImportLifecycleEventFactory
 		_exportImportLifecycleEventFactory;
-	private MessageBus _messageBus;
+	private volatile MessageBus _messageBus;
 	private final Set<ServiceRegistration<DestinationConfiguration>>
 		_serviceRegistrations = new HashSet<>();
 

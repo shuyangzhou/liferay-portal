@@ -536,7 +536,7 @@ public class BackgroundTaskManagerImpl implements BackgroundTaskManager {
 			"Invalid class " + ClassUtil.getClassName(orderByComparator));
 	}
 
-	private BackgroundTaskLocalService _backgroundTaskLocalService;
+	private volatile BackgroundTaskLocalService _backgroundTaskLocalService;
 	private final Set<ServiceRegistration<DestinationConfiguration>>
 		_serviceRegistrations = new HashSet<>();
 

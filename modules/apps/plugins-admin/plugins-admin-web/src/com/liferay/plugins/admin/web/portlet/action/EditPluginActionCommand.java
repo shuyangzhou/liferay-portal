@@ -110,7 +110,7 @@ public class EditPluginActionCommand extends BaseMVCActionCommand {
 		}
 	}
 
-	private PluginSettingService _pluginSettingService;
-	private PortletService _portletService;
+	private volatile PluginSettingService _pluginSettingService;
+	private volatile PortletService _portletService;
 
 }

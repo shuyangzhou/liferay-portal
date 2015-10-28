@@ -55,6 +55,6 @@ public class TestAutoLogin implements AutoLogin {
 		_atomicReference = atomicReference;
 	}
 
-	private AtomicReference<String> _atomicReference;
+	private volatile AtomicReference<String> _atomicReference;
 
 }

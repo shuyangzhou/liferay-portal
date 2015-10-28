@@ -66,6 +66,6 @@ public class TestActionFilter implements ActionFilter {
 		_atomicReference = atomicReference;
 	}
 
-	private AtomicReference<String> _atomicReference;
+	private volatile AtomicReference<String> _atomicReference;
 
 }

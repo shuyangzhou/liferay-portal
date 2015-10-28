@@ -163,6 +163,6 @@ public class MentionsPortlet extends MVCPortlet {
 	private static final Log _log = LogFactoryUtil.getLog(
 		MentionsPortlet.class);
 
-	private MentionsUserFinder _mentionsUserFinder;
+	private volatile MentionsUserFinder _mentionsUserFinder;
 
 }

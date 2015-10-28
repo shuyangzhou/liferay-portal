@@ -76,6 +76,6 @@ public class DataSampleFactoryImpl implements DataSampleFactory {
 		_portal = null;
 	}
 
-	private Portal _portal;
+	private volatile Portal _portal;
 
 }

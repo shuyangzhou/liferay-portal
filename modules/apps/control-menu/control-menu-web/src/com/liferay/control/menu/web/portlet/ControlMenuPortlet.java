@@ -152,7 +152,7 @@ public class ControlMenuPortlet extends MVCPortlet {
 		_controlMenuEntryRegistry = controlMenuEntryRegistry;
 	}
 
-	private ControlMenuCategoryRegistry _controlMenuCategoryRegistry;
-	private ControlMenuEntryRegistry _controlMenuEntryRegistry;
+	private volatile ControlMenuCategoryRegistry _controlMenuCategoryRegistry;
+	private volatile ControlMenuEntryRegistry _controlMenuEntryRegistry;
 
 }

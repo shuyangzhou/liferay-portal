@@ -53,6 +53,6 @@ public class TestSearchEngineConfigurator implements SearchEngineConfigurator {
 		_atomicReference = atomicReference;
 	}
 
-	private AtomicReference<String> _atomicReference;
+	private volatile AtomicReference<String> _atomicReference;
 
 }

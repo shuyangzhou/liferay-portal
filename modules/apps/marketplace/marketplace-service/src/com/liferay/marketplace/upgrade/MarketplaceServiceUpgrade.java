@@ -68,8 +68,8 @@ public class MarketplaceServiceUpgrade implements UpgradeStepRegistrator {
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
 
-	private ExpandoColumnLocalService _expandoColumnLocalService;
-	private ExpandoTableLocalService _expandoTableLocalService;
-	private ExpandoValueLocalService _expandoValueLocalService;
+	private volatile ExpandoColumnLocalService _expandoColumnLocalService;
+	private volatile ExpandoTableLocalService _expandoTableLocalService;
+	private volatile ExpandoValueLocalService _expandoValueLocalService;
 
 }

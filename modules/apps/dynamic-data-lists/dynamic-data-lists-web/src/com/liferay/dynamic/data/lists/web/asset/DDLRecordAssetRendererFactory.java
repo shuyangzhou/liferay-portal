@@ -169,7 +169,7 @@ public class DDLRecordAssetRendererFactory
 		_ddlRecordLocalService = ddlRecordLocalService;
 	}
 
-	private DDLRecordLocalService _ddlRecordLocalService;
+	private volatile DDLRecordLocalService _ddlRecordLocalService;
 	private ServletContext _servletContext;
 
 }

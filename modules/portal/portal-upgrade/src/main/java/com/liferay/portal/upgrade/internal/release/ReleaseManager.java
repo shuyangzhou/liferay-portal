@@ -233,9 +233,9 @@ public class ReleaseManager {
 
 	private OutputStreamContainerFactoryTracker
 		_outputStreamContainerFactoryTracker;
-	private ReleaseLocalService _releaseLocalService;
+	private volatile ReleaseLocalService _releaseLocalService;
 	private ReleaseManagerConfiguration _releaseManagerConfiguration;
-	private ReleasePublisher _releasePublisher;
+	private volatile ReleasePublisher _releasePublisher;
 	private ServiceTrackerMap<String, List<UpgradeInfo>> _serviceTrackerMap;
 
 	private class UpgradeInfoServiceTrackerMapListener

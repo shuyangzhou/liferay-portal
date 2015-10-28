@@ -64,6 +64,6 @@ public class PageFlagsWebUpgrade {
 			false);
 	}
 
-	private ReleaseLocalService _releaseLocalService;
+	private volatile ReleaseLocalService _releaseLocalService;
 
 }

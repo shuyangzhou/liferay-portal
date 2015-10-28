@@ -204,6 +204,6 @@ public class ResourcesImporterHotDeployMessageListener
 	private static final Log _log = LogFactoryUtil.getLog(
 		ResourcesImporterHotDeployMessageListener.class);
 
-	private CompanyLocalService _companyLocalService;
+	private volatile CompanyLocalService _companyLocalService;
 
 }

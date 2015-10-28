@@ -67,6 +67,6 @@ public class DDLServiceUpgrade {
 	private static final Log _log = LogFactoryUtil.getLog(
 		DDLServiceUpgrade.class);
 
-	private ReleaseLocalService _releaseLocalService;
+	private volatile ReleaseLocalService _releaseLocalService;
 
 }

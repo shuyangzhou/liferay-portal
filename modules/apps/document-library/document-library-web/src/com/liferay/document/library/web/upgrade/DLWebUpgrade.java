@@ -66,7 +66,7 @@ public class DLWebUpgrade {
 			"com.liferay.document.library.web", upgradeProcesses, 1, 1, false);
 	}
 
-	private ReleaseLocalService _releaseLocalService;
-	private SettingsFactory _settingsFactory;
+	private volatile ReleaseLocalService _releaseLocalService;
+	private volatile SettingsFactory _settingsFactory;
 
 }
