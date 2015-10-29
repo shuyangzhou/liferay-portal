@@ -23,7 +23,7 @@ import com.liferay.portal.util.PropsValues;
 import com.liferay.shopping.model.ShoppingCategory;
 import com.liferay.shopping.model.ShoppingCategoryConstants;
 import com.liferay.shopping.model.ShoppingItem;
-import com.liferay.shopping.service.ShoppingItemLocalServiceUtil;
+import com.liferay.shopping.service.ShoppingItemLocalService;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -65,7 +65,7 @@ public class ShoppingItemPermission implements BaseModelPermissionChecker {
 			PermissionChecker permissionChecker, long itemId, String actionId)
 		throws PortalException {
 
-		ShoppingItem item = ShoppingItemLocalServiceUtil.getItem(itemId);
+		ShoppingItem item = _shoppingItemLocalService.getItem(itemId);
 
 		return contains(permissionChecker, item, actionId);
 	}
@@ -126,6 +126,14 @@ public class ShoppingItemPermission implements BaseModelPermissionChecker {
 		_shoppingCategoryPermission = shoppingCategoryPermission;
 	}
 
+	@Reference(unbind = "-")
+	protected void setShoppingItemLocalService(
+		ShoppingItemLocalService shoppingItemLocalService) {
+
+		_shoppingItemLocalService = shoppingItemLocalService;
+	}
+
 	private static ShoppingCategoryPermission _shoppingCategoryPermission;
+	private static ShoppingItemLocalService _shoppingItemLocalService;
 
 }

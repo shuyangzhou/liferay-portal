@@ -19,9 +19,10 @@ import com.liferay.portal.security.auth.PrincipalException;
 import com.liferay.portal.security.permission.ActionKeys;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.shopping.model.ShoppingOrder;
-import com.liferay.shopping.service.ShoppingOrderLocalServiceUtil;
+import com.liferay.shopping.service.ShoppingOrderLocalService;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
@@ -62,7 +63,7 @@ public class ShoppingOrderPermission {
 			String actionId)
 		throws PortalException {
 
-		ShoppingOrder order = ShoppingOrderLocalServiceUtil.getOrder(orderId);
+		ShoppingOrder order = _shoppingOrderLocalService.getOrder(orderId);
 
 		return contains(permissionChecker, groupId, order, actionId);
 	}
@@ -88,5 +89,14 @@ public class ShoppingOrderPermission {
 			order.getGroupId(), ShoppingOrder.class.getName(),
 			order.getOrderId(), actionId);
 	}
+
+	@Reference(unbind = "-")
+	protected void setShoppingOrderLocalService(
+		ShoppingOrderLocalService shoppingOrderLocalService) {
+
+		_shoppingOrderLocalService = shoppingOrderLocalService;
+	}
+
+	private static ShoppingOrderLocalService _shoppingOrderLocalService;
 
 }

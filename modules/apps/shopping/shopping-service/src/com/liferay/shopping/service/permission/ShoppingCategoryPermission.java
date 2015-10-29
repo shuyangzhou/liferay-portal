@@ -22,9 +22,10 @@ import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.shopping.model.ShoppingCategory;
 import com.liferay.shopping.model.ShoppingCategoryConstants;
-import com.liferay.shopping.service.ShoppingCategoryLocalServiceUtil;
+import com.liferay.shopping.service.ShoppingCategoryLocalService;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
@@ -73,7 +74,7 @@ public class ShoppingCategoryPermission implements BaseModelPermissionChecker {
 		}
 		else {
 			ShoppingCategory category =
-				ShoppingCategoryLocalServiceUtil.getCategory(categoryId);
+				_shoppingCategoryLocalService.getCategory(categoryId);
 
 			return contains(permissionChecker, category, actionId);
 		}
@@ -96,7 +97,7 @@ public class ShoppingCategoryPermission implements BaseModelPermissionChecker {
 			while (categoryId !=
 						ShoppingCategoryConstants.DEFAULT_PARENT_CATEGORY_ID) {
 
-				category = ShoppingCategoryLocalServiceUtil.getCategory(
+				category = _shoppingCategoryLocalService.getCategory(
 					categoryId);
 
 				if (!_hasPermission(permissionChecker, category, actionId)) {
@@ -122,6 +123,13 @@ public class ShoppingCategoryPermission implements BaseModelPermissionChecker {
 		check(permissionChecker, groupId, primaryKey, actionId);
 	}
 
+	@Reference(unbind = "-")
+	protected void setShoppingCategoryLocalService(
+		ShoppingCategoryLocalService shoppingCategoryLocalService) {
+
+		_shoppingCategoryLocalService = shoppingCategoryLocalService;
+	}
+
 	private static boolean _hasPermission(
 		PermissionChecker permissionChecker, ShoppingCategory category,
 		String actionId) {
@@ -138,5 +146,7 @@ public class ShoppingCategoryPermission implements BaseModelPermissionChecker {
 
 		return false;
 	}
+
+	private static ShoppingCategoryLocalService _shoppingCategoryLocalService;
 
 }
