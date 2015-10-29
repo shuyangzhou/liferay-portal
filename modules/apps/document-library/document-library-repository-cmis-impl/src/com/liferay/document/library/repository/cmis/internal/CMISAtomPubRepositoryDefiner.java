@@ -15,6 +15,8 @@
 package com.liferay.document.library.repository.cmis.internal;
 
 import com.liferay.document.library.repository.cmis.internal.constants.CMISRepositoryConstants;
+import com.liferay.portal.kernel.repository.RepositoryConfiguration;
+import com.liferay.portal.kernel.repository.RepositoryConfigurationBuilder;
 import com.liferay.portal.kernel.repository.RepositoryFactory;
 import com.liferay.portal.kernel.repository.registry.RepositoryDefiner;
 import com.liferay.portal.kernel.repository.registry.RepositoryFactoryRegistry;
@@ -28,19 +30,25 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = RepositoryDefiner.class)
 public class CMISAtomPubRepositoryDefiner extends BaseCMISRepositoryDefiner {
 
+	public CMISAtomPubRepositoryDefiner() {
+		RepositoryConfigurationBuilder repositoryConfigurationBuilder =
+			new RepositoryConfigurationBuilder(
+				getClass(), "content.Language",
+				CMISRepositoryConstants.
+					CMIS_ATOMPUB_REPOSITORY_ID_PARAMETER,
+				CMISRepositoryConstants.CMIS_ATOMPUB_URL_PARAMETER);
+
+		_repositoryConfiguration = repositoryConfigurationBuilder.build();
+	}
+
 	@Override
 	public String getClassName() {
 		return CMISAtomPubRepository.class.getName();
 	}
 
 	@Override
-	public String[] getSupportedConfigurations() {
-		return _SUPPORTED_CONFIGURATIONS;
-	}
-
-	@Override
-	public String[][] getSupportedParameters() {
-		return _SUPPORTED_PARAMETERS;
+	public RepositoryConfiguration getRepositoryConfiguration() {
+		return _repositoryConfiguration;
 	}
 
 	@Override
@@ -63,16 +71,7 @@ public class CMISAtomPubRepositoryDefiner extends BaseCMISRepositoryDefiner {
 		_repositoryFactory = repositoryFactory;
 	}
 
-	private static final String[] _SUPPORTED_CONFIGURATIONS = {
-		CMISRepositoryConstants.CMIS_ATOMPUB_CONFIGURATION
-	};
-
-	private static final String[][] _SUPPORTED_PARAMETERS = {
-		{CMISRepositoryConstants.CMIS_ATOMPUB_URL_PARAMETER,
-			CMISRepositoryConstants.CMIS_ATOMPUB_REPOSITORY_ID_PARAMETER
-		}
-	};
-
+	private final RepositoryConfiguration _repositoryConfiguration;
 	private RepositoryFactory _repositoryFactory;
 
 }

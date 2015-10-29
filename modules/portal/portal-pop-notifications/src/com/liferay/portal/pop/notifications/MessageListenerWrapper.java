@@ -12,36 +12,34 @@
  * details.
  */
 
-package com.liferay.portal.pop;
-
-import aQute.bnd.annotation.ProviderType;
+package com.liferay.portal.pop.notifications;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.pop.MessageListener;
 import com.liferay.portal.kernel.pop.MessageListenerException;
+import com.liferay.portal.kernel.util.ClassUtil;
 
 import javax.mail.Message;
 
 /**
  * @author Brian Wing Shun Chan
  */
-@ProviderType
 public class MessageListenerWrapper implements MessageListener {
 
-	public MessageListenerWrapper(MessageListener listener) {
-		_listener = listener;
+	public MessageListenerWrapper(MessageListener messageListener) {
+		_messageListener = messageListener;
 	}
 
 	@Override
 	public boolean accept(String from, String recipient, Message message) {
 		if (_log.isDebugEnabled()) {
-			_log.debug("Listener " + _listener.getClass().getName());
+			_log.debug("Listener " + ClassUtil.getClassName(_messageListener));
 			_log.debug("From " + from);
 			_log.debug("Recipient " + recipient);
 		}
 
-		boolean value = _listener.accept(from, recipient, message);
+		boolean value = _messageListener.accept(from, recipient, message);
 
 		if (_log.isDebugEnabled()) {
 			_log.debug("Accept " + value);
@@ -55,13 +53,13 @@ public class MessageListenerWrapper implements MessageListener {
 		throws MessageListenerException {
 
 		if (_log.isDebugEnabled()) {
-			_log.debug("Listener " + _listener.getClass().getName());
+			_log.debug("Listener " + ClassUtil.getClassName(_messageListener));
 			_log.debug("From " + from);
 			_log.debug("Recipient " + recipient);
 			_log.debug("Message " + message);
 		}
 
-		_listener.deliver(from, recipient, message);
+		_messageListener.deliver(from, recipient, message);
 	}
 
 	@Override
@@ -74,30 +72,30 @@ public class MessageListenerWrapper implements MessageListener {
 			return false;
 		}
 
-		MessageListenerWrapper listener = (MessageListenerWrapper)obj;
+		MessageListenerWrapper messageListener = (MessageListenerWrapper)obj;
 
-		String id = listener.getId();
+		String id = messageListener.getId();
 
 		return getId().equals(id);
 	}
 
 	@Override
 	public String getId() {
-		return _listener.getId();
+		return _messageListener.getId();
 	}
 
 	public MessageListener getMessageListener() {
-		return _listener;
+		return _messageListener;
 	}
 
 	@Override
 	public int hashCode() {
-		return _listener.getId().hashCode();
+		return _messageListener.getId().hashCode();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		MessageListenerWrapper.class);
 
-	private final MessageListener _listener;
+	private final MessageListener _messageListener;
 
 }

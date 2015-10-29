@@ -15,6 +15,8 @@
 package com.liferay.document.library.repository.cmis.internal;
 
 import com.liferay.document.library.repository.cmis.internal.constants.CMISRepositoryConstants;
+import com.liferay.portal.kernel.repository.RepositoryConfiguration;
+import com.liferay.portal.kernel.repository.RepositoryConfigurationBuilder;
 import com.liferay.portal.kernel.repository.RepositoryFactory;
 import com.liferay.portal.kernel.repository.registry.RepositoryDefiner;
 import com.liferay.portal.kernel.repository.registry.RepositoryFactoryRegistry;
@@ -29,19 +31,41 @@ import org.osgi.service.component.annotations.Reference;
 public class CMISWebServicesRepositoryDefiner
 	extends BaseCMISRepositoryDefiner {
 
+	public CMISWebServicesRepositoryDefiner() {
+		RepositoryConfigurationBuilder repositoryConfigurationBuilder =
+			new RepositoryConfigurationBuilder(
+				getClass(), "content.Language",
+				CMISRepositoryConstants.CMIS_WEBSERVICES_ACL_SERVICE_PARAMETER,
+				CMISRepositoryConstants.
+					CMIS_WEBSERVICES_DISCOVERY_SERVICE_PARAMETER,
+				CMISRepositoryConstants.
+					CMIS_WEBSERVICES_MULTIFILING_SERVICE_PARAMETER,
+				CMISRepositoryConstants.
+					CMIS_WEBSERVICES_OBJECT_SERVICE_PARAMETER,
+				CMISRepositoryConstants.
+					CMIS_WEBSERVICES_NAVIGATION_SERVICE_PARAMETER,
+				CMISRepositoryConstants.
+					CMIS_WEBSERVICES_POLICY_SERVICE_PARAMETER,
+				CMISRepositoryConstants.
+					CMIS_WEBSERVICES_RELATIONSHIP_SERVICE_PARAMETER,
+				CMISRepositoryConstants.
+					CMIS_WEBSERVICES_REPOSITORY_ID_PARAMETER,
+				CMISRepositoryConstants.
+					CMIS_WEBSERVICES_REPOSITORY_SERVICE_PARAMETER,
+				CMISRepositoryConstants.
+					CMIS_WEBSERVICES_VERSIONING_SERVICE_PARAMETER);
+
+		_repositoryConfiguration = repositoryConfigurationBuilder.build();
+	}
+
 	@Override
 	public String getClassName() {
 		return CMISWebServicesRepository.class.getName();
 	}
 
 	@Override
-	public String[] getSupportedConfigurations() {
-		return _SUPPORTED_CONFIGURATIONS;
-	}
-
-	@Override
-	public String[][] getSupportedParameters() {
-		return _SUPPORTED_PARAMETERS;
+	public RepositoryConfiguration getRepositoryConfiguration() {
+		return _repositoryConfiguration;
 	}
 
 	@Override
@@ -64,31 +88,7 @@ public class CMISWebServicesRepositoryDefiner
 		_repositoryFactory = repositoryFactory;
 	}
 
-	private static final String[] _SUPPORTED_CONFIGURATIONS = {
-		CMISRepositoryConstants.CMIS_WEBSERVICES_CONFIGURATION
-	};
-
-	private static final String[][] _SUPPORTED_PARAMETERS = new String[][] {
-		{
-			CMISRepositoryConstants.CMIS_WEBSERVICES_REPOSITORY_ID_PARAMETER,
-			CMISRepositoryConstants.CMIS_WEBSERVICES_ACL_SERVICE_PARAMETER,
-			CMISRepositoryConstants.
-				CMIS_WEBSERVICES_DISCOVERY_SERVICE_PARAMETER,
-			CMISRepositoryConstants.
-				CMIS_WEBSERVICES_MULTIFILING_SERVICE_PARAMETER,
-			CMISRepositoryConstants.
-				CMIS_WEBSERVICES_NAVIGATION_SERVICE_PARAMETER,
-			CMISRepositoryConstants.CMIS_WEBSERVICES_OBJECT_SERVICE_PARAMETER,
-			CMISRepositoryConstants.CMIS_WEBSERVICES_POLICY_SERVICE_PARAMETER,
-			CMISRepositoryConstants.
-				CMIS_WEBSERVICES_RELATIONSHIP_SERVICE_PARAMETER,
-			CMISRepositoryConstants.
-				CMIS_WEBSERVICES_REPOSITORY_SERVICE_PARAMETER,
-			CMISRepositoryConstants.
-				CMIS_WEBSERVICES_VERSIONING_SERVICE_PARAMETER
-		}
-	};
-
+	private final RepositoryConfiguration _repositoryConfiguration;
 	private RepositoryFactory _repositoryFactory;
 
 }

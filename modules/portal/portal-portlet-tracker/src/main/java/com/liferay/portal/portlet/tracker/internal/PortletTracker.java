@@ -65,7 +65,6 @@ import com.liferay.portlet.PortletContextBag;
 import com.liferay.portlet.PortletContextBagPool;
 import com.liferay.portlet.PortletInstanceFactory;
 import com.liferay.registry.util.StringPlus;
-import com.liferay.util.log4j.Log4JUtil;
 
 import java.io.IOException;
 
@@ -692,10 +691,6 @@ public class PortletTracker
 			GetterUtil.getBoolean(
 				get(serviceReference, "show-portlet-inactive"),
 				portletModel.isShowPortletInactive()));
-		portletModel.setSocialInteractionsConfiguration(
-			GetterUtil.getBoolean(
-				get(serviceReference, "social-interactions-configuration"),
-				portletModel.isSocialInteractionsConfiguration()));
 		portletModel.setStrutsPath(
 			GetterUtil.getString(
 				get(serviceReference, "struts-path"),
@@ -1033,8 +1028,6 @@ public class PortletTracker
 
 		createContext(bundle, bundlePortletApp, serviceRegistrations);
 
-		initLogger(classLoader);
-
 		serviceRegistrations.setBundlePortletApp(bundlePortletApp);
 
 		serviceRegistrations.doConfiguration(classLoader);
@@ -1270,11 +1263,6 @@ public class PortletTracker
 		}
 
 		return serviceRegistrations;
-	}
-
-	protected void initLogger(ClassLoader classLoader) {
-		Log4JUtil.configureLog4J(
-			classLoader.getResource("META-INF/portal-log4j.xml"));
 	}
 
 	protected void readResourceActions(
