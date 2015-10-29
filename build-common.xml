@@ -955,6 +955,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 				<sysproperty key="whip.datafile" file="test-coverage/@{test.type}/whip.dat" />
 				<sysproperty key="whip.instrument.dump" value="${whip.instrument.dump}" />
 				<jvmarg if:true="${jvm.debug}" line="${jpda.settings}" />
+				<jvmarg if:true="${osgi.jvmargs.required}" line="${osgi.jvmargs}" />
 				<jvmarg line="${junit.java.gc}" />
 				<jvmarg line="${whip.agent}" />
 				<jvmarg value="-Xss2m" />
