@@ -1804,6 +1804,7 @@ ${tomcat-gc-log}
 								"modules/portal/portal-json-web-service-extender/src/testIntegration/java/**/*Test.java",
 								"modules/util/osgi-util/src/testIntegration/java/**/*Test.java",
 								"portal-service/test/unit/com/liferay/portal/log/assertor/PortalLogAssertorTest.java",
+								"portal-service/test/unit/com/liferay/portal/log/assertor/TomcatOSGISeedTest.java",
 								"*/pacl/test/[\\w]+Test.class",
 								"**/*ServiceHttpTest.java",
 								"**/*ServiceJsonTest.java",

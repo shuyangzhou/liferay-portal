@@ -727,6 +727,12 @@
 					writer.write("osgi.shuffle.output.log.path=" + tempDir + "\n");
 
 					writer.close();
+
+					project.setProperty("osgi.jvmargs.required", "true");
+					project.setProperty(
+						"osgi.jvmargs",
+						"-Dosgi.shuffle.timestamp=" + date.getTime() +
+							" -Dosgi.shuffle.output.log.path=" + tempDir);
 				]]>
 			</beanshell>
 		</sequential>
@@ -963,6 +969,10 @@
 								<arg value="-Ddatabase.type=@{database.type}" />
 								<arg value="-Dtest.class.group.index=${axis.variable}" />
 							</gradle-execute>
+
+							<ant dir="portal-service" target="test-class">
+								<property name="test.class" value="TomcatOSGISeedTest" />
+							</ant>
 
 							<ant dir="portal-service" target="test-class" inheritAll="false">
 								<property name="test.class" value="PortalLogAssertorTest" />
