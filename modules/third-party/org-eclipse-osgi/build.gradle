@@ -8,7 +8,8 @@ task patch(type: PatchTask)
 sourceCompatibility = "1.6"
 targetCompatibility = "1.6"
 
-String eclipseOsgiVersion = "3.10.200-20150904.172142-1"
+String eclipseOsgiSnapshotVersion = "3.10.200-20150904.172142-1"
+String eclipseOsgiVersion = "3.10.200-SNAPSHOT"
 
 copyPatchOriginalLibClasses {
 	exclude "META-INF/*.SF"
@@ -16,7 +17,7 @@ copyPatchOriginalLibClasses {
 }
 
 dependencies {
-	compile group: "org.eclipse.osgi", name: "org.eclipse.osgi", version: eclipseOsgiVersion
+	compile group: "org.eclipse.osgi", name: "org.eclipse.osgi", version: eclipseOsgiSnapshotVersion
 }
 
 liferay {
@@ -36,6 +37,6 @@ patch {
 	originalLibModuleName = "org.eclipse.osgi"
 
 	originalLibSrcFile = {
-		FileUtil.get(project, "http://cdn.repository.liferay.com/nexus/content/groups/public/org/eclipse/osgi/org.eclipse.osgi/3.10.200-SNAPSHOT/org.eclipse.osgi-${eclipseOsgiVersion}-sources.jar")
+		FileUtil.get(project, "http://cdn.repository.liferay.com/nexus/content/groups/public/org/eclipse/osgi/org.eclipse.osgi/${eclipseOsgiVersion}/org.eclipse.osgi-${eclipseOsgiSnapshotVersion}-sources.jar")
 	}
 }
