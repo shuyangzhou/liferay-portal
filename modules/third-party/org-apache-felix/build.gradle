@@ -8,10 +8,11 @@ task patch(type: PatchTask)
 sourceCompatibility = "1.6"
 targetCompatibility = "1.6"
 
-String felixOsgiVersion = "3.5.1-20150612.021433-1"
+String felixSnapshotVersion = "3.5.1-20150612.021433-1"
+String felixVersion = "3.5.1-SNAPSHOT"
 
 dependencies {
-	compile group: "org.apache.felix", name: "org.apache.felix.fileinstall", optional, version: "3.5.1-SNAPSHOT"
+	compile group: "org.apache.felix", name: "org.apache.felix.fileinstall", optional, version: felixSnapshotVersion
 	compile group: "org.apache.felix", name: "org.osgi.core", optional, version: "1.0.0"
 }
 
@@ -30,6 +31,6 @@ patch {
 	originalLibModuleName = "org.apache.felix.fileinstall"
 
 	originalLibSrcFile = {
-		FileUtil.get(project, "https://repository.liferay.com/nexus/content/groups/public/org/apache/felix/org.apache.felix.fileinstall/3.5.1-SNAPSHOT/org.apache.felix.fileinstall-${felixOsgiVersion}-sources.jar")
+		FileUtil.get(project, "https://repository.liferay.com/nexus/content/groups/public/org/apache/felix/org.apache.felix.fileinstall/${felixVersion}/org.apache.felix.fileinstall-${felixSnapshotVersion}-sources.jar")
 	}
 }
