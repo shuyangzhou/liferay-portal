@@ -1,8 +1,12 @@
 import com.liferay.gradle.plugins.patcher.PatchTask
 import com.liferay.gradle.util.FileUtil
 
+import org.gradle.internal.hash.HashUtil
+import org.gradle.internal.hash.HashValue
+
 apply plugin: "com.liferay.patcher"
 
+task checkJar
 task patch(type: PatchTask)
 
 sourceCompatibility = "1.6"
@@ -10,6 +14,27 @@ targetCompatibility = "1.6"
 
 String felixSnapshotVersion = "3.5.1-20150612.021433-1"
 String felixVersion = "3.5.1-SNAPSHOT"
+
+checkJar {
+	doLast {
+		File deployedLibFile = new File(liferay.deployDir, patch.originalLibModuleName + ".jar")
+
+		if (!deployedLibFile.exists()) {
+			logger.warn "Unable to find " + deployedLibFile
+
+			return
+		}
+
+		File originalLibFile = patch.originalLibFile
+
+		HashValue deployedLibHashValue = HashUtil.sha1(deployedLibFile)
+		HashValue originalLibHashValue = HashUtil.sha1(originalLibFile)
+
+		if (deployedLibHashValue != originalLibHashValue) {
+			throw new GradleException("Hash values of ${deployedLibFile} and ${originalLibFile} do not match")
+		}
+	}
+}
 
 dependencies {
 	compile group: "org.apache.felix", name: "org.apache.felix.fileinstall", optional, version: felixSnapshotVersion
