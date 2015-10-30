@@ -28,7 +28,7 @@ import org.junit.Assert;
 /**
  * @author Peter Yoo
  */
-public abstract class BaseMessageUtilTestCase {
+public abstract class BaseJenkinsResultsParserTestCase {
 
 	protected void assertSample(File caseDir) throws Exception {
 		System.out.print("Asserting sample " + caseDir.getName() + ": ");
@@ -54,7 +54,7 @@ public abstract class BaseMessageUtilTestCase {
 	}
 
 	protected void assertSamples() throws Exception {
-		File[] files = _dependenciesDir.listFiles();
+		File[] files = dependenciesDir.listFiles();
 
 		for (File file : files) {
 			assertSample(file);
@@ -90,15 +90,15 @@ public abstract class BaseMessageUtilTestCase {
 		throws Exception;
 
 	protected void downloadSample(String sampleKey, URL url) throws Exception {
-		System.out.println("Downloading sample " + sampleKey);
-
-		String sampleDirName = _dependenciesDir.getPath() + "/" + sampleKey;
+		String sampleDirName = dependenciesDir.getPath() + "/" + sampleKey;
 
 		File sampleDir = new File(sampleDirName);
 
 		if (sampleDir.exists()) {
 			return;
 		}
+
+		System.out.println("Downloading sample " + sampleKey);
 
 		try {
 			downloadSample(sampleDir, url);
@@ -149,6 +149,10 @@ public abstract class BaseMessageUtilTestCase {
 		return new String(Files.readAllBytes(Paths.get(file.toURI())));
 	}
 
+	protected String read(File dir, String fileName) throws IOException {
+		return read(new File(dir, fileName));
+	}
+
 	protected String replaceToken(String string, String token, String value) {
 		if (string == null) {
 			return string;
@@ -189,7 +193,7 @@ public abstract class BaseMessageUtilTestCase {
 		write(expectedMessageFile, expectedMessage);
 	}
 
-	private final File _dependenciesDir = new File(
+	protected final File dependenciesDir = new File(
 		"src/test/resources/com/liferay/results/parser/dependencies/" +
 			getSimpleClassName());
 

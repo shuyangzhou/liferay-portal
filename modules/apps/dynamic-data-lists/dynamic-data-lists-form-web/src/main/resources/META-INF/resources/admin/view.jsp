@@ -18,7 +18,10 @@
 
 <%
 String displayStyle = ddlFormAdminDisplayContext.getDisplayStyle();
+
 PortletURL portletURL = ddlFormAdminDisplayContext.getPortletURL();
+
+portletURL.setParameter("displayStyle", displayStyle);
 
 RecordSetSearch recordSetSearch = new RecordSetSearch(renderRequest, portletURL);
 
@@ -94,11 +97,6 @@ recordSetSearch.setOrderByType(orderByType);
 						%>
 
 						<liferay-ui:search-container-column-text colspan="<%= 2 %>">
-
-							<%
-								User userDisplay = UserLocalServiceUtil.fetchUserById(recordSet.getUserId());
-							%>
-
 							<liferay-frontend:vertical-card
 								actionJsp="/admin/record_set_action.jsp"
 								actionJspServletContext="<%= application %>"
@@ -106,11 +104,15 @@ recordSetSearch.setOrderByType(orderByType);
 								imageUrl='<%= themeDisplay.getPathThemeImages() + "/file_system/large/article.png" %>'
 								resultRow="<%= row %>"
 								showCheckbox= "<%= false %>"
-								smallImageCSSClass="user-icon user-icon-lg"
-								smallImageUrl="<%= userDisplay != null ? userDisplay.getPortraitURL(themeDisplay) : UserConstants.getPortraitURL(themeDisplay.getPathImage(), true, 0, null) %>"
 								title="<%= recordSet.getName(locale) %>"
 								url="<%= rowURL %>"
 							>
+								<liferay-frontend:vertical-card-sticker-bottom>
+									<liferay-ui:user-portrait
+										userId="<%= recordSet.getUserId() %>"
+									/>
+								</liferay-frontend:vertical-card-sticker-bottom>
+
 								<liferay-frontend:vertical-card-header>
 									<liferay-ui:message arguments="<%= new String[] {LanguageUtil.getTimeDescription(locale, System.currentTimeMillis() - recordSet.getModifiedDate().getTime(), true), HtmlUtil.escape(recordSet.getUserName())} %>" key="x-ago-by-x" translateArguments="<%= false %>" />
 								</liferay-frontend:vertical-card-header>

@@ -12,39 +12,37 @@
  * details.
  */
 
-package com.liferay.workflow.definition.link.web.application.list;
+package com.liferay.workflow.instance.web.application.list;
 
-import com.liferay.application.list.BaseControlPanelEntryPanelApp;
+import com.liferay.application.list.BasePanelApp;
 import com.liferay.application.list.PanelApp;
 import com.liferay.application.list.constants.PanelCategoryKeys;
 import com.liferay.portal.model.Portlet;
-import com.liferay.workflow.definition.link.web.portlet.constants.WorkflowDefinitionLinkPortletKeys;
+import com.liferay.portal.util.PortletKeys;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
- * @author Eudaldo Alonso
+ * @author Adolfo Pérez
  */
 @Component(
 	immediate = true,
 	property = {
-		"panel.category.key=" + PanelCategoryKeys.CONTROL_PANEL_CONFIGURATION,
-		"service.ranking:Integer=500"
+		"panel.category.key=" + PanelCategoryKeys.USER_MY_ACCOUNT,
+		"service.ranking:Integer=400"
 	},
 	service = PanelApp.class
 )
-public class WorkflowConfigurationPanelApp
-	extends BaseControlPanelEntryPanelApp {
+public class MyWorkflowInstancePanelApp extends BasePanelApp {
 
 	@Override
 	public String getPortletId() {
-		return WorkflowDefinitionLinkPortletKeys.
-			WORKFLOW_DEFINITION_LINK_CONTROL_PANEL;
+		return PortletKeys.MY_WORKFLOW_INSTANCE;
 	}
 
 	@Reference(
-		target = "(javax.portlet.name=" + WorkflowDefinitionLinkPortletKeys.WORKFLOW_DEFINITION_LINK_CONTROL_PANEL + ")",
+		target = "(javax.portlet.name=" + PortletKeys.MY_WORKFLOW_INSTANCE + ")",
 		unbind = "-"
 	)
 	public void setPortlet(Portlet portlet) {

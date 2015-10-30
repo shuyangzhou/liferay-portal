@@ -26,7 +26,7 @@ import org.junit.Test;
 /**
  * @author Peter Yoo
  */
-public class FailureMessageUtilTest extends BaseMessageUtilTestCase {
+public class FailureMessageUtilTest extends BaseJenkinsResultsParserTestCase {
 
 	@Before
 	public void setUp() throws Exception {

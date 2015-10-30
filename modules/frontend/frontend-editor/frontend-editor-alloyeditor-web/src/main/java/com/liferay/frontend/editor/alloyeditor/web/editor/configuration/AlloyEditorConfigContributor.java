@@ -14,14 +14,11 @@
 
 package com.liferay.frontend.editor.alloyeditor.web.editor.configuration;
 
-import com.liferay.portal.kernel.editor.configuration.BaseEditorConfigContributor;
 import com.liferay.portal.kernel.editor.configuration.EditorConfigContributor;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.theme.ThemeDisplay;
@@ -41,7 +38,8 @@ import org.osgi.service.component.annotations.Component;
 	property = {"editor.name=alloyeditor"},
 	service = EditorConfigContributor.class
 )
-public class AlloyEditorConfigContributor extends BaseEditorConfigContributor {
+public class AlloyEditorConfigContributor
+	extends BaseAlloyEditorConfigContributor {
 
 	@Override
 	public void populateConfigJSONObject(
@@ -49,43 +47,14 @@ public class AlloyEditorConfigContributor extends BaseEditorConfigContributor {
 		ThemeDisplay themeDisplay,
 		RequestBackedPortletURLFactory requestBackedPortletURLFactory) {
 
-		String contentsLanguageDir = getContentsLanguageDir(
-			inputEditorTaglibAttributes);
+		super.populateConfigJSONObject(
+			jsonObject, inputEditorTaglibAttributes, themeDisplay,
+			requestBackedPortletURLFactory);
 
 		jsonObject.put(
-			"contentsLangDirection", HtmlUtil.escapeJS(contentsLanguageDir));
-
-		String contentsLanguageId = getContentsLanguageId(
-			inputEditorTaglibAttributes);
-
-		jsonObject.put(
-			"contentsLanguage", contentsLanguageId.replace("iw_", "he_"));
-
-		jsonObject.put(
-			"extraPlugins",
-			"ae_autolink,ae_dragresize,ae_addimages,ae_placeholder," +
-				"ae_selectionregion,ae_tableresize,ae_tabletools,ae_uicore");
-
-		String languageId = getLanguageId(themeDisplay);
-
-		jsonObject.put("language", languageId.replace("iw_", "he_"));
-
-		jsonObject.put(
-			"removePlugins",
-			"contextmenu,elementspath,image,link,liststyle,resize,tabletools," +
-				"toolbar");
-
-		String namespace = GetterUtil.getString(
-			inputEditorTaglibAttributes.get(
-				"liferay-ui:input-editor:namespace"));
-
-		String name =
-			namespace +
-				GetterUtil.getString(
-					inputEditorTaglibAttributes.get(
-						"liferay-ui:input-editor:name"));
-
-		jsonObject.put("srcNode", name);
+			"allowedContent",
+			"b strong i hr h1 h2 h3 h4 h5 h6 em ul ol li pre table tr th; " +
+				"img a[*]");
 
 		jsonObject.put(
 			"toolbars", getToolbarsJSONObject(themeDisplay.getLocale()));

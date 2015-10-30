@@ -12,9 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.language;
-
-import com.liferay.portal.kernel.util.SetUtil;
+package com.liferay.portal.kernel.util;
 
 import java.util.ListResourceBundle;
 import java.util.ResourceBundle;
@@ -29,10 +27,8 @@ public class AggregateResourceBundleTest {
 
 	@Test
 	public void testGetKeyFromFirstBundle() {
-		ResourceBundle resourceBundleA = _createResourceBundle(
-			"keyA", "valueA");
-		ResourceBundle resourceBundleB = _createResourceBundle(
-			"keyB", "valueB");
+		ResourceBundle resourceBundleA = createResourceBundle("keyA", "valueA");
+		ResourceBundle resourceBundleB = createResourceBundle("keyB", "valueB");
 
 		AggregateResourceBundle aggregateResourceBundle =
 			new AggregateResourceBundle(resourceBundleA, resourceBundleB);
@@ -46,10 +42,8 @@ public class AggregateResourceBundleTest {
 
 	@Test
 	public void testGetKeyFromSecondBundle() {
-		ResourceBundle resourceBundleA = _createResourceBundle(
-			"keyA", "valueA");
-		ResourceBundle resourceBundleB = _createResourceBundle(
-			"keyB", "valueB");
+		ResourceBundle resourceBundleA = createResourceBundle("keyA", "valueA");
+		ResourceBundle resourceBundleB = createResourceBundle("keyB", "valueB");
 
 		AggregateResourceBundle aggregateResourceBundle =
 			new AggregateResourceBundle(resourceBundleA, resourceBundleB);
@@ -60,10 +54,8 @@ public class AggregateResourceBundleTest {
 
 	@Test
 	public void testKeySet() {
-		ResourceBundle resourceBundleA = _createResourceBundle(
-			"keyA", "valueA");
-		ResourceBundle resourceBundleB = _createResourceBundle(
-			"keyB", "valueB");
+		ResourceBundle resourceBundleA = createResourceBundle("keyA", "valueA");
+		ResourceBundle resourceBundleB = createResourceBundle("keyB", "valueB");
 
 		AggregateResourceBundle aggregateResourceBundle =
 			new AggregateResourceBundle(resourceBundleA, resourceBundleB);
@@ -73,7 +65,25 @@ public class AggregateResourceBundleTest {
 			aggregateResourceBundle.keySet());
 	}
 
-	private ResourceBundle _createResourceBundle(
+	@Test
+	public void testOverriddenKeys() {
+		ResourceBundle resourceBundleA = createResourceBundle("keyA", "valueA");
+		ResourceBundle resourceBundleB = createResourceBundle("keyA", "valueB");
+
+		AggregateResourceBundle aggregateResourceBundle =
+			new AggregateResourceBundle(resourceBundleA, resourceBundleB);
+
+		Assert.assertEquals(
+			"valueA", aggregateResourceBundle.getString("keyA"));
+
+		aggregateResourceBundle = new AggregateResourceBundle(
+			resourceBundleB, resourceBundleA);
+
+		Assert.assertEquals(
+			"valueB", aggregateResourceBundle.getString("keyA"));
+	}
+
+	protected ResourceBundle createResourceBundle(
 		final String... keysAndValues) {
 
 		if ((keysAndValues.length % 2) != 0) {
@@ -89,7 +99,7 @@ public class AggregateResourceBundleTest {
 
 				for (int i = 0; i < contents.length; i++) {
 					contents[i] = new Object[] {
-						keysAndValues[i / 2], keysAndValues[(i / 2) + 1]
+						keysAndValues[i * 2], keysAndValues[i * 2 + 1]
 					};
 				}
 
