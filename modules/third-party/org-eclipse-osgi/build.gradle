@@ -3,7 +3,17 @@ import com.liferay.gradle.util.FileUtil
 
 apply plugin: "com.liferay.patcher"
 
+task patch(type: PatchTask)
+
+sourceCompatibility = "1.6"
+targetCompatibility = "1.6"
+
 String eclipseOsgiVersion = "3.10.200-20150904.172142-1"
+
+copyPatchOriginalLibClasses {
+	exclude "META-INF/*.SF"
+	exclude "META-INF/*.RSA"
+}
 
 dependencies {
 	compile group: "org.eclipse.osgi", name: "org.eclipse.osgi", version: eclipseOsgiVersion
@@ -12,11 +22,6 @@ dependencies {
 liferay {
 	deployDir = file("${liferayHome}/osgi/core")
 }
-
-sourceCompatibility = "1.6"
-targetCompatibility = "1.6"
-
-task patch(type: PatchTask)
 
 patch {
 	ext {
@@ -32,10 +37,5 @@ patch {
 
 	originalLibSrcFile = {
 		FileUtil.get(project, "http://cdn.repository.liferay.com/nexus/content/groups/public/org/eclipse/osgi/org.eclipse.osgi/3.10.200-SNAPSHOT/org.eclipse.osgi-${eclipseOsgiVersion}-sources.jar")
-	}
-
-	copyPatchOriginalLibClasses {
-		exclude "META-INF/*.SF"
-		exclude "META-INF/*.RSA"
 	}
 }
