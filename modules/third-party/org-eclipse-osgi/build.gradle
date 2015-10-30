@@ -66,6 +66,6 @@ patch {
 	originalLibModuleName = "org.eclipse.osgi"
 
 	originalLibSrcFile = {
-		FileUtil.get(project, "http://cdn.repository.liferay.com/nexus/content/groups/public/org/eclipse/osgi/org.eclipse.osgi/${eclipseOsgiVersion}/org.eclipse.osgi-${eclipseOsgiSnapshotVersion}-sources.jar")
+		FileUtil.get(project, "http://repository.liferay.com/nexus/content/groups/public/org/eclipse/osgi/org.eclipse.osgi/${eclipseOsgiVersion}/org.eclipse.osgi-${eclipseOsgiSnapshotVersion}-sources.jar")
 	}
 }
