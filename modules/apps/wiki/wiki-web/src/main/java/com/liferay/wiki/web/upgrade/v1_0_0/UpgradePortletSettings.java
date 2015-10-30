@@ -14,10 +14,13 @@
 
 package com.liferay.wiki.web.upgrade.v1_0_0;
 
+import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.settings.SettingsFactory;
 import com.liferay.portal.util.PortletKeys;
 import com.liferay.wiki.constants.WikiConstants;
 import com.liferay.wiki.constants.WikiPortletKeys;
+
+import java.sql.Connection;
 
 /**
  * @author Iván Zaera
@@ -31,9 +34,11 @@ public class UpgradePortletSettings
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		upgradeMainPortlet(
-			WikiPortletKeys.WIKI, WikiConstants.SERVICE_NAME,
-			PortletKeys.PREFS_OWNER_TYPE_LAYOUT, true);
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection()) {
+			upgradeMainPortlet(
+				con, WikiPortletKeys.WIKI, WikiConstants.SERVICE_NAME,
+				PortletKeys.PREFS_OWNER_TYPE_LAYOUT, true);
+		}
 	}
 
 }

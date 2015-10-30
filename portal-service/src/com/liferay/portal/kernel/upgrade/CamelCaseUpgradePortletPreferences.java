@@ -17,6 +17,8 @@ package com.liferay.portal.kernel.upgrade;
 import com.liferay.portal.kernel.util.TextFormatter;
 import com.liferay.portlet.PortletPreferencesFactoryUtil;
 
+import java.sql.Connection;
+
 import java.util.Map;
 
 import javax.portlet.PortletPreferences;
@@ -29,8 +31,8 @@ public class CamelCaseUpgradePortletPreferences
 
 	@Override
 	protected String upgradePreferences(
-			long companyId, long ownerId, int ownerType, long plid,
-			String portletId, String xml)
+			Connection con, long companyId, long ownerId, int ownerType,
+			long plid, String portletId, String xml)
 		throws Exception {
 
 		PortletPreferences portletPreferences =

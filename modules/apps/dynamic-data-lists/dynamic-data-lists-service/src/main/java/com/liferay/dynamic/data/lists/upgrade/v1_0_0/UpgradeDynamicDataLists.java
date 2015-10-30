@@ -48,28 +48,19 @@ import java.util.Set;
 public class UpgradeDynamicDataLists extends UpgradeProcess {
 
 	protected void addDDMContent(
-			String uuid_, long contentId, long groupId, long companyId,
-			long userId, String userName, Timestamp createDate,
+			Connection con, String uuid_, long contentId, long groupId,
+			long companyId, long userId, String userName, Timestamp createDate,
 			Timestamp modifiedDate, String name, String description, String xml)
 		throws Exception {
 
-		Connection con = null;
-		PreparedStatement ps = null;
+		StringBundler sb = new StringBundler(4);
 
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
+		sb.append("insert into DDMContent (uuid_, contentId, groupId, ");
+		sb.append("companyId, userId, userName, createDate, modifiedDate, ");
+		sb.append("name, description, xml) values (?, ?, ?, ?, ?, ?, ?, ?, ?,");
+		sb.append(" ?, ?)");
 
-			StringBundler sb = new StringBundler(4);
-
-			sb.append("insert into DDMContent (uuid_, contentId, groupId, ");
-			sb.append("companyId, userId, userName, createDate, ");
-			sb.append("modifiedDate, name, description, xml) values (?, ?, ");
-			sb.append("?, ?, ?, ?, ?, ?, ?, ?, ?)");
-
-			String sql = sb.toString();
-
-			ps = con.prepareStatement(sql);
-
+		try (PreparedStatement ps = con.prepareStatement(sb.toString())) {
 			ps.setString(1, uuid_);
 			ps.setLong(2, contentId);
 			ps.setLong(3, groupId);
@@ -88,9 +79,6 @@ public class UpgradeDynamicDataLists extends UpgradeProcess {
 			_log.error("Unable to add dynamic data mapping content ", e);
 
 			throw e;
-		}
-		finally {
-			DataAccess.cleanUp(con, ps);
 		}
 	}
 
@@ -118,40 +106,41 @@ public class UpgradeDynamicDataLists extends UpgradeProcess {
 		}
 	}
 
-	protected void deleteExpandoData(Set<Long> expandoRowIds) throws Exception {
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+	protected void deleteExpandoData(Connection con, Set<Long> expandoRowIds)
+		throws Exception {
 
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
+		String sql =
+			"select tableId from ExpandoRow where " +
+				getExpandoRowIds(expandoRowIds) + " group by tableId";
 
-			ps = con.prepareStatement(
-				"select tableId from ExpandoRow where " +
-					getExpandoRowIds(expandoRowIds) + " group by tableId");
-
+		try (PreparedStatement ps = con.prepareStatement(sql)) {
 			int parameterIndex = 1;
 
 			for (long expandoRowId : expandoRowIds) {
 				ps.setLong(parameterIndex++, expandoRowId);
 			}
 
-			rs = ps.executeQuery();
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					long tableId = rs.getLong("tableId");
 
-			while (rs.next()) {
-				long tableId = rs.getLong("tableId");
+					runSQL(
+						con,
+						"delete from ExpandoTable where tableId = " + tableId);
 
-				runSQL("delete from ExpandoTable where tableId = " + tableId);
+					runSQL(
+						con,
+						"delete from ExpandoRow where tableId = " + tableId);
 
-				runSQL("delete from ExpandoRow where tableId = " + tableId);
+					runSQL(
+						con,
+						"delete from ExpandoColumn where tableId = " + tableId);
 
-				runSQL("delete from ExpandoColumn where tableId = " + tableId);
-
-				runSQL("delete from ExpandoValue where tableId = " + tableId);
+					runSQL(
+						con,
+						"delete from ExpandoValue where tableId = " + tableId);
+				}
 			}
-		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
 		}
 	}
 
@@ -180,42 +169,32 @@ public class UpgradeDynamicDataLists extends UpgradeProcess {
 		return sb.toString();
 	}
 
-	protected Map<String, String> getExpandoValuesMap(long expandoRowId)
+	protected Map<String, String> getExpandoValuesMap(
+			Connection con, long expandoRowId)
 		throws Exception {
 
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+		StringBundler sb = new StringBundler(4);
 
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
+		sb.append("select ExpandoColumn.name, ExpandoValue.data_ from ");
+		sb.append("ExpandoValue inner join ExpandoColumn on ");
+		sb.append("ExpandoColumn.columnId = ExpandoValue.columnId where ");
+		sb.append("rowId_ = ?");
 
-			StringBundler sb = new StringBundler(4);
-
-			sb.append("select ExpandoColumn.name, ExpandoValue.data_ from ");
-			sb.append("ExpandoValue inner join ExpandoColumn on ");
-			sb.append("ExpandoColumn.columnId = ExpandoValue.columnId where ");
-			sb.append("rowId_ = ?");
-
-			ps = con.prepareStatement(sb.toString());
-
+		try (PreparedStatement ps = con.prepareStatement(sb.toString())) {
 			ps.setLong(1, expandoRowId);
 
-			rs = ps.executeQuery();
+			try (ResultSet rs = ps.executeQuery()) {
+				Map<String, String> fieldsMap = new HashMap<>();
 
-			Map<String, String> fieldsMap = new HashMap<>();
+				while (rs.next()) {
+					String name = rs.getString("name");
+					String data_ = rs.getString("data_");
 
-			while (rs.next()) {
-				String name = rs.getString("name");
-				String data_ = rs.getString("data_");
+					fieldsMap.put(name, data_);
+				}
 
-				fieldsMap.put(name, data_);
+				return fieldsMap;
 			}
-
-			return fieldsMap;
-		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
 		}
 	}
 
@@ -262,54 +241,53 @@ public class UpgradeDynamicDataLists extends UpgradeProcess {
 	}
 
 	protected void updateDDMStorageLink(
-			long oldClassNameId, long oldClassPK, long newClassNameId,
-			long newClassPK)
+			Connection con, long oldClassNameId, long oldClassPK,
+			long newClassNameId, long newClassPK)
 		throws Exception {
 
 		runSQL(
+			con,
 			"update DDMStorageLink set classNameId = " + newClassNameId + ", " +
 				"classPK = " + newClassPK + " where classNameId = " +
 					oldClassNameId + " and classPK = " + oldClassPK);
 	}
 
-	protected void updateDDMStructureStorageType() throws Exception {
+	protected void updateDDMStructureStorageType(Connection con)
+		throws Exception {
+
 		runSQL(
+			con,
 			"update DDMStructure set storageType = 'xml' where storageType = " +
 				"'expando'");
 	}
 
 	protected void updateRecordDDMStorageId(
-			long recordId, String version, long ddmContentId)
+			Connection con, long recordId, String version, long ddmContentId)
 		throws Exception {
 
 		runSQL(
+			con,
 			"update DDLRecord set ddmStorageId = " + ddmContentId +
 				" where recordId = " + recordId + " and version = '" +
 					version + "'");
 	}
 
 	protected void updateRecordVersionDDMStorageId(
-			long recordVersionId, long DDMStorageId)
+			Connection con, long recordVersionId, long DDMStorageId)
 		throws Exception {
 
 		runSQL(
+			con,
 			"update DDLRecordVersion set ddmStorageId = " + DDMStorageId +
 				" where recordVersionId = " + recordVersionId);
 	}
 
 	protected void upgradeRecordVersions() throws Exception {
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+		String sql = getUpgradeRecordVersionsSQL();
 
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			String sql = getUpgradeRecordVersionsSQL();
-
-			ps = con.prepareStatement(sql);
-
-			rs = ps.executeQuery();
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection();
+			PreparedStatement ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery()) {
 
 			Set<Long> ddmStorageIds = new HashSet<>();
 
@@ -327,21 +305,22 @@ public class UpgradeDynamicDataLists extends UpgradeProcess {
 				long ddmContentId = increment();
 
 				Map<String, String> expandoValuesMap = getExpandoValuesMap(
-					ddmStorageId);
+					con, ddmStorageId);
 
 				String xml = toXML(expandoValuesMap);
 
 				addDDMContent(
-					PortalUUIDUtil.generate(), ddmContentId, groupId, companyId,
-					userId, userName, createDate, createDate,
+					con, PortalUUIDUtil.generate(), ddmContentId, groupId,
+					companyId, userId, userName, createDate, createDate,
 					DDMStorageLink.class.getName(), null, xml);
 
-				updateRecordVersionDDMStorageId(recordVersionId, ddmContentId);
+				updateRecordVersionDDMStorageId(
+					con, recordVersionId, ddmContentId);
 
-				updateRecordDDMStorageId(recordId, version, ddmContentId);
+				updateRecordDDMStorageId(con, recordId, version, ddmContentId);
 
 				updateDDMStorageLink(
-					_expandoStorageAdapterClassNameId, ddmStorageId,
+					con, _expandoStorageAdapterClassNameId, ddmStorageId,
 					_ddmContentClassNameId, ddmContentId);
 
 				ddmStorageIds.add(ddmStorageId);
@@ -351,12 +330,9 @@ public class UpgradeDynamicDataLists extends UpgradeProcess {
 				return;
 			}
 
-			updateDDMStructureStorageType();
+			updateDDMStructureStorageType(con);
 
-			deleteExpandoData(ddmStorageIds);
-		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			deleteExpandoData(con, ddmStorageIds);
 		}
 	}
 

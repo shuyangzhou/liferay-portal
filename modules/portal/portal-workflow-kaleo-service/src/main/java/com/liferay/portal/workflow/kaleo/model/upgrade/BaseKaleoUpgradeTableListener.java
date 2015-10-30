@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.upgrade.util.BaseUpgradeTableListener;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.ServiceComponent;
 
 import java.sql.Connection;
@@ -39,18 +40,18 @@ public class BaseKaleoUpgradeTableListener extends BaseUpgradeTableListener {
 
 		Map<Long, Long> keyValueMap = new HashMap<>();
 
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+		StringBundler sb = new StringBundler(6);
 
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
+		sb.append("select ");
+		sb.append(keyColumnName);
+		sb.append(StringPool.COMMA_AND_SPACE);
+		sb.append(valueColumnName);
+		sb.append(" from ");
+		sb.append(tableName);
 
-			ps = con.prepareStatement(
-				"select " + keyColumnName + ", " + valueColumnName + " from " +
-					tableName);
-
-			rs = ps.executeQuery();
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection();
+			PreparedStatement ps = con.prepareStatement(sb.toString());
+			ResultSet rs = ps.executeQuery()) {
 
 			while (rs.next()) {
 				long key = rs.getLong(keyColumnName);
@@ -67,9 +68,6 @@ public class BaseKaleoUpgradeTableListener extends BaseUpgradeTableListener {
 		}
 		catch (Exception e) {
 			throw new SystemException(e);
-		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
 		}
 
 		return keyValueMap;
@@ -90,21 +88,23 @@ public class BaseKaleoUpgradeTableListener extends BaseUpgradeTableListener {
 			String tableName, String keyColumnName)
 		throws Exception {
 
-		for (Map.Entry<Long, Long> entry : keyValueMap.entrySet()) {
-			StringBundler sb = new StringBundler(10);
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection()) {
+			for (Map.Entry<Long, Long> entry : keyValueMap.entrySet()) {
+				StringBundler sb = new StringBundler(10);
 
-			sb.append("update ");
-			sb.append(tableName);
-			sb.append(" set kaleoClassName = '");
-			sb.append(kaleoClassName);
-			sb.append("', kaleoClassPK = ");
-			sb.append(entry.getValue());
-			sb.append(" where ");
-			sb.append(keyColumnName);
-			sb.append(" = ");
-			sb.append(entry.getKey());
+				sb.append("update ");
+				sb.append(tableName);
+				sb.append(" set kaleoClassName = '");
+				sb.append(kaleoClassName);
+				sb.append("', kaleoClassPK = ");
+				sb.append(entry.getValue());
+				sb.append(" where ");
+				sb.append(keyColumnName);
+				sb.append(" = ");
+				sb.append(entry.getKey());
 
-			runSQL(sb.toString());
+				runSQL(con, sb.toString());
+			}
 		}
 	}
 

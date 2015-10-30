@@ -20,6 +20,7 @@ import com.liferay.portal.model.ServiceComponent;
 
 import java.io.IOException;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
@@ -39,6 +40,14 @@ public abstract class BaseUpgradeTableListener implements UpgradeTableListener {
 			ServiceComponent previousServiceComponent,
 			UpgradeTable upgradeTable)
 		throws Exception {
+	}
+
+	protected void runSQL(Connection connection, String template)
+		throws IOException, SQLException {
+
+		DB db = DBFactoryUtil.getDB();
+
+		db.runSQL(connection, template);
 	}
 
 	protected void runSQL(String template) throws IOException, SQLException {

@@ -20,6 +20,8 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portlet.PortletPreferencesFactoryUtil;
 
+import java.sql.Connection;
+
 import javax.portlet.PortletPreferences;
 
 /**
@@ -39,8 +41,8 @@ public class UpgradeWiki extends BaseUpgradePortletPreferences {
 
 	@Override
 	protected String upgradePreferences(
-			long companyId, long ownerId, int ownerType, long plid,
-			String portletId, String xml)
+			Connection con, long companyId, long ownerId, int ownerType,
+			long plid, String portletId, String xml)
 		throws Exception {
 
 		PortletPreferences portletPreferences =

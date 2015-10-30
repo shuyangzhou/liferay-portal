@@ -33,70 +33,44 @@ public class UpgradeCalendar extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		if (!tableHasColumn("CalendarBooking", "vEventUid")) {
-			runSQL(
-				"alter table Calendar add timeZoneId STRING null after " +
-					"description");
-		}
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection()) {
+			if (!tableHasColumn("CalendarBooking", "vEventUid")) {
+				runSQL(
+					con,
+					"alter table Calendar add timeZoneId STRING null after " +
+						"description");
+			}
 
-		updateCalendarTimeZoneIds();
+			updateCalendarTimeZoneIds(con);
+		}
 	}
 
 	protected void updateCalendarTimeZoneId(
 			Connection connection, long calendarId, String timeZoneId)
 		throws Exception {
 
-		PreparedStatement ps = connection.prepareStatement(
-			"update Calendar set timeZoneId = ? where calendarId = ?");
+		String sql = "update Calendar set timeZoneId = ? where calendarId = ?";
 
-		ps.setString(1, timeZoneId);
-		ps.setLong(2, calendarId);
-
-		ps.execute();
-	}
-
-	protected void updateCalendarTimeZoneId(long calendarId, String timeZoneId)
-		throws Exception {
-
-		Connection con = null;
-		PreparedStatement ps = null;
-
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
-				"update Calendar set timeZoneId = ? where calendarId = ?");
-
+		try (PreparedStatement ps = connection.prepareStatement(sql)) {
 			ps.setString(1, timeZoneId);
 			ps.setLong(2, calendarId);
 
 			ps.execute();
 		}
-		finally {
-			DataAccess.cleanUp(con, ps);
-		}
 	}
 
-	protected void updateCalendarTimeZoneIds() throws Exception {
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+	protected void updateCalendarTimeZoneIds(Connection con) throws Exception {
+		StringBundler sb = new StringBundler(6);
 
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
+		sb.append("select Calendar.calendarId, CalendarResource.");
+		sb.append("classNameId, User_.timeZoneId from Calendar ");
+		sb.append("inner join CalendarResource on Calendar.");
+		sb.append("calendarResourceId = CalendarResource.");
+		sb.append("calendarResourceId inner join User_ on ");
+		sb.append("CalendarResource.userId = User_.userId");
 
-			StringBundler sb = new StringBundler(6);
-
-			sb.append("select Calendar.calendarId, CalendarResource.");
-			sb.append("classNameId, User_.timeZoneId from Calendar ");
-			sb.append("inner join CalendarResource on Calendar.");
-			sb.append("calendarResourceId = CalendarResource.");
-			sb.append("calendarResourceId inner join User_ on ");
-			sb.append("CalendarResource.userId = User_.userId");
-
-			ps = con.prepareStatement(sb.toString());
-
-			rs = ps.executeQuery();
+		try (PreparedStatement ps = con.prepareStatement(sb.toString());
+			ResultSet rs = ps.executeQuery()) {
 
 			long userClassNameId = PortalUtil.getClassNameId(User.class);
 
@@ -114,11 +88,8 @@ public class UpgradeCalendar extends UpgradeProcess {
 						PropsKeys.COMPANY_DEFAULT_TIME_ZONE);
 				}
 
-				updateCalendarTimeZoneId(calendarId, timeZoneId);
+				updateCalendarTimeZoneId(con, calendarId, timeZoneId);
 			}
-		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
 		}
 	}
 

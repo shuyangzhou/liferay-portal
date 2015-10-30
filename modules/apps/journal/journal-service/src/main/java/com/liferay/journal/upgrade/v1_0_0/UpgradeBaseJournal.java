@@ -14,7 +14,6 @@
 
 package com.liferay.journal.upgrade.v1_0_0;
 
-import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -42,28 +41,19 @@ import java.util.Map;
 public abstract class UpgradeBaseJournal extends UpgradeProcess {
 
 	protected void addResourcePermission(
-			long companyId, String className, long primKey, long roleId,
-			long actionIds)
+			Connection con, long companyId, String className, long primKey,
+			long roleId, long actionIds)
 		throws Exception {
 
-		Connection con = null;
-		PreparedStatement ps = null;
+		StringBundler sb = new StringBundler(3);
 
-		try {
+		sb.append("insert into ResourcePermission (resourcePermissionId, ");
+		sb.append("companyId, name, scope, primKey, roleId, ownerId, ");
+		sb.append("actionIds) values (?, ?, ?, ?, ?, ?, ?, ?)");
+
+		try (PreparedStatement ps = con.prepareStatement(sb.toString())) {
 			long resourcePermissionId = increment(
 				ResourcePermission.class.getName());
-
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			StringBundler sb = new StringBundler(3);
-
-			sb.append("insert into ResourcePermission (resourcePermissionId, ");
-			sb.append("companyId, name, scope, primKey, roleId, ownerId, ");
-			sb.append("actionIds) values (?, ?, ?, ?, ?, ?, ?, ?)");
-
-			String sql = sb.toString();
-
-			ps = con.prepareStatement(sql);
 
 			ps.setLong(1, resourcePermissionId);
 			ps.setLong(2, companyId);
@@ -80,9 +70,6 @@ public abstract class UpgradeBaseJournal extends UpgradeProcess {
 			if (_log.isWarnEnabled()) {
 				_log.warn("Unable to add resource permission " + className, e);
 			}
-		}
-		finally {
-			DataAccess.cleanUp(con, ps);
 		}
 	}
 
@@ -104,104 +91,82 @@ public abstract class UpgradeBaseJournal extends UpgradeProcess {
 		return bitwiseValue;
 	}
 
-	protected Map<String, Long> getBitwiseValues(String name) throws Exception {
+	protected Map<String, Long> getBitwiseValues(Connection con, String name)
+		throws Exception {
+
 		Map<String, Long> bitwiseValues = _bitwiseValues.get(name);
 
 		if (bitwiseValues != null) {
 			return bitwiseValues;
 		}
 
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+		String sql =
+			"select actionId, bitwiseValue from ResourceAction where name = ?";
 
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
-				"select actionId, bitwiseValue from ResourceAction " +
-					"where name = ?");
-
+		try (PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setString(1, name);
 
-			rs = ps.executeQuery();
+			try (ResultSet rs = ps.executeQuery()) {
+				bitwiseValues = new HashMap<>();
 
-			bitwiseValues = new HashMap<>();
+				while (rs.next()) {
+					String actionId = rs.getString("actionId");
+					long bitwiseValue = rs.getLong("bitwiseValue");
 
-			while (rs.next()) {
-				String actionId = rs.getString("actionId");
-				long bitwiseValue = rs.getLong("bitwiseValue");
-
-				bitwiseValues.put(actionId, bitwiseValue);
+					bitwiseValues.put(actionId, bitwiseValue);
+				}
 			}
 
 			_bitwiseValues.put(name, bitwiseValues);
 
 			return bitwiseValues;
 		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
-		}
 	}
 
-	protected long getCompanyGroupId(long companyId) throws Exception {
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+	protected long getCompanyGroupId(Connection con, long companyId)
+		throws Exception {
 
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
+		String sql =
+			"select groupId from Group_ where classNameId = ? and classPK = ?";
 
-			ps = con.prepareStatement(
-				"select groupId from Group_ where classNameId = ? and " +
-					"classPK = ?");
-
+		try (PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setLong(1, PortalUtil.getClassNameId(Company.class.getName()));
 			ps.setLong(2, companyId);
 
-			rs = ps.executeQuery();
-
-			if (rs.next()) {
-				return rs.getLong("groupId");
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					return rs.getLong("groupId");
+				}
 			}
 
 			return 0;
 		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
-		}
 	}
 
-	protected long getDefaultUserId(long companyId) throws Exception {
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+	protected long getDefaultUserId(Connection con, long companyId)
+		throws Exception {
 
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
+		String sql =
+			"select userId from User_ where companyId = ? and " +
+				"defaultUser = ?";
 
-			ps = con.prepareStatement(
-					"select userId from User_ where companyId = ? and " +
-							"defaultUser = ?"
-			);
-
+		try (PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setLong(1, companyId);
 			ps.setBoolean(2, true);
 
-			rs = ps.executeQuery();
-
-			if (rs.next()) {
-				return rs.getLong("userId");
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					return rs.getLong("userId");
+				}
 			}
 
 			return 0;
 		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
-		}
 	}
 
-	protected long getRoleId(long companyId, String name) throws Exception {
+	protected long getRoleId(Connection con, long companyId, String name)
+		throws Exception {
+
 		String roleIdsKey = companyId + StringPool.POUND + name;
 
 		Long roleId = _roleIds.get(roleIdsKey);
@@ -210,31 +175,22 @@ public abstract class UpgradeBaseJournal extends UpgradeProcess {
 			return roleId;
 		}
 
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+		String sql =
+			"select roleId from Role_ where companyId = ? and name = ?";
 
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
-				"select roleId from Role_ where companyId = ? and name = ?");
-
+		try (PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setLong(1, companyId);
 			ps.setString(2, name);
 
-			rs = ps.executeQuery();
-
-			if (rs.next()) {
-				roleId = rs.getLong("roleId");
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					roleId = rs.getLong("roleId");
+				}
 			}
 
 			_roleIds.put(roleIdsKey, roleId);
 
 			return roleId;
-		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
 		}
 	}
 

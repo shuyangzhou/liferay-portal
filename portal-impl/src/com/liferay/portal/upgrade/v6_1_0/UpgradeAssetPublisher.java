@@ -74,8 +74,8 @@ public class UpgradeAssetPublisher extends BaseUpgradePortletPreferences {
 
 	@Override
 	protected String upgradePreferences(
-			long companyId, long ownerId, int ownerType, long plid,
-			String portletId, String xml)
+			Connection con, long companyId, long ownerId, int ownerType,
+			long plid, String portletId, String xml)
 		throws Exception {
 
 		if (!PropsValues.DL_FILE_ENTRY_TYPE_IG_IMAGE_AUTO_CREATE_ON_UPGRADE) {

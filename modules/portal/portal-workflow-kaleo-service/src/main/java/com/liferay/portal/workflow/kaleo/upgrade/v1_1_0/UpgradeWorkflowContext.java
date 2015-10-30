@@ -16,6 +16,7 @@ package com.liferay.portal.workflow.kaleo.upgrade.v1_1_0;
 
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.workflow.kaleo.util.WorkflowContextUtil;
 
@@ -36,27 +37,29 @@ public class UpgradeWorkflowContext extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		updateTable("KaleoInstance", "kaleoInstanceId");
-		updateTable("KaleoLog", "kaleoLogId");
-		updateTable("KaleoTaskInstanceToken", "kaleoTaskInstanceTokenId");
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection()) {
+			updateTable(con, "KaleoInstance", "kaleoInstanceId");
+			updateTable(con, "KaleoLog", "kaleoLogId");
+			updateTable(
+				con, "KaleoTaskInstanceToken", "kaleoTaskInstanceTokenId");
+		}
 	}
 
-	protected void updateTable(String tableName, String fieldName)
+	protected void updateTable(
+			Connection con, String tableName, String fieldName)
 		throws Exception {
 
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+		StringBundler sb = new StringBundler(6);
 
-		try {
-			con = DataAccess.getConnection();
+		sb.append("select ");
+		sb.append(fieldName);
+		sb.append(", workflowContext from ");
+		sb.append(tableName);
+		sb.append(" where workflowContext is not null and workflowContext ");
+		sb.append("not like '%serializable%'");
 
-			ps = con.prepareStatement(
-				"select " + fieldName + ", workflowContext from " + tableName +
-					" where workflowContext is not null and workflowContext " +
-						"not like '%serializable%'");
-
-			rs = ps.executeQuery();
+		try (PreparedStatement ps = con.prepareStatement(sb.toString());
+			ResultSet rs = ps.executeQuery()) {
 
 			JSONSerializer jsonSerializer = new JSONSerializer();
 
@@ -75,36 +78,29 @@ public class UpgradeWorkflowContext extends UpgradeProcess {
 						workflowContext));
 
 				updateWorkflowContext(
-					tableName, fieldName, fieldValue, workflowContext);
+					con, tableName, fieldName, fieldValue, workflowContext);
 			}
-		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
 		}
 	}
 
 	protected void updateWorkflowContext(
-			String tableName, String fieldName, long fieldValue,
+			Connection con, String tableName, String fieldName, long fieldValue,
 			String workflowContext)
 		throws Exception {
 
-		Connection con = null;
-		PreparedStatement ps = null;
+		StringBundler sb = new StringBundler(5);
 
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
+		sb.append("update ");
+		sb.append(tableName);
+		sb.append(" set workflowContext = ? where ");
+		sb.append(fieldName);
+		sb.append(" = ?");
 
-			ps = con.prepareStatement(
-				"update " + tableName + " set workflowContext = ? where " +
-					fieldName + " = ?");
-
+		try (PreparedStatement ps = con.prepareStatement(sb.toString())) {
 			ps.setString(1, workflowContext);
 			ps.setLong(2, fieldValue);
 
 			ps.executeUpdate();
-		}
-		finally {
-			DataAccess.cleanUp(con, ps);
 		}
 	}
 

@@ -15,7 +15,6 @@
 package com.liferay.asset.publisher.web.upgrade.v1_0_0;
 
 import com.liferay.asset.publisher.web.constants.AssetPublisherPortletKeys;
-import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.upgrade.BaseUpgradePortletPreferences;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -36,38 +35,28 @@ import javax.portlet.PortletPreferences;
  */
 public class UpgradePortletPreferences extends BaseUpgradePortletPreferences {
 
-	protected String getJournalArticleResourceUuid(String journalArticleUuid)
+	protected String getJournalArticleResourceUuid(
+			Connection con, String journalArticleUuid)
 		throws Exception {
 
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+		StringBundler sb = new StringBundler(5);
 
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
+		sb.append("select JournalArticleResource.uuid_ from ");
+		sb.append("JournalArticleResource inner join JournalArticle on ");
+		sb.append("JournalArticle.resourcePrimKey = ");
+		sb.append("JournalArticleResource.resourcePrimKey where ");
+		sb.append("JournalArticle.uuid_ = ?");
 
-			StringBundler sb = new StringBundler(5);
-
-			sb.append("select JournalArticleResource.uuid_ from ");
-			sb.append("JournalArticleResource inner join JournalArticle on ");
-			sb.append("JournalArticle.resourcePrimKey = ");
-			sb.append("JournalArticleResource.resourcePrimKey where ");
-			sb.append("JournalArticle.uuid_ = ?");
-
-			ps = con.prepareStatement(sb.toString());
-
+		try (PreparedStatement ps = con.prepareStatement(sb.toString())) {
 			ps.setString(1, journalArticleUuid);
 
-			rs = ps.executeQuery();
-
-			if (rs.next()) {
-				return rs.getString("uuid_");
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					return rs.getString("uuid_");
+				}
 			}
 
 			return null;
-		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
 		}
 	}
 
@@ -80,8 +69,8 @@ public class UpgradePortletPreferences extends BaseUpgradePortletPreferences {
 
 	@Override
 	protected String upgradePreferences(
-			long companyId, long ownerId, int ownerType, long plid,
-			String portletId, String xml)
+			Connection con, long companyId, long ownerId, int ownerType,
+			long plid, String portletId, String xml)
 		throws Exception {
 
 		PortletPreferences portletPreferences =
@@ -92,7 +81,7 @@ public class UpgradePortletPreferences extends BaseUpgradePortletPreferences {
 			"asset-entry-xml", new String[0]);
 
 		if (ArrayUtil.isNotEmpty(assetEntryXmls)) {
-			upgradeUuids(assetEntryXmls);
+			upgradeUuids(con, assetEntryXmls);
 
 			portletPreferences.setValues("assetEntryXml", assetEntryXmls);
 		}
@@ -100,7 +89,9 @@ public class UpgradePortletPreferences extends BaseUpgradePortletPreferences {
 		return PortletPreferencesFactoryUtil.toXML(portletPreferences);
 	}
 
-	protected void upgradeUuids(String[] assetEntryXmls) throws Exception {
+	protected void upgradeUuids(Connection con, String[] assetEntryXmls)
+		throws Exception {
+
 		for (int i = 0; i < assetEntryXmls.length; i++) {
 			String assetEntry = assetEntryXmls[i];
 
@@ -112,7 +103,7 @@ public class UpgradePortletPreferences extends BaseUpgradePortletPreferences {
 				"asset-entry-uuid");
 
 			String journalArticleResourceUuid = getJournalArticleResourceUuid(
-				assetTypeElementUuid.getStringValue());
+				con, assetTypeElementUuid.getStringValue());
 
 			if (journalArticleResourceUuid == null) {
 				continue;

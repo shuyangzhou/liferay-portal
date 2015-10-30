@@ -16,8 +16,11 @@ package com.liferay.journal.upgrade.v1_0_0;
 
 import com.liferay.journal.constants.JournalConstants;
 import com.liferay.journal.constants.JournalPortletKeys;
+import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.settings.SettingsFactory;
 import com.liferay.portal.util.PortletKeys;
+
+import java.sql.Connection;
 
 /**
  * @author Juergen Kappler
@@ -31,9 +34,11 @@ public class UpgradePortletSettings
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		upgradeDisplayPortlet(
-			JournalPortletKeys.JOURNAL, JournalConstants.SERVICE_NAME,
-			PortletKeys.PREFS_OWNER_TYPE_LAYOUT);
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection()) {
+			upgradeDisplayPortlet(
+				con, JournalPortletKeys.JOURNAL, JournalConstants.SERVICE_NAME,
+				PortletKeys.PREFS_OWNER_TYPE_LAYOUT);
+		}
 	}
 
 }
