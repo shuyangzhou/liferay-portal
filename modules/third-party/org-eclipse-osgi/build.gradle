@@ -21,7 +21,7 @@ String eclipseOsgiVersion = "3.10.200-SNAPSHOT"
 
 checkJar {
 	doLast {
-		File deployedLibFile = new File(liferay.deployDir, "org.eclipse.osgi.jar")
+		File deployedLibFile = new File(liferay.deployDir, patch.originalLibModuleName + ".jar")
 
 		if (!deployedLibFile.exists()) {
 			logger.warn "Unable to find " + deployedLibFile
