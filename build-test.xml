@@ -1841,27 +1841,20 @@ ${tomcat-gc-log}
 					List testClassGroups = getClassGroups(classFileNames, allTestClassGroupsSize);
 
 					for (i = 0; i < allTestClassGroupsSize; i++) {
-						List testClassGroup = testClassGroups.get(i);
-
 						sb.append("TEST_CLASS_GROUP_");
 						sb.append(i);
 						sb.append("=");
 
-						for (String testClass : testClassGroup) {
-							sb.append(testClass);
-							sb.append(",");
-						}
+						for (j = 0; j < allTestClassGroupsSize; j++) {
+							List testClassGroup = testClassGroups.get(j);
 
-						for (String testClass : autoBalanceTestClassNames) {
-							if (!testClassGroup.contains(testClass)) {
+							for (String testClass : testClassGroup) {
 								sb.append(testClass);
 								sb.append(",");
 							}
 						}
 
-						if (!testClassGroup.isEmpty() || autoBalanceTestClassNames.length > 0) {
-							sb.setLength(sb.length() - 1);
-						}
+						sb.setLength(sb.length() - 1);
 
 						sb.append("\n\n");
 					}
