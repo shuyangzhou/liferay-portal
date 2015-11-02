@@ -704,6 +704,40 @@
 		</sequential>
 	</macrodef>
 
+	<macrodef name="prepare-osgi-shuffle-properties">
+		<sequential>
+			<beanshell>
+				<![CDATA[
+					import java.io.Writer;
+
+					String localName = InetAddress.getLocalHost().getHostName();
+
+					int osgiShuffleSeed = localName.hashCode();
+
+					String tempDir = System.getProperty("java.io.tmpdir") + "/OsgiShuffleLog-" + localName;
+
+					Writer writer = new BufferedWriter(
+						new FileWriter(
+							project.getProperty("app.server.classes.portal.dir") + "/system-ext.properties", true));
+
+					Date date = new Date();
+
+					writer.write("osgi.shuffle.seed=" + osgiShuffleSeed + "\n");
+					writer.write("osgi.shuffle.timestamp=" + date.getTime() + "\n");
+					writer.write("osgi.shuffle.output.log.path=" + tempDir + "\n");
+
+					writer.close();
+
+					project.setProperty("osgi.jvmargs.required", "true");
+					project.setProperty(
+						"osgi.jvmargs",
+						"-Dosgi.shuffle.timestamp=" + date.getTime() +
+							" -Dosgi.shuffle.output.log.path=" + tempDir);
+				]]>
+			</beanshell>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="prepare-test-build">
 		<sequential>
 			<antcall target="prepare-test-build">
@@ -929,10 +963,16 @@
 
 							<antcall target="prepare-system-ext-properties" inheritAll="false" />
 
+							<prepare-osgi-shuffle-properties />
+
 							<gradle-execute dir="modules" task="testIntegration">
 								<arg value="-Ddatabase.type=@{database.type}" />
 								<arg value="-Dtest.class.group.index=${axis.variable}" />
 							</gradle-execute>
+
+							<ant dir="portal-service" target="test-class">
+								<property name="test.class" value="TomcatOSGISeedTest" />
+							</ant>
 
 							<ant dir="portal-service" target="test-class" inheritAll="false">
 								<property name="test.class" value="PortalLogAssertorTest" />

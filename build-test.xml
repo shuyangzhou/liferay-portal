@@ -1804,6 +1804,7 @@ ${tomcat-gc-log}
 								"modules/portal/portal-json-web-service-extender/src/testIntegration/java/**/*Test.java",
 								"modules/util/osgi-util/src/testIntegration/java/**/*Test.java",
 								"portal-service/test/unit/com/liferay/portal/log/assertor/PortalLogAssertorTest.java",
+								"portal-service/test/unit/com/liferay/portal/log/assertor/TomcatOSGISeedTest.java",
 								"*/pacl/test/[\\w]+Test.class",
 								"**/*ServiceHttpTest.java",
 								"**/*ServiceJsonTest.java",
@@ -2045,6 +2046,10 @@ module.framework.base.dir=${liferay.home}/osgi]]></echo>
 			<setup-testable-tomcat-manager />
 
 			<setup-testable-tomcat-osgi-modules />
+
+			<gradle-execute dir="${project.dir}/modules/third-party/org-apache-felix" task="deploy" />
+
+			<gradle-execute dir="${project.dir}/modules/third-party/org-eclipse-osgi" task="deploy" />
 		</sequential>
 	</macrodef>
 
@@ -5730,7 +5735,8 @@ module.framework.properties.osgi.console=11312</echo>
 	</target>
 
 	<target name="prepare-system-ext-properties">
-		<echo file="${app.server.classes.portal.dir}/system-ext.properties">log.sanitizer.enabled=false</echo>
+		<echo file="${app.server.classes.portal.dir}/system-ext.properties">log.sanitizer.enabled=false
+</echo>
 	</target>
 
 	<target name="prepare-test-build">
