@@ -2047,7 +2047,7 @@ module.framework.base.dir=${liferay.home}/osgi]]></echo>
 
 			<setup-testable-tomcat-osgi-modules />
 
-			<gradle-execute dir="${project.dir}/modules/third-party/org-apache-felix" task="deploy" />
+			<gradle-execute dir="${project.dir}/modules/third-party/org-apache-felix-fileinstall" task="deploy" />
 
 			<gradle-execute dir="${project.dir}/modules/third-party/org-eclipse-osgi" task="deploy" />
 		</sequential>

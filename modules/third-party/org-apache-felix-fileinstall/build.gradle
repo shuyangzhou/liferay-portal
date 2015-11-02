@@ -12,7 +12,7 @@ task patch(type: PatchTask)
 sourceCompatibility = "1.6"
 targetCompatibility = "1.6"
 
-String felixSnapshotVersion = "3.5.1-20150612.021433-1"
+String felixSnapshotVersion = "3.5.1-20150728.201454-4"
 String felixVersion = "3.5.1-SNAPSHOT"
 
 checkJar {
