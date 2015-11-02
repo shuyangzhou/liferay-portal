@@ -44,21 +44,14 @@ public class UpgradeRatings extends UpgradeProcess {
 	}
 
 	protected void upgradeRatingsEntry(Connection con) throws Exception {
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+		String sql = "select distinct classNameId from RatingsEntry";
 
-		try {
-			ps = con.prepareStatement(
-				"select distinct classNameId from RatingsEntry");
-
-			rs = ps.executeQuery();
+		try (PreparedStatement ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery()) {
 
 			while (rs.next()) {
 				upgradeRatingsEntry(con, rs.getLong("classNameId"));
 			}
-		}
-		finally {
-			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
@@ -94,41 +87,30 @@ public class UpgradeRatings extends UpgradeProcess {
 			Connection con, long classNameId, int normalizationFactor)
 		throws Exception {
 
-		PreparedStatement ps = null;
+		String sql =
+			"update RatingsEntry set score = score / ? where classNameId = ?";
 
-		try {
-			ps = con.prepareStatement(
-				"update RatingsEntry set score = score / ? where classNameId " +
-					"= ?");
-
+		try (PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setInt(1, normalizationFactor);
 			ps.setLong(2, classNameId);
 
 			ps.executeUpdate();
-		}
-		finally {
-			DataAccess.cleanUp(ps);
 		}
 	}
 
 	protected void upgradeRatingsEntryThumbs(Connection con, long classNameId)
 		throws Exception {
 
-		PreparedStatement ps = null;
+		String sql =
+			"update RatingsEntry set score = ? where score = ? and " +
+				"classNameId = ?";
 
-		try {
-			ps = con.prepareStatement(
-				"update RatingsEntry set score = ? where score = ? and " +
-					"classNameId = ?");
-
+		try (PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setDouble(1, 0);
 			ps.setDouble(2, -1);
 			ps.setLong(3, classNameId);
 
 			ps.executeUpdate();
-		}
-		finally {
-			DataAccess.cleanUp(ps);
 		}
 	}
 

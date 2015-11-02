@@ -20,7 +20,6 @@ import com.liferay.portal.model.ReleaseConstants;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 
 /**
@@ -30,13 +29,11 @@ public class UpgradeModules extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+		String sql =
+			"insert into Release_ values  (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-		try (Connection con = DataAccess.getUpgradeOptimizedConnection()) {
-			ps = con.prepareStatement(
-				"insert into Release_ values  (?, ?, ?, ?, ?, ?, ?, ?, ?, " +
-					"?, ?)");
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection();
+			PreparedStatement ps = con.prepareStatement(sql)) {
 
 			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
@@ -57,9 +54,6 @@ public class UpgradeModules extends UpgradeProcess {
 			}
 
 			ps.executeBatch();
-		}
-		finally {
-			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 

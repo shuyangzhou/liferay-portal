@@ -63,70 +63,60 @@ public class UpgradeSubscription extends UpgradeProcess {
 	protected long getGroupId(Connection con, long classNameId, long classPK)
 		throws Exception {
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+		String className = PortalUtil.getClassName(classNameId);
 
-		try {
-			String className = PortalUtil.getClassName(classNameId);
+		String[] groupIdSQLParts = StringUtil.split(
+			_getGroupIdSQLPartsMap.get(className));
 
-			String[] groupIdSQLParts = StringUtil.split(
-				_getGroupIdSQLPartsMap.get(className));
-
-			if (ArrayUtil.isEmpty(groupIdSQLParts)) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(
-						"Unable to determine the group ID for the class name " +
-							className);
-				}
-
-				return 0;
+		if (ArrayUtil.isEmpty(groupIdSQLParts)) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					"Unable to determine the group ID for the class name " +
+						className);
 			}
 
-			String sql =
-				"select " + groupIdSQLParts[1] + " from " + groupIdSQLParts[0] +
-					" where " + groupIdSQLParts[2] + " = ?";
+			return 0;
+		}
 
-			ps = con.prepareStatement(sql);
+		StringBundler sb = new StringBundler(8);
 
-			ps.setLong(1, classPK);
+		sb.append("select ");
+		sb.append(groupIdSQLParts[1]);
+		sb.append(" from ");
+		sb.append(groupIdSQLParts[0]);
+		sb.append(" where ");
+		sb.append(groupIdSQLParts[2]);
+		sb.append(" = ");
+		sb.append(classPK);
 
-			rs = ps.executeQuery();
+		try (PreparedStatement ps = con.prepareStatement(sb.toString());
+			ResultSet rs = ps.executeQuery()) {
 
 			if (rs.next()) {
 				return rs.getLong("groupId");
 			}
-		}
-		finally {
-			DataAccess.cleanUp(null, ps, rs);
-		}
 
-		return 0;
+			return 0;
+		}
 	}
 
 	protected boolean hasGroup(Connection con, long groupId) throws Exception {
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+		String sql = "select count(*) from Group_ where groupId = ?";
 
-		try {
-			ps = con.prepareStatement(
-				"select count(*) from Group_ where groupId = ?");
-
+		try (PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setLong(1, groupId);
 
-			rs = ps.executeQuery();
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					int count = rs.getInt(1);
 
-			if (rs.next()) {
-				int count = rs.getInt(1);
-
-				if (count > 0) {
-					return true;
+					if (count > 0) {
+						return true;
+					}
 				}
 			}
 
 			return false;
-		}
-		finally {
-			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
@@ -163,15 +153,11 @@ public class UpgradeSubscription extends UpgradeProcess {
 	}
 
 	protected void updateSubscriptionGroupIds(Connection con) throws Exception {
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+		String sql =
+			"select subscriptionId, classNameId, classPK from Subscription";
 
-		try {
-			ps = con.prepareStatement(
-				"select subscriptionId, classNameId, classPK from " +
-					"Subscription");
-
-			rs = ps.executeQuery();
+		try (PreparedStatement ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery()) {
 
 			while (rs.next()) {
 				long subscriptionId = rs.getLong("subscriptionId");
@@ -181,9 +167,6 @@ public class UpgradeSubscription extends UpgradeProcess {
 				updateSubscriptionGroupId(
 					con, subscriptionId, classNameId, classPK);
 			}
-		}
-		finally {
-			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 

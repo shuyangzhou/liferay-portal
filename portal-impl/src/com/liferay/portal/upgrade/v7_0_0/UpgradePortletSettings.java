@@ -50,14 +50,13 @@ public abstract class UpgradePortletSettings extends UpgradeProcess {
 			Connection con, PortletPreferencesRow portletPreferencesRow)
 		throws Exception {
 
-		PreparedStatement ps = null;
+		StringBundler sb = new StringBundler(3);
 
-		try {
-			ps = con.prepareStatement(
-				"insert into PortletPreferences (mvccVersion, " +
-					"portletPreferencesId, ownerId, ownerType, plid, " +
-						"portletId, preferences) values (?, ?, ?, ?, ?, ?, ?)");
+		sb.append("insert into PortletPreferences (mvccVersion, ");
+		sb.append("portletPreferencesId, ownerId, ownerType, plid, ");
+		sb.append("portletId, preferences) values (?, ?, ?, ?, ?, ?, ?)");
 
+		try (PreparedStatement ps = con.prepareStatement(sb.toString())) {
 			ps.setLong(1, portletPreferencesRow.getMvccVersion());
 			ps.setLong(2, portletPreferencesRow.getPortletPreferencesId());
 			ps.setLong(3, portletPreferencesRow.getOwnerId());
@@ -67,9 +66,6 @@ public abstract class UpgradePortletSettings extends UpgradeProcess {
 			ps.setString(7, portletPreferencesRow.getPreferences());
 
 			ps.executeUpdate();
-		}
-		finally {
-			DataAccess.cleanUp(ps);
 		}
 	}
 
@@ -124,28 +120,19 @@ public abstract class UpgradePortletSettings extends UpgradeProcess {
 	}
 
 	protected long getGroupId(Connection con, long plid) throws Exception {
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+		String sql = "select groupId from Layout where plid = ?";
 
-		long groupId = 0;
-
-		try {
-			ps = con.prepareStatement(
-				"select groupId from Layout where plid = ?");
-
+		try (PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setLong(1, plid);
 
-			rs = ps.executeQuery();
-
-			if (rs.next()) {
-				groupId = rs.getLong("groupId");
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					return rs.getLong("groupId");
+				}
 			}
-		}
-		finally {
-			DataAccess.cleanUp(null, ps, rs);
-		}
 
-		return groupId;
+			return 0;
+		}
 	}
 
 	protected PreparedStatement getPortletPreferencesPreparedStatement(
@@ -206,14 +193,13 @@ public abstract class UpgradePortletSettings extends UpgradeProcess {
 			Connection con, PortletPreferencesRow portletPreferencesRow)
 		throws Exception {
 
-		PreparedStatement ps = null;
+		StringBundler sb = new StringBundler(3);
 
-		try {
-			ps = con.prepareStatement(
-				"update PortletPreferences set mvccVersion = ?, ownerId = ?, " +
-					"ownerType = ?, plid = ?, portletId = ?, preferences = ? " +
-						"where portletPreferencesId = ?");
+		sb.append("update PortletPreferences set mvccVersion = ?, ownerId = ?");
+		sb.append(", ownerType = ?, plid = ?, portletId = ?, preferences = ? ");
+		sb.append("where portletPreferencesId = ?");
 
+		try (PreparedStatement ps = con.prepareStatement(sb.toString())) {
 			ps.setLong(1, portletPreferencesRow.getMvccVersion());
 			ps.setLong(2, portletPreferencesRow.getOwnerId());
 			ps.setInt(3, portletPreferencesRow.getOwnerType());
@@ -223,9 +209,6 @@ public abstract class UpgradePortletSettings extends UpgradeProcess {
 			ps.setLong(7, portletPreferencesRow.getPortletPreferencesId());
 
 			ps.executeUpdate();
-		}
-		finally {
-			DataAccess.cleanUp(ps);
 		}
 	}
 

@@ -43,21 +43,20 @@ public class UpgradeMVCCVersion extends UpgradeProcess {
 
 		tableName = normalizeName(tableName, databaseMetaData);
 
-		ResultSet tableResultSet = databaseMetaData.getTables(
-			null, null, tableName, null);
+		try (ResultSet tableResultSet = databaseMetaData.getTables(
+				null, null, tableName, null)) {
 
-		try {
 			if (!tableResultSet.next()) {
 				_log.error("Table " + tableName + " does not exist");
 
 				return;
 			}
 
-			ResultSet columnResultSet = databaseMetaData.getColumns(
-				null, null, tableName,
-				normalizeName("mvccVersion", databaseMetaData));
+			String columnName = normalizeName("mvccVersion", databaseMetaData);
 
-			try {
+			try (ResultSet columnResultSet = databaseMetaData.getColumns(
+					null, null, tableName, columnName)) {
+
 				if (columnResultSet.next()) {
 					return;
 				}
@@ -72,12 +71,6 @@ public class UpgradeMVCCVersion extends UpgradeProcess {
 						"Added column mvccVersion to table " + tableName);
 				}
 			}
-			finally {
-				DataAccess.cleanUp(columnResultSet);
-			}
-		}
-		finally {
-			DataAccess.cleanUp(tableResultSet);
 		}
 	}
 

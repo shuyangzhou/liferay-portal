@@ -53,87 +53,60 @@ public abstract class BaseUpgradePortletPreferences extends UpgradeProcess {
 	protected long getCompanyId(Connection con, String sql, long primaryKey)
 		throws Exception {
 
-		long companyId = 0;
-
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-			ps = con.prepareStatement(sql);
-
+		try (PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setLong(1, primaryKey);
 
-			rs = ps.executeQuery();
-
-			while (rs.next()) {
-				companyId = rs.getLong("companyId");
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					return rs.getLong("companyId");
+				}
 			}
 		}
-		finally {
-			DataAccess.cleanUp(null, ps, rs);
-		}
 
-		return companyId;
+		return 0;
 	}
 
 	protected Object[] getGroup(Connection con, long groupId) throws Exception {
-		Object[] group = null;
+		String sql = "select companyId from Group_ where groupId = ?";
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-			ps = con.prepareStatement(
-				"select companyId from Group_ where groupId = ?");
-
+		try (PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setLong(1, groupId);
 
-			rs = ps.executeQuery();
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					long companyId = rs.getLong("companyId");
 
-			while (rs.next()) {
-				long companyId = rs.getLong("companyId");
-
-				group = new Object[] {groupId, companyId};
+					return new Object[] {groupId, companyId};
+				}
 			}
 		}
-		finally {
-			DataAccess.cleanUp(null, ps, rs);
-		}
 
-		return group;
+		return null;
 	}
 
 	protected Object[] getLayout(Connection con, long plid) throws Exception {
-		Object[] layout = null;
+		String sql =
+			"select groupId, companyId, privateLayout, layoutId from Layout " +
+				"where plid = ?";
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-			ps = con.prepareStatement(
-				"select groupId, companyId, privateLayout, layoutId from " +
-					"Layout where plid = ?");
-
+		try (PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setLong(1, plid);
 
-			rs = ps.executeQuery();
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					long groupId = rs.getLong("groupId");
+					long companyId = rs.getLong("companyId");
+					boolean privateLayout = rs.getBoolean("privateLayout");
+					long layoutId = rs.getLong("layoutId");
 
-			while (rs.next()) {
-				long groupId = rs.getLong("groupId");
-				long companyId = rs.getLong("companyId");
-				boolean privateLayout = rs.getBoolean("privateLayout");
-				long layoutId = rs.getLong("layoutId");
-
-				layout = new Object[] {
-					groupId, companyId, privateLayout, layoutId
-				};
+					return new Object[] {
+						groupId, companyId, privateLayout, layoutId
+					};
+				}
 			}
 		}
-		finally {
-			DataAccess.cleanUp(null, ps, rs);
-		}
 
-		return layout;
+		return null;
 	}
 
 	protected String getLayoutUuid(Connection con, long plid, long layoutId)
@@ -145,16 +118,11 @@ public abstract class BaseUpgradePortletPreferences extends UpgradeProcess {
 			return null;
 		}
 
-		String uuid = null;
+		String sql =
+			"select uuid_ from Layout where groupId = ? and privateLayout = " +
+				"? and layoutId = ?";
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-			ps = con.prepareStatement(
-				"select uuid_ from Layout where groupId = ? and " +
-					"privateLayout = ? and layoutId = ?");
-
+		try (PreparedStatement ps = con.prepareStatement(sql)) {
 			long groupId = (Long)layout[0];
 			boolean privateLayout = (Boolean)layout[2];
 
@@ -162,17 +130,14 @@ public abstract class BaseUpgradePortletPreferences extends UpgradeProcess {
 			ps.setBoolean(2, privateLayout);
 			ps.setLong(3, layoutId);
 
-			rs = ps.executeQuery();
-
-			if (rs.next()) {
-				uuid = rs.getString("uuid_");
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					return rs.getString("uuid_");
+				}
 			}
 		}
-		finally {
-			DataAccess.cleanUp(null, ps, rs);
-		}
 
-		return uuid;
+		return null;
 	}
 
 	protected String[] getPortletIds() {
@@ -215,27 +180,21 @@ public abstract class BaseUpgradePortletPreferences extends UpgradeProcess {
 	}
 
 	protected void updatePortletPreferences() throws Exception {
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+		StringBundler sb = new StringBundler(4);
 
-		try (Connection con = DataAccess.getUpgradeOptimizedConnection()) {
-			StringBundler sb = new StringBundler(4);
+		sb.append("select portletPreferencesId, ownerId, ownerType, ");
+		sb.append("plid, portletId, preferences from PortletPreferences");
 
-			sb.append("select portletPreferencesId, ownerId, ownerType, ");
-			sb.append("plid, portletId, preferences from PortletPreferences");
+		String whereClause = getUpdatePortletPreferencesWhereClause();
 
-			String whereClause = getUpdatePortletPreferencesWhereClause();
+		if (Validator.isNotNull(whereClause)) {
+			sb.append(" where ");
+			sb.append(whereClause);
+		}
 
-			if (Validator.isNotNull(whereClause)) {
-				sb.append(" where ");
-				sb.append(whereClause);
-			}
-
-			String sql = sb.toString();
-
-			ps = con.prepareStatement(sql);
-
-			rs = ps.executeQuery();
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection();
+			PreparedStatement ps = con.prepareStatement(sb.toString());
+			ResultSet rs = ps.executeQuery()) {
 
 			while (rs.next()) {
 				long portletPreferencesId = rs.getLong("portletPreferencesId");
@@ -306,28 +265,21 @@ public abstract class BaseUpgradePortletPreferences extends UpgradeProcess {
 				}
 			}
 		}
-		finally {
-			DataAccess.cleanUp(null, ps, rs);
-		}
 	}
 
 	protected void updatePortletPreferences(
 			Connection con, long portletPreferencesId, String preferences)
 		throws Exception {
 
-		PreparedStatement ps = null;
+		String sql =
+			"update PortletPreferences set preferences = ? where " +
+				"portletPreferencesId = ?";
 
-		try {
-			ps = con.prepareStatement(
-				"update PortletPreferences set preferences = ? where " +
-					"portletPreferencesId = " + portletPreferencesId);
-
+		try (PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setString(1, preferences);
+			ps.setLong(2, portletPreferencesId);
 
 			ps.executeUpdate();
-		}
-		finally {
-			DataAccess.cleanUp(ps);
 		}
 	}
 
