@@ -30,16 +30,13 @@ import java.sql.ResultSet;
 public class BaseUpgradeAdminPortlets extends UpgradeProcess {
 
 	protected void addResourcePermission(
-			long resourcePermissionId, long companyId, String name, int scope,
-			String primKey, long roleId, long actionIds)
+			Connection con, long resourcePermissionId, long companyId,
+			String name, int scope, String primKey, long roleId, long actionIds)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			ps = con.prepareStatement(
 				"insert into ResourcePermission (resourcePermissionId, " +
 					"companyId, name, scope, primKey, roleId, actionIds) " +
@@ -56,20 +53,17 @@ public class BaseUpgradeAdminPortlets extends UpgradeProcess {
 			ps.executeUpdate();
 		}
 		finally {
-			DataAccess.cleanUp(con, ps);
+			DataAccess.cleanUp(ps);
 		}
 	}
 
-	protected long getBitwiseValue(String name, String actionId)
+	protected long getBitwiseValue(Connection con, String name, String actionId)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			ps = con.prepareStatement(
 				"select bitwiseValue from ResourceAction where name = ? and " +
 					"actionId = ?");
@@ -86,7 +80,7 @@ public class BaseUpgradeAdminPortlets extends UpgradeProcess {
 			return 0;
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
@@ -119,20 +113,17 @@ public class BaseUpgradeAdminPortlets extends UpgradeProcess {
 			String portletFrom, String portletTo)
 		throws Exception {
 
-		long bitwiseValue = getBitwiseValue(
-			portletFrom, ActionKeys.ACCESS_IN_CONTROL_PANEL);
+		String sql = "select * from ResourcePermission where name = ?";
 
-		Connection con = null;
-		PreparedStatement ps = null;
 		ResultSet rs = null;
 
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
-				"select * from ResourcePermission where name = ?");
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection();
+			PreparedStatement ps = con.prepareStatement(sql)) {
 
 			ps.setString(1, portletFrom);
+
+			long bitwiseValue = getBitwiseValue(
+				con, portletFrom, ActionKeys.ACCESS_IN_CONTROL_PANEL);
 
 			rs = ps.executeQuery();
 
@@ -144,6 +135,7 @@ public class BaseUpgradeAdminPortlets extends UpgradeProcess {
 					actionIds = actionIds & (~bitwiseValue);
 
 					runSQL(
+						con,
 						"update ResourcePermission set actionIds = " +
 							actionIds + " where resourcePermissionId = " +
 								resourcePermissionId);
@@ -161,13 +153,13 @@ public class BaseUpgradeAdminPortlets extends UpgradeProcess {
 					actionIds |= bitwiseValue;
 
 					addResourcePermission(
-						resourcePermissionId, companyId, portletTo, scope,
+						con, resourcePermissionId, companyId, portletTo, scope,
 						primKey, roleId, actionIds);
 				}
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(rs);
 		}
 	}
 

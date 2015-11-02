@@ -50,16 +50,13 @@ import java.util.Map;
 public class UpgradeDocumentLibrary extends UpgradeProcess {
 
 	protected void addDDMStructureLink(
-			long ddmStructureLinkId, long classNameId, long classPK,
-			long ddmStructureId)
+			Connection con, long ddmStructureLinkId, long classNameId,
+			long classPK, long ddmStructureId)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			ps = con.prepareStatement(
 				"insert into DDMStructureLink (structureLinkId, classNameId, " +
 					"classPK, structureId) values (?, ?, ?, ?)");
@@ -79,52 +76,53 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 			throw e;
 		}
 		finally {
-			DataAccess.cleanUp(con, ps);
+			DataAccess.cleanUp(ps);
 		}
 	}
 
 	@Override
 	protected void doUpgrade() throws Exception {
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection()) {
 
-		// DLFileEntry
+			// DLFileEntry
 
-		updateFileEntryFileNames();
+			updateFileEntryFileNames(con);
 
-		// DLFileEntryType
+			// DLFileEntryType
 
-		updateFileEntryTypeNamesAndDescriptions();
+			updateFileEntryTypeNamesAndDescriptions(con);
 
-		updateFileEntryTypeDDMStructureLinks();
+			updateFileEntryTypeDDMStructureLinks(con);
 
-		// DLFileVersion
+			// DLFileVersion
 
-		updateFileVersionFileNames();
+			updateFileVersionFileNames(con);
 
-		// DLFolder
+			// DLFolder
 
-		try {
-			runSQL("alter_column_type DLFolder name VARCHAR(255) null");
+			try {
+				runSQL(
+					con, "alter_column_type DLFolder name VARCHAR(255) null");
+			}
+			catch (SQLException sqle) {
+				upgradeTable(
+					DLFolderTable.TABLE_NAME, DLFolderTable.TABLE_COLUMNS,
+					DLFolderTable.TABLE_SQL_CREATE,
+					DLFolderTable.TABLE_SQL_ADD_INDEXES);
+			}
+
+			updateRepositoryClassNameIds(con);
 		}
-		catch (SQLException sqle) {
-			upgradeTable(
-				DLFolderTable.TABLE_NAME, DLFolderTable.TABLE_COLUMNS,
-				DLFolderTable.TABLE_SQL_CREATE,
-				DLFolderTable.TABLE_SQL_ADD_INDEXES);
-		}
-
-		updateRepositoryClassNameIds();
 	}
 
-	protected boolean hasFileEntry(long groupId, long folderId, String fileName)
+	protected boolean hasFileEntry(
+			Connection con, long groupId, long folderId, String fileName)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			ps = con.prepareStatement(
 				"select count(*) from DLFileEntry where groupId = ? and " +
 					"folderId = ? and fileName = ?");
@@ -146,19 +144,17 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 			return false;
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
-	protected void updateFileEntryFileName(long fileEntryId, String fileName)
+	protected void updateFileEntryFileName(
+			Connection con, long fileEntryId, String fileName)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			ps = con.prepareStatement(
 				"update DLFileEntry set fileName = ? where fileEntryId = ?");
 
@@ -168,20 +164,17 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 			ps.executeUpdate();
 		}
 		finally {
-			DataAccess.cleanUp(con, ps);
+			DataAccess.cleanUp(ps);
 		}
 	}
 
-	protected void updateFileEntryFileNames() throws Exception {
-		runSQL("alter table DLFileEntry add fileName VARCHAR(255) null");
+	protected void updateFileEntryFileNames(Connection con) throws Exception {
+		runSQL(con, "alter table DLFileEntry add fileName VARCHAR(255) null");
 
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			ps = con.prepareStatement(
 				"select fileEntryId, groupId, folderId, extension, title, " +
 					"version from DLFileEntry");
@@ -211,7 +204,7 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 				String uniqueTitle = StringPool.BLANK;
 
 				for (int i = 1;; i++) {
-					if (!hasFileEntry(groupId, folderId, uniqueFileName)) {
+					if (!hasFileEntry(con, groupId, folderId, uniqueFileName)) {
 						break;
 					}
 
@@ -227,28 +220,26 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 						uniqueTitle, extension);
 				}
 
-				updateFileEntryFileName(fileEntryId, uniqueFileName);
+				updateFileEntryFileName(con, fileEntryId, uniqueFileName);
 
 				if (Validator.isNotNull(uniqueTitle)) {
-					updateFileEntryTitle(fileEntryId, uniqueTitle, version);
+					updateFileEntryTitle(
+						con, fileEntryId, uniqueTitle, version);
 				}
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
 	protected void updateFileEntryTitle(
-			long fileEntryId, String title, String version)
+			Connection con, long fileEntryId, String title, String version)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			ps = con.prepareStatement(
 				"update DLFileEntry set title = ? where fileEntryId = ?");
 
@@ -268,18 +259,17 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 			ps.executeUpdate();
 		}
 		finally {
-			DataAccess.cleanUp(con, ps);
+			DataAccess.cleanUp(ps);
 		}
 	}
 
-	protected void updateFileEntryTypeDDMStructureLinks() throws Exception {
-		Connection con = null;
+	protected void updateFileEntryTypeDDMStructureLinks(Connection con)
+		throws Exception {
+
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			ps = con.prepareStatement(
 				"select * from DLFileEntryTypes_DDMStructures");
 
@@ -292,24 +282,24 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 				long fileEntryTypeId = rs.getLong("fileEntryTypeId");
 
 				addDDMStructureLink(
-					increment(), classNameId, fileEntryTypeId, structureId);
+					con, increment(), classNameId, fileEntryTypeId,
+					structureId);
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 
-		runSQL("drop table DLFileEntryTypes_DDMStructures");
+		runSQL(con, "drop table DLFileEntryTypes_DDMStructures");
 	}
 
-	protected void updateFileEntryTypeNamesAndDescriptions() throws Exception {
-		Connection con = null;
+	protected void updateFileEntryTypeNamesAndDescriptions(Connection con)
+		throws Exception {
+
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			ps = con.prepareStatement(
 				"select companyId, groupId from Group_ where classNameId = ?");
 
@@ -323,16 +313,17 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 				long companyId = rs.getLong(1);
 				long groupId = rs.getLong(2);
 
-				updateFileEntryTypeNamesAndDescriptions(companyId, groupId);
+				updateFileEntryTypeNamesAndDescriptions(
+					con, companyId, groupId);
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
 	protected void updateFileEntryTypeNamesAndDescriptions(
-			long companyId, long groupId)
+			Connection con, long companyId, long groupId)
 		throws Exception {
 
 		Map<String, String> nameLanguageKeys = new HashMap<>();
@@ -357,22 +348,19 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 			String nameLanguageKey = nameAndKey.getKey();
 
 			updateFileEntryTypeNamesAndDescriptions(
-				companyId, groupId, dlFileEntryTypeKey, nameLanguageKey);
+				con, companyId, groupId, dlFileEntryTypeKey, nameLanguageKey);
 		}
 	}
 
 	protected void updateFileEntryTypeNamesAndDescriptions(
-			long companyId, long groupId, String dlFileEntryTypeKey,
-			String nameLanguageKey)
+			Connection con, long companyId, long groupId,
+			String dlFileEntryTypeKey, String nameLanguageKey)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			ps = con.prepareStatement(
 				"select fileEntryTypeId, name, description from " +
 					"DLFileEntryType where groupId = ? and fileEntryTypeKey " +
@@ -400,16 +388,17 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 			}
 
 			updateFileEntryTypeNamesAndDescriptions(
-				companyId, fileEntryTypeId, nameLanguageKey, name, description);
+				con, companyId, fileEntryTypeId, nameLanguageKey, name,
+				description);
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
 	protected void updateFileEntryTypeNamesAndDescriptions(
-			long companyId, long dlFileEntryTypeId, String nameLanguageKey,
-			String nameXML, String descriptionXML)
+			Connection con, long companyId, long dlFileEntryTypeId,
+			String nameLanguageKey, String nameXML, String descriptionXML)
 		throws Exception {
 
 		boolean update = false;
@@ -450,23 +439,20 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 
 		if (update) {
 			updateFileEntryTypeNamesAndDescriptions(
-				dlFileEntryTypeId, nameXML, descriptionXML, nameMap,
+				con, dlFileEntryTypeId, nameXML, descriptionXML, nameMap,
 				descriptionMap, defaultLocale);
 		}
 	}
 
 	protected void updateFileEntryTypeNamesAndDescriptions(
-			long fileEntryTypeId, String nameXML, String descriptionXML,
-			Map<Locale, String> nameMap, Map<Locale, String> descriptionMap,
-			Locale defaultLocale)
+			Connection con, long fileEntryTypeId, String nameXML,
+			String descriptionXML, Map<Locale, String> nameMap,
+			Map<Locale, String> descriptionMap, Locale defaultLocale)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			ps = con.prepareStatement(
 				"update DLFileEntryType set name = ?, description = ? where " +
 					"fileEntryTypeId = ?");
@@ -493,20 +479,17 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps);
+			DataAccess.cleanUp(ps);
 		}
 	}
 
 	protected void updateFileVersionFileName(
-			long fileVersionId, String fileName)
+			Connection con, long fileVersionId, String fileName)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			ps = con.prepareStatement(
 				"update DLFileVersion set fileName = ? where " +
 					"fileVersionId = ?");
@@ -517,20 +500,17 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 			ps.executeUpdate();
 		}
 		finally {
-			DataAccess.cleanUp(con, ps);
+			DataAccess.cleanUp(ps);
 		}
 	}
 
-	protected void updateFileVersionFileNames() throws Exception {
-		runSQL("alter table DLFileVersion add fileName VARCHAR(255) null");
+	protected void updateFileVersionFileNames(Connection con) throws Exception {
+		runSQL(con, "alter table DLFileVersion add fileName VARCHAR(255) null");
 
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			ps = con.prepareStatement(
 				"select fileVersionId, extension, title from DLFileVersion");
 
@@ -544,26 +524,25 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 
 				String fileName = DLUtil.getSanitizedFileName(title, extension);
 
-				updateFileVersionFileName(fileVersionId, fileName);
+				updateFileVersionFileName(con, fileVersionId, fileName);
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
-	protected void updateRepositoryClassNameIds() throws Exception {
+	protected void updateRepositoryClassNameIds(Connection con)
+		throws Exception {
+
 		long liferayRepositoryClassNameId = PortalUtil.getClassNameId(
 			LiferayRepository.class);
 		long portletRepositoryClassNameId = PortalUtil.getClassNameId(
 			PortletRepository.class);
 
-		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			ps = con.prepareStatement(
 				"update Repository set classNameId = ? where classNameId = ?");
 
@@ -573,7 +552,7 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 			ps.executeUpdate();
 		}
 		finally {
-			DataAccess.cleanUp(con, ps);
+			DataAccess.cleanUp(ps);
 		}
 	}
 

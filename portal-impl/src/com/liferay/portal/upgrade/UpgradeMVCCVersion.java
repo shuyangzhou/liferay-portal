@@ -38,7 +38,7 @@ import java.util.List;
 public class UpgradeMVCCVersion extends UpgradeProcess {
 
 	public void upgradeMVCCVersion(
-			DatabaseMetaData databaseMetaData, String tableName)
+			Connection con, DatabaseMetaData databaseMetaData, String tableName)
 		throws Exception {
 
 		tableName = normalizeName(tableName, databaseMetaData);
@@ -63,6 +63,7 @@ public class UpgradeMVCCVersion extends UpgradeProcess {
 				}
 
 				runSQL(
+					con,
 					"alter table " + tableName +
 						" add mvccVersion LONG default 0");
 
@@ -82,12 +83,8 @@ public class UpgradeMVCCVersion extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		Connection connection = null;
-
-		try {
-			connection = DataAccess.getUpgradeOptimizedConnection();
-
-			DatabaseMetaData databaseMetaData = connection.getMetaData();
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection()) {
+			DatabaseMetaData databaseMetaData = con.getMetaData();
 
 			List<Element> classElements = getClassElements();
 
@@ -96,17 +93,14 @@ public class UpgradeMVCCVersion extends UpgradeProcess {
 					continue;
 				}
 
-				upgradeMVCCVersion(databaseMetaData, classElement);
+				upgradeMVCCVersion(con, databaseMetaData, classElement);
 			}
 
 			String[] moduleTableNames = getModuleTableNames();
 
 			for (String moduleTableName : moduleTableNames) {
-				upgradeMVCCVersion(databaseMetaData, moduleTableName);
+				upgradeMVCCVersion(con, databaseMetaData, moduleTableName);
 			}
-		}
-		finally {
-			DataAccess.cleanUp(connection);
 		}
 	}
 
@@ -145,12 +139,13 @@ public class UpgradeMVCCVersion extends UpgradeProcess {
 	}
 
 	protected void upgradeMVCCVersion(
-			DatabaseMetaData databaseMetaData, Element classElement)
+			Connection con, DatabaseMetaData databaseMetaData,
+			Element classElement)
 		throws Exception {
 
 		String tableName = classElement.attributeValue("table");
 
-		upgradeMVCCVersion(databaseMetaData, tableName);
+		upgradeMVCCVersion(con, databaseMetaData, tableName);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

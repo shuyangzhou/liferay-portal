@@ -35,10 +35,12 @@ import javax.portlet.ReadOnlyException;
  */
 public abstract class BaseUpgradePortletPreferences extends UpgradeProcess {
 
-	protected void deletePortletPreferences(long portletPreferencesId)
+	protected void deletePortletPreferences(
+			Connection con, long portletPreferencesId)
 		throws Exception {
 
 		runSQL(
+			con,
 			"delete from PortletPreferences where portletPreferencesId = " +
 				portletPreferencesId);
 	}
@@ -48,16 +50,15 @@ public abstract class BaseUpgradePortletPreferences extends UpgradeProcess {
 		updatePortletPreferences();
 	}
 
-	protected long getCompanyId(String sql, long primaryKey) throws Exception {
+	protected long getCompanyId(Connection con, String sql, long primaryKey)
+		throws Exception {
+
 		long companyId = 0;
 
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			ps = con.prepareStatement(sql);
 
 			ps.setLong(1, primaryKey);
@@ -69,22 +70,19 @@ public abstract class BaseUpgradePortletPreferences extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 
 		return companyId;
 	}
 
-	protected Object[] getGroup(long groupId) throws Exception {
+	protected Object[] getGroup(Connection con, long groupId) throws Exception {
 		Object[] group = null;
 
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			ps = con.prepareStatement(
 				"select companyId from Group_ where groupId = ?");
 
@@ -99,22 +97,19 @@ public abstract class BaseUpgradePortletPreferences extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 
 		return group;
 	}
 
-	protected Object[] getLayout(long plid) throws Exception {
+	protected Object[] getLayout(Connection con, long plid) throws Exception {
 		Object[] layout = null;
 
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			ps = con.prepareStatement(
 				"select groupId, companyId, privateLayout, layoutId from " +
 					"Layout where plid = ?");
@@ -135,14 +130,16 @@ public abstract class BaseUpgradePortletPreferences extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 
 		return layout;
 	}
 
-	protected String getLayoutUuid(long plid, long layoutId) throws Exception {
-		Object[] layout = getLayout(plid);
+	protected String getLayoutUuid(Connection con, long plid, long layoutId)
+		throws Exception {
+
+		Object[] layout = getLayout(con, plid);
 
 		if (layout == null) {
 			return null;
@@ -150,13 +147,10 @@ public abstract class BaseUpgradePortletPreferences extends UpgradeProcess {
 
 		String uuid = null;
 
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			ps = con.prepareStatement(
 				"select uuid_ from Layout where groupId = ? and " +
 					"privateLayout = ? and layoutId = ?");
@@ -175,7 +169,7 @@ public abstract class BaseUpgradePortletPreferences extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 
 		return uuid;
@@ -221,13 +215,10 @@ public abstract class BaseUpgradePortletPreferences extends UpgradeProcess {
 	}
 
 	protected void updatePortletPreferences() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection()) {
 			StringBundler sb = new StringBundler(4);
 
 			sb.append("select portletPreferencesId, ownerId, ownerType, ");
@@ -259,6 +250,7 @@ public abstract class BaseUpgradePortletPreferences extends UpgradeProcess {
 
 				if (ownerType == PortletKeys.PREFS_OWNER_TYPE_ARCHIVED) {
 					companyId = getCompanyId(
+						con,
 						"select companyId from PortletItem where " +
 							"portletItemId = ?",
 						ownerId);
@@ -267,14 +259,14 @@ public abstract class BaseUpgradePortletPreferences extends UpgradeProcess {
 					companyId = ownerId;
 				}
 				else if (ownerType == PortletKeys.PREFS_OWNER_TYPE_GROUP) {
-					Object[] group = getGroup(ownerId);
+					Object[] group = getGroup(con, ownerId);
 
 					if (group != null) {
 						companyId = (Long)group[1];
 					}
 				}
 				else if (ownerType == PortletKeys.PREFS_OWNER_TYPE_LAYOUT) {
-					Object[] layout = getLayout(plid);
+					Object[] layout = getLayout(con, plid);
 
 					if (layout != null) {
 						companyId = (Long)layout[1];
@@ -284,13 +276,14 @@ public abstract class BaseUpgradePortletPreferences extends UpgradeProcess {
 							PortletKeys.PREFS_OWNER_TYPE_ORGANIZATION) {
 
 					companyId = getCompanyId(
+						con,
 						"select companyId from Organization_ where " +
 							"organizationId = ?",
 						ownerId);
 				}
 				else if (ownerType == PortletKeys.PREFS_OWNER_TYPE_USER) {
 					companyId = getCompanyId(
-						"select companyId from User_ where userId = ?",
+						con, "select companyId from User_ where userId = ?",
 						ownerId);
 				}
 				else {
@@ -300,34 +293,31 @@ public abstract class BaseUpgradePortletPreferences extends UpgradeProcess {
 
 				if (companyId > 0) {
 					String newPreferences = upgradePreferences(
-						companyId, ownerId, ownerType, plid, portletId,
+						con, companyId, ownerId, ownerType, plid, portletId,
 						preferences);
 
 					if (!preferences.equals(newPreferences)) {
 						updatePortletPreferences(
-							portletPreferencesId, newPreferences);
+							con, portletPreferencesId, newPreferences);
 					}
 				}
 				else {
-					deletePortletPreferences(portletPreferencesId);
+					deletePortletPreferences(con, portletPreferencesId);
 				}
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
 	protected void updatePortletPreferences(
-			long portletPreferencesId, String preferences)
+			Connection con, long portletPreferencesId, String preferences)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			ps = con.prepareStatement(
 				"update PortletPreferences set preferences = ? where " +
 					"portletPreferencesId = " + portletPreferencesId);
@@ -337,7 +327,7 @@ public abstract class BaseUpgradePortletPreferences extends UpgradeProcess {
 			ps.executeUpdate();
 		}
 		finally {
-			DataAccess.cleanUp(con, ps);
+			DataAccess.cleanUp(ps);
 		}
 	}
 
@@ -352,6 +342,20 @@ public abstract class BaseUpgradePortletPreferences extends UpgradeProcess {
 		}
 	}
 
+	protected String upgradePreferences(
+			Connection con, long companyId, long ownerId, int ownerType,
+			long plid, String portletId, String xml)
+		throws Exception {
+
+		return upgradePreferences(
+			companyId, ownerId, ownerType, plid, portletId, xml);
+	}
+
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             #updatePortletPreferences(Connection, long, String)}
+	 */
+	@Deprecated
 	protected abstract String upgradePreferences(
 			long companyId, long ownerId, int ownerType, long plid,
 			String portletId, String xml)

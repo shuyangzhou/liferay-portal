@@ -118,13 +118,10 @@ public class UpgradePortalPreferences extends UpgradeProcess {
 	}
 
 	protected void upgradePortalPreferences() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection()) {
 			ps = con.prepareStatement(
 				"select portalPreferencesId, preferences from " +
 					"PortalPreferences");
@@ -136,24 +133,22 @@ public class UpgradePortalPreferences extends UpgradeProcess {
 
 				String preferences = rs.getString("preferences");
 
-				upgradeUserStagingPreferences(portalPreferencesId, preferences);
+				upgradeUserStagingPreferences(
+					con, portalPreferencesId, preferences);
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
 	protected void upgradeUserStagingPreferences(
-			long portalPreferencesId, String preferences)
+			Connection con, long portalPreferencesId, String preferences)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			ps = con.prepareStatement(
 				"update PortalPreferences set preferences = ? where " +
 					"portalPreferencesId = ?");
@@ -163,7 +158,7 @@ public class UpgradePortalPreferences extends UpgradeProcess {
 			ps.executeUpdate();
 		}
 		finally {
-			DataAccess.cleanUp(con, ps);
+			DataAccess.cleanUp(ps);
 		}
 	}
 

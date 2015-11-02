@@ -34,14 +34,13 @@ import java.util.List;
  */
 public class BaseUpgradeLastPublishDate extends UpgradeProcess {
 
-	protected Date getLayoutSetLastPublishDate(long groupId) throws Exception {
-		Connection con = null;
+	protected Date getLayoutSetLastPublishDate(Connection con, long groupId)
+		throws Exception {
+
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			ps = con.prepareStatement(
 				"select settings_ from LayoutSet where groupId = ?");
 
@@ -66,20 +65,18 @@ public class BaseUpgradeLastPublishDate extends UpgradeProcess {
 			return null;
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
-	protected Date getPortletLastPublishDate(long groupId, String portletId)
+	protected Date getPortletLastPublishDate(
+			Connection con, long groupId, String portletId)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			ps = con.prepareStatement(
 				"select preferences from PortletPreferences where plid = ? " +
 					"and ownerType = ? and ownerId = ? and portletId = ?");
@@ -116,18 +113,15 @@ public class BaseUpgradeLastPublishDate extends UpgradeProcess {
 			return null;
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
-	protected List<Long> getStagedGroupIds() throws Exception {
-		Connection con = null;
+	protected List<Long> getStagedGroupIds(Connection con) throws Exception {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			ps = con.prepareStatement(
 				"select groupId from Group_ where typeSettings like " +
 					"'%staged=true%'");
@@ -145,21 +139,23 @@ public class BaseUpgradeLastPublishDate extends UpgradeProcess {
 			return stagedGroupIds;
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
-	protected void updateLastPublishDates(String portletId, String tableName)
+	protected void updateLastPublishDates(
+			Connection con, String portletId, String tableName)
 		throws Exception {
 
-		List<Long> stagedGroupIds = getStagedGroupIds();
+		List<Long> stagedGroupIds = getStagedGroupIds(con);
 
 		for (long stagedGroupId : stagedGroupIds) {
 			Date lastPublishDate = getPortletLastPublishDate(
-				stagedGroupId, portletId);
+				con, stagedGroupId, portletId);
 
 			if (lastPublishDate == null) {
-				lastPublishDate = getLayoutSetLastPublishDate(stagedGroupId);
+				lastPublishDate = getLayoutSetLastPublishDate(
+					con, stagedGroupId);
 			}
 
 			if (lastPublishDate == null) {
@@ -167,20 +163,31 @@ public class BaseUpgradeLastPublishDate extends UpgradeProcess {
 			}
 
 			updateStagedModelLastPublishDates(
-				stagedGroupId, tableName, lastPublishDate);
+				con, stagedGroupId, tableName, lastPublishDate);
+		}
+	}
+
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *            #updateLastPublishDates(Connection, String, String)}
+	 */
+	@Deprecated
+	protected void updateLastPublishDates(String portletId, String tableName)
+		throws Exception {
+
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection()) {
+			updateLastPublishDates(con, portletId, tableName);
 		}
 	}
 
 	protected void updateStagedModelLastPublishDates(
-			long groupId, String tableName, Date lastPublishDate)
+			Connection con, long groupId, String tableName,
+			Date lastPublishDate)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			ps = con.prepareStatement(
 				"update " + tableName + " set lastPublishDate = ? where " +
 					"groupId = ?");
@@ -191,7 +198,7 @@ public class BaseUpgradeLastPublishDate extends UpgradeProcess {
 			ps.executeUpdate();
 		}
 		finally {
-			DataAccess.cleanUp(con, ps);
+			DataAccess.cleanUp(ps);
 		}
 	}
 

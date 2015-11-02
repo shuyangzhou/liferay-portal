@@ -30,13 +30,10 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection()) {
 			ps = con.prepareStatement(
 				"select resourcePermissionId, primKey, primKeyId, actionIds, " +
 					"viewActionId from ResourcePermission");
@@ -74,11 +71,11 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 				sb.append(" where resourcePermissionId = ");
 				sb.append(resourcePermissionId);
 
-				runSQL(sb.toString());
+				runSQL(con, sb.toString());
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 

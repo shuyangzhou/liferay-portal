@@ -30,13 +30,10 @@ public class UpgradeModules extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection()) {
 			ps = con.prepareStatement(
 				"insert into Release_ values  (?, ?, ?, ?, ?, ?, ?, ?, ?, " +
 					"?, ?)");
@@ -62,7 +59,7 @@ public class UpgradeModules extends UpgradeProcess {
 			ps.executeBatch();
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
