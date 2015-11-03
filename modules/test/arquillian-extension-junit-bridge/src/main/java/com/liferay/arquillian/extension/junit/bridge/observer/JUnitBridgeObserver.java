@@ -14,9 +14,13 @@
 
 package com.liferay.arquillian.extension.junit.bridge.observer;
 
+import com.liferay.arquillian.extension.junit.bridge.util.FrameworkMethodComparator;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.jboss.arquillian.core.api.annotation.Observes;
@@ -29,6 +33,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.internal.runners.statements.InvokeMethod;
 import org.junit.internal.runners.statements.RunAfters;
@@ -79,11 +84,32 @@ public class JUnitBridgeObserver {
 			Description.createTestDescription(
 				clazz, method.getName(), method.getAnnotations()));
 
-		statement = withBefores(
-			statement, BeforeClass.class, junitTestClass, null);
+		List<FrameworkMethod> frameworkMethods = new ArrayList<>(
+			junitTestClass.getAnnotatedMethods(org.junit.Test.class));
 
-		statement = withAfters(
-			statement, AfterClass.class, junitTestClass, null);
+		frameworkMethods.removeAll(
+			junitTestClass.getAnnotatedMethods(Ignore.class));
+
+		Collections.sort(frameworkMethods, FrameworkMethodComparator.INSTANCE);
+
+		FrameworkMethod firstFrameworkMethod = frameworkMethods.get(0);
+
+		Method firstMethod = firstFrameworkMethod.getMethod();
+
+		if (firstMethod.equals(method)) {
+			statement = withBefores(
+				statement, BeforeClass.class, junitTestClass, null);
+		}
+
+		FrameworkMethod lastFrameworkMethod = frameworkMethods.get(
+			frameworkMethods.size() - 1);
+
+		Method lastMethod = lastFrameworkMethod.getMethod();
+
+		if (lastMethod.equals(method)) {
+			statement = withAfters(
+				statement, AfterClass.class, junitTestClass, null);
+		}
 
 		statement = withRules(
 			statement, ClassRule.class, junitTestClass, null,
