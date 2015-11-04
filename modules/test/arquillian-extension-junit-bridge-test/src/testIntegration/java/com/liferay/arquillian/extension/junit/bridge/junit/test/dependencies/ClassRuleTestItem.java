@@ -43,7 +43,7 @@ public class ClassRuleTestItem {
 				new BaseTestCallback<Object, Object>() {
 
 					@Override
-					public Object doBeforeClass(Description description)
+					public Object beforeClass(Description description)
 						throws IOException {
 
 						_testItemHelper.write("doBeforeClass1");
@@ -52,7 +52,7 @@ public class ClassRuleTestItem {
 					}
 
 					@Override
-					public void doAfterClass(Description description, Object c)
+					public void afterClass(Description description, Object c)
 						throws IOException {
 
 						_testItemHelper.write(c.toString());
@@ -64,7 +64,7 @@ public class ClassRuleTestItem {
 				new BaseTestCallback<Object, Object>() {
 
 					@Override
-					public Object doBeforeClass(Description description)
+					public Object beforeClass(Description description)
 						throws IOException {
 
 						_testItemHelper.write("doBeforeClass2");
@@ -73,7 +73,7 @@ public class ClassRuleTestItem {
 					}
 
 					@Override
-					public void doAfterClass(Description description, Object c)
+					public void afterClass(Description description, Object c)
 						throws IOException {
 
 						_testItemHelper.write(c.toString());
