@@ -17,7 +17,7 @@ package com.liferay.portal.kernel.test.rule;
 import com.liferay.portal.kernel.concurrent.ConcurrentReferenceKeyHashMap;
 import com.liferay.portal.kernel.memory.FinalizeManager;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
-import com.liferay.portal.kernel.test.rule.callback.BaseTestCallback;
+import com.liferay.portal.kernel.test.rule.callback.TestCallback;
 
 import java.util.Deque;
 import java.util.LinkedList;
@@ -40,8 +40,8 @@ import org.junit.runners.model.Statement;
 public class BaseTestRule<C, M>
 	implements ArquillianClassRuleHandler, TestRule {
 
-	public BaseTestRule(BaseTestCallback<C, M> baseTestCallback) {
-		_baseTestCallback = baseTestCallback;
+	public BaseTestRule(TestCallback<C, M> testCallback) {
+		_testCallback = testCallback;
 	}
 
 	@Override
@@ -57,13 +57,13 @@ public class BaseTestRule<C, M>
 				public void evaluate() throws Throwable {
 					Object target = inspectTarget(statement);
 
-					M m = _baseTestCallback.beforeMethod(description, target);
+					M m = _testCallback.beforeMethod(description, target);
 
 					try {
 						statement.evaluate();
 					}
 					finally {
-						_baseTestCallback.afterMethod(description, m, target);
+						_testCallback.afterMethod(description, m, target);
 					}
 				}
 
@@ -77,13 +77,13 @@ public class BaseTestRule<C, M>
 
 				@Override
 				public void evaluate() throws Throwable {
-					C c = _baseTestCallback.beforeClass(description);
+					C c = _testCallback.beforeClass(description);
 
 					try {
 						statement.evaluate();
 					}
 					finally {
-						_baseTestCallback.afterClass(description, c);
+						_testCallback.afterClass(description, c);
 					}
 				}
 
@@ -105,7 +105,7 @@ public class BaseTestRule<C, M>
 						_classCarryOnMap.put(clazz, deque);
 					}
 
-					deque.addLast(_baseTestCallback.beforeClass(description));
+					deque.addLast(_testCallback.beforeClass(description));
 				}
 
 				try {
@@ -115,7 +115,7 @@ public class BaseTestRule<C, M>
 					if (_handleAfterClassThreadLocal.get()) {
 						Deque<Object> deque = _classCarryOnMap.get(clazz);
 
-						_baseTestCallback.afterClass(
+						_testCallback.afterClass(
 							description, (C)deque.removeLast());
 
 						if (deque.isEmpty()) {
@@ -203,8 +203,6 @@ public class BaseTestRule<C, M>
 		new ConcurrentReferenceKeyHashMap<>(
 			FinalizeManager.WEAK_REFERENCE_FACTORY);
 
-	private final BaseTestCallback<C, M> _baseTestCallback;
-
 	private final ThreadLocal<Boolean> _handleAfterClassThreadLocal =
 		new ThreadLocal<Boolean>() {
 
@@ -224,5 +222,7 @@ public class BaseTestRule<C, M>
 			}
 
 		};
+
+	private final TestCallback<C, M> _testCallback;
 
 }
