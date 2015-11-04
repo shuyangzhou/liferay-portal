@@ -14,21 +14,8 @@
 
 package com.liferay.portal.kernel.test.rule.callback;
 
-import java.lang.reflect.Method;
-
 /**
  * @author Shuyang Zhou
  */
 public interface TestCallback<C, M> {
-
-	public void afterClass(Class<?> clazz, C c) throws Throwable;
-
-	public void afterMethod(Class<?> clazz, Method method, M m, Object target)
-		throws Throwable;
-
-	public C beforeClass(Class<?> clazz) throws Throwable;
-
-	public M beforeMethod(Class<?> clazz, Method method, Object target)
-		throws Throwable;
-
 }

@@ -14,41 +14,12 @@
 
 package com.liferay.portal.kernel.test.rule.callback;
 
-import java.lang.reflect.Method;
-
 import org.junit.runner.Description;
 
 /**
  * @author Shuyang Zhou
  */
 public class BaseTestCallback<C, M> implements TestCallback<C, M> {
-
-	@Override
-	public void afterClass(Class<?> clazz, C c) throws Throwable {
-		doAfterClass(Description.createSuiteDescription(clazz), c);
-	}
-
-	@Override
-	public void afterMethod(Class<?> clazz, Method method, M m, Object target)
-		throws Throwable {
-
-		doAfterMethod(
-			Description.createTestDescription(clazz, method.getName()), m,
-			target);
-	}
-
-	@Override
-	public C beforeClass(Class<?> clazz) throws Throwable {
-		return doBeforeClass(Description.createSuiteDescription(clazz));
-	}
-
-	@Override
-	public M beforeMethod(Class<?> clazz, Method method, Object target)
-		throws Throwable {
-
-		return doBeforeMethod(
-			Description.createTestDescription(clazz, method.getName()), target);
-	}
 
 	public void doAfterClass(Description description, C c) throws Throwable {
 	}
