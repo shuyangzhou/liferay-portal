@@ -193,7 +193,9 @@ public class NewEnvTestRule implements TestRule {
 			arguments.add("-Dwhip.instrument.dump=true");
 		}
 
-		arguments.add("-Dwhip.static.instrument=true");
+		if (Boolean.getBoolean("whip.static.instrument")) {
+			arguments.add("-Dwhip.static.instrument=true");
+		}
 
 		return arguments;
 	}
