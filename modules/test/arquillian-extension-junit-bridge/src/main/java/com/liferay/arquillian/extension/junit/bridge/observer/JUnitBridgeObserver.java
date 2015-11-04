@@ -96,7 +96,11 @@ public class JUnitBridgeObserver {
 
 		Method firstMethod = firstFrameworkMethod.getMethod();
 
+		boolean isFirstMethod = false;
+
 		if (firstMethod.equals(method)) {
+			isFirstMethod = true;
+
 			statement = withBefores(
 				statement, BeforeClass.class, junitTestClass, null);
 		}
@@ -106,16 +110,90 @@ public class JUnitBridgeObserver {
 
 		Method lastMethod = lastFrameworkMethod.getMethod();
 
+		boolean isLastMethod = false;
+
 		if (lastMethod.equals(method)) {
+			isLastMethod = true;
+
 			statement = withAfters(
 				statement, AfterClass.class, junitTestClass, null);
 		}
 
-		statement = withRules(
-			statement, ClassRule.class, junitTestClass, null,
-			Description.createSuiteDescription(clazz));
+		evaluateWithClassRule(
+			statement, junitTestClass, target,
+			Description.createSuiteDescription(clazz), isFirstMethod,
+			isLastMethod);
+	}
 
-		statement.evaluate();
+	protected void evaluateWithClassRule(
+			Statement statement,
+			org.junit.runners.model.TestClass junitTestClass, Object target,
+			Description description, boolean isFirstMethod,
+			boolean isLastMethod)
+		throws Throwable {
+
+		if (!isFirstMethod && !isLastMethod) {
+			statement.evaluate();
+
+			return;
+		}
+
+		List<TestRule> testRules = junitTestClass.getAnnotatedMethodValues(
+			target, ClassRule.class, TestRule.class);
+
+		testRules.addAll(
+			junitTestClass.getAnnotatedFieldValues(
+				target, ClassRule.class, TestRule.class));
+
+		if (testRules.isEmpty()) {
+			statement.evaluate();
+
+			return;
+		}
+
+		handleClassRules(testRules, isFirstMethod, isLastMethod, true);
+
+		statement = new RunRules(statement, testRules, description);
+
+		try {
+			statement.evaluate();
+		}
+		finally {
+			handleClassRules(testRules, isFirstMethod, isLastMethod, false);
+		}
+	}
+
+	protected void handleClassRules(
+		List<TestRule> testRules, boolean isFirstMethod, boolean isLastMethod,
+		boolean enable) {
+
+		for (TestRule testRule : testRules) {
+			Class<?> testRuleClass = testRule.getClass();
+
+			if (isFirstMethod) {
+				try {
+					Method handleBeforeClassMethod = testRuleClass.getMethod(
+						"handleBeforeClass", boolean.class);
+
+					handleBeforeClassMethod.invoke(testRule, enable);
+				}
+				catch (ReflectiveOperationException roe) {
+					continue;
+				}
+			}
+
+			if (isLastMethod) {
+				try {
+					Method handleAfterClassMethod = testRuleClass.getMethod(
+						"handleAfterClass", boolean.class);
+
+					handleAfterClassMethod.invoke(testRule, enable);
+				}
+				catch (ReflectiveOperationException roe) {
+					continue;
+				}
+			}
+		}
 	}
 
 	protected Statement withAfters(
