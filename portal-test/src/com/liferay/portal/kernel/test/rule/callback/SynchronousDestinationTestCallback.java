@@ -49,7 +49,7 @@ import org.junit.runner.Description;
  * @author Shuyang Zhou
  */
 public class SynchronousDestinationTestCallback
-	extends BaseTestCallback<SyncHandler, SyncHandler> {
+	implements TestCallback<SyncHandler, SyncHandler> {
 
 	public static final SynchronousDestinationTestCallback INSTANCE =
 		new SynchronousDestinationTestCallback();
@@ -101,7 +101,7 @@ public class SynchronousDestinationTestCallback
 						" without any usage of " + Sync.class.getName());
 		}
 
-		return super.beforeClass(description);
+		return null;
 	}
 
 	@Override
