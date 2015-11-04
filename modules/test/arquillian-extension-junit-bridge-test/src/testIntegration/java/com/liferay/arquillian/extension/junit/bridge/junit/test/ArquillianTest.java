@@ -15,11 +15,11 @@
 package com.liferay.arquillian.extension.junit.bridge.junit.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.test.dependencies.BeforeAfterClassTestItem;
+import com.liferay.arquillian.extension.junit.bridge.junit.test.dependencies.ClassRuleTestItem;
 import com.liferay.portal.kernel.test.junit.BridgeJUnitTestRunner;
 import com.liferay.portal.kernel.test.junit.BridgeJUnitTestRunner.BridgeRunListener;
 
 import java.io.IOException;
-
 
 import java.util.List;
 
@@ -46,6 +46,20 @@ public class ArquillianTest {
 		}
 		finally {
 			BeforeAfterClassTestItem.assertAndTearDown();
+		}
+	}
+
+	@Test
+	public void testClassRule() throws IOException {
+		try {
+			Result result = BridgeJUnitTestRunner.runBridgeTests(
+				new BridgeRunListener(ArquillianTest.class),
+				ClassRuleTestItem.class);
+
+			assertResult(result, ClassRuleTestItem.class);
+		}
+		finally {
+			ClassRuleTestItem.assertAndTearDown();
 		}
 	}
 
