@@ -21,18 +21,18 @@ import org.junit.runner.Description;
  */
 public class BaseTestCallback<C, M> implements TestCallback<C, M> {
 
-	public void doAfterClass(Description description, C c) throws Throwable {
+	public void afterClass(Description description, C c) throws Throwable {
 	}
 
-	public void doAfterMethod(Description description, M m, Object target)
+	public void afterMethod(Description description, M m, Object target)
 		throws Throwable {
 	}
 
-	public C doBeforeClass(Description description) throws Throwable {
+	public C beforeClass(Description description) throws Throwable {
 		return null;
 	}
 
-	public M doBeforeMethod(Description description, Object target)
+	public M beforeMethod(Description description, Object target)
 		throws Throwable {
 
 		return null;
