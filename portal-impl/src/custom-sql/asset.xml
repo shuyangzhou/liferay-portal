@@ -77,12 +77,16 @@
 	</sql>
 	<sql id="com.liferay.portlet.asset.service.persistence.AssetEntryFinder.findByAndTagIds">
 		<![CDATA[
-			SELECT
-				DISTINCT AssetEntries_AssetTags.entryId
-			FROM
-				AssetEntries_AssetTags
-			WHERE
-				([$TAG_ID$])
+			EXISTS
+				(
+					SELECT
+						1
+					FROM
+						AssetEntries_AssetTags
+					WHERE
+						(AssetEntries_AssetTags.entryId = AssetEntry.entryId) AND
+						(AssetEntries_AssetTags.tagId IN ([$TAG_ID$]))
+				)
 		]]>
 	</sql>
 	<sql id="com.liferay.portlet.asset.service.persistence.AssetEntryFinder.findByClassNameId">

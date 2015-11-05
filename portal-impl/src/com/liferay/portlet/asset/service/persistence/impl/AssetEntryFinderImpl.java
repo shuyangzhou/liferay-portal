@@ -223,23 +223,26 @@ public class AssetEntryFinderImpl
 	}
 
 	protected void buildAllTagsSQL(long[][] tagIds, StringBundler sb) {
-		sb.append(" AND AssetEntry.entryId IN (");
+		String findByTagIdsSql = CustomSQLUtil.get(FIND_BY_AND_TAG_IDS);
+
+		sb.append(" AND (");
 
 		for (int i = 0; i < tagIds.length; i++) {
-			String sql = CustomSQLUtil.get(FIND_BY_AND_TAG_IDS);
+			String sql = null;
 
-			sql = StringUtil.replace(sql, "[$TAG_ID$]", getTagIds(tagIds[i]));
+			if (tagIds[i].length > 1) {
+				sql = StringUtil.replace(
+					findByTagIdsSql, "[$TAG_ID$]", StringUtil.merge(tagIds[i]));
+			}
+			else {
+				sql = StringUtil.replace(
+					findByTagIdsSql, " IN ([$TAG_ID$])", " = " + tagIds[i][0]);
+			}
 
 			sb.append(sql);
 
 			if ((i + 1) < tagIds.length) {
-				sb.append(" AND AssetEntry.entryId IN (");
-			}
-		}
-
-		for (int i = 0; i < tagIds.length; i++) {
-			if ((i + 1) < tagIds.length) {
-				sb.append(StringPool.CLOSE_PARENTHESIS);
+				sb.append(" AND ");
 			}
 		}
 
@@ -275,17 +278,11 @@ public class AssetEntryFinderImpl
 	}
 
 	protected String buildAnyTagsSQL(long[] tagIds, StringBundler sb) {
+		String sql = CustomSQLUtil.get(FIND_BY_AND_TAG_IDS);
+
 		sb.append(" AND (");
-
-		for (int i = 0; i < tagIds.length; i++) {
-			sb.append("AssetTag.tagId = ");
-			sb.append(tagIds[i]);
-
-			if ((i + 1) != tagIds.length) {
-				sb.append(" OR ");
-			}
-		}
-
+		sb.append(
+			StringUtil.replace(sql, "[$TAG_ID$]", StringUtil.merge(tagIds)));
 		sb.append(StringPool.CLOSE_PARENTHESIS);
 
 		return sb.toString();
@@ -324,16 +321,6 @@ public class AssetEntryFinderImpl
 		}
 
 		sb.append("FROM AssetEntry ");
-
-		if (entryQuery.getAnyTagIds().length > 0) {
-			sb.append("INNER JOIN ");
-			sb.append("AssetEntries_AssetTags ON ");
-			sb.append("(AssetEntries_AssetTags.entryId = ");
-			sb.append("AssetEntry.entryId) ");
-			sb.append("INNER JOIN ");
-			sb.append("AssetTag ON ");
-			sb.append("(AssetTag.tagId = AssetEntries_AssetTags.tagId) ");
-		}
 
 		if (entryQuery.getLinkedAssetEntryId() > 0) {
 			sb.append("INNER JOIN ");
@@ -642,19 +629,27 @@ public class AssetEntryFinderImpl
 	}
 
 	protected void buildNotAllTagsSQL(long[][] tagIds, StringBundler sb) {
+		String findByTagIdsSql = CustomSQLUtil.get(FIND_BY_AND_TAG_IDS);
+
 		sb.append(" AND (");
 
 		for (int i = 0; i < tagIds.length; i++) {
-			sb.append("AssetEntry.entryId NOT IN (");
+			sb.append("NOT ");
 
-			String sql = CustomSQLUtil.get(FIND_BY_AND_TAG_IDS);
+			String sql = null;
 
-			sql = StringUtil.replace(sql, "[$TAG_ID$]", getTagIds(tagIds[i]));
+			if (tagIds[i].length > 1) {
+				sql = StringUtil.replace(
+					findByTagIdsSql, "[$TAG_ID$]", StringUtil.merge(tagIds[i]));
+			}
+			else {
+				sql = StringUtil.replace(
+					findByTagIdsSql, " IN ([$TAG_ID$])", " = " + tagIds[i][0]);
+			}
 
 			sb.append(sql);
-			sb.append(StringPool.CLOSE_PARENTHESIS);
 
-			if (((i + 1) < tagIds.length) && (tagIds[i + 1].length > 0)) {
+			if ((i + 1) < tagIds.length) {
 				sb.append(" OR ");
 			}
 		}
@@ -690,23 +685,11 @@ public class AssetEntryFinderImpl
 	}
 
 	protected String buildNotAnyTagsSQL(long[] notTagIds, StringBundler sb) {
-		sb.append(" AND (");
+		String sql = CustomSQLUtil.get(FIND_BY_AND_TAG_IDS);
 
-		for (int i = 0; i < notTagIds.length; i++) {
-			sb.append("AssetEntry.entryId NOT IN (");
-
-			String sql = CustomSQLUtil.get(FIND_BY_AND_TAG_IDS);
-
-			sql = StringUtil.replace(sql, "[$TAG_ID$]", getTagIds(notTagIds));
-
-			sb.append(sql);
-			sb.append(StringPool.CLOSE_PARENTHESIS);
-
-			if ((i + 1) < notTagIds.length) {
-				sb.append(" AND ");
-			}
-		}
-
+		sb.append(" AND (NOT ");
+		sb.append(
+			StringUtil.replace(sql, "[$TAG_ID$]", StringUtil.merge(notTagIds)));
 		sb.append(StringPool.CLOSE_PARENTHESIS);
 
 		return sb.toString();
@@ -775,21 +758,6 @@ public class AssetEntryFinderImpl
 		return ListUtil.toList(
 			AssetCategoryUtil.getDescendants(parentAssetCategory),
 			AssetCategory.CATEGORY_ID_ACCESSOR);
-	}
-
-	protected String getTagIds(long[] tagIds) {
-		StringBundler sb = new StringBundler((tagIds.length * 3) - 1);
-
-		for (int i = 0; i < tagIds.length; i++) {
-			sb.append("tagId = ");
-			sb.append(tagIds[i]);
-
-			if ((i + 1) != tagIds.length) {
-				sb.append(" OR ");
-			}
-		}
-
-		return sb.toString();
 	}
 
 	protected void setDates(
