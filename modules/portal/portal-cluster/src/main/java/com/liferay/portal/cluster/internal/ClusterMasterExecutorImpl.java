@@ -180,13 +180,20 @@ public class ClusterMasterExecutorImpl implements ClusterMasterExecutor {
 			return _localClusterNodeId;
 		}
 
-		ClusterNode clusterNode = _clusterExecutorImpl.getClusterNode(address);
+		while (true) {
+			ClusterNode clusterNode = _clusterExecutorImpl.getClusterNode(
+				address);
 
-		if (clusterNode != null) {
-			return clusterNode.getClusterNodeId();
+			if (clusterNode != null) {
+				return clusterNode.getClusterNodeId();
+			}
+
+			if (_log.isInfoEnabled()) {
+				_log.info(
+					"Reattempting to acquire the cluster master node with " +
+						"address " + address);
+			}
 		}
-
-		return null;
 	}
 
 	protected String getMasterClusterNodeId(boolean notify) {
