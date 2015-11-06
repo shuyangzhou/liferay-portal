@@ -46,6 +46,8 @@ public class VerifyPortletPreferences extends VerifyProcess {
 		ActionableDynamicQuery actionableDynamicQuery =
 			getPortletPreferencesActionableDynamicQuery();
 
+		actionableDynamicQuery.setParallel(true);
+
 		actionableDynamicQuery.performActions();
 	}
 
