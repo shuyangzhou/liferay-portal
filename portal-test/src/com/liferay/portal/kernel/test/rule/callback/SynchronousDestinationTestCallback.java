@@ -55,7 +55,7 @@ public class SynchronousDestinationTestCallback
 		new SynchronousDestinationTestCallback();
 
 	@Override
-	public void doAfterClass(Description description, SyncHandler syncHandler)
+	public void afterClass(Description description, SyncHandler syncHandler)
 		throws Exception {
 
 		if (syncHandler != null) {
@@ -64,7 +64,7 @@ public class SynchronousDestinationTestCallback
 	}
 
 	@Override
-	public void doAfterMethod(
+	public void afterMethod(
 		Description description, SyncHandler syncHandler, Object target) {
 
 		if (syncHandler != null) {
@@ -73,7 +73,7 @@ public class SynchronousDestinationTestCallback
 	}
 
 	@Override
-	public SyncHandler doBeforeClass(Description description) throws Throwable {
+	public SyncHandler beforeClass(Description description) throws Throwable {
 		Class<?> testClass = description.getTestClass();
 
 		Sync sync = testClass.getAnnotation(Sync.class);
@@ -101,11 +101,11 @@ public class SynchronousDestinationTestCallback
 						" without any usage of " + Sync.class.getName());
 		}
 
-		return super.doBeforeClass(description);
+		return super.beforeClass(description);
 	}
 
 	@Override
-	public SyncHandler doBeforeMethod(Description description, Object target) {
+	public SyncHandler beforeMethod(Description description, Object target) {
 		Class<?> testClass = description.getTestClass();
 
 		Sync sync = testClass.getAnnotation(Sync.class);

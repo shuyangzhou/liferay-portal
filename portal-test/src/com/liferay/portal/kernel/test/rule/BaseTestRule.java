@@ -50,12 +50,12 @@ public class BaseTestRule<C, M> implements TestRule {
 				Object target = null;
 
 				if (methodName == null) {
-					c = _baseTestCallback.doBeforeClass(description);
+					c = _baseTestCallback.beforeClass(description);
 				}
 				else {
 					target = inspectTarget(statement);
 
-					m = _baseTestCallback.doBeforeMethod(description, target);
+					m = _baseTestCallback.beforeMethod(description, target);
 				}
 
 				try {
@@ -63,10 +63,10 @@ public class BaseTestRule<C, M> implements TestRule {
 				}
 				finally {
 					if (methodName == null) {
-						_baseTestCallback.doAfterClass(description, c);
+						_baseTestCallback.afterClass(description, c);
 					}
 					else {
-						_baseTestCallback.doAfterMethod(description, m, target);
+						_baseTestCallback.afterMethod(description, m, target);
 					}
 				}
 			}

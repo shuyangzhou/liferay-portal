@@ -138,7 +138,7 @@ public class LogAssertionTestCallback
 	}
 
 	@Override
-	public void doAfterClass(
+	public void afterClass(
 		Description description, List<CaptureAppender> captureAppenders) {
 
 		ExpectedMultipleLogs expectedMultipleLogs = description.getAnnotation(
@@ -163,15 +163,15 @@ public class LogAssertionTestCallback
 	}
 
 	@Override
-	public void doAfterMethod(
+	public void afterMethod(
 		Description description, List<CaptureAppender> captureAppenders,
 		Object target) {
 
-		doAfterClass(description, captureAppenders);
+		afterClass(description, captureAppenders);
 	}
 
 	@Override
-	public List<CaptureAppender> doBeforeClass(Description description) {
+	public List<CaptureAppender> beforeClass(Description description) {
 		ExpectedMultipleLogs expectedMultipleLogs = description.getAnnotation(
 			ExpectedMultipleLogs.class);
 
@@ -194,10 +194,10 @@ public class LogAssertionTestCallback
 	}
 
 	@Override
-	public List<CaptureAppender> doBeforeMethod(
+	public List<CaptureAppender> beforeMethod(
 		Description description, Object target) {
 
-		return doBeforeClass(description);
+		return beforeClass(description);
 	}
 
 	protected static void installJdk14Handler() {
