@@ -21,17 +21,21 @@ import org.junit.runner.Description;
  */
 public class BaseTestCallback<C, M> implements TestCallback<C, M> {
 
+	@Override
 	public void afterClass(Description description, C c) throws Throwable {
 	}
 
+	@Override
 	public void afterMethod(Description description, M m, Object target)
 		throws Throwable {
 	}
 
+	@Override
 	public C beforeClass(Description description) throws Throwable {
 		return null;
 	}
 
+	@Override
 	public M beforeMethod(Description description, Object target)
 		throws Throwable {
 
