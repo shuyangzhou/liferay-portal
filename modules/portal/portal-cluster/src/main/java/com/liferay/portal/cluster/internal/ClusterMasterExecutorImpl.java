@@ -91,7 +91,10 @@ public class ClusterMasterExecutorImpl implements ClusterMasterExecutor {
 			}
 		}
 
-		final String masterClusterNodeId = getMasterClusterNodeId(true);
+		Address masterAddress = updateMasterAddress(true);
+
+		final String masterClusterNodeId = getMasterClusterNodeId(
+			masterAddress);
 
 		ClusterRequest clusterRequest = ClusterRequest.createUnicastRequest(
 			methodHandler, masterClusterNodeId);
@@ -160,7 +163,7 @@ public class ClusterMasterExecutorImpl implements ClusterMasterExecutor {
 
 		_enabled = true;
 
-		getMasterClusterNodeId(false);
+		updateMasterAddress(false);
 	}
 
 	@Deactivate
@@ -196,7 +199,7 @@ public class ClusterMasterExecutorImpl implements ClusterMasterExecutor {
 		}
 	}
 
-	protected String getMasterClusterNodeId(boolean notify) {
+	protected Address updateMasterAddress(boolean notify) {
 		ClusterChannel clusterChannel =
 			_clusterExecutorImpl.getClusterChannel();
 
@@ -216,7 +219,7 @@ public class ClusterMasterExecutorImpl implements ClusterMasterExecutor {
 			}
 		}
 
-		return getMasterClusterNodeId(coordinator);
+		return coordinator;
 	}
 
 	protected void notifyMasterTokenTransitionListeners(
@@ -275,7 +278,7 @@ public class ClusterMasterExecutorImpl implements ClusterMasterExecutor {
 				clusterEvent.getClusterEventType();
 
 			if (clusterEventType.equals(ClusterEventType.COORDINATOR_UPDATE)) {
-				getMasterClusterNodeId(true);
+				updateMasterAddress(true);
 			}
 		}
 
