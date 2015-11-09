@@ -199,29 +199,6 @@ public class ClusterMasterExecutorImpl implements ClusterMasterExecutor {
 		}
 	}
 
-	protected Address updateMasterAddress(boolean notify) {
-		ClusterChannel clusterChannel =
-			_clusterExecutorImpl.getClusterChannel();
-
-		Address localAddress = clusterChannel.getLocalAddress();
-
-		ClusterReceiver clusterReceiver = clusterChannel.getClusterReceiver();
-
-		Address coordinator = clusterReceiver.getCoordinator();
-
-		boolean master = localAddress.equals(coordinator);
-
-		if (master != _master) {
-			_master = master;
-
-			if (_enabled && notify) {
-				notifyMasterTokenTransitionListeners(master);
-			}
-		}
-
-		return coordinator;
-	}
-
 	protected void notifyMasterTokenTransitionListeners(
 		boolean masterTokenAcquired) {
 
@@ -255,6 +232,29 @@ public class ClusterMasterExecutorImpl implements ClusterMasterExecutor {
 
 	@Reference(target = "(servlet.context.name=portal)", unbind = "-")
 	protected void setRelease(Release release) {
+	}
+
+	protected Address updateMasterAddress(boolean notify) {
+		ClusterChannel clusterChannel =
+			_clusterExecutorImpl.getClusterChannel();
+
+		Address localAddress = clusterChannel.getLocalAddress();
+
+		ClusterReceiver clusterReceiver = clusterChannel.getClusterReceiver();
+
+		Address coordinator = clusterReceiver.getCoordinator();
+
+		boolean master = localAddress.equals(coordinator);
+
+		if (master != _master) {
+			_master = master;
+
+			if (_enabled && notify) {
+				notifyMasterTokenTransitionListeners(master);
+			}
+		}
+
+		return coordinator;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
