@@ -743,6 +743,8 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 
 			ps.setLong(1, resourceClassNameId);
 			ps.setLong(2, templateId);
+
+			ps.executeUpdate();
 		}
 		finally {
 			DataAccess.cleanUp(ps);
