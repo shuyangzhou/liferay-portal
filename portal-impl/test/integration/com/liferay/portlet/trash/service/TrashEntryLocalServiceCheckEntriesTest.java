@@ -39,6 +39,7 @@ import com.liferay.portal.model.Group;
 import com.liferay.portal.model.GroupConstants;
 import com.liferay.portal.model.Layout;
 import com.liferay.portal.model.User;
+import com.liferay.portal.service.CompanyLocalServiceUtil;
 import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.test.randomizerbumpers.TikaSafeRandomizerBumper;
@@ -93,10 +94,18 @@ public class TrashEntryLocalServiceCheckEntriesTest {
 	@Test
 	public void testCompanies() throws Exception {
 		for (int i = 0; i < _COMPANIES_COUNT; i++ ) {
-			Group group = updateTrashEntriesMaxAge(
-				createGroup(createCompany()), _MAX_AGE);
+			Company company = CompanyTestUtil.addCompany(
+				RandomTestUtil.randomString());
 
-			createTrashEntries(group);
+			try {
+				Group group = updateTrashEntriesMaxAge(
+					createGroup(company.getCompanyId()), _MAX_AGE);
+
+				createTrashEntries(group);
+			}
+			finally {
+				CompanyLocalServiceUtil.deleteCompany(company);
+			}
 		}
 
 		TrashEntryLocalServiceUtil.checkEntries();
@@ -210,15 +219,6 @@ public class TrashEntryLocalServiceCheckEntriesTest {
 
 		Assert.assertEquals(
 			0, TrashEntryLocalServiceUtil.getTrashEntriesCount());
-	}
-
-	protected long createCompany() throws Exception {
-		Company company = CompanyTestUtil.addCompany(
-			RandomTestUtil.randomString());
-
-		_companies.add(company);
-
-		return company.getCompanyId();
 	}
 
 	protected void createFileEntryTrashEntry(Group group, boolean expired)
@@ -356,9 +356,6 @@ public class TrashEntryLocalServiceCheckEntriesTest {
 	private static final int _MAX_AGE = 5;
 
 	private static final int _NOT_EXPIRED_TRASH_ENTRIES_COUNT = 4;
-
-	@DeleteAfterTestRun
-	private final List<Company> _companies = new ArrayList<>();
 
 	@DeleteAfterTestRun
 	private final List<Group> _groups = new ArrayList<>();
