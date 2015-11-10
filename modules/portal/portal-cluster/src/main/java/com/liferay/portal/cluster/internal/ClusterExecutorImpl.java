@@ -425,12 +425,10 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 		Serializable payload = clusterRequest.getPayload();
 
 		if (payload instanceof ClusterNodeStatus) {
-			if (_memberJoined((ClusterNodeStatus)payload)) {
-				return ClusterRequest.createMulticastRequest(
-					_localClusterNodeStatus, true);
-			}
+			_memberJoined((ClusterNodeStatus)payload);
 
-			return null;
+			return ClusterRequest.createMulticastRequest(
+				_localClusterNodeStatus, true);
 		}
 
 		ClusterNodeResponse clusterNodeResponse = executeClusterRequest(
@@ -576,7 +574,7 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 	protected volatile ClusterExecutorConfiguration
 		clusterExecutorConfiguration;
 
-	private boolean _memberJoined(ClusterNodeStatus clusterNodeStatus) {
+	private void _memberJoined(ClusterNodeStatus clusterNodeStatus) {
 		ClusterNodeStatus oldClusterNodeStatus = _clusterNodeStatuses.put(
 			clusterNodeStatus.getClusterNodeId(), clusterNodeStatus);
 
@@ -589,15 +587,13 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 				}
 			}
 
-			return false;
+			return;
 		}
 
 		ClusterEvent clusterEvent = ClusterEvent.join(
 			clusterNodeStatus.getClusterNode());
 
 		fireClusterEvent(clusterEvent);
-
-		return true;
 	}
 
 	private String getChannelName(Dictionary<String, Object> properties) {
