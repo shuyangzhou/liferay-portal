@@ -73,7 +73,6 @@ import com.liferay.portlet.documentlibrary.store.DLStoreUtil;
 
 import java.io.File;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
@@ -98,12 +97,9 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			Timestamp modifiedDate, long structureVersionId, String definition)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			StringBundler sb = new StringBundler(5);
 
 			sb.append("insert into DDMStructureLayout (uuid_, ");
@@ -114,7 +110,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 
 			String sql = sb.toString();
 
-			ps = con.prepareStatement(sql);
+			ps = connection.prepareStatement(sql);
 
 			ps.setString(1, uuid_);
 			ps.setLong(2, structureLayoutId);
@@ -137,7 +133,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			throw e;
 		}
 		finally {
-			DataAccess.cleanUp(con, ps);
+			DataAccess.cleanUp(ps);
 		}
 	}
 
@@ -149,12 +145,9 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			long statusByUserId, String statusByUserName, Timestamp statusDate)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			StringBundler sb = new StringBundler(6);
 
 			sb.append("insert into DDMStructureVersion (structureVersionId, ");
@@ -166,7 +159,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 
 			String sql = sb.toString();
 
-			ps = con.prepareStatement(sql);
+			ps = connection.prepareStatement(sql);
 
 			ps.setLong(1, structureVersionId);
 			ps.setLong(2, groupId);
@@ -197,7 +190,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			throw e;
 		}
 		finally {
-			DataAccess.cleanUp(con, ps);
+			DataAccess.cleanUp(ps);
 		}
 	}
 
@@ -209,12 +202,9 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			String statusByUserName, Timestamp statusDate)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			StringBundler sb = new StringBundler(5);
 
 			sb.append("insert into DDMTemplateVersion (templateVersionId, ");
@@ -226,7 +216,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 
 			String sql = sb.toString();
 
-			ps = con.prepareStatement(sql);
+			ps = connection.prepareStatement(sql);
 
 			ps.setLong(1, templateVersionId);
 			ps.setLong(2, groupId);
@@ -257,7 +247,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			throw e;
 		}
 		finally {
-			DataAccess.cleanUp(con, ps);
+			DataAccess.cleanUp(ps);
 		}
 	}
 
@@ -280,14 +270,11 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			return ddmForm;
 		}
 
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"select parentStructureId, definition from DDMStructure " +
 					"where structureId = ?" );
 
@@ -320,7 +307,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 					structureId);
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
@@ -383,14 +370,11 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 	protected void updateContent(DDMForm ddmForm, long contentId)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"select data_ from DDMContent where contentId = ?");
 
 			ps.setLong(1, contentId);
@@ -406,21 +390,18 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
 	protected void updateContent(long contentId, String data_)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"update DDMContent set data_= ? where contentId = ?");
 
 			ps.setString(1, data_);
@@ -429,7 +410,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			ps.executeUpdate();
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
@@ -468,13 +449,10 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 	}
 
 	protected void upgradeDDLFileUploadReferences() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			StringBundler sb = new StringBundler(7);
 
 			sb.append("select DDLRecordVersion.*, DDMContent.data_, ");
@@ -485,7 +463,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			sb.append("inner join DDMStructure on DDLRecordSet.");
 			sb.append("DDMStructureId = DDMStructure.structureId");
 
-			ps = con.prepareStatement(sb.toString());
+			ps = connection.prepareStatement(sb.toString());
 
 			rs = ps.executeQuery();
 
@@ -515,18 +493,15 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
 	protected void upgradeDLFileUploadReferences() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			StringBundler sb = new StringBundler(10);
 
 			sb.append("select DLFileVersion.*, DDMContent.contentId, ");
@@ -540,7 +515,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			sb.append("fileVersionId and DLFileEntryMetadata.fileEntryId = ");
 			sb.append("DLFileVersion.fileEntryId");
 
-			ps = con.prepareStatement(sb.toString());
+			ps = connection.prepareStatement(sb.toString());
 
 			rs = ps.executeQuery();
 
@@ -570,7 +545,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
@@ -583,13 +558,10 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			long structureId, String definition)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"update DDMStructure set definition = ? where structureId = ?");
 
 			ps.setString(1, definition);
@@ -605,18 +577,15 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			throw e;
 		}
 		finally {
-			DataAccess.cleanUp(con, ps);
+			DataAccess.cleanUp(ps);
 		}
 	}
 
 	protected void upgradeStructurePermissions() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			StringBundler sb = new StringBundler(5);
 
 			sb.append("select resourcePermissionId, primKey from ");
@@ -625,7 +594,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			sb.append("' and scope = ");
 			sb.append(ResourceConstants.SCOPE_INDIVIDUAL);
 
-			ps = con.prepareStatement(sb.toString());
+			ps = connection.prepareStatement(sb.toString());
 
 			rs = ps.executeQuery();
 
@@ -650,21 +619,18 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
 	protected void upgradeStructuresAndAddStructureVersionsAndLayouts()
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement("select * from DDMStructure");
+			ps = connection.prepareStatement("select * from DDMStructure");
 
 			rs = ps.executeQuery();
 
@@ -717,18 +683,15 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
 	protected void upgradeTemplatePermissions() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			StringBundler sb = new StringBundler(5);
 
 			sb.append("select resourcePermissionId, primKey from ");
@@ -737,7 +700,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			sb.append("' and scope = ");
 			sb.append(ResourceConstants.SCOPE_INDIVIDUAL);
 
-			ps = con.prepareStatement(sb.toString());
+			ps = connection.prepareStatement(sb.toString());
 
 			rs = ps.executeQuery();
 
@@ -763,7 +726,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
@@ -771,13 +734,10 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			long templateId, long resourceClassNameId)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"update DDMTemplate set resourceClassNameId = ? where " +
 					"templateId = ?");
 
@@ -785,19 +745,16 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			ps.setLong(2, templateId);
 		}
 		finally {
-			DataAccess.cleanUp(con, ps);
+			DataAccess.cleanUp(ps);
 		}
 	}
 
 	protected void upgradeTemplatesAndAddTemplateVersions() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement("select * from DDMTemplate");
+			ps = connection.prepareStatement("select * from DDMTemplate");
 
 			rs = ps.executeQuery();
 
@@ -850,20 +807,17 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
 	protected void upgradeTemplateScript(long templateId, String script)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"update DDMTemplate set language = ?, script = ? where " +
 					"templateId = ?");
 
@@ -881,18 +835,15 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			throw e;
 		}
 		finally {
-			DataAccess.cleanUp(con, ps);
+			DataAccess.cleanUp(ps);
 		}
 	}
 
 	protected void upgradeXMLStorageAdapter() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			StringBundler sb = new StringBundler(5);
 
 			sb.append("select DDMStorageLink.classPK, DDMStorageLink.");
@@ -901,7 +852,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			sb.append("DDMStructure.structureId) where DDMStorageLink.");
 			sb.append("classNameId = ? and DDMStructure.storageType = ?");
 
-			ps = con.prepareStatement(sb.toString());
+			ps = connection.prepareStatement(sb.toString());
 
 			ps.setLong(1, PortalUtil.getClassNameId(DDMContent.class));
 			ps.setString(2, "xml");
@@ -921,7 +872,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			updateStructureVersionStorageType();
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
@@ -1452,12 +1403,9 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 				int viewCount)
 			throws Exception {
 
-			Connection con = null;
 			PreparedStatement ps = null;
 
 			try {
-				con = DataAccess.getUpgradeOptimizedConnection();
-
 				StringBundler sb = new StringBundler(9);
 
 				sb.append("insert into AssetEntry (entryId, groupId, ");
@@ -1472,7 +1420,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 
 				String sql = sb.toString();
 
-				ps = con.prepareStatement(sql);
+				ps = connection.prepareStatement(sql);
 
 				ps.setLong(1, entryId);
 				ps.setLong(2, groupId);
@@ -1504,7 +1452,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 				ps.executeUpdate();
 			}
 			finally {
-				DataAccess.cleanUp(con, ps);
+				DataAccess.cleanUp(ps);
 			}
 		}
 
@@ -1539,12 +1487,9 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 				long custom2ImageId, boolean manualCheckInRequired)
 			throws Exception {
 
-			Connection con = null;
 			PreparedStatement ps = null;
 
 			try {
-				con = DataAccess.getUpgradeOptimizedConnection();
-
 				StringBundler sb = new StringBundler(9);
 
 				sb.append("insert into DLFileEntry (uuid_, fileEntryId, ");
@@ -1560,7 +1505,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 
 				String sql = sb.toString();
 
-				ps = con.prepareStatement(sql);
+				ps = connection.prepareStatement(sql);
 
 				ps.setString(1, uuid);
 				ps.setLong(2, fileEntryId);
@@ -1595,7 +1540,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 				ps.executeUpdate();
 			}
 			finally {
-				DataAccess.cleanUp(con, ps);
+				DataAccess.cleanUp(ps);
 			}
 		}
 
@@ -1611,12 +1556,9 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 				String statusByUserName, Timestamp statusDate)
 			throws Exception {
 
-			Connection con = null;
 			PreparedStatement ps = null;
 
 			try {
-				con = DataAccess.getUpgradeOptimizedConnection();
-
 				StringBundler sb = new StringBundler(10);
 
 				sb.append("insert into DLFileVersion (uuid_, fileVersionId, ");
@@ -1632,7 +1574,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 
 				String sql = sb.toString();
 
-				ps = con.prepareStatement(sql);
+				ps = connection.prepareStatement(sql);
 
 				ps.setString(1, uuid);
 				ps.setLong(2, fileVersionId);
@@ -1665,7 +1607,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 				ps.executeUpdate();
 			}
 			finally {
-				DataAccess.cleanUp(con, ps);
+				DataAccess.cleanUp(ps);
 			}
 		}
 
@@ -1676,12 +1618,9 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 				String name, String description, Timestamp lastPostDate)
 			throws Exception {
 
-			Connection con = null;
 			PreparedStatement ps = null;
 
 			try {
-				con = DataAccess.getUpgradeOptimizedConnection();
-
 				StringBundler sb = new StringBundler(5);
 
 				sb.append("insert into DLFolder (uuid_, folderId, groupId, ");
@@ -1695,7 +1634,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 
 				String sql = sb.toString();
 
-				ps = con.prepareStatement(sql);
+				ps = connection.prepareStatement(sql);
 
 				ps.setString(1, uuid);
 				ps.setLong(2, folderId);
@@ -1721,7 +1660,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 				ps.executeUpdate();
 			}
 			finally {
-				DataAccess.cleanUp(con, ps);
+				DataAccess.cleanUp(ps);
 			}
 		}
 
@@ -1789,12 +1728,9 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 				long ownerId, long actionIds)
 			throws Exception {
 
-			Connection con = null;
 			PreparedStatement ps = null;
 
 			try {
-				con = DataAccess.getUpgradeOptimizedConnection();
-
 				StringBundler sb = new StringBundler(4);
 
 				sb.append("insert into ResourcePermission (mvccVersion, ");
@@ -1804,7 +1740,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 
 				String sql = sb.toString();
 
-				ps = con.prepareStatement(sql);
+				ps = connection.prepareStatement(sql);
 
 				ps.setLong(1, mvccVersion);
 				ps.setLong(2, resourcePermissionId);
@@ -1819,18 +1755,15 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 				ps.executeUpdate();
 			}
 			finally {
-				DataAccess.cleanUp(con, ps);
+				DataAccess.cleanUp(ps);
 			}
 		}
 
 		protected long getActionBitwiseValue(String action) throws Exception {
-			Connection con = null;
 			PreparedStatement ps = null;
 			ResultSet rs = null;
 
 			try {
-				con = DataAccess.getUpgradeOptimizedConnection();
-
 				StringBundler sb = new StringBundler(4);
 
 				sb.append("select bitwiseValue from ResourceAction where ");
@@ -1838,7 +1771,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 
 				String sql = sb.toString();
 
-				ps = con.prepareStatement(sql);
+				ps = connection.prepareStatement(sql);
 
 				ps.setString(1, DLFileEntry.class.getName());
 				ps.setString(2, action);
@@ -1852,7 +1785,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 				return 0;
 			}
 			finally {
-				DataAccess.cleanUp(con, ps, rs);
+				DataAccess.cleanUp(null, ps, rs);
 			}
 		}
 
@@ -1870,18 +1803,15 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 				long groupId, long parentFolderId, String name)
 			throws Exception {
 
-			Connection con = null;
 			PreparedStatement ps = null;
 			ResultSet rs = null;
 
 			try {
-				con = DataAccess.getUpgradeOptimizedConnection();
-
 				String sql =
 					"select folderId from DLFolder where groupId = ? and " +
 					"parentFolderId = ? and name = ?";
 
-				ps = con.prepareStatement(sql);
+				ps = connection.prepareStatement(sql);
 
 				ps.setLong(1, groupId);
 				ps.setLong(2, parentFolderId);
@@ -1894,7 +1824,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 				}
 			}
 			finally {
-				DataAccess.cleanUp(con, ps, rs);
+				DataAccess.cleanUp(null, ps, rs);
 			}
 
 			return 0;
@@ -1913,13 +1843,10 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 		}
 
 		protected long getRoleId(String roleName) throws Exception {
-			Connection con = null;
 			PreparedStatement ps = null;
 			ResultSet rs = null;
 
 			try {
-				con = DataAccess.getUpgradeOptimizedConnection();
-
 				StringBundler sb = new StringBundler(4);
 
 				sb.append("select roleId from role_ where companyId = ? and ");
@@ -1927,7 +1854,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 
 				String sql = sb.toString();
 
-				ps = con.prepareStatement(sql);
+				ps = connection.prepareStatement(sql);
 
 				ps.setLong(1, _companyId);
 				ps.setString(2, roleName);
@@ -1941,7 +1868,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 				return 0;
 			}
 			finally {
-				DataAccess.cleanUp(con, ps, rs);
+				DataAccess.cleanUp(null, ps, rs);
 			}
 		}
 

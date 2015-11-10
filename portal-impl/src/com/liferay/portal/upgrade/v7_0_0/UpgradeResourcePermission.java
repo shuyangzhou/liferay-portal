@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.util.PropsValues;
 
-import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -31,19 +30,16 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			DatabaseMetaData databaseMetaData = con.getMetaData();
+			DatabaseMetaData databaseMetaData = connection.getMetaData();
 
 			boolean supportsBatchUpdates =
 				databaseMetaData.supportsBatchUpdates();
 
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"select resourcePermissionId, primKey, primKeyId, actionIds, " +
 					"viewActionId from ResourcePermission");
 
@@ -65,25 +61,24 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 				}
 
 				updateResourcePermission(
-					con, supportsBatchUpdates, resourcePermissionId,
-					newPrimKeyId, newViewActionId);
+					supportsBatchUpdates, resourcePermissionId, newPrimKeyId,
+					newViewActionId);
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
 	protected void updateResourcePermission(
-			Connection con, boolean supportsBatchUpdates,
-			long resourcePermissionId, long newPrimKeyId,
-			boolean newViewActionId)
+			boolean supportsBatchUpdates, long resourcePermissionId,
+			long newPrimKeyId, boolean newViewActionId)
 		throws Exception {
 
 		PreparedStatement ps = null;
 
 		try {
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"update ResourcePermission set primKeyId = ?," +
 					"viewActionId = ?  where resourcePermissionId = ?");
 

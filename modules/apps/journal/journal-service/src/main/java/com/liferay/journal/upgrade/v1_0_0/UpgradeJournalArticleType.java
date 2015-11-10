@@ -29,7 +29,6 @@ import com.liferay.portlet.asset.model.AssetCategoryConstants;
 import com.liferay.portlet.asset.model.AssetVocabulary;
 import com.liferay.portlet.asset.util.AssetVocabularySettingsHelper;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
@@ -52,12 +51,9 @@ public class UpgradeJournalArticleType extends UpgradeBaseJournal {
 
 		Timestamp now = new Timestamp(System.currentTimeMillis());
 
-		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			StringBundler sb = new StringBundler(6);
 
 			sb.append("insert into AssetCategory (uuid_, categoryId, ");
@@ -69,7 +65,7 @@ public class UpgradeJournalArticleType extends UpgradeBaseJournal {
 
 			String sql = sb.toString();
 
-			ps = con.prepareStatement(sql);
+			ps = connection.prepareStatement(sql);
 
 			ps.setString(1, PortalUUIDUtil.generate());
 			ps.setLong(2, assetCategoryId);
@@ -111,7 +107,7 @@ public class UpgradeJournalArticleType extends UpgradeBaseJournal {
 			throw e;
 		}
 		finally {
-			DataAccess.cleanUp(con, ps);
+			DataAccess.cleanUp(ps);
 		}
 	}
 
@@ -119,13 +115,10 @@ public class UpgradeJournalArticleType extends UpgradeBaseJournal {
 			long assetEntryId, long assetCategoryId)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"insert into AssetEntries_AssetCategories (categoryId, " +
 					"entryId) values (?, ?)");
 
@@ -140,7 +133,7 @@ public class UpgradeJournalArticleType extends UpgradeBaseJournal {
 			throw e;
 		}
 		finally {
-			DataAccess.cleanUp(con, ps);
+			DataAccess.cleanUp(ps);
 		}
 	}
 
@@ -151,12 +144,9 @@ public class UpgradeJournalArticleType extends UpgradeBaseJournal {
 
 		Timestamp now = new Timestamp(System.currentTimeMillis());
 
-		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			StringBundler sb = new StringBundler(4);
 
 			sb.append("insert into AssetVocabulary (uuid_, vocabularyId, ");
@@ -166,7 +156,7 @@ public class UpgradeJournalArticleType extends UpgradeBaseJournal {
 
 			String sql = sb.toString();
 
-			ps = con.prepareStatement(sql);
+			ps = connection.prepareStatement(sql);
 
 			ps.setString(1, PortalUUIDUtil.generate());
 			ps.setLong(2, vocabularyId);
@@ -205,7 +195,7 @@ public class UpgradeJournalArticleType extends UpgradeBaseJournal {
 			throw e;
 		}
 		finally {
-			DataAccess.cleanUp(con, ps);
+			DataAccess.cleanUp(ps);
 		}
 	}
 
@@ -221,14 +211,11 @@ public class UpgradeJournalArticleType extends UpgradeBaseJournal {
 	}
 
 	protected List<String> getArticleTypes() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"select distinct type_ from JournalArticle");
 
 			rs = ps.executeQuery();
@@ -242,19 +229,16 @@ public class UpgradeJournalArticleType extends UpgradeBaseJournal {
 			return types;
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
 	protected long getAssetEntryId(long classPK) throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"select entryId from AssetEntry where classNameId = ? and " +
 					"classPK = ?");
 
@@ -273,19 +257,16 @@ public class UpgradeJournalArticleType extends UpgradeBaseJournal {
 			return 0;
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
 	protected boolean hasSelectedArticleTypes() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"select count(*) from JournalArticle where type_ != 'general'");
 
 			rs = ps.executeQuery();
@@ -301,7 +282,7 @@ public class UpgradeJournalArticleType extends UpgradeBaseJournal {
 			return false;
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
@@ -310,13 +291,10 @@ public class UpgradeJournalArticleType extends UpgradeBaseJournal {
 			Map<String, Long> journalArticleTypesToAssetCategoryIds)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			StringBundler sb = new StringBundler(10);
 
 			sb.append("select JournalArticle.resourcePrimKey, ");
@@ -330,7 +308,7 @@ public class UpgradeJournalArticleType extends UpgradeBaseJournal {
 			sb.append("JournalArticle.companyId = ? and ");
 			sb.append("tempJournalArticle.id_ is null");
 
-			ps = con.prepareStatement(sb.toString());
+			ps = connection.prepareStatement(sb.toString());
 
 			ps.setLong(1, companyId);
 
@@ -350,7 +328,7 @@ public class UpgradeJournalArticleType extends UpgradeBaseJournal {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
@@ -365,14 +343,11 @@ public class UpgradeJournalArticleType extends UpgradeBaseJournal {
 			return;
 		}
 
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement("select companyId from Company");
+			ps = connection.prepareStatement("select companyId from Company");
 
 			rs = ps.executeQuery();
 
@@ -426,7 +401,7 @@ public class UpgradeJournalArticleType extends UpgradeBaseJournal {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 

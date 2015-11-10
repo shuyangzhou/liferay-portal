@@ -25,7 +25,6 @@ import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PropsUtil;
 import com.liferay.portal.util.PropsValues;
 
-import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -42,14 +41,11 @@ public class UpgradeRatings extends UpgradeProcess {
 	}
 
 	protected void upgradeRatingsEntry() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"select distinct classNameId from RatingsEntry");
 
 			rs = ps.executeQuery();
@@ -59,7 +55,7 @@ public class UpgradeRatings extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
@@ -93,13 +89,10 @@ public class UpgradeRatings extends UpgradeProcess {
 			long classNameId, int normalizationFactor)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"update RatingsEntry set score = score / ? where classNameId " +
 					"= ?");
 
@@ -109,20 +102,17 @@ public class UpgradeRatings extends UpgradeProcess {
 			ps.executeUpdate();
 		}
 		finally {
-			DataAccess.cleanUp(con, ps);
+			DataAccess.cleanUp(ps);
 		}
 	}
 
 	protected void upgradeRatingsEntryThumbs(long classNameId)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"update RatingsEntry set score = ? where score = ? and " +
 					"classNameId = ?");
 
@@ -133,19 +123,16 @@ public class UpgradeRatings extends UpgradeProcess {
 			ps.executeUpdate();
 		}
 		finally {
-			DataAccess.cleanUp(con, ps);
+			DataAccess.cleanUp(ps);
 		}
 	}
 
 	protected void upgradeRatingsStats() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			DatabaseMetaData databaseMetaData = con.getMetaData();
+			DatabaseMetaData databaseMetaData = connection.getMetaData();
 
 			boolean supportsBatchUpdates =
 				databaseMetaData.supportsBatchUpdates();
@@ -157,11 +144,11 @@ public class UpgradeRatings extends UpgradeProcess {
 			sb.append("sum(RatingsEntry.score) / count(1) as averageScore ");
 			sb.append("from RatingsEntry group by classNameId, classPK");
 
-			ps = con.prepareStatement(sb.toString());
+			ps = connection.prepareStatement(sb.toString());
 
 			rs = ps.executeQuery();
 
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"update RatingsStats set totalEntries = ?, totalScore = ?, " +
 					"averageScore = ? where classNameId = ? and classPK = ?");
 
@@ -196,7 +183,7 @@ public class UpgradeRatings extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
