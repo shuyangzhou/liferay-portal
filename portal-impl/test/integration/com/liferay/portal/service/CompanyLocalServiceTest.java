@@ -25,6 +25,7 @@ import com.liferay.portal.RequiredCompanyException;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.test.randomizerbumpers.NumericStringRandomizerBumper;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
@@ -64,6 +65,7 @@ import java.io.File;
 
 import java.lang.reflect.Field;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -507,6 +509,8 @@ public class CompanyLocalServiceTest {
 
 		PortalInstances.initCompany(_mockServletContext, webId);
 
+		_companies.add(company);
+
 		return company;
 	}
 
@@ -642,6 +646,9 @@ public class CompanyLocalServiceTest {
 
 		CompanyLocalServiceUtil.deleteCompany(company.getCompanyId());
 	}
+
+	@DeleteAfterTestRun
+	private final List<Company> _companies = new ArrayList<>();
 
 	private long _companyId;
 	private MockServletContext _mockServletContext;
