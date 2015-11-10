@@ -1880,6 +1880,11 @@ ${tomcat-gc-log}
 			</beanshell>
 
 			<echo file="test.class.file.names.properties">${test.class.file.names.properties.content}</echo>
+			<copy
+				file="force.test.class.file.names.properties"
+				overwrite="true"
+				tofile="test.class.file.names.properties"
+			/>
 		</sequential>
 	</macrodef>
 
@@ -6804,8 +6809,15 @@ jdbc.default.password=${database.mysql.password}</echo>
 			</then>
 		</if>
 
-		<antcall target="clean-up-db2-processes" inheritAll="false" />
-		<antcall target="clean-up-java-processes" inheritAll="false" />
+		<if>
+			<not>
+				<equals arg1="${os.name}" arg2="SunOS" />
+			</not>
+			<then>
+				<antcall target="clean-up-db2-processes" inheritAll="false" />
+				<antcall target="clean-up-java-processes" inheritAll="false" />
+			</then>
+		</if>
 
 		<get-testcase-property property.name="portal.version" />
 
