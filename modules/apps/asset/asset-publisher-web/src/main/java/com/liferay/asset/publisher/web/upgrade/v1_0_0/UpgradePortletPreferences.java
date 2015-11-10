@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portlet.PortletPreferencesFactoryUtil;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -39,13 +38,10 @@ public class UpgradePortletPreferences extends BaseUpgradePortletPreferences {
 	protected String getJournalArticleResourceUuid(String journalArticleUuid)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			StringBundler sb = new StringBundler(5);
 
 			sb.append("select JournalArticleResource.uuid_ from ");
@@ -54,7 +50,7 @@ public class UpgradePortletPreferences extends BaseUpgradePortletPreferences {
 			sb.append("JournalArticleResource.resourcePrimKey where ");
 			sb.append("JournalArticle.uuid_ = ?");
 
-			ps = con.prepareStatement(sb.toString());
+			ps = connection.prepareStatement(sb.toString());
 
 			ps.setString(1, journalArticleUuid);
 
@@ -67,7 +63,7 @@ public class UpgradePortletPreferences extends BaseUpgradePortletPreferences {
 			return null;
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 

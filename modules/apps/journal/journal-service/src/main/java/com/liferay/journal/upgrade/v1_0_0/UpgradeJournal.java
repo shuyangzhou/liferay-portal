@@ -39,7 +39,6 @@ import com.liferay.portlet.dynamicdatamapping.StorageEngineManager;
 import com.liferay.util.ContentUtil;
 import com.liferay.util.xml.XMLUtil;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
@@ -137,12 +136,9 @@ public class UpgradeJournal extends UpgradeBaseJournal {
 
 		Timestamp now = new Timestamp(System.currentTimeMillis());
 
-		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			StringBundler sb = new StringBundler(6);
 
 			sb.append("insert into DDMStructure (uuid_, structureId, ");
@@ -154,7 +150,7 @@ public class UpgradeJournal extends UpgradeBaseJournal {
 
 			String sql = sb.toString();
 
-			ps = con.prepareStatement(sql);
+			ps = connection.prepareStatement(sql);
 
 			ps.setString(1, uuid);
 			ps.setLong(2, ddmStructureId);
@@ -219,7 +215,7 @@ public class UpgradeJournal extends UpgradeBaseJournal {
 			throw e;
 		}
 		finally {
-			DataAccess.cleanUp(con, ps);
+			DataAccess.cleanUp(ps);
 		}
 
 		return ddmStructureId;
@@ -231,12 +227,9 @@ public class UpgradeJournal extends UpgradeBaseJournal {
 			Timestamp modifiedDate, long structureVersionId, String definition)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			StringBundler sb = new StringBundler(5);
 
 			sb.append("insert into DDMStructureLayout (uuid_, ");
@@ -247,7 +240,7 @@ public class UpgradeJournal extends UpgradeBaseJournal {
 
 			String sql = sb.toString();
 
-			ps = con.prepareStatement(sql);
+			ps = connection.prepareStatement(sql);
 
 			ps.setString(1, uuid_);
 			ps.setLong(2, structureLayoutId);
@@ -270,7 +263,7 @@ public class UpgradeJournal extends UpgradeBaseJournal {
 			throw e;
 		}
 		finally {
-			DataAccess.cleanUp(con, ps);
+			DataAccess.cleanUp(ps);
 		}
 	}
 
@@ -282,12 +275,9 @@ public class UpgradeJournal extends UpgradeBaseJournal {
 			long statusByUserId, String statusByUserName, Timestamp statusDate)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			StringBundler sb = new StringBundler(6);
 
 			sb.append("insert into DDMStructureVersion (structureVersionId, ");
@@ -299,7 +289,7 @@ public class UpgradeJournal extends UpgradeBaseJournal {
 
 			String sql = sb.toString();
 
-			ps = con.prepareStatement(sql);
+			ps = connection.prepareStatement(sql);
 
 			ps.setLong(1, structureVersionId);
 			ps.setLong(2, groupId);
@@ -330,7 +320,7 @@ public class UpgradeJournal extends UpgradeBaseJournal {
 			throw e;
 		}
 		finally {
-			DataAccess.cleanUp(con, ps);
+			DataAccess.cleanUp(ps);
 		}
 	}
 
@@ -342,12 +332,9 @@ public class UpgradeJournal extends UpgradeBaseJournal {
 
 		Timestamp now = new Timestamp(System.currentTimeMillis());
 
-		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			StringBundler sb = new StringBundler(7);
 
 			sb.append("insert into DDMTemplate (uuid_, templateId, groupId, ");
@@ -360,7 +347,7 @@ public class UpgradeJournal extends UpgradeBaseJournal {
 
 			String sql = sb.toString();
 
-			ps = con.prepareStatement(sql);
+			ps = connection.prepareStatement(sql);
 
 			ps.setString(1, uuid);
 			ps.setLong(2, ddmTemplateId);
@@ -418,7 +405,7 @@ public class UpgradeJournal extends UpgradeBaseJournal {
 			throw e;
 		}
 		finally {
-			DataAccess.cleanUp(con, ps);
+			DataAccess.cleanUp(ps);
 		}
 
 		return ddmTemplateId;
@@ -428,13 +415,10 @@ public class UpgradeJournal extends UpgradeBaseJournal {
 			long classNameId, long classPK, long templateId)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"insert into DDMTemplateLink (templateLinkId, classNameId, " +
 					"classPK, templateId) values (?, ?, ?, ?)");
 
@@ -451,20 +435,17 @@ public class UpgradeJournal extends UpgradeBaseJournal {
 			throw e;
 		}
 		finally {
-			DataAccess.cleanUp(con, ps);
+			DataAccess.cleanUp(ps);
 		}
 	}
 
 	protected void addDDMTemplateLinks() throws Exception {
 		long classNameId = PortalUtil.getClassNameId(_CLASS_NAME_DDM_STRUCTURE);
 
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			StringBundler sb = new StringBundler(6);
 
 			sb.append("select DDMTemplate.templateId, JournalArticle.id_ ");
@@ -474,7 +455,7 @@ public class UpgradeJournal extends UpgradeBaseJournal {
 			sb.append("JournalArticle.ddmTemplateKey and ");
 			sb.append("JournalArticle.classNameId != ?)");
 
-			ps = con.prepareStatement(sb.toString());
+			ps = connection.prepareStatement(sb.toString());
 
 			ps.setLong(1, classNameId);
 
@@ -488,7 +469,7 @@ public class UpgradeJournal extends UpgradeBaseJournal {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
@@ -500,12 +481,9 @@ public class UpgradeJournal extends UpgradeBaseJournal {
 			String statusByUserName, Timestamp statusDate)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			StringBundler sb = new StringBundler(5);
 
 			sb.append("insert into DDMTemplateVersion (templateVersionId, ");
@@ -517,7 +495,7 @@ public class UpgradeJournal extends UpgradeBaseJournal {
 
 			String sql = sb.toString();
 
-			ps = con.prepareStatement(sql);
+			ps = connection.prepareStatement(sql);
 
 			ps.setLong(1, templateVersionId);
 			ps.setLong(2, groupId);
@@ -548,7 +526,7 @@ public class UpgradeJournal extends UpgradeBaseJournal {
 			throw e;
 		}
 		finally {
-			DataAccess.cleanUp(con, ps);
+			DataAccess.cleanUp(ps);
 		}
 	}
 
@@ -632,14 +610,11 @@ public class UpgradeJournal extends UpgradeBaseJournal {
 	}
 
 	protected long getStagingGroupId(long groupId) throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"select groupId from Group_ where liveGroupId = ?");
 
 			ps.setLong(1, groupId);
@@ -653,21 +628,18 @@ public class UpgradeJournal extends UpgradeBaseJournal {
 			return 0;
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
 	protected int hasDDMStructure(long groupId, String ddmStructureKey)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"select count(*) from DDMStructure where groupId = ? and " +
 					"classNameId = ? and structureKey = ?");
 
@@ -689,19 +661,16 @@ public class UpgradeJournal extends UpgradeBaseJournal {
 			return 0;
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
 	protected void updateBasicWebContentStructure() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement("select companyId from Company");
+			ps = connection.prepareStatement("select companyId from Company");
 
 			rs = ps.executeQuery();
 
@@ -712,7 +681,7 @@ public class UpgradeJournal extends UpgradeBaseJournal {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
@@ -721,13 +690,10 @@ public class UpgradeJournal extends UpgradeBaseJournal {
 			String content)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"update JournalArticle set ddmStructureKey = ?, " +
 					"ddmTemplateKey = ?, content = ? where id_ = ?");
 
@@ -739,19 +705,16 @@ public class UpgradeJournal extends UpgradeBaseJournal {
 			ps.executeUpdate();
 		}
 		finally {
-			DataAccess.cleanUp(con, ps);
+			DataAccess.cleanUp(ps);
 		}
 	}
 
 	protected void updateJournalArticles(long companyId) throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"select id_, content from JournalArticle where companyId = " +
 					companyId + " and ddmStructureKey is null or " +
 						"ddmStructureKey like ''");
@@ -768,7 +731,7 @@ public class UpgradeJournal extends UpgradeBaseJournal {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
