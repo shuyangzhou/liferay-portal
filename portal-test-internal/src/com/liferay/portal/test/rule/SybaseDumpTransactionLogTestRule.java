@@ -12,19 +12,21 @@
  * details.
  */
 
-package com.liferay.marketplace.upgrade.v1_0_0;
+package com.liferay.portal.test.rule;
+
+import com.liferay.portal.kernel.test.rule.BaseTestRule;
+import com.liferay.portal.test.rule.callback.SybaseDumpTransactionLogTestCallback;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author Shuyang Zhou
  */
-public class UpgradeCompanyId
-	extends com.liferay.portal.upgrade.util.UpgradeCompanyId {
+public class SybaseDumpTransactionLogTestRule extends BaseTestRule<Void, Void> {
 
-	@Override
-	protected TableUpdater[] getTableUpdaters() {
-		return new TableUpdater[] {
-			new TableUpdater("Marketplace_Module", "Marketplace_App", "appId")
-		};
+	public static final SybaseDumpTransactionLogTestRule INSTANCE =
+		new SybaseDumpTransactionLogTestRule();
+
+	private SybaseDumpTransactionLogTestRule() {
+		super(SybaseDumpTransactionLogTestCallback.INSTANCE);
 	}
 
 }
