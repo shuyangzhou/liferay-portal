@@ -35,7 +35,9 @@ public class SybaseDumpTransactionLogTestCallback
 		new SybaseDumpTransactionLogTestCallback();
 
 	@Override
-	public Void beforeClass(Description description) throws SQLException {
+	public Void beforeMethod(Description description, Object target)
+		throws SQLException {
+
 		DB db = DBFactoryUtil.getDB();
 
 		String type = db.getType();
@@ -47,7 +49,8 @@ public class SybaseDumpTransactionLogTestCallback
 		try (Connection connection = DataAccess.getConnection();
 			Statement statement = connection.createStatement()) {
 
-			statement.execute("dump transaction lportal with no_log");
+			System.out.println("#########Catalog : " + connection.getCatalog() + ", Schema" + connection.getSchema());
+			System.out.println(statement.execute("dump transaction lportal with no_log"));
 		}
 
 		return null;
