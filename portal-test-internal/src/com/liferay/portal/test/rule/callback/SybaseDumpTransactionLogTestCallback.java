@@ -40,14 +40,15 @@ public class SybaseDumpTransactionLogTestCallback
 
 		String type = db.getType();
 
-		if (!type.equals(DB.TYPE_POSTGRESQL)) {
+		if (!type.equals(DB.TYPE_SYBASE)) {
 			return null;
 		}
 
 		try (Connection connection = DataAccess.getConnection();
 			Statement statement = connection.createStatement()) {
 
-			statement.execute("dump transaction lportal with no_log");
+			System.out.println("#########Catalog : " + connection.getCatalog() + ", Schema" + connection.getSchema());
+			System.out.println(statement.execute("dump transaction lportal with no_log"));
 		}
 
 		return null;
