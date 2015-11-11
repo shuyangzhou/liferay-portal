@@ -521,8 +521,14 @@ public class PortletURLImpl
 
 	@Override
 	public void setParameter(String name, String value, boolean append) {
-		if ((name == null) || (value == null)) {
+		if (name == null) {
 			throw new IllegalArgumentException();
+		}
+
+		if (value == null) {
+			removeParameter(name);
+
+			return;
 		}
 
 		setParameter(name, new String[] {value}, append);
@@ -1421,6 +1427,12 @@ public class PortletURLImpl
 		}
 		catch (EncryptorException ee) {
 			return value;
+		}
+	}
+
+	protected void removeParameter(String name) {
+		if (_params.containsKey(name)) {
+			_params.remove(name);
 		}
 	}
 

@@ -318,7 +318,7 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 		if (path != null) {
 			PortletURL portletURL = actionResponseImpl.createRenderURL();
 
-			portletURL.setParameter("struts_action", path);
+			portletURL.setParameter("mvcRenderCommandName", path);
 			portletURL.setWindowState(WindowState.MAXIMIZED);
 
 			return portletURL.toString();

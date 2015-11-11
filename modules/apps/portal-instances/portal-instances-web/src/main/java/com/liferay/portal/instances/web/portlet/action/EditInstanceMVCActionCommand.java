@@ -75,9 +75,7 @@ public class EditInstanceMVCActionCommand extends BaseMVCActionCommand {
 				updateInstance(actionRequest);
 			}
 
-			String redirect = ParamUtil.getString(actionRequest, "redirect");
-
-			sendRedirect(actionRequest, actionResponse, redirect);
+			sendRedirect(actionRequest, actionResponse);
 		}
 		catch (Exception e) {
 			String mvcPath = "/error.jsp";

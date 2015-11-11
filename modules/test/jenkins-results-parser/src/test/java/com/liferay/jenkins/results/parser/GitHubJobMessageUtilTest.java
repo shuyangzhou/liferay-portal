@@ -120,7 +120,7 @@ public class GitHubJobMessageUtilTest extends BaseJenkinsResultsParserTestCase {
 		Project project = getProject(
 			urlString, urlString.substring("file:".length()));
 
-		GitHubJobMessageUtil.getFailedJobMessage(project);
+		GitHubJobMessageUtil.getGitHubJobMessage(project);
 
 		return project.getProperty("report.html.content");
 	}
