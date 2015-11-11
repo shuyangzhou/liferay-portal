@@ -1241,7 +1241,7 @@ information. Make sure to commit in all build services results.
 		<echo file="create-header.sql">use master
 dump transaction master with no_log
 go
-alter database master on master=232
+alter database master on master=1024
 go
 drop database lportal
 go
