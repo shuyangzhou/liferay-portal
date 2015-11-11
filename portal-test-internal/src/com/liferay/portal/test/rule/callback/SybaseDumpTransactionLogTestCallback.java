@@ -48,7 +48,7 @@ public class SybaseDumpTransactionLogTestCallback
 			Statement statement = connection.createStatement()) {
 
 			statement.addBatch("use master");
-			statement.addBatch("dump transaction master with no_log");
+			statement.addBatch("dump transaction lportal with no_log");
 
 			statement.executeBatch();
 		}
