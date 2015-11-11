@@ -17,6 +17,7 @@ package com.liferay.portal.test.rule;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.BaseTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRunTestRule;
+import com.liferay.portal.kernel.test.rule.SybaseDumpTransactionLogTestRule;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.ServerDetector;
@@ -39,6 +40,7 @@ public class LiferayIntegrationTestRule extends AggregateTestRule {
 	public LiferayIntegrationTestRule() {
 		super(
 			false, CITimeoutTestRule.INSTANCE, LogAssertionTestRule.INSTANCE,
+			SybaseDumpTransactionLogTestRule.INSTANCE,
 			_clearThreadLocalTestRule, _uniqueStringRandomizerBumperTestRule,
 			new DeleteAfterTestRunTestRule());
 	}
