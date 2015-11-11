@@ -21,19 +21,49 @@ public class UpgradeCompanyId
 	extends com.liferay.portal.upgrade.util.UpgradeCompanyId {
 
 	@Override
-	protected String[] getTableNames() {
-		return new String[] {
-			"AnnouncementsFlag", "AssetEntries_AssetCategories",
-			"AssetEntries_AssetTags", "AssetTagStats", "BrowserTracker",
-			"DLFileEntryMetadata", "DLFileEntryTypes_DLFolders", "DLSyncEvent",
-			"Groups_Orgs", "Groups_Roles", "Groups_UserGroups", "Image",
-			"MBStatsUser", "OrgGroupRole", "OrgLabor", "PasswordPolicyRel",
-			"PasswordTracker", "PortletPreferences", "RatingsStats",
-			"ResourceBlockPermission", "SCFrameworkVersi_SCProductVers",
-			"SCLicense", "SCLicenses_SCProductEntries", "TrashVersion",
-			"UserGroupGroupRole", "UserGroupRole", "UserGroups_Teams",
-			"UserIdMapper", "Users_Groups", "Users_Orgs", "Users_Roles",
-			"Users_Teams", "Users_UserGroups", "UserTrackerPath"
+	protected TableUpdater[] getTableUpdaters() {
+		return new TableUpdater[] {
+			new TableUpdater("AnnouncementsFlag", "User_", "userId"),
+			new TableUpdater(
+				"AssetEntries_AssetCategories", "AssetCategory", "categoryId"),
+			new TableUpdater("AssetEntries_AssetTags", "AssetTag", "tagId"),
+			new TableUpdater("AssetTagStats", "AssetTag", "tagId"),
+			new TableUpdater("BrowserTracker", "User_", "userId"),
+			new TableUpdater(
+				"DLFileEntryMetadata", "DLFileEntry", "fileEntryId"),
+			new TableUpdater(
+				"DLFileEntryTypes_DLFolders", "DLFolder", "folderId"),
+			//new TableUpdater("DLSyncEvent", "", ""),
+			new TableUpdater("Groups_Orgs", "Group_", "groupId"),
+			new TableUpdater("Groups_Roles", "Group_", "groupId"),
+			new TableUpdater("Groups_UserGroups", "Group_", "groupId"),
+			//new TableUpdater("Image", "", ""),
+			new TableUpdater("MBStatsUser", "Group_", "groupId"),
+			new TableUpdater("OrgGroupRole", "Organization_", "organizationId"),
+			new TableUpdater("OrgLabor", "Organization_", "organizationId"),
+			new TableUpdater(
+				"PasswordPolicyRel", "PasswordPolicy", "passwordPolicyId"),
+			new TableUpdater("PasswordTracker", "User_", "userId"),
+			//new TableUpdater("PortletPreferences", "Portlet", "portletId"),
+			//new TableUpdater("RatingsStats", "", ""),
+			//new TableUpdater("ResourceBlockPermission", "", ""),
+			new TableUpdater(
+				"SCFrameworkVersi_SCProductVers", "SCFrameworkVersion",
+				"frameworkVersionId"),
+			new TableUpdater("SCLicense", "SCLicense", "licenseId"),
+			new TableUpdater(
+				"SCLicenses_SCProductEntries", "SCLicense", "licenseId"),
+			new TableUpdater("TrashVersion", "TrashEntry", "entryId"),
+			new TableUpdater("UserGroupGroupRole", "UserGroup", "userGroupId"),
+			new TableUpdater("UserGroupRole", "UserGroup", "userGroupId"),
+			new TableUpdater("UserGroups_Teams", "UserGroup", "userGroupId"),
+			new TableUpdater("UserIdMapper", "User_", "userId"),
+			new TableUpdater("Users_Groups", "User_", "userId"),
+			new TableUpdater("Users_Orgs", "User_", "userId"),
+			new TableUpdater("Users_Roles", "User_", "userId"),
+			new TableUpdater("Users_Teams", "User_", "userId"),
+			new TableUpdater("Users_UserGroups", "User_", "userId"),
+			new TableUpdater("UserTrackerPath", "UserTracker", "userTrackerId")
 		};
 	}
 
