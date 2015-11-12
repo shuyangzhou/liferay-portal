@@ -56,6 +56,8 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 					"update ResourcePermission set primKeyId = ?," +
 						"viewActionId = ?  where resourcePermissionId = ?");
 
+				int count = 0;
+
 				while (rs.next()) {
 					long resourcePermissionId = rs.getLong(
 						"resourcePermissionId");
@@ -84,8 +86,6 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 
 					ps2.setLong(3, resourcePermissionId);
 
-					int count = 0;
-
 					if (supportsBatchUpdates) {
 						ps2.addBatch();
 
@@ -101,6 +101,10 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 					else {
 						ps2.executeUpdate();
 					}
+				}
+
+				if (supportsBatchUpdates && (count > 0)) {
+					ps2.executeBatch();
 				}
 			}
 			finally {
