@@ -31,82 +31,78 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection()) {
 			DatabaseMetaData databaseMetaData = con.getMetaData();
 
 			boolean supportsBatchUpdates =
 				databaseMetaData.supportsBatchUpdates();
 
-			ps = con.prepareStatement(
-				"select resourcePermissionId, primKey, primKeyId, actionIds, " +
-					"viewActionId from ResourcePermission");
+			try (PreparedStatement ps = con.prepareStatement(
+					"select resourcePermissionId, primKey, primKeyId, " +
+						"actionIds, viewActionId from ResourcePermission");
+				ResultSet rs = ps.executeQuery()) {
 
-			rs = ps.executeQuery();
+				while (rs.next()) {
+					long resourcePermissionId = rs.getLong(
+						"resourcePermissionId");
+					long primKeyId = rs.getLong("primKeyId");
+					long actionIds = rs.getLong("actionIds");
+					boolean viewActionId = rs.getBoolean("viewActionId");
 
-			while (rs.next()) {
-				long resourcePermissionId = rs.getLong("resourcePermissionId");
-				long primKeyId = rs.getLong("primKeyId");
-				long actionIds = rs.getLong("actionIds");
-				boolean viewActionId = rs.getBoolean("viewActionId");
+					long newPrimKeyId = GetterUtil.getLong(
+						rs.getString("primKey"));
+					boolean newViewActionId = (actionIds % 2 == 1);
 
-				long newPrimKeyId = GetterUtil.getLong(rs.getString("primKey"));
-				boolean newViewActionId = (actionIds % 2 == 1);
+					if ((primKeyId == newPrimKeyId) &&
+						(newViewActionId == viewActionId)) {
 
-				if ((primKeyId == newPrimKeyId) &&
-					(newViewActionId == viewActionId)) {
-
-					continue;
-				}
-
-				PreparedStatement ps2 = null;
-
-				try {
-					ps2 = con.prepareStatement(
-						"update ResourcePermission set primKeyId = ?," +
-							"viewActionId = ?  where resourcePermissionId = ?");
-
-					ps2.setLong(1, newPrimKeyId);
-
-					if (newViewActionId) {
-						ps2.setBoolean(2, true);
-					}
-					else {
-						ps2.setBoolean(2, false);
+						continue;
 					}
 
-					ps2.setLong(3, resourcePermissionId);
+					PreparedStatement ps2 = null;
 
-					int count = 0;
+					try {
+						ps2 = con.prepareStatement(
+							"update ResourcePermission set primKeyId = ?," +
+								"viewActionId = ? where " +
+									"resourcePermissionId = ?");
 
-					if (supportsBatchUpdates) {
-						ps2.addBatch();
+						ps2.setLong(1, newPrimKeyId);
 
-						if (count == PropsValues.HIBERNATE_JDBC_BATCH_SIZE) {
-							ps2.executeBatch();
-
-							count = 0;
+						if (newViewActionId) {
+							ps2.setBoolean(2, true);
 						}
 						else {
-							count++;
+							ps2.setBoolean(2, false);
+						}
+
+						ps2.setLong(3, resourcePermissionId);
+
+						int count = 0;
+
+						if (supportsBatchUpdates) {
+							ps2.addBatch();
+
+							if (count ==
+									PropsValues.HIBERNATE_JDBC_BATCH_SIZE) {
+
+								ps2.executeBatch();
+
+								count = 0;
+							}
+							else {
+								count++;
+							}
+						}
+						else {
+							ps2.executeUpdate();
 						}
 					}
-					else {
-						ps2.executeUpdate();
+					finally {
+						DataAccess.cleanUp(ps2);
 					}
 				}
-				finally {
-					DataAccess.cleanUp(ps2);
-				}
 			}
-		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
 		}
 	}
 
