@@ -476,14 +476,10 @@ public class Table {
 			return;
 		}
 
-		PreparedStatement ps = con.prepareStatement(getInsertSQL());
+		try (PreparedStatement ps = con.prepareStatement(getInsertSQL());
+			UnsyncBufferedReader unsyncBufferedReader =
+				new UnsyncBufferedReader(new FileReader(_tempFileName))) {
 
-		UnsyncBufferedReader unsyncBufferedReader = new UnsyncBufferedReader(
-			new FileReader(_tempFileName));
-
-		String line = null;
-
-		try {
 			DatabaseMetaData databaseMetaData = con.getMetaData();
 
 			if (!databaseMetaData.supportsBatchUpdates()) {
@@ -493,6 +489,8 @@ public class Table {
 			}
 
 			int count = 0;
+
+			String line = null;
 
 			while ((line = unsyncBufferedReader.readLine()) != null) {
 				String[] values = StringUtil.split(line);
@@ -533,11 +531,6 @@ public class Table {
 			if (count != 0) {
 				ps.executeBatch();
 			}
-		}
-		finally {
-			DataAccess.cleanUp(null, ps);
-
-			unsyncBufferedReader.close();
 		}
 
 		if (_log.isDebugEnabled()) {
