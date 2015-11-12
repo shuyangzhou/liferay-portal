@@ -239,6 +239,10 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 			return booleanFilter;
 		}
 
+		if (permissionChecker.isCompanyAdmin(companyId)) {
+			return booleanFilter;
+		}
+
 		Set<Group> groups = new LinkedHashSet<>();
 		Set<Role> roles = new LinkedHashSet<>();
 		Map<Long, List<Role>> groupIdsToRoles = new HashMap<>();
@@ -270,12 +274,6 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 		TermsFilter rolesTermsFilter = new TermsFilter(Field.ROLE_ID);
 
 		for (Role role : roles) {
-			String roleName = role.getName();
-
-			if (roleName.equals(RoleConstants.ADMINISTRATOR)) {
-				return booleanFilter;
-			}
-
 			if (_resourcePermissionLocalService.hasResourcePermission(
 					companyId, className, ResourceConstants.SCOPE_COMPANY,
 					String.valueOf(companyId), role.getRoleId(),
@@ -323,7 +321,7 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 				}
 
 				if (group.isSite() &&
-					!roleName.equals(RoleConstants.SITE_MEMBER) &&
+					!RoleConstants.SITE_MEMBER.equals(role.getName()) &&
 					(role.getType() == RoleConstants.TYPE_SITE)) {
 
 					groupRolesTermsFilter.addValue(
