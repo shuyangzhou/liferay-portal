@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.model.Company;
 import com.liferay.portal.model.Image;
 import com.liferay.portal.service.ImageLocalServiceUtil;
+import com.liferay.portal.upgrade.AutoBatchPreparedStatementUtil;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.documentlibrary.model.DLFileEntry;
@@ -48,7 +49,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -340,11 +340,6 @@ public class UpgradeImageGallery extends UpgradeProcess {
 		try {
 			con = DataAccess.getUpgradeOptimizedConnection();
 
-			DatabaseMetaData databaseMetaData = con.getMetaData();
-
-			boolean supportsBatchUpdates =
-				databaseMetaData.supportsBatchUpdates();
-
 			ps = con.prepareStatement(
 				"select companyId, scope, primKey, roleId from " +
 					"ResourcePermission where name = ?");
@@ -353,10 +348,11 @@ public class UpgradeImageGallery extends UpgradeProcess {
 
 			rs = ps.executeQuery();
 
-			ps = con.prepareStatement(
-				"delete from ResourcePermission where name = ? and " +
-					"companyId = ? and scope = ? and primKey = ? and " +
-						"roleId = ?");
+			ps = AutoBatchPreparedStatementUtil.autoBath(
+				con.prepareStatement(
+					"delete from ResourcePermission where name = ? and " +
+						"companyId = ? and scope = ? and primKey = ? and " +
+							"roleId = ?"));
 
 			int count = 0;
 
@@ -367,26 +363,10 @@ public class UpgradeImageGallery extends UpgradeProcess {
 				ps.setString(4, rs.getString("primKey"));
 				ps.setLong(5, rs.getLong("roleId"));
 
-				if (supportsBatchUpdates) {
-					ps.addBatch();
-
-					if (count == PropsValues.HIBERNATE_JDBC_BATCH_SIZE) {
-						ps.executeBatch();
-
-						count = 0;
-					}
-					else {
-						count++;
-					}
-				}
-				else {
-					ps.executeUpdate();
-				}
+				ps.addBatch();
 			}
 
-			if (supportsBatchUpdates && (count > 0)) {
-				ps.executeBatch();
-			}
+			ps.executeBatch();
 		}
 		finally {
 			DataAccess.cleanUp(con, ps, rs);
