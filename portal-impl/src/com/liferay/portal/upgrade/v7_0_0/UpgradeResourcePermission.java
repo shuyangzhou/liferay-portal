@@ -39,8 +39,6 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 				"where resourcePermissionId = ?";
 
 		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
 
 		try {
 			con = DataAccess.getUpgradeOptimizedConnection();
@@ -50,11 +48,10 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 			boolean supportsBatchUpdates =
 				databaseMetaData.supportsBatchUpdates();
 
-			ps = con.prepareStatement(selectSQL);
+			try (PreparedStatement ps = con.prepareStatement(selectSQL);
+				ResultSet rs = ps.executeQuery();
+				PreparedStatement ps2 = con.prepareStatement(updateSQL)) {
 
-			rs = ps.executeQuery();
-
-			try (PreparedStatement ps2 = con.prepareStatement(updateSQL)) {
 				int count = 0;
 
 				while (rs.next()) {
@@ -108,7 +105,7 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(con);
 		}
 	}
 
