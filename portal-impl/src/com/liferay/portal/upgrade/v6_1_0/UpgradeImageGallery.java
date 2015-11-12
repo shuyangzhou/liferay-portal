@@ -340,23 +340,16 @@ public class UpgradeImageGallery extends UpgradeProcess {
 			"delete from ResourcePermission where name = ? and companyId = ? " +
 				"and scope = ? and primKey = ? and roleId = ?";
 
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection();
+			PreparedStatement ps = con.prepareStatement(selectSQL);
+			ResultSet rs = ps.executeQuery()) {
 
 			DatabaseMetaData databaseMetaData = con.getMetaData();
 
 			boolean supportsBatchUpdates =
 				databaseMetaData.supportsBatchUpdates();
 
-			ps = con.prepareStatement(selectSQL);
-
 			ps.setString(1, igResourceName);
-
-			rs = ps.executeQuery();
 
 			try (PreparedStatement ps2 = con.prepareStatement(deleteSQL)) {
 				int count = 0;
@@ -389,9 +382,6 @@ public class UpgradeImageGallery extends UpgradeProcess {
 					ps2.executeBatch();
 				}
 			}
-		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
 		}
 	}
 
