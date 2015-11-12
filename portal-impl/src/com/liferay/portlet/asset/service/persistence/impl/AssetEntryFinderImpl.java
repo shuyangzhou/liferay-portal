@@ -227,26 +227,24 @@ public class AssetEntryFinderImpl
 
 		sb.append(" AND (");
 
-		for (int i = 0; i < tagIds.length; i++) {
-			String sql = null;
-
-			if (tagIds[i].length > 1) {
-				sql = StringUtil.replace(
-					findByTagIdsSql, "[$TAG_ID$]", StringUtil.merge(tagIds[i]));
+		for (long[] tagIdArray : tagIds) {
+			if (tagIdArray.length > 1) {
+				sb.append(
+					StringUtil.replace(
+						findByTagIdsSql, "[$TAG_ID$]",
+						StringUtil.merge(tagIdArray)));
 			}
 			else {
-				sql = StringUtil.replace(
-					findByTagIdsSql, " IN ([$TAG_ID$])", " = " + tagIds[i][0]);
+				sb.append(
+					StringUtil.replace(
+						findByTagIdsSql, " IN ([$TAG_ID$])",
+						" = " + tagIdArray[0]));
 			}
 
-			sb.append(sql);
-
-			if ((i + 1) < tagIds.length) {
-				sb.append(" AND ");
-			}
+			sb.append(" AND ");
 		}
 
-		sb.append(StringPool.CLOSE_PARENTHESIS);
+		sb.setStringAt(StringPool.CLOSE_PARENTHESIS, sb.index() - 1);
 	}
 
 	protected void buildAnyCategoriesSQL(long[] categoryIds, StringBundler sb) {
@@ -281,8 +279,17 @@ public class AssetEntryFinderImpl
 		String sql = CustomSQLUtil.get(FIND_BY_AND_TAG_IDS);
 
 		sb.append(" AND (");
-		sb.append(
-			StringUtil.replace(sql, "[$TAG_ID$]", StringUtil.merge(tagIds)));
+
+		if (tagIds.length > 1) {
+			sb.append(
+				StringUtil.replace(
+					sql, "[$TAG_ID$]", StringUtil.merge(tagIds)));
+		}
+		else {
+			sb.append(
+				StringUtil.replace(sql, "IN ([$TAG_ID$])", " = " + tagIds[0]));
+		}
+
 		sb.append(StringPool.CLOSE_PARENTHESIS);
 
 		return sb.toString();
@@ -633,28 +640,26 @@ public class AssetEntryFinderImpl
 
 		sb.append(" AND (");
 
-		for (int i = 0; i < tagIds.length; i++) {
+		for (long[] tagIdArray : tagIds) {
 			sb.append("NOT ");
 
-			String sql = null;
-
-			if (tagIds[i].length > 1) {
-				sql = StringUtil.replace(
-					findByTagIdsSql, "[$TAG_ID$]", StringUtil.merge(tagIds[i]));
+			if (tagIdArray.length > 1) {
+				sb.append(
+					StringUtil.replace(
+						findByTagIdsSql, "[$TAG_ID$]",
+						StringUtil.merge(tagIdArray)));
 			}
 			else {
-				sql = StringUtil.replace(
-					findByTagIdsSql, " IN ([$TAG_ID$])", " = " + tagIds[i][0]);
+				sb.append(
+					StringUtil.replace(
+						findByTagIdsSql, " IN ([$TAG_ID$])",
+						" = " + tagIdArray[0]));
 			}
 
-			sb.append(sql);
-
-			if ((i + 1) < tagIds.length) {
-				sb.append(" OR ");
-			}
+			sb.append(" OR ");
 		}
 
-		sb.append(StringPool.CLOSE_PARENTHESIS);
+		sb.setStringAt(StringPool.CLOSE_PARENTHESIS, sb.index() - 1);
 	}
 
 	protected void buildNotAnyCategoriesSQL(
@@ -688,8 +693,18 @@ public class AssetEntryFinderImpl
 		String sql = CustomSQLUtil.get(FIND_BY_AND_TAG_IDS);
 
 		sb.append(" AND (NOT ");
-		sb.append(
-			StringUtil.replace(sql, "[$TAG_ID$]", StringUtil.merge(notTagIds)));
+
+		if (notTagIds.length > 1) {
+			sb.append(
+				StringUtil.replace(
+					sql, "[$TAG_ID$]", StringUtil.merge(notTagIds)));
+		}
+		else {
+			sb.append(
+				StringUtil.replace(
+					sql, "IN ([$TAG_ID$])", " = " + notTagIds[0]));
+		}
+
 		sb.append(StringPool.CLOSE_PARENTHESIS);
 
 		return sb.toString();
