@@ -20,7 +20,6 @@ import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PropsUtil;
 import com.liferay.portal.util.PropsValues;
@@ -138,6 +137,15 @@ public class UpgradeRatings extends UpgradeProcess {
 	}
 
 	protected void upgradeRatingsStats() throws Exception {
+		String selectSQL =
+			"select classNameId, classPK, count(1) as totalEntries, " +
+				"sum(RatingsEntry.score) as totalScore, " +
+					"sum(RatingsEntry.score) / count(1) as averageScore " +
+						"from RatingsEntry group by classNameId, classPK";
+		String updateSQL =
+			"update RatingsStats set totalEntries = ?, totalScore = ?, " +
+				"averageScore = ? where classNameId = ? and classPK = ?";
+
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -150,20 +158,11 @@ public class UpgradeRatings extends UpgradeProcess {
 			boolean supportsBatchUpdates =
 				databaseMetaData.supportsBatchUpdates();
 
-			StringBundler sb = new StringBundler(4);
-
-			sb.append("select classNameId, classPK, count(1) as ");
-			sb.append("totalEntries, sum(RatingsEntry.score) as totalScore, ");
-			sb.append("sum(RatingsEntry.score) / count(1) as averageScore ");
-			sb.append("from RatingsEntry group by classNameId, classPK");
-
-			ps = con.prepareStatement(sb.toString());
+			ps = con.prepareStatement(selectSQL);
 
 			rs = ps.executeQuery();
 
-			PreparedStatement ps2 = con.prepareStatement(
-				"update RatingsStats set totalEntries = ?, totalScore = ?, " +
-					"averageScore = ? where classNameId = ? and classPK = ?");
+			PreparedStatement ps2 = con.prepareStatement(updateSQL);
 
 			int count = 0;
 
