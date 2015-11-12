@@ -80,31 +80,31 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 			boolean newViewActionId)
 		throws Exception {
 
-		PreparedStatement ps = null;
+		PreparedStatement ps2 = null;
 
 		try {
-			ps = con.prepareStatement(
+			ps2 = con.prepareStatement(
 				"update ResourcePermission set primKeyId = ?," +
 					"viewActionId = ?  where resourcePermissionId = ?");
 
-			ps.setLong(1, newPrimKeyId);
+			ps2.setLong(1, newPrimKeyId);
 
 			if (newViewActionId) {
-				ps.setBoolean(2, true);
+				ps2.setBoolean(2, true);
 			}
 			else {
-				ps.setBoolean(2, false);
+				ps2.setBoolean(2, false);
 			}
 
-			ps.setLong(3, resourcePermissionId);
+			ps2.setLong(3, resourcePermissionId);
 
 			int count = 0;
 
 			if (supportsBatchUpdates) {
-				ps.addBatch();
+				ps2.addBatch();
 
 				if (count == PropsValues.HIBERNATE_JDBC_BATCH_SIZE) {
-					ps.executeBatch();
+					ps2.executeBatch();
 
 					count = 0;
 				}
@@ -113,11 +113,11 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 				}
 			}
 			else {
-				ps.executeUpdate();
+				ps2.executeUpdate();
 			}
 		}
 		finally {
-			DataAccess.cleanUp(ps);
+			DataAccess.cleanUp(ps2);
 		}
 	}
 
