@@ -36,7 +36,6 @@ import com.liferay.portal.model.ResourceConstants;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.model.RoleConstants;
 import com.liferay.portal.model.User;
-import com.liferay.portal.model.UserGroupRole;
 import com.liferay.portal.security.permission.ActionKeys;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.security.permission.PermissionCheckerFactoryUtil;
@@ -46,7 +45,6 @@ import com.liferay.portal.service.GroupLocalService;
 import com.liferay.portal.service.ResourceBlockLocalService;
 import com.liferay.portal.service.ResourcePermissionLocalService;
 import com.liferay.portal.service.RoleLocalService;
-import com.liferay.portal.service.UserGroupRoleLocalService;
 import com.liferay.portal.service.UserLocalService;
 import com.liferay.portal.util.Portal;
 
@@ -243,23 +241,21 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 
 		Set<Group> groups = new LinkedHashSet<>();
 		Set<Role> roles = new LinkedHashSet<>();
-		Set<UserGroupRole> userGroupRoles = new LinkedHashSet<>();
 		Map<Long, List<Role>> groupIdsToRoles = new HashMap<>();
 
 		populate(
 			companyId, groupIds, userId, permissionChecker, groups, roles,
-			userGroupRoles, groupIdsToRoles);
+			groupIdsToRoles);
 
 		return doGetPermissionFilter_6(
 			companyId, groupIds, userId, permissionChecker, className,
-			booleanFilter, groups, roles, userGroupRoles, groupIdsToRoles);
+			booleanFilter, groups, roles, groupIdsToRoles);
 	}
 
 	protected BooleanFilter doGetPermissionFilter_6(
 			long companyId, long[] groupIds, long userId,
 			PermissionChecker permissionChecker, String className,
 			BooleanFilter booleanFilter, Set<Group> groups, Set<Role> roles,
-			Set<UserGroupRole> userGroupRoles,
 			Map<Long, List<Role>> groupIdsToRoles)
 		throws Exception {
 
@@ -356,12 +352,6 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 			addRequiredMemberRole(group, groupRolesTermsFilter);
 		}
 
-		for (UserGroupRole userGroupRole : userGroupRoles) {
-			groupRolesTermsFilter.addValue(
-				userGroupRole.getGroupId() + StringPool.DASH +
-					userGroupRole.getRoleId());
-		}
-
 		if (!groupsTermsFilter.isEmpty()) {
 			permissionBooleanFilter.add(groupsTermsFilter);
 		}
@@ -403,8 +393,7 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 	protected void populate(
 			long companyId, long[] groupIds, long userId,
 			PermissionChecker permissionChecker, Set<Group> groups,
-			Set<Role> roles, Set<UserGroupRole> userGroupRoles,
-			Map<Long, List<Role>> groupIdsToRoles)
+			Set<Role> roles, Map<Long, List<Role>> groupIdsToRoles)
 		throws Exception {
 
 		UserBag userBag = permissionChecker.getUserBag();
@@ -427,9 +416,6 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 		if (ArrayUtil.isEmpty(groupIds)) {
 			groups.addAll(userBag.getUserGroups());
 			groups.addAll(userBag.getUserOrgGroups());
-
-			userGroupRoles.addAll(
-				_userGroupRoleLocalService.getUserGroupRoles(userId));
 		}
 		else {
 			for (long groupId : groupIds) {
@@ -438,14 +424,6 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 
 					groups.add(group);
 				}
-
-				userGroupRoles.addAll(
-					_userGroupRoleLocalService.getUserGroupRoles(
-						userId, groupId));
-				userGroupRoles.addAll(
-					_userGroupRoleLocalService.
-						getUserGroupRolesByUserUserGroupAndGroup(
-							userId, groupId));
 			}
 		}
 
@@ -501,13 +479,6 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 	}
 
 	@Reference(unbind = "-")
-	protected void setUserGroupRoleLocalService(
-		UserGroupRoleLocalService userGroupRoleLocalService) {
-
-		_userGroupRoleLocalService = userGroupRoleLocalService;
-	}
-
-	@Reference(unbind = "-")
 	protected void setUserLocalService(UserLocalService userLocalService) {
 		_userLocalService = userLocalService;
 	}
@@ -522,7 +493,6 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 	private volatile ResourcePermissionLocalService
 		_resourcePermissionLocalService;
 	private volatile RoleLocalService _roleLocalService;
-	private volatile UserGroupRoleLocalService _userGroupRoleLocalService;
 	private volatile UserLocalService _userLocalService;
 
 }
