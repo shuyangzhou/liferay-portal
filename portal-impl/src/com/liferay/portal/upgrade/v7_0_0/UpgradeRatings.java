@@ -162,36 +162,36 @@ public class UpgradeRatings extends UpgradeProcess {
 
 			rs = ps.executeQuery();
 
-			PreparedStatement ps2 = con.prepareStatement(updateSQL);
+			try (PreparedStatement ps2 = con.prepareStatement(updateSQL)) {
+				int count = 0;
 
-			int count = 0;
+				while (rs.next()) {
+					ps2.setInt(1, rs.getInt("totalEntries"));
+					ps2.setDouble(2, rs.getDouble("totalScore"));
+					ps2.setDouble(3, rs.getDouble("averageScore"));
+					ps2.setLong(4, rs.getLong("classNameId"));
+					ps2.setLong(5, rs.getLong("classPK"));
 
-			while (rs.next()) {
-				ps2.setInt(1, rs.getInt("totalEntries"));
-				ps2.setDouble(2, rs.getDouble("totalScore"));
-				ps2.setDouble(3, rs.getDouble("averageScore"));
-				ps2.setLong(4, rs.getLong("classNameId"));
-				ps2.setLong(5, rs.getLong("classPK"));
+					if (supportsBatchUpdates) {
+						ps2.addBatch();
 
-				if (supportsBatchUpdates) {
-					ps2.addBatch();
+						if (count == PropsValues.HIBERNATE_JDBC_BATCH_SIZE) {
+							ps2.executeBatch();
 
-					if (count == PropsValues.HIBERNATE_JDBC_BATCH_SIZE) {
-						ps2.executeBatch();
-
-						count = 0;
+							count = 0;
+						}
+						else {
+							count++;
+						}
 					}
 					else {
-						count++;
+						ps2.executeUpdate();
 					}
 				}
-				else {
-					ps2.executeUpdate();
-				}
-			}
 
-			if (supportsBatchUpdates && (count > 0)) {
-				ps2.executeBatch();
+				if (supportsBatchUpdates && (count > 0)) {
+					ps2.executeBatch();
+				}
 			}
 		}
 		finally {
