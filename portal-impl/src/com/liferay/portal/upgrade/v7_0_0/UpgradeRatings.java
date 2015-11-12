@@ -161,24 +161,24 @@ public class UpgradeRatings extends UpgradeProcess {
 
 			rs = ps.executeQuery();
 
-			ps = con.prepareStatement(
+			PreparedStatement ps2 = con.prepareStatement(
 				"update RatingsStats set totalEntries = ?, totalScore = ?, " +
 					"averageScore = ? where classNameId = ? and classPK = ?");
 
 			int count = 0;
 
 			while (rs.next()) {
-				ps.setInt(1, rs.getInt("totalEntries"));
-				ps.setDouble(2, rs.getDouble("totalScore"));
-				ps.setDouble(3, rs.getDouble("averageScore"));
-				ps.setLong(4, rs.getLong("classNameId"));
-				ps.setLong(5, rs.getLong("classPK"));
+				ps2.setInt(1, rs.getInt("totalEntries"));
+				ps2.setDouble(2, rs.getDouble("totalScore"));
+				ps2.setDouble(3, rs.getDouble("averageScore"));
+				ps2.setLong(4, rs.getLong("classNameId"));
+				ps2.setLong(5, rs.getLong("classPK"));
 
 				if (supportsBatchUpdates) {
-					ps.addBatch();
+					ps2.addBatch();
 
 					if (count == PropsValues.HIBERNATE_JDBC_BATCH_SIZE) {
-						ps.executeBatch();
+						ps2.executeBatch();
 
 						count = 0;
 					}
@@ -187,12 +187,12 @@ public class UpgradeRatings extends UpgradeProcess {
 					}
 				}
 				else {
-					ps.executeUpdate();
+					ps2.executeUpdate();
 				}
 			}
 
 			if (supportsBatchUpdates && (count > 0)) {
-				ps.executeBatch();
+				ps2.executeBatch();
 			}
 		}
 		finally {
