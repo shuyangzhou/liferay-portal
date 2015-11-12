@@ -353,7 +353,7 @@ public class UpgradeImageGallery extends UpgradeProcess {
 
 			rs = ps.executeQuery();
 
-			ps = con.prepareStatement(
+			PreparedStatement ps2 = con.prepareStatement(
 				"delete from ResourcePermission where name = ? and " +
 					"companyId = ? and scope = ? and primKey = ? and " +
 						"roleId = ?");
@@ -361,17 +361,17 @@ public class UpgradeImageGallery extends UpgradeProcess {
 			int count = 0;
 
 			while (rs.next()) {
-				ps.setString(1, dlResourceName);
-				ps.setLong(2, rs.getLong("companyId"));
-				ps.setInt(3, rs.getInt("scope"));
-				ps.setString(4, rs.getString("primKey"));
-				ps.setLong(5, rs.getLong("roleId"));
+				ps2.setString(1, dlResourceName);
+				ps2.setLong(2, rs.getLong("companyId"));
+				ps2.setInt(3, rs.getInt("scope"));
+				ps2.setString(4, rs.getString("primKey"));
+				ps2.setLong(5, rs.getLong("roleId"));
 
 				if (supportsBatchUpdates) {
-					ps.addBatch();
+					ps2.addBatch();
 
 					if (count == PropsValues.HIBERNATE_JDBC_BATCH_SIZE) {
-						ps.executeBatch();
+						ps2.executeBatch();
 
 						count = 0;
 					}
@@ -380,12 +380,12 @@ public class UpgradeImageGallery extends UpgradeProcess {
 					}
 				}
 				else {
-					ps.executeUpdate();
+					ps2.executeUpdate();
 				}
 			}
 
 			if (supportsBatchUpdates && (count > 0)) {
-				ps.executeBatch();
+				ps2.executeBatch();
 			}
 		}
 		finally {
