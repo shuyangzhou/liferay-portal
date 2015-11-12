@@ -49,27 +49,29 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 
 			rs = ps.executeQuery();
 
-			while (rs.next()) {
-				long resourcePermissionId = rs.getLong("resourcePermissionId");
-				long primKeyId = rs.getLong("primKeyId");
-				long actionIds = rs.getLong("actionIds");
-				boolean viewActionId = rs.getBoolean("viewActionId");
+			PreparedStatement ps2 = null;
 
-				long newPrimKeyId = GetterUtil.getLong(rs.getString("primKey"));
-				boolean newViewActionId = (actionIds % 2 == 1);
+			try {
+				ps2 = con.prepareStatement(
+					"update ResourcePermission set primKeyId = ?," +
+						"viewActionId = ?  where resourcePermissionId = ?");
 
-				if ((primKeyId == newPrimKeyId) &&
-					(newViewActionId == viewActionId)) {
+				while (rs.next()) {
+					long resourcePermissionId = rs.getLong(
+						"resourcePermissionId");
+					long primKeyId = rs.getLong("primKeyId");
+					long actionIds = rs.getLong("actionIds");
+					boolean viewActionId = rs.getBoolean("viewActionId");
 
-					continue;
-				}
+					long newPrimKeyId = GetterUtil.getLong(
+						rs.getString("primKey"));
+					boolean newViewActionId = (actionIds % 2 == 1);
 
-				PreparedStatement ps2 = null;
+					if ((primKeyId == newPrimKeyId) &&
+						(newViewActionId == viewActionId)) {
 
-				try {
-					ps2 = con.prepareStatement(
-						"update ResourcePermission set primKeyId = ?," +
-							"viewActionId = ?  where resourcePermissionId = ?");
+						continue;
+					}
 
 					ps2.setLong(1, newPrimKeyId);
 
@@ -100,9 +102,9 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 						ps2.executeUpdate();
 					}
 				}
-				finally {
-					DataAccess.cleanUp(ps2);
-				}
+			}
+			finally {
+				DataAccess.cleanUp(ps2);
 			}
 		}
 		finally {
