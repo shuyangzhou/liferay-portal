@@ -333,6 +333,13 @@ public class UpgradeImageGallery extends UpgradeProcess {
 			String igResourceName, String dlResourceName)
 		throws Exception {
 
+		String selectSQL =
+			"select companyId, scope, primKey, roleId from " +
+				"ResourcePermission where name = ?";
+		String deleteSQL =
+			"delete from ResourcePermission where name = ? and companyId = ? " +
+				"and scope = ? and primKey = ? and roleId = ?";
+
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -345,18 +352,13 @@ public class UpgradeImageGallery extends UpgradeProcess {
 			boolean supportsBatchUpdates =
 				databaseMetaData.supportsBatchUpdates();
 
-			ps = con.prepareStatement(
-				"select companyId, scope, primKey, roleId from " +
-					"ResourcePermission where name = ?");
+			ps = con.prepareStatement(selectSQL);
 
 			ps.setString(1, igResourceName);
 
 			rs = ps.executeQuery();
 
-			PreparedStatement ps2 = con.prepareStatement(
-				"delete from ResourcePermission where name = ? and " +
-					"companyId = ? and scope = ? and primKey = ? and " +
-						"roleId = ?");
+			PreparedStatement ps2 = con.prepareStatement(deleteSQL);
 
 			int count = 0;
 
