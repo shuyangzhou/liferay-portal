@@ -17,10 +17,9 @@ package com.liferay.portal.upgrade.v7_0_0;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.upgrade.AutoBatchPreparedStatementUtil;
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -39,16 +38,10 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 				"where resourcePermissionId = ?";
 
 		try (Connection con = DataAccess.getUpgradeOptimizedConnection()) {
-			DatabaseMetaData databaseMetaData = con.getMetaData();
-
-			boolean supportsBatchUpdates =
-				databaseMetaData.supportsBatchUpdates();
-
 			try (PreparedStatement ps = con.prepareStatement(selectSQL);
 				ResultSet rs = ps.executeQuery();
-				PreparedStatement ps2 = con.prepareStatement(updateSQL)) {
-
-				int count = 0;
+				PreparedStatement ps2 = AutoBatchPreparedStatementUtil.autoBath(
+					con.prepareStatement(updateSQL))) {
 
 				while (rs.next()) {
 					long resourcePermissionId = rs.getLong(
@@ -78,26 +71,10 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 
 					ps2.setLong(3, resourcePermissionId);
 
-					if (supportsBatchUpdates) {
-						ps2.addBatch();
-
-						if (count == PropsValues.HIBERNATE_JDBC_BATCH_SIZE) {
-							ps2.executeBatch();
-
-							count = 0;
-						}
-						else {
-							count++;
-						}
-					}
-					else {
-						ps2.executeUpdate();
-					}
+					ps2.addBatch();
 				}
 
-				if (supportsBatchUpdates && (count > 0)) {
-					ps2.executeBatch();
-				}
+				ps2.executeBatch();
 			}
 		}
 	}
