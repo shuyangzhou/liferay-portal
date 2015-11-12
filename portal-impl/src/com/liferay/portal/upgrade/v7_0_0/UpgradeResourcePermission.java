@@ -54,11 +54,7 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 
 			rs = ps.executeQuery();
 
-			PreparedStatement ps2 = null;
-
-			try {
-				ps2 = con.prepareStatement(updateSQL);
-
+			try (PreparedStatement ps2 = con.prepareStatement(updateSQL)) {
 				int count = 0;
 
 				while (rs.next()) {
@@ -109,9 +105,6 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 				if (supportsBatchUpdates && (count > 0)) {
 					ps2.executeBatch();
 				}
-			}
-			finally {
-				DataAccess.cleanUp(ps2);
 			}
 		}
 		finally {
