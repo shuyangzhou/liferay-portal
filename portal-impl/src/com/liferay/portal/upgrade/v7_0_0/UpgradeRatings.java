@@ -148,24 +148,21 @@ public class UpgradeRatings extends UpgradeProcess {
 
 		try (Connection con = DataAccess.getUpgradeOptimizedConnection();
 			PreparedStatement ps = con.prepareStatement(selectSQL);
-			ResultSet rs = ps.executeQuery()) {
+			ResultSet rs = ps.executeQuery();
+			PreparedStatement ps2 = AutoBatchPreparedStatementUtil.autoBath(
+				con.prepareStatement(updateSQL))) {
 
-			try (PreparedStatement ps2 =
-					AutoBatchPreparedStatementUtil.autoBath(
-						con.prepareStatement(updateSQL))) {
+			while (rs.next()) {
+				ps2.setInt(1, rs.getInt("totalEntries"));
+				ps2.setDouble(2, rs.getDouble("totalScore"));
+				ps2.setDouble(3, rs.getDouble("averageScore"));
+				ps2.setLong(4, rs.getLong("classNameId"));
+				ps2.setLong(5, rs.getLong("classPK"));
 
-				while (rs.next()) {
-					ps2.setInt(1, rs.getInt("totalEntries"));
-					ps2.setDouble(2, rs.getDouble("totalScore"));
-					ps2.setDouble(3, rs.getDouble("averageScore"));
-					ps2.setLong(4, rs.getLong("classNameId"));
-					ps2.setLong(5, rs.getLong("classPK"));
-
-					ps2.addBatch();
-				}
-
-				ps2.executeBatch();
+				ps2.addBatch();
 			}
+
+			ps2.executeBatch();
 		}
 	}
 
