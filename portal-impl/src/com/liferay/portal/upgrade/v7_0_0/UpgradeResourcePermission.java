@@ -40,7 +40,10 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 			try (PreparedStatement ps = con.prepareStatement(
 					"select resourcePermissionId, primKey, primKeyId, " +
 						"actionIds, viewActionId from ResourcePermission");
-				ResultSet rs = ps.executeQuery()) {
+				ResultSet rs = ps.executeQuery();
+				PreparedStatement ps2 = con.prepareStatement(
+					"update ResourcePermission set primKeyId = ?," +
+						"viewActionId = ? where resourcePermissionId = ?")) {
 
 				while (rs.next()) {
 					long resourcePermissionId = rs.getLong(
@@ -59,47 +62,33 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 						continue;
 					}
 
-					PreparedStatement ps2 = null;
+					ps2.setLong(1, newPrimKeyId);
 
-					try {
-						ps2 = con.prepareStatement(
-							"update ResourcePermission set primKeyId = ?," +
-								"viewActionId = ? where " +
-									"resourcePermissionId = ?");
+					if (newViewActionId) {
+						ps2.setBoolean(2, true);
+					}
+					else {
+						ps2.setBoolean(2, false);
+					}
 
-						ps2.setLong(1, newPrimKeyId);
+					ps2.setLong(3, resourcePermissionId);
 
-						if (newViewActionId) {
-							ps2.setBoolean(2, true);
+					int count = 0;
+
+					if (supportsBatchUpdates) {
+						ps2.addBatch();
+
+						if (count == PropsValues.HIBERNATE_JDBC_BATCH_SIZE) {
+							ps2.executeBatch();
+
+							count = 0;
 						}
 						else {
-							ps2.setBoolean(2, false);
-						}
-
-						ps2.setLong(3, resourcePermissionId);
-
-						int count = 0;
-
-						if (supportsBatchUpdates) {
-							ps2.addBatch();
-
-							if (count ==
-									PropsValues.HIBERNATE_JDBC_BATCH_SIZE) {
-
-								ps2.executeBatch();
-
-								count = 0;
-							}
-							else {
-								count++;
-							}
-						}
-						else {
-							ps2.executeUpdate();
+							count++;
 						}
 					}
-					finally {
-						DataAccess.cleanUp(ps2);
+					else {
+						ps2.executeUpdate();
 					}
 				}
 			}
