@@ -38,11 +38,7 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 			"update ResourcePermission set primKeyId = ?, viewActionId = ? " +
 				"where resourcePermissionId = ?";
 
-		Connection con = null;
-
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection()) {
 			DatabaseMetaData databaseMetaData = con.getMetaData();
 
 			boolean supportsBatchUpdates =
@@ -103,9 +99,6 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 					ps2.executeBatch();
 				}
 			}
-		}
-		finally {
-			DataAccess.cleanUp(con);
 		}
 	}
 
