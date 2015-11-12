@@ -37,45 +37,42 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 			"update ResourcePermission set primKeyId = ?, viewActionId = ? " +
 				"where resourcePermissionId = ?";
 
-		try (Connection con = DataAccess.getUpgradeOptimizedConnection()) {
-			try (PreparedStatement ps = con.prepareStatement(selectSQL);
-				ResultSet rs = ps.executeQuery();
-				PreparedStatement ps2 = AutoBatchPreparedStatementUtil.autoBath(
-					con.prepareStatement(updateSQL))) {
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection();
+			PreparedStatement ps = con.prepareStatement(selectSQL);
+			ResultSet rs = ps.executeQuery();
+			PreparedStatement ps2 = AutoBatchPreparedStatementUtil.autoBath(
+				con.prepareStatement(updateSQL))) {
 
-				while (rs.next()) {
-					long resourcePermissionId = rs.getLong(
-						"resourcePermissionId");
-					long primKeyId = rs.getLong("primKeyId");
-					long actionIds = rs.getLong("actionIds");
-					boolean viewActionId = rs.getBoolean("viewActionId");
+			while (rs.next()) {
+				long resourcePermissionId = rs.getLong("resourcePermissionId");
+				long primKeyId = rs.getLong("primKeyId");
+				long actionIds = rs.getLong("actionIds");
+				boolean viewActionId = rs.getBoolean("viewActionId");
 
-					long newPrimKeyId = GetterUtil.getLong(
-						rs.getString("primKey"));
-					boolean newViewActionId = (actionIds % 2 == 1);
+				long newPrimKeyId = GetterUtil.getLong(rs.getString("primKey"));
+				boolean newViewActionId = (actionIds % 2 == 1);
 
-					if ((primKeyId == newPrimKeyId) &&
-						(newViewActionId == viewActionId)) {
+				if ((primKeyId == newPrimKeyId) &&
+					(newViewActionId == viewActionId)) {
 
-						continue;
-					}
-
-					ps2.setLong(1, newPrimKeyId);
-
-					if (newViewActionId) {
-						ps2.setBoolean(2, true);
-					}
-					else {
-						ps2.setBoolean(2, false);
-					}
-
-					ps2.setLong(3, resourcePermissionId);
-
-					ps2.addBatch();
+					continue;
 				}
 
-				ps2.executeBatch();
+				ps2.setLong(1, newPrimKeyId);
+
+				if (newViewActionId) {
+					ps2.setBoolean(2, true);
+				}
+				else {
+					ps2.setBoolean(2, false);
+				}
+
+				ps2.setLong(3, resourcePermissionId);
+
+				ps2.addBatch();
 			}
+
+			ps2.executeBatch();
 		}
 	}
 
