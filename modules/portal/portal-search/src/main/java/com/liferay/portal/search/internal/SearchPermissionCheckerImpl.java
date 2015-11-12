@@ -248,15 +248,14 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 			groupIdsToRoles);
 
 		return doGetPermissionFilter_6(
-			companyId, groupIds, userId, permissionChecker, className,
-			booleanFilter, groups, roles, groupIdsToRoles);
+			companyId, userId, permissionChecker, className, booleanFilter,
+			groups, roles, groupIdsToRoles);
 	}
 
 	protected BooleanFilter doGetPermissionFilter_6(
-			long companyId, long[] groupIds, long userId,
-			PermissionChecker permissionChecker, String className,
-			BooleanFilter booleanFilter, Set<Group> groups, Set<Role> roles,
-			Map<Long, List<Role>> groupIdsToRoles)
+			long companyId, long userId, PermissionChecker permissionChecker,
+			String className, BooleanFilter booleanFilter, Set<Group> groups,
+			Set<Role> roles, Map<Long, List<Role>> groupIdsToRoles)
 		throws Exception {
 
 		BooleanFilter permissionBooleanFilter = new BooleanFilter();
@@ -333,18 +332,6 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 				}
 			}
 
-			if (ArrayUtil.isNotEmpty(groupIds)) {
-				for (long groupId : groupIds) {
-					if (_resourcePermissionLocalService.hasResourcePermission(
-							companyId, className, ResourceConstants.SCOPE_GROUP,
-							String.valueOf(groupId), role.getRoleId(),
-							ActionKeys.VIEW)) {
-
-						groupsTermsFilter.addValue(String.valueOf(groupId));
-					}
-				}
-			}
-
 			rolesTermsFilter.addValue(String.valueOf(role.getRoleId()));
 		}
 
@@ -418,13 +405,7 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 			groups.addAll(userBag.getUserOrgGroups());
 		}
 		else {
-			for (long groupId : groupIds) {
-				if (_groupLocalService.hasUserGroup(userId, groupId)) {
-					Group group = _groupLocalService.getGroup(groupId);
-
-					groups.add(group);
-				}
-			}
+			groups.addAll(_groupLocalService.getGroups(groupIds));
 		}
 
 		if (permissionChecker.isSignedIn()) {
