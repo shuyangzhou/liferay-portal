@@ -146,21 +146,14 @@ public class UpgradeRatings extends UpgradeProcess {
 			"update RatingsStats set totalEntries = ?, totalScore = ?, " +
 				"averageScore = ? where classNameId = ? and classPK = ?";
 
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection();
+			PreparedStatement ps = con.prepareStatement(selectSQL);
+			ResultSet rs = ps.executeQuery()) {
 
 			DatabaseMetaData databaseMetaData = con.getMetaData();
 
 			boolean supportsBatchUpdates =
 				databaseMetaData.supportsBatchUpdates();
-
-			ps = con.prepareStatement(selectSQL);
-
-			rs = ps.executeQuery();
 
 			try (PreparedStatement ps2 = con.prepareStatement(updateSQL)) {
 				int count = 0;
@@ -193,9 +186,6 @@ public class UpgradeRatings extends UpgradeProcess {
 					ps2.executeBatch();
 				}
 			}
-		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
 		}
 	}
 
