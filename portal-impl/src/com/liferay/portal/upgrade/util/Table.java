@@ -523,7 +523,9 @@ public class Table {
 					ps.addBatch();
 
 					if (count == _BATCH_SIZE) {
-						populateTableRows(ps, true);
+						ps.executeBatch();
+
+						ps.close();
 
 						count = 0;
 					}
@@ -532,13 +534,17 @@ public class Table {
 					}
 				}
 				else {
-					populateTableRows(ps, false);
+					ps.executeUpdate();
+
+					ps.close();
 				}
 			}
 
 			if (databaseMetaData.supportsBatchUpdates()) {
 				if (count != 0) {
-					populateTableRows(ps, true);
+					ps.executeBatch();
+
+					ps.close();
 				}
 			}
 		}
@@ -551,23 +557,6 @@ public class Table {
 		if (_log.isDebugEnabled()) {
 			_log.debug(getTableName() + " table populated with data");
 		}
-	}
-
-	public void populateTableRows(PreparedStatement ps, boolean batch)
-		throws Exception {
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Updating rows for " + getTableName());
-		}
-
-		if (batch) {
-			ps.executeBatch();
-		}
-		else {
-			ps.executeUpdate();
-		}
-
-		ps.close();
 	}
 
 	public void setColumn(
