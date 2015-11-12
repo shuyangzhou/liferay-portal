@@ -20,12 +20,12 @@ import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.upgrade.AutoBatchPreparedStatementUtil;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PropsUtil;
 import com.liferay.portal.util.PropsValues;
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -150,13 +150,9 @@ public class UpgradeRatings extends UpgradeProcess {
 			PreparedStatement ps = con.prepareStatement(selectSQL);
 			ResultSet rs = ps.executeQuery()) {
 
-			DatabaseMetaData databaseMetaData = con.getMetaData();
-
-			boolean supportsBatchUpdates =
-				databaseMetaData.supportsBatchUpdates();
-
-			try (PreparedStatement ps2 = con.prepareStatement(updateSQL)) {
-				int count = 0;
+			try (PreparedStatement ps2 =
+					AutoBatchPreparedStatementUtil.autoBath(
+						con.prepareStatement(updateSQL))) {
 
 				while (rs.next()) {
 					ps2.setInt(1, rs.getInt("totalEntries"));
@@ -165,26 +161,10 @@ public class UpgradeRatings extends UpgradeProcess {
 					ps2.setLong(4, rs.getLong("classNameId"));
 					ps2.setLong(5, rs.getLong("classPK"));
 
-					if (supportsBatchUpdates) {
-						ps2.addBatch();
-
-						if (count == PropsValues.HIBERNATE_JDBC_BATCH_SIZE) {
-							ps2.executeBatch();
-
-							count = 0;
-						}
-						else {
-							count++;
-						}
-					}
-					else {
-						ps2.executeUpdate();
-					}
+					ps2.addBatch();
 				}
 
-				if (supportsBatchUpdates && (count > 0)) {
-					ps2.executeBatch();
-				}
+				ps2.executeBatch();
 			}
 		}
 	}
