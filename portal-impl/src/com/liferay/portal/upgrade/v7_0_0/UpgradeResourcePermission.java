@@ -115,10 +115,6 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 			else {
 				ps.executeUpdate();
 			}
-
-			if (supportsBatchUpdates && (count > 0)) {
-				ps.executeBatch();
-			}
 		}
 		finally {
 			DataAccess.cleanUp(ps);
