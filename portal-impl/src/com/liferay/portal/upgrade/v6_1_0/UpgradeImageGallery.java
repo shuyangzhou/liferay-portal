@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.model.Company;
 import com.liferay.portal.model.Image;
 import com.liferay.portal.service.ImageLocalServiceUtil;
+import com.liferay.portal.upgrade.AutoBatchPreparedStatementUtil;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.documentlibrary.model.DLFileEntry;
@@ -48,7 +49,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -344,15 +344,11 @@ public class UpgradeImageGallery extends UpgradeProcess {
 			PreparedStatement ps = con.prepareStatement(selectSQL);
 			ResultSet rs = ps.executeQuery()) {
 
-			DatabaseMetaData databaseMetaData = con.getMetaData();
-
-			boolean supportsBatchUpdates =
-				databaseMetaData.supportsBatchUpdates();
-
 			ps.setString(1, igResourceName);
 
-			try (PreparedStatement ps2 = con.prepareStatement(deleteSQL)) {
-				int count = 0;
+			try (PreparedStatement ps2 =
+					AutoBatchPreparedStatementUtil.autoBath(
+						con.prepareStatement(deleteSQL))) {
 
 				while (rs.next()) {
 					ps2.setString(1, dlResourceName);
@@ -361,26 +357,10 @@ public class UpgradeImageGallery extends UpgradeProcess {
 					ps2.setString(4, rs.getString("primKey"));
 					ps2.setLong(5, rs.getLong("roleId"));
 
-					if (supportsBatchUpdates) {
-						ps2.addBatch();
-
-						if (count == PropsValues.HIBERNATE_JDBC_BATCH_SIZE) {
-							ps2.executeBatch();
-
-							count = 0;
-						}
-						else {
-							count++;
-						}
-					}
-					else {
-						ps2.executeUpdate();
-					}
+					ps2.addBatch();
 				}
 
-				if (supportsBatchUpdates && (count > 0)) {
-					ps2.executeBatch();
-				}
+				ps2.executeBatch();
 			}
 		}
 	}
