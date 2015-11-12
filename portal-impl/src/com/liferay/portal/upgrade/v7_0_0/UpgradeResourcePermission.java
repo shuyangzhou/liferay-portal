@@ -31,6 +31,13 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
+		String selectSQL =
+			"select resourcePermissionId, primKey, primKeyId, actionIds, " +
+				"viewActionId from ResourcePermission";
+		String updateSQL =
+			"update ResourcePermission set primKeyId = ?, viewActionId = ? " +
+				"where resourcePermissionId = ?";
+
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -43,18 +50,14 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 			boolean supportsBatchUpdates =
 				databaseMetaData.supportsBatchUpdates();
 
-			ps = con.prepareStatement(
-				"select resourcePermissionId, primKey, primKeyId, actionIds, " +
-					"viewActionId from ResourcePermission");
+			ps = con.prepareStatement(selectSQL);
 
 			rs = ps.executeQuery();
 
 			PreparedStatement ps2 = null;
 
 			try {
-				ps2 = con.prepareStatement(
-					"update ResourcePermission set primKeyId = ?," +
-						"viewActionId = ?  where resourcePermissionId = ?");
+				ps2 = con.prepareStatement(updateSQL);
 
 				int count = 0;
 
