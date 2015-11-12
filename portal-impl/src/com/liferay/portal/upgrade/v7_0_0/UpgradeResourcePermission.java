@@ -17,10 +17,9 @@ package com.liferay.portal.upgrade.v7_0_0;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.upgrade.AutoBatchPreparedStatementUtil;
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -31,71 +30,46 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		try (Connection con = DataAccess.getUpgradeOptimizedConnection()) {
-			DatabaseMetaData databaseMetaData = con.getMetaData();
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection();
+			PreparedStatement ps = con.prepareStatement(
+				"select resourcePermissionId, primKey, primKeyId, " +
+					"actionIds, viewActionId from ResourcePermission");
+			ResultSet rs = ps.executeQuery();
+			PreparedStatement ps2 = AutoBatchPreparedStatementUtil.autoBath(
+				con.prepareStatement(
+					"update ResourcePermission set primKeyId = ?, " +
+						"viewActionId = ? where resourcePermissionId = ?"))) {
 
-			boolean supportsBatchUpdates =
-				databaseMetaData.supportsBatchUpdates();
+			while (rs.next()) {
+				long resourcePermissionId = rs.getLong("resourcePermissionId");
+				long primKeyId = rs.getLong("primKeyId");
+				long actionIds = rs.getLong("actionIds");
+				boolean viewActionId = rs.getBoolean("viewActionId");
 
-			try (PreparedStatement ps = con.prepareStatement(
-					"select resourcePermissionId, primKey, primKeyId, " +
-						"actionIds, viewActionId from ResourcePermission");
-				ResultSet rs = ps.executeQuery();
-				PreparedStatement ps2 = con.prepareStatement(
-					"update ResourcePermission set primKeyId = ?," +
-						"viewActionId = ? where resourcePermissionId = ?")) {
+				long newPrimKeyId = GetterUtil.getLong(rs.getString("primKey"));
+				boolean newViewActionId = (actionIds % 2 == 1);
 
-				int count = 0;
+				if ((primKeyId == newPrimKeyId) &&
+					(newViewActionId == viewActionId)) {
 
-				while (rs.next()) {
-					long resourcePermissionId = rs.getLong(
-						"resourcePermissionId");
-					long primKeyId = rs.getLong("primKeyId");
-					long actionIds = rs.getLong("actionIds");
-					boolean viewActionId = rs.getBoolean("viewActionId");
-
-					long newPrimKeyId = GetterUtil.getLong(
-						rs.getString("primKey"));
-					boolean newViewActionId = (actionIds % 2 == 1);
-
-					if ((primKeyId == newPrimKeyId) &&
-						(newViewActionId == viewActionId)) {
-
-						continue;
-					}
-
-					ps2.setLong(1, newPrimKeyId);
-
-					if (newViewActionId) {
-						ps2.setBoolean(2, true);
-					}
-					else {
-						ps2.setBoolean(2, false);
-					}
-
-					ps2.setLong(3, resourcePermissionId);
-
-					if (supportsBatchUpdates) {
-						ps2.addBatch();
-
-						if (count == PropsValues.HIBERNATE_JDBC_BATCH_SIZE) {
-							ps2.executeBatch();
-
-							count = 0;
-						}
-						else {
-							count++;
-						}
-					}
-					else {
-						ps2.executeUpdate();
-					}
+					continue;
 				}
 
-				if (supportsBatchUpdates && (count > 0)) {
-					ps2.executeBatch();
+				ps2.setLong(1, newPrimKeyId);
+
+				if (newViewActionId) {
+					ps2.setBoolean(2, true);
 				}
+				else {
+					ps2.setBoolean(2, false);
+				}
+
+				ps2.setLong(3, resourcePermissionId);
+
+				ps2.addBatch();
 			}
+
+			ps2.executeBatch();
 		}
 	}
 

@@ -21,12 +21,12 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.upgrade.AutoBatchPreparedStatementUtil;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PropsUtil;
 import com.liferay.portal.util.PropsValues;
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -145,11 +145,6 @@ public class UpgradeRatings extends UpgradeProcess {
 		try {
 			con = DataAccess.getUpgradeOptimizedConnection();
 
-			DatabaseMetaData databaseMetaData = con.getMetaData();
-
-			boolean supportsBatchUpdates =
-				databaseMetaData.supportsBatchUpdates();
-
 			StringBundler sb = new StringBundler(4);
 
 			sb.append("select classNameId, classPK, count(1) as ");
@@ -161,11 +156,11 @@ public class UpgradeRatings extends UpgradeProcess {
 
 			rs = ps.executeQuery();
 
-			ps = con.prepareStatement(
-				"update RatingsStats set totalEntries = ?, totalScore = ?, " +
-					"averageScore = ? where classNameId = ? and classPK = ?");
-
-			int count = 0;
+			ps = AutoBatchPreparedStatementUtil.autoBath(
+				con.prepareStatement(
+					"update RatingsStats set totalEntries = ?, " +
+						"totalScore = ?, averageScore = ? where " +
+							"classNameId = ? and classPK = ?"));
 
 			while (rs.next()) {
 				ps.setInt(1, rs.getInt("totalEntries"));
@@ -174,26 +169,10 @@ public class UpgradeRatings extends UpgradeProcess {
 				ps.setLong(4, rs.getLong("classNameId"));
 				ps.setLong(5, rs.getLong("classPK"));
 
-				if (supportsBatchUpdates) {
-					ps.addBatch();
-
-					if (count == PropsValues.HIBERNATE_JDBC_BATCH_SIZE) {
-						ps.executeBatch();
-
-						count = 0;
-					}
-					else {
-						count++;
-					}
-				}
-				else {
-					ps.executeUpdate();
-				}
+				ps.addBatch();
 			}
 
-			if (supportsBatchUpdates && (count > 0)) {
-				ps.executeBatch();
-			}
+			ps.executeBatch();
 		}
 		finally {
 			DataAccess.cleanUp(con, ps, rs);
