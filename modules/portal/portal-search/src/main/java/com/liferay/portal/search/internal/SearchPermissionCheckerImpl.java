@@ -322,9 +322,14 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 					!RoleConstants.SITE_MEMBER.equals(role.getName()) &&
 					(role.getType() == RoleConstants.TYPE_SITE)) {
 
-					groupRolesTermsFilter.addValue(
-						group.getGroupId() + StringPool.DASH +
-							role.getRoleId());
+					List<Role> groupRoles = groupIdsToRoles.get(
+						group.getGroupId());
+
+					if (groupRoles.contains(role)) {
+						groupRolesTermsFilter.addValue(
+							group.getGroupId() + StringPool.DASH +
+								role.getRoleId());
+					}
 				}
 			}
 
