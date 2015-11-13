@@ -264,9 +264,7 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 
 		BooleanFilter permissionBooleanFilter = new BooleanFilter();
 
-		if (userId > 0) {
-			permissionBooleanFilter.addTerm(Field.USER_ID, userId);
-		}
+		permissionBooleanFilter.addTerm(Field.USER_ID, userId);
 
 		TermsFilter groupsTermsFilter = new TermsFilter(Field.GROUP_ID);
 		TermsFilter groupRolesTermsFilter = new TermsFilter(
