@@ -297,31 +297,35 @@ public abstract class BaseActionableDynamicQuery
 					return -1L;
 				}
 
-				List<Future<Void>> futures = new ArrayList<>(objects.size());
+				if (_parallel) {
+					List<Future<Void>> futures = new ArrayList<>(
+						objects.size());
 
-				for (final Object object : objects) {
-					if (_parallel) {
+					for (final Object object : objects) {
 						futures.add(
 							_threadPoolExecutor.submit(
 								new Callable<Void>() {
 
-								@Override
-								public Void call() throws Exception {
-									performAction(object);
+									@Override
+									public Void call() throws PortalException {
+										performAction(object);
 
-									return null;
+										return null;
+									}
+
 								}
-
-							})
+							)
 						);
 					}
-					else {
-						performAction(object);
+
+					for (Future<Void> future : futures) {
+						future.get();
 					}
 				}
-
-				for (Future<Void> future : futures) {
-					future.get();
+				else {
+					for (Object object : objects) {
+						performAction(object);
+					}
 				}
 
 				if (objects.size() < _interval) {
