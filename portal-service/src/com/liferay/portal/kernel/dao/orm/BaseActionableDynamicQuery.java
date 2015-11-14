@@ -297,7 +297,7 @@ public abstract class BaseActionableDynamicQuery
 					return -1L;
 				}
 
-				List<Future> futures = new ArrayList<>(objects.size());
+				List<Future<Void>> futures = new ArrayList<>(objects.size());
 
 				for (final Object object : objects) {
 					if (_parallel) {
@@ -320,7 +320,7 @@ public abstract class BaseActionableDynamicQuery
 					}
 				}
 
-				for (Future future : futures) {
+				for (Future<Void> future : futures) {
 					future.get();
 				}
 
