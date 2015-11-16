@@ -65,6 +65,12 @@ public class ServiceDependencyManager {
 	}
 
 	public void registerDependencies(Class<?>... serviceClasses) {
+		if (_serviceDependencyListeners.size() == 0) {
+			throw new IllegalStateException(
+				"No dependency listeners are available. Please add a " +
+					"ServiceDependencyListener first.");
+		}
+
 		synchronized (_serviceDependencies) {
 			doRegisterDependencies(serviceClasses);
 
@@ -76,6 +82,12 @@ public class ServiceDependencyManager {
 
 	public void registerDependencies(
 		Class<?>[] serviceClasses, Filter[] filters) {
+
+		if (_serviceDependencyListeners.size() == 0) {
+			throw new IllegalStateException(
+				"No dependency listeners are available. Please add a " +
+					"ServiceDependencyListener first.");
+		}
 
 		synchronized (_serviceDependencies) {
 			doRegisterDependencies(serviceClasses);
@@ -91,6 +103,12 @@ public class ServiceDependencyManager {
 	public void registerDependencies(
 		Collection<Class<?>> serviceClasses, Collection<Filter> filters) {
 
+		if (_serviceDependencyListeners.size() == 0) {
+			throw new IllegalStateException(
+				"No dependency listeners are available. Please add a " +
+					"ServiceDependencyListener first.");
+		}
+
 		synchronized (_serviceDependencies) {
 			doRegisterDependencies(
 				serviceClasses.toArray(new Class<?>[serviceClasses.size()]));
@@ -104,6 +122,12 @@ public class ServiceDependencyManager {
 	}
 
 	public void registerDependencies(Filter... filters) {
+		if (_serviceDependencyListeners.size() == 0) {
+			throw new IllegalStateException(
+				"No dependency listeners are available. Please add a " +
+					"ServiceDependencyListener first.");
+		}
+
 		synchronized (_serviceDependencies) {
 			doRegisterDependencies(filters);
 
