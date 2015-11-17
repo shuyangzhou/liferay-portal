@@ -396,9 +396,6 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 
 		if (permissionChecker.isSignedIn()) {
 			roles.addAll(userBag.getRoles());
-
-			roles.add(
-				_roleLocalService.getRole(companyId, RoleConstants.GUEST));
 		}
 		else {
 			Group guestGroup = _groupLocalService.getGroup(
@@ -409,7 +406,7 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 					userId, Collections.singletonList(guestGroup)));
 		}
 
-		if (permissionChecker.isSignedIn()) {
+		if (permissionChecker.isCheckGuest()) {
 			roles.add(
 				_roleLocalService.getRole(companyId, RoleConstants.GUEST));
 		}
