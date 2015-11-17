@@ -53,6 +53,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -295,41 +296,16 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 					}
 				}
 
-				if (group.isSite() &&
-					!RoleConstants.SITE_MEMBER.equals(role.getName()) &&
-					(role.getType() == RoleConstants.TYPE_SITE)) {
+				List<Role> groupRoles = groupIdsToRoles.get(group.getGroupId());
 
-					List<Role> groupRoles = groupIdsToRoles.get(
-						group.getGroupId());
-
-					if (groupRoles.contains(role)) {
-						groupRolesTermsFilter.addValue(
-							group.getGroupId() + StringPool.DASH +
-								role.getRoleId());
-					}
+				for (Role groupRole : groupRoles) {
+					groupRolesTermsFilter.addValue(
+						group.getGroupId() + StringPool.DASH +
+							groupRole.getRoleId());
 				}
 			}
 
 			rolesTermsFilter.addValue(String.valueOf(role.getRoleId()));
-		}
-
-		Role organizationUserRole = _roleLocalService.getRole(
-			companyId, RoleConstants.ORGANIZATION_USER);
-		Role siteMemberRole = _roleLocalService.getRole(
-			companyId, RoleConstants.SITE_MEMBER);
-
-		for (Group group : groups) {
-			if (group.isOrganization()) {
-				groupRolesTermsFilter.addValue(
-					group.getGroupId() + StringPool.DASH +
-						organizationUserRole.getRoleId());
-			}
-
-			if (group.isSite()) {
-				groupRolesTermsFilter.addValue(
-					group.getGroupId() + StringPool.DASH +
-						siteMemberRole.getRoleId());
-			}
 		}
 
 		if (!groupsTermsFilter.isEmpty()) {
@@ -403,11 +379,36 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 				_roleLocalService.getRole(companyId, RoleConstants.GUEST));
 		}
 
+		Role organizationUserRole = _roleLocalService.getRole(
+			companyId, RoleConstants.ORGANIZATION_USER);
+		Role siteMemberRole = _roleLocalService.getRole(
+			companyId, RoleConstants.SITE_MEMBER);
+
 		for (Group group : groups) {
 			long[] roleIds = permissionChecker.getRoleIds(
 				userId, group.getGroupId());
 
 			List<Role> groupRoles = _roleLocalService.getRoles(roleIds);
+
+			ListIterator<Role> listIterator = groupRoles.listIterator();
+
+			while (listIterator.hasNext()) {
+				Role role = listIterator.next();
+
+				if ((role.getType() != RoleConstants.TYPE_ORGANIZATION) &&
+					(role.getType() != RoleConstants.TYPE_SITE)) {
+
+					listIterator.remove();
+				}
+			}
+
+			if (!groupRoles.contains(organizationUserRole)) {
+				groupRoles.add(organizationUserRole);
+			}
+
+			if (!groupRoles.contains(siteMemberRole)) {
+				groupRoles.add(siteMemberRole);
+			}
 
 			groupIdsToRoles.put(group.getGroupId(), groupRoles);
 
