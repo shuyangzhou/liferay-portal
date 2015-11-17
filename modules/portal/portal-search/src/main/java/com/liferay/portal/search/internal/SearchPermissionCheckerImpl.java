@@ -67,6 +67,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Bruno Farache
  * @author Raymond Augé
  * @author Amos Fong
+ * @author Preston Crary
  */
 @Component(immediate = true, service = SearchPermissionChecker.class)
 public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
@@ -251,60 +252,62 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 			Field.GROUP_ROLE_ID);
 		TermsFilter rolesTermsFilter = new TermsFilter(Field.ROLE_ID);
 
+		List<Long> roleIds = new ArrayList<>(roles.size());
+		List<Long> regularRoleIds = new ArrayList<>();
+
 		for (Role role : roles) {
-			if (_resourcePermissionLocalService.hasResourcePermission(
-					companyId, className, ResourceConstants.SCOPE_COMPANY,
-					String.valueOf(companyId), role.getRoleId(),
-					ActionKeys.VIEW)) {
+			roleIds.add(role.getRoleId());
 
-				return booleanFilter;
-			}
-
-			if ((role.getType() == RoleConstants.TYPE_REGULAR) &&
-				_resourcePermissionLocalService.hasResourcePermission(
-					companyId, className,
-					ResourceConstants.SCOPE_GROUP_TEMPLATE,
-					String.valueOf(GroupConstants.DEFAULT_PARENT_GROUP_ID),
-					role.getRoleId(), ActionKeys.VIEW)) {
-
-				return booleanFilter;
-			}
-
-			for (Group group : groups) {
-				if (permissionChecker.isGroupAdmin(
-						group.getGroupId()) ||
-					_resourcePermissionLocalService.hasResourcePermission(
-						companyId, className, ResourceConstants.SCOPE_GROUP,
-						String.valueOf(group.getGroupId()), role.getRoleId(),
-						ActionKeys.VIEW)) {
-
-					groupsTermsFilter.addValue(
-						String.valueOf(group.getGroupId()));
-				}
-
-				if ((role.getType() != RoleConstants.TYPE_REGULAR) &&
-					_resourcePermissionLocalService.hasResourcePermission(
-						companyId, className,
-						ResourceConstants.SCOPE_GROUP_TEMPLATE,
-						String.valueOf(GroupConstants.DEFAULT_PARENT_GROUP_ID),
-						role.getRoleId(), ActionKeys.VIEW)) {
-
-					long[] groupRoleIds = groupIdsToRoleIds.get(
-						group.getGroupId());
-
-					if (ArrayUtil.contains(groupRoleIds, role.getRoleId())) {
-						groupsTermsFilter.addValue(
-							String.valueOf(group.getGroupId()));
-					}
-				}
-
-				for (long roleId : groupIdsToRoleIds.get(group.getGroupId())) {
-					groupRolesTermsFilter.addValue(
-						getGroupRoleTerm(group.getGroupId(), roleId));
-				}
+			if (role.getType() == RoleConstants.TYPE_REGULAR) {
+				regularRoleIds.add(role.getRoleId());
 			}
 
 			rolesTermsFilter.addValue(String.valueOf(role.getRoleId()));
+		}
+
+		long[] roleIdsArray = ArrayUtil.toLongArray(roleIds);
+
+		if (_resourcePermissionLocalService.hasResourcePermission(
+				companyId, className, ResourceConstants.SCOPE_COMPANY,
+				String.valueOf(companyId), roleIdsArray, ActionKeys.VIEW)) {
+
+			return booleanFilter;
+		}
+
+		if (_resourcePermissionLocalService.hasResourcePermission(
+				companyId, className, ResourceConstants.SCOPE_GROUP_TEMPLATE,
+				String.valueOf(GroupConstants.DEFAULT_PARENT_GROUP_ID),
+				ArrayUtil.toLongArray(regularRoleIds), ActionKeys.VIEW)) {
+
+			return booleanFilter;
+		}
+
+		for (Group group : groups) {
+			if (permissionChecker.isGroupAdmin(
+					group.getGroupId()) ||
+				_resourcePermissionLocalService.hasResourcePermission(
+					companyId, className, ResourceConstants.SCOPE_GROUP,
+					String.valueOf(group.getGroupId()), roleIdsArray,
+					ActionKeys.VIEW)) {
+
+				groupsTermsFilter.addValue(String.valueOf(group.getGroupId()));
+			}
+
+			long[] groupRoleIds = groupIdsToRoleIds.get(group.getGroupId());
+
+			if (_resourcePermissionLocalService.hasResourcePermission(
+					companyId, className,
+					ResourceConstants.SCOPE_GROUP_TEMPLATE,
+					String.valueOf(GroupConstants.DEFAULT_PARENT_GROUP_ID),
+					groupRoleIds, ActionKeys.VIEW)) {
+
+				groupsTermsFilter.addValue(String.valueOf(group.getGroupId()));
+			}
+
+			for (long roleId : groupRoleIds) {
+				groupRolesTermsFilter.addValue(
+					getGroupRoleTerm(group.getGroupId(), roleId));
+			}
 		}
 
 		if (!groupsTermsFilter.isEmpty()) {
