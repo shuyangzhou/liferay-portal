@@ -173,7 +173,7 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 			if ((role.getType() == RoleConstants.TYPE_ORGANIZATION) ||
 				(role.getType() == RoleConstants.TYPE_SITE)) {
 
-				groupRoleIds.add(groupId + StringPool.DASH + role.getRoleId());
+				groupRoleIds.add(getGroupRoleTerm(groupId, role.getRoleId()));
 			}
 			else {
 				roleIds.add(role.getRoleId());
@@ -300,8 +300,8 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 
 				for (Role groupRole : groupRoles) {
 					groupRolesTermsFilter.addValue(
-						group.getGroupId() + StringPool.DASH +
-							groupRole.getRoleId());
+						getGroupRoleTerm(
+							group.getGroupId(), groupRole.getRoleId()));
 				}
 			}
 
@@ -344,6 +344,11 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 		if (indexer.isPermissionAware()) {
 			indexer.reindex(resourceName, GetterUtil.getLong(resourceClassPK));
 		}
+	}
+
+	protected String getGroupRoleTerm(long groupId, long roleId) {
+		return String.valueOf(groupId).concat(StringPool.DASH).concat(
+			String.valueOf(roleId));
 	}
 
 	protected void populate(
