@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.search.filter.BooleanFilter;
 import com.liferay.portal.kernel.search.filter.TermsFilter;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.Group;
@@ -49,6 +50,7 @@ import com.liferay.portal.service.UserLocalService;
 import com.liferay.portal.util.Portal;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -223,21 +225,21 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 
 		Set<Group> groups = new LinkedHashSet<>();
 		Set<Role> roles = new LinkedHashSet<>();
-		Map<Long, List<Role>> groupIdsToRoles = new HashMap<>();
+		Map<Long, long[]> groupIdsToRoleIds = new HashMap<>();
 
 		populate(
 			companyId, groupIds, userId, permissionChecker, groups, roles,
-			groupIdsToRoles);
+			groupIdsToRoleIds);
 
 		return doGetPermissionFilter_6(
 			companyId, userId, permissionChecker, className, booleanFilter,
-			groups, roles, groupIdsToRoles);
+			groups, roles, groupIdsToRoleIds);
 	}
 
 	protected BooleanFilter doGetPermissionFilter_6(
 			long companyId, long userId, PermissionChecker permissionChecker,
 			String className, BooleanFilter booleanFilter, Set<Group> groups,
-			Set<Role> roles, Map<Long, List<Role>> groupIdsToRoles)
+			Set<Role> roles, Map<Long, long[]> groupIdsToRoleIds)
 		throws Exception {
 
 		BooleanFilter permissionBooleanFilter = new BooleanFilter();
@@ -287,21 +289,18 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 						String.valueOf(GroupConstants.DEFAULT_PARENT_GROUP_ID),
 						role.getRoleId(), ActionKeys.VIEW)) {
 
-					List<Role> groupRoles = groupIdsToRoles.get(
+					long[] groupRoleIds = groupIdsToRoleIds.get(
 						group.getGroupId());
 
-					if (groupRoles.contains(role)) {
+					if (ArrayUtil.contains(groupRoleIds, role.getRoleId())) {
 						groupsTermsFilter.addValue(
 							String.valueOf(group.getGroupId()));
 					}
 				}
 
-				List<Role> groupRoles = groupIdsToRoles.get(group.getGroupId());
-
-				for (Role groupRole : groupRoles) {
+				for (long roleId : groupIdsToRoleIds.get(group.getGroupId())) {
 					groupRolesTermsFilter.addValue(
-						getGroupRoleTerm(
-							group.getGroupId(), groupRole.getRoleId()));
+						getGroupRoleTerm(group.getGroupId(), roleId));
 				}
 			}
 
@@ -354,7 +353,7 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 	protected void populate(
 			long companyId, long[] groupIds, long userId,
 			PermissionChecker permissionChecker, Set<Group> groups,
-			Set<Role> roles, Map<Long, List<Role>> groupIdsToRoles)
+			Set<Role> roles, Map<Long, long[]> groupIdsToRoles)
 		throws Exception {
 
 		UserBag userBag = permissionChecker.getUserBag();
@@ -415,7 +414,12 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 				groupRoles.add(siteMemberRole);
 			}
 
-			groupIdsToRoles.put(group.getGroupId(), groupRoles);
+			long[] groupRoleIds = ListUtil.toLongArray(
+				groupRoles, Role.ROLE_ID_ACCESSOR);
+
+			Arrays.sort(groupRoleIds);
+
+			groupIdsToRoles.put(group.getGroupId(), groupRoleIds);
 
 			roles.addAll(groupRoles);
 		}
