@@ -18,13 +18,10 @@ import com.liferay.portal.kernel.concurrent.ThreadPoolExecutor;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.executor.PortalExecutorManagerUtil;
-import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Indexer;
-import com.liferay.portal.kernel.search.SearchEngineUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionAttribute;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.service.BaseLocalService;
 
@@ -32,7 +29,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
@@ -55,19 +51,6 @@ public abstract class BaseActionableDynamicQuery
 			PortalException.class, SystemException.class);
 
 		REQUIRES_NEW_TRANSACTION_ATTRIBUTE = builder.build();
-	}
-
-	@Override
-	public void addDocument(Document document) throws PortalException {
-		if (_documents == null) {
-			_documents = new ArrayList<>();
-		}
-
-		_documents.add(document);
-
-		if (_documents.size() >= _interval) {
-			indexInterval();
-		}
 	}
 
 	@Override
@@ -164,11 +147,6 @@ public abstract class BaseActionableDynamicQuery
 	}
 
 	@Override
-	public void setCommitImmediately(boolean commitImmediately) {
-		_commitImmediately = commitImmediately;
-	}
-
-	@Override
 	public void setCompanyId(long companyId) {
 		_companyId = companyId;
 	}
@@ -211,11 +189,6 @@ public abstract class BaseActionableDynamicQuery
 	}
 
 	@Override
-	public void setSearchEngineId(String searchEngineId) {
-		_searchEngineId = searchEngineId;
-	}
-
-	@Override
 	public void setTransactionAttribute(
 		TransactionAttribute transactionAttribute) {
 
@@ -240,20 +213,6 @@ public abstract class BaseActionableDynamicQuery
 				_groupIdPropertyName);
 
 			dynamicQuery.add(property.eq(_groupId));
-		}
-	}
-
-	protected void addDocuments(Collection<Document> documents)
-		throws PortalException {
-
-		if (_documents == null) {
-			_documents = new ArrayList<>();
-		}
-
-		_documents.addAll(documents);
-
-		if (_documents.size() >= _interval) {
-			indexInterval();
 		}
 	}
 
@@ -360,9 +319,6 @@ public abstract class BaseActionableDynamicQuery
 
 			throw new SystemException(t);
 		}
-		finally {
-			indexInterval();
-		}
 	}
 
 	protected Object executeDynamicQuery(
@@ -389,32 +345,24 @@ public abstract class BaseActionableDynamicQuery
 		}
 	}
 
+	protected long getCompanyId() {
+		return _companyId;
+	}
+
 	protected Projection getCountProjection() {
 		return ProjectionFactoryUtil.rowCount();
 	}
 
-	protected String getSearchEngineId() {
-		return _searchEngineId;
+	protected int getInterval() {
+		return _interval;
+	}
+
+	protected Class<?> getModelClass() {
+		return _clazz;
 	}
 
 	protected TransactionAttribute getTransactionAttribute() {
 		return _transactionAttribute;
-	}
-
-	protected void indexInterval() throws PortalException {
-		if ((_documents == null) || _documents.isEmpty()) {
-			return;
-		}
-
-		if (Validator.isNull(_searchEngineId)) {
-			_searchEngineId = SearchEngineUtil.getSearchEngineId(_documents);
-		}
-
-		SearchEngineUtil.updateDocuments(
-			_searchEngineId, _companyId, new ArrayList<Document>(_documents),
-			_commitImmediately);
-
-		_documents.clear();
 	}
 
 	@SuppressWarnings("unused")
@@ -433,9 +381,7 @@ public abstract class BaseActionableDynamicQuery
 	private BaseLocalService _baseLocalService;
 	private ClassLoader _classLoader;
 	private Class<?> _clazz;
-	private boolean _commitImmediately;
 	private long _companyId;
-	private Collection<Document> _documents;
 	private Method _dynamicQueryCountMethod;
 	private Method _dynamicQueryMethod;
 	private long _groupId;
@@ -448,7 +394,6 @@ public abstract class BaseActionableDynamicQuery
 
 	private PerformCountMethod _performCountMethod;
 	private String _primaryKeyPropertyName;
-	private String _searchEngineId;
 	private final ThreadPoolExecutor _threadPoolExecutor =
 		PortalExecutorManagerUtil.getPortalExecutor(
 			BaseActionableDynamicQuery.class.getName());
