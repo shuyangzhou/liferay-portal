@@ -53,6 +53,7 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.CompanyConstants;
+import com.liferay.portal.scheduler.internal.messaging.config.SchedulerProxyMessagingConfigurator;
 import com.liferay.portal.util.PortalUtil;
 
 import java.util.ArrayList;
@@ -850,6 +851,12 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 	@Reference(target = "(bean.id=*.SchedulerEngineProxyBean)", unbind = "-")
 	protected void setSchedulerEngine(SchedulerEngine schedulerEngine) {
 		_schedulerEngine = schedulerEngine;
+	}
+
+	@Reference(unbind = "-")
+	protected void setSchedulerProxyMessagingConfigurator(
+		SchedulerProxyMessagingConfigurator
+			schedulerProxyMessagingConfigurator) {
 	}
 
 	protected void unsetAuditRouter(AuditRouter auditRouter) {
