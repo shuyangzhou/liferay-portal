@@ -87,7 +87,8 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
  */
 @Component(
 	configurationPid = "com.liferay.portal.cluster.configuration.ClusterExecutorConfiguration",
-	immediate = true, service = ClusterExecutor.class
+	immediate = true,
+	service = {ClusterExecutor.class, ClusterExecutorImpl.class}
 )
 public class ClusterExecutorImpl implements ClusterExecutor {
 
@@ -346,6 +347,22 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 		return _clusterChannel;
 	}
 
+	protected ClusterNode getClusterNode(Address address) {
+		for (ClusterNodeStatus clusterNodeStatus :
+				_clusterNodeStatuses.values()) {
+
+			if (address.equals(clusterNodeStatus.getAddress())) {
+				return clusterNodeStatus.getClusterNode();
+			}
+		}
+
+		if (_log.isErrorEnabled()) {
+			_log.error("Unable to find cluster node with address " + address);
+		}
+
+		return null;
+	}
+
 	protected InetSocketAddress getConfiguredPortalInetSocketAddress(
 		Props props) {
 
@@ -408,12 +425,10 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 		Serializable payload = clusterRequest.getPayload();
 
 		if (payload instanceof ClusterNodeStatus) {
-			if (_memberJoined((ClusterNodeStatus)payload)) {
-				return ClusterRequest.createMulticastRequest(
-					_localClusterNodeStatus, true);
-			}
+			_memberJoined((ClusterNodeStatus)payload);
 
-			return null;
+			return ClusterRequest.createMulticastRequest(
+				_localClusterNodeStatus, true);
 		}
 
 		ClusterNodeResponse clusterNodeResponse = executeClusterRequest(
@@ -559,7 +574,7 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 	protected volatile ClusterExecutorConfiguration
 		clusterExecutorConfiguration;
 
-	private boolean _memberJoined(ClusterNodeStatus clusterNodeStatus) {
+	private void _memberJoined(ClusterNodeStatus clusterNodeStatus) {
 		ClusterNodeStatus oldClusterNodeStatus = _clusterNodeStatuses.put(
 			clusterNodeStatus.getClusterNodeId(), clusterNodeStatus);
 
@@ -572,15 +587,13 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 				}
 			}
 
-			return false;
+			return;
 		}
 
 		ClusterEvent clusterEvent = ClusterEvent.join(
 			clusterNodeStatus.getClusterNode());
 
 		fireClusterEvent(clusterEvent);
-
-		return true;
 	}
 
 	private String getChannelName(Dictionary<String, Object> properties) {
