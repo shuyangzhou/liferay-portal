@@ -27,7 +27,6 @@ import com.liferay.portal.model.ResourceConstants;
 import com.liferay.portal.model.ResourcePermission;
 import com.liferay.portal.util.PortalUtil;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -46,14 +45,11 @@ public abstract class UpgradeBaseJournal extends UpgradeProcess {
 			long actionIds)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
 			long resourcePermissionId = increment(
 				ResourcePermission.class.getName());
-
-			con = DataAccess.getUpgradeOptimizedConnection();
 
 			StringBundler sb = new StringBundler(3);
 
@@ -63,7 +59,7 @@ public abstract class UpgradeBaseJournal extends UpgradeProcess {
 
 			String sql = sb.toString();
 
-			ps = con.prepareStatement(sql);
+			ps = connection.prepareStatement(sql);
 
 			ps.setLong(1, resourcePermissionId);
 			ps.setLong(2, companyId);
@@ -82,7 +78,7 @@ public abstract class UpgradeBaseJournal extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps);
+			DataAccess.cleanUp(ps);
 		}
 	}
 
@@ -111,14 +107,11 @@ public abstract class UpgradeBaseJournal extends UpgradeProcess {
 			return bitwiseValues;
 		}
 
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"select actionId, bitwiseValue from ResourceAction " +
 					"where name = ?");
 
@@ -140,19 +133,16 @@ public abstract class UpgradeBaseJournal extends UpgradeProcess {
 			return bitwiseValues;
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
 	protected long getCompanyGroupId(long companyId) throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"select groupId from Group_ where classNameId = ? and " +
 					"classPK = ?");
 
@@ -168,19 +158,16 @@ public abstract class UpgradeBaseJournal extends UpgradeProcess {
 			return 0;
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
 	protected long getDefaultUserId(long companyId) throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 					"select userId from User_ where companyId = ? and " +
 							"defaultUser = ?"
 			);
@@ -197,7 +184,7 @@ public abstract class UpgradeBaseJournal extends UpgradeProcess {
 			return 0;
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
@@ -210,14 +197,11 @@ public abstract class UpgradeBaseJournal extends UpgradeProcess {
 			return roleId;
 		}
 
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"select roleId from Role_ where companyId = ? and name = ?");
 
 			ps.setLong(1, companyId);
@@ -234,7 +218,7 @@ public abstract class UpgradeBaseJournal extends UpgradeProcess {
 			return roleId;
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(null, ps, rs);
 		}
 	}
 
