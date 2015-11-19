@@ -78,7 +78,7 @@ public class ExportImportDateUtilTest {
 
 	@Test
 	public void testGetLastPublishDateFromLastPublishDate() throws Exception {
-		PortletDataContext portletDataContext = new PortletDataContextImpl();
+		PortletDataContext portletDataContext = new PortletDataContextImpl(null);
 
 		portletDataContext.setGroupId(_group.getGroupId());
 
@@ -103,7 +103,7 @@ public class ExportImportDateUtilTest {
 	public void testGetLastPublishDateNotFromLastPublishDate()
 		throws Exception {
 
-		PortletDataContext portletDataContext = new PortletDataContextImpl();
+		PortletDataContext portletDataContext = new PortletDataContextImpl(null);
 
 		portletDataContext.setGroupId(_group.getGroupId());
 
@@ -127,7 +127,7 @@ public class ExportImportDateUtilTest {
 	public void testGetLastPublishDateWithoutPorltetLastPublishDate()
 		throws Exception {
 
-		PortletDataContext portletDataContext = new PortletDataContextImpl();
+		PortletDataContext portletDataContext = new PortletDataContextImpl(null);
 
 		portletDataContext.setGroupId(_group.getGroupId());
 
@@ -145,7 +145,7 @@ public class ExportImportDateUtilTest {
 	public void testGetLastPublishDateWithoutPortletDataContextLastPublishDate()
 		throws Exception {
 
-		PortletDataContext portletDataContext = new PortletDataContextImpl();
+		PortletDataContext portletDataContext = new PortletDataContextImpl(null);
 
 		portletDataContext.setGroupId(_group.getGroupId());
 
