@@ -963,6 +963,9 @@
 				</test-action>
 
 				<test-set-up>
+					<echo>####################Cleaning up arquillian gradle clean</echo>
+					<delete dir="/opt/dev/projects/github/liferay-portal/.gradle/caches/modules-2/files-2.1/org.arquillian.liferay/arquillian-container-liferay/1.0.0.Final-SNAPSHOT/230d74ac5fcace2f4c002684845e37b30408c962" />
+
 					<prepare-test-build />
 				</test-set-up>
 			</run-batch-test>
