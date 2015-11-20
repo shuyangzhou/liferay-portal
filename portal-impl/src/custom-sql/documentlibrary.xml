@@ -21,11 +21,19 @@
 				COUNT(DISTINCT DLFileEntry.fileEntryId) AS COUNT_VALUE
 			FROM
 				DLFileEntry
-			[$JOIN$]
 			WHERE
-				(DLFileEntry.groupId = ?) AND
-				([$STATUS$])
+				(DLFileEntry.groupId = ?)
 				[$FOLDER_ID$]
+				EXISTS
+					(
+						SELECT
+							1
+						FROM
+							DLFileVersion
+						WHERE
+							(DLFileEntry.fileEntryId = DLFileVersion.fileEntryId) AND
+							([$STATUS$])
+					)
 		]]>
 	</sql>
 	<sql id="com.liferay.portlet.documentlibrary.service.persistence.DLFileEntryFinder.countByG_M_R">
@@ -52,14 +60,20 @@
 				COUNT(DISTINCT DLFileEntry.fileEntryId) AS COUNT_VALUE
 			FROM
 				DLFileEntry
-			INNER JOIN
-				DLFileVersion ON
-					(DLFileVersion.fileEntryId = DLFileEntry.fileEntryId)
 			WHERE
-				(DLFileVersion.groupId = ?) AND
-				(DLFileVersion.userId = ?) AND
-				([$STATUS$])
+				(DLFileEntry.groupId = ?)
 				[$FOLDER_ID$]
+				EXISTS
+					(
+						SELECT
+							1
+						FROM
+							DLFileVersion
+						WHERE
+							(DLFileEntry.fileEntryId = DLFileVersion.fileEntryId) AND
+							(DLFileVersion.userId = ?) AND
+							([$STATUS$])
+					)
 		]]>
 	</sql>
 	<sql id="com.liferay.portlet.documentlibrary.service.persistence.DLFileEntryFinder.findByAnyImageId">
@@ -175,19 +189,20 @@
 			SELECT
 				{DLFileEntry.*}
 			FROM
-				(
-					SELECT
-						DISTINCT DLFileEntry.fileEntryId
-					FROM
-						DLFileEntry
-					[$JOIN$]
-					WHERE
-						(DLFileEntry.groupId = ?) AND
-						([$STATUS$])
-						[$FOLDER_ID$]
-				) TEMP_TABLE
-				INNER JOIN
-					DLFileEntry ON TEMP_TABLE.fileEntryId = DLFileEntry.fileEntryId
+				DLFileEntry
+			WHERE
+				(DLFileEntry.groupId = ?)
+				[$FOLDER_ID$]
+				EXISTS
+					(
+						SELECT
+							1
+						FROM
+							DLFileVersion
+						WHERE
+							(DLFileEntry.fileEntryId = DLFileVersion.fileEntryId) AND
+							([$STATUS$])
+					)
 		]]>
 	</sql>
 	<sql id="com.liferay.portlet.documentlibrary.service.persistence.DLFileEntryFinder.findByG_U_F">
@@ -195,22 +210,21 @@
 			SELECT
 				{DLFileEntry.*}
 			FROM
-				(
-					SELECT
-						DISTINCT DLFileEntry.fileEntryId
-					FROM
-						DLFileEntry
-					INNER JOIN
-						DLFileVersion ON
-							(DLFileVersion.fileEntryId = DLFileEntry.fileEntryId)
-					WHERE
-						(DLFileVersion.groupId = ?) AND
-						(DLFileVersion.userId = ?) AND
-						([$STATUS$])
-						[$FOLDER_ID$]
-				) TEMP_TABLE
-				INNER JOIN
-					DLFileEntry ON TEMP_TABLE.fileEntryId = DLFileEntry.fileEntryId
+				DLFileEntry
+			WHERE
+				(DLFileEntry.groupId = ?)
+				[$FOLDER_ID$]
+				EXISTS
+					(
+						SELECT
+							1
+						FROM
+							DLFileVersion
+						WHERE
+							(DLFileEntry.fileEntryId = DLFileVersion.fileEntryId) AND
+							(DLFileVersion.userId = ?) AND
+							([$STATUS$])
+					)
 		]]>
 	</sql>
 	<sql id="com.liferay.portlet.documentlibrary.service.persistence.DLFileEntryFinder.joinAE_ByDLFileEntry">

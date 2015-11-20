@@ -27,7 +27,6 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.security.permission.InlineSQLHelperUtil;
 import com.liferay.portlet.documentlibrary.NoSuchFileEntryException;
 import com.liferay.portlet.documentlibrary.model.DLFileEntry;
@@ -595,12 +594,6 @@ public class DLFileEntryFinderImpl
 
 			qPos.add(groupId);
 
-			if (userId > 0) {
-				qPos.add(userId);
-			}
-
-			qPos.add(queryDefinition.getStatus());
-
 			for (Long repositoryId : repositoryIds) {
 				qPos.add(repositoryId);
 			}
@@ -612,6 +605,12 @@ public class DLFileEntryFinderImpl
 			if (mimeTypes != null) {
 				qPos.add(mimeTypes);
 			}
+
+			if (userId > 0) {
+				qPos.add(userId);
+			}
+
+			qPos.add(queryDefinition.getStatus());
 
 			Iterator<Long> itr = q.iterate();
 
@@ -667,12 +666,6 @@ public class DLFileEntryFinderImpl
 
 			qPos.add(groupId);
 
-			if (userId > 0) {
-				qPos.add(userId);
-			}
-
-			qPos.add(queryDefinition.getStatus());
-
 			for (Long repositoryId : repositoryIds) {
 				qPos.add(repositoryId);
 			}
@@ -684,6 +677,12 @@ public class DLFileEntryFinderImpl
 			if (mimeTypes != null) {
 				qPos.add(mimeTypes);
 			}
+
+			if (userId > 0) {
+				qPos.add(userId);
+			}
+
+			qPos.add(queryDefinition.getStatus());
 
 			return (List<DLFileEntry>)QueryUtil.list(
 				q, getDialect(), queryDefinition.getStart(),
@@ -721,21 +720,8 @@ public class DLFileEntryFinderImpl
 		String[] mimeTypes, QueryDefinition<DLFileEntry> queryDefinition,
 		boolean inlineSQLHelper) {
 
-		String tableName = DLFileVersionImpl.TABLE_NAME;
-
-		String sql = CustomSQLUtil.get(id, queryDefinition, tableName);
-
-		if (queryDefinition.getStatus() == WorkflowConstants.STATUS_ANY) {
-			sql = StringUtil.replace(sql, "[$JOIN$]", StringPool.BLANK);
-
-			tableName = DLFileEntryImpl.TABLE_NAME;
-		}
-		else {
-			sql = StringUtil.replace(
-				sql, "[$JOIN$]",
-				CustomSQLUtil.get(
-					DLFolderFinderImpl.JOIN_FE_BY_DL_FILE_VERSION));
-		}
+		String sql = CustomSQLUtil.get(
+			id, queryDefinition, DLFileVersionImpl.TABLE_NAME);
 
 		if (inlineSQLHelper && InlineSQLHelperUtil.isEnabled()) {
 			sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -751,28 +737,32 @@ public class DLFileEntryFinderImpl
 			if (ListUtil.isNotEmpty(repositoryIds)) {
 				sb.append(WHERE_AND);
 				sb.append(StringPool.OPEN_PARENTHESIS);
-				sb.append(getRepositoryIds(repositoryIds, tableName));
+				sb.append(
+					getRepositoryIds(
+						repositoryIds, DLFileEntryImpl.TABLE_NAME));
 				sb.append(StringPool.CLOSE_PARENTHESIS);
 			}
 
 			if (ListUtil.isNotEmpty(folderIds)) {
 				sb.append(WHERE_AND);
 				sb.append(StringPool.OPEN_PARENTHESIS);
-				sb.append(getFolderIds(folderIds, tableName));
+				sb.append(getFolderIds(folderIds, DLFileEntryImpl.TABLE_NAME));
 				sb.append(StringPool.CLOSE_PARENTHESIS);
 			}
 
 			if (ArrayUtil.isNotEmpty(mimeTypes)) {
 				sb.append(WHERE_AND);
 				sb.append(StringPool.OPEN_PARENTHESIS);
-				sb.append(getMimeTypes(mimeTypes, tableName));
+				sb.append(getMimeTypes(mimeTypes, DLFileEntryImpl.TABLE_NAME));
 				sb.append(StringPool.CLOSE_PARENTHESIS);
 			}
+
+			sb.append(WHERE_AND);
 
 			return StringUtil.replace(sql, "[$FOLDER_ID$]", sb.toString());
 		}
 		else {
-			return StringUtil.replace(sql, "[$FOLDER_ID$]", StringPool.BLANK);
+			return StringUtil.replace(sql, "[$FOLDER_ID$]", WHERE_AND);
 		}
 	}
 
