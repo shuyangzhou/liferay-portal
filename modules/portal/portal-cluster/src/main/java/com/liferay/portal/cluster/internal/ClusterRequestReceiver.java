@@ -19,10 +19,10 @@ import com.liferay.portal.cluster.ClusterChannel;
 import com.liferay.portal.kernel.cache.thread.local.Lifecycle;
 import com.liferay.portal.kernel.cache.thread.local.ThreadLocalCacheManager;
 import com.liferay.portal.kernel.cluster.Address;
-import com.liferay.portal.kernel.cluster.ClusterNode;
+import com.liferay.portal.kernel.cluster.ClusterEvent;
+import com.liferay.portal.kernel.cluster.ClusterEventType;
 import com.liferay.portal.kernel.cluster.ClusterNodeResponse;
 import com.liferay.portal.kernel.cluster.ClusterRequest;
-import com.liferay.portal.kernel.cluster.FutureClusterResponses;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.CentralizedThreadLocal;
@@ -66,6 +66,18 @@ public class ClusterRequestReceiver extends BaseClusterReceiver {
 	}
 
 	@Override
+	protected void doCoordinatorUpdated(
+		Address oldCoordinator, Address newCoordinator) {
+
+		if (oldCoordinator.equals(newCoordinator)) {
+			return;
+		}
+
+		_clusterExecutorImpl.fireClusterEvent(
+			new ClusterEvent(ClusterEventType.COORDINATOR_UPDATE));
+	}
+
+	@Override
 	protected void doReceive(Object messagePayload, Address srcAddress) {
 		ClusterChannel clusterChannel =
 			_clusterExecutorImpl.getClusterChannel();
@@ -80,7 +92,8 @@ public class ClusterRequestReceiver extends BaseClusterReceiver {
 					(ClusterRequest)messagePayload, srcAddress);
 			}
 			else if (messagePayload instanceof ClusterNodeResponse) {
-				processClusterResponse((ClusterNodeResponse)messagePayload);
+				_clusterExecutorImpl.handleReceivedClusterNodeResponse(
+					(ClusterNodeResponse)messagePayload);
 			}
 			else if (_log.isWarnEnabled()) {
 				_log.warn(
@@ -113,34 +126,6 @@ public class ClusterRequestReceiver extends BaseClusterReceiver {
 		}
 		catch (Throwable t) {
 			_log.error("Unable to send message " + responsePayload, t);
-		}
-	}
-
-	protected void processClusterResponse(
-		ClusterNodeResponse clusterNodeResponse) {
-
-		String uuid = clusterNodeResponse.getUuid();
-
-		FutureClusterResponses futureClusterResponses =
-			_clusterExecutorImpl.getFutureClusterResponses(uuid);
-
-		if (futureClusterResponses == null) {
-			if (_log.isInfoEnabled()) {
-				_log.info("Unable to find response container for " + uuid);
-			}
-
-			return;
-		}
-
-		if (!futureClusterResponses.addClusterNodeResponse(
-				clusterNodeResponse) &&
-			_log.isWarnEnabled()) {
-
-			ClusterNode clusterNode = clusterNodeResponse.getClusterNode();
-
-			_log.warn(
-				"Unexpected cluster node ID " + clusterNode.getClusterNodeId() +
-					" for response container with UUID " + uuid);
 		}
 	}
 

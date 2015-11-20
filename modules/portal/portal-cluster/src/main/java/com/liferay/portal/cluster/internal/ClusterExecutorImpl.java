@@ -87,7 +87,8 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
  */
 @Component(
 	configurationPid = "com.liferay.portal.cluster.configuration.ClusterExecutorConfiguration",
-	immediate = true, service = ClusterExecutor.class
+	immediate = true,
+	service = {ClusterExecutor.class, ClusterExecutorImpl.class}
 )
 public class ClusterExecutorImpl implements ClusterExecutor {
 
@@ -346,6 +347,22 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 		return _clusterChannel;
 	}
 
+	protected ClusterNode getClusterNode(Address address) {
+		for (ClusterNodeStatus clusterNodeStatus :
+				_clusterNodeStatuses.values()) {
+
+			if (address.equals(clusterNodeStatus.getAddress())) {
+				return clusterNodeStatus.getClusterNode();
+			}
+		}
+
+		if (_log.isErrorEnabled()) {
+			_log.error("Unable to find cluster node with address " + address);
+		}
+
+		return null;
+	}
+
 	protected InetSocketAddress getConfiguredPortalInetSocketAddress(
 		Props props) {
 
@@ -398,8 +415,40 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 		return _executorService;
 	}
 
-	protected FutureClusterResponses getFutureClusterResponses(String uuid) {
-		return _futureClusterResponses.get(uuid);
+	protected void handleReceivedClusterNodeResponse(
+		ClusterNodeResponse clusterNodeResponse) {
+
+		Serializable payload = clusterNodeResponse.getPayload();
+
+		if (payload instanceof ClusterNodeStatus) {
+			_memberJoined((ClusterNodeStatus)payload);
+
+			return;
+		}
+
+		String uuid = clusterNodeResponse.getUuid();
+
+		FutureClusterResponses futureClusterResponses =
+			_futureClusterResponses.get(uuid);
+
+		if (futureClusterResponses == null) {
+			if (_log.isInfoEnabled()) {
+				_log.info("Unable to find response container for " + uuid);
+			}
+
+			return;
+		}
+
+		if (!futureClusterResponses.addClusterNodeResponse(
+				clusterNodeResponse) &&
+			_log.isWarnEnabled()) {
+
+			ClusterNode clusterNode = clusterNodeResponse.getClusterNode();
+
+			_log.warn(
+				"Unexpected cluster node ID " + clusterNode.getClusterNodeId() +
+					" for response container with UUID " + uuid);
+		}
 	}
 
 	protected Serializable handleReceivedClusterRequest(
@@ -408,12 +457,11 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 		Serializable payload = clusterRequest.getPayload();
 
 		if (payload instanceof ClusterNodeStatus) {
-			if (_memberJoined((ClusterNodeStatus)payload)) {
-				return ClusterRequest.createMulticastRequest(
-					_localClusterNodeStatus, true);
-			}
+			_memberJoined((ClusterNodeStatus)payload);
 
-			return null;
+			return ClusterNodeResponse.createResultClusterNodeResponse(
+				_localClusterNodeStatus.getClusterNode(),
+				clusterRequest.getUuid(), _localClusterNodeStatus);
 		}
 
 		ClusterNodeResponse clusterNodeResponse = executeClusterRequest(
