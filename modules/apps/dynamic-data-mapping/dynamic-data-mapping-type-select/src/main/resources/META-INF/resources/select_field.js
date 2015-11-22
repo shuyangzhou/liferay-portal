@@ -15,6 +15,12 @@ AUI.add(
 						value: []
 					},
 
+					strings: {
+						value: {
+							chooseAnOption: Liferay.Language.get('choose-an-option')
+						}
+					},
+
 					type: {
 						value: 'select'
 					},
@@ -30,6 +36,23 @@ AUI.add(
 				NAME: 'liferay-ddm-form-field-select',
 
 				prototype: {
+					getContextValue: function() {
+						var instance = this;
+
+						var value = SelectField.superclass.getContextValue.apply(instance, arguments);
+
+						if (!Array.isArray(value)) {
+							try {
+								value = JSON.parse(value);
+							}
+							catch (e) {
+								value = [value];
+							}
+						}
+
+						return value[0] || '';
+					},
+
 					getOptions: function() {
 						var instance = this;
 
@@ -58,7 +81,8 @@ AUI.add(
 							SelectField.superclass.getTemplateContext.apply(instance, arguments),
 							{
 								multiple: instance.get('multiple') ? 'multiple' : '',
-								options: instance.getOptions()
+								options: instance.getOptions(),
+								strings: instance.get('strings')
 							}
 						);
 					},
@@ -68,11 +92,7 @@ AUI.add(
 
 						var status = '';
 
-						var value = instance.get('value');
-
-						if (instance.get('localizable')) {
-							value = value[instance.get('locale')] || [];
-						}
+						var value = instance.getContextValue();
 
 						if (value.indexOf(option.value) > -1) {
 							status = 'selected';
