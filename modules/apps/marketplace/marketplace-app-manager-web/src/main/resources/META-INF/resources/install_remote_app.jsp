@@ -27,9 +27,9 @@
 		</div>
 	</c:if>
 
-	<liferay-ui:success key="pluginDownloaded" message="the-plugin-was-downloaded-successfully-and-is-now-being-installed" />
-
 	<liferay-ui:error key="invalidURL" message="please-enter-a-valid-url" />
+
+	<liferay-ui:success key="pluginDownloaded" message="the-plugin-was-downloaded-successfully-and-is-now-being-installed" />
 
 	<aui:fieldset>
 		<aui:input cssClass="file-input" name="url" type="text" />

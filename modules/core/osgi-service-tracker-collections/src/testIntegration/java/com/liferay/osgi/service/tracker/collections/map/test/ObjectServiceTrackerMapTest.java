@@ -14,15 +14,15 @@
 
 package com.liferay.osgi.service.tracker.collections.map.test;
 
+import com.liferay.osgi.service.tracker.collections.internal.map.BundleContextWrapper;
+import com.liferay.osgi.service.tracker.collections.internal.map.TrackedOne;
+import com.liferay.osgi.service.tracker.collections.internal.map.TrackedTwo;
 import com.liferay.osgi.service.tracker.collections.map.PropertyServiceReferenceMapper;
 import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapper;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerCustomizerFactory;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerCustomizerFactory.ServiceWrapper;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
-import com.liferay.osgi.service.tracker.collections.map.internal.BundleContextWrapper;
-import com.liferay.osgi.service.tracker.collections.map.internal.TrackedOne;
-import com.liferay.osgi.service.tracker.collections.map.internal.TrackedTwo;
 
 import java.util.Collection;
 import java.util.Comparator;
