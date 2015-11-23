@@ -148,11 +148,6 @@ public class JGroupsClusterChannelFactory implements ClusterChannelFactory {
 			}
 		}
 
-		System.setProperty(
-			"jgroups.bind_addr", _bindInetAddress.getHostAddress());
-		System.setProperty(
-			"jgroups.bind_interface", _bindNetworkInterface.getName());
-
 		if (_log.isInfoEnabled()) {
 			String hostAddress = _bindInetAddress.getHostAddress();
 			String name = _bindNetworkInterface.getName();
