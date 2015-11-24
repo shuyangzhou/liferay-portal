@@ -608,6 +608,13 @@ public class UserNotificationEventLocalServiceWrapper
 	}
 
 	@Override
+	public int getUserNotificationEventsCount(long userId,
+		java.lang.String type, int deliveryType, boolean archived) {
+		return _userNotificationEventLocalService.getUserNotificationEventsCount(userId,
+			type, deliveryType, archived);
+	}
+
+	@Override
 	public com.liferay.portal.model.UserNotificationEvent sendUserNotificationEvents(
 		long userId, java.lang.String portletId, int deliveryType,
 		boolean actionRequired,
