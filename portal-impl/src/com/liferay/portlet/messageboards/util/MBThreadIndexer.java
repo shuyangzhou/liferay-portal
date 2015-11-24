@@ -274,6 +274,7 @@ public class MBThreadIndexer extends BaseIndexer<MBThread> {
 			});
 		indexableActionableDynamicQuery.setCompanyId(companyId);
 		indexableActionableDynamicQuery.setGroupId(groupId);
+		indexableActionableDynamicQuery.setParallel(true);
 		indexableActionableDynamicQuery.setPerformActionMethod(
 			new ActionableDynamicQuery.PerformActionMethod<MBThread>() {
 

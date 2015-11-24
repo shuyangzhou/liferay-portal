@@ -161,11 +161,9 @@
 	<command name="addMemberCP">
 		<var name="key_userScreenName" value="${userScreenName}" />
 
-		<execute function="AssertClick" locator1="SiteMemberships#TOOLBAR_ADD_MEMBERS" value1="Add Members" />
-		<execute function="AssertClick" locator1="MenuItem#USER" value1="User" />
+		<execute function="AssertClick" locator1="SiteMemberships#NAVIGATION_USERS" value1="Users" />
 
-		<execute function="Type" locator1="TextInput#KEYWORDS" value1="${userScreenName}" />
-		<execute function="AssertClick" locator1="Button#SEARCH" value1="Search" />
+		<execute function="Click" locator1="Button#PLUS" />
 
 		<if>
 			<isset var="userMiddleName" />
@@ -186,10 +184,10 @@
 	<command name="addMemberOrganizationCP">
 		<var name="key_orgName" value="${orgName}" />
 
-		<execute function="AssertClick" locator1="SiteMemberships#TOOLBAR_ADD_MEMBERS" value1="Add Members" />
-		<execute function="AssertClick" locator1="MenuItem#ORGANIZATION" value1="Organization" />
-		<execute function="Type" locator1="Search#SEARCH_FIELD" value1="${orgName}" />
-		<execute function="AssertClick" locator1="Search#SEARCH_BUTTON" value1="Search" />
+		<execute function="AssertClick" locator1="SiteMemberships#NAVIGATION_ORGANIZATIONS" value1="Organizations" />
+
+		<execute function="Click" locator1="Button#PLUS" />
+
 		<execute function="AssertTextEquals" locator1="SiteMembershipsAddMembers#ORGANIZATION_TABLE_NAME" value1="${orgName}" />
 		<execute function="Check" locator1="SiteMembershipsAddMembers#ORGANIZATION_TABLE_CHECKBOX" />
 		<execute function="Click" locator1="Button#SAVE" />
@@ -199,10 +197,10 @@
 	<command name="addMemberUserGroupCP">
 		<var name="key_userGroupName" value="${userGroupName}" />
 
-		<execute function="AssertClick" locator1="SiteMemberships#TOOLBAR_ADD_MEMBERS" value1="Add Members" />
-		<execute function="AssertClick" locator1="MenuItem#USER_GROUP" value1="User Group" />
-		<execute function="Type" locator1="TextInput#KEYWORDS" value1="${userGroupName}" />
-		<execute function="AssertClick" locator1="Button#SEARCH" value1="Search" />
+		<execute function="AssertClick" locator1="SiteMemberships#NAVIGATION_USER_GROUPS" value1="User Groups" />
+
+		<execute function="Click" locator1="Button#PLUS" />
+
 		<execute function="AssertTextEquals" locator1="SiteMembershipsAddMembers#USER_GROUP_TABLE_NAME" value1="${userGroupName}" />
 		<execute function="Check" locator1="SiteMembershipsAddMembers#USER_GROUP_TABLE_CHECKBOX" />
 		<execute function="Click" locator1="Button#SAVE" />
@@ -250,11 +248,17 @@
 
 		<execute function="AssertTextEquals" locator1="SiteMemberships#MEMBERSHIP_TYPE" value1="Membership Type: Restricted" />
 		<execute function="AssertTextEquals" locator1="SiteMemberships#REQUEST_MESSAGE" value1="There are 1 membership requests pending." />
-		<execute function="AssertClick" locator1="SiteMemberships#TOOLBAR_VIEW_MEMBERSHIP_REQUESTS" value1="View Membership Requests" />
+
+		<execute function="Click" locator1="Icon#HEADER_VERTICAL_ELLIPSIS" />
+
+		<execute function="AssertClick" locator1="MenuItem#VIEW_MEMBERSHIP_REQUESTS" value1="View Membership Requests" />
+
+		<execute function="SelectFrame" locator1="IFrame#DIALOG" />
 
 		<execute function="AssertTextEquals" locator1="SiteMembershipsViewMembershipRequests#USER_NAME" value1="${userFirstName} ${userLastName} (${userEmailAddress})" />
 		<execute function="AssertTextEquals" locator1="SiteMembershipsViewMembershipRequests#USER_COMMENTS" value1="Please allow me to join the Restricted Site." />
-		<execute function="AssertClick" locator1="SiteMembershipsViewMembershipRequests#REPLY" value1="Reply" />
+
+		<execute function="Click" locator1="SiteMembershipsViewMembershipRequests#REPLY" />
 
 		<execute function="Select" locator1="SiteMembershipsViewMembershipRequests#STATUS" value1="Approve" />
 		<execute function="Type" locator1="SiteMembershipsViewMembershipRequests#REPLY_COMMENTS_AREA" value1="You may join the Restricted Site." />
@@ -704,7 +708,7 @@
 		<var name="key_userScreenName" value="${userScreenName}" />
 
 		<execute function="Type" locator1="TextInput#SEARCH" value1="${userScreenName}" />
-		<execute function="AssertClick" locator1="Button#SEARCH" value1="Search" />
+		<execute function="Click" locator1="Icon#BASIC_SEARCH" />
 
 		<if>
 			<isset var="userMiddleName" />

@@ -175,6 +175,7 @@ public class BookmarksFolderIndexer extends BaseIndexer<BookmarksFolder> {
 			_bookmarksFolderLocalService.getIndexableActionableDynamicQuery();
 
 		indexableActionableDynamicQuery.setCompanyId(companyId);
+		indexableActionableDynamicQuery.setParallel(true);
 		indexableActionableDynamicQuery.setPerformActionMethod(
 			new ActionableDynamicQuery.PerformActionMethod<BookmarksFolder>() {
 

@@ -236,6 +236,7 @@ public class OrganizationIndexer extends BaseIndexer<Organization> {
 			OrganizationLocalServiceUtil.getIndexableActionableDynamicQuery();
 
 		indexableActionableDynamicQuery.setCompanyId(companyId);
+		indexableActionableDynamicQuery.setParallel(true);
 		indexableActionableDynamicQuery.setPerformActionMethod(
 			new ActionableDynamicQuery.PerformActionMethod<Organization>() {
 

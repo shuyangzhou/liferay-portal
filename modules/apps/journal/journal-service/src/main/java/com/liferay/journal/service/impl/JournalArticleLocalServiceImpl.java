@@ -4757,6 +4757,7 @@ public class JournalArticleLocalServiceImpl
 		final Indexer<JournalArticle> indexer = IndexerRegistryUtil.getIndexer(
 			JournalArticle.class.getName());
 
+		indexableActionableDynamicQuery.setParallel(true);
 		indexableActionableDynamicQuery.setPerformActionMethod(
 			new ActionableDynamicQuery.PerformActionMethod<JournalArticle>() {
 
@@ -6475,7 +6476,7 @@ public class JournalArticleLocalServiceImpl
 				dlAppLocalService.getFileEntryByUuidAndGroupId(uuid, groupId);
 
 			if (tempFile) {
-				String fileEntryName = DLUtil.getFileName(
+				String fileEntryName = DLUtil.getUniqueFileName(
 					fileEntry.getGroupId(), fileEntry.getFolderId(),
 					fileEntry.getFileName());
 

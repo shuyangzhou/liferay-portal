@@ -174,6 +174,7 @@ public class AssetVocabularyIndexer extends BaseIndexer<AssetVocabulary> {
 				getIndexableActionableDynamicQuery();
 
 		indexableActionableDynamicQuery.setCompanyId(companyId);
+		indexableActionableDynamicQuery.setParallel(true);
 		indexableActionableDynamicQuery.setPerformActionMethod(
 			new ActionableDynamicQuery.PerformActionMethod<AssetVocabulary>() {
 

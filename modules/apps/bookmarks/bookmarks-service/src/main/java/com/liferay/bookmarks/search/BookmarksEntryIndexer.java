@@ -183,6 +183,7 @@ public class BookmarksEntryIndexer extends BaseIndexer<BookmarksEntry> {
 			});
 		indexableActionableDynamicQuery.setCompanyId(companyId);
 		indexableActionableDynamicQuery.setGroupId(groupId);
+		indexableActionableDynamicQuery.setParallel(true);
 		indexableActionableDynamicQuery.setPerformActionMethod(
 			new ActionableDynamicQuery.PerformActionMethod<BookmarksEntry>() {
 

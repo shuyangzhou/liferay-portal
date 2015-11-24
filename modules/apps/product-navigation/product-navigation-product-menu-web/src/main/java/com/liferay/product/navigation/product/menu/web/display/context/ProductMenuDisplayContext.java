@@ -46,6 +46,9 @@ public class ProductMenuDisplayContext {
 
 		_panelAppRegistry = (PanelAppRegistry)_portletRequest.getAttribute(
 			ApplicationListWebKeys.PANEL_APP_REGISTRY);
+		_panelCategoryHelper =
+			(PanelCategoryHelper)_portletRequest.getAttribute(
+				ApplicationListWebKeys.PANEL_CATEGORY_HELPER);
 		_panelCategoryRegistry =
 			(PanelCategoryRegistry)_portletRequest.getAttribute(
 				ApplicationListWebKeys.PANEL_CATEGORY_REGISTRY);
@@ -63,6 +66,12 @@ public class ProductMenuDisplayContext {
 			_themeDisplay.getScopeGroup());
 
 		return _childPanelCategories;
+	}
+
+	public int getNotificationsCount(PanelCategory panelCategory) {
+		return _panelCategoryHelper.getNotificationsCount(
+			panelCategory.getKey(), _themeDisplay.getPermissionChecker(),
+			_themeDisplay.getScopeGroup(), _themeDisplay.getUser());
 	}
 
 	public String getRootPanelCategoryKey() {
@@ -123,6 +132,7 @@ public class ProductMenuDisplayContext {
 
 	private List<PanelCategory> _childPanelCategories;
 	private final PanelAppRegistry _panelAppRegistry;
+	private final PanelCategoryHelper _panelCategoryHelper;
 	private final PanelCategoryRegistry _panelCategoryRegistry;
 	private final PortletRequest _portletRequest;
 	private final PortletResponse _portletResponse;

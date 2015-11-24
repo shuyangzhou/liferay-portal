@@ -229,6 +229,7 @@ public class AssetCategoryIndexer extends BaseIndexer<AssetCategory> {
 			AssetCategoryLocalServiceUtil.getIndexableActionableDynamicQuery();
 
 		indexableActionableDynamicQuery.setCompanyId(companyId);
+		indexableActionableDynamicQuery.setParallel(true);
 		indexableActionableDynamicQuery.setPerformActionMethod(
 			new ActionableDynamicQuery.PerformActionMethod<AssetCategory>() {
 

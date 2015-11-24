@@ -201,6 +201,7 @@ public class SCIndexer extends BaseIndexer<SCProductEntry> {
 			SCProductEntryLocalServiceUtil.getIndexableActionableDynamicQuery();
 
 		indexableActionableDynamicQuery.setCompanyId(companyId);
+		indexableActionableDynamicQuery.setParallel(true);
 		indexableActionableDynamicQuery.setPerformActionMethod(
 			new ActionableDynamicQuery.PerformActionMethod<SCProductEntry>() {
 

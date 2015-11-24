@@ -227,6 +227,7 @@ public class CalendarBookingIndexer extends BaseIndexer<CalendarBooking> {
 		indexableActionableDynamicQuery.setCommitImmediately(
 			isCommitImmediately());
 		indexableActionableDynamicQuery.setCompanyId(companyId);
+		indexableActionableDynamicQuery.setParallel(true);
 		indexableActionableDynamicQuery.setPerformActionMethod(
 			new ActionableDynamicQuery.PerformActionMethod<CalendarBooking>() {
 

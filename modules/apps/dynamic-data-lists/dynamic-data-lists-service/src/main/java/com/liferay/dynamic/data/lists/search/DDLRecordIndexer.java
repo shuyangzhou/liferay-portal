@@ -325,6 +325,7 @@ public class DDLRecordIndexer extends BaseIndexer<DDLRecord> {
 		indexableActionableDynamicQuery.setCommitImmediately(
 			isCommitImmediately());
 		indexableActionableDynamicQuery.setCompanyId(companyId);
+		indexableActionableDynamicQuery.setParallel(true);
 		indexableActionableDynamicQuery.setPerformActionMethod(
 			new ActionableDynamicQuery.PerformActionMethod<DDLRecord>() {
 

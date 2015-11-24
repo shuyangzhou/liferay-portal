@@ -161,6 +161,7 @@ public class UserGroupIndexer extends BaseIndexer<UserGroup> {
 			_userGroupLocalService.getIndexableActionableDynamicQuery();
 
 		indexableActionableDynamicQuery.setCompanyId(companyId);
+		indexableActionableDynamicQuery.setParallel(true);
 		indexableActionableDynamicQuery.setPerformActionMethod(
 			new ActionableDynamicQuery.PerformActionMethod<UserGroup>() {
 
