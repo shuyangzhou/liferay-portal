@@ -37,6 +37,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.osgi.framework.Bundle;
+import org.osgi.framework.Version;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -64,9 +65,9 @@ public class AppDisplayFactoryUtil {
 	public static AppDisplay getAppDisplay(
 		List<Bundle> bundles, String appTitle) {
 
-		AppDisplay appDisplay = new AppDisplay(appTitle);
+		AppDisplay appDisplay = null;
 
-		if (appTitle.equals(AppDisplay.APP_NAME_UNCATEGORIZED)) {
+		if (appTitle.equals(AppDisplay.APP_TITLE_UNCATEGORIZED)) {
 			appTitle = null;
 		}
 
@@ -83,6 +84,15 @@ public class AppDisplayFactoryUtil {
 			}
 			else if (curAppTitle != null) {
 				continue;
+			}
+
+			if (appDisplay == null) {
+				String appDescription = headers.get(
+					BundleConstants.LIFERAY_RELENG_APP_DESCRIPTION);
+				Version appVersion = bundle.getVersion();
+
+				appDisplay = new SimpleAppDisplay(
+					appTitle, appDescription, appVersion);
 			}
 
 			appDisplay.addBundle(bundle);
@@ -111,7 +121,7 @@ public class AppDisplayFactoryUtil {
 	protected static AppDisplay createMarketplaceAppDisplay(
 		BundlesMap bundlesMap, App app) {
 
-		AppDisplay appDisplay = new AppDisplay(app.getTitle());
+		AppDisplay appDisplay = new MarketplaceAppDisplay(app);
 
 		List<Module> modules = _moduleLocalService.getModules(app.getAppId());
 
@@ -169,24 +179,31 @@ public class AppDisplayFactoryUtil {
 		for (Bundle bundle : bundles) {
 			Dictionary<String, String> headers = bundle.getHeaders();
 
-			String[] categories = StringUtil.split(
-				headers.get(BundleConstants.LIFERAY_RELENG_CATEGORY));
+			if (Validator.isNotNull(category)) {
+				String[] categories = StringUtil.split(
+					headers.get(BundleConstants.LIFERAY_RELENG_CATEGORY));
 
-			if (!ArrayUtil.contains(categories, category)) {
-				continue;
+				if (!ArrayUtil.contains(categories, category)) {
+					continue;
+				}
 			}
 
 			String appTitle = headers.get(
 				BundleConstants.LIFERAY_RELENG_APP_TITLE);
 
 			if (appTitle == null) {
-				appTitle = AppDisplay.APP_NAME_UNCATEGORIZED;
+				appTitle = AppDisplay.APP_TITLE_UNCATEGORIZED;
 			}
 
 			AppDisplay appDisplay = appDisplaysMap.get(appTitle);
 
 			if (appDisplay == null) {
-				appDisplay = new AppDisplay(appTitle);
+				String appDescription = headers.get(
+					BundleConstants.LIFERAY_RELENG_APP_DESCRIPTION);
+				Version appVersion = bundle.getVersion();
+
+				appDisplay = new SimpleAppDisplay(
+					appTitle, appDescription, appVersion);
 
 				appDisplaysMap.put(appTitle, appDisplay);
 			}
@@ -205,7 +222,7 @@ public class AppDisplayFactoryUtil {
 		while (iterator.hasNext()) {
 			AppDisplay appDisplay = iterator.next();
 
-			if (appDisplay.getState() != state) {
+			if ((state > 0) && (appDisplay.getState() != state)) {
 				iterator.remove();
 			}
 		}

@@ -228,20 +228,20 @@ public class UploadServletRequestImpl
 	}
 
 	public UploadServletRequestImpl(
-		HttpServletRequest request, Map<String, FileItem[]> fileParams,
-		Map<String, List<String>> regularParams) {
+		HttpServletRequest request, Map<String, FileItem[]> fileParameters,
+		Map<String, List<String>> regularParameters) {
 
 		super(request);
 
 		_fileParameters = new LinkedHashMap<>();
 		_regularParameters = new LinkedHashMap<>();
 
-		if (fileParams != null) {
-			_fileParameters.putAll(fileParams);
+		if (fileParameters != null) {
+			_fileParameters.putAll(fileParameters);
 		}
 
-		if (regularParams != null) {
-			_regularParameters.putAll(regularParams);
+		if (regularParameters != null) {
+			_regularParameters.putAll(regularParameters);
 		}
 
 		_liferayServletRequest = null;
@@ -257,7 +257,9 @@ public class UploadServletRequestImpl
 			}
 		}
 
-		_liferayServletRequest.cleanUp();
+		if (_liferayServletRequest != null) {
+			_liferayServletRequest.cleanUp();
+		}
 	}
 
 	@Override

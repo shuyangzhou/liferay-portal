@@ -564,6 +564,13 @@ public class UserNotificationEventLocalServiceUtil {
 		return getService().getUserNotificationEventsCount(userId, deliveryType);
 	}
 
+	public static int getUserNotificationEventsCount(long userId,
+		java.lang.String type, int deliveryType, boolean archived) {
+		return getService()
+				   .getUserNotificationEventsCount(userId, type, deliveryType,
+			archived);
+	}
+
 	public static com.liferay.portal.model.UserNotificationEvent sendUserNotificationEvents(
 		long userId, java.lang.String portletId, int deliveryType,
 		boolean actionRequired,

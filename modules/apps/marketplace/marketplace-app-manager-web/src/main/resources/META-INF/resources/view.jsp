@@ -17,23 +17,41 @@
 <%@ include file="/init.jsp" %>
 
 <%
-String toolbarItem = ParamUtil.getString(request, "toolbarItem", "manage");
-
-PortletURL portletURL = renderResponse.createRenderURL();
-
-portletURL.setParameter("mvcPath", "/view.jsp");
-portletURL.setParameter("toolbarItem", toolbarItem);
+String category = ParamUtil.getString(request, "category");
+int state = ParamUtil.getInteger(request, "state");
 %>
 
-<liferay-ui:tabs
-	names="manage,install"
-	refresh="<%= false %>"
->
-	<liferay-ui:section>
-		<%@ include file="/manage.jspf" %>
-	</liferay-ui:section>
+<div class="container-fluid-1280">
+	<liferay-ui:search-container>
+		<liferay-ui:search-container-results>
 
-	<liferay-ui:section>
-		<%@ include file="/install_apps.jspf" %>
-	</liferay-ui:section>
-</liferay-ui:tabs>
+			<%
+			List<Bundle> bundles = BundleManagerUtil.getBundles();
+
+			List<AppDisplay> appDisplays = AppDisplayFactoryUtil.getAppDisplays(bundles, category, state);
+
+			int end = searchContainer.getEnd();
+
+			if (end > appDisplays.size()) {
+				end = appDisplays.size();
+			}
+
+			searchContainer.setResults(appDisplays.subList(searchContainer.getStart(), end));
+
+			searchContainer.setTotal(appDisplays.size());
+			%>
+
+		</liferay-ui:search-container-results>
+
+		<liferay-ui:search-container-row
+			className="com.liferay.marketplace.app.manager.web.util.AppDisplay"
+			modelVar="appDisplay"
+		>
+			<liferay-ui:search-container-column-text colspan="<%= 2 %>">
+				<%= appDisplay.getTitle() %>
+			</liferay-ui:search-container-column-text>
+		</liferay-ui:search-container-row>
+
+		<liferay-ui:search-iterator displayStyle="descriptive" markupView="lexicon" />
+	</liferay-ui:search-container>
+</div>
