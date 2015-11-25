@@ -6,6 +6,15 @@
 	<var name="portletName" value="Asset Publisher" />
 
 	<set-up>
+		<var method="TestPropsUtil#get('test.portal.instance')" name="testPortalInstance" />
+
+		<if>
+			<equals arg1="${testPortalInstance}" arg2="true" />
+			<then>
+				<execute macro="SignIn#signInPortalInstanceSetUp" />
+			</then>
+		</if>
+
 		<execute macro="User#firstLoginPG" />
 
 		<execute macro="Page#addPG">
@@ -26,26 +35,36 @@
 	</set-up>
 
 	<tear-down>
-		<execute macro="User#logoutAndLoginPG">
-			<var name="userLoginEmailAddress" value="test@liferay.com" />
-			<var name="userLoginFullName" value="Test Test" />
-		</execute>
+		<var method="TestPropsUtil#get('test.portal.instance')" name="testPortalInstance" />
 
-		<execute macro="Page#tearDownPG" />
+		<if>
+			<equals arg1="${testPortalInstance}" arg2="true" />
+			<then>
+				<execute macro="PortalInstances#tearDownCP" />
+			</then>
+			<else>
+				<execute macro="User#logoutAndLoginPG">
+					<var name="userLoginEmailAddress" value="test@liferay.com" />
+					<var name="userLoginFullName" value="Test Test" />
+				</execute>
 
-		<execute macro="WebContent#tearDownCP" />
+				<execute macro="Page#tearDownPG" />
 
-		<execute macro="WebContent#tearDownCP">
-			<var name="siteScopeName" value="Global" />
-		</execute>
+				<execute macro="WebContent#tearDownCP" />
 
-		<execute macro="DMDocumentType#tearDownCP" />
+				<execute macro="WebContent#tearDownCP">
+					<var name="siteScopeName" value="Global" />
+				</execute>
 
-		<execute macro="BlogsEntry#tearDownCP" />
+				<execute macro="DMDocumentType#tearDownCP" />
 
-		<execute macro="Vocabulary#tearDownCP" />
+				<execute macro="BlogsEntry#tearDownCP" />
 
-		<execute macro="Site#tearDownCP" />
+				<execute macro="Vocabulary#tearDownCP" />
+
+				<execute macro="Site#tearDownCP" />
+			</else>
+		</if>
 	</tear-down>
 
 	<command name="AddAndEditAssetsViaVirtualHostOrganizations" priority="4">
@@ -250,7 +269,7 @@
 			<var name="siteScopeName" value="Global" />
 		</execute>
 
-		<execute macro="DMDocumentType#addCP">
+		<execute macro="DMDocumentType#add">
 			<var name="dmDocumentTypeDescription" value="Global Document Type Description" />
 			<var name="dmDocumentTypeFieldNames" value="Text" />
 			<var name="dmDocumentTypeName" value="Global Document Type Name" />
@@ -262,7 +281,7 @@
 			<var name="portlet" value="Documents and Media" />
 		</execute>
 
-		<execute macro="DMDocumentType#addCP">
+		<execute macro="DMDocumentType#add">
 			<var name="dmDocumentTypeDescription" value="Local Document Type Description" />
 			<var name="dmDocumentTypeFieldNames" value="Text" />
 			<var name="dmDocumentTypeName" value="Local Document Type Name" />
