@@ -46,6 +46,6 @@ public class UserModelListener extends BaseModelListener<User> {
 		_shoppingCartLocalService = shoppingCartLocalService;
 	}
 
-	private ShoppingCartLocalService _shoppingCartLocalService;
+	private volatile ShoppingCartLocalService _shoppingCartLocalService;
 
 }
