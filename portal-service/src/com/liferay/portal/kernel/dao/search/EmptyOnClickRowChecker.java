@@ -47,7 +47,7 @@ public class EmptyOnClickRowChecker extends RowChecker {
 		String name, String value, String checkBoxRowIds,
 		String checkBoxAllRowIds, String checkBoxPostOnClick) {
 
-		StringBundler sb = new StringBundler(14);
+		StringBundler sb = new StringBundler(15);
 
 		sb.append("<input ");
 
@@ -57,12 +57,13 @@ public class EmptyOnClickRowChecker extends RowChecker {
 
 		sb.append("class=\"");
 		sb.append(getCssClass());
+		sb.append("\" ");
 
 		if (disabled) {
 			sb.append("disabled ");
 		}
 
-		sb.append("\" name=\"");
+		sb.append("name=\"");
 		sb.append(name);
 		sb.append("\" title=\"");
 		sb.append(LanguageUtil.get(request.getLocale(), "select"));
