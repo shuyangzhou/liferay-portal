@@ -41,7 +41,7 @@ public class JGroupsClusterChannel implements ClusterChannel {
 
 	public JGroupsClusterChannel(
 		String channelProperties, String clusterName,
-		ClusterReceiver clusterReceiver, InetAddress _bindInetAddress) {
+		ClusterReceiver clusterReceiver, InetAddress bindInetAddress) {
 
 		if (Validator.isNull(channelProperties)) {
 			throw new NullPointerException("Channel properties is null");
@@ -61,12 +61,12 @@ public class JGroupsClusterChannel implements ClusterChannel {
 		try {
 			_jChannel = new JChannel(channelProperties);
 
-			if (_bindInetAddress != null) {
+			if (bindInetAddress != null) {
 				ProtocolStack protocolStack = _jChannel.getProtocolStack();
 
 				TP tp = protocolStack.getTransport();
 
-				tp.setBindAddress(_bindInetAddress);
+				tp.setBindAddress(bindInetAddress);
 			}
 
 			_jChannel.setReceiver(new JGroupsReceiver(clusterReceiver));
