@@ -37,7 +37,8 @@ public class SecureObjectInputStream extends ObjectInputStream {
 	}
 
 	protected Class<?> doResolveClass(ObjectStreamClass osc)
-					throws ClassNotFoundException, IOException {
+		throws ClassNotFoundException, IOException {
+
 		return super.resolveClass(osc);
 	}
 
