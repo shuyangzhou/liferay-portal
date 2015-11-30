@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.util;
 
+import com.liferay.portal.kernel.io.SecureObjectInputStream;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 
@@ -37,7 +38,7 @@ public class SerializableUtil {
 		ObjectInputStream objectInputStream = null;
 
 		try {
-			objectInputStream = new ObjectInputStream(
+			objectInputStream = new SecureObjectInputStream(
 				new UnsyncByteArrayInputStream(bytes));
 
 			return objectInputStream.readObject();
