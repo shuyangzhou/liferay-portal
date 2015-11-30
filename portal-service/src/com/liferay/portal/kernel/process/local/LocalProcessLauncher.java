@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.process.local;
 
+import com.liferay.portal.kernel.io.SecureObjectInputStream;
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedOutputStream;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.io.unsync.UnsyncPrintWriter;
@@ -83,7 +84,7 @@ public class LocalProcessLauncher {
 
 		try {
 			ObjectInputStream bootstrapObjectInputStream =
-				new ObjectInputStream(System.in);
+				new SecureObjectInputStream(System.in);
 
 			String processCallableName =
 				(String)bootstrapObjectInputStream.readObject();
