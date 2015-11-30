@@ -14,16 +14,17 @@
 
 package com.liferay.portal.kernel.util;
 
+import com.liferay.portal.kernel.io.SecureObjectInputStream;
+
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectInputStream;
 import java.io.ObjectStreamClass;
 
 /**
  * @author Brian Wing Shun Chan
  * @author Shuyang Zhou
  */
-public class ClassLoaderObjectInputStream extends ObjectInputStream {
+public class ClassLoaderObjectInputStream extends SecureObjectInputStream {
 
 	public ClassLoaderObjectInputStream(
 			InputStream inputStream, ClassLoader classLoader)
@@ -35,7 +36,7 @@ public class ClassLoaderObjectInputStream extends ObjectInputStream {
 	}
 
 	@Override
-	protected Class<?> resolveClass(ObjectStreamClass objectStreamClass)
+	protected Class<?> doResolveClass(ObjectStreamClass objectStreamClass)
 		throws ClassNotFoundException {
 
 		String name = objectStreamClass.getName();

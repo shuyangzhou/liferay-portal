@@ -19,13 +19,12 @@ import com.liferay.portal.kernel.util.ClassResolverUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectInputStream;
 import java.io.ObjectStreamClass;
 
 /**
  * @author Shuyang Zhou
  */
-public class AnnotatedObjectInputStream extends ObjectInputStream {
+public class AnnotatedObjectInputStream extends SecureObjectInputStream {
 
 	public AnnotatedObjectInputStream(InputStream inputStream)
 		throws IOException {
@@ -34,7 +33,7 @@ public class AnnotatedObjectInputStream extends ObjectInputStream {
 	}
 
 	@Override
-	protected Class<?> resolveClass(ObjectStreamClass objectStreamClass)
+	protected Class<?> doResolveClass(ObjectStreamClass objectStreamClass)
 		throws ClassNotFoundException, IOException {
 
 		String contextName = readUTF();
