@@ -36,6 +36,11 @@ public class SecureObjectInputStream extends ObjectInputStream {
 		super(in);
 	}
 
+	protected Class<?> doResolveClass(ObjectStreamClass osc)
+					throws ClassNotFoundException, IOException {
+		return super.resolveClass(osc);
+	}
+
 	@Override
 	protected Class<?> resolveClass(ObjectStreamClass osc)
 		throws ClassNotFoundException, IOException {
@@ -67,7 +72,7 @@ public class SecureObjectInputStream extends ObjectInputStream {
 				"Trying to load restricted class: " + osc.getName());
 		}
 
-		return super.resolveClass(osc);
+		return doResolveClass(osc);
 	}
 
 	private static final Pattern[] _allowedClassesPatterns;
