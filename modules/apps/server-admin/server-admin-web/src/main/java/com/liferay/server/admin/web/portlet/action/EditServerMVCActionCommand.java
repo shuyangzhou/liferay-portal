@@ -377,6 +377,11 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 			return;
 		}
 
+		final PortletSession portletSession = actionRequest.getPortletSession();
+
+		final long lastAccessedTime = portletSession.getLastAccessedTime();
+		final int maxInactiveInterval = portletSession.getMaxInactiveInterval();
+
 		final String uuid = PortalUUIDUtil.generate();
 
 		taskContextMap.put("uuid", uuid);
@@ -411,6 +416,12 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 						BackgroundTaskConstants.STATUS_CANCELLED) ||
 					(status == BackgroundTaskConstants.STATUS_FAILED) ||
 					(status == BackgroundTaskConstants.STATUS_SUCCESSFUL)) {
+
+					int reindexSessionDuration =
+						(int)(System.currentTimeMillis() - lastAccessedTime);
+
+					portletSession.setMaxInactiveInterval(
+						reindexSessionDuration + maxInactiveInterval);
 
 					countDownLatch.countDown();
 				}
