@@ -89,7 +89,7 @@ public class HypersonicLoader {
 
 		try (Connection con = DriverManager.getConnection(
 				"jdbc:hsqldb:" + sqlDir + "/" + databaseName +
-					";shutdown=true",
+					";shutdown=true;hsqldb.write_delay=false",
 				"sa", "")) {
 
 			if (Validator.isNull(fileNames)) {
