@@ -14,11 +14,11 @@
 
 package com.liferay.portal.servlet.jsp.compiler.internal;
 
-import com.liferay.portal.kernel.util.ReflectionUtil;
-
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -195,11 +195,9 @@ public class JspCompiler extends Jsr199JavaCompiler {
 
 			String uri = getTldUri(url);
 
-			if (uri == null) {
-				continue;
+			if (uri != null) {
+				tldMappings.put(uri, new String[] {"/" + resourcePath, null});
 			}
-
-			tldMappings.put(uri, new String[] {"/" + resourcePath, null});
 		}
 	}
 
@@ -233,35 +231,30 @@ public class JspCompiler extends Jsr199JavaCompiler {
 	}
 
 	protected String getTldUri(URL url) {
-		try (InputStream inputStream = url.openStream()) {
-			byte[] buffer = new byte[4096];
-			int length = 0;
-			StringBuilder sb = new StringBuilder();
+		try (InputStream is = url.openStream();
+			InputStreamReader inputStreamReader = new InputStreamReader(is);
+			BufferedReader bufferedReader =
+				new BufferedReader(inputStreamReader)) {
 
-			while ((length = inputStream.read(buffer)) > 0) {
-				String xml = new String(buffer, 0, length);
+			for (String line = bufferedReader.readLine(); line != null;
+				line = bufferedReader.readLine()) {
 
-				sb.append(xml);
+				int x = line.indexOf("<uri>");
 
-				if (xml.indexOf("</uri>") > -1) {
-					break;
+				if (x < 0) {
+					continue;
 				}
+
+				int y = line.indexOf("</uri>", x);
+
+				return line.substring(x + 5, y);
 			}
-
-			String xml = sb.toString();
-
-			int x = xml.indexOf("<uri>");
-			int y = xml.indexOf("</uri>", x);
-
-			if (x < 0) {
-				return null;
-			}
-
-			return xml.substring(x + 5, y);
 		}
 		catch (IOException ioe) {
-			return ReflectionUtil.throwException(ioe);
+			_logger.log(Logger.LOG_WARNING, ioe.getMessage());
 		}
+
+		return null;
 	}
 
 	protected void initClassPath(ServletContext servletContext) {
