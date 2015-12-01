@@ -188,7 +188,7 @@ public class JspCompiler extends Jsr199JavaCompiler {
 		BundleWiring bundleWiring = bundle.adapt(BundleWiring.class);
 
 		Collection<String> resourcePaths = bundleWiring.listResources(
-			"/", "*.tld", BundleWiring.FINDENTRIES_RECURSE);
+			"/", "*.tld", BundleWiring.LISTRESOURCES_RECURSE);
 
 		for (String resourcePath : resourcePaths) {
 			URL url = bundle.getResource(resourcePath);
