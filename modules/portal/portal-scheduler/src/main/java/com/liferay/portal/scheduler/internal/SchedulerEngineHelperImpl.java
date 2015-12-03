@@ -810,10 +810,12 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 
 	@Deactivate
 	protected void deactivate() {
+		if (_bundleContext == null) {
+			return;
+		}
+
 		if (_serviceTracker != null) {
 			_serviceTracker.close();
-
-			_serviceTracker = null;
 		}
 
 		try {
@@ -832,7 +834,12 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 		for (ServiceRegistration<Destination> serviceRegistration :
 				_destinationServiceRegistrations) {
 
+			Destination destination = _bundleContext.getService(
+				serviceRegistration.getReference());
+
 			serviceRegistration.unregister();
+
+			destination.destroy();
 		}
 
 		for (ServiceRegistration<SchedulerEventMessageListener>
