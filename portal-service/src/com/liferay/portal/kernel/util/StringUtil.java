@@ -4705,6 +4705,10 @@ public class StringUtil {
 		int comparePoint = 0;
 
 		while (sIndex < s.length()) {
+			if (wildcardIndex == wildcard.length()) {
+				return false;
+			}
+
 			char c = wildcard.charAt(wildcardIndex);
 
 			if (c == multipleWildcardCharacter) {
