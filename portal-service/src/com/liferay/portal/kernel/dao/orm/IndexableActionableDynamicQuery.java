@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 /**
  * @author Andrew Betts
@@ -32,7 +33,12 @@ public class IndexableActionableDynamicQuery
 
 	public void addDocument(Document document) throws PortalException {
 		if (_documents == null) {
-			_documents = new ArrayList<>();
+			if (isParallel()) {
+				_documents = new ConcurrentLinkedDeque<>();
+			}
+			else {
+				_documents = new ArrayList<>();
+			}
 		}
 
 		_documents.add(document);
@@ -46,7 +52,12 @@ public class IndexableActionableDynamicQuery
 		throws PortalException {
 
 		if (_documents == null) {
-			_documents = new ArrayList<>();
+			if (isParallel()) {
+				_documents = new ConcurrentLinkedDeque<>();
+			}
+			else {
+				_documents = new ArrayList<>();
+			}
 		}
 
 		_documents.addAll(documents);
