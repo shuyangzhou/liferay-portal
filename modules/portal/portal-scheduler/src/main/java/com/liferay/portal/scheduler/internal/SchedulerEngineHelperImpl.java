@@ -26,6 +26,9 @@ import com.liferay.portal.kernel.cluster.ClusterableProxyFactory;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.messaging.Destination;
+import com.liferay.portal.kernel.messaging.DestinationConfiguration;
+import com.liferay.portal.kernel.messaging.DestinationFactory;
 import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageListener;
@@ -54,6 +57,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.CompanyConstants;
 import com.liferay.portal.scheduler.internal.messaging.config.SchedulerProxyMessagingConfigurator;
+import com.liferay.portal.scheduler.internal.messaging.config.ScriptingMessageListener;
 import com.liferay.portal.util.PortalUtil;
 
 import java.util.ArrayList;
@@ -61,8 +65,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Dictionary;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.portlet.PortletRequest;
 
@@ -763,6 +769,25 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 		}
 
 		if (GetterUtil.getBoolean(_props.get(PropsKeys.SCHEDULER_ENABLED))) {
+			registerDestination(
+				_bundleContext,
+				DestinationConfiguration.DESTINATION_TYPE_PARALLEL,
+				DestinationNames.SCHEDULER_DISPATCH);
+
+			Destination scriptingDestination = registerDestination(
+				_bundleContext,
+				DestinationConfiguration.DESTINATION_TYPE_PARALLEL,
+				DestinationNames.SCHEDULER_SCRIPTING);
+
+			SchedulerEventMessageListenerWrapper
+				schedulerEventMessageListenerWrapper =
+					new SchedulerEventMessageListenerWrapper();
+
+			schedulerEventMessageListenerWrapper.setMessageListener(
+				new ScriptingMessageListener());
+
+			scriptingDestination.register(schedulerEventMessageListenerWrapper);
+
 			Filter filter = _bundleContext.createFilter(
 				"(objectClass=" +
 					SchedulerEventMessageListener.class.getName() + ")");
@@ -791,10 +816,6 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 			_serviceTracker = null;
 		}
 
-		if (_serviceRegistration != null) {
-			_serviceRegistration.unregister();
-		}
-
 		try {
 			shutdown();
 		}
@@ -802,6 +823,16 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 			if (_log.isWarnEnabled()) {
 				_log.warn("Unable to shutdown scheduler", e);
 			}
+		}
+
+		if (_serviceRegistration != null) {
+			_serviceRegistration.unregister();
+		}
+
+		for (ServiceRegistration<Destination> serviceRegistration :
+				_destinationServiceRegistrations) {
+
+			serviceRegistration.unregister();
 		}
 
 		for (ServiceRegistration<SchedulerEventMessageListener>
@@ -815,6 +846,29 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 
 	protected SchedulerEngine getSchedulerEngine() {
 		return _schedulerEngine;
+	}
+
+	protected Destination registerDestination(
+		BundleContext bundleContext, String destinationType,
+		String destinationName) {
+
+		DestinationConfiguration destinationConfiguration =
+			new DestinationConfiguration(destinationType, destinationName);
+
+		Destination destination = _destinationFactory.createDestination(
+			destinationConfiguration);
+
+		Dictionary<String, Object> dictionary = new HashMapDictionary<>();
+
+		dictionary.put("destination.name", destination.getName());
+
+		ServiceRegistration<Destination> serviceRegistration =
+			bundleContext.registerService(
+				Destination.class, destination, dictionary);
+
+		_destinationServiceRegistrations.add(serviceRegistration);
+
+		return destination;
 	}
 
 	@Reference(
@@ -836,6 +890,13 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 		ClusterMasterExecutor clusterMasterExecutor) {
 
 		_clusterMasterExecutor = clusterMasterExecutor;
+	}
+
+	@Reference(unbind = "-")
+	protected void setDestinationFactory(
+		DestinationFactory destinationFactory) {
+
+		_destinationFactory = destinationFactory;
 	}
 
 	@Reference(unbind = "-")
@@ -871,6 +932,9 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 	private volatile BundleContext _bundleContext;
 	private volatile ClusterLink _clusterLink;
 	private volatile ClusterMasterExecutor _clusterMasterExecutor;
+	private volatile DestinationFactory _destinationFactory;
+	private final Set<ServiceRegistration<Destination>>
+		_destinationServiceRegistrations = new HashSet<>();
 	private volatile JSONFactory _jsonFactory;
 	private final Map<String, ServiceRegistration<MessageListener>>
 		_messageListenerServiceRegistrations = new HashMap<>();
