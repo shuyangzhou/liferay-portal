@@ -21,8 +21,10 @@ import com.liferay.portal.kernel.messaging.DestinationConfiguration;
 import com.liferay.portal.kernel.messaging.DestinationEventListener;
 import com.liferay.portal.kernel.messaging.DestinationFactory;
 import com.liferay.portal.kernel.messaging.DestinationFactoryUtil;
+import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.messaging.MessageBusEventListener;
+import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.nio.intraband.RegistrationReference;
 import com.liferay.portal.kernel.nio.intraband.messaging.DestinationConfigurationProcessCallable;
@@ -150,11 +152,11 @@ public abstract class AbstractMessagingConfigurator
 						ServiceReference<Destination> serviceReference,
 						Destination destination) {
 
-						destination.close();
+						if (destination.getName().equals(DestinationNames.SCHEDULER_DISPATCH)) {
+							_messageBus.removeDestination(DestinationNames.SCHEDULER_ENGINE);
+						}
 
-						destination.removeDestinationEventListeners();
-
-						destination.unregisterMessageListeners();
+						_messageBus.removeDestination(destination.getName());
 					}
 
 				});
