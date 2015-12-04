@@ -96,7 +96,7 @@ MarketplaceAppManagerUtil.addPortletBreadcrumbEntry(appDisplay, request, renderR
 		<liferay-ui:search-container-results>
 
 			<%
-			List<ModuleGroupDisplay> moduleGroupDisplays = ModuleGroupDisplayFactoryUtil.getModuleGroupDisplays(appDisplay.getBundles(), BundleStateConstants.getState(state));
+			List<ModuleGroupDisplay> moduleGroupDisplays = ModuleGroupDisplayFactoryUtil.getModuleGroupDisplays(appDisplay, BundleStateConstants.getState(state));
 
 			moduleGroupDisplays = ListUtil.sort(moduleGroupDisplays, new ModuleGroupDisplayComparator(orderByType));
 
@@ -119,7 +119,9 @@ MarketplaceAppManagerUtil.addPortletBreadcrumbEntry(appDisplay, request, renderR
 		>
 			<liferay-ui:search-container-column-text colspan="<%= 2 %>">
 				<h5>
-					<%= moduleGroupDisplay.getTitle() %>
+					<a href="<%= HtmlUtil.escapeHREF(moduleGroupDisplay.getDisplayURL(renderResponse)) %>">
+						<%= moduleGroupDisplay.getTitle() %>
+					</a>
 				</h5>
 
 				<h6 class="text-default">
