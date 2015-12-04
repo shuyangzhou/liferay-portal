@@ -18,6 +18,8 @@ import com.liferay.marketplace.app.manager.web.constants.BundleConstants;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Dictionary;
+import java.util.Iterator;
+import java.util.List;
 
 import org.osgi.framework.Bundle;
 
@@ -25,6 +27,18 @@ import org.osgi.framework.Bundle;
  * @author Ryan Park
  */
 public class BundleUtil {
+
+	public static void filterBundles(List<Bundle> bundles, int state) {
+		Iterator<Bundle> iterator = bundles.iterator();
+
+		while (iterator.hasNext()) {
+			Bundle bundle = iterator.next();
+
+			if ((state > 0) && (bundle.getState() != state)) {
+				iterator.remove();
+			}
+		}
+	}
 
 	public static boolean isFragment(Bundle bundle) {
 		Dictionary<String, String> headers = bundle.getHeaders();
