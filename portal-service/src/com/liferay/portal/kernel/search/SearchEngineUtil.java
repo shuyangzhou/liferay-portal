@@ -171,6 +171,11 @@ public class SearchEngineUtil {
 
 		SearchEngine searchEngine = getSearchEngine(searchEngineId);
 
+		while (searchEngine instanceof SearchEngineProxyWrapper) {
+			searchEngine =
+				((SearchEngineProxyWrapper)searchEngine).getSearchEngine();
+		}
+
 		IndexWriter indexWriter = searchEngine.getIndexWriter();
 
 		indexWriter.commit(companyId);
