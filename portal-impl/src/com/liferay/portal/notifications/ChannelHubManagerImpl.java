@@ -374,9 +374,11 @@ public class ChannelHubManagerImpl implements ChannelHubManager {
 			long companyId, long userId, NotificationEvent notificationEvent)
 		throws ChannelException {
 
-		ChannelHub channelHub = getChannelHub(companyId);
+		ChannelHub channelHub = fetchChannelHub(companyId);
 
-		channelHub.storeNotificationEvent(userId, notificationEvent);
+		if (channelHub != null) {
+			channelHub.storeNotificationEvent(userId, notificationEvent);
+		}
 	}
 
 	@Override
