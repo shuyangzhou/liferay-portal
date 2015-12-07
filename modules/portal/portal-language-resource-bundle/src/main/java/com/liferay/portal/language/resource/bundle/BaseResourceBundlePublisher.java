@@ -39,12 +39,12 @@ import org.osgi.framework.ServiceRegistration;
  */
 public abstract class BaseResourceBundlePublisher {
 
-	protected void doActivate(BundleContext bundleContext) throws IOException {
+	protected void activate(BundleContext bundleContext) throws IOException {
 		registerResourceBundle(
 			bundleContext, "content.Language", getPortletName());
 	}
 
-	protected void doDeactivate() {
+	protected void deactivate() {
 		for (ServiceRegistration serviceRegistration : _serviceRegistrations) {
 			serviceRegistration.unregister();
 		}
@@ -52,13 +52,13 @@ public abstract class BaseResourceBundlePublisher {
 		_serviceRegistrations.clear();
 	}
 
-	protected void doModified(BundleContext bundleContext) throws IOException {
-		doDeactivate();
-
-		doActivate(bundleContext);
-	}
-
 	protected abstract String getPortletName();
+
+	protected void modified(BundleContext bundleContext) throws IOException {
+		deactivate();
+
+		activate(bundleContext);
+	}
 
 	protected void registerResourceBundle(
 		BundleContext bundleContext, String bundleName, String portletName) {
