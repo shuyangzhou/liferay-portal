@@ -51,6 +51,7 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -2272,10 +2273,6 @@ public class DDMStructurePersistenceImpl extends BasePersistenceImpl<DDMStructur
 	@Override
 	public List<DDMStructure> filterFindByGroupId(long[] groupIds, int start,
 		int end, OrderByComparator<DDMStructure> orderByComparator) {
-		if (!InlineSQLHelperUtil.isEnabled(groupIds)) {
-			return findByGroupId(groupIds, start, end, orderByComparator);
-		}
-
 		if (groupIds == null) {
 			groupIds = new long[0];
 		}
@@ -2283,6 +2280,37 @@ public class DDMStructurePersistenceImpl extends BasePersistenceImpl<DDMStructur
 			groupIds = ArrayUtil.unique(groupIds);
 
 			Arrays.sort(groupIds);
+		}
+
+		List<Long> enabledGroupIdsList = new ArrayList<Long>();
+		List<Long> notEnabledGroupIdsList = new ArrayList<Long>();
+
+		for (long groupId : groupIds) {
+			if (!InlineSQLHelperUtil.isEnabled(groupId)) {
+				notEnabledGroupIdsList.add(groupId);
+			}
+			else {
+				enabledGroupIdsList.add(groupId);
+			}
+		}
+
+		List<DDMStructure> DDMStructureList = new ArrayList<DDMStructure>();
+
+		if (notEnabledGroupIdsList.size() > 0) {
+			Long[] notEnabledGroupIdsArray = notEnabledGroupIdsList.toArray(new Long[notEnabledGroupIdsList.size()]);
+
+			groupIds = ArrayUtil.toArray(notEnabledGroupIdsArray);
+
+			if (enabledGroupIdsList.size() == 0) {
+				return findByGroupId(groupIds, start, end, orderByComparator);
+			}
+
+			DDMStructureList.addAll(findByGroupId(groupIds, start, end,
+					orderByComparator));
+
+			Long[] enabledGroupIdsArray = enabledGroupIdsList.toArray(new Long[enabledGroupIdsList.size()]);
+
+			groupIds = ArrayUtil.toArray(enabledGroupIdsArray);
 		}
 
 		StringBundler query = new StringBundler();
@@ -2350,8 +2378,18 @@ public class DDMStructurePersistenceImpl extends BasePersistenceImpl<DDMStructur
 				q.addEntity(_FILTER_ENTITY_TABLE, DDMStructureImpl.class);
 			}
 
-			return (List<DDMStructure>)QueryUtil.list(q, getDialect(), start,
-				end);
+			if (notEnabledGroupIdsList.size() > 0) {
+				List<DDMStructure> result = (List<DDMStructure>)QueryUtil.list(q,
+						getDialect(), start, end);
+
+				DDMStructureList.addAll(result);
+
+				return DDMStructureList;
+			}
+			else {
+				return (List<DDMStructure>)QueryUtil.list(q, getDialect(),
+					start, end);
+			}
 		}
 		catch (Exception e) {
 			throw processException(e);
@@ -6135,11 +6173,6 @@ public class DDMStructurePersistenceImpl extends BasePersistenceImpl<DDMStructur
 	public List<DDMStructure> filterFindByG_C(long[] groupIds,
 		long classNameId, int start, int end,
 		OrderByComparator<DDMStructure> orderByComparator) {
-		if (!InlineSQLHelperUtil.isEnabled(groupIds)) {
-			return findByG_C(groupIds, classNameId, start, end,
-				orderByComparator);
-		}
-
 		if (groupIds == null) {
 			groupIds = new long[0];
 		}
@@ -6147,6 +6180,38 @@ public class DDMStructurePersistenceImpl extends BasePersistenceImpl<DDMStructur
 			groupIds = ArrayUtil.unique(groupIds);
 
 			Arrays.sort(groupIds);
+		}
+
+		List<Long> enabledGroupIdsList = new ArrayList<Long>();
+		List<Long> notEnabledGroupIdsList = new ArrayList<Long>();
+
+		for (long groupId : groupIds) {
+			if (!InlineSQLHelperUtil.isEnabled(groupId)) {
+				notEnabledGroupIdsList.add(groupId);
+			}
+			else {
+				enabledGroupIdsList.add(groupId);
+			}
+		}
+
+		List<DDMStructure> DDMStructureList = new ArrayList<DDMStructure>();
+
+		if (notEnabledGroupIdsList.size() > 0) {
+			Long[] notEnabledGroupIdsArray = notEnabledGroupIdsList.toArray(new Long[notEnabledGroupIdsList.size()]);
+
+			groupIds = ArrayUtil.toArray(notEnabledGroupIdsArray);
+
+			if (enabledGroupIdsList.size() == 0) {
+				return findByG_C(groupIds, classNameId, start, end,
+					orderByComparator);
+			}
+
+			DDMStructureList.addAll(findByG_C(groupIds, classNameId, start,
+					end, orderByComparator));
+
+			Long[] enabledGroupIdsArray = enabledGroupIdsList.toArray(new Long[enabledGroupIdsList.size()]);
+
+			groupIds = ArrayUtil.toArray(enabledGroupIdsArray);
 		}
 
 		StringBundler query = new StringBundler();
@@ -6222,8 +6287,18 @@ public class DDMStructurePersistenceImpl extends BasePersistenceImpl<DDMStructur
 
 			qPos.add(classNameId);
 
-			return (List<DDMStructure>)QueryUtil.list(q, getDialect(), start,
-				end);
+			if (notEnabledGroupIdsList.size() > 0) {
+				List<DDMStructure> result = (List<DDMStructure>)QueryUtil.list(q,
+						getDialect(), start, end);
+
+				DDMStructureList.addAll(result);
+
+				return DDMStructureList;
+			}
+			else {
+				return (List<DDMStructure>)QueryUtil.list(q, getDialect(),
+					start, end);
+			}
 		}
 		catch (Exception e) {
 			throw processException(e);

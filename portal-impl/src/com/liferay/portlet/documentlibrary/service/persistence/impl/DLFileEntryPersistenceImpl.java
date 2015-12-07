@@ -6180,10 +6180,6 @@ public class DLFileEntryPersistenceImpl extends BasePersistenceImpl<DLFileEntry>
 	@Override
 	public List<DLFileEntry> filterFindByG_F(long groupId, long[] folderIds,
 		int start, int end, OrderByComparator<DLFileEntry> orderByComparator) {
-		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
-			return findByG_F(groupId, folderIds, start, end, orderByComparator);
-		}
-
 		if (folderIds == null) {
 			folderIds = new long[0];
 		}
@@ -6191,6 +6187,10 @@ public class DLFileEntryPersistenceImpl extends BasePersistenceImpl<DLFileEntry>
 			folderIds = ArrayUtil.unique(folderIds);
 
 			Arrays.sort(folderIds);
+		}
+
+		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
+			return findByG_F(groupId, folderIds, start, end, orderByComparator);
 		}
 
 		StringBundler query = new StringBundler();
@@ -8774,11 +8774,6 @@ public class DLFileEntryPersistenceImpl extends BasePersistenceImpl<DLFileEntry>
 	public List<DLFileEntry> filterFindByG_U_F(long groupId, long userId,
 		long[] folderIds, int start, int end,
 		OrderByComparator<DLFileEntry> orderByComparator) {
-		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
-			return findByG_U_F(groupId, userId, folderIds, start, end,
-				orderByComparator);
-		}
-
 		if (folderIds == null) {
 			folderIds = new long[0];
 		}
@@ -8786,6 +8781,11 @@ public class DLFileEntryPersistenceImpl extends BasePersistenceImpl<DLFileEntry>
 			folderIds = ArrayUtil.unique(folderIds);
 
 			Arrays.sort(folderIds);
+		}
+
+		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
+			return findByG_U_F(groupId, userId, folderIds, start, end,
+				orderByComparator);
 		}
 
 		StringBundler query = new StringBundler();
@@ -11132,11 +11132,6 @@ public class DLFileEntryPersistenceImpl extends BasePersistenceImpl<DLFileEntry>
 	public List<DLFileEntry> filterFindByG_F_F(long groupId, long[] folderIds,
 		long fileEntryTypeId, int start, int end,
 		OrderByComparator<DLFileEntry> orderByComparator) {
-		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
-			return findByG_F_F(groupId, folderIds, fileEntryTypeId, start, end,
-				orderByComparator);
-		}
-
 		if (folderIds == null) {
 			folderIds = new long[0];
 		}
@@ -11144,6 +11139,11 @@ public class DLFileEntryPersistenceImpl extends BasePersistenceImpl<DLFileEntry>
 			folderIds = ArrayUtil.unique(folderIds);
 
 			Arrays.sort(folderIds);
+		}
+
+		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
+			return findByG_F_F(groupId, folderIds, fileEntryTypeId, start, end,
+				orderByComparator);
 		}
 
 		StringBundler query = new StringBundler();

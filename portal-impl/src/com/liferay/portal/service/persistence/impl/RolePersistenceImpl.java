@@ -6665,10 +6665,6 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 	@Override
 	public List<Role> filterFindByC_T(long companyId, int[] types, int start,
 		int end, OrderByComparator<Role> orderByComparator) {
-		if (!InlineSQLHelperUtil.isEnabled()) {
-			return findByC_T(companyId, types, start, end, orderByComparator);
-		}
-
 		if (types == null) {
 			types = new int[0];
 		}
@@ -6676,6 +6672,10 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 			types = ArrayUtil.unique(types);
 
 			Arrays.sort(types);
+		}
+
+		if (!InlineSQLHelperUtil.isEnabled()) {
+			return findByC_T(companyId, types, start, end, orderByComparator);
 		}
 
 		StringBundler query = new StringBundler();

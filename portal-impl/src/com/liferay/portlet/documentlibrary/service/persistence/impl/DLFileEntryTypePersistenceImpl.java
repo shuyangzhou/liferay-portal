@@ -56,6 +56,7 @@ import com.liferay.portlet.documentlibrary.service.persistence.DLFolderPersisten
 
 import java.io.Serializable;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -2291,10 +2292,6 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 	@Override
 	public List<DLFileEntryType> filterFindByGroupId(long[] groupIds,
 		int start, int end, OrderByComparator<DLFileEntryType> orderByComparator) {
-		if (!InlineSQLHelperUtil.isEnabled(groupIds)) {
-			return findByGroupId(groupIds, start, end, orderByComparator);
-		}
-
 		if (groupIds == null) {
 			groupIds = new long[0];
 		}
@@ -2302,6 +2299,37 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 			groupIds = ArrayUtil.unique(groupIds);
 
 			Arrays.sort(groupIds);
+		}
+
+		List<Long> enabledGroupIdsList = new ArrayList<Long>();
+		List<Long> notEnabledGroupIdsList = new ArrayList<Long>();
+
+		for (long groupId : groupIds) {
+			if (!InlineSQLHelperUtil.isEnabled(groupId)) {
+				notEnabledGroupIdsList.add(groupId);
+			}
+			else {
+				enabledGroupIdsList.add(groupId);
+			}
+		}
+
+		List<DLFileEntryType> DLFileEntryTypeList = new ArrayList<DLFileEntryType>();
+
+		if (notEnabledGroupIdsList.size() > 0) {
+			Long[] notEnabledGroupIdsArray = notEnabledGroupIdsList.toArray(new Long[notEnabledGroupIdsList.size()]);
+
+			groupIds = ArrayUtil.toArray(notEnabledGroupIdsArray);
+
+			if (enabledGroupIdsList.size() == 0) {
+				return findByGroupId(groupIds, start, end, orderByComparator);
+			}
+
+			DLFileEntryTypeList.addAll(findByGroupId(groupIds, start, end,
+					orderByComparator));
+
+			Long[] enabledGroupIdsArray = enabledGroupIdsList.toArray(new Long[enabledGroupIdsList.size()]);
+
+			groupIds = ArrayUtil.toArray(enabledGroupIdsArray);
 		}
 
 		StringBundler query = new StringBundler();
@@ -2369,8 +2397,18 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 				q.addEntity(_FILTER_ENTITY_TABLE, DLFileEntryTypeImpl.class);
 			}
 
-			return (List<DLFileEntryType>)QueryUtil.list(q, getDialect(),
-				start, end);
+			if (notEnabledGroupIdsList.size() > 0) {
+				List<DLFileEntryType> result = (List<DLFileEntryType>)QueryUtil.list(q,
+						getDialect(), start, end);
+
+				DLFileEntryTypeList.addAll(result);
+
+				return DLFileEntryTypeList;
+			}
+			else {
+				return (List<DLFileEntryType>)QueryUtil.list(q, getDialect(),
+					start, end);
+			}
 		}
 		catch (Exception e) {
 			throw processException(e);

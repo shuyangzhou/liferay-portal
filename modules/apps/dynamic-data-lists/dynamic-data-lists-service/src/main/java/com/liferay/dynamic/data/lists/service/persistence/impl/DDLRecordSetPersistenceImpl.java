@@ -51,6 +51,7 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -2272,10 +2273,6 @@ public class DDLRecordSetPersistenceImpl extends BasePersistenceImpl<DDLRecordSe
 	@Override
 	public List<DDLRecordSet> filterFindByGroupId(long[] groupIds, int start,
 		int end, OrderByComparator<DDLRecordSet> orderByComparator) {
-		if (!InlineSQLHelperUtil.isEnabled(groupIds)) {
-			return findByGroupId(groupIds, start, end, orderByComparator);
-		}
-
 		if (groupIds == null) {
 			groupIds = new long[0];
 		}
@@ -2283,6 +2280,37 @@ public class DDLRecordSetPersistenceImpl extends BasePersistenceImpl<DDLRecordSe
 			groupIds = ArrayUtil.unique(groupIds);
 
 			Arrays.sort(groupIds);
+		}
+
+		List<Long> enabledGroupIdsList = new ArrayList<Long>();
+		List<Long> notEnabledGroupIdsList = new ArrayList<Long>();
+
+		for (long groupId : groupIds) {
+			if (!InlineSQLHelperUtil.isEnabled(groupId)) {
+				notEnabledGroupIdsList.add(groupId);
+			}
+			else {
+				enabledGroupIdsList.add(groupId);
+			}
+		}
+
+		List<DDLRecordSet> DDLRecordSetList = new ArrayList<DDLRecordSet>();
+
+		if (notEnabledGroupIdsList.size() > 0) {
+			Long[] notEnabledGroupIdsArray = notEnabledGroupIdsList.toArray(new Long[notEnabledGroupIdsList.size()]);
+
+			groupIds = ArrayUtil.toArray(notEnabledGroupIdsArray);
+
+			if (enabledGroupIdsList.size() == 0) {
+				return findByGroupId(groupIds, start, end, orderByComparator);
+			}
+
+			DDLRecordSetList.addAll(findByGroupId(groupIds, start, end,
+					orderByComparator));
+
+			Long[] enabledGroupIdsArray = enabledGroupIdsList.toArray(new Long[enabledGroupIdsList.size()]);
+
+			groupIds = ArrayUtil.toArray(enabledGroupIdsArray);
 		}
 
 		StringBundler query = new StringBundler();
@@ -2350,8 +2378,18 @@ public class DDLRecordSetPersistenceImpl extends BasePersistenceImpl<DDLRecordSe
 				q.addEntity(_FILTER_ENTITY_TABLE, DDLRecordSetImpl.class);
 			}
 
-			return (List<DDLRecordSet>)QueryUtil.list(q, getDialect(), start,
-				end);
+			if (notEnabledGroupIdsList.size() > 0) {
+				List<DDLRecordSet> result = (List<DDLRecordSet>)QueryUtil.list(q,
+						getDialect(), start, end);
+
+				DDLRecordSetList.addAll(result);
+
+				return DDLRecordSetList;
+			}
+			else {
+				return (List<DDLRecordSet>)QueryUtil.list(q, getDialect(),
+					start, end);
+			}
 		}
 		catch (Exception e) {
 			throw processException(e);
