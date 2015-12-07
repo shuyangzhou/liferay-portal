@@ -3300,6 +3300,11 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
+			<name>rootPortletURL</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
 			<name>saveState</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
@@ -5792,11 +5797,6 @@
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
-	</tag>
-	<tag>
-		<name>user-group-search-form</name>
-		<tag-class>com.liferay.taglib.ui.UserGroupSearchFormTag</tag-class>
-		<body-content>JSP</body-content>
 	</tag>
 	<tag>
 		<name>user-portrait</name>
