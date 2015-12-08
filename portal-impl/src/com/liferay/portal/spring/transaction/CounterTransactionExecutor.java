@@ -91,6 +91,8 @@ public class CounterTransactionExecutor
 				platformTransactionManager.rollback(transactionStatus);
 			}
 			catch (RuntimeException re) {
+				re.addSuppressed(throwable);
+
 				_log.error(
 					"Application exception overridden by rollback exception",
 					re);
@@ -98,6 +100,8 @@ public class CounterTransactionExecutor
 				throw re;
 			}
 			catch (Error e) {
+				e.addSuppressed(throwable);
+
 				_log.error(
 					"Application exception overridden by rollback error", e);
 
