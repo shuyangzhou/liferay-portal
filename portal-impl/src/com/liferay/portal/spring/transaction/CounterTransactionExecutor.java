@@ -21,7 +21,6 @@ import org.aopalliance.intercept.MethodInvocation;
 
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.TransactionSystemException;
 import org.springframework.transaction.interceptor.TransactionAttribute;
 
 /**
@@ -38,12 +37,6 @@ public class CounterTransactionExecutor
 
 		try {
 			platformTransactionManager.commit(transactionStatus);
-		}
-		catch (TransactionSystemException tse) {
-			_log.error(
-				"Application exception overridden by commit exception", tse);
-
-			throw tse;
 		}
 		catch (RuntimeException re) {
 			_log.error(
@@ -96,13 +89,6 @@ public class CounterTransactionExecutor
 		if (transactionAttribute.rollbackOn(throwable)) {
 			try {
 				platformTransactionManager.rollback(transactionStatus);
-			}
-			catch (TransactionSystemException tse) {
-				_log.error(
-					"Application exception overridden by rollback exception",
-					tse);
-
-				throw tse;
 			}
 			catch (RuntimeException re) {
 				_log.error(
