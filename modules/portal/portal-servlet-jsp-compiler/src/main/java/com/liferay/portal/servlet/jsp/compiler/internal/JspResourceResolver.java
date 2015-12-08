@@ -212,9 +212,7 @@ public class JspResourceResolver implements ResourceResolver {
 			urls = extraPackageMap.get(packageName);
 		}
 
-		if (((urls == null) || urls.isEmpty()) &&
-			isExportsPackage(bundleWiring, packageName)) {
-
+		if ((urls == null) || urls.isEmpty()) {
 			ClassLoader classLoader = bundleWiring.getClassLoader();
 
 			try {
