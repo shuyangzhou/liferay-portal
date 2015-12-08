@@ -503,7 +503,7 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 				sb.append(" vulnerablity using ");
 			}
 			else {
-				sb.append("Use SecureObjectInputStream");
+				sb.append("Use ProtectedObjectInputStream");
 				sb.append(" instead of ");
 			}
 
