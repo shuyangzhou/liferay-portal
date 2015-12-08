@@ -46,7 +46,7 @@
   <dependency>
    <groupId>com.github.rotty3000</groupId>
    <artifactId>phidias</artifactId>
-   <version>0.3.2</version>
+   <version>0.3.7</version>
    <scope>compile</scope>
   </dependency>
   <dependency>
