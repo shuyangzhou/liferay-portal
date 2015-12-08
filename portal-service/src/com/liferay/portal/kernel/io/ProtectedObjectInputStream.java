@@ -30,9 +30,9 @@ import java.util.regex.Pattern;
 /**
  * @author Mika Koivisto
  */
-public class SecureObjectInputStream extends ObjectInputStream {
+public class ProtectedObjectInputStream extends ObjectInputStream {
 
-	public SecureObjectInputStream(InputStream in) throws IOException {
+	public ProtectedObjectInputStream(InputStream in) throws IOException {
 		super(in);
 	}
 
@@ -82,7 +82,7 @@ public class SecureObjectInputStream extends ObjectInputStream {
 	static {
 		String[] allowedClassesRegex = StringUtil.split(
 			System.getProperty(
-				SecureObjectInputStream.class.getName() +
+				ProtectedObjectInputStream.class.getName() +
 					".allowed.classes.regex"));
 
 		List<Pattern> patterns = new ArrayList<>(allowedClassesRegex.length);
@@ -96,7 +96,7 @@ public class SecureObjectInputStream extends ObjectInputStream {
 
 		String[] restrictedClassesRegex = StringUtil.split(
 			System.getProperty(
-				SecureObjectInputStream.class.getName() +
+				ProtectedObjectInputStream.class.getName() +
 					".restricted.classes.regex"));
 
 		patterns = new ArrayList<>(restrictedClassesRegex.length);
