@@ -719,6 +719,8 @@ AUI.add(
 					function(calendarList) {
 						var calendars = calendarList.get('calendars');
 
+						var defaultCalendarId = CalendarUtil.DEFAULT_USER_CALENDAR_ID;
+
 						A.each(
 							calendars,
 							function(item, index) {
@@ -729,8 +731,23 @@ AUI.add(
 								if (item.get('visible')) {
 									visibleCalendars[calendarId] = item;
 								}
+
+								if (item.get('defaultCalendar')) {
+									var calendarResourceId = item.get('calendarResourceId');
+
+									if (calendarResourceId == Liferay.CalendarUtil.GROUP_CALENDAR_RESOURCE_ID && item.get('permissions').MANAGE_BOOKINGS) {
+										defaultCalendarId = calendarId;
+									}
+									else if (calendarResourceId == Liferay.CalendarUtil.USER_CALENDAR_RESOURCE_ID && defaultCalendarId == null) {
+										defaultCalendarId = calendarId;
+									}
+								}
 							}
 						);
+
+						if (defaultCalendarId != null) {
+							CalendarUtil.DEFAULT_USER_CALENDAR_ID = defaultCalendarId;
+						}
 					}
 				);
 
@@ -879,7 +896,18 @@ AUI.add(
 				A.each(
 					schedulerEvents,
 					function(schedulerEvent) {
-						schedulerEvent.set('status', calendarBooking.status);
+						if (calendarBooking.status === CalendarWorkflow.STATUS_DENIED) {
+							var scheduler = schedulerEvent.get('scheduler');
+
+							var eventRecorder = scheduler.get('eventRecorder');
+
+							eventRecorder.hidePopover();
+
+							CalendarUtil.destroyEvent(schedulerEvent);
+						}
+						else {
+							schedulerEvent.set('status', calendarBooking.status);
+						}
 					}
 				);
 			}
