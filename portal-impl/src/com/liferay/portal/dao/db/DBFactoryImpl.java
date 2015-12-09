@@ -17,6 +17,7 @@ package com.liferay.portal.dao.db;
 import com.liferay.portal.dao.orm.hibernate.DialectImpl;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBFactory;
+import com.liferay.portal.kernel.dao.db.DBType;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.pacl.DoPrivileged;
@@ -74,6 +75,54 @@ public class DBFactoryImpl implements DBFactory {
 	}
 
 	@Override
+	public DB getDB(DBType dbType, DataSource dataSource) {
+		int dbMajorVersion = 0;
+		int dbMinorVersion = 0;
+
+		if (dataSource != null) {
+			try (Connection connection = dataSource.getConnection()) {
+				DatabaseMetaData databaseMetaData = connection.getMetaData();
+
+				dbMajorVersion = databaseMetaData.getDatabaseMajorVersion();
+				dbMinorVersion = databaseMetaData.getDatabaseMinorVersion();
+			}
+			catch (SQLException sqle) {
+				return ReflectionUtil.throwException(sqle);
+			}
+		}
+
+		if (dbType == DBType.DB2) {
+			return new DB2DB(dbMajorVersion, dbMinorVersion);
+		}
+
+		if (dbType == DBType.HYPERSONIC) {
+			return new HypersonicDB(dbMajorVersion, dbMinorVersion);
+		}
+
+		if (dbType == DBType.MYSQL) {
+			return new MySQLDB(dbMajorVersion, dbMinorVersion);
+		}
+
+		if (dbType == DBType.ORACLE) {
+			return new OracleDB(dbMajorVersion, dbMinorVersion);
+		}
+
+		if (dbType == DBType.POSTGRESQL) {
+			return new PostgreSQLDB(dbMajorVersion, dbMinorVersion);
+		}
+
+		if (dbType == DBType.SQLSERVER) {
+			return new SQLServerDB(dbMajorVersion, dbMinorVersion);
+		}
+
+		if (dbType == DBType.SYBASE) {
+			return new SybaseDB(dbMajorVersion, dbMinorVersion);
+		}
+
+		throw new IllegalArgumentException("Unknown database type " + dbType);
+	}
+
+	@Override
 	public DB getDB(Object dialect, DataSource dataSource) {
 		if (dialect instanceof DialectImpl) {
 			DialectImpl dialectImpl = (DialectImpl)dialect;
@@ -119,51 +168,16 @@ public class DBFactoryImpl implements DBFactory {
 	}
 
 	@Override
-	public DB getDB(String type, DataSource dataSource) {
-		int dbMajorVersion = 0;
-		int dbMinorVersion = 0;
+	public void setDB(DBType dbType, DataSource dataSource) {
+		_db = getDB(dbType, dataSource);
 
-		if (dataSource != null) {
-			try (Connection connection = dataSource.getConnection()) {
-				DatabaseMetaData databaseMetaData = connection.getMetaData();
+		if (_log.isDebugEnabled()) {
+			Class<?> clazz = _db.getClass();
 
-				dbMajorVersion = databaseMetaData.getDatabaseMajorVersion();
-				dbMinorVersion = databaseMetaData.getDatabaseMinorVersion();
-			}
-			catch (SQLException sqle) {
-				return ReflectionUtil.throwException(sqle);
-			}
+			_log.debug(
+				"Using DB implementation " + clazz.getName() + " for " +
+					dbType);
 		}
-
-		if (type.equals(DB.TYPE_DB2)) {
-			return new DB2DB(dbMajorVersion, dbMinorVersion);
-		}
-
-		if (type.equals(DB.TYPE_HYPERSONIC)) {
-			return new HypersonicDB(dbMajorVersion, dbMinorVersion);
-		}
-
-		if (type.equals(DB.TYPE_MYSQL)) {
-			return new MySQLDB(dbMajorVersion, dbMinorVersion);
-		}
-
-		if (type.equals(DB.TYPE_ORACLE)) {
-			return new OracleDB(dbMajorVersion, dbMinorVersion);
-		}
-
-		if (type.equals(DB.TYPE_POSTGRESQL)) {
-			return new PostgreSQLDB(dbMajorVersion, dbMinorVersion);
-		}
-
-		if (type.equals(DB.TYPE_SQLSERVER)) {
-			return new SQLServerDB(dbMajorVersion, dbMinorVersion);
-		}
-
-		if (type.equals(DB.TYPE_SYBASE)) {
-			return new SybaseDB(dbMajorVersion, dbMinorVersion);
-		}
-
-		throw new IllegalArgumentException("Unknown database type " + type);
 	}
 
 	@Override
@@ -177,18 +191,6 @@ public class DBFactoryImpl implements DBFactory {
 			_log.debug(
 				"Using DB implementation " + dbClazz.getName() + " for " +
 					dialectClazz.getName());
-		}
-	}
-
-	@Override
-	public void setDB(String type, DataSource dataSource) {
-		_db = getDB(type, dataSource);
-
-		if (_log.isDebugEnabled()) {
-			Class<?> clazz = _db.getClass();
-
-			_log.debug(
-				"Using DB implementation " + clazz.getName() + " for " + type);
 		}
 	}
 
