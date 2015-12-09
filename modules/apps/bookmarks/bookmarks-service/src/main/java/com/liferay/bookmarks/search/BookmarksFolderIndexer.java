@@ -149,10 +149,6 @@ public class BookmarksFolderIndexer extends BaseIndexer<BookmarksFolder> {
 				getSearchEngineId(), bookmarksFolder.getCompanyId(), document,
 				isCommitImmediately());
 		}
-
-		SearchEngineUtil.updateDocument(
-			getSearchEngineId(), bookmarksFolder.getCompanyId(), document,
-			isCommitImmediately());
 	}
 
 	@Override
