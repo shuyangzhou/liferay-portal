@@ -12,27 +12,22 @@
  * details.
  */
 
-package com.liferay.portal.cluster;
+package com.liferay.portal.cluster.internal;
 
-import com.liferay.portal.kernel.cluster.Address;
-
-import java.util.List;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
 
 /**
  * @author Tina Tian
  */
-public interface ClusterReceiver {
+public interface ClusterChannelFactory {
 
-	public void addressesUpdated(List<Address> addresses);
+	public ClusterChannel createClusterChannel(
+		String channelProperties, String clusterName,
+		ClusterReceiver clusterReceiver);
 
-	public void coordinatorAddressUpdated(Address coordinatorAddress);
+	public InetAddress getBindInetAddress();
 
-	public List<Address> getAddresses();
-
-	public Address getCoordinatorAddress();
-
-	public void openLatch();
-
-	public void receive(Object messagePayload, Address srcAddress);
+	public NetworkInterface getBindNetworkInterface();
 
 }
