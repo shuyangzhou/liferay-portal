@@ -16,11 +16,11 @@ package com.liferay.portal.util;
 
 import com.liferay.portal.bean.BeanLocatorImpl;
 import com.liferay.portal.configuration.ConfigurationFactoryImpl;
-import com.liferay.portal.dao.db.DBFactoryImpl;
 import com.liferay.portal.dao.jdbc.DataSourceFactoryImpl;
 import com.liferay.portal.kernel.bean.BeanLocator;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
+import com.liferay.portal.kernel.dao.db.DBFactory;
 import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataSourceFactoryUtil;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -42,7 +42,9 @@ import com.liferay.util.log4j.Log4JUtil;
 
 import com.sun.syndication.io.XmlReader;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.ServiceLoader;
 
 import org.apache.commons.lang.time.StopWatch;
 
@@ -141,7 +143,12 @@ public class InitUtil {
 
 		// DB factory
 
-		DBFactoryUtil.setDBFactory(DoPrivilegedUtil.wrap(new DBFactoryImpl()));
+		ServiceLoader<DBFactory> serviceLoader = ServiceLoader.load(
+			DBFactory.class, InitUtil.class.getClassLoader());
+
+		Iterator<DBFactory> iterator = serviceLoader.iterator();
+
+		DBFactoryUtil.setDBFactory(DoPrivilegedUtil.wrap(iterator.next()));
 
 		// ROME
 

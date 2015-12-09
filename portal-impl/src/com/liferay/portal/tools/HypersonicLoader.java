@@ -14,13 +14,14 @@
 
 package com.liferay.portal.tools;
 
-import com.liferay.portal.dao.db.HypersonicDB;
 import com.liferay.portal.kernel.dao.db.DB;
+import com.liferay.portal.kernel.dao.db.DBFactory;
 import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.util.InitUtil;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -30,8 +31,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.ServiceLoader;
 
 /**
  * @author Brian Wing Shun Chan
@@ -56,7 +59,14 @@ public class HypersonicLoader {
 			sb.append(StringPool.NEW_LINE);
 		}
 
-		DB db = new HypersonicDB(0, 0);
+		ServiceLoader<DBFactory> serviceLoader = ServiceLoader.load(
+			DBFactory.class, InitUtil.class.getClassLoader());
+
+		Iterator<DBFactory> iterator = serviceLoader.iterator();
+
+		DBFactory dbFactory = iterator.next();
+
+		DB db = dbFactory.getDB(DB.TYPE_HYPERSONIC, null);
 
 		db.runSQLTemplateString(con, sb.toString(), false, true);
 	}
