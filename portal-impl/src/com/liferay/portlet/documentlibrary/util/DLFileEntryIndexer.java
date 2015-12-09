@@ -593,10 +593,7 @@ public class DLFileEntryIndexer
 					try {
 						Document document = getDocument(dlFileEntry);
 
-						if (document != null) {
-							indexableActionableDynamicQuery.addDocuments(
-								document);
-						}
+						indexableActionableDynamicQuery.addDocuments(document);
 					}
 					catch (PortalException pe) {
 						if (_log.isWarnEnabled()) {

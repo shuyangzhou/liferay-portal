@@ -189,10 +189,7 @@ public class DLFolderIndexer
 					try {
 						Document document = getDocument(dlFolder);
 
-						if (document != null) {
-							indexableActionableDynamicQuery.addDocuments(
-								document);
-						}
+						indexableActionableDynamicQuery.addDocuments(document);
 					}
 					catch (PortalException pe) {
 						if (_log.isWarnEnabled()) {
