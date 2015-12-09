@@ -199,11 +199,9 @@ public class AssetCategoryIndexer extends BaseIndexer<AssetCategory> {
 	protected void doReindex(AssetCategory assetCategory) throws Exception {
 		Document document = getDocument(assetCategory);
 
-		if (document != null) {
-			SearchEngineUtil.updateDocument(
-				getSearchEngineId(), assetCategory.getCompanyId(), document,
-				isCommitImmediately());
-		}
+		SearchEngineUtil.updateDocument(
+			getSearchEngineId(), assetCategory.getCompanyId(), document,
+			isCommitImmediately());
 	}
 
 	@Override

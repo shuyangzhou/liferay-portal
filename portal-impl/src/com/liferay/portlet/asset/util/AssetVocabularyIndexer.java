@@ -143,11 +143,9 @@ public class AssetVocabularyIndexer extends BaseIndexer<AssetVocabulary> {
 	protected void doReindex(AssetVocabulary assetVocabulary) throws Exception {
 		Document document = getDocument(assetVocabulary);
 
-		if (document != null) {
-			SearchEngineUtil.updateDocument(
-				getSearchEngineId(), assetVocabulary.getCompanyId(), document,
-				isCommitImmediately());
-		}
+		SearchEngineUtil.updateDocument(
+			getSearchEngineId(), assetVocabulary.getCompanyId(), document,
+			isCommitImmediately());
 	}
 
 	@Override

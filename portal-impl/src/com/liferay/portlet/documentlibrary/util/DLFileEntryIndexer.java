@@ -506,11 +506,9 @@ public class DLFileEntryIndexer
 
 		Document document = getDocument(dlFileEntry);
 
-		if (document != null) {
-			SearchEngineUtil.updateDocument(
-				getSearchEngineId(), dlFileEntry.getCompanyId(), document,
-				isCommitImmediately());
-		}
+		SearchEngineUtil.updateDocument(
+			getSearchEngineId(), dlFileEntry.getCompanyId(), document,
+			isCommitImmediately());
 	}
 
 	@Override

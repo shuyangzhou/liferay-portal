@@ -152,11 +152,9 @@ public class DLFolderIndexer
 
 		Document document = getDocument(dlFolder);
 
-		if (document != null) {
-			SearchEngineUtil.updateDocument(
-				getSearchEngineId(), dlFolder.getCompanyId(), document,
-				isCommitImmediately());
-		}
+		SearchEngineUtil.updateDocument(
+			getSearchEngineId(), dlFolder.getCompanyId(), document,
+			isCommitImmediately());
 	}
 
 	@Override

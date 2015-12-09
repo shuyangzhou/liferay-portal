@@ -157,11 +157,9 @@ public class ContactIndexer extends BaseIndexer<Contact> {
 	protected void doReindex(Contact contact) throws Exception {
 		Document document = getDocument(contact);
 
-		if (document != null) {
-			SearchEngineUtil.updateDocument(
-				getSearchEngineId(), contact.getCompanyId(), document,
-				isCommitImmediately());
-		}
+		SearchEngineUtil.updateDocument(
+			getSearchEngineId(), contact.getCompanyId(), document,
+			isCommitImmediately());
 	}
 
 	@Override
