@@ -132,11 +132,11 @@ public class BookmarksFolderIndexer extends BaseIndexer<BookmarksFolder> {
 
 	@Override
 	protected void doReindex(BookmarksFolder bookmarksFolder) throws Exception {
-		Document document = getDocument(bookmarksFolder);
-
 		if (!bookmarksFolder.isApproved() && !bookmarksFolder.isInTrash()) {
 			return;
 		}
+
+		Document document = getDocument(bookmarksFolder);
 
 		SearchEngineUtil.updateDocument(
 			getSearchEngineId(), bookmarksFolder.getCompanyId(), document,
