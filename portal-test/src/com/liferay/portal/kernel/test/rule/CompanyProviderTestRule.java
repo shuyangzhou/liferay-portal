@@ -12,29 +12,20 @@
  * details.
  */
 
-package com.liferay.portal.kernel.util;
+package com.liferay.portal.kernel.test.rule;
 
-import java.io.IOException;
-
-import java.sql.SQLException;
-
-import javax.naming.NamingException;
+import com.liferay.portal.kernel.test.rule.callback.CompanyProviderTestCallback;
 
 /**
- * @author     Ganesh Ram
- * @author     Brian Wing Shun Chan
- * @deprecated As of 6.1.0, replaced by {@link
- *             com.liferay.portal.kernel.dao.db.DB}
+ * @author Cristina González
  */
-@Deprecated
-public interface Database {
+public class CompanyProviderTestRule extends BaseTestRule<Long, Long> {
 
-	public String getType();
+	public static final CompanyProviderTestRule INSTANCE =
+		new CompanyProviderTestRule();
 
-	public void runSQLTemplate(String path)
-		throws IOException, NamingException, SQLException;
-
-	public void runSQLTemplate(String path, boolean failOnError)
-		throws IOException, NamingException, SQLException;
+	public CompanyProviderTestRule() {
+		super(CompanyProviderTestCallback.INSTANCE);
+	}
 
 }
