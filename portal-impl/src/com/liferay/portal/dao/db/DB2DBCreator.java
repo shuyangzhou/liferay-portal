@@ -12,29 +12,25 @@
  * details.
  */
 
-package com.liferay.portal.kernel.util;
+package com.liferay.portal.dao.db;
 
-import java.io.IOException;
-
-import java.sql.SQLException;
-
-import javax.naming.NamingException;
+import com.liferay.portal.kernel.dao.db.DB;
+import com.liferay.portal.kernel.dao.db.DBCreator;
+import com.liferay.portal.kernel.dao.db.DBType;
 
 /**
- * @author     Ganesh Ram
- * @author     Brian Wing Shun Chan
- * @deprecated As of 6.1.0, replaced by {@link
- *             com.liferay.portal.kernel.dao.db.DB}
+ * @author Shuyang Zhou
  */
-@Deprecated
-public interface Database {
+public class DB2DBCreator implements DBCreator {
 
-	public String getType();
+	@Override
+	public DB create(int dbMajorVersion, int dbMinorVersion) {
+		return new DB2DB(dbMajorVersion, dbMinorVersion);
+	}
 
-	public void runSQLTemplate(String path)
-		throws IOException, NamingException, SQLException;
-
-	public void runSQLTemplate(String path, boolean failOnError)
-		throws IOException, NamingException, SQLException;
+	@Override
+	public DBType getDBType() {
+		return DBType.DB2;
+	}
 
 }

@@ -12,29 +12,25 @@
  * details.
  */
 
-package com.liferay.portal.dao.orm.common;
+package com.liferay.portal.dao.db;
 
+import com.liferay.portal.kernel.dao.db.DB;
+import com.liferay.portal.kernel.dao.db.DBCreator;
 import com.liferay.portal.kernel.dao.db.DBType;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 /**
- * @author Alberto Chaparro
- * @author Miguel Pastor
+ * @author Shuyang Zhou
  */
-public class OracleSQLTransformerTest extends BaseSQLTransformerTestCase {
+public class SybaseDBCreator implements DBCreator {
 
-	@Test
-	public void testReplaceNotEqualsBlankStringComparison() {
-		Assert.assertEquals(
-			"SELECT * FROM User_ WHERE emailAddress IS NOT NULL",
-			transformSQL("SELECT * FROM User_ WHERE emailAddress != ''"));
+	@Override
+	public DB create(int dbMajorVersion, int dbMinorVersion) {
+		return new SybaseDB(dbMajorVersion, dbMinorVersion);
 	}
 
 	@Override
-	protected DBType getDBType() {
-		return DBType.ORACLE;
+	public DBType getDBType() {
+		return DBType.SYBASE;
 	}
 
 }

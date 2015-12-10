@@ -12,29 +12,15 @@
  * details.
  */
 
-package com.liferay.portal.dao.orm.common;
-
-import com.liferay.portal.kernel.dao.db.DBType;
-
-import org.junit.Assert;
-import org.junit.Test;
+package com.liferay.portal.kernel.dao.db;
 
 /**
- * @author Alberto Chaparro
- * @author Miguel Pastor
+ * @author Shuyang Zhou
  */
-public class OracleSQLTransformerTest extends BaseSQLTransformerTestCase {
+public interface DBCreator {
 
-	@Test
-	public void testReplaceNotEqualsBlankStringComparison() {
-		Assert.assertEquals(
-			"SELECT * FROM User_ WHERE emailAddress IS NOT NULL",
-			transformSQL("SELECT * FROM User_ WHERE emailAddress != ''"));
-	}
+	public DB create(int dbMajorVersion, int dbMinorVersion);
 
-	@Override
-	protected DBType getDBType() {
-		return DBType.ORACLE;
-	}
+	public DBType getDBType();
 
 }
