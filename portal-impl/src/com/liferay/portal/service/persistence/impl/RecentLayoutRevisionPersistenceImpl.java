@@ -2041,6 +2041,8 @@ public class RecentLayoutRevisionPersistenceImpl extends BasePersistenceImpl<Rec
 		recentLayoutRevision.setNew(true);
 		recentLayoutRevision.setPrimaryKey(recentLayoutRevisionId);
 
+		recentLayoutRevision.setCompanyId(companyProvider.getCompanyId());
+
 		return recentLayoutRevision;
 	}
 
