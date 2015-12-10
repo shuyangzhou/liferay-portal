@@ -2029,6 +2029,8 @@ public class RecentLayoutBranchPersistenceImpl extends BasePersistenceImpl<Recen
 		recentLayoutBranch.setNew(true);
 		recentLayoutBranch.setPrimaryKey(recentLayoutBranchId);
 
+		recentLayoutBranch.setCompanyId(companyProvider.getCompanyId());
+
 		return recentLayoutBranch;
 	}
 
