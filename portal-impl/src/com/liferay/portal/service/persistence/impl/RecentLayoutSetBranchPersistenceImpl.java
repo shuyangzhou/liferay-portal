@@ -2010,6 +2010,8 @@ public class RecentLayoutSetBranchPersistenceImpl extends BasePersistenceImpl<Re
 		recentLayoutSetBranch.setNew(true);
 		recentLayoutSetBranch.setPrimaryKey(recentLayoutSetBranchId);
 
+		recentLayoutSetBranch.setCompanyId(companyProvider.getCompanyId());
+
 		return recentLayoutSetBranch;
 	}
 
