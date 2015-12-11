@@ -260,8 +260,27 @@ public class PortletPreferencesLocalServiceImpl
 			portletId = portlet.getRootPortletId();
 		}
 
-		return portletPreferencesFinder.countByO_O_P_P_P(
-			ownerId, ownerType, plid, portletId, excludeDefaultPreferences);
+		if (excludeDefaultPreferences) {
+			return portletPreferencesFinder.countByO_O_P_P_P(
+				ownerId, ownerType, plid, portletId, true);
+		}
+
+		if ((ownerId != -1) && (plid != -1)) {
+			return portletPreferencesPersistence.countByO_O_P_P(
+				ownerId, ownerType, plid, portletId);
+		}
+
+		if (ownerId != -1) {
+			return portletPreferencesPersistence.countByO_O_PI(
+				ownerId, ownerType, portletId);
+		}
+
+		if (plid != -1) {
+			return portletPreferencesPersistence.countByO_P_P(
+				ownerType, plid, portletId);
+		}
+
+		return portletPreferencesPersistence.countByO_P(ownerType, portletId);
 	}
 
 	@Override
@@ -269,8 +288,17 @@ public class PortletPreferencesLocalServiceImpl
 		long ownerId, int ownerType, String portletId,
 		boolean excludeDefaultPreferences) {
 
-		return portletPreferencesFinder.countByO_O_P(
-			ownerId, ownerType, portletId, excludeDefaultPreferences);
+		if (excludeDefaultPreferences) {
+			return portletPreferencesFinder.countByO_O_P(
+				ownerId, ownerType, portletId, true);
+		}
+
+		if (ownerId != -1) {
+			return portletPreferencesPersistence.countByO_O_PI(
+				ownerId, ownerType, portletId);
+		}
+
+		return portletPreferencesPersistence.countByO_P(ownerType, portletId);
 	}
 
 	@Override
