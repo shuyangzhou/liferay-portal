@@ -41,4 +41,7 @@ public class CompanyProviderTestCallback extends BaseTestCallback<Long, Void> {
 		return previousCompanyId;
 	}
 
+	private CompanyProviderTestCallback() {
+	}
+
 }
