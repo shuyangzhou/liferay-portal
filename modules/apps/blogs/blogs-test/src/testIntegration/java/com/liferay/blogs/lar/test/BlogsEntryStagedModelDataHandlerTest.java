@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.servlet.taglib.ui.ImageSelector;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.rule.CompanyProviderTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
@@ -64,7 +65,8 @@ public class BlogsEntryStagedModelDataHandlerTest
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
 		new AggregateTestRule(
-			new LiferayIntegrationTestRule(), TransactionalTestRule.INSTANCE);
+			new LiferayIntegrationTestRule(), CompanyProviderTestRule.INSTANCE,
+			TransactionalTestRule.INSTANCE);
 
 	@Test
 	public void testImportedCoverImage() throws Exception {
