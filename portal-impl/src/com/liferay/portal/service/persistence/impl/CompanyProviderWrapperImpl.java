@@ -15,13 +15,13 @@
 package com.liferay.portal.service.persistence.impl;
 
 import com.liferay.portal.service.persistence.CompanyProvider;
-import com.liferay.portal.service.persistence.CompanyProviderFactory;
+import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 
 /**
  * @author Miguel Pastor
  * @author Cristina González
  */
-public class CompanyProviderFactoryImpl implements CompanyProviderFactory {
+public class CompanyProviderWrapperImpl implements CompanyProviderWrapper {
 
 	@Override
 	public long getCompanyId() {
