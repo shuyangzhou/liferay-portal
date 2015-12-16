@@ -73,7 +73,14 @@ public class PortalCacheConfiguration {
 			_portalCacheBootstrapLoaderProperties);
 	}
 
-	private final Properties _portalCacheBootstrapLoaderProperties;
+	public void setPortalCacheBootstrapLoaderProperties(
+		Properties portalCacheBootstrapLoaderProperties) {
+
+		_portalCacheBootstrapLoaderProperties =
+			portalCacheBootstrapLoaderProperties;
+	}
+
+	private Properties _portalCacheBootstrapLoaderProperties;
 	private final Set<Properties> _portalCacheListenerPropertiesSet;
 	private final String _portalCacheName;
 

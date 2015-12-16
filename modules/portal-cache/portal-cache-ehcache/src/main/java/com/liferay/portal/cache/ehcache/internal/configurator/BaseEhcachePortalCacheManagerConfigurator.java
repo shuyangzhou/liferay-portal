@@ -92,12 +92,7 @@ public abstract class BaseEhcachePortalCacheManagerConfigurator {
 			return;
 		}
 
-		FactoryConfiguration<?> factoryConfiguration =
-			cacheConfiguration.getBootstrapCacheLoaderFactoryConfiguration();
-
-		if (factoryConfiguration != null) {
-			cacheConfiguration.addBootstrapCacheLoaderFactory(null);
-		}
+		cacheConfiguration.bootstrapCacheLoaderFactory(null);
 
 		List<?> factoryConfigurations =
 			cacheConfiguration.getCacheEventListenerConfigurations();
@@ -188,9 +183,6 @@ public abstract class BaseEhcachePortalCacheManagerConfigurator {
 		return true;
 	}
 
-	protected abstract Properties parseBootstrapCacheLoaderConfigurations(
-		FactoryConfiguration<?> factoryConfiguration);
-
 	protected Set<Properties> parseCacheEventListenerConfigurations(
 		List<CacheEventListenerFactoryConfiguration>
 			cacheEventListenerConfigurations,
@@ -252,17 +244,12 @@ public abstract class BaseEhcachePortalCacheManagerConfigurator {
 					cacheConfiguration.getCacheEventListenerConfigurations(),
 				usingDefault);
 
-		Properties portalCacheBootstrapLoaderProperties =
-			parseBootstrapCacheLoaderConfigurations(
-				cacheConfiguration.
-					getBootstrapCacheLoaderFactoryConfiguration());
-
 		boolean requireSerialization = isRequireSerialization(
 			cacheConfiguration);
 
 		return new EhcachePortalCacheConfiguration(
-			portalCacheName, portalCacheListenerPropertiesSet,
-			portalCacheBootstrapLoaderProperties, requireSerialization);
+			portalCacheName, portalCacheListenerPropertiesSet, null,
+			requireSerialization);
 	}
 
 	protected Set<Properties>

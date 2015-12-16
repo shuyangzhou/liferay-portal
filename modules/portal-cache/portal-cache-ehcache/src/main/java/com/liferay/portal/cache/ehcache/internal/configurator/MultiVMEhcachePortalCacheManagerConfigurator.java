@@ -15,7 +15,7 @@
 package com.liferay.portal.cache.ehcache.internal.configurator;
 
 import com.liferay.portal.cache.PortalCacheReplicator;
-import com.liferay.portal.cache.ehcache.EhcacheConstants;
+import com.liferay.portal.cache.configuration.PortalCacheConfiguration;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -23,7 +23,6 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import java.util.Properties;
 
 import net.sf.ehcache.config.CacheConfiguration;
-import net.sf.ehcache.config.FactoryConfiguration;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -45,8 +44,6 @@ public class MultiVMEhcachePortalCacheManagerConfigurator
 			props.get(PropsKeys.EHCACHE_BOOTSTRAP_CACHE_LOADER_ENABLED));
 		_clusterEnabled = GetterUtil.getBoolean(
 			props.get(PropsKeys.CLUSTER_LINK_ENABLED));
-		_clusterLinkReplicationEnabled = GetterUtil.getBoolean(
-			props.get(PropsKeys.EHCACHE_CLUSTER_LINK_REPLICATION_ENABLED));
 	}
 
 	@Override
@@ -74,27 +71,21 @@ public class MultiVMEhcachePortalCacheManagerConfigurator
 	}
 
 	@Override
-	protected Properties parseBootstrapCacheLoaderConfigurations(
-		FactoryConfiguration<?> factoryConfiguration) {
+	protected PortalCacheConfiguration parseCacheListenerConfigurations(
+		CacheConfiguration cacheConfiguration, boolean usingDefault) {
 
-		if ((factoryConfiguration == null) || !_clusterEnabled ||
-			!_bootstrapLoaderEnabled) {
+		PortalCacheConfiguration portalCacheConfiguration =
+			super.parseCacheListenerConfigurations(
+				cacheConfiguration, usingDefault);
 
-			return null;
+		if (!_clusterEnabled || !_bootstrapLoaderEnabled) {
+			return portalCacheConfiguration;
 		}
 
-		Properties portalCacheBootstrapLoaderProperties = parseProperties(
-			factoryConfiguration.getProperties(),
-			factoryConfiguration.getPropertySeparator());
+		portalCacheConfiguration.setPortalCacheBootstrapLoaderProperties(
+			new Properties());
 
-		if (!_clusterLinkReplicationEnabled) {
-			portalCacheBootstrapLoaderProperties.put(
-				EhcacheConstants.
-					BOOTSTRAP_CACHE_LOADER_FACTORY_CLASS_NAME,
-				factoryConfiguration.getFullyQualifiedClassPath());
-		}
-
-		return portalCacheBootstrapLoaderProperties;
+		return portalCacheConfiguration;
 	}
 
 	@Reference(unbind = "-")
@@ -104,6 +95,5 @@ public class MultiVMEhcachePortalCacheManagerConfigurator
 
 	private boolean _bootstrapLoaderEnabled;
 	private boolean _clusterEnabled;
-	private boolean _clusterLinkReplicationEnabled;
 
 }
