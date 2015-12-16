@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.util.PortalLifecycle;
 import com.liferay.portal.kernel.util.PortalLifecycleUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.module.framework.ModuleFrameworkUtilAdapter;
-import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.service.test.ServiceTestUtil;
 import com.liferay.portal.servlet.MainServlet;
 import com.liferay.portal.test.mock.AutoDeployMockServletContext;
@@ -45,7 +44,7 @@ import org.springframework.mock.web.MockServletContext;
 /**
  * @author Shuyang Zhou
  */
-public class MainServletTestCallback extends BaseTestCallback<Long, Void> {
+public class MainServletTestCallback extends BaseTestCallback<Void, Void> {
 
 	public static final MainServletTestCallback INSTANCE =
 		new MainServletTestCallback();
@@ -55,16 +54,14 @@ public class MainServletTestCallback extends BaseTestCallback<Long, Void> {
 	}
 
 	@Override
-	public void afterClass(Description description, Long previousCompanyId)
+	public void afterClass(Description description, Void c)
 		throws PortalException {
 
 		SearchEngineUtil.removeCompany(TestPropsValues.getCompanyId());
-
-		CompanyThreadLocal.setCompanyId(previousCompanyId);
 	}
 
 	@Override
-	public Long beforeClass(Description description) throws PortalException {
+	public Void beforeClass(Description description) throws PortalException {
 		if (isArquillianTest(description)) {
 			Assert.fail(
 				description.getTestClass() + " is an Arquillian test and " +
@@ -113,11 +110,7 @@ public class MainServletTestCallback extends BaseTestCallback<Long, Void> {
 
 		ServiceTestUtil.initPermissions();
 
-		long previousCompanyId = CompanyThreadLocal.getCompanyId();
-
-		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
-
-		return previousCompanyId;
+		return null;
 	}
 
 	protected MainServletTestCallback() {
