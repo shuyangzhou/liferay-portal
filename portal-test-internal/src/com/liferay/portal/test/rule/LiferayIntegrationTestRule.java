@@ -30,6 +30,7 @@ import com.liferay.portal.util.InitUtil;
 import com.liferay.portal.util.PropsUtil;
 import com.liferay.util.log4j.Log4JUtil;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -43,12 +44,21 @@ import org.junit.runners.model.Statement;
 public class LiferayIntegrationTestRule extends AggregateTestRule {
 
 	public LiferayIntegrationTestRule() {
-		super(
-			false, CITimeoutTestRule.INSTANCE, LogAssertionTestRule.INSTANCE,
-			_springInitializationTestRule,
-			SybaseDumpTransactionLogTestRule.INSTANCE,
-			_clearThreadLocalTestRule, _uniqueStringRandomizerBumperTestRule,
-			new DeleteAfterTestRunTestRule());
+		super(false, _getTestRules());
+	}
+
+	private static TestRule[] _getTestRules() {
+		List<TestRule> testRules = new ArrayList<>();
+
+		testRules.add(CITimeoutTestRule.INSTANCE);
+		testRules.add(LogAssertionTestRule.INSTANCE);
+		testRules.add(_springInitializationTestRule);
+		testRules.add(SybaseDumpTransactionLogTestRule.INSTANCE);
+		testRules.add(_clearThreadLocalTestRule);
+		testRules.add(_uniqueStringRandomizerBumperTestRule);
+		testRules.add(new DeleteAfterTestRunTestRule());
+
+		return testRules.toArray(new TestRule[testRules.size()]);
 	}
 
 	private static final TestRule _clearThreadLocalTestRule =
