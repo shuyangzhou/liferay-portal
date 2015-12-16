@@ -48,15 +48,6 @@ public class MultiVMEhcachePortalCacheManagerConfigurator
 	}
 
 	@Override
-	protected boolean isClearCacheManagerPeerConfigurations() {
-		if (_clusterEnabled && !_clusterLinkReplicationEnabled) {
-			return false;
-		}
-
-		return true;
-	}
-
-	@Override
 	protected boolean isRequireSerialization(
 		CacheConfiguration cacheConfiguration) {
 

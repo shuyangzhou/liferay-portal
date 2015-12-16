@@ -11,14 +11,6 @@
 	Caches in this file can be clustered and are configured to be clustered.
 	-->
 
-	<cacheManagerPeerProviderFactory
-		class="portalPropertyKey=ehcache.cache.manager.peer.provider.factory"
-		properties="portalPropertyKey=ehcache.multi.vm.config.location.peerProviderProperties"
-		propertySeparator=","
-	/>
-	<cacheManagerPeerListenerFactory
-		class="portalPropertyKey=ehcache.cache.manager.peer.listener.factory"
-	/>
 	<defaultCache
 		eternal="false"
 		maxElementsInMemory="10000"

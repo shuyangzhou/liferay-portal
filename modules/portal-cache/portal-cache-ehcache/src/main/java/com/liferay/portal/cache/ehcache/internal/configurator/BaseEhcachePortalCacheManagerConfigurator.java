@@ -106,18 +106,15 @@ public abstract class BaseEhcachePortalCacheManagerConfigurator {
 	}
 
 	protected void clearListenerConfigrations(Configuration configuration) {
-		if (isClearCacheManagerPeerConfigurations()) {
-			List<?> listenerFactoryConfigurations =
-				configuration.
-					getCacheManagerPeerListenerFactoryConfigurations();
+		List<?> listenerFactoryConfigurations =
+			configuration.getCacheManagerPeerListenerFactoryConfigurations();
 
-			listenerFactoryConfigurations.clear();
+		listenerFactoryConfigurations.clear();
 
-			List<?> providerFactoryConfigurations =
-				configuration.getCacheManagerPeerProviderFactoryConfiguration();
+		List<?> providerFactoryConfigurations =
+			configuration.getCacheManagerPeerProviderFactoryConfiguration();
 
-			providerFactoryConfigurations.clear();
-		}
+		providerFactoryConfigurations.clear();
 
 		FactoryConfiguration<?> factoryConfiguration =
 			configuration.getCacheManagerEventListenerFactoryConfiguration();
@@ -154,8 +151,6 @@ public abstract class BaseEhcachePortalCacheManagerConfigurator {
 
 		return null;
 	}
-
-	protected abstract boolean isClearCacheManagerPeerConfigurations();
 
 	@SuppressWarnings("deprecation")
 	protected boolean isRequireSerialization(

@@ -34,11 +34,6 @@ public class SingleVMEhcachePortalCacheManagerConfigurator
 	extends BaseEhcachePortalCacheManagerConfigurator {
 
 	@Override
-	protected boolean isClearCacheManagerPeerConfigurations() {
-		return true;
-	}
-
-	@Override
 	protected Properties parseBootstrapCacheLoaderConfigurations(
 		FactoryConfiguration<?> factoryConfiguration) {
 
