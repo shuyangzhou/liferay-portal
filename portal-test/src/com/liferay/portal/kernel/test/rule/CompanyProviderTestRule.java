@@ -24,7 +24,7 @@ public class CompanyProviderTestRule extends BaseTestRule<Long, Void> {
 	public static final CompanyProviderTestRule INSTANCE =
 		new CompanyProviderTestRule();
 
-	public CompanyProviderTestRule() {
+	private CompanyProviderTestRule() {
 		super(CompanyProviderTestCallback.INSTANCE);
 	}
 
