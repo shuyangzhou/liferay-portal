@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -124,9 +123,7 @@ public class BeanReferenceAnnotationBeanPostProcessor
 				continue;
 			}
 
-			if (!Object.class.equals(referencedBeanType) &&
-				referencedBeanName.equals(StringPool.BLANK)) {
-
+			if (!Object.class.equals(referencedBeanType)) {
 				referencedBeanName = referencedBeanType.getName();
 			}
 
