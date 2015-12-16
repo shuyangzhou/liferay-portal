@@ -41,6 +41,8 @@ public class MultiVMEhcachePortalCacheManagerConfigurator
 
 	@Activate
 	protected void activate() {
+		_bootstrapLoaderEnabled = GetterUtil.getBoolean(
+			props.get(PropsKeys.EHCACHE_BOOTSTRAP_CACHE_LOADER_ENABLED));
 		_clusterEnabled = GetterUtil.getBoolean(
 			props.get(PropsKeys.CLUSTER_LINK_ENABLED));
 		_clusterLinkReplicationEnabled = GetterUtil.getBoolean(
@@ -75,7 +77,9 @@ public class MultiVMEhcachePortalCacheManagerConfigurator
 	protected Properties parseBootstrapCacheLoaderConfigurations(
 		FactoryConfiguration<?> factoryConfiguration) {
 
-		if ((factoryConfiguration == null) || !_clusterEnabled) {
+		if ((factoryConfiguration == null) || !_clusterEnabled ||
+			!_bootstrapLoaderEnabled) {
+
 			return null;
 		}
 
@@ -98,6 +102,7 @@ public class MultiVMEhcachePortalCacheManagerConfigurator
 		this.props = props;
 	}
 
+	private boolean _bootstrapLoaderEnabled;
 	private boolean _clusterEnabled;
 	private boolean _clusterLinkReplicationEnabled;
 
