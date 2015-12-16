@@ -14,6 +14,7 @@
 
 package com.liferay.portal.security.pacl.test;
 
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.GroupWrapper;
@@ -41,14 +42,14 @@ public class ExpandoBridgeTest {
 	public static final PACLTestRule paclTestRule = new PACLTestRule();
 
 	@BeforeClass
-	public static void setUpClass() throws Exception {
+	public static void setUpClass() throws PortalException {
 		_previousCompanyId = CompanyThreadLocal.getCompanyId();
 
 		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
 	}
 
 	@AfterClass
-	public static void tearDownClass() throws Exception {
+	public static void tearDownClass() {
 		CompanyThreadLocal.setCompanyId(_previousCompanyId);
 	}
 
