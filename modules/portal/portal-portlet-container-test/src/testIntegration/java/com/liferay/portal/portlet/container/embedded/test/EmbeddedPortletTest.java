@@ -17,7 +17,6 @@ package com.liferay.portal.portlet.container.embedded.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.portal.kernel.template.TemplateHandler;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
-import com.liferay.portal.kernel.test.rule.CompanyProviderTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
@@ -85,7 +84,6 @@ public class EmbeddedPortletTest {
 		public static final AggregateTestRule aggregateTestRule =
 			new AggregateTestRule(
 				new LiferayIntegrationTestRule(),
-				CompanyProviderTestRule.INSTANCE,
 				TransactionalTestRule.INSTANCE);
 
 		@Before
@@ -200,7 +198,6 @@ public class EmbeddedPortletTest {
 		public static final AggregateTestRule aggregateTestRule =
 			new AggregateTestRule(
 				new LiferayIntegrationTestRule(),
-				CompanyProviderTestRule.INSTANCE,
 				TransactionalTestRule.INSTANCE);
 
 		@Before
@@ -321,7 +318,6 @@ public class EmbeddedPortletTest {
 		public static final AggregateTestRule aggregateTestRule =
 			new AggregateTestRule(
 				new LiferayIntegrationTestRule(),
-				CompanyProviderTestRule.INSTANCE,
 				TransactionalTestRule.INSTANCE);
 
 		@Before
@@ -407,7 +403,6 @@ public class EmbeddedPortletTest {
 		public static final AggregateTestRule aggregateTestRule =
 			new AggregateTestRule(
 				new LiferayIntegrationTestRule(),
-				CompanyProviderTestRule.INSTANCE,
 				TransactionalTestRule.INSTANCE);
 
 		@Before
