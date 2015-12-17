@@ -14,6 +14,7 @@
 
 package com.liferay.portal.test.rule.callback;
 
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.SearchEngineUtil;
@@ -50,17 +51,14 @@ public class MainServletTestCallback extends BaseTestCallback<Object, Object> {
 	}
 
 	@Override
-	public void afterClass(Description description, Object object) {
+	public void afterClass(Description description, Object object)
+		throws PortalException {
+
 		if (ArquillianUtil.isArquillianTest(description)) {
 			return;
 		}
 
-		try {
-			SearchEngineUtil.removeCompany(TestPropsValues.getCompanyId());
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-		}
+		SearchEngineUtil.removeCompany(TestPropsValues.getCompanyId());
 	}
 
 	@Override
