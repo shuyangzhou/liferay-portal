@@ -55,7 +55,6 @@ import com.liferay.portal.test.rule.ExpectedLog;
 import com.liferay.portal.test.rule.ExpectedLogs;
 import com.liferay.portal.test.rule.ExpectedType;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.portal.test.rule.MainServletTestRule;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portal.util.test.PrefsPropsTemporarySwapper;
 import com.liferay.portlet.asset.model.AssetEntry;
@@ -101,7 +100,7 @@ public class DLAppServiceTest extends BaseDLAppTestCase {
 		@Rule
 		public static final AggregateTestRule aggregateTestRule =
 			new AggregateTestRule(
-				new LiferayIntegrationTestRule(), MainServletTestRule.INSTANCE,
+				new LiferayIntegrationTestRule(),
 				SynchronousDestinationTestRule.INSTANCE);
 
 		@Test
@@ -508,7 +507,7 @@ public class DLAppServiceTest extends BaseDLAppTestCase {
 		@Rule
 		public static final AggregateTestRule aggregateTestRule =
 			new AggregateTestRule(
-				new LiferayIntegrationTestRule(), MainServletTestRule.INSTANCE,
+				new LiferayIntegrationTestRule(),
 				SynchronousDestinationTestRule.INSTANCE);
 
 		@Test
@@ -552,7 +551,7 @@ public class DLAppServiceTest extends BaseDLAppTestCase {
 		@Rule
 		public static final AggregateTestRule aggregateTestRule =
 			new AggregateTestRule(
-				new LiferayIntegrationTestRule(), MainServletTestRule.INSTANCE,
+				new LiferayIntegrationTestRule(),
 				SynchronousDestinationTestRule.INSTANCE);
 
 		@Test
@@ -632,7 +631,7 @@ public class DLAppServiceTest extends BaseDLAppTestCase {
 		@Rule
 		public static final AggregateTestRule aggregateTestRule =
 			new AggregateTestRule(
-				new LiferayIntegrationTestRule(), MainServletTestRule.INSTANCE,
+				new LiferayIntegrationTestRule(),
 				SynchronousDestinationTestRule.INSTANCE);
 
 		@Test
@@ -661,7 +660,7 @@ public class DLAppServiceTest extends BaseDLAppTestCase {
 		@Rule
 		public static final AggregateTestRule aggregateTestRule =
 			new AggregateTestRule(
-				new LiferayIntegrationTestRule(), MainServletTestRule.INSTANCE,
+				new LiferayIntegrationTestRule(),
 				SynchronousDestinationTestRule.INSTANCE);
 
 		@Test
@@ -734,7 +733,7 @@ public class DLAppServiceTest extends BaseDLAppTestCase {
 		@Rule
 		public static final AggregateTestRule aggregateTestRule =
 			new AggregateTestRule(
-				new LiferayIntegrationTestRule(), MainServletTestRule.INSTANCE,
+				new LiferayIntegrationTestRule(),
 				SynchronousDestinationTestRule.INSTANCE);
 
 		@Test
@@ -772,7 +771,7 @@ public class DLAppServiceTest extends BaseDLAppTestCase {
 		@Rule
 		public static final AggregateTestRule aggregateTestRule =
 			new AggregateTestRule(
-				new LiferayIntegrationTestRule(), MainServletTestRule.INSTANCE,
+				new LiferayIntegrationTestRule(),
 				SynchronousDestinationTestRule.INSTANCE);
 
 		@Test
@@ -856,7 +855,7 @@ public class DLAppServiceTest extends BaseDLAppTestCase {
 		@Rule
 		public static final AggregateTestRule aggregateTestRule =
 			new AggregateTestRule(
-				new LiferayIntegrationTestRule(), MainServletTestRule.INSTANCE,
+				new LiferayIntegrationTestRule(),
 				SynchronousDestinationTestRule.INSTANCE);
 
 		@Test
@@ -930,7 +929,7 @@ public class DLAppServiceTest extends BaseDLAppTestCase {
 		@Rule
 		public static final AggregateTestRule aggregateTestRule =
 			new AggregateTestRule(
-				new LiferayIntegrationTestRule(), MainServletTestRule.INSTANCE,
+				new LiferayIntegrationTestRule(),
 				SynchronousDestinationTestRule.INSTANCE);
 
 		@Test
@@ -980,7 +979,7 @@ public class DLAppServiceTest extends BaseDLAppTestCase {
 		@Rule
 		public static final AggregateTestRule aggregateTestRule =
 			new AggregateTestRule(
-				new LiferayIntegrationTestRule(), MainServletTestRule.INSTANCE,
+				new LiferayIntegrationTestRule(),
 				SynchronousDestinationTestRule.INSTANCE);
 
 		@Before
@@ -1050,7 +1049,7 @@ public class DLAppServiceTest extends BaseDLAppTestCase {
 		@Rule
 		public static final AggregateTestRule aggregateTestRule =
 			new AggregateTestRule(
-				new LiferayIntegrationTestRule(), MainServletTestRule.INSTANCE,
+				new LiferayIntegrationTestRule(),
 				SynchronousDestinationTestRule.INSTANCE);
 
 		@Test
@@ -1083,7 +1082,7 @@ public class DLAppServiceTest extends BaseDLAppTestCase {
 		@Rule
 		public static final AggregateTestRule aggregateTestRule =
 			new AggregateTestRule(
-				new LiferayIntegrationTestRule(), MainServletTestRule.INSTANCE,
+				new LiferayIntegrationTestRule(),
 				SynchronousDestinationTestRule.INSTANCE);
 
 		@Test
@@ -1161,7 +1160,7 @@ public class DLAppServiceTest extends BaseDLAppTestCase {
 		@Rule
 		public static final AggregateTestRule aggregateTestRule =
 			new AggregateTestRule(
-				new LiferayIntegrationTestRule(), MainServletTestRule.INSTANCE,
+				new LiferayIntegrationTestRule(),
 				SynchronousDestinationTestRule.INSTANCE);
 
 		@Test
@@ -1233,7 +1232,7 @@ public class DLAppServiceTest extends BaseDLAppTestCase {
 		@Rule
 		public static final AggregateTestRule aggregateTestRule =
 			new AggregateTestRule(
-				new LiferayIntegrationTestRule(), MainServletTestRule.INSTANCE,
+				new LiferayIntegrationTestRule(),
 				SynchronousDestinationTestRule.INSTANCE);
 
 		@Test
@@ -1458,7 +1457,7 @@ public class DLAppServiceTest extends BaseDLAppTestCase {
 		@Rule
 		public static final AggregateTestRule aggregateTestRule =
 			new AggregateTestRule(
-				new LiferayIntegrationTestRule(), MainServletTestRule.INSTANCE,
+				new LiferayIntegrationTestRule(),
 				SynchronousDestinationTestRule.INSTANCE);
 
 		@Test
