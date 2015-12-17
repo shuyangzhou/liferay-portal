@@ -58,7 +58,7 @@ public class PortalCacheConfiguration {
 	}
 
 	public Set<Properties> getPortalCacheListenerPropertiesSet() {
-		return Collections.unmodifiableSet(_portalCacheListenerPropertiesSet);
+		return _portalCacheListenerPropertiesSet;
 	}
 
 	public String getPortalCacheName() {

@@ -14,7 +14,6 @@
 
 package com.liferay.portal.cache.ehcache.internal.configurator;
 
-import com.liferay.portal.cache.PortalCacheReplicator;
 import com.liferay.portal.cache.configuration.PortalCacheConfiguration;
 import com.liferay.portal.cache.configuration.PortalCacheManagerConfiguration;
 import com.liferay.portal.cache.ehcache.EhcacheConstants;
@@ -26,7 +25,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.Props;
-import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -173,20 +171,14 @@ public abstract class BaseEhcachePortalCacheManagerConfigurator {
 		return false;
 	}
 
-	protected boolean isValidCacheEventListener(
-		Properties properties, boolean usingDefault) {
-
-		if (usingDefault) {
-			return false;
-		}
-
-		return true;
-	}
-
 	protected Set<Properties> parseCacheEventListenerConfigurations(
 		List<CacheEventListenerFactoryConfiguration>
 			cacheEventListenerConfigurations,
 		boolean usingDefault) {
+
+		if (usingDefault) {
+			return Collections.emptySet();
+		}
 
 		Set<Properties> portalCacheListenerPropertiesSet = new HashSet<>();
 
@@ -197,10 +189,6 @@ public abstract class BaseEhcachePortalCacheManagerConfigurator {
 			Properties properties = parseProperties(
 				cacheEventListenerFactoryConfiguration.getProperties(),
 				cacheEventListenerFactoryConfiguration. getPropertySeparator());
-
-			if (!isValidCacheEventListener(properties, usingDefault)) {
-				continue;
-			}
 
 			String factoryClassName =
 				cacheEventListenerFactoryConfiguration.
@@ -446,27 +434,6 @@ public abstract class BaseEhcachePortalCacheManagerConfigurator {
 			_log.info(
 				"Portal property key " + classPathPortalPropertyKey +
 					" has value " + value);
-		}
-
-		factoryConfiguration.setClass(props.get(classPathPortalPropertyKey));
-
-		if (classPathPortalPropertyKey.equals(
-				PropsKeys.EHCACHE_CACHE_EVENT_LISTENER_FACTORY)) {
-
-			StringBundler sb = new StringBundler(5);
-
-			String propertiesString = factoryConfiguration.getProperties();
-
-			if (propertiesString != null) {
-				sb.append(factoryConfiguration.getProperties());
-				sb.append(factoryConfiguration.getPropertySeparator());
-			}
-
-			sb.append(PortalCacheReplicator.REPLICATOR);
-			sb.append(CharPool.EQUAL);
-			sb.append(Boolean.TRUE);
-
-			factoryConfiguration.setProperties(sb.toString());
 		}
 	}
 

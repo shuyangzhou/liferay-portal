@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Properties;
+import java.util.Set;
 
 import net.sf.ehcache.config.CacheConfiguration;
 
@@ -67,19 +68,6 @@ public class MultiVMEhcachePortalCacheManagerConfigurator
 	}
 
 	@Override
-	protected boolean isValidCacheEventListener(
-		Properties properties, boolean usingDefault) {
-
-		if (Boolean.valueOf(
-				properties.getProperty(PortalCacheReplicator.REPLICATOR))) {
-
-			return _clusterEnabled;
-		}
-
-		return super.isValidCacheEventListener(properties, usingDefault);
-	}
-
-	@Override
 	protected PortalCacheConfiguration parseCacheListenerConfigurations(
 		CacheConfiguration cacheConfiguration, boolean usingDefault) {
 
@@ -87,21 +75,34 @@ public class MultiVMEhcachePortalCacheManagerConfigurator
 			super.parseCacheListenerConfigurations(
 				cacheConfiguration, usingDefault);
 
-		if (!_clusterEnabled || !_bootstrapLoaderEnabled) {
+		if (!_clusterEnabled) {
 			return portalCacheConfiguration;
 		}
 
-		String bootstrapLoaderPropertiesString =
-			_bootstrapLoaderProperties.getProperty(
-				cacheConfiguration.getName());
+		if (_bootstrapLoaderEnabled) {
+			String bootstrapLoaderPropertiesString =
+				_bootstrapLoaderProperties.getProperty(
+					cacheConfiguration.getName());
 
-		if (Validator.isNull(bootstrapLoaderPropertiesString)) {
-			bootstrapLoaderPropertiesString =
-				_defaultBootstrapLoaderPropertiesString;
+			if (Validator.isNull(bootstrapLoaderPropertiesString)) {
+				bootstrapLoaderPropertiesString =
+					_defaultBootstrapLoaderPropertiesString;
+			}
+
+			portalCacheConfiguration.setPortalCacheBootstrapLoaderProperties(
+				parseProperties(
+					bootstrapLoaderPropertiesString, StringPool.COMMA));
 		}
 
-		portalCacheConfiguration.setPortalCacheBootstrapLoaderProperties(
-			parseProperties(bootstrapLoaderPropertiesString, StringPool.COMMA));
+		Set<Properties> portalCacheListenerPropertiesSet =
+			portalCacheConfiguration.getPortalCacheListenerPropertiesSet();
+
+		Properties portalCacheReplicatorProperties = new Properties();
+
+		portalCacheReplicatorProperties.put(
+			PortalCacheReplicator.REPLICATOR, true);
+
+		portalCacheListenerPropertiesSet.add(portalCacheReplicatorProperties);
 
 		return portalCacheConfiguration;
 	}
