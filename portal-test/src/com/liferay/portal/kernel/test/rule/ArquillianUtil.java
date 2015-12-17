@@ -12,21 +12,36 @@
  * details.
  */
 
-package com.liferay.portal.test.rule;
+package com.liferay.portal.kernel.test.rule;
 
-import com.liferay.portal.kernel.test.rule.BaseTestRule;
-import com.liferay.portal.test.rule.callback.SybaseDumpTransactionLogTestCallback;
+import org.junit.runner.Description;
+import org.junit.runner.RunWith;
+import org.junit.runner.Runner;
 
 /**
  * @author Shuyang Zhou
  */
-public class SybaseDumpTransactionLogTestRule extends BaseTestRule<Void, Void> {
+public class ArquillianUtil {
 
-	public static final SybaseDumpTransactionLogTestRule INSTANCE =
-		new SybaseDumpTransactionLogTestRule();
+	public static boolean isArquillianTest(Description description) {
+		RunWith runWith = description.getAnnotation(RunWith.class);
 
-	private SybaseDumpTransactionLogTestRule() {
-		super(SybaseDumpTransactionLogTestCallback.INSTANCE);
+		if (runWith == null) {
+			return false;
+		}
+
+		Class<? extends Runner> runnerClass = runWith.value();
+
+		String runnerClassName = runnerClass.getName();
+
+		if (runnerClassName.equals(
+				"com.liferay.arquillian.extension.junit.bridge.junit." +
+					"Arquillian")) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 }
