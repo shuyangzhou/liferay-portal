@@ -285,9 +285,9 @@ public class PermissionCheckerTest {
 	public void testIsOmniAdminWithCompanyAdmin() throws Exception {
 		_company = CompanyTestUtil.addCompany();
 
-		User adminUser = UserTestUtil.addCompanyAdminUser(_company);
+		_user = UserTestUtil.addCompanyAdminUser(_company);
 
-		PermissionChecker permissionChecker = _getPermissionChecker(adminUser);
+		PermissionChecker permissionChecker = _getPermissionChecker(_user);
 
 		Assert.assertFalse(permissionChecker.isOmniadmin());
 	}
