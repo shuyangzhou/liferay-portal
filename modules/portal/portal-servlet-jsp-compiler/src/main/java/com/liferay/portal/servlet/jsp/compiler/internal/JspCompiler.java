@@ -32,7 +32,9 @@ import java.security.CodeSource;
 import java.security.PrivilegedAction;
 import java.security.ProtectionDomain;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -123,11 +125,9 @@ public class JspCompiler extends Jsr199JavaCompiler {
 			File file = new File(className);
 
 			if (file.exists() && file.canRead()) {
-				if (_classPath.contains(file)) {
-					_classPath.remove(file);
-				}
+				_classPath.remove(file);
 
-				_classPath.add(0, file);
+				_classPath.push(file);
 
 				continue;
 			}
@@ -162,11 +162,9 @@ public class JspCompiler extends Jsr199JavaCompiler {
 			File file = toFile(url);
 
 			if (file.exists() && file.canRead()) {
-				if (_classPath.contains(file)) {
-					_classPath.remove(file);
-				}
+				_classPath.remove(file);
 
-				_classPath.add(0, file);
+				_classPath.push(file);
 			}
 		}
 		catch (Exception e) {
@@ -376,7 +374,7 @@ public class JspCompiler extends Jsr199JavaCompiler {
 
 	private Bundle[] _allParticipatingBundles;
 	private Bundle _bundle;
-	private final List<File> _classPath = new ArrayList<>();
+	private final Deque<File> _classPath = new ArrayDeque<>();
 	private Bundle _jspBundle;
 	private Logger _logger;
 	private ResourceResolver _resourceResolver;
