@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.ServerDetector;
 import com.liferay.portal.kernel.util.SystemProperties;
+import com.liferay.portal.test.rule.callback.CITimeoutTestCallback;
 import com.liferay.portal.test.rule.callback.ClearThreadLocalTestCallback;
 import com.liferay.portal.test.rule.callback.LogAssertionTestCallback;
 import com.liferay.portal.test.rule.callback.UniqueStringRandomizerBumperTestCallback;
@@ -50,7 +51,10 @@ public class LiferayIntegrationTestRule extends AggregateTestRule {
 	private static TestRule[] _getTestRules() {
 		List<TestRule> testRules = new ArrayList<>();
 
-		testRules.add(CITimeoutTestRule.INSTANCE);
+		if (System.getenv("JENKINS_HOME") != null) {
+			testRules.add(_ciTimeoutTestRule);
+		}
+
 		testRules.add(LogAssertionTestRule.INSTANCE);
 		testRules.add(_springInitializationTestRule);
 		testRules.add(SybaseDumpTransactionLogTestRule.INSTANCE);
@@ -61,6 +65,8 @@ public class LiferayIntegrationTestRule extends AggregateTestRule {
 		return testRules.toArray(new TestRule[testRules.size()]);
 	}
 
+	private static final TestRule _ciTimeoutTestRule = new BaseTestRule<>(
+		CITimeoutTestCallback.INSTANCE);
 	private static final TestRule _clearThreadLocalTestRule =
 		new BaseTestRule<>(ClearThreadLocalTestCallback.INSTANCE);
 
