@@ -32,7 +32,7 @@ public class UpgradeCalendar extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		if (!tableHasColumn("Calendar", "timeZoneId")) {
+		if (!hasColumn("Calendar", "timeZoneId")) {
 			runSQL("alter table Calendar add timeZoneId VARCHAR(75) null");
 		}
 
