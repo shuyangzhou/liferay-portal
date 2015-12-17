@@ -19,6 +19,8 @@ import com.liferay.portal.cache.configuration.PortalCacheConfiguration;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Properties;
 
@@ -44,6 +46,13 @@ public class MultiVMEhcachePortalCacheManagerConfigurator
 			props.get(PropsKeys.EHCACHE_BOOTSTRAP_CACHE_LOADER_ENABLED));
 		_clusterEnabled = GetterUtil.getBoolean(
 			props.get(PropsKeys.CLUSTER_LINK_ENABLED));
+
+		_defaultBootstrapLoaderPropertiesString = props.get(
+			PropsKeys.EHCACHE_BOOTSTRAP_CACHE_LOADER_PROPERTIES_DEFAULT);
+		_bootstrapLoaderProperties = props.getProperties(
+			PropsKeys.EHCACHE_BOOTSTRAP_CACHE_LOADER_PROPERTIES +
+				StringPool.PERIOD,
+			true);
 	}
 
 	@Override
@@ -82,8 +91,17 @@ public class MultiVMEhcachePortalCacheManagerConfigurator
 			return portalCacheConfiguration;
 		}
 
+		String bootstrapLoaderPropertiesString =
+			_bootstrapLoaderProperties.getProperty(
+				cacheConfiguration.getName());
+
+		if (Validator.isNull(bootstrapLoaderPropertiesString)) {
+			bootstrapLoaderPropertiesString =
+				_defaultBootstrapLoaderPropertiesString;
+		}
+
 		portalCacheConfiguration.setPortalCacheBootstrapLoaderProperties(
-			new Properties());
+			parseProperties(bootstrapLoaderPropertiesString, StringPool.COMMA));
 
 		return portalCacheConfiguration;
 	}
@@ -94,6 +112,8 @@ public class MultiVMEhcachePortalCacheManagerConfigurator
 	}
 
 	private boolean _bootstrapLoaderEnabled;
+	private Properties _bootstrapLoaderProperties;
 	private boolean _clusterEnabled;
+	private String _defaultBootstrapLoaderPropertiesString;
 
 }
