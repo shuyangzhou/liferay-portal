@@ -39,6 +39,16 @@ Import-Package:\
 	org.apache.taglibs.standard.tei;version='[1.2.3,2.0)',\
 	org.apache.taglibs.standard.tlv;version='[1.2.3,2.0)',\
 	*
+Export-Package:\
+	freemarker,\
+	freemarker.cache,\
+	freemarker.core,\
+	freemarker.ext,\
+	freemarker.ext.beans,\
+	freemarker.ext.jsp,\
+	freemarker.ext.servlet,\
+	freemarker.template,\
+	freemarker.template.utility
 Include-Resource:\
 	classes,\
 	WEB-INF=src/main/resources/WEB-INF,\
