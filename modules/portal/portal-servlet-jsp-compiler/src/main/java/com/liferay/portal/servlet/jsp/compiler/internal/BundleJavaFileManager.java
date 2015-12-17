@@ -202,20 +202,16 @@ public class BundleJavaFileManager
 		return fileManager.list(location, packagePath, kinds, recurse);
 	}
 
-	private String getClassNameFromPath(String resourceName) {
-		if (resourceName.endsWith(".class")) {
-			resourceName = resourceName.substring(0, resourceName.length() - 6);
-		}
-
-		return resourceName.replace('/', '.');
-	}
-
 	private JavaFileObject getJavaFileObject(
 		URL resourceURL, String resourceName) {
 
 		String protocol = resourceURL.getProtocol();
 
-		String className = getClassNameFromPath(resourceName);
+		if (resourceName.endsWith(".class")) {
+			resourceName = resourceName.substring(0, resourceName.length() - 6);
+		}
+
+		String className = resourceName.replace('/', '.');
 
 		if (protocol.equals("bundle") || protocol.equals("bundleresource")) {
 			try {
