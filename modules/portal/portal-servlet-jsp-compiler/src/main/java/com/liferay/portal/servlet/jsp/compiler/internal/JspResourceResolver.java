@@ -44,7 +44,7 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.wiring.BundleCapability;
-import org.osgi.framework.wiring.BundleWire;
+import org.osgi.framework.wiring.BundleRevision;
 import org.osgi.framework.wiring.BundleWiring;
 import org.osgi.util.tracker.ServiceTracker;
 
@@ -271,15 +271,15 @@ public class JspResourceResolver implements ResourceResolver {
 	protected boolean isExportsPackage(
 		BundleWiring bundleWiring, String packageName) {
 
-		List<BundleWire> bundleWires = bundleWiring.getProvidedWires(
-			"osgi.wiring.package");
+		List<BundleCapability> bundleCapabilities =
+			bundleWiring.getCapabilities(BundleRevision.PACKAGE_NAMESPACE);
 
-		for (BundleWire bundleWire : bundleWires) {
-			BundleCapability bundleCapability = bundleWire.getCapability();
-
+		for (BundleCapability bundleCapability : bundleCapabilities) {
 			Map<String, Object> attributes = bundleCapability.getAttributes();
 
-			if (packageName.equals(attributes.get("osgi.wiring.package"))) {
+			if (packageName.equals(
+					attributes.get(BundleRevision.PACKAGE_NAMESPACE))) {
+
 				return true;
 			}
 		}
