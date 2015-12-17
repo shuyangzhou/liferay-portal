@@ -39,11 +39,11 @@ import com.liferay.portal.model.Group;
 import com.liferay.portal.model.GroupConstants;
 import com.liferay.portal.model.Layout;
 import com.liferay.portal.model.User;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.test.randomizerbumpers.TikaSafeRandomizerBumper;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.portal.test.rule.MainServletTestRule;
 import com.liferay.portal.util.test.LayoutTestUtil;
 import com.liferay.portlet.documentlibrary.model.DLFileEntry;
 import com.liferay.portlet.documentlibrary.model.DLFolderConstants;
@@ -77,7 +77,7 @@ public class TrashEntryLocalServiceCheckEntriesTest {
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
 		new AggregateTestRule(
-			new LiferayIntegrationTestRule(), MainServletTestRule.INSTANCE,
+			new LiferayIntegrationTestRule(),
 			SynchronousDestinationTestRule.INSTANCE);
 
 	@Before
@@ -92,9 +92,15 @@ public class TrashEntryLocalServiceCheckEntriesTest {
 
 	@Test
 	public void testCompanies() throws Exception {
+		Long previousCompanyId = CompanyThreadLocal.getCompanyId();
+
 		for (int i = 0; i < _COMPANIES_COUNT; i++ ) {
+			long companyId = createCompany();
+
+			CompanyThreadLocal.setCompanyId(companyId);
+
 			Group group = updateTrashEntriesMaxAge(
-				createGroup(createCompany()), _MAX_AGE);
+				createGroup(companyId), _MAX_AGE);
 
 			createTrashEntries(group);
 		}
@@ -104,6 +110,8 @@ public class TrashEntryLocalServiceCheckEntriesTest {
 		Assert.assertEquals(
 			_COMPANIES_COUNT * _NOT_EXPIRED_TRASH_ENTRIES_COUNT,
 			TrashEntryLocalServiceUtil.getTrashEntriesCount());
+
+		CompanyThreadLocal.setCompanyId(previousCompanyId);
 	}
 
 	@Test
@@ -224,18 +232,18 @@ public class TrashEntryLocalServiceCheckEntriesTest {
 	protected void createFileEntryTrashEntry(Group group, boolean expired)
 		throws Exception {
 
+		User user = UserTestUtil.getAdminUser(group.getCompanyId());
+
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(
-				group.getGroupId(), TestPropsValues.getUserId());
+				group.getGroupId(), user.getUserId());
 
 		FileEntry fileEntry = DLAppLocalServiceUtil.addFileEntry(
-			TestPropsValues.getUserId(), group.getGroupId(),
+			user.getUserId(), group.getGroupId(),
 			DLFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			RandomTestUtil.randomString(), ContentTypes.TEXT_PLAIN,
 			RandomTestUtil.randomBytes(TikaSafeRandomizerBumper.INSTANCE),
 			serviceContext);
-
-		User user = UserTestUtil.getAdminUser(fileEntry.getCompanyId());
 
 		RepositoryTrashUtil.moveFileEntryToTrash(
 			user.getUserId(), fileEntry.getRepositoryId(),

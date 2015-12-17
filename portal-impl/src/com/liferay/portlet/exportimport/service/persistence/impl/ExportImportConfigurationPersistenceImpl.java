@@ -37,6 +37,7 @@ import com.liferay.portal.model.MVCCModel;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextThreadLocal;
 import com.liferay.portal.service.persistence.CompanyProvider;
+import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import com.liferay.portlet.exportimport.NoSuchConfigurationException;
@@ -2911,6 +2912,8 @@ public class ExportImportConfigurationPersistenceImpl
 		exportImportConfiguration.setNew(true);
 		exportImportConfiguration.setPrimaryKey(exportImportConfigurationId);
 
+		exportImportConfiguration.setCompanyId(companyProvider.getCompanyId());
+
 		return exportImportConfiguration;
 	}
 
@@ -3611,7 +3614,7 @@ public class ExportImportConfigurationPersistenceImpl
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
-	@BeanReference(type = CompanyProvider.class)
+	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
 	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
 	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
