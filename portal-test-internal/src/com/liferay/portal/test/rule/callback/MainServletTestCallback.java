@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.SearchEngineUtil;
 import com.liferay.portal.kernel.servlet.ServletContextPool;
+import com.liferay.portal.kernel.test.rule.ArquillianUtil;
 import com.liferay.portal.kernel.test.rule.callback.BaseTestCallback;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.PortalLifecycle;
@@ -34,8 +35,6 @@ import javax.servlet.ServletException;
 
 import org.junit.Assert;
 import org.junit.runner.Description;
-import org.junit.runner.RunWith;
-import org.junit.runner.Runner;
 
 import org.springframework.core.io.FileSystemResourceLoader;
 import org.springframework.mock.web.MockServletConfig;
@@ -62,7 +61,7 @@ public class MainServletTestCallback extends BaseTestCallback<Void, Void> {
 
 	@Override
 	public Void beforeClass(Description description) throws PortalException {
-		if (isArquillianTest(description)) {
+		if (ArquillianUtil.isArquillianTest(description)) {
 			Assert.fail(
 				description.getTestClass() + " is an Arquillian test and " +
 					"should not use " + MainServletTestRule.class);
@@ -114,27 +113,6 @@ public class MainServletTestCallback extends BaseTestCallback<Void, Void> {
 	}
 
 	protected MainServletTestCallback() {
-	}
-
-	protected boolean isArquillianTest(Description description) {
-		RunWith runWith = description.getAnnotation(RunWith.class);
-
-		if (runWith == null) {
-			return false;
-		}
-
-		Class<? extends Runner> runnerClass = runWith.value();
-
-		String runnerClassName = runnerClass.getName();
-
-		if (runnerClassName.equals(
-				"com.liferay.arquillian.extension.junit.bridge.junit." +
-					"Arquillian")) {
-
-			return true;
-		}
-
-		return false;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
