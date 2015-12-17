@@ -159,7 +159,7 @@ public class JspCompiler extends Jsr199JavaCompiler {
 		URL url = codeSource.getLocation();
 
 		try {
-			File file = new File(toURI(url));
+			File file = toFile(url);
 
 			if (file.exists() && file.canRead()) {
 				if (_classPath.contains(file)) {
@@ -331,7 +331,7 @@ public class JspCompiler extends Jsr199JavaCompiler {
 			Constants.JSP_TLD_URI_TO_LOCATION_MAP, tldMappings);
 	}
 
-	protected URI toURI(URL url)
+	protected File toFile(URL url)
 		throws MalformedURLException, URISyntaxException {
 
 		String protocol = url.getProtocol();
@@ -345,9 +345,10 @@ public class JspCompiler extends Jsr199JavaCompiler {
 		}
 
 		if (protocol.equals("file")) {
-			return url.toURI();
+			return new File(url.toURI());
 		}
-		else if (protocol.equals("jar")) {
+
+		if (protocol.equals("jar")) {
 			String file = url.getFile();
 
 			int pos = file.indexOf("!/");
@@ -356,7 +357,11 @@ public class JspCompiler extends Jsr199JavaCompiler {
 				file = file.substring(0, pos);
 			}
 
-			return new URI(file);
+			return new File(new URI(file));
+		}
+
+		if (protocol.equals("vfs")) {
+			return new File(url.getFile());
 		}
 
 		throw new URISyntaxException(
