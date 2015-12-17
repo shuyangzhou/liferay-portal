@@ -215,17 +215,6 @@ public abstract class BaseEhcachePortalCacheManagerConfigurator {
 	protected PortalCacheConfiguration parseCacheListenerConfigurations(
 		CacheConfiguration cacheConfiguration, boolean usingDefault) {
 
-		if (cacheConfiguration == null) {
-			return null;
-		}
-
-		String portalCacheName = cacheConfiguration.getName();
-
-		if (portalCacheName == null) {
-			portalCacheName =
-				PortalCacheConfiguration.DEFAULT_PORTAL_CACHE_NAME;
-		}
-
 		Set<Properties> portalCacheListenerPropertiesSet =
 			parseCacheEventListenerConfigurations(
 				(List<CacheEventListenerFactoryConfiguration>)
@@ -236,8 +225,8 @@ public abstract class BaseEhcachePortalCacheManagerConfigurator {
 			cacheConfiguration);
 
 		return new EhcachePortalCacheConfiguration(
-			portalCacheName, portalCacheListenerPropertiesSet, null,
-			requireSerialization);
+			cacheConfiguration.getName(), portalCacheListenerPropertiesSet,
+			null, requireSerialization);
 	}
 
 	protected Set<Properties>
@@ -267,9 +256,19 @@ public abstract class BaseEhcachePortalCacheManagerConfigurator {
 				configuration.
 					getCacheManagerEventListenerFactoryConfiguration());
 
+		CacheConfiguration defaultCacheConfiguration =
+			configuration.getDefaultCacheConfiguration();
+
+		if (defaultCacheConfiguration == null) {
+			defaultCacheConfiguration = new CacheConfiguration();
+		}
+
+		defaultCacheConfiguration.setName(
+			PortalCacheConfiguration.DEFAULT_PORTAL_CACHE_NAME);
+
 		PortalCacheConfiguration defaultPortalCacheConfiguration =
 			parseCacheListenerConfigurations(
-				configuration.getDefaultCacheConfiguration(), usingDefault);
+				defaultCacheConfiguration, usingDefault);
 
 		Set<PortalCacheConfiguration> portalCacheConfigurations =
 			new HashSet<>();
