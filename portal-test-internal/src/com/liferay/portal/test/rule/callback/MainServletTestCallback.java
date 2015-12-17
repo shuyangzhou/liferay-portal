@@ -28,11 +28,9 @@ import com.liferay.portal.module.framework.ModuleFrameworkUtilAdapter;
 import com.liferay.portal.service.test.ServiceTestUtil;
 import com.liferay.portal.servlet.MainServlet;
 import com.liferay.portal.test.mock.AutoDeployMockServletContext;
-import com.liferay.portal.test.rule.MainServletTestRule;
 
 import javax.servlet.ServletException;
 
-import org.junit.Assert;
 import org.junit.runner.Description;
 
 import org.springframework.core.io.FileSystemResourceLoader;
@@ -53,6 +51,10 @@ public class MainServletTestCallback extends BaseTestCallback<Object, Object> {
 
 	@Override
 	public void afterClass(Description description, Object object) {
+		if (ArquillianUtil.isArquillianTest(description)) {
+			return;
+		}
+
 		try {
 			SearchEngineUtil.removeCompany(TestPropsValues.getCompanyId());
 		}
@@ -64,9 +66,7 @@ public class MainServletTestCallback extends BaseTestCallback<Object, Object> {
 	@Override
 	public Object beforeClass(Description description) {
 		if (ArquillianUtil.isArquillianTest(description)) {
-			Assert.fail(
-				description.getTestClass() + " is an Arquillian test and " +
-					"should not use " + MainServletTestRule.class);
+			return null;
 		}
 
 		if (_mainServlet == null) {
