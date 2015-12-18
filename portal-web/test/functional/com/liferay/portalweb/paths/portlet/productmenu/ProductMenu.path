@@ -39,6 +39,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>GO_TO_SITES_LINK</td>
+	<td>//a[contains(.,'Go to Site')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>CATEGORY_COLLAPSED</td>
 	<td>//div[div[@aria-expanded='true']]/../..//a[@aria-expanded='false' and contains(.,'${key_category}')]</td>
 	<td></td>
@@ -64,7 +69,7 @@
 	<td></td>
 </tr>
 <tr>
-<td>EDIT_PAGE</td>
+	<td>EDIT_PAGE</td>
 	<td>//div[@class='list-group-item']//a[contains(@title,'Edit ${key_page}')]</td>
 	<td></td>
 </tr>
@@ -207,7 +212,7 @@
 </tr>
 <tr>
 	<td>PRODUCT_MENU_PANEL_SCOPE_COG</td>
-	<td>//div[contains(@class,'nav-equal-height-heading')]//i[contains(@class,'icon-cog')]</td>
+	<td>//div[contains(@class,'dropdown')]/a/span/*[name()='svg'][contains(@class,'lexicon-icon-cog')]</td>
 	<td></td>
 </tr>
 <tr>
