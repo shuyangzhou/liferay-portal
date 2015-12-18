@@ -57,13 +57,13 @@ public class BundleJavaFileManager
 
 	public BundleJavaFileManager(
 		Bundle bundle, JavaFileManager javaFileManager, Logger logger,
-		boolean verbose, ResourceResolver resourceResolver) {
+		boolean verbose, ClassResolver classResolver) {
 
 		super(javaFileManager);
 
 		_logger = logger;
 		_verbose = verbose;
-		_resourceResolver = resourceResolver;
+		_classResolver = classResolver;
 
 		_bundleWiring = bundle.adapt(BundleWiring.class);
 
@@ -245,7 +245,7 @@ public class BundleJavaFileManager
 		String packagePath, int options, BundleWiring bundleWiring,
 		List<JavaFileObject> javaFileObjects) {
 
-		Collection<String> resources = _resourceResolver.resolveResources(
+		Collection<String> resources = _classResolver.resolveClasses(
 			bundleWiring, packagePath, "*.class", options);
 
 		if ((resources == null) || resources.isEmpty()) {
@@ -253,7 +253,7 @@ public class BundleJavaFileManager
 		}
 
 		for (String resourceName : resources) {
-			URL resourceURL = _resourceResolver.getResource(
+			URL resourceURL = _classResolver.getClassURL(
 				bundleWiring, resourceName);
 
 			JavaFileObject javaFileObject = getJavaFileObject(
@@ -301,8 +301,8 @@ public class BundleJavaFileManager
 
 	private final BundleWiring _bundleWiring;
 	private final Set<BundleWiring> _bundleWirings = new LinkedHashSet<>();
+	private final ClassResolver _classResolver;
 	private final Logger _logger;
-	private final ResourceResolver _resourceResolver;
 	private final Set<Object> _systemPackageNames = new HashSet<>();
 	private final boolean _verbose;
 

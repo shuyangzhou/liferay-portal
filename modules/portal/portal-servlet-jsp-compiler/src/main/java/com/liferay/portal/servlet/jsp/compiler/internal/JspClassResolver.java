@@ -50,9 +50,9 @@ import org.osgi.util.tracker.ServiceTracker;
 /**
  * @author Raymond Augé
  */
-public class JspResourceResolver implements ResourceResolver {
+public class JspClassResolver implements ClassResolver {
 
-	public JspResourceResolver(Bundle bundle, Bundle jspBundle, Logger logger) {
+	public JspClassResolver(Bundle bundle, Bundle jspBundle, Logger logger) {
 		_bundle = bundle;
 		_jspBundle = jspBundle;
 		_logger = logger;
@@ -71,7 +71,7 @@ public class JspResourceResolver implements ResourceResolver {
 	}
 
 	@Override
-	public URL getResource(BundleWiring bundleWiring, String name) {
+	public URL getClassURL(BundleWiring bundleWiring, String name) {
 		Bundle bundle = bundleWiring.getBundle();
 
 		URL url = bundle.getResource(name);
@@ -86,7 +86,7 @@ public class JspResourceResolver implements ResourceResolver {
 	}
 
 	@Override
-	public Collection<String> resolveResources(
+	public Collection<String> resolveClasses(
 		BundleWiring bundleWiring, String path, String filePattern,
 		int options) {
 
