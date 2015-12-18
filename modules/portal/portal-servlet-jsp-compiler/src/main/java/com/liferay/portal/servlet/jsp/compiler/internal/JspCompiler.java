@@ -286,17 +286,10 @@ public class JspCompiler extends Jsr199JavaCompiler {
 				_logger.log(Logger.LOG_ERROR, ioe.getMessage(), ioe);
 			}
 
-			BundleJavaFileManager bundleJavaFileManager =
-				new BundleJavaFileManager(
-					_bundle, standardJavaFileManager, _logger,
-					options.contains(BundleJavaFileManager.OPT_VERBOSE),
-					_classResolver);
-
-			for (BundleWiring bundleWiring : _jspBundleWirings) {
-				bundleJavaFileManager.addBundleWiring(bundleWiring);
-			}
-
-			javaFileManager = bundleJavaFileManager;
+			javaFileManager = new BundleJavaFileManager(
+				_bundle, _jspBundleWirings, standardJavaFileManager, _logger,
+				options.contains(BundleJavaFileManager.OPT_VERBOSE),
+				_classResolver);
 		}
 
 		return super.getJavaFileManager(javaFileManager);

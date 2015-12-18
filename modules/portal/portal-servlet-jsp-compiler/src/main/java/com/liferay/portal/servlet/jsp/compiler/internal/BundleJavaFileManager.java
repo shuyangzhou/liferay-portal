@@ -56,8 +56,9 @@ public class BundleJavaFileManager
 	public static final String OPT_VERBOSE = "-verbose";
 
 	public BundleJavaFileManager(
-		Bundle bundle, JavaFileManager javaFileManager, Logger logger,
-		boolean verbose, ClassResolver classResolver) {
+		Bundle bundle, Set<BundleWiring> jspBundleWirings,
+		JavaFileManager javaFileManager, Logger logger, boolean verbose,
+		ClassResolver classResolver) {
 
 		super(javaFileManager);
 
@@ -94,6 +95,8 @@ public class BundleJavaFileManager
 			}
 		}
 
+		_bundleWirings.addAll(jspBundleWirings);
+
 		if (_verbose) {
 			StringBundler sb = new StringBundler(_bundleWirings.size() * 4 + 6);
 
@@ -118,10 +121,6 @@ public class BundleJavaFileManager
 
 			_logger.log(Logger.LOG_INFO, sb.toString());
 		}
-	}
-
-	public void addBundleWiring(BundleWiring bundleWiring) {
-		_bundleWirings.add(bundleWiring);
 	}
 
 	@Override
