@@ -35,8 +35,10 @@ import java.security.ProtectionDomain;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletContext;
 
@@ -147,6 +149,16 @@ public class JspCompiler extends Jsr199JavaCompiler {
 		_jspBundle = FrameworkUtil.getBundle(
 			com.liferay.portal.servlet.jsp.compiler.JspServlet.class);
 
+		BundleWiring bundleWiring = _jspBundle.adapt(BundleWiring.class);
+
+		_jspBundleWirings.add(bundleWiring);
+
+		for (BundleWire bundleWire : bundleWiring.getRequiredWires(null)) {
+			BundleWiring providedBundleWiring = bundleWire.getProviderWiring();
+
+			_jspBundleWirings.add(providedBundleWiring);
+		}
+
 		_logger = new Logger(_jspBundle.getBundleContext());
 
 		ServletContext servletContext =
@@ -174,23 +186,6 @@ public class JspCompiler extends Jsr199JavaCompiler {
 		initTLDMappings(servletContext);
 
 		super.init(jspCompilationContext, errorDispatcher, suppressLogging);
-	}
-
-	protected void addBundleWirings(
-		BundleJavaFileManager bundleJavaFileManager) {
-
-		BundleWiring bundleWiring = _jspBundle.adapt(BundleWiring.class);
-
-		bundleJavaFileManager.addBundleWiring(bundleWiring);
-
-		List<BundleWire> requiredBundleWires = bundleWiring.getRequiredWires(
-			null);
-
-		for (BundleWire bundleWire : requiredBundleWires) {
-			BundleWiring providedBundleWiring = bundleWire.getProviderWiring();
-
-			bundleJavaFileManager.addBundleWiring(providedBundleWiring);
-		}
 	}
 
 	protected void addDependenciesToClassPath() {
@@ -297,7 +292,9 @@ public class JspCompiler extends Jsr199JavaCompiler {
 					options.contains(BundleJavaFileManager.OPT_VERBOSE),
 					_classResolver);
 
-			addBundleWirings(bundleJavaFileManager);
+			for (BundleWiring bundleWiring : _jspBundleWirings) {
+				bundleJavaFileManager.addBundleWiring(bundleWiring);
+			}
 
 			javaFileManager = bundleJavaFileManager;
 		}
@@ -452,6 +449,7 @@ public class JspCompiler extends Jsr199JavaCompiler {
 	private final List<File> _classPath = new ArrayList<>();
 	private ClassResolver _classResolver;
 	private Bundle _jspBundle;
+	private final Set<BundleWiring> _jspBundleWirings = new LinkedHashSet<>();
 	private Logger _logger;
 
 }
