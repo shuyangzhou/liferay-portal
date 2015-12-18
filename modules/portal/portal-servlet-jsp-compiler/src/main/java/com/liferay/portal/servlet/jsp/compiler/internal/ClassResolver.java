@@ -28,7 +28,6 @@ public interface ClassResolver {
 	public URL getClassURL(BundleWiring bundleWiring, String name);
 
 	public Collection<String> resolveClasses(
-		BundleWiring bundleWiring, String path, String filePattern,
-		int options);
+		BundleWiring bundleWiring, String path, int options);
 
 }

@@ -87,24 +87,23 @@ public class JspClassResolver implements ClassResolver {
 
 	@Override
 	public Collection<String> resolveClasses(
-		BundleWiring bundleWiring, String path, String filePattern,
-		int options) {
+		BundleWiring bundleWiring, String path, int options) {
 
 		Collection<String> resources = null;
 
 		Bundle bundle = bundleWiring.getBundle();
 
 		if (bundle.equals(_bundle) || bundle.equals(_jspBundle)) {
-			resources = bundleWiring.listResources(path, filePattern, options);
+			resources = bundleWiring.listResources(path, "*.class", options);
 		}
 		else if (isExportsPackage(bundleWiring, path.replace('/', '.'))) {
 			if (bundle.getBundleId() == 0) {
 				resources = handleSystemBundle(
-					bundleWiring, path, filePattern, options);
+					bundleWiring, path, "*.class", options);
 			}
 			else {
 				resources = bundleWiring.listResources(
-					path, filePattern, options);
+					path, "*.class", options);
 			}
 		}
 

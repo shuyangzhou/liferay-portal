@@ -246,7 +246,7 @@ public class BundleJavaFileManager
 		List<JavaFileObject> javaFileObjects) {
 
 		Collection<String> resources = _classResolver.resolveClasses(
-			bundleWiring, packagePath, "*.class", options);
+			bundleWiring, packagePath, options);
 
 		if ((resources == null) || resources.isEmpty()) {
 			return;
