@@ -1,6 +1,16 @@
 Bundle-Name: Liferay Portal Template FreeMarker
 Bundle-SymbolicName: com.liferay.portal.template.freemarker
 Bundle-Version: 1.0.0
+Export-Package:\
+	freemarker,\
+	freemarker.cache,\
+	freemarker.core,\
+	freemarker.ext,\
+	freemarker.ext.beans,\
+	freemarker.ext.jsp,\
+	freemarker.ext.servlet,\
+	freemarker.template,\
+	freemarker.template.utility
 Import-Package:\
 	!com.sun.javadoc,\
 	!com.sun.org.apache.xml.internal.utils,\
@@ -44,3 +54,6 @@ Include-Resource:\
 	WEB-INF=src/main/resources/WEB-INF,\
 	@lib/javax.servlet.jsp.jstl.jar!/META-INF/*.tld,\
 	@lib/org.freemarker.jar
+Liferay-Releng-Module-Group-Description:
+Liferay-Releng-Module-Group-Title: Template Engines
+-include: ../../../marketplace/platform/bnd.bnd

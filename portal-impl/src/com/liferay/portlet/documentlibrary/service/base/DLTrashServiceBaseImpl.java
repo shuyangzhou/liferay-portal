@@ -50,6 +50,25 @@ public abstract class DLTrashServiceBaseImpl extends BaseServiceImpl
 	 */
 
 	/**
+	 * Returns the d l trash local service.
+	 *
+	 * @return the d l trash local service
+	 */
+	public com.liferay.portlet.documentlibrary.service.DLTrashLocalService getDLTrashLocalService() {
+		return dlTrashLocalService;
+	}
+
+	/**
+	 * Sets the d l trash local service.
+	 *
+	 * @param dlTrashLocalService the d l trash local service
+	 */
+	public void setDLTrashLocalService(
+		com.liferay.portlet.documentlibrary.service.DLTrashLocalService dlTrashLocalService) {
+		this.dlTrashLocalService = dlTrashLocalService;
+	}
+
+	/**
 	 * Returns the d l trash remote service.
 	 *
 	 * @return the d l trash remote service
@@ -145,6 +164,8 @@ public abstract class DLTrashServiceBaseImpl extends BaseServiceImpl
 		}
 	}
 
+	@BeanReference(type = com.liferay.portlet.documentlibrary.service.DLTrashLocalService.class)
+	protected com.liferay.portlet.documentlibrary.service.DLTrashLocalService dlTrashLocalService;
 	@BeanReference(type = com.liferay.portlet.documentlibrary.service.DLTrashService.class)
 	protected DLTrashService dlTrashService;
 	@BeanReference(type = com.liferay.counter.service.CounterLocalService.class)

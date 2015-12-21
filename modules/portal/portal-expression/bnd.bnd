@@ -11,3 +11,6 @@ Include-Resource:\
 	classes,\
 	@lib/commons-compiler.jar,\
 	@lib/janino.jar
+Liferay-Releng-Module-Group-Description:
+Liferay-Releng-Module-Group-Title: Runtime
+-include: ../../../marketplace/platform/bnd.bnd

@@ -5,3 +5,6 @@ Export-Package: com.liferay.item.selector.web.constants
 Include-Resource:\
 	classes,\
 	META-INF/resources=src/main/resources/META-INF/resources
+Liferay-Releng-Module-Group-Description:
+Liferay-Releng-Module-Group-Title: Item Selector
+-include: ../../../../marketplace/collaboration/bnd.bnd

@@ -7,3 +7,6 @@ Include-Resource:\
 	@lib/jgrapht-core.jar,\
 	@lib/org.apache.felix.utils.jar!/org/apache/felix/utils/extender/*,\
 	@lib/org.apache.felix.utils.jar!/org/apache/felix/utils/log/*
+Liferay-Releng-Module-Group-Description:
+Liferay-Releng-Module-Group-Title: Upgrade and Verify
+-include: ../../../marketplace/platform/bnd.bnd

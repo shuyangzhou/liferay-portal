@@ -2,8 +2,8 @@
 	<command name="downloadAndInstallApp">
 		<var name="key_appName" value="${appName}" />
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Store" />
+		<execute macro="ProductMenu#gotoControlPanelApps">
+			<var name="portlet" value="Store" />
 		</execute>
 
 		<execute macro="Marketplace#signIn" />
@@ -12,16 +12,16 @@
 
 		<execute macro="Portlet#startServer" />
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Store" />
+		<execute macro="ProductMenu#gotoControlPanelApps">
+			<var name="portlet" value="Store" />
 		</execute>
 
 		<execute macro="Marketplace#downloadApp">
 			<var name="appName" value="${appName}" />
 		</execute>
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Purchased" />
+		<execute macro="ProductMenu#gotoControlPanelApps">
+			<var name="portlet" value="Purchased" />
 		</execute>
 
 		<execute macro="Marketplace#installApp">
@@ -816,7 +816,7 @@
 			<var name="folderName" value="${bookmarkFolderName}" />
 		</execute>
 
-		<execute macro="Bookmark#viewPG">
+		<execute macro="Bookmark#viewBookmark">
 			<var name="bookmarkName" value="${bookmarkName1}" />
 			<var name="bookmarkURL" value="${bookmarkURL1}" />
 		</execute>
@@ -852,7 +852,7 @@
 			<var name="folderName" value="${bookmarkFolderName}" />
 		</execute>
 
-		<execute macro="Bookmark#viewPG">
+		<execute macro="Bookmark#viewBookmark">
 			<var name="bookmarkName" value="${bookmarkName2}" />
 			<var name="bookmarkURL" value="${bookmarkURL2}" />
 		</execute>
@@ -888,7 +888,7 @@
 			<var name="folderName" value="${bookmarkFolderName}" />
 		</execute>
 
-		<execute macro="Bookmark#viewPG">
+		<execute macro="Bookmark#viewBookmark">
 			<var name="bookmarkName" value="${bookmarkName3}" />
 			<var name="bookmarkURL" value="${bookmarkURL3}" />
 		</execute>

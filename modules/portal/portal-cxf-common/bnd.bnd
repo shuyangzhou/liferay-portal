@@ -51,3 +51,6 @@ Include-Resource:\
 	lib/=lib/woodstox-core-asl.jar,\
 	lib/=lib/wsdl4j.jar,\
 	lib/=lib/xmlschema-core.jar
+Liferay-Releng-Module-Group-Description:
+Liferay-Releng-Module-Group-Title: Remote Service Engines
+-include: ../../../marketplace/platform/bnd.bnd

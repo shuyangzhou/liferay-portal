@@ -7,3 +7,6 @@ Import-Package:\
 Include-Resource:\
 	classes,\
 	test-classes/integration
+Liferay-Releng-Module-Group-Description:
+Liferay-Releng-Module-Group-Title: Message Boards
+-include: ../../../../marketplace/collaboration/bnd.bnd

@@ -5,3 +5,6 @@ Include-Resource:\
 	classes,\
 	@lib/guava.jar,\
 	@lib/owasp-java-html-sanitizer.jar
+Liferay-Releng-Module-Group-Description:
+Liferay-Releng-Module-Group-Title: Comments
+-include: ../../../../marketplace/collaboration/bnd.bnd
