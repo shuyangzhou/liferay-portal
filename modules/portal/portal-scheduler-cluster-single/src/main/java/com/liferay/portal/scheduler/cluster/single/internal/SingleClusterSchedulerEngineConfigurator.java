@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.scheduler.single.internal;
+package com.liferay.portal.scheduler.cluster.single.internal;
 
 import com.liferay.portal.kernel.messaging.sender.SingleDestinationMessageSenderFactory;
 import com.liferay.portal.kernel.scheduler.SchedulerEngine;
@@ -28,8 +28,10 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Tina Tian
  */
-@Component(immediate = true, service = SingleSchedulerEngineConfigurator.class)
-public class SingleSchedulerEngineConfigurator
+@Component(
+	immediate = true, service = SingleClusterSchedulerEngineConfigurator.class
+)
+public class SingleClusterSchedulerEngineConfigurator
 	extends BaseSchedulerEngineConfigurator {
 
 	@Activate
