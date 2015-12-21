@@ -39,34 +39,27 @@ public class ReverseTableMapper<L extends BaseModel<L>, R extends BaseModel<R>>
 
 	@Override
 	public boolean containsTableMapping(
-		long companyId, long leftPrimaryKey, long rightPrimaryKey) {
+		long leftPrimaryKey, long rightPrimaryKey) {
 
 		return _tableMapper.containsTableMapping(
-			companyId, rightPrimaryKey, leftPrimaryKey);
+			rightPrimaryKey, leftPrimaryKey);
 	}
 
 	@Override
-	public int deleteLeftPrimaryKeyTableMappings(
-		long companyId, long leftPrimaryKey) {
-
-		return _tableMapper.deleteRightPrimaryKeyTableMappings(
-			companyId, leftPrimaryKey);
+	public int deleteLeftPrimaryKeyTableMappings(long leftPrimaryKey) {
+		return _tableMapper.deleteRightPrimaryKeyTableMappings(leftPrimaryKey);
 	}
 
 	@Override
-	public int deleteRightPrimaryKeyTableMappings(
-		long companyId, long rightPrimaryKey) {
-
-		return _tableMapper.deleteLeftPrimaryKeyTableMappings(
-			companyId, rightPrimaryKey);
+	public int deleteRightPrimaryKeyTableMappings(long rightPrimaryKey) {
+		return _tableMapper.deleteLeftPrimaryKeyTableMappings(rightPrimaryKey);
 	}
 
 	@Override
 	public boolean deleteTableMapping(
-		long companyId, long leftPrimaryKey, long rightPrimaryKey) {
+		long leftPrimaryKey, long rightPrimaryKey) {
 
-		return _tableMapper.deleteTableMapping(
-			companyId, rightPrimaryKey, leftPrimaryKey);
+		return _tableMapper.deleteTableMapping(rightPrimaryKey, leftPrimaryKey);
 	}
 
 	@Override
@@ -76,16 +69,15 @@ public class ReverseTableMapper<L extends BaseModel<L>, R extends BaseModel<R>>
 
 	@Override
 	public List<L> getLeftBaseModels(
-		long companyId, long rightPrimaryKey, int start, int end,
-		OrderByComparator<L> obc) {
+		long rightPrimaryKey, int start, int end, OrderByComparator<L> obc) {
 
 		return _tableMapper.getRightBaseModels(
-			companyId, rightPrimaryKey, start, end, obc);
+			rightPrimaryKey, start, end, obc);
 	}
 
 	@Override
-	public long[] getLeftPrimaryKeys(long companyId, long rightPrimaryKey) {
-		return _tableMapper.getRightPrimaryKeys(companyId, rightPrimaryKey);
+	public long[] getLeftPrimaryKeys(long rightPrimaryKey) {
+		return _tableMapper.getRightPrimaryKeys(rightPrimaryKey);
 	}
 
 	@Override
@@ -95,16 +87,14 @@ public class ReverseTableMapper<L extends BaseModel<L>, R extends BaseModel<R>>
 
 	@Override
 	public List<R> getRightBaseModels(
-		long companyId, long leftPrimaryKey, int start, int end,
-		OrderByComparator<R> obc) {
+		long leftPrimaryKey, int start, int end, OrderByComparator<R> obc) {
 
-		return _tableMapper.getLeftBaseModels(
-			companyId, leftPrimaryKey, start, end, obc);
+		return _tableMapper.getLeftBaseModels(leftPrimaryKey, start, end, obc);
 	}
 
 	@Override
-	public long[] getRightPrimaryKeys(long companyId, long leftPrimaryKey) {
-		return _tableMapper.getLeftPrimaryKeys(companyId, leftPrimaryKey);
+	public long[] getRightPrimaryKeys(long leftPrimaryKey) {
+		return _tableMapper.getLeftPrimaryKeys(leftPrimaryKey);
 	}
 
 	@Override

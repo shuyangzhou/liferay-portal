@@ -31,6 +31,7 @@ import com.liferay.portal.model.Organization;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.model.RoleConstants;
 import com.liferay.portal.model.User;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.test.log.CaptureAppender;
 import com.liferay.portal.test.log.Log4JLoggerTestUtil;
@@ -283,13 +284,19 @@ public class PermissionCheckerTest {
 
 	@Test
 	public void testIsOmniAdminWithCompanyAdmin() throws Exception {
+		long companyId = CompanyThreadLocal.getCompanyId();
+
 		_company = CompanyTestUtil.addCompany();
+
+		CompanyThreadLocal.setCompanyId(_company.getCompanyId());
 
 		_user = UserTestUtil.addCompanyAdminUser(_company);
 
 		PermissionChecker permissionChecker = _getPermissionChecker(_user);
 
 		Assert.assertFalse(permissionChecker.isOmniadmin());
+
+		CompanyThreadLocal.setCompanyId(companyId);
 	}
 
 	@Test

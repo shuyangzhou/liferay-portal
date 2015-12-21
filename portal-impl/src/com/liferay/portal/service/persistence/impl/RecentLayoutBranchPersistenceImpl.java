@@ -38,6 +38,7 @@ import com.liferay.portal.model.RecentLayoutBranch;
 import com.liferay.portal.model.impl.RecentLayoutBranchImpl;
 import com.liferay.portal.model.impl.RecentLayoutBranchModelImpl;
 import com.liferay.portal.service.persistence.CompanyProvider;
+import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.RecentLayoutBranchPersistence;
 
 import java.io.Serializable;
@@ -2029,6 +2030,8 @@ public class RecentLayoutBranchPersistenceImpl extends BasePersistenceImpl<Recen
 		recentLayoutBranch.setNew(true);
 		recentLayoutBranch.setPrimaryKey(recentLayoutBranchId);
 
+		recentLayoutBranch.setCompanyId(companyProvider.getCompanyId());
+
 		return recentLayoutBranch;
 	}
 
@@ -2643,7 +2646,7 @@ public class RecentLayoutBranchPersistenceImpl extends BasePersistenceImpl<Recen
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
-	@BeanReference(type = CompanyProvider.class)
+	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
 	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
 	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
