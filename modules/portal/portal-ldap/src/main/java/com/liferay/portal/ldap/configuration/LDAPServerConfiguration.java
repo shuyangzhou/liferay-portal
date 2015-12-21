@@ -22,12 +22,13 @@ import com.liferay.configuration.admin.ConfigurationAdmin;
  * @author Michael C. Han
  */
 @ConfigurationAdmin(
-	category = "platform", factoryInstanceLabelAttribute = "companyId"
+	category = "platform", factoryInstanceLabelAttribute = "companyId",
+	scope = ConfigurationAdmin.Scope.COMPANY
 )
 @Meta.OCD(
 	factory = true,
 	id = "com.liferay.portal.ldap.configuration.LDAPServerConfiguration",
-	localization = "content/Language"
+	localization = "content/Language", name = "%ldap.server.configuration.name"
 )
 public interface LDAPServerConfiguration {
 

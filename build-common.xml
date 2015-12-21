@@ -872,44 +872,17 @@ Please set the environment variable ANT_OPTS to the recommended value of
 				</else>
 			</if>
 
-			<if>
-				<isset property="env.JENKINS_HOME" />
-				<then>
-					<parallel>
-						<daemons>
-							<sequential>
-								<sleep hours="1" />
-
-								<print-thread-dump jps.name="GradleWrapperMain" />
-							</sequential>
-						</daemons>
-						<exec dir="@{dir}" executable="${project.dir}/gradlew${gradlew.suffix}" failonerror="@{failonerror}">
-							<args />
-							<arg value="--no-daemon" />
-							<arg value="--project-cache-dir=${project.dir}/.gradle" />
-							<arg value="--stacktrace" />
-							<arg value="-Dapp.server.parent.dir=${app.server.parent.dir}" />
-							<arg value="-Dforced.cache.enabled=@{forcedcacheenabled}" />
-							<arg value="-Dliferay.home=${liferay.home}" />
-							<arg value="@{task}" />
-							<env key="GRADLE_OPTS" value="${env.ANT_OPTS}" />
-						</exec>
-					</parallel>
-				</then>
-				<else>
-					<exec dir="@{dir}" executable="${project.dir}/gradlew${gradlew.suffix}" failonerror="@{failonerror}">
-						<args />
-						<arg value="--no-daemon" />
-						<arg value="--project-cache-dir=${project.dir}/.gradle" />
-						<arg value="--stacktrace" />
-						<arg value="-Dapp.server.parent.dir=${app.server.parent.dir}" />
-						<arg value="-Dforced.cache.enabled=@{forcedcacheenabled}" />
-						<arg value="-Dliferay.home=${liferay.home}" />
-						<arg value="@{task}" />
-						<env key="GRADLE_OPTS" value="${env.ANT_OPTS}" />
-					</exec>
-				</else>
-			</if>
+			<exec dir="@{dir}" executable="${project.dir}/gradlew${gradlew.suffix}" failonerror="@{failonerror}">
+				<args />
+				<arg value="--no-daemon" />
+				<arg value="--project-cache-dir=${project.dir}/.gradle" />
+				<arg value="--stacktrace" />
+				<arg value="-Dapp.server.parent.dir=${app.server.parent.dir}" />
+				<arg value="-Dforced.cache.enabled=@{forcedcacheenabled}" />
+				<arg value="-Dliferay.home=${liferay.home}" />
+				<arg value="@{task}" />
+				<env key="GRADLE_OPTS" value="${env.ANT_OPTS}" />
+			</exec>
 		</sequential>
 	</macrodef>
 
@@ -1073,44 +1046,6 @@ Please set the environment variable ANT_OPTS to the recommended value of
 			</tstamp>
 
 			<echo message="${current.time}" />
-		</sequential>
-	</macrodef>
-
-	<macrodef name="print-thread-dump">
-		<attribute name="jps.name" />
-
-		<sequential>
-			<local name="jps.pid" />
-
-			<exec executable="jps" />
-
-			<exec executable="jps">
-				<redirector outputproperty="jps.pid">
-					<outputfilterchain>
-						<linecontains>
-							<contains value="@{jps.name}" />
-						</linecontains>
-						<replacestring from=" @{jps.name}" />
-					</outputfilterchain>
-				</redirector>
-			</exec>
-
-			<if>
-				<not>
-					<equals arg1="${jps.pid}" arg2="" />
-				</not>
-				<then>
-					<echo>Thread dump for process : ${jps.pid}</echo>
-
-					<exec executable="jstack">
-						<arg value="-l" />
-						<arg value="${jps.pid}" />
-					</exec>
-				</then>
-				<else>
-					<echo>Unable to print the thread dump of @{jps.name}.</echo>
-				</else>
-			</if>
 		</sequential>
 	</macrodef>
 
@@ -1497,12 +1432,14 @@ rerun your task.
 			<if>
 				<matches pattern="\d\.\d\.\d\d" string="${lp.version}" />
 				<then>
+					<var name="liferay.releng.app.title.suffix" value="\s EE" />
 					<var name="liferay.releng.public" value="false" />
 					<var name="liferay.releng.supported" value="true" />
 				</then>
 				<elseif>
 					<matches pattern="\d\.\d\.\d" string="${lp.version}" />
 					<then>
+						<var name="liferay.releng.app.title.suffix" value="" />
 						<var name="liferay.releng.public" value="true" />
 						<var name="liferay.releng.supported" value="false" />
 					</then>
@@ -1561,6 +1498,7 @@ rerun your task.
 				junit.java.unit.gc=${junit.java.unit.gc}
 				liferay.home=${liferay.home}
 				liferay.portal.version=${lp.version}-SNAPSHOT
+				liferay.releng.app.title.suffix=${liferay.releng.app.title.suffix}
 				liferay.releng.public=${liferay.releng.public}
 				liferay.releng.supported=${liferay.releng.supported}
 				microsoft.translator.client.id=${microsoft.translator.client.id}

@@ -21,9 +21,14 @@ import com.liferay.configuration.admin.ConfigurationAdmin;
 /**
  * @author Juergen Kappler
  */
-@ConfigurationAdmin(category = "web-experience-management")
+@ConfigurationAdmin(
+	category = "web-experience-management",
+	scope = ConfigurationAdmin.Scope.PORTLET_INSTANCE
+)
 @Meta.OCD(
-	id = "com.liferay.nested.portlets.web.configuration.NestedPortletsPortletInstanceConfiguration"
+	id = "com.liferay.nested.portlets.web.configuration.NestedPortletsPortletInstanceConfiguration",
+	localization = "content/Language",
+	name = "%nested.portlets.portlet.instance.configuration.name"
 )
 public interface NestedPortletsPortletInstanceConfiguration {
 

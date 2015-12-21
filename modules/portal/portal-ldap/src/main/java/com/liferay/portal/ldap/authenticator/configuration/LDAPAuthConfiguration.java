@@ -23,12 +23,13 @@ import com.liferay.portal.ldap.configuration.CompanyScopedConfiguration;
  * @author Michael C. Han
  */
 @ConfigurationAdmin(
-	category = "platform", factoryInstanceLabelAttribute = "companyId"
+	category = "platform", factoryInstanceLabelAttribute = "companyId",
+	scope = ConfigurationAdmin.Scope.COMPANY
 )
 @Meta.OCD(
 	factory = true,
 	id = "com.liferay.portal.ldap.authenticator.configuration.LDAPAuthConfiguration",
-	localization = "content/Language"
+	localization = "content/Language", name = "%ldap.auth.configuration.name"
 )
 public interface LDAPAuthConfiguration extends CompanyScopedConfiguration {
 

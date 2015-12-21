@@ -22,8 +22,14 @@ import com.liferay.portal.kernel.settings.LocalizedValuesMap;
 /**
  * @author Iván Zaera
  */
-@ConfigurationAdmin(category = "collaboration")
-@Meta.OCD(id = "com.liferay.wiki.configuration.WikiGroupServiceConfiguration")
+@ConfigurationAdmin(
+	category = "collaboration", scope = ConfigurationAdmin.Scope.GROUP
+)
+@Meta.OCD(
+	id = "com.liferay.wiki.configuration.WikiGroupServiceConfiguration",
+	localization = "content/Language",
+	name = "%wiki.group.service.configuration.name"
+)
 public interface WikiGroupServiceConfiguration {
 
 	/**

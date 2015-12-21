@@ -9,4 +9,7 @@ Include-Resource:\
 	META-INF/resources=src/main/resources/META-INF/resources,\
 	@../../../../util-java/util-java.jar!/com/liferay/util/RSSUtil.class,\
 	@../../../../util-java/util-java.jar!/com/liferay/util/portlet/PortletProps.class
+Liferay-Releng-Module-Group-Description:
+Liferay-Releng-Module-Group-Title: Social
 Web-ContextPath: /social-networking-web
+-include: ../../../../marketplace/collaboration/bnd.bnd

@@ -21,4 +21,7 @@ Include-Resource:\
 	@../../../../lib/portal/jspwiki.jar,\
 	@../../../../lib/portal/oro.jar,\
 	@../../../../lib/portal/oscache.jar
+Liferay-Releng-Module-Group-Description:
+Liferay-Releng-Module-Group-Title: Wiki
 Web-ContextPath: /wiki-engine-jspwiki
+-include: ../../../../marketplace/collaboration/bnd.bnd

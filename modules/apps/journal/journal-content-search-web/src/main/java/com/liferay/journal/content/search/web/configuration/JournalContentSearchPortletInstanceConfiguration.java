@@ -21,9 +21,14 @@ import com.liferay.configuration.admin.ConfigurationAdmin;
 /**
  * @author Juergen Kappler
  */
-@ConfigurationAdmin(category = "web-experience-management")
+@ConfigurationAdmin(
+	category = "web-experience-management",
+	scope = ConfigurationAdmin.Scope.PORTLET_INSTANCE
+)
 @Meta.OCD(
-	id = "com.liferay.journal.content.search.web.configuration.JournalContentSearchPortletInstanceConfiguration"
+	id = "com.liferay.journal.content.search.web.configuration.JournalContentSearchPortletInstanceConfiguration",
+	localization = "content/Language",
+	name = "%journal.content.search.portlet.instance.configuration.name"
 )
 public interface JournalContentSearchPortletInstanceConfiguration {
 

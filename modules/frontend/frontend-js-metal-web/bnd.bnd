@@ -5,3 +5,6 @@ Include-Resource:\
 	bower.json,\
 	classes
 JS-Submodules: true
+Liferay-Releng-Module-Group-Description:
+Liferay-Releng-Module-Group-Title: Frontend Infrastructure
+-include: ../../../marketplace/platform/bnd.bnd

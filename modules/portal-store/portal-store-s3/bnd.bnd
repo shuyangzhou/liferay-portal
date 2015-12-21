@@ -25,3 +25,6 @@ Include-Resource:\
 	@lib/jackson-core.jar,\
 	@lib/jackson-databind.jar,\
 	@lib/joda-time.jar
+Liferay-Releng-Module-Group-Description:
+Liferay-Releng-Module-Group-Title: Data Stores
+-include: ../../../marketplace/platform/bnd.bnd

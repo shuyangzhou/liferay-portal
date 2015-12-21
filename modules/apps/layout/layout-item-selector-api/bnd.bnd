@@ -3,3 +3,6 @@ Bundle-SymbolicName: com.liferay.layout.item.selector
 Bundle-Version: 1.0.0
 Export-Package: com.liferay.layout.item.selector.criterion
 Include-Resource: classes
+Liferay-Releng-Module-Group-Description:
+Liferay-Releng-Module-Group-Title: Site Management
+-include: ../../../../marketplace/web-content-management/bnd.bnd
