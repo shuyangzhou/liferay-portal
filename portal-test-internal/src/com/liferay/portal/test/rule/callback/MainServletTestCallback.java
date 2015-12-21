@@ -15,8 +15,6 @@
 package com.liferay.portal.test.rule.callback;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.SearchEngineUtil;
 import com.liferay.portal.kernel.servlet.ServletContextPool;
 import com.liferay.portal.kernel.test.rule.ArquillianUtil;
@@ -114,9 +112,6 @@ public class MainServletTestCallback extends BaseTestCallback<Object, Object> {
 
 	protected MainServletTestCallback() {
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		MainServletTestCallback.class);
 
 	private static MainServlet _mainServlet;
 

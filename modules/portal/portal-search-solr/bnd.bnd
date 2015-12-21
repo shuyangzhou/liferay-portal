@@ -43,3 +43,6 @@ Include-Resource:\
 	lib/stax2-api.jar=lib/stax2-api.jar,\
 	lib/woodstox-core-asl.jar=lib/woodstox-core-asl.jar,\
 	lib/zookeeper.jar=lib/zookeeper.jar
+Liferay-Releng-Module-Group-Description:
+Liferay-Releng-Module-Group-Title: Solr
+-include: ../../../marketplace/platform/bnd.bnd

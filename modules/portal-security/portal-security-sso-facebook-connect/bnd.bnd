@@ -1,4 +1,4 @@
-Bundle-Name: Liferay Portal SSO Facebook Connect
+Bundle-Name: Liferay Portal Security SSO Facebook Connect
 Bundle-SymbolicName: com.liferay.portal.security.sso.facebook.connect
 Bundle-Version: 1.0.0
 Import-Package:\
@@ -8,4 +8,7 @@ Import-Package:\
 Include-Resource:\
 	classes,\
 	META-INF/resources=src/main/resources/META-INF/resources
+Liferay-Releng-Module-Group-Description:
+Liferay-Releng-Module-Group-Title: Security Frameworks
 Web-ContextPath: /portal-security-sso-facebook-connect
+-include: ../../../marketplace/platform/bnd.bnd

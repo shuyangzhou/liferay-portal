@@ -21,6 +21,8 @@ Include-Resource:\
 	@${app.server.lib.portal.dir}/util-java.jar!/com/liferay/util/dao/orm/CustomSQLUtil.class,\
 	@${app.server.lib.portal.dir}/util-java.jar!/com/liferay/util/xml/Dom4jUtil.class,\
 	@${app.server.lib.portal.dir}/util-java.jar!/com/liferay/util/xml/XMLUtil.class
+Liferay-Releng-Module-Group-Description:
+Liferay-Releng-Module-Group-Title: Dynamic Data Mapping
 Liferay-Service: true
 Require-Capability:\
 	liferay.extender;\
@@ -28,3 +30,4 @@ Require-Capability:\
 Require-SchemaVersion: 1.0.0
 Spring-Context: META-INF/spring
 -spring-dependency: com.liferay.portal.spring.extender.service.ServiceReference
+-include: ../../../../marketplace/business-productivity/bnd.bnd

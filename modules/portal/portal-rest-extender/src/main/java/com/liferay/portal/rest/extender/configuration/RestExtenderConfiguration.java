@@ -22,11 +22,14 @@ import com.liferay.configuration.admin.ConfigurationAdmin;
  * @author Carlos Sierra Andrés
  */
 @ConfigurationAdmin(
-	category = "platform", factoryInstanceLabelAttribute = "companyId"
+	category = "platform", factoryInstanceLabelAttribute = "companyId",
+	scope = ConfigurationAdmin.Scope.COMPANY
 )
 @Meta.OCD(
 	factory = true,
-	id = "com.liferay.portal.rest.extender.configuration.RestExtenderConfiguration"
+	id = "com.liferay.portal.rest.extender.configuration.RestExtenderConfiguration",
+	localization = "content/Language",
+	name = "%rest.extender.configuration.name"
 )
 public interface RestExtenderConfiguration {
 

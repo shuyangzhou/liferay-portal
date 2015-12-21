@@ -44,6 +44,8 @@
 
 		<antcall target="prepare-virtual-host-name-properties" />
 
+		<prepare-tomcat-setenv />
+
 		<antcall target="start-selenium" />
 
 		<if>

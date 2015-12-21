@@ -21,9 +21,14 @@ import com.liferay.configuration.admin.ConfigurationAdmin;
 /**
  * @author Juergen Kappler
  */
-@ConfigurationAdmin(category = "web-experience-management")
+@ConfigurationAdmin(
+	category = "web-experience-management",
+	scope = ConfigurationAdmin.Scope.PORTLET_INSTANCE
+)
 @Meta.OCD(
-	id = "com.liferay.site.navigation.menu.web.configuration.SiteNavigationMenuPortletInstanceConfiguration"
+	id = "com.liferay.site.navigation.menu.web.configuration.SiteNavigationMenuPortletInstanceConfiguration",
+	localization = "content/Language",
+	name = "%site.navigation.menu.portlet.instance.configuration.name"
 )
 public interface SiteNavigationMenuPortletInstanceConfiguration {
 
@@ -36,19 +41,13 @@ public interface SiteNavigationMenuPortletInstanceConfiguration {
 	@Meta.AD(deflt = "0", required = false)
 	public long displayStyleGroupId();
 
-	@Meta.AD(deflt = "root-layout", required = false)
-	public String headerType();
-
 	@Meta.AD(deflt = "current", required = false)
 	public String includedLayouts();
-
-	@Meta.AD(deflt = "true", required = false)
-	public boolean nestedChildren();
 
 	@Meta.AD(deflt = "preview", required = false)
 	public boolean preview();
 
-	@Meta.AD(deflt = "1", required = false)
+	@Meta.AD(deflt = "0", required = false)
 	public int rootLayoutLevel();
 
 	@Meta.AD(deflt = "absolute", required = false)

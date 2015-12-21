@@ -432,7 +432,9 @@ boolean hasUnlinkLayoutSetPrototypePermission = PortalPermissionUtil.contains(pe
 
 								options.prop('disabled', false);
 
-								options.filter(':not([data-servletContextName=' + siteTemplate + '])').prop('disabled', true);
+								if (siteTemplate) {
+									options.filter(':not([data-servletContextName=' + siteTemplate + '])').prop('disabled', true);
+								}
 							};
 
 							applicationAdapter.on('change', toggleCompatibleSiteTemplates);
@@ -523,7 +525,7 @@ boolean hasUnlinkLayoutSetPrototypePermission = PortalPermissionUtil.contains(pe
 	</liferay-ui:search-container>
 
 	<aui:button-row>
-		<aui:button cssClass="modify-link" id="selectParentSiteLink" value="select" />
+		<aui:button cssClass="btn-lg modify-link" id="selectParentSiteLink" value="select" />
 	</aui:button-row>
 
 	<div class="<%= parentGroups.isEmpty() ? "membership-restriction-container hide" : "membership-restriction-container" %>" id="<portlet:namespace />membershipRestrictionContainer">
