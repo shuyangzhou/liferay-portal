@@ -40,6 +40,7 @@ import com.liferay.portal.model.PluginSetting;
 import com.liferay.portal.model.impl.PluginSettingImpl;
 import com.liferay.portal.model.impl.PluginSettingModelImpl;
 import com.liferay.portal.service.persistence.CompanyProvider;
+import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.PluginSettingPersistence;
 
 import java.io.Serializable;
@@ -1644,7 +1645,7 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
-	@BeanReference(type = CompanyProvider.class)
+	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
 	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
 	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();

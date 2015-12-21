@@ -38,6 +38,7 @@ import com.liferay.portal.model.OrgGroupRole;
 import com.liferay.portal.model.impl.OrgGroupRoleImpl;
 import com.liferay.portal.model.impl.OrgGroupRoleModelImpl;
 import com.liferay.portal.service.persistence.CompanyProvider;
+import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.OrgGroupRolePK;
 import com.liferay.portal.service.persistence.OrgGroupRolePersistence;
 
@@ -1691,7 +1692,7 @@ public class OrgGroupRolePersistenceImpl extends BasePersistenceImpl<OrgGroupRol
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
-	@BeanReference(type = CompanyProvider.class)
+	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
 	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
 	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();

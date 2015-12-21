@@ -38,6 +38,7 @@ import com.liferay.portal.model.RecentLayoutSetBranch;
 import com.liferay.portal.model.impl.RecentLayoutSetBranchImpl;
 import com.liferay.portal.model.impl.RecentLayoutSetBranchModelImpl;
 import com.liferay.portal.service.persistence.CompanyProvider;
+import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.RecentLayoutSetBranchPersistence;
 
 import java.io.Serializable;
@@ -2626,7 +2627,7 @@ public class RecentLayoutSetBranchPersistenceImpl extends BasePersistenceImpl<Re
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
-	@BeanReference(type = CompanyProvider.class)
+	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
 	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
 	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();

@@ -174,7 +174,7 @@ public class AssetTagModelImpl extends BaseModelImpl<AssetTag>
 			{ "entryId", Types.BIGINT },
 			{ "tagId", Types.BIGINT }
 		};
-	public static final String MAPPING_TABLE_ASSETENTRIES_ASSETTAGS_SQL_CREATE = "create table AssetEntries_AssetTags (companyId LONG not null,entryId LONG not null,tagId LONG not null,primary key (companyId, entryId, tagId))";
+	public static final String MAPPING_TABLE_ASSETENTRIES_ASSETTAGS_SQL_CREATE = "create table AssetEntries_AssetTags (companyId LONG not null,entryId LONG not null,tagId LONG not null,primary key (entryId, tagId))";
 	public static final boolean FINDER_CACHE_ENABLED_ASSETENTRIES_ASSETTAGS = GetterUtil.getBoolean(com.liferay.portal.util.PropsUtil.get(
 				"value.object.finder.cache.enabled.AssetEntries_AssetTags"),
 			true);

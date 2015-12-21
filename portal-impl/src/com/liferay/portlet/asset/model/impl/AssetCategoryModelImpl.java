@@ -200,7 +200,7 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 			{ "entryId", Types.BIGINT }
 		};
 	public static final String MAPPING_TABLE_ASSETENTRIES_ASSETCATEGORIES_SQL_CREATE =
-		"create table AssetEntries_AssetCategories (companyId LONG not null,categoryId LONG not null,entryId LONG not null,primary key (companyId, categoryId, entryId))";
+		"create table AssetEntries_AssetCategories (companyId LONG not null,categoryId LONG not null,entryId LONG not null,primary key (categoryId, entryId))";
 	public static final boolean FINDER_CACHE_ENABLED_ASSETENTRIES_ASSETCATEGORIES =
 		GetterUtil.getBoolean(com.liferay.portal.util.PropsUtil.get(
 				"value.object.finder.cache.enabled.AssetEntries_AssetCategories"),
