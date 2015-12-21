@@ -11,4 +11,7 @@ Include-Resource: \
 	classes,\
 	@../../../util-java/util-java.jar!/com/liferay/util/Encryptor.class,\
 	@../../../util-java/util-java.jar!/com/liferay/util/EncryptorException.class
+Liferay-Releng-Module-Group-Description:
+Liferay-Releng-Module-Group-Title: Security Frameworks
+-include: ../../../marketplace/platform/bnd.bnd
 -metatype-inherit: True

@@ -16,6 +16,7 @@ package com.liferay.users.admin.lar.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.rule.CompanyProviderTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.OrganizationTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -61,7 +62,8 @@ public class OrganizationStagedModelDataHandlerTest
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
 		new AggregateTestRule(
-			new LiferayIntegrationTestRule(), TransactionalTestRule.INSTANCE);
+			new LiferayIntegrationTestRule(), CompanyProviderTestRule.INSTANCE,
+			TransactionalTestRule.INSTANCE);
 
 	@After
 	@Override
@@ -283,6 +285,26 @@ public class OrganizationStagedModelDataHandlerTest
 		Assert.assertNotNull(importedWebsite);
 		Assert.assertEquals(
 			organization.getOrganizationId(), importedWebsite.getClassPK());
+	}
+
+	@Override
+	protected void validateImportedStagedModel(
+			StagedModel stagedModel, StagedModel importedStagedModel)
+		throws Exception {
+
+		super.validateImportedStagedModel(stagedModel, importedStagedModel);
+
+		Organization organization = (Organization)stagedModel;
+		Organization importedOrganization = (Organization)importedStagedModel;
+
+		Assert.assertEquals(
+			organization.getName(), importedOrganization.getName());
+		Assert.assertEquals(
+			organization.getType(), importedOrganization.getType());
+		Assert.assertEquals(
+			organization.isRecursable(), importedOrganization.isRecursable());
+		Assert.assertEquals(
+			organization.getComments(), importedOrganization.getComments());
 	}
 
 	private Organization _organization;

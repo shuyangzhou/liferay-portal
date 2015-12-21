@@ -21,9 +21,14 @@ import com.liferay.configuration.admin.ConfigurationAdmin;
 /**
  * @author Juergen Kappler
  */
-@ConfigurationAdmin(category = "web-experience-management")
+@ConfigurationAdmin(
+	category = "web-experience-management",
+	scope = ConfigurationAdmin.Scope.PORTLET_INSTANCE
+)
 @Meta.OCD(
-	id = "com.liferay.iframe.web.configuration.IFramePortletInstanceConfiguration"
+	id = "com.liferay.iframe.web.configuration.IFramePortletInstanceConfiguration",
+	localization = "content/Language",
+	name = "%iframe.portlet.instance.configuration.name"
 )
 public interface IFramePortletInstanceConfiguration {
 

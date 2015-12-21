@@ -15,8 +15,6 @@
 package com.liferay.portal.test.rule.callback;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.SearchEngineUtil;
 import com.liferay.portal.kernel.servlet.ServletContextPool;
 import com.liferay.portal.kernel.test.rule.ArquillianUtil;
@@ -26,6 +24,7 @@ import com.liferay.portal.kernel.util.PortalLifecycle;
 import com.liferay.portal.kernel.util.PortalLifecycleUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.module.framework.ModuleFrameworkUtilAdapter;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.service.test.ServiceTestUtil;
 import com.liferay.portal.servlet.MainServlet;
 import com.liferay.portal.test.mock.AutoDeployMockServletContext;
@@ -41,7 +40,7 @@ import org.springframework.mock.web.MockServletContext;
 /**
  * @author Shuyang Zhou
  */
-public class MainServletTestCallback extends BaseTestCallback<Object, Object> {
+public class MainServletTestCallback extends BaseTestCallback<Long, Long> {
 
 	public static final MainServletTestCallback INSTANCE =
 		new MainServletTestCallback();
@@ -51,7 +50,7 @@ public class MainServletTestCallback extends BaseTestCallback<Object, Object> {
 	}
 
 	@Override
-	public void afterClass(Description description, Object object)
+	public void afterClass(Description description, Long previousCompanyId)
 		throws PortalException {
 
 		if (ArquillianUtil.isArquillianTest(description)) {
@@ -59,10 +58,12 @@ public class MainServletTestCallback extends BaseTestCallback<Object, Object> {
 		}
 
 		SearchEngineUtil.removeCompany(TestPropsValues.getCompanyId());
+
+		CompanyThreadLocal.setCompanyId(previousCompanyId);
 	}
 
 	@Override
-	public Object beforeClass(Description description) {
+	public Long beforeClass(Description description) {
 		if (ArquillianUtil.isArquillianTest(description)) {
 			return null;
 		}
@@ -109,14 +110,21 @@ public class MainServletTestCallback extends BaseTestCallback<Object, Object> {
 
 		ServiceTestUtil.initPermissions();
 
-		return null;
+		try {
+			long previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+			CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+
+			return previousCompanyId;
+		}
+		catch (PortalException pe) {
+			throw new RuntimeException(
+				"The company could not be initialized", pe);
+		}
 	}
 
 	protected MainServletTestCallback() {
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		MainServletTestCallback.class);
 
 	private static MainServlet _mainServlet;
 

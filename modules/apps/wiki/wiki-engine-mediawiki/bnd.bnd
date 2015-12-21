@@ -10,4 +10,7 @@ Import-Package:\
 Include-Resource:\
 	classes,\
 	@lib/org.jamwiki.jar
+Liferay-Releng-Module-Group-Description:
+Liferay-Releng-Module-Group-Title: Wiki
 Web-ContextPath: /wiki-engine-mediawiki
+-include: ../../../../marketplace/collaboration/bnd.bnd

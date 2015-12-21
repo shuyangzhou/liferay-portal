@@ -9,6 +9,11 @@
 </thead>
 <tbody>
 <tr>
+	<td>BOOKMARK_ASSET_URL</td>
+	<td>//div[contains(@class,'asset-url')]/a</td>
+	<td></td>
+</tr>
+<tr>
 	<td>PORTLET_TITLE</td>
 	<td>//h2[@id='cpPortletTitle']/span[@class='portlet-title-text']</td>
 	<td></td>
@@ -42,6 +47,17 @@
 <tr>
 	<td>NAVIGATION_MINE</td>
 	<td>//div[@class='navbar-inner' or contains(@class,'navbar-default')]//li/a[contains(@href,'mine')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--BREADCRUMB-->
+<tr>
+	<td>BREADCRUMB_FOLDER_NAME</td>
+	<td>//ul[contains(@class,'breadcrumb')]/li/a[contains(.,'${key_folderName}')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -111,15 +127,20 @@
 	<td></td>
 	<td></td>
 </tr>
-<!--FOLDERS_DESCRIPTIVE-->
+<!--DESCRIPTIVE_ENTRY-->
 <tr>
-	<td>FOLDERS_DESCRIPTIVE_ENTRY_TITLE</td>
-	<td>//li[contains(@class,'list-group-item')]//div/h5[contains(.,'${key_folderName}')]</td>
+	<td>DESCRIPTIVE_ENTRY_TITLE</td>
+	<td>//li[contains(@class,'list-group-item')]//a[contains(.,'${key_assetName}')]</td>
 	<td></td>
 </tr>
 <tr>
-	<td>FOLDERS_DESCRIPTIVE_ENTRY_DESCRIPTION</td>
-	<td>//li[contains(@class,'list-group-item')]//div/h6[contains(.,'${key_folderDescription}')]</td>
+	<td>DESCRIPTIVE_ENTRY_DESCRIPTION</td>
+	<td>//li[contains(@class,'list-group-item')]//div/h6[contains(.,'${key_assetDescription}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>DESCRIPTIVE_ENTRY_GENERIC</td>
+	<td>//div[contains(@class,'list-group-item-content')]//h5/a</td>
 	<td></td>
 </tr>
 </tbody>

@@ -24,18 +24,19 @@ import com.liferay.polls.service.PollsVoteLocalServiceUtil;
 import com.liferay.polls.service.persistence.PollsChoiceUtil;
 import com.liferay.polls.util.test.PollsTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.rule.CompanyProviderTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.lar.test.BaseStagedModelDataHandlerTestCase;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.StagedModel;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.junit.Assert;
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
 
@@ -47,9 +48,12 @@ import org.junit.runner.RunWith;
 public class PollsVoteStagedModelDataHandlerTest
 	extends BaseStagedModelDataHandlerTestCase {
 
+	@ClassRule
 	@Rule
-	public final AggregateTestRule aggregateTestRule = new AggregateTestRule(
-		new LiferayIntegrationTestRule(), TransactionalTestRule.INSTANCE);
+	public static final AggregateTestRule aggregateTestRule =
+		new AggregateTestRule(
+			new LiferayIntegrationTestRule(), CompanyProviderTestRule.INSTANCE,
+			TransactionalTestRule.INSTANCE);
 
 	@Override
 	protected Map<String, List<StagedModel>> addDependentStagedModelsMap(
@@ -138,28 +142,6 @@ public class PollsVoteStagedModelDataHandlerTest
 
 		PollsQuestionLocalServiceUtil.getPollsQuestionByUuidAndGroupId(
 			question.getUuid(), group.getGroupId());
-	}
-
-	@Override
-	protected void validateImportedStagedModel(
-			StagedModel stagedModel, StagedModel importedStagedModel)
-		throws Exception {
-
-		super.validateImportedStagedModel(stagedModel, importedStagedModel);
-
-		PollsVote vote = (PollsVote)stagedModel;
-		PollsVote importedVote = (PollsVote)importedStagedModel;
-
-		Calendar voteDateCalendar = Calendar.getInstance();
-		Calendar importedVoteDateCalendar = Calendar.getInstance();
-
-		voteDateCalendar.setTime(vote.getVoteDate());
-		importedVoteDateCalendar.setTime(importedVote.getVoteDate());
-
-		voteDateCalendar.set(Calendar.MILLISECOND, 0);
-		importedVoteDateCalendar.set(Calendar.MILLISECOND, 0);
-
-		Assert.assertEquals(voteDateCalendar, importedVoteDateCalendar);
 	}
 
 }

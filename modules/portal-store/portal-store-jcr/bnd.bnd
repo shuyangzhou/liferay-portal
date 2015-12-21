@@ -16,3 +16,6 @@ Include-Resource:\
 	@lib/jackrabbit-spi.jar,\
 	@lib/jackrabbit-spi-commons.jar,\
 	@lib/jcr.jar
+Liferay-Releng-Module-Group-Description:
+Liferay-Releng-Module-Group-Title: Data Stores
+-include: ../../../marketplace/platform/bnd.bnd

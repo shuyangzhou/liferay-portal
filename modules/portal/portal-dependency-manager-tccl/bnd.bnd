@@ -5,3 +5,6 @@ Export-Package: com.liferay.portal.dependency.manager.tccl
 Fragment-Host: org.apache.felix.dependencymanager
 Import-Package: org.osgi.framework.*
 Include-Resource: classes
+Liferay-Releng-Module-Group-Description:
+Liferay-Releng-Module-Group-Title: Remote Service Engines
+-include: ../../../marketplace/platform/bnd.bnd

@@ -181,11 +181,28 @@ public class Field implements Serializable {
 
 	public static final String VIEW_COUNT = "viewCount";
 
+	public static boolean validateFieldName(String name) {
+		if (name.contains(StringPool.COMMA) ||
+			name.contains(StringPool.PERIOD) ||
+			name.contains(StringPool.POUND) ||
+			name.contains(StringPool.SLASH) || name.contains(StringPool.STAR)||
+			name.startsWith(StringPool.UNDERLINE)) {
+
+			return false;
+		}
+
+		return true;
+	}
+
 	public Field(String name) {
+		validate(name);
+
 		_name = name;
 	}
 
 	public Field(String name, Map<Locale, String> localizedValues) {
+		validate(name);
+
 		_name = name;
 		_localizedValues = localizedValues;
 	}
@@ -195,6 +212,8 @@ public class Field implements Serializable {
 	}
 
 	public Field(String name, String[] values) {
+		validate(name);
+
 		_name = name;
 		_values = values;
 	}
@@ -419,6 +438,39 @@ public class Field implements Serializable {
 		private final LinkedList<Field> _nestedFieldsBuilderFields =
 			new LinkedList<>();
 
+	}
+
+	protected void validate(String name) {
+		if (name.contains(StringPool.COMMA)) {
+			throw new IllegalArgumentException(
+				"Name must not contain " + StringPool.COMMA + ": " + name);
+		}
+
+		if (name.contains(StringPool.PERIOD)) {
+			throw new IllegalArgumentException(
+				"Name must not contain " + StringPool.PERIOD + ": " + name);
+		}
+
+		if (name.contains(StringPool.POUND)) {
+			throw new IllegalArgumentException(
+				"Name must not contain " + StringPool.POUND + ": " + name);
+		}
+
+		if (name.contains(StringPool.SLASH)) {
+			throw new IllegalArgumentException(
+				"Name must not contain " + StringPool.SLASH + ": " + name);
+		}
+
+		if (name.contains(StringPool.STAR)) {
+			throw new IllegalArgumentException(
+				"Name must not contain " + StringPool.STAR + ": " + name);
+		}
+
+		if (name.startsWith(StringPool.UNDERLINE)) {
+			throw new IllegalArgumentException(
+				"Name must not start with " + StringPool.UNDERLINE + ": " +
+					name);
+		}
 	}
 
 	private float _boost = 1;

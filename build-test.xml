@@ -953,6 +953,15 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 				<available file="poshi-warnings.xml" />
 				<then>
 					<loadfile property="testray.testcase.warnings" srcfile="poshi-warnings.xml" />
+
+					<propertyregex
+						global="true"
+						input="${testray.testcase.warnings}"
+						override="true"
+						property="testray.testcase.warnings"
+						regexp="]]>([\S]+)"
+						replace="&amp;#93;&amp;#93;&amp;gt;\1"
+					/>
 				</then>
 			</if>
 
@@ -1637,10 +1646,7 @@ tell application "Safari" to quit
 				</else>
 			</if>
 
-			<replace file="${app.server.tomcat.bin.dir}/setenv${file.suffix.bat}">
-				<replacetoken><![CDATA[-Xmx1024m -XX:MaxPermSize=256m]]></replacetoken>
-				<replacevalue><![CDATA[-verbose:gc -Xloggc:/tmp/tomcat-gc.log -Xms512m -Xmx512m -XX:MaxNewSize=32m -XX:MaxPermSize=200m -XX:MaxTenuringThreshold=0 -XX:NewSize=32m -XX:ParallelGCThreads=2 -XX:PermSize=200m -XX:+PrintGCCause -XX:+PrintGCDetails -XX:SurvivorRatio=65536 -XX:TargetSurvivorRatio=0 -XX:+UseParNewGC]]></replacevalue>
-			</replace>
+			<prepare-tomcat-setenv />
 
 			<antcall target="prepare-test-build-tomcat-dependents" inheritAll="false" />
 
@@ -1757,6 +1763,15 @@ tell application "Safari" to quit
 					<var name="app.server.bundle.index" unset="true" />
 				</then>
 			</if>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="prepare-tomcat-setenv">
+		<sequential>
+			<replace file="${app.server.tomcat.bin.dir}/setenv${file.suffix.bat}">
+				<replacetoken><![CDATA[-Xmx2048m -XX:MaxPermSize=384m]]></replacetoken>
+				<replacevalue><![CDATA[-verbose:gc -Xloggc:/tmp/tomcat-gc.log -Xms512m -Xmx512m -XX:MaxNewSize=32m -XX:MaxPermSize=200m -XX:MaxTenuringThreshold=0 -XX:NewSize=32m -XX:ParallelGCThreads=2 -XX:PermSize=200m -XX:+PrintGCCause -XX:+PrintGCDetails -XX:SurvivorRatio=65536 -XX:TargetSurvivorRatio=0 -XX:+UseParNewGC]]></replacevalue>
+			</replace>
 		</sequential>
 	</macrodef>
 
@@ -3017,9 +3032,9 @@ go]]></replacevalue>
 				<property name="test.case.attachments">
 					<![CDATA[
 						<attachments>
-							<file name="console.output" value="${testray.logs.jenkins.console}" />
-							<file name="report.html" value="${testray.logs.poshi.report}" />
-							<file name="summary.html" value="${testray.logs.poshi.summary}" />
+							<file name="Jenkins Console" value="${testray.logs.jenkins.console}" />
+							<file name="Poshi Report" value="${testray.logs.poshi.report}" />
+							<file name="Poshi Summary" value="${testray.logs.poshi.summary}" />
 						</attachments>
 					]]>
 				</property>
@@ -3028,7 +3043,7 @@ go]]></replacevalue>
 				<property name="test.case.attachments">
 					<![CDATA[
 						<attachments>
-							<file name="console.output" value="${testray.logs.jenkins.console}" />
+							<file name="Jenkins Console" value="${testray.logs.jenkins.console}" />
 						</attachments>
 					]]>
 				</property>

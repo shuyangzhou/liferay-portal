@@ -8,4 +8,7 @@ Export-Package:\
 Include-Resource:\
 	classes,\
 	META-INF/resources=src/main/resources/META-INF/resources
+Liferay-Releng-Module-Group-Description:
+Liferay-Releng-Module-Group-Title: Dynamic Data Lists
 Web-ContextPath: /dynamic-data-lists-web
+-include: ../../../../marketplace/business-productivity/bnd.bnd
