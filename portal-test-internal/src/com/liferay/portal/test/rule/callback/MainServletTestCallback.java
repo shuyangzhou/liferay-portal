@@ -63,7 +63,7 @@ public class MainServletTestCallback extends BaseTestCallback<Long, Void> {
 	}
 
 	@Override
-	public Long beforeClass(Description description) {
+	public Long beforeClass(Description description) throws PortalException {
 		if (ArquillianUtil.isArquillianTest(description)) {
 			return null;
 		}
@@ -110,17 +110,11 @@ public class MainServletTestCallback extends BaseTestCallback<Long, Void> {
 
 		ServiceTestUtil.initPermissions();
 
-		try {
-			long previousCompanyId = CompanyThreadLocal.getCompanyId();
+		long previousCompanyId = CompanyThreadLocal.getCompanyId();
 
-			CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
 
-			return previousCompanyId;
-		}
-		catch (PortalException pe) {
-			throw new RuntimeException(
-				"The company could not be initialized", pe);
-		}
+		return previousCompanyId;
 	}
 
 	protected MainServletTestCallback() {
