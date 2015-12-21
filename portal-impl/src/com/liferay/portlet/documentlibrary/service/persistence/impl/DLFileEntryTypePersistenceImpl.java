@@ -3917,7 +3917,9 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 	 */
 	@Override
 	public long[] getDLFolderPrimaryKeys(long pk) {
-		long[] pks = dlFileEntryTypeToDLFolderTableMapper.getRightPrimaryKeys(companyProvider.getCompanyId(),
+		DLFileEntryType dlFileEntryType = findByPrimaryKey(pk);
+
+		long[] pks = dlFileEntryTypeToDLFolderTableMapper.getRightPrimaryKeys(dlFileEntryType.getCompanyId(),
 				pk);
 
 		return pks.clone();
@@ -3970,7 +3972,9 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 	public List<com.liferay.portlet.documentlibrary.model.DLFolder> getDLFolders(
 		long pk, int start, int end,
 		OrderByComparator<com.liferay.portlet.documentlibrary.model.DLFolder> orderByComparator) {
-		return dlFileEntryTypeToDLFolderTableMapper.getRightBaseModels(companyProvider.getCompanyId(),
+		DLFileEntryType dlFileEntryType = findByPrimaryKey(pk);
+
+		return dlFileEntryTypeToDLFolderTableMapper.getRightBaseModels(dlFileEntryType.getCompanyId(),
 			pk, start, end, orderByComparator);
 	}
 
@@ -3982,7 +3986,9 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 	 */
 	@Override
 	public int getDLFoldersSize(long pk) {
-		long[] pks = dlFileEntryTypeToDLFolderTableMapper.getRightPrimaryKeys(companyProvider.getCompanyId(),
+		DLFileEntryType dlFileEntryType = findByPrimaryKey(pk);
+
+		long[] pks = dlFileEntryTypeToDLFolderTableMapper.getRightPrimaryKeys(dlFileEntryType.getCompanyId(),
 				pk);
 
 		return pks.length;
@@ -3997,7 +4003,9 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 	 */
 	@Override
 	public boolean containsDLFolder(long pk, long dlFolderPK) {
-		return dlFileEntryTypeToDLFolderTableMapper.containsTableMapping(companyProvider.getCompanyId(),
+		DLFileEntryType dlFileEntryType = findByPrimaryKey(pk);
+
+		return dlFileEntryTypeToDLFolderTableMapper.containsTableMapping(dlFileEntryType.getCompanyId(),
 			pk, dlFolderPK);
 	}
 
@@ -4025,7 +4033,9 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 	 */
 	@Override
 	public void addDLFolder(long pk, long dlFolderPK) {
-		dlFileEntryTypeToDLFolderTableMapper.addTableMapping(companyProvider.getCompanyId(),
+		DLFileEntryType dlFileEntryType = findByPrimaryKey(pk);
+
+		dlFileEntryTypeToDLFolderTableMapper.addTableMapping(dlFileEntryType.getCompanyId(),
 			pk, dlFolderPK);
 	}
 
@@ -4038,7 +4048,9 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 	@Override
 	public void addDLFolder(long pk,
 		com.liferay.portlet.documentlibrary.model.DLFolder dlFolder) {
-		dlFileEntryTypeToDLFolderTableMapper.addTableMapping(companyProvider.getCompanyId(),
+		DLFileEntryType dlFileEntryType = findByPrimaryKey(pk);
+
+		dlFileEntryTypeToDLFolderTableMapper.addTableMapping(dlFileEntryType.getCompanyId(),
 			pk, dlFolder.getPrimaryKey());
 	}
 
@@ -4050,8 +4062,10 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 	 */
 	@Override
 	public void addDLFolders(long pk, long[] dlFolderPKs) {
+		DLFileEntryType dlFileEntryType = findByPrimaryKey(pk);
+
 		for (long dlFolderPK : dlFolderPKs) {
-			dlFileEntryTypeToDLFolderTableMapper.addTableMapping(companyProvider.getCompanyId(),
+			dlFileEntryTypeToDLFolderTableMapper.addTableMapping(dlFileEntryType.getCompanyId(),
 				pk, dlFolderPK);
 		}
 	}
@@ -4065,8 +4079,10 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 	@Override
 	public void addDLFolders(long pk,
 		List<com.liferay.portlet.documentlibrary.model.DLFolder> dlFolders) {
+		DLFileEntryType dlFileEntryType = findByPrimaryKey(pk);
+
 		for (com.liferay.portlet.documentlibrary.model.DLFolder dlFolder : dlFolders) {
-			dlFileEntryTypeToDLFolderTableMapper.addTableMapping(companyProvider.getCompanyId(),
+			dlFileEntryTypeToDLFolderTableMapper.addTableMapping(dlFileEntryType.getCompanyId(),
 				pk, dlFolder.getPrimaryKey());
 		}
 	}
@@ -4078,7 +4094,9 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 	 */
 	@Override
 	public void clearDLFolders(long pk) {
-		dlFileEntryTypeToDLFolderTableMapper.deleteLeftPrimaryKeyTableMappings(companyProvider.getCompanyId(),
+		DLFileEntryType dlFileEntryType = findByPrimaryKey(pk);
+
+		dlFileEntryTypeToDLFolderTableMapper.deleteLeftPrimaryKeyTableMappings(dlFileEntryType.getCompanyId(),
 			pk);
 	}
 
@@ -4090,7 +4108,9 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 	 */
 	@Override
 	public void removeDLFolder(long pk, long dlFolderPK) {
-		dlFileEntryTypeToDLFolderTableMapper.deleteTableMapping(companyProvider.getCompanyId(),
+		DLFileEntryType dlFileEntryType = findByPrimaryKey(pk);
+
+		dlFileEntryTypeToDLFolderTableMapper.deleteTableMapping(dlFileEntryType.getCompanyId(),
 			pk, dlFolderPK);
 	}
 
@@ -4115,8 +4135,10 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 	 */
 	@Override
 	public void removeDLFolders(long pk, long[] dlFolderPKs) {
+		DLFileEntryType dlFileEntryType = findByPrimaryKey(pk);
+
 		for (long dlFolderPK : dlFolderPKs) {
-			dlFileEntryTypeToDLFolderTableMapper.deleteTableMapping(companyProvider.getCompanyId(),
+			dlFileEntryTypeToDLFolderTableMapper.deleteTableMapping(dlFileEntryType.getCompanyId(),
 				pk, dlFolderPK);
 		}
 	}
@@ -4144,23 +4166,25 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 	 */
 	@Override
 	public void setDLFolders(long pk, long[] dlFolderPKs) {
+		DLFileEntryType dlFileEntryType = findByPrimaryKey(pk);
+
 		Set<Long> newDLFolderPKsSet = SetUtil.fromArray(dlFolderPKs);
 		Set<Long> oldDLFolderPKsSet = SetUtil.fromArray(dlFileEntryTypeToDLFolderTableMapper.getRightPrimaryKeys(
-					companyProvider.getCompanyId(), pk));
+					dlFileEntryType.getCompanyId(), pk));
 
 		Set<Long> removeDLFolderPKsSet = new HashSet<Long>(oldDLFolderPKsSet);
 
 		removeDLFolderPKsSet.removeAll(newDLFolderPKsSet);
 
 		for (long removeDLFolderPK : removeDLFolderPKsSet) {
-			dlFileEntryTypeToDLFolderTableMapper.deleteTableMapping(companyProvider.getCompanyId(),
+			dlFileEntryTypeToDLFolderTableMapper.deleteTableMapping(dlFileEntryType.getCompanyId(),
 				pk, removeDLFolderPK);
 		}
 
 		newDLFolderPKsSet.removeAll(oldDLFolderPKsSet);
 
 		for (long newDLFolderPK : newDLFolderPKsSet) {
-			dlFileEntryTypeToDLFolderTableMapper.addTableMapping(companyProvider.getCompanyId(),
+			dlFileEntryTypeToDLFolderTableMapper.addTableMapping(dlFileEntryType.getCompanyId(),
 				pk, newDLFolderPK);
 		}
 	}
