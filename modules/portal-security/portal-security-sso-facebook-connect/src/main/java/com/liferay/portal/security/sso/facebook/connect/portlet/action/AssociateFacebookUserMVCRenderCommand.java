@@ -23,16 +23,12 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.security.auth.PrincipalException;
 import com.liferay.portal.service.UserLocalService;
 import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PortletKeys;
 
 import javax.portlet.PortletException;
 import javax.portlet.PortletRequest;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -43,9 +39,8 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	immediate = true,
 	property = {
-		"mvc.command.name=/login/associate_facebook_user",
-		"javax.portlet.name=" + PortletKeys.LOGIN,
-		"javax.portlet.name=" + PortletKeys.FAST_LOGIN,
+		"javax.portlet.name=", "javax.portlet.name=" + PortletKeys.LOGIN,
+		"mvc.command.name=/login/associate_facebook_user" + PortletKeys.FAST_LOGIN
 	},
 	service = MVCRenderCommand.class
 )
