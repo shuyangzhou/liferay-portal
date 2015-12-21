@@ -1645,10 +1645,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 	private static final Log _log = LogFactoryUtil.getLog(
 		CompanyLocalServiceImpl.class);
 
-	@BeanReference(
-		name = "com.liferay.portal.service.persistence.CompanyProviderWrapper",
-		type = CompanyProviderWrapper.class
-	)
+	@BeanReference(type = CompanyProviderWrapper.class)
 	private CompanyProviderWrapper _companyProviderWrapper;
 
 	private class CustomCompanyProvider implements CompanyProvider {
