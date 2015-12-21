@@ -5,4 +5,7 @@ Export-Package: com.liferay.site.navigation.breadcrumb.web.constants
 Include-Resource:\
 	classes,\
 	META-INF/resources=src/main/resources/META-INF/resources
+Liferay-Releng-Module-Group-Description:
+Liferay-Releng-Module-Group-Title: Site Navigation
 Web-ContextPath: /site-navigation-breadcrumb-web
+-include: ../../../../marketplace/web-content-management/bnd.bnd

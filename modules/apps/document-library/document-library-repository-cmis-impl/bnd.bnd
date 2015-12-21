@@ -18,3 +18,6 @@ Include-Resource:\
 	@lib/chemistry-opencmis-commons-impl.jar,\
 	@lib/stax2-api.jar,\
 	@lib/woodstox-core-asl.jar
+Liferay-Releng-Module-Group-Description:
+Liferay-Releng-Module-Group-Title: Document Library
+-include: ../../../../marketplace/collaboration/bnd.bnd

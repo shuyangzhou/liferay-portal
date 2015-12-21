@@ -5,5 +5,8 @@ Include-Resource:\
 	classes,\
 	content=../frontend-editor-lang/src/main/resources/content,\
 	META-INF/resources=src/main/resources/META-INF/resources
+Liferay-Releng-Module-Group-Description:
+Liferay-Releng-Module-Group-Title: Rich Text Editors
 Web-ContextPath: /frontend-editor-bbcode-web
 -donotcopy: (\.touch|.*_diffs.*|.*.properties)
+-include: ../../../../marketplace/platform/bnd.bnd

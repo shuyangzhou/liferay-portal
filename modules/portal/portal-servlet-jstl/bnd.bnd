@@ -8,3 +8,6 @@ Import-Package:\
 	org.apache.taglibs.standard.*;version=${plugin.full.version},\
 	*
 Include-Resource: @lib/javax.servlet.jsp.jstl.jar
+Liferay-Releng-Module-Group-Description:
+Liferay-Releng-Module-Group-Title: OSGI JSP support
+-include: ../../../marketplace/platform/bnd.bnd

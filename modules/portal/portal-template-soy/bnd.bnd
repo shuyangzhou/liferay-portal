@@ -20,3 +20,6 @@ Include-Resource:\
 	@lib/javax.inject.jar,\
 	@lib/jsr305.jar,\
 	@lib/soy.jar
+Liferay-Releng-Module-Group-Description:
+Liferay-Releng-Module-Group-Title: Template Engines
+-include: ../../../marketplace/platform/bnd.bnd

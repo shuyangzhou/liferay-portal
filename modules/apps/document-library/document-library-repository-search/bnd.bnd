@@ -16,3 +16,6 @@ Include-Resource:\
 	lib/lucene-queries.jar=lib/lucene-queries.jar,\
 	lib/lucene-queryparser.jar=lib/lucene-queryparser.jar,\
 	lib/lucene-sandbox.jar=lib/lucene-sandbox.jar
+Liferay-Releng-Module-Group-Description:
+Liferay-Releng-Module-Group-Title: Document Library
+-include: ../../../../marketplace/collaboration/bnd.bnd

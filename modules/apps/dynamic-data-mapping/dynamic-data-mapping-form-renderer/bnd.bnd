@@ -7,4 +7,7 @@ Include-Resource:\
 	META-INF=src/main/resources/META-INF,\
 	META-INF/resources/content=src/main/resources/content
 JS-Config: /META-INF/resources/js/config.js
+Liferay-Releng-Module-Group-Description:
+Liferay-Releng-Module-Group-Title: Dynamic Data Mapping
 Web-ContextPath: /dynamic-data-mapping-form-renderer
+-include: ../../../../marketplace/business-productivity/bnd.bnd

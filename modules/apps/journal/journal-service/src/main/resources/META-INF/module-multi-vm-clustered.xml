@@ -13,10 +13,5 @@
 		overflowToDisk="false"
 		timeToIdleSeconds="600"
 	>
-		<cacheEventListenerFactory
-			class="portalPropertyKey=ehcache.cache.event.listener.factory"
-			properties="replicatePuts=false"
-			propertySeparator=","
-		/>
 	</cache>
 </ehcache>

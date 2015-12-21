@@ -21,9 +21,14 @@ import com.liferay.configuration.admin.ConfigurationAdmin;
 /**
  * @author Sergio González
  */
-@ConfigurationAdmin(category = "collaboration")
+@ConfigurationAdmin(
+	category = "collaboration",
+	scope = ConfigurationAdmin.Scope.PORTLET_INSTANCE
+)
 @Meta.OCD(
-	id = "com.liferay.blogs.web.configuration.BlogsPortletInstanceConfiguration"
+	id = "com.liferay.blogs.web.configuration.BlogsPortletInstanceConfiguration",
+	localization = "content/Language",
+	name = "%blogs.portlet.instance.configuration.name"
 )
 public interface BlogsPortletInstanceConfiguration {
 

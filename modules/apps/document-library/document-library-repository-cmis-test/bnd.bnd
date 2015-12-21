@@ -5,3 +5,6 @@ Include-Resource:\
 	classes,\
 	test-classes/integration,\
 	@../../../../lib/portal/chemistry-opencmis-commons-api.jar!/org/apache/chemistry/opencmis/commons/enums/CapabilityQuery.class
+Liferay-Releng-Module-Group-Description:
+Liferay-Releng-Module-Group-Title: Document Library
+-include: ../../../../marketplace/collaboration/bnd.bnd

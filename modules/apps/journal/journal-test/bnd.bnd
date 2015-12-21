@@ -9,3 +9,6 @@ Include-Resource:\
 	classes,\
 	test-classes/integration/,\
 	@${app.server.lib.portal.dir}/util-java.jar!/com/liferay/util/xml/XMLUtil.class
+Liferay-Releng-Module-Group-Description:
+Liferay-Releng-Module-Group-Title: Web Content
+-include: ../../../../marketplace/web-content-management/bnd.bnd

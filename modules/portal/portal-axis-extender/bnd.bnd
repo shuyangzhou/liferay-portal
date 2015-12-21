@@ -16,3 +16,6 @@ Include-Resource:\
 	classes,\
 	@../../../lib/portal/axis.jar,\
 	@../../../lib/portal/wsdl4j.jar
+Liferay-Releng-Module-Group-Description:
+Liferay-Releng-Module-Group-Title: Remote Service Engines
+-include: ../../../marketplace/platform/bnd.bnd
