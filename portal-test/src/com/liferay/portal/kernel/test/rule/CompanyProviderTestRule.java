@@ -19,7 +19,7 @@ import com.liferay.portal.kernel.test.rule.callback.CompanyProviderTestCallback;
 /**
  * @author Cristina González
  */
-public class CompanyProviderTestRule extends BaseTestRule<Long, Long> {
+public class CompanyProviderTestRule extends BaseTestRule<Long, Void> {
 
 	public static final CompanyProviderTestRule INSTANCE =
 		new CompanyProviderTestRule();

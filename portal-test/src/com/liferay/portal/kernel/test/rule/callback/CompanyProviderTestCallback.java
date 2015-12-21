@@ -22,7 +22,7 @@ import org.junit.runner.Description;
 /**
  * @author Cristina González
  */
-public class CompanyProviderTestCallback extends BaseTestCallback<Long, Long> {
+public class CompanyProviderTestCallback extends BaseTestCallback<Long, Void> {
 
 	public static final CompanyProviderTestCallback INSTANCE =
 		new CompanyProviderTestCallback();

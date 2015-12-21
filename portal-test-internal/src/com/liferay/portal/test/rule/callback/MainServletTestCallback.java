@@ -40,7 +40,7 @@ import org.springframework.mock.web.MockServletContext;
 /**
  * @author Shuyang Zhou
  */
-public class MainServletTestCallback extends BaseTestCallback<Long, Long> {
+public class MainServletTestCallback extends BaseTestCallback<Long, Void> {
 
 	public static final MainServletTestCallback INSTANCE =
 		new MainServletTestCallback();
