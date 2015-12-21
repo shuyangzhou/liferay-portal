@@ -19,10 +19,26 @@ package com.liferay.portal.service.persistence;
 /**
  * @author Cristina González
  */
-public interface CompanyProviderWrapper extends CompanyProvider {
+public class CompanyProviderWrapper implements CompanyProvider {
 
-	public CompanyProvider getCompanyProvider();
+	@Override
+	public long getCompanyId() {
+		return _companyProvider.getCompanyId();
+	}
 
-	public void setCompanyProvider(CompanyProvider companyProvider);
+	@Override
+	public String getCompanyIdName() {
+		return _companyProvider.getCompanyIdName();
+	}
+
+	public CompanyProvider getCompanyProvider() {
+		return _companyProvider;
+	}
+
+	public void setCompanyProvider(CompanyProvider companyProvider) {
+		_companyProvider = companyProvider;
+	}
+
+	private CompanyProvider _companyProvider;
 
 }
