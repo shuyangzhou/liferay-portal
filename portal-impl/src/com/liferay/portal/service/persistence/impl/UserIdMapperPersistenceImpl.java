@@ -40,6 +40,7 @@ import com.liferay.portal.model.UserIdMapper;
 import com.liferay.portal.model.impl.UserIdMapperImpl;
 import com.liferay.portal.model.impl.UserIdMapperModelImpl;
 import com.liferay.portal.service.persistence.CompanyProvider;
+import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.UserIdMapperPersistence;
 
 import java.io.Serializable;
@@ -1326,6 +1327,8 @@ public class UserIdMapperPersistenceImpl extends BasePersistenceImpl<UserIdMappe
 		userIdMapper.setNew(true);
 		userIdMapper.setPrimaryKey(userIdMapperId);
 
+		userIdMapper.setCompanyId(companyProvider.getCompanyId());
+
 		return userIdMapper;
 	}
 
@@ -1901,7 +1904,7 @@ public class UserIdMapperPersistenceImpl extends BasePersistenceImpl<UserIdMappe
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
-	@BeanReference(type = CompanyProvider.class)
+	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
 	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
 	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();

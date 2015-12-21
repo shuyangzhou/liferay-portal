@@ -12,20 +12,30 @@
  * details.
  */
 
-package com.liferay.portal.instances.web.portlet;
+package com.liferay.staging.processes.web.portlet.action;
 
-import com.liferay.portal.instances.web.constants.PortalInstancesPortletKeys;
-import com.liferay.portlet.ControlPanelEntry;
+import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
+import com.liferay.staging.processes.web.constants.StagingProcessesPortletKeys;
 
 import org.osgi.service.component.annotations.Component;
 
 /**
- * @author Pei-Jung Lan
+ * @author Mate Thurzo
  */
 @Component(
-	property = {"javax.portlet.name=" + PortalInstancesPortletKeys.PORTAL_INSTANCES},
-	service = ControlPanelEntry.class
+	immediate = true,
+	property = {
+		"javax.portlet.name=" + StagingProcessesPortletKeys.STAGING_PROCESSES,
+		"mvc.command.name=viewPublishConfigurations"
+	},
+	service = MVCRenderCommand.class
 )
-public class OmniadminControlPanelEntry
-	extends com.liferay.portlet.OmniadminControlPanelEntry {
+public class ViewPublishConfigurationsMVCRenderCommand
+	extends GetGroupMVCRenderCommand {
+
+	@Override
+	protected String getPath() {
+		return "/publish_templates/view.jsp";
+	}
+
 }

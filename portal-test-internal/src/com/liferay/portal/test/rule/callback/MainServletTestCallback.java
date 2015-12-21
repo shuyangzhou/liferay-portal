@@ -39,7 +39,7 @@ import org.springframework.mock.web.MockServletContext;
 /**
  * @author Shuyang Zhou
  */
-public class MainServletTestCallback extends BaseTestCallback<Object, Object> {
+public class MainServletTestCallback extends BaseTestCallback<Void, Void> {
 
 	public static final MainServletTestCallback INSTANCE =
 		new MainServletTestCallback();
@@ -49,7 +49,7 @@ public class MainServletTestCallback extends BaseTestCallback<Object, Object> {
 	}
 
 	@Override
-	public void afterClass(Description description, Object object)
+	public void afterClass(Description description, Void c)
 		throws PortalException {
 
 		if (ArquillianUtil.isArquillianTest(description)) {
@@ -60,7 +60,7 @@ public class MainServletTestCallback extends BaseTestCallback<Object, Object> {
 	}
 
 	@Override
-	public Object beforeClass(Description description) {
+	public Void beforeClass(Description description) {
 		if (ArquillianUtil.isArquillianTest(description)) {
 			return null;
 		}

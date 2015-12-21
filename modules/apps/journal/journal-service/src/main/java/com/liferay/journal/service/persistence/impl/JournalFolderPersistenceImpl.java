@@ -44,6 +44,7 @@ import com.liferay.portal.security.permission.InlineSQLHelperUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextThreadLocal;
 import com.liferay.portal.service.persistence.CompanyProvider;
+import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
@@ -7503,6 +7504,8 @@ public class JournalFolderPersistenceImpl extends BasePersistenceImpl<JournalFol
 
 		journalFolder.setUuid(uuid);
 
+		journalFolder.setCompanyId(companyProvider.getCompanyId());
+
 		return journalFolder;
 	}
 
@@ -8216,7 +8219,7 @@ public class JournalFolderPersistenceImpl extends BasePersistenceImpl<JournalFol
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
-	@ServiceReference(type = CompanyProvider.class)
+	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;

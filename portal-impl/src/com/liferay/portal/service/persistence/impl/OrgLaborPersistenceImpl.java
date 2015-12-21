@@ -38,6 +38,7 @@ import com.liferay.portal.model.OrgLabor;
 import com.liferay.portal.model.impl.OrgLaborImpl;
 import com.liferay.portal.model.impl.OrgLaborModelImpl;
 import com.liferay.portal.service.persistence.CompanyProvider;
+import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.OrgLaborPersistence;
 
 import java.io.Serializable;
@@ -687,6 +688,8 @@ public class OrgLaborPersistenceImpl extends BasePersistenceImpl<OrgLabor>
 		orgLabor.setNew(true);
 		orgLabor.setPrimaryKey(orgLaborId);
 
+		orgLabor.setCompanyId(companyProvider.getCompanyId());
+
 		return orgLabor;
 	}
 
@@ -1264,7 +1267,7 @@ public class OrgLaborPersistenceImpl extends BasePersistenceImpl<OrgLabor>
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
-	@BeanReference(type = CompanyProvider.class)
+	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
 	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
 	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();

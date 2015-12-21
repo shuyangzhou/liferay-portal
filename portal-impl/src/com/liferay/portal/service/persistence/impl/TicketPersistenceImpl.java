@@ -41,6 +41,7 @@ import com.liferay.portal.model.Ticket;
 import com.liferay.portal.model.impl.TicketImpl;
 import com.liferay.portal.model.impl.TicketModelImpl;
 import com.liferay.portal.service.persistence.CompanyProvider;
+import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.TicketPersistence;
 
 import java.io.Serializable;
@@ -1041,6 +1042,8 @@ public class TicketPersistenceImpl extends BasePersistenceImpl<Ticket>
 		ticket.setNew(true);
 		ticket.setPrimaryKey(ticketId);
 
+		ticket.setCompanyId(companyProvider.getCompanyId());
+
 		return ticket;
 	}
 
@@ -1617,7 +1620,7 @@ public class TicketPersistenceImpl extends BasePersistenceImpl<Ticket>
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
-	@BeanReference(type = CompanyProvider.class)
+	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
 	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
 	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();

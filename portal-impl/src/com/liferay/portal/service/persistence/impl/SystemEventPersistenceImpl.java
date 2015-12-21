@@ -39,6 +39,7 @@ import com.liferay.portal.model.SystemEvent;
 import com.liferay.portal.model.impl.SystemEventImpl;
 import com.liferay.portal.model.impl.SystemEventModelImpl;
 import com.liferay.portal.service.persistence.CompanyProvider;
+import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.SystemEventPersistence;
 
 import java.io.Serializable;
@@ -2423,6 +2424,8 @@ public class SystemEventPersistenceImpl extends BasePersistenceImpl<SystemEvent>
 		systemEvent.setNew(true);
 		systemEvent.setPrimaryKey(systemEventId);
 
+		systemEvent.setCompanyId(companyProvider.getCompanyId());
+
 		return systemEvent;
 	}
 
@@ -3072,7 +3075,7 @@ public class SystemEventPersistenceImpl extends BasePersistenceImpl<SystemEvent>
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
-	@BeanReference(type = CompanyProvider.class)
+	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
 	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
 	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
