@@ -72,7 +72,7 @@ import com.liferay.portal.model.VirtualHost;
 import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.service.base.CompanyLocalServiceBaseImpl;
 import com.liferay.portal.service.persistence.CompanyProvider;
-import com.liferay.portal.service.persistence.CompanyProviderFactory;
+import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.util.Portal;
 import com.liferay.portal.util.PortalInstances;
 import com.liferay.portal.util.PortalUtil;
@@ -273,12 +273,12 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		// Search engine
 
 		CompanyProvider currentCompanyProvider =
-			_companyProviderFactory.getCompanyProvider();
+			_companyProviderWrapper.getCompanyProvider();
 
 		try {
 			long companyId = company.getCompanyId();
 
-			_companyProviderFactory.setCompanyProvider(
+			_companyProviderWrapper.setCompanyProvider(
 				new CustomCompanyProvider(companyId));
 
 			SearchEngineUtil.initialize(companyId);
@@ -410,7 +410,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 			portletLocalService.checkPortlets(companyId);
 		}
 		finally {
-			_companyProviderFactory.setCompanyProvider(currentCompanyProvider);
+			_companyProviderWrapper.setCompanyProvider(currentCompanyProvider);
 		}
 
 		return company;
@@ -1646,10 +1646,10 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		CompanyLocalServiceImpl.class);
 
 	@BeanReference(
-		name = "com.liferay.portal.service.persistence.CompanyProvider",
-		type = CompanyProviderFactory.class
+		name = "com.liferay.portal.service.persistence.CompanyProviderWrapper",
+		type = CompanyProviderWrapper.class
 	)
-	private CompanyProviderFactory _companyProviderFactory;
+	private CompanyProviderWrapper _companyProviderWrapper;
 
 	private class CustomCompanyProvider implements CompanyProvider {
 
