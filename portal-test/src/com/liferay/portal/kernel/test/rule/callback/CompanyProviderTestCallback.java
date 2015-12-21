@@ -15,6 +15,7 @@
 package com.liferay.portal.kernel.test.rule.callback;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.test.rule.ArquillianUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.security.auth.CompanyThreadLocal;
 
@@ -30,11 +31,19 @@ public class CompanyProviderTestCallback extends BaseTestCallback<Long, Void> {
 
 	@Override
 	public void afterClass(Description description, Long previousCompanyId) {
+		if (!ArquillianUtil.isArquillianTest(description)) {
+			return;
+		}
+
 		CompanyThreadLocal.setCompanyId(previousCompanyId);
 	}
 
 	@Override
 	public Long beforeClass(Description description) throws PortalException {
+		if (!ArquillianUtil.isArquillianTest(description)) {
+			return null;
+		}
+
 		Long previousCompanyId = CompanyThreadLocal.getCompanyId();
 
 		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
