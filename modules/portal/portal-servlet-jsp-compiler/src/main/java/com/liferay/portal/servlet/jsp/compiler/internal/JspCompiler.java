@@ -454,7 +454,7 @@ public class JspCompiler extends Jsr199JavaCompiler {
 		Bundle systemBundle = bundleContext.getBundle(0);
 
 		if (systemBundle == null) {
-			throw new IllegalStateException(
+			throw new ExceptionInInitializerError(
 				"Unable to access to system bundle");
 		}
 
