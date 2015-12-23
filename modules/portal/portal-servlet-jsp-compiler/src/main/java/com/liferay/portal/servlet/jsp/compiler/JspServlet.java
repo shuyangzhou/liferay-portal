@@ -76,8 +76,7 @@ import org.osgi.framework.wiring.BundleWiring;
 public class JspServlet extends HttpServlet {
 
 	public JspServlet() {
-		_jspBundle = FrameworkUtil.getBundle(
-			com.liferay.portal.servlet.jsp.compiler.JspServlet.class);
+		_jspBundle = FrameworkUtil.getBundle(JspServlet.class);
 	}
 
 	@Override
