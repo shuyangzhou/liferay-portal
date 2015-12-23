@@ -104,8 +104,9 @@ public class JspJavaFileObjectResolver implements JavaFileObjectResolver {
 		}
 
 		if (javaFileObjects.isEmpty()) {
-			javaFileObjects.addAll(
-				doResolveClasses(_bundleWiring, packagePath, options));
+			return toJavaFileObjects(
+				_bundleWiring.getBundle(),
+				_bundleWiring.listResources(packagePath, "*.class", options));
 		}
 
 		return javaFileObjects;
@@ -128,9 +129,7 @@ public class JspJavaFileObjectResolver implements JavaFileObjectResolver {
 
 		Bundle bundle = bundleWiring.getBundle();
 
-		if ((bundleWiring == _bundleWiring) ||
-			(bundleWiring == _jspBundleWiring)) {
-
+		if (bundleWiring == _jspBundleWiring) {
 			return toJavaFileObjects(
 				bundle, bundleWiring.listResources(path, "*.class", options));
 		}
