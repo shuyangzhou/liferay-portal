@@ -177,7 +177,7 @@ public class JspCompiler extends Jsr199JavaCompiler {
 		_bundleWirings.addAll(_jspBundleWirings);
 
 		_javaFileObjectResolver = new JspJavaFileObjectResolver(
-			_bundle, _jspBundle, _logger);
+			_bundle, _jspBundle, _bundleWirings, _logger);
 
 		jspCompilationContext.setClassLoader(jspBundleClassloader);
 

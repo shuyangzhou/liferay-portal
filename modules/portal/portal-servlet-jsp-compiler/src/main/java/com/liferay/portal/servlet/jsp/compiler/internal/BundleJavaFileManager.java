@@ -20,9 +20,8 @@ import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.IOException;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 
 import javax.tools.ForwardingJavaFileManager;
@@ -147,8 +146,8 @@ public class BundleJavaFileManager
 		if (!packageName.startsWith("java.") &&
 			(location == StandardLocation.CLASS_PATH)) {
 
-			List<JavaFileObject> javaFileObjects = listFromDependencies(
-				recurse, packagePath);
+			Collection<JavaFileObject> javaFileObjects =
+				_javaFileObjectResolver.resolveClasses(recurse, packagePath);
 
 			if (!javaFileObjects.isEmpty() ||
 				!_systemPackageNames.contains(packageName)) {
@@ -158,32 +157,6 @@ public class BundleJavaFileManager
 		}
 
 		return fileManager.list(location, packagePath, kinds, recurse);
-	}
-
-	protected List<JavaFileObject> listFromDependencies(
-		boolean recurse, String packagePath) {
-
-		List<JavaFileObject> javaFileObjects = new ArrayList<>();
-
-		int options = 0;
-
-		if (recurse) {
-			options = BundleWiring.LISTRESOURCES_RECURSE;
-		}
-
-		for (BundleWiring bundleWiring : _bundleWirings) {
-			javaFileObjects.addAll(
-				_javaFileObjectResolver.resolveClasses(
-					bundleWiring, packagePath, options));
-		}
-
-		if (javaFileObjects.isEmpty()) {
-			javaFileObjects.addAll(
-				_javaFileObjectResolver.resolveClasses(
-					_bundleWiring, packagePath, options));
-		}
-
-		return javaFileObjects;
 	}
 
 	private final BundleWiring _bundleWiring;
