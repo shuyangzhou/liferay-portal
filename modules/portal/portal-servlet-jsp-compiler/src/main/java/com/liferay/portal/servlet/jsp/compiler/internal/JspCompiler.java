@@ -150,43 +150,7 @@ public class JspCompiler extends Jsr199JavaCompiler {
 		JspCompilationContext jspCompilationContext,
 		ErrorDispatcher errorDispatcher, boolean suppressLogging) {
 
-		Bundle jspBundle = FrameworkUtil.getBundle(JspCompiler.class);
-
-		BundleWiring bundleWiring = jspBundle.adapt(BundleWiring.class);
-
-		_jspBundleWirings.add(bundleWiring);
-
-		for (BundleWire bundleWire : bundleWiring.getRequiredWires(null)) {
-			BundleWiring providedBundleWiring = bundleWire.getProviderWiring();
-
-			_jspBundleWirings.add(providedBundleWiring);
-		}
-
-		BundleContext bundleContext = jspBundle.getBundleContext();
-
-		Bundle systemBundle = bundleContext.getBundle(0);
-
-		if (systemBundle == null) {
-			throw new IllegalStateException(
-				"Unable to access to system bundle");
-		}
-
-		BundleWiring systemBundleWiring = systemBundle.adapt(
-			BundleWiring.class);
-
-		for (BundleCapability bundleCapability :
-				systemBundleWiring.getCapabilities(
-					BundleRevision.PACKAGE_NAMESPACE)) {
-
-			Map<String, Object> attributes = bundleCapability.getAttributes();
-
-			Object packageName = attributes.get(
-				BundleRevision.PACKAGE_NAMESPACE);
-
-			if (packageName != null) {
-				_systemPackageNames.add(packageName);
-			}
-		}
+		BundleContext bundleContext = _jspBundle.getBundleContext();
 
 		_logger = new Logger(bundleContext);
 
@@ -208,7 +172,7 @@ public class JspCompiler extends Jsr199JavaCompiler {
 		_bundle = _allParticipatingBundles[0];
 
 		_javaFileObjectResolver = new JspJavaFileObjectResolver(
-			_bundle, jspBundle, _logger);
+			_bundle, _jspBundle, _logger);
 
 		jspCompilationContext.setClassLoader(jspBundleClassloader);
 
@@ -468,12 +432,54 @@ public class JspCompiler extends Jsr199JavaCompiler {
 		"javax.servlet.ServletException"
 	};
 
+	private static final Bundle _jspBundle = FrameworkUtil.getBundle(
+		JspCompiler.class);
+	private static final Set<BundleWiring> _jspBundleWirings =
+		new LinkedHashSet<>();
+	private static final Set<Object> _systemPackageNames = new HashSet<>();
+
+	static {
+		BundleWiring bundleWiring = _jspBundle.adapt(BundleWiring.class);
+
+		_jspBundleWirings.add(bundleWiring);
+
+		for (BundleWire bundleWire : bundleWiring.getRequiredWires(null)) {
+			BundleWiring providedBundleWiring = bundleWire.getProviderWiring();
+
+			_jspBundleWirings.add(providedBundleWiring);
+		}
+
+		BundleContext bundleContext = _jspBundle.getBundleContext();
+
+		Bundle systemBundle = bundleContext.getBundle(0);
+
+		if (systemBundle == null) {
+			throw new IllegalStateException(
+				"Unable to access to system bundle");
+		}
+
+		BundleWiring systemBundleWiring = systemBundle.adapt(
+			BundleWiring.class);
+
+		for (BundleCapability bundleCapability :
+				systemBundleWiring.getCapabilities(
+					BundleRevision.PACKAGE_NAMESPACE)) {
+
+			Map<String, Object> attributes = bundleCapability.getAttributes();
+
+			Object packageName = attributes.get(
+				BundleRevision.PACKAGE_NAMESPACE);
+
+			if (packageName != null) {
+				_systemPackageNames.add(packageName);
+			}
+		}
+	}
+
 	private Bundle[] _allParticipatingBundles;
 	private Bundle _bundle;
 	private final List<File> _classPath = new ArrayList<>();
 	private JavaFileObjectResolver _javaFileObjectResolver;
-	private final Set<BundleWiring> _jspBundleWirings = new LinkedHashSet<>();
 	private Logger _logger;
-	private final Set<Object> _systemPackageNames = new HashSet<>();
 
 }
