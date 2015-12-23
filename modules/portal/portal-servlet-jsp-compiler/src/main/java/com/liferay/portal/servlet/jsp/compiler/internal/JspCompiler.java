@@ -182,7 +182,7 @@ public class JspCompiler extends Jsr199JavaCompiler {
 		if (options.contains(BundleJavaFileManager.OPT_VERBOSE)) {
 			StringBundler sb = new StringBundler(_bundleWirings.size() * 4 + 6);
 
-			sb.append("Bundle Java file manager for bundle ");
+			sb.append("Jsp compiler for bundle ");
 			sb.append(_bundle.getSymbolicName());
 			sb.append(StringPool.DASH);
 			sb.append(_bundle.getVersion());
