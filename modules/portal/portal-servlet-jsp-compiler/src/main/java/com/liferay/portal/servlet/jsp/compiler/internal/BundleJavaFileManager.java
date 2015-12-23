@@ -45,14 +45,12 @@ public class BundleJavaFileManager
 	public static final String OPT_VERBOSE = "-verbose";
 
 	public BundleJavaFileManager(
-		Bundle bundle, Set<BundleWiring> bundleWirings,
-		Set<Object> systemPackageNames, JavaFileManager javaFileManager,
-		Logger logger, boolean verbose,
+		Bundle bundle, Set<Object> systemPackageNames,
+		JavaFileManager javaFileManager, Logger logger, boolean verbose,
 		JavaFileObjectResolver javaFileObjectResolver) {
 
 		super(javaFileManager);
 
-		_bundleWirings = bundleWirings;
 		_systemPackageNames = systemPackageNames;
 		_logger = logger;
 		_verbose = verbose;
@@ -135,7 +133,6 @@ public class BundleJavaFileManager
 	}
 
 	private final BundleWiring _bundleWiring;
-	private final Set<BundleWiring> _bundleWirings;
 	private final JavaFileObjectResolver _javaFileObjectResolver;
 	private final Logger _logger;
 	private final Set<Object> _systemPackageNames;

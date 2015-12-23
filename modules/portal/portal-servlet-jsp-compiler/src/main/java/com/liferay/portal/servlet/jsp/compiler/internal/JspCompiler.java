@@ -313,8 +313,7 @@ public class JspCompiler extends Jsr199JavaCompiler {
 			}
 
 			javaFileManager = new BundleJavaFileManager(
-				_bundle, _bundleWirings, _systemPackageNames,
-				standardJavaFileManager, _logger,
+				_bundle, _systemPackageNames, standardJavaFileManager, _logger,
 				options.contains(BundleJavaFileManager.OPT_VERBOSE),
 				_javaFileObjectResolver);
 		}
