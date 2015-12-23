@@ -148,9 +148,9 @@ public class JspCompiler extends Jsr199JavaCompiler {
 		JspCompilationContext jspCompilationContext,
 		ErrorDispatcher errorDispatcher, boolean suppressLogging) {
 
-		BundleContext bundleContext = _jspBundle.getBundleContext();
+		Bundle jspBundle = _jspBundleWiring.getBundle();
 
-		_logger = new Logger(bundleContext);
+		_logger = new Logger(jspBundle.getBundleContext());
 
 		ServletContext servletContext =
 			jspCompilationContext.getServletContext();
@@ -203,8 +203,7 @@ public class JspCompiler extends Jsr199JavaCompiler {
 		}
 
 		_javaFileObjectResolver = new JspJavaFileObjectResolver(
-			_bundleWiring, _jspBundle.adapt(BundleWiring.class), _bundleWirings,
-			_logger);
+			_bundleWiring, _jspBundleWiring, _bundleWirings, _logger);
 
 		jspCompilationContext.setClassLoader(jspBundleClassloader);
 
@@ -416,24 +415,25 @@ public class JspCompiler extends Jsr199JavaCompiler {
 		"javax.servlet.ServletException"
 	};
 
-	private static final Bundle _jspBundle = FrameworkUtil.getBundle(
-		JspCompiler.class);
+	private static final BundleWiring _jspBundleWiring;
 	private static final Set<BundleWiring> _jspBundleWirings =
 		new LinkedHashSet<>();
 	private static final Set<Object> _systemPackageNames = new HashSet<>();
 
 	static {
-		BundleWiring bundleWiring = _jspBundle.adapt(BundleWiring.class);
+		Bundle jspBundle = FrameworkUtil.getBundle(JspCompiler.class);
 
-		_jspBundleWirings.add(bundleWiring);
+		_jspBundleWiring = jspBundle.adapt(BundleWiring.class);
 
-		for (BundleWire bundleWire : bundleWiring.getRequiredWires(null)) {
+		_jspBundleWirings.add(_jspBundleWiring);
+
+		for (BundleWire bundleWire : _jspBundleWiring.getRequiredWires(null)) {
 			BundleWiring providedBundleWiring = bundleWire.getProviderWiring();
 
 			_jspBundleWirings.add(providedBundleWiring);
 		}
 
-		BundleContext bundleContext = _jspBundle.getBundleContext();
+		BundleContext bundleContext = jspBundle.getBundleContext();
 
 		Bundle systemBundle = bundleContext.getBundle(0);
 
