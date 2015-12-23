@@ -63,17 +63,17 @@ import org.osgi.util.tracker.ServiceTracker;
 public class JspJavaFileObjectResolver implements JavaFileObjectResolver {
 
 	public JspJavaFileObjectResolver(
-		Bundle bundle, Bundle jspBundle, Set<BundleWiring> bundleWirings,
-		Logger logger) {
+		BundleWiring bundleWiring, BundleWiring jspBundleWiring,
+		Set<BundleWiring> bundleWirings, Logger logger) {
 
-		_bundle = bundle;
-		_jspBundle = jspBundle;
+		_bundleWiring = bundleWiring;
+		_jspBundleWiring = jspBundleWiring;
 		_bundleWirings = bundleWirings;
 		_logger = logger;
 
-		_bundleWiring = bundle.adapt(BundleWiring.class);
+		Bundle bundle = _bundleWiring.getBundle();
 
-		BundleContext bundleContext = _bundle.getBundleContext();
+		BundleContext bundleContext = bundle.getBundleContext();
 
 		try {
 			_serviceTracker = ServiceTrackerFactory.open(
@@ -128,7 +128,9 @@ public class JspJavaFileObjectResolver implements JavaFileObjectResolver {
 
 		Bundle bundle = bundleWiring.getBundle();
 
-		if (bundle.equals(_bundle) || bundle.equals(_jspBundle)) {
+		if ((bundleWiring == _bundleWiring) ||
+			(bundleWiring == _jspBundleWiring)) {
+
 			return toJavaFileObjects(
 				bundle, bundleWiring.listResources(path, "*.class", options));
 		}
@@ -368,13 +370,12 @@ public class JspJavaFileObjectResolver implements JavaFileObjectResolver {
 		return javaFileObjects;
 	}
 
-	private final Bundle _bundle;
 	private final BundleWiring _bundleWiring;
 	private final Set<BundleWiring> _bundleWirings;
 	private final Map<String, Collection<JavaFileObject>> _javaFileObjects =
 		new ConcurrentReferenceValueHashMap<>(
 			FinalizeManager.SOFT_REFERENCE_FACTORY);
-	private final Bundle _jspBundle;
+	private final BundleWiring _jspBundleWiring;
 	private final Logger _logger;
 	private final ServiceTracker<Map<String, List<URL>>, Map<String, List<URL>>>
 		_serviceTracker;
