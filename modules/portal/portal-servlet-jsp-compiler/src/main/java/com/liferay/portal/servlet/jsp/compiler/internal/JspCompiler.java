@@ -478,8 +478,6 @@ public class JspCompiler extends Jsr199JavaCompiler {
 
 		_jspBundleWiring = jspBundle.adapt(BundleWiring.class);
 
-		_jspBundleWirings.add(_jspBundleWiring);
-
 		for (BundleWire bundleWire : _jspBundleWiring.getRequiredWires(null)) {
 			BundleWiring providedBundleWiring = bundleWire.getProviderWiring();
 

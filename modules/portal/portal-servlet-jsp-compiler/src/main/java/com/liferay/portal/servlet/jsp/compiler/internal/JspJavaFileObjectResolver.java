@@ -98,6 +98,12 @@ public class JspJavaFileObjectResolver implements JavaFileObjectResolver {
 			options = BundleWiring.LISTRESOURCES_RECURSE;
 		}
 
+		javaFileObjects.addAll(
+			toJavaFileObjects(
+				_jspBundleWiring.getBundle(),
+				_jspBundleWiring.listResources(
+					packagePath, "*.class", options)));
+
 		for (BundleWiring bundleWiring : _bundleWirings) {
 			javaFileObjects.addAll(
 				doResolveClasses(bundleWiring, packagePath, options));
@@ -127,16 +133,11 @@ public class JspJavaFileObjectResolver implements JavaFileObjectResolver {
 	protected Collection<JavaFileObject> doResolveClasses(
 		BundleWiring bundleWiring, String path, int options) {
 
-		Bundle bundle = bundleWiring.getBundle();
-
-		if (bundleWiring == _jspBundleWiring) {
-			return toJavaFileObjects(
-				bundle, bundleWiring.listResources(path, "*.class", options));
-		}
-
 		if (!isExportsPackage(bundleWiring, path.replace('/', '.'))) {
 			return Collections.emptyList();
 		}
+
+		Bundle bundle = bundleWiring.getBundle();
 
 		if (bundle.getBundleId() == 0) {
 			return handleSystemBundle(bundleWiring, path);
