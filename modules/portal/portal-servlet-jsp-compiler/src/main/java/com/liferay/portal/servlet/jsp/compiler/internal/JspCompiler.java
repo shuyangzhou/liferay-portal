@@ -167,9 +167,9 @@ public class JspCompiler extends Jsr199JavaCompiler {
 
 		_allParticipatingBundles = jspBundleClassloader.getBundles();
 
-		_bundle = _allParticipatingBundles[0];
+		Bundle bundle = _allParticipatingBundles[0];
 
-		_bundleWiring = _bundle.adapt(BundleWiring.class);
+		_bundleWiring = bundle.adapt(BundleWiring.class);
 
 		for (BundleWire bundleWire : _bundleWiring.getRequiredWires(null)) {
 			BundleWiring providedBundleWiring = bundleWire.getProviderWiring();
@@ -183,9 +183,9 @@ public class JspCompiler extends Jsr199JavaCompiler {
 			StringBundler sb = new StringBundler(_bundleWirings.size() * 4 + 6);
 
 			sb.append("Jsp compiler for bundle ");
-			sb.append(_bundle.getSymbolicName());
+			sb.append(bundle.getSymbolicName());
 			sb.append(StringPool.DASH);
-			sb.append(_bundle.getVersion());
+			sb.append(bundle.getVersion());
 			sb.append(" has dependent bundle wirings: ");
 
 			for (BundleWiring curBundleWiring : _bundleWirings) {
@@ -461,7 +461,6 @@ public class JspCompiler extends Jsr199JavaCompiler {
 	}
 
 	private Bundle[] _allParticipatingBundles;
-	private Bundle _bundle;
 	private BundleWiring _bundleWiring;
 	private final Set<BundleWiring> _bundleWirings = new LinkedHashSet<>();
 	private final List<File> _classPath = new ArrayList<>();
