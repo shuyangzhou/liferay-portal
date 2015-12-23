@@ -59,31 +59,6 @@ public class BundleJavaFileManager
 		_javaFileObjectResolver = javaFileObjectResolver;
 
 		_bundleWiring = bundle.adapt(BundleWiring.class);
-
-		if (_verbose) {
-			StringBundler sb = new StringBundler(_bundleWirings.size() * 4 + 6);
-
-			sb.append("Bundle Java file manager for bundle ");
-			sb.append(bundle.getSymbolicName());
-			sb.append(StringPool.DASH);
-			sb.append(bundle.getVersion());
-			sb.append(" has dependent bundle wirings: ");
-
-			for (BundleWiring bundleWiring : _bundleWirings) {
-				Bundle currentBundle = bundleWiring.getBundle();
-
-				sb.append(currentBundle.getSymbolicName());
-				sb.append(StringPool.DASH);
-				sb.append(currentBundle.getVersion());
-				sb.append(StringPool.COMMA_AND_SPACE);
-			}
-
-			if (!_bundleWirings.isEmpty()) {
-				sb.setIndex(sb.index() - 1);
-			}
-
-			_logger.log(Logger.LOG_INFO, sb.toString());
-		}
 	}
 
 	@Override

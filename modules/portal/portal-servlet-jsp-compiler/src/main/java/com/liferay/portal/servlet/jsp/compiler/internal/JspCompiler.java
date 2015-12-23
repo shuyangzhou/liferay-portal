@@ -14,6 +14,9 @@
 
 package com.liferay.portal.servlet.jsp.compiler.internal;
 
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -175,6 +178,31 @@ public class JspCompiler extends Jsr199JavaCompiler {
 		}
 
 		_bundleWirings.addAll(_jspBundleWirings);
+
+		if (options.contains(BundleJavaFileManager.OPT_VERBOSE)) {
+			StringBundler sb = new StringBundler(_bundleWirings.size() * 4 + 6);
+
+			sb.append("Bundle Java file manager for bundle ");
+			sb.append(_bundle.getSymbolicName());
+			sb.append(StringPool.DASH);
+			sb.append(_bundle.getVersion());
+			sb.append(" has dependent bundle wirings: ");
+
+			for (BundleWiring curBundleWiring : _bundleWirings) {
+				Bundle currentBundle = curBundleWiring.getBundle();
+
+				sb.append(currentBundle.getSymbolicName());
+				sb.append(StringPool.DASH);
+				sb.append(currentBundle.getVersion());
+				sb.append(StringPool.COMMA_AND_SPACE);
+			}
+
+			if (!_bundleWirings.isEmpty()) {
+				sb.setIndex(sb.index() - 1);
+			}
+
+			_logger.log(Logger.LOG_INFO, sb.toString());
+		}
 
 		_javaFileObjectResolver = new JspJavaFileObjectResolver(
 			_bundle, _jspBundle, _bundleWirings, _logger);
