@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.search.filter.TermsFilter;
 import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.security.permission.ActionKeys;
@@ -175,6 +176,14 @@ public class MBMessageIndexer
 
 		if (searchContext.isIncludeDiscussions()) {
 			addRelatedClassNames(contextBooleanFilter, searchContext);
+		}
+
+		String classNameId = GetterUtil.getString(
+			searchContext.getAttribute(Field.CLASS_NAME_ID));
+
+		if (Validator.isNotNull(classNameId)) {
+			contextBooleanFilter.addRequiredTerm(
+				Field.CLASS_NAME_ID, classNameId);
 		}
 
 		long threadId = GetterUtil.getLong(

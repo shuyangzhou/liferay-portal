@@ -16,7 +16,7 @@ package com.liferay.portal.store.file.system;
 
 import aQute.bnd.annotation.metatype.Configurable;
 
-import com.liferay.portal.convert.FileSystemStoreRootDirException;
+import com.liferay.portal.convert.documentlibrary.FileSystemStoreRootDirException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.FileUtil;

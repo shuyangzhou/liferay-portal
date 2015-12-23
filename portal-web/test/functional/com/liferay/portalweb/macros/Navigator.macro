@@ -22,7 +22,9 @@
 	<command name="gotoNavItem">
 		<var name="key_navItem" value="${navItem}" />
 
-		<execute function="AssertClick#assertTextClickAtWaitForLastScript" locator1="NavBar#NAV_ITEM_LINK" value1="${navItem}" />
+		<execute function="AssertClick" locator1="NavBar#NAV_ITEM_LINK" value1="${navItem}" />
+
+		<execute function="AssertElementPresent" locator1="NavBar#ACTIVE_NAV_ITEM_LINK" />
 	</command>
 
 	<command name="gotoPage" summary="Navigate to the page named '${pageName}'">
@@ -68,7 +70,7 @@
 	<command name="gotoTab">
 		<var name="key_tab" value="${tab}" />
 
-		<execute function="AssertClick" locator1="NavTab#TAB_LINK" value1="${tab}" />
+		<execute function="Click" locator1="NavTab#TAB_LINK" />
 	</command>
 
 	<command name="openSiteURL">
