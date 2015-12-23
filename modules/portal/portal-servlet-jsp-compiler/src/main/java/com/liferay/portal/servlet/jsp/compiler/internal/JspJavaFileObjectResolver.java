@@ -44,6 +44,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.tools.JavaFileObject;
 
@@ -62,11 +63,15 @@ import org.osgi.util.tracker.ServiceTracker;
 public class JspJavaFileObjectResolver implements JavaFileObjectResolver {
 
 	public JspJavaFileObjectResolver(
-		Bundle bundle, Bundle jspBundle, Logger logger) {
+		Bundle bundle, Bundle jspBundle, Set<BundleWiring> bundleWirings,
+		Logger logger) {
 
 		_bundle = bundle;
 		_jspBundle = jspBundle;
+		_bundleWirings = bundleWirings;
 		_logger = logger;
+
+		_bundleWiring = bundle.adapt(BundleWiring.class);
 
 		BundleContext bundleContext = _bundle.getBundleContext();
 
@@ -83,6 +88,42 @@ public class JspJavaFileObjectResolver implements JavaFileObjectResolver {
 
 	@Override
 	public Collection<JavaFileObject> resolveClasses(
+		boolean recurse, String packagePath) {
+
+		List<JavaFileObject> javaFileObjects = new ArrayList<>();
+
+		int options = 0;
+
+		if (recurse) {
+			options = BundleWiring.LISTRESOURCES_RECURSE;
+		}
+
+		for (BundleWiring bundleWiring : _bundleWirings) {
+			javaFileObjects.addAll(
+				doResolveClasses(bundleWiring, packagePath, options));
+		}
+
+		if (javaFileObjects.isEmpty()) {
+			javaFileObjects.addAll(
+				doResolveClasses(_bundleWiring, packagePath, options));
+		}
+
+		return javaFileObjects;
+	}
+
+	protected String decodePath(String path) {
+		path = StringUtil.replace(
+			path, StringPool.SLASH, "_LIFERAY_TEMP_SLASH_");
+
+		path = URLCodec.decodeURL(path, StringPool.UTF8);
+
+		path = StringUtil.replace(
+			path, "_LIFERAY_TEMP_SLASH_", StringPool.SLASH);
+
+		return path;
+	}
+
+	protected Collection<JavaFileObject> doResolveClasses(
 		BundleWiring bundleWiring, String path, int options) {
 
 		Bundle bundle = bundleWiring.getBundle();
@@ -102,18 +143,6 @@ public class JspJavaFileObjectResolver implements JavaFileObjectResolver {
 
 		return toJavaFileObjects(
 			bundle, bundleWiring.listResources(path, "*.class", options));
-	}
-
-	protected String decodePath(String path) {
-		path = StringUtil.replace(
-			path, StringPool.SLASH, "_LIFERAY_TEMP_SLASH_");
-
-		path = URLCodec.decodeURL(path, StringPool.UTF8);
-
-		path = StringUtil.replace(
-			path, "_LIFERAY_TEMP_SLASH_", StringPool.SLASH);
-
-		return path;
 	}
 
 	protected String getClassName(String resourceName) {
@@ -340,6 +369,8 @@ public class JspJavaFileObjectResolver implements JavaFileObjectResolver {
 	}
 
 	private final Bundle _bundle;
+	private final BundleWiring _bundleWiring;
+	private final Set<BundleWiring> _bundleWirings;
 	private final Map<String, Collection<JavaFileObject>> _javaFileObjects =
 		new ConcurrentReferenceValueHashMap<>(
 			FinalizeManager.SOFT_REFERENCE_FACTORY);
