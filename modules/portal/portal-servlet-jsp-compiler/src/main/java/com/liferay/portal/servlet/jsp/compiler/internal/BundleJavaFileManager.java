@@ -32,9 +32,6 @@ import javax.tools.StandardLocation;
 
 import org.apache.felix.utils.log.Logger;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.wiring.BundleWiring;
-
 /**
  * @author Raymond Augé
  * @author Shuyang Zhou
@@ -45,18 +42,17 @@ public class BundleJavaFileManager
 	public static final String OPT_VERBOSE = "-verbose";
 
 	public BundleJavaFileManager(
-		Bundle bundle, Set<Object> systemPackageNames,
+		ClassLoader classLoader, Set<Object> systemPackageNames,
 		JavaFileManager javaFileManager, Logger logger, boolean verbose,
 		JavaFileObjectResolver javaFileObjectResolver) {
 
 		super(javaFileManager);
 
+		_classLoader = classLoader;
 		_systemPackageNames = systemPackageNames;
 		_logger = logger;
 		_verbose = verbose;
 		_javaFileObjectResolver = javaFileObjectResolver;
-
-		_bundleWiring = bundle.adapt(BundleWiring.class);
 	}
 
 	@Override
@@ -65,7 +61,7 @@ public class BundleJavaFileManager
 			return fileManager.getClassLoader(location);
 		}
 
-		return _bundleWiring.getClassLoader();
+		return _classLoader;
 	}
 
 	@Override
@@ -132,7 +128,7 @@ public class BundleJavaFileManager
 		return fileManager.list(location, packagePath, kinds, recurse);
 	}
 
-	private final BundleWiring _bundleWiring;
+	private final ClassLoader _classLoader;
 	private final JavaFileObjectResolver _javaFileObjectResolver;
 	private final Logger _logger;
 	private final Set<Object> _systemPackageNames;
