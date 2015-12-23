@@ -150,8 +150,7 @@ public class JspCompiler extends Jsr199JavaCompiler {
 		JspCompilationContext jspCompilationContext,
 		ErrorDispatcher errorDispatcher, boolean suppressLogging) {
 
-		Bundle jspBundle = FrameworkUtil.getBundle(
-			com.liferay.portal.servlet.jsp.compiler.JspServlet.class);
+		Bundle jspBundle = FrameworkUtil.getBundle(JspCompiler.class);
 
 		BundleWiring bundleWiring = jspBundle.adapt(BundleWiring.class);
 
