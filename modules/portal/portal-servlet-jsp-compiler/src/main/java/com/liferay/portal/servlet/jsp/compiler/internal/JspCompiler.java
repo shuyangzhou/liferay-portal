@@ -197,9 +197,7 @@ public class JspCompiler extends Jsr199JavaCompiler {
 				sb.append(StringPool.COMMA_AND_SPACE);
 			}
 
-			if (!_bundleWirings.isEmpty()) {
-				sb.setIndex(sb.index() - 1);
-			}
+			sb.setIndex(sb.index() - 1);
 
 			_logger.log(Logger.LOG_INFO, sb.toString());
 		}
