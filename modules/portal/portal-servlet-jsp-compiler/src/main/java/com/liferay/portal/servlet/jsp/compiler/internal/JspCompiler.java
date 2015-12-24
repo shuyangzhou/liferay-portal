@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -176,13 +176,16 @@ public class JspCompiler extends Jsr199JavaCompiler {
 		for (BundleWire bundleWire : bundleWiring.getRequiredWires(null)) {
 			BundleWiring providedBundleWiring = bundleWire.getProviderWiring();
 
-			_bundleWirings.add(providedBundleWiring);
+			_bundleWiringPackageNames.put(
+				providedBundleWiring,
+				_collectPackageNames(providedBundleWiring));
 		}
 
-		_bundleWirings.addAll(_jspBundleWirings);
+		_bundleWiringPackageNames.putAll(_jspBundleWiringPackageNames);
 
 		if (options.contains(BundleJavaFileManager.OPT_VERBOSE)) {
-			StringBundler sb = new StringBundler(_bundleWirings.size() * 4 + 6);
+			StringBundler sb = new StringBundler(
+				_bundleWiringPackageNames.size() * 4 + 6);
 
 			sb.append("Jsp compiler for bundle ");
 			sb.append(bundle.getSymbolicName());
@@ -190,7 +193,9 @@ public class JspCompiler extends Jsr199JavaCompiler {
 			sb.append(bundle.getVersion());
 			sb.append(" has dependent bundle wirings: ");
 
-			for (BundleWiring curBundleWiring : _bundleWirings) {
+			for (BundleWiring curBundleWiring :
+					_bundleWiringPackageNames.keySet()) {
+
 				Bundle currentBundle = curBundleWiring.getBundle();
 
 				sb.append(currentBundle.getSymbolicName());
@@ -205,7 +210,7 @@ public class JspCompiler extends Jsr199JavaCompiler {
 		}
 
 		_javaFileObjectResolver = new JspJavaFileObjectResolver(
-			bundleWiring, _jspBundleWiring, _bundleWirings, _logger);
+			bundleWiring, _jspBundleWiring, _bundleWiringPackageNames, _logger);
 
 		jspCompilationContext.setClassLoader(jspBundleClassloader);
 
@@ -410,6 +415,26 @@ public class JspCompiler extends Jsr199JavaCompiler {
 			url.toString(), "Unknown protocol " + protocol);
 	}
 
+	private static Set<String> _collectPackageNames(BundleWiring bundleWiring) {
+		Set<String> packageNames = new HashSet<>();
+
+		for (BundleCapability bundleCapability :
+				bundleWiring.getCapabilities(
+					BundleRevision.PACKAGE_NAMESPACE)) {
+
+			Map<String, Object> attributes = bundleCapability.getAttributes();
+
+			Object packageName = attributes.get(
+				BundleRevision.PACKAGE_NAMESPACE);
+
+			if (packageName != null) {
+				packageNames.add((String)packageName);
+			}
+		}
+
+		return packageNames;
+	}
+
 	private static final String[] _JSP_COMPILER_DEPENDENCIES = {
 		"com.liferay.portal.kernel.exception.PortalException",
 		"com.liferay.portal.util.PortalImpl", "javax.portlet.PortletException",
@@ -417,9 +442,9 @@ public class JspCompiler extends Jsr199JavaCompiler {
 	};
 
 	private static final BundleWiring _jspBundleWiring;
-	private static final Set<BundleWiring> _jspBundleWirings =
-		new LinkedHashSet<>();
-	private static final Set<Object> _systemPackageNames = new HashSet<>();
+	private static final Map<BundleWiring, Set<String>>
+		_jspBundleWiringPackageNames = new LinkedHashMap<>();
+	private static final Set<String> _systemPackageNames;
 
 	static {
 		Bundle jspBundle = FrameworkUtil.getBundle(JspCompiler.class);
@@ -429,7 +454,9 @@ public class JspCompiler extends Jsr199JavaCompiler {
 		for (BundleWire bundleWire : _jspBundleWiring.getRequiredWires(null)) {
 			BundleWiring providedBundleWiring = bundleWire.getProviderWiring();
 
-			_jspBundleWirings.add(providedBundleWiring);
+			_jspBundleWiringPackageNames.put(
+				providedBundleWiring,
+				_collectPackageNames(providedBundleWiring));
 		}
 
 		BundleContext bundleContext = jspBundle.getBundleContext();
@@ -441,26 +468,13 @@ public class JspCompiler extends Jsr199JavaCompiler {
 				"Unable to access to system bundle");
 		}
 
-		BundleWiring systemBundleWiring = systemBundle.adapt(
-			BundleWiring.class);
-
-		for (BundleCapability bundleCapability :
-				systemBundleWiring.getCapabilities(
-					BundleRevision.PACKAGE_NAMESPACE)) {
-
-			Map<String, Object> attributes = bundleCapability.getAttributes();
-
-			Object packageName = attributes.get(
-				BundleRevision.PACKAGE_NAMESPACE);
-
-			if (packageName != null) {
-				_systemPackageNames.add(packageName);
-			}
-		}
+		_systemPackageNames = _collectPackageNames(
+			systemBundle.adapt(BundleWiring.class));
 	}
 
 	private Bundle[] _allParticipatingBundles;
-	private final Set<BundleWiring> _bundleWirings = new LinkedHashSet<>();
+	private final Map<BundleWiring, Set<String>> _bundleWiringPackageNames =
+		new LinkedHashMap<>();
 	private ClassLoader _classLoader;
 	private final List<File> _classPath = new ArrayList<>();
 	private JavaFileObjectResolver _javaFileObjectResolver;
