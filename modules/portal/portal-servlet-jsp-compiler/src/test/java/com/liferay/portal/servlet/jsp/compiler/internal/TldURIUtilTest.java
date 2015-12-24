@@ -14,6 +14,8 @@
 
 package com.liferay.portal.servlet.jsp.compiler.internal;
 
+import java.io.IOException;
+
 import java.net.URL;
 
 import org.junit.Assert;
@@ -25,28 +27,28 @@ import org.junit.Test;
 public class TldURIUtilTest {
 
 	@Test
-	public void testGetTldUri1() throws Exception {
+	public void testGetTldUri1() throws IOException {
 		URL url = TldURIUtilTest.class.getResource("dependencies/test_1.tld");
 
 		Assert.assertEquals("This is a test.", TldURIUtil.getTldURI(url));
 	}
 
 	@Test
-	public void testGetTldUri2() throws Exception {
+	public void testGetTldUri2() throws IOException {
 		URL url = TldURIUtilTest.class.getResource("dependencies/test_2.tld");
 
 		Assert.assertEquals("This is a test.", TldURIUtil.getTldURI(url));
 	}
 
 	@Test
-	public void testGetTldUri3() throws Exception {
+	public void testGetTldUri3() throws IOException {
 		URL url = TldURIUtilTest.class.getResource("dependencies/test_3.tld");
 
 		Assert.assertNull(TldURIUtil.getTldURI(url));
 	}
 
 	@Test
-	public void testGetTldUri4() throws Exception {
+	public void testGetTldUri4() throws IOException {
 		URL url = TldURIUtilTest.class.getResource("dependencies/test_4.tld");
 
 		Assert.assertNull(TldURIUtil.getTldURI(url));
