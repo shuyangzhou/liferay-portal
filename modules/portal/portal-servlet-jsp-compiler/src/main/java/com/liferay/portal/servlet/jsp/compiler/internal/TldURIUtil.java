@@ -14,8 +14,6 @@
 
 package com.liferay.portal.servlet.jsp.compiler.internal;
 
-import com.liferay.portal.kernel.util.ReflectionUtil;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,7 +26,7 @@ import java.net.URL;
  */
 public class TldURIUtil {
 
-	public static String getTldURI(URL url) {
+	public static String getTldURI(URL url) throws IOException {
 		try (InputStream inputStream = url.openStream();
 			InputStreamReader inputStreamReader = new InputStreamReader(
 				inputStream);
@@ -71,9 +69,6 @@ public class TldURIUtil {
 			}
 
 			return null;
-		}
-		catch (IOException ioe) {
-			return ReflectionUtil.throwException(ioe);
 		}
 	}
 
