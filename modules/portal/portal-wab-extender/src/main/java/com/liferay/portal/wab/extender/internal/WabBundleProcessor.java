@@ -342,6 +342,7 @@ public class WabBundleProcessor implements ServletContextListener {
 		properties.put(
 			HttpWhiteboardConstants.HTTP_WHITEBOARD_CONTEXT_PATH, _contextPath);
 		properties.put(Constants.SERVICE_RANKING, 1000);
+		properties.put("rtl.required", Boolean.TRUE.toString());
 
 		for (Entry<String, String> contextParametersEntry :
 				contextParameters.entrySet()) {

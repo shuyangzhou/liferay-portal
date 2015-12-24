@@ -105,12 +105,12 @@ String keywords = ParamUtil.getString(request, "keywords");
 	<portlet:param name="<%= Constants.CMD %>" value="<%= Constants.RESTORE %>" />
 </portlet:actionURL>
 
-<liferay-trash:trash-undo
+<liferay-trash:undo
 	portletURL="<%= restoreTrashEntriesURL %>"
 />
 
 <div class="container-fluid-1280">
-	<aui:form action="<%= portletURL.toString() %>" cssClass="row" method="get" name="fm">
+	<aui:form action="<%= portletURL.toString() %>" method="get" name="fm">
 		<aui:input name="<%= Constants.CMD %>" type="hidden" />
 		<aui:input name="redirect" type="hidden" value="<%= portletURL.toString() %>" />
 		<aui:input name="deleteEntryIds" type="hidden" />

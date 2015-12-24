@@ -26,7 +26,7 @@ taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 <%@ page import="com.liferay.portal.captcha.recaptcha.ReCaptchaImpl" %><%@
 page import="com.liferay.portal.convert.ConvertProcess" %><%@
 page import="com.liferay.portal.convert.ConvertProcessUtil" %><%@
-page import="com.liferay.portal.convert.FileSystemStoreRootDirException" %><%@
+page import="com.liferay.portal.convert.documentlibrary.FileSystemStoreRootDirException" %><%@
 page import="com.liferay.portal.kernel.configuration.Filter" %><%@
 page import="com.liferay.portal.kernel.dao.search.SearchContainer" %><%@
 page import="com.liferay.portal.kernel.image.ImageMagickUtil" %><%@

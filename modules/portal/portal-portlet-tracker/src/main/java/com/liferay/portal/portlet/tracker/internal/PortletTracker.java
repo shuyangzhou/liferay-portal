@@ -1069,6 +1069,7 @@ public class PortletTracker
 			HttpWhiteboardConstants.HTTP_WHITEBOARD_CONTEXT_PATH,
 			"/" + portletApp.getServletContextName());
 		properties.put(Constants.SERVICE_RANKING, 1000);
+		properties.put("rtl.required", Boolean.TRUE.toString());
 
 		serviceRegistrations.addServiceRegistration(
 			bundleContext.registerService(
