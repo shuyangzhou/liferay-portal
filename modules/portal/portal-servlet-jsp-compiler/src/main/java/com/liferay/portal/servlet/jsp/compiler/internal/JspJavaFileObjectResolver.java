@@ -44,6 +44,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.tools.JavaFileObject;
@@ -64,11 +65,12 @@ public class JspJavaFileObjectResolver implements JavaFileObjectResolver {
 
 	public JspJavaFileObjectResolver(
 		BundleWiring bundleWiring, BundleWiring jspBundleWiring,
-		Set<BundleWiring> bundleWirings, Logger logger) {
+		Map<BundleWiring, Set<String>> bundleWiringPackageNames,
+		Logger logger) {
 
 		_bundleWiring = bundleWiring;
 		_jspBundleWiring = jspBundleWiring;
-		_bundleWirings = bundleWirings;
+		_bundleWiringPackageNames = bundleWiringPackageNames;
 		_logger = logger;
 
 		Bundle bundle = _bundleWiring.getBundle();
@@ -104,9 +106,18 @@ public class JspJavaFileObjectResolver implements JavaFileObjectResolver {
 				_jspBundleWiring.listResources(
 					packagePath, "*.class", options)));
 
-		for (BundleWiring bundleWiring : _bundleWirings) {
-			javaFileObjects.addAll(
-				doResolveClasses(bundleWiring, packagePath, options));
+		String packageName = packagePath.replace(
+			CharPool.SLASH, CharPool.PERIOD);
+
+		for (Entry<BundleWiring, Set<String>> entry :
+				_bundleWiringPackageNames.entrySet()) {
+
+			Set<String> packageNames = entry.getValue();
+
+			if (packageNames.contains(packageName)) {
+				javaFileObjects.addAll(
+					doResolveClasses(entry.getKey(), packagePath, options));
+			}
 		}
 
 		if (javaFileObjects.isEmpty()) {
@@ -132,10 +143,6 @@ public class JspJavaFileObjectResolver implements JavaFileObjectResolver {
 
 	protected Collection<JavaFileObject> doResolveClasses(
 		BundleWiring bundleWiring, String path, int options) {
-
-		if (!isExportsPackage(bundleWiring, path.replace('/', '.'))) {
-			return Collections.emptyList();
-		}
 
 		Bundle bundle = bundleWiring.getBundle();
 
@@ -371,7 +378,7 @@ public class JspJavaFileObjectResolver implements JavaFileObjectResolver {
 	}
 
 	private final BundleWiring _bundleWiring;
-	private final Set<BundleWiring> _bundleWirings;
+	private final Map<BundleWiring, Set<String>> _bundleWiringPackageNames;
 	private final Map<String, Collection<JavaFileObject>> _javaFileObjects =
 		new ConcurrentReferenceValueHashMap<>(
 			FinalizeManager.SOFT_REFERENCE_FACTORY);
