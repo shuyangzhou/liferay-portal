@@ -15,6 +15,7 @@
 package com.liferay.portal.servlet.jsp.compiler.internal;
 
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
+import com.liferay.portal.kernel.util.StringBundler;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,7 +35,7 @@ public class TldURIUtil {
 			UnsyncBufferedReader unsyncBufferedReader =
 				new UnsyncBufferedReader(inputStreamReader)) {
 
-			StringBuilder sb = null;
+			StringBundler sb = null;
 
 			String line = null;
 
@@ -54,7 +55,7 @@ public class TldURIUtil {
 						return line.substring(x, y);
 					}
 
-					sb = new StringBuilder(line.substring(x));
+					sb = new StringBundler(line.substring(x));
 				}
 				else {
 					int y = line.indexOf("</uri>");
