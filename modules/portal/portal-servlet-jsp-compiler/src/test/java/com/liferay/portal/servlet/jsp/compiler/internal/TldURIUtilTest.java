@@ -22,42 +22,34 @@ import org.junit.Test;
 /**
  * @author Raymond Augé
  */
-public class JspCompilerTest {
+public class TldURIUtilTest {
 
 	@Test
 	public void testGetTldUri1() throws Exception {
-		JspCompiler jspCompiler = new JspCompiler();
+		URL url = TldURIUtilTest.class.getResource("dependencies/test_1.tld");
 
-		URL url = JspCompilerTest.class.getResource("dependencies/test_1.tld");
-
-		Assert.assertEquals("This is a test.", jspCompiler.getTldUri(url));
+		Assert.assertEquals("This is a test.", TldURIUtil.getTldURI(url));
 	}
 
 	@Test
 	public void testGetTldUri2() throws Exception {
-		JspCompiler jspCompiler = new JspCompiler();
+		URL url = TldURIUtilTest.class.getResource("dependencies/test_2.tld");
 
-		URL url = JspCompilerTest.class.getResource("dependencies/test_2.tld");
-
-		Assert.assertEquals("This is a test.", jspCompiler.getTldUri(url));
+		Assert.assertEquals("This is a test.", TldURIUtil.getTldURI(url));
 	}
 
 	@Test
 	public void testGetTldUri3() throws Exception {
-		JspCompiler jspCompiler = new JspCompiler();
+		URL url = TldURIUtilTest.class.getResource("dependencies/test_3.tld");
 
-		URL url = JspCompilerTest.class.getResource("dependencies/test_3.tld");
-
-		Assert.assertNull(jspCompiler.getTldUri(url));
+		Assert.assertNull(TldURIUtil.getTldURI(url));
 	}
 
 	@Test
 	public void testGetTldUri4() throws Exception {
-		JspCompiler jspCompiler = new JspCompiler();
+		URL url = TldURIUtilTest.class.getResource("dependencies/test_4.tld");
 
-		URL url = JspCompilerTest.class.getResource("dependencies/test_4.tld");
-
-		Assert.assertNull(jspCompiler.getTldUri(url));
+		Assert.assertNull(TldURIUtil.getTldURI(url));
 	}
 
 }
