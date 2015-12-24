@@ -14,13 +14,11 @@
 
 package com.liferay.portal.servlet.jsp.compiler.internal;
 
-import com.liferay.portal.kernel.util.ReflectionUtil;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -150,46 +148,9 @@ public class JspCompiler extends Jsr199JavaCompiler {
 		JspCompilationContext jspCompilationContext,
 		ErrorDispatcher errorDispatcher, boolean suppressLogging) {
 
-		Bundle jspBundle = FrameworkUtil.getBundle(
-			com.liferay.portal.servlet.jsp.compiler.JspServlet.class);
+		Bundle jspBundle = _jspBundleWiring.getBundle();
 
-		BundleWiring bundleWiring = jspBundle.adapt(BundleWiring.class);
-
-		_jspBundleWirings.add(bundleWiring);
-
-		for (BundleWire bundleWire : bundleWiring.getRequiredWires(null)) {
-			BundleWiring providedBundleWiring = bundleWire.getProviderWiring();
-
-			_jspBundleWirings.add(providedBundleWiring);
-		}
-
-		BundleContext bundleContext = jspBundle.getBundleContext();
-
-		Bundle systemBundle = bundleContext.getBundle(0);
-
-		if (systemBundle == null) {
-			throw new IllegalStateException(
-				"Unable to access to system bundle");
-		}
-
-		BundleWiring systemBundleWiring = systemBundle.adapt(
-			BundleWiring.class);
-
-		for (BundleCapability bundleCapability :
-				systemBundleWiring.getCapabilities(
-					BundleRevision.PACKAGE_NAMESPACE)) {
-
-			Map<String, Object> attributes = bundleCapability.getAttributes();
-
-			Object packageName = attributes.get(
-				BundleRevision.PACKAGE_NAMESPACE);
-
-			if (packageName != null) {
-				_systemPackageNames.add(packageName);
-			}
-		}
-
-		_logger = new Logger(bundleContext);
+		_logger = new Logger(jspBundle.getBundleContext());
 
 		ServletContext servletContext =
 			jspCompilationContext.getServletContext();
@@ -206,10 +167,45 @@ public class JspCompiler extends Jsr199JavaCompiler {
 
 		_allParticipatingBundles = jspBundleClassloader.getBundles();
 
-		_bundle = _allParticipatingBundles[0];
+		Bundle bundle = _allParticipatingBundles[0];
+
+		BundleWiring bundleWiring = bundle.adapt(BundleWiring.class);
+
+		_classLoader = bundleWiring.getClassLoader();
+
+		for (BundleWire bundleWire : bundleWiring.getRequiredWires(null)) {
+			BundleWiring providedBundleWiring = bundleWire.getProviderWiring();
+
+			_bundleWirings.add(providedBundleWiring);
+		}
+
+		_bundleWirings.addAll(_jspBundleWirings);
+
+		if (options.contains(BundleJavaFileManager.OPT_VERBOSE)) {
+			StringBundler sb = new StringBundler(_bundleWirings.size() * 4 + 6);
+
+			sb.append("Jsp compiler for bundle ");
+			sb.append(bundle.getSymbolicName());
+			sb.append(StringPool.DASH);
+			sb.append(bundle.getVersion());
+			sb.append(" has dependent bundle wirings: ");
+
+			for (BundleWiring curBundleWiring : _bundleWirings) {
+				Bundle currentBundle = curBundleWiring.getBundle();
+
+				sb.append(currentBundle.getSymbolicName());
+				sb.append(StringPool.DASH);
+				sb.append(currentBundle.getVersion());
+				sb.append(StringPool.COMMA_AND_SPACE);
+			}
+
+			sb.setIndex(sb.index() - 1);
+
+			_logger.log(Logger.LOG_INFO, sb.toString());
+		}
 
 		_javaFileObjectResolver = new JspJavaFileObjectResolver(
-			_bundle, jspBundle, _logger);
+			bundleWiring, _jspBundleWiring, _bundleWirings, _logger);
 
 		jspCompilationContext.setClassLoader(jspBundleClassloader);
 
@@ -278,7 +274,8 @@ public class JspCompiler extends Jsr199JavaCompiler {
 	}
 
 	protected void collectTLDMappings(
-		Map<String, String[]> tldMappings, Bundle bundle) {
+			Map<String, String[]> tldMappings, Bundle bundle)
+		throws IOException {
 
 		BundleWiring bundleWiring = bundle.adapt(BundleWiring.class);
 
@@ -293,7 +290,7 @@ public class JspCompiler extends Jsr199JavaCompiler {
 		for (String resourcePath : resourcePaths) {
 			URL url = bundle.getResource(resourcePath);
 
-			String uri = getTldUri(url);
+			String uri = TldURIUtil.getTldURI(url);
 
 			if (uri != null) {
 				tldMappings.put(uri, new String[] {"/" + resourcePath, null});
@@ -318,62 +315,12 @@ public class JspCompiler extends Jsr199JavaCompiler {
 			}
 
 			javaFileManager = new BundleJavaFileManager(
-				_bundle, _jspBundleWirings, _systemPackageNames,
-				standardJavaFileManager, _logger,
-				options.contains(BundleJavaFileManager.OPT_VERBOSE),
+				_classLoader, _systemPackageNames, standardJavaFileManager,
+				_logger, options.contains(BundleJavaFileManager.OPT_VERBOSE),
 				_javaFileObjectResolver);
 		}
 
 		return super.getJavaFileManager(javaFileManager);
-	}
-
-	protected String getTldUri(URL url) {
-		try (InputStream inputStream = url.openStream();
-			InputStreamReader inputStreamReader = new InputStreamReader(
-				inputStream);
-			BufferedReader bufferedReader = new BufferedReader(
-				inputStreamReader)) {
-
-			StringBuilder sb = null;
-
-			String line = null;
-
-			while ((line = bufferedReader.readLine()) != null) {
-				if (sb == null) {
-					int x = line.indexOf("<uri>");
-
-					if (x < 0) {
-						continue;
-					}
-
-					x += 5;
-
-					int y = line.indexOf("</uri>", x);
-
-					if (y >= 0) {
-						return line.substring(x, y);
-					}
-
-					sb = new StringBuilder(line.substring(x));
-				}
-				else {
-					int y = line.indexOf("</uri>");
-
-					if (y >= 0) {
-						sb.append(line.substring(0, y));
-
-						return sb.toString();
-					}
-
-					sb.append(line);
-				}
-			}
-
-			return null;
-		}
-		catch (IOException ioe) {
-			return ReflectionUtil.throwException(ioe);
-		}
 	}
 
 	protected void initClassPath(ServletContext servletContext) {
@@ -469,12 +416,54 @@ public class JspCompiler extends Jsr199JavaCompiler {
 		"javax.servlet.ServletException"
 	};
 
+	private static final BundleWiring _jspBundleWiring;
+	private static final Set<BundleWiring> _jspBundleWirings =
+		new LinkedHashSet<>();
+	private static final Set<Object> _systemPackageNames = new HashSet<>();
+
+	static {
+		Bundle jspBundle = FrameworkUtil.getBundle(JspCompiler.class);
+
+		_jspBundleWiring = jspBundle.adapt(BundleWiring.class);
+
+		for (BundleWire bundleWire : _jspBundleWiring.getRequiredWires(null)) {
+			BundleWiring providedBundleWiring = bundleWire.getProviderWiring();
+
+			_jspBundleWirings.add(providedBundleWiring);
+		}
+
+		BundleContext bundleContext = jspBundle.getBundleContext();
+
+		Bundle systemBundle = bundleContext.getBundle(0);
+
+		if (systemBundle == null) {
+			throw new ExceptionInInitializerError(
+				"Unable to access to system bundle");
+		}
+
+		BundleWiring systemBundleWiring = systemBundle.adapt(
+			BundleWiring.class);
+
+		for (BundleCapability bundleCapability :
+				systemBundleWiring.getCapabilities(
+					BundleRevision.PACKAGE_NAMESPACE)) {
+
+			Map<String, Object> attributes = bundleCapability.getAttributes();
+
+			Object packageName = attributes.get(
+				BundleRevision.PACKAGE_NAMESPACE);
+
+			if (packageName != null) {
+				_systemPackageNames.add(packageName);
+			}
+		}
+	}
+
 	private Bundle[] _allParticipatingBundles;
-	private Bundle _bundle;
+	private final Set<BundleWiring> _bundleWirings = new LinkedHashSet<>();
+	private ClassLoader _classLoader;
 	private final List<File> _classPath = new ArrayList<>();
 	private JavaFileObjectResolver _javaFileObjectResolver;
-	private final Set<BundleWiring> _jspBundleWirings = new LinkedHashSet<>();
 	private Logger _logger;
-	private final Set<Object> _systemPackageNames = new HashSet<>();
 
 }

@@ -44,6 +44,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.tools.JavaFileObject;
 
@@ -62,13 +63,17 @@ import org.osgi.util.tracker.ServiceTracker;
 public class JspJavaFileObjectResolver implements JavaFileObjectResolver {
 
 	public JspJavaFileObjectResolver(
-		Bundle bundle, Bundle jspBundle, Logger logger) {
+		BundleWiring bundleWiring, BundleWiring jspBundleWiring,
+		Set<BundleWiring> bundleWirings, Logger logger) {
 
-		_bundle = bundle;
-		_jspBundle = jspBundle;
+		_bundleWiring = bundleWiring;
+		_jspBundleWiring = jspBundleWiring;
+		_bundleWirings = bundleWirings;
 		_logger = logger;
 
-		BundleContext bundleContext = _bundle.getBundleContext();
+		Bundle bundle = _bundleWiring.getBundle();
+
+		BundleContext bundleContext = bundle.getBundleContext();
 
 		try {
 			_serviceTracker = ServiceTrackerFactory.open(
@@ -83,25 +88,34 @@ public class JspJavaFileObjectResolver implements JavaFileObjectResolver {
 
 	@Override
 	public Collection<JavaFileObject> resolveClasses(
-		BundleWiring bundleWiring, String path, int options) {
+		boolean recurse, String packagePath) {
 
-		Bundle bundle = bundleWiring.getBundle();
+		List<JavaFileObject> javaFileObjects = new ArrayList<>();
 
-		if (bundle.equals(_bundle) || bundle.equals(_jspBundle)) {
+		int options = 0;
+
+		if (recurse) {
+			options = BundleWiring.LISTRESOURCES_RECURSE;
+		}
+
+		javaFileObjects.addAll(
+			toJavaFileObjects(
+				_jspBundleWiring.getBundle(),
+				_jspBundleWiring.listResources(
+					packagePath, "*.class", options)));
+
+		for (BundleWiring bundleWiring : _bundleWirings) {
+			javaFileObjects.addAll(
+				doResolveClasses(bundleWiring, packagePath, options));
+		}
+
+		if (javaFileObjects.isEmpty()) {
 			return toJavaFileObjects(
-				bundle, bundleWiring.listResources(path, "*.class", options));
+				_bundleWiring.getBundle(),
+				_bundleWiring.listResources(packagePath, "*.class", options));
 		}
 
-		if (!isExportsPackage(bundleWiring, path.replace('/', '.'))) {
-			return Collections.emptyList();
-		}
-
-		if (bundle.getBundleId() == 0) {
-			return handleSystemBundle(bundleWiring, path);
-		}
-
-		return toJavaFileObjects(
-			bundle, bundleWiring.listResources(path, "*.class", options));
+		return javaFileObjects;
 	}
 
 	protected String decodePath(String path) {
@@ -114,6 +128,23 @@ public class JspJavaFileObjectResolver implements JavaFileObjectResolver {
 			path, "_LIFERAY_TEMP_SLASH_", StringPool.SLASH);
 
 		return path;
+	}
+
+	protected Collection<JavaFileObject> doResolveClasses(
+		BundleWiring bundleWiring, String path, int options) {
+
+		if (!isExportsPackage(bundleWiring, path.replace('/', '.'))) {
+			return Collections.emptyList();
+		}
+
+		Bundle bundle = bundleWiring.getBundle();
+
+		if (bundle.getBundleId() == 0) {
+			return handleSystemBundle(bundleWiring, path);
+		}
+
+		return toJavaFileObjects(
+			bundle, bundleWiring.listResources(path, "*.class", options));
 	}
 
 	protected String getClassName(String resourceName) {
@@ -339,11 +370,12 @@ public class JspJavaFileObjectResolver implements JavaFileObjectResolver {
 		return javaFileObjects;
 	}
 
-	private final Bundle _bundle;
+	private final BundleWiring _bundleWiring;
+	private final Set<BundleWiring> _bundleWirings;
 	private final Map<String, Collection<JavaFileObject>> _javaFileObjects =
 		new ConcurrentReferenceValueHashMap<>(
 			FinalizeManager.SOFT_REFERENCE_FACTORY);
-	private final Bundle _jspBundle;
+	private final BundleWiring _jspBundleWiring;
 	private final Logger _logger;
 	private final ServiceTracker<Map<String, List<URL>>, Map<String, List<URL>>>
 		_serviceTracker;
