@@ -14,7 +14,8 @@
 
 package com.liferay.portal.servlet.jsp.compiler.internal;
 
-import java.io.BufferedReader;
+import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -30,14 +31,14 @@ public class TldURIUtil {
 		try (InputStream inputStream = url.openStream();
 			InputStreamReader inputStreamReader = new InputStreamReader(
 				inputStream);
-			BufferedReader bufferedReader = new BufferedReader(
-				inputStreamReader)) {
+			UnsyncBufferedReader unsyncBufferedReader =
+				new UnsyncBufferedReader(inputStreamReader)) {
 
 			StringBuilder sb = null;
 
 			String line = null;
 
-			while ((line = bufferedReader.readLine()) != null) {
+			while ((line = unsyncBufferedReader.readLine()) != null) {
 				if (sb == null) {
 					int x = line.indexOf("<uri>");
 
