@@ -329,8 +329,10 @@ public abstract class BasePortalCacheManager<K extends Serializable, V>
 			PortalCacheListener<K, V> portalCacheListener =
 				portalCacheListenerFactory.create(properties);
 
-			portalCache.registerPortalCacheListener(
-				portalCacheListener, portalCacheListenerScope);
+			if (portalCacheListener != null) {
+				portalCache.registerPortalCacheListener(
+					portalCacheListener, portalCacheListenerScope);
+			}
 		}
 	}
 
