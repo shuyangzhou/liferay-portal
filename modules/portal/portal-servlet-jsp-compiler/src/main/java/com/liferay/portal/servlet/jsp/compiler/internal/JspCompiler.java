@@ -224,18 +224,6 @@ public class JspCompiler extends Jsr199JavaCompiler {
 		ClassLoader frameworkClassLoader = Bundle.class.getClassLoader();
 
 		for (String className : _JSP_COMPILER_DEPENDENCIES) {
-			File file = new File(className);
-
-			if (file.exists() && file.canRead()) {
-				if (_classPath.contains(file)) {
-					_classPath.remove(file);
-				}
-
-				_classPath.add(0, file);
-
-				continue;
-			}
-
 			try {
 				Class<?> clazz = Class.forName(
 					className, true, frameworkClassLoader);
