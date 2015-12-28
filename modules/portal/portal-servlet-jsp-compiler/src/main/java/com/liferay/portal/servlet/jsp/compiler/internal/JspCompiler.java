@@ -176,6 +176,10 @@ public class JspCompiler extends Jsr199JavaCompiler {
 		for (BundleWire bundleWire : bundleWiring.getRequiredWires(null)) {
 			BundleWiring providedBundleWiring = bundleWire.getProviderWiring();
 
+			if (_bundleWiringPackageNames.containsKey(providedBundleWiring)) {
+				continue;
+			}
+
 			_bundleWiringPackageNames.put(
 				providedBundleWiring,
 				_collectPackageNames(providedBundleWiring));
@@ -453,6 +457,12 @@ public class JspCompiler extends Jsr199JavaCompiler {
 
 		for (BundleWire bundleWire : _jspBundleWiring.getRequiredWires(null)) {
 			BundleWiring providedBundleWiring = bundleWire.getProviderWiring();
+
+			if (_jspBundleWiringPackageNames.containsKey(
+					providedBundleWiring)) {
+
+				continue;
+			}
 
 			_jspBundleWiringPackageNames.put(
 				providedBundleWiring,
