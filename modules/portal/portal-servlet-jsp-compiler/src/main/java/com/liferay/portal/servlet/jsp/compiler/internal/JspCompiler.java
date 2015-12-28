@@ -254,9 +254,7 @@ public class JspCompiler extends Jsr199JavaCompiler {
 			File file = new File(toURI(url));
 
 			if (file.exists() && file.canRead()) {
-				if (_classPath.contains(file)) {
-					_classPath.remove(file);
-				}
+				_classPath.remove(file);
 
 				_classPath.add(0, file);
 			}
