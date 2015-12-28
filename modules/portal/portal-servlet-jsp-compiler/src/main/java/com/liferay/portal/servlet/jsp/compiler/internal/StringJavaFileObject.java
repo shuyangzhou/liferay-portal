@@ -34,7 +34,7 @@ public class StringJavaFileObject extends BaseJavaFileObject {
 
 	@Override
 	public boolean isNameCompatible(String simpleName, Kind kind) {
-		if ((Kind.SOURCE == kind) && className.equals(simpleName)) {
+		if (className.equals(simpleName) && (Kind.SOURCE == kind)) {
 			return true;
 		}
 
