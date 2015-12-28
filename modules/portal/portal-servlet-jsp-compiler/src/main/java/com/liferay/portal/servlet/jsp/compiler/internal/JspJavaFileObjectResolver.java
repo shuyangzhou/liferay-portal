@@ -142,9 +142,7 @@ public class JspJavaFileObjectResolver implements JavaFileObjectResolver {
 	}
 
 	protected String getClassName(String resourceName) {
-		if (resourceName.endsWith(".class")) {
-			resourceName = resourceName.substring(0, resourceName.length() - 6);
-		}
+		resourceName = resourceName.substring(0, resourceName.length() - 6);
 
 		return resourceName.replace(CharPool.SLASH, CharPool.PERIOD);
 	}
