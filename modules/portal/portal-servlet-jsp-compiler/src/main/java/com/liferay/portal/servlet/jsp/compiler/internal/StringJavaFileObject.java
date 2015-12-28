@@ -34,7 +34,7 @@ public class StringJavaFileObject extends BaseJavaFileObject {
 
 	@Override
 	public boolean isNameCompatible(String simpleName, Kind kind) {
-		if ((Kind.SOURCE == kind) && this.simpleName.equals(simpleName)) {
+		if ((Kind.SOURCE == kind) && className.equals(simpleName)) {
 			return true;
 		}
 
@@ -43,7 +43,7 @@ public class StringJavaFileObject extends BaseJavaFileObject {
 
 	@Override
 	public URI toUri() {
-		return URI.create("string:///".concat(getName()));
+		return URI.create("string:///".concat(className));
 	}
 
 	private final String _content;
