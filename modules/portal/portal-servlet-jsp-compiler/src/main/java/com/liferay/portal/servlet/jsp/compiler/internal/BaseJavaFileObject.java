@@ -88,11 +88,7 @@ public abstract class BaseJavaFileObject implements JavaFileObject {
 
 	@Override
 	public boolean isNameCompatible(String simpleName, Kind kind) {
-		if ((this.kind == kind) && this.simpleName.equals(simpleName)) {
-			return true;
-		}
-
-		return false;
+		throw new UnsupportedOperationException();
 	}
 
 	/**

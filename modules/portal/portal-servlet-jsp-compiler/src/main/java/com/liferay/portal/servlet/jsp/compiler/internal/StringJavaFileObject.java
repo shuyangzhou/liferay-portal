@@ -33,6 +33,15 @@ public class StringJavaFileObject extends BaseJavaFileObject {
 	}
 
 	@Override
+	public boolean isNameCompatible(String simpleName, Kind kind) {
+		if ((this.kind == kind) && this.simpleName.equals(simpleName)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	@Override
 	public URI toUri() {
 		return URI.create("string:///".concat(getName()));
 	}
