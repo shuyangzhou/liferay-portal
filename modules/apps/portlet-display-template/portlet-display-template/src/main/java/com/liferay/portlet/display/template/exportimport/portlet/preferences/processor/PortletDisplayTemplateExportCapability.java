@@ -151,6 +151,9 @@ public class PortletDisplayTemplateExportCapability implements Capability {
 	protected void setPortletLocalService(
 		PortletLocalService portletLocalService) {
 
+		System.out.println(
+			"############" + this + " set " + portletLocalService);
+
 		_portletLocalService = portletLocalService;
 	}
 
