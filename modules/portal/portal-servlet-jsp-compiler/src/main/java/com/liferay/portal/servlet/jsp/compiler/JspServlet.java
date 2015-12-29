@@ -14,11 +14,13 @@
 
 package com.liferay.portal.servlet.jsp.compiler;
 
+import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.servlet.jsp.compiler.internal.JspBundleClassloader;
 
 import java.io.IOException;
 import java.io.InputStream;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -57,6 +59,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionListener;
 
+import org.apache.jasper.Constants;
+import org.apache.jasper.JspCompilationContext;
+import org.apache.jasper.compiler.JspRuntimeContext;
+import org.apache.jasper.servlet.JspServletWrapper;
 import org.apache.jasper.xmlparser.ParserUtils;
 import org.apache.jasper.xmlparser.TreeNode;
 
@@ -173,6 +179,7 @@ public class JspServlet extends HttpServlet {
 		defaults.put("httpMethods", "GET,POST,HEAD");
 		defaults.put("keepgenerated", "false");
 		defaults.put("logVerbosityLevel", "NONE");
+		defaults.put("development", "true");
 
 		Enumeration<String> names = servletConfig.getInitParameterNames();
 		Set<String> nameSet = new HashSet<>(Collections.list(names));
@@ -265,6 +272,65 @@ public class JspServlet extends HttpServlet {
 
 				_jspServletContext.log(
 					"[JSP DEBUG] " + _bundle + " invoking " + path);
+			}
+
+			try {
+				JspRuntimeContext jspRuntimeContext =
+					(JspRuntimeContext)_rctxtField.get(_jspServlet);
+
+				String jspUri = getInitParameter("jspFile");
+
+				if (jspUri == null) {
+					String jspFile = (String)request.getAttribute(
+						Constants.JSP_FILE);
+
+					if (jspFile != null) {
+						jspUri = jspFile;
+					}
+				}
+
+				if (jspUri == null) {
+					jspUri = (String)request.getAttribute(
+						RequestDispatcher.INCLUDE_SERVLET_PATH);
+
+					if (jspUri != null) {
+						String pathInfo = (String)request.getAttribute(
+							RequestDispatcher.INCLUDE_PATH_INFO);
+
+						if (pathInfo != null) {
+							jspUri += pathInfo;
+						}
+					}
+					else {
+						jspUri = request.getServletPath();
+						String pathInfo = request.getPathInfo();
+
+						if (pathInfo != null) {
+							jspUri += pathInfo;
+						}
+					}
+				}
+
+				JspServletWrapper wrapper = jspRuntimeContext.getWrapper(
+					jspUri);
+
+				if (wrapper != null) {
+					JspCompilationContext jspCompilationContext =
+						(JspCompilationContext)_ctxtField.get(wrapper);
+
+					Map<String, Long> bytecodeBirthTimes =
+						(Map<String, Long>)_bytecodeBirthTimesField.get(
+							jspRuntimeContext);
+
+					bytecodeBirthTimes.put(
+						jspCompilationContext.getFullClassName(),
+						Long.valueOf(0L));
+
+					jspRuntimeContext.addWrapper(jspUri, wrapper);
+				}
+			}
+			catch (Exception e) {
+				throw new RuntimeException(e);
 			}
 
 			_jspServlet.service(request, response);
@@ -439,10 +505,38 @@ public class JspServlet extends HttpServlet {
 
 	private static final Class<?>[] _INTERFACES = {ServletContext.class};
 
+	private static final Field _bytecodeBirthTimesField;
+	private static final Field _ctxtField;
 	private static final Bundle _jspBundle = FrameworkUtil.getBundle(
 		JspServlet.class);
 	private static final Pattern _originalJspPattern = Pattern.compile(
 		"^(?<file>.*)(\\.(portal|original))(?<extension>\\.(jsp|jspf))$");
+	private static final Field _rctxtField;
+
+	static {
+		Field bytecodeBirthTimesField = null;
+		Field ctxtField = null;
+		Field rctxtField = null;
+
+		try {
+			bytecodeBirthTimesField = ReflectionUtil.getDeclaredField(
+				JspRuntimeContext.class, "bytecodeBirthTimes");
+
+			ctxtField = ReflectionUtil.getDeclaredField(
+				JspServletWrapper.class, "ctxt");
+
+			rctxtField = ReflectionUtil.getDeclaredField(
+				org.apache.jasper.servlet.JspServlet.class, "rctxt");
+		}
+		catch (Exception e) {
+			ReflectionUtil.throwException(e);
+		}
+		finally {
+			_bytecodeBirthTimesField = bytecodeBirthTimesField;
+			_ctxtField = ctxtField;
+			_rctxtField = rctxtField;
+		}
+	}
 
 	private Bundle[] _allParticipatingBundles;
 	private Bundle _bundle;
