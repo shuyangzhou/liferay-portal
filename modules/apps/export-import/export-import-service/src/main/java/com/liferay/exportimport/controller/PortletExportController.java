@@ -927,6 +927,8 @@ public class PortletExportController implements ExportController {
 							getExportCapabilities();
 
 					if (ListUtil.isNotEmpty(exportCapabilities)) {
+						System.out.println("@@@@@" + exportCapabilities);
+
 						for (Capability exportCapability : exportCapabilities) {
 							exportCapability.process(
 								portletDataContext, jxPortletPreferences);
