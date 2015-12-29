@@ -22,7 +22,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 
-import java.util.jar.JarFile;
+import java.util.zip.ZipFile;
 
 /**
  * @author Shuyang Zhou
@@ -50,9 +50,9 @@ public class VfsJavaFileObject extends BaseJavaFileObject {
 
 	@Override
 	public InputStream openInputStream() throws IOException {
-		JarFile jarFile = new JarFile(_file);
+		ZipFile zipFile = new ZipFile(_file);
 
-		return jarFile.getInputStream(jarFile.getJarEntry(_entryName));
+		return zipFile.getInputStream(zipFile.getEntry(_entryName));
 	}
 
 	@Override
