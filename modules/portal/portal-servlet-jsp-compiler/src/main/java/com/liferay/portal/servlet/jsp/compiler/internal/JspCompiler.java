@@ -452,6 +452,8 @@ public class JspCompiler extends Jsr199JavaCompiler {
 
 		_jspBundleWiring = jspBundle.adapt(BundleWiring.class);
 
+		Set<String> systemPackageNames = null;
+
 		for (BundleWire bundleWire : _jspBundleWiring.getRequiredWires(null)) {
 			BundleWiring providedBundleWiring = bundleWire.getProviderWiring();
 
@@ -461,22 +463,34 @@ public class JspCompiler extends Jsr199JavaCompiler {
 				continue;
 			}
 
+			Set<String> packageNames = _collectPackageNames(
+				providedBundleWiring);
+
+			Bundle bundle = providedBundleWiring.getBundle();
+
+			if (bundle.getBundleId() == 0) {
+				systemPackageNames = packageNames;
+			}
+
 			_jspBundleWiringPackageNames.put(
-				providedBundleWiring,
-				_collectPackageNames(providedBundleWiring));
+				providedBundleWiring, packageNames);
 		}
 
-		BundleContext bundleContext = jspBundle.getBundleContext();
+		if (systemPackageNames == null) {
+			BundleContext bundleContext = jspBundle.getBundleContext();
 
-		Bundle systemBundle = bundleContext.getBundle(0);
+			Bundle systemBundle = bundleContext.getBundle(0);
 
-		if (systemBundle == null) {
-			throw new ExceptionInInitializerError(
-				"Unable to access to system bundle");
+			if (systemBundle == null) {
+				throw new ExceptionInInitializerError(
+					"Unable to access to system bundle");
+			}
+
+			systemPackageNames = _collectPackageNames(
+				systemBundle.adapt(BundleWiring.class));
 		}
 
-		_systemPackageNames = _collectPackageNames(
-			systemBundle.adapt(BundleWiring.class));
+		_systemPackageNames = systemPackageNames;
 	}
 
 	private Bundle[] _allParticipatingBundles;
