@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -57,6 +58,7 @@ import com.liferay.portlet.asset.service.AssetCategoryLocalService;
 import com.liferay.portlet.asset.service.AssetVocabularyLocalService;
 import com.liferay.portlet.asset.service.persistence.AssetCategoryUtil;
 import com.liferay.portlet.asset.service.persistence.AssetVocabularyUtil;
+import com.liferay.portlet.display.template.exportimport.portlet.preferences.processor.PortletDisplayTemplateExportCapability;
 import com.liferay.portlet.documentlibrary.model.DLFileEntry;
 import com.liferay.portlet.documentlibrary.model.DLFileEntryType;
 import com.liferay.portlet.documentlibrary.service.DLFileEntryTypeLocalService;
@@ -65,6 +67,7 @@ import com.liferay.portlet.exportimport.lar.PortletDataContext;
 import com.liferay.portlet.exportimport.lar.PortletDataException;
 import com.liferay.portlet.exportimport.lar.StagedModelDataHandlerUtil;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -364,8 +367,20 @@ public class AssetPublisherExportImportPortletPreferencesProcessor
 
 	@Reference(unbind = "-")
 	protected void setAssetPublisherPortletDisplayTemplateExportCapability(
-		AssetPublisherPortletDisplayTemplateExportCapability
-			assetPublisherPortletDisplayTemplateExportCapability) {
+			AssetPublisherPortletDisplayTemplateExportCapability
+				assetPublisherPortletDisplayTemplateExportCapability)
+		throws Exception {
+
+		Field field = ReflectionUtil.getDeclaredField(
+			PortletDisplayTemplateExportCapability.class,
+			"_portletLocalService");
+
+		System.out.println(
+			"########Accepting " +
+				assetPublisherPortletDisplayTemplateExportCapability +
+					" with " +
+						field.get(
+							assetPublisherPortletDisplayTemplateExportCapability));
 
 		_assetPublisherPortletDisplayTemplateExportCapability =
 			assetPublisherPortletDisplayTemplateExportCapability;

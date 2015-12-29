@@ -15,11 +15,15 @@
 package com.liferay.asset.publisher.web.exportimport.portlet.preferences.processor;
 
 import com.liferay.exportimport.portlet.preferences.processor.Capability;
+import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portlet.display.template.exportimport.portlet.preferences.processor.PortletDisplayTemplateExportCapability;
 import com.liferay.portlet.exportimport.lar.PortletDataContext;
 
+import java.lang.reflect.Field;
+
 import javax.portlet.PortletPreferences;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 
 /**
@@ -34,6 +38,16 @@ import org.osgi.service.component.annotations.Component;
 )
 public class AssetPublisherPortletDisplayTemplateExportCapability
 	extends PortletDisplayTemplateExportCapability {
+
+	@Activate
+	public void activate() throws Exception {
+		Field field = ReflectionUtil.getDeclaredField(
+			PortletDisplayTemplateExportCapability.class,
+			"_portletLocalService");
+
+		System.out.println(
+			"%%%%%%%activating " + this + " with " + field.get(this));
+	}
 
 	@Override
 	protected String getDisplayStyle(
