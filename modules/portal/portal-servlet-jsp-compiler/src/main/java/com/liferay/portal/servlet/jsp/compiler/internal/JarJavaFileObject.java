@@ -14,13 +14,13 @@
 
 package com.liferay.portal.servlet.jsp.compiler.internal;
 
+import com.liferay.portal.kernel.zip.ZipFileUtil;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
 import java.net.URI;
-
-import java.util.zip.ZipFile;
 
 /**
  * @author Shuyang Zhou
@@ -36,9 +36,7 @@ public class JarJavaFileObject extends BaseJavaFileObject {
 
 	@Override
 	public InputStream openInputStream() throws IOException {
-		ZipFile zipFile = new ZipFile(_file);
-
-		return zipFile.getInputStream(zipFile.getEntry(_entryName));
+		return ZipFileUtil.openInputStream(_file, _entryName);
 	}
 
 	@Override
