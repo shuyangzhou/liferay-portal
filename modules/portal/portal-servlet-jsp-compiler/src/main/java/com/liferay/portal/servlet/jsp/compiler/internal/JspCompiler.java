@@ -184,8 +184,6 @@ public class JspCompiler extends Jsr199JavaCompiler {
 				_collectPackageNames(providedBundleWiring));
 		}
 
-		_bundleWiringPackageNames.putAll(_jspBundleWiringPackageNames);
-
 		if (options.contains(BundleJavaFileManager.OPT_VERBOSE)) {
 			StringBundler sb = new StringBundler(
 				_bundleWiringPackageNames.size() * 4 + 6);
@@ -483,7 +481,7 @@ public class JspCompiler extends Jsr199JavaCompiler {
 
 	private Bundle[] _allParticipatingBundles;
 	private final Map<BundleWiring, Set<String>> _bundleWiringPackageNames =
-		new HashMap<>();
+		new HashMap<>(_jspBundleWiringPackageNames);
 	private ClassLoader _classLoader;
 	private final List<File> _classPath = new ArrayList<>();
 	private JavaFileObjectResolver _javaFileObjectResolver;
