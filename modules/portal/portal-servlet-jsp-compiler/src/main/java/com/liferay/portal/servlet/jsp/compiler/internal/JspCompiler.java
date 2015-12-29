@@ -14,6 +14,9 @@
 
 package com.liferay.portal.servlet.jsp.compiler.internal;
 
+import com.liferay.portal.kernel.concurrent.ConcurrentReferenceKeyHashMap;
+import com.liferay.portal.kernel.concurrent.ConcurrentReferenceValueHashMap;
+import com.liferay.portal.kernel.memory.FinalizeManager;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 
@@ -174,10 +177,6 @@ public class JspCompiler extends Jsr199JavaCompiler {
 
 		for (BundleWire bundleWire : bundleWiring.getRequiredWires(null)) {
 			BundleWiring providedBundleWiring = bundleWire.getProviderWiring();
-
-			if (_bundleWiringPackageNames.containsKey(providedBundleWiring)) {
-				continue;
-			}
 
 			_bundleWiringPackageNames.put(
 				providedBundleWiring,
@@ -417,7 +416,14 @@ public class JspCompiler extends Jsr199JavaCompiler {
 	}
 
 	private static Set<String> _collectPackageNames(BundleWiring bundleWiring) {
-		Set<String> packageNames = new HashSet<>();
+		Set<String> packageNames = _bundleWiringPackageNamesCache.get(
+			bundleWiring);
+
+		if (packageNames != null) {
+			return packageNames;
+		}
+
+		packageNames = new HashSet<>();
 
 		for (BundleCapability bundleCapability :
 				bundleWiring.getCapabilities(
@@ -433,6 +439,8 @@ public class JspCompiler extends Jsr199JavaCompiler {
 			}
 		}
 
+		_bundleWiringPackageNamesCache.put(bundleWiring, packageNames);
+
 		return packageNames;
 	}
 
@@ -442,6 +450,11 @@ public class JspCompiler extends Jsr199JavaCompiler {
 		"javax.servlet.ServletException"
 	};
 
+	private static final Map<BundleWiring, Set<String>>
+		_bundleWiringPackageNamesCache = new ConcurrentReferenceKeyHashMap<>(
+			new ConcurrentReferenceValueHashMap<BundleWiring, Set<String>>(
+				FinalizeManager.SOFT_REFERENCE_FACTORY),
+			FinalizeManager.WEAK_REFERENCE_FACTORY);
 	private static final BundleWiring _jspBundleWiring;
 	private static final Map<BundleWiring, Set<String>>
 		_jspBundleWiringPackageNames = new HashMap<>();
@@ -456,12 +469,6 @@ public class JspCompiler extends Jsr199JavaCompiler {
 
 		for (BundleWire bundleWire : _jspBundleWiring.getRequiredWires(null)) {
 			BundleWiring providedBundleWiring = bundleWire.getProviderWiring();
-
-			if (_jspBundleWiringPackageNames.containsKey(
-					providedBundleWiring)) {
-
-				continue;
-			}
 
 			Set<String> packageNames = _collectPackageNames(
 				providedBundleWiring);
