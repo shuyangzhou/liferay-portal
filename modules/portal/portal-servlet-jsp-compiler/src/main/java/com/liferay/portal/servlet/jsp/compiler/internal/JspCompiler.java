@@ -34,7 +34,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -447,7 +446,7 @@ public class JspCompiler extends Jsr199JavaCompiler {
 
 	private static final BundleWiring _jspBundleWiring;
 	private static final Map<BundleWiring, Set<String>>
-		_jspBundleWiringPackageNames = new LinkedHashMap<>();
+		_jspBundleWiringPackageNames = new HashMap<>();
 	private static final Set<String> _systemPackageNames;
 
 	static {
@@ -484,7 +483,7 @@ public class JspCompiler extends Jsr199JavaCompiler {
 
 	private Bundle[] _allParticipatingBundles;
 	private final Map<BundleWiring, Set<String>> _bundleWiringPackageNames =
-		new LinkedHashMap<>();
+		new HashMap<>();
 	private ClassLoader _classLoader;
 	private final List<File> _classPath = new ArrayList<>();
 	private JavaFileObjectResolver _javaFileObjectResolver;
