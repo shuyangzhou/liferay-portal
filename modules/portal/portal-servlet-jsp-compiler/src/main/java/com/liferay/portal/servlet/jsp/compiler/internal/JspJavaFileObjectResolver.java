@@ -14,7 +14,6 @@
 
 package com.liferay.portal.servlet.jsp.compiler.internal;
 
-import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.portal.kernel.concurrent.ConcurrentReferenceValueHashMap;
 import com.liferay.portal.kernel.memory.FinalizeManager;
 import com.liferay.portal.kernel.util.CharPool;
@@ -51,8 +50,6 @@ import javax.tools.JavaFileObject;
 import org.apache.felix.utils.log.Logger;
 
 import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.wiring.BundleCapability;
 import org.osgi.framework.wiring.BundleWiring;
 import org.osgi.util.tracker.ServiceTracker;
@@ -64,27 +61,15 @@ public class JspJavaFileObjectResolver implements JavaFileObjectResolver {
 
 	public JspJavaFileObjectResolver(
 		BundleWiring bundleWiring, BundleWiring jspBundleWiring,
-		Map<BundleWiring, Set<String>> bundleWiringPackageNames,
-		Logger logger) {
+		Map<BundleWiring, Set<String>> bundleWiringPackageNames, Logger logger,
+		ServiceTracker<Map<String, List<URL>>, Map<String, List<URL>>>
+			serviceTracker) {
 
 		_bundleWiring = bundleWiring;
 		_jspBundleWiring = jspBundleWiring;
 		_bundleWiringPackageNames = bundleWiringPackageNames;
 		_logger = logger;
-
-		Bundle bundle = _bundleWiring.getBundle();
-
-		BundleContext bundleContext = bundle.getBundleContext();
-
-		try {
-			_serviceTracker = ServiceTrackerFactory.open(
-				bundleContext,
-				"(&(jsp.compiler.resource.map=*)(objectClass=" +
-					Map.class.getName() + "))");
-		}
-		catch (InvalidSyntaxException ise) {
-			throw new RuntimeException(ise);
-		}
+		_serviceTracker = serviceTracker;
 	}
 
 	@Override
@@ -141,12 +126,11 @@ public class JspJavaFileObjectResolver implements JavaFileObjectResolver {
 			bundle, bundleWiring.listResources(path, "*.class", options));
 	}
 
-	protected String getClassName(String resourceName) {
-		if (resourceName.endsWith(".class")) {
-			resourceName = resourceName.substring(0, resourceName.length() - 6);
-		}
+	protected String getClassName(String classResourceName) {
+		classResourceName = classResourceName.substring(
+			0, classResourceName.length() - 6);
 
-		return resourceName.replace(CharPool.SLASH, CharPool.PERIOD);
+		return classResourceName.replace(CharPool.SLASH, CharPool.PERIOD);
 	}
 
 	protected File getFile(URL url) throws IOException {
@@ -287,13 +271,11 @@ public class JspJavaFileObjectResolver implements JavaFileObjectResolver {
 
 									@Override
 									public boolean accept(Path entryPath) {
-										Path fileNamePath =
-											entryPath.getFileName();
+										String entryPathString =
+											entryPath.toString();
 
-										String fileName =
-											fileNamePath.toString();
-
-										return fileName.endsWith(".class");
+										return entryPathString.endsWith(
+											".class");
 									}
 
 								})) {

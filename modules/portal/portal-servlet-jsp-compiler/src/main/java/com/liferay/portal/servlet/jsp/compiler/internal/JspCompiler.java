@@ -14,6 +14,10 @@
 
 package com.liferay.portal.servlet.jsp.compiler.internal;
 
+import com.liferay.osgi.util.ServiceTrackerFactory;
+import com.liferay.portal.kernel.concurrent.ConcurrentReferenceKeyHashMap;
+import com.liferay.portal.kernel.concurrent.ConcurrentReferenceValueHashMap;
+import com.liferay.portal.kernel.memory.FinalizeManager;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 
@@ -34,7 +38,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -63,10 +66,12 @@ import org.apache.jasper.compiler.Node.Nodes;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.wiring.BundleCapability;
 import org.osgi.framework.wiring.BundleRevision;
 import org.osgi.framework.wiring.BundleWire;
 import org.osgi.framework.wiring.BundleWiring;
+import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * @author Raymond Augé
@@ -181,8 +186,6 @@ public class JspCompiler extends Jsr199JavaCompiler {
 				_collectPackageNames(providedBundleWiring));
 		}
 
-		_bundleWiringPackageNames.putAll(_jspBundleWiringPackageNames);
-
 		if (options.contains(BundleJavaFileManager.OPT_VERBOSE)) {
 			StringBundler sb = new StringBundler(
 				_bundleWiringPackageNames.size() * 4 + 6);
@@ -210,12 +213,14 @@ public class JspCompiler extends Jsr199JavaCompiler {
 		}
 
 		_javaFileObjectResolver = new JspJavaFileObjectResolver(
-			bundleWiring, _jspBundleWiring, _bundleWiringPackageNames, _logger);
+			bundleWiring, _jspBundleWiring, _bundleWiringPackageNames, _logger,
+			_serviceTracker);
 
 		jspCompilationContext.setClassLoader(jspBundleClassloader);
 
 		initClassPath(servletContext);
-		initTLDMappings(servletContext);
+		initTLDMappings(
+			servletContext, jspCompilationContext.getTagFileJarUrls());
 
 		super.init(jspCompilationContext, errorDispatcher, suppressLogging);
 	}
@@ -224,18 +229,6 @@ public class JspCompiler extends Jsr199JavaCompiler {
 		ClassLoader frameworkClassLoader = Bundle.class.getClassLoader();
 
 		for (String className : _JSP_COMPILER_DEPENDENCIES) {
-			File file = new File(className);
-
-			if (file.exists() && file.canRead()) {
-				if (_classPath.contains(file)) {
-					_classPath.remove(file);
-				}
-
-				_classPath.add(0, file);
-
-				continue;
-			}
-
 			try {
 				Class<?> clazz = Class.forName(
 					className, true, frameworkClassLoader);
@@ -266,9 +259,7 @@ public class JspCompiler extends Jsr199JavaCompiler {
 			File file = new File(toURI(url));
 
 			if (file.exists() && file.canRead()) {
-				if (_classPath.contains(file)) {
-					_classPath.remove(file);
-				}
+				_classPath.remove(file);
 
 				_classPath.add(0, file);
 			}
@@ -279,7 +270,8 @@ public class JspCompiler extends Jsr199JavaCompiler {
 	}
 
 	protected void collectTLDMappings(
-			Map<String, String[]> tldMappings, Bundle bundle)
+			Map<String, String[]> tldMappings, Map<String, URL> tagFileJarUrls,
+			Bundle bundle)
 		throws IOException {
 
 		BundleWiring bundleWiring = bundle.adapt(BundleWiring.class);
@@ -298,7 +290,18 @@ public class JspCompiler extends Jsr199JavaCompiler {
 			String uri = TldURIUtil.getTldURI(url);
 
 			if (uri != null) {
-				tldMappings.put(uri, new String[] {"/" + resourcePath, null});
+				String absoluteResourcePath = StringPool.SLASH.concat(
+					resourcePath);
+
+				tldMappings.put(uri, new String[] {absoluteResourcePath, null});
+
+				String urlString = url.toExternalForm();
+
+				tagFileJarUrls.put(
+					absoluteResourcePath,
+					new URL(
+						urlString.substring(
+							0, urlString.length() - resourcePath.length())));
 			}
 		}
 	}
@@ -348,7 +351,9 @@ public class JspCompiler extends Jsr199JavaCompiler {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void initTLDMappings(ServletContext servletContext) {
+	protected void initTLDMappings(
+		ServletContext servletContext, Map<String, URL> tagFileJarUrls) {
+
 		Map<String, String[]> tldMappings =
 			(Map<String, String[]>)servletContext.getAttribute(
 				Constants.JSP_TLD_URI_TO_LOCATION_MAP);
@@ -361,7 +366,7 @@ public class JspCompiler extends Jsr199JavaCompiler {
 
 		try {
 			for (Bundle bundle : _allParticipatingBundles) {
-				collectTLDMappings(tldMappings, bundle);
+				collectTLDMappings(tldMappings, tagFileJarUrls, bundle);
 			}
 		}
 		catch (Exception e) {
@@ -416,7 +421,14 @@ public class JspCompiler extends Jsr199JavaCompiler {
 	}
 
 	private static Set<String> _collectPackageNames(BundleWiring bundleWiring) {
-		Set<String> packageNames = new HashSet<>();
+		Set<String> packageNames = _bundleWiringPackageNamesCache.get(
+			bundleWiring);
+
+		if (packageNames != null) {
+			return packageNames;
+		}
+
+		packageNames = new HashSet<>();
 
 		for (BundleCapability bundleCapability :
 				bundleWiring.getCapabilities(
@@ -432,6 +444,8 @@ public class JspCompiler extends Jsr199JavaCompiler {
 			}
 		}
 
+		_bundleWiringPackageNamesCache.put(bundleWiring, packageNames);
+
 		return packageNames;
 	}
 
@@ -441,9 +455,16 @@ public class JspCompiler extends Jsr199JavaCompiler {
 		"javax.servlet.ServletException"
 	};
 
+	private static final Map<BundleWiring, Set<String>>
+		_bundleWiringPackageNamesCache = new ConcurrentReferenceKeyHashMap<>(
+			new ConcurrentReferenceValueHashMap<BundleWiring, Set<String>>(
+				FinalizeManager.SOFT_REFERENCE_FACTORY),
+			FinalizeManager.WEAK_REFERENCE_FACTORY);
 	private static final BundleWiring _jspBundleWiring;
 	private static final Map<BundleWiring, Set<String>>
-		_jspBundleWiringPackageNames = new LinkedHashMap<>();
+		_jspBundleWiringPackageNames = new HashMap<>();
+	private static final ServiceTracker
+		<Map<String, List<URL>>, Map<String, List<URL>>> _serviceTracker;
 	private static final Set<String> _systemPackageNames;
 
 	static {
@@ -451,30 +472,54 @@ public class JspCompiler extends Jsr199JavaCompiler {
 
 		_jspBundleWiring = jspBundle.adapt(BundleWiring.class);
 
+		Set<String> systemPackageNames = null;
+
 		for (BundleWire bundleWire : _jspBundleWiring.getRequiredWires(null)) {
 			BundleWiring providedBundleWiring = bundleWire.getProviderWiring();
 
+			Set<String> packageNames = _collectPackageNames(
+				providedBundleWiring);
+
+			Bundle bundle = providedBundleWiring.getBundle();
+
+			if (bundle.getBundleId() == 0) {
+				systemPackageNames = packageNames;
+			}
+
 			_jspBundleWiringPackageNames.put(
-				providedBundleWiring,
-				_collectPackageNames(providedBundleWiring));
+				providedBundleWiring, packageNames);
 		}
 
 		BundleContext bundleContext = jspBundle.getBundleContext();
 
-		Bundle systemBundle = bundleContext.getBundle(0);
+		if (systemPackageNames == null) {
+			Bundle systemBundle = bundleContext.getBundle(0);
 
-		if (systemBundle == null) {
-			throw new ExceptionInInitializerError(
-				"Unable to access to system bundle");
+			if (systemBundle == null) {
+				throw new ExceptionInInitializerError(
+					"Unable to access to system bundle");
+			}
+
+			systemPackageNames = _collectPackageNames(
+				systemBundle.adapt(BundleWiring.class));
 		}
 
-		_systemPackageNames = _collectPackageNames(
-			systemBundle.adapt(BundleWiring.class));
+		_systemPackageNames = systemPackageNames;
+
+		try {
+			_serviceTracker = ServiceTrackerFactory.open(
+				bundleContext,
+				"(&(jsp.compiler.resource.map=*)(objectClass=" +
+					Map.class.getName() + "))");
+		}
+		catch (InvalidSyntaxException ise) {
+			throw new ExceptionInInitializerError(ise);
+		}
 	}
 
 	private Bundle[] _allParticipatingBundles;
 	private final Map<BundleWiring, Set<String>> _bundleWiringPackageNames =
-		new LinkedHashMap<>();
+		new HashMap<>(_jspBundleWiringPackageNames);
 	private ClassLoader _classLoader;
 	private final List<File> _classPath = new ArrayList<>();
 	private JavaFileObjectResolver _javaFileObjectResolver;
