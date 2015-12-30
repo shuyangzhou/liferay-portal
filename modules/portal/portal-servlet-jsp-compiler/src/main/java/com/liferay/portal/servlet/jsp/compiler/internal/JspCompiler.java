@@ -14,6 +14,7 @@
 
 package com.liferay.portal.servlet.jsp.compiler.internal;
 
+import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.portal.kernel.concurrent.ConcurrentReferenceKeyHashMap;
 import com.liferay.portal.kernel.concurrent.ConcurrentReferenceValueHashMap;
 import com.liferay.portal.kernel.memory.FinalizeManager;
@@ -65,10 +66,12 @@ import org.apache.jasper.compiler.Node.Nodes;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.wiring.BundleCapability;
 import org.osgi.framework.wiring.BundleRevision;
 import org.osgi.framework.wiring.BundleWire;
 import org.osgi.framework.wiring.BundleWiring;
+import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * @author Raymond Augé
@@ -210,7 +213,8 @@ public class JspCompiler extends Jsr199JavaCompiler {
 		}
 
 		_javaFileObjectResolver = new JspJavaFileObjectResolver(
-			bundleWiring, _jspBundleWiring, _bundleWiringPackageNames, _logger);
+			bundleWiring, _jspBundleWiring, _bundleWiringPackageNames, _logger,
+			_serviceTracker);
 
 		jspCompilationContext.setClassLoader(jspBundleClassloader);
 
@@ -444,6 +448,8 @@ public class JspCompiler extends Jsr199JavaCompiler {
 	private static final BundleWiring _jspBundleWiring;
 	private static final Map<BundleWiring, Set<String>>
 		_jspBundleWiringPackageNames = new HashMap<>();
+	private static final ServiceTracker
+		<Map<String, List<URL>>, Map<String, List<URL>>> _serviceTracker;
 	private static final Set<String> _systemPackageNames;
 
 	static {
@@ -469,9 +475,9 @@ public class JspCompiler extends Jsr199JavaCompiler {
 				providedBundleWiring, packageNames);
 		}
 
-		if (systemPackageNames == null) {
-			BundleContext bundleContext = jspBundle.getBundleContext();
+		BundleContext bundleContext = jspBundle.getBundleContext();
 
+		if (systemPackageNames == null) {
 			Bundle systemBundle = bundleContext.getBundle(0);
 
 			if (systemBundle == null) {
@@ -484,6 +490,16 @@ public class JspCompiler extends Jsr199JavaCompiler {
 		}
 
 		_systemPackageNames = systemPackageNames;
+
+		try {
+			_serviceTracker = ServiceTrackerFactory.open(
+				bundleContext,
+				"(&(jsp.compiler.resource.map=*)(objectClass=" +
+					Map.class.getName() + "))");
+		}
+		catch (InvalidSyntaxException ise) {
+			throw new ExceptionInInitializerError(ise);
+		}
 	}
 
 	private Bundle[] _allParticipatingBundles;
