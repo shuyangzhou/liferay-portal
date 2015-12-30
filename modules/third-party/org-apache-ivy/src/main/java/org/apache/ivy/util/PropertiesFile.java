@@ -1,4 +1,3 @@
-/* @generated */
 /*
  *  Licensed to the Apache Software Foundation (ASF) under one or more
  *  contributor license agreements.  See the NOTICE file distributed with
@@ -45,8 +44,7 @@ public class PropertiesFile extends Properties {
                 fis = new FileInputStream(file);
                 load(fis);
             } catch (Exception ex) {
-                Message.warn("exception occurred while reading properties file " + file + ": "
-                        + ex.getMessage());
+                Message.warn("exception occurred while reading properties file " + file, ex);
             }
             try {
                 if (fis != null) {
@@ -87,8 +85,7 @@ public class PropertiesFile extends Properties {
 			}
 			bw.flush();
         } catch (Exception ex) {
-            Message.warn("exception occurred while writing properties file " + file + ": "
-                    + ex.getMessage());
+            Message.warn("exception occurred while writing properties file " + file, ex);
         }
         try {
             if (fos != null) {
@@ -150,3 +147,4 @@ public class PropertiesFile extends Properties {
     }
 
 }
+/* @generated */
