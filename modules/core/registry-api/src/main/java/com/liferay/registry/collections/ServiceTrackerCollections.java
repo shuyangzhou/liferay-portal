@@ -95,25 +95,20 @@ public class ServiceTrackerCollections {
 	public static <S> ServiceTrackerList<S> list(
 		Class<S> clazz, String filterString) {
 
-		return new ServiceTrackerCollectionImpl<S>(
-			clazz, _getFilter(filterString), null,
-			java.util.Collections.<String, Object>emptyMap());
+		return list(clazz, _getFilter(filterString));
 	}
 
 	public static <S> ServiceTrackerList<S> list(
 		Class<S> clazz, String filterString, Map<String, Object> properties) {
 
-		return new ServiceTrackerCollectionImpl<>(
-			clazz, _getFilter(filterString), null, properties);
+		return list(clazz, _getFilter(filterString), properties);
 	}
 
 	public static <S> ServiceTrackerList<S> list(
 		Class<S> clazz, String filterString,
 		ServiceTrackerCustomizer<S, S> serviceTrackerCustomizer) {
 
-		return new ServiceTrackerCollectionImpl<S>(
-			clazz, _getFilter(filterString), serviceTrackerCustomizer,
-			Collections.<String, Object>emptyMap());
+		return list(clazz, _getFilter(filterString), serviceTrackerCustomizer);
 	}
 
 	public static <S> ServiceTrackerList<S> list(
@@ -121,7 +116,7 @@ public class ServiceTrackerCollections {
 		ServiceTrackerCustomizer<S, S> serviceTrackerCustomizer,
 		Map<String, Object> properties) {
 
-		return new ServiceTrackerCollectionImpl<S>(
+		return list(
 			clazz, _getFilter(filterString), serviceTrackerCustomizer,
 			properties);
 	}
