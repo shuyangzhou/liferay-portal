@@ -33,7 +33,7 @@ public class ServiceTrackerCollections {
 
 	public static <S> ServiceTrackerList<S> list(Class<S> clazz) {
 		return new ServiceTrackerCollectionImpl<>(
-			clazz, (Filter)null, null, Collections.<String, Object>emptyMap());
+			clazz, null, null, Collections.<String, Object>emptyMap());
 	}
 
 	public static <S> ServiceTrackerList<S> list(
@@ -72,7 +72,7 @@ public class ServiceTrackerCollections {
 		Class<S> clazz, Map<String, Object> properties) {
 
 		return new ServiceTrackerCollectionImpl<>(
-			clazz, (Filter)null, null, properties);
+			clazz, null, null, properties);
 	}
 
 	public static <S> ServiceTrackerList<S> list(
@@ -80,7 +80,7 @@ public class ServiceTrackerCollections {
 		ServiceTrackerCustomizer<S, S> serviceTrackerCustomizer) {
 
 		return new ServiceTrackerCollectionImpl<S>(
-			clazz, (Filter)null, serviceTrackerCustomizer,
+			clazz, null, serviceTrackerCustomizer,
 			Collections.<String, Object>emptyMap());
 	}
 
@@ -89,7 +89,7 @@ public class ServiceTrackerCollections {
 		Map<String, Object> properties) {
 
 		return new ServiceTrackerCollectionImpl<>(
-			clazz, (Filter)null, serviceTrackerCustomizer, properties);
+			clazz, null, serviceTrackerCustomizer, properties);
 	}
 
 	public static <S> ServiceTrackerList<S> list(
