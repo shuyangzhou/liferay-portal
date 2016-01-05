@@ -1,2 +1,8 @@
 apply plugin: "com.liferay.defaults.plugin"
 apply plugin: "com.liferay.plugin"
+
+if ((liferay.appServerType == "tomcat") && (project.properties["jsp.precompile"] == "on")) {
+	compileJSP {
+		destinationDir = new File(liferay.appServerDir, "work/Catalina/localhost/_/" + bundle.instructions["Bundle-SymbolicName"] + "-" + project.version)
+	}
+}
