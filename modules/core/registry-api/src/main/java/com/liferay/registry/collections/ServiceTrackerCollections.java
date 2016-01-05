@@ -54,7 +54,7 @@ public class ServiceTrackerCollections {
 		Class<S> clazz, Filter filter,
 		ServiceTrackerCustomizer<S, S> serviceTrackerCustomizer) {
 
-		return new ServiceTrackerCollectionImpl<S>(
+		return new ServiceTrackerCollectionImpl<>(
 			clazz, filter, serviceTrackerCustomizer,
 			Collections.<String, Object>emptyMap());
 	}
@@ -79,7 +79,7 @@ public class ServiceTrackerCollections {
 		Class<S> clazz,
 		ServiceTrackerCustomizer<S, S> serviceTrackerCustomizer) {
 
-		return new ServiceTrackerCollectionImpl<S>(
+		return new ServiceTrackerCollectionImpl<>(
 			clazz, null, serviceTrackerCustomizer,
 			Collections.<String, Object>emptyMap());
 	}
