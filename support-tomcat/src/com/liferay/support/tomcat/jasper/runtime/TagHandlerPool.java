@@ -48,6 +48,9 @@ public class TagHandlerPool extends org.apache.jasper.runtime.TagHandlerPool {
 				throw new JspException(e);
 			}
 		}
+		else {
+			_counter.getAndDecrement();
+		}
 
 		return tag;
 	}
