@@ -72,6 +72,7 @@ import com.liferay.portlet.social.model.impl.SocialRequestInterpreterImpl;
 import com.liferay.registry.collections.ServiceTrackerCollections;
 import com.liferay.registry.collections.ServiceTrackerList;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -279,9 +280,9 @@ public class PortletBagFactory {
 	protected <S> ServiceTrackerList<S> getServiceTrackerList(
 		Class<S> clazz, Portlet portlet) {
 
-		Map<String, Object> properties = new HashMap<>();
-
-		properties.put("javax.portlet.name", portlet.getPortletId());
+		Map<String, Object> properties =
+			Collections.<String, Object>singletonMap(
+				"javax.portlet.name", portlet.getPortletId());
 
 		return ServiceTrackerCollections.openList(
 			clazz,
