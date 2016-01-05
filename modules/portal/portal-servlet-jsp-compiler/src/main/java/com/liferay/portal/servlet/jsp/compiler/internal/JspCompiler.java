@@ -14,6 +14,7 @@
 
 package com.liferay.portal.servlet.jsp.compiler.internal;
 
+import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.portal.kernel.concurrent.ConcurrentReferenceKeyHashMap;
 import com.liferay.portal.kernel.concurrent.ConcurrentReferenceValueHashMap;
 import com.liferay.portal.kernel.memory.FinalizeManager;
@@ -65,10 +66,12 @@ import org.apache.jasper.compiler.Node.Nodes;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.wiring.BundleCapability;
 import org.osgi.framework.wiring.BundleRevision;
 import org.osgi.framework.wiring.BundleWire;
 import org.osgi.framework.wiring.BundleWiring;
+import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * @author Raymond Augé
@@ -129,20 +132,23 @@ public class JspCompiler extends Jsr199JavaCompiler {
 			throw new JasperException(ioe);
 		}
 
-		List<JavacErrorDetail> javacErrorDetails = new ArrayList<>();
+		List<Diagnostic<? extends JavaFileObject>> diagnostics =
+			diagnosticCollector.getDiagnostics();
 
-		for (Diagnostic<? extends JavaFileObject> diagnostic :
-				diagnosticCollector.getDiagnostics()) {
+		JavacErrorDetail[] javacErrorDetails = new JavacErrorDetail[
+			diagnostics.size()];
 
-			javacErrorDetails.add(
-				ErrorDispatcher.createJavacError(
-					javaFileName, pageNodes,
-					new StringBuilder(diagnostic.getMessage(null)),
-					(int)diagnostic.getLineNumber()));
+		for (int i = 0; i < diagnostics.size(); i++) {
+			Diagnostic<? extends JavaFileObject> diagnostic = diagnostics.get(
+				i);
+
+			javacErrorDetails[i] = ErrorDispatcher.createJavacError(
+				javaFileName, pageNodes,
+				new StringBuilder(diagnostic.getMessage(null)),
+				(int)diagnostic.getLineNumber());
 		}
 
-		return javacErrorDetails.toArray(
-			new JavacErrorDetail[javacErrorDetails.size()]);
+		return javacErrorDetails;
 	}
 
 	@Override
@@ -210,12 +216,14 @@ public class JspCompiler extends Jsr199JavaCompiler {
 		}
 
 		_javaFileObjectResolver = new JspJavaFileObjectResolver(
-			bundleWiring, _jspBundleWiring, _bundleWiringPackageNames, _logger);
+			bundleWiring, _jspBundleWiring, _bundleWiringPackageNames, _logger,
+			_serviceTracker);
 
 		jspCompilationContext.setClassLoader(jspBundleClassloader);
 
 		initClassPath(servletContext);
-		initTLDMappings(servletContext);
+		initTLDMappings(
+			servletContext, jspCompilationContext.getTagFileJarUrls());
 
 		super.init(jspCompilationContext, errorDispatcher, suppressLogging);
 	}
@@ -224,18 +232,6 @@ public class JspCompiler extends Jsr199JavaCompiler {
 		ClassLoader frameworkClassLoader = Bundle.class.getClassLoader();
 
 		for (String className : _JSP_COMPILER_DEPENDENCIES) {
-			File file = new File(className);
-
-			if (file.exists() && file.canRead()) {
-				if (_classPath.contains(file)) {
-					_classPath.remove(file);
-				}
-
-				_classPath.add(0, file);
-
-				continue;
-			}
-
 			try {
 				Class<?> clazz = Class.forName(
 					className, true, frameworkClassLoader);
@@ -266,9 +262,7 @@ public class JspCompiler extends Jsr199JavaCompiler {
 			File file = new File(toURI(url));
 
 			if (file.exists() && file.canRead()) {
-				if (_classPath.contains(file)) {
-					_classPath.remove(file);
-				}
+				_classPath.remove(file);
 
 				_classPath.add(0, file);
 			}
@@ -279,7 +273,8 @@ public class JspCompiler extends Jsr199JavaCompiler {
 	}
 
 	protected void collectTLDMappings(
-			Map<String, String[]> tldMappings, Bundle bundle)
+			Map<String, String[]> tldMappings, Map<String, URL> tagFileJarUrls,
+			Bundle bundle)
 		throws IOException {
 
 		BundleWiring bundleWiring = bundle.adapt(BundleWiring.class);
@@ -298,7 +293,18 @@ public class JspCompiler extends Jsr199JavaCompiler {
 			String uri = TldURIUtil.getTldURI(url);
 
 			if (uri != null) {
-				tldMappings.put(uri, new String[] {"/" + resourcePath, null});
+				String absoluteResourcePath = StringPool.SLASH.concat(
+					resourcePath);
+
+				tldMappings.put(uri, new String[] {absoluteResourcePath, null});
+
+				String urlString = url.toExternalForm();
+
+				tagFileJarUrls.put(
+					absoluteResourcePath,
+					new URL(
+						urlString.substring(
+							0, urlString.length() - resourcePath.length())));
 			}
 		}
 	}
@@ -348,7 +354,9 @@ public class JspCompiler extends Jsr199JavaCompiler {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void initTLDMappings(ServletContext servletContext) {
+	protected void initTLDMappings(
+		ServletContext servletContext, Map<String, URL> tagFileJarUrls) {
+
 		Map<String, String[]> tldMappings =
 			(Map<String, String[]>)servletContext.getAttribute(
 				Constants.JSP_TLD_URI_TO_LOCATION_MAP);
@@ -361,7 +369,7 @@ public class JspCompiler extends Jsr199JavaCompiler {
 
 		try {
 			for (Bundle bundle : _allParticipatingBundles) {
-				collectTLDMappings(tldMappings, bundle);
+				collectTLDMappings(tldMappings, tagFileJarUrls, bundle);
 			}
 		}
 		catch (Exception e) {
@@ -458,6 +466,8 @@ public class JspCompiler extends Jsr199JavaCompiler {
 	private static final BundleWiring _jspBundleWiring;
 	private static final Map<BundleWiring, Set<String>>
 		_jspBundleWiringPackageNames = new HashMap<>();
+	private static final ServiceTracker
+		<Map<String, List<URL>>, Map<String, List<URL>>> _serviceTracker;
 	private static final Set<String> _systemPackageNames;
 
 	static {
@@ -483,9 +493,9 @@ public class JspCompiler extends Jsr199JavaCompiler {
 				providedBundleWiring, packageNames);
 		}
 
-		if (systemPackageNames == null) {
-			BundleContext bundleContext = jspBundle.getBundleContext();
+		BundleContext bundleContext = jspBundle.getBundleContext();
 
+		if (systemPackageNames == null) {
 			Bundle systemBundle = bundleContext.getBundle(0);
 
 			if (systemBundle == null) {
@@ -498,6 +508,16 @@ public class JspCompiler extends Jsr199JavaCompiler {
 		}
 
 		_systemPackageNames = systemPackageNames;
+
+		try {
+			_serviceTracker = ServiceTrackerFactory.open(
+				bundleContext,
+				"(&(jsp.compiler.resource.map=*)(objectClass=" +
+					Map.class.getName() + "))");
+		}
+		catch (InvalidSyntaxException ise) {
+			throw new ExceptionInInitializerError(ise);
+		}
 	}
 
 	private Bundle[] _allParticipatingBundles;
