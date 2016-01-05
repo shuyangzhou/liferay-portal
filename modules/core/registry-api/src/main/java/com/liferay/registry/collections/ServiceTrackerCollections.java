@@ -21,8 +21,8 @@ import com.liferay.registry.ServiceReference;
 import com.liferay.registry.ServiceTrackerCustomizer;
 import com.liferay.registry.collections.internal.ServiceTrackerCollectionImpl;
 
+import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,14 +33,14 @@ public class ServiceTrackerCollections {
 
 	public static <S> ServiceTrackerList<S> list(Class<S> clazz) {
 		return new ServiceTrackerCollectionImpl<>(
-			clazz, (Filter)null, null, new HashMap<String, Object>());
+			clazz, (Filter)null, null, Collections.<String, Object>emptyMap());
 	}
 
 	public static <S> ServiceTrackerList<S> list(
 		Class<S> clazz, Filter filter) {
 
 		return new ServiceTrackerCollectionImpl<>(
-			clazz, filter, null, new HashMap<String, Object>());
+			clazz, filter, null, Collections.<String, Object>emptyMap());
 	}
 
 	public static <S> ServiceTrackerList<S> list(
@@ -56,7 +56,7 @@ public class ServiceTrackerCollections {
 
 		return new ServiceTrackerCollectionImpl<S>(
 			clazz, filter, serviceTrackerCustomizer,
-			new HashMap<String, Object>());
+			Collections.<String, Object>emptyMap());
 	}
 
 	public static <S> ServiceTrackerList<S> list(
@@ -81,7 +81,7 @@ public class ServiceTrackerCollections {
 
 		return new ServiceTrackerCollectionImpl<S>(
 			clazz, (Filter)null, serviceTrackerCustomizer,
-			new HashMap<String, Object>());
+			Collections.<String, Object>emptyMap());
 	}
 
 	public static <S> ServiceTrackerList<S> list(
@@ -97,7 +97,7 @@ public class ServiceTrackerCollections {
 
 		return new ServiceTrackerCollectionImpl<S>(
 			clazz, _getFilter(filterString), null,
-			new HashMap<String, Object>());
+			java.util.Collections.<String, Object>emptyMap());
 	}
 
 	public static <S> ServiceTrackerList<S> list(
@@ -113,7 +113,7 @@ public class ServiceTrackerCollections {
 
 		return new ServiceTrackerCollectionImpl<S>(
 			clazz, _getFilter(filterString), serviceTrackerCustomizer,
-			new HashMap<String, Object>());
+			Collections.<String, Object>emptyMap());
 	}
 
 	public static <S> ServiceTrackerList<S> list(
