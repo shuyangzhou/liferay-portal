@@ -69,6 +69,9 @@ import com.liferay.portlet.social.model.SocialActivityInterpreter;
 import com.liferay.portlet.social.model.SocialRequestInterpreter;
 import com.liferay.portlet.social.model.impl.SocialActivityInterpreterImpl;
 import com.liferay.portlet.social.model.impl.SocialRequestInterpreterImpl;
+import com.liferay.registry.Filter;
+import com.liferay.registry.Registry;
+import com.liferay.registry.RegistryUtil;
 import com.liferay.registry.collections.ServiceTrackerCollections;
 import com.liferay.registry.collections.ServiceTrackerList;
 
@@ -284,11 +287,14 @@ public class PortletBagFactory {
 			Collections.<String, Object>singletonMap(
 				"javax.portlet.name", portlet.getPortletId());
 
-		return ServiceTrackerCollections.openList(
-			clazz,
+		Registry registry = RegistryUtil.getRegistry();
+
+		Filter filter = registry.getFilter(
 			"(|(javax.portlet.name=" + portlet.getPortletId() +
-				")(javax.portlet.name=ALL))",
-			properties);
+				")(javax.portlet.name=ALL))");
+
+		return ServiceTrackerCollections.openList(
+			clazz, filter, properties);
 	}
 
 	protected List<AssetRendererFactory<?>> newAssetRendererFactoryInstances(
