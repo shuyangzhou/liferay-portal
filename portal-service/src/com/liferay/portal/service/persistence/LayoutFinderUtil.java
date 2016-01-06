@@ -35,6 +35,11 @@ public class LayoutFinderUtil {
 	}
 
 	public static java.util.List<com.liferay.portal.model.Layout> findByScopeGroup(
+		long groupId) {
+		return getFinder().findByScopeGroup(groupId);
+	}
+
+	public static java.util.List<com.liferay.portal.model.Layout> findByScopeGroup(
 		long groupId, boolean privateLayout) {
 		return getFinder().findByScopeGroup(groupId, privateLayout);
 	}

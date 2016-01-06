@@ -1201,6 +1201,12 @@ public class LayoutLocalServiceWrapper implements LayoutLocalService,
 		return _layoutLocalService.getPersistedModel(primaryKeyObj);
 	}
 
+	@Override
+	public java.util.List<com.liferay.portal.model.Layout> getScopeGroupLayouts(
+		long groupId) {
+		return _layoutLocalService.getScopeGroupLayouts(groupId);
+	}
+
 	/**
 	* Returns all the layouts within scope of the group
 	*
