@@ -1154,6 +1154,11 @@ public class LayoutLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
+	public static java.util.List<com.liferay.portal.model.Layout> getScopeGroupLayouts(
+		long groupId) {
+		return getService().getScopeGroupLayouts(groupId);
+	}
+
 	/**
 	* Returns all the layouts within scope of the group
 	*
