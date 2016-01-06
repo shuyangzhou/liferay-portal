@@ -1498,6 +1498,11 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 		return parentLayout;
 	}
 
+	@Override
+	public List<Layout> getScopeGroupLayouts(long groupId) {
+		return layoutFinder.findByScopeGroup(groupId);
+	}
+
 	/**
 	 * Returns all the layouts within scope of the group
 	 *
