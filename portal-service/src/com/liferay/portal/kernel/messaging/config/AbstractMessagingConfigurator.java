@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.messaging.DestinationConfiguration;
 import com.liferay.portal.kernel.messaging.DestinationEventListener;
 import com.liferay.portal.kernel.messaging.DestinationFactory;
 import com.liferay.portal.kernel.messaging.DestinationFactoryUtil;
+import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.messaging.MessageBusEventListener;
 import com.liferay.portal.kernel.messaging.MessageListener;
@@ -36,6 +37,8 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.registry.Filter;
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
+import com.liferay.registry.ServiceFinalizer;
+import com.liferay.registry.ServiceReference;
 import com.liferay.registry.ServiceRegistrar;
 import com.liferay.registry.dependency.ServiceDependencyListener;
 import com.liferay.registry.dependency.ServiceDependencyManager;
@@ -136,7 +139,25 @@ public abstract class AbstractMessagingConfigurator
 		}
 
 		if (_destinationServiceRegistrar != null) {
-			_destinationServiceRegistrar.destroy();
+			_destinationServiceRegistrar.destroy(
+				new ServiceFinalizer<Destination>() {
+
+					@Override
+					public void finalize(
+						ServiceReference<Destination> serviceReference,
+						Destination destination) {
+
+						if (destination.getName().equals(
+								DestinationNames.SCHEDULER_DISPATCH)) {
+
+							_messageBus.removeDestination(
+								DestinationNames.SCHEDULER_ENGINE);
+						}
+
+						_messageBus.removeDestination(destination.getName());
+					}
+
+				});
 		}
 
 		if (_messageBusEventListenerServiceRegistrar != null) {
