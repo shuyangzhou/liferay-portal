@@ -56,9 +56,7 @@ PanelCategory panelCategory = (PanelCategory)request.getAttribute(ApplicationLis
 							<liferay-ui:icon-menu direction="down" icon="cog" markupView="lexicon" message="" showArrow="<%= false %>">
 
 								<%
-								Map<String, Object> data = new HashMap<String, Object>();
-
-								data.put("navigation", Boolean.TRUE.toString());
+								Map<String, Object> data = Collections.<String, Object>singletonMap("navigation", Boolean.TRUE.toString());
 
 								PortletURL portletURL = PortalUtil.getControlPanelPortletURL(request, curSite, themeDisplay.getPpid(), 0, 0, PortletRequest.RENDER_PHASE);
 								%>
