@@ -20,8 +20,8 @@ import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.module.configuration.ConfigurationFactory;
 import com.liferay.portal.kernel.openid.OpenId;
 import com.liferay.portal.kernel.settings.CompanyServiceSettingsLocator;
+import com.liferay.portal.security.sso.openid.configuration.OpenIdConfiguration;
 import com.liferay.portal.security.sso.openid.constants.OpenIdConstants;
-import com.liferay.portal.security.sso.openid.module.configuration.OpenIdConfiguration;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -38,7 +38,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Michael C. Han
  */
 @Component(
-	configurationPid = "com.liferay.portal.security.sso.openid.module.configuration.OpenIdConfiguration",
+	configurationPid = "com.liferay.portal.security.sso.openid.configuration.OpenIdConfiguration",
 	immediate = true, service = OpenId.class
 )
 public class OpenIdImpl implements OpenId {

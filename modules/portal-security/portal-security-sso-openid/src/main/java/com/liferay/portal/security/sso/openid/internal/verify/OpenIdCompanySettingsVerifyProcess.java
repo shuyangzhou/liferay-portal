@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.util.PrefsProps;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.security.sso.openid.constants.LegacyOpenIdPropsKeys;
+import com.liferay.portal.security.sso.openid.constants.OpenIdConfigurationKeys;
 import com.liferay.portal.security.sso.openid.constants.OpenIdConstants;
 import com.liferay.portal.service.CompanyLocalService;
 import com.liferay.portal.verify.BaseCompanySettingsVerifyProcess;
@@ -57,7 +58,7 @@ public class OpenIdCompanySettingsVerifyProcess
 		Dictionary<String, String> dictionary = new HashMapDictionary<>();
 
 		dictionary.put(
-			OpenIdConstants.AUTH_ENABLED,
+			OpenIdConfigurationKeys.AUTH_ENABLED,
 			_prefsProps.getString(
 				companyId, LegacyOpenIdPropsKeys.OPENID_AUTH_ENABLED,
 				StringPool.FALSE));

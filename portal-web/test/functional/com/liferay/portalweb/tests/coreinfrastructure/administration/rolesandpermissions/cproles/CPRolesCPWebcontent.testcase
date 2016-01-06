@@ -82,9 +82,12 @@
 			<var name="userLoginFullName" value="userfn userln" />
 		</execute>
 
-		<execute macro="Page#gotoContentCP">
+		<execute macro="Navigator#openSiteURL">
 			<var name="siteName" value="Site Name" />
-			<var name="siteURL" value="true" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesContent">
+			<var name="portlet" value="Web Content" />
 		</execute>
 
 		<execute macro="WebContentFolder#addCP">
@@ -161,9 +164,12 @@
 			<var name="userLoginFullName" value="userfn userln" />
 		</execute>
 
-		<execute macro="Page#gotoContentCP">
+		<execute macro="Navigator#openSiteURL">
 			<var name="siteName" value="Site Name" />
-			<var name="siteURL" value="true" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesContent">
+			<var name="portlet" value="Web Content" />
 		</execute>
 
 		<execute macro="WebContentNavigator#gotoManageStructures" />
@@ -252,9 +258,12 @@
 			<var name="userLoginFullName" value="userfn userln" />
 		</execute>
 
-		<execute macro="Page#gotoContentCP">
+		<execute macro="Navigator#openSiteURL">
 			<var name="siteName" value="Site Name" />
-			<var name="siteURL" value="true" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesContent">
+			<var name="portlet" value="Web Content" />
 		</execute>
 
 		<execute macro="WebContentTemplates#addCP">
@@ -333,9 +342,12 @@
 			<var name="userLoginFullName" value="userfn userln" />
 		</execute>
 
-		<execute macro="Page#gotoContentCP">
+		<execute macro="Navigator#openSiteURL">
 			<var name="siteName" value="Site Name" />
-			<var name="siteURL" value="true" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesContent">
+			<var name="portlet" value="Web Content" />
 		</execute>
 
 		<execute macro="WebContentNavigator#gotoAddCP" />
@@ -464,9 +476,12 @@
 			<var name="userLoginFullName" value="userfn userln" />
 		</execute>
 
-		<execute macro="Page#gotoContentCP">
+		<execute macro="Navigator#openSiteURL">
 			<var name="siteName" value="Site Name" />
-			<var name="siteURL" value="true" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesContent">
+			<var name="portlet" value="Web Content" />
 		</execute>
 
 		<execute macro="WebContent#viewNoPermissionCP" />

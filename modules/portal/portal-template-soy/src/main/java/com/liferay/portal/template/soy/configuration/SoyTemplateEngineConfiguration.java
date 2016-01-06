@@ -12,35 +12,28 @@
  * details.
  */
 
-package com.liferay.portal.security.sso.openid.module.configuration;
+package com.liferay.portal.template.soy.configuration;
 
 import aQute.bnd.annotation.metatype.Meta;
 
 import com.liferay.configuration.admin.ConfigurationAdmin;
 
 /**
- * Defines the configuration property keys and sensible default values.
- *
- * <p>
- * This class also defines the identity of the configuration schema which, among
- * other things, defines the filename (minus the <code>.cfg</code> extension)
- * for setting values via a file.
- * </p>
- *
- * @author Michael C. Han
+ * @author Marcellus Tavares
  */
 @ConfigurationAdmin(category = "platform")
 @Meta.OCD(
-	id = "com.liferay.portal.security.sso.openid.module.configuration.OpenIdConfiguration",
-	localization = "content/Language", name = "%open.id.configuration.name"
+	id = "com.liferay.portal.template.soy.configuration.SoyTemplateEngineConfiguration"
 )
-public interface OpenIdConfiguration {
+public interface SoyTemplateEngineConfiguration {
+
+	@Meta.AD(deflt = "60", required = false)
+	public int resourceModificationCheck();
 
 	@Meta.AD(
-		deflt = "false",
-		description = "Set this to true to enable OpenId authentication.",
+		deflt = "com.liferay.portal.template.soy.SoyTemplateBundleResourceParser|com.liferay.portal.template.ClassLoaderResourceParser",
 		required = false
 	)
-	public boolean enabled();
+	public String[] templateParsers();
 
 }

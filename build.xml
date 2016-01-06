@@ -121,6 +121,7 @@
 			</delete>
 
 			<delete dir="${liferay.home}/osgi" failonerror="false" />
+			<delete dir="${liferay.home}/work" failonerror="false" />
 
 			<delete dir="test-coverage" />
 			<delete dir="test-results" />
@@ -339,6 +340,13 @@
 			<arg value="-Dportal.build=true" />
 			<env key="WAS_HOME" value="${app.server.websphere.dir}" />
 		</gradle-execute>
+
+		<if>
+			<equals arg1="${jsp.precompile}" arg2="on" />
+			<then>
+				<gradle-execute dir="${project.dir}/modules" task="compileJSP" />
+			</then>
+		</if>
 
 		<stopwatch action="elapsed" name="modules.stopwatch" />
 
