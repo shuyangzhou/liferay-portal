@@ -15,31 +15,11 @@
 package com.liferay.portal.security.sso.cas.constants;
 
 /**
- * @author Mika Koivisto
+ * @author Michael C. Han
  */
 public class CASConstants {
 
-	public static final String AUTH_ENABLED = "enabled";
-
-	public static final String IMPORT_FROM_LDAP = "importFromLDAP";
-
-	public static final String LOGIN_URL = "loginURL";
-
-	public static final String LOGOUT_ON_SESSION_EXPIRATION =
-		"logoutOnSessionExpiration";
-
-	public static final String LOGOUT_URL = "logoutURL";
-
-	public static final String NO_SUCH_USER_REDIRECT_URL =
-		"noSuchUserRedirectURL";
-
-	public static final String SERVER_NAME = "serverName";
-
-	public static final String SERVER_URL = "serverURL";
-
 	public static final String SERVICE_NAME =
 		"com.liferay.portal.security.sso.cas";
-
-	public static final String SERVICE_URL = "serviceURL";
 
 }

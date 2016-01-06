@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.util.PrefsProps;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.security.sso.token.constants.LegacyTokenPropsKeys;
+import com.liferay.portal.security.sso.token.constants.TokenConfigurationKeys;
 import com.liferay.portal.security.sso.token.constants.TokenConstants;
 import com.liferay.portal.service.CompanyLocalService;
 import com.liferay.portal.verify.BaseCompanySettingsVerifyProcess;
@@ -66,22 +67,22 @@ public class ShibbolethCompanySettingsVerifyProcess
 		}
 
 		dictionary.put(
-			TokenConstants.AUTH_ENABLED,
+			TokenConfigurationKeys.AUTH_ENABLED,
 				_prefsProps.getString(
 					companyId, LegacyTokenPropsKeys.SHIBBOLETH_AUTH_ENABLED,
 					StringPool.FALSE));
 		dictionary.put(
-			TokenConstants.IMPORT_FROM_LDAP,
+			TokenConfigurationKeys.IMPORT_FROM_LDAP,
 				_prefsProps.getString(
 					companyId, LegacyTokenPropsKeys.SHIBBOLETH_IMPORT_FROM_LDAP,
 					StringPool.FALSE));
 		dictionary.put(
-			TokenConstants.LOGOUT_REDIRECT_URL,
+			TokenConfigurationKeys.LOGOUT_REDIRECT_URL,
 				_prefsProps.getString(
 					companyId, LegacyTokenPropsKeys.SHIBBOLETH_LOGOUT_URL,
 					"/Shibboleth.sso/Logout"));
 		dictionary.put(
-			TokenConstants.USER_HEADER,
+			TokenConfigurationKeys.USER_HEADER,
 				_prefsProps.getString(
 					companyId, LegacyTokenPropsKeys.SHIBBOLETH_USER_HEADER,
 					"SHIBBOLETH_USER_EMAIL"));

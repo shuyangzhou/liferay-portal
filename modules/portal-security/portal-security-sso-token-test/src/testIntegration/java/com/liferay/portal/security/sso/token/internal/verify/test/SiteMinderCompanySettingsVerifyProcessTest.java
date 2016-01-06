@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.security.sso.token.constants.LegacyTokenPropsKeys;
+import com.liferay.portal.security.sso.token.constants.TokenConfigurationKeys;
 import com.liferay.portal.security.sso.token.constants.TokenConstants;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.verify.test.BaseCompanySettingsVerifyProcessTestCase;
@@ -58,14 +59,15 @@ public class SiteMinderCompanySettingsVerifyProcessTest
 		Assert.assertTrue(
 			GetterUtil.getBoolean(
 				settings.getValue(
-					TokenConstants.AUTH_ENABLED, StringPool.FALSE)));
+					TokenConfigurationKeys.AUTH_ENABLED, StringPool.FALSE)));
 		Assert.assertFalse(
 			GetterUtil.getBoolean(
 				settings.getValue(
-					TokenConstants.IMPORT_FROM_LDAP, StringPool.TRUE)));
+					TokenConfigurationKeys.IMPORT_FROM_LDAP, StringPool.TRUE)));
 		Assert.assertEquals(
 			"testSiteminder",
-			settings.getValue(TokenConstants.USER_HEADER, StringPool.BLANK));
+			settings.getValue(
+				TokenConfigurationKeys.USER_HEADER, StringPool.BLANK));
 	}
 
 	@Override

@@ -15,19 +15,11 @@
 package com.liferay.portal.security.sso.token.constants;
 
 /**
- * @author Mika Koivisto
+ * @author Michael C. Han
  */
 public class TokenConstants {
 
-	public static final String AUTH_ENABLED = "enabled";
-
-	public static final String IMPORT_FROM_LDAP = "importFromLDAP";
-
-	public static final String LOGOUT_REDIRECT_URL = "logoutRedirectURL";
-
 	public static final String SERVICE_NAME =
 		"com.liferay.portal.security.sso.token";
-
-	public static final String USER_HEADER = "userTokenName";
 
 }

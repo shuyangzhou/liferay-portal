@@ -28,13 +28,8 @@ import groovy.lang.Closure;
 
 import java.io.File;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -604,7 +599,8 @@ public class LiferayOSGiPlugin extends LiferayJavaPlugin {
 		BundleExtension bundleExtension = GradleUtil.getExtension(
 			project, BundleExtension.class);
 
-		bundleExtension.setJarBuilderFactory(new LiferayJarBuilderFactory());
+		bundleExtension.setJarBuilderFactory(
+			new LiferayJarBuilderFactory(project));
 	}
 
 	private static final Logger _logger = Logging.getLogger(
@@ -612,74 +608,57 @@ public class LiferayOSGiPlugin extends LiferayJavaPlugin {
 
 	private static class LiferayJarBuilder extends JarBuilder {
 
+		public void addClasspath(File file) {
+			try {
+				builder.addClasspath(file);
+			}
+			catch (Exception e) {
+				throw new GradleException(e.getMessage(), e);
+			}
+		}
+
 		@Override
 		public JarBuilder withClasspath(Object files) {
-			List<File> filesList = new ArrayList<>(
-				Arrays.asList((File[])files));
 
-			Iterator<File> iterator = filesList.iterator();
+			// Prevent JarBuilderFactoryDecorator from adding
+			// configurations.runtime.files.
 
-			while (iterator.hasNext()) {
-				File file = iterator.next();
-
-				if (_classpathFiles.contains(file)) {
-					iterator.remove();
-
-					continue;
-				}
-
-				_classpathFiles.add(file);
-
-				if (_logger.isInfoEnabled()) {
-					_logger.info("CLASSPATH: {}", file.getAbsolutePath());
-				}
-			}
-
-			return super.withClasspath(
-				filesList.toArray(new File[filesList.size()]));
+			return this;
 		}
 
 		@Override
 		public JarBuilder withResources(Object files) {
-			List<File> filesList = new ArrayList<>(
-				Arrays.asList((File[])files));
 
-			Iterator<File> iterator = filesList.iterator();
+			// Prevent JarBuilderFactoryDecorator from adding
+			// sourceSets.main.output.classesDir/resourcesDir.
 
-			while (iterator.hasNext()) {
-				File file = iterator.next();
-
-				if (_resourceFiles.contains(file)) {
-					iterator.remove();
-
-					continue;
-				}
-
-				_resourceFiles.add(file);
-
-				if (_logger.isInfoEnabled()) {
-					_logger.info("RESOURCE: {}", file.getAbsolutePath());
-				}
-			}
-
-			return super.withResources(
-				filesList.toArray(new File[filesList.size()]));
+			return this;
 		}
-
-		private final Set<File> _classpathFiles = new HashSet<>();
-		private final Set<File> _resourceFiles = new HashSet<>();
 
 	}
 
 	private static class LiferayJarBuilderFactory
 		implements Factory<JarBuilder> {
 
+		public LiferayJarBuilderFactory(Project project) {
+			_project = project;
+		}
+
 		@Override
 		public JarBuilder create() {
 			LiferayJarBuilder liferayJarBuilder = new LiferayJarBuilder();
 
+			SourceSet sourceSet = GradleUtil.getSourceSet(
+				_project, SourceSet.MAIN_SOURCE_SET_NAME);
+
+			SourceSetOutput sourceSetOutput = sourceSet.getOutput();
+
+			liferayJarBuilder.addClasspath(sourceSetOutput.getClassesDir());
+
 			return liferayJarBuilder;
 		}
+
+		private final Project _project;
 
 	}
 

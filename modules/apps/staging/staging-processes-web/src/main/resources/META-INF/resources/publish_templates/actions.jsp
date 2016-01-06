@@ -40,7 +40,9 @@ ExportImportConfiguration exportImportConfiguration = (ExportImportConfiguration
 	<portlet:param name="exportImportConfigurationId" value="<%= String.valueOf(exportImportConfiguration.getExportImportConfigurationId()) %>" />
 </portlet:actionURL>
 
-<liferay-ui:icon-delete
-	trash="<%= TrashUtil.isTrashEnabled(groupId) %>"
-	url="<%= deletePublishConfigurationURL %>"
-/>
+<liferay-ui:icon-menu icon="<%= StringPool.BLANK %>" markupView="lexicon" message="<%= StringPool.BLANK %>" showWhenSingleIcon="<%= true %>">
+	<liferay-ui:icon-delete
+		trash="<%= TrashUtil.isTrashEnabled(groupId) %>"
+		url="<%= deletePublishConfigurationURL %>"
+	/>
+</liferay-ui:icon-menu>

@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.security.sso.openid.constants.LegacyOpenIdPropsKeys;
+import com.liferay.portal.security.sso.openid.constants.OpenIdConfigurationKeys;
 import com.liferay.portal.security.sso.openid.constants.OpenIdConstants;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.verify.test.BaseCompanySettingsVerifyProcessTestCase;
@@ -55,7 +56,8 @@ public class OpenIdCompanySettingsVerifyProcessTest
 					StringPool.BLANK)));
 		Assert.assertEquals(
 			StringPool.TRUE,
-			settings.getValue(OpenIdConstants.AUTH_ENABLED, StringPool.FALSE));
+			settings.getValue(
+				OpenIdConfigurationKeys.AUTH_ENABLED, StringPool.FALSE));
 	}
 
 	@Override

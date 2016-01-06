@@ -15,7 +15,7 @@
 package com.liferay.portal.security.sso.openid.internal.module.configuration.definition;
 
 import com.liferay.portal.kernel.settings.definition.ConfigurationBeanDeclaration;
-import com.liferay.portal.security.sso.openid.module.configuration.OpenIdConfiguration;
+import com.liferay.portal.security.sso.openid.configuration.OpenIdConfiguration;
 
 import org.osgi.service.component.annotations.Component;
 
