@@ -14,7 +14,7 @@
  */
 --%>
 
-<%@ include file="/html/portal/init.jsp" %>
+<%@ include file="/html/portal/init.jsp" %
 
 <%
 Boolean staleSession = (Boolean)session.getAttribute(WebKeys.STALE_SESSION);
