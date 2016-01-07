@@ -14,7 +14,7 @@
  */
 --%>
 
-<%@ include file="/bookmarks/init.jsp" %>
+<%@ include file="/bookmarks/init.jsp" %
 
 <%
 BookmarksPortletToolbarContributor bookmarksPortletToolbarContributor = (BookmarksPortletToolbarContributor)request.getAttribute(BookmarksWebKeys.BOOKMARKS_PORTLET_TOOLBAR_CONTRIBUTOR);
