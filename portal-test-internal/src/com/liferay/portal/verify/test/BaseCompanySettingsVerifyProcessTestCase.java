@@ -91,6 +91,8 @@ public abstract class BaseCompanySettingsVerifyProcessTestCase
 				settings.getModifiableSettings();
 
 			modifiableSettings.reset();
+
+			modifiableSettings.store();
 		}
 
 		super.tearDown();

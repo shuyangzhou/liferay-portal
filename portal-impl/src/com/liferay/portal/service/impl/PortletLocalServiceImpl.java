@@ -505,6 +505,12 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 
 		if (portletId.equals(rootPortletId)) {
 			portlet = companyPortletsMap.get(portletId);
+
+			if (portletId.equals(PortletKeys.MY_ACCOUNT) && (portlet != null)) {
+				System.out.println("Portlet: " + portlet.toString() +
+					" retrieved from companyPortletsMap with portletId. " +
+					"Category: " + portlet.getControlPanelEntryCategory());
+			}
 		}
 		else {
 			portlet = companyPortletsMap.get(rootPortletId);
