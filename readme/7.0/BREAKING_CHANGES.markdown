@@ -3240,7 +3240,7 @@ Freemarker templates that are using the `${theme}` variable to access any of its
 
 All the provided functionality available in the `${theme}` variable can be replaced by the direct usage of a taglib. For example:
 
-- `${theme.runtime("com.liferay.portal.kernel.servlet.taglib.ui.BreadcrumbEntry", portletProviderAction.VIEW, "", default_preferences)}` can be replaced by:
+`${theme.runtime("com.liferay.portal.kernel.servlet.taglib.ui.BreadcrumbEntry", portletProviderAction.VIEW, "", default_preferences)}` can be replaced by:
 ```
 <@liferay_portlet["runtime"]
     defaultPreferences=default_preferences
@@ -3249,21 +3249,26 @@ All the provided functionality available in the `${theme}` variable can be repla
 />
 ```
 
-- `${theme.include(content_include)}` can be replaced by:
+`${theme.include(content_include)}` can be replaced by:
 ```
 <@liferay_util["include"] page=content_include />
 ```
 
-- `${theme.wrapPortlet("portlet.ftl", content_include)}` can be replaced by:
+`${theme.wrapPortlet("portlet.ftl", content_include)}` can be replaced by:
 ```
 <@liferay_theme["wrap-portlet"] page="portlet.ftl">
     <@liferay_util["include"] page=content_include />
 </@>
 ```
 
-- `${theme.iconHelp(portlet_description)}` can be replaced by:
+`${theme.iconHelp(portlet_description)}` can be replaced by:
 ```
 <@liferay_ui["icon-help"] message=portlet_description />
+```
+
+`${nav_item.icon()}` can be replaced by:
+```
+<@liferay_theme["layout-icon"] layout=${nav_item.getLayout()} />
 ```
 
 #### Why was this change made?
@@ -3271,3 +3276,35 @@ All the provided functionality available in the `${theme}` variable can be repla
 For historic reasons, the `{$theme} variable was being injected with the `VelocityTaglibImpl` class. This was creating some coupling between the template engines and between some specific taglibs and the template engines at the same time.
 
 Freemarker already offers native support for taglibs which cover all the functionality originally provided by the `{$theme}` variable. Removing this coupling would help future developments while still keeping all the existing functionality.
+
+---------------------------------------
+
+### Portlet configuration options may not always be displayed
+- **Date:** 2016-Jan-07
+- **JIRA Ticket:** LPS-54620 and LPS-61820
+
+#### What changed?
+
+The portlet configuration options (configuration, export/import, look and feel, etc) were always displayed in every view of the portlet and they couldn't be customized.
+
+With Lexicon, the options that are displayed will be based on the context, so not all the options will always be displayed.
+
+#### Who is affected?
+
+Portlets that should always display all the configuration options no matter which view of the portlet is rendered.
+
+#### How should I update my code?
+
+If you don't apply any change to your source code you will experience the following behaviour based on the portlet type:
+
+- If it's a Struts Portlet and you have defined a `view-action` init parameter, the configuration options will only be displayed for that particular view when invoking a url with a parameter `struts-action` with the value indicated in `view-action` init parameter.
+
+- If it's a Liferay MVC Portlet and you have defined a `view-template` init parameter, the configuration options will only be displayed when that template is rendered by invoking a url with a parameter `mvcPath` with the value indicated in `view-template` init parameter.
+
+- If it's a portlet using any other framework, the configuration options will never be displayed.
+
+In order to keep the old behaviour of adding the configuration options in every view you need to add the init parameter `always-display-default-configuration-icons` with the value `true`.
+
+#### Why was this change made?
+
+Lexicon patterns require the ability to specify different configuration options depending on the view of the portlet by adding or removing options. This can be easily achieved by using `PortletConfigurationIconFactory` and `PortletConfigurationIconFactory` classes.
