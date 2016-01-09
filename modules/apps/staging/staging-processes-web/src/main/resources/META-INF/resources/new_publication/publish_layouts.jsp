@@ -41,10 +41,10 @@ if (liveGroup.isStaged()) {
 
 treeId = treeId + liveGroupId;
 
-String publishActionKey = "publish-to-live";
+String publishMessageKey = "publish-to-live";
 
 if (cmd.equals(Constants.PUBLISH_TO_REMOTE)) {
-	publishActionKey = "publish-to-remote-live";
+	publishMessageKey = "publish-to-remote-live";
 }
 
 long selPlid = ParamUtil.getLong(request, "selPlid", LayoutConstants.DEFAULT_PARENT_LAYOUT_ID);
@@ -248,7 +248,7 @@ response.setHeader("Ajax-ID", request.getHeader("Ajax-ID"));
 		<aui:button-row>
 			<aui:button cssClass="btn-lg" id="addButton" onClick='<%= renderResponse.getNamespace() + "schedulePublishEvent();" %>' value="add-event" />
 
-			<aui:button cssClass="btn-lg" id="publishButton" type="submit" value="<%= publishActionKey %>" />
+			<aui:button cssClass="btn-lg" id="publishButton" type="submit" value="<%= publishMessageKey %>" />
 
 			<aui:button cssClass="btn-lg" href="<%= basePortletURL %>" type="reset" value="cancel" />
 		</aui:button-row>
