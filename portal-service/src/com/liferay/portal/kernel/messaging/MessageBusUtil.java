@@ -14,13 +14,20 @@
 
 package com.liferay.portal.kernel.messaging;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.sender.SingleDestinationMessageSenderFactoryUtil;
 import com.liferay.portal.kernel.messaging.sender.SynchronousMessageSender;
 import com.liferay.portal.kernel.security.pacl.permission.PortalMessageBusPermission;
 import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;
+import com.liferay.portal.kernel.util.ProxyFactory;
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
+import com.liferay.registry.ServiceReference;
 import com.liferay.registry.ServiceTracker;
+import com.liferay.registry.ServiceTrackerCustomizer;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author Michael C. Han
@@ -158,7 +165,8 @@ public class MessageBusUtil {
 	public MessageBusUtil() {
 		Registry registry = RegistryUtil.getRegistry();
 
-		_serviceTracker = registry.trackServices(MessageBus.class);
+		_serviceTracker = registry.trackServices(
+			MessageBus.class, new MessageBusServiceTrackerCustomizer());
 
 		_serviceTracker.open();
 	}
@@ -179,11 +187,17 @@ public class MessageBusUtil {
 
 	private MessageBus _getMessageBus() {
 		try {
-			while (_serviceTracker.getService() == null) {
-				Thread.sleep(500);
+			if (!_initialized.get()) {
+				while (_serviceTracker.getService() == null) {
+					if (_log.isDebugEnabled()) {
+						_log.debug("Waiting for a PortalExecutorManager");
+					}
+
+					Thread.sleep(500);
+				}
 			}
 
-			return _serviceTracker.getService();
+			return _messageBus;
 		}
 		catch (InterruptedException e) {
 			throw new IllegalStateException(
@@ -299,10 +313,40 @@ public class MessageBusUtil {
 			destinationName, messageListener);
 	}
 
+	private static final Log _log = LogFactoryUtil.getLog(MessageBusUtil.class);
+
 	private static final MessageBusUtil _instance = new MessageBusUtil();
 
 	private static SynchronousMessageSender.Mode _synchronousMessageSenderMode;
 
+	private final AtomicBoolean _initialized = new AtomicBoolean(false);
+	private final MessageBus _messageBus =
+		ProxyFactory.newServiceTrackedInstance(MessageBus.class);
 	private final ServiceTracker<MessageBus, MessageBus> _serviceTracker;
+
+	private class MessageBusServiceTrackerCustomizer
+		implements ServiceTrackerCustomizer<MessageBus, MessageBus> {
+
+		@Override
+		public MessageBus addingService(
+			ServiceReference<MessageBus> serviceReference) {
+
+			_initialized.set(true);
+
+			return null;
+		}
+
+		@Override
+		public void modifiedService(
+			ServiceReference<MessageBus> serviceReference,
+			MessageBus messageBus) {
+		}
+
+		@Override
+		public void removedService(
+			ServiceReference<MessageBus> serviceReference, MessageBus service) {
+		}
+
+	}
 
 }

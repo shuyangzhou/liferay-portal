@@ -66,11 +66,11 @@ LayoutsTreeDisplayContext layoutsTreeDisplayContext = new LayoutsTreeDisplayCont
 				<aui:a cssClass="layout-set-link" href="<%= layoutsTreeDisplayContext.getPublicLayoutsURL() %>" label="<%= layoutsTreeDisplayContext.getLayoutSetName(false) %>" />
 
 				<c:if test="<%= layoutsTreeDisplayContext.isShowAddRootLayoutButton() %>">
-					<a class="layout-set-tree-add" href="<%= layoutsTreeDisplayContext.getAddLayoutURL(false, LayoutConstants.DEFAULT_PLID) %>" title="<liferay-ui:message key="add-page" />"><aui:icon image="plus" markupView="lexicon" /></a>
+					<a class="layout-set-tree-add" href="<%= layoutsTreeDisplayContext.getAddLayoutURL(LayoutConstants.DEFAULT_PLID, false) %>" title="<liferay-ui:message key="add-page" />"><aui:icon image="plus" markupView="lexicon" /></a>
 				</c:if>
 
 				<c:if test="<%= layoutsTreeDisplayContext.isShowEditLayoutSetButton() %>">
-					<a class="layout-set-tree-edit" href="<%= layoutsTreeDisplayContext.getEditLayoutURL(false) %>" title="<liferay-ui:message arguments="<%= layoutsTreeDisplayContext.getLayoutSetName(false) %>" key="edit-x" />"><aui:icon image="cog" markupView="lexicon" /></a>
+					<a class="layout-set-tree-edit" href="<%= layoutsTreeDisplayContext.getEditLayoutURL(LayoutConstants.DEFAULT_PLID, false) %>" title="<liferay-ui:message arguments="<%= layoutsTreeDisplayContext.getLayoutSetName(false) %>" key="edit-x" />"><aui:icon image="cog" markupView="lexicon" /></a>
 				</c:if>
 			</span>
 		</c:if>
@@ -79,11 +79,11 @@ LayoutsTreeDisplayContext layoutsTreeDisplayContext = new LayoutsTreeDisplayCont
 			<aui:a cssClass="layout-set-link" href="<%= layoutsTreeDisplayContext.getPrivateLayoutsURL() %>" label="<%= layoutsTreeDisplayContext.getLayoutSetName(true) %>" />
 
 			<c:if test="<%= layoutsTreeDisplayContext.isShowAddRootLayoutButton() %>">
-				<a class="layout-set-tree-add" href="<%= layoutsTreeDisplayContext.getAddLayoutURL(true, LayoutConstants.DEFAULT_PLID) %>" title="<liferay-ui:message key="add-page" />"><aui:icon image="plus" markupView="lexicon" /></a>
+				<a class="layout-set-tree-add" href="<%= layoutsTreeDisplayContext.getAddLayoutURL(LayoutConstants.DEFAULT_PLID, true) %>" title="<liferay-ui:message key="add-page" />"><aui:icon image="plus" markupView="lexicon" /></a>
 			</c:if>
 
 			<c:if test="<%= layoutsTreeDisplayContext.isShowEditLayoutSetButton() %>">
-				<a class="layout-set-tree-edit" href="<%= layoutsTreeDisplayContext.getEditLayoutURL(true) %>" title="<liferay-ui:message arguments="<%= layoutsTreeDisplayContext.getLayoutSetName(true) %>" key="edit-x" />"><aui:icon image="cog" markupView="lexicon" /></a>
+				<a class="layout-set-tree-edit" href="<%= layoutsTreeDisplayContext.getEditLayoutURL(LayoutConstants.DEFAULT_PLID, true) %>" title="<liferay-ui:message arguments="<%= layoutsTreeDisplayContext.getLayoutSetName(true) %>" key="edit-x" />"><aui:icon image="cog" markupView="lexicon" /></a>
 			</c:if>
 		</span>
 	</div>
