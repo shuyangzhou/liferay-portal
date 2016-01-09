@@ -20,6 +20,7 @@ import com.liferay.configuration.admin.web.util.ConfigurationModelRetriever;
 import com.liferay.portal.kernel.cluster.ClusterMasterExecutor;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.search.IndexWriterHelperUtil;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.SearchException;
@@ -100,6 +101,10 @@ public class ConfigurationIndexingExtender {
 		ConfigurationModelRetriever configurationModelRetriever) {
 
 		_configurationModelRetriever = configurationModelRetriever;
+	}
+
+	@Reference(unbind = "-")
+	protected void setMessageBus(MessageBus messageBus) {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
