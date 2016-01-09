@@ -80,10 +80,10 @@ if (liveGroup.isStaged()) {
 
 treeId = treeId + liveGroupId;
 
-String publishActionKey = "publish-to-live";
+String publishMessageKey = "publish-to-live";
 
 if (cmd.equals(Constants.PUBLISH_TO_REMOTE)) {
-	publishActionKey = "publish-to-remote-live";
+	publishMessageKey = "publish-to-remote-live";
 }
 
 long selPlid = ParamUtil.getLong(request, "selPlid", LayoutConstants.DEFAULT_PARENT_LAYOUT_ID);

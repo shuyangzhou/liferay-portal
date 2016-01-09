@@ -68,7 +68,9 @@
 		</if>
 	</tear-down>
 
-	<command name="AddCalendarEventAllDay" priority="4">
+	<command name="AddCalendarEventAllDay" priority="5">
+		<property name="portal.acceptance" value="true" />
+
 		<var name="eventTitle" value="Calendar Event All Day Title" />
 		<var name="eventType" value="All Day" />
 		<var name="portletName" value="Calendar" />
@@ -804,6 +806,18 @@
 		<execute macro="CalendarEvent#view">
 			<var name="eventTitle" value="${eventTitle}" />
 		</execute>
+
+		<execute macro="CalendarNavigator#gotoEventDetails">
+			<var name="eventTitle" value="${eventTitle}" />
+			<var name="eventType" value="${eventType}" />
+		</execute>
+
+		<execute macro="CalendarEvent#viewRepeatingEventViaViewDetails">
+			<var name="eventTitle" value="${eventTitle}" />
+			<var name="eventType" value="${eventType}" />
+			<var name="frequency" value="Daily" />
+			<var name="numberOfOccurrences" value="1" />
+		</execute>
 	</command>
 
 	<command name="AddCalendarEventRepeatingCommentToCurrentSiteCalendars" priority="3">
@@ -946,6 +960,18 @@
 
 		<execute macro="CalendarEvent#view">
 			<var name="eventTitle" value="${eventTitle}" />
+		</execute>
+
+		<execute macro="CalendarNavigator#gotoEventDetails">
+			<var name="eventTitle" value="${eventTitle}" />
+			<var name="eventType" value="${eventType}" />
+		</execute>
+
+		<execute macro="CalendarEvent#viewRepeatingEventViaViewDetails">
+			<var name="eventTitle" value="${eventTitle}" />
+			<var name="eventType" value="${eventType}" />
+			<var name="frequency" value="Weekly" />
+			<var name="numberOfOccurrences" value="2" />
 		</execute>
 	</command>
 
@@ -1183,10 +1209,21 @@
 			<var name="eventTitle" value="${eventTitle}" />
 		</execute>
 
-		<execute macro="CalendarEvent#deleteRepeatingEventViaAgendaView">
-			<var name="deleteOptionSet" value="All Events in the Series" />
+		<execute macro="CalendarNavigator#gotoView">
+			<var name="viewType" value="Week" />
+		</execute>
+
+		<execute macro="CalendarScheduler#selectSpecificEvent">
+			<var name="eventTitle" value="${eventTitle}" />
+		</execute>
+
+		<execute macro="CalendarScheduler#gotoDetailsViaDialogBox" />
+
+		<execute macro="CalendarEvent#viewRepeatingEventViaViewDetails">
 			<var name="eventTitle" value="${eventTitle}" />
 			<var name="eventType" value="${eventType}" />
+			<var name="frequency" value="Yearly" />
+			<var name="yearlyRecurrenceSummary" value="Yearly, on the Third Sunday of February" />
 		</execute>
 	</command>
 
@@ -1557,7 +1594,94 @@
 		</execute>
 	</command>
 
-	<command name="AddResourceCalendarToOtherCalendars" priority="4">
+	<command name="AddEventWithRelatedAssetViaAssetPublisher" priority="4">
+		<execute macro="Page#addPG">
+			<var name="pageName" value="AP Page" />
+		</execute>
+
+		<execute macro="Page#gotoPG">
+			<var name="pageName" value="AP Page" />
+		</execute>
+
+		<execute macro="Portlet#addPG">
+			<var name="portletName" value="Blogs" />
+		</execute>
+
+		<execute macro="Page#gotoPG">
+			<var name="pageName" value="AP Page" />
+		</execute>
+
+		<execute macro="Portlet#addPG">
+			<var name="portletName" value="Asset Publisher" />
+		</execute>
+
+		<execute macro="Blogs#addEntry">
+			<var name="entryContent" value="Blogs Entry Content" />
+			<var name="entryTitle" value="Blogs Entry Title" />
+		</execute>
+
+		<execute macro="CalendarNavigator#gotoAddEventViaAssetPublisher" />
+
+		<execute macro="CalendarEvent#editTitle">
+			<var name="eventTitle" value="Calendar Event Title" />
+		</execute>
+
+		<execute macro="CalendarEvent#gotoConfigureRelatedAssets" />
+
+		<execute macro="RelatedAssets#selectAsset">
+			<var name="assetTitle" value="Blogs Entry Title" />
+			<var name="assetType" value="Blogs Entry" />
+		</execute>
+
+		<execute macro="CalendarEvent#selectEventIframe" />
+
+		<execute macro="CalendarEvent#publish" />
+
+		<execute macro="Page#gotoPG">
+			<var name="pageName" value="Calendar Page" />
+		</execute>
+
+		<execute macro="CalendarEvent#view">
+			<var name="eventTitle" value="Calendar Event Title" />
+		</execute>
+
+		<execute macro="Page#gotoPG">
+			<var name="pageName" value="AP Page" />
+		</execute>
+
+		<execute macro="CalendarEvent#viewViaAssetPublisher">
+			<var name="calendarName" value="Liferay" />
+			<var name="eventTitle" value="Calendar Event Title" />
+		</execute>
+
+		<execute macro="AssetPublisherPortlet#viewPG">
+			<var name="assetContent" value="Blogs Entry Content" />
+			<var name="assetTitle" value="Blogs Entry Title" />
+			<var name="relatedAssetTitle" value="Calendar Event Title" />
+		</execute>
+
+		<execute macro="Page#gotoPG">
+			<var name="pageName" value="AP Page" />
+		</execute>
+
+		<execute macro="AssetPublisherPortlet#viewPG">
+			<var name="assetContent" value="Start Date" />
+			<var name="assetTitle" value="Calendar Event Title" />
+			<var name="relatedAssetTitle" value="Blogs Entry Title" />
+		</execute>
+
+		<execute macro="AssetPublisherPortlet#gotoViewInContext" />
+
+		<execute macro="CalendarEvent#viewDetailsInPortlet">
+			<var name="calendarName" value="Liferay" />
+			<var name="eventTitle" value="Calendar Event Title" />
+			<var name="relatedAssetTitle" value="Blogs Entry Title" />
+		</execute>
+	</command>
+
+	<command name="AddResourceCalendarToOtherCalendars" priority="5">
+		<property name="portal.acceptance" value="true" />
+
 		<var name="calendarResourceName" value="Calendar Resource Name" />
 		<var name="calendarType" value="Other Calendars" />
 
@@ -1848,7 +1972,9 @@
 		</for>
 	</command>
 
-	<command name="ConfigureDisplayTimeZone" priority="4">
+	<command name="ConfigureDisplayTimeZone" priority="5">
+		<property name="portal.acceptance" value="true" />
+
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="${pageName}" />
 		</execute>
@@ -1892,7 +2018,7 @@
 			<var name="startDateTime" value="9:00am" />
 		</execute>
 
-		<execute macro="CalendarScheduler#_gotoDetailsViaDialogBox" />
+		<execute macro="CalendarScheduler#gotoDetailsViaDialogBox" />
 
 		<execute macro="CalendarEvent#viewTimesViaDetails">
 			<var name="endDateTime" value="10:00 AM" />
@@ -1935,7 +2061,7 @@
 			<var name="startDateTime" value="pm" />
 		</execute>
 
-		<execute macro="CalendarScheduler#_gotoDetailsViaDialogBox" />
+		<execute macro="CalendarScheduler#gotoDetailsViaDialogBox" />
 
 		<execute macro="CalendarEvent#viewTimesViaDetails">
 			<var name="endDateTime" value="PM" />
@@ -3225,7 +3351,40 @@
 		</execute>
 	</command>
 
-	<command name="ImportCalendarAndViewCalendarEventRegularComment" priority="4">
+	<command name="ExportUserCalendarAsICS" priority="4">
+		<description message="This is a use case for LPS-57992." />
+
+		<execute macro="CalendarNavigator#gotoAddEvent" />
+
+		<execute macro="CalendarEvent#add">
+			<var name="calendarName" value="Test Test" />
+			<var name="eventTitle" value="Event For Export" />
+			<var name="eventType" value="Regular" />
+			<var name="pageName" value="${pageName}" />
+		</execute>
+
+		<execute macro="Page#gotoPG">
+			<var name="pageName" value="${pageName}" />
+		</execute>
+
+		<execute macro="CalendarNavigator#gotoMyCalendarsManage" />
+
+		<execute macro="Calendar#exportCalendarFile">
+			<var name="calendarName" value="Test Test" />
+		</execute>
+
+		<execute macro="Page#gotoPG">
+			<var name="pageName" value="${pageName}" />
+		</execute>
+
+		<execute macro="CalendarEvent#view">
+			<var name="eventTitle" value="Event For Export" />
+		</execute>
+	</command>
+
+	<command name="ImportCalendarAndViewCalendarEventRegularComment" priority="5">
+		<property name="portal.acceptance" value="true" />
+
 		<var name="calendarName" value="Liferay" />
 		<var name="calendarType" value="Current Site Calendars" />
 		<var name="eventComment" value="Calendar Event Regular Comment" />
@@ -3325,7 +3484,7 @@
 			<var name="pageName" value="${pageName}" />
 		</execute>
 
-		<execute macro="Calendar#gotoCurrentSiteCalendarsManage" />
+		<execute macro="CalendarNavigator#gotoCurrentSiteCalendarsManage" />
 
 		<execute macro="Calendar#importCalendarFile">
 			<var name="calendarFile" value="calendar_microsoft_outlook_calendar.ics" />
@@ -3935,7 +4094,7 @@
 			<var name="startDateTime" value="21:00" />
 		</execute>
 
-		<execute macro="CalendarScheduler#_gotoDetailsViaDialogBox" />
+		<execute macro="CalendarScheduler#gotoDetailsViaDialogBox" />
 
 		<execute macro="CalendarEvent#viewTimesViaDetails">
 			<var name="endDateTime" value="23:00" />
@@ -3989,7 +4148,7 @@
 			<var name="startDateTime" value="9:00pm" />
 		</execute>
 
-		<execute macro="CalendarScheduler#_gotoDetailsViaDialogBox" />
+		<execute macro="CalendarScheduler#gotoDetailsViaDialogBox" />
 
 		<execute macro="CalendarEvent#viewTimesViaDetails">
 			<var name="endDateTime" value="11:00 PM" />
@@ -4344,6 +4503,109 @@
 		</for>
 	</command>
 
+	<command name="ViewDisplayedSiteCalendarEventsAsGuest" priority="3">
+		<description message="This is a use case for LPS-59251." />
+
+		<execute macro="Page#gotoPG">
+			<var name="pageName" value="${pageName}" />
+		</execute>
+
+		<execute macro="CalendarNavigator#gotoAddEvent" />
+
+		<execute macro="CalendarEvent#editTitle">
+			<var name="eventTitle" value="Liferay Calendar Event Title" />
+		</execute>
+
+		<execute macro="CalendarEvent#setTimes">
+			<var name="endDateTime" value="04:00 AM" />
+			<var name="startDateTime" value="03:00 AM" />
+		</execute>
+
+		<execute macro="CalendarEvent#selectCalendar">
+			<var name="calendarName" value="Liferay" />
+		</execute>
+
+		<execute macro="CalendarEvent#publish" />
+
+		<execute macro="Page#gotoPG">
+			<var name="pageName" value="${pageName}" />
+		</execute>
+
+		<execute macro="CalendarNavigator#gotoAddEvent" />
+
+		<execute macro="CalendarEvent#editTitle">
+			<var name="eventTitle" value="Test Test Calendar Event Title" />
+		</execute>
+
+		<execute macro="CalendarEvent#setTimes">
+			<var name="endDateTime" value="09:00 PM" />
+			<var name="startDateTime" value="08:00 PM" />
+		</execute>
+
+		<execute macro="CalendarEvent#selectCalendar">
+			<var name="calendarName" value="Test Test" />
+		</execute>
+
+		<execute macro="CalendarEvent#publish" />
+
+		<execute macro="Page#gotoPG">
+			<var name="pageName" value="${pageName}" />
+		</execute>
+
+		<execute macro="CalendarScheduler#viewWeek">
+			<var name="eventTitle" value="Liferay Calendar Event Title" />
+		</execute>
+
+		<execute macro="CalendarScheduler#viewWeek">
+			<var name="eventTitle" value="Test Test Calendar Event Title" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoPersonalSite" />
+
+		<execute macro="Portlet#addPG">
+			<var name="portletName" value="${portletName}" />
+		</execute>
+
+		<execute macro="User#logoutPG" />
+
+		<execute macro="Page#gotoPG">
+			<var name="pageName" value="${pageName}" />
+		</execute>
+
+		<execute macro="CalendarEvent#viewSiteCalendarEventWithDefaultPermissions">
+			<var name="calendarName" value="Liferay" />
+			<var name="endDateTime" value="04:00 AM" />
+			<var name="eventTitle" value="Liferay Calendar Event Title" />
+			<var name="siteName" value="Liferay" />
+			<var name="startDateTime" value="03:00 AM" />
+		</execute>
+
+		<execute macro="CalendarEvent#viewSiteCalendarEventNotPresent">
+			<var name="endDateTime" value="09:00 PM" />
+			<var name="siteName" value="Test Test" />
+			<var name="startDateTime" value="08:00 PM" />
+		</execute>
+
+		<execute macro="Navigator#gotoSpecificURLPage">
+			<var name="pageName" value="Welcome" />
+			<var name="url" value="localhost:8080/web/test" />
+		</execute>
+
+		<execute macro="CalendarEvent#viewSiteCalendarEventWithDefaultPermissions">
+			<var name="calendarName" value="Test Test" />
+			<var name="endDateTime" value="09:00 PM" />
+			<var name="eventTitle" value="Test Test Calendar Event Title" />
+			<var name="siteName" value="Test Test" />
+			<var name="startDateTime" value="08:00 PM" />
+		</execute>
+
+		<execute macro="CalendarEvent#viewSiteCalendarEventNotPresent">
+			<var name="endDateTime" value="04:00 AM" />
+			<var name="siteName" value="Liferay" />
+			<var name="startDateTime" value="03:00 AM" />
+		</execute>
+	</command>
+
 	<command name="ViewEventCalendarChange" priority="4">
 		<execute macro="ProductMenu#gotoControlPanelUsers">
 			<var name="portlet" value="Users and Organizations" />
@@ -4694,7 +4956,9 @@
 		</execute>
 	</command>
 
-	<command name="ViewSiteCalendarRSSFeed" priority="4">
+	<command name="ViewSiteCalendarRSSFeed" priority="5">
+		<property name="portal.acceptance" value="true" />
+
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="${pageName}" />
 		</execute>
