@@ -17,11 +17,15 @@ package com.liferay.portal.kernel.util;
 import com.liferay.portal.kernel.bean.ClassLoaderBeanHandler;
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
+import com.liferay.registry.ServiceReference;
 import com.liferay.registry.ServiceTracker;
+import com.liferay.registry.ServiceTrackerCustomizer;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author Brian Wing Shun Chan
@@ -59,7 +63,16 @@ public class ProxyFactory {
 	public static <T> T newServiceTrackedInstance(Class<T> interfaceClass) {
 		return (T)ProxyUtil.newProxyInstance(
 			interfaceClass.getClassLoader(), new Class[] {interfaceClass},
-			new ServiceTrackedInvocationHandler<T>(interfaceClass));
+			new ServiceTrackedInvocationHandler<>(interfaceClass));
+	}
+
+	public static <T> T newServiceTrackedInstance(
+		Class<T> interfaceClass, boolean waitForInitialization) {
+
+		return (T)ProxyUtil.newProxyInstance(
+			interfaceClass.getClassLoader(), new Class[] {interfaceClass},
+			new ServiceTrackedInvocationHandler<>(
+				interfaceClass, waitForInitialization));
 	}
 
 	private static class DummyInvocationHandler<T>
@@ -105,6 +118,12 @@ public class ProxyFactory {
 		public Object invoke(Object proxy, Method method, Object[] arguments)
 			throws Throwable {
 
+			if (_waitForInitialization && !_initialized.get()) {
+				while (_serviceTracker.getService() == null) {
+					Thread.sleep(500);
+				}
+			}
+
 			T service = _serviceTracker.getService();
 
 			if (service != null) {
@@ -144,14 +163,52 @@ public class ProxyFactory {
 		}
 
 		private ServiceTrackedInvocationHandler(Class<T> interfaceClass) {
+			this(interfaceClass, false);
+		}
+
+		private ServiceTrackedInvocationHandler(
+			Class<T> interfaceClass, boolean waitForInitialization) {
+
+			_waitForInitialization = waitForInitialization;
 			Registry registry = RegistryUtil.getRegistry();
 
-			_serviceTracker = registry.trackServices(interfaceClass);
+			if (!waitForInitialization) {
+				_serviceTracker = registry.trackServices(interfaceClass);
+			}
+			else {
+				_serviceTracker = registry.trackServices(
+					interfaceClass,
+					new InitializationAwareServiceTrackerCustomizer());
+			}
 
 			_serviceTracker.open();
 		}
 
+		private final AtomicBoolean _initialized = new AtomicBoolean(false);
 		private final ServiceTracker<T, T> _serviceTracker;
+		private final boolean _waitForInitialization;
+
+		private class InitializationAwareServiceTrackerCustomizer
+			implements ServiceTrackerCustomizer<T, T> {
+
+			@Override
+			public T addingService(ServiceReference<T> serviceReference) {
+				_initialized.set(true);
+
+				return null;
+			}
+
+			@Override
+			public void modifiedService(
+				ServiceReference<T> serviceReference, T messageBus) {
+			}
+
+			@Override
+			public void removedService(
+				ServiceReference<T> serviceReference, T service) {
+			}
+
+		}
 
 	}
 

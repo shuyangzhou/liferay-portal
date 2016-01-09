@@ -18,9 +18,7 @@ import com.liferay.portal.kernel.messaging.sender.SingleDestinationMessageSender
 import com.liferay.portal.kernel.messaging.sender.SynchronousMessageSender;
 import com.liferay.portal.kernel.security.pacl.permission.PortalMessageBusPermission;
 import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;
-import com.liferay.registry.Registry;
-import com.liferay.registry.RegistryUtil;
-import com.liferay.registry.ServiceTracker;
+import com.liferay.portal.kernel.util.ProxyFactory;
 
 /**
  * @author Michael C. Han
@@ -155,14 +153,6 @@ public class MessageBusUtil {
 			destinationName, messageListener);
 	}
 
-	public MessageBusUtil() {
-		Registry registry = RegistryUtil.getRegistry();
-
-		_serviceTracker = registry.trackServices(MessageBus.class);
-
-		_serviceTracker.open();
-	}
-
 	public void setSynchronousMessageSenderMode(
 		SynchronousMessageSender.Mode synchronousMessageSenderMode) {
 
@@ -178,17 +168,7 @@ public class MessageBusUtil {
 	}
 
 	private MessageBus _getMessageBus() {
-		try {
-			while (_serviceTracker.getService() == null) {
-				Thread.sleep(500);
-			}
-
-			return _serviceTracker.getService();
-		}
-		catch (InterruptedException e) {
-			throw new IllegalStateException(
-				"Unable to initialize MessageBusUtil", e);
-		}
+		return _messageBus;
 	}
 
 	private boolean _hasMessageListener(String destinationName) {
@@ -303,6 +283,7 @@ public class MessageBusUtil {
 
 	private static SynchronousMessageSender.Mode _synchronousMessageSenderMode;
 
-	private final ServiceTracker<MessageBus, MessageBus> _serviceTracker;
+	private final MessageBus _messageBus =
+		ProxyFactory.newServiceTrackedInstance(MessageBus.class, true);
 
 }
