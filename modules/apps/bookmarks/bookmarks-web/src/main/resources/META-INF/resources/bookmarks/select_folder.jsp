@@ -61,13 +61,6 @@ if (folder != null) {
 			className="com.liferay.bookmarks.model.BookmarksFolder"
 			modelVar="curFolder"
 		>
-
-			<%
-			AssetRendererFactory<BookmarksFolder> assetRendererFactory = AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByClass(BookmarksFolder.class);
-
-			AssetRenderer<BookmarksFolder> assetRenderer = assetRendererFactory.getAssetRenderer(curFolder.getFolderId());
-			%>
-
 			<portlet:renderURL var="viewFolderURL">
 				<portlet:param name="mvcRenderCommandName" value="/bookmarks/select_folder" />
 				<portlet:param name="folderId" value="<%= String.valueOf(curFolder.getFolderId()) %>" />
@@ -76,6 +69,13 @@ if (folder != null) {
 			<liferay-ui:search-container-column-text
 				name="folder"
 			>
+
+				<%
+				AssetRendererFactory<BookmarksFolder> assetRendererFactory = AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByClass(BookmarksFolder.class);
+
+				AssetRenderer<BookmarksFolder> assetRenderer = assetRendererFactory.getAssetRenderer(curFolder.getFolderId());
+				%>
+
 				<liferay-ui:icon
 					iconCssClass="<%= assetRenderer.getIconCssClass() %>"
 					label="<%= true %>"
@@ -85,27 +85,16 @@ if (folder != null) {
 				/>
 			</liferay-ui:search-container-column-text>
 
-			<%
-			List<Long> subfolderIds = new ArrayList<Long>();
-
-			subfolderIds.add(curFolder.getFolderId());
-
-			BookmarksFolderServiceUtil.getSubfolderIds(subfolderIds, scopeGroupId, curFolder.getFolderId(), true);
-
-			int foldersCount = subfolderIds.size() - 1;
-			int entriesCount = BookmarksEntryServiceUtil.getFoldersEntriesCount(scopeGroupId, subfolderIds);
-			%>
-
 			<liferay-ui:search-container-column-text
 				href="<%= viewFolderURL %>"
 				name="num-of-folders"
-				value="<%= String.valueOf(foldersCount) %>"
+				value="<%= String.valueOf(BookmarksFolderServiceUtil.getFoldersCount(scopeGroupId, curFolder.getFolderId(), WorkflowConstants.STATUS_APPROVED)) %>"
 			/>
 
 			<liferay-ui:search-container-column-text
 				href="<%= viewFolderURL %>"
 				name="num-of-entries"
-				value="<%= String.valueOf(entriesCount) %>"
+				value="<%= String.valueOf(BookmarksEntryServiceUtil.getFoldersEntriesCount(scopeGroupId, Arrays.asList(curFolder.getFolderId()))) %>"
 			/>
 
 			<liferay-ui:search-container-column-text>
