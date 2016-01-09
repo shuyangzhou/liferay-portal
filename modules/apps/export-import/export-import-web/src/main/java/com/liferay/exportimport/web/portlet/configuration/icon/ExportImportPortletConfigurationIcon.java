@@ -18,7 +18,6 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.configuration.icon.BasePortletConfigurationIcon;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.theme.PortletDisplay;
 
 import javax.portlet.PortletRequest;
 
@@ -49,9 +48,7 @@ public class ExportImportPortletConfigurationIcon
 
 	@Override
 	public String getOnClick() {
-		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
-
-		StringBundler sb = new StringBundler(11);
+		StringBundler sb = new StringBundler(12);
 
 		sb.append("Liferay.Portlet.openWindow({bodyCssClass: ");
 		sb.append("'dialog-with-footer', namespace: '");
@@ -71,15 +68,11 @@ public class ExportImportPortletConfigurationIcon
 
 	@Override
 	public String getURL() {
-		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
-
 		return portletDisplay.getURLExportImport();
 	}
 
 	@Override
 	public boolean isShow() {
-		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
-
 		return portletDisplay.isShowExportImportIcon();
 	}
 

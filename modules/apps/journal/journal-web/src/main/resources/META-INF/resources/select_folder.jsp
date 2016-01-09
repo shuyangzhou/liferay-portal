@@ -76,24 +76,6 @@ JournalPortletUtil.addPortletBreadcrumbEntries(folder, request, portletURL);
 				<portlet:param name="folderId" value="<%= String.valueOf(curFolder.getFolderId()) %>" />
 			</liferay-portlet:renderURL>
 
-			<%
-			AssetRendererFactory<JournalFolder> assetRendererFactory = AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByClass(JournalFolder.class);
-
-			AssetRenderer<JournalFolder> assetRenderer = assetRendererFactory.getAssetRenderer(curFolder.getFolderId());
-
-			int foldersCount = 0;
-			int articlesCount = 0;
-
-			List<Long> subfolderIds = JournalFolderServiceUtil.getSubfolderIds(scopeGroupId, curFolder.getFolderId(), false);
-
-			foldersCount = subfolderIds.size();
-
-			subfolderIds.clear();
-			subfolderIds.add(curFolder.getFolderId());
-
-			articlesCount = JournalArticleServiceUtil.getFoldersAndArticlesCount(scopeGroupId, subfolderIds);
-			%>
-
 			<liferay-ui:search-container-column-text
 				href="<%= rowURL %>"
 				name="name"
@@ -101,12 +83,12 @@ JournalPortletUtil.addPortletBreadcrumbEntries(folder, request, portletURL);
 
 			<liferay-ui:search-container-column-text
 				name="num-of-folders"
-				value="<%= String.valueOf(foldersCount) %>"
+				value="<%= String.valueOf(JournalFolderServiceUtil.getFoldersCount(scopeGroupId, curFolder.getFolderId())) %>"
 			/>
 
 			<liferay-ui:search-container-column-text
 				name="num-of-web-content-instances"
-				value="<%= String.valueOf(articlesCount) %>"
+				value="<%= String.valueOf(JournalArticleServiceUtil.getFoldersAndArticlesCount(scopeGroupId, Arrays.asList(curFolder.getFolderId()))) %>"
 			/>
 
 			<c:if test="<%= rowURL != null %>">
