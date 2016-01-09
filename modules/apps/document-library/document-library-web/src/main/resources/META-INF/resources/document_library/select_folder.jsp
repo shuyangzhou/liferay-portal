@@ -101,18 +101,12 @@ DLVisualizationHelper dlVisualizationHelper = new DLVisualizationHelper(dlReques
 
 			AssetRenderer<?> assetRenderer = assetRendererFactory.getAssetRenderer(curFolder.getFolderId());
 
-			int foldersCount = 0;
 			int fileEntriesCount = 0;
+			int foldersCount = 0;
 
 			try {
-				List<Long> subfolderIds = DLAppServiceUtil.getSubfolderIds(curFolder.getRepositoryId(), curFolder.getFolderId(), false);
-
-				foldersCount = subfolderIds.size();
-
-				subfolderIds.clear();
-				subfolderIds.add(curFolder.getFolderId());
-
-				fileEntriesCount = DLAppServiceUtil.getFoldersFileEntriesCount(curFolder.getRepositoryId(), subfolderIds, WorkflowConstants.STATUS_APPROVED);
+				fileEntriesCount = DLAppServiceUtil.getFoldersFileEntriesCount(curFolder.getRepositoryId(), Arrays.asList(curFolder.getFolderId()), WorkflowConstants.STATUS_APPROVED);
+				foldersCount = DLAppServiceUtil.getFoldersCount(curFolder.getRepositoryId(), curFolder.getFolderId());
 			}
 			catch (com.liferay.portal.kernel.repository.RepositoryException re) {
 				rowURL = null;
