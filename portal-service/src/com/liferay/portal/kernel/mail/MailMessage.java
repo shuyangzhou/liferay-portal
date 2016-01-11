@@ -14,7 +14,7 @@
 
 package com.liferay.portal.kernel.mail;
 
-import com.liferay.mail.model.FileAttachment;
+import com.liferay.portal.kernel.mail.model.FileAttachment;
 
 import java.io.File;
 import java.io.Serializable;
