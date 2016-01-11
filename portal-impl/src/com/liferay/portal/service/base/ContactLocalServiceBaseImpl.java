@@ -353,7 +353,7 @@ public abstract class ContactLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.service.CounterLocalService getCounterLocalService() {
+	public com.liferay.portal.kernel.counter.service.CounterLocalService getCounterLocalService() {
 		return counterLocalService;
 	}
 
@@ -363,7 +363,7 @@ public abstract class ContactLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.service.CounterLocalService counterLocalService) {
+		com.liferay.portal.kernel.counter.service.CounterLocalService counterLocalService) {
 		this.counterLocalService = counterLocalService;
 	}
 
@@ -683,8 +683,8 @@ public abstract class ContactLocalServiceBaseImpl extends BaseLocalServiceImpl
 	protected ContactLocalService contactLocalService;
 	@BeanReference(type = ContactPersistence.class)
 	protected ContactPersistence contactPersistence;
-	@BeanReference(type = com.liferay.counter.service.CounterLocalService.class)
-	protected com.liferay.counter.service.CounterLocalService counterLocalService;
+	@BeanReference(type = com.liferay.portal.kernel.counter.service.CounterLocalService.class)
+	protected com.liferay.portal.kernel.counter.service.CounterLocalService counterLocalService;
 	@BeanReference(type = com.liferay.portal.service.AddressLocalService.class)
 	protected com.liferay.portal.service.AddressLocalService addressLocalService;
 	@BeanReference(type = AddressPersistence.class)

@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.counter.model;
+package com.liferay.portal.kernel.counter.model;
 
 import aQute.bnd.annotation.ProviderType;
 

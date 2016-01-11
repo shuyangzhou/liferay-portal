@@ -14,13 +14,13 @@
 
 package com.liferay.counter.service.persistence.impl;
 
-import com.liferay.counter.model.Counter;
 import com.liferay.counter.model.CounterHolder;
 import com.liferay.counter.model.CounterRegister;
 import com.liferay.counter.model.impl.CounterImpl;
-import com.liferay.counter.service.persistence.CounterFinder;
 import com.liferay.portal.kernel.cache.CacheRegistryItem;
 import com.liferay.portal.kernel.concurrent.CompeteLatch;
+import com.liferay.portal.kernel.counter.model.Counter;
+import com.liferay.portal.kernel.counter.service.persistence.CounterFinder;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.dao.orm.LockMode;
 import com.liferay.portal.kernel.dao.orm.ObjectNotFoundException;
