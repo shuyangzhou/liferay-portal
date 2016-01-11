@@ -16,8 +16,8 @@ package com.liferay.counter.model.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.counter.model.Counter;
-import com.liferay.counter.model.CounterModel;
+import com.liferay.portal.kernel.counter.model.Counter;
+import com.liferay.portal.kernel.counter.model.CounterModel;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.util.GetterUtil;

@@ -16,11 +16,11 @@ package com.liferay.counter.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.counter.NoSuchCounterException;
-import com.liferay.counter.model.Counter;
+import com.liferay.portal.kernel.counter.NoSuchCounterException;
+import com.liferay.portal.kernel.counter.model.Counter;
 import com.liferay.counter.model.impl.CounterImpl;
 import com.liferay.counter.model.impl.CounterModelImpl;
-import com.liferay.counter.service.persistence.CounterPersistence;
+import com.liferay.portal.kernel.counter.service.persistence.CounterPersistence;
 
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -57,7 +57,7 @@ import java.util.Set;
  *
  * @author Brian Wing Shun Chan
  * @see CounterPersistence
- * @see com.liferay.counter.service.persistence.CounterUtil
+ * @see com.liferay.portal.kernel.counter.service.persistence.CounterUtil
  * @generated
  */
 @ProviderType

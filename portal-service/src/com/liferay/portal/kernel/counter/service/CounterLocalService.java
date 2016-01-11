@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.counter.service;
+package com.liferay.portal.kernel.counter.service;
 
 import aQute.bnd.annotation.ProviderType;
 
@@ -55,8 +55,8 @@ public interface CounterLocalService extends BaseLocalService,
 	* @return the counter that was added
 	*/
 	@com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
-	public com.liferay.counter.model.Counter addCounter(
-		com.liferay.counter.model.Counter counter);
+	public com.liferay.portal.kernel.counter.model.Counter addCounter(
+		com.liferay.portal.kernel.counter.model.Counter counter);
 
 	/**
 	* Creates a new counter with the primary key. Does not add the counter to the database.
@@ -64,7 +64,7 @@ public interface CounterLocalService extends BaseLocalService,
 	* @param name the primary key for the new counter
 	* @return the new counter
 	*/
-	public com.liferay.counter.model.Counter createCounter(
+	public com.liferay.portal.kernel.counter.model.Counter createCounter(
 		java.lang.String name);
 
 	/**
@@ -74,8 +74,8 @@ public interface CounterLocalService extends BaseLocalService,
 	* @return the counter that was removed
 	*/
 	@com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
-	public com.liferay.counter.model.Counter deleteCounter(
-		com.liferay.counter.model.Counter counter);
+	public com.liferay.portal.kernel.counter.model.Counter deleteCounter(
+		com.liferay.portal.kernel.counter.model.Counter counter);
 
 	/**
 	* Deletes the counter with the primary key from the database. Also notifies the appropriate model listeners.
@@ -85,7 +85,7 @@ public interface CounterLocalService extends BaseLocalService,
 	* @throws PortalException if a counter with the primary key could not be found
 	*/
 	@com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
-	public com.liferay.counter.model.Counter deleteCounter(
+	public com.liferay.portal.kernel.counter.model.Counter deleteCounter(
 		java.lang.String name) throws PortalException;
 
 	/**
@@ -162,7 +162,7 @@ public interface CounterLocalService extends BaseLocalService,
 		com.liferay.portal.kernel.dao.orm.Projection projection);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public com.liferay.counter.model.Counter fetchCounter(java.lang.String name);
+	public com.liferay.portal.kernel.counter.model.Counter fetchCounter(java.lang.String name);
 
 	/**
 	* Returns the counter with the primary key.
@@ -172,7 +172,7 @@ public interface CounterLocalService extends BaseLocalService,
 	* @throws PortalException if a counter with the primary key could not be found
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public com.liferay.counter.model.Counter getCounter(java.lang.String name)
+	public com.liferay.portal.kernel.counter.model.Counter getCounter(java.lang.String name)
 		throws PortalException;
 
 	/**
@@ -187,7 +187,7 @@ public interface CounterLocalService extends BaseLocalService,
 	* @return the range of counters
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.util.List<com.liferay.counter.model.Counter> getCounters(
+	public java.util.List<com.liferay.portal.kernel.counter.model.Counter> getCounters(
 		int start, int end);
 
 	/**
@@ -238,6 +238,6 @@ public interface CounterLocalService extends BaseLocalService,
 	* @return the counter that was updated
 	*/
 	@com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
-	public com.liferay.counter.model.Counter updateCounter(
-		com.liferay.counter.model.Counter counter);
+	public com.liferay.portal.kernel.counter.model.Counter updateCounter(
+		com.liferay.portal.kernel.counter.model.Counter counter);
 }

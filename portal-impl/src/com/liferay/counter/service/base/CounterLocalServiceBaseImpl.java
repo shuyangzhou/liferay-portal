@@ -16,10 +16,10 @@ package com.liferay.counter.service.base;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.counter.model.Counter;
-import com.liferay.counter.service.CounterLocalService;
-import com.liferay.counter.service.persistence.CounterFinder;
-import com.liferay.counter.service.persistence.CounterPersistence;
+import com.liferay.portal.kernel.counter.model.Counter;
+import com.liferay.portal.kernel.counter.service.CounterLocalService;
+import com.liferay.portal.kernel.counter.service.persistence.CounterFinder;
+import com.liferay.portal.kernel.counter.service.persistence.CounterPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -55,7 +55,7 @@ import javax.sql.DataSource;
  *
  * @author Brian Wing Shun Chan
  * @see com.liferay.counter.service.impl.CounterLocalServiceImpl
- * @see com.liferay.counter.service.CounterLocalServiceUtil
+ * @see com.liferay.portal.kernel.counter.service.CounterLocalServiceUtil
  * @generated
  */
 @ProviderType
@@ -374,7 +374,7 @@ public abstract class CounterLocalServiceBaseImpl extends BaseLocalServiceImpl
 		}
 	}
 
-	@BeanReference(type = com.liferay.counter.service.CounterLocalService.class)
+	@BeanReference(type = com.liferay.portal.kernel.counter.service.CounterLocalService.class)
 	protected CounterLocalService counterLocalService;
 	@BeanReference(type = CounterPersistence.class)
 	protected CounterPersistence counterPersistence;

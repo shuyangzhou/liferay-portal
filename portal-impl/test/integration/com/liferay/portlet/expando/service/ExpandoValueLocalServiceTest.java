@@ -14,7 +14,7 @@
 
 package com.liferay.portlet.expando.service;
 
-import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.kernel.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
