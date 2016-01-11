@@ -101,7 +101,7 @@ public class PortletServlet extends HttpServlet {
 		portletRequest.setAttribute(WebKeys.PORTLET_ID, portletId);
 		portletRequest.setAttribute(PORTLET_SERVLET_CONFIG, getServletConfig());
 		portletRequest.setAttribute(PORTLET_SERVLET_REQUEST, request);
-		portletRequest.setAttribute(PORTLET_SERVLET_RESPONSE, response);
+//		portletRequest.setAttribute(PORTLET_SERVLET_RESPONSE, response);
 
 		HttpSession session = request.getSession();
 
