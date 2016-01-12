@@ -554,6 +554,12 @@ public class ServiceBuilder {
 					"The package-path attribute is required");
 			}
 
+			String servicePackagePath = packagePath;
+
+			if (Validator.isNull(servicePackagePath)) {
+				servicePackagePath = packagePath;
+			}
+
 			_outputPath =
 				_implDirName + "/" + StringUtil.replace(packagePath, ".", "/");
 
@@ -604,6 +610,8 @@ public class ServiceBuilder {
 				_testOutputPath += "/" + _portletPackageName;
 
 				_packagePath += "." + _portletPackageName;
+
+				_servicePackagePath += "." + _portletPackageName;
 			}
 			else {
 				_portletShortName = namespaceElement.getText();
@@ -5062,7 +5070,7 @@ public class ServiceBuilder {
 
 		_ejbList.add(
 			new Entity(
-				_packagePath, _portletName, _portletShortName, ejbName,
+				_packagePath, _servicePackagePath, _portletName, _portletShortName, ejbName,
 				humanName, table, alias, uuid, uuidAccessor, localService,
 				remoteService, persistenceClass, finderClass, dataSource,
 				sessionFactory, txManager, cacheEnabled, dynamicUpdateEnabled,
@@ -5266,6 +5274,7 @@ public class ServiceBuilder {
 	private Set<String> _resourceActionModels = new HashSet<>();
 	private String _resourcesDirName;
 	private String _serviceOutputPath;
+	private String _servicePackagePath;
 	private String _springFileName;
 	private String[] _springNamespaces;
 	private String _sqlDirName;
