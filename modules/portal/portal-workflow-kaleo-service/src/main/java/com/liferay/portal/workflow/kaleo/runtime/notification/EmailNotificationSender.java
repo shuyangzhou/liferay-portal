@@ -14,8 +14,8 @@
 
 package com.liferay.portal.workflow.kaleo.runtime.notification;
 
-import com.liferay.mail.service.MailServiceUtil;
 import com.liferay.portal.kernel.mail.MailMessage;
+import com.liferay.portal.kernel.mail.service.MailServiceUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.workflow.kaleo.definition.NotificationReceptionType;

@@ -14,9 +14,10 @@
 
 package com.liferay.mail.util;
 
-import com.liferay.mail.model.Filter;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.mail.model.Filter;
+import com.liferay.portal.kernel.mail.util.Hook;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;

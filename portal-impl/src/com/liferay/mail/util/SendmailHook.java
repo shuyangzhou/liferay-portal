@@ -14,10 +14,11 @@
 
 package com.liferay.mail.util;
 
-import com.liferay.mail.model.Filter;
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.mail.model.Filter;
+import com.liferay.portal.kernel.mail.util.Hook;
 import com.liferay.portal.kernel.process.ProcessUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.ListUtil;

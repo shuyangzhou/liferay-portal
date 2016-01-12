@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.mail.model;
+package com.liferay.portal.kernel.mail.model;
 
 import java.io.File;
 

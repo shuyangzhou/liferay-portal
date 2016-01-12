@@ -176,7 +176,7 @@ public abstract class JournalArticleServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the mail remote service
 	 */
-	public com.liferay.mail.service.MailService getMailService() {
+	public com.liferay.portal.kernel.mail.service.MailService getMailService() {
 		return mailService;
 	}
 
@@ -185,7 +185,7 @@ public abstract class JournalArticleServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @param mailService the mail remote service
 	 */
-	public void setMailService(com.liferay.mail.service.MailService mailService) {
+	public void setMailService(com.liferay.portal.kernel.mail.service.MailService mailService) {
 		this.mailService = mailService;
 	}
 
@@ -1362,8 +1362,8 @@ public abstract class JournalArticleServiceBaseImpl extends BaseServiceImpl
 	protected JournalArticleFinder journalArticleFinder;
 	@ServiceReference(type = com.liferay.counter.service.CounterLocalService.class)
 	protected com.liferay.counter.service.CounterLocalService counterLocalService;
-	@ServiceReference(type = com.liferay.mail.service.MailService.class)
-	protected com.liferay.mail.service.MailService mailService;
+	@ServiceReference(type = com.liferay.portal.kernel.mail.service.MailService.class)
+	protected com.liferay.portal.kernel.mail.service.MailService mailService;
 	@ServiceReference(type = com.liferay.portal.service.ClassNameLocalService.class)
 	protected com.liferay.portal.service.ClassNameLocalService classNameLocalService;
 	@ServiceReference(type = com.liferay.portal.service.ClassNameService.class)
