@@ -12,118 +12,47 @@
  * details.
  */
 
-package com.liferay.counter.service.persistence;
+package com.liferay.portal.kernel.counter.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.counter.model.Counter;
+import com.liferay.portal.kernel.counter.model.Counter;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-import com.liferay.portal.kernel.dao.orm.DynamicQuery;
-import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.ReferenceRegistry;
-import com.liferay.portal.service.ServiceContext;
-
-import java.util.List;
+import com.liferay.portal.service.persistence.BasePersistence;
 
 /**
- * The persistence utility for the counter service. This utility wraps {@link com.liferay.counter.service.persistence.impl.CounterPersistenceImpl} and provides direct access to the database for CRUD operations. This utility should only be used by the service layer, as it must operate within a transaction. Never access this utility in a JSP, controller, model, or other front-end class.
+ * The persistence interface for the counter service.
  *
  * <p>
  * Caching information and settings can be found in <code>portal.properties</code>
  * </p>
  *
  * @author Brian Wing Shun Chan
- * @see CounterPersistence
  * @see com.liferay.counter.service.persistence.impl.CounterPersistenceImpl
+ * @see CounterUtil
  * @generated
  */
 @ProviderType
-public class CounterUtil {
+public interface CounterPersistence extends BasePersistence<Counter> {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this class directly. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify or reference this interface directly. Always use {@link CounterUtil} to access the counter persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
-
-	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache()
-	 */
-	public static void clearCache() {
-		getPersistence().clearCache();
-	}
-
-	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache(com.liferay.portal.model.BaseModel)
-	 */
-	public static void clearCache(Counter counter) {
-		getPersistence().clearCache(counter);
-	}
-
-	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
-	 */
-	public static long countWithDynamicQuery(DynamicQuery dynamicQuery) {
-		return getPersistence().countWithDynamicQuery(dynamicQuery);
-	}
-
-	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
-	 */
-	public static List<Counter> findWithDynamicQuery(DynamicQuery dynamicQuery) {
-		return getPersistence().findWithDynamicQuery(dynamicQuery);
-	}
-
-	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
-	 */
-	public static List<Counter> findWithDynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end) {
-		return getPersistence().findWithDynamicQuery(dynamicQuery, start, end);
-	}
-
-	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
-	 */
-	public static List<Counter> findWithDynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator<Counter> orderByComparator) {
-		return getPersistence()
-				   .findWithDynamicQuery(dynamicQuery, start, end,
-			orderByComparator);
-	}
-
-	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
-	 */
-	public static Counter update(Counter counter) {
-		return getPersistence().update(counter);
-	}
-
-	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
-	 */
-	public static Counter update(Counter counter, ServiceContext serviceContext) {
-		return getPersistence().update(counter, serviceContext);
-	}
 
 	/**
 	* Caches the counter in the entity cache if it is enabled.
 	*
 	* @param counter the counter
 	*/
-	public static void cacheResult(Counter counter) {
-		getPersistence().cacheResult(counter);
-	}
+	public void cacheResult(Counter counter);
 
 	/**
 	* Caches the counters in the entity cache if it is enabled.
 	*
 	* @param counters the counters
 	*/
-	public static void cacheResult(List<Counter> counters) {
-		getPersistence().cacheResult(counters);
-	}
+	public void cacheResult(java.util.List<Counter> counters);
 
 	/**
 	* Creates a new counter with the primary key. Does not add the counter to the database.
@@ -131,9 +60,7 @@ public class CounterUtil {
 	* @param name the primary key for the new counter
 	* @return the new counter
 	*/
-	public static Counter create(java.lang.String name) {
-		return getPersistence().create(name);
-	}
+	public Counter create(java.lang.String name);
 
 	/**
 	* Removes the counter with the primary key from the database. Also notifies the appropriate model listeners.
@@ -142,14 +69,10 @@ public class CounterUtil {
 	* @return the counter that was removed
 	* @throws NoSuchCounterException if a counter with the primary key could not be found
 	*/
-	public static Counter remove(java.lang.String name)
-		throws com.liferay.counter.NoSuchCounterException {
-		return getPersistence().remove(name);
-	}
+	public Counter remove(java.lang.String name)
+		throws com.liferay.portal.kernel.counter.NoSuchCounterException;
 
-	public static Counter updateImpl(Counter counter) {
-		return getPersistence().updateImpl(counter);
-	}
+	public Counter updateImpl(Counter counter);
 
 	/**
 	* Returns the counter with the primary key or throws a {@link NoSuchCounterException} if it could not be found.
@@ -158,10 +81,8 @@ public class CounterUtil {
 	* @return the counter
 	* @throws NoSuchCounterException if a counter with the primary key could not be found
 	*/
-	public static Counter findByPrimaryKey(java.lang.String name)
-		throws com.liferay.counter.NoSuchCounterException {
-		return getPersistence().findByPrimaryKey(name);
-	}
+	public Counter findByPrimaryKey(java.lang.String name)
+		throws com.liferay.portal.kernel.counter.NoSuchCounterException;
 
 	/**
 	* Returns the counter with the primary key or returns <code>null</code> if it could not be found.
@@ -169,23 +90,18 @@ public class CounterUtil {
 	* @param name the primary key of the counter
 	* @return the counter, or <code>null</code> if a counter with the primary key could not be found
 	*/
-	public static Counter fetchByPrimaryKey(java.lang.String name) {
-		return getPersistence().fetchByPrimaryKey(name);
-	}
+	public Counter fetchByPrimaryKey(java.lang.String name);
 
-	public static java.util.Map<java.io.Serializable, Counter> fetchByPrimaryKeys(
-		java.util.Set<java.io.Serializable> primaryKeys) {
-		return getPersistence().fetchByPrimaryKeys(primaryKeys);
-	}
+	@Override
+	public java.util.Map<java.io.Serializable, Counter> fetchByPrimaryKeys(
+		java.util.Set<java.io.Serializable> primaryKeys);
 
 	/**
 	* Returns all the counters.
 	*
 	* @return the counters
 	*/
-	public static List<Counter> findAll() {
-		return getPersistence().findAll();
-	}
+	public java.util.List<Counter> findAll();
 
 	/**
 	* Returns a range of all the counters.
@@ -198,9 +114,7 @@ public class CounterUtil {
 	* @param end the upper bound of the range of counters (not inclusive)
 	* @return the range of counters
 	*/
-	public static List<Counter> findAll(int start, int end) {
-		return getPersistence().findAll(start, end);
-	}
+	public java.util.List<Counter> findAll(int start, int end);
 
 	/**
 	* Returns an ordered range of all the counters.
@@ -214,10 +128,8 @@ public class CounterUtil {
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of counters
 	*/
-	public static List<Counter> findAll(int start, int end,
-		OrderByComparator<Counter> orderByComparator) {
-		return getPersistence().findAll(start, end, orderByComparator);
-	}
+	public java.util.List<Counter> findAll(int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<Counter> orderByComparator);
 
 	/**
 	* Returns an ordered range of all the counters.
@@ -232,38 +144,19 @@ public class CounterUtil {
 	* @param retrieveFromCache whether to retrieve from the finder cache
 	* @return the ordered range of counters
 	*/
-	public static List<Counter> findAll(int start, int end,
-		OrderByComparator<Counter> orderByComparator, boolean retrieveFromCache) {
-		return getPersistence()
-				   .findAll(start, end, orderByComparator, retrieveFromCache);
-	}
+	public java.util.List<Counter> findAll(int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<Counter> orderByComparator,
+		boolean retrieveFromCache);
 
 	/**
 	* Removes all the counters from the database.
 	*/
-	public static void removeAll() {
-		getPersistence().removeAll();
-	}
+	public void removeAll();
 
 	/**
 	* Returns the number of counters.
 	*
 	* @return the number of counters
 	*/
-	public static int countAll() {
-		return getPersistence().countAll();
-	}
-
-	public static CounterPersistence getPersistence() {
-		if (_persistence == null) {
-			_persistence = (CounterPersistence)PortalBeanLocatorUtil.locate(CounterPersistence.class.getName());
-
-			ReferenceRegistry.registerReference(CounterUtil.class,
-				"_persistence");
-		}
-
-		return _persistence;
-	}
-
-	private static CounterPersistence _persistence;
+	public int countAll();
 }

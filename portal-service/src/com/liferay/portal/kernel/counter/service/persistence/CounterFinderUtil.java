@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.counter.service.persistence;
+package com.liferay.portal.kernel.counter.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
