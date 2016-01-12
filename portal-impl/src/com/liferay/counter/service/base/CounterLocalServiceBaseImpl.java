@@ -64,7 +64,7 @@ public abstract class CounterLocalServiceBaseImpl extends BaseLocalServiceImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use {@link com.liferay.counter.service.CounterLocalServiceUtil} to access the counter local service.
+	 * Never modify or reference this class directly. Always use {@link com.liferay.portal.kernel.counter.service.CounterLocalServiceUtil} to access the counter local service.
 	 */
 
 	/**
@@ -323,13 +323,13 @@ public abstract class CounterLocalServiceBaseImpl extends BaseLocalServiceImpl
 	}
 
 	public void afterPropertiesSet() {
-		persistedModelLocalServiceRegistry.register("com.liferay.counter.model.Counter",
+		persistedModelLocalServiceRegistry.register("com.liferay.portal.kernel.counter.model.Counter",
 			counterLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
-			"com.liferay.counter.model.Counter");
+			"com.liferay.portal.kernel.counter.model.Counter");
 	}
 
 	/**

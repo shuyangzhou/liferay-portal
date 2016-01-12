@@ -22,7 +22,7 @@
 		<hint name="year-nullable">true</hint>
 		<hint name="show-time">false</hint>
 	</hint-collection>
-	<model name="com.liferay.counter.model.Counter">
+	<model name="com.liferay.portal.kernel.counter.model.Counter">
 		<field name="name" type="String" />
 		<field name="currentId" type="long" />
 	</model>
