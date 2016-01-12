@@ -14,7 +14,7 @@
 
 package com.liferay.portal.ldap.internal.portal.settings.web.portlet.action;
 
-import com.liferay.counter.service.CounterLocalService;
+import com.liferay.portal.kernel.counter.service.CounterLocalService;
 import com.liferay.portal.kernel.ldap.DuplicateLDAPServerNameException;
 import com.liferay.portal.kernel.ldap.LDAPFilterException;
 import com.liferay.portal.kernel.ldap.LDAPServerNameException;

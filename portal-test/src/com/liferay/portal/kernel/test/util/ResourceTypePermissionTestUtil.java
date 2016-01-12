@@ -14,7 +14,7 @@
 
 package com.liferay.portal.kernel.test.util;
 
-import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.kernel.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.model.ResourceTypePermission;
 import com.liferay.portal.service.ResourceTypePermissionLocalServiceUtil;
 

@@ -2109,7 +2109,7 @@ public class ServiceBuilder {
 
 	private void _createFinderBaseImpl(Entity entity) throws Exception {
 		if (!entity.hasFinderClass() ||
-			_packagePath.equals("com.liferay.counter")) {
+			_packagePath.equals("com.liferay.portal.kernel.counter")) {
 
 			_removeFinderBaseImpl(entity);
 
@@ -3129,7 +3129,7 @@ public class ServiceBuilder {
 	}
 
 	private void _createSpringXml() throws Exception {
-		if (_packagePath.equals("com.liferay.counter")) {
+		if (_packagePath.equals("com.liferay.portal.kernel.counter")) {
 			return;
 		}
 
@@ -5026,8 +5026,8 @@ public class ServiceBuilder {
 				referenceSet.add(referencePackage + "." + referenceEntity);
 			}
 
-			if (!_packagePath.equals("com.liferay.counter")) {
-				referenceSet.add("com.liferay.counter.Counter");
+			if (!_packagePath.equals("com.liferay.portal.kernel.counter")) {
+				referenceSet.add("com.liferay.portal.kernel.counter.Counter");
 			}
 
 			if (_autoImportDefaultReferences) {
