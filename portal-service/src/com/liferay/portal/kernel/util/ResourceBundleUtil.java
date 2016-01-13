@@ -120,8 +120,7 @@ public class ResourceBundleUtil {
 			}
 
 			if (currentResourceBundles.size() == 1) {
-				resourceBundles.put(
-					currentLanguageId, currentResourceBundles.peek());
+				resourceBundles.put(currentLanguageId, resourceBundle);
 			}
 			else {
 				int size = currentResourceBundles.size();
