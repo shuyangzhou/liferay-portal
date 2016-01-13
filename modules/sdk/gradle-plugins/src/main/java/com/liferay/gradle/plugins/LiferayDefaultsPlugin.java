@@ -16,6 +16,7 @@ package com.liferay.gradle.plugins;
 
 import aQute.bnd.osgi.Constants;
 
+import com.liferay.gradle.plugins.change.log.builder.ChangeLogBuilderPlugin;
 import com.liferay.gradle.plugins.extensions.LiferayExtension;
 import com.liferay.gradle.plugins.node.tasks.PublishNodeModuleTask;
 import com.liferay.gradle.plugins.patcher.PatchTask;
@@ -109,6 +110,9 @@ import org.gradle.plugins.ide.idea.model.IdeaModule;
 public class LiferayDefaultsPlugin extends BaseDefaultsPlugin<LiferayPlugin> {
 
 	public static final String COPY_LIBS_TASK_NAME = "copyLibs";
+
+	public static final String DEFAULT_REPOSITORY_URL =
+		"http://cdn.repository.liferay.com/nexus/content/groups/public";
 
 	public static final String JAR_SOURCES_TASK_NAME = "jarSources";
 
@@ -279,6 +283,7 @@ public class LiferayDefaultsPlugin extends BaseDefaultsPlugin<LiferayPlugin> {
 	}
 
 	protected void applyPlugins(Project project) {
+		GradleUtil.applyPlugin(project, ChangeLogBuilderPlugin.class);
 		GradleUtil.applyPlugin(project, EclipsePlugin.class);
 		GradleUtil.applyPlugin(project, FindBugsPlugin.class);
 		GradleUtil.applyPlugin(project, IdeaPlugin.class);
@@ -987,8 +992,7 @@ public class LiferayDefaultsPlugin extends BaseDefaultsPlugin<LiferayPlugin> {
 		"maven.local.ignore");
 
 	private static final String _REPOSITORY_URL = System.getProperty(
-		"repository.url",
-		"http://cdn.repository.liferay.com/nexus/content/groups/public");
+		"repository.url", DEFAULT_REPOSITORY_URL);
 
 	private static final String _SNAPSHOT_PROPERTY_NAME = "snapshot";
 

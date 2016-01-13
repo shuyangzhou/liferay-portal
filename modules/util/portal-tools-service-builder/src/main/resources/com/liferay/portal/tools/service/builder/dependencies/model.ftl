@@ -1,7 +1,7 @@
-package ${packagePath}.model;
+package ${servicePackagePath}.model;
 
 <#if entity.hasCompoundPK()>
-	import ${packagePath}.service.persistence.${entity.name}PK;
+	import ${servicePackagePath}.service.persistence.${entity.name}PK;
 </#if>
 
 import aQute.bnd.annotation.ProviderType;
@@ -187,7 +187,7 @@ public interface ${entity.name}Model extends
 
 		<#assign autoEscape = true>
 
-		<#assign modelName = packagePath + ".model." + entity.name>
+		<#assign modelName = servicePackagePath + ".model." + entity.name>
 
 		<#if modelHintsUtil.getHints(modelName, column.name)??>
 			<#assign hints = modelHintsUtil.getHints(modelName, column.name)>
@@ -587,19 +587,19 @@ public interface ${entity.name}Model extends
 	public Object clone();
 
 	@Override
-	public int compareTo(${packagePath}.model.${entity.name} ${entity.varName});
+	public int compareTo(${servicePackagePath}.model.${entity.name} ${entity.varName});
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<${packagePath}.model.${entity.name}> toCacheModel();
+	public CacheModel<${servicePackagePath}.model.${entity.name}> toCacheModel();
 
 	@Override
-	public ${packagePath}.model.${entity.name} toEscapedModel();
+	public ${servicePackagePath}.model.${entity.name} toEscapedModel();
 
 	@Override
-	public ${packagePath}.model.${entity.name} toUnescapedModel();
+	public ${servicePackagePath}.model.${entity.name} toUnescapedModel();
 
 	@Override
 	public String toString();

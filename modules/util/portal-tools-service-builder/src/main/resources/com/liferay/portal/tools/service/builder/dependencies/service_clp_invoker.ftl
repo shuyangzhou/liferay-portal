@@ -1,6 +1,6 @@
-package ${packagePath}.service.base;
+package ${servicePackagePath}.service.base;
 
-import ${packagePath}.service.${entity.name}${sessionTypeName}ServiceUtil;
+import ${servicePackagePath}.service.${entity.name}${sessionTypeName}ServiceUtil;
 
 import aQute.bnd.annotation.ProviderType;
 

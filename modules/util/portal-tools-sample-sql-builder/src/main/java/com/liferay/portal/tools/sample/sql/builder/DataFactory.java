@@ -15,8 +15,6 @@
 package com.liferay.portal.tools.sample.sql.builder;
 
 import com.liferay.blogs.web.constants.BlogsPortletKeys;
-import com.liferay.counter.model.Counter;
-import com.liferay.counter.model.CounterModel;
 import com.liferay.counter.model.impl.CounterModelImpl;
 import com.liferay.document.library.web.constants.DLPortletKeys;
 import com.liferay.dynamic.data.lists.constants.DDLPortletKeys;
@@ -62,6 +60,8 @@ import com.liferay.journal.model.impl.JournalContentSearchModelImpl;
 import com.liferay.journal.social.JournalActivityKeys;
 import com.liferay.login.web.constants.LoginPortletKeys;
 import com.liferay.message.boards.web.constants.MBPortletKeys;
+import com.liferay.portal.kernel.counter.model.Counter;
+import com.liferay.portal.kernel.counter.model.CounterModel;
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
 import com.liferay.portal.kernel.metadata.RawMetadataProcessor;
 import com.liferay.portal.kernel.template.TemplateConstants;

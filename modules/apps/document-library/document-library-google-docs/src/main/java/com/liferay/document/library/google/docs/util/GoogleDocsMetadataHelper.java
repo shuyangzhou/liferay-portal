@@ -14,7 +14,6 @@
 
 package com.liferay.document.library.google.docs.util;
 
-import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.dynamic.data.mapping.storage.Field;
@@ -22,6 +21,7 @@ import com.liferay.dynamic.data.mapping.storage.Fields;
 import com.liferay.dynamic.data.mapping.storage.StorageEngine;
 import com.liferay.dynamic.data.mapping.util.DDMFormValuesToFieldsConverterUtil;
 import com.liferay.dynamic.data.mapping.util.FieldsToDDMFormValuesConverterUtil;
+import com.liferay.portal.kernel.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.service.ServiceContext;

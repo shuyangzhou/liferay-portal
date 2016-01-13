@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping default-lazy="false" auto-import="false">
-	<import class="com.liferay.counter.model.Counter" />
+	<import class="com.liferay.portal.kernel.counter.model.Counter" />
 	<import class="com.liferay.portal.model.Account" />
 	<import class="com.liferay.portal.model.Address" />
 	<import class="com.liferay.portal.model.BrowserTracker" />
@@ -128,6 +128,13 @@
 	<import class="com.liferay.portlet.social.model.SocialRequestInterpreter" />
 	<import class="com.liferay.portlet.trash.model.TrashEntry" />
 	<import class="com.liferay.portlet.trash.model.TrashVersion" />
+	<import class="com.liferay.portal.kernel.counter.model.Counter" />
+	<import class="com.liferay.portal.kernel.counter.model.Counter" />
+	<import class="com.liferay.portal.kernel.counter.model.Counter" />
+	<import class="com.liferay.portal.kernel.counter.model.Counter" />
+	<import class="com.liferay.portal.kernel.counter.model.Counter" />
+	<import class="com.liferay.portal.kernel.counter.model.Counter" />
+	<import class="com.liferay.portal.kernel.counter.model.Counter" />
 	<class name="com.liferay.counter.model.impl.CounterImpl" table="Counter">
 		<id name="name" type="java.lang.String">
 			<generator class="assigned" />

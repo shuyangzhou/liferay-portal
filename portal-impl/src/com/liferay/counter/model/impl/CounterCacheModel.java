@@ -16,8 +16,7 @@ package com.liferay.counter.model.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.counter.model.Counter;
-
+import com.liferay.portal.kernel.counter.model.Counter;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;

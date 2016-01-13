@@ -554,6 +554,19 @@ public class ServiceBuilder {
 					"The package-path attribute is required");
 			}
 
+			Boolean splitPaths = GetterUtil.getBoolean(
+				rootElement.attributeValue("split-paths"), false);
+
+			String servicePackagePath;
+
+			if (splitPaths) {
+				servicePackagePath = StringUtil.replace(
+					packagePath, "com.liferay", "com.liferay.portal.kernel");
+			}
+			else {
+				servicePackagePath = packagePath;
+			}
+
 			_outputPath =
 				_implDirName + "/" + StringUtil.replace(packagePath, ".", "/");
 
@@ -604,6 +617,8 @@ public class ServiceBuilder {
 				_testOutputPath += "/" + _portletPackageName;
 
 				_packagePath += "." + _portletPackageName;
+
+				_servicePackagePath += "." + _portletPackageName;
 			}
 			else {
 				_portletShortName = namespaceElement.getText();
@@ -3843,6 +3858,7 @@ public class ServiceBuilder {
 		context.put("propsUtil", _propsUtil);
 		context.put("serviceBuilder", this);
 		context.put("serviceOutputPath", _serviceOutputPath);
+		context.put("servicePackagePath", _servicePackagePath);
 		context.put("springFileName", _springFileName);
 		context.put("sqlDir", _sqlDirName);
 		context.put("sqlFileName", _sqlFileName);
@@ -4655,7 +4671,7 @@ public class ServiceBuilder {
 			sb.append(
 				"package " + _packagePath + ".service.persistence.impl;\n\n");
 			sb.append(
-				"import " + _packagePath + ".service.persistence." + ejbName +
+				"import " + _servicePackagePath + ".service.persistence." + ejbName +
 					"Finder;\n");
 			sb.append(
 				"import " + _packagePath + ".service.persistence." + ejbName +
@@ -5062,7 +5078,7 @@ public class ServiceBuilder {
 
 		_ejbList.add(
 			new Entity(
-				_packagePath, _portletName, _portletShortName, ejbName,
+				_packagePath, _servicePackagePath, _portletName, _portletShortName, ejbName,
 				humanName, table, alias, uuid, uuidAccessor, localService,
 				remoteService, persistenceClass, finderClass, dataSource,
 				sessionFactory, txManager, cacheEnabled, dynamicUpdateEnabled,
@@ -5266,6 +5282,7 @@ public class ServiceBuilder {
 	private Set<String> _resourceActionModels = new HashSet<>();
 	private String _resourcesDirName;
 	private String _serviceOutputPath;
+	private String _servicePackagePath;
 	private String _springFileName;
 	private String[] _springNamespaces;
 	private String _sqlDirName;
