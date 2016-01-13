@@ -19,6 +19,8 @@ import com.liferay.portal.kernel.language.UTF8Control;
 import java.text.MessageFormat;
 
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -97,38 +99,37 @@ public class ResourceBundleUtil {
 
 		String languageId = LocaleUtil.toLanguageId(locale);
 
-		String[] languageIdParts = languageId.split("_");
+		loadResourceBundles(resourceBundles, languageId, resourceBundleLoader);
+	}
 
-		if (ArrayUtil.isEmpty(languageIdParts)) {
-			return;
-		}
+	public static void loadResourceBundles(
+		Map<String, ResourceBundle> resourceBundles, String languageId,
+		ResourceBundleLoader resourceBundleLoader) {
 
-		String currentLanguageId = StringPool.BLANK;
-		List<ResourceBundle> currentResourceBundles = new ArrayList<>();
+		Deque<ResourceBundle> currentResourceBundles = new LinkedList<>();
 
-		for (int i = 0; i < languageIdParts.length; i++) {
-			if ( i > 0 ) {
-				currentLanguageId += "_";
-			}
-
-			currentLanguageId += languageIdParts[i];
-
+		for (String currentLanguageId : _getLanguageIds(languageId)) {
 			ResourceBundle resourceBundle =
 				resourceBundleLoader.loadResourceBundle(currentLanguageId);
 
-			if (resourceBundle != null) {
-				currentResourceBundles.add(resourceBundle);
-			}
-
-			if (currentResourceBundles.isEmpty()) {
+			if (resourceBundle == null) {
 				continue;
 			}
 
-			resourceBundles.put(
-				currentLanguageId,
-				new AggregateResourceBundle(
-					currentResourceBundles.toArray(
-						new ResourceBundle[currentResourceBundles.size()])));
+			currentResourceBundles.addFirst(resourceBundle);
+
+			if (currentResourceBundles.size() == 1) {
+				resourceBundles.put(currentLanguageId, resourceBundle);
+			}
+			else {
+				int size = currentResourceBundles.size();
+
+				resourceBundles.put(
+					currentLanguageId,
+					new AggregateResourceBundle(
+						currentResourceBundles.toArray(
+							new ResourceBundle[size])));
+			}
 		}
 	}
 
@@ -136,6 +137,24 @@ public class ResourceBundleUtil {
 
 		public ResourceBundle loadResourceBundle(String languageId);
 
+	}
+
+	private static List<String> _getLanguageIds(String languageId) {
+		List<String> languageIds = new ArrayList<>();
+
+		languageIds.add(StringPool.BLANK);
+
+		int index = 0;
+
+		while ((index = languageId.indexOf(CharPool.UNDERLINE, index + 1)) !=
+					-1) {
+
+			languageIds.add(languageId.substring(0, index));
+		}
+
+		languageIds.add(languageId);
+
+		return languageIds;
 	}
 
 }
