@@ -112,12 +112,11 @@ public class ResourceBundleUtil {
 			ResourceBundle resourceBundle =
 				resourceBundleLoader.loadResourceBundle(currentLanguageId);
 
-			if (resourceBundle != null) {
-				currentResourceBundles.addFirst(resourceBundle);
-			}
-			else {
+			if (resourceBundle == null) {
 				continue;
 			}
+
+			currentResourceBundles.addFirst(resourceBundle);
 
 			if (currentResourceBundles.size() == 1) {
 				resourceBundles.put(currentLanguageId, resourceBundle);
