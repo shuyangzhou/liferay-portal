@@ -1,7 +1,7 @@
 <#include "copyright.txt" parse="false">
 
 
-<#if osgiModule>package ${packagePath}.exception;<#else>package ${packagePath};</#if>
+<#if osgiModule>package ${servicePackagePath}.exception;<#else>package ${servicePackagePath};</#if>
 
 import aQute.bnd.annotation.ProviderType;
 

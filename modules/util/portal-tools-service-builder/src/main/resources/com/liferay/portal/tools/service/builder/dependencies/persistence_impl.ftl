@@ -15,18 +15,18 @@ package ${packagePath}.service.persistence.impl;
 <#assign noSuchEntity = serviceBuilder.getNoSuchEntityException(entity)>
 
 <#if osgiModule>
-	import ${packagePath}.exception.${noSuchEntity}Exception;
+	import ${servicePackagePath}.exception.${noSuchEntity}Exception;
 <#else>
-	import ${packagePath}.${noSuchEntity}Exception;
+	import ${servicePackagePath}.${noSuchEntity}Exception;
 </#if>
 
-import ${packagePath}.model.${entity.name};
+import ${servicePackagePath}.model.${entity.name};
 import ${packagePath}.model.impl.${entity.name}Impl;
 import ${packagePath}.model.impl.${entity.name}ModelImpl;
-import ${packagePath}.service.persistence.${entity.name}Persistence;
+import ${servicePackagePath}.service.persistence.${entity.name}Persistence;
 
 <#if entity.hasCompoundPK()>
-	import ${packagePath}.service.persistence.${entity.PKClassName};
+	import ${servicePackagePath}.service.persistence.${entity.PKClassName};
 </#if>
 
 import aQute.bnd.annotation.ProviderType;
@@ -102,7 +102,7 @@ import java.util.Set;
 
 <#list referenceList as tempEntity>
 	<#if tempEntity.hasColumns() && (entity.name == "Counter" || tempEntity.name != "Counter")>
-		import ${tempEntity.packagePath}.service.persistence.${tempEntity.name}Persistence;
+		import ${tempEntity.servicePackagePath}.service.persistence.${tempEntity.name}Persistence;
 	</#if>
 </#list>
 
@@ -115,7 +115,7 @@ import java.util.Set;
  *
  * @author ${author}
  * @see ${entity.name}Persistence
- * @see ${packagePath}.service.persistence.${entity.name}Util
+ * @see ${servicePackagePath}.service.persistence.${entity.name}Util
 <#if classDeprecated>
  * @deprecated ${classDeprecatedComment}
 </#if>
@@ -426,7 +426,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 	 *
 	 * @param ${entity.PKVarName} the primary key of the ${entity.humanName}
 	 * @return the ${entity.humanName} that was removed
-	 * @throws ${packagePath}.${noSuchEntity}Exception if a ${entity.humanName} with the primary key could not be found
+	 * @throws ${servicePackagePath}.${noSuchEntity}Exception if a ${entity.humanName} with the primary key could not be found
 	 */
 	@Override
 	public ${entity.name} remove(${entity.PKClassName} ${entity.PKVarName}) throws ${noSuchEntity}Exception {
@@ -438,7 +438,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 	 *
 	 * @param primaryKey the primary key of the ${entity.humanName}
 	 * @return the ${entity.humanName} that was removed
-	 * @throws ${packagePath}.${noSuchEntity}Exception if a ${entity.humanName} with the primary key could not be found
+	 * @throws ${servicePackagePath}.${noSuchEntity}Exception if a ${entity.humanName} with the primary key could not be found
 	 */
 	@Override
 	public ${entity.name} remove(Serializable primaryKey) throws ${noSuchEntity}Exception {
@@ -524,7 +524,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 	}
 
 	@Override
-	public ${entity.name} updateImpl(${packagePath}.model.${entity.name} ${entity.varName}) {
+	public ${entity.name} updateImpl(${servicePackagePath}.model.${entity.name} ${entity.varName}) {
 		${entity.varName} = toUnwrappedModel(${entity.varName});
 
 		boolean isNew = ${entity.varName}.isNew();
@@ -591,7 +591,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 			}
 		</#if>
 
-		<#assign sanitizeTuples = modelHintsUtil.getSanitizeTuples("${packagePath}.model.${entity.name}")>
+		<#assign sanitizeTuples = modelHintsUtil.getSanitizeTuples("${servicePackagePath}.model.${entity.name}")>
 
 		<#if sanitizeTuples?size != 0>
 			long userId = GetterUtil.getLong(PrincipalThreadLocal.getName());
@@ -641,7 +641,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 							<#assign modes = "StringUtil.split(\"" + sanitizeTuple.getObject(2) + "\")">
 						</#if>
 
-						${entity.varName}.set${colMethodName}(SanitizerUtil.sanitize(companyId, groupId, userId, ${packagePath}.model.${entity.name}.class.getName(), ${entity.PKVarName}, ${contentType}, ${modes}, ${entity.varName}.get${colMethodName}(), null));
+						${entity.varName}.set${colMethodName}(SanitizerUtil.sanitize(companyId, groupId, userId, ${servicePackagePath}.model.${entity.name}.class.getName(), ${entity.PKVarName}, ${contentType}, ${modes}, ${entity.varName}.get${colMethodName}(), null));
 					</#list>
 				}
 				catch (SanitizerException se) {
@@ -821,7 +821,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 	 *
 	 * @param primaryKey the primary key of the ${entity.humanName}
 	 * @return the ${entity.humanName}
-	 * @throws ${packagePath}.${noSuchEntity}Exception if a ${entity.humanName} with the primary key could not be found
+	 * @throws ${servicePackagePath}.${noSuchEntity}Exception if a ${entity.humanName} with the primary key could not be found
 	 */
 	@Override
 	public ${entity.name} findByPrimaryKey(Serializable primaryKey) throws ${noSuchEntity}Exception {
@@ -839,11 +839,11 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 	}
 
 	/**
-	 * Returns the ${entity.humanName} with the primary key or throws a {@link ${packagePath}.${noSuchEntity}Exception} if it could not be found.
+	 * Returns the ${entity.humanName} with the primary key or throws a {@link ${servicePackagePath}.${noSuchEntity}Exception} if it could not be found.
 	 *
 	 * @param ${entity.PKVarName} the primary key of the ${entity.humanName}
 	 * @return the ${entity.humanName}
-	 * @throws ${packagePath}.${noSuchEntity}Exception if a ${entity.humanName} with the primary key could not be found
+	 * @throws ${servicePackagePath}.${noSuchEntity}Exception if a ${entity.humanName} with the primary key could not be found
 	 */
 	@Override
 	public ${entity.name} findByPrimaryKey(${entity.PKClassName} ${entity.PKVarName}) throws ${noSuchEntity}Exception {
@@ -1216,7 +1216,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 			 * @return the ${tempEntity.humanNames} associated with the ${entity.humanName}
 			 */
 			@Override
-			public List<${tempEntity.packagePath}.model.${tempEntity.name}> get${tempEntity.names}(${entity.PKClassName} pk) {
+			public List<${tempEntity.servicePackagePath}.model.${tempEntity.name}> get${tempEntity.names}(${entity.PKClassName} pk) {
 				return get${tempEntity.names}(pk, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 			}
 
@@ -1233,7 +1233,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 			 * @return the range of ${tempEntity.humanNames} associated with the ${entity.humanName}
 			 */
 			@Override
-			public List<${tempEntity.packagePath}.model.${tempEntity.name}> get${tempEntity.names}(${entity.PKClassName} pk, int start, int end) {
+			public List<${tempEntity.servicePackagePath}.model.${tempEntity.name}> get${tempEntity.names}(${entity.PKClassName} pk, int start, int end) {
 				return get${tempEntity.names}(pk, start, end, null);
 			}
 
@@ -1251,7 +1251,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 			 * @return the ordered range of ${tempEntity.humanNames} associated with the ${entity.humanName}
 			 */
 			@Override
-			public List<${tempEntity.packagePath}.model.${tempEntity.name}> get${tempEntity.names}(${entity.PKClassName} pk, int start, int end, OrderByComparator<${tempEntity.packagePath}.model.${tempEntity.name}> orderByComparator) {
+			public List<${tempEntity.servicePackagePath}.model.${tempEntity.name}> get${tempEntity.names}(${entity.PKClassName} pk, int start, int end, OrderByComparator<${tempEntity.servicePackagePath}.model.${tempEntity.name}> orderByComparator) {
 				return ${entity.varName}To${tempEntity.name}TableMapper.getRightBaseModels(pk, start, end, orderByComparator);
 			}
 
@@ -1324,7 +1324,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				 * @param ${tempEntity.varName} the ${tempEntity.humanName}
 				 */
 				@Override
-				public void add${tempEntity.name}(${entity.PKClassName} pk, ${tempEntity.packagePath}.model.${tempEntity.name} ${tempEntity.varName}) {
+				public void add${tempEntity.name}(${entity.PKClassName} pk, ${tempEntity.servicePackagePath}.model.${tempEntity.name} ${tempEntity.varName}) {
 					${entity.name} ${entity.varName} = fetchByPrimaryKey(pk);
 
 					if (${entity.varName} == null) {
@@ -1366,7 +1366,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				 * @param ${tempEntity.varNames} the ${tempEntity.humanNames}
 				 */
 				@Override
-				public void add${tempEntity.names}(${entity.PKClassName} pk, List<${tempEntity.packagePath}.model.${tempEntity.name}> ${tempEntity.varNames}) {
+				public void add${tempEntity.names}(${entity.PKClassName} pk, List<${tempEntity.servicePackagePath}.model.${tempEntity.name}> ${tempEntity.varNames}) {
 					long companyId = 0;
 
 					${entity.name} ${entity.varName} = fetchByPrimaryKey(pk);
@@ -1378,7 +1378,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 						companyId = ${entity.varName}.getCompanyId();
 					}
 
-					for (${tempEntity.packagePath}.model.${tempEntity.name} ${tempEntity.varName} : ${tempEntity.varNames}) {
+					for (${tempEntity.servicePackagePath}.model.${tempEntity.name} ${tempEntity.varName} : ${tempEntity.varNames}) {
 						${entity.varName}To${tempEntity.name}TableMapper.addTableMapping(companyId, pk, ${tempEntity.varName}.getPrimaryKey());
 					}
 				}
@@ -1411,7 +1411,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				 * @param ${tempEntity.varName} the ${tempEntity.humanName}
 				 */
 				@Override
-				public void remove${tempEntity.name}(${entity.PKClassName} pk, ${tempEntity.packagePath}.model.${tempEntity.name} ${tempEntity.varName}) {
+				public void remove${tempEntity.name}(${entity.PKClassName} pk, ${tempEntity.servicePackagePath}.model.${tempEntity.name} ${tempEntity.varName}) {
 					${entity.varName}To${tempEntity.name}TableMapper.deleteTableMapping(pk, ${tempEntity.varName}.getPrimaryKey());
 				}
 
@@ -1435,8 +1435,8 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				 * @param ${tempEntity.varNames} the ${tempEntity.humanNames}
 				 */
 				@Override
-				public void remove${tempEntity.names}(${entity.PKClassName} pk, List<${tempEntity.packagePath}.model.${tempEntity.name}> ${tempEntity.varNames}) {
-					for (${tempEntity.packagePath}.model.${tempEntity.name} ${tempEntity.varName} : ${tempEntity.varNames}) {
+				public void remove${tempEntity.names}(${entity.PKClassName} pk, List<${tempEntity.servicePackagePath}.model.${tempEntity.name}> ${tempEntity.varNames}) {
+					for (${tempEntity.servicePackagePath}.model.${tempEntity.name} ${tempEntity.varName} : ${tempEntity.varNames}) {
 						${entity.varName}To${tempEntity.name}TableMapper.deleteTableMapping(pk, ${tempEntity.varName}.getPrimaryKey());
 					}
 				}
@@ -1485,12 +1485,12 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				 * @param ${tempEntity.varNames} the ${tempEntity.humanNames} to be associated with the ${entity.humanName}
 				 */
 				@Override
-				public void set${tempEntity.names}(${entity.PKClassName} pk, List<${tempEntity.packagePath}.model.${tempEntity.name}> ${tempEntity.varNames}) {
+				public void set${tempEntity.names}(${entity.PKClassName} pk, List<${tempEntity.servicePackagePath}.model.${tempEntity.name}> ${tempEntity.varNames}) {
 					try {
 						${tempEntity.PKClassName}[] ${tempEntity.varName}PKs = new ${tempEntity.PKClassName}[${tempEntity.varNames}.size()];
 
 						for (int i = 0; i < ${tempEntity.varNames}.size(); i++) {
-							${tempEntity.packagePath}.model.${tempEntity.name} ${tempEntity.varName} = ${tempEntity.varNames}.get(i);
+							${tempEntity.servicePackagePath}.model.${tempEntity.name} ${tempEntity.varName} = ${tempEntity.varNames}.get(i);
 
 							${tempEntity.varName}PKs[i] = ${tempEntity.varName}.getPrimaryKey();
 						}
@@ -1806,7 +1806,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 
 			@BeanReference(type = ${tempEntity.name}Persistence.class)
 			protected ${tempEntity.name}Persistence ${tempEntity.varName}Persistence;
-			protected TableMapper<${entity.name}, ${tempEntity.packagePath}.model.${tempEntity.name}> ${entity.varName}To${tempEntity.name}TableMapper;
+			protected TableMapper<${entity.name}, ${tempEntity.servicePackagePath}.model.${tempEntity.name}> ${entity.varName}To${tempEntity.name}TableMapper;
 		</#if>
 	</#list>
 

@@ -1,6 +1,6 @@
-package ${packagePath}.service.persistence;
+package ${servicePackagePath}.service.persistence;
 
-import ${packagePath}.model.${entity.name};
+import ${servicePackagePath}.model.${entity.name};
 
 import aQute.bnd.annotation.ProviderType;
 

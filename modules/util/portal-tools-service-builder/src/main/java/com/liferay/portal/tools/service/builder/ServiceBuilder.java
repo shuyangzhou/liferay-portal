@@ -554,9 +554,16 @@ public class ServiceBuilder {
 					"The package-path attribute is required");
 			}
 
-			String servicePackagePath = packagePath;
+			Boolean splitPaths = GetterUtil.getBoolean(
+				rootElement.attributeValue("split-paths"), false);
 
-			if (Validator.isNull(servicePackagePath)) {
+			String servicePackagePath;
+
+			if (splitPaths) {
+				servicePackagePath = StringUtil.replace(
+					packagePath, "com.liferay", "com.liferay.portal.kernel");
+			}
+			else {
 				servicePackagePath = packagePath;
 			}
 
@@ -3851,6 +3858,7 @@ public class ServiceBuilder {
 		context.put("propsUtil", _propsUtil);
 		context.put("serviceBuilder", this);
 		context.put("serviceOutputPath", _serviceOutputPath);
+		context.put("servicePackagePath", _servicePackagePath);
 		context.put("springFileName", _springFileName);
 		context.put("sqlDir", _sqlDirName);
 		context.put("sqlFileName", _sqlFileName);
@@ -4663,7 +4671,7 @@ public class ServiceBuilder {
 			sb.append(
 				"package " + _packagePath + ".service.persistence.impl;\n\n");
 			sb.append(
-				"import " + _packagePath + ".service.persistence." + ejbName +
+				"import " + _servicePackagePath + ".service.persistence." + ejbName +
 					"Finder;\n");
 			sb.append(
 				"import " + _packagePath + ".service.persistence." + ejbName +
