@@ -990,6 +990,16 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 
 		newContent = formatJava(fileName, absolutePath, newContent);
 
+		if (_checkTabs &&
+			!isExcludedFile(_checkTabsExclusionFiles, absolutePath)) {
+
+			JavaSourceTabCalculator javaSourceTabCalculator =
+				new JavaSourceTabCalculator();
+
+			javaSourceTabCalculator.calculateTabs(
+				fileName, newContent, (JavaSourceProcessor)this);
+		}
+
 		return StringUtil.replace(newContent, "\n\n\n", "\n\n");
 	}
 
@@ -1000,9 +1010,6 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 		if (portalSource) {
 			fileNames = getPortalJavaFiles();
 
-			_checkModulesServiceUtil = GetterUtil.getBoolean(
-				System.getProperty(
-					"source.formatter.check.modules.service.util"));
 			_checkUnprocessedExceptions = GetterUtil.getBoolean(
 				System.getProperty(
 					"source.formatter.check.unprocessed.exceptions"));
@@ -1017,6 +1024,9 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 			getProperty("allow.use.service.util.in.service.impl"));
 		_checkJavaFieldTypesExclusionFiles = getPropertyList(
 			"check.java.field.types.excludes.files");
+		_checkTabs = GetterUtil.getBoolean(
+			System.getProperty("source.formatter.check.tabs"));
+		_checkTabsExclusionFiles = getPropertyList("check.tabs.excludes.files");
 		_diamondOperatorExclusionFiles = getPropertyList(
 			"diamond.operator.excludes.files");
 		_diamondOperatorExclusionPaths = getPropertyList(
@@ -2384,14 +2394,7 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 				if (serviceUtilClassPackagePath.startsWith(
 						moduleServicePackagePath)) {
 
-					if (_checkModulesServiceUtil) {
-						processErrorMessage(
-							fileName,
-							"LPS-59076: Convert OSGi Component to Spring " +
-								"bean: " + fileName);
-					}
-
-					break;
+					continue;
 				}
 			}
 
@@ -2463,38 +2466,6 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 					match, "private volatile ", "private ");
 
 				return StringUtil.replace(content, match, replacement);
-			}
-
-			if (!_checkModulesServiceUtil) {
-				continue;
-			}
-
-			if (moduleServicePackagePath == null) {
-				moduleServicePackagePath = getModuleServicePackagePath(
-					fileName);
-			}
-
-			if (Validator.isNotNull(moduleServicePackagePath)) {
-				sb = new StringBundler(5);
-
-				sb.append("\nimport ");
-				sb.append(moduleServicePackagePath);
-				sb.append(".*\\.");
-				sb.append(typeName);
-				sb.append(StringPool.SEMICOLON);
-
-				Pattern importPattern = Pattern.compile(sb.toString());
-
-				Matcher importMatcher = importPattern.matcher(content);
-
-				if (importMatcher.find()) {
-					processErrorMessage(
-						fileName,
-						"LPS-59076: Convert OSGi Component to Spring bean: " +
-							fileName);
-
-					break;
-				}
 			}
 		}
 
@@ -3734,7 +3705,8 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 	private Pattern _catchExceptionPattern = Pattern.compile(
 		"\n(\t+)catch \\((.+Exception) (.+)\\) \\{\n");
 	private List<String> _checkJavaFieldTypesExclusionFiles;
-	private boolean _checkModulesServiceUtil;
+	private boolean _checkTabs;
+	private List<String> _checkTabsExclusionFiles;
 	private boolean _checkUnprocessedExceptions;
 	private final Pattern _classPattern = Pattern.compile(
 		"(\n(\t*)(private|protected|public) ((abstract|static) )*" +
