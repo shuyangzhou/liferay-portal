@@ -12,40 +12,33 @@
  * details.
  */
 
-package com.liferay.counter.service;
+package com.liferay.portal.kernel.counter.service;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.search.IndexableType;
-import com.liferay.portal.kernel.transaction.Isolation;
-import com.liferay.portal.kernel.transaction.Propagation;
-import com.liferay.portal.kernel.transaction.Transactional;
-import com.liferay.portal.service.BaseLocalService;
-import com.liferay.portal.service.PersistedModelLocalService;
+import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
+import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
- * Provides the local service interface for Counter. Methods of this
- * service will not have security checks based on the propagated JAAS
- * credentials because this service can only be accessed from within the same
- * VM.
+ * Provides the local service utility for Counter. This utility wraps
+ * {@link com.liferay.counter.service.impl.CounterLocalServiceImpl} and is the
+ * primary access point for service operations in application layer code running
+ * on the local server. Methods of this service will not have security checks
+ * based on the propagated JAAS credentials because this service can only be
+ * accessed from within the same VM.
  *
  * @author Brian Wing Shun Chan
- * @see CounterLocalServiceUtil
+ * @see CounterLocalService
  * @see com.liferay.counter.service.base.CounterLocalServiceBaseImpl
  * @see com.liferay.counter.service.impl.CounterLocalServiceImpl
  * @generated
  */
 @ProviderType
-@Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
-	PortalException.class, SystemException.class})
-public interface CounterLocalService extends BaseLocalService,
-	PersistedModelLocalService {
+public class CounterLocalServiceUtil {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link CounterLocalServiceUtil} to access the counter local service. Add custom service methods to {@link com.liferay.counter.service.impl.CounterLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this class directly. Add custom service methods to {@link com.liferay.counter.service.impl.CounterLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
 
 	/**
@@ -54,9 +47,10 @@ public interface CounterLocalService extends BaseLocalService,
 	* @param counter the counter
 	* @return the counter that was added
 	*/
-	@com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
-	public com.liferay.counter.model.Counter addCounter(
-		com.liferay.counter.model.Counter counter);
+	public static com.liferay.portal.kernel.counter.model.Counter addCounter(
+		com.liferay.portal.kernel.counter.model.Counter counter) {
+		return getService().addCounter(counter);
+	}
 
 	/**
 	* Creates a new counter with the primary key. Does not add the counter to the database.
@@ -64,8 +58,10 @@ public interface CounterLocalService extends BaseLocalService,
 	* @param name the primary key for the new counter
 	* @return the new counter
 	*/
-	public com.liferay.counter.model.Counter createCounter(
-		java.lang.String name);
+	public static com.liferay.portal.kernel.counter.model.Counter createCounter(
+		java.lang.String name) {
+		return getService().createCounter(name);
+	}
 
 	/**
 	* Deletes the counter from the database. Also notifies the appropriate model listeners.
@@ -73,9 +69,10 @@ public interface CounterLocalService extends BaseLocalService,
 	* @param counter the counter
 	* @return the counter that was removed
 	*/
-	@com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
-	public com.liferay.counter.model.Counter deleteCounter(
-		com.liferay.counter.model.Counter counter);
+	public static com.liferay.portal.kernel.counter.model.Counter deleteCounter(
+		com.liferay.portal.kernel.counter.model.Counter counter) {
+		return getService().deleteCounter(counter);
+	}
 
 	/**
 	* Deletes the counter with the primary key from the database. Also notifies the appropriate model listeners.
@@ -84,19 +81,24 @@ public interface CounterLocalService extends BaseLocalService,
 	* @return the counter that was removed
 	* @throws PortalException if a counter with the primary key could not be found
 	*/
-	@com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
-	public com.liferay.counter.model.Counter deleteCounter(
-		java.lang.String name) throws PortalException;
+	public static com.liferay.portal.kernel.counter.model.Counter deleteCounter(
+		java.lang.String name)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().deleteCounter(name);
+	}
 
 	/**
 	* @throws PortalException
 	*/
-	@Override
-	public com.liferay.portal.model.PersistedModel deletePersistedModel(
+	public static com.liferay.portal.model.PersistedModel deletePersistedModel(
 		com.liferay.portal.model.PersistedModel persistedModel)
-		throws PortalException;
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().deletePersistedModel(persistedModel);
+	}
 
-	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery();
+	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return getService().dynamicQuery();
+	}
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -104,8 +106,10 @@ public interface CounterLocalService extends BaseLocalService,
 	* @param dynamicQuery the dynamic query
 	* @return the matching rows
 	*/
-	public <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery);
+	public static <T> java.util.List<T> dynamicQuery(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+		return getService().dynamicQuery(dynamicQuery);
+	}
 
 	/**
 	* Performs a dynamic query on the database and returns a range of the matching rows.
@@ -119,9 +123,11 @@ public interface CounterLocalService extends BaseLocalService,
 	* @param end the upper bound of the range of model instances (not inclusive)
 	* @return the range of matching rows
 	*/
-	public <T> java.util.List<T> dynamicQuery(
+	public static <T> java.util.List<T> dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end);
+		int end) {
+		return getService().dynamicQuery(dynamicQuery, start, end);
+	}
 
 	/**
 	* Performs a dynamic query on the database and returns an ordered range of the matching rows.
@@ -136,10 +142,13 @@ public interface CounterLocalService extends BaseLocalService,
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of matching rows
 	*/
-	public <T> java.util.List<T> dynamicQuery(
+	public static <T> java.util.List<T> dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
 		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator);
+		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+		return getService()
+				   .dynamicQuery(dynamicQuery, start, end, orderByComparator);
+	}
 
 	/**
 	* Returns the number of rows matching the dynamic query.
@@ -147,8 +156,10 @@ public interface CounterLocalService extends BaseLocalService,
 	* @param dynamicQuery the dynamic query
 	* @return the number of rows matching the dynamic query
 	*/
-	public long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery);
+	public static long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+		return getService().dynamicQueryCount(dynamicQuery);
+	}
 
 	/**
 	* Returns the number of rows matching the dynamic query.
@@ -157,12 +168,16 @@ public interface CounterLocalService extends BaseLocalService,
 	* @param projection the projection to apply to the query
 	* @return the number of rows matching the dynamic query
 	*/
-	public long dynamicQueryCount(
+	public static long dynamicQueryCount(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
-		com.liferay.portal.kernel.dao.orm.Projection projection);
+		com.liferay.portal.kernel.dao.orm.Projection projection) {
+		return getService().dynamicQueryCount(dynamicQuery, projection);
+	}
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public com.liferay.counter.model.Counter fetchCounter(java.lang.String name);
+	public static com.liferay.portal.kernel.counter.model.Counter fetchCounter(
+		java.lang.String name) {
+		return getService().fetchCounter(name);
+	}
 
 	/**
 	* Returns the counter with the primary key.
@@ -171,9 +186,11 @@ public interface CounterLocalService extends BaseLocalService,
 	* @return the counter
 	* @throws PortalException if a counter with the primary key could not be found
 	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public com.liferay.counter.model.Counter getCounter(java.lang.String name)
-		throws PortalException;
+	public static com.liferay.portal.kernel.counter.model.Counter getCounter(
+		java.lang.String name)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getCounter(name);
+	}
 
 	/**
 	* Returns a range of all the counters.
@@ -186,50 +203,62 @@ public interface CounterLocalService extends BaseLocalService,
 	* @param end the upper bound of the range of counters (not inclusive)
 	* @return the range of counters
 	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.util.List<com.liferay.counter.model.Counter> getCounters(
-		int start, int end);
+	public static java.util.List<com.liferay.portal.kernel.counter.model.Counter> getCounters(
+		int start, int end) {
+		return getService().getCounters(start, end);
+	}
 
 	/**
 	* Returns the number of counters.
 	*
 	* @return the number of counters
 	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getCountersCount();
+	public static int getCountersCount() {
+		return getService().getCountersCount();
+	}
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.util.List<java.lang.String> getNames();
+	public static java.util.List<java.lang.String> getNames() {
+		return getService().getNames();
+	}
 
 	/**
 	* Returns the OSGi service identifier.
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
+	}
 
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public com.liferay.portal.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj) throws PortalException;
+	public static com.liferay.portal.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getPersistedModel(primaryKeyObj);
+	}
 
-	@Transactional(isolation = Isolation.COUNTER, propagation = Propagation.REQUIRES_NEW)
-	public long increment();
+	public static long increment() {
+		return getService().increment();
+	}
 
-	@Transactional(isolation = Isolation.COUNTER, propagation = Propagation.REQUIRES_NEW)
-	public long increment(java.lang.String name);
+	public static long increment(java.lang.String name) {
+		return getService().increment(name);
+	}
 
-	@Transactional(isolation = Isolation.COUNTER, propagation = Propagation.REQUIRES_NEW)
-	public long increment(java.lang.String name, int size);
+	public static long increment(java.lang.String name, int size) {
+		return getService().increment(name, size);
+	}
 
-	@Transactional(isolation = Isolation.COUNTER, propagation = Propagation.REQUIRES_NEW)
-	public void rename(java.lang.String oldName, java.lang.String newName);
+	public static void rename(java.lang.String oldName, java.lang.String newName) {
+		getService().rename(oldName, newName);
+	}
 
-	@Transactional(isolation = Isolation.COUNTER, propagation = Propagation.REQUIRES_NEW)
-	public void reset(java.lang.String name);
+	public static void reset(java.lang.String name) {
+		getService().reset(name);
+	}
 
-	@Transactional(isolation = Isolation.COUNTER, propagation = Propagation.REQUIRES_NEW)
-	public void reset(java.lang.String name, long size);
+	public static void reset(java.lang.String name, long size) {
+		getService().reset(name, size);
+	}
 
 	/**
 	* Updates the counter in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
@@ -237,7 +266,21 @@ public interface CounterLocalService extends BaseLocalService,
 	* @param counter the counter
 	* @return the counter that was updated
 	*/
-	@com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
-	public com.liferay.counter.model.Counter updateCounter(
-		com.liferay.counter.model.Counter counter);
+	public static com.liferay.portal.kernel.counter.model.Counter updateCounter(
+		com.liferay.portal.kernel.counter.model.Counter counter) {
+		return getService().updateCounter(counter);
+	}
+
+	public static CounterLocalService getService() {
+		if (_service == null) {
+			_service = (CounterLocalService)PortalBeanLocatorUtil.locate(CounterLocalService.class.getName());
+
+			ReferenceRegistry.registerReference(CounterLocalServiceUtil.class,
+				"_service");
+		}
+
+		return _service;
+	}
+
+	private static CounterLocalService _service;
 }

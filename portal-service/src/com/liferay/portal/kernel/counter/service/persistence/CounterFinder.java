@@ -12,28 +12,31 @@
  * details.
  */
 
-package com.liferay.counter;
+package com.liferay.portal.kernel.counter.service.persistence;
 
-import com.liferay.portal.NoSuchModelException;
+import aQute.bnd.annotation.ProviderType;
 
 /**
  * @author Brian Wing Shun Chan
+ * @generated
  */
-public class NoSuchCounterException extends NoSuchModelException {
+@ProviderType
+public interface CounterFinder {
+	public java.util.List<java.lang.String> getNames();
 
-	public NoSuchCounterException() {
-	}
+	public java.lang.String getRegistryName();
 
-	public NoSuchCounterException(String msg) {
-		super(msg);
-	}
+	public long increment();
 
-	public NoSuchCounterException(String msg, Throwable cause) {
-		super(msg, cause);
-	}
+	public long increment(java.lang.String name);
 
-	public NoSuchCounterException(Throwable cause) {
-		super(cause);
-	}
+	public long increment(java.lang.String name, int size);
 
+	public void invalidate();
+
+	public void rename(java.lang.String oldName, java.lang.String newName);
+
+	public void reset(java.lang.String name);
+
+	public void reset(java.lang.String name, long size);
 }

@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.counter.service;
+package com.liferay.portal.kernel.counter.service;
 
 import aQute.bnd.annotation.ProviderType;
 
@@ -39,8 +39,8 @@ public class CounterLocalServiceWrapper implements CounterLocalService,
 	* @return the counter that was added
 	*/
 	@Override
-	public com.liferay.counter.model.Counter addCounter(
-		com.liferay.counter.model.Counter counter) {
+	public com.liferay.portal.kernel.counter.model.Counter addCounter(
+		com.liferay.portal.kernel.counter.model.Counter counter) {
 		return _counterLocalService.addCounter(counter);
 	}
 
@@ -51,7 +51,7 @@ public class CounterLocalServiceWrapper implements CounterLocalService,
 	* @return the new counter
 	*/
 	@Override
-	public com.liferay.counter.model.Counter createCounter(
+	public com.liferay.portal.kernel.counter.model.Counter createCounter(
 		java.lang.String name) {
 		return _counterLocalService.createCounter(name);
 	}
@@ -63,8 +63,8 @@ public class CounterLocalServiceWrapper implements CounterLocalService,
 	* @return the counter that was removed
 	*/
 	@Override
-	public com.liferay.counter.model.Counter deleteCounter(
-		com.liferay.counter.model.Counter counter) {
+	public com.liferay.portal.kernel.counter.model.Counter deleteCounter(
+		com.liferay.portal.kernel.counter.model.Counter counter) {
 		return _counterLocalService.deleteCounter(counter);
 	}
 
@@ -76,7 +76,7 @@ public class CounterLocalServiceWrapper implements CounterLocalService,
 	* @throws PortalException if a counter with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.counter.model.Counter deleteCounter(
+	public com.liferay.portal.kernel.counter.model.Counter deleteCounter(
 		java.lang.String name)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _counterLocalService.deleteCounter(name);
@@ -177,7 +177,8 @@ public class CounterLocalServiceWrapper implements CounterLocalService,
 	}
 
 	@Override
-	public com.liferay.counter.model.Counter fetchCounter(java.lang.String name) {
+	public com.liferay.portal.kernel.counter.model.Counter fetchCounter(
+		java.lang.String name) {
 		return _counterLocalService.fetchCounter(name);
 	}
 
@@ -189,7 +190,8 @@ public class CounterLocalServiceWrapper implements CounterLocalService,
 	* @throws PortalException if a counter with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.counter.model.Counter getCounter(java.lang.String name)
+	public com.liferay.portal.kernel.counter.model.Counter getCounter(
+		java.lang.String name)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _counterLocalService.getCounter(name);
 	}
@@ -206,7 +208,7 @@ public class CounterLocalServiceWrapper implements CounterLocalService,
 	* @return the range of counters
 	*/
 	@Override
-	public java.util.List<com.liferay.counter.model.Counter> getCounters(
+	public java.util.List<com.liferay.portal.kernel.counter.model.Counter> getCounters(
 		int start, int end) {
 		return _counterLocalService.getCounters(start, end);
 	}
@@ -280,8 +282,8 @@ public class CounterLocalServiceWrapper implements CounterLocalService,
 	* @return the counter that was updated
 	*/
 	@Override
-	public com.liferay.counter.model.Counter updateCounter(
-		com.liferay.counter.model.Counter counter) {
+	public com.liferay.portal.kernel.counter.model.Counter updateCounter(
+		com.liferay.portal.kernel.counter.model.Counter counter) {
 		return _counterLocalService.updateCounter(counter);
 	}
 
