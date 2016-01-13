@@ -58,45 +58,34 @@ public class ResourceBundleTracker implements Closeable {
 			return resourceBundle;
 		}
 
-		synchronized (_resourceBundles) {
-			resourceBundle = _resourceBundles.get(languageId);
+		ResourceBundleUtil.loadResourceBundles(
+			_resourceBundles, languageId,
+			new ResourceBundleLoader() {
 
-			if (resourceBundle == null) {
-				ResourceBundleUtil.loadResourceBundles(
-					_resourceBundles, languageId,
-					new ResourceBundleLoader() {
+				@Override
+				public ResourceBundle loadResourceBundle(String languageId) {
+					List<ResourceBundle> resourceBundles =
+						_serviceTrackerMap.getService(languageId);
 
-						@Override
-						public ResourceBundle loadResourceBundle(
-							String languageId) {
+					if ((resourceBundles == null) ||
+						resourceBundles.isEmpty()) {
 
-							List<ResourceBundle> resourceBundles =
-								_serviceTrackerMap.getService(languageId);
+						return null;
+					}
 
-							if ((resourceBundles == null) ||
-								resourceBundles.isEmpty()) {
+					int size = resourceBundles.size();
 
-								return null;
-							}
+					if (size == 1) {
+						return resourceBundles.get(0);
+					}
 
-							int size = resourceBundles.size();
+					return new AggregateResourceBundle(
+						resourceBundles.toArray(new ResourceBundle[size]));
+				}
 
-							if (size == 1) {
-								return resourceBundles.get(0);
-							}
+			});
 
-							return new AggregateResourceBundle(
-								resourceBundles.toArray(
-									new ResourceBundle[size]));
-						}
-
-					});
-
-				resourceBundle = _resourceBundles.get(languageId);
-			}
-		}
-
-		return resourceBundle;
+		return _resourceBundles.get(languageId);
 	}
 
 	private final Map<String, ResourceBundle> _resourceBundles =
@@ -115,18 +104,16 @@ public class ResourceBundleTracker implements Closeable {
 			String languageId, ResourceBundle resourceBundle,
 			List<ResourceBundle> content) {
 
-			synchronized (_resourceBundles) {
-				Set<String> keySet = _resourceBundles.keySet();
-				Iterator<String> iterator = keySet.iterator();
+			Set<String> keySet = _resourceBundles.keySet();
+			Iterator<String> iterator = keySet.iterator();
 
-				while (iterator.hasNext()) {
-					String subLanguageId = iterator.next();
+			while (iterator.hasNext()) {
+				String subLanguageId = iterator.next();
 
-					if (!languageId.equals(subLanguageId) &&
-						subLanguageId.startsWith(languageId)) {
+				if (!languageId.equals(subLanguageId) &&
+					subLanguageId.startsWith(languageId)) {
 
-						iterator.remove();
-					}
+					iterator.remove();
 				}
 			}
 		}
@@ -138,16 +125,14 @@ public class ResourceBundleTracker implements Closeable {
 			String languageId, ResourceBundle service,
 			List<ResourceBundle> content) {
 
-			synchronized (_resourceBundles) {
-				Set<String> keySet = _resourceBundles.keySet();
-				Iterator<String> iterator = keySet.iterator();
+			Set<String> keySet = _resourceBundles.keySet();
+			Iterator<String> iterator = keySet.iterator();
 
-				while (iterator.hasNext()) {
-					String subLanguageId = iterator.next();
+			while (iterator.hasNext()) {
+				String subLanguageId = iterator.next();
 
-					if (subLanguageId.startsWith(languageId)) {
-						iterator.remove();
-					}
+				if (subLanguageId.startsWith(languageId)) {
+					iterator.remove();
 				}
 			}
 		}
