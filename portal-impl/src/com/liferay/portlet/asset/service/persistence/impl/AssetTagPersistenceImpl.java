@@ -2283,35 +2283,37 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 			Arrays.sort(groupIds);
 		}
 
-		List<Long> enabledGroupIdsList = new ArrayList<Long>();
-		List<Long> notEnabledGroupIdsList = new ArrayList<Long>();
+		List<Long> inlinePermissionEnabledGroupIds = new ArrayList<Long>();
+		List<Long> inlinePermissionNotEnabledGroupIds = new ArrayList<Long>();
 
 		for (long groupId : groupIds) {
-			if (!InlineSQLHelperUtil.isEnabled(groupId)) {
-				notEnabledGroupIdsList.add(groupId);
+			if (InlineSQLHelperUtil.isEnabled(groupId)) {
+				inlinePermissionEnabledGroupIds.add(groupId);
 			}
 			else {
-				enabledGroupIdsList.add(groupId);
+				inlinePermissionNotEnabledGroupIds.add(groupId);
 			}
 		}
 
-		List<AssetTag> AssetTagList = new ArrayList<AssetTag>();
+		List<AssetTag> filterResults = new ArrayList<AssetTag>();
 
-		if (notEnabledGroupIdsList.size() > 0) {
-			Long[] notEnabledGroupIdsArray = notEnabledGroupIdsList.toArray(new Long[notEnabledGroupIdsList.size()]);
+		if (inlinePermissionNotEnabledGroupIds.size() > 0) {
+			Long[] array = null;
 
-			groupIds = ArrayUtil.toArray(notEnabledGroupIdsArray);
+			array = inlinePermissionNotEnabledGroupIds.toArray(new Long[inlinePermissionNotEnabledGroupIds.size()]);
 
-			if (enabledGroupIdsList.size() == 0) {
+			groupIds = ArrayUtil.toArray(array);
+
+			if (inlinePermissionEnabledGroupIds.size() == 0) {
 				return findByGroupId(groupIds, start, end, orderByComparator);
 			}
 
-			AssetTagList.addAll(findByGroupId(groupIds, start, end,
+			filterResults.addAll(findByGroupId(groupIds, start, end,
 					orderByComparator));
 
-			Long[] enabledGroupIdsArray = enabledGroupIdsList.toArray(new Long[enabledGroupIdsList.size()]);
+			array = inlinePermissionEnabledGroupIds.toArray(new Long[inlinePermissionEnabledGroupIds.size()]);
 
-			groupIds = ArrayUtil.toArray(enabledGroupIdsArray);
+			groupIds = ArrayUtil.toArray(array);
 		}
 
 		StringBundler query = new StringBundler();
@@ -2379,13 +2381,13 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 				q.addEntity(_FILTER_ENTITY_TABLE, AssetTagImpl.class);
 			}
 
-			if (notEnabledGroupIdsList.size() > 0) {
+			if (inlinePermissionNotEnabledGroupIds.size() > 0) {
 				List<AssetTag> result = (List<AssetTag>)QueryUtil.list(q,
 						getDialect(), start, end);
 
-				AssetTagList.addAll(result);
+				filterResults.addAll(result);
 
-				return AssetTagList;
+				return filterResults;
 			}
 			else {
 				return (List<AssetTag>)QueryUtil.list(q, getDialect(), start,
@@ -3974,36 +3976,38 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 			Arrays.sort(groupIds);
 		}
 
-		List<Long> enabledGroupIdsList = new ArrayList<Long>();
-		List<Long> notEnabledGroupIdsList = new ArrayList<Long>();
+		List<Long> inlinePermissionEnabledGroupIds = new ArrayList<Long>();
+		List<Long> inlinePermissionNotEnabledGroupIds = new ArrayList<Long>();
 
 		for (long groupId : groupIds) {
-			if (!InlineSQLHelperUtil.isEnabled(groupId)) {
-				notEnabledGroupIdsList.add(groupId);
+			if (InlineSQLHelperUtil.isEnabled(groupId)) {
+				inlinePermissionEnabledGroupIds.add(groupId);
 			}
 			else {
-				enabledGroupIdsList.add(groupId);
+				inlinePermissionNotEnabledGroupIds.add(groupId);
 			}
 		}
 
-		List<AssetTag> AssetTagList = new ArrayList<AssetTag>();
+		List<AssetTag> filterResults = new ArrayList<AssetTag>();
 
-		if (notEnabledGroupIdsList.size() > 0) {
-			Long[] notEnabledGroupIdsArray = notEnabledGroupIdsList.toArray(new Long[notEnabledGroupIdsList.size()]);
+		if (inlinePermissionNotEnabledGroupIds.size() > 0) {
+			Long[] array = null;
 
-			groupIds = ArrayUtil.toArray(notEnabledGroupIdsArray);
+			array = inlinePermissionNotEnabledGroupIds.toArray(new Long[inlinePermissionNotEnabledGroupIds.size()]);
 
-			if (enabledGroupIdsList.size() == 0) {
+			groupIds = ArrayUtil.toArray(array);
+
+			if (inlinePermissionEnabledGroupIds.size() == 0) {
 				return findByG_LikeN(groupIds, name, start, end,
 					orderByComparator);
 			}
 
-			AssetTagList.addAll(findByG_LikeN(groupIds, name, start, end,
+			filterResults.addAll(findByG_LikeN(groupIds, name, start, end,
 					orderByComparator));
 
-			Long[] enabledGroupIdsArray = enabledGroupIdsList.toArray(new Long[enabledGroupIdsList.size()]);
+			array = inlinePermissionEnabledGroupIds.toArray(new Long[inlinePermissionEnabledGroupIds.size()]);
 
-			groupIds = ArrayUtil.toArray(enabledGroupIdsArray);
+			groupIds = ArrayUtil.toArray(array);
 		}
 
 		StringBundler query = new StringBundler();
@@ -4093,13 +4097,13 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 				qPos.add(name);
 			}
 
-			if (notEnabledGroupIdsList.size() > 0) {
+			if (inlinePermissionNotEnabledGroupIds.size() > 0) {
 				List<AssetTag> result = (List<AssetTag>)QueryUtil.list(q,
 						getDialect(), start, end);
 
-				AssetTagList.addAll(result);
+				filterResults.addAll(result);
 
-				return AssetTagList;
+				return filterResults;
 			}
 			else {
 				return (List<AssetTag>)QueryUtil.list(q, getDialect(), start,

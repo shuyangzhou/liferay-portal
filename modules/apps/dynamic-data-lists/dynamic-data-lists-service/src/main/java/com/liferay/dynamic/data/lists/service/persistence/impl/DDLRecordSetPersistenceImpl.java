@@ -2282,35 +2282,37 @@ public class DDLRecordSetPersistenceImpl extends BasePersistenceImpl<DDLRecordSe
 			Arrays.sort(groupIds);
 		}
 
-		List<Long> enabledGroupIdsList = new ArrayList<Long>();
-		List<Long> notEnabledGroupIdsList = new ArrayList<Long>();
+		List<Long> inlinePermissionEnabledGroupIds = new ArrayList<Long>();
+		List<Long> inlinePermissionNotEnabledGroupIds = new ArrayList<Long>();
 
 		for (long groupId : groupIds) {
-			if (!InlineSQLHelperUtil.isEnabled(groupId)) {
-				notEnabledGroupIdsList.add(groupId);
+			if (InlineSQLHelperUtil.isEnabled(groupId)) {
+				inlinePermissionEnabledGroupIds.add(groupId);
 			}
 			else {
-				enabledGroupIdsList.add(groupId);
+				inlinePermissionNotEnabledGroupIds.add(groupId);
 			}
 		}
 
-		List<DDLRecordSet> DDLRecordSetList = new ArrayList<DDLRecordSet>();
+		List<DDLRecordSet> filterResults = new ArrayList<DDLRecordSet>();
 
-		if (notEnabledGroupIdsList.size() > 0) {
-			Long[] notEnabledGroupIdsArray = notEnabledGroupIdsList.toArray(new Long[notEnabledGroupIdsList.size()]);
+		if (inlinePermissionNotEnabledGroupIds.size() > 0) {
+			Long[] array = null;
 
-			groupIds = ArrayUtil.toArray(notEnabledGroupIdsArray);
+			array = inlinePermissionNotEnabledGroupIds.toArray(new Long[inlinePermissionNotEnabledGroupIds.size()]);
 
-			if (enabledGroupIdsList.size() == 0) {
+			groupIds = ArrayUtil.toArray(array);
+
+			if (inlinePermissionEnabledGroupIds.size() == 0) {
 				return findByGroupId(groupIds, start, end, orderByComparator);
 			}
 
-			DDLRecordSetList.addAll(findByGroupId(groupIds, start, end,
+			filterResults.addAll(findByGroupId(groupIds, start, end,
 					orderByComparator));
 
-			Long[] enabledGroupIdsArray = enabledGroupIdsList.toArray(new Long[enabledGroupIdsList.size()]);
+			array = inlinePermissionEnabledGroupIds.toArray(new Long[inlinePermissionEnabledGroupIds.size()]);
 
-			groupIds = ArrayUtil.toArray(enabledGroupIdsArray);
+			groupIds = ArrayUtil.toArray(array);
 		}
 
 		StringBundler query = new StringBundler();
@@ -2378,13 +2380,13 @@ public class DDLRecordSetPersistenceImpl extends BasePersistenceImpl<DDLRecordSe
 				q.addEntity(_FILTER_ENTITY_TABLE, DDLRecordSetImpl.class);
 			}
 
-			if (notEnabledGroupIdsList.size() > 0) {
+			if (inlinePermissionNotEnabledGroupIds.size() > 0) {
 				List<DDLRecordSet> result = (List<DDLRecordSet>)QueryUtil.list(q,
 						getDialect(), start, end);
 
-				DDLRecordSetList.addAll(result);
+				filterResults.addAll(result);
 
-				return DDLRecordSetList;
+				return filterResults;
 			}
 			else {
 				return (List<DDLRecordSet>)QueryUtil.list(q, getDialect(),
