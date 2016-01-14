@@ -44,6 +44,7 @@ import com.liferay.portal.kernel.portlet.PortletProvider;
 import com.liferay.portal.kernel.portlet.PortletProviderUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
+import com.liferay.portal.kernel.portlet.sites.util.SitesUtil;
 import com.liferay.portal.kernel.portlet.usersadmin.util.UsersAdmin;
 import com.liferay.portal.kernel.portlet.usersadmin.util.UsersAdminUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
@@ -93,7 +94,6 @@ import com.liferay.portlet.announcements.model.AnnouncementsEntryConstants;
 import com.liferay.portlet.announcements.model.impl.AnnouncementsDeliveryImpl;
 import com.liferay.portlet.announcements.service.AnnouncementsDeliveryLocalService;
 import com.liferay.portlet.documentlibrary.service.DLAppLocalService;
-import com.liferay.portlet.sites.util.SitesUtil;
 import com.liferay.users.admin.constants.UsersAdminPortletKeys;
 
 import java.util.ArrayList;
