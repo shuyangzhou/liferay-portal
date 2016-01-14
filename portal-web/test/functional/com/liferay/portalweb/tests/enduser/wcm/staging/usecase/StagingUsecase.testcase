@@ -3796,12 +3796,12 @@
 
 		<execute function="AssertElementNotPresent" locator1="PagesConfiguration#CONTENT_CHOOSE_CONTENT_CONTENT_CHECKBOX" />
 
-		<execute macro="Page#gotoPagesCP">
-			<var name="pageStaging" value="true" />
-			<var name="portletName" value="Site Pages" />
-			<var name="siteScopeName" value="Site Name" />
-			<var name="siteURL" value="true" />
+		<execute macro="Navigator#gotoSitePage">
+			<var name="pageName" value="Public Pages" />
+			<var name="siteName" value="Site Name" />
 		</execute>
+
+		<execute macro="ProductMenu#gotoStagingSite" />
 
 		<execute macro="Staging#gotoPublishToLive" />
 
@@ -3937,6 +3937,8 @@
 				<execute function="AssertClick#assertTextClickAtClickDockbar" locator1="Staging#STAGING_DROP_DOWN_BUTTON" value1="Staging" />
 			</then>
 		</if>
+
+		<execute function="Click" locator1="Icon#HISTORY_VERTICAL_ELLIPSIS" />
 
 		<execute function="Click" locator1="Staging#HISTORY_BUTTON" />
 
@@ -4450,6 +4452,8 @@
 				<execute function="AssertClick#assertTextClickAtClickDockbar" locator1="Staging#STAGING_DROP_DOWN_BUTTON" value1="Staging" />
 			</then>
 		</if>
+
+		<execute function="Click" locator1="Icon#HISTORY_VERTICAL_ELLIPSIS" />
 
 		<execute function="Click" locator1="Staging#HISTORY_BUTTON" />
 
