@@ -58,8 +58,8 @@ import com.liferay.portal.service.permission.GroupPermissionUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.documentlibrary.service.DLAppLocalService;
+import com.liferay.portlet.kernel.usersadmin.util.UsersAdminUtil;
 import com.liferay.portlet.sites.util.SitesUtil;
-import com.liferay.portlet.usersadmin.util.UsersAdminUtil;
 import com.liferay.users.admin.constants.UsersAdminPortletKeys;
 
 import java.util.List;

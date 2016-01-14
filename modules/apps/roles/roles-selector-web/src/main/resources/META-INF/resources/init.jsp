@@ -41,6 +41,7 @@ page import="com.liferay.portal.service.RoleLocalServiceUtil" %><%@
 page import="com.liferay.portal.service.UserLocalServiceUtil" %><%@
 page import="com.liferay.portlet.PortletURLUtil" %><%@
 page import="com.liferay.portlet.exportimport.staging.StagingUtil" %><%@
+page import="com.liferay.portlet.kernel.usersadmin.util.UsersAdminUtil" %><%@
 page import="com.liferay.portlet.rolesadmin.search.RoleSearch" %><%@
 page import="com.liferay.portlet.rolesadmin.search.RoleSearchTerms" %><%@
 page import="com.liferay.portlet.sites.search.OrganizationRoleUserChecker" %><%@
@@ -49,8 +50,7 @@ page import="com.liferay.portlet.sites.search.UserGroupRoleUserChecker" %><%@
 page import="com.liferay.portlet.usergroupsadmin.search.UserGroupDisplayTerms" %><%@
 page import="com.liferay.portlet.usergroupsadmin.search.UserGroupSearch" %><%@
 page import="com.liferay.portlet.usersadmin.search.UserSearch" %><%@
-page import="com.liferay.portlet.usersadmin.search.UserSearchTerms" %><%@
-page import="com.liferay.portlet.usersadmin.util.UsersAdminUtil" %>
+page import="com.liferay.portlet.usersadmin.search.UserSearchTerms" %>
 
 <%@ page import="java.util.LinkedHashMap" %><%@
 page import="java.util.List" %>
