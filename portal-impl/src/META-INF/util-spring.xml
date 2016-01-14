@@ -581,13 +581,13 @@
 			<bean class="com.liferay.portlet.expando.util.ExpandoBridgeIndexerImpl" />
 		</property>
 	</bean>
-	<bean id="com.liferay.portlet.rolesadmin.util.RolesAdmin" class="com.liferay.portlet.rolesadmin.util.RolesAdminImpl" />
-	<bean id="com.liferay.portlet.rolesadmin.util.RolesAdminUtil" class="com.liferay.portlet.rolesadmin.util.RolesAdminUtil">
-		<property name="rolesAdmin" ref="com.liferay.portlet.rolesadmin.util.RolesAdmin" />
+	<bean id="com.liferay.portlet.kernel.rolesadmin.util.RolesAdmin" class="com.liferay.portlet.rolesadmin.util.RolesAdminImpl" />
+	<bean id="com.liferay.portlet.kernel.rolesadmin.util.RolesAdminUtil" class="com.liferay.portlet.kernel.rolesadmin.util.RolesAdminUtil">
+		<property name="rolesAdmin" ref="com.liferay.portlet.kernel.rolesadmin.util.RolesAdmin" />
 	</bean>
-	<bean id="com.liferay.portlet.sites.util.Sites" class="com.liferay.portlet.sites.util.SitesImpl" />
+	<bean id="com.liferay.portlet.kernel.sites.util.Sites" class="com.liferay.portlet.sites.util.SitesImpl" />
 	<bean id="com.liferay.portlet.sites.util.SitesUtil" class="com.liferay.portlet.sites.util.SitesUtil">
-		<property name="sites" ref="com.liferay.portlet.sites.util.Sites" />
+		<property name="sites" ref="com.liferay.portlet.kernel.sites.util.Sites" />
 	</bean>
 	<bean id="com.liferay.portlet.social.service.permission.SocialActivityPermissionUtil" class="com.liferay.portlet.social.service.permission.SocialActivityPermissionUtil">
 		<property name="socialActivityPermission">
@@ -616,8 +616,8 @@
 	<bean id="com.liferay.portlet.usersadmin.util.ContactIndexer" class="com.liferay.portlet.usersadmin.util.ContactIndexer" />
 	<bean id="com.liferay.portlet.usersadmin.util.OrganizationIndexer" class="com.liferay.portlet.usersadmin.util.OrganizationIndexer" />
 	<bean id="com.liferay.portlet.usersadmin.util.UserIndexer" class="com.liferay.portlet.usersadmin.util.UserIndexer" />
-	<bean id="com.liferay.portlet.usersadmin.util.UsersAdmin" class="com.liferay.portlet.usersadmin.util.UsersAdminImpl" />
-	<bean id="com.liferay.portlet.usersadmin.util.UsersAdminUtil" class="com.liferay.portlet.usersadmin.util.UsersAdminUtil">
-		<property name="usersAdmin" ref="com.liferay.portlet.usersadmin.util.UsersAdmin" />
+	<bean id="com.liferay.portlet.kernel.usersadmin.util.UsersAdmin" class="com.liferay.portlet.usersadmin.util.UsersAdminImpl" />
+	<bean id="com.liferay.portlet.kernel.usersadmin.util.UsersAdminUtil" class="com.liferay.portlet.kernel.usersadmin.util.UsersAdminUtil">
+		<property name="usersAdmin" ref="com.liferay.portlet.kernel.usersadmin.util.UsersAdmin" />
 	</bean>
 </beans>

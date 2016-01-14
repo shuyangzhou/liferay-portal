@@ -66,11 +66,11 @@ Import-Package:\
 	com.liferay.portlet.messageboards.util,\
 	com.liferay.portlet.ratings,\
 	com.liferay.portlet.ratings.transformer,\
-	com.liferay.portlet.rolesadmin.util,\
+	com.liferay.portlet.kernel.rolesadmin.util,\
 	com.liferay.portlet.trash.model,\
 	com.liferay.portlet.trash.util,\
 	com.liferay.portlet.usergroupsadmin.search,\
-	com.liferay.portlet.usersadmin.util,\
+	com.liferay.portlet.kernel.usersadmin.util,\
 	*
 Include-Resource:\
 	classes,\
