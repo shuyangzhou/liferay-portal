@@ -1161,28 +1161,28 @@ that may or may not be enforced with a unique index at the database level. Case
 
 					<#list finderColsList as finderCol>
 						<#if finderCol.name == "groupId">
-
-							List<Long> enabledGroupIdsList = new ArrayList<Long>();
-							List<Long> notEnabledGroupIdsList = new ArrayList<Long>();
+							List<Long> inlinePermissionEnabledGroupIds = new ArrayList<Long>();
+							List<Long> inlinePermissionNotEnabledGroupIds = new ArrayList<Long>();
 
 							for (${finderCol.type} ${finderCol.name} : ${finderCol.names}) {
-								if (!InlineSQLHelperUtil.isEnabled(${finderCol.name})) {
-									notEnabledGroupIdsList.add(${finderCol.name});
+								if (InlineSQLHelperUtil.isEnabled(${finderCol.name})) {
+									inlinePermissionEnabledGroupIds.add(${finderCol.name});
 								}
 								else {
-									enabledGroupIdsList.add(${finderCol.name});
+									inlinePermissionNotEnabledGroupIds.add(${finderCol.name});
 								}
 							}
 
-							List<${entity.name}> ${entity.name}List = new ArrayList<${entity.name}>();
+							List<${entity.name}> filterResults = new ArrayList<${entity.name}>();
 
-							if (notEnabledGroupIdsList.size() > 0) {
+							if (inlinePermissionNotEnabledGroupIds.size() > 0) {
+								Long[] array = null;
 
-								Long[] notEnabledGroupIdsArray = notEnabledGroupIdsList.toArray(new Long[notEnabledGroupIdsList.size()]);
+								array = inlinePermissionNotEnabledGroupIds.toArray(new Long[inlinePermissionNotEnabledGroupIds.size()]);
 
-								${finderCol.names} = ArrayUtil.toArray(notEnabledGroupIdsArray);
+								${finderCol.names} = ArrayUtil.toArray(array);
 
-								if (enabledGroupIdsList.size() == 0) {
+								if (inlinePermissionEnabledGroupIds.size() == 0) {
 									return findBy${finder.name}(
 
 									<#list finderColsList as finderCol>
@@ -1196,7 +1196,7 @@ that may or may not be enforced with a unique index at the database level. Case
 									start, end, orderByComparator);
 								}
 
-								${entity.name}List.addAll(findBy${finder.name}(
+								filterResults.addAll(findBy${finder.name}(
 
 								<#list finderColsList as finderCol>
 									<#if finderCol.hasArrayableOperator()>
@@ -1208,9 +1208,9 @@ that may or may not be enforced with a unique index at the database level. Case
 
 								start, end, orderByComparator));
 
-								Long[] enabledGroupIdsArray = enabledGroupIdsList.toArray(new Long[enabledGroupIdsList.size()]);
+								array = inlinePermissionEnabledGroupIds.toArray(new Long[inlinePermissionEnabledGroupIds.size()]);
 
-								${finderCol.names} = ArrayUtil.toArray(enabledGroupIdsArray);
+								${finderCol.names} = ArrayUtil.toArray(array);
 							}
 
 						</#if>
@@ -1264,13 +1264,12 @@ that may or may not be enforced with a unique index at the database level. Case
 						/>
 
 						<#if finder.hasColumn("groupId") && finder.getColumn("groupId").hasArrayableOperator()>
-							if (notEnabledGroupIdsList.size() > 0) {
-
+							if (inlinePermissionNotEnabledGroupIds.size() > 0) {
 								List<${entity.name}> result = (List<${entity.name}>)QueryUtil.list(q, getDialect(), start, end);
 
-								${entity.name}List.addAll(result);
+								filterResults.addAll(result);
 
-								return ${entity.name}List;
+								return filterResults;
 							}
 							else {
 								return (List<${entity.name}>)QueryUtil.list(q, getDialect(), start, end);
@@ -1355,12 +1354,12 @@ that may or may not be enforced with a unique index at the database level. Case
 						/>
 
 						<#if finder.hasColumn("groupId") && finder.getColumn("groupId").hasArrayableOperator()>
-							if (notEnabledGroupIdsList.size() > 0) {
+							if (inlinePermissionNotEnabledGroupIds.size() > 0) {
 								List<${entity.name}> result = (List<${entity.name}>)QueryUtil.list(q, getDialect(), start, end);
 
-								${entity.name}List.addAll(result);
+								filterResults.addAll(result);
 
-								return ${entity.name}List;
+								return filterResults;
 							}
 							else {
 								return (List<${entity.name}>)QueryUtil.list(q, getDialect(), start, end);
