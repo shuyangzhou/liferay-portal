@@ -14,12 +14,12 @@
 
 package com.liferay.document.library.web.portlet.action;
 
-import com.liferay.portal.NoSuchRepositoryEntryException;
+import com.liferay.portal.exception.NoSuchRepositoryEntryException;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.security.auth.PrincipalException;
-import com.liferay.portlet.documentlibrary.NoSuchFileEntryException;
-import com.liferay.portlet.documentlibrary.NoSuchFileVersionException;
+import com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException;
+import com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException;
 
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
