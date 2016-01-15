@@ -184,10 +184,13 @@ public class BaseJSONHandler extends BaseHandler {
 			SyncFileService.update(syncFile);
 		}
 		else if (exception.equals(
-					"com.liferay.portlet.documentlibrary.FileNameException") ||
-				 exception.equals(
-					 "com.liferay.portlet.documentlibrary." +
-						 "FolderNameException")) {
+					"com.
+						liferay.
+							portlet.
+								documentlibrary.exception.FileNameException") ||
+				  exception.equals(
+					  "com.liferay.portlet.documentlibrary." +
+						  "FolderNameException")) {
 
 			SyncFile syncFile = getLocalSyncFile();
 

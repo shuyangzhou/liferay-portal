@@ -163,8 +163,8 @@ public class RoleFinderUtil {
 		return getFinder().findByUserGroupRole(userId, groupId);
 	}
 
-	public static com.liferay.portal.model.Role findByC_N(long companyId,
-		java.lang.String name)
+	public static com.liferay.portal.model.Role findByC_N(
+		long companyId, java.lang.String name)
 		throws com.liferay.portal.exception.NoSuchRoleException {
 		return getFinder().findByC_N(companyId, name);
 	}
