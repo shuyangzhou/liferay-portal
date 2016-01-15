@@ -20,8 +20,6 @@
 SiteAdministrationPanelCategoryDisplayContext siteAdministrationPanelCategoryDisplayContext = new SiteAdministrationPanelCategoryDisplayContext(liferayPortletRequest, liferayPortletResponse, null);
 
 PanelCategory panelCategory = siteAdministrationPanelCategoryDisplayContext.getPanelCategory();
-
-ResourceBundle resourceBundle = ResourceBundleUtil.getBundle("content.Language", locale, getClass());
 %>
 
 <liferay-ui:icon
@@ -98,7 +96,7 @@ ResourceBundle resourceBundle = ResourceBundleUtil.getBundle("content.Language",
 					eventName: 'clickoutside'
 				}
 			],
-			position: 'left',
+			position: 'right',
 			trigger: trigger,
 			visible: false,
 			width: 300,
