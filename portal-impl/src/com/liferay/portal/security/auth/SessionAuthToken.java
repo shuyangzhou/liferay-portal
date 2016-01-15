@@ -14,6 +14,7 @@
 
 package com.liferay.portal.security.auth;
 
+import com.liferay.admin.kernel.util.PortalProductMenuApplicationType;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -35,7 +36,6 @@ import com.liferay.portal.service.permission.PortletPermissionUtil;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.SecurityPortletContainerWrapper;
-import com.liferay.portlet.admin.util.PortalProductMenuApplicationType;
 
 import javax.portlet.PortletRequest;
 
