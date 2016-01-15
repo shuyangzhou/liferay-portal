@@ -1158,7 +1158,6 @@ that may or may not be enforced with a unique index at the database level. Case
 				</#list>
 
 				<#if finder.hasColumn("groupId") && finder.getColumn("groupId").hasArrayableOperator()>
-
 					<#list finderColsList as finderCol>
 						<#if finderCol.name == "groupId">
 							List<Long> inlinePermissionEnabledGroupIds = new ArrayList<Long>();
@@ -1212,15 +1211,10 @@ that may or may not be enforced with a unique index at the database level. Case
 
 								${finderCol.names} = ArrayUtil.toArray(array);
 							}
-
 						</#if>
 					</#list>
 				<#else>
-					if (!InlineSQLHelperUtil.isEnabled(
-						<#if finder.hasColumn("groupId")>
-							groupId
-						</#if>)) {
-
+					if (!InlineSQLHelperUtil.isEnabled(<#if finder.hasColumn("groupId")>groupId</#if>)) {
 						return findBy${finder.name}(
 
 						<#list finderColsList as finderCol>
