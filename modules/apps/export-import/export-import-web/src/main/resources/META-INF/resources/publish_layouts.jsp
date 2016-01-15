@@ -114,6 +114,10 @@ String openNodes = SessionTreeJSClicks.getOpenNodes(request, treeId + "SelectedN
 
 if (openNodes == null) {
 	selectedLayoutIds = ExportImportHelperUtil.getAllLayoutIds(stagingGroupId, privateLayout);
+
+	for (long selectedLayoutId : selectedLayoutIds) {
+		SessionTreeJSClicks.openLayoutNodes(request, treeId + "SelectedNode", privateLayout, selectedLayoutId, true);
+	}
 }
 else {
 	selectedLayoutIds = GetterUtil.getLongValues(StringUtil.split(openNodes, ','));
@@ -164,15 +168,6 @@ response.setHeader("Ajax-ID", request.getHeader("Ajax-ID"));
 			</div>
 		</c:if>
 	</c:if>
-
-	<portlet:actionURL name="editPublishConfiguration" var="restoreTrashEntriesURL">
-		<portlet:param name="mvcPath" value="editPublishConfiguration" />
-		<portlet:param name="<%= Constants.CMD %>" value="<%= Constants.RESTORE %>" />
-	</portlet:actionURL>
-
-	<liferay-trash:undo
-		portletURL="<%= restoreTrashEntriesURL %>"
-	/>
 
 	<c:if test='<%= !cmd.equals("view_processes") && !quickPublish %>'>
 		<div <%= (!cmd.equals(Constants.ADD) && !cmd.equals(Constants.UPDATE)) ? StringPool.BLANK : "class=\"hide\"" %>>

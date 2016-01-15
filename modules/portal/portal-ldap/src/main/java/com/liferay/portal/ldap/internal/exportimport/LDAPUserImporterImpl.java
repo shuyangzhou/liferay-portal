@@ -109,9 +109,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Hugo Huijser
  */
 @Component(
-	configurationPid = "com.liferay.portal.ldap.configuration.LDAPConfiguration",
-	immediate = true,
-	service = {LDAPUserImporter.class, UserImporter.class}
+	immediate = true, service = {LDAPUserImporter.class, UserImporter.class}
 )
 public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 
@@ -955,6 +953,13 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 			String userMappingsGroup = userMappings.getProperty("group");
 
 			if (Validator.isNull(userMappingsGroup)) {
+				if (_log.isInfoEnabled()) {
+					_log.info(
+						"Skipping group import because no mappings for LDAP " +
+							"groups were specified in user mappings " +
+								userMappings);
+				}
+
 				return;
 			}
 

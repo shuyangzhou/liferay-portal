@@ -19,6 +19,7 @@
 <%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
 
 <%@ taglib uri="http://liferay.com/tld/aui" prefix="aui" %><%@
+taglib uri="http://liferay.com/tld/frontend" prefix="liferay-frontend" %><%@
 taglib uri="http://liferay.com/tld/layout" prefix="liferay-layout" %><%@
 taglib uri="http://liferay.com/tld/portlet" prefix="liferay-portlet" %><%@
 taglib uri="http://liferay.com/tld/security" prefix="liferay-security" %><%@
@@ -29,15 +30,6 @@ taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 <%@ page import="com.liferay.layout.admin.web.constants.LayoutAdminPortletKeys" %><%@
 page import="com.liferay.layout.admin.web.display.context.LayoutsAdminDisplayContext" %><%@
 page import="com.liferay.layout.admin.web.display.context.LayoutsTreeDisplayContext" %><%@
-page import="com.liferay.mobile.device.rules.model.MDRAction" %><%@
-page import="com.liferay.mobile.device.rules.model.MDRRuleGroup" %><%@
-page import="com.liferay.mobile.device.rules.model.MDRRuleGroupInstance" %><%@
-page import="com.liferay.mobile.device.rules.service.MDRActionLocalServiceUtil" %><%@
-page import="com.liferay.mobile.device.rules.service.MDRRuleGroupInstanceServiceUtil" %><%@
-page import="com.liferay.mobile.device.rules.service.MDRRuleGroupLocalServiceUtil" %><%@
-page import="com.liferay.mobile.device.rules.service.permission.MDRPermission" %><%@
-page import="com.liferay.mobile.device.rules.service.permission.MDRRuleGroupInstancePermission" %><%@
-page import="com.liferay.mobile.device.rules.util.comparator.RuleGroupInstancePriorityComparator" %><%@
 page import="com.liferay.portal.ImageTypeException" %><%@
 page import="com.liferay.portal.LayoutFriendlyURLException" %><%@
 page import="com.liferay.portal.LayoutFriendlyURLsException" %><%@
@@ -51,9 +43,7 @@ page import="com.liferay.portal.SitemapChangeFrequencyException" %><%@
 page import="com.liferay.portal.SitemapIncludeException" %><%@
 page import="com.liferay.portal.SitemapPagePriorityException" %><%@
 page import="com.liferay.portal.kernel.bean.BeanParamUtil" %><%@
-page import="com.liferay.portal.kernel.dao.search.ResultRow" %><%@
 page import="com.liferay.portal.kernel.dao.search.RowChecker" %><%@
-page import="com.liferay.portal.kernel.dao.search.SearchContainer" %><%@
 page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
 page import="com.liferay.portal.kernel.language.UnicodeLanguageUtil" %><%@
 page import="com.liferay.portal.kernel.plugin.PluginPackage" %><%@
@@ -71,7 +61,6 @@ page import="com.liferay.portal.kernel.util.PrefsPropsUtil" %><%@
 page import="com.liferay.portal.kernel.util.PropertiesParamUtil" %><%@
 page import="com.liferay.portal.kernel.util.PropsKeys" %><%@
 page import="com.liferay.portal.kernel.util.ResourceBundleUtil" %><%@
-page import="com.liferay.portal.kernel.util.StringBundler" %><%@
 page import="com.liferay.portal.kernel.util.StringPool" %><%@
 page import="com.liferay.portal.kernel.util.StringUtil" %><%@
 page import="com.liferay.portal.kernel.util.TextFormatter" %><%@
@@ -125,7 +114,7 @@ page import="com.liferay.portlet.documentlibrary.FileSizeException" %><%@
 page import="com.liferay.portlet.exportimport.lar.PortletDataHandlerKeys" %><%@
 page import="com.liferay.portlet.exportimport.staging.LayoutStagingUtil" %><%@
 page import="com.liferay.portlet.exportimport.staging.StagingUtil" %><%@
-page import="com.liferay.portlet.sites.util.SitesUtil" %>
+page import="com.liferay.sites.kernel.util.SitesUtil" %>
 
 <%@ page import="java.util.Collections" %><%@
 page import="java.util.HashMap" %><%@
@@ -142,11 +131,11 @@ page import="javax.portlet.WindowState" %>
 
 <portlet:defineObjects />
 
+<liferay-frontend:defineObjects />
+
 <liferay-theme:defineObjects />
 
 <%
-WindowState windowState = liferayPortletRequest.getWindowState();
-
 PortletURL currentURLObj = PortletURLUtil.getCurrent(liferayPortletRequest, liferayPortletResponse);
 
 String currentURL = currentURLObj.toString();
