@@ -90,27 +90,29 @@ public class Entity {
 
 	public Entity(String name) {
 		this(
-			null, null, null, name, null, null, null, false, false, false, true,
-			null, null, null, null, null, true, false, false, false, false,
-			false, null, null, null, null, null, null, null, null, null, null,
-			false);
+			null, null, null, null, name, null, null, null, false, false, false,
+			true, null, null, null, null, null, true, false, false, false,
+			false, false, null, null, null, null, null, null, null, null, null,
+			null, false);
 	}
 
 	public Entity(
-		String packagePath, String portletName, String portletShortName,
-		String name, String humanName, String table, String alias, boolean uuid,
-		boolean uuidAccessor, boolean localService, boolean remoteService,
-		String persistenceClass, String finderClass, String dataSource,
-		String sessionFactory, String txManager, boolean cacheEnabled,
-		boolean dynamicUpdateEnabled, boolean jsonEnabled, boolean mvccEnabled,
-		boolean trashEnabled, boolean deprecated, List<EntityColumn> pkList,
-		List<EntityColumn> regularColList, List<EntityColumn> blobList,
-		List<EntityColumn> collectionList, List<EntityColumn> columnList,
-		EntityOrder order, List<EntityFinder> finderList,
-		List<Entity> referenceList, List<String> unresolvedReferenceList,
-		List<String> txRequiredList, boolean resourceActionModel) {
+		String packagePath, String servicePackagePath, String portletName,
+		String portletShortName, String name, String humanName, String table,
+		String alias, boolean uuid, boolean uuidAccessor, boolean localService,
+		boolean remoteService, String persistenceClass, String finderClass,
+		String dataSource, String sessionFactory, String txManager,
+		boolean cacheEnabled, boolean dynamicUpdateEnabled, boolean jsonEnabled,
+		boolean mvccEnabled, boolean trashEnabled, boolean deprecated,
+		List<EntityColumn> pkList, List<EntityColumn> regularColList,
+		List<EntityColumn> blobList, List<EntityColumn> collectionList,
+		List<EntityColumn> columnList, EntityOrder order,
+		List<EntityFinder> finderList, List<Entity> referenceList,
+		List<String> unresolvedReferenceList, List<String> txRequiredList,
+		boolean resourceActionModel) {
 
 		_packagePath = packagePath;
+		_servicePackagePath = servicePackagePath;
 		_portletName = portletName;
 		_portletShortName = portletShortName;
 		_name = name;
@@ -395,6 +397,10 @@ public class Entity {
 
 	public List<EntityColumn> getRegularColList() {
 		return _regularColList;
+	}
+
+	public String getServicePackagePath() {
+		return _servicePackagePath;
 	}
 
 	public String getSessionFactory() {
@@ -924,6 +930,7 @@ public class Entity {
 	private final List<EntityColumn> _regularColList;
 	private final boolean _remoteService;
 	private final boolean _resourceActionModel;
+	private final String _servicePackagePath;
 	private final String _sessionFactory;
 	private final String _table;
 	private List<String> _transients;
