@@ -25,7 +25,7 @@ import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.portal.portletfilerepository.PortletFileRepositoryUtil;
+import com.liferay.portal.kernel.portletfilerepository.PortletFileRepositoryUtil;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.documentlibrary.NoSuchFileException;
 import com.liferay.portlet.trash.util.TrashUtil;

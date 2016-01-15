@@ -20,7 +20,7 @@ import com.liferay.portal.kernel.trash.BaseTrashHandler;
 import com.liferay.portal.kernel.trash.TrashHandler;
 import com.liferay.portal.model.ContainerModel;
 import com.liferay.portal.model.TrashedModel;
-import com.liferay.portal.portletfilerepository.PortletFileRepositoryUtil;
+import com.liferay.portal.kernel.portletfilerepository.PortletFileRepositoryUtil;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portlet.documentlibrary.model.DLFileEntry;
 import com.liferay.portlet.messageboards.model.MBMessage;

@@ -16,7 +16,8 @@
 
 <%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
 
-<%@ taglib uri="http://liferay.com/tld/item-selector" prefix="liferay-item-selector" %><%@
+<%@ taglib uri="http://liferay.com/tld/frontend" prefix="liferay-frontend" %><%@
+taglib uri="http://liferay.com/tld/item-selector" prefix="liferay-item-selector" %><%@
 taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %>
 
 <%@ page import="com.liferay.portal.kernel.dao.search.SearchContainer" %><%@
@@ -34,8 +35,12 @@ page import="com.liferay.portal.kernel.search.SearchContextFactory" %><%@
 page import="com.liferay.portal.kernel.util.GetterUtil" %><%@
 page import="com.liferay.portal.kernel.util.OrderByComparator" %><%@
 page import="com.liferay.portal.kernel.util.ParamUtil" %><%@
-page import="com.liferay.portal.kernel.util.ResourceBundleUtil" %><%@
+<<<<<<< HEAD
 page import="com.liferay.portal.portletfilerepository.PortletFileRepositoryUtil" %><%@
+=======
+page import="com.liferay.portal.kernel.util.ResourceBundleUtil" %><%@
+page import="com.liferay.portal.kernel.portletfilerepository.PortletFileRepositoryUtil" %><%@
+>>>>>>> LPS-61952 Update jsp usage
 page import="com.liferay.portlet.documentlibrary.model.DLFolderConstants" %><%@
 page import="com.liferay.portlet.documentlibrary.util.DLUtil" %><%@
 page import="com.liferay.wiki.item.selector.criterion.WikiAttachmentItemSelectorCriterion" %><%@
@@ -44,13 +49,10 @@ page import="com.liferay.wiki.web.item.selector.view.WikiAttachmentItemSelectorV
 page import="com.liferay.wiki.web.item.selector.view.display.context.WikiAttachmentItemSelectorViewDisplayContext" %>
 
 <%@ page import="java.util.ArrayList" %><%@
-page import="java.util.List" %><%@
-page import="java.util.ResourceBundle" %>
+page import="java.util.List" %>
 
 <portlet:defineObjects />
 
-<liferay-theme:defineObjects />
+<liferay-frontend:defineObjects />
 
-<%
-ResourceBundle resourceBundle = ResourceBundleUtil.getBundle("content.Language", locale, getClass());
-%>
+<liferay-theme:defineObjects />

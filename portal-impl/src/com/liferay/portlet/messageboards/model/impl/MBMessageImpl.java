@@ -21,7 +21,7 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.Repository;
-import com.liferay.portal.portletfilerepository.PortletFileRepositoryUtil;
+import com.liferay.portal.kernel.portletfilerepository.PortletFileRepositoryUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portlet.asset.service.AssetTagLocalServiceUtil;
 import com.liferay.portlet.documentlibrary.model.DLFolderConstants;

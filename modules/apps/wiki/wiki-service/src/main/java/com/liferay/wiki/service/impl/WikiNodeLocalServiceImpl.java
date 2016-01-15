@@ -30,7 +30,7 @@ import com.liferay.portal.model.Group;
 import com.liferay.portal.model.ResourceConstants;
 import com.liferay.portal.model.SystemEventConstants;
 import com.liferay.portal.model.User;
-import com.liferay.portal.portletfilerepository.PortletFileRepositoryUtil;
+import com.liferay.portal.kernel.portletfilerepository.PortletFileRepositoryUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portlet.documentlibrary.model.DLFolderConstants;

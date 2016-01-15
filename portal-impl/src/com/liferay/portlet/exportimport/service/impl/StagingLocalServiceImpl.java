@@ -44,7 +44,7 @@ import com.liferay.portal.model.LayoutSetBranchConstants;
 import com.liferay.portal.model.PortletPreferences;
 import com.liferay.portal.model.Repository;
 import com.liferay.portal.model.User;
-import com.liferay.portal.portletfilerepository.PortletFileRepositoryUtil;
+import com.liferay.portal.kernel.portletfilerepository.PortletFileRepositoryUtil;
 import com.liferay.portal.security.auth.HttpPrincipal;
 import com.liferay.portal.security.auth.PrincipalException;
 import com.liferay.portal.security.auth.RemoteAuthException;

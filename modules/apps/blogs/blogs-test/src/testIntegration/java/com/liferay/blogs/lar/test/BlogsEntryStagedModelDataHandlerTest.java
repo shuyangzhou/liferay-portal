@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.lar.test.BaseWorkflowedStagedModelDataHandlerTestCase;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.StagedModel;
-import com.liferay.portal.portletfilerepository.PortletFileRepositoryUtil;
+import com.liferay.portal.kernel.portletfilerepository.PortletFileRepositoryUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portlet.blogs.model.BlogsEntry;
