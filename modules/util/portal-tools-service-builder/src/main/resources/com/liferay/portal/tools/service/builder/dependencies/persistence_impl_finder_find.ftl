@@ -882,10 +882,10 @@ that may or may not be enforced with a unique index at the database level. Case
 					StringBundler query = null;
 
 					if (orderByComparator != null) {
-						query = new StringBundler(5 + (orderByComparator.getOrderByConditionFields().length * 3) + (orderByComparator.getOrderByFields().length * 3));
+						query = new StringBundler(${finderColsList?size + 4} + (orderByComparator.getOrderByConditionFields().length * 3) + (orderByComparator.getOrderByFields().length * 3));
 					}
 					else {
-						query = new StringBundler(4);
+						query = new StringBundler(${finderColsList?size + 3});
 					}
 
 					if (getDB().isSupportsInlineDistinct()) {
