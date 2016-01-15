@@ -1,7 +1,7 @@
 <#include "copyright.txt" parse="false">
 
 
-package ${packagePath}.exception;
+package ${servicePackagePath}.exception;
 
 import aQute.bnd.annotation.ProviderType;
 

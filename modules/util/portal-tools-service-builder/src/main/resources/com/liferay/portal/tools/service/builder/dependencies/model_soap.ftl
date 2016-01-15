@@ -1,7 +1,7 @@
-package ${packagePath}.model;
+package ${servicePackagePath}.model;
 
 <#if entity.hasCompoundPK()>
-	import ${packagePath}.service.persistence.${entity.name}PK;
+	import ${servicePackagePath}.service.persistence.${entity.name}PK;
 </#if>
 
 import aQute.bnd.annotation.ProviderType;

@@ -555,11 +555,19 @@ public class ServiceBuilder {
 					"The package-path attribute is required");
 			}
 
+			String servicePackagePath = rootElement.attributeValue(
+				"api-package-path");
+
+			if (Validator.isNull(servicePackagePath)) {
+				servicePackagePath = packagePath;
+			}
+
 			_outputPath =
 				_implDirName + "/" + StringUtil.replace(packagePath, ".", "/");
 
 			_serviceOutputPath =
-				_apiDirName + "/" + StringUtil.replace(packagePath, ".", "/");
+				_apiDirName + "/" +
+					StringUtil.replace(servicePackagePath, ".", "/");
 
 			if (Validator.isNotNull(_testDirName)) {
 				_testOutputPath =
@@ -568,6 +576,8 @@ public class ServiceBuilder {
 			}
 
 			_packagePath = packagePath;
+
+			_servicePackagePath = servicePackagePath;
 
 			_autoImportDefaultReferences = GetterUtil.getBoolean(
 				rootElement.attributeValue("auto-import-default-references"),
@@ -605,6 +615,8 @@ public class ServiceBuilder {
 				_testOutputPath += "/" + _portletPackageName;
 
 				_packagePath += "." + _portletPackageName;
+
+				_servicePackagePath += "." + _portletPackageName;
 			}
 			else {
 				_portletShortName = namespaceElement.getText();
@@ -3863,6 +3875,7 @@ public class ServiceBuilder {
 		context.put("propsUtil", _propsUtil);
 		context.put("serviceBuilder", this);
 		context.put("serviceOutputPath", _serviceOutputPath);
+		context.put("servicePackagePath", _servicePackagePath);
 		context.put("springFileName", _springFileName);
 		context.put("sqlDir", _sqlDirName);
 		context.put("sqlFileName", _sqlFileName);
@@ -4676,11 +4689,11 @@ public class ServiceBuilder {
 			sb.append(
 				"package " + _packagePath + ".service.persistence.impl;\n\n");
 			sb.append(
-				"import " + _packagePath + ".service.persistence." + ejbName +
-					"Finder;\n");
+				"import " + _servicePackagePath +
+					".service.persistence." + ejbName + "Finder;\n");
 			sb.append(
-				"import " + _packagePath + ".service.persistence." + ejbName +
-					"Util;");
+				"import " + _servicePackagePath +
+					".service.persistence." + ejbName + "Util;");
 
 			content = StringUtil.replace(
 				content, "package " + _packagePath + ".service.persistence;",
@@ -5083,7 +5096,7 @@ public class ServiceBuilder {
 
 		_ejbList.add(
 			new Entity(
-				_packagePath, _portletName, _portletShortName, ejbName,
+				_packagePath, _servicePackagePath, _portletName, _portletShortName, ejbName,
 				humanName, table, alias, uuid, uuidAccessor, localService,
 				remoteService, persistenceClass, finderClass, dataSource,
 				sessionFactory, txManager, cacheEnabled, dynamicUpdateEnabled,
@@ -5287,6 +5300,7 @@ public class ServiceBuilder {
 	private Set<String> _resourceActionModels = new HashSet<>();
 	private String _resourcesDirName;
 	private String _serviceOutputPath;
+	private String _servicePackagePath;
 	private String _springFileName;
 	private String[] _springNamespaces;
 	private String _sqlDirName;
