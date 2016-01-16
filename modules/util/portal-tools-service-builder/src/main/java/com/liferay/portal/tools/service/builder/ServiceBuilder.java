@@ -4690,11 +4690,11 @@ public class ServiceBuilder {
 			sb.append(
 				"package " + _packagePath + ".service.persistence.impl;\n\n");
 			sb.append(
-				"import " + _apiPackagePath +
-					".service.persistence." + ejbName + "Finder;\n");
+				"import " + _apiPackagePath + ".service.persistence." +
+					ejbName + "Finder;\n");
 			sb.append(
-				"import " + _apiPackagePath +
-					".service.persistence." + ejbName + "Util;");
+				"import " + _apiPackagePath + ".service.persistence." + ejbName +
+					"Util;");
 
 			content = StringUtil.replace(
 				content, "package " + _packagePath + ".service.persistence;",
