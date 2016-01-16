@@ -538,7 +538,7 @@ public class ServiceBuilder {
 			_badColumnNames = _readLines(_tplBadColumnNames);
 
 			_beanLocatorUtilShortName = _beanLocatorUtil.substring(
-				_beanLocatorUtil.lastIndexOf(".") + 1);
+				_beanLocatorUtil.lastIndexOf('.') + 1);
 
 			SAXReader saxReader = _getSAXReader();
 
@@ -555,16 +555,23 @@ public class ServiceBuilder {
 					"The package-path attribute is required");
 			}
 
+			_apiPackagePath = GetterUtil.getString(
+				rootElement.attributeValue("api-package-path"), packagePath);
+
 			_outputPath =
-				_implDirName + "/" + StringUtil.replace(packagePath, ".", "/");
+				_implDirName + "/" + StringUtil.replace(packagePath, '.', '/');
+
+			_oldOutputPath =
+				_apiDirName + "/" + StringUtil.replace(packagePath, '.', '/');
 
 			_serviceOutputPath =
-				_apiDirName + "/" + StringUtil.replace(packagePath, ".", "/");
+				_apiDirName + "/" +
+					StringUtil.replace(_apiPackagePath, '.', '/');
 
 			if (Validator.isNotNull(_testDirName)) {
 				_testOutputPath =
 					_testDirName + "/" +
-						StringUtil.replace(packagePath, ".", "/");
+						StringUtil.replace(packagePath, '.', '/');
 			}
 
 			_packagePath = packagePath;
@@ -605,6 +612,8 @@ public class ServiceBuilder {
 				_testOutputPath += "/" + _portletPackageName;
 
 				_packagePath += "." + _portletPackageName;
+
+				_apiPackagePath += "." + _portletPackageName;
 			}
 			else {
 				_portletShortName = namespaceElement.getText();
@@ -1009,7 +1018,7 @@ public class ServiceBuilder {
 			return entity;
 		}
 
-		int pos = name.lastIndexOf(".");
+		int pos = name.lastIndexOf('.');
 
 		if (pos == -1) {
 			pos = _ejbList.indexOf(new Entity(name));
@@ -1046,7 +1055,7 @@ public class ServiceBuilder {
 			return entity;
 		}
 
-		String refPackageDirName = StringUtil.replace(refPackage, ".", "/");
+		String refPackageDirName = StringUtil.replace(refPackage, '.', '/');
 
 		String refFileName =
 			_implDirName + "/" + refPackageDirName + "/service.xml";
@@ -1910,15 +1919,29 @@ public class ServiceBuilder {
 		}
 
 		for (String exception : exceptions) {
-			String dirName = StringPool.BLANK;
-
-			if (_osgiModule) {
-				dirName = "exception/";
-			}
+			File oldExceptionFile = new File(
+				_serviceOutputPath + "/" + exception + "Exception.java");
 
 			File exceptionFile = new File(
-				_serviceOutputPath + "/" + dirName + exception +
+				_serviceOutputPath + "/exception/" + exception +
 					"Exception.java");
+
+			if (oldExceptionFile.exists()) {
+				exceptionFile.delete();
+
+				Files.createDirectories(
+					Paths.get(_serviceOutputPath, "exception"));
+
+				Files.move(oldExceptionFile.toPath(), exceptionFile.toPath());
+
+				String content = _read(exceptionFile);
+
+				content = StringUtil.replace(
+					content, "package " + _packagePath,
+					"package " + _packagePath + ".exception");
+
+				_write(exceptionFile, content);
+			}
 
 			if (!exceptionFile.exists()) {
 				Map<String, Object> context = _getContext();
@@ -2084,9 +2107,13 @@ public class ServiceBuilder {
 
 	private void _createFinder(Entity entity) throws Exception {
 		if (!entity.hasFinderClass()) {
-			_removeFinder(entity);
+			_removeFinder(entity, _serviceOutputPath);
 
 			return;
+		}
+
+		if (!_oldOutputPath.equals(_serviceOutputPath)) {
+			_removeFinder(entity, _oldOutputPath);
 		}
 
 		JavaClass javaClass = _getJavaClass(
@@ -3036,12 +3063,12 @@ public class ServiceBuilder {
 		}
 
 		File file = new File(
-			_implDirName + "/" + StringUtil.replace(_propsUtil, ".", "/") +
+			_implDirName + "/" + StringUtil.replace(_propsUtil, '.', '/') +
 				".java");
 
 		Map<String, Object> context = _getContext();
 
-		int index = _propsUtil.lastIndexOf(".");
+		int index = _propsUtil.lastIndexOf('.');
 
 		context.put(
 			"servicePropsUtilClassName", _propsUtil.substring(index + 1));
@@ -3831,6 +3858,7 @@ public class ServiceBuilder {
 		Map<String, Object> context = new HashMap<>();
 
 		context.put("apiDir", _apiDirName);
+		context.put("apiPackagePath", _apiPackagePath);
 		context.put("arrayUtil", ArrayUtil_IW.getInstance());
 		context.put("author", _author);
 		context.put("beanLocatorUtil", _beanLocatorUtil);
@@ -4662,10 +4690,10 @@ public class ServiceBuilder {
 			sb.append(
 				"package " + _packagePath + ".service.persistence.impl;\n\n");
 			sb.append(
-				"import " + _packagePath + ".service.persistence." + ejbName +
-					"Finder;\n");
+				"import " + _apiPackagePath + ".service.persistence." +
+					ejbName + "Finder;\n");
 			sb.append(
-				"import " + _packagePath + ".service.persistence." + ejbName +
+				"import " + _apiPackagePath + ".service.persistence." + ejbName +
 					"Util;");
 
 			content = StringUtil.replace(
@@ -5069,7 +5097,7 @@ public class ServiceBuilder {
 
 		_ejbList.add(
 			new Entity(
-				_packagePath, _portletName, _portletShortName, ejbName,
+				_packagePath, _apiPackagePath, _portletName, _portletShortName, ejbName,
 				humanName, table, alias, uuid, uuidAccessor, localService,
 				remoteService, persistenceClass, finderClass, dataSource,
 				sessionFactory, txManager, cacheEnabled, dynamicUpdateEnabled,
@@ -5126,9 +5154,9 @@ public class ServiceBuilder {
 				entity.getName() + "ExportActionableDynamicQuery.java");
 	}
 
-	private void _removeFinder(Entity entity) {
+	private void _removeFinder(Entity entity, String outputPath) {
 		_deleteFile(
-			_serviceOutputPath + "/service/persistence/" + entity.getName() +
+			outputPath + "/service/persistence/" + entity.getName() +
 				"Finder.java");
 	}
 
@@ -5240,6 +5268,7 @@ public class ServiceBuilder {
 		"public void set.*" + Pattern.quote("("));
 
 	private String _apiDirName;
+	private String _apiPackagePath;
 	private String _author;
 	private boolean _autoImportDefaultReferences;
 	private boolean _autoNamespaceTables;
@@ -5272,6 +5301,7 @@ public class ServiceBuilder {
 	private String[] _readOnlyPrefixes;
 	private Set<String> _resourceActionModels = new HashSet<>();
 	private String _resourcesDirName;
+	private String _oldOutputPath; 
 	private String _serviceOutputPath;
 	private String _springFileName;
 	private String[] _springNamespaces;
