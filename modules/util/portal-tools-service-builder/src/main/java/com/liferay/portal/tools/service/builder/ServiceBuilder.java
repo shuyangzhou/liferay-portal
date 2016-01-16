@@ -3858,6 +3858,7 @@ public class ServiceBuilder {
 		Map<String, Object> context = new HashMap<>();
 
 		context.put("apiDir", _apiDirName);
+		context.put("apiPackagePath", _apiPackagePath);
 		context.put("arrayUtil", ArrayUtil_IW.getInstance());
 		context.put("author", _author);
 		context.put("beanLocatorUtil", _beanLocatorUtil);
@@ -3876,7 +3877,6 @@ public class ServiceBuilder {
 		context.put("propsUtil", _propsUtil);
 		context.put("serviceBuilder", this);
 		context.put("serviceOutputPath", _serviceOutputPath);
-		context.put("apiPackagePath", _apiPackagePath);
 		context.put("springFileName", _springFileName);
 		context.put("sqlDir", _sqlDirName);
 		context.put("sqlFileName", _sqlFileName);
