@@ -555,19 +555,15 @@ public class ServiceBuilder {
 					"The package-path attribute is required");
 			}
 
-			String apiPackagePath =	rootElement.attributeValue(
-				"api-package-path");
-
-			if (Validator.isNull(apiPackagePath)) {
-				apiPackagePath = packagePath;
-			}
+			_apiPackagePath = GetterUtil.getString(
+				rootElement.attributeValue("api-package-path"), packagePath);
 
 			_outputPath =
 				_implDirName + "/" + StringUtil.replace(packagePath, ".", "/");
 
 			_serviceOutputPath =
 				_apiDirName + "/" +
-					StringUtil.replace(apiPackagePath, ".", "/");
+					StringUtil.replace(_apiPackagePath, ".", "/");
 
 			if (Validator.isNotNull(_testDirName)) {
 				_testOutputPath =
@@ -576,8 +572,6 @@ public class ServiceBuilder {
 			}
 
 			_packagePath = packagePath;
-
-			_apiPackagePath = apiPackagePath;
 
 			_autoImportDefaultReferences = GetterUtil.getBoolean(
 				rootElement.attributeValue("auto-import-default-references"),
