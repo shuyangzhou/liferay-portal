@@ -1,4 +1,4 @@
-package ${packagePath}.service;
+package ${apiPackagePath}.service;
 
 <#assign entitiesHaveColumns = false>
 
@@ -6,7 +6,7 @@ package ${packagePath}.service;
 	<#if entity.hasColumns()>
 		<#assign entitiesHaveColumns = true>
 
-		import ${packagePath}.model.${entity.name}Clp;
+		import ${apiPackagePath}.model.${entity.name}Clp;
 	</#if>
 </#list>
 
@@ -265,8 +265,8 @@ public class ClpSerializer {
 		String className = clazz.getName();
 
 		<#list exceptions as exception>
-			if (className.equals("${packagePath}.${exception}Exception")) {
-				return new ${packagePath}.${exception}Exception(throwable.getMessage(), throwable.getCause());
+			if (className.equals("${packagePath}.exception.${exception}Exception")) {
+				return new ${packagePath}.exception.${exception}Exception(throwable.getMessage(), throwable.getCause());
 			}
 		</#list>
 

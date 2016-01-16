@@ -555,11 +555,19 @@ public class ServiceBuilder {
 					"The package-path attribute is required");
 			}
 
+			String apiPackagePath =	rootElement.attributeValue(
+				"api-package-path");
+
+			if (Validator.isNull(apiPackagePath)) {
+				apiPackagePath = packagePath;
+			}
+
 			_outputPath =
 				_implDirName + "/" + StringUtil.replace(packagePath, ".", "/");
 
 			_serviceOutputPath =
-				_apiDirName + "/" + StringUtil.replace(packagePath, ".", "/");
+				_apiDirName + "/" +
+					StringUtil.replace(apiPackagePath, ".", "/");
 
 			if (Validator.isNotNull(_testDirName)) {
 				_testOutputPath =
@@ -568,6 +576,8 @@ public class ServiceBuilder {
 			}
 
 			_packagePath = packagePath;
+
+			_apiPackagePath = apiPackagePath;
 
 			_autoImportDefaultReferences = GetterUtil.getBoolean(
 				rootElement.attributeValue("auto-import-default-references"),
@@ -605,6 +615,8 @@ public class ServiceBuilder {
 				_testOutputPath += "/" + _portletPackageName;
 
 				_packagePath += "." + _portletPackageName;
+
+				_apiPackagePath += "." + _portletPackageName;
 			}
 			else {
 				_portletShortName = namespaceElement.getText();
@@ -1910,15 +1922,29 @@ public class ServiceBuilder {
 		}
 
 		for (String exception : exceptions) {
-			String dirName = StringPool.BLANK;
-
-			if (_osgiModule) {
-				dirName = "exception/";
-			}
+			File oldExceptionFile = new File(
+				_serviceOutputPath + "/" + exception + "Exception.java");
 
 			File exceptionFile = new File(
-				_serviceOutputPath + "/" + dirName + exception +
+				_serviceOutputPath + "/exception/" + exception +
 					"Exception.java");
+
+			if (oldExceptionFile.exists()) {
+				exceptionFile.delete();
+
+				Files.createDirectories(
+					Paths.get(_serviceOutputPath, "exception"));
+
+				Files.move(oldExceptionFile.toPath(), exceptionFile.toPath());
+
+				String content = _read(exceptionFile);
+
+				content = StringUtil.replace(
+					content, "package " + _packagePath,
+					"package " + _packagePath + ".exception");
+
+				_write(exceptionFile, content);
+			}
 
 			if (!exceptionFile.exists()) {
 				Map<String, Object> context = _getContext();
@@ -3849,6 +3875,7 @@ public class ServiceBuilder {
 		context.put("propsUtil", _propsUtil);
 		context.put("serviceBuilder", this);
 		context.put("serviceOutputPath", _serviceOutputPath);
+		context.put("apiPackagePath", _apiPackagePath);
 		context.put("springFileName", _springFileName);
 		context.put("sqlDir", _sqlDirName);
 		context.put("sqlFileName", _sqlFileName);
@@ -4662,11 +4689,11 @@ public class ServiceBuilder {
 			sb.append(
 				"package " + _packagePath + ".service.persistence.impl;\n\n");
 			sb.append(
-				"import " + _packagePath + ".service.persistence." + ejbName +
-					"Finder;\n");
+				"import " + _apiPackagePath +
+					".service.persistence." + ejbName + "Finder;\n");
 			sb.append(
-				"import " + _packagePath + ".service.persistence." + ejbName +
-					"Util;");
+				"import " + _apiPackagePath +
+					".service.persistence." + ejbName + "Util;");
 
 			content = StringUtil.replace(
 				content, "package " + _packagePath + ".service.persistence;",
@@ -5069,7 +5096,7 @@ public class ServiceBuilder {
 
 		_ejbList.add(
 			new Entity(
-				_packagePath, _portletName, _portletShortName, ejbName,
+				_packagePath, _apiPackagePath, _portletName, _portletShortName, ejbName,
 				humanName, table, alias, uuid, uuidAccessor, localService,
 				remoteService, persistenceClass, finderClass, dataSource,
 				sessionFactory, txManager, cacheEnabled, dynamicUpdateEnabled,
@@ -5240,6 +5267,7 @@ public class ServiceBuilder {
 		"public void set.*" + Pattern.quote("("));
 
 	private String _apiDirName;
+	private String _apiPackagePath;
 	private String _author;
 	private boolean _autoImportDefaultReferences;
 	private boolean _autoNamespaceTables;
