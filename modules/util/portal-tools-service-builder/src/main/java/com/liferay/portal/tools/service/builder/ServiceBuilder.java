@@ -561,6 +561,9 @@ public class ServiceBuilder {
 			_outputPath =
 				_implDirName + "/" + StringUtil.replace(packagePath, '.', '/');
 
+			_oldOutputPath =
+				_apiDirName + "/" + StringUtil.replace(packagePath, '.', '/');
+
 			_serviceOutputPath =
 				_apiDirName + "/" +
 					StringUtil.replace(_apiPackagePath, '.', '/');
@@ -2104,9 +2107,13 @@ public class ServiceBuilder {
 
 	private void _createFinder(Entity entity) throws Exception {
 		if (!entity.hasFinderClass()) {
-			_removeFinder(entity);
+			_removeFinder(entity, _serviceOutputPath);
 
 			return;
+		}
+
+		if (!_oldOutputPath.equals(_serviceOutputPath)) {
+			_removeFinder(entity, _oldOutputPath);
 		}
 
 		JavaClass javaClass = _getJavaClass(
@@ -5147,9 +5154,9 @@ public class ServiceBuilder {
 				entity.getName() + "ExportActionableDynamicQuery.java");
 	}
 
-	private void _removeFinder(Entity entity) {
+	private void _removeFinder(Entity entity, String outputPath) {
 		_deleteFile(
-			_serviceOutputPath + "/service/persistence/" + entity.getName() +
+			outputPath + "/service/persistence/" + entity.getName() +
 				"Finder.java");
 	}
 
@@ -5294,6 +5301,7 @@ public class ServiceBuilder {
 	private String[] _readOnlyPrefixes;
 	private Set<String> _resourceActionModels = new HashSet<>();
 	private String _resourcesDirName;
+	private String _oldOutputPath; 
 	private String _serviceOutputPath;
 	private String _springFileName;
 	private String[] _springNamespaces;
