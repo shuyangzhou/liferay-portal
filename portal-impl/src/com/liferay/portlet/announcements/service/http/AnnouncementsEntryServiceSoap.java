@@ -65,7 +65,7 @@ import java.rmi.RemoteException;
  */
 @ProviderType
 public class AnnouncementsEntryServiceSoap {
-	public static com.liferay.portlet.announcements.model.AnnouncementsEntry addEntry(
+	public static com.liferay.announcements.kernel.model.AnnouncementsEntrySoap addEntry(
 		long plid, long classNameId, long classPK, java.lang.String title,
 		java.lang.String content, java.lang.String url, java.lang.String type,
 		int displayDateMonth, int displayDateDay, int displayDateYear,
@@ -74,7 +74,7 @@ public class AnnouncementsEntryServiceSoap {
 		int expirationDateHour, int expirationDateMinute, int priority,
 		boolean alert) throws RemoteException {
 		try {
-			com.liferay.portlet.announcements.model.AnnouncementsEntry returnValue =
+			com.liferay.announcements.kernel.model.AnnouncementsEntry returnValue =
 				AnnouncementsEntryServiceUtil.addEntry(plid, classNameId,
 					classPK, title, content, url, type, displayDateMonth,
 					displayDateDay, displayDateYear, displayDateHour,
@@ -82,7 +82,7 @@ public class AnnouncementsEntryServiceSoap {
 					expirationDateDay, expirationDateYear, expirationDateHour,
 					expirationDateMinute, priority, alert);
 
-			return returnValue;
+			return com.liferay.announcements.kernel.model.AnnouncementsEntrySoap.toSoapModel(returnValue);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -97,7 +97,7 @@ public class AnnouncementsEntryServiceSoap {
 	boolean, int, int, int, int, int, int, boolean)}
 	*/
 	@Deprecated
-	public static com.liferay.portlet.announcements.model.AnnouncementsEntry addEntry(
+	public static com.liferay.announcements.kernel.model.AnnouncementsEntrySoap addEntry(
 		long plid, long classNameId, long classPK, java.lang.String title,
 		java.lang.String content, java.lang.String url, java.lang.String type,
 		int displayDateMonth, int displayDateDay, int displayDateYear,
@@ -106,7 +106,7 @@ public class AnnouncementsEntryServiceSoap {
 		int expirationDateMinute, int priority, boolean alert)
 		throws RemoteException {
 		try {
-			com.liferay.portlet.announcements.model.AnnouncementsEntry returnValue =
+			com.liferay.announcements.kernel.model.AnnouncementsEntry returnValue =
 				AnnouncementsEntryServiceUtil.addEntry(plid, classNameId,
 					classPK, title, content, url, type, displayDateMonth,
 					displayDateDay, displayDateYear, displayDateHour,
@@ -114,7 +114,7 @@ public class AnnouncementsEntryServiceSoap {
 					expirationDateYear, expirationDateHour,
 					expirationDateMinute, priority, alert);
 
-			return returnValue;
+			return com.liferay.announcements.kernel.model.AnnouncementsEntrySoap.toSoapModel(returnValue);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -134,13 +134,13 @@ public class AnnouncementsEntryServiceSoap {
 		}
 	}
 
-	public static com.liferay.portlet.announcements.model.AnnouncementsEntry getEntry(
+	public static com.liferay.announcements.kernel.model.AnnouncementsEntrySoap getEntry(
 		long entryId) throws RemoteException {
 		try {
-			com.liferay.portlet.announcements.model.AnnouncementsEntry returnValue =
+			com.liferay.announcements.kernel.model.AnnouncementsEntry returnValue =
 				AnnouncementsEntryServiceUtil.getEntry(entryId);
 
-			return returnValue;
+			return com.liferay.announcements.kernel.model.AnnouncementsEntrySoap.toSoapModel(returnValue);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -149,7 +149,7 @@ public class AnnouncementsEntryServiceSoap {
 		}
 	}
 
-	public static com.liferay.portlet.announcements.model.AnnouncementsEntry updateEntry(
+	public static com.liferay.announcements.kernel.model.AnnouncementsEntrySoap updateEntry(
 		long entryId, java.lang.String title, java.lang.String content,
 		java.lang.String url, java.lang.String type, int displayDateMonth,
 		int displayDateDay, int displayDateYear, int displayDateHour,
@@ -158,7 +158,7 @@ public class AnnouncementsEntryServiceSoap {
 		int expirationDateHour, int expirationDateMinute, int priority)
 		throws RemoteException {
 		try {
-			com.liferay.portlet.announcements.model.AnnouncementsEntry returnValue =
+			com.liferay.announcements.kernel.model.AnnouncementsEntry returnValue =
 				AnnouncementsEntryServiceUtil.updateEntry(entryId, title,
 					content, url, type, displayDateMonth, displayDateDay,
 					displayDateYear, displayDateHour, displayDateMinute,
@@ -166,7 +166,7 @@ public class AnnouncementsEntryServiceSoap {
 					expirationDateYear, expirationDateHour,
 					expirationDateMinute, priority);
 
-			return returnValue;
+			return com.liferay.announcements.kernel.model.AnnouncementsEntrySoap.toSoapModel(returnValue);
 		}
 		catch (Exception e) {
 			_log.error(e, e);

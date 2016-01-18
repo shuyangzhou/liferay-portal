@@ -52,7 +52,7 @@ public class AnnouncementsDeliveryLocalServiceUtil {
 		return getService().addAnnouncementsDelivery(announcementsDelivery);
 	}
 
-	public static com.liferay.portlet.announcements.model.AnnouncementsDelivery addUserDelivery(
+	public static com.liferay.announcements.kernel.model.AnnouncementsDelivery addUserDelivery(
 		long userId, java.lang.String type)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().addUserDelivery(userId, type);
@@ -98,7 +98,7 @@ public class AnnouncementsDeliveryLocalServiceUtil {
 	}
 
 	public static void deleteDelivery(
-		com.liferay.portlet.announcements.model.AnnouncementsDelivery delivery) {
+		com.liferay.announcements.kernel.model.AnnouncementsDelivery delivery) {
 		getService().deleteDelivery(delivery);
 	}
 
@@ -245,7 +245,7 @@ public class AnnouncementsDeliveryLocalServiceUtil {
 		return getService().getAnnouncementsDelivery(deliveryId);
 	}
 
-	public static com.liferay.portlet.announcements.model.AnnouncementsDelivery getDelivery(
+	public static com.liferay.announcements.kernel.model.AnnouncementsDelivery getDelivery(
 		long deliveryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getDelivery(deliveryId);
@@ -270,12 +270,12 @@ public class AnnouncementsDeliveryLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static java.util.List<com.liferay.portlet.announcements.model.AnnouncementsDelivery> getUserDeliveries(
+	public static java.util.List<com.liferay.announcements.kernel.model.AnnouncementsDelivery> getUserDeliveries(
 		long userId) throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getUserDeliveries(userId);
 	}
 
-	public static com.liferay.portlet.announcements.model.AnnouncementsDelivery getUserDelivery(
+	public static com.liferay.announcements.kernel.model.AnnouncementsDelivery getUserDelivery(
 		long userId, java.lang.String type)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getUserDelivery(userId, type);
@@ -292,7 +292,7 @@ public class AnnouncementsDeliveryLocalServiceUtil {
 		return getService().updateAnnouncementsDelivery(announcementsDelivery);
 	}
 
-	public static com.liferay.portlet.announcements.model.AnnouncementsDelivery updateDelivery(
+	public static com.liferay.announcements.kernel.model.AnnouncementsDelivery updateDelivery(
 		long userId, java.lang.String type, boolean email, boolean sms,
 		boolean website)
 		throws com.liferay.portal.kernel.exception.PortalException {

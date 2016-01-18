@@ -40,7 +40,7 @@ public class AnnouncementsEntryServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.portlet.announcements.service.impl.AnnouncementsEntryServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.portlet.announcements.model.AnnouncementsEntry addEntry(
+	public static com.liferay.announcements.kernel.model.AnnouncementsEntry addEntry(
 		long plid, long classNameId, long classPK, java.lang.String title,
 		java.lang.String content, java.lang.String url, java.lang.String type,
 		int displayDateMonth, int displayDateDay, int displayDateYear,
@@ -63,7 +63,7 @@ public class AnnouncementsEntryServiceUtil {
 	boolean, int, int, int, int, int, int, boolean)}
 	*/
 	@Deprecated
-	public static com.liferay.portlet.announcements.model.AnnouncementsEntry addEntry(
+	public static com.liferay.announcements.kernel.model.AnnouncementsEntry addEntry(
 		long plid, long classNameId, long classPK, java.lang.String title,
 		java.lang.String content, java.lang.String url, java.lang.String type,
 		int displayDateMonth, int displayDateDay, int displayDateYear,
@@ -84,7 +84,7 @@ public class AnnouncementsEntryServiceUtil {
 		getService().deleteEntry(entryId);
 	}
 
-	public static com.liferay.portlet.announcements.model.AnnouncementsEntry getEntry(
+	public static com.liferay.announcements.kernel.model.AnnouncementsEntry getEntry(
 		long entryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getEntry(entryId);
@@ -99,7 +99,7 @@ public class AnnouncementsEntryServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.portlet.announcements.model.AnnouncementsEntry updateEntry(
+	public static com.liferay.announcements.kernel.model.AnnouncementsEntry updateEntry(
 		long entryId, java.lang.String title, java.lang.String content,
 		java.lang.String url, java.lang.String type, int displayDateMonth,
 		int displayDateDay, int displayDateYear, int displayDateHour,

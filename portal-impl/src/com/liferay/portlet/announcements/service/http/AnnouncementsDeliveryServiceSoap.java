@@ -65,15 +65,15 @@ import java.rmi.RemoteException;
  */
 @ProviderType
 public class AnnouncementsDeliveryServiceSoap {
-	public static com.liferay.portlet.announcements.model.AnnouncementsDelivery updateDelivery(
+	public static com.liferay.announcements.kernel.model.AnnouncementsDeliverySoap updateDelivery(
 		long userId, java.lang.String type, boolean email, boolean sms,
 		boolean website) throws RemoteException {
 		try {
-			com.liferay.portlet.announcements.model.AnnouncementsDelivery returnValue =
+			com.liferay.announcements.kernel.model.AnnouncementsDelivery returnValue =
 				AnnouncementsDeliveryServiceUtil.updateDelivery(userId, type,
 					email, sms, website);
 
-			return returnValue;
+			return com.liferay.announcements.kernel.model.AnnouncementsDeliverySoap.toSoapModel(returnValue);
 		}
 		catch (Exception e) {
 			_log.error(e, e);

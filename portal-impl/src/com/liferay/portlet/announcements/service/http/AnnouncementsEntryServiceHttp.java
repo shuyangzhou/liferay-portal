@@ -55,7 +55,7 @@ import com.liferay.portal.service.http.TunnelUtil;
  */
 @ProviderType
 public class AnnouncementsEntryServiceHttp {
-	public static com.liferay.portlet.announcements.model.AnnouncementsEntry addEntry(
+	public static com.liferay.announcements.kernel.model.AnnouncementsEntry addEntry(
 		HttpPrincipal httpPrincipal, long plid, long classNameId, long classPK,
 		java.lang.String title, java.lang.String content, java.lang.String url,
 		java.lang.String type, int displayDateMonth, int displayDateDay,
@@ -88,7 +88,7 @@ public class AnnouncementsEntryServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portlet.announcements.model.AnnouncementsEntry)returnObj;
+			return (com.liferay.announcements.kernel.model.AnnouncementsEntry)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -97,7 +97,7 @@ public class AnnouncementsEntryServiceHttp {
 		}
 	}
 
-	public static com.liferay.portlet.announcements.model.AnnouncementsEntry addEntry(
+	public static com.liferay.announcements.kernel.model.AnnouncementsEntry addEntry(
 		HttpPrincipal httpPrincipal, long plid, long classNameId, long classPK,
 		java.lang.String title, java.lang.String content, java.lang.String url,
 		java.lang.String type, int displayDateMonth, int displayDateDay,
@@ -130,7 +130,7 @@ public class AnnouncementsEntryServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portlet.announcements.model.AnnouncementsEntry)returnObj;
+			return (com.liferay.announcements.kernel.model.AnnouncementsEntry)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -165,7 +165,7 @@ public class AnnouncementsEntryServiceHttp {
 		}
 	}
 
-	public static com.liferay.portlet.announcements.model.AnnouncementsEntry getEntry(
+	public static com.liferay.announcements.kernel.model.AnnouncementsEntry getEntry(
 		HttpPrincipal httpPrincipal, long entryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -187,7 +187,7 @@ public class AnnouncementsEntryServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portlet.announcements.model.AnnouncementsEntry)returnObj;
+			return (com.liferay.announcements.kernel.model.AnnouncementsEntry)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -196,7 +196,7 @@ public class AnnouncementsEntryServiceHttp {
 		}
 	}
 
-	public static com.liferay.portlet.announcements.model.AnnouncementsEntry updateEntry(
+	public static com.liferay.announcements.kernel.model.AnnouncementsEntry updateEntry(
 		HttpPrincipal httpPrincipal, long entryId, java.lang.String title,
 		java.lang.String content, java.lang.String url, java.lang.String type,
 		int displayDateMonth, int displayDateDay, int displayDateYear,
@@ -228,7 +228,7 @@ public class AnnouncementsEntryServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portlet.announcements.model.AnnouncementsEntry)returnObj;
+			return (com.liferay.announcements.kernel.model.AnnouncementsEntry)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);

@@ -53,12 +53,12 @@ public class AnnouncementsEntryFinderUtil {
 			alert, flagValue);
 	}
 
-	public static java.util.List<com.liferay.portlet.announcements.model.AnnouncementsEntry> findByDisplayDate(
+	public static java.util.List<com.liferay.announcements.kernel.model.AnnouncementsEntry> findByDisplayDate(
 		java.util.Date displayDateLT, java.util.Date displayDateGT) {
 		return getFinder().findByDisplayDate(displayDateLT, displayDateGT);
 	}
 
-	public static java.util.List<com.liferay.portlet.announcements.model.AnnouncementsEntry> findByScope(
+	public static java.util.List<com.liferay.announcements.kernel.model.AnnouncementsEntry> findByScope(
 		long userId, long classNameId, long[] classPKs, int displayDateMonth,
 		int displayDateDay, int displayDateYear, int displayDateHour,
 		int displayDateMinute, int expirationDateMonth, int expirationDateDay,
@@ -73,7 +73,7 @@ public class AnnouncementsEntryFinderUtil {
 			alert, flagValue, start, end);
 	}
 
-	public static java.util.List<com.liferay.portlet.announcements.model.AnnouncementsEntry> findByScopes(
+	public static java.util.List<com.liferay.announcements.kernel.model.AnnouncementsEntry> findByScopes(
 		long userId, java.util.LinkedHashMap<java.lang.Long, long[]> scopes,
 		int displayDateMonth, int displayDateDay, int displayDateYear,
 		int displayDateHour, int displayDateMinute, int expirationDateMonth,

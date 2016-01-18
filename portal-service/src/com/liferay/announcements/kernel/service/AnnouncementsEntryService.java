@@ -47,7 +47,7 @@ public interface AnnouncementsEntryService extends BaseService {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AnnouncementsEntryServiceUtil} to access the announcements entry remote service. Add custom service methods to {@link com.liferay.portlet.announcements.service.impl.AnnouncementsEntryServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public com.liferay.portlet.announcements.model.AnnouncementsEntry addEntry(
+	public com.liferay.announcements.kernel.model.AnnouncementsEntry addEntry(
 		long plid, long classNameId, long classPK, java.lang.String title,
 		java.lang.String content, java.lang.String url, java.lang.String type,
 		int displayDateMonth, int displayDateDay, int displayDateYear,
@@ -62,7 +62,7 @@ public interface AnnouncementsEntryService extends BaseService {
 	boolean, int, int, int, int, int, int, boolean)}
 	*/
 	@java.lang.Deprecated
-	public com.liferay.portlet.announcements.model.AnnouncementsEntry addEntry(
+	public com.liferay.announcements.kernel.model.AnnouncementsEntry addEntry(
 		long plid, long classNameId, long classPK, java.lang.String title,
 		java.lang.String content, java.lang.String url, java.lang.String type,
 		int displayDateMonth, int displayDateDay, int displayDateYear,
@@ -74,7 +74,7 @@ public interface AnnouncementsEntryService extends BaseService {
 	public void deleteEntry(long entryId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public com.liferay.portlet.announcements.model.AnnouncementsEntry getEntry(
+	public com.liferay.announcements.kernel.model.AnnouncementsEntry getEntry(
 		long entryId) throws PortalException;
 
 	/**
@@ -84,7 +84,7 @@ public interface AnnouncementsEntryService extends BaseService {
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
 
-	public com.liferay.portlet.announcements.model.AnnouncementsEntry updateEntry(
+	public com.liferay.announcements.kernel.model.AnnouncementsEntry updateEntry(
 		long entryId, java.lang.String title, java.lang.String content,
 		java.lang.String url, java.lang.String type, int displayDateMonth,
 		int displayDateDay, int displayDateYear, int displayDateHour,

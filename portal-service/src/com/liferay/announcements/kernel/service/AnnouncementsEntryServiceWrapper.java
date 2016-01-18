@@ -35,7 +35,7 @@ public class AnnouncementsEntryServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portlet.announcements.model.AnnouncementsEntry addEntry(
+	public com.liferay.announcements.kernel.model.AnnouncementsEntry addEntry(
 		long plid, long classNameId, long classPK, java.lang.String title,
 		java.lang.String content, java.lang.String url, java.lang.String type,
 		int displayDateMonth, int displayDateDay, int displayDateYear,
@@ -59,7 +59,7 @@ public class AnnouncementsEntryServiceWrapper
 	*/
 	@Deprecated
 	@Override
-	public com.liferay.portlet.announcements.model.AnnouncementsEntry addEntry(
+	public com.liferay.announcements.kernel.model.AnnouncementsEntry addEntry(
 		long plid, long classNameId, long classPK, java.lang.String title,
 		java.lang.String content, java.lang.String url, java.lang.String type,
 		int displayDateMonth, int displayDateDay, int displayDateYear,
@@ -81,7 +81,7 @@ public class AnnouncementsEntryServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portlet.announcements.model.AnnouncementsEntry getEntry(
+	public com.liferay.announcements.kernel.model.AnnouncementsEntry getEntry(
 		long entryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _announcementsEntryService.getEntry(entryId);
@@ -98,7 +98,7 @@ public class AnnouncementsEntryServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portlet.announcements.model.AnnouncementsEntry updateEntry(
+	public com.liferay.announcements.kernel.model.AnnouncementsEntry updateEntry(
 		long entryId, java.lang.String title, java.lang.String content,
 		java.lang.String url, java.lang.String type, int displayDateMonth,
 		int displayDateDay, int displayDateYear, int displayDateHour,

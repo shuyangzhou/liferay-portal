@@ -52,7 +52,7 @@ public class AnnouncementsFlagLocalServiceUtil {
 		return getService().addAnnouncementsFlag(announcementsFlag);
 	}
 
-	public static com.liferay.portlet.announcements.model.AnnouncementsFlag addFlag(
+	public static com.liferay.announcements.kernel.model.AnnouncementsFlag addFlag(
 		long userId, long entryId, int value) {
 		return getService().addFlag(userId, entryId, value);
 	}
@@ -92,7 +92,7 @@ public class AnnouncementsFlagLocalServiceUtil {
 	}
 
 	public static void deleteFlag(
-		com.liferay.portlet.announcements.model.AnnouncementsFlag flag) {
+		com.liferay.announcements.kernel.model.AnnouncementsFlag flag) {
 		getService().deleteFlag(flag);
 	}
 
@@ -238,7 +238,7 @@ public class AnnouncementsFlagLocalServiceUtil {
 		return getService().getAnnouncementsFlagsCount();
 	}
 
-	public static com.liferay.portlet.announcements.model.AnnouncementsFlag getFlag(
+	public static com.liferay.announcements.kernel.model.AnnouncementsFlag getFlag(
 		long userId, long entryId, int value)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getFlag(userId, entryId, value);

@@ -58,7 +58,7 @@ public interface AnnouncementsEntryLocalService extends BaseLocalService,
 	public com.liferay.announcements.kernel.model.AnnouncementsEntry addAnnouncementsEntry(
 		com.liferay.announcements.kernel.model.AnnouncementsEntry announcementsEntry);
 
-	public com.liferay.portlet.announcements.model.AnnouncementsEntry addEntry(
+	public com.liferay.announcements.kernel.model.AnnouncementsEntry addEntry(
 		long userId, long classNameId, long classPK, java.lang.String title,
 		java.lang.String content, java.lang.String url, java.lang.String type,
 		int displayDateMonth, int displayDateDay, int displayDateYear,
@@ -73,7 +73,7 @@ public interface AnnouncementsEntryLocalService extends BaseLocalService,
 	boolean, int, int, int, int, int, int, boolean)}
 	*/
 	@java.lang.Deprecated
-	public com.liferay.portlet.announcements.model.AnnouncementsEntry addEntry(
+	public com.liferay.announcements.kernel.model.AnnouncementsEntry addEntry(
 		long userId, long classNameId, long classPK, java.lang.String title,
 		java.lang.String content, java.lang.String url, java.lang.String type,
 		int displayDateMonth, int displayDateDay, int displayDateYear,
@@ -115,7 +115,7 @@ public interface AnnouncementsEntryLocalService extends BaseLocalService,
 		long entryId) throws PortalException;
 
 	public void deleteEntry(
-		com.liferay.portlet.announcements.model.AnnouncementsEntry entry)
+		com.liferay.announcements.kernel.model.AnnouncementsEntry entry)
 		throws PortalException;
 
 	public void deleteEntry(long entryId) throws PortalException;
@@ -258,11 +258,11 @@ public interface AnnouncementsEntryLocalService extends BaseLocalService,
 		java.lang.String uuid, long companyId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.util.List<com.liferay.portlet.announcements.model.AnnouncementsEntry> getEntries(
+	public java.util.List<com.liferay.announcements.kernel.model.AnnouncementsEntry> getEntries(
 		long classNameId, long classPK, boolean alert, int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.util.List<com.liferay.portlet.announcements.model.AnnouncementsEntry> getEntries(
+	public java.util.List<com.liferay.announcements.kernel.model.AnnouncementsEntry> getEntries(
 		long userId, long classNameId, long[] classPKs, int displayDateMonth,
 		int displayDateDay, int displayDateYear, int displayDateHour,
 		int displayDateMinute, int expirationDateMonth, int expirationDateDay,
@@ -271,12 +271,12 @@ public interface AnnouncementsEntryLocalService extends BaseLocalService,
 		int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.util.List<com.liferay.portlet.announcements.model.AnnouncementsEntry> getEntries(
+	public java.util.List<com.liferay.announcements.kernel.model.AnnouncementsEntry> getEntries(
 		long userId, java.util.LinkedHashMap<java.lang.Long, long[]> scopes,
 		boolean alert, int flagValue, int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.util.List<com.liferay.portlet.announcements.model.AnnouncementsEntry> getEntries(
+	public java.util.List<com.liferay.announcements.kernel.model.AnnouncementsEntry> getEntries(
 		long userId, java.util.LinkedHashMap<java.lang.Long, long[]> scopes,
 		int displayDateMonth, int displayDateDay, int displayDateYear,
 		int displayDateHour, int displayDateMinute, int expirationDateMonth,
@@ -312,7 +312,7 @@ public interface AnnouncementsEntryLocalService extends BaseLocalService,
 		int expirationDateMinute, boolean alert, int flagValue);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public com.liferay.portlet.announcements.model.AnnouncementsEntry getEntry(
+	public com.liferay.announcements.kernel.model.AnnouncementsEntry getEntry(
 		long entryId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -335,7 +335,7 @@ public interface AnnouncementsEntryLocalService extends BaseLocalService,
 		java.io.Serializable primaryKeyObj) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.util.List<com.liferay.portlet.announcements.model.AnnouncementsEntry> getUserEntries(
+	public java.util.List<com.liferay.announcements.kernel.model.AnnouncementsEntry> getUserEntries(
 		long userId, int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -351,7 +351,7 @@ public interface AnnouncementsEntryLocalService extends BaseLocalService,
 	public com.liferay.announcements.kernel.model.AnnouncementsEntry updateAnnouncementsEntry(
 		com.liferay.announcements.kernel.model.AnnouncementsEntry announcementsEntry);
 
-	public com.liferay.portlet.announcements.model.AnnouncementsEntry updateEntry(
+	public com.liferay.announcements.kernel.model.AnnouncementsEntry updateEntry(
 		long userId, long entryId, java.lang.String title,
 		java.lang.String content, java.lang.String url, java.lang.String type,
 		int displayDateMonth, int displayDateDay, int displayDateYear,

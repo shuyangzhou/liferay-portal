@@ -47,7 +47,7 @@ public class AnnouncementsFlagLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portlet.announcements.model.AnnouncementsFlag addFlag(
+	public com.liferay.announcements.kernel.model.AnnouncementsFlag addFlag(
 		long userId, long entryId, int value) {
 		return _announcementsFlagLocalService.addFlag(userId, entryId, value);
 	}
@@ -91,7 +91,7 @@ public class AnnouncementsFlagLocalServiceWrapper
 
 	@Override
 	public void deleteFlag(
-		com.liferay.portlet.announcements.model.AnnouncementsFlag flag) {
+		com.liferay.announcements.kernel.model.AnnouncementsFlag flag) {
 		_announcementsFlagLocalService.deleteFlag(flag);
 	}
 
@@ -254,7 +254,7 @@ public class AnnouncementsFlagLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portlet.announcements.model.AnnouncementsFlag getFlag(
+	public com.liferay.announcements.kernel.model.AnnouncementsFlag getFlag(
 		long userId, long entryId, int value)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _announcementsFlagLocalService.getFlag(userId, entryId, value);
