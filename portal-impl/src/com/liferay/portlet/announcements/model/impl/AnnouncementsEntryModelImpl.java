@@ -16,6 +16,10 @@ package com.liferay.portlet.announcements.model.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.announcements.kernel.model.AnnouncementsEntry;
+import com.liferay.announcements.kernel.model.AnnouncementsEntryModel;
+import com.liferay.announcements.kernel.model.AnnouncementsEntrySoap;
+
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
@@ -32,9 +36,6 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
 
-import com.liferay.portlet.announcements.model.AnnouncementsEntry;
-import com.liferay.portlet.announcements.model.AnnouncementsEntryModel;
-import com.liferay.portlet.announcements.model.AnnouncementsEntrySoap;
 import com.liferay.portlet.expando.model.ExpandoBridge;
 import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 import com.liferay.portlet.exportimport.lar.StagedModelType;
@@ -83,7 +84,7 @@ public class AnnouncementsEntryModelImpl extends BaseModelImpl<AnnouncementsEntr
 			{ "classNameId", Types.BIGINT },
 			{ "classPK", Types.BIGINT },
 			{ "title", Types.VARCHAR },
-			{ "content", Types.CLOB },
+			{ "content", Types.VARCHAR },
 			{ "url", Types.VARCHAR },
 			{ "type_", Types.VARCHAR },
 			{ "displayDate", Types.TIMESTAMP },
@@ -104,7 +105,7 @@ public class AnnouncementsEntryModelImpl extends BaseModelImpl<AnnouncementsEntr
 		TABLE_COLUMNS_MAP.put("classNameId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("classPK", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("title", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("content", Types.CLOB);
+		TABLE_COLUMNS_MAP.put("content", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("url", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("type_", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("displayDate", Types.TIMESTAMP);
@@ -113,7 +114,7 @@ public class AnnouncementsEntryModelImpl extends BaseModelImpl<AnnouncementsEntr
 		TABLE_COLUMNS_MAP.put("alert", Types.BOOLEAN);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table AnnouncementsEntry (uuid_ VARCHAR(75) null,entryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,classNameId LONG,classPK LONG,title VARCHAR(75) null,content TEXT null,url STRING null,type_ VARCHAR(75) null,displayDate DATE null,expirationDate DATE null,priority INTEGER,alert BOOLEAN)";
+	public static final String TABLE_SQL_CREATE = "create table AnnouncementsEntry (uuid_ VARCHAR(75) null,entryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,classNameId LONG,classPK LONG,title VARCHAR(75) null,content VARCHAR(75) null,url VARCHAR(75) null,type_ VARCHAR(75) null,displayDate DATE null,expirationDate DATE null,priority INTEGER,alert BOOLEAN)";
 	public static final String TABLE_SQL_DROP = "drop table AnnouncementsEntry";
 	public static final String ORDER_BY_JPQL = " ORDER BY announcementsEntry.priority ASC, announcementsEntry.modifiedDate ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY AnnouncementsEntry.priority ASC, AnnouncementsEntry.modifiedDate ASC";
@@ -1007,7 +1008,7 @@ public class AnnouncementsEntryModelImpl extends BaseModelImpl<AnnouncementsEntr
 		StringBundler sb = new StringBundler(55);
 
 		sb.append("<model><model-name>");
-		sb.append("com.liferay.portlet.announcements.model.AnnouncementsEntry");
+		sb.append("com.liferay.announcements.kernel.model.AnnouncementsEntry");
 		sb.append("</model-name>");
 
 		sb.append(
