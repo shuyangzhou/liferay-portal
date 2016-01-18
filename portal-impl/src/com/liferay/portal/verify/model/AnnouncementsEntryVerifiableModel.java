@@ -14,7 +14,7 @@
 
 package com.liferay.portal.verify.model;
 
-import com.liferay.portlet.announcements.model.AnnouncementsEntry;
+import com.liferay.announcements.kernel.model.AnnouncementsEntry;
 
 /**
  * @author Brian Wing Shun Chan
