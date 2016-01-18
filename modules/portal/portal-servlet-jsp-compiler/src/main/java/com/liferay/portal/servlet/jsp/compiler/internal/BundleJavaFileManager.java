@@ -87,13 +87,15 @@ public class BundleJavaFileManager
 			return baseJavaFileObject.getClassName();
 		}
 
-		if (file.getClass() == _zipFileIndexFileObjectClass) {
-			try {
-				String name = (String)_nameField.get(file);
+		if (_nameField != null) {
+			if (file.getClass() == _nameField.getDeclaringClass()) {
+				try {
+					String name = (String)_nameField.get(file);
 
-				return name.substring(0, name.lastIndexOf(CharPool.PERIOD));
-			}
-			catch (ReflectiveOperationException roe) {
+					return name.substring(0, name.lastIndexOf(CharPool.PERIOD));
+				}
+				catch (ReflectiveOperationException roe) {
+				}
 			}
 		}
 
@@ -147,7 +149,6 @@ public class BundleJavaFileManager
 
 	private static final Set<Kind> _kinds = EnumSet.of(Kind.CLASS);
 	private static final Field _nameField;
-	private static final Class<?> _zipFileIndexFileObjectClass;
 
 	static {
 		Field nameField = null;
@@ -174,11 +175,9 @@ public class BundleJavaFileManager
 			}
 			catch (ReflectiveOperationException roe) {
 				nameField = null;
-				zipFileIndexFileObjectClass = null;
 			}
 		}
 
-		_zipFileIndexFileObjectClass = zipFileIndexFileObjectClass;
 		_nameField = nameField;
 	}
 
