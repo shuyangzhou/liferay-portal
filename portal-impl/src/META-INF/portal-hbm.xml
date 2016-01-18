@@ -73,9 +73,9 @@
 	<import class="com.liferay.portal.model.Website" />
 	<import class="com.liferay.portal.model.WorkflowDefinitionLink" />
 	<import class="com.liferay.portal.model.WorkflowInstanceLink" />
-	<import class="com.liferay.portlet.announcements.model.AnnouncementsDelivery" />
-	<import class="com.liferay.portlet.announcements.model.AnnouncementsEntry" />
-	<import class="com.liferay.portlet.announcements.model.AnnouncementsFlag" />
+	<import class="com.liferay.announcements.kernel.model.AnnouncementsDelivery" />
+	<import class="com.liferay.announcements.kernel.model.AnnouncementsEntry" />
+	<import class="com.liferay.announcements.kernel.model.AnnouncementsFlag" />
 	<import class="com.liferay.portlet.asset.model.AssetCategory" />
 	<import class="com.liferay.portlet.asset.model.AssetCategoryProperty" />
 	<import class="com.liferay.portlet.asset.model.AssetEntry" />
@@ -1198,7 +1198,7 @@
 		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="title" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="content" type="com.liferay.portal.dao.orm.hibernate.StringClobType" />
+		<property name="content" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="url" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="type" type="com.liferay.portal.dao.orm.hibernate.StringType" column="type_" />
 		<property name="displayDate" type="org.hibernate.type.TimestampType" />
