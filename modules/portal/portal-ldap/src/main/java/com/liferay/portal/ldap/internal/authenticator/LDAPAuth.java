@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.security.auth.Authenticator;
 import com.liferay.portal.kernel.security.ldap.LDAPSettings;
 import com.liferay.portal.kernel.security.ldap.LDAPUserImporter;
 import com.liferay.portal.kernel.security.ldap.PortalLDAP;
+import com.liferay.portal.kernel.security.pwd.PasswordEncryptor;
 import com.liferay.portal.kernel.util.AutoResetThreadLocal;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
@@ -40,7 +41,6 @@ import com.liferay.portal.ldap.configuration.LDAPServerConfiguration;
 import com.liferay.portal.ldap.configuration.SystemLDAPConfiguration;
 import com.liferay.portal.ldap.exportimport.configuration.LDAPImportConfiguration;
 import com.liferay.portal.model.User;
-import com.liferay.portal.security.pwd.PasswordEncryptor;
 import com.liferay.portal.service.UserLocalService;
 import com.liferay.portlet.admin.util.Omniadmin;
 
