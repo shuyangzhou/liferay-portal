@@ -299,7 +299,7 @@ public class UserServiceSoap {
 		com.liferay.portal.model.EmailAddressSoap[] emailAddresses,
 		com.liferay.portal.model.PhoneSoap[] phones,
 		com.liferay.portal.model.WebsiteSoap[] websites,
-		com.liferay.portlet.announcements.model.AnnouncementsDeliverySoap[] announcementsDelivers,
+		com.liferay.announcements.kernel.model.AnnouncementsDeliverySoap[] announcementsDelivers,
 		boolean sendEmail,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws RemoteException {
@@ -489,7 +489,7 @@ public class UserServiceSoap {
 		com.liferay.portal.model.EmailAddressSoap[] emailAddresses,
 		com.liferay.portal.model.PhoneSoap[] phones,
 		com.liferay.portal.model.WebsiteSoap[] websites,
-		com.liferay.portlet.announcements.model.AnnouncementsDeliverySoap[] announcementsDelivers,
+		com.liferay.announcements.kernel.model.AnnouncementsDeliverySoap[] announcementsDelivers,
 		boolean sendEmail,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws RemoteException {
@@ -1582,7 +1582,7 @@ public class UserServiceSoap {
 		com.liferay.portal.model.EmailAddressSoap[] emailAddresses,
 		com.liferay.portal.model.PhoneSoap[] phones,
 		com.liferay.portal.model.WebsiteSoap[] websites,
-		com.liferay.portlet.announcements.model.AnnouncementsDeliverySoap[] announcementsDelivers,
+		com.liferay.announcements.kernel.model.AnnouncementsDeliverySoap[] announcementsDelivers,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws RemoteException {
 		try {
@@ -1698,7 +1698,7 @@ public class UserServiceSoap {
 		com.liferay.portal.model.EmailAddressSoap[] emailAddresses,
 		com.liferay.portal.model.PhoneSoap[] phones,
 		com.liferay.portal.model.WebsiteSoap[] websites,
-		com.liferay.portlet.announcements.model.AnnouncementsDeliverySoap[] announcementsDelivers,
+		com.liferay.announcements.kernel.model.AnnouncementsDeliverySoap[] announcementsDelivers,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws RemoteException {
 		try {
