@@ -12,28 +12,31 @@
  * details.
  */
 
-package com.liferay.portlet.dynamicdatamapping;
+package com.liferay.gradle.plugins.extensions;
 
-import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.gradle.plugins.util.FileUtil;
+import com.liferay.gradle.util.GradleUtil;
+
+import java.io.File;
+
+import org.gradle.api.Project;
 
 /**
- * @author Rafael Praxedes
+ * @author Manuel de la Peña
  */
-public class StructureDefinitionException extends PortalException {
+public class JOnASAppServer extends AppServer {
 
-	public StructureDefinitionException() {
+	public JOnASAppServer(Project project) {
+		super("jonas", project);
 	}
 
-	public StructureDefinitionException(String msg) {
-		super(msg);
-	}
+	@Override
+	public void addAdditionalDependencies(String configurationName) {
+		File dir = new File(getDir(), "lib/endorsed");
 
-	public StructureDefinitionException(String msg, Throwable cause) {
-		super(msg, cause);
-	}
-
-	public StructureDefinitionException(Throwable cause) {
-		super(cause);
+		GradleUtil.addDependency(
+			project, configurationName,
+			FileUtil.getJarsFileTree(project, dir));
 	}
 
 }
