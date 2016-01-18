@@ -88,13 +88,13 @@ public class AnnouncementsFlagServiceSoap {
 		}
 	}
 
-	public static com.liferay.portlet.announcements.model.AnnouncementsFlag getFlag(
+	public static com.liferay.announcements.kernel.model.AnnouncementsFlagSoap getFlag(
 		long entryId, int value) throws RemoteException {
 		try {
-			com.liferay.portlet.announcements.model.AnnouncementsFlag returnValue =
+			com.liferay.announcements.kernel.model.AnnouncementsFlag returnValue =
 				AnnouncementsFlagServiceUtil.getFlag(entryId, value);
 
-			return returnValue;
+			return com.liferay.announcements.kernel.model.AnnouncementsFlagSoap.toSoapModel(returnValue);
 		}
 		catch (Exception e) {
 			_log.error(e, e);

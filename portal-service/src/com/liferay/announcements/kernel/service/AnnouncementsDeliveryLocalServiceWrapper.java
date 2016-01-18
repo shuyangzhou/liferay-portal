@@ -47,7 +47,7 @@ public class AnnouncementsDeliveryLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portlet.announcements.model.AnnouncementsDelivery addUserDelivery(
+	public com.liferay.announcements.kernel.model.AnnouncementsDelivery addUserDelivery(
 		long userId, java.lang.String type)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _announcementsDeliveryLocalService.addUserDelivery(userId, type);
@@ -98,7 +98,7 @@ public class AnnouncementsDeliveryLocalServiceWrapper
 
 	@Override
 	public void deleteDelivery(
-		com.liferay.portlet.announcements.model.AnnouncementsDelivery delivery) {
+		com.liferay.announcements.kernel.model.AnnouncementsDelivery delivery) {
 		_announcementsDeliveryLocalService.deleteDelivery(delivery);
 	}
 
@@ -263,7 +263,7 @@ public class AnnouncementsDeliveryLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portlet.announcements.model.AnnouncementsDelivery getDelivery(
+	public com.liferay.announcements.kernel.model.AnnouncementsDelivery getDelivery(
 		long deliveryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _announcementsDeliveryLocalService.getDelivery(deliveryId);
@@ -292,13 +292,13 @@ public class AnnouncementsDeliveryLocalServiceWrapper
 	}
 
 	@Override
-	public java.util.List<com.liferay.portlet.announcements.model.AnnouncementsDelivery> getUserDeliveries(
+	public java.util.List<com.liferay.announcements.kernel.model.AnnouncementsDelivery> getUserDeliveries(
 		long userId) throws com.liferay.portal.kernel.exception.PortalException {
 		return _announcementsDeliveryLocalService.getUserDeliveries(userId);
 	}
 
 	@Override
-	public com.liferay.portlet.announcements.model.AnnouncementsDelivery getUserDelivery(
+	public com.liferay.announcements.kernel.model.AnnouncementsDelivery getUserDelivery(
 		long userId, java.lang.String type)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _announcementsDeliveryLocalService.getUserDelivery(userId, type);
@@ -317,7 +317,7 @@ public class AnnouncementsDeliveryLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portlet.announcements.model.AnnouncementsDelivery updateDelivery(
+	public com.liferay.announcements.kernel.model.AnnouncementsDelivery updateDelivery(
 		long userId, java.lang.String type, boolean email, boolean sms,
 		boolean website)
 		throws com.liferay.portal.kernel.exception.PortalException {

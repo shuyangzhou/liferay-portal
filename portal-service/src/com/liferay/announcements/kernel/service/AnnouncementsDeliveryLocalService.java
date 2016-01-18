@@ -58,7 +58,7 @@ public interface AnnouncementsDeliveryLocalService extends BaseLocalService,
 	public com.liferay.announcements.kernel.model.AnnouncementsDelivery addAnnouncementsDelivery(
 		com.liferay.announcements.kernel.model.AnnouncementsDelivery announcementsDelivery);
 
-	public com.liferay.portlet.announcements.model.AnnouncementsDelivery addUserDelivery(
+	public com.liferay.announcements.kernel.model.AnnouncementsDelivery addUserDelivery(
 		long userId, java.lang.String type) throws PortalException;
 
 	/**
@@ -94,7 +94,7 @@ public interface AnnouncementsDeliveryLocalService extends BaseLocalService,
 	public void deleteDeliveries(long userId);
 
 	public void deleteDelivery(
-		com.liferay.portlet.announcements.model.AnnouncementsDelivery delivery);
+		com.liferay.announcements.kernel.model.AnnouncementsDelivery delivery);
 
 	public void deleteDelivery(long deliveryId) throws PortalException;
 
@@ -215,7 +215,7 @@ public interface AnnouncementsDeliveryLocalService extends BaseLocalService,
 		long deliveryId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public com.liferay.portlet.announcements.model.AnnouncementsDelivery getDelivery(
+	public com.liferay.announcements.kernel.model.AnnouncementsDelivery getDelivery(
 		long deliveryId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -234,11 +234,11 @@ public interface AnnouncementsDeliveryLocalService extends BaseLocalService,
 		java.io.Serializable primaryKeyObj) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.util.List<com.liferay.portlet.announcements.model.AnnouncementsDelivery> getUserDeliveries(
+	public java.util.List<com.liferay.announcements.kernel.model.AnnouncementsDelivery> getUserDeliveries(
 		long userId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public com.liferay.portlet.announcements.model.AnnouncementsDelivery getUserDelivery(
+	public com.liferay.announcements.kernel.model.AnnouncementsDelivery getUserDelivery(
 		long userId, java.lang.String type) throws PortalException;
 
 	/**
@@ -251,7 +251,7 @@ public interface AnnouncementsDeliveryLocalService extends BaseLocalService,
 	public com.liferay.announcements.kernel.model.AnnouncementsDelivery updateAnnouncementsDelivery(
 		com.liferay.announcements.kernel.model.AnnouncementsDelivery announcementsDelivery);
 
-	public com.liferay.portlet.announcements.model.AnnouncementsDelivery updateDelivery(
+	public com.liferay.announcements.kernel.model.AnnouncementsDelivery updateDelivery(
 		long userId, java.lang.String type, boolean email, boolean sms,
 		boolean website) throws PortalException;
 }

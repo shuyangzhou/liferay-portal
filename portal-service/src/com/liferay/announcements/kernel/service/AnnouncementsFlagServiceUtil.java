@@ -50,7 +50,7 @@ public class AnnouncementsFlagServiceUtil {
 		getService().deleteFlag(flagId);
 	}
 
-	public static com.liferay.portlet.announcements.model.AnnouncementsFlag getFlag(
+	public static com.liferay.announcements.kernel.model.AnnouncementsFlag getFlag(
 		long entryId, int value)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getFlag(entryId, value);

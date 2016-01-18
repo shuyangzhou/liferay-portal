@@ -52,7 +52,7 @@ public class AnnouncementsEntryLocalServiceUtil {
 		return getService().addAnnouncementsEntry(announcementsEntry);
 	}
 
-	public static com.liferay.portlet.announcements.model.AnnouncementsEntry addEntry(
+	public static com.liferay.announcements.kernel.model.AnnouncementsEntry addEntry(
 		long userId, long classNameId, long classPK, java.lang.String title,
 		java.lang.String content, java.lang.String url, java.lang.String type,
 		int displayDateMonth, int displayDateDay, int displayDateYear,
@@ -110,7 +110,7 @@ public class AnnouncementsEntryLocalServiceUtil {
 	}
 
 	public static void deleteEntry(
-		com.liferay.portlet.announcements.model.AnnouncementsEntry entry)
+		com.liferay.announcements.kernel.model.AnnouncementsEntry entry)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().deleteEntry(entry);
 	}
@@ -282,12 +282,12 @@ public class AnnouncementsEntryLocalServiceUtil {
 				   .getAnnouncementsEntryByUuidAndCompanyId(uuid, companyId);
 	}
 
-	public static java.util.List<com.liferay.portlet.announcements.model.AnnouncementsEntry> getEntries(
+	public static java.util.List<com.liferay.announcements.kernel.model.AnnouncementsEntry> getEntries(
 		long classNameId, long classPK, boolean alert, int start, int end) {
 		return getService().getEntries(classNameId, classPK, alert, start, end);
 	}
 
-	public static java.util.List<com.liferay.portlet.announcements.model.AnnouncementsEntry> getEntries(
+	public static java.util.List<com.liferay.announcements.kernel.model.AnnouncementsEntry> getEntries(
 		long userId, long classNameId, long[] classPKs, int displayDateMonth,
 		int displayDateDay, int displayDateYear, int displayDateHour,
 		int displayDateMinute, int expirationDateMonth, int expirationDateDay,
@@ -302,14 +302,14 @@ public class AnnouncementsEntryLocalServiceUtil {
 			alert, flagValue, start, end);
 	}
 
-	public static java.util.List<com.liferay.portlet.announcements.model.AnnouncementsEntry> getEntries(
+	public static java.util.List<com.liferay.announcements.kernel.model.AnnouncementsEntry> getEntries(
 		long userId, java.util.LinkedHashMap<java.lang.Long, long[]> scopes,
 		boolean alert, int flagValue, int start, int end) {
 		return getService()
 				   .getEntries(userId, scopes, alert, flagValue, start, end);
 	}
 
-	public static java.util.List<com.liferay.portlet.announcements.model.AnnouncementsEntry> getEntries(
+	public static java.util.List<com.liferay.announcements.kernel.model.AnnouncementsEntry> getEntries(
 		long userId, java.util.LinkedHashMap<java.lang.Long, long[]> scopes,
 		int displayDateMonth, int displayDateDay, int displayDateYear,
 		int displayDateHour, int displayDateMinute, int expirationDateMonth,
@@ -370,7 +370,7 @@ public class AnnouncementsEntryLocalServiceUtil {
 			alert, flagValue);
 	}
 
-	public static com.liferay.portlet.announcements.model.AnnouncementsEntry getEntry(
+	public static com.liferay.announcements.kernel.model.AnnouncementsEntry getEntry(
 		long entryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getEntry(entryId);
@@ -400,7 +400,7 @@ public class AnnouncementsEntryLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static java.util.List<com.liferay.portlet.announcements.model.AnnouncementsEntry> getUserEntries(
+	public static java.util.List<com.liferay.announcements.kernel.model.AnnouncementsEntry> getUserEntries(
 		long userId, int start, int end) {
 		return getService().getUserEntries(userId, start, end);
 	}
@@ -420,7 +420,7 @@ public class AnnouncementsEntryLocalServiceUtil {
 		return getService().updateAnnouncementsEntry(announcementsEntry);
 	}
 
-	public static com.liferay.portlet.announcements.model.AnnouncementsEntry updateEntry(
+	public static com.liferay.announcements.kernel.model.AnnouncementsEntry updateEntry(
 		long userId, long entryId, java.lang.String title,
 		java.lang.String content, java.lang.String url, java.lang.String type,
 		int displayDateMonth, int displayDateDay, int displayDateYear,

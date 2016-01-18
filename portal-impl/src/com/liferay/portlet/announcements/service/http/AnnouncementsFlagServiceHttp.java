@@ -108,7 +108,7 @@ public class AnnouncementsFlagServiceHttp {
 		}
 	}
 
-	public static com.liferay.portlet.announcements.model.AnnouncementsFlag getFlag(
+	public static com.liferay.announcements.kernel.model.AnnouncementsFlag getFlag(
 		HttpPrincipal httpPrincipal, long entryId, int value)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -131,7 +131,7 @@ public class AnnouncementsFlagServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portlet.announcements.model.AnnouncementsFlag)returnObj;
+			return (com.liferay.announcements.kernel.model.AnnouncementsFlag)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
