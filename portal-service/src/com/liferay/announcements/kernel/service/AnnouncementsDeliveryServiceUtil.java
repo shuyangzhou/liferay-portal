@@ -50,7 +50,7 @@ public class AnnouncementsDeliveryServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.portlet.announcements.model.AnnouncementsDelivery updateDelivery(
+	public static com.liferay.announcements.kernel.model.AnnouncementsDelivery updateDelivery(
 		long userId, java.lang.String type, boolean email, boolean sms,
 		boolean website)
 		throws com.liferay.portal.kernel.exception.PortalException {

@@ -46,7 +46,7 @@ public class AnnouncementsFlagServiceWrapper implements AnnouncementsFlagService
 	}
 
 	@Override
-	public com.liferay.portlet.announcements.model.AnnouncementsFlag getFlag(
+	public com.liferay.announcements.kernel.model.AnnouncementsFlag getFlag(
 		long entryId, int value)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _announcementsFlagService.getFlag(entryId, value);

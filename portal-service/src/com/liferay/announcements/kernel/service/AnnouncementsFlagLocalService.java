@@ -58,7 +58,7 @@ public interface AnnouncementsFlagLocalService extends BaseLocalService,
 	public com.liferay.announcements.kernel.model.AnnouncementsFlag addAnnouncementsFlag(
 		com.liferay.announcements.kernel.model.AnnouncementsFlag announcementsFlag);
 
-	public com.liferay.portlet.announcements.model.AnnouncementsFlag addFlag(
+	public com.liferay.announcements.kernel.model.AnnouncementsFlag addFlag(
 		long userId, long entryId, int value);
 
 	/**
@@ -92,7 +92,7 @@ public interface AnnouncementsFlagLocalService extends BaseLocalService,
 		long flagId) throws PortalException;
 
 	public void deleteFlag(
-		com.liferay.portlet.announcements.model.AnnouncementsFlag flag);
+		com.liferay.announcements.kernel.model.AnnouncementsFlag flag);
 
 	public void deleteFlag(long flagId) throws PortalException;
 
@@ -213,7 +213,7 @@ public interface AnnouncementsFlagLocalService extends BaseLocalService,
 	public int getAnnouncementsFlagsCount();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public com.liferay.portlet.announcements.model.AnnouncementsFlag getFlag(
+	public com.liferay.announcements.kernel.model.AnnouncementsFlag getFlag(
 		long userId, long entryId, int value) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
