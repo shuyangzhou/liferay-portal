@@ -48,7 +48,7 @@ page import="com.liferay.portlet.blogs.model.BlogsStatsUser" %><%@
 page import="com.liferay.portlet.blogs.service.BlogsEntryLocalServiceUtil" %><%@
 page import="com.liferay.portlet.blogs.service.BlogsStatsUserLocalServiceUtil" %><%@
 page import="com.liferay.portlet.blogs.util.comparator.StatsUserLastPostDateComparator" %><%@
-page import="com.liferay.portlet.ratings.RatingsType" %><%@
+page import="com.liferay.ratings.kernel.RatingsType" %><%@
 page import="com.liferay.taglib.search.ResultRow" %>
 
 <%@ page import="java.text.Format" %>
