@@ -74,8 +74,7 @@ public class WabBundleProcessor implements ServletContextListener {
 
 	public WabBundleProcessor(
 		Bundle bundle, String contextPath,
-		Dictionary<String, Object> properties,
-		SAXParserFactory saxParserFactory, Logger logger) {
+		Dictionary<String, Object> properties, Logger logger) {
 
 		_bundle = bundle;
 		_contextPath = contextPath;
@@ -96,8 +95,6 @@ public class WabBundleProcessor implements ServletContextListener {
 		_contextName = _contextPath.substring(1);
 
 		_bundleContext = _bundle.getBundleContext();
-		_webXMLDefinitionLoader = new WebXMLDefinitionLoader(
-			_bundle, saxParserFactory, _logger);
 	}
 
 	@Override
@@ -153,7 +150,10 @@ public class WabBundleProcessor implements ServletContextListener {
 		}
 	}
 
-	public void init() throws Exception {
+	public void init(SAXParserFactory saxParserFactory) throws Exception {
+		WebXMLDefinitionLoader webXMLDefinitionLoader =
+			new WebXMLDefinitionLoader(_bundle, saxParserFactory, _logger);
+
 		Thread currentThread = Thread.currentThread();
 
 		ClassLoader contextClassLoader = currentThread.getContextClassLoader();
@@ -161,7 +161,7 @@ public class WabBundleProcessor implements ServletContextListener {
 		try {
 			currentThread.setContextClassLoader(_bundleClassLoader);
 
-			_webXMLDefinition = _webXMLDefinitionLoader.loadWebXML();
+			_webXMLDefinition = webXMLDefinitionLoader.loadWebXML();
 
 			initContext(_webXMLDefinition);
 
@@ -592,7 +592,6 @@ public class WabBundleProcessor implements ServletContextListener {
 	private ServiceRegistration<ServletContextListener>
 		_thisEventListenerRegistration;
 	private WebXMLDefinition _webXMLDefinition;
-	private final WebXMLDefinitionLoader _webXMLDefinitionLoader;
 
 	private static class JspServletWrapper extends HttpServlet {
 
