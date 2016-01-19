@@ -50,18 +50,18 @@ recordSetSearch.setOrderByType(orderByType);
 		>
 
 			<%
+			searchContainer.setTotal(ddlFormAdminDisplayContext.getSearchContainerTotal(searchContainer));
+
 			request.setAttribute(WebKeys.SEARCH_CONTAINER, searchContainer);
 			%>
 
 			<liferay-ui:search-container-results
 				results="<%= ddlFormAdminDisplayContext.getSearchContainerResults(searchContainer) %>"
-				total="<%= ddlFormAdminDisplayContext.getSearchContainerTotal(searchContainer) %>"
 			/>
 
 			<liferay-ui:search-container-row
 				className="com.liferay.dynamic.data.lists.model.DDLRecordSet"
 				cssClass="entry-display-style"
-				escapedModel="<%= true %>"
 				keyProperty="recordSetId"
 				modelVar="recordSet"
 			>
@@ -103,7 +103,7 @@ recordSetSearch.setOrderByType(orderByType);
 								icon="forms"
 								resultRow="<%= row %>"
 								showCheckbox= "<%= false %>"
-								title="<%= recordSet.getName(locale) %>"
+								title="<%= HtmlUtil.escape(recordSet.getName(locale)) %>"
 								url="<%= rowURL %>"
 							>
 								<liferay-frontend:vertical-card-sticker-bottom>
@@ -125,12 +125,12 @@ recordSetSearch.setOrderByType(orderByType);
 						<liferay-ui:search-container-column-text
 							href="<%= rowURL %>"
 							name="name"
-							value="<%= recordSet.getName(locale) %>"
+							value="<%= HtmlUtil.escape(recordSet.getName(locale)) %>"
 						/>
 
 						<liferay-ui:search-container-column-text
 							name="description"
-							value="<%= StringUtil.shorten(recordSet.getDescription(locale), 100) %>"
+							value="<%= HtmlUtil.escape(StringUtil.shorten(recordSet.getDescription(locale), 100)) %>"
 						/>
 
 						<liferay-ui:search-container-column-date
