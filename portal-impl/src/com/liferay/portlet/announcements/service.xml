@@ -95,8 +95,8 @@
 		<reference package-path="com.liferay.portal" entity="Team" />
 		<reference package-path="com.liferay.portal" entity="User" />
 		<reference package-path="com.liferay.portal" entity="UserGroup" />
-		<reference package-path="com.liferay.portlet.announcements" entity="AnnouncementsDelivery" />
-		<reference package-path="com.liferay.portlet.announcements" entity="AnnouncementsFlag" />
+		<reference package-path="com.liferay.announcements.kernel" entity="AnnouncementsDelivery" />
+		<reference package-path="com.liferay.announcements.kernel" entity="AnnouncementsFlag" />
 	</entity>
 	<entity name="AnnouncementsFlag" local-service="true" remote-service="true">
 
