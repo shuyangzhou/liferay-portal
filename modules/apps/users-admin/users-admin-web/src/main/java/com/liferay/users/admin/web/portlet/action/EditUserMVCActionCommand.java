@@ -14,6 +14,9 @@
 
 package com.liferay.users.admin.web.portlet.action;
 
+import com.liferay.announcements.kernel.model.AnnouncementsDelivery;
+import com.liferay.announcements.kernel.model.AnnouncementsEntryConstants;
+import com.liferay.announcements.kernel.service.AnnouncementsDeliveryLocalService;
 import com.liferay.portal.exception.AddressCityException;
 import com.liferay.portal.exception.AddressStreetException;
 import com.liferay.portal.exception.AddressZipException;
@@ -86,10 +89,7 @@ import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.InvokerPortletImpl;
 import com.liferay.portlet.admin.util.AdminUtil;
 import com.liferay.portlet.admin.util.PortalMyAccountApplicationType;
-import com.liferay.portlet.announcements.model.AnnouncementsDelivery;
-import com.liferay.portlet.announcements.model.AnnouncementsEntryConstants;
 import com.liferay.portlet.announcements.model.impl.AnnouncementsDeliveryImpl;
-import com.liferay.portlet.announcements.service.AnnouncementsDeliveryLocalService;
 import com.liferay.portlet.documentlibrary.service.DLAppLocalService;
 import com.liferay.sites.kernel.util.SitesUtil;
 import com.liferay.users.admin.constants.UsersAdminPortletKeys;
