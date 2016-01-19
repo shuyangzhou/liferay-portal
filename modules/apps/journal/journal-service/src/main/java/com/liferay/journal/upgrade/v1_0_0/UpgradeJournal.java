@@ -88,10 +88,12 @@ public class UpgradeJournal extends UpgradeProcess {
 		PermissionThreadLocal.setAddResource(false);
 
 		try {
+			Class<?> clazz = getClass();
+
 			_defaultDDMStructureHelper.addDDMStructures(
 				defaultUserId, group.getGroupId(),
 				PortalUtil.getClassNameId(JournalArticle.class),
-				getClass().getClassLoader(),
+				clazz.getClassLoader(),
 				"com/liferay/journal/upgrade/v1_0_0/dependencies" +
 					"/basic-web-content-structure.xml",
 				new ServiceContext());
