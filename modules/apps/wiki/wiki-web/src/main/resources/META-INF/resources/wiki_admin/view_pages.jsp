@@ -37,8 +37,8 @@ if (Validator.isNotNull(orderByCol) && Validator.isNotNull(orderByType)) {
 	portalPreferences.setValue(WikiPortletKeys.WIKI_ADMIN, "pages-order-by-type", orderByType);
 }
 else {
-	orderByCol = portalPreferences.getValue(WikiPortletKeys.WIKI_ADMIN, "pages-order-by-col", "title");
-	orderByType = portalPreferences.getValue(WikiPortletKeys.WIKI_ADMIN, "pages-order-by-type", "asc");
+	orderByCol = portalPreferences.getValue(WikiPortletKeys.WIKI_ADMIN, "pages-order-by-col", "modifiedDate");
+	orderByType = portalPreferences.getValue(WikiPortletKeys.WIKI_ADMIN, "pages-order-by-type", "desc");
 }
 
 request.setAttribute("view_pages.jsp-orderByCol", orderByCol);
@@ -80,13 +80,12 @@ else {
 <liferay-util:include page="/wiki_admin/pages_navigation.jsp" servletContext="<%= application %>" />
 
 <liferay-frontend:management-bar
-	checkBoxDisabled="<%= pages.isEmpty() %>"
+	disabled="<%= pages.isEmpty() %>"
 	includeCheckBox="<%= true %>"
 	searchContainerId="wikiPages"
 >
 	<liferay-frontend:management-bar-buttons>
 		<liferay-frontend:management-bar-display-buttons
-			disabled="<%= pages.isEmpty() %>"
 			displayViews='<%= new String[] {"descriptive", "list"} %>'
 			portletURL="<%= currentURLObj %>"
 			selectedDisplayStyle="<%= displayStyle %>"
@@ -156,11 +155,6 @@ else {
 
 				<c:choose>
 					<c:when test='<%= displayStyle.equals("descriptive") %>'>
-						<liferay-ui:search-container-column-icon
-							icon="wiki"
-							toggleRowChecker="<%= true %>"
-						/>
-
 						<liferay-ui:search-container-column-text colspan="<%= 2 %>">
 
 							<%
@@ -230,7 +224,7 @@ else {
 
 						<liferay-ui:search-container-column-date
 							href="<%= rowURL %>"
-							name="date"
+							name="modified-date"
 							value="<%= curPage.getModifiedDate() %>"
 						/>
 

@@ -47,8 +47,9 @@ public class JournalCreationStrategyFactory {
 		}
 
 		if (_log.isDebugEnabled()) {
-			_log.debug(
-				"Return " + _journalCreationStrategy.getClass().getName());
+			Class<?> clazz = _journalCreationStrategy.getClass();
+
+			_log.debug("Return " + clazz.getName());
 		}
 
 		return _journalCreationStrategy;
@@ -58,7 +59,9 @@ public class JournalCreationStrategyFactory {
 		JournalCreationStrategy journalCreationStrategy) {
 
 		if (_log.isDebugEnabled()) {
-			_log.debug("Set " + journalCreationStrategy.getClass().getName());
+			Class<?> clazz = _journalCreationStrategy.getClass();
+
+			_log.debug("Set " + clazz.getName());
 		}
 
 		_journalCreationStrategy = journalCreationStrategy;

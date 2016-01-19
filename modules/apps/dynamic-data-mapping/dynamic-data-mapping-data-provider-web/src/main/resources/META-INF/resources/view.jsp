@@ -46,18 +46,18 @@ ddmDataProviderSearch.setOrderByType(orderByType);
 		>
 
 			<%
+			searchContainer.setTotal(ddmDataProviderDisplayContext.getSearchContainerTotal(searchContainer));
+
 			request.setAttribute(WebKeys.SEARCH_CONTAINER, searchContainer);
 			%>
 
 			<liferay-ui:search-container-results
 				results="<%= ddmDataProviderDisplayContext.getSearchContainerResults(searchContainer) %>"
-				total="<%= ddmDataProviderDisplayContext.getSearchContainerTotal(searchContainer) %>"
 			/>
 
 			<liferay-ui:search-container-row
 				className="com.liferay.dynamic.data.mapping.model.DDMDataProviderInstance"
 				cssClass="entry-display-style"
-				escapedModel="<%= true %>"
 				keyProperty="dataProviderInstanceId"
 				modelVar="dataProviderInstance"
 			>

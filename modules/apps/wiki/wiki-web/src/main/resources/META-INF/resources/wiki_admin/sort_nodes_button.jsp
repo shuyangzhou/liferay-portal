@@ -20,6 +20,11 @@
 String orderByCol = GetterUtil.getString((String)request.getAttribute("view.jsp-orderByCol"));
 String orderByType = GetterUtil.getString((String)request.getAttribute("view.jsp-orderByType"));
 
+Map<String, String> orderColumns = new HashMap<String, String>();
+
+orderColumns.put("modifiedDate", "last-post-date");
+orderColumns.put("name", "name");
+
 PortletURL sortURL = renderResponse.createRenderURL();
 
 sortURL.setParameter("mvcRenderCommandName", "/wiki_admin/view");
@@ -28,6 +33,6 @@ sortURL.setParameter("mvcRenderCommandName", "/wiki_admin/view");
 <liferay-frontend:management-bar-sort
 	orderByCol="<%= orderByCol %>"
 	orderByType="<%= orderByType %>"
-	orderColumns='<%= new String[] {"name"} %>'
+	orderColumns="<%= orderColumns %>"
 	portletURL="<%= sortURL %>"
 />
