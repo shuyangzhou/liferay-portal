@@ -90,7 +90,6 @@ public class DraftExportImportConfigurationMessageListener
 		DynamicQuery dynamicQuery =
 			_exportImportConfigurationLocalService.dynamicQuery();
 
-
 		Property typeProperty = PropertyFactoryUtil.forName("type");
 
 		dynamicQuery.add(
