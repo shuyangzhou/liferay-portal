@@ -2068,7 +2068,7 @@ public class DataFactory {
 
 		layoutModels.add(
 			newLayoutModel(
-				groupId, "welcome", LoginPortletKeys.LOGIN + ",", "47,"));
+				groupId, "welcome", LoginPortletKeys.LOGIN + ",", "com_liferay_hello_world_web_portlet_HelloWorldPortlet,"));
 		layoutModels.add(
 			newLayoutModel(groupId, "blogs", "", BlogsPortletKeys.BLOGS + ","));
 		layoutModels.add(
