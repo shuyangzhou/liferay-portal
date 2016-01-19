@@ -73,13 +73,10 @@ import org.osgi.service.http.whiteboard.HttpWhiteboardConstants;
 public class WabBundleProcessor implements ServletContextListener {
 
 	public WabBundleProcessor(
-		Bundle bundle, String contextPath,
-		Dictionary<String, Object> properties,
-		SAXParserFactory saxParserFactory, Logger logger) {
+		Bundle bundle, String contextPath, Logger logger) {
 
 		_bundle = bundle;
 		_contextPath = contextPath;
-		_properties = properties;
 
 		if (_contextPath.indexOf('/') != 0) {
 			throw new IllegalArgumentException(
@@ -96,8 +93,6 @@ public class WabBundleProcessor implements ServletContextListener {
 		_contextName = _contextPath.substring(1);
 
 		_bundleContext = _bundle.getBundleContext();
-		_webXMLDefinitionLoader = new WebXMLDefinitionLoader(
-			_bundle, saxParserFactory, _logger);
 	}
 
 	@Override
@@ -153,7 +148,14 @@ public class WabBundleProcessor implements ServletContextListener {
 		}
 	}
 
-	public void init() throws Exception {
+	public void init(
+			SAXParserFactory saxParserFactory,
+			Dictionary<String, Object> properties)
+		throws Exception {
+
+		WebXMLDefinitionLoader webXMLDefinitionLoader =
+			new WebXMLDefinitionLoader(_bundle, saxParserFactory, _logger);
+
 		Thread currentThread = Thread.currentThread();
 
 		ClassLoader contextClassLoader = currentThread.getContextClassLoader();
@@ -161,27 +163,27 @@ public class WabBundleProcessor implements ServletContextListener {
 		try {
 			currentThread.setContextClassLoader(_bundleClassLoader);
 
-			_webXMLDefinition = _webXMLDefinitionLoader.loadWebXML();
+			_webXMLDefinition = webXMLDefinitionLoader.loadWebXML();
 
-			initContext();
+			initContext(_webXMLDefinition);
 
 			registerThisAsEventListener();
 
-			initListeners();
+			initListeners(_webXMLDefinition);
 
-			initFilters();
+			initFilters(_webXMLDefinition);
 
 			try {
 				currentThread.setContextClassLoader(contextClassLoader);
 
 				_defaultServletServiceRegistration = createDefaultServlet();
-				_jspServletServiceRegistration = createJspServlet();
+				_jspServletServiceRegistration = createJspServlet(properties);
 			}
 			finally {
 				currentThread.setContextClassLoader(_bundleClassLoader);
 			}
 
-			initServlets();
+			initServlets(_webXMLDefinition);
 		}
 		catch (Exception e) {
 			_logger.log(
@@ -196,6 +198,8 @@ public class WabBundleProcessor implements ServletContextListener {
 		}
 		finally {
 			currentThread.setContextClassLoader(contextClassLoader);
+
+			_webXMLDefinition = null;
 		}
 	}
 
@@ -214,10 +218,12 @@ public class WabBundleProcessor implements ServletContextListener {
 			Object.class, new Object(), properties);
 	}
 
-	protected ServiceRegistration<Servlet> createJspServlet() {
-		Dictionary<String, Object> properties = new HashMapDictionary<>();
+	protected ServiceRegistration<Servlet> createJspServlet(
+		Dictionary<String, Object> properties) {
 
-		for (Enumeration<String> keys = _properties.keys();
+		Dictionary<String, Object> jspProperties = new HashMapDictionary<>();
+
+		for (Enumeration<String> keys = properties.keys();
 				keys.hasMoreElements();) {
 
 			String key = keys.nextElement();
@@ -230,19 +236,19 @@ public class WabBundleProcessor implements ServletContextListener {
 				_SERVLET_INIT_PARAM_PREFIX +
 					key.substring(_JSP_SERVLET_INIT_PARAM_PREFIX.length());
 
-			properties.put(paramName, _properties.get(key));
+			jspProperties.put(paramName, properties.get(key));
 		}
 
-		properties.put(
+		jspProperties.put(
 			HttpWhiteboardConstants.HTTP_WHITEBOARD_CONTEXT_SELECT,
 			_contextName);
-		properties.put(
+		jspProperties.put(
 			HttpWhiteboardConstants.HTTP_WHITEBOARD_SERVLET_NAME, "jsp");
-		properties.put(
+		jspProperties.put(
 			HttpWhiteboardConstants.HTTP_WHITEBOARD_SERVLET_PATTERN, "*.jsp");
 
 		return _bundleContext.registerService(
-			Servlet.class, new JspServletWrapper(), properties);
+			Servlet.class, new JspServletWrapper(), jspProperties);
 	}
 
 	protected void destroyContext() {
@@ -329,11 +335,11 @@ public class WabBundleProcessor implements ServletContextListener {
 		return classNamesList.toArray(new String[classNamesList.size()]);
 	}
 
-	protected void initContext() throws Exception {
-		Map<String, String> contextParameters =
-			_webXMLDefinition.getContextParameters();
+	protected void initContext(WebXMLDefinition webXMLDefinition)
+		throws Exception {
 
-		_wabServletContextHelper = new WabServletContextHelper(_bundle);
+		Map<String, String> contextParameters =
+			webXMLDefinition.getContextParameters();
 
 		Dictionary<String, Object> properties = new HashMapDictionary<>();
 
@@ -357,12 +363,15 @@ public class WabBundleProcessor implements ServletContextListener {
 		}
 
 		_serviceRegistration = _bundleContext.registerService(
-			ServletContextHelper.class, _wabServletContextHelper, properties);
+			ServletContextHelper.class, new WabServletContextHelper(_bundle),
+			properties);
 	}
 
-	protected void initFilters() throws Exception {
+	protected void initFilters(WebXMLDefinition webXMLDefinition)
+		throws Exception {
+
 		Map<String, FilterDefinition> filterDefinitions =
-			_webXMLDefinition.getFilterDefinitions();
+			webXMLDefinition.getFilterDefinitions();
 
 		for (Map.Entry<String, FilterDefinition> entry :
 				filterDefinitions.entrySet()) {
@@ -427,9 +436,11 @@ public class WabBundleProcessor implements ServletContextListener {
 		}
 	}
 
-	protected void initListeners() throws Exception {
+	protected void initListeners(WebXMLDefinition webXMLDefinition)
+		throws Exception {
+
 		List<ListenerDefinition> listenerDefinitions =
-			_webXMLDefinition.getListenerDefinitions();
+			webXMLDefinition.getListenerDefinitions();
 
 		for (ListenerDefinition listenerDefinition : listenerDefinitions) {
 			Dictionary<String, Object> properties = new Hashtable<>();
@@ -480,9 +491,11 @@ public class WabBundleProcessor implements ServletContextListener {
 		}
 	}
 
-	protected void initServlets() throws Exception {
+	protected void initServlets(WebXMLDefinition webXMLDefinition)
+		throws Exception {
+
 		Map<String, ServletDefinition> servletDefinitions =
-			_webXMLDefinition.getServletDefinitions();
+			webXMLDefinition.getServletDefinitions();
 
 		for (Entry<String, ServletDefinition> entry :
 				servletDefinitions.entrySet()) {
@@ -575,18 +588,15 @@ public class WabBundleProcessor implements ServletContextListener {
 	private final Set<ServiceRegistration<?>> _listenerRegistrations =
 		new ConcurrentSkipListSet<>();
 	private final Logger _logger;
-	private final Dictionary<String, Object> _properties;
 	private ServiceRegistration<ServletContextHelper> _serviceRegistration;
 	private ServiceRegistration<ServletContext> _servletContextRegistration;
 	private final Set<ServiceRegistration<Servlet>> _servletRegistrations =
 		new ConcurrentSkipListSet<>();
 	private ServiceRegistration<ServletContextListener>
 		_thisEventListenerRegistration;
-	private WabServletContextHelper _wabServletContextHelper;
 	private WebXMLDefinition _webXMLDefinition;
-	private final WebXMLDefinitionLoader _webXMLDefinitionLoader;
 
-	private class JspServletWrapper extends HttpServlet {
+	private static class JspServletWrapper extends HttpServlet {
 
 		@Override
 		public void destroy() {
