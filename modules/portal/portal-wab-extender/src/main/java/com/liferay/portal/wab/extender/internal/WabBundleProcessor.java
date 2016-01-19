@@ -163,13 +163,13 @@ public class WabBundleProcessor implements ServletContextListener {
 
 			_webXMLDefinition = _webXMLDefinitionLoader.loadWebXML();
 
-			initContext();
+			initContext(_webXMLDefinition);
 
 			registerThisAsEventListener();
 
-			initListeners();
+			initListeners(_webXMLDefinition);
 
-			initFilters();
+			initFilters(_webXMLDefinition);
 
 			try {
 				currentThread.setContextClassLoader(contextClassLoader);
@@ -181,7 +181,7 @@ public class WabBundleProcessor implements ServletContextListener {
 				currentThread.setContextClassLoader(_bundleClassLoader);
 			}
 
-			initServlets();
+			initServlets(_webXMLDefinition);
 		}
 		catch (Exception e) {
 			_logger.log(
@@ -196,6 +196,8 @@ public class WabBundleProcessor implements ServletContextListener {
 		}
 		finally {
 			currentThread.setContextClassLoader(contextClassLoader);
+
+			_webXMLDefinition = null;
 		}
 	}
 
@@ -329,9 +331,11 @@ public class WabBundleProcessor implements ServletContextListener {
 		return classNamesList.toArray(new String[classNamesList.size()]);
 	}
 
-	protected void initContext() throws Exception {
+	protected void initContext(WebXMLDefinition webXMLDefinition)
+		throws Exception {
+
 		Map<String, String> contextParameters =
-			_webXMLDefinition.getContextParameters();
+			webXMLDefinition.getContextParameters();
 
 		_wabServletContextHelper = new WabServletContextHelper(_bundle);
 
@@ -360,9 +364,11 @@ public class WabBundleProcessor implements ServletContextListener {
 			ServletContextHelper.class, _wabServletContextHelper, properties);
 	}
 
-	protected void initFilters() throws Exception {
+	protected void initFilters(WebXMLDefinition webXMLDefinition)
+		throws Exception {
+
 		Map<String, FilterDefinition> filterDefinitions =
-			_webXMLDefinition.getFilterDefinitions();
+			webXMLDefinition.getFilterDefinitions();
 
 		for (Map.Entry<String, FilterDefinition> entry :
 				filterDefinitions.entrySet()) {
@@ -427,9 +433,11 @@ public class WabBundleProcessor implements ServletContextListener {
 		}
 	}
 
-	protected void initListeners() throws Exception {
+	protected void initListeners(WebXMLDefinition webXMLDefinition)
+		throws Exception {
+
 		List<ListenerDefinition> listenerDefinitions =
-			_webXMLDefinition.getListenerDefinitions();
+			webXMLDefinition.getListenerDefinitions();
 
 		for (ListenerDefinition listenerDefinition : listenerDefinitions) {
 			Dictionary<String, Object> properties = new Hashtable<>();
@@ -480,9 +488,11 @@ public class WabBundleProcessor implements ServletContextListener {
 		}
 	}
 
-	protected void initServlets() throws Exception {
+	protected void initServlets(WebXMLDefinition webXMLDefinition)
+		throws Exception {
+
 		Map<String, ServletDefinition> servletDefinitions =
-			_webXMLDefinition.getServletDefinitions();
+			webXMLDefinition.getServletDefinitions();
 
 		for (Entry<String, ServletDefinition> entry :
 				servletDefinitions.entrySet()) {
