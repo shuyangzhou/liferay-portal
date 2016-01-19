@@ -337,8 +337,6 @@ public class WabBundleProcessor implements ServletContextListener {
 		Map<String, String> contextParameters =
 			webXMLDefinition.getContextParameters();
 
-		_wabServletContextHelper = new WabServletContextHelper(_bundle);
-
 		Dictionary<String, Object> properties = new HashMapDictionary<>();
 
 		properties.put(
@@ -361,7 +359,8 @@ public class WabBundleProcessor implements ServletContextListener {
 		}
 
 		_serviceRegistration = _bundleContext.registerService(
-			ServletContextHelper.class, _wabServletContextHelper, properties);
+			ServletContextHelper.class, new WabServletContextHelper(_bundle),
+			properties);
 	}
 
 	protected void initFilters(WebXMLDefinition webXMLDefinition)
@@ -592,7 +591,6 @@ public class WabBundleProcessor implements ServletContextListener {
 		new ConcurrentSkipListSet<>();
 	private ServiceRegistration<ServletContextListener>
 		_thisEventListenerRegistration;
-	private WabServletContextHelper _wabServletContextHelper;
 	private WebXMLDefinition _webXMLDefinition;
 	private final WebXMLDefinitionLoader _webXMLDefinitionLoader;
 
