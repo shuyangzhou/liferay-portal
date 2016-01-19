@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -28,7 +29,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Layout;
-import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.theme.PortletDisplay;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
@@ -89,15 +89,6 @@ public abstract class BaseAssetRenderer<T> implements AssetRenderer<T> {
 	@Override
 	public String[] getAvailableLanguageIds() {
 		return _AVAILABLE_LANGUAGE_IDS;
-	}
-
-	/**
-	 * @deprecated As of 6.2.0, replaced by {@link #getAvailableLanguageIds}
-	 */
-	@Deprecated
-	@Override
-	public String[] getAvailableLocales() {
-		return getAvailableLanguageIds();
 	}
 
 	@Override

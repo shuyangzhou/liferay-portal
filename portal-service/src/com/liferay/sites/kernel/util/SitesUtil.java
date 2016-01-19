@@ -16,13 +16,13 @@ package com.liferay.sites.kernel.util;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Layout;
 import com.liferay.portal.model.LayoutPrototype;
 import com.liferay.portal.model.LayoutSet;
 import com.liferay.portal.model.LayoutSetPrototype;
 import com.liferay.portal.model.User;
-import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.service.ServiceContext;
 
 import java.io.File;
@@ -263,34 +263,11 @@ public class SitesUtil {
 		getSites().mergeLayoutPrototypeLayout(group, layout);
 	}
 
-	/**
-	 * @deprecated As of 6.2.0, replaced by {@link
-	 *             #mergeLayoutPrototypeLayout(Group, Layout)}
-	 */
-	@Deprecated
-	public static void mergeLayoutProtypeLayout(Group group, Layout layout)
-		throws Exception {
-
-		getSites().mergeLayoutProtypeLayout(group, layout);
-	}
-
 	public static void mergeLayoutSetPrototypeLayouts(
 			Group group, LayoutSet layoutSet)
 		throws Exception {
 
 		getSites().mergeLayoutSetPrototypeLayouts(group, layoutSet);
-	}
-
-	/**
-	 * @deprecated As of 6.2.0, replaced by {@link
-	 *             #mergeLayoutSetPrototypeLayouts(Group, LayoutSet)}
-	 */
-	@Deprecated
-	public static void mergeLayoutSetProtypeLayouts(
-			Group group, LayoutSet layoutSet)
-		throws Exception {
-
-		getSites().mergeLayoutSetProtypeLayouts(group, layoutSet);
 	}
 
 	public static void removeMergeFailFriendlyURLLayouts(LayoutSet layoutSet) {
