@@ -12,15 +12,17 @@
  * details.
  */
 
-package com.liferay.portal.verify.model;
+package com.liferay.admin.kernel.util;
+
+import com.liferay.portal.model.User;
 
 /**
- * @author Miguel Pastor
+ * @author Michael C. Han
  */
-public interface VerifiableModel {
+public interface Omniadmin {
 
-	public String getPrimaryKeyColumnName();
+	public boolean isOmniadmin(long userId);
 
-	public String getTableName();
+	public boolean isOmniadmin(User user);
 
 }

@@ -12,26 +12,15 @@
  * details.
  */
 
-package com.liferay.portlet.journal.util;
-
-import com.liferay.portal.kernel.util.ProxyFactory;
-
-import java.util.Locale;
+package com.liferay.portal.kernel.verify.model;
 
 /**
- * @author Marcellus Tavares
- * @author Bruno Basto
- * @author Leonardo Barros
+ * @author Miguel Pastor
  */
-public class JournalConverterManagerUtil {
+public interface VerifiableModel {
 
-	public static String getDDMXSD(String journalXSD, Locale defaultLocale)
-		throws Exception {
+	public String getPrimaryKeyColumnName();
 
-		return _journalConverterManager.getDDMXSD(journalXSD, defaultLocale);
-	}
-
-	private static final JournalConverterManager _journalConverterManager =
-		ProxyFactory.newServiceTrackedInstance(JournalConverterManager.class);
+	public String getTableName();
 
 }

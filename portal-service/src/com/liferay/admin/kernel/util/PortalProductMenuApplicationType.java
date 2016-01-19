@@ -12,15 +12,19 @@
  * details.
  */
 
-package com.liferay.portal.verify.model;
+package com.liferay.admin.kernel.util;
 
 /**
- * @author Miguel Pastor
+ * @author Eudaldo Alonso
  */
-public interface VerifiableGroupedModel extends VerifiableModel {
+public class PortalProductMenuApplicationType {
 
-	public String getRelatedPrimaryKeyColumnName();
+	public interface ProductMenu {
 
-	public String getRelatedTableName();
+		public static final String CLASS_NAME =
+			"com.liferay.admin.kernel.util." +
+				"PortalProductMenuApplicationType$ProductMenu";
+
+	}
 
 }

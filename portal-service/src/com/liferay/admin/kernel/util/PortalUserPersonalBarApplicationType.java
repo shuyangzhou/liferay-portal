@@ -12,21 +12,19 @@
  * details.
  */
 
-package com.liferay.portal.verify.model;
+package com.liferay.admin.kernel.util;
 
 /**
- * @author Miguel Pastor
+ * @author Eudaldo Alonso
  */
-public interface VerifiableAuditedModel extends VerifiableModel {
+public class PortalUserPersonalBarApplicationType {
 
-	public String getJoinByTableName();
+	public interface UserPersonalBar {
 
-	public String getRelatedModelName();
+		public static final String CLASS_NAME =
+			"com.liferay.admin.kernel.util." +
+				"PortalUserPersonalBarApplicationType$UserPersonalBar";
 
-	public String getRelatedPKColumnName();
-
-	public boolean isAnonymousUserAllowed();
-
-	public boolean isUpdateDates();
+	}
 
 }

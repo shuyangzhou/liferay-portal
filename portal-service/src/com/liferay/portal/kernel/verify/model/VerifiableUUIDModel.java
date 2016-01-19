@@ -12,21 +12,10 @@
  * details.
  */
 
-package com.liferay.portal.verify.model;
+package com.liferay.portal.kernel.verify.model;
 
 /**
  * @author Miguel Pastor
  */
-public interface VerifiableResourcedModel extends VerifiableModel {
-
-	public String getModelName();
-
-	@Override
-	public String getPrimaryKeyColumnName();
-
-	@Override
-	public String getTableName();
-
-	public String getUserIdColumnName();
-
+public interface VerifiableUUIDModel extends VerifiableModel {
 }

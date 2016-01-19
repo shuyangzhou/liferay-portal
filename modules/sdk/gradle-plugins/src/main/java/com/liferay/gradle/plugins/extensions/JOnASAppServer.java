@@ -12,10 +12,31 @@
  * details.
  */
 
-package com.liferay.portal.verify.model;
+package com.liferay.gradle.plugins.extensions;
+
+import com.liferay.gradle.plugins.util.FileUtil;
+import com.liferay.gradle.util.GradleUtil;
+
+import java.io.File;
+
+import org.gradle.api.Project;
 
 /**
- * @author Miguel Pastor
+ * @author Manuel de la Peña
  */
-public interface VerifiableUUIDModel extends VerifiableModel {
+public class JOnASAppServer extends AppServer {
+
+	public JOnASAppServer(Project project) {
+		super("jonas", project);
+	}
+
+	@Override
+	public void addAdditionalDependencies(String configurationName) {
+		File dir = new File(getDir(), "lib/endorsed");
+
+		GradleUtil.addDependency(
+			project, configurationName,
+			FileUtil.getJarsFileTree(project, dir));
+	}
+
 }

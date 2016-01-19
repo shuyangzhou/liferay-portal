@@ -12,19 +12,16 @@
  * details.
  */
 
-package com.liferay.portlet.admin.util;
+package com.liferay.journal.kernel.util;
+
+import java.util.Locale;
 
 /**
- * @author Eudaldo Alonso
+ * @author Leonardo Barros
  */
-public class PortalProductMenuApplicationType {
+public interface JournalConverterManager {
 
-	public interface ProductMenu {
-
-		public static final String CLASS_NAME =
-			"com.liferay.portlet.admin.util." +
-				"PortalProductMenuApplicationType$ProductMenu";
-
-	}
+	public String getDDMXSD(String journalXSD, Locale defaultLocale)
+		throws Exception;
 
 }

@@ -12,19 +12,21 @@
  * details.
  */
 
-package com.liferay.portlet.admin.util;
+package com.liferay.portal.kernel.verify.model;
 
 /**
- * @author Pei-Jung Lan
+ * @author Miguel Pastor
  */
-public class PortalDirectoryApplicationType {
+public interface VerifiableResourcedModel extends VerifiableModel {
 
-	public interface PortalDirectory {
+	public String getModelName();
 
-		public static final String CLASS_NAME =
-			"com.liferay.portlet.admin.util." +
-				"PortalDirectoryApplicationType$PortalDirectory";
+	@Override
+	public String getPrimaryKeyColumnName();
 
-	}
+	@Override
+	public String getTableName();
+
+	public String getUserIdColumnName();
 
 }
