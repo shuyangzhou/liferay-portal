@@ -18,6 +18,7 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.announcements.kernel.model.AnnouncementsEntry;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.service.persistence.BasePersistence;
 
 /**
@@ -33,6 +34,7 @@ import com.liferay.portal.service.persistence.BasePersistence;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portlet.announcements.service.persistence.impl.AnnouncementsEntryPersistenceImpl")
 public interface AnnouncementsEntryPersistence extends BasePersistence<AnnouncementsEntry> {
 	/*
 	 * NOTE FOR DEVELOPERS:
