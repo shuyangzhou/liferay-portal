@@ -2,6 +2,7 @@ package ${apiPackagePath}.service;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
@@ -72,6 +73,11 @@ import ${import};
 </#if>
 
 @ProviderType
+<#if sessionTypeName == "Local">
+@ImplementationPath(implementationPath="${packagePath}.service.impl.${entity.name}LocalServiceImpl")
+<#else>
+@ImplementationPath(implementationPath="${packagePath}.service.impl.${entity.name}ServiceImpl")
+</#if>
 @Transactional(isolation = Isolation.PORTAL, rollbackFor = {PortalException.class, SystemException.class})
 public interface ${entity.name}${sessionTypeName}Service
 	extends Base${sessionTypeName}Service

@@ -7,6 +7,7 @@ package ${apiPackagePath}.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.LocaleException;
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.trash.TrashHandler;
@@ -61,6 +62,7 @@ import java.util.Map;
 </#if>
 
 @ProviderType
+@ImplementationPath(implementationPath="${packagePath}.model.impl.${entity.name}ModelImpl")
 public interface ${entity.name}Model extends
 	<#assign overrideColumnNames = []>
 
