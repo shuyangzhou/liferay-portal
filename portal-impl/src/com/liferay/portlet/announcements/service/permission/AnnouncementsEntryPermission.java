@@ -14,6 +14,8 @@
 
 package com.liferay.portlet.announcements.service.permission;
 
+import com.liferay.announcements.kernel.model.AnnouncementsEntry;
+import com.liferay.announcements.kernel.service.AnnouncementsEntryLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.model.Layout;
 import com.liferay.portal.model.impl.VirtualLayout;
@@ -21,8 +23,6 @@ import com.liferay.portal.security.auth.PrincipalException;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.service.LayoutLocalServiceUtil;
 import com.liferay.portal.service.permission.PortletPermissionUtil;
-import com.liferay.portlet.announcements.model.AnnouncementsEntry;
-import com.liferay.portlet.announcements.service.AnnouncementsEntryLocalServiceUtil;
 
 /**
  * @author Raymond Augé

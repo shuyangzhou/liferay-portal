@@ -14,6 +14,8 @@
 
 package com.liferay.portlet.announcements.service.impl;
 
+import com.liferay.announcements.kernel.constants.AnnouncementsConstants;
+import com.liferay.announcements.kernel.model.AnnouncementsEntry;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.PortletProvider;
 import com.liferay.portal.kernel.portlet.PortletProviderUtil;
@@ -32,8 +34,6 @@ import com.liferay.portal.service.permission.RolePermissionUtil;
 import com.liferay.portal.service.permission.UserGroupPermissionUtil;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PortletKeys;
-import com.liferay.portlet.announcements.constants.AnnouncementsConstants;
-import com.liferay.portlet.announcements.model.AnnouncementsEntry;
 import com.liferay.portlet.announcements.service.base.AnnouncementsEntryServiceBaseImpl;
 import com.liferay.portlet.announcements.service.permission.AnnouncementsEntryPermission;
 
@@ -150,31 +150,6 @@ public class AnnouncementsEntryServiceImpl
 			displayDateMinute, displayImmediately, expirationDateMonth,
 			expirationDateDay, expirationDateYear, expirationDateHour,
 			expirationDateMinute, priority, alert);
-	}
-
-	/**
-	 * @deprecated As of 6.2.0, replaced by {@link #addEntry(long, long, long,
-	 *             String, String, String, String, int, int, int, int, int,
-	 *             boolean, int, int, int, int, int, int, boolean)}
-	 */
-	@Deprecated
-	@Override
-	public AnnouncementsEntry addEntry(
-			long plid, long classNameId, long classPK, String title,
-			String content, String url, String type, int displayDateMonth,
-			int displayDateDay, int displayDateYear, int displayDateHour,
-			int displayDateMinute, int expirationDateMonth,
-			int expirationDateDay, int expirationDateYear,
-			int expirationDateHour, int expirationDateMinute, int priority,
-			boolean alert)
-		throws PortalException {
-
-		return addEntry(
-			plid, classNameId, classPK, title, content, url, type,
-			displayDateMonth, displayDateDay, displayDateYear, displayDateHour,
-			displayDateMinute, false, expirationDateMonth, expirationDateDay,
-			expirationDateYear, expirationDateHour, expirationDateMinute,
-			priority, alert);
 	}
 
 	@Override

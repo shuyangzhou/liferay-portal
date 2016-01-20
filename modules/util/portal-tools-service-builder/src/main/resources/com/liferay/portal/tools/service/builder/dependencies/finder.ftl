@@ -1,6 +1,8 @@
-package ${packagePath}.service.persistence;
+package ${apiPackagePath}.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
+
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 
 /**
  * @author ${author}
@@ -15,6 +17,7 @@ import aQute.bnd.annotation.ProviderType;
 </#if>
 
 @ProviderType
+@ImplementationPath(implementationPath="${packagePath}.service.persistence.impl.${entity.name}FinderImpl")
 public interface ${entity.name}Finder {
 
 	<#list methods as method>
