@@ -12,25 +12,23 @@
  * details.
  */
 
-package com.liferay.portlet.layoutsadmin.util;
-
-import aQute.bnd.annotation.ProviderType;
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.xml.Element;
-import com.liferay.portal.model.Layout;
-import com.liferay.portal.theme.ThemeDisplay;
+package com.liferay.portal.kernel.layoutconfiguration.util.xml;
 
 /**
- * @author Eduardo Garcia
+ * @author Brian Wing Shun Chan
  */
-@ProviderType
-public interface SitemapURLProvider {
+public abstract class RuntimeLogic {
 
-	public String getClassName();
+	public static final String CLOSE_2_TAG = "/>";
 
-	public void visitLayout(
-			Element element, Layout layout, ThemeDisplay themeDisplay)
-		throws PortalException;
+	public abstract String getClose1Tag();
+
+	public String getClose2Tag() {
+		return CLOSE_2_TAG;
+	}
+
+	public abstract String getOpenTag();
+
+	public abstract String processXML(String xml) throws Exception;
 
 }
