@@ -125,7 +125,7 @@ New way:
     <liferay-ui:logo-selector
         currentLogoURL="<%= selUser.getPortraitURL(themeDisplay) %>"
         defaultLogoURL="<%= UserConstants.getPortraitURL(themeDisplay.getPathImage(), selUser.isMale(), 0) %>"
-        hasUpdateLogoPermission='<%= UsersAdminUtil.hasUpdateFieldPermission(selUser, "portrait") %>'
+        hasUpdateLogoPermission='<%= UsersAdminUtil.hasUpdateFieldPermission(permissionChecker, null, selUser, "portrait") %>'
         imageId="<%= selUser.getPortraitId() %>"
         logoDisplaySelector=".user-logo"
         maxFileSize="<%= PrefsPropsUtil.getLong(PropsKeys.USERS_IMAGE_MAX_SIZE) / 1024 %>"
@@ -3444,6 +3444,12 @@ else.
 
 `com.liferay.portal.jdbc.pool.metrics` renamed to `com.liferay.portal.kernel.jdbc.pool.metrics`
 
+`com.liferay.portal.layoutconfiguration.util` renamed to `com.liferay.portal.kernel.layoutconfiguration.util`
+
+`com.liferay.portal.layoutconfiguration.util.xml` renamed to `com.liferay.portal.kernel.layoutconfiguration.util.xml`
+
+`com.liferay.portal.repository.proxy` renamed to `com.liferay.portal.kernel.repository.proxy`
+
 `com.liferay.portal.webserver` renamed to `com.liferay.portal.kernel.webserver`
 
 `com.liferay.portlet.backgroundtask` renamed to `com.liferay.background.task.kernel`
@@ -3451,6 +3457,12 @@ else.
 `com.liferay.portlet.dynamicdatamapping` renamed to `com.liferay.dynamic.data.mapping.kernel`
 
 `com.liferay.portlet.imagegallerydisplay.display.context` renamed to `com.liferay.image.gallery.display.kernel.display.context`
+
+`com.liferay.portlet.layoutsadmin.util` renamed to `com.liferay.layouts.admin.kernel.util`
+
+`com.liferay.portlet.mobiledevicerules` renamed to `com.liferay.mobile.device.rules`
+
+`com.liferay.portlet.portletconfiguration.util` renamed to `com.liferay.portlet.configuration.kernel.util`
 
 `com.liferay.portlet.rolesadmin.util` renamed to `com.liferay.roles.admin.kernel.util`
 
