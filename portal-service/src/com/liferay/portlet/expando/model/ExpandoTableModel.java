@@ -16,6 +16,7 @@ package com.liferay.portlet.expando.model;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.CacheModel;
@@ -39,6 +40,7 @@ import java.io.Serializable;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portlet.expando.model.impl.ExpandoTableModelImpl")
 public interface ExpandoTableModel extends BaseModel<ExpandoTable>, ShardedModel,
 	TypedModel {
 	/*

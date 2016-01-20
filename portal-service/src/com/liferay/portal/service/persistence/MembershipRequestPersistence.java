@@ -16,6 +16,7 @@ package com.liferay.portal.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.model.MembershipRequest;
 
 /**
@@ -31,6 +32,7 @@ import com.liferay.portal.model.MembershipRequest;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portal.service.persistence.impl.MembershipRequestPersistenceImpl")
 public interface MembershipRequestPersistence extends BasePersistence<MembershipRequest> {
 	/*
 	 * NOTE FOR DEVELOPERS:

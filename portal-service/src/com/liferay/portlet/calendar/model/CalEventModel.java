@@ -16,6 +16,7 @@ package com.liferay.portlet.calendar.model;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.CacheModel;
@@ -46,6 +47,7 @@ import java.util.Date;
  */
 @Deprecated
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portlet.calendar.model.impl.CalEventModelImpl")
 public interface CalEventModel extends BaseModel<CalEvent>, GroupedModel,
 	ShardedModel, StagedAuditedModel {
 	/*

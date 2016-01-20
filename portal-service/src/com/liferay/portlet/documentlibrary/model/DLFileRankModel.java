@@ -16,6 +16,7 @@ package com.liferay.portlet.documentlibrary.model;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ShardedModel;
@@ -41,6 +42,7 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portlet.documentlibrary.model.impl.DLFileRankModelImpl")
 public interface DLFileRankModel extends BaseModel<DLFileRank>, ShardedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:

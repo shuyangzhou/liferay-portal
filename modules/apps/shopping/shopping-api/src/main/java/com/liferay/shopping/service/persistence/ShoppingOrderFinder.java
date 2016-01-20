@@ -16,11 +16,14 @@ package com.liferay.shopping.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
+
 /**
  * @author Brian Wing Shun Chan
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.shopping.service.persistence.impl.ShoppingOrderFinderImpl")
 public interface ShoppingOrderFinder {
 	public int countByG_C_U_N_PPPS(long groupId, long companyId, long userId,
 		java.lang.String number, java.lang.String billingFirstName,

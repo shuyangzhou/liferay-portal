@@ -16,6 +16,7 @@ package com.liferay.microblogs.model;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.model.AuditedModel;
 import com.liferay.portal.model.BaseModel;
@@ -43,6 +44,7 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.microblogs.model.impl.MicroblogsEntryModelImpl")
 public interface MicroblogsEntryModel extends AuditedModel,
 	BaseModel<MicroblogsEntry>, ShardedModel {
 	/*

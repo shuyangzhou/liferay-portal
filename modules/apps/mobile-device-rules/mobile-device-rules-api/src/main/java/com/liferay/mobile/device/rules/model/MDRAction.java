@@ -16,6 +16,7 @@ package com.liferay.mobile.device.rules.model;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.kernel.util.Accessor;
 import com.liferay.portal.model.PersistedModel;
 
@@ -29,6 +30,7 @@ import com.liferay.portal.model.PersistedModel;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.mobile.device.rules.model.impl.MDRActionImpl")
 public interface MDRAction extends MDRActionModel, PersistedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:

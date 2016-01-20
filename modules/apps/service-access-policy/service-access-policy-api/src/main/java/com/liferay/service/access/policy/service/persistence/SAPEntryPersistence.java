@@ -16,6 +16,7 @@ package com.liferay.service.access.policy.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.service.persistence.BasePersistence;
 
 import com.liferay.service.access.policy.model.SAPEntry;
@@ -33,6 +34,7 @@ import com.liferay.service.access.policy.model.SAPEntry;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.service.access.policy.service.persistence.impl.SAPEntryPersistenceImpl")
 public interface SAPEntryPersistence extends BasePersistence<SAPEntry> {
 	/*
 	 * NOTE FOR DEVELOPERS:

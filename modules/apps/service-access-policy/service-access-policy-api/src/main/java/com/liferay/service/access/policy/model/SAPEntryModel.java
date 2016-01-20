@@ -17,6 +17,7 @@ package com.liferay.service.access.policy.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.LocaleException;
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.CacheModel;
@@ -47,6 +48,7 @@ import java.util.Map;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.service.access.policy.model.impl.SAPEntryModelImpl")
 public interface SAPEntryModel extends BaseModel<SAPEntry>, LocalizedModel,
 	ShardedModel, StagedAuditedModel {
 	/*

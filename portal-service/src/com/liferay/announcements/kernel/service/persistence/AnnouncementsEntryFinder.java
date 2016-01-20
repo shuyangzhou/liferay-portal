@@ -16,11 +16,14 @@ package com.liferay.announcements.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
+
 /**
  * @author Brian Wing Shun Chan
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portlet.announcements.service.persistence.impl.AnnouncementsEntryFinderImpl")
 public interface AnnouncementsEntryFinder {
 	public int countByScope(long userId, long classNameId, long[] classPKs,
 		int displayDateMonth, int displayDateDay, int displayDateYear,

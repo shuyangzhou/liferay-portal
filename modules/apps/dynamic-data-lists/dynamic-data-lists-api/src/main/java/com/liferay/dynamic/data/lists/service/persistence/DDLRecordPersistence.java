@@ -18,6 +18,7 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.dynamic.data.lists.model.DDLRecord;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.service.persistence.BasePersistence;
 
 /**
@@ -33,6 +34,7 @@ import com.liferay.portal.service.persistence.BasePersistence;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.dynamic.data.lists.service.persistence.impl.DDLRecordPersistenceImpl")
 public interface DDLRecordPersistence extends BasePersistence<DDLRecord> {
 	/*
 	 * NOTE FOR DEVELOPERS:

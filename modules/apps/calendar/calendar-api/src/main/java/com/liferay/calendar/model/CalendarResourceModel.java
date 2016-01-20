@@ -17,6 +17,7 @@ package com.liferay.calendar.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.LocaleException;
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.model.AttachedModel;
 import com.liferay.portal.model.BaseModel;
@@ -48,6 +49,7 @@ import java.util.Map;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.calendar.model.impl.CalendarResourceModelImpl")
 public interface CalendarResourceModel extends AttachedModel,
 	BaseModel<CalendarResource>, LocalizedModel, ShardedModel, StagedGroupedModel {
 	/*

@@ -16,6 +16,7 @@ package com.liferay.portal.model;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.persistence.OrgGroupRolePK;
 
@@ -37,6 +38,7 @@ import java.io.Serializable;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portal.model.impl.OrgGroupRoleModelImpl")
 public interface OrgGroupRoleModel extends BaseModel<OrgGroupRole>, MVCCModel,
 	ShardedModel {
 	/*

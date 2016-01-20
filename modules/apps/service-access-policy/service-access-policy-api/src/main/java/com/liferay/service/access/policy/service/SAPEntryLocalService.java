@@ -16,6 +16,7 @@ package com.liferay.service.access.policy.service;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.search.IndexableType;
@@ -38,6 +39,7 @@ import com.liferay.portal.service.PersistedModelLocalService;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.service.access.policy.service.impl.SAPEntryLocalServiceImpl")
 @Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
 	PortalException.class, SystemException.class})
 public interface SAPEntryLocalService extends BaseLocalService,

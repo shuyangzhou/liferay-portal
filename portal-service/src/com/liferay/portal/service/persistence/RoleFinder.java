@@ -16,11 +16,14 @@ package com.liferay.portal.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
+
 /**
  * @author Brian Wing Shun Chan
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portal.service.persistence.impl.RoleFinderImpl")
 public interface RoleFinder {
 	public int countByKeywords(long companyId, java.lang.String keywords,
 		java.lang.Integer[] types);

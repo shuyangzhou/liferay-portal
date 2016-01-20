@@ -18,6 +18,7 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.polls.model.PollsVote;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.service.persistence.BasePersistence;
 
 /**
@@ -33,6 +34,7 @@ import com.liferay.portal.service.persistence.BasePersistence;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.polls.service.persistence.impl.PollsVotePersistenceImpl")
 public interface PollsVotePersistence extends BasePersistence<PollsVote> {
 	/*
 	 * NOTE FOR DEVELOPERS:

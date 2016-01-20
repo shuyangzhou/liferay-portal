@@ -16,11 +16,14 @@ package com.liferay.wiki.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
+
 /**
  * @author Brian Wing Shun Chan
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.wiki.service.persistence.impl.WikiPageFinderImpl")
 public interface WikiPageFinder {
 	public int countByCreateDate(long groupId, long nodeId,
 		java.util.Date createDate, boolean before);

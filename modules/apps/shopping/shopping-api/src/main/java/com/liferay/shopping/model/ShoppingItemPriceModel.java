@@ -16,6 +16,7 @@ package com.liferay.shopping.model;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ShardedModel;
@@ -39,6 +40,7 @@ import java.io.Serializable;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.shopping.model.impl.ShoppingItemPriceModelImpl")
 public interface ShoppingItemPriceModel extends BaseModel<ShoppingItemPrice>,
 	ShardedModel {
 	/*
