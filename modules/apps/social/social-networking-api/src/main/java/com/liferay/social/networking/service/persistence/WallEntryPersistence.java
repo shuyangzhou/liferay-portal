@@ -16,6 +16,7 @@ package com.liferay.social.networking.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.service.persistence.BasePersistence;
 
 import com.liferay.social.networking.model.WallEntry;
@@ -33,6 +34,7 @@ import com.liferay.social.networking.model.WallEntry;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.social.networking.service.persistence.impl.WallEntryPersistenceImpl")
 public interface WallEntryPersistence extends BasePersistence<WallEntry> {
 	/*
 	 * NOTE FOR DEVELOPERS:

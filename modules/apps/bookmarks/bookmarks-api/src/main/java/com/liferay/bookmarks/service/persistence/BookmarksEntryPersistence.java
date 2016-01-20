@@ -18,6 +18,7 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.bookmarks.model.BookmarksEntry;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.service.persistence.BasePersistence;
 
 /**
@@ -33,6 +34,7 @@ import com.liferay.portal.service.persistence.BasePersistence;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.bookmarks.service.persistence.impl.BookmarksEntryPersistenceImpl")
 public interface BookmarksEntryPersistence extends BasePersistence<BookmarksEntry> {
 	/*
 	 * NOTE FOR DEVELOPERS:

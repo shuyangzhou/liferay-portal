@@ -16,6 +16,7 @@ package com.liferay.dynamic.data.mapping.model;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.model.AttachedModel;
 import com.liferay.portal.model.BaseModel;
@@ -41,6 +42,7 @@ import java.io.Serializable;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.dynamic.data.mapping.model.impl.DDMStorageLinkModelImpl")
 public interface DDMStorageLinkModel extends AttachedModel,
 	BaseModel<DDMStorageLink>, ShardedModel {
 	/*

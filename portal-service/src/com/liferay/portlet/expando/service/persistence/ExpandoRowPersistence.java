@@ -16,6 +16,7 @@ package com.liferay.portlet.expando.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.service.persistence.BasePersistence;
 
 import com.liferay.portlet.expando.model.ExpandoRow;
@@ -33,6 +34,7 @@ import com.liferay.portlet.expando.model.ExpandoRow;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portlet.expando.service.persistence.impl.ExpandoRowPersistenceImpl")
 public interface ExpandoRowPersistence extends BasePersistence<ExpandoRow> {
 	/*
 	 * NOTE FOR DEVELOPERS:

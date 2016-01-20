@@ -16,11 +16,14 @@ package com.liferay.portal.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
+
 /**
  * @author Brian Wing Shun Chan
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portal.service.persistence.impl.PasswordPolicyFinderImpl")
 public interface PasswordPolicyFinder {
 	public int countByC_N(long companyId, java.lang.String name);
 

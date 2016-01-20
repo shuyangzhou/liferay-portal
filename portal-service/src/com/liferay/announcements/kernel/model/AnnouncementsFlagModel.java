@@ -16,6 +16,7 @@ package com.liferay.announcements.kernel.model;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ShardedModel;
@@ -41,6 +42,7 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portlet.announcements.model.impl.AnnouncementsFlagModelImpl")
 public interface AnnouncementsFlagModel extends BaseModel<AnnouncementsFlag>,
 	ShardedModel {
 	/*

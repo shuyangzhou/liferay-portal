@@ -16,6 +16,7 @@ package com.liferay.announcements.kernel.model;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.model.AttachedModel;
 import com.liferay.portal.model.BaseModel;
@@ -44,6 +45,7 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portlet.announcements.model.impl.AnnouncementsEntryModelImpl")
 public interface AnnouncementsEntryModel extends AttachedModel,
 	BaseModel<AnnouncementsEntry>, ShardedModel, StagedAuditedModel {
 	/*

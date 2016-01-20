@@ -16,6 +16,7 @@ package com.liferay.portal.workflow.kaleo.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.service.persistence.BasePersistence;
 import com.liferay.portal.workflow.kaleo.model.KaleoTask;
 
@@ -32,6 +33,7 @@ import com.liferay.portal.workflow.kaleo.model.KaleoTask;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portal.workflow.kaleo.service.persistence.impl.KaleoTaskPersistenceImpl")
 public interface KaleoTaskPersistence extends BasePersistence<KaleoTask> {
 	/*
 	 * NOTE FOR DEVELOPERS:

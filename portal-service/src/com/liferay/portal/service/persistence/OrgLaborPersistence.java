@@ -16,6 +16,7 @@ package com.liferay.portal.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.model.OrgLabor;
 
 /**
@@ -31,6 +32,7 @@ import com.liferay.portal.model.OrgLabor;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portal.service.persistence.impl.OrgLaborPersistenceImpl")
 public interface OrgLaborPersistence extends BasePersistence<OrgLabor> {
 	/*
 	 * NOTE FOR DEVELOPERS:

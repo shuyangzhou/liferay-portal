@@ -16,6 +16,7 @@ package com.liferay.portlet.ratings.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.service.persistence.BasePersistence;
 
 import com.liferay.portlet.ratings.model.RatingsEntry;
@@ -33,6 +34,7 @@ import com.liferay.portlet.ratings.model.RatingsEntry;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portlet.ratings.service.persistence.impl.RatingsEntryPersistenceImpl")
 public interface RatingsEntryPersistence extends BasePersistence<RatingsEntry> {
 	/*
 	 * NOTE FOR DEVELOPERS:

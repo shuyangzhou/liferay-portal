@@ -16,6 +16,7 @@ package com.liferay.portlet.documentlibrary.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.service.persistence.BasePersistence;
 
 import com.liferay.portlet.documentlibrary.model.DLFolder;
@@ -33,6 +34,7 @@ import com.liferay.portlet.documentlibrary.model.DLFolder;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portlet.documentlibrary.service.persistence.impl.DLFolderPersistenceImpl")
 public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	/*
 	 * NOTE FOR DEVELOPERS:
