@@ -17,6 +17,7 @@ package com.liferay.portal.workflow.kaleo.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.LocaleException;
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.CacheModel;
@@ -47,6 +48,7 @@ import java.util.Map;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portal.workflow.kaleo.model.impl.KaleoDefinitionModelImpl")
 public interface KaleoDefinitionModel extends BaseModel<KaleoDefinition>,
 	GroupedModel, LocalizedModel, ShardedModel {
 	/*

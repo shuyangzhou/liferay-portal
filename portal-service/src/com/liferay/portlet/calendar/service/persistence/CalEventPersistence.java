@@ -16,6 +16,7 @@ package com.liferay.portlet.calendar.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.service.persistence.BasePersistence;
 
 import com.liferay.portlet.calendar.model.CalEvent;
@@ -35,6 +36,7 @@ import com.liferay.portlet.calendar.model.CalEvent;
  */
 @Deprecated
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portlet.calendar.service.persistence.impl.CalEventPersistenceImpl")
 public interface CalEventPersistence extends BasePersistence<CalEvent> {
 	/*
 	 * NOTE FOR DEVELOPERS:

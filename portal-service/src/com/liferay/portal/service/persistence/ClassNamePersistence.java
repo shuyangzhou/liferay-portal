@@ -16,6 +16,7 @@ package com.liferay.portal.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.model.ClassName;
 
 /**
@@ -31,6 +32,7 @@ import com.liferay.portal.model.ClassName;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portal.service.persistence.impl.ClassNamePersistenceImpl")
 public interface ClassNamePersistence extends BasePersistence<ClassName> {
 	/*
 	 * NOTE FOR DEVELOPERS:

@@ -16,6 +16,7 @@ package com.liferay.portal.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.model.UserTrackerPath;
 
 /**
@@ -31,6 +32,7 @@ import com.liferay.portal.model.UserTrackerPath;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portal.service.persistence.impl.UserTrackerPathPersistenceImpl")
 public interface UserTrackerPathPersistence extends BasePersistence<UserTrackerPath> {
 	/*
 	 * NOTE FOR DEVELOPERS:

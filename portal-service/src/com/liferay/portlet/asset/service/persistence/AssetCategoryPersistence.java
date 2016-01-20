@@ -16,6 +16,7 @@ package com.liferay.portlet.asset.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.service.persistence.BasePersistence;
 
 import com.liferay.portlet.asset.model.AssetCategory;
@@ -33,6 +34,7 @@ import com.liferay.portlet.asset.model.AssetCategory;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portlet.asset.service.persistence.impl.AssetCategoryPersistenceImpl")
 public interface AssetCategoryPersistence extends BasePersistence<AssetCategory> {
 	/*
 	 * NOTE FOR DEVELOPERS:

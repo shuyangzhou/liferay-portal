@@ -16,6 +16,7 @@ package com.liferay.shopping.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.service.persistence.BasePersistence;
 
 import com.liferay.shopping.model.ShoppingItem;
@@ -33,6 +34,7 @@ import com.liferay.shopping.model.ShoppingItem;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.shopping.service.persistence.impl.ShoppingItemPersistenceImpl")
 public interface ShoppingItemPersistence extends BasePersistence<ShoppingItem> {
 	/*
 	 * NOTE FOR DEVELOPERS:

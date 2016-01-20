@@ -16,6 +16,7 @@ package com.liferay.portal.model;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.service.ServiceContext;
 
 import com.liferay.portlet.expando.model.ExpandoBridge;
@@ -36,6 +37,7 @@ import java.io.Serializable;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portal.model.impl.PasswordPolicyRelModelImpl")
 public interface PasswordPolicyRelModel extends AttachedModel,
 	BaseModel<PasswordPolicyRel>, MVCCModel, ShardedModel {
 	/*

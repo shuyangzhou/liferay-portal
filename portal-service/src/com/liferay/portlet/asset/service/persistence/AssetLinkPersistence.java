@@ -16,6 +16,7 @@ package com.liferay.portlet.asset.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.service.persistence.BasePersistence;
 
 import com.liferay.portlet.asset.model.AssetLink;
@@ -33,6 +34,7 @@ import com.liferay.portlet.asset.model.AssetLink;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portlet.asset.service.persistence.impl.AssetLinkPersistenceImpl")
 public interface AssetLinkPersistence extends BasePersistence<AssetLink> {
 	/*
 	 * NOTE FOR DEVELOPERS:

@@ -16,6 +16,7 @@ package com.liferay.portlet.exportimport.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.service.persistence.BasePersistence;
 
 import com.liferay.portlet.exportimport.model.ExportImportConfiguration;
@@ -33,6 +34,7 @@ import com.liferay.portlet.exportimport.model.ExportImportConfiguration;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portlet.exportimport.service.persistence.impl.ExportImportConfigurationPersistenceImpl")
 public interface ExportImportConfigurationPersistence extends BasePersistence<ExportImportConfiguration> {
 	/*
 	 * NOTE FOR DEVELOPERS:

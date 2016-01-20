@@ -18,6 +18,7 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.calendar.model.CalendarBooking;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.service.persistence.BasePersistence;
 
 /**
@@ -33,6 +34,7 @@ import com.liferay.portal.service.persistence.BasePersistence;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.calendar.service.persistence.impl.CalendarBookingPersistenceImpl")
 public interface CalendarBookingPersistence extends BasePersistence<CalendarBooking> {
 	/*
 	 * NOTE FOR DEVELOPERS:

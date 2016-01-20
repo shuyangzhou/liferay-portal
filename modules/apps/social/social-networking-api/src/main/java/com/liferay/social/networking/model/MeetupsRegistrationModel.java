@@ -16,6 +16,7 @@ package com.liferay.social.networking.model;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.model.AuditedModel;
 import com.liferay.portal.model.BaseModel;
@@ -43,6 +44,7 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.social.networking.model.impl.MeetupsRegistrationModelImpl")
 public interface MeetupsRegistrationModel extends AuditedModel,
 	BaseModel<MeetupsRegistration>, ShardedModel {
 	/*

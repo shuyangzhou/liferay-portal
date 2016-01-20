@@ -16,11 +16,14 @@ package com.liferay.portal.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
+
 /**
  * @author Brian Wing Shun Chan
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portal.service.persistence.impl.PortletPreferencesFinderImpl")
 public interface PortletPreferencesFinder {
 	public long countByO_O_P(long ownerId, int ownerType,
 		java.lang.String portletId, boolean excludeDefaultPreferences);
