@@ -584,7 +584,7 @@ public class WabBundleProcessor implements ServletContextListener {
 	private WebXMLDefinition _webXMLDefinition;
 	private final WebXMLDefinitionLoader _webXMLDefinitionLoader;
 
-	private class JspServletWrapper extends HttpServlet {
+	private static class JspServletWrapper extends HttpServlet {
 
 		@Override
 		public void destroy() {
