@@ -73,12 +73,10 @@ import org.osgi.service.http.whiteboard.HttpWhiteboardConstants;
 public class WabBundleProcessor implements ServletContextListener {
 
 	public WabBundleProcessor(
-		Bundle bundle, String contextPath,
-		Dictionary<String, Object> properties, Logger logger) {
+		Bundle bundle, String contextPath, Logger logger) {
 
 		_bundle = bundle;
 		_contextPath = contextPath;
-		_properties = properties;
 
 		if (_contextPath.indexOf('/') != 0) {
 			throw new IllegalArgumentException(
@@ -149,7 +147,11 @@ public class WabBundleProcessor implements ServletContextListener {
 		}
 	}
 
-	public void init(SAXParserFactory saxParserFactory) throws Exception {
+	public void init(
+			SAXParserFactory saxParserFactory,
+			Dictionary<String, Object> properties)
+		throws Exception {
+
 		Thread currentThread = Thread.currentThread();
 
 		ClassLoader contextClassLoader = currentThread.getContextClassLoader();
@@ -175,7 +177,7 @@ public class WabBundleProcessor implements ServletContextListener {
 				currentThread.setContextClassLoader(contextClassLoader);
 
 				_defaultServletServiceRegistration = createDefaultServlet();
-				_jspServletServiceRegistration = createJspServlet();
+				_jspServletServiceRegistration = createJspServlet(properties);
 			}
 			finally {
 				currentThread.setContextClassLoader(_bundleClassLoader);
@@ -214,10 +216,12 @@ public class WabBundleProcessor implements ServletContextListener {
 			Object.class, new Object(), properties);
 	}
 
-	protected ServiceRegistration<Servlet> createJspServlet() {
-		Dictionary<String, Object> properties = new HashMapDictionary<>();
+	protected ServiceRegistration<Servlet> createJspServlet(
+		Dictionary<String, Object> properties) {
 
-		for (Enumeration<String> keys = _properties.keys();
+		Dictionary<String, Object> jspProperties = new HashMapDictionary<>();
+
+		for (Enumeration<String> keys = properties.keys();
 				keys.hasMoreElements();) {
 
 			String key = keys.nextElement();
@@ -230,19 +234,19 @@ public class WabBundleProcessor implements ServletContextListener {
 				_SERVLET_INIT_PARAM_PREFIX +
 					key.substring(_JSP_SERVLET_INIT_PARAM_PREFIX.length());
 
-			properties.put(paramName, _properties.get(key));
+			jspProperties.put(paramName, properties.get(key));
 		}
 
-		properties.put(
+		jspProperties.put(
 			HttpWhiteboardConstants.HTTP_WHITEBOARD_CONTEXT_SELECT,
 			_contextName);
-		properties.put(
+		jspProperties.put(
 			HttpWhiteboardConstants.HTTP_WHITEBOARD_SERVLET_NAME, "jsp");
-		properties.put(
+		jspProperties.put(
 			HttpWhiteboardConstants.HTTP_WHITEBOARD_SERVLET_PATTERN, "*.jsp");
 
 		return _bundleContext.registerService(
-			Servlet.class, new JspServletWrapper(), properties);
+			Servlet.class, new JspServletWrapper(), jspProperties);
 	}
 
 	protected void destroyContext() {
@@ -587,7 +591,6 @@ public class WabBundleProcessor implements ServletContextListener {
 	private final Set<ServiceRegistration<?>> _listenerRegistrations =
 		new ConcurrentSkipListSet<>();
 	private final Logger _logger;
-	private final Dictionary<String, Object> _properties;
 	private ServiceRegistration<ServletContextHelper> _serviceRegistration;
 	private ServiceRegistration<ServletContext> _servletContextRegistration;
 	private final Set<ServiceRegistration<Servlet>> _servletRegistrations =
