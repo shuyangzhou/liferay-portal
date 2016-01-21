@@ -16,6 +16,7 @@ package com.liferay.portal.lock.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.lock.model.Lock;
 import com.liferay.portal.service.persistence.BasePersistence;
 
@@ -32,6 +33,7 @@ import com.liferay.portal.service.persistence.BasePersistence;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portal.lock.service.persistence.impl.LockPersistenceImpl")
 public interface LockPersistence extends BasePersistence<Lock> {
 	/*
 	 * NOTE FOR DEVELOPERS:

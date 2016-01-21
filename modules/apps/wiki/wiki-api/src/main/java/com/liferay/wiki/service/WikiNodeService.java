@@ -16,6 +16,7 @@ package com.liferay.wiki.service;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
@@ -42,6 +43,7 @@ import com.liferay.portal.service.BaseService;
 @OSGiBeanProperties(property =  {
 	"json.web.service.context.name=wiki", "json.web.service.context.path=WikiNode"}, service = WikiNodeService.class)
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.wiki.service.impl.WikiNodeServiceImpl")
 @Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
 	PortalException.class, SystemException.class})
 public interface WikiNodeService extends BaseService {

@@ -16,6 +16,7 @@ package com.liferay.bookmarks.service;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
@@ -42,6 +43,7 @@ import com.liferay.portal.service.BaseService;
 @OSGiBeanProperties(property =  {
 	"json.web.service.context.name=bookmarks", "json.web.service.context.path=BookmarksFolder"}, service = BookmarksFolderService.class)
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.bookmarks.service.impl.BookmarksFolderServiceImpl")
 @Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
 	PortalException.class, SystemException.class})
 public interface BookmarksFolderService extends BaseService {

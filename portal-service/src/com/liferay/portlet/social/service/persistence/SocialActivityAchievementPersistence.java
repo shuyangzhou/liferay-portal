@@ -16,6 +16,7 @@ package com.liferay.portlet.social.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.service.persistence.BasePersistence;
 
 import com.liferay.portlet.social.model.SocialActivityAchievement;
@@ -33,6 +34,7 @@ import com.liferay.portlet.social.model.SocialActivityAchievement;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portlet.social.service.persistence.impl.SocialActivityAchievementPersistenceImpl")
 public interface SocialActivityAchievementPersistence extends BasePersistence<SocialActivityAchievement> {
 	/*
 	 * NOTE FOR DEVELOPERS:

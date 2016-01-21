@@ -16,6 +16,7 @@ package com.liferay.portlet.blogs.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.service.persistence.BasePersistence;
 
 import com.liferay.portlet.blogs.model.BlogsStatsUser;
@@ -33,6 +34,7 @@ import com.liferay.portlet.blogs.model.BlogsStatsUser;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portlet.blogs.service.persistence.impl.BlogsStatsUserPersistenceImpl")
 public interface BlogsStatsUserPersistence extends BasePersistence<BlogsStatsUser> {
 	/*
 	 * NOTE FOR DEVELOPERS:

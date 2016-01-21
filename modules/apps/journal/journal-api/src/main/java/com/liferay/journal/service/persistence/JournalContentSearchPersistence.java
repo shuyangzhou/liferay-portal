@@ -18,6 +18,7 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.journal.model.JournalContentSearch;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.service.persistence.BasePersistence;
 
 /**
@@ -33,6 +34,7 @@ import com.liferay.portal.service.persistence.BasePersistence;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.journal.service.persistence.impl.JournalContentSearchPersistenceImpl")
 public interface JournalContentSearchPersistence extends BasePersistence<JournalContentSearch> {
 	/*
 	 * NOTE FOR DEVELOPERS:

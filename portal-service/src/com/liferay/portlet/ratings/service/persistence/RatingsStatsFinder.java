@@ -16,11 +16,14 @@ package com.liferay.portlet.ratings.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
+
 /**
  * @author Brian Wing Shun Chan
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portlet.ratings.service.persistence.impl.RatingsStatsFinderImpl")
 public interface RatingsStatsFinder {
 	public java.util.Map<java.io.Serializable, com.liferay.portlet.ratings.model.RatingsStats> fetchByPrimaryKeys(
 		java.util.Set<java.io.Serializable> primaryKeys);

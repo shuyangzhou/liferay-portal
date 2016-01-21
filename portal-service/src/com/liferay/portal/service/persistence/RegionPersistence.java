@@ -16,6 +16,7 @@ package com.liferay.portal.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.model.Region;
 
 /**
@@ -31,6 +32,7 @@ import com.liferay.portal.model.Region;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portal.service.persistence.impl.RegionPersistenceImpl")
 public interface RegionPersistence extends BasePersistence<Region> {
 	/*
 	 * NOTE FOR DEVELOPERS:

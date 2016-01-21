@@ -16,6 +16,7 @@ package com.liferay.portal.workflow.kaleo.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.service.persistence.BasePersistence;
 import com.liferay.portal.workflow.kaleo.model.KaleoTimerInstanceToken;
 
@@ -32,6 +33,7 @@ import com.liferay.portal.workflow.kaleo.model.KaleoTimerInstanceToken;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portal.workflow.kaleo.service.persistence.impl.KaleoTimerInstanceTokenPersistenceImpl")
 public interface KaleoTimerInstanceTokenPersistence extends BasePersistence<KaleoTimerInstanceToken> {
 	/*
 	 * NOTE FOR DEVELOPERS:

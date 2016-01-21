@@ -18,6 +18,7 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.marketplace.model.Module;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.service.persistence.BasePersistence;
 
 /**
@@ -33,6 +34,7 @@ import com.liferay.portal.service.persistence.BasePersistence;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.marketplace.service.persistence.impl.ModulePersistenceImpl")
 public interface ModulePersistence extends BasePersistence<Module> {
 	/*
 	 * NOTE FOR DEVELOPERS:

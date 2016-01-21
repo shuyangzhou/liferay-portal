@@ -18,6 +18,7 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.dynamic.data.mapping.model.DDMTemplateLink;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.service.persistence.BasePersistence;
 
 /**
@@ -33,6 +34,7 @@ import com.liferay.portal.service.persistence.BasePersistence;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.dynamic.data.mapping.service.persistence.impl.DDMTemplateLinkPersistenceImpl")
 public interface DDMTemplateLinkPersistence extends BasePersistence<DDMTemplateLink> {
 	/*
 	 * NOTE FOR DEVELOPERS:

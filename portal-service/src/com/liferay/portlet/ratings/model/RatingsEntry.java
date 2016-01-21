@@ -16,6 +16,7 @@ package com.liferay.portlet.ratings.model;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.kernel.util.Accessor;
 import com.liferay.portal.model.PersistedModel;
 
@@ -29,6 +30,7 @@ import com.liferay.portal.model.PersistedModel;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portlet.ratings.model.impl.RatingsEntryImpl")
 public interface RatingsEntry extends RatingsEntryModel, PersistedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:

@@ -16,6 +16,7 @@ package com.liferay.portal.service;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
@@ -38,6 +39,7 @@ import com.liferay.portal.kernel.transaction.Transactional;
 @AccessControlled
 @JSONWebService
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portal.service.impl.UserServiceImpl")
 @Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
 	PortalException.class, SystemException.class})
 public interface UserService extends BaseService {
@@ -160,7 +162,7 @@ public interface UserService extends BaseService {
 		java.util.List<com.liferay.portal.model.EmailAddress> emailAddresses,
 		java.util.List<com.liferay.portal.model.Phone> phones,
 		java.util.List<com.liferay.portal.model.Website> websites,
-		java.util.List<com.liferay.portlet.announcements.model.AnnouncementsDelivery> announcementsDelivers,
+		java.util.List<com.liferay.announcements.kernel.model.AnnouncementsDelivery> announcementsDelivers,
 		boolean sendEmail,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws PortalException;
@@ -296,7 +298,7 @@ public interface UserService extends BaseService {
 		java.util.List<com.liferay.portal.model.EmailAddress> emailAddresses,
 		java.util.List<com.liferay.portal.model.Phone> phones,
 		java.util.List<com.liferay.portal.model.Website> websites,
-		java.util.List<com.liferay.portlet.announcements.model.AnnouncementsDelivery> announcementsDelivers,
+		java.util.List<com.liferay.announcements.kernel.model.AnnouncementsDelivery> announcementsDelivers,
 		boolean sendEmail,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws PortalException;
@@ -963,7 +965,7 @@ public interface UserService extends BaseService {
 		java.util.List<com.liferay.portal.model.EmailAddress> emailAddresses,
 		java.util.List<com.liferay.portal.model.Phone> phones,
 		java.util.List<com.liferay.portal.model.Website> websites,
-		java.util.List<com.liferay.portlet.announcements.model.AnnouncementsDelivery> announcementsDelivers,
+		java.util.List<com.liferay.announcements.kernel.model.AnnouncementsDelivery> announcementsDelivers,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws PortalException;
 
@@ -1112,7 +1114,7 @@ public interface UserService extends BaseService {
 		java.util.List<com.liferay.portal.model.EmailAddress> emailAddresses,
 		java.util.List<com.liferay.portal.model.Phone> phones,
 		java.util.List<com.liferay.portal.model.Website> websites,
-		java.util.List<com.liferay.portlet.announcements.model.AnnouncementsDelivery> announcementsDelivers,
+		java.util.List<com.liferay.announcements.kernel.model.AnnouncementsDelivery> announcementsDelivers,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws PortalException;
 }

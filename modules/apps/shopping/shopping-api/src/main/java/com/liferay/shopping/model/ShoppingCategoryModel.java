@@ -16,6 +16,7 @@ package com.liferay.shopping.model;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.CacheModel;
@@ -43,6 +44,7 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.shopping.model.impl.ShoppingCategoryModelImpl")
 public interface ShoppingCategoryModel extends BaseModel<ShoppingCategory>,
 	GroupedModel, ShardedModel {
 	/*

@@ -16,6 +16,7 @@ package com.liferay.polls.service;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
@@ -42,6 +43,7 @@ import com.liferay.portal.service.BaseService;
 @OSGiBeanProperties(property =  {
 	"json.web.service.context.name=polls", "json.web.service.context.path=PollsQuestion"}, service = PollsQuestionService.class)
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.polls.service.impl.PollsQuestionServiceImpl")
 @Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
 	PortalException.class, SystemException.class})
 public interface PollsQuestionService extends BaseService {

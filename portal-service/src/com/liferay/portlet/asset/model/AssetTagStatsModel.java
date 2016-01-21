@@ -16,6 +16,7 @@ package com.liferay.portlet.asset.model;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ShardedModel;
@@ -40,6 +41,7 @@ import java.io.Serializable;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portlet.asset.model.impl.AssetTagStatsModelImpl")
 public interface AssetTagStatsModel extends BaseModel<AssetTagStats>,
 	ShardedModel, TypedModel {
 	/*

@@ -17,6 +17,7 @@ package com.liferay.portal.background.task.service.persistence;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.background.task.model.BackgroundTask;
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.service.persistence.BasePersistence;
 
 /**
@@ -32,6 +33,7 @@ import com.liferay.portal.service.persistence.BasePersistence;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portal.background.task.service.persistence.impl.BackgroundTaskPersistenceImpl")
 public interface BackgroundTaskPersistence extends BasePersistence<BackgroundTask> {
 	/*
 	 * NOTE FOR DEVELOPERS:

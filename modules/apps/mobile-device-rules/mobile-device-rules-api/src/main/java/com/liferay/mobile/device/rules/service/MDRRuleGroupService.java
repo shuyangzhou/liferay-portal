@@ -16,6 +16,7 @@ package com.liferay.mobile.device.rules.service;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
@@ -42,6 +43,7 @@ import com.liferay.portal.service.BaseService;
 @OSGiBeanProperties(property =  {
 	"json.web.service.context.name=mdr", "json.web.service.context.path=MDRRuleGroup"}, service = MDRRuleGroupService.class)
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.mobile.device.rules.service.impl.MDRRuleGroupServiceImpl")
 @Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
 	PortalException.class, SystemException.class})
 public interface MDRRuleGroupService extends BaseService {

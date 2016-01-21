@@ -1,12 +1,13 @@
-package ${packagePath}.model;
+package ${apiPackagePath}.model;
 
 <#if entity.hasCompoundPK()>
-	import ${packagePath}.service.persistence.${entity.name}PK;
+	import ${apiPackagePath}.service.persistence.${entity.name}PK;
 </#if>
 
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.LocaleException;
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.trash.TrashHandler;
@@ -61,6 +62,7 @@ import java.util.Map;
 </#if>
 
 @ProviderType
+@ImplementationPath(implementationPath="${packagePath}.model.impl.${entity.name}ModelImpl")
 public interface ${entity.name}Model extends
 	<#assign overrideColumnNames = []>
 
@@ -187,7 +189,7 @@ public interface ${entity.name}Model extends
 
 		<#assign autoEscape = true>
 
-		<#assign modelName = packagePath + ".model." + entity.name>
+		<#assign modelName = apiPackagePath + ".model." + entity.name>
 
 		<#if modelHintsUtil.getHints(modelName, column.name)??>
 			<#assign hints = modelHintsUtil.getHints(modelName, column.name)>
@@ -587,19 +589,19 @@ public interface ${entity.name}Model extends
 	public Object clone();
 
 	@Override
-	public int compareTo(${packagePath}.model.${entity.name} ${entity.varName});
+	public int compareTo(${apiPackagePath}.model.${entity.name} ${entity.varName});
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<${packagePath}.model.${entity.name}> toCacheModel();
+	public CacheModel<${apiPackagePath}.model.${entity.name}> toCacheModel();
 
 	@Override
-	public ${packagePath}.model.${entity.name} toEscapedModel();
+	public ${apiPackagePath}.model.${entity.name} toEscapedModel();
 
 	@Override
-	public ${packagePath}.model.${entity.name} toUnescapedModel();
+	public ${apiPackagePath}.model.${entity.name} toUnescapedModel();
 
 	@Override
 	public String toString();

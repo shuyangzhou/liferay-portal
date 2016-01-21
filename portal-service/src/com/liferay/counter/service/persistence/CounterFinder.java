@@ -16,11 +16,14 @@ package com.liferay.counter.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
+
 /**
  * @author Brian Wing Shun Chan
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.counter.service.persistence.impl.CounterFinderImpl")
 public interface CounterFinder {
 	public java.util.List<java.lang.String> getNames();
 

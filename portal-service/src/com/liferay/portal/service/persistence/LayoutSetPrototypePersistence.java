@@ -16,6 +16,7 @@ package com.liferay.portal.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.model.LayoutSetPrototype;
 
 /**
@@ -31,6 +32,7 @@ import com.liferay.portal.model.LayoutSetPrototype;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portal.service.persistence.impl.LayoutSetPrototypePersistenceImpl")
 public interface LayoutSetPrototypePersistence extends BasePersistence<LayoutSetPrototype> {
 	/*
 	 * NOTE FOR DEVELOPERS:

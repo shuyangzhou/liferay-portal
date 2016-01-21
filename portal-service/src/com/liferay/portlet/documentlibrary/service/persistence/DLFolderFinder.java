@@ -16,11 +16,14 @@ package com.liferay.portlet.documentlibrary.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
+
 /**
  * @author Brian Wing Shun Chan
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portlet.documentlibrary.service.persistence.impl.DLFolderFinderImpl")
 public interface DLFolderFinder {
 	public int countF_FE_FS_ByG_F_M_M(long groupId, long folderId,
 		java.lang.String[] mimeTypes, boolean includeMountFolders,

@@ -16,11 +16,14 @@ package com.liferay.portlet.documentlibrary.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
+
 /**
  * @author Brian Wing Shun Chan
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portlet.documentlibrary.service.persistence.impl.DLFileEntryMetadataFinderImpl")
 public interface DLFileEntryMetadataFinder {
 	public java.util.List<com.liferay.portlet.documentlibrary.model.DLFileEntryMetadata> findByMismatchedCompanyId();
 

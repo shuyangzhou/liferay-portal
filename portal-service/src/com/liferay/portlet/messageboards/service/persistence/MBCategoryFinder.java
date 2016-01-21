@@ -16,11 +16,14 @@ package com.liferay.portlet.messageboards.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
+
 /**
  * @author Brian Wing Shun Chan
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portlet.messageboards.service.persistence.impl.MBCategoryFinderImpl")
 public interface MBCategoryFinder {
 	public int countC_ByS_G_U_P(long groupId, long userId,
 		long[] parentCategoryIds,

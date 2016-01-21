@@ -16,6 +16,7 @@ package com.liferay.polls.model;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.kernel.util.Accessor;
 import com.liferay.portal.model.PersistedModel;
 
@@ -29,6 +30,7 @@ import com.liferay.portal.model.PersistedModel;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.polls.model.impl.PollsChoiceImpl")
 public interface PollsChoice extends PollsChoiceModel, PersistedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
