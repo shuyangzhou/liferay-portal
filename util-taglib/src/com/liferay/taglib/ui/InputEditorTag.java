@@ -291,8 +291,6 @@ public class InputEditorTag extends IncludeTag {
 	}
 
 	protected Editor getEditor(HttpServletRequest request) {
-		String editorName = _editorName;
-
 		return getEditor(request, _editorName);
 	}
 

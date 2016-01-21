@@ -18,6 +18,7 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.counter.model.Counter;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.service.persistence.BasePersistence;
 
 /**
@@ -33,6 +34,7 @@ import com.liferay.portal.service.persistence.BasePersistence;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.counter.service.persistence.impl.CounterPersistenceImpl")
 public interface CounterPersistence extends BasePersistence<Counter> {
 	/*
 	 * NOTE FOR DEVELOPERS:

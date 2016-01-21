@@ -16,6 +16,7 @@ package com.liferay.wiki.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.service.persistence.BasePersistence;
 
 import com.liferay.wiki.model.WikiPageResource;
@@ -33,6 +34,7 @@ import com.liferay.wiki.model.WikiPageResource;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.wiki.service.persistence.impl.WikiPageResourcePersistenceImpl")
 public interface WikiPageResourcePersistence extends BasePersistence<WikiPageResource> {
 	/*
 	 * NOTE FOR DEVELOPERS:

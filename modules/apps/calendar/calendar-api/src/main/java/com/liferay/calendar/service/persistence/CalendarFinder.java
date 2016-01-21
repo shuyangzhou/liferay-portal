@@ -16,11 +16,14 @@ package com.liferay.calendar.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
+
 /**
  * @author Eduardo Lundgren
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.calendar.service.persistence.impl.CalendarFinderImpl")
 public interface CalendarFinder {
 	public int countByKeywords(long companyId, long[] groupIds,
 		long[] calendarResourceIds, java.lang.String keywords);

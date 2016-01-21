@@ -16,6 +16,7 @@ package com.liferay.portal.model;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.service.ServiceContext;
 
@@ -39,6 +40,7 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portal.model.impl.PasswordTrackerModelImpl")
 public interface PasswordTrackerModel extends BaseModel<PasswordTracker>,
 	MVCCModel, ShardedModel {
 	/*

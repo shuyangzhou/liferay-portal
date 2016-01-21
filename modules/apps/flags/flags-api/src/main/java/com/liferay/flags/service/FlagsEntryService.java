@@ -16,6 +16,7 @@ package com.liferay.flags.service;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
@@ -41,6 +42,7 @@ import com.liferay.portal.service.BaseService;
 @OSGiBeanProperties(property =  {
 	"json.web.service.context.name=flags", "json.web.service.context.path=FlagsEntry"}, service = FlagsEntryService.class)
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.flags.service.impl.FlagsEntryServiceImpl")
 @Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
 	PortalException.class, SystemException.class})
 public interface FlagsEntryService extends BaseService {

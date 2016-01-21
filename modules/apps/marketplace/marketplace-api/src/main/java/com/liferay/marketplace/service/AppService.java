@@ -16,6 +16,7 @@ package com.liferay.marketplace.service;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
@@ -41,6 +42,7 @@ import com.liferay.portal.service.BaseService;
 @OSGiBeanProperties(property =  {
 	"json.web.service.context.name=marketplace", "json.web.service.context.path=App"}, service = AppService.class)
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.marketplace.service.impl.AppServiceImpl")
 @Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
 	PortalException.class, SystemException.class})
 public interface AppService extends BaseService {

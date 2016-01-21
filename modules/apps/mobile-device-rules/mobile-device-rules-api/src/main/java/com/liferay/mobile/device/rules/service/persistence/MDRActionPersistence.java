@@ -18,6 +18,7 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.mobile.device.rules.model.MDRAction;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.service.persistence.BasePersistence;
 
 /**
@@ -33,6 +34,7 @@ import com.liferay.portal.service.persistence.BasePersistence;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.mobile.device.rules.service.persistence.impl.MDRActionPersistenceImpl")
 public interface MDRActionPersistence extends BasePersistence<MDRAction> {
 	/*
 	 * NOTE FOR DEVELOPERS:

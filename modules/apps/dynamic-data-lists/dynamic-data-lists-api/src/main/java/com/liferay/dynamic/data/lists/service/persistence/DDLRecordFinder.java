@@ -16,11 +16,14 @@ package com.liferay.dynamic.data.lists.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
+
 /**
  * @author Brian Wing Shun Chan
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.dynamic.data.lists.service.persistence.impl.DDLRecordFinderImpl")
 public interface DDLRecordFinder {
 	public int countByR_S(long recordSetId, int status);
 
