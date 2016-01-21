@@ -58,7 +58,6 @@ import com.liferay.portlet.calendar.service.persistence.CalEventPersistence;
 
 import java.io.Serializable;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -3554,9 +3553,7 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 			types = new String[0];
 		}
 		else if (types.length > 1) {
-			types = ArrayUtil.distinct(types, NULL_SAFE_STRING_COMPARATOR);
-
-			Arrays.sort(types, NULL_SAFE_STRING_COMPARATOR);
+			types = ArrayUtil.distinctAndSort(types, NULL_SAFE_STRING_COMPARATOR);
 		}
 
 		if (types.length == 1) {
@@ -3788,9 +3785,7 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 			types = new String[0];
 		}
 		else if (types.length > 1) {
-			types = ArrayUtil.distinct(types, NULL_SAFE_STRING_COMPARATOR);
-
-			Arrays.sort(types, NULL_SAFE_STRING_COMPARATOR);
+			types = ArrayUtil.distinctAndSort(types, NULL_SAFE_STRING_COMPARATOR);
 		}
 
 		Object[] finderArgs = new Object[] { groupId, StringUtil.merge(types) };
@@ -5041,9 +5036,7 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 			types = new String[0];
 		}
 		else if (types.length > 1) {
-			types = ArrayUtil.distinct(types, NULL_SAFE_STRING_COMPARATOR);
-
-			Arrays.sort(types, NULL_SAFE_STRING_COMPARATOR);
+			types = ArrayUtil.distinctAndSort(types, NULL_SAFE_STRING_COMPARATOR);
 		}
 
 		if (types.length == 1) {
@@ -5292,9 +5285,7 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 			types = new String[0];
 		}
 		else if (types.length > 1) {
-			types = ArrayUtil.distinct(types, NULL_SAFE_STRING_COMPARATOR);
-
-			Arrays.sort(types, NULL_SAFE_STRING_COMPARATOR);
+			types = ArrayUtil.distinctAndSort(types, NULL_SAFE_STRING_COMPARATOR);
 		}
 
 		Object[] finderArgs = new Object[] {

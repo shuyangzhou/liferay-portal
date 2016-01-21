@@ -2206,10 +2206,8 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 			taskExecutorClassNames = new String[0];
 		}
 		else if (taskExecutorClassNames.length > 1) {
-			taskExecutorClassNames = ArrayUtil.distinct(taskExecutorClassNames,
+			taskExecutorClassNames = ArrayUtil.distinctAndSort(taskExecutorClassNames,
 					NULL_SAFE_STRING_COMPARATOR);
-
-			Arrays.sort(taskExecutorClassNames, NULL_SAFE_STRING_COMPARATOR);
 		}
 
 		if (taskExecutorClassNames.length == 1) {
@@ -2447,10 +2445,8 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 			taskExecutorClassNames = new String[0];
 		}
 		else if (taskExecutorClassNames.length > 1) {
-			taskExecutorClassNames = ArrayUtil.distinct(taskExecutorClassNames,
+			taskExecutorClassNames = ArrayUtil.distinctAndSort(taskExecutorClassNames,
 					NULL_SAFE_STRING_COMPARATOR);
-
-			Arrays.sort(taskExecutorClassNames, NULL_SAFE_STRING_COMPARATOR);
 		}
 
 		Object[] finderArgs = new Object[] {
@@ -3672,10 +3668,8 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 			taskExecutorClassNames = new String[0];
 		}
 		else if (taskExecutorClassNames.length > 1) {
-			taskExecutorClassNames = ArrayUtil.distinct(taskExecutorClassNames,
+			taskExecutorClassNames = ArrayUtil.distinctAndSort(taskExecutorClassNames,
 					NULL_SAFE_STRING_COMPARATOR);
-
-			Arrays.sort(taskExecutorClassNames, NULL_SAFE_STRING_COMPARATOR);
 		}
 
 		if (taskExecutorClassNames.length == 1) {
@@ -3914,10 +3908,8 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 			taskExecutorClassNames = new String[0];
 		}
 		else if (taskExecutorClassNames.length > 1) {
-			taskExecutorClassNames = ArrayUtil.distinct(taskExecutorClassNames,
+			taskExecutorClassNames = ArrayUtil.distinctAndSort(taskExecutorClassNames,
 					NULL_SAFE_STRING_COMPARATOR);
-
-			Arrays.sort(taskExecutorClassNames, NULL_SAFE_STRING_COMPARATOR);
 		}
 
 		Object[] finderArgs = new Object[] {
@@ -5703,10 +5695,8 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 			taskExecutorClassNames = new String[0];
 		}
 		else if (taskExecutorClassNames.length > 1) {
-			taskExecutorClassNames = ArrayUtil.distinct(taskExecutorClassNames,
+			taskExecutorClassNames = ArrayUtil.distinctAndSort(taskExecutorClassNames,
 					NULL_SAFE_STRING_COMPARATOR);
-
-			Arrays.sort(taskExecutorClassNames, NULL_SAFE_STRING_COMPARATOR);
 		}
 
 		if (taskExecutorClassNames.length == 1) {
@@ -5963,10 +5953,8 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 			taskExecutorClassNames = new String[0];
 		}
 		else if (taskExecutorClassNames.length > 1) {
-			taskExecutorClassNames = ArrayUtil.distinct(taskExecutorClassNames,
+			taskExecutorClassNames = ArrayUtil.distinctAndSort(taskExecutorClassNames,
 					NULL_SAFE_STRING_COMPARATOR);
-
-			Arrays.sort(taskExecutorClassNames, NULL_SAFE_STRING_COMPARATOR);
 		}
 
 		Object[] finderArgs = new Object[] {
@@ -6703,10 +6691,8 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 			taskExecutorClassNames = new String[0];
 		}
 		else if (taskExecutorClassNames.length > 1) {
-			taskExecutorClassNames = ArrayUtil.distinct(taskExecutorClassNames,
+			taskExecutorClassNames = ArrayUtil.distinctAndSort(taskExecutorClassNames,
 					NULL_SAFE_STRING_COMPARATOR);
-
-			Arrays.sort(taskExecutorClassNames, NULL_SAFE_STRING_COMPARATOR);
 		}
 
 		if (taskExecutorClassNames.length == 1) {
@@ -6963,10 +6949,8 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 			taskExecutorClassNames = new String[0];
 		}
 		else if (taskExecutorClassNames.length > 1) {
-			taskExecutorClassNames = ArrayUtil.distinct(taskExecutorClassNames,
+			taskExecutorClassNames = ArrayUtil.distinctAndSort(taskExecutorClassNames,
 					NULL_SAFE_STRING_COMPARATOR);
-
-			Arrays.sort(taskExecutorClassNames, NULL_SAFE_STRING_COMPARATOR);
 		}
 
 		Object[] finderArgs = new Object[] {

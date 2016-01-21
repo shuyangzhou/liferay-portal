@@ -51,7 +51,6 @@ import com.liferay.portlet.expando.service.persistence.ExpandoColumnPersistence;
 import java.io.Serializable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1069,9 +1068,7 @@ public class ExpandoColumnPersistenceImpl extends BasePersistenceImpl<ExpandoCol
 			names = new String[0];
 		}
 		else if (names.length > 1) {
-			names = ArrayUtil.distinct(names, NULL_SAFE_STRING_COMPARATOR);
-
-			Arrays.sort(names, NULL_SAFE_STRING_COMPARATOR);
+			names = ArrayUtil.distinctAndSort(names, NULL_SAFE_STRING_COMPARATOR);
 		}
 
 		if (names.length == 1) {
@@ -1469,9 +1466,7 @@ public class ExpandoColumnPersistenceImpl extends BasePersistenceImpl<ExpandoCol
 			names = new String[0];
 		}
 		else if (names.length > 1) {
-			names = ArrayUtil.distinct(names, NULL_SAFE_STRING_COMPARATOR);
-
-			Arrays.sort(names, NULL_SAFE_STRING_COMPARATOR);
+			names = ArrayUtil.distinctAndSort(names, NULL_SAFE_STRING_COMPARATOR);
 		}
 
 		Object[] finderArgs = new Object[] { tableId, StringUtil.merge(names) };
@@ -1635,9 +1630,7 @@ public class ExpandoColumnPersistenceImpl extends BasePersistenceImpl<ExpandoCol
 			names = new String[0];
 		}
 		else if (names.length > 1) {
-			names = ArrayUtil.distinct(names, NULL_SAFE_STRING_COMPARATOR);
-
-			Arrays.sort(names, NULL_SAFE_STRING_COMPARATOR);
+			names = ArrayUtil.distinctAndSort(names, NULL_SAFE_STRING_COMPARATOR);
 		}
 
 		StringBundler query = new StringBundler();

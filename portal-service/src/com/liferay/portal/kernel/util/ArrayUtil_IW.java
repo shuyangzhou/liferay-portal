@@ -283,6 +283,15 @@ public class ArrayUtil_IW {
 		return ArrayUtil.distinct(array, comparator);
 	}
 
+	public java.lang.String[] distinctAndSort(java.lang.String[] array) {
+		return ArrayUtil.distinctAndSort(array);
+	}
+
+	public java.lang.String[] distinctAndSort(java.lang.String[] array,
+		java.util.Comparator<java.lang.String> comparator) {
+		return ArrayUtil.distinctAndSort(array, comparator);
+	}
+
 	public <T> boolean exists(T[] array,
 		com.liferay.portal.kernel.util.PredicateFilter<T> predicateFilter) {
 		return ArrayUtil.exists(array, predicateFilter);

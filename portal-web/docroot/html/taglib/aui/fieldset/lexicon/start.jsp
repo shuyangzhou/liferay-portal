@@ -31,6 +31,12 @@ if (Validator.isNull(label)) {
 			<c:if test="<%= Validator.isNotNull(helpMessage) %>">
 				<liferay-ui:icon-help message="<%= helpMessage %>" />
 			</c:if>
+
+			<c:if test="<%= collapsible %>">
+				<aui:icon cssClass="collapse-icon-closed" image="angle-right" markupView="lexicon" />
+
+				<aui:icon cssClass="collapse-icon-open" image="angle-down" markupView="lexicon" />
+			</c:if>
 		</liferay-util:buffer>
 
 		<div class="panel-heading" id="<%= panelId %>Header" role="presentation">

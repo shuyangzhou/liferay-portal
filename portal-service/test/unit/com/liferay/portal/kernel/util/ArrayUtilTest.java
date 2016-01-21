@@ -259,6 +259,20 @@ public class ArrayUtilTest {
 	}
 
 	@Test
+	public void testDistinctAndSort() {
+		Assert.assertArrayEquals(
+			new String[] {"abc", "def", "ghi", "jkl"},
+			ArrayUtil.distinctAndSort(
+				new String[] {"def", "ghi", "def", "abc", "abc", "jkl"}));
+
+		Assert.assertArrayEquals(
+			new String[] {"jkl", "ghi", "def", "abc"},
+			ArrayUtil.distinctAndSort(
+				new String[] {"def", "ghi", "def", "abc", "abc", "jkl"},
+				new StringComparator(false, false)));
+	}
+
+	@Test
 	public void testFilterDoubleArray() {
 		double[] array = ArrayUtil.filter(
 			new double[] {0.1, 0.2, 1.2, 1.3}, _doublePredicateFilter);

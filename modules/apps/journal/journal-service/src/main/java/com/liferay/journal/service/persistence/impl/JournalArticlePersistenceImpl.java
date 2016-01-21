@@ -3943,10 +3943,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 			DDMStructureKeies = new String[0];
 		}
 		else if (DDMStructureKeies.length > 1) {
-			DDMStructureKeies = ArrayUtil.distinct(DDMStructureKeies,
+			DDMStructureKeies = ArrayUtil.distinctAndSort(DDMStructureKeies,
 					NULL_SAFE_STRING_COMPARATOR);
-
-			Arrays.sort(DDMStructureKeies, NULL_SAFE_STRING_COMPARATOR);
 		}
 
 		if (DDMStructureKeies.length == 1) {
@@ -4169,10 +4167,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 			DDMStructureKeies = new String[0];
 		}
 		else if (DDMStructureKeies.length > 1) {
-			DDMStructureKeies = ArrayUtil.distinct(DDMStructureKeies,
+			DDMStructureKeies = ArrayUtil.distinctAndSort(DDMStructureKeies,
 					NULL_SAFE_STRING_COMPARATOR);
-
-			Arrays.sort(DDMStructureKeies, NULL_SAFE_STRING_COMPARATOR);
 		}
 
 		Object[] finderArgs = new Object[] { StringUtil.merge(DDMStructureKeies) };

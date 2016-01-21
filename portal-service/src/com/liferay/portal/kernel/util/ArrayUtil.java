@@ -852,7 +852,7 @@ public class ArrayUtil {
 	public static String[] distinct(
 		String[] array, Comparator<String> comparator) {
 
-		if (isEmpty(array)) {
+		if (isEmpty(array) || (array.length == 1)) {
 			return array;
 		}
 
@@ -870,6 +870,51 @@ public class ArrayUtil {
 		}
 
 		return set.toArray(new String[set.size()]);
+	}
+
+	public static String[] distinctAndSort(String[] array) {
+		return distinctAndSort(array, null);
+	}
+
+	public static String[] distinctAndSort(
+		String[] array, Comparator<String> comparator) {
+
+		if (isEmpty(array) || (array.length == 1)) {
+			return array;
+		}
+
+		int size = 1;
+
+		for (int i = 1; i < array.length; i++) {
+			String element = array[i];
+
+			int index = Arrays.binarySearch(
+				array, 0, size, element, comparator);
+
+			if (index >= 0) {
+				continue;
+			}
+
+			index = -index - 1;
+
+			if (index != i) {
+				int length = size - index;
+
+				if (length > 0) {
+					System.arraycopy(array, index, array, index + 1, length);
+				}
+
+				array[index] = element;
+			}
+
+			size++;
+		}
+
+		if (size < array.length) {
+			return Arrays.copyOf(array, size);
+		}
+
+		return array;
 	}
 
 	public static <T> boolean exists(
