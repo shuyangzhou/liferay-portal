@@ -34,7 +34,7 @@ public class SimpleModuleGroupDisplay implements ModuleGroupDisplay {
 
 	public SimpleModuleGroupDisplay() {
 		_appDisplay = null;
-		_title = MODULE_GROUP_TITLE_UNCATEGORIZED;
+		_title = MODULE_GROUP_TITLE_INDEPENDENT_MODULES;
 		_description = StringPool.BLANK;
 		_version = null;
 	}
@@ -46,7 +46,7 @@ public class SimpleModuleGroupDisplay implements ModuleGroupDisplay {
 		_appDisplay = appDisplay;
 
 		if (Validator.isNull(title)) {
-			_title = MODULE_GROUP_TITLE_UNCATEGORIZED;
+			_title = MODULE_GROUP_TITLE_INDEPENDENT_MODULES;
 		}
 		else {
 			_title = title;

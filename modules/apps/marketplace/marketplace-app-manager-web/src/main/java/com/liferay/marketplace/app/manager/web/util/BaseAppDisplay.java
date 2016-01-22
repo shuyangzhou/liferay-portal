@@ -97,7 +97,9 @@ public abstract class BaseAppDisplay implements AppDisplay {
 
 		String title = moduleGroupDisplay.getTitle();
 
-		if (title.equals(ModuleGroupDisplay.MODULE_GROUP_TITLE_UNCATEGORIZED)) {
+		if (title.equals(
+				ModuleGroupDisplay.MODULE_GROUP_TITLE_INDEPENDENT_MODULES)) {
+
 			return false;
 		}
 		else {

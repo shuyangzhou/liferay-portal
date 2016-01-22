@@ -5,10 +5,10 @@ Import-Package:\
 	!org.apache.commons.dbcp,\
 	!org.apache.jackrabbit.test,\
 	!org.apache.lucene.*,\
+	!org.apache.pdfbox.*,\
 	!org.apache.tika.*,\
 	*
 Include-Resource:\
-	classes,\
 	@lib/concurrent.jar,\
 	@lib/jackrabbit-api.jar,\
 	@lib/jackrabbit-core.jar,\
