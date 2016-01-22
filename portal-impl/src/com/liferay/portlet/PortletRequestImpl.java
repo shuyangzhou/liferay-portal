@@ -126,6 +126,11 @@ public abstract class PortletRequestImpl implements LiferayPortletRequest {
 	}
 
 	@Override
+	public Map<String, String[]> clearRenderParameters() {
+		return RenderParametersPool.clear(_request, _plid, _portletName);
+	}
+
+	@Override
 	public void defineObjects(
 		PortletConfig portletConfig, PortletResponse portletResponse) {
 
@@ -457,11 +462,6 @@ public abstract class PortletRequestImpl implements LiferayPortletRequest {
 	@Override
 	public String getRemoteUser() {
 		return _remoteUser;
-	}
-
-	@Override
-	public Map<String, String[]> getRenderParameters() {
-		return RenderParametersPool.getOrCreate(_request, _plid, _portletName);
 	}
 
 	@Override
