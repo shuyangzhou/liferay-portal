@@ -198,7 +198,7 @@ public class PortletContainerImpl implements PortletContainer {
 
 		PortletApp portletApp = portlet.getPortletApp();
 
-		PublicRenderParameters publicRenderParameters =
+		Map<String, String[]> publicRenderParameters =
 			PublicRenderParametersPool.get(
 				request, layout.getPlid(), portletApp.isWARFile());
 
