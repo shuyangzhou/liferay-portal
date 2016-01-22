@@ -27,6 +27,8 @@ public class PublicRenderParameters extends HashMap<String, String[]> {
 
 		super(map1);
 
+		super.putAll(map2);
+
 		_map = map2;
 	}
 

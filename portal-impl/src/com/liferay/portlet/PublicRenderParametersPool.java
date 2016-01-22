@@ -38,17 +38,14 @@ public class PublicRenderParametersPool {
 	public static Map<String, String[]> get(
 		HttpServletRequest request, long plid, boolean warFile) {
 
-		Map<String, String[]> map1 = get(request, plid);
+		Map<String, String[]> map = get(request, plid);
 
 		if (warFile) {
-			Map<String, String[]> map2 =_publicRenderParametersMap.get();
-
-			map1.putAll(map2);
-
-			return new PublicRenderParameters(map1, map2);
+			return new PublicRenderParameters(
+				map, _publicRenderParametersMap.get());
 		}
 
-		return map1;
+		return map;
 	}
 
 	protected static Map<String, String[]> get(
