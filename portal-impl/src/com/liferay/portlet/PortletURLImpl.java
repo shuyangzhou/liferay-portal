@@ -1286,9 +1286,12 @@ public class PortletURLImpl
 
 		Layout layout = getLayout();
 
-		Map<String, String[]> renderParameters =
-			RenderParametersPool.getOrCreate(
-				_request, layout.getPlid(), getPortlet().getPortletId());
+		Map<String, String[]> renderParameters = RenderParametersPool.get(
+			_request, layout.getPlid(), getPortlet().getPortletId());
+
+		if (renderParameters == null) {
+			return;
+		}
 
 		for (Map.Entry<String, String[]> entry : renderParameters.entrySet()) {
 			String name = entry.getKey();
