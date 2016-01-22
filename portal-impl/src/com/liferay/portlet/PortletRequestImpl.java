@@ -982,7 +982,7 @@ public abstract class PortletRequestImpl implements LiferayPortletRequest {
 	private HttpServletRequest _portletRequestDispatcherRequest;
 	private PortletPreferences _preferences;
 	private Profile _profile;
-	private PublicRenderParameters _publicRenderParameters;
+	private Map<String, String[]> _publicRenderParameters;
 	private String _remoteUser;
 	private long _remoteUserId;
 	private HttpServletRequest _request;

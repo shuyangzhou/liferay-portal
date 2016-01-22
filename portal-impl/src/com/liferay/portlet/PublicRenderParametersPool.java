@@ -35,7 +35,7 @@ import javax.servlet.http.HttpSession;
  */
 public class PublicRenderParametersPool {
 
-	public static PublicRenderParameters get(
+	public static Map<String, String[]> get(
 		HttpServletRequest request, long plid, boolean warFile) {
 
 		Map<String, String[]> map1 = get(request, plid);
