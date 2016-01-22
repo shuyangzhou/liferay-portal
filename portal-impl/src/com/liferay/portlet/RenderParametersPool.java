@@ -136,6 +136,10 @@ public class RenderParametersPool {
 		HttpServletRequest request, long plid, String portletId,
 		Map<String, String[]> params) {
 
+		if (params.isEmpty()) {
+			return;
+		}
+
 		Map<String, Map<String, String[]>> plidPool = getOrCreate(
 			request, plid);
 
