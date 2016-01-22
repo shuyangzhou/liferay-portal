@@ -27,8 +27,10 @@ import com.liferay.portal.exception.UserScreenNameException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
+import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
+import com.liferay.portal.kernel.security.auth.AuthException;
 import com.liferay.portal.kernel.security.auth.session.AuthenticatedSessionManagerUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.Http;
@@ -37,7 +39,6 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.Layout;
-import com.liferay.portal.security.auth.AuthException;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PropsValues;
@@ -100,8 +101,16 @@ public class LoginMVCActionCommand extends BaseMVCActionCommand {
 				actionRequest, "doActionAfterLogin");
 
 			if (doActionAfterLogin) {
-				actionResponse.setRenderParameter(
-					"mvcPath", "/login_redirect.jsp");
+				LiferayPortletResponse liferayPortletResponse =
+					(LiferayPortletResponse)actionResponse;
+
+				PortletURL renderURL = liferayPortletResponse.createRenderURL();
+
+				renderURL.setParameter(
+					"mvcRenderCommandName", "/login/login_redirect");
+
+				actionRequest.setAttribute(
+					WebKeys.REDIRECT, renderURL.toString());
 			}
 		}
 		catch (Exception e) {
@@ -173,8 +182,8 @@ public class LoginMVCActionCommand extends BaseMVCActionCommand {
 			ActionResponse actionResponse)
 		throws Exception {
 
-		HttpServletRequest request = PortalUtil.getHttpServletRequest(
-			actionRequest);
+		HttpServletRequest request = PortalUtil.getOriginalServletRequest(
+			PortalUtil.getHttpServletRequest(actionRequest));
 		HttpServletResponse response = PortalUtil.getHttpServletResponse(
 			actionResponse);
 

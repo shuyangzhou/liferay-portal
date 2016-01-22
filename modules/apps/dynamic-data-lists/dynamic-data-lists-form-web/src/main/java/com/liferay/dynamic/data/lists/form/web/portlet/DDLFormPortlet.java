@@ -43,12 +43,12 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
+import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PrefsParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.security.auth.PrincipalException;
 import com.liferay.portal.service.WorkflowDefinitionLinkLocalService;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
@@ -242,8 +242,7 @@ public class DDLFormPortlet extends MVCPortlet {
 		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		String submitLabel = getSubmitLabel(
-			recordSet.getRecordSetId(), themeDisplay);
+		String submitLabel = getSubmitLabel(recordSet, themeDisplay);
 
 		ddmFormRenderingContext.setSubmitLabel(submitLabel);
 
@@ -280,9 +279,9 @@ public class DDLFormPortlet extends MVCPortlet {
 	}
 
 	protected String getSubmitLabel(
-		long recordSetId, ThemeDisplay themeDisplay) {
+		DDLRecordSet recordSet, ThemeDisplay themeDisplay) {
 
-		boolean workflowEnabled = hasWorkflowEnabled(recordSetId, themeDisplay);
+		boolean workflowEnabled = hasWorkflowEnabled(recordSet, themeDisplay);
 
 		if (workflowEnabled) {
 			return LanguageUtil.get(
@@ -294,11 +293,11 @@ public class DDLFormPortlet extends MVCPortlet {
 	}
 
 	protected boolean hasWorkflowEnabled(
-		long recordSetId, ThemeDisplay themeDisplay) {
+		DDLRecordSet recordSet, ThemeDisplay themeDisplay) {
 
 		return _workflowDefinitionLinkLocalService.hasWorkflowDefinitionLink(
-			themeDisplay.getCompanyId(), themeDisplay.getScopeGroupId(),
-			DDLRecordSet.class.getName(), recordSetId);
+			themeDisplay.getCompanyId(), recordSet.getGroupId(),
+			DDLRecordSet.class.getName(), recordSet.getRecordSetId());
 	}
 
 	protected boolean isCaptchaRequired(DDLRecordSet recordSet) {

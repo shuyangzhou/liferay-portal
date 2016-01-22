@@ -28,6 +28,8 @@ import com.liferay.portal.kernel.search.QueryConfig;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.search.Sort;
+import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
+import com.liferay.portal.kernel.security.exportimport.UserGroupImportTransactionThreadLocal;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -44,8 +46,6 @@ import com.liferay.portal.model.Team;
 import com.liferay.portal.model.User;
 import com.liferay.portal.model.UserGroup;
 import com.liferay.portal.model.UserGroupConstants;
-import com.liferay.portal.security.auth.PrincipalThreadLocal;
-import com.liferay.portal.security.exportimport.UserGroupImportTransactionThreadLocal;
 import com.liferay.portal.security.permission.PermissionCacheUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.base.UserGroupLocalServiceBaseImpl;
@@ -521,14 +521,14 @@ public class UserGroupLocalServiceImpl extends UserGroupLocalServiceBaseImpl {
 	 *         user group's name or description (optionally <code>null</code>)
 	 * @param  params the finder params (optionally <code>null</code>). For more
 	 *         information see {@link
-	 *         com.liferay.portlet.usergroupsadmin.util.UserGroupIndexer}
+	 *         com.liferay.user.groups.admin.web.search.UserGroupIndexer}
 	 * @param  start the lower bound of the range of user groups to return
 	 * @param  end the upper bound of the range of user groups to return (not
 	 *         inclusive)
 	 * @param  sort the field and direction by which to sort (optionally
 	 *         <code>null</code>)
 	 * @return the matching user groups ordered by sort
-	 * @see    com.liferay.portlet.usergroupsadmin.util.UserGroupIndexer
+	 * @see    com.liferay.user.groups.admin.web.search.UserGroupIndexer
 	 */
 	@Override
 	public Hits search(
@@ -616,7 +616,7 @@ public class UserGroupLocalServiceImpl extends UserGroupLocalServiceBaseImpl {
 	 *         <code>null</code>)
 	 * @param  params the finder params (optionally <code>null</code>). For more
 	 *         information see {@link
-	 *         com.liferay.portlet.usergroupsadmin.util.UserGroupIndexer}
+	 *         com.liferay.user.groups.admin.web.search.UserGroupIndexer}
 	 * @param  andSearch whether every field must match its keywords or just one
 	 *         field
 	 * @param  start the lower bound of the range of user groups to return
