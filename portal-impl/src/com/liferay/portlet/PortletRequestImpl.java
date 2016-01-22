@@ -821,22 +821,24 @@ public abstract class PortletRequestImpl implements LiferayPortletRequest {
 			}
 		}
 		else {
-			Map<String, String[]> renderParameters =
-				RenderParametersPool.getOrCreate(request, plid, _portletName);
+			Map<String, String[]> renderParameters = RenderParametersPool.get(
+				request, plid, _portletName);
 
-			for (Map.Entry<String, String[]> entry :
-					renderParameters.entrySet()) {
+			if (renderParameters != null) {
+				for (Map.Entry<String, String[]> entry :
+						renderParameters.entrySet()) {
 
-				String name = entry.getKey();
-				String[] values = entry.getValue();
+					String name = entry.getKey();
+					String[] values = entry.getValue();
 
-				if ((invokerPortlet == null) ||
-					!invokerPortlet.isFacesPortlet()) {
+					if ((invokerPortlet == null) ||
+						!invokerPortlet.isFacesPortlet()) {
 
-					name = removePortletNamespace(portletNamespace, name);
+						name = removePortletNamespace(portletNamespace, name);
+					}
+
+					dynamicRequest.setParameterValues(name, values);
 				}
-
-				dynamicRequest.setParameterValues(name, values);
 			}
 		}
 
