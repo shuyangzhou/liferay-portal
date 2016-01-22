@@ -24,14 +24,14 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.toolbar.contributor.BasePortletToolbarContributor;
 import com.liferay.portal.kernel.portlet.toolbar.contributor.PortletToolbarContributor;
 import com.liferay.portal.kernel.repository.model.Folder;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.BaseModelPermissionChecker;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.servlet.taglib.ui.MenuItem;
 import com.liferay.portal.kernel.servlet.taglib.ui.URLMenuItem;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.security.permission.ActionKeys;
-import com.liferay.portal.security.permission.BaseModelPermissionChecker;
-import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.theme.PortletDisplay;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
@@ -48,6 +48,7 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 import javax.portlet.PortletURL;
 
 import org.osgi.service.component.annotations.Component;
@@ -355,7 +356,7 @@ public class DLPortletToolbarContributor extends BasePortletToolbarContributor {
 
 	@Override
 	protected List<MenuItem> getPortletTitleMenuItems(
-		PortletRequest portletRequest) {
+		PortletRequest portletRequest, PortletResponse portletResponse) {
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);

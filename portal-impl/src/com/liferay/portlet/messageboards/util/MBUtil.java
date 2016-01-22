@@ -24,6 +24,9 @@ import com.liferay.portal.kernel.sanitizer.SanitizerUtil;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Hits;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CharPool;
@@ -48,9 +51,6 @@ import com.liferay.portal.model.RoleConstants;
 import com.liferay.portal.model.Subscription;
 import com.liferay.portal.model.ThemeConstants;
 import com.liferay.portal.model.UserGroup;
-import com.liferay.portal.security.permission.ActionKeys;
-import com.liferay.portal.security.permission.PermissionChecker;
-import com.liferay.portal.security.permission.ResourceActionsUtil;
 import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.OrganizationLocalServiceUtil;
 import com.liferay.portal.service.ResourcePermissionLocalServiceUtil;
@@ -882,7 +882,7 @@ public class MBUtil {
 			defaultGroupRole.getRoleId());
 
 		if (defaultGroupActionIds == null) {
-			serviceContext.setGroupPermissions(new String[] {});
+			serviceContext.setGroupPermissions(new String[0]);
 		}
 		else {
 			serviceContext.setGroupPermissions(
@@ -894,7 +894,7 @@ public class MBUtil {
 			guestRole.getRoleId());
 
 		if (guestActionIds == null) {
-			serviceContext.setGuestPermissions(new String[] {});
+			serviceContext.setGuestPermissions(new String[0]);
 		}
 		else {
 			serviceContext.setGuestPermissions(

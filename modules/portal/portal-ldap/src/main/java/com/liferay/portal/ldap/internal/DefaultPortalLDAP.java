@@ -18,9 +18,12 @@ import com.liferay.portal.kernel.ldap.LDAPUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.log.LogUtil;
+import com.liferay.portal.kernel.security.ldap.LDAPSettings;
+import com.liferay.portal.kernel.security.ldap.PortalLDAP;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
 import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.Props;
@@ -34,8 +37,6 @@ import com.liferay.portal.ldap.configuration.ConfigurationProvider;
 import com.liferay.portal.ldap.configuration.LDAPServerConfiguration;
 import com.liferay.portal.ldap.configuration.SystemLDAPConfiguration;
 import com.liferay.portal.model.CompanyConstants;
-import com.liferay.portal.security.ldap.LDAPSettings;
-import com.liferay.portal.security.ldap.PortalLDAP;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -384,34 +385,14 @@ public class DefaultPortalLDAP implements PortalLDAP {
 			}
 		}
 
-		boolean hasProperties = false;
-
-		for (int ldapServerId = 0;; ldapServerId++) {
+		if (!ListUtil.isEmpty(ldapServerConfigurations)) {
 			LDAPServerConfiguration ldapServerConfiguration =
-				_ldapServerConfigurationProvider.getConfiguration(
-					companyId, ldapServerId);
+				ldapServerConfigurations.get(0);
 
-			String providerUrl = ldapServerConfiguration.baseProviderURL();
-
-			if (Validator.isNull(providerUrl)) {
-				break;
-			}
-
-			hasProperties = true;
-
-			if (hasUser(ldapServerId, companyId, screenName, emailAddress)) {
-				return ldapServerId;
-			}
+			return ldapServerConfiguration.ldapServerId();
 		}
 
-		if (hasProperties || ldapServerConfigurations.isEmpty()) {
-			return 0;
-		}
-
-		LDAPServerConfiguration ldapServerConfiguration =
-			ldapServerConfigurations.get(0);
-
-		return ldapServerConfiguration.ldapServerId();
+		return LDAPServerConfiguration.LDAP_SERVER_ID_DEFAULT;
 	}
 
 	@Override

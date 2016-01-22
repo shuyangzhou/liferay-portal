@@ -28,7 +28,8 @@ taglib uri="http://liferay.com/tld/trash" prefix="liferay-trash" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %><%@
 taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
-<%@ page import="com.liferay.portal.kernel.bean.BeanParamUtil" %><%@
+<%@ page import="com.liferay.document.library.display.context.DLMimeTypeDisplayContext" %><%@
+page import="com.liferay.portal.kernel.bean.BeanParamUtil" %><%@
 page import="com.liferay.portal.kernel.dao.search.RowChecker" %><%@
 page import="com.liferay.portal.kernel.dao.search.SearchContainer" %><%@
 page import="com.liferay.portal.kernel.exception.PortalException" %><%@
@@ -47,6 +48,7 @@ page import="com.liferay.portal.kernel.search.SearchContext" %><%@
 page import="com.liferay.portal.kernel.search.SearchContextFactory" %><%@
 page import="com.liferay.portal.kernel.search.SearchResultUtil" %><%@
 page import="com.liferay.portal.kernel.search.Summary" %><%@
+page import="com.liferay.portal.kernel.security.permission.ActionKeys" %><%@
 page import="com.liferay.portal.kernel.servlet.SessionErrors" %><%@
 page import="com.liferay.portal.kernel.util.ArrayUtil" %><%@
 page import="com.liferay.portal.kernel.util.Constants" %><%@
@@ -75,7 +77,6 @@ page import="com.liferay.portal.model.Ticket" %><%@
 page import="com.liferay.portal.model.TicketConstants" %><%@
 page import="com.liferay.portal.model.User" %><%@
 page import="com.liferay.portal.portletfilerepository.PortletFileRepositoryUtil" %><%@
-page import="com.liferay.portal.security.permission.ActionKeys" %><%@
 page import="com.liferay.portal.service.ServiceContext" %><%@
 page import="com.liferay.portal.service.SubscriptionLocalServiceUtil" %><%@
 page import="com.liferay.portal.service.TicketLocalServiceUtil" %><%@

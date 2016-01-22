@@ -17,6 +17,8 @@ package com.liferay.portal.service.impl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
+import com.liferay.portal.kernel.security.membershippolicy.OrganizationMembershipPolicyUtil;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.model.Address;
 import com.liferay.portal.model.EmailAddress;
 import com.liferay.portal.model.OrgLabor;
@@ -25,8 +27,6 @@ import com.liferay.portal.model.OrganizationConstants;
 import com.liferay.portal.model.Phone;
 import com.liferay.portal.model.User;
 import com.liferay.portal.model.Website;
-import com.liferay.portal.security.membershippolicy.OrganizationMembershipPolicyUtil;
-import com.liferay.portal.security.permission.ActionKeys;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.base.OrganizationServiceBaseImpl;
 import com.liferay.portal.service.permission.GroupPermissionUtil;
@@ -607,7 +607,7 @@ public class OrganizationServiceImpl extends OrganizationServiceBaseImpl {
 	 *             attributes for the organization.
 	 * @return     the organization
 	 * @deprecated As of 7.0.0, replaced by {@link #updateOrganization(long,
-	 *             long, String, String, long, long, int, String, boolean,
+	 *             long, String, String, long, long, long, String, boolean,
 	 *             byte[], boolean, List, List, List, List, List,
 	 *             ServiceContext)}
 	 */
