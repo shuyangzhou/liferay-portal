@@ -613,7 +613,7 @@ if (lifecycle.equals(PortletRequest.RENDER_PHASE)) {
 
 	Set<String> publicRenderParameterNames = SetUtil.fromEnumeration(portletConfig.getPublicRenderParameterNames());
 
-	Map<String, String[]> renderParameters = RenderParametersPool.get(request, plid, portletDisplay.getId());
+	Map<String, String[]> renderParameters = RenderParametersPool.getOrCreate(request, plid, portletDisplay.getId());
 
 	for (Map.Entry<String, String[]> entry : renderParameters.entrySet()) {
 		String key = entry.getKey();

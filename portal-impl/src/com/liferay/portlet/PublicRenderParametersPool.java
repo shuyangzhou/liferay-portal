@@ -59,7 +59,7 @@ public class PublicRenderParametersPool {
 		HttpServletRequest request, long plid) {
 
 		if (PropsValues.PORTLET_PUBLIC_RENDER_PARAMETER_DISTRIBUTION_LAYOUT) {
-			return RenderParametersPool.get(
+			return RenderParametersPool.getOrCreate(
 				request, plid, _PUBLIC_RENDER_PARAMETERS);
 		}
 

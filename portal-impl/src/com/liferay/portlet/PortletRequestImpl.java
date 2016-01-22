@@ -461,7 +461,7 @@ public abstract class PortletRequestImpl implements LiferayPortletRequest {
 
 	@Override
 	public Map<String, String[]> getRenderParameters() {
-		return RenderParametersPool.get(_request, _plid, _portletName);
+		return RenderParametersPool.getOrCreate(_request, _plid, _portletName);
 	}
 
 	@Override
@@ -821,8 +821,8 @@ public abstract class PortletRequestImpl implements LiferayPortletRequest {
 			}
 		}
 		else {
-			Map<String, String[]> renderParameters = RenderParametersPool.get(
-				request, plid, _portletName);
+			Map<String, String[]> renderParameters =
+				RenderParametersPool.getOrCreate(request, plid, _portletName);
 
 			for (Map.Entry<String, String[]> entry :
 					renderParameters.entrySet()) {
