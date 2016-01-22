@@ -16,6 +16,7 @@ package com.liferay.portlet.documentlibrary.model;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.trash.TrashHandler;
@@ -48,6 +49,7 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portlet.documentlibrary.model.impl.DLFileShortcutModelImpl")
 public interface DLFileShortcutModel extends BaseModel<DLFileShortcut>,
 	ShardedModel, StagedGroupedModel, TrashedModel, WorkflowedModel {
 	/*

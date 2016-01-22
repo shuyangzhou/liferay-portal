@@ -16,6 +16,8 @@ package com.liferay.portlet.calendar.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
+
 /**
  * @author Brian Wing Shun Chan
  * @deprecated As of 7.0.0, with no direct replacement
@@ -23,6 +25,7 @@ import aQute.bnd.annotation.ProviderType;
  */
 @Deprecated
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portlet.calendar.service.persistence.impl.CalEventFinderImpl")
 public interface CalEventFinder {
 	public int countByG_SD_T(long groupId, java.util.Date startDateGT,
 		java.util.Date startDateLT, boolean timeZoneSensitive,

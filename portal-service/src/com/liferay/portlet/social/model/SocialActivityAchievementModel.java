@@ -16,6 +16,7 @@ package com.liferay.portlet.social.model;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.CacheModel;
@@ -40,6 +41,7 @@ import java.io.Serializable;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portlet.social.model.impl.SocialActivityAchievementModelImpl")
 public interface SocialActivityAchievementModel extends BaseModel<SocialActivityAchievement>,
 	ShardedModel {
 	/*

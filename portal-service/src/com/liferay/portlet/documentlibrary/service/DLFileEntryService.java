@@ -16,6 +16,7 @@ package com.liferay.portlet.documentlibrary.service;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
@@ -39,6 +40,7 @@ import com.liferay.portal.service.BaseService;
 @AccessControlled
 @JSONWebService
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portlet.documentlibrary.service.impl.DLFileEntryServiceImpl")
 @Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
 	PortalException.class, SystemException.class})
 public interface DLFileEntryService extends BaseService {

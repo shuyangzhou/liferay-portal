@@ -16,11 +16,14 @@ package com.liferay.journal.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
+
 /**
  * @author Brian Wing Shun Chan
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.journal.service.persistence.impl.JournalArticleFinderImpl")
 public interface JournalArticleFinder {
 	public int countByKeywords(long companyId, long groupId,
 		java.util.List<java.lang.Long> folderIds, long classNameId,

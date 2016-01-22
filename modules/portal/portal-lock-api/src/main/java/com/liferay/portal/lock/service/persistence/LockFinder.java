@@ -16,11 +16,14 @@ package com.liferay.portal.lock.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
+
 /**
  * @author Brian Wing Shun Chan
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portal.lock.service.persistence.impl.LockFinderImpl")
 public interface LockFinder {
 	public com.liferay.portal.lock.model.Lock fetchByC_K(
 		java.lang.String className, java.lang.String key,

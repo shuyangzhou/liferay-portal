@@ -14,7 +14,6 @@
 
 package com.liferay.portal.workflow.kaleo.manager;
 
-import com.liferay.portal.exception.NoSuchRoleException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -25,6 +24,7 @@ import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.workflow.comparator.WorkflowComparatorFactory;
 import com.liferay.portal.model.Company;
 import com.liferay.portal.model.Group;
+import com.liferay.portal.model.Role;
 import com.liferay.portal.model.RoleConstants;
 import com.liferay.portal.model.User;
 import com.liferay.portal.model.WorkflowDefinitionLink;
@@ -180,18 +180,19 @@ public class DefaultPortalKaleoManager
 		for (Map.Entry<String, String> entry : _defaultRoles.entrySet()) {
 			String name = entry.getKey();
 
-			try {
-				roleLocalService.getRole(companyId, name);
-			}
-			catch (NoSuchRoleException nsre) {
-				Map<Locale, String> descriptionMap = new HashMap<>();
+			Role role = roleLocalService.fetchRole(companyId, name);
 
-				descriptionMap.put(LocaleUtil.getDefault(), entry.getValue());
-
-				roleLocalService.addRole(
-					defaultUser.getUserId(), null, 0, name, null,
-					descriptionMap, RoleConstants.TYPE_REGULAR, null, null);
+			if (role != null) {
+				continue;
 			}
+
+			Map<Locale, String> descriptionMap = new HashMap<>();
+
+			descriptionMap.put(LocaleUtil.getDefault(), entry.getValue());
+
+			roleLocalService.addRole(
+				defaultUser.getUserId(), null, 0, name, null, descriptionMap,
+				RoleConstants.TYPE_REGULAR, null, null);
 		}
 	}
 

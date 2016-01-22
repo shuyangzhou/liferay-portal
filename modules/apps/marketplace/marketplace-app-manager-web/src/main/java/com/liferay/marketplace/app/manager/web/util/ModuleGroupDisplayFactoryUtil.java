@@ -39,7 +39,7 @@ public class ModuleGroupDisplayFactoryUtil {
 		ModuleGroupDisplay moduleGroupDisplay = null;
 
 		if (moduleGroupTitle.equals(
-				ModuleGroupDisplay.MODULE_GROUP_TITLE_UNCATEGORIZED)) {
+				ModuleGroupDisplay.MODULE_GROUP_TITLE_INDEPENDENT_MODULES)) {
 
 			moduleGroupTitle = StringPool.BLANK;
 		}
@@ -90,7 +90,7 @@ public class ModuleGroupDisplayFactoryUtil {
 
 			if (moduleGroupTitle == null) {
 				moduleGroupTitle =
-					ModuleGroupDisplay.MODULE_GROUP_TITLE_UNCATEGORIZED;
+					ModuleGroupDisplay.MODULE_GROUP_TITLE_INDEPENDENT_MODULES;
 			}
 
 			ModuleGroupDisplay moduleGroupDisplay = moduleGroupDisplaysMap.get(

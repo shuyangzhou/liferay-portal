@@ -16,11 +16,14 @@ package com.liferay.portal.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
+
 /**
  * @author Brian Wing Shun Chan
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portal.service.persistence.impl.UserFinderImpl")
 public interface UserFinder {
 	public java.util.Map<java.lang.Long, java.lang.Integer> countByGroups(
 		long companyId, int status, long[] groupIds);

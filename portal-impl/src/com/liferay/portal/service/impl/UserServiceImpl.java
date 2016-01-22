@@ -14,6 +14,7 @@
 
 package com.liferay.portal.service.impl;
 
+import com.liferay.announcements.kernel.model.AnnouncementsDelivery;
 import com.liferay.portal.exception.RequiredUserException;
 import com.liferay.portal.exception.UserEmailAddressException;
 import com.liferay.portal.exception.UserFieldException;
@@ -64,7 +65,6 @@ import com.liferay.portal.service.permission.UserGroupPermissionUtil;
 import com.liferay.portal.service.permission.UserGroupRolePermissionUtil;
 import com.liferay.portal.service.permission.UserPermissionUtil;
 import com.liferay.portal.util.PropsValues;
-import com.liferay.portlet.announcements.model.AnnouncementsDelivery;
 import com.liferay.users.admin.kernel.util.UsersAdminUtil;
 
 import java.util.ArrayList;
@@ -2027,10 +2027,10 @@ public class UserServiceImpl extends UserServiceBaseImpl {
 	 * @deprecated As of 7.0.0, replaced by {@link #updateUser(long, String,
 	 *             String, String, boolean, String, String, String, String,
 	 *             long, String, boolean, byte[], String, String, String,
-	 *             String, String, String, String, int, int, boolean, int, int,
-	 *             int, String, String, String, String, String, String, String,
-	 *             String, String, String, String, long[], long[], long[], List,
-	 *             long[], List, List, List, List, List, ServiceContext)}
+	 *             String, String, String, String, long, long, boolean, int,
+	 *             int, int, String, String, String, String, String, String,
+	 *             long[], long[], long[], List, long[], List, List, List, List,
+	 *             List, ServiceContext)}
 	 */
 	@Deprecated
 	@Override

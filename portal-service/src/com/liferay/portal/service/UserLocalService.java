@@ -16,6 +16,7 @@ package com.liferay.portal.service;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.search.IndexableType;
@@ -36,6 +37,7 @@ import com.liferay.portal.kernel.transaction.Transactional;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portal.service.impl.UserLocalServiceImpl")
 @Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
 	PortalException.class, SystemException.class})
 public interface UserLocalService extends BaseLocalService,
@@ -2484,10 +2486,9 @@ public interface UserLocalService extends BaseLocalService,
 	* @deprecated As of 7.0.0, replaced by {@link #updateUser(long, String,
 	String, String, boolean, String, String, String, String,
 	long, String, boolean, byte[], String, String, String,
-	String, String, String, String, int, int, boolean, int, int,
-	int, String, String, String, String, String, String, String,
-	String, String, String, String, long[], long[], long[], List,
-	long[], ServiceContext)}
+	String, String, String, String, long, long, boolean, int,
+	int, int, String, String, String, String, String, String,
+	long[], long[], long[], List, long[], ServiceContext)}
 	*/
 	@java.lang.Deprecated
 	public com.liferay.portal.model.User updateUser(long userId,

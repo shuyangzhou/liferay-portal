@@ -16,6 +16,7 @@ package com.liferay.portal.service;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
@@ -38,6 +39,7 @@ import com.liferay.portal.kernel.transaction.Transactional;
 @AccessControlled
 @JSONWebService
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portal.service.impl.OrganizationServiceImpl")
 @Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
 	PortalException.class, SystemException.class})
 public interface OrganizationService extends BaseService {
@@ -352,7 +354,7 @@ public interface OrganizationService extends BaseService {
 	attributes for the organization.
 	* @return the organization
 	* @deprecated As of 7.0.0, replaced by {@link #updateOrganization(long,
-	long, String, String, long, long, int, String, boolean,
+	long, String, String, long, long, long, String, boolean,
 	byte[], boolean, List, List, List, List, List,
 	ServiceContext)}
 	*/

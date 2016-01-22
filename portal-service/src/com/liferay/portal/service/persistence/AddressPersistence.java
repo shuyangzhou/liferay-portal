@@ -16,6 +16,7 @@ package com.liferay.portal.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
 import com.liferay.portal.model.Address;
 
 /**
@@ -31,6 +32,7 @@ import com.liferay.portal.model.Address;
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.portal.service.persistence.impl.AddressPersistenceImpl")
 public interface AddressPersistence extends BasePersistence<Address> {
 	/*
 	 * NOTE FOR DEVELOPERS:

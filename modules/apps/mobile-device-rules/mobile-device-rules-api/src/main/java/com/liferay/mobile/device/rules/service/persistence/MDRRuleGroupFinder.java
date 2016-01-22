@@ -16,11 +16,14 @@ package com.liferay.mobile.device.rules.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.annotation.ImplementationPath;
+
 /**
  * @author Edward C. Han
  * @generated
  */
 @ProviderType
+@ImplementationPath(implementationPath = "com.liferay.mobile.device.rules.service.persistence.impl.MDRRuleGroupFinderImpl")
 public interface MDRRuleGroupFinder {
 	public int countByKeywords(long groupId, java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params);
