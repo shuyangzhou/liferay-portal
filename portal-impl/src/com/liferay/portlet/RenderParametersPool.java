@@ -60,6 +60,38 @@ public class RenderParametersPool {
 		return plidPool.remove(portletId);
 	}
 
+	public static Map<String, Map<String, String[]>> get(
+		HttpServletRequest request, long plid) {
+
+		HttpSession session = request.getSession();
+
+		if (plid <= 0) {
+			return null;
+		}
+
+		Map<Long, Map<String, Map<String, String[]>>> pool =
+			(Map<Long, Map<String, Map<String, String[]>>>)session.getAttribute(
+				WebKeys.PORTLET_RENDER_PARAMETERS);
+
+		if (pool == null) {
+			return null;
+		}
+
+		return pool.get(plid);
+	}
+
+	public static Map<String, String[]> get(
+		HttpServletRequest request, long plid, String portletId) {
+
+		Map<String, Map<String, String[]>> plidPool = get(request, plid);
+
+		if (plidPool == null) {
+			return null;
+		}
+
+		return plidPool.get(portletId);
+	}
+
 	public static Map<String, Map<String, String[]>> getOrCreate(
 		HttpServletRequest request, long plid) {
 
