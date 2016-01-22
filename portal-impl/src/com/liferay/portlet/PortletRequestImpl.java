@@ -770,15 +770,7 @@ public abstract class PortletRequestImpl implements LiferayPortletRequest {
 		}
 
 		if (portletFocus) {
-			Map<String, String[]> renderParameters = new HashMap<>();
-
-			if (getLifecycle().equals(PortletRequest.RENDER_PHASE) &&
-				!LiferayWindowState.isExclusive(request) &&
-				!LiferayWindowState.isPopUp(request)) {
-
-				RenderParametersPool.put(
-					request, plid, _portletName, renderParameters);
-			}
+			Map<String, String[]> renderParameters = null;
 
 			Map<String, String[]> parameters = request.getParameterMap();
 
@@ -792,6 +784,10 @@ public abstract class PortletRequestImpl implements LiferayPortletRequest {
 				String[] values = entry.getValue();
 
 				if (themeDisplay.isLifecycleRender()) {
+					if (renderParameters == null) {
+						renderParameters = new HashMap<>();
+					}
+
 					renderParameters.put(name, values);
 				}
 
@@ -818,6 +814,15 @@ public abstract class PortletRequestImpl implements LiferayPortletRequest {
 						dynamicRequest.setParameterValues(realName, values);
 					}
 				}
+			}
+
+			if (getLifecycle().equals(PortletRequest.RENDER_PHASE) &&
+				!LiferayWindowState.isExclusive(request) &&
+				!LiferayWindowState.isPopUp(request) &&
+				(renderParameters != null)) {
+
+				RenderParametersPool.put(
+					request, plid, _portletName, renderParameters);
 			}
 		}
 		else {
