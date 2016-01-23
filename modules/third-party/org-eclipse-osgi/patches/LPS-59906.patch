@@ -1,0 +1,433 @@
+diff --git a/org/eclipse/osgi/framework/eventmgr/EventManager.java b/org/eclipse/osgi/framework/eventmgr/EventManager.java
+index 9e371ee..8ebab05 100644
+--- a/org/eclipse/osgi/framework/eventmgr/EventManager.java
++++ b/org/eclipse/osgi/framework/eventmgr/EventManager.java
+@@ -1,3 +1,4 @@
++/* @generated */
+ /*******************************************************************************
+  * Copyright (c) 2003, 2010 IBM Corporation and others.
+  * All rights reserved. This program and the accompanying materials
+@@ -11,10 +12,22 @@
+ 
+ package org.eclipse.osgi.framework.eventmgr;
+ 
++import java.io.BufferedWriter;
++import java.io.FileWriter;
++import java.io.Writer;
+ import java.security.AccessController;
+ import java.security.PrivilegedAction;
++import java.util.ArrayList;
++import java.util.Collections;
++import java.util.Comparator;
++import java.util.List;
+ import java.util.Map;
++import java.util.Random;
+ import java.util.Set;
++import org.eclipse.osgi.internal.framework.BundleContextImpl;
++import org.eclipse.osgi.internal.framework.EquinoxBundle;
++import org.eclipse.osgi.internal.serviceregistry.FilteredServiceListener;
++import org.osgi.framework.ServiceEvent;
+ 
+ /**
+  * This class is the central class for the Event Manager. Each
+@@ -101,6 +114,62 @@ import java.util.Set;
+ public class EventManager {
+ 	static final boolean DEBUG = false;
+ 
++	private static final long _key;
++
++	static {
++		Long seed = null;
++
++		String testBuildTimestamp = null;
++
++		String logOutputPath = null;
++
++		try {
++            testBuildTimestamp = System.getProperty("osgi.shuffle.timestamp");
++
++            logOutputPath = System.getProperty("osgi.shuffle.output.log.path");
++        }
++        catch(NumberFormatException nfe) {
++        }
++
++        if ((testBuildTimestamp == null) || (logOutputPath == null)) {
++            System.out.println("OSGi shuffle logging failed, configuration not supplied. Shuffling still enabled");
++        }
++
++		Writer writer = null;
++
++		try {
++			if (logOutputPath != null) {
++				writer = new BufferedWriter(new FileWriter(logOutputPath, true));
++			}
++
++			try {
++				seed = Long.valueOf(System.getProperty("osgi.shuffle.seed"));
++
++				System.out.println("EventManager started with seed: " + seed + "\n");
++			}
++			catch (NumberFormatException nfe) {
++				Random random = new Random();
++
++				seed = random.nextLong();
++
++				System.out.println("EventManager started with random seed\n");
++			}
++
++			writer.write("EventManager patch applied " + testBuildTimestamp + "\n");
++		}
++		catch (Exception e) {
++		}
++		finally {
++			try {
++				writer.close();
++			}
++			catch (Exception e) {
++			}
++		}
++
++		_key = seed;
++	}
++
+ 	/**
+ 	 * EventThread for asynchronous dispatch of events.
+ 	 * Access to this field must be protected by a synchronized region.
+@@ -222,6 +291,43 @@ public class EventManager {
+ 	 * is passed to this method. This is passed on to the call back object.
+ 	 */
+ 	static <K, V, E> void dispatchEvent(Set<Map.Entry<K, V>> listeners, EventDispatcher<K, V, E> dispatcher, int eventAction, E eventObject) {
++		List<Map.Entry<K, V>> listenersList = new ArrayList<Map.Entry<K, V>>(listeners);
++
++		if (eventObject instanceof ServiceEvent) {
++			ServiceEvent event = (ServiceEvent)eventObject;
++
++			if (event.getType() == ServiceEvent.REGISTERED) {
++				Collections.sort(listenersList, new Comparator<Map.Entry<K, V>>() {
++
++					@Override
++					public int compare(Map.Entry<K, V> o1, Map.Entry<K, V> o2) {
++						FilteredServiceListener key1 = (FilteredServiceListener)o1.getValue();
++						FilteredServiceListener key2 = (FilteredServiceListener)o2.getValue();
++
++						BundleContextImpl bundleContextImpl1 = (BundleContextImpl)key1.getBundleContext();
++						BundleContextImpl bundleContextImpl2 = (BundleContextImpl)key2.getBundleContext();
++
++						EquinoxBundle equinoxBundle1 = bundleContextImpl1.getBundleImpl();
++						EquinoxBundle equinoxBundle2 = bundleContextImpl2.getBundleImpl();
++
++						long hash1 = equinoxBundle1.getBundleId() ^ _key;
++						long hash2 = equinoxBundle2.getBundleId() ^ _key;
++
++						if (hash1 < hash2) {
++							return -1;
++						}
++
++						if (hash1 == hash2) {
++							return 0;
++						}
++
++						return 1;
++					}
++
++				});
++			}
++		}
++
+ 		for (Map.Entry<K, V> listener : listeners) { /* iterate over the list of listeners */
+ 			final K eventListener = listener.getKey();
+ 			final V listenerObject = listener.getValue();
+diff --git a/org/eclipse/osgi/framework/eventmgr/ListenerQueue.java b/org/eclipse/osgi/framework/eventmgr/ListenerQueue.java
+index 40fbf99..a756e48 100644
+--- a/org/eclipse/osgi/framework/eventmgr/ListenerQueue.java
++++ b/org/eclipse/osgi/framework/eventmgr/ListenerQueue.java
+@@ -1,3 +1,4 @@
++/* @generated */
+ /*******************************************************************************
+  * Copyright (c) 2003, 2010 IBM Corporation and others.
+  * All rights reserved. This program and the accompanying materials
+@@ -11,9 +12,20 @@
+ 
+ package org.eclipse.osgi.framework.eventmgr;
+ 
++import java.io.BufferedWriter;
++import java.io.FileWriter;
++import java.io.Writer;
++import java.util.ArrayList;
++import java.util.Collections;
++import java.util.Comparator;
++import java.util.List;
+ import java.util.Map;
++import java.util.Random;
+ import java.util.Set;
+ import org.eclipse.osgi.framework.eventmgr.EventManager.EventThread;
++import org.eclipse.osgi.internal.framework.BundleContextImpl;
++import org.eclipse.osgi.internal.framework.EquinoxBundle;
++import org.osgi.framework.ServiceEvent;
+ 
+ /**
+  * The ListenerQueue is used to snapshot the list of listeners at the time the event
+@@ -39,6 +51,63 @@ public class ListenerQueue<K, V, E> {
+ 	 * EventManager with which this queue is associated.
+ 	 */
+ 	protected final EventManager manager;
++
++	private static final long _key;
++
++	static {
++		Long seed = null;
++
++		String testBuildTimestamp = null;
++
++		String logOutputPath = null;
++
++		try {
++            testBuildTimestamp = System.getProperty("osgi.shuffle.timestamp");
++
++            logOutputPath = System.getProperty("osgi.shuffle.output.log.path");
++        }
++        catch(NumberFormatException nfe) {
++        }
++
++        if ((testBuildTimestamp == null) || (logOutputPath == null)) {
++            System.out.println("OSGi shuffle logging failed, configuration not supplied. Shuffling still enabled");
++        }
++
++		Writer writer = null;
++
++		try {
++			if (logOutputPath != null) {
++				writer = new BufferedWriter(new FileWriter(logOutputPath, true));
++			}
++
++			try {
++				seed = Long.valueOf(System.getProperty("osgi.shuffle.seed"));
++
++				System.out.println("ListenerQueue started with seed: " + seed + "\n");
++			}
++			catch (NumberFormatException nfe) {
++				Random random = new Random();
++
++				seed = random.nextLong();
++
++				System.out.println("ListenerQueue started with random seed\n");
++			}
++
++			writer.write("ListenerQueue patch applied " + testBuildTimestamp + "\n");
++		}
++		catch (Exception e) {
++		}
++		finally {
++			try {
++				writer.close();
++			}
++			catch (Exception e) {
++			}
++		}
++
++		_key = seed;
++	}
++
+ 	/**
+ 	 * A list of listener lists.
+ 	 */
+@@ -121,8 +190,19 @@ public class ListenerQueue<K, V, E> {
+ 			readOnly = true;
+ 		}
+ 		EventThread<K, V, E> eventThread = manager.getEventThread();
++
++		List<Map.Entry<Set<Map.Entry<K, V>>, EventDispatcher<K, V, E>>> snapshotList = new ArrayList<Map.Entry<Set<Map.Entry<K, V>>, EventDispatcher<K, V, E>>>(queue.entrySet());
++
++		if (eventObject instanceof ServiceEvent) {
++			ServiceEvent event = (ServiceEvent)eventObject;
++
++			if (event.getType() == ServiceEvent.REGISTERED) {
++				Collections.sort(snapshotList, new RandomShuffleComparator<K, V, E>());
++			}
++		}
++
+ 		synchronized (eventThread) { /* synchronize on the EventThread to ensure no interleaving of posting to the event thread */
+-			for (Map.Entry<Set<Map.Entry<K, V>>, EventDispatcher<K, V, E>> entry : queue.entrySet()) { /* iterate over the list of listener lists */
++			for (Map.Entry<Set<Map.Entry<K, V>>, EventDispatcher<K, V, E>> entry : snapshotList) { /* iterate over the list of listener lists */
+ 				eventThread.postEvent(entry.getKey(), entry.getValue(), eventAction, eventObject);
+ 			}
+ 		}
+@@ -144,8 +224,51 @@ public class ListenerQueue<K, V, E> {
+ 		}
+ 		// We can't guarantee any delivery order for synchronous events.
+ 		// Attempts to do so result in deadly embraces.
+-		for (Map.Entry<Set<Map.Entry<K, V>>, EventDispatcher<K, V, E>> entry : queue.entrySet()) { /* iterate over the list of listener lists */
++
++		List<Map.Entry<Set<Map.Entry<K, V>>, EventDispatcher<K, V, E>>> snapshotList = new ArrayList<Map.Entry<Set<Map.Entry<K, V>>, EventDispatcher<K, V, E>>>(queue.entrySet());
++
++		if (eventObject instanceof ServiceEvent) {
++			ServiceEvent event = (ServiceEvent)eventObject;
++
++			if (event.getType() == ServiceEvent.REGISTERED) {
++				Collections.sort(snapshotList, new RandomShuffleComparator<K, V, E>());
++			}
++		}
++
++		for (Map.Entry<Set<Map.Entry<K, V>>, EventDispatcher<K, V, E>> entry : snapshotList) { /* iterate over the list of listener lists */
+ 			EventManager.dispatchEvent(entry.getKey(), entry.getValue(), eventAction, eventObject);
+ 		}
+ 	}
++
++	private class RandomShuffleComparator<K, V, E> implements Comparator<Map.Entry<Set<Map.Entry<K, V>>, EventDispatcher<K, V, E>>> {
++
++		@Override
++		public int compare(
++			Map.Entry<Set<Map.Entry<K, V>>, EventDispatcher<K, V, E>> o1,
++			Map.Entry<Set<Map.Entry<K, V>>, EventDispatcher<K, V, E>> o2) {
++
++			EventDispatcher<K, V, E> key1 = o1.getValue();
++			EventDispatcher<K, V, E> key2 = o2.getValue();
++
++			BundleContextImpl bundleContextImpl1 = (BundleContextImpl)key1;
++			BundleContextImpl bundleContextImpl2 = (BundleContextImpl)key2;
++
++			EquinoxBundle equinoxBundle1 = bundleContextImpl1.getBundleImpl();
++			EquinoxBundle equinoxBundle2 = bundleContextImpl2.getBundleImpl();
++
++			long hash1 = equinoxBundle1.getBundleId() ^ _key;
++			long hash2 = equinoxBundle2.getBundleId() ^ _key;
++
++			if (hash1 < hash2) {
++				return -1;
++			}
++
++			if (hash1 == hash2) {
++				return 0;
++			}
++
++			return 1;
++		}
++
++	}
+ }
+diff --git a/org/eclipse/osgi/internal/serviceregistry/FilteredServiceListener.java b/org/eclipse/osgi/internal/serviceregistry/FilteredServiceListener.java
+index b919fb6..6e46af9 100644
+--- a/org/eclipse/osgi/internal/serviceregistry/FilteredServiceListener.java
++++ b/org/eclipse/osgi/internal/serviceregistry/FilteredServiceListener.java
+@@ -1,3 +1,4 @@
++/* @generated */
+ /*******************************************************************************
+  * Copyright (c) 2003, 2012 IBM Corporation and others.
+  * All rights reserved. This program and the accompanying materials
+@@ -20,7 +21,7 @@ import org.osgi.framework.hooks.service.ListenerHook;
+ /**
+  * Service Listener delegate.
+  */
+-class FilteredServiceListener implements ServiceListener, ListenerHook.ListenerInfo {
++public class FilteredServiceListener implements ServiceListener, ListenerHook.ListenerInfo {
+ 	/** Filter for listener. */
+ 	private final FilterImpl filter;
+ 	/** Real listener. */
+diff --git a/org/osgi/util/tracker/AbstractTracked.java b/org/osgi/util/tracker/AbstractTracked.java
+index 9aa0bd4..1821154 100644
+--- a/org/osgi/util/tracker/AbstractTracked.java
++++ b/org/osgi/util/tracker/AbstractTracked.java
+@@ -1,3 +1,4 @@
++/* @generated */
+ /*
+  * Copyright (c) OSGi Alliance (2007, 2013). All Rights Reserved.
+  * 
+@@ -16,11 +17,17 @@
+ 
+ package org.osgi.util.tracker;
+ 
++import java.io.BufferedWriter;
++import java.io.FileWriter;
++import java.io.Writer;
+ import java.util.ArrayList;
++import java.util.Collections;
++import java.util.Comparator;
+ import java.util.HashMap;
+ import java.util.LinkedList;
+ import java.util.List;
+ import java.util.Map;
++import java.util.Random;
+ 
+ /**
+  * Abstract class to track items. If a Tracker is reused (closed then reopened),
+@@ -41,6 +48,62 @@ abstract class AbstractTracked<S, T, R> {
+ 	/* set this to true to compile in debug messages */
+ 	static final boolean		DEBUG	= false;
+ 
++	private static final long _key;
++
++	static {
++		Long seed = null;
++
++		String testBuildTimestamp = null;
++
++		String logOutputPath = null;
++
++		try {
++            testBuildTimestamp = System.getProperty("osgi.shuffle.timestamp");
++
++            logOutputPath = System.getProperty("osgi.shuffle.output.log.path");
++        }
++        catch(NumberFormatException nfe) {
++        }
++
++        if ((testBuildTimestamp == null) || (logOutputPath == null)) {
++            System.out.println("OSGi shuffle logging failed, configuration not supplied. Shuffling still enabled");
++        }
++
++		Writer writer = null;
++
++		try {
++			if (logOutputPath != null) {
++				writer = new BufferedWriter(new FileWriter(logOutputPath, true));
++			}
++
++			try {
++				seed = Long.valueOf(System.getProperty("osgi.shuffle.seed"));
++
++				System.out.println("AbstractTracked started with seed: " + seed + "\n");
++			}
++			catch (NumberFormatException nfe) {
++				Random random = new Random();
++
++				seed = random.nextLong();
++
++				System.out.println("AbstractTracked started with random seed\n");
++			}
++
++			writer.write("AbstractTracked patch applied " + testBuildTimestamp + "\n");
++		}
++		catch (Exception e) {
++		}
++		finally {
++			try {
++				writer.close();
++			}
++			catch (Exception e) {
++			}
++		}
++
++		_key = seed;
++	}
++
+ 	/**
+ 	 * Map of tracked items to customized objects.
+ 	 * 
+@@ -145,6 +208,17 @@ abstract class AbstractTracked<S, T, R> {
+ 	 * 
+ 	 */
+ 	void trackInitial() {
++		Collections.sort(initial, new Comparator<S>() {
++
++			@Override
++			public int compare(S o1, S o2) {
++				return o1.toString().compareTo(o2.toString());
++			}
++
++		});
++
++		Collections.shuffle(initial, new Random(_key));
++
+ 		while (true) {
+ 			S item;
+ 			synchronized (this) {

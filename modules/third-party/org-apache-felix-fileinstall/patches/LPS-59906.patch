@@ -1,0 +1,143 @@
+diff --git a/org/apache/felix/fileinstall/internal/Scanner.java b/org/apache/felix/fileinstall/internal/Scanner.java
+index b8e970c..9fefa28 100644
+--- a/org/apache/felix/fileinstall/internal/Scanner.java
++++ b/org/apache/felix/fileinstall/internal/Scanner.java
+@@ -1,3 +1,4 @@
++/* @generated */
+ /*
+  * Licensed to the Apache Software Foundation (ASF) under one
+  * or more contributor license agreements.  See the NOTICE file
+@@ -18,13 +19,20 @@
+  */
+ package org.apache.felix.fileinstall.internal;
+ 
++import java.io.BufferedWriter;
+ import java.io.Closeable;
+ import java.io.File;
++import java.io.FileWriter;
+ import java.io.FilenameFilter;
+ import java.io.IOException;
++import java.io.Writer;
++import java.util.Arrays;
++import java.util.Collections;
+ import java.util.HashMap;
+ import java.util.HashSet;
++import java.util.List;
+ import java.util.Map;
++import java.util.Random;
+ import java.util.Set;
+ import java.util.regex.Pattern;
+ import java.util.zip.CRC32;
+@@ -112,11 +120,19 @@ public class Scanner implements Closeable {
+      */
+     public Set<File> scan(boolean reportImmediately)
+     {
+-        File[] list = directory.listFiles(filter);
+-        if (list == null)
++        File[] array = directory.listFiles(filter);
++
++        if (array == null)
+         {
+             return null;
+         }
++
++        List<File> list = Arrays.asList(array);
++
++        Collections.sort(list);
++
++        Collections.shuffle(list, scannerRandomSource);
++
+         Set<File> files = new HashSet<File>();
+         Set<File> removed = new HashSet<File>(storedChecksums.keySet());
+         for (File file : list)
+@@ -196,6 +212,55 @@ public class Scanner implements Closeable {
+         return crc.getValue();
+     }
+ 
++    protected static Random scannerRandomSource;
++
++    static {
++        Long scannerShuffleSeed = null;
++
++        try {
++            scannerShuffleSeed = Long.valueOf(System.getProperty("osgi.shuffle.seed"));
++
++            scannerRandomSource = new Random(scannerShuffleSeed);
++        }
++        catch(NumberFormatException nfe) {
++            scannerRandomSource = new Random();
++        }
++
++        String testBuildTimestamp = System.getProperty("osgi.shuffle.timestamp");
++        String logOutputPath = System.getProperty("osgi.shuffle.output.log.path");
++
++        if ((testBuildTimestamp == null) || (logOutputPath == null)) {
++            System.out.println("Felix OSGi shuffle logging failed, configuration not supplied. Shuffling still enabled");
++        }
++        else {
++            Writer writer = null;
++
++            try {
++                writer = new BufferedWriter(new FileWriter(logOutputPath, true));
++
++                if (scannerShuffleSeed != null) {
++                    System.out.println("Felix FileInstall started with seed: " + scannerShuffleSeed + "\n");
++                }
++                else {
++                    System.out.println("Felix FileInstall started with random seed\n");
++                }
++
++                writer.write("Felix patch applied " + testBuildTimestamp);
++            }
++            catch (IOException ex) {
++            }
++            finally {
++                if (writer != null)  {
++                    try {
++                        writer.close();
++                    }
++                    catch (IOException ex) {
++                    }
++                }
++            }
++        }
++    }
++
+     private static void checksum(File file, CRC32 crc)
+     {
+         crc.update(file.getName().getBytes());
+diff --git a/org/apache/felix/fileinstall/internal/WatcherScanner.java b/org/apache/felix/fileinstall/internal/WatcherScanner.java
+index 185fabd..ae4c228 100644
+--- a/org/apache/felix/fileinstall/internal/WatcherScanner.java
++++ b/org/apache/felix/fileinstall/internal/WatcherScanner.java
+@@ -1,3 +1,4 @@
++/* @generated */
+ /*
+  * Licensed to the Apache Software Foundation (ASF) under one
+  * or more contributor license agreements.  See the NOTICE file
+@@ -23,8 +24,11 @@ import java.io.IOException;
+ import java.nio.file.FileSystems;
+ import java.nio.file.Path;
+ import java.nio.file.PathMatcher;
++import java.util.ArrayList;
++import java.util.Collections;
+ import java.util.HashSet;
+ import java.util.Iterator;
++import java.util.List;
+ import java.util.Set;
+ 
+ import org.osgi.framework.BundleContext;
+@@ -64,6 +68,13 @@ public class WatcherScanner extends Scanner {
+             if (changed.isEmpty()) {
+                 return new HashSet<File>();
+             }
++
++            List<File> changedList = new ArrayList<File>(changed);
++
++            Collections.sort(changedList);
++
++            Collections.shuffle(changedList, scannerRandomSource);
++
+             Set<File> files = new HashSet<File>();
+             Set<File> removed = new HashSet<File>();
+             if (reportImmediately) {

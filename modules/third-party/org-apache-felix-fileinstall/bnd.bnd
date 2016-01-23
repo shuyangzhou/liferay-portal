@@ -1,0 +1,4 @@
+Bundle-SymbolicName: org.apache.felix.fileinstall
+Bundle-Version: 3.5.1.LIFERAY-PATCHED-1
+Export-Package:org.apache.felix.fileinstall.*
+Include-Resource: classes
