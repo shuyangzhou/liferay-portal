@@ -22,6 +22,13 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
+import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.security.membershippolicy.OrganizationMembershipPolicyUtil;
+import com.liferay.portal.kernel.security.membershippolicy.RoleMembershipPolicyUtil;
+import com.liferay.portal.kernel.security.membershippolicy.SiteMembershipPolicyUtil;
+import com.liferay.portal.kernel.security.membershippolicy.UserGroupMembershipPolicyUtil;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -45,13 +52,6 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.model.UserGroup;
 import com.liferay.portal.model.UserGroupRole;
 import com.liferay.portal.model.Website;
-import com.liferay.portal.security.auth.PrincipalException;
-import com.liferay.portal.security.membershippolicy.OrganizationMembershipPolicyUtil;
-import com.liferay.portal.security.membershippolicy.RoleMembershipPolicyUtil;
-import com.liferay.portal.security.membershippolicy.SiteMembershipPolicyUtil;
-import com.liferay.portal.security.membershippolicy.UserGroupMembershipPolicyUtil;
-import com.liferay.portal.security.permission.ActionKeys;
-import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.base.UserServiceBaseImpl;
 import com.liferay.portal.service.permission.GroupPermissionUtil;
@@ -2027,10 +2027,10 @@ public class UserServiceImpl extends UserServiceBaseImpl {
 	 * @deprecated As of 7.0.0, replaced by {@link #updateUser(long, String,
 	 *             String, String, boolean, String, String, String, String,
 	 *             long, String, boolean, byte[], String, String, String,
-	 *             String, String, String, String, int, int, boolean, int, int,
-	 *             int, String, String, String, String, String, String, String,
-	 *             String, String, String, String, long[], long[], long[], List,
-	 *             long[], List, List, List, List, List, ServiceContext)}
+	 *             String, String, String, String, long, long, boolean, int,
+	 *             int, int, String, String, String, String, String, String,
+	 *             long[], long[], long[], List, long[], List, List, List, List,
+	 *             List, ServiceContext)}
 	 */
 	@Deprecated
 	@Override

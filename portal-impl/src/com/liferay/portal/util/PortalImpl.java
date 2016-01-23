@@ -53,8 +53,16 @@ import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletBag;
 import com.liferay.portal.kernel.portlet.PortletBagPool;
 import com.liferay.portal.kernel.security.auth.AlwaysAllowDoAsUser;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
+import com.liferay.portal.kernel.security.auth.FullNameGenerator;
+import com.liferay.portal.kernel.security.auth.FullNameGeneratorFactory;
+import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.auth.http.HttpAuthManagerUtil;
 import com.liferay.portal.kernel.security.pacl.DoPrivileged;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
+import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.servlet.BrowserSnifferUtil;
 import com.liferay.portal.kernel.servlet.DynamicServletRequest;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
@@ -64,6 +72,7 @@ import com.liferay.portal.kernel.servlet.PersistentHttpServletRequestWrapper;
 import com.liferay.portal.kernel.servlet.PortalMessages;
 import com.liferay.portal.kernel.servlet.PortalSessionThreadLocal;
 import com.liferay.portal.kernel.servlet.PortalWebResourcesUtil;
+import com.liferay.portal.kernel.servlet.PortletServlet;
 import com.liferay.portal.kernel.servlet.ServletContextUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.taglib.ui.BreadcrumbEntry;
@@ -138,16 +147,8 @@ import com.liferay.portal.model.VirtualLayoutConstants;
 import com.liferay.portal.model.impl.CookieRemotePreference;
 import com.liferay.portal.model.impl.VirtualLayout;
 import com.liferay.portal.plugin.PluginPackageUtil;
-import com.liferay.portal.security.auth.CompanyThreadLocal;
-import com.liferay.portal.security.auth.FullNameGenerator;
-import com.liferay.portal.security.auth.FullNameGeneratorFactory;
-import com.liferay.portal.security.auth.PrincipalException;
 import com.liferay.portal.security.jaas.JAASHelper;
 import com.liferay.portal.security.lang.DoPrivilegedUtil;
-import com.liferay.portal.security.permission.ActionKeys;
-import com.liferay.portal.security.permission.PermissionChecker;
-import com.liferay.portal.security.permission.PermissionCheckerFactoryUtil;
-import com.liferay.portal.security.permission.ResourceActionsUtil;
 import com.liferay.portal.security.sso.SSOUtil;
 import com.liferay.portal.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.service.CompanyLocalServiceUtil;
@@ -2516,6 +2517,14 @@ public class PortalImpl implements Portal {
 	public HttpServletRequest getHttpServletRequest(
 		PortletRequest portletRequest) {
 
+		HttpServletRequest httpServletRequest = 
+			(HttpServletRequest)portletRequest.getAttribute(
+				PortletServlet.PORTLET_SERVLET_REQUEST);
+		
+		if (httpServletRequest != null) {
+			return httpServletRequest;
+		}
+		
 		if (portletRequest instanceof LiferayPortletRequest) {
 			LiferayPortletRequest liferayPortletRequest =
 				(LiferayPortletRequest)portletRequest;

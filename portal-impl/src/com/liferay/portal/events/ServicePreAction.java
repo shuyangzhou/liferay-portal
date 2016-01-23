@@ -26,6 +26,11 @@ import com.liferay.portal.kernel.interval.IntervalActionProcessor;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
+import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.servlet.BrowserSnifferUtil;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.servlet.PortalWebResourceConstants;
@@ -65,11 +70,6 @@ import com.liferay.portal.model.RoleConstants;
 import com.liferay.portal.model.Theme;
 import com.liferay.portal.model.User;
 import com.liferay.portal.model.impl.VirtualLayout;
-import com.liferay.portal.security.auth.PrincipalException;
-import com.liferay.portal.security.permission.ActionKeys;
-import com.liferay.portal.security.permission.PermissionChecker;
-import com.liferay.portal.security.permission.PermissionCheckerFactoryUtil;
-import com.liferay.portal.security.permission.PermissionThreadLocal;
 import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.ImageLocalServiceUtil;
 import com.liferay.portal.service.LayoutLocalServiceUtil;
@@ -1728,6 +1728,15 @@ public class ServicePreAction extends Action {
 		}
 	}
 
+	/**
+	 * Returns <code>true</code> if the request URI's path starts with the
+	 * portal's default login path <code>c/portal/login</code>.
+	 *
+	 * @param  request the servlet request for the page, which can be a result
+	 *         of a redirect
+	 * @return <code>true</code> if the request is a login request;
+	 *         <code>false</code> otherwise
+	 */
 	protected boolean isLoginRequest(HttpServletRequest request) {
 		String requestURI = request.getRequestURI();
 

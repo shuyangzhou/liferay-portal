@@ -38,12 +38,12 @@ public class ConfigurationAdminPanelApp extends BasePanelApp {
 
 	@Override
 	public String getPortletId() {
-		return ConfigurationAdminPortletKeys.CONFIGURATION_ADMIN;
+		return ConfigurationAdminPortletKeys.SYSTEM_SETTINGS;
 	}
 
 	@Override
 	@Reference(
-		target = "(javax.portlet.name=" + ConfigurationAdminPortletKeys.CONFIGURATION_ADMIN + ")",
+		target = "(javax.portlet.name=" + ConfigurationAdminPortletKeys.SYSTEM_SETTINGS + ")",
 		unbind = "-"
 	)
 	public void setPortlet(Portlet portlet) {

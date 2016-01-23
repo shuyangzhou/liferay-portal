@@ -9,10 +9,7 @@ Import-Package:\
 	!org.apache.ivy.*,\
 	!org.fusesource.jansi.*,\
 	*
-Include-Resource: \
-	classes,\
-	@lib/antlr.jar,\
-	@lib/groovy.jar
+Include-Resource: @lib/groovy.jar
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Scripting Engines
 -include: ../../../marketplace/platform/bnd.bnd

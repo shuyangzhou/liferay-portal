@@ -369,8 +369,8 @@
 			<var name="userScreenName" value="test" />
 		</execute>
 
-		<execute macro="ProductMenu#gotoSite">
-			<var name="site" value="Site Organization Name" />
+		<execute macro="Navigator#openSiteURL">
+			<var name="siteName" value="Site Organization Name" />
 		</execute>
 	</command>
 
@@ -550,8 +550,8 @@
 		</execute>
 
 		<execute macro="Page#add">
-			<var name="page" value="Private Pages" />
 			<var name="pageName" value="Test Private Page" />
+			<var name="sitePagePrivacy" value="Private" />
 			<var name="siteScopeSelected" value="true" />
 		</execute>
 
@@ -1193,6 +1193,10 @@
 			<var name="userScreenName" value="usersn1" />
 		</execute>
 
+		<execute macro="ProductMenu#gotoControlPanelUsers">
+			<var name="portlet" value="Users and Organizations" />
+		</execute>
+
 		<execute macro="User#addCP">
 			<var name="userEmailAddress" value="userea2@liferay.com" />
 			<var name="userFirstName" value="userfn2" />
@@ -1291,6 +1295,8 @@
 			<var name="userNameIsNotFound" value="true" />
 			<var name="userScreenName" value="usersn2" />
 		</execute>
+
+		<execute macro="IFrame#selectTopFrame" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -1436,6 +1442,12 @@
 		<execute macro="Team#viewDefaultCP">
 			<var name="teamName" value="Site Team Name" />
 		</execute>
+
+		<execute macro="ProductMenu#gotoSite">
+			<var name="site" value="Liferay" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoPublicPages" />
 
 		<execute macro="Page#add">
 			<var name="pageName" value="Blog Page Template" />
