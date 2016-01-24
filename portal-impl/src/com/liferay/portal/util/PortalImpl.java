@@ -2517,14 +2517,14 @@ public class PortalImpl implements Portal {
 	public HttpServletRequest getHttpServletRequest(
 		PortletRequest portletRequest) {
 
-		HttpServletRequest httpServletRequest = 
+		HttpServletRequest httpServletRequest =
 			(HttpServletRequest)portletRequest.getAttribute(
 				PortletServlet.PORTLET_SERVLET_REQUEST);
-		
+
 		if (httpServletRequest != null) {
 			return httpServletRequest;
 		}
-		
+
 		if (portletRequest instanceof LiferayPortletRequest) {
 			LiferayPortletRequest liferayPortletRequest =
 				(LiferayPortletRequest)portletRequest;
