@@ -1842,7 +1842,7 @@
 		<field name="threadId" type="long" />
 		<field name="lastPublishDate" type="Date" />
 	</model>
-	<model name="com.liferay.portlet.ratings.model.RatingsEntry">
+	<model name="com.liferay.ratings.kernel.model.RatingsEntry">
 		<field name="uuid" type="String" />
 		<field name="entryId" type="long" />
 		<field name="companyId" type="long" />
@@ -1854,7 +1854,7 @@
 		<field name="classPK" type="long" />
 		<field name="score" type="double" />
 	</model>
-	<model name="com.liferay.portlet.ratings.model.RatingsStats">
+	<model name="com.liferay.ratings.kernel.model.RatingsStats">
 		<field name="statsId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="classNameId" type="long" />
