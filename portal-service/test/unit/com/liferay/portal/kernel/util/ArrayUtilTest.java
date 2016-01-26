@@ -475,6 +475,36 @@ public class ArrayUtilTest {
 	}
 
 	@Test
+	public void testMergeSortedUniqueArrayAddFirstThirdFifth() {
+		long[] array1 = {2L, 4L};
+		long[] array2 = {1L, 3L, 5L};
+
+		long[] actual = ArrayUtil.mergeSortedUnique(array1, array2);
+
+		Assert.assertArrayEquals(new long[] {1L, 2L, 3L, 4L, 5L}, actual);
+	}
+
+	@Test
+	public void testMergeSortedUniqueArrayAddSecondForth() {
+		long[] array1 = {1L, 3L, 5L};
+		long[] array2 = {2L, 4L};
+
+		long[] actual = ArrayUtil.mergeSortedUnique(array1, array2);
+
+		Assert.assertArrayEquals(new long[] {1L, 2L, 3L, 4L, 5L}, actual);
+	}
+
+	@Test
+	public void testMergeSortedUniqueArrayDuplicateAll() {
+		long[] array1 = {1L, 2L, 3L};
+		long[] array2 = {1L, 2L, 3L};
+
+		long[] actual = ArrayUtil.mergeSortedUnique(array1, array2);
+
+		Assert.assertArrayEquals(new long[] {1L, 2L, 3L}, actual);
+	}
+
+	@Test
 	public void testRemoveFromBooleanArray() {
 		boolean[] array = {true, true, false};
 
