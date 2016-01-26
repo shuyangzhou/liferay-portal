@@ -378,7 +378,7 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		long[] roleIds = getRoleIds(getUserId(), groupId);
 
 		Boolean value = PermissionCacheUtil.getPermission(
-			user.getUserId(), signedIn, groupId, name, primKey, actionId);
+			groupId, name, primKey, roleIds, actionId);
 
 		if (value != null) {
 			return value;
@@ -403,12 +403,11 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 			}
 
 			PermissionCacheUtil.putPermission(
-				user.getUserId(), signedIn, groupId, name, primKey, actionId,
-				value);
+				groupId, name, primKey, roleIds, actionId, value);
 		}
 		catch (Exception e) {
 			PermissionCacheUtil.removePermission(
-				user.getUserId(), signedIn, groupId, name, primKey, actionId);
+				groupId, name, primKey, roleIds, actionId);
 
 			throw e;
 		}
