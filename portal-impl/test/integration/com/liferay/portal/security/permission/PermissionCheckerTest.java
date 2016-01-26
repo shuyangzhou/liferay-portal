@@ -85,20 +85,15 @@ public class PermissionCheckerTest {
 		String withoutExceptionPortletId = "11";
 		String withoutExceptionActionId = "VIEW";
 
-		try {
-			Assert.assertFalse(
-				permissionChecker.hasPermission(
-					_group.getGroupId(), withExceptionPortletId,
-					_group.getGroupId(), withExceptionActionId));
+		Assert.assertFalse(
+			permissionChecker.hasPermission(
+				_group.getGroupId(), withExceptionPortletId,
+				_group.getGroupId(), withExceptionActionId));
 
-			Assert.assertFalse(
-				permissionChecker.hasPermission(
-					_group.getGroupId(), withoutExceptionPortletId,
-					_group.getGroupId(), withoutExceptionActionId));
-		}
-		catch (Exception e) {
-			Assert.fail();
-		}
+		Assert.assertFalse(
+			permissionChecker.hasPermission(
+				_group.getGroupId(), withoutExceptionPortletId,
+				_group.getGroupId(), withoutExceptionActionId));
 
 		boolean hasWithException = false;
 		boolean hasWithoutException = false;
