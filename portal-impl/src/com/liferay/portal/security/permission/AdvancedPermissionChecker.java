@@ -416,22 +416,6 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 	}
 
 	@Override
-	public boolean hasUserPermission(
-		long groupId, String name, String primKey, String actionId,
-		boolean checkAdmin) {
-
-		try {
-			return hasUserPermissionImpl(
-				groupId, name, primKey, actionId, checkAdmin);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			return false;
-		}
-	}
-
-	@Override
 	public boolean isCompanyAdmin() {
 		try {
 			return isCompanyAdminImpl(user.getCompanyId());
@@ -845,11 +829,12 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 			}
 
 			if (ResourceBlockLocalServiceUtil.isSupported(name)) {
-				return hasUserPermission(
+				return hasUserPermissionImpl(
 					groupId, name, primKey, actionId, true);
 			}
 
-			return hasUserPermission(groupId, name, primKey, actionId, true);
+			return hasUserPermissionImpl(
+				groupId, name, primKey, actionId, true);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
