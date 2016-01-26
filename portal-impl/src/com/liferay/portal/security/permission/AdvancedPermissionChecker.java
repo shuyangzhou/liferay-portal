@@ -830,11 +830,11 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 
 			if (ResourceBlockLocalServiceUtil.isSupported(name)) {
 				return hasUserPermissionImpl(
-					groupId, name, primKey, actionId, true);
+					groupId, name, primKey, actionId);
 			}
 
 			return hasUserPermissionImpl(
-				groupId, name, primKey, actionId, true);
+				groupId, name, primKey, actionId);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -844,8 +844,7 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 	}
 
 	protected boolean hasUserPermissionImpl(
-			long groupId, String name, String primKey, String actionId,
-			boolean checkAdmin)
+			long groupId, String name, String primKey, String actionId)
 		throws Exception {
 
 		StopWatch stopWatch = new StopWatch();
@@ -881,19 +880,17 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 					name, actionId);
 		}
 
-		if (checkAdmin) {
-			if (isCompanyAdminImpl(companyId)) {
-				return true;
-			}
+		if (isCompanyAdminImpl(companyId)) {
+			return true;
+		}
 
-			if (name.equals(Organization.class.getName())) {
-				if (isOrganizationAdminImpl(GetterUtil.getLong(primKey))) {
-					return true;
-				}
-			}
-			else if (isGroupAdminImpl(groupId) && hasLayoutManagerPermission) {
+		if (name.equals(Organization.class.getName())) {
+			if (isOrganizationAdminImpl(GetterUtil.getLong(primKey))) {
 				return true;
 			}
+		}
+		else if (isGroupAdminImpl(groupId) && hasLayoutManagerPermission) {
+			return true;
 		}
 
 		return doCheckPermission(
