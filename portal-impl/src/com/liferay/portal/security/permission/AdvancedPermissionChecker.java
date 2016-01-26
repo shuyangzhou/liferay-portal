@@ -573,6 +573,10 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 	}
 
 	protected long[] doGetRoleIds(long userId, long groupId) throws Exception {
+		if (!signedIn) {
+			return getGuestUserRoleIds();
+		}
+
 		long[] roleIds = PermissionCacheUtil.getUserGroupRoleIds(
 			userId, groupId);
 
