@@ -12,37 +12,36 @@
  * details.
  */
 
-package com.liferay.portlet.blogs.util.comparator;
+package com.liferay.blogs.kernel.util.comparator;
 
-import com.liferay.portal.kernel.util.DateUtil;
+import com.liferay.blogs.kernel.model.BlogsEntry;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portlet.blogs.model.BlogsStatsUser;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author Sergio González
  */
-public class StatsUserLastPostDateComparator
-	extends OrderByComparator<BlogsStatsUser> {
+public class EntryTitleComparator extends OrderByComparator<BlogsEntry> {
 
-	public static final String ORDER_BY_ASC = "BlogsStatsUser.lastPostDate ASC";
+	public static final String ORDER_BY_ASC = "BlogsEntry.title ASC";
 
-	public static final String ORDER_BY_DESC =
-		"BlogsStatsUser.lastPostDate DESC";
+	public static final String ORDER_BY_DESC = "BlogsEntry.title DESC";
 
-	public static final String[] ORDER_BY_FIELDS = {"lastPostDate"};
+	public static final String[] ORDER_BY_FIELDS = {"title"};
 
-	public StatsUserLastPostDateComparator() {
+	public EntryTitleComparator() {
 		this(false);
 	}
 
-	public StatsUserLastPostDateComparator(boolean ascending) {
+	public EntryTitleComparator(boolean ascending) {
 		_ascending = ascending;
 	}
 
 	@Override
-	public int compare(BlogsStatsUser statsUser1, BlogsStatsUser statsUser2) {
-		int value = DateUtil.compareTo(
-			statsUser1.getLastPostDate(), statsUser2.getLastPostDate());
+	public int compare(BlogsEntry entry1, BlogsEntry entry2) {
+		String title1 = entry1.getTitle();
+		String title2 = entry2.getTitle();
+
+		int value = title1.compareTo(title2);
 
 		if (_ascending) {
 			return value;

@@ -12,49 +12,37 @@
  * details.
  */
 
-package com.liferay.portlet.blogs.util.comparator;
+package com.liferay.blogs.kernel.util.comparator;
 
+import com.liferay.blogs.kernel.model.BlogsStatsUser;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portlet.blogs.model.BlogsEntry;
 
 /**
- * @author Alexander Chow
+ * @author Brian Wing Shun Chan
  */
-public class EntryDisplayDateComparator extends OrderByComparator<BlogsEntry> {
+public class StatsUserLastPostDateComparator
+	extends OrderByComparator<BlogsStatsUser> {
 
-	public static final String ORDER_BY_ASC =
-		"BlogsEntry.displayDate ASC, BlogsEntry.entryId ASC";
-
-	public static final String[] ORDER_BY_CONDITION_FIELDS =
-		{"displayDate", "entryId"};
+	public static final String ORDER_BY_ASC = "BlogsStatsUser.lastPostDate ASC";
 
 	public static final String ORDER_BY_DESC =
-		"BlogsEntry.displayDate DESC, BlogsEntry.entryId DESC";
+		"BlogsStatsUser.lastPostDate DESC";
 
-	public static final String[] ORDER_BY_FIELDS = {"displayDate", "entryId"};
+	public static final String[] ORDER_BY_FIELDS = {"lastPostDate"};
 
-	public EntryDisplayDateComparator() {
+	public StatsUserLastPostDateComparator() {
 		this(false);
 	}
 
-	public EntryDisplayDateComparator(boolean ascending) {
+	public StatsUserLastPostDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}
 
 	@Override
-	public int compare(BlogsEntry entry1, BlogsEntry entry2) {
+	public int compare(BlogsStatsUser statsUser1, BlogsStatsUser statsUser2) {
 		int value = DateUtil.compareTo(
-			entry1.getDisplayDate(), entry2.getDisplayDate());
-
-		if (value == 0) {
-			if (entry1.getEntryId() < entry2.getEntryId()) {
-				value = -1;
-			}
-			else if (entry1.getEntryId() > entry2.getEntryId()) {
-				value = 1;
-			}
-		}
+			statsUser1.getLastPostDate(), statsUser2.getLastPostDate());
 
 		if (_ascending) {
 			return value;
@@ -72,11 +60,6 @@ public class EntryDisplayDateComparator extends OrderByComparator<BlogsEntry> {
 		else {
 			return ORDER_BY_DESC;
 		}
-	}
-
-	@Override
-	public String[] getOrderByConditionFields() {
-		return ORDER_BY_CONDITION_FIELDS;
 	}
 
 	@Override
