@@ -1180,6 +1180,62 @@ public class ArrayUtil {
 		return !isEmpty(array);
 	}
 
+	public static long[] mergeSortedUnique(long[] array1, long[] array2) {
+		if (isEmpty(array1)) {
+			return array2;
+		}
+
+		if (isEmpty(array2)) {
+			return array1;
+		}
+
+		int duplicates = 0;
+
+		if (array1.length < array2.length) {
+			for (long value : array1) {
+				if (Arrays.binarySearch(array2, value) >= 0) {
+					duplicates++;
+				}
+			}
+		}
+		else {
+			for (long value : array2) {
+				if (Arrays.binarySearch(array1, value) >= 0) {
+					duplicates++;
+				}
+			}
+		}
+
+		long[] newArray = new long[array1.length + array2.length - duplicates];
+
+		int i = 0;
+		int j = 0;
+		int k = 0;
+
+		while ((i < array1.length) && (j < array2.length)) {
+			if (array1[i] < array2[j]) {
+				newArray[k++] = array1[i++];
+			}
+			else if (array1[i] > array2[j]) {
+				newArray[k++] = array2[j++];
+			}
+			else {
+				newArray[k++] = array1[i++];
+
+				j++;
+			}
+		}
+
+		if (i < array1.length) {
+			System.arraycopy(array1, i, newArray, k, array1.length - i);
+		}
+		else if (j < array2.length) {
+			System.arraycopy(array2, j, newArray, k, array2.length - j);
+		}
+
+		return newArray;
+	}
+
 	public static boolean[] remove(boolean[] array, boolean value) {
 		if (isEmpty(array)) {
 			return array;

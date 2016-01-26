@@ -279,12 +279,8 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 			return roleIds;
 		}
 
-		Set<Long> roleIdsSet = SetUtil.fromArray(roleIds);
-
 		try {
-			for (long roleId : getGuestUserRoleIds()) {
-				roleIdsSet.add(roleId);
-			}
+			return ArrayUtil.mergeSortedUnique(roleIds, getGuestUserRoleIds());
 		}
 		catch (Exception e) {
 			if (_log.isDebugEnabled()) {
@@ -292,8 +288,7 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 			}
 		}
 
-		return ArrayUtil.toArray(
-			roleIdsSet.toArray(new Long[roleIdsSet.size()]));
+		return PermissionChecker.DEFAULT_ROLE_IDS;
 	}
 
 	@Override
