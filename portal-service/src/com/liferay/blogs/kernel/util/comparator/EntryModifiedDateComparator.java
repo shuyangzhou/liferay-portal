@@ -12,36 +12,49 @@
  * details.
  */
 
-package com.liferay.portlet.blogs.util.comparator;
+package com.liferay.blogs.kernel.util.comparator;
 
+import com.liferay.blogs.kernel.model.BlogsEntry;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portlet.blogs.model.BlogsEntry;
 
 /**
- * @author Sergio González
+ * @author Roberto Díaz
  */
-public class EntryTitleComparator extends OrderByComparator<BlogsEntry> {
+public class EntryModifiedDateComparator extends OrderByComparator<BlogsEntry> {
 
-	public static final String ORDER_BY_ASC = "BlogsEntry.title ASC";
+	public static final String ORDER_BY_ASC =
+		"BlogsEntry.modifiedDate ASC, BlogsEntry.entryId ASC";
 
-	public static final String ORDER_BY_DESC = "BlogsEntry.title DESC";
+	public static final String[] ORDER_BY_CONDITION_FIELDS =
+		{"modifiedDate", "entryId"};
 
-	public static final String[] ORDER_BY_FIELDS = {"title"};
+	public static final String ORDER_BY_DESC =
+		"BlogsEntry.modifiedDate DESC, BlogsEntry.entryId DESC";
 
-	public EntryTitleComparator() {
+	public static final String[] ORDER_BY_FIELDS = {"modifiedDate", "entryId"};
+
+	public EntryModifiedDateComparator() {
 		this(false);
 	}
 
-	public EntryTitleComparator(boolean ascending) {
+	public EntryModifiedDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}
 
 	@Override
 	public int compare(BlogsEntry entry1, BlogsEntry entry2) {
-		String title1 = entry1.getTitle();
-		String title2 = entry2.getTitle();
+		int value = DateUtil.compareTo(
+			entry1.getModifiedDate(), entry2.getModifiedDate());
 
-		int value = title1.compareTo(title2);
+		if (value == 0) {
+			if (entry1.getEntryId() < entry2.getEntryId()) {
+				value = -1;
+			}
+			else if (entry1.getEntryId() > entry2.getEntryId()) {
+				value = 1;
+			}
+		}
 
 		if (_ascending) {
 			return value;
@@ -59,6 +72,11 @@ public class EntryTitleComparator extends OrderByComparator<BlogsEntry> {
 		else {
 			return ORDER_BY_DESC;
 		}
+	}
+
+	@Override
+	public String[] getOrderByConditionFields() {
+		return ORDER_BY_CONDITION_FIELDS;
 	}
 
 	@Override
