@@ -943,7 +943,7 @@
 			<var name="portlet" value="Server Administration" />
 		</execute>
 
-		<execute function="AssertClick" locator1="NavTab#FILE_UPLOADS" value1="File Uploads" />
+		<execute function="AssertClick" locator1="NavBar#FILE_UPLOADS" value1="File Uploads" />
 		<execute function="Type" locator1="ServerAdministrationFileUploads#DOCS_AND_MEDIA_MAX_FILE_SIZE_FIELD" value1="30000000" />
 		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="Your request completed successfully." />
@@ -1240,8 +1240,6 @@
 			<var name="siteName" value="Community Site Name" />
 		</execute>
 
-		<execute macro="Navigator#gotoStagedView" />
-
 		<execute macro="ProductMenu#gotoSitesPublishingTools">
 			<var name="portlet" value="Staging" />
 		</execute>
@@ -1380,8 +1378,6 @@
 		<execute macro="Navigator#openSiteURL">
 			<var name="siteName" value="Community Site Name" />
 		</execute>
-
-		<execute macro="Navigator#gotoStagedView" />
 
 		<execute macro="ProductMenu#gotoSitesPublishingTools">
 			<var name="portlet" value="Staging" />
@@ -1729,8 +1725,6 @@
 			<var name="siteName" value="Community Site Name" />
 		</execute>
 
-		<execute macro="Navigator#gotoStagedView" />
-
 		<execute macro="ProductMenu#gotoSitesPublishingTools">
 			<var name="portlet" value="Staging" />
 		</execute>
@@ -1976,8 +1970,6 @@
 		<execute macro="Navigator#openSiteURL">
 			<var name="siteName" value="Community Site Name" />
 		</execute>
-
-		<execute macro="Navigator#gotoStagedView" />
 
 		<execute macro="ProductMenu#gotoSitesPublishingTools">
 			<var name="portlet" value="Staging" />
@@ -3058,8 +3050,6 @@
 			<var name="portlet" value="Web Content" />
 		</execute>
 
-		<execute macro="Navigator#gotoStagedView" />
-
 		<execute macro="WebContentNavigator#gotoAddCP" />
 
 		<execute macro="WebContent#addCP">
@@ -3432,7 +3422,7 @@
 		</execute>
 
 		<execute macro="Navigator#openSpecificURL">
-			<var name="url" value="http://localhost:8080" />
+			<var name="url" value="http://localhost:8080/" />
 		</execute>
 
 		<execute macro="ProductMenu#gotoSite">
@@ -3452,7 +3442,7 @@
 		</execute>
 
 		<execute macro="Navigator#openSpecificURL">
-			<var name="url" value="http://localhost:8080" />
+			<var name="url" value="http://localhost:8080/" />
 		</execute>
 
 		<execute macro="ProductMenu#gotoControlPanelSites">

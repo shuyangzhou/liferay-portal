@@ -1,9 +1,34 @@
 <definition>
-	<command name="setUpPortalInstance">
+	<command name="getDefaultSiteName" returns="defaultSiteName">
 		<var method="TestPropsUtil#get('test.portal.instance')" name="testPortalInstance" />
 
 		<if>
 			<equals arg1="${testPortalInstance}" arg2="true" />
+			<then>
+				<var method="TestPropsUtil#get('portal.url')" name="portalURL" />
+
+				<var method="StringUtil#replace('${portalURL}', 'http://', '')" name="portalURL" />
+				<var method="StringUtil#replace('${portalURL}', ':8080', '')" name="portalURL" />
+
+				<return name="defaultSiteName" value="${portalURL}" />
+			</then>
+			<else>
+				<return name="defaultSiteName" value="Liferay" />
+			</else>
+		</if>
+	</command>
+
+	<command name="setUpPortalInstance">
+		<var method="TestPropsUtil#get('test.name.skip.portal.instance')" name="testNameSkipPortalInstance" />
+		<var method="TestPropsUtil#get('test.portal.instance')" name="testPortalInstance" />
+
+		<if>
+			<and>
+				<equals arg1="${testPortalInstance}" arg2="true" />
+				<not>
+					<condition function="IsTestName" locator1="${testNameSkipPortalInstance}" />
+				</not>
+			</and>
 			<then>
 				<execute macro="SignIn#signInPortalInstanceSetUp" />
 			</then>

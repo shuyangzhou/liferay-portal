@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TextFormatter;
+import com.liferay.portal.kernel.util.Tuple;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.tools.ToolsUtil;
 import com.liferay.source.formatter.util.FileUtil;
@@ -432,6 +433,15 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 
 				if ((moduleLanguageProperties != null) &&
 					moduleLanguageProperties.containsKey(languageKey)) {
+
+					continue;
+				}
+
+				Properties moduleLangLanguageProperties =
+					getModuleLangLanguageProperties(fileName);
+
+				if ((moduleLangLanguageProperties != null) &&
+					moduleLangLanguageProperties.containsKey(languageKey)) {
 
 					continue;
 				}
@@ -1109,35 +1119,23 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 	protected Properties getBNDFileLanguageProperties(String fileName)
 		throws Exception {
 
-		Properties properties = _bndFileLanguageProperties.get(fileName);
+		Tuple bndFileLocationAndContentTuple =
+			getBNDFileLocationAndContentTuple(fileName);
+
+		if (bndFileLocationAndContentTuple == null) {
+			return null;
+		}
+
+		String bndFileLocation =
+			(String)bndFileLocationAndContentTuple.getObject(0);
+
+		Properties properties = _bndLanguagePropertiesMap.get(bndFileLocation);
 
 		if (properties != null) {
 			return properties;
 		}
 
-		String bndContent = null;
-		String bndFileLocation = fileName;
-
-		while (true) {
-			int pos = bndFileLocation.lastIndexOf(StringPool.SLASH);
-
-			if (pos == -1) {
-				return null;
-			}
-
-			bndFileLocation = bndFileLocation.substring(0, pos + 1);
-
-			File file = new File(bndFileLocation + "bnd.bnd");
-
-			if (file.exists()) {
-				bndContent = FileUtil.read(file);
-
-				break;
-			}
-
-			bndFileLocation = StringUtil.replaceLast(
-				bndFileLocation, StringPool.SLASH, StringPool.BLANK);
-		}
+		String bndContent = (String)bndFileLocationAndContentTuple.getObject(1);
 
 		Matcher matcher = bndContentDirPattern.matcher(bndContent);
 
@@ -1155,12 +1153,52 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 
 			properties.load(inputStream);
 
-			_bndFileLanguageProperties.put(fileName, properties);
+			_bndLanguagePropertiesMap.put(bndFileLocation, properties);
 
 			return properties;
 		}
 
 		return null;
+	}
+
+	protected Tuple getBNDFileLocationAndContentTuple(String fileName)
+		throws Exception {
+
+		Tuple bndFileLocationAndContentTuple =
+			_bndFileLocationAndContentMap.get(fileName);
+
+		if (bndFileLocationAndContentTuple != null) {
+			return bndFileLocationAndContentTuple;
+		}
+
+		String bndFileLocation = fileName;
+
+		while (true) {
+			int pos = bndFileLocation.lastIndexOf(StringPool.SLASH);
+
+			if (pos == -1) {
+				return null;
+			}
+
+			bndFileLocation = bndFileLocation.substring(0, pos + 1);
+
+			File file = new File(bndFileLocation + "bnd.bnd");
+
+			if (file.exists()) {
+				String bndContent = FileUtil.read(file);
+
+				bndFileLocationAndContentTuple = new Tuple(
+					bndFileLocation, bndContent);
+
+				_bndFileLocationAndContentMap.put(
+					fileName, bndFileLocationAndContentTuple);
+
+				return bndFileLocationAndContentTuple;
+			}
+
+			bndFileLocation = StringUtil.replaceLast(
+				bndFileLocation, StringPool.SLASH, StringPool.BLANK);
+		}
 	}
 
 	protected Map<String, String> getCompatClassNamesMap() throws Exception {
@@ -1414,6 +1452,84 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		return _mainReleaseVersion;
 	}
 
+	protected String getModuleLangDir(String moduleLocation) {
+		int x = moduleLocation.lastIndexOf(StringPool.SLASH);
+
+		String baseModuleName = moduleLocation.substring(0, x);
+
+		int y = baseModuleName.lastIndexOf(StringPool.SLASH);
+
+		baseModuleName = baseModuleName.substring(
+			y + 1, baseModuleName.length());
+
+		return moduleLocation.substring(0, x + 1) + baseModuleName + "-lang";
+	}
+
+	protected Properties getModuleLangLanguageProperties(String fileName)
+		throws Exception {
+
+		Properties properties = _moduleLangLanguageProperties.get(fileName);
+
+		if (properties != null) {
+			return properties;
+		}
+
+		String buildGradleContent = null;
+		String buildGradleFileLocation = fileName;
+
+		while (true) {
+			int pos = buildGradleFileLocation.lastIndexOf(StringPool.SLASH);
+
+			if (pos == -1) {
+				return null;
+			}
+
+			buildGradleFileLocation = buildGradleFileLocation.substring(
+				0, pos + 1);
+
+			File file = new File(buildGradleFileLocation + "build.gradle");
+
+			if (file.exists()) {
+				buildGradleContent = FileUtil.read(file);
+
+				break;
+			}
+
+			buildGradleFileLocation = StringUtil.replaceLast(
+				buildGradleFileLocation, StringPool.SLASH, StringPool.BLANK);
+		}
+
+		Matcher matcher = langMergerPluginPattern.matcher(buildGradleContent);
+
+		if (!matcher.find()) {
+			return null;
+		}
+
+		String moduleLocation = StringUtil.replaceLast(
+			buildGradleFileLocation, StringPool.SLASH, StringPool.BLANK);
+
+		String moduleLangDir = getModuleLangDir(moduleLocation);
+
+		String moduleLangLanguagePropertiesFileName =
+			moduleLangDir + "/src/main/resources/content/Language.properties";
+
+		File file = new File(moduleLangLanguagePropertiesFileName);
+
+		if (!file.exists()) {
+			return null;
+		}
+
+		properties = new Properties();
+
+		InputStream inputStream = new FileInputStream(file);
+
+		properties.load(inputStream);
+
+		_moduleLangLanguageProperties.put(fileName, properties);
+
+		return properties;
+	}
+
 	protected Properties getModuleLanguageProperties(String fileName) {
 		Properties properties = _moduleLanguageProperties.get(fileName);
 
@@ -1587,6 +1703,10 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 	}
 
 	protected void postFormat() throws Exception {
+	}
+
+	protected void printError(String fileName, String message) {
+		_sourceFormatterHelper.printError(fileName, message);
 	}
 
 	protected void processErrorMessage(String fileName, String message) {
@@ -1930,6 +2050,9 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		"Collections\\.EMPTY_(LIST|MAP|SET)");
 	protected static Pattern javaSourceInsideJSPTagPattern = Pattern.compile(
 		"<%=(.+?)%>");
+	protected static Pattern langMergerPluginPattern = Pattern.compile(
+		"^apply[ \t]+plugin[ \t]*:[ \t]+\"com.liferay.lang.merger\"$",
+		Pattern.MULTILINE);
 	protected static Pattern languageKeyPattern = Pattern.compile(
 		"LanguageUtil.(?:get|format)\\([^;%]+|Liferay.Language.get\\('([^']+)");
 	protected static boolean portalSource;
@@ -2091,8 +2214,8 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 	}
 
 	private Set<String> _annotationsExclusions;
-	private Map<String, Properties> _bndFileLanguageProperties =
-		new HashMap<>();
+	private Map<String, Tuple> _bndFileLocationAndContentMap = new HashMap<>();
+	private Map<String, Properties> _bndLanguagePropertiesMap = new HashMap<>();
 	private Map<String, String> _compatClassNamesMap;
 	private String _copyright;
 	private Map<String, List<String>> _errorMessagesMap = new HashMap<>();
@@ -2101,6 +2224,8 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 	private Set<String> _immutableFieldTypes;
 	private String _mainReleaseVersion;
 	private final List<String> _modifiedFileNames = new ArrayList<>();
+	private Map<String, Properties> _moduleLangLanguageProperties =
+		new HashMap<>();
 	private Map<String, Properties> _moduleLanguageProperties = new HashMap<>();
 	private String _oldCopyright;
 	private Properties _portalLanguageProperties;

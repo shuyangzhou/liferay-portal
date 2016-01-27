@@ -46,7 +46,7 @@ ControlMenuEntryRegistry controlMenuEntryRegistry = (ControlMenuEntryRegistry)re
 						List<ControlMenuEntry> controlMenuEntries = controlMenuEntryRegistry.getControlMenuEntries(controlMenuCategory, request);
 
 						for (ControlMenuEntry controlMenuEntry : controlMenuEntries) {
-							if (controlMenuEntry.include(request, new PipingServletResponse(pageContext))) {
+							if (controlMenuEntry.includeIcon(request, new PipingServletResponse(pageContext))) {
 								continue;
 							}
 						%>
@@ -72,6 +72,20 @@ ControlMenuEntryRegistry controlMenuEntryRegistry = (ControlMenuEntryRegistry)re
 				%>
 
 			</header>
+		</div>
+
+		<div class="control-menu-body">
+
+			<%
+			for (ControlMenuCategory controlMenuCategory : controlMenuCategories) {
+				List<ControlMenuEntry> controlMenuEntries = controlMenuEntryRegistry.getControlMenuEntries(controlMenuCategory, request);
+
+				for (ControlMenuEntry controlMenuEntry : controlMenuEntries) {
+					controlMenuEntry.includeBody(request, new PipingServletResponse(pageContext));
+				}
+			}
+			%>
+
 		</div>
 	</div>
 

@@ -387,6 +387,16 @@ public class StagingUtil {
 		return _staging.hasWorkflowTask(userId, layoutRevision);
 	}
 
+	public static boolean isGroupAccessible(Group group, Group fromGroup) {
+		return _staging.isGroupAccessible(group, fromGroup);
+	}
+
+	public static boolean isGroupAccessible(long groupId, long fromGroupId)
+		throws PortalException {
+
+		return _staging.isGroupAccessible(groupId, fromGroupId);
+	}
+
 	public static boolean isIncomplete(Layout layout, long layoutSetBranchId) {
 		return _staging.isIncomplete(layout, layoutSetBranchId);
 	}

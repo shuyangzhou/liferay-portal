@@ -30,6 +30,8 @@ import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.util.ResourceBundleUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Layout;
@@ -37,7 +39,7 @@ import com.liferay.portal.service.GroupLocalService;
 import com.liferay.portal.theme.PortletDisplay;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.PortletURLFactoryUtil;
+import com.liferay.portlet.PortletURLUtil;
 import com.liferay.portlet.asset.AssetRendererFactoryRegistryUtil;
 import com.liferay.portlet.asset.model.AssetRendererFactory;
 import com.liferay.portlet.asset.util.AssetUtil;
@@ -49,6 +51,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.Set;
 
 import javax.portlet.PortletRequest;
@@ -124,8 +127,8 @@ public class AssetPublisherPortletToolbarContributor
 
 		Map<Long, Map<String, PortletURL>> scopeAddPortletURLs =
 			_getScopeAddPortletURLs(
-				themeDisplay, assetPublisherDisplayContext, portletRequest,
-				portletResponse, 1);
+				assetPublisherDisplayContext, portletRequest, portletResponse,
+				1);
 
 		if (MapUtil.isEmpty(scopeAddPortletURLs)) {
 			return;
@@ -166,8 +169,11 @@ public class AssetPublisherPortletToolbarContributor
 		data.put(
 			"id", HtmlUtil.escape(portletDisplay.getNamespace()) + "editAsset");
 
+		ResourceBundle resourceBundle = ResourceBundleUtil.getBundle(
+			"content.Language", themeDisplay.getLocale(), getClass());
+
 		String title = LanguageUtil.get(
-			themeDisplay.getLocale(), "add-content-select-scope-and-type");
+			resourceBundle, "add-content-select-scope-and-type");
 
 		data.put("title", title);
 
@@ -203,11 +209,29 @@ public class AssetPublisherPortletToolbarContributor
 
 		Menu menu = new Menu();
 
+		Map<String, Object> data = new HashMap<>();
+
+		data.put("qa-id", "addButton");
+
+		menu.setData(data);
+
 		menu.setDirection("down");
 		menu.setExtended(false);
 		menu.setIcon("../aui/plus-sign-2");
 		menu.setMenuItems(portletTitleMenuItems);
 		menu.setShowArrow(false);
+
+		boolean showWhenSingleIcon = true;
+
+		if (portletTitleMenuItems.size() == 1) {
+			MenuItem menuItem = portletTitleMenuItems.get(0);
+
+			if (Validator.isNull(menuItem.getLabel())) {
+				showWhenSingleIcon = false;
+			}
+		}
+
+		menu.setShowWhenSingleIcon(showWhenSingleIcon);
 
 		return menu;
 	}
@@ -273,11 +297,21 @@ public class AssetPublisherPortletToolbarContributor
 
 		URLMenuItem urlMenuItem = new URLMenuItem();
 
-		AssetRendererFactory<?> assetRendererFactory =
-			AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByClassName(
-				_getClassName(className));
+		Map<String, Object> data = new HashMap<>();
+
+		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
+
+		data.put(
+			"id", HtmlUtil.escape(portletDisplay.getNamespace()) + "editAsset");
 
 		String message = _getMessage(className, themeDisplay.getLocale());
+
+		String title = LanguageUtil.format(
+			themeDisplay.getLocale(), "new-x", message, false);
+
+		data.put("title", title);
+
+		urlMenuItem.setData(data);
 
 		urlMenuItem.setLabel(HtmlUtil.escape(message));
 
@@ -285,14 +319,16 @@ public class AssetPublisherPortletToolbarContributor
 
 		Group group = _groupLocalService.fetchGroup(groupId);
 
+		AssetRendererFactory<?> assetRendererFactory =
+			AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByClassName(
+				_getClassName(className));
+
 		if (!group.isStagedPortlet(
 				assetRendererFactory.getPortletId()) &&
 			!group.isStagedRemotely()) {
 
 			curGroupId = group.getLiveGroupId();
 		}
-
-		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
 
 		boolean addDisplayPageParameter = AssetUtil.isDefaultAssetPublisher(
 			themeDisplay.getLayout(), portletDisplay.getId(),
@@ -311,7 +347,6 @@ public class AssetPublisherPortletToolbarContributor
 	}
 
 	private Map<Long, Map<String, PortletURL>> _getScopeAddPortletURLs(
-			ThemeDisplay themeDisplay,
 			AssetPublisherDisplayContext assetPublisherDisplayContext,
 			PortletRequest portletRequest, PortletResponse portletResponse,
 			int max)
@@ -325,14 +360,23 @@ public class AssetPublisherPortletToolbarContributor
 
 		Map<Long, Map<String, PortletURL>> scopeAddPortletURLs = new HashMap();
 
-		PortletURL redirectURL = PortletURLFactoryUtil.create(
-			portletRequest, AssetPublisherPortletKeys.ASSET_PUBLISHER,
-			themeDisplay.getPlid(), PortletRequest.RENDER_PHASE);
+		LiferayPortletResponse liferayPortletResponse =
+			(LiferayPortletResponse)portletResponse;
+
+		PortletURL redirectURL = liferayPortletResponse.createRenderURL();
 
 		redirectURL.setParameter(
 			"hideDefaultSuccessMessage", Boolean.TRUE.toString());
 		redirectURL.setParameter("mvcPath", "/add_asset_redirect.jsp");
-		redirectURL.setParameter("redirect", themeDisplay.getURLCurrent());
+
+		LiferayPortletRequest liferayPortletRequest =
+			(LiferayPortletRequest)portletRequest;
+
+		PortletURL currentURLObj = PortletURLUtil.getCurrent(
+			liferayPortletRequest, liferayPortletResponse);
+
+		redirectURL.setParameter("redirect", currentURLObj.toString());
+
 		redirectURL.setWindowState(LiferayWindowState.POP_UP);
 
 		String redirect = redirectURL.toString();
@@ -340,8 +384,7 @@ public class AssetPublisherPortletToolbarContributor
 		for (long groupId : groupIds) {
 			Map<String, PortletURL> addPortletURLs =
 				AssetUtil.getAddPortletURLs(
-					(LiferayPortletRequest)portletRequest,
-					(LiferayPortletResponse)portletResponse, groupId,
+					liferayPortletRequest, liferayPortletResponse, groupId,
 					assetPublisherDisplayContext.getClassNameIds(),
 					assetPublisherDisplayContext.getClassTypeIds(),
 					assetPublisherDisplayContext.getAllAssetCategoryIds(),
