@@ -1803,7 +1803,7 @@
 		<field name="type" type="String" />
 		<field name="typePK" type="long" />
 	</model>
-	<model name="com.liferay.portlet.expando.model.ExpandoColumn">
+	<model name="com.liferay.expando.kernel.model.ExpandoColumn">
 		<field name="columnId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="tableId" type="long" />
@@ -1818,20 +1818,20 @@
 			<hint-collection name="CLOB" />
 		</field>
 	</model>
-	<model name="com.liferay.portlet.expando.model.ExpandoRow">
+	<model name="com.liferay.expando.kernel.model.ExpandoRow">
 		<field name="rowId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="modifiedDate" type="Date" />
 		<field name="tableId" type="long" />
 		<field name="classPK" type="long" />
 	</model>
-	<model name="com.liferay.portlet.expando.model.ExpandoTable">
+	<model name="com.liferay.expando.kernel.model.ExpandoTable">
 		<field name="tableId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="classNameId" type="long" />
 		<field name="name" type="String" />
 	</model>
-	<model name="com.liferay.portlet.expando.model.ExpandoValue">
+	<model name="com.liferay.expando.kernel.model.ExpandoValue">
 		<field name="valueId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="tableId" type="long" />
