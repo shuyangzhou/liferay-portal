@@ -79,7 +79,15 @@ public abstract class BaseControlMenuEntry implements ControlMenuEntry {
 	}
 
 	@Override
-	public boolean include(
+	public boolean includeBody(
+			HttpServletRequest request, HttpServletResponse response)
+		throws IOException {
+
+		return false;
+	}
+
+	@Override
+	public boolean includeIcon(
 			HttpServletRequest request, HttpServletResponse response)
 		throws IOException {
 

@@ -41,7 +41,11 @@ public interface ControlMenuEntry {
 
 	public String getURL(HttpServletRequest request);
 
-	public boolean include(
+	public boolean includeBody(
+			HttpServletRequest request, HttpServletResponse response)
+		throws IOException;
+
+	public boolean includeIcon(
 			HttpServletRequest request, HttpServletResponse response)
 		throws IOException;
 

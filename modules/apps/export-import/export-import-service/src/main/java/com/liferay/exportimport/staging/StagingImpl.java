@@ -1190,6 +1190,36 @@ public class StagingImpl implements Staging {
 	}
 
 	@Override
+	public boolean isGroupAccessible(Group group, Group fromGroup) {
+		if (group.equals(fromGroup)) {
+			return true;
+		}
+
+		if (group.isStaged() && !group.isStagedRemotely() &&
+			group.isStagingGroup()) {
+
+			return false;
+		}
+
+		if (group.hasStagingGroup() &&
+			fromGroup.equals(group.getStagingGroup())) {
+
+			return false;
+		}
+
+		return true;
+	}
+
+	@Override
+	public boolean isGroupAccessible(long groupId, long fromGroupId)
+		throws PortalException {
+
+		return isGroupAccessible(
+			_groupLocalService.getGroup(groupId),
+			_groupLocalService.getGroup(fromGroupId));
+	}
+
+	@Override
 	public boolean isIncomplete(Layout layout, long layoutSetBranchId) {
 		LayoutRevision layoutRevision = LayoutStagingUtil.getLayoutRevision(
 			layout);
