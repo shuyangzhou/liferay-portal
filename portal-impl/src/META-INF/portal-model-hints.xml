@@ -1517,7 +1517,7 @@
 		<field name="classPK" type="long" />
 		<field name="workflowInstanceId" type="long" />
 	</model>
-	<model name="com.liferay.portlet.asset.model.AssetCategory">
+	<model name="com.liferay.asset.kernel.model.AssetCategory">
 		<field name="uuid" type="String" />
 		<field name="categoryId" type="long" />
 		<field name="groupId" type="long" />
@@ -1540,7 +1540,7 @@
 		<field name="vocabularyId" type="long" />
 		<field name="lastPublishDate" type="Date" />
 	</model>
-	<model name="com.liferay.portlet.asset.model.AssetCategoryProperty">
+	<model name="com.liferay.asset.kernel.model.AssetCategoryProperty">
 		<field name="categoryPropertyId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
@@ -1555,7 +1555,7 @@
 			<hint name="display-width">210</hint>
 		</field>
 	</model>
-	<model name="com.liferay.portlet.asset.model.AssetEntry">
+	<model name="com.liferay.asset.kernel.model.AssetEntry">
 		<field name="entryId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
@@ -1592,7 +1592,7 @@
 		<field name="priority" type="double" />
 		<field name="viewCount" type="int" />
 	</model>
-	<model name="com.liferay.portlet.asset.model.AssetLink">
+	<model name="com.liferay.asset.kernel.model.AssetLink">
 		<field name="linkId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
@@ -1603,7 +1603,7 @@
 		<field name="type" type="int" />
 		<field name="weight" type="int" />
 	</model>
-	<model name="com.liferay.portlet.asset.model.AssetTag">
+	<model name="com.liferay.asset.kernel.model.AssetTag">
 		<field name="uuid" type="String" />
 		<field name="tagId" type="long" />
 		<field name="groupId" type="long" />
@@ -1618,14 +1618,14 @@
 		<field name="assetCount" type="int" />
 		<field name="lastPublishDate" type="Date" />
 	</model>
-	<model name="com.liferay.portlet.asset.model.AssetTagStats">
+	<model name="com.liferay.asset.kernel.model.AssetTagStats">
 		<field name="tagStatsId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="tagId" type="long" />
 		<field name="classNameId" type="long" />
 		<field name="assetCount" type="int" />
 	</model>
-	<model name="com.liferay.portlet.asset.model.AssetVocabulary">
+	<model name="com.liferay.asset.kernel.model.AssetVocabulary">
 		<field name="uuid" type="String" />
 		<field name="vocabularyId" type="long" />
 		<field name="groupId" type="long" />
