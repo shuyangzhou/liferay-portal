@@ -191,43 +191,29 @@ public class DefaultJSONWebServiceRegistrator
 
 			Method method = methodDescriptor.getMethod();
 
-			if (!_jsonWebServiceNaming.isIncludedMethod(method)) {
-				continue;
-			}
-
 			JSONWebService methodJSONWebService = method.getAnnotation(
 				JSONWebService.class);
 
-			if (jsonWebServiceMode.equals(JSONWebServiceMode.AUTO)) {
-				if (methodJSONWebService == null) {
-					registerJSONWebServiceAction(
-						contextName, contextPath, serviceBean,
-						methodDescriptor.getDeclaringClass(), method);
-				}
-				else {
-					JSONWebServiceMode methodJSONWebServiceMode =
-						methodJSONWebService.mode();
-
-					if (!methodJSONWebServiceMode.equals(
-							JSONWebServiceMode.IGNORE)) {
-
-						registerJSONWebServiceAction(
-							contextName, contextPath, serviceBean,
-							methodDescriptor.getDeclaringClass(), method);
-					}
+			if (methodJSONWebService == null) {
+				if (!jsonWebServiceMode.equals(JSONWebServiceMode.AUTO)) {
+					continue;
 				}
 			}
-			else if (methodJSONWebService != null) {
+			else {
 				JSONWebServiceMode methodJSONWebServiceMode =
 					methodJSONWebService.mode();
 
-				if (!methodJSONWebServiceMode.equals(
+				if (methodJSONWebServiceMode.equals(
 						JSONWebServiceMode.IGNORE)) {
 
-					registerJSONWebServiceAction(
-						contextName, contextPath, serviceBean,
-						methodDescriptor.getDeclaringClass(), method);
+					continue;
 				}
+			}
+
+			if (_jsonWebServiceNaming.isIncludedMethod(method)) {
+				registerJSONWebServiceAction(
+					contextName, contextPath, serviceBean,
+					methodDescriptor.getDeclaringClass(), method);
 			}
 		}
 	}
