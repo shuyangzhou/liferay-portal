@@ -14,11 +14,11 @@
 
 package com.liferay.dynamic.data.lists.web.asset;
 
+import com.liferay.asset.kernel.model.BaseDDMFormValuesReader;
 import com.liferay.dynamic.data.lists.model.DDLRecord;
 import com.liferay.dynamic.data.mapping.kernel.DDMFormValues;
 import com.liferay.dynamic.data.mapping.util.DDMBeanTranslatorUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portlet.asset.model.BaseDDMFormValuesReader;
 
 /**
  * @author Adolfo Pérez
