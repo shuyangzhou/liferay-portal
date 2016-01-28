@@ -12,31 +12,48 @@
  * details.
  */
 
-package com.liferay.portlet.messageboards.util.comparator;
+package com.liferay.message.boards.kernel.util.comparator;
 
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portlet.messageboards.model.MBMessage;
+import com.liferay.portlet.messageboards.model.MBThread;
 
 /**
  * @author Brian Wing Shun Chan
  */
-public class MessageCreateDateComparator extends OrderByComparator<MBMessage> {
+public class ThreadLastPostDateComparator extends OrderByComparator<MBThread> {
 
-	public static final String ORDER_BY_ASC = "MBMessage.createDate ASC";
+	public static final String ORDER_BY_ASC =
+		"MBThread.lastPostDate ASC, MBThread.threadId ASC";
 
-	public static final String ORDER_BY_DESC = "MBMessage.createDate DESC";
+	public static final String[] ORDER_BY_CONDITION_FIELDS = {"lastPostDate"};
 
-	public static final String[] ORDER_BY_FIELDS = {"createDate"};
+	public static final String ORDER_BY_DESC =
+		"MBThread.lastPostDate DESC, MBThread.threadId DESC";
 
-	public MessageCreateDateComparator(boolean ascending) {
+	public static final String[] ORDER_BY_FIELDS = {"lastPostDate", "threadId"};
+
+	public ThreadLastPostDateComparator() {
+		this(false);
+	}
+
+	public ThreadLastPostDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}
 
 	@Override
-	public int compare(MBMessage message1, MBMessage message2) {
+	public int compare(MBThread thread1, MBThread thread2) {
 		int value = DateUtil.compareTo(
-			message1.getCreateDate(), message2.getCreateDate());
+			thread1.getLastPostDate(), thread2.getLastPostDate());
+
+		if (value == 0) {
+			if (thread1.getThreadId() < thread2.getThreadId()) {
+				value = -1;
+			}
+			else if (thread1.getThreadId() > thread2.getThreadId()) {
+				value = 1;
+			}
+		}
 
 		if (_ascending) {
 			return value;
@@ -54,6 +71,11 @@ public class MessageCreateDateComparator extends OrderByComparator<MBMessage> {
 		else {
 			return ORDER_BY_DESC;
 		}
+	}
+
+	@Override
+	public String[] getOrderByConditionFields() {
+		return ORDER_BY_CONDITION_FIELDS;
 	}
 
 	@Override

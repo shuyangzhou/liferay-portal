@@ -12,47 +12,31 @@
  * details.
  */
 
-package com.liferay.portlet.messageboards.util.comparator;
+package com.liferay.message.boards.kernel.util.comparator;
 
 import com.liferay.portal.kernel.util.DateUtil;
+import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portlet.messageboards.model.MBMessage;
-
-import java.io.Serializable;
-
-import java.util.Comparator;
 
 /**
  * @author Brian Wing Shun Chan
  */
-public class MessageThreadComparator
-	implements Comparator<MBMessage>, Serializable {
+public class MessageCreateDateComparator extends OrderByComparator<MBMessage> {
 
-	public MessageThreadComparator() {
-		this(true);
-	}
+	public static final String ORDER_BY_ASC = "MBMessage.createDate ASC";
 
-	public MessageThreadComparator(boolean ascending) {
+	public static final String ORDER_BY_DESC = "MBMessage.createDate DESC";
+
+	public static final String[] ORDER_BY_FIELDS = {"createDate"};
+
+	public MessageCreateDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}
 
 	@Override
-	public int compare(MBMessage msg1, MBMessage msg2) {
-		Long parentMessageId1 = Long.valueOf(msg1.getParentMessageId());
-		Long parentMessageId2 = Long.valueOf(msg2.getParentMessageId());
-
-		int value = parentMessageId1.compareTo(parentMessageId2);
-
-		if (value == 0) {
-			value = DateUtil.compareTo(
-				msg1.getCreateDate(), msg2.getCreateDate());
-		}
-
-		if (value == 0) {
-			Long messageId1 = Long.valueOf(msg1.getMessageId());
-			Long messageId2 = Long.valueOf(msg2.getMessageId());
-
-			value = messageId1.compareTo(messageId2);
-		}
+	public int compare(MBMessage message1, MBMessage message2) {
+		int value = DateUtil.compareTo(
+			message1.getCreateDate(), message2.getCreateDate());
 
 		if (_ascending) {
 			return value;
@@ -60,6 +44,26 @@ public class MessageThreadComparator
 		else {
 			return -value;
 		}
+	}
+
+	@Override
+	public String getOrderBy() {
+		if (_ascending) {
+			return ORDER_BY_ASC;
+		}
+		else {
+			return ORDER_BY_DESC;
+		}
+	}
+
+	@Override
+	public String[] getOrderByFields() {
+		return ORDER_BY_FIELDS;
+	}
+
+	@Override
+	public boolean isAscending() {
+		return _ascending;
 	}
 
 	private final boolean _ascending;
