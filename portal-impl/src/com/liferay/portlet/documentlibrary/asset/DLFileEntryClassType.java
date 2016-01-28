@@ -14,10 +14,10 @@
 
 package com.liferay.portlet.documentlibrary.asset;
 
+import com.liferay.asset.kernel.model.ClassTypeField;
+import com.liferay.asset.kernel.model.DDMStructureClassType;
 import com.liferay.dynamic.data.mapping.kernel.DDMStructure;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portlet.asset.model.ClassTypeField;
-import com.liferay.portlet.asset.model.DDMStructureClassType;
 import com.liferay.portlet.documentlibrary.model.DLFileEntryType;
 import com.liferay.portlet.documentlibrary.service.DLFileEntryTypeLocalServiceUtil;
 

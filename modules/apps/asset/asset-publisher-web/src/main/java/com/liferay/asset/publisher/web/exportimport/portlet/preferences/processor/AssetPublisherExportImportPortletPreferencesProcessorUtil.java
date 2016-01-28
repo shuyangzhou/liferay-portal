@@ -14,11 +14,11 @@
 
 package com.liferay.asset.publisher.web.exportimport.portlet.preferences.processor;
 
+import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.portal.kernel.template.TemplateHandler;
 import com.liferay.portal.kernel.template.TemplateHandlerRegistryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portlet.asset.model.AssetEntry;
 
 import javax.portlet.PortletPreferences;
 
