@@ -14,6 +14,9 @@
 
 package com.liferay.portal.kernel.util;
 
+import com.liferay.portal.kernel.concurrent.ConcurrentReferenceValueHashMap;
+import com.liferay.portal.kernel.memory.FinalizeManager;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +32,18 @@ import java.util.regex.Pattern;
  * @see    Pattern
  */
 public class StringParser {
+
+	public static StringParser create(String chunk) {
+		StringParser stringParser = _stringParserFragmentsCache.get(chunk);
+
+		if (stringParser == null) {
+			stringParser = new StringParser(chunk);
+		}
+
+		_stringParserFragmentsCache.put(chunk, stringParser);
+
+		return stringParser;
+	}
 
 	/**
 	 * Escapes the special characters in the string so that they will have no
@@ -48,110 +63,6 @@ public class StringParser {
 		Matcher matcher = _escapeRegexPattern.matcher(s);
 
 		return matcher.replaceAll("\\\\$0");
-	}
-
-	/**
-	 * Constructs a new string parser from the pattern.
-	 *
-	 * <p>
-	 * The pattern can be any string containing named fragments in brackets. The
-	 * following is a valid pattern for greeting:
-	 * </p>
-	 *
-	 * <p>
-	 * <pre>
-	 * <code>
-	 * Hi {name}! How are you?
-	 * </code>
-	 * </pre>
-	 * </p>
-	 *
-	 * <p>
-	 * This pattern would match the string &quot;Hi Tom! How are you?&quot;. The
-	 * format of a fragment may optionally be specified by inserting a colon
-	 * followed by a regular expression after the fragment name. For instance,
-	 * <code>name</code> could be set to match only lower case letters with the
-	 * following:
-	 * </p>
-	 *
-	 * <p>
-	 * <pre>
-	 * <code>
-	 * Hi {name:[a-z]+}! How are you?
-	 * </code>
-	 * </pre>
-	 * </p>
-	 *
-	 * <p>
-	 * By default, a fragment will match anything except a forward slash or a
-	 * period.
-	 * </p>
-	 *
-	 * <p>
-	 * If a string parser is set to encode fragments using a {@link
-	 * StringEncoder}, an individual fragment can be specified as raw by
-	 * prefixing its name with a percent sign, as shown below:
-	 * </p>
-	 *
-	 * <p>
-	 * <pre>
-	 * <code>
-	 * /view_page/{%path:.*}
-	 * </code>
-	 * </pre>
-	 * </p>
-	 *
-	 * <p>
-	 * The format of the path fragment has also been specified to match anything
-	 * using the pattern &quot;.*&quot;. This pattern could be used to parse the
-	 * string:
-	 * </p>
-	 *
-	 * <p>
-	 * <pre>
-	 * <code>
-	 * /view_page/root/home/mysite/pages/index.htm
-	 * </code>
-	 * </pre>
-	 * </p>
-	 *
-	 * <p>
-	 * <code>path</code> would be set to
-	 * &quot;root/home/mysite/pages/index.htm&quot;, even if {@link
-	 * URLStringEncoder} had been set as the string encoder.
-	 * </p>
-	 *
-	 * <p>
-	 * <b>Do not include capturing subgroups in the pattern.</b>
-	 * </p>
-	 *
-	 * @param pattern the pattern string
-	 */
-	public StringParser(String pattern) {
-		String regex = escapeRegex(pattern);
-
-		Matcher matcher = _fragmentPattern.matcher(pattern);
-
-		while (matcher.find()) {
-			String chunk = matcher.group();
-
-			StringParserFragment stringParserFragment =
-				new StringParserFragment(chunk);
-
-			_stringParserFragments.add(stringParserFragment);
-
-			pattern = pattern.replace(chunk, stringParserFragment.getToken());
-
-			regex = regex.replace(
-				escapeRegex(chunk),
-				StringPool.OPEN_PARENTHESIS.concat(
-					stringParserFragment.getPattern().concat(
-						StringPool.CLOSE_PARENTHESIS)));
-		}
-
-		_builder = pattern;
-
-		_pattern = Pattern.compile(regex);
 	}
 
 	/**
@@ -253,15 +164,123 @@ public class StringParser {
 		_stringEncoder = stringEncoder;
 	}
 
+	/**
+	 * Constructs a new string parser from the pattern.
+	 *
+	 * <p>
+	 * The pattern can be any string containing named fragments in brackets. The
+	 * following is a valid pattern for greeting:
+	 * </p>
+	 *
+	 * <p>
+	 * <pre>
+	 * <code>
+	 * Hi {name}! How are you?
+	 * </code>
+	 * </pre>
+	 * </p>
+	 *
+	 * <p>
+	 * This pattern would match the string &quot;Hi Tom! How are you?&quot;. The
+	 * format of a fragment may optionally be specified by inserting a colon
+	 * followed by a regular expression after the fragment name. For instance,
+	 * <code>name</code> could be set to match only lower case letters with the
+	 * following:
+	 * </p>
+	 *
+	 * <p>
+	 * <pre>
+	 * <code>
+	 * Hi {name:[a-z]+}! How are you?
+	 * </code>
+	 * </pre>
+	 * </p>
+	 *
+	 * <p>
+	 * By default, a fragment will match anything except a forward slash or a
+	 * period.
+	 * </p>
+	 *
+	 * <p>
+	 * If a string parser is set to encode fragments using a {@link
+	 * StringEncoder}, an individual fragment can be specified as raw by
+	 * prefixing its name with a percent sign, as shown below:
+	 * </p>
+	 *
+	 * <p>
+	 * <pre>
+	 * <code>
+	 * /view_page/{%path:.*}
+	 * </code>
+	 * </pre>
+	 * </p>
+	 *
+	 * <p>
+	 * The format of the path fragment has also been specified to match anything
+	 * using the pattern &quot;.*&quot;. This pattern could be used to parse the
+	 * string:
+	 * </p>
+	 *
+	 * <p>
+	 * <pre>
+	 * <code>
+	 * /view_page/root/home/mysite/pages/index.htm
+	 * </code>
+	 * </pre>
+	 * </p>
+	 *
+	 * <p>
+	 * <code>path</code> would be set to
+	 * &quot;root/home/mysite/pages/index.htm&quot;, even if {@link
+	 * URLStringEncoder} had been set as the string encoder.
+	 * </p>
+	 *
+	 * <p>
+	 * <b>Do not include capturing subgroups in the pattern.</b>
+	 * </p>
+	 *
+	 * @param pattern the pattern string
+	 */
+	protected StringParser(String pattern) {
+		String regex = escapeRegex(pattern);
+
+		Matcher matcher = _fragmentPattern.matcher(pattern);
+
+		_stringParserFragments = new ArrayList<>(matcher.groupCount());
+
+		while (matcher.find()) {
+			String chunk = matcher.group();
+
+			StringParserFragment stringParserFragment =
+				StringParserFragment.create(chunk);
+
+			_stringParserFragments.add(stringParserFragment);
+
+			pattern = pattern.replace(chunk, stringParserFragment.getToken());
+
+			regex = regex.replace(
+				escapeRegex(chunk),
+				StringPool.OPEN_PARENTHESIS.concat(
+					stringParserFragment.getPattern().concat(
+						StringPool.CLOSE_PARENTHESIS)));
+		}
+
+		_builder = pattern;
+
+		_pattern = Pattern.compile(regex);
+	}
+
 	private static final Pattern _escapeRegexPattern = Pattern.compile(
 		"[\\{\\}\\(\\)\\[\\]\\*\\+\\?\\$\\^\\.\\#\\\\]");
 	private static final Pattern _fragmentPattern = Pattern.compile(
 		"\\{.+?\\}");
+	private static final Map<String, StringParser>
+		_stringParserFragmentsCache = new ConcurrentReferenceValueHashMap<>(
+			FinalizeManager.SOFT_REFERENCE_FACTORY);
 
 	private final String _builder;
 	private final Pattern _pattern;
 	private StringEncoder _stringEncoder;
-	private final List<StringParserFragment> _stringParserFragments =
-		new ArrayList<>();
+	private final List<StringParserFragment> _stringParserFragments;
 
 }
