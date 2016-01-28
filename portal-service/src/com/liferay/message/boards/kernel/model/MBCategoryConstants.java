@@ -12,21 +12,25 @@
  * details.
  */
 
-package com.liferay.portlet.messageboards.model;
+package com.liferay.message.boards.kernel.model;
+
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 
 /**
  * @author Alexander Chow
+ * @author Sergio González
  */
-public class MBThreadConstants {
+public class MBCategoryConstants {
 
-	public static final String NEW_THREAD_URL = "${newThreadURL}";
+	public static final String DEFAULT_DISPLAY_STYLE = PropsUtil.get(
+		PropsKeys.MESSAGE_BOARDS_CATEGORY_DISPLAY_STYLES_DEFAULT);
 
-	public static final double PRIORITY_NOT_GIVEN = -1.0;
+	public static final long DEFAULT_PARENT_CATEGORY_ID = 0;
 
-	public static final String THREAD_VIEW_COMBINATION = "combination";
+	public static final long DISCUSSION_CATEGORY_ID = -1;
 
-	public static final String THREAD_VIEW_FLAT = "flat";
-
-	public static final String THREAD_VIEW_TREE = "tree";
+	public static final String[] DISPLAY_STYLES = PropsUtil.getArray(
+		PropsKeys.MESSAGE_BOARDS_CATEGORY_DISPLAY_STYLES);
 
 }
