@@ -16,8 +16,8 @@ package com.liferay.asset.kernel.util.comparator;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.asset.kernel.model.AssetTag;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portlet.asset.model.AssetTag;
 
 /**
  * @author Miguel Pastor

@@ -14,7 +14,7 @@
 
 package com.liferay.asset.kernel.util.comparator;
 
-import com.liferay.portlet.asset.model.AssetRendererFactory;
+import com.liferay.asset.kernel.model.AssetRendererFactory;
 
 import java.io.Serializable;
 
