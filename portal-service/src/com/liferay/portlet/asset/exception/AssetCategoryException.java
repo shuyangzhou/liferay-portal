@@ -14,8 +14,8 @@
 
 package com.liferay.portlet.asset.exception;
 
+import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portlet.asset.model.AssetVocabulary;
 
 /**
  * @author Juan Fernández

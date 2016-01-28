@@ -14,6 +14,7 @@
 
 package com.liferay.asset.kernel.model;
 
+import com.liferay.asset.kernel.NoSuchClassTypeFieldException;
 import com.liferay.dynamic.data.mapping.kernel.DDMFormField;
 import com.liferay.dynamic.data.mapping.kernel.DDMStructure;
 import com.liferay.dynamic.data.mapping.kernel.DDMStructureManagerUtil;
@@ -23,7 +24,6 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portlet.asset.NoSuchClassTypeFieldException;
 
 import java.util.ArrayList;
 import java.util.List;
