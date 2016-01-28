@@ -5132,7 +5132,7 @@ public class ServiceBuilder {
 		}
 
 		boolean resourceActionModel = _resourceActionModels.contains(
-			_apiPackagePath + ".model." + ejbName);
+			_packagePath + ".model." + ejbName);
 
 		_ejbList.add(
 			new Entity(
