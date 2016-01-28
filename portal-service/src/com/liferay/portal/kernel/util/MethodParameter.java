@@ -22,20 +22,16 @@ import java.util.List;
  */
 public class MethodParameter {
 
-	public MethodParameter(
-		String name, String signatures, Class<?> type, boolean initialize) {
-
+	public MethodParameter(String name, String signatures, Class<?> type) {
 		_name = name;
 		_signatures = signatures;
 		_type = type;
 
-		if (initialize) {
-			try {
-				getGenericTypes();
-			}
-			catch (ClassNotFoundException cnfe) {
-				throw new IllegalArgumentException(cnfe);
-			}
+		try {
+			getGenericTypes();
+		}
+		catch (ClassNotFoundException cnfe) {
+			throw new IllegalArgumentException(cnfe);
 		}
 	}
 
