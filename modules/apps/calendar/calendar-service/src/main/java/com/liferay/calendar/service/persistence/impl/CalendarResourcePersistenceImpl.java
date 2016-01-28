@@ -51,6 +51,7 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -4167,10 +4168,6 @@ public class CalendarResourcePersistenceImpl extends BasePersistenceImpl<Calenda
 	public List<CalendarResource> filterFindByG_C(long[] groupIds, String code,
 		int start, int end,
 		OrderByComparator<CalendarResource> orderByComparator) {
-		if (!InlineSQLHelperUtil.isEnabled(groupIds)) {
-			return findByG_C(groupIds, code, start, end, orderByComparator);
-		}
-
 		if (groupIds == null) {
 			groupIds = new long[0];
 		}
@@ -4178,6 +4175,39 @@ public class CalendarResourcePersistenceImpl extends BasePersistenceImpl<Calenda
 			groupIds = ArrayUtil.unique(groupIds);
 
 			Arrays.sort(groupIds);
+		}
+
+		List<Long> inlinePermissionEnabledGroupIds = new ArrayList<Long>();
+		List<Long> inlinePermissionNotEnabledGroupIds = new ArrayList<Long>();
+
+		for (long groupId : groupIds) {
+			if (InlineSQLHelperUtil.isEnabled(groupId)) {
+				inlinePermissionEnabledGroupIds.add(groupId);
+			}
+			else {
+				inlinePermissionNotEnabledGroupIds.add(groupId);
+			}
+		}
+
+		List<CalendarResource> filterResults = new ArrayList<CalendarResource>();
+
+		if (inlinePermissionNotEnabledGroupIds.size() > 0) {
+			Long[] array = null;
+
+			array = inlinePermissionNotEnabledGroupIds.toArray(new Long[inlinePermissionNotEnabledGroupIds.size()]);
+
+			groupIds = ArrayUtil.toArray(array);
+
+			if (inlinePermissionEnabledGroupIds.size() == 0) {
+				return findByG_C(groupIds, code, start, end, orderByComparator);
+			}
+
+			filterResults.addAll(findByG_C(groupIds, code, start, end,
+					orderByComparator));
+
+			array = inlinePermissionEnabledGroupIds.toArray(new Long[inlinePermissionEnabledGroupIds.size()]);
+
+			groupIds = ArrayUtil.toArray(array);
 		}
 
 		StringBundler query = new StringBundler();
@@ -4241,8 +4271,18 @@ public class CalendarResourcePersistenceImpl extends BasePersistenceImpl<Calenda
 				qPos.add(code);
 			}
 
-			return (List<CalendarResource>)QueryUtil.list(q, getDialect(),
-				start, end);
+			if (inlinePermissionNotEnabledGroupIds.size() > 0) {
+				List<CalendarResource> result = (List<CalendarResource>)QueryUtil.list(q,
+						getDialect(), start, end);
+
+				filterResults.addAll(result);
+
+				return filterResults;
+			}
+			else {
+				return (List<CalendarResource>)QueryUtil.list(q, getDialect(),
+					start, end);
+			}
 		}
 		catch (Exception e) {
 			throw processException(e);

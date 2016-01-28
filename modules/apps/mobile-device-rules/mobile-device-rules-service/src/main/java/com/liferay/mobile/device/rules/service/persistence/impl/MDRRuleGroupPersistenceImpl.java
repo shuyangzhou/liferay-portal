@@ -51,6 +51,7 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -2275,10 +2276,6 @@ public class MDRRuleGroupPersistenceImpl extends BasePersistenceImpl<MDRRuleGrou
 	@Override
 	public List<MDRRuleGroup> filterFindByGroupId(long[] groupIds, int start,
 		int end, OrderByComparator<MDRRuleGroup> orderByComparator) {
-		if (!InlineSQLHelperUtil.isEnabled(groupIds)) {
-			return findByGroupId(groupIds, start, end, orderByComparator);
-		}
-
 		if (groupIds == null) {
 			groupIds = new long[0];
 		}
@@ -2286,6 +2283,39 @@ public class MDRRuleGroupPersistenceImpl extends BasePersistenceImpl<MDRRuleGrou
 			groupIds = ArrayUtil.unique(groupIds);
 
 			Arrays.sort(groupIds);
+		}
+
+		List<Long> inlinePermissionEnabledGroupIds = new ArrayList<Long>();
+		List<Long> inlinePermissionNotEnabledGroupIds = new ArrayList<Long>();
+
+		for (long groupId : groupIds) {
+			if (InlineSQLHelperUtil.isEnabled(groupId)) {
+				inlinePermissionEnabledGroupIds.add(groupId);
+			}
+			else {
+				inlinePermissionNotEnabledGroupIds.add(groupId);
+			}
+		}
+
+		List<MDRRuleGroup> filterResults = new ArrayList<MDRRuleGroup>();
+
+		if (inlinePermissionNotEnabledGroupIds.size() > 0) {
+			Long[] array = null;
+
+			array = inlinePermissionNotEnabledGroupIds.toArray(new Long[inlinePermissionNotEnabledGroupIds.size()]);
+
+			groupIds = ArrayUtil.toArray(array);
+
+			if (inlinePermissionEnabledGroupIds.size() == 0) {
+				return findByGroupId(groupIds, start, end, orderByComparator);
+			}
+
+			filterResults.addAll(findByGroupId(groupIds, start, end,
+					orderByComparator));
+
+			array = inlinePermissionEnabledGroupIds.toArray(new Long[inlinePermissionEnabledGroupIds.size()]);
+
+			groupIds = ArrayUtil.toArray(array);
 		}
 
 		StringBundler query = new StringBundler();
@@ -2353,8 +2383,18 @@ public class MDRRuleGroupPersistenceImpl extends BasePersistenceImpl<MDRRuleGrou
 				q.addEntity(_FILTER_ENTITY_TABLE, MDRRuleGroupImpl.class);
 			}
 
-			return (List<MDRRuleGroup>)QueryUtil.list(q, getDialect(), start,
-				end);
+			if (inlinePermissionNotEnabledGroupIds.size() > 0) {
+				List<MDRRuleGroup> result = (List<MDRRuleGroup>)QueryUtil.list(q,
+						getDialect(), start, end);
+
+				filterResults.addAll(result);
+
+				return filterResults;
+			}
+			else {
+				return (List<MDRRuleGroup>)QueryUtil.list(q, getDialect(),
+					start, end);
+			}
 		}
 		catch (Exception e) {
 			throw processException(e);

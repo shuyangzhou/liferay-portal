@@ -3393,10 +3393,6 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	@Override
 	public List<MBThread> filterFindByG_C(long groupId, long[] categoryIds,
 		int start, int end, OrderByComparator<MBThread> orderByComparator) {
-		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
-			return findByG_C(groupId, categoryIds, start, end, orderByComparator);
-		}
-
 		if (categoryIds == null) {
 			categoryIds = new long[0];
 		}
@@ -3404,6 +3400,10 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 			categoryIds = ArrayUtil.unique(categoryIds);
 
 			Arrays.sort(categoryIds);
+		}
+
+		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
+			return findByG_C(groupId, categoryIds, start, end, orderByComparator);
 		}
 
 		StringBundler query = new StringBundler();
@@ -8842,11 +8842,6 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	public List<MBThread> filterFindByG_C_S(long groupId, long[] categoryIds,
 		int status, int start, int end,
 		OrderByComparator<MBThread> orderByComparator) {
-		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
-			return findByG_C_S(groupId, categoryIds, status, start, end,
-				orderByComparator);
-		}
-
 		if (categoryIds == null) {
 			categoryIds = new long[0];
 		}
@@ -8854,6 +8849,11 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 			categoryIds = ArrayUtil.unique(categoryIds);
 
 			Arrays.sort(categoryIds);
+		}
+
+		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
+			return findByG_C_S(groupId, categoryIds, status, start, end,
+				orderByComparator);
 		}
 
 		StringBundler query = new StringBundler();
@@ -10342,11 +10342,6 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	public List<MBThread> filterFindByG_C_NotS(long groupId,
 		long[] categoryIds, int status, int start, int end,
 		OrderByComparator<MBThread> orderByComparator) {
-		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
-			return findByG_C_NotS(groupId, categoryIds, status, start, end,
-				orderByComparator);
-		}
-
 		if (categoryIds == null) {
 			categoryIds = new long[0];
 		}
@@ -10354,6 +10349,11 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 			categoryIds = ArrayUtil.unique(categoryIds);
 
 			Arrays.sort(categoryIds);
+		}
+
+		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
+			return findByG_C_NotS(groupId, categoryIds, status, start, end,
+				orderByComparator);
 		}
 
 		StringBundler query = new StringBundler();

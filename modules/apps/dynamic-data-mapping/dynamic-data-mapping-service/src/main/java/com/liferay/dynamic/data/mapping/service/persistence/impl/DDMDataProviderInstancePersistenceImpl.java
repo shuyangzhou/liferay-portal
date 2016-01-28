@@ -51,6 +51,7 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -2314,10 +2315,6 @@ public class DDMDataProviderInstancePersistenceImpl extends BasePersistenceImpl<
 	public List<DDMDataProviderInstance> filterFindByGroupId(long[] groupIds,
 		int start, int end,
 		OrderByComparator<DDMDataProviderInstance> orderByComparator) {
-		if (!InlineSQLHelperUtil.isEnabled(groupIds)) {
-			return findByGroupId(groupIds, start, end, orderByComparator);
-		}
-
 		if (groupIds == null) {
 			groupIds = new long[0];
 		}
@@ -2325,6 +2322,39 @@ public class DDMDataProviderInstancePersistenceImpl extends BasePersistenceImpl<
 			groupIds = ArrayUtil.unique(groupIds);
 
 			Arrays.sort(groupIds);
+		}
+
+		List<Long> inlinePermissionEnabledGroupIds = new ArrayList<Long>();
+		List<Long> inlinePermissionNotEnabledGroupIds = new ArrayList<Long>();
+
+		for (long groupId : groupIds) {
+			if (InlineSQLHelperUtil.isEnabled(groupId)) {
+				inlinePermissionEnabledGroupIds.add(groupId);
+			}
+			else {
+				inlinePermissionNotEnabledGroupIds.add(groupId);
+			}
+		}
+
+		List<DDMDataProviderInstance> filterResults = new ArrayList<DDMDataProviderInstance>();
+
+		if (inlinePermissionNotEnabledGroupIds.size() > 0) {
+			Long[] array = null;
+
+			array = inlinePermissionNotEnabledGroupIds.toArray(new Long[inlinePermissionNotEnabledGroupIds.size()]);
+
+			groupIds = ArrayUtil.toArray(array);
+
+			if (inlinePermissionEnabledGroupIds.size() == 0) {
+				return findByGroupId(groupIds, start, end, orderByComparator);
+			}
+
+			filterResults.addAll(findByGroupId(groupIds, start, end,
+					orderByComparator));
+
+			array = inlinePermissionEnabledGroupIds.toArray(new Long[inlinePermissionEnabledGroupIds.size()]);
+
+			groupIds = ArrayUtil.toArray(array);
 		}
 
 		StringBundler query = new StringBundler();
@@ -2394,8 +2424,18 @@ public class DDMDataProviderInstancePersistenceImpl extends BasePersistenceImpl<
 					DDMDataProviderInstanceImpl.class);
 			}
 
-			return (List<DDMDataProviderInstance>)QueryUtil.list(q,
-				getDialect(), start, end);
+			if (inlinePermissionNotEnabledGroupIds.size() > 0) {
+				List<DDMDataProviderInstance> result = (List<DDMDataProviderInstance>)QueryUtil.list(q,
+						getDialect(), start, end);
+
+				filterResults.addAll(result);
+
+				return filterResults;
+			}
+			else {
+				return (List<DDMDataProviderInstance>)QueryUtil.list(q,
+					getDialect(), start, end);
+			}
 		}
 		catch (Exception e) {
 			throw processException(e);
