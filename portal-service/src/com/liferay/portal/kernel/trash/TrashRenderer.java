@@ -14,7 +14,7 @@
 
 package com.liferay.portal.kernel.trash;
 
-import com.liferay.portlet.asset.model.Renderer;
+import com.liferay.asset.kernel.model.Renderer;
 
 import java.util.Locale;
 

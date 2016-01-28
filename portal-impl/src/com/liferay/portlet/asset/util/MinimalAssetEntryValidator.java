@@ -14,10 +14,10 @@
 
 package com.liferay.portlet.asset.util;
 
+import com.liferay.asset.kernel.exception.AssetTagException;
 import com.liferay.message.boards.kernel.model.MBDiscussion;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portlet.asset.exception.AssetTagException;
 
 /**
  * @author Brian Wing Shun Chan

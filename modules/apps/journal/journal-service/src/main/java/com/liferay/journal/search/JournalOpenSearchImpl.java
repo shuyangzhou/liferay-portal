@@ -14,6 +14,8 @@
 
 package com.liferay.journal.search;
 
+import com.liferay.asset.kernel.model.AssetEntry;
+import com.liferay.asset.kernel.service.AssetEntryLocalService;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalArticleConstants;
 import com.liferay.journal.model.JournalContentSearch;
@@ -35,8 +37,6 @@ import com.liferay.portal.service.LayoutLocalService;
 import com.liferay.portal.service.LayoutSetLocalService;
 import com.liferay.portal.service.permission.LayoutPermissionUtil;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.asset.model.AssetEntry;
-import com.liferay.portlet.asset.service.AssetEntryLocalService;
 
 import java.util.List;
 
