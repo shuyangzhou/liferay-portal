@@ -36,13 +36,11 @@ public class MethodParameter {
 	}
 
 	public Class<?>[] getGenericTypes() throws ClassNotFoundException {
-		if (_initialized) {
+		if (_genericTypes != null) {
 			return _genericTypes;
 		}
 
 		_genericTypes = _getGenericTypes(_signatures);
-
-		_initialized = true;
 
 		return _genericTypes;
 	}
@@ -240,7 +238,6 @@ public class MethodParameter {
 
 	private ClassLoader _contextClassLoader;
 	private Class<?>[] _genericTypes;
-	private boolean _initialized;
 	private final String _name;
 	private final String _signatures;
 	private final Class<?> _type;
