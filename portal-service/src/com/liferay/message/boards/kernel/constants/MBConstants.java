@@ -12,25 +12,14 @@
  * details.
  */
 
-package com.liferay.portlet.messageboards.model;
-
-import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.PropsUtil;
+package com.liferay.message.boards.kernel.constants;
 
 /**
- * @author Alexander Chow
  * @author Sergio González
  */
-public class MBCategoryConstants {
+public class MBConstants {
 
-	public static final String DEFAULT_DISPLAY_STYLE = PropsUtil.get(
-		PropsKeys.MESSAGE_BOARDS_CATEGORY_DISPLAY_STYLES_DEFAULT);
-
-	public static final long DEFAULT_PARENT_CATEGORY_ID = 0;
-
-	public static final long DISCUSSION_CATEGORY_ID = -1;
-
-	public static final String[] DISPLAY_STYLES = PropsUtil.getArray(
-		PropsKeys.MESSAGE_BOARDS_CATEGORY_DISPLAY_STYLES);
+	public static final String SERVICE_NAME =
+		"com.liferay.portlet.messageboards";
 
 }
