@@ -135,20 +135,15 @@ public class JSONWebServiceNaming {
 					return false;
 				}
 
-				String signature = methodParameter.getSignature();
+				Class<?>[] genericTypes = methodParameter.getGenericTypes();
 
-				if (signature.contains(StringPool.LESS_THAN)) {
-					String excludedName = 'L' + excludedTypesName;
+				if (genericTypes != null) {
+					for (Class<?> genericType : genericTypes) {
+						String genericName = genericType.getName();
 
-					if (!excludedName.endsWith(StringPool.PERIOD)) {
-						excludedName = excludedName.concat(
-							StringPool.SEMICOLON);
-					}
-
-					excludedName = StringUtil.replace(excludedName, '.', '/');
-
-					if (signature.contains(excludedName)) {
-						return false;
+						if (genericName.startsWith(excludedTypesName)) {
+							return false;
+						}
 					}
 				}
 			}

@@ -24,7 +24,6 @@ public class MethodParameter {
 
 	public MethodParameter(String name, String signatures, Class<?> type) {
 		_name = name;
-		_signatures = signatures;
 		_type = type;
 
 		try {
@@ -33,7 +32,7 @@ public class MethodParameter {
 			ClassLoader contextClassLoader =
 				currentThread.getContextClassLoader();
 
-			_genericTypes = _getGenericTypes(contextClassLoader, _signatures);
+			_genericTypes = _getGenericTypes(contextClassLoader, signatures);
 		}
 		catch (ClassNotFoundException cnfe) {
 			throw new IllegalArgumentException(cnfe);
@@ -46,10 +45,6 @@ public class MethodParameter {
 
 	public String getName() {
 		return _name;
-	}
-
-	public String getSignature() {
-		return _signatures;
 	}
 
 	public Class<?> getType() {
@@ -226,7 +221,6 @@ public class MethodParameter {
 
 	private final Class<?>[] _genericTypes;
 	private final String _name;
-	private final String _signatures;
 	private final Class<?> _type;
 
 }
