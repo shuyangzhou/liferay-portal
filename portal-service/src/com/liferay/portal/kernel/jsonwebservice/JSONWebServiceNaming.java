@@ -100,6 +100,20 @@ public class JSONWebServiceNaming {
 			return true;
 		}
 
+		Class<?> returnType = method.getReturnType();
+
+		if (returnType.isArray()) {
+			returnType = returnType.getComponentType();
+		}
+
+		String returnTypeName = returnType.getName();
+
+		for (String excludedTypesName : excludedTypesNames) {
+			if (excludedTypesName.startsWith(returnTypeName)) {
+				return false;
+			}
+		}
+
 		MethodParameter[] methodParameters =
 			MethodParametersResolverUtil.resolveMethodParameters(method);
 
@@ -117,6 +131,10 @@ public class JSONWebServiceNaming {
 			String parameterTypeName = parameterType.getName();
 
 			for (String excludedTypesName : excludedTypesNames) {
+				if (parameterTypeName.startsWith(excludedTypesName)) {
+					return false;
+				}
+
 				String signature = methodParameter.getSignature();
 
 				if (signature.contains(StringPool.LESS_THAN)) {
@@ -133,24 +151,6 @@ public class JSONWebServiceNaming {
 						return false;
 					}
 				}
-
-				if (parameterTypeName.startsWith(excludedTypesName)) {
-					return false;
-				}
-			}
-		}
-
-		Class<?> returnType = method.getReturnType();
-
-		if (returnType.isArray()) {
-			returnType = returnType.getComponentType();
-		}
-
-		String returnTypeName = returnType.getName();
-
-		for (String excludedTypesName : excludedTypesNames) {
-			if (excludedTypesName.startsWith(returnTypeName)) {
-				return false;
 			}
 		}
 
