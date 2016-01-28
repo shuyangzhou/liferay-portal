@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portlet.messageboards.model;
+package com.liferay.message.boards.kernel.model;
 
 import java.util.List;
 
