@@ -69,15 +69,15 @@ public class PortletConfigurationIconTracker {
 
 	public static List<PortletConfigurationIcon> getPortletConfigurationIcons(
 		String portletId, PortletRequest portletRequest,
-		Comparator comparator) {
+		Comparator<?> comparator) {
 
 		List<PortletConfigurationIcon> portletConfigurationIcons =
-			new ArrayList();
+			new ArrayList<>();
 
 		List<PortletConfigurationIconFactory>
 			portletConfigurationIconFactories = ListUtil.sort(
 				getPortletConfigurationFactories(portletId, portletRequest),
-				comparator);
+				(Comparator<PortletConfigurationIconFactory>)comparator);
 
 		for (PortletConfigurationIconFactory portletConfigurationIconFactory :
 				portletConfigurationIconFactories) {
