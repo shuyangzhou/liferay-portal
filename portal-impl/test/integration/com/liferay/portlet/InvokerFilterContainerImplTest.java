@@ -63,6 +63,15 @@ public class InvokerFilterContainerImplTest {
 	public static void setUpClass() {
 		_atomicState = new AtomicState();
 
+		PortletContextFactory portletContextFactory =
+			new PortletContextFactoryImpl();
+
+		PortletContextFactoryUtil portletContextFactoryUtil =
+			new PortletContextFactoryUtil();
+
+		portletContextFactoryUtil.setPortletContextFactory(
+			portletContextFactory);
+
 		MainServlet mainServlet = MainServletTestCallback.getMainServlet();
 
 		ServletContext servletContext = mainServlet.getServletContext();
@@ -79,7 +88,7 @@ public class InvokerFilterContainerImplTest {
 		portlet.setPortletClass("com.liferay.portlet.StrutsPortlet");
 		portlet.setPortletId("InvokerFilterContainerImplTest");
 
-		PortletContext portletContext = PortletContextFactory.create(
+		PortletContext portletContext = PortletContextFactoryUtil.create(
 			portlet, servletContext);
 
 		try {
