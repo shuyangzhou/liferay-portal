@@ -42,7 +42,8 @@ public class IconOptionsTag extends IconTag {
 			return _portletConfigurationIcons;
 		}
 
-		Comparator comparator = new PropertyComparator("weight", false, false);
+		Comparator<?> comparator = new PropertyComparator(
+			"weight", false, false);
 
 		_portletConfigurationIcons =
 			PortletConfigurationIconTracker.getPortletConfigurationIcons(
