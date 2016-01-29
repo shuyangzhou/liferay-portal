@@ -745,22 +745,6 @@ public class AnnotationLocatorTest {
 		}
 	}
 
-	@Retention(RetentionPolicy.RUNTIME)
-	@Target(ElementType.METHOD)
-	private @interface Method {
-
-		public int value();
-
-	}
-
-	@Retention(RetentionPolicy.RUNTIME)
-	@Target({ElementType.METHOD, ElementType.TYPE})
-	private @interface Mix {
-
-		public int value();
-
-	}
-
 	@Type(value = 5)
 	private static class OriginClass
 		implements OriginInterface2, OriginInterface1 {
@@ -774,23 +758,6 @@ public class AnnotationLocatorTest {
 		@Override
 		public void originMethod2() {
 		}
-
-	}
-
-	@Type(value = 9)
-	private interface OriginInterface1 {
-
-		@Method(value = 9)
-		@Mix(value = 9)
-		public void originMethod1();
-
-	}
-
-	@Mix(value = 8)
-	private interface OriginInterface2 extends OriginInterface1 {
-
-		@Method(value = 8)
-		public void originMethod2();
 
 	}
 
@@ -811,28 +778,6 @@ public class AnnotationLocatorTest {
 		@Override
 		public void superMethod2() {
 		}
-
-	}
-
-	@Mix(value = 7)
-	private interface SuperInterface1 extends OriginInterface1 {
-
-		@Method(value = 7)
-		void superMethod1();
-
-	}
-
-	@Type(value = 6)
-	private interface SuperInterface2 extends SuperInterface1 {
-
-		@Override
-		@Method(value = 6)
-		@Mix(value = 6)
-		void originMethod1();
-
-		@Method(value = 6)
-		@Mix(value = 6)
-		void superMethod2();
 
 	}
 
@@ -861,6 +806,61 @@ public class AnnotationLocatorTest {
 		@Override
 		public void testMethod2() {
 		}
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.METHOD)
+	private @interface Method {
+
+		public int value();
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target({ElementType.METHOD, ElementType.TYPE})
+	private @interface Mix {
+
+		public int value();
+
+	}
+
+	@Type(value = 9)
+	private interface OriginInterface1 {
+
+		@Method(value = 9)
+		@Mix(value = 9)
+		public void originMethod1();
+
+	}
+
+	@Mix(value = 8)
+	private interface OriginInterface2 extends OriginInterface1 {
+
+		@Method(value = 8)
+		public void originMethod2();
+
+	}
+
+	@Mix(value = 7)
+	private interface SuperInterface1 extends OriginInterface1 {
+
+		@Method(value = 7)
+		void superMethod1();
+
+	}
+
+	@Type(value = 6)
+	private interface SuperInterface2 extends SuperInterface1 {
+
+		@Override
+		@Method(value = 6)
+		@Mix(value = 6)
+		void originMethod1();
+
+		@Method(value = 6)
+		@Mix(value = 6)
+		void superMethod2();
 
 	}
 

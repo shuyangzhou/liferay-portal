@@ -508,6 +508,15 @@ public class BasicRegistryImpl implements Registry {
 
 	}
 
+	private static class LowerCaseKeyTreeMap extends TreeMap<String, Object> {
+
+		@Override
+		public Object put(String key, Object value) {
+			return super.put(key.toLowerCase(), value);
+		}
+
+	}
+
 	private class BasicServiceReference<T> implements ServiceReference<T> {
 
 		public BasicServiceReference(
@@ -893,15 +902,6 @@ public class BasicRegistryImpl implements Registry {
 		private final AtomicInteger _stateCounter = new AtomicInteger();
 		private final NavigableMap<ServiceReference<S>, T> _trackedServices =
 			new ConcurrentSkipListMap<>();
-
-	}
-
-	private static class LowerCaseKeyTreeMap extends TreeMap<String, Object> {
-
-		@Override
-		public Object put(String key, Object value) {
-			return super.put(key.toLowerCase(), value);
-		}
 
 	}
 

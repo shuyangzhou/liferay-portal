@@ -100,7 +100,6 @@ public class ClassServiceDependencyVerifierTest {
 
 	private static class TestInstance3
 		implements TestInterface1, TestInterface2 {
-
 	}
 
 	private interface TestInterface1 {

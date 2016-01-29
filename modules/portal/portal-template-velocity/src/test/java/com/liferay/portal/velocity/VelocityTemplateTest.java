@@ -380,21 +380,6 @@ public class VelocityTemplateTest {
 	private TemplateContextHelper _templateContextHelper;
 	private VelocityEngine _velocityEngine;
 
-	private static class MockTemplateResourceLoader
-		extends VelocityTemplateResourceLoader {
-
-		@Override
-		protected void activate(Map<String, Object> properties) {
-			Registry registry = RegistryUtil.getRegistry();
-
-			setMultiVMPool(registry.getService(MultiVMPool.class));
-			setSingleVMPool(registry.getService(SingleVMPool.class));
-
-			super.activate(properties);
-		}
-
-	}
-
 	private static class MockTemplateContextHelper
 		extends TemplateContextHelper {
 
@@ -471,6 +456,21 @@ public class VelocityTemplateTest {
 
 		private long _lastModified = System.currentTimeMillis();
 		private String _templateId;
+
+	}
+
+	private static class MockTemplateResourceLoader
+		extends VelocityTemplateResourceLoader {
+
+		@Override
+		protected void activate(Map<String, Object> properties) {
+			Registry registry = RegistryUtil.getRegistry();
+
+			setMultiVMPool(registry.getService(MultiVMPool.class));
+			setSingleVMPool(registry.getService(SingleVMPool.class));
+
+			super.activate(properties);
+		}
 
 	}
 
