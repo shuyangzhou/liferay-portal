@@ -468,7 +468,7 @@ public class BasicRegistryImpl implements Registry {
 	private final Map<ServiceTracker<?, ?>, Filter> _serviceTrackers =
 		new ConcurrentHashMap<>();
 
-	private class BasicFilter implements Filter {
+	private static class BasicFilter implements Filter {
 
 		public BasicFilter(String filterString) {
 			_filter = new aQute.lib.filter.Filter(filterString);
@@ -896,7 +896,7 @@ public class BasicRegistryImpl implements Registry {
 
 	}
 
-	private class LowerCaseKeyTreeMap extends TreeMap<String, Object> {
+	private static class LowerCaseKeyTreeMap extends TreeMap<String, Object> {
 
 		@Override
 		public Object put(String key, Object value) {

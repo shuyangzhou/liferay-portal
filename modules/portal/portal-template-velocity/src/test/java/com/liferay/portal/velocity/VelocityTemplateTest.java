@@ -395,7 +395,8 @@ public class VelocityTemplateTest {
 
 	}
 
-	private class MockTemplateContextHelper extends TemplateContextHelper {
+	private static class MockTemplateContextHelper
+		extends TemplateContextHelper {
 
 		@Override
 		public Map<String, Object> getHelperUtilities(
@@ -420,7 +421,7 @@ public class VelocityTemplateTest {
 
 	}
 
-	private class MockTemplateResource implements TemplateResource {
+	private static class MockTemplateResource implements TemplateResource {
 
 		/**
 		 * The empty constructor is required by {@link java.io.Externalizable}.

@@ -311,7 +311,7 @@ public class ReleaseManager {
 
 	}
 
-	private class UpgradeServiceTrackerCustomizer
+	private static class UpgradeServiceTrackerCustomizer
 		implements ServiceTrackerCustomizer<UpgradeStep, UpgradeInfo> {
 
 		public UpgradeServiceTrackerCustomizer(BundleContext bundleContext) {

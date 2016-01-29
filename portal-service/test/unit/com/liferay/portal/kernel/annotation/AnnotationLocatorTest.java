@@ -762,7 +762,8 @@ public class AnnotationLocatorTest {
 	}
 
 	@Type(value = 5)
-	private class OriginClass implements OriginInterface2, OriginInterface1 {
+	private static class OriginClass
+		implements OriginInterface2, OriginInterface1 {
 
 		@Method(value = 5)
 		@Mix(value = 5)
@@ -794,7 +795,7 @@ public class AnnotationLocatorTest {
 	}
 
 	@Mix(value = 2)
-	private class SuperClass
+	private static class SuperClass
 		extends OriginClass implements SuperInterface2, SuperInterface1 {
 
 		@Method(value = 2)
@@ -836,7 +837,7 @@ public class AnnotationLocatorTest {
 	}
 
 	@Type(value = 1)
-	private class TestClass
+	private static class TestClass
 		extends SuperClass implements TestInterface2, TestInterface1 {
 
 		@Method(value = 1)

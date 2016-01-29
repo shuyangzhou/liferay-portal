@@ -97,7 +97,7 @@ public class RepositoryConfigurationBuilder {
 
 	}
 
-	private class RepositoryConfigurationImpl
+	private static class RepositoryConfigurationImpl
 		implements RepositoryConfiguration {
 
 		public RepositoryConfigurationImpl(Collection<Parameter> parameters) {

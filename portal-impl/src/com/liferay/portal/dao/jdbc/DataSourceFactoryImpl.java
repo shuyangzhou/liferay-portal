@@ -596,7 +596,7 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 
 	}
 
-	private class MBeanServerServiceTrackerCustomizer
+	private static class MBeanServerServiceTrackerCustomizer
 		implements ServiceTrackerCustomizer<MBeanServer, MBeanServer> {
 
 		public MBeanServerServiceTrackerCustomizer(

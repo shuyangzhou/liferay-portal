@@ -64,7 +64,7 @@ public class AutoEscapeBeanHandlerTest {
 
 	}
 
-	private class BeanImpl implements Bean {
+	private static class BeanImpl implements Bean {
 
 		public BeanImpl(String attribute) {
 			_attribute = attribute;

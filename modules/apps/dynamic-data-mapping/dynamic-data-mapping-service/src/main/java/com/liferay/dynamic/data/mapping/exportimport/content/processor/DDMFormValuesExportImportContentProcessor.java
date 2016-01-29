@@ -310,7 +310,7 @@ public class DDMFormValuesExportImportContentProcessor
 
 	}
 
-	private class LayoutImportDDMFormFieldValueTransformer
+	private static class LayoutImportDDMFormFieldValueTransformer
 		implements DDMFormFieldValueTransformer {
 
 		public LayoutImportDDMFormFieldValueTransformer(

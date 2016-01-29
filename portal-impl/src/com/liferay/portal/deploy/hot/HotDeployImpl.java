@@ -351,7 +351,7 @@ public class HotDeployImpl implements HotDeploy {
 
 	}
 
-	private class HotDeployPortalLifecycle extends BasePortalLifecycle {
+	private static class HotDeployPortalLifecycle extends BasePortalLifecycle {
 
 		public HotDeployPortalLifecycle(HotDeployEvent hotDeployEvent) {
 			_servletContext = hotDeployEvent.getServletContext();

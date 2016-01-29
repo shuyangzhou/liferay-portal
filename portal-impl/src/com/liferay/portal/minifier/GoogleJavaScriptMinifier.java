@@ -122,7 +122,7 @@ public class GoogleJavaScriptMinifier implements JavaScriptMinifier {
 
 	}
 
-	private class SimpleMessageFormatter implements MessageFormatter {
+	private static class SimpleMessageFormatter implements MessageFormatter {
 
 		@Override
 		public String formatError(JSError jsError) {

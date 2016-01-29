@@ -1860,7 +1860,7 @@ public class TableMapperTest {
 
 	}
 
-	private class RecorderModelListener<T extends BaseModel<T>>
+	private static class RecorderModelListener<T extends BaseModel<T>>
 		extends BaseModelListener<T> {
 
 		public void assertOnAfterAddAssociation(
@@ -1961,7 +1961,7 @@ public class TableMapperTest {
 
 	}
 
-	private class RecordInvocationHandler implements InvocationHandler {
+	private static class RecordInvocationHandler implements InvocationHandler {
 
 		public void assertCall(String methodName, Object... args) {
 			Object[] record = _records.get(methodName);
