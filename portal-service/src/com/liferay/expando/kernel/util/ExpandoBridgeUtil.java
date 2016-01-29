@@ -12,10 +12,10 @@
  * details.
  */
 
-package com.liferay.portlet.expando.util;
+package com.liferay.expando.kernel.util;
 
+import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.portal.service.ServiceContext;
-import com.liferay.portlet.expando.model.ExpandoBridge;
 
 import java.io.Serializable;
 

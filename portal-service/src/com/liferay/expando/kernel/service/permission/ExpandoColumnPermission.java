@@ -12,11 +12,11 @@
  * details.
  */
 
-package com.liferay.portlet.expando.service.permission;
+package com.liferay.expando.kernel.service.permission;
 
+import com.liferay.expando.kernel.model.ExpandoColumn;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
-import com.liferay.portlet.expando.model.ExpandoColumn;
 
 /**
  * @author Michael C. Han

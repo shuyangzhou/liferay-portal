@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portlet.expando.model;
+package com.liferay.expando.kernel.model;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.UnicodeProperties;
