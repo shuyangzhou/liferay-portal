@@ -478,6 +478,8 @@ public class JournalConverterImpl implements JournalConverter {
 				"name", dynamicContentElement.attributeValue("name"));
 			jsonObject.put(
 				"title", dynamicContentElement.attributeValue("title"));
+			jsonObject.put(
+				"type", dynamicContentElement.attributeValue("type"));
 
 			serializable = jsonObject.toString();
 		}
